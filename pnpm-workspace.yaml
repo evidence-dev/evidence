@@ -1,0 +1,4 @@
+packages:
+  - 'packages/*'
+  - 'sites/*'
+  - '.github/actions/*'

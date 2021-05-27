@@ -1,0 +1,37 @@
+{
+	"name": "@evidence-dev/create-new",
+	"license": "MIT",
+	"description": "create a new evidence project",
+	"author": "evidence.dev",
+	"version": "1.0.5",
+	"bin": "./bin.js",
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^18.0.0",
+		"@rollup/plugin-json": "^4.1.0",
+		"@rollup/plugin-node-resolve": "^11.2.1",
+		"@sveltejs/kit": "1.0.0-next.71",
+		"@types/fs-extra": "^9.0.11",
+		"fs-extra": "^9.1.0",
+		"gitignore-parser": "^0.0.2",
+		"kleur": "^4.1.4",
+		"prettier": "^2.2.1",
+		"prettier-plugin-svelte": "^2.2.0",
+		"prompts": "^2.4.0",
+		"rollup": "^2.41.1",
+		"sucrase": "^3.18.1",
+		"tiny-glob": "^0.2.8"
+	},
+	"scripts": {
+		"dev": "rollup -cw",
+		"build": "rollup -c",
+		"lint": "eslint --ignore-path .gitignore \"cli/*.js\" && npm run check-format",
+		"format": "prettier --write . --config ../../.prettierrc --ignore-path .gitignore",
+		"check-format": "prettier --check . --config ../../.prettierrc --ignore-path .gitignore",
+		"prepublishOnly": "npm run build"
+	},
+	"files": [
+		"dist",
+		"bin.js"
+	],
+	"type": "module"
+}
