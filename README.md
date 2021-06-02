@@ -15,7 +15,7 @@ If you are feeling adventurous, drive on:
 Check out the [documentation](https://docs.evidence.dev) for a complete walk through.
 
 ```
-npm init evidence-dev/new my-project 
+npm init @evidence-dev/new my-project 
 cd my-project
 npm run dev 
 ```
