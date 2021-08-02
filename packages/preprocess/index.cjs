@@ -41,13 +41,30 @@ const createModuleContext = function(filename){
 const createDefaultProps = function(filename){
     let defaultProps = `
         import { page } from '$app/stores';
-        import {LineChart, Value, DataTable} from '@evidence-dev/components'
+        import Value from '@evidence-dev/components/viz/Value.svelte';
+        import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
+        import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
+        import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
+        import ColumnChart from '@evidence-dev/components/viz/ColumnChart.svelte';
+        import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
+        import Hist from '@evidence-dev/components/viz/Hist.svelte';
+        import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
+        import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
         `
     if(hasQueries(filename)){
         defaultProps = `
             export let data 
             import { page } from '$app/stores';
-            import {LineChart, Value, QueryViewer, DataTable} from '@evidence-dev/components'
+            import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
+            import Value from '@evidence-dev/components/viz/Value.svelte';
+            import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
+            import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
+            import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
+            import ColumnChart from '@evidence-dev/components/viz/ColumnChart.svelte';
+            import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
+            import Hist from '@evidence-dev/components/viz/Hist.svelte';
+            import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
+            import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
             `
     }
     return defaultProps
