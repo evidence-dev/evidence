@@ -1,3 +1,5 @@
-# Evidence.dev Components 
+# Your Evidence Project
 
-Component library included in [evidence.dev](https://evidence.dev) projects
+Thank you for trying out Evidence. 
+
+[Documentation](https://docs.evidence.dev)
