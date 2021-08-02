@@ -1,0 +1,29 @@
+{
+	"name": "example-project",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"preview": "svelte-kit preview"
+	},
+	"devDependencies": {
+		"@evidence-dev/db-orchestrator": "workspace:*",
+		"@sveltejs/adapter-static": "1.0.0-next.13",
+		"@sveltejs/kit": "1.0.0-next.140",
+		"vite": "2.4.3",
+		"vite-plugin-live-reload": "2.1.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@evidence-dev/components": "link:../../../components",
+		"@evidence-dev/preprocess": "workspace:*",
+		"@tidyjs/tidy": "2.4.2",
+		"blueimp-md5": "2.18.0",
+		"d3": "6.7.0",
+		"d3-array": "3.0.1",
+		"d3-scale": "3.3.0",
+		"fs-extra": "9.1.0",
+		"layercake": "4.1.1",
+		"svelte": "3.40.1"
+	}
+}
