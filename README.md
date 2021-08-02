@@ -29,6 +29,7 @@ Check out the [documentation](https://docs.evidence.dev) for a complete walk thr
 ```
 npm init @evidence-dev/new my-project 
 cd my-project
+npm install
 npm run dev 
 ```
 
