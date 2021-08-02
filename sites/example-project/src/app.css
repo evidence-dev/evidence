@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Spectral+SC&display=swap');
+
+body {
+	font-family: 'Spectral', serif;
+	font-size: 18px;
+	line-height: 1.6;
+	font-weight: normal;
+	color: #2d2d2d;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+	/* background-color: #fcfdff ; */
+}
+
+p, ul, ol {
+	margin-block-end: 1em;
+	margin-block-start: 0em;
+	-moz-font-feature-settings: "onum";
+	-ms-font-feature-settings: "onum";
+	-webkit-font-feature-settings: "onum";
+	font-feature-settings: "onum";
+}
+
+h1, h2, h3, h4, h5, h6  {
+	font-weight: normal;
+	font-family: "SF Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	line-height: 1.5;
+	margin: 1.0em 0 0.3em 0; 
+}
+
+h1:first-of-type {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #444444;
+	border-top: none;
+	padding-top: none;
+	margin: 0em 0 0.3em 0; 
+}
+
+h1 {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #444444;
+	display: block;
+	border-top: 1px solid #e3e8ee;
+	padding-top: 0.3em;
+	margin: 1.1em 0 0.3em 0; 
+}
+
+
+h1:active {
+	display: block;
+}
+
+h2 { 
+	font-size: 1em;
+	font-weight: bold;
+	color: #444444;
+}
+
+h3 {
+	font-size: 1em;
+	font-style: italic;
+	font-family: 'Spectral', serif;
+}
+
+h4 {
+	font-size: 0.7em;
+	text-transform: lowercase;
+	font-family: 'Spectral SC', serif;
+	letter-spacing: 0.04em;
+}
+
+h5 {
+	font-size:0.68em;
+	font-family: 'Spectral', serif;
+	letter-spacing: 0.05em;
+}
+
+h6 {
+	font-size: 0.65em;
+	font-family: 'Spectral', serif;
+	letter-spacing: 0.025em;
+}
+
+article a {
+		color: #256a9c;
+		text-decoration: underline;
+		text-decoration-color: #daf1fe90; 
+		text-decoration-thickness: .1em;
+		text-underline-offset: 0.05em;
+	}
+
+article a:hover {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: #daf1fe; 
+	text-decoration-thickness: .1em;
+	text-underline-offset: 0.05em;
+}
+
+main {
+	position: relative;
+	max-width: 70ch;
+	margin: 0 auto;
+	box-sizing: border-box;
+	padding: 0 1.5em 0 1.5em;
+}
+
+hr {
+	display: block;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	margin-left: auto;
+	margin-right: auto;
+	border-top: 1px solid #e3e8ee;
+	border-bottom:none;
+	border-left:none;
+	border-right:none;
+	width: 75%;
+	
+}
+
+@media (max-width: 600px) {
+	body {
+		font-size: 16px;
+	}
+}
+
+/* GLOBAL COLOR VARIABLES - USED IN MULTI-SERIES CHARTS */
+:root {
+	--color1: #923d59;
+	--color2: #488f96;
+	--color3: #518eca;
+	--color4: #B3A9A0;
+	--color5: #3F6C51;
+	--color6: #ffc857;
+	--color7: #495867;
+	--color8: #bfdbf7;
+	--color9: #bc4749;
+	--color10: #EEEBD0;
+	--color11: #F68E5F;
+	--color12: #923d59;
+	--color13: #488f96;
+	--color14: #518eca;
+	--color15: #B3A9A0;
+	--color16: #3F6C51;
+	--color17: #ffc857;
+	--color18: #495867;
+	--color19: #bfdbf7;
+	--color20: #bc4749;
+}
+
+/* Idea for multiple color palettes: naming convention after --.
+For example: --gradient1 --gradient2 | --standard1 --standard2, etc.
+*/

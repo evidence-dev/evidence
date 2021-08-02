@@ -1,4 +1,4 @@
 packages:
   - 'packages/*'
   - 'sites/*'
-  - '.github/actions/*'
+  - 'packages/create-new/templates/*'

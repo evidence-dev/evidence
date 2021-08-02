@@ -1,0 +1,16 @@
+{
+    "name": "@evidence-dev/bigquery",
+    "version": "0.0.1",
+    "description": "BigQuery driver for Evidence projects",
+    "main": "index.cjs",
+    "author": "evidence.dev",
+    "license": "MIT",
+    "dependencies": {
+      "blueimp-md5": "^2.18.0",
+      "fs-extra": "^9.1.0",
+      "@google-cloud/bigquery": "^5.6.0",
+      "chalk": "^4.1.1"
+    },
+    "type": "module"
+  }
+  
