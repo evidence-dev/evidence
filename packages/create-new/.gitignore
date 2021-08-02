@@ -1,5 +1,12 @@
-.DS_Store
-node_modules
-/.svelte
-/build
-/functions
+/dist
+
+# re-enable this once we're out of prerelease
+/cli/versions.js
+
+/templates/*/.svelte
+/templates/*/build
+/templates/*/.cloudflare
+/templates/*/.vercel_build_output
+/templates/*/.netlify
+/templates/*/dist
+/templates/.evidence

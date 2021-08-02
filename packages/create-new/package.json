@@ -2,36 +2,37 @@
 	"name": "@evidence-dev/create-new",
 	"license": "MIT",
 	"description": "create a new evidence project",
-	"author": "evidence.dev",
-	"version": "1.0.5",
+	"version": "0.1.2",
 	"bin": "./bin.js",
-	"devDependencies": {
-		"@rollup/plugin-commonjs": "^18.0.0",
-		"@rollup/plugin-json": "^4.1.0",
-		"@rollup/plugin-node-resolve": "^11.2.1",
-		"@sveltejs/kit": "1.0.0-next.71",
-		"@types/fs-extra": "^9.0.11",
-		"fs-extra": "^9.1.0",
-		"gitignore-parser": "^0.0.2",
+	"dependencies": {
 		"kleur": "^4.1.4",
+		"prompts": "^2.4.1"
+	},
+	"devDependencies": {
+		"@sveltejs/kit": "next",
+		"@types/gitignore-parser": "^0.0.0",
+		"@types/prettier": "^2.2.3",
+		"@types/prompts": "^2.0.11",
+		"gitignore-parser": "^0.0.2",
 		"prettier": "^2.2.1",
 		"prettier-plugin-svelte": "^2.2.0",
-		"prompts": "^2.4.0",
-		"rollup": "^2.41.1",
 		"sucrase": "^3.18.1",
-		"tiny-glob": "^0.2.8"
+		"svelte-preprocess": "^4.7.3",
+		"tiny-glob": "^0.2.8",
+		"typescript": "^4.3.5"
 	},
 	"scripts": {
-		"dev": "rollup -cw",
-		"build": "rollup -c",
-		"lint": "eslint --ignore-path .gitignore \"cli/*.js\" && npm run check-format",
-		"format": "prettier --write . --config ../../.prettierrc --ignore-path .gitignore",
-		"check-format": "prettier --check . --config ../../.prettierrc --ignore-path .gitignore",
+		"build": "npm run format && node scripts/build-templates",
+		"check": "tsc",
+		"lint": "eslint --ignore-path .gitignore --ignore-path ../../.gitignore \"./*.js\" && npm run check-format",
+		"format": "prettier --write . --config ../../.prettierrc --ignore-path .gitignore --ignore-path ../../.gitignore --plugin prettier-plugin-svelte",
+		"check-format": "prettier --check . --config ../../.prettierrc --ignore-path ../../.gitignore --ignore-path .gitignore --plugin prettier-plugin-svelte",
 		"prepublishOnly": "npm run build"
 	},
 	"files": [
 		"dist",
-		"bin.js"
+		"bin.js",
+		"utils.js"
 	],
 	"type": "module"
 }
