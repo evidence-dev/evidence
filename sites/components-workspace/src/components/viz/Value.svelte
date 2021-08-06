@@ -1,5 +1,9 @@
 <script>
-    export let fmt = null
+    import getColumnSummary from "../modules/getColumnSummary.js";
+    import formatValue from "../modules/formatValue.js";
+    import getParsedDate from "../modules/getParsedDate.js";
+    let fmt = null
+    let units = null
     
     export let data = null 
     export let row = 0    
@@ -11,26 +15,21 @@
         if(!column){
             column = Object.keys(data[row])[0]
         }
+        let columnSummary = getColumnSummary(data);
+
+        let dateCols = columnSummary.filter(d => d.type === "date")
+        dateCols = dateCols.map(d => d.id);
+        if(dateCols.length > 0){
+            for(var i = 0; i < dateCols.length; i++){
+            data = getParsedDate(data, dateCols[i]);
+            }
+        }
         value = data[row][column]
-
-        let fmt_stub = column.substr(column.length - 4) 
-
-        if(fmt_stub.substr(0,1) === '_' ){
-            fmt = fmt_stub.substr(1)
-        }
-        else if(column.includes("_date")){
-            fmt = "date"
-        }
+        columnSummary = columnSummary.filter(d => d.id === column);
+        fmt = columnSummary[0].format;
+        units = columnSummary[0].units;
     }
     
 </script>
 
-{#if fmt === "pct"}
-{value.toLocaleString(undefined, { style: 'percent' })}
-{:else if fmt === "usd" }
-{value.toLocaleString('en-US',{style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2})}
-{:else if fmt === "date"}
-{(new Date (value)).toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })}
-{:else }
-{value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}
-{/if}
+{formatValue(value, fmt, units)} 
