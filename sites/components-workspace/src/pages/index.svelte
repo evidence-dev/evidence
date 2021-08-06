@@ -7,6 +7,7 @@
     import Hist from '$lib/viz/Hist.svelte'
     import ScatterPlot from '$lib/viz/ScatterPlot.svelte'
     import DataTable from '$lib/viz/DataTable.svelte'
+    import Value from '$lib/viz/Value.svelte'
 
     import testData from '/src/data/test.json'
     import pctTest from '/src/data/pct_test.json'
@@ -14,6 +15,8 @@
  </script>
 
 <h1>Evidence Component Library</h1>
+
+This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is another: <Value value=.3054 fmt=pct/>
 
 <h2>Area Chart</h2>
 <AreaChart data={testData} x=x y=y/>
