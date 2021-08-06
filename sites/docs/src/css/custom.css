@@ -1,0 +1,124 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #189176;
+  --ifm-color-primary-dark: rgb(33, 175, 144);
+  --ifm-color-primary-darker: rgb(31, 165, 136);
+  --ifm-color-primary-darkest: rgb(26, 136, 112);
+  --ifm-color-primary-light: rgb(70, 203, 174);
+  --ifm-color-primary-lighter: rgb(102, 212, 189);
+  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-code-font-size: 95%;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgb(72, 77, 91);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+@media screen and (max-width: 996px) {
+  :root {
+    --ifm-font-size-base: 18px;
+  }
+  article header h1 {
+    font-size: 1.5rem !important;
+  }
+  article h2 {
+    font-size: 1.2rem !important;
+  }
+  article h3 {
+    font-size: 1rem !important;
+  }
+  .hero .hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  :root {
+    --ifm-font-size-base: 14px;
+  }
+  article header h1 {
+    font-size: 1.5rem !important;
+  }
+  article h2 {
+    font-size: 1.2rem !important;
+  }
+  article h3 {
+    font-size: 1rem !important;
+  }
+  .hero .hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+
+@media screen and (min-width: 997px) {
+  :root {
+    --ifm-font-size-base: 17px;
+  }
+  article header h1 {
+    font-size: 2rem !important;
+  }
+  article h2 {
+    font-size: 1.5rem !important;
+  }
+  article h3 {
+    font-size: 1.25rem !important;
+  }
+}
+
+
+article {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gradient {
+  background: -webkit-linear-gradient(315deg, #046ade 0%, #08a86d 75%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.big-link {
+  color: #006ce8;
+  text-align: center;
+}
+
+.big-link:hover {
+  color: #0054b5;
+  text-decoration: none;
+}
+
+.overview {
+  font-size: 1rem;
+}
+
+.logo-background {
+  background-color: white;
+  width: 50%;
+  height: auto;
+}
+
+
+
+@media screen and (max-width: 500px) {
+  .community-header {
+    font-size: 1.2rem !important;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .community-header {
+    font-size: 1.2rem !important;
+  }
+}
