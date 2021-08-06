@@ -174,9 +174,20 @@
     // The chart draws bars from the top down and from left to right, but this stacked dataset calculates everything
     // from 0 up.
 
-  $: filteredData = (filter) => {
-    return finalData.filter((d) => d[series] === filter);
-  };
+    let flatData = [];
+    for(var i = 0; i < seriesData.length; i++){
+      for(var j = 0; j < seriesData[i].length; j++){
+        flatData.push({
+          "series": seriesData[i].key,
+          "y0": seriesData[i][j][0],
+          "y1": seriesData[i][j][1],
+          "x": seriesData[i][j].data[0]
+        })
+      }
+    }
+    $: filteredData = (filter) => {
+      return flatData.filter((d) => d.series === filter); 
+    };
 
   // In the graphics logic for the stacked column below, there is a 1 pixel adjustment to
   // both the initial y coordinate and the column height. This is to avoid a rendering issue
@@ -219,7 +230,7 @@
         <rect
           class="group-rect {group} {i}"
           data-id={j}
-          x={isBandwidth ? $xGet(d) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xGet(d) : ($xGet(d) - chartColumnWidth(d)/2)}
+          x={isBandwidth ? $xScale(seriesData[i][j].data[0]) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xScale(seriesData[i][j].data[0]) : ($xScale(seriesData[i][j].data[0]) - chartColumnWidth(d)/2)}
           y={$yScale(seriesData[i][j][1]) - 1}
           height={$yScale(seriesData[i][j][0]) -
             $yScale(seriesData[i][j][1]) +
@@ -229,7 +240,7 @@
           fill-opacity='{fillOpacity}'
           stroke={outlineColor}
           stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue(d[yName],yFormat,yUnits)}</title></rect
+          ><title>{group + ": " + formatValue(d.x,yFormat,yUnits)}</title></rect
         >
       {/each}
       {#if seriesLabels !== "none"}
