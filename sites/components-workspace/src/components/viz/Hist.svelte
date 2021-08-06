@@ -1,7 +1,7 @@
 <script>
 import { extent } from 'd3-array';
 import * as d3 from 'd3';
-import {tidy, arrange, groupBy, summarize, n} from '@tidyjs/tidy'
+import {tidy, arrange, groupBy, summarize, n, rename} from '@tidyjs/tidy'
 import getThresholds from '../modules/getThresholds.js'
 
 import Chart from './Chart.svelte'
@@ -20,7 +20,8 @@ export let data;
 export let x = null;
 
 // Output Data Names:
-let x2 = 'binMin';
+// Columns in output dataset will be [x], binMax, and frequency. [x] serves as the 'binMin',
+// but uses the actual column name to obtain the user's formatting (and name for potential axis titling in future)
 let y = 'frequency';
 
 // Bin Props:
@@ -103,7 +104,8 @@ finalData.push({"binMin": thresh[thresh.length-2], "binMax": thresh[thresh.lengt
 
 finalData = tidy(
         finalData,
-        arrange('binMin')
+        rename({binMin: x}),
+        arrange(x)
 );
 
 // Reset upper bound of X Axis:
@@ -118,7 +120,7 @@ xMax = xMax ? xMax : thresh[thresh.length - 1];
 
 {#if !error}
 <div width=100%>
-    <Chart data={finalData} x={x2} y={y}
+    <Chart data={finalData} x={x} y={y}
     yMin={yMin} 
     yMax={yMax} 
     xMin={xMin} 
