@@ -8,6 +8,7 @@ export default class Chart extends SvelteComponentTyped<{
     width?: string;
     height?: number;
     sort?: any;
+    reverseAxes?: boolean;
     heightMultiplier?: any;
     marginTop?: string;
     marginBottom?: string;
@@ -15,7 +16,6 @@ export default class Chart extends SvelteComponentTyped<{
     paddingLeft?: number;
     paddingTop?: number;
     paddingBottom?: number;
-    reverseAxes?: boolean;
     xType?: string;
     yType?: string;
     groupType?: any;
@@ -43,6 +43,7 @@ declare const __propDef: {
         width?: string;
         height?: number;
         sort?: any;
+        reverseAxes?: boolean;
         heightMultiplier?: any;
         marginTop?: string;
         marginBottom?: string;
@@ -50,7 +51,6 @@ declare const __propDef: {
         paddingLeft?: number;
         paddingTop?: number;
         paddingBottom?: number;
-        reverseAxes?: boolean;
         xType?: string;
         yType?: string;
         groupType?: any;

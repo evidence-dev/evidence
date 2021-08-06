@@ -46,7 +46,7 @@
     let yBaseline = undefined;
 
     let yAxisPosition = "top";
-    let yTickMarks = "true";
+    let yTickMarks = "false";
     let xTickMarks = undefined;
     let xAxisTitle = "";
 
