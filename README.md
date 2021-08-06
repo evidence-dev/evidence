@@ -1,4 +1,4 @@
-![evidence-logo](/docs/evidence-logo.svg)
+![evidence-logo](/readme/evidence-logo.svg)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/evidence-dev/evidence.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/evidence-dev/evidence/stargazers/)
@@ -17,14 +17,14 @@ You can reference the results of those queries directly in your markdown documen
 Evidence compiles your markdown documents into a fast and reliable website. It tests your queries and keeps the site up-to-date with your data warehouse.
 
 Evidence supports loops, conditionals, parameterized pages, tests and more. It's easy to get started and you can build data products which are both more sophisticated and dramatically easier to use than what you can build with a typical BI tool.
-![how-it-works](/docs/how-it-works.png)
+![how-it-works](/readme/how-it-works.png)
 
 # Getting Started 
 Evidence is in alpha. A lot of things will change between now and our stable release.  
 
 ## Installation 
 
-Check out the [documentation](https://docs.evidence.dev) for a complete walk through.
+Check out the [documentation](https://readme.evidence.dev) for a complete walk through.
 
 ```
 npm init @evidence-dev/new my-project 
@@ -43,4 +43,4 @@ Follow us on [Twitter](https://twitter.com/evidence_dev) to receive the latest u
 If you are interested in contributing, please join us on our [slack channel](https://evidencedev.slack.com/join/shared_invite/zt-qliah5tz-THIzMChvRn~lBA7EHFPXaA#/shared-invite/email), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.  
 
 # License
-Evidence is licensed under the MIT license. See the [LICENSE](docs/license.md) file for licensing information.
+Evidence is licensed under the MIT license. See the [LICENSE](readme/license.md) file for licensing information.
