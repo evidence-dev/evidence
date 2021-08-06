@@ -149,7 +149,8 @@
     .stack()
     .keys(keys)
     .value(([, values], key) => values.get(key))
-    .order(order)(values);
+    .order(order)
+    .offset(d3.stackOffsetDiverging)(values);
 
     // Stacked data splits the dataset by group and generates a list of coordinates for each rectangle to be drawn:
     // Example:
@@ -216,8 +217,8 @@
           class="group-rect {group} {i}"
           data-id={j}
           x={isBandwidth ? $xScale(seriesData[i][j].data[0]) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xScale(seriesData[i][j].data[0]) : ($xScale(seriesData[i][j].data[0]) - chartColumnWidth(d)/2)}
-          y={seriesData[i][j][1] ? $yScale(seriesData[i][j][1]) - 1 : 0}
-          height={seriesData[i][j][1] ? $yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1]) + 1 : 0}
+          y={$yScale(seriesData[i][j][1]) + (seriesData[i][j][1] === 0 ? 0 : -1)}
+          height={Math.abs($yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1])) + (seriesData[i][j][1] > 0 ? 1 : 0)}
           width={chartColumnWidth(d)}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'

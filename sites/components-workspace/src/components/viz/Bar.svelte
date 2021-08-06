@@ -89,7 +89,8 @@
     .stack()
     .keys(keys)
     .value(([, values], key) => values.get(key))
-    .order(order)(values);
+    .order(order)
+    .offset(d3.stackOffsetDiverging)(values);
 
   // In the graphics logic for the stacked column below, there is a 1 pixel adjustment to
   // both the initial y coordinate and the column height. This is to avoid a rendering issue
@@ -146,7 +147,7 @@
           x={$xScale(seriesData[i][j][0])}
           y={$yScale(seriesData[i][j].data[0]) + calcBarHeight(d)/2 - chartBarHeight(d)/2}
           height={chartBarHeight(d)}
-          width={seriesData[i][j][1] ? $xScale(seriesData[i][j][1]) - $xScale(seriesData[i][j][0]) + 1 : 0}
+          width={$xScale(seriesData[i][j][1]) - $xScale(seriesData[i][j][0]) + 1}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'
           stroke='{outlineColor}'

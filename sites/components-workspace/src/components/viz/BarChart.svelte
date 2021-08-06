@@ -82,8 +82,6 @@
         checkInputs(data, [x,y], [series]);
         if(getColumnType(data, x) === "date"){
             throw Error("Bar chart does not accept dates yet");  
-        } else if(groupType === "stacked" && getColumnExtents(data,y)[0] < 0){
-            throw Error("Stacked bar chart does not accept negative values yet");
         }
 
         if(series != null){
