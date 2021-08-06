@@ -146,9 +146,7 @@
           x={$xScale(seriesData[i][j][0])}
           y={$yScale(seriesData[i][j].data[0]) + calcBarHeight(d)/2 - chartBarHeight(d)/2}
           height={chartBarHeight(d)}
-          width={$xScale(seriesData[i][j][1]) -
-            $xScale(seriesData[i][j][0]) +
-            1}
+          width={seriesData[i][j][1] ? $xScale(seriesData[i][j][1]) - $xScale(seriesData[i][j][0]) + 1 : 0}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'
           stroke='{outlineColor}'

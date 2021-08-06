@@ -94,7 +94,7 @@
     if(!isHist){
       return Math.min(calcColumnWidth(d), maxColumnWidth);
     } else {
-      return calcColumnWidth(d) - 1;
+      return Math.max(calcColumnWidth(d) - 1, 0);
     }
   }
 
@@ -231,16 +231,14 @@
           class="group-rect {group} {i}"
           data-id={j}
           x={isBandwidth ? $xScale(seriesData[i][j].data[0]) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xScale(seriesData[i][j].data[0]) : ($xScale(seriesData[i][j].data[0]) - chartColumnWidth(d)/2)}
-          y={$yScale(seriesData[i][j][1]) - 1}
-          height={$yScale(seriesData[i][j][0]) -
-            $yScale(seriesData[i][j][1]) +
-            1}
+          y={seriesData[i][j][1] ? $yScale(seriesData[i][j][1]) - 1 : 0}
+          height={seriesData[i][j][1] ? $yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1]) + 1 : 0}
           width={chartColumnWidth(d)}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'
           stroke={outlineColor}
           stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue(d.x,yFormat,yUnits)}</title></rect
+          ><title>{group + ": " + formatValue(d.y1 - d.y0,yFormat,yUnits)}</title></rect
         >
       {/each}
       {#if seriesLabels !== "none"}
