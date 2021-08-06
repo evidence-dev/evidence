@@ -149,6 +149,7 @@
             baseline={xBaseline}/>
         <Bar 
             series={series} 
+            seriesNames={seriesNames}
             stackOrder={stackOrder} 
             fillColor={fillColor}
             fillTransparency={fillTransparency}/>

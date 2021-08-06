@@ -58,10 +58,7 @@
   let colorPalette = getColorPalette();
 
   // Get distinct series names if series column supplied in chart call:
-  let seriesNames = [];
-  if (series !== null && filter === null) {
-    seriesNames = getDistinctValues(finalData, series);
-  }
+  export let seriesNames = [];
 
   var keys = Array.from(d3.group(finalData, (d) => d[series]).keys());
   var values = Array.from(
@@ -94,16 +91,28 @@
     .value(([, values], key) => values.get(key))
     .order(order)(values);
 
-  $: filteredData = (filter) => {
-    return finalData.filter((d) => d[series] === filter);
-  };
-
   // In the graphics logic for the stacked column below, there is a 1 pixel adjustment to
   // both the initial y coordinate and the column height. This is to avoid a rendering issue
   // where a miniscule gap can appear between the stacks of the column (especially when
   // scrolling)
 
   $: isBandwidth = typeof $yScale.bandwidth === 'function';
+
+  let flatData = [];
+  for(var i = 0; i < seriesData.length; i++){
+    for(var j = 0; j < seriesData[i].length; j++){
+        flatData.push({
+          "series": seriesData[i].key,
+          "x0": seriesData[i][j][0],
+          "x1": seriesData[i][j][1],
+          "y": seriesData[i][j].data[0]
+        })
+    }
+  }
+  
+  $: filteredData = (filter) => {
+      return flatData.filter((d) => d.series === filter);
+  };
 
 </script>
 
@@ -135,7 +144,7 @@
           class="group-rect {group} {i}"
           data-id={j}
           x={$xScale(seriesData[i][j][0])}
-          y={$yGet(d) + calcBarHeight(d)/2 - chartBarHeight(d)/2}
+          y={$yScale(seriesData[i][j].data[0]) + calcBarHeight(d)/2 - chartBarHeight(d)/2}
           height={chartBarHeight(d)}
           width={$xScale(seriesData[i][j][1]) -
             $xScale(seriesData[i][j][0]) +
@@ -144,7 +153,7 @@
           fill-opacity='{fillOpacity}'
           stroke='{outlineColor}'
           stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue(d[xName], xFormat, xUnits)}</title></rect
+          ><title>{group + ": " + formatValue((seriesData[i][j][1] - seriesData[i][j][0]), xFormat, xUnits)}</title></rect
         >
       {/each}
     {/each}
