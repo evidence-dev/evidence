@@ -9,6 +9,7 @@ export default class Bar extends SvelteComponentTyped<{
     outlineColor?: string;
     outlineWidth?: number;
     stackOrder?: string;
+    seriesNames?: any[];
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -26,6 +27,7 @@ declare const __propDef: {
         outlineColor?: string;
         outlineWidth?: number;
         stackOrder?: string;
+        seriesNames?: any[];
     };
     events: {
         [evt: string]: CustomEvent<any>;

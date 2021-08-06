@@ -48,7 +48,7 @@
     let yAxisPosition = "top";
     let yTickMarks = "true";
     let xTickMarks = undefined;
-    export let xAxisTitle = undefined;
+    let xAxisTitle = "";
 
     // Gridlines:
     export let xGridlines = "false";
@@ -149,6 +149,7 @@
             baseline={xBaseline}/>
         <Bar 
             series={series} 
+            seriesNames={seriesNames}
             stackOrder={stackOrder} 
             fillColor={fillColor}
             fillTransparency={fillTransparency}/>

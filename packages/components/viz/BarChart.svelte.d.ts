@@ -13,7 +13,6 @@ export default class BarChart extends SvelteComponentTyped<{
     units?: string;
     xGridlines?: string;
     yGridlines?: string;
-    xAxisTitle?: any;
     series?: any;
 }, {
     [evt: string]: CustomEvent<any>;
@@ -36,7 +35,6 @@ declare const __propDef: {
         units?: string;
         xGridlines?: string;
         yGridlines?: string;
-        xAxisTitle?: any;
         series?: any;
     };
     events: {

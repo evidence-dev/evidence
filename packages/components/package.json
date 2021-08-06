@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "devDependencies": {
     "@sveltejs/adapter-static": "1.0.0-next.13",
     "@sveltejs/kit": "1.0.0-next.140",
