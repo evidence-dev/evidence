@@ -4,9 +4,9 @@
 export default class Value extends SvelteComponentTyped<{
     value?: any;
     data?: any;
-    fmt?: string;
     row?: number;
     column?: string;
+    fmt?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -19,9 +19,9 @@ declare const __propDef: {
     props: {
         value?: any;
         data?: any;
-        fmt?: string;
         row?: number;
         column?: string;
+        fmt?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;
