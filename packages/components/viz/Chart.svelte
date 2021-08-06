@@ -222,12 +222,22 @@
     // ---------------------------------------------------------------------------------------
       
         if(sort === "true"){
-            if(xColType === "number" || xColType === "date"){
-                sortBy = x
-                sortOrder = "asc"
+            if(reverseAxes === false){
+                if(xColType === "number" || xColType === "date"){
+                    sortBy = x
+                    sortOrder = "asc"
+                } else {
+                    sortBy = y
+                    sortOrder = "desc"
+                }
             } else {
-                sortBy = y
-                sortOrder = "desc"
+                if(yColType === "number" || yColType === "date"){
+                    sortBy = y
+                    sortOrder = "asc"
+                } else {
+                    sortBy = x
+                    sortOrder = "asc"
+                } 
             }
     
     

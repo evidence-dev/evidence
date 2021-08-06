@@ -44,8 +44,6 @@
     
     // Sorting:
     export let sort = "true";
-    const sortBy = x;
-    const sortOrder = "asc";
     let stackOrder = "true";
 
     // Axis Ticks:
@@ -124,8 +122,6 @@
     sort={sort}
     {paddingLeft}
     {paddingRight}
-    sortBy={sortBy}
-    sortOrder={sortOrder}
     >
         <XAxis 
             tickMarks={xTickMarks} 
