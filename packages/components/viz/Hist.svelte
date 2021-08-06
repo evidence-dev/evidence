@@ -1,7 +1,7 @@
 <script>
 import { extent } from 'd3-array';
 import * as d3 from 'd3';
-import {tidy, arrange, groupBy, summarize, n} from '@tidyjs/tidy'
+import {tidy, arrange, groupBy, summarize, n, rename, mutate, replaceNully} from '@tidyjs/tidy'
 import getThresholds from '../modules/getThresholds.js'
 
 import Chart from './Chart.svelte'
@@ -20,7 +20,8 @@ export let data;
 export let x = null;
 
 // Output Data Names:
-let x2 = 'binMin';
+// Columns in output dataset will be [x], binMax, and frequency. [x] serves as the 'binMin',
+// but uses the actual column name to obtain the user's formatting (and name for potential axis titling in future)
 let y = 'frequency';
 
 // Bin Props:
@@ -57,8 +58,14 @@ let thresh;
 
 let error;
 try{
+    // Replace nulls with 0:
+    data = tidy(
+        data,
+        mutate({ tempName: (d) => d[x]}),
+        replaceNully({tempName: 0}),
+        rename({tempName: x})
+    )
     checkInputs(data, [x]);
-
     data = data.map(d => d[x]);
 
 // Handle Negative Values on Y Axis:
@@ -99,11 +106,12 @@ finalData = tidy(
         groupBy(["binMin", "binMax"], summarize({frequency: n("value")}))
 );
 
-finalData.push({"binMin": thresh[thresh.length-2], "binMax": thresh[thresh.length-1], "value": 0})
+finalData.push({"binMin": thresh[thresh.length-2], "binMax": thresh[thresh.length-1], "frequency": 0})
 
 finalData = tidy(
         finalData,
-        arrange('binMin')
+        rename({binMin: x}),
+        arrange(x)
 );
 
 // Reset upper bound of X Axis:
@@ -118,7 +126,7 @@ xMax = xMax ? xMax : thresh[thresh.length - 1];
 
 {#if !error}
 <div width=100%>
-    <Chart data={finalData} x={x2} y={y}
+    <Chart data={finalData} x={x} y={y}
     yMin={yMin} 
     yMax={yMax} 
     xMin={xMin} 

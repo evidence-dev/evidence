@@ -55,21 +55,6 @@
     $: isBandwidth = typeof $xScale.bandwidth === 'function';
     $: isHist = binMax != null;
 
-// NEW WIDTH TEST:
-// let xBand
-// let colWidth
-// let yearz = d3.timeYear.range(...xExtents);
-// console.log($xRange)
-
-//   xBand = d3.scaleBand()
-//       .domain(d3.timeYear.range(xExtents[0], xExtents[1], 1))
-//       .rangeRound($xRange)
-//       .paddingInner([0.15])
-
-//   colWidth = xBand.bandwidth();
-
-//   console.log(colWidth)
-
 // ---------------------------------------------------------------------------------------
 // Column Width
 // ---------------------------------------------------------------------------------------
@@ -81,7 +66,7 @@
   $: calcColumnWidth = (d) => {
     let chartWidth = $width - $padding.left - $padding.right;
     let columnWidth = $xScale.bandwidth ? $xScale.bandwidth() 
-          : isHist ? $xScale(d.binMax) - $xScale(d.binMin)
+          : isHist ? $xScale(d.binMax) - $xScale(d[xName])
           : chartWidth / (xIntegerRange ? xIntegerRange : $data.length)
     return columnWidth;
   };
@@ -213,7 +198,7 @@
         ><title
           >{binMax
             ? "(" +
-              d.binMin.toFixed(1) +
+              d[xName].toFixed(1) +
               " to " +
               d.binMax.toFixed(1) +
               "): " +
