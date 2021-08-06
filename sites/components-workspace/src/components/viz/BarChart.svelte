@@ -56,8 +56,6 @@
 
     // Sorting:
     export let sort = "true";
-    const sortBy = y;
-    const sortOrder = "asc"; // "asc" shows largest values at top in a horizontal bar chart
     let stackOrder = "true";
 
     // Labels:
@@ -133,9 +131,8 @@
     heightMultiplier={heightMultiplier}
     width={width}
     sort={sort}
-    sortBy={sortBy}
-    sortOrder={sortOrder}>
-        <XAxis 
+    >
+    <XAxis 
             gridlines={yGridlines}
             axisPosition={yAxisPosition}
             axisTitle={units}
