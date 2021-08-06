@@ -1,7 +1,7 @@
 <script>
 import { extent } from 'd3-array';
 import * as d3 from 'd3';
-import {tidy, arrange, groupBy, summarize, n, rename} from '@tidyjs/tidy'
+import {tidy, arrange, groupBy, summarize, n, rename, mutate, replaceNully} from '@tidyjs/tidy'
 import getThresholds from '../modules/getThresholds.js'
 
 import Chart from './Chart.svelte'
@@ -58,8 +58,14 @@ let thresh;
 
 let error;
 try{
+    // Replace nulls with 0:
+    data = tidy(
+        data,
+        mutate({ tempName: (d) => d[x]}),
+        replaceNully({tempName: 0}),
+        rename({tempName: x})
+    )
     checkInputs(data, [x]);
-
     data = data.map(d => d[x]);
 
 // Handle Negative Values on Y Axis:
