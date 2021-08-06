@@ -99,7 +99,7 @@ finalData = tidy(
         groupBy(["binMin", "binMax"], summarize({frequency: n("value")}))
 );
 
-finalData.push({"binMin": thresh[thresh.length-2], "binMax": thresh[thresh.length-1], "value": 0})
+finalData.push({"binMin": thresh[thresh.length-2], "binMax": thresh[thresh.length-1], "frequency": 0})
 
 finalData = tidy(
         finalData,
