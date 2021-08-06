@@ -363,6 +363,8 @@
         setContext("xIntegerRange", xIntegerRange);
         setContext("yIntegerRange", yIntegerRange);
 
+        setContext("reverseAxes", reverseAxes);
+
         // Get count of distinct x values (used for setting ticks on x axis):
         var xDistinctCount = getDistinctCount(data, x);
         setContext("xDistinctCount", xDistinctCount);

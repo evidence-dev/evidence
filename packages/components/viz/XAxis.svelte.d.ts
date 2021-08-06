@@ -14,7 +14,7 @@ export default class XAxis extends SvelteComponentTyped<{
     baseline?: boolean;
     baselineColor?: string;
     axisTitle?: string;
-    tickMarks?: string;
+    tickMarks?: any;
     tickMarkColor?: any;
     labels?: string;
     labelColor?: string;
@@ -43,7 +43,7 @@ declare const __propDef: {
         baseline?: boolean;
         baselineColor?: string;
         axisTitle?: string;
-        tickMarks?: string;
+        tickMarks?: any;
         tickMarkColor?: any;
         labels?: string;
         labelColor?: string;

@@ -33,7 +33,7 @@ export default function formatAxisLabel(data, columnFormat, columnUnits, firstTi
 
     switch(columnFormat){
         case "pct": 
-            data = firstTick ? data.toLocaleString(undefined, { style: 'percent' }) : data.toLocaleString();
+            data = firstTick ? data.toLocaleString(undefined, { style: 'percent' }) : data.toLocaleString(undefined, { style: 'percent' }).replace("%","");
             break;
         case "usd": 
             data = firstTick ? data.toLocaleString('en-US',{style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix : data.toLocaleString();
