@@ -9,6 +9,7 @@
     import DataTable from '$lib/viz/DataTable.svelte'
 
     import testData from '/src/data/test.json'
+    import pctTest from '/src/data/pct_test.json'
     import countries from '/src/data/countries.json'
  </script>
 
@@ -16,6 +17,7 @@
 
 <h2>Area Chart</h2>
 <AreaChart data={testData} x=x y=y/>
+<AreaChart data={pctTest} x=x y=y_pct/>
 
 <h2>Bubble Chart</h2>
 <BubbleChart data={testData} x=x y=y size=y/>
