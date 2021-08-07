@@ -123,12 +123,12 @@
       <rect
         class="group-rect"
         data-id={i}
-        x={Math.max($xScale.range()[0], $xScale(Math.min(0, $x(d))))}
+        x={Math.max($xScale.range()[0], $xScale(Math.min(0, $x(d)))) + ($x(d) > 0 ? 0.4 : 0)}
         y={isBandwidth ? $yGet(d) + calcBarHeight(d)/2 - chartBarHeight(d)/2 : $yGet(d) - chartBarHeight(d)/2}
         height={chartBarHeight(d)}
         width={Math.abs(
           Math.max($xGet(d), 0) - Math.max($xScale.range()[0], $xScale(0))
-        )}
+        )+($x(d) > 0 ? 0 : -0.6)}
         fill='{fillColor}'
         fill-opacity='{fillOpacity}'
         stroke='{outlineColor}'
@@ -144,10 +144,10 @@
         <rect
           class="group-rect {group} {i}"
           data-id={j}
-          x={$xScale(seriesData[i][j][0]) + (seriesData[i][j][0] < 0 ? -1 : 0)}
+          x={$xScale(seriesData[i][j][0]) + (seriesData[i][j][0] < 0 ? -1 : 0) + (seriesData[i][j][0] === 0 ? 0.4 : 0)}
           y={$yScale(seriesData[i][j].data[0]) + calcBarHeight(d)/2 - chartBarHeight(d)/2}
           height={chartBarHeight(d)}
-          width={$xScale(seriesData[i][j][1]) - $xScale(seriesData[i][j][0]) + 1}
+          width={$xScale(seriesData[i][j][1]) - $xScale(seriesData[i][j][0]) + 1 + (seriesData[i][j][1] === 0 ? -0.5 : 0)}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'
           stroke='{outlineColor}'
