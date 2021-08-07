@@ -25,7 +25,7 @@
     export let series = null;
 
     // Data Types:
-    export let xType = "categorical";
+    export let xType = undefined;
     let yType = null;
 
     // Axis Bounds:
@@ -78,9 +78,6 @@
     try{
         checkInputs(data, [x,y],[series]);
         xFormat = getFormatTag(x);
-        if(getColumnType(data, x, xFormat) === "date"){
-            throw Error("Column chart does not accept dates yet. You can format the column as strings by appending '_str' to the column name in SQL");  
-        }
         
         if(series !== null){
             seriesNames = getDistinctValues(data, series);
