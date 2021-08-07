@@ -152,7 +152,7 @@
           fill-opacity='{fillOpacity}'
           stroke='{outlineColor}'
           stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue(seriesData[i][j][0] > 0 ? (seriesData[i][j][1] - seriesData[i][j][0]) : (seriesData[i][j][0] - seriesData[i][j][1]), xFormat, xUnits)}</title></rect
+          ><title>{group + ": " + formatValue(seriesData[i][j][0] >= 0 ? (seriesData[i][j][1] - seriesData[i][j][0]) : (seriesData[i][j][0] - seriesData[i][j][1]), xFormat, xUnits)}</title></rect
         >
       {/each}
     {/each}
