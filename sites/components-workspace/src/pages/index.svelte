@@ -12,6 +12,12 @@
     import testData from '/src/data/test.json'
     import pctTest from '/src/data/pct_test.json'
     import countries from '/src/data/countries.json'
+    import test_string from '/src/data/test_string.json'
+    import test_dates from '/src/data/test_dates.json'
+    import test_weeks from '/src/data/test_weeks.json'
+    import test_months from '/src/data/test_months.json'
+    import test_quarters from '/src/data/test_quarters.json'
+    import test_years from '/src/data/test_years.json'
  </script>
 
 <h1>Evidence Component Library</h1>
