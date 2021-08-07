@@ -80,9 +80,6 @@
     let error;
     try{
         checkInputs(data, [x,y], [series]);
-        if(getColumnType(data, x) === "date"){
-            throw Error("Bar chart does not accept dates yet");  
-        }
 
         if(series != null){
             seriesNames = getDistinctValues(data, series);

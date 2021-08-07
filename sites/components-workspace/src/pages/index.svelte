@@ -50,3 +50,20 @@ This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is a
 
 <h2>Data Table</h2>
 <DataTable data={testData}/>
+
+<h2>Date Testing</h2>
+
+<h3>Date</h3>
+<ColumnChart data={test_dates} x=date y=y/>
+
+<h3>Week</h3>
+<ColumnChart data={test_weeks} x=week y=y/>
+
+<h3>Month</h3>
+<ColumnChart data={test_months} x=month y=y/>
+
+<h3>Quarter</h3>
+<ColumnChart data={test_quarters} x=qtr y=y/>
+
+<h3>Year</h3>
+<ColumnChart data={test_years} x=year y=y/>
