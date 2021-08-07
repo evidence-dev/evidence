@@ -186,8 +186,8 @@
         class="group-rect {calcColumnWidth(d)}"
         data-id={i}
         x={isBandwidth ? $xGet(d) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xGet(d) : ($xGet(d) - chartColumnWidth(d)/2)}
-        y={$yScale(Math.max(0, $y(d)))}
-        height={columnHeight(d)}
+        y={$yScale(Math.max(0, $y(d))) + ($y(d) > 0 ? 0 : 0.5)}
+        height={columnHeight(d) + ($y(d) > 0 ? -0.4 : 0)}
         width={chartColumnWidth(d)}
         fill='{fillColor}'
         fill-opacity='{fillOpacity}'
@@ -214,8 +214,8 @@
           class="group-rect {group} {i}"
           data-id={j}
           x={isBandwidth ? $xScale(seriesData[i][j].data[0]) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xScale(seriesData[i][j].data[0]) : ($xScale(seriesData[i][j].data[0]) - chartColumnWidth(d)/2)}
-          y={$yScale(seriesData[i][j][1]) + (seriesData[i][j][1] === 0 ? 0 : -1)}
-          height={Math.abs($yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1])) + (seriesData[i][j][1] > 0 ? 1 : 1)}
+          y={$yScale(seriesData[i][j][1]) + (seriesData[i][j][1] === 0 ? 0 : -1) + (seriesData[i][j][1] === 0 ? 0.3 : 0)}
+          height={Math.abs($yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1])) + (seriesData[i][j][1] > 0 ? 1 : 1) + (seriesData[i][j][0] === 0 ? -0.3 : 0)}
           width={chartColumnWidth(d)}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'
