@@ -185,7 +185,7 @@
     .tick.tick-0 line {
 		stroke-dasharray: 0;
 		stroke-width: 1;
-		stroke: #9c9c9c;
+		stroke: #858585;
 	}
 </style>
 
