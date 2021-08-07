@@ -39,9 +39,6 @@
   export let outlineColor = "#545454";
   export let outlineWidth = 0;
 
-  // Labels:
-  let seriesLabels = "none";
-
   // let xDistinctCount = getContext("xDistinctCount");
   if(xIntegerRange == null){
     xIntegerRange = $xDomain[1] - $xDomain[0];
@@ -227,34 +224,6 @@
           ><title>{group + ": " + formatValue(d.y0 >= 0 ? (d.y1 - d.y0) : (d.y0 - d.y1),yFormat,yUnits)}</title></rect
         >
       {/each}
-      {#if seriesLabels !== "none"}
-            {#if seriesLabels === "right"}
-              <text
-                class="line-labels"
-                x={isBandwidth ? $xRange[1] + 5 : $xRange[1] + 30}
-                y={$yScale(
-                  (seriesData[i][seriesData[i].length - 1][0] +
-                    seriesData[i][seriesData[i].length - 1][1]) /
-                    2
-                )}
-                alignment-baseline="middle"
-                fill="var({colorPalette[i]})">{group}</text
-              >
-            {:else}
-              <text
-              class="line-labels"
-              x={$xRange[0] - 5}
-              y={$yScale(
-                (seriesData[i][0][0] +
-                  seriesData[i][0][1]) /
-                  2
-              )}
-              text-anchor="end"
-              alignment-baseline="middle"
-              fill="var({colorPalette[i]})">{group}</text
-              >
-            {/if}
-      {/if}
     {/each}
   </g>
 {/if}

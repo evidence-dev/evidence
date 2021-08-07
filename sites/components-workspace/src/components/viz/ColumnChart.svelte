@@ -60,8 +60,6 @@
     // Labels:
     export let units = "";
     export let legend = "top";
-    // export let seriesLabels = undefined;
-    // seriesLabels = seriesLabels ? seriesLabels : yAxisPosition === "right" ? "left" : undefined;
 
     // Stacked Data Flag:
     let groupType = null;

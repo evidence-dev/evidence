@@ -1,15 +1,15 @@
+function checkDataType(data, column){
+    let dataType;
+    data = data.filter(d => d[column] != null);
+    dataType = typeof data[0][column];
+    return dataType;
+}
+
 export default function getColumnType(data, column, fmtTag) {
     // Takes query result and column to check type
     // Checks first non-null row to determine type (string or number)
     // If string and _date tag supplied in SQL column name, treat as date
     // Outputs string, number, or date as column types
-
-    function checkDataType(data, column){
-        let dataType;
-        data = data.filter(d => d[column] != null);
-        dataType = typeof data[0][column];
-        return dataType;
-    }
 
     // Get original data type:
     let colType = checkDataType(data, column);

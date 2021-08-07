@@ -1,7 +1,6 @@
 ![evidence-logo](/readme/evidence-logo.svg)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/evidence-dev/evidence.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/evidence-dev/evidence/stargazers/)
 
 **<h2>Business Intelligence for Modern Data Teams</h2>**
 

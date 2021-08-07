@@ -59,8 +59,6 @@
     export let lineLabel = null; // string: used to add custom label to single line
     export let xAxisTitle = "";
     export let legend = undefined;
-    // export let seriesLabels = undefined;
-    // seriesLabels = seriesLabels ? seriesLabels : yAxisPosition === "right" ? "left" : undefined;
 
     // Styling:
     export let lineColor = undefined;
