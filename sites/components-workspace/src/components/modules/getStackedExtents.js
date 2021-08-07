@@ -21,6 +21,6 @@ export default function getStackedExtents(data, groupCol, valueCol) {
     );
 
     var extents = [minData[0].value == undefined ? 0 : minData[0].value, maxData[0].value == undefined ? 0 : maxData[0].value];
-        console.log(extents)
-        return extents;
+    
+    return extents;
 } 
