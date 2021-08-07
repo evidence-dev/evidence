@@ -218,13 +218,13 @@
           data-id={j}
           x={isBandwidth ? $xScale(seriesData[i][j].data[0]) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xScale(seriesData[i][j].data[0]) : ($xScale(seriesData[i][j].data[0]) - chartColumnWidth(d)/2)}
           y={$yScale(seriesData[i][j][1]) + (seriesData[i][j][1] === 0 ? 0 : -1)}
-          height={Math.abs($yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1])) + (seriesData[i][j][1] > 0 ? 1 : 0)}
+          height={Math.abs($yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1])) + (seriesData[i][j][1] > 0 ? 1 : 1)}
           width={chartColumnWidth(d)}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'
           stroke={outlineColor}
           stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue(d.y1 - d.y0,yFormat,yUnits)}</title></rect
+          ><title>{group + ": " + formatValue(d.y0 >= 0 ? (d.y1 - d.y0) : (d.y0 - d.y1),yFormat,yUnits)}</title></rect
         >
       {/each}
       {#if seriesLabels !== "none"}

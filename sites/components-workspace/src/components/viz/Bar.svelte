@@ -144,7 +144,7 @@
         <rect
           class="group-rect {group} {i}"
           data-id={j}
-          x={$xScale(seriesData[i][j][0])}
+          x={$xScale(seriesData[i][j][0]) + (seriesData[i][j][0] < 0 ? -1 : 0)}
           y={$yScale(seriesData[i][j].data[0]) + calcBarHeight(d)/2 - chartBarHeight(d)/2}
           height={chartBarHeight(d)}
           width={$xScale(seriesData[i][j][1]) - $xScale(seriesData[i][j][0]) + 1}
@@ -152,7 +152,7 @@
           fill-opacity='{fillOpacity}'
           stroke='{outlineColor}'
           stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue((seriesData[i][j][1] - seriesData[i][j][0]), xFormat, xUnits)}</title></rect
+          ><title>{group + ": " + formatValue(seriesData[i][j][0] > 0 ? (seriesData[i][j][1] - seriesData[i][j][0]) : (seriesData[i][j][0] - seriesData[i][j][1]), xFormat, xUnits)}</title></rect
         >
       {/each}
     {/each}
