@@ -24,7 +24,7 @@
         import getParsedDate from "../modules/getParsedDate.js";
         import getDistinctCount from "../modules/getDistinctCount.js";
         import getStackedData from "../modules/getStackedData.js";
-        import getStackedDomainMax from "../modules/getStackedDomainMax.js";
+        import getStackedExtents from "../modules/getStackedExtents.js";
         import getColumnType from "../modules/getColumnType.js";  
         import getColumnFormat from "../modules/getColumnFormat.js";
         import getColumnExtents from "../modules/getColumnExtents.js";
@@ -294,11 +294,18 @@
         // The stacked code below only runs if you have not already overridden the max value of the
         // value axis.
     
+        let xStackedExtents = [];
+        let yStackedExtents = [];
+        
         if (groupType === "stacked") {
             if (reverseAxes === true && xMax === null) {
-                xMax = getStackedDomainMax(data, y, x);
+                xStackedExtents = getStackedExtents(data, y, x);
+                xMax = xStackedExtents[1];
+                xMin = xStackedExtents[0];
             } else if (reverseAxes === false && yMax === null) {
-                yMax = getStackedDomainMax(data, x, y);
+                yStackedExtents = getStackedExtents(data, x, y);
+                yMax = yStackedExtents[1];
+                yMin = yStackedExtents[0];            
             }
         }
     
