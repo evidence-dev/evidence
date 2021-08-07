@@ -337,7 +337,7 @@
     // ---------------------------------------------------------------------------------------
         let xScale;
         if (xType === "categorical") {
-            xScale = scaleBand().paddingInner([0.35]).padding(0.1).round(false);
+            xScale = scaleBand().paddingInner([0.35]).padding(0).round(false);
         } else if (xColType === "date") {
             xScale = scaleTime();
         } else if (xColType === "number") {

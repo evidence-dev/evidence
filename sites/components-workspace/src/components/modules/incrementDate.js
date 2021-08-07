@@ -23,7 +23,7 @@ export default function incrementDate(date, interval, change) {
             tempDate.setDate(tempDate.getDate() + (change));
             break;
         case "week":
-            tempDate.setDate(tempDate.getDate() + (change * 7));
+            tempDate.setDate(tempDate.getDate() + (change * 3));
             break;
         case "month":
             tempDate.setDate(tempDate.getDate() + (change * 15));
@@ -34,7 +34,8 @@ export default function incrementDate(date, interval, change) {
             // addMonths(tempDate, change * 3);
             break;
         case "year":
-            tempDate.setFullYear(tempDate.getFullYear() + (change));
+            tempDate.setDate(tempDate.getDate() + (change * 180));
+            // tempDate.setFullYear(tempDate.getFullYear() + (change));
             break;
         default:
             tempDate.setDate(v.getDate() + (change));
