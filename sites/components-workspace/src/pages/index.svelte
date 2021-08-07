@@ -38,6 +38,7 @@ This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is a
 <h2>Column Chart</h2>
 <ColumnChart data={testData} x=x y=y/>
 <ColumnChart data={countries} x=year y=value series=country/>
+<ColumnChart data={countries} x=year y=value series=country xType=categorical/>
 
 <h2>Histogram</h2>
 <Hist data={testData} x=x/>
