@@ -1,22 +1,22 @@
+function isLeapYear(year) { 
+    return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
+}
+
+function getDaysInMonth(year, month) {
+    return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+}
+
+function addMonths(date, value) {
+    var n = date.getDate();
+    date.setDate(1);
+    date.setMonth(date.getMonth() + value);
+    date.setDate(Math.min(n, getDaysInMonth(date.getFullYear(), date.getMonth())));
+    return date;
+}
+
 export default function incrementDate(date, interval, change) {
 
     let tempDate = new Date(date);
-
-    function isLeapYear(year) { 
-        return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
-    }
-  
-    function getDaysInMonth(year, month) {
-        return [31, (isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-    }
-  
-    function addMonths(date, value) {
-        var n = date.getDate();
-        date.setDate(1);
-        date.setMonth(date.getMonth() + value);
-        date.setDate(Math.min(n, getDaysInMonth(date.getFullYear(), date.getMonth())));
-        return date;
-    }
   
     switch(interval) {
         case "date":
