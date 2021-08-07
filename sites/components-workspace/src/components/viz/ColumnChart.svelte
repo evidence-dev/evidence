@@ -82,9 +82,8 @@
         xFormat = getFormatTag(x);
         if(getColumnType(data, x, xFormat) === "date"){
             throw Error("Column chart does not accept dates yet. You can format the column as strings by appending '_str' to the column name in SQL");  
-        } else if(groupType === "stacked" && getColumnExtents(data,y)[0] < 0){
-            throw Error("Stacked column chart does not accept negative values yet");
         }
+        
         if(series !== null){
             seriesNames = getDistinctValues(data, series);
         }
