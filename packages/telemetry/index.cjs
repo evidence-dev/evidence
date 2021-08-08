@@ -5,19 +5,20 @@ const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM'
 
 const initializeProfile = async () => {  
     const projectProfile = {
-        anonymousId: secure(), 
+        anonymousId: secure.v4(), 
         traits: {
             projectCreated: new Date()
         }
     }
-    writeJSONSync("./.profile.json", projectProfile, { throws: false })
-    analytics.identify(projectProfile);
+    writeJSONSync("./.profile.json", projectProfile)
+    Analytics.identify(projectProfile);
     return projectProfile 
 }
 
 const getProfile = async () => {
     if (!pathExistsSync("./.profile.json")) {
-        return await initializeProfile()
+        const profile = await initializeProfile()
+        return profile
     }  
     else {
         return readJSONSync("./.profile.json")
