@@ -63,7 +63,6 @@ const runQueries = async function (routeHash, database, config, dev) {
                         updateCache(dev, query.queryString, data[query.id], queryTime)
                         logEvent("db-query", dev)
                     } catch(err) {
-                        console.log(err)
                         process.stdout.clearLine();
                         process.stdout.cursorTo(0);
                         process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
