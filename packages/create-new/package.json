@@ -2,7 +2,7 @@
 	"name": "@evidence-dev/create-new",
 	"license": "MIT",
 	"description": "create a new evidence project",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"bin": "./bin.js",
 	"dependencies": {
 		"kleur": "^4.1.4",
