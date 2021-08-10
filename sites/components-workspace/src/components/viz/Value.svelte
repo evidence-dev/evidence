@@ -1,36 +1,49 @@
 <script>
-    export let fmt = null
+    import getColumnSummary from "../modules/getColumnSummary.js";
+    import formatValue from "../modules/formatValue.js";
+    import getParsedDate from "../modules/getParsedDate.js";
     
+    // Passing in value from dataset:
     export let data = null 
     export let row = 0    
     export let column = null
 
+    // Passing in single value directly:
     export let value = null
+
+    // Overrides for format and units:
+    export let fmt = null
+    let units = null
 
     if(data) {
         if(!column){
             column = Object.keys(data[row])[0]
         }
-        value = data[row][column]
+        let columnSummary = getColumnSummary(data);
 
-        let fmt_stub = column.substr(column.length - 4) 
-
-        if(fmt_stub.substr(0,1) === '_' ){
-            fmt = fmt_stub.substr(1)
+        let dateCols = columnSummary.filter(d => d.type === "date")
+        dateCols = dateCols.map(d => d.id);
+        if(dateCols.length > 0){
+            for(var i = 0; i < dateCols.length; i++){
+            data = getParsedDate(data, dateCols[i]);
+            }
         }
-        else if(column.includes("_date")){
-            fmt = "date"
+        value = data[row][column]
+        columnSummary = columnSummary.filter(d => d.id === column);
+
+        if(fmt == null){
+            fmt = columnSummary[0].format;
+        }
+
+        // Units (k, M, B) - not used in <Value> yet:
+        // units = columnSummary[0].units;
+    } else {
+        value = isNaN(value) ? value : Number.parseFloat(value);
+        if(fmt == null){
+            fmt = (typeof value === "number" ? "num" : "str");
         }
     }
     
 </script>
 
-{#if fmt === "pct"}
-{value.toLocaleString(undefined, { style: 'percent' })}
-{:else if fmt === "usd" }
-{value.toLocaleString('en-US',{style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2})}
-{:else if fmt === "date"}
-{(new Date (value)).toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })}
-{:else }
-{value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}
-{/if}
+{formatValue(value, fmt)} 

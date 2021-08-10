@@ -1,6 +1,6 @@
 {
     "name": "@evidence-dev/telemetry",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Annonymous usage telemetry for Evidence projects",
     "main": "index.cjs",
     "author": "evidence.dev",

@@ -46,9 +46,9 @@
     let yBaseline = undefined;
 
     let yAxisPosition = "top";
-    let yTickMarks = "true";
+    let yTickMarks = "false";
     let xTickMarks = undefined;
-    export let xAxisTitle = undefined;
+    let xAxisTitle = "";
 
     // Gridlines:
     export let xGridlines = "false";
@@ -56,8 +56,6 @@
 
     // Sorting:
     export let sort = "true";
-    const sortBy = y;
-    const sortOrder = "asc"; // "asc" shows largest values at top in a horizontal bar chart
     let stackOrder = "true";
 
     // Labels:
@@ -82,11 +80,6 @@
     let error;
     try{
         checkInputs(data, [x,y], [series]);
-        if(getColumnType(data, x) === "date"){
-            throw Error("Bar chart does not accept dates yet");  
-        } else if(groupType === "stacked" && getColumnExtents(data,y)[0] < 0){
-            throw Error("Stacked bar chart does not accept negative values yet");
-        }
 
         if(series != null){
             seriesNames = getDistinctValues(data, series);
@@ -133,9 +126,8 @@
     heightMultiplier={heightMultiplier}
     width={width}
     sort={sort}
-    sortBy={sortBy}
-    sortOrder={sortOrder}>
-        <XAxis 
+    >
+    <XAxis 
             gridlines={yGridlines}
             axisPosition={yAxisPosition}
             axisTitle={units}
@@ -149,6 +141,7 @@
             baseline={xBaseline}/>
         <Bar 
             series={series} 
+            seriesNames={seriesNames}
             stackOrder={stackOrder} 
             fillColor={fillColor}
             fillTransparency={fillTransparency}/>

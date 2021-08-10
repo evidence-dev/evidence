@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "devDependencies": {
     "@sveltejs/adapter-static": "1.0.0-next.13",
     "@sveltejs/kit": "1.0.0-next.140",
@@ -36,7 +36,7 @@
     "./modules/getFormatTag.js": "./modules/getFormatTag.js",
     "./modules/getParsedDate.js": "./modules/getParsedDate.js",
     "./modules/getStackedData.js": "./modules/getStackedData.js",
-    "./modules/getStackedDomainMax.js": "./modules/getStackedDomainMax.js",
+    "./modules/getStackedExtents.js": "./modules/getStackedExtents.js",
     "./modules/getThresholds.js": "./modules/getThresholds.js",
     "./modules/incrementDate.js": "./modules/incrementDate.js",
     "./ui/BaseLayout.svelte": "./ui/BaseLayout.svelte",

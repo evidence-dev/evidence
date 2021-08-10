@@ -9,7 +9,7 @@ export default class ColumnChart extends SvelteComponentTyped<{
     legend?: string;
     fillColor?: any;
     fillTransparency?: any;
-    xType?: string;
+    xType?: any;
     yMin?: number;
     units?: string;
     xGridlines?: string;
@@ -32,7 +32,7 @@ declare const __propDef: {
         legend?: string;
         fillColor?: any;
         fillTransparency?: any;
-        xType?: string;
+        xType?: any;
         yMin?: number;
         units?: string;
         xGridlines?: string;

@@ -5,7 +5,7 @@ export default function formatAxisLabel(data, columnFormat, columnUnits, firstTi
     formatSecond = d3.timeFormat(":%S"),
     formatMinute = d3.timeFormat("%I:%M"),
     formatHour = d3.timeFormat("%I %p"),
-    formatDay = d3.timeFormat("%a %d"),
+    formatDay = d3.timeFormat("%b %e"),
     formatWeek = d3.timeFormat("%b %e"),
     formatMonth = d3.timeFormat("%b"),
     formatYear = d3.timeFormat("%Y");
@@ -33,7 +33,7 @@ export default function formatAxisLabel(data, columnFormat, columnUnits, firstTi
 
     switch(columnFormat){
         case "pct": 
-            data = firstTick ? data.toLocaleString(undefined, { style: 'percent' }) : data.toLocaleString();
+            data = firstTick ? data.toLocaleString(undefined, { style: 'percent' }) : data.toLocaleString(undefined, { style: 'percent' }).replace("%","");
             break;
         case "usd": 
             data = firstTick ? data.toLocaleString('en-US',{style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix : data.toLocaleString();
@@ -69,13 +69,7 @@ export default function formatAxisLabel(data, columnFormat, columnUnits, firstTi
             : formatYear)(data);
             break;
         case "week":
-            data = (d3.timeSecond(data) < data ? formatMillisecond
-            : d3.timeMinute(data) < data ? formatSecond
-            : d3.timeHour(data) < data ? formatMinute
-            : d3.timeDay(data) < data ? formatHour
-            : d3.timeMonth(data) < data ? (d3.timeWeek(data) < data ? formatDay : formatWeek)
-            : d3.timeYear(data) < data ? formatMonth
-            : formatYear)(data);
+            data = formatWeek(data);
             break;
         case "qtr":
             data = (d3.timeSecond(data) < data ? formatMillisecond

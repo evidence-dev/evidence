@@ -25,7 +25,7 @@
     export let series = null;
 
     // Data Types:
-    export let xType = "categorical";
+    export let xType = undefined;
     let yType = null;
 
     // Axis Bounds:
@@ -44,8 +44,6 @@
     
     // Sorting:
     export let sort = "true";
-    const sortBy = x;
-    const sortOrder = "asc";
     let stackOrder = "true";
 
     // Axis Ticks:
@@ -62,8 +60,6 @@
     // Labels:
     export let units = "";
     export let legend = "top";
-    // export let seriesLabels = undefined;
-    // seriesLabels = seriesLabels ? seriesLabels : yAxisPosition === "right" ? "left" : undefined;
 
     // Stacked Data Flag:
     let groupType = null;
@@ -82,11 +78,7 @@
     try{
         checkInputs(data, [x,y],[series]);
         xFormat = getFormatTag(x);
-        if(getColumnType(data, x, xFormat) === "date"){
-            throw Error("Column chart does not accept dates yet. You can format the column as strings by appending '_str' to the column name in SQL");  
-        } else if(groupType === "stacked" && getColumnExtents(data,y)[0] < 0){
-            throw Error("Stacked column chart does not accept negative values yet");
-        }
+        
         if(series !== null){
             seriesNames = getDistinctValues(data, series);
         }
@@ -124,8 +116,6 @@
     sort={sort}
     {paddingLeft}
     {paddingRight}
-    sortBy={sortBy}
-    sortOrder={sortOrder}
     >
         <XAxis 
             tickMarks={xTickMarks} 

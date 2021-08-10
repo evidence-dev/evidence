@@ -10,7 +10,6 @@
 
   // Labels:
   export let lineLabel = null; // lineLabel is used to add a custom label to a single line
-  // export let seriesLabels = "right";
 
   // Styling:
   export let lineColor = "#d1d1d1";
@@ -114,26 +113,6 @@
         stroke-dasharray={lineDashSize}
         stroke-opacity={lineOpacity}
       />
-      <!-- {#if seriesLabels !== "none"}
-        {#if seriesLabels === "right"}
-          <text
-            class="line-labels"
-            x={$xRange[1] - ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0) + 5}
-            y={lastRow(group)}
-            alignment-baseline="middle"
-            fill="var({colorPalette[i]})">{group}</text
-          >
-        {:else}
-          <text
-          class="line-labels"
-          x={$xRange[0] + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0) - 5}
-          y={firstRow(group)}
-          text-anchor="end"
-          alignment-baseline="middle"
-          fill="var({colorPalette[i]})">{group}</text
-          >
-        {/if}
-      {/if} -->
     {/each}
   </g>
 {/if}

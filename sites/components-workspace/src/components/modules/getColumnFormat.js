@@ -14,7 +14,9 @@ export default function getColumnFormat(fmtTag, columnType) {
         "chf",
         "str",
         "id",
-        "pct"]
+        "pct",
+        "num",
+        "num2"]
     let colFmt;
     if(columnType === "date" && dateFmts.includes(fmtTag)){
         colFmt = fmtTag;

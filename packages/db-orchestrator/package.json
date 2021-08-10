@@ -1,14 +1,14 @@
 {
   "name": "@evidence-dev/db-orchestrator",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "DB orchestration for Evidence projects",
   "main": "index.cjs",
   "author": "evidence.dev",
   "license": "MIT",
   "dependencies": {
-    "@evidence-dev/bigquery": "workspace:*",
-    "@evidence-dev/snowflake": "workspace:*",
-    "@evidence-dev/telemetry": "workspace:*",
+    "@evidence-dev/bigquery": "workspace:^",
+    "@evidence-dev/snowflake": "workspace:^",
+    "@evidence-dev/telemetry": "workspace:^",
     "blueimp-md5": "^2.18.0",
     "chalk": "^4.1.0",
     "fs-extra": "^9.1.0"

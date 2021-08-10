@@ -25,6 +25,9 @@
 	export let dxTick = 0;
 	export let dyTick = 0;
 
+  // Reverse Axes:
+  let reverseAxes = getContext("reverseAxes");
+
   // Gridlines:
 	export let gridlines = "false";
 	export let gridlineColor = '#ededed';
@@ -38,7 +41,7 @@
   export let axisTitle = '';
 
   // Tickmarks:
-  export let tickMarks = 'false';
+  export let tickMarks = undefined;
   export let tickMarkColor = null;
 
   // Axis Tick Labels:
@@ -76,9 +79,9 @@
 	{#each tickVals as tick, i}
 	  <g class='tick tick-{ tick }' transform='translate({$xScale(tick)},{$yRange[0]})'>
 
-      {#if gridlines === "true" }
+      {#if gridlines === "true" || (reverseAxes && gridlines === "false" && tick === 0)}
 		  <line 
-            y1='{$height * -1}' 
+            y1='{($height * -1) - 4}' 
             y2='0' 
             x1='0' 
             x2='0'
@@ -114,7 +117,7 @@
         transform='rotate(-45)'
         >
         {#if i + 1 === tickVals.length}
-          {formatAxisLabel(tick, xFormat, xUnits, "firstTick")}
+          {formatAxisLabel(tick, xFormat, xUnits, "firstTick") + (reverseAxes ? " " + axisTitle : "")}
         {:else}
           {formatAxisLabel(tick, xFormat, xUnits)}
         {/if}
@@ -131,7 +134,7 @@
           font-size='{labelSize}'
           >
           {#if i + 1 === tickVals.length}
-          {formatAxisLabel(tick, xFormat, xUnits, "firstTick")}
+          {formatAxisLabel(tick, xFormat, xUnits, "firstTick") + (reverseAxes ? " " + axisTitle : "")}
           {:else}
           {formatAxisLabel(tick, xFormat, xUnits)}
           {/if}
@@ -155,7 +158,7 @@
       ></line>
 	{/if}
 
-  {#if axisTitle !== ''}
+  {#if axisTitle !== '' && !reverseAxes}
     <text 
       class="axis-title"
       x='{$width + $padding.right}' 
@@ -182,7 +185,7 @@
     .tick.tick-0 line {
 		stroke-dasharray: 0;
 		stroke-width: 1;
-		stroke: #9c9c9c;
+		stroke: #858585;
 	}
 </style>
 

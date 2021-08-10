@@ -2,7 +2,7 @@
 /** @typedef {typeof __propDef.events}  HistEvents */
 /** @typedef {typeof __propDef.slots}  HistSlots */
 export default class Hist extends SvelteComponentTyped<{
-    data: any;
+    data: any[];
     x?: any;
     fillColor?: any;
     fillTransparency?: any;
@@ -22,7 +22,7 @@ export type HistSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
+        data: any[];
         x?: any;
         fillColor?: any;
         fillTransparency?: any;

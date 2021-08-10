@@ -37,6 +37,8 @@ export default function getFormatTag(columnName) {
 
     // Numbers:
     "pct",
+    "num",
+    "num2",
 
     // Strings:
     "str",

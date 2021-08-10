@@ -39,9 +39,6 @@
   export let outlineColor = "#545454";
   export let outlineWidth = 0;
 
-  // Labels:
-  let seriesLabels = "none";
-
   // let xDistinctCount = getContext("xDistinctCount");
   if(xIntegerRange == null){
     xIntegerRange = $xDomain[1] - $xDomain[0];
@@ -55,21 +52,6 @@
     $: isBandwidth = typeof $xScale.bandwidth === 'function';
     $: isHist = binMax != null;
 
-// NEW WIDTH TEST:
-// let xBand
-// let colWidth
-// let yearz = d3.timeYear.range(...xExtents);
-// console.log($xRange)
-
-//   xBand = d3.scaleBand()
-//       .domain(d3.timeYear.range(xExtents[0], xExtents[1], 1))
-//       .rangeRound($xRange)
-//       .paddingInner([0.15])
-
-//   colWidth = xBand.bandwidth();
-
-//   console.log(colWidth)
-
 // ---------------------------------------------------------------------------------------
 // Column Width
 // ---------------------------------------------------------------------------------------
@@ -81,7 +63,7 @@
   $: calcColumnWidth = (d) => {
     let chartWidth = $width - $padding.left - $padding.right;
     let columnWidth = $xScale.bandwidth ? $xScale.bandwidth() 
-          : isHist ? $xScale(d.binMax) - $xScale(d.binMin)
+          : isHist ? $xScale(d.binMax) - $xScale(d[xName])
           : chartWidth / (xIntegerRange ? xIntegerRange : $data.length)
     return columnWidth;
   };
@@ -94,7 +76,7 @@
     if(!isHist){
       return Math.min(calcColumnWidth(d), maxColumnWidth);
     } else {
-      return calcColumnWidth(d) - 1;
+      return Math.max(calcColumnWidth(d) - 1, 0);
     }
   }
 
@@ -164,7 +146,8 @@
     .stack()
     .keys(keys)
     .value(([, values], key) => values.get(key))
-    .order(order)(values);
+    .order(order)
+    .offset(d3.stackOffsetDiverging)(values);
 
     // Stacked data splits the dataset by group and generates a list of coordinates for each rectangle to be drawn:
     // Example:
@@ -174,9 +157,20 @@
     // The chart draws bars from the top down and from left to right, but this stacked dataset calculates everything
     // from 0 up.
 
-  $: filteredData = (filter) => {
-    return finalData.filter((d) => d[series] === filter);
-  };
+    let flatData = [];
+    for(var i = 0; i < seriesData.length; i++){
+      for(var j = 0; j < seriesData[i].length; j++){
+        flatData.push({
+          "series": seriesData[i].key,
+          "y0": seriesData[i][j][0],
+          "y1": seriesData[i][j][1],
+          "x": seriesData[i][j].data[0]
+        })
+      }
+    }
+    $: filteredData = (filter) => {
+      return flatData.filter((d) => d.series === filter); 
+    };
 
   // In the graphics logic for the stacked column below, there is a 1 pixel adjustment to
   // both the initial y coordinate and the column height. This is to avoid a rendering issue
@@ -192,8 +186,8 @@
         class="group-rect {calcColumnWidth(d)}"
         data-id={i}
         x={isBandwidth ? $xGet(d) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xGet(d) : ($xGet(d) - chartColumnWidth(d)/2)}
-        y={$yScale(Math.max(0, $y(d)))}
-        height={columnHeight(d)}
+        y={$yScale(Math.max(0, $y(d))) + ($y(d) > 0 ? 0 : 0.5)}
+        height={columnHeight(d) + ($y(d) > 0 ? -0.4 : 0)}
         width={chartColumnWidth(d)}
         fill='{fillColor}'
         fill-opacity='{fillOpacity}'
@@ -202,7 +196,7 @@
         ><title
           >{binMax
             ? "(" +
-              d.binMin.toFixed(1) +
+              d[xName].toFixed(1) +
               " to " +
               d.binMax.toFixed(1) +
               "): " +
@@ -219,47 +213,17 @@
         <rect
           class="group-rect {group} {i}"
           data-id={j}
-          x={isBandwidth ? $xGet(d) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xGet(d) : ($xGet(d) - chartColumnWidth(d)/2)}
-          y={$yScale(seriesData[i][j][1]) - 1}
-          height={$yScale(seriesData[i][j][0]) -
-            $yScale(seriesData[i][j][1]) +
-            1}
+          x={isBandwidth ? $xScale(seriesData[i][j].data[0]) + calcColumnWidth(d)/2 - chartColumnWidth(d)/2 : isHist ? $xScale(seriesData[i][j].data[0]) : ($xScale(seriesData[i][j].data[0]) - chartColumnWidth(d)/2)}
+          y={$yScale(seriesData[i][j][1]) + (seriesData[i][j][1] === 0 ? 0 : -1) + (seriesData[i][j][1] === 0 ? 0.3 : 0)}
+          height={Math.abs($yScale(seriesData[i][j][0]) - $yScale(seriesData[i][j][1])) + (seriesData[i][j][1] > 0 ? 1 : 1) + (seriesData[i][j][0] === 0 ? -0.3 : 0)}
           width={chartColumnWidth(d)}
           fill="var({colorPalette[i]})"
           fill-opacity='{fillOpacity}'
           stroke={outlineColor}
           stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue(d[yName],yFormat,yUnits)}</title></rect
+          ><title>{group + ": " + formatValue(d.y0 >= 0 ? (d.y1 - d.y0) : (d.y0 - d.y1),yFormat,yUnits)}</title></rect
         >
       {/each}
-      {#if seriesLabels !== "none"}
-            {#if seriesLabels === "right"}
-              <text
-                class="line-labels"
-                x={isBandwidth ? $xRange[1] + 5 : $xRange[1] + 30}
-                y={$yScale(
-                  (seriesData[i][seriesData[i].length - 1][0] +
-                    seriesData[i][seriesData[i].length - 1][1]) /
-                    2
-                )}
-                alignment-baseline="middle"
-                fill="var({colorPalette[i]})">{group}</text
-              >
-            {:else}
-              <text
-              class="line-labels"
-              x={$xRange[0] - 5}
-              y={$yScale(
-                (seriesData[i][0][0] +
-                  seriesData[i][0][1]) /
-                  2
-              )}
-              text-anchor="end"
-              alignment-baseline="middle"
-              fill="var({colorPalette[i]})">{group}</text
-              >
-            {/if}
-      {/if}
     {/each}
   </g>
 {/if}

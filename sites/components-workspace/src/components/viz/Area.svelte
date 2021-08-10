@@ -27,21 +27,32 @@
     // then another line along the X Axis to (0,0), and finally a line back to the first point
     // in the line.
 
+
+    $: {
+    var last = $data[$data.length - 1];
+    var lastX = $xGet(last);
+    };
+
+    $: {
+      var first = $data[0];
+      var firstX = $xGet(first);
+    }
+
     let area;
     $: {
       const yRange = $yScale.range();
       area = path + (
         'L' + 
-        ($xScale($xDomain[(Object.keys($xDomain)).length-1]) + 
+        (lastX + 
         ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)) + 
         ',' + 
-        $yScale(Math.max(0,$yDomain[0])) +
+        ($yScale(Math.max(0,$yDomain[0]))-0.5) +
 
         'L' + 
-        ($xScale($xDomain[0]) + 
+        (firstX + 
         ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)) + 
         ',' + 
-        $yScale(Math.max(0,$yDomain[0])) +
+        ($yScale(Math.max(0,$yDomain[0]))-0.5) +
         'Z'
       );
     }

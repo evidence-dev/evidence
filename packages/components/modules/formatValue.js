@@ -24,9 +24,11 @@ export default function(value, columnFormat, columnUnits) {
 
     // Get format tag from end of column name (if supplied):
     let fmt = columnFormat;
+
+    try{
     switch(fmt){
         case "pct": 
-            value = value.toLocaleString(undefined, { style: 'percent' })
+            value = value.toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 })
             break;
         case "usd": 
             value = value.toLocaleString('en-US',{style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2}) + suffix
@@ -67,10 +69,21 @@ export default function(value, columnFormat, columnUnits) {
         case "id":
             value = d3.format(".0f")(value)
             break;
-        default: 
+        case "str":
+            value = value.toLocaleString();
+            break;
+        case "num":
+            value = value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
+            break;
+        case "num2":
             value = value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + suffix
-    }
-
+            break;
+        default: 
+            value = value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
+        }
+        } catch(error) {
+            value = value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + suffix
+        }
     return value;
 }
   

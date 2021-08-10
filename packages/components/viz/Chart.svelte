@@ -24,7 +24,7 @@
         import getParsedDate from "../modules/getParsedDate.js";
         import getDistinctCount from "../modules/getDistinctCount.js";
         import getStackedData from "../modules/getStackedData.js";
-        import getStackedDomainMax from "../modules/getStackedDomainMax.js";
+        import getStackedExtents from "../modules/getStackedExtents.js";
         import getColumnType from "../modules/getColumnType.js";  
         import getColumnFormat from "../modules/getColumnFormat.js";
         import getColumnExtents from "../modules/getColumnExtents.js";
@@ -222,12 +222,22 @@
     // ---------------------------------------------------------------------------------------
       
         if(sort === "true"){
-            if(xColType === "number" || xColType === "date"){
-                sortBy = x
-                sortOrder = "asc"
+            if(reverseAxes === false){
+                if(xColType === "number" || xColType === "date"){
+                    sortBy = x
+                    sortOrder = "asc"
+                } else {
+                    sortBy = y
+                    sortOrder = "desc"
+                }
             } else {
-                sortBy = y
-                sortOrder = "desc"
+                if(yColType === "number" || yColType === "date"){
+                    sortBy = y
+                    sortOrder = "asc"
+                } else {
+                    sortBy = x
+                    sortOrder = "asc"
+                } 
             }
     
     
@@ -284,11 +294,18 @@
         // The stacked code below only runs if you have not already overridden the max value of the
         // value axis.
     
+        let xStackedExtents = [];
+        let yStackedExtents = [];
+        
         if (groupType === "stacked") {
             if (reverseAxes === true && xMax === null) {
-                xMax = getStackedDomainMax(data, y, x);
+                xStackedExtents = getStackedExtents(data, y, x);
+                xMax = xStackedExtents[1];
+                xMin = xStackedExtents[0];
             } else if (reverseAxes === false && yMax === null) {
-                yMax = getStackedDomainMax(data, x, y);
+                yStackedExtents = getStackedExtents(data, x, y);
+                yMax = yStackedExtents[1];
+                yMin = yStackedExtents[0];            
             }
         }
     
@@ -320,7 +337,7 @@
     // ---------------------------------------------------------------------------------------
         let xScale;
         if (xType === "categorical") {
-            xScale = scaleBand().paddingInner([0.35]).padding(0.1).round(false);
+            xScale = scaleBand().paddingInner([0.35]).padding(0).round(false);
         } else if (xColType === "date") {
             xScale = scaleTime();
         } else if (xColType === "number") {
@@ -362,6 +379,8 @@
     
         setContext("xIntegerRange", xIntegerRange);
         setContext("yIntegerRange", yIntegerRange);
+
+        setContext("reverseAxes", reverseAxes);
 
         // Get count of distinct x values (used for setting ticks on x axis):
         var xDistinctCount = getDistinctCount(data, x);
