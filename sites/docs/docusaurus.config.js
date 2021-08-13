@@ -112,7 +112,7 @@ module.exports = {
           items: [
             {
               label: 'Slack',
-              href: 'https://evidencedev.slack.com/join/shared_invite/zt-qliah5tz-THIzMChvRn~lBA7EHFPXaA#/shared-invite/email',
+              href: 'https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q',
             },
             {
               label: 'Twitter',
