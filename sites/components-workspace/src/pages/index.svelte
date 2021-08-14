@@ -34,7 +34,7 @@ This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is a
 
 <h2>Bar Chart</h2>
 <BarChart data={testData} x=x y=y/>
-<BarChart data={countries} x=year y=value series=country/>
+<BarChart data={countries} x=year y=value series=country units="long units string"/>
 
 <h2>Column Chart</h2>
 <ColumnChart data={testData} x=x y=y/>
