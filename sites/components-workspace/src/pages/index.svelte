@@ -14,6 +14,7 @@
     import countries from '/src/data/countries.json'
     import test_string from '/src/data/test_string.json'
     import test_dates from '/src/data/test_dates.json'
+    import test_dates_stacked from '/src/data/test_dates_stacked.json'
     import test_weeks from '/src/data/test_weeks.json'
     import test_months from '/src/data/test_months.json'
     import test_quarters from '/src/data/test_quarters.json'
@@ -56,6 +57,7 @@ This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is a
 
 <h3>Date</h3>
 <ColumnChart data={test_dates} x=date y=y/>
+<ColumnChart data={test_dates_stacked} x=date y=y series=group/>
 
 <h3>Week</h3>
 <ColumnChart data={test_weeks} x=week y=y/>
