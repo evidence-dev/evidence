@@ -23,10 +23,10 @@ Lets you take the result of a query and use it anywhere in your markdown.
 * **column** - column name to pull values from
 * **row** - (Optional) specific row number to display
 
-## Showing a Specific Value
+### Showing a Specific Value
 * **value** - specific value to display (e.g., `value=300`)
 
-## Formatting
+### Formatting
 * **fmt** - use a [format tag](/formatting/format-tags) to override the default formatting
 
 ### Default Behaviour
