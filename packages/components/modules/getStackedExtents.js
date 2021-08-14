@@ -1,10 +1,20 @@
-import {tidy, groupBy, summarize, sum, min, max} from "@tidyjs/tidy";
+import {tidy, groupBy, summarize, sum, min, max, mutate, rename} from "@tidyjs/tidy";
 
-export default function getStackedExtents(data, groupCol, valueCol) {
+export default function getStackedExtents(data, groupCol, valueCol, groupColType) {
+
+    if(groupColType === "date"){
+        data = tidy(
+            data,
+            mutate({ tempName: (d) => Date.parse(d[groupCol])}),
+            rename({tempName: groupCol})
+        );
+    }
+    
     var positiveData = tidy(
-            data.filter(d => d[valueCol] > 0),
-            groupBy(groupCol, [summarize({ total: sum(valueCol) })])
+        data.filter(d => d[valueCol] > 0),
+        groupBy(groupCol, [summarize({ total: sum(valueCol) })])
     );
+
     var negativeData = tidy(
         data.filter(d => d[valueCol] < 0),
         groupBy(groupCol, [summarize({ total: sum(valueCol) })])

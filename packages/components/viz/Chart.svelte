@@ -108,6 +108,14 @@
         // Extents:
         let xExtents = getColumnExtents(data, x);
         let yExtents = getColumnExtents(data, y);
+        
+        if (groupType === "stacked") {
+            if (reverseAxes === true && xMax === null) {
+                xExtents = getStackedExtents(data, y, x, yColType);
+            } else if (reverseAxes === false && yMax === null) {
+                yExtents = getStackedExtents(data, x, y, xColType);
+            }
+        }
 
         // Padded Extents:
         let xPaddedExtent; 
@@ -293,22 +301,7 @@
     
         // The stacked code below only runs if you have not already overridden the max value of the
         // value axis.
-    
-        let xStackedExtents = [];
-        let yStackedExtents = [];
-        
-        if (groupType === "stacked") {
-            if (reverseAxes === true && xMax === null) {
-                xStackedExtents = getStackedExtents(data, y, x);
-                xMax = xStackedExtents[1];
-                xMin = xStackedExtents[0];
-            } else if (reverseAxes === false && yMax === null) {
-                yStackedExtents = getStackedExtents(data, x, y);
-                yMax = yStackedExtents[1];
-                yMin = yStackedExtents[0];            
-            }
-        }
-    
+     
         let xDomainVals = null;
         if(xType === "categorical") {
             if(groupType === "stacked" && reverseAxes === false) {
