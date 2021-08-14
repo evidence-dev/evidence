@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from 'svelte';
   import formatAxisLabel from '../modules/formatAxisLabel.js'
-	const { width, height, xScale, xDomain, yRange, padding, yDomain} = getContext('LayerCake');
+	const { width, height, xScale, xDomain, xRange, yRange, padding, yDomain} = getContext('LayerCake');
   
   // "ticks" is the number of ticks to add to the x axis
   // by default, d3 uses 10 ticks unless overridden
@@ -66,9 +66,9 @@
 		if (i === 0) {
 		  return 'start';
 		}
-		if (i === tickVals.length - 1) {
-		  return 'end';
-		}
+    if (i === tickVals.length - 1){
+      return 'end'
+    }
 	  }
 	  return 'middle';
 	}
@@ -134,11 +134,22 @@
           font-size='{labelSize}'
           >
           {#if i + 1 === tickVals.length}
-          {formatAxisLabel(tick, xFormat, xUnits, "firstTick") + (reverseAxes ? " " + axisTitle : "")}
+          {formatAxisLabel(tick, xFormat, xUnits, "firstTick")}
           {:else}
           {formatAxisLabel(tick, xFormat, xUnits)}
           {/if}
         </text>
+        {#if reverseAxes && i + 1 === tickVals.length}
+        <text
+          x="{(formatAxisLabel(tick).length/2) * 18}"
+          y='{axisPosition === "top" ? -$yRange[0] - 8 : yTick}'
+          text-anchor='start'
+          fill='{labelColor}'
+          font-size='{labelSize}'
+        >
+          {axisTitle}
+        </text>
+        {/if}
       {/if}
     {/if}
 
