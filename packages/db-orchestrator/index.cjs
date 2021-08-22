@@ -31,7 +31,10 @@ const updateCache = function (dev, queryString, data, queryTime) {
     }
 }
 
-const runQueries = async function (routeHash, database, config, dev) {
+const runQueries = async function (routeHash, dev) {
+    const database = readJSONSync('./.evidence/database.config.json',{throws:false})
+    const config = readJSONSync('./evidence.config.json', {throws:false})
+
     let routePath = `./.evidence/build/queries/${routeHash}`
     let queryFile = `${routePath}/${readdirSync(routePath)}`
     let queries = readJSONSync(queryFile, { throws: false }) 
@@ -68,7 +71,6 @@ const runQueries = async function (routeHash, database, config, dev) {
                         process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
                         data[query.id] = { error: { message: err } }
                         logEvent("db-error", dev)
-
                     } 
                 }
             }

@@ -46,7 +46,6 @@ const runQuery = async (queryString, database) => {
 
         const result = await execute(connection, queryString)
         const stardizedResults = await standardizeResult(result)
-        // console.log(stardizedResults)
         return stardizedResults
     }
     catch (err) {

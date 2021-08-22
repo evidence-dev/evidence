@@ -70,7 +70,7 @@ importers:
       kleur: 4.1.4
       prompts: 2.4.1
     devDependencies:
-      '@sveltejs/kit': 1.0.0-next.142
+      '@sveltejs/kit': 1.0.0-next.146
       '@types/gitignore-parser': 0.0.0
       '@types/prettier': 2.3.2
       '@types/prompts': 2.0.14
@@ -119,9 +119,9 @@ importers:
 
   packages/db-orchestrator:
     specifiers:
-      '@evidence-dev/bigquery': workspace:*
-      '@evidence-dev/snowflake': workspace:*
-      '@evidence-dev/telemetry': workspace:*
+      '@evidence-dev/bigquery': workspace:^
+      '@evidence-dev/snowflake': workspace:^
+      '@evidence-dev/telemetry': workspace:^
       blueimp-md5: ^2.18.0
       chalk: ^4.1.0
       fs-extra: ^9.1.0
@@ -2856,8 +2856,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.142:
-    resolution: {integrity: sha512-MxoQz/kxlYOXVHETlxh8+wIvfZ4N2EScDqyuaWwFHqWg6fj6FHADJfZ7JCniqvAe8ME2jA9Om/gVR8e1oY04+w==}
+  /@sveltejs/kit/1.0.0-next.146:
+    resolution: {integrity: sha512-MSatcaCRfjl88Prd5mW4pNOJ3Gsr525+Vjr24MoKtyTt6PZQmTfQsDVwyP93exn/6w2xl9uMCW6cFpDVBu7jSg==}
     engines: {node: ^12.20 || >=14.13}
     hasBin: true
     peerDependencies:

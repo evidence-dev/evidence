@@ -22,17 +22,39 @@ const standardizeResult = async(result) => {
 	return output;
 }
 
+const getCredentials = async(database) => {  
+    try{  
+        if(database){
+            const keyFile = readJSONSync(database.keyFilename) 
+            const creds = {
+                projectId: keyFile.project_id ,
+                credentials: {
+                    client_email: keyFile.client_email,
+                    private_key: keyFile.private_key  
+                }
+            }
+            return creds
+        }else{
+            const creds = {
+                projectId: process.env["project_id"] ,
+                credentials: {
+                    client_email: process.env["client_email"] ,
+                    private_key: process.env["private_key"].replace(/\\n/g, "\n") 
+                }
+            }
+            return creds
+        }
+    }catch {
+        throw new Error('Missing database credentials')
+    }
+} 
+
+
+
 const runQuery = async (queryString, database) => {
     try {
-        const keyFile = readJSONSync(database.keyFilename,  {throws:false}) 
-
-        const connection = new BigQuery({
-            projectId: keyFile.project_id ?? process.env["project_id"],
-            credentials: {
-              client_email: keyFile.client_email ?? process.env["client_email"],
-              private_key: keyFile.private_key ?? process.env["private_key"].replace(/\\n/g, "\n") 
-            }
-        })
+        const credentials = await getCredentials(database)
+        const connection = new BigQuery(credentials)
 
         const [job] = await connection.createQueryJob({query: queryString });
         const [rows] = await job.getQueryResults();
