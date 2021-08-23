@@ -70,7 +70,7 @@ importers:
       kleur: 4.1.4
       prompts: 2.4.1
     devDependencies:
-      '@sveltejs/kit': 1.0.0-next.146
+      '@sveltejs/kit': 1.0.0-next.154
       '@types/gitignore-parser': 0.0.0
       '@types/prettier': 2.3.2
       '@types/prompts': 2.0.14
@@ -120,6 +120,7 @@ importers:
   packages/db-orchestrator:
     specifiers:
       '@evidence-dev/bigquery': workspace:^
+      '@evidence-dev/postgres': workspace:^
       '@evidence-dev/snowflake': workspace:^
       '@evidence-dev/telemetry': workspace:^
       blueimp-md5: ^2.18.0
@@ -127,11 +128,22 @@ importers:
       fs-extra: ^9.1.0
     dependencies:
       '@evidence-dev/bigquery': link:../bigquery
+      '@evidence-dev/postgres': link:../postgres
       '@evidence-dev/snowflake': link:../snowflake
       '@evidence-dev/telemetry': link:../telemetry
       blueimp-md5: 2.18.0
       chalk: 4.1.1
       fs-extra: 9.1.0
+
+  packages/postgres:
+    specifiers:
+      blueimp-md5: ^2.18.0
+      fs-extra: ^9.1.0
+      pg: ^8.7.1
+    dependencies:
+      blueimp-md5: 2.18.0
+      fs-extra: 9.1.0
+      pg: 8.7.1
 
   packages/preprocess:
     specifiers:
@@ -253,6 +265,43 @@ importers:
       d3-scale: 3.3.0
       fs-extra: 9.1.0
       layercake: 4.1.1_svelte@3.40.1
+      svelte: 3.40.1
+    devDependencies:
+      '@evidence-dev/db-orchestrator': link:../../packages/db-orchestrator
+      '@sveltejs/adapter-static': 1.0.0-next.13
+      '@sveltejs/kit': 1.0.0-next.140_svelte@3.40.1
+      vite: 2.4.3
+      vite-plugin-live-reload: 2.1.0
+
+  sites/postgres-test:
+    specifiers:
+      '@evidence-dev/components': link:../../packages/components
+      '@evidence-dev/db-orchestrator': workspace:*
+      '@evidence-dev/preprocess': workspace:*
+      '@sveltejs/adapter-static': 1.0.0-next.13
+      '@sveltejs/kit': 1.0.0-next.140
+      '@tidyjs/tidy': 2.4.2
+      blueimp-md5: 2.18.0
+      d3: 6.7.0
+      d3-array: 3.0.1
+      d3-scale: 3.3.0
+      fs-extra: 9.1.0
+      layercake: 4.1.1
+      pg: ^8.7.1
+      svelte: 3.40.1
+      vite: 2.4.3
+      vite-plugin-live-reload: 2.1.0
+    dependencies:
+      '@evidence-dev/components': link:../../packages/components
+      '@evidence-dev/preprocess': link:../../packages/preprocess
+      '@tidyjs/tidy': 2.4.2
+      blueimp-md5: 2.18.0
+      d3: 6.7.0
+      d3-array: 3.0.1
+      d3-scale: 3.3.0
+      fs-extra: 9.1.0
+      layercake: 4.1.1_svelte@3.40.1
+      pg: 8.7.1
       svelte: 3.40.1
     devDependencies:
       '@evidence-dev/db-orchestrator': link:../../packages/db-orchestrator
@@ -2856,17 +2905,22 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
   /@sveltejs/kit/1.0.0-next.146:
     resolution: {integrity: sha512-MSatcaCRfjl88Prd5mW4pNOJ3Gsr525+Vjr24MoKtyTt6PZQmTfQsDVwyP93exn/6w2xl9uMCW6cFpDVBu7jSg==}
+=======
+  /@sveltejs/kit/1.0.0-next.154:
+    resolution: {integrity: sha512-3WqdmZyTwrAnPtFI5cNLXswGiCx934tfWckS6MLbOTlN6zGtex2H9A2WZKlXRhpxtIM8XqrYlGKr1qNDBmATWQ==}
+>>>>>>> origin/develop
     engines: {node: ^12.20 || >=14.13}
     hasBin: true
     peerDependencies:
-      svelte: ^3.34.0
+      svelte: ^3.39.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 1.0.0-next.14_vite@2.4.4
+      '@sveltejs/vite-plugin-svelte': 1.0.0-next.19_vite@2.5.0
       cheap-watch: 1.0.3
       sade: 1.7.4
-      vite: 2.4.4
+      vite: 2.5.0
     transitivePeerDependencies:
       - diff-match-patch
       - supports-color
@@ -2895,8 +2949,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte/1.0.0-next.14_vite@2.4.4:
-    resolution: {integrity: sha512-46IKPtoGcdo6YLyUhvsXyC1Dg3m2HlbgreZqxM/h5DzavgUa75c/WHT5cIxxLppG+gxtct7V08/WNEdpFdmM3Q==}
+  /@sveltejs/vite-plugin-svelte/1.0.0-next.19_vite@2.5.0:
+    resolution: {integrity: sha512-q9hHkMzodScwDq64pNaWhekpj97vWg3wO9T0rqd8bC2EsrBQs2uD1qMJvDqlNd63AbO2uSJMGo+TQ0Xt2xgyYg==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
     peerDependencies:
       diff-match-patch: ^1.0.5
@@ -2912,7 +2966,7 @@ packages:
       magic-string: 0.25.7
       require-relative: 0.8.7
       svelte-hmr: 0.14.7
-      vite: 2.4.4
+      vite: 2.5.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4001,6 +4055,11 @@ packages:
     resolution: {integrity: sha512-4/rOEg86jivtPTeOUUT61jJO1Ya1TrR/OkqCSZDyq84WJh3LuuiphBYJN+fm5xufIk4XAFcEwte/8WzC8If/1g==}
     dev: false
 
+  /buffer-writer/2.0.0:
+    resolution: {integrity: sha512-a7ZpuTZU1TRtnwyCNW3I5dc0wWNC3VR9S++Ewyk2HHZdrO3CQJqSpd+95Us590V6AL7JqUAH2IwZ/398PmNFgw==}
+    engines: {node: '>=4'}
+    dev: false
+
   /bytes/3.0.0:
     resolution: {integrity: sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg=}
     engines: {node: '>= 0.8'}
@@ -4109,6 +4168,7 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    dev: false
 
   /chalk/4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
@@ -4116,7 +4176,6 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-    dev: false
 
   /character-entities-legacy/1.1.4:
     resolution: {integrity: sha512-3Xnr+7ZFS1uxeiUDvV02wQ+QDbc55o97tIV5zHScSPJpcLm/r0DFPcoY3tYRp+VZukxuMeKgXYmsXQHO05zQeA==}
@@ -5537,6 +5596,12 @@ packages:
     requiresBuild: true
     dev: true
 
+  /esbuild/0.12.22:
+    resolution: {integrity: sha512-yWCr9RoFehpqoe/+MwZXJpYOEIt7KOEvNnjIeMZpMSyQt+KCBASM3y7yViiN5dJRphf1wGdUz1+M4rTtWd/ulA==}
+    hasBin: true
+    requiresBuild: true
+    dev: true
+
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
@@ -6053,7 +6118,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       at-least-node: 1.0.0
-      graceful-fs: 4.2.6
+      graceful-fs: 4.2.8
       jsonfile: 6.1.0
       universalify: 2.0.0
     dev: false
@@ -8485,6 +8550,10 @@ packages:
       semver: 6.3.0
     dev: false
 
+  /packet-reader/1.0.0:
+    resolution: {integrity: sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==}
+    dev: false
+
   /param-case/3.0.4:
     resolution: {integrity: sha512-RXlj7zCYokReqWpOPH9oYivUzLYZ5vAPIfEmCTNViosC78F8F0H9y7T7gG2M39ymgutxF5gcFEsyZQSph9Bp3A==}
     dependencies:
@@ -8605,6 +8674,62 @@ packages:
 
   /performance-now/2.1.0:
     resolution: {integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=}
+    dev: false
+
+  /pg-connection-string/2.5.0:
+    resolution: {integrity: sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==}
+    dev: false
+
+  /pg-int8/1.0.1:
+    resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
+    engines: {node: '>=4.0.0'}
+    dev: false
+
+  /pg-pool/3.4.1_pg@8.7.1:
+    resolution: {integrity: sha512-TVHxR/gf3MeJRvchgNHxsYsTCHQ+4wm3VIHSS19z8NC0+gioEhq1okDY1sm/TYbfoP6JLFx01s0ShvZ3puP/iQ==}
+    peerDependencies:
+      pg: '>=8.0'
+    dependencies:
+      pg: 8.7.1
+    dev: false
+
+  /pg-protocol/1.5.0:
+    resolution: {integrity: sha512-muRttij7H8TqRNu/DxrAJQITO4Ac7RmX3Klyr/9mJEOBeIpgnF8f9jAfRz5d3XwQZl5qBjF9gLsUtMPJE0vezQ==}
+    dev: false
+
+  /pg-types/2.2.0:
+    resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
+    engines: {node: '>=4'}
+    dependencies:
+      pg-int8: 1.0.1
+      postgres-array: 2.0.0
+      postgres-bytea: 1.0.0
+      postgres-date: 1.0.7
+      postgres-interval: 1.2.0
+    dev: false
+
+  /pg/8.7.1:
+    resolution: {integrity: sha512-7bdYcv7V6U3KAtWjpQJJBww0UEsWuh4yQ/EjNf2HeO/NnvKjpvhEIe/A/TleP6wtmSKnUnghs5A9jUoK6iDdkA==}
+    engines: {node: '>= 8.0.0'}
+    peerDependencies:
+      pg-native: '>=2.0.0'
+    peerDependenciesMeta:
+      pg-native:
+        optional: true
+    dependencies:
+      buffer-writer: 2.0.0
+      packet-reader: 1.0.0
+      pg-connection-string: 2.5.0
+      pg-pool: 3.4.1_pg@8.7.1
+      pg-protocol: 1.5.0
+      pg-types: 2.2.0
+      pgpass: 1.0.4
+    dev: false
+
+  /pgpass/1.0.4:
+    resolution: {integrity: sha512-YmuA56alyBq7M59vxVBfPJrGSozru8QAdoNlWuW3cz8l+UX3cWge0vTvjKhsSHSJpo3Bom8/Mm6hf0TR5GY0+w==}
+    dependencies:
+      split2: 3.2.2
     dev: false
 
   /picomatch/2.3.0:
@@ -9108,6 +9233,28 @@ packages:
       colorette: 1.2.2
       nanoid: 3.1.23
       source-map-js: 0.6.2
+
+  /postgres-array/2.0.0:
+    resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
+    engines: {node: '>=4'}
+    dev: false
+
+  /postgres-bytea/1.0.0:
+    resolution: {integrity: sha1-AntTPAqokOJtFy1Hz5zOzFIazTU=}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /postgres-date/1.0.7:
+    resolution: {integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /postgres-interval/1.2.0:
+    resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      xtend: 4.0.2
+    dev: false
 
   /prepend-http/2.0.0:
     resolution: {integrity: sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=}
@@ -10445,6 +10592,12 @@ packages:
       extend-shallow: 3.0.2
     dev: false
 
+  /split2/3.2.2:
+    resolution: {integrity: sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==}
+    dependencies:
+      readable-stream: 3.6.0
+    dev: false
+
   /sprintf-js/1.0.3:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
     dev: false
@@ -11420,7 +11573,7 @@ packages:
   /vite-plugin-live-reload/2.1.0:
     resolution: {integrity: sha512-NKIcVqrraPUZbsUKCKs+0StqKAmbAh2csbFxMWTXGDUeOoHAFni9H0CxtQelrYT5bQCV9FT/RveAM8q8bMdnQQ==}
     dependencies:
-      chalk: 4.1.1
+      chalk: 4.1.2
       chokidar: 3.5.2
     dev: true
 
@@ -11443,6 +11596,19 @@ packages:
     hasBin: true
     dependencies:
       esbuild: 0.12.16
+      postcss: 8.3.6
+      resolve: 1.20.0
+      rollup: 2.54.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /vite/2.5.0:
+    resolution: {integrity: sha512-Dn4B+g54PJsMG5WCc4QeFy1ygMXRdTtFrUPegqfk4+vzVQcbF/DqqmI/1bxezArzbujBJg/67QeT5wz8edfJVQ==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    dependencies:
+      esbuild: 0.12.22
       postcss: 8.3.6
       resolve: 1.20.0
       rollup: 2.54.0

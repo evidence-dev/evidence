@@ -1,0 +1,4 @@
+{
+    "database": "postgres",
+    "send_anonymous_usage_stats": false 
+}
