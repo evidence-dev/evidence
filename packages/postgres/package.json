@@ -1,0 +1,14 @@
+{
+  "name": "@evidence-dev/postgres",
+  "version": "0.0.1",
+  "description": "PostgreSQL driver for Evidence projects",
+  "main": "index.cjs",
+  "author": "evidence.dev",
+  "license": "MIT",
+  "dependencies": {
+    "blueimp-md5": "^2.18.0",
+    "fs-extra": "^9.1.0",
+    "pg": "^8.7.1"
+  },
+  "type": "module"
+}
