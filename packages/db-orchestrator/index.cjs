@@ -2,6 +2,7 @@ const { readdirSync, readJSONSync, writeJSONSync, pathExistsSync, emptyDirSync, 
 const md5 = require("blueimp-md5")
 const chalk = require('chalk')
 const logEvent = require('@evidence-dev/telemetry')
+const readline = require('readline');
 
 const getCache = function (dev, queryString, queryTime) {
     queryTime = md5(queryTime)
@@ -60,14 +61,12 @@ const runQueries = async function (routeHash, dev) {
                     try {
                         process.stdout.write(chalk.grey("  "+ query.id +" running..."))
                         data[query.id] = await runQuery(query.queryString, database, dev)
-                        process.stdout.clearLine();
-                        process.stdout.cursorTo(0);
+                        readline.cursorTo(process.stdout, 0);
                         process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
                         updateCache(dev, query.queryString, data[query.id], queryTime)
                         logEvent("db-query", dev)
                     } catch(err) {
-                        process.stdout.clearLine();
-                        process.stdout.cursorTo(0);
+                        readline.cursorTo(process.stdout, 0);
                         process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
                         data[query.id] = { error: { message: err } }
                         logEvent("db-error", dev)
