@@ -23,7 +23,7 @@ Evidence is in alpha. A lot of things will change between now and our stable rel
 
 ## Installation 
 
-Check out the [documentation](https://readme.evidence.dev) for a complete walk through.
+Check out the [documentation](https://docs.evidence.dev) for a complete walk through.
 
 ```
 npm init @evidence-dev/new my-project 
