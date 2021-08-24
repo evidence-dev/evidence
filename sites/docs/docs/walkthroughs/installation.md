@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 
 # Installation
-Don't worry if this is your first time using any of the tools referenced in this walkthrough - we will guide you through all the steps. If you need help, [send us a message on Slack.](/community)
+Don't worry if this is your first time using any of the tools referenced in this walkthrough - we will guide you through all the steps. If you need help, [send us a message on Slack.](/community). We're here for you! 
 
 ## IDE or Text Editor
 You will need an IDE (integrated development environment) or text editor to work with Evidence. We like [VSCode (Visual Studio Code)](https://code.visualstudio.com/) because of its layout, integrated console/terminal, and extension library.
@@ -43,19 +43,14 @@ npm update -g
 `-g` here means **global** - this will update your version of npm wherever it is used locally (rather than only in your current project).
 
 
-## Create Evidence Project
-`init` is a command to **initialize** a project (i.e. create it) and fill it with the files you will need to get started.
+## Create an Evidence Project
+`npx degit` is a command to download the code from a github repository. This is going to download our template project and place it into a directory called 'my-project'. 
 
-This command is used to initialize Evidence:
+This command is used to create a folder called my :
 ```shell
-npm init @evidence-dev/new my-project
+npx degit evidence-dev/template my-project
+
 ```
-
-`@` is a **scope** symbol in npm. This means we are trying to set up a package that is part of a larger group or organization (the package is "scoped" to that organization). 
-
-In this case:
-* `@evidence-dev` is the organization
-* `new` is the package
 
 `my-project` is the name of the directory that will be created on your computer. You can change this name to whatever you'd like.
 
@@ -74,7 +69,7 @@ cd my-project
 ```
 `cd` means **change directory** - we are telling the terminal to go into the my-project directory.
 
-Now we can run the installation step:
+Now that we are in our project, we can run the installation step:
 
 ```shell
 npm install
@@ -85,9 +80,7 @@ npm will add all dependencies to the `node_modules` folder in your project.
 That's it for installation - now you can start your server and use Evidence.
 
 ## Start the Development Server
-To view pages in a browser, you need a **server**. The server takes files we create and sends them to the browser to be rendered and displayed. It also responds to events on the webpage when new files or images are needed. 
-
-Since you are working with Evidence in development mode, you'll be using a development server which runs on your local computer.
+Since you are working with Evidence in development mode, you'll be using a development server which runs on your local computer. This server watches for changes in your markdown documents, and quickly translates them into updated pages in your project. 
 
 Use the command below in your terminal to start the dev server:
 ```shell
@@ -106,8 +99,19 @@ Entering `localhost:3000` in your browser tells your browser to send a request t
 
 On your Evidence page, if you click the [Querying Data](http://localhost:3000/firstquery) link, you'll see the name of the page appended to the URL, just as you would see on a normal website: `localhost:3000/firstquery`
 
+## In Review 
+
+We've run the following four commands in our terminal, and we should have a working Evidence site visible in our web browser at `localhost:3000`. 
+
+```shell
+npx degit evidence-dev/template my-project
+cd my-project 
+npm install 
+npm run dev 
+```
+
 ## Next Steps
-Now that you're all set up, [take a look at the files in your new project.](/getting-started/project-structure)
+Now that you're all set up, you can keep working through the getting started guide. The next step is to [take a look at the files in your new project.](/getting-started/project-structure)
 
 ## Help
 If you need help with any of this, [reach out to us on Slack](/community).

@@ -15,11 +15,10 @@ If needed, update with `npm update -g`
 :::
 
 ```shell
-npm init @evidence-dev/new my-project
-
-cd my-project
-npm install
-npm run dev
+npx degit evidence-dev/template my-project
+cd my-project 
+npm install 
+npm run dev 
 ```
 
 Follow the setup steps in your terminal to complete the installation. Then open your browser and go to [localhost:3000](http://localhost:3000)
@@ -29,10 +28,6 @@ Follow the setup steps in your terminal to complete the installation. Then open 
 ![home-screen-initial](/img/hello-world-gradient.png)
 
 </div>
-
-:::note Unstyled Content    
-If your page shows unstyled content, just refresh your browser. This is a known issue in development mode.
-:::
 
 
 

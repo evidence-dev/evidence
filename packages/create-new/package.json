@@ -1,7 +1,7 @@
 {
 	"name": "@evidence-dev/create-new",
 	"license": "MIT",
-	"description": "create a new evidence project",
+	"description": "DEPRECATED package for creating a new evidence project. Follow the new installation instructions on our website at: www.evidence.dev.",
 	"version": "0.1.5",
 	"bin": "./bin.js",
 	"dependencies": {
