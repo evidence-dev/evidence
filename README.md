@@ -26,9 +26,9 @@ Evidence is in alpha. A lot of things will change between now and our stable rel
 Check out the [documentation](https://docs.evidence.dev) for a complete walk through.
 
 ```
-npm init @evidence-dev/new my-project 
-cd my-project
-npm install
+npx degit evidence-dev/template my-project
+cd my-project 
+npm install 
 npm run dev 
 ```
 
