@@ -4,5 +4,10 @@ hide_table_of_contents: false
 ---
 
 # Deploy Your Site
+You can deploy your Evidence project to a public URL or to a password-protected domain. See [our deployment docs](/deployment/deployment-overview) for instructions.
 
-Evidence projects can be deployed on [Netlify](https://www.netlify.com/). Please reach out to us in the [community](community) or [open an issue on GitHub](https://github.com/evidence-dev/evidence/issues/new) and we can help you get your site deployed.
+## Evidence Cloud 
+
+If you are interested in using Evidence, but you would prefer not to self-host your project, you might be interested in our forthcoming cloud service.
+
+To be notified when Evidence Cloud is available, [sign up for the waitlist](https://du3tapwtcbi.typeform.com/to/kwp7ZD3q). 

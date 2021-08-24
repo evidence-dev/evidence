@@ -29,15 +29,15 @@ Evidence is built for analysts - not web developers. The only skills you need ar
 
 If you're ready to get started, [jump into the tutorial &#8594](/getting-started/get-started)
 
-:::warning Public Alpha
+:::caution Public Alpha
 Evidence is in public alpha: there will be bugs and things will change before we reach a stable release.
 :::
 
 <h2>We'd love to hear from you</h2>
 
 If you're trying out Evidence, we'd love to talk to you:
-* [Join us on Slack](https://evidencedev.slack.com/join/shared_invite/zt-qliah5tz-THIzMChvRn~lBA7EHFPXaA#/shared-invite/email)
-* [Check out our GitHub](https://github.com/evidence-dev)
+* [Join us on Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
+* [Check out our GitHub](https://github.com/evidence-dev/evidence)
 * [Join the Mailing List on Our Website](https://evidence.dev)
 
 If there's **anything** you find difficult in the docs, please open an issue on Github or reach out to us on Slack.

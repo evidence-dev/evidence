@@ -59,6 +59,7 @@
 
     // Labels:
     export let units = "";
+    export let xAxisTitle = "";
     export let legend = "top";
 
     // Stacked Data Flag:
@@ -123,6 +124,7 @@
             labelPosition={xLabelPosition}
             baseline={xBaseline}
             gridlines={xGridlines}
+            axisTitle={xAxisTitle}
             />
         <YAxis 
             units={units} 

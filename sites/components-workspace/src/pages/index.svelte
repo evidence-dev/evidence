@@ -14,6 +14,7 @@
     import countries from '/src/data/countries.json'
     import test_string from '/src/data/test_string.json'
     import test_dates from '/src/data/test_dates.json'
+    import test_dates_stacked from '/src/data/test_dates_stacked.json'
     import test_weeks from '/src/data/test_weeks.json'
     import test_months from '/src/data/test_months.json'
     import test_quarters from '/src/data/test_quarters.json'
@@ -33,12 +34,12 @@ This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is a
 
 <h2>Bar Chart</h2>
 <BarChart data={testData} x=x y=y/>
-<BarChart data={countries} x=year y=value series=country/>
+<BarChart data={countries} x=year y=value series=country units="long units string"/>
 
 <h2>Column Chart</h2>
 <ColumnChart data={testData} x=x y=y/>
 <ColumnChart data={countries} x=year y=value series=country/>
-<ColumnChart data={countries} x=year y=value series=country xType=categorical/>
+<ColumnChart data={countries} x=year y=value series=country xType=categorical xAxisTitle="Created Year"/>
 
 <h2>Histogram</h2>
 <Hist data={testData} x=x/>
@@ -56,6 +57,7 @@ This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is a
 
 <h3>Date</h3>
 <ColumnChart data={test_dates} x=date y=y/>
+<ColumnChart data={test_dates_stacked} x=date y=y series=group/>
 
 <h3>Week</h3>
 <ColumnChart data={test_weeks} x=week y=y/>

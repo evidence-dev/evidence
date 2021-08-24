@@ -51,3 +51,5 @@ You can hover over each point on your chart to see the value and (if applicable)
 
 ![scatter-hovertags](/img/scatter-hovertag-close.png)
 
+Direct labeling and interactive charts (tooltips, etc.) are on our roadmap.
+

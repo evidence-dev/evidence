@@ -47,3 +47,4 @@ Evidence's component tags need to be closed using `/>` (same as HTML tags)
 If you create a bar chart with many x-axis items (e.g., names of departments), Evidence will extend the height of the chart for you to avoid the bars becoming squished.
 
 ![bar-chart-long](/img/bar-chart-long.png)
+
