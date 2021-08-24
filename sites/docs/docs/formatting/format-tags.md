@@ -11,7 +11,7 @@ A **format tag** can be appended to your column name to ensure the right format 
 
 Format tags are appended with an underscore: for example, to append the percentage format to a column named `growth`, it would be `growth_pct`.
 
-Evidence will also format the column if the column’s name matches any of the accepted format tags exactly.
+Evidence will also format the column if the column’s name matches any of the accepted format tags exactly (e.g., if your column is named `date`, Evidence will use the `date` format).
 
 ## Accepted Tags
 Below are the currently accepted format tags and their respective formats. Most numbers are formatted with 2 decimal places. This functionality will be extended in future versions to allow for more customization of formats.

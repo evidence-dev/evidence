@@ -22,7 +22,7 @@ The most recent day of data was logged on <Value data={data.complaints_by_day} f
 ![summary-sentence](/img/austin-summary-text-2.png)
 
 </div>
-These values will continue to update as the results of your SQL query change.
+These values will continue to update as the results of your SQL query change. You should see a more recent date than the screenshot above when you run your query.
 
 <h2>Updated Page</h2>
 

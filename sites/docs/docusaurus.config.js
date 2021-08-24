@@ -73,12 +73,20 @@ module.exports = {
               to: '/formatting/format-tags',
             },
             {
+              label: 'Deployment',
+              to: '/deployment/deployment-overview',
+            },
+            {
               label: 'Walkthroughs',
               to: '/walkthroughs/installation',
             },
             {
               label: 'Troubleshooting',
-              to: '/troubleshooting/troubleshooting',
+              to: '/troubleshooting',
+            },
+            {
+              label: 'Usage Statistics',
+              to: '/usage-statistics',
             },
             // {
             //   label: 'Community',
@@ -129,7 +137,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Evidence`,
+      copyright: `Copyright © ${new Date().getFullYear()} Evidence Technologies, Inc.`,
     },
   },
   presets: [

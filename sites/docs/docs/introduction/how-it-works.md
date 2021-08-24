@@ -28,4 +28,7 @@ When you create a new Evidence project, we scaffold together a SvelteKit project
 
 ** 3. The Evidence Component Library**, which includes charts, tables, UI components, etc.
 
+All this gives you the ability to quickly write reports and analysis, with full control over the content. Here is one example of the development experience in Evidence - quickly changing the number of bins in a histogram:
+
+![hist-bins](/img/hist-bin-changes.gif)
 

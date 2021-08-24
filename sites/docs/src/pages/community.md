@@ -24,3 +24,5 @@ We'd love to hear what you think about Evidence and we're excited to see what yo
 * Star our repo
 * Contribute to our open-source codebase
 * Open issues
+
+If you run into issues connecting with us on any of the platforms above, please email <support@evidence.dev>

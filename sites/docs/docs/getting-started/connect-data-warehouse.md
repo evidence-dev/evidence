@@ -4,7 +4,9 @@ sidebar_position: 5
 
 # Connect Data Warehouse
 
-Evidence supports Google BigQuery and Snowflake. Both data warehouses offer a large collection of public datasets, which are great for testing out Evidence.
+Evidence supports Google BigQuery, Snowflake, and PostgreSQL. 
+
+If you want to try out Evidence with free public datasets, both BigQuery and Snowflake offer a large collection.
 
 :::tip Don't have a data warehouse account?
 Set up a FREE BigQuery sandbox in less than 60 seconds:<br/> 
@@ -65,7 +67,6 @@ Snowflake only requires an account, username, and password to connect through Ev
 "password": "xxxxxx"
 ```
 
-You can also authorize with environment variables if you like. If no credentials are provided, Evidence will check for environment variables with the same name and use those if available.
 
 ### Update Evidence Configuration File
 1. Open `evidence.config.json`
@@ -88,7 +89,6 @@ Postgres can be connected with basic database credentials. If you run into issue
 "password": "xxxxxx"
 ```
 
-You can also authorize with environment variables if you like. If no credentials are provided, Evidence will check for environment variables with the same name and use those if available.
 
 ### Update Evidence Configuration File
 1. Open `evidence.config.json`
