@@ -123,6 +123,30 @@ hr {
 	
 }
 
+/* COLOR PALETTE - USED IN MULTI-SERIES CHARTS */
+:root {
+	--color1: #923d59;
+	--color2: #488f96;
+	--color3: #518eca;
+	--color4: #B3A9A0;
+	--color5: #3F6C51;
+	--color6: #ffc857;
+	--color7: #495867;
+	--color8: #bfdbf7;
+	--color9: #bc4749;
+	--color10: #EEEBD0;
+	--color11: #F68E5F;
+	--color12: #923d59;
+	--color13: #488f96;
+	--color14: #518eca;
+	--color15: #B3A9A0;
+	--color16: #3F6C51;
+	--color17: #ffc857;
+	--color18: #495867;
+	--color19: #bfdbf7;
+	--color20: #bc4749;
+}
+
 @media (max-width: 600px) {
 	body {
 		font-size: 16px;
