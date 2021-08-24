@@ -5,6 +5,13 @@ hide_table_of_contents: false
 
 # Install Evidence
 
+:::info Known issue for PC Users
+PC users will not be able to successfully install Evidence because of a known issue, which we will be resolving in the coming weeks. 
+
+Please sign up for our mailing list to receive an update when we release support for PCs:
+**[Sign Up for Mailing List](http://eepurl.com/htt4ob)**
+:::
+
 If you're not familiar with the terminal or you run into trouble, check out the [Detailed Installation Walkthrough.](/walkthroughs/installation) Otherwise, get started below.
 
 Install Evidence from npm using the commands below in your terminal:
@@ -15,10 +22,9 @@ If needed, update with `npm update -g`
 :::
 
 ```shell
-npm init @evidence-dev/new my-project
-
-cd my-project
-npm install
+npx degit evidence-dev/template my-new-project
+cd my-new-project 
+npm install 
 npm run dev
 ```
 

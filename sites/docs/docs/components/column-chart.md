@@ -38,10 +38,6 @@ hide_table_of_contents: false
 * **fillColor** - color of the columns. CSS color input (CSS color name, hexadecimal code, RGB code)
 * **fillTransparency** - % of color which will be rendered as transparent (value between 0 and 1)
 
-:::caution Support for Dates
-Column charts do not yet support dates on the x-axis. This will be added in a future release.
-:::
-
 :::note
 Evidence's component tags need to be closed using `/>` (same as HTML tags)
 :::

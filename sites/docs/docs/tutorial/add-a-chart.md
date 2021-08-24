@@ -25,6 +25,6 @@ This will give you the line chart below, which displays over 2,700 data points:
 
 </div>
 
-:::note Visualization Components
+:::info Visualization Components
 Check out the [Components](/components/value) section to see the full list of available components.
 :::

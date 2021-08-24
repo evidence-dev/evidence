@@ -39,10 +39,6 @@ BarChart is a **reverse axis** chart: the x-axis is vertical and the y-axis is h
 * **fillColor** - color of the columns. CSS color input (CSS color name, hexadecimal code, RGB code)
 * **fillTransparency** - % of color which will be rendered as transparent (value between 0 and 1)
 
-:::caution Support for Dates
-Bar charts do not yet support dates on the x-axis. This will be added in a future release.
-:::
-
 :::note
 Evidence's component tags need to be closed using `/>` (same as HTML tags)
 :::
@@ -51,3 +47,4 @@ Evidence's component tags need to be closed using `/>` (same as HTML tags)
 If you create a bar chart with many x-axis items (e.g., names of departments), Evidence will extend the height of the chart for you to avoid the bars becoming squished.
 
 ![bar-chart-long](/img/bar-chart-long.png)
+

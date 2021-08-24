@@ -17,6 +17,6 @@ Here is a sample of what you'll build in our tutorial:
 
 </div>
 
-:::warning Public Alpha
+:::caution Public Alpha
 Evidence is in public alpha: there will be bugs and things will change before we reach a stable release.
 :::
