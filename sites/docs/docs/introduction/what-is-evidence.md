@@ -29,7 +29,7 @@ Evidence is built for analysts - not web developers. The only skills you need ar
 
 If you're ready to get started, [jump into the tutorial &#8594](/getting-started/get-started)
 
-:::caution Public Alpha
+:::note Public Alpha
 Evidence is in public alpha: there will be bugs and things will change before we reach a stable release.
 :::
 
