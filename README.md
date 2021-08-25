@@ -33,13 +33,13 @@ npm run dev
 ```
 
 # Join the Evidence Community
-Join our [Slack channel](https://evidencedev.slack.com/join/shared_invite/zt-qliah5tz-THIzMChvRn~lBA7EHFPXaA#/shared-invite/email) to get involved in the community's discussion, share what you're working on, or request features.
+Join our [Slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) to get involved in the community's discussion, share what you're working on, or request features.
 
 Follow us on [Twitter](https://twitter.com/evidence_dev) to receive the latest updates on Evidence.
 
 
 # Contributing 
-If you are interested in contributing, please join us on our [slack channel](https://evidencedev.slack.com/join/shared_invite/zt-qliah5tz-THIzMChvRn~lBA7EHFPXaA#/shared-invite/email), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.  
+If you are interested in contributing, please join us on our [slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.  
 
 # License
 Evidence is licensed under the MIT license. See the [LICENSE](readme/license.md) file for licensing information.
