@@ -44,12 +44,12 @@ Once files are added to these directories, VSCode will split them up to show whe
 
 ### Update Database Configuration File
 ![db-config](/img/dbconfig.png)
-1. Open `database.config.json`
+1. Open `database.config.json` in `.evidence` folder in your project
 2. Replace "YOUR-JSON-KEY.json" with the name of the file you placed in the `.evidence` directory
 3. Replace "YOUR-PROJECT-ID" with your project ID supplied by Google (which can be found in your JSON Key file)
 
 ### Update Evidence Configuration File
-1. Open `evidence.config.json`
+1. Open `evidence.config.json` in root of your project
 2. Input your data warehouse name ("bigquery"):
 ```json
 "database":"bigquery"
@@ -59,7 +59,7 @@ Once files are added to these directories, VSCode will split them up to show whe
 Snowflake only requires an account, username, and password to connect through Evidence.
 
 ### Update Database Configuration File
-1. Open `database.config.json`
+1. Open `database.config.json` in `.evidence` folder in your project
 2. Input your credentials:
 ```json
 "account": "xx16244.us-central1.gcp",
@@ -69,7 +69,7 @@ Snowflake only requires an account, username, and password to connect through Ev
 
 
 ### Update Evidence Configuration File
-1. Open `evidence.config.json`
+1. Open `evidence.config.json` in root of your project.
 2. Input your data warehouse name ("snowflake"):
 ```json
 "database":"snowflake"
@@ -79,7 +79,7 @@ Snowflake only requires an account, username, and password to connect through Ev
 Postgres can be connected with basic database credentials. If you run into issues or need another type of auth to connect to your Postgres database, please [create a GitHub issue](https://github.com/evidence-dev/evidence/issues), [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), or send an email to <support@evidence.dev>.
 
 ### Update Database Configuration File
-1. Open `database.config.json`
+1. Open `database.config.json` in `.evidence` folder in your project
 2. Input your credentials:
 ```json
 "host": "database.server.com",
@@ -91,7 +91,7 @@ Postgres can be connected with basic database credentials. If you run into issue
 
 
 ### Update Evidence Configuration File
-1. Open `evidence.config.json`
+1. Open `evidence.config.json` in root of your project.
 2. Input your database name ("postgres"):
 ```json
 "database":"postgres"
