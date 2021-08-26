@@ -1,6 +1,5 @@
 {
 	"dependencies": {
-		"@evidence-dev/components": "link:packages/components",
-		"@evidence-dev/create-new": "link:packages/create-new"
+		"@evidence-dev/components": "link:packages/components"
 	}
 }
