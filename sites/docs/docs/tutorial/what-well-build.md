@@ -17,3 +17,7 @@ Here's what the final product will look like:
 ![final-page](/img/final-product.gif)
 
 </div>
+
+:::tip Not using BigQuery?
+We will be adding tutorials for other databases in the future. You won't be able to query the tutorial dataset, but you can still work your way through the steps using your own dataset to become familiar with Evidence's features.
+:::

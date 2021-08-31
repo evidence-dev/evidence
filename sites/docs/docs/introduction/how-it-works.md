@@ -26,7 +26,7 @@ When you create a new Evidence project, we scaffold together a SvelteKit project
 
 ** 2. The Evidence Data Warehouse Client**, which manages the database connection and the development cache
 
-** 3. The Evidence Component Library**, which includes charts, tables, UI components, etc.
+** 3. The Evidence Component Library**, which includes charts, tables, UI components, etc. Built with [D3.js](https://d3js.org/) and [Layercake](https://layercake.graphics/).
 
 All this gives you the ability to quickly write reports and analysis, with full control over the content. Here is one example of the development experience in Evidence - quickly changing the number of bins in a histogram:
 

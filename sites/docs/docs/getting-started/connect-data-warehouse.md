@@ -23,7 +23,7 @@ Set up a FREE BigQuery sandbox in less than 60 seconds:<br/>
 ### Create a Service Account Key
 1. [Go to the Service Account Page](https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts/create?supportedpurview=project&_ga=2.202527640.867747861.1622513856-469265758.1621868166&_gac=1.81391205.1622124503.CjwKCAjw47eFBhA9EiwAy8kzNKaExCvM0G229wH0PGh4USFcdB7wudKCKWt4MSEPM6wbQKCwOot1NxoCtxIQAvD_BwE) and click on your project
 2. Add a name for your service account, then click Create
-3. Assign your service account a role for BigQuery (scroll down the role dropdown to find BigQuery roles). **BigQuery User** should work, but it may depend on your organization's permissions settings in Google Cloud. If you run into trouble with permissions, you may need to change this role.
+3. Assign your service account a role for BigQuery (scroll down the role dropdown to find BigQuery roles). **BigQuery User** should work, but it may depend on your organization's permissions settings in Google Cloud. If you run into trouble with permissions, you may need to change this role. Reach out to us if you run into issues or need help with BigQuery permissions.
 4. Click Continue, then click Done. You should see a table of users.
 5. Click on the email address for the service account you just created, then click the **Keys** tab
 6. Click Add Key, then Create New Key, then Create
@@ -44,12 +44,12 @@ Once files are added to these directories, VSCode will split them up to show whe
 
 ### Update Database Configuration File
 ![db-config](/img/dbconfig.png)
-1. Open `database.config.json`
+1. Open `database.config.json` in `.evidence` folder in your project
 2. Replace "YOUR-JSON-KEY.json" with the name of the file you placed in the `.evidence` directory
 3. Replace "YOUR-PROJECT-ID" with your project ID supplied by Google (which can be found in your JSON Key file)
 
 ### Update Evidence Configuration File
-1. Open `evidence.config.json`
+1. Open `evidence.config.json` in root of your project
 2. Input your data warehouse name ("bigquery"):
 ```json
 "database":"bigquery"
@@ -59,7 +59,7 @@ Once files are added to these directories, VSCode will split them up to show whe
 Snowflake only requires an account, username, and password to connect through Evidence.
 
 ### Update Database Configuration File
-1. Open `database.config.json`
+1. Open `database.config.json` in `.evidence` folder in your project
 2. Input your credentials:
 ```json
 "account": "xx16244.us-central1.gcp",
@@ -69,7 +69,7 @@ Snowflake only requires an account, username, and password to connect through Ev
 
 
 ### Update Evidence Configuration File
-1. Open `evidence.config.json`
+1. Open `evidence.config.json` in root of your project.
 2. Input your data warehouse name ("snowflake"):
 ```json
 "database":"snowflake"
@@ -79,7 +79,7 @@ Snowflake only requires an account, username, and password to connect through Ev
 Postgres can be connected with basic database credentials. If you run into issues or need another type of auth to connect to your Postgres database, please [create a GitHub issue](https://github.com/evidence-dev/evidence/issues), [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), or send an email to <support@evidence.dev>.
 
 ### Update Database Configuration File
-1. Open `database.config.json`
+1. Open `database.config.json` in `.evidence` folder in your project
 2. Input your credentials:
 ```json
 "host": "database.server.com",
@@ -91,7 +91,7 @@ Postgres can be connected with basic database credentials. If you run into issue
 
 
 ### Update Evidence Configuration File
-1. Open `evidence.config.json`
+1. Open `evidence.config.json` in root of your project.
 2. Input your database name ("postgres"):
 ```json
 "database":"postgres"

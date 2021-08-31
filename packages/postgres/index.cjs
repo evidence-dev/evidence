@@ -22,6 +22,11 @@ const runQuery = async (queryString, database) => {
             port: database.port ?? process.env["port"],
         }
 
+        var types = require('pg').types
+        types.setTypeParser(20, function(val) {
+            return parseInt(val, 10)
+        })
+
         var pool = new Pool(credentials);
         var result = await pool.query(queryString)
 

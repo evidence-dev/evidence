@@ -12,9 +12,6 @@ If your database connection has been set up successfully, you will see an output
 
 * This message was set up with a [conditional](/templating/conditionals) - you can use conditionals to dynamically display information based on results of queries on your page. Check out the code in `firstquery.md` to see how this was done
 
-* Take a look at the [example analysis](http://localhost:3000/example) referenced on that page to see more of what Evidence can do. You can see the code behind the example in `example.md`
-
-
 ## Write a query from scratch
 Let's take a look at 1,000 rows from the Austin 311 Calls public dataset to undestand what the data looks like. We'll call this query `data_sample`:
 

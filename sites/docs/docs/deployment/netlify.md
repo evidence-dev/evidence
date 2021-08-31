@@ -66,25 +66,27 @@ This will give you a URL that GitHub will use to trigger builds
 ![netlify-github-new-secret](/img/netlify-github-new-secret.png)
 ![netlify-github-secret](/img/netlify-github-secret.png)
 3. Add a schedule file to your project
-* Create a new directory called `.github`
+* Create a new directory in your project called `.github`
 * Within that directory, create another called `workflows`
 * Add a new file in `.github/workflows` called `main.yml`
-4. Add the following text to the `main.yml` file you just created 
+4. Add the following text to the `main.yml` file you just created. Be sure that the spacing and indentation is exactly as presented here, as it will impact whether the action runs correctly
 
 ```
-    name: Schedule Netlify Build
-    on:
-    workflow_dispatch:
-    schedule:
-        - cron: '0 14 * * *' # Once a day around 10am ET
-    jobs:
-    build:
-        name: Request Netlify Webhook
-        runs-on: ubuntu-latest
-        steps:
-        - name: POST to Build Hook
-            env:
-            BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
-            run: curl -X POST -d {} $BUILD_HOOK
+name: Schedule Netlify Build
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * *' # Once a day around 6am ET (10am UTC)
+jobs:
+  build:
+    name: Request Netlify Webhook
+    runs-on: ubuntu-latest
+    steps:
+      - name: POST to Build Hook
+        env:
+          BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: curl -X POST -d {} $BUILD_HOOK
 ```
+
+5. See your GitHub Actions run in the **Actions** tab of your GitHub repo
 

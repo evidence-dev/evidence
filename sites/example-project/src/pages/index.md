@@ -8,7 +8,9 @@
         countif(timestamp_diff(current_timestamp(), created_date, day) <7) as calls_in_the_last_7_days,
         countif(timestamp_diff(current_timestamp(), created_date, day) <365) as calls_in_the_last_365_days,
         min(created_date) as earliest_call_date, 
-        max(created_date) as latest_call_date
+        max(created_date) as latest_call_date,
+        "string1" as string1,
+        'string2' as string2
     from `bigquery-public-data.austin_311.311_service_requests` 
     limit 1 
 ```

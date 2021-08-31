@@ -46,10 +46,8 @@ npm update -g
 ## Create an Evidence Project
 `npx degit` is a command to download the code from a github repository. This is going to download our template project and place it into a directory called 'my-project'. 
 
-This command is used to create a folder called my :
 ```shell
 npx degit evidence-dev/template my-project
-
 ```
 
 `my-project` is the name of the directory that will be created on your computer. You can change this name to whatever you'd like.

@@ -18,11 +18,10 @@
 {/if}
 
 <div class="header">
-	<Logo organization="Austin 311"/>
+	<Logo organization="Postgres Example"/>
 	<Nav
 		sections = {[
-			{href:"/", label: "Home"},
-			{href:"/departments", label: "Departments"}
+			{href:"/", label: "Home"}
 		]}
 	/>
 </div>
