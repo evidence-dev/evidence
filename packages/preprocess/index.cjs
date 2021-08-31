@@ -114,6 +114,8 @@ const updateBuildQueriesDir = function(content, filename){
 }
 
 function highlighter(code, lang) {
+    code = code.replace(/'/g, "&apos;");
+    code = code.replace(/"/g, "&quot;");
     return `
     <QueryViewer queryString = '${code}' queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
     `;
