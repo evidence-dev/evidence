@@ -88,7 +88,11 @@ Postgres can be connected with basic database credentials. If you run into issue
 "user": "postgres",
 "password": "xxxxxx"
 ```
-
+3. [Optional] If your database requires SSL, you can add this option to the config options above:
+```json
+"ssl": true
+```
+By default, `ssl` will be set to false.
 
 ### Update Evidence Configuration File
 1. Open `evidence.config.json` in root of your project.
