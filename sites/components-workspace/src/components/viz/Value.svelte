@@ -2,6 +2,7 @@
     import getColumnSummary from "../modules/getColumnSummary.js";
     import formatValue from "../modules/formatValue.js";
     import getParsedDate from "../modules/getParsedDate.js";
+    import checkInputs from "../modules/checkInputs.js";
     
     // Passing in value from dataset:
     export let data = null 
@@ -18,11 +19,21 @@
     let error;
     try {
     if(data) {
-        if(!column){
-            column = Object.keys(data[row])[0]
-        }
-        let columnSummary = getColumnSummary(data);
 
+        if(isNaN(row)){
+            throw Error("row must be a number (row="+row+")")
+        }
+
+        if(!column){
+            try{
+                column = Object.keys(data[row])[0]
+            } catch(e) {
+                throw Error("Row "+row+" does not exist in the dataset")
+            }
+        }
+
+        checkInputs(data, [column]);
+        let columnSummary = getColumnSummary(data);
         let dateCols = columnSummary.filter(d => d.type === "date")
         dateCols = dateCols.map(d => d.id);
         if(dateCols.length > 0){
@@ -30,6 +41,7 @@
             data = getParsedDate(data, dateCols[i]);
             }
         }
+
         value = data[row][column]
         columnSummary = columnSummary.filter(d => d.id === column);
 
@@ -40,6 +52,9 @@
         // Units (k, M, B) - not used in <Value> yet:
         // units = columnSummary[0].units;
     } else {
+        if(!value){
+            throw Error("No value or dataset provided")
+        }
         value = isNaN(value) ? value : Number.parseFloat(value);
         if(fmt == null){
             fmt = (typeof value === "number" ? "num" : "str");
@@ -55,7 +70,7 @@
 {formatValue(value, fmt)} 
 {:else}
     <div class="error">
-        error
+        [error]
         <span class="error-msg">{error}</span>
     </div>
 {/if}
