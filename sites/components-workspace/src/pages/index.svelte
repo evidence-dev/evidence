@@ -23,7 +23,7 @@
 
 <h1>Evidence Component Library</h1>
 
-This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is another: <Value value=.3054 fmt=pct/>
+This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is another: <Value value=.3054 fmt=pct/>. Here is a value component written to produce an error: <Value data=abc/> along with another <Value data={[{"date":"2020-05-07"}]} column=nexist/> in the same sentence.
 
 <h2>Area Chart</h2>
 <AreaChart data={testData} x=x y=y/>
