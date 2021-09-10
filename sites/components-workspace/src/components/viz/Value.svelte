@@ -33,15 +33,16 @@
             throw Error("row must be a number (row="+row+")")
         }
 
-        if(!column){
-            try{
-                column = Object.keys(data[row])[0]
-            } catch(e) {
-                throw Error("Row "+row+" does not exist in the dataset")
-            }
+        try{
+            Object.keys(data[row])[0]
+        } catch(e) {
+            throw Error("Row "+row+" does not exist in the dataset")
         }
 
+        column = column ?? Object.keys(data[row])[0]
+
         checkInputs(data, [column]);
+
         let columnSummary = getColumnSummary(data);
         let dateCols = columnSummary.filter(d => d.type === "date")
         dateCols = dateCols.map(d => d.id);

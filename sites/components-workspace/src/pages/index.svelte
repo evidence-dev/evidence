@@ -22,6 +22,7 @@
 
     let data = {}
  </script>
+
 <h1>Evidence Component Library</h1>
 <Value placeholder="Report Date"/>
 <br>
@@ -30,6 +31,19 @@ This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is a
 <br>
 <br>  
 The company has added <Value placeholder="number of employees"/> employees since <Value last report date/>.
+
+<h2>Value Component Error Handling</h2>
+1. Empty tag: <Value/>
+<br>
+2. Non-existent query result: <Value data=abc/> 
+<br>
+3. Wrong query result name: <Value data={data.abc}/>
+<br>
+4. Non-existent column: <Value data={[{"date":"2020-05-07"}]} column=abc/>
+<br>
+5. Non-existent row with no column: <Value data={[{"date":"2020-05-07"}]} row=11/>
+<br>
+6. Non-existent row with correct column: <Value data={[{"date":"2020-05-07"}]} column=date row=11/>
 
 <h2>Area Chart</h2>
 <AreaChart data={testData} x=x y=y/>
