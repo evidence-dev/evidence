@@ -18,7 +18,7 @@ If you like to mock up reports before you're ready to fill in real data, you can
 
 Here are a few examples of placeholders: 
 
-<Value placeholder="Report Date"/>  
+<Value placeholder="Report Date"/>    
 
 Revenue has changed by <Value placeholder="YTD sales growth"/> this year, with the largest change occuring in <Value placeholder="top country name"/> (<Value placeholder="top country YTD growth"/>).
 

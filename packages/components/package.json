@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "devDependencies": {
     "@sveltejs/adapter-static": "1.0.0-next.13",
     "@sveltejs/kit": "1.0.0-next.140",
@@ -20,6 +20,7 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./.DS_Store": "./.DS_Store",
     "./modules/checkInputs.js": "./modules/checkInputs.js",
     "./modules/countDates.js": "./modules/countDates.js",
     "./modules/formatAxisLabel.js": "./modules/formatAxisLabel.js",
