@@ -23,9 +23,14 @@
 
 <h1>Evidence Component Library</h1>
 
-This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is another: <Value value=.3054 fmt=pct/>. Here is a value component written to produce an error: <Value data=abc/> along with another <Value data={[{"date":"2020-05-07"}]} row=1/> in the same sentence.
+<Value placeholder="Report Date"/>
+<br>
+<br>
+This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is another: <Value value=.3054 fmt=pct/>. Here is a value component written to produce an error: <Value data=abc/> along with another <Value data={[{"date":"2020-05-07"}]} row=8/>, and another <Value data={[{"date":"2020-05-07"}]} column=revenue/> in the same sentence.  
+<br>
+<br>  
+The company has added <Value placeholder="number of employees"/> employees since <Value last report date/>.
 
-<Value column=fewf/>
 
 <h2>Area Chart</h2>
 <AreaChart data={testData} x=x y=y/>

@@ -16,6 +16,15 @@
     export let fmt = null
     let units = null
 
+    // Placeholder text when data not supplied:
+    export let placeholder = null
+    let errorColor = 'red';
+    if(placeholder){
+        errorColor = 'blue';
+    } else {
+        placeholder = "value";
+    }
+
     let error;
     try {
     if(data) {
@@ -69,8 +78,8 @@
 {#if !error}
 {formatValue(value, fmt)} 
 {:else}
-    <div class="error">
-        [error]
+    <div class="error" style='color:{errorColor}'>
+        [{placeholder}]
         <span class="error-msg">{error}</span>
     </div>
 {/if}
@@ -79,7 +88,6 @@
      .error {
         display: inline;
         position: relative;
-        color: red;
         cursor: help;
     }
 
