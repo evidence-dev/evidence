@@ -1,16 +1,5 @@
 # Home
 
-Testing <Value/> component:
-
-* Empty tag: <Value/>
-* Non-existent query result: <Value data=abc/> 
-* Wrong query result name: <Value data={data.abc}/>
-* Non-existent column: <Value data={data.summary} column=abc/>
-* Non-existent row: <Value data={data.summary} row=20/>
-<Value data={data.summary} column=total_calls/>
-
-
-
 ## Context
 
 ```summary
