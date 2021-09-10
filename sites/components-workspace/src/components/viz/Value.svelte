@@ -79,10 +79,10 @@
 {#if !error}
 {formatValue(value, fmt)} 
 {:else}
-    <div class="error" style='color:{errorColor}'>
+    <span class="error" style='color:{errorColor}'>
         [{placeholder}]
         <span class="error-msg">{error}</span>
-    </div>
+    </span>
 {/if}
 
 <style>
