@@ -5,7 +5,7 @@
     import checkInputs from "../modules/checkInputs.js";
     
     // Passing in value from dataset:
-    export let data = null 
+    export let data = null
     export let row = 0    
     export let column = null
 
@@ -62,7 +62,7 @@
         // units = columnSummary[0].units;
     } else {
         if(!value){
-            throw Error("No value or dataset provided")
+            throw Error("No value or data provided. If you referenced a query result, check that the name is correct.")
         }
         value = isNaN(value) ? value : Number.parseFloat(value);
         if(fmt == null){
