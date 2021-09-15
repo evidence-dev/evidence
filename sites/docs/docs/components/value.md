@@ -33,6 +33,20 @@ Lets you take the result of a query and use it anywhere in your markdown.
 * **<span class="gradient">&lt;Value/></span>** pulls the first row in a table
 * If no column is specified, it will select the first column in the dataset (furthest left column)
 
+### Errors
+Errors appear inline with your text - when you hover over an error, it will show you the reason for the error.
+![value-error](/img/value-error.gif)
+
+### Adding a Placeholder
+If you like to mock up reports before you're ready to fill in real data, you can also override the Value error with a **placeholder**. Input the text you want to use as your placeholder and it will appear in blue font with square brackets, inline with your text.
+
+* **placeholder** - text to display in place of an error
+
+```markdown
+<Value placeholder="Report Date"/>
+```
+
+![value-placeholder](/img/value-placeholder.png)
 
 :::note
 Evidence's component tags need to be closed using `/>` (same as HTML tags)
