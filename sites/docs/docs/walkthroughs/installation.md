@@ -156,6 +156,21 @@ Entering `localhost:3000` in your browser tells your browser to send a request t
 
 On your Evidence page, if you click the [Querying Data](http://localhost:3000/firstquery) link, you'll see the name of the page appended to the URL, just as you would see on a normal website: `localhost:3000/firstquery`
 
+## Using a Different Port
+You may need to run your Evidence project on a different port (for example, if you have other programs running and port 3000 is already occupied). If you need to run your Evidence project on a different port than 3000, follow the steps below:
+
+1. Open the `package.json` file in the root of your project. This file provides a list of instructions for your project, including which scripts to use to run various commands, as well as which versions of packages are needed to run the project
+2. Under **scripts**, look at the **dev** line. This is the script your project will use in the background when you run the `npm run dev` command in your terminal. By default, this script uses port 3000
+3. Add `--port XXXX` after `svelte-kit dev`, where `XXXX` is the port number you'd like to use. This will override the port used when running the dev server
+
+The new **dev** line should look like this:
+```json
+"dev": "svelte-kit dev --port XXXX",
+```
+
+**Example (using port 8080):**
+![custom-port](/img/custom-port.png)
+
 ## In Review 
 
 We've run the following four commands in our terminal, and we should have a working Evidence site visible in our web browser at `localhost:3000`. 

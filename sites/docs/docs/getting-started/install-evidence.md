@@ -47,3 +47,19 @@ Great Windows support is a priority for us. If you'd like to be notified when we
 ![home-screen-initial](/img/hello-world-gradient.png)
 
 </div>
+
+
+## Using a Different Port
+If you need to run your Evidence project on a different port than 3000, follow the steps below:
+
+1. Open the `package.json` file in the root of your project
+2. Under **scripts**, look at the **dev** line
+3. Add `--port XXXX` after `svelte-kit dev`, where `XXXX` is the port number you'd like to use
+
+The new **dev** line should look like this:
+```json
+"dev": "svelte-kit dev --port XXXX",
+```
+
+**Example (using port 8080):**
+![custom-port](/img/custom-port.png)
