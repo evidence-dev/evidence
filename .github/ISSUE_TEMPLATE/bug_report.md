@@ -7,21 +7,20 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Bug Description**
+Describe what happened
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Expected Behavior**
+Describe what you expected to happen
 
 **Error Messages and Screenshots**
 If you received any error messages, please post them here. Screenshots are also helpful.
+
+**Steps To Reproduce**
+Let us know the steps we can take to reproduce the issue you're seeing. Sample data helps speed up the process of reproducing.
+1. 
+2. 
+3. 
 
 **Workarounds**
 Is there anything you can do in advance of this being fixed?
@@ -30,11 +29,10 @@ Is there anything you can do in advance of this being fixed?
 If so, let us know and we can help you get started.
 
 **Environment Information**
-
-Operating System:
-Node version (output of `node -v`):
-npm version (output of `npm -v`):
-Package versions (output of `npm list --depth=0`):
+Operating System (e.g., MacOS, Windows 10):
+Node version (`node -v`):
+npm version (`npm -v`):
+Package versions (`npm list --depth=0`):
 
 ```markdown
 
