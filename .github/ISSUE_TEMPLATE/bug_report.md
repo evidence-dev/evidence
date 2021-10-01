@@ -41,8 +41,8 @@ Paste version output here
 ```
 
 **Database:**
-[ ] Postgres
-[ ] BigQuery
-[ ] Snowflake
-[ ] Redshift
-[ ] Other (please specify)
+- [ ] Postgres
+- [ ] BigQuery
+- [ ] Snowflake
+- [ ] Redshift
+- [ ] Other (please specify)
