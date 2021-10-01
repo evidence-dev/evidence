@@ -2,7 +2,7 @@
 name: Database connector request
 about: Suggest a database you would like to connect to Evidence
 title: ''
-labels: ''
+labels: connectors, enhancement
 assignees: ''
 
 ---
