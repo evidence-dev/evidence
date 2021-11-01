@@ -8,19 +8,20 @@ const config = {
 		files: {
 			routes: 'src/pages',
 			lib: 'src/components'
-		},
-		package: {
-			dir: '../../packages/components',
-			emitTypes: true,
-			exports: {
-				include: ['**'],
-				exclude: ['_*', '**/_*']
-			},
-			files: {
-				include: ['**'],
-				exclude: []
-			}
 		}
+		// ,
+		// package: {
+		// 	dir: '../../packages/components',
+		// 	emitTypes: true,
+		// 	exports: {
+		// 		include: ['**'],
+		// 		exclude: ['_*', '**/_*']
+		// 	},
+		// 	files: {
+		// 		include: ['**'],
+		// 		exclude: []
+		// 	}
+		// }
 		
 	}
 };
