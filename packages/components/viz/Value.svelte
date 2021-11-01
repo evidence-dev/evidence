@@ -47,7 +47,7 @@
         let dateCols = columnSummary.filter(d => d.type === "date")
         dateCols = dateCols.map(d => d.id);
         if(dateCols.length > 0){
-            for(var i = 0; i < dateCols.length; i++){
+            for(let i = 0; i < dateCols.length; i++){
             data = getParsedDate(data, dateCols[i]);
             }
         }

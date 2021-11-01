@@ -28,15 +28,12 @@
     // in the line.
 
 
-    $: {
-    var last = $data[$data.length - 1];
-    var lastX = $xGet(last);
-    };
+    $: last = $data[$data.length - 1];
+    $: lastX = $xGet(last);
 
-    $: {
-      var first = $data[0];
-      var firstX = $xGet(first);
-    }
+
+    $: first = $data[0];
+    $: firstX = $xGet(first);
 
     let area;
     $: {
