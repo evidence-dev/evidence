@@ -1,0 +1,27 @@
+{
+  "name": "@evidence-dev/evidence",
+  "version": "0.1.0",
+  "description": "dependencies for evidence projects",
+  "scripts": {
+    "test": "test"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "@evidence-dev/preprocess": "workspace:^",
+    "@evidence-dev/db-orchestrator": "workspace:^",
+    "@evidence-dev/components": "workspace:^",
+	  "@sveltejs/kit": "1.0.0-next.192",
+    "svelte": "3.44.1",
+    "@sveltejs/adapter-static": "1.0.0-next.21",
+    "@tidyjs/tidy": "2.4.4",
+    "d3": "6.7.0",
+    "d3-array": "3.0.1",
+    "d3-scale": "4.0.1",
+    "layercake": "5.0.0",
+    "svelte2tsx": "0.4.7",
+    "typescript": "4.4.4",
+		"vite-plugin-full-reload": "^0.2.2"
+  }
+}

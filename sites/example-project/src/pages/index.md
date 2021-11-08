@@ -10,7 +10,6 @@
         min(created_date) as earliest_call_date, 
         max(created_date) as latest_call_date,
         "string1" as string1,
-        'string2' as string2
     from `bigquery-public-data.austin_311.311_service_requests` 
     limit 1 
 ```
@@ -26,7 +25,7 @@ Austin 311 has fielded <Value data={data.summary}/> calls since <Value data={dat
     from `bigquery-public-data.austin_311.311_service_requests` 
     group by 1 
     order by 1 desc
-    limit 365
+    limit 363
 ```
 
 Call data is updated every few days -- the most recent update was on <Value data={data.summary} column=latest_call_date/>. 
