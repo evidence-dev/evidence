@@ -1,5 +1,5 @@
 {
-  "name": "clean-example-project",
+  "name": "example-project",
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",

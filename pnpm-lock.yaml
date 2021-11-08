@@ -5,8 +5,8 @@ importers:
   .:
     specifiers:
       '@evidence-dev/components': link:packages/components
-      '@evidence-dev/db-orchestrator': workspace:^
-      '@evidence-dev/preprocess': workspace:^
+      '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
+      '@evidence-dev/preprocess': link:packages/preprocess
       '@sveltejs/adapter-static': 1.0.0-next.21
       '@sveltejs/kit': 1.0.0-next.192
       '@tidyjs/tidy': 2.4.4
@@ -71,7 +71,19 @@ importers:
       fs-extra: 9.1.0
 
   packages/evidence:
-    specifiers: {}
+    specifiers:
+      '@evidence-dev/components': workspace:^
+      '@evidence-dev/db-orchestrator': workspace:^
+      '@evidence-dev/preprocess': workspace:^
+      '@sveltejs/adapter-static': 1.0.0-next.21
+      vite-plugin-full-reload: 0.2.2
+    dependencies:
+      '@evidence-dev/preprocess': link:../preprocess
+      '@sveltejs/adapter-static': 1.0.0-next.21
+      vite-plugin-full-reload: 0.2.2
+    devDependencies:
+      '@evidence-dev/components': link:../../sites/components-workspace
+      '@evidence-dev/db-orchestrator': link:../db-orchestrator
 
   packages/postgres:
     specifiers:
@@ -120,12 +132,6 @@ importers:
       '@lukeed/uuid': 2.0.0
       analytics-node: 5.0.0
       fs-extra: 10.0.0
-
-  sites/clean-example-project:
-    specifiers:
-      '@evidence-dev/evidence': workspace:^
-    dependencies:
-      '@evidence-dev/evidence': link:../../packages/evidence
 
   sites/components-workspace:
     specifiers:
@@ -2782,7 +2788,6 @@ packages:
 
   /@sveltejs/adapter-static/1.0.0-next.21:
     resolution: {integrity: sha512-B4+QoUVAaANKx+mHntG8SqF45zbj3Ct4Akg/cGauo6COyfKZRhO5OsMa+wPuT2TKJBZC4eEDK0p+p9nyQBkxKQ==}
-    dev: true
 
   /@sveltejs/kit/1.0.0-next.140_svelte@3.40.1:
     resolution: {integrity: sha512-mNPtwItLU61JVpYXGAuDBEUlmenMs06lv6xxvhrdIgQlVlizNEebC9E27vdzPtcktxUZJGl4u/Fw3K1CG8Lk2A==}
@@ -11368,7 +11373,6 @@ packages:
     dependencies:
       chalk: 4.1.2
       picomatch: 2.3.0
-    dev: true
 
   /vite-plugin-live-reload/2.1.0:
     resolution: {integrity: sha512-NKIcVqrraPUZbsUKCKs+0StqKAmbAh2csbFxMWTXGDUeOoHAFni9H0CxtQelrYT5bQCV9FT/RveAM8q8bMdnQQ==}

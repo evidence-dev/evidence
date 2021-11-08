@@ -1,8 +1,8 @@
 {
 	"devDependencies": {
 		"@evidence-dev/components": "link:packages/components",
-		"@evidence-dev/db-orchestrator": "workspace:^",
-		"@evidence-dev/preprocess": "workspace:^",
+		"@evidence-dev/db-orchestrator": "link:packages/db-orchestrator",
+		"@evidence-dev/preprocess": "link:packages/preprocess",
 		"@sveltejs/adapter-static": "1.0.0-next.21",
 		"@sveltejs/kit": "1.0.0-next.192",
 		"@tidyjs/tidy": "2.4.4",
