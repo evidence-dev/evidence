@@ -2,8 +2,8 @@
 /** @typedef {typeof __propDef.events}  XAxisEvents */
 /** @typedef {typeof __propDef.slots}  XAxisSlots */
 export default class XAxis extends SvelteComponentTyped<{
-    snapTicks?: boolean;
     ticks?: number;
+    snapTicks?: boolean;
     xTick?: any;
     yTick?: number;
     dxTick?: number;
@@ -31,8 +31,8 @@ export type XAxisSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        snapTicks?: boolean;
         ticks?: number;
+        snapTicks?: boolean;
         xTick?: any;
         yTick?: number;
         dxTick?: number;

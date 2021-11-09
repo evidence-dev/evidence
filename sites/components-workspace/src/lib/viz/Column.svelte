@@ -158,8 +158,8 @@
     // from 0 up.
 
     let flatData = [];
-    for(var i = 0; i < seriesData.length; i++){
-      for(var j = 0; j < seriesData[i].length; j++){
+    for(let i = 0; i < seriesData.length; i++){
+      for(let j = 0; j < seriesData[i].length; j++){
         flatData.push({
           "series": seriesData[i].key,
           "y0": seriesData[i][j][0],

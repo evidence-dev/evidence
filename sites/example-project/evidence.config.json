@@ -1,4 +1,4 @@
 {
     "database": "bigquery",
-    "send_anonymous_usage_stats": true 
+    "send_anonymous_usage_stats": false 
 }

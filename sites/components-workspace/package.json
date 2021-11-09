@@ -1,26 +1,13 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview"
   },
-  "devDependencies": {
-    "@sveltejs/adapter-static": "1.0.0-next.13",
-    "@sveltejs/kit": "1.0.0-next.140",
-    "vite": "2.4.3"
-  },
   "type": "module",
   "dependencies": {
-    "@tidyjs/tidy": "2.4.2",
-    "d3": "6.7.0",
-    "d3-array": "3.0.1",
-    "d3-scale": "3.3.0",
-    "layercake": "4.1.1",
-    "svelte": "3.40.1",
-    "svelte2tsx": "0.4.2",
-    "tidyjs": "1.0.22",
-    "typescript": "4.3.5"
+    "@evidence-dev/evidence": "workspace:^"
   }
 }

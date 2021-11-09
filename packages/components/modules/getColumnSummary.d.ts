@@ -2,7 +2,7 @@ export default function getColumnSummary(data: any): {
     id: string;
     title: any;
     type: string;
-    extents: any[];
+    extents: number[];
     format: any;
     units: string;
 }[];

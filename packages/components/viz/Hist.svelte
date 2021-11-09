@@ -90,8 +90,8 @@ thresh = getThresholds(domain, binCount);
 // The loop below checks each value of the dataset against each bin threshold value. If it is less, that threshold value
 // is assigned as the bin for that piece of data. The threshold function above returns the threshold values ordered ascending,
 // which is why we can loop through them like this (and exit the loop once we find the right bin for each data point).
-for(var i = 0; i < data.length; i++){
-    for(var j = 1; j < thresh.length; j++){
+for(let i = 0; i < data.length; i++){
+    for(let j = 1; j < thresh.length; j++){
         // Check if value is between threshold min and max. Data can be equal to the last threshold max, but should be less
         // than the other threshold maxes:
         if(j === (thresh.length - 2) ? (data[i] <= Math.ceil(thresh[j])) : (data[i] < thresh[j])){
