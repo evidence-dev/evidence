@@ -3,8 +3,7 @@
     import AreaChart from '$lib/viz/AreaChart.svelte'
     import BubbleChart from '$lib/viz/BubbleChart.svelte'
     import BarChart from '$lib/viz/BarChart.svelte'
-    import ColumnChart from '$lib/viz/ColumnChart.svelte'
-    import Hist from '$lib/viz/Hist.svelte'
+    import Histogram from '$lib/viz/Histogram.svelte'
     import ScatterPlot from '$lib/viz/ScatterPlot.svelte'
     import DataTable from '$lib/viz/DataTable.svelte'
     import Value from '$lib/viz/Value.svelte'
@@ -23,7 +22,7 @@
     let data = {}
  </script>
 
-<h1>Evidence Component Library</h1>
+<!-- <h1>Evidence Component Library</h1>
 <Value placeholder="Report Date"/>
 <br>
 <br>
@@ -44,25 +43,33 @@ The company has added <Value placeholder="number of employees"/> employees since
 5. Non-existent row with no column: <Value data={[{"date":"2020-05-07"}]} row=11/>
 <br>
 6. Non-existent row with correct column: <Value data={[{"date":"2020-05-07"}]} column=date row=11/>
+ -->
+
+
 
 <h2>Area Chart</h2>
 <AreaChart data={testData} x=x y=y/>
+
 <AreaChart data={pctTest} x=x y=y_pct/>
 
 <h2>Bubble Chart</h2>
 <BubbleChart data={testData} x=x y=y size=y/>
 
 <h2>Bar Chart</h2>
-<BarChart data={testData} x=x y=y/>
-<BarChart data={countries} x=year y=value series=country units="long units string"/>
+<BarChart data={testData} x=x y=y horiz={true}/>
+<BarChart data={countries} x=year y=value series=country yAxisTitle="long units string" horiz={true}/>
 
 <h2>Column Chart</h2>
-<ColumnChart data={testData} x=x y=y/>
-<ColumnChart data={countries} x=year y=value series=country/>
-<ColumnChart data={countries} x=year y=value series=country xType=categorical xAxisTitle="Created Year"/>
+<BarChart data={testData} x=x y=y/>
+<BarChart data={countries} x=year y=value series=country xType=category/>
+<BarChart data={countries} x=year y=value series=country xType=category xAxisTitle="Created Year"/>
+
+<h2>Grouped Column Chart</h2>
+<BarChart data={countries} type=grouped x=year y=value series=country xType=category xAxisTitle="Created Year"/>
+
 
 <h2>Histogram</h2>
-<Hist data={testData} x=x/>
+<Histogram data={testData} x=x/>
 
 <h2>Line Chart</h2>
 <LineChart data={testData} x=x y=y/>
@@ -76,17 +83,17 @@ The company has added <Value placeholder="number of employees"/> employees since
 <h2>Date Testing</h2>
 
 <h3>Date</h3>
-<ColumnChart data={test_dates} x=date y=y/>
-<ColumnChart data={test_dates_stacked} x=date y=y series=group/>
+<BarChart data={test_dates} x=date y=y/>
+<BarChart data={test_dates_stacked} x=date y=y series=group/>
 
 <h3>Week</h3>
-<ColumnChart data={test_weeks} x=week y=y/>
+<BarChart data={test_weeks} x=week y=y/>
 
 <h3>Month</h3>
-<ColumnChart data={test_months} x=month y=y/>
+<BarChart data={test_months} x=month y=y/>
 
 <h3>Quarter</h3>
-<ColumnChart data={test_quarters} x=qtr y=y/>
+<BarChart data={test_quarters} x=qtr y=y/>
 
 <h3>Year</h3>
-<ColumnChart data={test_years} x=year y=y/>
+<BarChart data={test_years} x=year y=y/>

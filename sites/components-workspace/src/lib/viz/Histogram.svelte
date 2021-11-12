@@ -1,40 +1,30 @@
 <script>
     import Chart from './Chart.svelte'
-    import Area from './Area.svelte'
+    import Hist from './Hist.svelte'
 
     export let data;
     export let x;
-    export let y;
-    export let series;
-    export let xType;
+    export let legend = false;
 
     export let title;
     export let subtitle;
-    export let legend;
     export let xAxisTitle;
     export let yAxisTitle;
     export let xGridlines;
     export let yGridlines;
-    export let yMin;
+    export let yMin = 0;
 
-    export let line;
     export let fillColor;
     export let fillOpacity;
 
-    if(!series && typeof y !== 'object'){
-        legend = legend ?? false
-    }
-
-    let chartType = "Area Chart";
+    let chartType = "Histogram";
+    let hist = true;
 
 </script>
 
-<Chart
-    {data}
-    {x}
-    {y}
-    {series}
-    {xType}
+<Chart 
+    {data} 
+    {x} 
     {legend}
     {xAxisTitle}
     {yAxisTitle}
@@ -44,10 +34,10 @@
     {title}
     {subtitle}
     {chartType}
+    {hist}
     >
-    <Area
-        {line}
-        {fillColor}
-        {fillOpacity}
-     />
+        <Hist
+            {fillColor}
+            {fillOpacity}                
+        />
 </Chart>

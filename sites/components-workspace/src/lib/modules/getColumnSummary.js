@@ -1,11 +1,11 @@
-import getColumnType from "../modules/getColumnType.js";
-import getColumnExtents from "../modules/getColumnExtents.js";
-import getColumnUnits from "../modules/getColumnUnits.js";
-import getColumnFormat from "../modules/getColumnFormat.js";
-import formatTitle from '../modules/formatTitle.js'
-import getFormatTag from "../modules/getFormatTag.js";
+import getColumnType from "./getColumnType.js";
+import getColumnExtents from "./getColumnExtents.js";
+import getColumnUnits from "./getColumnUnits.js";
+import getColumnFormat from "./getColumnFormat.js";
+import formatTitle from './formatTitle.js'
+import getFormatTag from "./getFormatTag.js";
 
-export default function getColumnSummary(data) {
+export default function getColumnSummary(data, returnType="object") {
 
     var colName;
     var colFmtTag;        
@@ -16,7 +16,29 @@ export default function getColumnSummary(data) {
 
     let columnSummary = [];
 
-    for (const [key] of Object.entries(data[0])) {
+    if(returnType === 'object'){
+      for (const [key] of Object.entries(data[0])) {
+        colName = key;
+        colFmtTag = getFormatTag(key);
+        colType = getColumnType(data, colName, colFmtTag);
+        colExtents = getColumnExtents(data, colName);        
+        colUnits = getColumnUnits(colExtents);
+        colFormat = getColumnFormat(colFmtTag, colType);
+  
+        let thisCol = {
+            [colName]: {
+                title: formatTitle(colName, colFormat),
+                type: colType,
+                extents: colExtents,
+                format: colFormat,
+                units: colUnits
+              }
+        }
+
+          columnSummary = {...columnSummary, ...thisCol}
+      }
+    } else {
+      for (const [key] of Object.entries(data[0])) {
         colName = key;
         colFmtTag = getFormatTag(key);
         colType = getColumnType(data, colName, colFmtTag);
@@ -33,6 +55,7 @@ export default function getColumnSummary(data) {
               units: colUnits
           })
       }
+    }
 
       return columnSummary
 }

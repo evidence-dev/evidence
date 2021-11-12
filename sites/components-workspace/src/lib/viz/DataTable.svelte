@@ -34,7 +34,7 @@
       checkInputs(data);
 
       // 3 - Get Column Summary
-      columnSummary = getColumnSummary(data);
+      columnSummary = getColumnSummary(data, 'array');
 
       // 4 - Process Data
       // Filter for columns with type of "date"

@@ -107,7 +107,7 @@ importers:
     dependencies:
       blueimp-md5: 2.18.0
       fs-extra: 9.1.0
-      mdsvex: 0.9.3
+      mdsvex: 0.9.3_svelte@3.44.1
       remark: 13.0.0
       remark-parse: 9.0.0
       unified: 9.2.1
@@ -136,8 +136,12 @@ importers:
   sites/components-workspace:
     specifiers:
       '@evidence-dev/evidence': workspace:^
+      echarts: ^5.2.2
+      echarts-stat: ^1.2.0
     dependencies:
       '@evidence-dev/evidence': link:../../packages/evidence
+      echarts: 5.2.2
+      echarts-stat: 1.2.0
 
   sites/docs:
     specifiers:
@@ -3631,7 +3635,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1_debug@4.3.2
+      follow-redirects: 1.14.1
     transitivePeerDependencies:
       - debug
     dev: false
@@ -3639,7 +3643,7 @@ packages:
   /axios/0.21.1_debug@3.2.7:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1_debug@3.2.7
+      follow-redirects: 1.14.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5302,6 +5306,17 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
+  /echarts-stat/1.2.0:
+    resolution: {integrity: sha512-zLd7Kgs+tuTSeaK0VQEMNmnMivEkhvHIk1gpBtLzpRerfcIQ+Bd5XudOMmtwpaTc1WDZbA7d1V//iiBccR46Qg==}
+    dev: false
+
+  /echarts/5.2.2:
+    resolution: {integrity: sha512-yxuBfeIH5c+0FsoRP60w4De6omXhA06c7eUYBsC1ykB6Ys2yK5fSteIYWvkJ4xJVLQgCvAdO8C4mN6MLeJpBaw==}
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.2.1
+    dev: false
+
   /ee-first/1.1.1:
     resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
     dev: false
@@ -5993,7 +6008,7 @@ packages:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
     dev: false
 
-  /follow-redirects/1.14.1_debug@3.2.7:
+  /follow-redirects/1.14.1:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -6001,8 +6016,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dependencies:
-      debug: 3.2.7
     dev: false
 
   /follow-redirects/1.14.1_debug@4.3.2:
@@ -7877,7 +7890,7 @@ packages:
     resolution: {integrity: sha512-iV3XNKw06j5Q7mi6h+9vbx23Tv7JkjEVgKHW4pimwyDGWm0OIQntJJ+u1C6mg6mK1EaTv42XQ7w76yuzH7M2cA==}
     dev: false
 
-  /mdsvex/0.9.3:
+  /mdsvex/0.9.3_svelte@3.44.1:
     resolution: {integrity: sha512-BybdSeHihCZtydCJkFv+CZesHHYElZEp47WvYUszdfdqt6guIW/dP8H7fyrsaY6RPFfXgzGavZHB07OysuQTuQ==}
     peerDependencies:
       svelte: 3.x
@@ -7885,6 +7898,7 @@ packages:
       '@types/unist': 2.0.3
       prism-svelte: 0.4.7
       prismjs: 1.23.0
+      svelte: 3.44.1
       vfile-message: 2.0.4
     dev: false
 
@@ -11803,6 +11817,12 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+    dev: false
+
+  /zrender/5.2.1:
+    resolution: {integrity: sha512-M3bPGZuyLTNBC6LiNKXJwSCtglMp8XUEqEBG+2MdICDI3d1s500Y4P0CzldQGsqpRVB7fkvf3BKQQRxsEaTlsw==}
+    dependencies:
+      tslib: 2.3.0
     dev: false
 
   /zwitch/1.0.5:

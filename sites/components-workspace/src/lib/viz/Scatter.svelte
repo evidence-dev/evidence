@@ -1,101 +1,77 @@
 <script>
-    import { getContext } from "svelte";
-    import getColorPalette from "../modules/getColorPalette.js";
-    import getDistinctValues from "../modules/getDistinctValues.js";
-    import formatValue from "../modules/formatValue.js"
-    const { data, xGet, yGet, xScale, yScale } = getContext("LayerCake");
+    import { props, config } from '../modules/stores.js';   
+    import getSeriesConfig from '../modules/getSeriesConfig.js'
+    import formatTitle from '../modules/formatTitle'
 
-    // Data:
-    export let series = null;
-    export let filter = null;
-    let xName = getContext("xName");
-    let yName = getContext("yName");
-    let xFormat = getContext("xFormat");
-    let yFormat = getContext("yFormat");
-    let xUnits = getContext("xUnits");
-    let yUnits = getContext("yUnits");
-    export let reverseAxes = "false";
+    export let y;
+    export let series;
+    export let options;
+    export let name; // name to appear in legend (for single series graphics)
 
-    // Styling:
-    export let fillColor = "#488f96";
-    export let fillTransparency = 0.25;
-    let fillOpacity = 1 - fillTransparency;
-    export let outlineColor = "none";
-    export let outlineWidth = 0;
-    export let outlineTransparency = 0;
-    let outlineOpacity = 1 - outlineTransparency;
-    export let pointSize = 3;
+    export let shape = 'circle';
+    export let fillColor;
+    export let opacity = 0.7; // opacity of both fill and outline (ECharts limitation)
+    export let outlineColor;
+    export let outlineWidth;
+    export let pointSize = 10;
+
+    // Prop check. If local props supplied, use those. Otherwise fall back to global props.
+    let data = $props.data;
+    let x = $props.x;
+    let horiz = $props.horiz;
+    let xMismatch = $props.xMismatch;
+    let columnSummary = $props.columnSummary;
+    y = y ?? $props.y;
+    series = series ?? $props.series;
+    let yMin = $props.yMin;
+    let error = $props.error;
+
+    if(!series && typeof y !== 'object'){
+        name = name ?? formatTitle(y, columnSummary[y].title)
+    }
+
+    let baseConfig = {
+            type: "scatter",
+            label: {
+                show: false,
+            },
+            labelLayout: { hideOverlap: true },
+            emphasis: {
+                focus: "series",
+            },
+            symbol: shape,
+            symbolSize: pointSize,
+            itemStyle: {
+                color: fillColor,
+                opacity: opacity,
+                borderColor: outlineColor,
+                borderWidth: outlineWidth
+            }
+     }
+
+    if(options){
+        baseConfig = {...baseConfig, ...options}
+    }
+
+    let seriesConfig = getSeriesConfig(data, x, y, series, horiz, baseConfig, name, xMismatch, columnSummary);
     
-    // MULTI-SERIES LOGIC:
+    config.update(d => {d.series.push(...seriesConfig); return d})
 
-    //Filter dataset if filter value supplied in chart call:
-    let finalData = [];
-    if (series !== null && filter !== null) {
-        finalData = $data.filter((d) => d[series] === filter);
-    } else {
-        finalData = $data;
+    let chartOverrides = {
+         yAxis: {
+             scale: true,
+             min: yMin
+         },
+         xAxis: {
+             boundaryGap: ['1%', '1%']
+         }
+     }
+
+    if(chartOverrides){
+        config.update(d => {
+            d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+            d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            return d})
     }
 
-    // Get array of global color variables (set in app.css):
-    let colorPalette = getColorPalette();
-
-    // Get distinct series names if series column supplied in chart call:
-    let seriesNames = [];
-    if (series !== null) {
-        seriesNames = getDistinctValues(finalData, series);
-    }
-
-    $: filteredData = (filter) => {
-        return finalData.filter((d) => d[series] === filter);
-    };
 </script>
-
-{#if series === null || filter !== null}
-    {#each finalData as d}
-        <circle
-            cx={$xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
-            cy={$yGet(d) + ($yScale.bandwidth ? $yScale.bandwidth() / 2 : 0)}
-            r={pointSize}
-            fill={fillColor}
-            fill-opacity={fillOpacity}
-            stroke={outlineColor}
-            stroke-width={outlineWidth}
-            stroke-opacity={outlineOpacity}
-            ><title
-                >{reverseAxes === "false"
-                    ? formatValue(d[xName],xFormat,xUnits) +
-                      "; " +
-                      formatValue(d[yName],yFormat,yUnits)
-                    : formatValue(d[xName],xFormat,xUnits)}</title
-            ></circle
-        >
-    {/each}
-{:else}
-    <g class="scatter-group">
-        {#each seriesNames as group, i}
-            {#each filteredData(group) as d}
-                <circle
-                    cx={$xGet(d) +
-                        ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
-                    cy={$yGet(d) +
-                        ($yScale.bandwidth ? $yScale.bandwidth() / 2 : 0)}
-                    r={pointSize}
-                    fill="var({colorPalette[i]})"
-                    fill-opacity={fillOpacity}
-                    stroke={outlineColor}
-                    stroke-width={outlineWidth}
-                    stroke-opacity={outlineOpacity}
-                    ><title
-                        >{group +
-                            ": " +
-                            (reverseAxes === "false"
-                                ? formatValue(d[xName],xFormat,xUnits) +
-                                  "; " +
-                                  formatValue(d[yName],yFormat,yUnits)
-                                : formatValue(d[xName],xFormat,xUnits))}</title
-                    ></circle
-                >
-            {/each}
-        {/each}
-    </g>
-{/if}

@@ -50,25 +50,15 @@ export default function formatTitle(column, columnFormat) {
         "id"
     ]
 
-    // Allow some joining words to remain fully lowercased in title:
-    let lowercase = [
-        "of",
-        "the",
-        "and",
-        "in"
-    ]
-
     // Set name to proper casing:
     function toTitleCase(str) {
         return str.replace(
         /\w\S*/g,
         function(txt) {
-            if(!acronyms.includes(txt) && !lowercase.includes(txt)){
+            if(!acronyms.includes(txt)){
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            } else if(acronyms.includes(txt)){
-                return txt.toUpperCase();
             } else {
-                return txt.toLowerCase();
+                return txt.toUpperCase();
             }
         });
     }
