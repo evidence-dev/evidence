@@ -1,5 +1,4 @@
 import * as echarts from 'echarts';
-import ecStat from 'echarts-stat';
 
 export default(node, option, renderer) => {
 

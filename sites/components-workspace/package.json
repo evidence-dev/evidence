@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
@@ -8,8 +8,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/evidence": "workspace:^",
-    "echarts": "^5.2.2",
-    "echarts-stat": "^1.2.0"
+    "@evidence-dev/evidence": "workspace:^"
   }
 }
