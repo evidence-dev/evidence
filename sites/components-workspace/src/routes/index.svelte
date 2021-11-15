@@ -32,10 +32,40 @@
         {a:6}
     ]
 
+    let textP = [
+        {dept: 'Public Works', category: 'Pothole Repair', complaints: 24105},
+{dept: 'Public Works', category: 'Debris in Street', complaints: 16378},
+{dept: 'Public Works', category: 'Tree Issue ROW', complaints: 14871},
+{dept: 'Public Works', category: 'Obstruction in ROW', complaints: 10528},
+{dept: 'Public Works', category: 'Sidewalk Repair', complaints: 9206},
+{dept: 'Public Works', category: 'Pavement Failure', complaints: 6941},
+{dept: 'Public Works', category: 'Tree Issue ROW/Emergency (PW)', complaints: 5675},
+{dept: 'Public Works', category: 'Tree Issue ROW/Maintenance (PW)', complaints: 4688},
+{dept: 'Public Works', category: 'Alley & Unpaved Street Maintenance', complaints: 3160},
+{dept: 'Public Works', category: 'Mowing Medians', complaints: 2743},
+{dept: 'Public Works', category: 'Curb/Gutter Repair', complaints: 1435},
+{dept: 'Public Works', category: 'Sidewalk/Curb Ramp/Route - NEW', complaints: 1272},
+{dept: 'Public Works', category: 'Street Resurfacing', complaints: 1029},
+{dept: 'Public Works', category: 'School Zone - New/Review/Changes', complaints: 696},
+{dept: 'Public Works', category: 'Street Resurfacing Inquiry', complaints: 611},
+{dept: 'Public Works', category: 'Guardrail New/Repair', complaints: 402},
+{dept: 'Public Works', category: 'Guardrail Repair', complaints: 357},
+{dept: 'Public Works', category: 'Roadway Spillage', complaints: 323},
+{dept: 'Public Works', category: 'Bridge Repair', complaints: 294},
+{dept: 'Public Works', category: 'Barricade Request', complaints: 228},
+{dept: 'Public Works', category: 'School Issues - Crossing Guards', complaints: 171},
+{dept: 'Public Works', category: 'Bicycle Issues', complaints: 97},
+{dept: 'Public Works', category: 'Road Sanding Request', complaints: 59},
+{dept: 'Public Works', category: 'Fence/Wall Repair', complaints: 42},
+{dept: 'Public Works', category: 'Tree Issue ROW/Maintenance (PARD)', complaints: 29},
+{dept: 'Public Works', category: 'Guardrail - New', complaints: 27},
+{dept: 'Public Works', category: 'Tree Issue ROW/Emergency (PARD)', complaints: 24},
+{dept: 'Public Works', category: 'Fence Repair - MOPAC', complaints: 10}
+    ]
     
  </script>
 
-
+<BarChart data={textP} x=category y=complaints horiz=true/>
 
 <Histogram data={testH} x=a/>
 

@@ -68,7 +68,7 @@
 
     let chartOverrides = {
          xAxis: {
-             boundaryGap: ['1%','1%']
+             boundaryGap: [horiz ? '0%' : '1%','1%']
          }
     }
 

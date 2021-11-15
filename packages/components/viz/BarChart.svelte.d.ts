@@ -7,7 +7,7 @@ export default class BarChart extends SvelteComponentTyped<{
     sort?: any;
     data?: any;
     x?: any;
-    horiz?: any;
+    horiz?: boolean;
     y?: any;
     series?: any;
     fillColor?: any;
@@ -37,7 +37,7 @@ declare const __propDef: {
         sort?: any;
         data?: any;
         x?: any;
-        horiz?: any;
+        horiz?: boolean;
         y?: any;
         series?: any;
         fillColor?: any;

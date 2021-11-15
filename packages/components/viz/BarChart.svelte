@@ -16,7 +16,12 @@
     export let xGridlines = undefined;
     export let yGridlines = undefined;
     export let yMin = undefined;
-    export let horiz = undefined;
+    export let horiz = false;
+    if(horiz === "true" || horiz === true){
+        horiz = true;
+    } else {
+        horiz = false;
+    }
 
     export let type = undefined; // stacked or grouped
 
