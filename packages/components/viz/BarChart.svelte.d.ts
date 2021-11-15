@@ -2,18 +2,26 @@
 /** @typedef {typeof __propDef.events}  BarChartEvents */
 /** @typedef {typeof __propDef.slots}  BarChartSlots */
 export default class BarChart extends SvelteComponentTyped<{
-    data: any;
+    title?: any;
+    legend?: boolean;
+    sort?: any;
+    data?: any;
     x?: any;
+    horiz?: any;
     y?: any;
-    sort?: string;
-    legend?: string;
-    fillColor?: any;
-    fillTransparency?: any;
-    yMin?: number;
-    units?: string;
-    xGridlines?: string;
-    yGridlines?: string;
     series?: any;
+    fillColor?: any;
+    fillOpacity?: any;
+    yMin?: any;
+    subtitle?: any;
+    xType?: string;
+    xAxisTitle?: any;
+    xGridlines?: any;
+    yAxisTitle?: any;
+    yGridlines?: any;
+    type?: any;
+    outlineColor?: any;
+    outlineWidth?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -24,18 +32,26 @@ export type BarChartSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
+        title?: any;
+        legend?: boolean;
+        sort?: any;
+        data?: any;
         x?: any;
+        horiz?: any;
         y?: any;
-        sort?: string;
-        legend?: string;
-        fillColor?: any;
-        fillTransparency?: any;
-        yMin?: number;
-        units?: string;
-        xGridlines?: string;
-        yGridlines?: string;
         series?: any;
+        fillColor?: any;
+        fillOpacity?: any;
+        yMin?: any;
+        subtitle?: any;
+        xType?: string;
+        xAxisTitle?: any;
+        xGridlines?: any;
+        yAxisTitle?: any;
+        yGridlines?: any;
+        type?: any;
+        outlineColor?: any;
+        outlineWidth?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;

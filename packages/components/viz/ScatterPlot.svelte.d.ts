@@ -2,21 +2,24 @@
 /** @typedef {typeof __propDef.events}  ScatterPlotEvents */
 /** @typedef {typeof __propDef.slots}  ScatterPlotSlots */
 export default class ScatterPlot extends SvelteComponentTyped<{
-    data: any;
+    title?: any;
+    legend?: boolean;
+    data?: any;
     x?: any;
     y?: any;
-    legend?: string;
-    fillColor?: any;
-    fillTransparency?: any;
-    yMin?: any;
-    units?: string;
-    xGridlines?: string;
-    yGridlines?: string;
-    xAxisTitle?: string;
     series?: any;
+    fillColor?: any;
+    yMin?: any;
+    subtitle?: any;
+    xType?: any;
+    xAxisTitle?: any;
+    xGridlines?: any;
+    yAxisTitle?: any;
+    yGridlines?: any;
     outlineColor?: any;
     outlineWidth?: any;
-    outlineTransparency?: any;
+    shape?: any;
+    opacity?: any;
     pointSize?: any;
 }, {
     [evt: string]: CustomEvent<any>;
@@ -28,21 +31,24 @@ export type ScatterPlotSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
+        title?: any;
+        legend?: boolean;
+        data?: any;
         x?: any;
         y?: any;
-        legend?: string;
-        fillColor?: any;
-        fillTransparency?: any;
-        yMin?: any;
-        units?: string;
-        xGridlines?: string;
-        yGridlines?: string;
-        xAxisTitle?: string;
         series?: any;
+        fillColor?: any;
+        yMin?: any;
+        subtitle?: any;
+        xType?: any;
+        xAxisTitle?: any;
+        xGridlines?: any;
+        yAxisTitle?: any;
+        yGridlines?: any;
         outlineColor?: any;
         outlineWidth?: any;
-        outlineTransparency?: any;
+        shape?: any;
+        opacity?: any;
         pointSize?: any;
     };
     events: {

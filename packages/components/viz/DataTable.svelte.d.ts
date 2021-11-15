@@ -2,10 +2,10 @@
 /** @typedef {typeof __propDef.events}  DataTableEvents */
 /** @typedef {typeof __propDef.slots}  DataTableSlots */
 export default class DataTable extends SvelteComponentTyped<{
-    data: any;
+    data?: any;
+    rows?: number;
     marginTop?: string;
     marginBottom?: string;
-    rows?: number;
     rowNumbers?: string;
     rowLines?: string;
 }, {
@@ -18,10 +18,10 @@ export type DataTableSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
+        data?: any;
+        rows?: number;
         marginTop?: string;
         marginBottom?: string;
-        rows?: number;
         rowNumbers?: string;
         rowLines?: string;
     };

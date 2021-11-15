@@ -2,24 +2,27 @@
 /** @typedef {typeof __propDef.events}  BubbleChartEvents */
 /** @typedef {typeof __propDef.slots}  BubbleChartSlots */
 export default class BubbleChart extends SvelteComponentTyped<{
-    data: any;
+    title?: any;
+    legend?: boolean;
+    size?: any;
+    data?: any;
     x?: any;
     y?: any;
-    legend?: string;
-    size?: any;
-    fillColor?: any;
-    fillTransparency?: any;
-    yMin?: any;
-    units?: string;
-    xGridlines?: string;
-    yGridlines?: string;
-    xAxisTitle?: string;
     series?: any;
+    fillColor?: any;
+    yMin?: any;
+    subtitle?: any;
+    xType?: any;
+    xAxisTitle?: any;
+    xGridlines?: any;
+    yAxisTitle?: any;
+    yGridlines?: any;
     outlineColor?: any;
     outlineWidth?: any;
-    outlineTransparency?: any;
-    minPointSize?: any;
-    maxPointSize?: any;
+    shape?: any;
+    opacity?: any;
+    minSize?: any;
+    maxSize?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -30,24 +33,27 @@ export type BubbleChartSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
+        title?: any;
+        legend?: boolean;
+        size?: any;
+        data?: any;
         x?: any;
         y?: any;
-        legend?: string;
-        size?: any;
-        fillColor?: any;
-        fillTransparency?: any;
-        yMin?: any;
-        units?: string;
-        xGridlines?: string;
-        yGridlines?: string;
-        xAxisTitle?: string;
         series?: any;
+        fillColor?: any;
+        yMin?: any;
+        subtitle?: any;
+        xType?: any;
+        xAxisTitle?: any;
+        xGridlines?: any;
+        yAxisTitle?: any;
+        yGridlines?: any;
         outlineColor?: any;
         outlineWidth?: any;
-        outlineTransparency?: any;
-        minPointSize?: any;
-        maxPointSize?: any;
+        shape?: any;
+        opacity?: any;
+        minSize?: any;
+        maxSize?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;

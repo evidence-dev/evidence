@@ -3,15 +3,15 @@
     import getSeriesConfig from '../modules/getSeriesConfig.js'
     import formatTitle from '../modules/formatTitle'
 
-    export let y;
-    export let series;
-    export let options;
-    export let name; // name to appear in legend (for single series graphics)
+    export let y = undefined;
+    export let series = undefined;
+    export let options = undefined;
+    export let name = undefined; // name to appear in legend (for single series graphics)
 
-    export let lineColor;
+    export let lineColor = undefined;
     export let lineWidth = 2;
     export let lineType = "solid";
-    export let lineOpacity;
+    export let lineOpacity = undefined;
 
     export let markers = false;
     export let markerShape = 'circle';

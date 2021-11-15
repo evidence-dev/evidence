@@ -3,17 +3,17 @@
     import getSeriesConfig from '../modules/getSeriesConfig.js'
     import formatTitle from '../modules/formatTitle'
 
-    export let y;
-    export let series;
-    export let options;
-    export let name; // name to appear in legend (for single series graphics)
+    export let y = undefined;
+    export let series = undefined;
+    export let options = undefined;
+    export let name = undefined; // name to appear in legend (for single series graphics)
     export let type = 'stacked' // stacked or grouped
-    export let stackName;
+    export let stackName = undefined;
 
-    export let fillColor;
-    export let fillOpacity;
-    export let outlineColor;
-    export let outlineWidth;
+    export let fillColor = undefined;
+    export let fillOpacity = undefined;
+    export let outlineColor = undefined;
+    export let outlineWidth = undefined;
 
     let barMaxWidth;
 

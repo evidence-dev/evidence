@@ -2,21 +2,26 @@
 /** @typedef {typeof __propDef.events}  LineChartEvents */
 /** @typedef {typeof __propDef.slots}  LineChartSlots */
 export default class LineChart extends SvelteComponentTyped<{
-    data: any;
+    title?: any;
+    legend?: boolean;
+    data?: any;
     x?: any;
     y?: any;
-    legend?: string;
-    yMin?: number;
-    units?: string;
-    xGridlines?: string;
-    yGridlines?: string;
-    xAxisTitle?: string;
     series?: any;
-    lineLabel?: any;
+    yMin?: any;
+    subtitle?: any;
+    xType?: any;
+    xAxisTitle?: any;
+    xGridlines?: any;
+    yAxisTitle?: any;
+    yGridlines?: any;
     lineColor?: any;
     lineWidth?: any;
-    lineDashSize?: any;
-    lineTransparency?: any;
+    lineType?: any;
+    lineOpacity?: any;
+    markers?: any;
+    markerShape?: any;
+    markerSize?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -27,21 +32,26 @@ export type LineChartSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
+        title?: any;
+        legend?: boolean;
+        data?: any;
         x?: any;
         y?: any;
-        legend?: string;
-        yMin?: number;
-        units?: string;
-        xGridlines?: string;
-        yGridlines?: string;
-        xAxisTitle?: string;
         series?: any;
-        lineLabel?: any;
+        yMin?: any;
+        subtitle?: any;
+        xType?: any;
+        xAxisTitle?: any;
+        xGridlines?: any;
+        yAxisTitle?: any;
+        yGridlines?: any;
         lineColor?: any;
         lineWidth?: any;
-        lineDashSize?: any;
-        lineTransparency?: any;
+        lineType?: any;
+        lineOpacity?: any;
+        markers?: any;
+        markerShape?: any;
+        markerSize?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;

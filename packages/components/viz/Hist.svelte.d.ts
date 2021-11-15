@@ -2,16 +2,9 @@
 /** @typedef {typeof __propDef.events}  HistEvents */
 /** @typedef {typeof __propDef.slots}  HistSlots */
 export default class Hist extends SvelteComponentTyped<{
-    data: any[];
     x?: any;
     fillColor?: any;
-    fillTransparency?: any;
-    yMin?: number;
-    units?: string;
-    xGridlines?: string;
-    yGridlines?: string;
-    xAxisTitle?: string;
-    binCount?: any;
+    fillOpacity?: number;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -22,20 +15,14 @@ export type HistSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any[];
         x?: any;
         fillColor?: any;
-        fillTransparency?: any;
-        yMin?: number;
-        units?: string;
-        xGridlines?: string;
-        yGridlines?: string;
-        xAxisTitle?: string;
-        binCount?: any;
+        fillOpacity?: number;
     };
     events: {
         [evt: string]: CustomEvent<any>;
     };
     slots: {};
 };
+import { props } from "../modules/stores.js";
 export {};

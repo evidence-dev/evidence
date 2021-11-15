@@ -3,13 +3,13 @@
     import getSeriesConfig from '../modules/getSeriesConfig.js'
     import formatTitle from '../modules/formatTitle'
 
-    export let y;
-    export let series;
-    export let options;
-    export let name; // name to appear in legend (for single series graphics)
+    export let y = undefined;
+    export let series = undefined;
+    export let options = undefined;
+    export let name = undefined; // name to appear in legend (for single series graphics)
 
-    export let fillColor;
-    export let fillOpacity;
+    export let fillColor = undefined;
+    export let fillOpacity = undefined;
     export let line = true;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.

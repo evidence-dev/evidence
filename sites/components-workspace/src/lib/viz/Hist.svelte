@@ -2,9 +2,9 @@
     import { props, config } from '../modules/stores.js';   
     import ecStat from 'echarts-stat';
 
-    export let x;
+    export let x = undefined;
 
-    export let fillColor;
+    export let fillColor = undefined;
     export let fillOpacity = 1;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
@@ -14,7 +14,14 @@
     // Filter dataset to only x column and create bins
     data = data.map((d) => d[x])
 
-    let histData = ecStat.histogram(data, 'freedmanDiaconis');
+    let histData = ecStat.histogram(data);
+
+    // Remove empty first bin if it would cause negative values on x-axis:
+    let firstBinMin = histData.data[0][2]
+    let firstBinCount = histData.data[0][1]
+    if(firstBinMin < 0 && firstBinCount === 0){
+        histData.data.shift()
+    }
 
     let seriesConfig = {
         type: 'custom',
@@ -44,7 +51,7 @@
             itemName: 4
         }
     }
-   
+
     config.update(d => {d.series.push(seriesConfig); return d})
 
     let chartOverrides = {
@@ -52,7 +59,9 @@
              boundaryGap: ['0%','1%']
          },
          xAxis: {
-             boundaryGap: ['1%','1%']
+             boundaryGap: ['1%', '1%'],
+             scale: false,
+             min: histData.data[0][2] // min of bin for first bin in hist dataset
          }
      }
 

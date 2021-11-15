@@ -2,8 +2,13 @@
 /** @typedef {typeof __propDef.events}  AreaEvents */
 /** @typedef {typeof __propDef.slots}  AreaSlots */
 export default class Area extends SvelteComponentTyped<{
-    fillColor?: string;
-    fillTransparency?: number;
+    line?: boolean;
+    y?: any;
+    series?: any;
+    options?: any;
+    name?: any;
+    fillColor?: any;
+    fillOpacity?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -14,12 +19,18 @@ export type AreaSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        fillColor?: string;
-        fillTransparency?: number;
+        line?: boolean;
+        y?: any;
+        series?: any;
+        options?: any;
+        name?: any;
+        fillColor?: any;
+        fillOpacity?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;
     };
     slots: {};
 };
+import { props } from "../modules/stores.js";
 export {};

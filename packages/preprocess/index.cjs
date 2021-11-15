@@ -45,9 +45,8 @@ const createDefaultProps = function(filename){
         import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
         import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
         import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
-        import ColumnChart from '@evidence-dev/components/viz/ColumnChart.svelte';
         import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
-        import Hist from '@evidence-dev/components/viz/Hist.svelte';
+        import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
         import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
         import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
         `
@@ -60,9 +59,8 @@ const createDefaultProps = function(filename){
             import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
             import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
             import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
-            import ColumnChart from '@evidence-dev/components/viz/ColumnChart.svelte';
             import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
-            import Hist from '@evidence-dev/components/viz/Hist.svelte';
+            import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
             import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
             import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
             `

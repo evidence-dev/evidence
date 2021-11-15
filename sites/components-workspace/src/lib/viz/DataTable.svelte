@@ -7,7 +7,7 @@
     import getParsedDate from '../modules/getParsedDate.js';
 
     // 1 - Get Inputs
-    export let data;
+    export let data = undefined;
     export let rows = 5;
     export let marginTop = '1em';
     export let marginBottom = '3.5em';

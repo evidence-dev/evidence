@@ -43,7 +43,7 @@
 
         checkInputs(data, [column]);
 
-        let columnSummary = getColumnSummary(data);
+        let columnSummary = getColumnSummary(data, 'array');
         let dateCols = columnSummary.filter(d => d.type === "date")
         dateCols = dateCols.map(d => d.id);
         if(dateCols.length > 0){

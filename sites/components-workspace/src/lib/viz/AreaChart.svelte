@@ -2,24 +2,24 @@
     import Chart from './Chart.svelte'
     import Area from './Area.svelte'
 
-    export let data;
-    export let x;
-    export let y;
-    export let series;
-    export let xType;
+    export let data = undefined;
+    export let x = undefined;
+    export let y = undefined;
+    export let series = undefined;
+    export let xType = undefined;
 
-    export let title;
-    export let subtitle;
-    export let legend;
-    export let xAxisTitle;
-    export let yAxisTitle;
-    export let xGridlines;
-    export let yGridlines;
-    export let yMin;
+    export let title = undefined;
+    export let subtitle = undefined;
+    export let legend = undefined;
+    export let xAxisTitle = undefined;
+    export let yAxisTitle = undefined;
+    export let xGridlines = undefined;
+    export let yGridlines = undefined;
+    export let yMin = undefined;
 
-    export let line;
-    export let fillColor;
-    export let fillOpacity;
+    export let line = undefined;
+    export let fillColor = undefined;
+    export let fillOpacity = undefined;
 
     if(!series && typeof y !== 'object'){
         legend = legend ?? false

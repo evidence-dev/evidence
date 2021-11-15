@@ -2,27 +2,27 @@
     import Chart from './Chart.svelte'
     import Scatter from './Scatter.svelte'
 
-    export let data;
-    export let x;
-    export let y;
-    export let series;
-    export let xType;
+    export let data = undefined;
+    export let x = undefined;
+    export let y = undefined;
+    export let series = undefined;
+    export let xType = undefined;
 
-    export let title;
-    export let subtitle;
-    export let legend;
-    export let xAxisTitle;
-    export let yAxisTitle;
-    export let xGridlines;
-    export let yGridlines;
-    export let yMin;
+    export let title = undefined;
+    export let subtitle = undefined;
+    export let legend = undefined;
+    export let xAxisTitle = undefined;
+    export let yAxisTitle = undefined;
+    export let xGridlines = undefined;
+    export let yGridlines = undefined;
+    export let yMin = undefined;
 
-    export let shape;
-    export let fillColor;
-    export let opacity; // opacity of both fill and outline (ECharts limitation)
-    export let outlineColor;
-    export let outlineWidth;
-    export let pointSize;
+    export let shape = undefined;
+    export let fillColor = undefined;
+    export let opacity = undefined; // opacity of both fill and outline (ECharts limitation)
+    export let outlineColor = undefined;
+    export let outlineWidth = undefined;
+    export let pointSize = undefined;
 
     if(!series && typeof y !== 'object'){
         legend = legend ?? false

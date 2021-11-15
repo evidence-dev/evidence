@@ -1,19 +1,15 @@
-/** @typedef {typeof __propDef.props}  AreaChartProps */
-/** @typedef {typeof __propDef.events}  AreaChartEvents */
-/** @typedef {typeof __propDef.slots}  AreaChartSlots */
-export default class AreaChart extends SvelteComponentTyped<{
+/** @typedef {typeof __propDef.props}  HistogramProps */
+/** @typedef {typeof __propDef.events}  HistogramEvents */
+/** @typedef {typeof __propDef.slots}  HistogramSlots */
+export default class Histogram extends SvelteComponentTyped<{
     title?: any;
-    line?: any;
     legend?: boolean;
     data?: any;
     x?: any;
-    y?: any;
-    series?: any;
     fillColor?: any;
     fillOpacity?: any;
-    yMin?: any;
+    yMin?: number;
     subtitle?: any;
-    xType?: any;
     xAxisTitle?: any;
     xGridlines?: any;
     yAxisTitle?: any;
@@ -22,24 +18,20 @@ export default class AreaChart extends SvelteComponentTyped<{
     [evt: string]: CustomEvent<any>;
 }, {}> {
 }
-export type AreaChartProps = typeof __propDef.props;
-export type AreaChartEvents = typeof __propDef.events;
-export type AreaChartSlots = typeof __propDef.slots;
+export type HistogramProps = typeof __propDef.props;
+export type HistogramEvents = typeof __propDef.events;
+export type HistogramSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         title?: any;
-        line?: any;
         legend?: boolean;
         data?: any;
         x?: any;
-        y?: any;
-        series?: any;
         fillColor?: any;
         fillOpacity?: any;
-        yMin?: any;
+        yMin?: number;
         subtitle?: any;
-        xType?: any;
         xAxisTitle?: any;
         xGridlines?: any;
         yAxisTitle?: any;

@@ -2,29 +2,29 @@
     import Chart from './Chart.svelte'
     import Line from './Line.svelte'
 
-    export let data;
-    export let x;
-    export let y;
-    export let series;
-    export let xType;
+    export let data = undefined;
+    export let x = undefined;
+    export let y = undefined;
+    export let series = undefined;
+    export let xType = undefined;
 
-    export let title;
-    export let subtitle;
-    export let legend;
-    export let xAxisTitle;
-    export let yAxisTitle;
-    export let xGridlines;
-    export let yGridlines;
-    export let yMin;
+    export let title = undefined;
+    export let subtitle = undefined;
+    export let legend = undefined;
+    export let xAxisTitle = undefined;
+    export let yAxisTitle = undefined;
+    export let xGridlines = undefined;
+    export let yGridlines = undefined;
+    export let yMin = undefined;
 
-    export let lineColor;
-    export let lineType;
-    export let lineOpacity;
-    export let lineWidth;
+    export let lineColor = undefined;
+    export let lineType = undefined;
+    export let lineOpacity = undefined;
+    export let lineWidth = undefined;
 
-    export let markers;
-    export let markerShape;
-    export let markerSize;
+    export let markers = undefined;
+    export let markerShape = undefined;
+    export let markerSize = undefined;
 
     if(!series && typeof y !== 'object'){
         legend = legend ?? false

@@ -1,6 +1,4 @@
 
-import * as d3 from 'd3';
-
 export default function(value, columnFormat, columnUnits) {
 
   let suffix;
@@ -52,22 +50,22 @@ export default function(value, columnFormat, columnUnits) {
             value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
             break;
         case "month": 
-            value = d3.timeFormat("%b")(value);
+            value = value.toLocaleString('en-US', {month: 'short'});
             break;
         case "qtr": 
             value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
             break;
         case "year": 
-            value = d3.format(".0f")(value.getFullYear());
+            value = value.getFullYear();
             break;
         // case "time":
         //     value = value.toLocaleTimeString('en-US')
         //     break;
         case "year_num":
-            value = d3.format(".0f")(value)
+            value = value;
             break;
         case "id":
-            value = d3.format(".0f")(value)
+            value = value;
             break;
         case "str":
             value = value.toLocaleString();

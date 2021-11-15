@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "dependencies": {
     "@evidence-dev/evidence": "workspace:^"
@@ -8,11 +8,10 @@
   "exports": {
     "./package.json": "./package.json",
     "./modules/checkInputs": "./modules/checkInputs.js",
-    "./modules/countDates": "./modules/countDates.js",
+    "./modules/echarts": "./modules/echarts.js",
     "./modules/formatAxisLabel": "./modules/formatAxisLabel.js",
     "./modules/formatTitle": "./modules/formatTitle.js",
     "./modules/formatValue": "./modules/formatValue.js",
-    "./modules/getColorPalette": "./modules/getColorPalette.js",
     "./modules/getColumnExtents": "./modules/getColumnExtents.js",
     "./modules/getColumnFormat": "./modules/getColumnFormat.js",
     "./modules/getColumnSummary": "./modules/getColumnSummary.js",
@@ -22,10 +21,8 @@
     "./modules/getDistinctValues": "./modules/getDistinctValues.js",
     "./modules/getFormatTag": "./modules/getFormatTag.js",
     "./modules/getParsedDate": "./modules/getParsedDate.js",
-    "./modules/getStackedData": "./modules/getStackedData.js",
-    "./modules/getStackedExtents": "./modules/getStackedExtents.js",
-    "./modules/getThresholds": "./modules/getThresholds.js",
-    "./modules/incrementDate": "./modules/incrementDate.js",
+    "./modules/getSeriesConfig": "./modules/getSeriesConfig.js",
+    "./modules/stores": "./modules/stores.js",
     "./ui/BaseLayout.svelte": "./ui/BaseLayout.svelte",
     "./ui/BreadCrumbs.svelte": "./ui/BreadCrumbs.svelte",
     "./ui/ChevronToggle.svelte": "./ui/ChevronToggle.svelte",
@@ -46,18 +43,15 @@
     "./viz/Bubble.svelte": "./viz/Bubble.svelte",
     "./viz/BubbleChart.svelte": "./viz/BubbleChart.svelte",
     "./viz/Chart.svelte": "./viz/Chart.svelte",
-    "./viz/Column.svelte": "./viz/Column.svelte",
-    "./viz/ColumnChart.svelte": "./viz/ColumnChart.svelte",
     "./viz/DataTable.svelte": "./viz/DataTable.svelte",
+    "./viz/ECharts.svelte": "./viz/ECharts.svelte",
     "./viz/ErrorChart.svelte": "./viz/ErrorChart.svelte",
     "./viz/Hist.svelte": "./viz/Hist.svelte",
-    "./viz/Legend.svelte": "./viz/Legend.svelte",
+    "./viz/Histogram.svelte": "./viz/Histogram.svelte",
     "./viz/Line.svelte": "./viz/Line.svelte",
     "./viz/LineChart.svelte": "./viz/LineChart.svelte",
     "./viz/Scatter.svelte": "./viz/Scatter.svelte",
     "./viz/ScatterPlot.svelte": "./viz/ScatterPlot.svelte",
-    "./viz/Value.svelte": "./viz/Value.svelte",
-    "./viz/XAxis.svelte": "./viz/XAxis.svelte",
-    "./viz/YAxis.svelte": "./viz/YAxis.svelte"
+    "./viz/Value.svelte": "./viz/Value.svelte"
   }
 }

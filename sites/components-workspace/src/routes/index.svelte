@@ -20,7 +20,24 @@
     import test_years from '/src/data/test_years.json'
 
     let data = {}
+
+    let testH = [
+        {a:5},
+        {a:5},
+        {a:9},
+        {a:9},
+        {a:7},
+        {a:8},
+        {a:6},
+        {a:6}
+    ]
+
+    
  </script>
+
+
+
+<Histogram data={testH} x=a/>
 
 <!-- <h1>Evidence Component Library</h1>
 <Value placeholder="Report Date"/>

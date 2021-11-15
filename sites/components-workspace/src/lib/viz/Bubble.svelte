@@ -4,17 +4,17 @@
     import getColumnExtents from '../modules/getColumnExtents'
     import formatTitle from '../modules/formatTitle'
 
-    export let y;
-    export let series;
-    export let options;
-    export let size;
-    export let name; // name to appear in legend (for single series graphics)
+    export let y = undefined;
+    export let series = undefined;
+    export let options = undefined;
+    export let size = undefined;
+    export let name = undefined; // name to appear in legend (for single series graphics)
 
-    export let shape;
-    export let fillColor;
+    export let shape = undefined;
+    export let fillColor = undefined;
     export let opacity = 0.7; // opacity of both fill and outline (ECharts limitation)
-    export let outlineColor;
-    export let outlineWidth;
+    export let outlineColor = undefined;
+    export let outlineWidth = undefined;
 
     export let minSize = 50;
     export let maxSize = 900;
@@ -77,7 +77,8 @@
     let chartOverrides = {
          yAxis: {
              scale: true,
-             min: yMin
+             min: yMin,
+             boundaryGap: ['1%', '1%']
          },
          xAxis: {
              boundaryGap: ['1%', '1%']
