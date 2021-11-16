@@ -346,7 +346,7 @@ try{
                         margin: 6
                     },
                     scale: true,
-                    splitNumber: 8,
+                    // splitNumber: 8,
                     // boundaryGap: xType === "category" ? true : ['1%', '1%'],
                     // min: columnSummary[x].extents[0]
             } 
@@ -373,7 +373,8 @@ try{
                     formatter: function(value){
                             return formatAxisLabel(value, xFormat, xUnits)
                     }
-                }
+                },
+                scale: true
             }
         } else {
             verticalAxisConfig = {
@@ -507,7 +508,7 @@ try{
                 padding: [0, 0, 0, 0]
             },       
             grid: {
-                left: "0%",
+                left: "0.5%",
                 right: horiz ? "4%" : "0%",
                 bottom: chartBottom,
                 top: chartTop,

@@ -84,5 +84,7 @@ order by date asc
 ## Category Breakdown
 {#each complaints_by_category as row}
 ### {row.category}
-<LineChart data={complaints_by_day_cat.filter(d => d.category === row.category)} x=date y=complaints/>
+<Histogram data={complaints_by_day_cat.filter(d => d.category === row.category)} x=complaints/>
 {/each}
+
+

@@ -38,6 +38,6 @@
     >
         <Hist
             {fillColor}
-            {fillOpacity}                
+            {fillOpacity}        
         />
 </Chart>

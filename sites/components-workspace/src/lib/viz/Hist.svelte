@@ -1,6 +1,7 @@
 <script>
     import { props, config } from '../modules/stores.js';   
     import ecStat from 'echarts-stat';
+    import getDistinctValues from '../modules/getDistinctValues';
 
     export let x = undefined;
 
@@ -11,10 +12,28 @@
     let data = $props.data;
     x = x ?? $props.x;
 
+    // Determine right method to use based on distinct x values (echarts-stat limitation causes some errors otherwise)
+    let method;
+    let xDistinct = getDistinctValues(data, x).filter(function(x){
+        return x != null;
+    });
+    let xMax = Math.max(...xDistinct);
+
+    if(xDistinct.length <= 1){
+        method = 'squareRoot'
+    } else if(xMax < 10){
+        method = 'freedmanDiaconis'
+    } else if(xMax < 40){
+        method = 'sturges'
+    } else {
+        method = 'squareRoot'
+    }
+
     // Filter dataset to only x column and create bins
     data = data.map((d) => d[x])
 
-    let histData = ecStat.histogram(data);
+    // Run ECharts histogram function
+    let histData = ecStat.histogram(data, method);
 
     // Remove empty first bin if it would cause negative values on x-axis:
     let firstBinMin = histData.data[0][2]

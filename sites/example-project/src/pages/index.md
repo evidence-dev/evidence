@@ -16,7 +16,7 @@
 
 Austin 311 has fielded <Value data={data.summary}/> calls since <Value data={data.summary} column=earliest_call_date/> and <Value data={data.summary} column=calls_in_the_last_365_days/> calls over the last 365 days.
 
-<LineChart data={data.daily_complaints} x='date' y='number_of_complaints' units="calls to Austin 311 per day"/>
+<LineChart data={data.daily_complaints} x='date' y='number_of_complaints' units="calls to Austin 311 per day" lineWidth=6/>
 
 ```daily_complaints
     select 
@@ -25,9 +25,10 @@ Austin 311 has fielded <Value data={data.summary}/> calls since <Value data={dat
     from `bigquery-public-data.austin_311.311_service_requests` 
     group by 1 
     order by 1 desc
-    limit 363
+    limit 5
 ```
 
+<Histogram data={data.daily_complaints} x=number_of_complaints/>
 Call data is updated every few days -- the most recent update was on <Value data={data.summary} column=latest_call_date/>. 
 
 ## Top {data.top_complaint.length} Call Categories 
