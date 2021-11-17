@@ -14,6 +14,7 @@
     export let lineOpacity = undefined;
 
     export let markers = false;
+    markers = (markers === "true" || markers === true);
     export let markerShape = 'circle';
     export let markerSize = 8;
 
@@ -40,7 +41,7 @@
                 focus: "series",
             },
             lineStyle: {
-                width: lineWidth,
+                width: parseInt(lineWidth),
                 type: lineType,
             },
             itemStyle: {
@@ -57,6 +58,28 @@
 
     if(options){
         config.update(d => {return {...d, ...options}})
+    }
+
+    let chartOverrides = {
+         yAxis: { // vertical axis
+             scale: true,
+             boundaryGap: ['1%', '1%']
+         },
+         xAxis: { // horizontal axis
+             boundaryGap: ['1%', '1%']
+         }
+     }
+
+    if(chartOverrides){
+        config.update(d => {
+            if(horiz){
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+            } else {
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            return d})
     }
 
 </script>

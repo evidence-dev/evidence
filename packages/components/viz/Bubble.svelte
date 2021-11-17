@@ -75,12 +75,12 @@
 
     // Overriding global chart config:
     let chartOverrides = {
-         yAxis: {
+         yAxis: { // vertical axis
              scale: true,
              min: yMin,
              boundaryGap: ['1%', '1%']
          },
-         xAxis: {
+         xAxis: { // horizontal axis
              boundaryGap: ['1%', '1%']
          }
     }
@@ -91,8 +91,13 @@
 
     if(chartOverrides){
         config.update(d => {
-            d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
-            d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            if(horiz){
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+            } else {
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
             return d})
     }
 

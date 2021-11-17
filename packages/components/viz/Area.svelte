@@ -51,4 +51,26 @@
         config.update(d => {return {...d, ...options}})
     }
 
+    let chartOverrides = {
+         yAxis: { // vertical axis
+             scale: true,
+             boundaryGap: ['1%', '1%']
+         },
+         xAxis: { // horizontal axis
+             boundaryGap: ['1%', '1%']
+         }
+     }
+
+    if(chartOverrides){
+        config.update(d => {
+            if(horiz){
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+            } else {
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            return d})
+    }
+
 </script>

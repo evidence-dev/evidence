@@ -1,5 +1,5 @@
 <script>
-    import echarts from "../modules/echarts";
+    import echarts from "$lib/modules/echarts";
     export let config = undefined;    
 
     export let height = '291px'

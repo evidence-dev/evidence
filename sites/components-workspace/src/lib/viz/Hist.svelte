@@ -1,7 +1,7 @@
 <script>
-    import { props, config } from '../modules/stores.js';   
+    import { props, config } from '$lib/modules/stores.js';   
     import ecStat from 'echarts-stat';
-    import getDistinctValues from '../modules/getDistinctValues';
+    import getDistinctValues from '$lib/modules/getDistinctValues.js';
 
     export let x = undefined;
 

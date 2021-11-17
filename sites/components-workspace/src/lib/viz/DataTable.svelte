@@ -1,10 +1,10 @@
 <script>
     import { slide } from 'svelte/transition';
-    import formatValue from '../modules/formatValue.js';
+    import formatValue from '$lib/modules/formatValue.js';
     import ErrorChart from './ErrorChart.svelte'
-    import checkInputs from '../modules/checkInputs.js'
-    import getColumnSummary from '../modules/getColumnSummary.js';
-    import getParsedDate from '../modules/getParsedDate.js';
+    import checkInputs from '$lib/modules/checkInputs.js'
+    import getColumnSummary from '$lib/modules/getColumnSummary.js';
+    import getParsedDate from '$lib/modules/getParsedDate.js';
 
     // 1 - Get Inputs
     export let data = undefined;

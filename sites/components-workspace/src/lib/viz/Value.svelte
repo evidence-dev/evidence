@@ -1,8 +1,8 @@
 <script>
-    import getColumnSummary from "../modules/getColumnSummary.js";
-    import formatValue from "../modules/formatValue.js";
-    import getParsedDate from "../modules/getParsedDate.js";
-    import checkInputs from "../modules/checkInputs.js";
+    import getColumnSummary from "$lib/modules/getColumnSummary.js";
+    import formatValue from "$lib/modules/formatValue.js";
+    import getParsedDate from "$lib/modules/getParsedDate.js";
+    import checkInputs from "$lib/modules/checkInputs.js";
     
     // Passing in value from dataset:
     export let data = null

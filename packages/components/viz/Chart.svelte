@@ -500,6 +500,15 @@ try{
                     // Use axis to trigger tooltip
                     type: "shadow", // 'shadow' as default; can also be 'line' or 'shadow'
                 },
+                padding: 6,
+                borderRadius: 4, 
+                borderWidth: 1,
+                borderColor: '#c4c4c4',
+                backgroundColor: '#f0f0f0',
+                textStyle: {
+                    color: '#3d3d3d',
+                    fontSize: 12
+                }
             },
             legend: {
                 show: legend,
@@ -539,7 +548,7 @@ try{
     error = e.message;
     props.update(d => { return {...d, error} })
 }
-
+console.log()
 </script>
 
 

@@ -2,15 +2,15 @@
     // ---------------------------------------------------------------------------------------
     // Imports
     // ---------------------------------------------------------------------------------------
-        import { props, config } from '../modules/stores.js';   
+        import { props, config } from '$lib/modules/stores.js';   
 
         import ECharts from "./ECharts.svelte";
-        import getColumnSummary from '../modules/getColumnSummary';
-        import getDistinctValues from '../modules/getDistinctValues';
-        import formatAxisLabel from '../modules/formatAxisLabel';
-        import formatTitle from '../modules/formatTitle.js';
+        import getColumnSummary from '$lib/modules/getColumnSummary';
+        import getDistinctValues from '$lib/modules/getDistinctValues';
+        import formatAxisLabel from '$lib/modules/formatAxisLabel';
+        import formatTitle from '$lib/modules/formatTitle.js';
         import ErrorChart from './ErrorChart.svelte';
-        import checkInputs from '../modules/checkInputs';
+        import checkInputs from '$lib/modules/checkInputs';
 
     // ---------------------------------------------------------------------------------------
     // Input Props

@@ -1,8 +1,8 @@
 <script>
-    import { props, config } from '../modules/stores.js';   
-    import getSeriesConfig from '../modules/getSeriesConfig.js'
-    import getColumnExtents from '../modules/getColumnExtents'
-    import formatTitle from '../modules/formatTitle'
+    import { props, config } from '$lib/modules/stores.js';   
+    import getSeriesConfig from '$lib/modules/getSeriesConfig.js'
+    import getColumnExtents from '$lib/modules/getColumnExtents'
+    import formatTitle from '$lib/modules/formatTitle'
 
     export let y = undefined;
     export let series = undefined;
