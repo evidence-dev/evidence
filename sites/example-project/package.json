@@ -2,7 +2,7 @@
   "name": "example-project",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "svelte-kit dev --host 0.0.0.0",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview"
   },

@@ -11,7 +11,13 @@ export default(node, option, renderer) => {
             "containLabel": true,
         },
         "color": [
-            "#90999e",
+            "#3e6180",
+            // "#345673",
+            "#5492c4",
+            // "#4783b3",
+            "#91c0e6",
+            "#b1b7bd",
+            // "#90999e",
             // "#8e9ba3",
             // "#436175",
             "#923d59",
@@ -42,23 +48,23 @@ export default(node, option, renderer) => {
         },
         "line": {
             "itemStyle": {
-                "borderWidth": "0"
+                "borderWidth": 0
             },
             "lineStyle": {
-                "width": 2
+                "width": 3
             },
-            "symbolSize": "0",
+            "symbolSize": 0,
             "symbol": "circle",
             "smooth": false
         },
         "radar": {
             "itemStyle": {
-                "borderWidth": "0"
+                "borderWidth": 0
             },
             "lineStyle": {
-                "width": "2"
+                "width": 2
             },
-            "symbolSize": "0",
+            "symbolSize": 0,
             "symbol": "circle",
             "smooth": false
         },
@@ -128,7 +134,7 @@ export default(node, option, renderer) => {
                 "width": 1,
                 "color": "#aaaaaa"
             },
-            "symbolSize": "0",
+            "symbolSize": 0,
             "symbol": "circle",
             "smooth": false,
             "color": [
@@ -242,7 +248,10 @@ export default(node, option, renderer) => {
                 "show": true,
                 "lineStyle": {
                     "color": [
-                        "#E0E6F1"
+                        // "#E0E6F1"
+                        '#ebf2f7'
+                        // '#ebf4fa'
+                        // '#f0f1f2'
                     ],
 					"width": 1
                 }
@@ -278,7 +287,9 @@ export default(node, option, renderer) => {
                 "show": true,
                 "lineStyle": {
                     "color": [
-                        "#E0E6F1"
+                        // "#E0E6F1"
+                        // '#ebf2f7'
+                        '#ebf4fa'
                     ]
                 }
             },
@@ -340,7 +351,7 @@ export default(node, option, renderer) => {
         "legend": {
             "textStyle": {
                 "padding": [0,0,0,-7],
-                "color": "grey"
+                "color": "#6E7079"
             },
             // "padding": [15,0,0,0],
             "icon": "circle",
@@ -360,11 +371,11 @@ export default(node, option, renderer) => {
             "axisPointer": {
                 "lineStyle": {
                     "color": "#cccccc",
-                    "width": "1"
+                    "width": 1
                 },
                 "crossStyle": {
                     "color": "#cccccc",
-                    "width": "1"
+                    "width": 1
                 }
             }
         },

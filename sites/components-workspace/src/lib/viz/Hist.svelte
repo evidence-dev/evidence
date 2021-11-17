@@ -74,10 +74,10 @@
     config.update(d => {d.series.push(seriesConfig); return d})
 
     let chartOverrides = {
-         yAxis: {
+         yAxis: { // vertical axis
              boundaryGap: ['0%','1%']
          },
-         xAxis: {
+         xAxis: { // horizontal axis
              boundaryGap: ['1%', '1%'],
              scale: false,
              min: histData.data[0][2] // min of bin for first bin in hist dataset
@@ -86,8 +86,8 @@
 
     if(chartOverrides){
         config.update(d => {
-            d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
-            d.xAxis = {...d.xAxis, ...chartOverrides.xAxis}; 
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis}; 
             return d
         })
     }
