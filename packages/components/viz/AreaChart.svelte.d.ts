@@ -4,19 +4,25 @@
 export default class AreaChart extends SvelteComponentTyped<{
     title?: any;
     line?: any;
-    legend?: boolean;
+    legend?: any;
+    sort?: any;
     data?: any;
     x?: any;
+    xType?: any;
     y?: any;
     series?: any;
     fillColor?: any;
     fillOpacity?: any;
+    missing?: any;
     yMin?: any;
     subtitle?: any;
-    xType?: any;
     xAxisTitle?: any;
+    xBaseline?: any;
+    xTickMarks?: any;
     xGridlines?: any;
     yAxisTitle?: any;
+    yBaseline?: any;
+    yTickMarks?: any;
     yGridlines?: any;
 }, {
     [evt: string]: CustomEvent<any>;
@@ -30,19 +36,25 @@ declare const __propDef: {
     props: {
         title?: any;
         line?: any;
-        legend?: boolean;
+        legend?: any;
+        sort?: any;
         data?: any;
         x?: any;
+        xType?: any;
         y?: any;
         series?: any;
         fillColor?: any;
         fillOpacity?: any;
+        missing?: any;
         yMin?: any;
         subtitle?: any;
-        xType?: any;
         xAxisTitle?: any;
+        xBaseline?: any;
+        xTickMarks?: any;
         xGridlines?: any;
         yAxisTitle?: any;
+        yBaseline?: any;
+        yTickMarks?: any;
         yGridlines?: any;
     };
     events: {

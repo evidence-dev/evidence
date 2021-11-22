@@ -15,12 +15,16 @@
     export let yAxisTitle = undefined;
     export let xGridlines = undefined;
     export let yGridlines = undefined;
+    export let xBaseline = undefined;
+    export let yBaseline = undefined;
+    export let xTickMarks = undefined;
+    export let yTickMarks = undefined;
     export let yMin = undefined;
-    export let horiz = false;
-    if(horiz === "true" || horiz === true){
-        horiz = true;
+    export let swapXY = false;
+    if(swapXY === "true" || swapXY === true){
+        swapXY = true;
     } else {
-        horiz = false;
+        swapXY = false;
     }
 
     export let type = undefined; // stacked or grouped
@@ -32,18 +36,9 @@
 
     export let sort = undefined;
 
-    if(!series && typeof y !== 'object'){
-        legend = legend ?? false
-    }
-
     let chartType = "Bar Chart";
 
-    // If axes are reversed, bar chart can only have category x-axis (ECharts limitation):
-    if(horiz){
-        xType = "category"
-    }
-
-</script>
+ </script>
 
 <Chart
     {data}
@@ -56,8 +51,12 @@
     {yAxisTitle}
     {xGridlines}
     {yGridlines}
+    {xBaseline}
+    {yBaseline}
+    {xTickMarks}
+    {yTickMarks}
     {yMin}
-    {horiz}
+    {swapXY}
     {title}
     {subtitle}
     {chartType}

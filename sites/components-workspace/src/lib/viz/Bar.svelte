@@ -1,7 +1,10 @@
 <script>
     import { props, config } from '$lib/modules/stores.js';   
-    import getSeriesConfig from '$lib/modules/getSeriesConfig.js'
-    import formatTitle from '$lib/modules/formatTitle'
+    import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
+    import getStackedData from '$lib/modules/getStackedData.js';
+    import getSortedData from '$lib/modules/getSortedData.js';
+    import formatTitle from '$lib/modules/formatTitle';
+    import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
     export let series = undefined;
@@ -20,24 +23,53 @@
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
     let x = $props.x;
-    let horiz = $props.horiz;
+    let swapXY = $props.swapXY;
+    let xType = $props.xType;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
+    let sort = $props.sort;
     y = y ?? $props.y;
     series = series ?? $props.series;
 
+    let stackedData;
+    let sortOrder;
+
     if(!series && typeof y !== 'object'){
-        name = name ?? formatTitle(y, columnSummary[y].title)
+        // Single Series
+        name = name ?? formatTitle(y, columnSummary[y].title);
+
+        if(swapXY && xType !== "category"){
+            data = getCompletedData(data, x, y, series, false, (xType !== "time"));
+            xType = "category";
+        };
+    } else {
+        // Multi Series
+
+        // Sort by stack total for category axis
+        if(sort === true && xType === "category"){
+            stackedData = getStackedData(data, x, y); // REMEMBER: need to broaden this to include multiple y columns
+            stackedData = getSortedData(stackedData, y, false);
+            sortOrder = stackedData.map(d => d[x]);
+            data.sort(function (a, b) {
+                return sortOrder.indexOf(a[x]) - sortOrder.indexOf(b[x]);
+            });
+        }
+
+        // Run fill for missing series entries, only if it's a value x axis and a stacked bar
+        if((swapXY && xType !== "category") || (xType === "value" && type === "stacked")){
+            data = getCompletedData(data, x, y, series, false, (xType !== "time"));
+            xType = "category";
+        }
+              
+        if(type === "stacked"){
+        // Set up stacks
+            stackName = stackName ?? "stack1";
+        } else {
+            stackName = null;
+        }
     }
 
     barMaxWidth = 60;
-
-    // Set up stacks
-    if(type === 'stacked'){
-        stackName = stackName ?? "stack1";
-    } else {
-        stackName = null;
-    }
 
     let baseConfig = {
             type: "bar",
@@ -57,8 +89,8 @@
                 borderWidth: outlineWidth
             }
     }
-
-    let seriesConfig = getSeriesConfig(data, x, y, series, horiz, baseConfig, name, xMismatch, columnSummary);
+ 
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
     config.update(d => {d.series.push(...seriesConfig); return d})
 
@@ -67,16 +99,25 @@
     }
 
     let chartOverrides = {
-         xAxis: { // horizontal axis
-             boundaryGap: [horiz ? '0%' : '1%','1%']
+         // Evidence definition of axes (yAxis = dependent, xAxis = independent)
+         xAxis: {
+             boundaryGap: ['1%', '2%'],
+             type: xType
          }
     }
 
     if(chartOverrides){
         config.update(d => {
-            d.xAxis = {...d.xAxis, ...chartOverrides.xAxis}; 
-            return d
-        })
+            if(swapXY){
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+            } else {
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            return d})
     }
 
+
+    
 </script>

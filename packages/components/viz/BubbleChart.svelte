@@ -16,6 +16,10 @@
     export let yAxisTitle = undefined;
     export let xGridlines = undefined;
     export let yGridlines = undefined;
+    export let xBaseline = undefined;
+    export let yBaseline = undefined;
+    export let xTickMarks = undefined;
+    export let yTickMarks = undefined;
     export let yMin = undefined;
 
     export let shape = undefined;
@@ -26,9 +30,7 @@
     export let minSize = undefined;
     export let maxSize = undefined;
 
-    if(!series && typeof y !== 'object'){
-        legend = legend ?? false
-    }
+    export let sort = undefined;
 
     let chartType = "Bubble Chart";
     let bubble = true;
@@ -47,11 +49,16 @@
     {yAxisTitle}
     {xGridlines}
     {yGridlines}
+    {xBaseline}
+    {yBaseline}
+    {xTickMarks}
+    {yTickMarks}
     {yMin}
     {title}
     {subtitle}
     {chartType}
     {bubble}
+    {sort}
     >
     <Bubble
         {shape}

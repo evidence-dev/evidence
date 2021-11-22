@@ -8,7 +8,8 @@ export default class Chart extends SvelteComponentTyped<{
     size?: any;
     data?: any;
     x?: string;
-    horiz?: boolean;
+    swapXY?: boolean;
+    xType?: any;
     y?: string | string[];
     series?: any;
     options?: any;
@@ -17,7 +18,6 @@ export default class Chart extends SvelteComponentTyped<{
     subtitle?: any;
     bubble?: boolean;
     hist?: boolean;
-    xType?: any;
     xAxisTitle?: string;
     xBaseline?: boolean;
     xTickMarks?: boolean;
@@ -46,7 +46,8 @@ declare const __propDef: {
         size?: any;
         data?: any;
         x?: string;
-        horiz?: boolean;
+        swapXY?: boolean;
+        xType?: any;
         y?: string | string[];
         series?: any;
         options?: any;
@@ -55,7 +56,6 @@ declare const __propDef: {
         subtitle?: any;
         bubble?: boolean;
         hist?: boolean;
-        xType?: any;
         xAxisTitle?: string;
         xBaseline?: boolean;
         xTickMarks?: boolean;

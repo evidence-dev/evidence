@@ -39,18 +39,33 @@ export default function formatAxisLabel(value, columnFormat, columnUnits) {
             value = value.toLocaleString('en-US',{style: 'currency', currency: 'CHF', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
             break;
         case "date": 
+            if(typeof value === "string"){
+                value = new Date(value);
+            }
             value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
             break;
         case "week": 
+            if(typeof value === "string"){
+                value = new Date(value);
+            }
             value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
             break;
         case "month": 
+            if(typeof value === "string"){
+                value = new Date(value);
+            }
             value = value.toLocaleString('en-US', {month: 'short'});
             break;
         case "qtr": 
+            if(typeof value === "string"){
+                value = new Date(value);
+            }
             value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
             break;
         case "year": 
+            if(typeof value === "string"){
+                value = new Date(value);
+            }
             value = value.getFullYear();
             break;
         case "year_num":

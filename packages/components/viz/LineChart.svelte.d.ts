@@ -3,17 +3,23 @@
 /** @typedef {typeof __propDef.slots}  LineChartSlots */
 export default class LineChart extends SvelteComponentTyped<{
     title?: any;
-    legend?: boolean;
+    legend?: any;
+    sort?: any;
     data?: any;
     x?: any;
+    xType?: any;
     y?: any;
     series?: any;
+    missing?: any;
     yMin?: any;
     subtitle?: any;
-    xType?: any;
     xAxisTitle?: any;
+    xBaseline?: any;
+    xTickMarks?: any;
     xGridlines?: any;
     yAxisTitle?: any;
+    yBaseline?: any;
+    yTickMarks?: any;
     yGridlines?: any;
     lineColor?: any;
     lineWidth?: any;
@@ -33,17 +39,23 @@ import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         title?: any;
-        legend?: boolean;
+        legend?: any;
+        sort?: any;
         data?: any;
         x?: any;
+        xType?: any;
         y?: any;
         series?: any;
+        missing?: any;
         yMin?: any;
         subtitle?: any;
-        xType?: any;
         xAxisTitle?: any;
+        xBaseline?: any;
+        xTickMarks?: any;
         xGridlines?: any;
         yAxisTitle?: any;
+        yBaseline?: any;
+        yTickMarks?: any;
         yGridlines?: any;
         lineColor?: any;
         lineWidth?: any;

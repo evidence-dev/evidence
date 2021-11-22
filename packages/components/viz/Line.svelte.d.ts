@@ -2,10 +2,11 @@
 /** @typedef {typeof __propDef.events}  LineEvents */
 /** @typedef {typeof __propDef.slots}  LineSlots */
 export default class Line extends SvelteComponentTyped<{
+    name?: any;
     y?: any;
     series?: any;
     options?: any;
-    name?: any;
+    missing?: string;
     lineColor?: any;
     lineWidth?: number;
     lineType?: string;
@@ -23,10 +24,11 @@ export type LineSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
+        name?: any;
         y?: any;
         series?: any;
         options?: any;
-        name?: any;
+        missing?: string;
         lineColor?: any;
         lineWidth?: number;
         lineType?: string;

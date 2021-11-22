@@ -3,21 +3,25 @@
 /** @typedef {typeof __propDef.slots}  BarChartSlots */
 export default class BarChart extends SvelteComponentTyped<{
     title?: any;
-    legend?: boolean;
+    legend?: any;
     sort?: any;
     data?: any;
     x?: any;
-    horiz?: boolean;
+    swapXY?: boolean;
+    xType?: any;
     y?: any;
     series?: any;
     fillColor?: any;
     fillOpacity?: any;
     yMin?: any;
     subtitle?: any;
-    xType?: string;
     xAxisTitle?: any;
+    xBaseline?: any;
+    xTickMarks?: any;
     xGridlines?: any;
     yAxisTitle?: any;
+    yBaseline?: any;
+    yTickMarks?: any;
     yGridlines?: any;
     type?: any;
     outlineColor?: any;
@@ -33,21 +37,25 @@ import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         title?: any;
-        legend?: boolean;
+        legend?: any;
         sort?: any;
         data?: any;
         x?: any;
-        horiz?: boolean;
+        swapXY?: boolean;
+        xType?: any;
         y?: any;
         series?: any;
         fillColor?: any;
         fillOpacity?: any;
         yMin?: any;
         subtitle?: any;
-        xType?: string;
         xAxisTitle?: any;
+        xBaseline?: any;
+        xTickMarks?: any;
         xGridlines?: any;
         yAxisTitle?: any;
+        yBaseline?: any;
+        yTickMarks?: any;
         yGridlines?: any;
         type?: any;
         outlineColor?: any;

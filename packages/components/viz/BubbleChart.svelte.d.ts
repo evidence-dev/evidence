@@ -3,19 +3,24 @@
 /** @typedef {typeof __propDef.slots}  BubbleChartSlots */
 export default class BubbleChart extends SvelteComponentTyped<{
     title?: any;
-    legend?: boolean;
+    legend?: any;
+    sort?: any;
     size?: any;
     data?: any;
     x?: any;
+    xType?: any;
     y?: any;
     series?: any;
     fillColor?: any;
     yMin?: any;
     subtitle?: any;
-    xType?: any;
     xAxisTitle?: any;
+    xBaseline?: any;
+    xTickMarks?: any;
     xGridlines?: any;
     yAxisTitle?: any;
+    yBaseline?: any;
+    yTickMarks?: any;
     yGridlines?: any;
     outlineColor?: any;
     outlineWidth?: any;
@@ -34,19 +39,24 @@ import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         title?: any;
-        legend?: boolean;
+        legend?: any;
+        sort?: any;
         size?: any;
         data?: any;
         x?: any;
+        xType?: any;
         y?: any;
         series?: any;
         fillColor?: any;
         yMin?: any;
         subtitle?: any;
-        xType?: any;
         xAxisTitle?: any;
+        xBaseline?: any;
+        xTickMarks?: any;
         xGridlines?: any;
         yAxisTitle?: any;
+        yBaseline?: any;
+        yTickMarks?: any;
         yGridlines?: any;
         outlineColor?: any;
         outlineWidth?: any;

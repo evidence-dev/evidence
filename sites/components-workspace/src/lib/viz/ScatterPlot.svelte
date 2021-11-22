@@ -15,6 +15,10 @@
     export let yAxisTitle = undefined;
     export let xGridlines = undefined;
     export let yGridlines = undefined;
+    export let xBaseline = undefined;
+    export let yBaseline = undefined;
+    export let xTickMarks = undefined;
+    export let yTickMarks = undefined;
     export let yMin = undefined;
 
     export let shape = undefined;
@@ -24,9 +28,7 @@
     export let outlineWidth = undefined;
     export let pointSize = undefined;
 
-    if(!series && typeof y !== 'object'){
-        legend = legend ?? false
-    }
+    export let sort = undefined;
 
     let chartType = "Scatter Plot";
 
@@ -43,10 +45,15 @@
     {yAxisTitle}
     {xGridlines}
     {yGridlines}
+    {xBaseline}
+    {yBaseline}
+    {xTickMarks}
+    {yTickMarks}
     {yMin}
     {title}
     {subtitle}
     {chartType}
+    {sort}
     >
     <Scatter
         {shape}

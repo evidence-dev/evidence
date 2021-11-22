@@ -1,7 +1,9 @@
 <script>
     import { props, config } from '../modules/stores.js';   
-    import getSeriesConfig from '../modules/getSeriesConfig.js'
-    import formatTitle from '../modules/formatTitle'
+    import getSeriesConfig from '../modules/getSeriesConfig.js';
+    import formatTitle from '../modules/formatTitle';
+    import replaceNulls from '../modules/replaceNulls.js';
+    import getCompletedData from '../modules/getCompletedData.js';
 
     export let y = undefined;
     export let series = undefined;
@@ -11,26 +13,44 @@
     export let fillColor = undefined;
     export let fillOpacity = undefined;
     export let line = true;
+    line = (line === "true" || line === true);
+
+    export let missing = "gap";
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
     let x = $props.x;
-    let horiz = $props.horiz;
+    let swapXY = $props.swapXY;
+    let xType = $props.xType;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
     series = series ?? $props.series;
 
+    let stackName;
     if(!series && typeof y !== 'object'){
-        name = name ?? formatTitle(y, columnSummary[y].title)
+        // Single Series
+        name = name ?? formatTitle(y, columnSummary[y].title);
+    } else {
+        // Multi Series
+        stackName = "area"; // area must be stacked for multi-series chart
+        data = getCompletedData(data, x, y, series, false, (xType === "value")); // fill in missing X if it's a value axis (because we need to plot it as category axis)
+        data = replaceNulls(data, y); // nulls must be zero (or area shapes will be drawn incorrectly - ECharts limitation)
+        xType = xType === "value" ? "category" : xType;
+    }
+
+    if(missing === "zero"){
+        data = replaceNulls(data, y)
     }
 
     let baseConfig = {
             type: "line",
+            stack: stackName,
             areaStyle: {
                 color: fillColor,
                 opacity: fillOpacity
             },
+            connectNulls: (missing === "connect"),
             lineStyle: {
                 width: line ? 1.5 : 0
             },
@@ -43,7 +63,7 @@
             }
     }
 
-    let seriesConfig = getSeriesConfig(data, x, y, series, horiz, baseConfig, name, xMismatch, columnSummary);
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
     config.update(d => {d.series.push(...seriesConfig); return d})
 
@@ -51,24 +71,30 @@
         config.update(d => {return {...d, ...options}})
     }
 
+
     let chartOverrides = {
-         yAxis: { // vertical axis
-             scale: true,
-             boundaryGap: ['1%', '1%']
+         yAxis: { 
+             boundaryGap: ['0%', '1%'],
          },
-         xAxis: { // horizontal axis
-             boundaryGap: ['1%', '1%']
+         xAxis: { 
+            boundaryGap: ['0%', '2%'],
+            type: xType
+         },
+         tooltip: {
+             trigger: "axis"
          }
      }
 
     if(chartOverrides){
         config.update(d => {
-            if(horiz){
-                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+            if(swapXY){
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis}; // THESE DON'T SEEM TO BE UPDATING CORRECTLY.
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             }
             return d})
     }

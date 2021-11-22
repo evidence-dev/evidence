@@ -1,6 +1,6 @@
 import getDistinctValues from '../modules/getDistinctValues.js'
 
-export default function getSeriesConfig(data, x, y, series, horiz, baseConfig, name=null, xMismatch, columnSummary) {
+export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary) {
 
     function generateTempConfig(seriesData, seriesName, baseConfig) {
         let tempConfig = {
@@ -30,7 +30,7 @@ export default function getSeriesConfig(data, x, y, series, horiz, baseConfig, n
             // Filter for specific series:
             filteredData = data.filter((d) => d[series] === seriesDistinct[i]);
 
-            if(horiz){
+            if(swapXY){
                 seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
             } else {
                 seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
@@ -55,7 +55,7 @@ export default function getSeriesConfig(data, x, y, series, horiz, baseConfig, n
      
             for (j = 0; j < y.length; j++) {
 
-                if(horiz){
+                if(swapXY){
                     seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x])]);
                 } else {
                     seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]]]);
@@ -74,7 +74,7 @@ export default function getSeriesConfig(data, x, y, series, horiz, baseConfig, n
         legend = true;
 
         for (i = 0; i < y.length; i++) {
-            if(horiz){
+            if(swapXY){
                 seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x])]);
             } else {
                 seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]]]);
@@ -89,7 +89,7 @@ export default function getSeriesConfig(data, x, y, series, horiz, baseConfig, n
     if(series == null && typeof y !== "object") {
         legend = false;
 
-        if(horiz){
+        if(swapXY){
             seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
         } else {
             seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);

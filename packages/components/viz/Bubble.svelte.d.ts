@@ -2,11 +2,11 @@
 /** @typedef {typeof __propDef.events}  BubbleEvents */
 /** @typedef {typeof __propDef.slots}  BubbleSlots */
 export default class Bubble extends SvelteComponentTyped<{
+    name?: any;
     size?: any;
     y?: any;
     series?: any;
     options?: any;
-    name?: any;
     fillColor?: any;
     outlineColor?: any;
     outlineWidth?: any;
@@ -24,11 +24,11 @@ export type BubbleSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
+        name?: any;
         size?: any;
         y?: any;
         series?: any;
         options?: any;
-        name?: any;
         fillColor?: any;
         outlineColor?: any;
         outlineWidth?: any;

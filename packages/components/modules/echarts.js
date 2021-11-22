@@ -203,7 +203,9 @@ export default(node, option, renderer) => {
                 "show": false,
                 "lineStyle": {
                     "color": "#6E7079"
-                }
+                },
+                "length": 3,
+                "alignWithLabel": true
             },
             "axisLabel": {
                 "show": true,
@@ -238,7 +240,8 @@ export default(node, option, renderer) => {
                 "show": false,
                 "lineStyle": {
                     "color": "#6E7079"
-                }
+                },
+                "length": 2
             },
             "axisLabel": {
                 "show": true,
@@ -277,7 +280,8 @@ export default(node, option, renderer) => {
                 "show": false,
                 "lineStyle": {
                     "color": "#6E7079"
-                }
+                },
+                "length": 2
             },
             "axisLabel": {
                 "show": true,
@@ -314,7 +318,8 @@ export default(node, option, renderer) => {
                 "show": true,
                 "lineStyle": {
                     "color": "#6E7079"
-                }
+                },
+                "length": 3
             },
             "axisLabel": {
                 "show": true,

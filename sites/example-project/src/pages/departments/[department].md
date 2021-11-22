@@ -30,7 +30,7 @@ group by 1
 ```
 
 ## Calls by Category
-<BarChart data={complaints_by_category} x=category y=complaints horiz=true yAxisTitle="Calls Received" sort=false/>
+<BarChart data={complaints_by_category} x=category y=complaints swapXY=true yAxisTitle="Calls Received" sort=false/>
 
 ```complaints_by_day_dept
     select 

@@ -1,7 +1,8 @@
 <script>
     import { props, config } from '$lib/modules/stores.js';   
-    import getSeriesConfig from '$lib/modules/getSeriesConfig.js'
-    import formatTitle from '$lib/modules/formatTitle'
+    import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
+    import formatTitle from '$lib/modules/formatTitle.js';
+    import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
     export let series = undefined;
@@ -18,7 +19,7 @@
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
     let x = $props.x;
-    let horiz = $props.horiz;
+    let swapXY = $props.swapXY;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
@@ -26,7 +27,11 @@
     let yMin = $props.yMin;
 
     if(!series && typeof y !== 'object'){
-        name = name ?? formatTitle(y, columnSummary[y].title)
+        // Single Series
+        name = name ?? formatTitle(y, columnSummary[y].title);
+    } else {
+        // Multi Series
+        data = getCompletedData(data, x, y, series);
     }
 
     let baseConfig = {
@@ -52,24 +57,23 @@
         baseConfig = {...baseConfig, ...options}
     }
 
-    let seriesConfig = getSeriesConfig(data, x, y, series, horiz, baseConfig, name, xMismatch, columnSummary);
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
     config.update(d => {d.series.push(...seriesConfig); return d})
 
     let chartOverrides = {
-         yAxis: { // vertical axis
+         yAxis: {
              scale: true,
-             min: yMin,
              boundaryGap: ['1%', '1%']
          },
-         xAxis: { // horizontal axis
-             boundaryGap: ['1%', '1%']
+         xAxis: {
+             boundaryGap: ['1%', '2%']
          }
      }
 
     if(chartOverrides){
         config.update(d => {
-            if(horiz){
+            if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
             } else {

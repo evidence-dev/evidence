@@ -2,10 +2,10 @@
 /** @typedef {typeof __propDef.events}  ScatterEvents */
 /** @typedef {typeof __propDef.slots}  ScatterSlots */
 export default class Scatter extends SvelteComponentTyped<{
+    name?: any;
     y?: any;
     series?: any;
     options?: any;
-    name?: any;
     fillColor?: any;
     outlineColor?: any;
     outlineWidth?: any;
@@ -22,10 +22,10 @@ export type ScatterSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
+        name?: any;
         y?: any;
         series?: any;
         options?: any;
-        name?: any;
         fillColor?: any;
         outlineColor?: any;
         outlineWidth?: any;

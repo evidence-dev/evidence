@@ -15,7 +15,7 @@ importers:
       svelte: 3.44.1
       svelte2tsx: 0.4.7
       typescript: 4.4.4
-      vite-plugin-full-reload: ^0.2.2
+      vite-plugin-full-reload: 0.2.2
     devDependencies:
       '@evidence-dev/components': link:packages/components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
@@ -32,10 +32,10 @@ importers:
 
   packages/bigquery:
     specifiers:
-      '@google-cloud/bigquery': ^5.6.0
-      blueimp-md5: ^2.18.0
-      chalk: ^4.1.1
-      fs-extra: ^9.1.0
+      '@google-cloud/bigquery': 5.6.0
+      blueimp-md5: 2.18.0
+      chalk: 4.1.1
+      fs-extra: 9.1.0
     dependencies:
       '@google-cloud/bigquery': 5.6.0
       blueimp-md5: 2.18.0
@@ -54,16 +54,16 @@ importers:
       '@evidence-dev/postgres': workspace:^
       '@evidence-dev/snowflake': workspace:^
       '@evidence-dev/telemetry': workspace:^
-      blueimp-md5: ^2.18.0
-      chalk: ^4.1.0
-      fs-extra: ^9.1.0
+      blueimp-md5: 2.18.0
+      chalk: 4.1.0
+      fs-extra: 9.1.0
     dependencies:
       '@evidence-dev/bigquery': link:../bigquery
       '@evidence-dev/postgres': link:../postgres
       '@evidence-dev/snowflake': link:../snowflake
       '@evidence-dev/telemetry': link:../telemetry
       blueimp-md5: 2.18.0
-      chalk: 4.1.1
+      chalk: 4.1.0
       fs-extra: 9.1.0
 
   packages/evidence:
@@ -83,9 +83,9 @@ importers:
 
   packages/postgres:
     specifiers:
-      blueimp-md5: ^2.18.0
-      fs-extra: ^9.1.0
-      pg: ^8.7.1
+      blueimp-md5: 2.18.0
+      fs-extra: 9.1.0
+      pg: 8.7.1
     dependencies:
       blueimp-md5: 2.18.0
       fs-extra: 9.1.0
@@ -103,7 +103,7 @@ importers:
     dependencies:
       blueimp-md5: 2.18.0
       fs-extra: 9.1.0
-      mdsvex: 0.9.3
+      mdsvex: 0.9.3_svelte@3.44.1
       remark: 13.0.0
       remark-parse: 9.0.0
       unified: 9.2.1
@@ -111,9 +111,9 @@ importers:
 
   packages/snowflake:
     specifiers:
-      blueimp-md5: ^2.18.0
-      fs-extra: ^9.1.0
-      snowflake-sdk: ^1.6.1
+      blueimp-md5: 2.18.0
+      fs-extra: 9.1.0
+      snowflake-sdk: 1.6.1
     dependencies:
       blueimp-md5: 2.18.0
       fs-extra: 9.1.0
@@ -4028,6 +4028,14 @@ packages:
       supports-color: 5.5.0
     dev: false
 
+  /chalk/4.1.0:
+    resolution: {integrity: sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==}
+    engines: {node: '>=10'}
+    dependencies:
+      ansi-styles: 4.3.0
+      supports-color: 7.2.0
+    dev: false
+
   /chalk/4.1.1:
     resolution: {integrity: sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==}
     engines: {node: '>=10'}
@@ -6147,7 +6155,7 @@ packages:
       abort-controller: 3.0.0
       extend: 3.0.2
       https-proxy-agent: 5.0.0
-      is-stream: 2.0.0
+      is-stream: 2.0.1
       node-fetch: 2.6.1
     transitivePeerDependencies:
       - supports-color
@@ -7252,11 +7260,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /is-stream/2.0.0:
-    resolution: {integrity: sha512-XCoy+WlUr7d1+Z8GgSuXmpuUFC9fOhRXglJMx+dwLKTkL44Cjd4W1Z5P+BQZpr+cR93aGP4S/s7Ftw6Nd/kiEw==}
-    engines: {node: '>=8'}
-    dev: false
-
   /is-stream/2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
     engines: {node: '>=8'}
@@ -7897,7 +7900,7 @@ packages:
     resolution: {integrity: sha512-iV3XNKw06j5Q7mi6h+9vbx23Tv7JkjEVgKHW4pimwyDGWm0OIQntJJ+u1C6mg6mK1EaTv42XQ7w76yuzH7M2cA==}
     dev: false
 
-  /mdsvex/0.9.3:
+  /mdsvex/0.9.3_svelte@3.44.1:
     resolution: {integrity: sha512-BybdSeHihCZtydCJkFv+CZesHHYElZEp47WvYUszdfdqt6guIW/dP8H7fyrsaY6RPFfXgzGavZHB07OysuQTuQ==}
     peerDependencies:
       svelte: 3.x
@@ -7905,6 +7908,7 @@ packages:
       '@types/unist': 2.0.3
       prism-svelte: 0.4.7
       prismjs: 1.23.0
+      svelte: 3.44.1
       vfile-message: 2.0.4
     dev: false
 
@@ -11705,7 +11709,7 @@ packages:
     dependencies:
       '@dabh/diagnostics': 2.0.2
       async: 3.2.0
-      is-stream: 2.0.0
+      is-stream: 2.0.1
       logform: 2.2.0
       one-time: 1.0.0
       readable-stream: 3.6.0

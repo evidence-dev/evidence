@@ -2,10 +2,10 @@
 /** @typedef {typeof __propDef.events}  BarEvents */
 /** @typedef {typeof __propDef.slots}  BarSlots */
 export default class Bar extends SvelteComponentTyped<{
+    name?: any;
     y?: any;
     series?: any;
     options?: any;
-    name?: any;
     fillColor?: any;
     fillOpacity?: any;
     type?: string;
@@ -22,10 +22,10 @@ export type BarSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
+        name?: any;
         y?: any;
         series?: any;
         options?: any;
-        name?: any;
         fillColor?: any;
         fillOpacity?: any;
         type?: string;

@@ -427,7 +427,7 @@ let singleVal = [
 <Histogram data={binCheck2}/>
 <Histogram data={bc3}/>
 
-<BarChart data={textP} x=category y=complaints horiz=true/>
+<BarChart data={textP} x=category y=complaints swapXY=true/>
 
 <Histogram data={testH} x=a/>
 
@@ -465,12 +465,12 @@ The company has added <Value placeholder="number of employees"/> employees since
 <BubbleChart data={testData} x=x y=y size=y/>
 
 <h2>Bar Chart</h2>
-<BarChart data={testData} x=x y=y horiz={true}/>
-<BarChart data={countries} x=year y=value series=country yAxisTitle="long units string" horiz={true}/>
+<BarChart data={testData} x=x y=y swapXY={true}/>
+<BarChart data={countries} x=year y=value series=country yAxisTitle="long units string" swapXY={true}/>
 
 <h2>Column Chart</h2>
 <BarChart data={testData} x=x y=y/>
-<BarChart data={countries} x=year y=value series=country xType=category/>
+<BarChart data={countries} x=year y=value series=country/>
 <BarChart data={countries} x=year y=value series=country xType=category xAxisTitle="Created Year"/>
 
 <h2>Grouped Column Chart</h2>

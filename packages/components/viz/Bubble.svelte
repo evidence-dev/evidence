@@ -1,8 +1,9 @@
 <script>
     import { props, config } from '../modules/stores.js';   
-    import getSeriesConfig from '../modules/getSeriesConfig.js'
-    import getColumnExtents from '../modules/getColumnExtents'
-    import formatTitle from '../modules/formatTitle'
+    import getSeriesConfig from '../modules/getSeriesConfig.js';
+    import getColumnExtents from '../modules/getColumnExtents';
+    import formatTitle from '../modules/formatTitle';
+    import getCompletedData from '../modules/getCompletedData.js';
 
     export let y = undefined;
     export let series = undefined;
@@ -16,13 +17,13 @@
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
 
-    export let minSize = 50;
-    export let maxSize = 900;
+    export let minSize = 200;
+    export let maxSize = 400;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
     let x = $props.x;
-    let horiz = $props.horiz;
+    let swapXY = $props.swapXY;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
@@ -31,7 +32,11 @@
     let yMin = $props.yMin;
 
     if(!series && typeof y !== 'object'){
-        name = name ?? formatTitle(y, columnSummary[y].title)
+        // Single Series
+        name = name ?? formatTitle(y, columnSummary[y].title);
+    } else {
+        // Multi Series
+        data = getCompletedData(data, x, y, series);
     }
 
     // Determine bubble sizes:
@@ -75,23 +80,22 @@
 
     // Overriding global chart config:
     let chartOverrides = {
-         yAxis: { // vertical axis
+         yAxis: {
              scale: true,
-             min: yMin,
              boundaryGap: ['1%', '1%']
          },
-         xAxis: { // horizontal axis
-             boundaryGap: ['1%', '1%']
+         xAxis: {
+             boundaryGap: ['1%', '2%']
          }
     }
 
-    let seriesConfig = getSeriesConfig(data, x, y, series, horiz, baseConfig, name, xMismatch, columnSummary);
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
     config.update(d => {d.series.push(...seriesConfig); return d})
 
     if(chartOverrides){
         config.update(d => {
-            if(horiz){
+            if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
             } else {

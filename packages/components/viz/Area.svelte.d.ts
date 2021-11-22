@@ -3,12 +3,13 @@
 /** @typedef {typeof __propDef.slots}  AreaSlots */
 export default class Area extends SvelteComponentTyped<{
     line?: boolean;
+    name?: any;
     y?: any;
     series?: any;
     options?: any;
-    name?: any;
     fillColor?: any;
     fillOpacity?: any;
+    missing?: string;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -20,12 +21,13 @@ import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         line?: boolean;
+        name?: any;
         y?: any;
         series?: any;
         options?: any;
-        name?: any;
         fillColor?: any;
         fillOpacity?: any;
+        missing?: string;
     };
     events: {
         [evt: string]: CustomEvent<any>;

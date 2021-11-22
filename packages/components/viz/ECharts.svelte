@@ -19,3 +19,11 @@
     "
     use:echarts={config}
 />
+
+<style>
+  @media print {
+  .chart {
+    break-inside: avoid;
+  }
+}
+</style>
