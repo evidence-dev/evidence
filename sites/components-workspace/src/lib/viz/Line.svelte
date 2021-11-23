@@ -30,7 +30,7 @@
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
     series = series ?? $props.series;
-
+ 
     if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
@@ -78,10 +78,7 @@
              boundaryGap: ['0%', '1%']
          },
          xAxis: {
-             boundaryGap: ['0%', '2%']
-         },
-         tooltip: {
-             trigger: "axis"
+             boundaryGap: ['2%', '2%']
          }
      }
 
@@ -90,11 +87,9 @@
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             }
             return d})
     }

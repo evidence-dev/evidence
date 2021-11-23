@@ -81,6 +81,9 @@
              boundaryGap: ['1%', '1%'],
              scale: false,
              min: histData.data[0][2] // min of bin for first bin in hist dataset
+         },
+         tooltip: {
+             trigger: "item"
          }
      }
 
@@ -88,6 +91,7 @@
         config.update(d => {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis}; 
+                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip}; 
             return d
         })
     }

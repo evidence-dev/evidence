@@ -11,8 +11,12 @@ export default class Histogram extends SvelteComponentTyped<{
     yMin?: number;
     subtitle?: any;
     xAxisTitle?: any;
+    xBaseline?: any;
+    xTickMarks?: any;
     xGridlines?: any;
     yAxisTitle?: any;
+    yBaseline?: any;
+    yTickMarks?: any;
     yGridlines?: any;
 }, {
     [evt: string]: CustomEvent<any>;
@@ -33,8 +37,12 @@ declare const __propDef: {
         yMin?: number;
         subtitle?: any;
         xAxisTitle?: any;
+        xBaseline?: any;
+        xTickMarks?: any;
         xGridlines?: any;
         yAxisTitle?: any;
+        yBaseline?: any;
+        yTickMarks?: any;
         yGridlines?: any;
     };
     events: {

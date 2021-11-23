@@ -12,7 +12,6 @@
         import formatTitle from '$lib/modules/formatTitle.js';
         import ErrorChart from './ErrorChart.svelte';
         import checkInputs from '$lib/modules/checkInputs';
-        import getParsedDate from "$lib/modules/getParsedDate.js";
 
     // ---------------------------------------------------------------------------------------
     // Input Props
@@ -249,7 +248,7 @@ try{
 
         // Throw error if attempting to plot value or time on horizontal x-axis:
         if(swapXY && xType !== "category"){
-            throw Error("Horizontal charts do not support a value or time-based x-axis. Add xType=category to treat your x column as strings, or change your SQL query to output string values.")
+            throw Error("Horizontal charts do not support a value or time-based x-axis. You can either change your SQL query to output string values or set swapXY=false.")
         }
 
         // Override xType if axes are swapped - only category enabled on horizontal axis
@@ -355,7 +354,7 @@ try{
                     axisLabel: {
                         show: xAxisLabels,
                         hideOverlap: true,
-                        showMaxLabel: (xType === "category" ), // max label for ECharts' time axis is a stub - default for that is false
+                        showMaxLabel: (xType === "category" || xType === "value"), // max label for ECharts' time axis is a stub - default for that is false
                         formatter: 
                             xType === 'time' ? false :                         
                             function(value){
@@ -364,9 +363,6 @@ try{
                         margin: 6
                     },
                     scale: true,
-                    // splitNumber: 8,
-                    // boundaryGap: xType === "category" ? true : ['1%', '1%'],
-                    // min: xType !== "category" ? columnSummary[x].extents[0] < 10 && columnSummary[x].extents[0] > 0 ? 0 : null : null
             } 
         } 
 
@@ -496,7 +492,7 @@ try{
                 },
                 cursor: 'auto',
                 // Positioning (if swapXY, top right; otherwise bottom right)
-                right: swapXY ? '2%' : '1%',
+                right: swapXY ? '2%' : '3%',
                 top: swapXY ? topAxisTitleTop : null,
                 bottom: swapXY ? null: '2%'
             };
@@ -537,7 +533,7 @@ try{
             },       
             grid: {
                 left: "0.5%",
-                right: swapXY ? "4%" : "0%",
+                right: swapXY ? "4%" : "3%",
                 bottom: chartBottom,
                 top: chartTop,
                 containLabel: true,
@@ -547,14 +543,14 @@ try{
             series: [],
             animation: false,
             graphic: horizAxisTitleConfig,
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataView: {
-            //             show: true
-            //         }
-            //     }
-            // }
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: {
+                        show: true
+                    }
+                }
+            }
         };
 
         if(options){

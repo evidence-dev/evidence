@@ -12,6 +12,10 @@
     export let yAxisTitle = undefined;
     export let xGridlines = undefined;
     export let yGridlines = undefined;
+    export let xBaseline = undefined;
+    export let yBaseline = undefined;
+    export let xTickMarks = undefined;
+    export let yTickMarks = undefined;
     export let yMin = 0;
 
     export let fillColor = undefined;
@@ -30,6 +34,10 @@
     {yAxisTitle}
     {xGridlines}
     {yGridlines}
+    {xBaseline}
+    {yBaseline}
+    {xTickMarks}
+    {yTickMarks}
     {yMin}
     {title}
     {subtitle}

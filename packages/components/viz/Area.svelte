@@ -77,24 +77,19 @@
              boundaryGap: ['0%', '1%'],
          },
          xAxis: { 
-            boundaryGap: ['0%', '2%'],
+            boundaryGap: ['4%', '4%'],
             type: xType
-         },
-         tooltip: {
-             trigger: "axis"
          }
      }
 
     if(chartOverrides){
         config.update(d => {
             if(swapXY){
-                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis}; // THESE DON'T SEEM TO BE UPDATING CORRECTLY.
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             }
             return d})
     }

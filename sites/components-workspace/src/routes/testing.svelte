@@ -379,7 +379,6 @@ let stackOrd = [
     <Area/>
 </Chart>
 
-
 <Chart data={multy} swapXY=true>
     <Bar y=y1/>
     <Area y=y2/>
@@ -403,3 +402,5 @@ let stackOrd = [
 <BarChart data={dec}/>
 
 <BarChart data={stackOrd} series=series swapXY=true/>
+
+<AreaChart data={fed} x=established_date series=fed_reserve_district/>

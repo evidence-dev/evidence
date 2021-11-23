@@ -7,6 +7,12 @@
     import ScatterPlot from '$lib/viz/ScatterPlot.svelte'
     import DataTable from '$lib/viz/DataTable.svelte'
     import Value from '$lib/viz/Value.svelte'
+    import Chart from '$lib/viz/Chart.svelte'
+    import Line from '$lib/viz/Line.svelte'
+    import Bar from '$lib/viz/Bar.svelte'
+    import Area from '$lib/viz/Area.svelte'
+    import Scatter from '$lib/viz/Scatter.svelte'
+
 
 let full = 
 [
@@ -57,6 +63,12 @@ let nulls =
 <h1>Series Column with Numeric X Axis</h1>
 <h2>Line Chart</h2>
 <LineChart data={full} title="Full Data"/>
+<Chart data={full}>
+    <Scatter y=y2 opacity=1/>
+    <Line y=y3/>
+    <Bar y=y1 fillColor=maroon fillOpacity=0.3/>
+
+</Chart>
 <LineChart data={missingX} title="Missing X"/>
 <LineChart data={nulls}  title="Nulls"/>
 

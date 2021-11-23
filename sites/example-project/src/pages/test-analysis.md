@@ -1,4 +1,5 @@
 <script>
+
     let areatest = [
         {x: 10, y:16, y2: 23, y3: 12},
         {x: 11, y:3, y2: 23, y3: 15},
@@ -136,10 +137,13 @@ let banksFilledZero = [
     {fed_reserve_district: 'NY', established_date: '2021-01-01', banks: 0}
 ]
 
+let series = ['San Francisco', 'Atlanta', 'New York', 'Washington', 'Chicago', 'Kansas City', 'Dallas']
 
 </script>
 
-<AreaChart data={areatest} x=x y={['y', 'y2', 'y3']} xType=category/>
+<Chart data={areatest} xAxisTitle="Packages Delivered">
+    <Area y=y/>
+</Chart>
 
 # Test Analysis
 
@@ -176,9 +180,28 @@ group by fed_reserve_district, established_date
 
 <AreaChart data={data.dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1/>
 
+<Chart data={data.dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
+    <Scatter boundGapRight={['4%','4%']}/>
+</Chart>
+
 <AreaChart data={banks} x=established_date y=banks series=fed_reserve_district/>
 
 <AreaChart data={banksFilled} x=established_date y=banks series=fed_reserve_district/>
 
 <AreaChart data={banksFilledZero} x=established_date y=banks series=fed_reserve_district />
 
+
+```dates_num
+select fed_reserve_district, extract( year from established_date) as established_date, count(*) as banks 
+from `bigquery-public-data.fdic_banks.institutions`
+group by fed_reserve_district, established_date
+```
+
+
+{#each series as series}
+
+{series}
+
+<AreaChart data={data.dates_state.filter(d => d.fed_reserve_district === series)} x=established_date missing=zero/>
+
+{/each}
