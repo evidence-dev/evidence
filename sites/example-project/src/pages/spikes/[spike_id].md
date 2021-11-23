@@ -7,8 +7,6 @@ Call volume was <Value value={spike[0].number_of_complaints/spike[0].rolling_std
 
 <Histogram data={daily_complaints_by_category} x=number_of_complaints xAxisTitle="Calls per day, last 365 days" units="days"/>
 
-<Line/>
-
 ```spikes
     with daily_complaints_by_category as (
         select 

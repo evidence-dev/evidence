@@ -543,14 +543,6 @@ try{
             series: [],
             animation: false,
             graphic: horizAxisTitleConfig,
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: {
-                        show: true
-                    }
-                }
-            }
         };
 
         if(options){

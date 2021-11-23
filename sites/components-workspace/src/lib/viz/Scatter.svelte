@@ -20,6 +20,7 @@
     let data = $props.data;
     let x = $props.x;
     let swapXY = $props.swapXY;
+    let xType = $props.xType;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
@@ -67,7 +68,7 @@
              boundaryGap: ['1%', '1%']
          },
          xAxis: {
-             boundaryGap: ['1%', '2%']
+             boundaryGap: [xType === "time" ? '0%' : '1%', '2%']
          }
      }
 
