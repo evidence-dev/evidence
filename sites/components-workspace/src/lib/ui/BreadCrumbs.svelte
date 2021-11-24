@@ -59,10 +59,11 @@
     }
     a{
         text-decoration: none;
-        color: #3e3e3e;
+        color: var(--grey-700);
     }
     a:hover{
-        color:black;
+        color:var(--grey-999);
+        transition:0.2s
     }
 
     span.dev-controls {
@@ -70,10 +71,10 @@
         text-align: center;
         margin: 0 0 0 1.5em; 
         padding: 0.05em 0.25em 0.05em 0.25em;
-        border: 1px solid #c0c0c0;
+        border: 1px solid var(--grey-300);
         border-radius: 3px;
         font-size: 0.8em;
-        color: #3e3e3e;
+        color: var(--grey-900);
         cursor: pointer;
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -83,12 +84,12 @@
     }
 
     span.dev-controls:hover{
-        box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
+        box-shadow: 0 5px 5px 2px var(--grey-100);
         transition:all 350ms;
     }
 
     span.dev-controls.show{
-		background: -webkit-linear-gradient(315deg, #046ade 0%, #08a86d 75%);
+		background: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);
         text-decoration: none;
 		-webkit-background-clip: text;
         background-clip: text;

@@ -20,7 +20,7 @@
 	}
 
 	div.nav-container a {
-		color:#2d2d2d;
+		color:var(--grey-999);
 		display: inline-block;
 		text-align: center;
 		text-decoration: none;
@@ -48,7 +48,7 @@
 		content: '';
 		width: calc(100% - 1em);
 		height: 2px;
-		background: -webkit-linear-gradient(315deg, #0875ce 0%, #08a86d 75%);
+		background: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);
 		display: block;
 		bottom: -2px;
 	}

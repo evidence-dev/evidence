@@ -8,6 +8,7 @@
   "exports": {
     "./package.json": "./package.json",
     "./modules/checkInputs": "./modules/checkInputs.js",
+    "./modules/colours": "./modules/colours.js",
     "./modules/echarts": "./modules/echarts.js",
     "./modules/formatAxisLabel": "./modules/formatAxisLabel.js",
     "./modules/formatTitle": "./modules/formatTitle.js",

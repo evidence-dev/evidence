@@ -53,6 +53,14 @@
             labelLayout: { hideOverlap: true },
             emphasis: {
                 focus: "series",
+                endLabel: {
+                    show: false
+                } ,
+                lineStyle: {
+                    opacity: 1,
+                    width: 3
+
+                }
             },
             lineStyle: {
                 width: parseInt(lineWidth),
