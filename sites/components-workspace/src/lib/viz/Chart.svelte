@@ -12,6 +12,7 @@
         import formatTitle from '$lib/modules/formatTitle.js';
         import ErrorChart from './ErrorChart.svelte';
         import checkInputs from '$lib/modules/checkInputs';
+        import {colours} from '$lib/modules/colours'
 
     // ---------------------------------------------------------------------------------------
     // Input Props
@@ -512,16 +513,18 @@ try{
                 trigger: "axis",
                 confine: true,
                 axisPointer: {
-                    // Use axis to trigger tooltip
+                    // Use axis to trigger tooltip 
                     type: "shadow", // 'shadow' as default; can also be 'line' or 'shadow'
+
                 },
                 padding: 6,
                 borderRadius: 4, 
                 borderWidth: 1,
-                borderColor: '#c4c4c4',
-                backgroundColor: '#f0f0f0',
+                borderColor: colours.grey400,
+                backgroundColor: 'white',
+                extraCssText: 'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12)',
                 textStyle: {
-                    color: '#3d3d3d',
+                    color: colours.grey900,
                     fontSize: 12
                 }
             },
