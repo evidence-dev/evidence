@@ -73,7 +73,7 @@ top_complaints as (
     from `bigquery-public-data.austin_311.311_service_requests` 
     group by 1
     order by 2 desc 
-    limit 6
+    limit 16
 )
 
 select 

@@ -544,8 +544,8 @@ try{
             xAxis: horizAxisConfig,
             yAxis: verticalAxisConfig,
             series: [],
-            animation: false,
-            graphic: horizAxisTitleConfig,
+            animation: true,
+            graphic: horizAxisTitleConfig
         };
 
         if(options){
