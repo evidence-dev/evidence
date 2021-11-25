@@ -66,7 +66,7 @@ module.exports = {
             },
             {
               label: 'Components',
-              to: '/components/value',
+              to: '/components/text-components/value',
             },
             {
               label: 'Formatting',

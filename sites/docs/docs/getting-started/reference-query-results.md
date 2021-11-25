@@ -21,9 +21,9 @@ This notation is what will be used to pass query results to Evidence components.
 ## How to Use Evidence Components
 Evidence components require a reference to a query result and arguments specific to the component you're using. You can find a list of components and their arguments in the Components section.
 
-We'll use Evidence's [<span class="gradient">**&lt;Value/>**</span>](/components/value) component as an example. 
+We'll use Evidence's [<span class="gradient">**&lt;Value/>**</span>](/components/text-components/value) component as an example. 
 
-[<span class="gradient">**&lt;Value/>**</span>](/components/value) lets you include the result of a query directly in the text on your page.
+[<span class="gradient">**&lt;Value/>**</span>](/components/text-components/value) lets you include the result of a query directly in the text on your page.
 
 Under the `data_sample` query you wrote in the last section, paste the code below:
 
