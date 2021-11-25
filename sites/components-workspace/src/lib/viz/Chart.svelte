@@ -526,7 +526,8 @@ try{
                 textStyle: {
                     color: colours.grey900,
                     fontSize: 12
-                }
+                },
+                order:'valueDesc'
             },
             legend: {
                 show: legend,
