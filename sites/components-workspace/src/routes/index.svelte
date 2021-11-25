@@ -457,7 +457,7 @@ The company has added <Value placeholder="number of employees"/> employees since
 
 
 <h2>Area Chart</h2>
-<AreaChart data={testData} x=x y=y/>
+<AreaChart data={testData} x=x y=y title='Testing!'/>
 
 <AreaChart data={pctTest} x=x y=y_pct/>
 

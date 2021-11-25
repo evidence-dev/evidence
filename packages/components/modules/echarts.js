@@ -1,4 +1,6 @@
 import * as echarts from 'echarts';
+import {colours} from './colours'
+
 
 export default(node, option, renderer) => {
 
@@ -11,37 +13,31 @@ export default(node, option, renderer) => {
             "containLabel": true,
         },
         "color": [
-            "#3e6180",
-            // "#345673",
-            "#5492c4",
-            // "#4783b3",
-            "#91c0e6",
-            "#b1b7bd",
-            // "#90999e",
-            // "#8e9ba3",
-            // "#436175",
-            "#923d59",
-            "#488f96",
-            "#518eca",
-            "#b3a9a0",
-            "#ffc857",
-            "#495867",
-            "#bfdbf7",
-            "#bc4749",
-            "#eeebd0"
+            "hsla(207, 65%, 39%, 1)", // Navy
+            "hsla(195, 49%, 51%, 1)", // Teal 
+            "hsla(207, 69%, 79%, 1)", // Light Blue 
+            "hsla(202, 28%, 65%, 1)", // Grey
+            "hsla(179, 37%, 65%, 1)", // Light Green 
+            "hsla(40, 30%, 75%, 1)", // Tan 
+            "hsla(38, 89%, 62%, 1)", // Yellow 
+            "hsla(342, 40%, 40%, 1)", // Maroon 
+            "hsla(207, 86%, 70%, 1)", // Blue 
+            "hsla(160, 40%, 46%, 1)", // Green 
+            // Grey Scale
+            '#71777d', '#7e848a', '#8c9196', '#9a9fa3', '#a8acb0', '#b7babd', '#c5c8ca', '#d4d6d7', '#e3e4e5', '#f3f3f3'
         ],
-        "backgroundColor": "rgba(0,0,0,0)",
+        "backgroundColor": "rgba(255, 255, 255, 0)",
         "textStyle": {},
         "title": {
             "padding": 0,
             "itemGap": 7,
             "textStyle": {
                 "fontSize": 14,
-                "color": '#484d4f'
+                "color": colours.grey700
             },
             "subtextStyle": {
                 "fontSize": 13,
-                "color": '#484d4f',
+                "color": colours.grey600,
                 "overflow": "break"
             },
             "top": '0%'
@@ -51,7 +47,8 @@ export default(node, option, renderer) => {
                 "borderWidth": 0
             },
             "lineStyle": {
-                "width": 3
+                "width": 2,
+                "join": 'round'
             },
             "symbolSize": 0,
             "symbol": "circle",
@@ -70,7 +67,7 @@ export default(node, option, renderer) => {
         },
         "bar": {
             "itemStyle": {
-                "barBorderWidth": 0,
+                "barBorderWidth": 1,
                 "barBorderColor": "#cccccc"
             },
         },
@@ -196,7 +193,7 @@ export default(node, option, renderer) => {
             "axisLine": {
                 "show": true,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey500
                 }
 			            },
             "axisTick": {
@@ -233,7 +230,7 @@ export default(node, option, renderer) => {
             "axisLine": {
                 "show": false,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey500
                 }
             },
             "axisTick": {
@@ -245,14 +242,14 @@ export default(node, option, renderer) => {
             },
             "axisLabel": {
                 "show": true,
-                "color": "#6E7079"
+                "color": colours.grey500
             },
             "splitLine": {
                 "show": true,
                 "lineStyle": {
                     "color": [
                         // "#E0E6F1"
-                        '#ebf2f7'
+                        colours.grey200
                         // '#ebf4fa'
                         // '#f0f1f2'
                     ],
@@ -311,7 +308,7 @@ export default(node, option, renderer) => {
             "axisLine": {
                 "show": true,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey400
                 }
             },
             "axisTick": {
@@ -364,8 +361,8 @@ export default(node, option, renderer) => {
                 "horizontal": ['M 17 3 h 2 c 0.386 0 0.738 0.223 0.904 0.572 s 0.115 0.762 -0.13 1.062 L 11.292 15 l 8.482 10.367 c 0.245 0.299 0.295 0.712 0.13 1.062 S 19.386 27 19 27 h -2 c -0.3 0 -0.584 -0.135 -0.774 -0.367 l -9 -11 c -0.301 -0.369 -0.301 -0.898 0 -1.267 l 9 -11 C 16.416 3.135 16.7 3 17 3 Z', 
                 'M 12 27 h -2 c -0.386 0 -0.738 -0.223 -0.904 -0.572 s -0.115 -0.762 0.13 -1.062 L 17.708 15 L 9.226 4.633 c -0.245 -0.299 -0.295 -0.712 -0.13 -1.062 S 9.614 3 10 3 h 2 c 0.3 0 0.584 0.135 0.774 0.367 l 9 11 c 0.301 0.369 0.301 0.898 0 1.267 l -9 11 C 12.584 26.865 12.3 27 12 27 Z']
             },
-            "pageIconColor": "grey",
-            "pageIconSize": 15,
+            "pageIconColor": colours.grey600,
+            "pageIconSize": 12,
             "pageTextStyle": {
                 "color": "grey",
             },

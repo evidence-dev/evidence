@@ -108,6 +108,11 @@
 
     if(chartOverrides){
         config.update(d => {
+            if(type === "stacked"){
+                d.tooltip = {...d.tooltip, order: 'seriesDesc'} 
+            } else {
+                d.tooltip = {...d.tooltip, order: 'seriesAsc'} 
+            }
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
