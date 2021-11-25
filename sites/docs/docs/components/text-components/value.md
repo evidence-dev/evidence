@@ -48,10 +48,6 @@ If you like to mock up reports before you're ready to fill in real data, you can
 
 ![value-placeholder](/img/value-placeholder.png)
 
-:::note
-Evidence's component tags need to be closed using `/>` (same as HTML tags)
-:::
-
 
 
 

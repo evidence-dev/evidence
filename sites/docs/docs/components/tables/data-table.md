@@ -25,10 +25,6 @@ hide_table_of_contents: false
 ### Formatting
 Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/formatting/format-tags) section for more details.
 
-:::note
-Evidence's component tags need to be closed using `/>` (same as HTML tags)
-:::
-
 
 
 
