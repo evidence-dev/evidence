@@ -52,7 +52,7 @@
             },
             connectNulls: (missing === "connect"),
             lineStyle: {
-                width: line ? 1.5 : 0
+                width: line ? 1 : 0
             },
             label: {
                 show: false,
@@ -79,11 +79,12 @@
          xAxis: { 
             boundaryGap: ['4%', '4%'],
             type: xType
-         }
+         },
      }
 
     if(chartOverrides){
         config.update(d => {
+            d.tooltip = {...d.tooltip, order: 'seriesDesc'} // Areas always stacked 
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
@@ -91,6 +92,7 @@
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
             }
+            console.log(d.tooltip)
             return d})
     }
 
