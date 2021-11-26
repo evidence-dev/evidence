@@ -175,10 +175,12 @@ order by established_date asc
 ```dates_state
 select fed_reserve_district, date_trunc(established_date, year) as established_date, count(*) as banks 
 from `bigquery-public-data.fdic_banks.institutions`
+where established_date >= '1960-01-01'
+and established_date <= '2005-01-01'
 group by fed_reserve_district, established_date
 ```
 
-<AreaChart data={data.dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1/>
+<AreaChart data={data.dates_state} x=established_date y=banks series=fed_reserve_district/>
 
 <Chart data={data.dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
     <Scatter boundGapRight={['4%','4%']}/>

@@ -56,6 +56,7 @@ const createDefaultProps = function(filename){
         import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
         import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
         import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
+        import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
         `
     if(hasQueries(filename)){
         defaultProps = `
@@ -77,6 +78,7 @@ const createDefaultProps = function(filename){
             import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
             import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
             import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
+            import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
             `
     }
     return defaultProps

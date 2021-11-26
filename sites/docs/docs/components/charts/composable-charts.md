@@ -173,21 +173,26 @@ You can combine multiple components inside a single `<Chart>` to create mixed-ty
 ## Examples
 
 ### Combined Chart
-![echarts](/img/echarts-sample.svg) 
+This example uses multiple y columns and multiple series types (bar and line)
+
+![composable](/img/exg-composable-multi-type-nt.svg) 
 
 ```markdown
-<Chart data={data.query_name}>
-    <Bar/>
-    <Line/>
+<Chart data={data.fda_recalls}>
+    <Bar y=voluntary_recalls/>
+    <Line y=fda_recalls/>
 </Chart>
 ```
 
-### Multiple y Columns
-![echarts](/img/echarts-sample.svg) 
+Because x is the first column in the dataset, an explicit `x` prop is not required.
+
+This structure also gives you control over the individual series on your chart. For example, if you have a single series running through a component, you can override props specifically for that series. Since the FDA acronym was not fully capitalized above, you can rename that specific series inside the `<Line>` primitive:
+
+![composable-name-override](/img/exg-composable-name-override-nt.svg)
 
 ```markdown
-<Chart data={data.query_name}>
-    <Bar y=sales/>
-    <Line y=gross_profit/>
+<Chart data={data.fda_recalls}>
+    <Bar y=voluntary_recalls/>
+    <Line y=fda_recalls name="FDA Recalls"/>
 </Chart>
 ```

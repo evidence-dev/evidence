@@ -199,20 +199,20 @@ export default(node, option, renderer) => {
             "axisTick": {
                 "show": false,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey500
                 },
                 "length": 3,
                 "alignWithLabel": true
             },
             "axisLabel": {
                 "show": true,
-                "color": "#6E7079"
+                "color": colours.grey500
             },
             "splitLine": {
                 "show": false,
                 "lineStyle": {
                     "color": [
-                        "#E0E6F1"
+                        colours.grey200
                     ]
                 }
             },
@@ -236,7 +236,7 @@ export default(node, option, renderer) => {
             "axisTick": {
                 "show": false,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey500
                 },
                 "length": 2
             },
@@ -248,10 +248,7 @@ export default(node, option, renderer) => {
                 "show": true,
                 "lineStyle": {
                     "color": [
-                        // "#E0E6F1"
                         colours.grey200
-                        // '#ebf4fa'
-                        // '#f0f1f2'
                     ],
 					"width": 1
                 }
@@ -270,27 +267,25 @@ export default(node, option, renderer) => {
             "axisLine": {
                 "show": false,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey500
                 }
             },
             "axisTick": {
                 "show": false,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey500
                 },
                 "length": 2
             },
             "axisLabel": {
                 "show": true,
-                "color": "#6E7079"
+                "color": colours.grey500
             },
             "splitLine": {
                 "show": true,
                 "lineStyle": {
                     "color": [
-                        // "#E0E6F1"
-                        // '#ebf2f7'
-                        '#ebf4fa'
+                        colours.grey200
                     ]
                 }
             },
@@ -308,25 +303,25 @@ export default(node, option, renderer) => {
             "axisLine": {
                 "show": true,
                 "lineStyle": {
-                    "color": colours.grey400
+                    "color": colours.grey500
                 }
             },
             "axisTick": {
                 "show": true,
                 "lineStyle": {
-                    "color": "#6E7079"
+                    "color": colours.grey500
                 },
                 "length": 3
             },
             "axisLabel": {
                 "show": true,
-                "color": "#6E7079"
+                "color": colours.grey500
             },
             "splitLine": {
                 "show": false,
                 "lineStyle": {
                     "color": [
-                        "#E0E6F1"
+                        colours.grey200
                     ]
                 }
             },
@@ -353,7 +348,7 @@ export default(node, option, renderer) => {
         "legend": {
             "textStyle": {
                 "padding": [0,0,0,-7],
-                "color": "#6E7079"
+                "color": colours.grey500
             },
             // "padding": [15,0,0,0],
             "icon": "circle",

@@ -13,7 +13,7 @@ export default class AreaChart extends SvelteComponentTyped<{
     series?: any;
     fillColor?: any;
     fillOpacity?: any;
-    missing?: any;
+    handleMissing?: any;
     yMin?: any;
     subtitle?: any;
     xAxisTitle?: any;
@@ -45,7 +45,7 @@ declare const __propDef: {
         series?: any;
         fillColor?: any;
         fillOpacity?: any;
-        missing?: any;
+        handleMissing?: any;
         yMin?: any;
         subtitle?: any;
         xAxisTitle?: any;

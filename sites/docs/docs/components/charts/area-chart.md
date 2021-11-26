@@ -7,7 +7,7 @@ hide_table_of_contents: false
 # AreaChart
 <h1 class="community-header"><span class="gradient">&lt;AreaChart/></span></h1>
 
-![echarts](/img/echarts-sample.svg) 
+![area](/img/exg-area-nt.svg) 
 
 ```markdown
 <AreaChart 
@@ -59,23 +59,24 @@ hide_table_of_contents: false
 ## Examples
 
 ### Area
-![echarts](/img/echarts-sample.svg) 
+![area](/img/exg-area-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<AreaChart 
+    data={data.fed_reserve_district_sf} 
+    x=established_date 
+    y=banks_created
 />
 ```
 
 ### Stacked Area
-![echarts](/img/echarts-sample.svg) 
+![stacked-area](/img/exg-stacked-area-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<AreaChart 
+    data={data.fed_reserve_district}  
+    x=established_date 
+    y=banks_created
+    series=fed_reserve_district
 />
 ```

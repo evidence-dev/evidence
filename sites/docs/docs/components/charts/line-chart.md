@@ -7,7 +7,7 @@ hide_table_of_contents: false
 # LineChart
 <h1 class="community-header"><span class="gradient">&lt;LineChart/></span></h1>
 
-![echarts](/img/echarts-sample.svg) 
+![line](/img/exg-line-nt.svg) 
 
 ```markdown
 <LineChart 
@@ -62,34 +62,46 @@ hide_table_of_contents: false
 ## Examples
 
 ### Line
-![echarts](/img/echarts-sample.svg) 
+![line](/img/exg-line-nt.svg) 
 
 ```markdown
 <LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+    data={data.daily_complaints} 
+    x=date 
+    y=number_of_complaints 
+    yAxisTitle="calls to Austin 311 per day"
 />
 ```
 
 ### Multi-Series Line
-![echarts](/img/echarts-sample.svg) 
+![multi-series-line](/img/exg-multi-series-line-nt.svg) 
 
 ```markdown
 <LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+    data={data.daily_volume_yoy} 
+    x=day_of_year 
+    y=cum_vol 
+    series=year 
+    yAxisTitle="cumulative calls" 
+    xAxisTitle="day of year"
 />
 ```
 
 ### Multiple y Columns
-![echarts](/img/echarts-sample.svg) 
+![multiple-y-line](/img/exg-multiple-y-line-nt.svg) 
 
 ```markdown
 <LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+    data={data.fda_recalls}  
+    x=year
+    y={["voluntary_recalls", "fda_recalls"]}
 />
 ```
+
+Because x is the first column in the dataset and we want to plot all the remaining numerical columns in the table, we can simplify our code down to:
+
+```markdown
+<LineChart data={data.fda_recalls}/>
+```
+
+Evidence will automatically pick the first column as `x` and use all other numerical columns for `y`.

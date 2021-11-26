@@ -7,7 +7,7 @@ hide_table_of_contents: false
 # Histogram
 <h1 class="community-header"><span class="gradient">&lt;Histogram/></span></h1>
 
-![echarts](/img/echarts-sample.svg) 
+![histogram](/img/exg-histogram-nt.svg) 
 
 ```markdown
 <Histogram
@@ -52,12 +52,12 @@ hide_table_of_contents: false
 ## Examples
 
 ### Histogram
-![echarts](/img/echarts-sample.svg) 
+![histogram](/img/exg-histogram-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<Histogram 
+    data={data.complaints_by_day_dept} 
+    x=complaints 
+    xAxisTitle="Daily Calls"
 />
 ```

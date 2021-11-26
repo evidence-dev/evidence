@@ -92,7 +92,6 @@
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
             }
-            console.log(d.tooltip)
             return d})
     }
 

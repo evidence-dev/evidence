@@ -7,7 +7,7 @@ hide_table_of_contents: false
 # ScatterPlot
 <h1 class="community-header"><span class="gradient">&lt;ScatterPlot/></span></h1>
 
-![scatter-plot](/img/echarts-sample.svg) 
+![scatter-plot](/img/exg-scatter-nt.svg) 
 
 ```markdown
 <ScatterPlot 
@@ -60,23 +60,28 @@ hide_table_of_contents: false
 ## Examples
 
 ### Scatter Plot
-![echarts](/img/echarts-sample.svg) 
+![scatter-plot](/img/exg-scatter-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<ScatterPlot 
+    data={data.census} 
+    y=median_rent_usd 
+    x=income_per_capita_usd 
+    xAxisTitle="Income Per Capita" 
+    yAxisTitle="Median Rent" 
 />
 ```
 
 ### Multi-Series Scatter Plot
-![echarts](/img/echarts-sample.svg) 
+![scatter-plot](/img/exg-multi-series-scatter-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<ScatterPlot 
+    data={data.scores_by_region} 
+    x=score_a 
+    y=score_b 
+    series=region 
+    xAxisTitle=true 
+    yAxisTitle=true
 />
 ```

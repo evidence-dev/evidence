@@ -143,7 +143,7 @@ article {
 
 .gallery {
   width: 49%;
-  height: 100%;
+  height: 250px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
   overflow: hidden;
@@ -152,12 +152,18 @@ article {
   display: block;
   float: left;
   padding: 8px;
+  text-align: center;
   padding-top: 6px;
   margin-right: 1%;
-  margin-top: 1%;
   padding-bottom: 0px;
   box-shadow: 1px 1px 4px #d4d4d4;
   background-color: white;
+}
+
+@media screen and (max-width: 500px){
+  .gallery {
+    width: 100%;
+  }
 }
 
 .gallery:hover {
@@ -174,15 +180,15 @@ article {
 
 .lbl {
   padding-top: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 10px;
   margin-bottom: 2px;
   margin-top: 0;
-  font-size: 0.75em;
+  font-size: 0.9em;
   font-weight: 600;
   /* color: #3d3d3d; */
-  background: -webkit-linear-gradient(315deg, #046ade 0%, #08a86d 25%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* background: -webkit-linear-gradient(315deg, #046ade 0%, #08a86d 25%); */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
 }
 
 p {

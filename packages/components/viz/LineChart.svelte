@@ -30,7 +30,7 @@
     export let markerShape = undefined;
     export let markerSize = undefined;
 
-    export let missing = undefined;
+    export let handleMissing = undefined;
 
     export let sort = undefined;
 
@@ -67,6 +67,6 @@
         {markers}
         {markerShape}
         {markerSize}
-        {missing}
+        {handleMissing}
     />
 </Chart>

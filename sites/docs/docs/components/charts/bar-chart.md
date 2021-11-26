@@ -7,7 +7,7 @@ hide_table_of_contents: false
 # BarChart
 <h1 class="community-header"><span class="gradient">&lt;BarChart/></span></h1>
 
-![echarts](/img/echarts-sample.svg) 
+![bar](/img/exg-bar-nt.svg) 
 
 ```markdown
 <BarChart 
@@ -58,76 +58,98 @@ hide_table_of_contents: false
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 </table>												
 
-
-## Smart Defaults
-If you create a bar chart with many x-axis items (e.g., names of departments), Evidence will extend the height of the chart for you to avoid the bars becoming squished.
-
-![bar-chart-long](/img/bar-chart-long.png)
-
 ## Examples
 
 ### Bar
-![echarts](/img/echarts-sample.svg) 
+![bar](/img/exg-bar-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
-/>
-```
-
-### Stacked Bar
-![echarts](/img/echarts-sample.svg) 
-
-```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
-/>
-```
-
-### Grouped Bar
-![echarts](/img/echarts-sample.svg) 
-
-```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<BarChart 
+    data={data.value_by_region} 
+    x=region
+    y=value 
+    xAxisTitle=Region
 />
 ```
 
 ### Horiztonal Bar
-![echarts](/img/echarts-sample.svg) 
+![bar](/img/exg-horizontal-bar-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<BarChart 
+    data={data.value_by_region}
+    x=country 
+    y=value 
+    swapXY=true
+/>
+```
+
+### Stacked Bar
+![bar](/img/exg-stacked-bar-nt.svg) 
+
+```markdown
+<BarChart 
+    data={data.annual_value_by_region} 
+    x=year 
+    y=value 
+    series=region
 />
 ```
 
 ### Horiztonal Stacked Bar
-![echarts](/img/echarts-sample.svg) 
+![bar](/img/exg-horizontal-stacked-bar-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<BarChart 
+    data={data.annual_value_by_region} 
+    swapXY=true 
+    x=year 
+    y=value 
+    series=region 
+    xType=category 
+    sort=false
+/>
+```
+
+### Grouped Bar
+![bar](/img/exg-grouped-bar-nt.svg) 
+
+```markdown
+<BarChart 
+    data={data.annual_value_by_region} 
+    x=year 
+    y=value 
+    series=region 
+    type=grouped
 />
 ```
 
 ### Horiztonal Grouped Bar
-![echarts](/img/echarts-sample.svg) 
+![bar](/img/exg-horizontal-grouped-bar-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<BarChart 
+    data={data.annual_value_by_region} 
+    swapXY=true 
+    x=year 
+    y=value 
+    series=region 
+    type=grouped 
+    xType=category
+/>
+```
+
+### Long Bar Chart
+If you create a bar chart with many x-axis items (e.g., names of departments), Evidence will extend the height of the chart for you to avoid the bars becoming squished. See Long Bar example below.
+
+![long-bar](/img/exg-long-bar.svg) 
+
+```markdown
+<BarChart 
+    data={complaints_by_category} 
+    x=category 
+    y=complaints 
+    swapXY=true 
+    yAxisTitle="Calls Received" 
 />
 ```

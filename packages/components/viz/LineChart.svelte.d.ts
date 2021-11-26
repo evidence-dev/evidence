@@ -10,7 +10,7 @@ export default class LineChart extends SvelteComponentTyped<{
     xType?: any;
     y?: any;
     series?: any;
-    missing?: any;
+    handleMissing?: any;
     yMin?: any;
     subtitle?: any;
     xAxisTitle?: any;
@@ -46,7 +46,7 @@ declare const __propDef: {
         xType?: any;
         y?: any;
         series?: any;
-        missing?: any;
+        handleMissing?: any;
         yMin?: any;
         subtitle?: any;
         xAxisTitle?: any;

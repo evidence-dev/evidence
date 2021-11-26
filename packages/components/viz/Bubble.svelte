@@ -17,8 +17,8 @@
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
 
-    export let minSize = 200;
-    export let maxSize = 400;
+    export let minSize = 10;
+    export let maxSize = 35;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
@@ -42,18 +42,19 @@
 
     // Determine bubble sizes:
     let sizeExtents = getColumnExtents(data, size);
-
     let dataRange = sizeExtents[1] - sizeExtents[0];
     let minData = sizeExtents[0];
-
+    let minSizeSq;
+    let maxSizeSq;
     function bubbleSize(newPoint){
-        minSize = minSize ^ 2
-        maxSize = maxSize ^ 2
-        let sizeRange = maxSize - minSize;
+        minSizeSq = Math.pow(minSize, 2);
+        maxSizeSq = Math.pow(maxSize, 2);
+        let sizeRange = maxSizeSq - minSizeSq;
         
         return Math.sqrt(((newPoint - minData) / dataRange) * sizeRange + minSize)
     }
     
+
     let baseConfig = {
             type: "scatter",
             label: {

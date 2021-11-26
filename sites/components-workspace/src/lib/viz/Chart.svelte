@@ -452,7 +452,7 @@ try{
         legendHeight = 15;
         legendHeight = legendHeight * hasLegend;
 
-        legendPaddingTop = 10;
+        legendPaddingTop = 7;
         legendPaddingTop = legendPaddingTop * Math.max(hasTitle, hasSubtitle);
 
         legendTop = titleBoxHeight + legendPaddingTop;

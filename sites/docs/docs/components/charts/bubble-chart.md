@@ -7,7 +7,7 @@ hide_table_of_contents: false
 # BubbleChart
 <h1 class="community-header"><span class="gradient">&lt;BubbleChart/></span></h1>
 
-![echarts](/img/echarts-sample.svg) 
+![bubble](/img/exg-multi-series-bubble-nt.svg) 
 
 ```markdown
 <BubbleChart 
@@ -64,23 +64,30 @@ hide_table_of_contents: false
 ## Examples
 
 ### Bubble
-![echarts](/img/echarts-sample.svg) 
+![bubble](/img/exg-bubble-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
-/>
+<BubbleChart 
+    data={data.simple_example} 
+    x=x 
+    y=y 
+    size=size 
+    xAxisTitle=true 
+    yAxisTitle=true
+/> 
 ```
 
 ### Multi-Series Bubble
-![echarts](/img/echarts-sample.svg) 
+![bubble](/img/exg-multi-series-bubble-nt.svg) 
 
 ```markdown
-<LineChart 
-    data={data.query_name}  
-    x=column_x 
-    y=column_y
+<BubbleChart 
+    data={data.scores_by_region} 
+    x=score_a 
+    y=score_b 
+    size=size 
+    series=region 
+    xAxisTitle=true 
+    yAxisTitle=true
 />
 ```

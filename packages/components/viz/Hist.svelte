@@ -75,7 +75,10 @@
 
     let chartOverrides = {
          yAxis: { // vertical axis
-             boundaryGap: ['0%','1%']
+             boundaryGap: ['0%','1%'],
+             axisLabel: {
+                 formatter: null
+             }
          },
          xAxis: { // horizontal axis
              boundaryGap: ['1%', '1%'],

@@ -9,7 +9,7 @@ export default class Area extends SvelteComponentTyped<{
     options?: any;
     fillColor?: any;
     fillOpacity?: any;
-    missing?: string;
+    handleMissing?: string;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -27,7 +27,7 @@ declare const __propDef: {
         options?: any;
         fillColor?: any;
         fillOpacity?: any;
-        missing?: string;
+        handleMissing?: string;
     };
     events: {
         [evt: string]: CustomEvent<any>;

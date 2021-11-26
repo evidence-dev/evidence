@@ -6,7 +6,7 @@ export default class Line extends SvelteComponentTyped<{
     y?: any;
     series?: any;
     options?: any;
-    missing?: string;
+    handleMissing?: string;
     lineColor?: any;
     lineWidth?: number;
     lineType?: string;
@@ -28,7 +28,7 @@ declare const __propDef: {
         y?: any;
         series?: any;
         options?: any;
-        missing?: string;
+        handleMissing?: string;
         lineColor?: any;
         lineWidth?: number;
         lineType?: string;
