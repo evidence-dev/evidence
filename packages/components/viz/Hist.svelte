@@ -1,155 +1,102 @@
 <script>
-import { extent } from 'd3-array';
-import * as d3 from 'd3';
-import {tidy, arrange, groupBy, summarize, n, rename, mutate, replaceNully} from '@tidyjs/tidy'
-import getThresholds from '../modules/getThresholds.js'
+    import { props, config } from '../modules/stores.js';   
+    import ecStat from 'echarts-stat';
+    import getDistinctValues from '../modules/getDistinctValues.js';
 
-import Chart from './Chart.svelte'
-import Column from './Column.svelte'
-import XAxis from './XAxis.svelte'
-import YAxis from './YAxis.svelte'
-import ErrorChart from './ErrorChart.svelte'
-import checkInputs from '../modules/checkInputs.js';
-  
-// Chart Area:
-let height = undefined;
-let width = undefined;
+    export let x = undefined;
 
-// Input Data (chart only needs values from the supplied column):
-export let data;
-export let x = null;
+    export let fillColor = undefined;
+    export let fillOpacity = 1;
 
-// Output Data Names:
-// Columns in output dataset will be [x], binMax, and frequency. [x] serves as the 'binMin',
-// but uses the actual column name to obtain the user's formatting (and name for potential axis titling in future)
-let y = 'frequency';
+    // Prop check. If local props supplied, use those. Otherwise fall back to global props.
+    let data = $props.data;
+    x = x ?? $props.x;
 
-// Bin Props:
-export let binCount = null;
+    // Determine right method to use based on distinct x values (echarts-stat limitation causes some errors otherwise)
+    let method;
+    let xDistinct = getDistinctValues(data, x).filter(function(x){
+        return x != null;
+    });
+    let xMax = Math.max(...xDistinct);
 
-// Axis Bounds:
-export let yMin = null;
-let yMax = null;
-let xMin = null;
-let xMax = null;
-
-// Axis Baselines:
-let xBaseline = undefined;
-let yBaseline = undefined;
-
-// Gridlines:
-export let xGridlines = "false";
-export let yGridlines = "true";
-
-// Axis Ticks:
-let xTickCount = undefined;
-let xTickMarks = null;
-
-// Labels:
-export let units = "";
-export let xAxisTitle = "";
-
-// Styling:
-export let fillColor = undefined;
-export let fillTransparency = undefined;
-
-let finalData = [];
-let thresh;
-
-let error;
-try{
-    // Replace nulls with 0:
-    data = tidy(
-        data,
-        mutate({ tempName: (d) => d[x]}),
-        replaceNully({tempName: 0}),
-        rename({tempName: x})
-    )
-    checkInputs(data, [x]);
-    data = data.map(d => d[x]);
-
-// Handle Negative Values on Y Axis:
-if(yMin === null){
-    if(d3.min(data, d => d[y]) < 0){
-        yMin = null
+    if(xDistinct.length <= 1){
+        method = 'squareRoot'
+    } else if(xMax < 10){
+        method = 'freedmanDiaconis'
+    } else if(xMax < 40){
+        method = 'sturges'
     } else {
-        yMin = 0
+        method = 'squareRoot'
     }
-}
 
-// Histogram Calculations: 
+    // Filter dataset to only x column and create bins
+    data = data.map((d) => d[x])
 
-// If binCount not supplied, use Freedman-Diaconis formula from D3 to determine good starting point for binCount:
-const domain = extent(data);
-if(binCount === null){
-    binCount = d3.thresholdFreedmanDiaconis(data, domain[0], domain[1]);
-}
+    // Run ECharts histogram function
+    let histData = ecStat.histogram(data, method);
 
-thresh = getThresholds(domain, binCount);
+    // Remove empty first bin if it would cause negative values on x-axis:
+    let firstBinMin = histData.data[0][2]
+    let firstBinCount = histData.data[0][1]
+    if(firstBinMin < 0 && firstBinCount === 0){
+        histData.data.shift()
+    }
 
-// The loop below checks each value of the dataset against each bin threshold value. If it is less, that threshold value
-// is assigned as the bin for that piece of data. The threshold function above returns the threshold values ordered ascending,
-// which is why we can loop through them like this (and exit the loop once we find the right bin for each data point).
-for(var i = 0; i < data.length; i++){
-    for(var j = 1; j < thresh.length; j++){
-        // Check if value is between threshold min and max. Data can be equal to the last threshold max, but should be less
-        // than the other threshold maxes:
-        if(j === (thresh.length - 2) ? (data[i] <= Math.ceil(thresh[j])) : (data[i] < thresh[j])){
-        finalData.push({"value": data[i], "binMin": thresh[j-1], "binMax": thresh[j]});
-        break;
+    let seriesConfig = {
+        type: 'custom',
+        label: {show: true},
+        renderItem: function (params, api) {
+            let yValue = api.value(1);
+            let start = api.coord([api.value(2), yValue]);
+            let size = api.size([api.value(3) - api.value(2), yValue]);
+            let barColor = api.visual('color');
+            return {
+            type: 'rect',
+            shape: {
+                x: start[0],
+                y: start[1],
+                width: size[0] - 1, // 1 is the gap between bars. Possibly turn this into variable for changing.
+                height: size[1]
+            },
+            style: {
+                fill: fillColor ?? barColor,
+                opacity: fillOpacity
+            }
+            };
+        },
+        data: histData.data,
+        encode: {
+            tooltip: [1],
+            itemName: 4
         }
     }
-}
 
-finalData = tidy(
-        finalData,
-        groupBy(["binMin", "binMax"], summarize({frequency: n("value")}))
-);
+    config.update(d => {d.series.push(seriesConfig); return d})
 
-finalData.push({"binMin": thresh[thresh.length-2], "binMax": thresh[thresh.length-1], "frequency": 0})
+    let chartOverrides = {
+         yAxis: { // vertical axis
+             boundaryGap: ['0%','1%'],
+             axisLabel: {
+                 formatter: null
+             }
+         },
+         xAxis: { // horizontal axis
+             boundaryGap: ['1%', '1%'],
+             scale: false,
+             min: histData.data[0][2] // min of bin for first bin in hist dataset
+         },
+         tooltip: {
+             trigger: "item"
+         }
+     }
 
-finalData = tidy(
-        finalData,
-        rename({binMin: x}),
-        arrange(x)
-);
-
-// Reset upper bound of X Axis:
-// Use user-supplied number if provided, otherwise use the maximum threshold value (leaves enough space for all data)
-xMax = xMax ? xMax : thresh[thresh.length - 1];
-
-} catch(e) {
-    error = e.message;
-}
+    if(chartOverrides){
+        config.update(d => {
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis}; 
+                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip}; 
+            return d
+        })
+    }
 
 </script>
-
-{#if !error}
-<div width=100%>
-    <Chart data={finalData} x={x} y={y}
-    yMin={yMin} 
-    yMax={yMax} 
-    xMin={xMin} 
-    xMax={xMax}
-    height={height}
-    width={width}
-    >
-        <XAxis 
-            ticks={xTickCount} 
-            tickMarks={xTickMarks}
-            baseline={xBaseline}
-            gridlines={xGridlines}
-            axisTitle={xAxisTitle}/>
-        <YAxis 
-            units={units}
-            baseline={yBaseline}
-            gridlines={yGridlines}/>
-        <Column 
-            binMax={"binMax"} 
-            fillColor={fillColor}
-            fillTransparency={fillTransparency}/>
-    </Chart>
-</div>
-{:else}
-<ErrorChart {error} chartType="Histogram"/>
-{/if}

@@ -1,4 +1,3 @@
 packages:
   - 'packages/*'
   - 'sites/*'
-  - 'packages/create-new/templates/*'

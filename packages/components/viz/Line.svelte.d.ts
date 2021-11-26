@@ -2,13 +2,18 @@
 /** @typedef {typeof __propDef.events}  LineEvents */
 /** @typedef {typeof __propDef.slots}  LineSlots */
 export default class Line extends SvelteComponentTyped<{
-    filter?: any;
+    name?: any;
+    y?: any;
     series?: any;
-    lineLabel?: any;
-    lineColor?: string;
+    options?: any;
+    handleMissing?: string;
+    lineColor?: any;
     lineWidth?: number;
-    lineDashSize?: number;
-    lineTransparency?: number;
+    lineType?: string;
+    lineOpacity?: any;
+    markers?: boolean;
+    markerShape?: string;
+    markerSize?: number;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -19,17 +24,23 @@ export type LineSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        filter?: any;
+        name?: any;
+        y?: any;
         series?: any;
-        lineLabel?: any;
-        lineColor?: string;
+        options?: any;
+        handleMissing?: string;
+        lineColor?: any;
         lineWidth?: number;
-        lineDashSize?: number;
-        lineTransparency?: number;
+        lineType?: string;
+        lineOpacity?: any;
+        markers?: boolean;
+        markerShape?: string;
+        markerSize?: number;
     };
     events: {
         [evt: string]: CustomEvent<any>;
     };
     slots: {};
 };
+import { props } from "../modules/stores.js";
 export {};

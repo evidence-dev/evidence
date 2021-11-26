@@ -61,12 +61,16 @@ module.exports = {
               to: '/tutorial/what-well-build',
             },
             {
-              label: 'Templating',
-              to: '/templating/loops',
+              label: 'Queries',
+              to: '/queries/sql-queries',
             },
             {
               label: 'Components',
-              to: '/components/value',
+              to: '/components/text-components/value',
+            },
+            {
+              label: 'Templating',
+              to: '/templating/loops',
             },
             {
               label: 'Formatting',

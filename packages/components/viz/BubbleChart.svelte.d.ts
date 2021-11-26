@@ -2,24 +2,32 @@
 /** @typedef {typeof __propDef.events}  BubbleChartEvents */
 /** @typedef {typeof __propDef.slots}  BubbleChartSlots */
 export default class BubbleChart extends SvelteComponentTyped<{
-    data: any;
-    x?: any;
-    y?: any;
-    legend?: string;
+    title?: any;
+    legend?: any;
+    sort?: any;
     size?: any;
-    fillColor?: any;
-    fillTransparency?: any;
-    yMin?: any;
-    units?: string;
-    xGridlines?: string;
-    yGridlines?: string;
-    xAxisTitle?: string;
+    data?: any;
+    x?: any;
+    xType?: any;
+    y?: any;
     series?: any;
+    fillColor?: any;
+    yMin?: any;
+    subtitle?: any;
+    xAxisTitle?: any;
+    xBaseline?: any;
+    xTickMarks?: any;
+    xGridlines?: any;
+    yAxisTitle?: any;
+    yBaseline?: any;
+    yTickMarks?: any;
+    yGridlines?: any;
     outlineColor?: any;
     outlineWidth?: any;
-    outlineTransparency?: any;
-    minPointSize?: any;
-    maxPointSize?: any;
+    shape?: any;
+    opacity?: any;
+    minSize?: any;
+    maxSize?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -30,24 +38,32 @@ export type BubbleChartSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
-        x?: any;
-        y?: any;
-        legend?: string;
+        title?: any;
+        legend?: any;
+        sort?: any;
         size?: any;
-        fillColor?: any;
-        fillTransparency?: any;
-        yMin?: any;
-        units?: string;
-        xGridlines?: string;
-        yGridlines?: string;
-        xAxisTitle?: string;
+        data?: any;
+        x?: any;
+        xType?: any;
+        y?: any;
         series?: any;
+        fillColor?: any;
+        yMin?: any;
+        subtitle?: any;
+        xAxisTitle?: any;
+        xBaseline?: any;
+        xTickMarks?: any;
+        xGridlines?: any;
+        yAxisTitle?: any;
+        yBaseline?: any;
+        yTickMarks?: any;
+        yGridlines?: any;
         outlineColor?: any;
         outlineWidth?: any;
-        outlineTransparency?: any;
-        minPointSize?: any;
-        maxPointSize?: any;
+        shape?: any;
+        opacity?: any;
+        minSize?: any;
+        maxSize?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;
