@@ -15,7 +15,7 @@
     export let line = true;
     line = (line === "true" || line === true);
 
-    export let missing = "gap";
+    export let handleMissing = "gap";
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
@@ -39,7 +39,7 @@
         xType = xType === "value" ? "category" : xType;
     }
 
-    if(missing === "zero"){
+    if(handleMissing === "zero"){
         data = replaceNulls(data, y)
     }
 
@@ -50,7 +50,7 @@
                 color: fillColor,
                 opacity: fillOpacity
             },
-            connectNulls: (missing === "connect"),
+            connectNulls: (handleMissing === "connect"),
             lineStyle: {
                 width: line ? 1 : 0
             },

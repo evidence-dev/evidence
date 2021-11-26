@@ -25,7 +25,7 @@
     export let fillColor = undefined;
     export let fillOpacity = undefined;
 
-    export let missing = undefined;
+    export let handleMissing = undefined;
 
     export let sort = undefined;
 
@@ -58,6 +58,6 @@
         {line}
         {fillColor}
         {fillOpacity}
-        {missing}
+        {handleMissing}
      />
 </Chart>

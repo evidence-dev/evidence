@@ -20,7 +20,7 @@
     export let markerShape = 'circle';
     export let markerSize = 8;
 
-    export let missing = "gap";
+    export let handleMissing = "gap";
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
@@ -40,7 +40,7 @@
         data = getCompletedData(data, x, y, series);
     }
 
-    if(missing === "zero"){
+    if(handleMissing === "zero"){
         data = replaceNulls(data, y)
     }
 
@@ -49,7 +49,7 @@
             label: {
                 show: false,
             },
-            connectNulls: (missing === "connect"),
+            connectNulls: (handleMissing === "connect"),
             labelLayout: { hideOverlap: true },
             emphasis: {
                 focus: "series",
