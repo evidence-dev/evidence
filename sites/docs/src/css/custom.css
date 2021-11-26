@@ -36,28 +36,10 @@
 }
 
 .container {
-  margin-left: 30px;
+  margin-left: 1.9em;
 }
 
 @media screen and (max-width: 996px) {
-  :root {
-    --ifm-font-size-base: 18px;
-  }
-  article header h1 {
-    font-size: 1.5rem !important;
-  }
-  article h2 {
-    font-size: 1.2rem !important;
-  }
-  article h3 {
-    font-size: 1rem !important;
-  }
-  .hero .hero__title {
-    font-size: 2.5rem;
-  }
-}
-
-@media screen and (max-width: 350px) {
   :root {
     --ifm-font-size-base: 14px;
   }
@@ -72,6 +54,30 @@
   }
   .hero .hero__title {
     font-size: 2.5rem;
+  }
+  .container {
+    margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  :root {
+    --ifm-font-size-base: 12px;
+  }
+  article header h1 {
+    font-size: 1.5rem !important;
+  }
+  article h2 {
+    font-size: 1.2rem !important;
+  }
+  article h3 {
+    font-size: 1rem !important;
+  }
+  .hero .hero__title {
+    font-size: 2.5rem;
+  }
+  .container {
+    margin-left: auto;
   }
 }
 
