@@ -42,14 +42,21 @@ const createDefaultProps = function(filename){
     let defaultProps = `
         import { page } from '$app/stores';
         import Value from '@evidence-dev/components/viz/Value.svelte';
+        import Chart from '@evidence-dev/components/viz/Chart.svelte';
+        import Area from '@evidence-dev/components/viz/Area.svelte';
+        import Line from '@evidence-dev/components/viz/Line.svelte';
+        import Bar from '@evidence-dev/components/viz/Bar.svelte';
+        import Hist from '@evidence-dev/components/viz/Hist.svelte';
+        import Bubble from '@evidence-dev/components/viz/Bubble.svelte';
+        import Scatter from '@evidence-dev/components/viz/Scatter.svelte';
         import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
         import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
         import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
-        import ColumnChart from '@evidence-dev/components/viz/ColumnChart.svelte';
         import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
-        import Hist from '@evidence-dev/components/viz/Hist.svelte';
+        import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
         import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
         import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
+        import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
         `
     if(hasQueries(filename)){
         defaultProps = `
@@ -57,14 +64,21 @@ const createDefaultProps = function(filename){
             import { page } from '$app/stores';
             import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
             import Value from '@evidence-dev/components/viz/Value.svelte';
+            import Chart from '@evidence-dev/components/viz/Chart.svelte';
+            import Area from '@evidence-dev/components/viz/Area.svelte';
+            import Line from '@evidence-dev/components/viz/Line.svelte';
+            import Bar from '@evidence-dev/components/viz/Bar.svelte';
+            import Hist from '@evidence-dev/components/viz/Hist.svelte';
+            import Bubble from '@evidence-dev/components/viz/Bubble.svelte';
+            import Scatter from '@evidence-dev/components/viz/Scatter.svelte';
             import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
             import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
             import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
-            import ColumnChart from '@evidence-dev/components/viz/ColumnChart.svelte';
             import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
-            import Hist from '@evidence-dev/components/viz/Hist.svelte';
+            import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
             import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
             import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
+            import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
             `
     }
     return defaultProps

@@ -1,147 +1,72 @@
 <script>
-    import Chart from "./Chart.svelte";
-    import XAxis from "./XAxis.svelte";
-    import YAxis from "./YAxis.svelte";
-    import Line from "./Line.svelte";
-    import Legend from './Legend.svelte';
-    import ErrorChart from "./ErrorChart.svelte";
-    import checkInputs from '../modules/checkInputs.js';
-    import getDistinctValues from '../modules/getDistinctValues.js';
+    import Chart from './Chart.svelte'
+    import Line from './Line.svelte'
 
-    import * as d3 from "d3";
+    export let data = undefined;
+    export let x = undefined;
+    export let y = undefined;
+    export let series = undefined;
+    export let xType = undefined;
 
-    // Chart Area:
-    let height = undefined;
-    let width = undefined;
-    let paddingLeft = undefined;
-    let paddingRight = undefined;
-
-    // Data:
-    export let data;
-    export let x = null;
-    export let y = null;
-    export let series = null;
-
-    // Data Types:
-    let xType = null;
-    let yType = null;
-
-    // Axis Bounds:
-    export let yMin = null;
-    let yMax = null;
-    let xMin = null;
-    let xMax = null;
-
-    // Axis Baselines:
-    let xBaseline = undefined;
-    let yBaseline = undefined;
-
-    // Gridlines:
-    export let yGridlines = "true";
-    export let xGridlines = "false";
-
-    // Sorting:
-    let sort = "true";
-    const sortBy = x;
-    const sortOrder = "asc";
-
-    // Axis Ticks:
-    let yAxisPosition = undefined;
-    if(yAxisPosition === "right"){
-        paddingRight = 40;
-        paddingLeft = 40;
-    }
-    let xTickCount = undefined;
-    let xTickMarks = undefined;
-
-    // Labels:
-    export let units = "";
-    export let lineLabel = null; // string: used to add custom label to single line
-    export let xAxisTitle = "";
+    export let title = undefined;
+    export let subtitle = undefined;
     export let legend = undefined;
+    export let xAxisTitle = undefined;
+    export let yAxisTitle = undefined;
+    export let xGridlines = undefined;
+    export let yGridlines = undefined;
+    export let xBaseline = undefined;
+    export let yBaseline = undefined;
+    export let xTickMarks = undefined;
+    export let yTickMarks = undefined;
+    export let yMin = undefined;
 
-    // Styling:
     export let lineColor = undefined;
+    export let lineType = undefined;
+    export let lineOpacity = undefined;
     export let lineWidth = undefined;
-    export let lineDashSize = undefined;
-    export let lineTransparency = undefined;
 
-    let seriesNames;
+    export let markers = undefined;
+    export let markerShape = undefined;
+    export let markerSize = undefined;
 
-    // Error Handling:
-    let error;
-    try{
-        checkInputs(data, [x,y], [series]);
-        // Handle Negative Values on Y Axis:
-        if (yMin === null) {
-            if (d3.min(data, (d) => d[y]) < 0) {
-                yMin = null;
-            } else {
-                yMin = 0;
-            }
-        }
+    export let handleMissing = undefined;
 
+    export let sort = undefined;
 
-        if(series != null){
-            seriesNames = getDistinctValues(data, series);
-            legend = "top";
-        }
-
-    } catch(e) {
-        error = e.message;
-    }
-
+    let chartType = "Line Chart";
 
 </script>
 
-{#if !error}
-
-{#if series != null && legend === "top"}
-<Legend seriesNames={seriesNames}/>
-{/if}
-
-<div width="100%">
-    <Chart
-        {data}
-        {x}
-        {y}
-        {yMin}
-        {yMax}
-        {xMin}
-        {xMax}
-        {xType}
-        {yType}
-        {height}
-        {width}
-        {paddingLeft}
-        {paddingRight}
-        sort={sort}
-        sortBy={sortBy}
-        sortOrder={sortOrder}
+<Chart
+    {data}
+    {x}
+    {y}
+    {series}
+    {xType}
+    {legend}
+    {xAxisTitle}
+    {yAxisTitle}
+    {xGridlines}
+    {yGridlines}
+    {xBaseline}
+    {yBaseline}
+    {xTickMarks}
+    {yTickMarks}
+    {yMin}
+    {title}
+    {subtitle}
+    {chartType}
+    {sort}
     >
-        <XAxis 
-            axisTitle={xAxisTitle} 
-            ticks={xTickCount} 
-            tickMarks={xTickMarks}
-            baseline={xBaseline}
-            gridlines={xGridlines}/>
-        <YAxis 
-            units={units} 
-            axisPosition={yAxisPosition}
-            baseline={yBaseline}
-            gridlines={yGridlines}/>
-        <Line 
-            series={series} 
-            lineLabel={lineLabel} 
-            lineColor={lineColor}
-            lineWidth={lineWidth} 
-            lineTransparency={lineTransparency}
-            lineDashSize={lineDashSize}
-            />
-    </Chart>
-</div>
-{:else}
-
-<ErrorChart {error} chartType="Line Chart"/>
-
-{/if}
+    <Line
+        {lineColor}
+        {lineWidth}
+        {lineOpacity}
+        {lineType}
+        {markers}
+        {markerShape}
+        {markerSize}
+        {handleMissing}
+    />
+</Chart>

@@ -1,99 +1,63 @@
 <script>
     import Chart from './Chart.svelte'
-    import XAxis from './XAxis.svelte'
-    import YAxis from './YAxis.svelte'
     import Area from './Area.svelte'
-    import * as d3 from 'd3'
-    import ErrorChart from './ErrorChart.svelte'
-    import checkInputs from '../modules/checkInputs.js'
-    
-    // Chart Area:
-    let height = undefined;
-    let width = undefined;
 
-    // Data:
-    export let data;
-    export let x = null;
-    export let y = null;
+    export let data = undefined;
+    export let x = undefined;
+    export let y = undefined;
+    export let series = undefined;
+    export let xType = undefined;
 
-    // Data Types:
-    export let xType = null;
-    export let yType = null;
-
-    // Axis Bounds:
-    export let yMin = null;
-    let yMax = null;
-    let xMin = null;
-    let xMax = null;
-
-    // Axis Baselines:
-    let xBaseline = undefined;
-    let yBaseline = undefined;
-
-    // Gridlines:
-    export let xGridlines = "false";
-    export let yGridlines = "true";
-
-    // Sorting:
-    let sort = "true";
-    const sortBy = x;
-    const sortOrder = "asc";
-
-    // Labels:
-    export let units = "";
+    export let title = undefined;
+    export let subtitle = undefined;
+    export let legend = undefined;
     export let xAxisTitle = undefined;
+    export let yAxisTitle = undefined;
+    export let xGridlines = undefined;
+    export let yGridlines = undefined;
+    export let xBaseline = undefined;
+    export let yBaseline = undefined;
+    export let xTickMarks = undefined;
+    export let yTickMarks = undefined;
+    export let yMin = undefined;
 
-    // Styling:
+    export let line = undefined;
     export let fillColor = undefined;
-    export let fillTransparency = undefined;
-    
-    // Check Inputs
-    let error;
-    try{
-        checkInputs(data, [x,y]);
-     
-        // Handle negative values in y axis:
-        if (yMin === null) {
-            if (d3.min(data, (d) => d[y]) < 0) {
-                yMin = null;
-            } else {
-                yMin = 0;
-            }
-        }
-    } catch(e) {
-        error = e.message;
-    }
+    export let fillOpacity = undefined;
+
+    export let handleMissing = undefined;
+
+    export let sort = undefined;
+
+    let chartType = "Area Chart";
 
 </script>
-  
-{#if !error}
-<div width=100%>
-    <Chart data={data} x={x} y={y}
-    yMin={yMin} 
-    yMax={yMax} 
-    xMax={xMax}
-    xMin={xMin}
-    xType={xType}
-    yType={yType}
-    height={height}
-    width={width}
-    sort={sort}
-    sortBy={sortBy}
-    sortOrder={sortOrder}
-    > 
-        <XAxis
-            baseline={xBaseline}
-            axisTitle={xAxisTitle}
-            gridlines={xGridlines}/>
-        <YAxis 
-            units={units}
-            baseline={yBaseline}
-            gridlines={yGridlines}/>
-        <Area 
-            fillColor={fillColor} 
-            fillTransparency={fillTransparency}/>
-    </Chart>
-</div>
-{:else}
-<ErrorChart {error} chartType="Area Chart"/>
-{/if}
+
+<Chart
+    {data}
+    {x}
+    {y}
+    {series}
+    {xType}
+    {legend}
+    {xAxisTitle}
+    {yAxisTitle}
+    {xGridlines}
+    {yGridlines}
+    {xBaseline}
+    {yBaseline}
+    {xTickMarks}
+    {yTickMarks}
+    {yMin}
+    {title}
+    {subtitle}
+    {chartType}
+    {sort}
+    >
+    <Area
+        {line}
+        {fillColor}
+        {fillOpacity}
+        {handleMissing}
+     />
+</Chart>

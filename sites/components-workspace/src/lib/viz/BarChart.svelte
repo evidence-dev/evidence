@@ -1,152 +1,72 @@
 <script>
     import Chart from './Chart.svelte'
-    import XAxis from './XAxis.svelte'
-    import YAxis from './YAxis.svelte'
     import Bar from './Bar.svelte'
-    import Legend from './Legend.svelte'
-    import ErrorChart from './ErrorChart.svelte'
-    import checkInputs from '../modules/checkInputs.js'
 
-    import * as d3 from 'd3'
-    import getDistinctValues from '../modules/getDistinctValues.js';
-    import getColumnType from '../modules/getColumnType.js';
-    import getColumnExtents from '../modules/getColumnExtents.js';
-  
-    // Chart Area:
-    let height = undefined;
-    let width = undefined;
-    let paddingLeft;
-    let paddingRight;
-    let paddingTop;
-    // Set maximum bars allowed in standard height of chart (used to auto-adjust chart height)
-    const maxBars = 5;
+    export let data = undefined;
+    export let x = undefined;
+    export let y = undefined;
+    export let series = undefined;
+    export let xType = undefined;
 
-    // Data:
-    export let data;  
-    export let x = null;
-    export let y = null;
-    export let series = null;
-
-    // In this bar chart, the x axis is the vertical axis and the y axis is the horizontal axis,
-    // but the switch doesn't occur until the <Chart> call below. In the script tag, x means
-    // the vertical axis and y the horizontal axis.
-
-    // Data Types:
-    let xType = "categorical";
-    let yType = null;
-
-    // Axis Bounds:
-    export let yMin = null;
-    let yMax = null;
-    let xMin = null;
-    let xMax = null;
-
-    // Axis Baselines:
-    let xBaseline = undefined;
-    let yBaseline = undefined;
-
-    let yAxisPosition = "top";
-    let yTickMarks = "false";
-    let xTickMarks = undefined;
-    let xAxisTitle = "";
-
-    // Gridlines:
-    export let xGridlines = "false";
-    export let yGridlines = "true";
-
-    // Sorting:
-    export let sort = "true";
-    let stackOrder = "true";
-
-    // Labels:
-    export let units = "";
-    export let legend = "top";
-
-    // Set Stacked Data Flag:
-    let groupType = null;
-    let seriesNames;
-    if(series !== null){
-        groupType = "stacked";
-    };
-
-    // Styling:
-    export let fillColor = undefined;
-    export let fillTransparency = undefined;
-
-    let barCount = 0;
-    let heightMultiplier = undefined;
-
-    // Error Handling:
-    let error;
-    try{
-        checkInputs(data, [x,y], [series]);
-
-        if(series != null){
-            seriesNames = getDistinctValues(data, series);
-        }
-        // Handle Negative Values on Y Axis:
-        if(d3.min(data, d => d[y]) < 0){
-            yMin = null
-        } else {
-            yMin = 0
-        };
-
-        // Set height multiplier if number of bars exceeds maximum:
-        if(height === undefined){
-            barCount = getDistinctValues(data, x).length;
-            heightMultiplier = Math.max(1, barCount / maxBars);
-        }
-
-    } catch(e) {
-        error = e.message ?? error;
+    export let title = undefined;
+    export let subtitle = undefined;
+    export let legend = undefined;
+    export let xAxisTitle = undefined;
+    export let yAxisTitle = undefined;
+    export let xGridlines = undefined;
+    export let yGridlines = undefined;
+    export let xBaseline = undefined;
+    export let yBaseline = undefined;
+    export let xTickMarks = undefined;
+    export let yTickMarks = undefined;
+    export let yMin = undefined;
+    export let swapXY = false;
+    if(swapXY === "true" || swapXY === true){
+        swapXY = true;
+    } else {
+        swapXY = false;
     }
 
-</script>
-  
-{#if !error}
+    export let type = undefined; // stacked or grouped
 
-{#if series != null && legend === "top"}
-<Legend seriesNames={seriesNames}/>
-{/if}
+    export let fillColor = undefined;
+    export let fillOpacity = undefined;
+    export let outlineColor = undefined;
+    export let outlineWidth = undefined;
 
-<div width=100%>
-    <Chart data={data} x={y} y={x}
-    yMin={xMin} 
-    yMax={xMax} 
-    xMin={yMin} 
-    xMax={yMax}
-    {paddingLeft}
-    {paddingRight}
-    {paddingTop}
-    reverseAxes={true}
-    xType={yType}
-    yType={xType}
-    groupType={groupType}
-    height={height}
-    heightMultiplier={heightMultiplier}
-    width={width}
-    sort={sort}
+    export let sort = undefined;
+
+    let chartType = "Bar Chart";
+
+ </script>
+
+<Chart
+    {data}
+    {x}
+    {y}
+    {series}
+    {xType}
+    {legend}
+    {xAxisTitle}
+    {yAxisTitle}
+    {xGridlines}
+    {yGridlines}
+    {xBaseline}
+    {yBaseline}
+    {xTickMarks}
+    {yTickMarks}
+    {yMin}
+    {swapXY}
+    {title}
+    {subtitle}
+    {chartType}
+    {sort}
     >
-    <XAxis 
-            gridlines={yGridlines}
-            axisPosition={yAxisPosition}
-            axisTitle={units}
-            tickMarks={yTickMarks}
-            baseline={yBaseline}
-            />
-        <YAxis 
-            gridlines={xGridlines} 
-            units={xAxisTitle}
-            tickMarks={xTickMarks}
-            baseline={xBaseline}/>
-        <Bar 
-            series={series} 
-            seriesNames={seriesNames}
-            stackOrder={stackOrder} 
-            fillColor={fillColor}
-            fillTransparency={fillTransparency}/>
-    </Chart>
-</div>
-{:else}
-<ErrorChart {error} chartType="Bar Chart"/>
-{/if}
+    <Bar
+        {type}
+        {fillColor}
+        {fillOpacity}
+        {outlineColor}
+        {outlineWidth}
+    />
+</Chart>

@@ -1,13 +1,13 @@
 <script>
     import { slide } from 'svelte/transition';
-    import formatValue from '../modules/formatValue.js';
+    import formatValue from '$lib/modules/formatValue.js';
     import ErrorChart from './ErrorChart.svelte'
-    import checkInputs from '../modules/checkInputs.js'
-    import getColumnSummary from '../modules/getColumnSummary.js';
-    import getParsedDate from '../modules/getParsedDate.js';
+    import checkInputs from '$lib/modules/checkInputs.js'
+    import getColumnSummary from '$lib/modules/getColumnSummary.js';
+    import getParsedDate from '$lib/modules/getParsedDate.js';
 
     // 1 - Get Inputs
-    export let data;
+    export let data = undefined;
     export let rows = 5;
     export let marginTop = '1em';
     export let marginBottom = '3.5em';
@@ -34,7 +34,7 @@
       checkInputs(data);
 
       // 3 - Get Column Summary
-      columnSummary = getColumnSummary(data);
+      columnSummary = getColumnSummary(data, 'array');
 
       // 4 - Process Data
       // Filter for columns with type of "date"

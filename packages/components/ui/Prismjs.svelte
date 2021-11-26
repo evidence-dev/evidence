@@ -81,9 +81,9 @@
 <style>
 
     div {
-      background-color: rgb(247, 249, 250);
-      border-left: 1px solid rgb(235, 238, 240);
-      border-right: 1px solid rgb(235, 238, 240);
+      background-color: var(--grey-100);
+      border-left: 1px solid var(--grey-200);
+      border-right: 1px solid var(--grey-200);
     }
   
     pre {

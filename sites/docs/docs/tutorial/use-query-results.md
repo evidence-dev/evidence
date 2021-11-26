@@ -8,7 +8,7 @@ One of the most effective (and underappreciated) ways of presenting data is to s
 
 <h2>Include a Value In Your Text</h2>
 
-Evidence's [<span class="gradient">**&lt;Value/>**</span>](/components/value) component lets you include the result of a query directly in the text on your page.
+Evidence's [<span class="gradient">**&lt;Value/>**</span>](/components/text-components/value) component lets you include the result of a query directly in the text on your page.
 
 Copy and paste the sentence below into your markdown file.
 

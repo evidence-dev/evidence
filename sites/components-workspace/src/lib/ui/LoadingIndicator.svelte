@@ -27,7 +27,7 @@
 		left: 0;
 		top: 0;
 		height: 100%;
-		background-image: -webkit-linear-gradient(315deg, #046ade 0%, #08a86d 75%);;
+		background-image: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);;
 		transition: width 0.4s;
 	}
 	.fade {
@@ -38,9 +38,6 @@
 		pointer-events: none;
 		z-index: 998;
 		animation: fade 0.4s;
-	}
-	:global(html).dark .fade {
-		background-color: rgba(0, 0, 0, 0.3);
 	}
 	@keyframes fade {
 		from {

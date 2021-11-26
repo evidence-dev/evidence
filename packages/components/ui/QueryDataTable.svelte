@@ -97,7 +97,7 @@
     width: 75%;
     height: 10px;
     margin:0 0;
-    background: #dfeffe;
+    background: var(--blue-100);
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
@@ -116,7 +116,7 @@
     appearance: none;
     width: 10px;
     height: 10px;
-    background: #3488e9;
+    background: var(--blue-500);
     cursor: pointer;
     border-radius:10px;
 
@@ -125,14 +125,14 @@
   .slider::-moz-range-thumb {
     width: 10px;
     height: 10px;
-    background: #3488e9;
+    background: var(--blue-500);
     cursor: pointer;
   }
 
   .slider::-moz-range-thumb {
     width: 10px;
     height: 10px;
-    background: #3488e9;
+    background: var(--blue-500);
     cursor: pointer;
   }
 
@@ -149,7 +149,7 @@
   .container{
     width:100%;
     overflow-x: scroll;
-    border-bottom: 1px solid rgb(235, 238, 240);   
+    border-bottom: 1px solid var(--grey-200);   
   }
 
   table{
@@ -187,7 +187,7 @@
   }
 
   .index{
-    color:lightgray;
+    color:var(--grey-300);
     text-align: left;
     max-width: min-content;
   }

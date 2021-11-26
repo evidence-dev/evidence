@@ -67,10 +67,10 @@
  .status-bar{
   margin-top: 0px;
   margin-bottom: 0px;
-  background-color: rgb(247, 249, 250);
-  border-left: 1px solid rgb(235, 238, 240);
-  border-right: 1px solid rgb(235, 238, 240);
-  border-bottom: 1px solid rgb(235, 238, 240);
+  background-color: var(--grey-100);
+  border-left: 1px solid var(--grey-200);
+  border-right: 1px solid var(--grey-200);
+  border-bottom: 1px solid var(--grey-200);
   overflow-x: scroll;
 
  }
@@ -90,21 +90,21 @@
  }
  
  .status-bar.success{
-  color: #3488e9;
+  color: var(--blue-500);
   cursor: pointer;
  }
  
  .status-bar.error {
-  color: rgb(245, 78, 78);
+  color: var(--red-600);
  }
 
  div.title {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  background-color: rgb(247, 249, 250);
-  border-top: 1px solid rgb(235, 238, 240);
-  border-left: 1px solid rgb(235, 238, 240);
-  border-right: 1px solid rgb(235, 238, 240);
+  background-color: var(--grey-100);
+  border-top: 1px solid var(--grey-200);
+  border-left: 1px solid var(--grey-200);
+  border-right: 1px solid var(--grey-200);
 
   margin-bottom: 0px;
   cursor: pointer;

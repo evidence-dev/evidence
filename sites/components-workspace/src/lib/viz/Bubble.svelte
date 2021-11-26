@@ -1,118 +1,110 @@
 <script>
-    import { getContext } from "svelte";
-    import getColorPalette from "../modules/getColorPalette.js";
-    import getDistinctValues from "../modules/getDistinctValues.js";
-    import formatValue from "../modules/formatValue.js"
-    const { data, xGet, yGet, xScale, yScale } = getContext("LayerCake");
+    import { props, config } from '$lib/modules/stores.js';   
+    import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
+    import getColumnExtents from '$lib/modules/getColumnExtents';
+    import formatTitle from '$lib/modules/formatTitle';
+    import getCompletedData from '$lib/modules/getCompletedData.js';
 
-    import { scaleSqrt } from "d3-scale";
-    import { extent } from "d3-array";
+    export let y = undefined;
+    export let series = undefined;
+    export let options = undefined;
+    export let size = undefined;
+    export let name = undefined; // name to appear in legend (for single series graphics)
 
-    // Get data:
-    export let size = null;
-    export let series = null;
-    export let filter = null;
-    let xName = getContext("xName");
-    let yName = getContext("yName");
-    let xFormat = getContext("xFormat");
-    let yFormat = getContext("yFormat");
-    let xUnits = getContext("xUnits");
-    let yUnits = getContext("yUnits");
+    export let shape = undefined;
+    export let fillColor = undefined;
+    export let opacity = 0.7; // opacity of both fill and outline (ECharts limitation)
+    export let outlineColor = undefined;
+    export let outlineWidth = undefined;
 
-    export let reverseAxes = "false";
+    export let minSize = 10;
+    export let maxSize = 35;
 
-    // Styling:
-    export let fillColor = "#488f96";
-    export let fillTransparency = 0.25;
-    let fillOpacity = 1 - fillTransparency;
-    export let outlineColor = "none";
-    export let outlineWidth = 0;
-    export let outlineTransparency = 0;
-    let outlineOpacity = 1 - outlineTransparency;
+    // Prop check. If local props supplied, use those. Otherwise fall back to global props.
+    let data = $props.data;
+    let x = $props.x;
+    let swapXY = $props.swapXY;
+    let xType = $props.xType;
+    let xMismatch = $props.xMismatch;
+    let columnSummary = $props.columnSummary;
+    y = y ?? $props.y;
+    series = series ?? $props.series;
+    size = size ?? $props.size;
+    let yMin = $props.yMin;
 
-    // Point Size:
-    export let minPointSize = 3;
-    export let maxPointSize = 15;
-
-    // Point Size Calculation:
-    $: radiusScale = scaleSqrt()
-        .domain(extent($data, (d) => +d[size]))
-        .range([minPointSize, maxPointSize]);
-
-
-    // MULTI-SERIES LOGIC:
-
-    //Filter dataset if filter value supplied in chart call:
-    let finalData = [];
-    if (series !== null && filter !== null) {
-        finalData = $data.filter((d) => d[series] === filter);
+    if(!series && typeof y !== 'object'){
+        // Single Series
+        name = name ?? formatTitle(y, columnSummary[y].title);
     } else {
-        finalData = $data;
+        // Multi Series
+        data = getCompletedData(data, x, y, series);
     }
 
-    // Get array of global color variables (set in app.css):
-    let colorPalette = getColorPalette();
+    // Determine bubble sizes:
+    let sizeExtents = getColumnExtents(data, size);
+    let dataRange = sizeExtents[1] - sizeExtents[0];
+    let minData = sizeExtents[0];
+    let minSizeSq;
+    let maxSizeSq;
+    function bubbleSize(newPoint){
+        minSizeSq = Math.pow(minSize, 2);
+        maxSizeSq = Math.pow(maxSize, 2);
+        let sizeRange = maxSizeSq - minSizeSq;
+        
+        return Math.sqrt(((newPoint - minData) / dataRange) * sizeRange + minSize)
+    }
+    
 
-    // Get distinct series names if series column supplied in chart call:
-    let seriesNames = [];
-    if (series !== null) {
-        seriesNames = getDistinctValues(finalData, series);
+    let baseConfig = {
+            type: "scatter",
+            label: {
+                show: false,
+            },
+            labelLayout: { hideOverlap: true },
+            emphasis: {
+                focus: "series",
+            },
+            symbolSize: function (data) {
+                return bubbleSize(data[1]);
+            },
+            symbol: shape,
+            itemStyle: {
+                color: fillColor,
+                opacity: opacity,
+                borderColor: outlineColor,
+                borderWidth: outlineWidth
+            }
     }
 
-    $: filteredData = (filter) => {
-        return finalData.filter((d) => d[series] === filter);
-    };
+    if(options){
+        baseConfig = {...baseConfig, ...options}
+    }
+
+    // Overriding global chart config:
+    let chartOverrides = {
+         yAxis: {
+             scale: true,
+             boundaryGap: ['1%', '1%']
+         },
+         xAxis: {
+             boundaryGap: [xType === "time" ? '0%' : '1%', '2%']
+         }
+    }
+
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    
+    config.update(d => {d.series.push(...seriesConfig); return d})
+
+    if(chartOverrides){
+        config.update(d => {
+            if(swapXY){
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+            } else {
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            return d})
+    }
+
 </script>
-
-{#if series === null || filter !== null}
-    {#each finalData as d}
-        <circle
-            cx={$xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
-            cy={$yGet(d)}
-            r={radiusScale(d[size])}
-            fill={fillColor}
-            fill-opacity={fillOpacity}
-            stroke={outlineColor}
-            stroke-width={outlineWidth}
-            stroke-opacity={outlineOpacity}
-            ><title
-                >{reverseAxes === "false"
-                    ? formatValue(d[xName],xFormat,xUnits) +
-                      ", " +
-                      formatValue(d[yName],yFormat,yUnits) +
-                      " ; size = " +
-                      d[size].toLocaleString()
-                    : formatValue(d[xName],xFormat,xUnits)}</title
-            ></circle
-        >
-    {/each}
-{:else}
-    <g class="bubble-group">
-        {#each seriesNames as group, i}
-            {#each filteredData(group) as d}
-                <circle
-                    cx={$xGet(d) +
-                        ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
-                    cy={$yGet(d)}
-                    r={radiusScale(d[size])}
-                    fill="var({colorPalette[i]})"
-                    fill-opacity={fillOpacity}
-                    stroke={outlineColor}
-                    stroke-width={outlineWidth}
-                    stroke-opacity={outlineOpacity}
-                    ><title
-                        >{group +
-                            ": " +
-                            (reverseAxes === "false"
-                                ? formatValue(d[xName],xFormat,xUnits) +
-                                  ", " +
-                                  formatValue(d[yName],yFormat,yUnits) +
-                                  " ; size = " +
-                                  d[size].toLocaleString()
-                                : formatValue(d[xName],xFormat,xUnits))}</title
-                    ></circle
-                >
-            {/each}
-        {/each}
-    </g>
-{/if}

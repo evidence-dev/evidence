@@ -10,7 +10,7 @@
 The last complaint call for {$page.params.department} was on <Value data={last_complaint} column=date fmt=date/>
 
 ## Distribution of Daily Calls
-<Hist data={complaints_by_day_dept} x=complaints binCount=50 xAxisTitle="Daily Calls" fillColor='var(--color1)'/>
+<Histogram data={complaints_by_day_dept} x=complaints binCount=50 xAxisTitle="Daily Calls"/>
 
 ```last_complaint
 select owning_department as dept,
@@ -30,7 +30,7 @@ group by 1
 ```
 
 ## Calls by Category
-<BarChart data={complaints_by_category} x=category y=complaints/>
+<BarChart data={complaints_by_category} x=category y=complaints swapXY=true yAxisTitle="Calls Received" sort=false/>
 
 ```complaints_by_day_dept
     select 
@@ -84,5 +84,7 @@ order by date asc
 ## Category Breakdown
 {#each complaints_by_category as row}
 ### {row.category}
-<LineChart data={complaints_by_day_cat.filter(d => d.category === row.category)} x=date y=complaints/>
+<Histogram data={complaints_by_day_cat.filter(d => d.category === row.category)} x=complaints/>
 {/each}
+
+

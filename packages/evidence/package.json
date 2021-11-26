@@ -28,6 +28,8 @@
     "layercake": "5.0.0",
     "svelte": "3.44.1",
     "svelte2tsx": "0.4.7",
-    "typescript": "4.4.4"
+    "typescript": "4.4.4",
+    "echarts": "5.2.2",
+    "echarts-stat": "1.2.0"
   }
 }

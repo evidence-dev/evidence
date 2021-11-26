@@ -10,9 +10,9 @@
     "@evidence-dev/snowflake": "workspace:^",
     "@evidence-dev/postgres": "workspace:^",
     "@evidence-dev/telemetry": "workspace:^",
-    "blueimp-md5": "^2.18.0",
-    "chalk": "^4.1.0",
-    "fs-extra": "^9.1.0"
+    "blueimp-md5": "2.18.0",
+    "chalk": "4.1.0",
+    "fs-extra": "9.1.0"
   },
   "type": "module"
 }

@@ -1,160 +1,128 @@
 <script>
-  // Bandwidth means width of bars/columns (bar height in this case, column width in column chart)
-  import { getContext } from "svelte";
-  import * as d3 from "d3";
-  import getColorPalette from "../modules/getColorPalette.js";
-  import getDistinctValues from "../modules/getDistinctValues.js";
-  import formatValue from "../modules/formatValue.js"
-  const { data, xGet, yGet, xScale, yScale, x, height, yDomain } = getContext("LayerCake");
+    import { props, config } from '../modules/stores.js';   
+    import getSeriesConfig from '../modules/getSeriesConfig.js';
+    import getStackedData from '../modules/getStackedData.js';
+    import getSortedData from '../modules/getSortedData.js';
+    import formatTitle from '../modules/formatTitle';
+    import getCompletedData from '../modules/getCompletedData.js';
 
-  // Get Data:
-  let xName = getContext("xName");
-  let yName = getContext("yName");
-  let xFormat = getContext("xFormat");
-  let xUnits = getContext("xUnits");
-  let yIntegerRange = getContext("yIntegerRange");
-  export let series = null;
-  export let filter = null;
+    export let y = undefined;
+    export let series = undefined;
+    export let options = undefined;
+    export let name = undefined; // name to appear in legend (for single series graphics)
+    export let type = 'stacked' // stacked or grouped
+    export let stackName = undefined;
 
-  // Styling:
-  export let fillColor = "#d1d1d1";
-  export let fillTransparency = 0;
-  let fillOpacity = 1 - fillTransparency;
-  export let outlineColor = "#d1d1d1";
-  export let outlineWidth = 0;
+    export let fillColor = undefined;
+    export let fillOpacity = undefined;
+    export let outlineColor = undefined;
+    export let outlineWidth = undefined;
 
-  // Sorting:
-  export let stackOrder = "true";
+    let barMaxWidth;
 
-  // Bar Height:
-  const maxBarHeight = 50;
+    // Prop check. If local props supplied, use those. Otherwise fall back to global props.
+    let data = $props.data;
+    let x = $props.x;
+    let swapXY = $props.swapXY;
+    let xType = $props.xType;
+    let xMismatch = $props.xMismatch;
+    let columnSummary = $props.columnSummary;
+    let sort = $props.sort;
+    y = y ?? $props.y;
+    series = series ?? $props.series;
 
-  $: calcBarHeight = (d) => {
-    let chartHeight = $height;
-    let barHeight = $yScale.bandwidth ? $yScale.bandwidth() 
-        : chartHeight / (yIntegerRange ? yIntegerRange : $data.length);
-    return barHeight;
-  };
+    let stackedData;
+    let sortOrder;
 
-  $: chartBarHeight = (d) => {
-    return Math.min(calcBarHeight(d), maxBarHeight);
-  }
+    if(!series && typeof y !== 'object'){
+        // Single Series
+        name = name ?? formatTitle(y, columnSummary[y].title);
 
-  if(yIntegerRange == null){
-    yIntegerRange = $yDomain[1] - $yDomain[0];
-  }
+        if(swapXY && xType !== "category"){
+            data = getCompletedData(data, x, y, series, false, (xType !== "time"));
+            xType = "category";
+        };
+    } else {
+        // Multi Series
 
-  // MULTI-SERIES LOGIC:
+        // Sort by stack total for category axis
+        if(sort === true && xType === "category"){
+            stackedData = getStackedData(data, x, y); // REMEMBER: need to broaden this to include multiple y columns
+            stackedData = getSortedData(stackedData, y, false);
+            sortOrder = stackedData.map(d => d[x]);
+            data.sort(function (a, b) {
+                return sortOrder.indexOf(a[x]) - sortOrder.indexOf(b[x]);
+            });
+        }
 
-  //Filter dataset if filter value supplied in chart call:
-  let finalData = [];
-  if (series !== null && filter !== null) {
-    finalData = $data.filter((d) => d[series] === filter);
-  } else {
-    finalData = $data;
-  }
-
-  // Get array of global color variables (set in app.css):
-  let colorPalette = getColorPalette();
-
-  // Get distinct series names if series column supplied in chart call:
-  export let seriesNames = [];
-
-  var keys = Array.from(d3.group(finalData, (d) => d[series]).keys());
-  var values = Array.from(
-    d3.rollup(
-      finalData,
-      ([d]) => d[xName],
-      (d) => d[yName],
-      (d) => d[series]
-    )
-  );
-
-  // Stack Order:
-  
-    // D3 stack order options:
-      // d3.stackOrderNone
-      // d3.stackOrderAscending
-      // d3.stackOrderDescending
-      // d3.stackOrderAppearance
-      // d3.stackOrderInsideOut
-      // d3.stackOrderReverse
-    
-  var order = d3.stackOrderDescending;
-  if(stackOrder==="false"){ 
-    order = d3.stackOrderNone; 
-  }
-
-  var seriesData = d3
-    .stack()
-    .keys(keys)
-    .value(([, values], key) => values.get(key))
-    .order(order)
-    .offset(d3.stackOffsetDiverging)(values);
-
-  // In the graphics logic for the stacked column below, there is a 1 pixel adjustment to
-  // both the initial y coordinate and the column height. This is to avoid a rendering issue
-  // where a miniscule gap can appear between the stacks of the column (especially when
-  // scrolling)
-
-  $: isBandwidth = typeof $yScale.bandwidth === 'function';
-
-  let flatData = [];
-  for(let i = 0; i < seriesData.length; i++){
-    for(let j = 0; j < seriesData[i].length; j++){
-        flatData.push({
-          "series": seriesData[i].key,
-          "x0": seriesData[i][j][0],
-          "x1": seriesData[i][j][1],
-          "y": seriesData[i][j].data[0]
-        })
+        // Run fill for missing series entries, only if it's a value x axis and a stacked bar
+        if((swapXY && xType !== "category") || (xType === "value" && type === "stacked")){
+            data = getCompletedData(data, x, y, series, false, (xType !== "time"));
+            xType = "category";
+        }
+              
+        if(type === "stacked"){
+        // Set up stacks
+            stackName = stackName ?? "stack1";
+        } else {
+            stackName = null;
+        }
     }
-  }
-  
-  $: filteredData = (filter) => {
-      return flatData.filter((d) => d.series === filter);
-  };
 
+    barMaxWidth = 60;
+
+    let baseConfig = {
+            type: "bar",
+            stack: stackName,
+            label: {
+                show: false,
+            },
+            labelLayout: { hideOverlap: true },
+            emphasis: {
+                focus: "series",
+            },
+            barMaxWidth: barMaxWidth,
+            itemStyle: {
+                color: fillColor,
+                opacity: fillOpacity,
+                borderColor: outlineColor,
+                borderWidth: outlineWidth
+            }
+    }
+ 
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    
+    config.update(d => {d.series.push(...seriesConfig); return d})
+
+    if(options){
+        config.update(d => {return {...d, ...options}})
+    }
+
+    let chartOverrides = {
+         // Evidence definition of axes (yAxis = dependent, xAxis = independent)
+         xAxis: {
+             boundaryGap: ['1%', '2%'],
+             type: xType
+         }
+    }
+
+    if(chartOverrides){
+        config.update(d => {
+            if(type === "stacked"){
+                d.tooltip = {...d.tooltip, order: 'seriesDesc'} 
+            } else {
+                d.tooltip = {...d.tooltip, order: 'seriesAsc'} 
+            }
+            if(swapXY){
+                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+            } else {
+                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            return d})
+    }
+
+
+    
 </script>
-
-{#if series === null}
-  <g class="bar-group">
-    {#each finalData as d, i}    
-      <rect
-        class="group-rect"
-        data-id={i}
-        x={Math.max($xScale.range()[0], $xScale(Math.min(0, $x(d)))) + ($x(d) > 0 ? 0.4 : 0)}
-        y={isBandwidth ? $yGet(d) + calcBarHeight(d)/2 - chartBarHeight(d)/2 : $yGet(d) - chartBarHeight(d)/2}
-        height={chartBarHeight(d)}
-        width={Math.abs(
-          Math.max($xGet(d), 0) - Math.max($xScale.range()[0], $xScale(0))
-        )+($x(d) > 0 ? 0 : -0.6)}
-        fill='{fillColor}'
-        fill-opacity='{fillOpacity}'
-        stroke='{outlineColor}'
-        stroke-width={outlineWidth}
-        ><title>{formatValue(d[xName],xFormat, xUnits)}</title></rect
-      >
-    {/each}
-  </g>
-{:else}
-  <g class="bar-group">
-    {#each seriesNames as group, i}
-      {#each filteredData(group) as d, j}
-        <rect
-          class="group-rect {group} {i}"
-          data-id={j}
-          x={$xScale(seriesData[i][j][0]) + (seriesData[i][j][0] < 0 ? -1 : 0) + (seriesData[i][j][0] === 0 ? 0.4 : 0)}
-          y={$yScale(seriesData[i][j].data[0]) + calcBarHeight(d)/2 - chartBarHeight(d)/2}
-          height={chartBarHeight(d)}
-          width={$xScale(seriesData[i][j][1]) - $xScale(seriesData[i][j][0]) + 1 + (seriesData[i][j][1] === 0 ? -0.5 : 0)}
-          fill="var({colorPalette[i]})"
-          fill-opacity='{fillOpacity}'
-          stroke='{outlineColor}'
-          stroke-width={outlineWidth}
-          ><title>{group + ": " + formatValue(seriesData[i][j][0] >= 0 ? (seriesData[i][j][1] - seriesData[i][j][0]) : (seriesData[i][j][0] - seriesData[i][j][1]), xFormat, xUnits)}</title></rect
-        >
-      {/each}
-    {/each}
-  </g>
-{/if}

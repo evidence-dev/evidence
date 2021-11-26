@@ -2,10 +2,10 @@
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
 ## Histogram
-<Hist data={data.simpler_bar} x=value xTickMarks=true/>
+<Histogram data={data.simpler_bar} x=value xTickMarks=true/>
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<Hist data={data.mobility} x=retail/>
-<Hist data={data.census} x=median_rent_usd/>
+<Histogram data={data.mobility} x=retail/>
+<Histogram data={data.census} x=median_rent_usd/>
 <DataTable data={data.census}/>
 
 ## Bar Chart
@@ -18,33 +18,32 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<BarChart data={data.simpler_bar_unordered} x=year y=value series=country/>
+<BarChart swapXY=true data={data.simpler_bar_unordered} x=year y=value series=country/>
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<BarChart data={data.simpler_bar_unordered} x=year y=value series=country/>
+<BarChart swapXY=true data={data.simpler_bar_unordered} x=year y=value series=country/>
 
-<BarChart data={data.simpler_bar} x=year y=value series=country/>
+<BarChart swapXY=true data={data.simpler_bar} x=year y=value series=country/>
 
 ## Column Chart
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-<ColumnChart data={data.simple_bar} x=country y=value xAxisTitle=Country/>
+<BarChart data={data.simple_bar} x=country y=value xAxisTitle=Country/>
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<ColumnChart data={data.simple} x=x y=y/>
-<ColumnChart data={data.simple_string} x=x y=y/>
+<BarChart data={data.simple} x=x y=y/>
+<BarChart data={data.simple_string} x=x y=y/>
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
 ## Stacked Column
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<ColumnChart data={data.simpler_bar_unordered} x=year y=value series=country/>
-<ColumnChart data={data.simpler_bar_unordered} x=year y=value series=country xType=categorical/>
+<BarChart data={data.simpler_bar_unordered} x=year y=value series=country/>
 
 ## Line Chart
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
 ### Single Line
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-<LineChart data={data.mobility} x=date y=retail units="% chg y/y"/>
+<LineChart data={data.mobility} x=date y=retail yAxisTitle="% chg y/y"/>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
 ```date_new
@@ -78,7 +77,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 ## Scatter Plot
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-<ScatterPlot data={data.census} y=median_rent_usd x=income_per_capita_usd units="Median Rent" xAxisTitle="Income Per Capita"/>
+<ScatterPlot data={data.census} y=median_rent_usd x=income_per_capita_usd yAxisTitle="Median Rent" xAxisTitle="Income Per Capita"/>
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 ### Grouped Scatter Plot
@@ -88,7 +87,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 ## Bubble Chart
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-<BubbleChart data={data.world_data} x=population y=life_expectancy size=gdp/>
+<BubbleChart data={data.world_data} x=population y=life_expectancy size=gdp minSize=300/>
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 ### Grouped Bubble Chart

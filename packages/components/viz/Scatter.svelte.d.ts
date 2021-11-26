@@ -2,14 +2,15 @@
 /** @typedef {typeof __propDef.events}  ScatterEvents */
 /** @typedef {typeof __propDef.slots}  ScatterSlots */
 export default class Scatter extends SvelteComponentTyped<{
-    filter?: any;
-    fillColor?: string;
-    fillTransparency?: number;
-    reverseAxes?: string;
+    name?: any;
+    y?: any;
     series?: any;
-    outlineColor?: string;
-    outlineWidth?: number;
-    outlineTransparency?: number;
+    options?: any;
+    fillColor?: any;
+    outlineColor?: any;
+    outlineWidth?: any;
+    shape?: string;
+    opacity?: number;
     pointSize?: number;
 }, {
     [evt: string]: CustomEvent<any>;
@@ -21,14 +22,15 @@ export type ScatterSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        filter?: any;
-        fillColor?: string;
-        fillTransparency?: number;
-        reverseAxes?: string;
+        name?: any;
+        y?: any;
         series?: any;
-        outlineColor?: string;
-        outlineWidth?: number;
-        outlineTransparency?: number;
+        options?: any;
+        fillColor?: any;
+        outlineColor?: any;
+        outlineWidth?: any;
+        shape?: string;
+        opacity?: number;
         pointSize?: number;
     };
     events: {
@@ -36,4 +38,5 @@ declare const __propDef: {
     };
     slots: {};
 };
+import { props } from "../modules/stores.js";
 export {};

@@ -1,12 +1,11 @@
 # <Value value = {spike[0].date} fmt=date/> -- {spike[0].description} Spike
 
 There were {spike[0].number_of_complaints} calls for {spike[0].description} on <Value value = {spike[0].date} fmt=date/>
-
-<LineChart data={data.daily_complaints_by_category.filter(d => d.description === spike[0].description)} x="date" y="number_of_complaints" units={spike[0].description + " Calls"}/>
+<LineChart data={data.daily_complaints_by_category.filter(d => d.description === spike[0].description)} x="date" y="number_of_complaints" yAxisTitle={spike[0].description + " Calls"}/>
 
 Call volume was <Value value={spike[0].number_of_complaints/spike[0].rolling_stddev_daily_complaints}/> standard deviations above the rolling 365 day average of <Value value={spike[0].rolling_avg_daily_complaints}/> calls.
 
-<Hist data={daily_complaints_by_category} x=number_of_complaints xAxisTitle="Calls per day, last 365 days" units="days"/>
+<Histogram data={daily_complaints_by_category} x=number_of_complaints xAxisTitle="Calls per day, last 365 days" units="days"/>
 
 ```spikes
     with daily_complaints_by_category as (

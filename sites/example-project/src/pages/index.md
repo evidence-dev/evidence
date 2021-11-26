@@ -25,7 +25,7 @@ Austin 311 has fielded <Value data={data.summary}/> calls since <Value data={dat
     from `bigquery-public-data.austin_311.311_service_requests` 
     group by 1 
     order by 1 desc
-    limit 363
+    limit 365
 ```
 
 Call data is updated every few days -- the most recent update was on <Value data={data.summary} column=latest_call_date/>. 
@@ -46,7 +46,7 @@ The following {data.top_complaint.length} categories have generated the most cal
         from `bigquery-public-data.austin_311.311_service_requests` 
         group by 1
         order by 2 desc 
-        limit 3
+        limit 4
     )
 
     select *,
@@ -62,6 +62,31 @@ The following {data.top_complaint.length} categories have generated the most cal
 
 {/each}
 </ol>
+
+```top_categories_weekly
+with     
+
+top_complaints as (
+    select 
+        complaint_description as description, 
+        count(*) as number_of_complaints
+    from `bigquery-public-data.austin_311.311_service_requests` 
+    group by 1
+    order by 2 desc 
+    limit 16
+)
+
+select 
+    date_trunc(created_date, week) as date, 
+    complaint_description as description,
+    count(*) as number_of_complaints 
+from `bigquery-public-data.austin_311.311_service_requests` 
+where complaint_description in (select description from  top_complaints)
+and extract(year from created_date) >= extract(year from current_date()) - 2
+group by 1,2
+```
+
+<LineChart title="Weekly Call Volume, by Category" data={data.top_categories_weekly} x=date y=number_of_complaints series=description/>
 
 # Call volume is {data.ytd_volume[0].growth_pct >= 0 ? "up" : "down" } <Value data={data.ytd_volume} /> year to date
 
@@ -87,7 +112,7 @@ order by year desc
 ```
 
 <LineChart data={data.daily_volume_yoy} x=day_of_year y=cum_vol series=year 
-units="cumulative calls" 
+yAxisTitle="cumulative calls" 
 xAxisTitle="day of year"/>
 
 
@@ -98,7 +123,7 @@ with daily_vol as (
         extract(dayofyear from created_date) as day_of_year,
         count(*) as vol
     from `bigquery-public-data.austin_311.311_service_requests`
-    where extract(year from created_date) >= extract(year from current_date()) - 1 
+    where extract(year from created_date) >= extract(year from current_date()) - 2 
     group by 1,2)
 
 select 
@@ -107,26 +132,6 @@ select
 from daily_vol
 
 ```
-
-<!-- 
-<div class="flex-grid">
-  <div class="col">
-      <ColumnChart data={data.ytd_volume} x=year y=vol units="calls YTD"/>
-  </div>
-  <div class="col">
-  <LineChart data={data.daily_volume_yoy} x=day_of_year y=cum_vol series=year />
-  </div>
-</div>
-
-<style>
-    .flex-grid {
-    display: flex;
-    }
-    .col {
-    flex: 1;
-    }
-</style> -->
-
 
 ## <Value data={data.department_pareto} column=cutoff_pct/> of the growth came from {data.department_pareto.length} departments
 

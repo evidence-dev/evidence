@@ -2,18 +2,28 @@
 /** @typedef {typeof __propDef.events}  AreaChartEvents */
 /** @typedef {typeof __propDef.slots}  AreaChartSlots */
 export default class AreaChart extends SvelteComponentTyped<{
-    data: any;
+    title?: any;
+    line?: any;
+    legend?: any;
+    sort?: any;
+    data?: any;
     x?: any;
-    y?: any;
-    fillColor?: any;
-    fillTransparency?: any;
     xType?: any;
-    yType?: any;
-    yMin?: number;
-    units?: string;
-    xGridlines?: string;
-    yGridlines?: string;
+    y?: any;
+    series?: any;
+    fillColor?: any;
+    fillOpacity?: any;
+    handleMissing?: any;
+    yMin?: any;
+    subtitle?: any;
     xAxisTitle?: any;
+    xBaseline?: any;
+    xTickMarks?: any;
+    xGridlines?: any;
+    yAxisTitle?: any;
+    yBaseline?: any;
+    yTickMarks?: any;
+    yGridlines?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -24,18 +34,28 @@ export type AreaChartSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data: any;
+        title?: any;
+        line?: any;
+        legend?: any;
+        sort?: any;
+        data?: any;
         x?: any;
-        y?: any;
-        fillColor?: any;
-        fillTransparency?: any;
         xType?: any;
-        yType?: any;
-        yMin?: number;
-        units?: string;
-        xGridlines?: string;
-        yGridlines?: string;
+        y?: any;
+        series?: any;
+        fillColor?: any;
+        fillOpacity?: any;
+        handleMissing?: any;
+        yMin?: any;
+        subtitle?: any;
         xAxisTitle?: any;
+        xBaseline?: any;
+        xTickMarks?: any;
+        xGridlines?: any;
+        yAxisTitle?: any;
+        yBaseline?: any;
+        yTickMarks?: any;
+        yGridlines?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;

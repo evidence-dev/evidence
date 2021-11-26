@@ -2,14 +2,16 @@
 /** @typedef {typeof __propDef.events}  BarEvents */
 /** @typedef {typeof __propDef.slots}  BarSlots */
 export default class Bar extends SvelteComponentTyped<{
-    filter?: any;
-    fillColor?: string;
-    fillTransparency?: number;
+    name?: any;
+    y?: any;
     series?: any;
-    outlineColor?: string;
-    outlineWidth?: number;
-    stackOrder?: string;
-    seriesNames?: any[];
+    options?: any;
+    fillColor?: any;
+    fillOpacity?: any;
+    type?: string;
+    stackName?: string;
+    outlineColor?: any;
+    outlineWidth?: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -20,18 +22,21 @@ export type BarSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        filter?: any;
-        fillColor?: string;
-        fillTransparency?: number;
+        name?: any;
+        y?: any;
         series?: any;
-        outlineColor?: string;
-        outlineWidth?: number;
-        stackOrder?: string;
-        seriesNames?: any[];
+        options?: any;
+        fillColor?: any;
+        fillOpacity?: any;
+        type?: string;
+        stackName?: string;
+        outlineColor?: any;
+        outlineWidth?: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;
     };
     slots: {};
 };
+import { props } from "../modules/stores.js";
 export {};

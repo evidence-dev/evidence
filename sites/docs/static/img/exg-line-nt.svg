@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="576" height="198" style="user-select: none; position: absolute; left: 0px; top: 0px;">
+<g>
+<rect width="576" height="198" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0">
+</rect>
+</g>
+<g>
+<defs>
+<clipPath id="zr2391-clip-0">
+<path d="M 35 9 L 559 9 L 559 173 L 35 173 L 35 9 Z" fill="#000" fill-opacity="1" stroke="none">
+</path>
+</clipPath>
+</defs>
+<path d="M 36.9093 172.5 L 558.72 172.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 139.5 L 558.72 139.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 107.5 L 558.72 107.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 75.5 L 558.72 75.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 42.5 L 558.72 42.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 10.5 L 558.72 10.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 0 0 L 144.8633 0 L 144.8633 12 L 0 12 L 0 0 Z" fill="white" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,36.9093,4)">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,36.9093,4)" dominant-baseline="central" text-anchor="start" x="0" y="6" style="font: 12px sans-serif;">calls to Austin 311 per day</text>
+<path d="M 36.9093 172.5 L 558.72 172.5" fill="none" stroke="hsla(212, 10%, 53%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="round" stroke-miterlimit="10">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,172)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">0</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,139.6)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">200</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,107.2)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">400</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,74.8)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">600</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,42.4)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">800</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,10)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">1,000</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,104.1897,178)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Apr</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,205.2114,178)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">May</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,309.6005,178)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Jun</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,410.6222,178)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Jul</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,515.0113,178)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Aug</text>
+<g clip-path="url(#zr2391-clip-0)">
+<path d="M 46.9441 62.812 L 50.3115 41.428 L 53.6789 22.474 L 57.0463 30.088 L 60.4137 33.976 L 63.7811 96.508 L 67.1485 114.976 L 70.5158 73.018 L 73.8832 54.712 L 77.2506 72.208 L 80.618 63.622 L 83.9854 63.622 L 87.3528 94.24 L 90.7202 110.44 L 94.0876 71.074 L 97.455 65.242 L 100.8223 80.47 L 104.1897 80.632 L 107.5571 90.838 L 110.9245 115.138 L 114.2919 132.472 L 117.6593 73.342 L 121.0267 87.436 L 124.3941 67.348 L 127.7615 77.23 L 131.1289 68.644 L 134.4962 92.782 L 137.8636 109.144 L 141.231 67.186 L 144.5984 74.476 L 147.9658 59.896 L 151.3332 75.124 L 154.7006 67.348 L 158.068 96.994 L 161.4354 116.272 L 164.8027 72.046 L 168.1702 78.85 L 171.5375 70.102 L 174.9049 77.068 L 178.2723 59.248 L 181.6397 108.172 L 185.0071 121.132 L 188.3745 78.202 L 191.7419 79.012 L 195.1093 77.554 L 198.4767 73.018 L 201.844 73.504 L 205.2114 77.392 L 208.5788 105.58 L 211.9462 56.17 L 215.3136 71.074 L 218.681 65.89 L 222.0484 70.588 L 225.4158 64.432 L 228.7832 107.2 L 232.1505 130.204 L 235.5179 67.186 L 238.8853 77.068 L 242.2527 83.872 L 245.6201 79.498 L 248.9875 67.996 L 252.3549 100.72 L 255.7223 120.808 L 259.0897 75.286 L 262.4571 73.99 L 265.8244 72.37 L 269.1918 66.7 L 272.5592 60.868 L 275.9266 100.396 L 279.294 130.366 L 282.6614 75.124 L 286.0288 58.276 L 289.3962 59.896 L 292.7635 68.644 L 296.131 52.768 L 299.4984 30.25 L 302.8657 89.704 L 306.2331 90.028 L 309.6005 36.73 L 312.9679 55.522 L 316.3353 55.684 L 319.7027 45.64 L 323.0701 98.29 L 326.4375 111.412 L 329.8048 56.656 L 333.1722 56.008 L 336.5396 58.6 L 339.907 59.896 L 343.2744 65.728 L 346.6418 102.988 L 350.0092 111.574 L 353.3766 61.354 L 356.744 63.784 L 360.1114 53.092 L 363.4788 66.376 L 366.8461 77.878 L 370.2135 106.552 L 373.5809 124.534 L 376.9483 69.454 L 380.3157 67.834 L 383.6831 76.096 L 387.0505 81.928 L 390.4179 75.61 L 393.7852 104.608 L 397.1526 117.568 L 400.52 67.834 L 403.8874 38.026 L 407.2548 68.806 L 410.6222 69.94 L 413.9896 80.47 L 417.357 110.926 L 420.7244 129.718 L 424.0918 99.1 L 427.4591 59.086 L 430.8265 69.616 L 434.1939 60.544 L 437.5613 81.928 L 440.9287 89.056 L 444.2961 123.238 L 447.6635 74.638 L 451.0309 66.7 L 454.3983 55.846 L 457.7657 75.934 L 461.1331 74.476 L 464.5004 115.948 L 467.8678 127.936 L 471.2352 69.778 L 474.6026 62.488 L 477.97 66.862 L 481.3374 62.812 L 484.7048 64.756 L 488.0722 116.272 L 491.4395 116.92 L 494.8069 72.37 L 498.1743 69.13 L 501.5417 69.778 L 504.9091 78.364 L 508.2765 81.604 L 511.6439 112.222 L 515.0113 129.556 L 518.3787 70.102 L 521.746 61.678 L 525.1135 74.638 L 528.4808 69.778 L 531.8482 68.32 L 535.2156 112.87 L 538.583 118.864 L 541.9504 70.426 L 545.3178 76.42 L 548.6852 73.504" fill="none" stroke="hsla(207, 65%, 39%, 1)" stroke-width="2" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10">
+</path>
+</g>
+<path d="M 0 0 L 0 0 L 0 0 L 0 0 L 0 0 Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+</g>
+</svg>

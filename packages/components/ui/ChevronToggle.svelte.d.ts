@@ -2,9 +2,9 @@
 /** @typedef {typeof __propDef.events}  ChevronToggleEvents */
 /** @typedef {typeof __propDef.slots}  ChevronToggleSlots */
 export default class ChevronToggle extends SvelteComponentTyped<{
+    color?: string;
     size?: number;
     toggled?: boolean;
-    color?: string;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -15,9 +15,9 @@ export type ChevronToggleSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
+        color?: string;
         size?: number;
         toggled?: boolean;
-        color?: string;
     };
     events: {
         [evt: string]: CustomEvent<any>;
