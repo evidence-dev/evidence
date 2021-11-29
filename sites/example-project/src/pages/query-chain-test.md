@@ -3,7 +3,7 @@
     </script>
 
 ```qone
-select {vvv} as num, "A" as string
+select 135 as num, "A" as string
 ```
 
 ```qtwo

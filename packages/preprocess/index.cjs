@@ -110,24 +110,31 @@ const updateBuildQueriesDir = function(content, filename){
     })
 
     // Handle query chaining:
-    let testString
-    let matches
-    let matchString
+    let testString;
+    let matches;
+    let matchString;
+    let replaceString;
+    let queryIds = queryStrings.map(d => d.id);
 
-    for(let k=0; k<10; k++){
-    for(let i=0; i<queryStrings.length; i++){
-        testString = queryStrings[i].queryString
-        matches = testString.match(/\${.*?\}/gi)	
+    for(let i=0; i<10; i++){
+        for(let j=0; j<queryStrings.length; j++){
+            testString = queryStrings[j].queryString
+            matches = testString.match(/\${.*?\}/gi)	
 
-        if(matches){
-        for(let j=0; j < matches.length; j++){
-            matchString = matches[j].replace("${", "").replace("}", "")
-            queryStrings[i].queryString = queryStrings[i].queryString.replace(matches[j], "(" + queryStrings.filter(d => d.id === matchString)[0].queryString + ")")
+            if(matches){
+                for(let k=0; k < matches.length; k++){
+                    matchString = matches[k].replace("${", "").replace("}", "")
+                    if(!queryIds.includes(matchString)){
+                        throw Error("Error in " + queryStrings[j].id + " query: " + (matchString === "" ? "query name is required to run query chaining." : matchString + " is not a query name on this page."))
+                    }
+                    replaceString = "(" + queryStrings.filter(d => d.id === matchString)[0].queryString + ")"
+                    queryStrings[j].queryString = queryStrings[j].queryString.replace(matches[k], replaceString)
+                }
+            } 
         }
-        } 
-    }
     }
     // End of chaining logic //
+
 
 
     if (queryStrings.length === 0) {
@@ -154,7 +161,7 @@ function highlighter(code, lang) {
     code = code.replace(/"/g, "&quot;");
 
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
-    code = code.replace(/\${/g, "").replace(/}/g,"");
+    code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
     <QueryViewer queryString = '${code}' queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
     `;
