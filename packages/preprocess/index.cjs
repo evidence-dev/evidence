@@ -108,6 +108,28 @@ const updateBuildQueriesDir = function(content, filename){
             {id, queryString}
         )
     })
+
+    // Handle query chaining:
+    let testString
+    let matches
+    let matchString
+
+    for(let k=0; k<10; k++){
+    for(let i=0; i<queryStrings.length; i++){
+        testString = queryStrings[i].queryString
+        matches = testString.match(/\${.*?\}/gi)	
+
+        if(matches){
+        for(let j=0; j < matches.length; j++){
+            matchString = matches[j].replace("${", "").replace("}", "")
+            queryStrings[i].queryString = queryStrings[i].queryString.replace(matches[j], "(" + queryStrings.filter(d => d.id === matchString)[0].queryString + ")")
+        }
+        } 
+    }
+    }
+    // End of chaining logic //
+
+
     if (queryStrings.length === 0) {
         removeSync(queryDir)
         return
@@ -130,6 +152,9 @@ const updateBuildQueriesDir = function(content, filename){
 function highlighter(code, lang) {
     code = code.replace(/'/g, "&apos;");
     code = code.replace(/"/g, "&quot;");
+
+    // Repalce curly braces or Svelte will try to evaluate as a JS expression
+    code = code.replace(/\${/g, "").replace(/}/g,"");
     return `
     <QueryViewer queryString = '${code}' queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
     `;
