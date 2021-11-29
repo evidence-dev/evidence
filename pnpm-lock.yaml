@@ -33,13 +33,9 @@ importers:
   packages/bigquery:
     specifiers:
       '@google-cloud/bigquery': 5.6.0
-      blueimp-md5: 2.18.0
-      chalk: 4.1.1
       fs-extra: 9.1.0
     dependencies:
       '@google-cloud/bigquery': 5.6.0
-      blueimp-md5: 2.18.0
-      chalk: 4.1.1
       fs-extra: 9.1.0
 
   packages/components:
@@ -87,12 +83,8 @@ importers:
 
   packages/postgres:
     specifiers:
-      blueimp-md5: 2.18.0
-      fs-extra: 9.1.0
       pg: 8.7.1
     dependencies:
-      blueimp-md5: 2.18.0
-      fs-extra: 9.1.0
       pg: 8.7.1
 
   packages/preprocess:
@@ -115,12 +107,8 @@ importers:
 
   packages/snowflake:
     specifiers:
-      blueimp-md5: 2.18.0
-      fs-extra: 9.1.0
       snowflake-sdk: 1.6.1
     dependencies:
-      blueimp-md5: 2.18.0
-      fs-extra: 9.1.0
       snowflake-sdk: 1.6.1
 
   packages/telemetry:

@@ -6,8 +6,6 @@
     "author": "evidence.dev",
     "license": "MIT",
     "dependencies": {
-      "blueimp-md5": "2.18.0",
-      "fs-extra": "9.1.0",
       "snowflake-sdk": "1.6.1"
     },
     "type": "module"
