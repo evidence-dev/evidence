@@ -48,12 +48,14 @@ const createDefaultProps = function(filename){
         import Bar from '@evidence-dev/components/viz/Bar.svelte';
         import Bubble from '@evidence-dev/components/viz/Bubble.svelte';
         import Scatter from '@evidence-dev/components/viz/Scatter.svelte';
+        import Hist from '@evidence-dev/components/viz/Hist.svelte';
         import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
         import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
         import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
         import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
         import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
         import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
+        import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
         import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
         `
     if(hasQueries(filename)){
@@ -68,12 +70,14 @@ const createDefaultProps = function(filename){
             import Bar from '@evidence-dev/components/viz/Bar.svelte';
             import Bubble from '@evidence-dev/components/viz/Bubble.svelte';
             import Scatter from '@evidence-dev/components/viz/Scatter.svelte';
+            import Hist from '@evidence-dev/components/viz/Hist.svelte';
             import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
             import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
             import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
             import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
             import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
             import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
+            import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
             import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
             `
     }
