@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "type": "module",
   "dependencies": {
     "@tidyjs/tidy": "2.4.4",
