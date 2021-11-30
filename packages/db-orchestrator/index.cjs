@@ -44,9 +44,13 @@ const runQueries = async function (routeHash, dev) {
     
     if (queries.length > 0) {
         let data = {}
+        data["queries"] = queries 
         for (let query of queries) {
             if (query.id === 'untitled') {
                 data[query.id] = { error: { message: "Queries require a title" } }
+            }
+            if (query.id === 'queries') {
+                data[query.id] = { error: { message: "Invalid query name: 'queries'" } }
             }
             if (query.queryString.length === 0) {
                 data[query.id] = { error: { message: "Enter a query" } }

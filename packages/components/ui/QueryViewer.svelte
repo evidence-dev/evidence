@@ -8,6 +8,7 @@
   export let queryID; 
   export let queryString; 
   export let queryResult;
+  export let page 
   let title = queryID.replace(/_/g, ' ').replace(/(?: |\b)(\w)/g, function(queryID) { return queryID.toUpperCase()}) 
   let error = queryResult.error
   let nRecords = null
@@ -31,6 +32,8 @@
       showResults = !showResults
     }
   }
+  export let allQueries
+  let queries = allQueries.filter(d => d.id === queryID)
 
  </script>
 
@@ -41,7 +44,7 @@
           <span><ChevronToggle toggled={showSQL}/> {queryID}</span>
         </div>
           {#if showSQL}
-              <Prism language="sql" code="{queryString}"/>     
+              <Prism language="sql" code="{JSON.stringify(queries)}"/>     
           {/if}
       <div class = {"status-bar" + (error ? " error": " success") + (showResults ? " open": " closed")} on:click={toggleResults}>  
         <span> 

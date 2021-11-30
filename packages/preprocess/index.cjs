@@ -39,6 +39,7 @@ const createModuleContext = function(filename){
 } 
 
 const createDefaultProps = function(filename){
+    let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
         import Value from '@evidence-dev/components/viz/Value.svelte';
@@ -57,6 +58,7 @@ const createDefaultProps = function(filename){
         import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
         import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
         import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
+        let routeHash = '${routeHash}'
         `
     if(hasQueries(filename)){
         defaultProps = `
@@ -79,6 +81,7 @@ const createDefaultProps = function(filename){
             import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
             import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
             import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
+            let routeHash = '${routeHash}'
             `
     }
     return defaultProps
@@ -123,9 +126,11 @@ const updateBuildQueriesDir = function(content, filename){
                 references.forEach(reference => {
                     referencedQueryID = reference.replace("${", "").replace("}", "")
                     if(!queryIds.includes(referencedQueryID)){
-                        query.compileError = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
-                        query.queryString = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
+                        errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
+                        query.compileError = errorMessage
+                        query.queryString = errorMessage
                     } else if(i == maxIterations) {
+                        // tried 100 times, still have references, likely circular 
                         query.compileError = 'Compiler error: circular reference'
                         query.queryString = 'Compiler error: circular reference'
                     } else {
@@ -133,6 +138,7 @@ const updateBuildQueriesDir = function(content, filename){
                         try {
                             query.queryString = query.queryString.replace(reference, referencedQuery)
                         } catch {
+                            // tried <100 times but compiled string is too long, likely circular  
                             query.compileError = 'Compiler error: circular reference'
                             query.queryString = 'Compiler error: circular reference'
                         }
@@ -168,14 +174,11 @@ function highlighter(code, lang) {
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
-    <QueryViewer queryString = '${code}' queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
+    <QueryViewer allQueries = {data.queries} queryString = '${code}' queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
     `;
 }
 
 module.exports = function evidencePreprocess(){
-
-    
-
     return [
         {
             markup({content, filename}){
