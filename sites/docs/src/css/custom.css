@@ -266,10 +266,11 @@ h2 {
   box-shadow: 1px 1px 4px #d4d4d4;
   background-color: white;
   max-height: 40vh;
+  transition:box-shadow 350ms;
 }
 
 .gallery-item-grid:hover {
-  transform: scale(1.03);
+  box-shadow: 1px 2px 5px 2px #d4d4d4;
 }
 
 .gallery-container-grid > h2, h3 {
