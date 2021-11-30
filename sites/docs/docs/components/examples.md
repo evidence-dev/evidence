@@ -244,7 +244,7 @@ hide_table_of_contents: false
         <p class="lbl">Histogram</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/scatter-plot#histogram">
+<a href="/components/charts/histogram#histogram">
 
 ![histogram](/img/exg-histogram-nt.svg) 
 
