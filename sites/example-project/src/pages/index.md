@@ -4,23 +4,24 @@
 
 <style>
     .save-pdf {
-        background-color:navy; 
+        background-color:var(--blue-600); 
         color: white; 
-        border-radius: 10px; 
+        border-radius: 4px; 
         border-width: 0; 
         padding: 4px 10px 4px 10px;
+        font-family: var(--ui-font);
+        transition: all 400ms ease-out ;
+        font-weight:bold;
     }
 
     .save-pdf:hover {
-        filter: brightness(150%);
+        background-color:var(--blue-700); 
         cursor: pointer;
+        transition: all 400ms ease-out ;
     }
 
     .save-pdf:active {
-  -webkit-box-shadow: inset 0px 0px 5px black;
-     -moz-box-shadow: inset 0px 0px 5px black;
-          box-shadow: inset 0px 0px 5px black;
-   outline: none;
+        outline: none;
     }
 </style>
 
@@ -249,15 +250,19 @@ Year to date call volume is up by <Value data={data.department_pareto} column = 
 # Recent Call Volume Spikes  
 The following [volume spikes](spikes) may warrant further investigation.
 
-```spikes
-    with daily_complaints_by_category as (
+```daily_complaints_by_category
         select 
             complaint_description as description,
             extract(date from created_date) as date, 
             count(*) as number_of_complaints 
         from `bigquery-public-data.austin_311.311_service_requests` 
         group by 1,2 
-    ), 
+```
+
+
+
+```spikes
+    with daily_complaints_by_category as ${daily_complaints_by_category}, 
     rolling_metrics as (
         select *,
             stddev_pop(number_of_complaints) over(partition by description order by date rows between 365 preceding and 1 preceding) as rolling_stddev_daily_complaints,
@@ -277,38 +282,6 @@ The following [volume spikes](spikes) may warrant further investigation.
     row_number() over() as spike_id,
     from spikes
     limit 3
-```
-
-```daily_complaints_by_category 
-    select 
-        complaint_description as description,
-        extract(date from created_date) as date, 
-        count(*) as number_of_complaints 
-    from `bigquery-public-data.austin_311.311_service_requests` 
-    where created_date >= timestamp_sub(current_timestamp(), interval 180 day)
-    group by 1,2 
-```
-
-```complaints_by_dept_2019
-select owning_department as dept,
-count(*) as complaints
-from `bigquery-public-data.austin_311.311_service_requests` 
-where extract(year from created_date) = 2019
-group by dept
-```
-
-```complaints_by_dept_2020
-select owning_department as dept,
-count(*) as complaints
-from `bigquery-public-data.austin_311.311_service_requests` 
-where extract(year from created_date) = 2020
-group by dept
-```
-
-```complaints_join
-select a.*, b.complaints as complaints_20 from ${complaints_by_dept_2019} a
-left join ${complaints_by_dept_2020} b
-on a.dept = b.dept
 ```
 
 

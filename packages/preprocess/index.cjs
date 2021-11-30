@@ -110,32 +110,24 @@ const updateBuildQueriesDir = function(content, filename){
     })
 
     // Handle query chaining:
-    let testString;
-    let matches;
-    let matchString;
-    let replaceString;
     let queryIds = queryStrings.map(d => d.id);
 
     for(let i=0; i<10; i++){
-        for(let j=0; j<queryStrings.length; j++){
-            testString = queryStrings[j].queryString
-            matches = testString.match(/\${.*?\}/gi)	
-
-            if(matches){
-                for(let k=0; k < matches.length; k++){
-                    matchString = matches[k].replace("${", "").replace("}", "")
-                    if(!queryIds.includes(matchString)){
-                        throw Error("Error in " + queryStrings[j].id + " query: " + (matchString === "" ? "query name is required to run query chaining." : matchString + " is not a query name on this page."))
+        queryStrings.forEach(query => {
+            let references = query.queryString.match(/\${.*?\}/gi)	
+            if(references){
+                references.forEach(reference => {
+                    referencedQueryID = reference.replace("${", "").replace("}", "")
+                    if(!queryIds.includes(referencedQueryID)){
+                        query.compileError = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
+                    }else {
+                        let referencedQuery = "(" + queryStrings.filter(d => d.id === referencedQueryID)[0].queryString + ")"
+                        query.queryString = query.queryString.replace(reference, referencedQuery)
                     }
-                    replaceString = "(" + queryStrings.filter(d => d.id === matchString)[0].queryString + ")"
-                    queryStrings[j].queryString = queryStrings[j].queryString.replace(matches[k], replaceString)
-                }
+                }) 
             } 
-        }
+        })
     }
-    // End of chaining logic //
-
-
 
     if (queryStrings.length === 0) {
         removeSync(queryDir)

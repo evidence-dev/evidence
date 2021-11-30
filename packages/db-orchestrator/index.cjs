@@ -51,6 +51,9 @@ const runQueries = async function (routeHash, dev) {
             if (query.queryString.length === 0) {
                 data[query.id] = { error: { message: "Enter a query" } }
             }
+            if (query.compileError) {
+                data[query.id] = { error: { message: query.compileError } }
+            }
             else {
                 let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
                 let cache = getCache(dev, query.queryString, queryTime)
