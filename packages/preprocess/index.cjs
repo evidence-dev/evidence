@@ -125,10 +125,11 @@ const updateBuildQueriesDir = function(content, filename){
                 for(let k=0; k < matches.length; k++){
                     matchString = matches[k].replace("${", "").replace("}", "")
                     if(!queryIds.includes(matchString)){
-                        throw Error("Error in " + queryStrings[j].id + " query: " + (matchString === "" ? "query name is required to run query chaining." : matchString + " is not a query name on this page."))
+                        throw Error("Error in " + queryStrings[j].id + " query: " + (matchString === "" ? "query name is required to run query chaining." : matchString + " is not a query on this page."))
+                    } else {
+                        replaceString = "(" + queryStrings.filter(d => d.id === matchString)[0].queryString + ")"
+                        queryStrings[j].queryString = queryStrings[j].queryString.replace(matches[k], replaceString)    
                     }
-                    replaceString = "(" + queryStrings.filter(d => d.id === matchString)[0].queryString + ")"
-                    queryStrings[j].queryString = queryStrings[j].queryString.replace(matches[k], replaceString)
                 }
             } 
         }
@@ -168,6 +169,9 @@ function highlighter(code, lang) {
 }
 
 module.exports = function evidencePreprocess(){
+
+    
+
     return [
         {
             markup({content, filename}){
