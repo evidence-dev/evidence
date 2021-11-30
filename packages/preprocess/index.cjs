@@ -103,26 +103,39 @@ const updateBuildQueriesDir = function(content, filename){
         .parse(content)   
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
-        let queryString = node.value.trim()
+        let queryString = node.value.trim() // refs get compiled and sent to db orchestrator
+        let rawQueryString = queryString // original, as written 
+        let compiled = false // default flag, switched to true if query is compiled
         queryStrings.push(
-            {id, queryString}
+            {id, queryString, rawQueryString, compiled}
         )
     })
 
     // Handle query chaining:
+    let maxIterations = 100
     let queryIds = queryStrings.map(d => d.id);
 
-    for(let i=0; i<10; i++){
+    for(let i=0; i<=maxIterations; i++){
         queryStrings.forEach(query => {
             let references = query.queryString.match(/\${.*?\}/gi)	
             if(references){
+                query.compiled = true
                 references.forEach(reference => {
                     referencedQueryID = reference.replace("${", "").replace("}", "")
                     if(!queryIds.includes(referencedQueryID)){
                         query.compileError = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
-                    }else {
+                        query.queryString = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
+                    } else if(i == maxIterations) {
+                        query.compileError = 'Compiler error: circular reference'
+                        query.queryString = 'Compiler error: circular reference'
+                    } else {
                         let referencedQuery = "(" + queryStrings.filter(d => d.id === referencedQueryID)[0].queryString + ")"
-                        query.queryString = query.queryString.replace(reference, referencedQuery)
+                        try {
+                            query.queryString = query.queryString.replace(reference, referencedQuery)
+                        } catch {
+                            query.compileError = 'Compiler error: circular reference'
+                            query.queryString = 'Compiler error: circular reference'
+                        }
                     }
                 }) 
             } 

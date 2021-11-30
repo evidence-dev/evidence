@@ -43,3 +43,15 @@
 ```circular_reference_2
     select * from ${circular_reference_1}
 ```
+
+```missing_close_bracket
+    select 
+        n_days / 365 as approx_years
+    from ${working_reference
+```
+
+```missing_opening_bracket
+    select 
+        n_days / 365 as approx_years
+    from working_reference}
+```
