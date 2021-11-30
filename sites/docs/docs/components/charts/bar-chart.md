@@ -72,7 +72,7 @@ hide_table_of_contents: false
 />
 ```
 
-### Horiztonal Bar
+### Horizontal Bar
 ![bar](/img/exg-horizontal-bar-nt.svg) 
 
 ```markdown
@@ -96,7 +96,7 @@ hide_table_of_contents: false
 />
 ```
 
-### Horiztonal Stacked Bar
+### Horizontal Stacked Bar
 ![bar](/img/exg-horizontal-stacked-bar-nt.svg) 
 
 ```markdown
@@ -124,7 +124,7 @@ hide_table_of_contents: false
 />
 ```
 
-### Horiztonal Grouped Bar
+### Horizontal Grouped Bar
 ![bar](/img/exg-horizontal-grouped-bar-nt.svg) 
 
 ```markdown
