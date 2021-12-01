@@ -1,12 +1,12 @@
 <script>
   import { slide } from 'svelte/transition';
-  import DataTable from './QueryDataTable.svelte'
+  import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
-  import Prism from "./Prismjs.svelte";
+  import Prism from "./QueryViewerSupport/Prismjs.svelte";
   import {showQueries} from './stores.js'
+  import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
 
   export let queryID; 
-  export let queryString; 
   export let queryResult;
   let title = queryID.replace(/_/g, ' ').replace(/(?: |\b)(\w)/g, function(queryID) { return queryID.toUpperCase()}) 
   let error = queryResult.error
@@ -31,6 +31,15 @@
       showResults = !showResults
     }
   }
+  export let allQueries
+  let queries = allQueries.filter(d => d.id === queryID)
+  let rawQuery = queries[0].rawQueryString
+  let compiledQuery = queries[0].queryString
+  let showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
+
+  let codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, rawQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30) // Pre-calculate the container height for smooth slide transition 
+
+  let showCompiled = showCompilerToggle
 
  </script>
 
@@ -40,8 +49,17 @@
         <div on:click={toggleSQL} class="title">
           <span><ChevronToggle toggled={showSQL}/> {queryID}</span>
         </div>
+          {#if showSQL && showCompilerToggle}
+            <CompilerToggle bind:showCompiled = {showCompiled}/>
+          {/if }
           {#if showSQL}
-              <Prism language="sql" code="{queryString}"/>     
+              <div class=code-container transition:slide|local style={`height: ${codeContainerHeight}em;`}>
+                {#if showCompiled}
+                  <Prism language="sql" code={compiledQuery}/>
+                {:else}
+                  <Prism language="sql" code={rawQuery}/>
+                {/if}
+              </div>
           {/if}
       <div class = {"status-bar" + (error ? " error": " success") + (showResults ? " open": " closed")} on:click={toggleResults}>  
         <span> 
@@ -64,6 +82,15 @@
  
  
  <style>
+    .code-container {
+        background-color: var(--grey-100);
+        border-left: 1px solid var(--grey-200);
+        border-right: 1px solid var(--grey-200);
+        overflow: scroll;
+        padding: 0 12px 6px 12px; 
+    }
+
+
  .status-bar{
   margin-top: 0px;
   margin-bottom: 0px;

@@ -134,7 +134,7 @@ const updateBuildQueriesDir = function(content, filename){
                         query.compileError = 'Compiler error: circular reference'
                         query.queryString = 'Compiler error: circular reference'
                     } else {
-                        let referencedQuery = "(" + queryStrings.filter(d => d.id === referencedQueryID)[0].queryString + ")"
+                        let referencedQuery = "\n(" + queryStrings.filter(d => d.id === referencedQueryID)[0].queryString + ")"
                         try {
                             query.queryString = query.queryString.replace(reference, referencedQuery)
                         } catch {
@@ -174,7 +174,7 @@ function highlighter(code, lang) {
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
-    <QueryViewer allQueries = {data.queries} queryString = '${code}' queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
+    <QueryViewer allQueries = {data.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
     `;
 }
 
