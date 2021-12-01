@@ -3,8 +3,8 @@
 /** @typedef {typeof __propDef.slots}  QueryViewerSlots */
 export default class QueryViewer extends SvelteComponentTyped<{
     queryID: any;
+    pageQueries: any;
     queryResult: any;
-    allQueries: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -16,8 +16,8 @@ import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         queryID: any;
+        pageQueries: any;
         queryResult: any;
-        allQueries: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;

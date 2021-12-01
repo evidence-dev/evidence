@@ -59,21 +59,4 @@
     background-color: var(--grey-100);
     transition: all 400ms;
    }
-
-/* .toggle {
-      padding: 4px 0 0 12px;
-    }
-
-    span {
-
-    }
-
-    span:hover{
-      border: 1px solid var(--grey-300);
-    }
-
-    span.on {
-
-    } */
-
 </style>

@@ -7,8 +7,7 @@
   
   export let language;
   export let code;
-  export let compiledCode
-  
+ 
   onMount(() => {
 
    let script = document.createElement('script');
@@ -77,13 +76,9 @@
     <code class="language-{language}">{code}</code>
   </pre>
 <style>
-  
     pre {
       margin: 0 0 0 0; /* Makes the block jump around on transition */  
       font-size:12px;
       display: block;
-    }
-
-
-    
+    }   
 </style>

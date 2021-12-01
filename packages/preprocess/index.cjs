@@ -100,27 +100,28 @@ const updateBuildQueriesDir = function(content, filename){
     let routeHash = getRouteHash(filename)
     let queryDir = `./.evidence/build/queries/${routeHash}`
 
-    let queryStrings = [];  
+    let queries = [];  
     let tree = unified()
         .use(parse)
         .parse(content)   
+
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
-        let queryString = node.value.trim() // refs get compiled and sent to db orchestrator
-        let rawQueryString = queryString // original, as written 
+        let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
+        let inputQueryString = compiledQueryString // original, as written 
         let compiled = false // default flag, switched to true if query is compiled
-        queryStrings.push(
-            {id, queryString, rawQueryString, compiled}
+        queries.push(
+            {id, compiledQueryString, inputQueryString, compiled}
         )
     })
 
     // Handle query chaining:
     let maxIterations = 100
-    let queryIds = queryStrings.map(d => d.id);
+    let queryIds = queries.map(d => d.id);
 
     for(let i=0; i<=maxIterations; i++){
-        queryStrings.forEach(query => {
-            let references = query.queryString.match(/\${.*?\}/gi)	
+        queries.forEach(query => {
+            let references = query.compiledQueryString.match(/\${.*?\}/gi)	
             if(references){
                 query.compiled = true
                 references.forEach(reference => {
@@ -128,19 +129,19 @@ const updateBuildQueriesDir = function(content, filename){
                     if(!queryIds.includes(referencedQueryID)){
                         errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
                         query.compileError = errorMessage
-                        query.queryString = errorMessage
+                        query.compiledQueryString = errorMessage
                     } else if(i == maxIterations) {
                         // tried 100 times, still have references, likely circular 
                         query.compileError = 'Compiler error: circular reference'
-                        query.queryString = 'Compiler error: circular reference'
+                        query.compiledQueryString = 'Compiler error: circular reference'
                     } else {
-                        let referencedQuery = "\n(" + queryStrings.filter(d => d.id === referencedQueryID)[0].queryString + ")"
+                        let referencedQuery = "\n(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
                         try {
-                            query.queryString = query.queryString.replace(reference, referencedQuery)
+                            query.compiledQueryString = query.compiledQueryString.replace(reference, referencedQuery)
                         } catch {
                             // tried <100 times but compiled string is too long, likely circular  
                             query.compileError = 'Compiler error: circular reference'
-                            query.queryString = 'Compiler error: circular reference'
+                            query.compiledQueryString = 'Compiler error: circular reference'
                         }
                     }
                 }) 
@@ -148,21 +149,21 @@ const updateBuildQueriesDir = function(content, filename){
         })
     }
 
-    if (queryStrings.length === 0) {
+    if (queries.length === 0) {
         removeSync(queryDir)
         return
     }
-    let queryHash = md5(JSON.stringify(queryStrings))
+    let queryHash = md5(JSON.stringify(queries))
     if (fs.existsSync(`${queryDir}/${queryHash}.json`)){
         return
     }
-    if (queryStrings.length > 0) {
+    if (queries.length > 0) {
         if(!fs.existsSync(queryDir)){
             fs.mkdirSync(queryDir)
-            writeJSONSync(`${queryDir}/${queryHash}.json`, queryStrings)
+            writeJSONSync(`${queryDir}/${queryHash}.json`, queries)
         }else{
             emptyDirSync(queryDir)
-            writeJSONSync(`${queryDir}/${queryHash}.json`, queryStrings)
+            writeJSONSync(`${queryDir}/${queryHash}.json`, queries)
         }
     }
 }
@@ -174,7 +175,7 @@ function highlighter(code, lang) {
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
-    <QueryViewer allQueries = {data.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
+    <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
     `;
 }
 

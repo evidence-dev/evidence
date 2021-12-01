@@ -35,6 +35,7 @@
     "./ui/LoadingIndicator.svelte": "./ui/LoadingIndicator.svelte",
     "./ui/Logo.svelte": "./ui/Logo.svelte",
     "./ui/Nav.svelte": "./ui/Nav.svelte",
+    "./ui/PrintButton.svelte": "./ui/PrintButton.svelte",
     "./ui/QueryViewer.svelte": "./ui/QueryViewer.svelte",
     "./ui/QueryViewerSupport/CompilerToggle.svelte": "./ui/QueryViewerSupport/CompilerToggle.svelte",
     "./ui/QueryViewerSupport/Prismjs.svelte": "./ui/QueryViewerSupport/Prismjs.svelte",

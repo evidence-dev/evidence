@@ -44,15 +44,15 @@ const runQueries = async function (routeHash, dev) {
     
     if (queries.length > 0) {
         let data = {}
-        data["queries"] = queries 
+        data["evidencemeta"] = {queries} 
         for (let query of queries) {
             if (query.id === 'untitled') {
                 data[query.id] = { error: { message: "Queries require a title" } }
             }
-            if (query.id === 'queries') {
-                data[query.id] = { error: { message: "Invalid query name: 'queries'" } }
+            if (query.id === 'evidencemeta') {
+                data[query.id] = { error: { message: "Invalid query name: 'evidencemeta'" } }
             }
-            if (query.queryString.length === 0) {
+            if (query.compiledQueryString.length === 0) {
                 data[query.id] = { error: { message: "Enter a query" } }
             }
             if (query.compileError) {
@@ -60,17 +60,17 @@ const runQueries = async function (routeHash, dev) {
             }
             else {
                 let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
-                let cache = getCache(dev, query.queryString, queryTime)
+                let cache = getCache(dev, query.compiledQueryString, queryTime)
                 if (cache) {
                     data[query.id] = cache
                     process.stdout.write(chalk.greenBright("✓ "+ query.id) +  chalk.grey(" from cache \n"))
                 } else {
                     try {
                         process.stdout.write(chalk.grey("  "+ query.id +" running..."))
-                        data[query.id] = await runQuery(query.queryString, database, dev)
+                        data[query.id] = await runQuery(query.compiledQueryString, database, dev)
                         readline.cursorTo(process.stdout, 0);
                         process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
-                        updateCache(dev, query.queryString, data[query.id], queryTime)
+                        updateCache(dev, query.compiledQueryString, data[query.id], queryTime)
                         logEvent("db-query", dev)
                     } catch(err) {
                         readline.cursorTo(process.stdout, 0);

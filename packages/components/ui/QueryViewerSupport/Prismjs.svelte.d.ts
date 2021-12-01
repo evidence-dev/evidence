@@ -4,7 +4,6 @@
 export default class Prismjs extends SvelteComponentTyped<{
     language: any;
     code: any;
-    compiledCode: any;
 }, {
     [evt: string]: CustomEvent<any>;
 }, {}> {
@@ -17,7 +16,6 @@ declare const __propDef: {
     props: {
         language: any;
         code: any;
-        compiledCode: any;
     };
     events: {
         [evt: string]: CustomEvent<any>;
