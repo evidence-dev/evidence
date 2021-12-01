@@ -18,7 +18,7 @@ export const config = {
 				exclude: ['@evidence-dev/components']
 			},
 			ssr: {
-				external: ['@evidence-dev/db-orchestrator', 'echarts-stat']
+				external: ['@evidence-dev/db-orchestrator', 'echarts-stat', 'sql-formatter']
 			},
 			plugins: [
 				FullReload.default(['./.evidence/build/queries/**'], {delay: 150}),

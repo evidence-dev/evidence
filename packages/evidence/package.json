@@ -26,6 +26,7 @@
     "echarts-stat": "1.2.0",
     "svelte": "3.44.1",
     "svelte2tsx": "0.4.7",
-    "typescript": "4.4.4"
+    "typescript": "4.4.4",
+		"sql-formatter": "4.0.2"
   }
 }

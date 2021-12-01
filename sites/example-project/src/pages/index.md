@@ -39,7 +39,7 @@ Austin 311 has fielded <Value data={data.summary}/> calls since <Value data={dat
 ```annual_complaints
     select date_trunc(month, year) as year,
     sum(complaints) as complaints
-    from ${monthly_complaints}
+    from ${ monthly_complaints }
     group by year
 ```
 

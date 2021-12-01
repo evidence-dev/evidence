@@ -1,7 +1,7 @@
 <script>
   import "./prismtheme.css"
     
-  import { blur, slide, fly, fade} from 'svelte/transition';
+  import { blur } from 'svelte/transition';
 
   import { onMount } from 'svelte';
   

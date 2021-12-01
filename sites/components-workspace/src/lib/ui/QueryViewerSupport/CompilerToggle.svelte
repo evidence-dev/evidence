@@ -25,7 +25,7 @@
         background-color: var(--grey-100);
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
-        padding: 14px 0 0 20px;
+        padding: 14px 0 2px 20px;
         font-family: var(--ui-font-family);
         font-size:10px;
         font-weight: bold;

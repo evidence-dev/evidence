@@ -125,7 +125,7 @@ const updateBuildQueriesDir = function(content, filename){
             if(references){
                 query.compiled = true
                 references.forEach(reference => {
-                    referencedQueryID = reference.replace("${", "").replace("}", "")
+                    referencedQueryID = reference.replace("${", "").replace("}", "").trim()
                     if(!queryIds.includes(referencedQueryID)){
                         errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
                         query.compileError = errorMessage
@@ -135,7 +135,7 @@ const updateBuildQueriesDir = function(content, filename){
                         query.compileError = 'Compiler error: circular reference'
                         query.compiledQueryString = 'Compiler error: circular reference'
                     } else {
-                        let referencedQuery = "\n(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
+                        let referencedQuery = "(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
                         try {
                             query.compiledQueryString = query.compiledQueryString.replace(reference, referencedQuery)
                         } catch {
