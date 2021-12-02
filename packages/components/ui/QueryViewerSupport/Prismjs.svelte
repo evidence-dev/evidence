@@ -1,13 +1,13 @@
 <script>
   import "./prismtheme.css"
     
-  import { blur, slide, fly} from 'svelte/transition';
+  import { blur } from 'svelte/transition';
 
   import { onMount } from 'svelte';
   
   export let language;
   export let code;
-  
+ 
   onMount(() => {
 
    let script = document.createElement('script');
@@ -72,25 +72,13 @@
   });
 
 </script>
-<div transition:slide|local>
-  <pre >
+  <pre in:blur|local>
     <code class="language-{language}">{code}</code>
   </pre>
-</div>
-
 <style>
-
-    div {
-      background-color: var(--grey-100);
-      border-left: 1px solid var(--grey-200);
-      border-right: 1px solid var(--grey-200);
-    }
-  
     pre {
-        overflow: auto;
-        margin: 0 0 0 0; /* Makes the block jump around on transition */  
-        font-size:12px;
-        display: block;
-    }
-    
+      margin: 0 0 0 0; /* Makes the block jump around on transition */  
+      font-size:12px;
+      display: block;
+    }   
 </style>

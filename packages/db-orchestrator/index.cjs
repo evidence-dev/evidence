@@ -32,6 +32,21 @@ const updateCache = function (dev, queryString, data, queryTime) {
     }
 }
 
+const validateQuery = function (query) { 
+    if (query.id === 'untitled') {
+        throw "Queries require a title"
+    }
+    if (query.id === 'evidencemeta') {
+        throw "Invalid query name: 'evidencemeta'"
+    }
+    if (query.compiledQueryString.length === 0) {
+        throw "Enter a query"
+    }
+    if (query.compileError) {
+        throw query.compileError
+    }
+}
+
 const runQueries = async function (routeHash, dev) {
     const database = readJSONSync('./.evidence/database.config.json',{throws:false})
     const config = readJSONSync('./evidence.config.json', {throws:false})
@@ -44,34 +59,28 @@ const runQueries = async function (routeHash, dev) {
     
     if (queries.length > 0) {
         let data = {}
+        data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 
         for (let query of queries) {
-            if (query.id === 'untitled') {
-                data[query.id] = { error: { message: "Queries require a title" } }
-            }
-            if (query.queryString.length === 0) {
-                data[query.id] = { error: { message: "Enter a query" } }
-            }
-            else {
-                let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
-                let cache = getCache(dev, query.queryString, queryTime)
-                if (cache) {
-                    data[query.id] = cache
-                    process.stdout.write(chalk.greenBright("✓ "+ query.id) +  chalk.grey(" from cache \n"))
-                } else {
-                    try {
-                        process.stdout.write(chalk.grey("  "+ query.id +" running..."))
-                        data[query.id] = await runQuery(query.queryString, database, dev)
-                        readline.cursorTo(process.stdout, 0);
-                        process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
-                        updateCache(dev, query.queryString, data[query.id], queryTime)
-                        logEvent("db-query", dev)
-                    } catch(err) {
-                        readline.cursorTo(process.stdout, 0);
-                        process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
-                        data[query.id] = { error: { message: err } }
-                        logEvent("db-error", dev)
-                    } 
-                }
+            let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
+            let cache = getCache(dev, query.compiledQueryString, queryTime)
+            if (cache) {
+                data[query.id] = cache
+                process.stdout.write(chalk.greenBright("✓ "+ query.id) +  chalk.grey(" from cache \n"))
+            } else {
+                try {
+                    process.stdout.write(chalk.grey("  "+ query.id +" running..."))
+                    validateQuery(query)
+                    data[query.id] = await runQuery(query.compiledQueryString, database, dev)
+                    readline.cursorTo(process.stdout, 0);
+                    process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
+                    updateCache(dev, query.compiledQueryString, data[query.id], queryTime)
+                    logEvent("db-query", dev)
+                } catch(err) {
+                    readline.cursorTo(process.stdout, 0);
+                    process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
+                    data[query.id] = { error: { message: err } }
+                    logEvent("db-error", dev)
+                } 
             }
         }
         return data

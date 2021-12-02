@@ -31,7 +31,7 @@ Some users have been running into an issue that causes 500 errors when running t
 
 Check which version you have with `node -v` 
 
-**NPM Version 6 or greater** 
+**NPM Version 7 or greater** 
 
 Check which version you have with `npm -v` 
 

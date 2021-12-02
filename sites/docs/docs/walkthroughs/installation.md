@@ -44,7 +44,7 @@ Below are the versions of Node.js and npm you will need to install Evidence:
 
 Check which version you have with `node -v` 
 
-**NPM Version 6 or greater** 
+**NPM Version 7 or greater** 
 
 Check which version you have with `npm -v` 
 

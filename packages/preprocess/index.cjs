@@ -39,6 +39,7 @@ const createModuleContext = function(filename){
 } 
 
 const createDefaultProps = function(filename){
+    let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
         import Value from '@evidence-dev/components/viz/Value.svelte';
@@ -57,6 +58,7 @@ const createDefaultProps = function(filename){
         import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
         import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
         import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
+        let routeHash = '${routeHash}'
         `
     if(hasQueries(filename)){
         defaultProps = `
@@ -79,6 +81,7 @@ const createDefaultProps = function(filename){
             import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
             import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
             import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
+            let routeHash = '${routeHash}'
             `
     }
     return defaultProps
@@ -97,32 +100,70 @@ const updateBuildQueriesDir = function(content, filename){
     let routeHash = getRouteHash(filename)
     let queryDir = `./.evidence/build/queries/${routeHash}`
 
-    let queryStrings = [];  
+    let queries = [];  
     let tree = unified()
         .use(parse)
         .parse(content)   
+
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
-        let queryString = node.value.trim()
-        queryStrings.push(
-            {id, queryString}
+        let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
+        let inputQueryString = compiledQueryString // original, as written 
+        let compiled = false // default flag, switched to true if query is compiled
+        queries.push(
+            {id, compiledQueryString, inputQueryString, compiled}
         )
     })
-    if (queryStrings.length === 0) {
+
+    // Handle query chaining:
+    let maxIterations = 100
+    let queryIds = queries.map(d => d.id);
+
+    for(let i=0; i<=maxIterations; i++){
+        queries.forEach(query => {
+            let references = query.compiledQueryString.match(/\${.*?\}/gi)	
+            if(references){
+                query.compiled = true
+                references.forEach(reference => {
+                    referencedQueryID = reference.replace("${", "").replace("}", "").trim()
+                    if(!queryIds.includes(referencedQueryID)){
+                        errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
+                        query.compileError = errorMessage
+                        query.compiledQueryString = errorMessage
+                    } else if(i == maxIterations) {
+                        // tried 100 times, still have references, likely circular 
+                        query.compileError = 'Compiler error: circular reference'
+                        query.compiledQueryString = 'Compiler error: circular reference'
+                    } else {
+                        let referencedQuery = "(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
+                        try {
+                            query.compiledQueryString = query.compiledQueryString.replace(reference, referencedQuery)
+                        } catch {
+                            // tried <100 times but compiled string is too long, likely circular  
+                            query.compileError = 'Compiler error: circular reference'
+                            query.compiledQueryString = 'Compiler error: circular reference'
+                        }
+                    }
+                }) 
+            } 
+        })
+    }
+
+    if (queries.length === 0) {
         removeSync(queryDir)
         return
     }
-    let queryHash = md5(JSON.stringify(queryStrings))
+    let queryHash = md5(JSON.stringify(queries))
     if (fs.existsSync(`${queryDir}/${queryHash}.json`)){
         return
     }
-    if (queryStrings.length > 0) {
+    if (queries.length > 0) {
         if(!fs.existsSync(queryDir)){
             fs.mkdirSync(queryDir)
-            writeJSONSync(`${queryDir}/${queryHash}.json`, queryStrings)
+            writeJSONSync(`${queryDir}/${queryHash}.json`, queries)
         }else{
             emptyDirSync(queryDir)
-            writeJSONSync(`${queryDir}/${queryHash}.json`, queryStrings)
+            writeJSONSync(`${queryDir}/${queryHash}.json`, queries)
         }
     }
 }
@@ -130,8 +171,11 @@ const updateBuildQueriesDir = function(content, filename){
 function highlighter(code, lang) {
     code = code.replace(/'/g, "&apos;");
     code = code.replace(/"/g, "&quot;");
+
+    // Repalce curly braces or Svelte will try to evaluate as a JS expression
+    code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
-    <QueryViewer queryString = '${code}' queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
+    <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
     `;
 }
 
