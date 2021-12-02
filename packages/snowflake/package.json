@@ -1,13 +1,11 @@
 {
     "name": "@evidence-dev/snowflake",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Snowflake driver for Evidence projects",
     "main": "index.cjs",
     "author": "evidence.dev",
     "license": "MIT",
     "dependencies": {
-      "blueimp-md5": "2.18.0",
-      "fs-extra": "9.1.0",
       "snowflake-sdk": "1.6.1"
     },
     "type": "module"
