@@ -80,7 +80,7 @@ importers:
       '@sveltejs/adapter-static': 1.0.0-next.21
       vite-plugin-full-reload: 0.2.2
     devDependencies:
-      '@evidence-dev/components': link:../../sites/components-workspace
+      '@evidence-dev/components': link:../components
       '@evidence-dev/db-orchestrator': link:../db-orchestrator
 
   packages/postgres:
@@ -3627,7 +3627,7 @@ packages:
   /axios/0.21.1_debug@3.2.7:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1_debug@3.2.7
+      follow-redirects: 1.14.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6048,7 +6048,7 @@ packages:
         optional: true
     dev: false
 
-  /follow-redirects/1.14.1_debug@3.2.7:
+  /follow-redirects/1.14.1_debug@4.3.2:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -6057,7 +6057,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 3.2.7
+      debug: 4.3.2_supports-color@6.1.0
     dev: false
 
   /for-in/1.0.2:
@@ -6771,7 +6771,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.1
+      follow-redirects: 1.14.1_debug@4.3.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
