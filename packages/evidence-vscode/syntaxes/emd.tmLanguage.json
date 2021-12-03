@@ -1,0 +1,59 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Septh/tmlanguage/master/tmLanguage.schema.json",
+    "name": "Markdown Svelte",
+    "patterns": [
+      {
+        "include": "#svelte"
+      },
+      {
+        "include": "#markdown"
+      }
+    ],
+    "repository": {
+      "svelte": {
+        "patterns": [
+          { "include": "#svelte-tag" },
+          { "include": "#svelte-template" }
+        ],
+        "repository": {
+          "svelte-tag": {
+            "patterns": [
+              {
+                "begin": "(^|\\G)\\s*(?=<[^script])",
+                "end": "(?<=\\s*/?>$)",
+                "contentName": "source.svelte",
+                "patterns": [
+                  {
+                    "include": "source.svelte"
+                  }
+                ]
+              }
+            ]
+          },
+          "svelte-template": {
+            "patterns": [
+              {
+                "begin": "(^|\\G)\\s*(?={)",
+                "end": "(?<=\\s*}$)",
+                "contentName": "source.svelte",
+                "patterns": [
+                  {
+                    "include": "source.svelte"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "markdown": {
+        "contentName": "text.html.markdown",
+        "patterns": [
+          {
+            "include": "text.html.markdown"
+          }
+        ]
+      }
+    },
+    "scopeName": "text.html.markdown.svelte"
+  }
