@@ -19,7 +19,7 @@
           "svelte-tag": {
             "patterns": [
               {
-                "begin": "(^|\\G)\\s*(?=<[^script])",
+                "begin": "(^|\\G)[\\s|\\w|\\W]*?(?=<[^script])",
                 "end": "(?<=\\s*/?>$)",
                 "contentName": "source.svelte",
                 "patterns": [
