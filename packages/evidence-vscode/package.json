@@ -1,0 +1,90 @@
+{
+  "name": "evidence-vscode",
+	"displayName": "evidence-vscode",
+	"description": "VSCode Plugin for Evidence",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.62.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+        "onCommand:evidence-vscode.helloWorld"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"languages": [
+			{
+			  "id": "emd",
+			  "aliases": [
+				"Evidence Markdown",
+				"emd"
+			  ],
+			  "extensions": [
+				".md"
+			  ],
+			  "configuration": "./language-configuration.json"
+			}
+		  ],
+		"grammars": [
+			{
+				"language": "emd",
+				"scopeName": "text.html.markdown.svelte",
+				"path": "./syntaxes/emd.tmLanguage.json",
+				"embeddedLanguages": {
+				  "source.svelte": "svelte",
+				  "source.js": "javascript",
+				  "text.html.markdown": "markdown",
+				  "meta.tag.svelte": "svelte",
+				  "meta.embedded.block.sql": "sql"
+				}
+			},
+			{
+				"scopeName": "markdown.sql.codeblock",
+				"path": "./syntaxes/markdown-sql.json",
+				"injectTo": [
+					"text.html.markdown"
+				],
+				"embeddedLanguages": {
+					"meta.embedded.block.sql": "sql"
+				}
+			}
+		],	
+		"configurationDefaults": {
+			"[emd]": {
+			  "editor.wordWrap": "on",
+			  "editor.quickSuggestions": true,
+			  "editor.suggest.showWords": false,
+			  "editor.suggest.snippetsPreventQuickSuggestions": false
+		  }
+	  },
+	  "snippets": [
+		{
+		  "language": "markdown",
+		  "path": "./snippets/emd.code-snippets"
+		}
+	  ]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.62.0",
+		"@types/glob": "^7.1.4",
+		"@types/mocha": "^9.0.0",
+		"@types/node": "14.x",
+		"@typescript-eslint/eslint-plugin": "^5.1.0",
+		"@typescript-eslint/parser": "^5.1.0",
+		"eslint": "^8.1.0",
+		"glob": "^7.1.7",
+		"mocha": "^9.1.3",
+		"typescript": "^4.4.4",
+		"@vscode/test-electron": "^1.6.2"
+	}
+}
