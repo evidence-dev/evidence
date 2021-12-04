@@ -1,0 +1,17 @@
+{
+    "group by": {
+		"prefix": "group by",
+		"body": ["group by "],
+		"description": "Insert group by clause"
+	},
+	"order by": {
+		"prefix": "order by",
+		"body": ["order by "],
+		"description": "Insert order by clause"
+	},
+	"Window Function": {
+		"prefix": "over",
+		"body": ["over\n\t(partition by ${1:column} order by ${2:column})\n\tas ${3:alias}"],
+		"description": "Insert window function"
+	}
+}

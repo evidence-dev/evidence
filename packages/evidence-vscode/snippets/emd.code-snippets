@@ -1,42 +1,52 @@
 {
     "SQL query block": {
 		"prefix": "SQL query block",
-		"body": ["```${1:query_name}","select ${2:columns} \nfrom ${3:tbl_name}", "```"],
+		"body": ["```${1:query_name}","\tselect ${2:columns} \n\tfrom ${3:tbl_name}", "```\n\n"],
 		"description": "Insert SQL query block"
+	},
+	"Chart": {
+		"prefix": "Chart",
+		"body": ["<Chart data={data.${1:query_name}} x=${2:column} y=${3:column}>\n\t${4:}\n</Chart>\n\n"],
+		"description": "Insert Chart"
 	},
     "BarChart": {
 		"prefix": "BarChart",
-		"body": ["<BarChart\n   data={data.${1:query_name}}\n   x=${2:column}\n   y=${3:column}\n/>\n\n"],
+		"body": ["<BarChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert BarChart"
 	},
     "LineChart": {
 		"prefix": "LineChart",
-		"body": ["<LineChart\n   data={data.${1:query_name}}\n   x=${2:column}\n   y=${3:column}\n/>"],
+		"body": ["<LineChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert LineChart"
 	},
 	"Histogram": {
 		"prefix": "Histogram",
-		"body": ["<Histogram\n   data={data.${1:query_name}}\n   x=${2:column}\n/>"],
+		"body": ["<Histogram\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n/>\n\n"],
 		"description": "Insert Histogram"
 	},
 	"ScatterPlot": {
 		"prefix": "ScatterPlot",
-		"body": ["<ScatterPlot\n   data={data.${1:query_name}}\n   x=${2:column}\n   y=${3:column}\n/>"],
+		"body": ["<ScatterPlot\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert ScatterPlot"
+	},
+	"BubbleChart": {
+		"prefix": "BubbleChart",
+		"body": ["<BubbleChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"],
+		"description": "Insert BubbleChart"
 	},
 	"If Block": {
 		"prefix": "If Block",
-		"body": ["{#if ${1:condition}}\n   ${2:}\n{/if}"],
+		"body": ["{#if ${1:condition}}\n\t${2:}\n{/if}\n\n"],
 		"description": "Insert If Block"
 	},
 	"IfElse Block": {
 		"prefix": "IfElse Block",
-		"body": ["{#if ${1:condition}}\n   ${2:}\n{:else}\n   ${3:}\n{/if}\n\n"],
+		"body": ["{#if ${1:condition}}\n\t${2:}\n{:else}\n\t${3:}\n{/if}\n\n"],
 		"description": "Insert IfElse Block"
 	},
 	"Loop": {
 		"prefix": "Loop",
-		"body": ["{#each ${1:something} as ${2:something}}\n   ${3:}\n{/each}"],
+		"body": ["{#each ${1:something} as ${2:something}}\n\t${3:}\n{/each}\n\n"],
 		"description": "Insert Loop"
 	},
 }
