@@ -56,13 +56,26 @@
 			  "editor.wordWrap": "on",
 			  "editor.quickSuggestions": true,
 			  "editor.suggest.showWords": false,
-			  "editor.suggest.snippetsPreventQuickSuggestions": false
+			  "editor.suggest.snippetsPreventQuickSuggestions": false,
+			  "editor.quickSuggestionsDelay": 300
 		  }
 	  },
 	  "snippets": [
 		{
 		  "language": "markdown",
 		  "path": "./snippets/emd.code-snippets"
+		},
+		{
+			"language": "svelte",
+			"path": "./snippets/svelte.code-snippets"
+		},
+		{
+			"language": "sql",
+			"path": "./snippets/sql.code-snippets"
+		},
+		{
+			"language": "javascript",
+			"path": "./snippets/js.code-snippets"
 		}
 	  ]
 	},
