@@ -82,12 +82,12 @@
 		{
 			"label": "Evidence Dark",
 			"uiTheme": "vs-dark",
-			"path": "./themes/Evidence Dark-color-theme.json"
+			"path": "./themes/evidence-dark-color-theme.json"
 		},
 		{
 			"label": "Evidence Light",
 			"uiTheme": "vs",
-			"path": "./themes/Evidence Light-color-theme.json"
+			"path": "./themes/evidence-light-color-theme.json"
 		}
 	]
 	},
