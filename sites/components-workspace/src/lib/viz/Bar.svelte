@@ -55,9 +55,9 @@
             });
         }
 
-        // Run fill for missing series entries, only if it's a value x axis and a stacked bar
-        if((swapXY && xType !== "category") || (xType === "value" && type === "stacked")){
-            data = getCompletedData(data, x, y, series, false, (xType !== "time"));
+       // Run fill for missing series entries, only if it's a stacked bar
+        if((swapXY) || ((xType === "value" || xType === "category") && type === "stacked")){
+            data = getCompletedData(data, x, y, series, false, (xType === "value"));
             xType = "category";
         }
               
