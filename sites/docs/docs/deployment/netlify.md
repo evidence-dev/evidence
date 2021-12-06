@@ -16,13 +16,20 @@ You can sign up for Netlify [here](https://app.netlify.com/signup)
 1. Use the default options supplied by Netlify and click Deploy Site. Netlify will start building your site and you should see the screen below:
 ![netlify-first-deploy](/img/netlify-first-deploy.png)
 
+:::note Deploy Issues
+It's normal for some deployments to fail at this stage because Netlify needs environment variables created in order to run the build. The next section will walk you through setting those up.
+:::
+
 ## Add Environment Variables
 Since your database credentials are not checked into version control (they are included in the `.gitignore` file in your project), you need to provide Netlify with the credentials to access your database. You can set up environment variables in Netlify for this.
 
 1. Go to Site Settings
 1. Under Build & deploy, go to Environment
 1. Click Edit in the Environment Variables section
-1. Add each required environment variable to connect to your database (see below for the required variables based on which database you're using)
+1. Add an environment variable with a Key of `NPM_VERSION` and Value of 8.1.3
+![npm-version-variable](/img/npm-version-variable.png)
+
+1. Add each required environment variable for your database (see below for the required variables based on which database you're using)
 
 ![env-vars-edit](/img/env-vars-edit.png)
 
