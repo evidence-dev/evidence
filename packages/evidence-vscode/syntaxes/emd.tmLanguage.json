@@ -13,14 +13,15 @@
       "svelte": {
         "patterns": [
           { "include": "#svelte-tag" },
-          { "include": "#svelte-template" }
+          { "include": "#svelte-template" },
+          { "include": "#svelte-js-expression" }
         ],
         "repository": {
           "svelte-tag": {
             "patterns": [
               {
-                "begin": "(^|.*?)(?=<[^script])",
-                "end": "(?<=>)",
+                "begin": "(?!^#{1,}\\s+?)(?:[^{}]*?)(?=<[^(script)])",
+                "end": "(?<=>|$)",
                 "contentName": "source.svelte",
                 "patterns": [
                   {
@@ -33,8 +34,22 @@
           "svelte-template": {
             "patterns": [
               {
-                "begin": "(.*?)(?={)",
-                "end": "(?<=})",
+                "begin": "(?!^#{1,}\\s+?)(?:.*?)(?={[#/])",
+                "end": "(?<=}|$)",
+                "contentName": "source.svelte",
+                "patterns": [
+                  {
+                    "include": "source.svelte"
+                  }
+                ]
+              }
+            ]
+          },
+          "svelte-js-expression": {
+            "patterns": [
+              {
+                "begin": "(?!^#{1,}\\s+?)(?:.*?)(?={[^#/])",
+                "end": "(?<=}|$)",
                 "contentName": "source.svelte",
                 "patterns": [
                   {

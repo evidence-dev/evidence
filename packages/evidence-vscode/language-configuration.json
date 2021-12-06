@@ -1,12 +1,10 @@
 {
 	"comments": {
-		// symbols used for start and end a block comment. Remove this entry if your language does not support block comments
 		"blockComment": [
 			"<!--",
 			"-->"
 		]
 	},
-	// symbols used as brackets
 	"brackets": [
 		["{", "}"],
 		["[", "]"],
@@ -34,5 +32,5 @@
 			"end": "^\\s*<!--\\s*#?endregion\\b.*-->"
 		}
 	},
-	"wordPattern": ".*",
+	"wordPattern": { "pattern": "(\\p{Alphabetic}|\\p{Number}|\\p{Nonspacing_Mark})(((\\p{Alphabetic}|\\p{Number}|\\p{Nonspacing_Mark})|[_])?(\\p{Alphabetic}|\\p{Number}|\\p{Nonspacing_Mark}))*", "flags": "ug" },
 }

@@ -1,0 +1,21 @@
+{
+    "name": "evidence-themes",
+    "displayName": "evidence-themes",
+    "description": "VSCode Themes for Evidence Projects",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.62.0"
+    },
+    "categories": [
+        "Themes"
+    ],
+    "contributes": {
+        "themes": [
+            {
+                "label": "Evidence Dark",
+                "uiTheme": "vs-dark",
+                "path": "./themes/Evidence Dark-color-theme.json"
+            }
+        ]
+    }
+}
