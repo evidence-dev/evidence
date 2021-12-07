@@ -101,28 +101,40 @@ let nulls =
 
  </script>
 
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+
 <h1>Series Column with String X Axis</h1>
 <h2>Line Chart</h2>
-<LineChart data={full} series=series title="Full Data"/>
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+
+<LineChart data={full} series=series title="Full Data" sort=false/>
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+
 <LineChart data={missingY} series=series title="Missing Y - handleNulls=gaps (default)"/>
 <LineChart data={missingY} series=series handleNulls=connect title="Missing Y - handleNulls=connect"/>
 <LineChart data={missingY} series=series handleNulls=zero title="Missing Y - handleNulls=zero"/>
 <LineChart data={nulls} series=series title="Nulls - handleNulls=gaps (default)"/>
+
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
 
 <h2>Area Chart</h2>
 <AreaChart data={full} series=series title="Full Data"/>
 <AreaChart data={missingY} series=series title="Missing Y" handleNulls=connect/>
 <AreaChart data={nulls} series=series title="Nulls" handleNulls=zero/>
 
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+
 <h2>Stacked Bar Chart</h2>
-<BarChart data={full} series=series title="Full Data"/>
+<BarChart data={full} series=series title="Full Data" sort=false/>
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+
 <BarChart data={missingY} series=series title="Missing Y"/>
 <BarChart data={nulls} series=series title="Nulls"/>
 
 <h2>Horizontal Stacked Bar Chart</h2>
-<BarChart data={full} series=series swapXY=true title="Full Data" xType=value/>
-<BarChart data={missingY} series=series swapXY=true title="Missing Y" xType=value/>
-<BarChart data={nulls} series=series swapXY=true title="Nulls"/>
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=true/>
+<BarChart data={missingY} series=series swapXY=true title="Missing Y" sort=false/>
+<BarChart data={nulls} series=series swapXY=true title="Nulls" sort=false/>
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={full} series=series type=grouped title="Full Data"/>

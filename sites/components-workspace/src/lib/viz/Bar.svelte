@@ -31,8 +31,11 @@
     y = y ?? $props.y;
     series = series ?? $props.series;
 
+    let tempData = [...data]
     let stackedData;
     let sortOrder;
+    let i;
+    let j;
 
     if(!series && typeof y !== 'object'){
         // Single Series
@@ -44,11 +47,16 @@
         };
     } else {
         // Multi Series
-
         // Sort by stack total for category axis
         if(sort === true && xType === "category"){
-            stackedData = getStackedData(data, x, y); // REMEMBER: need to broaden this to include multiple y columns
-            stackedData = getSortedData(stackedData, y, false);
+            stackedData = getStackedData(data, x, y); 
+
+            if(typeof y === "object"){
+                stackedData = getSortedData(stackedData, "stackTotal", false); 
+            } else {
+                stackedData = getSortedData(stackedData, y, false);
+            }
+
             sortOrder = stackedData.map(d => d[x]);
             data.sort(function (a, b) {
                 return sortOrder.indexOf(a[x]) - sortOrder.indexOf(b[x]);
@@ -60,7 +68,7 @@
             data = getCompletedData(data, x, y, series, false, (xType === "value"));
             xType = "category";
         }
-              
+
         if(type === "stacked"){
         // Set up stacks
             stackName = stackName ?? "stack1";

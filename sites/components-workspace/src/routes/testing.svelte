@@ -349,6 +349,20 @@ let numberSeriesXSync =
 {x: 6, series: 'c', y: 63}
 ]
 
+let full2 = 
+[
+    {x: "1900", y1: 103, y2: 135, y3: 88},
+    {x: "1901", y1: 105, y2: 138, y3: 93},
+    {x: "1902", y1: 106, y2: 132, y3: 103},
+    {x: "1903", y1: 108, y2: 130, y3: 105},
+    {x: "1904", y1: 109, y2: 128, y3: 102},
+    {x: "1905", y1: 100, y2: 124, y3: 101},
+    {x: "1906", y1: 120, y2: 122, y3: 100},
+    {x: "1907", y1: 133, y2: 131, y3: 100},
+    {x: "1908", y1: 142, y2: 128, y3: 99},
+    {x: "1909", y1: 156, y2: 135, y3: 97},
+    {x: "1910", y1: 168, y2: 137, y3: 95}
+]
 
 let dec = [
     {x: 1.134, y: 10},
@@ -370,6 +384,28 @@ let stackOrd = [
     {x: "KC", series: "Active", y: 40},
     {x: "KC", series: "Inactive", y: 70}
 ]
+
+let missingY = 
+[
+{x: "a1", series: 'a', y: 10},
+{x: "a1", series: 'b', y: 24},
+{x: "a1", series: 'c', y: 45},
+{x: "a2", series: 'a', y: 14},
+{x: "a2", series: 'b', y: 26},
+{x: "a3", series: 'a', y: 6},
+{x: "a3", series: 'b', y: 3},
+{x: "a3", series: 'c', y: 5},
+{x: "a4", series: 'a', y: 11},
+{x: "a4", series: 'b', y: 20},
+{x: "a4", series: 'c', y: 60},
+{x: "a5", series: 'a', y: 18},
+{x: "a5", series: 'b', y: 28},
+{x: "a5", series: 'c', y: 58},
+{x: "a6", series: 'a', y: 15},
+{x: "a6", series: 'b', y: 22},
+{x: "a6", series: 'c', y: 63}
+]
+
 
 </script>
 
@@ -397,10 +433,16 @@ let stackOrd = [
 
 <!-- <BarChart data={missingX}  title="Missing X" swapXY=true/> -->
 
-<BarChart data={numberSeriesXSync} series=series title="X out of sync"/>
+<!-- <BarChart data={numberSeriesXSync} series=series title="X out of sync"/>
 
 <BarChart data={dec}/>
 
 <BarChart data={stackOrd} series=series swapXY=true/>
 
-<AreaChart data={fed} x=established_date series=fed_reserve_district/>
+<AreaChart data={fed} x=established_date series=fed_reserve_district/> -->
+
+<BarChart data={full2}  swapXY=true title="Full Data" xType=value sort=false/>
+<BarChart data={full2}  swapXY=true title="Full Data" xType=value sort=false/>
+<BarChart data={full2}  swapXY=true title="Full Data" xType=value/>
+
+<BarChart data={missingY} series=series swapXY=true title="Missing Y" sort=true/>
