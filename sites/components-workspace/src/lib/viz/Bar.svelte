@@ -31,11 +31,8 @@
     y = y ?? $props.y;
     series = series ?? $props.series;
 
-    let tempData = [...data]
     let stackedData;
     let sortOrder;
-    let i;
-    let j;
 
     if(!series && typeof y !== 'object'){
         // Single Series

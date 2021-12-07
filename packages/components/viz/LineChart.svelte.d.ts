@@ -6,6 +6,7 @@ export default class LineChart extends SvelteComponentTyped<{
     legend?: any;
     sort?: any;
     data?: any;
+    lineWidth?: any;
     x?: any;
     xType?: any;
     y?: any;
@@ -22,7 +23,6 @@ export default class LineChart extends SvelteComponentTyped<{
     yTickMarks?: any;
     yGridlines?: any;
     lineColor?: any;
-    lineWidth?: any;
     lineType?: any;
     lineOpacity?: any;
     markers?: any;
@@ -42,6 +42,7 @@ declare const __propDef: {
         legend?: any;
         sort?: any;
         data?: any;
+        lineWidth?: any;
         x?: any;
         xType?: any;
         y?: any;
@@ -58,7 +59,6 @@ declare const __propDef: {
         yTickMarks?: any;
         yGridlines?: any;
         lineColor?: any;
-        lineWidth?: any;
         lineType?: any;
         lineOpacity?: any;
         markers?: any;
