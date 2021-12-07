@@ -64,8 +64,8 @@ let nulls =
 <BarChart data={nulls}  title="Nulls"/>
 
 <h2>horizontal Stacked Bar Chart</h2>
-<BarChart data={full}  swapXY=true title="Full Data" xType=value/>
-<BarChart data={nulls}  swapXY=true title="Nulls"/>
+<BarChart data={full}  swapXY=true title="Full Data" xType=value sort={false}/>
+<BarChart data={nulls}  swapXY=true title="Nulls" sort=false/>
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={full}  type=grouped title="Full Data"/>

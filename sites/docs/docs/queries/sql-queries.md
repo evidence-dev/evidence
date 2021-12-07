@@ -36,7 +36,7 @@ from international_transactions
 All query results on a page are returned to a single object called `data`. To use a query result, you need to reference the query name as a subset of that `data` object. These references can be used in any of the components from our built-in library.
 
 For example, if your query name was `sales_by_country`:
-```
+```markdown
 <LineChart data={data.sales_by_country}/>
 ```
 
@@ -44,6 +44,3 @@ For example, if your query name was `sales_by_country`:
 The column names in your query result define how your data is treated when using components. We believe this is good practice for code readability and consistency:
 - Date column names must include a date unit to be interpreted as dates in Evidence (date, week, month, qtr, year)
 - Formatting is determine by **format tags** appended to your column names. See [Formatting](/formatting/format-tags) for more details
-
-## Query Chaining - Coming Soon
-At this time, you cannot run a query against the result of another query. This feature is a top priority and is currently in development.

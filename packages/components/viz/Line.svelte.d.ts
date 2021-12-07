@@ -3,12 +3,12 @@
 /** @typedef {typeof __propDef.slots}  LineSlots */
 export default class Line extends SvelteComponentTyped<{
     name?: any;
+    lineWidth?: number;
     y?: any;
     series?: any;
     options?: any;
     handleMissing?: string;
     lineColor?: any;
-    lineWidth?: number;
     lineType?: string;
     lineOpacity?: any;
     markers?: boolean;
@@ -25,12 +25,12 @@ import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
         name?: any;
+        lineWidth?: number;
         y?: any;
         series?: any;
         options?: any;
         handleMissing?: string;
         lineColor?: any;
-        lineWidth?: number;
         lineType?: string;
         lineOpacity?: any;
         markers?: boolean;

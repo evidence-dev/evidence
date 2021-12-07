@@ -44,23 +44,28 @@
         };
     } else {
         // Multi Series
-
         // Sort by stack total for category axis
         if(sort === true && xType === "category"){
-            stackedData = getStackedData(data, x, y); // REMEMBER: need to broaden this to include multiple y columns
-            stackedData = getSortedData(stackedData, y, false);
+            stackedData = getStackedData(data, x, y); 
+
+            if(typeof y === "object"){
+                stackedData = getSortedData(stackedData, "stackTotal", false); 
+            } else {
+                stackedData = getSortedData(stackedData, y, false);
+            }
+
             sortOrder = stackedData.map(d => d[x]);
             data.sort(function (a, b) {
                 return sortOrder.indexOf(a[x]) - sortOrder.indexOf(b[x]);
             });
         }
 
-        // Run fill for missing series entries, only if it's a value x axis and a stacked bar
-        if((swapXY && xType !== "category") || (xType === "value" && type === "stacked")){
-            data = getCompletedData(data, x, y, series, false, (xType !== "time"));
+       // Run fill for missing series entries, only if it's a stacked bar
+        if((swapXY) || ((xType === "value" || xType === "category") && type === "stacked")){
+            data = getCompletedData(data, x, y, series, false, (xType === "value"));
             xType = "category";
         }
-              
+
         if(type === "stacked"){
         // Set up stacks
             stackName = stackName ?? "stack1";

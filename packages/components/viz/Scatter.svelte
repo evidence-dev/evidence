@@ -68,7 +68,7 @@
              boundaryGap: ['1%', '1%']
          },
          xAxis: {
-             boundaryGap: [xType === "time" ? '0%' : '1%', '2%']
+             boundaryGap: [xType === "time" ? '2%' : '1%', '2%']
          }
      }
 

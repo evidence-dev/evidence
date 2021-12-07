@@ -1,11 +1,12 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "type": "module",
   "dependencies": {
     "@tidyjs/tidy": "2.4.4",
     "echarts": "5.2.2",
-    "echarts-stat": "1.2.0"
+    "echarts-stat": "1.2.0",
+    "prettier-sql": "5.0.1"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -37,11 +38,13 @@
     "./ui/LoadingIndicator.svelte": "./ui/LoadingIndicator.svelte",
     "./ui/Logo.svelte": "./ui/Logo.svelte",
     "./ui/Nav.svelte": "./ui/Nav.svelte",
-    "./ui/Prismjs.svelte": "./ui/Prismjs.svelte",
-    "./ui/QueryDataTable.svelte": "./ui/QueryDataTable.svelte",
+    "./ui/PrintButton.svelte": "./ui/PrintButton.svelte",
     "./ui/QueryViewer.svelte": "./ui/QueryViewer.svelte",
-    "./ui/prismtheme.css": "./ui/prismtheme.css",
-    "./ui/prismthemedark.css": "./ui/prismthemedark.css",
+    "./ui/QueryViewerSupport/CompilerToggle.svelte": "./ui/QueryViewerSupport/CompilerToggle.svelte",
+    "./ui/QueryViewerSupport/Prismjs.svelte": "./ui/QueryViewerSupport/Prismjs.svelte",
+    "./ui/QueryViewerSupport/QueryDataTable.svelte": "./ui/QueryViewerSupport/QueryDataTable.svelte",
+    "./ui/QueryViewerSupport/prismtheme.css": "./ui/QueryViewerSupport/prismtheme.css",
+    "./ui/QueryViewerSupport/prismthemedark.css": "./ui/QueryViewerSupport/prismthemedark.css",
     "./ui/stores": "./ui/stores.js",
     "./viz/Area.svelte": "./viz/Area.svelte",
     "./viz/AreaChart.svelte": "./viz/AreaChart.svelte",

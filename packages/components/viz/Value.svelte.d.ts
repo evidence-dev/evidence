@@ -2,8 +2,8 @@
 /** @typedef {typeof __propDef.events}  ValueEvents */
 /** @typedef {typeof __propDef.slots}  ValueSlots */
 export default class Value extends SvelteComponentTyped<{
-    data?: any;
     value?: any;
+    data?: any;
     row?: number;
     column?: string;
     fmt?: any;
@@ -18,8 +18,8 @@ export type ValueSlots = typeof __propDef.slots;
 import { SvelteComponentTyped } from "svelte";
 declare const __propDef: {
     props: {
-        data?: any;
         value?: any;
+        data?: any;
         row?: number;
         column?: string;
         fmt?: any;

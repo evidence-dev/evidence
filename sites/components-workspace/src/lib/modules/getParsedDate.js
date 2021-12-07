@@ -1,4 +1,4 @@
-import {tidy, mutate, rename} from "@tidyjs/tidy";
+import {tidy, mutate} from "@tidyjs/tidy";
 
 export default function getParsedDate(data, column) {
     
@@ -11,8 +11,7 @@ export default function getParsedDate(data, column) {
 
     data = tidy(
         data,
-        mutate({ tempName: (d) => new Date(d[column]+append)}),
-        rename({tempName: column})
+        mutate({ [column]: (d) => new Date(d[column]+append)}),
     );
 
     return data;

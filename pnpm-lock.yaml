@@ -12,6 +12,7 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
+      prettier-sql: 5.0.1
       svelte: 3.44.1
       svelte2tsx: 0.4.7
       typescript: 4.4.4
@@ -25,6 +26,7 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
+      prettier-sql: 5.0.1
       svelte: 3.44.1
       svelte2tsx: 0.4.7_svelte@3.44.1+typescript@4.4.4
       typescript: 4.4.4
@@ -43,10 +45,12 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
+      prettier-sql: 5.0.1
     dependencies:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
+      prettier-sql: 5.0.1
 
   packages/db-orchestrator:
     specifiers:
@@ -123,9 +127,15 @@ importers:
 
   sites/components-workspace:
     specifiers:
-      '@evidence-dev/evidence': workspace:^
+      '@tidyjs/tidy': 2.4.4
+      echarts: 5.2.2
+      echarts-stat: 1.2.0
+      prettier-sql: 5.0.1
     dependencies:
-      '@evidence-dev/evidence': link:../../packages/evidence
+      '@tidyjs/tidy': 2.4.4
+      echarts: 5.2.2
+      echarts-stat: 1.2.0
+      prettier-sql: 5.0.1
 
   sites/docs:
     specifiers:
@@ -3430,7 +3440,6 @@ packages:
 
   /argparse/2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
-    dev: false
 
   /arr-diff/4.0.0:
     resolution: {integrity: sha1-1kYQdP6/7HHn4VI1dhoyml3HxSA=}
@@ -4167,6 +4176,7 @@ packages:
 
   /clipboard/2.0.8:
     resolution: {integrity: sha512-Y6WO0unAIQp5bLmk1zdThRhgJt/x3ks6f30s3oE3H1mgIEU33XyQjEf8gsf6DxC7NPX8Y1SsNWjUjL/ywLnnbQ==}
+    requiresBuild: true
     dependencies:
       good-listener: 1.2.2
       select: 1.1.2
@@ -5455,6 +5465,7 @@ packages:
     resolution: {integrity: sha512-TSVZVrb4EIXz6KaYjXfTzPyyRpXV5zgYIADXtQsIenjZ78myvDGaPi11o4ZSaHIwFHsuwkB6ne5SZRBwAQ7maw==}
     cpu: [arm64]
     os: [android]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5462,6 +5473,7 @@ packages:
     resolution: {integrity: sha512-c51C+N+UHySoV2lgfWSwwmlnLnL0JWj/LzuZt9Ltk9ub1s2Y8cr6SQV5W3mqVH1egUceew6KZ8GyI4nwu+fhsw==}
     cpu: [x64]
     os: [darwin]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5469,6 +5481,7 @@ packages:
     resolution: {integrity: sha512-JvAMtshP45Hd8A8wOzjkY1xAnTKTYuP/QUaKp5eUQGX+76GIie3fCdUUr2ZEKdvpSImNqxiZSIMziEiGB5oUmQ==}
     cpu: [arm64]
     os: [darwin]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5476,6 +5489,7 @@ packages:
     resolution: {integrity: sha512-r6On/Skv9f0ZjTu6PW5o7pdXr8aOgtFOEURJZYf1XAJs0IQ+gW+o1DzXjVkIoT+n1cm3N/t1KRJfX71MPg/ZUA==}
     cpu: [x64]
     os: [freebsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5483,6 +5497,7 @@ packages:
     resolution: {integrity: sha512-F6LmI2Q1gii073kmBE3NOTt/6zLL5zvZsxNLF8PMAwdHc+iBhD1vzfI8uQZMJA1IgXa3ocr3L3DJH9fLGXy6Yw==}
     cpu: [arm64]
     os: [freebsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5490,6 +5505,7 @@ packages:
     resolution: {integrity: sha512-U1UZwG3UIwF7/V4tCVAo/nkBV9ag5KJiJTt+gaCmLVWH3bPLX7y+fNlhIWZy8raTMnXhMKfaTvWZ9TtmXzvkuQ==}
     cpu: [ia32]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5497,6 +5513,7 @@ packages:
     resolution: {integrity: sha512-YpXSwtu2NxN3N4ifJxEdsgd6Q5d8LYqskrAwjmoCT6yQnEHJSF5uWcxv783HWN7lnGpJi9KUtDvYsnMdyGw71Q==}
     cpu: [x64]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5504,6 +5521,7 @@ packages:
     resolution: {integrity: sha512-SyiT/JKxU6J+DY2qUiSLZJqCAftIt3uoGejZ0HDnUM2MGJqEGSGh7p1ecVL2gna3PxS4P+j6WAehCwgkBPXNIw==}
     cpu: [arm]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5511,6 +5529,7 @@ packages:
     resolution: {integrity: sha512-sgDNb8kb3BVodtAlcFGgwk+43KFCYjnFOaOfJibXnnIojNWuJHpL6aQJ4mumzNWw8Rt1xEtDQyuGK9f+Y24jGA==}
     cpu: [arm64]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5518,6 +5537,7 @@ packages:
     resolution: {integrity: sha512-qQJHlZBG+QwVIA8AbTEtbvF084QgDi4DaUsUnA+EolY1bxrG+UyOuGflM2ZritGhfS/k7THFjJbjH2wIeoKA2g==}
     cpu: [mips64el]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5525,6 +5545,7 @@ packages:
     resolution: {integrity: sha512-2dSnm1ldL7Lppwlo04CGQUpwNn5hGqXI38OzaoPOkRsBRWFBozyGxTFSee/zHFS+Pdh3b28JJbRK3owrrRgWNw==}
     cpu: [ppc64]
     os: [linux]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5532,6 +5553,7 @@ packages:
     resolution: {integrity: sha512-D4raxr02dcRiQNbxOLzpqBzcJNFAdsDNxjUbKkDMZBkL54Z0vZh4LRndycdZAMcIdizC/l/Yp/ZsBdAFxc5nbA==}
     cpu: [x64]
     os: [netbsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5539,6 +5561,7 @@ packages:
     resolution: {integrity: sha512-KuLCmYMb2kh05QuPJ+va60bKIH5wHL8ypDkmpy47lzwmdxNsuySeCMHuTv5o2Af1RUn5KLO5ZxaZeq4GEY7DaQ==}
     cpu: [x64]
     os: [openbsd]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5546,6 +5569,7 @@ packages:
     resolution: {integrity: sha512-jBsF+e0woK3miKI8ufGWKG3o3rY9DpHvCVRn5eburMIIE+2c+y3IZ1srsthKyKI6kkXLvV4Cf/E7w56kLipMXw==}
     cpu: [x64]
     os: [sunos]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5553,6 +5577,7 @@ packages:
     resolution: {integrity: sha512-L9m4lLFQrFeR7F+eLZXG82SbXZfUhyfu6CexZEil6vm+lc7GDCE0Q8DiNutkpzjv1+RAbIGVva9muItQ7HVTkQ==}
     cpu: [ia32]
     os: [win32]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5560,6 +5585,7 @@ packages:
     resolution: {integrity: sha512-k4tX4uJlSbSkfs78W5d9+I9gpd+7N95W7H2bgOMFPsYREVJs31+Q2gLLHlsnlY95zBoPQMIzHooUIsixQIBjaQ==}
     cpu: [x64]
     os: [win32]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5567,6 +5593,7 @@ packages:
     resolution: {integrity: sha512-2tTv/BpYRIvuwHpp2M960nG7uvL+d78LFW/ikPItO+2GfK51CswIKSetSpDii+cjz8e9iSPgs+BU4o8nWICBwQ==}
     cpu: [arm64]
     os: [win32]
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -6132,6 +6159,7 @@ packages:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+    requiresBuild: true
     optional: true
 
   /function-bind/1.1.1:
@@ -9203,6 +9231,12 @@ packages:
     resolution: {integrity: sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=}
     engines: {node: '>=4'}
     dev: false
+
+  /prettier-sql/5.0.1:
+    resolution: {integrity: sha512-bjcOltr044ktVM4UUr7Vi0V4wJlk1Uke9ONS8VU6ekee/2GsDw8EpYmOjZjPqGzO0tsthj8QizzmiLmn3GnJFA==}
+    hasBin: true
+    dependencies:
+      argparse: 2.0.1
 
   /pretty-error/3.0.4:
     resolution: {integrity: sha512-ytLFLfv1So4AO1UkoBF6GXQgJRaKbiSiGFICaOPNwQ3CMvBvXpLRubeQWyPGnsbV/t9ml9qto6IeCsho0aEvwQ==}

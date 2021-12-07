@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
@@ -8,6 +8,9 @@
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/evidence": "workspace:^"
+    "@tidyjs/tidy": "2.4.4",
+    "echarts": "5.2.2",
+    "echarts-stat": "1.2.0",
+    "prettier-sql": "5.0.1"
   }
 }
