@@ -1,7 +1,7 @@
 {
   "name": "evidence-vscode",
 	"displayName": "evidence-vscode",
-	"description": "VSCode Plugin for Evidence",
+	"description": "VSCode extension for Evidence",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.62.0"
@@ -12,7 +12,7 @@
 	"activationEvents": [
         "onCommand:evidence-vscode.helloWorld"
 	],
-	"main": "./out/extension.js",
+	"main": "./dist/extension.js",
 	"contributes": {
 		"languages": [
 			{
@@ -80,10 +80,13 @@
 	  ]
 	},
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile && npm run lint",
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "npm run compile-tests && npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"
 	},
@@ -98,6 +101,9 @@
 		"glob": "^7.1.7",
 		"mocha": "^9.1.3",
 		"typescript": "^4.4.4",
+		"ts-loader": "^9.2.5",
+		"webpack": "^5.52.1",
+		"webpack-cli": "^4.8.0",
 		"@vscode/test-electron": "^1.6.2"
 	}
 }
