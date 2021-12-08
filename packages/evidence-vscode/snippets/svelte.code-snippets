@@ -1,17 +1,3 @@
 {
-    "Multiple Columns": {
-		"prefix": "Multiple Columns",
-		"body": ["{['${1:column1}','${2:column2}']} "],
-		"description": "Insert multiple columns"
-	},
-	"filter": {
-		"prefix": "filter",
-		"body": ["filter(d => d.${1:column} === '${2:value}')"],
-		"description": "Insert dataset filter"
-	},
-	"handleMissing": {
-		"prefix": "handleMissing",
-		"body": ["handleMissing=${1|gap,connect,zero|}"],
-		"description": "Handle missing values"
-	}
+
 }
