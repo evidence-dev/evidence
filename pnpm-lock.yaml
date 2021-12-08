@@ -12,7 +12,6 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
-      prettier-sql: 5.0.1
       svelte: 3.44.1
       svelte2tsx: 0.4.7
       typescript: 4.4.4
@@ -26,7 +25,6 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
-      prettier-sql: 5.0.1
       svelte: 3.44.1
       svelte2tsx: 0.4.7_svelte@3.44.1+typescript@4.4.4
       typescript: 4.4.4
@@ -45,12 +43,10 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
-      prettier-sql: 5.0.1
     dependencies:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
-      prettier-sql: 5.0.1
 
   packages/db-orchestrator:
     specifiers:
@@ -130,12 +126,10 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
-      prettier-sql: 5.0.1
     dependencies:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
-      prettier-sql: 5.0.1
 
   sites/docs:
     specifiers:
@@ -3440,6 +3434,7 @@ packages:
 
   /argparse/2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
+    dev: false
 
   /arr-diff/4.0.0:
     resolution: {integrity: sha1-1kYQdP6/7HHn4VI1dhoyml3HxSA=}
@@ -9231,12 +9226,6 @@ packages:
     resolution: {integrity: sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=}
     engines: {node: '>=4'}
     dev: false
-
-  /prettier-sql/5.0.1:
-    resolution: {integrity: sha512-bjcOltr044ktVM4UUr7Vi0V4wJlk1Uke9ONS8VU6ekee/2GsDw8EpYmOjZjPqGzO0tsthj8QizzmiLmn3GnJFA==}
-    hasBin: true
-    dependencies:
-      argparse: 2.0.1
 
   /pretty-error/3.0.4:
     resolution: {integrity: sha512-ytLFLfv1So4AO1UkoBF6GXQgJRaKbiSiGFICaOPNwQ3CMvBvXpLRubeQWyPGnsbV/t9ml9qto6IeCsho0aEvwQ==}
