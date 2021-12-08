@@ -15,7 +15,7 @@ export const config = {
 		},
 		vite: {
 			optimizeDeps: {
-				include: ['echarts-stat', 'prettier-sql'],
+				include: ['echarts-stat'],
 				exclude: ['@evidence-dev/components']
 			},
 			ssr: {
