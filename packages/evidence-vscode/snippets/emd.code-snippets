@@ -39,6 +39,11 @@
 		"body": ["<Histogram data={data.${1:query_name}} x=${2:column}\n/>\n\n"],
 		"description": "Insert Histogram"
 	},
+	"Insert <DataTable/>": {
+		"prefix": "DataTable",
+		"body": ["<DataTable data={data.${1:query_name}}/>\n\n"],
+		"description": "Insert DataTable"
+	},
 	"Insert <Value/>": {
 		"prefix": "Value",
 		"body": ["<Value data={data.${1:query_name}}/>\n\n"],
