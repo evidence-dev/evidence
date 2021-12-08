@@ -15,11 +15,11 @@ export const config = {
 		},
 		vite: {
 			optimizeDeps: {
-				include: ['echarts-stat'],
+				include: ['echarts-stat', 'prettier-sql'],
 				exclude: ['@evidence-dev/components']
 			},
 			ssr: {
-				external: ['@evidence-dev/db-orchestrator', 'prettier-sql']
+				external: ['@evidence-dev/db-orchestrator']
 			},
 			plugins: [
 				FullReload.default(['./.evidence/build/queries/**'], {delay: 150}),
