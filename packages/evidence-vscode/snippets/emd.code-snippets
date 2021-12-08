@@ -1,52 +1,62 @@
 {
-    "SQL query block": {
+    "Insert SQL query block": {
 		"prefix": "SQL query block",
-		"body": ["```${1:query_name}","\tselect ${2:columns} \n\tfrom ${3:tbl_name}", "```\n\n"],
+		"body": ["```${1:query_name}","\tselect ${2:columns} \n\tfrom ${3:table_name}", "```\n\n"],
 		"description": "Insert SQL query block"
 	},
-	"Chart": {
+	"Insert <Chart>": {
 		"prefix": "Chart",
 		"body": ["<Chart data={data.${1:query_name}} x=${2:column} y=${3:column}>\n\t${4:}\n</Chart>\n\n"],
 		"description": "Insert Chart"
 	},
-    "BarChart": {
-		"prefix": "BarChart",
-		"body": ["<BarChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
-		"description": "Insert BarChart"
-	},
-    "LineChart": {
+	"Insert <LineChart/>": {
 		"prefix": "LineChart",
 		"body": ["<LineChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert LineChart"
 	},
-	"Histogram": {
-		"prefix": "Histogram",
-		"body": ["<Histogram\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n/>\n\n"],
-		"description": "Insert Histogram"
+	"Insert <AreaChart/>": {
+		"prefix": "AreaChart",
+		"body": ["<AreaChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"description": "Insert AreaChart"
 	},
-	"ScatterPlot": {
+    "Insert <BarChart/>": {
+		"prefix": "BarChart",
+		"body": ["<BarChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"description": "Insert BarChart"
+	},
+	"Insert <ScatterPlot/>": {
 		"prefix": "ScatterPlot",
 		"body": ["<ScatterPlot\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert ScatterPlot"
 	},
-	"BubbleChart": {
+	"Insert <BubbleChart/>": {
 		"prefix": "BubbleChart",
 		"body": ["<BubbleChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"],
 		"description": "Insert BubbleChart"
 	},
-	"If Block": {
+	"Insert <Histogram/>": {
+		"prefix": "Histogram",
+		"body": ["<Histogram data={data.${1:query_name}} x=${2:column}\n/>\n\n"],
+		"description": "Insert Histogram"
+	},
+	"Insert <Value/>": {
+		"prefix": "Value",
+		"body": ["<Value data={data.${1:query_name}}/>\n\n"],
+		"description": "Insert Value"
+	},
+	"Insert Each Block": {
+		"prefix": "Each Block",
+		"body": ["{#each ${1:dataset} as ${2:row}, ${3:index}}\n\t${3:}\n{/each}\n\n"],
+		"description": "Insert Each Block"
+	},
+	"Insert If Block": {
 		"prefix": "If Block",
 		"body": ["{#if ${1:condition}}\n\t${2:}\n{/if}\n\n"],
 		"description": "Insert If Block"
 	},
-	"IfElse Block": {
+	"Insert IfElse Block": {
 		"prefix": "IfElse Block",
 		"body": ["{#if ${1:condition}}\n\t${2:}\n{:else}\n\t${3:}\n{/if}\n\n"],
 		"description": "Insert IfElse Block"
-	},
-	"Loop": {
-		"prefix": "Loop",
-		"body": ["{#each ${1:something} as ${2:something}}\n\t${3:}\n{/each}\n\n"],
-		"description": "Insert Loop"
-	},
+	}
 }
