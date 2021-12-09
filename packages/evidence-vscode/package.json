@@ -1,19 +1,38 @@
 {
   "name": "evidence-vscode",
-	"displayName": "evidence-vscode",
+	"displayName": "Evidence",
 	"description": "VSCode extension for Evidence",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.62.0"
 	},
 	"categories": [
+		"Data Science",
+		"Programming Languages",
 		"Other"
 	],
+	"publisher": "Evidence Technologies, Inc.",
+	"license": "MIT",
+	"repository": {
+        "type": "git",
+        "url": "https://github.com/evidence-dev/evidence.git"
+    },
+	"keywords": [
+        "evidence",
+        "vscode"
+    ],
+	"bugs": {
+        "url": "https://github.com/evidence-dev/evidence/issues"
+    },
+	"homepage": "https://github.com/evidence-dev/evidence#readme",
+
 	"activationEvents": [
         "onCommand:evidence-vscode.helloWorld"
 	],
 	"main": "./dist/extension.js",
+	"icon": "icons/evidence-logo.png",
 	"contributes": {
+
 		"languages": [
 			{
 			  "id": "emd",
