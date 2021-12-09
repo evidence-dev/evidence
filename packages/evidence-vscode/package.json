@@ -11,7 +11,7 @@
 		"Programming Languages",
 		"Other"
 	],
-	"publisher": "Evidence Technologies, Inc.",
+	"publisher": "Evidence",
 	"license": "MIT",
 	"repository": {
         "type": "git",
@@ -19,7 +19,11 @@
     },
 	"keywords": [
         "evidence",
-        "vscode"
+        "vscode",
+		"analytics",
+		"data",
+		"sql",
+		"markdown"
     ],
 	"bugs": {
         "url": "https://github.com/evidence-dev/evidence/issues"
@@ -43,6 +47,7 @@
 			  "extensions": [
 				".md"
 			  ],
+			  "icon": "markdown",
 			  "configuration": "./language-configuration.json"
 			}
 		  ],
