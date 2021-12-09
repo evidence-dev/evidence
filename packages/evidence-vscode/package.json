@@ -4,7 +4,7 @@
 	"description": "VSCode extension for Evidence",
 	"version": "0.0.1",
 	"engines": {
-		"vscode": "^1.62.0"
+		"vscode": "^1.63.0"
 	},
 	"categories": [
 		"Data Science",
