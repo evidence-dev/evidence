@@ -1,7 +1,7 @@
 {
   "name": "evidence-vscode",
 	"displayName": "Evidence",
-	"description": "VSCode extension for Evidence",
+	"description": "Evidence language support for VS Code",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.63.0"
@@ -28,15 +28,13 @@
 	"bugs": {
         "url": "https://github.com/evidence-dev/evidence/issues"
     },
-	"homepage": "https://github.com/evidence-dev/evidence#readme",
-
+	"homepage": "https://evidence.dev",
 	"activationEvents": [
         "onCommand:evidence-vscode.helloWorld"
 	],
 	"main": "./dist/extension.js",
 	"icon": "icons/evidence-logo.png",
 	"contributes": {
-
 		"languages": [
 			{
 			  "id": "emd",

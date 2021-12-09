@@ -1,6 +1,6 @@
-# evidence-vscode README
+# Evidence VS Code
 
-The official VSCode extension for [Evidence - a web framework for data analysts](https://evidence.dev). Evidence lets you include SQL queries, charts, tables, and dynamic text in a Markdown file, and compiles all of that into a web application. Evidence connects to your database, runs the queries you include in your Markdown, and returns the query results to your page.
+The official VS Code extension for [Evidence](https://evidence.dev). Evidence is a Markdown-based business intelligence tool. Connect to your database, write SQL queries, and include charts, tables, and dynamic text - all from Markdown.
 
 This extension provides language support and basic autocomplete for Evidence Markdown files.
 
@@ -15,10 +15,9 @@ This extension provides language support and basic autocomplete for Evidence Mar
   - Components (Charts, Tables, Text Components)
   - SQL Query Blocks
 
-## Release Notes
+## Support
 
-### 0.0.1
-
-Initial release of the official VSCode extension for Evidence:
-- Syntax highlighting for Markdown, SQL, Svelte, and JavaScript
-- Autocomplete suggestions for inserting SQL Query Blocks, Charts, Tables, and Text Components
+If you run into any issues setting up the extension, please reach out:
+- [Open an issue on GitHub](https://github.com/evidence-dev/evidence/issues)
+- Post in our [Slack community](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
+- Email <support@evidence.dev>
