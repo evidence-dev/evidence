@@ -17,7 +17,12 @@
                     "name": "punctuation.definition.markdown"
                 },
                 "4": {
-                    "name": "fenced_code.block.language"
+                    "name": "fenced_code.block.language",
+                    "patterns": [
+                        {
+                            "include": "source.js"
+                        }
+                    ]
                 },
                 "6": {
                     "name": "fenced_code.block.language.attributes"
@@ -36,6 +41,26 @@
                     "patterns": [
                         {
                             "include": "source.sql"
+                        },
+                        {
+                            "begin": "(?<=\\$)(?={)",
+                            "end": "(?<=})",
+                            "contentName": "query_reference",
+                            "patterns": [
+                                {
+                                    "include": "source.svelte"
+                                }
+                            ]
+                        },
+                        {
+                            "begin": "(?=\\${)",
+                            "end": "(?<=\\$)",
+                            "contentName": "query_reference_start",
+                            "patterns": [
+                                {
+                                    "include": "source.js"
+                                }
+                            ]
                         }
                     ]
                 }

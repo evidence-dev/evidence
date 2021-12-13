@@ -59,7 +59,8 @@
 				  "source.js": "javascript",
 				  "text.html.markdown": "markdown",
 				  "meta.tag.svelte": "svelte",
-				  "meta.embedded.block.sql": "sql"
+				  "meta.embedded.block.sql": "sql",
+				  "markup.fenced_code.block.markdown": "sql"
 				}
 			},
 			{
@@ -76,11 +77,15 @@
 		"configurationDefaults": {
 			"[emd]": {
 			  "editor.wordWrap": "on",
-			  "editor.quickSuggestions": true,
 			  "editor.suggest.showWords": false,
+			  "editor.quickSuggestions": {
+				  "other": true,
+				  "comments": false,
+				  "strings": false
+			  },
 			  "editor.suggest.snippetsPreventQuickSuggestions": false,
 			  "editor.quickSuggestionsDelay": 300
-		  }
+			}
 	  },
 	  "snippets": [
 		{

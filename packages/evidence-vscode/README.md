@@ -2,7 +2,7 @@
 
 The official VS Code extension for [Evidence](https://evidence.dev). Evidence is a Markdown-based business intelligence tool. Connect to your database, write SQL queries, and include charts, tables, and dynamic text - all from Markdown.
 
-This extension provides language support and basic autocomplete for Evidence Markdown files.
+This extension provides language support and basic autocomplete for Evidence Markdown files. This is an early version of the extension and will serve as the starting point for deeper VS Code support for Evidence in the future.
 
 ## Features
 
@@ -14,6 +14,7 @@ This extension provides language support and basic autocomplete for Evidence Mar
 - Autocomplete suggestions for inserting:
   - Components (Charts, Tables, Text Components)
   - SQL Query Blocks
+  - Templating (Loops, Conditionals)
 
 ## Support
 
