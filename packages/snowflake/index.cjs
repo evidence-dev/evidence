@@ -39,9 +39,9 @@ const standardizeResult = async(result) => {
 const runQuery = async (queryString, database) => {
     try {
         var connection = createConnection.createConnection({
-            account: database.account ?? process.env["account"],
-            username: database.username ?? process.env["username"],
-            password: database.password ?? process.env["password"]
+            account:  database ? database.account : process.env["account"],
+            username:  database ? database.username : process.env["username"],
+            password:  database ? database.password : process.env["password"]
         });
 
         const result = await execute(connection, queryString)
