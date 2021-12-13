@@ -3,6 +3,9 @@
 	"displayName": "Evidence",
 	"description": "Evidence language support for VS Code",
 	"version": "0.0.2",
+	"engines": {
+        "vscode": "^1.52.0"
+    },
 	"categories": [
 		"Data Science",
 		"Programming Languages",
