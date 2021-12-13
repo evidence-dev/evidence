@@ -36,7 +36,7 @@
 	},
 	"Insert <Histogram/>": {
 		"prefix": "Histogram",
-		"body": ["<Histogram data={data.${1:query_name}} x=${2:column}\n/>\n\n"],
+		"body": ["<Histogram data={data.${1:query_name}} x=${2:column}/>\n\n"],
 		"description": "Insert Histogram"
 	},
 	"Insert <DataTable/>": {
