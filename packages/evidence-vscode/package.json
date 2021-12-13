@@ -30,7 +30,7 @@
     },
 	"homepage": "https://evidence.dev",
 	"activationEvents": [
-        "onCommand:evidence-vscode.helloWorld"
+        "onLanguage:emd"
 	],
 	"main": "./dist/extension.js",
 	"icon": "icons/evidence-logo.png",
