@@ -84,7 +84,8 @@
 				  "strings": false
 			  },
 			  "editor.suggest.snippetsPreventQuickSuggestions": false,
-			  "editor.quickSuggestionsDelay": 300
+			  "editor.quickSuggestionsDelay": 300,
+			  "editor.acceptSuggestionOnEnter": "off"
 			}
 	  },
 	  "snippets": [

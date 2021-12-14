@@ -51,7 +51,7 @@
 	},
 	"Insert Each Block": {
 		"prefix": "Each Block",
-		"body": ["{#each ${1:dataset} as ${2:row}, ${3:index}}\n\t${4:}\n{/each}\n\n"],
+		"body": ["{#each data.${1:query_name} as ${2:row_name}}\n\t${4:}\n{/each}\n\n"],
 		"description": "Insert Each Block"
 	},
 	"Insert If Block": {

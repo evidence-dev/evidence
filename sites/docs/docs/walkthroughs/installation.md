@@ -134,10 +134,15 @@ npm install
 
 npm will add all dependencies to the `node_modules` folder in your project.
 
-## Install the Evidence VS Code Extension
+## Install the VS Code Extension
 The Evidence VS Code extension enables syntax highlighting and basic autocomplete. You can install the extension in 2 ways:
-- In VS Code, search for "Evidence" in the Extensions menu
-- Install from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
+1. In VS Code, search for "Evidence" in the Extensions menu and click to install
+
+    ![extension-menu](/img/extensions-menu-search.png)
+
+1. Install from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
+
+See [VS Code Extension](/vscode-extension) for more information about the extension.
 
 The VS Code extension is not required to build an Evidence project, but it makes the experience of writing your project smoother.
 
