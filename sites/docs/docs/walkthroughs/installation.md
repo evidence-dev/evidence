@@ -99,7 +99,7 @@ Once you have the right Node.js and npm versions installed, you're ready to crea
 If any of the steps above are out of date, you can check out the npm website for current details:
 https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-Please let us know if any of these steps don't work so we can update these docs and help others who will run into the same issues! You can let us know [on Slack](/community) or by emailing <support@evidence.dev>.
+Please let us know if any of these steps don't work so we can update these docs and help others who will run into the same issues. You can let us know [on Slack](/community) or by emailing <support@evidence.dev>.
 :::
 
 ## Create an Evidence Project
@@ -133,6 +133,13 @@ npm install
 ```
 
 npm will add all dependencies to the `node_modules` folder in your project.
+
+## Install the Evidence VS Code Extension
+The Evidence VS Code extension enables syntax highlighting and basic autocomplete. You can install the extension in 2 ways:
+- In VS Code, search for "Evidence" in the Extensions menu
+- Install from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
+
+The VS Code extension is not required to build an Evidence project, but it makes the experience of writing your project smoother.
 
 That's it for installation - now you can start your server and use Evidence.
 
@@ -169,6 +176,8 @@ The new **dev** line should look like this:
 ```
 
 **Example (using port 8080):**
+
+
 ![custom-port](/img/custom-port.png)
 
 ## In Review 
