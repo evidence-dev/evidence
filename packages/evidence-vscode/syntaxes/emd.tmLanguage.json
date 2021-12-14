@@ -1,0 +1,74 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Septh/tmlanguage/master/tmLanguage.schema.json",
+    "name": "Markdown Svelte",
+    "patterns": [
+      {
+        "include": "#svelte"
+      },
+      {
+        "include": "#markdown"
+      }
+    ],
+    "repository": {
+      "svelte": {
+        "patterns": [
+          { "include": "#svelte-tag" },
+          { "include": "#svelte-template" },
+          { "include": "#svelte-js-expression" }
+        ],
+        "repository": {
+          "svelte-tag": {
+            "patterns": [
+              {
+                "begin": "(?!^#{1,}\\s+?)(?:[^{}]*?)(?=<[^(script)])",
+                "end": "(?<=>|$)",
+                "contentName": "source.svelte",
+                "patterns": [
+                  {
+                    "include": "source.svelte"
+                  }
+                ]
+              }
+            ]
+          },
+          "svelte-template": {
+            "patterns": [
+              {
+                "begin": "(?!^#{1,}\\s+?)(?:.*?)(?={[#/])",
+                "end": "(?<=}|$)",
+                "contentName": "source.svelte",
+                "patterns": [
+                  {
+                    "include": "source.svelte"
+                  }
+                ]
+              }
+            ]
+          },
+          "svelte-js-expression": {
+            "patterns": [
+              {
+                "begin": "(?!^#{1,}\\s+?)(?:.*?)(?={[^#/])",
+                "end": "(?<=}|$)",
+                "contentName": "source.svelte",
+                "patterns": [
+                  {
+                    "include": "source.svelte"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "markdown": {
+        "contentName": "text.html.markdown",
+        "patterns": [
+          {
+            "include": "text.html.markdown"
+          }
+        ]
+      }
+    },
+    "scopeName": "text.html.markdown.svelte"
+  }

@@ -17,7 +17,15 @@ npm install
 npm run dev 
 ```
 
-Check the System Requirements below to ensure you have the right pre-requisites.
+### VS Code Extension
+Install the Evidence VS Code extension to enable syntax highlighting and basic autocomplete. You can install the extension in 2 ways:
+1. In VS Code, search for "Evidence" in the Extensions menu and click to install
+
+    ![extension-menu](/img/extensions-menu-search.png)
+
+1. Install from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
+
+See [VS Code Extension](/vscode-extension) for more information about the extension.
 
 ## System Requirements 
 
