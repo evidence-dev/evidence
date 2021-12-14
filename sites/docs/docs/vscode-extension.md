@@ -24,7 +24,7 @@ Evidence VS Code provides syntax highlighting for SQL queries, components, templ
 ## Autocomplete
 Evidence VS Code includes a collection of autocomplete suggestions which can be quickly inserted into your project with only a few keystrokes. This is not full intellisense, which is planned for a future version of the extension.
 
-![autocomplete-several](/img/autocomplete-several.gif)
+![autocomplete-several-2](/img/autocomplete-several-2.gif)
 
 ### How to Use
 
@@ -60,7 +60,7 @@ You may encounter situations where autocomplete suggestions pop up at the ends o
 ### Examples
 
 #### SQL Query Blocks
-![sql-query-autocomplete-3](/img/sql-query-autocomplete-3.gif)
+![sql-query-autocomplete-5](/img/sql-query-autocomplete-5.gif)
 
 #### Components
 ![scatterplot-autocomplete](/img/scatterplot-autocomplete.gif)

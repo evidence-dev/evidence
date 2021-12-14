@@ -1,7 +1,7 @@
 {
     "Insert SQL query block": {
 		"prefix": "SQL query block",
-		"body": ["```${1:query_name}","\tselect ${2:columns} \n\tfrom ${3:table_name}", "```\n\n"],
+		"body": ["```${1:query_name}","\t${2:}", "```\n\n"],
 		"description": "Insert SQL query block"
 	},
 	"Insert <Chart>": {
