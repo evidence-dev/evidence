@@ -18,7 +18,7 @@
 
     // Placeholder text when data not supplied:
     export let placeholder = null
-    let errorColor = 'red';
+    let errorColor = 'var(--red-600)';
     if(placeholder){
         errorColor = 'blue';
     } else {
@@ -98,12 +98,15 @@
         top: -5px;
         left: 105%;
         white-space: nowrap;
-        padding-left: 4px;
-        padding-right: 4px;        
+        padding-left: 5px;
+        padding-right: 5px;     
+        padding-top: 2px;
+        padding-bottom: 1px;   
         color: white;
         font-family: sans-serif;
         font-size: 0.8em;
         background-color: black;
+        opacity: 0.85;
         border-radius: 6px;
         z-index: 1;
     }
