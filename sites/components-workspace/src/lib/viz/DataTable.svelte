@@ -195,7 +195,7 @@
 
   .container{
     width:100%;
-    overflow-x: scroll;
+    overflow-x: auto;
     border-bottom: 2px solid rgb(235, 238, 240); 
   }
 

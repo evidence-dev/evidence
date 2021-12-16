@@ -148,7 +148,7 @@
 
   .container{
     width:100%;
-    overflow-x: scroll;
+    overflow-x: auto;
     border-bottom: 1px solid var(--grey-200);   
   }
 

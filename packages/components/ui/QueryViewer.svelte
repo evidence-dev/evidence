@@ -93,7 +93,7 @@
         background-color: var(--grey-100);
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
-        overflow: scroll;
+        overflow: auto;
         padding: 0 12px 6px 12px; 
     }
 
@@ -104,7 +104,7 @@
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
         border-bottom: 1px solid var(--grey-200);
-        overflow-x: scroll;
+        overflow-x: auto;
     }
 
     .closed {
