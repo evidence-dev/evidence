@@ -101,8 +101,7 @@
       --scrollbar-track-color: transparent;
       --scrollbar-color: rgba(0,0,0,.2);
       --scrollbar-active-color: rgba(0,0,0,.4);
-      --scrollbar-size: .375rem;
-      --scrollbar-active-size: .6rem;
+      --scrollbar-size: .75rem;
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
     }
     .code-container::-webkit-scrollbar {
@@ -114,16 +113,19 @@
     }
     .code-container::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-color);
-      border-radius: 3px;
+      border-radius: 7px;
+      background-clip: padding-box;
     }
     .code-container::-webkit-scrollbar-thumb:hover {
       background-color: var(--scrollbar-active-color);
     }
     .code-container::-webkit-scrollbar-thumb:vertical {
       min-height: var(--scrollbar-minlength);
+      border: 3px solid transparent;
     }
     .code-container::-webkit-scrollbar-thumb:horizontal {
       min-width: var(--scrollbar-minlength);
+      border: 3px solid transparent;
     }
 
     .status-bar{
@@ -145,16 +147,19 @@
     }
     .status-bar::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-color);
-      border-radius: 3px;
+      border-radius: 7px;
+      background-clip: padding-box;
     }
     .status-bar::-webkit-scrollbar-thumb:hover {
       background-color: var(--scrollbar-active-color);
     }
     .status-bar::-webkit-scrollbar-thumb:vertical {
       min-height: var(--scrollbar-minlength);
+      border: 3px solid transparent;
     }
     .status-bar::-webkit-scrollbar-thumb:horizontal {
       min-width: var(--scrollbar-minlength);
+      border: 3px solid transparent;
     }
     
     .closed {
