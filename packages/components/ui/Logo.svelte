@@ -13,6 +13,6 @@
   		-webkit-text-fill-color: transparent;
         font-size: 1.0em;
         font-weight: bold;
-        font-family: "SF Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: var(--ui-font-family);
 	}
 </style>
