@@ -5,7 +5,7 @@ hide_table_of_contents: false
 
 # Get Started
 
-This guide will show you how easy it is to install Evidence, connect it to your data warehouse, and start building beautiful data-rich documents with markdown and SQL.
+This guide walks through the process of installing Evidence, connecting it to your data warehouse, and building professional data-driven reports with markdown and SQL.
 
 For more background on Evidence, check out [What is Evidence?](/)
 
