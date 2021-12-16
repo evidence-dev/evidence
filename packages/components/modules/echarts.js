@@ -27,7 +27,9 @@ export default(node, option, renderer) => {
             '#71777d', '#7e848a', '#8c9196', '#9a9fa3', '#a8acb0', '#b7babd', '#c5c8ca', '#d4d6d7', '#e3e4e5', '#f3f3f3'
         ],
         "backgroundColor": "rgba(255, 255, 255, 0)",
-        "textStyle": {},
+        "textStyle": {
+            "fontFamily": "sans-serif"
+        },
         "title": {
             "padding": 0,
             "itemGap": 7,
