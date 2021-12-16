@@ -89,20 +89,22 @@
 </div>
  
 <style>
-    .code-container {
-        background-color: var(--grey-100);
-        border-left: 1px solid var(--grey-200);
-        border-right: 1px solid var(--grey-200);
-        overflow: auto;
-        padding: 0 12px 6px 12px; 
-    }
-
     :root {
       --scrollbar-track-color: transparent;
       --scrollbar-color: rgba(0,0,0,.2);
       --scrollbar-active-color: rgba(0,0,0,.4);
       --scrollbar-size: .75rem;
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
+    }
+
+    .code-container {
+        background-color: var(--grey-100);
+        border-left: 1px solid var(--grey-200);
+        border-right: 1px solid var(--grey-200);
+        overflow: auto;
+        padding: 0 12px 6px 12px; 
+        scrollbar-width: thin; 
+        scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
     }
     .code-container::-webkit-scrollbar {
       height: var(--scrollbar-size);
@@ -136,6 +138,8 @@
         border-right: 1px solid var(--grey-200);
         border-bottom: 1px solid var(--grey-200);
         overflow-x: auto;
+        scrollbar-width: thin; 
+        scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
     }
 
     .status-bar::-webkit-scrollbar {

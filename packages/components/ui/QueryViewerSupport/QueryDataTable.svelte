@@ -149,11 +149,6 @@
 
   }
 
-  .container{
-    width:100%;
-    overflow-x: auto;
-    border-bottom: 1px solid var(--grey-200);   
-  }
 
   :root {
       --scrollbar-track-color: transparent;
@@ -161,7 +156,16 @@
       --scrollbar-active-color: rgba(0,0,0,.4);
       --scrollbar-size: .75rem;
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
-    }
+  }
+
+  .container{
+    width:100%;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--grey-200);   
+    scrollbar-width: thin; 
+    scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
+  }
+
     .container::-webkit-scrollbar {
       height: var(--scrollbar-size);
       width: var(--scrollbar-size);

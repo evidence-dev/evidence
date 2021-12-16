@@ -76,11 +76,6 @@
     <code class="language-{language}">{code}</code>
   </pre>
 <style>
-    pre {
-      margin: 0 0 0 0; /* Makes the block jump around on transition */  
-      font-size:12px;
-      display: block;
-    }   
 
     :root {
       --scrollbar-track-color: transparent;
@@ -89,6 +84,15 @@
       --scrollbar-size: .75rem;
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
     }
+
+    pre {
+      margin: 0 0 0 0; /* Makes the block jump around on transition */  
+      font-size:12px;
+      display: block;
+      scrollbar-width: thin; 
+      scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
+    }   
+
     pre::-webkit-scrollbar {
       height: var(--scrollbar-size);
       width: var(--scrollbar-size);
