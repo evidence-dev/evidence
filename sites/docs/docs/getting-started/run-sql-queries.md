@@ -10,7 +10,7 @@ Go back to [localhost:3000/firstquery](http://localhost:3000/firstquery) and tak
 
 If your database connection has been set up successfully, you will see an output from the query and a message linking to an example analysis. 
 
-* This message was set up with a [conditional](/templating/conditionals) - you can use conditionals to dynamically display information based on results of queries on your page. Check out the code in `firstquery.md` to see how this was done
+* This message was set up with a [conditional](/templating#conditionals) - you can use conditionals to dynamically display information based on results of queries on your page. Check out the code in `firstquery.md` to see how this was done
 
 ## Write a query from scratch
 Let's take a look at 1,000 rows from the Austin 311 Calls public dataset to undestand what the data looks like. We'll call this query `data_sample`:
