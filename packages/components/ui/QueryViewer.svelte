@@ -97,6 +97,35 @@
         padding: 0 12px 6px 12px; 
     }
 
+    :root {
+      --scrollbar-track-color: transparent;
+      --scrollbar-color: rgba(0,0,0,.2);
+      --scrollbar-active-color: rgba(0,0,0,.4);
+      --scrollbar-size: .375rem;
+      --scrollbar-active-size: .6rem;
+      --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
+    }
+    .code-container::-webkit-scrollbar {
+      height: var(--scrollbar-size);
+      width: var(--scrollbar-size);
+    }
+    .code-container::-webkit-scrollbar-track {
+      background-color: var(--scrollbar-track-color);
+    }
+    .code-container::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-color);
+      border-radius: 3px;
+    }
+    .code-container::-webkit-scrollbar-thumb:hover {
+      background-color: var(--scrollbar-active-color);
+    }
+    .code-container::-webkit-scrollbar-thumb:vertical {
+      min-height: var(--scrollbar-minlength);
+    }
+    .code-container::-webkit-scrollbar-thumb:horizontal {
+      min-width: var(--scrollbar-minlength);
+    }
+
     .status-bar{
         margin-top: 0px;
         margin-bottom: 0px;
@@ -107,6 +136,27 @@
         overflow-x: auto;
     }
 
+    .status-bar::-webkit-scrollbar {
+      height: var(--scrollbar-size);
+      width: var(--scrollbar-size);
+    }
+    .status-bar::-webkit-scrollbar-track {
+      background-color: var(--scrollbar-track-color);
+    }
+    .status-bar::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-color);
+      border-radius: 3px;
+    }
+    .status-bar::-webkit-scrollbar-thumb:hover {
+      background-color: var(--scrollbar-active-color);
+    }
+    .status-bar::-webkit-scrollbar-thumb:vertical {
+      min-height: var(--scrollbar-minlength);
+    }
+    .status-bar::-webkit-scrollbar-thumb:horizontal {
+      min-width: var(--scrollbar-minlength);
+    }
+    
     .closed {
         border-bottom-left-radius: 6px;
         border-bottom-right-radius: 6px;

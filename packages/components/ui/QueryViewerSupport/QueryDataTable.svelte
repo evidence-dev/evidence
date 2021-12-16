@@ -73,22 +73,25 @@
               {/each}
             </tbody>
   </table> 
-  {#if max > 0}
-  <div class="pagination">
-    <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
-    <span>
-    {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
-    </span>
-  </div>
-  {/if}
 </div>   
+
+{#if max > 0}
+<div class="pagination">
+  <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
+  <span style="padding-top: 1px;">
+  {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
+  </span>
+</div>
+{/if}
 
 
 <style>
   div.pagination {
     padding: 0px 5px;
+    padding-top: 1px;
+    padding-bottom: 0px;
     align-content: center;
-    border-top: 1px solid rgb(235, 238, 240);
+    border-bottom: 1px solid var(--grey-200);   
     height: 1.5em;
   }
 
@@ -152,11 +155,40 @@
     border-bottom: 1px solid var(--grey-200);   
   }
 
+  :root {
+      --scrollbar-track-color: transparent;
+      --scrollbar-color: rgba(0,0,0,.2);
+      --scrollbar-active-color: rgba(0,0,0,.4);
+      --scrollbar-size: .375rem;
+      --scrollbar-active-size: .6rem;
+      --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
+    }
+    .container::-webkit-scrollbar {
+      height: var(--scrollbar-size);
+      width: var(--scrollbar-size);
+    }
+    .container::-webkit-scrollbar-track {
+      background-color: var(--scrollbar-track-color);
+    }
+    .container::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-color);
+      border-radius: 3px;
+    }
+    .container::-webkit-scrollbar-thumb:hover {
+      background-color: var(--scrollbar-active-color);
+    }
+    .container::-webkit-scrollbar-thumb:vertical {
+      min-height: var(--scrollbar-minlength);
+    }
+    .container::-webkit-scrollbar-thumb:horizontal {
+      min-width: var(--scrollbar-minlength);
+    }
+
   table{
     width:100%;
     font-size: calc(1em - 4px);
     border-collapse: collapse;
-    font-family: sans-serif;
+    font-family: var(--ui-font-family);
   }
 
   th{

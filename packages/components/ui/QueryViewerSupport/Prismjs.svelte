@@ -81,4 +81,34 @@
       font-size:12px;
       display: block;
     }   
+
+    :root {
+      --scrollbar-track-color: transparent;
+      --scrollbar-color: rgba(0,0,0,.2);
+      --scrollbar-active-color: rgba(0,0,0,.4);
+      --scrollbar-size: .375rem;
+      --scrollbar-active-size: .6rem;
+      --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
+    }
+    pre::-webkit-scrollbar {
+      height: var(--scrollbar-size);
+      width: var(--scrollbar-size);
+    }
+    pre::-webkit-scrollbar-track {
+      background-color: var(--scrollbar-track-color);
+    }
+    pre::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-color);
+      border-radius: 3px;
+    }
+    pre::-webkit-scrollbar-thumb:hover {
+      background-color: var(--scrollbar-active-color);
+    }
+    pre::-webkit-scrollbar-thumb:vertical {
+      min-height: var(--scrollbar-minlength);
+    }
+    pre::-webkit-scrollbar-thumb:horizontal {
+      min-width: var(--scrollbar-minlength);
+    }
+    
 </style>
