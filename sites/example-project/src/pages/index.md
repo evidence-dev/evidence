@@ -14,6 +14,21 @@
     limit 1 
 ```
 
+```rolling_average_daily_calls
+    select *, 
+        avg(number_of_complaints) over(order by date rows between 7 preceding and current row) as seven_day_average
+    from ${daily_complaints}
+    limit 50
+```
+
+<Chart data={data.rolling_average_daily_calls} x=date title={`Last ${data.rolling_average_daily_calls.length} days of call volume`}>
+    <Bar y=number_of_complaints/> 
+    <Line y=seven_day_average/>
+</Chart>
+
+
+
+
 Austin 311 has fielded <Value data={data.summary}/> calls since <Value data={data.summary} column=earliest_call_date/> and <Value data={data.summary} column=calls_in_the_last_365_days/> calls over the last 365 days.
 
 <LineChart data={data.daily_complaints} x='date' y='number_of_complaints' units="calls to Austin 311 per day"/>
@@ -106,10 +121,6 @@ group by 1,2
 
 <LineChart title="Weekly Call Volume, by Category" data={data.top_categories_weekly} x=date y=number_of_complaints series=description/>
 
-# Call volume is {data.ytd_volume[0].growth_pct >= 0 ? "up" : "down" } <Value data={data.ytd_volume} /> year to date
-
-The team has fielded <Value data = {data.ytd_volume} column=vol /> so far this year, representing a <Value data={data.ytd_volume} /> {data.ytd_volume[0].growth_pct >= 0 ? "increase" : "decrease" } from the <Value data = {data.ytd_volume} column=vol row=1/> calls they had fielded by this point last year.
- 
 ``` ytd_volume 
 with annual_call_volume as (
     select 
@@ -128,10 +139,6 @@ from annual_call_volume
 order by year desc
 
 ```
-
-<LineChart data={data.daily_volume_yoy} x=day_of_year y=cum_vol series=year 
-yAxisTitle="cumulative calls" 
-xAxisTitle="day of year"/>
 
 <LineChart data={data.daily_vol_yoy} x=day_of_year y=cum_vol series=year 
 yAxisTitle="cumulative calls" 
@@ -172,55 +179,6 @@ select
 from daily_vol
 
 ```
-
-## <Value data={data.department_pareto} column=cutoff_pct/> of the growth came from {data.department_pareto.length} departments
-
-``` department_pareto
-with annual_call_volume as (
-    select 
-        extract(year from created_date) as year,
-        owning_department as dept, 
-        count(*) as vol
-    from `bigquery-public-data.austin_311.311_service_requests`
-    where extract(dayofyear from created_date) <= extract(dayofyear from current_date())
-    group by 1,2 
-), 
-delta as (
-    select 
-        *, 
-        vol - lag(vol) over(partition by dept order by year) as delta_vol, 
-    from annual_call_volume
-    order by year desc
-),
-share as (
-    select 
-        *,
-        sum(delta_vol) over(partition by year) as total_delta,
-        safe_divide(delta_vol, sum(delta_vol) over(partition by year)) as delta_share_pct,
-    from delta 
-),
-cumulative as (
-    select 
-        *, 
-        sum(delta_share_pct) over(partition by year order by delta_share_pct desc) as cum_sum
-    from share 
-)
-
-select *, 
-max(cum_sum) over() as cutoff_pct 
-from cumulative 
-where year = extract(year from current_date())
-and cum_sum < 0.85
-order by 4 desc
-```
-
-Year to date call volume is up by <Value data={data.department_pareto} column = total_delta/>. Of that growth, <Value data={data.department_pareto} column=cutoff_pct/> came from the following {data.department_pareto.length} departments:
-
-<ol>
-{#each data.department_pareto as item}
-<li> <a href={`departments/${item.dept}`}> {item.dept}</a> +<Value value={item.delta_vol}/> calls (<Value value={item.delta_share_pct} fmt=pct/>) </li>
-{/each}
-</ol>
 
 # Recent Call Volume Spikes  
 The following [volume spikes](spikes) may warrant further investigation.

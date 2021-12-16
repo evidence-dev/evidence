@@ -10,9 +10,7 @@ Query chaining enables analysts to reference the results of a query from other q
 ## Syntax
 Reference other queries by writing the query name inside `${ }`.
 
-For example, if you want to reference a query named *first_query*, you would write `${first_query}`.
-
-The SQL compiler ignores whitespace on either side of the query name, so you can include spaces if you prefer that format. The above example would become `${ first_query }`.
+For example, if you want to reference a query named `daily_sales`, you would write `${daily_sales}` into your SQL query.
 
 ## Example
 
@@ -52,9 +50,10 @@ from (
 You can choose whether you want to see the compiled or written SQL inside the query viewer:
 ![compiled-written-toggle](/img/compiled-written-toggle.gif)
 
-## Execution Order
-The Evidence SQL compiler does not follow an execution order, meaning you can reference queries that exist anywhere else on your page (you're not restricted to queries above your current query). 
+## Other
 
-The SQL compiler will also detect circular references. If a query includes a circular reference, Evidence will print an error to your console and produce an error inside the query viewer, without stopping your page from running:
+The order that queries appear on the page doesn't matter to the SQL compiler. You can reference queries that appear before or after the query that you are authoring. 
+
+The SQL compiler detects circular and missing references. If a query includes either a circular reference or a missing reference, Evidence will display an error that looks like a syntax error in a normal SQL query. Queries with compiler errors are not sent to your database. 
 
 ![circular-error-single](/img/circular-error-single.png)

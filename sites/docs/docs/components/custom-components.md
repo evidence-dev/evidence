@@ -50,7 +50,7 @@ Components can be as simple as a line of text, or as complex as anything you can
 
 You can use HTML tags in the main part of a component file (e.g., `<p>`, `<span>`, `<div>`, etc.).
 
-You can also use templating syntax like loops (`{#each}`) and conditionals (`{#if}`). See [Templating](/templating/loops) for examples of that syntax.
+You can also use templating syntax like loops (`{#each}`) and conditionals (`{#if}`). See [Templating](/templating#loops) for examples of that syntax.
 
 ### Adding styles
 

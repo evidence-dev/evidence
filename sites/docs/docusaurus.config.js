@@ -17,15 +17,9 @@ module.exports = {
         src: 'img/evidence.svg',
       },
       items: [
-        // {
-        //   to: 'https://evidence.dev',
-        //   position: 'left',
-        //   label: 'Home',
-        //   target: '_self',
-        // },
         {
           type: 'doc',
-          docId: 'introduction/intro',
+          docId: 'introduction',
           // to: '/',
           position: 'left',
           label: 'Docs',
@@ -69,10 +63,6 @@ module.exports = {
               to: '/components/text-components/value',
             },
             {
-              label: 'Templating',
-              to: '/templating/loops',
-            },
-            {
               label: 'Formatting',
               to: '/formatting/format-tags',
             },
@@ -91,11 +81,7 @@ module.exports = {
             {
               label: 'Usage Statistics',
               to: '/usage-statistics',
-            },
-            // {
-            //   label: 'Community',
-            //   to: '/community',
-            // },
+            }
           ],
         },
         {
