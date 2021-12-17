@@ -5,15 +5,6 @@ sidebar_position: 1
 # Installation
 Don't worry if this is your first time using any of the tools referenced in this walkthrough - we will guide you through all the steps. If you need help, [send us a message on Slack.](/community) We're here for you! 
 
-## System Requirements 
-
-**Mac OSX ** 
-
-Evidence is very new, and Windows users have been running into issues. 
-
-Great Windows support is a priority for us. If you'd like to be notified when we've resolved these issues, you can **[sign up for mailing list](http://eepurl.com/htt4ob)**
-
-
 ## IDE or Text Editor
 You will need an IDE (integrated development environment) or text editor to work with Evidence. We like [VSCode (Visual Studio Code)](https://code.visualstudio.com/) because of its layout, integrated console/terminal, and extension library.
 
