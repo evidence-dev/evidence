@@ -21,9 +21,7 @@
         height: 150px;
         margin-top: 20px;
         margin-bottom: 20px;
-        font-family: "SF Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
-            Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
-            "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: var(--ui-font-family);
         font-weight: normal;
         color: rgb(112, 111, 111);
         border: 1px solid #f8e9e9;

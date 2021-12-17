@@ -54,8 +54,8 @@
     span{
         text-transform:capitalize;
         font-size: small;
-        font-family: "SF Compact Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    	-webkit-font-smoothing: antialiased;
+        font-family: var(--ui-font-family-compact);
+        -webkit-font-smoothing: antialiased;
     }
     a{
         text-decoration: none;

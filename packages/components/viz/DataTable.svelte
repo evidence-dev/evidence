@@ -186,7 +186,7 @@
   }
 
   span {
-    font-family: "SF Compact Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: var(--ui-font-family-compact);
     -webkit-font-smoothing: antialiased;
     font-size: 0.8em;
     float: right;
@@ -195,7 +195,7 @@
 
   .container{
     width:100%;
-    overflow-x: scroll;
+    overflow-x: auto;
     border-bottom: 2px solid rgb(235, 238, 240); 
   }
 

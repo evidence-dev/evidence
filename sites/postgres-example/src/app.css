@@ -6,12 +6,12 @@ body {
 	font-size: 18px;
 	line-height: 1.6;
 	font-weight: normal;
-	color: #2d2d2d;
+	color: var(--grey-900);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
-	/* background-color: #fcfdff ; */
+	/* background-color: #F8FAFC ; */
 }
 
 p, ul, ol {
@@ -25,7 +25,7 @@ p, ul, ol {
 
 h1, h2, h3, h4, h5, h6  {
 	font-weight: normal;
-	font-family: "SF Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-family: var(--ui-font-family);
 	line-height: 1.5;
 	margin: 1.0em 0 0.3em 0; 
 }
@@ -33,7 +33,7 @@ h1, h2, h3, h4, h5, h6  {
 h1:first-of-type {
 	font-size: 1.2em;
 	font-weight: bold;
-	color: #444444;
+	color: var(--grey-800);
 	border-top: none;
 	padding-top: none;
 	margin: 0em 0 0.3em 0; 
@@ -42,9 +42,9 @@ h1:first-of-type {
 h1 {
 	font-size: 1.2em;
 	font-weight: bold;
-	color: #444444;
+	color: var(--grey-800);
 	display: block;
-	border-top: 1px solid #e3e8ee;
+	border-top: 1px solid var(--grey-200);
 	padding-top: 0.3em;
 	margin: 1.1em 0 0.3em 0; 
 }
@@ -57,7 +57,7 @@ h1:active {
 h2 { 
 	font-size: 1em;
 	font-weight: bold;
-	color: #444444;
+	color: var(--grey-800);
 }
 
 h3 {
@@ -86,9 +86,9 @@ h6 {
 }
 
 article a {
-		color: #256a9c;
+		color: var(--blue-link);
 		text-decoration: underline;
-		text-decoration-color: #daf1fe90; 
+		text-decoration-color: var(--blue-100); 
 		text-decoration-thickness: .1em;
 		text-underline-offset: 0.05em;
 	}
@@ -96,7 +96,7 @@ article a {
 article a:hover {
 	color: inherit;
 	text-decoration: underline;
-	text-decoration-color: #daf1fe; 
+	text-decoration-color: var(--blue-200); 
 	text-decoration-thickness: .1em;
 	text-underline-offset: 0.05em;
 }
@@ -115,36 +115,12 @@ hr {
 	margin-bottom: 1.5em;
 	margin-left: auto;
 	margin-right: auto;
-	border-top: 1px solid #e3e8ee;
+	border-top: 1px solid var(--grey-200);
 	border-bottom:none;
 	border-left:none;
 	border-right:none;
 	width: 75%;
 	
-}
-
-/* COLOR PALETTE - USED IN MULTI-SERIES CHARTS */
-:root {
-	--color1: #923d59;
-	--color2: #488f96;
-	--color3: #518eca;
-	--color4: #B3A9A0;
-	--color5: #3F6C51;
-	--color6: #ffc857;
-	--color7: #495867;
-	--color8: #bfdbf7;
-	--color9: #bc4749;
-	--color10: #EEEBD0;
-	--color11: #F68E5F;
-	--color12: #923d59;
-	--color13: #488f96;
-	--color14: #518eca;
-	--color15: #B3A9A0;
-	--color16: #3F6C51;
-	--color17: #ffc857;
-	--color18: #495867;
-	--color19: #bfdbf7;
-	--color20: #bc4749;
 }
 
 @media (max-width: 600px) {
@@ -153,8 +129,10 @@ hr {
 	}
 }
 
-/* GLOBAL COLOR VARIABLES - USED IN MULTI-SERIES CHARTS */
 :root {
+	--ui-font-family: "SF Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
+	--ui-font-family-compact: "SF Compact Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
 	--color1: #923d59;
 	--color2: #488f96;
 	--color3: #518eca;
@@ -175,8 +153,57 @@ hr {
 	--color18: #495867;
 	--color19: #bfdbf7;
 	--color20: #bc4749;
-}
 
-/* Idea for multiple color palettes: naming convention after --.
-For example: --gradient1 --gradient2 | --standard1 --standard2, etc.
-*/
+	--blue-100: hsla(202, 100%, 95%, 1);
+	--blue-200: hsla(204, 100%, 85%, 1);
+	--blue-300: hsla(206, 95%, 72%, 1);
+	--blue-400: hsla(208, 90%, 63%, 1);
+	--blue-500: hsla(210, 85%, 54%, 1);
+	--blue-600: hsla(212, 96%, 44%, 1);
+	--blue-700: hsla(214, 98%, 38%, 1);
+	--blue-800: hsla(217, 98%, 33%, 1);
+	--blue-900: hsla(220, 99%, 24%, 1);
+	--blue-999: hsla(222, 100%, 18%, 1);
+	--blue-link: hsla(205, 62%, 38%, 1);
+	--green-100: hsla(167, 100%, 94%, 1);
+	--green-200: hsla(166, 100%, 87%, 1);
+	--green-300: hsla(163, 93%, 76%, 1);
+	--green-400: hsla(161, 90%, 63%, 1);
+	--green-500: hsla(159, 88%, 44%, 1);
+	--green-600: hsla(158, 91%, 35%, 1);
+	--green-700: hsla(156, 93%, 28%, 1);
+	--green-800: hsla(154, 95%, 23%, 1);
+	--green-900: hsla(152, 100%, 18%, 1);
+	--green-999: hsla(150, 100%, 14%, 1);
+	--grey-100: hsla(217, 33%, 97%, 1);
+	--grey-200: hsla(215, 15%, 91%, 1);
+	--grey-300: hsla(211, 16%, 82%, 1);
+	--grey-400: hsla(212, 13%, 65%, 1);
+	--grey-500: hsla(212, 10%, 53%, 1);
+	--grey-600: hsla(212, 12%, 43%, 1);
+	--grey-700: hsla(210, 14%, 37%, 1);
+	--grey-800: hsla(210, 18%, 30%, 1);
+	--grey-900: hsla(210, 20%, 25%, 1);
+	--grey-999: hsla(211, 24%, 16%, 1);
+	--red-100: hsla(0, 100%, 95%, 1);
+	--red-200: hsla(0, 100%, 87%, 1);
+	--red-300: hsla(0, 100%, 80%, 1);
+	--red-400: hsla(0, 91%, 69%, 1);
+	--red-500: hsla(0, 83%, 62%, 1);
+	--red-600: hsla(356, 75%, 53%, 1);
+	--red-700: hsla(354, 85%, 44%, 1);
+	--red-800: hsla(352, 90%, 35%, 1);
+	--red-900: hsla(350, 94%, 28%, 1);
+	--red-999: hsla(348, 94%, 20%, 1);
+	--yellow-100: hsla(49, 100%, 96%, 1);
+	--yellow-200: hsla(48, 100%, 88%, 1);
+	--yellow-300: hsla(48, 95%, 76%, 1);
+	--yellow-400: hsla(48, 94%, 68%, 1);
+	--yellow-500: hsla(44, 92%, 63%, 1);
+	--yellow-600: hsla(42, 87%, 55%, 1);
+	--yellow-700: hsla(36, 77%, 49%, 1);
+	--yellow-800: hsla(29, 80%, 44%, 1);
+	--yellow-900: hsla(22, 82%, 39%, 1);
+	--yellow-999: hsla(15, 86%, 30%, 1);
+	
+}
