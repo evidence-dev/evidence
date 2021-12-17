@@ -24,7 +24,7 @@
 		display: inline-block;
 		text-align: center;
 		text-decoration: none;
-		font-family: "SF Compact Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: var(--ui-font-family-compact);
 		padding: 0 1em 0 0;
 		letter-spacing: 0.05em;
 		-webkit-font-smoothing: antialiased;

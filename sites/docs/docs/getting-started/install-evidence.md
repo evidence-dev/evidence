@@ -43,13 +43,6 @@ Check which version you have with `node -v`
 
 Check which version you have with `npm -v` 
 
-**Mac OSX ** 
-
-Evidence is very new, and Windows users have been running into issues. 
-
-Great Windows support is a priority for us. If you'd like to be notified when we've resolved these issues, you can **[sign up for mailing list](http://eepurl.com/htt4ob)**
-
-
 <div style={{textAlign: 'center'}}>
 
 ![home-screen-initial](/img/hello-world-gradient.png)
