@@ -17,7 +17,22 @@ npm install
 npm run dev 
 ```
 
-### VS Code Extension
+### System Requirements 
+
+**NPM Version 7 or greater** 
+
+Check which version you have with `npm -v` 
+
+Install the latest version with `npm install -g npm@latest`
+
+<div style={{textAlign: 'center'}}>
+
+![home-screen-initial](/img/hello-world-gradient.png)
+
+</div>
+
+
+## VS Code Extension
 Install the Evidence VS Code extension to enable syntax highlighting and basic autocomplete. You can install the extension in 2 ways:
 1. In VS Code, search for "Evidence" in the Extensions menu and click to install
 
@@ -27,30 +42,10 @@ Install the Evidence VS Code extension to enable syntax highlighting and basic a
 
 See [VS Code Extension](/vscode-extension) for more information about the extension.
 
-## System Requirements 
 
-:::caution Node version issue
-Some users have been running into an issue that causes 500 errors when running their project on the dev server. This is caused by using a different version of Node than the one specified below during the installation process. If you encounter this error, the easiest solution is to change your version of Node and install a new Evidence project. If you need help changing versions, see our [Detailed Installation Walkthrough.](/walkthroughs/installation)
-:::
+## Optional
 
-**Node Version 14.17.6** 
-
-`14.17.6` is the most recent stable version of Node as at the time this was written. Should this page ever be out of date, check the [Node.js website](https://nodejs.org/en/) to see ther version number listed as **LTS (long-term support)**.
-
-Check which version you have with `node -v` 
-
-**NPM Version 7 or greater** 
-
-Check which version you have with `npm -v` 
-
-<div style={{textAlign: 'center'}}>
-
-![home-screen-initial](/img/hello-world-gradient.png)
-
-</div>
-
-
-## Using a Different Port
+### Using a Different Port
 If you need to run your Evidence project on a different port than 3000, follow the steps below:
 
 1. Open the `package.json` file in the root of your project
@@ -63,4 +58,33 @@ The new **dev** line should look like this:
 ```
 
 **Example (using port 8080):**
+
 ![custom-port](/img/custom-port.png)
+
+
+### Using Mobile Device in Dev Mode
+
+#### Expose Server to Your Network
+If you would like to test your Evidence project on other devices while in dev mode, you can expose your dev server to your network. This will generate a web address for you, which you can use to see your project on mobile devices.
+
+:::caution Trusted Network
+Only expose your server to your network if it is a trusted network. Treat this as a temporary setting, especially if you frequently use networks outside of your office or home. 
+:::
+
+1. Open the `package.json` file in the root of your project
+2. Under **scripts**, look at the **dev** line
+3. Add `--host 0.0.0.0` after `svelte-kit dev`
+
+The new **dev** line should look like this:
+```json
+"dev": "svelte-kit dev --host 0.0.0.0",
+```
+
+The network address to use on your mobile device will appear in your console after running your dev server:
+![network](/img/network.png)
+
+Note the warning about directories being accessible to anyone on your network.
+
+Open the network address on your mobile device and you should see your Evidence project:
+
+![mobile-screenshots-small](/img/mobile-screenshots-small.png)
