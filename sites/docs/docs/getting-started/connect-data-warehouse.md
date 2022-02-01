@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Connect Data Warehouse
 
-Evidence supports Google BigQuery, Snowflake, and PostgreSQL. 
+Evidence supports Google BigQuery, Snowflake, PostgreSQL, and MySQL.
 
 If you want to try out Evidence with free public datasets, both BigQuery and Snowflake offer a large collection.
 
@@ -102,6 +102,40 @@ By default, `ssl` will be set to false.
 ```
 
 
+## MySQL
+MySQL can be connected with basic database credentials. If you run into issues or need another type of auth to connect to your MySQL database, please [create a GitHub issue](https://github.com/evidence-dev/evidence/issues), [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), or send an email to <support@evidence.dev>.
+
+### Update Database Configuration File
+1. Open `database.config.json` in `.evidence` folder in your project
+2. Input your credentials:
+
+**Basic Credentials**
+```json
+"host": "database.server.com",
+"database": "my-database-name",
+"port": 5432,
+"user": "username",
+"password": "xxxxxx"
+```
+
+**Google Cloud SQL**
+If you are using Google Cloud SQL, you can also connect using a socket path and the config options below.
+
+`socketPath` is a concatenation of "/cloudsql/" and your instance's **connection name** which you can find in Google Cloud.
+
+```json
+"socketPath": "/cloudsql/my-project-123:us-northeast2:my-instance"
+"database": "database_name"
+"user": "username"
+"password": "xxxxxx"
+```
+
+### Update Evidence Configuration File
+1. Open `evidence.config.json` in root of your project.
+2. Input your database name ("mysql"):
+```json
+"database":"mysql"
+```
 
 ## Next Steps
 That's it - now you're ready to start querying some real datasets in Evidence!

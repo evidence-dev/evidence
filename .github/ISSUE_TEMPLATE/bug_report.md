@@ -45,4 +45,5 @@ Paste version output here
 - [ ] BigQuery
 - [ ] Snowflake
 - [ ] Redshift
+- [ ] MySQL
 - [ ] Other (please specify)
