@@ -118,7 +118,8 @@ MySQL can be connected with basic database credentials. If you run into issues o
 "password": "xxxxxx"
 ```
 
-**Google Cloud SQL**
+**Google Cloud SQL**   
+
 If you are using Google Cloud SQL, you can also connect using a socket path and the config options below.
 
 `socketPath` is a concatenation of "/cloudsql/" and your instance's **connection name** which you can find in Google Cloud.
