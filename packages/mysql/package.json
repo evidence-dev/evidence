@@ -1,7 +1,7 @@
 {
     "name": "@evidence-dev/mysql",
     "version": "0.0.1",
-    "description": "MySql driver for Evidence projects",
+    "description": "MySQL driver for Evidence projects",
     "main": "index.cjs",
     "author": "evidence.dev",
     "license": "MIT",

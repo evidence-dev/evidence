@@ -15,12 +15,14 @@ const standardizeResult = async (result) => {
 const runQuery = async (queryString, database) => {
     try {
         const credentials = {
-            user: database.user ?? process.env["user"],
-            host: database.host ?? process.env["host"],
-            database: database.database ?? process.env["database"],
-            password: database.password ?? process.env["password"],
-            port: database.port ?? process.env["port"],
-            ssl: database.ssl ?? process.env["ssl"] ?? false
+            user: database ? database.user : process.env["user"],
+            host: database ? database.host : process.env["host"],
+            database: database ? database.database : process.env["database"],
+            password: database ? database.password : process.env["password"],
+            port: database ? database.port : process.env["port"],
+            ssl: database ? database.ssl : process.env["ssl"] ?? false,
+            socketPath: database ? database.socketPath : process.env["socketPath"] ?? "",
+            decimalNumbers: true
         }
 
         var pool = mysql.createPool(credentials);
