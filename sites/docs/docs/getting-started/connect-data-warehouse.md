@@ -118,6 +118,60 @@ MySQL can be connected with basic database credentials. If you run into issues o
 "password": "xxxxxx"
 ```
 
+### Connect to server via SSH
+
+If your MySQL server's port isn't publicly open, or you need to access it via another server - you can use SSH tunneling to connect to the database.
+
+To do that, you need to add your SSH Credentials to `database.config.json`
+
+**Example: Connect to MySQL Server without open port through SSH**
+
+```json
+{
+    "host": "127.0.0.1", // Once you SSH Into the server, the "localhost" becomes the target server
+    "database": "mydb",
+    "port": 3306,
+    "user": "user",
+    "password": "pass",
+    "tunnel": "ssh", // Be sure to add a tunnel parameter - currently "ssh" is the only supported value
+    "ssh": {
+        "host": "IP Address", // You can also use a hostname here if you'd like
+        "port": "22", // Port is 22 by default, but you can change it
+        "user": "user",
+        "password": "pass",
+
+        // You can alternatively pass a privateKeyPath. You can either pass a password
+        // or private key, but password will take preference if you pass both
+        "privateKeyPath": "/Users/bob/.ssh/id_rsa"
+    }
+}
+```
+
+**Example: Connect to MySQL Server via another server through SSH**
+
+In some cases, the MySQL Server's firewall rules are configured to only let connections through from whitelisted IP Addresses. You can access the database by first SSH'ing into the whitelisted IP.
+
+```json
+{
+    "host": "192.168.1.45", // The intranet (LAN) IP address or hostname
+    "database": "mydb",
+    "port": 3306,
+    "user": "user",
+    "password": "pass",
+    "tunnel": "ssh", // Be sure to add a tunnel parameter - currently "ssh" is the only supported value
+    "ssh": {
+        "host": "IP Address", // The IP Address or hostname of the publicly accessible server
+        "port": "22", // Port is 22 by default, but you can change it
+        "user": "user",
+        "password": "pass",
+
+        // You can alternatively pass a privateKeyPath. You can either pass a password
+        // or private key, but password will take preference if you pass both
+        "privateKeyPath": "/Users/bob/.ssh/id_rsa"
+    }
+}
+```
+
 **Google Cloud SQL**   
 
 If you are using Google Cloud SQL, you can also connect using a socket path and the config options below.

@@ -6,7 +6,8 @@
     "author": "evidence.dev",
     "license": "MIT",
     "dependencies": {
-        "mysql2": "^2.3.2"
+        "mysql2": "^2.3.2",
+        "ssh2": "^1.6.0"
     },
     "type": "module"
 }
