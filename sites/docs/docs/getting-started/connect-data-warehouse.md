@@ -167,9 +167,26 @@ In some cases, the MySQL Server's firewall rules are configured to only let conn
 
         // You can alternatively pass a privateKeyPath. You can either pass a password
         // or private key, but password will take preference if you pass both
+        //
+        // Absolute paths are reccomended, and home directory expansion is not supported
         "privateKeyPath": "/Users/bob/.ssh/id_rsa"
     }
 }
+```
+
+**Example: Using environment variables**
+
+You can set the following environment variables to use an SSH tunnel to access a MySQL Database:
+
+```bash
+export tunnel=ssh
+export ssh_host="IP Address"
+export ssh_port="22"
+export ssh_user="user"
+export ssh_password="pass"
+
+# Or pass an absolute path to the private key:
+export ssh_privateKeyPath="/Users/bob/.ssh/id_rsa"
 ```
 
 **Google Cloud SQL**   

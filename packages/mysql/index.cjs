@@ -30,22 +30,22 @@ const buildTunnel = (database) => {
 
     return new Promise((resolve, reject) => {
         let sshConfig = {
-            host: database.ssh.host,
-            port: database.ssh.port,
-            username: database.ssh.user
+            host: database ? database.ssh.host : process.env["ssh_host"],
+            port: database ? database.ssh.port : process.env["ssh_port"],
+            username: database ? database.ssh.user : process.env["ssh_user"]
         };
 
-        if(database.ssh.password) {
-            sshConfig.password = database.ssh.password;
+        if(database.ssh.password || process.env["ssh_password"]) {
+            sshConfig.password = database ? database.ssh.password : process.env["ssh_password"];
         } else {
-            sshConfig.privateKey = fs.readFileSync(database.ssh.privateKeyPath)
+            sshConfig.privateKey = fs.readFileSync(database ? database.ssh.privateKeyPath : process.env["ssh_privateKeyPath"])
         }
 
         let forwardConfig = {
             sourceHost: LOCAL_TUNNEL_HOST,
             sourcePort: LOCAL_TUNNEL_PORT,
-            destHost: database.host,
-            destPort: database.port
+            destHost: database ? database.host : process.env["host"],
+            destPort: database ? database.port : process.env["port"]
         };
 
         tunnelClient = new Client();
@@ -62,7 +62,7 @@ const buildTunnel = (database) => {
 
 const runQuery = async (queryString, database) => {
     try {
-        const tunnelFlag = database.tunnel && database.tunnel === "ssh" && database.ssh;
+        const tunnelFlag = (database.tunnel && database.tunnel === "ssh" || process.env["tunnel"] === "ssh")
         let stream = null;
         if(tunnelFlag) {
             stream = await buildTunnel(database);
