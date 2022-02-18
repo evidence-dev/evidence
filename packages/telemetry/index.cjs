@@ -21,7 +21,12 @@ const getProfile = async () => {
         return profile
     }  
     else {
-        return readJSONSync("./.profile.json")
+        let profile = readJSONSync("./.profile.json")
+        if (profile.anonymousId === "b958769d-6b88-43f3-978a-b970a146ffd2") {
+            // This anon ID was incorrectly committed to the template project, replace with a fresh ID going forward
+            profile = await initializeProfile()
+        }
+        return profile
     }
 }
 
