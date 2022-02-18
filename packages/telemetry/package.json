@@ -1,14 +1,14 @@
 {
     "name": "@evidence-dev/telemetry",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Annonymous usage telemetry for Evidence projects",
     "main": "index.cjs",
     "author": "evidence.dev",
     "license": "MIT",
     "dependencies": {
-        "@lukeed/uuid": "^2.0.0",
-        "analytics-node": "^5.0.0",
-        "fs-extra": "^10.0.0"
+        "@lukeed/uuid": "2.0.0",
+        "analytics-node": "5.0.0",
+        "fs-extra": "10.0.0"
     },
     "type": "module"
 }
