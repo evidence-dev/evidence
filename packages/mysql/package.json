@@ -1,0 +1,12 @@
+{
+    "name": "@evidence-dev/mysql",
+    "version": "0.0.1",
+    "description": "MySQL driver for Evidence projects",
+    "main": "index.cjs",
+    "author": "evidence.dev",
+    "license": "MIT",
+    "dependencies": {
+        "mysql2": "^2.3.2"
+    },
+    "type": "module"
+}
