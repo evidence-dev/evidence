@@ -18,6 +18,10 @@ Here's what the final product will look like:
 
 </div>
 
+:::note BigQuery has reduced the size of the Austin Data Set
+The Austin 311 data is now limited to 1,000 records, so your project may look significantly different than the content in the tutorial. 
+:::
+
 :::tip Not using BigQuery?
 We will be adding tutorials for other databases in the future. You won't be able to query the tutorial dataset, but you can still work your way through the steps using your own dataset to become familiar with Evidence's features.
 :::
