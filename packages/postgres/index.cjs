@@ -20,7 +20,8 @@ const runQuery = async (queryString, database) => {
             database: database ? database.database : process.env["database"],
             password: database ? database.password : process.env["password"],
             port: database ? database.port : process.env["port"],
-            ssl: database ? database.ssl : process.env["ssl"] ?? false
+            ssl: database ? database.ssl : process.env["ssl"] ?? false,
+            connectionString: database ? database.connectionString : process.env["connectionString"]
         }
 
         var types = require('pg').types
