@@ -447,44 +447,66 @@ let singleVal = [
  </script>
 
 ```pct_test
-SELECT 1 as x, 0.03 as y_pct, "A" as cat
+SELECT 1 as x, 0.03 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT 2 as x, 0.05 as y_pct, "A" as cat
+SELECT 2 as x, 0.05 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT 3 as x, 0.06 as y_pct, "A" as cat
+SELECT 3 as x, 0.06 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT 4 as x, 0.11 as y_pct, "A" as cat
+SELECT 4 as x, 0.11 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT 1 as x, 0.04 as y_pct, "B" as cat
+SELECT 1 as x, 0.4 as stationsavailable_pct, "B" as cat
 UNION ALL
-SELECT 2 as x, 0.07 as y_pct, "B" as cat
+SELECT 2 as x, 0.07 as stationsavailable_pct, "B" as cat
 UNION ALL
-SELECT 3 as x, 0.01 as y_pct, "B" as cat
+SELECT 3 as x, 0.01 as stationsavailable_pct, "B" as cat
 UNION ALL
-SELECT 4 as x, 0.08 as y_pct, "B" as cat
+SELECT 4 as x, 0.08 as stationsavailable_pct, "B" as cat
 ```
 
-<AreaChart data={data.pct_test} series=cat/>
+<AreaChart data={data.pct_test} series=cat y=stationsavailable_pct x=x/>
+
+```pct_test_date_string
+SELECT '2020-01-01 10:00:00' as x_date, cast(0.3237829573297832 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-01 12:00:00' as x_date, cast(0.5532532453263256 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-02 10:00:00' as x_date, cast(0.665326432543264326 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-02 12:00:00' as x_date, cast(0.116453264325643265 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-01 10:00:00' as x_date, cast(0.46453264325436 as string) as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-01 12:00:00' as x_date, cast(0.7645326453254325643 as string) as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-02 10:00:00' as x_date, cast(0.16543264532543254 as string) as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-02 12:00:00' as x_date, cast(0.86432543264325 as string) as stationsavailable_pct, "B" as cat
+```
+
+<AreaChart data={data.pct_test_date_string} series=cat x=x_date y=stationsavailable_pct />
+
+
 
 ```pct_test_date
-SELECT '2020-01-01' as x_date, 0.03 as y_pct, "A" as cat
+SELECT '2020-01-01 10:00:00' as x_date, 0.3237829573297832 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT '2020-01-02' as x_date, 0.05 as y_pct, "A" as cat
+SELECT '2020-01-01 12:00:00' as x_date, 0.5532532453263256 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT '2020-01-03' as x_date, 0.06 as y_pct, "A" as cat
+SELECT '2020-01-02 10:00:00' as x_date, 0.665326432543264326 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT '2020-01-04' as x_date, 0.11 as y_pct, "A" as cat
+SELECT '2020-01-02 12:00:00' as x_date, 0.116453264325643265 as stationsavailable_pct, "A" as cat
 UNION ALL
-SELECT '2020-01-01' as x_date, 0.04 as y_pct, "B" as cat
+SELECT '2020-01-01 10:00:00' as x_date, 0.46453264325436 as stationsavailable_pct, "B" as cat
 UNION ALL
-SELECT '2020-01-02' as x_date, 0.07 as y_pct, "B" as cat
+SELECT '2020-01-01 12:00:00' as x_date, 0.7645326453254325643 as stationsavailable_pct, "B" as cat
 UNION ALL
-SELECT '2020-01-03' as x_date, 0.01 as y_pct, "B" as cat
+SELECT '2020-01-02 10:00:00' as x_date, 0.16543264532543254 as stationsavailable_pct, "B" as cat
 UNION ALL
-SELECT '2020-01-04' as x_date, 0.08 as y_pct, "B" as cat
+SELECT '2020-01-02 12:00:00' as x_date, 0.86432543264325 as stationsavailable_pct, "B" as cat
 ```
 
-<AreaChart data={data.pct_test_date} series=cat />
+<AreaChart data={data.pct_test_date} series=cat x=x_date y=stationsavailable_pct />
 
 
 <Histogram data={binCheck}/>
