@@ -1,12 +1,5 @@
 <script>
-    import LineChart from '$lib/viz/LineChart.svelte'
-    import AreaChart from '$lib/viz/AreaChart.svelte'
-    import BubbleChart from '$lib/viz/BubbleChart.svelte'
-    import BarChart from '$lib/viz/BarChart.svelte'
-    import Histogram from '$lib/viz/Histogram.svelte'
-    import ScatterPlot from '$lib/viz/ScatterPlot.svelte'
-    import DataTable from '$lib/viz/DataTable.svelte'
-    import Value from '$lib/viz/Value.svelte'
+
 
     import testData from '/src/data/test.json'
     import pctTest from '/src/data/pct_test.json'
@@ -19,7 +12,6 @@
     import test_quarters from '/src/data/test_quarters.json'
     import test_years from '/src/data/test_years.json'
 
-    let data = {}
 
     let testH = [
         {a:5},
@@ -95,7 +87,7 @@
     ]
     
 
-    let binCheck = 
+let binCheck = 
     [
     {a: 1},
     {a: 1},
@@ -453,6 +445,47 @@ let singleVal = [
     {a: 1},
 ]
  </script>
+
+```pct_test
+SELECT 1 as x, 0.03 as y_pct, "A" as cat
+UNION ALL
+SELECT 2 as x, 0.05 as y_pct, "A" as cat
+UNION ALL
+SELECT 3 as x, 0.06 as y_pct, "A" as cat
+UNION ALL
+SELECT 4 as x, 0.11 as y_pct, "A" as cat
+UNION ALL
+SELECT 1 as x, 0.04 as y_pct, "B" as cat
+UNION ALL
+SELECT 2 as x, 0.07 as y_pct, "B" as cat
+UNION ALL
+SELECT 3 as x, 0.01 as y_pct, "B" as cat
+UNION ALL
+SELECT 4 as x, 0.08 as y_pct, "B" as cat
+```
+
+<AreaChart data={data.pct_test} series=cat/>
+
+```pct_test_date
+SELECT '2020-01-01' as x_date, 0.03 as y_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-02' as x_date, 0.05 as y_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-03' as x_date, 0.06 as y_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-04' as x_date, 0.11 as y_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-01' as x_date, 0.04 as y_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-02' as x_date, 0.07 as y_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-03' as x_date, 0.01 as y_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-04' as x_date, 0.08 as y_pct, "B" as cat
+```
+
+<AreaChart data={data.pct_test_date} series=cat />
+
 
 <Histogram data={binCheck}/>
 <Histogram data={binCheck2}/>

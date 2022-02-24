@@ -1,21 +1,4 @@
 <script>
-    import LineChart from '$lib/viz/LineChart.svelte'
-    import AreaChart from '$lib/viz/AreaChart.svelte'
-    import BubbleChart from '$lib/viz/BubbleChart.svelte'
-    import BarChart from '$lib/viz/BarChart.svelte'
-    import Histogram from '$lib/viz/Histogram.svelte'
-    import ScatterPlot from '$lib/viz/ScatterPlot.svelte'
-    import DataTable from '$lib/viz/DataTable.svelte'
-    import Value from '$lib/viz/Value.svelte'
-
-    import Line from '$lib/viz/Line.svelte'
-    import Bar from '$lib/viz/Bar.svelte'
-    import Scatter from '$lib/viz/Scatter.svelte'
-    import Area from '$lib/viz/Area.svelte'
-
-    import Chart from '$lib/viz/Chart.svelte'
-
-    import getCompletedData from '$lib/modules/getCompletedData.js';
 
 let numberSeriesFull = 
 [
@@ -133,10 +116,6 @@ let barTest = [
     {x: 3, y: 24, series: "B"}
 ]
 
-let full2 = getCompletedData(numberSeriesMissingX, "x", "y", "series", true, true)
-let full3 = getCompletedData(numberSeriesMissingY, "x", "y","series", true)
-let full4 = getCompletedData(numberSeriesXSync, "x", "y", "series", true)
-
 let full5 = 
 [
   { x: 1, series: 'a', y: 10 },
@@ -173,10 +152,8 @@ let full5 =
 
 <h2>Area Chart</h2>
 <AreaChart data={numberSeriesFull} series=series title="Full Data"/>
-<AreaChart data={full2} series=series title="Fill Attempt"/>
 <AreaChart data={numberSeriesMissingY} yBaseline=true xTickMarks=true yTickMarks=true yGridlines=false series=series title="Missing Y"/>
 <AreaChart data={numberSeriesMissingY} series=series title="Missing Y"/>
-<AreaChart data={full3} series=series title="Missing Y" xType=category/>
 <AreaChart data={numberSeriesMissingX} series=series title="Missing X"/>
 <AreaChart data={numberSeriesXSync} series=series title="X out of sync"/>
 <AreaChart data={numberSeriesNulls} series=series title="Nulls"/>
@@ -185,10 +162,8 @@ let full5 =
 <BarChart data={numberSeriesFull} series=series title="Full Data"/>
 <BarChart data={numberSeriesMissingY} series=series title="Missing Y" />
 <BarChart data={numberSeriesMissingX} series=series title="Missing X"/>
-<BarChart data={full2} series=series title="Missing X Filled"/>
 
 <BarChart data={numberSeriesXSync} series=series title="X out of sync"/>
-<BarChart data={full4} series=series title="X out of sync"/>
 
 <BarChart data={numberSeriesNulls} series=series title="Nulls"/>
 

@@ -1,18 +1,4 @@
 <script>
-    import LineChart from '$lib/viz/LineChart.svelte'
-    import AreaChart from '$lib/viz/AreaChart.svelte'
-    import BubbleChart from '$lib/viz/BubbleChart.svelte'
-    import BarChart from '$lib/viz/BarChart.svelte'
-    import Histogram from '$lib/viz/Histogram.svelte'
-    import ScatterPlot from '$lib/viz/ScatterPlot.svelte'
-    import DataTable from '$lib/viz/DataTable.svelte'
-    import Value from '$lib/viz/Value.svelte'
-    import Chart from '$lib/viz/Chart.svelte'
-    import Line from '$lib/viz/Line.svelte'
-    import Bar from '$lib/viz/Bar.svelte'
-    import Area from '$lib/viz/Area.svelte'
-    import Scatter from '$lib/viz/Scatter.svelte'
-
 
 let full = 
 [

@@ -1,22 +1,4 @@
 <script>
-    import LineChart from '$lib/viz/LineChart.svelte'
-    import AreaChart from '$lib/viz/AreaChart.svelte'
-    import BubbleChart from '$lib/viz/BubbleChart.svelte'
-    import BarChart from '$lib/viz/BarChart.svelte'
-    import Histogram from '$lib/viz/Histogram.svelte'
-    import ScatterPlot from '$lib/viz/ScatterPlot.svelte'
-    import DataTable from '$lib/viz/DataTable.svelte'
-    import Value from '$lib/viz/Value.svelte'
-    import {tidy, complete} from "@tidyjs/tidy";
-
-    import Line from '$lib/viz/Line.svelte'
-    import Bar from '$lib/viz/Bar.svelte'
-    import Scatter from '$lib/viz/Scatter.svelte'
-    import Area from '$lib/viz/Area.svelte'
-
-    import Chart from '$lib/viz/Chart.svelte'
-
-
 
 let orig = [
     {fed_reserve_district: 'NY', established_date: '2015-01-01', banks: 1},
@@ -304,8 +286,6 @@ let missingY = [ // take out SF 2018 and NY 2016
     {fed_reserve_district: 'KC', established_date: '2021-01-01', banks: 0},
     {fed_reserve_district: 'NY', established_date: '2021-01-01', banks: 0}
 ]
-let filling = tidy(missingY, complete(['fed_reserve_district', 'established_date']))
-
 
 let titles  = [
     "Full Data",
@@ -320,7 +300,6 @@ let titles  = [
 <h2>Line Chart</h2>
 <LineChart data={full} series=fed_reserve_district x=established_date title={titles[0]} markers=true/>
 <LineChart data={missingY} series=fed_reserve_district x=established_date title={titles[1]} markers=true/>
-<LineChart data={filling} series=fed_reserve_district x=established_date title={"Attempted Fill from Missing Y dataset"}/>
 <LineChart data={missingX} series=fed_reserve_district x=established_date title={titles[2]}/>
 <LineChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]}/>
 <LineChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]}/>
@@ -328,7 +307,6 @@ let titles  = [
 <h2>Area Chart</h2>
 <AreaChart data={full} series=fed_reserve_district x=established_date title={titles[0]}/>
 <AreaChart data={missingY} series=fed_reserve_district x=established_date title={titles[1]}/>
-<AreaChart data={filling} series=fed_reserve_district x=established_date title={"Attempted Fill from Missing Y dataset"}/>
 <AreaChart data={missingX} series=fed_reserve_district x=established_date title={titles[2]}/>
 <AreaChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]}/>
 <AreaChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]}/>
