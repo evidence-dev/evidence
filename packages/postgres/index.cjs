@@ -24,9 +24,25 @@ const runQuery = async (queryString, database) => {
             connectionString: database ? database.connectionString : process.env["connectionString"]
         }
 
+        // Override types returned by pg package. The package will return some numbers as strings
+        // to avoid loss of accuracy in very large numbers. This is something to keep an eye on,
+        // but for now, we are replacing the default parsing functions with the applicable
+        // JavaScript parsing function for each data type:
         var types = require('pg').types
+
+        // Override bigint:
         types.setTypeParser(20, function(val) {
             return parseInt(val, 10)
+        })
+
+        // Override numeric/decimal:
+        types.setTypeParser(1700, function(val) {
+            return parseFloat(val)
+        })
+
+        // Override money (incl. removing currency symbol):
+        types.setTypeParser(790, function(val) {
+            return parseFloat(val.replace(/[^0-9.]/g, ''))
         })
 
         var pool = new Pool(credentials);
