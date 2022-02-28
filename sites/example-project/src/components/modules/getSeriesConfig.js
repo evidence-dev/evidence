@@ -1,4 +1,4 @@
-import getDistinctValues from '../modules/getDistinctValues.js'
+import getDistinctValues from './getDistinctValues.js'
 
 export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary) {
 

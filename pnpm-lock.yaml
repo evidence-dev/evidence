@@ -80,7 +80,7 @@ importers:
       '@sveltejs/adapter-static': 1.0.0-next.22
       vite-plugin-full-reload: 0.2.2
     devDependencies:
-      '@evidence-dev/components': link:../../sites/components-workspace
+      '@evidence-dev/components': link:../../sites/example-project
       '@evidence-dev/db-orchestrator': link:../db-orchestrator
 
   packages/evidence-vscode:
@@ -153,9 +153,9 @@ importers:
 
   packages/telemetry:
     specifiers:
-      '@lukeed/uuid': ^2.0.0
-      analytics-node: ^5.0.0
-      fs-extra: ^10.0.0
+      '@lukeed/uuid': 2.0.0
+      analytics-node: 5.0.0
+      fs-extra: 10.0.0
     dependencies:
       '@lukeed/uuid': 2.0.0
       analytics-node: 5.0.0
@@ -200,7 +200,14 @@ importers:
   sites/example-project:
     specifiers:
       '@evidence-dev/evidence': workspace:^
+      '@tidyjs/tidy': 2.4.4
+      echarts: 5.2.2
+      echarts-stat: 1.2.0
     dependencies:
+      '@tidyjs/tidy': 2.4.4
+      echarts: 5.2.2
+      echarts-stat: 1.2.0
+    devDependencies:
       '@evidence-dev/evidence': link:../../packages/evidence
 
   sites/postgres-example:
