@@ -161,16 +161,6 @@ importers:
       analytics-node: 5.0.0
       fs-extra: 10.0.0
 
-  sites/components-workspace:
-    specifiers:
-      '@tidyjs/tidy': 2.4.4
-      echarts: 5.2.2
-      echarts-stat: 1.2.0
-    dependencies:
-      '@tidyjs/tidy': 2.4.4
-      echarts: 5.2.2
-      echarts-stat: 1.2.0
-
   sites/docs:
     specifiers:
       '@docusaurus/core': 2.0.0-beta.0
