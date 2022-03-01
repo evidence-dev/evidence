@@ -52,7 +52,9 @@ Once files are added to these directories, VSCode will split them up to show whe
 1. Open `evidence.config.json` in root of your project
 2. Input your data warehouse name ("bigquery"):
 ```json
-"database":"bigquery"
+{
+    "database":"bigquery"
+}
 ```
 
 ## Snowflake
@@ -62,9 +64,11 @@ Snowflake only requires an account, username, and password to connect through Ev
 1. Open `database.config.json` in `.evidence` folder in your project
 2. Input your credentials:
 ```json
-"account": "xx16244.us-central1.gcp",
-"username": "NAME",
-"password": "xxxxxx"
+{
+    "account": "xx16244.us-central1.gcp",
+    "username": "NAME",
+    "password": "xxxxxx"
+}
 ```
 
 
@@ -72,7 +76,9 @@ Snowflake only requires an account, username, and password to connect through Ev
 1. Open `evidence.config.json` in root of your project.
 2. Input your data warehouse name ("snowflake"):
 ```json
-"database":"snowflake"
+{
+    "database":"snowflake"
+}
 ```
 
 ## PostgreSQL
@@ -82,11 +88,13 @@ Postgres can be connected with basic database credentials. If you run into issue
 1. Open `database.config.json` in `.evidence` folder in your project
 2. Input your credentials:
 ```json
-"host": "database.server.com",
-"database": "my-database-name",
-"port": 5432,
-"user": "postgres",
-"password": "xxxxxx"
+{
+    "host": "database.server.com",
+    "database": "my-database-name",
+    "port": 5432,
+    "user": "postgres",
+    "password": "xxxxxx"
+}
 ```
 3. [Optional] If your database requires SSL, you can add this option to the config options above:
 ```json
@@ -94,11 +102,18 @@ Postgres can be connected with basic database credentials. If you run into issue
 ```
 By default, `ssl` will be set to false.
 
+**Note for Heroku Postgres users:** You may need to supply a different SSL argument. The below will work, but may not provide the right level of security for your project. We will be updating thse docs with more resources for Heroku Postgres databases in the near future. Please reach out on Slack or create a Github issue if you would like to contribute to these docs.
+```json
+"ssl": "no-verify"
+```
+
 ### Update Evidence Configuration File
 1. Open `evidence.config.json` in root of your project.
 2. Input your database name ("postgres"):
 ```json
-"database":"postgres"
+{
+    "database":"postgres"
+}
 ```
 
 
@@ -111,11 +126,13 @@ MySQL can be connected with basic database credentials. If you run into issues o
 
 **Basic Credentials**
 ```json
-"host": "database.server.com",
-"database": "my-database-name",
-"port": 5432,
-"user": "username",
-"password": "xxxxxx"
+{
+    "host": "database.server.com",
+    "database": "my-database-name",
+    "port": 5432,
+    "user": "username",
+    "password": "xxxxxx"
+}
 ```
 
 **Google Cloud SQL**   
@@ -125,17 +142,21 @@ If you are using Google Cloud SQL, you can also connect using a socket path and 
 `socketPath` is a concatenation of "/cloudsql/" and your instance's **connection name** which you can find in Google Cloud.
 
 ```json
-"socketPath": "/cloudsql/my-project-123:us-northeast2:my-instance"
-"database": "database_name"
-"user": "username"
-"password": "xxxxxx"
+{
+    "socketPath": "/cloudsql/my-project-123:us-northeast2:my-instance"
+    "database": "database_name"
+    "user": "username"
+    "password": "xxxxxx"
+}
 ```
 
 ### Update Evidence Configuration File
 1. Open `evidence.config.json` in root of your project.
 2. Input your database name ("mysql"):
 ```json
-"database":"mysql"
+{
+    "database":"mysql"
+}
 ```
 
 ## Next Steps
