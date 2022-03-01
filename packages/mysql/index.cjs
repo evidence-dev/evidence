@@ -15,13 +15,13 @@ const standardizeResult = async (result) => {
 const runQuery = async (queryString, database) => {
     try {
         const credentials = {
-            user: database ? database.user : process.env["user"],
-            host: database ? database.host : process.env["host"],
-            database: database ? database.database : process.env["database"],
-            password: database ? database.password : process.env["password"],
-            port: database ? database.port : process.env["port"],
-            ssl: database ? database.ssl : process.env["ssl"] ?? false,
-            socketPath: database ? database.socketPath : process.env["socketPath"] ?? "",
+            user: database ? database.user : process.env["user"] || process.env["USER"],
+            host: database ? database.host : process.env["host"] || process.env["HOST"],
+            database: database ? database.database : process.env["database"] || process.env["DATABASE"],
+            password: database ? database.password : process.env["password"] || process.env["PASSWORD"],
+            port: database ? database.port : process.env["port"] || process.env["PORT"],
+            ssl: database ? database.ssl : process.env["ssl"] || process.env["SSL"],
+            socketPath: database ? database.socketPath : process.env["socketPath"] || process.env["SOCKETPATH"],
             decimalNumbers: true
         }
 
