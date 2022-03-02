@@ -7,6 +7,7 @@ importers:
       '@changesets/cli': ^2.21.0
       '@evidence-dev/components': link:packages/components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
+      '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
       '@sveltejs/adapter-static': 1.0.0-next.22
       '@sveltejs/kit': 1.0.0-next.202
@@ -21,6 +22,7 @@ importers:
       '@changesets/cli': 2.21.0
       '@evidence-dev/components': link:packages/components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
+      '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
       '@sveltejs/adapter-static': 1.0.0-next.22
       '@sveltejs/kit': 1.0.0-next.202_svelte@3.44.3
@@ -191,7 +193,6 @@ importers:
 
   sites/example-project:
     specifiers:
-      '@evidence-dev/evidence': workspace:^
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
@@ -199,8 +200,6 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
-    devDependencies:
-      '@evidence-dev/evidence': link:../../packages/evidence
 
 packages:
 
