@@ -15,18 +15,34 @@ const standardizeResult = async(result) => {
 const runQuery = async (queryString, database) => {
     try {
         const credentials =  {
-            user: database ? database.user : process.env["user"],
-            host: database ? database.host : process.env["host"],
-            database: database ? database.database : process.env["database"],
-            password: database ? database.password : process.env["password"],
-            port: database ? database.port : process.env["port"],
-            ssl: database ? database.ssl : process.env["ssl"] ?? false,
-            connectionString: database ? database.connectionString : process.env["connectionString"]
+            user: database ? database.user : process.env["POSTGRES_USER"] || process.env["user"] || process.env["USER"],
+            host: database ? database.host : process.env["POSTGRES_HOST"] || process.env["host"] || process.env["HOST"],
+            database: database ? database.database : process.env["POSTGRES_DATABASE"] || process.env["database"] || process.env["DATABASE"],
+            password: database ? database.password : process.env["POSTGRES_PASSWORD"] || process.env["password"] || process.env["PASSWORD"],
+            port: database ? database.port : process.env["POSTGRES_PORT"] || process.env["port"] || process.env["PORT"],
+            ssl: database ? database.ssl : process.env["POSTGRES_SSL"] || process.env["ssl"] || process.env["SSL"],
+            connectionString: database ? database.connectionString : process.env["POSTGRES_CONNECTIONSTRING"] || process.env["connectionString"] || process.env["CONNECTIONSTRING"]
         }
 
+        // Override types returned by pg package. The package will return some numbers as strings
+        // to avoid loss of accuracy in very large numbers. This is something to keep an eye on,
+        // but for now, we are replacing the default parsing functions with the applicable
+        // JavaScript parsing function for each data type:
         var types = require('pg').types
+
+        // Override bigint:
         types.setTypeParser(20, function(val) {
             return parseInt(val, 10)
+        })
+
+        // Override numeric/decimal:
+        types.setTypeParser(1700, function(val) {
+            return parseFloat(val)
+        })
+
+        // Override money (incl. removing currency symbol):
+        types.setTypeParser(790, function(val) {
+            return parseFloat(val.replace(/[^0-9.]/g, ''))
         })
 
         var pool = new Pool(credentials);

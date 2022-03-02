@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "0.1.12",
+  "version": "0.1.16",
   "description": "dependencies for evidence projects",
   "scripts": {
     "test": "test"
