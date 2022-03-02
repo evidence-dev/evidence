@@ -1,6 +1,7 @@
 {
   "name": "example-project",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "dev": "svelte-kit dev --host 0.0.0.0",
     "build": "svelte-kit build",
