@@ -4,3 +4,4 @@ dist
 .env
 .pnpm-debug.log
 .vscode
+/packages/components

@@ -3,6 +3,7 @@
 		"@evidence-dev/components": "link:packages/components",
 		"@evidence-dev/db-orchestrator": "link:packages/db-orchestrator",
 		"@evidence-dev/preprocess": "link:packages/preprocess",
+		"@evidence-dev/evidence": "link:packages/evidence",
 		"@sveltejs/adapter-static": "1.0.0-next.22",
 		"@sveltejs/kit": "1.0.0-next.202",
 		"@tidyjs/tidy": "2.4.4",
@@ -13,5 +14,8 @@
 		"typescript": "4.5.4",
 		"vite-plugin-full-reload": "0.2.2",
 		"@changesets/cli": "^2.21.0"
+	},
+	"scripts": {
+		"release": "pnpm -r publish"
 	}
 }

@@ -1,0 +1,595 @@
+<script>
+
+
+    import testData from '/src/data/test.json'
+    import pctTest from '/src/data/pct_test.json'
+    import countries from '/src/data/countries.json'
+    import test_string from '/src/data/test_string.json'
+    import test_dates from '/src/data/test_dates.json'
+    import test_dates_stacked from '/src/data/test_dates_stacked.json'
+    import test_weeks from '/src/data/test_weeks.json'
+    import test_months from '/src/data/test_months.json'
+    import test_quarters from '/src/data/test_quarters.json'
+    import test_years from '/src/data/test_years.json'
+
+
+    let testH = [
+        {a:5},
+        {a:5},
+        {a:9},
+        {a:9},
+        {a:7},
+        {a:8},
+        {a:6},
+        {a:6}
+    ]
+
+    let textP = [
+        {dept: 'Public Works', category: 'Pothole Repair', complaints: 24105},
+{dept: 'Public Works', category: 'Debris in Street', complaints: 16378},
+{dept: 'Public Works', category: 'Tree Issue ROW', complaints: 14871},
+{dept: 'Public Works', category: 'Obstruction in ROW', complaints: 10528},
+{dept: 'Public Works', category: 'Pavement Failure', complaints: 6941},
+{dept: 'Public Works', category: 'Tree Issue ROW/Emergency (PW)', complaints: 5675},
+{dept: 'Public Works', category: 'Tree Issue ROW/Maintenance (PW)', complaints: 4688},
+{dept: 'Public Works', category: 'Alley & Unpaved Street Maintenance', complaints: 3160},
+{dept: 'Public Works', category: 'Mowing Medians', complaints: 2743},
+{dept: 'Public Works', category: 'Curb/Gutter Repair', complaints: 1435},
+{dept: 'Public Works', category: 'Sidewalk/Curb Ramp/Route - NEW', complaints: 1272},
+{dept: 'Public Works', category: 'Street Resurfacing', complaints: 1029},
+{dept: 'Public Works', category: 'School Zone - New/Review/Changes', complaints: 696},
+{dept: 'Public Works', category: 'Street Resurfacing Inquiry', complaints: 611},
+{dept: 'Public Works', category: 'Guardrail New/Repair', complaints: 402},
+{dept: 'Public Works', category: 'Sidewalk Repair', complaints: 9206},
+{dept: 'Public Works', category: 'Guardrail Repair', complaints: 357},
+{dept: 'Public Works', category: 'Roadway Spillage', complaints: 323},
+{dept: 'Public Works', category: 'Bridge Repair', complaints: 294},
+{dept: 'Public Works', category: 'Barricade Request', complaints: 228},
+{dept: 'Public Works', category: 'School Issues - Crossing Guards', complaints: 171},
+{dept: 'Public Works', category: 'Bicycle Issues', complaints: 97},
+{dept: 'Public Works', category: 'Road Sanding Request', complaints: 59},
+{dept: 'Public Works', category: 'Fence/Wall Repair', complaints: 42},
+{dept: 'Public Works', category: 'Tree Issue ROW/Maintenance (PARD)', complaints: 29},
+{dept: 'Public Works', category: 'Guardrail - New', complaints: 27},
+{dept: 'Public Works', category: 'Tree Issue ROW/Emergency (PARD)', complaints: 24},
+{dept: 'Public Works', category: 'Fence Repair - MOPAC', complaints: 10}
+    ]
+
+    let textS = [
+        {dept: 'Public Works', category: 'Pothole Repair', complaints: 24105},
+{dept: 'Public Works', category: 'Debris in Street', complaints: 16378},
+{dept: 'Public Works', category: 'Tree Issue ROW', complaints: 14871},
+{dept: 'Public Works', category: 'Obstruction in ROW', complaints: 10528},
+{dept: 'Public Works', category: 'Pavement Failure', complaints: 6941},
+{dept: 'Public Works', category: 'Tree Issue ROW/Emergency (PW)', complaints: 5675},
+{dept: 'Public Works', category: 'Tree Issue ROW/Maintenance (PW)', complaints: 4688},
+{dept: 'Public Works', category: 'Alley & Unpaved Street Maintenance', complaints: 3160},
+{dept: 'Public Works', category: 'Mowing Medians', complaints: 2743},
+{dept: 'Public Works', category: 'Curb/Gutter Repair', complaints: 1435},
+{dept: 'Public Works', category: 'Sidewalk/Curb Ramp/Route - NEW', complaints: 1272},
+{dept: 'Public Works', category: 'Street Resurfacing', complaints: 1029},
+{dept: 'Public Works', category: 'School Zone - New/Review/Changes', complaints: 696},
+{dept: 'Public Works', category: 'Street Resurfacing Inquiry', complaints: 611},
+{dept: 'Public Works', category: 'Guardrail New/Repair', complaints: 402},
+{dept: 'Public Works', category: 'Sidewalk Repair', complaints: 9206},
+{dept: 'Public Works', category: 'Guardrail Repair', complaints: 357},
+{dept: 'Public Works', category: 'Roadway Spillage', complaints: 323},
+{dept: 'Public Works', category: 'Bridge Repair', complaints: 294},
+{dept: 'Public Works', category: 'Barricade Request', complaints: 228},
+{dept: 'Public Works', category: 'School Issues - Crossing Guards', complaints: 171},
+{dept: 'Public Works', category: 'Bicycle Issues', complaints: 97},
+{dept: 'Public Works', category: 'Road Sanding Request', complaints: 59},
+{dept: 'Public Works', category: 'Fence/Wall Repair', complaints: 42},
+{dept: 'Public Works', category: 'Tree Issue ROW/Maintenance (PARD)', complaints: 29},
+{dept: 'Public Works', category: 'Guardrail - New', complaints: 27},
+{dept: 'Public Works', category: 'Tree Issue ROW/Emergency (PARD)', complaints: 24},
+{dept: 'Public Works', category: 'Fence Repair - MOPAC', complaints: 10}
+    ]
+    
+
+let binCheck = 
+    [
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 7},
+    {a: 8}
+]
+let bc3 = [
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+
+    {a: 2},
+
+
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+
+
+
+    {a: 4},
+    {a: 5},
+    {a: 6},
+    {a: 7}
+]
+
+
+
+let binCheck2 = 
+    [
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 1},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 2},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 3},
+    {a: 7},
+    {a: 8}
+]
+
+let binNull = 
+    [
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: null},
+    {a: 5},
+    {a: 5},
+    {a: 5},
+    {a: 5},
+    {a: 5},
+    {a: 5},
+    {a: 5},
+    {a: 2}
+]
+
+let singleVal = [
+    {a: 1},
+]
+ </script>
+
+```pct_test
+SELECT 1 as x, 0.03 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT 2 as x, 0.05 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT 3 as x, 0.06 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT 4 as x, 0.11 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT 1 as x, 0.4 as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT 2 as x, 0.07 as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT 3 as x, 0.01 as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT 4 as x, 0.08 as stationsavailable_pct, "B" as cat
+```
+
+<AreaChart data={data.pct_test} series=cat y=stationsavailable_pct x=x/>
+
+```pct_test_date_string
+SELECT '2020-01-01 10:00:00' as x_date, cast(0.3237829573297832 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-01 12:00:00' as x_date, cast(0.5532532453263256 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-02 10:00:00' as x_date, cast(0.665326432543264326 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-02 12:00:00' as x_date, cast(0.116453264325643265 as string) as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-01 10:00:00' as x_date, cast(0.46453264325436 as string) as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-01 12:00:00' as x_date, cast(0.7645326453254325643 as string) as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-02 10:00:00' as x_date, cast(0.16543264532543254 as string) as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-02 12:00:00' as x_date, cast(0.86432543264325 as string) as stationsavailable_pct, "B" as cat
+```
+
+<AreaChart data={data.pct_test_date_string} series=cat x=x_date y=stationsavailable_pct />
+
+
+
+```pct_test_date
+SELECT '2020-01-01 10:00:00' as x_date, 0.3237829573297832 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-01 12:00:00' as x_date, 0.5532532453263256 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-02 10:00:00' as x_date, 0.665326432543264326 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-02 12:00:00' as x_date, 0.116453264325643265 as stationsavailable_pct, "A" as cat
+UNION ALL
+SELECT '2020-01-01 10:00:00' as x_date, 0.46453264325436 as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-01 12:00:00' as x_date, 0.7645326453254325643 as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-02 10:00:00' as x_date, 0.16543264532543254 as stationsavailable_pct, "B" as cat
+UNION ALL
+SELECT '2020-01-02 12:00:00' as x_date, 0.86432543264325 as stationsavailable_pct, "B" as cat
+```
+
+<AreaChart data={data.pct_test_date} series=cat x=x_date y=stationsavailable_pct />
+
+
+<Histogram data={binCheck}/>
+<Histogram data={binCheck2}/>
+<Histogram data={bc3}/>
+
+<BarChart data={textP} x=category y=complaints swapXY=true sort=true/>
+<BarChart data={textS} x=category y=complaints swapXY=true sort=false/>
+
+<Histogram data={testH} x=a/>
+
+<!-- <h1>Evidence Component Library</h1>
+<Value placeholder="Report Date"/>
+<br>
+<br>
+This is a value component: <Value data={[{"date":"2020-05-07"}]}/> and this is another: <Value value=.3054 fmt=pct/>. Here is a value component written to produce an error: <Value data={data.abc}/> along with another <Value data={[{"date":"2020-05-07"}]} row=8/>, and another <Value data={[{"date":"2020-05-07"}]} column=revenue/> in the same sentence.  
+<br>
+<br>  
+The company has added <Value placeholder="number of employees"/> employees since <Value last report date/>.
+
+<h2>Value Component Error Handling</h2>
+1. Empty tag: <Value/>
+<br>
+2. Non-existent query result: <Value data=abc/> 
+<br>
+3. Wrong query result name: <Value data={data.abc}/>
+<br>
+4. Non-existent column: <Value data={[{"date":"2020-05-07"}]} column=abc/>
+<br>
+5. Non-existent row with no column: <Value data={[{"date":"2020-05-07"}]} row=11/>
+<br>
+6. Non-existent row with correct column: <Value data={[{"date":"2020-05-07"}]} column=date row=11/>
+ -->
+
+
+
+<h2>Area Chart</h2>
+<AreaChart data={testData} x=x y=y title='Testing!'/>
+
+<AreaChart data={pctTest} x=x y=y_pct/>
+
+<h2>Bubble Chart</h2>
+<BubbleChart data={testData} x=x y=y size=y/>
+
+<h2>Bar Chart</h2>
+<BarChart data={testData} x=x y=y swapXY={true}/>
+<BarChart data={countries} x=year y=value series=country yAxisTitle="long units string" swapXY={true}/>
+
+<h2>Column Chart</h2>
+<BarChart data={testData} x=x y=y/>
+<BarChart data={countries} x=year y=value series=country/>
+<BarChart data={countries} x=year y=value series=country xType=category xAxisTitle="Created Year"/>
+
+<h2>Grouped Column Chart</h2>
+<BarChart data={countries} type=grouped x=year y=value series=country xType=category xAxisTitle="Created Year"/>
+
+
+<h2>Histogram</h2>
+<Histogram data={testData} x=x/>
+
+<h2>Line Chart</h2>
+<LineChart data={testData} x=x y=y lineWidth=5/>
+
+<h2>Scatter Plot</h2>
+<ScatterPlot data={testData} x=x y=y/>
+
+<h2>Data Table</h2>
+<DataTable data={testData}/>
+
+<h2>Date Testing</h2>
+
+<h3>Date</h3>
+<BarChart data={test_dates} x=date y=y/>
+<BarChart data={test_dates_stacked} x=date y=y series=group/>
+
+<h3>Week</h3>
+<BarChart data={test_weeks} x=week y=y/>
+
+<h3>Month</h3>
+<BarChart data={test_months} x=month y=y/>
+
+<h3>Quarter</h3>
+<BarChart data={test_quarters} x=qtr y=y/>
+
+<h3>Year</h3>
+<BarChart data={test_years} x=year y=y/>

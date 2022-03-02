@@ -1,14 +1,19 @@
 {
-  "name": "example-project",
-  "version": "0.0.1",
-  "private": true,
+  "name": "@evidence-dev/components",
+  "version": "0.1.13",
   "scripts": {
-    "dev": "svelte-kit dev --host 0.0.0.0",
+    "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
-    "preview": "svelte-kit preview"
+    "preview": "svelte-kit preview",
+    "prepublishOnly": "svelte-kit package"
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/evidence": "workspace:^"
+    "@tidyjs/tidy": "2.4.4",
+    "echarts": "5.2.2",
+    "echarts-stat": "1.2.0"
+  },
+  "publishConfig": {
+    "directory": "../../packages/components"
   }
 }
