@@ -15,13 +15,13 @@ const standardizeResult = async(result) => {
 const runQuery = async (queryString, database) => {
     try {
         const credentials =  {
-            user: database ? database.user : process.env["user"] || process.env["USER"] || process.env["POSTGRES_USER"],
-            host: database ? database.host : process.env["host"] || process.env["HOST"] || process.env["POSTGRES_HOST"],
-            database: database ? database.database : process.env["database"] || process.env["DATABASE"] || process.env["POSTGRES_DATABASE"],
-            password: database ? database.password : process.env["password"] || process.env["PASSWORD"] || process.env["POSTGRES_PASSWORD"],
-            port: database ? database.port : process.env["port"] || process.env["PORT"] || process.env["POSTGRES_PORT"],
-            ssl: database ? database.ssl : process.env["ssl"] || process.env["SSL"] || process.env["POSTGRES_SSL"],
-            connectionString: database ? database.connectionString : process.env["connectionString"] || process.env["CONNECTIONSTRING"] || process.env["POSTGRES_CONNECTIONSTRING"]
+            user: database ? database.user : process.env["POSTGRES_USER"] || process.env["user"] || process.env["USER"],
+            host: database ? database.host : process.env["POSTGRES_HOST"] || process.env["host"] || process.env["HOST"],
+            database: database ? database.database : process.env["POSTGRES_DATABASE"] || process.env["database"] || process.env["DATABASE"],
+            password: database ? database.password : process.env["POSTGRES_PASSWORD"] || process.env["password"] || process.env["PASSWORD"],
+            port: database ? database.port : process.env["POSTGRES_PORT"] || process.env["port"] || process.env["PORT"],
+            ssl: database ? database.ssl : process.env["POSTGRES_SSL"] || process.env["ssl"] || process.env["SSL"],
+            connectionString: database ? database.connectionString : process.env["POSTGRES_CONNECTIONSTRING"] || process.env["connectionString"] || process.env["CONNECTIONSTRING"]
         }
 
         // Override types returned by pg package. The package will return some numbers as strings

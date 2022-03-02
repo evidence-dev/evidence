@@ -36,10 +36,10 @@ const getCredentials = async(database) => {
             return creds
         }else{
             const creds = {
-                projectId: process.env["project_id"] || process.env["PROJECT_ID"] || process.env["BIGQUERY_PROJECT_ID"],
+                projectId: process.env["BIGQUERY_PROJECT_ID"] || process.env["project_id"] || process.env["PROJECT_ID"],
                 credentials: {
-                    client_email: process.env["client_email"] || process.env["CLIENT_EMAIL"] || process.env["BIGQUERY_CLIENT_EMAIL"],
-                    private_key: (process.env["private_key"] || process.env["PRIVATE_KEY"] || process.env["BIGQUERY_PRIVATE_KEY"]).replace(/\\n/g, "\n") 
+                    client_email: process.env["BIGQUERY_CLIENT_EMAIL"] || process.env["client_email"] || process.env["CLIENT_EMAIL"],
+                    private_key: (process.env["BIGQUERY_PRIVATE_KEY"] || process.env["private_key"] || process.env["PRIVATE_KEY"]).replace(/\\n/g, "\n") 
                 }
             }
             return creds
