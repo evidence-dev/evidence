@@ -15,13 +15,13 @@ const standardizeResult = async (result) => {
 const runQuery = async (queryString, database) => {
     try {
         const credentials = {
-            user: database ? database.user : process.env["user"] || process.env["USER"],
-            host: database ? database.host : process.env["host"] || process.env["HOST"],
-            database: database ? database.database : process.env["database"] || process.env["DATABASE"],
-            password: database ? database.password : process.env["password"] || process.env["PASSWORD"],
-            port: database ? database.port : process.env["port"] || process.env["PORT"],
-            ssl: database ? database.ssl : process.env["ssl"] || process.env["SSL"],
-            socketPath: database ? database.socketPath : process.env["socketPath"] || process.env["SOCKETPATH"],
+            user: database ? database.user : process.env["user"] || process.env["USER"] || process.env["MYSQL_USER"],
+            host: database ? database.host : process.env["host"] || process.env["HOST"] || process.env["MYSQL_HOST"],
+            database: database ? database.database : process.env["database"] || process.env["DATABASE"] || process.env["MYSQL_DATABASE"],
+            password: database ? database.password : process.env["password"] || process.env["PASSWORD"] || process.env["MYSQL_PASSWORD"],
+            port: database ? database.port : process.env["port"] || process.env["PORT"] || process.env["MYSQL_PORT"],
+            ssl: database ? database.ssl : process.env["ssl"] || process.env["SSL"] || process.env["MYSQL_SSL"],
+            socketPath: database ? database.socketPath : process.env["socketPath"] || process.env["SOCKETPATH"] || process.env["MYSQL_SOCKETPATH"],
             decimalNumbers: true
         }
 
