@@ -16,6 +16,7 @@
 		"@changesets/cli": "^2.21.0"
 	},
 	"scripts": {
-		"release": "pnpm -r publish"
+		"release": "pnpm -r publish",
+		"test": "pnpm --filter ./sites/example-project package && pnpm -r test"
 	}
 }

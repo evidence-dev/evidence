@@ -201,6 +201,9 @@ importers:
       echarts: 5.2.2
       echarts-stat: 1.2.0
 
+  sites/test-env:
+    specifiers: {}
+
 packages:
 
   /@algolia/autocomplete-core/1.2.1:
