@@ -202,7 +202,10 @@ importers:
       echarts-stat: 1.2.0
 
   sites/test-env:
-    specifiers: {}
+    specifiers:
+      '@evidence-dev/evidence': workspace:^
+    dependencies:
+      '@evidence-dev/evidence': link:../../packages/evidence
 
 packages:
 
