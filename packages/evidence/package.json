@@ -2,9 +2,6 @@
   "name": "@evidence-dev/evidence",
   "version": "0.1.17",
   "description": "dependencies for evidence projects",
-  "scripts": {
-    "test": "test"
-  },
   "type": "module",
   "author": "",
   "license": "MIT",

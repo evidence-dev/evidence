@@ -201,6 +201,12 @@ importers:
       echarts: 5.2.2
       echarts-stat: 1.2.0
 
+  sites/test-env:
+    specifiers:
+      '@evidence-dev/evidence': workspace:^
+    dependencies:
+      '@evidence-dev/evidence': link:../../packages/evidence
+
 packages:
 
   /@algolia/autocomplete-core/1.2.1:

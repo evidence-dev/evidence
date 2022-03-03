@@ -1,0 +1,19 @@
+{
+  "name": "evidence-test-environment",
+  "version": "0.0.1",
+  "private":true,
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "preview": "svelte-kit preview",
+    "test": "svelte-kit build"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=14.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@evidence-dev/evidence": "workspace:^"
+  }
+}
