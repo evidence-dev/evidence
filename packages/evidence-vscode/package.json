@@ -1,139 +1,138 @@
 {
   "name": "evidence-vscode",
-	"displayName": "Evidence",
-	"description": "Evidence language support for VS Code",
-	"version": "0.0.5",
-	"private": true,
-	"engines": {
-        "vscode": "^1.52.0"
-    },
-	"categories": [
-		"Data Science",
-		"Programming Languages",
-		"Other"
-	],
-	"publisher": "Evidence",
-	"license": "MIT",
-	"repository": {
-        "type": "git",
-        "url": "https://github.com/evidence-dev/evidence.git"
-    },
-	"keywords": [
-        "evidence",
-        "vscode",
-		"analytics",
-		"data",
-		"sql",
-		"markdown"
+  "displayName": "Evidence",
+  "description": "Evidence language support for VS Code",
+  "version": "0.0.6",
+  "private": true,
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "categories": [
+    "Data Science",
+    "Programming Languages",
+    "Other"
+  ],
+  "publisher": "Evidence",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evidence-dev/evidence.git"
+  },
+  "keywords": [
+    "evidence",
+    "vscode",
+    "analytics",
+    "data",
+    "sql",
+    "markdown"
+  ],
+  "bugs": {
+    "url": "https://github.com/evidence-dev/evidence/issues"
+  },
+  "homepage": "https://evidence.dev",
+  "activationEvents": [
+    "onLanguage:emd"
+  ],
+  "main": "./dist/extension.js",
+  "icon": "icons/evidence-logo.png",
+  "contributes": {
+    "languages": [
+      {
+        "id": "emd",
+        "aliases": [
+          "Evidence Markdown",
+          "emd"
+        ],
+        "extensions": [
+          ".md"
+        ],
+        "configuration": "./language-configuration.json"
+      }
     ],
-	"bugs": {
-        "url": "https://github.com/evidence-dev/evidence/issues"
+    "grammars": [
+      {
+        "language": "emd",
+        "scopeName": "text.html.markdown.svelte",
+        "path": "./syntaxes/emd.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.svelte": "svelte",
+          "source.js": "javascript",
+          "text.html.markdown": "markdown",
+          "meta.tag.svelte": "svelte",
+          "meta.embedded.block.sql": "sql",
+          "markup.fenced_code.block.markdown": "sql"
+        }
+      },
+      {
+        "scopeName": "markdown.sql.codeblock",
+        "path": "./syntaxes/markdown-sql.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.sql": "sql"
+        }
+      }
+    ],
+    "configurationDefaults": {
+      "[emd]": {
+        "editor.wordWrap": "on",
+        "editor.suggest.showWords": false,
+        "editor.quickSuggestions": {
+          "other": true,
+          "comments": false,
+          "strings": false
+        },
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.quickSuggestionsDelay": 300,
+        "editor.acceptSuggestionOnEnter": "off"
+      }
     },
-	"homepage": "https://evidence.dev",
-	"activationEvents": [
-        "onLanguage:emd"
-	],
-	"main": "./dist/extension.js",
-	"icon": "icons/evidence-logo.png",
-	"contributes": {
-		"languages": [
-			{
-			  "id": "emd",
-			  "aliases": [
-				"Evidence Markdown",
-				"emd"
-			  ],
-			  "extensions": [
-				".md"
-			  ],
-			  "icon": "markdown",
-			  "configuration": "./language-configuration.json"
-			}
-		  ],
-		"grammars": [
-			{
-				"language": "emd",
-				"scopeName": "text.html.markdown.svelte",
-				"path": "./syntaxes/emd.tmLanguage.json",
-				"embeddedLanguages": {
-				  "source.svelte": "svelte",
-				  "source.js": "javascript",
-				  "text.html.markdown": "markdown",
-				  "meta.tag.svelte": "svelte",
-				  "meta.embedded.block.sql": "sql",
-				  "markup.fenced_code.block.markdown": "sql"
-				}
-			},
-			{
-				"scopeName": "markdown.sql.codeblock",
-				"path": "./syntaxes/markdown-sql.json",
-				"injectTo": [
-					"text.html.markdown"
-				],
-				"embeddedLanguages": {
-					"meta.embedded.block.sql": "sql"
-				}
-			}
-		],	
-		"configurationDefaults": {
-			"[emd]": {
-			  "editor.wordWrap": "on",
-			  "editor.suggest.showWords": false,
-			  "editor.quickSuggestions": {
-				  "other": true,
-				  "comments": false,
-				  "strings": false
-			  },
-			  "editor.suggest.snippetsPreventQuickSuggestions": false,
-			  "editor.quickSuggestionsDelay": 300,
-			  "editor.acceptSuggestionOnEnter": "off"
-			}
-	  },
-	  "snippets": [
-		{
-		  "language": "markdown",
-		  "path": "./snippets/emd.code-snippets"
-		},
-		{
-			"language": "svelte",
-			"path": "./snippets/svelte.code-snippets"
-		},
-		{
-			"language": "sql",
-			"path": "./snippets/sql.code-snippets"
-		},
-		{
-			"language": "javascript",
-			"path": "./snippets/js.code-snippets"
-		}
-	  ]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run package",
-		"compile": "webpack",
-		"watch": "webpack --watch",
-		"package": "webpack --mode production --devtool hidden-source-map",
-		"compile-tests": "tsc -p . --outDir out",
-		"watch-tests": "tsc -p . -w --outDir out",
-		"lint": "eslint src --ext ts"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.52.0",
-		"@types/glob": "^7.1.4",
-		"@types/mocha": "^9.0.0",
-		"@types/node": "14.x",
-		"@typescript-eslint/eslint-plugin": "^5.1.0",
-		"@typescript-eslint/parser": "^5.1.0",
-		"eslint": "^8.1.0",
-		"glob": "^7.1.7",
-		"mocha": "^9.1.3",
-		"typescript": "^4.4.4",
-		"ts-loader": "^9.2.5",
-		"webpack": "^5.52.1",
-		"webpack-cli": "^4.8.0",
-		"@vscode/test-electron": "^1.6.2"
-	},
-	"extensionDependencies": [
-		"svelte.svelte-vscode"
-	]
+    "snippets": [
+      {
+        "language": "markdown",
+        "path": "./snippets/emd.code-snippets"
+      },
+      {
+        "language": "svelte",
+        "path": "./snippets/svelte.code-snippets"
+      },
+      {
+        "language": "sql",
+        "path": "./snippets/sql.code-snippets"
+      },
+      {
+        "language": "javascript",
+        "path": "./snippets/js.code-snippets"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.52.0",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "@vscode/test-electron": "^1.6.2",
+    "eslint": "^8.1.0",
+    "glob": "^7.1.7",
+    "mocha": "^9.1.3",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.4.4",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0"
+  },
+  "extensionDependencies": [
+    "svelte.svelte-vscode"
+  ]
 }

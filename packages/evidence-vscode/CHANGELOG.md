@@ -2,6 +2,9 @@
 
 All notable changes to the Evidence VS Code extension will be documented in this file.
 
+## 0.0.6
+- Bug fix for most recent VS Code release
+
 ## 0.0.5
 - Remove template select statement from SQL query block autocomplete (issues with behaviour of Markdown's asterisk surrounding pair)
 
