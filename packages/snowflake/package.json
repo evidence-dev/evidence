@@ -5,6 +5,9 @@
     "main": "index.cjs",
     "author": "evidence.dev",
     "license": "MIT",
+    "scripts": {
+      "test": "uvu test test.js"
+    },
     "dependencies": {
       "snowflake-sdk": "1.6.1"
     },
