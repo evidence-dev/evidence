@@ -36,6 +36,16 @@ module.exports = {
         },
       ],
     },
+    algolia: {
+      // The application ID provided by Algolia
+      appId: 'KHH9ANIISC',
+
+      // Public API key: it is safe to commit it
+      apiKey: 'd2bd44615d8d5f5464e54f06e82edd19',
+
+      indexName: 'docs-evidence',
+
+    },
     footer: {
       style: 'dark',
       links: [
