@@ -38,51 +38,36 @@ const createModuleContext = function(filename){
     return moduleContext
 } 
 
-const createDefaultProps = function(filename){
+const createDefaultProps = function(filename, devMode){
+    let packagePath = devMode ? '..' : '@evidence-dev'
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
-        import Value from '@evidence-dev/components/viz/Value.svelte';
-        import Chart from '@evidence-dev/components/viz/Chart.svelte';
-        import Area from '@evidence-dev/components/viz/Area.svelte';
-        import Line from '@evidence-dev/components/viz/Line.svelte';
-        import Bar from '@evidence-dev/components/viz/Bar.svelte';
-        import Bubble from '@evidence-dev/components/viz/Bubble.svelte';
-        import Scatter from '@evidence-dev/components/viz/Scatter.svelte';
-        import Hist from '@evidence-dev/components/viz/Hist.svelte';
-        import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
-        import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
-        import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
-        import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
-        import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
-        import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
-        import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
-        import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
+        import Value from '${packagePath}/components/viz/Value.svelte';
+        import Chart from '${packagePath}/components/viz/Chart.svelte';
+        import Area from '${packagePath}/components/viz/Area.svelte';
+        import Line from '${packagePath}/components/viz/Line.svelte';
+        import Bar from '${packagePath}/components/viz/Bar.svelte';
+        import Bubble from '${packagePath}/components/viz/Bubble.svelte';
+        import Scatter from '${packagePath}/components/viz/Scatter.svelte';
+        import Hist from '${packagePath}/components/viz/Hist.svelte';
+        import AreaChart from '${packagePath}/components/viz/AreaChart.svelte';
+        import BarChart from '${packagePath}/components/viz/BarChart.svelte';
+        import BubbleChart from '${packagePath}/components/viz/BubbleChart.svelte';
+        import DataTable from '${packagePath}/components/viz/DataTable.svelte';
+        import LineChart from '${packagePath}/components/viz/LineChart.svelte';
+        import ScatterPlot from '${packagePath}/components/viz/ScatterPlot.svelte';
+        import Histogram from '${packagePath}/components/viz/Histogram.svelte';
+        import ECharts from '${packagePath}/components/viz/ECharts.svelte';
         let routeHash = '${routeHash}'
         `
+  
     if(hasQueries(filename)){
         defaultProps = `
-            export let data 
-            import { page } from '$app/stores';
-            import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
-            import Value from '@evidence-dev/components/viz/Value.svelte';
-            import Chart from '@evidence-dev/components/viz/Chart.svelte';
-            import Area from '@evidence-dev/components/viz/Area.svelte';
-            import Line from '@evidence-dev/components/viz/Line.svelte';
-            import Bar from '@evidence-dev/components/viz/Bar.svelte';
-            import Bubble from '@evidence-dev/components/viz/Bubble.svelte';
-            import Scatter from '@evidence-dev/components/viz/Scatter.svelte';
-            import Hist from '@evidence-dev/components/viz/Hist.svelte';
-            import AreaChart from '@evidence-dev/components/viz/AreaChart.svelte';
-            import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
-            import BubbleChart from '@evidence-dev/components/viz/BubbleChart.svelte';
-            import DataTable from '@evidence-dev/components/viz/DataTable.svelte';
-            import LineChart from '@evidence-dev/components/viz/LineChart.svelte';
-            import ScatterPlot from '@evidence-dev/components/viz/ScatterPlot.svelte';
-            import Histogram from '@evidence-dev/components/viz/Histogram.svelte';
-            import ECharts from '@evidence-dev/components/viz/ECharts.svelte';
-            let routeHash = '${routeHash}'
-            `
+            export let data
+            import QueryViewer from '${packagePath}/components/ui/QueryViewer.svelte';
+            ${defaultProps}
+        `
     }
     return defaultProps
 }
@@ -179,7 +164,7 @@ function highlighter(code, lang) {
     `;
 }
 
-module.exports = function evidencePreprocess(){
+module.exports = function evidencePreprocess(devMode = false){
     return [
         {
             markup({content, filename}){
@@ -229,7 +214,7 @@ module.exports = function evidencePreprocess(){
             script({content, filename, attributes}) {
                 if(filename.endsWith(".md")){
                     if(attributes.context != "module") {
-                        return {code: createDefaultProps(filename) + content }
+                        return {code: createDefaultProps(filename, devMode) + content }
                     }	
                 }
             }
