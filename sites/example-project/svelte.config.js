@@ -15,6 +15,6 @@ let newKit = {
 sconfig.kit = {...sconfig.kit, ...newKit}
 
 // Modify preprocess to allow for loading of $lib instead of package version of components library
-sconfig.preprocess = evidencePreprocess(true)
+sconfig.preprocess = evidencePreprocess(componentDevelopmentMode=true)
 
 export default sconfig;

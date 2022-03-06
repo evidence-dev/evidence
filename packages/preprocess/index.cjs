@@ -38,8 +38,8 @@ const createModuleContext = function(filename){
     return moduleContext
 } 
 
-const createDefaultProps = function(filename, devMode){
-    let packagePath = devMode ? '..' : '@evidence-dev'
+const createDefaultProps = function(filename, componentDevelopmentMode){
+    let packagePath = componentDevelopmentMode ? '..' : '@evidence-dev'
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
@@ -164,7 +164,7 @@ function highlighter(code, lang) {
     `;
 }
 
-module.exports = function evidencePreprocess(devMode = false){
+module.exports = function evidencePreprocess(componentDevelopmentMode = false){
     return [
         {
             markup({content, filename}){
@@ -214,7 +214,7 @@ module.exports = function evidencePreprocess(devMode = false){
             script({content, filename, attributes}) {
                 if(filename.endsWith(".md")){
                     if(attributes.context != "module") {
-                        return {code: createDefaultProps(filename, devMode) + content }
+                        return {code: createDefaultProps(filename, componentDevelopmentMode) + content }
                     }	
                 }
             }
