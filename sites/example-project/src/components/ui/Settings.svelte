@@ -66,17 +66,21 @@
 
 	let authType;
 
-	function onChange() {
-		console.log(database);
+	async function submitForm() {
+		const submit = await fetch("/api/settings.json", {
+			method: "POST",
+			body: JSON.stringify({
+				database
+			})
+		})
+	};
 
-		// evidenceConfig.database = database;
-		// fs.writeFileSync('evidence.config.json', JSON.stringify(evidenceConfig));
-	}
+
 </script>
 
 <h2>Select Your Database</h2>
 
-<form method="post" action="api/settings.json">
+<form on:submit|preventDefault={submitForm}>
 {#each databaseOptions as db}
 	<input
 		bind:group={database}
@@ -84,7 +88,6 @@
 		id={db.id}
 		name="database"
 		value={db.id}
-		on:change={onChange}
 	/>
 	<label for={db.id}>{db.name}</label><br />
 {/each}
