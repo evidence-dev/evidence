@@ -66,5 +66,3 @@
 
 <button type=submit>Save</button>
 </form>
-
-{JSON.stringify(credentials)}
