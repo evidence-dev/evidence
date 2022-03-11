@@ -2,11 +2,13 @@ import fs from 'fs';
 
 export async function get({params}) {
     let evidenceConfig = JSON.parse(fs.readFileSync('evidence.config.json', 'utf8'));
+    let databaseConfig = JSON.parse(fs.readFileSync('.evidence/database.config.json', 'utf8'));
 
     return {
         header: "accept: application/json",
         body: {
-            evidenceConfig
+            evidenceConfig,
+            databaseConfig
         }
     }
 }
@@ -18,6 +20,11 @@ export function post(request) {
     let evidenceConfig = JSON.parse(fs.readFileSync('evidence.config.json', 'utf8'));
     evidenceConfig.database = db
     fs.writeFileSync('evidence.config.json', JSON.stringify(evidenceConfig));
+
+    // let databaseConfig = JSON.parse(fs.readFileSync('.evidence/database.config.json', 'utf8'));
+    const credentials = formBody.credentials
+    fs.writeFileSync('.evidence/database.config.json', JSON.stringify(credentials));
+
     return {
         body: "settings saved"
     }
