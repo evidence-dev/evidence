@@ -13,6 +13,20 @@
         {id: "projectKey", label: "Project Key", type: "text", value: credentials.projectKey ?? ""}
     ]
 
+
+    // Attempt to upload JSON keyfile:
+    let files;
+    
+    async function saveFile(files) {
+		const submit = await fetch("/api/keyFile.json", {
+			method: "POST",
+			body: JSON.stringify({
+				files
+			})
+		})
+	};
+    ///////
+
 </script>
 
 
@@ -25,9 +39,27 @@
         <input
             type=text
             id={opt.id}
-            name={opt.name}
+            name={opt.id}
             bind:value={credentials[opt.id]}
         />
     </div>
 
 {/each}
+
+
+<!-- attempt to upload JSON keyfile -->
+<input 
+    type="file" 
+    accept="application/json"
+    bind:files 
+    on:change="{saveFile}"
+>
+
+
+{#if files && files[0]}
+	<p>
+		{files[0].name}
+	</p>
+{/if}
+
+<!-- -->

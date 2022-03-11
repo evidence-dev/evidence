@@ -30,7 +30,6 @@ export function post(request) {
     }
 }
 
-
 // Breaking changes in new verion of Svelte kit - merged on Jan 19, 2022
 // https://github.com/sveltejs/kit/pull/3384
 // Will need to change to format below once we upgrade our sveltekit dependency:

@@ -17,8 +17,8 @@
         {id: "user", label: "User", type: "text", value: credentials.user ?? ""},
         {id: "password", label: "Password", type: "password", value: credentials.password ?? ""},
         {id: "port", label: "Port", type: "text", value: credentials.port ?? ""},
-        {id: "ssl", label: "SSL", type: "text", value: credentials.ssl ?? ""},
-        {id: "connectionString", label: "Connection String", type: "text", value: credentials.connectionString ?? ""}
+        {id: "ssl", label: "SSL (optional)", type: "text", value: credentials.ssl ?? ""},
+        {id: "connectionString", label: "Connection String (optional)", type: "text", value: credentials.connectionString ?? ""}
     ]
 
 </script>
@@ -34,7 +34,7 @@
         <input
             type=text
             id={opt.id}
-            name={opt.name}
+            name={opt.id}
             bind:value={credentials[opt.id]}
         />
     </div>
@@ -44,7 +44,7 @@
         <input
             type=password
             id={opt.id}
-            name={opt.name}
+            name={opt.id}
             bind:value={credentials[opt.id]}
         />
     </div>

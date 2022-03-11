@@ -14,7 +14,7 @@
         {id: "database", label: "Database", type: "text", value: credentials.database ?? ""},
         {id: "user", label: "User", type: "text", value: credentials.user ?? ""},
         {id: "password", label: "Password", type: "password", value: credentials.password ?? ""},
-        {id: "socketPath", label: "Socket Path", type: "text", value: credentials.socketPath ?? ""}
+        {id: "socketPath", label: "Socket Path (optional)", type: "text", value: credentials.socketPath ?? ""}
     ]
 
 </script>
@@ -30,7 +30,7 @@
         <input
             type=text
             id={opt.id}
-            name={opt.name}
+            name={opt.id}
             bind:value={credentials[opt.id]}
         />
     </div>
@@ -40,7 +40,7 @@
         <input
             type=password
             id={opt.id}
-            name={opt.name}
+            name={opt.id}
             bind:value={credentials[opt.id]}
         />
     </div>

@@ -26,7 +26,7 @@
         <input
             type=text
             id={opt.id}
-            name={opt.name}
+            name={opt.id}
             bind:value={credentials[opt.id]}
         />
     </div>
@@ -36,7 +36,7 @@
         <input
             type=password
             id={opt.id}
-            name={opt.name}
+            name={opt.id}
             bind:value={credentials[opt.id]}
         />
     </div>
