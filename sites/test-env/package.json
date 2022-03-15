@@ -3,10 +3,8 @@
   "version": "0.0.1",
   "private":true,
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
-    "test": "svelte-kit build"
+    "dev": "evidence dev",
+    "test": "evidence build"
   },
   "engines": {
     "npm": ">=7.0.0",
