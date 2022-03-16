@@ -39,33 +39,33 @@ const createModuleContext = function(filename){
 } 
 
 const createDefaultProps = function(filename, componentDevelopmentMode){
-    let packagePath = componentDevelopmentMode ? '..' : '@evidence-dev'
+    let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components'
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
-        import Value from '${packagePath}/components/viz/Value.svelte';
-        import Chart from '${packagePath}/components/viz/Chart.svelte';
-        import Area from '${packagePath}/components/viz/Area.svelte';
-        import Line from '${packagePath}/components/viz/Line.svelte';
-        import Bar from '${packagePath}/components/viz/Bar.svelte';
-        import Bubble from '${packagePath}/components/viz/Bubble.svelte';
-        import Scatter from '${packagePath}/components/viz/Scatter.svelte';
-        import Hist from '${packagePath}/components/viz/Hist.svelte';
-        import AreaChart from '${packagePath}/components/viz/AreaChart.svelte';
-        import BarChart from '${packagePath}/components/viz/BarChart.svelte';
-        import BubbleChart from '${packagePath}/components/viz/BubbleChart.svelte';
-        import DataTable from '${packagePath}/components/viz/DataTable.svelte';
-        import LineChart from '${packagePath}/components/viz/LineChart.svelte';
-        import ScatterPlot from '${packagePath}/components/viz/ScatterPlot.svelte';
-        import Histogram from '${packagePath}/components/viz/Histogram.svelte';
-        import ECharts from '${packagePath}/components/viz/ECharts.svelte';
+        import Value from '${componentSource}/viz/Value.svelte';
+        import Chart from '${componentSource}/viz/Chart.svelte';
+        import Area from '${componentSource}/viz/Area.svelte';
+        import Line from '${componentSource}/viz/Line.svelte';
+        import Bar from '${componentSource}/viz/Bar.svelte';
+        import Bubble from '${componentSource}/viz/Bubble.svelte';
+        import Scatter from '${componentSource}/viz/Scatter.svelte';
+        import Hist from '${componentSource}/viz/Hist.svelte';
+        import AreaChart from '${componentSource}/viz/AreaChart.svelte';
+        import BarChart from '${componentSource}/viz/BarChart.svelte';
+        import BubbleChart from '${componentSource}/viz/BubbleChart.svelte';
+        import DataTable from '${componentSource}/viz/DataTable.svelte';
+        import LineChart from '${componentSource}/viz/LineChart.svelte';
+        import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
+        import Histogram from '${componentSource}/viz/Histogram.svelte';
+        import ECharts from '${componentSource}/viz/ECharts.svelte';
         let routeHash = '${routeHash}'
         `
   
     if(hasQueries(filename)){
         defaultProps = `
             export let data
-            import QueryViewer from '${packagePath}/components/ui/QueryViewer.svelte';
+            import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
             ${defaultProps}
         `
     }
