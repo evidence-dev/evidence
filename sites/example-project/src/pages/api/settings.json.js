@@ -1,8 +1,16 @@
 import fs from 'fs';
 
 export async function get({params}) {
-    let evidenceConfig = JSON.parse(fs.readFileSync('evidence.config.json', 'utf8'));
-    let databaseConfig = JSON.parse(fs.readFileSync('.evidence/database.config.json', 'utf8'));
+    let evidenceConfig = {}
+    let databaseConfig = {}
+
+    if (fs.existsSync('evidence.config.json')) {
+        evidenceConfig = JSON.parse(fs.readFileSync('evidence.config.json', 'utf8', ));
+    }
+
+    if (fs.existsSync('.evidence/database.config.json')) {
+        databaseConfig = JSON.parse(fs.readFileSync('.evidence/database.config.json', 'utf8'));
+    }
 
     return {
         header: "accept: application/json",
