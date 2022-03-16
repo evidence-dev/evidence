@@ -17,10 +17,10 @@
     let database = items.evidenceConfig.database
     let credentials = items.databaseConfig
 
-    import BigqueryForm from '$lib/ui/BigqueryForm.svelte'
-    import PostgresForm from '$lib/ui/PostgresForm.svelte'
-    import SnowflakeForm from '$lib/ui/SnowflakeForm.svelte'
-    import MysqlForm from '$lib/ui/MysqlForm.svelte'
+    import BigqueryForm from '$lib/ui/Databases/BigqueryForm.svelte'
+    import PostgresForm from '$lib/ui/Databases/PostgresForm.svelte'
+    import SnowflakeForm from '$lib/ui/Databases/SnowflakeForm.svelte'
+    import MysqlForm from '$lib/ui/Databases/MysqlForm.svelte'
 
     let databaseOptions = [
 		{id: 'bigquery', name: 'BigQuery'},
