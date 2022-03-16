@@ -1,1 +1,1 @@
-{"database":"snowflake","send_anonymous_usage_stats":false}
+{"database":"bigquery","send_anonymous_usage_stats":false}

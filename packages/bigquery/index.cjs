@@ -25,12 +25,11 @@ const standardizeResult = async(result) => {
 const getCredentials = async(database) => {  
     try{  
         if(database){
-            const keyFile = readJSONSync(database.keyFilename) 
             const creds = {
-                projectId: keyFile.project_id ,
+                projectId: database.project_id ,
                 credentials: {
-                    client_email: keyFile.client_email,
-                    private_key: keyFile.private_key  
+                    client_email: database.client_email,
+                    private_key: database.private_key  
                 }
             }
             return creds
