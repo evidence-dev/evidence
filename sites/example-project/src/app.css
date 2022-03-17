@@ -134,7 +134,7 @@ hr {
 
 :root {
 	/* Layout header height */
-	--header-height: 3rem; 
+	--header-height: 2.5rem; 
 	/* Font stacks */
 	--ui-font-family: "SF Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
 	--ui-font-family-compact: "SF Compact Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";

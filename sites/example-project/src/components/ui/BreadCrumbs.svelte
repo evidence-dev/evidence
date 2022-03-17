@@ -24,26 +24,23 @@
                 {/if}
             {/each}
         {/if}
-    </span>
-    <span>
-        <!-- {#if $page.path != "/" && $page.path != "/blog" && $page.path != "/faq" && $page.path != "/examples" && $page.path != "/blog/1"} -->
+        </span>
+        <span>
             {#if $showQueries}
             <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
             {:else}
             <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
             {/if}
-        <!-- {/if} -->
-    </span>
+        </span>
     </span>
 </div>
 
 <style>
     div{
-        padding: 0.45ch 0 0 0;
-        height: 1.5em;
-        margin: 1em 0 0 0;
+        padding: 0 1.5em 0 1.5em;
+        box-sizing: border-box;
+        width: 100%;
 
-        /* border: 1px solid red; */
     }
 
     span.container{
@@ -76,6 +73,7 @@
         font-size: 0.8em;
         color: var(--grey-900);
         cursor: pointer;
+        user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
         -webkit-font-smoothing: antialiased;

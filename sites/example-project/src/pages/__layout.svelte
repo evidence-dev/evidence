@@ -1,12 +1,7 @@
 <script>
 	import "../app.css"
-	import { navigating } from '$app/stores';
-	import Nav from '@evidence-dev/components/ui/Nav.svelte';
-	import BreadCrumbs from '@evidence-dev/components/ui/BreadCrumbs.svelte';
-	import LoadingIndicator from '@evidence-dev/components/ui/LoadingIndicator.svelte';
-	import { blur, fade } from "svelte/transition"
-	import Logo from "@evidence-dev/components/ui/Logo.svelte";
 	import TableOfContents from "$lib/TableOfContents.svelte";
+	import Header from '$lib/ui/Header.svelte'
 </script>
 
 <svelte:head>
@@ -14,9 +9,7 @@
 </svelte:head>
 
 <div class="grid">
-	<header>
-	  <BreadCrumbs/>
-	</header>
+	<Header/>
 	<aside class=sidebar>
 	  <div class="sticky">
 		<h1 href="/">Spectre Energy</h1>
@@ -99,11 +92,9 @@
 	</aside>
 	<main>
 	  <div class=content>
-		{#if !$navigating}
-		<article in:blur>
+		<article>
 			<slot/>
 		</article>
-		{/if}
 		<aside class='toc'>
 			<TableOfContents/>
 		</aside>
@@ -126,33 +117,12 @@
   isolation: isolate;
 }
 
-header {
-  grid-area: header;
-  position: sticky;
-  z-index: 2;
-  top: 0;
-  display: grid;
-  place-content: center;
-  height: var(--header-height);
-  /* border-bottom: 3px solid; */
-  background-color: rgba(255, 255, 255, 1);
-
-}
-
-/*
-  The “aside” child is positioned according to
-  grid layout, filling the assigned grid area.
-*/
 aside.sidebar {
   grid-area: sidebar;
   position: relative;
   z-index: 1;
   background-color: var(--grey-100);
   border-right: 1px solid var(--grey-300);
-  
-  /* color: white; */
-  /* border: 3px solid; */
-
 }
 
 .sticky {
@@ -168,7 +138,6 @@ nav {
 
 main {
   grid-area: main;
-  /* border: 3px solid; */
 }
 
 div.content { 
@@ -176,7 +145,6 @@ div.content {
 	max-width:100ch;
 	box-sizing: border-box;
 	display: grid;
-	/* border: 3px solid red; */
 	grid-template-columns: 4fr minmax(0,1fr);
 	gap: 0 5ch;
   	grid-template-areas:
@@ -191,14 +159,11 @@ article {
 	grid-area: article;
 	padding: 0 1.5em 0 1.5em;
 	box-sizing: border-box;
-	/* border: 3px solid yellow; */
 }
 
 aside.toc {
 	grid-area: toc;
 	padding: 0px;
-
-	/* border: 3px solid; */
 }
 
 
