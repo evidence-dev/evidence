@@ -1,7 +1,40 @@
+<script context = "module">
+
+	// Build nav links
+	const rootMDFiles = import.meta.glob('./*.md');
+	const levelOneIndexFiles = import.meta.glob('./*/index.md');
+
+	let allmenu = [];
+
+	for(let path in rootMDFiles) {
+		allmenu.push({
+			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' '),
+			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/'),
+		})
+	}
+
+	for(let path in levelOneIndexFiles) {
+		allmenu.push({
+			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
+			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+		})
+	}
+
+	export const load = async() => {
+		const menu = await Promise.all(allmenu)
+		return { props: { menu } }
+	}
+
+</script>
+
 <script>
 	import "../app.css"
 	import TableOfContents from "$lib/TableOfContents.svelte";
 	import Header from '$lib/ui/Header.svelte'
+	import SidebarNav from '$lib/ui/Sidebarnav.svelte'
+	import { page } from '$app/stores';
+
+	export let menu;
 </script>
 
 <svelte:head>
@@ -11,84 +44,24 @@
 <div class="grid">
 	<Header/>
 	<aside class=sidebar>
-	  <div class="sticky">
-		<h1 href="/">Spectre Energy</h1>
-		<nav>
-		  <ul>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-			<li>Nav Item</li>
-		  </ul>
-		</nav>
-		<div class=side-bar-bottom>
-			<h1>Bottom stuff</h1>
-		</div>
-	  </div>
+		<div class="sticky">
+			<h1><a href='/'>Evidence</a></h1>
+			<br/>
+			<nav>
+				{#each menu as item}
+					{#if item.label != 'index'}
+					<a href={item.href} sveltekit:prefetch >
+						<div class:selected="{"/"+$page.path.split('/')[1] === item.href}" >
+							{item.label}
+						</div>
+					</a>
+					{/if}
+				{/each}
+			</nav>
+			<div class=side-bar-bottom>
+				<h1>Bottom stuff</h1>
+			</div>
+		</div>			
 	</aside>
 	<main>
 	  <div class=content>
@@ -100,9 +73,7 @@
 		</aside>
 	  </div>
 	</main>
-
-
-  </div>
+</div>
 
 <style>
 .grid {
@@ -123,17 +94,6 @@ aside.sidebar {
   z-index: 1;
   background-color: var(--grey-100);
   border-right: 1px solid var(--grey-300);
-}
-
-.sticky {
-	position: sticky;
-  	top: 0;
-	padding: 1em;
-}
-
-nav {
-	max-height: 75vh;
-	overflow-y: scroll;
 }
 
 main {
@@ -165,6 +125,57 @@ aside.toc {
 	grid-area: toc;
 	padding: 0px;
 }
+
+.sticky {
+    position: sticky;
+    top: 0;
+    padding: 0;
+}
+
+nav {
+    min-height: 85vh;
+    overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+a {
+	text-transform: capitalize;
+	color:var(--grey-999);
+	display: inline-block;
+	text-decoration: none;
+	font-family: var(--ui-font-family);
+	-webkit-font-smoothing: antialiased;
+}
+
+nav a {
+	font-size: 16px;
+	display: block;
+	color: var(--grey-700);
+}
+
+nav div {
+	width: 100%;
+	background-color: var(--grey-100);
+	border-top: 1px solid var(--grey-100);
+	border-bottom: 1px solid var(--grey-100);
+	padding: 0.1em 1em 0 1em;
+}
+
+nav a:hover {
+	text-decoration: none;
+	background-color: none;
+	text-decoration: none;
+	color: var(--blue-600);
+	transition-property: color;
+	transition-duration: 600ms;
+}
+
+div.selected {
+	background-color: var(--grey-200);
+	border-top: 1px solid var(--grey-300);
+	border-bottom: 1px solid var(--grey-300);
+}
+
 
 
 </style>

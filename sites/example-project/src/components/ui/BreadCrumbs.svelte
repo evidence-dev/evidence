@@ -13,14 +13,14 @@
 <div>
     <span class="container"> 
         <span>
-        {#if nPages > 2 }
+        {#if nPages > 1 }
             {#each pathArray as crumb, i}
                 {#if i === 0} 
                     <a href="/" ref="prefetch">Home</a>
-                {:else if i === nPages-1}
+                {:else if i === nPages}
                     &thinsp;
                 {:else}
-                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replace("_"," "))} </a>            
+                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replaceAll("_"," "))} </a>            
                 {/if}
             {/each}
         {/if}
