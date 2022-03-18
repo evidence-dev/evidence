@@ -156,24 +156,24 @@ nav a {
 nav div {
 	width: 100%;
 	background-color: var(--grey-100);
-	border-top: 1px solid var(--grey-100);
-	border-bottom: 1px solid var(--grey-100);
-	padding: 0.1em 1em 0 1em;
+	padding: 0.2em 1em 0.2em 1em;
+}
+
+nav div:hover {
+	background-color: var(--grey-200);
 }
 
 nav a:hover {
 	text-decoration: none;
 	background-color: none;
 	text-decoration: none;
-	color: var(--blue-600);
-	transition-property: color;
-	transition-duration: 600ms;
 }
 
 div.selected {
 	background-color: var(--grey-200);
-	border-top: 1px solid var(--grey-300);
-	border-bottom: 1px solid var(--grey-300);
+	font-weight: bold;
+	color: var(--grey-800);
+
 }
 
 
