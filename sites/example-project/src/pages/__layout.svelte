@@ -31,8 +31,9 @@
 	import "../app.css"
 	import TableOfContents from "$lib/TableOfContents.svelte";
 	import Header from '$lib/ui/Header.svelte'
-	import SidebarNav from '$lib/ui/Sidebarnav.svelte'
+	import Logo from '$lib/ui/Logo.svelte'
 	import { page } from '$app/stores';
+	import { dev } from '$app/env';
 
 	export let menu;
 </script>
@@ -45,8 +46,9 @@
 	<Header/>
 	<aside class=sidebar>
 		<div class="sticky">
-			<h1><a href='/'>Evidence</a></h1>
-			<br/>
+			<div class=nav-header>
+				<a href='/'><h1 class=project-title>Evidence</h1></a>
+			</div>
 			<nav>
 				{#each menu as item}
 					{#if item.label != 'index'}
@@ -58,10 +60,13 @@
 					{/if}
 				{/each}
 			</nav>
-			<div class=side-bar-bottom>
-				<h1>Bottom stuff</h1>
+			{#if dev}
+			<div class="nav-footer">
+				<a href='/settings'>Settings</a>
 			</div>
-		</div>			
+			{/if}
+		</div>
+		
 	</aside>
 	<main>
 	  <div class=content>
@@ -88,13 +93,7 @@
   isolation: isolate;
 }
 
-aside.sidebar {
-  grid-area: sidebar;
-  position: relative;
-  z-index: 1;
-  background-color: var(--grey-100);
-  border-right: 1px solid var(--grey-300);
-}
+
 
 main {
   grid-area: main;
@@ -126,21 +125,39 @@ aside.toc {
 	padding: 0px;
 }
 
+aside.sidebar {
+  grid-area: sidebar;
+  position: relative;
+  z-index: 1;
+  background-color: var(--grey-100);
+  border-right: 1px solid var(--grey-300);
+}
+
 .sticky {
     position: sticky;
     top: 0;
     padding: 0;
+	height: 100vh;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 3em 1fr 4em;
+	grid-template-areas: 
+	'header'
+	'nav'
+	'footer'
+	;
 }
 
+
+
 nav {
-    min-height: 85vh;
     overflow-y: scroll;
 	overflow-x: hidden;
 }
 
 a {
 	text-transform: capitalize;
-	color:var(--grey-999);
+	color:var(--grey-800);
 	display: inline-block;
 	text-decoration: none;
 	font-family: var(--ui-font-family);
@@ -155,12 +172,15 @@ nav a {
 
 nav div {
 	width: 100%;
-	background-color: var(--grey-100);
 	padding: 0.2em 1em 0.2em 1em;
+	/* transition-property: background-color;
+	transition-duration: 400ms; */
 }
 
 nav div:hover {
 	background-color: var(--grey-200);
+	/* transition-property: background-color;
+	transition-duration: 400ms; */
 }
 
 nav a:hover {
@@ -176,6 +196,29 @@ div.selected {
 
 }
 
+div.nav-header {
+	padding: 0.2em 1em 1.2em 1em;
+	grid-area: header;
+}
 
+div.nav-header a {
+	display: block;
+}
+
+.nav-footer {
+	padding: 1.2em 1em 1.2em 1em;
+	box-sizing: border-box;
+
+	position:absolute; 
+	bottom:0;
+	height:100%;
+	width: 100%;
+	border-top: 1px solid var(--grey-200);
+	grid-area:footer;
+}
+
+.nav-footer a {
+	display:block
+}
 
 </style>
