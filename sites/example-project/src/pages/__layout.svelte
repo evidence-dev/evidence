@@ -31,20 +31,20 @@
 	import "../app.css"
 	import TableOfContents from "$lib/TableOfContents.svelte";
 	import Header from '$lib/ui/Header.svelte'
-	import Logo from '$lib/ui/Logo.svelte'
+	import Hamburger from '$lib/ui/hamburger.svelte'
 	import { page } from '$app/stores';
 	import { dev } from '$app/env';
 
 	export let menu;
+	export let open = false  
 </script>
 
 <svelte:head>
 	<title>Evidence</title>
 </svelte:head>
-
 <div class="grid">
 	<Header/>
-	<aside class=sidebar>
+	<aside class="sidebar" class:open>
 		<div class="sticky">
 			<div class=nav-header>
 				<a href='/'><h1 class=project-title>Evidence</h1></a>
@@ -62,12 +62,15 @@
 			</nav>
 			{#if dev}
 			<div class="nav-footer">
+
 				<a href='/settings'>Settings</a>
 			</div>
 			{/if}
+
 		</div>
-		
 	</aside>
+	<Hamburger bind:open/>
+
 	<main>
 	  <div class=content>
 		<article>
@@ -77,8 +80,10 @@
 			<TableOfContents/>
 		</aside>
 	  </div>
+
 	</main>
 </div>
+
 
 <style>
 .grid {
@@ -126,7 +131,7 @@ aside.toc {
 aside.sidebar {
   grid-area: sidebar;
   position: relative;
-  z-index: 1;
+  z-index: 3;
   background-color: var(--grey-100);
   border-right: 1px solid var(--grey-300);
 }
@@ -253,20 +258,27 @@ div.nav-header a {
 		isolation: isolate;
 	}
 
-	div.content { 
-		margin: auto;
-		max-width:100ch;
-		box-sizing: border-box;
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-areas:
-			'article'; 
-		justify-items: center;
+	aside.sidebar {
+		grid-area: none; 
+		position: fixed;
+		height: 100%;
+		width: 100%; 
+		left: -100%;
+		transition: left 0.3s ease-in-out; 	
+		background-color: hsla(217, 33%, 97%, .83);
+		-webkit-backdrop-filter: blur(20px) saturate(1.8);
+		backdrop-filter: blur(20px) saturate(1.8);
+		border-right: 1px solid var(--grey-300);		
 	}
 
-	aside.sidebar {
-		display: none;
+	aside.open {
+		left: 0;
 	}
+
+	div.nav-footer {
+		display: none 
+	}
+
 }
 
 </style>
