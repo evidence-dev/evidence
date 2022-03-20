@@ -3,13 +3,8 @@
 </script>
 
 <header>
-    <div class="grid">
-        <div class="breadcrumb-container">
-            <BreadCrumbs/>
-        </div>
-    </div>
-    <div class=settings-box>
-        
+    <div class="breadcrumb-container">
+        <BreadCrumbs/>
     </div>
 </header>
 
@@ -25,27 +20,12 @@ header {
     backdrop-filter: blur(20px) saturate(1.8);
 }
 
-div.grid {
-    margin: auto;
-    max-width:100ch;
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: 4fr minmax(0,1fr);
-    gap: 0 5ch;
-    grid-template-areas:
-        'above-article above-toc'; 
-    justify-items: left;
-    align-items: center;
-}
-
 div.breadcrumb-container {
-	width: 100%;
 	height: var(--header-height);
-	/* border-bottom: 1px solid var(--grey-100); */
-	grid-area: above-article ;
 	box-sizing: border-box;
 	display: flex;
 	justify-items: right;
 	align-items: center; 
 }
+
 </style>
