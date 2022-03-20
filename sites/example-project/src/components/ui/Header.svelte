@@ -39,11 +39,9 @@ div.grid {
 }
 
 div.breadcrumb-container {
-	max-width: 70ch;
-	min-width: 0;
 	width: 100%;
 	height: var(--header-height);
-	border-bottom: 1px solid var(--grey-100);
+	/* border-bottom: 1px solid var(--grey-100); */
 	grid-area: above-article ;
 	box-sizing: border-box;
 	display: flex;

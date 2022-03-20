@@ -95,10 +95,6 @@
         font-weight: bold;
      }
 
-    @media (max-width: 600px) {
-        .dev-controls {
-            display:none;
-        }
-	}
+
 
 </style>
