@@ -1,1 +1,1 @@
-{"database":"bigquery","send_anonymous_usage_stats":false}
+{"database":"postgres","send_anonymous_usage_stats":false}

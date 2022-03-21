@@ -16,37 +16,8 @@
         {id: "password", label: "Password", type: "password", value: credentials.password ?? ""},
         {id: "socketPath", label: "Socket Path (optional)", type: "text", value: credentials.socketPath ?? ""}
     ]
+    import GenericForm from './GenericForm.svelte'
 
 </script>
 
-
-<h2>MySQL Credentials</h2>
-
-{#each opts as opt}
-
-    {#if opt.type === "text"}
-    <div class=input-item>
-        <label for={opt.id}>{opt.label}</label>
-        <input
-            type=text
-            id={opt.id}
-            name={opt.id}
-            bind:value={credentials[opt.id]}
-        />
-    </div>
-    {:else if opt.type === "password"}
-    <div class=input-item>
-        <label for={opt.id}>{opt.label}</label>
-        <input
-            type=password
-            id={opt.id}
-            name={opt.id}
-            bind:value={credentials[opt.id]}
-        />
-    </div>
-    {:else}
-    <div>Error</div>
-    {/if}
-
-{/each}
-
+<GenericForm {opts} bind:credentials={credentials}/>

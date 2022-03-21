@@ -13,8 +13,7 @@
 </script>
 
 
-<h2>BigQuery Credentials</h2>
-<p>Load yer' key file:</p> 
+<hr/>
 
 <input 
     type="file" 
