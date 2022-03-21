@@ -8,7 +8,6 @@
             }
         }
     }
-
 </script>
 
 
@@ -67,7 +66,11 @@
         </div> 
     </div>
     <footer>
+        {#if selectedDatabase.id === ''}
         <span>Learn more about Database Connection Settings &rarr;</span> 
+        {:else}
+        <span>Learn more about {selectedDatabase.name} Connection Settings &rarr;</span> 
+        {/if}
         <button type=submit id=save>Save</button>
     </footer>
 </form>
