@@ -79,13 +79,13 @@
         border: 1px solid var(--grey-300);
         padding: 0.25em 0.25em 0.25em 0.25em;
         margin-left: auto;
-        margin-right: 2em;
         width: 70%;
         padding: 0.35em;
         color: var(--grey-999);
         -webkit-appearance: none;
         -moz-appearance: none;
         vertical-align:middle;
+        font-size: 16px;
     }
     input:required {
        box-shadow: none;

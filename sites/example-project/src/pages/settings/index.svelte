@@ -101,6 +101,23 @@ h2 {
     border-top:none;
 }
 
+select {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;   
+   padding:0.75em;
+   width: 100%;
+   border: 1px solid var(--grey-200); 
+   font-family: var(--ui-font-family);
+   color: var(--grey-800); 
+   margin: 0.5em 0 0 0; 
+}
+
+select:focus {
+    outline: none;
+
+}
+
 footer {
     border: 1px solid var(--grey-200);
     border-radius: 0 0 5px 5px;
