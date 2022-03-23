@@ -27,10 +27,14 @@
 
 <script>
 	import "../app.css"
+	import { navigating } from '$app/stores';
+	import { blur } from "svelte/transition"
+
 	import TableOfContents from "$lib/TableOfContents.svelte";
 	import Header from '$lib/ui/Header.svelte'
 	import Hamburger from '$lib/ui/hamburger.svelte'
 	import Sidebar from '$lib/ui/Sidebar.svelte'
+	import LoadingIndicator from "$lib/ui/LoadingIndicator.svelte";
 
 	export let menu;
 	export let open = false  
@@ -39,11 +43,16 @@
 <svelte:head>
 	<title>Evidence</title>
 </svelte:head>
+
+{#if $navigating}
+	<LoadingIndicator/>
+{/if}
+
 <div class="grid">
 	<Header/>
 	<Sidebar {open} {menu}/> 
 	<Hamburger bind:open/>
-	<main>
+	<main in:blur|local>
 	  <div class=content>
 		<article>
 			<slot/>
