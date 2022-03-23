@@ -1,4 +1,6 @@
 <script>
+    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+
     export let opts
     export let credentials
 </script>
@@ -6,19 +8,21 @@
 
 <hr/>
 
+
+
 {#each opts as opt}
 <div class=input-item>
     <label for={opt.id}>
+        {opt.label}
 
         {#if opt.additionalInstructions}
-        <span class="additional-info" >
-            {opt.label}
-            <span class="additional-info-msg">{opt.additionalInstructions}</span>
+        <span class="additional-info-icon">
+                <IoIosHelpCircleOutline/>
+                <span class=info-msg>{opt.additionalInstructions}</span>
         </span>
-        {:else}
-        {opt.label}
         {/if}
     </label>
+
 
     {#if opt.type === "text"}
         {#if opt.optional}
@@ -27,6 +31,7 @@
             id={opt.id}
             name={opt.id}
             bind:value={credentials[opt.id]}
+            placeholder={opt.placeholder}
         />
         {:else }
         <input
@@ -34,6 +39,7 @@
             id={opt.id}
             name={opt.id}
             bind:value={credentials[opt.id]}
+            placeholder={opt.placeholder}
             required
         />
         {/if}
@@ -43,6 +49,7 @@
             type=password
             id={opt.id}
             name={opt.id}
+            placeholder="password"
             bind:value={credentials[opt.id]}
         />
         {:else }
@@ -50,6 +57,7 @@
             type=password
             id={opt.id}
             name={opt.id}
+            placeholder="password"
             bind:value={credentials[opt.id]}
             required
             />
@@ -60,8 +68,19 @@
 {/each}
 
 <style>
+
     hr {
         width: 100%
+    }
+
+    span.additional-info-icon {
+        width: 18px;
+        color:var(--grey-600);
+        display:inline-block;
+        vertical-align: middle;
+        line-height: 1em;
+        cursor: help;
+        position:relative;
     }
 
     div.input-item{
@@ -71,6 +90,7 @@
         margin-top: 1.25em;
         display:flex;
         flex-direction: row;
+        align-items: center;
     }
 
     input {
@@ -79,7 +99,7 @@
         border: 1px solid var(--grey-300);
         padding: 0.25em 0.25em 0.25em 0.25em;
         margin-left: auto;
-        width: 70%;
+        width: 65%;
         padding: 0.35em;
         color: var(--grey-999);
         -webkit-appearance: none;
@@ -95,16 +115,12 @@
     }
 
     label {
-        width: 25%
+        width: 30%;
     }
 
-    .additional-info {
-        display: inline;
-        position: relative;
-        cursor: help;
-    }
+ 
 
-    .additional-info .additional-info-msg {
+    .additional-info-icon .info-msg {
         visibility: hidden;
         position: absolute;
         top: -5px;
@@ -123,7 +139,7 @@
         z-index: 1;
     }
 
-    .additional-info:hover .additional-info-msg {
+    .additional-info-icon:hover .info-msg {
         visibility: visible;
     }
 

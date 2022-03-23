@@ -49,7 +49,7 @@
 </script>
 
 
-<form on:submit|preventDefault={submitForm}>
+<form on:submit|preventDefault={submitForm} autocomplete="off">
     <div class=container>
         <div class=panel> 
             <h1>Database Connection</h1>

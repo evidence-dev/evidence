@@ -15,8 +15,10 @@
 		{ id: 'host', label: 'Host', type: 'text', value: credentials.host ?? '' },
 		{ id: 'database', label: 'Database', type: 'text', value: credentials.database ?? '' },
 		{ id: 'user', label: 'User', type: 'text', value: credentials.user ?? '' },
-		{ id: 'password', label: 'Password', type: 'password', value: credentials.password ?? '' },
-		{ id: 'port', label: 'Port', type: 'text', value: credentials.port ?? '' },
+		{ 
+			id: 'password', label: 'Password', type: 'password', value: credentials.password ?? '' },
+		{ 
+			id: 'port', label: 'Port', type: 'text', value: credentials.port ?? '' },
 		{ 
             id: 'ssl', label: 'SSL', type: 'text', optional: true, value: credentials.ssl ?? '',
             additionalInstructions:
