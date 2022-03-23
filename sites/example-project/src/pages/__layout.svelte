@@ -50,7 +50,7 @@
 
 <div class="grid">
 	<Header/>
-	<Sidebar {open} {menu}/> 
+	<Sidebar bind:open {menu}/> 
 	<Hamburger bind:open/>
 	<main in:blur|local>
 	  <div class=content>
