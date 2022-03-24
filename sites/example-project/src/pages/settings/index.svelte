@@ -46,6 +46,15 @@
 		})
 	};
 
+
+    async function runTest() {
+		const submit = await fetch("/api/testConnection.json", {
+			method: "POST",
+			body: JSON.stringify({
+                credentials
+			})
+		})
+	};
 </script>
 
 
@@ -75,6 +84,7 @@
     </footer>
 </form>
 
+<button on:click={runTest}>Test Connection</button>
 
 <style> 
 h2 {

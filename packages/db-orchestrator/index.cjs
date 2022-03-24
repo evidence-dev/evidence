@@ -87,4 +87,36 @@ const runQueries = async function (routeHash, dev) {
     }
 }
 
-module.exports = runQueries
+
+const testConnection = async function () {
+    let query = {
+        id: "testConnection",
+        compiledQueryString: "select 100 as num"
+    }
+    let results;
+    let success;
+    const database = readJSONSync('./.evidence/database.config.json',{throws:false})
+    const config = readJSONSync('./evidence.config.json', {throws:false})
+
+    const { default: runQuery } = await import('@evidence-dev/'+ config.database);
+
+    try {
+        process.stdout.write(chalk.grey("  "+ query.id +" running..."))
+        // validateQuery(query)
+        results = await runQuery(query.compiledQueryString, database)
+        readline.cursorTo(process.stdout, 0);
+        process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
+        success = true;
+    } catch(err) {
+        readline.cursorTo(process.stdout, 0);
+        process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
+        success = false;
+    } 
+    return success
+
+}
+
+module.exports = {
+    runQueries,
+    testConnection
+}
