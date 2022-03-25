@@ -3,6 +3,12 @@
 	import { dev } from '$app/env';
 
     export let menu 
+	let folders = [...new Set(menu.map(item => item.folder))];
+	folders = folders.filter(d => d !== undefined);
+	console.log(folders)
+
+	let noFolders = menu.filter(d => d.folder === undefined)
+
     export let open 
 
 </script>
@@ -13,7 +19,7 @@
             <a href='/'><h1 class=project-title>Evidence</h1></a>
         </div>
         <nav>
-            {#if menu}
+            <!-- {#if menu}
             {#each menu as item}
                 {#if item.label != 'index'}
                 <a href={item.href} sveltekit:prefetch on:click={() => open = !open}>
@@ -23,7 +29,30 @@
                 </a>
                 {/if}
             {/each}
+            {/if} -->
+			{#if noFolders}
+            {#each noFolders as item}
+                {#if item.label != 'index'}
+                <a href={item.href} sveltekit:prefetch on:click={() => open = !open}>
+                    <div class:selected="{"/"+$page.path.split('/')[1] === item.href}" >
+                        {item.label}
+                    </div>
+                </a>
+                {/if}
+            {/each}
             {/if}
+			{#if folders}
+            {#each folders as folder}
+                {#if folder.label != 'index'}
+                <a href={folder.href} sveltekit:prefetch on:click={() => open = !open}>
+                    <div class:selected="{"/"+$page.path.split('/')[1] === folder.href}" >
+                        {folder}
+                    </div>
+                </a>
+                {/if}
+            {/each}
+            {/if}
+
         </nav>
         {#if dev}
         <div class="nav-footer">
