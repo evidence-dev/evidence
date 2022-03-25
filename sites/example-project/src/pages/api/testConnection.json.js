@@ -1,16 +1,25 @@
-import {testConnection} from '@evidence-dev/db-orchestrator'
+import { testConnection } from '@evidence-dev/db-orchestrator'
 
 export async function post(request) {
-    let success = await testConnection()
+    let result = await testConnection()
 
-    if(success){
+    if(result === "Database Connected"){
         return {
-            body: "Database Connected"
+            headers: {
+                "Content-Type": "application/json"
+            },
+            status: 200,
+            body: JSON.stringify(result)
         }
     } else {
         return {
-            body: "Database Not Connected"
+            headers: {
+                "Content-Type": "application/json"
+            },
+            status: 500,
+            body: JSON.stringify(result)
         }
     }
+
 
 }
