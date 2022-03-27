@@ -95,7 +95,7 @@ const testConnection = async function () {
     }
     let queryResult;
     let result;
-    const database = readJSONSync('./.evidence/database.config.json',{throws:false})
+    const database = readJSONSync('./evidence.settings.json',{throws:false})
     const config = readJSONSync('./evidence.config.json', {throws:false})
 
     const { default: runQuery } = await import('@evidence-dev/'+ config.database);
