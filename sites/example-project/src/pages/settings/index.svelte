@@ -17,6 +17,7 @@
     import PostgresForm from '$lib/ui/Databases/PostgresForm.svelte'
     import SnowflakeForm from '$lib/ui/Databases/SnowflakeForm.svelte'
     import MysqlForm from '$lib/ui/Databases/MysqlForm.svelte'
+    import TestConnection from '$lib/ui/Databases/TestConnection.svelte'
 
     export let settings 
 
@@ -75,6 +76,7 @@
     </footer>
 </form>
 
+<TestConnection/>
 
 <style> 
 h2 {
