@@ -7,16 +7,25 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import sade from 'sade';
 
-const populateDevTemplate = function() {
+const populateTemplate = function() {
     // Create the template project in .evidence/dev 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    fs.emptyDirSync("./.evidence/dev/")
-    fs.copySync(path.join(__dirname, '/template'), "./.evidence/dev/")
+
+    fs.ensureDirSync("./.evidence/template/")
+
+    // empty the template directory, except any local settings that already exist. 
+    fs.readdirSync("./.evidence/template/").forEach(file => {
+      if(file != "evidence.settings.json")
+        fs.removeSync(path.join("./.evidence/template/", file))
+      }
+    )
+
+    fs.copySync(path.join(__dirname, '/template'), "./.evidence/template/")
 
     // package.json is awkward to have in the monorepo, but vite needs it to find the root of the project 
     const packageContents = {type: "module"}
-    fs.writeJsonSync("./.evidence/dev/package.json", packageContents)
+    fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
 const prog = sade('evidence')
@@ -25,7 +34,7 @@ prog
   .command('dev')
   .describe("launch the local evidence development environment")
   .action(() => {
-    populateDevTemplate()
+    populateTemplate()
 
     // Watcher and syncing   
     const ignoredFiles = [
@@ -38,7 +47,7 @@ prog
     const watcher = chokidar.watch('./pages/**', {ignored:ignoredFiles})
 
     const sourcePath = path => "./"+path
-    const targetPath = path => "./.evidence/dev/src/pages/"+path.split("pages/")[1]
+    const targetPath = path => "./.evidence/template/src/pages/"+path.split("pages/")[1]
     watcher
         .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
         .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
@@ -52,7 +61,7 @@ prog
 
     // Run svelte kit dev in the hidden directory 
     // TODO: Improve the Handling of feedback / console logging from svelte & evidence
-    const child = spawn('npx svelte-kit dev -- --open', {shell: true, cwd:'.evidence/dev'});
+    const child = spawn('npx svelte-kit dev -- --open', {shell: true, cwd:'.evidence/template'});
 
     child.stdout.on('data', (data) => {
       console.log(`child stdout:\n${data}`);

@@ -1,21 +1,21 @@
 <script context = "module">
 	// Build nav links
-	const rootMDFiles = import.meta.glob('./*.md');
-	const levelOneIndexFiles = import.meta.glob('./*/index.md');
+	const rootMDFiles = import.meta.glob('../*.md');
+	const levelOneIndexFiles = import.meta.glob('../*/index.md');
 
 	let allmenu = [];
 
 	for(let path in rootMDFiles) {
 		allmenu.push({
-			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' '),
-			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/'),
+			label: path.replace(/^\..\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' '),
+			href: path.replace(/^\..\//, '/').replace(/\.md$/, '').replaceAll('index','/'),
 		})
 	}
 
 	for(let path in levelOneIndexFiles) {
 		allmenu.push({
-			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
-			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+			label: path.replace(/^\..\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
+			href: path.replace(/^\..\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
 		})
 	}
 	
@@ -26,9 +26,7 @@
 </script>
 
 <script>
-	import "../app.css"
-	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
-	import Header from '@evidence-dev/components/ui/Header.svelte'
+	import "../../app.css"
 	import Hamburger from '@evidence-dev/components/ui/Hamburger.svelte'
 	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
 
@@ -40,18 +38,14 @@
 	<title>Evidence</title>
 </svelte:head>
 <div class="grid">
-	<Header/>
 	<Sidebar {open} {menu}/> 
 	<Hamburger bind:open/>
 	<main>
 	  <div class=content>
-		<article>
-			<slot/>
-		</article>
-		<aside class='toc'>
-			<TableOfContents/>
-		</aside>
-	  </div>
+          <article>
+            <slot/>
+          </article>
+        </div>
 	</main>
 </div>
 
@@ -68,6 +62,7 @@
   margin: 0 auto;
   isolation: isolate;
 }
+
 
 main {
   grid-area: main;
@@ -92,12 +87,10 @@ article {
 	grid-area: article;
 	padding: 0 1.5em 0 1.5em;
 	box-sizing: border-box;
+    font-family: var(--ui-font);
 }
 
-aside.toc {
-	grid-area: toc;
-	padding: 0px;
-}
+
 
 @media (max-width: 1440px) {
 	div.content { 
@@ -105,13 +98,8 @@ aside.toc {
 		grid-template-areas:
 			'article'; 
 	}
-
 	article {
 		max-width: 80ch;
-	}
-
-	aside.toc {
-		display: none;
 	}
 }
 

@@ -8,8 +8,8 @@ export async function get({params}) {
         evidenceConfig = JSON.parse(fs.readFileSync('evidence.config.json', 'utf8', ));
     }
 
-    if (fs.existsSync('.evidence/database.config.json')) {
-        databaseConfig = JSON.parse(fs.readFileSync('.evidence/database.config.json', 'utf8'));
+    if (fs.existsSync('evidence.settings.json')) {
+        databaseConfig = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
     }
 
     return {
@@ -29,9 +29,8 @@ export function post(request) {
     evidenceConfig.database = db
     fs.writeFileSync('evidence.config.json', JSON.stringify(evidenceConfig));
 
-    // let databaseConfig = JSON.parse(fs.readFileSync('.evidence/database.config.json', 'utf8'));
     const credentials = formBody.credentials
-    fs.writeFileSync('.evidence/database.config.json', JSON.stringify(credentials));
+    fs.writeFileSync('evidence.settings.json', JSON.stringify(credentials));
 
     return {
         body: "settings saved"

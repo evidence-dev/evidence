@@ -7,7 +7,7 @@ const readline = require('readline');
 const getCache = function (dev, queryString, queryTime) {
     queryTime = md5(queryTime)
     if (dev) {
-        const devCache = readJSONSync("./.evidence/dev/cache/" + queryTime + "/" + md5(queryString) + ".json", { throws: false })
+        const devCache = readJSONSync("./dev/cache/" + queryTime + "/" + md5(queryString) + ".json", { throws: false })
         if (devCache) {
             logEvent("cache-query", dev)
             return devCache
@@ -18,17 +18,17 @@ const getCache = function (dev, queryString, queryTime) {
 const updateCache = function (dev, queryString, data, queryTime) {
     queryTime = md5(queryTime)
     if (dev) {
-        if (!pathExistsSync("./.evidence/dev")) {
-            mkdirSync("./.evidence/dev")
+        if (!pathExistsSync("./dev")) {
+            mkdirSync("./dev")
         }
-        if (!pathExistsSync("./.evidence/dev/cache/")) {
-            mkdirSync("./.evidence/dev/cache/")
+        if (!pathExistsSync("./dev/cache/")) {
+            mkdirSync("./dev/cache/")
         }
-        if (!pathExistsSync("./.evidence/dev/cache/" + queryTime)) {
-            emptyDirSync('./.evidence/dev/cache/')
-            mkdirSync("./.evidence/dev/cache/" + queryTime)
+        if (!pathExistsSync("./dev/cache/" + queryTime)) {
+            emptyDirSync('./dev/cache/')
+            mkdirSync("./dev/cache/" + queryTime)
         }
-        writeJSONSync("./.evidence/dev/cache/" + queryTime + "/" + md5(queryString) + ".json", data, { throws: false })
+        writeJSONSync("./dev/cache/" + queryTime + "/" + md5(queryString) + ".json", data, { throws: false })
     }
 }
 
@@ -48,10 +48,10 @@ const validateQuery = function (query) {
 }
 
 const runQueries = async function (routeHash, dev) {
-    const database = readJSONSync('./.evidence/database.config.json',{throws:false})
+    const database = readJSONSync('./evidence.settings.json',{throws:false})
     const config = readJSONSync('./evidence.config.json', {throws:false})
 
-    let routePath = `./.evidence/build/queries/${routeHash}`
+    let routePath = `./build/queries/${routeHash}`
     let queryFile = `${routePath}/${readdirSync(routePath)}`
     let queries = readJSONSync(queryFile, { throws: false }) 
 

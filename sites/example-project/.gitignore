@@ -2,3 +2,5 @@
 .svelte-kit
 build
 node_modules
+evidence.settings.json
+dev
