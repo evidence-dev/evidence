@@ -20,7 +20,7 @@
                 {:else if i === nPages}
                     &thinsp;
                 {:else}
-                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replaceAll("_"," "))} </a>            
+                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replaceAll("_"," ").replaceAll("-"," "))} </a>            
                 {/if}
             {/each}
         {/if}

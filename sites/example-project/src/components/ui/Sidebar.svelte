@@ -4,6 +4,7 @@
 
     export let menu 
     export let open 
+
 </script>
 
 <aside class="sidebar" class:open>
@@ -15,7 +16,7 @@
             {#if menu}
             {#each menu as item}
                 {#if item.label != 'index'}
-                <a href={item.href} sveltekit:prefetch >
+                <a href={item.href} sveltekit:prefetch on:click={() => open = !open}>
                     <div class:selected="{"/"+$page.path.split('/')[1] === item.href}" >
                         {item.label}
                     </div>
