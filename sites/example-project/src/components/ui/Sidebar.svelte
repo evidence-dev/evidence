@@ -1,11 +1,11 @@
 <script>
     import { page } from '$app/stores';
 	import { dev } from '$app/env';
+	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte'
 
     export let menu 
 	let folders = [...new Set(menu.map(item => item.folder))];
 	folders = folders.filter(d => d !== undefined);
-	console.log(folders)
 
 	let noFolders = menu.filter(d => d.folder === undefined)
 
@@ -44,11 +44,34 @@
 			{#if folders}
             {#each folders as folder}
                 {#if folder.label != 'index'}
-                <a href={folder.href} sveltekit:prefetch on:click={() => open = !open}>
-                    <div class:selected="{"/"+$page.path.split('/')[1] === folder.href}" >
-                        {folder}
+                <!-- <a href={"/"+folder} sveltekit:prefetch on:click={() => open = !open}>
+                    <div class:selected="{"/"+$page.path.split('/')[1] === "/" + folder}" >
+                        {folder} >
                     </div>
-                </a>
+                </a> -->
+
+				<CollapsibleSection {folder} {menu} bind:open={open}/>
+
+				<!-- <div class=collapsible>
+				<a href={"/"+folder} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+					<div class:selected="{"/"+$page.path.split('/')[1] === "/" + folder}" >
+						{folder} >
+					</div>
+				</a>
+			
+			
+				<div class='contents' hidden={!expanded}>
+					{#each menu.filter(d => d.folder === folder) as item}
+					{#if item.label != 'index'}
+					<a href={item.href} sveltekit:prefetch on:click={() => open = !open}>
+						<div class:selected="{"/"+$page.path.split('/')[1] === item.href}" >
+							{item.label}
+						</div>
+					</a>
+					{/if}
+					{/each}
+				</div>
+				</div> -->
                 {/if}
             {/each}
             {/if}

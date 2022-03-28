@@ -33,12 +33,14 @@
 		// console.log(tempPath)
 		// tempPath = tempPath.replace(/\/([^\/]+)$/, '')
 		// console.log(tempPath)
-		allmenu.push({
-			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
-			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
-			folder: path.replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
-		})
-	}
+		if(!path.includes("/index.md")){
+			allmenu.push({
+				label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index','').replace(/.*\//,''),
+				href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+				folder: path.replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
+			})
+		}
+	} 
 
 	export const load = async() => {
 		const menu = await Promise.all(allmenu)
