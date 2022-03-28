@@ -7,10 +7,10 @@ const readline = require('readline');
 const getCache = function (dev, queryString, queryTime) {
     queryTime = md5(queryTime)
     if (dev) {
-        const devCache = readJSONSync("./dev/cache/" + queryTime + "/" + md5(queryString) + ".json", { throws: false })
-        if (devCache) {
+        const cache = readJSONSync("./queries/cache/" + queryTime + "/" + md5(queryString) + ".json", { throws: false })
+        if (cache) {
             logEvent("cache-query", dev)
-            return devCache
+            return cache
         }
     }
 }
@@ -18,17 +18,17 @@ const getCache = function (dev, queryString, queryTime) {
 const updateCache = function (dev, queryString, data, queryTime) {
     queryTime = md5(queryTime)
     if (dev) {
-        if (!pathExistsSync("./dev")) {
-            mkdirSync("./dev")
+        if (!pathExistsSync("./queries")) {
+            mkdirSync("./queries")
         }
-        if (!pathExistsSync("./dev/cache/")) {
-            mkdirSync("./dev/cache/")
+        if (!pathExistsSync("./queries/cache/")) {
+            mkdirSync("./queries/cache/")
         }
-        if (!pathExistsSync("./dev/cache/" + queryTime)) {
-            emptyDirSync('./dev/cache/')
-            mkdirSync("./dev/cache/" + queryTime)
+        if (!pathExistsSync("./queries/cache/" + queryTime)) {
+            emptyDirSync('./queries/cache/')
+            mkdirSync("./queries/cache/" + queryTime)
         }
-        writeJSONSync("./dev/cache/" + queryTime + "/" + md5(queryString) + ".json", data, { throws: false })
+        writeJSONSync("./queries/cache/" + queryTime + "/" + md5(queryString) + ".json", data, { throws: false })
     }
 }
 
@@ -51,7 +51,7 @@ const runQueries = async function (routeHash, dev) {
     const database = readJSONSync('./evidence.settings.json',{throws:false})
     const config = readJSONSync('./evidence.config.json', {throws:false})
 
-    let routePath = `./build/queries/${routeHash}`
+    let routePath = `./queries/extracted/${routeHash}`
     let queryFile = `${routePath}/${readdirSync(routePath)}`
     let queries = readJSONSync(queryFile, { throws: false }) 
 
