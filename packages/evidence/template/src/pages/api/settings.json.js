@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export async function get({params}) {
+export async function get() {
     let evidenceConfig = {}
     let databaseConfig = {}
 

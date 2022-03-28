@@ -17,10 +17,15 @@
     import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
     import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
+    import TestConnection from '@evidence-dev/components/ui/Databases/TestConnection.svelte'
+
 
     export let settings 
 
     let credentials = settings.databaseConfig
+
+    // TODO: the save / existing / no save if no change flow is jank right now 
+
 
     // Available connector types, including a fallback
     const databaseOptions = [
@@ -42,7 +47,9 @@
 			})
 		})
 	};
+
 </script>
+
 
 <form on:submit|preventDefault={submitForm} autocomplete="off">
     <div class=container>
@@ -69,6 +76,8 @@
         <button type=submit id=save>Save</button>
     </footer>
 </form>
+
+<TestConnection/>
 
 <style> 
 h2 {
@@ -109,6 +118,7 @@ select {
 
 select:focus {
     outline: none;
+
 }
 
 footer {

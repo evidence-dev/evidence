@@ -2,7 +2,7 @@
   "name": "@evidence-dev/components",
   "version": "0.1.14",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
     "package": "svelte-kit package",
@@ -13,7 +13,7 @@
     "@tidyjs/tidy": "2.4.4",
     "echarts": "5.2.2",
     "echarts-stat": "1.2.0",
-    "svelte-icons": "^2.1.0"
+    "svelte-icons": "2.1.0"
   },
   "publishConfig": {
     "directory": "../../packages/components"

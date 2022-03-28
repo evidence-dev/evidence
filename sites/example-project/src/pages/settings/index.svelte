@@ -12,6 +12,7 @@
 
 
 <script>
+    export let settings 
     // DB Forms 
     import BigqueryForm from '$lib/ui/Databases/BigqueryForm.svelte'
     import PostgresForm from '$lib/ui/Databases/PostgresForm.svelte'
@@ -19,13 +20,9 @@
     import MysqlForm from '$lib/ui/Databases/MysqlForm.svelte'
     import TestConnection from '$lib/ui/Databases/TestConnection.svelte'
 
-    export let settings 
-
     let credentials = settings.databaseConfig
 
     // TODO: the save / existing / no save if no change flow is jank right now 
-
-
     // Available connector types, including a fallback
     const databaseOptions = [
         {id: '', name: 'Choose a database'},
