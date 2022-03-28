@@ -30,11 +30,11 @@
 	import { navigating } from '$app/stores';
 	import { blur } from "svelte/transition"
 
-	import TableOfContents from "$lib/TableOfContents.svelte";
-	import Header from '$lib/ui/Header.svelte'
-	import Hamburger from '$lib/ui/hamburger.svelte'
-	import Sidebar from '$lib/ui/Sidebar.svelte'
-	import LoadingIndicator from "$lib/ui/LoadingIndicator.svelte";
+	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
+	import Header from '@evidence-dev/components/ui/Header.svelte'
+	import Hamburger from '@evidence-dev/components/ui/Hamburger.svelte'
+	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
+	import LoadingIndicator from "@evidence-dev/components/ui/LoadingIndicator.svelte";
 
 	export let menu;
 	export let open = false  

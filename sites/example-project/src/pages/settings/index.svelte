@@ -14,11 +14,11 @@
 <script>
     export let settings 
     // DB Forms 
-    import BigqueryForm from '$lib/ui/Databases/BigqueryForm.svelte'
-    import PostgresForm from '$lib/ui/Databases/PostgresForm.svelte'
-    import SnowflakeForm from '$lib/ui/Databases/SnowflakeForm.svelte'
-    import MysqlForm from '$lib/ui/Databases/MysqlForm.svelte'
-    import TestConnection from '$lib/ui/Databases/TestConnection.svelte'
+    import BigqueryForm from '@evidence-dev/components/ui/Databases/BigqueryForm.svelte'
+    import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
+    import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
+    import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
+    import TestConnection from '@evidence-dev/components/ui/Databases/TestConnection.svelte'
 
     let credentials = settings.databaseConfig
 

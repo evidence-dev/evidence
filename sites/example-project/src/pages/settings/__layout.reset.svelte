@@ -27,8 +27,8 @@
 
 <script>
 	import "../../app.css"
-	import Hamburger from '$lib/ui/hamburger.svelte'
-	import Sidebar from '$lib/ui/Sidebar.svelte'
+	import Hamburger from '@evidence-dev/components/ui/Hamburger.svelte'
+	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
 
 	export let menu;
 	export let open = false  

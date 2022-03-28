@@ -19,6 +19,6 @@
 	},
 	"scripts": {
 		"release": "pnpm -r publish",
-		"test": "pnpm --filter ./sites/example-project package && pnpm install --frozen-lockfile && pnpm -r test"
+		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test"
 	}
 }
