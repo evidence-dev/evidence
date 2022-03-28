@@ -1,6 +1,6 @@
 import { testConnection } from '@evidence-dev/db-orchestrator'
 
-export async function post(request) {
+export async function post() {
     let result = await testConnection()
 
     if(result === "Database Connected"){

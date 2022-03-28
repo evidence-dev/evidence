@@ -30,10 +30,9 @@ const getProfile = async () => {
     }
 }
 
-const logEvent = async (eventName, dev) => {
+const logEvent = async (eventName, dev, settings) => {
     try {
-        const config = readJSONSync("./evidence.config.json")
-        const track = config.send_anonymous_usage_stats ?? true
+        const track = settings.send_anonymous_usage_stats ?? true
         if(track){
             projectProfile = await getProfile()
             var analytics = new Analytics(wK);

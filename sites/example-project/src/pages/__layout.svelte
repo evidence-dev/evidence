@@ -1,3 +1,5 @@
+<!-- This get's shipped with the template -- don't do local imports from $lib -->
+
 <script context = "module">
 	// Build nav links
 	const rootMDFiles = import.meta.glob('./*.md');

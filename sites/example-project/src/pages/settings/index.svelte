@@ -1,7 +1,7 @@
 <script context="module">
     export const load = async ({fetch}) => {
         const res = await fetch("../api/settings.json")
-        const settings = await res.json()
+        const {settings} = await res.json()
         return {
             props: {
                 settings
@@ -12,15 +12,15 @@
 
 
 <script>
-    export let settings 
-    // DB Forms 
     import BigqueryForm from '@evidence-dev/components/ui/Databases/BigqueryForm.svelte'
     import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
     import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
     import TestConnection from '@evidence-dev/components/ui/Databases/TestConnection.svelte'
 
-    let credentials = settings.databaseConfig
+    export let settings 
+
+    let credentials = settings.credentials
 
     // TODO: the save / existing / no save if no change flow is jank right now 
     // Available connector types, including a fallback
@@ -32,14 +32,17 @@
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm}
 	];
 
-	let selectedDatabase = databaseOptions.filter(d => d.id === settings.evidenceConfig.database)[0];
+    let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0];
 
     async function submitForm() {
+        console.log(selectedDatabase)
+        settings.database = selectedDatabase.id
+        settings.credentials = credentials
+    
 		const submit = await fetch("/api/settings.json", {
 			method: "POST",
 			body: JSON.stringify({
-				database: selectedDatabase.id,
-                credentials
+                settings
 			})
 		})
 	};

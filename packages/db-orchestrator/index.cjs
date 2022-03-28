@@ -48,14 +48,13 @@ const validateQuery = function (query) {
 }
 
 const runQueries = async function (routeHash, dev) {
-    const database = readJSONSync('./evidence.settings.json',{throws:false})
-    const config = readJSONSync('./evidence.config.json', {throws:false})
+    const settings = readJSONSync('./evidence.settings.json', {throws:false})
 
     let routePath = `./build/queries/${routeHash}`
     let queryFile = `${routePath}/${readdirSync(routePath)}`
     let queries = readJSONSync(queryFile, { throws: false }) 
 
-    const { default: runQuery } = await import('@evidence-dev/'+ config.database);
+    const { default: runQuery } = await import('@evidence-dev/'+ settings.database);
     
     if (queries.length > 0) {
         let data = {}
@@ -70,16 +69,16 @@ const runQueries = async function (routeHash, dev) {
                 try {
                     process.stdout.write(chalk.grey("  "+ query.id +" running..."))
                     validateQuery(query)
-                    data[query.id] = await runQuery(query.compiledQueryString, database, dev)
+                    data[query.id] = await runQuery(query.compiledQueryString, database.credentials, dev)
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
                     updateCache(dev, query.compiledQueryString, data[query.id], queryTime)
-                    logEvent("db-query", dev)
+                    logEvent("db-query", dev, settings)
                 } catch(err) {
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
                     data[query.id] = { error: { message: err } }
-                    logEvent("db-error", dev)
+                    logEvent("db-error", dev, settings)
                 } 
             }
         }
@@ -88,21 +87,20 @@ const runQueries = async function (routeHash, dev) {
 }
 
 
-const testConnection = async function () {
+const testConnection = async function (dev) {
     let query = {
         id: "Connection Test",
         compiledQueryString: "select 100 as num"
     }
     let queryResult;
     let result;
-    const database = readJSONSync('./evidence.settings.json',{throws:false})
-    const config = readJSONSync('./evidence.config.json', {throws:false})
+    const settings = readJSONSync('./evidence.settings.json', {throws:false})
 
-    const { default: runQuery } = await import('@evidence-dev/'+ config.database);
+    const { default: runQuery } = await import('@evidence-dev/'+ settings.database);
 
     try {
         process.stdout.write(chalk.grey("  "+ query.id +" running..."))
-        queryResult = await runQuery(query.compiledQueryString, database)
+        queryResult = await runQuery(query.compiledQueryString, settings.credentials)
         readline.cursorTo(process.stdout, 0);
         process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
         result = "Database Connected";
@@ -112,7 +110,6 @@ const testConnection = async function () {
         result = err;
     } 
     return result
-
 }
 
 module.exports = {
