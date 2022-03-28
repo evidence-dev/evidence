@@ -69,7 +69,7 @@ const runQueries = async function (routeHash, dev) {
                 try {
                     process.stdout.write(chalk.grey("  "+ query.id +" running..."))
                     validateQuery(query)
-                    data[query.id] = await runQuery(query.compiledQueryString, database.credentials, dev)
+                    data[query.id] = await runQuery(query.compiledQueryString, settings.credentials, dev)
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
                     updateCache(dev, query.compiledQueryString, data[query.id], queryTime)
@@ -87,7 +87,7 @@ const runQueries = async function (routeHash, dev) {
 }
 
 
-const testConnection = async function (dev) {
+const testConnection = async function () {
     let query = {
         id: "Connection Test",
         compiledQueryString: "select 100 as num"
