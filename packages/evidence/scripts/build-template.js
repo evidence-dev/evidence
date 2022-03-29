@@ -4,7 +4,6 @@ import fs from 'fs-extra'
 
 const templatePaths = [
     '.npmrc',
-    'evidence.config.json',
     'license',
     'static/',
     'src/app.css',

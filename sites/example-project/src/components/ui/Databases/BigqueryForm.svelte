@@ -1,5 +1,8 @@
 <script>
     export let credentials
+    export let existingCredentials
+
+    credentials = {...existingCredentials}
 
     let files;
 
@@ -26,6 +29,7 @@
     accept="application/json"
     bind:files
     on:change={handleUpload}
+    
 />
 </div>
 

@@ -20,7 +20,7 @@ export function post(request) {
     const {settings} = JSON.parse(request.body)
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     return {
-        body: "settings saved"
+        body: settings
     }
 }
 
