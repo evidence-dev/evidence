@@ -26,7 +26,7 @@
   let codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30) 
 
   // Status Bar & Results Toggle 
-  let error = queryResult.error
+  let error = queryResult[0]?.error_object?.error
   let nRecords = null
   let nProperties = null
   let showResults = false

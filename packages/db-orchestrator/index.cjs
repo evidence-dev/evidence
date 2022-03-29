@@ -78,7 +78,7 @@ const runQueries = async function (routeHash, dev) {
                 } catch(err) {
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
-                    data[query.id] = { error: { message: err } }
+                    data[query.id] = [ { error_object: {error: { message: err } } } ]
                     logEvent("db-error", dev)
                 } 
             }
