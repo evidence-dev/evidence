@@ -15,7 +15,7 @@ const getRouteHash = function(filename){
 
 const hasQueries = function(filename){
     let hash = getRouteHash(filename)
-    return fs.existsSync("./queries/extracted/"+hash)
+    return fs.existsSync("./.evidence-queries/extracted/"+hash)
 }
 
 const createModuleContext = function(filename){
@@ -73,14 +73,14 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
 }
 
 const updateExtractedQueriesDir = function(content, filename){
-    if (!fs.existsSync("./queries")){
-        fs.mkdirSync("./queries");
+    if (!fs.existsSync("./.evidence-queries")){
+        fs.mkdirSync("./.evidence-queries");
     }
-    if (!fs.existsSync("./queries/extracted")){
-        fs.mkdirSync("./queries/extracted");
+    if (!fs.existsSync("./.evidence-queries/extracted")){
+        fs.mkdirSync("./.evidence-queries/extracted");
     }
     let routeHash = getRouteHash(filename)
-    let queryDir = `./queries/extracted/${routeHash}`
+    let queryDir = `./.evidence-queries/extracted/${routeHash}`
 
     let queries = [];  
     let tree = unified()
