@@ -1,39 +1,26 @@
 import fs from 'fs';
 
-export async function get({params}) {
-    let evidenceConfig = {}
-    let databaseConfig = {}
-
-    if (fs.existsSync('evidence.config.json')) {
-        evidenceConfig = JSON.parse(fs.readFileSync('evidence.config.json', 'utf8', ));
-    }
+export async function get() {
+    let settings = {}
 
     if (fs.existsSync('evidence.settings.json')) {
-        databaseConfig = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
+        settings = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
     }
 
     return {
         header: "accept: application/json",
         body: {
-            evidenceConfig,
-            databaseConfig
+            settings
         }
     }
 }
 
 
 export function post(request) {
-    const formBody = JSON.parse(request.body)
-    const db = formBody.database
-    let evidenceConfig = JSON.parse(fs.readFileSync('evidence.config.json', 'utf8'));
-    evidenceConfig.database = db
-    fs.writeFileSync('evidence.config.json', JSON.stringify(evidenceConfig));
-
-    const credentials = formBody.credentials
-    fs.writeFileSync('evidence.settings.json', JSON.stringify(credentials));
-
+    const {settings} = JSON.parse(request.body)
+    fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     return {
-        body: "settings saved"
+        body: settings
     }
 }
 

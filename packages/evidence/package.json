@@ -8,6 +8,10 @@
   "bin": {
     "evidence": "cli.js"
   },
+  "scripts": {
+    "build": "node scripts/build-template",
+    "prepublishOnly": "npm run build"
+  },
   "files": [
       "template"
   ],

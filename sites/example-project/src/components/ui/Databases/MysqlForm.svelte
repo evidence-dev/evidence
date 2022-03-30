@@ -1,5 +1,8 @@
 <script>
-    export let credentials
+	export let credentials;
+	export let existingCredentials;
+
+	credentials = { ...existingCredentials };
 
     credentials = {
         host: credentials.host,

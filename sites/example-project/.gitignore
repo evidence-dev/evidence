@@ -3,4 +3,6 @@
 build
 node_modules
 evidence.settings.json
-queries
+dev
+.profile.json
+.evidence-queries
