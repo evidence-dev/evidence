@@ -23,7 +23,7 @@
   let showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
   let showCompiled = showCompilerToggle
       // Pre-calculate the container height for smooth slide transition 
-  let codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30) 
+  let codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30)
 
   // Status Bar & Results Toggle 
   let error = queryResult.error
@@ -51,6 +51,7 @@
  {#if $showQueries}
     <!-- Title -->
     <div class="container" transition:slide|local>
+      <div class="container-a">
         <div on:click={toggleSQL} class="title">
           <span><ChevronToggle toggled={showSQL}/> {queryID}</span>
         </div>
@@ -68,6 +69,7 @@
               {/if}
             </div>  
           {/if}
+      </div>
       <!-- Status -->
       <div class = {"status-bar" + (error ? " error": " success") + (showResults ? " open": " closed")} on:click={toggleResults}>  
         <span> 
@@ -83,7 +85,7 @@
       </div>
         {#if queryResult.length > 0 && !error && showResults}
             <DataTable data={queryResult}/>
-        {/if}
+            {/if}
     </div>
  {/if}
 </div>
@@ -170,7 +172,7 @@
         border-bottom-left-radius: 6px;
         border-bottom-right-radius: 6px;
         transition:400ms;
-        transition-delay: 400ms 
+        transition-delay: 400ms; 
         /* 400ms is the default duration for the slide */
     }
 
@@ -222,4 +224,13 @@
         font-size: 0.8em;
         margin-top:0.75em;
     }
+
+    .container-a {
+      background-color: var(--grey-100);
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      box-sizing: border-box;
+    }
+    /* container-a avoids whitespace appearing in the slide transition */
+
 </style>
