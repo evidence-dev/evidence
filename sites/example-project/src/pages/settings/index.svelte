@@ -16,7 +16,7 @@
     import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
     import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
-    import { blur, slide } from 'svelte/transition'
+    import { slide } from 'svelte/transition'
 
     export let settings 
     
@@ -35,11 +35,6 @@
 	];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0];
-
-    const clearCredentials = function() {
-        credentials = {}
-        testResult = null
-    }
 
     async function runTest() {
         const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -86,16 +81,32 @@
             <h1>Database Connection</h1>
             <p>Evidence supports one database connection per project.</p>
             <h2>Connection Type</h2>
-            <select bind:value={selectedDatabase} on:change={clearCredentials}>
+            <select bind:value={selectedDatabase} on:change={() => testResult = null}>
             {#each databaseOptions as option}
                 <option value={option}>
                     {option.name}
                 </option>
             {/each}
             </select>
-            <svelte:component this={selectedDatabase.formComponent} bind:credentials={credentials} {existingCredentials}/>
         </div> 
+        <div class=panel>
+            <svelte:component this={selectedDatabase.formComponent} bind:credentials={credentials} existingCredentials = {selectedDatabase.id === settings.database ? existingCredentials : {}}/>
+        </div>
+        {#if testResult}
+        <div class=panel in:slide|local>
+            {#await testResult}
+                <span class="indicator running" /><span>Testing connection</span>
+            {:then result} 
+                <span class="indicator success" /><span>{result}</span>
+            {:catch error}
+                <span class="indicator fail" />
+                <span  style="color:var(--red-600)">Unable to connect</span>
+                <p in:slide|local class=error>{error.message}</p>
+            {/await}
+        </div>
+        {/if}
     </div>
+ 
     <footer>
         {#if selectedDatabase.id === ''}
         <span>Learn more about Database Connection Settings &rarr;</span> 
@@ -103,24 +114,14 @@
         <span>Learn more about {selectedDatabase.name} Connection Settings &rarr;</span> 
         {/if}
         {#if credentialsEdited}
-        <button type=submit id=save>Save and Test</button>
+        <button type=submit id=save>Save</button>
         {:else}
         <button type=submit id=save>Test</button>
         {/if} 
     </footer>
 </form>
 
-{#if testResult}
-<div class=message in:slide|local>
-    {#await testResult}
-        <span class="indicator running"/><span in:blur|local>Running connection test</span>
-    {:then result} 
-        <span class="indicator success"/><span in:blur|local>{result}</span>
-    {:catch error}
-        <span class="indicator fail"/><span in:blur|local>{error.message}</span>
-    {/await}
-</div>
-{/if}
+
 
 
 <style> 
@@ -170,7 +171,7 @@ span.indicator {
 }
 
 span.indicator.running {
-    background-color: var(--blue-600);
+    background-color: var(--blue-500);
     transform: scale(1);
     animation: pulse-blue 2s infinite;
 }
@@ -185,16 +186,10 @@ span.indicator.fail {
     background-color: var(--red-600);
 }
 
-.message {
-    border: 1px solid var(--grey-200);
-    margin-top: 1.5em;
-    border-radius: 5px;
-    padding:0.5em 1em;
-    text-align: left;
-    font-family: var(--ui-font-family);
-    font-size: 14px;
+p.error {
+	font-family: 'monoco', Roboto Mono, monospace;
+    padding-top: 1em;
 }
-
 
 h2 {
     text-transform: uppercase;
@@ -256,11 +251,6 @@ button {
     text-decoration: none;
     font-size:14px;
     cursor:pointer;
-}
-    
-button:hover {
-    box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
-    transition:all 350ms;
 }
 
 #save {

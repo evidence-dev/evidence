@@ -5,11 +5,6 @@
     export let credentials
 </script>
 
-
-<hr/>
-
-
-
 {#each opts as opt}
 <div class=input-item>
     <label for={opt.id}>
@@ -116,6 +111,10 @@
 
     label {
         width: 30%;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 14px;
+        color: var(--grey-800)
     }
 
  
