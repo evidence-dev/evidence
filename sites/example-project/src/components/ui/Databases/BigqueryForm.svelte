@@ -22,12 +22,22 @@
 <label>
     JSON Keyfile
 </label>
+{#if credentials.project_id && credentials.private_key && credentials.client_email}
 <input id=file-input
     type="file" 
     accept="application/json"
     bind:files
     on:change={handleUpload}
 />
+{:else}
+<input id=file-input
+    type="file" 
+    accept="application/json"
+    bind:files
+    on:change={handleUpload}
+    required
+/>
+{/if}
 
 </div>
 
@@ -41,6 +51,7 @@
             name=project
             value={credentials?.project_id ?? ' '}
             disabled
+            
         />
 </div>
 <div class=input-item>
@@ -52,6 +63,7 @@
             id=pk
             value={credentials?.private_key ?? ''}
             disabled
+            
         />
 </div>
 <div class=input-item>
@@ -63,6 +75,7 @@
             id=client-email
             value={credentials?.client_email ?? ' '}
             disabled
+            
         />
 </div>
 
