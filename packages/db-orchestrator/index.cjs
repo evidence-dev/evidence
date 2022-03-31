@@ -1,9 +1,8 @@
-const { readdirSync, readJSONSync, writeJSONSync, pathExistsSync, emptyDirSync, mkdirSync, ensureFileSync } = require('fs-extra')
+const { readdirSync, readJSONSync, writeJSONSync, pathExistsSync, emptyDirSync, mkdirSync } = require('fs-extra')
 const md5 = require("blueimp-md5")
 const chalk = require('chalk')
 const logEvent = require('@evidence-dev/telemetry')
 const readline = require('readline');
-const { throws } = require('assert');
 
 const getCache = function (dev, queryString, queryTime) {
     queryTime = md5(queryTime)
@@ -108,7 +107,6 @@ const testConnection = async function () {
         id: "Connection Test",
         compiledQueryString: "select 100 as num"
     }
-    let queryResult;
     let result;
     const settings = readJSONSync('./evidence.settings.json', {throws:false})
 
