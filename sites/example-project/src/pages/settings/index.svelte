@@ -27,7 +27,7 @@
 
     // Available connector types and fallback
     const databaseOptions = [
-        {id: '', name: 'Choose a database'},
+        {name: 'Choose a database'},
 		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm},
 		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
@@ -110,16 +110,17 @@
     </div>
  
     <footer>
-        {#if selectedDatabase.id === ''}
-        <span>Learn more about Database Connection Settings &rarr;</span> 
-        {:else}
+        {#if selectedDatabase.id}
         <span>Learn more about {selectedDatabase.name} Connection Settings &rarr;</span> 
-        {/if}
-        {#if credentialsEdited}
-        <button type=submit id=save>Save</button>
+            {#if credentialsEdited}
+            <button type=submit id=save>Save</button>
+            {:else}
+            <button type=submit id=save>Test</button>
+            {/if} 
         {:else}
-        <button type=submit id=save>Test</button>
-        {/if} 
+            <span>Learn more about Database Connection Settings &rarr;</span> 
+            <button type=submit id=save disabled>Save</button>
+        {/if}
     </footer>
 </form>
 
@@ -275,6 +276,16 @@ button {
     padding:0.4em 1.10em;
     transition-property: background, color;
     transition-duration: 350ms;
+}
+
+#save:disabled,
+button[disabled]{
+  border: 1px solid var(--grey-400);
+  background-color: var(--grey-100);
+  color: var(--grey-600);
+  cursor: not-allowed;
+  transition-property: background, color;
+  transition-duration: 350ms;
 }
 
 </style>
