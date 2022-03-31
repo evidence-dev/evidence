@@ -64,10 +64,6 @@
 
 <style>
 
-    hr {
-        width: 100%
-    }
-
     span.additional-info-icon {
         width: 18px;
         color:var(--grey-600);
