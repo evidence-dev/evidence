@@ -34,7 +34,7 @@
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm}
 	];
 
-    let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0];
+    let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
 
     async function runTest() {
         const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -89,9 +89,11 @@
             {/each}
             </select>
         </div> 
-        <div class=panel>
+        {#if selectedDatabase.formComponent}
+        <div class=panel transition:slide|local>
             <svelte:component this={selectedDatabase.formComponent} bind:credentials={credentials} existingCredentials = {selectedDatabase.id === settings.database ? existingCredentials : {}}/>
         </div>
+        {/if}
         {#if testResult}
         <div class=panel in:slide|local>
             {#await testResult}

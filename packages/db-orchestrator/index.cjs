@@ -1,8 +1,9 @@
-const { readdirSync, readJSONSync, writeJSONSync, pathExistsSync, emptyDirSync, mkdirSync } = require('fs-extra')
+const { readdirSync, readJSONSync, writeJSONSync, pathExistsSync, emptyDirSync, mkdirSync, ensureFileSync } = require('fs-extra')
 const md5 = require("blueimp-md5")
 const chalk = require('chalk')
 const logEvent = require('@evidence-dev/telemetry')
 const readline = require('readline');
+const { throws } = require('assert');
 
 const getCache = function (dev, queryString, queryTime) {
     queryTime = md5(queryTime)
@@ -47,14 +48,29 @@ const validateQuery = function (query) {
     }
 }
 
+
+
+
+const importDBAdapter = async function(settings) {
+    try {
+        const { default: runQuery } = await import('@evidence-dev/'+ settings.database);
+        return runQuery
+    }catch {
+        const runQuery = async function(){
+            throw 'Missing database credentials'
+        }
+        return runQuery
+    }
+}
+
 const runQueries = async function (routeHash, dev) {
     const settings = readJSONSync('./evidence.settings.json', {throws:false})
+    const runQuery = await importDBAdapter(settings)
 
     let routePath = `./.evidence-queries/extracted/${routeHash}`
     let queryFile = `${routePath}/${readdirSync(routePath)}`
     let queries = readJSONSync(queryFile, { throws: false }) 
 
-    const { default: runQuery } = await import('@evidence-dev/'+ settings.database);
     
     if (queries.length > 0) {
         let data = {}
@@ -69,7 +85,7 @@ const runQueries = async function (routeHash, dev) {
                 try {
                     process.stdout.write(chalk.grey("  "+ query.id +" running..."))
                     validateQuery(query)
-                    data[query.id] = await runQuery(query.compiledQueryString, settings.credentials, dev)
+                    data[query.id] = await runQuery(query.compiledQueryString, settings?.credentials, dev)
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
                     updateCache(dev, query.compiledQueryString, data[query.id], queryTime)
