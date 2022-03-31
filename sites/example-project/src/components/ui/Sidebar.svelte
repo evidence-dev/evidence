@@ -7,7 +7,26 @@
 	let folders = [...new Set(menu.map(item => item.folder))];
 	folders = folders.filter(d => d !== undefined);
 
-	let noFolders = menu.filter(d => d.folder === undefined)
+	let fileCount;
+	let folderList = [];
+	let folderObj;
+	let folderLink;
+	for(let i = 0; i < folders.length; i++){
+		let contents = menu.filter(d => d.folder === folders[i]);
+		fileCount = contents.filter(d => d.label !== folders[i]).length;
+		folderLink = contents.filter(d => d.label === folders[i]).length > 0;
+		folderObj = {folder: folders[i], fileCount: fileCount, folderLink: folderLink}
+		folderList.push(folderObj)
+	}
+
+	// Keep only folders with at least 1 page that is not index.md or a parameterized page (path contains '[')
+	folderList = folderList.filter(d => d.fileCount > 0)
+	let folderCheck = [];
+	for(let i = 0; i < folderList.length; i++){
+		folderCheck.push(folderList[i].folder)
+	}
+
+	let noFolders = menu.filter(d => d.folder === undefined && !folderCheck.includes(d.folder))
 
     export let open 
 
@@ -19,67 +38,26 @@
             <a href='/'><h1 class=project-title>Evidence</h1></a>
         </div>
         <nav>
-            <!-- {#if menu}
-            {#each menu as item}
-                {#if item.label != 'index'}
-                <a href={item.href} sveltekit:prefetch on:click={() => open = !open}>
-                    <div class:selected="{"/"+$page.path.split('/')[1] === item.href}" >
-                        {item.label}
-                    </div>
-                </a>
-                {/if}
+			{#if folders}
+            {#each folderCheck as folder}
+				<CollapsibleSection {folder} {menu} {folderList} bind:open={open}/>
             {/each}
-            {/if} -->
+            {/if}
+			
 			{#if noFolders}
             {#each noFolders as item}
                 {#if item.label != 'index'}
-                <a href={item.href} sveltekit:prefetch on:click={() => open = !open}>
-                    <div class:selected="{"/"+$page.path.split('/')[1] === item.href}" >
+                <a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
+                    <div class=item class:selected="{"/"+$page.path.split('/')[1] === item.href}">
                         {item.label}
                     </div>
                 </a>
                 {/if}
             {/each}
             {/if}
-			{#if folders}
-            {#each folders as folder}
-                {#if folder.label != 'index'}
-                <!-- <a href={"/"+folder} sveltekit:prefetch on:click={() => open = !open}>
-                    <div class:selected="{"/"+$page.path.split('/')[1] === "/" + folder}" >
-                        {folder} >
-                    </div>
-                </a> -->
-
-				<CollapsibleSection {folder} {menu} bind:open={open}/>
-
-				<!-- <div class=collapsible>
-				<a href={"/"+folder} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
-					<div class:selected="{"/"+$page.path.split('/')[1] === "/" + folder}" >
-						{folder} >
-					</div>
-				</a>
-			
-			
-				<div class='contents' hidden={!expanded}>
-					{#each menu.filter(d => d.folder === folder) as item}
-					{#if item.label != 'index'}
-					<a href={item.href} sveltekit:prefetch on:click={() => open = !open}>
-						<div class:selected="{"/"+$page.path.split('/')[1] === item.href}" >
-							{item.label}
-						</div>
-					</a>
-					{/if}
-					{/each}
-				</div>
-				</div> -->
-                {/if}
-            {/each}
-            {/if}
-
         </nav>
         {#if dev}
         <div class="nav-footer">
-
             <a href='/settings'>Settings</a>
         </div>
         {/if}
@@ -114,6 +92,7 @@ aside.sidebar {
 nav {
     overflow-y: scroll;
 	overflow-x: hidden;
+	grid-area: nav;
 }
 
 a {
