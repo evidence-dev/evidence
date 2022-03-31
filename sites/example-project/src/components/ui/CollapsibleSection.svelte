@@ -18,26 +18,28 @@
 </script>
 
 <div class="collapsible">
-	<div class="folder" class:selected={$page.path === '/' + folder}>
-		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)}>
+	<div class="folder" class:selected={$page.path === '/' + folder} class:folder-selected={$page.path.split('/')[1] === folder}>
+		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
+                class:selected={$page.path === '/' + folder}
+                class:folder-selected={$page.path.split('/')[1] === folder}
 				style="tran"
-				width="13"
-				height="13"
+				width="12"
+				height="12"
 				fill="none"
 				stroke-linecap="round"
 				stroke-linejoin="round"
 				stroke-width="2"
 				viewBox="0 0 24 24"
-				stroke="var(--grey-700)"
 			>
 				<path d="M9 5l7 7-7 7" /></svg
 			>
 		</button>
-
 		{#if folderList.filter((d) => d.folder === folder)[0].folderLink}
 			<a href={'/' + folder} aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
+                <div class=folder-label class:selected={$page.path === '/' + folder} class:folder-selected={$page.path.split('/')[1] === folder}>
 				{folder}
+                </div>
 			</a>
 		{:else}
 			<span aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
@@ -72,6 +74,7 @@
 		font-size: 16px;
 		color: var(--grey-700);
 		cursor: pointer;
+        width: 100%;
 	}
 
 	a .content-item {
@@ -80,21 +83,25 @@
 
 	.folder {
 		width: 100%;
-		/* padding: 0.2em 1em 0.2em 1em; */
-		display: block;
+        padding: 0.2rem 1rem 0.2rem 1.2rem;
+        display: grid;
+        grid-template-columns: 1.2rem auto;
+        margin: 0;
+        padding: 0;
+        gap: 0;
 	}
 
-	.contents {
+    .folder .folder-label {
+        padding: 0.2rem 1rem 0.2rem 0rem;
+    }
+
+	/* .contents {
 		width: 100%;
 		display: block;
-	}
+	} */
 
-	.contents a {
-		display: block;
-	}
 	.content-item {
-		width: 100%;
-		padding: 0.2em 1em 0em 1.5em;
+		padding: 0.2rem 1rem 0.2rem 1.8rem;
 	}
 
 	button {
@@ -104,23 +111,35 @@
 		color: inherit;
 		font-size: 1em;
 		cursor: pointer;
-		margin-left: 0.5em;
-		margin-right: 0;
-		padding-top: 0.5em;
+        padding-right: 0rem;
+        padding-left: 0.2rem;
+        width: 100%;
+        height: 100%;
 	}
 
 	svg {
 		transition: transform 0.15s ease-in;
+        stroke: var(--grey-700);
 	}
+
+    svg.selected {
+        stroke: var(--grey-999);
+        stroke-width: 3;
+    }
+
+    svg.folder-selected {
+        stroke: var(--grey-999);
+        stroke-width: 3;
+    }
 
 	[aria-expanded='true'] svg {
 		transform: rotate(0.25turn);
 	}
 
-	.collapsible {
+	/* .collapsible {
 		display: block;
 		width: 100%;
-	}
+	} */
 
 	.folder:hover,
 	.content-item:hover {
@@ -140,4 +159,10 @@
 		color: var(--grey-999);
 		font-weight: 500;
 	}
+
+    .folder-selected {
+		color: var(--grey-999);
+		font-weight: 500;
+    }
+
 </style>

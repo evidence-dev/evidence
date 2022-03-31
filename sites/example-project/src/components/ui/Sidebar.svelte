@@ -48,7 +48,7 @@
             {#each noFolders as item}
                 {#if item.label != 'index'}
                 <a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-                    <div class=item class:selected="{"/"+$page.path.split('/')[1] === item.href}">
+                    <div class:selected="{"/"+$page.path.split('/')[1] === item.href}">
                         {item.label}
                     </div>
                 </a>
@@ -81,7 +81,7 @@ aside.sidebar {
 	height: 100vh;
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-template-rows: 3em 1fr 4em;
+	grid-template-rows: 3rem 1fr 4rem;
 	grid-template-areas: 
 	'header'
 	'nav'
@@ -111,8 +111,7 @@ nav a {
 }
 
 nav div {
-	width: 100%;
-	padding: 0.2em 1em 0.2em 1em;
+	padding: 0.2rem 1rem 0.2rem 1.2rem;
 	/* transition-property: background-color;
 	transition-duration: 400ms; */
 }
@@ -141,7 +140,7 @@ div.selected {
 }
 
 div.nav-header {
-	padding: 0.2em 1em 1.2em 1em;
+	padding: 0.2rem 1rem 1.2rem 1.2rem;
 	grid-area: header;
 }
 
@@ -150,7 +149,7 @@ div.nav-header a {
 }
 
 .nav-footer {
-	padding: 1.2em 1em 1.2em 1em;
+	padding: 1.2rem 1rem 1.2rem 1.2rem;
 	box-sizing: border-box;
 
 	position:absolute; 

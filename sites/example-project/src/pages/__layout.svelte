@@ -28,11 +28,6 @@
 	}
 
 	for(let path in levelOneMDFiles) {
-		// console.log(path);
-		// tempPath = path.replace(/^\.\//, '')
-		// console.log(tempPath)
-		// tempPath = tempPath.replace(/\/([^\/]+)$/, '')
-		// console.log(tempPath)
 		if(!path.includes("/index.md") && !path.includes("[")){
 			allmenu.push({
 				label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index','').replace(/.*\//,''),
@@ -41,7 +36,7 @@
 			})
 		}
 	} 
-console.log(allmenu)
+
 	export const load = async() => {
 		const menu = await Promise.all(allmenu)
 		return { props: { menu } }
