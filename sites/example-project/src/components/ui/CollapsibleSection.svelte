@@ -12,8 +12,11 @@
 	let expanded = false;
 
 	function toggle() {
-		// expanded = !expanded;
-		open = !open;
+		expanded = !expanded;
+
+        if($page.path !== '/' + folder){
+		    open = !open;
+        }
 	}
 </script>
 
@@ -29,7 +32,7 @@
 				fill="none"
 				stroke-linecap="round"
 				stroke-linejoin="round"
-				stroke-width="2"
+				stroke-width="3"
 				viewBox="0 0 24 24"
 			>
 				<path d="M9 5l7 7-7 7" /></svg
@@ -42,7 +45,7 @@
                 </div>
 			</a>
 		{:else}
-			<span aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
+			<span class=folder-label class:folder-selected={$page.path.split('/')[1] === folder} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
 				{folder}
 			</span>
 		{/if}
@@ -95,10 +98,15 @@
         padding: 0.2rem 1rem 0.2rem 0rem;
     }
 
-	/* .contents {
-		width: 100%;
-		display: block;
-	} */
+    .folder-label {
+        text-decoration: none;
+		font-family: var(--ui-font-family);
+		-webkit-font-smoothing: antialiased;
+		font-size: 16px;
+        cursor: pointer;
+        text-transform: capitalize;
+        color: var(--grey-700);
+    }
 
 	.content-item {
 		padding: 0.2rem 1rem 0.2rem 1.8rem;

@@ -35,7 +35,7 @@
 <aside class="sidebar" class:open>
     <div class="sticky">
         <div class=nav-header>
-            <a href='/'><h1 class=project-title>Evidence</h1></a>
+            <a href='/' on:click={() => open = !open}><h1 class=project-title>Evidence</h1></a>
         </div>
         <nav>
 			{#if folders}
