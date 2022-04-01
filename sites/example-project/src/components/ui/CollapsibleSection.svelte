@@ -27,8 +27,8 @@
                 class:selected={$page.path === '/' + folder}
                 class:folder-selected={$page.path.split('/')[1] === folder}
 				style="tran"
-				width="12"
-				height="12"
+				width="9"
+				height="9"
 				fill="none"
 				stroke-linecap="round"
 				stroke-linejoin="round"
@@ -69,12 +69,11 @@
 <style>
 	a {
 		text-transform: capitalize;
-		color: var(--grey-800);
 		display: inline-block;
 		text-decoration: none;
 		font-family: var(--ui-font-family);
 		-webkit-font-smoothing: antialiased;
-		font-size: 16px;
+		font-size: 15px;
 		color: var(--grey-700);
 		cursor: pointer;
         width: 100%;
@@ -102,14 +101,14 @@
         text-decoration: none;
 		font-family: var(--ui-font-family);
 		-webkit-font-smoothing: antialiased;
-		font-size: 16px;
+		font-size: 15px;
         cursor: pointer;
         text-transform: capitalize;
         color: var(--grey-700);
     }
 
 	.content-item {
-		padding: 0.2rem 1rem 0.2rem 1.8rem;
+		padding: 0.2rem 1rem 0.2rem 2.25rem;
 	}
 
 	button {
@@ -130,14 +129,16 @@
         stroke: var(--grey-700);
 	}
 
-    svg.selected {
-        stroke: var(--grey-999);
-        stroke-width: 3;
-    }
 
     svg.folder-selected {
         stroke: var(--grey-999);
-        stroke-width: 3;
+        stroke-width: 5;
+    }
+
+
+    svg.selected {
+        stroke: var(--blue-600);
+        stroke-width: 5;
     }
 
 	[aria-expanded='true'] svg {
@@ -151,26 +152,29 @@
 
 	.folder:hover,
 	.content-item:hover {
-		background-color: var(--grey-200);
+		/* background-color: var(--grey-200); */
+		color: var(--grey-900)
 		/* transition-property: background-color;
 	transition-duration: 400ms; */
 	}
 
 	.selected.content-item {
-		background-color: var(--grey-200);
-		color: var(--grey-999);
+		/* background-color: var(--grey-200); */
+		color: var(--blue-600);
 		font-weight: 500;
 	}
 
-	.selected {
-		background-color: var(--grey-200);
-		color: var(--grey-999);
-		font-weight: 500;
-	}
 
     .folder-selected {
 		color: var(--grey-999);
 		font-weight: 500;
     }
+
+
+	.selected {
+		/* background-color: var(--grey-200); */
+		color: var(--blue-600);
+		font-weight: 500;
+	}
 
 </style>

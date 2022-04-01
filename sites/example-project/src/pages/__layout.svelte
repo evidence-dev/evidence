@@ -89,7 +89,7 @@
   grid-template-areas:
     'sidebar header'
     'sidebar main';
-  grid-template-columns: 20rem 5fr;
+  grid-template-columns: 18rem 5fr;
   grid-template-rows: var(--header-height) 1fr;
   gap: 0 16px;
   margin: 0 auto;
