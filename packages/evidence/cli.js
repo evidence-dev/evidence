@@ -28,6 +28,31 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
+const runFileWatcher = function() {
+  const ignoredFiles = [
+    "./pages/settings/**", 
+    "./pages/settings.+(*)",
+    "./pages/api/**", 
+    "./pages/api.+(*)"
+  ]
+
+  const watcher = chokidar.watch('./pages/**', {ignored:ignoredFiles})
+
+  const sourcePath = path => "./"+path
+  const targetPath = path => "./.evidence/template/src/pages/"+path.split("pages/")[1]
+  watcher
+      .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
+      .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
+      .on('unlink', path => fs.rmSync(targetPath(path)))
+      .on('addDir', path => {
+        if(!fs.existsSync(targetPath(path))){
+          fs.mkdirSync(targetPath(path))}
+        })
+      .on('unlinkDir', path => fs.rmdirSync(targetPath(path)))
+  ;
+  return watcher 
+}
+
 const prog = sade('evidence')
 
 prog
@@ -35,45 +60,39 @@ prog
   .describe("launch the local evidence development environment")
   .action(() => {
     populateTemplate()
-
-    // Watcher and syncing   
-    const ignoredFiles = [
-      "./pages/settings/**", 
-      "./pages/settings.+(*)",
-      "./pages/api/**", 
-      "./pages/api.+(*)"
-    ]
-
-    const watcher = chokidar.watch('./pages/**', {ignored:ignoredFiles})
-
-    const sourcePath = path => "./"+path
-    const targetPath = path => "./.evidence/template/src/pages/"+path.split("pages/")[1]
-    watcher
-        .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-        .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-        .on('unlink', path => fs.rmSync(targetPath(path)))
-        .on('addDir', path => {
-          if(!fs.existsSync(targetPath(path))){
-            fs.mkdirSync(targetPath(path))}
-          })
-        .on('unlinkDir', path => fs.rmdirSync(targetPath(path)))
-    ;
+    runFileWatcher()
 
     // Run svelte kit dev in the hidden directory 
-    // TODO: Improve the Handling of feedback / console logging from svelte & evidence
-    const child = spawn('npx svelte-kit dev -- --open', {shell: true, cwd:'.evidence/template'});
-
-    child.stdout.on('data', (data) => {
-      console.log(`child stdout:\n${data}`);
-    });
-    child.stderr.on('data', (data) => {
-      console.error(`child stderr:\n${data}`);
-    });
-    child.on('exit', function (code, signal) {
-      console.log('Child process exited with ' +
-                  `code ${code} and signal ${signal}`);
-    });
+    const child = spawn('npx svelte-kit dev', {shell: true, cwd:'.evidence/template', stdio: "inherit"});
 
   }); 
+
+  prog
+  .command('build')
+  .describe("build production outputs")
+  .action(() => {
+    populateTemplate()
+    const watcher = runFileWatcher()
+
+    // Run svelte kit build in the hidden directory 
+    const child = spawn('npx svelte-kit build', {shell: true, cwd:'.evidence/template'});
+
+    // Copy the outputs to the root of the project upon successful exit 
+    child.stdout.on('data', (data) => {
+    });
+    child.stderr.on('data', (data) => {
+      console.error(`${data}`);
+    });
+    child.on('exit', function (code, signal) {
+      if(code === 0) {
+        fs.copySync('./.evidence/template/build', './build')
+        console.log("Build complete --> /build ")
+        child.kill()
+        watcher.close()
+      }
+    })
+
+  }); 
+
 
   prog.parse(process.argv)
