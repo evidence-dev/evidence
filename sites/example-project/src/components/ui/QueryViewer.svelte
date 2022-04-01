@@ -1,5 +1,6 @@
 <script>
   import { slide } from 'svelte/transition';
+  import { dev } from '$app/env';
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
@@ -74,7 +75,12 @@
       <div class = {"status-bar" + (error ? " error": " success") + (showResults ? " open": " closed")} on:click={toggleResults}>  
         <span> 
           {#if error}
-            {error.message} 
+            {#if dev && error.message === "Missing database credentials"}
+              {error.message}.
+              <a class=credentials-link href='/settings'> Add credentials here</a>
+            {:else}
+              {error.message} 
+            {/if}
           {:else if nRecords > 0}
             <ChevronToggle toggled={showResults} color="#3488e9"/> {nRecords.toLocaleString()} {nRecords > 1 ? "records" : "record"} with {nProperties.toLocaleString()} {nProperties > 1 ? "properties" : "property"} 
           {:else}
