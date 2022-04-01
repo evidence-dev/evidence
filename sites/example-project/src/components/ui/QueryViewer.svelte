@@ -197,6 +197,15 @@
         color: var(--red-600);  
     }
 
+    .credentials-link {
+      color: var(--blue-500);
+      text-decoration: none;
+    } 
+
+    .credentials-link:hover {
+      color: var(--blue-700);
+    }
+
     div.title {
         border-top-left-radius: 6px;
         border-top-right-radius: 6px;
