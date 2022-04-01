@@ -12,11 +12,12 @@
 	let expanded = false;
 
 	function toggle() {
-		expanded = !expanded;
-
         if($page.path !== '/' + folder){
 		    open = !open;
-        }
+			expanded = true;
+        } else {
+			expanded = !expanded;
+		}
 	}
 </script>
 
@@ -45,7 +46,7 @@
                 </div>
 			</a>
 		{:else}
-			<span class=folder-label class:folder-selected={$page.path.split('/')[1] === folder} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<span class="folder-label nolink" class:folder-selected={$page.path.split('/')[1] === folder} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
 				{folder}
 			</span>
 		{/if}
@@ -106,6 +107,11 @@
         text-transform: capitalize;
         color: var(--grey-700);
     }
+
+	.nolink {
+		-webkit-user-select: none;
+        user-select: none;
+	}
 
 	.content-item {
 		padding: 0.2rem 1rem 0.2rem 2.25rem;

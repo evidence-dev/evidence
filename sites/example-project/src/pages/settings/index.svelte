@@ -16,7 +16,7 @@
     import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
     import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
-    import { slide, blur } from 'svelte/transition'
+    import { slide } from 'svelte/transition'
 
     export let settings 
     
@@ -75,7 +75,7 @@
 
 </script>
 
-<form on:submit|preventDefault={submitForm} autocomplete="off" in:blur>
+<form on:submit|preventDefault={submitForm} autocomplete="off">
     <div class=container>
         <div class=panel> 
             <h1>Database Connection</h1>

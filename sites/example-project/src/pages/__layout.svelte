@@ -1,50 +1,5 @@
 <!-- This get's shipped with the template -- don't do local imports from $lib -->
 
-<script context = "module">
-	// Build nav links
-	const rootMDFiles = import.meta.glob('./*.md');
-	const levelOneIndexFiles = import.meta.glob('./*/index.md');
-	const levelOneMDFiles = import.meta.glob('./*/*.md');
-
-	let allmenu = [];
-
-	let root;
-	let folder;
-	let file;
-	let tempPath;
-
-	for(let path in rootMDFiles) {
-		allmenu.push({
-			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' '),
-			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/'),
-			folder: undefined
-		})
-	}
-
-	for(let path in levelOneIndexFiles) {
-		allmenu.push({
-			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
-			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
-			folder: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('/index',''),
-		})
-	}
-
-	for(let path in levelOneMDFiles) {
-		if(!path.includes("/index.md") && !path.includes("[")){
-			allmenu.push({
-				label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index','').replace(/.*\//,''),
-				href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
-				folder: path.replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
-			})
-		}
-	} 
-
-	export const load = async() => {
-		const menu = await Promise.all(allmenu)
-		return { props: { menu } }
-	}
-</script>
-
 <script>
 	import "../app.css"
 	import { navigating } from '$app/stores';
@@ -56,7 +11,6 @@
 	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
 	import LoadingIndicator from "@evidence-dev/components/ui/LoadingIndicator.svelte";
 
-	export let menu;
 	export let open = false  
 </script>
 
@@ -70,7 +24,7 @@
 
 <div class="grid">
 	<Header/>
-	<Sidebar bind:open {menu}/> 
+	<Sidebar bind:open/> 
 	<Hamburger bind:open/>
 	<main in:blur|local>
 	  <div class=content>
