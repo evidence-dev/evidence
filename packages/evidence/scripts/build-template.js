@@ -4,7 +4,6 @@ import fs from 'fs-extra'
 
 const templatePaths = [
     '.npmrc',
-    'license',
     'static/',
     'src/app.css',
     'src/app.html',
