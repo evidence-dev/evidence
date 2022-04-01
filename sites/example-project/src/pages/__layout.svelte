@@ -4,13 +4,20 @@
 	// Build nav links
 	const rootMDFiles = import.meta.glob('./*.md');
 	const levelOneIndexFiles = import.meta.glob('./*/index.md');
+	const levelOneMDFiles = import.meta.glob('./*/*.md');
 
 	let allmenu = [];
+
+	let root;
+	let folder;
+	let file;
+	let tempPath;
 
 	for(let path in rootMDFiles) {
 		allmenu.push({
 			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' '),
 			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/'),
+			folder: undefined
 		})
 	}
 
@@ -18,9 +25,20 @@
 		allmenu.push({
 			label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
 			href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+			folder: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('/index',''),
 		})
 	}
-	
+
+	for(let path in levelOneMDFiles) {
+		if(!path.includes("/index.md") && !path.includes("[")){
+			allmenu.push({
+				label: path.replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index','').replace(/.*\//,''),
+				href: path.replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+				folder: path.replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
+			})
+		}
+	} 
+
 	export const load = async() => {
 		const menu = await Promise.all(allmenu)
 		return { props: { menu } }
@@ -73,7 +91,7 @@
   grid-template-areas:
     'sidebar header'
     'sidebar main';
-  grid-template-columns: 20rem 5fr;
+  grid-template-columns: 18rem 5fr;
   grid-template-rows: var(--header-height) 1fr;
   gap: 0 16px;
   margin: 0 auto;

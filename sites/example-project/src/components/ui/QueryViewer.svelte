@@ -1,5 +1,6 @@
 <script>
   import { slide } from 'svelte/transition';
+  import { dev } from '$app/env';
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
@@ -23,10 +24,10 @@
   let showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
   let showCompiled = showCompilerToggle
       // Pre-calculate the container height for smooth slide transition 
-  let codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30) 
+  let codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30)
 
   // Status Bar & Results Toggle 
-  let error = queryResult.error
+  let error = queryResult[0]?.error_object?.error
   let nRecords = null
   let nProperties = null
   let showResults = false
@@ -51,6 +52,7 @@
  {#if $showQueries}
     <!-- Title -->
     <div class="container" transition:slide|local>
+      <div class="container-a">
         <div on:click={toggleSQL} class="title">
           <span><ChevronToggle toggled={showSQL}/> {queryID}</span>
         </div>
@@ -68,11 +70,17 @@
               {/if}
             </div>  
           {/if}
+      </div>
       <!-- Status -->
       <div class = {"status-bar" + (error ? " error": " success") + (showResults ? " open": " closed")} on:click={toggleResults}>  
         <span> 
           {#if error}
-            {error.message} 
+            {#if dev && error.message === "Missing database credentials"}
+              {error.message}.
+              <a class=credentials-link href='/settings'> Add credentials here</a>
+            {:else}
+              {error.message} 
+            {/if}
           {:else if nRecords > 0}
             <ChevronToggle toggled={showResults} color="#3488e9"/> {nRecords.toLocaleString()} {nRecords > 1 ? "records" : "record"} with {nProperties.toLocaleString()} {nProperties > 1 ? "properties" : "property"} 
           {:else}
@@ -83,7 +91,7 @@
       </div>
         {#if queryResult.length > 0 && !error && showResults}
             <DataTable data={queryResult}/>
-        {/if}
+            {/if}
     </div>
  {/if}
 </div>
@@ -170,7 +178,7 @@
         border-bottom-left-radius: 6px;
         border-bottom-right-radius: 6px;
         transition:400ms;
-        transition-delay: 400ms 
+        transition-delay: 400ms; 
         /* 400ms is the default duration for the slide */
     }
 
@@ -187,6 +195,15 @@
     
     .status-bar.error {
         color: var(--red-600);  
+    }
+
+    .credentials-link {
+      color: var(--blue-500);
+      text-decoration: none;
+    } 
+
+    .credentials-link:hover {
+      color: var(--blue-700);
     }
 
     div.title {
@@ -222,4 +239,13 @@
         font-size: 0.8em;
         margin-top:0.75em;
     }
+
+    .container-a {
+      background-color: var(--grey-100);
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      box-sizing: border-box;
+    }
+    /* container-a avoids whitespace appearing in the slide transition */
+
 </style>

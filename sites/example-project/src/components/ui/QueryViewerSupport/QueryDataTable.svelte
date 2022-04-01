@@ -30,7 +30,7 @@
 </script>
 
 <div class="container"  transition:slide|local>
-  <table >
+  <table in:blur>
       <thead>
         <tr>
           <th class="index" style="width:10%"></th>
@@ -76,7 +76,7 @@
 </div>   
 
 {#if max > 0}
-<div class="pagination">
+<div class="pagination" transition:slide>
   <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
   <span style="padding-top: 1px;">
   {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
@@ -93,6 +93,7 @@
     align-content: center;
     border-bottom: 1px solid var(--grey-200);   
     height: 1.5em;
+    background-color: white;
   }
 
   .slider {
@@ -164,6 +165,7 @@
     border-bottom: 1px solid var(--grey-200);   
     scrollbar-width: thin; 
     scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
+    background-color: white;
   }
 
     .container::-webkit-scrollbar {
