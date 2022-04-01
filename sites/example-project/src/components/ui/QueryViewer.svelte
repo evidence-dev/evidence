@@ -77,7 +77,7 @@
           {#if error}
             {#if dev && error.message === "Missing database credentials"}
               {error.message}.
-              <a class=credentials-link href='/settings'> Add credentials here</a>
+              <a class=credentials-link href='/settings'> Add credentials &rarr;</a>
             {:else}
               {error.message} 
             {/if}

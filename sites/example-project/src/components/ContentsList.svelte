@@ -29,9 +29,10 @@
             io.observe(header);
         });
     });
+
 </script>
 
-{#if headers}
+{#if headers && headers.length > 1}
 {#each headers as header, i}
     <a 
     href={'#' + encodeURIComponent(header.innerText + i)} 

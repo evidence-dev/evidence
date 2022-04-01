@@ -59,7 +59,7 @@
         {#if dev}
         <div class="nav-footer">
 
-			<a href='/settings' class="settings-link">
+			<a href='/settings' class="settings-link" class:selected="{$page.path === '/settings'}">
 				<div class="settings-icon" href='/settings'>				
 					<!-- <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke="var(--grey-500)" fill="var(--grey-500)">
 						<path fill-rule="evenodd" d="M16 12a4 4 0 11-8 0 4 4 0 018 0zm-1.5 0a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
@@ -159,6 +159,10 @@ div.selected {
 	font-weight: 500;
 }
 
+div.selected:hover {
+	color: var(--blue-800);
+}
+
 div.nav-header {
 	padding: 0.2rem 1rem 1.2rem 1.2rem;
 	grid-area: header;
@@ -198,6 +202,14 @@ div.nav-header a {
 
 .settings-link:hover a {
 	color: var(--grey-900);
+}
+
+.settings-link.selected a {
+	color: var(--blue-600);
+}
+
+.settings-link.selected .settings-icon {
+	fill: var(--blue-600);
 }
 
 .settings-icon {
