@@ -1,10 +1,11 @@
 <script>
   import ContentsList from './ContentsList.svelte';
-  import {navigating} from '$app/stores'
+  import { navigating, page } from '$app/stores'
+
 </script>
 
 <div class="container">
-  {#if !$navigating}
+  {#if !$navigating && $page.path !== '/settings'}
     <ContentsList/>
   {/if}
 </div>

@@ -3,7 +3,8 @@
 <script>
 	import "../app.css"
 	import { navigating } from '$app/stores';
-	import { blur } from "svelte/transition"
+	import { blur } from "svelte/transition";
+	import { page } from "$app/stores"
 
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
 	import Header from '@evidence-dev/components/ui/Header.svelte'
@@ -23,7 +24,9 @@
 {/if}
 
 <div class="grid">
-	<Header/>
+	{#if $page.path !== '/settings'}
+		<Header/>
+	{/if}
 	<Sidebar bind:open/> 
 	<Hamburger bind:open/>
 	<main in:blur|local>
