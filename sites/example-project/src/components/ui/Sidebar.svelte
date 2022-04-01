@@ -26,9 +26,9 @@
 		folderCheck.push(folderList[i].folder)
 	}
 
-	let noFolders = menu.filter(d => d.folder === undefined && !folderCheck.includes(d.folder))
+	let noFolders = menu.filter(d => d.folder === undefined || !folderCheck.includes(d.folder))
 
-    export let open 
+	export let open 
 
 </script>
 
