@@ -17,12 +17,10 @@
                 // Add 'active' class if observation target is inside viewport
                 if (entry.intersectionRatio == 1) {
             inView.push(entry.target)
-            console.log(inView)
         }
                 // Remove 'active' class otherwise
                 else {
                     inView = inView.filter(item => item != entry.innerText)
-            console.log(inView)
                 }
             });
         });
