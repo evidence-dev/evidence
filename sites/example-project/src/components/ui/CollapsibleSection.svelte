@@ -151,6 +151,7 @@
 	} */
 
 	.folder:hover,
+	.folder-label:hover,
 	.content-item:hover {
 		/* background-color: var(--grey-200); */
 		color: var(--grey-900)
@@ -170,6 +171,9 @@
 		font-weight: 500;
     }
 
+	.folder-label.folder-selected:hover {
+		color: var(--blue-800);
+	}
 
 	.selected {
 		/* background-color: var(--grey-200); */
