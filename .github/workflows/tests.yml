@@ -37,4 +37,4 @@ jobs:
           BIGQUERY_PROJECT_ID: ${{ secrets.BIGQUERY_PROJECT_ID }}
           BIGQUERY_CLIENT_EMAIL: ${{ secrets.BIGQUERY_CLIENT_EMAIL }}
           BIGQUERY_PRIVATE_KEY:  ${{ secrets.BIGQUERY_PRIVATE_KEY }}
-
+          SQLITE_FILENAME: ":memory:"
