@@ -38,8 +38,9 @@ const runFileWatcher = function() {
 
   const watcher = chokidar.watch('./pages/**', {ignored:ignoredFiles})
 
-  const sourcePath = path => "./"+path
-  const targetPath = path => "./.evidence/template/src/pages/"+path.split("pages/")[1]
+  const sourcePath = p => path.join('./', p)
+  const targetPath = p => path.join("./.evidence/template/src/pages/", p.split('pages'+path.sep)[1])
+
   watcher
       .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
       .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
@@ -60,14 +61,24 @@ prog
   .describe("launch the local evidence development environment")
   .action(() => {
     populateTemplate()
-    runFileWatcher()
+    const watcher = runFileWatcher()
 
     // Run svelte kit dev in the hidden directory 
-    const child = spawn('npx svelte-kit dev', {shell: true, cwd:'.evidence/template', stdio: "inherit"});
+    const child = spawn('npx svelte-kit dev', {
+      shell: true, 
+      detached: false, 
+      cwd:'.evidence/template', 
+      stdio: "inherit"
+    });
+
+    child.on('exit', function () {
+      child.kill()
+      watcher.close()
+    })
 
   }); 
 
-  prog
+prog
   .command('build')
   .describe("build production outputs")
   .action(() => {
@@ -77,19 +88,20 @@ prog
     // Run svelte kit build in the hidden directory 
     const child = spawn('npx svelte-kit build', {shell: true, cwd:'.evidence/template'});
 
-    // Copy the outputs to the root of the project upon successful exit 
     child.stdout.on('data', (data) => {
     });
     child.stderr.on('data', (data) => {
       console.error(`${data}`);
     });
-    child.on('exit', function (code, signal) {
+    // Copy the outputs to the root of the project upon successful exit 
+
+    child.on('exit', function (code) {
       if(code === 0) {
         fs.copySync('./.evidence/template/build', './build')
         console.log("Build complete --> /build ")
-        child.kill()
-        watcher.close()
       }
+      child.kill()
+      watcher.close()
     })
 
   }); 
