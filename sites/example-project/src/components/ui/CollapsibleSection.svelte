@@ -106,6 +106,8 @@
         cursor: pointer;
         text-transform: capitalize;
         color: var(--grey-700);
+		display: flex;
+		align-items: center;
     }
 
 	.nolink {
@@ -120,14 +122,16 @@
 	button {
 		border: none;
 		background: none;
-		display: inline;
 		color: inherit;
 		font-size: 1em;
 		cursor: pointer;
         padding-right: 0rem;
-        padding-left: 0.2rem;
+        padding-left: 0.3rem;
         width: 100%;
         height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	svg {
@@ -140,7 +144,6 @@
         stroke: var(--grey-999);
         stroke-width: 5;
     }
-
 
     svg.selected {
         stroke: var(--blue-600);
