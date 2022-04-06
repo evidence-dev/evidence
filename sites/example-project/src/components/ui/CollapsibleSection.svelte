@@ -25,6 +25,7 @@
 	<div class="folder" class:selected={$page.path === '/' + folder} class:folder-selected={$page.path.split('/')[1] === folder}>
 		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
+				class=collapse-icon
                 class:selected={$page.path === '/' + folder}
                 class:folder-selected={$page.path.split('/')[1] === folder}
 				style="tran"
@@ -110,6 +111,14 @@
 		align-items: center;
     }
 
+	.folder:hover .folder-label {
+		color: var(--grey-900);
+	}
+
+	.folder:hover .collapse-icon {
+		stroke: var(--grey-900);
+	}
+
 	.nolink {
 		-webkit-user-select: none;
         user-select: none;
@@ -154,22 +163,7 @@
 		transform: rotate(0.25turn);
 	}
 
-	/* .collapsible {
-		display: block;
-		width: 100%;
-	} */
-
-	.folder:hover,
-	.folder-label:hover,
-	.content-item:hover {
-		/* background-color: var(--grey-200); */
-		color: var(--grey-900)
-		/* transition-property: background-color;
-	transition-duration: 400ms; */
-	}
-
 	.selected.content-item {
-		/* background-color: var(--grey-200); */
 		color: var(--blue-600);
 		font-weight: 500;
 	}
@@ -180,12 +174,23 @@
 		font-weight: 500;
     }
 
-	.folder-label.folder-selected:hover {
+	.folder.folder-selected:hover .folder-label {
+		color: var(--blue-800);
+	}
+
+	.folder.folder-selected:hover .collapse-icon {
+		stroke: var(--blue-800);
+	}
+
+	.content-item:hover {
+		color: var(--grey-900);
+	}
+
+	.content-item.selected:hover {
 		color: var(--blue-800);
 	}
 
 	.selected {
-		/* background-color: var(--grey-200); */
 		color: var(--blue-600);
 		font-weight: 500;
 	}
