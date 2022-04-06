@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@changesets/cli': ^2.21.0
+      '@changesets/cli': 2.21.0
       '@evidence-dev/components': link:packages/components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
@@ -17,7 +17,7 @@ importers:
       svelte: 3.44.3
       svelte2tsx: 0.4.7
       typescript: 4.5.4
-      uvu: ^0.5.2
+      uvu: 0.5.2
       vite-plugin-full-reload: 0.2.2
     devDependencies:
       '@changesets/cli': 2.21.0
@@ -33,7 +33,7 @@ importers:
       svelte: 3.44.3
       svelte2tsx: 0.4.7_svelte@3.44.3+typescript@4.5.4
       typescript: 4.5.4
-      uvu: 0.5.3
+      uvu: 0.5.2
       vite-plugin-full-reload: 0.2.2
 
   packages/bigquery:
@@ -12031,6 +12031,11 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
+  /totalist/2.0.0:
+    resolution: {integrity: sha512-+Y17F0YzxfACxTyjfhnJQEe7afPA0GSpYlFkl2VFMxYP7jshQf9gXV7cH47EfToBumFThfKBvfAcoUn6fdNeRQ==}
+    engines: {node: '>=6'}
+    dev: true
+
   /tough-cookie/2.5.0:
     resolution: {integrity: sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==}
     engines: {node: '>=0.8'}
@@ -12534,8 +12539,8 @@ packages:
     hasBin: true
     dev: false
 
-  /uvu/0.5.3:
-    resolution: {integrity: sha512-brFwqA3FXzilmtnIyJ+CxdkInkY/i4ErvP7uV0DnUVxQcQ55reuHphorpF+tZoVHK2MniZ/VJzI7zJQoc9T9Yw==}
+  /uvu/0.5.2:
+    resolution: {integrity: sha512-m2hLe7I2eROhh+tm3WE5cTo/Cv3WQA7Oc9f7JB6uWv+/zVKvfAm53bMyOoGOSZeQ7Ov2Fu9pLhFr7p07bnT20w==}
     engines: {node: '>=8'}
     hasBin: true
     dependencies:
@@ -12543,6 +12548,7 @@ packages:
       diff: 5.0.0
       kleur: 4.1.4
       sade: 1.7.4
+      totalist: 2.0.0
     dev: true
 
   /v8-compile-cache/2.3.0:
