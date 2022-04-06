@@ -39,7 +39,7 @@ const runFileWatcher = function() {
   const watcher = chokidar.watch('./pages/**', {ignored:ignoredFiles})
 
   const sourcePath = p => path.join('./', p)
-  const targetPath = p => path.join("./.evidence/template/src/pages/", p.split('pages'+path.sep)[1])
+  const targetPath = p => path.join("./.evidence/template/src/pages/", path.relative('./pages/', p))
 
   watcher
       .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
