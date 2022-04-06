@@ -160,15 +160,10 @@ nav a {
 
 nav div {
 	padding: 0.2rem 1rem 0.2rem 1.2rem;
-	/* transition-property: background-color;
-	transition-duration: 400ms; */
 }
 
 nav div:hover {
-	/* background-color: var(--grey-200); */
 	color: var(--grey-900)
-	/* transition-property: background-color;
-	transition-duration: 400ms; */
 }
 
 nav a:hover {
@@ -178,7 +173,6 @@ nav a:hover {
 }
 
 div.selected {
-	/* background-color: var(--grey-200); */
 	color: var(--blue-600);
 	font-weight: 500;
 }
@@ -199,7 +193,6 @@ div.nav-header a {
 .nav-footer {
 	padding: 1.2rem 1rem 1.2rem 1.2rem;
 	box-sizing: border-box;
-
 	position:absolute; 
 	bottom:0;
 	height:100%;
@@ -207,7 +200,6 @@ div.nav-header a {
 	border-top: 1px solid var(--grey-200);
 	grid-area:footer;
 	display: flex;
-
 	font-size: 16px;
 }
 
@@ -236,9 +228,15 @@ div.nav-header a {
 	color: var(--blue-600);
 }
 
+.settings-link.selected:hover a {
+	color: var(--blue-800);
+}
+
+.settings-link.selected:hover .settings-icon {
+	color: var(--blue-800);
+}
+
 .settings-icon {
-	/* padding: 0.2rem 1rem 1.2rem 0.5rem; */
-	/* padding: 0.05rem 10rem 1.2rem 0.1rem; */
 	padding: 0.082rem 0rem 0rem 0.5rem;
 	color: var(--grey-500);
 	height: 22px;
@@ -247,7 +245,6 @@ div.nav-header a {
 
 
 .nav-footer a {
-	/* display:block; */
 	color: var(--grey-700);
 }
 

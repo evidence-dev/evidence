@@ -25,6 +25,7 @@
 	<div class="folder" class:selected={$page.path === '/' + folder} class:folder-selected={$page.path.split('/')[1] === folder}>
 		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
+				class=collapse-icon
                 class:selected={$page.path === '/' + folder}
                 class:folder-selected={$page.path.split('/')[1] === folder}
 				style="tran"
@@ -106,7 +107,17 @@
         cursor: pointer;
         text-transform: capitalize;
         color: var(--grey-700);
+		display: flex;
+		align-items: center;
     }
+
+	.folder:hover .folder-label {
+		color: var(--grey-900);
+	}
+
+	.folder:hover .collapse-icon {
+		stroke: var(--grey-900);
+	}
 
 	.nolink {
 		-webkit-user-select: none;
@@ -120,14 +131,16 @@
 	button {
 		border: none;
 		background: none;
-		display: inline;
 		color: inherit;
 		font-size: 1em;
 		cursor: pointer;
         padding-right: 0rem;
-        padding-left: 0.2rem;
+        padding-left: 0.3rem;
         width: 100%;
         height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	svg {
@@ -141,7 +154,6 @@
         stroke-width: 5;
     }
 
-
     svg.selected {
         stroke: var(--blue-600);
         stroke-width: 5;
@@ -151,22 +163,7 @@
 		transform: rotate(0.25turn);
 	}
 
-	/* .collapsible {
-		display: block;
-		width: 100%;
-	} */
-
-	.folder:hover,
-	.folder-label:hover,
-	.content-item:hover {
-		/* background-color: var(--grey-200); */
-		color: var(--grey-900)
-		/* transition-property: background-color;
-	transition-duration: 400ms; */
-	}
-
 	.selected.content-item {
-		/* background-color: var(--grey-200); */
 		color: var(--blue-600);
 		font-weight: 500;
 	}
@@ -177,12 +174,23 @@
 		font-weight: 500;
     }
 
-	.folder-label.folder-selected:hover {
+	.folder.folder-selected:hover .folder-label {
+		color: var(--blue-800);
+	}
+
+	.folder.folder-selected:hover .collapse-icon {
+		stroke: var(--blue-800);
+	}
+
+	.content-item:hover {
+		color: var(--grey-900);
+	}
+
+	.content-item.selected:hover {
 		color: var(--blue-800);
 	}
 
 	.selected {
-		/* background-color: var(--grey-200); */
 		color: var(--blue-600);
 		font-weight: 500;
 	}
