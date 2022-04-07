@@ -46,4 +46,5 @@ Paste version output here
 - [ ] Snowflake
 - [ ] Redshift
 - [ ] MySQL
+- [ ] SQLite
 - [ ] Other (please specify)

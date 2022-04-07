@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Connect Data Warehouse
 
-Evidence supports Google BigQuery, Snowflake, PostgreSQL, and MySQL.
+Evidence supports Google BigQuery, Snowflake, PostgreSQL, MySQL, and SQLite.
 
 If you want to try out Evidence with free public datasets, both BigQuery and Snowflake offer a large collection.
 
@@ -158,6 +158,28 @@ If you are using Google Cloud SQL, you can also connect using a socket path and 
     "database":"mysql"
 }
 ```
+
+## SQLite
+
+### Update Database Configuration File
+1. Open `database.config.json` in `.evidence` folder in your project
+2. Input your SQLite filename:
+```json
+{
+    "filename": "/Users/myname/myfolder/mydb.sqlite3"
+}
+```
+
+
+### Update Evidence Configuration File
+1. Open `evidence.config.json` in root of your project.
+2. Input your database name ("sqlite"):
+```json
+{
+    "database":"sqlite"
+}
+```
+
 
 ## Next Steps
 That's it - now you're ready to start querying some real datasets in Evidence!
