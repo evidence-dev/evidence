@@ -86,19 +86,26 @@ prog
     const watcher = runFileWatcher()
 
     // Run svelte kit build in the hidden directory 
-    const child = spawn('npx svelte-kit build', {shell: true, cwd:'.evidence/template'});
+    const child = spawn('npx svelte-kit build', {
+      shell: true, 
+      cwd:'.evidence/template', 
+      stdio: "inherit"});
 
-    child.stdout.on('data', (data) => {
-    });
-    child.stderr.on('data', (data) => {
-      console.error(`${data}`);
-    });
+    // child.stdout.on('data', (data) => {
+    // });
+    // child.stderr.on('data', (data) => {
+    //   console.error(`${data}`);
+    // });
     // Copy the outputs to the root of the project upon successful exit 
 
     child.on('exit', function (code) {
       if(code === 0) {
         fs.copySync('./.evidence/template/build', './build')
         console.log("Build complete --> /build ")
+      }
+      else {
+        console.log("Build failed")
+
       }
       child.kill()
       watcher.close()

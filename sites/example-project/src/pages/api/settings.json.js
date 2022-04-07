@@ -1,16 +1,24 @@
 import fs from 'fs';
+import { dev } from '$app/env';
 
 export async function get() {
-    let settings = {}
-
-    if (fs.existsSync('evidence.settings.json')) {
-        settings = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
+    if (!dev) {
+        return {
+            status: 404
+        }
     }
+    else { 
+        let settings = {}
 
-    return {
-        header: "accept: application/json",
-        body: {
-            settings
+        if (fs.existsSync('evidence.settings.json')) {
+            settings = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
+        }
+        return {
+            header: "accept: application/json",
+            status: 200,
+            body: {
+                settings
+            }
         }
     }
 }
