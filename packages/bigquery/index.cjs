@@ -1,6 +1,4 @@
 const {BigQuery} = require('@google-cloud/bigquery');
-const {readJSONSync} = require('fs-extra');
-
 
 const standardizeResult = async(result) => {
     var output = [];

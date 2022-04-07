@@ -32,7 +32,7 @@ const getProfile = async () => {
 
 const logEvent = async (eventName, dev, settings) => {
     try {
-        const track = settings.send_anonymous_usage_stats ?? true
+        const track = (settings ? settings.send_anonymous_usage_stats : process.env["SEND_ANONYMOUS_USAGE_STATS"] || process.env["send_anonymous_usage_stats"]) ?? true
         if(track){
             projectProfile = await getProfile()
             var analytics = new Analytics(wK);

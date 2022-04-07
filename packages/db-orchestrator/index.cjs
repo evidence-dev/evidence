@@ -52,7 +52,8 @@ const validateQuery = function (query) {
 
 const importDBAdapter = async function(settings) {
     try {
-        const { default: runQuery } = await import('@evidence-dev/'+ settings.database);
+        databaseType = settings ? settings.database : process.env["DATABASE"] || process.env["database"]
+        const { default: runQuery } = await import('@evidence-dev/'+ databaseType);
         return runQuery
     }catch {
         const runQuery = async function(){
