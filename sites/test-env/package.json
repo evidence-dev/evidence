@@ -1,7 +1,7 @@
 {
   "name": "evidence-test-environment",
-  "version": "0.0.1",
-  "private":true,
+  "version": "0.0.2",
+  "private": true,
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
