@@ -3,6 +3,19 @@
   "version": "0.1.18",
   "description": "dependencies for evidence projects",
   "type": "module",
+  "keywords": [
+    "analytics",
+    "business-intelligence",
+    "data",
+    "sql",
+    "markdown",
+    "svelte",
+    "data-visualization",
+    "visualization",
+    "data-viz",
+    "charts",
+    "echarts"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {

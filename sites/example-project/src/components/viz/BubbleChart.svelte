@@ -27,8 +27,7 @@
     export let opacity = undefined; // opacity of both fill and outline (ECharts limitation)
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
-    export let minSize = undefined;
-    export let maxSize = undefined;
+    export let scaleTo = undefined;
 
     export let sort = undefined;
 
@@ -66,7 +65,6 @@
         {opacity}
         {outlineColor}
         {outlineWidth}
-        {minSize}
-        {maxSize}
+        {scaleTo}
     />
 </Chart>
