@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/db-orchestrator",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "DB orchestration for Evidence projects",
   "main": "index.cjs",
   "author": "evidence.dev",
@@ -10,6 +10,7 @@
     "@evidence-dev/snowflake": "workspace:^",
     "@evidence-dev/postgres": "workspace:^",
     "@evidence-dev/mysql": "workspace:^",
+    "@evidence-dev/sqlite": "workspace:^",
     "@evidence-dev/telemetry": "workspace:^",
     "blueimp-md5": "2.18.0",
     "chalk": "4.1.0",

@@ -36,5 +36,6 @@ The column names in your query result define how your data is treated when using
 - Snowflake
 - PostgreSQL
 - MySQL
+- SQLite
 
 We are accepting contributions for new database connectors. Please see [our contribution guide on GitHub](https://github.com/evidence-dev/evidence/blob/develop/CONTRIBUTING.md).

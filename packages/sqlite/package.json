@@ -1,0 +1,16 @@
+{
+  "name": "@evidence-dev/sqlite",
+  "version": "0.0.2",
+  "description": "SQLite driver for Evidence projects",
+  "main": "index.cjs",
+  "author": "Edgar Ramírez-Mondragón",
+  "license": "MIT",
+  "scripts": {
+    "test": "uvu test test.js"
+  },
+  "dependencies": {
+    "sqlite3": "5.0.2",
+    "sqlite": "4.0.25"
+  },
+  "type": "module"
+}

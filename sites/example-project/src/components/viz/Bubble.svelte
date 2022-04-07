@@ -17,8 +17,9 @@
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
 
-    export let minSize = 10;
-    export let maxSize = 35;
+    let maxSize = 35;
+    export let scaleTo = 1;
+    maxSize = maxSize * (scaleTo / 1);
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
@@ -42,18 +43,18 @@
 
     // Determine bubble sizes:
     let sizeExtents = getColumnExtents(data, size);
-    let dataRange = sizeExtents[1] - sizeExtents[0];
-    let minData = sizeExtents[0];
-    let minSizeSq;
-    let maxSizeSq;
+    let maxData = sizeExtents[1];
+    let maxSizeSq = Math.pow(maxSize, 2);
+
+    // Maximum point in dataset is assigned the maximum point area on the graph. Other
+    // points are assigned based on their proportion to the maximum point. 
+    // E.g., if max point in dataset is 100 and we want to plot 45 as the next point,
+    // we will be drawing a point that is 45% of the area of the max point
+
     function bubbleSize(newPoint){
-        minSizeSq = Math.pow(minSize, 2);
-        maxSizeSq = Math.pow(maxSize, 2);
-        let sizeRange = maxSizeSq - minSizeSq;
-        
-        return Math.sqrt(((newPoint - minData) / dataRange) * sizeRange + minSize)
+        const newPointSize = data.filter(d => d[x] === newPoint[0] && d[y] === newPoint[1])[0][size]
+        return Math.sqrt((newPointSize / maxData) * maxSizeSq)
     }
-    
 
     let baseConfig = {
             type: "scatter",
@@ -65,7 +66,7 @@
                 focus: "series",
             },
             symbolSize: function (data) {
-                return bubbleSize(data[1]);
+                return bubbleSize(data);
             },
             symbol: shape,
             itemStyle: {

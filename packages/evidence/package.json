@@ -1,8 +1,21 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "0.1.17",
+  "version": "0.1.19",
   "description": "dependencies for evidence projects",
   "type": "module",
+  "keywords": [
+    "analytics",
+    "business-intelligence",
+    "data",
+    "sql",
+    "markdown",
+    "svelte",
+    "data-visualization",
+    "visualization",
+    "data-viz",
+    "charts",
+    "echarts"
+  ],
   "author": "",
   "license": "MIT",
   "bin": {
