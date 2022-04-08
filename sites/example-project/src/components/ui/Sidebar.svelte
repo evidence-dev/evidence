@@ -113,6 +113,13 @@
 </aside>
 
 <style>
+:root {
+	--scrollbar-track-color: transparent;
+	--scrollbar-color: rgba(0,0,0,.2);
+	--scrollbar-active-color: rgba(0,0,0,.4);
+	--scrollbar-size: .75rem;
+	--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical)*/
+}
 
 aside.sidebar {
     grid-area: sidebar;
@@ -141,6 +148,32 @@ nav {
     overflow-y: scroll;
 	overflow-x: hidden;
 	grid-area: nav;
+	scrollbar-width: thin; 
+    scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
+}
+
+nav::-webkit-scrollbar {
+    height: var(--scrollbar-size);
+    width: var(--scrollbar-size);
+}
+nav::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track-color);
+}
+nav::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    border-radius: 7px;
+    background-clip: padding-box;
+}
+nav::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-active-color);
+}
+nav::-webkit-scrollbar-thumb:vertical {
+    min-height: var(--scrollbar-minlength);
+    border: 3px solid transparent;
+}
+nav::-webkit-scrollbar-thumb:horizontal {
+    min-width: var(--scrollbar-minlength);
+    border: 3px solid transparent;
 }
 
 a {
@@ -247,7 +280,6 @@ div.nav-header a {
 .nav-footer a {
 	color: var(--grey-700);
 }
-
 
 @media (max-width: 850px) {
 	aside.sidebar {
