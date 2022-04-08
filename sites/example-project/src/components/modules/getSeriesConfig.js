@@ -1,6 +1,6 @@
 import getDistinctValues from './getDistinctValues.js'
 
-export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary) {
+export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary, size=null) {
 
     function generateTempConfig(seriesData, seriesName, baseConfig) {
         let tempConfig = {
@@ -30,10 +30,18 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
             // Filter for specific series:
             filteredData = data.filter((d) => d[series] === seriesDistinct[i]);
 
-            if(swapXY){
-                seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
+            if(size != null){
+                if(swapXY){
+                    seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x]), d[size]]);
+                } else {
+                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y], d[size]]);
+                }
             } else {
-                seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+                if(swapXY){
+                    seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
+                } else {
+                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+                }
             }
 
             // Set series name:
@@ -55,12 +63,21 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
      
             for (j = 0; j < y.length; j++) {
 
-                if(swapXY){
-                    seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x])]);
-                } else {
-                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]]]);
-                }
 
+                if(size != null){
+                    if(swapXY){
+                        seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x]), d[size]]);
+                    } else {
+                        seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]], d[size]]);
+                    }
+                } else {
+                    if(swapXY){
+                        seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x])]);
+                    } else {
+                        seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]]]);
+                    }
+                }
+   
                 // Set series name:
                 seriesName = seriesDistinct[i] + " - " + columnSummary[y[j]].title;
                 tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
@@ -74,11 +91,21 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
         legend = true;
 
         for (i = 0; i < y.length; i++) {
-            if(swapXY){
-                seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x])]);
+
+            if(size != null){
+                if(swapXY){
+                    seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x]), d[size]]);
+                } else {
+                    seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]], d[size]]);
+                }
             } else {
-                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]]]);
+                if(swapXY){
+                    seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x])]);
+                } else {
+                    seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]]]);
+                }
             }
+
             seriesName = columnSummary[y[i]].title;
             tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
             seriesConfig.push(tempConfig);
@@ -89,10 +116,18 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
     if(series == null && typeof y !== "object") {
         legend = false;
 
-        if(swapXY){
-            seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
+        if(size != null){
+            if(swapXY){
+                seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x]), d[size]]);
+            } else {
+                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y], d[size]]);
+            }
         } else {
-            seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+            if(swapXY){
+                seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
+            } else {
+                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+            }
         }
 
         tempConfig = generateTempConfig(seriesData, seriesName=name, baseConfig);
