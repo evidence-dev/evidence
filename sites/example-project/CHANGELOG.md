@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 0.1.16
+
+### Patch Changes
+
+- c75b082: Fix BubbleChart's treatment of multiple y columns
+
 ## 0.1.15
 
 ### Patch Changes
