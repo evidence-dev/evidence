@@ -96,6 +96,7 @@
                 {/if}
             {/each}
             {/if}
+			<div class=spacer></div>
         </nav>
         {#if dev}
         <div class="nav-footer">
@@ -219,6 +220,10 @@ div.nav-header {
 	grid-area: header;
 }
 
+.nav-header {
+	overflow: hidden;
+}
+
 div.nav-header a {
 	display: block;
 }
@@ -281,6 +286,12 @@ div.nav-header a {
 	color: var(--grey-700);
 }
 
+.spacer {
+	display: none;
+	height: 100px;
+	width: 100%;
+}
+
 @media (max-width: 850px) {
 	aside.sidebar {
 		grid-area: none; 
@@ -292,7 +303,7 @@ div.nav-header a {
 		background-color: hsla(217, 33%, 97%, .83);
 		-webkit-backdrop-filter: blur(20px) saturate(1.8);
 		backdrop-filter: blur(20px) saturate(1.8);
-		border-right: 1px solid var(--grey-300);		
+		border-right: 1px solid var(--grey-300);	
 	}
 
 	aside.open {
@@ -300,7 +311,11 @@ div.nav-header a {
 	}
 
 	div.nav-footer {
-		display: none 
+		display: none ;
+	}
+
+	.spacer {
+		display: block;
 	}
 
 }
