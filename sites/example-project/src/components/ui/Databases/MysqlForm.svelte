@@ -13,10 +13,10 @@
     }
 
     let opts = [
-        {id: "host", label: "Host", type: "text", value: credentials.host ?? ""},
-        {id: "database", label: "Database", type: "text", value: credentials.database ?? ""},
-        {id: "user", label: "User", type: "text", value: credentials.user ?? ""},
-        {id: "password", label: "Password", type: "password", value: credentials.password ?? ""},
+        {id: "host", label: "Host", type: "text", placeholder: "database.server.com", value: credentials.host ?? ""},
+        {id: "database", label: "Database", placeholder: "my-database-name", type: "text", value: credentials.database ?? ""},
+        {id: "user", label: "User", type: "text", placeholder: "username", value: credentials.user ?? ""},
+        {id: "password", label: "Password", type: "password", placeholder: "password", value: credentials.password ?? ""},
         {id: "socketPath", label: "Socket Path (optional)", type: "text", value: credentials.socketPath ?? ""}
     ]
     import GenericForm from './GenericForm.svelte'
