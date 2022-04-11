@@ -17,7 +17,7 @@
     const databaseOptions = [
         {name: 'Choose a database'},
 		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm},
-		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
+		{id: 'postgresql', name: 'PostgreSQL', formComponent: PostgresForm},
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
         {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm}
@@ -100,7 +100,7 @@
  
     <footer>
         {#if selectedDatabase.id}
-        <span>Learn more about {selectedDatabase.name} Connection Settings &rarr;</span> 
+        <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/getting-started/connect-data-warehouse#{selectedDatabase.id}">{selectedDatabase.name} Connection Settings &rarr;</a></span> 
             {#if credentialsEdited}
             <button type=submit id=save>Save</button>
             {:else}
@@ -187,6 +187,15 @@ h2 {
     text-transform: uppercase;
     font-weight: normal;
     font-size: 14px;
+}
+
+.docs-link {
+    color: var(--blue-600);
+    text-decoration: none;
+}
+
+.docs-link:hover {
+    color: var(--blue-800);
 }
 
 .container {
