@@ -72,6 +72,7 @@
         line-height: 1em;
         cursor: help;
         position:relative;
+        text-transform: none;
     }
 
     div.input-item{

@@ -11,10 +11,14 @@ const runQuery = async (queryString, database) => {
             mode: sqlite3.OPEN_READONLY,
         })
         const result = await db.all(queryString);
-        return result;
+        return result;    
     } catch(err) {
         if (err.message) {
-            throw err.message
+            if(err.errno === 14){
+                throw "Unable to open database file in root of Evidence project"
+            } else {
+                throw err.message
+            }
         } else {
             throw err
         }

@@ -3,6 +3,7 @@
     import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
     import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
+    import SqliteForm from '@evidence-dev/components/ui/Databases/SqliteForm.svelte'
     import { slide, blur } from 'svelte/transition'
 
     export let settings 
@@ -18,7 +19,8 @@
 		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm},
 		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
-		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm}
+		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
+        {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm}
 	];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
