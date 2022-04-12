@@ -1,6 +1,7 @@
 <script>
     export let credentials
     export let existingCredentials
+    export let disableSave;
 
     credentials = {...existingCredentials}
 
@@ -29,4 +30,4 @@
 
 </script>
 
-<GenericForm {opts} bind:credentials />
+<GenericForm {opts} bind:credentials bind:disableSave/>

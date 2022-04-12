@@ -17,13 +17,15 @@
     const databaseOptions = [
         {name: 'Choose a database'},
 		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm},
-		{id: 'postgresql', name: 'PostgreSQL', formComponent: PostgresForm},
+		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
         {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm}
 	];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
+
+    let disableSave = true;
 
     async function runTest() {
         const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -62,6 +64,10 @@
         }
 	};
 
+    function databaseChange() {
+        testResult = null;
+        disableSave = true;
+    }
 </script>
 
 <form on:submit|preventDefault={submitForm} autocomplete="off" in:blur|local>
@@ -70,7 +76,7 @@
             <h1>Database Connection</h1>
             <p>Evidence supports one database connection per project.</p>
             <h2>Connection Type</h2>
-            <select bind:value={selectedDatabase} on:change={() => testResult = null}>
+            <select bind:value={selectedDatabase} on:change={databaseChange}>
             {#each databaseOptions as option}
                 <option value={option}>
                     {option.name}
@@ -80,7 +86,7 @@
         </div> 
         {#if selectedDatabase.formComponent}
         <div class=panel transition:slide|local>
-            <svelte:component this={selectedDatabase.formComponent} bind:credentials={credentials} existingCredentials = {selectedDatabase.id === settings.database ? existingCredentials : {}}/>
+            <svelte:component this={selectedDatabase.formComponent} bind:disableSave bind:credentials={credentials} existingCredentials = {selectedDatabase.id === settings.database ? existingCredentials : {}}/>
         </div>
         {/if}
         {#if testResult}
@@ -102,7 +108,7 @@
         {#if selectedDatabase.id}
         <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/getting-started/connect-data-warehouse#{selectedDatabase.id}">{selectedDatabase.name} Connection Settings &rarr;</a></span> 
             {#if credentialsEdited}
-            <button type=submit id=save>Save</button>
+            <button type=submit id=save disabled={disableSave}>Save</button>
             {:else}
             <button type=submit id=save>Test</button>
             {/if} 
@@ -181,6 +187,7 @@ span.indicator.fail {
 p.error {
 	font-family: 'monoco', Roboto Mono, monospace;
     padding-top: 1em;
+    word-break: break-all;
 }
 
 h2 {

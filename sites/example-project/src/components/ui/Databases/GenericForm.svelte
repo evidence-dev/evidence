@@ -3,6 +3,27 @@
 
     export let opts
     export let credentials
+    export let disableSave
+
+    let requiredOpts = opts.filter(d => d.optional !== true);
+
+    function handleChange() {
+        let filledFields = 0;
+        let fieldStatus = false;
+
+        for(let i=0; i<requiredOpts.length; i++){
+            fieldStatus = credentials[requiredOpts[i].id] != undefined && credentials[requiredOpts[i].id] !== '';
+            filledFields = filledFields + fieldStatus;
+        }
+
+        if(filledFields === requiredOpts.length){
+            disableSave = false;
+        } else {
+            disableSave = true;
+        }
+
+    }
+
 </script>
 
 {#each opts as opt}
@@ -36,6 +57,7 @@
             bind:value={credentials[opt.id]}
             placeholder={opt.placeholder}
             required
+            on:keyup={handleChange}
         />
         {/if}
     {:else if opt.type === "password"}
@@ -55,6 +77,7 @@
             placeholder="password"
             bind:value={credentials[opt.id]}
             required
+            on:keyup={handleChange}
             />
         {/if}
     {/if}
@@ -82,6 +105,7 @@
         margin-top: 1.25em;
         display:flex;
         flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
     }
 
@@ -114,8 +138,6 @@
         color: var(--grey-800)
     }
 
- 
-
     .additional-info-icon .info-msg {
         visibility: hidden;
         position: absolute;
@@ -138,6 +160,5 @@
     .additional-info-icon:hover .info-msg {
         visibility: visible;
     }
-
 
 </style>

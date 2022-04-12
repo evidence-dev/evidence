@@ -1,10 +1,11 @@
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
+const path = require('path')
 
 const runQuery = async (queryString, database) => {
+    const filename = database ? database.filename : process.env["SQLITE_FILENAME"] || process.env["filename"] || process.env["FILENAME"]
 
     try {
-        const filename = database ? database.filename : process.env["SQLITE_FILENAME"] || process.env["filename"] || process.env["FILENAME"]
         const db = await open({
             filename: filename,
             driver: sqlite3.Database,
@@ -15,7 +16,7 @@ const runQuery = async (queryString, database) => {
     } catch(err) {
         if (err.message) {
             if(err.errno === 14){
-                throw "Unable to open database file in root of Evidence project"
+                throw "Unable to open " + filename + " in " + path.resolve()
             } else {
                 throw err.message
             }

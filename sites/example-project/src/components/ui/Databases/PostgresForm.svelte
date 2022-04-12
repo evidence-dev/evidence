@@ -1,6 +1,7 @@
 <script>
 	export let credentials;
 	export let existingCredentials;
+    export let disableSave;
 
 	credentials = { ...existingCredentials };
 
@@ -66,4 +67,4 @@
 	import GenericForm from './GenericForm.svelte';
 </script>
 
-<GenericForm {opts} bind:credentials />
+<GenericForm {opts} bind:credentials bind:disableSave/>

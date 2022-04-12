@@ -1,6 +1,7 @@
 <script>
     export let credentials
     export let existingCredentials
+    export let disableSave;
 
     credentials = {...existingCredentials}
 
@@ -11,6 +12,7 @@
             const fileContents = await file.text()
             credentials = JSON.parse(fileContents)
         }
+        disableSave = false
     }
 
 </script>
