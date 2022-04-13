@@ -3,12 +3,15 @@
 
 	export let credentials;
 	export let existingCredentials;
+    export let gitIgnore;
+    existingCredentials.versionControl = !gitIgnore.includes(credentials.filename)
     export let disableSave;
 
 	credentials = { ...existingCredentials };
 
     credentials = {
-        filename: credentials.filename
+        filename: credentials.filename,
+        versionControl: credentials.versionControl
     }
 
     let opts = [
@@ -18,7 +21,15 @@
             type: "filename", 
             additionalInstructions: 'Name of file stored in the same directory as your Evidence project, or an in-memory SQLite database (:memory:)',
             placeholder: "mydatabase",
-            value: credentials.filename ?? ""}
+            value: credentials.filename ?? ""
+        },
+        {
+            id: "versionControl",
+            label: "Include in Version Control",
+            type: "toggle",
+            additionalInstructions: 'If you have a git repo and choose to include this file in version control, it will be removed from your project gitignore',
+            value: credentials.versionControl ?? true
+        }
     ]
 
     let filename = opts.filter(d => d.id === 'filename')[0].value
@@ -48,7 +59,13 @@
             disableSave = false;
         }
     }
-    
+
+    function handleCheck() {
+        if(file != undefined && file !== '' && filenameError === false){
+            disableSave = false;
+        }
+    }
+
 </script>
 
 {#each opts as opt}
@@ -64,7 +81,9 @@
         {/if}
     </label>
 
+    {#if opt.type === "filename"}
 <input
+    class=basic
     type=text
     id=file
     name=file
@@ -91,8 +110,16 @@
 />
 <p class:filenameError class=error-msg>Filename cannot include folders</p>
 
+{:else if opt.type === "toggle"}
+<label class="switch">
+
+<input type="checkbox" bind:checked={credentials[opt.id]} on:change={handleCheck}/>
+<span class="slider" />
+</label>
+{/if}
 </div>
 {/each}
+
 
 <style>
 
@@ -118,7 +145,7 @@
         align-items: center;
     }
 
-    input {
+    .basic {
         box-sizing: border-box;
         border-radius: 4px 4px 4px 4px;
         border: 1px solid var(--grey-300);
@@ -133,10 +160,10 @@
         font-size: 16px;
         height: 1.95rem;
     }
-    input:required {
+    .basic:required {
        box-shadow: none;
     }
-    input:focus{
+    .basic:focus{
         outline: none;
     }
 
@@ -215,6 +242,63 @@
 
     .hidden {
         display: none;
+    }
+
+
+
+       .switch {
+      position: relative;
+      display: inline-block;
+      width: 3.75rem;
+      height: 2rem;
+      margin-left: auto;
+      margin-right: 2px;
+    }
+  
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+  
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+      border-radius: 2rem;
+    }
+  
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 1.5rem;
+      width: 1.5rem;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+  
+    input:checked + .slider {
+      background-color: var(--green-500);
+    }
+  
+    input:checked + .slider {
+      box-shadow: 0 0 1px var(--green-500);
+    }
+  
+    input:checked + .slider:before {
+      -webkit-transform: translateX(1.75rem);
+      -ms-transform: translateX(1.75rem);
+      transform: translateX(1.75rem);
     }
 
 </style>

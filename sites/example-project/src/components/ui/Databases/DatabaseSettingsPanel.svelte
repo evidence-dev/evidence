@@ -7,6 +7,7 @@
     import { slide, blur } from 'svelte/transition'
 
     export let settings 
+    export let gitIgnore
     
     let credentials = {} // reflects current state of the form 
     let existingCredentials = settings.credentials // what's saved? 
@@ -25,7 +26,7 @@
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
 
-    let disableSave = true;
+    let disableSave = false;
 
     async function runTest() {
         const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -86,7 +87,7 @@
         </div> 
         {#if selectedDatabase.formComponent}
         <div class=panel transition:slide|local>
-            <svelte:component this={selectedDatabase.formComponent} bind:disableSave bind:credentials={credentials} existingCredentials = {selectedDatabase.id === settings.database ? existingCredentials : {}}/>
+            <svelte:component this={selectedDatabase.formComponent} bind:disableSave bind:credentials={credentials} {gitIgnore} existingCredentials = {selectedDatabase.id === settings.database ? existingCredentials : {}}/>
         </div>
         {/if}
         {#if testResult}
@@ -103,7 +104,6 @@
         </div>
         {/if}
     </div>
- 
     <footer>
         {#if selectedDatabase.id}
         <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/getting-started/connect-data-warehouse#{selectedDatabase.id}">{selectedDatabase.name} Connection Settings &rarr;</a></span> 
