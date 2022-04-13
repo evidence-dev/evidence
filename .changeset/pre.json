@@ -1,0 +1,20 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@evidence-dev/bigquery": "0.0.6",
+    "@evidence-dev/db-orchestrator": "0.1.18",
+    "@evidence-dev/evidence": "0.1.25",
+    "evidence-vscode": "0.0.6",
+    "@evidence-dev/mysql": "0.0.4",
+    "@evidence-dev/postgres": "0.0.10",
+    "@evidence-dev/preprocess": "0.1.5",
+    "@evidence-dev/snowflake": "0.0.7",
+    "@evidence-dev/sqlite": "0.0.2",
+    "@evidence-dev/telemetry": "0.0.4",
+    "evidence-docs": "0.0.0",
+    "@evidence-dev/components": "0.1.21",
+    "evidence-test-environment": "0.0.9"
+  },
+  "changesets": []
+}
