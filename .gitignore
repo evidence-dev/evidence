@@ -5,3 +5,4 @@ dist
 .pnpm-debug.log
 .vscode
 /packages/components
+/packages/evidence/template

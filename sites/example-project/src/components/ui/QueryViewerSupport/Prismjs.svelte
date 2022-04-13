@@ -72,7 +72,7 @@
   });
 
 </script>
-  <pre in:blur|local>
+  <pre in:blur>
     <code class="language-{language}">{code}</code>
   </pre>
 <style>

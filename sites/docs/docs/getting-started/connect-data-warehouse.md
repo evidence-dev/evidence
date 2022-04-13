@@ -81,7 +81,7 @@ Snowflake only requires an account, username, and password to connect through Ev
 }
 ```
 
-## PostgreSQL
+## Postgres
 Postgres can be connected with basic database credentials. If you run into issues or need another type of auth to connect to your Postgres database, please [create a GitHub issue](https://github.com/evidence-dev/evidence/issues), [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), or send an email to <support@evidence.dev>.
 
 ### Update Database Configuration File

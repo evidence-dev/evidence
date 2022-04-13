@@ -1,0 +1,67 @@
+<script>
+	export let open = false
+</script>
+
+<button class:open on:click={() => open = !open}>
+	<svg width=32 height=24>
+		<line id="top" x1=0 y1=2  x2=32 y2=2/>
+		<line id="middle" x1=0 y1=12 x2=32 y2=12/>
+		<line id="bottom" x1=0 y1=22 x2=32 y2=22/>
+	</svg>
+</button>
+
+<style>
+	svg {
+		min-height: 24px;
+		transition: transform 0.3s ease-in-out;
+	}
+	
+	svg line {
+		stroke: var(--grey-600);
+		stroke-width: 3;
+		transition: transform 0.3s ease-in-out
+	}
+	
+	button {
+        /* height: 32px;
+        width: 40px;  */
+		z-index: 5;
+        position:fixed;
+        left: 0;
+        bottom: 0; 
+        margin: 1.0em;
+        border: none;
+        color: none;
+        padding: 11px 11px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        background-color: hsla(217, 33%, 97%, .83);
+		-webkit-backdrop-filter: blur(20px) saturate(1.8);
+		backdrop-filter: blur(20px) saturate(1.8);
+		border: 1px solid var(--grey-300);	
+        border-radius: 4px;
+	}
+	
+	.open svg {
+		transform: scale(0.7)
+	}
+	
+	.open #top {
+		transform: translate(6px, 0px) rotate(45deg)
+	}
+	
+	.open #middle {
+		opacity: 0;
+	}
+	
+    .open #bottom {
+            transform: translate(-12px, 9px) rotate(-45deg)
+        }
+
+    @media (min-width: 850px) {
+        button {
+            display: none;
+        }
+    }
+</style>

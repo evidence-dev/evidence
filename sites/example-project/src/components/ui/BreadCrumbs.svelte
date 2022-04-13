@@ -13,37 +13,33 @@
 <div>
     <span class="container"> 
         <span>
-        {#if nPages > 2 }
+        {#if nPages > 1 }
             {#each pathArray as crumb, i}
                 {#if i === 0} 
                     <a href="/" ref="prefetch">Home</a>
-                {:else if i === nPages-1}
+                {:else if i === nPages}
                     &thinsp;
                 {:else}
-                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replace("_"," "))} </a>            
+                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replaceAll("_"," ").replaceAll("-"," "))} </a>            
                 {/if}
             {/each}
         {/if}
-    </span>
-    <span>
-        <!-- {#if $page.path != "/" && $page.path != "/blog" && $page.path != "/faq" && $page.path != "/examples" && $page.path != "/blog/1"} -->
+        </span>
+        <span>
             {#if $showQueries}
             <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
             {:else}
             <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
             {/if}
-        <!-- {/if} -->
-    </span>
+        </span>
     </span>
 </div>
 
 <style>
     div{
-        padding: 0.45ch 0 0 0;
-        height: 1.5em;
-        margin: 1em 0 0 0;
-
-        /* border: 1px solid red; */
+        padding: 0 1.5em 0 1.5em;
+        box-sizing: border-box;
+        width: 100%;
     }
 
     span.container{
@@ -76,6 +72,7 @@
         font-size: 0.8em;
         color: var(--grey-900);
         cursor: pointer;
+        user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
         -webkit-font-smoothing: antialiased;
@@ -97,10 +94,6 @@
         font-weight: bold;
      }
 
-    @media (max-width: 600px) {
-        .dev-controls {
-            display:none;
-        }
-	}
+
 
 </style>

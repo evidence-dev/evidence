@@ -15,7 +15,7 @@ const getRouteHash = function(filename){
 
 const hasQueries = function(filename){
     let hash = getRouteHash(filename)
-    return fs.existsSync("./.evidence/build/queries/"+hash)
+    return fs.existsSync("./.evidence-queries/extracted/"+hash)
 }
 
 const createModuleContext = function(filename){
@@ -72,18 +72,15 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
     return defaultProps
 }
 
-const updateBuildQueriesDir = function(content, filename){
-    if (!fs.existsSync("./.evidence")){
-        fs.mkdirSync("./.evidence");
+const updateExtractedQueriesDir = function(content, filename){
+    if (!fs.existsSync("./.evidence-queries")){
+        fs.mkdirSync("./.evidence-queries");
     }
-    if (!fs.existsSync("./.evidence/build")){
-        fs.mkdirSync("./.evidence/build");
-    }
-    if (!fs.existsSync("./.evidence/build/queries")){
-        fs.mkdirSync("./.evidence/build/queries");
+    if (!fs.existsSync("./.evidence-queries/extracted")){
+        fs.mkdirSync("./.evidence-queries/extracted");
     }
     let routeHash = getRouteHash(filename)
-    let queryDir = `./.evidence/build/queries/${routeHash}`
+    let queryDir = `./.evidence-queries/extracted/${routeHash}`
 
     let queries = [];  
     let tree = unified()
@@ -169,7 +166,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
         {
             markup({content, filename}){
                 if(filename.endsWith(".md")){
-                    updateBuildQueriesDir(content, filename)
+                    updateExtractedQueriesDir(content, filename)
                 }
             }
         },

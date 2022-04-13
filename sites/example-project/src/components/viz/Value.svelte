@@ -86,33 +86,36 @@
 {/if}
 
 <style>
-     .error {
-        display: inline;
-        position: relative;
-        cursor: help;
-    }
+    .error {
+       display: inline;
+       position: relative;
+       cursor: help;
+   }
 
-    .error .error-msg {
-        visibility: hidden;
-        position: absolute;
-        top: -5px;
-        left: 105%;
-        white-space: nowrap;
-        padding-left: 5px;
-        padding-right: 5px;     
-        padding-top: 2px;
-        padding-bottom: 1px;   
-        color: white;
-        font-family: sans-serif;
-        font-size: 0.8em;
-        background-color: black;
-        opacity: 0.85;
-        border-radius: 6px;
-        z-index: 1;
-    }
+   .error .error-msg {
+       visibility: hidden;
+       display: none;
+       position: absolute;
+       top: -5px;
+       left: 105%;
+       max-width: 400px;
+       min-width: 150px;
+       padding-left: 5px;
+       padding-right: 5px;     
+       padding-top: 2px;
+       padding-bottom: 1px;   
+       color: white;
+       font-family: sans-serif;
+       font-size: 0.8em;
+       background-color: black;
+       opacity: 0.85;
+       border-radius: 6px;
+       z-index: 1;
+   }
 
-    .error:hover .error-msg {
-        visibility: visible;
-    }
+   .error:hover .error-msg {
+       visibility: visible;
+       display: inline;
+   }
 
 </style>

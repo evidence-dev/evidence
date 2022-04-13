@@ -15,6 +15,7 @@ importers:
       echarts: 5.2.2
       echarts-stat: 1.2.0
       svelte: 3.44.3
+      svelte-icons: 2.1.0
       svelte2tsx: 0.4.7
       typescript: 4.5.4
       uvu: 0.5.2
@@ -31,6 +32,7 @@ importers:
       echarts: 5.2.2
       echarts-stat: 1.2.0
       svelte: 3.44.3
+      svelte-icons: 2.1.0
       svelte2tsx: 0.4.7_svelte@3.44.3+typescript@4.5.4
       typescript: 4.5.4
       uvu: 0.5.2
@@ -72,10 +74,16 @@ importers:
       '@evidence-dev/db-orchestrator': workspace:^
       '@evidence-dev/preprocess': workspace:^
       '@sveltejs/adapter-static': 1.0.0-next.22
+      chokidar: 3.5.3
+      fs-extra: 10.0.1
+      sade: ^1.8.1
       vite-plugin-full-reload: 0.2.2
     dependencies:
       '@evidence-dev/preprocess': link:../preprocess
       '@sveltejs/adapter-static': 1.0.0-next.22
+      chokidar: 3.5.3
+      fs-extra: 10.0.1
+      sade: 1.8.1
       vite-plugin-full-reload: 0.2.2
     devDependencies:
       '@evidence-dev/components': link:../../sites/example-project
@@ -199,10 +207,12 @@ importers:
       echarts: 5.2.2
       echarts-stat: 1.2.0
       fs-extra: ^10.0.1
+      svelte-icons: 2.1.0
     dependencies:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
+      svelte-icons: 2.1.0
     devDependencies:
       fs-extra: 10.0.1
 
@@ -4561,6 +4571,21 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
+  /chokidar/3.5.3:
+    resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
+    engines: {node: '>= 8.10.0'}
+    dependencies:
+      anymatch: 3.1.2
+      braces: 3.0.2
+      glob-parent: 5.1.2
+      is-binary-path: 2.1.0
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      readdirp: 3.6.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
+
   /chownr/1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
     dev: false
@@ -6624,7 +6649,6 @@ packages:
       graceful-fs: 4.2.8
       jsonfile: 6.1.0
       universalify: 2.0.0
-    dev: true
 
   /fs-extra/7.0.1:
     resolution: {integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==}
@@ -8863,7 +8887,6 @@ packages:
   /mri/1.1.6:
     resolution: {integrity: sha512-oi1b3MfbyGa7FJMP9GmLTttni5JoICpYBRlq+x5V16fZbLsnL9N3wFqqIm/nIG43FjUFkFh9Epzp/kzUGUnJxQ==}
     engines: {node: '>=4'}
-    dev: true
 
   /ms/2.0.0:
     resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=}
@@ -11018,6 +11041,13 @@ packages:
       mri: 1.1.6
     dev: true
 
+  /sade/1.8.1:
+    resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
+    engines: {node: '>=6'}
+    dependencies:
+      mri: 1.1.6
+    dev: false
+
   /safe-buffer/5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
@@ -11791,6 +11821,9 @@ packages:
     dependencies:
       svelte: 3.44.3
     dev: true
+
+  /svelte-icons/2.1.0:
+    resolution: {integrity: sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==}
 
   /svelte/3.44.3:
     resolution: {integrity: sha512-aGgrNCip5PQFNfq9e9tmm7EYxWLVHoFsEsmKrtOeRD8dmoGDdyTQ+21xd7qgFd8MNdKGSYvg7F9dr+Tc0yDymg==}

@@ -2,17 +2,17 @@
     // ---------------------------------------------------------------------------------------
     // Imports
     // ---------------------------------------------------------------------------------------
-        import { props, config } from '$lib/modules/stores.js';   
+        import { props, config } from '../modules/stores.js';   
 
         import ECharts from "./ECharts.svelte";
-        import getColumnSummary from '$lib/modules/getColumnSummary';
-        import getDistinctValues from '$lib/modules/getDistinctValues';
-        import getSortedData from '$lib/modules/getSortedData.js';
-        import formatAxisLabel from '$lib/modules/formatAxisLabel';
-        import formatTitle from '$lib/modules/formatTitle.js';
+        import getColumnSummary from '../modules/getColumnSummary';
+        import getDistinctValues from '../modules/getDistinctValues';
+        import getSortedData from '../modules/getSortedData.js';
+        import formatAxisLabel from '../modules/formatAxisLabel';
+        import formatTitle from '../modules/formatTitle.js';
         import ErrorChart from './ErrorChart.svelte';
-        import checkInputs from '$lib/modules/checkInputs';
-        import {colours} from '$lib/modules/colours'
+        import checkInputs from '../modules/checkInputs';
+        import {colours} from '../modules/colours'
 
     // ---------------------------------------------------------------------------------------
     // Input Props
@@ -522,7 +522,7 @@ try{
                 borderWidth: 1,
                 borderColor: colours.grey400,
                 backgroundColor: 'white',
-                extraCssText: 'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12)',
+                extraCssText: 'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
                 textStyle: {
                     color: colours.grey900,
                     fontSize: 12

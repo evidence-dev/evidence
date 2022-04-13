@@ -22,7 +22,7 @@ export const config = {
 				external: ['@evidence-dev/db-orchestrator']
 			},
 			plugins: [
-				FullReload.default(['./.evidence/build/queries/**'], {delay: 150}),
+				FullReload.default(['./.evidence-queries/extracted/**'], {delay: 150}),
 			]
 		}
 	}
