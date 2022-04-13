@@ -4,14 +4,14 @@
 	export let credentials;
 	export let existingCredentials;
     export let gitIgnore;
-    existingCredentials.gitignoreSqliteFile = gitIgnore.includes(existingCredentials.filename)
+    existingCredentials.gitignoreSqlite = gitIgnore.includes("\n.db") && gitIgnore.includes("\n.sqlite3") && gitIgnore.includes("\n.sqlite")
     export let disableSave;
 
 	credentials = { ...existingCredentials };
 
     credentials = {
         filename: credentials.filename,
-        gitignoreSqliteFile: credentials.gitignoreSqliteFile
+        gitignoreSqlite: credentials.gitignoreSqlite
     }
 
     let opts = [
@@ -24,11 +24,11 @@
             value: credentials.filename ?? ""
         },
         {
-            id: "gitignoreSqliteFile",
-            label: "Gitignore this file",
+            id: "gitignoreSqlite",
+            label: "Gitignore all SQLite files",
             type: "toggle",
-            additionalInstructions: 'If enabled, Evidence will gitignore this SQLite database file',
-            value: credentials.gitignoreSqliteFile ?? true
+            additionalInstructions: 'If enabled, Evidence will gitignore .db, .sqlite, and .sqlite3 files',
+            value: credentials.gitignoreSqlite ?? true
         }
     ]
 

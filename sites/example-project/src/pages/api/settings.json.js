@@ -33,10 +33,26 @@ export function post(request) {
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     if(settings.database === "sqlite"){
         let gitIgnore = fs.readFileSync('.gitignore', 'utf8')
-        if(settings.credentials.gitignoreSqliteFile === false){
-            fs.writeFileSync('.gitignore', gitIgnore.replaceAll("\n" + settings.credentials.filename, ""))
-        } else if(settings.credentials.gitignoreSqliteFile === true && !gitIgnore.includes(settings.credentials.filename)){
-            fs.writeFileSync('.gitignore', gitIgnore + "\n" + settings.credentials.filename)
+        let extensions = [".db", ".sqlite", ".sqlite3"]
+        if(settings.credentials.gitignoreSqlite === false){
+            let regex
+            extensions.forEach(ext => {
+                // Find newline plus extension and only match those strings which are directly
+                // followed by either a new line or the end of the file contents
+                // (stops the issue of matching .sqlite within the .sqlite3 string)
+                // g means global match - same behaviour as replaceAll
+                regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+                gitIgnore = gitIgnore.replace(regex, "")
+            })
+            fs.writeFileSync('.gitignore', gitIgnore)
+        } else if(settings.credentials.gitignoreSqlite === true){
+            extensions.forEach(ext => {
+                regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+                if(!gitIgnore.match(regex)){
+                    gitIgnore = gitIgnore + ("\n" + ext)
+                }
+            })
+            fs.writeFileSync('.gitignore', gitIgnore)
         }
     }
     return {
