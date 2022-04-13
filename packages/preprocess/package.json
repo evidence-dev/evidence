@@ -1,17 +1,17 @@
 {
   "name": "@evidence-dev/preprocess",
-  "version": "0.1.5",
+  "version": "1.0.0-next.0",
   "description": "Markdown preprocessor for evidence.dev projects",
   "main": "index.cjs",
   "author": "evidence.dev",
   "license": "MIT",
   "dependencies": {
     "mdsvex": "^0.9.0",
-		"unified": "^9.2.1",
-		"remark-parse": "^9.0.0",
-		"blueimp-md5": "^2.18.0",
-		"remark": "^13.0.0",
-		"fs-extra": "^9.1.0",
-		"unist-util-visit": "^2.0.3"
-	}
+    "unified": "^9.2.1",
+    "remark-parse": "^9.0.0",
+    "blueimp-md5": "^2.18.0",
+    "remark": "^13.0.0",
+    "fs-extra": "^9.1.0",
+    "unist-util-visit": "^2.0.3"
+  }
 }

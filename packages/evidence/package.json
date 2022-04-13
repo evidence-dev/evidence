@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "0.1.25",
+  "version": "1.0.0-next.0",
   "description": "dependencies for evidence projects",
   "type": "module",
   "keywords": [
@@ -26,7 +26,7 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
-      "template"
+    "template"
   ],
   "devDependencies": {
     "@evidence-dev/components": "workspace:^",

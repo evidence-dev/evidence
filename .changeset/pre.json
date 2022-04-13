@@ -16,5 +16,7 @@
     "@evidence-dev/components": "0.1.21",
     "evidence-test-environment": "0.0.9"
   },
-  "changesets": []
+  "changesets": [
+    "tall-rivers-remain"
+  ]
 }

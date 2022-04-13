@@ -1,5 +1,16 @@
 # evidence-test-environment
 
+## 1.0.0-next.0
+
+### Major Changes
+
+- Hides most of the front-end experience from analysts, introduces a new side-bar navigation scheme, adds a development mode settings page to configure database connections
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@1.0.0-next.0
+
 ## 0.0.9
 
 ### Patch Changes
