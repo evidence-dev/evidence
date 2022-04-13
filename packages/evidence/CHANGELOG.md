@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 0.1.22
+
+### Patch Changes
+
+- 0713a5d: take these back to public
+- Updated dependencies [0713a5d]
+  - @evidence-dev/components@0.1.18
+
 ## 0.1.21
 
 ### Patch Changes
