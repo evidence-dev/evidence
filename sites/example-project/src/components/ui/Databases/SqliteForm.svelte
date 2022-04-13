@@ -19,7 +19,7 @@
             id: "filename", 
             label: "Filename", 
             type: "filename", 
-            additionalInstructions: 'Name of file stored in the same directory as your Evidence project, or an in-memory SQLite database (:memory:)',
+            additionalInstructions: 'Name of file stored in the same directory as your Evidence project',
             placeholder: "mydatabase",
             value: credentials.filename ?? ""
         },
@@ -171,7 +171,8 @@
         text-transform: uppercase;
         font-weight: normal;
         font-size: 14px;
-        color: var(--grey-800)
+        color: var(--grey-800);
+        white-space: nowrap;
     }
 
  
@@ -248,8 +249,8 @@
        .switch {
       position: relative;
       display: inline-block;
-      width: 3.75rem;
-      height: 2rem;
+      width: 2.8rem;
+      height: 1.75rem;
       margin-left: auto;
       margin-right: 2px;
     }
@@ -270,34 +271,32 @@
       background-color: #ccc;
       -webkit-transition: 0.4s;
       transition: 0.4s;
-      border-radius: 2rem;
+      border-radius: 25px;
     }
   
     .slider:before {
       position: absolute;
       content: "";
-      height: 1.5rem;
-      width: 1.5rem;
+      height: 1.25rem;
+      width: 1.25rem;
       left: 4px;
       bottom: 4px;
       background-color: white;
       -webkit-transition: 0.4s;
       transition: 0.4s;
       border-radius: 50%;
+      box-shadow: 0px 1px 2px var(--grey-500);
+
     }
   
     input:checked + .slider {
       background-color: var(--green-500);
     }
-  
-    input:checked + .slider {
-      box-shadow: 0 0 1px var(--green-500);
-    }
-  
+
     input:checked + .slider:before {
-      -webkit-transform: translateX(1.75rem);
-      -ms-transform: translateX(1.75rem);
-      transform: translateX(1.75rem);
+      -webkit-transform: translateX(1.1rem);
+      -ms-transform: translateX(1.1rem);
+      transform: translateX(1.1rem);
     }
 
 </style>
