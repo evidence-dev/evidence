@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 0.1.20
+
+### Patch Changes
+
+- 6f74e1c: Another patch for the release process
+
 ## 0.1.19
 
 ### Patch Changes
