@@ -1,12 +1,13 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.15",
+  "version": "0.1.21",
   "scripts": {
     "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
-    "package": "svelte-kit package",
-    "prepublishOnly": "svelte-kit package"
+    "package": "svelte-kit package && pnpm clean-package",
+    "clean-package": "node scripts/clean-package.js",
+    "prepublishOnly": "pnpm package"
   },
   "type": "module",
   "dependencies": {
@@ -17,5 +18,8 @@
   },
   "publishConfig": {
     "directory": "../../packages/components"
+  },
+  "devDependencies": {
+    "fs-extra": "^10.0.1"
   }
 }

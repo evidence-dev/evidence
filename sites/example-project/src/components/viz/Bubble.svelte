@@ -52,7 +52,7 @@
     // we will be drawing a point that is 45% of the area of the max point
 
     function bubbleSize(newPoint){
-        const newPointSize = data.filter(d => d[x] === newPoint[0] && d[y] === newPoint[1])[0][size]
+        const newPointSize = newPoint[2]
         return Math.sqrt((newPointSize / maxData) * maxSizeSq)
     }
 
@@ -92,7 +92,7 @@
          }
     }
 
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary, size);
     
     config.update(d => {d.series.push(...seriesConfig); return d})
 

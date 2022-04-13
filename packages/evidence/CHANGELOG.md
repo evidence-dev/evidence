@@ -1,5 +1,48 @@
 # @evidence-dev/evidence
 
+## 0.1.25
+
+### Patch Changes
+
+- Updated dependencies [b1bd12f]
+  - @evidence-dev/components@0.1.21
+
+## 0.1.24
+
+### Patch Changes
+
+- Updated dependencies [6f74e1c]
+  - @evidence-dev/components@0.1.20
+
+## 0.1.23
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/components@0.1.19
+
+## 0.1.22
+
+### Patch Changes
+
+- 0713a5d: take these back to public
+- Updated dependencies [0713a5d]
+  - @evidence-dev/components@0.1.18
+
+## 0.1.21
+
+### Patch Changes
+
+- Updated dependencies [e540391]
+  - @evidence-dev/components@0.1.17
+
+## 0.1.20
+
+### Patch Changes
+
+- Updated dependencies [c75b082]
+  - @evidence-dev/components@0.1.16
+
 ## 0.1.19
 
 ### Patch Changes
