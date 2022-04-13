@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 0.1.17
+
+### Patch Changes
+
+- e540391: Updating the packaging process to support pre-releases
+
 ## 0.1.16
 
 ### Patch Changes
