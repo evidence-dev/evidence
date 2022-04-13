@@ -1,17 +1,17 @@
-<script>
+<script>    
     import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
 
 	export let credentials;
 	export let existingCredentials;
     export let gitIgnore;
-    existingCredentials.versionControl = !gitIgnore.includes(credentials.filename)
+    existingCredentials.gitignoreSqliteFile = gitIgnore.includes(existingCredentials.filename)
     export let disableSave;
 
 	credentials = { ...existingCredentials };
 
     credentials = {
         filename: credentials.filename,
-        versionControl: credentials.versionControl
+        gitignoreSqliteFile: credentials.gitignoreSqliteFile
     }
 
     let opts = [
@@ -24,11 +24,11 @@
             value: credentials.filename ?? ""
         },
         {
-            id: "versionControl",
-            label: "Include in Version Control",
+            id: "gitignoreSqliteFile",
+            label: "Gitignore this file",
             type: "toggle",
-            additionalInstructions: 'If you have a git repo and choose to include this file in version control, it will be removed from your project gitignore',
-            value: credentials.versionControl ?? true
+            additionalInstructions: 'If enabled, Evidence will gitignore this SQLite database file',
+            value: credentials.gitignoreSqliteFile ?? true
         }
     ]
 
@@ -119,7 +119,6 @@
 {/if}
 </div>
 {/each}
-
 
 <style>
 

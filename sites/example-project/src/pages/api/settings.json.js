@@ -33,9 +33,9 @@ export function post(request) {
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     if(settings.database === "sqlite"){
         let gitIgnore = fs.readFileSync('.gitignore', 'utf8')
-        if(settings.credentials.versionControl === true){
+        if(settings.credentials.gitignoreSqliteFile === false){
             fs.writeFileSync('.gitignore', gitIgnore.replaceAll("\n" + settings.credentials.filename, ""))
-        } else if(settings.credentials.versionControl === false && !gitIgnore.includes(settings.credentials.filename)){
+        } else if(settings.credentials.gitignoreSqliteFile === true && !gitIgnore.includes(settings.credentials.filename)){
             fs.writeFileSync('.gitignore', gitIgnore + "\n" + settings.credentials.filename)
         }
     }
