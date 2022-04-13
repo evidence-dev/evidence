@@ -49,10 +49,13 @@ importers:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
+      fs-extra: ^10.0.1
     dependencies:
       '@tidyjs/tidy': 2.4.4
       echarts: 5.2.2
       echarts-stat: 1.2.0
+    devDependencies:
+      fs-extra: 10.0.1
 
   packages/db-orchestrator:
     specifiers:
