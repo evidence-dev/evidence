@@ -48,7 +48,7 @@
             filename.value = file + ext;
         }
         credentials.filename = filename.value;
-        if(file.includes('/')){
+        if(file?.includes('/')){
             filenameError = true;
             disableSave = true;
         } else if(file === '' || file == undefined) {
