@@ -8,26 +8,41 @@
 
 	for(let path in rootMDFiles) {
 		menu.push({
+			filename: path.replace('/src/pages/', '').replace(/^\.\//, ''),
 			label: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' '),
 			href: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/'),
-			folder: undefined
+			hrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/')),
+			folder: undefined,
+			folderLabel: undefined,
+			folderHref: undefined,
+			folderHrefUri: undefined,
 		})
 	}
 
 	for(let path in levelOneIndexFiles) {
 		menu.push({
-			label: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
+			filename: path.replace('/src/pages/', '').replace(/^\.\//, '').replaceAll('_', ' ').replaceAll('-', ' ').replace(/.*\//,''),
+			label: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('/index',''),
 			href: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+			hrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index','')),
 			folder: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('/index',''),
+			folderLabel: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
+			folderHref: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+			folderHrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index','')),
 		})
 	}
 
 	for(let path in levelOneMDFiles) {
 		if(!path.includes("/index.md") && !path.includes("[")){
 			menu.push({
+				filename: path.replace('/src/pages/', '').replace(/^\.\//, '').replaceAll('/index','').replace(/.*\//,''),
 				label: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index','').replace(/.*\//,''),
 				href: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
+				hrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index','')),
 				folder: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
+				folderLabel: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
+				folderHref: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
+				folderHrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index','')),
 			})
 		}
 	} 
@@ -52,11 +67,21 @@
 	let folderObj;
 	let folderLink;
 	let contents;
+
+	let folderLab;
+	let folderHref;
+	let folderHrefUri;
+	
 	for(let i = 0; i < folders.length; i++){
 		contents = menu.filter(d => d.folder === folders[i]);
-		fileCount = contents.filter(d => d.label !== folders[i]).length;
-		folderLink = contents.filter(d => d.label === folders[i]).length > 0;
-		folderObj = {folder: folders[i], fileCount: fileCount, folderLink: folderLink}
+
+		folderLab = contents[0].folderLabel;
+		folderHref = contents[0].folderHref;
+		folderHrefUri = contents[0].folderHrefUri;
+
+		fileCount = contents.filter(d => d.href !== folderHref).length;
+		folderLink = contents.filter(d => d.href === folderHref).length > 0;
+		folderObj = {folder: folders[i], folderLabel: folderLab, folderHref: folderHref, folderHrefUri: folderHrefUri, fileCount: fileCount, folderLink: folderLink}
 		folderList.push(folderObj)
 	}
 
@@ -88,11 +113,11 @@
 			{#if noFolders}
             {#each noFolders as item}
                 {#if item.label != 'index'}
-                <a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-                    <div class:selected="{"/"+$page.path.split('/')[1] === item.href}">
-                        {item.label}
-                    </div>
-                </a>
+						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
+							<div class:selected="{"/"+$page.path.split('/')[1] === item.hrefUri}">
+								{item.label}
+							</div>
+						</a>
                 {/if}
             {/each}
             {/if}

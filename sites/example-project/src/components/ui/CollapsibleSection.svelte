@@ -8,11 +8,12 @@
 	export let folderList;
 
 	let folderContents = menu.filter((d) => d.folder === folder);
-
+	let folderLabel = folderList.filter(d => d.folder === folder)[0].folderLabel;
+	let folderHrefUri = folderList.filter(d => d.folder === folder)[0].folderHrefUri;
 	let expanded = false;
 
 	function toggle() {
-        if($page.path !== '/' + folder){
+        if($page.path !== folderHrefUri){
 		    open = !open;
 			expanded = true;
         } else {
@@ -22,12 +23,12 @@
 </script>
 
 <div class="collapsible">
-	<div class="folder" class:selected={$page.path === '/' + folder} class:folder-selected={$page.path.split('/')[1] === folder}>
+	<div class="folder" class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
 		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
 				class=collapse-icon
-                class:selected={$page.path === '/' + folder}
-                class:folder-selected={$page.path.split('/')[1] === folder}
+                class:selected={$page.path === folderHrefUri}
+                class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}
 				style="tran"
 				width="9"
 				height="9"
@@ -42,13 +43,13 @@
 		</button>
 		{#if folderList.filter((d) => d.folder === folder)[0].folderLink}
 			<a href={'/' + folder} aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
-                <div class=folder-label class:selected={$page.path === '/' + folder} class:folder-selected={$page.path.split('/')[1] === folder}>
-				{folder}
+                <div class=folder-label class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
+				{folderLabel}
                 </div>
 			</a>
 		{:else}
-			<span class="folder-label nolink" class:folder-selected={$page.path.split('/')[1] === folder} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
-				{folder}
+			<span class="folder-label nolink" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+				{folderLabel}
 			</span>
 		{/if}
 	</div>
@@ -56,12 +57,12 @@
 	{#if expanded}
 		<div class="contents" hidden={!expanded} transition:slide>
 			{#each folderContents as item}
-				{#if item.label != 'index' && !item.label.includes('[') && item.label !== item.folder}
-					<a href={item.href} sveltekit:prefetch on:click={() => (open = !open)}>
-						<div class:selected={$page.path === item.href} class="content-item">
-							{item.label}
-						</div>
-					</a>
+				{#if item.filename != 'index.md' && !item.label.includes('[')}
+						<a href={item.href} sveltekit:prefetch on:click={() => (open = !open)}>
+							<div class:selected={$page.path === item.hrefUri} class="content-item">
+								{item.label}
+							</div>
+						</a>
 				{/if}
 			{/each}
 		</div>
