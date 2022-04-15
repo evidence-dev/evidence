@@ -1,8 +1,8 @@
 ---
-sidebar_position: 5
+sidebar_position: 2
 ---
 
-# Connect Data Warehouse
+# Connect Database
 
 Evidence supports Google BigQuery, Snowflake, PostgreSQL, MySQL, and SQLite.
 

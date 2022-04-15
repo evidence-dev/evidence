@@ -150,8 +150,6 @@ To stop the dev server, use `Ctrl` + `C`
 
 When the dev server is running, you will be able to see your pages in your browser at [localhost:3000](http://localhost:3000)
 
-![hello-world](/img/hello-world-gradient.png)
-
 ## Localhost
 If you have not tried web development before, `localhost:3000` may look foreign to you. This is your **URL** for local web development and tells your browser where to send requests. You can think of it in the same way as a normal URL like `google.com`.
 

@@ -30,7 +30,7 @@ For tips on markdown syntax, check out [Markdown Guide.](https://www.markdowngui
 ## Write your first query
 In Evidence you write SQL like this:
 
-````markdown title="src/pages/firstquery.md"
+````markdown
 ```my_first_query
 
 select 

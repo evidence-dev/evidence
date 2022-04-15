@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 1
 hide_table_of_contents: false
 title: Templating
 ---

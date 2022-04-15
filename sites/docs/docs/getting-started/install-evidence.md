@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 hide_table_of_contents: false
 ---
 
@@ -24,12 +24,6 @@ npm run dev
 Check which version you have with `npm -v` 
 
 Install the latest version with `npm install -g npm@latest`
-
-<div style={{textAlign: 'center'}}>
-
-![home-screen-initial](/img/hello-world-gradient.png)
-
-</div>
 
 
 ## VS Code Extension
