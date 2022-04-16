@@ -43,6 +43,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
+        import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
         import Area from '${componentSource}/viz/Area.svelte';
