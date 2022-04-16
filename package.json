@@ -18,7 +18,7 @@
 		"uvu": "0.5.2"
 	},
 	"scripts": {
-		"release": "pnpm --filter ./sites/example-project package && pnpm changeset publish",
+		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test"
 	}
 }
