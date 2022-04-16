@@ -1,5 +1,18 @@
 # @evidence-dev/evidence
 
+## 1.0.0-next.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/components@1.0.0-next.1
+
+## 1.0.0-next.1
+
+### Patch Changes
+
+- Inline svelte-kit config into the template
+
 ## 1.0.0-next.0
 
 ### Major Changes

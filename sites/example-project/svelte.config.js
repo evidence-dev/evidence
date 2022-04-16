@@ -13,6 +13,10 @@ const config = {
 			routes: 'src/pages',
 			lib: 'src/components'
 		},
+		package: {
+			dir: '../../packages/components',
+			emitTypes: true
+		},
 		vite: {
 			optimizeDeps: {
 				include: ['echarts-stat'],

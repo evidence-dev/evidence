@@ -17,6 +17,8 @@
     "evidence-test-environment": "0.0.9"
   },
   "changesets": [
+    "large-impalas-matter",
+    "serious-rice-learn",
     "tall-rivers-remain"
   ]
 }
