@@ -8,7 +8,6 @@ hide_table_of_contents: false
 If you're not familiar with the terminal or you run into trouble, check out the [Detailed Installation Walkthrough.](/walkthroughs/installation)
 
 ## Install & Launch
-Create a new Evidence project by following the steps below, then open your browser and go to [localhost:3000](http://localhost:3000)
 
 ```shell
 npx degit evidence-dev/template my-project
@@ -17,9 +16,11 @@ npm install
 npm run dev 
 ```
 
-### System Requirements 
+Open your browser and go to [localhost:3000](http://localhost:3000)
 
-**NPM Version 7 or greater** 
+## System Requirements 
+
+Evidence requires NPM `Version 7` or higher. 
 
 Check which version you have with `npm -v` 
 
