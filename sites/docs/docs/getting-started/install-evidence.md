@@ -27,31 +27,5 @@ Install the latest version with `npm install -g npm@latest`
 
 
 ## VS Code Extension (Optional)
-If you use VS Code, the Evidence VS Code extension adds syntax highlighting and basic autocomplete to your authoring experience. You can install the extension from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode) 
+If you use VS Code, the Evidence VS Code Extension adds handy syntax highlighting and basic autocomplete for 'Evidence flavoured' markdown. You can install the extension from the the [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode). 
 
-### Using Mobile Device in Dev Mode
-
-#### Expose Server to Your Network
-If you would like to test your Evidence project on other devices while in dev mode, you can expose your dev server to your network. This will generate a web address for you, which you can use to see your project on mobile devices.
-
-:::caution Trusted Network
-Only expose your server to your network if it is a trusted network. Treat this as a temporary setting, especially if you frequently use networks outside of your office or home. 
-:::
-
-1. Open the `package.json` file in the root of your project
-2. Under **scripts**, look at the **dev** line
-3. Add `--host 0.0.0.0` after `svelte-kit dev`
-
-The new **dev** line should look like this:
-```json
-"dev": "svelte-kit dev --host 0.0.0.0",
-```
-
-The network address to use on your mobile device will appear in your console after running your dev server:
-![network](/img/network.png)
-
-Note the warning about directories being accessible to anyone on your network.
-
-Open the network address on your mobile device and you should see your Evidence project:
-
-![mobile-screenshots-small](/img/mobile-screenshots-small.png)
