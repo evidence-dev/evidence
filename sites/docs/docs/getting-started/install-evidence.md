@@ -5,7 +5,7 @@ hide_table_of_contents: false
 
 # Install Evidence
 
-If you're not familiar with the terminal or you run into trouble, check out the [Detailed Installation Walkthrough.](/walkthroughs/installation)
+If this is your first time doing something like this, or you just need a reminder, check out the [Detailed Installation Walkthrough.](/walkthroughs/installation)
 
 ## Install & Launch
 
