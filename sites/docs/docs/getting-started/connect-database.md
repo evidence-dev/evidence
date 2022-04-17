@@ -1,22 +1,25 @@
 ---
 sidebar_position: 2
+title: Connect A Database
 ---
 
-# Connect Database
+To connect your local development environment to a database: 
 
-Evidence supports Google BigQuery, Snowflake, PostgreSQL, MySQL, and SQLite.
+1. Run your evidence project with `npm run dev` 
+1. Navigate to [localhost:3000/settings](http://localhost:3000/settings)
+1. Select your database and enter your credentials 
 
-If you want to try out Evidence with free public datasets, both BigQuery and Snowflake offer a large collection.
+## Supported Databases
 
-:::tip Don't have a data warehouse account?
-Set up a FREE BigQuery sandbox in less than 60 seconds:<br/> 
+Evidence supports the following databases: 
 
-1. [Go to BigQuery](https://console.cloud.google.com/bigquery?_ga=2.235574280.867747861.1622513856-469265758.1621868166&_gac=1.226175592.1622124503.CjwKCAjw47eFBhA9EiwAy8kzNKaExCvM0G229wH0PGh4USFcdB7wudKCKWt4MSEPM6wbQKCwOot1NxoCtxIQAvD_BwE)
-2. Log in with your Google account (or create one)
-3. Accept the terms of service
-4. Create a project
-5. [Click here to see BigQuery's public datasets](https://console.cloud.google.com/bigquery?project=bigquery-public-data&page=project)
-:::
+1. BigQuery 
+1. Snowflake 
+1. PostgreSQL 
+1. MySQL 
+1. SQLite
+
+We're adding new connectors regularly. Feel free to [create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
 
 ## BigQuery
 
