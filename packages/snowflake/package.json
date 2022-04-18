@@ -1,16 +1,15 @@
 {
-    "name": "@evidence-dev/snowflake",
-    "version": "0.0.7",
-    "description": "Snowflake driver for Evidence projects",
-    "main": "index.cjs",
-    "author": "evidence.dev",
-    "license": "MIT",
-    "scripts": {
-      "test": "uvu test test.js"
-    },
-    "dependencies": {
-      "snowflake-sdk": "1.6.8"
-    },
-    "type": "module"
-  }
-  
+  "name": "@evidence-dev/snowflake",
+  "version": "0.0.8-next.0",
+  "description": "Snowflake driver for Evidence projects",
+  "main": "index.cjs",
+  "author": "evidence.dev",
+  "license": "MIT",
+  "scripts": {
+    "test": "uvu test test.js"
+  },
+  "dependencies": {
+    "snowflake-sdk": "1.6.8"
+  },
+  "type": "module"
+}

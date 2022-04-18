@@ -1,5 +1,13 @@
 # @evidence-dev/db-orchestrator
 
+## 1.0.0-next.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/snowflake@0.0.8-next.0
+  - @evidence-dev/sqlite@1.0.0-next.1
+
 ## 1.0.0-next.0
 
 ### Major Changes

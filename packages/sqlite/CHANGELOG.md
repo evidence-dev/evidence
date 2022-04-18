@@ -1,5 +1,11 @@
 # @evidence-dev/sqlite
 
+## 1.0.0-next.1
+
+### Patch Changes
+
+- Update vendor sdk
+
 ## 1.0.0-next.0
 
 ### Major Changes
