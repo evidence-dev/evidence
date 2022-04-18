@@ -9,7 +9,7 @@
     "test": "uvu test test.js"
   },
   "dependencies": {
-    "sqlite3": "5.0.2",
+    "sqlite3": "5.0.4",
     "sqlite": "4.0.25"
   },
   "type": "module"
