@@ -13,8 +13,8 @@ export async function get() {
         if (fs.existsSync('evidence.settings.json')) {
             settings = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
         }
-        if (fs.existsSync('.gitignore')) {
-            gitIgnore = fs.readFileSync('.gitignore', 'utf8')
+        if (fs.existsSync('../../.gitignore')) {
+            gitIgnore = fs.readFileSync('../../.gitignore', 'utf8')
         }
         return {
             header: "accept: application/json",
@@ -32,7 +32,7 @@ export function post(request) {
     const {settings} = JSON.parse(request.body)
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     if(settings.database === "sqlite"){
-        let gitIgnore = fs.readFileSync('.gitignore', 'utf8')
+        let gitIgnore = fs.readFileSync('../../.gitignore', 'utf8')
         let extensions = [".db", ".sqlite", ".sqlite3"]
         if(settings.credentials.gitignoreSqlite === false){
             let regex
@@ -44,7 +44,7 @@ export function post(request) {
                 regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
                 gitIgnore = gitIgnore.replace(regex, "")
             })
-            fs.writeFileSync('.gitignore', gitIgnore)
+            fs.writeFileSync('../../.gitignore', gitIgnore)
         } else if(settings.credentials.gitignoreSqlite === true){
             extensions.forEach(ext => {
                 regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
@@ -52,7 +52,7 @@ export function post(request) {
                     gitIgnore = gitIgnore + ("\n" + ext)
                 }
             })
-            fs.writeFileSync('.gitignore', gitIgnore)
+            fs.writeFileSync('../../.gitignore', gitIgnore)
         }
     }
     return {

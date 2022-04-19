@@ -4,7 +4,7 @@
 	export let credentials;
 	export let existingCredentials;
     export let gitIgnore;
-    existingCredentials.gitignoreSqlite = gitIgnore.includes("\n.db") && gitIgnore.includes("\n.sqlite3") && gitIgnore.includes("\n.sqlite")
+    existingCredentials.gitignoreSqlite = gitIgnore.match(/\n.db(?=\n|$)/) && gitIgnore.match(/\n.sqlite3(?=\n|$)/) && gitIgnore.match(/\n.sqlite(?=\n|$)/)
     export let disableSave;
 
 	credentials = { ...existingCredentials };
