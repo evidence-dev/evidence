@@ -5,53 +5,61 @@
 	const levelOneMDFiles = import.meta.glob('/src/pages/*/*.md');
 
 	let menu = [];
+	let pathEnd;
+	let pathSplit;
 
 	for(let path in rootMDFiles) {
+		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
 		menu.push({
-			filename: path.replace('/src/pages/', '').replace(/^\.\//, ''),
-			label: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' '),
-			href: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/'),
-			hrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('index','/')),
+			filename: pathEnd,
+			label: pathEnd.replace(/\.md$/, '').replace(/_/g, ' ').replace(/-/g, ' '),
+			href: "/" + pathEnd.replace(/^index\.md/, '').replace(/\.md$/, ''),
+			hrefUri: encodeURI("/" + pathEnd.replace(/^index\.md/, '').replace(/\.md$/, '')),
 			folder: undefined,
 			folderLabel: undefined,
 			folderHref: undefined,
 			folderHrefUri: undefined,
-			nameError: path.replace('/src/pages/', '').replace(/^\.\//, '').includes(" "),
+			nameError: pathEnd.includes(" "),
 			folderNameError: undefined
 		})
 	}
 
 	for(let path in levelOneIndexFiles) {
+		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
+		pathSplit = pathEnd.split("/")
 		menu.push({
-			filename: path.replace('/src/pages/', '').replace(/^\.\//, '').replaceAll('_', ' ').replaceAll('-', ' ').replace(/.*\//,''),
-			label: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('/index',''),
-			href: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
-			hrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index','')),
-			folder: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('/index',''),
-			folderLabel: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
-			folderHref: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
-			folderHrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index','')),
-			nameError: path.replace('/src/pages/', '').replace(/^\.\//, '').replaceAll('_', ' ').replaceAll('-', ' ').replace(/.*\//,'').includes(" "),
-			folderNameError: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index','').includes(" ")
+			filename: pathSplit[1],
+			label: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
+			href: "/" + pathSplit[0],
+			hrefUri: encodeURI("/" + pathSplit[0]),
+			folder: pathSplit[0],
+			folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
+			folderHref: "/" + pathSplit[0],
+			folderHrefUri: encodeURI("/" + pathSplit[0]),
+			nameError: pathEnd.includes(" "),
+			folderNameError: pathSplit[0].includes(" ")
 		})
 	}
 
 	for(let path in levelOneMDFiles) {
+		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
+		pathSplit = pathEnd.split("/")
 		if(!path.includes("/index.md") && !path.includes("[")){
 			menu.push({
-				filename: path.replace('/src/pages/', '').replace(/^\.\//, '').replaceAll('/index','').replace(/.*\//,''),
-				label: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index','').replace(/.*\//,''),
-				href: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index',''),
-				hrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replaceAll('/index','')),
-				folder: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
-				folderLabel: path.replace('/src/pages/', '').replace(/^\.\//, '').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('_', ' ').replaceAll('-', ' ').replaceAll('/index',''),
-				folderHref: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index',''),
-				folderHrefUri: encodeURI(path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index','')),
-				nameError: path.replace('/src/pages/', '').replace(/^\.\//, '').replaceAll('/index','').replace(/.*\//,'').includes(" "),
-				folderNameError: path.replace('/src/pages', '').replace(/^\.\//, '/').replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, '').replaceAll('/index','').includes(" ")
+				filename: pathSplit[1],
+				label: pathSplit[1].replace(/\.md$/, '').replace(/_/g, ' ').replace(/-/g, ' ').replace(/.*\//,''),
+				href: "/" + pathEnd.replace(/\.md$/, ''),
+				hrefUri: encodeURI("/" + pathEnd.replace(/\.md$/, '')),
+				folder: pathSplit[0],
+				folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
+				folderHref: "/" + pathEnd.replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, ''),
+				folderHrefUri: encodeURI("/" + pathSplit[0]),
+				nameError: pathEnd.includes(" "),
+				folderNameError: pathSplit[0].includes(" ")
 			})
 		}
 	} 
+
 </script>
 
 <script>
