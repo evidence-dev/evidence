@@ -23,8 +23,10 @@
 	}
 	
 	button {
-        /* height: 32px;
-        width: 40px;  */
+		align-items: center;
+		display: grid;
+		grid-row: auto;
+		grid-column: auto;
 		z-index: 5;
         position:fixed;
         left: 0;
@@ -32,7 +34,7 @@
         margin: 1.0em;
         border: none;
         color: none;
-        padding: 11px 11px;
+        padding: 14px 11px 14px 11px;
         text-align: center;
         text-decoration: none;
         font-size: 16px;
@@ -44,11 +46,11 @@
 	}
 	
 	.open svg {
-		transform: scale(0.7)
+		transform: scale(0.7);
 	}
 	
 	.open #top {
-		transform: translate(6px, 0px) rotate(45deg)
+		transform: translate(6px, -0.5px) rotate(45deg);
 	}
 	
 	.open #middle {
@@ -56,7 +58,7 @@
 	}
 	
     .open #bottom {
-            transform: translate(-12px, 9px) rotate(-45deg)
+            transform: translate(-12px, 8px) rotate(-45deg)
         }
 
     @media (min-width: 850px) {
