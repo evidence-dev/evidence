@@ -75,7 +75,7 @@
 {/each}
 
 {#if optionalOpts.length > 0}
-<h1 class=section-header>Optional</h1>
+<div class="separator">Optional</div>
 {/if}
 
 {#each optionalOpts as opt}
@@ -132,7 +132,7 @@
         font-family: var(--ui-font-family);
         color: var(--grey-999);
         font-size: 16px;
-        margin-top: 1.25em;
+        margin-top: 1.1em;
         display:flex;
         flex-direction: row;
         flex-wrap: wrap;
@@ -191,9 +191,24 @@
         visibility: visible;
     }
 
-    .section-header {
-        margin-top: 30px;
-        margin-bottom: 5px;
+    .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin-block-start: 2.5em;
+        color: var(--grey-600);
+        font-weight:bold;
+    }
+
+    .separator::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--grey-200);
+    }
+
+    .separator:not(:empty)::after {
+        margin-left: 1.5em;
+        margin-top: 0.1em;
     }
 
 </style>
