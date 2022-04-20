@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.0.0-next.2
+
+### Patch Changes
+
+- Fixes sqlite gitignore error, settings optionals, and misc UI bugs
+
 ## 1.0.0-next.1
 
 ### Patch Changes

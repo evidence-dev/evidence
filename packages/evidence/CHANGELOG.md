@@ -1,5 +1,14 @@
 # @evidence-dev/evidence
 
+## 1.0.0-next.4
+
+### Patch Changes
+
+- Fixes sqlite gitignore error, settings optionals, and misc UI bugs
+- Updated dependencies
+  - @evidence-dev/components@1.0.0-next.2
+  - @evidence-dev/db-orchestrator@1.0.0-next.2
+
 ## 1.0.0-next.3
 
 ### Patch Changes
