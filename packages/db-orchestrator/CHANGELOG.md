@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 1.0.0-next.3
+
+### Patch Changes
+
+- Updated dependencies [99c1d08]
+  - @evidence-dev/sqlite@1.0.0-next.3
+
 ## 1.0.0-next.2
 
 ### Patch Changes

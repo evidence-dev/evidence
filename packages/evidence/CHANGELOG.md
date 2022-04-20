@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 1.0.0-next.5
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@1.0.0-next.3
+
 ## 1.0.0-next.4
 
 ### Patch Changes

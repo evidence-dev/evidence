@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/db-orchestrator",
-  "version": "1.0.0-next.2",
+  "version": "1.0.0-next.3",
   "description": "DB orchestration for Evidence projects",
   "main": "index.cjs",
   "author": "evidence.dev",

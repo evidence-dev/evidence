@@ -1,5 +1,11 @@
 # @evidence-dev/sqlite
 
+## 1.0.0-next.3
+
+### Patch Changes
+
+- 99c1d08: Fixes location of sqlite database files in an Evidence project
+
 ## 1.0.0-next.2
 
 ### Patch Changes
