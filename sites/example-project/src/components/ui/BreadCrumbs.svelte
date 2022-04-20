@@ -2,7 +2,7 @@
     import { page } from '$app/stores';
     import { showQueries } from './stores.js'
 
-    $: pathArray = $page.path.split('/')
+    $: pathArray = $page.path.split('/').slice(1)
     $: nPages = pathArray.length
 
     function toggleQueries() {
@@ -18,11 +18,13 @@
                 {#if i === 0} 
                     <a href="/" ref="prefetch">Home</a>
                 {:else if i === nPages}
-                    &thinsp;
+                    &emsp13;
                 {:else}
-                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replace(/_/g," ").replace(/-/g," "))} </a>            
+                    &emsp13;/&emsp13;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replace(/_/g," ").replace(/-/g," "))} </a>            
                 {/if}
             {/each}
+        {:else}
+            <a href="/" ref="prefetch">Home</a>
         {/if}
         </span>
         <span>
@@ -52,6 +54,7 @@
         font-size: small;
         font-family: var(--ui-font-family-compact);
         -webkit-font-smoothing: antialiased;
+        color:var(--grey-700)
     }
     a{
         text-decoration: none;
