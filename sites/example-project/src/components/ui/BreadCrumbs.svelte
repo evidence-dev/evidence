@@ -2,8 +2,33 @@
     import { page } from '$app/stores';
     import { showQueries } from './stores.js'
 
-    $: pathArray = $page.path.split('/')
-    $: nPages = pathArray.length
+    $: pathArray = $page.path.split('/').slice(1)
+
+    const buildCrumbs = function (pathArray) {
+        let crumbs = [
+            {
+                href:'/', 
+                title: "Home"
+            }
+        ]
+        pathArray.forEach((path, i) => {
+            if (path != '') {
+                let crumb = {
+                    href: "/"+pathArray.slice(0,i+1).join("/"), 
+                    title: decodeURIComponent(path.replace(/_/g," ").replace(/-/g," "))
+                }
+                crumbs.push(crumb)
+            } 
+        })
+        if(crumbs.length > 3){
+            let upOne = crumbs.slice(-3)[0].href
+            crumbs.splice(1, crumbs.length-3, {href: upOne, title:'...'})
+        }
+
+        return crumbs   
+    }
+
+    $: crumbs = buildCrumbs(pathArray)
 
     function toggleQueries() {
 		showQueries.update(value => !value)
@@ -12,18 +37,14 @@
 
 <div>
     <span class="container"> 
-        <span>
-        {#if nPages > 1 }
-            {#each pathArray as crumb, i}
-                {#if i === 0} 
-                    <a href="/" ref="prefetch">Home</a>
-                {:else if i === nPages}
-                    &thinsp;
+        <span class="crumbs">
+            {#each crumbs as crumb, i}
+                {#if i > 0 }
+                &emsp13;/&emsp13;<a href={crumb.href} ref="prefetch">{crumb.title}</a>  
                 {:else}
-                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replace(/_/g," ").replace(/-/g," "))} </a>            
+                <a href={crumb.href} ref="prefetch">{crumb.title}</a>  
                 {/if}
             {/each}
-        {/if}
         </span>
         <span>
             {#if $showQueries}
@@ -40,6 +61,10 @@
         padding: 0 1.5em 0 1.5em;
         box-sizing: border-box;
         width: 100%;
+        overflow: auto;
+		white-space: nowrap;
+		-ms-overflow-style: none;  
+  		scrollbar-width: none;  
     }
 
     span.container{
@@ -52,7 +77,9 @@
         font-size: small;
         font-family: var(--ui-font-family-compact);
         -webkit-font-smoothing: antialiased;
+        color:var(--grey-700)
     }
+
     a{
         text-decoration: none;
         color: var(--grey-700);
@@ -93,6 +120,14 @@
   		-webkit-text-fill-color: transparent;
         font-weight: bold;
      }
+
+     @media (max-width: 600px) {
+        span.dev-controls {
+            display: none;
+        }
+    }
+     
+
 
 
 
