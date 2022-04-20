@@ -14,17 +14,51 @@
     }
 
     let opts = [
-        {id: "host", label: "Host", type: "text", placeholder: "database.server.com", value: credentials.host ?? ""},
-        {id: "database", label: "Database", placeholder: "my-database-name", type: "text", value: credentials.database ?? ""},
-        {id: "user", label: "User", type: "text", placeholder: "username", value: credentials.user ?? ""},
-        {id: "password", label: "Password", type: "password", placeholder: "password", value: credentials.password ?? ""},
+        {
+            id: "host", 
+            label: "Host", 
+            type: "text", 
+            optional: true, 
+            override: false,
+            placeholder: "database.server.com", 
+            value: credentials.host ?? ""
+        },
+        {
+            id: "database", 
+            label: "Database", 
+            optional: false, 
+            override: false,
+            placeholder: "my-database-name", 
+            type: "text", 
+            value: credentials.database ?? ""
+        },
+        {
+            id: "user", 
+            label: "User", 
+            type: "text", 
+            optional: false, 
+            override: false,
+            placeholder: "username", 
+            value: credentials.user ?? ""
+        },
+        {
+            id: "password", 
+            label: "Password", 
+            type: "password", 
+            optional: false, 
+            override: false,
+            placeholder: "password", 
+            value: credentials.password ?? ""
+        },
         {
             id: "socketPath", 
             label: "Socket Path", 
             type: "text", 
             additionalInstructions:
-				'This is an optional field, when using XYZ this is commonly required.',
-            optional: true,
+				'This is an optional field. When using Google Cloud MySQL this is commonly required.',
+            optional: true, 
+            override: false,
+            placeholder: "/cloudsql/my-project-123:us-northeast2:my-instance",
             value: credentials.socketPath ?? ""
         }
     ]
