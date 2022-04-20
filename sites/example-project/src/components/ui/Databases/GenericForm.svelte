@@ -170,10 +170,10 @@
 
     .additional-info-icon .info-msg {
         visibility: hidden;
+        display: none;
         position: absolute;
         top: -5px;
         left: 105%;
-        white-space: nowrap;
         padding-left: 5px;
         padding-right: 5px;     
         padding-top: 2px;
@@ -185,10 +185,13 @@
         opacity: 0.85;
         border-radius: 6px;
         z-index: 1;
+        max-width: 200px;
+        min-width: 150px;
     }
 
     .additional-info-icon:hover .info-msg {
         visibility: visible;
+        display: inline;
     }
 
     .separator {
