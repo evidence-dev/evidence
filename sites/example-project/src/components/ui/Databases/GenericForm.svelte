@@ -6,17 +6,27 @@
     export let disableSave
 
     let requiredOpts = opts.filter(d => d.optional !== true);
+    let optionalOpts = opts.filter(d => d.optional === true);
+    let overrideOpts = opts.filter(d => d.optional === true && d.override === true)
 
     function handleChange() {
         let filledFields = 0;
         let fieldStatus = false;
+
+        let overrideFields = 0;
+        let overrideFieldStatus = false;
 
         for(let i=0; i<requiredOpts.length; i++){
             fieldStatus = credentials[requiredOpts[i].id] != undefined && credentials[requiredOpts[i].id] !== '';
             filledFields = filledFields + fieldStatus;
         }
 
-        if(filledFields === requiredOpts.length){
+        for(let j=0; j<overrideOpts.length; j++){
+            overrideFieldStatus = credentials[overrideOpts[j].id] != undefined && credentials[overrideOpts[j].id] !== '';
+            overrideFields = overrideFields + overrideFieldStatus;
+        }
+
+        if(filledFields === requiredOpts.length || overrideFields > 0){
             disableSave = false;
         } else {
             disableSave = true;
@@ -26,7 +36,8 @@
 
 </script>
 
-{#each opts as opt}
+{#each requiredOpts as opt}
+
 <div class=input-item>
     <label for={opt.id}>
         {opt.label}
@@ -41,45 +52,64 @@
 
 
     {#if opt.type === "text"}
-        {#if opt.optional}
         <input
             type=text
             id={opt.id}
             name={opt.id}
             bind:value={credentials[opt.id]}
             placeholder={opt.placeholder}
-        />
-        {:else }
-        <input
-            type=text
-            id={opt.id}
-            name={opt.id}
-            bind:value={credentials[opt.id]}
-            placeholder={opt.placeholder}
-            required
             on:keyup={handleChange}
         />
-        {/if}
     {:else if opt.type === "password"}
-        {#if opt.optional}
         <input
             type=password
             id={opt.id}
             name={opt.id}
             placeholder="password"
             bind:value={credentials[opt.id]}
-        />
-        {:else }
-        <input
-            type=password
-            id={opt.id}
-            name={opt.id}
-            placeholder="password"
-            bind:value={credentials[opt.id]}
-            required
             on:keyup={handleChange}
             />
+    {/if}
+</div>
+
+{/each}
+
+{#if optionalOpts.length > 0}
+<h1 class=section-header>Optional</h1>
+{/if}
+
+{#each optionalOpts as opt}
+<div class=input-item>
+    <label for={opt.id}>
+        {opt.label}
+
+        {#if opt.additionalInstructions}
+        <span class="additional-info-icon">
+                <IoIosHelpCircleOutline/>
+                <span class=info-msg>{opt.additionalInstructions}</span>
+        </span>
         {/if}
+    </label>
+
+
+    {#if opt.type === "text"}
+        <input
+            type=text
+            id={opt.id}
+            name={opt.id}
+            bind:value={credentials[opt.id]}
+            placeholder={opt.placeholder}
+            on:keyup={handleChange}
+        />
+    {:else if opt.type === "password"}
+        <input
+            type=password
+            id={opt.id}
+            name={opt.id}
+            placeholder="password"
+            bind:value={credentials[opt.id]}
+            on:keyup={handleChange}
+        />
     {/if}
 </div>
 
@@ -115,7 +145,7 @@
         border: 1px solid var(--grey-300);
         padding: 0.25em 0.25em 0.25em 0.25em;
         margin-left: auto;
-        width: 65%;
+        width: 62%;
         padding: 0.35em;
         color: var(--grey-999);
         -webkit-appearance: none;
@@ -131,7 +161,7 @@
     }
 
     label {
-        width: 30%;
+        width: 35%;
         text-transform: uppercase;
         font-weight: normal;
         font-size: 14px;
@@ -159,6 +189,11 @@
 
     .additional-info-icon:hover .info-msg {
         visibility: visible;
+    }
+
+    .section-header {
+        margin-top: 30px;
+        margin-bottom: 5px;
     }
 
 </style>

@@ -20,6 +20,8 @@
             label: "Filename", 
             type: "filename", 
             additionalInstructions: 'Name of file stored in the same directory as your Evidence project',
+            optional: false,
+            override: false,
             placeholder: "mydatabase",
             value: credentials.filename ?? ""
         },
@@ -28,6 +30,8 @@
             label: "Gitignore all SQLite files",
             type: "toggle",
             additionalInstructions: 'If enabled, Evidence will gitignore .db, .sqlite, and .sqlite3 files',
+            optional: false,
+            override: false,
             value: credentials.gitignoreSqlite ?? true
         }
     ]
