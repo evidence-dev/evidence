@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: Connect A Database
+title: Connect a Database
 ---
 
 To connect your local development environment to a database: 
