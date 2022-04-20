@@ -4,7 +4,7 @@ const path = require('path')
 
 const runQuery = async (queryString, database) => {
     const filename = database ? database.filename : process.env["SQLITE_FILENAME"] || process.env["filename"] || process.env["FILENAME"]
-    const filepath = "../../" + filename
+    const filepath = filename !== ":memory:" ? "../../" + filename : filename
     try {
         const db = await open({
             filename: filepath,
