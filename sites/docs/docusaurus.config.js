@@ -58,11 +58,7 @@ module.exports = {
             },
             {
               label: 'Get Started',
-              to: '/getting-started/get-started',
-            },
-            {
-              label: 'Tutorial',
-              to: '/tutorial/what-well-build',
+              to: '/getting-started/installation',
             },
             {
               label: 'Queries',
