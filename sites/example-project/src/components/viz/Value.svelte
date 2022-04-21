@@ -3,6 +3,7 @@
     import formatValue from "$lib/modules/formatValue.js";
     import getParsedDate from "$lib/modules/getParsedDate.js";
     import checkInputs from "$lib/modules/checkInputs.js";
+    import PulseNumber from "./PulseNumber.svelte";
     
     // Passing in value from dataset:
     export let data = null
@@ -73,11 +74,13 @@
 } catch(e) {
     error = e.message;
 }
+
+
     
 </script>
 
 {#if !error}
-{formatValue(value, fmt)} 
+<PulseNumber value={formatValue(value, fmt)}/>
 {:else}
     <span class="error" style='color:{errorColor}'>
         [{placeholder}]
