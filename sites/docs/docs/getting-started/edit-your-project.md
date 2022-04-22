@@ -86,3 +86,5 @@ For example, if your query name was `regional_sales_change`, you could include a
 ```
 
 ![bar](/img/exg-bar-nt.svg) 
+
+For a full list of available components in the built-in library, see the [Components Example Gallery](/components/example-gallery)
