@@ -19,73 +19,67 @@
 
     // Placeholder text when data not supplied:
     export let placeholder = null
-    let errorColor = 'var(--red-600)';
-    if(placeholder){
-        errorColor = 'blue';
-    } else {
-        placeholder = "value";
-    }
 
     let error;
+
     try {
-    if(data) {
 
-        if(isNaN(row)){
-            throw Error("row must be a number (row="+row+")")
-        }
+        if(!placeholder){
+            if(data) {
 
-        try{
-            Object.keys(data[row])[0]
-        } catch(e) {
-            throw Error("Row "+row+" does not exist in the dataset")
-        }
+                if(isNaN(row)){
+                    throw Error("row must be a number (row="+row+")")
+                }
 
-        column = column ?? Object.keys(data[row])[0]
+                try{
+                    Object.keys(data[row])[0]
+                } catch(e) {
+                    throw Error("Row "+row+" does not exist in the dataset")
+                }
 
-        checkInputs(data, [column]);
+                column = column ?? Object.keys(data[row])[0]
 
-        let columnSummary = getColumnSummary(data, 'array');
-        let dateCols = columnSummary.filter(d => d.type === "date")
-        dateCols = dateCols.map(d => d.id);
-        if(dateCols.length > 0){
-            for(let i = 0; i < dateCols.length; i++){
-            data = getParsedDate(data, dateCols[i]);
+                checkInputs(data, [column]);
+
+                let columnSummary = getColumnSummary(data, 'array');
+                let dateCols = columnSummary.filter(d => d.type === "date")
+                dateCols = dateCols.map(d => d.id);
+                if(dateCols.length > 0){
+                    for(let i = 0; i < dateCols.length; i++){
+                    data = getParsedDate(data, dateCols[i]);
+                    }
+                }
+
+                value = data[row][column]
+                columnSummary = columnSummary.filter(d => d.id === column);
+
+                if(fmt == null){
+                    fmt = columnSummary[0].format;
+                }
+
+                // Units (k, M, B) - not used in <Value> yet:
+                // units = columnSummary[0].units;
+            } else if(value) { 
+                value = isNaN(value) ? value : Number.parseFloat(value);
+                if(fmt == null){
+                    fmt = (typeof value === "number" ? "num" : "str");
+                }
+            } else {
+                throw Error("No value or data provided. If you referenced a query result, check that the name is correct.")
             }
         }
-
-        value = data[row][column]
-        columnSummary = columnSummary.filter(d => d.id === column);
-
-        if(fmt == null){
-            fmt = columnSummary[0].format;
-        }
-
-        // Units (k, M, B) - not used in <Value> yet:
-        // units = columnSummary[0].units;
-    } else {
-        if(!value){
-            throw Error("No value or data provided. If you referenced a query result, check that the name is correct.")
-        }
-        value = isNaN(value) ? value : Number.parseFloat(value);
-        if(fmt == null){
-            fmt = (typeof value === "number" ? "num" : "str");
-        }
-    }
-} catch(e) {
+} catch(e) {  
     error = e.message;
 }
 
-
-    
 </script>
 
-{#if !error}
-<PulseNumber value={formatValue(value, fmt)}/>
+{#if placeholder}
+    <span class="error" style='color:blue'>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span>
+{:else if !error}
+    <PulseNumber value={formatValue(value, fmt)}/>
 {:else}
-    <span class="error" style='color:{errorColor}'>
-        [{placeholder}]
-        <span class="error-msg">{error}</span>
-    </span>
+    <span class="error" style='color:var(--red-600)'>[value]<span class="error-msg">{error}</span></span>
 {/if}
 
 <style>
@@ -110,10 +104,11 @@
        color: white;
        font-family: sans-serif;
        font-size: 0.8em;
-       background-color: black;
+       background-color: var(--grey-900);
        opacity: 0.85;
        border-radius: 6px;
        z-index: 1;
+       word-wrap: break-word;
    }
 
    .error:hover .error-msg {
