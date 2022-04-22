@@ -58,7 +58,7 @@ module.exports = {
             },
             {
               label: 'Get Started',
-              to: '/getting-started/installation',
+              to: '/getting-started/install-evidence',
             },
             {
               label: 'Queries',
