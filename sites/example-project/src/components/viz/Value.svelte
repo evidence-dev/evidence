@@ -4,6 +4,7 @@
     import getParsedDate from "$lib/modules/getParsedDate.js";
     import checkInputs from "$lib/modules/checkInputs.js";
     import PulseNumber from "./PulseNumber.svelte";
+    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
     
     // Passing in value from dataset:
     export let data = null
@@ -80,12 +81,21 @@
     <PulseNumber value={formatValue(value, fmt)}/>
 {:else}
     <span class="error" style='color:var(--red-600)'>[value]<span class="error-msg">{error}</span></span>
+    <div class="error6">
+        <span class=error-label>Error</span>
+        <span class="additional-info-icon">
+            <IoIosHelpCircleOutline/>
+        </span>
+        <span class=error-msg>{error}</span>
+    </div>
+
+      
 {/if}
 
 <style>
     .error {
        display: inline;
-       position: relative;
+       /* position: relative; */
        cursor: help;
    }
 
@@ -115,5 +125,62 @@
        visibility: visible;
        display: inline;
    }
+
+
+   .error6 {
+       display: inline;
+       position: relative;
+       cursor: help;
+       color: white;
+       font-family: sans-serif;
+       font-size: 0.8em;
+       background-color: var(--red-600);
+       border-radius: 20px;
+       padding: 3px 4px;
+       /* margin-right: 3px; */
+    }
+
+    .additional-info-icon {
+        width: 18px;
+        color: white;
+        display:inline-block;
+        vertical-align: middle;
+        line-height: 1em;
+        cursor: help;
+        position:relative;
+        text-transform: none;
+    }
+
+
+    .error6 .error-msg {
+       display: none;
+       position: absolute;
+       top: -5px;
+       left: 105%;
+       max-width: 400px;
+       min-width: 150px;
+       padding-left: 5px;
+       padding-right: 5px;     
+       padding-top: 2px;
+       padding-bottom: 1px;   
+       color: white;
+       font-family: sans-serif;
+       font-size: 0.9rem;
+       background-color: var(--grey-900);
+       opacity: 0.85;
+       border-radius: 6px;
+       z-index: 1;
+       word-wrap: break-word;
+    }
+
+    .error6:hover .error-msg {
+        display: inline;
+    }
+
+    .error-label {
+        margin-left: 0px;
+        padding-left: 3px;
+        vertical-align: baseline;
+    }
 
 </style>
