@@ -4,7 +4,8 @@
 	import "../app.css"
 	import { navigating } from '$app/stores';
 	import { blur } from "svelte/transition";
-	import { page } from "$app/stores"
+	import { page } from "$app/stores";
+	import { pageHasQueries } from '$lib/ui/stores.js';
 
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
 	import Header from '@evidence-dev/components/ui/Header.svelte'
@@ -25,7 +26,7 @@
 
 <div class="grid">
 	{#if $page.path !== '/settings'}
-		<Header/>
+		<Header {pageHasQueries}/>
 	{/if}
 	<Sidebar bind:open/> 
 	<Hamburger bind:open/>

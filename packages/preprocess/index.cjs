@@ -34,7 +34,7 @@ const createModuleContext = function(filename){
                 }
             }
             `
-    }
+        }
     return moduleContext
 } 
 
@@ -43,6 +43,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
+        import { pageHasQueries } from '$lib/ui/stores.js';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
@@ -66,9 +67,15 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
     if(hasQueries(filename)){
         defaultProps = `
             export let data
+            pageHasQueries.update(value => value = true)
             import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
             ${defaultProps}
         `
+    } else {
+        defaultProps = `
+        pageHasQueries.update(value => value = false)
+        ${defaultProps}
+    `
     }
     return defaultProps
 }

@@ -1,7 +1,8 @@
 <script>
     import { page } from '$app/stores';
     import { showQueries } from './stores.js'
-
+    export let pageHasQueries;
+    
     $: pathArray = $page.path.split('/').slice(1)
 
     const buildCrumbs = function (pathArray) {
@@ -47,10 +48,12 @@
             {/each}
         </span>
         <span>
-            {#if $showQueries}
-            <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
-            {:else}
-            <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
+            {#if $pageHasQueries}
+                {#if $showQueries}
+                <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
+                {:else}
+                <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
+                {/if}
             {/if}
         </span>
     </span>
