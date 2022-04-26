@@ -92,6 +92,73 @@
 {/if}
 
 <style>
+    .error {
+       display: inline-grid;
+       grid-template-columns: auto auto;
+       grid-row: auto;
+       column-gap: 3px;
+
+       position: relative;
+       cursor: help;
+       color: white;
+       font-family: sans-serif;
+       font-size: 0.8em;
+       background-color: var(--red-600);
+       border-radius: 20px;
+
+       padding: 1px 2px 1px 3px;
+       margin-left: 1px;
+       margin-right: 2px;
+    }
+
+    .error-label {
+        display: inline;
+        vertical-align: middle;
+        padding-left: 3px;
+        margin-top: auto;
+    }
+
+    .additional-info-icon {
+        display: inline;
+        vertical-align: middle;
+        width: 18px;
+        color: white;
+        cursor: help;
+        position:relative;
+        text-transform: none;
+        margin-top: auto;
+        line-height: 1.1em;
+    }
+
+
+
+
+
+
+    .error .error-msg {
+       display: none;
+       position: absolute;
+       top: -5px;
+       left: 105%;
+       max-width: 400px;
+       min-width: 150px;
+       padding-left: 5px;
+       padding-right: 5px;     
+       padding-top: 2px;
+       padding-bottom: 1px;   
+       color: white;
+       font-family: sans-serif;
+       font-size: 0.9rem;
+       background-color: var(--grey-900);
+       opacity: 0.90;
+       border-radius: 6px;
+       z-index: 1;
+    }
+
+    .error:hover .error-msg {
+        display: inline;
+    }
+
     .placeholder {
        display: inline;
        position: relative;
@@ -123,66 +190,5 @@
    .placeholder:hover .error-msg {
        display: inline;
    }
-
-
-   .error {
-       display: inline-grid;
-       grid-template-columns: auto auto;
-       grid-template-rows: auto;
-       column-gap: 3px;
-       margin-top: 1px;
-       margin-bottom: 1px;
-       position: relative;
-       cursor: help;
-       color: white;
-       font-family: sans-serif;
-       font-size: 0.8em;
-       background-color: var(--red-600);
-       border-radius: 20px;
-       padding: 1px 2px 1px 3px;
-       margin-left: 1px;
-       margin-right: 2px;
-    }
-
-    .additional-info-icon {
-        width: 18px;
-        color: white;
-        display:inline-block;
-        vertical-align: middle;
-        line-height: 1em;
-        cursor: help;
-        position:relative;
-        text-transform: none;
-        margin-top: auto;
-    }
-
-    .error .error-msg {
-       display: none;
-       position: absolute;
-       top: -5px;
-       left: 105%;
-       max-width: 400px;
-       min-width: 150px;
-       padding-left: 5px;
-       padding-right: 5px;     
-       padding-top: 2px;
-       padding-bottom: 1px;   
-       color: white;
-       font-family: sans-serif;
-       font-size: 0.9rem;
-       background-color: var(--grey-900);
-       opacity: 0.90;
-       border-radius: 6px;
-       z-index: 1;
-    }
-
-    .error:hover .error-msg {
-        display: inline;
-    }
-
-    .error-label {
-        margin-left: 0px;
-        padding-left: 3px;
-    }
 
 </style>
