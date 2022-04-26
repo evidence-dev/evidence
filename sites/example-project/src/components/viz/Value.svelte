@@ -76,31 +76,30 @@
 </script>
 
 {#if placeholder}
-    <span class="error" style='color:blue'>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span>
+    <span class="placeholder">[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span>
 {:else if !error}
     <PulseNumber value={formatValue(value, fmt)}/>
 {:else}
-    <span class="error" style='color:var(--red-600)'>[value]<span class="error-msg">{error}</span></span>
-    <div class="error6">
+    <span class="error">
         <span class=error-label>Error</span>
         <span class="additional-info-icon">
             <IoIosHelpCircleOutline/>
         </span>
         <span class=error-msg>{error}</span>
-    </div>
+    </span>
 
       
 {/if}
 
 <style>
-    .error {
+    .placeholder {
        display: inline;
-       /* position: relative; */
+       position: relative;
        cursor: help;
+       color: blue;
    }
 
-   .error .error-msg {
-       visibility: hidden;
+   .placeholder .error-msg {
        display: none;
        position: absolute;
        top: -5px;
@@ -121,14 +120,18 @@
        word-wrap: break-word;
    }
 
-   .error:hover .error-msg {
-       visibility: visible;
+   .placeholder:hover .error-msg {
        display: inline;
    }
 
 
-   .error6 {
-       display: inline;
+   .error {
+       display: inline-grid;
+       grid-template-columns: auto auto;
+       grid-template-rows: auto;
+       column-gap: 3px;
+       margin-top: 1px;
+       margin-bottom: 1px;
        position: relative;
        cursor: help;
        color: white;
@@ -136,8 +139,9 @@
        font-size: 0.8em;
        background-color: var(--red-600);
        border-radius: 20px;
-       padding: 3px 4px;
-       /* margin-right: 3px; */
+       padding: 1px 2px 1px 3px;
+       margin-left: 1px;
+       margin-right: 2px;
     }
 
     .additional-info-icon {
@@ -149,10 +153,10 @@
         cursor: help;
         position:relative;
         text-transform: none;
+        margin-top: auto;
     }
 
-
-    .error6 .error-msg {
+    .error .error-msg {
        display: none;
        position: absolute;
        top: -5px;
@@ -167,20 +171,18 @@
        font-family: sans-serif;
        font-size: 0.9rem;
        background-color: var(--grey-900);
-       opacity: 0.85;
+       opacity: 0.90;
        border-radius: 6px;
        z-index: 1;
-       word-wrap: break-word;
     }
 
-    .error6:hover .error-msg {
+    .error:hover .error-msg {
         display: inline;
     }
 
     .error-label {
         margin-left: 0px;
         padding-left: 3px;
-        vertical-align: baseline;
     }
 
 </style>
