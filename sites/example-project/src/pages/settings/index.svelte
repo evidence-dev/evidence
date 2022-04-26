@@ -29,10 +29,13 @@
     export let settings 
     export let gitIgnore
     import DatabaseSettingsPanel from '@evidence-dev/components/ui/Databases/DatabaseSettingsPanel.svelte';
+    import DeploySettingsPanel from '$lib/ui/Deployment/DeploySettingsPanel.svelte'
 </script>
 
 {#if dev}
 <DatabaseSettingsPanel {settings} {gitIgnore}/> 
+
+<DeploySettingsPanel {settings} /> 
 {:else}
 <p>Settings are only available in development mode.</p>
 {/if}
