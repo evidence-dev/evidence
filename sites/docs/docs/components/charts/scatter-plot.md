@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 6
 hide_title: true
 hide_table_of_contents: false
 ---
@@ -14,6 +14,35 @@ hide_table_of_contents: false
     data={data.query_name} 
     x=column_x 
     y=column_y
+/>
+```
+
+## Examples
+
+### Scatter Plot
+![scatter-plot](/img/exg-scatter-nt.svg) 
+
+```markdown
+<ScatterPlot 
+    data={data.census} 
+    y=median_rent_usd 
+    x=income_per_capita_usd 
+    xAxisTitle="Income Per Capita" 
+    yAxisTitle="Median Rent" 
+/>
+```
+
+### Multi-Series Scatter Plot
+![scatter-plot](/img/exg-multi-series-scatter-nt.svg) 
+
+```markdown
+<ScatterPlot 
+    data={data.scores_by_region} 
+    x=score_a 
+    y=score_b 
+    series=region 
+    xAxisTitle=true 
+    yAxisTitle=true
 />
 ```
 
@@ -57,31 +86,3 @@ hide_table_of_contents: false
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 </table>											
 
-## Examples
-
-### Scatter Plot
-![scatter-plot](/img/exg-scatter-nt.svg) 
-
-```markdown
-<ScatterPlot 
-    data={data.census} 
-    y=median_rent_usd 
-    x=income_per_capita_usd 
-    xAxisTitle="Income Per Capita" 
-    yAxisTitle="Median Rent" 
-/>
-```
-
-### Multi-Series Scatter Plot
-![scatter-plot](/img/exg-multi-series-scatter-nt.svg) 
-
-```markdown
-<ScatterPlot 
-    data={data.scores_by_region} 
-    x=score_a 
-    y=score_b 
-    series=region 
-    xAxisTitle=true 
-    yAxisTitle=true
-/>
-```

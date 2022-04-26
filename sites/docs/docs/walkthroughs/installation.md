@@ -3,12 +3,10 @@ sidebar_position: 1
 ---
 
 # Installation
-Don't worry if this is your first time using any of the tools referenced in this walkthrough - we will guide you through all the steps. If you need help, [send us a message on Slack.](/community) We're here for you! 
+Don't worry if this is your first time using any of the tools referenced in this walkthrough - we will guide you through all the steps. If you need help, [send us a message on Slack.](/community) We're here to help! 
 
 ## IDE or Text Editor
 You will need an IDE (integrated development environment) or text editor to work with Evidence. We like [VSCode (Visual Studio Code)](https://code.visualstudio.com/) because of its layout, integrated console/terminal, and extension library.
-
-![VSCode](/img/vscode_ui.png)
 
 VSCode has an extensive documentation site which you can find at this link:
 https://code.visualstudio.com/docs
@@ -29,9 +27,9 @@ When installing packages, if you are ever presented with an option to download a
 
 Below are the versions of Node.js and npm you will need to install Evidence:
 
-**Node Version 14.17.6** 
+**Node Version 14 or greater** 
 
-`14.17.6` is the most recent stable version of Node as at the time this was written. Should this page ever be out of date, check the [Node.js website](https://nodejs.org/en/) to see ther version number listed as **LTS (long-term support)**.
+Check the [Node.js website](https://nodejs.org/en/) to see ther version number listed as **LTS (long-term support)**.
 
 Check which version you have with `node -v` 
 
@@ -60,7 +58,7 @@ This will print a list to your console of all available Node.js versions. If you
 ### Install a version
 Take the version number you found in the previous step and include it in the command below. This will install Node.js and npm at the same time:
 ```shell
-nvm install 14.17.6
+nvm install 16.8.0
 ```
 
 ### Check your installed versions
@@ -81,7 +79,7 @@ Nvm makes it easy to switch between different versions.
 
 Switch between versions using the command below. When you switch Node.js versions, it will automatically change your npm version to match.
 ```shell
-nvm use 14.17.6
+nvm use 16.8.0
 ```
 
 Once you have the right Node.js and npm versions installed, you're ready to create your Evidence project!
@@ -150,31 +148,12 @@ To stop the dev server, use `Ctrl` + `C`
 
 When the dev server is running, you will be able to see your pages in your browser at [localhost:3000](http://localhost:3000)
 
-![hello-world](/img/hello-world-gradient.png)
-
 ## Localhost
 If you have not tried web development before, `localhost:3000` may look foreign to you. This is your **URL** for local web development and tells your browser where to send requests. You can think of it in the same way as a normal URL like `google.com`.
 
 Entering `localhost:3000` in your browser tells your browser to send a request to the local server which is using port 3000. If your development server is running, it will receive that request and send back the files needed to display your webpage.
 
 On your Evidence page, if you click the [Querying Data](http://localhost:3000/firstquery) link, you'll see the name of the page appended to the URL, just as you would see on a normal website: `localhost:3000/firstquery`
-
-## Using a Different Port
-You may need to run your Evidence project on a different port (for example, if you have other programs running and port 3000 is already occupied). If you need to run your Evidence project on a different port than 3000, follow the steps below:
-
-1. Open the `package.json` file in the root of your project. This file provides a list of instructions for your project, including which scripts to use to run various commands, as well as which versions of packages are needed to run the project
-2. Under **scripts**, look at the **dev** line. This is the script your project will use in the background when you run the `npm run dev` command in your terminal. By default, this script uses port 3000
-3. Add `--port XXXX` after `svelte-kit dev`, where `XXXX` is the port number you'd like to use. This will override the port used when running the dev server
-
-The new **dev** line should look like this:
-```json
-"dev": "svelte-kit dev --port XXXX",
-```
-
-**Example (using port 8080):**
-
-
-![custom-port](/img/custom-port.png)
 
 ## In Review 
 
@@ -188,7 +167,7 @@ npm run dev
 ```
 
 ## Next Steps
-Now that you're all set up, you can keep working through the getting started guide. The next step is to [take a look at the files in your new project.](/getting-started/project-structure)
+Now that you're all set up, you can keep working through the getting started guide. The next step is to [connect your database.](/getting-started/connect-database)
 
 ## Help
 If you need help with any of this, [reach out to us on Slack](/community).

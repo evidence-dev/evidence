@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
+sidebar_position: 1
 hide_title: true
 hide_table_of_contents: false
 ---
 
-# Examples
+# Example Gallery
 
 <h1 class="community-header"><span class="gradient">Example Gallery</span></h1>
 

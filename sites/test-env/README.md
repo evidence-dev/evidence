@@ -17,6 +17,6 @@ Don't clone this repo, just download the code using the steps above.
 
 ## Learning More
 
-- [Getting Started Walkthrough](https://docs.evidence.dev/getting-started/get-started)
+- [Docs](https://docs.evidence.dev/)
 - [Project Home Page](https://www.evidence.dev)
 - [Github](https://github.com/evidence-dev/evidence)
