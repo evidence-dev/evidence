@@ -97,7 +97,6 @@
        grid-template-columns: auto auto;
        grid-row: auto;
        column-gap: 3px;
-
        position: relative;
        cursor: help;
        color: white;
@@ -105,8 +104,7 @@
        font-size: 0.8em;
        background-color: var(--red-600);
        border-radius: 20px;
-
-       padding: 1px 2px 1px 3px;
+       padding: 1px 3px 1px 3px;
        margin-left: 1px;
        margin-right: 2px;
     }
@@ -127,13 +125,8 @@
         position:relative;
         text-transform: none;
         margin-top: auto;
-        line-height: 1.1em;
+        line-height: 1.03em;
     }
-
-
-
-
-
 
     .error .error-msg {
        display: none;
