@@ -1,11 +1,10 @@
 <script>
     import BreadCrumbs from './BreadCrumbs.svelte';
-    export let pageHasQueries;
 </script>
 
 <header>
     <div class="breadcrumb-container">
-        <BreadCrumbs {pageHasQueries}/>
+        <BreadCrumbs/>
     </div>
 </header>
 

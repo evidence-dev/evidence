@@ -43,7 +43,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries } from '$lib/ui/stores.js';
+        import { pageHasQueries } from '@evidence-dev/components/ui/stores';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
@@ -68,7 +68,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
         defaultProps = `
             export let data
             pageHasQueries.update(value => value = true)
-            import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
+            import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
             ${defaultProps}
         `
     } else {

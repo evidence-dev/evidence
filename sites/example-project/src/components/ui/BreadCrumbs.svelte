@@ -1,8 +1,8 @@
 <script>
     import { page } from '$app/stores';
     import { showQueries } from './stores.js'
-    export let pageHasQueries;
-    
+    import { pageHasQueries } from './stores.js'
+
     $: pathArray = $page.path.split('/').slice(1)
 
     const buildCrumbs = function (pathArray) {
