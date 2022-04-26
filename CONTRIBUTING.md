@@ -48,7 +48,7 @@ If your problem relates to sensitive or private information, please don't post a
 
 Pull requests are welcome! We review pull requests as they are submitted and will reach out to you with any questions or comments.
 
-If you haven't submitted a pull request before, see the [GitHub Pull Request Guide](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+If you haven't submitted a pull request before, see the [GitHub Pull Request Guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
 
 ## Join Our Team
 
