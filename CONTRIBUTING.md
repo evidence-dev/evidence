@@ -46,9 +46,16 @@ If your problem relates to sensitive or private information, please don't post a
 
 ## Contribute Code
 
+### Testing Changes
+
+You can test your changes by running `npm run dev` form within the `./sites/example-project` project.
+Note that changes to the `components` package should be done within `./sites/example-project/src/component`.  During the build, `./sites/example-project/src/component` will be copied over to `./packages/components`).  All other packages can be updated directly in `./packages/components`.
+
+### Pull Requests
 Pull requests are welcome! We review pull requests as they are submitted and will reach out to you with any questions or comments.
 
 If you haven't submitted a pull request before, see the [GitHub Pull Request Guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+
 
 ## Join Our Team
 
