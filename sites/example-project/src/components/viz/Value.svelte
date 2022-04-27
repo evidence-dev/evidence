@@ -4,6 +4,7 @@
     import getParsedDate from "$lib/modules/getParsedDate.js";
     import checkInputs from "$lib/modules/checkInputs.js";
     import PulseNumber from "./PulseNumber.svelte";
+    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
     
     // Passing in value from dataset:
     export let data = null
@@ -19,84 +20,146 @@
 
     // Placeholder text when data not supplied:
     export let placeholder = null
-    let errorColor = 'var(--red-600)';
-    if(placeholder){
-        errorColor = 'blue';
-    } else {
-        placeholder = "value";
-    }
 
     let error;
+
     try {
-    if(data) {
 
-        if(isNaN(row)){
-            throw Error("row must be a number (row="+row+")")
-        }
+        if(!placeholder){
+            if(data) {
 
-        try{
-            Object.keys(data[row])[0]
-        } catch(e) {
-            throw Error("Row "+row+" does not exist in the dataset")
-        }
+                if(isNaN(row)){
+                    throw Error("row must be a number (row="+row+")")
+                }
 
-        column = column ?? Object.keys(data[row])[0]
+                try{
+                    Object.keys(data[row])[0]
+                } catch(e) {
+                    throw Error("Row "+row+" does not exist in the dataset")
+                }
 
-        checkInputs(data, [column]);
+                column = column ?? Object.keys(data[row])[0]
 
-        let columnSummary = getColumnSummary(data, 'array');
-        let dateCols = columnSummary.filter(d => d.type === "date")
-        dateCols = dateCols.map(d => d.id);
-        if(dateCols.length > 0){
-            for(let i = 0; i < dateCols.length; i++){
-            data = getParsedDate(data, dateCols[i]);
+                checkInputs(data, [column]);
+
+                let columnSummary = getColumnSummary(data, 'array');
+                let dateCols = columnSummary.filter(d => d.type === "date")
+                dateCols = dateCols.map(d => d.id);
+                if(dateCols.length > 0){
+                    for(let i = 0; i < dateCols.length; i++){
+                    data = getParsedDate(data, dateCols[i]);
+                    }
+                }
+
+                value = data[row][column]
+                columnSummary = columnSummary.filter(d => d.id === column);
+
+                if(fmt == null){
+                    fmt = columnSummary[0].format;
+                }
+
+                // Units (k, M, B) - not used in <Value> yet:
+                // units = columnSummary[0].units;
+            } else if(value) { 
+                value = isNaN(value) ? value : Number.parseFloat(value);
+                if(fmt == null){
+                    fmt = (typeof value === "number" ? "num" : "str");
+                }
+            } else {
+                throw Error("No value or data provided. If you referenced a query result, check that the name is correct.")
             }
         }
-
-        value = data[row][column]
-        columnSummary = columnSummary.filter(d => d.id === column);
-
-        if(fmt == null){
-            fmt = columnSummary[0].format;
-        }
-
-        // Units (k, M, B) - not used in <Value> yet:
-        // units = columnSummary[0].units;
-    } else {
-        if(!value){
-            throw Error("No value or data provided. If you referenced a query result, check that the name is correct.")
-        }
-        value = isNaN(value) ? value : Number.parseFloat(value);
-        if(fmt == null){
-            fmt = (typeof value === "number" ? "num" : "str");
-        }
-    }
-} catch(e) {
+} catch(e) {  
     error = e.message;
 }
 
-
-    
 </script>
 
-{#if !error}
-<PulseNumber value={formatValue(value, fmt)}/>
+{#if placeholder}
+    <span class="placeholder">[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span>
+{:else if !error}
+    <PulseNumber value={formatValue(value, fmt)}/>
 {:else}
-    <span class="error" style='color:{errorColor}'>
-        [{placeholder}]
-        <span class="error-msg">{error}</span>
+    <span class="error">
+        <span class=error-label>Error</span>
+        <span class="additional-info-icon">
+            <IoIosHelpCircleOutline/>
+        </span>
+        <span class=error-msg>{error}</span>
     </span>
+
+      
 {/if}
 
 <style>
     .error {
+       display: inline-grid;
+       grid-template-columns: auto auto;
+       grid-row: auto;
+       column-gap: 3px;
+       position: relative;
+       cursor: help;
+       color: white;
+       font-family: sans-serif;
+       font-size: 0.75em;
+       background-color: var(--red-700);
+       border-radius: 20px;
+       padding: 0px 6px 0px 6px;
+       margin-left: 1px;
+       margin-right: 2px;
+    }
+
+    .error-label {
+        display: inline;
+        vertical-align: middle;
+        padding-left: 3px;
+        margin-top: auto;
+    }
+
+    .additional-info-icon {
+        display: inline;
+        vertical-align: middle;
+        width: 14px;
+        color: white;
+        cursor: help;
+        position:relative;
+        text-transform: none;
+        margin-top: auto;
+        line-height: 1.3em;
+    }
+
+    .error .error-msg {
+       display: none;
+       position: absolute;
+       top: -5px;
+       left: 105%;
+       max-width: 400px;
+       min-width: 150px;
+       padding-left: 10px;
+       padding-right: 8px;     
+       padding-top: 5px;
+       padding-bottom: 5px;   
+       color: white;
+       font-family: sans-serif;
+       font-size: 0.9rem;
+       background-color: var(--grey-900);
+       opacity: 0.90;
+       border-radius: 6px;
+       z-index: 1;
+    }
+
+    .error:hover .error-msg {
+        display: inline;
+    }
+
+    .placeholder {
        display: inline;
        position: relative;
        cursor: help;
+       color: blue;
    }
 
-   .error .error-msg {
-       visibility: hidden;
+   .placeholder .error-msg {
        display: none;
        position: absolute;
        top: -5px;
@@ -110,14 +173,14 @@
        color: white;
        font-family: sans-serif;
        font-size: 0.8em;
-       background-color: black;
+       background-color: var(--grey-900);
        opacity: 0.85;
        border-radius: 6px;
        z-index: 1;
+       word-wrap: break-word;
    }
 
-   .error:hover .error-msg {
-       visibility: visible;
+   .placeholder:hover .error-msg {
        display: inline;
    }
 
