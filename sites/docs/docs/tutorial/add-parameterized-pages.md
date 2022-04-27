@@ -13,10 +13,10 @@ In our example, we are going to create parameterized pages for products, so you 
 Create a `product` folder in `pages/` and create the two .md files shown below:
 
 ```folder {5,6}
-my-project
+pages /
 |-- index.md
 |-- business-performance.md
-`--product
+`-- product /
    |-- [product].md
    `-- index.md
 ```

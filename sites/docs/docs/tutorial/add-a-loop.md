@@ -21,7 +21,7 @@ Items ranked by sales are as follows:
 {/each}
 ```
 #### How does this work? 
-In the each block, we're passing in the query name `data.product_performance` and giving it an "alias" of `prod_perf` to reference inside the each block.
+In the each block, we're passing in the query name `data.product_performance` and giving it an "alias" of `prod_perf` to reference inside the each block. You **must** alias the query in the each block.
 
 The each block loops through every row of the table and displays whatever is included in the middle of the block. In this case, we're displaying the `item` column of the `prod_perf` dataset.
 
@@ -40,7 +40,9 @@ When used inside an **each block**, the `<Value/>` component only requires a ref
 
 Let's also make this a bullet list by adding a `*` in front of our data (normal markdown syntax).
 
-```json {3} title="Change the highlighted line below:"
+```json {5} title="Change the highlighted line below:"
+Items ranked by sales are as follows:
+
 {#each data.product_performance as prod_perf}
 
 * {prod_perf.item}: <Value value={prod_perf.item_sales} fmt=usd/>
@@ -68,7 +70,9 @@ This code will loop through the product list and add a URL containing a product 
 
 For example, the URL for the Running Shoes product would be `localhost:3000/product/Running%20Shoes`.
 
-```markdown {3} title="Change the highlighted line below:" 
+```markdown {5} title="Change the highlighted line below:" 
+Items ranked by sales are as follows:
+
 {#each data.product_performance as prod_perf}
 
 * [{prod_perf.item}](/product/{prod_perf.item}): <Value value={prod_perf.item_sales} fmt=usd/>

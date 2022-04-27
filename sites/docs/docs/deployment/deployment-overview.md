@@ -27,7 +27,7 @@ You can schedule (or trigger) regular builds of your site to keep it up-to-date 
 This has two benefits for you and your users: 
 
 1. If something goes wrong with your SQL, Evidence just stops building your project, and continues to serve older results. 
-2. Your site will be exceptionally fast. Under most conditions, pages will load in miliseconds. 
+2. Your site will be exceptionally fast. Under most conditions, pages will load in milliseconds. 
 
 ## Builds 
 
