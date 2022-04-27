@@ -1,5 +1,12 @@
 # evidence-test-environment
 
+## 1.0.0-next.6
+
+### Patch Changes
+
+- Updated dependencies [3d0d93c]
+  - @evidence-dev/evidence@1.0.0-next.6
+
 ## 1.0.0-next.5
 
 ### Patch Changes

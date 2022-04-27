@@ -1,5 +1,11 @@
 # @evidence-dev/sqlite
 
+## 1.0.0-next.4
+
+### Patch Changes
+
+- 3d0d93c: Various UI changes
+
 ## 1.0.0-next.3
 
 ### Patch Changes
