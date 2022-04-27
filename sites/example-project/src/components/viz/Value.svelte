@@ -101,10 +101,10 @@
        cursor: help;
        color: white;
        font-family: sans-serif;
-       font-size: 0.8em;
-       background-color: var(--red-600);
+       font-size: 0.75em;
+       background-color: var(--red-700);
        border-radius: 20px;
-       padding: 1px 3px 1px 3px;
+       padding: 0px 6px 0px 6px;
        margin-left: 1px;
        margin-right: 2px;
     }
@@ -119,13 +119,13 @@
     .additional-info-icon {
         display: inline;
         vertical-align: middle;
-        width: 18px;
+        width: 14px;
         color: white;
         cursor: help;
         position:relative;
         text-transform: none;
         margin-top: auto;
-        line-height: 1.03em;
+        line-height: 1.3em;
     }
 
     .error .error-msg {
@@ -135,10 +135,10 @@
        left: 105%;
        max-width: 400px;
        min-width: 150px;
-       padding-left: 5px;
-       padding-right: 5px;     
-       padding-top: 2px;
-       padding-bottom: 1px;   
+       padding-left: 10px;
+       padding-right: 8px;     
+       padding-top: 5px;
+       padding-bottom: 5px;   
        color: white;
        font-family: sans-serif;
        font-size: 0.9rem;
