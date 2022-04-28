@@ -68,7 +68,7 @@
 	{#if expanded}
 		<div class="contents" hidden={!expanded} transition:slide>
 			{#each folderContents as item}
-				{#if item.filename != 'index.md' && !item.label.includes('[')}
+				{#if !item.label.includes('[')}
 					{#if dev && item.nameError}
 						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
 							<div class="content-item name-error">

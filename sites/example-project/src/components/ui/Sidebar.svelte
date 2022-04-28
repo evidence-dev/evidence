@@ -3,6 +3,7 @@
 	const rootMDFiles = import.meta.glob('/src/pages/*.md');
 	const levelOneIndexFiles = import.meta.glob('/src/pages/*/index.md');
 	const levelOneMDFiles = import.meta.glob('/src/pages/*/*.md');
+	const levelTwoIndexFiles = import.meta.glob('/src/pages/*/*/index.md');
 
 	let menu = [];
 	let pathEnd;
@@ -60,6 +61,26 @@
 		}
 	} 
 
+	for(let path in levelTwoIndexFiles) {
+		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
+		pathSplit = pathEnd.split("/")
+		console.log(pathSplit)
+		menu.push({
+			filename: pathSplit[2],
+			label: pathSplit[1].replace(/_/g, ' ').replace(/-/g, ' '),
+			href: "/" + pathSplit[0] + "/" + pathSplit[1],
+			hrefUri: encodeURI("/" + pathSplit[0] + "/" + pathSplit[1]),
+			folder: pathSplit[0],
+			folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
+			folderHref: "/" + pathSplit[0],
+			folderHrefUri: encodeURI("/" + pathSplit[0]),
+			nameError: pathEnd.includes(" "),
+			folderNameError: pathSplit[0].includes(" ")
+		})
+	}
+
+console.log(menu)
+
 </script>
 
 <script>
@@ -110,7 +131,7 @@
 	}
 
 	let noFolders = menu.filter(d => d.folder === undefined || !folderCheck.includes(d.folder))
-
+console.log(folderList)
 	export let open 
 
 </script>
