@@ -1,15 +1,6 @@
 <script>
-import BigLink from "../BigLink.svelte"
-export let settings
-
-let deployTargets = [
-    {name: 'Choose a database'},
-    {name: 'Netlify', }
-]
-
-let netlifyHref = `
-    https://app.netlify.com/start/deploy?repository=${settings.gitRepo.replace('.git', '')}#BIGQUERY_PROJECT_ID=${settings.credentials.project_id}&BIGQUERY_CLIENT_EMAIL=${settings.credentials.client_email}&BIGQUERY_PRIVATE_KEY=${settings.credentials.private_key}
-    `
+    export let settings
+    import NetlifyDeploy from "./NetlifyDeploy.svelte";
 
 </script>
 
@@ -20,18 +11,8 @@ let netlifyHref = `
 
     <div class=panel> 
     <h1>Deployment</h1>
-    <select bind:value={deployTargets} >
-        {#each deployTargets as target}
-            <option value={target}>
-                {target.name}
-            </option>
-        {/each}
-        </select>
-
-        <BigLink href={netlifyHref}>Deploy to Netlify &rarr</BigLink>
-
+    <NetlifyDeploy {settings} />
     </div>
-
 </div>
 <footer>
 
