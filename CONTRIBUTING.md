@@ -48,13 +48,20 @@ If your problem relates to sensitive or private information, please don't post a
 
 ### Testing Changes
 
-You can test your changes by running `npm run dev` form within the `./sites/example-project` project.
-Note that changes to the `components` package should be done within `./sites/example-project/src/component`.  During the build, `./sites/example-project/src/component` will be copied over to `./packages/components`).  All other packages can be updated directly in `./packages/components`.
+You can test your changes by running `npm run dev` from within the `./sites/example-project` project.
+
+Note that changes to the `components` package should be done within `./sites/example-project/src/components`.  During the build, `./sites/example-project/src/components` will be copied over to `./packages/components`).  All other packages can be updated directly in `./packages`.
 
 ### Pull Requests
 Pull requests are welcome! We review pull requests as they are submitted and will reach out to you with any questions or comments.
 
-If you haven't submitted a pull request before, see the [GitHub Pull Request Guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+Follow these steps to submit a pull request for your changes:
+1. Create a fork of the `evidence` repo
+2. Commit your changes to your fork
+3. Test your changes to make sure all results are as expected
+4. Open a pull request against the `main` branch of the `evidence` repo
+
+[Here's an example of a pull request](https://github.com/evidence-dev/evidence/pull/165) from a community member who built Evidence's MySQL connector.
 
 
 ## Join Our Team
