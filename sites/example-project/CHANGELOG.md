@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.0.0-next.4
+
+### Patch Changes
+
+- Fix import error for show hide queries button
+
 ## 1.0.0-next.3
 
 ### Patch Changes
