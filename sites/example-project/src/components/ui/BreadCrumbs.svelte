@@ -1,7 +1,7 @@
 <script>
     import { page } from '$app/stores';
     import { showQueries } from './stores.js'
-    import { pageHasQueries } from './stores.js'
+    import { pageHasQueries } from '@evidence-dev/components/ui/stores';
 
     $: pathArray = $page.path.split('/').slice(1)
 
