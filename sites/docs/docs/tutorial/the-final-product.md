@@ -9,7 +9,7 @@ Here's another look at the project we just created:
 
 <div style={{textAlign: 'center'}}>
 
-![final-page](/img/tutorial-img/needful-things-finished.gif)
+![final-page](/img/tutorial-img/needful-things-final-product-v2.gif)
 
 </div>
 

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 5
 hide_table_of_contents: false
 ---
 
@@ -31,7 +31,7 @@ Here's what our page looks like now:
 
 <div style={{textAlign: 'center'}}>
 
-![after-add-sentence](/img/tutorial-img/needful-things-value-in-text.png)
+![after-add-sentence](/img/tutorial-img/needful-things-value-in-text-v2.png)
 
 </div>
 
@@ -43,7 +43,7 @@ Evidence lets you choose what's visible with the Show/Hide Sources button at the
 
 <div style={{textAlign: 'center'}}>
 
-![show-hide-sources](/img/tutorial-img/needful-things-show-hide-queries.gif)
+![show-hide-sources](/img/tutorial-img/needful-things-show-hide-queries-v2.gif)
 
 </div>
 
