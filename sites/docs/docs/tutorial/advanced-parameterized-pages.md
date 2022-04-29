@@ -16,6 +16,7 @@ Create a `product-performance` folder in `pages/` and create the two .md files s
 pages /
 |-- index.md
 |-- business-performance.md
+|-- marketing-performance.md
 `-- product-performance /
    |-- [product].md
    `-- index.md
