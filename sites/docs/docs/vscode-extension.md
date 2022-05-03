@@ -16,6 +16,16 @@ You can install the extension in 2 ways:
 
 1. Install from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
 
+## Markdown Preview
+The Evidence VS Code extension does not work with VS Code's default Markdown preview (this will be fixed in a future version of the extension), but there is another way to access that function.
+
+To show a preview of a Markdown document when the Evidence extension is enabled:
+1. Right click on the markdown file name (either in the sidebar file navigation or in the editor tab at the top of the page)
+2. Click `Open With...` or `Reopen Editor With...`
+3. Click **Markdown Preview**
+
+To get back to your editor view, repeat the steps and click **Text Editor**.
+
 ## Syntax Highlighting
 Evidence VS Code provides syntax highlighting for SQL queries, components, templating, Markdown, HTML, and JavaScript.
 
