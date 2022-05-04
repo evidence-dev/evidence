@@ -1,24 +1,49 @@
 <script>
     export let settings
     import NetlifyDeploy from "./NetlifyDeploy.svelte";
+    import OtherDeploy from "./OtherDeploy.svelte";
+    import { slide, blur } from 'svelte/transition'
+
+    let deploymentOptions = [
+        {name: 'Choose a deployment target'},
+		{id: 'netlify', name: 'Netlify', formComponent: NetlifyDeploy},
+		{id: 'other', name: 'Other', formComponent: OtherDeploy}
+	];
+
+    let selectedDeployment = deploymentOptions[0]
 
 </script>
 
 <form>
-
-
 <div class=container>
-
     <div class=panel> 
     <h1>Deployment</h1>
-    <NetlifyDeploy {settings} />
+    <p>Evidence projects can be deployed to a variety of cloud environments. If you haven't done this type of thing before, we would suggest using Netlify.</p>
+    <h2>Deployment Environment</h2>
+    <select bind:value={selectedDeployment}>
+        {#each deploymentOptions as option}
+        <option value={option}>
+            {option.name}
+        </option>
+        {/each}
+    </select>
     </div>
+    {#if selectedDeployment.formComponent}
+    <div class=panel transition:slide|local>
+        <svelte:component this={selectedDeployment.formComponent} {settings}/>
+    </div>
+    {/if}
 </div>
 <footer>
 
 </footer>
 </form>
 <style>
+    h2 {
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 14px;
+    }
     select {
         -webkit-appearance: none;
         -moz-appearance: none;
