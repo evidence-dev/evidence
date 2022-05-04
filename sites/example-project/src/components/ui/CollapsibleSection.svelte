@@ -10,6 +10,11 @@
 	export let folderList;
 
 	let folderContents = menu.filter((d) => d.folder === folder);
+	folderContents = folderContents.sort((a, b) => {
+        return (a.label < b.label ? -1 : 1)
+    });
+
+
 	let folderLabel = folderList.filter(d => d.folder === folder)[0].folderLabel;
 	let folderHrefUri = folderList.filter(d => d.folder === folder)[0].folderHrefUri;
 	let expanded = false;
@@ -68,7 +73,7 @@
 	{#if expanded}
 		<div class="contents" hidden={!expanded} transition:slide>
 			{#each folderContents as item}
-				{#if item.filename != 'index.md' && !item.label.includes('[')}
+				{#if !item.label.includes('[') && !(item.filename === "index.md" && item.hrefUri === item.folderHrefUri)}
 					{#if dev && item.nameError}
 						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
 							<div class="content-item name-error">

@@ -3,6 +3,7 @@
 	const rootMDFiles = import.meta.glob('/src/pages/*.md');
 	const levelOneIndexFiles = import.meta.glob('/src/pages/*/index.md');
 	const levelOneMDFiles = import.meta.glob('/src/pages/*/*.md');
+	const levelTwoIndexFiles = import.meta.glob('/src/pages/*/*/index.md');
 
 	let menu = [];
 	let pathEnd;
@@ -60,6 +61,23 @@
 		}
 	} 
 
+	for(let path in levelTwoIndexFiles) {
+		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
+		pathSplit = pathEnd.split("/")
+		menu.push({
+			filename: pathSplit[2],
+			label: pathSplit[1].replace(/_/g, ' ').replace(/-/g, ' '),
+			href: "/" + pathSplit[0] + "/" + pathSplit[1],
+			hrefUri: encodeURI("/" + pathSplit[0] + "/" + pathSplit[1]),
+			folder: pathSplit[0],
+			folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
+			folderHref: "/" + pathSplit[0],
+			folderHrefUri: encodeURI("/" + pathSplit[0]),
+			nameError: pathEnd.includes(" "),
+			folderNameError: pathSplit[0].includes(" ")
+		})
+	}
+
 </script>
 
 <script>
@@ -110,9 +128,11 @@
 	}
 
 	let noFolders = menu.filter(d => d.folder === undefined || !folderCheck.includes(d.folder))
+	noFolders = noFolders.sort((a, b) => {
+        return (a.label < b.label ? -1 : 1)
+    });
 
 	export let open 
-
 </script>
 
 <aside class="sidebar" class:open>
@@ -129,7 +149,7 @@
 			
 			{#if noFolders}
             {#each noFolders as item}
-                {#if item.label != 'index'}
+                {#if item.href !== '/'}
 					{#if dev && item.nameError}
 						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
 							<div class=name-error class:selected="{"/"+$page.path.split('/')[1] === item.href}">
