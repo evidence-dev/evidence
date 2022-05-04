@@ -29,21 +29,22 @@
 
 </script>
 
-<h1>Netlify</h1>
-
 {#if !settings.credentials}
-
-<p>Connect to a database first</p>
-
+<p>You'll need to connect to a database before deploying to netlify.</p>
 {:else if !settings.gitRepo}
-
+<p>You'll need to set up a git repo before deploying to netlify.</p>
 {:else }
 
-<p>Use the button below to createa new Netlify site based for this project.</p>
+<p>The Deploy to Netlify button below will create a new netlify project: </p>
+<ol>
+    <li>Connected to the git repo: <code>{settings.gitRepo}</code> </li>
+    <li>Pre-populated with the required environment variables for your {settings.database} connection.</li>
+</ol>
 
 <a href={netlifyHref}><img src="https://www.netlify.com/img/deploy/button.svg"></a>
 
-<p>This will pre-populate your netlify with environment variables for your database connection, and connect it to your git repo.</p>
-
 {/if}
 
+<style>
+
+</style>

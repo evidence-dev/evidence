@@ -35,6 +35,7 @@
     {/if}
 </div>
 <footer>
+    <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/deployment/deployment-overview">Deploying your Project &rarr;</a></span>
 
 </footer>
 </form>
@@ -97,6 +98,15 @@
         font-size: 14px;
         align-items: center;
         font-family: var(--ui-font-family);
+    }
+
+    .docs-link {
+        color: var(--blue-600);
+        text-decoration: none;
+    }
+
+    .docs-link:hover {
+        color: var(--blue-800);
     }
 
 </style>
