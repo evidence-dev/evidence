@@ -64,7 +64,6 @@
 	for(let path in levelTwoIndexFiles) {
 		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
 		pathSplit = pathEnd.split("/")
-		console.log(pathSplit)
 		menu.push({
 			filename: pathSplit[2],
 			label: pathSplit[1].replace(/_/g, ' ').replace(/-/g, ' '),
@@ -78,8 +77,6 @@
 			folderNameError: pathSplit[0].includes(" ")
 		})
 	}
-
-console.log(menu)
 
 </script>
 
@@ -131,9 +128,11 @@ console.log(menu)
 	}
 
 	let noFolders = menu.filter(d => d.folder === undefined || !folderCheck.includes(d.folder))
-console.log(folderList)
-	export let open 
+	noFolders = noFolders.sort((a, b) => {
+        return (a.label < b.label ? -1 : 1)
+    });
 
+	export let open 
 </script>
 
 <aside class="sidebar" class:open>
@@ -150,7 +149,7 @@ console.log(folderList)
 			
 			{#if noFolders}
             {#each noFolders as item}
-                {#if item.label != 'index'}
+                {#if item.href !== '/'}
 					{#if dev && item.nameError}
 						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
 							<div class=name-error class:selected="{"/"+$page.path.split('/')[1] === item.href}">
