@@ -1,6 +1,13 @@
 import fs from 'fs';
+import path from 'path';
 import gitRemoteOriginUrl from 'git-remote-origin-url'; // get the git repo
 import { dev } from '$app/env';
+
+function getLocalGitRepo () {
+    if(fs.existsSync(path.join(path.resolve(), '.git'))){
+        return path.resolve() 
+    }
+}
 
 export async function get() {
     if (!dev) {
@@ -17,6 +24,7 @@ export async function get() {
         if (fs.existsSync('../../.gitignore')) {
             gitIgnore = fs.readFileSync('../../.gitignore', 'utf8')
         }
+        settings.localGitRepo = getLocalGitRepo();
         settings.gitRepo = await gitRemoteOriginUrl()
         return {
             header: "accept: application/json",
