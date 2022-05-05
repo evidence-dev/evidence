@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 7
 hide_title: true
 hide_table_of_contents: false
 ---
@@ -13,6 +13,19 @@ hide_table_of_contents: false
 <Histogram
     data={data.query_name} 
     x=column_x 
+/>
+```
+
+## Examples
+
+### Histogram
+![histogram](/img/exg-histogram-nt.svg) 
+
+```markdown
+<Histogram 
+    data={data.complaints_by_day_dept} 
+    x=complaints 
+    xAxisTitle="Daily Calls"
 />
 ```
 
@@ -48,16 +61,3 @@ hide_table_of_contents: false
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 </table>											
-
-## Examples
-
-### Histogram
-![histogram](/img/exg-histogram-nt.svg) 
-
-```markdown
-<Histogram 
-    data={data.complaints_by_day_dept} 
-    x=complaints 
-    xAxisTitle="Daily Calls"
-/>
-```

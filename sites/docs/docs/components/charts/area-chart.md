@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 hide_title: true
 hide_table_of_contents: false
 ---
@@ -17,6 +17,31 @@ hide_table_of_contents: false
 />
 ```
 
+
+## Examples
+
+### Area
+![area](/img/exg-area-nt.svg) 
+
+```markdown
+<AreaChart 
+    data={data.fed_reserve_district_sf} 
+    x=established_date 
+    y=banks_created
+/>
+```
+
+### Stacked Area
+![stacked-area](/img/exg-stacked-area-nt.svg) 
+
+```markdown
+<AreaChart 
+    data={data.fed_reserve_district}  
+    x=established_date 
+    y=banks_created
+    series=fed_reserve_district
+/>
+```
 
 ## Props
 
@@ -55,28 +80,3 @@ hide_table_of_contents: false
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 </table>												
-
-## Examples
-
-### Area
-![area](/img/exg-area-nt.svg) 
-
-```markdown
-<AreaChart 
-    data={data.fed_reserve_district_sf} 
-    x=established_date 
-    y=banks_created
-/>
-```
-
-### Stacked Area
-![stacked-area](/img/exg-stacked-area-nt.svg) 
-
-```markdown
-<AreaChart 
-    data={data.fed_reserve_district}  
-    x=established_date 
-    y=banks_created
-    series=fed_reserve_district
-/>
-```

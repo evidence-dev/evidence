@@ -40,7 +40,7 @@ Since your database credentials are not checked into version control (they are i
 ![env_vars_sf_done](/img/env_vars_sf_done.png)
 
 ### BigQuery
-You will need the 3 variables below from the JSON key file you generated for your BigQuery service account. If you don't have a JSON key file, see [Connect Data Warehouse](/getting-started/connect-data-warehouse#bigquery).
+You will need the 3 variables below from the JSON key file you generated for your BigQuery service account:
 
 ![env_vars_bq_done](/img/env_vars_bq_done.png)
 

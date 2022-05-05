@@ -44,7 +44,7 @@ fs.outputFileSync('./template/svelte.config.js',
                     exclude: ['@evidence-dev/components']
                 },
                 ssr: {
-                    external: ['@evidence-dev/db-orchestrator']
+                    external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url']
                 },
                 plugins: [
                     FullReload.default(['./.evidence-queries/extracted/**'], {delay: 150}),
@@ -66,7 +66,7 @@ Thank you for checking out Evidence.
 
 ## Learning More
 
-- [Getting Started Walkthrough](https://docs.evidence.dev/getting-started/get-started)
+- [Docs](https://docs.evidence.dev/)
 - [Project Home Page](https://www.evidence.dev)
 - [Github](https://github.com/evidence-dev/evidence)
 

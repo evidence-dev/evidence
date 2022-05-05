@@ -27,7 +27,7 @@ You can schedule (or trigger) regular builds of your site to keep it up-to-date 
 This has two benefits for you and your users: 
 
 1. If something goes wrong with your SQL, Evidence just stops building your project, and continues to serve older results. 
-2. Your site will be exceptionally fast. Under most conditions, pages will load in miliseconds. 
+2. Your site will be exceptionally fast. Under most conditions, pages will load in milliseconds. 
 
 ## Builds 
 
@@ -48,7 +48,7 @@ Below are the required environment variables for the databases we support. These
 ![env_vars_sf_done](/img/env_vars_sf_done.png)
 
 ### BigQuery
-You will need the 3 variables below from the JSON key file you generated for your BigQuery service account. If you don't have a JSON key file, see [Connect Data Warehouse](/getting-started/connect-data-warehouse#bigquery).
+You will need the 3 variables below from the JSON key file you generated for your BigQuery service account:
 
 ![env_vars_bq_done](/img/env_vars_bq_done.png)
 

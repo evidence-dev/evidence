@@ -1,55 +1,38 @@
 ---
 sidebar_position: 2
 ---
-
 # Create a Page
 
-## Create a markdown page
-In the `src/pages` directory, create a new directory (folder) called `austin-311` and create a new page in that directory called `index.md`.
+1. **Inside** the `pages` directory, start by editing the homepage for Needful Things, called `index.md`. 
 
-![austin-files](/img/austin-files-3.png)
+2. Replace the text currently in the file with the text below, to add a header and introduction.
 
-In `index.md`, add a header, introduction, and sections to your page. Copy and paste the text below into your file.
+```markdown title="pages/index.md"
+![Needful Things Logo](http://static1.squarespace.com/static/55d5e6bbe4b07fd45aec98a4/t/5a67ff45ec212de974357e39/1622153363313/Needful+logo.png?format=180w)
 
-```markdown title="src/pages/austin-311/index.md"
-# Austin 311 Complaints Summary
+This is Needful Things' Evidence project, where you can find the KPIs and data analysis for the business.
 
-The analysis below investigates the frequency and nature of 311 calls in Austin, TX.
+## Reports
 
-## Complaints by Day
+[Business Performance](/business-performance) gives an overview of the business KPIs.
 
-### Summary
+[Marketing Performance](/marketing-performance) shows how effective different marketing channels are.
 
-### Daily Chart
-
-## Complaints by Department
+[Product Performance](/product-performance) shows data about specific products.
 ```
+3. Save the page, and enter `npm run dev` in the shell.
 
-## Add a navigation link to your page
-Open the `__layout.svelte` file to edit the navigation sections and find the code below:
-```json title="src/pages/__layout.svelte"
-    <Nav
-		sections = {[
-			{href:"/", label: "Home"}
-		]}
-	/>
-```
+4. Delete all the other files inside the `pages` directory (we won't need these).
 
-Add another section for `austin-311` and save the file:
+5. Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser. (The links on the homepage won't work yet as we haven't built them!)
 
-```json {4} title="src/pages/__layout.svelte"
-    <Nav
-		sections = {[
-			{href:"/", label: "Home"},
-            {href:"/austin-311", label: "Austin 311"}
-		]}
-	/>
-```
+Evidence 'hot reloads' when you save your file by default, so you should get immediate feedback.
 
-Go back to your browser and refresh the page if necessary. You should now be able to navigate to your new page, which should look like this:
+You should now be able to see your new page, which looks like this:
 
 <div style={{textAlign: 'center'}}>
 
-![first-additions](/img/add-a-page.png)
+![first-additions](/img/tutorial-img/needful-things-first-page-success-v2.png)
 
 </div>
+

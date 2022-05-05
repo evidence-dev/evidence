@@ -1,5 +1,31 @@
 # @evidence-dev/evidence
 
+## 1.0.0-next.8
+
+### Patch Changes
+
+- e45a29a: Add a deployment panel to settings
+- Updated dependencies [e45a29a]
+  - @evidence-dev/components@1.0.0-next.5
+
+## 1.0.0-next.7
+
+### Patch Changes
+
+- Fix import error for show hide queries button
+- Updated dependencies
+  - @evidence-dev/components@1.0.0-next.4
+
+## 1.0.0-next.6
+
+### Patch Changes
+
+- 3d0d93c: Various UI changes
+- Updated dependencies [3d0d93c]
+  - @evidence-dev/preprocess@1.0.0-next.1
+  - @evidence-dev/components@1.0.0-next.3
+  - @evidence-dev/db-orchestrator@1.0.0-next.4
+
 ## 1.0.0-next.5
 
 ### Patch Changes

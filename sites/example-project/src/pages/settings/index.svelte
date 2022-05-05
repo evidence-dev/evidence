@@ -29,8 +29,8 @@
     export let settings 
     export let gitIgnore
     import DatabaseSettingsPanel from '@evidence-dev/components/ui/Databases/DatabaseSettingsPanel.svelte';
-    import DeploySettingsPanel from '$lib/ui/Deployment/DeploySettingsPanel.svelte'
-    import VersionControlPanel from '$lib/ui/VersionControl/VersionControlPanel.svelte'
+    import VersionControlPanel from '@evidence-dev/components/ui/VersionControl/VersionControlPanel.svelte'
+    import DeploySettingsPanel from '@evidence-dev/components/ui/Deployment/DeploySettingsPanel.svelte'
 </script>
 
 {#if dev}

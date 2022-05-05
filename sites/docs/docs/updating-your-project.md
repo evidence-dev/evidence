@@ -6,8 +6,4 @@ To get the new changes, run `npm update` in the root of your project. This will 
 
 If you run into any problems with updates, reach out on [Slack](/community) or email <support@evidence.dev>.
 
-:::caution Updating Older Projects
-Evidence recently moved to a single dependency structure to make it easier to install and update projects. If you have an Evidence project created before November 9, 2021 and would like to upgrade it to the newest version, the easiest way is to start from a fresh project following the installation instructions, and move over the pages you neeed from your old project. If you need help please reach out and we will be happy to help you with the upgrade.
-:::
-
 

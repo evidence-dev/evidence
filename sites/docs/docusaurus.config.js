@@ -1,4 +1,8 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
+// Add Math Eqn Support
+const math = require('remark-math');
+const katex = require('rehype-katex');
+
 module.exports = {
   title: 'Evidence Docs',
   tagline: 'Get Started with Evidence',
@@ -58,11 +62,7 @@ module.exports = {
             },
             {
               label: 'Get Started',
-              to: '/getting-started/get-started',
-            },
-            {
-              label: 'Tutorial',
-              to: '/tutorial/what-well-build',
+              to: '/getting-started/install-evidence',
             },
             {
               label: 'Queries',
@@ -149,7 +149,10 @@ module.exports = {
           // Please change this to your repo.
           // editUrl:
           //   'https://github.com/facebook/docusaurus/edit/master/website/',
-          routeBasePath: '/'
+          routeBasePath: '/',
+          // Add Math Eqn Support
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
         },
         // blog: {
         //   showReadingTime: true,
@@ -165,5 +168,15 @@ module.exports = {
   ],
   scripts: [
     'https://scripts.simpleanalyticscdn.com/latest.js'
+  ],
+  // Add math stylesheets
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      type: 'text/css',
+      integrity:
+        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+      crossorigin: 'anonymous',
+    },
   ],
 };

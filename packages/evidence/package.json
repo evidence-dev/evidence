@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "1.0.0-next.5",
+  "version": "1.0.0-next.8",
   "description": "dependencies for evidence projects",
   "type": "module",
   "keywords": [
@@ -46,6 +46,7 @@
     "@sveltejs/kit": "1.0.0-next.202",
     "svelte": "3.44.3",
     "svelte2tsx": "0.4.7",
-    "typescript": "4.5.4"
+    "typescript": "4.5.4",
+    "git-remote-origin-url": "4.0.0"
   }
 }

@@ -1,6 +1,7 @@
 <script>
     import { page } from '$app/stores';
     import { showQueries } from './stores.js'
+    import { pageHasQueries } from '@evidence-dev/components/ui/stores';
 
     $: pathArray = $page.path.split('/').slice(1)
 
@@ -37,20 +38,22 @@
 
 <div>
     <span class="container"> 
-        <span class="crumbs">
+        <span>
             {#each crumbs as crumb, i}
                 {#if i > 0 }
-                &emsp13;/&emsp13;<a href={crumb.href} ref="prefetch">{crumb.title}</a>  
+                <a href={crumb.href}>&emsp13;/&emsp13;{crumb.title}</a>  
                 {:else}
-                <a href={crumb.href} ref="prefetch">{crumb.title}</a>  
+                <a href={crumb.href}>{crumb.title}</a>  
                 {/if}
             {/each}
         </span>
         <span>
-            {#if $showQueries}
-            <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
-            {:else}
-            <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
+            {#if $pageHasQueries}
+                {#if $showQueries}
+                <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
+                {:else}
+                <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
+                {/if}
             {/if}
         </span>
     </span>
@@ -73,7 +76,6 @@
     }
 
     span{
-        text-transform:capitalize;
         font-size: small;
         font-family: var(--ui-font-family-compact);
         -webkit-font-smoothing: antialiased;
@@ -81,12 +83,13 @@
     }
 
     a{
+        text-transform: capitalize;
         text-decoration: none;
         color: var(--grey-700);
     }
     a:hover{
         color:var(--grey-999);
-        transition:0.2s
+        transition:all 0.2s;
     }
 
     span.dev-controls {

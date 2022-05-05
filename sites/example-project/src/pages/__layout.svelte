@@ -4,7 +4,7 @@
 	import "../app.css"
 	import { navigating } from '$app/stores';
 	import { blur } from "svelte/transition";
-	import { page } from "$app/stores"
+	import { page } from "$app/stores";
 
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
 	import Header from '@evidence-dev/components/ui/Header.svelte'

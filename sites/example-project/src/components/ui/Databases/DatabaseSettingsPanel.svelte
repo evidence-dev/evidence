@@ -17,7 +17,7 @@
     // Available connector types and fallback
     const databaseOptions = [
         {name: 'Choose a database'},
-		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm},
+		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/walkthroughs/bigquery"},
 		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
@@ -105,15 +105,18 @@
         {/if}
     </div>
     <footer>
+        {#if selectedDatabase.docsHref}
+        <span>Learn more about <a class=docs-link href={selectedDatabase.docsHref}>{selectedDatabase.name} Connection Settings &rarr;</a></span> 
+        {:else}
+        <span>Need help with this step? <a class=docs-link href="https://docs.evidence.dev/community">Get in touch &rarr;</a></span> 
+        {/if}
         {#if selectedDatabase.id}
-        <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/getting-started/connect-data-warehouse#{selectedDatabase.id}">{selectedDatabase.name} Connection Settings &rarr;</a></span> 
             {#if credentialsEdited}
             <button type=submit id=save disabled={disableSave}>Save</button>
             {:else}
             <button type=submit id=save>Test</button>
             {/if} 
         {:else}
-            <span>Learn more about Database Connection Settings &rarr;</span> 
             <button type=submit id=save disabled>Save</button>
         {/if}
     </footer>

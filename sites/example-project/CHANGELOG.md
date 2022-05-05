@@ -1,5 +1,23 @@
 # @evidence-dev/components
 
+## 1.0.0-next.5
+
+### Patch Changes
+
+- e45a29a: Add a deployment panel to settings
+
+## 1.0.0-next.4
+
+### Patch Changes
+
+- Fix import error for show hide queries button
+
+## 1.0.0-next.3
+
+### Patch Changes
+
+- 3d0d93c: Various UI changes
+
 ## 1.0.0-next.2
 
 ### Patch Changes

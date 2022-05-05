@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 6
 hide_title: true
 hide_table_of_contents: false
 ---
@@ -18,6 +18,36 @@ hide_table_of_contents: false
 />
 ```
 
+## Examples
+
+### Bubble
+![bubble](/img/exg-bubble-nt.svg) 
+
+```markdown
+<BubbleChart 
+    data={data.simple_example} 
+    x=x 
+    y=y 
+    size=size 
+    xAxisTitle=true 
+    yAxisTitle=true
+/> 
+```
+
+### Multi-Series Bubble
+![bubble](/img/exg-multi-series-bubble-nt.svg) 
+
+```markdown
+<BubbleChart 
+    data={data.scores_by_region} 
+    x=score_a 
+    y=score_b 
+    size=size 
+    series=region 
+    xAxisTitle=true 
+    yAxisTitle=true
+/>
+```
 
 ## Props
 
@@ -59,34 +89,3 @@ hide_table_of_contents: false
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 </table>											
-
-## Examples
-
-### Bubble
-![bubble](/img/exg-bubble-nt.svg) 
-
-```markdown
-<BubbleChart 
-    data={data.simple_example} 
-    x=x 
-    y=y 
-    size=size 
-    xAxisTitle=true 
-    yAxisTitle=true
-/> 
-```
-
-### Multi-Series Bubble
-![bubble](/img/exg-multi-series-bubble-nt.svg) 
-
-```markdown
-<BubbleChart 
-    data={data.scores_by_region} 
-    x=score_a 
-    y=score_b 
-    size=size 
-    series=region 
-    xAxisTitle=true 
-    yAxisTitle=true
-/>
-```

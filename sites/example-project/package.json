@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "1.0.0-next.2",
+  "version": "1.0.0-next.5",
   "scripts": {
     "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",

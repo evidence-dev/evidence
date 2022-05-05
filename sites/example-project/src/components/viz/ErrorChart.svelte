@@ -18,7 +18,7 @@
         font-weight: normal;
         border-radius: 4px;
         border: 1px solid #f8e9e9;
-        height: 150px;
+        min-height: 150px;
         padding: 20px 30px 20px 30px;
         margin-top: 20px;
         margin-bottom: 20px;
@@ -26,7 +26,6 @@
         grid-template-rows: auto;
         grid-template-columns: 100%;
         justify-content: center;
-        overflow: scroll;
     }
 
     .wrapper {
