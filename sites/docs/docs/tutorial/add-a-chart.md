@@ -1,9 +1,8 @@
 ---
 sidebar_position: 6
 hide_table_of_contents: false
+title: Add a Chart
 ---
-
-# Add a Chart
 
 Charts work in the same way as the [<span class="gradient">**&lt;Value/>**</span>](/components/text-components/value) component - you can add them anywhere in your markdown and reference SQL queries on the page.
 

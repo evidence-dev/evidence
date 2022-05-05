@@ -1,8 +1,8 @@
 ---
 sidebar_position: 1
+title: Installation
 ---
 
-# Installation
 Don't worry if this is your first time using any of the tools referenced in this walkthrough - we will guide you through all the steps. If you need help, [send us a message on Slack.](/community) We're here to help! 
 
 ## IDE or Text Editor
@@ -17,6 +17,12 @@ The rest of this walkthrough will be done through a terminal. You can either use
 If you are using VSCode, the shortcut to open a new terminal is
 
 `Ctrl` + `` ` ``
+
+## Node.js & npm
+To install Evidence, you will need **Node.js** and **npm (Node Package Manager)**. Below are the steps to get started with these. If you're interested in learning more about Node.js and npm, [CLICK HERE].
+
+
+
 
 ## Node.js & npm
 You will need to install Evidence from **npm (Node Package Manager)**, which is a source of JavaScript packages. Npm requires you to have **Node.js**, which is a "JavaScript runtime environment" - that just means it's software that gets used to execute an application once it's live (in the case of Node.js, it lets you execute JavaScript code outside of a web browser).
@@ -153,7 +159,7 @@ If you have not tried web development before, `localhost:3000` may look foreign 
 
 Entering `localhost:3000` in your browser tells your browser to send a request to the local server which is using port 3000. If your development server is running, it will receive that request and send back the files needed to display your webpage.
 
-On your Evidence page, if you click the [Querying Data](http://localhost:3000/firstquery) link, you'll see the name of the page appended to the URL, just as you would see on a normal website: `localhost:3000/firstquery`
+If you navigate to a page in your Evidence project and look at the URL, you will see that each page in Evidence corresponds to a URL (e.g., `localhost:3000/examples`).
 
 ## In Review 
 

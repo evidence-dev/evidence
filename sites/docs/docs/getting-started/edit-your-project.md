@@ -1,8 +1,7 @@
 ---
 sidebar_position: 4
+title: Edit Your Project
 ---
-
-# Edit Your Project
 
 ## Pages
 Your project comes with a `pages` directory, which you can fill with markdown files. When you run your project, Evidence builds a webpage for each of those markdown files.

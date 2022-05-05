@@ -1,9 +1,8 @@
 ---
 sidebar_position: 10
 hide_table_of_contents: false
+title: The Final Product
 ---
-
-# The Final Product
 
 Here's another look at the project we just created:
 

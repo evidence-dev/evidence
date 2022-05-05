@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
 hide_table_of_contents: false
+title: Introduction
 ---
 
-# Introduction
 :::note Pre-requisite
 If you haven't already, follow the [Install Evidence](/getting-started/install-evidence) instructions to copy the template project.
 :::

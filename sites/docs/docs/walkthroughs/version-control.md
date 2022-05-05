@@ -1,8 +1,7 @@
 ---
 sidebar_position: 2
+title: Version Control
 ---
-
-# Version Control
 
 If you are new to version control, GitHub provides some helpful tutorials on their [Guides website](https://guides.github.com/activities/hello-world/).
 

@@ -35,7 +35,7 @@ module.exports = {
         },
         {
           href: 'https://github.com/evidence-dev/evidence',
-          label: 'GitHub',
+          label: 'Github',
           position: 'right',
         },
       ],

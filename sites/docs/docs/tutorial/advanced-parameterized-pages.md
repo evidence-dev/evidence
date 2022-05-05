@@ -1,8 +1,8 @@
 ---
 sidebar_position: 9
+title: "Advanced: Parameterized Pages"
 ---
 
-# Advanced: Parameterized Pages
 Parameterized pages allow you to programmatically create webpages using your data. 
 
 Evidence takes a parameter you supply through a URL and uses it to populate a template markdown file, allowing you to create one page that can display data for many objects.

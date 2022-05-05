@@ -16,7 +16,7 @@
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 80%;
   --ifm-table-cell-padding: 4px;
-  --ifm-menu-link-padding-vertical: 0.3em;
+  --ifm-menu-link-padding-vertical: 0.3rem;
   --ifm-leading: 12px;
   /* --ifm-spacing-horizontal: 0px; */
   --ifm-pre-padding: 0.7em;
@@ -280,4 +280,24 @@ h2 {
 
 .gallery-container-grid > h2 {
   margin-top: 20px;
+}
+
+.menu__link--sublist-caret:after {
+  background: var(--ifm-menu-link-sublist-icon) 50%/1.75rem 1.75rem;
+  margin-left: auto;
+  min-width: 1.25rem;
+}
+
+.menu__caret:before {
+  background: var(--ifm-menu-link-sublist-icon) 50%/1.75rem 1.75rem;
+}
+
+/* .theme-doc-sidebar-item-link-level-1 .menu__link {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+} */
+
+
+.admonition-note {
+  background-color: rgb(240, 240, 240, 0.4);
 }

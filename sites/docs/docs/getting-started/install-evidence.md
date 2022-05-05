@@ -1,9 +1,8 @@
 ---
 sidebar_position: 1
 hide_table_of_contents: false
+title: Install Evidence
 ---
-
-# Install Evidence
 
 If this is your first time doing something like this, or you just need a reminder, check out the [Detailed Installation Walkthrough.](/walkthroughs/installation)
 
