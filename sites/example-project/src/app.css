@@ -128,16 +128,15 @@ hr {
 
 code {
 	font-family: Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
-	font-size: 0.9em;
+	font-size: 0.85em;
 	background-color: var(--grey-100);
-	padding: 0.1em 0.2em;
+	padding: 0.05em 0.2em;
 	border: solid 1px var(--grey-200);
 	border-radius: 4px;
-	color: var(--grey-900);
+	color: var(--grey-800);
 	-webkit-user-select: all;
 	-moz-user-select: all;
 	user-select: all;
-
 }
 
 @media (max-width: 600px) {
