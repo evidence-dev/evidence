@@ -1,7 +1,6 @@
 <script>
+    import EnvironmentVarListing from "./EnvironmentVarListing.svelte";
     export let settings
-
-    let netlifyHref 
     let targetEnvVars = {}
 
     if(settings.credentials) {
@@ -25,8 +24,6 @@
         hrefComponents.push(key+'='+targetEnvVars[key])
     }
 
-    netlifyHref = `https://app.netlify.com/start/deploy?repository=${settings.gitRepo.replace('.git', '')}#` + hrefComponents.join('&')
-
 </script>
 
 {#if !settings.credentials}
@@ -35,16 +32,46 @@
 <p>You'll need to set up a git repo before deploying to netlify.</p>
 {:else }
 
-<p>The Deploy to Netlify button below will create a new netlify project: </p>
+<h2>Deploying to Netlify</h2>
+
 <ol>
-    <li>Connected to the git repo: <code>{settings.gitRepo}</code> </li>
-    <li>Pre-populated with the required environment variables for your {settings.database} connection.</li>
+    <li><a href='https://app.netlify.com/start' target=_blank>Start a new netlify project &rarr;</a></li>
+    <li>Authorize netlify with your git provider</li>
+    <li>Choose this repo <code>{settings.gitRepo}</code></li>
+    <li>Update the settings to match those below</li>
 </ol>
 
-<a href={netlifyHref}><img src="https://www.netlify.com/img/deploy/button.svg"></a>
+<h2>Basic Build Settings</h2>
+
+<span>Build command</span>
+<p>
+    <code>npm run build</code>
+
+</p>
+
+<span>Publish directory</span>
+<p>
+    <code>build/</code>
+</p>
+
+<h2>Advanced Build Settings</h2>
+<p>Click `Show Advanced` and copy/paste the following variable names and variables</p>
+
+<EnvironmentVarListing {settings}/>
+
+
 
 {/if}
 
 <style>
+    a {
+        color: var(--blue-600);
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: var(--blue-800);
+        text-decoration: none;
+    }
 
 </style>
