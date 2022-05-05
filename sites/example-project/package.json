@@ -14,6 +14,7 @@
     "@tidyjs/tidy": "2.4.4",
     "echarts": "5.2.2",
     "echarts-stat": "1.2.0",
+    "git-remote-origin-url": "4.0.0",
     "svelte-icons": "2.1.0"
   },
   "publishConfig": {
