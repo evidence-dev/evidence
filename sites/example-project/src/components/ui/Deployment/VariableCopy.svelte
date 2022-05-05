@@ -5,15 +5,16 @@
     let copied = false 
 
     const toggleCopied = function() {
-        copied = !copied
+        copied = false
     }
 
     export let copy = async (text) => {
       try {
-        await navigator.clipboard.writeText(text);
-        copied = true
-        setTimeout(toggleCopied, 2000)
-
+        if(!copied) {
+          await navigator.clipboard.writeText(text);
+          copied = true
+          setTimeout(toggleCopied, 2000)
+        }
       } catch (e) {
       }
     };
@@ -37,7 +38,6 @@
     <code in:blur>
 
       {@html hideText ? '&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;' : text}
-
 
     </code>
     {/if}
@@ -100,6 +100,9 @@
       background-color: unset;
       border: unset;
       border-radius: unset;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
   </style>
