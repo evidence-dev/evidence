@@ -19,6 +19,10 @@ pre[class*="language-"] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
+	/* Remove the defaults from the stylesheet for in-lined code blocks */
+	background-color: unset;
+	border: unset;
+	border-radius: unset;
 }
 
 

@@ -126,6 +126,16 @@ hr {
 	
 }
 
+code {
+	font-family: Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
+	font-size: 0.9em;
+	background-color: var(--grey-100);
+	padding: 0.1em 0.2em;
+	border: solid 1px var(--grey-200);
+	border-radius: 4px;
+	color: var(--grey-900)
+}
+
 @media (max-width: 600px) {
 	body {
 		font-size: 16px;

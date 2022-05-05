@@ -96,4 +96,10 @@
         text-overflow: ellipsis;
     }
 
+    code {
+      background-color: unset;
+      border: unset;
+      border-radius: unset;
+    }
+
   </style>
