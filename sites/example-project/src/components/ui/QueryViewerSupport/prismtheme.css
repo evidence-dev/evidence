@@ -23,6 +23,9 @@ pre[class*="language-"] {
 	background-color: unset;
 	border: unset;
 	border-radius: unset;
+	-webkit-user-select: unset;
+	-moz-user-select: unset;
+	user-select: unset;
 }
 
 

@@ -133,7 +133,11 @@ code {
 	padding: 0.1em 0.2em;
 	border: solid 1px var(--grey-200);
 	border-radius: 4px;
-	color: var(--grey-900)
+	color: var(--grey-900);
+	-webkit-user-select: all;
+	-moz-user-select: all;
+	user-select: all;
+
 }
 
 @media (max-width: 600px) {
