@@ -13,8 +13,10 @@
 
     <div class=panel> 
     <h1>Version Control</h1>
+        Use version control to keep track of changes to your project. A published git repo is needed if you want to deploy your Evidence project online.
+    
         <div class=git-item>
-            {#if settings.localGitRepo}
+            {#if settings.localGiteRepo}
                 <span class=gitcheck-icon>
                 <IoIosCheckmarkCircle/>
                 </span>
@@ -24,20 +26,20 @@
                 </span>
             {/if}
             <span class=item-label>Local Git Repo</span>
-            {#if settings.localGitRepo}
+            {#if settings.localGiteRepo}
                 <div class=result-msg>
                     <span class=repo-location>Tracking {settings.localGitRepo}</span>  
                 </div>
             {:else}
             <span class=help-icon>
                 <IoIosHelpCircleOutline/>
-                <span class=info-msg>Version control on your local computer. Initialize a repository through your code editor or run `git init` in a terminal. If you are using VS Code, this can be done from the Source Control tab.</span>
+                <span class=info-msg>Use your code editor to initialize a repo or run `git init` in a terminal</span>
             </span>
             {/if}
         </div>
 
         <div class=git-item>
-            {#if settings.gitRepo}
+            {#if settings.giteRepo}
                 <span class=gitcheck-icon>
                 <IoIosCheckmarkCircle/>
                 </span>
@@ -46,15 +48,15 @@
                 <IoIosCloseCircle/>
                 </span>
             {/if}   
-            <span class=item-label>Remote Git Repo</span>
-            {#if settings.gitRepo}
+            <span class=item-label>Git Repo Published</span>
+            {#if settings.giteRepo}
             <div class=result-msg>
                 <a href={settings.gitRepo.replace(".git", "")} target="_blank"><span class=repo-location>{settings.gitRepo.replace(".git", "")}</span></a>  
             </div>
             {:else}
             <span class=help-icon>
                 <IoIosHelpCircleOutline/>
-                <span class=info-msg>Publish your git repo to GitHub or GitLab. If you are using VS Code, this can be done from the Source Control tab.</span>
+                <span class=info-msg>Publish your git repo to a platform like GitHub or GitLab</span>
             </span>
             {/if}
         </div>
@@ -62,7 +64,7 @@
 
 </div>
 <footer>
-    <span>New to git? <a class=docs-link href="https://docs.evidence.dev/walkthroughs/version-control"> See detailed instructions in the docs &rarr;</a></span> 
+    <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/walkthroughs/version-control">Setting Up Version Control &rarr;</a></span> 
 </footer>
 </form>
 <style>
@@ -180,7 +182,7 @@
         border-radius: 6px;
         z-index: 1;
         max-width: 200px;
-        min-width: 150px;
+        min-width: 100px;
     }
 
     .help-icon:hover .info-msg {
