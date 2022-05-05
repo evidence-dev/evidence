@@ -49,12 +49,12 @@
             <span class=item-label>Remote Git Repo</span>
             {#if settings.gitRepo}
             <div class=result-msg>
-                <span class=repo-location>{settings.gitRepo}</span>  
+                <a href={settings.gitRepo.replace(".git", "")} target="_blank"><span class=repo-location>{settings.gitRepo.replace(".git", "")}</span></a>  
             </div>
             {:else}
             <span class=help-icon>
                 <IoIosHelpCircleOutline/>
-                <span class=info-msg>Publish your git repo online through GitHub or GitLab</span>
+                <span class=info-msg>Publish your git repo to GitHub or GitLab. If you are using VS Code, this can be done from the Source Control tab.</span>
             </span>
             {/if}
         </div>
@@ -141,6 +141,7 @@
     .repo-location {
         color: var(--grey-500);
         font-size: 0.8rem;
+        text-decoration: unset;
     }
 
     .item-label {
