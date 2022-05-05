@@ -4,8 +4,8 @@ import gitRemoteOriginUrl from 'git-remote-origin-url'; // get the git repo
 import { dev } from '$app/env';
 
 function getLocalGitRepo () {
-    if(fs.existsSync(path.join(path.resolve(), '.git'))){
-        return path.resolve() 
+    if(fs.existsSync(path.join(path.resolve('../../'), '.git'))){
+        return path.resolve('../../') 
     }
 }
 

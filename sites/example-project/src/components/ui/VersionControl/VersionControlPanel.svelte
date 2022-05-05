@@ -14,7 +14,7 @@
     <div class=panel> 
     <h1>Version Control</h1>
         <div class=git-item>
-            {#if settings.localGiftRepo}
+            {#if settings.localGitRepo}
                 <span class=gitcheck-icon>
                 <IoIosCheckmarkCircle/>
                 </span>
@@ -24,15 +24,20 @@
                 </span>
             {/if}
             <span class=item-label>Local Git Repo</span>
-            {#if settings.localGiftRepo}
+            {#if settings.localGitRepo}
                 <div class=result-msg>
                     <span class=repo-location>Tracking {settings.localGitRepo}</span>  
                 </div>
+            {:else}
+            <span class=help-icon>
+                <IoIosHelpCircleOutline/>
+                <span class=info-msg>Version control on your local computer. Initialize a repository through your code editor or run `git init` in a terminal</span>
+            </span>
             {/if}
         </div>
 
         <div class=git-item>
-            {#if settings.gitRfepo}
+            {#if settings.gitRepo}
                 <span class=gitcheck-icon>
                 <IoIosCheckmarkCircle/>
                 </span>
@@ -42,13 +47,14 @@
                 </span>
             {/if}   
             <span class=item-label>Remote Git Repo</span>
-            {#if settings.gitRfepo}
+            {#if settings.gitRepo}
             <div class=result-msg>
                 <span class=repo-location>{settings.gitRepo}</span>  
             </div>
             {:else}
             <span class=help-icon>
                 <IoIosHelpCircleOutline/>
+                <span class=info-msg>Publish your git repo online through GitHub or GitLab</span>
             </span>
             {/if}
         </div>
@@ -56,7 +62,7 @@
 
 </div>
 <footer>
-    <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/version-control"> Setting Up Version Control &rarr;</a></span> 
+    <span>New to git? <a class=docs-link href="https://docs.evidence.dev/walkthroughs/version-control"> See detailed instructions in the docs &rarr;</a></span> 
 </footer>
 </form>
 <style>
@@ -102,27 +108,29 @@
 
     .gitcheck-icon {
         color: var(--green-700);
-        width: 22px;
-        display:inline-block;
+        float: right;
+        width: 25px;
         vertical-align: middle;
         line-height: 1em;
         position:relative;
         text-transform: none;
+        margin-right: 5px;
     }
 
     .gitx-icon {
         color: var(--red-700);
-        width: 22px;
-        display:inline-block;
+        width: 25px;
+        float: right;
         vertical-align: middle;
         line-height: 1em;
-        cursor: help;
         position:relative;
         text-transform: none;
+        margin-right: 5px;
     }
 
     .git-item {
-        margin-top: 15px;
+        margin-top: 18px;
+        margin-bottom: 10px;
     }
 
     .result-msg {
@@ -151,5 +159,33 @@
         position:relative;
         text-transform: none;
     }
+
+
+    .help-icon .info-msg {
+        visibility: hidden;
+        display: none;
+        position: absolute;
+        top: -5px;
+        left: 105%;
+        padding-left: 5px;
+        padding-right: 5px;     
+        padding-top: 2px;
+        padding-bottom: 1px;   
+        color: white;
+        font-family: sans-serif;
+        font-size: 0.8em;
+        background-color: var(--grey-900);
+        opacity: 0.85;
+        border-radius: 6px;
+        z-index: 1;
+        max-width: 200px;
+        min-width: 150px;
+    }
+
+    .help-icon:hover .info-msg {
+        visibility: visible;
+        display: inline;
+    }
+
 
 </style>
