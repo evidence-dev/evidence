@@ -10,7 +10,7 @@
             return {
                 props: {
                     settings,
-                    gitIgnore
+                    gitIgnore 
                 }
             }
         }
@@ -29,11 +29,13 @@
     export let settings 
     export let gitIgnore
     import DatabaseSettingsPanel from '@evidence-dev/components/ui/Databases/DatabaseSettingsPanel.svelte';
+    import VersionControlPanel from '@evidence-dev/components/ui/VersionControl/VersionControlPanel.svelte'
     import DeploySettingsPanel from '@evidence-dev/components/ui/Deployment/DeploySettingsPanel.svelte'
 </script>
 
 {#if dev}
 <DatabaseSettingsPanel {settings} {gitIgnore}/> 
+<VersionControlPanel {settings}/>
 <DeploySettingsPanel {settings} /> 
 {:else}
 <p>Settings are only available in development mode.</p>
