@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 1.0.0-next.8
+
+### Patch Changes
+
+- e45a29a: Add a deployment panel to settings
+- Updated dependencies [e45a29a]
+  - @evidence-dev/components@1.0.0-next.5
+
 ## 1.0.0-next.7
 
 ### Patch Changes
