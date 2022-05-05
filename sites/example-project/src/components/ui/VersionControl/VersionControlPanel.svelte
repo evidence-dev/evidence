@@ -31,7 +31,7 @@
             {:else}
             <span class=help-icon>
                 <IoIosHelpCircleOutline/>
-                <span class=info-msg>Version control on your local computer. Initialize a repository through your code editor or run `git init` in a terminal</span>
+                <span class=info-msg>Version control on your local computer. Initialize a repository through your code editor or run `git init` in a terminal. If you are using VS Code, this can be done from the Source Control tab.</span>
             </span>
             {/if}
         </div>
