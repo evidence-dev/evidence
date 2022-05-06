@@ -24,8 +24,12 @@ export async function get() {
         if (fs.existsSync('../../.gitignore')) {
             gitIgnore = fs.readFileSync('../../.gitignore', 'utf8')
         }
-        settings.localGitRepo = getLocalGitRepo();
-        settings.gitRepo = await gitRemoteOriginUrl()
+        try{
+            settings.localGitRepo = getLocalGitRepo();
+            settings.gitRepo = await gitRemoteOriginUrl()
+        }catch {
+            
+        }
         return {
             header: "accept: application/json",
             status: 200,
