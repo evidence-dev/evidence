@@ -57,7 +57,7 @@ import VariableCopy from "./VariableCopy.svelte";
 </div>
 
 <div class="separator">Advanced Build Settings</div>
-<p>Click 'Show Advanced' and copy paste the following into environment variables</p>
+<p>Click 'Show Advanced' and copy paste the following into <a href='https://docs.netlify.com/configure-builds/environment-variables/' >environment variables.</a> </p>
 
 <EnvironmentVarListing {settings}/>
 
