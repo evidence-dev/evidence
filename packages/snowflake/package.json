@@ -9,7 +9,7 @@
     "test": "uvu test test.js"
   },
   "dependencies": {
-    "snowflake-sdk": "1.6.8"
+    "snowflake-sdk": "1.6.9"
   },
   "type": "module"
 }
