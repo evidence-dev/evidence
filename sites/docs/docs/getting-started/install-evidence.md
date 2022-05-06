@@ -16,8 +16,8 @@ Check which version you have with `npm -v`
 
 Install the latest version with `npm install -g npm@latest`
 
-### Alternatively using a Docker container instead of NPM
-Typically you'd need to have `npm` installed to work with Evidence. However, if you are familiar with Docker, and wish not to work with `npm`, Evidence provides a development Docker image.  Take a look at our [Docker Development Environment](https://github.com/evidence-dev/docker-devenv) repository for more details if you wish to go down this path.
+### Alternatively using Docker instead of NPM
+Typically, Evidence requires `npm` to be installed. However, if you are familiar with `Docker`, and wish not to work with `npm`, Evidence provides a development `Docker` image.  Take a look at our [Docker Development Environment](https://github.com/evidence-dev/docker-devenv) repository for more details if you wish to go down this path.
 
 ## Install & Launch
 
