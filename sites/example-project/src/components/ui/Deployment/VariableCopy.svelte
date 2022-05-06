@@ -24,22 +24,24 @@
 
   </script>
 
-  <div class=container class:copied>
-    <span class=var-value 
-        on:click="{() => {
-            if (text !== undefined) {
-                copy(text);
-            };
-        }}"
-  >
+  <div 
+    class=container 
+    class:copied
+    on:click="{() => {
+      if (text !== undefined) {
+          copy(text);
+      };
+    }}"
+    >
+    <span class=var-value>
     {#if copied}
-    <code in:blur>Copied</code>
+    <span in:blur>Copied</span>
     {:else}
-    <code in:blur>
+    <span in:blur>
 
       {@html hideText ? '&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;' : text}
 
-    </code>
+    </span>
     {/if}
 
   </span>
@@ -58,8 +60,8 @@
         border-radius: 4px 4px 4px 4px;
         border: 1px solid var(--grey-200);
         padding: 0.25em 0.25em 0.25em 0.25em;
-        color: var(--grey-999);
-        font-size: 16px;
+        color: var(--grey-800);
+        size: 0.75em;
         cursor: pointer;
         user-select: none;
         -webkit-user-select: none;
@@ -69,17 +71,21 @@
         justify-content: space-between;
         align-items: center;
         transition: all 400ms;
+        width: 100%;
+        font-family: var(--monospace-font-family);
     }
 
     div.container:hover {
         border-color: var(--blue-500);
         background-color: var(--blue-100);
+        color: var(--blue-800);
         transition: all 400ms;
     }
     
     div.container:active {
         border-color: var(--green-500);
         background-color: var(--green-100);
+        color: var(--green-800);
     }
 
     div.container.copied {
@@ -94,15 +100,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+     }
 
-    code {
-      background-color: unset;
-      border: unset;
-      border-radius: unset;
-      -moz-user-select: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
 
   </style>

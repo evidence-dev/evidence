@@ -127,7 +127,7 @@ hr {
 }
 
 code {
-	font-family: Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
+	font-family: var(--monospace-font-family);
 	font-size: 0.85em;
 	background-color: var(--grey-100);
 	padding: 0.05em 0.2em;
@@ -149,6 +149,7 @@ code {
 	/* Layout header height */
 	--header-height: 2.5rem; 
 	/* Font stacks */
+	--monospace-font-family:  Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
 	--ui-font-family: "SF Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
 	--ui-font-family-compact: "SF Compact Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	--color1: #923d59;

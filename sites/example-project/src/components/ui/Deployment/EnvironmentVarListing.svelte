@@ -5,6 +5,10 @@
     let targetEnvVars = []
 
     if(settings.credentials) {
+        targetEnvVars =[{
+            name: 'DATABASE',
+            value: settings.database
+        }]
         credentials = settings.credentials
         if(settings.database == 'bigquery') {
             credentials = {
@@ -14,17 +18,19 @@
             }
         }
         for(const key in credentials) {
-            let envVar = {
-                name: settings.database.toUpperCase() + '_' + key.toUpperCase(),
-                value: settings.credentials[key]
+            if (key != 'gitignoreSqlite') {
+                let envVar = {
+                    name: settings.database.toUpperCase() + '_' + key.toUpperCase(),
+                    value: settings.credentials[key]
+                }
+                targetEnvVars.push(envVar)
             }
-            targetEnvVars.push(envVar)
         }
     }
 </script>
 
-<div class=environment-variable>
-    <span class=title>Variable Name</span><span class=title>Variable</span> 
+<div class=titles>
+    <span class=title>Key</span><span class=title>Value</span> 
 </div>
 
 {#each targetEnvVars as envVar }
@@ -43,7 +49,18 @@
         font-family: var(--ui-font-family);
         color: var(--grey-999);
         font-size: 16px;
-        margin-top: 1.25em;
+        margin-bottom: 1.25em;
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    div.titles {
+        font-family: var(--ui-font-family);
+        color: var(--grey-999);
+        font-size: 16px;
+        margin-bottom: 0.25em;
         display:flex;
         flex-direction: row;
         justify-content: space-between;
@@ -64,6 +81,7 @@
         font-size: 0.85em;
         color: var(--grey-800);
         text-transform: uppercase;
+        letter-spacing: 0.07em;
     }
 </style>
 
