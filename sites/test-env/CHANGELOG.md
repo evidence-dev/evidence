@@ -1,5 +1,23 @@
 # evidence-test-environment
 
+## 1.0.0
+
+### Major Changes
+
+- 1b81b58: Hides most of the front-end experience from analysts, introduces a new side-bar navigation scheme, adds a development mode settings page to configure database connections
+
+### Patch Changes
+
+- 644963c: Add deployment instructions and a check on the status of the user's git repo to the dev mode settings panel
+- Updated dependencies [3d0d93c]
+- Updated dependencies [54044fa]
+- Updated dependencies [a50f8c2]
+- Updated dependencies [1b81b58]
+- Updated dependencies [36dcd68]
+- Updated dependencies [644963c]
+- Updated dependencies [e45a29a]
+  - @evidence-dev/evidence@1.0.0
+
 ## 1.0.0-next.10
 
 ### Patch Changes
