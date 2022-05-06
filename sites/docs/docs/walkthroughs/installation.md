@@ -18,78 +18,35 @@ If you are using VSCode, the shortcut to open a new terminal is
 
 `Ctrl` + `` ` ``
 
-## Node.js & npm
-You will need to install Evidence from **npm (Node Package Manager)**, which is a source of JavaScript packages. Npm requires you to have **Node.js**, which is a "JavaScript runtime environment" - that just means it's software that gets used to execute an application once it's live (in the case of Node.js, it lets you execute JavaScript code outside of a web browser).
+## System Requirements
+Before installing Evidence, you will need to make sure you have the following installed on your computer:
 
-There are several ways to install both Node.js and npm and it can be quite confusing to search through the alternatives. Our recommendation is to use **nvm (Node Version Manager)** - this is a package you download that will help you install Node.js and npm, and makes it easier to manage/change versions.
+#### Node.js (v14 or higher)
 
-When installing packages, if you are ever presented with an option to download a "stable" or "supported" version vs. a "current" version, you should choose the stable version because it has been released for some time and the package creator has worked through a lot of the issues/bugs with it. Current or newest versions often contain features that are still in development or haven't been fully vetted.
-
-Below are the versions of Node.js and npm you will need to install Evidence:
-
-**Node Version 14 or greater** 
-
-Check the [Node.js website](https://nodejs.org/en/) to see ther version number listed as **LTS (long-term support)**.
-
-Check which version you have with `node -v` 
-
-**NPM Version 7 or greater** 
-
-Check which version you have with `npm -v` 
-
-### Install nvm
-Run the following commands in your terminal to install nvm. This will download and run an install script from the nvm GitHub repo:
-```shell
-touch ~/.bash_profile
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-```
-
-Run the command below to check that nvm was successfully installed (if the command runs and returns a version number, it's been installed):
-```shell
-nvm --version
-```
-
-### Check available versions
-```shell
-nvm ls-remote
-```
-This will print a list to your console of all available Node.js versions. If you're switching versions, you should find the largest version number listed as **LTS (Long-term support)**. Typically there will be a stable version and a "current" version listed. The current version is in development now and may not work with Evidence. 
-
-### Install a version
-Take the version number you found in the previous step and include it in the command below. This will install Node.js and npm at the same time:
-```shell
-nvm install 16.8.0
-```
-
-### Check your installed versions
-If you are unsure which version of Node.js or npm you have, you can run the following commands in your terminal:
-
+Type the following command into your terminal:
 ```shell
 node -v
 ```
+`-v` means **version**.
 
+If you see a version less than 14 or if you don't see a version number returned from that command, you will need to install Node.js - you can install for your operating system [here](https://nodejs.org/en/download/). Choose the "LTS" option (long-term support).
+
+#### npm (v7 or higher)
+
+If you downloaded Node.js in the previous step, you will have npm installed (it's included with the Node.js installation).
+
+Run this command to check your npm version:
 ```shell
 npm -v
 ```
 
-`-v` means **version**. You can use this command to check versions of any package you have installed. If your npm version number is under 6, you can update npm with the following command:
+If your npm version number is under 7, you can update npm with the following command:
 
-### Change Versions
-Nvm makes it easy to switch between different versions.
-
-Switch between versions using the command below. When you switch Node.js versions, it will automatically change your npm version to match.
 ```shell
-nvm use 16.8.0
+npm install -g npm@latest
 ```
 
 Once you have the right Node.js and npm versions installed, you're ready to create your Evidence project!
-
-:::note Help us improve the docs
-If any of the steps above are out of date, you can check out the npm website for current details:
-https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
-
-Please let us know if any of these steps don't work so we can update these docs and help others who will run into the same issues. You can let us know [on Slack](/community) or by emailing <support@evidence.dev>.
-:::
 
 ## Create an Evidence Project
 `npx degit` is a command to download the code from a github repository. This is going to download our template project and place it into a directory called 'my-project'. 
@@ -171,3 +128,7 @@ Now that you're all set up, you can keep working through the getting started gui
 
 ## Help
 If you need help with any of this, [reach out to us on Slack](/community).
+
+:::note Help us improve the docs
+Please let us know if any of these steps don't work so we can update these docs and help others who will run into the same issues. You can let us know [on Slack](/community) or by emailing <support@evidence.dev>.
+:::
