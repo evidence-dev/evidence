@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
+title: Create a Page
 ---
-# Create a Page
 
 1. **Inside** the `pages` directory, start by editing the homepage for Needful Things, called `index.md`. 
 

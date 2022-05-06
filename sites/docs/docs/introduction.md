@@ -3,7 +3,11 @@ sidebar_position: 1
 slug: /
 title: Introduction
 hide_table_of_contents: true
+hide_title: true
+breadcrumbs: false
 ---
+
+<h1 class="community-header">Evidence</h1>
 
 Evidence is a web framework for data analysts. It's a modern alternative to drag-and-drop BI tools. 
 

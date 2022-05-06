@@ -1,10 +1,8 @@
 ---
 sidebar_position: 4
 hide_table_of_contents: false
+title: Add Queries
 ---
-
-# Add Queries
-
 
 Let's making a new page for our queries. Create a new markdown page called `business-performance.md` (in the same file as `index.md`), adding the following code to create the sections, and add a query
 
