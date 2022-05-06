@@ -7,7 +7,7 @@
     let deploymentOptions = [
         {name: 'Choose a deployment target'},
 		{id: 'netlify', name: 'Netlify', formComponent: NetlifyDeploy},
-		{id: 'Self-host (other)', name: 'Other', formComponent: OtherDeploy}
+		{id: 'other', name: 'Self-host (other)', formComponent: OtherDeploy}
 	];
 
     let selectedDeployment = deploymentOptions[0]
