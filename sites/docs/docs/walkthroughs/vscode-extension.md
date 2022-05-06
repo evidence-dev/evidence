@@ -1,5 +1,5 @@
 ---
-sidebar_position: 13
+sidebar_position: 4
 hide_table_of_contents: false
 title: VS Code Extension
 ---

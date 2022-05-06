@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 title: Evidence Chart Library
 hide_title: true
 hide_table_of_contents: false

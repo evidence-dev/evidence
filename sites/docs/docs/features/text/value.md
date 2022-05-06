@@ -35,7 +35,7 @@ Lets you take the result of a query and use it anywhere in your markdown.
 
 ### Errors
 Errors appear inline with your text - when you hover over an error, it will show you the reason for the error.
-![value-error](/img/value-error.gif)
+<img src="/static/img/value-error.gif" width="650"/>
 
 ### Adding a Placeholder
 If you like to mock up reports before you're ready to fill in real data, you can also override the Value error with a **placeholder**. Input the text you want to use as your placeholder and it will appear in blue font with square brackets, inline with your text.
