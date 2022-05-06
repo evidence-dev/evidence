@@ -1,8 +1,7 @@
 ---
 sidebar_position: 4
+title: Edit Your Project
 ---
-
-# Edit Your Project
 
 ## Pages
 Your project comes with a `pages` directory, which you can fill with markdown files. When you run your project, Evidence builds a webpage for each of those markdown files.
@@ -87,4 +86,4 @@ For example, if your query name was `regional_sales_change`, you could include a
 
 ![bar](/img/exg-bar-nt.svg) 
 
-For a full list of available components in the built-in library, see the [Components Example Gallery](/components/example-gallery)
+For a full list of available charts in the built-in library, see the [Charts Example Gallery](/features/charts/examples)

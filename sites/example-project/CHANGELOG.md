@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.0.0-next.7
+
+### Patch Changes
+
+- Fixed version control panel
+
 ## 1.0.0-next.6
 
 ### Patch Changes

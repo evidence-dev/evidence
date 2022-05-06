@@ -1,4 +1,7 @@
-# BigQuery 
+---
+sidebar_position: 2
+title: BigQuery
+---
 
 Evidence supports connecting to Google BigQuery by using a [service account](https://cloud.google.com/iam/docs/service-accounts) and a JSON key. 
 

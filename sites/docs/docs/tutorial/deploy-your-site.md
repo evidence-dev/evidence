@@ -1,8 +1,8 @@
 ---
 sidebar_position: 7
 hide_table_of_contents: false
+title: Deploy Your Site
 ---
-# Deploy Your Site
 
 Now we have a page with some queries and charts, let's put it on the internet so we can share it with the Needful Things owner (and anyone else we want) can see it!
 

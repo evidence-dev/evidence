@@ -1,8 +1,8 @@
 ---
 sidebar_position: 3
 hide_table_of_contents: true
+title: Connect a Database
 ---
-# Connect a Database
 
 We need the add the data from the Needful Things - we are going to use a local SQLite database for the tutorial. 
 

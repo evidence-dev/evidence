@@ -1,8 +1,7 @@
 ---
 sidebar_position: 8
+title: "Advanced: Loops"
 ---
-
-# Advanced: Loops
 
 Needful Things have asked us where they should spend their marketing dollars.
 

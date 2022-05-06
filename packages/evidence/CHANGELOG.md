@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 1.0.0-next.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/components@1.0.0-next.7
+
 ## 1.0.0-next.9
 
 ### Patch Changes

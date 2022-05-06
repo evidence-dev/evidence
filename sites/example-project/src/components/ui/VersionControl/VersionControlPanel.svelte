@@ -16,7 +16,7 @@
         Use version control to keep track of changes to your project. A published git repo is needed if you want to deploy your Evidence project online.
     
         <div class=git-item>
-            {#if settings.localGiteRepo}
+            {#if settings.localGitRepo}
                 <span class=gitcheck-icon>
                 <IoIosCheckmarkCircle/>
                 </span>
@@ -26,7 +26,7 @@
                 </span>
             {/if}
             <span class=item-label>Local Git Repo</span>
-            {#if settings.localGiteRepo}
+            {#if settings.localGitRepo}
                 <div class=result-msg>
                     <span class=repo-location>Tracking {settings.localGitRepo}</span>  
                 </div>
@@ -39,7 +39,7 @@
         </div>
 
         <div class=git-item>
-            {#if settings.giteRepo}
+            {#if settings.gitRepo}
                 <span class=gitcheck-icon>
                 <IoIosCheckmarkCircle/>
                 </span>
@@ -49,7 +49,7 @@
                 </span>
             {/if}   
             <span class=item-label>Git Repo Published</span>
-            {#if settings.giteRepo}
+            {#if settings.gitRepo}
             <div class=result-msg>
                 <a href={settings.gitRepo.replace(".git", "")} target="_blank"><span class=repo-location>{settings.gitRepo.replace(".git", "")}</span></a>  
             </div>

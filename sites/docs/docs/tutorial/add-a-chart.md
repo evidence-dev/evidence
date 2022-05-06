@@ -1,15 +1,14 @@
 ---
 sidebar_position: 6
 hide_table_of_contents: false
+title: Add a Chart
 ---
 
-# Add a Chart
-
-Charts work in the same way as the [<span class="gradient">**&lt;Value/>**</span>](/components/text-components/value) component - you can add them anywhere in your markdown and reference SQL queries on the page.
+Charts work in the same way as the [<span class="gradient">**&lt;Value/>**</span>](/features/markdown//value) component - you can add them anywhere in your markdown and reference SQL queries on the page.
 
 So let's try to answer the question the Needful Things owner had about sales.
 
-To do this, add an [<span class="gradient">**&lt;AreaChart/>**</span>](/components/charts/area-chart), a [<span class="gradient">**&lt;LineChart/>**</span>](/components/charts/line-chart), and a [<span class="gradient">**&lt;BarChart/>**</span>](/components/charts/bar-chart) component to your page.
+To do this, add an [<span class="gradient">**&lt;AreaChart/>**</span>](/features/charts/area-chart), a [<span class="gradient">**&lt;LineChart/>**</span>](/features/charts/line-chart), and a [<span class="gradient">**&lt;BarChart/>**</span>](/features/charts/bar-chart) component to your page.
 
 ```markdown title="Add to the bottom of business-performance.md:"
 ## Monthly Sales
@@ -45,5 +44,5 @@ The first chart shows sales have overall been increasing across the three year p
 The second and third charts show this is mainly due to an increasing number of orders - the average basket size has been relatively consistent over the period.
 
 :::info Visualization Components
-Check out the [Components](/components/text-components/value) section to see the full list of available components.
+Check out the [Components](/features/markdown//value) section to see the full list of available components.
 :::
