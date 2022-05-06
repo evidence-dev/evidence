@@ -1,4 +1,7 @@
-## Conditionals
+---
+title: Conditionals
+sidebar_position: 2
+---
 
 Conditionals are critical tool for managing information overload, and ensuring that your reporting is consistently showing actionable information. 
 

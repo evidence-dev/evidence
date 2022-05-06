@@ -1,4 +1,7 @@
-## Loops
+---
+title: Loops
+sidebar_position: 3
+---
 
 Loops enable you to iterate over the rows in a query result, and reference the row using an alias of your choosing. 
 

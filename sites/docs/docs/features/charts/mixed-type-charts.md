@@ -1,15 +1,41 @@
 ---
 sidebar_position: 8
-title: Composable Charts
+title: Mixed-Type Charts
 hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">Composable Charts</span></h1>
+<h1 class="community-header"><span class="gradient">Mixed-Type Charts</span></h1>
 
-`<Chart>` is the main component used to create charts in the Evidence chart library. All other components listed on this page can only be used within a `<Chart>` component.
+You can combine multiple chart types inside a single `<Chart>` tag to create mixed-type charts.
 
-You can combine multiple components inside a single `<Chart>` to create mixed-type charts.
+
+## Examples
+
+### Mixed-Type Chart
+This example uses multiple y columns and multiple series types (bar and line)
+
+![composable](/img/exg-composable-multi-type-nt.svg) 
+
+```markdown
+<Chart data={data.fda_recalls}>
+    <Bar y=voluntary_recalls/>
+    <Line y=fda_recalls/>
+</Chart>
+```
+
+Because x is the first column in the dataset, an explicit `x` prop is not required.
+
+This structure also gives you control over the individual series on your chart. For example, if you have a single series running through a component, you can override props specifically for that series. Since the FDA acronym was not fully capitalized above, you can rename that specific series inside the `<Line>` primitive:
+
+![composable-name-override](/img/exg-composable-name-override-nt.svg)
+
+```markdown
+<Chart data={data.fda_recalls}>
+    <Bar y=voluntary_recalls/>
+    <Line y=fda_recalls name="FDA Recalls"/>
+</Chart>
+```
 
 ## Chart `<Chart>`
 ```markdown
@@ -168,30 +194,3 @@ You can combine multiple components inside a single `<Chart>` to create mixed-ty
 <tr>	<td>fillColor</td>	<td>Color to override default series color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>fillOpacity</td>	<td>% of the full color that should be rendered, with remainder being transparent</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number (0 to 1)</td>	<td class='tcenter'>1</td>	</tr>
 </table>						
-
-## Examples
-
-### Combined Chart
-This example uses multiple y columns and multiple series types (bar and line)
-
-![composable](/img/exg-composable-multi-type-nt.svg) 
-
-```markdown
-<Chart data={data.fda_recalls}>
-    <Bar y=voluntary_recalls/>
-    <Line y=fda_recalls/>
-</Chart>
-```
-
-Because x is the first column in the dataset, an explicit `x` prop is not required.
-
-This structure also gives you control over the individual series on your chart. For example, if you have a single series running through a component, you can override props specifically for that series. Since the FDA acronym was not fully capitalized above, you can rename that specific series inside the `<Line>` primitive:
-
-![composable-name-override](/img/exg-composable-name-override-nt.svg)
-
-```markdown
-<Chart data={data.fda_recalls}>
-    <Bar y=voluntary_recalls/>
-    <Line y=fda_recalls name="FDA Recalls"/>
-</Chart>
-```

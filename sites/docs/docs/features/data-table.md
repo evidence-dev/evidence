@@ -1,6 +1,6 @@
 ---
-sidebar_position: 2
-title: DataTable
+sidebar_position: 4
+title: Tables
 hide_title: true
 hide_table_of_contents: false
 ---

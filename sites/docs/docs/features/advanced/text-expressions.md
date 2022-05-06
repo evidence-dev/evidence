@@ -1,4 +1,8 @@
-## Text expressions 
+---
+title: Text expressions 
+sidebar_position: 1
+---
+
 In Evidence, curly braces like these `{...}` evaluate javascript. In most cases, you will want to pass data into a componet such as `<Value/>` or `<LineChart/>`, but text expressions can be very handy. You don't need to be an expert in javascript to use text expressions, and the possibilities are nearly endless. 
 
 #### Examples
