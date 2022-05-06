@@ -179,10 +179,10 @@ importers:
 
   sites/docs:
     specifiers:
-      '@docusaurus/core': ^2.0.0-beta.0
-      '@docusaurus/preset-classic': ^2.0.0-beta.0
-      '@docusaurus/theme-classic': ^2.0.0-beta.4
-      '@docusaurus/theme-common': ^2.0.0-beta.4
+      '@docusaurus/core': 2.0.0-beta.0
+      '@docusaurus/preset-classic': 2.0.0-beta.0
+      '@docusaurus/theme-classic': 2.0.0-beta.4
+      '@docusaurus/theme-common': 2.0.0-beta.4
       '@mdx-js/react': ^1.6.21
       '@svgr/webpack': ^5.5.0
       clsx: ^1.1.1
@@ -194,7 +194,7 @@ importers:
       remark-math: '3'
       url-loader: ^4.1.1
     dependencies:
-      '@docusaurus/core': 2.0.0-beta.4_react-dom@17.0.2+react@17.0.2
+      '@docusaurus/core': 2.0.0-beta.0_react-dom@17.0.2+react@17.0.2
       '@docusaurus/preset-classic': 2.0.0-beta.0_react-dom@17.0.2+react@17.0.2
       '@docusaurus/theme-classic': 2.0.0-beta.4_react-dom@17.0.2+react@17.0.2
       '@docusaurus/theme-common': 2.0.0-beta.4_react-dom@17.0.2+react@17.0.2
@@ -6456,7 +6456,7 @@ packages:
       merge-stream: 2.0.0
       npm-run-path: 4.0.1
       onetime: 5.1.2
-      signal-exit: 3.0.3
+      signal-exit: 3.0.7
       strip-final-newline: 2.0.0
 
   /expand-brackets/2.1.4:
@@ -11658,7 +11658,6 @@ packages:
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
-    dev: false
 
   /simple-lru-cache/0.0.2:
     resolution: {integrity: sha1-1ZzDoZPBpdAyD4Tucy9uRxPlEd0=}
@@ -12071,6 +12070,7 @@ packages:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
       strip-ansi: 6.0.1
+    dev: true
 
   /string-width/4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
@@ -12079,7 +12079,6 @@ packages:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
       strip-ansi: 6.0.1
-    dev: false
 
   /string.prototype.trimend/1.0.4:
     resolution: {integrity: sha512-y9xCjw1P23Awk8EvTpcyL2NIr1j7wJ39f+k6lvRnSMz+mz9CGz9NYPelDk42kOz6+ql8xjfK8oYzy3jAP5QU5A==}
@@ -13514,7 +13513,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       ansi-styles: 4.3.0
-      string-width: 4.2.2
+      string-width: 4.2.3
       strip-ansi: 6.0.1
 
   /wrappy/1.0.2:
