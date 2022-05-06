@@ -16,7 +16,7 @@ hide_table_of_contents: false
         <p class="lbl">Line Chart - Single Series</p>
     </div>
     <div class="item-body-centered">
-        <a href="/components/charts/line-chart#line">
+        <a href="/features/charts/line-chart#line">
 
 ![line](/img/exg-line-nt.svg) 
         
@@ -30,7 +30,7 @@ hide_table_of_contents: false
     </div>
     <div class="item-body-centered">
 
-<a href="/components/charts/line-chart#multi-series-line">
+<a href="/features/charts/line-chart#multi-series-line">
 
 ![multi-series-line](/img/exg-multi-series-line-nt.svg) 
 
@@ -44,7 +44,7 @@ hide_table_of_contents: false
     </div>
     <div class="item-body-centered">
 
-<a href="/components/charts/line-chart#multiple-y-columns">
+<a href="/features/charts/line-chart#multiple-y-columns">
 
 ![multiple-y-line](/img/exg-multiple-y-line-nt.svg) 
 
@@ -59,7 +59,7 @@ hide_table_of_contents: false
         <p class="lbl">Area Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/area-chart#area">
+<a href="/features/charts/area-chart#area">
 
 ![area](/img/exg-area-nt.svg) 
 
@@ -73,7 +73,7 @@ hide_table_of_contents: false
         <p class="lbl">Stacked Area Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/area-chart#stacked-area">
+<a href="/features/charts/area-chart#stacked-area">
 
 ![stacked-area](/img/exg-stacked-area-nt.svg) 
 
@@ -87,7 +87,7 @@ hide_table_of_contents: false
         <p class="lbl">Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bar-chart#bar">
+<a href="/features/charts/bar-chart#bar">
 
 ![bar](/img/exg-bar-nt.svg) 
 
@@ -101,7 +101,7 @@ hide_table_of_contents: false
         <p class="lbl">Stacked Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bar-chart#stacked-bar">
+<a href="/features/charts/bar-chart#stacked-bar">
 
 ![stacked-bar](/img/exg-stacked-bar-nt.svg) 
 
@@ -115,7 +115,7 @@ hide_table_of_contents: false
         <p class="lbl">Grouped Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bar-chart#grouped-bar">
+<a href="/features/charts/bar-chart#grouped-bar">
 
 ![grouped-bar](/img/exg-grouped-bar-nt.svg) 
 
@@ -129,7 +129,7 @@ hide_table_of_contents: false
         <p class="lbl">Horizontal Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bar-chart#horizontal-bar">
+<a href="/features/charts/bar-chart#horizontal-bar">
 
 ![horizontal-bar](/img/exg-horizontal-bar-nt.svg) 
 
@@ -143,7 +143,7 @@ hide_table_of_contents: false
         <p class="lbl">Horizontal Stacked Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bar-chart#horizontal-stacked-bar">
+<a href="/features/charts/bar-chart#horizontal-stacked-bar">
 
 ![horizontal-stacked-bar](/img/exg-horizontal-stacked-bar-nt.svg) 
 
@@ -157,7 +157,7 @@ hide_table_of_contents: false
         <p class="lbl">Horizontal Grouped Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bar-chart#horizontal-grouped-bar">
+<a href="/features/charts/bar-chart#horizontal-grouped-bar">
 
 ![horizontal-grouped-bar](/img/exg-horizontal-grouped-bar-nt.svg) 
 
@@ -170,7 +170,7 @@ hide_table_of_contents: false
         <p class="lbl">Long Bar Chart</p>
     </div>
     <div class="item-body-top">
-<a href="/components/charts/bar-chart#long-bar-chart">
+<a href="/features/charts/bar-chart#long-bar-chart">
 
 ![long-bar](/img/exg-long-bar.svg) 
 
@@ -184,7 +184,7 @@ hide_table_of_contents: false
         <p class="lbl">Scatter Plot</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/scatter-plot#scatter-plot">
+<a href="/features/charts/scatter-plot#scatter-plot">
 
 ![scatter](/img/exg-scatter-nt.svg) 
 
@@ -198,7 +198,7 @@ hide_table_of_contents: false
         <p class="lbl">Scatter Plot - Multiple Series</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/scatter-plot#multi-series-scatter-plot">
+<a href="/features/charts/scatter-plot#multi-series-scatter-plot">
 
 ![multi-series-scatter](/img/exg-multi-series-scatter-nt.svg) 
 
@@ -212,7 +212,7 @@ hide_table_of_contents: false
         <p class="lbl">Bubble Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bubble-chart#bubble">
+<a href="/features/charts/bubble-chart#bubble">
 
 ![bubble](/img/exg-bubble-nt.svg) 
 
@@ -226,7 +226,7 @@ hide_table_of_contents: false
         <p class="lbl">Bubble Chart - Multiple Series</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/bubble-chart#multi-series-bubble">
+<a href="/features/charts/bubble-chart#multi-series-bubble">
 
 ![multi-series-bubble](/img/exg-multi-series-bubble-nt.svg) 
 
@@ -241,7 +241,7 @@ hide_table_of_contents: false
         <p class="lbl">Histogram</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/histogram#histogram">
+<a href="/features/charts/histogram#histogram">
 
 ![histogram](/img/exg-histogram-nt.svg) 
 
@@ -256,7 +256,7 @@ hide_table_of_contents: false
         <p class="lbl">Mixed Type Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/composable-charts#combined-chart">
+<a href="/features/charts/mixed-type-charts#combined-chart">
 
 ![composable-name-override](/img/exg-composable-name-override-nt.svg)
 
@@ -271,7 +271,7 @@ hide_table_of_contents: false
         <p class="lbl">Custom ECharts Example</p>
     </div>
     <div class="item-body-centered">
-<a href="/components/charts/custom-charts#advanced-chart">
+<a href="/features/charts/custom-charts#advanced-chart">
 
 ![custom-chart](/img/exg-custom-echarts-anscombe.svg)
 
