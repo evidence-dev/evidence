@@ -1,5 +1,13 @@
 # evidence-test-environment
 
+## 1.0.0-next.9
+
+### Patch Changes
+
+- 644963c: Add deployment instructions and a check on the status of the user's git repo to the dev mode settings panel
+- Updated dependencies [644963c]
+  - @evidence-dev/evidence@1.0.0-next.9
+
 ## 1.0.0-next.8
 
 ### Patch Changes
