@@ -1,5 +1,19 @@
 # @evidence-dev/sqlite
 
+## 1.0.0
+
+### Major Changes
+
+- 1b81b58: Hides most of the front-end experience from analysts, introduces a new side-bar navigation scheme, adds a development mode settings page to configure database connections
+
+### Patch Changes
+
+- 64daf72: Update vendor sdk
+- 3d0d93c: Various UI changes
+- 99c1d08: Fixes location of sqlite database files in an Evidence project
+- a50f8c2: fix sqlite gitignore error, settings optionals, and misc UI fixes
+- 644963c: Add deployment instructions and a check on the status of the user's git repo to the dev mode settings panel
+
 ## 1.0.0-next.5
 
 ### Patch Changes

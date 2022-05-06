@@ -1,5 +1,31 @@
 # @evidence-dev/evidence
 
+## 1.0.0
+
+### Major Changes
+
+- 1b81b58: Hides most of the front-end experience from analysts, introduces a new side-bar navigation scheme, adds a development mode settings page to configure database connections
+
+### Patch Changes
+
+- 3d0d93c: Various UI changes
+- 54044fa: Inline svelte-kit config into the template
+- a50f8c2: fix sqlite gitignore error, settings optionals, and misc UI fixes
+- 36dcd68: Fix import error for show hide queries button
+- 644963c: Add deployment instructions and a check on the status of the user's git repo to the dev mode settings panel
+- e45a29a: Add a deployment panel to settings
+- Updated dependencies [54044fa]
+- Updated dependencies [3d0d93c]
+- Updated dependencies [9d6417e]
+- Updated dependencies [a50f8c2]
+- Updated dependencies [1b81b58]
+- Updated dependencies [36dcd68]
+- Updated dependencies [644963c]
+- Updated dependencies [e45a29a]
+  - @evidence-dev/components@1.0.0
+  - @evidence-dev/preprocess@1.0.0
+  - @evidence-dev/db-orchestrator@1.0.0
+
 ## 1.0.0-next.10
 
 ### Patch Changes

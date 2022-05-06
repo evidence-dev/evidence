@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/preprocess",
-  "version": "1.0.0-next.2",
+  "version": "1.0.0",
   "description": "Markdown preprocessor for evidence.dev projects",
   "main": "index.cjs",
   "author": "evidence.dev",
