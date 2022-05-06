@@ -1,4 +1,6 @@
-# Troubleshooting
+---
+title: Troubleshooting
+---
 
 :::tip Running into Problems?
 Join the [Evidence Community](/community) to get help with issues and discuss feature ideas.

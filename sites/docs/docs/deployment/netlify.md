@@ -6,56 +6,11 @@ title: Netlify
 
 Netlify lets you host a public version of your project for free, or you can create and host a password-protected version with Netlify's $15/month plan.
 
-## Sign up for Netlify for free
-You can sign up for Netlify [here](https://app.netlify.com/signup)
+# Deploy to netlify
+1. Run your project in development mode 
+1. Visit the [settings page](https://localhost:3000)
+1. Open the deployment panel, and select 'netlify', then follow the provided instructions
 
-## Connect Netlify to your Evidence project
-1. On your overview page, click to create a new site from Git:
-![netlify-new-site-git](/img/netlify-new-site-git.png)
-1. Follow the prompts from Netlify to connect to your GitHub and choose the repo containing your Evidence project
-1. Use the default options supplied by Netlify and click Deploy Site. Netlify will start building your site and you should see the screen below:
-![netlify-first-deploy](/img/netlify-first-deploy.png)
-
-:::note Deploy Issues
-It's normal for some deployments to fail at this stage because Netlify needs environment variables created in order to run the build. The next section will walk you through setting those up.
-:::
-
-## Add Environment Variables
-Since your database credentials are not checked into version control (they are included in the `.gitignore` file in your project), you need to provide Netlify with the credentials to access your database. You can set up environment variables in Netlify for this.
-
-1. Go to Site Settings
-1. Under Build & deploy, go to Environment
-1. Click Edit in the Environment Variables section
-1. Add an environment variable with a Key of `NPM_VERSION` and Value of 8.1.3
-![npm-version-variable](/img/npm-version-variable.png)
-
-1. Add each required environment variable for your database (see below for the required variables based on which database you're using)
-
-![env-vars-edit](/img/env-vars-edit.png)
-
-### PostgreSQL
-![env_vars_pg_done](/img/env_vars_pg_done.png)
-
-### Snowflake
-![env_vars_sf_done](/img/env_vars_sf_done.png)
-
-### BigQuery
-You will need the 3 variables below from the JSON key file you generated for your BigQuery service account. If you don't have a JSON key file, see [Connect Data Warehouse](/getting-started/connect-data-warehouse#bigquery).
-
-![env_vars_bq_done](/img/env_vars_bq_done.png)
-
-## Deploy your project
-Netlify will already have deployed a version of your site without the environment variables, but now you'll need to update it so the queries in your project work.
-
-Go to Deploys and click Trigger deploy - this will kickstart a new build of your project.
-
-![netlify-trigger-deploy](/img/netlify-trigger-deploy.png)
-
-Once the deploy is complete, refresh your project site and your queries should be working. 
-
-:::note 
-If you run into any problems with deployment, please [reach out on Slack](/community) or send an email to <support@evidence.dev>.
-:::
 
 ## Optional: Set a site-wide password for your project (Requires Paid Plan) 
 Follow the directions provided by Netlify to set up a password for your site:

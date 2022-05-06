@@ -1,4 +1,8 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
+// Add Math Eqn Support
+const math = require('remark-math');
+const katex = require('rehype-katex');
+
 module.exports = {
   title: 'Evidence Docs',
   tagline: 'Get Started with Evidence',
@@ -31,7 +35,7 @@ module.exports = {
         },
         {
           href: 'https://github.com/evidence-dev/evidence',
-          label: 'GitHub',
+          label: 'Github',
           position: 'right',
         },
       ],
@@ -58,23 +62,23 @@ module.exports = {
             },
             {
               label: 'Get Started',
-              to: '/getting-started/get-started',
+              to: '/getting-started/install-evidence',
             },
             {
-              label: 'Tutorial',
-              to: '/tutorial/what-well-build',
+              label: 'SQL Queries',
+              to: '/features/queries/sql-queries',
             },
             {
-              label: 'Queries',
-              to: '/queries/sql-queries',
+              label: 'Markdown',
+              to: '/features/markdown/writing-markdown',
             },
             {
-              label: 'Components',
-              to: '/components/text-components/value',
+              label: 'Charts',
+              to: '/features/charts/examples',
             },
             {
-              label: 'Formatting',
-              to: '/formatting/format-tags',
+              label: 'Tables',
+              to: '/features/data-table',
             },
             {
               label: 'Deployment',
@@ -149,7 +153,10 @@ module.exports = {
           // Please change this to your repo.
           // editUrl:
           //   'https://github.com/facebook/docusaurus/edit/master/website/',
-          routeBasePath: '/'
+          routeBasePath: '/',
+          // Add Math Eqn Support
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
         },
         // blog: {
         //   showReadingTime: true,
@@ -165,5 +172,15 @@ module.exports = {
   ],
   scripts: [
     'https://scripts.simpleanalyticscdn.com/latest.js'
+  ],
+  // Add math stylesheets
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      type: 'text/css',
+      integrity:
+        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+      crossorigin: 'anonymous',
+    },
   ],
 };

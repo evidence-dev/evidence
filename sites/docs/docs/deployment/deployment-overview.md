@@ -15,7 +15,6 @@ If you are interested in using Evidence, but you would prefer not to self-host y
 
 To be notified when Evidence Cloud is available, [sign up for the waitlist](https://du3tapwtcbi.typeform.com/to/kwp7ZD3q). 
 
-
 ## Build Process  
 
 Evidence doesn't run new queries each time someone visits one of your reports. 
@@ -27,7 +26,7 @@ You can schedule (or trigger) regular builds of your site to keep it up-to-date 
 This has two benefits for you and your users: 
 
 1. If something goes wrong with your SQL, Evidence just stops building your project, and continues to serve older results. 
-2. Your site will be exceptionally fast. Under most conditions, pages will load in miliseconds. 
+2. Your site will be exceptionally fast. Under most conditions, pages will load in milliseconds. 
 
 ## Builds 
 
@@ -37,18 +36,8 @@ The command `npm run build` will build a static version of your reports and plac
 
 In production, Evidence expects to find your database credentials in **environment variables**. 
 
-By default, the `database.config.json` file containing your credentials will not be checked into version control, and it will not be available in your production environment. 
+To find the environment variables that you'll need to set for your project: 
 
-Below are the required environment variables for the databases we support. These screenshots are from a Netlify deployment, but the variables should be the same wherever you decide to deploy your project.
-
-### PostgreSQL
-![env_vars_pg_done](/img/env_vars_pg_done.png)
-
-### Snowflake
-![env_vars_sf_done](/img/env_vars_sf_done.png)
-
-### BigQuery
-You will need the 3 variables below from the JSON key file you generated for your BigQuery service account. If you don't have a JSON key file, see [Connect Data Warehouse](/getting-started/connect-data-warehouse#bigquery).
-
-![env_vars_bq_done](/img/env_vars_bq_done.png)
-
+1. Run your project in development mode 
+1. Visit the [settings page](https://localhost:3000)
+1. Open the deployment panel, and select 'self-host'

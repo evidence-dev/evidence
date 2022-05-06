@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Spectral+SC&display=swap');
 
+
+html {
+	scroll-behavior: smooth;
+}
+
+body, html {
+	height: 100%;
+}
+
 body {
 	font-family: 'Spectral', serif;
 	font-size: 18px;
@@ -28,6 +37,7 @@ h1, h2, h3, h4, h5, h6  {
 	font-family: var(--ui-font-family);
 	line-height: 1.5;
 	margin: 1.0em 0 0.3em 0; 
+	scroll-margin-top: var(--header-height); /* ensure that table of contents links scroll with room for the header */
 }
 
 h1:first-of-type {
@@ -101,13 +111,6 @@ article a:hover {
 	text-underline-offset: 0.05em;
 }
 
-main {
-	position: relative;
-	max-width: 70ch;
-	margin: 0 auto;
-	box-sizing: border-box;
-	padding: 0 1.5em 0 1.5em;
-}
 
 hr {
 	display: block;
@@ -123,6 +126,19 @@ hr {
 	
 }
 
+code {
+	font-family: var(--monospace-font-family);
+	font-size: 0.85em;
+	background-color: var(--grey-100);
+	padding: 0.05em 0.2em;
+	border: solid 1px var(--grey-200);
+	border-radius: 4px;
+	color: var(--grey-800);
+	-webkit-user-select: all;
+	-moz-user-select: all;
+	user-select: all;
+}
+
 @media (max-width: 600px) {
 	body {
 		font-size: 16px;
@@ -130,9 +146,12 @@ hr {
 }
 
 :root {
+	/* Layout header height */
+	--header-height: 2.5rem; 
+	/* Font stacks */
+	--monospace-font-family:  Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
 	--ui-font-family: "SF Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
 	--ui-font-family-compact: "SF Compact Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-
 	--color1: #923d59;
 	--color2: #488f96;
 	--color3: #518eca;
@@ -154,6 +173,7 @@ hr {
 	--color19: #bfdbf7;
 	--color20: #bc4749;
 
+	/* Colour System */
 	--blue-100: hsla(202, 100%, 95%, 1);
 	--blue-200: hsla(204, 100%, 85%, 1);
 	--blue-300: hsla(206, 95%, 72%, 1);

@@ -1,12 +1,11 @@
 {
   "name": "evidence-test-environment",
-  "version": "0.0.9",
+  "version": "1.0.0-next.10",
   "private": true,
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
-    "test": "svelte-kit build"
+    "build": "evidence build",
+    "dev": "evidence dev",
+    "test": "evidence build"
   },
   "engines": {
     "npm": ">=7.0.0",

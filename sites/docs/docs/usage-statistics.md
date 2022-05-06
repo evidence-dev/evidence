@@ -1,4 +1,6 @@
-# Usage Statistics
+---
+title: Usage Statistics
+---
 
 We collect basic usage information in order to understand how many people are actively using the project:
 * Anonymous ID

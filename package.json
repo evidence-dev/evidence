@@ -9,15 +9,17 @@
 		"@tidyjs/tidy": "2.4.4",
 		"echarts": "5.2.2",
 		"echarts-stat": "1.2.0",
+		"svelte-icons": "2.1.0",
 		"svelte": "3.44.3",
 		"svelte2tsx": "0.4.7",
 		"typescript": "4.5.4",
 		"vite-plugin-full-reload": "0.2.2",
 		"@changesets/cli": "2.21.0",
-		"uvu": "0.5.2"
+		"uvu": "0.5.2",
+		"git-remote-origin-url": "4.0.0"
 	},
 	"scripts": {
-		"release": "pnpm --filter ./sites/example-project package && pnpm changeset publish",
-		"test": "pnpm --filter ./sites/example-project package && pnpm install --frozen-lockfile && pnpm -r test"
+		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
+		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test"
 	}
 }

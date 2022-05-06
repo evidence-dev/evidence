@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "0.1.25",
+  "version": "1.0.0-next.10",
   "description": "dependencies for evidence projects",
   "type": "module",
   "keywords": [
@@ -18,6 +18,16 @@
   ],
   "author": "",
   "license": "MIT",
+  "bin": {
+    "evidence": "cli.js"
+  },
+  "scripts": {
+    "build": "node scripts/build-template",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "template"
+  ],
   "devDependencies": {
     "@evidence-dev/components": "workspace:^",
     "@evidence-dev/db-orchestrator": "workspace:^"
@@ -25,7 +35,10 @@
   "dependencies": {
     "@evidence-dev/preprocess": "workspace:^",
     "@sveltejs/adapter-static": "1.0.0-next.22",
-    "vite-plugin-full-reload": "0.2.2"
+    "vite-plugin-full-reload": "0.2.2",
+    "chokidar": "3.5.3",
+    "fs-extra": "10.0.1",
+    "sade": "^1.8.1"
   },
   "peerDependencies": {
     "@evidence-dev/components": "workspace:^",
@@ -33,6 +46,7 @@
     "@sveltejs/kit": "1.0.0-next.202",
     "svelte": "3.44.3",
     "svelte2tsx": "0.4.7",
-    "typescript": "4.5.4"
+    "typescript": "4.5.4",
+    "git-remote-origin-url": "4.0.0"
   }
 }

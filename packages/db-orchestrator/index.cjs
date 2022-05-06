@@ -7,10 +7,10 @@ const readline = require('readline');
 const getCache = function (dev, queryString, queryTime) {
     queryTime = md5(queryTime)
     if (dev) {
-        const devCache = readJSONSync("./.evidence/dev/cache/" + queryTime + "/" + md5(queryString) + ".json", { throws: false })
-        if (devCache) {
+        const cache = readJSONSync("./.evidence-queries/cache/" + queryTime + "/" + md5(queryString) + ".json", { throws: false })
+        if (cache) {
             logEvent("cache-query", dev)
-            return devCache
+            return cache
         }
     }
 }
@@ -18,17 +18,17 @@ const getCache = function (dev, queryString, queryTime) {
 const updateCache = function (dev, queryString, data, queryTime) {
     queryTime = md5(queryTime)
     if (dev) {
-        if (!pathExistsSync("./.evidence/dev")) {
-            mkdirSync("./.evidence/dev")
+        if (!pathExistsSync("./.evidence-queries")) {
+            mkdirSync("./.evidence-queries")
         }
-        if (!pathExistsSync("./.evidence/dev/cache/")) {
-            mkdirSync("./.evidence/dev/cache/")
+        if (!pathExistsSync("./.evidence-queries/cache/")) {
+            mkdirSync("./.evidence-queries/cache/")
         }
-        if (!pathExistsSync("./.evidence/dev/cache/" + queryTime)) {
-            emptyDirSync('./.evidence/dev/cache/')
-            mkdirSync("./.evidence/dev/cache/" + queryTime)
+        if (!pathExistsSync("./.evidence-queries/cache/" + queryTime)) {
+            emptyDirSync('./.evidence-queries/cache/')
+            mkdirSync("./.evidence-queries/cache/" + queryTime)
         }
-        writeJSONSync("./.evidence/dev/cache/" + queryTime + "/" + md5(queryString) + ".json", data, { throws: false })
+        writeJSONSync("./.evidence-queries/cache/" + queryTime + "/" + md5(queryString) + ".json", data, { throws: false })
     }
 }
 
@@ -47,15 +47,30 @@ const validateQuery = function (query) {
     }
 }
 
-const runQueries = async function (routeHash, dev) {
-    const database = readJSONSync('./.evidence/database.config.json',{throws:false})
-    const config = readJSONSync('./evidence.config.json', {throws:false})
 
-    let routePath = `./.evidence/build/queries/${routeHash}`
+
+
+const importDBAdapter = async function(settings) {
+    try {
+        databaseType = settings ? settings.database : process.env["DATABASE"] || process.env["database"]
+        const { default: runQuery } = await import('@evidence-dev/'+ databaseType);
+        return runQuery
+    }catch {
+        const runQuery = async function(){
+            throw 'Missing database credentials'
+        }
+        return runQuery
+    }
+}
+
+const runQueries = async function (routeHash, dev) {
+    const settings = readJSONSync('./evidence.settings.json', {throws:false})
+    const runQuery = await importDBAdapter(settings)
+
+    let routePath = `./.evidence-queries/extracted/${routeHash}`
     let queryFile = `${routePath}/${readdirSync(routePath)}`
     let queries = readJSONSync(queryFile, { throws: false }) 
 
-    const { default: runQuery } = await import('@evidence-dev/'+ config.database);
     
     if (queries.length > 0) {
         let data = {}
@@ -70,16 +85,16 @@ const runQueries = async function (routeHash, dev) {
                 try {
                     process.stdout.write(chalk.grey("  "+ query.id +" running..."))
                     validateQuery(query)
-                    data[query.id] = await runQuery(query.compiledQueryString, database, dev)
+                    data[query.id] = await runQuery(query.compiledQueryString, settings?.credentials, dev)
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
                     updateCache(dev, query.compiledQueryString, data[query.id], queryTime)
-                    logEvent("db-query", dev)
+                    logEvent("db-query", dev, settings)
                 } catch(err) {
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
-                    data[query.id] = { error: { message: err } }
-                    logEvent("db-error", dev)
+                    data[query.id] = [ { error_object: {error: { message: err } } } ]
+                    logEvent("db-error", dev, settings)
                 } 
             }
         }
@@ -87,4 +102,32 @@ const runQueries = async function (routeHash, dev) {
     }
 }
 
-module.exports = runQueries
+
+const testConnection = async function () {
+    let query = {
+        id: "Connection Test",
+        compiledQueryString: "select 100 as num"
+    }
+    let result;
+    const settings = readJSONSync('./evidence.settings.json', {throws:false})
+
+    const { default: runQuery } = await import('@evidence-dev/'+ settings.database);
+
+    try {
+        process.stdout.write(chalk.grey("  "+ query.id +" running..."))
+        queryResult = await runQuery(query.compiledQueryString, settings.credentials)
+        readline.cursorTo(process.stdout, 0);
+        process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
+        result = "Database Connected";
+    } catch(err) {
+        readline.cursorTo(process.stdout, 0);
+        process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
+        result = err;
+    } 
+    return result
+}
+
+module.exports = {
+    runQueries,
+    testConnection
+}

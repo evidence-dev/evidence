@@ -4,41 +4,44 @@
 </script>
 
 <div width=100% class="error">
-    <div class="chart-type">{chartType}</div>
-    <div class="message">{error}</div>
+    <div class="wrapper">
+        <div class="chart-type">{chartType}</div>
+        <div class="message">{error}</div>
+    </div>
 </div>
 
 <style>
-    .error{
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+    .error {
         background-color: #fdf1f1;
+        font-family: var(--ui-font-family);
+        color: var(--grey-700);
+        font-weight: normal;
         border-radius: 4px;
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-top: 20px;
-        height: 150px;
+        border: 1px solid #f8e9e9;
+        min-height: 150px;
+        padding: 20px 30px 20px 30px;
         margin-top: 20px;
         margin-bottom: 20px;
-        font-family: var(--ui-font-family);
-        font-weight: normal;
-        color: rgb(112, 111, 111);
-        border: 1px solid #f8e9e9;
-        font-size: 0.8rem;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 100%;
+        justify-content: center;
     }
 
-    .chart-type{
+    .wrapper {
+        margin: auto;
+        width: 100%;
+    }
+
+    .chart-type {
         font-weight: bold;
         text-align: center;
-        float: center;
         font-size: 1.2rem;
-        padding-top:8%;
     }
 
-    .message{
+    .message {
         text-align: center;
-        padding-left: 30px;
-        padding-right: 30px;
+        word-wrap: break-word;
+        font-size: 0.8rem;
     }
 </style>

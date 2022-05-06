@@ -1,8 +1,8 @@
 {
   "name": "@evidence-dev/components",
-  "version": "0.1.21",
+  "version": "1.0.0-next.7",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
     "package": "svelte-kit package && pnpm clean-package",
@@ -13,7 +13,9 @@
   "dependencies": {
     "@tidyjs/tidy": "2.4.4",
     "echarts": "5.2.2",
-    "echarts-stat": "1.2.0"
+    "echarts-stat": "1.2.0",
+    "git-remote-origin-url": "4.0.0",
+    "svelte-icons": "2.1.0"
   },
   "publishConfig": {
     "directory": "../../packages/components"

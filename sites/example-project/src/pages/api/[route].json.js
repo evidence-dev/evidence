@@ -1,4 +1,4 @@
-import runQueries from '@evidence-dev/db-orchestrator'
+import {runQueries} from '@evidence-dev/db-orchestrator'
 import { dev } from '$app/env';
 
 export async function get({params}) {

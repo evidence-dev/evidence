@@ -1,43 +1,25 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 hide_table_of_contents: false
+title: Add Queries
 ---
 
-# Add Queries
+Let's making a new page for our queries. Create a new markdown page called `business-performance.md` (in the same file as `index.md`), adding the following code to create the sections, and add a query
 
-:::note Warning
-You need a database connection to run queries. If you haven't already done so, [set up your database connection](/getting-started/connect-data-warehouse).
-:::
+````markdown title="Add this to business-performance.md"
+# Business Performance
+Below is a summary of Needful Things' sales.
 
-We will be using two queries for our analysis. Copy and paste the queries below into your file under the appropriate headers.
+```monthly_orders
 
-<h2>Complaints by Day</h2>
-
-````markdown title="Add this to austin-311/index.md after the 'Complaints by Day' header:"
-```complaints_by_day
 select
-extract(date from created_date) as date, 
-count(*) as complaints 
-
-from `bigquery-public-data.austin_311.311_service_requests` 
- 
-group by date 
-order by date desc
-```
-````
-
-<h2>Complaints by Department</h2>
-
-````markdown title="Add after the 'Complaints by Department' header:"
-```complaints_by_department
-
-select owning_department as department,
-count(*) as complaints
-
-from `bigquery-public-data.austin_311.311_service_requests` 
-
-group by department
-order by complaints desc
+    order_month,
+    count(sales) as orders,
+    sum(sales) as sales_usd,
+    sum(sales) / count (sales) as basket_size
+from orders
+group by order_month
+order by order_month desc
 ```
 ````
 
@@ -45,7 +27,15 @@ Your page should now look like this:
 
 <div style={{textAlign: 'center'}}>
 
-![austin-queries](/img/austin-queries.png)
+![needful-things-queries](/img/tutorial-img/needful-things-queries-v2.png)
+
+</div>
+
+You can see both the query SQL, and the resulting data using the dropdowns.
+
+<div style={{textAlign: 'center'}}>
+
+![needful-things-queries](/img/tutorial-img/needful-things-explore-queries-v2.gif)
 
 </div>
 

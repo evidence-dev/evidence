@@ -3,7 +3,11 @@ sidebar_position: 1
 slug: /
 title: Introduction
 hide_table_of_contents: true
+hide_title: true
+breadcrumbs: false
 ---
+
+<h1 class="community-header">Evidence</h1>
 
 Evidence is a web framework for data analysts. It's a modern alternative to drag-and-drop BI tools. 
 
@@ -21,7 +25,7 @@ Evidence supports loops, conditionals, parameterized pages, tests and more. It's
 ## Who is it for? 
 Evidence is built for analysts - not web developers. The only skills you need to get started are the ability to write SQL and markdown.
 
-If you're ready to get started, [jump into the tutorial &#8594](/getting-started/get-started)
+If you're ready to get started, [install Evidence &#8594](/getting-started/install-evidence)
 
 :::note Public Alpha
 Evidence is in public alpha: there will be bugs and things will change before we reach a stable release.

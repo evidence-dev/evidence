@@ -1,9 +1,35 @@
 <script>
     import { page } from '$app/stores';
     import { showQueries } from './stores.js'
+    import { pageHasQueries } from '@evidence-dev/components/ui/stores';
 
-    $: pathArray = $page.path.split('/')
-    $: nPages = pathArray.length
+    $: pathArray = $page.path.split('/').slice(1)
+
+    const buildCrumbs = function (pathArray) {
+        let crumbs = [
+            {
+                href:'/', 
+                title: "Home"
+            }
+        ]
+        pathArray.forEach((path, i) => {
+            if (path != '') {
+                let crumb = {
+                    href: "/"+pathArray.slice(0,i+1).join("/"), 
+                    title: decodeURIComponent(path.replace(/_/g," ").replace(/-/g," "))
+                }
+                crumbs.push(crumb)
+            } 
+        })
+        if(crumbs.length > 3){
+            let upOne = crumbs.slice(-3)[0].href
+            crumbs.splice(1, crumbs.length-3, {href: upOne, title:'...'})
+        }
+
+        return crumbs   
+    }
+
+    $: crumbs = buildCrumbs(pathArray)
 
     function toggleQueries() {
 		showQueries.update(value => !value)
@@ -13,37 +39,35 @@
 <div>
     <span class="container"> 
         <span>
-        {#if nPages > 2 }
-            {#each pathArray as crumb, i}
-                {#if i === 0} 
-                    <a href="/" ref="prefetch">Home</a>
-                {:else if i === nPages-1}
-                    &thinsp;
+            {#each crumbs as crumb, i}
+                {#if i > 0 }
+                <a href={crumb.href}>&emsp13;/&emsp13;{crumb.title}</a>  
                 {:else}
-                    &thinsp;&rsaquo;&thinsp;<a href={pathArray.slice(0,i+1).join("/")} ref="prefetch">{decodeURIComponent(crumb.replace("_"," "))} </a>            
+                <a href={crumb.href}>{crumb.title}</a>  
                 {/if}
             {/each}
-        {/if}
-    </span>
-    <span>
-        <!-- {#if $page.path != "/" && $page.path != "/blog" && $page.path != "/faq" && $page.path != "/examples" && $page.path != "/blog/1"} -->
-            {#if $showQueries}
-            <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
-            {:else}
-            <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
+        </span>
+        <span>
+            {#if $pageHasQueries}
+                {#if $showQueries}
+                <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
+                {:else}
+                <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
+                {/if}
             {/if}
-        <!-- {/if} -->
-    </span>
+        </span>
     </span>
 </div>
 
 <style>
     div{
-        padding: 0.45ch 0 0 0;
-        height: 1.5em;
-        margin: 1em 0 0 0;
-
-        /* border: 1px solid red; */
+        padding: 0 1.5em 0 1.5em;
+        box-sizing: border-box;
+        width: 100%;
+        overflow: auto;
+		white-space: nowrap;
+		-ms-overflow-style: none;  
+  		scrollbar-width: none;  
     }
 
     span.container{
@@ -52,18 +76,20 @@
     }
 
     span{
-        text-transform:capitalize;
         font-size: small;
         font-family: var(--ui-font-family-compact);
         -webkit-font-smoothing: antialiased;
+        color:var(--grey-700)
     }
+
     a{
+        text-transform: capitalize;
         text-decoration: none;
         color: var(--grey-700);
     }
     a:hover{
         color:var(--grey-999);
-        transition:0.2s
+        transition:all 0.2s;
     }
 
     span.dev-controls {
@@ -76,6 +102,7 @@
         font-size: 0.8em;
         color: var(--grey-900);
         cursor: pointer;
+        user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
         -webkit-font-smoothing: antialiased;
@@ -97,10 +124,14 @@
         font-weight: bold;
      }
 
-    @media (max-width: 600px) {
-        .dev-controls {
-            display:none;
+     @media (max-width: 600px) {
+        span.dev-controls {
+            display: none;
         }
-	}
+    }
+     
+
+
+
 
 </style>
