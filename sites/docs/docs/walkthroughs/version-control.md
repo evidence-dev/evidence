@@ -13,7 +13,7 @@ You can check if you have a published repo in the Settings page of your Evidence
 
 If you use VS Code, the easiest way to get set up with version control is through the Source Control tab in your editor. You can initialize and publish your git repo from this tab.
 
-<img src="/static/img/vscode-git.png" width="300"/>
+![vscode-git](/img/vscode-git.png)
 
 If you need more information, VS Code has a [guide for setting up version control](https://code.visualstudio.com/docs/editor/versioncontrol#_initialize-a-repository) in their docs.
 

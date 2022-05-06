@@ -29,7 +29,7 @@ when there were <Value data={data.monthly_orders} column=orders/> orders.
 ```
 
 **Result on Webpage:**
-<img src="/static/img/tutorial-img/needful-things-value-in-text-nowindow.png" width="700"/>
+![summary-sentence](/img/tutorial-img/needful-things-value-in-text-nowindow.png)
 
 ## Options
 
@@ -50,7 +50,7 @@ when there were <Value data={data.monthly_orders} column=orders/> orders.
 
 ## Errors
 Errors appear inline with your text - when you hover over an error, it will show you the reason for the error.
-<img src="/static/img/value-error.gif" width="650"/>
+![value-error](/img/value-error.gif) width="650"/>
 
 ## Adding a Placeholder
 If you like to mock up reports before you're ready to fill in real data, you can also override the Value error with a **placeholder**. Input the text you want to use as your placeholder and it will appear in blue font with square brackets, inline with your text.
