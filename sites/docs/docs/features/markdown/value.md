@@ -27,7 +27,7 @@ Lets you take the result of a query and use it anywhere in your markdown.
 * **value** - specific value to display (e.g., `value=300`)
 
 ### Formatting
-* **fmt** - use a [format tag](/queries/number-formatting) to override the default formatting
+* **fmt** - use a [format tag](/features/queries/number-formatting) to override the default formatting
 
 ### Default Behaviour
 * **<span class="gradient">&lt;Value/></span>** pulls the first row in a table
