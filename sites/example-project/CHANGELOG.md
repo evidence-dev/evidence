@@ -1,5 +1,23 @@
 # @evidence-dev/components
 
+## 1.0.0-next.7
+
+### Patch Changes
+
+- Fixed version control panel
+
+## 1.0.0-next.6
+
+### Patch Changes
+
+- 644963c: Add deployment instructions and a check on the status of the user's git repo to the dev mode settings panel
+
+## 1.0.0-next.5
+
+### Patch Changes
+
+- e45a29a: Add a deployment panel to settings
+
 ## 1.0.0-next.4
 
 ### Patch Changes

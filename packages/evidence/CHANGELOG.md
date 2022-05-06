@@ -1,5 +1,30 @@
 # @evidence-dev/evidence
 
+## 1.0.0-next.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/components@1.0.0-next.7
+
+## 1.0.0-next.9
+
+### Patch Changes
+
+- 644963c: Add deployment instructions and a check on the status of the user's git repo to the dev mode settings panel
+- Updated dependencies [644963c]
+  - @evidence-dev/db-orchestrator@1.0.0-next.5
+  - @evidence-dev/preprocess@1.0.0-next.2
+  - @evidence-dev/components@1.0.0-next.6
+
+## 1.0.0-next.8
+
+### Patch Changes
+
+- e45a29a: Add a deployment panel to settings
+- Updated dependencies [e45a29a]
+  - @evidence-dev/components@1.0.0-next.5
+
 ## 1.0.0-next.7
 
 ### Patch Changes
