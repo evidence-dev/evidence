@@ -65,16 +65,20 @@ module.exports = {
               to: '/getting-started/install-evidence',
             },
             {
-              label: 'Queries',
-              to: '/queries/sql-queries',
+              label: 'SQL Queries',
+              to: '/features/queries/sql-queries',
             },
             {
-              label: 'Components',
-              to: '/components/text-components/value',
+              label: 'Markdown',
+              to: '/features/markdown/writing-markdown',
             },
             {
-              label: 'Formatting',
-              to: '/formatting/format-tags',
+              label: 'Charts',
+              to: '/features/charts/examples',
+            },
+            {
+              label: 'Tables',
+              to: '/features/data-table',
             },
             {
               label: 'Deployment',
