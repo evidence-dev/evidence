@@ -1,8 +1,10 @@
 ---
 sidebar_position: 1
 hide_title: false
-title: Custom Components
+title: Guide
 ---
+
+# Custom Components
 
 In Evidence, you can build your own components and use them anywhere in your project. This is made possible through Svelte, the JavaScript framework Evidence is built on. 
 
