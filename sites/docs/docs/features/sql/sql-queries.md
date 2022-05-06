@@ -2,7 +2,7 @@
 sidebar_position: 1
 hide_title: false
 hide_table_of_contents: false
-title: SQL Queries
+title: Writing Queries
 ---
 
 When you open a page in dev mode, Evidence runs all of the queries on the page. You can see the progress of these queries printed in the console. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries. 

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: Include Data in Text
+title: Including Data in Text
 hide_title: true
 hide_table_of_contents: false
 ---
