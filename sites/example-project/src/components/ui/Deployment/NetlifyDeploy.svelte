@@ -1,30 +1,7 @@
 <script>
     import EnvironmentVarListing from "./EnvironmentVarListing.svelte";
-import VariableCopy from "./VariableCopy.svelte";
+    import VariableCopy from "./VariableCopy.svelte";
     export let settings
-    let targetEnvVars = {}
-
-    if(settings.credentials) {
-        if(settings.database === 'bigquery') {
-            targetEnvVars = {
-                BIGQUERY_PROJECT_ID: settings.credentials.project_id, 
-                BIGQUERY_CLIENT_EMAIL: settings.credentials.client_email,
-                BIGQUERY_PRIVATE_KEY: settings.credentials.private_key
-            }
-        }
-        else {
-            for(const key in settings.credentials) {
-                targetEnvVars[settings.database.toUpperCase() + '_' + key.toUpperCase()] = settings.credentials[key]
-            }
-        }
-    }
-
-    let hrefComponents = []
-
-    for(const key in targetEnvVars){ 
-        hrefComponents.push(key+'='+targetEnvVars[key])
-    }
-
 </script>
 
 {#if !settings.credentials}
