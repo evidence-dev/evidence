@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.0.1
+
+### Patch Changes
+
+- 8c125c5: Allow for a missing git repo
+
 ## 1.0.0
 
 ### Major Changes
