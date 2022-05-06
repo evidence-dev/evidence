@@ -250,7 +250,7 @@ hide_table_of_contents: false
 </div>
 
 
-## Composable Charts
+## Mixed-Type Charts
 <div  class="gallery-item-grid">
     <div class="item-header">
         <p class="lbl">Mixed Type Chart</p>
