@@ -37,6 +37,7 @@
 <DatabaseSettingsPanel {settings} {gitIgnore}/> 
 <VersionControlPanel {settings}/>
 <DeploySettingsPanel {settings} /> 
+<br/>
 {:else}
 <p>Settings are only available in development mode.</p>
 {/if}
