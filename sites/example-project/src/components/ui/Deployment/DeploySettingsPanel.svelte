@@ -1,12 +1,14 @@
 <script>
     export let settings
     import NetlifyDeploy from "./NetlifyDeploy.svelte";
+    import VercelDeploy from "./VercelDeploy.svelte";
     import OtherDeploy from "./OtherDeploy.svelte";
     import { slide, blur } from 'svelte/transition'
 
     let deploymentOptions = [
         {name: 'Choose a deployment target'},
 		{id: 'netlify', name: 'Netlify', formComponent: NetlifyDeploy},
+        {id: 'vercel', name: 'Vercel', formComponent: VercelDeploy},
 		{id: 'other', name: 'Self-host (other)', formComponent: OtherDeploy}
 	];
 
