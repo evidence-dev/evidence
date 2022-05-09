@@ -38,10 +38,10 @@
 
 <EnvironmentVarListing {settings}/>
 
-<div class="separator">Optional </div>
+<h2>Optional </h2>
 <ol>
     <li><a href='https://docs.netlify.com/visitor-access/password-protection/'>Password protect your site</a></li>
-    <li> <a href='https://docs.evidence.dev/deployment/netlify#optional-schedule-updates-using-github-actions'>Schedule your site to update periodically</a></li>
+    <li> <a href='https://docs.evidence.dev/deployment/netlify#optional-schedule-updates-using-build-hooks'>Schedule your site to update periodically</a></li>
 </ol>
 
 {/if}

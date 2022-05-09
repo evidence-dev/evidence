@@ -46,6 +46,7 @@
 <h2>Optional </h2>
 <ol>
     <li><a href='https://vercel.com/blog/protecting-deployments'>Password protect your site</a></li>
+    <li> <a href='https://docs.evidence.dev/deployment/vercel#optional-schedule-updates-using-deploy-hooks'>Schedule your site to update periodically</a></li>
 </ol>
 
 {/if}

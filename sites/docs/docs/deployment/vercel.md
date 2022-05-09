@@ -12,11 +12,11 @@ Vercel lets you host a public version of your project for free, or you can creat
 1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
 
 ## Optional: Set a site-wide password for your project (Requires Paid Plan) 
-Follow the directions provided by Netlify to set up a password for your site:
+Follow the directions provided by Vercel to set up a password for your site:
 https://vercel.com/blog/protecting-deployments
 
-## Optional: Schedule updates using Github Actions 
-If you want your site to update on a specific schedule, you can use GitHub Actions. You provide a schedule in your GitHub repo (details below) and GitHub will send a request to Netlify to trigger a rebuild of your site on that schedule (using a specific URL provided by Netlify; AKA a build hook).
+## Optional: Schedule updates using Deploy Hooks 
+If you want your site to update on a specific schedule, you can use GitHub Actions (or another similar service) to schedule regular calls to a [Vercel deploy hook](https://vercel.com/docs/concepts/git/deploy-hooks). 
 
 1. Create a [Vercel deploy hook](https://vercel.com/docs/concepts/git/deploy-hooks). 
 This will give you a URL that GitHub will use to trigger builds
@@ -37,7 +37,7 @@ on:
     - cron: '0 10 * * *' # Once a day around 6am ET (10am UTC)
 jobs:
   build:
-    name: Request Netlify Webhook
+    name: Request Vercel Webhook
     runs-on: ubuntu-latest
     steps:
       - name: POST to Deploy Hook
