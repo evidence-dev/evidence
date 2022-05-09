@@ -5,49 +5,51 @@
 </script>
 
 {#if !settings.credentials}
-<p>You'll need to connect to a database before deploying to netlify.</p>
+<p>You'll need to connect to a database before deploying to Vercel.</p>
 {:else if !settings.gitRepo}
-<p>You'll need to set up a git repo before deploying to netlify.</p>
+<p>You'll need to set up a git repo before deploying to Vercel.</p>
 {:else }
 
-<h1>Deploying to Netlify</h1>
+<h1>Deploying to Vercel</h1>
 
 <ol>
-    <li><a href='https://app.netlify.com/start' target=_blank>Start a new netlify project &rarr;</a></li>
+    <li><a href='https://vercel.com/new' target=_blank>Start a new Vercel project &rarr;</a></li>
     <li>Choose the repo containing this project</li>
-    <li>Update the <code>site settings</code> to match those below</li>
+    <li>Configure your project to match the settings below</li>
 
 </ol>
 
-<div class="separator">Basic Build Settings</div>
+<div class="separator">Build and Output Settings</div>
 
 <div class='setting-row'>
-    <span class='setting'>Build command</span>
+    <span class='setting'>Build Command</span>
     <div class='setting-value'><VariableCopy text={'npm run build'}/></div>
 </div>
 
 
 <div class='setting-row'>
-    <span class='setting'>Publish directory</span>  
+    <span class='setting'>Output Directory</span>  
     <div class='setting-value'><VariableCopy text={'build/'}/> </div>
-    
 </div>
 
-<div class="separator">Advanced Build Settings</div>
-<p>Click 'Show Advanced' and copy paste the following into <a href='https://docs.netlify.com/configure-builds/environment-variables/' >environment variables.</a> </p>
+<div class='setting-row'>
+    <span class='setting'>Install Command</span>  
+    <div class='setting-value'><VariableCopy text={'build/'}/> </div>
+</div>
+
+
+<div class="separator">Environment Variables</div>
+<p>Copy paste the following into environment variables</p>
 
 <EnvironmentVarListing {settings}/>
 
 <h2>Optional </h2>
 <ol>
-    <li><a href='https://docs.netlify.com/visitor-access/password-protection/'>Password protect your site</a></li>
-    <li> <a href='https://docs.evidence.dev/deployment/netlify#optional-schedule-updates-using-build-hooks'>Schedule your site to update periodically</a></li>
+    <li><a href='https://vercel.com/blog/protecting-deployments'>Password protect your site</a></li>
+    <li> <a href='https://docs.evidence.dev/deployment/vercel#optional-schedule-updates-using-deploy-hooks'>Schedule your site to update periodically</a></li>
 </ol>
 
 {/if}
-
-
-
 
 <style>
     a {

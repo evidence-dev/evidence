@@ -8,7 +8,7 @@ Netlify lets you host a public version of your project for free, or you can crea
 
 # Deploy to netlify
 1. Run your project in development mode 
-1. Visit the [settings page](https://localhost:3000)
+1. Visit the [settings page](https://localhost:3000/settings)
 1. Open the deployment panel, and select 'netlify', then follow the provided instructions
 
 
@@ -16,8 +16,8 @@ Netlify lets you host a public version of your project for free, or you can crea
 Follow the directions provided by Netlify to set up a password for your site:
 https://docs.netlify.com/visitor-access/password-protection/
 
-## Optional: Schedule updates using Github Actions 
-If you want your site to update on a specific schedule, you can use GitHub Actions. You provide a schedule in your GitHub repo (details below) and GitHub will send a request to Netlify to trigger a rebuild of your site on that schedule (using a specific URL provided by Netlify; AKA a build hook).
+## Optional: Schedule updates using Build Hooks 
+If you want your site to update on a regular schedule, you can use GitHub Actions (or another similar service) to schedule regular calls to a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/). 
 
 1. Create a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/) in **Site settings > Build & deploy > Continuous deployment > Build hooks**
 ![netlify-add-build-hook](/img/netlify-add-build-hook.png)
