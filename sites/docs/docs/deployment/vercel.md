@@ -1,40 +1,36 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 hide_table_of_contents: false
-title: Netlify
+title: Vercel
 ---
 
-Netlify lets you host a public version of your project for free, or you can create and host a password-protected version with Netlify's $15/month plan.
+Vercel lets you host a public version of your project for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/netlify) offers the same option for $15/month. 
 
-# Deploy to netlify
+# Deploy to Vercel
 1. Run your project in development mode 
 1. Visit the [settings page](https://localhost:3000/settings)
-1. Open the deployment panel, and select 'netlify', then follow the provided instructions
-
+1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
 
 ## Optional: Set a site-wide password for your project (Requires Paid Plan) 
 Follow the directions provided by Netlify to set up a password for your site:
-https://docs.netlify.com/visitor-access/password-protection/
+https://vercel.com/blog/protecting-deployments
 
 ## Optional: Schedule updates using Github Actions 
 If you want your site to update on a specific schedule, you can use GitHub Actions. You provide a schedule in your GitHub repo (details below) and GitHub will send a request to Netlify to trigger a rebuild of your site on that schedule (using a specific URL provided by Netlify; AKA a build hook).
 
-1. Create a [Netlify build hook](https://docs.netlify.com/configure-builds/build-hooks/) in **Site settings > Build & deploy > Continuous deployment > Build hooks**
-![netlify-add-build-hook](/img/netlify-add-build-hook.png)
+1. Create a [Vercel deploy hook](https://vercel.com/docs/concepts/git/deploy-hooks). 
 This will give you a URL that GitHub will use to trigger builds
 
-2. Add `NETLIFY_BUILD_HOOK` to your Github Repo's Secrets 
-*  In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret**<br/><br/>
-![netlify-github-new-secret](/img/netlify-github-new-secret.png)
-![netlify-github-secret](/img/netlify-github-secret.png)
+2. Add `VERCEL_DEPLOY_HOOK` to your Github Repo's Secrets 
+*  In your GitHub repo, go to Settings > Secrets > Actions and click **New repository secret** and create a secret, `VERCEL_DEPLOY_HOOK`, with the URL from step 1. 
 3. Add a schedule file to your project
 * Create a new directory in your project called `.github`
 * Within that directory, create another called `workflows`
 * Add a new file in `.github/workflows` called `main.yml`
-4. Add the following text to the `main.yml` file you just created. Be sure that the spacing and indentation is exactly as presented here, as it will impact whether the action runs correctly
+4. Add the following text to the `main.yml` file you just created. Be sure that the indentation in your `main.yml` matches the below. 
 
 ```
-name: Schedule Netlify Build
+name: Schedule Vercel Deploy
 on:
   workflow_dispatch:
   schedule:
@@ -44,9 +40,9 @@ jobs:
     name: Request Netlify Webhook
     runs-on: ubuntu-latest
     steps:
-      - name: POST to Build Hook
+      - name: POST to Deploy Hook
         env:
-          BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+          BUILD_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
         run: curl -X POST -d {} $BUILD_HOOK
 ```
 
