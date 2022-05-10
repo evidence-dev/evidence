@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 1.0.2
+
+### Patch Changes
+
+- 2e483e4: Support passing arguments to svelte-kit through the CLI
+- eeabad3: Add vercel deployment instructions to the development-mode settings page, and to the project docs.
+
 ## 1.0.1
 
 ### Patch Changes
