@@ -54,17 +54,36 @@ const runFileWatcher = function() {
   return watcher 
 }
 
+const flattenArguments = function(args) {
+  if (args) {
+    const result = [];
+    const keys = Object.keys(args);
+    keys.forEach(key => {
+      if (key !== '_') {
+        result.push(`--${key}`);
+        if (args[key]) {
+          result.push(args[key]);
+        }
+      }
+    });
+    return result;
+  } else {
+    return [];
+  }
+}
+
 const prog = sade('evidence')
 
 prog
   .command('dev')
   .describe("launch the local evidence development environment")
-  .action(() => {
+  .action((args) => {
     populateTemplate()
     const watcher = runFileWatcher()
+    const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
-    const child = spawn('npx svelte-kit dev', {
+    const child = spawn('npx svelte-kit dev', flatArgs, {
       shell: true, 
       detached: false, 
       cwd:'.evidence/template', 
@@ -81,12 +100,13 @@ prog
 prog
   .command('build')
   .describe("build production outputs")
-  .action(() => {
+  .action((args) => {
     populateTemplate()
     const watcher = runFileWatcher()
+    const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 
-    const child = spawn('npx svelte-kit build', {
+    const child = spawn('npx svelte-kit build', flatArgs, {
       shell: true, 
       cwd:'.evidence/template', 
       stdio: "inherit"});
