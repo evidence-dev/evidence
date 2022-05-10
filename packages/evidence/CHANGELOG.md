@@ -1,5 +1,14 @@
 # @evidence-dev/evidence
 
+## 1.0.2
+
+### Patch Changes
+
+- 2e483e4: Support passing arguments to svelte-kit through the CLI
+- Updated dependencies [2e483e4]
+- Updated dependencies [eeabad3]
+  - @evidence-dev/components@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes
