@@ -6,6 +6,8 @@
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
   import {showQueries} from './stores.js'
   import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
+  import { writable } from 'svelte/store';
+  import { browser } from '$app/env';
 
   export let queryID; 
   export let pageQueries
@@ -30,7 +32,10 @@
   let error = queryResult[0]?.error_object?.error
   let nRecords = null
   let nProperties = null
-  let showResults = false
+  // Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
+  let showResults = writable(browser && (localStorage.getItem('showResults_'.concat(queryID))==='true'  || false));
+  showResults.subscribe((value) => browser && (localStorage.setItem('showResults_'.concat(queryID),(value))));
+  
 
   if(!error){
     nRecords = queryResult.length
@@ -41,7 +46,7 @@
   
   const toggleResults = function() {
     if(!error && nRecords > 0){
-      showResults = !showResults
+      $showResults = !$showResults
     }
   }
 
@@ -72,7 +77,7 @@
           {/if}
       </div>
       <!-- Status -->
-      <div class = {"status-bar" + (error ? " error": " success") + (showResults ? " open": " closed")} on:click={toggleResults}>  
+      <div class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>  
         <span> 
           {#if error}
             {#if dev && error.message === "Missing database credentials"}
@@ -82,14 +87,14 @@
               {error.message} 
             {/if}
           {:else if nRecords > 0}
-            <ChevronToggle toggled={showResults} color="#3488e9"/> {nRecords.toLocaleString()} {nRecords > 1 ? "records" : "record"} with {nProperties.toLocaleString()} {nProperties > 1 ? "properties" : "property"} 
+            <ChevronToggle toggled={$showResults} color="#3488e9"/> {nRecords.toLocaleString()} {nRecords > 1 ? "records" : "record"} with {nProperties.toLocaleString()} {nProperties > 1 ? "properties" : "property"} 
           {:else}
               ran successfully but no data was returned
           {/if}
         </span>  
       <!-- Results -->
       </div>
-        {#if queryResult.length > 0 && !error && showResults}
+        {#if queryResult.length > 0 && !error && $showResults}
             <DataTable data={queryResult}/>
             {/if}
     </div>
