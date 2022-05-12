@@ -13,10 +13,13 @@
   export let pageQueries
   export let queryResult;
 
-  // Title & Query Toggle 
-  let showSQL = false
+  // Title & Query Toggle
+  // Create a copy of the showSQL variable in the local storage, for each query. Access this to determine state of each query dropdown.
+  let showSQL = writable(browser && (localStorage.getItem('showSQL_'.concat(queryID))==='true'  || false));
+  showSQL.subscribe((value) => browser && (localStorage.setItem('showSQL_'.concat(queryID),(value))));
+  
   const toggleSQL = function() {
-    showSQL = !showSQL
+    $showSQL = !$showSQL
   }
 
   // Query text & Compiler Toggle 
@@ -59,14 +62,14 @@
     <div class="container" transition:slide|local>
       <div class="container-a">
         <div on:click={toggleSQL} class="title">
-          <span><ChevronToggle toggled={showSQL}/> {queryID}</span>
+          <span><ChevronToggle toggled={$showSQL}/> {queryID}</span>
         </div>
         <!-- Compile Toggle  -->
-          {#if showSQL && showCompilerToggle}
+          {#if $showSQL && showCompilerToggle}
             <CompilerToggle bind:showCompiled = {showCompiled}/>
           {/if }
           <!-- Query Display -->
-          {#if showSQL}
+          {#if $showSQL}
             <div class=code-container transition:slide|local style={`height: ${codeContainerHeight}em;`}>
               {#if showCompiled}
                 <Prism language="sql" code={compiledQuery}/>
