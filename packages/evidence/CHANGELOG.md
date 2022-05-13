@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [174a626]
+  - @evidence-dev/components@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
