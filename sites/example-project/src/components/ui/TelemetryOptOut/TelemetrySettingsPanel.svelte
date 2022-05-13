@@ -19,17 +19,33 @@
 <form>
 <div class=container>
     <div class=panel> 
-        <label class="switch">
-            <input type="checkbox" bind:checked={usageStats} on:change={save}/>
-            <span class="slider" />
-        </label>
+        <h1>Telemetry</h1>
+        <p>Evidence collects anonymous usage data to help us understand how often the tool is being used.</p>
+        <p>Each time you run a query, we get three pieces of information:
+        </p>
+        <ol>
+            <li>A random identifier that is stored in <code>.evidence/template/.profile.json</code></li>
+            <li>Whether your project is running in development or build mode</li>
+            <li>Whether your query returned from the cache, from your database, or returned an error</li>
+        </ol>
+        <p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
+        <div class=input-item>
+            <label for='telemetry-toggle'>
+                Share anonymous usage data
+            </label>
+            <label class="switch">
+                <input type="checkbox" bind:checked={usageStats} on:change={save} id='telemetry-toggle'/>
+                <span class="slider" />
+            </label>
+
+        </div>
+
     </div>
 
-    {settings.send_anonymous_usage_stats}
 
 </div>
 <footer>
-    <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/deployment/deployment-overview">Deploying your Project &rarr;</a></span>
+    <span>The source code for our telemetry can be <a class=docs-link href="https://github.com/evidence-dev/evidence/blob/main/packages/telemetry/index.cjs">found here &rarr;</a></span>
 </footer>
 </form>
 <style>
@@ -125,5 +141,25 @@
       -webkit-transform: translateX(1.1rem);
       -ms-transform: translateX(1.1rem);
       transform: translateX(1.1rem);
+    }
+
+    label {
+        width: 30%;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 14px;
+        color: var(--grey-800);
+        white-space: nowrap;
+    }
+
+    div.input-item{
+        font-family: var(--ui-font-family);
+        color: var(--grey-999);
+        font-size: 16px;
+        margin-top: 1.25em;
+        display:flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
     }
 </style>
