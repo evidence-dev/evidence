@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.0.3
+
+### Patch Changes
+
+- 174a626: Fixing default showQueries behaviour to be true by default in dev
+
 ## 1.0.2
 
 ### Patch Changes
