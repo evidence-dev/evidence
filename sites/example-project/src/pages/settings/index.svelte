@@ -31,7 +31,7 @@
     import DatabaseSettingsPanel from '@evidence-dev/components/ui/Databases/DatabaseSettingsPanel.svelte';
     import VersionControlPanel from '@evidence-dev/components/ui/VersionControl/VersionControlPanel.svelte'
     import DeploySettingsPanel from '@evidence-dev/components/ui/Deployment/DeploySettingsPanel.svelte'
-    import TelemetrySettingsPanel from '@evidence-dev/components/TelemetryOptOut/TelemetrySettingsPanel.svelte';
+    import TelemetrySettingsPanel from '@evidence-dev/components/ui/TelemetryOptOut/TelemetrySettingsPanel.svelte';
     
 </script>
 
