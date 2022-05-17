@@ -12,7 +12,7 @@ importers:
       '@sveltejs/adapter-static': 1.0.0-next.22
       '@sveltejs/kit': 1.0.0-next.202
       '@tidyjs/tidy': 2.4.4
-      echarts: 5.2.2
+      echarts: 5.3.2
       echarts-stat: 1.2.0
       git-remote-origin-url: 4.0.0
       svelte: 3.44.3
@@ -30,7 +30,7 @@ importers:
       '@sveltejs/adapter-static': 1.0.0-next.22
       '@sveltejs/kit': 1.0.0-next.202_svelte@3.44.3
       '@tidyjs/tidy': 2.4.4
-      echarts: 5.2.2
+      echarts: 5.3.2
       echarts-stat: 1.2.0
       git-remote-origin-url: 4.0.0
       svelte: 3.44.3
@@ -212,14 +212,14 @@ importers:
   sites/example-project:
     specifiers:
       '@tidyjs/tidy': 2.4.4
-      echarts: 5.2.2
+      echarts: 5.3.2
       echarts-stat: 1.2.0
       fs-extra: ^10.0.1
       git-remote-origin-url: 4.0.0
       svelte-icons: 2.1.0
     dependencies:
       '@tidyjs/tidy': 2.4.4
-      echarts: 5.2.2
+      echarts: 5.3.2
       echarts-stat: 1.2.0
       git-remote-origin-url: 4.0.0
       svelte-icons: 2.1.0
@@ -5924,11 +5924,11 @@ packages:
   /echarts-stat/1.2.0:
     resolution: {integrity: sha512-zLd7Kgs+tuTSeaK0VQEMNmnMivEkhvHIk1gpBtLzpRerfcIQ+Bd5XudOMmtwpaTc1WDZbA7d1V//iiBccR46Qg==}
 
-  /echarts/5.2.2:
-    resolution: {integrity: sha512-yxuBfeIH5c+0FsoRP60w4De6omXhA06c7eUYBsC1ykB6Ys2yK5fSteIYWvkJ4xJVLQgCvAdO8C4mN6MLeJpBaw==}
+  /echarts/5.3.2:
+    resolution: {integrity: sha512-LWCt7ohOKdJqyiBJ0OGBmE9szLdfA9sGcsMEi+GGoc6+Xo75C+BkcT/6NNGRHAWtnQl2fNow05AQjznpap28TQ==}
     dependencies:
       tslib: 2.3.0
-      zrender: 5.2.1
+      zrender: 5.3.1
 
   /ee-first/1.1.1:
     resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
@@ -13686,8 +13686,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  /zrender/5.2.1:
-    resolution: {integrity: sha512-M3bPGZuyLTNBC6LiNKXJwSCtglMp8XUEqEBG+2MdICDI3d1s500Y4P0CzldQGsqpRVB7fkvf3BKQQRxsEaTlsw==}
+  /zrender/5.3.1:
+    resolution: {integrity: sha512-7olqIjy0gWfznKr6vgfnGBk7y4UtdMvdwFmK92vVQsQeDPyzkHW1OlrLEKg6GHz1W5ePf0FeN1q2vkl/HFqhXw==}
     dependencies:
       tslib: 2.3.0
 
