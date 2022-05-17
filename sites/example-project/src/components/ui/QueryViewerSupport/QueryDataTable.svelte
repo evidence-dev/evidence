@@ -1,6 +1,6 @@
 <script>
     import {blur, slide, fade } from 'svelte/transition';
-    import ExportData from '$lib/ui/ExportData.svelte'
+    import DownloadData from '$lib/ui/DownloadData.svelte'
 
     export let data 
     export let queryID
@@ -31,8 +31,8 @@
 
 </script>
 
-<div class="results-pane">
-<div class="container"  transition:slide|local>
+<div class="results-pane" transition:slide|local>
+<div class="container" >
 
   <table in:blur>
     <thead>
@@ -80,7 +80,7 @@
 </div>   
 
 {#if max > 0}
-<div class="pagination" transition:slide>
+<div class="pagination">
   <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
   <span style="padding-top: 1px;">
   {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
@@ -88,7 +88,7 @@
 </div>
 {/if}
 
-<ExportData {data} {queryID}/>
+<DownloadData {data} {queryID}/>
 
 </div>
 
@@ -239,7 +239,7 @@
     max-width: min-content;
   }
 
-.results-pane {
-  margin-bottom: 30px;
-}
+  .results-pane {
+    margin-bottom: 40px;
+  }
 </style>

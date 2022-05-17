@@ -5,14 +5,18 @@
     import checkInputs from '$lib/modules/checkInputs.js'
     import getColumnSummary from '$lib/modules/getColumnSummary.js';
     import getParsedDate from '$lib/modules/getParsedDate.js';
+    import DownloadData from '$lib/ui/DownloadData.svelte'
 
     // 1 - Get Inputs
     export let data = undefined;
     export let rows = 5;
     export let marginTop = '1em';
-    export let marginBottom = '3.5em';
+    export let marginBottom = '1em';
+    export let paddingBottom = '1.5em';
     export let rowNumbers = 'true';
     export let rowLines = 'true';
+
+    export let hovering = false;
  
     let columnWidths;
     let index;
@@ -64,7 +68,8 @@
 </script>
 
 {#if !error}
-<div class="container"  transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom};">
+<div class=table-container transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
+<div class="container">
   <table >
       <thead>
         <tr>
@@ -128,12 +133,17 @@
   </div>
   {/if}
 </div>   
+<DownloadData {data} onHover={true} {hovering}/>
+
+</div>
 {:else}
 <ErrorChart {error} chartType="Data Table"/>
 {/if}
 
 
 <style>
+
+
   div.pagination {
     padding: 0px 5px;
     align-content: center;
