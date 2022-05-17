@@ -14,7 +14,7 @@
             decimalSeparator: '.',
             showLabels: true, 
             showTitle: false,
-            filename: queryID ?? "export",
+            filename: queryID ?? "evidence-download",
             useTextFile: false,
             useBom: true,
             useKeysAsHeaders: true,
