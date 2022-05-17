@@ -2,6 +2,7 @@
   import { slide } from 'svelte/transition';
   import { dev } from '$app/env';
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
+  import ExportData from '$lib/ui/ExportData.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
   import {showQueries} from './stores.js'
@@ -98,7 +99,7 @@
       <!-- Results -->
       </div>
         {#if queryResult.length > 0 && !error && $showResults}
-            <DataTable data={queryResult}/>
+            <DataTable data={queryResult} queryID={queryID}/>
             {/if}
     </div>
  {/if}
