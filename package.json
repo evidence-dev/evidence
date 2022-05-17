@@ -10,6 +10,7 @@
 		"@tidyjs/tidy": "2.4.4",
 		"echarts": "5.2.2",
 		"echarts-stat": "1.2.0",
+		"export-to-csv": "0.2.1",
 		"git-remote-origin-url": "4.0.0",
 		"svelte": "3.44.3",
 		"svelte-icons": "2.1.0",
@@ -21,9 +22,5 @@
 	"scripts": {
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test"
-	},
-	"dependencies": {
-		"export-to-csv": "^0.2.1",
-		"xlsx-style": "^0.8.13"
 	}
 }
