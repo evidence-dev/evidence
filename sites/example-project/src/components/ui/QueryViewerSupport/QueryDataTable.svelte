@@ -1,7 +1,9 @@
 <script>
     import {blur, slide, fade } from 'svelte/transition';
+    import ExportData from '$lib/ui/ExportData.svelte'
 
     export let data 
+    export let queryID
 
     let columns = []
     for (const [key, value] of Object.entries(data[0])) {
@@ -29,9 +31,11 @@
 
 </script>
 
+<div class="results-pane">
 <div class="container"  transition:slide|local>
+
   <table in:blur>
-      <thead>
+    <thead>
         <tr>
           <th class="index" style="width:10%"></th>
           {#each columns as column}
@@ -84,6 +88,9 @@
 </div>
 {/if}
 
+<ExportData {data} {queryID}/>
+
+</div>
 
 <style>
   div.pagination {
@@ -232,4 +239,7 @@
     max-width: min-content;
   }
 
+.results-pane {
+  margin-bottom: 30px;
+}
 </style>
