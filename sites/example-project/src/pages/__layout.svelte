@@ -114,4 +114,18 @@ aside.toc {
 	}
 }
 
+@media print {
+  main * {
+    visibility: hidden;
+  }
+  article, article * {
+    visibility: visible;
+  }
+  article {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
 </style>

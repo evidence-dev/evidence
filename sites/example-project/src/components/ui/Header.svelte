@@ -28,4 +28,10 @@ div.breadcrumb-container {
 	align-items: center; 
 }
 
+@media print {
+    header {
+      display: none;
+    }
+  }
+
 </style>
