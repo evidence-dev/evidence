@@ -534,27 +534,6 @@ try{
                 type: "scroll",
                 top: legendTop,
                 padding: [0, 0, 0, 0]
-            },       
-            toolbox: {
-                show: true,
-                showTitle: false, // hide the default text so they don't overlap each other
-                feature: {
-                    saveAsImage: {
-                        show: true,
-                        title: 'Save As Image',
-                        icon: 'path://M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5',
-                        iconStyle: {
-                            borderWidth: 1.5,
-                            borderColor: "var(--grey-400)"
-                        },
-                        emphasis: {
-                            iconStyle: {
-                                borderColor: "var(--grey-500)"
-                            }
-                        },
-                        pixelRatio: 1
-                    }
-                },
             },
             grid: {
                 left: "0.5%",
