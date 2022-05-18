@@ -265,4 +265,10 @@
     text-overflow: none;
   } */
 
+  @media print {
+    table {
+      break-inside: avoid;
+    }
+  }
+
 </style>

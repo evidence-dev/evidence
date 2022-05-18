@@ -1,10 +1,12 @@
 <script>
     import BreadCrumbs from './BreadCrumbs.svelte';
+    import PrintButton from './PrintButton.svelte';
 </script>
 
 <header>
     <div class="breadcrumb-container">
         <BreadCrumbs/>
+        <PrintButton/>
     </div>
 </header>
 
@@ -32,6 +34,6 @@ div.breadcrumb-container {
     header {
       display: none;
     }
-  }
+}
 
 </style>

@@ -227,3 +227,29 @@ code {
 	--yellow-999: hsla(15, 86%, 30%, 1);
 	
 }
+
+
+@media print {
+
+	html {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		color-adjust: exact;	
+	}
+
+	h1, h2, h3 {
+		page-break-inside: avoid;
+	}
+	
+	h1::after, h2::after, h3::after {
+		content: "";
+		display: block;
+		height: 100px;
+		margin-bottom: -100px;
+	}
+
+	p, ul, ol {
+		orphans: 2;
+		widows: 2;	
+	}
+}

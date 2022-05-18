@@ -1,24 +1,38 @@
-<button class="save-pdf" onClick="print()">Download PDF</button>
+<script>
+    import IoMdPrint from 'svelte-icons/io/IoMdPrint.svelte'
+    // import FaRegFilePdf from 'svelte-icons/fa/FaRegFilePdf.svelte'
+    // import FaFilePdf from 'svelte-icons/fa/FaFilePdf.svelte'
+    // import GoFilePdf from 'svelte-icons/go/GoFilePdf.svelte'
+</script>
+
+<span class=print-icon onClick="print()">
+    <IoMdPrint/>
+</span>
+
+<!-- <span class=print-icon onClick="print()">
+    <GoFilePdf/>
+</span>
+
+<span class=print-icon onClick="print()">
+    <FaFilePdf/>
+</span>
+
+<span class=print-icon onClick="print()">
+    <FaRegFilePdf/>
+</span> -->
 
 <style>
-    .save-pdf {
-        background-color:var(--blue-600); 
-        color: white; 
-        border-radius: 4px; 
-        border-width: 0; 
-        padding: 4px 10px 4px 10px;
-        font-family: var(--ui-font-family);
-        transition: all 400ms ease-out ;
-        font-weight:bold;
-    }
 
-    .save-pdf:hover {
-        background-color:var(--blue-700); 
+    .print-icon {
+        height: 22px;
+        width: 22px;
+        color: var(--grey-400);
         cursor: pointer;
-        transition: all 400ms ease-out ;
+        margin-right: 10px;
     }
 
-    .save-pdf:active {
-        outline: none;
+    .print-icon:hover {
+        color: var(--grey-500);
     }
+
 </style>
