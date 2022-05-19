@@ -13,7 +13,7 @@
 
 </script>
 
-<div class=other>
+<div class=chart-container>
 <div 
     class="chart" 
     style="
@@ -65,11 +65,11 @@
     user-select: none;
   }
 
-  .other {
-    padding-bottom: 30px;
+  .chart-container {
+    padding-bottom: 15px;
   }
 
-  .other:hover .download-icon {
+  .chart-container:hover .download-icon {
     visibility: visible;
   }
 
