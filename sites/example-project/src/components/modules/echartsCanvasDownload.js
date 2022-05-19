@@ -446,7 +446,6 @@ export default(node, option, renderer) => {
     let src = chart.getConnectedDataURL({
         type: 'png',
         pixelRatio: 3,
-        backgroundColor: '#fff',
         excludeComponents: ['toolbox']
     });
 

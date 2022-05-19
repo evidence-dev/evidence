@@ -1,10 +1,10 @@
 <script>
     import echarts from "$lib/modules/echarts";
-    import echartsCanvas from "$lib/modules/echarts-canvas";
+    import echartsCanvasDownload from "$lib/modules/echartsCanvasDownload";
 
     export let config = undefined;    
-    let newConfig = config;
-    newConfig.animation = false;
+    let downloadConfig = config;
+    downloadConfig.animation = false;
 
     export let height = '291px'
     export let width = '100%'
@@ -48,7 +48,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-    use:echartsCanvas={newConfig}
+    use:echartsCanvasDownload={downloadConfig}
 />
 {/if}
 
