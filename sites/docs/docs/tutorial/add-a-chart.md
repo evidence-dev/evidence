@@ -4,7 +4,7 @@ hide_table_of_contents: false
 title: Add a Chart
 ---
 
-Charts work in the same way as the [<span class="gradient">**&lt;Value/>**</span>](/features/markdown//value) component - you can add them anywhere in your markdown and reference SQL queries on the page.
+Charts work in the same way as the [<span class="gradient">**&lt;Value/>**</span>](/features/markdown/value) component - you can add them anywhere in your markdown and reference SQL queries on the page.
 
 So let's try to answer the question the Needful Things owner had about sales.
 
@@ -44,5 +44,5 @@ The first chart shows sales have overall been increasing across the three year p
 The second and third charts show this is mainly due to an increasing number of orders - the average basket size has been relatively consistent over the period.
 
 :::info Visualization Components
-Check out the [Components](/features/markdown//value) section to see the full list of available components.
+Check out the [Components](/features/markdown/value) section to see the full list of available components.
 :::
