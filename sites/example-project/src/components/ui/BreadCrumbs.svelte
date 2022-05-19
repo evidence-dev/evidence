@@ -61,7 +61,7 @@
 
 <style>
     div{
-        padding: 0 1.5em 0 1.5em;
+        padding: 0 0.5em 0 1.5em;
         box-sizing: border-box;
         width: 100%;
         overflow: auto;

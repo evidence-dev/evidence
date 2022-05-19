@@ -258,7 +258,7 @@
 
     @media print {
     .container {
-      display: none;
+      break-inside: avoid;
     }
   }
 </style>

@@ -24,11 +24,11 @@
 <style>
 
     .print-icon {
-        height: 22px;
-        width: 22px;
+        height: 20px;
+        width: 20px;
         color: var(--grey-400);
         cursor: pointer;
-        margin-right: 10px;
+        margin-right: 15px;
     }
 
     .print-icon:hover {
