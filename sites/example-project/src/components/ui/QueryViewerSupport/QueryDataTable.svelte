@@ -1,7 +1,9 @@
 <script>
     import {blur, slide, fade } from 'svelte/transition';
+    import DownloadData from '../DownloadData.svelte'
 
     export let data 
+    export let queryID
 
     let columns = []
     for (const [key, value] of Object.entries(data[0])) {
@@ -29,9 +31,11 @@
 
 </script>
 
-<div class="container"  transition:slide|local>
+<div class="results-pane" transition:slide|local>
+<div class="container" >
+
   <table in:blur>
-      <thead>
+    <thead>
         <tr>
           <th class="index" style="width:10%"></th>
           {#each columns as column}
@@ -76,7 +80,7 @@
 </div>   
 
 {#if max > 0}
-<div class="pagination" transition:slide>
+<div class="pagination">
   <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
   <span style="padding-top: 1px;">
   {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
@@ -84,6 +88,9 @@
 </div>
 {/if}
 
+<DownloadData {data} {queryID}/>
+
+</div>
 
 <style>
   div.pagination {
@@ -232,4 +239,7 @@
     max-width: min-content;
   }
 
+  .results-pane {
+    margin-bottom: 40px;
+  }
 </style>
