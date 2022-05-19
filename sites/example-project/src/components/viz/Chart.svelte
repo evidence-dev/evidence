@@ -489,7 +489,7 @@ try{
                 style: {
                     text: horizAxisTitle,
                     textAlign: 'right',
-                    fill: '#6E7079',
+                    fill: colours.grey500,
                 },
                 cursor: 'auto',
                 // Positioning (if swapXY, top right; otherwise bottom right)
