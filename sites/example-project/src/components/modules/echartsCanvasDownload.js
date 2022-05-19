@@ -441,8 +441,6 @@ export default(node, option, renderer) => {
 
 	chart.setOption(option);
 
-    // window.addEventListener("resize", () => { chart.resize();});
-    // var img = new Image();
     let src = chart.getConnectedDataURL({
         type: 'png',
         pixelRatio: 3,
@@ -451,10 +449,9 @@ export default(node, option, renderer) => {
 
     download(src, "evidence-chart.png")
 
+    chart.dispose();
+
     return {
-		// update(option){
-		// 	chart.update(option, true, true);
-		// },
 		destroy() {
 			chart.dispose();
 		}
