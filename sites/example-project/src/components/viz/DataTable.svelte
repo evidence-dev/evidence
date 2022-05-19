@@ -12,6 +12,7 @@
     export let rows = 5;
     export let marginTop = '1em';
     export let marginBottom = '0em';
+    export let marginBottom = '1em';
     export let paddingBottom = '1.5em';
     export let rowNumbers = 'true';
     export let rowLines = 'true';
@@ -68,9 +69,9 @@
 </script>
 
 {#if !error}
-<div class="table-container {data.length <= 20}" class:avoidbreaks={rows <= 20} transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
+<div class="table-container" class:avoidbreaks={rows <= 20} transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
 <div class="container">
-  <table  >
+  <table>
       <thead>
         <tr>
           {#if rowNumbers === 'true'}
