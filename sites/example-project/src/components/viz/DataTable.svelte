@@ -12,7 +12,6 @@
     export let rows = 5;
     export let marginTop = '1em';
     export let marginBottom = '0em';
-    export let marginBottom = '1em';
     export let paddingBottom = '1.5em';
     export let rowNumbers = 'true';
     export let rowLines = 'true';

@@ -73,5 +73,10 @@
         visibility: visible;
     }
 
+    @media print {
+        .download-icon {
+            display: none;
+        }
+    }
 </style>
 
