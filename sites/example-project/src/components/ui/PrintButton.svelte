@@ -20,4 +20,10 @@
         color: var(--grey-500);
     }
 
+    @media (max-width: 850px) {
+        .print-icon {
+            display: none;
+        }
+    }
+
 </style>
