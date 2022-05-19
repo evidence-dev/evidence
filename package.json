@@ -1,22 +1,23 @@
 {
 	"devDependencies": {
+		"@changesets/cli": "2.21.0",
 		"@evidence-dev/components": "link:packages/components",
 		"@evidence-dev/db-orchestrator": "link:packages/db-orchestrator",
-		"@evidence-dev/preprocess": "link:packages/preprocess",
 		"@evidence-dev/evidence": "link:packages/evidence",
+		"@evidence-dev/preprocess": "link:packages/preprocess",
 		"@sveltejs/adapter-static": "1.0.0-next.22",
 		"@sveltejs/kit": "1.0.0-next.202",
 		"@tidyjs/tidy": "2.4.4",
 		"echarts": "5.2.2",
 		"echarts-stat": "1.2.0",
-		"svelte-icons": "2.1.0",
+		"export-to-csv": "0.2.1",
+		"git-remote-origin-url": "4.0.0",
 		"svelte": "3.44.3",
+		"svelte-icons": "2.1.0",
 		"svelte2tsx": "0.4.7",
 		"typescript": "4.5.4",
-		"vite-plugin-full-reload": "0.2.2",
-		"@changesets/cli": "2.21.0",
 		"uvu": "0.5.2",
-		"git-remote-origin-url": "4.0.0"
+		"vite-plugin-full-reload": "0.2.2"
 	},
 	"scripts": {
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
