@@ -489,7 +489,7 @@ try{
                 style: {
                     text: horizAxisTitle,
                     textAlign: 'right',
-                    fill: '#6E7079',
+                    fill: colours.grey500,
                 },
                 cursor: 'auto',
                 // Positioning (if swapXY, top right; otherwise bottom right)
@@ -534,7 +534,7 @@ try{
                 type: "scroll",
                 top: legendTop,
                 padding: [0, 0, 0, 0]
-            },       
+            },
             grid: {
                 left: "0.5%",
                 right: swapXY ? "4%" : "3%",
