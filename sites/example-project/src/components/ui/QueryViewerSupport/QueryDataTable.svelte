@@ -1,6 +1,6 @@
 <script>
     import {blur, slide, fade } from 'svelte/transition';
-    import DownloadData from '$lib/ui/DownloadData.svelte'
+    import DownloadData from '../DownloadData.svelte'
 
     export let data 
     export let queryID

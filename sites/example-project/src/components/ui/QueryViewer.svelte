@@ -2,7 +2,6 @@
   import { slide } from 'svelte/transition';
   import { dev } from '$app/env';
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
-  import DownloadData from '$lib/ui/DownloadData.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
   import {showQueries} from './stores.js'
