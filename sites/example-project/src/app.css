@@ -228,8 +228,14 @@ code {
 	
 }
 
-
 @media print {
+
+	@page {
+		margin-top: 17mm;
+		margin-bottom: 13mm;
+		margin-left: 15mm;
+		margin-right: 15mm;
+	}
 
 	html {
 		-webkit-print-color-adjust: exact;
@@ -248,7 +254,7 @@ code {
 		margin-bottom: -100px;
 	}
 
-	p, ul, ol {
+	article {
 		orphans: 2;
 		widows: 2;	
 	}

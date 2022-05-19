@@ -47,7 +47,7 @@
 
     @media print {
     .error {
-      display: none;
+        break-inside: avoid;
     }
   }
 </style>
