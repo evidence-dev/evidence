@@ -127,7 +127,7 @@
   {#if max > 0}
   <div class="pagination">
     <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
-    <span>
+    <span style="line-height: 2em;">
     {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
     </span>
   </div>
