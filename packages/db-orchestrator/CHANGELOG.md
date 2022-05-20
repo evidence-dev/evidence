@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [8170b66]
+  - @evidence-dev/telemetry@1.0.1
+
 ## 1.0.0
 
 ### Major Changes

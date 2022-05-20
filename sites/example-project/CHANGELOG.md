@@ -1,5 +1,17 @@
 # @evidence-dev/components
 
+## 1.1.0
+
+### Minor Changes
+
+- 3b5f1af: Adds download to CSV feature to query viewer and DataTables
+- fc45df2: Adds chart download feature to generate a PNG of a chart
+
+### Patch Changes
+
+- 8170b66: Add telemetry options to the development mode settings page.
+- 80d38a5: Fixes scroll and spacing issues in DataTable
+
 ## 1.0.3
 
 ### Patch Changes
