@@ -44,4 +44,10 @@
         word-wrap: break-word;
         font-size: 0.8rem;
     }
+
+    @media print {
+    .error {
+        break-inside: avoid;
+    }
+  }
 </style>

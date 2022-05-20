@@ -432,4 +432,10 @@ span.alert-icon {
 
 }
 
+@media print {
+    aside {
+      display: none;
+    }
+  }
+
 </style>

@@ -256,4 +256,9 @@
     }
     /* container-a avoids whitespace appearing in the slide transition */
 
+    @media print {
+    .container {
+      break-inside: avoid;
+    }
+  }
 </style>

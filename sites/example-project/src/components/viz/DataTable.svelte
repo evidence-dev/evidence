@@ -11,7 +11,7 @@
     export let data = undefined;
     export let rows = 5;
     export let marginTop = '1em';
-    export let marginBottom = '1em';
+    export let marginBottom = '0em';
     export let paddingBottom = '1.5em';
     export let rowNumbers = 'true';
     export let rowLines = 'true';
@@ -68,9 +68,9 @@
 </script>
 
 {#if !error}
-<div class=table-container transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
+<div class="table-container" class:avoidbreaks={rows <= 20} transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
 <div class="container">
-  <table >
+  <table>
       <thead>
         <tr>
           {#if rowNumbers === 'true'}
@@ -127,7 +127,7 @@
   {#if max > 0}
   <div class="pagination">
     <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
-    <span style="line-height: 2em;">
+    <span class="page-labels">
     {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
     </span>
   </div>
@@ -193,6 +193,10 @@
     height: 10px;
     background: #3488e9;
     cursor: pointer;
+  }
+
+  .page-labels {
+    line-height: 2em;
   }
 
   span {
@@ -275,5 +279,20 @@
     white-space: unset;
     text-overflow: none;
   } */
+
+  @media print {
+    .avoidbreaks {
+      break-inside: avoid;
+    }
+
+    .pagination {
+      break-inside: avoid;
+    }
+
+   .slider {
+      display: none;
+    }
+
+  }
 
 </style>

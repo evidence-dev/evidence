@@ -1,24 +1,30 @@
-<button class="save-pdf" onClick="print()">Download PDF</button>
+<script>
+    import FaRegFilePdf from 'svelte-icons/fa/FaRegFilePdf.svelte'
+</script>
+
+<span class=print-icon onClick="print()" title="Print to PDF">
+    <FaRegFilePdf/>
+</span>
 
 <style>
-    .save-pdf {
-        background-color:var(--blue-600); 
-        color: white; 
-        border-radius: 4px; 
-        border-width: 0; 
-        padding: 4px 10px 4px 10px;
-        font-family: var(--ui-font-family);
-        transition: all 400ms ease-out ;
-        font-weight:bold;
-    }
 
-    .save-pdf:hover {
-        background-color:var(--blue-700); 
+    .print-icon {
+        height: 22px;
+        width: 22px;
+        color: var(--grey-400);
         cursor: pointer;
-        transition: all 400ms ease-out ;
+        padding-right: 1.5em;
+        position: relative;
     }
 
-    .save-pdf:active {
-        outline: none;
+    .print-icon:hover {
+        color: var(--grey-500);
     }
+
+    @media (max-width: 850px) {
+        .print-icon {
+            display: none;
+        }
+    }
+
 </style>

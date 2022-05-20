@@ -57,6 +57,14 @@
     .chart {
       break-inside: avoid;
     }
+
+    .download-icon {
+      display: none;
+    }
+
+    .chart-container {
+      padding: 0;
+    }
   }
   .chart {
     -moz-user-select: none;
