@@ -1,5 +1,12 @@
 # evidence-docs
 
+## 1.0.2
+
+### Patch Changes
+
+- 8170b66: Add telemetry options to the development mode settings page.
+- 34598ac: Fixing broken links in docs
+
 ## 1.0.1
 
 ### Patch Changes

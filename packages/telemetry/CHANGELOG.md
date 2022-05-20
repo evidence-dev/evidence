@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 1.0.1
+
+### Patch Changes
+
+- 8170b66: Add telemetry options to the development mode settings page.
+
 ## 1.0.0
 
 ### Major Changes

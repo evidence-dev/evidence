@@ -1,5 +1,21 @@
 # @evidence-dev/evidence
 
+## 2.0.0
+
+### Minor Changes
+
+- 58eda6e: Add Print to PDF Feature
+
+### Patch Changes
+
+- 8170b66: Add telemetry options to the development mode settings page.
+- Updated dependencies [8170b66]
+- Updated dependencies [80d38a5]
+- Updated dependencies [3b5f1af]
+- Updated dependencies [fc45df2]
+  - @evidence-dev/components@1.1.0
+  - @evidence-dev/db-orchestrator@1.0.1
+
 ## 1.0.3
 
 ### Patch Changes
