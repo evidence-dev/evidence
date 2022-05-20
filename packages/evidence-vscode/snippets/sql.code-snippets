@@ -1,3 +1,7 @@
 {
-
+    "SELECT 10": {
+		"prefix": "SELECT * FROM table_name LIMIT 10",
+		"body": ["SELECT *", "FROM ${1:table_name}","LIMIT 10"],
+		"description": "Select 10 from a table"
+	}
 }
