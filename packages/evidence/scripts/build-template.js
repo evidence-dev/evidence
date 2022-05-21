@@ -40,11 +40,11 @@ fs.outputFileSync('./template/svelte.config.js',
             },
             vite: {
                 optimizeDeps: {
-                    include: ['echarts-stat'],
+                    include: ['echarts-stat', 'export-to-csv'],
                     exclude: ['@evidence-dev/components']
                 },
                 ssr: {
-                    external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url', 'export-to-csv']
+                    external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url']
                 },
                 plugins: [
                     FullReload.default(['./.evidence-queries/extracted/**'], {delay: 150}),
