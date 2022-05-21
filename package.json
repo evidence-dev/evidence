@@ -8,6 +8,7 @@
 		"@sveltejs/adapter-static": "1.0.0-next.22",
 		"@sveltejs/kit": "1.0.0-next.202",
 		"@tidyjs/tidy": "2.4.4",
+		"downloadjs": "1.4.7",
 		"echarts": "5.3.2",
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
