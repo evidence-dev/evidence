@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 2.0.2
+
+### Patch Changes
+
+- 5aa64df: Minor bug fix
+
 ## 2.0.1
 
 ### Patch Changes
