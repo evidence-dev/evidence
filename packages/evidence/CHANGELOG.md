@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 2.0.1
+
+### Patch Changes
+
+- 6a078e6: Dependency fix and minor bug fixes
+- Updated dependencies [6a078e6]
+  - @evidence-dev/components@1.1.1
+
 ## 2.0.0
 
 ### Minor Changes
