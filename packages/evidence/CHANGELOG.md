@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 2.0.3
+
+### Patch Changes
+
+- d79dc33: Minor bug fix
+
 ## 2.0.2
 
 ### Patch Changes
