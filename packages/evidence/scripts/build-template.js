@@ -40,7 +40,7 @@ fs.outputFileSync('./template/svelte.config.js',
             },
             vite: {
                 optimizeDeps: {
-                    include: ['echarts-stat', 'export-to-csv'],
+                    include: ['echarts-stat', 'export-to-csv', 'downloadjs'],
                     exclude: ['@evidence-dev/components']
                 },
                 ssr: {
