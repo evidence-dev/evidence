@@ -1,18 +1,15 @@
 <script>
     export let settings
-    let usageStats = settings.send_anonymous_usage_stats
+    let usageStats = (settings.send_anonymous_usage_stats ?? 'yes') === 'yes'
 
     async function save() {
-        settings.send_anonymous_usage_stats = usageStats
+        settings.send_anonymous_usage_stats = usageStats ? 'yes' : 'no'
         const submitted = await fetch("/api/settings.json", {
 			method: "POST",
 			body: JSON.stringify({
                 settings
 			})
 		})
-        // reset the state of settings 
-        settings = await submitted.json()
-        existingCredentials = settings.credentials
     }
 </script>
 
