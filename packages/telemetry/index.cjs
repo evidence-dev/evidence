@@ -43,8 +43,6 @@ const logEvent = async (eventName, dev, settings) => {
                   devMode: dev 
                 }
               });
-        }else {
-            console.log('No track')
         }
     }catch {
         // do nothing
