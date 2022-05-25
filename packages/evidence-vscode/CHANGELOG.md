@@ -2,6 +2,10 @@
 
 All notable changes to the Evidence VS Code extension will be documented in this file.
 
+## 0.0.7
+- Fixed markdown preview shortcuts (cmd-shift-V, cmd-K V)
+- Adding more space in js snippets so they 'work' by default rather than throwing a user error
+
 ## 0.0.6
 - Bug fix for most recent VS Code release
 
