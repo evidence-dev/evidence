@@ -51,17 +51,17 @@
 	},
 	"Insert Each Block": {
 		"prefix": "Each Block",
-		"body": ["{#each data.${1:query_name} as ${2:row_name}}\n\t${4:}\n{/each}\n\n"],
+		"body": ["{#each data.${1:query_name} as ${2:row_name}}\n\n\t${4:}\n\n{/each}\n\n"],
 		"description": "Insert Each Block"
 	},
 	"Insert If Block": {
 		"prefix": "If Block",
-		"body": ["{#if ${1:condition}}\n\t${2:}\n{/if}\n\n"],
+		"body": ["{#if ${1:condition}}\n\n\t${2:}\n\n{/if}\n\n"],
 		"description": "Insert If Block"
 	},
 	"Insert IfElse Block": {
 		"prefix": "IfElse Block",
-		"body": ["{#if ${1:condition}}\n\t${2:}\n{:else}\n\t${3:}\n{/if}\n\n"],
+		"body": ["{#if ${1:condition}}\n\n\t${2:}\n\n{:else}\n\n\t${3:}\n\n{/if}\n\n"],
 		"description": "Insert IfElse Block"
 	}
 }
