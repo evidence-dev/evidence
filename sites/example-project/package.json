@@ -2,7 +2,7 @@
   "name": "@evidence-dev/components",
   "version": "1.1.1",
   "scripts": {
-    "dev": "svelte-kit package && svelte-kit dev",
+    "dev": "svelte-kit package && svelte-kit dev -o",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
     "package": "svelte-kit package && pnpm clean-package",
