@@ -22,6 +22,9 @@ const config = {
 				include: ['echarts-stat'],
 				exclude: ['@evidence-dev/components']
 			},
+			server: {
+				strictPort: false,
+			},
 			ssr: {
 				external: ['@evidence-dev/db-orchestrator']
 			},
