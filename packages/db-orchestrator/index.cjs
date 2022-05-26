@@ -75,7 +75,9 @@ const runQueries = async function (routeHash, dev) {
     if (queries.length > 0) {
         let data = {}
         data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 
-        for (let query of queries) {
+        console.log("Evidence metdata", data["evidencemeta"]); //TODO debug
+        for (let queryIndex in queries) {
+            let query = queries[queryIndex];
             let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
             let cache = getCache(dev, query.compiledQueryString, queryTime)
             if (cache) {
@@ -83,9 +85,13 @@ const runQueries = async function (routeHash, dev) {
                 process.stdout.write(chalk.greenBright("✓ "+ query.id) +  chalk.grey(" from cache \n"))
             } else {
                 try {
-                    process.stdout.write(chalk.grey("  "+ query.id +" running..."))
+                    process.stdout.write(chalk.grey("  "+ query.id +" running..."));
+                    console.log("Next query", query); //TODO debug
+                    
                     validateQuery(query)
-                    data[query.id] = await runQuery(query.compiledQueryString, settings?.credentials, dev)
+                    data[query.id] = await runQuery(query.compiledQueryString, settings?.credentials, dev);
+                    
+                    data["evidencemeta"][queryIndex].fieldTypes = {'todo': 'figure-this-out' }; 
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
                     updateCache(dev, query.compiledQueryString, data[query.id], queryTime)
