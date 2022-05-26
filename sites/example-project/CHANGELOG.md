@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.1.2
+
+### Patch Changes
+
+- e8ceec3: Fix sorting bug that caused side effects from components sorting datasets
+
 ## 1.1.1
 
 ### Patch Changes
