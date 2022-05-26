@@ -2,7 +2,7 @@
   "name": "evidence-vscode",
   "displayName": "Evidence",
   "description": "Evidence language support for VS Code",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "engines": {
     "vscode": "^1.52.0"
@@ -108,17 +108,17 @@
     ],
     "keybindings": [
       {
-          "command": "markdown.showPreview",
-          "key": "shift+ctrl+v",
-          "mac": "shift+cmd+v",
-          "when": "!notebookEditorFocused && editorLangId == 'emd'"
+        "command": "markdown.showPreview",
+        "key": "shift+ctrl+v",
+        "mac": "shift+cmd+v",
+        "when": "!notebookEditorFocused && editorLangId == 'emd'"
       },
-      { 
+      {
         "command": "markdown.showPreviewToSide",
         "key": "ctrl+k v",
-        "mac": "cmd+k v",             
-        "when": "!notebookEditorFocused && editorLangId == 'emd'" }
-
+        "mac": "cmd+k v",
+        "when": "!notebookEditorFocused && editorLangId == 'emd'"
+      }
     ]
   },
   "scripts": {
