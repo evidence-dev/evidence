@@ -32,9 +32,8 @@ const getProfile = async () => {
 
 const logEvent = async (eventName, dev, settings) => {
     try {
-        let usageStats = settings ? settings.database : process.env["SEND_ANONYMOUS_USAGE_STATS"] ?? process.env["send_anonymous_usage_stats"]
-        usageStats = usageStats ?? 'true' //optout
-        if(usageStats === 'true'){
+        let usageStats = settings ? settings.send_anonymous_usage_stats ?? 'yes' : process.env["SEND_ANONYMOUS_USAGE_STATS"] ?? process.env["send_anonymous_usage_stats"] ?? 'yes'
+        if(usageStats === 'yes'){
             projectProfile = await getProfile()
             var analytics = new Analytics(wK);
             analytics.track({
