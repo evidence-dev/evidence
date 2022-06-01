@@ -80,6 +80,15 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
     return defaultProps
 }
 
+// Unified parser step to ignore indented code blocks. 
+// Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
+// Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
+const ignoreIndentedCode = function() {
+	const Parser = this.Parser;
+	const block_tokenizers = Parser.prototype.blockTokenizers;
+	block_tokenizers.indentedCode = () => true;
+}
+
 const updateExtractedQueriesDir = function(content, filename){
     if (!fs.existsSync("./.evidence-queries")){
         fs.mkdirSync("./.evidence-queries");
@@ -93,6 +102,7 @@ const updateExtractedQueriesDir = function(content, filename){
     let queries = [];  
     let tree = unified()
         .use(parse)
+        .use(ignoreIndentedCode)
         .parse(content)   
 
     visit(tree, 'code', function(node) {
