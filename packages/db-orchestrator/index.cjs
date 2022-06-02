@@ -2,7 +2,6 @@ const { readdirSync, readJSONSync, writeJSONSync, pathExistsSync, emptyDirSync, 
 const md5 = require("blueimp-md5")
 const chalk = require('chalk')
 const logEvent = require('@evidence-dev/telemetry')
-//const getColumnSummary = require('@evidence-dev/components/modules/getColumnSummary');
 const readline = require('readline');
 
 const cacheDirectory = "./.evidence-queries/cache";
