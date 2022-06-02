@@ -34,3 +34,18 @@ Visit <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse"
 
 
 {/if}
+
+## Local images
+This is a picture of a cat, stored in /static/
+
+![Cute cat](kitty-cat.jpeg)
+
+<style>
+    img{
+        width:50%;
+		text-align: center;
+		display: block;
+  	    margin-left: auto;
+  	    margin-right: auto;
+    }
+</style>
