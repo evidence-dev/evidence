@@ -4,12 +4,12 @@ const chalk = require('chalk')
 const logEvent = require('@evidence-dev/telemetry')
 const readline = require('readline');
 
-const getCache = function (dev, queryString, queryTime) {
+const getCache = function (dev, queryString, queryTime, settings) {
     queryTime = md5(queryTime)
     if (dev) {
         const cache = readJSONSync("./.evidence-queries/cache/" + queryTime + "/" + md5(queryString) + ".json", { throws: false })
         if (cache) {
-            logEvent("cache-query", dev)
+            logEvent("cache-query", dev, settings)
             return cache
         }
     }
@@ -79,7 +79,7 @@ const runQueries = async function (routeHash, dev) {
         for (let queryIndex in queries) {
             let query = queries[queryIndex];
             let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
-            let cache = getCache(dev, query.compiledQueryString, queryTime)
+            let cache = getCache(dev, query.compiledQueryString, queryTime, settings)
             if (cache) {
                 data[query.id] = cache
                 process.stdout.write(chalk.greenBright("✓ "+ query.id) +  chalk.grey(" from cache \n"))

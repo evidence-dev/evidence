@@ -1,5 +1,20 @@
 # @evidence-dev/evidence
 
+## 2.0.5
+
+### Patch Changes
+
+- Updated dependencies [44ebd1a]
+  - @evidence-dev/db-orchestrator@1.0.2
+  - @evidence-dev/components@1.1.3
+
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [e8ceec3]
+  - @evidence-dev/components@1.1.2
+
 ## 2.0.3
 
 ### Patch Changes

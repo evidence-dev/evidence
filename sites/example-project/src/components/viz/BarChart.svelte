@@ -38,9 +38,7 @@
 
     let chartType = "Bar Chart";
 
-
-    export let annotate = true;
- </script>
+</script>
 
 <Chart
     {data}

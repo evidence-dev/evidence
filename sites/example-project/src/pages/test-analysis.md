@@ -183,6 +183,7 @@ group by fed_reserve_district, established_date
 <AreaChart data={data.dates_state} x=established_date y=banks series=fed_reserve_district/>
 
 <Chart data={data.dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
+
     <Scatter boundGapRight={['4%','4%']}/>
 </Chart>
 

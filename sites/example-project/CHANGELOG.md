@@ -1,5 +1,17 @@
 # @evidence-dev/components
 
+## 1.1.3
+
+### Patch Changes
+
+- 44ebd1a: Update the telemetry settings panel to show the correct state on initial startup, and provide more environment variable friendly alternatives ("yes"/ "no") to opt out of telemetry in production.
+
+## 1.1.2
+
+### Patch Changes
+
+- e8ceec3: Fix sorting bug that caused side effects from components sorting datasets
+
 ## 1.1.1
 
 ### Patch Changes

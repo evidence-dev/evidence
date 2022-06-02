@@ -55,7 +55,7 @@
             }
 
             sortOrder = stackedData.map(d => d[x]);
-            data.sort(function (a, b) {
+            data = [...data].sort(function (a, b) {
                 return sortOrder.indexOf(a[x]) - sortOrder.indexOf(b[x]);
             });
         }

@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 1.0.2
+
+### Patch Changes
+
+- 44ebd1a: Update the telemetry settings panel to show the correct state on initial startup, and provide more environment variable friendly alternatives ("yes"/ "no") to opt out of telemetry in production.
+
 ## 1.0.1
 
 ### Patch Changes
