@@ -38,11 +38,12 @@ const createModuleContext = function(filename){
     return moduleContext
 } 
 
-const createDefaultProps = function(filename, componentDevelopmentMode){
+const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components'
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
+        import { setContext, getContext } from 'svelte';
         import { pageHasQueries } from '@evidence-dev/components/ui/stores';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
@@ -65,9 +66,44 @@ const createDefaultProps = function(filename, componentDevelopmentMode){
         `
   
     if(hasQueries(filename)){
+        let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z\d_$]*)$'))
+                                         .map(id => `let ${id} = getContext('pageQueryResults').getData('${id}');`)
+                                         .join('\n') || '';
         defaultProps = `
-            export let data
-            pageHasQueries.update(value => value = true)
+            export let data;
+            pageHasQueries.update(value => value = true);
+
+            setContext('pageQueryResults', {
+                getData: (queryName) => {
+                    let originalData = data[queryName];
+                    let evidenceTypedData = [];
+
+                    let columnTypes = data.evidencemeta?.queries?.find(query => query.id === queryName)?.columnTypes;
+
+                    for (var i = 0; i < originalData.length; i++) {
+                        let nextItem = originalData[i];
+                        if (nextItem && columnTypes) {
+                            if (!nextItem.hasOwnProperty('_evidenceColumnTypes')) {
+                                Object.defineProperty(nextItem, '_evidenceColumnTypes', {
+                                    enumerable: false,
+                                    value: columnTypes,
+                                });
+                            }
+                        }
+                        evidenceTypedData.push(nextItem);
+                    }
+                    return evidenceTypedData;
+                },
+                getColumnTypes: (queryName) => {
+                    let columnTypes = data.evidencemeta?.queries?.filter(query => query.id === queryName)?.map(record => record.columnTypes);
+                    if (columnTypes && columnTypes.length > 0) {
+                        return columnTypes[0];
+                    }
+                }
+            });
+
+            ${queryDeclarations}
+
             import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
             ${defaultProps}
         `
@@ -113,7 +149,7 @@ const updateExtractedQueriesDir = function(content, filename){
         queries.push(
             {id, compiledQueryString, inputQueryString, compiled}
         )
-    })
+    });
 
     // Handle query chaining:
     let maxIterations = 100
@@ -151,21 +187,21 @@ const updateExtractedQueriesDir = function(content, filename){
 
     if (queries.length === 0) {
         removeSync(queryDir)
-        return
+        return [];
     }
     let queryHash = md5(JSON.stringify(queries))
     if (fs.existsSync(`${queryDir}/${queryHash}.json`)){
-        return
+        return queryIds;
     }
     if (queries.length > 0) {
         if(!fs.existsSync(queryDir)){
             fs.mkdirSync(queryDir)
-            writeJSONSync(`${queryDir}/${queryHash}.json`, queries)
         }else{
             emptyDirSync(queryDir)
-            writeJSONSync(`${queryDir}/${queryHash}.json`, queries)
         }
+        writeJSONSync(`${queryDir}/${queryHash}.json`, queries);
     }
+    return queryIds;
 }
 
 function highlighter(code, lang) {
@@ -180,11 +216,13 @@ function highlighter(code, lang) {
 }
 
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
+    let queryIdsByFile = [];
     return [
         {
             markup({content, filename}){
                 if(filename.endsWith(".md")){
-                    updateExtractedQueriesDir(content, filename)
+                    let fileQueryIds = updateExtractedQueriesDir(content, filename);
+                    queryIdsByFile.push({'filename': filename, 'queryIds': fileQueryIds});
                 }
             }
         },
@@ -229,7 +267,8 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
             script({content, filename, attributes}) {
                 if(filename.endsWith(".md")){
                     if(attributes.context != "module") {
-                        return {code: createDefaultProps(filename, componentDevelopmentMode) + content }
+                        let queryIds = queryIdsByFile.find(nextQueryId => filename === nextQueryId.filename)?.queryIds;
+                        return {code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content }
                     }	
                 }
             }
