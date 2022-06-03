@@ -21,13 +21,13 @@
                       columnDisplayName = `${column.name}`;
                       break;
                     case 'number':
-                      columnDisplayName = `${column.name} 🔢`;
+                      columnDisplayName = `${column.name}`;
                       break;
                     case 'boolean':
-                      columnDisplayName = `${column.name} ☑️`;
+                      columnDisplayName = `${column.name}`;
                       break;
                     case 'string':
-                      columnDisplayName = `${column.name} 🔤`
+                      columnDisplayName = `${column.name}`
                       break;
                     default:
                       break;
