@@ -18,7 +18,7 @@
                 if (column.typeFidelity === 'precise') {
                   switch (column.evidenceType) {
                     case 'date':
-                      columnDisplayName = `${column.name} 📅`;
+                      columnDisplayName = `${column.name}`;
                       break;
                     case 'number':
                       columnDisplayName = `${column.name} 🔢`;
