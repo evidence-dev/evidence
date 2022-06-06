@@ -48,7 +48,13 @@ If your problem relates to sensitive or private information, please don't post a
 
 ### Testing Changes
 
-You can test your changes by running `npm run dev` from within the `./sites/example-project` project.
+Follow these steps to test your changes
+1. In the project root folder, run `pnpm install`
+2. `cd ./sites/example-project`
+3. `npm run dev`
+
+You should be able to open the `example-project` on  `localhost:3000`. Any subsequent changes you make will be reflected on the website.
+
 
 Note that changes to the `components` package should be done within `./sites/example-project/src/components`.  During the build, `./sites/example-project/src/components` will be copied over to `./packages/components`).  All other packages can be updated directly in `./packages`.
 

@@ -1,4 +1,5 @@
 <script>
+    import { getContext} from 'svelte';
     import { slide } from 'svelte/transition';
     import formatValue from '$lib/modules/formatValue.js';
     import ErrorChart from './ErrorChart.svelte'
@@ -9,6 +10,7 @@
 
     // 1 - Get Inputs
     export let data = undefined;
+    export let queryID = undefined;
     export let rows = 5;
     export let marginTop = '1em';
     export let marginBottom = '0em';
@@ -35,7 +37,16 @@
 
     try{
       // 2 - Check Inputs
-      checkInputs(data);
+      try {
+        if (queryID && data) {
+          throw Error('Only one of "queryID" or "data" attributes should be provided');
+        } else if (queryID) {
+          data = getContext('pageQueryResults').getData(queryID);
+        }
+        checkInputs(data);
+      } catch (err) {
+          throw err;
+      }
 
       // 3 - Get Column Summary
       columnSummary = getColumnSummary(data, 'array');
@@ -77,7 +88,9 @@
               <th class="index" style="width:2%"></th>
           {/if}
           {#each columnSummary as column}
-              <th class="{column.type}" style="width:{columnWidths}%"> {column.title} </th>  
+              <th class="{column.type}" style="width:{columnWidths}%" 
+                  evidenceType="{column.evidenceColumnType?.evidenceType || 'unavailable'}"
+                  evidenceTypeFidelity="{column.evidenceColumnType?.typeFidelity || 'unavailable'}"> {column.title} </th>
           {/each}
         <tr/>
       </thead>
@@ -133,7 +146,7 @@
   </div>
   {/if}
 </div>   
-<DownloadData {data} onHover={true} {hovering}/>
+<DownloadData {data} {queryID} onHover={true} {hovering}/>
 
 </div>
 {:else}

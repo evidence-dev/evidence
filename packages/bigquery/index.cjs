@@ -1,5 +1,13 @@
 const {BigQuery} = require('@google-cloud/bigquery');
 
+var EvidenceType;
+(function (EvidenceType) {
+    EvidenceType["BOOLEAN"] = "boolean";
+    EvidenceType["NUMBER"] = "number";
+    EvidenceType["STRING"] = "string";
+    EvidenceType["DATE"] = "date";
+})(EvidenceType || (EvidenceType = {})); //TODO extract copied enum to common source
+
 const standardizeResult = async(result) => {
     var output = [];
     result.forEach(row => {
@@ -46,8 +54,6 @@ const getCredentials = async(database) => {
     }
 } 
 
-
-
 const runQuery = async (queryString, database) => {
     try {
         const credentials = await getCredentials(database)
@@ -55,8 +61,11 @@ const runQuery = async (queryString, database) => {
 
         const [job] = await connection.createQueryJob({query: queryString });
         const [rows] = await job.getQueryResults();
-        const standardizedResult = await standardizeResult(rows)
-        return standardizedResult
+        const [, , response] = await job.getQueryResults({
+            autoPaginate: false,
+        });
+        const standardizedRows = await standardizeResult(rows);
+        return { rows: standardizedRows, columnTypes : mapResultsToEvidenceColumnTypes(response) };
     } catch (err) {
         if (err.errors) {
             throw err.errors[0].message           
@@ -65,5 +74,59 @@ const runQuery = async (queryString, database) => {
         }        
     }
 };
+
+const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefined) {
+    switch (nativeFieldType) {
+        case 'BOOL':
+        case 'BOOLEAN':
+          return EvidenceType.BOOLEAN;
+        case 'INT64':
+        case 'INT':
+        case 'SMALLINT':
+        case 'INTEGER':
+        case 'BIGINT':
+        case 'TINYINT':
+        case 'BYTEINT':
+        case 'DECIMAL':
+        case 'NUMERIC':
+        case 'BIGDECIMAL':
+        case 'BIGNUMERIC':
+        case 'FLOAT64':
+          return EvidenceType.NUMBER;
+        case 'STRING':
+          return EvidenceType.STRING;
+        case 'TIME':
+        case 'TIMESTAMP':
+        case 'DATE':
+        case 'DATETIME':
+          return EvidenceType.DATE;
+        case 'STRUCT':
+        case 'ARRAY':
+        case 'BYTES':
+        case 'GEOGRAPHY':
+        case 'INTERVAL':
+        case 'JSON':
+        default:
+          return defaultType;
+    }
+};
+
+const mapResultsToEvidenceColumnTypes = function (results) {
+    return results?.schema?.fields?.map(field => {
+        let typeFidelity = 'precise';
+        let evidenceType = nativeTypeToEvidenceType(field.type);
+        if (!evidenceType) {
+            typeFidelity = 'inferred';
+            evidenceType = EvidenceType.STRING;
+        }
+        return (
+          {
+            'name': field.name,
+            'evidenceType': evidenceType,
+            'typeFidelity': typeFidelity,
+          });
+    });
+};
+
 
 module.exports = runQuery

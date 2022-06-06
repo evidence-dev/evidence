@@ -98,8 +98,8 @@
       <!-- Results -->
       </div>
         {#if queryResult.length > 0 && !error && $showResults}
-            <DataTable data={queryResult} queryID={queryID}/>
-            {/if}
+            <DataTable data={queryResult} {queryID}/>
+        {/if}
     </div>
  {/if}
 </div>

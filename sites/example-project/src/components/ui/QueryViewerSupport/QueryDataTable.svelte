@@ -1,17 +1,56 @@
 <script>
     import {blur, slide, fade } from 'svelte/transition';
     import DownloadData from '../DownloadData.svelte'
+    import { getContext} from 'svelte';
 
-    export let data 
-    export let queryID
+    export let queryID;
+    export let data;  //TODO fallback support in case of the untitled issue. Shouldn't be exposed.
+    let columns = [];
 
-    let columns = []
-    for (const [key, value] of Object.entries(data[0])) {
+    if (queryID && queryID !== 'untitled') {
+        data = getContext('pageQueryResults').getData(queryID);
+        if (data) {
+          let columnTypes =  data[0]['_evidenceColumnTypes'];
+          
+          if (columnTypes) {
+            columnTypes.forEach(column => {
+                let columnDisplayName = column.name;
+                if (column.typeFidelity === 'precise') {
+                  switch (column.evidenceType) {
+                    case 'date':
+                      columnDisplayName = `${column.name}`;
+                      break;
+                    case 'number':
+                      columnDisplayName = `${column.name}`;
+                      break;
+                    case 'boolean':
+                      columnDisplayName = `${column.name}`;
+                      break;
+                    case 'string':
+                      columnDisplayName = `${column.name}`
+                      break;
+                    default:
+                      break;
+                  }
+                }
+                columns.push({
+                  id: column.name,
+                  title: columnDisplayName,
+                  type: column.evidenceType
+                });
+            });
+          }
+        }
+    }
+    if (columns.length === 0) {
+      //TODO this is fallback support in case of the 'untitled' issue
+      for (const [key, value] of Object.entries(data[0])) {
         columns.push({
             id: key,
             title: key,
             type: typeof(value)
         })
+      }
     }
 
     // Table input 
@@ -88,7 +127,7 @@
 </div>
 {/if}
 
-<DownloadData {data} {queryID}/>
+<DownloadData {data} {queryID} />
 
 </div>
 
