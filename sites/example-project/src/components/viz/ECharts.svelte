@@ -1,6 +1,7 @@
 <script>
     import echarts from "$lib/modules/echarts";
     import echartsCanvasDownload from "$lib/modules/echartsCanvasDownload";
+    import EchartsCopyTarget from "./EchartsCopyTarget.svelte";
 
     export let config = undefined;    
     // Create a copy of the config object to pass to the download charts function. This is needed for 2 reasons:
@@ -36,7 +37,8 @@
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
 </span>
 
-
+<!-- Shows a copyable img of the chart whenever a copy event fires -->
+<EchartsCopyTarget {downloadConfig} {height} {width}/> 
 </div>
 
 {#if downloadChart}
