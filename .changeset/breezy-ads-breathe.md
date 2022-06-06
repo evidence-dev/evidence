@@ -8,4 +8,4 @@
 'evidence-test-environment': patch
 ---
 
-Exposed queries as their own variable (instead of data.\*) and exposed native Postgres/BigQuery types to components
+Exposed queries as their own variable (data={queryName}, in addition to existing data={data.queryname}) and exposed native Postgres/BigQuery types to components
