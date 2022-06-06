@@ -4,13 +4,11 @@
     export let downloadConfig = undefined;    
     export let height = '291px'
     export let width = '100%'
+    export let copying = false 
 
     downloadConfig.animation = false
 
-    let copying = false 
 </script>
-
-<svelte:window on:copy={() => {copying = true; setTimeout(() => { copying = false }, 0);}}/>
 
 {#if copying}
     <div 
