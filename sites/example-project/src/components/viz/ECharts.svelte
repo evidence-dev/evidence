@@ -15,9 +15,17 @@
 
     let downloadChart = false;
 
+    let toggle = true 
+
 </script>
 
+<input type=checkbox bind:checked={toggle}>
+
+{toggle}
+
 <div class=chart-container>
+
+{#if toggle}
 <div 
     class="chart" 
     style="
@@ -30,6 +38,7 @@
     "
     use:echarts={config}
 />
+{/if}
 
 <span class=download-icon on:click={() => {downloadChart = true; downloadConfig.animation = false; setTimeout(() => { downloadChart = false; downloadConfig.animation = true;  }, 1000);}}>
   <span>Download</span>
