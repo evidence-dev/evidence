@@ -16,7 +16,7 @@ select
     order_month,
     count(sales) as orders,
     sum(sales) as sales_usd,
-    sum(sales) / count (sales) as basket_size
+    sum(sales) / count (sales) as basket_size_usd
 from orders
 group by order_month
 order by order_month desc
