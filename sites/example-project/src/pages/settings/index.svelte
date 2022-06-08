@@ -10,7 +10,7 @@
             return {
                 props: {
                     settings,
-                    gitIgnore 
+                    gitIgnore
                 }
             }
         }
@@ -32,6 +32,7 @@
     import VersionControlPanel from '$lib/ui/VersionControl/VersionControlPanel.svelte'
     import DeploySettingsPanel from '$lib/ui/Deployment/DeploySettingsPanel.svelte'
     import TelemetrySettingsPanel from '$lib/ui/TelemetryOptOut/TelemetrySettingsPanel.svelte';
+    import ProjectSettingsPanel from '$lib/ui/ProjectSettings/ProjectSettingsPanel.svelte';
     
 </script>
 
@@ -40,6 +41,7 @@
 <VersionControlPanel {settings}/>
 <DeploySettingsPanel {settings} /> 
 <TelemetrySettingsPanel {settings} />
+<ProjectSettingsPanel />
 <br/>
 {:else}
 <p>Settings are only available in development mode.</p>

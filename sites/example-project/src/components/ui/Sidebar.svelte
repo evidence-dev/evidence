@@ -86,6 +86,7 @@
 	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte'
 	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte'
 	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
+	import { projectName } from '$lib/ui/stores';
 
 	export const load = async() => {
 		const menu = await Promise.all(menu)
@@ -138,7 +139,7 @@
 <aside class="sidebar" class:open>
     <div class="sticky">
         <div class=nav-header>
-            <a href='/' on:click={() => open = !open}><h1 class=project-title>Evidence</h1></a>
+            <a href='/' on:click={() => open = !open}><h1 class=project-title>{$projectName}</h1></a>
         </div>
         <nav>
 			{#if folders}

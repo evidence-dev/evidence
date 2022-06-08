@@ -18,6 +18,11 @@ const config = {
 			emitTypes: true
 		},
 		vite: {
+			server: {
+				fs: {
+					allow: ['.']
+				}
+			},
 			optimizeDeps: {
 				include: ['echarts-stat'],
 				exclude: ['@evidence-dev/components']

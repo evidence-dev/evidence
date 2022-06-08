@@ -6,6 +6,8 @@
 	import { blur } from "svelte/transition";
 	import { page } from "$app/stores";
 
+	import { projectName } from '$lib/ui/stores';
+
 	import TableOfContents from "$lib/TableOfContents.svelte";
 	import Header from '$lib/ui/Header.svelte'
 	import Hamburger from '$lib/ui/Hamburger.svelte'
@@ -16,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>Evidence</title>
+	<title>{$projectName}</title>
 </svelte:head>
 
 {#if $navigating}
