@@ -1,5 +1,9 @@
 <script>
-    import { props, config } from '$lib/modules/stores.js';   
+    import {getContext} from 'svelte'
+    import { propKey, configKey } from './context'
+    let props = getContext(propKey)
+    let config = getContext(configKey)
+    
     import ecStat from 'echarts-stat';
     import getDistinctValues from '$lib/modules/getDistinctValues.js';
 
