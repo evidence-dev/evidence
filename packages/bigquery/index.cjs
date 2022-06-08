@@ -1,12 +1,5 @@
-const {BigQuery} = require('@google-cloud/bigquery');
-
-var EvidenceType;
-(function (EvidenceType) {
-    EvidenceType["BOOLEAN"] = "boolean";
-    EvidenceType["NUMBER"] = "number";
-    EvidenceType["STRING"] = "string";
-    EvidenceType["DATE"] = "date";
-})(EvidenceType || (EvidenceType = {})); //TODO extract copied enum to common source
+const { BigQuery } = require('@google-cloud/bigquery');
+const { EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 
 const standardizeResult = async(result) => {
     var output = [];
@@ -113,10 +106,10 @@ const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefi
 
 const mapResultsToEvidenceColumnTypes = function (results) {
     return results?.schema?.fields?.map(field => {
-        let typeFidelity = 'precise';
+        let typeFidelity = TypeFidelity.PRECISE;
         let evidenceType = nativeTypeToEvidenceType(field.type);
         if (!evidenceType) {
-            typeFidelity = 'inferred';
+            typeFidelity = TypeFidelity.INFERRED;
             evidenceType = EvidenceType.STRING;
         }
         return (

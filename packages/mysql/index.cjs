@@ -1,5 +1,6 @@
+const { number } = require('echarts');
 const mysql = require('mysql2');
-
+const mysqlTypes = mysql.Types;
 const standardizeResult = async (result) => {
     var output = [];
     result.forEach(row => {
@@ -11,6 +12,61 @@ const standardizeResult = async (result) => {
     });
     return output;
 }
+
+const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
+    switch (dataTypeId) {
+        case mysqlTypes["DECIMAL"]:
+        case mysqlTypes["TINY"]:
+        case mysqlTypes["SHORT"]:
+        case mysqlTypes["LONG"]:
+        case mysqlTypes["FLOAT"]:
+        case mysqlTypes["DOUBLE"]:
+        case mysqlTypes["NEWDECIMAL"]:
+        case mysqlTypes["INT24"]:
+        case mysqlTypes["LONGLONG"]:
+            return 'number';
+        case mysqlTypes["TIMESTAMP"]:
+        case mysqlTypes["DATE"]:
+        case mysqlTypes["TIME"]:
+        case mysqlTypes["DATETIME"]:
+        case mysqlTypes["YEAR"]:
+        case mysqlTypes["NEWDATE"]:
+            return 'date';
+        case mysqlTypes["VARCHAR"]:
+        case mysqlTypes["VAR_STRING"]:
+        case mysqlTypes["STRING"]:  
+            return 'string'   
+        case mysqlTypes["BIT"]:
+        case mysqlTypes["JSON"]:
+        case mysqlTypes["NULL"]:
+        case mysqlTypes["ENUM"]:
+        case mysqlTypes["SET"]:
+        case mysqlTypes["TINY_BLOB"]:
+        case mysqlTypes["MEDIUM_BLOB"]:
+        case mysqlTypes["LONG_BLOB"]:
+        case mysqlTypes["BLOB"]:
+        case mysqlTypes["GEOMETRY"]:
+        default:
+            return defaultType;
+    }
+};
+
+const mapResultsToEvidenceColumnTypes = function (fields) {
+    return fields?.map(field => {
+        let typeFidelity = 'precise';
+        let evidenceType = nativeTypeToEvidenceType(field.columnType);
+        if (!evidenceType) {
+            typeFidelity = 'inferred';
+            evidenceType = 'string';
+        }
+        return (
+          {
+            'name': field.name,
+            'evidenceType': evidenceType,
+            'typeFidelity': typeFidelity,
+          });
+    });
+};
 
 const runQuery = async (queryString, database) => {
     try {
@@ -29,9 +85,9 @@ const runQuery = async (queryString, database) => {
         const promisePool = pool.promise();
         const [rows, fields] = await promisePool.query(queryString);
 
-        const stardizedResults = await standardizeResult(rows)
+        const standardizedRows = await standardizeResult(rows);
+        return { rows: standardizedRows, columnTypes : mapResultsToEvidenceColumnTypes(fields) };
 
-        return stardizedResults
     }
     catch (err) {
         if (err.message) {

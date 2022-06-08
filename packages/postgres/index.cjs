@@ -1,13 +1,7 @@
 const pg = require('pg');
 const { Pool } = pg;
+const { EvidenceType } = require('@evidence-dev/db-commons');
 
-var EvidenceType;
-(function (EvidenceType) {
-    EvidenceType["BOOLEAN"] = "boolean";
-    EvidenceType["NUMBER"] = "number";
-    EvidenceType["STRING"] = "string";
-    EvidenceType["DATE"] = "date";
-})(EvidenceType || (EvidenceType = {})); //TODO extract copied enum to common source
 /**
  * Some types that are not defined in the PG library
  */

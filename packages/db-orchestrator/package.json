@@ -12,6 +12,7 @@
     "@evidence-dev/mysql": "workspace:^",
     "@evidence-dev/sqlite": "workspace:^",
     "@evidence-dev/telemetry": "workspace:^",
+    "@evidence-dev/db-commons": "workspace:^",
     "blueimp-md5": "2.18.0",
     "chalk": "4.1.0",
     "fs-extra": "9.1.0"

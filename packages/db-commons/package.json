@@ -1,0 +1,12 @@
+{
+    "name": "@evidence-dev/db-commons",
+    "version": "0.0.1",
+    "description": "Shared modules for Evidence Database Drivers",
+    "main": "index.cjs",
+    "author": "evidence.dev",
+    "license": "MIT",
+    "dependencies": {
+        "fs-extra": "10.0.0"
+    },
+    "type": "module"
+}
