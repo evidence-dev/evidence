@@ -1,6 +1,8 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
+import { TypeFidelity } from '@evidence-dev/db-commons';
+import 'dotenv/config';
 
 let results;
 
@@ -18,7 +20,7 @@ test('query runs', async () => {
 
         let expectedColumnTypes = ['number', 'date', 'date', 'string', 'boolean'];
         let expectedColumnNames = ['number_col', 'date_col', 'timestamp_col', 'string_col', 'bool_col'];
-        let expectedTypePrecision = Array(5).fill('precise');
+        let expectedTypePrecision = Array(5).fill(TypeFidelity.PRECISE);
 
         assert.equal(true, (expectedColumnTypes.length === actualColumnTypes.length && expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])));
         assert.equal(true, (expectedColumnNames.length === actualColumnNames.length && expectedColumnNames.every((value, index) => value === actualColumnNames[index])));

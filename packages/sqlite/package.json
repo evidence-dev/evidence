@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "sqlite3": "5.0.4",
-    "sqlite": "4.0.25"
+    "sqlite": "4.0.25",
+    "@evidence-dev/db-commons": "workspace:^"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
   },
   "type": "module"
 }

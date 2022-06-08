@@ -6,3 +6,5 @@ dist
 .vscode
 /packages/components
 /packages/evidence/template
+*.sqlite
+*.sqlite-journal
