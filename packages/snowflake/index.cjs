@@ -41,7 +41,9 @@ const runQuery = async (queryString, database) => {
         var connection = createConnection.createConnection({
             account:  database ? database.account : process.env["SNOWFLAKE_ACCOUNT"] || process.env["account"] || process.env["ACCOUNT"],
             username:  database ? database.username : process.env["SNOWFLAKE_USERNAME"] || process.env["username"] || process.env["USERNAME"],
-            password:  database ? database.password : process.env["SNOWFLAKE_PASSWORD"] || process.env["password"] || process.env["PASSWORD"]
+            password:  database ? database.password : process.env["SNOWFLAKE_PASSWORD"] || process.env["password"] || process.env["PASSWORD"],
+            database:  database ? database.database : process.env["SNOWFLAKE_DATABASE"] || process.env["database"] || process.env["DATABASE"],
+            warehouse:  database ? database.warehouse : process.env["SNOWFLAKE_WAREHOUSE"] || process.env["warehouse"] || process.env["WAREHOUSE"]
         });
 
         const result = await execute(connection, queryString)
