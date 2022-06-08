@@ -3,7 +3,7 @@ import download from 'downloadjs';
 import {colours} from './colours'
 
 
-export default(node, option, renderer) => {
+export default(node, option) => {
 
 	echarts.registerTheme('evidence-light', {
         "grid": {
@@ -438,6 +438,8 @@ export default(node, option, renderer) => {
     });
 
     const chart = echarts.init(node, 'evidence-light', {renderer: 'canvas'});   
+
+    option.animation = false
 
 	chart.setOption(option);
 
