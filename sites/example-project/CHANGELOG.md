@@ -1,5 +1,13 @@
 # @evidence-dev/components
 
+## 1.1.4
+
+### Patch Changes
+
+- 1fead9d: Exposed queries as their own variable (data={queryName}, in addition to existing data={data.queryname}) and exposed native Postgres/BigQuery types to components
+- f651bda: Adding a database and warehouse field to the Snowflake connector. Without these it is difficult to run queries in a Snowflake DB.
+- d225abf: Provide images of charts when users are attempting to copy and paste
+
 ## 1.1.3
 
 ### Patch Changes

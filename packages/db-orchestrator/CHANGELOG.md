@@ -1,5 +1,16 @@
 # @evidence-dev/db-orchestrator
 
+## 1.0.3
+
+### Patch Changes
+
+- 1fead9d: Exposed queries as their own variable (data={queryName}, in addition to existing data={data.queryname}) and exposed native Postgres/BigQuery types to components
+- Updated dependencies [1fead9d]
+- Updated dependencies [f651bda]
+  - @evidence-dev/bigquery@1.1.0
+  - @evidence-dev/postgres@0.1.0
+  - @evidence-dev/snowflake@0.0.9
+
 ## 1.0.2
 
 ### Patch Changes

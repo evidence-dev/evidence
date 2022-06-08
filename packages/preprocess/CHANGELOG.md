@@ -1,5 +1,15 @@
 # @evidence-dev/preprocess
 
+## 1.1.0
+
+### Minor Changes
+
+- 1fead9d: Exposed queries as their own variable (data={queryName}, in addition to existing data={data.queryname}) and exposed native Postgres/BigQuery types to components
+
+### Patch Changes
+
+- a728873: Ignore indented code blocks when extracting SQL queries.
+
 ## 1.0.0
 
 ### Major Changes
