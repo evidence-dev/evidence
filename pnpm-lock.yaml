@@ -46,30 +46,45 @@ importers:
 
   packages/bigquery:
     specifiers:
+      '@evidence-dev/db-commons': workspace:^
       '@google-cloud/bigquery': 5.6.0
+      dotenv: ^16.0.1
       fs-extra: 9.1.0
     dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
       '@google-cloud/bigquery': 5.6.0
       fs-extra: 9.1.0
+    devDependencies:
+      dotenv: 16.0.1
+
+  packages/db-commons:
+    specifiers:
+      fs-extra: 10.0.0
+    dependencies:
+      fs-extra: 10.0.0
 
   packages/db-orchestrator:
     specifiers:
       '@evidence-dev/bigquery': workspace:^
+      '@evidence-dev/db-commons': workspace:^
       '@evidence-dev/mysql': workspace:^
       '@evidence-dev/postgres': workspace:^
       '@evidence-dev/snowflake': workspace:^
       '@evidence-dev/sqlite': workspace:^
       '@evidence-dev/telemetry': workspace:^
+      '@evidence-dev/db-commons': workspace:^
       blueimp-md5: 2.18.0
       chalk: 4.1.0
       fs-extra: 9.1.0
     dependencies:
       '@evidence-dev/bigquery': link:../bigquery
+      '@evidence-dev/db-commons': link:../db-commons
       '@evidence-dev/mysql': link:../mysql
       '@evidence-dev/postgres': link:../postgres
       '@evidence-dev/snowflake': link:../snowflake
       '@evidence-dev/sqlite': link:../sqlite
       '@evidence-dev/telemetry': link:../telemetry
+      '@evidence-dev/db-commons': link:../db-commons      
       blueimp-md5: 2.18.0
       chalk: 4.1.0
       fs-extra: 9.1.0
@@ -129,14 +144,21 @@ importers:
 
   packages/mysql:
     specifiers:
+      '@evidence-dev/db-commons': workspace:^
+      dotenv: ^16.0.1
       mysql2: ^2.3.2
     dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
       mysql2: 2.3.3
+    devDependencies:
+      dotenv: 16.0.1
 
   packages/postgres:
     specifiers:
+      '@evidence-dev/db-commons': workspace:^
       pg: 8.7.1
     dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
       pg: 8.7.1
 
   packages/preprocess:
@@ -157,17 +179,27 @@ importers:
 
   packages/snowflake:
     specifiers:
+      '@evidence-dev/db-commons': workspace:^
+      dotenv: ^16.0.1
       snowflake-sdk: 1.6.9
     dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
       snowflake-sdk: 1.6.9
+    devDependencies:
+      dotenv: 16.0.1
 
   packages/sqlite:
     specifiers:
+      '@evidence-dev/db-commons': workspace:^
+      dotenv: ^16.0.1
       sqlite: 4.0.25
       sqlite3: 5.0.4
     dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
       sqlite: 4.0.25
       sqlite3: 5.0.4
+    devDependencies:
+      dotenv: 16.0.1
 
   packages/telemetry:
     specifiers:
@@ -4178,7 +4210,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1_debug@4.3.4
+      follow-redirects: 1.14.1_debug@3.2.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -4194,7 +4226,7 @@ packages:
   /axios/0.21.4_debug@3.2.7:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.1_debug@4.3.4
+      follow-redirects: 1.14.1_debug@3.2.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5858,6 +5890,11 @@ packages:
       is-obj: 2.0.0
     dev: false
 
+  /dotenv/16.0.1:
+    resolution: {integrity: sha512-1K6hR6wtk2FviQ4kEiSjFiH5rpzEVi8WW0x96aztHVMhEspNpc4DVOUTEHtEva5VThQ8IaBX1Pe4gSzpVVUsKQ==}
+    engines: {node: '>=12'}
+    dev: true
+
   /downloadjs/1.4.7:
     resolution: {integrity: sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=}
 
@@ -6779,7 +6816,7 @@ packages:
         optional: true
     dev: false
 
-  /follow-redirects/1.14.1_debug@4.3.4:
+  /follow-redirects/1.14.1_debug@3.2.7:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -6788,7 +6825,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4_supports-color@6.1.0
+      debug: 3.2.7
     dev: false
 
   /for-in/1.0.2:
@@ -7649,7 +7686,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.1_debug@4.3.4
+      follow-redirects: 1.14.1_debug@3.2.7
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
