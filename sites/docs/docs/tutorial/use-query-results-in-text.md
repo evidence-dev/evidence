@@ -13,8 +13,8 @@ Evidence's [<span class="gradient">**&lt;Value/>**</span>](/features/markdown/va
 Copy and paste the sentence below into your markdown file.
 
 ```markdown title="Add to business-performance.md below the 'monthly_orders' query:"
-The most recent month of data began <Value data={data.monthly_orders} fmt=date/>, 
-when there were <Value data={data.monthly_orders} column=orders/> orders.
+The most recent month of data began <Value data={monthly_orders} fmt=date/>,
+when there were <Value data={monthly_orders} column=orders/> orders.
 ```
 
 **Result:**

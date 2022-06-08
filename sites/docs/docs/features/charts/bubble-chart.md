@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BubbleChart 
-    data={data.query_name} 
+    data={query_name} 
     x=column_x 
     y=column_y
     size=column_size
@@ -25,7 +25,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BubbleChart 
-    data={data.simple_example} 
+    data={simple_example} 
     x=x 
     y=y 
     size=size 
@@ -39,7 +39,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BubbleChart 
-    data={data.scores_by_region} 
+    data={scores_by_region} 
     x=score_a 
     y=score_b 
     size=size 

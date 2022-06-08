@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <Histogram
-    data={data.query_name} 
+    data={query_name} 
     x=column_x 
 />
 ```
@@ -23,7 +23,7 @@ hide_table_of_contents: false
 
 ```markdown
 <Histogram 
-    data={data.complaints_by_day_dept} 
+    data={complaints_by_day_dept} 
     x=complaints 
     xAxisTitle="Daily Calls"
 />

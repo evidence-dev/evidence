@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BarChart 
-    data={data.query_name} 
+    data={query_name} 
     x=column_x 
     y=column_y
 />
@@ -24,7 +24,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BarChart 
-    data={data.value_by_region} 
+    data={value_by_region} 
     x=region
     y=value 
     xAxisTitle=Region
@@ -36,7 +36,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BarChart 
-    data={data.value_by_region}
+    data={value_by_region}
     x=country 
     y=value 
     swapXY=true
@@ -48,7 +48,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BarChart 
-    data={data.annual_value_by_region} 
+    data={annual_value_by_region} 
     x=year 
     y=value 
     series=region
@@ -60,7 +60,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BarChart 
-    data={data.annual_value_by_region} 
+    data={annual_value_by_region} 
     swapXY=true 
     x=year 
     y=value 
@@ -75,7 +75,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BarChart 
-    data={data.annual_value_by_region} 
+    data={annual_value_by_region} 
     x=year 
     y=value 
     series=region 
@@ -88,7 +88,7 @@ hide_table_of_contents: false
 
 ```markdown
 <BarChart 
-    data={data.annual_value_by_region} 
+    data={annual_value_by_region} 
     swapXY=true 
     x=year 
     y=value 

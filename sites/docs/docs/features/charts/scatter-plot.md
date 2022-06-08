@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <ScatterPlot 
-    data={data.query_name} 
+    data={query_name} 
     x=column_x 
     y=column_y
 />
@@ -24,7 +24,7 @@ hide_table_of_contents: false
 
 ```markdown
 <ScatterPlot 
-    data={data.census} 
+    data={census} 
     y=median_rent_usd 
     x=income_per_capita_usd 
     xAxisTitle="Income Per Capita" 
@@ -37,7 +37,7 @@ hide_table_of_contents: false
 
 ```markdown
 <ScatterPlot 
-    data={data.scores_by_region} 
+    data={scores_by_region} 
     x=score_a 
     y=score_b 
     series=region 

@@ -10,11 +10,11 @@ In Evidence, curly braces like these `{...}` evaluate javascript. In most cases,
 #### Examples
 
 * Doing math: `{5+5}` will show up as "10" in your report. 
-* Dynamically getting the number of records from a query result: `{data.example_query.length}` will display the number of rows returned by `example_query`.
+* Dynamically getting the number of records from a query result: `{example_query.length}` will display the number of rows returned by `example_query`.
 * Using a [conditional](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator) to create a colloquial explanation of what's going on: 
 
 ```
-We are {data.revenue_growth[0].projected_vs_target >= 0 ? "on track for " : "behind"} our revenue growth target.
+We are {revenue_growth[0].projected_vs_target >= 0 ? "on track for " : "behind"} our revenue growth target.
 ```
 
 Will resolve to "We are on track for our revenue growth target." or "We are behind our revenue growth target." depending on the results of the `revenue_growth` query. 
@@ -47,13 +47,13 @@ Finally, this last piece of content.
 Imagine you wanted to encourage your sales leaders "up-sell" low margin customers, but only when there were enough low-margin customers to do that work in-bulk. You could use a conditional to do something like this: 
 
 ```markdown
-{#if data.low_margin_customers.length > 15}
+{#if low_margin_customers.length > 15}
 
 The following customers are generating low margins. 
 
 Consider re-allocating an account management call block to up-sell these customers. 
 
-<Table data={data.low_margin_customers/>
+<Table data={low_margin_customers}/>
 
 {:else }
 
@@ -68,7 +68,7 @@ There are fewer than fifteen low margin customers, which is not enough to fill a
 Loops enable you to iterate over the rows in a query result, and reference the row using an alias of your choosing. 
 
 ```markdown
-{#each data.query as alias}
+{#each query_name as alias}
 
 {alias.column_name}
 
@@ -95,7 +95,7 @@ By using an `{#each}` block, we can iterate over each of the rows in `location_s
 ```markdown 
 Daily sales: 
 
-{#each data.location_summary as location}
+{#each location_summary as location}
 
 ## {location.name} 
 

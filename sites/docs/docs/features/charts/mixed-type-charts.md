@@ -18,7 +18,7 @@ This example uses multiple y columns and multiple series types (bar and line)
 ![composable](/img/exg-composable-multi-type-nt.svg) 
 
 ```markdown
-<Chart data={data.fda_recalls}>
+<Chart data={fda_recalls}>
     <Bar y=voluntary_recalls/>
     <Line y=fda_recalls/>
 </Chart>
@@ -31,7 +31,7 @@ This structure also gives you control over the individual series on your chart. 
 ![composable-name-override](/img/exg-composable-name-override-nt.svg)
 
 ```markdown
-<Chart data={data.fda_recalls}>
+<Chart data={fda_recalls}>
     <Bar y=voluntary_recalls/>
     <Line y=fda_recalls name="FDA Recalls"/>
 </Chart>
@@ -39,7 +39,7 @@ This structure also gives you control over the individual series on your chart. 
 
 ## Chart `<Chart>`
 ```markdown
-<Chart data={data.query_name}>
+<Chart data={query_name}>
     Insert primitives here
 </Chart>
 ```
@@ -76,7 +76,7 @@ This structure also gives you control over the individual series on your chart. 
 
 ### Line `<Line/>`
 ```markdown
-<Chart data={data.query_name}>
+<Chart data={query_name}>
     <Line/>
 </Chart>
 ```
@@ -99,7 +99,7 @@ This structure also gives you control over the individual series on your chart. 
 
 ### Area `<Area/>`
 ```markdown
-<Chart data={data.query_name}>
+<Chart data={query_name}>
     <Area/>
 </Chart>
 ```
@@ -118,7 +118,7 @@ This structure also gives you control over the individual series on your chart. 
 
 ### Bar `<Bar/>`
 ```markdown
-<Chart data={data.query_name}>
+<Chart data={query_name}>
     <Bar/>
 </Chart>
 ```
@@ -139,7 +139,7 @@ This structure also gives you control over the individual series on your chart. 
 
 ### Scatter `<Scatter/>`
 ```markdown
-<Chart data={data.query_name}>
+<Chart data={query_name}>
     <Scatter/>
 </Chart>
 ```
@@ -160,7 +160,7 @@ This structure also gives you control over the individual series on your chart. 
 
 ### Bubble `<Bubble/>`
 ```markdown
-<Chart data={data.query_name}>
+<Chart data={query_name}>
     <Bubble/>
 </Chart>
 ```
@@ -183,7 +183,7 @@ This structure also gives you control over the individual series on your chart. 
 
 ### Hist `<Hist/>`
 ```markdown
-<Chart data={data.query_name}>
+<Chart data={query_name}>
     <Hist/>
 </Chart>
 ```

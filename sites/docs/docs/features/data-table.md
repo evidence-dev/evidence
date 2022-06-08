@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <DataTable
-    data={data.query_name} 
+    data={query_name} 
 />
 ```
 ### Required Props

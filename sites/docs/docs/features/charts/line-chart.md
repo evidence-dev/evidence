@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.query_name}  
+    data={query_name}  
     x=column_x 
     y=column_y
 />
@@ -24,7 +24,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.daily_complaints} 
+    data={daily_complaints} 
     x=date 
     y=number_of_complaints 
     yAxisTitle="calls to Austin 311 per day"
@@ -36,7 +36,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.daily_volume_yoy} 
+    data={daily_volume_yoy} 
     x=day_of_year 
     y=cum_vol 
     series=year 
@@ -50,7 +50,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.fda_recalls}  
+    data={fda_recalls}  
     x=year
     y={["voluntary_recalls", "fda_recalls"]}
 />
@@ -59,7 +59,7 @@ hide_table_of_contents: false
 Because x is the first column in the dataset and we want to plot all the remaining numerical columns in the table, we can simplify our code down to:
 
 ```markdown
-<LineChart data={data.fda_recalls}/>
+<LineChart data={fda_recalls}/>
 ```
 
 Evidence will automatically pick the first column as `x` and use all other numerical columns for `y`.

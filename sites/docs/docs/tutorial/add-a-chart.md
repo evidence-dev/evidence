@@ -13,21 +13,21 @@ To do this, add an [<span class="gradient">**&lt;AreaChart/>**</span>](/features
 ```markdown title="Add to the bottom of business-performance.md:"
 ## Monthly Sales
 <AreaChart 
-    data={data.monthly_orders} 
+    data={monthly_orders} 
     x=order_month
     y=sales_usd
 />
 
 ## Monthly Orders
 <LineChart 
-    data={data.monthly_orders} 
+    data={monthly_orders} 
     x=order_month
     y=orders
 />
 
 ## Basket Size
 <BarChart 
-    data={data.monthly_orders} 
+    data={monthly_orders} 
     x=order_month
     y=basket_size_usd
 />

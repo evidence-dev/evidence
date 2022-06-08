@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <AreaChart 
-    data={data.query_name} 
+    data={query_name} 
     x=column_x 
     y=column_y
 />
@@ -25,7 +25,7 @@ hide_table_of_contents: false
 
 ```markdown
 <AreaChart 
-    data={data.fed_reserve_district_sf} 
+    data={fed_reserve_district_sf} 
     x=established_date 
     y=banks_created
 />
@@ -36,7 +36,7 @@ hide_table_of_contents: false
 
 ```markdown
 <AreaChart 
-    data={data.fed_reserve_district}  
+    data={fed_reserve_district}  
     x=established_date 
     y=banks_created
     series=fed_reserve_district

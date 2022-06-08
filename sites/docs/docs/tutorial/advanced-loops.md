@@ -42,7 +42,7 @@ order by orders
 ```
 
 <AreaChart
-    data={data.orders_by_channel}
+    data={orders_by_channel}
     x=order_month
     y=orders
     series=channel
@@ -84,14 +84,14 @@ Loops are achieved through an **`each block`**.
 Let's use an each block to list the names of all the channel.
 
 ```json title="Add to bottom of marketing-performance.md:"
-{#each data.channel_cpa as channel}
+{#each channel_cpa as channel}
 
 {channel.marketing_channel}
 
 {/each}
 ```
 #### How does this work? 
-In the each block, we're passing in the query name `data.channel_cpa` and giving it an "alias" of `channel` to reference inside the each block. You **must** alias the query in the each block.
+In the each block, we're passing in the query name `channel_cpa` and giving it an "alias" of `channel` to reference inside the each block. You **must** alias the query in the each block.
 
 The each block loops through every row of the table and displays whatever is included in the middle of the block. In this case, we're displaying the `marketing_channel` column of the `channel` dataset.
 
@@ -109,7 +109,7 @@ We'll use a `<Value/>` component for this. You could do this with a bare referen
 When used inside an **each block**, the `<Value/>` component only requires a reference to the column it needs to display.
 
 ```json {3} title="Change the highlighted line below:"
-{#each data.channel_cpa as channel}
+{#each channel_cpa as channel}
 
 **{channel.marketing_channel} CPA was <Value value={channel.cpa} fmt=usd/>**, with a spend of <Value value={channel.total_spend} fmt=usd/>, bringing in <Value value={channel.total_orders}/> orders.
 
