@@ -39,12 +39,12 @@ const createModuleContext = function(filename){
 } 
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
-    let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components'
+    let componentSource = '$lib' 
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
         import { setContext, getContext } from 'svelte';
-        import { pageHasQueries } from '@evidence-dev/components/ui/stores';
+        import { pageHasQueries } from '${componentSource}/ui/stores';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
@@ -104,7 +104,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
 
             ${queryDeclarations}
 
-            import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
+            import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
             ${defaultProps}
         `
     } else {

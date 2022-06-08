@@ -1,9 +1,9 @@
 <script>
-    import BigqueryForm from '@evidence-dev/components/ui/Databases/BigqueryForm.svelte'
-    import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
-    import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
-    import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
-    import SqliteForm from '@evidence-dev/components/ui/Databases/SqliteForm.svelte'
+    import BigqueryForm from '$lib/ui/Databases/BigqueryForm.svelte'
+    import PostgresForm from '$lib/ui/Databases/PostgresForm.svelte'
+    import SnowflakeForm from '$lib/ui/Databases/SnowflakeForm.svelte'
+    import MysqlForm from '$lib/ui/Databases/MysqlForm.svelte'
+    import SqliteForm from '$lib/ui/Databases/SqliteForm.svelte'
     import { slide, blur } from 'svelte/transition'
 
     export let settings 

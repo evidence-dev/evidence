@@ -11,7 +11,8 @@ const templatePaths = [
     'src/pages/index.md',
     'src/pages/__layout.svelte',
     'src/pages/settings/',
-    'src/pages/api/'
+    'src/pages/api/',
+    'src/components/'
 ]
 
 fs.emptyDirSync("./template/")
@@ -41,7 +42,6 @@ fs.outputFileSync('./template/svelte.config.js',
             vite: {
                 optimizeDeps: {
                     include: ['echarts-stat', 'export-to-csv', 'downloadjs'],
-                    exclude: ['@evidence-dev/components']
                 },
                 ssr: {
                     external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url']
