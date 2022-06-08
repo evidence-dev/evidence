@@ -1,5 +1,13 @@
 # evidence-test-environment
 
+## 1.0.10
+
+### Patch Changes
+
+- 1fead9d: Exposed queries as their own variable (data={queryName}, in addition to existing data={data.queryname}) and exposed native Postgres/BigQuery types to components
+- Updated dependencies [1fead9d]
+  - @evidence-dev/evidence@2.1.0
+
 ## 1.0.9
 
 ### Patch Changes
