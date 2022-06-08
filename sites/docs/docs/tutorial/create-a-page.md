@@ -20,11 +20,9 @@ This is Needful Things' Evidence project, where you can find the KPIs and data a
 
 [Product Performance](/product-performance) shows data about specific products.
 ```
-3. Save the page, and enter `npm run dev` in the shell.
+3. Save the page.
 
-4. Delete all the other files inside the `pages` directory (we won't need these).
-
-5. Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser. (The links on the homepage won't work yet as we haven't built them!)
+4. Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser. (The links on the homepage won't work yet as we haven't built them!)
 
 Evidence 'hot reloads' when you save your file by default, so you should get immediate feedback.
 
