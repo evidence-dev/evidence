@@ -72,7 +72,6 @@ importers:
       '@evidence-dev/snowflake': workspace:^
       '@evidence-dev/sqlite': workspace:^
       '@evidence-dev/telemetry': workspace:^
-      '@evidence-dev/db-commons': workspace:^
       blueimp-md5: 2.18.0
       chalk: 4.1.0
       fs-extra: 9.1.0
@@ -84,7 +83,6 @@ importers:
       '@evidence-dev/snowflake': link:../snowflake
       '@evidence-dev/sqlite': link:../sqlite
       '@evidence-dev/telemetry': link:../telemetry
-      '@evidence-dev/db-commons': link:../db-commons      
       blueimp-md5: 2.18.0
       chalk: 4.1.0
       fs-extra: 9.1.0
