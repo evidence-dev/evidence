@@ -1,8 +1,13 @@
 <script>
-    // ---------------------------------------------------------------------------------------
-    // Imports
-    // ---------------------------------------------------------------------------------------
-        import { props, config } from '../modules/stores.js';   
+        import {writable} from 'svelte/store'
+        import {setContext} from 'svelte'
+        import { propKey, configKey } from './context'
+
+        let props = writable({})
+        let config = writable({})
+
+        setContext(propKey, props)
+        setContext(configKey, config)
 
         import ECharts from "./ECharts.svelte";
         import getColumnSummary from '../modules/getColumnSummary';
