@@ -15,7 +15,7 @@ hide_table_of_contents: false
 />
 ```
 ### Required Props
-* **data** - query name, referenced as a subset of Evidence's **`data`** object
+* **data** - query name, wrapped in curly braces
 
 ### Optional Props
 * **rows** - # of rows to show in the table before paginating results. Default is 5 rows

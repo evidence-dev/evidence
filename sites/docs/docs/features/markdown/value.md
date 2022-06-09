@@ -34,7 +34,7 @@ when there were <Value data={monthly_orders} column=orders/> orders.
 ## Options
 
 ### Showing Data from a Query Result
-* **data** - query name, referenced as a subset of Evidence's **`data`** object
+* **data** - query name, wrapped in curly braces
 * **column** - column name to pull values from
 * **row** - (Optional) specific row number to display
 
