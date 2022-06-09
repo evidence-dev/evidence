@@ -41,6 +41,11 @@ fs.outputFileSync('./template/svelte.config.js',
                 lib: 'src/components'
             },
             vite: {
+                server: {
+                    fs: {
+                        allow: ['.']
+                    }
+                },
                 optimizeDeps: {
                     include: ['echarts-stat', 'export-to-csv', 'downloadjs'],
                 },
