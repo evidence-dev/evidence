@@ -18,7 +18,7 @@ from international_transactions
 ````
 
 ## Using Query Results
-All query results on a page are returned to a single object called `data`. To use a query result, you can to reference  a subset of the `data` object. For instance if your query is named `sales_by_country`, you can reference the results using `data.sales_by_country`.  For convinience, Evidence also exposes each query result by it's own name, e.g `sales_by_country`.  These references can be used in any of the components from our built-in library.
+Reference a query in a component using `data={query_name}`
 
 For example, if your query name was `sales_by_country`:
 ```markdown
