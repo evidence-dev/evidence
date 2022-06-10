@@ -29,7 +29,7 @@ While our library offers a lot of customizable features, our defaults let you cr
 ## Data Structure
 
 **Data**
-- All charts require a data prop, which should contain a query result (e.g., `data={data.query_name}`)
+- All charts require a data prop, which should contain a query result (e.g., `data={query_name}`)
 
 **x and y**
 - All charts in our library today are x-y coordinate charts (AKA Cartesian), meaning they require `x` and `y` columns to create the axes and scales for the chart
@@ -63,14 +63,14 @@ A composable chart consists of a `<Chart>` component and **primitives**, which a
 
 This structure lets you build simple charts...
 ```html
-<Chart data={data.query_name} x=date y=sales>
+<Chart data={query_name} x=date y=sales>
     <Line/>
 </Chart>
 ```
 
 ...or more complex charts with multiple series types:
 ```html
-<Chart data={data.query_name} x=date>
+<Chart data={query_name} x=date>
     <Bar y=sales/>
     <Line y=gross_profit/>
 </Chart>
@@ -79,7 +79,7 @@ This structure lets you build simple charts...
 Composable charts manage prop conflicts and allow for prop overrides. Props can be defined in both the `<Chart>` component and primitive components, and Evidence will use whichever prop is scoped more specifically. For example, in the code below, the line will plot `gross_profit` instead of `sales`:
 
 ```html
-<Chart data={data.financial_results} x=month y=sales>
+<Chart data={financial_results} x=month y=sales>
     <Line y=gross_profit/>
 </Chart>
 ```
@@ -91,19 +91,19 @@ The easiest way to build a chart in Evidence is by using Quick Charts. Quick Cha
 
 For example, instead of writing this...
 ```markdown
-<Chart data={data.query_name} x=date y=sales>
+<Chart data={query_name} x=date y=sales>
     <Line/>
 </Chart>
 ```
 
 ...you can write this...
 ```markdown
-<LineChart data={data.query_name} x=date y=sales/>
+<LineChart data={query_name} x=date y=sales/>
 ```
 
 ...and if your query columns are organized as described in the data section above, you can simplify it to this:
 ```markdown
-<LineChart data={data.query_name}/>
+<LineChart data={query_name}/>
 ```
 
 #### Available Quick Charts

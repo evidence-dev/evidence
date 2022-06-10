@@ -73,12 +73,12 @@ Evidence supports extremely large queries, but they can be slow to run in develo
 ## Components
 You can include query results on your page using Evidence's built-in component library. Evidence components include things like charts, tables, and graphs. 
 
-All query results on a page are returned to a single object called `data`. To use a query result, you need to reference the query name as a subset of that `data` object. These references can be used in any of the components from our built-in library.
+You can use a query result in a component with `data={query_name}`
 
 For example, if your query name was `regional_sales_change`, you could include a bar chart like this:
 ```markdown
 <BarChart 
-    data={data.regional_sales_change}
+    data={regional_sales_change}
     x=region
     y=sales_change
 />

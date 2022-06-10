@@ -6,52 +6,52 @@
 	},
 	"Insert <Chart>": {
 		"prefix": "Chart",
-		"body": ["<Chart data={data.${1:query_name}} x=${2:column} y=${3:column}>\n\t${4:}\n</Chart>\n\n"],
+		"body": ["<Chart data={${1:query_name}} x=${2:column} y=${3:column}>\n\t${4:}\n</Chart>\n\n"],
 		"description": "Insert Chart"
 	},
 	"Insert <LineChart/>": {
 		"prefix": "LineChart",
-		"body": ["<LineChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"body": ["<LineChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert LineChart"
 	},
 	"Insert <AreaChart/>": {
 		"prefix": "AreaChart",
-		"body": ["<AreaChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"body": ["<AreaChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert AreaChart"
 	},
     "Insert <BarChart/>": {
 		"prefix": "BarChart",
-		"body": ["<BarChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"body": ["<BarChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert BarChart"
 	},
 	"Insert <ScatterPlot/>": {
 		"prefix": "ScatterPlot",
-		"body": ["<ScatterPlot\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"body": ["<ScatterPlot\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert ScatterPlot"
 	},
 	"Insert <BubbleChart/>": {
 		"prefix": "BubbleChart",
-		"body": ["<BubbleChart\n\tdata={data.${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"],
+		"body": ["<BubbleChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"],
 		"description": "Insert BubbleChart"
 	},
 	"Insert <Histogram/>": {
 		"prefix": "Histogram",
-		"body": ["<Histogram data={data.${1:query_name}} x=${2:column}/>\n\n"],
+		"body": ["<Histogram data={${1:query_name}} x=${2:column}/>\n\n"],
 		"description": "Insert Histogram"
 	},
 	"Insert <DataTable/>": {
 		"prefix": "DataTable",
-		"body": ["<DataTable data={data.${1:query_name}}/>\n\n"],
+		"body": ["<DataTable data={${1:query_name}}/>\n\n"],
 		"description": "Insert DataTable"
 	},
 	"Insert <Value/>": {
 		"prefix": "Value",
-		"body": ["<Value data={data.${1:query_name}}/>\n\n"],
+		"body": ["<Value data={${1:query_name}}/>\n\n"],
 		"description": "Insert Value"
 	},
 	"Insert Each Block": {
 		"prefix": "Each Block",
-		"body": ["{#each data.${1:query_name} as ${2:row_name}}\n\n\t${4:}\n\n{/each}\n\n"],
+		"body": ["{#each ${1:query_name} as ${2:row_name}}\n\n\t${4:}\n\n{/each}\n\n"],
 		"description": "Insert Each Block"
 	},
 	"Insert If Block": {

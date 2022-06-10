@@ -22,7 +22,7 @@ Adding this to a normal `<Value/>` component gives us the following:
 
 ```html
 <Value 
-    data={data.your_query_name.filter(d => d.your_column_name === $page.params.your_parameter_name)} 
+    data={your_query_name.filter(d => d.your_column_name === $page.params.your_parameter_name)} 
     column=your_column_name
 />
 ```

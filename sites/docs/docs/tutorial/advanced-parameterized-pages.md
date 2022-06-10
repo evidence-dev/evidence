@@ -41,7 +41,7 @@ from orders
 group by item
 ```
 
-{#each data.product_list as product}
+{#each product_list as product}
     
 [{product.item}](/product-performance/{product.item})
 
@@ -74,7 +74,7 @@ group by order_month,item
 
 <BarChart 
     title='Orders per week'
-    data={data.monthly_item_sales.filter(d => d.item === $page.params.product)} 
+    data={monthly_item_sales.filter(d => d.item === $page.params.product)}
     x=order_month 
     y=orders
 />
@@ -106,7 +106,7 @@ Adding this to a normal `<BarChart/>` component gives us the following:
 ```html
 <BarChart 
     title='Orders per week'
-    data={data.monthly_item_sales.filter(d => d.item === $page.params.product)} 
+    data={monthly_item_sales.filter(d => d.item === $page.params.product)}
     x=order_month 
     y=orders
 />

@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.query_name}  
+    data={query_name}  
     x=column_x 
     y=column_y
 />
@@ -24,7 +24,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.daily_complaints} 
+    data={daily_complaints} 
     x=date 
     y=number_of_complaints 
     yAxisTitle="calls to Austin 311 per day"
@@ -36,7 +36,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.daily_volume_yoy} 
+    data={daily_volume_yoy} 
     x=day_of_year 
     y=cum_vol 
     series=year 
@@ -50,7 +50,7 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart 
-    data={data.fda_recalls}  
+    data={fda_recalls}  
     x=year
     y={["voluntary_recalls", "fda_recalls"]}
 />
@@ -59,7 +59,7 @@ hide_table_of_contents: false
 Because x is the first column in the dataset and we want to plot all the remaining numerical columns in the table, we can simplify our code down to:
 
 ```markdown
-<LineChart data={data.fda_recalls}/>
+<LineChart data={fda_recalls}/>
 ```
 
 Evidence will automatically pick the first column as `x` and use all other numerical columns for `y`.
@@ -69,7 +69,7 @@ Evidence will automatically pick the first column as `x` and use all other numer
 ### Data
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>data</td>	<td>Query name, referenced as a subset of Evidence's data object</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>data object</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>x</td>	<td>Column to use for the x-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>First column</td>	</tr>
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>Any non-assigned numeric columns</td>	</tr>
 <tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>

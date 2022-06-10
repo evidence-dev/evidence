@@ -11,7 +11,7 @@ In Evidence, you can include data directly in text by using the **<span class="g
 
 ```markdown
 <Value 
-    data={data.query_name} 
+    data={query_name} 
     column=your_column_name
     row=your_row_number
     value=pass_in_specific_value
@@ -24,8 +24,8 @@ In Evidence, you can include data directly in text by using the **<span class="g
 **Markdown:**
 
 ```markdown
-The most recent month of data began <Value data={data.monthly_orders} fmt=date/>, 
-when there were <Value data={data.monthly_orders} column=orders/> orders.
+The most recent month of data began <Value data={monthly_orders} fmt=date/>,
+when there were <Value data={monthly_orders} column=orders/> orders.
 ```
 
 **Result on Webpage:**
@@ -34,7 +34,7 @@ when there were <Value data={data.monthly_orders} column=orders/> orders.
 ## Options
 
 ### Showing Data from a Query Result
-* **data** - query name, referenced as a subset of Evidence's **`data`** object
+* **data** - query name, wrapped in curly braces
 * **column** - column name to pull values from
 * **row** - (Optional) specific row number to display
 

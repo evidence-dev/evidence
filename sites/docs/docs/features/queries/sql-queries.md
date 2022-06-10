@@ -11,16 +11,20 @@ When you open a page in dev mode, Evidence runs all of the queries on the page. 
 You can include SQL queries in your page using a markdown code block (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
 
 ````markdown
-```data_sample
+```sales_by_country
 select country, sum(sales) as sales
 from international_transactions 
 ```
 ````
 
 ## Using Query Results
-All query results on a page are returned to a single object called `data`. To use a query result, you need to reference the query name as a subset of that `data` object. These references can be used in any of the components from our built-in library.
+Reference a query in a component using `data={query_name}`
 
 For example, if your query name was `sales_by_country`:
+```markdown
+<LineChart data={sales_by_country}/>
+```
+or alternatively,
 ```markdown
 <LineChart data={data.sales_by_country}/>
 ```

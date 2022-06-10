@@ -11,7 +11,7 @@ hide_table_of_contents: false
 
 ```markdown
 <Histogram
-    data={data.query_name} 
+    data={query_name} 
     x=column_x 
 />
 ```
@@ -23,7 +23,7 @@ hide_table_of_contents: false
 
 ```markdown
 <Histogram 
-    data={data.complaints_by_day_dept} 
+    data={complaints_by_day_dept} 
     x=complaints 
     xAxisTitle="Daily Calls"
 />
@@ -34,7 +34,7 @@ hide_table_of_contents: false
 ### Data
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>data</td>	<td>Query name, referenced as a subset of Evidence's data object</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>data object</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>x</td>	<td>Column which contains the data you want to summarize</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>First column</td>	</tr>
 </table>						
 
