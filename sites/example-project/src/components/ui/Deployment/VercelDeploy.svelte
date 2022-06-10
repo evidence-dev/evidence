@@ -1,6 +1,7 @@
 <script>
     import EnvironmentVarListing from "./EnvironmentVarListing.svelte";
     import VariableCopy from "./VariableCopy.svelte";
+    import Separator from "../lib/Separator.svelte";
     export let settings
 </script>
 
@@ -19,7 +20,7 @@
 
 </ol>
 
-<div class="separator">Build and Output Settings</div>
+<Separator>Build and Output Settings</Separator>
 
 <div class='setting-row'>
     <span class='setting'>Build Command</span>
@@ -38,7 +39,7 @@
 </div>
 
 
-<div class="separator">Environment Variables</div>
+<Separator>Environment Variables</Separator>
 <p>Copy paste the following into environment variables</p>
 
 <EnvironmentVarListing {settings}/>
@@ -81,25 +82,4 @@
         margin-top: 0.25em;
         width: 45%;
     }
-
-    .separator {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin-block-start: 2.5em;
-        color: var(--grey-700);
-        font-weight:bold;
-    }
-
-    .separator::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid var(--grey-200);
-    }
-
-    .separator:not(:empty)::after {
-        margin-left: 1.5em;
-        margin-top: 0.1em;
-    }
-
 </style>

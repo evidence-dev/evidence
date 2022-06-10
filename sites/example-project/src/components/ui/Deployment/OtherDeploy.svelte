@@ -1,6 +1,7 @@
 <script>
     import EnvironmentVarListing from "./EnvironmentVarListing.svelte";
     import VariableCopy from "./VariableCopy.svelte";
+    import Separator from "../lib/Separator.svelte";
     export let settings
 </script>
 
@@ -14,7 +15,7 @@
     <li>You can share your database credentials with your production environment by setting the environment variables listed below</li>
 </ol>
 
-<div class="separator">Building Your Project</div>
+<Separator>Building Your Project</Separator>
 
 <div class='setting-row'>
     <span class='setting'>Build command</span>
@@ -27,7 +28,7 @@
     
 </div>
 
-<div class="separator">Environment Variables</div>
+<Separator>Environment Variables</Separator>
 <p>The following environment variables must be present in your deployment environment to enable your database connection</p>
 
 {#if !settings.credentials}
@@ -59,26 +60,6 @@
     div.setting-value {
         margin-top: 0.25em;
         width: 45%;
-    }
-
-    .separator {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin-block-start: 2.5em;
-        color: var(--grey-700);
-        font-weight:bold;
-    }
-
-    .separator::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid var(--grey-200);
-    }
-
-    .separator:not(:empty)::after {
-        margin-left: 1.5em;
-        margin-top: 0.1em;
     }
 
 </style>
