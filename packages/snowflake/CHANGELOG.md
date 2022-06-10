@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 0.0.9
+
+### Patch Changes
+
+- f651bda: Adding a database and warehouse field to the Snowflake connector. Without these it is difficult to run queries in a Snowflake DB.
+
 ## 0.0.8
 
 ### Patch Changes

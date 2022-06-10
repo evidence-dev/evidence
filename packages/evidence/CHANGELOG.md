@@ -1,5 +1,21 @@
 # @evidence-dev/evidence
 
+## 2.1.0
+
+### Minor Changes
+
+- 1fead9d: Exposed queries as their own variable (data={queryName}, in addition to existing data={data.queryname}) and exposed native Postgres/BigQuery types to components
+
+### Patch Changes
+
+- Updated dependencies [1fead9d]
+- Updated dependencies [f651bda]
+- Updated dependencies [d225abf]
+- Updated dependencies [a728873]
+  - @evidence-dev/preprocess@1.1.0
+  - @evidence-dev/db-orchestrator@1.0.3
+  - @evidence-dev/components@1.1.4
+
 ## 2.0.5
 
 ### Patch Changes

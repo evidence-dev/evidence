@@ -11,7 +11,7 @@
         {x: 17, y:18, y2: 26, y3: 16}
     ]
 
-    let banks = [
+    let bankData = [
     {fed_reserve_district: 'NY', established_date: '2015-01-01', banks: 1},
     {fed_reserve_district: 'SF', established_date: '2017-01-01', banks: 1},
     {fed_reserve_district: 'ATL', established_date: '2017-01-01', banks: 1},
@@ -187,7 +187,7 @@ group by fed_reserve_district, established_date
     <Scatter boundGapRight={['4%','4%']}/>
 </Chart>
 
-<AreaChart data={banks} x=established_date y=banks series=fed_reserve_district/>
+<AreaChart data={bankData} x=established_date y=banks series=fed_reserve_district/>
 
 <AreaChart data={banksFilled} x=established_date y=banks series=fed_reserve_district/>
 

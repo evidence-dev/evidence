@@ -1,4 +1,5 @@
 import getColumnType from "./getColumnType.js";
+import getColumnEvidenceType from "./getColumnEvidenceType.js";
 import getColumnExtents from "./getColumnExtents.js";
 import getColumnUnits from "./getColumnUnits.js";
 import getColumnFormat from "./getColumnFormat.js";
@@ -10,6 +11,7 @@ export default function getColumnSummary(data, returnType="object") {
     var colName;
     var colFmtTag;        
     var colType;
+    var evidenceColumnType;
     var colExtents;
     var colUnits;
     var colFormat;
@@ -21,6 +23,7 @@ export default function getColumnSummary(data, returnType="object") {
         colName = key;
         colFmtTag = getFormatTag(key);
         colType = getColumnType(data, colName, colFmtTag);
+        evidenceColumnType = getColumnEvidenceType(data, colName);
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);
@@ -29,6 +32,7 @@ export default function getColumnSummary(data, returnType="object") {
             [colName]: {
                 title: formatTitle(colName, colFormat),
                 type: colType,
+                evidenceColumnType: evidenceColumnType,
                 extents: colExtents,
                 format: colFormat,
                 units: colUnits
@@ -42,6 +46,7 @@ export default function getColumnSummary(data, returnType="object") {
         colName = key;
         colFmtTag = getFormatTag(key);
         colType = getColumnType(data, colName, colFmtTag);
+        evidenceColumnType = getColumnEvidenceType(data, colName);
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);
@@ -50,6 +55,7 @@ export default function getColumnSummary(data, returnType="object") {
               id: colName,
               title: formatTitle(colName, colFormat),
               type: colType,
+              evidenceColumnType: evidenceColumnType,
               extents: colExtents,
               format: colFormat,
               units: colUnits

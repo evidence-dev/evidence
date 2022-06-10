@@ -1,6 +1,8 @@
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 const path = require('path')
+const { processQueryResults } = require('@evidence-dev/db-commons')
+
 
 const runQuery = async (queryString, database) => {
     const filename = database ? database.filename : process.env["SQLITE_FILENAME"] || process.env["filename"] || process.env["FILENAME"]
@@ -12,7 +14,7 @@ const runQuery = async (queryString, database) => {
             mode: sqlite3.OPEN_READONLY,
         })
         const result = await db.all(queryString);
-        return result;    
+        return processQueryResults(result);
     } catch(err) {
         if (err.message) {
             if(err.errno === 14){

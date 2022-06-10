@@ -1,6 +1,7 @@
 <script>
     import echarts from "$lib/modules/echarts";
     import echartsCanvasDownload from "$lib/modules/echartsCanvasDownload";
+    import EchartsCopyTarget from "./EchartsCopyTarget.svelte";
 
     export let config = undefined;    
 
@@ -8,7 +9,11 @@
     export let width = '100%'
 
     let downloadChart = false;
+    let copying = false
+
 </script>
+
+<svelte:window on:copy={() => {copying = true; setTimeout(() => { copying = false }, 0);}}/>
 
 <div class=chart-container>
 
@@ -21,6 +26,7 @@
         margin-top: 15px;
         margin-bottom: 10px;
         overflow: visible;
+        display: {copying ? 'none' : 'inherit'}
     "
     use:echarts={config}
 />
@@ -29,6 +35,9 @@
   <span>Download</span>
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
 </span>
+
+<EchartsCopyTarget {downloadConfig} {height} {width} {copying}/> 
+
 </div>
 
 {#if downloadChart}
@@ -63,9 +72,10 @@
     }
   }
   .chart {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+    -moz-user-select: none;  
+    -webkit-user-select: none;  
+    -ms-user-select: none;  
+    -o-user-select: none;  
     user-select: none;
   }
 

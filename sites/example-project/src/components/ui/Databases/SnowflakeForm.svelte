@@ -28,8 +28,23 @@
             type: "password", 
             optional: false,
             override: false,
-            value: credentials.password
-        }
+            value: credentials.password},
+        {
+            id: "database", 
+            label: "Database", 
+            type: "text", 
+            optional: false,
+            override: false,
+            placeholder: "my-database",
+            value: credentials.warehouse},
+        {
+            id: "warehouse", 
+            label: "Warehouse", 
+            type: "text", 
+            optional: false,
+            override: false,
+            placeholder: "my_wh",
+            value: credentials.warehouse}
     ]
 
     import GenericForm from './GenericForm.svelte'
