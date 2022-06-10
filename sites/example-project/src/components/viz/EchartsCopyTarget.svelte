@@ -1,12 +1,12 @@
 <script>
     import eChartsCopy from "$lib/modules/echartsCopy.js";
     
-    export let downloadConfig = undefined;    
+    export let config = undefined;    
     export let height = '291px'
     export let width = '100%'
     export let copying = false 
 
-    downloadConfig.animation = false
+    config.animation = false
 
 </script>
 
@@ -21,6 +21,6 @@
           margin-bottom: 10px;
           overflow: visible;
       "
-      use:eChartsCopy={downloadConfig}
+      use:eChartsCopy={config}
     />
 {/if}
