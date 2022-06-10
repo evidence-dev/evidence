@@ -1,7 +1,7 @@
 <script>
     import EnvironmentVarListing from "./EnvironmentVarListing.svelte";
     import VariableCopy from "./VariableCopy.svelte";
-    import Separator from "../lib/Separator.svelte";
+    import Separator from "$lib/ui/system/Separator.svelte";
     export let settings
 </script>
 
