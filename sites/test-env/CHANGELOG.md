@@ -1,5 +1,11 @@
 # evidence-test-environment
 
+## 1.0.13
+
+### Patch Changes
+
+- @evidence-dev/evidence@3.0.2
+
 ## 1.0.12
 
 ### Patch Changes
