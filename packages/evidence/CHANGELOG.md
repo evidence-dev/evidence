@@ -1,5 +1,14 @@
 # @evidence-dev/evidence
 
+## 3.0.0
+
+### Patch Changes
+
+- Updated dependencies [a83857e]
+- Updated dependencies [cb6d561]
+  - @evidence-dev/preprocess@1.1.1
+  - @evidence-dev/db-orchestrator@1.1.0
+
 ## 2.1.0
 
 ### Minor Changes

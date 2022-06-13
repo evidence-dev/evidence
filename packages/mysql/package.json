@@ -1,6 +1,6 @@
 {
     "name": "@evidence-dev/mysql",
-    "version": "0.0.4",
+    "version": "0.1.0",
     "description": "MySQL driver for Evidence projects",
     "main": "index.cjs",
     "author": "evidence.dev",
@@ -13,7 +13,7 @@
         "@evidence-dev/db-commons": "workspace:^"
     },
     "devDependencies": {
-      "dotenv": "^16.0.1"
+        "dotenv": "^16.0.1"
     },
     "type": "module"
 }

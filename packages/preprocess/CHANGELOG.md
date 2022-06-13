@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 1.1.1
+
+### Patch Changes
+
+- a83857e: Downgrade remark-parse dependency to match mdsvex version, and avoid security warning.
+
 ## 1.1.0
 
 ### Minor Changes
