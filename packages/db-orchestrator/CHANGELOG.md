@@ -1,5 +1,21 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.0
+
+### Minor Changes
+
+- cb6d561: Native type support for MySQL, SQL Lite, and Snowflake and extracted common DB functionality to a shared package.
+
+### Patch Changes
+
+- Updated dependencies [cb6d561]
+  - @evidence-dev/bigquery@1.2.0
+  - @evidence-dev/db-commons@0.1.0
+  - @evidence-dev/mysql@0.1.0
+  - @evidence-dev/postgres@0.2.0
+  - @evidence-dev/snowflake@0.1.0
+  - @evidence-dev/sqlite@1.1.0
+
 ## 1.0.3
 
 ### Patch Changes
