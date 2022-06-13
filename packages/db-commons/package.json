@@ -1,7 +1,7 @@
 {
     "name": "@evidence-dev/db-commons",
     "version": "0.1.0",
-    "description": "Shared modules for Evidence Database Drivers",
+    "description": "Shared modules for Evidence Database Drivers ",
     "main": "index.cjs",
     "author": "evidence.dev",
     "license": "MIT",
