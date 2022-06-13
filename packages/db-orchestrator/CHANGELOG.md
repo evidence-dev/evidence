@@ -1,5 +1,17 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [942488c]
+  - @evidence-dev/db-commons@0.1.1
+  - @evidence-dev/bigquery@1.2.1
+  - @evidence-dev/mysql@0.1.1
+  - @evidence-dev/postgres@0.2.1
+  - @evidence-dev/snowflake@0.1.1
+  - @evidence-dev/sqlite@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes
