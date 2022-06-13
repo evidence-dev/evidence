@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 0.2.2
+
+### Patch Changes
+
+- 194de3a: include db commons dep
+
 ## 0.2.1
 
 ### Patch Changes

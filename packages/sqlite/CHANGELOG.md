@@ -1,5 +1,11 @@
 # @evidence-dev/sqlite
 
+## 1.1.2
+
+### Patch Changes
+
+- 194de3a: include db commons dep
+
 ## 1.1.1
 
 ### Patch Changes

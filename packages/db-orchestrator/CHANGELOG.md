@@ -1,5 +1,13 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies [194de3a]
+  - @evidence-dev/postgres@0.2.2
+  - @evidence-dev/sqlite@1.1.2
+
 ## 1.1.1
 
 ### Patch Changes
