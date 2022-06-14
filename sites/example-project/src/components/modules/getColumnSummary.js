@@ -1,4 +1,3 @@
-import getColumnType from "./getColumnType.js";
 import getColumnEvidenceType from "./getColumnEvidenceType.js";
 import getColumnExtents from "./getColumnExtents.js";
 import getColumnUnits from "./getColumnUnits.js";
@@ -25,7 +24,6 @@ export default function getColumnSummary(data, returnType="object") {
         colFmtTag = getFormatTag(key);
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType
-        legacyType = getColumnType(data, colName, colFmtTag);
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);
@@ -33,7 +31,6 @@ export default function getColumnSummary(data, returnType="object") {
         let thisCol = {
             [colName]: {
                 title: formatTitle(colName, colFormat),
-                legacyType: legacyType,
                 type: colType,
                 evidenceColumnType: evidenceColumnType,
                 extents: colExtents,
@@ -50,7 +47,6 @@ export default function getColumnSummary(data, returnType="object") {
         colFmtTag = getFormatTag(key);
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType
-        legacyType = getColumnType(data, colName, colFmtTag);
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);
@@ -58,7 +54,6 @@ export default function getColumnSummary(data, returnType="object") {
           columnSummary.push({
               id: colName,
               title: formatTitle(colName, colFormat),
-              legacyType: legacyType,
               type: colType,
               evidenceColumnType: evidenceColumnType,
               extents: colExtents,
