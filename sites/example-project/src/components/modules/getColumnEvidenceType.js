@@ -1,3 +1,5 @@
+import inferColumnTypes from "./inferColumnTypes";
+
 export default function getColumnEvidenceType(data, column) {
   let item;
   if (data) {
@@ -8,6 +10,10 @@ export default function getColumnEvidenceType(data, column) {
     }
     if (item && item['_evidenceColumnTypes']) {
       let columnTypes = item['_evidenceColumnTypes'];
+      return columnTypes.find(item => item.name === column);
+    } else {
+      // infer types as a fall-back (when someone is passing arbitrary data objects)
+      let columnTypes = inferColumnTypes(data);
       return columnTypes.find(item => item.name === column);
     }
   }
