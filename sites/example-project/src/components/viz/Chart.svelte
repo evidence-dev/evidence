@@ -10,6 +10,7 @@
         import getSortedData from '../modules/getSortedData.js';
         import formatAxisLabel from '../modules/formatAxisLabel';
         import formatTitle from '../modules/formatTitle.js';
+        import formatValue from '../modules/formatValue.js';
         import ErrorChart from './ErrorChart.svelte';
         import checkInputs from '../modules/checkInputs';
         import {colours} from '../modules/colours'
@@ -511,6 +512,12 @@ try{
             },
             tooltip: {
                 trigger: "axis",
+                // formatter: function (params) {
+                    // console.log(params[0])
+                    // return params[1].marker + params[1].seriesId
+                    // return "<strong>" + formatTitle(x, xFormat) + ": </strong>  " + " <span style='float:right'>" + formatValue(params[0].value[0], xFormat) + "</span><br/> " + formatTitle(y, yFormat) + ": " + "<span style='float:right'>" + formatValue(params[0].value[1], yFormat) + "</span>"
+//                 }
+// ,
                 confine: true,
                 axisPointer: {
                     // Use axis to trigger tooltip 
