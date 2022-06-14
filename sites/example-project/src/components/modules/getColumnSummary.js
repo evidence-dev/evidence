@@ -15,6 +15,7 @@ export default function getColumnSummary(data, returnType="object") {
     var colExtents;
     var colUnits;
     var colFormat;
+    var legacyType; 
 
     let columnSummary = [];
 
@@ -22,8 +23,9 @@ export default function getColumnSummary(data, returnType="object") {
       for (const [key] of Object.entries(data[0])) {
         colName = key;
         colFmtTag = getFormatTag(key);
-        colType = getColumnType(data, colName, colFmtTag);
         evidenceColumnType = getColumnEvidenceType(data, colName);
+        colType = evidenceColumnType.evidenceType
+        legacyType = getColumnType(data, colName, colFmtTag);
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);
@@ -31,6 +33,7 @@ export default function getColumnSummary(data, returnType="object") {
         let thisCol = {
             [colName]: {
                 title: formatTitle(colName, colFormat),
+                legacyType: legacyType,
                 type: colType,
                 evidenceColumnType: evidenceColumnType,
                 extents: colExtents,
@@ -45,8 +48,9 @@ export default function getColumnSummary(data, returnType="object") {
       for (const [key] of Object.entries(data[0])) {
         colName = key;
         colFmtTag = getFormatTag(key);
-        colType = getColumnType(data, colName, colFmtTag);
         evidenceColumnType = getColumnEvidenceType(data, colName);
+        colType = evidenceColumnType.evidenceType
+        legacyType = getColumnType(data, colName, colFmtTag);
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);
@@ -54,6 +58,7 @@ export default function getColumnSummary(data, returnType="object") {
           columnSummary.push({
               id: colName,
               title: formatTitle(colName, colFormat),
+              legacyType: legacyType,
               type: colType,
               evidenceColumnType: evidenceColumnType,
               extents: colExtents,
