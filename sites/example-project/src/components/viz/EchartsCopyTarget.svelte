@@ -6,8 +6,6 @@
     export let width = '100%'
     export let copying = false 
 
-    config.animation = false
-
 </script>
 
 {#if copying}
