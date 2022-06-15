@@ -2,16 +2,20 @@
     import {blur, slide, fade } from 'svelte/transition';
     import DownloadData from '../DownloadData.svelte'
     import { getContext} from 'svelte';
+    import getColumnSummary from '$lib/modules/getColumnSummary.js';
+    import formatValue from '$lib/modules/formatValue.js';
 
     export let queryID;
     export let data;  //TODO fallback support in case of the untitled issue. Shouldn't be exposed.
     let columns = [];
+    let columnSummary;
 
     if (queryID && queryID !== 'untitled') {
         data = getContext('pageQueryResults').getData(queryID);
         if (data) {
           let columnTypes =  data[0]['_evidenceColumnTypes'];
-          
+          columnSummary = getColumnSummary(data, 'array');
+
           if (columnTypes) {
             columnTypes.forEach(column => {
                 let columnDisplayName = column.name;
@@ -63,9 +67,9 @@
     let dataPage = data.slice(index, index+size);
     let updatedSlice = ''
 
-    function slice(){
-    updatedSlice = data.slice(index, index+size);
-    dataPage = updatedSlice
+    function slice() {
+      updatedSlice = data.slice(index, index+size);
+      dataPage = updatedSlice
     }
 
 </script>
@@ -94,21 +98,33 @@
                       <!-- <input type="number" bind:value={index} max={max} min=0 on:input={slice} class="index-key" autofocus reversed> -->
                       {(index+i+1).toLocaleString()}
                       {:else}
-                      {(index+i+1).toLocaleString()}
+                      {(index+i+1).toLocaleString()} 
                       {/if}
                     </td>
-                  {#each Object.values(row) as cell}
-                    {#if typeof(cell) === 'number'}
-                    <td class="number" style="width:{columnWidths}%" >
-                    {cell.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    }) || "Ø"}</td>
-                    {:else}             
-                    <td class="other" style="width:{columnWidths}%">
+                  {#each Object.values(row) as cell, j}
+                      {#if cell == null}
+                      <td class="null {columnSummary[j].type}" style="width:{columnWidths}%">
+                          {"Ø"}                       
+                      </td>
+                    {:else if columnSummary[j].type === 'number'}
+                      <td class="number" style="width:{columnWidths}%;">
+                         {formatValue(cell, columnSummary[j].format, columnSummary[j].units)}
+                      </td>
+                    {:else if columnSummary[j].type === 'date'}
+                    <td class="string" style="width:{columnWidths}%" title={formatValue(cell, columnSummary[j].format)}>
                       <div >
-                          {cell || "Ø"}                       
+                          {formatValue(cell, columnSummary[j].format)}                       
                       </div>
+                    </td>
+                    {:else if columnSummary[j].type === 'string'}
+                      <td class="string" style="width:{columnWidths}%" title={cell}>
+                        <div >
+                            {cell || "Ø"}                       
+                        </div>
+                      </td>
+                    {:else}
+                      <td class="other" style="width:{columnWidths}%">
+                            {cell || "Ø"}                       
                       </td>
                     {/if}
                   {/each}
