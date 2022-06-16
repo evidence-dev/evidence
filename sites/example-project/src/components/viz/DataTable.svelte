@@ -273,11 +273,11 @@
   }
 
   .null{
-    color: lightgrey;
+    color: var(--grey-300);
   }
 
   .index{
-    color:lightgray;
+    color:var(--grey-300);
     text-align: left;
     max-width: min-content;
   }

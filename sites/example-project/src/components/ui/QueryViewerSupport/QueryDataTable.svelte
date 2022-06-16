@@ -294,6 +294,10 @@
     text-align: right;
   }
 
+  .null{
+    color: var(--grey-300);
+  }
+
   .index{
     color:var(--grey-300);
     text-align: left;
