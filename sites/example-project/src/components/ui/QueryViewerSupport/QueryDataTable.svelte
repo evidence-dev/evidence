@@ -81,12 +81,10 @@
     <thead>
         <tr>
           <th class="index" style="width:10%"></th>
-          {#each columns as column}
-              {#if column.type === 'number'}
-              <th class="number" style="width:{columnWidths}%"> {column.title} </th>
-              {:else}
-              <th class="other" style="width:{columnWidths}%"> {column.title} </th>
-              {/if}
+          {#each columnSummary as column}
+          <th class="{column.type}" style="width:{columnWidths}%" 
+              evidenceType="{column.evidenceColumnType?.evidenceType || 'unavailable'}"
+              evidenceTypeFidelity="{column.evidenceColumnType?.typeFidelity || 'unavailable'}"> {column.id} </th>
           {/each}
         <tr/>
       </thead>
@@ -281,6 +279,14 @@
   }
 
   .other{
+    text-align: left;
+  }
+
+  .string{
+    text-align: left;
+  }
+
+  .date{
     text-align: left;
   }
 
