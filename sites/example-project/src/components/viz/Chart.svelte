@@ -512,12 +512,15 @@ try{
             },
             tooltip: {
                 trigger: "axis",
-                // formatter: function (params) {
-                    // console.log(params[0])
-                    // return params[1].marker + params[1].seriesId
-                    // return "<strong>" + formatTitle(x, xFormat) + ": </strong>  " + " <span style='float:right'>" + formatValue(params[0].value[0], xFormat) + "</span><br/> " + formatTitle(y, yFormat) + ": " + "<span style='float:right'>" + formatValue(params[0].value[1], yFormat) + "</span>"
-//                 }
-// ,
+                valueFormatter: function(value) {
+                    let formatted;
+                    try {
+                        formatted = formatValue(value, yFormat)
+                    } catch(e) {
+                        return "-"
+                    }
+                    return formatted
+                },
                 confine: true,
                 axisPointer: {
                     // Use axis to trigger tooltip 
@@ -532,7 +535,8 @@ try{
                 extraCssText: 'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
                 textStyle: {
                     color: colours.grey900,
-                    fontSize: 12
+                    fontSize: 12,
+                    fontWeight: 400
                 },
                 order:'valueDesc'
             },
