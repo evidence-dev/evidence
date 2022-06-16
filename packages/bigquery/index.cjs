@@ -85,6 +85,7 @@ const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefi
         case 'BIGDECIMAL':
         case 'BIGNUMERIC':
         case 'FLOAT64':
+        case 'FLOAT':
           return EvidenceType.NUMBER;
         case 'STRING':
           return EvidenceType.STRING;
