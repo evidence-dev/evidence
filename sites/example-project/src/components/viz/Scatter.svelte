@@ -69,6 +69,9 @@
          },
          xAxis: {
              boundaryGap: [xType === "time" ? '2%' : '1%', '2%']
+         },
+         tooltip: {
+             trigger: "item"
          }
      }
 
@@ -77,9 +80,11 @@
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             }
             return d})
     }
