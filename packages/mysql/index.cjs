@@ -14,6 +14,8 @@ const standardizeResult = async (result) => {
 }
 
 const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
+    // No native bool https://stackoverflow.com/questions/289727/which-mysql-data-type-to-use-for-storing-boolean-values
+    
     switch (dataTypeId) {
         case mysqlTypes["DECIMAL"]:
         case mysqlTypes["TINY"]:

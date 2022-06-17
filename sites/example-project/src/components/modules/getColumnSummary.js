@@ -1,4 +1,3 @@
-import getColumnType from "./getColumnType.js";
 import getColumnEvidenceType from "./getColumnEvidenceType.js";
 import getColumnExtents from "./getColumnExtents.js";
 import getColumnUnits from "./getColumnUnits.js";
@@ -22,8 +21,8 @@ export default function getColumnSummary(data, returnType="object") {
       for (const [key] of Object.entries(data[0])) {
         colName = key;
         colFmtTag = getFormatTag(key);
-        colType = getColumnType(data, colName, colFmtTag);
         evidenceColumnType = getColumnEvidenceType(data, colName);
+        colType = evidenceColumnType.evidenceType
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);
@@ -45,8 +44,8 @@ export default function getColumnSummary(data, returnType="object") {
       for (const [key] of Object.entries(data[0])) {
         colName = key;
         colFmtTag = getFormatTag(key);
-        colType = getColumnType(data, colName, colFmtTag);
         evidenceColumnType = getColumnEvidenceType(data, colName);
+        colType = evidenceColumnType.evidenceType
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
         colFormat = getColumnFormat(colFmtTag, colType);

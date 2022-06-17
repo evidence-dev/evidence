@@ -85,7 +85,7 @@ const mapResultsToEvidenceColumnTypes = function (results) {
         }
         return (
           {
-            'name': field.name,
+            'name': field.name.toLowerCase(), // opening an issue for this -- not sure if we should just respect snowflake capitalizing all column names, or not. makes for unpleasant syntax elsewhere
             'evidenceType': evidenceType,
             'typeFidelity': typeFidelity,
           });
