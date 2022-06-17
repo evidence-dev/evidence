@@ -14,6 +14,7 @@ export default function getColumnSummary(data, returnType="object") {
     var colExtents;
     var colUnits;
     var colFormat;
+    var legacyType; 
 
     let columnSummary = [];
 
