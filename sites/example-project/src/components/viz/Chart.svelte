@@ -308,7 +308,7 @@ try{
     // ---------------------------------------------------------------------------------------
     // Add props to store to let child components access them
     // ---------------------------------------------------------------------------------------
-        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xMismatch, size, yMin, columnSummary}});
+        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, xMismatch, size, yMin, columnSummary}});
 
     // ---------------------------------------------------------------------------------------
     // Axis Configuration
@@ -512,14 +512,18 @@ try{
             },
             tooltip: {
                 trigger: "axis",
-                valueFormatter: function(value) {
-                    let formatted;
-                    try {
-                        formatted = formatValue(value, yFormat)
-                    } catch(e) {
-                        return "-"
+                formatter: function(params){
+                    let output
+                    console.log(params)
+                    if(params.length > 1){
+                        output = `<span style='font-weight: 600;'>${formatValue(params[0].value[0], xFormat)}</span>`
+                        for(let i = params.length - 1; i >= 0; i--){
+                            output = output + `<br> ${params[i].marker} ${params[i].seriesName} <span style='float:right; margin-left: 10px;'>${formatValue(params[i].value[1], yFormat)}</span>`
+                        }
+                    } else {
+                        output = `<span style='font-weight: 600;'>${formatValue(params[0].value[0], xFormat)}</span><br/><span>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(params[0].value[1], yFormat)}</span>`
                     }
-                    return formatted
+                    return output
                 },
                 confine: true,
                 axisPointer: {
@@ -583,4 +587,3 @@ try{
 <ErrorChart {error} {chartType}/>
 
 {/if}
-

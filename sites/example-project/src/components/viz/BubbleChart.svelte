@@ -34,6 +34,8 @@
     let chartType = "Bubble Chart";
     let bubble = true;
 
+    let useTooltip = true;
+
 </script>
 
 <Chart
@@ -66,5 +68,6 @@
         {outlineColor}
         {outlineWidth}
         {scaleTo}
+        {useTooltip}
     />
 </Chart>

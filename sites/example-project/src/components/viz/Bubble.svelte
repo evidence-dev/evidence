@@ -3,6 +3,7 @@
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import getColumnExtents from '$lib/modules/getColumnExtents';
     import formatTitle from '$lib/modules/formatTitle';
+    import formatValue from '$lib/modules/formatValue.js';
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
@@ -21,11 +22,17 @@
     export let scaleTo = 1;
     maxSize = maxSize * (scaleTo / 1);
 
+    export let useTooltip = false;
+    let multiSeries;
+    let tooltipOutput;
+
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
     let x = $props.x;
     let swapXY = $props.swapXY;
     let xType = $props.xType;
+    let xFormat = $props.xFormat;
+    let yFormat = $props.yFormat;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
@@ -36,9 +43,11 @@
     if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
+        multiSeries = false;
     } else {
         // Multi Series
         data = getCompletedData(data, x, y, series);
+        multiSeries = true;
     }
 
     // Determine bubble sizes:
@@ -77,6 +86,24 @@
             }
     }
 
+    let tooltipOpts;
+    if(useTooltip){
+        tooltipOpts = {
+            tooltip: {
+                formatter: function(params) {
+                    tooltipOutput = multiSeries ? `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>` : '';
+                    tooltipOutput = tooltipOutput + `${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                    ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
+                    ${formatTitle(size, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], yFormat)}</span>`
+                    return tooltipOutput
+                },
+                trigger: "item"
+            }
+        }
+
+        baseConfig = {...baseConfig, ...tooltipOpts}
+    }
+
     if(options){
         baseConfig = {...baseConfig, ...options}
     }
@@ -96,7 +123,7 @@
     }
 
     let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary, size);
-    
+
     config.update(d => {d.series.push(...seriesConfig); return d})
 
     if(chartOverrides){

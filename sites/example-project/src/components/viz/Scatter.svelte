@@ -2,6 +2,7 @@
     import { props, config } from '$lib/modules/stores.js';   
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import formatTitle from '$lib/modules/formatTitle.js';
+    import formatValue from '$lib/modules/formatValue.js';
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
@@ -16,11 +17,17 @@
     export let outlineWidth = undefined;
     export let pointSize = 10;
 
+    export let useTooltip = false;
+    let multiSeries;
+    let tooltipOutput;
+
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
     let x = $props.x;
     let swapXY = $props.swapXY;
     let xType = $props.xType;
+    let xFormat = $props.xFormat;
+    let yFormat = $props.yFormat;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
@@ -30,9 +37,11 @@
     if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
+        multiSeries = false;
     } else {
         // Multi Series
         data = getCompletedData(data, x, y, series);
+        multiSeries = true;
     }
 
     let baseConfig = {
@@ -54,12 +63,28 @@
             }
      }
 
+    let tooltipOpts;
+    if(useTooltip){
+        tooltipOpts = {
+            tooltip: {
+                formatter: function(params) {
+                    tooltipOutput = multiSeries ? `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>` : '';
+                    tooltipOutput = tooltipOutput + `${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                    ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                    return tooltipOutput
+                },
+                trigger: "item"
+            }
+        }
+
+        baseConfig = {...baseConfig, ...tooltipOpts}
+    }
+
     if(options){
         baseConfig = {...baseConfig, ...options}
     }
 
     let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
-    
     config.update(d => {d.series.push(...seriesConfig); return d})
 
     let chartOverrides = {
@@ -69,9 +94,6 @@
          },
          xAxis: {
              boundaryGap: [xType === "time" ? '2%' : '1%', '2%']
-         },
-         tooltip: {
-             trigger: "item"
          }
      }
 
@@ -80,11 +102,9 @@
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             }
             return d})
     }
