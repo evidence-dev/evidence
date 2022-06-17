@@ -25,11 +25,15 @@ const createModuleContext = function(filename){
         moduleContext = 
             ` 
             export async function load({fetch}) {
-                const res = await fetch('/api/${routeHash}.json')
-                const {data} = await res.json()
+                const res = await fetch('/api/${routeHash}.json');
+                const {data} = await res.json();
+
+                const customSettingsRes = await fetch('/api/customSettings.json');
+                const {customSettings} = await customSettingsRes.json();
                 return {
                     props: {
-                        data
+                        data,
+                        customSettings
                     }
                 }
             }
@@ -62,7 +66,14 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
-        let routeHash = '${routeHash}'
+        let routeHash = '${routeHash}';
+        export let customSettings;
+
+        setContext('customSettings', {
+            getCustomFormats: () => {
+                return customSettings.customFormats || [];
+            }
+        });
         `
   
     if(hasQueries(filename)){
@@ -71,6 +82,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
                                          .join('\n') || '';
         defaultProps = `
             export let data;
+
             pageHasQueries.update(value => value = true);
 
             setContext('pageQueryResults', {

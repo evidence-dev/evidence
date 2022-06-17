@@ -12,6 +12,7 @@
 		"echarts": "5.3.2",
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
+		"ssf": "^0.11.2",
 		"git-remote-origin-url": "4.0.0",
 		"svelte": "3.44.3",
 		"svelte-icons": "2.1.0",

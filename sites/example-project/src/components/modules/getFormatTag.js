@@ -1,3 +1,5 @@
+import { builtInFormats, getCustomFormats } from '$lib/modules/formats'
+
 export default function getFormatTag(columnName) {
 
     // Lowercase all characters in name:
@@ -18,35 +20,12 @@ export default function getFormatTag(columnName) {
         fmt = fmt_stub.replace("_", "");
     }
 
-    // Filter for supported format tags:
-
-    let supportedTags = [
-    // Date/Time:
-    "date",
-    "week",
-    "month",
-    "qtr",
-    "year",
-
-    // Currency:
-    "usd",
-    "cad",
-    "eur",
-    "gbp",
-    "chf",
-
-    // Numbers:
-    "pct",
-    "num",
-    "num2",
-
-    // Strings:
-    "str",
-    "id" // treating IDs as strings even if they are numbers
-    ]
+    let customFormats = getCustomFormats() || [];
+    let supportedTags = [...builtInFormats, ...customFormats].map(format => format.formatName);
 
     // if the fmt tag OR the full column name is in the supported tags, use that tag:
     fmt = supportedTags.includes(fmt) ? fmt : supportedTags.includes(columnName) ? columnName : null;
+
     return fmt;
 }
 
