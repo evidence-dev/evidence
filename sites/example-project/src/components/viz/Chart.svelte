@@ -88,6 +88,7 @@
         let xMismatch;
         let xFormat;
         let yFormat;
+        let sizeFormat;
         let xUnits;
         let yUnits;       
         let xDistinct;
@@ -283,6 +284,10 @@ try{
             }
         }
 
+        if(size){
+            sizeFormat = columnSummary[size].format;
+        }
+
         xUnits = columnSummary[x].units;
         
         if(!y){yUnits = ''} else {
@@ -308,7 +313,7 @@ try{
     // ---------------------------------------------------------------------------------------
     // Add props to store to let child components access them
     // ---------------------------------------------------------------------------------------
-        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, xMismatch, size, yMin, columnSummary}});
+        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle}});
 
     // ---------------------------------------------------------------------------------------
     // Axis Configuration
@@ -514,14 +519,24 @@ try{
                 trigger: "axis",
                 formatter: function(params){
                     let output
-                    console.log(params)
+                    let xVal
+                    let yVal
+                    console.log(xType)
                     if(params.length > 1){
-                        output = `<span style='font-weight: 600;'>${formatValue(params[0].value[0], xFormat)}</span>`
+                        xVal = params[0].value[swapXY ? 1 : 0]
+                        output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span>`
                         for(let i = params.length - 1; i >= 0; i--){
-                            output = output + `<br> ${params[i].marker} ${params[i].seriesName} <span style='float:right; margin-left: 10px;'>${formatValue(params[i].value[1], yFormat)}</span>`
+                            yVal = params[i].value[swapXY ? 0 : 1]
+                            output = output + `<br> ${params[i].marker} ${params[i].seriesName} <span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
                         }
+                    } else if(xType === "value"){
+                        xVal = params[0].value[swapXY ? 1 : 0]
+                        yVal = params[0].value[swapXY ? 0 : 1]
+                        output = `<span>${formatTitle(x, xFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(xVal, xFormat)}</span><br/><span>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
                     } else {
-                        output = `<span style='font-weight: 600;'>${formatValue(params[0].value[0], xFormat)}</span><br/><span>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(params[0].value[1], yFormat)}</span>`
+                        xVal = params[0].value[swapXY ? 1 : 0]
+                        yVal = params[0].value[swapXY ? 0 : 1]
+                        output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span><br/><span>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
                     }
                     return output
                 },

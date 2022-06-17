@@ -17,7 +17,7 @@
     export let outlineWidth = undefined;
     export let pointSize = 10;
 
-    export let useTooltip = false;
+    export let useTooltip = false; // if true, will override the default 'axis'-based echarts tooltip. true only for scatter-only charts
     let multiSeries;
     let tooltipOutput;
 
@@ -44,6 +44,7 @@
         multiSeries = true;
     }
 
+    // Set up base config for this type of chart series:
     let baseConfig = {
             type: "scatter",
             label: {
@@ -61,9 +62,12 @@
                 borderColor: outlineColor,
                 borderWidth: outlineWidth
             }
-     }
+    }
 
+
+    // Tooltip settings (scatter and bubble charts require different tooltip than default)
     let tooltipOpts;
+    let tooltipOverride;
     if(useTooltip){
         tooltipOpts = {
             tooltip: {
@@ -72,21 +76,31 @@
                     tooltipOutput = tooltipOutput + `${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
                     ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
                     return tooltipOutput
-                },
-                trigger: "item"
+                }
             }
         }
 
         baseConfig = {...baseConfig, ...tooltipOpts}
+
+        tooltipOverride = {
+            tooltip: {
+                trigger: "item"
+            }
+        }
     }
 
+    // If user has passed in custom echarts config options, append to the baseConfig:
     if(options){
         baseConfig = {...baseConfig, ...options}
     }
 
+
+    // Generate config for each series:
     let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     config.update(d => {d.series.push(...seriesConfig); return d})
 
+    
+    // Chart-level config settings:
     let chartOverrides = {
          yAxis: {
              scale: true,
@@ -95,8 +109,9 @@
          xAxis: {
              boundaryGap: [xType === "time" ? '2%' : '1%', '2%']
          }
-     }
+    }
 
+    // Apply the chart-level overrides to the main config used by Chart.svelte:
     if(chartOverrides){
         config.update(d => {
             if(swapXY){
@@ -105,6 +120,9 @@
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            if(useTooltip){
+                d.tooltip = {...d.tooltip, ...tooltipOverride.tooltip};
             }
             return d})
     }

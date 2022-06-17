@@ -33,6 +33,7 @@
     let xType = $props.xType;
     let xFormat = $props.xFormat;
     let yFormat = $props.yFormat;
+    let sizeFormat = $props.sizeFormat;
     let xMismatch = $props.xMismatch;
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
@@ -86,7 +87,10 @@
             }
     }
 
+    // Tooltip settings (scatter and bubble charts require different tooltip than default)
+
     let tooltipOpts;
+    let tooltipOverride;
     if(useTooltip){
         tooltipOpts = {
             tooltip: {
@@ -94,48 +98,52 @@
                     tooltipOutput = multiSeries ? `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>` : '';
                     tooltipOutput = tooltipOutput + `${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
                     ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
-                    ${formatTitle(size, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], yFormat)}</span>`
+                    ${formatTitle(size, sizeFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
                     return tooltipOutput
-                },
-                trigger: "item"
+                }
             }
         }
 
         baseConfig = {...baseConfig, ...tooltipOpts}
+
+        tooltipOverride = {
+            tooltip: {
+                trigger: "item"
+            }
+        }
     }
 
+    // If user has passed in custom echarts config options, append to the baseConfig:
     if(options){
         baseConfig = {...baseConfig, ...options}
     }
 
+    // Generate config for each series:
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary, size);
+    config.update(d => {d.series.push(...seriesConfig); return d})
+
     // Overriding global chart config:
     let chartOverrides = {
-         yAxis: {
-             scale: true,
-             boundaryGap: ['1%', '1%']
-         },
-         xAxis: {
-             boundaryGap: [xType === "time" ? '2%' : '1%', '2%']
-         },
-         tooltip: {
-             trigger: "item"
-         }
+        yAxis: {
+            scale: true,
+            boundaryGap: ['1%', '1%']
+        },
+        xAxis: {
+            boundaryGap: [xType === "time" ? '2%' : '1%', '2%']
+        }
     }
-
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary, size);
-
-    config.update(d => {d.series.push(...seriesConfig); return d})
 
     if(chartOverrides){
         config.update(d => {
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
-                d.tooltip = {...d.tooltip, ...chartOverrides.tooltip};
+            }
+            if(useTooltip){
+                d.tooltip = {...d.tooltip, ...tooltipOverride.tooltip};
             }
             return d})
     }
