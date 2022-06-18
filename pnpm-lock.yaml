@@ -17,6 +17,7 @@ importers:
       echarts-stat: 1.2.0
       export-to-csv: 0.2.1
       git-remote-origin-url: 4.0.0
+      ssf: ^0.11.2
       svelte: 3.44.3
       svelte-icons: 2.1.0
       svelte2tsx: 0.4.7
@@ -37,6 +38,7 @@ importers:
       echarts-stat: 1.2.0
       export-to-csv: 0.2.1
       git-remote-origin-url: 4.0.0
+      ssf: 0.11.2
       svelte: 3.44.3
       svelte-icons: 2.1.0
       svelte2tsx: 0.4.7_svelte@3.44.3+typescript@4.5.4
@@ -6880,6 +6882,11 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /frac/1.1.2:
+    resolution: {integrity: sha512-w/XBfkibaTl3YDqASwfDUqkna4Z2p9cFSr1aHDt0WoMTECnRfBOv2WArlZILlqgWlmdIlALXGpM2AOhEk5W3IA==}
+    engines: {node: '>=0.8'}
+    dev: true
+
   /fraction.js/4.1.1:
     resolution: {integrity: sha512-MHOhvvxHTfRFpF1geTK9czMIZ6xclsEor2wkIGYYq+PxcQqT7vStJqjhe6S1TenZrMZzo+wlqOufBDVepUEgPg==}
     dev: false
@@ -11934,6 +11941,13 @@ packages:
     resolution: {integrity: sha512-vF4ZbYdKS8OnoJAWBmMxCQDkiEBkGQYU7UZPtL8flbDRSNkhaXvRJ279ZtI6M+zDaQovVU4tuRgzK5fVhvFAhg==}
     engines: {node: '>= 0.6'}
     dev: false
+
+  /ssf/0.11.2:
+    resolution: {integrity: sha512-+idbmIXoYET47hH+d7dfm2epdOMUDjqcB4648sTZ+t2JwoyBFL/insLfB/racrDmsKB3diwsDA696pZMieAC5g==}
+    engines: {node: '>=0.8'}
+    dependencies:
+      frac: 1.1.2
+    dev: true
 
   /sshpk/1.16.1:
     resolution: {integrity: sha512-HXXqVUq7+pcKeLqqZj6mHFUMvXtOJt1uoUx09pFW6011inTMxqI8BA8PM95myrIyyKwdnzjdFjLiE6KBPVtJIg==}
