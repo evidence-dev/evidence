@@ -181,7 +181,9 @@
 
 <h2>Custom Formats</h2>
 
-<FormatGrid formats={customSettings.customFormats}/>
+{#if (customSettings.customFormats) }
+	<FormatGrid formats={customSettings.customFormats}/>
+{/if}
 
 {#if editingCustomFormat }
 	<div class="separator">Add a new custom format</div>
