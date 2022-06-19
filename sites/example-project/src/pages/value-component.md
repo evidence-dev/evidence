@@ -1,7 +1,7 @@
 # Value Component Error Handling
 
 ```summary
-select 1000 as total_calls
+select 1000 as total_sales_usd
 ```
 
 Errors in the Value component are now inlined into your text instead of breaking your full page. Here's an example of an empty Value tag: <Value/> which will return an error, but will stay within your text. You can hover over the error to see an error message describing the problem.
