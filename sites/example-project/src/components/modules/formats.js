@@ -21,43 +21,43 @@ export const builtInFormats = [
     formatName: "year",
     formatValue: "yyyy",
     valueType: "date",
-    exampleInput: new Date("Sun Jan 9 2022 07:32:04 GMT-0400"),
+    exampleInput: "2022/01/09"
   },
 
   // Currency:
   {
     formatName: "usd",
-    formatValue: "$#,##0.00;($0.00)",
+    formatValue: "$#,##0.00",
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "eur",
-    formatValue: "€#,##0.00;(€0.00)",
+    formatValue: "€#,##0.00",
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "jpy",
-    formatValue: "\\¥#,##0.00;(\\¥0.00)",
+    formatValue: '"¥"#,##0.00',
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "gbp",
-    formatValue: "\\£#,##0.00;(\\£0.00)",
+    formatValue: '"£"#,##0.00',
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "cad",
-    formatValue: "\\C\\A$#,##0.00;(\\C\\A$0.00)",
+    formatValue: '"CA$"#,##0.00',
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "chf",
-    formatValue: "\\C\\H\\F_0.00;(\\C\\H\\F_#,##0.00)",
+    formatValue: '"CHF" #,##0.00',
     valueType: "number",
     exampleInput: 101.1,
   },
@@ -98,7 +98,7 @@ export const builtInFormats = [
     formatName: "id",
     formatValue: "@",
     valueType: "number",
-    exampleInput: "11.231",
+    exampleInput: "921594675",
   },
 
   // Percent:
