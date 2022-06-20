@@ -517,12 +517,13 @@ try{
             },
             tooltip: {
                 trigger: "axis",
+                // formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
                 formatter: function(params){
                     let output
                     let xVal
                     let yVal
-                    console.log(xType)
                     if(params.length > 1){
+                        // If multi-series, add series name as title of tooltip
                         xVal = params[0].value[swapXY ? 1 : 0]
                         output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span>`
                         for(let i = params.length - 1; i >= 0; i--){
@@ -530,10 +531,12 @@ try{
                             output = output + `<br> ${params[i].marker} ${params[i].seriesName} <span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
                         }
                     } else if(xType === "value"){
+                        // If single-series and a numerical x-axis, include x column as a normal column rather than title (so as not to show a number as the title)
                         xVal = params[0].value[swapXY ? 1 : 0]
                         yVal = params[0].value[swapXY ? 0 : 1]
-                        output = `<span>${formatTitle(x, xFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(xVal, xFormat)}</span><br/><span>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
+                        output = `<span style='font-weight: 600;'>${formatTitle(x, xFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(xVal, xFormat)}</span><br/><span style='font-weight: 600;'>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
                     } else {
+                        // If single series and categorical or date x-axis, use x value as title of tooltip
                         xVal = params[0].value[swapXY ? 1 : 0]
                         yVal = params[0].value[swapXY ? 0 : 1]
                         output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span><br/><span>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`

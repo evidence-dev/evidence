@@ -95,10 +95,16 @@
         tooltipOpts = {
             tooltip: {
                 formatter: function(params) {
-                    tooltipOutput = multiSeries ? `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>` : '';
-                    tooltipOutput = tooltipOutput + `${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
-                    ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
-                    ${formatTitle(size, sizeFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
+                    if(multiSeries){
+                        tooltipOutput = `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>
+                        ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                        ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
+                        ${formatTitle(size, sizeFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
+                    } else {
+                        tooltipOutput = `<span style='font-weight: 600;'>${formatTitle(x, xFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                        <span style='font-weight: 600;'>${formatTitle(y, yFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
+                        <span style='font-weight: 600;'>${formatTitle(size, sizeFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
+                    }
                     return tooltipOutput
                 }
             }
