@@ -87,6 +87,14 @@
               evidenceTypeFidelity="{column.evidenceColumnType?.typeFidelity || 'unavailable'}"> {column.id} </th>
           {/each}
         <tr/>
+        <tr class=type-indicator>
+          <th class="index type-indicator" style="width:10%"></th>
+          {#each columnSummary as column}
+          <th class="{column.type} type-indicator" style="width:{columnWidths}%" 
+              evidenceType="{column.evidenceColumnType?.evidenceType || 'unavailable'}"
+              evidenceTypeFidelity="{column.evidenceColumnType?.typeFidelity || 'unavailable'}"> {column.type} </th>
+          {/each}
+        <tr/>
       </thead>
           <tbody>
               {#each dataPage as row, i}
@@ -120,6 +128,12 @@
                             {cell || "Ø"}                       
                         </div>
                       </td>
+                    {:else if columnSummary[j].type === 'boolean'}
+                    <td class="boolean" style="width:{columnWidths}%" title={cell}>
+                      <div >
+                          {cell ?? "Ø"}                       
+                      </div>
+                    </td>
                     {:else}
                       <td class="other" style="width:{columnWidths}%">
                             {cell || "Ø"}                       
@@ -294,6 +308,10 @@
     text-align: right;
   }
 
+  .boolean{
+    text-align: left; 
+  }
+
   .null{
     color: var(--grey-300);
   }
@@ -306,5 +324,15 @@
 
   .results-pane {
     margin-bottom: 40px;
+  }
+
+  th.type-indicator {
+    color:var(--grey-400);
+    font-weight:normal;
+    font-style: italic;
+  }
+
+  tr.type-indicator { 
+    border-bottom: 1px solid var(--grey-100)
   }
 </style>
