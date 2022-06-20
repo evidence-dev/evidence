@@ -271,6 +271,7 @@
     font-size: calc(1em - 4px);
     border-collapse: collapse;
     font-family: var(--ui-font-family);
+    font-variant-numeric: tabular-nums;
   }
 
   th{
