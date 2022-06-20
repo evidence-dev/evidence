@@ -32,6 +32,8 @@
 
     let chartType = "Scatter Plot";
 
+    let useTooltip = true;
+
 </script>
 
 <Chart
@@ -62,5 +64,6 @@
         {outlineColor}
         {outlineWidth}
         {pointSize}
+        {useTooltip}
     />
 </Chart>

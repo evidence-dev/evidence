@@ -2,6 +2,7 @@
     import { props, config } from '$lib/modules/stores.js';   
     import ecStat from 'echarts-stat';
     import getDistinctValues from '$lib/modules/getDistinctValues.js';
+    import formatValue from '../modules/formatValue';
 
     export let x = undefined;
 
@@ -11,6 +12,8 @@
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     let data = $props.data;
     x = x ?? $props.x;
+    let xFormat = $props.xFormat;
+    let yFormat = $props.yFormat;
 
     // Determine right method to use based on distinct x values (echarts-stat limitation causes some errors otherwise)
     let method;
@@ -66,8 +69,19 @@
         },
         data: histData.data,
         encode: {
-            tooltip: [1],
-            itemName: 4
+            tooltip: [1], // y column from shape{} above,
+            itemName: 4 // data at index 4 of api.value() - min and max of bin separated by hyphen
+        },
+        tooltip: {
+            formatter: function(params){
+                // params.value[0] = bin midpoint
+                // params.value[1] = frequency (count)
+                // params.value[2] = bin min
+                // params.value[3] = bin max
+                // params.value[4] = string of bin range - min and max separated by hyphen
+
+                return `<span style='font-weight:600;'>${formatValue(params.value[2],xFormat)} - ${formatValue(params.value[3],xFormat)}</span> <span style='margin-left: 10px;'> ${params.value[1]}</span>`
+           }
         }
     }
 

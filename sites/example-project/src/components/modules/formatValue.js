@@ -1,6 +1,10 @@
 
 export default function(value, columnFormat, columnUnits) {
 
+  if(value == undefined){
+      value = "-"
+  }
+  
   let suffix;
   switch(columnUnits){
         case "B":

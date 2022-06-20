@@ -10,6 +10,7 @@
         import getSortedData from '../modules/getSortedData.js';
         import formatAxisLabel from '../modules/formatAxisLabel';
         import formatTitle from '../modules/formatTitle.js';
+        import formatValue from '../modules/formatValue.js';
         import ErrorChart from './ErrorChart.svelte';
         import checkInputs from '../modules/checkInputs';
         import {colours} from '../modules/colours'
@@ -87,6 +88,7 @@
         let xMismatch;
         let xFormat;
         let yFormat;
+        let sizeFormat;
         let xUnits;
         let yUnits;       
         let xDistinct;
@@ -282,6 +284,10 @@ try{
             }
         }
 
+        if(size){
+            sizeFormat = columnSummary[size].format;
+        }
+
         xUnits = columnSummary[x].units;
         
         if(!y){yUnits = ''} else {
@@ -307,7 +313,7 @@ try{
     // ---------------------------------------------------------------------------------------
     // Add props to store to let child components access them
     // ---------------------------------------------------------------------------------------
-        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xMismatch, size, yMin, columnSummary}});
+        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle}});
 
     // ---------------------------------------------------------------------------------------
     // Axis Configuration
@@ -511,6 +517,32 @@ try{
             },
             tooltip: {
                 trigger: "axis",
+                // formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
+                formatter: function(params){
+                    let output
+                    let xVal
+                    let yVal
+                    if(params.length > 1){
+                        // If multi-series, add series name as title of tooltip
+                        xVal = params[0].value[swapXY ? 1 : 0]
+                        output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span>`
+                        for(let i = params.length - 1; i >= 0; i--){
+                            yVal = params[i].value[swapXY ? 0 : 1]
+                            output = output + `<br> ${params[i].marker} ${params[i].seriesName} <span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
+                        }
+                    } else if(xType === "value"){
+                        // If single-series and a numerical x-axis, include x column as a normal column rather than title (so as not to show a number as the title)
+                        xVal = params[0].value[swapXY ? 1 : 0]
+                        yVal = params[0].value[swapXY ? 0 : 1]
+                        output = `<span style='font-weight: 600;'>${formatTitle(x, xFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(xVal, xFormat)}</span><br/><span style='font-weight: 600;'>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
+                    } else {
+                        // If single series and categorical or date x-axis, use x value as title of tooltip
+                        xVal = params[0].value[swapXY ? 1 : 0]
+                        yVal = params[0].value[swapXY ? 0 : 1]
+                        output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span><br/><span>${formatTitle(y, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
+                    }
+                    return output
+                },
                 confine: true,
                 axisPointer: {
                     // Use axis to trigger tooltip 
@@ -525,7 +557,8 @@ try{
                 extraCssText: 'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
                 textStyle: {
                     color: colours.grey900,
-                    fontSize: 12
+                    fontSize: 12,
+                    fontWeight: 400
                 },
                 order:'valueDesc'
             },
@@ -572,4 +605,3 @@ try{
 <ErrorChart {error} {chartType}/>
 
 {/if}
-
