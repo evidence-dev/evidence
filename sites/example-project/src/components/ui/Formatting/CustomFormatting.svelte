@@ -38,6 +38,7 @@
     formatName = undefined;
     formatValue = undefined;
     valueType = undefined;
+    newFormatValidationErrors = "";
     editingCustomFormat = false;
   }
 
@@ -88,7 +89,7 @@
 
 <h2>Custom Formats</h2>
 
-{#if customSettings.customFormats}
+{#if (customSettings.customFormats && customSettings.customFormats.length > 0) }
   <FormatGrid formats={customSettings.customFormats} />
 {/if}
 
