@@ -11,22 +11,27 @@
     export let row = 0    
     export let column = null
 
-    // Passing in single value directly:
-    export let value = null
-
-    // Overrides for format and units:
-    export let fmt = null
-    let units = null
-
     // Placeholder text when data not supplied:
     export let placeholder = null
 
+    let value 
+    let fmt 
     let error;
 
+    let columnSummary
     try {
 
         if(!placeholder){
             if(data) {
+
+                if(typeof data == 'string') {
+                    throw Error(`Received: data=${data}, expected: data={${data}}`)
+                }
+
+                if (!Array.isArray(data)){
+                    // Accept bare objects 
+                    data = [data]
+                }
 
                 if(isNaN(row)){
                     throw Error("row must be a number (row="+row+")")
@@ -42,7 +47,7 @@
 
                 checkInputs(data, [column]);
 
-                let columnSummary = getColumnSummary(data, 'array');
+                columnSummary = getColumnSummary(data, 'array');
                 let dateCols = columnSummary.filter(d => d.type === "date")
                 dateCols = dateCols.map(d => d.id);
                 if(dateCols.length > 0){
@@ -53,20 +58,10 @@
 
                 value = data[row][column]
                 columnSummary = columnSummary.filter(d => d.id === column);
+                fmt = columnSummary[0].format;
 
-                if(fmt == null){
-                    fmt = columnSummary[0].format;
-                }
-
-                // Units (k, M, B) - not used in <Value> yet:
-                // units = columnSummary[0].units;
-            } else if(value) { 
-                value = isNaN(value) ? value : Number.parseFloat(value);
-                if(fmt == null){
-                    fmt = (typeof value === "number" ? "num" : "str");
-                }
             } else {
-                throw Error("No value or data provided. If you referenced a query result, check that the name is correct.")
+                throw Error("No data provided. If you referenced a query result, check that the name is correct.")
             }
         }
 } catch(e) {  
