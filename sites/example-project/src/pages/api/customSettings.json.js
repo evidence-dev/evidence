@@ -27,7 +27,7 @@ export async function get() {
         try{
             customSettings = getCustomSettings() || customSettings;
         } catch {
-            //TODO logError
+            // custom settings will be empty for now.
         }
         let result = { customSettings };
         return {
