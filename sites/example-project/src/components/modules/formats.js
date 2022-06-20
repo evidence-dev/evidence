@@ -27,42 +27,42 @@ export const builtInFormats = [
   // Currency:
   {
     formatName: "usd",
-    formatValue: "$0.00;($0.00)",
+    formatValue: "$#,##0.00;($0.00)",
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "eur",
-    formatValue: "€0.00;(€0.00)",
+    formatValue: "€#,##0.00;(€0.00)",
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "jpy",
-    formatValue: "\\¥0.00;(\\¥0.00)",
+    formatValue: "\\¥#,##0.00;(\\¥0.00)",
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "gbp",
-    formatValue: "\\£0.00;(\\£0.00)",
+    formatValue: "\\£#,##0.00;(\\£0.00)",
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "cad",
-    formatValue: "\\C\\A$0.00;(\\C\\A$0.00)",
+    formatValue: "\\C\\A$#,##0.00;(\\C\\A$0.00)",
     valueType: "number",
     exampleInput: 101.1,
   },
   {
     formatName: "chf",
-    formatValue: "\\C\\H\\F_0.00;(\\C\\H\\F_0.00)",
+    formatValue: "\\C\\H\\F_0.00;(\\C\\H\\F_#,##0.00)",
     valueType: "number",
     exampleInput: 101.1,
   },
 
-  // Numbers
+  // Numbers:
   {
     formatName: "num",
     formatValue: "0.##",

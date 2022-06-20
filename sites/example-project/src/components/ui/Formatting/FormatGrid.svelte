@@ -61,16 +61,17 @@
   {#each formats as format}
     <tr>
       <td>{format.formatName} </td>
-      <td>{format.formatValue} </td>
-      <td
+      <td class="wide_column">{format.formatValue} </td>
+      <td class="wide_column"
         ><input
           id="id_format_row{format.formatName}"
           placeholder={format.exampleInput || defaultExample(format.valueType)}
           bind:value={format.userInput}
           on:blur={(format.userInput = undefined)}
+          class=".alnright input_box"
         />
       </td>
-      <td>{formatExample(format)}</td>
+      <td class="alnright">{formatExample(format)}</td>
     </tr>
   {/each}
 </table>
@@ -91,7 +92,6 @@
     overflow: hidden;
   }
   td {
-    max-width: 1px;
     padding: 4px 8px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -99,4 +99,7 @@
   tr:hover {
     background-color: rgb(247, 249, 250);
   }
+  .alnright { text-align: right; }
+  .wide_column { min-width: 130px; }
+  .input_box { width: 100%; }
 </style>
