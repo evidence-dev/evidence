@@ -46,7 +46,13 @@ export function post(request) {
     const {settings} = JSON.parse(request.body)
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     if(settings.database === "sqlite"){
-        let gitIgnore = fs.readFileSync('../../.gitignore', 'utf8')
+        let gitIgnore;
+        if(fs.existsSync('../../.gitignore')){
+            gitIgnore = fs.readFileSync('../../.gitignore', 'utf8')
+        } else {
+            gitIgnore = ""
+            fs.writeFileSync('../../.gitignore', gitIgnore)
+        }
         let extensions = [".db", ".sqlite", ".sqlite3"]
         if(settings.credentials.gitignoreSqlite === false){
             let regex
