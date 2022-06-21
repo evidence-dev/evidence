@@ -115,7 +115,12 @@ export const getCustomFormats = () => {
 };
 
 export const applyFormatting = (value, columnFormat) => {
-  return ssf.format(columnFormat, value);
+  if (typeof(value)==='number' && (columnFormat === 'yyyy' || columnFormat == 'mmm')) {
+    return value.toString();
+  } else {
+    return ssf.format(columnFormat, value);
+  }
+
 };
 
 export const getColumnFormat = (formatName) => {
