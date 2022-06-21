@@ -77,7 +77,7 @@ export default function formatAxisLabel(value, columnFormat, columnUnits) {
             let formattedValue;
             if (columnFormat) {
                 try {
-                    formattedValue = applyFormatting(value, columnFormat);
+                    formattedValue = applyFormatting(value, columnFormat) + suffix;
                 } catch (error) {
 
                 }
