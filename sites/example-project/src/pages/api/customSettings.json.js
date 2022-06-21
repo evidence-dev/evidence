@@ -5,7 +5,6 @@ import { dev } from '$app/env';
 const CUSTOM_SETTINGS_FILE = '.custom-settings.json';
 
 function getCustomSettings() {
-    //TODO need to figure out where this actually ends up and needs to be packaged, currently in sites/example-project/.custom-settings.json
     let customSettingsPath = path.join(path.resolve('./'), CUSTOM_SETTINGS_FILE);
     if (fs.existsSync(customSettingsPath)) {
         return JSON.parse(fs.readFileSync(customSettingsPath, 'utf8'));
