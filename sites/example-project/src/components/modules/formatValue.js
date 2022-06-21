@@ -26,7 +26,7 @@ export default function (value, columnFormat, columnUnits) {
     // Get format tag from end of column name (if supplied):
     let fmt = columnFormat;
     try {
-      return applyFormatting(value, fmt);
+      return applyFormatting(value, fmt) + suffix; //TODO we need to consollidate columnUnits and columnFormat
     } catch (error) {
       if (typeof value === "number") {
         return (
