@@ -74,16 +74,20 @@ export default function formatAxisLabel(value, columnFormat, columnUnits) {
             value = value;
             break;
         default:
-            let formattedValue;
+            let fallbackValue = value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix;
             if (columnFormat) {
                 try {
-                    formattedValue = applyFormatting(value, columnFormat) + suffix;
+                    let formattedValue = applyFormatting(value, columnFormat);
+                    if (formattedValue) {
+                        value = formattedValue + suffix;
+                    } else {
+                        value = fallbackValue;
+                    }
                 } catch (error) {
-
+                    value = fallbackValue;
                 }
-            }
-            if (!formattedValue) {
-                value = value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix;
+            } else {
+                value = fallbackValue;
             }
 
     }
