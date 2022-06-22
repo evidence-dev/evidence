@@ -20,16 +20,19 @@ const hasQueries = function(filename){
 
 const createModuleContext = function(filename){
     let routeHash = getRouteHash(filename)
-    let moduleContext = ""
+    let moduleContext = "";
+
+    let loadCustomSettingsSnippet = `
+        const customSettingsRes = await fetch('/api/customSettings.json');
+        const { customSettings } = await customSettingsRes.json();
+    `
     if(hasQueries(filename)){
         moduleContext = 
             ` 
             export async function load({fetch}) {
                 const res = await fetch('/api/${routeHash}.json');
                 const {data} = await res.json();
-
-                const customSettingsRes = await fetch('/api/customSettings.json');
-                const {customSettings} = await customSettingsRes.json();
+                ${loadCustomSettingsSnippet}
                 return {
                     props: {
                         data,
@@ -38,7 +41,18 @@ const createModuleContext = function(filename){
                 }
             }
             `
-        }
+    } else {
+        moduleContext = `
+            export async function load({fetch}) {
+                ${loadCustomSettingsSnippet}
+                return {
+                    props: {
+                        customSettings
+                    }
+                }
+            }
+        `
+    }
     return moduleContext
 } 
 
