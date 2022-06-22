@@ -1,6 +1,9 @@
-import { applyFormatting } from "$lib/modules/formats";
+import { applyFormatting, getFormatValue } from "$lib/modules/formats";
 
 export default function (value, columnFormat, columnUnits) {
+
+  let fmt = getFormatValue(columnFormat);
+
   if (value === undefined) {
     return "-";
   } else {
@@ -24,9 +27,9 @@ export default function (value, columnFormat, columnUnits) {
     }
 
 
-    if (columnFormat) {
+    if (fmt) {
       try {
-        let formattedValue = applyFormatting(value, columnFormat); //TODO issue-333 we need to consolidate columnUnits and columnFormat
+        let formattedValue = applyFormatting(value, fmt); //TODO issue-333 we need to consolidate columnUnits and columnFormat
         if (formattedValue) {
           return formattedValue + suffix
         }

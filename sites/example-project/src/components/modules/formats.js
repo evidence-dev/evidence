@@ -116,7 +116,7 @@ export const getCustomFormats = () => {
 
 export const applyFormatting = (value, columnFormat) => {
   if (typeof(value)==='number' && (columnFormat === 'yyyy' || columnFormat == 'mmm')) {
-    return value.toString();
+    return value.toString(); //TODO issue-333 consolidate legacy support
   } else {
     return ssf.format(columnFormat, value);
   }
@@ -127,5 +127,21 @@ export const getColumnFormat = (formatName) => {
   let customFormats = getCustomFormats();
   return [...builtInFormats, ...customFormats].find(
     (format) => format.formatName === formatName
-  )?.formatValue;
+  );
 };
+
+export const getFormatName = (col) => {
+  if (typeof(col) === 'string') {
+    return col; //TODO issue-333 consolidate legacy support
+  } else {
+    return col?.formatName;
+  }
+}
+
+export const getFormatValue = (col) => {
+  if (typeof(col) === 'string') {
+    return col; //TODO issue-333 consolidate legacy support
+  } else {
+    return col?.formatValue;
+  }
+}

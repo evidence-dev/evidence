@@ -1,4 +1,4 @@
-import { applyFormatting } from '$lib/modules/formats';
+import { applyFormatting, getFormatValue } from '$lib/modules/formats';
 
 export default function formatAxisLabel(value, columnFormat, columnUnits) {
 
@@ -20,8 +20,9 @@ export default function formatAxisLabel(value, columnFormat, columnUnits) {
               value = value;
               suffix = '';
     }
+    let fmt = getFormatValue(columnFormat);
 
-    switch(columnFormat){
+    switch(fmt){
         case "pct": 
             value = value.toLocaleString(undefined, { style: 'percent' })
             break;
@@ -75,9 +76,9 @@ export default function formatAxisLabel(value, columnFormat, columnUnits) {
             break;
         default:
             let fallbackValue = value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix;
-            if (columnFormat) {
+            if (fmt) {
                 try {
-                    let formattedValue = applyFormatting(value, columnFormat);
+                    let formattedValue = applyFormatting(value, fmt);
                     if (formattedValue) {
                         value = formattedValue + suffix;
                     } else {
