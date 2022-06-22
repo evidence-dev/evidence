@@ -47,24 +47,22 @@ export function post(request) {
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     if(settings.database === "sqlite"){
         let gitIgnore;
-        if(fs.existsSync('../../.gitignore')){
-            gitIgnore = fs.readFileSync('../../.gitignore', 'utf8')
-        } else {
-            gitIgnore = ""
-            fs.writeFileSync('../../.gitignore', gitIgnore)
-        }
+        let hasGitIgnore = fs.existsSync('../../.gitignore');
+        gitIgnore = hasGitIgnore ? fs.readFileSync('../../.gitignore', 'utf8') : "";
         let extensions = [".db", ".sqlite", ".sqlite3"]
         if(settings.credentials.gitignoreSqlite === false){
             let regex
-            extensions.forEach(ext => {
-                // Find newline plus extension and only match those strings which are directly
-                // followed by either a new line or the end of the file contents
-                // (stops the issue of matching .sqlite within the .sqlite3 string)
-                // g means global match - same behaviour as replaceAll
-                regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
-                gitIgnore = gitIgnore.replace(regex, "")
-            })
-            fs.writeFileSync('../../.gitignore', gitIgnore)
+            if(hasGitIgnore){
+                extensions.forEach(ext => {
+                    // Find newline plus extension and only match those strings which are directly
+                    // followed by either a new line or the end of the file contents
+                    // (stops the issue of matching .sqlite within the .sqlite3 string)
+                    // g means global match - same behaviour as replaceAll
+                    regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+                    gitIgnore = gitIgnore.replace(regex, "")
+                })
+                fs.writeFileSync('../../.gitignore', gitIgnore)
+            }
         } else if(settings.credentials.gitignoreSqlite === true){
             extensions.forEach(ext => {
                 regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
