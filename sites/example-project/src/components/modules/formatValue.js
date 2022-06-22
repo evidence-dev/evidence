@@ -23,21 +23,29 @@ export default function (value, columnFormat, columnUnits) {
         suffix = "";
     }
 
-    // Get format tag from end of column name (if supplied):
-    let fmt = columnFormat;
-    try {
-      return applyFormatting(value, fmt) + suffix; //TODO issue-333 we need to consolidate columnUnits and columnFormat
-    } catch (error) {
-      if (typeof value === "number") {
-        return (
-          value.toLocaleString(undefined, {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-          }) + suffix
-        );
-      } else {
-        return value;
+
+    if (columnFormat) {
+      try {
+        let formattedValue = applyFormatting(value, columnFormat); //TODO issue-333 we need to consolidate columnUnits and columnFormat
+        if (formattedValue) {
+          return formattedValue + suffix
+        }
+      } catch (error) {
+        //fallback to default
       }
     }
+
+    //fallback if no formatting could be applied
+    if (typeof value === "number") {
+      return (
+        value.toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }) + suffix
+      );
+    } else {
+      return value;
+    }
   }
+
 }
