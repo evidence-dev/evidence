@@ -1,15 +1,18 @@
+import { getFormatName } from '$lib/modules/formats';
+
 export default function formatTitle(column, columnFormat) {
 
     // Get format tag from end of column name (if supplied):
-    let fmt = columnFormat;
+    let formatName = getFormatName(columnFormat);
 
     // Remove the format tag from the column name (only if preceded by
     // an underscore):
-    let colname = column.replace("_"+fmt,"");
+    let colname = column.replace("_"+formatName,"");
     let suffix = "";
     
     // Add special formatting depending on format of column name:
-    switch(fmt){
+    // TODO issue-333 move the replacement text to built-in formats
+    switch(formatName){
         case "pct": 
             // take name exluding fmt tag (colnam)
             colname = colname
