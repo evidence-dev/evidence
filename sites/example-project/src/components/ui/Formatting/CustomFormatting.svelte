@@ -49,9 +49,9 @@
 
   function getValidationErrors() {
     let errors = [];
-    if (!/^[a-zA-Z]+$/.test(formatName)) {
+    if (!(/^[a-zA-Z][a-zA-Z0-9]*$/.test(formatName))) {
       errors.push(
-        `The format name should only contain letters. "${formatName}" has other characters.`
+        `"${formatName}" is invalid. The format tag should always start with a letter and only contain letters and numbers.`
       );
     }
     let testValue = 10;
@@ -80,7 +80,7 @@
       )
     ) {
       errors.push(
-        `The format name "${formatName}"" is already assigned to an existing format.`
+        `The format tag "${formatName}"" is already assigned to an existing format.`
       );
     }
     return errors;
