@@ -1,8 +1,7 @@
 <script>
-    let complaints_by_category = data.complaints_by_category.filter(d => d.dept === $page.params.department);
-    let complaints_by_day_dept = data.complaints_by_day_dept.filter(d => d.dept === $page.params.department);
-    let complaints_by_day_cat = data.complaints_by_day_cat.filter(d => d.dept === $page.params.department);
-    let last_complaint = data.last_complaint.filter(d => d.dept === $page.params.department);
+    let complaints_by_category_filtered = data.complaints_by_category.filter(d => d.dept === $page.params.department);
+    let complaints_by_day_dept_filtered = data.complaints_by_day_dept.filter(d => d.dept === $page.params.department);
+    let complaints_by_day_cat_filtered = data.complaints_by_day_cat.filter(d => d.dept === $page.params.department);
 </script>
 
 
@@ -10,7 +9,7 @@
 The last complaint call for {$page.params.department} was on <Value data={last_complaint} column=date fmt=date/>
 
 ## Distribution of Daily Calls
-<Histogram data={complaints_by_day_dept} x=complaints binCount=50 xAxisTitle="Daily Calls"/>
+<Histogram data={complaints_by_day_dept_filtered} x=complaints binCount=50 xAxisTitle="Daily Calls"/>
 
 ```last_complaint
 select owning_department as dept,
@@ -18,7 +17,7 @@ max(created_date) as date
     from `bigquery-public-data.austin_311.311_service_requests` 
 group by 1
 ```
-
+ 
 ```complaints_by_category
     select 
         owning_department as dept,
@@ -82,9 +81,9 @@ order by date asc
 ```
 
 ## Category Breakdown
-{#each complaints_by_category as row}
+{#each complaints_by_category_filtered as row}
 ### {row.category}
-<Histogram data={complaints_by_day_cat.filter(d => d.category === row.category)} x=complaints/>
+<Histogram data={complaints_by_day_cat_filtered.filter(d => d.category === row.category)} x=complaints/>
 {/each}
 
 
