@@ -17,23 +17,17 @@ function saveCustomSettings(customSettings) {
 }
 
 export async function get() {
-    if (!dev) {
-        return {
-            status: 404
-        }
-    } else { 
-        let customSettings = {};
-        try{
-            customSettings = getCustomSettings() || customSettings;
-        } catch {
-            // custom settings will be empty for now.
-        }
-        let result = { customSettings };
-        return {
-            header: "accept: application/json",
-            status: 200,
-            body: result
-        }
+    let customSettings = {};
+    try{
+        customSettings = getCustomSettings() || customSettings;
+    } catch {
+        // custom settings will be empty for now.
+    }
+    let result = { customSettings };
+    return {
+        header: "accept: application/json",
+        status: 200,
+        body: result
     }
 }
 
