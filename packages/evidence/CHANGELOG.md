@@ -1,5 +1,23 @@
 # @evidence-dev/evidence
 
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [6a7fb35]
+- Updated dependencies [23d0234]
+- Updated dependencies [7a87d0b]
+- Updated dependencies [06cc44a]
+- Updated dependencies [04ad3b9]
+- Updated dependencies [9f894e7]
+- Updated dependencies [f6d00c3]
+- Updated dependencies [e2c7319]
+- Updated dependencies [23f90b7]
+- Updated dependencies [6fd2f57]
+  - @evidence-dev/preprocess@1.2.0
+  - @evidence-dev/components@1.2.0
+  - @evidence-dev/db-orchestrator@1.1.3
+
 ## 3.0.2
 
 ### Patch Changes

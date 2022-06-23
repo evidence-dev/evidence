@@ -1,5 +1,23 @@
 # @evidence-dev/components
 
+## 1.2.0
+
+### Minor Changes
+
+- 6a7fb35: Update to how the built-in formatting works and custom formats behind feature flag
+- 06cc44a: Remove support for value and fmt props in <Value /> tag
+- 9f894e7: Adds value and column title formatting to chart tooltips, with revised tooltips for scatter, bubble, and histogram charts
+
+### Patch Changes
+
+- 23d0234: Adds legacy FLOAT type to BigQuery connector types
+- 7a87d0b: Add support for native database types to all components
+- 04ad3b9: Indicate the data type that evidence has identified in the queryviewer data table
+- f6d00c3: Bug fix for settings page when gitignore file is missing
+- e2c7319: Adds formatting to query viewer data table
+- 23f90b7: Bug fix for tooltips in composable charts with multiple y columns
+- 6fd2f57: Avoids creating gitignore file when gitignore not selected
+
 ## 1.1.4
 
 ### Patch Changes
