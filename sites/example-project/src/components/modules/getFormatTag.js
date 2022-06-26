@@ -21,7 +21,7 @@ export default function getFormatTag(columnName) {
     }
 
     let customFormats = getCustomFormats() || [];
-    let supportedTags = [...builtInFormats, ...customFormats].map(format => format.formatName);
+    let supportedTags = [...builtInFormats, ...customFormats].map(format => format.formatTag);
 
     // if the fmt tag OR the full column name is in the supported tags, use that tag:
     fmt = supportedTags.includes(fmt) ? fmt : supportedTags.includes(columnName) ? columnName : null;

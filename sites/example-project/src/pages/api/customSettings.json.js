@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { dev } from '$app/env';
 
 const CUSTOM_SETTINGS_FILE = '.custom-settings.json';
 
@@ -32,7 +31,6 @@ export async function get() {
 }
 
 export function post(request) {
-    let body = JSON.parse(request.body);
     const { newCustomFormat } = JSON.parse(request.body);
 
     let customSettings = getCustomSettings() || {};
@@ -41,11 +39,26 @@ export function post(request) {
         if (!customSettings.customFormats) {
             customSettings.customFormats = [];
         }
-        if (newCustomFormat.formatName && newCustomFormat.formatValue) {
+        if (newCustomFormat.formatTag && newCustomFormat.formatCode) {
             customSettings.customFormats.push(newCustomFormat);
         }
         saveCustomSettings(customSettings);
     }
     return {  body: customSettings };
+}
 
+export function del(request) {
+    const { formatTag } = JSON.parse(request.body);
+    let customSettings = getCustomSettings() || {};
+    if (formatTag) {
+        if (!customSettings.customFormats) {
+            customSettings.customFormats = [];
+        }
+        let index = customSettings.customFormats.findIndex(format => format.formatTag === formatTag);
+        if (index >= 0) {
+            customSettings.customFormats.splice(index, 1);
+        }
+        saveCustomSettings(customSettings);
+    }
+    return {  body: customSettings };
 }

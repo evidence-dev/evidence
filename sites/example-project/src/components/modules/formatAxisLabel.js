@@ -1,4 +1,4 @@
-import { applyFormatting, getFormatValue } from '$lib/modules/formats';
+import { applyFormatting, getAxisFormatCode } from '$lib/modules/formats';
 
 export default function formatAxisLabel(value, columnFormat, columnUnits) {
 
@@ -20,77 +20,17 @@ export default function formatAxisLabel(value, columnFormat, columnUnits) {
               value = value;
               suffix = '';
     }
-    let fmt = getFormatValue(columnFormat);
 
-    switch(fmt){
-        case "pct": 
-            value = value.toLocaleString(undefined, { style: 'percent' })
-            break;
-        case "usd": 
-            value = value.toLocaleString('en-US',{style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
-            break;
-        case "cad": 
-            value = value.toLocaleString('en-US',{style: 'currency', currency: 'CAD', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
-            break;
-        case "eur": 
-            value = value.toLocaleString('en-US',{style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
-            break;
-        case "gbp": 
-            value = value.toLocaleString('en-US',{style: 'currency', currency: 'GBP', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
-            break;
-        case "chf": 
-            value = value.toLocaleString('en-US',{style: 'currency', currency: 'CHF', minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix
-            break;
-        case "date": 
-            if(typeof value === "string"){
-                value = new Date(value);
+    let fmt = getAxisFormatCode(columnFormat);
+    if (fmt) {
+        try {
+            let formattedValue = applyFormatting(value, fmt);
+            if (formattedValue) {
+                return formattedValue + suffix;
             }
-            value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
-            break;
-        case "week": 
-            if(typeof value === "string"){
-                value = new Date(value);
-            }
-            value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
-            break;
-        case "month": 
-            if(typeof value === "string"){
-                value = new Date(value);
-            }
-            value = value.toLocaleString('en-US', {month: 'short'});
-            break;
-        case "qtr": 
-            if(typeof value === "string"){
-                value = new Date(value);
-            }
-            value = value.toLocaleDateString('en-US',{ year: 'numeric', month: 'long', day: 'numeric' })
-            break;
-        case "year": 
-            if(typeof value === "string"){
-                value = new Date(value);
-            }
-            value = value.getFullYear();
-            break;
-        case "year_num":
-            value = value;
-            break;
-        default:
-            let fallbackValue = value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix;
-            if (fmt) {
-                try {
-                    let formattedValue = applyFormatting(value, fmt);
-                    if (formattedValue) {
-                        value = formattedValue + suffix;
-                    } else {
-                        value = fallbackValue;
-                    }
-                } catch (error) {
-                    value = fallbackValue;
-                }
-            } else {
-                value = fallbackValue;
-            }
-
+        } catch (error) {
+            //fallback to default
+        }
     }
-    return value;
+    return value.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}) + suffix;
 }

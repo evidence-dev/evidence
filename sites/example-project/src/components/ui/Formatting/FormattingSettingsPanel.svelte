@@ -1,9 +1,10 @@
 <script>
   export let customSettings;
   import { builtInFormats } from "$lib/modules/formats";
-  import BuiltInFormating from "./BuiltInFormating.svelte";
-  import CustomFormatting from "./CustomFormatting.svelte";
+  import BuiltInFormatGrid from "./BuiltInFormatGrid.svelte";
+  import CustomFormatsSection from "./CustomFormatsSection.svelte";
   import { slide } from "svelte/transition";
+  import CollapsibleTableSection from "./CollapsibleTableSection.svelte";
 </script>
 
 <form>
@@ -11,19 +12,24 @@
     <div class="panel">
       <h1>Value Formatting</h1>
     </div>
-    <div class="panel" transition:slide|local>
-      <svelte:component this={BuiltInFormating} {builtInFormats} />
-      <svelte:component
-        this={CustomFormatting}
-        {builtInFormats}
-        {customSettings}
-      />
+    <div class="subpanels" transition:slide|local>
+      <CollapsibleTableSection headerText={"Built-in Formats"}>
+        <svelte:component this={BuiltInFormatGrid} formats={builtInFormats} />
+      </CollapsibleTableSection>
+      <div class="spacer" />
+      <CollapsibleTableSection headerText={"Custom Formats"}>
+        <svelte:component
+          this={CustomFormatsSection}
+          {builtInFormats}
+          {customSettings}
+        />
+      </CollapsibleTableSection>
     </div>
     <footer>
       <span
-        >Learn more about <a
+        >Learn more about Excel Style Custom Formats<a
           class="docs-link"
-          href="https://exceljet.net/custom-number-formats"
+          href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68"
           >value formatting &rarr;</a
         ></span
       >
@@ -47,6 +53,11 @@
     padding: 1em;
   }
 
+  .subpanels {
+    border-top: 1px solid var(--grey-200);
+    padding: 1em 1em 1em 1em;
+  }
+
   .panel:first-of-type {
     border-top: none;
   }
@@ -60,5 +71,9 @@
     font-size: 14px;
     align-items: center;
     font-family: var(--ui-font-family);
+  }
+
+  .spacer {
+    margin: 1em;
   }
 </style>
