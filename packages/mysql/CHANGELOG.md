@@ -1,5 +1,11 @@
 # @evidence-dev/mysql
 
+## 0.1.2
+
+### Patch Changes
+
+- 7a87d0b: Add support for native database types to all components
+
 ## 0.1.1
 
 ### Patch Changes

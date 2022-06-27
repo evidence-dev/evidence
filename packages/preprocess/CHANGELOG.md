@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 1.2.0
+
+### Minor Changes
+
+- 6a7fb35: Update to how the built-in formatting works and custom formats behind feature flag
+
 ## 1.1.1
 
 ### Patch Changes

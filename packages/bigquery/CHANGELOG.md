@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 1.2.2
+
+### Patch Changes
+
+- 23d0234: Adds legacy FLOAT type to BigQuery connector types
+
 ## 1.2.1
 
 ### Patch Changes
