@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 5.0.0
+
+### Minor Changes
+
+- 51c65c5: Fixed a dependency issue with the ssf library
+
+### Patch Changes
+
+- Updated dependencies [51c65c5]
+  - @evidence-dev/components@1.3.0
+
 ## 4.0.0
 
 ### Patch Changes
