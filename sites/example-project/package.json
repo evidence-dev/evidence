@@ -17,7 +17,8 @@
     "echarts-stat": "1.2.0",
     "export-to-csv": "0.2.1",
     "git-remote-origin-url": "4.0.0",
-    "svelte-icons": "2.1.0"
+    "svelte-icons": "2.1.0",
+    "ssf": "^0.11.2"
   },
   "publishConfig": {
     "directory": "../../packages/components"
