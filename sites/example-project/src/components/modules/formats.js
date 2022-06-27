@@ -220,7 +220,7 @@ export const formatExample = (format) => {
         return ssf.format(format.formatCode, typedPreformattedValue);
       }
     } catch (error) {
-      console.log(error);
+      //return default value
     }
   }
   return "";
