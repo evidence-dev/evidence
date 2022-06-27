@@ -67,6 +67,14 @@ const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
     }
 } 
 
+const reportProgress = (status) => {
+    let progress = {
+        status: status
+    }
+
+    writeJSONSync('./.evidence-queries/status.json', progress)
+}
+
 const runQueries = async function (routeHash, dev) {
     const settings = readJSONSync('./evidence.settings.json', {throws:false})
     const runQuery = await importDBAdapter(settings)
@@ -77,6 +85,7 @@ const runQueries = async function (routeHash, dev) {
 
     
     if (queries.length > 0) {
+        reportProgress('started')
         let data = {}
         data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 
         for (let queryIndex in queries) {
@@ -120,6 +129,7 @@ const runQueries = async function (routeHash, dev) {
                 } 
             }
         }
+        reportProgress('done')
         return data
     }
 }

@@ -99,7 +99,7 @@ Daily sales:
 
 ## {location.name} 
 
-<Value value={location.sales_usd}/> in sales at a <Value value={location.gross_margin_pct}/> gross margin. 
+<Value data={location.sales_usd}/> in sales at a <Value data={location.gross_margin_pct}/> gross margin. 
 
 {/each}
 ```
