@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 5.0.1
+
+### Patch Changes
+
+- 1dec76c: Fixed a bug with query names not being updated on reloads
+- Updated dependencies [1dec76c]
+  - @evidence-dev/preprocess@1.2.1
+
 ## 5.0.0
 
 ### Minor Changes

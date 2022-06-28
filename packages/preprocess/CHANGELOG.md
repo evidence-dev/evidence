@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 1.2.1
+
+### Patch Changes
+
+- 1dec76c: Fixed a bug with query names not being updated on reloads
+
 ## 1.2.0
 
 ### Minor Changes
