@@ -5,17 +5,23 @@ hide_title: false
 hide_table_of_contents: false
 ---
 
-In Evidence, you can include data directly in text by using the **<span class="gradient">&lt;Value/></span>** component. This component takes a query result and displays a value inline in your text. You can pass it a single value, a table of values with a row/column reference, or a specific hardcoded value you want to display.
+`<Value />` accepts a query and displays a formatted value inline in text. 
 
-<h1 class="community-header"><span class="gradient">&lt;Value/></span></h1>
+By default, `Value` will display the value from the first row of the first column of the referenced data. 
 
 ```markdown
+<Value data={query_name} /> <!-- First row from the first column -->
+```
+
+## Specifying Rows and Columns 
+Optionally supply a `column` and/or a `row` argument to display other values from `data`. 
+
+```markdown
+<!-- Show the 6th row from column_name -->
 <Value 
-    data={query_name} 
-    column=your_column_name
-    row=your_row_number
-    value=pass_in_specific_value
-    fmt=fmt_tag
+    data={query_name}
+    column=column_name 
+    row=6
 />
 ```
 
@@ -24,44 +30,29 @@ In Evidence, you can include data directly in text by using the **<span class="g
 **Markdown:**
 
 ```markdown
-The most recent month of data began <Value data={monthly_orders} fmt=date/>,
+The most recent month of data began <Value data={monthly_orders} />,
 when there were <Value data={monthly_orders} column=orders/> orders.
 ```
 
-**Result on Webpage:**
+**Results:**
 ![summary-sentence](/img/tutorial-img/needful-things-value-in-text-nowindow.png)
 
-## Options
-
-### Showing Data from a Query Result
-* **data** - query name, wrapped in curly braces
-* **column** - column name to pull values from
-* **row** - (Optional) specific row number to display
-
-### Showing a Specific Value
-* **value** - specific value to display (e.g., `value=300`)
-
-### Formatting
-* **fmt** - use a [format tag](/features/queries/number-formatting) to override the default formatting
-
-## Default Behaviour
-* **<span class="gradient">&lt;Value/></span>** pulls the first row in a table
-* If no column is specified, it will select the first column in the dataset (furthest left column)
-
-## Errors
-Errors appear inline with your text - when you hover over an error, it will show you the reason for the error.
-![value-error](/img/value-error.gif) width="650"/>
-
 ## Adding a Placeholder
-If you like to mock up reports before you're ready to fill in real data, you can also override the Value error with a **placeholder**. Input the text you want to use as your placeholder and it will appear in blue font with square brackets, inline with your text.
-
-* **placeholder** - text to display in place of an error
+Override errors with the optional `placeholder` argument. This is useful for drafting reports *before* writing your queries.   
 
 ```markdown
 <Value placeholder="Report Date"/>
 ```
 
 ![value-placeholder](/img/value-placeholder.png)
+
+## All Options 
+* **data** - query name, wrapped in curly braces
+* **column** - (Optional) column name to pull values from
+* **row** - (Optional) specific row number to display
+* **placeholder** - (Optional) text to display in place of an error
+
+
 
 
 

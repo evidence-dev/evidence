@@ -1,0 +1,24 @@
+import fs from 'fs';
+import { dev } from '$app/env';
+
+export async function get() {
+    if (!dev) {
+        return {
+            status: 404
+        }
+    }
+    else {
+        let queryProgress = {}
+        if (fs.existsSync('.evidence-queries/status.json')) {
+            queryProgress = JSON.parse(fs.readFileSync('.evidence-queries/status.json', 'utf8'));
+            console.log("Status checked!!")
+        }
+        return {
+            header: "accept: application/json",
+            status: 200,
+            body: {
+                queryProgress
+            }
+        }
+    }
+}

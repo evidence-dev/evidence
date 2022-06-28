@@ -1,5 +1,42 @@
 # @evidence-dev/evidence
 
+## 5.0.1
+
+### Patch Changes
+
+- 1dec76c: Fixed a bug with query names not being updated on reloads
+- Updated dependencies [1dec76c]
+  - @evidence-dev/preprocess@1.2.1
+
+## 5.0.0
+
+### Minor Changes
+
+- 51c65c5: Fixed a dependency issue with the ssf library
+
+### Patch Changes
+
+- Updated dependencies [51c65c5]
+  - @evidence-dev/components@1.3.0
+
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [6a7fb35]
+- Updated dependencies [23d0234]
+- Updated dependencies [7a87d0b]
+- Updated dependencies [06cc44a]
+- Updated dependencies [04ad3b9]
+- Updated dependencies [9f894e7]
+- Updated dependencies [f6d00c3]
+- Updated dependencies [e2c7319]
+- Updated dependencies [23f90b7]
+- Updated dependencies [6fd2f57]
+  - @evidence-dev/preprocess@1.2.0
+  - @evidence-dev/components@1.2.0
+  - @evidence-dev/db-orchestrator@1.1.3
+
 ## 3.0.2
 
 ### Patch Changes
