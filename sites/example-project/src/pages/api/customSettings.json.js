@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const CUSTOM_SETTINGS_FILE = '.custom-settings.json';
+const CUSTOM_SETTINGS_FILE = '../../.custom-settings.json';
 
 function getCustomSettings() {
     let customSettingsPath = path.join(path.resolve('./'), CUSTOM_SETTINGS_FILE);
