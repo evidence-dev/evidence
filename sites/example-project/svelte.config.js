@@ -24,10 +24,7 @@ const config = {
 			},
 			ssr: {
 				external: ['@evidence-dev/db-orchestrator']
-			},
-			plugins: [
-				FullReload.default(['./.evidence-queries/extracted/**'], {delay: 150}),
-			]
+			}
 		}
 	}
 };
