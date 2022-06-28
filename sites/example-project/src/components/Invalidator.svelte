@@ -65,12 +65,12 @@
 {/await}
 
 {#await loadingPromise}
-<div class='loading' in:blur|local>
+<div class='loading' on:click={handleClick} in:blur|local>
     <h1 class='loading'> Loading... <h1/> 
 </div>
 
 {:then result} 
-<div class='loaded' in:blur|local>
+<div class='loaded' on:click={handleClick} in:blur|local>
     <h1 class='loaded'> Loaded <h1/> 
 </div>
 {/await}
