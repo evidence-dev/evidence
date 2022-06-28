@@ -91,7 +91,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         `
   
     if(hasQueries(filename)){
-        let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z\d_$]*)$'))
+        let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
                                          .map(id => `let ${id} = getContext('pageQueryResults').getData('${id}');`)
                                          .join('\n') || '';
         defaultProps = `
@@ -242,13 +242,13 @@ function highlighter(code, lang) {
 }
 
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
-    let queryIdsByFile = [];
+    let queryIdsByFile = {};
     return [
         {
             markup({content, filename}){
                 if(filename.endsWith(".md")){
                     let fileQueryIds = updateExtractedQueriesDir(content, filename);
-                    queryIdsByFile.push({'filename': filename, 'queryIds': fileQueryIds});
+                    queryIdsByFile[getRouteHash(filename)] = fileQueryIds;
                 }
             }
         },
@@ -293,9 +293,9 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
             script({content, filename, attributes}) {
                 if(filename.endsWith(".md")){
                     if(attributes.context != "module") {
-                        let queryIds = queryIdsByFile.find(nextQueryId => filename === nextQueryId.filename)?.queryIds;
+                        let queryIds = queryIdsByFile[getRouteHash(filename)];
                         return {code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content }
-                    }	
+                    }
                 }
             }
         }
