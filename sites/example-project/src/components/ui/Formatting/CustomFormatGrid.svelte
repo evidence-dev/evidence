@@ -6,7 +6,8 @@
   export let deleteHandler;
 </script>
 
-<table width="100%">
+<div class="tableContainer">
+<table width="100%" class=formatTable>
   <thead>
     <th class="align_left narrow_column">Format Tag</th>
     <th class="align_left medium_column">Format Code</th>
@@ -36,12 +37,24 @@
     </tr>
   {/each}
 </table>
+</div>
 
 <style>
   .deleteIcon {
-    color: red;
+    color: var(--red-600);
     width: 16px;
     height: 16px;
     cursor: pointer;
   }
+
+  .formatTable {
+    font-size: 12px;
+  }
+
+  .tableContainer {
+    border: 1px solid var(--gray-light, #eee);
+    border-radius: 4px;
+    padding: 8px 4px 8px 4px;
+  }
+
 </style>

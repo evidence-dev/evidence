@@ -1,4 +1,6 @@
 <script>
+	import { slide } from "svelte/transition"
+  import ChevronToggle from "../ChevronToggle.svelte"
   export let headerText;
   let expanded = true;
   let toggleExpanded = () => {
@@ -10,15 +12,14 @@
   <collapsibleHeader>
     <button area-expanded={expanded} on:click|preventDefault={toggleExpanded}>
       <h2>{headerText}</h2>
-      <svg viewBox="0 0 20 20" fill="none">
-        <path class="vert" d="M10 1V19" stroke="black" stroke-width="2" />
-        <path d="M1 10L19 10" stroke="black" stroke-width="2" />
-      </svg>
+      <ChevronToggle toggled={expanded} size=16/>
     </button>
   </collapsibleHeader>
-  <div class="collapsibleContents" hidden={!expanded}>
-    <slot />
+  {#if expanded}
+  <div class="collapsibleContents" hidden={!expanded} transition:slide|local>
+      <slot />
   </div>
+  {/if}
 </div>
 
 <style>
@@ -41,6 +42,7 @@
     border: none;
     margin: 0;
     padding: 0.2em 0.5em;
+    cursor: pointer;
   }
 
   button[area-expanded="true"] .vert {
@@ -52,14 +54,15 @@
     width: 1em;
     outline: 1px solid;
   }
+ 
   .collapsibleContents {
-    border: 1px solid var(--gray-light, #eee);
+    /* border: 1px solid var(--gray-light, #eee); */
     padding-top: 5px;
     padding-bottom: 5px;
+    margin: 0 0.5em 0.5em 0.5em;
   }
-
   .collapsibleSection {
     padding: 0px;
-    margin: 0px;
+    margin: 0.5em 0 0 0;
   }
 </style>

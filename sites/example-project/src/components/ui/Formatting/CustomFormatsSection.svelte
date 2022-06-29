@@ -114,6 +114,16 @@
       class="addFormatForm"
     >
       <div class="input-item">
+        <label for="valueType">Value Type</label>
+        <select id="valueType" bind:value={valueType}>
+          {#each valueTypeOptions as option}
+            <option value={option}>
+              {option}
+            </option>
+          {/each}
+        </select>
+      </div>
+      <div class="input-item">
         <label for="formatTag">Format Tag</label>
         <input
           id="formatTag"
@@ -127,19 +137,9 @@
         <input
           id="formatCode"
           type="text"
-          placeholder="$#,##0.0"
+          placeholder={valueType === "date" ? "mm/dd/yyyy" : "$#,##0.0"}
           bind:value={formatCode}
         />
-      </div>
-      <div class="input-item">
-        <label for="valueType">Value Type</label>
-        <select id="valueType" bind:value={valueType}>
-          {#each valueTypeOptions as option}
-            <option value={option}>
-              {option}
-            </option>
-          {/each}
-        </select>
       </div>
       <div class="new-format-buttons">
         <button
@@ -263,10 +263,90 @@
     margin-top: 0.1em;
   }
   .error {
-    color: crimson;
+    color: var(--red-600);
   }
 
   .addFormatForm {
     padding: 0em 2em 0em 2em;
   }
+
+  #showAddCustomFormatButton {
+    margin: 5px 0px 0px 0px;
+    background-color: var(--blue-600);
+    color:white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid var(--blue-700);
+    padding:0.4em 0.8em;
+    transition-property: background, color;
+    transition-duration: 350ms;
+  }
+
+  #showAddCustomFormatButton:active {
+    background-color: var(--blue-800);
+    color:white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid var(--blue-900);
+    padding:0.4em 0.8em;
+    transition-property: background, color;
+    transition-duration: 350ms;
+  }
+
+  #submitCustomFormatButton {
+    background-color: var(--blue-600);
+    color:white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid var(--blue-700);
+    padding:0.4em 1.10em;
+    transition-property: background, color;
+    transition-duration: 350ms;
+  }
+
+  #submitCustomFormatButton:active {
+    background-color: var(--blue-800);
+    color:white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid var(--blue-900);
+    padding:0.4em 1.10em;
+    transition-property: background, color;
+    transition-duration: 350ms;
+  }
+
+  #submitCustomFormatButton:disabled,
+button[disabled]{
+  border: 1px solid var(--grey-400);
+  background-color: var(--grey-100);
+  color: var(--grey-600);
+  cursor: not-allowed;
+  transition-property: background, color;
+  transition-duration: 350ms;
+}
+
+
+  #resetNewCustomFormatButton {
+    background-color: var(--grey-500);
+    margin-right: 0;
+    color:white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid var(--grey-600);
+    padding:0.4em 1.10em;
+    transition-property: background, color;
+    transition-duration: 350ms;
+  }
+
+  #resetNewCustomFormatButton:active {
+    background-color: var(--grey-600);
+    color:white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 1px solid var(--grey-700);
+    padding:0.4em 1.10em;
+    transition-property: background, color;
+    transition-duration: 350ms;
+  }
+
 </style>

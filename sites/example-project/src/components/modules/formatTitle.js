@@ -4,14 +4,16 @@ export default function formatTitle(column, columnFormat) {
     let result = applyTitleTagReplacement(column, columnFormat);
     // Allow some acronyms to remain fully capitalized in titles:
     let acronyms = [
-        "id"
+        "id",
+        "gdp"
     ]
     // Allow some joining words to remain fully lowercased in title:
     let lowercase = [
         "of",
         "the",
         "and",
-        "in"
+        "in",
+        "on"
     ]
     // Set name to proper casing:
     function toTitleCase(str) {
