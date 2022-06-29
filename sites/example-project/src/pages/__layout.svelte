@@ -12,9 +12,8 @@
 	import Hamburger from '@evidence-dev/components/ui/Hamburger.svelte'
 	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
 	import LoadingIndicator from "@evidence-dev/components/ui/LoadingIndicator.svelte";
-
-	import Invalidator from "$lib/Invalidator.svelte";
-	import Status from "$lib/Status.svelte";
+	
+	import QueryStatus from "$lib/QueryStatus.svelte";
 
 	export let open = false  
 </script>
@@ -37,22 +36,16 @@
 	  <div class=content>
 		<article>
 			<slot/>
-			<!-- {#if !$navigating}
-
-			{:else}
-			<Status />
-			{/if} -->
 		</article>
 		<aside class='toc'>
 			<TableOfContents/>
-			{#if browser}
-			<Invalidator/> 
-			{/if}
 		</aside>
 	  </div>
 	</main>
 </div>
-
+{#if !$navigating}
+<QueryStatus /> 
+{/if}
 
 <style>
 .grid {
