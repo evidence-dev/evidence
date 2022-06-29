@@ -16,75 +16,83 @@
 
     let value 
     let fmt 
-    let error;
 
     let columnSummary
-    try {
 
-        if(!placeholder){
-            if(data) {
+    const validateData = function(data, row) {
+        if(!data){
+            throw Error("No data provided. If you referenced a query result, check that the name is correct.")
+        } 
+        if(typeof data == 'string') {
+            throw Error(`Received: data=${data}, expected: data={${data}}`)
+        }
+        if(isNaN(row)){
+            throw Error("row must be a number (row="+row+")")
+        }
+        try{
+            Object.keys(data[row])[0]
+        } catch(e) {
+            throw Error("Row "+row+" does not exist in the dataset")
+        }
+    }
 
-                if(typeof data == 'string') {
-                    throw Error(`Received: data=${data}, expected: data={${data}}`)
-                }
+    const getValue = async function(data, row, column) {
+        validateData(data, row)
 
-                if (!Array.isArray(data)){
-                    // Accept bare objects 
-                    data = [data]
-                }
+        if (!Array.isArray(data)){
+            // Accept bare objects 
+            data = [data]
+        }
 
-                if(isNaN(row)){
-                    throw Error("row must be a number (row="+row+")")
-                }
+        column = column ?? Object.keys(data[row])[0]
 
-                try{
-                    Object.keys(data[row])[0]
-                } catch(e) {
-                    throw Error("Row "+row+" does not exist in the dataset")
-                }
+        checkInputs(data, [column]);
 
-                column = column ?? Object.keys(data[row])[0]
-
-                checkInputs(data, [column]);
-
-                columnSummary = getColumnSummary(data, 'array');
-                let dateCols = columnSummary.filter(d => d.type === "date")
-                dateCols = dateCols.map(d => d.id);
-                if(dateCols.length > 0){
-                    for(let i = 0; i < dateCols.length; i++){
-                    data = getParsedDate(data, dateCols[i]);
-                    }
-                }
-
-                value = data[row][column]
-                columnSummary = columnSummary.filter(d => d.id === column);
-                fmt = columnSummary[0].format;
-
-            } else {
-                throw Error("No data provided. If you referenced a query result, check that the name is correct.")
+        columnSummary = getColumnSummary(data, 'array');
+        let dateCols = columnSummary.filter(d => d.type === "date")
+        dateCols = dateCols.map(d => d.id);
+        if(dateCols.length > 0){
+            for(let i = 0; i < dateCols.length; i++){
+            data = getParsedDate(data, dateCols[i]);
             }
         }
-} catch(e) {  
-    error = e.message;
-}
+        value = data[row][column]
+
+        return value 
+    }
+
+    const getFormat = function(data, row, column) {
+        column = column ?? Object.keys(data[row])[0]
+        columnSummary = getColumnSummary(data, 'array');
+        columnSummary = columnSummary.filter(d => d.id === column);
+        fmt = columnSummary[0].format;
+        return fmt 
+    }
+
+    $: value = getValue(data, row, column)
+    $: fmt = getFormat(data, row, column)
+
 
 </script>
 
 {#if placeholder}
     <span class="placeholder">[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span>
-{:else if !error}
-    <PulseNumber value={formatValue(value, fmt)}/>
 {:else}
-    <span class="error">
-        <span class=error-label>Error</span>
+    {#await value}
+    <span>...</span>
+    {:then value} 
+        <PulseNumber value={formatValue(value, fmt)}/>
+    {:catch error}
+        <span class="error">
+            <span class=error-label>Error</span>
         <span class="additional-info-icon">
             <IoIosHelpCircleOutline/>
         </span>
-        <span class=error-msg>{error}</span>
-    </span>
-
-      
+            <span class=error-msg>{error}</span>
+        </span>
+    {/await}
 {/if}
+
 
 <style>
     .error {
