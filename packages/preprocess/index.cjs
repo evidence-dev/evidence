@@ -80,6 +80,8 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
+
+        import { variables } from '${componentSource}/modules/stores.js'
         let routeHash = '${routeHash}';
         export let customSettings;
 

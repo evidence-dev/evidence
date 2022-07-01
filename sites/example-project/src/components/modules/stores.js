@@ -7,3 +7,7 @@ export const config = writable(
 export const props = writable(
 	{}
 );
+
+export const variables = writable(
+	{}
+);
