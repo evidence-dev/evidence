@@ -23,8 +23,8 @@ const createModuleContext = function(filename){
     let moduleContext = "";
 
     let loadCustomSettingsSnippet = `
-        const customSettingsRes = await fetch('/api/customSettings.json');
-        const { customSettings } = await customSettingsRes.json();
+        const customFormattingSettingsRes = await fetch('/api/customFormattingSettings.json');
+        const { customFormattingSettings } = await customFormattingSettingsRes.json();
     `
     if(hasQueries(filename)){
         moduleContext = 
@@ -36,7 +36,7 @@ const createModuleContext = function(filename){
                 return {
                     props: {
                         data,
-                        customSettings
+                        customFormattingSettings
                     }
                 }
             }
@@ -47,7 +47,7 @@ const createModuleContext = function(filename){
                 ${loadCustomSettingsSnippet}
                 return {
                     props: {
-                        customSettings
+                        customFormattingSettings
                     }
                 }
             }
@@ -62,6 +62,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let defaultProps = `
         import { page } from '$app/stores';
         import { setContext, getContext } from 'svelte';
+        import { PAGE_QUERY_RESULTS, CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '$lib/modules/globalContexts.js';
         import { pageHasQueries } from '@evidence-dev/components/ui/stores';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
@@ -81,25 +82,25 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
         let routeHash = '${routeHash}';
-        export let customSettings;
+        export let customFormattingSettings;
 
-        setContext('customSettings', {
+        setContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, {
             getCustomFormats: () => {
-                return customSettings.customFormats || [];
+                return customFormattingSettings.customFormats || [];
             }
         });
         `
   
     if(hasQueries(filename)){
         let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z\d_$]*)$'))
-                                         .map(id => `let ${id} = getContext('pageQueryResults').getData('${id}');`)
+                                         .map(id => `let ${id} = getContext(PAGE_QUERY_RESULTS).getData('${id}');`)
                                          .join('\n') || '';
         defaultProps = `
             export let data;
 
             pageHasQueries.update(value => value = true);
 
-            setContext('pageQueryResults', {
+            setContext(PAGE_QUERY_RESULTS, {
                 getData: (queryName) => {
                     let originalData = data[queryName];
                     let evidenceTypedData = [];

@@ -2,7 +2,7 @@
   import CustomFormatGrid from "./CustomFormatGrid.svelte";
   import * as ssf from "ssf";
   export let builtInFormats = {};
-  export let customSettings = {};
+  export let customFormattingSettings = {};
 
   const valueTypeOptions = ["number", "date"];
 
@@ -13,7 +13,7 @@
   let newFormatValidationErrors = "";
 
   async function deleteCustomFormat(format) {
-    const submitted = await fetch("/api/customSettings.json", {
+    const submitted = await fetch("/api/customFormattingSettings.json", {
       method: "DELETE",
       body: JSON.stringify({
         formatTag: format.formatTag,
@@ -21,7 +21,7 @@
     });
     let result = await submitted.json();
     if (result) {
-      customSettings = result;
+      customFormattingSettings = result;
     }
   }
 
@@ -30,7 +30,7 @@
     if (validationErrors && validationErrors.length > 0) {
       newFormatValidationErrors = validationErrors.join("<br/>");
     } else {
-      const submitted = await fetch("/api/customSettings.json", {
+      const submitted = await fetch("/api/customFormattingSettings.json", {
         method: "POST",
         body: JSON.stringify({
           newCustomFormat: { formatTag, formatCode, valueType },
@@ -38,7 +38,7 @@
       });
       let result = await submitted.json();
       if (result) {
-        customSettings = result;
+        customFormattingSettings = result;
         resetNewCustomFormat();
       } else {
         newFormatValidationErrors = `Unable to create new custom format ${formatTag}`;
@@ -85,7 +85,7 @@
     }
     if (
       builtInFormats.find((format) => format.formatTag === formatTag) ||
-      customSettings.customFormats?.find(
+      customFormattingSettings.customFormats?.find(
         (format) => format.formatTag === formatTag
       )
     ) {
@@ -97,9 +97,9 @@
   }
 </script>
 
-{#if customSettings.customFormats && customSettings.customFormats.length > 0}
+{#if customFormattingSettings.customFormats && customFormattingSettings.customFormats.length > 0}
   <CustomFormatGrid
-    formats={customSettings.customFormats}
+    formats={customFormattingSettings.customFormats}
     deleteHandler={deleteCustomFormat}
   />
 {/if}

@@ -3,14 +3,14 @@
   export const load = async ({ fetch }) => {
     if (dev) {
       const settingsRes = await fetch("../api/settings.json");
-      const customSettingsRes = await fetch("../api/customSettings.json");
+      const customFormattingSettingsRes = await fetch("../api/customFormattingSettings.json");
       const { settings, gitIgnore } = await settingsRes.json();
-      const { customSettings } = await customSettingsRes.json();
+      const { customFormattingSettings } = await customFormattingSettingsRes.json();
       return {
         props: {
           settings,
           gitIgnore,
-          customSettings,
+          customFormattingSettings,
         },
       };
     } else {
@@ -26,7 +26,7 @@
 
 <script>
   export let settings;
-  export let customSettings;
+  export let customFormattingSettings;
   export let gitIgnore;
   import DatabaseSettingsPanel from "@evidence-dev/components/ui/Databases/DatabaseSettingsPanel.svelte";
   import VersionControlPanel from "@evidence-dev/components/ui/VersionControl/VersionControlPanel.svelte";
@@ -40,7 +40,7 @@
   <VersionControlPanel {settings} />
   <DeploySettingsPanel {settings} />
   <TelemetrySettingsPanel {settings} />
-  <FormattingSettingsPanel {settings} {customSettings} />
+  <FormattingSettingsPanel {settings} {customFormattingSettings} />
   <br />
 {:else}
   <p>Settings are only available in development mode.</p>

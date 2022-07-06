@@ -1,47 +1,17 @@
 <script>
   import "./format-grid.css";
   import { blur } from 'svelte/transition';
+  import { SUPPORTED_CURRENCIES } from "$lib/modules/builtInFormats";
   import { defaultExample, formatExample } from "$lib/modules/formats";
   export let formats;
   let selectedCurrency;
 </script>
 
 <select bind:value={selectedCurrency}>
-  <option name=usd id=usd value=usd>USD - United States Dollar</option>
-  <option name=eur id=eur value=eur>EUR - Euro</option>
-  <option name=jpy id=jpy value=jpy>JPY - Japanese Yen</option>
-  <option name=gbp id=gbp value=gbp>GBP - Pound Sterling</option>
-  <option name=aud id=aud value=aud>AUD - Australian Dollar</option>
-  <option name=cad id=cad value=cad>CAD - Canadian Dollar</option>
-  <option name=chf id=chf value=chf>CHF - Swiss Franc</option>
-  <option name=cny id=cny value=cny>CNY - Renminbi</option>
-  <option name=hkd id=hkd value=hkd>HKD - Hong Kong Dollar</option>
-  <option name=nzd id=nzd value=nzd>NZD - New Zealand Dollar</option>
-  <option name=sek id=sek value=sek>SEK - Swedish Krona</option>
-  <option name=krw id=krw value=krw>KRW - South Korean Won</option>
-  <option name=sgd id=sgd value=sgd>SGD - Singapore Dollar</option>
-  <option name=nok id=nok value=nok>NOK - Norwegian Krone</option>
-  <option name=mxn id=mxn value=mxn>MXN - Mexican Peso</option>
-  <option name=inr id=inr value=inr>INR - Indian Rupee</option>
-  <option name=rub id=rub value=rub>RUB - Russian Ruble</option>
-  <option name=zar id=zar value=zar>ZAR - South African Rand</option>
-  <option name=try id=try value=try>TRY - Turkish Lira</option>
-  <option name=brl id=brl value=brl>BRL - Brazilian Real</option>
-  <option name=twd id=twd value=twd>TWD - New Taiwan Dollar</option>
-  <option name=dkk id=dkk value=dkk>DKK - Danish Krone</option>
-  <option name=pln id=pln value=pln>PLN - Polish Złoty</option>
-  <option name=thb id=thb value=thb>THB - Thai Baht</option>
-  <option name=idr id=idr value=idr>IDR - Indonesian Rupiah</option>
-  <option name=huf id=huf value=huf>HUF - Hungarian Forint</option>
-  <option name=czk id=czk value=czk>CZK - Czech Koruna</option>
-  <option name=ils id=ils value=ils>ILS - Israeli New Shekel</option>
-  <option name=clp id=clp value=clp>CLP - Chilean Peso</option>
-  <option name=php id=php value=php>PHP - Philippine Peso</option>
-  <option name=aed id=aed value=aed>AED - Uae Dirham</option>
-  <option name=cop id=cop value=cop>COP - Colombian Peso</option>
-  <option name=sar id=sar value=sar>SAR - Saudi Riyal</option>
-  <option name=myr id=myr value=myr>MYR - Malaysian Ringgit</option>
-  <option name=ron id=ron value=ron>RON - Romanian Leu</option>
+  ${#each SUPPORTED_CURRENCIES as currency}
+    <option name={currency.primaryCode} id={currency.primaryCode} value={currency.primaryCode}>{currency.displayName}</option>
+  {/each}
+
 </select>
 
 <div class="tableContainer">

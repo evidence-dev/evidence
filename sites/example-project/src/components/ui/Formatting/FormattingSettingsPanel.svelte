@@ -1,12 +1,10 @@
 <script>
-  export let customSettings;
-  import { builtInFormats } from "$lib/modules/formats";
+  export let customFormattingSettings;
+  import { BUILT_IN_FORMATS } from "$lib/modules/builtInFormats";
   import BuiltInFormatGrid from "./BuiltInFormatGrid.svelte";
   import CustomFormatsSection from "./CustomFormatsSection.svelte";
-  import { slide } from "svelte/transition";
   import CollapsibleTableSection from "./CollapsibleTableSection.svelte";
   import CurrencyFormatGrid from "./CurrencyFormatGrid.svelte";
-import CollapsibleSection from "../CollapsibleSection.svelte";
 </script>
 
 <form>
@@ -20,17 +18,17 @@ import CollapsibleSection from "../CollapsibleSection.svelte";
     </div>
     <div class="subpanels">
       <CollapsibleTableSection headerText={"Dates"}>
-        <BuiltInFormatGrid formats={builtInFormats.filter(d => d.formatCategory === "date")}/>
+        <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "date")}/>
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Currencies"}>
         Evidence supports a wide range of international currencies. Select a currency from the drop-down below to see the available format tags.
-        <CurrencyFormatGrid formats={builtInFormats.filter(d => d.formatCategory === "currency")} />
+        <CurrencyFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "currency")} />
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Numbers"}>
-        <BuiltInFormatGrid formats={builtInFormats.filter(d => d.formatCategory === "number")} />
+        <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "number")} />
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Percentages"}>
-        <BuiltInFormatGrid formats={builtInFormats.filter(d => d.formatCategory === "percent")} />
+        <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "percent")} />
       </CollapsibleTableSection>
       
     </div>
@@ -39,8 +37,8 @@ import CollapsibleSection from "../CollapsibleSection.svelte";
         Custom formats can be used in the same way as built-in formats. Note that your format tag will not appear in the column title when used in a component.
         <svelte:component
           this={CustomFormatsSection}
-          {builtInFormats}
-          {customSettings}
+          builtInFormats={BUILT_IN_FORMATS}
+          {customFormattingSettings}
         />
       </CollapsibleTableSection>
       </div>
@@ -66,7 +64,6 @@ import CollapsibleSection from "../CollapsibleSection.svelte";
     font-size: 14px;
     font-family: var(--ui-font-family);
   }
-
   .panel {
     border-top: 1px solid var(--grey-200);
     padding: 1em;
@@ -90,13 +87,5 @@ import CollapsibleSection from "../CollapsibleSection.svelte";
     font-size: 14px;
     align-items: center;
     font-family: var(--ui-font-family);
-  }
-
-  .spacer {
-    margin: 1em;
-  }
-
-  .section-description {
-    padding-left: 0.5em;
   }
 </style>

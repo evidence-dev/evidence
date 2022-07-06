@@ -1,4 +1,5 @@
-import { builtInFormats, getCustomFormats } from '$lib/modules/formats'
+import { BUILT_IN_FORMATS } from '$lib/modules/builtInFormats';
+import { getCustomFormats } from '$lib/modules/formats'
 
 export default function getFormatTag(columnName) {
 
@@ -21,7 +22,7 @@ export default function getFormatTag(columnName) {
     }
 
     let customFormats = getCustomFormats() || [];
-    let supportedTags = [...builtInFormats, ...customFormats].map(format => format.formatTag);
+    let supportedTags = [...BUILT_IN_FORMATS, ...customFormats].map(format => format.formatTag);
 
     // if the fmt tag OR the full column name is in the supported tags, use that tag:
     fmt = supportedTags.includes(fmt) ? fmt : supportedTags.includes(columnName) ? columnName : null;
