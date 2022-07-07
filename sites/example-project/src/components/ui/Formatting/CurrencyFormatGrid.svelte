@@ -2,7 +2,7 @@
   import "./format-grid.css";
   import { blur } from 'svelte/transition';
   import { SUPPORTED_CURRENCIES } from "$lib/modules/builtInFormats";
-  import { defaultExample, formatExample } from "$lib/modules/formats";
+  import { defaultExample, formatExample } from "$lib/modules/formatting";
   export let formats;
   let selectedCurrency;
 </script>

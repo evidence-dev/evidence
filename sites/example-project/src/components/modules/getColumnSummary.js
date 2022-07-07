@@ -1,9 +1,8 @@
 import getColumnEvidenceType from "./getColumnEvidenceType.js";
 import getColumnExtents from "./getColumnExtents.js";
 import getColumnUnits from "./getColumnUnits.js";
-import { getColumnFormat } from "./formats";
+import { lookupColumnFormat } from "./formatting";
 import formatTitle from './formatTitle.js'
-import getFormatTag from "./getFormatTag.js";
 
 export default function getColumnSummary(data, returnType="object") {
 
@@ -20,10 +19,10 @@ export default function getColumnSummary(data, returnType="object") {
       for (const [key] of Object.entries(data[0])) {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
-        colType = evidenceColumnType.evidenceType
+        colType = evidenceColumnType.evidenceType;
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
-        colFormat = getColumnFormat(getFormatTag(key));
+        colFormat = lookupColumnFormat(key, evidenceColumnType);
         let thisCol = {
             [colName]: {
                 title: formatTitle(colName, colFormat),
@@ -40,10 +39,10 @@ export default function getColumnSummary(data, returnType="object") {
       for (const [key] of Object.entries(data[0])) {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
-        colType = evidenceColumnType.evidenceType
+        colType = evidenceColumnType.evidenceType;
         colExtents = getColumnExtents(data, colName);        
         colUnits = getColumnUnits(colExtents);
-        colFormat = getColumnFormat(getFormatTag(key));
+        colFormat = lookupColumnFormat(key, evidenceColumnType);
           columnSummary.push({
               id: colName,
               title: formatTitle(colName, colFormat),

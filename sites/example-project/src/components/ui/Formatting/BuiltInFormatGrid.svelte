@@ -1,6 +1,6 @@
 <script>
   import "./format-grid.css";
-  import { defaultExample, formatExample } from "$lib/modules/formats";
+  import { defaultExample, formatExample } from "$lib/modules/formatting";
   export let formats;
 </script>
 

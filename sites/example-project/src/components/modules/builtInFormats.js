@@ -1,51 +1,156 @@
-export const AUTO_FORMAT_CODE = 'auto';
+import {
+  AUTO_FORMAT_CODE,
+  configureAutoFormatting,
+} from "$lib/modules/autoFormatting";
 
 export const SUPPORTED_CURRENCIES = [
-                              { 'primaryCode':'usd', 'currencySymbol': '$', 'displayName': 'USD - United States Dollar' },
-                              { 'primaryCode':'aud', 'currencySymbol': 'AUD$', 'displayName': 'AUD - Australian Dollar', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'brl', 'currencySymbol': 'R$', 'displayName': 'BRL - Brazilian Real', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'cad', 'currencySymbol': 'CAD$', 'displayName': 'CAD - Canadian Dollar', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'cny', 'currencySymbol': '¥', 'displayName': 'CNY - Renminbi', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'eur', 'currencySymbol': '€', 'displayName': 'EUR - Euro' },
-                              { 'primaryCode':'gbp', 'currencySymbol': '£', 'displayName': 'GBP - Pound Sterling', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'jpy', 'currencySymbol': '¥', 'displayName': 'JPY - Japanese Yen', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'inr', 'currencySymbol': '₹', 'displayName': 'INR - Indian Rupee', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'krw', 'currencySymbol': '₩', 'displayName': 'KRW - South Korean won', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'ngn', 'currencySymbol': '₦', 'displayName': 'NGN -  Nigerian Naira', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'rub', 'currencySymbol': 'rub', 'displayName': 'RUB - Russian Ruble', 'escapeCurrencySymbol': true },
-                              { 'primaryCode':'sek', 'currencySymbol': 'kr', 'displayName': 'SEK - Swedish Krona', 'escapeCurrencySymbol': true },
-                            ];
-
-const DERIVED_CURRENCY_FORMATS = [
-  { 'derivedSuffix': "", valueFormatCode: '#,##0', exampleInput: 7043.123, auto: true },
-  { 'derivedSuffix': "1", valueFormatCode: '#,##0.0', exampleInput: 7043.123 },
-  { 'derivedSuffix': "2", valueFormatCode: '#,##0.00', exampleInput: 7043.123 },
-  { 'derivedSuffix': "0k", valueFormatCode: '#,##0,"k"', exampleInput: 64301.12 },
-  { 'derivedSuffix': "1k", valueFormatCode: '#,##0.0,"k"', exampleInput: 64301.12 },
-  { 'derivedSuffix': "2k", valueFormatCode: '#,##0.0,"k"', exampleInput: 64301.12 },
-  { 'derivedSuffix': "0m", valueFormatCode: '#,##0,,"M"' , exampleInput: 4564301.12 },
-  { 'derivedSuffix': "1m", valueFormatCode: '#,##0.0,,"M"', exampleInput: 4564301.12 },
-  { 'derivedSuffix': "2m", valueFormatCode: '#,##0.00,,"M"', exampleInput: 4564301.12 },
-  { 'derivedSuffix': "0b", valueFormatCode: '#,##0,,,"B"', exampleInput: 9784564301.12 },
-  { 'derivedSuffix': "1b", valueFormatCode: '#,##0.0,,,"B"', exampleInput: 9784564301.12 },
-  { 'derivedSuffix': "2b", valueFormatCode: '#,##0.00,,,"B"',  exampleInput: 9784564301.12 },
+  {
+    primaryCode: "usd",
+    currencySymbol: "$",
+    displayName: "USD - United States Dollar",
+  },
+  {
+    primaryCode: "aud",
+    currencySymbol: "AUD$",
+    displayName: "AUD - Australian Dollar",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "brl",
+    currencySymbol: "R$",
+    displayName: "BRL - Brazilian Real",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "cad",
+    currencySymbol: "CAD$",
+    displayName: "CAD - Canadian Dollar",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "cny",
+    currencySymbol: "¥",
+    displayName: "CNY - Renminbi",
+    escapeCurrencySymbol: true,
+  },
+  { primaryCode: "eur", currencySymbol: "€", displayName: "EUR - Euro" },
+  {
+    primaryCode: "gbp",
+    currencySymbol: "£",
+    displayName: "GBP - Pound Sterling",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "jpy",
+    currencySymbol: "¥",
+    displayName: "JPY - Japanese Yen",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "inr",
+    currencySymbol: "₹",
+    displayName: "INR - Indian Rupee",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "krw",
+    currencySymbol: "₩",
+    displayName: "KRW - South Korean won",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "ngn",
+    currencySymbol: "₦",
+    displayName: "NGN -  Nigerian Naira",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "rub",
+    currencySymbol: "rub",
+    displayName: "RUB - Russian Ruble",
+    escapeCurrencySymbol: true,
+  },
+  {
+    primaryCode: "sek",
+    currencySymbol: "kr",
+    displayName: "SEK - Swedish Krona",
+    escapeCurrencySymbol: true,
+  },
 ];
 
-const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map(currency => {
+const DERIVED_CURRENCY_FORMATS = [
+  {
+    derivedSuffix: "",
+    valueFormatCode: "#,##0",
+    exampleInput: 7043.123,
+    auto: true,
+  },
+  { derivedSuffix: "1", valueFormatCode: "#,##0.0", exampleInput: 7043.123 },
+  { derivedSuffix: "2", valueFormatCode: "#,##0.00", exampleInput: 7043.123 },
+  { derivedSuffix: "0k", valueFormatCode: '#,##0,"k"', exampleInput: 64301.12 },
+  {
+    derivedSuffix: "1k",
+    valueFormatCode: '#,##0.0,"k"',
+    exampleInput: 64301.12,
+  },
+  {
+    derivedSuffix: "2k",
+    valueFormatCode: '#,##0.0,"k"',
+    exampleInput: 64301.12,
+  },
+  {
+    derivedSuffix: "0m",
+    valueFormatCode: '#,##0,,"M"',
+    exampleInput: 4564301.12,
+  },
+  {
+    derivedSuffix: "1m",
+    valueFormatCode: '#,##0.0,,"M"',
+    exampleInput: 4564301.12,
+  },
+  {
+    derivedSuffix: "2m",
+    valueFormatCode: '#,##0.00,,"M"',
+    exampleInput: 4564301.12,
+  },
+  {
+    derivedSuffix: "0b",
+    valueFormatCode: '#,##0,,,"B"',
+    exampleInput: 9784564301.12,
+  },
+  {
+    derivedSuffix: "1b",
+    valueFormatCode: '#,##0.0,,,"B"',
+    exampleInput: 9784564301.12,
+  },
+  {
+    derivedSuffix: "2b",
+    valueFormatCode: '#,##0.00,,,"B"',
+    exampleInput: 9784564301.12,
+  },
+];
+
+const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map((currency) => {
   let derivedFormats = [];
-  DERIVED_CURRENCY_FORMATS.forEach(derivedFormat => {
+  DERIVED_CURRENCY_FORMATS.forEach((derivedFormat) => {
     let next = {
-      formatTag:  currency.primaryCode + derivedFormat.derivedSuffix,
+      formatTag: currency.primaryCode + derivedFormat.derivedSuffix,
       parentFormat: currency.primaryCode,
-      formatCategory: 'currency',
-      valueType: 'number',
+      formatCategory: "currency",
+      valueType: "number",
       exampleInput: derivedFormat.exampleInput,
-      titleTagReplacement: ` (${currency.currencySymbol})`
+      titleTagReplacement: ` (${currency.currencySymbol})`,
     };
-    let symbolInFormatCode = currency.escapeCurrencySymbol ? `"${currency.currencySymbol}"` : currency.currencySymbol;
+    let symbolInFormatCode = currency.escapeCurrencySymbol
+      ? `"${currency.currencySymbol}"`
+      : currency.currencySymbol;
     if (derivedFormat.auto) {
       next.formatCode = AUTO_FORMAT_CODE;
-      next._hiddenFormatCode =  `${symbolInFormatCode}${derivedFormat.valueFormatCode}`;
+      configureAutoFormatting(
+        next,
+        `${symbolInFormatCode}${derivedFormat.valueFormatCode}`,
+        true
+      );
     } else {
       next.formatCode = `${symbolInFormatCode}${derivedFormat.valueFormatCode}`;
     }
@@ -59,6 +164,7 @@ const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map(currency => {
 
 export const BUILT_IN_FORMATS = [
   ...CURRENCY_FORMATS,
+  //auto formats
   // Date/Time:
   {
     formatTag: "ddd",
@@ -280,7 +386,7 @@ export const BUILT_IN_FORMATS = [
   },
   {
     formatTag: "sci",
-    formatCode: '0.00E+0',
+    formatCode: "0.00E+0",
     formatCategory: "number",
     valueType: "number",
     exampleInput: "16546.1561",
@@ -293,7 +399,7 @@ export const BUILT_IN_FORMATS = [
     formatCategory: "percent",
     valueType: "number",
     exampleInput: 0.731,
-    titleTagReplacement: ""
+    titleTagReplacement: "",
   },
   {
     formatTag: "pct0",
@@ -301,7 +407,7 @@ export const BUILT_IN_FORMATS = [
     formatCategory: "percent",
     valueType: "number",
     exampleInput: 0.731,
-    titleTagReplacement: ""
+    titleTagReplacement: "",
   },
   {
     formatTag: "pct1",
@@ -309,7 +415,7 @@ export const BUILT_IN_FORMATS = [
     formatCategory: "percent",
     valueType: "number",
     exampleInput: 0.731,
-    titleTagReplacement: ""
+    titleTagReplacement: "",
   },
   {
     formatTag: "pct2",
@@ -317,7 +423,7 @@ export const BUILT_IN_FORMATS = [
     formatCategory: "percent",
     valueType: "number",
     exampleInput: 0.731,
-    titleTagReplacement: ""
+    titleTagReplacement: "",
   },
   {
     formatTag: "pct3",
@@ -325,6 +431,6 @@ export const BUILT_IN_FORMATS = [
     formatCategory: "percent",
     valueType: "number",
     exampleInput: 0.731,
-    titleTagReplacement: ""
+    titleTagReplacement: "",
   },
 ];

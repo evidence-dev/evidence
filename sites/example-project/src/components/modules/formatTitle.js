@@ -1,4 +1,4 @@
-import { applyTitleTagReplacement } from '$lib/modules/formats';
+import { applyTitleTagReplacement } from '$lib/modules/formatting';
 
 export default function formatTitle(column, columnFormat) {
     let result = applyTitleTagReplacement(column, columnFormat);
