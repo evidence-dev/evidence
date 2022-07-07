@@ -1,11 +1,12 @@
 <script>
     import { getContext} from 'svelte';
     import { slide } from 'svelte/transition';
-    import formatValue from '$lib/modules/formatValue.js';
+    import { formatValue } from '$lib/modules/formatting.js';
     import ErrorChart from './ErrorChart.svelte'
     import checkInputs from '$lib/modules/checkInputs.js'
     import getColumnSummary from '$lib/modules/getColumnSummary.js';
     import getParsedDate from '$lib/modules/getParsedDate.js';
+    import { PAGE_QUERY_RESULTS } from '$lib/modules/globalContexts.js';
     import DownloadData from '$lib/ui/DownloadData.svelte'
 
     // 1 - Get Inputs
@@ -41,7 +42,7 @@
         if (queryID && data) {
           throw Error('Only one of "queryID" or "data" attributes should be provided');
         } else if (queryID) {
-          data = getContext('pageQueryResults').getData(queryID);
+          data = getContext(PAGE_QUERY_RESULTS).getData(queryID);
         }
         checkInputs(data);
       } catch (err) {

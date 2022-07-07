@@ -16,6 +16,10 @@
         transition: transform 0.15s ease-in;
     }
 
+    span {
+        margin: auto 0 auto 0;
+    }
+
     [aria-expanded=true] svg { 
         transform: rotate(0.25turn); 
     }

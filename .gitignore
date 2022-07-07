@@ -4,7 +4,7 @@ dist
 .env
 .pnpm-debug.log
 .vscode
-.custom-settings.json
+customization/
 /packages/components
 /packages/evidence/template
 *.sqlite

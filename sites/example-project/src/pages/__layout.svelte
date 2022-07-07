@@ -30,8 +30,8 @@
 	<Sidebar bind:open/> 
 	<Hamburger bind:open/>
 	<main in:blur|local>
-	  <div class=content>
-		<article>
+	  <div class=content class:settings-content={$page.path === '/settings'}>
+		<article class:settings-article={$page.path === '/settings'}>
 			<slot/>
 		</article>
 		<aside class='toc'>
@@ -80,6 +80,21 @@ article {
 	box-sizing: border-box;
 }
 
+.settings-content {
+	max-width: 100ch !important;
+	grid-template-columns: 1fr !important;
+	grid-template-areas:
+    	'article' !important; 
+}
+
+.settings-article {
+	max-width: 100ch;
+	min-width: 0;
+	width: 100%;
+	grid-area: article;
+	padding: 0 1.5em 0 1.5em;
+	box-sizing: border-box;
+}
 aside.toc {
 	grid-area: toc;
 	padding: 0px;
@@ -95,6 +110,17 @@ aside.toc {
 	article {
 		max-width: 80ch;
 	}
+
+	.settings-article {
+		max-width: 100ch;
+	}
+
+	.settings-content {
+	max-width: 100ch !important;
+	grid-template-columns: 1fr !important;
+	grid-template-areas:
+    	'article' !important; 
+}
 
 	aside.toc {
 		display: none;

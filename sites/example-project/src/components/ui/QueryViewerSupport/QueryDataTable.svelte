@@ -3,7 +3,8 @@
     import DownloadData from '../DownloadData.svelte'
     import { getContext} from 'svelte';
     import getColumnSummary from '$lib/modules/getColumnSummary.js';
-    import formatValue from '$lib/modules/formatValue.js';
+    import { formatValue } from '$lib/modules/formatting.js';
+    import { PAGE_QUERY_RESULTS } from '$lib/modules/globalContexts.js';
 
     export let queryID;
     export let data;  //TODO fallback support in case of the untitled issue. Shouldn't be exposed.
@@ -11,7 +12,7 @@
     let columnSummary;
 
     if (queryID && queryID !== 'untitled') {
-        data = getContext('pageQueryResults').getData(queryID);
+        data = getContext(PAGE_QUERY_RESULTS).getData(queryID);
         if (data) {
           let columnTypes =  data[0]['_evidenceColumnTypes'];
           columnSummary = getColumnSummary(data, 'array');

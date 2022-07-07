@@ -13,9 +13,9 @@
         import getColumnSummary from '../modules/getColumnSummary';
         import getDistinctValues from '../modules/getDistinctValues';
         import getSortedData from '../modules/getSortedData.js';
-        import formatAxisLabel from '../modules/formatAxisLabel';
+        import { formatAxisValue } from '../modules/formatting';
         import formatTitle from '../modules/formatTitle.js';
-        import formatValue from '../modules/formatValue.js';
+        import { formatValue } from '../modules/formatting.js';
         import ErrorChart from './ErrorChart.svelte';
         import checkInputs from '../modules/checkInputs';
         import {colours} from '../modules/colours'
@@ -334,7 +334,7 @@ try{
                     hideOverlap: true,
                     showMaxLabel: true,
                     formatter: function(value){
-                            return formatAxisLabel(value, yFormat, yUnits)
+                            return formatAxisValue(value, yFormat, yUnits)
                     },
                     margin: 4
                 },
@@ -370,7 +370,7 @@ try{
                         formatter: 
                             xType === 'time' ? false :                         
                             function(value){
-                                return formatAxisLabel(value, xFormat, xUnits)
+                                return formatAxisValue(value, xFormat, xUnits)
                             },
                         margin: 6
                     },
@@ -397,7 +397,7 @@ try{
                     hideOverlap: true,
                     // formatter: 
                     //     function(value){
-                    //         return formatAxisLabel(value, xFormat, xUnits)
+                    //         return formatAxisValue(value, xFormat, xUnits)
                     //     },
                 },
                 scale: true
@@ -420,7 +420,7 @@ try{
                         hideOverlap: true,
                         margin: 4,
                         formatter: function(value){
-                            return formatAxisLabel(value, yFormat, yUnits)
+                            return formatAxisValue(value, yFormat, yUnits)
                         }
                     },
                     name: yAxisTitle,
