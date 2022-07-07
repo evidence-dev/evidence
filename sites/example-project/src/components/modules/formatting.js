@@ -2,8 +2,7 @@ import * as ssf from "ssf";
 import { getContext } from "svelte";
 import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from "$lib/modules/globalContexts";
 import {
-  AUTO_FORMAT_CODE,
-  IMPLICIT_COLUMN_AUTO_FORMATS,
+  findImplicitAutoFormat,
   applyAutoFormatting,
 } from "$lib/modules/autoFormatting";
 import { BUILT_IN_FORMATS } from "$lib/modules/builtInFormats";
@@ -35,17 +34,15 @@ export const lookupColumnFormat = (columnName, columnEvidenceType) => {
       return matchingFormat;
     }
   }
-  let matchingImplicitFormatDescriptor = IMPLICIT_COLUMN_AUTO_FORMATS.find(
-    (implicitFormat) =>
-      implicitFormat.matchingFunction(columnName, columnEvidenceType)
-  );
-  if (matchingImplicitFormatDescriptor) {
-    return matchingImplicitFormatDescriptor.format;
+
+  let matchingImplicitAutoFormat = findImplicitAutoFormat(columnName, columnEvidenceType);
+  if (matchingImplicitAutoFormat) {
+    return matchingImplicitAutoFormat;
   }
   return undefined;
 };
 
-export const formatValue = (value, columnFormat, columnUnits = undefined) => {
+export const formatValue = (value, columnFormat = undefined, columnUnits = undefined) => {
   try {
     return applyFormatting(
       value,
@@ -64,15 +61,12 @@ export const formatValue = (value, columnFormat, columnUnits = undefined) => {
 
 export const formatAxisValue = (value, columnFormat, columnUnits) => {
   try {
-    let formattedValue = applyFormatting(
+    return applyFormatting(
       value,
       columnFormat,
       AXIS_FORMATTING_CONTEXT,
       columnUnits
     );
-    if (formattedValue) {
-      return formattedValue;
-    }
   } catch (error) {
     //fallback to default
   }
@@ -114,13 +108,11 @@ export const formatExample = (format) => {
     normalizedUserInput ||
     format.exampleInput ||
     defaultExample(format.valueType);
+
   if (preFormattedValue) {
     try {
       let columnUnits = undefined;
-      if (
-        format.formatCode === AUTO_FORMAT_CODE &&
-        format.valueType === "number"
-      ) {
+      if (isAutoFormat(format) && format.valueType === "number") {
         let numericValue = Number(preFormattedValue);
         if (!Number.isNaN(numericValue)) {
           if (numericValue >= 1000000000) {
@@ -147,7 +139,7 @@ export const formatExample = (format) => {
 
 function applyFormatting(
   value,
-  columnFormat,
+  columnFormat = undefined,
   formattingContext = VALUE_FORMATTING_CONTEXT,
   columnUnits = undefined
 ) {
@@ -157,7 +149,7 @@ function applyFormatting(
   let result = undefined;
   if (columnFormat) {
     try {
-      let formattingCode = getContextualFormattingCode(
+      let formattingCode = getEffectiveFormattingCode(
         columnFormat,
         formattingContext
       );
@@ -197,13 +189,13 @@ function applyFormatting(
   }
   return result;
 }
-function getContextualFormattingCode(
+function getEffectiveFormattingCode(
   columnFormat,
   formattingContext = VALUE_FORMATTING_CONTEXT
 ) {
   if (typeof columnFormat === "string") {
     console.warn(
-      `The first arg to getContextualFormattingCode(${columnFormat}, ${formattingContext}) should be an object, not a string`
+      `The first arg to getEffectiveFormattingCode(${columnFormat}, ${formattingContext}) should be an object, not a string`
     );
     return columnFormat; //TODO issue-333 consolidate legacy support
   } else {
@@ -217,11 +209,7 @@ function getContextualFormattingCode(
   }
 }
 
-function applyDefaultFormatting(
-  typedValue,
-  columnFormat = undefined,
-  columnUnits = undefined
-) {
+function applyDefaultFormatting(typedValue) {
   if (typeof typedValue === "number") {
     return typedValue.toLocaleString(undefined, {
       minimumFractionDigits: 0,

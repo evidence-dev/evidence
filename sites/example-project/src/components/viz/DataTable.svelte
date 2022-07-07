@@ -1,7 +1,7 @@
 <script>
     import { getContext} from 'svelte';
     import { slide } from 'svelte/transition';
-    import formatValue from '$lib/modules/formatValue.js';
+    import { formatValue } from '$lib/modules/formatting.js';
     import ErrorChart from './ErrorChart.svelte'
     import checkInputs from '$lib/modules/checkInputs.js'
     import getColumnSummary from '$lib/modules/getColumnSummary.js';

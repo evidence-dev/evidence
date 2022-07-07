@@ -3,7 +3,7 @@
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import getColumnExtents from '$lib/modules/getColumnExtents';
     import formatTitle from '$lib/modules/formatTitle';
-    import formatValue from '$lib/modules/formatValue.js';
+    import { formatValue } from '$lib/modules/formatting.js';
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;

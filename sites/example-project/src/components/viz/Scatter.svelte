@@ -2,7 +2,7 @@
     import { props, config } from '$lib/modules/stores.js';   
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import formatTitle from '$lib/modules/formatTitle.js';
-    import formatValue from '$lib/modules/formatValue.js';
+    import { formatValue } from '$lib/modules/formatting.js';
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;

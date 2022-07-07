@@ -8,7 +8,7 @@ export const AUTO_FORMAT_CODE = "auto";
  * These won't be shown in the settings panel.
  * The ORDER in the array will take precedence as a columnName/evidenceType can be matched to multiple formats
  */
-export const IMPLICIT_COLUMN_AUTO_FORMATS = [
+const IMPLICIT_COLUMN_AUTO_FORMATS = [
   {
     name: "year",
     description:
@@ -23,11 +23,9 @@ export const IMPLICIT_COLUMN_AUTO_FORMATS = [
       return false;
     },
     format: {
-      formatTag: "$implicitNumericYear",
       formatCode: AUTO_FORMAT_CODE,
       valueType: "number",
       exampleInput: 2013,
-      titleTagReplacement: "",
       _autoFormat: {
         autoFormatCode: "@",
         truncateUnits: false,
@@ -48,17 +46,35 @@ export const IMPLICIT_COLUMN_AUTO_FORMATS = [
       return false;
     },
     format: {
-      formatTag: "$implicitNumericId",
       formatCode: AUTO_FORMAT_CODE,
       valueType: "number",
       exampleInput: 931201212031223422,
-      titleTagReplacement: "",
       _autoFormat: {
         autoFormatFunction: (value) => {
           if (value !== null && value !== undefined && !isNaN(value)) {
             return value.toLocaleString("fullwide", { useGrouping: false });
           }
         },
+      },
+    },
+  },
+  {
+    name: "defaultDate",
+    description:
+      'Formatting for Default Date',
+    matchingFunction: (columnName, columnEvidenceType) => {
+      if (columnEvidenceType) {
+        return columnEvidenceType.evidenceType === "date";
+      }
+      return false;
+    },
+    format: {
+      formatCode: AUTO_FORMAT_CODE,
+      valueType: "date",
+      exampleInput: "Sat Jan 01 2022 03:15:00 GMT-0500",
+      _autoFormat: {
+        autoFormatCode: "YYYY-MM-DD",
+        truncateUnits: false,
       },
     },
   },
@@ -83,8 +99,8 @@ export const configureAutoFormatting = (
   return format;
 };
 
-export const isAutoFormat = (format, contextualFormatCode) => {
-  let matchesCode = contextualFormatCode?.toLowerCase() === AUTO_FORMAT_CODE;
+export const isAutoFormat = (format, effectiveCode) => {
+  let matchesCode = ( (effectiveCode || format.formatCode)?.toLowerCase() === AUTO_FORMAT_CODE);
   let autoFormatCode =
     format._autoFormat?.autoFormatFunction ||
     format._autoFormat?.autoFormatCode;
@@ -94,6 +110,14 @@ export const isAutoFormat = (format, contextualFormatCode) => {
     return false;
   }
 };
+
+export const findImplicitAutoFormat = (columnName, columnEvidenceType) => {
+  let matched = IMPLICIT_COLUMN_AUTO_FORMATS.find(
+    (implicitFormat) =>
+      implicitFormat.matchingFunction(columnName, columnEvidenceType)
+  );
+  return matched?.format;
+}
 
 export const applyAutoFormatting = (
   typedValue,
@@ -123,6 +147,7 @@ export const applyAutoFormatting = (
   );
   return typedValue;
 };
+
 
 function truncateColumnUnits(numericValue, columnUnits) {
   let displayValue, suffix;

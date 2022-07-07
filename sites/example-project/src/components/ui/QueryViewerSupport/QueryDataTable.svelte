@@ -3,7 +3,7 @@
     import DownloadData from '../DownloadData.svelte'
     import { getContext} from 'svelte';
     import getColumnSummary from '$lib/modules/getColumnSummary.js';
-    import formatValue from '$lib/modules/formatValue.js';
+    import { formatValue } from '$lib/modules/formatting.js';
     import { PAGE_QUERY_RESULTS } from '$lib/modules/globalContexts.js';
 
     export let queryID;

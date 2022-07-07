@@ -10,7 +10,7 @@
         import getSortedData from '../modules/getSortedData.js';
         import { formatAxisValue } from '../modules/formatting';
         import formatTitle from '../modules/formatTitle.js';
-        import formatValue from '../modules/formatValue.js';
+        import { formatValue } from '../modules/formatting.js';
         import ErrorChart from './ErrorChart.svelte';
         import checkInputs from '../modules/checkInputs';
         import {colours} from '../modules/colours'

@@ -2,7 +2,7 @@
     import { props, config } from '$lib/modules/stores.js';   
     import ecStat from 'echarts-stat';
     import getDistinctValues from '$lib/modules/getDistinctValues.js';
-    import formatValue from '../modules/formatValue';
+    import { formatValue } from '../modules/formatting';
 
     export let x = undefined;
 

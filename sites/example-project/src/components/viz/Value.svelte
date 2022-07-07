@@ -1,6 +1,6 @@
 <script>
     import getColumnSummary from "$lib/modules/getColumnSummary.js";
-    import formatValue from "$lib/modules/formatValue.js";
+    import { formatValue } from "$lib/modules/formatting.js";
     import getParsedDate from "$lib/modules/getParsedDate.js";
     import checkInputs from "$lib/modules/checkInputs.js";
     import PulseNumber from "./PulseNumber.svelte";
