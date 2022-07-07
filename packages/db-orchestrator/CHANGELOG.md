@@ -1,5 +1,15 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.3
+
+### Patch Changes
+
+- Updated dependencies [23d0234]
+- Updated dependencies [7a87d0b]
+  - @evidence-dev/bigquery@1.2.2
+  - @evidence-dev/mysql@0.1.2
+  - @evidence-dev/snowflake@0.1.2
+
 ## 1.1.2
 
 ### Patch Changes

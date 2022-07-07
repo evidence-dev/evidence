@@ -111,7 +111,7 @@ When used inside an **each block**, the `<Value/>` component only requires a ref
 ```json {3} title="Change the highlighted line below:"
 {#each channel_cpa as channel}
 
-**{channel.marketing_channel} CPA was <Value value={channel.cpa} fmt=usd/>**, with a spend of <Value value={channel.total_spend} fmt=usd/>, bringing in <Value value={channel.total_orders}/> orders.
+**{channel.marketing_channel} CPA was <Value data={channel.cpa}/>**, with a spend of <Value data={channel.total_spend}/>, bringing in <Value data={channel.total_orders}/> orders.
 
 {/each}
 ```

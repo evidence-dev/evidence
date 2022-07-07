@@ -1,5 +1,9 @@
 <script>
-    import { props, config } from '$lib/modules/stores.js';   
+    import {getContext} from 'svelte'
+    import { propKey, configKey } from './context'
+    let props = getContext(propKey)
+    let config = getContext(configKey)
+    
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import getStackedData from '$lib/modules/getStackedData.js';
     import getSortedData from '$lib/modules/getSortedData.js';
