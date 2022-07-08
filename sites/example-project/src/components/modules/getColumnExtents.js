@@ -1,4 +1,4 @@
-import { tidy, summarize, min, max } from "@tidyjs/tidy";
+import { tidy, summarize, min, max, median } from "@tidyjs/tidy";
 
 /**
  *
@@ -6,15 +6,15 @@ import { tidy, summarize, min, max } from "@tidyjs/tidy";
  * @param {*} column
  * @returns undefined if not all the defined values are numbers
  */
-export function getColumnDataSummary(data, column) {
+export function getColumnDataSummary(data, columnName) {
   try {
-    let seriesSummary = {};
+    let seriesSummary;
     let seriesExtents = tidy(
       data,
-      summarize({ min: min(column), max: max(column), median: median(column) })
-    );
+      summarize({ min: min(columnName), max: max(columnName), median: median(columnName) })
+    )[0];
 
-    let maxDecimals = maxDecimalPlacesInArray(data.map((row) => row[column]));
+    let maxDecimals = maxDecimalPlacesInArray(data.map((row) => row[columnName]));
     seriesSummary = {
       min: seriesExtents.min,
       max: seriesExtents.max,
@@ -38,11 +38,13 @@ export function getColumnExtentsLegacy(data, column) {
 
 function checkValidNumericSeriesValue(value) {
   if (
-    typeof value === "string" ||
-    typeof value === "function" ||
-    typeof value === "object"
+    typeof(value) === "string" ||
+    typeof(value) === "function" ||
+    typeof(value) === "object"
   ) {
-    throw Error(`Invalid numeric value ${value}`);
+    if (value !== null) {
+      throw Error(`Invalid numeric value ${value}`);
+    }
   }
   //undefined and null are ignored.
 }
