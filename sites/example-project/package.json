@@ -8,7 +8,7 @@
     "package": "svelte-kit package && pnpm clean-package",
     "clean-package": "node scripts/clean-package.js",
     "prepublishOnly": "pnpm package",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "type": "module",
   "dependencies": {
@@ -25,6 +25,7 @@
     "directory": "../../packages/components"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "fs-extra": "^10.0.1",
     "jest": "^28.1.2"
   },

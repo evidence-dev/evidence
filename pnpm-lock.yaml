@@ -252,6 +252,7 @@ importers:
   sites/example-project:
     specifiers:
       '@tidyjs/tidy': 2.4.4
+      cross-env: ^7.0.3
       downloadjs: 1.4.7
       echarts: 5.3.2
       echarts-stat: 1.2.0
@@ -271,6 +272,7 @@ importers:
       ssf: 0.11.2
       svelte-icons: 2.1.0
     devDependencies:
+      cross-env: 7.0.3
       fs-extra: 10.0.1
       jest: 28.1.2
 
@@ -5790,6 +5792,14 @@ packages:
       path-type: 4.0.0
       yaml: 1.10.2
     dev: false
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+    dev: true
 
   /cross-fetch/3.1.4:
     resolution: {integrity: sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==}
