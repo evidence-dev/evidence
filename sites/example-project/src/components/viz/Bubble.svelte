@@ -5,7 +5,7 @@
     let config = getContext(configKey)
     
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
-    import getColumnExtents from '$lib/modules/getColumnExtents';
+    import { getColumnExtentsLegacy } from '$lib/modules/getColumnExtents';
     import formatTitle from '$lib/modules/formatTitle';
     import { formatValue } from '$lib/modules/formatting.js';
     import getCompletedData from '$lib/modules/getCompletedData.js';
@@ -56,7 +56,7 @@
     }
 
     // Determine bubble sizes:
-    let sizeExtents = getColumnExtents(data, size);
+    let sizeExtents = getColumnExtentsLegacy(data, size);
     let maxData = sizeExtents[1];
     let maxSizeSq = Math.pow(maxSize, 2);
 

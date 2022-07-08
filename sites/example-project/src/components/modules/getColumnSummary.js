@@ -1,5 +1,5 @@
 import getColumnEvidenceType from "./getColumnEvidenceType.js";
-import getColumnExtents from "./getColumnExtents.js";
+import { getColumnExtentsLegacy } from "./getColumnExtents.js";
 import getColumnUnits from "./getColumnUnits.js";
 import { lookupColumnFormat } from "./formatting";
 import formatTitle from './formatTitle.js'
@@ -20,7 +20,7 @@ export default function getColumnSummary(data, returnType="object") {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType;
-        colExtents = getColumnExtents(data, colName);        
+        colExtents = getColumnExtentsLegacy(data, colName);
         colUnits = getColumnUnits(colExtents);
         colFormat = lookupColumnFormat(key, evidenceColumnType);
         let thisCol = {
@@ -40,7 +40,7 @@ export default function getColumnSummary(data, returnType="object") {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType;
-        colExtents = getColumnExtents(data, colName);        
+        colExtents = getColumnExtentsLegacy(data, colName);
         colUnits = getColumnUnits(colExtents);
         colFormat = lookupColumnFormat(key, evidenceColumnType);
           columnSummary.push({
