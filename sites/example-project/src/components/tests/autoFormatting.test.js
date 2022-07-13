@@ -1,6 +1,5 @@
 
 import * as ssf from "ssf";
-
 import { isAutoFormat, defaultFormat } from "../modules/autoFormatting";
 
 test("isAutoFormat(format) = false for incorrect formats", () => {
@@ -29,11 +28,6 @@ test("isAutoFormat(format) = true for correct auto format", () => {
   ).toBe(true);
 });
 
-
-test("ssftest", () => {
-  ssf.format("0.0", 1);
-  expect(ssf.format("#,##0.0", 12345.67)).toBe("12,346.77");
-});
 
 test("defaultFormat for numbered value with columnUnitSummary is correct", () => {
   let columnUnitSummary = {
