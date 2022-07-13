@@ -115,12 +115,12 @@
                       </td>
                     {:else if columnSummary[j].type === 'number'}
                       <td class="number" style="width:{columnWidths}%;">
-                         {formatValue(cell, columnSummary[j].format, columnSummary[j].units)}
+                         {formatValue(cell, columnSummary[j].format, columnSummary[j].columnUnitSummary)}
                       </td>
                     {:else if columnSummary[j].type === 'date'}
                     <td class="string" style="width:{columnWidths}%" title={formatValue(cell, columnSummary[j].format)}>
                       <div >
-                          {formatValue(cell, columnSummary[j].format)}                       
+                          {formatValue(cell, columnSummary[j].format)}
                       </div>
                     </td>
                     {:else if columnSummary[j].type === 'string'}

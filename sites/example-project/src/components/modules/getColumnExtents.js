@@ -6,7 +6,7 @@ import { tidy, summarize, min, max, median } from "@tidyjs/tidy";
  * @param {*} column
  * @returns undefined if not all the defined values are numbers
  */
-export function getColumnDataSummary(data, columnName) {
+export function getColumnUnitSummary(data, columnName) {
   try {
     let seriesSummary;
     let seriesExtents = tidy(

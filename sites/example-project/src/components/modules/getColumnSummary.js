@@ -1,6 +1,5 @@
 import getColumnEvidenceType from "./getColumnEvidenceType.js";
-import { getColumnExtentsLegacy } from "./getColumnExtents.js";
-import getColumnUnits from "./getColumnUnits.js";
+import { getColumnExtentsLegacy, getColumnUnitSummary } from "./getColumnExtents.js";
 import { lookupColumnFormat } from "./formatting";
 import formatTitle from './formatTitle.js'
 
@@ -9,28 +8,29 @@ export default function getColumnSummary(data, returnType="object") {
     var colName;
     var colType;
     var evidenceColumnType;
-    var colExtents;
-    var colUnits;
     var colFormat;
-
+    let columnUnitSummary;
     let columnSummary = [];
+
+    var colExtentsLegacy;
 
     if(returnType === 'object'){
       for (const [key] of Object.entries(data[0])) {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType;
-        colExtents = getColumnExtentsLegacy(data, colName);
-        colUnits = getColumnUnits(colExtents);
         colFormat = lookupColumnFormat(key, evidenceColumnType);
+        columnUnitSummary = getColumnUnitSummary(data, colName);
+        colExtentsLegacy = getColumnExtentsLegacy(data, colName);
+
         let thisCol = {
             [colName]: {
                 title: formatTitle(colName, colFormat),
                 type: colType,
                 evidenceColumnType: evidenceColumnType,
-                extents: colExtents,
                 format: colFormat,
-                units: colUnits
+                columnUnitSummary: columnUnitSummary,
+                extentsLegacy: colExtentsLegacy
               }
         }
         columnSummary = {...columnSummary, ...thisCol}
@@ -40,18 +40,20 @@ export default function getColumnSummary(data, returnType="object") {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType;
-        colExtents = getColumnExtentsLegacy(data, colName);
-        colUnits = getColumnUnits(colExtents);
         colFormat = lookupColumnFormat(key, evidenceColumnType);
-          columnSummary.push({
-              id: colName,
-              title: formatTitle(colName, colFormat),
-              type: colType,
-              evidenceColumnType: evidenceColumnType,
-              extents: colExtents,
-              format: colFormat,
-              units: colUnits
-          })
+        columnUnitSummary = getColumnUnitSummary(data, colName);
+
+        colExtentsLegacy = getColumnExtentsLegacy(data, colName);
+
+        columnSummary.push({
+            id: colName,
+            title: formatTitle(colName, colFormat),
+            type: colType,
+            evidenceColumnType: evidenceColumnType,
+            format: colFormat,
+            columnUnitSummary: columnUnitSummary,
+            extentsLegacy: colExtentsLegacy,
+        })
       }
     }
 

@@ -3,6 +3,10 @@ import * as ssf from "ssf";
 export const AUTO_FORMAT_CODE = "auto";
 
 /**
+ * The number of units to display the median value in the series 
+ */
+const AUTO_FORMAT_MEDIAN_PRECISION = 3;
+/**
  * Describes implicit formats for columns having a certain name pattern and an evidence type (matched via matchingFunction).
  * This will only be applied to columns that cannot be matched to existing custom or built-in formats.
  * These won't be shown in the settings panel.
@@ -50,9 +54,11 @@ const IMPLICIT_COLUMN_AUTO_FORMATS = [
       valueType: "number",
       exampleInput: 931201212031223422,
       _autoFormat: {
-        autoFormatFunction: (value) => {
-          if (value !== null && value !== undefined && !isNaN(value)) {
-            return value.toLocaleString("fullwide", { useGrouping: false });
+        autoFormatFunction: (typedValue) => {
+          if (typedValue !== null && typedValue !== undefined && !isNaN(typedValue)) {
+            return typedValue.toLocaleString("fullwide", { useGrouping: false });
+          } else {
+            return typedValue;
           }
         },
       },
@@ -99,6 +105,15 @@ export const configureAutoFormatting = (
   return format;
 };
 
+export const findImplicitAutoFormat = (columnName, columnEvidenceType) => {
+  let matched = IMPLICIT_COLUMN_AUTO_FORMATS.find(
+    (implicitFormat) =>
+      implicitFormat.matchingFunction(columnName, columnEvidenceType)
+  );
+  return matched?.format;
+}
+
+
 export const isAutoFormat = (format, effectiveCode) => {
   let matchesCode = ( (effectiveCode || format.formatCode)?.toLowerCase() === AUTO_FORMAT_CODE);
   let autoFormatCode =
@@ -111,65 +126,133 @@ export const isAutoFormat = (format, effectiveCode) => {
   }
 };
 
-export const findImplicitAutoFormat = (columnName, columnEvidenceType) => {
-  let matched = IMPLICIT_COLUMN_AUTO_FORMATS.find(
-    (implicitFormat) =>
-      implicitFormat.matchingFunction(columnName, columnEvidenceType)
-  );
-  return matched?.format;
+/**
+ * Formatting logic for formats with formatCode=AUTO_FORMAT_CODE
+ * @param {*} typedValue the value to be formatted
+ * @param {*} columnFormat the auto formatting description
+ * @param {*} columnUnitSummary the summary of units in the column (only applicable to numbered columns)
+ * @returns formattedv value
+ */
+export const autoFormat = (typedValue, columnFormat, columnUnitSummary = undefined) => {
+  if (columnFormat._autoFormat?.autoFormatFunction) {
+    return columnFormat.autoFormatFunction(typedValue, columnFormat, columnUnitSummary);
+  } else if (columnFormat._autoFormat.autoFormatCode) {
+    let valueType = columnFormat.valueType;
+    if ("number" === valueType && columnUnitSummary?.median) {
+      let median = columnUnitSummary?.median;
+      let autoFormatCode  = columnFormat?._autoFormat?.autoFormatCode;
+      let truncateUnits  = columnFormat?._autoFormat?.truncateUnits;
+
+      let unitValue = typedValue;
+      let unit = "";
+ 
+      if (truncateUnits) {
+        unit = getAutoColumnUnit(median);
+        unitValue = applyColumnUnits(typedValue, unit);
+      }
+
+      return ssf.format(autoFormatCode, unitValue) + unit;
+    }
+  } else {
+    console.warn("autoFormat called without a formatCode or function");
+  }
+  return typedValue;
 }
 
-export const applyAutoFormatting = (
-  typedValue,
-  columnFormat,
-  columnUnits = undefined
-) => {
-  if (columnFormat._autoFormat?.autoFormatFunction) {
-    return columnFormat.autoFormatFunction(typedValue, columnUnits);
-  } else if (columnFormat._autoFormat?.autoFormatCode) {
-    if (columnFormat._autoFormat.truncateUnits) {
-      let { displayValue, suffix } = truncateColumnUnits(
-        typedValue,
-        columnUnits
-      ); //needed for usd but not for implicit formats
-      return (
-        ssf.format(columnFormat._autoFormat.autoFormatCode, displayValue) +
-        suffix
-      );
+/**
+ * Formatting for any column without formatting settings
+ * @param {*} typedValue a value of type number|date|string
+ * @param {*} columnUnitSummary
+ * @returns the formatted value
+ */
+export const defaultFormat = (typedValue, columnUnitSummary = undefined) => {
+  if (typeof(typedValue) === "number") {
+    if (columnUnitSummary && columnUnitSummary.median !== undefined) {
+
+      let effectiveFormatCode;
+      let valueInUnitTerms = typedValue;
+      let columnUnits = "";
+      let median = columnUnitSummary.median;
+
+      if (columnUnitSummary?.maxDecimals === 0) {
+        //if there are no decimals involved show the entire number
+        valueInUnitTerms = typedValue;
+        effectiveFormatCode = "#,##0";
+      } else {
+        let medianInUnitTerms;
+        columnUnits = getAutoColumnUnit(medianInUnitTerms);
+        if (columnUnits) {
+          medianInUnitTerms = applyColumnUnits(median, columnUnits);
+          valueInUnitTerms = applyColumnUnits(typedValue, columnUnits);
+        } else {
+          medianInUnitTerms = median;
+          valueInUnitTerms = typedValue;
+        }
+        let medianBase10Exponent = base10Exponent(medianInUnitTerms);
+        let valueBase10Exponent = base10Exponent(valueInUnitTerms);
+        let significantDigitsToDisplay = Math.max((valueBase10Exponent - medianBase10Exponent) + AUTO_FORMAT_MEDIAN_PRECISION, AUTO_FORMAT_MEDIAN_PRECISION);
+
+        let base = valueBase10Exponent;
+        effectiveFormatCode = "";
+        while (base > (valueBase10Exponent - significantDigitsToDisplay)) {
+          if (base > 0) {
+            effectiveFormatCode += "#";
+            if (base % 3 === 0) {
+              effectiveFormatCode += ",";
+            }
+          } else if (base === 0) {
+            effectiveFormatCode += "0";
+            if ((base - 1 )> (valueBase10Exponent - significantDigitsToDisplay)) {
+              //add a decimal if there are more significant digits to display
+              effectiveFormatCode += ".";
+            }
+          } else {
+            //base < 0
+            effectiveFormatCode += "0";
+          }
+          base--;
+        }
+      }
+      return ssf.format(effectiveFormatCode, valueInUnitTerms) + columnUnits;
     } else {
-      return ssf.format(columnFormat._autoFormat.autoFormatCode, typedValue);
+      return typedValue.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
     }
+  } else if (typedValue !== undefined && typedValue !== null) {
+    return typedValue?.toString();
+  } else {
+    return "-";
   }
-  console.warn(
-    `Auto format method missing in ${JSON.stringify(
-      columnFormat
-    )} while applying to value ${typedValue}`
-  );
-  return typedValue;
-};
+}
 
-
-function truncateColumnUnits(numericValue, columnUnits) {
-  let displayValue, suffix;
-  switch (columnUnits) {
+function applyColumnUnits (value, unit) {
+  switch(unit) {
     case "B":
-      displayValue = numericValue / 1000000000;
-      suffix = columnUnits;
-      break;
+      return value / 1000000000;
     case "M":
-      displayValue = numericValue / 1000000;
-      suffix = columnUnits;
-      break;
+      return value / 1000000;
     case "k":
-      displayValue = numericValue / 1000;
-      suffix = columnUnits;
-      break;
+      return value / 1000;
     default:
-      displayValue = numericValue;
-      suffix = "";
+      return value;
   }
-  return {
-    displayValue: displayValue,
-    suffix: suffix,
-  };
+}
+
+function getAutoColumnUnit(value) {
+  let abosoluteValue = Math.abs(value);
+  if(abosoluteValue >= 1000000000) {
+    return "B"
+  } else if(abosoluteValue >= 1000000){
+    return "M";
+  } else if(abosoluteValue >= 1000){
+    return "k";
+  } else {
+    return "";
+  }
+}
+
+function base10Exponent(value) {
+  return Math.floor(Math.log10(value));
 }

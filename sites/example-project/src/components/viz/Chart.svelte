@@ -94,8 +94,8 @@
         let xFormat;
         let yFormat;
         let sizeFormat;
-        let xUnits;
-        let yUnits;       
+        let xUnitSummary;
+        let yUnitSummary;       
         let xDistinct;
 
         // Individual Config Sections:
@@ -293,13 +293,13 @@ try{
             sizeFormat = columnSummary[size].format;
         }
 
-        xUnits = columnSummary[x].units;
+        xUnitSummary = columnSummary[x].columnUnitSummary;
         
-        if(!y){yUnits = ''} else {
+        if (y) {
             if(typeof y === 'object'){
-                yUnits = columnSummary[y[0]].units;
+                yUnitSummary = columnSummary[y[0]].columnUnitSummary;
             } else {
-                yUnits = columnSummary[y].units;
+                yUnitSummary = columnSummary[y].columnUnitSummary;
             }
         }
 
@@ -334,7 +334,7 @@ try{
                     hideOverlap: true,
                     showMaxLabel: true,
                     formatter: function(value){
-                            return formatAxisValue(value, yFormat, yUnits)
+                            return formatAxisValue(value, yFormat, yUnitSummary)
                     },
                     margin: 4
                 },
@@ -370,7 +370,7 @@ try{
                         formatter: 
                             xType === 'time' ? false :                         
                             function(value){
-                                return formatAxisValue(value, xFormat, xUnits)
+                                return formatAxisValue(value, xFormat, xUnitSummary)
                             },
                         margin: 6
                     },
@@ -397,7 +397,7 @@ try{
                     hideOverlap: true,
                     // formatter: 
                     //     function(value){
-                    //         return formatAxisValue(value, xFormat, xUnits)
+                    //         return formatAxisValue(value, xFormat, xUnitSummary)
                     //     },
                 },
                 scale: true
@@ -420,7 +420,7 @@ try{
                         hideOverlap: true,
                         margin: 4,
                         formatter: function(value){
-                            return formatAxisValue(value, yFormat, yUnits)
+                            return formatAxisValue(value, yFormat, yUnitSummary)
                         }
                     },
                     name: yAxisTitle,

@@ -1,7 +1,7 @@
 import {
   AUTO_FORMAT_CODE,
   configureAutoFormatting,
-} from "$lib/modules/autoFormatting";
+} from "./autoFormatting";
 
 export const SUPPORTED_CURRENCIES = [
   {
