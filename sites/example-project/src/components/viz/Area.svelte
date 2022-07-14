@@ -8,11 +8,14 @@
     import formatTitle from '$lib/modules/formatTitle';
     import replaceNulls from '$lib/modules/replaceNulls.js';
     import getCompletedData from '$lib/modules/getCompletedData.js';
+    import getStackPercentages from '$lib/modules/getStackPercentages.js';
 
     export let y = undefined;
     export let series = undefined;
     export let options = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
+
+    export let type = "stacked" // stacked or stacked100
 
     export let fillColor = undefined;
     export let fillOpacity = undefined;
@@ -45,6 +48,11 @@
 
     if(handleMissing === "zero"){
         data = replaceNulls(data, y)
+    }
+
+    if(type === "stacked100"){
+        data = getStackPercentages(data, x, y);
+        y= "percentOfX_pct"
     }
 
     let baseConfig = {
@@ -95,6 +103,13 @@
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            if(type === "stacked100"){
+                if(swapXY){
+                    d.xAxis = {...d.xAxis, max: 1};
+                } else {
+                    d.yAxis = {...d.yAxis, max: 1};
+                }
             }
             return d})
     }

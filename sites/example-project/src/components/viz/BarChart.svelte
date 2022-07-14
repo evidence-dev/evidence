@@ -27,7 +27,7 @@
         swapXY = false;
     }
 
-    export let type = undefined; // stacked or grouped
+    export let type = undefined; // stacked, grouped, or stacked100
 
     export let fillColor = undefined;
     export let fillOpacity = undefined;

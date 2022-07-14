@@ -29,6 +29,8 @@
 
     export let sort = undefined;
 
+    export let type = undefined; // stacked or stacked100
+
     let chartType = "Area Chart";
 
 </script>
@@ -59,5 +61,6 @@
         {fillColor}
         {fillOpacity}
         {handleMissing}
+        {type}
      />
 </Chart>
