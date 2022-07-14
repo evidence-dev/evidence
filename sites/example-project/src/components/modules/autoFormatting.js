@@ -248,9 +248,9 @@ export const autoFormat = (
       columnUnitSummary
     );
   } else if (columnFormat._autoFormat.autoFormatCode) {
+    let autoFormatCode = columnFormat?._autoFormat?.autoFormatCode;
     let valueType = columnFormat.valueType;
     if ("number" === valueType) {
-      let autoFormatCode = columnFormat?._autoFormat?.autoFormatCode;
       let truncateUnits = columnFormat?._autoFormat?.truncateUnits;
 
       let unitValue = typedValue;
@@ -263,6 +263,8 @@ export const autoFormat = (
         unitValue = applyColumnUnits(typedValue, unit);
       }
       return ssf.format(autoFormatCode, unitValue) + unit;
+    } else {
+      return ssf.format(autoFormatCode, typedValue);
     }
   } else {
     console.warn("autoFormat called without a formatCode or function");
