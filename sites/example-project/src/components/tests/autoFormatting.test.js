@@ -64,10 +64,42 @@ test("implicit number formatting on an array of only integer values", () => {
   expect(autoFormat(min, format, columnUnitSummary)).toBe("-1.2k");
 });
 
-test("implicit number formatting on an array of only integer values is #,##0", () => {
+test("auto number formatting on an array of large integers includes a column unit and at least three digits for values equal or larger than median", () => {
   let max = 1234567;
   let min = -1234;
   let median = 91000;
+
+  let columnUnitSummary = {
+    unitType: "number",
+    median: median,
+    maxDecimals: 0,
+    max: max,
+    min: min,
+  };
+
+  let format = findImplicitAutoFormat(
+    "someColumn",
+    undefined,
+    columnUnitSummary
+  );
+
+  expect(format).toBeDefined();
+  expect(format.formatCode).toBe(AUTO_FORMAT_CODE);
+
+  expect(format._autoFormat.autoFormatCode).toBe("#,##0.0");
+  expect(format._autoFormat.truncateUnits).toBe(true);
+
+  expect(autoFormat(3121, format, columnUnitSummary)).toBe("3.1k");
+  expect(autoFormat(0, format, columnUnitSummary)).toBe("0.0k");
+  expect(autoFormat(median, format, columnUnitSummary)).toBe("91.0k");
+  expect(autoFormat(max, format, columnUnitSummary)).toBe("1,234.6k");
+  expect(autoFormat(min, format, columnUnitSummary)).toBe("-1.2k");
+});
+
+test("auto number formatting on an array of only small integer values is #,##0", () => {
+  let max = 1234;
+  let min = -1234;
+  let median = 91;
   let columnUnitSummary = {
     unitType: "number",
     median: median,
@@ -88,14 +120,15 @@ test("implicit number formatting on an array of only integer values is #,##0", (
   expect(format._autoFormat.autoFormatCode).toBe("#,##0");
   expect(format._autoFormat.truncateUnits).toBe(false);
 
-  expect(autoFormat(3121, format, columnUnitSummary)).toBe("3,121");
+  expect(autoFormat(312, format, columnUnitSummary)).toBe("312");
   expect(autoFormat(0, format, columnUnitSummary)).toBe("0");
-  expect(autoFormat(median, format, columnUnitSummary)).toBe("91,000");
-  expect(autoFormat(max, format, columnUnitSummary)).toBe("1,234,567");
+  expect(autoFormat(median, format, columnUnitSummary)).toBe("91");
+  expect(autoFormat(max, format, columnUnitSummary)).toBe("1,234");
   expect(autoFormat(min, format, columnUnitSummary)).toBe("-1,234");
 });
 
-test("implicit number formatting on an auto currency with decimals is formatted correctly", () => {
+
+test("number formatting on an auto currency with decimals is formatted correctly", () => {
   let max = 1234567.8;
   let min = -1234.56;
   let median = 91000.314521;
@@ -120,7 +153,7 @@ test("implicit number formatting on an auto currency with decimals is formatted 
   expect(autoFormat(min, format, columnUnitSummary)).toBe("-$1.2k");
 });
 
-test("implicit number formatting on an auto currency consisting of only integer values is formatted as $#,##0", () => {
+test("number formatting on an auto currency consisting of only large integer values contain a column unit and at least 3 digits for values equal or larger to the median", () => {
   let max = 1234567;
   let min = 1234;
   let median = 91000;
@@ -138,11 +171,36 @@ test("implicit number formatting on an auto currency consisting of only integer 
   expect(format.formatCode).toBe(AUTO_FORMAT_CODE);
   expect(format._autoFormat.autoFormatFunction).toBeDefined();
 
-  expect(autoFormat(3121, format, columnUnitSummary)).toBe("C$3,121");
-  expect(autoFormat(0, format, columnUnitSummary)).toBe("C$0");
-  expect(autoFormat(median, format, columnUnitSummary)).toBe("C$91,000");
-  expect(autoFormat(max, format, columnUnitSummary)).toBe("C$1,234,567");
-  expect(autoFormat(min, format, columnUnitSummary)).toBe("C$1,234");
+  expect(autoFormat(3121, format, columnUnitSummary)).toBe("C$3.1k");
+  expect(autoFormat(0, format, columnUnitSummary)).toBe("C$0.0k");
+  expect(autoFormat(median, format, columnUnitSummary)).toBe("C$91.0k");
+  expect(autoFormat(max, format, columnUnitSummary)).toBe("C$1,234.6k");
+  expect(autoFormat(min, format, columnUnitSummary)).toBe("C$1.2k");
+});
+
+test("number formatting on an auto currency consisting of only small integer values show now decimal places or column units", () => {
+  let max = 1234;
+  let min = 2;
+  let median = 91;
+  let columnUnitSummary = {
+    unitType: "number",
+    median: median,
+    maxDecimals: 0,
+    max: max,
+    min: min,
+  };
+
+  let format = BUILT_IN_FORMATS.find((format) => format.formatTag === "jpy");
+
+  expect(format).toBeDefined();
+  expect(format.formatCode).toBe(AUTO_FORMAT_CODE);
+  expect(format._autoFormat.autoFormatFunction).toBeDefined();
+
+  expect(autoFormat(999, format, columnUnitSummary)).toBe("¥999");
+  expect(autoFormat(0, format, columnUnitSummary)).toBe("¥0");
+  expect(autoFormat(median, format, columnUnitSummary)).toBe("¥91");
+  expect(autoFormat(max, format, columnUnitSummary)).toBe("¥1,234");
+  expect(autoFormat(min, format, columnUnitSummary)).toBe("¥2");
 });
 
 test("implicit number formatting on an auto currency with small change only show two decimal places and no units", () => {

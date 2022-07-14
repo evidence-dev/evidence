@@ -169,11 +169,7 @@ export const generateImplicitNumberFormat = (
   let median = columnUnitSummary?.median;
   let truncateUnits;
 
-  if (columnUnitSummary?.maxDecimals === 0) {
-    //if there are no decimals involved show the entire number
-    effectiveFormatCode = "#,##0";
-    truncateUnits = false;
-  } else if (median !== undefined) {
+  if (median !== undefined) {
     let medianInUnitTerms;
     columnUnits = getAutoColumnUnit(median);
     if (columnUnits) {
@@ -183,10 +179,15 @@ export const generateImplicitNumberFormat = (
       medianInUnitTerms = median;
       truncateUnits = false;
     }
-    effectiveFormatCode = computeNumberAutoFormatCode(
-      medianInUnitTerms,
-      maxDisplayDecimals
-    );
+
+    if (columnUnitSummary.maxDecimals === 0 && !truncateUnits) {
+      effectiveFormatCode = "#,##0";
+    } else {
+      effectiveFormatCode = computeNumberAutoFormatCode(
+        medianInUnitTerms,
+        maxDisplayDecimals
+      );
+    }
   } else {
     effectiveFormatCode = "#,##0";
     truncateUnits = false;
