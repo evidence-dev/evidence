@@ -36,8 +36,8 @@
   <td>{column.id}</td>
   <td>{column.legacyType}</td>
   <td>{column.type}</td>
-  <td>{column.extents[0]}</td>
-  <td>{column.extents[1]}</td>
+  <td>{column.extentsLegacy[0]}</td>
+  <td>{column.extentsLegacy[1]}</td>
 </tr>
 {/each}
 </table>

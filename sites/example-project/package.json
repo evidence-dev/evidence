@@ -7,7 +7,8 @@
     "preview": "svelte-kit preview",
     "package": "svelte-kit package && pnpm clean-package",
     "clean-package": "node scripts/clean-package.js",
-    "prepublishOnly": "pnpm package"
+    "prepublishOnly": "pnpm package",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "type": "module",
   "dependencies": {
@@ -17,13 +18,18 @@
     "echarts-stat": "1.2.0",
     "export-to-csv": "0.2.1",
     "git-remote-origin-url": "4.0.0",
-    "svelte-icons": "2.1.0",
-    "ssf": "^0.11.2"
+    "ssf": "^0.11.2",
+    "svelte-icons": "2.1.0"
   },
   "publishConfig": {
     "directory": "../../packages/components"
   },
   "devDependencies": {
-    "fs-extra": "^10.0.1"
+    "cross-env": "^7.0.3",
+    "fs-extra": "^10.0.1",
+    "jest": "^28.1.2"
+  },
+  "jest": {
+    "verbose": true
   }
 }

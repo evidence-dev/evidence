@@ -1,7 +1,9 @@
 import {
   AUTO_FORMAT_CODE,
-  configureAutoFormatting,
-} from "$lib/modules/autoFormatting";
+  applyColumnUnits,
+  generateImplicitNumberFormat,
+} from "./autoFormatting";
+import ssf from "ssf";
 
 export const SUPPORTED_CURRENCIES = [
   {
@@ -146,11 +148,38 @@ const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map((currency) => {
       : currency.currencySymbol;
     if (derivedFormat.auto) {
       next.formatCode = AUTO_FORMAT_CODE;
+
+      //TODO Overall this is a bit shady as the format is recomputed for each value and some magic is done to make it look good.
+      //see tests in autoFormatting.test.js
+      /*Alternative
       configureAutoFormatting(
         next,
         `${symbolInFormatCode}${derivedFormat.valueFormatCode}`,
         true
-      );
+      ); */
+      next._autoFormat = {
+        autoFormatFunction: (typedValue, columnFormat, columnUnitSummary) => {
+          let format = generateImplicitNumberFormat(columnUnitSummary, 2);
+          let effectiveCode = `${symbolInFormatCode}${format._autoFormat.autoFormatCode}`;
+          let suffix = "";
+          let displayValue = typedValue;
+          if (
+            format._autoFormat.truncateUnits &&
+            format._autoFormat.columnUnits
+          ) {
+            suffix = format._autoFormat.columnUnits;
+            displayValue = applyColumnUnits(
+              typedValue,
+              format._autoFormat.columnUnits
+            );
+          } else {
+            if (effectiveCode.endsWith(".0")) {
+              effectiveCode = effectiveCode + "0";
+            }
+          }
+          return ssf.format(effectiveCode, displayValue) + suffix;
+        },
+      };
     } else {
       next.formatCode = `${symbolInFormatCode}${derivedFormat.valueFormatCode}`;
     }

@@ -1,12 +1,13 @@
-import * as ssf from "ssf";
+import ssf from "ssf";
 import { getContext } from "svelte";
-import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from "$lib/modules/globalContexts";
+import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from "./globalContexts";
 import {
   findImplicitAutoFormat,
-  applyAutoFormatting,
-} from "$lib/modules/autoFormatting";
-import { BUILT_IN_FORMATS } from "$lib/modules/builtInFormats";
-import { isAutoFormat } from "./autoFormatting";
+  autoFormat,
+  fallbackFormat,
+  isAutoFormat,
+} from "./autoFormatting";
+import { BUILT_IN_FORMATS } from "./builtInFormats";
 
 const AXIS_FORMATTING_CONTEXT = "axis";
 const VALUE_FORMATTING_CONTEXT = "value";
@@ -21,7 +22,11 @@ export const getCustomFormats = () => {
  * @param {*} columnName the name of the column
  * @returns a format object (built-in or custom) based on the column name if it matches the pattern column_${formatTag}, otherwise returns undefined
  */
-export const lookupColumnFormat = (columnName, columnEvidenceType) => {
+export const lookupColumnFormat = (
+  columnName,
+  columnEvidenceType,
+  columnUnitSummary
+) => {
   let potentialFormatTag = maybeExtractFormatTag(columnName);
 
   if (potentialFormatTag) {
@@ -35,20 +40,29 @@ export const lookupColumnFormat = (columnName, columnEvidenceType) => {
     }
   }
 
-  let matchingImplicitAutoFormat = findImplicitAutoFormat(columnName, columnEvidenceType);
+  let matchingImplicitAutoFormat = findImplicitAutoFormat(
+    columnName,
+    columnEvidenceType,
+    columnUnitSummary
+  );
   if (matchingImplicitAutoFormat) {
     return matchingImplicitAutoFormat;
   }
+
   return undefined;
 };
 
-export const formatValue = (value, columnFormat = undefined, columnUnits = undefined) => {
+export const formatValue = (
+  value,
+  columnFormat = undefined,
+  columnUnitSummary = undefined
+) => {
   try {
     return applyFormatting(
       value,
       columnFormat,
-      VALUE_FORMATTING_CONTEXT,
-      columnUnits
+      columnUnitSummary,
+      VALUE_FORMATTING_CONTEXT
     );
   } catch (error) {
     //fallback to default
@@ -59,13 +73,17 @@ export const formatValue = (value, columnFormat = undefined, columnUnits = undef
   }
 };
 
-export const formatAxisValue = (value, columnFormat, columnUnits) => {
+export const formatAxisValue = (
+  value,
+  columnFormat = undefined,
+  columnUnitSummary = undefined
+) => {
   try {
     return applyFormatting(
       value,
       columnFormat,
-      AXIS_FORMATTING_CONTEXT,
-      columnUnits
+      columnUnitSummary,
+      AXIS_FORMATTING_CONTEXT
     );
   } catch (error) {
     //fallback to default
@@ -111,24 +129,22 @@ export const formatExample = (format) => {
 
   if (preFormattedValue) {
     try {
-      let columnUnits = undefined;
-      if (isAutoFormat(format) && format.valueType === "number") {
+      let columnUnitSummary = undefined;
+      if (format.valueType === "number") {
         let numericValue = Number(preFormattedValue);
-        if (!Number.isNaN(numericValue)) {
-          if (numericValue >= 1000000000) {
-            columnUnits = "B";
-          } else if (numericValue >= 1000000) {
-            columnUnits = "M";
-          } else if (numericValue >= 1000) {
-            columnUnits = "k";
-          }
-        }
+        columnUnitSummary = {
+          min: numericValue,
+          max: numericValue,
+          median: numericValue,
+          maxDecimals: numericValue.toString().split(".")[1]?.length || 0,
+          unitType: "number",
+        };
       }
       return applyFormatting(
         preFormattedValue,
         format,
-        VALUE_FORMATTING_CONTEXT,
-        columnUnits
+        columnUnitSummary,
+        VALUE_FORMATTING_CONTEXT
       );
     } catch (error) {
       //return default value
@@ -140,8 +156,8 @@ export const formatExample = (format) => {
 function applyFormatting(
   value,
   columnFormat = undefined,
-  formattingContext = VALUE_FORMATTING_CONTEXT,
-  columnUnits = undefined
+  columnUnitSummary = undefined,
+  formattingContext = VALUE_FORMATTING_CONTEXT
 ) {
   if (value === undefined || value === null) {
     return "-";
@@ -171,7 +187,7 @@ function applyFormatting(
       }
       if (isAutoFormat(columnFormat, formattingCode)) {
         try {
-          result = applyAutoFormatting(typedValue, columnFormat, columnUnits);
+          result = autoFormat(typedValue, columnFormat, columnUnitSummary);
         } catch (error) {
           console.warn(
             `Unexpected error applying auto formatting. Error=${error}`
@@ -185,7 +201,7 @@ function applyFormatting(
     }
   }
   if (result === undefined) {
-    result = applyDefaultFormatting(value, columnFormat, columnUnits);
+    result = fallbackFormat(value, columnUnitSummary);
   }
   return result;
 }
@@ -206,17 +222,6 @@ function getEffectiveFormattingCode(
       return columnFormat.axisFormatCode;
     }
     return columnFormat?.formatCode;
-  }
-}
-
-function applyDefaultFormatting(typedValue) {
-  if (typeof typedValue === "number") {
-    return typedValue.toLocaleString(undefined, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    });
-  } else {
-    return typedValue?.toString();
   }
 }
 
