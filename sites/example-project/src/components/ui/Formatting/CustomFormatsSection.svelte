@@ -1,6 +1,6 @@
 <script>
   import CustomFormatGrid from "./CustomFormatGrid.svelte";
-  import * as ssf from "ssf";
+  import ssf from "ssf";
   export let builtInFormats = {};
   export let customFormattingSettings = {};
 

@@ -19,8 +19,8 @@ export default function getColumnSummary(data, returnType="object") {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType;
-        colFormat = lookupColumnFormat(key, evidenceColumnType);
         columnUnitSummary = getColumnUnitSummary(data, colName);
+        colFormat = lookupColumnFormat(key, evidenceColumnType, columnUnitSummary);
         colExtentsLegacy = getColumnExtentsLegacy(data, colName);
 
         let thisCol = {
@@ -40,9 +40,8 @@ export default function getColumnSummary(data, returnType="object") {
         colName = key;
         evidenceColumnType = getColumnEvidenceType(data, colName);
         colType = evidenceColumnType.evidenceType;
-        colFormat = lookupColumnFormat(key, evidenceColumnType);
         columnUnitSummary = getColumnUnitSummary(data, colName);
-
+        colFormat = lookupColumnFormat(key, evidenceColumnType, columnUnitSummary);
         colExtentsLegacy = getColumnExtentsLegacy(data, colName);
 
         columnSummary.push({

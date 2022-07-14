@@ -1,7 +1,7 @@
-import * as ssf from "ssf";
+import ssf from "ssf";
 import { getContext } from "svelte";
 import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from "./globalContexts";
-import { findImplicitAutoFormat, autoFormat, defaultFormat, isAutoFormat } from "./autoFormatting";
+import { findImplicitAutoFormat, autoFormat, fallbackFormat, isAutoFormat } from "./autoFormatting";
 import { BUILT_IN_FORMATS } from "./builtInFormats";
 
 const AXIS_FORMATTING_CONTEXT = "axis";
@@ -17,7 +17,7 @@ export const getCustomFormats = () => {
  * @param {*} columnName the name of the column
  * @returns a format object (built-in or custom) based on the column name if it matches the pattern column_${formatTag}, otherwise returns undefined
  */
-export const lookupColumnFormat = (columnName, columnEvidenceType) => {
+export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSummary) => {
   let potentialFormatTag = maybeExtractFormatTag(columnName);
 
   if (potentialFormatTag) {
@@ -31,10 +31,11 @@ export const lookupColumnFormat = (columnName, columnEvidenceType) => {
     }
   }
 
-  let matchingImplicitAutoFormat = findImplicitAutoFormat(columnName, columnEvidenceType);
+  let matchingImplicitAutoFormat = findImplicitAutoFormat(columnName, columnEvidenceType, columnUnitSummary);
   if (matchingImplicitAutoFormat) {
     return matchingImplicitAutoFormat;
   }
+
   return undefined;
 };
 
@@ -114,7 +115,8 @@ export const formatExample = (format) => {
           min: numericValue,
           max: numericValue,
           median: numericValue,
-          maxDecimals: numericValue.toString().split(".")[1]?.length || 0
+          maxDecimals: numericValue.toString().split(".")[1]?.length || 0,
+          unitType: "number"
         }
       }
       return applyFormatting(
@@ -178,7 +180,7 @@ function applyFormatting(
     }
   }
   if (result === undefined) {
-    result = defaultFormat(value, columnUnitSummary);
+    result = fallbackFormat(value, columnUnitSummary);
   }
   return result;
 }
