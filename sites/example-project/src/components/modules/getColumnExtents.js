@@ -98,8 +98,6 @@ function summarizeUnits(series) {
     } else if ((objectCount + emptyValueCount) === series.length) {
       unitType = "object";
     } else {
-      console.log(`Unknown unit type for series ${series} with ${series.length} elements`);
-      console.log(`numberCount=${numberCount}, stringCount=${stringCount}, dateCount=${dateCount}, objectCount=${objectCount}, undefinedCount=${undefinedCount}, nullCount=${nullCount}`);
       unitType = "unknown";
     }
     return {
