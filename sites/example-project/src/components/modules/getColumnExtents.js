@@ -106,16 +106,3 @@ function summarizeUnits(series) {
     }
   }
 }
-
-function checkValidNumericSeriesValue(value) {
-  if (
-    typeof(value) === "string" ||
-    typeof(value) === "function" ||
-    typeof(value) === "object"
-  ) {
-    if (value !== null) {
-      throw Error(`Invalid numeric value ${value}`);
-    }
-  }
-  //undefined and null are ignored.
-}
