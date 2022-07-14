@@ -8,7 +8,7 @@ test("getColumnUnitSummary returns valid unit type for mixed type array", () => 
     { column1: "far", column2: undefined },
   ];
   const summary = getColumnUnitSummary(data, "column2");
-  let {unitType, maxDecimals, median} = summary;
+  let { unitType, maxDecimals, median } = summary;
   expect(unitType).toStrictEqual("unknown");
   expect(median).toBeCloseTo(3.6, 1);
   expect(maxDecimals).toStrictEqual(1);
@@ -22,14 +22,14 @@ test("getColumnUnitSummary returns correct values with real valued nubmer array"
     { columnOne: "one", columnTwo: 1 },
     { columnOne: "five", columnTwo: 5 },
   ];
-  
+
   const summary = getColumnUnitSummary(data, "columnTwo");
   expect(summary).toStrictEqual({
     min: 1,
     max: 5,
     median: 3.1,
     maxDecimals: 5,
-    unitType: "number"
+    unitType: "number",
   });
 });
 
@@ -47,7 +47,7 @@ test("getColumnUnitSummary returns correct values when there are undefined and n
     max: 5,
     median: 3,
     maxDecimals: 0,
-    unitType: "number"
+    unitType: "number",
   });
 });
 
@@ -65,6 +65,6 @@ test("getColumnUnitSummary returns correct values with a string data series", ()
     max: "zar",
     median: undefined,
     maxDecimals: 0,
-    unitType: "string"
+    unitType: "string",
   });
 });

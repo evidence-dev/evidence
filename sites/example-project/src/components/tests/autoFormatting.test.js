@@ -1,5 +1,11 @@
-
-import { isAutoFormat, autoFormat, fallbackFormat, computeNumberAutoFormatCode, findImplicitAutoFormat, AUTO_FORMAT_CODE } from "../modules/autoFormatting";
+import {
+  isAutoFormat,
+  autoFormat,
+  fallbackFormat,
+  computeNumberAutoFormatCode,
+  findImplicitAutoFormat,
+  AUTO_FORMAT_CODE,
+} from "../modules/autoFormatting";
 import { BUILT_IN_FORMATS } from "../modules/builtInFormats";
 
 test("isAutoFormat(format) = false for incorrect formats", () => {
@@ -32,9 +38,19 @@ test("implicit number formatting on an array of only integer values", () => {
   let max = 1234567.8;
   let min = -1234.56;
   let median = 91000.314521;
-  let columnUnitSummary = { unitType: "number", median: median, maxDecimals: 6, max: max, min: min };
+  let columnUnitSummary = {
+    unitType: "number",
+    median: median,
+    maxDecimals: 6,
+    max: max,
+    min: min,
+  };
 
-  let format = findImplicitAutoFormat("someColumn", undefined, columnUnitSummary);
+  let format = findImplicitAutoFormat(
+    "someColumn",
+    undefined,
+    columnUnitSummary
+  );
 
   expect(format).toBeDefined();
   expect(format.formatCode).toBe(AUTO_FORMAT_CODE);
@@ -51,10 +67,20 @@ test("implicit number formatting on an array of only integer values", () => {
 test("implicit number formatting on an array of only integer values is #,##0", () => {
   let max = 1234567;
   let min = -1234;
-  let median = 91000;  
-  let columnUnitSummary = { unitType: "number", median: median, maxDecimals: 0, max: max, min: min };
+  let median = 91000;
+  let columnUnitSummary = {
+    unitType: "number",
+    median: median,
+    maxDecimals: 0,
+    max: max,
+    min: min,
+  };
 
-  let format = findImplicitAutoFormat("someColumn", undefined, columnUnitSummary);
+  let format = findImplicitAutoFormat(
+    "someColumn",
+    undefined,
+    columnUnitSummary
+  );
 
   expect(format).toBeDefined();
   expect(format.formatCode).toBe(AUTO_FORMAT_CODE);
@@ -70,11 +96,16 @@ test("implicit number formatting on an array of only integer values is #,##0", (
 });
 
 test("implicit number formatting on an auto currency with decimals is formatted correctly", () => {
-
   let max = 1234567.8;
   let min = -1234.56;
   let median = 91000.314521;
-  let columnUnitSummary = { unitType: "number", median: median, maxDecimals: 6, max: max, min: min };
+  let columnUnitSummary = {
+    unitType: "number",
+    median: median,
+    maxDecimals: 6,
+    max: max,
+    min: min,
+  };
 
   let format = BUILT_IN_FORMATS.find((format) => format.formatTag === "usd");
 
@@ -90,11 +121,16 @@ test("implicit number formatting on an auto currency with decimals is formatted 
 });
 
 test("implicit number formatting on an auto currency consisting of only integer values is formatted as $#,##0", () => {
-
   let max = 1234567;
   let min = 1234;
-  let median = 91000;  
-  let columnUnitSummary = { unitType: "number", median: median, maxDecimals: 0, max: max, min: min };
+  let median = 91000;
+  let columnUnitSummary = {
+    unitType: "number",
+    median: median,
+    maxDecimals: 0,
+    max: max,
+    min: min,
+  };
 
   let format = BUILT_IN_FORMATS.find((format) => format.formatTag === "cad");
 
@@ -113,7 +149,13 @@ test("implicit number formatting on an auto currency with small change only show
   let max = 1234.8;
   let min = -1234.56;
   let median = 12.345678;
-  let columnUnitSummary = { unitType: "number", median: median, maxDecimals: 6, max: max, min: min };
+  let columnUnitSummary = {
+    unitType: "number",
+    median: median,
+    maxDecimals: 6,
+    max: max,
+    min: min,
+  };
 
   let format = BUILT_IN_FORMATS.find((format) => format.formatTag === "gbp");
 
@@ -132,7 +174,7 @@ test("fallback formatting always show a maximum of two decimal places when a num
   expect(fallbackFormat(12345)).toBe("12,345");
   expect(fallbackFormat(12345.1)).toBe("12,345.1");
 
-  expect(fallbackFormat(9000.00)).toBe("9,000");
+  expect(fallbackFormat(9000.0)).toBe("9,000");
   expect(fallbackFormat(12345.678)).toBe("12,345.68");
   expect(fallbackFormat(-1234.56)).toBe("-1,234.56");
 });
@@ -147,14 +189,12 @@ test("fallbackFormat for string values is always the original string", () => {
   expect(fallbackFormat("")).toBe("");
 });
 
-
-
 test("computeNumberAutoFormatCode returns the correct auto format code with default max decimals and significant digits (3)", () => {
   expect(computeNumberAutoFormatCode(0.01)).toBe("#,##0.0000");
   expect(computeNumberAutoFormatCode(0.1)).toBe("#,##0.000");
 
   expect(computeNumberAutoFormatCode(0)).toBe("#,##0.00");
-  expect(computeNumberAutoFormatCode(0.000)).toBe("#,##0.00");
+  expect(computeNumberAutoFormatCode(0.0)).toBe("#,##0.00");
 
   expect(computeNumberAutoFormatCode(1)).toBe("#,##0.00");
   expect(computeNumberAutoFormatCode(1.0)).toBe("#,##0.00");
@@ -172,20 +212,34 @@ test("computeNumberAutoFormatCode returns the correct auto format code with cust
   expect(computeNumberAutoFormatCode(0.01, 2)).toBe("#,##0.00");
   expect(computeNumberAutoFormatCode(0.01, 3)).toBe("#,##0.000");
   expect(computeNumberAutoFormatCode(0.1, 2)).toBe("#,##0.00");
-  expect(computeNumberAutoFormatCode(0, 2)).toBe("#,##0.00");  
+  expect(computeNumberAutoFormatCode(0, 2)).toBe("#,##0.00");
   expect(computeNumberAutoFormatCode(100, 3)).toBe("#,##0");
   expect(computeNumberAutoFormatCode(10000, 2)).toBe("#,##0");
 });
 
 test("computeNumberAutoFormatCode returns the correct auto format code with custom significant digits", () => {
   let defaultMaxDecimals = 7;
-  expect(computeNumberAutoFormatCode(0.01, defaultMaxDecimals, 4)).toBe("#,##0.00000");
-  expect(computeNumberAutoFormatCode(0.1, defaultMaxDecimals, 4)).toBe("#,##0.0000");
+  expect(computeNumberAutoFormatCode(0.01, defaultMaxDecimals, 4)).toBe(
+    "#,##0.00000"
+  );
+  expect(computeNumberAutoFormatCode(0.1, defaultMaxDecimals, 4)).toBe(
+    "#,##0.0000"
+  );
 
-  expect(computeNumberAutoFormatCode(0, defaultMaxDecimals, 4)).toBe("#,##0.000");
-  expect(computeNumberAutoFormatCode(1, defaultMaxDecimals, 4)).toBe("#,##0.000");
+  expect(computeNumberAutoFormatCode(0, defaultMaxDecimals, 4)).toBe(
+    "#,##0.000"
+  );
+  expect(computeNumberAutoFormatCode(1, defaultMaxDecimals, 4)).toBe(
+    "#,##0.000"
+  );
 
-  expect(computeNumberAutoFormatCode(100, defaultMaxDecimals, 4)).toBe("#,##0.0");
-  expect(computeNumberAutoFormatCode(10000, defaultMaxDecimals, 4)).toBe("#,##0");
-  expect(computeNumberAutoFormatCode(10000, defaultMaxDecimals, 6)).toBe("#,##0.0");
+  expect(computeNumberAutoFormatCode(100, defaultMaxDecimals, 4)).toBe(
+    "#,##0.0"
+  );
+  expect(computeNumberAutoFormatCode(10000, defaultMaxDecimals, 4)).toBe(
+    "#,##0"
+  );
+  expect(computeNumberAutoFormatCode(10000, defaultMaxDecimals, 6)).toBe(
+    "#,##0.0"
+  );
 });

@@ -1,7 +1,7 @@
 import {
   AUTO_FORMAT_CODE,
   applyColumnUnits,
-  generateImplicitNumberFormat
+  generateImplicitNumberFormat,
 } from "./autoFormatting";
 import ssf from "ssf";
 
@@ -158,23 +158,28 @@ const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map((currency) => {
         true
       ); */
       next._autoFormat = {
-        autoFormatFunction : (typedValue, columnFormat, columnUnitSummary) => {
+        autoFormatFunction: (typedValue, columnFormat, columnUnitSummary) => {
           let format = generateImplicitNumberFormat(columnUnitSummary, 2);
           let effectiveCode = `${symbolInFormatCode}${format._autoFormat.autoFormatCode}`;
           let suffix = "";
           let displayValue = typedValue;
-          if (format._autoFormat.truncateUnits && format._autoFormat.columnUnits) {
+          if (
+            format._autoFormat.truncateUnits &&
+            format._autoFormat.columnUnits
+          ) {
             suffix = format._autoFormat.columnUnits;
-            displayValue = applyColumnUnits(typedValue, format._autoFormat.columnUnits);
+            displayValue = applyColumnUnits(
+              typedValue,
+              format._autoFormat.columnUnits
+            );
           } else {
             if (effectiveCode.endsWith(".0")) {
               effectiveCode = effectiveCode + "0";
             }
           }
           return ssf.format(effectiveCode, displayValue) + suffix;
-        }
-      }
-
+        },
+      };
     } else {
       next.formatCode = `${symbolInFormatCode}${derivedFormat.valueFormatCode}`;
     }

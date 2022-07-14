@@ -1,7 +1,12 @@
 import ssf from "ssf";
 import { getContext } from "svelte";
 import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from "./globalContexts";
-import { findImplicitAutoFormat, autoFormat, fallbackFormat, isAutoFormat } from "./autoFormatting";
+import {
+  findImplicitAutoFormat,
+  autoFormat,
+  fallbackFormat,
+  isAutoFormat,
+} from "./autoFormatting";
 import { BUILT_IN_FORMATS } from "./builtInFormats";
 
 const AXIS_FORMATTING_CONTEXT = "axis";
@@ -17,7 +22,11 @@ export const getCustomFormats = () => {
  * @param {*} columnName the name of the column
  * @returns a format object (built-in or custom) based on the column name if it matches the pattern column_${formatTag}, otherwise returns undefined
  */
-export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSummary) => {
+export const lookupColumnFormat = (
+  columnName,
+  columnEvidenceType,
+  columnUnitSummary
+) => {
   let potentialFormatTag = maybeExtractFormatTag(columnName);
 
   if (potentialFormatTag) {
@@ -31,7 +40,11 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
     }
   }
 
-  let matchingImplicitAutoFormat = findImplicitAutoFormat(columnName, columnEvidenceType, columnUnitSummary);
+  let matchingImplicitAutoFormat = findImplicitAutoFormat(
+    columnName,
+    columnEvidenceType,
+    columnUnitSummary
+  );
   if (matchingImplicitAutoFormat) {
     return matchingImplicitAutoFormat;
   }
@@ -39,13 +52,17 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
   return undefined;
 };
 
-export const formatValue = (value, columnFormat = undefined, columnUnitSummary = undefined) => {
+export const formatValue = (
+  value,
+  columnFormat = undefined,
+  columnUnitSummary = undefined
+) => {
   try {
     return applyFormatting(
       value,
       columnFormat,
       columnUnitSummary,
-      VALUE_FORMATTING_CONTEXT,
+      VALUE_FORMATTING_CONTEXT
     );
   } catch (error) {
     //fallback to default
@@ -56,13 +73,17 @@ export const formatValue = (value, columnFormat = undefined, columnUnitSummary =
   }
 };
 
-export const formatAxisValue = (value, columnFormat  = undefined, columnUnitSummary = undefined) => {
+export const formatAxisValue = (
+  value,
+  columnFormat = undefined,
+  columnUnitSummary = undefined
+) => {
   try {
     return applyFormatting(
       value,
       columnFormat,
       columnUnitSummary,
-      AXIS_FORMATTING_CONTEXT,
+      AXIS_FORMATTING_CONTEXT
     );
   } catch (error) {
     //fallback to default
@@ -116,8 +137,8 @@ export const formatExample = (format) => {
           max: numericValue,
           median: numericValue,
           maxDecimals: numericValue.toString().split(".")[1]?.length || 0,
-          unitType: "number"
-        }
+          unitType: "number",
+        };
       }
       return applyFormatting(
         preFormattedValue,
@@ -188,7 +209,7 @@ function getEffectiveFormattingCode(
   columnFormat,
   formattingContext = VALUE_FORMATTING_CONTEXT
 ) {
-  if (typeof(columnFormat) === "string") {
+  if (typeof columnFormat === "string") {
     console.warn(
       `The first arg to getEffectiveFormattingCode(${columnFormat}, ${formattingContext}) should be an object, not a string`
     );
