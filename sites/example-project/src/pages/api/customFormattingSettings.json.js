@@ -79,11 +79,11 @@ function getCustomFormattingSettingsFilePath() {
   if (!fs.existsSync(customFormattingSettingsPath)) {
     if (!fs.existsSync(CUSTOMIZATION_DIRECTORY)) {
       fs.mkdirSync(CUSTOMIZATION_DIRECTORY);
-      fs.writeFileSync(
-        customFormattingSettingsPath,
-        JSON.stringify(DEFAULT_CUSTOM_FORMATTING_SETTINGS, null, 2)
-      );
     }
+    fs.writeFileSync(
+      customFormattingSettingsPath,
+      JSON.stringify(DEFAULT_CUSTOM_FORMATTING_SETTINGS, null, 2)
+    );
   }
   return customFormattingSettingsPath;
 }
