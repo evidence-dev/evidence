@@ -97,7 +97,7 @@ const DERIVED_CURRENCY_FORMATS = [
   },
   {
     derivedSuffix: "2k",
-    valueFormatCode: '#,##0.0,"k"',
+    valueFormatCode: '#,##0.00,"k"',
     exampleInput: 64301.12,
   },
   {
