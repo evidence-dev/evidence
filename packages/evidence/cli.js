@@ -35,23 +35,24 @@ const runFileWatcher = function(sourceRelative,targetRelative) {
     "./pages/api/**", 
     "./pages/api.+(*)"
   ]
+  for(let i = 0; i < sourceRelative.length; i++) {
+    const watcher = chokidar.watch(path.join(sourceRelative[i],'**'), {ignored:ignoredFiles})
 
-  const watcher = chokidar.watch(path.join(sourceRelative,'**'), {ignored:ignoredFiles})
+    const sourcePath = p => path.join('./', p)
+    const targetPath = p => path.join(targetRelative[i], path.relative(sourceRelative[i], p))
 
-  const sourcePath = p => path.join('./', p)
-  const targetPath = p => path.join(targetRelative, path.relative(sourceRelative, p))
-
-  watcher
-      .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-      .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-      .on('unlink', path => fs.rmSync(targetPath(path)))
-      .on('addDir', path => {
-        if(!fs.existsSync(targetPath(path))){
-          fs.mkdirSync(targetPath(path))}
-        })
-      .on('unlinkDir', path => fs.rmdirSync(targetPath(path)))
-  ;
-  return watcher 
+    watcher
+        .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
+        .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
+        .on('unlink', path => fs.rmSync(targetPath(path)))
+        .on('addDir', path => {
+          if(!fs.existsSync(targetPath(path))){
+            fs.mkdirSync(targetPath(path))}
+          })
+        .on('unlinkDir', path => fs.rmdirSync(targetPath(path)))
+    ;
+    return watcher 
+  }
 }
 
 const flattenArguments = function(args) {
@@ -79,8 +80,7 @@ prog
   .describe("launch the local evidence development environment")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
-    const imgWatcher = runFileWatcher('./static/','./.evidence/template/static/')
+    const watcher = runFileWatcher(['./pages/','./static/'],['./.evidence/template/src/pages/','./.evidence/template/static/'])
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
@@ -94,7 +94,6 @@ prog
     child.on('exit', function () {
       child.kill()
       watcher.close()
-      imgWatcher.close()
     })
 
   }); 
@@ -104,8 +103,7 @@ prog
   .describe("build production outputs")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
-    const imgWatcher = runFileWatcher('./static/','./.evidence/template/static/')
+    const watcher = runFileWatcher(['./pages/','./static/'],['./.evidence/template/src/pages/','./.evidence/template/static/'])
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 
@@ -132,7 +130,6 @@ prog
       }
       child.kill()
       watcher.close()
-      imgWatcher.close()
     })
 
   }); 
