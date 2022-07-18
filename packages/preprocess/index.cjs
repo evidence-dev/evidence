@@ -62,7 +62,6 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let defaultProps = `
         import { page } from '$app/stores';
         import { setContext, getContext } from 'svelte';
-        import { PAGE_QUERY_RESULTS, CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts.js';
         import { pageHasQueries } from '@evidence-dev/components/ui/stores';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
@@ -81,6 +80,9 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
+        const PAGE_QUERY_RESULTS = 'pageQueryResults';
+        const CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY = 'customFormattingSettings';
+
         let routeHash = '${routeHash}';
         export let customFormattingSettings;
 
