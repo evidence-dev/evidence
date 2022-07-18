@@ -28,7 +28,7 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
-const runFileWatcher = function() {
+const runFileWatcher = function(sourceRelative,targetRelative) {
   const ignoredFiles = [
     "./pages/settings/**", 
     "./pages/settings.+(*)",
@@ -36,10 +36,10 @@ const runFileWatcher = function() {
     "./pages/api.+(*)"
   ]
 
-  const watcher = chokidar.watch('./pages/**', {ignored:ignoredFiles})
+  const watcher = chokidar.watch(path.join(sourceRelative,'**'), {ignored:ignoredFiles})
 
   const sourcePath = p => path.join('./', p)
-  const targetPath = p => path.join("./.evidence/template/src/pages/", path.relative('./pages/', p))
+  const targetPath = p => path.join(targetRelative, path.relative(sourceRelative, p))
 
   watcher
       .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
@@ -79,7 +79,8 @@ prog
   .describe("launch the local evidence development environment")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher()
+    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
+    const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
@@ -93,6 +94,7 @@ prog
     child.on('exit', function () {
       child.kill()
       watcher.close()
+      staticWatcher.close()
     })
 
   }); 
@@ -102,7 +104,8 @@ prog
   .describe("build production outputs")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher()
+    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
+    const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 
@@ -129,6 +132,7 @@ prog
       }
       child.kill()
       watcher.close()
+      staticWatcher.close()
     })
 
   }); 
