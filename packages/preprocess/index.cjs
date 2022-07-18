@@ -80,8 +80,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
-        const PAGE_QUERY_RESULTS = 'pageQueryResults';
-        const CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY = 'customFormattingSettings';
+        import { PAGE_QUERY_RESULTS, CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
 
         let routeHash = '${routeHash}';
         export let customFormattingSettings;
