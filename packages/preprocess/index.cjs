@@ -62,7 +62,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let defaultProps = `
         import { page } from '$app/stores';
         import { setContext, getContext } from 'svelte';
-        import { PAGE_QUERY_RESULTS, CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '$lib/modules/globalContexts.js';
+        import { PAGE_QUERY_RESULTS, CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts.js';
         import { pageHasQueries } from '@evidence-dev/components/ui/stores';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
