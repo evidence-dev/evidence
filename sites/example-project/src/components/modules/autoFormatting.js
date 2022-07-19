@@ -116,6 +116,8 @@ const IMPLICIT_COLUMN_AUTO_FORMATS = [
  */
 export const applyColumnUnits = (value, unit) => {
   switch (unit) {
+    case "T":
+      return value / 1000000000000;
     case "B":
       return value / 1000000000;
     case "M":
@@ -329,7 +331,9 @@ export function computeNumberAutoFormatCode(
  */
 function getAutoColumnUnit(value) {
   let abosoluteValue = Math.abs(value);
-  if (abosoluteValue >= 1000000000) {
+  if (abosoluteValue >= 1000000000000) {
+    return "T";
+  } else if (abosoluteValue >= 1000000000) {
     return "B";
   } else if (abosoluteValue >= 1000000) {
     return "M";
