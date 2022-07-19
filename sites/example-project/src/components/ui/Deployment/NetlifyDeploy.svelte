@@ -1,6 +1,7 @@
 <script>
     import EnvironmentVarListing from "./EnvironmentVarListing.svelte";
     import VariableCopy from "./VariableCopy.svelte";
+    import Separator from "$lib/ui/system/Separator.svelte";
     export let settings
 </script>
 
@@ -19,7 +20,7 @@
 
 </ol>
 
-<div class="separator">Basic Build Settings</div>
+<Separator>Basic Build Settings</Separator>
 
 <div class='setting-row'>
     <span class='setting'>Build command</span>
@@ -33,7 +34,7 @@
     
 </div>
 
-<div class="separator">Advanced Build Settings</div>
+<Separator>Advanced Build Settings</Separator>
 <p>Click 'Show Advanced' and copy paste the following into <a href='https://docs.netlify.com/configure-builds/environment-variables/' >environment variables.</a> </p>
 
 <EnvironmentVarListing {settings}/>
@@ -78,26 +79,6 @@
     div.setting-value {
         margin-top: 0.25em;
         width: 45%;
-    }
-
-    .separator {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin-block-start: 2.5em;
-        color: var(--grey-700);
-        font-weight:bold;
-    }
-
-    .separator::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid var(--grey-200);
-    }
-
-    .separator:not(:empty)::after {
-        margin-left: 1.5em;
-        margin-top: 0.1em;
     }
 
 </style>
