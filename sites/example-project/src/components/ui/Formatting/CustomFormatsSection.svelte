@@ -155,12 +155,14 @@
     </form>
   </addNewFormatArea>
 {:else}
+<div>
   <button
     id="showAddCustomFormatButton"
     on:click={showAddCustomFormat}
     disabled={editingCustomFormat}
     >New Custom Format
   </button>
+</div>
 {/if}
 
 <style>

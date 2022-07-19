@@ -47,6 +47,10 @@
     cursor: pointer;
   }
 
+  .deleteIcon:hover {
+    color: var(--red-700);
+  }
+
   .formatTable {
     font-size: 12px;
   }
@@ -55,6 +59,7 @@
     border: 1px solid var(--gray-light, #eee);
     border-radius: 4px;
     padding: 8px 4px 8px 4px;
+    margin-top: 10px;
   }
 
 </style>
