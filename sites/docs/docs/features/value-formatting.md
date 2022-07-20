@@ -16,7 +16,7 @@ Formatting can be configured in the Value Formatting Section of the Evidence Set
 Evidence supports a variety of date/time, number, percentage, and currency formats. You can find the full list and examples of supported format tags on the Settings page in your Evidence project.
 
 ## Custom Value Format Tags
-Custom formats can be added in the Value Formatting Section of the Evidence Settings.  Format's can be coded using [Excel style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68).
+Custom formats can be added in the Value Formatting Section of the Evidence Settings.  Formats can be coded using [Excel style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68).
 
 ## Title Formatting
 
