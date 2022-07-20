@@ -6,6 +6,7 @@
     
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import getStackedData from '$lib/modules/getStackedData.js';
+    import getStackPercentages from '$lib/modules/getStackPercentages.js';
     import getSortedData from '$lib/modules/getSortedData.js';
     import formatTitle from '$lib/modules/formatTitle';
     import getCompletedData from '$lib/modules/getCompletedData.js';
@@ -14,7 +15,7 @@
     export let series = undefined;
     export let options = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
-    export let type = 'stacked' // stacked or grouped
+    export let type = 'stacked' // stacked, grouped, or stacked100
     export let stackName = undefined;
 
     export let fillColor = undefined;
@@ -65,17 +66,25 @@
         }
 
        // Run fill for missing series entries, only if it's a stacked bar
-        if((swapXY) || ((xType === "value" || xType === "category") && type === "stacked")){
+        if((swapXY) || ((xType === "value" || xType === "category") && type.includes("stacked"))){
             data = getCompletedData(data, x, y, series, false, (xType === "value"));
             xType = "category";
         }
 
-        if(type === "stacked"){
+        if(type.includes("stacked")){
         // Set up stacks
             stackName = stackName ?? "stack1";
         } else {
             stackName = null;
         }
+
+        if(type === "stacked100"){
+            data = getStackPercentages(data, x, y);
+            y= "percentOfX_pct"
+        }
+
+        console.log(data)
+
     }
 
     barMaxWidth = 60;
@@ -117,10 +126,17 @@
 
     if(chartOverrides){
         config.update(d => {
-            if(type === "stacked"){
+            if(type.includes("stacked")){
                 d.tooltip = {...d.tooltip, order: 'seriesDesc'} 
             } else {
                 d.tooltip = {...d.tooltip, order: 'seriesAsc'} 
+            }
+            if(type === "stacked100"){
+                if(swapXY){
+                    d.xAxis = {...d.xAxis, max: 1};
+                } else {
+                    d.yAxis = {...d.yAxis, max: 1};
+                }
             }
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
