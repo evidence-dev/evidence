@@ -132,7 +132,7 @@ prog
       watcher.close();
       staticWatcher.close();
       if (code !== 0) {
-        throw new Error(`Build process exited with code ${code}`);
+        throw `Build process exited with code ${code}`;
       }
     })
 
