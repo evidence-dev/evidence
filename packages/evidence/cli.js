@@ -125,14 +125,15 @@ prog
       if(code === 0) {
         fs.copySync('./.evidence/template/build', './build')
         console.log("Build complete --> /build ")
+      } else {
+        console.error("Build failed")
       }
-      else {
-        console.log("Build failed")
-
+      child.kill();
+      watcher.close();
+      staticWatcher.close();
+      if (code !== 0) {
+        throw new Error(`Build process exited with code ${code}`);
       }
-      child.kill()
-      watcher.close()
-      staticWatcher.close()
     })
 
   }); 

@@ -57,7 +57,7 @@ const createModuleContext = function(filename){
 } 
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
-    let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components'
+    let componentSource = 'forcingbuildfail'; //componentDevelopmentMode ? '$lib' : '@evidence-dev/components'
     let routeHash = getRouteHash(filename)
     let defaultProps = `
         import { page } from '$app/stores';
