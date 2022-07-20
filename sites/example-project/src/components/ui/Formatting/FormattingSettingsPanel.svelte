@@ -51,7 +51,7 @@
       >Learn more about <a
         class="docs-link"
         target=none
-        href="https://docs.evidence.dev/features/queries/number-formatting"
+        href="https://docs.evidence.dev/features/value-formatting"
         > formatting in Evidence &rarr;</a
       ></span
     >
