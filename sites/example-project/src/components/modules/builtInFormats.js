@@ -146,17 +146,9 @@ const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map((currency) => {
     let symbolInFormatCode = currency.escapeCurrencySymbol
       ? `"${currency.currencySymbol}"`
       : currency.currencySymbol;
-    if (derivedFormat.auto) {
+    if (derivedFormat.auto || AUTO_FORMAT_CODE === derivedFormat.formatCode) {
       next.formatCode = AUTO_FORMAT_CODE;
-
-      //TODO Overall this is a bit shady as the format is recomputed for each value and some magic is done to make it look good.
-      //see tests in autoFormatting.test.js
-      /*Alternative
-      configureAutoFormatting(
-        next,
-        `${symbolInFormatCode}${derivedFormat.valueFormatCode}`,
-        true
-      ); */
+      //TODO This should be fixed so that 1)the format is NOT recomputed for each value, 2)remove some of magic is done to make it look good.
       next._autoFormat = {
         autoFormatFunction: (typedValue, columnFormat, columnUnitSummary) => {
           let format = generateImplicitNumberFormat(columnUnitSummary, 2);
@@ -424,11 +416,28 @@ export const BUILT_IN_FORMATS = [
   // Percent:
   {
     formatTag: "pct",
-    formatCode: "#,##0%",
+    formatCode: AUTO_FORMAT_CODE,
     formatCategory: "percent",
     valueType: "number",
     exampleInput: 0.731,
     titleTagReplacement: "",
+    _autoFormat: {
+      autoFormatFunction: (typedValue, columnFormat, columnUnitSummary) => {
+        if ("number" === columnUnitSummary?.unitType) {
+          let adjustedColumnUnitSummary = {
+            min: columnUnitSummary.min * 100,
+            max: columnUnitSummary.max * 100,
+            median: columnUnitSummary.median * 100,
+            maxDecimals: Math.max(columnUnitSummary.maxDecimals - 2, 0),
+            unitType: columnUnitSummary.unitType,
+          };
+          let format = generateImplicitNumberFormat(adjustedColumnUnitSummary);
+          return ssf.format(format._autoFormat.autoFormatCode, typedValue * 100) + '%';
+        } else {
+          return ssf.format("#,##0%", typedValue);
+        }
+      },
+    }
   },
   {
     formatTag: "pct0",
