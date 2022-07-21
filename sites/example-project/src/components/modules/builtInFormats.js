@@ -259,10 +259,10 @@ export const BUILT_IN_FORMATS = [
   },
   {
     formatTag: "hms",
-    formatCode: "H:M:S AM/PM",
+    formatCode: "H:MM:SS AM/PM",
     formatCategory: "date",
     valueType: "date",
-    exampleInput: "2022-01-09T11:45:23",
+    exampleInput: "2022-01-09T11:45:03",
   },
   // Numbers:
   {
