@@ -1,5 +1,14 @@
 # evidence-test-environment
 
+## 1.0.17
+
+### Patch Changes
+
+- 4702901: Adds support for static folder that users can put files in
+- Updated dependencies [d933ab8]
+- Updated dependencies [4702901]
+  - @evidence-dev/evidence@5.0.2
+
 ## 1.0.16
 
 ### Patch Changes

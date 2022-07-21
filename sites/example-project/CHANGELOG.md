@@ -1,5 +1,16 @@
 # @evidence-dev/components
 
+## 1.3.1
+
+### Patch Changes
+
+- 87fd331: Fix formatting for <currency-code>2k format
+- 9d2726b: issue-343 auto formatting for unformatted number columns, auto formatted currencies. Introduced Jest unit tests for ES6 Modules.
+- 6ed9a37: GA new formatting system without feature flags
+- 4702901: Adds support for static folder that users can put files in
+- e5a3eb7: Minor changes to formatting settings panel
+- 77c205d: Made `pct` an auto format showing 3 significant digits from the median's leading digit
+
 ## 1.3.0
 
 ### Minor Changes
