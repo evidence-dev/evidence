@@ -23,7 +23,7 @@ hide_table_of_contents: false
 * **rowLines** - turn table row borders on or off. Default is on. Turn off with `rowLines=false`
 
 ### Formatting
-Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/features/queries/number-formatting) section for more details.
+Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/features/value-formatting) section for more details.
 
 
 

@@ -32,7 +32,7 @@ or alternatively,
 ## Data Types & Formatting
 The column names in your query result define how your data is treated when using components. We believe this is good practice for code readability and consistency:
 - Date column names must include a date unit to be interpreted as dates in Evidence (date, week, month, qtr, year)
-- Formatting is determined by **format tags** appended to your column names. See [Formatting](/features/queries/number-formatting) for more details
+- Formatting is determined by **format tags** appended to your column names. See [Formatting](/features/value-formatting) for more details
 
 ## Supported Databases
 - BigQuery

@@ -2,7 +2,7 @@
 	import { slide } from "svelte/transition"
   import ChevronToggle from "../ChevronToggle.svelte"
   export let headerText;
-  let expanded = true;
+  export let expanded = true;
   let toggleExpanded = () => {
     expanded = !expanded;
   };
@@ -34,14 +34,15 @@
   }
 
   button {
-    background-color: var(--background, #fff);
+    background-color: var(--grey-100);
+    border-radius: 4px;
     color: var(--gray-darkest, #282828);
     display: flex;
     justify-content: space-between;
     width: 100%;
     border: none;
     margin: 0;
-    padding: 0.2em 0.5em;
+    padding: 0.4em 0.5em;
     cursor: pointer;
   }
 
