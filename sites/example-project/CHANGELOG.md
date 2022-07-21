@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.3.2
+
+### Patch Changes
+
+- 9275cda: Fixed the hms format to have two digits all the time for mm and ss
+
 ## 1.3.1
 
 ### Patch Changes
