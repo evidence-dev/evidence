@@ -1,5 +1,13 @@
 # @evidence-dev/preprocess
 
+## 1.2.2
+
+### Patch Changes
+
+- d933ab8: Fix test-env failing to build + silent errors when test-env fails to build
+- 11b6dd0: Turns on quote formatting
+- 6ed9a37: GA new formatting system without feature flags
+
 ## 1.2.1
 
 ### Patch Changes

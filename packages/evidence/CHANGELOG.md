@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 5.0.2
+
+### Patch Changes
+
+- d933ab8: Fix test-env failing to build + silent errors when test-env fails to build
+- 4702901: Adds support for static folder that users can put files in
+- Updated dependencies [87fd331]
+- Updated dependencies [9d2726b]
+- Updated dependencies [d933ab8]
+- Updated dependencies [11b6dd0]
+- Updated dependencies [6ed9a37]
+- Updated dependencies [4702901]
+- Updated dependencies [e5a3eb7]
+- Updated dependencies [77c205d]
+  - @evidence-dev/components@1.3.1
+  - @evidence-dev/preprocess@1.2.2
+
 ## 5.0.1
 
 ### Patch Changes
