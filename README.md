@@ -23,6 +23,12 @@ Evidence is in alpha. A lot of things will change between now and our stable rel
 
 ## Installation 
 
+**Try Online:**
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/___YOUR_PATH___)
+
+**Install Locally:**
+
 Check out the [documentation](https://docs.evidence.dev) for a complete walk through.
 
 ```
