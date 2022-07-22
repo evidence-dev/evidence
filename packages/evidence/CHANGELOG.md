@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 5.0.3
+
+### Patch Changes
+
+- Updated dependencies [9275cda]
+  - @evidence-dev/components@1.3.2
+
 ## 5.0.2
 
 ### Patch Changes
