@@ -29,8 +29,8 @@
 		grid-column: auto;
 		z-index: 5;
         position:fixed;
-        left: 0;
-        bottom: 0; 
+        right: 0;
+        top: 0; 
         margin: 1.0em;
         border: none;
         color: none;
