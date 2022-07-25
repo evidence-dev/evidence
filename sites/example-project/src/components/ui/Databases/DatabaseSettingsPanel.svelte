@@ -77,9 +77,9 @@
             <h1>Database Connection</h1>
             <p>Evidence supports one database connection per project.</p>
             <h2>Connection Type</h2>
-            <select bind:value={selectedDatabase} on:change={databaseChange}>
+            <select data-test-id='dbConnectionType' bind:value={selectedDatabase} on:change={databaseChange}>
             {#each databaseOptions as option}
-                <option value={option}>
+                <option data-test-id={option.id} id={option.id} value={option}>
                     {option.name}
                 </option>
             {/each}

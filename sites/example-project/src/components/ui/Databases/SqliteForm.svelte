@@ -90,6 +90,7 @@
     class=basic
     type=text
     id=file
+    data-test-id=sqlite3FilePrefix
     name=file
     placeholder={opt.placeholder}
     required
