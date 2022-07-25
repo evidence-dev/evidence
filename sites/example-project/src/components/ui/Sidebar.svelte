@@ -410,8 +410,8 @@ span.alert-icon {
 		position: fixed;
 		height: 100%;
 		width: 100%; 
-		left: -100%;
-		transition: left 0.3s ease-in-out; 	
+		left: 100%;
+		transition: all 0.3s ease-in-out; 	
 		background-color: hsla(217, 33%, 97%, .83);
 		-webkit-backdrop-filter: blur(20px) saturate(1.8);
 		backdrop-filter: blur(20px) saturate(1.8);
