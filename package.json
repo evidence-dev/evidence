@@ -7,6 +7,8 @@
 		"@evidence-dev/preprocess": "link:packages/preprocess",
 		"@sveltejs/adapter-static": "1.0.0-next.22",
 		"@sveltejs/kit": "1.0.0-next.202",
+		"@sveltejs/vite-plugin-svelte": "1.0.0-next.41",
+		"vite": "2.9.5",
 		"@tidyjs/tidy": "2.4.4",
 		"downloadjs": "1.4.7",
 		"echarts": "5.3.2",
