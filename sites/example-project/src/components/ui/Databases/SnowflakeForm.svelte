@@ -13,7 +13,9 @@
             optional: false,
             override: false,
             placeholder: "xx16244.us-central1.gcp",
-            value: credentials.account},
+            value: credentials.account,
+            dataTestId: "snowflakeAccount"
+        },
         {
             id: "username", 
             label: "Username", 
@@ -21,14 +23,18 @@
             optional: false,
             override: false,
             placeholder: "weyland-yutani",
-            value: credentials.username},
+            value: credentials.username,
+            dataTestId: "snowflakeUsername"
+        },
         {
             id: "password", 
             label: "Password", 
             type: "password", 
             optional: false,
             override: false,
-            value: credentials.password},
+            value: credentials.password,
+            dataTestId: "snowflakePassword"
+        },
         {
             id: "database", 
             label: "Database", 
@@ -36,7 +42,9 @@
             optional: false,
             override: false,
             placeholder: "my-database",
-            value: credentials.warehouse},
+            value: credentials.warehouse,
+            dataTestId: "snowflakeDatabase"
+        },
         {
             id: "warehouse", 
             label: "Warehouse", 
@@ -44,7 +52,9 @@
             optional: false,
             override: false,
             placeholder: "my_wh",
-            value: credentials.warehouse}
+            value: credentials.warehouse,
+            dataTestId: "snowflakeWarehouse"
+        }
     ]
 
     import GenericForm from './GenericForm.svelte'
