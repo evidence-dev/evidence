@@ -79,7 +79,7 @@
             <h2>Connection Type</h2>
             <select data-test-id='dbConnectionType' bind:value={selectedDatabase} on:change={databaseChange}>
             {#each databaseOptions as option}
-                <option data-test-id={option.id} id={option.id} value={option}>
+                <option data-test-id={option.id} id={option.id} value={option} label={option.name}>
                     {option.name}
                 </option>
             {/each}
