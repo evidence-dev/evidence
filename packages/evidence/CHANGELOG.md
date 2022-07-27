@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 5.0.3
+
+### Patch Changes
+
+- 07971d8: Ensure the version of Vite stays belows 3.0
+- Updated dependencies [bc62401]
+- Updated dependencies [9275cda]
+- Updated dependencies [07971d8]
+- Updated dependencies [b5d4f28]
+  - @evidence-dev/components@1.3.2
+
 ## 5.0.2
 
 ### Patch Changes
