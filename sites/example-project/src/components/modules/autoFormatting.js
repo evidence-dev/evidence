@@ -330,14 +330,14 @@ export function computeNumberAutoFormatCode(
  * @returns {string} the appropriate unit (B, M, k or '') for the given value
  */
 function getAutoColumnUnit(value) {
-  let abosoluteValue = Math.abs(value);
-  if (abosoluteValue >= 1000000000000) {
+  let absoluteValue = Math.abs(value);
+  if (absoluteValue >= 5000000000000) {
     return "T";
-  } else if (abosoluteValue >= 1000000000) {
+  } else if (absoluteValue >= 5000000000) {
     return "B";
-  } else if (abosoluteValue >= 1000000) {
+  } else if (absoluteValue >= 5000000) {
     return "M";
-  } else if (abosoluteValue >= 1000) {
+  } else if (absoluteValue >= 5000) {
     return "k";
   } else {
     return "";
