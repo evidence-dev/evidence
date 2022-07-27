@@ -87,9 +87,26 @@ const DERIVED_CURRENCY_FORMATS = [
     exampleInput: 412.17,
     auto: true,
   },
-  { derivedSuffix: "1", valueFormatCode: "#,##0.0", exampleInput: 7043.123 },
-  { derivedSuffix: "2", valueFormatCode: "#,##0.00", exampleInput: 7043.123 },
-  { derivedSuffix: "0k", valueFormatCode: '#,##0,"k"', exampleInput: 64301.12 },
+  { 
+    derivedSuffix: "0", 
+    valueFormatCode: "#,##0", 
+    exampleInput: 7043.123 
+  },
+  { 
+    derivedSuffix: "1", 
+    valueFormatCode: "#,##0.0", 
+    exampleInput: 7043.123 
+  },
+  { 
+    derivedSuffix: "2", 
+    valueFormatCode: "#,##0.00", 
+    exampleInput: 7043.123 
+  },
+  { 
+    derivedSuffix: "0k", 
+    valueFormatCode: '#,##0,"k"', 
+    exampleInput: 64301.12 
+  },
   {
     derivedSuffix: "1k",
     valueFormatCode: '#,##0.0,"k"',
