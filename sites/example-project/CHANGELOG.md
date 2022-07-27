@@ -1,5 +1,14 @@
 # @evidence-dev/components
 
+## 1.3.2
+
+### Patch Changes
+
+- bc62401: Add testIds to support e2e testing
+- 9275cda: Fixed the hms format to have two digits all the time for mm and ss
+- 07971d8: Ensure the version of Vite stays belows 3.0
+- b5d4f28: adding currency 0 suffix tag eg usd0, increased threshold for applying units (k,M,B,T)
+
 ## 1.3.1
 
 ### Patch Changes
