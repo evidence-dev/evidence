@@ -156,7 +156,7 @@ code {
 
 :root {
 	/* Layout header height */
-	--header-height: 2.5rem; 
+	--header-height: 3.5rem; 
 	/* Font stacks */
 	--monospace-font-family:  Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
 	--ui-font-family: "SF Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
