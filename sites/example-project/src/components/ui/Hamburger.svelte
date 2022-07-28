@@ -29,19 +29,16 @@
 		grid-column: auto;
 		z-index: 5;
         position:fixed;
-        left: 0;
-        bottom: 0; 
+        right: 0;
+        top: 0; 
         margin: 1.0em;
         border: none;
         color: none;
-        padding: 14px 11px 14px 11px;
+        padding: 0px 11px 14px 11px;
         text-align: center;
         text-decoration: none;
         font-size: 16px;
-        background-color: hsla(217, 33%, 97%, .83);
-		-webkit-backdrop-filter: blur(20px) saturate(1.8);
-		backdrop-filter: blur(20px) saturate(1.8);
-		border: 1px solid var(--grey-300);	
+        background-color: hsla(217, 33%, 97%, 0);
         border-radius: 4px;
 	}
 	
