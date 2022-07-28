@@ -8,7 +8,7 @@ const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 
 const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1].replace(".md","")
+    let route = filename.split("/src/pages")[1].replace(".md","").replace("/index","")
     let routeHash = md5(route)
     return routeHash
 }
@@ -174,8 +174,9 @@ const updateExtractedQueriesDir = function(content, filename){
         let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
         let inputQueryString = compiledQueryString // original, as written 
         let compiled = false // default flag, switched to true if query is compiled
+        let status = "not run"
         queries.push(
-            {id, compiledQueryString, inputQueryString, compiled}
+            {id, compiledQueryString, inputQueryString, compiled, status}
         )
     });
 
