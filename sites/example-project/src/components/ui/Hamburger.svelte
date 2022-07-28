@@ -39,7 +39,6 @@
         text-decoration: none;
         font-size: 16px;
         background-color: hsla(217, 33%, 97%, 0);
-		backdrop-filter: blur(20px) saturate(1.8);
         border-radius: 4px;
 	}
 	
