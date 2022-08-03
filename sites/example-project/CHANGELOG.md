@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.3.4
+
+### Patch Changes
+
+- 7469dc2: fix the hamburger overlap with the show queries button
+
 ## 1.3.3
 
 ### Patch Changes
