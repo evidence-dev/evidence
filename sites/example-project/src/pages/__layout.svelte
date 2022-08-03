@@ -5,7 +5,6 @@
 	import { navigating } from '$app/stores';
 	import { blur } from "svelte/transition";
 	import { page } from "$app/stores";
-
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
 	import Header from '@evidence-dev/components/ui/Header.svelte'
 	import Hamburger from '@evidence-dev/components/ui/Hamburger.svelte'
@@ -25,10 +24,12 @@
 
 <div class="grid">
 	{#if $page.path !== '/settings'}
-		<Header/>
+		<div class="header-bar">
+			<Header/>
+			<Hamburger bind:open/>
+		</div>
 	{/if}
 	<Sidebar bind:open/> 
-	<Hamburger bind:open/>
 	<main in:blur|local>
 	  <div class=content class:settings-content={$page.path === '/settings'}>
 		<article class:settings-article={$page.path === '/settings'}>
@@ -100,6 +101,10 @@ aside.toc {
 	padding: 0px;
 }
 
+.header-bar {
+	display: flex;
+	justify-content: space-between;
+}
 @media (max-width: 1440px) {
 	div.content { 
 		grid-template-columns: 1fr;

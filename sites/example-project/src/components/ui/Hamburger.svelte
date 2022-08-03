@@ -24,22 +24,17 @@
 	
 	button {
 		align-items: center;
-		display: grid;
-		grid-row: auto;
-		grid-column: auto;
-		z-index: 5;
-        position:fixed;
-        right: 0;
-        top: 0; 
-        margin: 1.0em;
+		z-index: 10;
+        margin-top: 1.0em;
+		margin-bottom: 1.0em;
+		margin-left: 0.4em;
+		margin-right: 1.5em;
         border: none;
-        color: none;
-        padding: 0px 11px 14px 11px;
+		padding: 0px;
         text-align: center;
         text-decoration: none;
         font-size: 16px;
         background-color: hsla(217, 33%, 97%, 0);
-        border-radius: 4px;
 	}
 	
 	.open svg {
