@@ -11,7 +11,7 @@
   <div class="container">
     <div class="panel">
       <h1>Value Formatting</h1>
-      <p>Format tags like <code>_usd</code> and <code>_pct</code> let you control how data will be formatted in Evidence.</p><p>Format tags are appended to the end of column names, per the example below.</p> 
+      <p>Format tags like <code>_usd</code> and <code>_pct</code> let you control how data will be formatted in Evidence.</p><p>Apply format tags by including them at the end of column names. For example:</p> 
       <pre>
 select 
   growth as growth<span class=format-tag>_pct</span>, -- formatted as a percentage
@@ -19,11 +19,11 @@ select
 from table 
       </pre>
       <p></p>
-      <p>All of the built in format tags are listed below for reference, and you can create your own custom format tags for your project.</p>
     </div>
     <div class="panel">
       <h1>Built in Format Tags</h1>
-      <CollapsibleTableSection headerText={"Dates"} expanded={true}>
+      <p>All of the built in format tags are listed below for reference.</p>
+      <CollapsibleTableSection headerText={"Dates"} expanded={false}>
         <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "date")}/>
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Currencies"} expanded={false}>

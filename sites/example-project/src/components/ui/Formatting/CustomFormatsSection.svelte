@@ -92,7 +92,7 @@
 </script>
 
   {#if customFormattingSettings.customFormats && customFormattingSettings.customFormats.length > 0}
-  <CollapsibleTableSection headerText={"Saved Custom Formats"} expanded={true}>
+  <CollapsibleTableSection headerText={"Saved Custom Formats"} expanded={false}>
     <CustomFormatGrid
       formats={customFormattingSettings.customFormats}
       deleteHandler={deleteCustomFormat}
