@@ -8,14 +8,13 @@
 </script>
 
 <select bind:value={selectedCurrency}>
+  <option>Choose a currency</option>
   ${#each SUPPORTED_CURRENCIES as currency}
     <option name={currency.primaryCode} id={currency.primaryCode} value={currency.primaryCode}>{currency.displayName}</option>
   {/each}
-
 </select>
-
-<div class="tableContainer">
-<table class="formatTable" width="100%" transition:blur>
+{#if selectedCurrency != 'Choose a currency'}
+<table transition:blur>
   <thead>
     <th class="align_left narrow_column">Format Tag</th>
     <th class="align_left wide_column">Format Code</th>
@@ -23,7 +22,7 @@
     <th class="align_right wide_column">Example Output</th>
   </thead>
   {#each formats.filter(d => d.parentFormat === selectedCurrency) as format}
-    <tr>
+    <tr transition:blur>
       <td transition:blur>{format.formatTag} </td>
       <td transition:blur>{format.formatCode} </td>
       <td transition:blur>
@@ -39,41 +38,28 @@
     </tr>
   {/each}
 </table>
-</div>
+{/if}
 
 <style>
-  .formatTable {
-    font-size: 12px;
-  }
-
-  .tableContainer {
-    border: 1px solid var(--gray-light, #eee);
-    border-radius: 4px;
-    padding: 8px 4px 8px 4px;
-  }
-
   select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;   
-        padding:0.75em;
-        width: 100%;
-        border: 1px solid var(--grey-200); 
-        font-family: var(--ui-font-family);
-        color: var(--grey-800); 
-        margin: 0.5em 0 1.5em 0;
-        transition: all 400ms;
-        cursor: pointer;
-    }
-
-        select:hover{
-            border: 1px solid var(--grey-300);
-            transition: all 400ms;
-            box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
-    }
-
-        select:focus {
-            outline: none;
-
-    }
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;   
+    padding:0.75em;
+    width: calc(100% + 14px);
+    border: 1px solid var(--grey-200); 
+    font-family: var(--ui-font-family);
+    color: var(--grey-800); 
+    margin: 0.5em 0 1.5em -7px;
+    transition: all 400ms;
+    cursor: pointer;
+  }
+  select:hover{
+      border: 1px solid var(--grey-300);
+      transition: all 400ms;
+      box-shadow: 0 5px 5px 2px hsl(0deg 0% 97%);
+  }
+  select:focus {
+      outline: none;
+  }
 </style>

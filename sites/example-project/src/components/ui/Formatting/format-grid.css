@@ -1,8 +1,10 @@
 table {
-  width: 100%;
-  font-size: calc(0.75em - 0px);
+  font-size: 14px;
   border-collapse: collapse;
   font-family: sans-serif;
+  /* Offset the cell padding to get the outside edges aligned w/ the parent */
+  margin-left: -8px;
+  width: calc(100% + 16px);
 }
 th {
   max-width: 1px;
@@ -16,9 +18,9 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-tr:hover {
+/* tr:hover {
   background-color: rgb(247, 249, 250);
-}
+} */
 .align_left {
   text-align: left;
 }

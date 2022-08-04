@@ -16,15 +16,15 @@
       <h2>Example</h2>
       <code class=sql-example>select date as month<span class=format-tag>_mmm</span>, sales as sales<span class=format-tag>_usd</span> from table  </code>  
       <p></p>
-      <p>Choose from the list of available format tags below, or create a custom format tag using Excel-style format codes. <a class=docs-link target=none href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68">Learn about Excel format codes here &rarr;</a></p>
+      <p>Choose from the built in format tags below, or create a custom format tag.</p>
 
     </div>
-    <div class="subpanels">
+    <div class="panel">
+      <h2>Built in Formats</h2>
       <CollapsibleTableSection headerText={"Dates"} expanded={true}>
         <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "date")}/>
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Currencies"} expanded={false}>
-        Evidence supports several international currencies. Select a currency from the drop-down below to see the available format tags.
         <CurrencyFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "currency")} />
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Numbers"} expanded={false}>
@@ -33,11 +33,10 @@
       <CollapsibleTableSection headerText={"Percentages"} expanded={false}>
         <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "percent")} />
       </CollapsibleTableSection>
-      
     </div>
     <div class="panel">
       <CollapsibleTableSection headerText={"Custom Formats"} expanded={true}>
-        Custom formats can be used in the same way as built-in formats. Note that your format tag will not appear in the column title when used in a component.  
+        Custom formats can be used in the same way as built-in formats, using  <a class=docs-link target=none href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68">excel-style format codes.</a> Format tags do not appear in column titles when used in charts or other components.  
         <svelte:component
           this={CustomFormatsSection}
           builtInFormats={BUILT_IN_FORMATS}
@@ -71,11 +70,6 @@
   .panel {
     border-top: 1px solid var(--grey-200);
     padding: 1em;
-  }
-
-  .subpanels {
-    border-top: 1px solid var(--grey-200);
-    padding: 1em 1em 1em 1em;
   }
 
   .panel:first-of-type {
@@ -115,5 +109,11 @@
     .docs-link:hover {
         color: var(--blue-800);
     }
+
+  h2 {
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 14px;
+  }
 
 </style>
