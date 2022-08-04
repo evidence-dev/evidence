@@ -1,10 +1,10 @@
 <script>
   import "./format-grid.css";
-  import { blur } from 'svelte/transition';
+  import { blur, slide } from 'svelte/transition';
   import { SUPPORTED_CURRENCIES } from "$lib/modules/builtInFormats";
   import { defaultExample, formatExample } from "$lib/modules/formatting";
   export let formats;
-  let selectedCurrency;
+  let selectedCurrency = 'Choose a currency';
 </script>
 
 <select bind:value={selectedCurrency}>
@@ -14,30 +14,32 @@
   {/each}
 </select>
 {#if selectedCurrency != 'Choose a currency'}
-<table transition:blur>
-  <thead>
-    <th class="align_left narrow_column">Format Tag</th>
-    <th class="align_left wide_column">Format Code</th>
-    <th class="align_left wide_column">Example Input</th>
-    <th class="align_right wide_column">Example Output</th>
-  </thead>
-  {#each formats.filter(d => d.parentFormat === selectedCurrency) as format}
-    <tr transition:blur>
-      <td transition:blur>{format.formatTag} </td>
-      <td transition:blur>{format.formatCode} </td>
-      <td transition:blur>
-        <input
-          id="id_format_row{format.formatTag}"
-          placeholder={format.exampleInput || defaultExample(format.valueType)}
-          bind:value={format.userInput}
-          on:blur={(format.userInput = undefined)}
-          class="align_left input_box"
-        />
-      </td>
-      <td class="align_right" transition:blur>{formatExample(format)}</td>
-    </tr>
-  {/each}
-</table>
+<div transition:slide>
+  <table>
+    <thead>
+      <th class="align_left narrow_column">Format Tag</th>
+      <th class="align_left wide_column">Format Code</th>
+      <th class="align_left wide_column">Example Input</th>
+      <th class="align_right wide_column">Example Output</th>
+    </thead>
+    {#each formats.filter(d => d.parentFormat === selectedCurrency) as format (format.formatTag)}
+      <tr>
+        <td in:blur|local>{format.formatTag} </td>
+        <td in:blur|local>{format.formatCode} </td>
+        <td>
+          <input
+            id="id_format_row{format.formatTag}"
+            placeholder={format.exampleInput || defaultExample(format.valueType)}
+            bind:value={format.userInput}
+            on:blur={(format.userInput = undefined)}
+            class="align_left input_box"
+          />
+        </td>
+        <td class="align_right" in:blur|local >{formatExample(format)}</td>
+      </tr>
+    {/each}
+  </table>
+</div>
 {/if}
 
 <style>
