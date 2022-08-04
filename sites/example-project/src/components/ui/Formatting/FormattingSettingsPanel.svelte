@@ -12,15 +12,13 @@
     <div class="panel">
       <h1>Value Formatting</h1>
       <p>Value formatting in Evidence is achieved using format tags appended to SQL column names.</p>
-
       <h2>Example</h2>
       <code class=sql-example>select date as month<span class=format-tag>_mmm</span>, sales as sales<span class=format-tag>_usd</span> from table  </code>  
       <p></p>
       <p>Choose from the built in format tags below, or create a custom format tag.</p>
-
     </div>
     <div class="panel">
-      <h2>Built in Formats</h2>
+      <h1>Built in Format Tags</h1>
       <CollapsibleTableSection headerText={"Dates"} expanded={true}>
         <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "date")}/>
       </CollapsibleTableSection>
@@ -35,16 +33,16 @@
       </CollapsibleTableSection>
     </div>
     <div class="panel">
-      <CollapsibleTableSection headerText={"Custom Formats"} expanded={true}>
-        Custom formats can be used in the same way as built-in formats, using  <a class=docs-link target=none href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68">excel-style format codes.</a> Format tags do not appear in column titles when used in charts or other components.  
-        <svelte:component
-          this={CustomFormatsSection}
+      <h1>Custom Format Tags</h1>
+      <p>
+        Add new format tags to your project. Custom format tags use <a class=docs-link target=none href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68">excel-style format codes.</a>
+      </p>
+        <CustomFormatsSection
           builtInFormats={BUILT_IN_FORMATS}
           {customFormattingSettings}
         />
-      </CollapsibleTableSection>
       </div>
-  </div>
+      </div>
   <footer>
     <span
       >Learn more about <a
@@ -110,10 +108,5 @@
         color: var(--blue-800);
     }
 
-  h2 {
-    text-transform: uppercase;
-    font-weight: normal;
-    font-size: 14px;
-  }
 
 </style>
