@@ -52,4 +52,4 @@ jobs:
           token: ${{ secrets.E2E_SMOKE_TESTS_REPO_ACCESS_PAT }}
           repository: evidence-dev/e2e-smoke-tests
           event-type: evidence-release
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "source":"evidence-dev/evidence", "published": "${{ needs.release.outputs.published }}", "publishedPackages": "${{ needs.release.outputs.publishedPackages }}"}'
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "source":"evidence-dev/evidence", "published": "${{ needs.release.outputs.published }}", "publishedPackages": ${{ needs.release.outputs.publishedPackages }}}'
