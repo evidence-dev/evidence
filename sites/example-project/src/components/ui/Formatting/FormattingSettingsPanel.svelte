@@ -11,11 +11,15 @@
   <div class="container">
     <div class="panel">
       <h1>Value Formatting</h1>
-      <p>Value formatting in Evidence is achieved using format tags appended to SQL column names.</p>
-      <h2>Example</h2>
-      <code class=sql-example>select date as month<span class=format-tag>_mmm</span>, sales as sales<span class=format-tag>_usd</span> from table  </code>  
+      <p>Format tags like <code>_usd</code> and <code>_pct</code> let you control how data will be formatted in Evidence.</p><p>Format tags are appended to the end of column names, per the example below.</p> 
+      <pre>
+select 
+  growth as growth<span class=format-tag>_pct</span>, -- formatted as a percentage
+  sales as sales<span class=format-tag>_usd</span>    -- formatted as US dollars
+from table 
+      </pre>
       <p></p>
-      <p>Choose from the built in format tags below, or create a custom format tag.</p>
+      <p>All of the built in format tags are listed below for reference, and you can create your own custom format tags for your project.</p>
     </div>
     <div class="panel">
       <h1>Built in Format Tags</h1>
@@ -74,8 +78,12 @@
     border-top: none;
   }
 
-  .sql-example {
-    font-size: 11pt;
+  pre {
+    background-color: var(--blue-999);
+    color: var(--grey-100);
+    font-size: 10pt;
+    border-radius: 4px;
+    padding: 0.5em;
   }
 
   /* .format-tag {
@@ -85,8 +93,7 @@
   } */
 
   .format-tag {
-    color: var(--blue-600);
-    font-weight: 800;
+    color: var(--blue-300);
   }
   footer {
     border: 1px solid var(--grey-200);
