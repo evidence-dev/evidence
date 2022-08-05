@@ -257,7 +257,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
         mdsvex.mdsvex(
             {extensions: [".md"],
             smartypants: {
-                quotes: true,
+                quotes: false,
                 ellipses: true,
                 backticks: true,
                 dashes: 'oldschool',
