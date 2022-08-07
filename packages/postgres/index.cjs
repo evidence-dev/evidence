@@ -61,7 +61,7 @@ const mapResultsToEvidenceColumnTypes = function (results) {
         }
         return (
           {
-            'name': field.name,
+            'name': field.name.toLowerCase(),
             'evidenceType': evidenceType,
             'typeFidelity': typeFidelity,
           });
