@@ -20,23 +20,23 @@
     export let lineOpacity = undefined;
 
     export let markers = false;
-    markers = (markers === "true" || markers === true);
+    $: markers = (markers === "true" || markers === true);
     export let markerShape = 'circle';
     export let markerSize = 8;
 
     export let handleMissing = "gap";
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    let x = $props.x;
-    let swapXY = $props.swapXY;
-    let xType = $props.xType;
-    let xMismatch = $props.xMismatch;
-    let columnSummary = $props.columnSummary;
-    y = y ?? $props.y;
-    series = series ?? $props.series;
+    $: data = $props.data;
+    $: x = $props.x;
+    $: swapXY = $props.swapXY;
+    $: xType = $props.xType;
+    $: xMismatch = $props.xMismatch;
+    $: columnSummary = $props.columnSummary;
+    $: y = y ?? $props.y;
+    $: series = series ?? $props.series;
  
-    if(!series && typeof y !== 'object'){
+    $: if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
     } else {
@@ -44,11 +44,11 @@
         data = getCompletedData(data, x, y, series);
     }
 
-    if(handleMissing === "zero"){
+    $: if(handleMissing === "zero"){
         data = replaceNulls(data, y)
     }
 
-    let baseConfig = {
+    $: baseConfig = {
             type: "line",
             label: {
                 show: false,
@@ -79,14 +79,14 @@
             symbolSize: markerSize
     }
 
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
-    config.update(d => {d.series.push(...seriesConfig); return d})
+    $: seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    $: config.update(d => {d.series.push(...seriesConfig); return d})
 
-    if(options){
+    $: if(options){
         config.update(d => {return {...d, ...options}})
     }
 
-    let chartOverrides = {
+    $: chartOverrides = {
          yAxis: {
              boundaryGap: ['0%', '1%']
          },
@@ -95,7 +95,7 @@
          }
      }
 
-    if(chartOverrides){
+    $: if(chartOverrides){
         config.update(d => {
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};

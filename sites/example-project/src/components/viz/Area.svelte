@@ -17,22 +17,22 @@
     export let fillColor = undefined;
     export let fillOpacity = undefined;
     export let line = true;
-    line = (line === "true" || line === true);
+    $: line = (line === "true" || line === true);
 
     export let handleMissing = "gap";
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    let x = $props.x;
-    let swapXY = $props.swapXY;
-    let xType = $props.xType;
-    let xMismatch = $props.xMismatch;
-    let columnSummary = $props.columnSummary;
-    y = y ?? $props.y;
-    series = series ?? $props.series;
+    $: data = $props.data;
+    $: x = $props.x;
+    $: swapXY = $props.swapXY;
+    $: xType = $props.xType;
+    $: xMismatch = $props.xMismatch;
+    $: columnSummary = $props.columnSummary;
+    $: y = y ?? $props.y;
+    $: series = series ?? $props.series;
 
     let stackName;
-    if(!series && typeof y !== 'object'){
+    $: if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
     } else {
@@ -43,11 +43,11 @@
         xType = xType === "value" ? "category" : xType;
     }
 
-    if(handleMissing === "zero"){
+    $: if(handleMissing === "zero"){
         data = replaceNulls(data, y)
     }
 
-    let baseConfig = {
+    $: baseConfig = {
             type: "line",
             stack: stackName,
             areaStyle: {
@@ -67,16 +67,16 @@
             }
     }
 
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    $: seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
-    config.update(d => {d.series.push(...seriesConfig); return d})
+    $: config.update(d => {d.series.push(...seriesConfig); return d})
 
-    if(options){
+    $: if(options){
         config.update(d => {return {...d, ...options}})
     }
 
 
-    let chartOverrides = {
+    $: chartOverrides = {
          yAxis: { 
              boundaryGap: ['0%', '1%'],
          },
@@ -86,7 +86,7 @@
          },
      }
 
-    if(chartOverrides){
+    $: if(chartOverrides){
         config.update(d => {
             d.tooltip = {...d.tooltip, order: 'seriesDesc'} // Areas always stacked 
             if(swapXY){

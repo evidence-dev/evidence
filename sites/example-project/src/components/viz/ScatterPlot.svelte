@@ -29,11 +29,6 @@
     export let pointSize = undefined;
 
     export let sort = undefined;
-
-    let chartType = "Scatter Plot";
-
-    let useTooltip = true;
-
 </script>
 
 <Chart
@@ -54,7 +49,7 @@
     {yMin}
     {title}
     {subtitle}
-    {chartType}
+    chartType="Scatter Plot"
     {sort}
     >
     <Scatter
@@ -64,6 +59,6 @@
         {outlineColor}
         {outlineWidth}
         {pointSize}
-        {useTooltip}
+        useTooltip=true
     />
 </Chart>

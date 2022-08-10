@@ -28,9 +28,6 @@
     export let handleMissing = undefined;
 
     export let sort = undefined;
-
-    let chartType = "Area Chart";
-
 </script>
 
 <Chart
@@ -51,7 +48,7 @@
     {yMin}
     {title}
     {subtitle}
-    {chartType}
+    chartType="Area Chart"
     {sort}
     >
     <Area

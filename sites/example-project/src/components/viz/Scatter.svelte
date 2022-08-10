@@ -26,19 +26,19 @@
     let tooltipOutput;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    let x = $props.x;
-    let swapXY = $props.swapXY;
-    let xType = $props.xType;
-    let xFormat = $props.xFormat;
-    let yFormat = $props.yFormat;
-    let xMismatch = $props.xMismatch;
-    let columnSummary = $props.columnSummary;
-    y = y ?? $props.y;
-    series = series ?? $props.series;
-    let yMin = $props.yMin;
+    $: data = $props.data;
+    $: x = $props.x;
+    $: swapXY = $props.swapXY;
+    $: xType = $props.xType;
+    $: xFormat = $props.xFormat;
+    $: yFormat = $props.yFormat;
+    $: xMismatch = $props.xMismatch;
+    $: columnSummary = $props.columnSummary;
+    $: y = y ?? $props.y;
+    $: series = series ?? $props.series;
+    $: yMin = $props.yMin;
 
-    if(!series && typeof y !== 'object'){
+    $: if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
         multiSeries = false;
@@ -49,7 +49,7 @@
     }
 
     // Set up base config for this type of chart series:
-    let baseConfig = {
+    $: baseConfig = {
             type: "scatter",
             label: {
                 show: false,
@@ -72,7 +72,7 @@
     // Tooltip settings (scatter and bubble charts require different tooltip than default)
     let tooltipOpts;
     let tooltipOverride;
-    if(useTooltip){
+    $: if(useTooltip){
         tooltipOpts = {
             tooltip: {
                 formatter: function(params) {
@@ -99,18 +99,18 @@
     }
 
     // If user has passed in custom echarts config options, append to the baseConfig:
-    if(options){
+    $: if(options){
         baseConfig = {...baseConfig, ...options}
     }
 
 
     // Generate config for each series:
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
-    config.update(d => {d.series.push(...seriesConfig); return d})
+    $: seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    $: config.update(d => {d.series.push(...seriesConfig); return d})
 
     
     // Chart-level config settings:
-    let chartOverrides = {
+    $: chartOverrides = {
          yAxis: {
              scale: true,
              boundaryGap: ['1%', '1%']
@@ -121,7 +121,7 @@
     }
 
     // Apply the chart-level overrides to the main config used by Chart.svelte:
-    if(chartOverrides){
+    $: if(chartOverrides){
         config.update(d => {
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};

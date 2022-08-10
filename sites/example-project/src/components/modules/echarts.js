@@ -3,7 +3,6 @@ import {colours} from './colours'
 
 
 export default(node, option, renderer) => {
-
 	echarts.registerTheme('evidence-light', {
         "grid": {
             "left": "0%",
@@ -443,9 +442,9 @@ export default(node, option, renderer) => {
     window.addEventListener("resize", () => { chart.resize();});
 
 	return {
-		// update(option){
-		// 	chart.update(option, true, true);
-		// },
+		update(option){
+			chart.setOption(option, true, true);
+		},
 		destroy() {
 			chart.dispose();
 		}
