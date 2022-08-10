@@ -42,21 +42,21 @@
     <div class=metric> 
         <Value {data} column={metric}/> 
         {#if timeSeries}
-        <div class=sparkline>
-            <LinkedChart 
-            data = {sparklineData}
-            type = line
-            grow = {true}
-            barMinWidth = 0
-            gap = 0
-            fill = var(--grey-300)
-            align = left
-            hover = {false}
-            linked = 'id'
-            width = 90
-            />
-        </div>
-    {/if}
+            <div class=sparkline>
+                <LinkedChart 
+                    data = {sparklineData}
+                    type = line
+                    grow = {true}
+                    barMinWidth = 0
+                    gap = 0
+                    fill = var(--grey-400)
+                    align = left
+                    hover = {false}
+                    linked = 'id'
+                    width = 75
+                />
+            </div>
+        {/if}
     </div> 
  
     {#if delta}
@@ -67,21 +67,14 @@
         </p> 
     {/if}
 </div>  
-<p> </p>
 
 <style>
     :global(.sparkline svg) {
-        height: 20px;
+        height: 16px;
     }
 
     div.sparkline {
-        width: 100%;
-        height: 100%; 
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        /* display: inline-block; */
+        display: inline-block;
     }
 
     div.metric {
@@ -92,19 +85,19 @@
     div.container {
         display: inline-block;
         font-family: var(--ui-font-family);
-        font-size: 14px;
-        padding: .75em .75em .75em 0;; 
+        font-size: 0.8em;
+        padding: .75em .75em .75em 0; 
         margin-right: 0.75em;
         margin-block-end: 1.5em;
         align-items: center;
         user-select: none;
         -webkit-user-select:none ;
+        /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.10);
+        border-radius: 4px; */
         /* border-right: solid 1px var(--grey-200); */
     }
     p {
         margin: 0;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     p.negative {
