@@ -5,6 +5,14 @@
   import CustomFormatsSection from "./CustomFormatsSection.svelte";
   import CollapsibleTableSection from "./CollapsibleTableSection.svelte";
   import CurrencyFormatGrid from "./CurrencyFormatGrid.svelte";
+  import Prism from "../QueryViewerSupport/Prismjs.svelte";
+
+  let exampleQuery = `
+select 
+  growth as growth_pct, -- formatted as a percentage
+  sales as sales_usd    -- formatted as US dollars
+from table` 
+
 </script>
 
 <form>
@@ -12,12 +20,9 @@
     <div class="panel">
       <h1>Value Formatting</h1>
       <p>Format tags like <code>_usd</code> and <code>_pct</code> let you control how data will be formatted in Evidence.</p><p>Apply format tags by including them at the end of column names. For example:</p> 
-      <pre>
-select 
-  growth as growth<span class=format-tag>_pct</span>, -- formatted as a percentage
-  sales as sales<span class=format-tag>_usd</span>    -- formatted as US dollars
-from table 
-      </pre>
+      <div class=code-container>
+        <Prism language="sql" code={exampleQuery}/>
+      </div>
       <p></p>
     </div>
     <div class="panel">
@@ -78,12 +83,11 @@ from table
     border-top: none;
   }
 
-  pre {
-    background-color: var(--blue-999);
-    color: var(--grey-100);
-    font-size: 10pt;
+  div.code-container {
+    background-color: var(--grey-100);
+    border: 1px solid var(--grey-200);
+    overflow: auto;
     border-radius: 4px;
-    padding: 0.5em;
   }
 
   /* .format-tag {
@@ -92,9 +96,6 @@ from table
     padding: 2px 4px 2px 4px;
   } */
 
-  .format-tag {
-    color: var(--blue-300);
-  }
   footer {
     border: 1px solid var(--grey-200);
     border-radius: 0 0 5px 5px;
