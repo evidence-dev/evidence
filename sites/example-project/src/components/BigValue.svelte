@@ -67,7 +67,6 @@
 
 
 <div class=container>
-    {downIsGood}
     {#if error}
     <div class=error>
         {error.message}
