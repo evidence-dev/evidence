@@ -1,15 +1,24 @@
 <script> 
     import Value from "$lib/viz/Value.svelte";
     import getColumnSummary from "$lib/modules/getColumnSummary";
-    import { LinkedChart, LinkedLabel, LinkedValue } from "svelte-tiny-linked-charts"
+    import { LinkedChart } from "svelte-tiny-linked-charts"
     import getSortedData from "$lib/modules/getSortedData";
 
     export let data 
-    export let metric 
+
+    let columnSummary = getColumnSummary(data, 'array')
+
+    // fall back items 
+    let firstNonDateCol = columnSummary.find(d => d.type !== "date")
+    let secondNonDateCol = columnSummary.find(d => d.type !== "date" && d.id !== firstNonDateCol.id) 
+    let firstDateCol = columnSummary.find(d => d.type === "date")
+
+    export let metric = firstNonDateCol ? firstNonDateCol.id : null
+    export let delta = secondNonDateCol ? secondNonDateCol.id : null
+    export let sparkline = firstDateCol ? firstDateCol.id : null 
+
     export let title 
-    export let delta 
-    export let deltaTitle 
-    export let timeSeries 
+    export let deltaTitle = delta ? getColumnSummary(data)[delta]["title"] : null 
 
     let fallBackTitle 
     let fallBackDeltaTitle 
@@ -17,21 +26,19 @@
 
     if(data && metric) {
         fallBackTitle = getColumnSummary(data)[metric]["title"]
-
     }
 
     if(data && delta) {
-        fallBackDeltaTitle = getColumnSummary(data)[delta]["title"]
         positive = data[0][delta] >= 0
     }
 
     let sparklineData = {}
 
     // populate sparklineData from data where timeseries is the key and metric is the value
-    if(data && timeSeries && metric) {
-        let sortedData = getSortedData(data, timeSeries, true)
+    if(data && sparkline && metric) {
+        let sortedData = getSortedData(data, sparkline, true)
         for(let i = 0; i < sortedData.length; i++) {
-            sparklineData[sortedData[i][timeSeries]] = sortedData[i][metric]
+            sparklineData[sortedData[i][sparkline]] = sortedData[i][metric]
         }
     }
 
@@ -41,7 +48,7 @@
     <p class=title>{title ?? fallBackTitle}</p> 
     <div class=metric> 
         <Value {data} column={metric}/> 
-        {#if timeSeries}
+        {#if sparkline}
             <div class=sparkline>
                 <LinkedChart 
                     data = {sparklineData}
