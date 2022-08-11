@@ -21,9 +21,6 @@
     export let fillColor = undefined;
     export let fillOpacity = undefined;
 
-    let chartType = "Histogram";
-    let hist = true;
-
 </script>
 
 <Chart 
@@ -41,8 +38,8 @@
     {yMin}
     {title}
     {subtitle}
-    {chartType}
-    {hist}
+    chartType="Histogram"
+    hist=true
     >
         <Hist
             {fillColor}

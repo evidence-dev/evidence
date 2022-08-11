@@ -1,8 +1,8 @@
 <script>
     import {getContext} from 'svelte'
     import { propKey, configKey } from './context'
-    let props = getContext(propKey)
-    let config = getContext(configKey)
+    $: props = getContext(propKey)
+    $: config = getContext(configKey)
     
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import getStackedData from '$lib/modules/getStackedData.js';
@@ -25,20 +25,20 @@
     let barMaxWidth;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    let x = $props.x;
-    let swapXY = $props.swapXY;
-    let xType = $props.xType;
-    let xMismatch = $props.xMismatch;
-    let columnSummary = $props.columnSummary;
-    let sort = $props.sort;
-    y = y ?? $props.y;
-    series = series ?? $props.series;
+    $: data = $props.data;
+    $: x = $props.x;
+    $: swapXY = $props.swapXY;
+    $: xType = $props.xType;
+    $: xMismatch = $props.xMismatch;
+    $: columnSummary = $props.columnSummary;
+    $: sort = $props.sort;
+    $: { y = y ?? $props.y;}
+    $: { series = series ?? $props.series;}
 
     let stackedData;
     let sortOrder;
 
-    if(!series && typeof y !== 'object'){
+    $: if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
 
@@ -78,9 +78,9 @@
         }
     }
 
-    barMaxWidth = 60;
+    $: {barMaxWidth = 60;}
 
-    let baseConfig = {
+    $: baseConfig = {
             type: "bar",
             stack: stackName,
             label: {
@@ -99,15 +99,15 @@
             }
     }
  
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    $: seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
-    config.update(d => {d.series.push(...seriesConfig); return d})
+    $: config.update(d => {d.series.push(...seriesConfig); return d})
 
-    if(options){
+    $: if(options){
         config.update(d => {return {...d, ...options}})
     }
 
-    let chartOverrides = {
+    $: chartOverrides = {
          // Evidence definition of axes (yAxis = dependent, xAxis = independent)
          xAxis: {
              boundaryGap: ['1%', '2%'],
@@ -115,7 +115,7 @@
          }
     }
 
-    if(chartOverrides){
+    $: if(chartOverrides){
         config.update(d => {
             if(type === "stacked"){
                 d.tooltip = {...d.tooltip, order: 'seriesDesc'} 

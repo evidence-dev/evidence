@@ -30,12 +30,6 @@
     export let scaleTo = undefined;
 
     export let sort = undefined;
-
-    let chartType = "Bubble Chart";
-    let bubble = true;
-
-    let useTooltip = true;
-
 </script>
 
 <Chart
@@ -57,8 +51,8 @@
     {yMin}
     {title}
     {subtitle}
-    {chartType}
-    {bubble}
+    chartType="Bubble Chart"
+    bubble=true
     {sort}
     >
     <Bubble
@@ -68,6 +62,6 @@
         {outlineColor}
         {outlineWidth}
         {scaleTo}
-        {useTooltip}
+        useTooltip=true
     />
 </Chart>

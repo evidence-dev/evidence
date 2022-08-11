@@ -14,19 +14,19 @@
     export let fillOpacity = 1;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    x = x ?? $props.x;
-    let xFormat = $props.xFormat;
-    let yFormat = $props.yFormat;
+    $: data = $props.data;
+    $: x = x ?? $props.x;
+    $: xFormat = $props.xFormat;
+    $: yFormat = $props.yFormat;
 
     // Determine right method to use based on distinct x values (echarts-stat limitation causes some errors otherwise)
     let method;
-    let xDistinct = getDistinctValues(data, x).filter(function(x){
+    $: xDistinct = getDistinctValues(data, x).filter(function(x){
         return x != null;
     });
-    let xMax = Math.max(...xDistinct);
+    $: xMax = Math.max(...xDistinct);
 
-    if(xDistinct.length <= 1){
+    $: if(xDistinct.length <= 1){
         method = 'squareRoot'
     } else if(xMax < 10){
         method = 'freedmanDiaconis'
@@ -37,19 +37,19 @@
     }
 
     // Filter dataset to only x column and create bins
-    data = data.map((d) => d[x])
+    $: data = data.map((d) => d[x])
 
     // Run ECharts histogram function
-    let histData = ecStat.histogram(data, method);
+    $: histData = ecStat.histogram(data, method);
 
     // Remove empty first bin if it would cause negative values on x-axis:
-    let firstBinMin = histData.data[0][2]
-    let firstBinCount = histData.data[0][1]
-    if(firstBinMin < 0 && firstBinCount === 0){
+    $: firstBinMin = histData.data[0][2]
+    $: firstBinCount = histData.data[0][1]
+    $: if(firstBinMin < 0 && firstBinCount === 0){
         histData.data.shift()
     }
 
-    let seriesConfig = {
+    $: seriesConfig = {
         type: 'custom',
         label: {show: true},
         renderItem: function (params, api) {
@@ -89,9 +89,9 @@
         }
     }
 
-    config.update(d => {d.series.push(seriesConfig); return d})
+    $: config.update(d => {d.series.push(seriesConfig); return d})
 
-    let chartOverrides = {
+    $: chartOverrides = {
          yAxis: { // vertical axis
              boundaryGap: ['0%','1%'],
              axisLabel: {
@@ -108,7 +108,7 @@
          }
      }
 
-    if(chartOverrides){
+    $: if(chartOverrides){
         config.update(d => {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis}; 

@@ -36,47 +36,49 @@
       dataPage = updatedSlice;
     }
 
-    try{
+    $: {
+      try{
+        error = undefined;
       // 2 - Check Inputs
-      try {
-        if (queryID && data) {
-          throw Error('Only one of "queryID" or "data" attributes should be provided');
-        } else if (queryID) {
-          data = getContext(PAGE_QUERY_RESULTS).getData(queryID);
+        try {
+          if (queryID && data) {
+            throw Error('Only one of "queryID" or "data" attributes should be provided');
+          } else if (queryID) {
+            data = getContext(PAGE_QUERY_RESULTS).getData(queryID);
+          }
+          checkInputs(data);
+        } catch (err) {
+            throw err;
         }
-        checkInputs(data);
-      } catch (err) {
-          throw err;
-      }
 
-      // 3 - Get Column Summary
-      columnSummary = getColumnSummary(data, 'array');
+        // 3 - Get Column Summary
+        columnSummary = getColumnSummary(data, 'array');
 
-      // 4 - Process Data
-      // Filter for columns with type of "date"
-      let dateCols = columnSummary.filter(d => d.type === "date")
-      dateCols = dateCols.map(d => d.id);
+        // 4 - Process Data
+        // Filter for columns with type of "date"
+        let dateCols = columnSummary.filter(d => d.type === "date")
+        dateCols = dateCols.map(d => d.id);
 
-      if(dateCols.length > 0){
-        for(let i = 0; i < dateCols.length; i++){
-          data = getParsedDate(data, dateCols[i]);
+        if(dateCols.length > 0){
+          for(let i = 0; i < dateCols.length; i++){
+            data = getParsedDate(data, dateCols[i]);
+          }
         }
+
+        // Table input:
+        columnWidths = 98/(columnSummary.length+1)
+
+        // Slicer:
+        index = 0;
+        size = Number.parseInt(rows);
+        max = Math.max(data.length - size,0);
+        dataPage = data.slice(index, index+size);
+        updatedSlice = '';
+
+      } catch(e) {
+          error = e.message;
       }
-
-      // Table input:
-      columnWidths = 98/(columnSummary.length+1)
-
-      // Slicer:
-      index = 0;
-      size = Number.parseInt(rows);
-      max = Math.max(data.length - size,0);
-      dataPage = data.slice(index, index+size);
-      updatedSlice = '';
-
-    } catch(e) {
-        error = e.message;
     }
-
 </script>
 
 {#if !error}

@@ -164,7 +164,7 @@ order by banks desc
 <!-- <DataTable data={data.banks}/> -->
 
 ```dates
-select date_trunc(established_date, year) as established_date, count(*) as banks 
+select date_trunc(established_date, year) as established_date, count(*)  as banks 
 from `bigquery-public-data.fdic_banks.institutions`
 group by established_date
 order by established_date asc
