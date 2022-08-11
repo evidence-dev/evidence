@@ -12,12 +12,12 @@
 
 <style>
     .error {
-        background-color: #fdf1f1;
+        background-color: var(--red-50);
         font-family: var(--ui-font-family);
         color: var(--grey-700);
         font-weight: normal;
         border-radius: 4px;
-        border: 1px solid #f8e9e9;
+        border: 1px solid var(--red-100);
         min-height: 150px;
         padding: 20px 30px 20px 30px;
         margin-top: 20px;

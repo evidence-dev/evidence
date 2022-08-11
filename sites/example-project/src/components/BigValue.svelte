@@ -3,51 +3,79 @@
     import getColumnSummary from "$lib/modules/getColumnSummary";
     import { LinkedChart } from "svelte-tiny-linked-charts"
     import getSortedData from "$lib/modules/getSortedData";
+    import checkInputs from "./modules/checkInputs";
 
-    export let data 
+    // To Do: 
+    // Add an option to show negative deltas as green 
 
-    let columnSummary = getColumnSummary(data, 'array')
+    export let data   
+    export let value = null
+    export let delta = null
+    export let sparkline = null 
 
-    // fall back items 
-    let firstNonDateCol = columnSummary.find(d => d.type !== "date")
-    let secondNonDateCol = columnSummary.find(d => d.type !== "date" && d.id !== firstNonDateCol.id) 
-    let firstDateCol = columnSummary.find(d => d.type === "date")
+    export let title =  null
+    export let deltaTitle = null 
 
-    export let metric = firstNonDateCol ? firstNonDateCol.id : null
-    export let delta = secondNonDateCol ? secondNonDateCol.id : null
-    export let sparkline = firstDateCol ? firstDateCol.id : null 
-
-    export let title 
-    export let deltaTitle = delta ? getColumnSummary(data)[delta]["title"] : null 
-
-    let fallBackTitle 
-    let fallBackDeltaTitle 
+    // Delta controls 
+    export let downIsGood = false
     let positive = true
+    let deltaColor = "var(--grey-700)"
 
-    if(data && metric) {
-        fallBackTitle = getColumnSummary(data)[metric]["title"]
-    }
+    let sparklineData = {}  
 
-    if(data && delta) {
-        positive = data[0][delta] >= 0
-    }
+    let error;
 
-    let sparklineData = {}
+    $: try {
+        error = undefined
+        checkInputs(data)
+        // fall back items 
+        let columnSummary = getColumnSummary(data, 'array')
+        let firstNonDateCol = columnSummary.find(d => d.type !== "date")
+        let secondNonDateCol = columnSummary.find(d => d.type !== "date" && d.id !== firstNonDateCol.id) 
+        let firstDateCol = columnSummary.find(d => d.type === "date")
 
-    // populate sparklineData from data where timeseries is the key and metric is the value
-    if(data && sparkline && metric) {
-        let sortedData = getSortedData(data, sparkline, true)
-        for(let i = 0; i < sortedData.length; i++) {
-            sparklineData[sortedData[i][sparkline]] = sortedData[i][metric]
+        value = value ?? (firstNonDateCol ? firstNonDateCol.id : null)
+        delta = delta ?? (secondNonDateCol ? secondNonDateCol.id : null)
+        sparkline = sparkline ?? (firstDateCol ? firstDateCol.id : null) 
+
+        checkInputs(data, [value, delta])
+
+        let valueColumnSummary = columnSummary.find(d => d.id === value)
+        let deltaColumnSummary = columnSummary.find(d => d.id === delta)
+
+        title = title ?? (valueColumnSummary ? valueColumnSummary.title : null)
+        deltaTitle = deltaTitle ?? (deltaColumnSummary ? deltaColumnSummary.title : null)
+    
+        if(data && delta) {
+            positive = data[0][delta] >= 0
+            deltaColor = (positive && !downIsGood) || (!positive && downIsGood) ? "var(--green-700)" : "var(--red-700)" 
         }
+
+        // populate sparklineData from data where timeseries is the key and value is the value
+        if(data && sparkline && value) {
+            let sortedData = getSortedData(data, sparkline, true)
+            for(let i = 0; i < sortedData.length; i++) {
+                    sparklineData[sortedData[i][sparkline]] = sortedData[i][value]
+                }
+            }
+
+    } catch(e) {
+        error = e
     }
 
 </script>
 
+
 <div class=container>
-    <p class=title>{title ?? fallBackTitle}</p> 
-    <div class=metric> 
-        <Value {data} column={metric}/> 
+    {downIsGood}
+    {#if error}
+    <div class=error>
+        {error.message}
+    </div>
+    {:else}
+    <p class=title>{title}</p> 
+    <div class=value> 
+        <Value {data} column={value}/> 
         {#if sparkline}
             <div class=sparkline>
                 <LinkedChart 
@@ -65,15 +93,18 @@
             </div>
         {/if}
     </div> 
- 
     {#if delta}
-        <p class=delta class:negative="{!positive}"> 
+        <p class=delta style={`color:${deltaColor}`}> 
             {@html positive ? "&#9650;" : "&#9660;"} 
             <Value {data} column={delta}/> 
-            <span class="delta-type">{deltaTitle ?? fallBackDeltaTitle}</span>
+            <span class="delta-type">{deltaTitle}</span>
         </p> 
     {/if}
+    {/if}
 </div>  
+
+
+
 
 <style>
     :global(.sparkline svg) {
@@ -84,10 +115,9 @@
         display: inline-block;
     }
 
-    div.metric {
+    div.value {
         position:relative;
     }
-
 
     div.container {
         display: inline-block;
@@ -95,7 +125,7 @@
         font-size: 0.8em;
         padding: .75em .75em .75em 0; 
         margin-right: 0.75em;
-        margin-block-end: 1.5em;
+        margin-block-end: 1.0em;
         align-items: center;
         user-select: none;
         -webkit-user-select:none ;
@@ -103,12 +133,18 @@
         border-radius: 4px; */
         /* border-right: solid 1px var(--grey-200); */
     }
+
+    div.error {
+        background-color: var(--red-50);
+        border: solid 1px var(--red-100);
+        padding: 1em;
+        max-width: 8em;
+        color: var(--grey-700);
+        font-size: 0.75em;
+        border-radius: 4px;
+    }
     p {
         margin: 0;
-    }
-
-    p.negative {
-        color: var(--red-700);
     }
 
     .title {
@@ -117,7 +153,7 @@
         text-shadow: 1px solid white;
     }
 
-    .metric{
+    .value{
         font-size: 1.2em;
         font-weight: bold;
         color: var(--grey-700);
@@ -126,7 +162,6 @@
     .delta{
         font-size: .8em;
         font-weight: bold;
-        color: var(--green-700);
         font-family: var(--ui-compact-font-family);
     }
 
