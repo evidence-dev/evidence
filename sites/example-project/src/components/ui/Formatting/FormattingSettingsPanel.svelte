@@ -5,26 +5,33 @@
   import CustomFormatsSection from "./CustomFormatsSection.svelte";
   import CollapsibleTableSection from "./CollapsibleTableSection.svelte";
   import CurrencyFormatGrid from "./CurrencyFormatGrid.svelte";
+  import Prism from "../QueryViewerSupport/Prismjs.svelte";
+
+  let exampleQuery = `
+select 
+  growth as growth_pct, -- formatted as a percentage
+  sales as sales_usd    -- formatted as US dollars
+from table` 
+
 </script>
 
 <form>
   <div class="container">
     <div class="panel">
       <h1>Value Formatting</h1>
-      <p>Value formatting in Evidence is achieved using format tags appended to SQL column names.</p>
-
-      <h2>Example</h2>
-      <code class=sql-example>select date as month<span class=format-tag>_mmm</span>, sales as sales<span class=format-tag>_usd</span> from table  </code>  
+      <p>Format tags like <code>_usd</code> and <code>_pct</code> let you control how data will be formatted in Evidence.</p><p>Apply format tags by including them at the end of column names. For example:</p> 
+      <div class=code-container>
+        <Prism language="sql" code={exampleQuery}/>
+      </div>
       <p></p>
-      <p>Choose from the list of available format tags below, or create a custom format tag using Excel-style format codes. <a class=docs-link target=none href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68">Learn about Excel format codes here &rarr;</a></p>
-
     </div>
-    <div class="subpanels">
-      <CollapsibleTableSection headerText={"Dates"} expanded={true}>
+    <div class="panel">
+      <h1>Built in Format Tags</h1>
+      <p>All of the built in format tags are listed below for reference.</p>
+      <CollapsibleTableSection headerText={"Dates"} expanded={false}>
         <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "date")}/>
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Currencies"} expanded={false}>
-        Evidence supports several international currencies. Select a currency from the drop-down below to see the available format tags.
         <CurrencyFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "currency")} />
       </CollapsibleTableSection>
       <CollapsibleTableSection headerText={"Numbers"} expanded={false}>
@@ -33,19 +40,18 @@
       <CollapsibleTableSection headerText={"Percentages"} expanded={false}>
         <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "percent")} />
       </CollapsibleTableSection>
-      
     </div>
     <div class="panel">
-      <CollapsibleTableSection headerText={"Custom Formats"} expanded={true}>
-        Custom formats can be used in the same way as built-in formats. Note that your format tag will not appear in the column title when used in a component.  
-        <svelte:component
-          this={CustomFormatsSection}
+      <h1>Custom Format Tags</h1>
+      <p>
+        Add new format tags to your project. Custom format tags use <a class=docs-link target=none href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68">excel-style format codes.</a>
+      </p>
+        <CustomFormatsSection
           builtInFormats={BUILT_IN_FORMATS}
           {customFormattingSettings}
         />
-      </CollapsibleTableSection>
       </div>
-  </div>
+      </div>
   <footer>
     <span
       >Learn more about <a
@@ -73,17 +79,15 @@
     padding: 1em;
   }
 
-  .subpanels {
-    border-top: 1px solid var(--grey-200);
-    padding: 1em 1em 1em 1em;
-  }
-
   .panel:first-of-type {
     border-top: none;
   }
 
-  .sql-example {
-    font-size: 11pt;
+  div.code-container {
+    background-color: var(--grey-100);
+    border: 1px solid var(--grey-200);
+    overflow: auto;
+    border-radius: 4px;
   }
 
   /* .format-tag {
@@ -92,10 +96,6 @@
     padding: 2px 4px 2px 4px;
   } */
 
-  .format-tag {
-    color: var(--blue-600);
-    font-weight: 800;
-  }
   footer {
     border: 1px solid var(--grey-200);
     border-radius: 0 0 5px 5px;
@@ -115,5 +115,6 @@
     .docs-link:hover {
         color: var(--blue-800);
     }
+
 
 </style>

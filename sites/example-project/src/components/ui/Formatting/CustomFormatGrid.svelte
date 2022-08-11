@@ -6,21 +6,18 @@
   export let deleteHandler;
 </script>
 
-<div class="tableContainer">
-<table width="100%" class=formatTable>
+<table>
   <thead>
     <th class="align_left narrow_column">Format Tag</th>
-    <th class="align_left medium_column">Format Code</th>
-    <th class="align_left narrow_column">Type</th>
-    <th class="align_left medium_column">Example Input</th>
-    <th class="align_right medium_column">Example Output</th>
+    <th class="align_left wide_column">Format Code</th>
+    <th class="align_left wide_column">Example Input</th>
+    <th class="align_right wide_column">Example Output</th>
     <th><!--actions --></th>
   </thead>
   {#each formats as format}
     <tr>
       <td>{format.formatTag} </td>
       <td>{format.formatCode} </td>
-      <td>{format.valueType}</td>
       <td>
         <input
           id="id_format_row{format.formatTag}"
@@ -37,7 +34,6 @@
     </tr>
   {/each}
 </table>
-</div>
 
 <style>
   .deleteIcon {

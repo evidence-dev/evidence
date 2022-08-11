@@ -39,8 +39,8 @@
   <DatabaseSettingsPanel {settings} {gitIgnore} />
   <VersionControlPanel {settings} />
   <DeploySettingsPanel {settings} />
-  <TelemetrySettingsPanel {settings} />
   <FormattingSettingsPanel {settings} {customFormattingSettings} />
+  <TelemetrySettingsPanel {settings} />
   <br />
 {:else}
   <p>Settings are only available in development mode.</p>
