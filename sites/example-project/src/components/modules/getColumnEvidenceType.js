@@ -10,11 +10,11 @@ export default function getColumnEvidenceType(data, column) {
     }
     if (item && item['_evidenceColumnTypes']) {
       let columnTypes = item['_evidenceColumnTypes'];
-      return columnTypes.find(item => item.name === column);
+      return columnTypes.find(item => item.name?.toLowerCase() === column?.toLowerCase());
     } else {
       // infer types as a fall-back (when someone is passing arbitrary data objects)
       let columnTypes = inferColumnTypes(data);
-      return columnTypes.find(item => item.name === column);
+      return columnTypes.find(item => item.name?.toLowerCase() === column?.toLowerCase());
     }
   }
 
