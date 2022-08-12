@@ -4,14 +4,18 @@ import BigValue from "$lib/BigValue.svelte";
 
 </script>
 
-# Tantum protulit caligine petunt
+# Project Growth 
 
 
 ```banks_established
 select 
 date_trunc(established_date, year) as established_date, 
-count(*)*10 as new_banks,
--0.15 as growth_pct
+count(*)*137 as new_projects_num0,
+count(*)*327982 as arr_usd1m,
+
+0.12 as growth_pct,
+1.29 as arr_growth_pct 
+
 
 from `bigquery-public-data.fdic_banks.institutions`
 group by established_date
@@ -21,21 +25,29 @@ order by established_date desc
 
 <BigValue 
 data = {data.banks_established} 
-value=new_banks
-delta=growth_pct
-deltaTitle="Annualized growth"
-title="Banks created YTD" 
-downIsGood
-sparkline={false}
+value=new_projects_num0 
+comparison=growth_pct
+comparisonTitle="Month over Month"
+title="New Activations" 
 /> 
 
-<BigValue data = {data.banks_established} /> 
+<BigValue data = {data.banks_established} 
+value=arr_usd1m
+title="Run Rate MRR"
+comparison=arr_growth_pct
+comparisonTitle="YTD" 
+sparkline={false}
+/> 
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
 
-<LineChart data = {data.banks_established} y=new_banks/> 
+<LineChart 
+data = {data.banks_established} y=new_projects_num0
+yAxisTitle="New Activations"
+/> 
+
 
 ## Uno sine at nunc pontus rectorque umeros
 

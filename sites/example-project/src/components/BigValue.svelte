@@ -6,20 +6,19 @@
     import checkInputs from "./modules/checkInputs";
 
     // To Do: 
-    // Add an option to show negative deltas as green 
 
     export let data   
     export let value = null
-    export let delta = null
+    export let comparison = null
     export let sparkline = null 
 
     export let title =  null
-    export let deltaTitle = null 
+    export let comparisonTitle = null 
 
     // Delta controls 
     export let downIsGood = false
     let positive = true
-    let deltaColor = "var(--grey-700)"
+    let comparisonColor = "var(--grey-700)"
 
     let sparklineData = {}  
 
@@ -35,20 +34,20 @@
         let firstDateCol = columnSummary.find(d => d.type === "date")
 
         value = value ?? (firstNonDateCol ? firstNonDateCol.id : null)
-        delta = delta ?? (secondNonDateCol ? secondNonDateCol.id : null)
+        comparison = comparison ?? (secondNonDateCol ? secondNonDateCol.id : null)
         sparkline = sparkline ?? (firstDateCol ? firstDateCol.id : null) 
 
-        checkInputs(data, [value, delta])
+        checkInputs(data, [value, comparison])
 
         let valueColumnSummary = columnSummary.find(d => d.id === value)
-        let deltaColumnSummary = columnSummary.find(d => d.id === delta)
+        let comparisonColumnSummary = columnSummary.find(d => d.id === comparison)
 
         title = title ?? (valueColumnSummary ? valueColumnSummary.title : null)
-        deltaTitle = deltaTitle ?? (deltaColumnSummary ? deltaColumnSummary.title : null)
+        comparisonTitle = comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null)
     
-        if(data && delta) {
-            positive = data[0][delta] >= 0
-            deltaColor = (positive && !downIsGood) || (!positive && downIsGood) ? "var(--green-700)" : "var(--red-700)" 
+        if(data && comparison) {
+            positive = data[0][comparison] >= 0
+            comparisonColor = (positive && !downIsGood) || (!positive && downIsGood) ? "var(--green-700)" : "var(--red-700)" 
         }
 
         // populate sparklineData from data where timeseries is the key and value is the value
@@ -92,11 +91,11 @@
             </div>
         {/if}
     </div> 
-    {#if delta}
-        <p class=delta style={`color:${deltaColor}`}> 
+    {#if comparison}
+        <p class=comparison style={`color:${comparisonColor}`}> 
             {@html positive ? "&#9650;" : "&#9660;"} 
-            <Value {data} column={delta}/> 
-            <span class="delta-type">{deltaTitle}</span>
+            <Value {data} column={comparison}/> 
+            <span class="comparison-type">{comparisonTitle}</span>
         </p> 
     {/if}
     {/if}
@@ -158,13 +157,13 @@
         color: var(--grey-700);
     }
 
-    .delta{
+    .comparison{
         font-size: .8em;
         font-weight: bold;
         font-family: var(--ui-compact-font-family);
     }
 
-    .delta-type {
+    .comparison-type {
         color: var(--grey-700);
         font-weight: normal;
     }
