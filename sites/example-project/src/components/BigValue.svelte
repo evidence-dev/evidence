@@ -5,8 +5,6 @@
     import getSortedData from "$lib/modules/getSortedData";
     import checkInputs from "./modules/checkInputs";
 
-    // To Do: 
-
     export let data   
     export let value = null
     export let comparison = null
@@ -26,25 +24,26 @@
 
     $: try {
         error = undefined
-        checkInputs(data)
-        // fall back items 
+
+        if(!value){
+            throw new Error("value is required")
+        }
+
+        checkInputs(data, [value])
+
         let columnSummary = getColumnSummary(data, 'array')
-        let firstNonDateCol = columnSummary.find(d => d.type !== "date")
-        let secondNonDateCol = columnSummary.find(d => d.type !== "date" && d.id !== firstNonDateCol.id) 
-        let firstDateCol = columnSummary.find(d => d.type === "date")
 
-        value = value ?? (firstNonDateCol ? firstNonDateCol.id : null)
-        comparison = comparison ?? (secondNonDateCol ? secondNonDateCol.id : null)
-        sparkline = sparkline ?? (firstDateCol ? firstDateCol.id : null) 
-
-        checkInputs(data, [value, comparison])
-
+        // Fall back titles 
         let valueColumnSummary = columnSummary.find(d => d.id === value)
-        let comparisonColumnSummary = columnSummary.find(d => d.id === comparison)
-
         title = title ?? (valueColumnSummary ? valueColumnSummary.title : null)
-        comparisonTitle = comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null)
-    
+
+        if(comparison){
+            checkInputs(data, [comparison])
+            let comparisonColumnSummary = columnSummary.find(d => d.id === comparison)
+            comparisonTitle = comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null)
+        }
+
+        
         if(data && comparison) {
             positive = data[0][comparison] >= 0
             comparisonColor = (positive && !downIsGood) || (!positive && downIsGood) ? "var(--green-700)" : "var(--red-700)" 
@@ -68,7 +67,8 @@
 <div class=container>
     {#if error}
     <div class=error>
-        {error.message}
+        <h1>Big Value</h1>
+        <p>{error.message}</p>
     </div>
     {:else}
     <p class=title>{title}</p> 
@@ -127,19 +127,29 @@
         align-items: center;
         user-select: none;
         -webkit-user-select:none ;
-        /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.10);
-        border-radius: 4px; */
-        /* border-right: solid 1px var(--grey-200); */
+        vertical-align:top; 
     }
 
     div.error {
         background-color: var(--red-50);
         border: solid 1px var(--red-100);
-        padding: 1em;
-        max-width: 8em;
+        padding: 0.2em 0.35em;
+        width: 10em;
         color: var(--grey-700);
         font-size: 0.75em;
         border-radius: 4px;
+        text-align: center;
+
+    }
+
+    div.error h1 {
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+    div.error p{
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     p {
         margin: 0;

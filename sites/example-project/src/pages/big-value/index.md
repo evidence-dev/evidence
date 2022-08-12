@@ -10,7 +10,7 @@ import BigValue from "$lib/BigValue.svelte";
 ```banks_established
 select 
 date_trunc(established_date, year) as established_date, 
-count(*)*137 as new_projects_num0,
+1372321313212312312312321123121221321232/0 as new_projects_num0,
 count(*)*327982 as arr_usd1m,
 
 0.12 as growth_pct,
@@ -22,6 +22,11 @@ group by established_date
 order by established_date desc 
 
 ```
+
+<BigValue 
+data = {data.banks_established} 
+/> 
+
 
 <BigValue 
 data = {data.banks_established} 

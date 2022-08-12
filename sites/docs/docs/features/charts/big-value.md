@@ -30,9 +30,9 @@ Multiple cards will align themselves into a row.
 
 ## All Options 
 * **data** - query name, wrapped in curly braces
-* **value** - (Optional) column to pull the main value from. Defaults to the first non-date column.
-* **comparison** - (Optional) column to pull the comparison value from. Defaults to the second non-date column.
-* **sparkline** - (Optional) column to pull the date from to create the sparkline. Defaults to the first date column. Use `{false}` to suppress the sparkline. 
+* **value** - required column to pull the main value from.
+* **comparison** - (Optional) column to pull the comparison value from. 
+* **sparkline** - (Optional) column to pull the date from to create the sparkline. 
 * **title** - (Optional) title of the card. Defaults to the title of the value column.
 * **comparisonTitle** - (Optional) text to the right of the comparison. Defaults to the title of the comparison column.
 * **downIsGood** - (Optional) if present, negative comparison values appear in green, and positive values appear in red. 
