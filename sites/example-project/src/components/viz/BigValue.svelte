@@ -3,7 +3,7 @@
     import getColumnSummary from "$lib/modules/getColumnSummary";
     import { LinkedChart } from "svelte-tiny-linked-charts"
     import getSortedData from "$lib/modules/getSortedData";
-    import checkInputs from "./modules/checkInputs";
+    import checkInputs from "$lib/modules/checkInputs";
 
     export let data   
     export let value = null
