@@ -120,7 +120,6 @@
     div.container {
         display: inline-block;
         font-family: var(--ui-font-family);
-        font-size: 0.8em;
         padding: .75em .75em .75em 0; 
         margin-right: 0.75em;
         margin-block-end: 1.0em;
@@ -156,6 +155,7 @@
     }
 
     .title {
+        font-size: 0.8em;
         font-weight: bold;
         color: var(--grey-700);
         text-shadow: 1px solid white;
@@ -168,7 +168,7 @@
     }
 
     .comparison{
-        font-size: .8em;
+        font-size: .65em;
         font-weight: bold;
         font-family: var(--ui-compact-font-family);
     }
