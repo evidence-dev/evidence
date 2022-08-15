@@ -42,6 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   trigger-e2e-smoke-tests:
+    if: ${{ needs.release.outputs.published }}
     runs-on: ubuntu-latest
     needs: release
     steps:
