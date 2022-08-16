@@ -19,7 +19,8 @@
     "export-to-csv": "0.2.1",
     "git-remote-origin-url": "4.0.0",
     "ssf": "^0.11.2",
-    "svelte-icons": "2.1.0"
+    "svelte-icons": "2.1.0",
+    "svelte-tiny-linked-charts": "1.1.2"
   },
   "publishConfig": {
     "directory": "../../packages/components"
