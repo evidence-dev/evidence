@@ -4,6 +4,7 @@
     import { LinkedChart } from "svelte-tiny-linked-charts"
     import getSortedData from "$lib/modules/getSortedData";
     import checkInputs from "$lib/modules/checkInputs";
+    import ErrorChart from './ErrorChart.svelte';
 
     export let data   
     export let value = null
@@ -66,10 +67,7 @@
 
 <div class=container>
     {#if error}
-    <div class=error>
-        <h1>Big Value</h1>
-        <p>{error.message}</p>
-    </div>
+    <ErrorChart chartType="Big Value" error={error.message}/>
     {:else}
     <p class=title>{title}</p> 
     <div class=value> 
@@ -127,28 +125,6 @@
         user-select: none;
         -webkit-user-select:none ;
         vertical-align:top; 
-    }
-
-    div.error {
-        background-color: var(--red-50);
-        border: solid 1px var(--red-100);
-        padding: 0.2em 0.35em;
-        width: 10em;
-        color: var(--grey-700);
-        font-size: 0.75em;
-        border-radius: 4px;
-        text-align: center;
-
-    }
-
-    div.error h1 {
-        font-size: 1em;
-        font-weight: bold;
-    }
-
-    div.error p{
-        text-overflow: ellipsis;
-        overflow: hidden;
     }
     p {
         margin: 0;

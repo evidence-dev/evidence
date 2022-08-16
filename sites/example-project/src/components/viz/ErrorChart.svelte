@@ -6,7 +6,11 @@
 <div width=100% class="error">
     <div class="wrapper">
         <div class="chart-type">{chartType}</div>
+        {#if chartType.includes("Value")}
+        <div class="value-message">{error}</div>
+        {:else}
         <div class="message">{error}</div>
+        {/if}
     </div>
 </div>
 
@@ -43,6 +47,13 @@
         text-align: center;
         word-wrap: break-word;
         font-size: 0.8rem;
+    }
+
+    .value-message {
+        text-align: center;
+        word-wrap: break-word;
+        font-size: 0.8rem;
+        width: 7.8em;
     }
 
     @media print {
