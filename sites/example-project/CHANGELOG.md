@@ -1,5 +1,13 @@
 # @evidence-dev/components
 
+## 1.3.5
+
+### Patch Changes
+
+- 49bc1d6: Updates to settings page layout
+- a60d10e: Changing error message on lack of query object to reference {my_query} not {data.myquery}
+- 5c81d4d: Add BigValue components
+
 ## 1.3.4
 
 ### Patch Changes

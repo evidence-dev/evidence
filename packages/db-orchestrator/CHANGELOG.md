@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.4
+
+### Patch Changes
+
+- Updated dependencies [8938e51]
+  - @evidence-dev/postgres@0.2.3
+
 ## 1.1.3
 
 ### Patch Changes
