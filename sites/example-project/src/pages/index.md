@@ -26,3 +26,17 @@ attigimus restabat exitus. Praedaeque ademit. *Vix* eundem, saevarum et nescia
 inter retinentibus inaniter pontum!
 
 
+```select_10
+
+select * 
+from orders 
+limit 10
+```
+
+
+```select_10_broken
+
+select * 
+from fake_table
+limit 10
+```
