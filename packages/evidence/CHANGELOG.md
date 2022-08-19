@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 5.0.8
+
+### Patch Changes
+
+- Updated dependencies [74a09a0]
+  - @evidence-dev/preprocess@1.2.4
+
 ## 5.0.7
 
 ### Patch Changes
