@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 0.2.3
+
+### Patch Changes
+
+- 8938e51: Fix postgres connector to handle cases consistently between query object and types object
+
 ## 0.2.2
 
 ### Patch Changes
