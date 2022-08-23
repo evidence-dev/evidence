@@ -130,7 +130,9 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
             }
         }
 
-        tempConfig = generateTempConfig(seriesData, seriesName=name, baseConfig);
+        seriesName = columnSummary[y].title;
+
+        tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
         seriesConfig.push(tempConfig);
     }
 
