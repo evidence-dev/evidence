@@ -56,7 +56,10 @@ union all
 select 'China' as country, 101 as value, 1996 as year
 ```
 
-<BarChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
+<BarChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
 
+<Chart data={simpler_bar_unordered} x=year y=value series=country >
+    <Bar type=stacked100/>
+</Chart>
 
 <AreaChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
