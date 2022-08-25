@@ -76,3 +76,17 @@ select 'China' as country, 101 as value, 1996 as year
 
 Y-axis title gets cut off when 100% stack is used:
 <BarChart xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
+
+
+```simpler_bar_oneyear
+select 'Canada' as country, 87 as value, 1994 as year
+union all
+select 'US' as country, 65 as value, 1994 as year
+union all
+select 'UK' as country, 80 as value, 1994 as year
+union all
+select 'China' as country, 65 as value, 1994 as year
+
+```
+
+<BarChart data={simpler_bar_oneyear} x=year y=value series=country/>
