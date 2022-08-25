@@ -78,6 +78,8 @@ Y-axis title gets cut off when 100% stack is used:
 <BarChart xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
 
 
+## Single Series Stack
+
 ```simpler_bar_oneyear
 select 'Canada' as country, 87 as value, 1994 as year
 union all
@@ -89,4 +91,20 @@ select 'China' as country, 65 as value, 1994 as year
 
 ```
 
-<BarChart data={simpler_bar_oneyear} x=year y=value series=country/>
+More we can do here to make a single series example publication-quality.
+
+Ideas:
+- Replace y-axis labels with data labels in the bar
+- Remove whitespace on either side of bar
+- Alternate legend placement (right or left)
+- Remove x-axis label under bar
+
+<BarChart 
+    data={simpler_bar_oneyear} 
+    x=year 
+    y=value 
+    series=country
+    type=stacked100
+    xAxisLabels=false
+    yGridlines=false
+/>

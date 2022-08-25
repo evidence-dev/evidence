@@ -77,7 +77,6 @@ function findInterval(arr){
 
     // 2. Get diffs
     arr = getDiffs(arr);
-    console.log(arr)
 
     // 3. Calculate greatest common divisor of diffs and divide by 100
     let interval = arr.reduce(gcd) / 100000000

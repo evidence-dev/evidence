@@ -15,6 +15,8 @@
     export let yAxisTitle = undefined;
     export let xGridlines = undefined;
     export let yGridlines = undefined;
+    export let xAxisLabels = undefined;
+    export let yAxisLabels = undefined;
     export let xBaseline = undefined;
     export let yBaseline = undefined;
     export let xTickMarks = undefined;
@@ -50,6 +52,8 @@
     {yAxisTitle}
     {xGridlines}
     {yGridlines}
+    {xAxisLabels}
+    {yAxisLabels}
     {xBaseline}
     {yBaseline}
     {xTickMarks}
