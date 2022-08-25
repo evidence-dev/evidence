@@ -5,6 +5,6 @@ title: Other Installation Options
 ---
 
 ## Docker 
-If you are familiar with `Docker`, Evidence provides a development `Docker` image.  
+If you are familiar with `Docker`, Evidence provides a development Docker image.  
 
 See our [Docker Development Environment](https://github.com/evidence-dev/docker-devenv) repository for instructions.
