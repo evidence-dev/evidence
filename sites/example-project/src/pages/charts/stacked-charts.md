@@ -60,7 +60,7 @@ select 'China' as country, 101 as value, 1996 as year
 
 ## Examples
 
-<BarChart xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
+<BarChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
 
 <BarChart swapXY=true xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
 
