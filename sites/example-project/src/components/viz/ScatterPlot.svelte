@@ -20,6 +20,7 @@
     export let xTickMarks = undefined;
     export let yTickMarks = undefined;
     export let yMin = undefined;
+    export let yMax = undefined;
 
     export let shape = undefined;
     export let fillColor = undefined;
@@ -52,6 +53,7 @@
     {xTickMarks}
     {yTickMarks}
     {yMin}
+    {yMax}
     {title}
     {subtitle}
     {chartType}

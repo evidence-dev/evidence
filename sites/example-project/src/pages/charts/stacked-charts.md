@@ -1,3 +1,5 @@
+# 100% Stacked Charts
+
 ```simpler_bar_unordered
 select 'Canada' as country, 87 as value, 1994 as year
 union all
@@ -56,10 +58,21 @@ union all
 select 'China' as country, 101 as value, 1996 as year
 ```
 
-<BarChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
+## Examples
+
+<BarChart xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
+
+<BarChart swapXY=true xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
+
+
+<AreaChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
+
+## Issues
+100% stacks do not work in composable charts:
 
 <Chart data={simpler_bar_unordered} x=year y=value series=country >
     <Bar type=stacked100/>
 </Chart>
 
-<AreaChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
+Y-axis title gets cut off when 100% stack is used:
+<BarChart xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>

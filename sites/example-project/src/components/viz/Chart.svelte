@@ -72,6 +72,7 @@
         export let yAxisLabels = true;
         yAxisLabels = (yAxisLabels === "true" || yAxisLabels === true);
         export let yMin = undefined;
+        export let yMax = undefined;
 
         // Legend:
         export let legend = undefined;
@@ -339,6 +340,7 @@ try{
                     margin: 4
                 },
                 min: yMin,
+                max: yMax,
                 splitLine: {
                     show: yGridlines
                 },
@@ -433,6 +435,7 @@ try{
                     },
                     nameGap: 6,
                     min: yMin,
+                    max: yMax,
                     boundaryGap: ['0%', '1%'],
                 }
         }

@@ -17,6 +17,7 @@
     export let xTickMarks = undefined;
     export let yTickMarks = undefined;
     export let yMin = 0;
+    export let yMax = undefined;
 
     export let fillColor = undefined;
     export let fillOpacity = undefined;
@@ -39,6 +40,7 @@
     {xTickMarks}
     {yTickMarks}
     {yMin}
+    {yMax}
     {title}
     {subtitle}
     {chartType}

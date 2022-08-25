@@ -21,6 +21,7 @@
     export let xTickMarks = undefined;
     export let yTickMarks = undefined;
     export let yMin = undefined;
+    export let yMax = undefined;
     export let swapXY = false;
     if(swapXY === "true" || swapXY === true){
         swapXY = true;
@@ -62,6 +63,7 @@
     {xTickMarks}
     {yTickMarks}
     {yMin}
+    {yMax}
     {swapXY}
     {title}
     {subtitle}
