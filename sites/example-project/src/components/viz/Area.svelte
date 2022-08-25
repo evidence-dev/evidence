@@ -8,7 +8,6 @@
     import formatTitle from '$lib/modules/formatTitle';
     import replaceNulls from '$lib/modules/replaceNulls.js';
     import getCompletedData from '$lib/modules/getCompletedData.js';
-    import getStackPercentages from '$lib/modules/getStackPercentages.js';
 
     export let y = undefined;
     export let series = undefined;
@@ -48,11 +47,6 @@
 
     if(handleMissing === "zero"){
         data = replaceNulls(data, y)
-    }
-
-    if(type === "stacked100"){
-        data = getStackPercentages(data, x, y);
-        y= "percentOfX_pct"
     }
 
     let baseConfig = {

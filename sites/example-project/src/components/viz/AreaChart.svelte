@@ -1,6 +1,7 @@
 <script>
     import Chart from './Chart.svelte'
     import Area from './Area.svelte'
+    import getStackPercentages from '$lib/modules/getStackPercentages.js';
 
     export let data = undefined;
     export let x = undefined;
@@ -32,6 +33,11 @@
     export let type = undefined; // stacked or stacked100
 
     let chartType = "Area Chart";
+
+    if(type === "stacked100"){
+        data = getStackPercentages(data, x, y);
+        y = y + "_pct"
+    }
 
 </script>
 

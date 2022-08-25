@@ -1,6 +1,7 @@
 <script>
     import Chart from './Chart.svelte'
     import Bar from './Bar.svelte'
+    import getStackPercentages from '$lib/modules/getStackPercentages.js';
 
     export let data = undefined;
     export let x = undefined;
@@ -37,6 +38,11 @@
     export let sort = undefined;
 
     let chartType = "Bar Chart";
+
+    if(type === "stacked100"){
+        data = getStackPercentages(data, x, y);
+        y = y + "_pct"
+    }
 
 </script>
 

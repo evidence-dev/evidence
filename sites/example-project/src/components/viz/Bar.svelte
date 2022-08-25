@@ -6,10 +6,8 @@
     
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import getStackedData from '$lib/modules/getStackedData.js';
-    import getStackPercentages from '$lib/modules/getStackPercentages.js';
     import getSortedData from '$lib/modules/getSortedData.js';
     import formatTitle from '$lib/modules/formatTitle';
-    import { formatAxisValue } from '../modules/formatting';
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
@@ -79,13 +77,6 @@
             stackName = null;
         }
 
-        if(type === "stacked100"){
-            data = getStackPercentages(data, x, y);
-            y= "percentOfX_pct"
-        }
-
-        console.log(data)
-
     }
 
     barMaxWidth = 60;
@@ -137,12 +128,6 @@
                     d.xAxis = {...d.xAxis, max: 1};
                 } else {
                     d.yAxis = {...d.yAxis, max: 1};
-                    d.yAxis = {...d.yAxis, axisLabel: {
-                        formatter: function(value){
-                            return formatAxisValue(value, "#,##0%")
-                        }
-                    }
-                }
                 }
             }
             if(swapXY){
