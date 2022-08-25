@@ -11,18 +11,19 @@ breadcrumbs: false
 
 Evidence is a web framework for data analysts. It's a modern alternative to drag-and-drop BI tools. 
 
-Evidence enables analysts to build automated reports, analysis and tools that feel like they came from the graphics department at a top-tier publication. All with just SQL and markdown.
+Evidence enables analysts to build automated reports, analysis and tools that feel like they came from the graphics department at a top-tier publication. 
+
+All with SQL and markdown.
 
 ## How does it work? 
 
+In Evidence, pages are just markdown files. When you write SQL statements inside those files, Evidence runs it against your data warehouse.
 
 <img src='/img/how-it-works-transparent.png' max-width='30px'/>
 
-In Evidence, pages are just markdown files. When you write SQL statements inside those files, Evidence runs it against your data warehouse.
+Evidence has a rich library of [chart and components](/features/charts/examples).
 
-Evidence has a rich library of chart and components.
-
-Evidence supports loops, conditional logic, parameterized pages, tests and more.
+Evidence supports [loops](/features/advanced/templating#loops), [conditional logic](http://localhost:4567/features/advanced/templating#conditionals), [parameterized pages](/features/advanced/parameterized-pages), tests and more.
 
 ## Who is it for? 
 Evidence is built for analysts - not web developers. The only skills you need to get started are the ability to write SQL and markdown.
