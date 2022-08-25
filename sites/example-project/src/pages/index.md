@@ -24,19 +24,3 @@ Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
 Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt;
 attigimus restabat exitus. Praedaeque ademit. *Vix* eundem, saevarum et nescia
 inter retinentibus inaniter pontum!
-
-
-```select_10
-
-select * 
-from orders 
-limit 10
-```
-
-
-```select_10_broken
-
-select * 
-from fake_table
-limit 10
-```

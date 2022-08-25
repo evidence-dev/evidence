@@ -50,20 +50,6 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 <LineChart data={data.mobility} x=date y=retail yAxisTitle="% chg y/y"/>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-```select10
-select * from orders
-
-limit 10
-```
-
-```select10_broken
-select * from orders
-limit 10
-```
-
-
-
-
 ```date_new
 select '2020-01-01' as date, 10 as value
 union all
