@@ -417,7 +417,7 @@ let smallb = [
 />
 
 ## Horizontal 100% Stacked Bar
-<BarChart data={data.simpler_bar_unordered} swapXY=true x=year y=value series=country xType=category sort=false type=stacked100/>
+<BarChart data={data.simpler_bar_unordered} swapXY=true x=year y=value series=country xType=category type=stacked100/>
 
 ## Horizontal Grouped Bar
 <BarChart data={data.simpler_bar_unordered} swapXY=true x=year y=value series=country type=grouped title="Horizontal Grouped Bar" xType=category/>
