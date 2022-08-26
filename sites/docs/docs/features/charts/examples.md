@@ -129,7 +129,7 @@ hide_table_of_contents: false
         <p class="lbl">100% Stacked Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/features/charts/bar-chart#stacked-bar">
+<a href="/features/charts/bar-chart#100-stacked-bar">
 
 ![stacked-bar](/img/100-stacked-bar.svg) 
 
@@ -185,7 +185,7 @@ hide_table_of_contents: false
         <p class="lbl">Horizontal 100% Stacked Bar Chart</p>
     </div>
     <div class="item-body-centered">
-<a href="/features/charts/bar-chart#horizontal-stacked-bar">
+<a href="/features/charts/bar-chart#horizontal-100-stacked-bar">
 
 ![horizontal-stacked-bar](/img/100-horiz-stacked-bar.svg) 
 
