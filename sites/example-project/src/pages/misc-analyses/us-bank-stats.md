@@ -1,16 +1,5 @@
 <script>
 
-    let areatest = [
-        {x: 10, y:16, y2: 23, y3: 12},
-        {x: 11, y:3, y2: 23, y3: 15},
-        {x: 12, y:0, y2: 35, y3: 12},
-        {x: 13, y:6, y2: 20, y3: 11},
-        {x: 14, y:12, y2: 29, y3: 21},
-        {x: 15, y:13, y2: 27, y3: 15},
-        {x: 16, y:16, y2: 23, y3: 19},
-        {x: 17, y:18, y2: 26, y3: 16}
-    ]
-
     let bankData = [
     {fed_reserve_district: 'NY', established_date: '2015-01-01', banks: 1},
     {fed_reserve_district: 'SF', established_date: '2017-01-01', banks: 1},
@@ -141,11 +130,7 @@ let series = ['San Francisco', 'Atlanta', 'New York', 'Washington', 'Chicago', '
 
 </script>
 
-<Chart data={areatest} xAxisTitle="Packages Delivered">
-    <Area y=y/>
-</Chart>
-
-# Test Analysis
+# US Bank Analysis
 
 ```banks
 select state_name, 

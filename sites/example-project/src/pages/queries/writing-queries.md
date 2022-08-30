@@ -1,4 +1,4 @@
-# Queries 
+# Writing Queries 
 
 ## A working query 
 

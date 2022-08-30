@@ -1,13 +1,18 @@
-# Value Component Error Handling
+# Value Component
 
 ```summary
 select 1000 as total_sales_usd
 ```
 
-Errors in the Value component are now inlined into your text instead of breaking your full page. Here's an example of an empty Value tag: <Value/> which will return an error, but will stay within your text. You can hover over the error to see an error message describing the problem.
+* Success: <Value data={summary}/> 
+
+The successful value metric is <Value data={summary}/> and shows up inline.
+
+# Value Errors
+
+Errors in the Value component are inlined into your text. Here's an example of an empty Value tag: <Value/> which will return an error, but will stay within your text. You can hover over the error to see an error message describing the problem.
 
 * Empty tag: <Value/>
-* Success: <Value data={data.summary}/> 
 * Manual: <Value value=10000/>
 * Non-existent query result: <Value data=abc/> 
 * Wrong query result name: <Value data={data.abc}/>

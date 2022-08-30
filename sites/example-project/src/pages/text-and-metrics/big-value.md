@@ -1,5 +1,4 @@
-# Project Growth 
-
+# Big Value
 
 ```banks_established
 select 
@@ -14,7 +13,6 @@ count(*)*327982 as arr_usd1m,
 from `bigquery-public-data.fdic_banks.institutions`
 group by established_date
 order by established_date desc 
-
 ```
 
 <BigValue 
