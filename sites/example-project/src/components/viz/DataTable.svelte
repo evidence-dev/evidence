@@ -128,6 +128,12 @@
                             {cell || "Ø"}                       
                         </div>
                       </td>
+                    {:else if columnSummary[j].type === 'boolean'}
+                      <td class="string" style="width:{columnWidths}%" title={cell}>
+                        <div >
+                            {cell ?? "Ø"}                       
+                        </div>
+                      </td>
                     {:else}
                       <td class="other" style="width:{columnWidths}%">
                             {cell || "Ø"}                       
