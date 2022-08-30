@@ -63,7 +63,7 @@ select 'Product AZ' as product, 1320 as median_rent_usd, 35046 as income_per_cap
 ```
 
 <ScatterPlot
-    data={data.census2}
+    data={census2}
     x=income_per_capita_usd0k
     y=median_rent_usd
 />

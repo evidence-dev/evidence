@@ -102,17 +102,17 @@ select "China" as country, 101 as value, 1996 as year
 
 ## Line
 <LineChart 
-    data={data.daily_complaints} 
+    data={daily_complaints} 
     x=date 
     y=number_of_complaints 
     yAxisTitle="calls to Austin 311 per day"
 />
 
 ## Multi-Series Line
-<LineChart data={data.simpler_bar} x=year y=value series=country/>
+<LineChart data={simpler_bar} x=year y=value series=country/>
 
 ## Muliple y Column Line
-<LineChart data={data.fda_recalls} x=year y={['voluntary_recalls', 'fda_recalls']}/>
+<LineChart data={fda_recalls} x=year y={['voluntary_recalls', 'fda_recalls']}/>
 
 ## Multiple y Column and Series Line
-<LineChart data={data.fda_recalls_class} x=year series=classification y={['voluntary_recalls', 'fda_recalls']}/>
+<LineChart data={fda_recalls_class} x=year series=classification y={['voluntary_recalls', 'fda_recalls']}/>

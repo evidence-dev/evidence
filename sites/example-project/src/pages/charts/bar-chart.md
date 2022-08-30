@@ -110,7 +110,7 @@ select "South" as country, 101 as value, 1996 as year
 
 ## Bar
 <BarChart 
-    data={data.simple_bar} 
+    data={simple_bar} 
     x=country 
     y=value 
     xAxisTitle=Region
@@ -118,7 +118,7 @@ select "South" as country, 101 as value, 1996 as year
 
 ## Stacked Bar
 <BarChart 
-    data={data.simpler_bar_unordered} 
+    data={simpler_bar_unordered} 
     x=year 
     y=value 
     series=country
@@ -129,7 +129,7 @@ select "South" as country, 101 as value, 1996 as year
 
 ## Grouped Bar
 <BarChart 
-    data={data.simpler_bar_unordered} 
+    data={simpler_bar_unordered} 
     x=year 
     y=value 
     series=country 
@@ -141,7 +141,7 @@ select "South" as country, 101 as value, 1996 as year
 
 ## Horizontal Bar
 <BarChart 
-    data={data.simple_bar}
+    data={simple_bar}
     x=country 
     y=value 
     xAxisTitle=Country 
@@ -150,7 +150,7 @@ select "South" as country, 101 as value, 1996 as year
 
 ## Horizontal Stacked Bar
 <BarChart 
-    data={data.simpler_bar_unordered} 
+    data={simpler_bar_unordered} 
     swapXY=true 
     x=year 
     y=value 
@@ -163,7 +163,7 @@ select "South" as country, 101 as value, 1996 as year
 
 ## Horizontal Grouped Bar
 <BarChart 
-    data={data.simpler_bar_unordered} 
+    data={simpler_bar_unordered} 
     swapXY=true 
     x=year 
     y=value 

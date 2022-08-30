@@ -13,12 +13,11 @@ The successful value metric is <Value data={summary}/> and shows up inline.
 Errors in the Value component are inlined into your text. Here's an example of an empty Value tag: <Value/> which will return an error, but will stay within your text. You can hover over the error to see an error message describing the problem.
 
 * Empty tag: <Value/>
-* Manual: <Value value=10000/>
 * Non-existent query result: <Value data=abc/> 
-* Wrong query result name: <Value data={data.abc}/>
-* Non-existent column: <Value data={data.summary} column=abc/>
-* Non-existent row without column: <Value data={data.summary} row=20/>
-* Non-existent row with correct column: <Value data={data.summary} column=total_calls row=20/>
+* Non-existent column: <Value data={summary} column=abc/>
+* Non-existent row without column: <Value data={summary} row=20/>
+* Non-existent row with correct column: <Value data={summary} column=total_calls row=20/>
+* Wrong query result name: error `abc is not defined` will appear at page-level
 
 # Value Placeholders
 If you like to mock up reports before you're ready to fill in real data, you can also override the Value error with a **placeholder**. Input the text you want to use as your placeholder and it will appear in blue font with square brackets, inline with your text.

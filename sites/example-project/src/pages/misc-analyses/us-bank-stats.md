@@ -144,9 +144,7 @@ group by state_name, active
 order by banks desc
 ```
 
-<BarChart swapXY=true data={data.banks} x=state_name y=banks series=active/>
-
-<!-- <DataTable data={data.banks}/> -->
+<BarChart swapXY=true data={banks} x=state_name y=banks series=active/>
 
 ```dates
 select date_trunc(established_date, year) as established_date, count(*) as banks 
@@ -155,7 +153,7 @@ group by established_date
 order by established_date asc
 ```
 
-<AreaChart data={data.dates} line=false x=established_date y=banks title="Bank Creation by Year" subtitle="1900s saw significant increase in bank creation" yAxisTitle="banks created per year" xAxisTitle="Establishment Year"/>
+<AreaChart data={dates} line=false x=established_date y=banks title="Bank Creation by Year" subtitle="1900s saw significant increase in bank creation" yAxisTitle="banks created per year" xAxisTitle="Establishment Year"/>
 
 ```dates_state
 select fed_reserve_district, date_trunc(established_date, year) as established_date, count(*) as banks 
@@ -165,9 +163,9 @@ and established_date <= '2005-01-01'
 group by fed_reserve_district, established_date
 ```
 
-<AreaChart data={data.dates_state} x=established_date y=banks series=fed_reserve_district/>
+<AreaChart data={dates_state} x=established_date y=banks series=fed_reserve_district/>
 
-<Chart data={data.dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
+<Chart data={dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
 
     <Scatter boundGapRight={['4%','4%']}/>
 </Chart>
@@ -190,6 +188,6 @@ group by fed_reserve_district, established_date
 
 {series}
 
-<AreaChart data={data.dates_state.filter(d => d.fed_reserve_district === series)} x=established_date missing=zero/>
+<AreaChart data={dates_state.filter(d => d.fed_reserve_district === series)} x=established_date missing=zero/>
 
 {/each}

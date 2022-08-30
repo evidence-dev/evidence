@@ -8,13 +8,13 @@ group by fed_reserve_district, established_date
 
 ## Area
 <AreaChart 
-    data={data.dates_state.filter(d => d.fed_reserve_district === "San Francisco")} 
+    data={dates_state.filter(d => d.fed_reserve_district === "San Francisco")} 
     x=established_date 
 />
 
 ## Stacked Area
 <AreaChart 
-    data={data.dates_state} 
+    data={dates_state} 
     x=established_date 
     y=banks 
     series=fed_reserve_district

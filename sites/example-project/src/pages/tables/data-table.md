@@ -14,11 +14,11 @@ select median_rent as median_rent_usd, income_per_capita as income_per_capita_us
 from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
 ```
 
-<DataTable data={data.fda_recalls}/>
-<DataTable data={data.census}/>
+<DataTable data={fda_recalls}/>
+<DataTable data={census}/>
 
 ## Rows Property
 ### rows=40
-<DataTable data={data.census} rows=40/>
+<DataTable data={census} rows=40/>
 
 

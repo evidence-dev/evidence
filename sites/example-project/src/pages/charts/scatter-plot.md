@@ -55,7 +55,7 @@ from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
 
 ## Scatter Plot
 <ScatterPlot 
-    data={data.census} 
+    data={census} 
     y=median_rent_usd 
     x=income_per_capita_usd 
     yAxisTitle="Median Rent" 
