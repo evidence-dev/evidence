@@ -109,19 +109,32 @@ let nulls =
 <AreaChart data={missingY} series=series title="Missing Y" handleNulls=connect/>
 <AreaChart data={nulls} series=series title="Nulls" handleNulls=zero/>
 
-<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+<h2>100% Stacked Area Chart</h2>
+<AreaChart data={full} series=series title="Full Data" type=stacked100/>
+<AreaChart data={missingY} series=series title="Missing Y" handleNulls=connect type=stacked100/>
+<AreaChart data={nulls} series=series title="Nulls" handleNulls=zero type=stacked100/>
 
 <h2>Stacked Bar Chart</h2>
 <BarChart data={full} series=series title="Full Data" sort=false/>
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
-
 <BarChart data={missingY} series=series title="Missing Y"/>
 <BarChart data={nulls} series=series title="Nulls"/>
+
+<h2>100% Stacked Bar Chart</h2>
+<BarChart data={full} series=series title="Full Data" sort=false type=stacked100/>
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false type=stacked100/>
+<BarChart data={missingY} series=series title="Missing Y" type=stacked100/>
+<BarChart data={nulls} series=series title="Nulls" type=stacked100/>
 
 <h2>Horizontal Stacked Bar Chart</h2>
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=true/>
 <BarChart data={missingY} series=series swapXY=true title="Missing Y" sort=false/>
 <BarChart data={nulls} series=series swapXY=true title="Nulls" sort=false/>
+
+<h2>Horizontal 100% Stacked Bar Chart</h2>
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=true type=stacked100/>
+<BarChart data={missingY} series=series swapXY=true title="Missing Y" sort=false type=stacked100/>
+<BarChart data={nulls} series=series swapXY=true title="Nulls" sort=false type=stacked100/>
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={full} series=series type=grouped title="Full Data"/>

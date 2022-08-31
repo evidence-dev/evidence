@@ -63,22 +63,37 @@ let nulls =
 <AreaChart data={missingX}  title="Missing X"/>
 <AreaChart data={nulls}  title="Nulls"/>
 
+<h2>100% Area Chart</h2>
+<AreaChart data={full}  title="Full Data" type=stacked100/>
+<AreaChart data={missingX}  title="Missing X" type=stacked100/>
+<AreaChart data={nulls}  title="Nulls" type=stacked100/>
+
 <h2>Stacked Bar Chart</h2>
 <BarChart data={full}  title="Full Data"/>
 <BarChart data={missingX}  title="Missing X"/>
 <BarChart data={nulls}  title="Nulls"/>
 
-<h2>horizontal Stacked Bar Chart</h2>
+<h2>100% Stacked Bar Chart</h2>
+<BarChart data={full}  title="Full Data" type=stacked100/>
+<BarChart data={missingX}  title="Missing X" type=stacked100/>
+<BarChart data={nulls}  title="Nulls" type=stacked100/>
+
+<h2>Horizontal Stacked Bar Chart</h2>
 <BarChart data={full}  swapXY=true title="Full Data"/>
 <BarChart data={missingX}  swapXY=true title="Missing X"/>
 <BarChart data={nulls}  swapXY=true title="Nulls"/>
+
+<h2>100% Horizontal Stacked Bar Chart</h2>
+<BarChart data={full}  swapXY=true title="Full Data" type=stacked100/>
+<BarChart data={missingX}  swapXY=true title="Missing X" type=stacked100/>
+<BarChart data={nulls}  swapXY=true title="Nulls" type=stacked100/>
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={full}  type=grouped title="Full Data"/>
 <BarChart data={missingX}  type=grouped title="Missing X"/>
 <BarChart data={nulls}  type=grouped title="Nulls"/>
 
-<h2>horizontal Grouped Bar Chart</h2>
+<h2>Horizontal Grouped Bar Chart</h2>
 <BarChart data={full}  swapXY=true type=grouped title="Full Data"/>
 <BarChart data={missingX}  swapXY=true type=grouped title="Missing X"/>
 <BarChart data={nulls}  swapXY=true type=grouped title="Nulls"/>

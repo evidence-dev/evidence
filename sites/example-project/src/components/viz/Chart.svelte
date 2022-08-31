@@ -242,7 +242,14 @@ try{
 
         if(stacked100 === true){
             data = getStackPercentages(data, x, y);
-            y = y + '_pct'
+
+            if(typeof y === 'object'){
+                for(let i=0; i<y.length; i++){
+                    y[i] = y[i] + '_pct'
+                }
+            } else {
+                y = y + '_pct'
+            }
 
             // Re-run column summary for new columns (not ideal):
             columnSummary = getColumnSummary(data);
