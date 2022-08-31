@@ -27,7 +27,7 @@ Evidence is in alpha. A lot of things will change between now and our stable rel
 
 **Try Online:**
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/___YOUR_PATH___)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/evidence?file=pages%2Findex.md)
 
 **Install Locally:**
 
