@@ -15,7 +15,7 @@
 </select>
 {#if selectedCurrency != 'Choose a currency'}
 <div transition:slide>
-  <table>
+  <table class=component-table>
     <thead>
       <th class="align_left narrow_column">Format Tag</th>
       <th class="align_left wide_column">Format Code</th>

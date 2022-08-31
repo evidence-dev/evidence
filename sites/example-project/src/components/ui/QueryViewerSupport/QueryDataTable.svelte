@@ -78,7 +78,7 @@
 <div class="results-pane" transition:slide|local>
 <div class="container" >
 
-  <table in:blur>
+  <table in:blur class=component-table>
     <thead>
         <tr>
           <th class="index" style="width:10%"></th>

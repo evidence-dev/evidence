@@ -23,7 +23,7 @@
 
 
 <div> 
-<table>
+<table class=component-table>
   <tr>
     <th>ID</th>
     <th>Legacy Type</th>

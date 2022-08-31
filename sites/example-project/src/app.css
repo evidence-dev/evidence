@@ -154,6 +154,32 @@ code {
 	}
 }
 
+table:not(.component-table){
+    width:80%;
+    font-size: calc(0.75em - 0px);
+    border-collapse: collapse;
+    font-family: sans-serif;
+    text-align: center;
+    margin: 10px auto 20px auto;
+}
+
+table:not(.component-table) th{
+	max-width: 1px;
+	font-weight: 600;
+	border-bottom: 1px solid rgb(110, 110, 110);
+	padding:0px 8px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+table:not(.component-table) td{
+	max-width: 1px;
+	padding: 4px 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border: 1px solid var(--grey-200);
+}
+
 :root {
 	/* Layout header height */
 	--header-height: 3.5rem; 
