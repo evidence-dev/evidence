@@ -357,6 +357,9 @@ let smallb = [
     series=fed_reserve_district
 />
 
+## 100% Stacked Area
+<AreaChart data={data.dates_state} x=established_date y=banks series=fed_reserve_district type=stacked100/>
+
 ## Bar
 <BarChart data={data.simple_bar} x=country y=value xAxisTitle=Region title="Bar"/>
 <BarChart 
@@ -376,6 +379,9 @@ let smallb = [
     y=value 
     series=country
 />
+
+## 100% Stacked Bar
+<BarChart data={data.simpler_bar_usd} x=year y=value_usd series=country type=stacked100/>
 
 ## Grouped Bar
 <BarChart data={data.simpler_bar_unordered} x=year y=value series=country type=grouped title="Grouped Bar"/>
@@ -409,6 +415,9 @@ let smallb = [
     xType=category 
     sort=false
 />
+
+## Horizontal 100% Stacked Bar
+<BarChart data={data.simpler_bar_unordered} swapXY=true x=year y=value series=country xType=category type=stacked100/>
 
 ## Horizontal Grouped Bar
 <BarChart data={data.simpler_bar_unordered} swapXY=true x=year y=value series=country type=grouped title="Horizontal Grouped Bar" xType=category/>

@@ -12,11 +12,14 @@
     export let yAxisTitle = undefined;
     export let xGridlines = undefined;
     export let yGridlines = undefined;
+    export let xAxisLabels = undefined;
+    export let yAxisLabels = undefined;
     export let xBaseline = undefined;
     export let yBaseline = undefined;
     export let xTickMarks = undefined;
     export let yTickMarks = undefined;
     export let yMin = 0;
+    export let yMax = undefined;
 
     export let fillColor = undefined;
     export let fillOpacity = undefined;
@@ -34,11 +37,14 @@
     {yAxisTitle}
     {xGridlines}
     {yGridlines}
+    {xAxisLabels}
+    {yAxisLabels}
     {xBaseline}
     {yBaseline}
     {xTickMarks}
     {yTickMarks}
     {yMin}
+    {yMax}
     {title}
     {subtitle}
     {chartType}

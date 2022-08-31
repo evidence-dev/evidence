@@ -197,11 +197,24 @@ let nulls =
 <AreaChart data={missingY} series=series title="Missing Y"/>
 <AreaChart data={nulls}  series=series title="Nulls"/>
 
+<h2>100% Stacked Area Chart</h2>
+<AreaChart data={full}  series=series title="Full Data" type=stacked100/>
+<AreaChart data={missingX}  series=series title="Missing X" type=stacked100/>
+<AreaChart data={missingY} series=series title="Missing Y" type=stacked100/>
+<AreaChart data={nulls}  series=series title="Nulls" type=stacked100/>
+
 <h2>Stacked Bar Chart</h2>
-<BarChart data={full}  series=series title="Full Data"/>
+<BarChart data={full}  series=series title="Full Data" />
 <BarChart data={missingX}  series=series title="Missing X"/>
 <BarChart data={missingY} series=series title="Missing Y"/>
 <BarChart data={nulls}  series=series title="Nulls"/>
+
+<h2>100% Stacked Bar Chart</h2>
+<BarChart data={full}  series=series title="Full Data" type=stacked100/>
+<BarChart data={missingX}  series=series title="Missing X" type=stacked10/>
+<BarChart data={missingY} series=series title="Missing Y" type=stacked10/>
+<BarChart data={nulls}  series=series title="Nulls" type=stacked10/>
+
 
 <!-- <h2>horizontal Stacked Bar Chart</h2>
 <BarChart data={full}  swapXY=true series=series title="Full Data" xType=value/>
