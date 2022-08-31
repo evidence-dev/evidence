@@ -17,7 +17,7 @@ You cam create automated reports, analysis and tools that feel like they came fr
 
 Evidence creates pages from markdown files. When you write SQL statements inside those files, Evidence runs it against your data warehouse.
 
-<img src='/img/how-it-works-transparent.png' max-width='30px'/>
+<img src='/img/how-it-works.svg' max-width='30px'/>
 
 Evidence has a rich library of [chart and components](/features/charts/examples).
 
