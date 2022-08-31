@@ -51,11 +51,11 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
 ```date_new
-select date("2020-01-01") as date, 10 as value
+select '2020-01-01' as date, 10 as value
 union all
-select date("2020-02-01") as date, 12 as value
+select '2020-02-01' as date, 12 as value
 union all
-select date("2020-03-01") as date, 5 as value
+select '2020-03-01' as date, 5 as value
 ```
 <LineChart data={data.date_new} x=date y=value yGridlines=false/>
 

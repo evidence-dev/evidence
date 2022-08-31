@@ -4,19 +4,18 @@ hide_table_of_contents: false
 title: Install Evidence
 ---
 
-If this is your first time doing something like this, or you just need a reminder, check out the [Detailed Installation Walkthrough.](/walkthroughs/installation)
+If this is your first time doing something like this, or you're having trouble installing, try the [Detailed Installation Walkthrough.](/walkthroughs/installation)
 
 
 ## System Requirements 
 
-Evidence requires NPM `Version 7` or higher. 
+Evidence requires **NPM** `Version 7` or higher, and **Node.js** `Version 14` or higher.
 
-Check which version you have with `npm -v` 
+You can check which version you have using `npm -v` and `node -v`
 
 Install the latest version with `npm install -g npm@latest`
 
-### Alternatively using Docker instead of NPM
-Typically, Evidence requires `npm` to be installed. However, if you are familiar with `Docker`, and wish not to work with `npm`, Evidence provides a development `Docker` image.  Take a look at our [Docker Development Environment](https://github.com/evidence-dev/docker-devenv) repository for more details if you wish to go down this path.
+
 
 ## Install & Launch
 
@@ -29,5 +28,11 @@ npm run dev
 
 Open your browser and go to [localhost:3000](http://localhost:3000)
 
-## VS Code Extension (Optional)
-If you use VS Code, the Evidence VS Code Extension adds handy syntax highlighting and basic autocomplete for 'Evidence flavoured' markdown. You can install the extension from the the [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode). 
+The `template` project running in your browser contains a tutorial on how to use Evidence.
+
+### (Optional) Docker Install 
+
+If you'd rather use Docker, see instructions [here](../walkthroughs/other-install-options).
+
+### (Optional) VS Code Extension 
+If you use VS Code, the Evidence VS Code Extension adds syntax highlighting and basic autocomplete for 'Evidence flavoured' markdown. You can install the extension from the the [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode). 
