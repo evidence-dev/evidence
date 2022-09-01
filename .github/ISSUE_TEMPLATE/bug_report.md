@@ -2,13 +2,18 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: 'bug, to-review'
 assignees: ''
 
 ---
 
 **Bug Description**
 Describe what happened
+
+**Severity**
+- [ ] High - I'm not able to use Evidence until this bug is fixed
+- [ ] Medium - I'm able to use Evidence, but a feature I need to use is not working
+- [ ] Low - I'm able to keep using Evidence as normal, but flagging this for the team to fix
 
 **Expected Behavior**
 Describe what you expected to happen

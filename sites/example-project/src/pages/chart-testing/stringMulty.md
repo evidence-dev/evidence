@@ -45,13 +45,25 @@ let nulls =
 <AreaChart data={full}  title="Full Data"/>
 <AreaChart data={nulls}  title="Nulls"/>
 
+<h2>100% Stacked Area Chart</h2>
+<AreaChart data={full}  title="Full Data" type=stacked100/>
+<AreaChart data={nulls}  title="Nulls" type=stacked100/>
+
 <h2>Stacked Bar Chart</h2>
 <BarChart data={full}  title="Full Data"/>
 <BarChart data={nulls}  title="Nulls"/>
 
-<h2>horizontal Stacked Bar Chart</h2>
+<h2>100% Stacked Bar Chart</h2>
+<BarChart data={full}  title="Full Data" type=stacked100/>
+<BarChart data={nulls}  title="Nulls" type=stacked100/>
+
+<h2>Horizontal Stacked Bar Chart</h2>
 <BarChart data={full}  swapXY=true title="Full Data" xType=value sort={false}/>
 <BarChart data={nulls}  swapXY=true title="Nulls" sort=false/>
+
+<h2>Horizontal 100% Stacked Bar Chart</h2>
+<BarChart data={full}  swapXY=true title="Full Data" xType=value sort={false} type=stacked100/>
+<BarChart data={nulls}  swapXY=true title="Nulls" sort=false type=stacked100/>
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={full}  type=grouped title="Full Data"/>

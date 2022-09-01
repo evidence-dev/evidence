@@ -311,6 +311,13 @@ let titles  = [
 <AreaChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]}/>
 <AreaChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]}/>
 
+<h2>100% Stacked Area Chart</h2>
+<AreaChart data={full} series=fed_reserve_district x=established_date title={titles[0]} type=stacked100/>
+<AreaChart data={missingY} series=fed_reserve_district x=established_date title={titles[1]} type=stacked100/>
+<AreaChart data={missingX} series=fed_reserve_district x=established_date title={titles[2]} type=stacked100/>
+<AreaChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]} type=stacked100/>
+<AreaChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]} type=stacked100/>
+
 <h2>Stacked Bar Chart</h2>
 <BarChart data={full} series=fed_reserve_district x=established_date title={titles[0]}/>
 <BarChart data={missingY} series=fed_reserve_district x=established_date title={titles[1]}/>
@@ -318,12 +325,26 @@ let titles  = [
 <BarChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]}/>
 <BarChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]}/>
 
+<h2>100% Stacked Bar Chart</h2>
+<BarChart data={full} series=fed_reserve_district x=established_date title={titles[0]} type=stacked100/>
+<BarChart data={missingY} series=fed_reserve_district x=established_date title={titles[1]} type=stacked100/>
+<BarChart data={missingX} series=fed_reserve_district x=established_date title={titles[2]} type=stacked100/>
+<BarChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]} type=stacked100/>
+<BarChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]} type=stacked100/>
+
 <h2>Horizontal Stacked Bar Chart</h2>
 <BarChart data={full} x=established_date series=fed_reserve_district swapXY=true title="Full Data" sort=false/>
 <BarChart data={missingY} x=established_date series=fed_reserve_district swapXY=true title="Missing Y"/>
 <BarChart data={missingX} x=established_date series=fed_reserve_district swapXY=true title="Missing X"/>
 <BarChart data={xSync} x=established_date series=fed_reserve_district swapXY=true title="X out of sync"/>
 <BarChart data={nulls} x=established_date series=fed_reserve_district swapXY=true title="Nulls"/>
+
+<h2>Horizontal 100% Stacked Bar Chart</h2>
+<BarChart data={full} x=established_date series=fed_reserve_district swapXY=true title="Full Data" sort=false type=stacked100/>
+<BarChart data={missingY} x=established_date series=fed_reserve_district swapXY=true title="Missing Y" type=stacked100/>
+<BarChart data={missingX} x=established_date series=fed_reserve_district swapXY=true title="Missing X" type=stacked100/>
+<BarChart data={xSync} x=established_date series=fed_reserve_district swapXY=true title="X out of sync" type=stacked100/>
+<BarChart data={nulls} x=established_date series=fed_reserve_district swapXY=true title="Nulls" type=stacked100/>
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={full} series=fed_reserve_district type=grouped x=established_date title={titles[0]}/>

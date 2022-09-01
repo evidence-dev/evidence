@@ -14,6 +14,8 @@
     export let options = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
 
+    export let type = "stacked" // stacked or stacked100
+
     export let fillColor = undefined;
     export let fillOpacity = undefined;
     export let line = true;
@@ -95,6 +97,13 @@
             } else {
                 d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
                 d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+            }
+            if(type === "stacked100"){
+                if(swapXY){
+                    d.xAxis = {...d.xAxis, max: 1};
+                } else {
+                    d.yAxis = {...d.yAxis, max: 1};
+                }
             }
             return d})
     }

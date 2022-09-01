@@ -13,13 +13,15 @@ Evidence will save your credentials locally, and run a test query to confirm tha
 
 ## Supported Databases
 
-Evidence supports the following databases: 
+Evidence supports: 
 
-1. BigQuery 
-1. Snowflake 
-1. PostgreSQL 
-1. MySQL 
-1. SQLite
+- BigQuery 
+- Snowflake 
+- Redshift
+- PostgreSQL 
+- MySQL 
+- SQLite
+- & More
 
 We're adding new connectors regularly. Feel free to [create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
 

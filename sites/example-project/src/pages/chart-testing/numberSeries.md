@@ -158,21 +158,41 @@ let full5 =
 <AreaChart data={numberSeriesXSync} series=series title="X out of sync"/>
 <AreaChart data={numberSeriesNulls} series=series title="Nulls"/>
 
+<h2>100% Stacked Area Chart</h2>
+<AreaChart data={numberSeriesFull} series=series title="Full Data" type=stacked100/>
+<AreaChart data={numberSeriesMissingY} yBaseline=true xTickMarks=true yTickMarks=true yGridlines=false series=series title="Missing Y" type=stacked100/>
+<AreaChart data={numberSeriesMissingY} series=series title="Missing Y" type=stacked100/>
+<AreaChart data={numberSeriesMissingX} series=series title="Missing X" type=stacked100/>
+<AreaChart data={numberSeriesXSync} series=series title="X out of sync" type=stacked100/>
+<AreaChart data={numberSeriesNulls} series=series title="Nulls" type=stacked100/>
+
 <h2>Stacked Bar Chart</h2>
 <BarChart data={numberSeriesFull} series=series title="Full Data"/>
 <BarChart data={numberSeriesMissingY} series=series title="Missing Y" />
 <BarChart data={numberSeriesMissingX} series=series title="Missing X"/>
-
 <BarChart data={numberSeriesXSync} series=series title="X out of sync"/>
-
 <BarChart data={numberSeriesNulls} series=series title="Nulls"/>
 
-<h2>horizontal Stacked Bar Chart</h2>
+<h2>100% Stacked Bar Chart</h2>
+<BarChart data={numberSeriesFull} series=series title="Full Data" type=stacked100/>
+<BarChart data={numberSeriesMissingY} series=series title="Missing Y" type=stacked100/>
+<BarChart data={numberSeriesMissingX} series=series title="Missing X" type=stacked100/>
+<BarChart data={numberSeriesXSync} series=series title="X out of sync" type=stacked100/>
+<BarChart data={numberSeriesNulls} series=series title="Nulls" type=stacked100/>
+
+<h2>Horizontal Stacked Bar Chart</h2>
 <BarChart data={numberSeriesFull} series=series swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true/>
 <BarChart data={numberSeriesMissingY} series=series swapXY=true title="Missing Y"/>
 <BarChart data={numberSeriesMissingX} series=series swapXY=true title="Missing X"/>
 <BarChart data={numberSeriesXSync} series=series swapXY=true title="X out of sync"/>
 <BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls"/> 
+
+<h2>Horizontal 100% Stacked Bar Chart</h2>
+<BarChart data={numberSeriesFull} series=series swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true type=stacked100/>
+<BarChart data={numberSeriesMissingY} series=series swapXY=true title="Missing Y" type=stacked100/>
+<BarChart data={numberSeriesMissingX} series=series swapXY=true title="Missing X" type=stacked100/>
+<BarChart data={numberSeriesXSync} series=series swapXY=true title="X out of sync" type=stacked100/>
+<BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls" type=stacked100/> 
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={numberSeriesFull} series=series type=grouped title="Full Data"/>
