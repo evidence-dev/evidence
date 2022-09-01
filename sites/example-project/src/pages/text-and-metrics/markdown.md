@@ -41,6 +41,7 @@
 ~~Strikethrough~~  
 Text<sup>superscript</sup>  
 Text<sub>subscript</sub>  
+<u>Underline</u>
 
 
 ## Highlighting
@@ -64,8 +65,7 @@ Link to [Google](https://google.com)
 <fake@example.com>
 
 # Images
-To be added
-
+![fav](/favicon.ico)
 # Tables
 | Column One | Column Two | Column Three |
 |:----------:|:----------:|:----------:|
@@ -75,3 +75,4 @@ To be added
 | 4 | 5 | 6 |
 | G | H | I |
 | 7 | 8 | 9 |
+
