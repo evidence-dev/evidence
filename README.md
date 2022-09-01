@@ -11,7 +11,7 @@ Evidence offers a modern development workflow for analysts and a polished user e
 # How It Works
 Evidence creates pages from markdown files. When you write SQL statements inside those files, Evidence runs it against your data warehouse.
 
-![how-it-works](/readme/how-it-works.svg)
+![how-it-works](/readme/how-it-works.png)
 
 You can reference the results of those queries directly in your markdown document's text, or you can use them to make charts, graphs, and tables using our built-in component library.
 
