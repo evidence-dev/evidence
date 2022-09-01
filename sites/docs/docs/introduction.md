@@ -11,7 +11,7 @@ breadcrumbs: false
 
 With Evidence, you can build a polished business intelligence system using only SQL & Markdown.
 
-You cam create automated reports, analysis and tools that feel like they came from the graphics department at a top-tier publication. 
+You can create automated reports, analysis and tools that feel like they came from the graphics department at a top-tier publication. 
 
 ## How does it work? 
 
