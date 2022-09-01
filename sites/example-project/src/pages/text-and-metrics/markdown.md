@@ -65,3 +65,13 @@ Link to [Google](https://google.com)
 
 # Images
 To be added
+
+# Tables
+| Column One | Column Two | Column Three |
+|:----------:|:----------:|:----------:|
+| A | B | C |
+| 1 | 2 | 3 |
+| D | E | F |
+| 4 | 5 | 6 |
+| G | H | I |
+| 7 | 8 | 9 |
