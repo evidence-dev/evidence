@@ -148,5 +148,8 @@
   },
   "extensionDependencies": [
     "svelte.svelte-vscode"
-  ]
+  ],
+  "dependencies": {
+    "vsce": "^2.11.0"
+  }
 }
