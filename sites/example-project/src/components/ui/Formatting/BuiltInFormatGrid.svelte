@@ -4,7 +4,7 @@
   export let formats;
 </script>
 
-<table class=component-table>
+<table>
   <thead>
     <th class="align_left narrow_column">Format Tag</th>
     <th class="align_left wide_column">Format Code</th>
