@@ -1,26 +1,7 @@
-# Welcome!
+# Welcome to the Evidence Development Workspace!
 
-Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
-pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
-discede?
+This workspace contains examples of all Evidence features.
 
-<BigLink href="text" > 
-Key Metrics  
-</BigLink>
+If you are developing a new feature, add a page to this project. The page will be used as a reference for the feature, as a sandbox for anyone making changes to the feature in the future, and for general product testing.
 
-Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
-
-- Cernit traxerunt oras devolvere opibusque gerit Tatiusque
-- Aethere mihi pirithoi fontes concretaque hic obuncis
-- Solitas fibras aures et verba hiatus et
-- Secutum idonea
-- Et vocem inquit
-- Dum aequi Xanthique minantia nec taurum
-
-
-
-## Uno sine at nunc pontus rectorque umeros
-
-Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt;
-attigimus restabat exitus. Praedaeque ademit. *Vix* eundem, saevarum et nescia
-inter retinentibus inaniter pontum!
+If you notice a feature is missing from this project, please add a page or create an issue on Github.

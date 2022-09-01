@@ -1,16 +1,5 @@
 <script>
 
-    let areatest = [
-        {x: 10, y:16, y2: 23, y3: 12},
-        {x: 11, y:3, y2: 23, y3: 15},
-        {x: 12, y:0, y2: 35, y3: 12},
-        {x: 13, y:6, y2: 20, y3: 11},
-        {x: 14, y:12, y2: 29, y3: 21},
-        {x: 15, y:13, y2: 27, y3: 15},
-        {x: 16, y:16, y2: 23, y3: 19},
-        {x: 17, y:18, y2: 26, y3: 16}
-    ]
-
     let bankData = [
     {fed_reserve_district: 'NY', established_date: '2015-01-01', banks: 1},
     {fed_reserve_district: 'SF', established_date: '2017-01-01', banks: 1},
@@ -141,11 +130,7 @@ let series = ['San Francisco', 'Atlanta', 'New York', 'Washington', 'Chicago', '
 
 </script>
 
-<Chart data={areatest} xAxisTitle="Packages Delivered">
-    <Area y=y/>
-</Chart>
-
-# Test Analysis
+# US Bank Analysis
 
 ```banks
 select state_name, 
@@ -159,9 +144,7 @@ group by state_name, active
 order by banks desc
 ```
 
-<BarChart swapXY=true data={data.banks} x=state_name y=banks series=active/>
-
-<!-- <DataTable data={data.banks}/> -->
+<BarChart swapXY=true data={banks} x=state_name y=banks series=active/>
 
 ```dates
 select date_trunc(established_date, year) as established_date, count(*) as banks 
@@ -170,7 +153,7 @@ group by established_date
 order by established_date asc
 ```
 
-<AreaChart data={data.dates} line=false x=established_date y=banks title="Bank Creation by Year" subtitle="1900s saw significant increase in bank creation" yAxisTitle="banks created per year" xAxisTitle="Establishment Year"/>
+<AreaChart data={dates} line=false x=established_date y=banks title="Bank Creation by Year" subtitle="1900s saw significant increase in bank creation" yAxisTitle="banks created per year" xAxisTitle="Establishment Year"/>
 
 ```dates_state
 select fed_reserve_district, date_trunc(established_date, year) as established_date, count(*) as banks 
@@ -180,9 +163,9 @@ and established_date <= '2005-01-01'
 group by fed_reserve_district, established_date
 ```
 
-<AreaChart data={data.dates_state} x=established_date y=banks series=fed_reserve_district/>
+<AreaChart data={dates_state} x=established_date y=banks series=fed_reserve_district/>
 
-<Chart data={data.dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
+<Chart data={dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
 
     <Scatter boundGapRight={['4%','4%']}/>
 </Chart>
@@ -205,6 +188,6 @@ group by fed_reserve_district, established_date
 
 {series}
 
-<AreaChart data={data.dates_state.filter(d => d.fed_reserve_district === series)} x=established_date missing=zero/>
+<AreaChart data={dates_state.filter(d => d.fed_reserve_district === series)} x=established_date missing=zero/>
 
 {/each}

@@ -2,6 +2,8 @@
     let vvv = 129
 </script>
 
+# Query Chaining
+
 ```input 
 select 
     complaint_description as description,
@@ -14,7 +16,7 @@ group by 1,2
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 
-<DataTable data={data.input}/>
+<DataTable data={input}/>
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 
@@ -22,7 +24,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     select count(*) as n_days from ${input}
 ```
 
-<DataTable data={data.working_reference}/>
+<DataTable data={working_reference}/>
 
 
 ```two_step_reference 

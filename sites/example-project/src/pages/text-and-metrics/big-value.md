@@ -1,5 +1,4 @@
-# Project Growth 
-
+# Big Value
 
 ```banks_established
 select 
@@ -14,23 +13,22 @@ count(*)*327982 as arr_usd1m,
 from `bigquery-public-data.fdic_banks.institutions`
 group by established_date
 order by established_date desc 
-
 ```
 
 <BigValue 
-data = {data.banks_established} 
+data = {banks_established} 
 /> 
 
 
 <BigValue 
-data = {data.banks_established} 
+data = {banks_established} 
 value=new_projects_num0 
 comparison=growth_pct
 comparisonTitle="Month over Month"
 title="New Activations" 
 /> 
 
-<BigValue data = {data.banks_established} 
+<BigValue data = {banks_established} 
 value=arr_usd1m
 title="Run Rate MRR"
 comparison=arr_growth_pct
@@ -43,7 +41,7 @@ pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
 
 <LineChart 
-data = {data.banks_established} y=new_projects_num0
+data = {banks_established} y=new_projects_num0
 yAxisTitle="New Activations"
 /> 
 
