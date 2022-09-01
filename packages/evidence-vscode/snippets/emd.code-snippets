@@ -63,5 +63,10 @@
 		"prefix": "IfElse Block",
 		"body": ["{#if ${1:condition}}\n\n\t${2:}\n\n{:else}\n\n\t${3:}\n\n{/if}\n\n"],
 		"description": "Insert IfElse Block"
+	},
+	"Insert markdown table": {
+		"prefix": "table",
+		"body": ["| ${1:Column 1} | ${2:Column 2} | ${3:Column 3} |\n| -------- | -------- | -------- |\n| ${4:   1    } | ${5:   2    } | ${6:   3    } |\n| ${7:   4    } | ${8:   5    } | ${9:   6    } |\n\n"],
+		"description": "Insert Markdown Table"
 	}
 }
