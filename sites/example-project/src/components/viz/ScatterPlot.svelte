@@ -33,6 +33,8 @@
 
     export let sort = undefined;
 
+    export let tooltipTitle = undefined;
+
     let chartType = "Scatter Plot";
 
     let useTooltip = true;
@@ -71,5 +73,6 @@
         {outlineWidth}
         {pointSize}
         {useTooltip}
+        {tooltipTitle}
     />
 </Chart>

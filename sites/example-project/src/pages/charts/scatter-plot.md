@@ -46,6 +46,54 @@ let regions = [
     {region: 'South', score_a: 99, score_b: 74},
     {region: 'South', score_a: 83, score_b: 73}
 ]
+
+let regions_states = [
+    {region: 'West', state: 'WA', score_a: 59, score_b: 51},
+    {region: 'West', state: 'CA', score_a: 70, score_b: 43},
+    {region: 'West', state: 'OR', score_a: 72, score_b: 38},
+    {region: 'West', state: 'NV', score_a: 66, score_b: 34},
+    {region: 'West', state: 'UT', score_a: 59, score_b: 48},
+    {region: 'West', state: 'TX', score_a: 66, score_b: 34},
+    {region: 'West', state: 'NE', score_a: 62, score_b: 30},
+    {region: 'West', state: 'AK', score_a: 58, score_b: 32},
+    {region: 'West', state: 'WY', score_a: 51, score_b: 35},
+    {region: 'East', state: 'NY', score_a: 47, score_b: 37},
+    {region: 'East', state: 'NJ', score_a: 67, score_b: 48},
+    {region: 'East', state: 'DE', score_a: 81, score_b: 71},
+    {region: 'East', state: 'MD', score_a: 86, score_b: 54},
+    {region: 'East', state: 'CT', score_a: 76, score_b: 68},
+    {region: 'East', state: 'VA', score_a: 65, score_b: 67},
+    {region: 'East', state: 'WV', score_a: 81, score_b: 50},
+    {region: 'East', state: 'KS', score_a: 59, score_b: 77},
+    {region: 'East', state: 'IN', score_a: 64, score_b: 57},
+    {region: 'East', state: 'IL', score_a: 55, score_b: 62},
+    {region: 'South', state: 'NC', score_a: 112, score_b: 82},
+    {region: 'South', state: 'SC', score_a: 80, score_b: 83},
+    {region: 'South', state: 'GA', score_a: 75, score_b: 85},
+    {region: 'South', state: 'FL', score_a: 93, score_b: 55},
+    {region: 'South', state: 'TN', score_a: 99, score_b: 81},
+    {region: 'South', state: 'LA', score_a: 81, score_b: 53},
+    {region: 'South', state: 'AL', score_a: 113, score_b: 86},
+    {region: 'South', state: 'MO', score_a: 98, score_b: 103},
+    {region: 'South', state: 'MI', score_a: 84, score_b: 83},
+]
+
+let single_region = [
+    {region: 'TX', score_a: 59, score_b: 51},
+    {region: 'OK', score_a: 70, score_b: 43},
+    {region: 'LA', score_a: 72, score_b: 38},
+    {region: 'AL', score_a: 66, score_b: 34},
+    {region: 'FL', score_a: 59, score_b: 48},
+    {region: 'NY', score_a: 66, score_b: 34},
+    {region: 'NJ', score_a: 62, score_b: 30},
+    {region: 'WA', score_a: 58, score_b: 32},
+    {region: 'NV', score_a: 51, score_b: 35},
+    {region: 'IL', score_a: 51, score_b: 52},
+    {region: 'IN', score_a: 59, score_b: 35},
+    {region: 'DE', score_a: 47, score_b: 37},
+    {region: 'KS', score_a: 54, score_b: 44},
+    {region: 'MA', score_a: 46, score_b: 48}
+]
 </script>
 
 ```census
@@ -65,3 +113,15 @@ from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
 
 ## Multi-Series Scatter Plot
 <ScatterPlot data={regions} x=score_a y=score_b series=region xAxisTitle=true yAxisTitle=true/>
+
+## Scatter Plot with Tooltip Title
+<ScatterPlot
+    data={single_region}
+    x=score_a
+    y=score_b
+    tooltipTitle=region
+/>
+
+## Multi-Series Scatter Plot with Tooltip Title
+<ScatterPlot data={regions_states} x=score_a y=score_b tooltipTitle=state series=region xAxisTitle=true yAxisTitle=true/>
+

@@ -1,6 +1,6 @@
 import getDistinctValues from './getDistinctValues.js'
 
-export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary, size=null) {
+export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary, size=null, tooltipTitle=null) {
 
     function generateTempConfig(seriesData, seriesName, baseConfig) {
         let tempConfig = {
@@ -23,6 +23,7 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
 
     // 1) Series column with single y column
     if (series != null && typeof y !== "object") {
+        
         legend = true;
         seriesDistinct = getDistinctValues(data, series);
 
@@ -40,7 +41,7 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
                 if(swapXY){
                     seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
                 } else {
-                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y], d[tooltipTitle]]);
                 }
             }
 
@@ -126,7 +127,7 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
             if(swapXY){
                 seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
             } else {
-                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y], d[tooltipTitle]]);
             }
         }
 
