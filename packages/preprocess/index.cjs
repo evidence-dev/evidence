@@ -94,7 +94,8 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
   
     if(hasQueries(filename)){
         let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
-                                         .map(id => `let ${id} = getContext(PAGE_QUERY_RESULTS).getData('${id}');`)
+                                         .map(id => `let ${id} 
+                                        $: data, ${id} = data.${id};`)
                                          .join('\n') || '';
         defaultProps = `
             export let data;
