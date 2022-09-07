@@ -84,7 +84,7 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
                     let tooltipData = filteredData.map((d) => d[tooltipTitle])
                     seriesData.forEach((item, index) => item.push(tooltipData[index]));
                 }
-            console.log(seriesData)
+
                 // Set series name:
                 seriesName = seriesDistinct[i] + " - " + columnSummary[y[j]].title;
                 tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
@@ -105,13 +105,11 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
                 seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]]]);
             }
         
-            console.log(seriesData)
             // Append size column if supplied (for bubble chart):
             if(size){
                 let sizeData = data.map((d) => d[size])
                 seriesData.forEach((item, index) => item.push(sizeData[index]));
             }
-            console.log(seriesData)
 
             // Append tooltip label if supplied:
             if(tooltipTitle){
@@ -140,7 +138,6 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
             let sizeData = data.map((d) => d[size])
             seriesData.forEach((item, index) => item.push(sizeData[index]));
         }
-        console.log(seriesData)
 
         // Append tooltip label if supplied:
         if(tooltipTitle){

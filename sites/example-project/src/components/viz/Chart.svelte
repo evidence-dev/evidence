@@ -301,7 +301,6 @@ try{
                 : getSortedData(data, x, true) 
             : data;
          
-
     // ---------------------------------------------------------------------------------------
     // Get format codes for axes
     // ---------------------------------------------------------------------------------------
@@ -329,7 +328,7 @@ try{
         }
 
         xAxisTitle = xAxisTitle === 'true' ? formatTitle(x, xFormat) : xAxisTitle === 'false' ? '' : xAxisTitle;
-        yAxisTitle = yAxisTitle === 'true' ? formatTitle(y, yFormat) : yAxisTitle === 'false' ? '' : yAxisTitle;
+        yAxisTitle = yAxisTitle === 'true' ? typeof y === 'object' ? '' : formatTitle(y, yFormat) : yAxisTitle === 'false' ? '' : yAxisTitle;
 
     // ---------------------------------------------------------------------------------------
     // Set legend flag
