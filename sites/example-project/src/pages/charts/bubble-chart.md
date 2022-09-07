@@ -60,4 +60,10 @@ let region_bubble = [
 <BubbleChart data={smallb} x=x y=y size=size xAxisTitle=true yAxisTitle=true/>
 
 ## Multi-Series Bubble Chart
-<BubbleChart data={region_bubble} x=score_a y=score_b size=size series=region xAxisTitle=true yAxisTitle=true/>
+<BubbleChart data={region_bubble} x=score_a y=score_b size=size series=region xAxisTitle=true yAxisTitle=true />
+
+## Bubble Chart with Tooltip Title
+<BubbleChart data={smallb} x=x y=y size=size xAxisTitle=true yAxisTitle=true tooltipTitle=y/>
+
+## Multi-Series Bubble Chart with Tooltip Title
+<BubbleChart data={region_bubble} x=score_a y=score_b size=size series=region xAxisTitle=true yAxisTitle=true tooltipTitle=region/>
