@@ -80,7 +80,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
-        import { PAGE_QUERY_RESULTS, CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
+        import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
 
         let routeHash = '${routeHash}';
         export let customFormattingSettings;
@@ -94,41 +94,13 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
   
     if(hasQueries(filename)){
         let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
-                                         .map(id => `let ${id} = getContext(PAGE_QUERY_RESULTS).getData('${id}');`)
+                                         .map(id => `let ${id} 
+                                        $: data, ${id} = data.${id};`)
                                          .join('\n') || '';
         defaultProps = `
             export let data;
 
             pageHasQueries.update(value => value = true);
-
-            setContext(PAGE_QUERY_RESULTS, {
-                getData: (queryName) => {
-                    let originalData = data[queryName];
-                    let evidenceTypedData = [];
-
-                    let columnTypes = data.evidencemeta?.queries?.find(query => query.id === queryName)?.columnTypes;
-
-                    for (var i = 0; i < originalData.length; i++) {
-                        let nextItem = originalData[i];
-                        if (nextItem && columnTypes) {
-                            if (!nextItem.hasOwnProperty('_evidenceColumnTypes')) {
-                                Object.defineProperty(nextItem, '_evidenceColumnTypes', {
-                                    enumerable: false,
-                                    value: columnTypes,
-                                });
-                            }
-                        }
-                        evidenceTypedData.push(nextItem);
-                    }
-                    return evidenceTypedData;
-                },
-                getColumnTypes: (queryName) => {
-                    let columnTypes = data.evidencemeta?.queries?.filter(query => query.id === queryName)?.map(record => record.columnTypes);
-                    if (columnTypes && columnTypes.length > 0) {
-                        return columnTypes[0];
-                    }
-                }
-            });
 
             ${queryDeclarations}
 

@@ -1,73 +1,22 @@
 <script>
     import {blur, slide, fade } from 'svelte/transition';
     import DownloadData from '../DownloadData.svelte'
-    import { getContext} from 'svelte';
     import getColumnSummary from '$lib/modules/getColumnSummary.js';
     import { formatValue } from '$lib/modules/formatting.js';
-    import { PAGE_QUERY_RESULTS } from '$lib/modules/globalContexts.js';
 
     export let queryID;
-    export let data;  //TODO fallback support in case of the untitled issue. Shouldn't be exposed.
-    let columns = [];
-    let columnSummary;
-
-    if (queryID && queryID !== 'untitled') {
-        data = getContext(PAGE_QUERY_RESULTS).getData(queryID);
-        if (data) {
-          let columnTypes =  data[0]['_evidenceColumnTypes'];
-          columnSummary = getColumnSummary(data, 'array');
-
-          if (columnTypes) {
-            columnTypes.forEach(column => {
-                let columnDisplayName = column.name;
-                if (column.typeFidelity === 'precise') {
-                  switch (column.evidenceType) {
-                    case 'date':
-                      columnDisplayName = `${column.name}`;
-                      break;
-                    case 'number':
-                      columnDisplayName = `${column.name}`;
-                      break;
-                    case 'boolean':
-                      columnDisplayName = `${column.name}`;
-                      break;
-                    case 'string':
-                      columnDisplayName = `${column.name}`
-                      break;
-                    default:
-                      break;
-                  }
-                }
-                columns.push({
-                  id: column.name,
-                  title: columnDisplayName,
-                  type: column.evidenceType
-                });
-            });
-          }
-        }
-    }
-    if (columns.length === 0) {
-      //TODO this is fallback support in case of the 'untitled' issue
-      for (const [key, value] of Object.entries(data[0])) {
-        columns.push({
-            id: key,
-            title: key,
-            type: typeof(value)
-        })
-      }
-    }
-
-    // Table input 
-    let columnWidths = 90/(columns.length+1);
+    export let data;  
+    
+    $: columnSummary = getColumnSummary(data, 'array');;
+    $: columnWidths = 90/(columnSummary.length + 1)
 
     // Slicer 
     let index = 0;
     let size = 5;
-    let max = Math.max(data.length - size,0);
-    let dataPage = data.slice(index, index+size);
-    let updatedSlice = ''
-
+    $: max = Math.max(data.length - size,0);
+    $: dataPage = data.slice(index, index+size);
+    let updatedSlice
+    
     function slice() {
       updatedSlice = data.slice(index, index+size);
       dataPage = updatedSlice
