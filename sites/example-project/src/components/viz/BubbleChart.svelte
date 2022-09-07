@@ -12,8 +12,8 @@
     export let title = undefined;
     export let subtitle = undefined;
     export let legend = undefined;
-    export let xAxisTitle = undefined;
-    export let yAxisTitle = undefined;
+    export let xAxisTitle = 'true';
+    export let yAxisTitle = 'true';
     export let xGridlines = undefined;
     export let yGridlines = undefined;
     export let xAxisLabels = undefined;
@@ -34,6 +34,8 @@
 
     export let sort = undefined;
 
+    export let tooltipTitle = undefined;
+
     let chartType = "Bubble Chart";
     let bubble = true;
 
@@ -46,6 +48,7 @@
     {x}
     {y}
     {size}
+    {tooltipTitle}
     {series}
     {xType}
     {legend}

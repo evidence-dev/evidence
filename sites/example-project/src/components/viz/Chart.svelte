@@ -30,6 +30,7 @@
         export let y = undefined;
         export let series = undefined;
         export let size = undefined;
+        export let tooltipTitle = undefined;
 
         export let swapXY = false; // Flipped axis chart
         if(swapXY === "true" || swapXY === true){
@@ -233,6 +234,7 @@ try{
         };
         if(size){inputCols.push(size)};
         if(series){optCols.push(series)};
+        if(tooltipTitle){optCols.push(tooltipTitle)}
 
         checkInputs(data, inputCols, optCols)
 
@@ -299,7 +301,6 @@ try{
                 : getSortedData(data, x, true) 
             : data;
          
-
     // ---------------------------------------------------------------------------------------
     // Get format codes for axes
     // ---------------------------------------------------------------------------------------
@@ -327,7 +328,7 @@ try{
         }
 
         xAxisTitle = xAxisTitle === 'true' ? formatTitle(x, xFormat) : xAxisTitle === 'false' ? '' : xAxisTitle;
-        yAxisTitle = yAxisTitle === 'true' ? formatTitle(y, yFormat) : yAxisTitle === 'false' ? '' : yAxisTitle;
+        yAxisTitle = yAxisTitle === 'true' ? typeof y === 'object' ? '' : formatTitle(y, yFormat) : yAxisTitle === 'false' ? '' : yAxisTitle;
 
     // ---------------------------------------------------------------------------------------
     // Set legend flag
@@ -341,7 +342,7 @@ try{
     // ---------------------------------------------------------------------------------------
     // Add props to store to let child components access them
     // ---------------------------------------------------------------------------------------
-        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle}});
+        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle, tooltipTitle}});
 
     // ---------------------------------------------------------------------------------------
     // Axis Configuration

@@ -1,6 +1,6 @@
 import getDistinctValues from './getDistinctValues.js'
 
-export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary, size=null) {
+export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary, size=null, tooltipTitle=null) {
 
     function generateTempConfig(seriesData, seriesName, baseConfig) {
         let tempConfig = {
@@ -20,7 +20,7 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
     let filteredData;
     let seriesName;
     let seriesDistinct;
-
+    
     // 1) Series column with single y column
     if (series != null && typeof y !== "object") {
         legend = true;
@@ -30,20 +30,24 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
             // Filter for specific series:
             filteredData = data.filter((d) => d[series] === seriesDistinct[i]);
 
-            if(size != null){
-                if(swapXY){
-                    seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x]), d[size]]);
-                } else {
-                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y], d[size]]);
-                }
+            if(swapXY){
+                seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
             } else {
-                if(swapXY){
-                    seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
-                } else {
-                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
-                }
+                seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+            }
+        
+            // Append size column if supplied (for bubble chart):
+            if(size){
+                let sizeData = filteredData.map((d) => d[size])
+                seriesData.forEach((item, index) => item.push(sizeData[index]));
             }
 
+            // Append tooltip label if supplied:
+            if(tooltipTitle){
+                let tooltipData = filteredData.map((d) => d[tooltipTitle])
+                seriesData.forEach((item, index) => item.push(tooltipData[index]));
+            }
+        
             // Set series name:
             seriesName = seriesDistinct[i];
 
@@ -63,21 +67,24 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
      
             for (j = 0; j < y.length; j++) {
 
-
-                if(size != null){
-                    if(swapXY){
-                        seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x]), d[size]]);
-                    } else {
-                        seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]], d[size]]);
-                    }
+                if(swapXY){
+                    seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x])]);
                 } else {
-                    if(swapXY){
-                        seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x])]);
-                    } else {
-                        seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]]]);
-                    }
+                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]]]);
                 }
    
+                // Append size column if supplied (for bubble chart):
+                if(size){
+                    let sizeData = filteredData.map((d) => d[size])
+                    seriesData.forEach((item, index) => item.push(sizeData[index]));
+                }
+
+                // Append tooltip label if supplied:
+                if(tooltipTitle){
+                    let tooltipData = filteredData.map((d) => d[tooltipTitle])
+                    seriesData.forEach((item, index) => item.push(tooltipData[index]));
+                }
+
                 // Set series name:
                 seriesName = seriesDistinct[i] + " - " + columnSummary[y[j]].title;
                 tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
@@ -92,20 +99,24 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
 
         for (i = 0; i < y.length; i++) {
 
-            if(size != null){
-                if(swapXY){
-                    seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x]), d[size]]);
-                } else {
-                    seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]], d[size]]);
-                }
+            if(swapXY){
+                seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x])]);
             } else {
-                if(swapXY){
-                    seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x])]);
-                } else {
-                    seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]]]);
-                }
+                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]]]);
+            }
+        
+            // Append size column if supplied (for bubble chart):
+            if(size){
+                let sizeData = data.map((d) => d[size])
+                seriesData.forEach((item, index) => item.push(sizeData[index]));
             }
 
+            // Append tooltip label if supplied:
+            if(tooltipTitle){
+                let tooltipData = data.map((d) => d[tooltipTitle])
+                seriesData.forEach((item, index) => item.push(tooltipData[index]));
+            }
+        
             seriesName = columnSummary[y[i]].title;
             tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
             seriesConfig.push(tempConfig);
@@ -116,18 +127,22 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
     if(series == null && typeof y !== "object") {
         legend = false;
 
-        if(size != null){
-            if(swapXY){
-                seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x]), d[size]]);
-            } else {
-                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y], d[size]]);
-            }
+        if(swapXY){
+            seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
         } else {
-            if(swapXY){
-                seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
-            } else {
-                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
-            }
+            seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
+        }
+
+        // Append size column if supplied (for bubble chart):
+        if(size){
+            let sizeData = data.map((d) => d[size])
+            seriesData.forEach((item, index) => item.push(sizeData[index]));
+        }
+
+        // Append tooltip label if supplied:
+        if(tooltipTitle){
+            let tooltipData = data.map((d) => d[tooltipTitle])
+            seriesData.forEach((item, index) => item.push(tooltipData[index]));
         }
 
         seriesName = columnSummary[y].title;

@@ -22,6 +22,7 @@
     export let pointSize = 10;
 
     export let useTooltip = false; // if true, will override the default 'axis'-based echarts tooltip. true only for scatter-only charts
+    export let tooltipTitle;
     let multiSeries;
     let tooltipOutput;
 
@@ -36,6 +37,7 @@
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
     series = series ?? $props.series;
+    tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
     let yMin = $props.yMin;
 
     if(!series && typeof y !== 'object'){
@@ -68,7 +70,6 @@
             }
     }
 
-
     // Tooltip settings (scatter and bubble charts require different tooltip than default)
     let tooltipOpts;
     let tooltipOverride;
@@ -77,12 +78,25 @@
             tooltip: {
                 formatter: function(params) {
                     if(multiSeries){
-                        tooltipOutput = `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>
-                        ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
-                        ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                        if(tooltipTitle){
+                            tooltipOutput = `<span style='font-weight:600'>${formatValue(params.value[2], "0")}</span><br/>
+                            ${formatTitle(series)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.seriesName)}</span><br/>
+                            ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                            ${formatTitle(typeof y === 'object' ? params.seriesName : y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                        } else {
+                            tooltipOutput = `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>
+                            ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                            ${formatTitle(typeof y === 'object' ? params.seriesName : y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                        }
                     } else {
-                        tooltipOutput = `<span style='font-weight: 600;'>${formatTitle(x, xFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
-                        <span style='font-weight: 600;'>${formatTitle(y, yFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                        if(tooltipTitle){
+                            tooltipOutput = `<span style='font-weight:600;'>${formatValue(params.value[2],"0")}</span><br/>
+                            <span style='font-weight: 400;'>${formatTitle(x, xFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                            <span style='font-weight: 400;'>${formatTitle(y, yFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                        } else {
+                            tooltipOutput = `<span style='font-weight: 600;'>${formatTitle(x, xFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                            <span style='font-weight: 600;'>${formatTitle(y, yFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                        }
                     }
                     return tooltipOutput
                 }
@@ -103,9 +117,8 @@
         baseConfig = {...baseConfig, ...options}
     }
 
-
     // Generate config for each series:
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary, undefined, tooltipTitle);
     config.update(d => {d.series.push(...seriesConfig); return d})
 
     
