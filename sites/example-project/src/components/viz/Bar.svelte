@@ -68,6 +68,8 @@
         if((swapXY) || ((xType === "value" || xType === "category") && type.includes("stacked"))){
             data = getCompletedData(data, x, y, series, false, (xType === "value"));
             xType = "category";
+        } else if(xType === 'time' && type.includes('stacked')){
+            data = getCompletedData(data, x, y, series, false, false);
         }
 
         if(type.includes("stacked")){
