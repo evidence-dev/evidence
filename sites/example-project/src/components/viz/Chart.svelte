@@ -30,6 +30,7 @@
         export let y = undefined;
         export let series = undefined;
         export let size = undefined;
+        export let tooltipTitle = undefined;
 
         export let swapXY = false; // Flipped axis chart
         if(swapXY === "true" || swapXY === true){
@@ -233,6 +234,7 @@ try{
         };
         if(size){inputCols.push(size)};
         if(series){optCols.push(series)};
+        if(tooltipTitle){optCols.push(tooltipTitle)}
 
         checkInputs(data, inputCols, optCols)
 
@@ -341,7 +343,7 @@ try{
     // ---------------------------------------------------------------------------------------
     // Add props to store to let child components access them
     // ---------------------------------------------------------------------------------------
-        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle}});
+        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle, tooltipTitle}});
 
     // ---------------------------------------------------------------------------------------
     // Axis Configuration

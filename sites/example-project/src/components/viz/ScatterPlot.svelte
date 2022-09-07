@@ -46,6 +46,7 @@
     {x}
     {y}
     {series}
+    {tooltipTitle}
     {xType}
     {legend}
     {xAxisTitle}
@@ -73,6 +74,5 @@
         {outlineWidth}
         {pointSize}
         {useTooltip}
-        {tooltipTitle}
     />
 </Chart>

@@ -37,6 +37,7 @@
     let columnSummary = $props.columnSummary;
     y = y ?? $props.y;
     series = series ?? $props.series;
+    tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
     let yMin = $props.yMin;
 
     if(!series && typeof y !== 'object'){
@@ -81,11 +82,11 @@
                             tooltipOutput = `<span style='font-weight:600'>${formatValue(params.value[2], "0")}</span><br/>
                             ${formatTitle(series)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.seriesName)}</span><br/>
                             ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
-                            ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                            ${formatTitle(typeof y === 'object' ? params.seriesName : y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
                         } else {
                             tooltipOutput = `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>
                             ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
-                            ${formatTitle(y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
+                            ${formatTitle(typeof y === 'object' ? params.seriesName : y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span>`
                         }
                     } else {
                         if(tooltipTitle){

@@ -34,6 +34,8 @@
 
     export let sort = undefined;
 
+    export let tooltipTitle = undefined;
+
     let chartType = "Bubble Chart";
     let bubble = true;
 
@@ -46,6 +48,7 @@
     {x}
     {y}
     {size}
+    {tooltipTitle}
     {series}
     {xType}
     {legend}
