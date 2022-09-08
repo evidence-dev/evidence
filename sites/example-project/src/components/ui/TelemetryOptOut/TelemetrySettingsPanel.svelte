@@ -20,7 +20,7 @@
         <h1>Telemetry</h1>
         <p>Evidence collects anonymous usage data to help us understand how often the tool is being used.</p>
         <CollapsibleTableSection headerText="More" expanded={false}>
-        <p>Each time you run a query, we get three pieces of information:
+        <p>Each time you run a query, we get four pieces of information:
         </p>
         <ol>
             <li>A random identifier that is stored in <code>.evidence/template/.profile.json</code></li>
