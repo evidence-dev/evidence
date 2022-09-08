@@ -1,5 +1,17 @@
 # @evidence-dev/components
 
+## 1.3.6
+
+### Patch Changes
+
+- 00f097f: Allows stacked charts to work with multiple y columns, and without requiring x and y to be supplied
+- fba883b: Fixes data completion for time-based bar charts
+- e6b72ac: Fixes appearance of boolean false values in DataTable
+- 90e3748: Adds 100% stacked charts
+- 63a758b: Fix for tooltip column name formatting
+- 81ff4e1: Enhances scatter and bubble tooltips by letting you add a title for each point
+- 0091256: Adds styling to native markdown tables
+
 ## 1.3.5
 
 ### Patch Changes
