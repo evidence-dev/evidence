@@ -1,4 +1,5 @@
 <script>
+    import CollapsibleTableSection from "../Formatting/CollapsibleTableSection.svelte";
     export let settings
     let usageStats = (settings.send_anonymous_usage_stats ?? 'yes') === 'yes'
 
@@ -18,24 +19,26 @@
     <div class=panel> 
         <h1>Telemetry</h1>
         <p>Evidence collects anonymous usage data to help us understand how often the tool is being used.</p>
+        <CollapsibleTableSection headerText="More" expanded={false}>
         <p>Each time you run a query, we get three pieces of information:
         </p>
         <ol>
             <li>A random identifier that is stored in <code>.evidence/template/.profile.json</code></li>
+            <li>An anonymized identifier based on the git repository you're using for the project</li>
             <li>Whether your project is running in development or build mode</li>
             <li>Whether your query returned from the cache, from your database, or returned an error</li>
         </ol>
-        <p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
-        <div class=input-item>
-            <label for='telemetry-toggle'>
-                Share anonymous usage data
-            </label>
-            <label class="switch">
-                <input type="checkbox" bind:checked={usageStats} on:change={save} id='telemetry-toggle'/>
-                <span class="slider" />
-            </label>
-
-        </div>
+            <p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
+            <div class=input-item>
+                <label for='telemetry-toggle'>
+                    Share anonymous usage data
+                </label>
+                <label class="switch">
+                    <input type="checkbox" bind:checked={usageStats} on:change={save} id='telemetry-toggle'/>
+                    <span class="slider" />
+                </label>
+            </div>
+        </CollapsibleTableSection>
 
     </div>
 

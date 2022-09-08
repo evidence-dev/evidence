@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import gitRemoteOriginUrl from 'git-remote-origin-url'; // get the git repo
 import { dev } from '$app/env';
+import logEvent from '@evidence-dev/telemetry'; 
 
 function getLocalGitRepo () {
     if(fs.existsSync(path.join(path.resolve('../../'), '.git'))){
@@ -42,8 +43,17 @@ export async function get() {
 }
 
 
-export function post(request) {
+export function post(request) {    
     const {settings} = JSON.parse(request.body)
+    // read original settings file 
+    let originalSettings = {}
+    if (fs.existsSync('evidence.settings.json')) {
+        originalSettings = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
+    }
+    // check if send_anonymous_usage_stats has changed and log an event if it has changed from yes to no
+    if(originalSettings.send_anonymous_usage_stats === 'yes' && settings.send_anonymous_usage_stats === 'no'){
+        logEvent('usageStatsDisabled', dev, originalSettings)
+    }
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
     if(settings.database === "sqlite"){
         let gitIgnore;
