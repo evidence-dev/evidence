@@ -49,9 +49,9 @@ export function post(request) {
     let originalSettings = {}
     if (fs.existsSync('evidence.settings.json')) {
         originalSettings = JSON.parse(fs.readFileSync('evidence.settings.json', 'utf8'));
-    }
-    // check if send_anonymous_usage_stats has changed and log an event if it has changed from yes to no
-    if(originalSettings.send_anonymous_usage_stats === 'yes' && settings.send_anonymous_usage_stats === 'no'){
+    } 
+    // check if send_anonymous_usage_stats has changed and log an event if it has changed from not 'no' (or undefined) to no
+    if(originalSettings.send_anonymous_usage_stats != 'no' && settings.send_anonymous_usage_stats === 'no'){
         logEvent('usageStatsDisabled', dev, originalSettings)
     }
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
