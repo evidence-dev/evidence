@@ -12,6 +12,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@evidence-dev/telemetry": "workspace:*",
     "@tidyjs/tidy": "2.4.4",
     "downloadjs": "1.4.7",
     "echarts": "5.3.2",
