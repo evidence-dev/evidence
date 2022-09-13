@@ -34,6 +34,7 @@
 	  <div class=content class:settings-content={$page.path === '/settings'}>
 		<article class:settings-article={$page.path === '/settings'}>
 			<slot/>
+			<p>&nbsp;</p>
 		</article>
 		<aside class='toc'>
 			<TableOfContents/>
