@@ -437,6 +437,7 @@ export default(node, option, renderer) => {
     });
 
     const chart = echarts.init(node, 'evidence-light', {renderer: 'canvas'});   
+    option.animation = false // disable animation
 
 	chart.setOption(option);
 
