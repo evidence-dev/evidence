@@ -442,8 +442,8 @@ export default(node, option, renderer) => {
 	chart.setOption(option);
 
     let src = chart.getConnectedDataURL({
-        type: 'png',
-        pixelRatio: 1.5,
+        type: 'jpeg',
+        pixelRatio: 2,
         backgroundColor: '#fff',
         excludeComponents: ['toolbox']
     });
