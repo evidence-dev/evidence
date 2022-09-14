@@ -1,4 +1,5 @@
 const secure = require('@lukeed/uuid/secure');
+const md5 = require("blueimp-md5")
 const Analytics = require('analytics-node')
 const { readJSONSync, writeJSONSync, pathExistsSync } = require('fs-extra')
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM'
@@ -33,14 +34,21 @@ const getProfile = async () => {
 const logEvent = async (eventName, dev, settings) => {
     try {
         let usageStats = settings ? settings.send_anonymous_usage_stats ?? 'yes' : process.env["SEND_ANONYMOUS_USAGE_STATS"] ?? process.env["send_anonymous_usage_stats"] ?? 'yes'
+        let repo ;
+        
+        if(settings && settings.gitRepo) {
+            repo = md5(settings.gitRepo)
+        };
+        
         if(usageStats === 'yes'){
-            projectProfile = await getProfile()
+            projectProfile = await getProfile(); 
             var analytics = new Analytics(wK);
             analytics.track({
                 anonymousId:projectProfile.anonymousId,
                 event: eventName,
                 properties: {
-                  devMode: dev 
+                  devMode: dev,
+                  repoHash: repo  
                 }
               });
         }

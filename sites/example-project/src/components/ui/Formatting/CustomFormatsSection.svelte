@@ -1,5 +1,6 @@
 <script>
   import CustomFormatGrid from "./CustomFormatGrid.svelte";
+  import CollapsibleTableSection from "./CollapsibleTableSection.svelte";
   import ssf from "ssf";
   export let builtInFormats = {};
   export let customFormattingSettings = {};
@@ -9,7 +10,6 @@
   let formatTag;
   let formatCode;
   let valueType;
-  let editingCustomFormat = false;
   let newFormatValidationErrors = "";
 
   async function deleteCustomFormat(format) {
@@ -49,21 +49,15 @@
   function resetNewCustomFormat() {
     formatTag = undefined;
     formatCode = undefined;
-    valueType = undefined;
+    valueType = 'number';
     newFormatValidationErrors = "";
-    editingCustomFormat = false;
-  }
-
-  function showAddCustomFormat() {
-    resetNewCustomFormat();
-    editingCustomFormat = true;
   }
 
   function getValidationErrors() {
     let errors = [];
     if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(formatTag)) {
       errors.push(
-        `"${formatTag}" is invalid. The format tag should always start with a letter and only contain letters and numbers.`
+        `"${formatTag}" is not a valid format tag. The format tag should always start with a letter and only contain letters and numbers.`
       );
     }
     let testValue = 10;
@@ -97,73 +91,57 @@
   }
 </script>
 
-{#if customFormattingSettings.customFormats && customFormattingSettings.customFormats.length > 0}
-  <CustomFormatGrid
-    formats={customFormattingSettings.customFormats}
-    deleteHandler={deleteCustomFormat}
-  />
-{/if}
+  {#if customFormattingSettings.customFormats && customFormattingSettings.customFormats.length > 0}
+  <CollapsibleTableSection headerText={"Saved Custom Formats"} expanded={false}>
+    <CustomFormatGrid
+      formats={customFormattingSettings.customFormats}
+      deleteHandler={deleteCustomFormat}
+    />
+  </CollapsibleTableSection>
+  {/if}
 
-{#if editingCustomFormat}
-  <addNewFormatArea>
-    <div class="separator">Add a new custom format</div>
-
-    <form
-      on:submit|preventDefault={submitNewCustomFormat}
-      autocomplete="off"
-      class="addFormatForm"
-    >
-      <div class="input-item">
-        <label for="valueType">Value Type</label>
-        <select id="valueType" bind:value={valueType}>
-          {#each valueTypeOptions as option}
-            <option value={option}>
-              {option}
-            </option>
-          {/each}
-        </select>
-      </div>
-      <div class="input-item">
-        <label for="formatTag">Format Tag</label>
-        <input
-          id="formatTag"
-          type="text"
-          placeholder="myformat"
-          bind:value={formatTag}
-        />
-      </div>
-      <div class="input-item">
-        <label for="formatCode">Format Code</label>
-        <input
-          id="formatCode"
-          type="text"
-          placeholder={valueType === "date" ? "mm/dd/yyyy" : "$#,##0.0"}
-          bind:value={formatCode}
-        />
-      </div>
-      <div class="new-format-buttons">
-        <button
-          id="submitCustomFormatButton"
-          type="submit"
-          disabled={!(formatTag && formatCode)}>Add</button
-        >
-        <button id="resetNewCustomFormatButton" on:click={resetNewCustomFormat}
-          >Cancel</button
-        >
-      </div>
-      <div class="error">{@html newFormatValidationErrors}</div>
-    </form>
-  </addNewFormatArea>
-{:else}
-<div>
-  <button
-    id="showAddCustomFormatButton"
-    on:click={showAddCustomFormat}
-    disabled={editingCustomFormat}
-    >New Custom Format
-  </button>
-</div>
-{/if}
+  <form
+    on:submit|preventDefault={submitNewCustomFormat}
+    autocomplete="off"
+    class="addFormatForm"
+  >
+    <div class="input-item">
+      <label for="valueType">Value Type</label>
+      <select id="valueType" bind:value={valueType}>
+        {#each valueTypeOptions as option}
+          <option value={option}>
+            {option}
+          </option>
+        {/each}
+      </select>
+    </div>
+    <div class="input-item">
+      <label for="formatTag">Format Tag</label>
+      <input
+        id="formatTag"
+        type="text"
+        placeholder="myformat"
+        bind:value={formatTag}
+      />
+    </div>
+    <div class="input-item">
+      <label for="formatCode">Format Code</label>
+      <input
+        id="formatCode"
+        type="text"
+        placeholder={valueType === "date" ? "mm/dd/yyyy" : "$#,##0.0"}
+        bind:value={formatCode}
+      />
+    </div>
+    <div class="new-format-buttons">
+      <button
+        id="submitCustomFormatButton"
+        type="submit"
+        disabled={!(formatTag && formatCode)}>Add Custom Format</button
+      >
+    </div>
+    <div class="error">{@html newFormatValidationErrors}</div>
+  </form>
 
 <style>
   input {
@@ -190,7 +168,6 @@
     width: 35%;
     text-transform: uppercase;
     font-weight: normal;
-    font-size: 12px;
     color: var(--grey-800);
   }
   button {
@@ -252,7 +229,6 @@
     margin-block-start: 0.5em;
     color: var(--grey-600);
     font-weight: bold;
-    padding-left: 1em;
   }
   .separator::after {
     content: "";
@@ -266,33 +242,6 @@
   }
   .error {
     color: var(--red-600);
-  }
-
-  .addFormatForm {
-    padding: 0em 2em 0em 2em;
-  }
-
-  #showAddCustomFormatButton {
-    margin: 5px 0px 0px 0px;
-    background-color: var(--blue-600);
-    color:white;
-    font-weight: bold;
-    border-radius: 4px;
-    border: 1px solid var(--blue-700);
-    padding:0.4em 0.8em;
-    transition-property: background, color;
-    transition-duration: 350ms;
-  }
-
-  #showAddCustomFormatButton:active {
-    background-color: var(--blue-800);
-    color:white;
-    font-weight: bold;
-    border-radius: 4px;
-    border: 1px solid var(--blue-900);
-    padding:0.4em 0.8em;
-    transition-property: background, color;
-    transition-duration: 350ms;
   }
 
   #submitCustomFormatButton {
@@ -318,7 +267,7 @@
   }
 
   #submitCustomFormatButton:disabled,
-button[disabled]{
+  button[disabled]{
   border: 1px solid var(--grey-400);
   background-color: var(--grey-100);
   color: var(--grey-600);
@@ -326,29 +275,5 @@ button[disabled]{
   transition-property: background, color;
   transition-duration: 350ms;
 }
-
-
-  #resetNewCustomFormatButton {
-    background-color: var(--grey-500);
-    margin-right: 0;
-    color:white;
-    font-weight: bold;
-    border-radius: 4px;
-    border: 1px solid var(--grey-600);
-    padding:0.4em 1.10em;
-    transition-property: background, color;
-    transition-duration: 350ms;
-  }
-
-  #resetNewCustomFormatButton:active {
-    background-color: var(--grey-600);
-    color:white;
-    font-weight: bold;
-    border-radius: 4px;
-    border: 1px solid var(--grey-700);
-    padding:0.4em 1.10em;
-    transition-property: background, color;
-    transition-duration: 350ms;
-  }
 
 </style>

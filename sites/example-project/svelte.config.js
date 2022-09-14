@@ -22,7 +22,7 @@ const config = {
 				exclude: ['@evidence-dev/components']
 			},
 			ssr: {
-				external: ['@evidence-dev/db-orchestrator']
+				external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry']
 			}
 		}
 	}

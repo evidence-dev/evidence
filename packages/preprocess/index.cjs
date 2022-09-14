@@ -65,6 +65,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { pageHasQueries } from '@evidence-dev/components/ui/stores';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
+        import BigValue from '${componentSource}/viz/BigValue.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
         import Area from '${componentSource}/viz/Area.svelte';
         import Line from '${componentSource}/viz/Line.svelte';
@@ -230,7 +231,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
         mdsvex.mdsvex(
             {extensions: [".md"],
             smartypants: {
-                quotes: true,
+                quotes: false,
                 ellipses: true,
                 backticks: true,
                 dashes: 'oldschool',

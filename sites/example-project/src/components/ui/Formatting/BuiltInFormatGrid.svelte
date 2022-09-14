@@ -4,8 +4,7 @@
   export let formats;
 </script>
 
-<div class="tableContainer">
-<table class="formatTable" width="100%">
+<table>
   <thead>
     <th class="align_left narrow_column">Format Tag</th>
     <th class="align_left wide_column">Format Code</th>
@@ -29,16 +28,5 @@
     </tr>
   {/each}
 </table>
-</div>
 
-<style>
-  .formatTable {
-    font-size: 12px;
-  }
 
-  .tableContainer {
-    border: 1px solid var(--gray-light, #eee);
-    border-radius: 4px;
-    padding: 8px 4px 8px 4px;
-  }
-</style>

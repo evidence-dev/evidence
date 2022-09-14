@@ -8,6 +8,7 @@
     "dependencies": {
         "@lukeed/uuid": "2.0.0",
         "analytics-node": "5.0.0",
+        "blueimp-md5": "^2.19.0",
         "fs-extra": "10.0.0"
     },
     "type": "module"

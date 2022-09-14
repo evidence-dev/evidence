@@ -81,6 +81,20 @@ hide_table_of_contents: false
 </div>
 </div>
 
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <p class="lbl">100% Stacked Area Chart</p>
+    </div>
+    <div class="item-body-centered">
+<a href="/features/charts/area-chart#100-stacked-area">
+
+![stacked-area](/img/100-stacked-area.svg) 
+
+</a>
+</div>
+</div>
+
 ## Bar
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -104,6 +118,20 @@ hide_table_of_contents: false
 <a href="/features/charts/bar-chart#stacked-bar">
 
 ![stacked-bar](/img/exg-stacked-bar-nt.svg) 
+
+</a>
+</div>
+</div>
+
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <p class="lbl">100% Stacked Bar Chart</p>
+    </div>
+    <div class="item-body-centered">
+<a href="/features/charts/bar-chart#100-stacked-bar">
+
+![stacked-bar](/img/100-stacked-bar.svg) 
 
 </a>
 </div>
@@ -146,6 +174,20 @@ hide_table_of_contents: false
 <a href="/features/charts/bar-chart#horizontal-stacked-bar">
 
 ![horizontal-stacked-bar](/img/exg-horizontal-stacked-bar-nt.svg) 
+
+</a>
+</div>
+</div>
+
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <p class="lbl">Horizontal 100% Stacked Bar Chart</p>
+    </div>
+    <div class="item-body-centered">
+<a href="/features/charts/bar-chart#horizontal-100-stacked-bar">
+
+![horizontal-stacked-bar](/img/100-horiz-stacked-bar.svg) 
 
 </a>
 </div>

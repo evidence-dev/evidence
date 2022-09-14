@@ -82,7 +82,7 @@
 {#if !error}
 <div class="table-container" class:avoidbreaks={rows <= 20} transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
 <div class="container">
-  <table>
+  <table >
       <thead>
         <tr>
           {#if rowNumbers === 'true'}
@@ -126,6 +126,12 @@
                       <td class="string" style="width:{columnWidths}%" title={cell}>
                         <div >
                             {cell || "Ø"}                       
+                        </div>
+                      </td>
+                    {:else if columnSummary[j].type === 'boolean'}
+                      <td class="string" style="width:{columnWidths}%" title={cell}>
+                        <div >
+                            {cell ?? "Ø"}                       
                         </div>
                       </td>
                     {:else}

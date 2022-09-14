@@ -1,5 +1,17 @@
 # @evidence-dev/preprocess
 
+## 1.2.4
+
+### Patch Changes
+
+- 74a09a0: Include BigValue components in the default imports
+
+## 1.2.3
+
+### Patch Changes
+
+- 1dec9a4: Resolves a bug introduced by smart quotes
+
 ## 1.2.2
 
 ### Patch Changes

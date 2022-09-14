@@ -6,7 +6,7 @@ export default function checkInputs(data, reqCols, optCols) {
     if(data == undefined){
         throw Error("No dataset provided");
     } else if(typeof data !== "object"){
-        throw Error("'"+data+"'"     + " is not a recognized query result. Data should be provided in this format: {data."+data.replace("data.","")+"}")
+        throw Error("'"+data+"'"     + " is not a recognized query result. Data should be provided in the format: data = {"+data.replace("data.","")+"}")
     } else if(data[0] == undefined) {
         throw Error("Dataset is empty: query ran successfully, but no data was returned from the database")
     }

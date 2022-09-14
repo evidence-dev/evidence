@@ -34,16 +34,18 @@
   }
 
   button {
+    font-size: 14px;
     background-color: var(--grey-100);
     border-radius: 4px;
-    color: var(--gray-darkest, #282828);
+    color: var(--gray-999);
     display: flex;
     justify-content: space-between;
     width: 100%;
     border: none;
     margin: 0;
-    padding: 0.4em 0.5em;
+    padding: 0.5em 0.5em;
     cursor: pointer;
+    /* border: 1px solid var(--grey-200); */
   }
 
   button[area-expanded="true"] .vert {
@@ -57,10 +59,7 @@
   }
  
   .collapsibleContents {
-    /* border: 1px solid var(--gray-light, #eee); */
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin: 0 0.5em 0.5em 0.5em;
+    padding: 0.5em 0.5em 1.5em 0.5em;
   }
   .collapsibleSection {
     padding: 0px;

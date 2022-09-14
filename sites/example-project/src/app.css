@@ -8,6 +8,10 @@ html {
 
 body, html {
 	height: 100%;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 img {
@@ -154,9 +158,34 @@ code {
 	}
 }
 
+article > table{
+    min-width:100%;
+    font-size: 0.75em;
+    border-collapse: collapse;
+    font-family: var(--ui-font-family);
+    text-align: center;
+    margin: 1em auto 1.5em auto;
+}
+
+article > table th{
+	font-weight: 600;
+	border-bottom: 1px solid var(--grey-800);
+	padding:0 8px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+article > table td{
+	max-width: 1px;
+	padding: 4px 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* border: 1px solid var(--grey-200); */
+}
+
 :root {
 	/* Layout header height */
-	--header-height: 2.5rem; 
+	--header-height: 3.5rem; 
 	/* Font stacks */
 	--monospace-font-family:  Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
 	--ui-font-family: "SF Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
@@ -214,6 +243,7 @@ code {
 	--grey-800: hsla(210, 18%, 30%, 1);
 	--grey-900: hsla(210, 20%, 25%, 1);
 	--grey-999: hsla(211, 24%, 16%, 1);
+	--red-50: #fdf1f1; 
 	--red-100: hsla(0, 100%, 95%, 1);
 	--red-200: hsla(0, 100%, 87%, 1);
 	--red-300: hsla(0, 100%, 80%, 1);

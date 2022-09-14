@@ -64,16 +64,20 @@ function extent(values, valueof) {
   }
 
 function findInterval(arr){
+
+    if(arr.length === 1){
+      return
+    }
     // Sort array ascending
     arr.sort(function(a, b)
     {return a - b});
-      
+
     // 1. Multiply array by 100
     arr = arr.map(function(x){return x * 100000000})
-    
+
     // 2. Get diffs
     arr = getDiffs(arr);
- 
+
     // 3. Calculate greatest common divisor of diffs and divide by 100
     let interval = arr.reduce(gcd) / 100000000
     interval = Math.round((interval + Number.EPSILON) * 100000000) / 100000000
