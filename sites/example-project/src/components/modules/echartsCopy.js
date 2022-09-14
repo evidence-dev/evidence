@@ -437,12 +437,13 @@ export default(node, option, renderer) => {
     });
 
     const chart = echarts.init(node, 'evidence-light', {renderer: 'canvas'});   
+    option.animation = false // disable animation
 
 	chart.setOption(option);
 
     let src = chart.getConnectedDataURL({
-        type: 'png',
-        pixelRatio: 1.5,
+        type: 'jpeg',
+        pixelRatio: 2,
         backgroundColor: '#fff',
         excludeComponents: ['toolbox']
     });

@@ -34,6 +34,7 @@
 	  <div class=content class:settings-content={$page.path === '/settings'}>
 		<article class:settings-article={$page.path === '/settings'}>
 			<slot/>
+			<p>&nbsp;</p>
 		</article>
 		<aside class='toc'>
 			<TableOfContents/>
@@ -79,6 +80,10 @@ article {
 	grid-area: article;
 	padding: 0 1.5em 0 1.5em;
 	box-sizing: border-box;
+	user-select: text;
+	-moz-user-select: text;
+	-webkit-user-select: text;
+	-ms-user-select: text;
 }
 
 .settings-content {
