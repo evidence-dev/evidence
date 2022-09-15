@@ -5,7 +5,7 @@
     "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
-    "package": "svelte-kit package && pnpm clean-package",
+    "package": "svelte-kit package && pnpm clean-package && pnpm i",
     "clean-package": "node scripts/clean-package.js",
     "prepublishOnly": "pnpm package",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
