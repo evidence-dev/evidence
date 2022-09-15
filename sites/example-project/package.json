@@ -5,14 +5,14 @@
     "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
-    "package": "svelte-kit package && pnpm clean-package && pnpm i",
+    "package": "svelte-kit package && pnpm clean-package",
     "clean-package": "node scripts/clean-package.js",
     "prepublishOnly": "pnpm package",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/telemetry": "workspace:*",
+    "@evidence-dev/telemetry": "1.0.3",
     "@tidyjs/tidy": "2.4.4",
     "downloadjs": "1.4.7",
     "echarts": "5.3.2",
