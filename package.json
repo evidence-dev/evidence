@@ -5,6 +5,7 @@
 		"@evidence-dev/db-orchestrator": "link:packages/db-orchestrator",
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/preprocess": "link:packages/preprocess",
+		"@evidence-dev/telemetry": "link:packages/telemetry",
 		"@sveltejs/adapter-static": "1.0.0-next.22",
 		"@sveltejs/kit": "1.0.0-next.202",
 		"@sveltejs/vite-plugin-svelte": "1.0.0-next.41",
