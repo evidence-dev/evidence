@@ -264,7 +264,7 @@ importers:
 
   sites/example-project:
     specifiers:
-      '@evidence-dev/telemetry': workspace:*
+      '@evidence-dev/telemetry': 1.0.3
       '@tidyjs/tidy': 2.4.4
       cross-env: ^7.0.3
       downloadjs: 1.4.7
