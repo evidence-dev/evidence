@@ -323,6 +323,45 @@ hide_table_of_contents: false
 
 <div  class="gallery-item-grid">
     <div class="item-header">
+        <p class="lbl">Custom ECharts Funnel</p>
+    </div>
+    <div class="item-body-centered">
+<a href="/features/charts/custom-charts#funnel-chart">
+
+![custom-chart](/img/custom-funnel.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <p class="lbl">Custom ECharts Pie Chart</p>
+    </div>
+    <div class="item-body-centered">
+<a href="/features/charts/custom-charts#pie-chart">
+
+![custom-chart](/img/custom-pie.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <p class="lbl">Custom ECharts Donut Chart</p>
+    </div>
+    <div class="item-body-centered">
+<a href="/features/charts/custom-charts#donut-chart">
+
+![custom-chart](/img/custom-donut.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
         <p class="lbl">Advanced ECharts Example</p>
     </div>
     <div class="item-body-centered">
