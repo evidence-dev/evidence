@@ -21,6 +21,64 @@ To create a JavaScript object in an Evidence markdown page, you need to add a `<
 
 ## Examples
 
+### Simple Treemap
+
+[Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=treemap-simple)
+
+![custom-treemap](/img/custom-treemap.png)
+
+
+``````
+```sales_by_country
+select "Canada" as country, 100 as sales
+union all
+select "US" as country, 250 as sales
+union all
+select "UK" as country, 130 as sales
+union all
+select "Australia" as country, 95 as sales
+```
+
+```test_data
+select country as name, sales as value
+from ${sales_by_country}
+```
+
+<ECharts config={
+    {
+      title: {
+        text: 'Treemap Example',
+        left: 'center'
+      },
+        tooltip: {
+            formatter: '{b}: {c}'
+        },
+      series: [
+        {
+          type: 'treemap',
+          visibleMin: 300,
+          label: {
+            show: true,
+            formatter: '{b}'
+          },
+          itemStyle: {
+            borderColor: '#fff'
+          },
+          roam: false,
+          nodeClick: false,
+          data: test_data,
+          breadcrumb: {
+            show: false
+          }
+        }
+      ]
+      }
+    }
+/>
+
+``````
+
+
 ### Advanced Chart
 [Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=scatter-anscombe-quartet)
 
