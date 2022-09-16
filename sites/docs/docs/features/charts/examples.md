@@ -310,7 +310,20 @@ hide_table_of_contents: false
 ## Custom Charts
 <div  class="gallery-item-grid">
     <div class="item-header">
-        <p class="lbl">Custom ECharts Example</p>
+        <p class="lbl">Custom ECharts Treemap</p>
+    </div>
+    <div class="item-body-centered">
+<a href="/features/charts/custom-charts#simple-treemap">
+
+![custom-chart](/img/custom-treemap.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <p class="lbl">Advanced ECharts Example</p>
     </div>
     <div class="item-body-centered">
 <a href="/features/charts/custom-charts#advanced-chart">
