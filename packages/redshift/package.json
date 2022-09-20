@@ -9,7 +9,8 @@
       "test": "uvu test test.js"
     },
     "dependencies": {
-      "@evidence-dev/postgres": "workspace:^"
+      "@evidence-dev/postgres": "workspace:^",
+      "@evidence-dev/db-commons": "workspace:^"
     },
     "type": "module"
   }

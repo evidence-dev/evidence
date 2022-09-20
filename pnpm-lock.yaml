@@ -198,8 +198,10 @@ importers:
 
   packages/redshift:
     specifiers:
+      '@evidence-dev/db-commons': workspace:^
       '@evidence-dev/postgres': workspace:^
     dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
       '@evidence-dev/postgres': link:../postgres
 
   packages/snowflake:
