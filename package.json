@@ -24,8 +24,8 @@
 		"vite-plugin-full-reload": "0.2.2",
 		"eslint": "^8.15.0",
 		"prettier": "2.6.2",
-		"prettier-plugin-svelte": "2.7.0"
-
+		"prettier-plugin-svelte": "2.7.0",
+		"blueimp-md5": "2.19.0"
 	},
 	"scripts": {
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
