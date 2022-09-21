@@ -1,5 +1,12 @@
 # evidence-test-environment
 
+## 1.0.25
+
+### Patch Changes
+
+- Updated dependencies [df25e4d]
+  - @evidence-dev/evidence@5.0.10
+
 ## 1.0.24
 
 ### Patch Changes

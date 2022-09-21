@@ -1,5 +1,14 @@
 # @evidence-dev/components
 
+## 1.3.7
+
+### Patch Changes
+
+- 6dce090: Fix chart copy paste bug and better support command-a keyboard shortcut for copying full pages
+- df25e4d: Log telemetry opt outs, include anonymized hash of git repo
+- Updated dependencies [df25e4d]
+  - @evidence-dev/telemetry@1.0.3
+
 ## 1.3.6
 
 ### Patch Changes

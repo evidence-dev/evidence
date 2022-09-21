@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.5
+
+### Patch Changes
+
+- Updated dependencies [df25e4d]
+  - @evidence-dev/telemetry@1.0.3
+
 ## 1.1.4
 
 ### Patch Changes

@@ -29,6 +29,10 @@ export const lookupColumnFormat = (
 ) => {
   let potentialFormatTag = maybeExtractFormatTag(columnName);
 
+  if(columnEvidenceType.evidenceType === 'string'){
+    return undefined;
+  }
+
   if (potentialFormatTag) {
     let customFormats = getCustomFormats();
     let matchingFormat = [...BUILT_IN_FORMATS, ...customFormats].find(

@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 5.0.10
+
+### Patch Changes
+
+- df25e4d: Log telemetry opt outs, include anonymized hash of git repo
+- Updated dependencies [6dce090]
+- Updated dependencies [df25e4d]
+  - @evidence-dev/components@1.3.7
+  - @evidence-dev/telemetry@1.0.3
+  - @evidence-dev/db-orchestrator@1.1.5
+
 ## 5.0.9
 
 ### Patch Changes

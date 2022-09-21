@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 1.0.3
+
+### Patch Changes
+
+- df25e4d: Log telemetry opt outs, include anonymized hash of git repo
+
 ## 1.0.2
 
 ### Patch Changes

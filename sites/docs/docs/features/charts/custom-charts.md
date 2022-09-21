@@ -21,6 +21,183 @@ To create a JavaScript object in an Evidence markdown page, you need to add a `<
 
 ## Examples
 
+### Simple Treemap
+
+[Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=treemap-simple)
+
+ECharts requires the data object to have a specific format. For example in the treemap chart show below it expects the columns to be called “name” and “value”. The `test_data` query in the code below renames the fields from the original query so ECharts can use them.
+
+![custom-treemap](/img/custom-treemap.png)
+
+``````
+```sales_by_country
+select "Canada" as country, 100 as sales
+union all
+select "US" as country, 250 as sales
+union all
+select "UK" as country, 130 as sales
+union all
+select "Australia" as country, 95 as sales
+```
+
+```test_data
+select country as name, sales as value
+from ${sales_by_country}
+```
+
+<ECharts config={
+    {
+      title: {
+        text: 'Treemap Example',
+        left: 'center'
+      },
+        tooltip: {
+            formatter: '{b}: {c}'
+        },
+      series: [
+        {
+          type: 'treemap',
+          visibleMin: 300,
+          label: {
+            show: true,
+            formatter: '{b}'
+          },
+          itemStyle: {
+            borderColor: '#fff'
+          },
+          roam: false,
+          nodeClick: false,
+          data: test_data,
+          breadcrumb: {
+            show: false
+          }
+        }
+      ]
+      }
+    }
+/>
+
+``````
+
+### Funnel Chart
+[Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=funnel)
+
+ECharts requires the data object to have a specific format. For example in the funnel chart show below it expects the columns to be called “name” and “value”. The `funnel_data` query in the code below renames the fields from the original query so ECharts can use them.
+
+![custom-funnel](/img/custom-funnel.png)
+
+
+``````
+```funnel_stages
+select "Emailed" as stage, 129 as count
+union all
+select "Meeting" as stage, 86 as count
+union all
+select "Proposal" as stage, 65 as count
+union all
+select "Signed" as stage, 44 as count
+```
+
+```funnel_data
+select stage as name, count as value
+from ${funnel_stages}
+```
+
+<ECharts config={
+        {
+            tooltip: {
+                formatter: '{b}: {c}'
+            },
+            series: [
+                {
+                type: 'funnel',
+                data: funnel_data,
+                }
+            ]
+        }
+    }
+/>
+``````
+
+### Pie Chart
+[Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=pie-simple)
+
+ECharts requires the data object to have a specific format. For example in the pie chart show below it expects the columns to be called “name” and “value”. The `pie_data` query in the code below renames the fields from the original query so ECharts can use them.
+
+![custom-pie](/img/custom-pie.png)
+
+``````
+```pie_query
+select "Apple" as pie, 60 as count
+union all
+select "Blueberry" as pie, 70 as count
+union all
+select "Cherry" as pie, 40 as count
+union all
+select "Pecan" as pie, 35 as count
+```
+
+```pie_data
+select pie as name, count as value
+from ${pie_query}
+```
+
+<ECharts config={
+    {
+        tooltip: {
+            formatter: '{b}: {c} ({d}%)'
+        },
+        series: [
+        {
+          type: 'pie',
+          data: pie_data,
+        }
+      ]
+      }
+    }
+/>
+``````
+
+### Donut Chart
+[Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=pie-doughnut)
+
+ECharts requires the data object to have a specific format. For example in the donut chart show below it expects the columns to be called “name” and “value”. The `donut_data` query in the code below renames the fields from the original query so ECharts can use them.
+
+![custom-donut](/img/custom-donut.png)
+
+``````
+```donut_query
+select "Glazed" as donut, 213 as count
+union all
+select "Cruller" as donut, 442 as count
+union all
+select "Jelly-filled" as donut, 321 as count
+union all
+select "Cream-filled" as donut, 350 as count
+```
+
+```donut_data
+select donut as name, count as value
+from ${donut_query}
+```
+
+<ECharts config={
+    {
+        tooltip: {
+            formatter: '{b}: {c} ({d}%)'
+        },
+      series: [
+        {
+          type: 'pie',
+          radius: ['40%', '70%'],
+          data: donut_data,
+        }
+      ]
+      }
+    }
+/>
+``````
+
 ### Advanced Chart
 [Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=scatter-anscombe-quartet)
 
