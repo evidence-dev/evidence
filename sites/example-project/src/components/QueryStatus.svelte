@@ -56,7 +56,10 @@
     >
         <span class=queryID>
             {status.id} 
-        </span>
+            {
+                status.status === "running"|| status.status === "not run" ? "running"
+                : status.status === "error" ? "error" : "done"
+            }
     </div>
     {/await}
 {/each}
