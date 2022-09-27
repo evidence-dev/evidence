@@ -1,85 +1,3 @@
-<script context="module">
-	// Build nav links
-	const rootMDFiles = import.meta.glob('/src/pages/*.md');
-	const levelOneIndexFiles = import.meta.glob('/src/pages/*/index.md');
-	const levelOneMDFiles = import.meta.glob('/src/pages/*/*.md');
-	const levelTwoIndexFiles = import.meta.glob('/src/pages/*/*/index.md');
-
-	let menu = [];
-	let pathEnd;
-	let pathSplit;
-
-	for(let path in rootMDFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		menu.push({
-			filename: pathEnd,
-			label: pathEnd.replace(/\.md$/, '').replace(/_/g, ' ').replace(/-/g, ' '),
-			href: "/" + pathEnd.replace(/^index\.md/, '').replace(/\.md$/, ''),
-			hrefUri: encodeURI("/" + pathEnd.replace(/^index\.md/, '').replace(/\.md$/, '')),
-			folder: undefined,
-			folderLabel: undefined,
-			folderHref: undefined,
-			folderHrefUri: undefined,
-			nameError: pathEnd.includes(" "),
-			folderNameError: undefined
-		})
-	}
-
-	for(let path in levelOneIndexFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		pathSplit = pathEnd.split("/")
-		menu.push({
-			filename: pathSplit[1],
-			label: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-			href: "/" + pathSplit[0],
-			hrefUri: encodeURI("/" + pathSplit[0]),
-			folder: pathSplit[0],
-			folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-			folderHref: "/" + pathSplit[0],
-			folderHrefUri: encodeURI("/" + pathSplit[0]),
-			nameError: pathEnd.includes(" "),
-			folderNameError: pathSplit[0].includes(" ")
-		})
-	}
-
-	for(let path in levelOneMDFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		pathSplit = pathEnd.split("/")
-		if(!path.includes("/index.md") && !path.includes("[")){
-			menu.push({
-				filename: pathSplit[1],
-				label: pathSplit[1].replace(/\.md$/, '').replace(/_/g, ' ').replace(/-/g, ' ').replace(/.*\//,''),
-				href: "/" + pathEnd.replace(/\.md$/, ''),
-				hrefUri: encodeURI("/" + pathEnd.replace(/\.md$/, '')),
-				folder: pathSplit[0],
-				folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-				folderHref: "/" + pathEnd.replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, ''),
-				folderHrefUri: encodeURI("/" + pathSplit[0]),
-				nameError: pathEnd.includes(" "),
-				folderNameError: pathSplit[0].includes(" ")
-			})
-		}
-	} 
-
-	for(let path in levelTwoIndexFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		pathSplit = pathEnd.split("/")
-		menu.push({
-			filename: pathSplit[2],
-			label: pathSplit[1].replace(/_/g, ' ').replace(/-/g, ' '),
-			href: "/" + pathSplit[0] + "/" + pathSplit[1],
-			hrefUri: encodeURI("/" + pathSplit[0] + "/" + pathSplit[1]),
-			folder: pathSplit[0],
-			folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-			folderHref: "/" + pathSplit[0],
-			folderHrefUri: encodeURI("/" + pathSplit[0]),
-			nameError: pathEnd.includes(" "),
-			folderNameError: pathSplit[0].includes(" ")
-		})
-	}
-
-</script>
-
 <script>
     import { page } from '$app/stores';
 	import { dev } from '$app/env';
@@ -87,10 +5,7 @@
 	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte'
 	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
 
-	export const load = async() => {
-		const menu = await Promise.all(menu)
-		return { props: { menu } }
-	}
+	export let menu;
 
 	let folders = [...new Set(menu.map(item => item.folder))];
 	folders = folders.filter(d => d !== undefined);

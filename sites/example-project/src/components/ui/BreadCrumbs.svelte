@@ -3,6 +3,8 @@
     import { showQueries } from './stores.js'
     import { pageHasQueries } from '@evidence-dev/components/ui/stores';
 
+    export let menu;
+
     $: pathArray = $page.path.split('/').slice(1)
 
     const buildCrumbs = function (pathArray) {
@@ -26,6 +28,12 @@
             crumbs.splice(1, crumbs.length-3, {href: upOne, title:'...'})
         }
 
+        // Check if path is in file system - if not, avoid creating a link to that page
+        crumbs.forEach((path, i) => {
+            if(!menu.map(d => d.href).includes(path.href)){
+                path.href = '';
+            }
+        })
         return crumbs   
     }
 

@@ -9,7 +9,7 @@
     "test": "uvu test test.js"
   },
   "dependencies": {
-    "snowflake-sdk": "1.6.9",
+    "snowflake-sdk": "1.6.13",
     "@evidence-dev/db-commons": "workspace:^"
   },
   "devDependencies": {

@@ -42,7 +42,7 @@
             optional: false,
             override: false,
             placeholder: "my-database",
-            value: credentials.warehouse,
+            value: credentials.database,
             dataTestId: "snowflakeDatabase"
         },
         {
