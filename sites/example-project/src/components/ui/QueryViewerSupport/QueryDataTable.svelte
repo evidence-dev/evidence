@@ -3,6 +3,7 @@
     import DownloadData from '../DownloadData.svelte'
     import { getContext} from 'svelte';
     import getColumnSummary from '$lib/modules/getColumnSummary.js';
+    import getParsedDate from '$lib/modules/getParsedDate.js';
     import { formatValue } from '$lib/modules/formatting.js';
     import { PAGE_QUERY_RESULTS } from '$lib/modules/globalContexts.js';
 
@@ -44,6 +45,15 @@
                   type: column.evidenceType
                 });
             });
+          }
+
+          let dateCols = columnSummary.filter(d => d.type === "date")
+          dateCols = dateCols.map(d => d.id);
+
+          if(dateCols.length > 0){
+            for(let i = 0; i < dateCols.length; i++){
+              data = getParsedDate(data, dateCols[i]);
+            }
           }
         }
     }
