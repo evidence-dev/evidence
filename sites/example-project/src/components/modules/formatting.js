@@ -176,7 +176,7 @@ function applyFormatting(
       let typedValue;
       try {
         if (columnFormat.valueType === "date" && typeof value === "string") {
-          typedValue = new Date(value);
+          typedValue = new Date(value+"T00:00");
         } else if (
           columnFormat.valueType === "number" &&
           typeof value !== "number" &&
