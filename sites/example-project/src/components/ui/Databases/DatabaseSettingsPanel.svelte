@@ -2,6 +2,7 @@
     import BigqueryForm from '@evidence-dev/components/ui/Databases/BigqueryForm.svelte'
     import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
     import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
+    import RedshiftForm from '@evidence-dev/components/ui/Databases/RedshiftForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
     import SqliteForm from '@evidence-dev/components/ui/Databases/SqliteForm.svelte'
     import { slide, blur } from 'svelte/transition'
@@ -20,6 +21,7 @@
 		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/walkthroughs/bigquery"},
 		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
+        {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
         {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm}
 	];
