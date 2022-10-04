@@ -1,7 +1,7 @@
 <script>
     import getColumnSummary from "$lib/modules/getColumnSummary.js";
     import { formatValue } from "$lib/modules/formatting.js";
-    import getParsedDate from "$lib/modules/getParsedDate.js";
+    import { convertColumnToDate } from "$lib/modules/dateParsing.js";
     import checkInputs from "$lib/modules/checkInputs.js";
     import PulseNumber from "./PulseNumber.svelte";
     import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
@@ -52,7 +52,7 @@
                 dateCols = dateCols.map(d => d.id);
                 if(dateCols.length > 0){
                     for(let i = 0; i < dateCols.length; i++){
-                    data = getParsedDate(data, dateCols[i]);
+                    data = convertColumnToDate(data, dateCols[i]);
                     }
                 }
 

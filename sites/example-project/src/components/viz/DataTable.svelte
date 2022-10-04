@@ -5,7 +5,7 @@
     import ErrorChart from './ErrorChart.svelte'
     import checkInputs from '$lib/modules/checkInputs.js'
     import getColumnSummary from '$lib/modules/getColumnSummary.js';
-    import getParsedDate from '$lib/modules/getParsedDate.js';
+    import { convertColumnToDate } from '$lib/modules/dateParsing.js';
     import { PAGE_QUERY_RESULTS } from '$lib/modules/globalContexts.js';
     import DownloadData from '$lib/ui/DownloadData.svelte'
 
@@ -59,7 +59,7 @@
 
       if(dateCols.length > 0){
         for(let i = 0; i < dateCols.length; i++){
-          data = getParsedDate(data, dateCols[i]);
+          data = convertColumnToDate(data, dateCols[i]);
         }
       }
 

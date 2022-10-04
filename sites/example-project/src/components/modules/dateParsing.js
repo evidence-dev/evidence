@@ -1,6 +1,6 @@
 import {tidy, mutate} from "@tidyjs/tidy";
 
-export function parseDate(date){
+export function standardizeDateString(date){
     // Parses an individual string into a JS date object
 
     let dateSplit = date.split(" ")
@@ -29,12 +29,12 @@ export function parseDate(date){
     return date
 }
 
-export default function getParsedDate(data, column) {
+export function convertColumnToDate(data, column) {
     // Replaces a date column's string values with JS date objects, using the parseDate function
 
     data = tidy(
         data,
-        mutate({ [column]: (d) => parseDate(d[column])}),
+        mutate({ [column]: (d) => new Date(standardizeDateString(d[column]))}),
     );
 
     return data;
