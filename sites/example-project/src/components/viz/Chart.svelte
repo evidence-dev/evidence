@@ -14,6 +14,7 @@
         import getDistinctValues from '../modules/getDistinctValues';
         import getStackPercentages from '../modules/getStackPercentages.js';
         import getSortedData from '../modules/getSortedData.js';
+        import { standardizeDateColumn } from '../modules/dateParsing.js';
         import { formatAxisValue } from '../modules/formatting';
         import formatTitle from '../modules/formatTitle.js';
         import { formatValue } from '../modules/formatting.js';
@@ -151,6 +152,10 @@
         let inputCols = [];
         let optCols = [];
         let i;
+
+        // Date String Handling:
+        let dateCols;
+        let columnSummaryArray;
 
 let error;
 try{
@@ -301,6 +306,21 @@ try{
                 : getSortedData(data, x, true) 
             : data;
          
+    // ---------------------------------------------------------------------------------------
+    // Standardize date columns
+    // ---------------------------------------------------------------------------------------
+
+      columnSummaryArray = getColumnSummary(data, "array");
+      dateCols = columnSummaryArray.filter(d => d.type === "date")
+      dateCols = dateCols.map(d => d.id);
+
+      if(dateCols.length > 0){
+        for(let i = 0; i < dateCols.length; i++){
+          data = standardizeDateColumn(data, dateCols[i]);
+        }
+      }
+
+
     // ---------------------------------------------------------------------------------------
     // Get format codes for axes
     // ---------------------------------------------------------------------------------------
