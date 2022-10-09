@@ -5,7 +5,7 @@ hide_table_of_contents: false
 title: Writing Queries
 ---
 
-When you open a page in dev mode, Evidence runs all of the queries on the page. You can see the progress of these queries printed in the console. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries. 
+When you open a page in dev mode, Evidence runs all of the queries on the page. You can see the progress of these queries printed in the console. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries.
 
 ## Query Blocks
 You can include SQL queries in your page using a markdown code block (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
@@ -13,7 +13,8 @@ You can include SQL queries in your page using a markdown code block (starting a
 ````markdown
 ```sales_by_country
 select country, sum(sales) as sales
-from international_transactions 
+from international_transactions
+group by 1
 ```
 ````
 
