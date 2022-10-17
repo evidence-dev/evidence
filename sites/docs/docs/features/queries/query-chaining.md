@@ -43,7 +43,7 @@ from (
         sum(sales) as sales
     from production.daily_sales
     group by 1
-) as t
+)
 ```
 
 ## Presentation
@@ -53,6 +53,8 @@ You can choose whether you want to see the compiled or written SQL inside the qu
 ## Other
 
 The order that queries appear on the page doesn't matter to the SQL compiler. You can reference queries that appear before or after the query that you are authoring.
+
+Some SQL dialects require sub-queries to be aliased, including Postgres and MySQL. E.g. `from ${sales_by_region} as sales_by_region`.
 
 The SQL compiler detects circular and missing references. If a query includes either a circular reference or a missing reference, Evidence will display an error that looks like a syntax error in a normal SQL query. Queries with compiler errors are not sent to your database.
 
