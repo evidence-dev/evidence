@@ -8,7 +8,7 @@ import {fileURLToPath} from 'url';
 import sade from 'sade';
 
 const populateTemplate = function() {
-    // Create the template project in .evidence/dev 
+    // Create the template project in .evidence/template
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
 
@@ -81,6 +81,7 @@ prog
     populateTemplate()
     const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
     const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
+    const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/')
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
@@ -95,6 +96,7 @@ prog
       child.kill()
       watcher.close()
       staticWatcher.close()
+      componentWatcher.close()
     })
 
   }); 
@@ -106,6 +108,7 @@ prog
     populateTemplate()
     const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
     const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
+    const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/')
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 
@@ -131,6 +134,7 @@ prog
       child.kill();
       watcher.close();
       staticWatcher.close();
+      componentWatcher.close();
       if (code !== 0) {
         throw `Build process exited with code ${code}`;
       }
