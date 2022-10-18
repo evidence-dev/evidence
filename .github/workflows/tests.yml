@@ -14,9 +14,6 @@ jobs:
 
   Tests:
     runs-on: ${{ matrix.os }}
-    needs: [approve]
-    environment:
-      name: Integrate Pull Request
     timeout-minutes: 20
     strategy:
       fail-fast: false
