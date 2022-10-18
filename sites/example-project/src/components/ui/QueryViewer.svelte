@@ -22,37 +22,47 @@
     $showSQL = !$showSQL
   }
 
-  // Query text & Compiler Toggle 
-  let queries = pageQueries.filter(d => d.id === queryID)
-  let inputQuery = queries[0].inputQueryString
-  let compiledQuery = queries[0].compiledQueryString
-  let showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
-  let showCompiled = showCompilerToggle
-      // Pre-calculate the container height for smooth slide transition 
-  let codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30)
+  const toggleResults = function() {
+      if(!error && nRecords > 0){
+        $showResults = !$showResults
+      }
+  }
 
-  // Status Bar & Results Toggle 
-  let error = queryResult[0]?.error_object?.error
-  let nRecords = null
-  let nProperties = null
-  // Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
+  // Query text & Compiler Toggle 
   let showResults = writable(browser && (localStorage.getItem('showResults_'.concat(queryID))==='true'  || false));
   showResults.subscribe((value) => browser && (localStorage.setItem('showResults_'.concat(queryID),(value))));
-  
 
-  if(!error){
-    nRecords = queryResult.length
-    if(nRecords > 0){
-      nProperties = Object.keys(queryResult[0]).length
-    }
-  }
+  let queries
+  let inputQuery
+  let compiledQuery
+  let showCompilerToggle
+  let showCompiled = true 
+  let codeContainerHeight
+  let error
+  let nRecords
+  let nProperties
   
-  const toggleResults = function() {
-    if(!error && nRecords > 0){
-      $showResults = !$showResults
+  $: {
+    queries = pageQueries.filter(d => d.id === queryID)
+    inputQuery = queries[0].inputQueryString
+    compiledQuery = queries[0].compiledQueryString
+    showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
+    // Pre-calculate the container height for smooth slide transition 
+    codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30)
+  
+    // Status Bar & Results Toggle 
+    error = queryResult[0]?.error_object?.error
+    nRecords = null
+    nProperties = null
+    // Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
+    if(!error){
+      nRecords = queryResult.length
+      if(nRecords > 0){
+        nProperties = Object.keys(queryResult[0]).length
+      }
     }
+    
   }
-
   
  </script>
 
@@ -72,9 +82,9 @@
           {#if $showSQL}
             <div class=code-container transition:slide|local style={`height: ${codeContainerHeight}em;`}>
               {#if showCompiled}
-                <Prism language="sql" code={compiledQuery}/>
+                <Prism code={compiledQuery}/>
               {:else}
-                <Prism language="sql" code={inputQuery}/>
+                <Prism code={inputQuery}/>
               {/if}
             </div>  
           {/if}
