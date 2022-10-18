@@ -1,5 +1,15 @@
 # evidence-test-environment
 
+## 1.0.26
+
+### Patch Changes
+
+- d12e700: Support adding local components from a /components/ directory
+- 2fbf018: Update docs and test-env
+- Updated dependencies [d12e700]
+- Updated dependencies [2fbf018]
+  - @evidence-dev/evidence@5.0.11
+
 ## 1.0.25
 
 ### Patch Changes
