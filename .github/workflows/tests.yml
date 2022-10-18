@@ -2,8 +2,8 @@ name: Tests
 
 on:
   pull_request:
-
-jobs:
+    branches: [ main ]
+  
   Tests:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
