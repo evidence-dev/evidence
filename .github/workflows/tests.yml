@@ -7,12 +7,7 @@ on:
 
 jobs:
   approve:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [14, 16]
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Approve
         run: echo "For security reasons, all pull requests need to be approved first before running any automated CI."
