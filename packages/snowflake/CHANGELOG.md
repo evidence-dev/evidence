@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 0.1.3
+
+### Patch Changes
+
+- aa70947: Updated version of snowflake sdk used in connector
+
 ## 0.1.2
 
 ### Patch Changes
