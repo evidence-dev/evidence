@@ -1,7 +1,7 @@
 name: Tests
 
 on:
-  pull_request_target:
+  pull_request:
     branches: 
       - main
 
@@ -27,7 +27,7 @@ jobs:
       - run: git config --global core.autocrlf false
       - uses: actions/checkout@v3
         with:
-          ref: "refs/pull/${{ github.event.number }}/merge"
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: pnpm/action-setup@v2.2.1
         with:
           version: 6.23.2
