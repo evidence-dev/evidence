@@ -1,6 +1,6 @@
 <script>
     export let query
-    import BarChart from '$lib/viz/BarChart.svelte'
+    import BarChart from '@evidence-dev/components/viz/BarChart.svelte'
 </script>
 
 <p>Here is a BarChart in a Component, with some accompanying text. Components stored in the /components/ folder will be included in your project.</p>
