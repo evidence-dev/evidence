@@ -9,7 +9,7 @@ jobs:
   approve:
     runs-on: ubuntu-latest
     steps:
-      - name: approve
+      - name: Approve
         run: echo "For security reasons, all pull requests need to be approved first before running any automated CI."
 
   Tests:
@@ -26,6 +26,8 @@ jobs:
     steps:
       - run: git config --global core.autocrlf false
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: pnpm/action-setup@v2.2.1
         with:
           version: 6.23.2
