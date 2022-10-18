@@ -4,7 +4,7 @@ hide_table_of_contents: false
 title: Parameterized Pages
 ---
 
-A parameter is included in a URL for a page to reference a specific item in a dataset (e.g., a department, region, product, etc.). This parameter can then be used to filter queries and present data specific to the item in the parameter.
+A parameter is included in a URL for a page to reference a specific item in a dataset (e.g., a department, region, product, etc.). This parameter can then be used to filter queries and present data specific to the item in the parameter
 
 A page's parameter can be accessed through this variable:
 ```markdown
