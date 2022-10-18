@@ -1,21 +1,11 @@
 name: Tests
 
 on:
-  pull_request_target:
-    branches: [ main ]
+  pull_request:
 
 jobs:
-  approve: 
-    runs-on: ubuntu-latest
-    steps:
-    - name: Approve
-      run: echo For security reasons, all pull requests need to be approved first before running any automated CI.
-
   Tests:
     runs-on: ${{ matrix.os }}
-    needs: [ approve ]
-    environment:
-      name: Integrate Pull Request
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -25,9 +15,6 @@ jobs:
     steps:
       - run: git config --global core.autocrlf false
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-          ref: ${{ github.event.pull_request.head.sha }}
       - uses: pnpm/action-setup@v2.2.1
         with:
           version: 6.23.2
