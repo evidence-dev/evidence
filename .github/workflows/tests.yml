@@ -2,7 +2,8 @@ name: Tests
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: 
+      - master
   
   Tests:
     runs-on: ${{ matrix.os }}
