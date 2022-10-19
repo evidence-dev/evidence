@@ -46,21 +46,23 @@
 <div class=container>
 {#each statuses as status (status.id)}
 {#await loadingPromise}
+    {#if status.status != "not run" && status.status != "from cache"}
     <div 
         id=toast 
         class:running={status.status === "running"|| status.status === "not run"} 
         class:error={status.status === "error"} 
         class:done={status.status === "done" || status.status === "from cache"} 
         in:scale 
-        out:fly="{{ x: 1000, duration: 1000, delay:1200, opacity: 0.8 }}"
+        out:fly="{{ x: 1000, duration: 1000, delay:1100, opacity: 0.8 }}"
     >
         <span class=queryID>
             {status.id} 
-            {
-                status.status === "running"|| status.status === "not run" ? "running"
-                : status.status === "error" ? "error" : "done"
-            }
+        </span>
+        <span class=status>
+            {status.status}
+        </span>
     </div>
+    {/if}
     {/await}
 {/each}
 </div>
@@ -74,7 +76,7 @@
         right:0;
         bottom: 0;
         margin:1.5em 2.5em;
-        width: 10em;
+        width: 12em;
     }
 
     #toast {
@@ -117,5 +119,9 @@
 
     span {
         cursor: pointer;
+    }
+
+    span.queryID {
+        font-weight: bold;
     }
 </style>
