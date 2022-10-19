@@ -213,11 +213,18 @@ function highlighter(code, lang) {
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
-    <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
+    {#if data.${lang} }
+        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
+    {:else}
+        Loading... 
+    {/if}
     `;
 }
 
+// 
+
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
+    console.log('preprocess')
     let queryIdsByFile = {};
     return [
         {
