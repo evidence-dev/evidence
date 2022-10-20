@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 1.3.9
+
+### Patch Changes
+
+- fb3b5ec: Make article widths consistent across breakpoint
+- 245c76f: Fixes bug related to nulls in date columns
+
 ## 1.3.8
 
 ### Patch Changes
