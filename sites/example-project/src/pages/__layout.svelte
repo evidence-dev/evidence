@@ -200,7 +200,7 @@ aside.toc {
 	}
 
 	article {
-		max-width: 80ch;
+		max-width: 70ch;
 	}
 
 	.settings-article {
