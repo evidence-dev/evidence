@@ -52,4 +52,5 @@ Paste version output here
 - [ ] Redshift
 - [ ] MySQL
 - [ ] SQLite
+- [ ] DuckDB
 - [ ] Other (please specify)
