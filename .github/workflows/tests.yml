@@ -10,10 +10,53 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Approve
-        run: echo "For security reasons, all pull requests need to be approved first before running any automated CI."
+        run: echo "For security reasons, all pull requests from forks need to be approved first before running any automated CI."
 
-  Tests:
+  Tests-sources:
     runs-on: ${{ matrix.os }}
+    if: ${{ github.actor == 'archiewood' || github.actor == 'mcrascal' || github.actor == 'ud3sh' || github.actor == 'hughess'}}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14, 16]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    steps:
+      - run: git config --global core.autocrlf false
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 6.23.2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+        env:
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_SSL: ${{ secrets.POSTGRES_SSL }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USERNAME: ${{ secrets.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          BIGQUERY_PROJECT_ID: ${{ secrets.BIGQUERY_PROJECT_ID }}
+          BIGQUERY_CLIENT_EMAIL: ${{ secrets.BIGQUERY_CLIENT_EMAIL }}
+          BIGQUERY_PRIVATE_KEY:  ${{ secrets.BIGQUERY_PRIVATE_KEY }}
+          SEND_ANONYMOUS_USAGE_STATS:  ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
+          SQLITE_FILENAME: ":memory:"
+
+
+
+
+  Tests-forks:
+    runs-on: ${{ matrix.os }}
+    if: ${{ github.actor != 'archiewood' && github.actor != 'mcrascal' && github.actor != 'ud3sh' && github.actor != 'hughess'}}
     needs: [ approve ]
     environment:
       name: Integrate Pull Request
@@ -52,3 +95,6 @@ jobs:
           BIGQUERY_PRIVATE_KEY:  ${{ secrets.BIGQUERY_PRIVATE_KEY }}
           SEND_ANONYMOUS_USAGE_STATS:  ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
           SQLITE_FILENAME: ":memory:"
+
+
+
