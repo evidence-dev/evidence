@@ -26,7 +26,7 @@ Evidence supports [loops](/features/advanced/templating#loops), [conditional log
 ## Who is it for? 
 You don't need to be a web developer to use Evidence. The only skills you need to get started are the ability to write SQL and markdown.
 
-If you're ready to get started, [install Evidence &#8594](/getting-started/install-evidence)
+If you're ready to get started, [install Evidence &#8594](/getting-started/install-evidence).
 
 :::note Public Alpha
 Evidence is in public alpha: there will be bugs and things will change before we reach a stable release.
