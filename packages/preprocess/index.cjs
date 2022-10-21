@@ -8,7 +8,9 @@ const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 
 const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1].replace(".md","").replace("/index","")
+    console.log(filename)
+    let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replaceAll("/index","")
+    console.log(route)
     let routeHash = md5(route)
     return routeHash
 }
@@ -191,17 +193,11 @@ const updateExtractedQueriesDir = function(content, filename){
         removeSync(queryDir)
         return [];
     }
-    let queryHash = md5(JSON.stringify(queries))
-    if (fs.existsSync(`${queryDir}/${queryHash}.json`)){
-        return queryIds;
-    }
     if (queries.length > 0) {
         if(!fs.existsSync(queryDir)){
             fs.mkdirSync(queryDir)
-        }else{
-            emptyDirSync(queryDir)
         }
-        writeJSONSync(`${queryDir}/${queryHash}.json`, queries);
+        writeJSONSync(`${queryDir}/queries.json`, queries, );
     }
     return queryIds;
 }
@@ -224,7 +220,6 @@ function highlighter(code, lang) {
 // 
 
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
-    console.log('preprocess')
     let queryIdsByFile = {};
     return [
         {

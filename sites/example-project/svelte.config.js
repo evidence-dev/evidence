@@ -1,5 +1,6 @@
 import evidencePreprocess from '@evidence-dev/preprocess'
 import adapter from '@sveltejs/adapter-static';
+import FullReload from 'vite-plugin-full-reload'
 
 /** @type {import('@sveltejs/kit').Config} */
 

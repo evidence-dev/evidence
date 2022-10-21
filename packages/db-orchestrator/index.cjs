@@ -80,11 +80,10 @@ const runQueries = async function (routeHash, dev) {
     const runQuery = await importDBAdapter(settings)
 
     let routePath = `./.evidence-queries/extracted/${routeHash}`
-    let queryFile = `${routePath}/${readdirSync(routePath)}`
+    let queryFile = `${routePath}/queries.json`
     let queries = readJSONSync(queryFile, { throws: false }) 
-
     
-    if (queries.length > 0) {
+    if (queries && queries.length > 0) {
         reportProgress('started')
         let data = {}
         data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 

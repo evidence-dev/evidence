@@ -42,8 +42,11 @@
     })
 </script>
 
-
 <div class=container>
+    {endpoint}
+    {$page.path}
+    {JSON.stringify($page)}
+    
 {#each statuses as status (status.id)}
 {#await loadingPromise}
     {#if status.status != "not run" && status.status != "from cache"}
@@ -76,7 +79,7 @@
         right:0;
         bottom: 0;
         margin:1.5em 2.5em;
-        width: 12em;
+        width: 20em;
     }
 
     #toast {
