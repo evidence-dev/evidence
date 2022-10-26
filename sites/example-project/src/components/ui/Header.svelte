@@ -2,11 +2,12 @@
     import BreadCrumbs from './BreadCrumbs.svelte';
     import PrintButton from './PrintButton.svelte';
     export let menu;
+    export let folderList;
 </script>
 
 <header>
     <div class="breadcrumb-container">
-        <BreadCrumbs {menu}/>
+        <BreadCrumbs {menu} {folderList}/>
         <PrintButton/>
     </div>
 </header>
