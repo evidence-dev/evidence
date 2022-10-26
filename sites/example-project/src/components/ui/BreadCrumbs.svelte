@@ -49,7 +49,7 @@
         <span>
             {#each crumbs as crumb, i}
                 {#if i > 0 }
-                <a href={crumb.href}>&emsp13;/&emsp13;{crumb.title}</a>  
+                &emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>  
                 {:else}
                 <a href={crumb.href}>{crumb.title}</a>  
                 {/if}
