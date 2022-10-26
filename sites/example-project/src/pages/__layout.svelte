@@ -80,6 +80,36 @@
 		})
 	}
 
+	let folders = [...new Set(menu.map(item => item.folder))];
+	folders = folders.filter(d => d !== undefined);
+
+	let fileCount;
+	let folderList = [];
+	let folderObj;
+	let folderLink;
+	let contents;
+
+	let folderLab;
+	let folderHref;
+	let folderHrefUri;
+	let indexFileCount;
+	let folderNameError;
+	
+	for(let i = 0; i < folders.length; i++){
+		contents = menu.filter(d => d.folder === folders[i]);
+
+		folderLab = contents[0].folderLabel;
+		folderHref = contents[0].folderHref;
+		folderHrefUri = contents[0].folderHrefUri;
+		folderNameError = contents[0].folderNameError;
+
+		fileCount = contents.filter(d => d.href !== folderHref).length;
+		indexFileCount = contents.filter(d => d.href === folderHref).length;
+		folderLink = contents.filter(d => d.href === folderHref).length > 0;
+		folderObj = {folder: folders[i], folderLabel: folderLab, folderHref: folderHref, folderHrefUri: folderHrefUri, fileCount: fileCount, indexFileCount: indexFileCount, folderLink: folderLink, folderNameError: folderNameError}
+		folderList.push(folderObj)
+	}
+
 </script>
 
 <script>
@@ -107,11 +137,11 @@
 <div class="grid">
 	{#if $page.path !== '/settings'}
 		<div class="header-bar">
-			<Header {menu}/>
+			<Header {menu} {folderList}/>
 			<Hamburger bind:open/>
 		</div>
 	{/if}
-	<Sidebar bind:open {menu}/> 
+	<Sidebar bind:open {menu} {folderList}/> 
 	<main in:blur|local>
 	  <div class=content class:settings-content={$page.path === '/settings'}>
 		<article class:settings-article={$page.path === '/settings'}>
