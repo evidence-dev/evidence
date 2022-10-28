@@ -8,9 +8,7 @@ const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 
 const getRouteHash = function(filename){
-    console.log(filename)
     let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replaceAll("/index","")
-    console.log(route)
     let routeHash = md5(route)
     return routeHash
 }
@@ -22,45 +20,38 @@ const hasQueries = function(filename){
 
 const createModuleContext = function(filename){
     let routeHash = getRouteHash(filename)
-    let moduleContext = "";
-
-    let loadCustomSettingsSnippet = `
-        const customFormattingSettingsRes = await fetch('/api/customFormattingSettings.json');
-        const { customFormattingSettings } = await customFormattingSettingsRes.json();
-    `
-    if(hasQueries(filename)){
-        moduleContext = 
-            ` 
-            export async function load({fetch}) {
-                const res = await fetch('/api/${routeHash}.json');
-                const {data} = await res.json();
-                ${loadCustomSettingsSnippet}
-                return {
-                    props: {
-                        data,
-                        customFormattingSettings
-                    }
+    let moduleContext = 
+        ` 
+        export async function load({fetch}) {
+            const res = await fetch('/api/${routeHash}.json');
+            const {data} = await res.json();
+            const customFormattingSettingsRes = await fetch('/api/customFormattingSettings.json');
+            const { customFormattingSettings } = await customFormattingSettingsRes.json();
+            return {
+                props: {
+                    data,
+                    customFormattingSettings
                 }
             }
-            `
-    } else {
-        moduleContext = `
-            export async function load({fetch}) {
-                ${loadCustomSettingsSnippet}
-                return {
-                    props: {
-                        customFormattingSettings
-                    }
-                }
-            }
+        }
         `
-    }
+
     return moduleContext
 } 
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
     let routeHash = getRouteHash(filename)
+
+    let queryDeclarations = ''
+    
+    if(hasQueries(filename)) {
+        queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
+        .map(id => `let ${id} 
+        $: data, ${id} = data.${id};`)
+        .join('\n') || '';  
+    } 
+
     let defaultProps = `
         import { page } from '$app/stores';
         import { setContext, getContext } from 'svelte';
@@ -83,39 +74,27 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
+        import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
         import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
 
-        let routeHash = '${routeHash}';
+        export let data = {};
         export let customFormattingSettings;
+
+        if(data){
+            console.log("big time data")
+        }
+        
+        let routeHash = '${routeHash}';
 
         setContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, {
             getCustomFormats: () => {
                 return customFormattingSettings.customFormats || [];
             }
         });
+
+        ${queryDeclarations}
         `
-  
-    if(hasQueries(filename)){
-        let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
-                                         .map(id => `let ${id} 
-                                        $: data, ${id} = data.${id};`)
-                                         .join('\n') || '';
-        defaultProps = `
-            export let data;
-
-            pageHasQueries.update(value => value = true);
-
-            ${queryDeclarations}
-
-            import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
-            ${defaultProps}
-        `
-    } else {
-        defaultProps = `
-        pageHasQueries.update(value => value = false)
-        ${defaultProps}
-    `
-    }
+        
     return defaultProps
 }
 
@@ -210,9 +189,7 @@ function highlighter(code, lang) {
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
     {#if data.${lang} }
-        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
-    {:else}
-        Loading... 
+        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/> 
     {/if}
     `;
 }

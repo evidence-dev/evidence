@@ -25,11 +25,15 @@
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    async function checkStatusAndInvalidate() {
+    async function checkStatusAndInvalidate(priorStatuses) {
         statuses = await getStatus()
+        // Check if queries have been removed from the page entirely
+        if(priorStatuses.length > 0 && statuses.length === 0){
+            loadingPromise = invalidate(`/api/${endpoint}.json`).then(() => timeout(1000))
+        }
         statuses.forEach(query => {
             if(query.status === "not run") {
-                loadingPromise = invalidate(`/api/${endpoint}.json`).then(resolve => timeout(1000))
+                loadingPromise = invalidate(`/api/${endpoint}.json`).then(() => timeout(1000))
             }            
         });
         return true 
@@ -37,16 +41,12 @@
 
     onMount(async () => {
         setInterval(async () => {
-            checkStatusAndInvalidate()
-        }, 100)
+            checkStatusAndInvalidate(statuses)
+        }, 500)
     })
 </script>
 
 <div class=container>
-    {endpoint}
-    {$page.path}
-    {JSON.stringify($page)}
-    
 {#each statuses as status (status.id)}
 {#await loadingPromise}
     {#if status.status != "not run" && status.status != "from cache"}

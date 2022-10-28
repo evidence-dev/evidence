@@ -1,5 +1,5 @@
 <script>
-  import { slide } from 'svelte/transition';
+  import { slide, blur } from 'svelte/transition';
   import { dev } from '$app/env';
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
@@ -66,7 +66,7 @@
   
  </script>
 
- <div> 
+ <div in:blur|local> 
  {#if $showQueries}
     <!-- Title -->
     <div class="container" transition:slide|local>
