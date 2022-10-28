@@ -34,12 +34,19 @@ const getProfile = async () => {
 const logEvent = async (eventName, dev, settings) => {
     try {
         let usageStats = settings ? settings.send_anonymous_usage_stats ?? 'yes' : process.env["SEND_ANONYMOUS_USAGE_STATS"] ?? process.env["send_anonymous_usage_stats"] ?? 'yes'
-        let repo ;
+        let repo;
+        let database;
         
-        if(settings && settings.gitRepo) {
-            repo = md5(settings.gitRepo)
-        };
-        
+        if(settings){
+            if(settings.gitRepo) {
+                repo = md5(settings.gitRepo)
+            }
+
+            if(settings.database){
+                database = settings.database;
+            }
+        }
+
         if(usageStats === 'yes'){
             projectProfile = await getProfile(); 
             var analytics = new Analytics(wK);
@@ -48,7 +55,8 @@ const logEvent = async (eventName, dev, settings) => {
                 event: eventName,
                 properties: {
                   devMode: dev,
-                  repoHash: repo  
+                  repoHash: repo,
+                  database: database  
                 }
               });
         }
