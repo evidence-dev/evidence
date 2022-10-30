@@ -42,4 +42,5 @@ jobs:
           BIGQUERY_PRIVATE_KEY:  ${{ secrets.BIGQUERY_PRIVATE_KEY }}
           SEND_ANONYMOUS_USAGE_STATS:  ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
           SQLITE_FILENAME: ":memory:"
+          DUCKDB_FILENAME: ":memory:"
 
