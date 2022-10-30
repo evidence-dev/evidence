@@ -283,7 +283,6 @@ importers:
       ssf: ^0.11.2
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.2
-      vite-plugin-live-reload: ^3.0.1
     dependencies:
       '@evidence-dev/telemetry': link:../../packages/telemetry
       '@tidyjs/tidy': 2.4.4
@@ -297,7 +296,6 @@ importers:
       ssf: 0.11.2
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.2
-      vite-plugin-live-reload: 3.0.1
     devDependencies:
       cross-env: 7.0.3
       fs-extra: 10.0.1
@@ -14815,13 +14813,6 @@ packages:
     dependencies:
       chalk: 4.1.2
       picomatch: 2.3.0
-
-  /vite-plugin-live-reload/3.0.1:
-    resolution: {integrity: sha512-ERZTRHnU50R7nRfKVMCNrkSyXIcxKv87INWmPPmnOF3fcaOKFbLQ5zdO6hfPb6bl03fmENtMByfz0OiEAsFF+g==}
-    dependencies:
-      chokidar: 3.5.3
-      picocolors: 1.0.0
-    dev: false
 
   /vite/2.9.5:
     resolution: {integrity: sha512-dvMN64X2YEQgSXF1lYabKXw3BbN6e+BL67+P3Vy4MacnY+UzT1AfkHiioFSi9+uiDUiaDy7Ax/LQqivk6orilg==}
