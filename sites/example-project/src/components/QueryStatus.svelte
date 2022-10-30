@@ -1,6 +1,5 @@
 <script>
-    import {blur, fade, fly, scale, slide} from "svelte/transition"
-    import { flip } from 'svelte/animate';
+    import {fly, scale} from "svelte/transition"
     import { page } from "$app/stores";
     import { invalidate } from '$app/navigation';
     import {onMount} from 'svelte'
@@ -31,18 +30,20 @@
         if(priorStatuses.length > 0 && statuses.length === 0){
             loadingPromise = invalidate(`/api/${endpoint}.json`).then(() => timeout(1000))
         }
-        statuses.forEach(query => {
-            if(query.status === "not run") {
-                loadingPromise = invalidate(`/api/${endpoint}.json`).then(() => timeout(1000))
-            }            
-        });
+        if(statuses.length > 0) {
+            statuses.forEach(query => {
+                if(query.status === "not run") {
+                    loadingPromise = invalidate(`/api/${endpoint}.json`).then(() => timeout(1000))
+                }            
+            });
+        }
         return true 
     }
 
     onMount(async () => {
         setInterval(async () => {
             checkStatusAndInvalidate(statuses)
-        }, 500)
+        }, 100)
     })
 </script>
 

@@ -4,7 +4,7 @@
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
-  import {showQueries} from './stores.js'
+  import {showQueries} from '@evidence-dev/components/ui/stores'
   import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
   import { writable } from 'svelte/store';
   import { browser } from '$app/env';
