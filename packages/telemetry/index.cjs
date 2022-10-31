@@ -56,7 +56,8 @@ const logEvent = async (eventName, dev, settings) => {
                 properties: {
                   devMode: dev,
                   repoHash: repo,
-                  database: database  
+                  database: database, // logs database type (postgres, snowflake, etc.)
+                  operatingSystem: process.platform // logs operating system name
                 }
               });
         }

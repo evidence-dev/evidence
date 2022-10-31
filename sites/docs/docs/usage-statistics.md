@@ -7,6 +7,8 @@ We collect basic usage information in order to understand how many people are ac
 * Query Timestamp
 * Query Type (query, cache, or error)
 * Mode (dev mode or production mode)
+* Database Connection Type (postgres, snowflake, etc.)
+* Operating System (windows, mac, etc.)
 
 This information is crucial for the project's development, but you can turn it off by adding the below to your `evidence.config` file:
 
