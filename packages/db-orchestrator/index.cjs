@@ -135,7 +135,7 @@ const runQueries = async function (routeHash, dev) {
 }
 
 
-const testConnection = async function () {
+const testConnection = async function (dev) {
     let query = {
         id: "Connection Test",
         compiledQueryString: "select 100 as num"
@@ -151,10 +151,12 @@ const testConnection = async function () {
         readline.cursorTo(process.stdout, 0);
         process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
         result = "Database Connected";
+        logEvent("db-connection-success", dev, settings)
     } catch(err) {
         readline.cursorTo(process.stdout, 0);
         process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
         result = err;
+        logEvent("db-connection-error", dev, settings)
     } 
     return result
 }
