@@ -8,7 +8,7 @@ const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 
 const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replaceAll("/index","")
+    let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/index/g,"")
     let routeHash = md5(route)
     return routeHash
 }
