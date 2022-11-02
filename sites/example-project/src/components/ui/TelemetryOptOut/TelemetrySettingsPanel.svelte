@@ -20,13 +20,15 @@
         <h1>Telemetry</h1>
         <p>Evidence collects anonymous usage data to help us understand how often the tool is being used.</p>
         <CollapsibleTableSection headerText="More" expanded={false}>
-        <p>Each time you run a query, we get four pieces of information:
+        <p>Each time you run a query, we get the following pieces of information:
         </p>
         <ol>
             <li>A random identifier that is stored in <code>.evidence/template/.profile.json</code></li>
             <li>An anonymized identifier based on the git repository you're using for the project</li>
             <li>Whether your project is running in development or build mode</li>
             <li>Whether your query returned from the cache, from your database, or returned an error</li>
+            <li>The type of Evidence database connector you are using (postgres, snowflake, etc.)</li>
+            <li>The operating system your project is running on (windows, mac, etc.)</li>
         </ol>
             <p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
             <div class=input-item>

@@ -1,11 +1,12 @@
 name: Tests
 
 on:
-  pull_request:
+  pull_request_target:
 
 jobs:
-  Tests:
+  Tests-sources:
     runs-on: ${{ matrix.os }}
+    if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess'}}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -15,6 +16,8 @@ jobs:
     steps:
       - run: git config --global core.autocrlf false
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: pnpm/action-setup@v2.2.1
         with:
           version: 6.23.2
@@ -39,3 +42,5 @@ jobs:
           BIGQUERY_PRIVATE_KEY:  ${{ secrets.BIGQUERY_PRIVATE_KEY }}
           SEND_ANONYMOUS_USAGE_STATS:  ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
           SQLITE_FILENAME: ":memory:"
+          DUCKDB_FILENAME: ":memory:"
+

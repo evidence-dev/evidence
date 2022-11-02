@@ -1,5 +1,27 @@
 # @evidence-dev/evidence
 
+## 5.0.12
+
+### Patch Changes
+
+- Updated dependencies [fb3b5ec]
+- Updated dependencies [245c76f]
+  - @evidence-dev/components@1.3.9
+
+## 5.0.11
+
+### Patch Changes
+
+- d12e700: Support adding local components from a /components/ directory
+- 2fbf018: Update docs and test-env
+- Updated dependencies [dec9ebe]
+- Updated dependencies [3523b63]
+- Updated dependencies [e2383bb]
+- Updated dependencies [fe65489]
+- Updated dependencies [08074f1]
+  - @evidence-dev/components@1.3.8
+  - @evidence-dev/db-orchestrator@1.1.6
+
 ## 5.0.10
 
 ### Patch Changes

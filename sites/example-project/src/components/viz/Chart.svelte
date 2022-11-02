@@ -303,7 +303,21 @@ $: {
                 getSortedData(data, y, false) 
                 : getSortedData(data, x, true) 
             : data;
-        
+    
+    // ---------------------------------------------------------------------------------------
+    // Standardize date columns
+    // ---------------------------------------------------------------------------------------
+
+    columnSummaryArray = getColumnSummary(data, "array");
+      dateCols = columnSummaryArray.filter(d => d.type === "date")
+      dateCols = dateCols.map(d => d.id);
+
+      if(dateCols.length > 0){
+        for(let i = 0; i < dateCols.length; i++){
+          data = standardizeDateColumn(data, dateCols[i]);
+        }
+    }
+            
     // ---------------------------------------------------------------------------------------
     // Get format codes for axes
     // ---------------------------------------------------------------------------------------

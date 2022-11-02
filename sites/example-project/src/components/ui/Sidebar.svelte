@@ -6,34 +6,7 @@
 	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
 
 	export let menu;
-
-	let folders = [...new Set(menu.map(item => item.folder))];
-	folders = folders.filter(d => d !== undefined);
-
-	let fileCount;
-	let folderList = [];
-	let folderObj;
-	let folderLink;
-	let contents;
-
-	let folderLab;
-	let folderHref;
-	let folderHrefUri;
-	let folderNameError;
-	
-	for(let i = 0; i < folders.length; i++){
-		contents = menu.filter(d => d.folder === folders[i]);
-
-		folderLab = contents[0].folderLabel;
-		folderHref = contents[0].folderHref;
-		folderHrefUri = contents[0].folderHrefUri;
-		folderNameError = contents[0].folderNameError;
-
-		fileCount = contents.filter(d => d.href !== folderHref).length;
-		folderLink = contents.filter(d => d.href === folderHref).length > 0;
-		folderObj = {folder: folders[i], folderLabel: folderLab, folderHref: folderHref, folderHrefUri: folderHrefUri, fileCount: fileCount, folderLink: folderLink, folderNameError: folderNameError}
-		folderList.push(folderObj)
-	}
+	export let folderList;
 
 	// Keep only folders with at least 1 page that is not index.md or a parameterized page (path contains '[')
 	folderList = folderList.filter(d => d.fileCount > 0)
@@ -56,7 +29,7 @@
             <a href='/' on:click={() => open = !open}><h1 class=project-title>Evidence</h1></a>
         </div>
         <nav>
-			{#if folders}
+			{#if folderList}
             {#each folderCheck as folder}
 				<CollapsibleSection {folder} {menu} {folderList} bind:open={open}/>
             {/each}

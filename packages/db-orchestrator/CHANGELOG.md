@@ -1,5 +1,15 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.6
+
+### Patch Changes
+
+- e2383bb: Adding Redshift to the UI
+- Updated dependencies [aa70947]
+- Updated dependencies [e2383bb]
+  - @evidence-dev/snowflake@0.1.3
+  - @evidence-dev/redshift@0.0.2
+
 ## 1.1.5
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @evidence-dev/components
 
+## 1.3.9
+
+### Patch Changes
+
+- fb3b5ec: Make article widths consistent across breakpoint
+- 245c76f: Fixes bug related to nulls in date columns
+
+## 1.3.8
+
+### Patch Changes
+
+- dec9ebe: Turns off format tags for string columns
+- 3523b63: Fixes form item for Snowflake connector
+- e2383bb: Adding Redshift to the UI
+- fe65489: Improves date parsing and consistency
+- 08074f1: Applies date and time handling consistently across components
+
 ## 1.3.7
 
 ### Patch Changes

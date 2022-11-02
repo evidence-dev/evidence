@@ -4,7 +4,7 @@
     import { showQueries } from '@evidence-dev/components/ui/stores'
     import { pageHasQueries } from '@evidence-dev/components/ui/stores';
 
-    export let menu;
+    export let folderList;
 
     $: pathArray = $page.path.split('/').slice(1)
 
@@ -29,13 +29,13 @@
             crumbs.splice(1, crumbs.length-3, {href: upOne, title:'...'})
         }
 
-        // Check if path is in file system - if not, avoid creating a link to that page
+        // Check if folder contains no index files - if so, disable breadcrumb link:
         crumbs.forEach((path, i) => {
-            if(!menu.map(d => d.href).includes(path.href)){
-                path.href = '';
+            if(folderList.filter(d => d.folderHref === path.href && d.indexFileCount === 0).length > 0){
+                path.href = 'javascript:void(0)';
             }
         })
-        return crumbs   
+        return crumbs
     }
 
     $: crumbs = buildCrumbs(pathArray)
@@ -50,7 +50,7 @@
         <span>
             {#each crumbs as crumb, i}
                 {#if i > 0 }
-                <a href={crumb.href}>&emsp13;/&emsp13;{crumb.title}</a>  
+                &emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>  
                 {:else}
                 <a href={crumb.href}>{crumb.title}</a>  
                 {/if}

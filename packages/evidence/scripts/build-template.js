@@ -11,7 +11,8 @@ const templatePaths = [
     'src/pages/index.md',
     'src/pages/__layout.svelte',
     'src/pages/settings/',
-    'src/pages/api/'
+    'src/pages/api/',
+    'src/components/'
 ]
 
 fs.emptyDirSync("./template/")

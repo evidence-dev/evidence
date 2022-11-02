@@ -39,3 +39,19 @@ Visit <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse"
 This is a picture of a cat, stored in /static/
 
 ![Cute cat](kitty-cat.jpeg)
+
+## Custom Components
+
+<script>
+    import Hello from '$lib/Hello.svelte';
+</script>
+
+```test_query
+select 'Canada' as country, 100 as sales_usd
+union all
+select 'USA' as country, 200 as sales_usd
+union all
+select 'UK' as country, 300 as sales_usd
+```
+
+<Hello query={test_query}/>

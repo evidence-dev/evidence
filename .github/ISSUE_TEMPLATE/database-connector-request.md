@@ -7,9 +7,6 @@ assignees: ''
 
 ---
 
-**Database Name**
-Please limit this request to 1 database. If you are requesting multiple connectors, open a new request for each connector.
-
 **What do you use this database for?**
 E.g., Is this your primary analytics data warehouse? Do you use it for a specific type or a specific source of data?
 

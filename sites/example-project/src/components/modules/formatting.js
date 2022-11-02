@@ -8,6 +8,7 @@ import {
   isAutoFormat,
 } from "./autoFormatting";
 import { BUILT_IN_FORMATS } from "./builtInFormats";
+import { standardizeDateString } from "./dateParsing";
 
 const AXIS_FORMATTING_CONTEXT = "axis";
 const VALUE_FORMATTING_CONTEXT = "value";
@@ -176,7 +177,7 @@ function applyFormatting(
       let typedValue;
       try {
         if (columnFormat.valueType === "date" && typeof value === "string") {
-          typedValue = new Date(value);
+          typedValue = new Date(standardizeDateString(value));
         } else if (
           columnFormat.valueType === "number" &&
           typeof value !== "number" &&
