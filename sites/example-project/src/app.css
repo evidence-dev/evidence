@@ -154,10 +154,11 @@ code {
 
 blockquote {
 
-	border-left: 4px solid var(--blue-500);
+	border-left: 4px solid var(--grey-300);
 	padding: 0em 0em 0em 0.75em;
 	margin-left: 0;
 	margin-right: 0;
+	color: var(--grey-600);
 
 }
 
