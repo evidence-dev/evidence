@@ -173,8 +173,10 @@ const updateExtractedQueriesDir = function(content, filename){
     if (queries.length > 0) {
         if(!fs.existsSync(queryDir)){
             fs.mkdirSync(queryDir)
+        }else{
+            emptyDirSync(queryDir)
+            writeJSONSync(`${queryDir}/queries.json`, queries);
         }
-        writeJSONSync(`${queryDir}/queries.json`, queries, );
     }
     return queryIds;
 }
