@@ -438,15 +438,18 @@ export default(node, option, renderer) => {
 
     const chart = echarts.init(node, 'evidence-light', {renderer: 'svg'});   
 
+    const resizeChart = () => { chart.resize();}
+    
+    window.addEventListener("resize", resizeChart);
+    chart.on('finished', () => { chart.resize();})
 	chart.setOption(option);
-
-    window.addEventListener("resize", () => { chart.resize();});
 
 	return {
 		// update(option){
 		// 	chart.update(option, true, true);
 		// },
 		destroy() {
+            chart.off('finished', resizeChart)
 			chart.dispose();
 		}
 	};
