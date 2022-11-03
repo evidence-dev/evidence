@@ -6,6 +6,9 @@ import * as chokidar from 'chokidar'
 import path from 'path';
 import {fileURLToPath} from 'url';
 import sade from 'sade';
+import * as dotenv from 'dotenv';
+
+dotenv.config()
 
 const populateTemplate = function() {
     // Create the template project in .evidence/template
