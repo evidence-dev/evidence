@@ -438,18 +438,30 @@ export default(node, option, renderer) => {
 
     const chart = echarts.init(node, 'evidence-light', {renderer: 'svg'});   
 
-    const resizeChart = () => { chart.resize();}
-    
-    window.addEventListener("resize", resizeChart);
-    chart.on('finished', () => { chart.resize();})
 	chart.setOption(option);
 
+    
+    let resizeObserver
+    const chartContainerElement = document.getElementsByClassName('chart-container')[0]
+    const resizeChart = () => { chart.resize() }
+    
+    if (window.ResizeObserver && chartContainerElement) {
+        resizeObserver = new ResizeObserver(resizeChart)
+        resizeObserver.observe(chartContainerElement)
+    } else {
+        window.addEventListener("resize", resizeChart);
+    }
+    
 	return {
-		// update(option){
-		// 	chart.update(option, true, true);
-		// },
-		destroy() {
-            chart.off('finished', resizeChart)
+        // update(option){
+            // 	chart.update(option, true, true);
+            // },
+            destroy() {
+                if (resizeObserver) {
+                    resizeObserver.unobserve(chartContainerElement)
+                } else {
+                    window.removeEventListener("resize", resizeChart)
+                }
 			chart.dispose();
 		}
 	};
