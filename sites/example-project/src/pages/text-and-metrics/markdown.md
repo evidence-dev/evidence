@@ -48,7 +48,17 @@ Text<sub>subscript</sub>
 This is how you <mark>highlight some text.</mark>
 
 # Blockquotes
+
 > This is a blockquote.
+
+> This is another blockquote.
+>> This is a nested blockquote.
+
+It can be nice to be able to use italics selectively in blockquotes
+
+> I hate Mondays
+>
+> -- _Garfield_
 
 # Code
 `let x = 100`
