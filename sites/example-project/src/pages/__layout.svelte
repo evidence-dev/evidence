@@ -117,7 +117,7 @@
 	import { navigating } from '$app/stores';
 	import { blur } from "svelte/transition";
 	import { page } from "$app/stores";
-	import {browser} from '$app/env'
+	import {dev} from '$app/env'
 
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
 	import Header from '@evidence-dev/components/ui/Header.svelte'
@@ -158,7 +158,7 @@
 	  </div>
 	</main>
 </div>
-{#if !$navigating}
+{#if !$navigating && dev}
 <QueryStatus /> 
 {/if}
 

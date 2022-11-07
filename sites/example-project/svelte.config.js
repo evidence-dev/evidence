@@ -1,7 +1,5 @@
 import evidencePreprocess from '@evidence-dev/preprocess'
 import adapter from '@sveltejs/adapter-static';
-// import FullReload from 'vite-plugin-full-reload'
-// import liveReload from 'vite-plugin-live-reload'
 
 /** @type {import('@sveltejs/kit').Config} */
 
@@ -25,11 +23,7 @@ const config = {
 			},
 			ssr: {
 				external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
-			},
-			plugins: [
-				// FullReload.default(['./.evidence-queries/extracted/*'], { delay: 150 })
-				// liveReload('./.evidence-queries/extracted/*')
-			],
+			}
 		}
 	}
 };
