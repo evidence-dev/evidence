@@ -3,7 +3,6 @@
   import DownloadData from '../DownloadData.svelte'
   import getColumnSummary from '$lib/modules/getColumnSummary.js';
   import { formatValue } from '$lib/modules/formatting.js';
-  import { convertColumnToDate } from '$lib/modules/dateParsing.js';
 
   export let queryID;
   export let data;  
@@ -17,14 +16,6 @@
   $: max = Math.max(data.length - size,0);
   $: dataPage = data.slice(index, index+size);
   let updatedSlice
-
-  let dateCols = columnSummary.filter(d => d.type === "date")
-  dateCols = dateCols.map(d => d.id);
-  if(dateCols.length > 0){
-    for(let i = 0; i < dateCols.length; i++){
-      data = convertColumnToDate(data, dateCols[i]);
-    }
-  }
   
   function slice() {
     updatedSlice = data.slice(index, index+size);

@@ -1,82 +1,80 @@
 <script>
-    import { slide } from 'svelte/transition';
-    import { formatValue } from '$lib/modules/formatting.js';
-    import ErrorChart from './ErrorChart.svelte'
-    import checkInputs from '$lib/modules/checkInputs.js'
-    import getColumnSummary from '$lib/modules/getColumnSummary.js';
-    import { convertColumnToDate } from '$lib/modules/dateParsing.js';
-    import DownloadData from '$lib/ui/DownloadData.svelte'
+  import { getContext } from "svelte";
+  import { slide } from "svelte/transition";
+  import { formatValue } from "$lib/modules/formatting.js";
+  import ErrorChart from "./ErrorChart.svelte";
+  import checkInputs from "$lib/modules/checkInputs.js";
+  import getColumnSummary from "$lib/modules/getColumnSummary.js";
+  import { convertColumnToDate } from "$lib/modules/dateParsing.js";
+  import DownloadData from "$lib/ui/DownloadData.svelte";
 
-    // 1 - Get Inputs
-    export let data = undefined;
-    export let queryID = undefined;
-    export let rows = 5;
-    export let marginTop = '1em';
-    export let marginBottom = '0em';
-    export let paddingBottom = '1.5em';
-    export let rowNumbers = 'true';
-    export let rowLines = 'true';
+  // 1 - Get Inputs
+  export let data = undefined;
+  export let queryID = undefined;
+  export let rows = 5;
+  export let marginTop = "1em";
+  export let marginBottom = "0em";
+  export let paddingBottom = "1.5em";
+  export let rowNumbers = "true";
+  export let rowLines = "true";
 
-    export let hovering = false;
- 
-    let columnWidths;
-    let index;
-    let size;
-    let max;
-    let dataPage;
-    let updatedSlice;
+  export let hovering = false;
 
-    let columnSummary;
-    let error;
+  let columnWidths;
+  let max;
+  let dataPage;
 
-    function slice(){
-      updatedSlice = data.slice(index, index+size);
-      dataPage = updatedSlice;
-    }
+  let columnSummary;
+  let error;
 
-    $: {
-      try{
-        error = undefined;
+  // Slicer
+  let index = 0;
+  let size = 5;
+  $: max = Math.max(data.length - size, 0);
+  $: dataPage = data.slice(index, index + size);
+  let updatedSlice;
+
+  function slice() {
+    updatedSlice = data.slice(index, index + size);
+    dataPage = updatedSlice;
+  }
+
+  $: {
+    try {
+      error = undefined;
       // 2 - Check Inputs
-        try {
-          if (queryID && data) {
-            throw Error('Only one of "queryID" or "data" attributes should be provided');
-          } else if (queryID) {
-          }
-          checkInputs(data);
-        } catch (err) {
-            throw err;
+      try {
+        if (queryID && data) {
+          throw Error(
+            'Only one of "queryID" or "data" attributes should be provided'
+          );
+        } else if (queryID) {
         }
-
-        // 3 - Get Column Summary
-        columnSummary = getColumnSummary(data, 'array');
-
-        // 4 - Process Data
-        // Filter for columns with type of "date"
-        let dateCols = columnSummary.filter(d => d.type === "date")
-        dateCols = dateCols.map(d => d.id);
-
-
-      if(dateCols.length > 0){
-          for(let i = 0; i < dateCols.length; i++){
-            data = convertColumnToDate(data, dateCols[i]);
-          }
-        }
-
-        // Table input:
-        columnWidths = 98/(columnSummary.length+1)
-
-        // Slicer:
-        index = 0;
-        size = Number.parseInt(rows);
-        max = Math.max(data.length - size,0);
-        dataPage = data.slice(index, index+size);
-        updatedSlice = '';
-
-      } catch(e) {
-          error = e.message;
+        checkInputs(data);
+      } catch (err) {
+        throw err;
       }
+
+      // 3 - Get Column Summary
+      columnSummary = getColumnSummary(data, "array");
+
+      // 4 - Process Data
+      // Filter for columns with type of "date"
+      let dateCols = columnSummary.filter((d) => d.type === "date");
+      dateCols = dateCols.map((d) => d.id);
+
+      if (dateCols.length > 0) {
+        for (let i = 0; i < dateCols.length; i++) {
+          data = convertColumnToDate(data, dateCols[i]);
+        }
+      }
+
+      // Table input:
+      columnWidths = 98 / (columnSummary.length + 1);
+    } catch (e) {
+      error = e.message;
     }
+  }
 </script>
 
 {#if !error}
@@ -328,10 +326,10 @@
 
   /* CSS below shows full text on hover if a cell has been cut off*/
   /* td > div:hover {
-    overflow: visible;
-    white-space: unset;
-    text-overflow: none;
-  } */
+  overflow: visible;
+  white-space: unset;
+  text-overflow: none;
+} */
 
   @media print {
     .avoidbreaks {
