@@ -116,5 +116,7 @@
       min-width: var(--scrollbar-minlength);
       border: 3px solid transparent;
     }
-    
+    code {
+      display: inline-block;
+    }
 </style>
