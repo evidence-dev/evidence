@@ -69,9 +69,25 @@ Follow these steps to submit a pull request for your changes:
 1. Create a fork of the `evidence` repo
 2. Commit your changes to your fork
 3. Test your changes to make sure all results are as expected
-4. Open a pull request against the `main` branch of the `evidence` repo
+4. Add a changeset<sup>*</sup>
+5. Open a pull request against the `main` branch of the `evidence` repo
 
 [Here's an example of a pull request](https://github.com/evidence-dev/evidence/pull/165) from a community member who built Evidence's MySQL connector.
+
+
+#### <sup>*</sup>Adding a Changeset
+Changesets ensure that package versions are updated correctly before releasing onto NPM.
+
+1. `cd` to the root of the monorepo
+2. `pnpm changeset`
+3. Follow the steps in the CLI to add some change notes:
+   1. Bump the packages that have changed
+   2. Most things are patch changes, not major or minor patch bumps
+   3. Unless you're making changes that will break someone's project, or change it in a really unexpected way, just do a patch release
+4. Commit the release notes to your branch so they'll be included as part of the PR
+   1. the file will be called three random words like delighted-fish-brick.md
+
+
 
 
 ## Join Our Team
