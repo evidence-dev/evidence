@@ -14,6 +14,7 @@
     import getDistinctValues from '../modules/getDistinctValues';
     import getStackPercentages from '../modules/getStackPercentages.js';
     import getSortedData from '../modules/getSortedData.js';
+    import { standardizeDateColumn } from '../modules/dateParsing.js';
     import { formatAxisValue } from '../modules/formatting';
     import formatTitle from '../modules/formatTitle.js';
     import { formatValue } from '../modules/formatting.js';
@@ -152,7 +153,11 @@
     let optCols = [];
     let i;
 
-let error;
+    let error;
+
+    // Date String Handling:
+    let columnSummaryArray;
+    let dateCols;
 
 $: {
     try{
@@ -309,12 +314,12 @@ $: {
     // ---------------------------------------------------------------------------------------
 
     columnSummaryArray = getColumnSummary(data, "array");
-      dateCols = columnSummaryArray.filter(d => d.type === "date")
-      dateCols = dateCols.map(d => d.id);
+    dateCols = columnSummaryArray.filter(d => d.type === "date")
+    dateCols = dateCols.map(d => d.id);
 
-      if(dateCols.length > 0){
+    if(dateCols.length > 0){
         for(let i = 0; i < dateCols.length; i++){
-          data = standardizeDateColumn(data, dateCols[i]);
+            data = standardizeDateColumn(data, dateCols[i]);
         }
     }
             
