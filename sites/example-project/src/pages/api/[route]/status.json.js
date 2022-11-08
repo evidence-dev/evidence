@@ -5,11 +5,8 @@ export async function get({params}) {
   let status = []
   let queries
 
-  if (fs.existsSync(`./.evidence-queries/extracted/${route}`)) {
-    let routePath = `./.evidence-queries/extracted/${route}`
-    let queryFile = `${routePath}/${fs.readdirSync(routePath)}`
-    queries = JSON.parse(fs.readFileSync(queryFile, { throws: false }))
-
+  if (fs.existsSync(`./.evidence-queries/extracted/${route}/queries.json`)) {
+    queries = JSON.parse(fs.readFileSync(`./.evidence-queries/extracted/${route}/queries.json`, { throws: false }))
     queries.forEach(query => {
         status.push({id: query.id, status: query.status})
     });
