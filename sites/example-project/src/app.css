@@ -158,13 +158,14 @@ code {
 	}
 }
 
-article > table{
+/* article > table{
     min-width:100%;
     font-size: 0.75em;
     border-collapse: collapse;
     font-family: var(--ui-font-family);
     text-align: center;
     margin: 1em auto 1.5em auto;
+	table-layout: auto;
 }
 
 article > table th{
@@ -180,8 +181,8 @@ article > table td{
 	padding: 4px 8px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	/* border: 1px solid var(--grey-200); */
-}
+	border: 1px solid var(--grey-200);
+} */
 
 :root {
 	/* Layout header height */
