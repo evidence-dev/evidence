@@ -1,5 +1,5 @@
 <script>
-    import {getContext} from 'svelte'
+    import {getContext, beforeUpdate} from 'svelte'
     import { propKey, configKey } from './context'
     $: props = getContext(propKey)
     $: config = getContext(configKey)
@@ -22,7 +22,7 @@
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
 
-    let barMaxWidth;
+    let barMaxWidth = 60;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     $: data = $props.data;
@@ -81,8 +81,6 @@
 
     }
 
-    $: {barMaxWidth = 60;}
-
     $: baseConfig = {
             type: "bar",
             stack: stackName,
@@ -106,10 +104,6 @@
     
     $: config.update(d => {d.series.push(...seriesConfig); return d})
 
-    $: if(options){
-        config.update(d => {return {...d, ...options}})
-    }
-
     $: chartOverrides = {
          // Evidence definition of axes (yAxis = dependent, xAxis = independent)
          xAxis: {
@@ -118,30 +112,38 @@
          }
     }
 
-    $: if(chartOverrides){
-        config.update(d => {
-            if(type.includes("stacked")){
-                d.tooltip = {...d.tooltip, order: 'seriesDesc'} 
-            } else {
-                d.tooltip = {...d.tooltip, order: 'seriesAsc'} 
-            }
-            if(type === "stacked100"){
-                if(swapXY){
-                    d.xAxis = {...d.xAxis, max: 1};
+    beforeUpdate(() => {
+        // beforeUpdate ensures that these overrides always run before we render the chart. 
+        // otherwise, this block won't re-execute after a change to the data object, and 
+        // the chart will re-render using the base config from Chart.svelte
+
+        if(options){
+            config.update(d => {return {...d, ...options}})
+        }
+
+        if(chartOverrides){
+            config.update(d => {
+                if(type.includes("stacked")){
+                    d.tooltip = {...d.tooltip, order: 'seriesDesc'} 
                 } else {
-                    d.yAxis = {...d.yAxis, max: 1};
+                    d.tooltip = {...d.tooltip, order: 'seriesAsc'} 
                 }
+                if(type === "stacked100"){
+                    if(swapXY){
+                        d.xAxis = {...d.xAxis, max: 1};
+                    } else {
+                        d.yAxis = {...d.yAxis, max: 1};
+                    }
+                }
+                if(swapXY){
+                    d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                    d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+                } else {
+                    d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                    d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+                }
+                return d})
             }
-            if(swapXY){
-                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
-                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
-            } else {
-                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
-                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
-            }
-            return d})
-    }
-
-
+    })
     
 </script>
