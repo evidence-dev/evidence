@@ -162,6 +162,13 @@
 $: {
     try{
     error = undefined
+    missingCols = [];
+    unusedColumns = []
+    // Error Handling:
+    inputCols = []
+    optCols = [];
+    uColName = []
+    
     checkInputs(data); // check that dataset exists
 
     // ---------------------------------------------------------------------------------------
@@ -176,28 +183,6 @@ $: {
     // ---------------------------------------------------------------------------------------
     // Make assumptions to complete required props
     // ---------------------------------------------------------------------------------------
-        // If no x column supplied, assume first column in dataset is x:
-        if(!x){
-            x = columnNames[0]
-        }
-
-        // If no y column(s) supplied, assume all columns other than x are the y columns:
-        uColNames = columnNames.filter(function(col){
-            return ![x, series, size].includes(col)
-        });
-
-        for(let i = 0; i < uColNames.length; i++){
-            uColName = uColNames[i]
-            uColType = columnSummary[uColName].type
-            if(uColType === "number"){
-                unusedColumns.push(uColName)
-            }
-        }
-
-        if(!y){
-            y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
-        }
-
         // Establish required columns based on chart type:
         if(bubble){
             reqCols = {
@@ -216,6 +201,28 @@ $: {
             }
         }
 
+        // If no x column supplied, assume first column in dataset is x:
+        if(!x){
+            x = columnNames[0]
+        }
+
+        // If no y column(s) supplied, assume all columns other than x are the y columns:
+        uColNames = columnNames.filter(function(col){
+            return ![x, series, size].includes(col)
+        });
+
+        for(let i = 0; i < uColNames.length; i++){
+            uColName = uColNames[i]
+            uColType = columnSummary[uColName].type
+            if(uColType === "number"){
+                unusedColumns.push(uColName)
+            }
+        }
+
+        if(!y && reqCols['y']){
+            y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
+        }
+        
         // Check which columns were not supplied to the chart:
         for(let property in reqCols){
             if(reqCols[property] == null){
@@ -645,10 +652,9 @@ $: {
         config.update(d => { return chartConfig });
 
     } catch(e) {
-    error = e.message;
-    props.update(d => { return {...d, error} })
+        error = e.message;
+        props.update(d => { return {...d, error} })
     }
-
 }
 
 </script>
