@@ -442,12 +442,12 @@ export default(node, option, renderer) => {
 
     
     let resizeObserver
-    const chartContainerElement = document.getElementsByClassName('chart-container')[0]
+    const containerElement = document.querySelector('div.content > article')
     const resizeChart = () => { chart.resize() }
     
-    if (window.ResizeObserver && chartContainerElement) {
+    if (window.ResizeObserver && containerElement) {
         resizeObserver = new ResizeObserver(resizeChart)
-        resizeObserver.observe(chartContainerElement)
+        resizeObserver.observe(containerElement)
     } else {
         window.addEventListener("resize", resizeChart);
     }
@@ -458,7 +458,7 @@ export default(node, option, renderer) => {
             // },
             destroy() {
                 if (resizeObserver) {
-                    resizeObserver.unobserve(chartContainerElement)
+                    resizeObserver.unobserve(containerElement)
                 } else {
                     window.removeEventListener("resize", resizeChart)
                 }
