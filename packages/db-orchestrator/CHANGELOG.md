@@ -1,5 +1,15 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.7
+
+### Patch Changes
+
+- f16158e: Updated telemetry to include operating system
+- 90b1846: Updates telemetry to include database type
+- Updated dependencies [f16158e]
+- Updated dependencies [90b1846]
+  - @evidence-dev/telemetry@1.0.4
+
 ## 1.1.6
 
 ### Patch Changes
