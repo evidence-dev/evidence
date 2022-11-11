@@ -440,13 +440,28 @@ export default(node, option, renderer) => {
 
 	chart.setOption(option);
 
-    window.addEventListener("resize", () => { chart.resize();});
-
+    
+    let resizeObserver
+    const containerElement = document.querySelector('div.content > article')
+    const resizeChart = () => { chart.resize() }
+    
+    if (window.ResizeObserver && containerElement) {
+        resizeObserver = new ResizeObserver(resizeChart)
+        resizeObserver.observe(containerElement)
+    } else {
+        window.addEventListener("resize", resizeChart);
+    }
+    
 	return {
-		// update(option){
-		// 	chart.update(option, true, true);
-		// },
-		destroy() {
+        // update(option){
+            // 	chart.update(option, true, true);
+            // },
+            destroy() {
+                if (resizeObserver) {
+                    resizeObserver.unobserve(containerElement)
+                } else {
+                    window.removeEventListener("resize", resizeChart)
+                }
 			chart.dispose();
 		}
 	};
