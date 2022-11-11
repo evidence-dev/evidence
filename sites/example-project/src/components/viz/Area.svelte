@@ -1,5 +1,5 @@
 <script>
-    import {getContext} from 'svelte'
+    import {getContext, beforeUpdate} from 'svelte'
     import { propKey, configKey } from './context'
     let props = getContext(propKey)
     let config = getContext(configKey)
@@ -88,7 +88,7 @@
          },
      }
 
-    $: if(chartOverrides){
+    beforeUpdate(() => {
         config.update(d => {
             d.tooltip = {...d.tooltip, order: 'seriesDesc'} // Areas always stacked 
             if(swapXY){
@@ -106,6 +106,6 @@
                 }
             }
             return d})
-    }
+    })
 
 </script>

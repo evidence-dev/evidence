@@ -1,5 +1,5 @@
 <script>
-    import {getContext} from 'svelte'
+    import {getContext, beforeUpdate} from 'svelte'
     import { propKey, configKey } from './context'
     let props = getContext(propKey)
     let config = getContext(configKey)
@@ -52,7 +52,7 @@
     }
 
     // Set up base config for this type of chart series:
-    $: baseConfig = {
+    let baseConfig = {
             type: "scatter",
             label: {
                 show: false,
@@ -74,7 +74,7 @@
     // Tooltip settings (scatter and bubble charts require different tooltip than default)
     let tooltipOpts;
     let tooltipOverride;
-    $: if(useTooltip){
+    if(useTooltip){
         tooltipOpts = {
             tooltip: {
                 formatter: function(params) {
@@ -134,8 +134,7 @@
          }
     }
 
-    // Apply the chart-level overrides to the main config used by Chart.svelte:
-    $: if(chartOverrides){
+    beforeUpdate(() => {
         config.update(d => {
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
@@ -148,6 +147,6 @@
                 d.tooltip = {...d.tooltip, ...tooltipOverride.tooltip};
             }
             return d})
-    }
+    })
 
 </script>

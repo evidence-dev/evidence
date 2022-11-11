@@ -1,5 +1,5 @@
 <script>
-    import {getContext} from 'svelte'
+    import {getContext, beforeUpdate } from 'svelte'
     import { propKey, configKey } from './context'
     let props = getContext(propKey)
     let config = getContext(configKey)
@@ -73,7 +73,7 @@
         return Math.sqrt((newPointSize / maxData) * maxSizeSq)
     }
 
-    $: baseConfig = {
+    let baseConfig = {
             type: "scatter",
             label: {
                 show: false,
@@ -82,8 +82,8 @@
             emphasis: {
                 focus: "series",
             },
-            symbolSize: function (data) {
-                return bubbleSize(data);
+            symbolSize: function (newPoint) {
+                return bubbleSize(newPoint);
             },
             symbol: shape,
             itemStyle: {
@@ -98,7 +98,7 @@
 
     let tooltipOpts;
     let tooltipOverride;
-    $: if(useTooltip){
+    if(useTooltip){
         tooltipOpts = {
             tooltip: {
                 formatter: function(params) {
@@ -160,7 +160,7 @@
         }
     }
 
-    $: if(chartOverrides){
+    beforeUpdate(() => {
         config.update(d => {
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
@@ -173,6 +173,6 @@
                 d.tooltip = {...d.tooltip, ...tooltipOverride.tooltip};
             }
             return d})
-    }
+    })
 
 </script>
