@@ -1,5 +1,19 @@
 # @evidence-dev/components
 
+## 1.3.10
+
+### Patch Changes
+
+- 77cee78: Add blockquote styling
+- f16158e: Updated telemetry to include operating system
+- 7ea5780: Fixes breadcrumb link issue for parameterized pages
+- 03bf05f: Fixes a minor code presentation issue
+- 90b1846: Updates telemetry to include database type
+- 7aaa078: Fix for chart size in flex layout
+- Updated dependencies [f16158e]
+- Updated dependencies [90b1846]
+  - @evidence-dev/telemetry@1.0.4
+
 ## 1.3.9
 
 ### Patch Changes

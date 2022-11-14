@@ -1,5 +1,12 @@
 # @evidence-dev/telemetry
 
+## 1.0.4
+
+### Patch Changes
+
+- f16158e: Updated telemetry to include operating system
+- 90b1846: Updates telemetry to include database type
+
 ## 1.0.3
 
 ### Patch Changes

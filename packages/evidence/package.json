@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "5.0.12",
+  "version": "5.0.13",
   "description": "dependencies for evidence projects",
   "type": "module",
   "keywords": [
