@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 5.0.13
+
+### Patch Changes
+
+- Updated dependencies [77cee78]
+- Updated dependencies [f16158e]
+- Updated dependencies [7ea5780]
+- Updated dependencies [03bf05f]
+- Updated dependencies [90b1846]
+- Updated dependencies [7aaa078]
+  - @evidence-dev/components@1.3.10
+  - @evidence-dev/db-orchestrator@1.1.7
+  - @evidence-dev/telemetry@1.0.4
+
 ## 5.0.12
 
 ### Patch Changes
