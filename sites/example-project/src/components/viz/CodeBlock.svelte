@@ -3,13 +3,12 @@
   import "../modules/prismPreconditions";
   import Prism from "prismjs";
   import PrismComponents from "prismjs/components";
-  import "prismjs/themes/prism.css";
+  import "prismjs/themes/prism-okaidia.css";
   import "prismjs/plugins/line-numbers/prism-line-numbers";
   import "prismjs/plugins/line-numbers/prism-line-numbers.css";
   import "prismjs/plugins/toolbar/prism-toolbar";
   import "prismjs/plugins/toolbar/prism-toolbar.css";
   import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard";
-
   /**
    * The target language to use. This language must be imported manually from prism to be activated.
    * @type {string}
