@@ -31,8 +31,6 @@ importers:
       uvu: 0.5.2
       vite: 2.9.5
       vite-plugin-full-reload: 0.2.2
-    dependencies:
-      prismjs: 1.29.0
     devDependencies:
       '@changesets/cli': 2.21.0
       '@evidence-dev/components': link:packages/components
@@ -52,6 +50,7 @@ importers:
       git-remote-origin-url: 4.0.0
       prettier: 2.6.2
       prettier-plugin-svelte: 2.7.0_ork634hvtrgwuerupv3oy3ufpm
+      prismjs: 1.29.0
       ssf: 0.11.2
       svelte: 3.44.3
       svelte-icons: 2.1.0
@@ -305,6 +304,7 @@ importers:
       cross-env: 7.0.3
       fs-extra: 10.0.1
       jest: 28.1.2
+    publishDirectory: ../../packages/components
 
   sites/test-env:
     specifiers:
@@ -13273,7 +13273,6 @@ packages:
   /prismjs/1.29.0:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
-    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
