@@ -66,12 +66,13 @@ Test
 Language support is provided by [prismjs](https://prismjs.com/).
 These languages are available for use in Evidence
  - JavaScript
- - HTML/CSS
+ - HTML
+ - CSS
  - SQL
  - Python
  - TypeScript
  - Java
- - Bash/Shell
+ - Bash
  - C#
  - C++
  - PHP
