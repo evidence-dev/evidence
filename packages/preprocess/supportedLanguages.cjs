@@ -9,7 +9,7 @@ module.exports = {
     "TypeScript",
     "Java",
     "Bash",
-    "C#",
+    "CSharp",
     "C++",
     "PHP",
     "C",

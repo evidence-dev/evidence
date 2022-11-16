@@ -92,7 +92,7 @@ echo "Hello World"
 ```
 
 ### C#
-```c#
+```csharp
 {
     static void Main()
     {
