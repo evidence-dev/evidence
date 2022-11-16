@@ -6,9 +6,7 @@
   import "prismjs/themes/prism-okaidia.css";
   import "prismjs/plugins/line-numbers/prism-line-numbers";
   import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-  import "prismjs/plugins/toolbar/prism-toolbar";
-  import "prismjs/plugins/toolbar/prism-toolbar.css";
-  import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard";
+
   /**
    * The target language to use. This language must be imported manually from prism to be activated.
    * @type {string}
@@ -26,12 +24,6 @@
    * @type {boolean}
    */
   export let showLineNumbers = false;
-
-  /**
-   * Either to show the copy button or not.
-   * @type {boolean}
-   */
-  export let showCopyButton = false;
 
   /**
    * A minimum height the code container should have.
@@ -53,7 +45,8 @@
   let root;
 
   /**
-   *
+   * This function ensures that all dependencies for a language
+   * have been loaded before attempting to render it.
    * @param language {string}
    */
   async function ensureLanguage(language) {
@@ -145,10 +138,7 @@
   }
 </script>
 
-<div
-  class:prism--show-copy-button={showCopyButton}
-  class:prism--hide-copy-button={!showCopyButton}
->
+<div>
   <pre
     class:line-numbers={showLineNumbers}
     style:min-height={minHeight}

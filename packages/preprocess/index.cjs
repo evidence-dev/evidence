@@ -263,7 +263,7 @@ function highlighter(code, lang) {
 
     // Ensure that "real" code blocks are rendered with syntax highlighting.
     if (prismLangs.has(lang)) {
-      return `<CodeBlock source="${code}" language="${lang}"/>`;
+      return `<CodeBlock source="${code}" language="${lang}" showLineNumbers />`;
     }
     return `<QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>`;
 }
