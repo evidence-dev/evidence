@@ -83,7 +83,7 @@
       dataPage = updatedSlice
     }
 
-    function handleMousewheel(event){
+    function handleWheel(event){
       // abort if scroll is in x-direction
       if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
         return
@@ -97,7 +97,7 @@
 
 <div class="results-pane" transition:slide|local>
 <div class="container" >
-  <table in:blur on:wheel={handleMousewheel}>
+  <table in:blur on:wheel={handleWheel}>
     <thead>
         <tr>
           <th class="index" style="width:10%"></th>
