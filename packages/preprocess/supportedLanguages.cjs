@@ -2,12 +2,13 @@ module.exports = {
   // Case insensitive
   supportedLangs: [
     "JavaScript",
-    "HTML/CSS",
+    "HTML",
+    "CSS",
     "SQL",
     "Python",
     "TypeScript",
     "Java",
-    "Bash/Shell",
+    "Bash",
     "C#",
     "C++",
     "PHP",
