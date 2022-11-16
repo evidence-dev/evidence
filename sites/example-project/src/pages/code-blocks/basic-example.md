@@ -34,6 +34,27 @@ function helloWorld() {
 &#96;&#96;&#96;
 ```
 
+## Line Highlighting
+You can also highlight specific lines of code by referencing lines using `{}` after the language indicator.
+
+```markdown
+&#96;&#96;&#96;javascript {1,3}
+function helloWorld() {
+    console.log("Hello World")
+}
+&#96;&#96;&#96;
+```
+
+
+```javascript {1,3}
+function helloWorld() {
+    console.log("Hello World")
+}
+```
+
+Full syntax description [here](https://prismjs.com/plugins/line-highlight/).
+
+
 ## List of supported languages
 Language support is provided by [prismjs](https://prismjs.com/).
 These languages are available for use in Evidence

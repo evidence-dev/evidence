@@ -254,16 +254,19 @@ const updateExtractedQueriesDir = function(content, filename){
     return queryIds;
 }
 
-function highlighter(code, lang) {
+function highlighter(code, lang, meta) {
     code = code.replace(/'/g, "&apos;");
     code = code.replace(/"/g, "&quot;");
 
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
 
+    // Strip braces {} from meta attribute (stores the lines to highlight)
+    let highlightLines = meta?.replace(/{/g, "").replace(/}/g,"") ?? null;
+
     // Ensure that "real" code blocks are rendered with syntax highlighting.
     if (prismLangs.has(lang.toLowerCase())) {
-      return `<CodeBlock source="${code}" language="${lang.toLowerCase()}" showLineNumbers=false />`;
+      return `<CodeBlock source="${code}" language="${lang.toLowerCase()}" highlightLines="${highlightLines}"/>`;
     }
     return `<QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>`;
 }

@@ -6,6 +6,8 @@
   import "prismjs/themes/prism-okaidia.css";
   import "prismjs/plugins/line-numbers/prism-line-numbers";
   import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+  import "prismjs/plugins/line-highlight/prism-line-highlight";
+  import "prismjs/plugins/line-highlight/prism-line-highlight.css";
 
   /**
    * The target language to use. This language must be imported manually from prism to be activated.
@@ -20,6 +22,12 @@
   export let source;
 
   /**
+   * Lines to highlight.
+   * @type {string}
+   */
+   export let highlightLines;
+
+  /**
    * Either to show the line numbers or not.
    * @type {boolean}
    */
@@ -30,14 +38,14 @@
    * By default, code section will fit the content's height..
    * @type {string}
    */
-  export let minHeight;
+  // export let minHeight;
 
   /**
    * A maximum height to restrict the code view into. In case of overflow, scrolling will be enabled.
    * By default, this is unrestricted.
    * @type {string}
    */
-  export let maxHeight;
+  // export let maxHeight;
 
   /**
    * @type {HTMLElement}
@@ -139,11 +147,18 @@
 </script>
 
 <div>
+  {#if highlightLines!="null"}
   <pre
     class:line-numbers={showLineNumbers}
-    style:min-height={minHeight}
-    style:max-height={maxHeight}><code bind:this={root} />
+    data-line={highlightLines}>
+    <code bind:this={root} />
   </pre>
+  {:else}
+  <pre
+    class:line-numbers={showLineNumbers}>
+    <code bind:this={root} />
+  </pre>
+  {/if}
 </div>
 
 <style>
