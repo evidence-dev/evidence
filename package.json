@@ -31,6 +31,6 @@
 	"scripts": {
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
-		"setup": "pnpm install && pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile"
+		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile --ignore-scripts"
 	}
 }
