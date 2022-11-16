@@ -59,9 +59,11 @@
   async function ensureLanguage(language) {
     if (!Object.keys(Prism.languages).includes(language)) {
       if (!Object.keys(PrismComponents.languages).includes(language)) {
-        console.warn(
-          `Highlighting for language ${language} is not supported. If you have abbreviated the language, try using the full name (e.g. python instead of py).`
-        );
+        // "code" explicitly does not support syntax highlighting.
+        if (language !== "code")
+          console.warn(
+            `Highlighting for language ${language} is not supported. If you have abbreviated the language, try using the full name (e.g. python instead of py).`
+          );
         return;
       }
 
@@ -86,10 +88,10 @@
             }
           }
         } else {
-            if (!requiredLanguages.has(r)) {
-              // Recurse to check for multi-level dependencies.
-              collectRequirements(r);
-            }
+          if (!requiredLanguages.has(r)) {
+            // Recurse to check for multi-level dependencies.
+            collectRequirements(r);
+          }
         }
       }
       // Ensure that we have a full list of languages to load for support
@@ -150,7 +152,8 @@
   <pre
     class:line-numbers={showLineNumbers}
     style:min-height={minHeight}
-    style:max-height={maxHeight}><code bind:this={root} /></pre>
+    style:max-height={maxHeight}><code bind:this={root} />
+  </pre>
 </div>
 
 <style>

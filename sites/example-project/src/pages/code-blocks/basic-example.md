@@ -1,43 +1,90 @@
-# Basic example of `<CodeBlock>`
+# Including Code in Your Evidence Files
 
-<script>
-    const jsSnip = `
+## Usage
+When injecting examples of code, you can simply use code blocks as normal.
+Note that a language indication is required, otherwise it will be interpreted as a query.
+
+Here are some examples:
+### Valid
+Javascript Code Block
+```markdown
+&#96;&#96;&#96;javascript
+function helloWorld() {
+    console.log("Hello World");
+}
+&#96;&#96;&#96;
+```
+Code Block without Syntax Highlighting
+```markdown
+&#96;&#96;&#96;code
+function helloWorld() {
+    console.log("Hello World");
+}
+&#96;&#96;&#96;
+```
+
+
+### Invalid
+Does not have any language indicator
+```markdown
+&#96;&#96;&#96;
+function helloWorld() {
+    console.log("Hello World");
+}
+&#96;&#96;&#96;
+```
+
+## Basic Examples
+Here are rendered codeblocks that with various languages
+
+### Javascript
+```javascript
 function helloWorld() {
     console.log("Hello World")
 }
-`
-    const pySnip = `
+```
+
+### Python
+```python
 def hello_world():
-    print("Hello World!")
-`
+    print("Hello World")
+```
 
-    const recursion = `
-<CodeBlock
-    source={\`
-function helloWorld() {
-    console.log("Hello World")
-}
-    \`}
-    showLineNumbers
-    language="javascript"
-/>`
-</script>
-## Javascript
-<CodeBlock
-    source={jsSnip}
-    showLineNumbers
-    language="javascript"
-/>
+### R
+```r
+> print("Hello World!")
+[1] "Hello World!"
+```
 
-## Python
-<CodeBlock
-    source={pySnip}
-    showLineNumbers
-    language="python"
-/>
+### Generic Code Block
+```code
+Test
+```
 
-## Example Usage
-<CodeBlock
-    source={recursion}
-    showLineNumbers
-    language="html"/>
+## List of supported languages
+
+Language support is provided by [prismjs](https://prismjs.com/).
+These languages are available for use in Evidence
+ - JavaScript
+ - HTML/CSS
+ - SQL
+ - Python
+ - TypeScript
+ - Java
+ - Bash/Shell
+ - C#
+ - C++
+ - PHP
+ - C
+ - PowerShell
+ - Go
+ - Rust
+ - Kotlin
+ - Dart
+ - Ruby
+ - Assembly
+ - R
+ - MATLAB
+ - DAX
+ - JSON
+ - YAML
