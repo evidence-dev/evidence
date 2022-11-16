@@ -2,4 +2,4 @@
 "@evidence-dev/components": patch
 ---
 
-Add blockquote styling
+Updates to dev workspace
