@@ -90,14 +90,14 @@
       }
 
       event.preventDefault()
-      index= Math.min(Math.max(0, index + Math.floor(event.deltaY/2)), max)
+      index= Math.min(Math.max(0, index + Math.floor(event.deltaY/Math.abs(event.deltaY))), max)
       slice()
     }
 </script>
 
 <div class="results-pane" transition:slide|local>
 <div class="container" >
-  <table in:blur on:mousewheel={handleMousewheel}>
+  <table in:blur on:wheel={handleMousewheel}>
     <thead>
         <tr>
           <th class="index" style="width:10%"></th>
