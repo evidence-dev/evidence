@@ -102,7 +102,7 @@ echo "Hello World"
 ```
 
 ### PHP
-```php
+```pHp
 <?php
   echo 'Hello World!';
 ?>

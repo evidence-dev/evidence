@@ -192,7 +192,7 @@ const updateExtractedQueriesDir = function(content, filename){
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
         // Prevent "real" code blocks from being interpreted as queries
-        if (prismLangs.has(id)) return
+        if (prismLangs.has(id.toLowerCase())) return
         let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
         let inputQueryString = compiledQueryString // original, as written 
         let compiled = false // default flag, switched to true if query is compiled
@@ -262,8 +262,8 @@ function highlighter(code, lang) {
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
 
     // Ensure that "real" code blocks are rendered with syntax highlighting.
-    if (prismLangs.has(lang)) {
-      return `<CodeBlock source="${code}" language="${lang}" showLineNumbers />`;
+    if (prismLangs.has(lang.toLowerCase())) {
+      return `<CodeBlock source="${code}" language="${lang.toLowerCase()}" showLineNumbers />`;
     }
     return `<QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>`;
 }
