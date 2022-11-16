@@ -29,7 +29,7 @@
 
 	},
 	"scripts": {
-		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
-		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test"
+		"release": "pnpm --filter ./sites/development-workspace package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
+		"test": "pnpm --filter ./sites/development-workspace package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test"
 	}
 }

@@ -123,7 +123,7 @@ importers:
       sade: 1.8.1
       vite-plugin-full-reload: 0.2.2
     devDependencies:
-      '@evidence-dev/components': link:../../sites/example-project
+      '@evidence-dev/components': link:../../sites/development-workspace
       '@evidence-dev/db-orchestrator': link:../db-orchestrator
 
   packages/evidence-vscode:
@@ -272,7 +272,7 @@ importers:
       remark-math: 3.0.1
       url-loader: 4.1.1_file-loader@6.2.0
 
-  sites/example-project:
+  sites/development-workspace:
     specifiers:
       '@evidence-dev/telemetry': 1.0.4
       '@tidyjs/tidy': 2.4.4

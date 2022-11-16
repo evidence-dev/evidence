@@ -1,4 +1,4 @@
-// Populate the template that's shipped with the package using a subset of files from the example-project
+// Populate the template that's shipped with the package using a subset of files from the development-workspace
 import path from 'path';
 import fs from 'fs-extra'
 
@@ -18,7 +18,7 @@ const templatePaths = [
 fs.emptyDirSync("./template/")
 
 templatePaths.forEach(p => {
-    fs.copySync(path.join("../../sites/example-project", p), path.join("./template", p))
+    fs.copySync(path.join("../../sites/development-workspace", p), path.join("./template", p))
 })
 
 // Create a clean SK config (workspace's is modified)

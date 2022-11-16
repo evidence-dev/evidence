@@ -95,5 +95,5 @@ In your markdown file:
 In the custom component:
 1. **Use the `/components/` folder** for your .svelte files
 1. **`export` any props you want to use** in the component
-1. **Import any [Evidence components](https://github.com/evidence-dev/evidence/tree/main/sites/example-project/src/components)** you want to use in the components
+1. **Import any [Evidence components](https://github.com/evidence-dev/evidence/tree/main/sites/development-workspace/src/components)** you want to use in the components
 1. **Use Svelte (HTML + extra features) syntax** in this component - it will not support Markdown
