@@ -19,7 +19,6 @@ module.exports = {
     "Kotlin",
     "Dart",
     "Ruby",
-    "Assembly",
     "R",
     "MATLAB",
     "DAX",

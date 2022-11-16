@@ -34,8 +34,9 @@ function helloWorld() {
 &#96;&#96;&#96;
 ```
 
-## Basic Examples
-Here are rendered codeblocks that with various languages
+## List of supported languages
+Language support is provided by [prismjs](https://prismjs.com/).
+These languages are available for use in Evidence
 
 ### Javascript
 ```javascript
@@ -44,10 +45,117 @@ function helloWorld() {
 }
 ```
 
+### HTML
+```html
+<div>
+    Hello World
+</div>
+```
+
+### CSS
+```css
+body {
+    background-color: blue;
+}
+```
+
+### SQL
+```sql
+SELECT 'Hello World';
+```
+
 ### Python
 ```python
 def hello_world():
     print("Hello World")
+```
+
+### Typescript
+```typescript
+function helloWorld(name: string): void {
+    print(`Hello ${name}`)
+}
+```
+
+### Java
+```java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello World!")
+    }
+}
+```
+
+### Bash
+```bash
+echo "Hello World"
+```
+
+### C#
+```c#
+{
+    static void Main()
+    {
+        System.Console.WriteLine("Hello, World!");
+    }
+}
+```
+
+### PHP
+```php
+<?php
+  echo 'Hello World!';
+?>
+```
+
+### C
+```c
+#include <stdio.h>
+
+main()
+{
+    printf("Hello World!\n");
+}
+```
+
+### PowerShell
+```powershell
+'Hello World!'
+```
+
+### Go
+```go
+package main
+import "fmt"
+func main() {
+ fmt.Printf("Hello World\n")
+}
+```
+
+### Rust
+```rust
+fn main() {
+    println!("Hello World!");
+}
+```
+
+### Kotlin
+```kotlin
+fun main(args : Array<String>) {
+    println("Hello, world!")
+}
+```
+
+### Dart
+```dart
+main() {
+   print('Hello world!');
+}
+```
+
+### Ruby
+```ruby
+puts "Hello World!"
 ```
 
 ### R
@@ -56,36 +164,34 @@ def hello_world():
 [1] "Hello World!"
 ```
 
+### MATLAB
+```matlab
+disp('Hello World');
+```
+### DAX
+```dax
+Sales:=CALCULATE(FactSales[Sales], 
+                 PREVIOUSQUARTER(DimDate[DateKey]))
+```
+
+### JSON
+```json
+{
+    "hello": "world!"
+}
+```
+### YAML
+```yaml
+hello:
+  world: true
+```
+
+### Markdown
+```markdown
+# Hello World
+```
+
 ### Generic Code Block
 ```code
 Test
 ```
-
-## List of supported languages
-
-Language support is provided by [prismjs](https://prismjs.com/).
-These languages are available for use in Evidence
- - JavaScript
- - HTML
- - CSS
- - SQL
- - Python
- - TypeScript
- - Java
- - Bash
- - C#
- - C++
- - PHP
- - C
- - PowerShell
- - Go
- - Rust
- - Kotlin
- - Dart
- - Ruby
- - Assembly
- - R
- - MATLAB
- - DAX
- - JSON
- - YAML
