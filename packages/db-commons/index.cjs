@@ -20,7 +20,7 @@ const inferValueType = function (columnValue) {
         return EvidenceType.BOOLEAN;
     } else if (typeof columnValue === 'string') {
         let result = EvidenceType.STRING;
-        if(columnValue && columnValue.match(/-/g).length === 2){
+        if(columnValue && (columnValue.match(/-/g) || []).length === 2){
             let testDateStr = columnValue;
             if(!columnValue.includes(":")){
                 testDateStr = columnValue + "T00:00";
