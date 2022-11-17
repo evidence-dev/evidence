@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 1.3.11
+
+### Patch Changes
+
+- 76f5617: Updates to dev workspace
+- de49590: Prevent parameterized pages from showing in sidebar at root level, addresses #410
+
 ## 1.3.10
 
 ### Patch Changes
