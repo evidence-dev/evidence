@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 0.1.2
+
+### Patch Changes
+
+- bb5d0e2: changes date inference logic to cover sqlite use cases
+
 ## 0.1.1
 
 ### Patch Changes

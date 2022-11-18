@@ -1,5 +1,29 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.8
+
+### Patch Changes
+
+- Updated dependencies [e93acbf]
+- Updated dependencies [bb5d0e2]
+  - @evidence-dev/sqlite@1.1.3
+  - @evidence-dev/db-commons@0.1.2
+  - @evidence-dev/bigquery@1.2.3
+  - @evidence-dev/mysql@0.1.3
+  - @evidence-dev/postgres@0.2.4
+  - @evidence-dev/redshift@0.0.3
+  - @evidence-dev/snowflake@0.1.4
+
+## 1.1.7
+
+### Patch Changes
+
+- f16158e: Updated telemetry to include operating system
+- 90b1846: Updates telemetry to include database type
+- Updated dependencies [f16158e]
+- Updated dependencies [90b1846]
+  - @evidence-dev/telemetry@1.0.4
+
 ## 1.1.6
 
 ### Patch Changes

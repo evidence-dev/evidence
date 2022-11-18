@@ -13,6 +13,7 @@
 
 	for(let path in rootMDFiles) {
 		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
+		if (path.includes('[')) continue;
 		menu.push({
 			filename: pathEnd,
 			label: pathEnd.replace(/\.md$/, '').replace(/_/g, ' ').replace(/-/g, ' '),
@@ -61,7 +62,7 @@
 				folderNameError: pathSplit[0].includes(" ")
 			})
 		}
-	} 
+	}
 
 	for(let path in levelTwoIndexFiles) {
 		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
@@ -94,7 +95,7 @@
 	let folderHrefUri;
 	let indexFileCount;
 	let folderNameError;
-	
+
 	for(let i = 0; i < folders.length; i++){
 		contents = menu.filter(d => d.folder === folders[i]);
 
@@ -145,7 +146,7 @@
 			<Hamburger bind:open/>
 		</div>
 	{/if}
-	<Sidebar bind:open {menu} {folderList}/> 
+	<Sidebar bind:open {menu} {folderList}/>
 	<main in:blur|local>
 	  <div class=content class:settings-content={$page.path === '/settings'}>
 		<article class:settings-article={$page.path === '/settings'}>
@@ -179,7 +180,7 @@ main {
   grid-area: main;
 }
 
-div.content { 
+div.content {
 	margin: auto;
 	max-width:100ch;
 	box-sizing: border-box;
@@ -187,7 +188,7 @@ div.content {
 	grid-template-columns: 4fr minmax(0,1fr);
 	gap: 0 5ch;
   	grid-template-areas:
-    	'article toc'; 
+    	'article toc';
     justify-items: left;
 }
 
@@ -208,7 +209,7 @@ article {
 	max-width: 100ch !important;
 	grid-template-columns: 1fr !important;
 	grid-template-areas:
-    	'article' !important; 
+    	'article' !important;
 }
 
 .settings-article {
@@ -229,10 +230,10 @@ aside.toc {
 	justify-content: space-between;
 }
 @media (max-width: 1440px) {
-	div.content { 
+	div.content {
 		grid-template-columns: 1fr;
 		grid-template-areas:
-			'article'; 
+			'article';
 	}
 
 	article {
@@ -247,7 +248,7 @@ aside.toc {
 	max-width: 100ch !important;
 	grid-template-columns: 1fr !important;
 	grid-template-areas:
-    	'article' !important; 
+    	'article' !important;
 }
 
 	aside.toc {

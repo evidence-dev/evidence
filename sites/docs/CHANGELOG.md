@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 1.0.4
+
+### Patch Changes
+
+- f16158e: Updated telemetry to include operating system
+
 ## 1.0.3
 
 ### Patch Changes
