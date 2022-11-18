@@ -173,6 +173,7 @@ const updateExtractedQueriesDir = function(content, filename){
     if (queries.length > 0) {
         if(!fs.existsSync(queryDir)){
             fs.mkdirSync(queryDir)
+            writeJSONSync(`${queryDir}/queries.json`, queries);
         }else{
             emptyDirSync(queryDir)
             writeJSONSync(`${queryDir}/queries.json`, queries);
