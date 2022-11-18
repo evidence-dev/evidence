@@ -36,9 +36,6 @@
     export let handleMissing = undefined;
 
     export let sort = undefined;
-
-    let chartType = "Line Chart";
-
 </script>
 
 <Chart
@@ -62,7 +59,7 @@
     {yMax}
     {title}
     {subtitle}
-    {chartType}
+    chartType="Line Chart"
     {sort}
     >
     <Line

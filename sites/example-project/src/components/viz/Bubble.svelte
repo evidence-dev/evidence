@@ -1,5 +1,5 @@
 <script>
-    import {getContext} from 'svelte'
+    import {getContext, beforeUpdate } from 'svelte'
     import { propKey, configKey } from './context'
     let props = getContext(propKey)
     let config = getContext(configKey)
@@ -11,7 +11,9 @@
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
+    const ySet = y ? true : false     // Hack, see chart.svelte
     export let series = undefined;
+    const seriesSet = series ? true : false     // Hack, see chart.svelte
     export let options = undefined;
     export let size = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
@@ -24,7 +26,7 @@
 
     let maxSize = 35;
     export let scaleTo = 1;
-    maxSize = maxSize * (scaleTo / 1);
+    $: maxSize = maxSize * (scaleTo / 1);
 
     export let useTooltip = false;
     export let tooltipTitle;
@@ -33,22 +35,22 @@
     let tooltipOutput;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    let x = $props.x;
-    let swapXY = $props.swapXY;
-    let xType = $props.xType;
-    let xFormat = $props.xFormat;
-    let yFormat = $props.yFormat;
-    let sizeFormat = $props.sizeFormat;
-    let xMismatch = $props.xMismatch;
-    let columnSummary = $props.columnSummary;
-    y = y ?? $props.y;
-    series = series ?? $props.series;
-    size = size ?? $props.size;
-    tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
-    let yMin = $props.yMin;
+    $: data = $props.data;
+    $: x = $props.x;
+    $: swapXY = $props.swapXY;
+    $: xType = $props.xType;
+    $: xFormat = $props.xFormat;
+    $: yFormat = $props.yFormat;
+    $: sizeFormat = $props.sizeFormat;
+    $: xMismatch = $props.xMismatch;
+    $: columnSummary = $props.columnSummary;
+    $: y = ySet ? y : $props.y;
+    $: series = seriesSet ? series : $props.series;
+    $: size = size ?? $props.size;
+    $: yMin = $props.yMin;
+    $: tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
 
-    if(!series && typeof y !== 'object'){
+    $: if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
         multiSeries = false;
@@ -59,9 +61,9 @@
     }
 
     // Determine bubble sizes:
-    let sizeExtents = getColumnExtentsLegacy(data, size);
-    let maxData = sizeExtents[1];
-    let maxSizeSq = Math.pow(maxSize, 2);
+    $: sizeExtents = getColumnExtentsLegacy(data, size);
+    $: maxData = sizeExtents[1];
+    $: maxSizeSq = Math.pow(maxSize, 2);
 
     // Maximum point in dataset is assigned the maximum point area on the graph. Other
     // points are assigned based on their proportion to the maximum point. 
@@ -82,8 +84,8 @@
             emphasis: {
                 focus: "series",
             },
-            symbolSize: function (data) {
-                return bubbleSize(data);
+            symbolSize: function (newPoint) {
+                return bubbleSize(newPoint);
             },
             symbol: shape,
             itemStyle: {
@@ -141,16 +143,16 @@
     }
 
     // If user has passed in custom echarts config options, append to the baseConfig:
-    if(options){
+    $: if(options){
         baseConfig = {...baseConfig, ...options}
     }
 
     // Generate config for each series:
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary, size, tooltipTitle);
-    config.update(d => {d.series.push(...seriesConfig); return d})
+    $: seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary, size, tooltipTitle);
+    $: config.update(d => {d.series.push(...seriesConfig); return d})
 
     // Overriding global chart config:
-    let chartOverrides = {
+    $: chartOverrides = {
         yAxis: {
             scale: true,
             boundaryGap: ['1%', '1%']
@@ -160,7 +162,7 @@
         }
     }
 
-    if(chartOverrides){
+    beforeUpdate(() => {
         config.update(d => {
             if(swapXY){
                 d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
@@ -173,6 +175,6 @@
                 d.tooltip = {...d.tooltip, ...tooltipOverride.tooltip};
             }
             return d})
-    }
+    })
 
 </script>

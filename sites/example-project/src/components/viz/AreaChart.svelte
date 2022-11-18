@@ -60,7 +60,7 @@
     {yMax}
     {title}
     {subtitle}
-    {chartType}
+    chartType="Area Chart"
     {sort}
     {stacked100}
     >

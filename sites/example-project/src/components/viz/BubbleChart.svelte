@@ -66,8 +66,8 @@
     {yMax}
     {title}
     {subtitle}
-    {chartType}
-    {bubble}
+    chartType="Bubble Chart"
+    bubble=true
     {sort}
     >
     <Bubble
@@ -77,6 +77,6 @@
         {outlineColor}
         {outlineWidth}
         {scaleTo}
-        {useTooltip}
+        useTooltip=true
     />
 </Chart>

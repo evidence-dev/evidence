@@ -118,13 +118,17 @@
 	import { navigating } from '$app/stores';
 	import { blur } from "svelte/transition";
 	import { page } from "$app/stores";
+	import {dev} from '$app/env'
+
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
 	import Header from '@evidence-dev/components/ui/Header.svelte'
 	import Hamburger from '@evidence-dev/components/ui/Hamburger.svelte'
 	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
 	import LoadingIndicator from "@evidence-dev/components/ui/LoadingIndicator.svelte";
-
-	export let open = false
+	
+	import QueryStatus from "@evidence-dev/components/QueryStatus.svelte";
+	
+	export let open = false  
 </script>
 
 <svelte:head>
@@ -155,7 +159,9 @@
 	  </div>
 	</main>
 </div>
-
+{#if !$navigating && dev}
+<QueryStatus /> 
+{/if}
 
 <style>
 .grid {

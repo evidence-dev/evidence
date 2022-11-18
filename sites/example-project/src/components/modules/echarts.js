@@ -3,7 +3,6 @@ import {colours} from './colours'
 
 
 export default(node, option, renderer) => {
-
 	echarts.registerTheme('evidence-light', {
         "grid": {
             "left": "0%",
@@ -453,16 +452,16 @@ export default(node, option, renderer) => {
     }
     
 	return {
-        // update(option){
-            // 	chart.update(option, true, true);
-            // },
-            destroy() {
-                if (resizeObserver) {
-                    resizeObserver.unobserve(containerElement)
-                } else {
-                    window.removeEventListener("resize", resizeChart)
-                }
-			chart.dispose();
+		update(option){
+			chart.setOption(option, true, true);
+		},
+        destroy() {
+            if (resizeObserver) {
+                resizeObserver.unobserve(containerElement)
+            } else {
+                window.removeEventListener("resize", resizeChart)
+            }
+            chart.dispose();
 		}
 	};
 }

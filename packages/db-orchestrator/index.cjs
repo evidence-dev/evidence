@@ -67,26 +67,15 @@ const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
     }
 } 
 
-const reportProgress = (status) => {
-    let progress = {
-        status: status
-    }
-
-    writeJSONSync('./.evidence-queries/status.json', progress)
-}
-
 const runQueries = async function (routeHash, dev) {
     const settings = readJSONSync('./evidence.settings.json', {throws:false})
     const runQuery = await importDBAdapter(settings)
 
     let routePath = `./.evidence-queries/extracted/${routeHash}`
-    let queryFile = `${routePath}/${readdirSync(routePath)}`
+    let queryFile = `${routePath}/queries.json`
     let queries = readJSONSync(queryFile, { throws: false }) 
-
-    
-    if (queries.length > 0) {
-        reportProgress('started')
-        let data = {}
+    let data = {}
+    if (queries && queries.length > 0) {
         data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 
         for (let queryIndex in queries) {
             let query = queries[queryIndex];
@@ -105,8 +94,12 @@ const runQueries = async function (routeHash, dev) {
                     populateColumnTypeMetadata(data, queryIndex, columnTypeCache);
                 }
                 process.stdout.write(chalk.greenBright("✓ "+ query.id) +  chalk.grey(" from cache \n"));
+                queries[queryIndex].status = "from cache"
+                writeJSONSync(queryFile, queries)
             } else {
                 try {
+                    queries[queryIndex].status = "running"
+                    writeJSONSync(queryFile, queries)
                     process.stdout.write(chalk.grey("  "+ query.id +" running..."));
                     validateQuery(query);
 
@@ -118,6 +111,9 @@ const runQueries = async function (routeHash, dev) {
                     readline.cursorTo(process.stdout, 0);
                     process.stdout.write(chalk.greenBright("✓ "+ query.id) + chalk.grey(" from database \n"))
 
+                    queries[queryIndex].status = "done"
+                    writeJSONSync(queryFile, queries)
+
                     updateCache(dev, query.compiledQueryString, data[query.id], columnTypes, queryTime);
 
                     logEvent("db-query", dev, settings)
@@ -126,12 +122,13 @@ const runQueries = async function (routeHash, dev) {
                     process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
                     data[query.id] = [ { error_object: {error: { message: err } } } ]
                     logEvent("db-error", dev, settings)
+                    queries[queryIndex].status = "error"
+                    writeJSONSync(queryFile, queries)
                 } 
             }
         }
-        reportProgress('done')
-        return data
-    }
+    } 
+    return data
 }
 
 

@@ -24,10 +24,12 @@
     export let yMin = undefined;
     export let yMax = undefined;
     export let swapXY = false;
-    if(swapXY === "true" || swapXY === true){
-        swapXY = true;
-    } else {
-        swapXY = false;
+    $: {
+        if(swapXY === "true" || swapXY === true) {
+            swapXY = true;
+        } else {
+            swapXY = false;
+        }
     }
 
     export let type = undefined; // stacked, grouped, or stacked100
@@ -39,9 +41,6 @@
     export let outlineWidth = undefined;
 
     export let sort = undefined;
-
-    let chartType = "Bar Chart";
-
 </script>
 
 <Chart
@@ -66,7 +65,7 @@
     {swapXY}
     {title}
     {subtitle}
-    {chartType}
+    chartType="Bar Chart"
     {sort}
     {stacked100}
     >

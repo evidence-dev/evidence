@@ -8,7 +8,7 @@ const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 
 const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1].replace(".md","")
+    let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/index/g,"")
     let routeHash = md5(route)
     return routeHash
 }
@@ -20,49 +20,42 @@ const hasQueries = function(filename){
 
 const createModuleContext = function(filename){
     let routeHash = getRouteHash(filename)
-    let moduleContext = "";
-
-    let loadCustomSettingsSnippet = `
-        const customFormattingSettingsRes = await fetch('/api/customFormattingSettings.json');
-        const { customFormattingSettings } = await customFormattingSettingsRes.json();
-    `
-    if(hasQueries(filename)){
-        moduleContext = 
-            ` 
-            export async function load({fetch}) {
-                const res = await fetch('/api/${routeHash}.json');
-                const {data} = await res.json();
-                ${loadCustomSettingsSnippet}
-                return {
-                    props: {
-                        data,
-                        customFormattingSettings
-                    }
+    let moduleContext = 
+        ` 
+        export async function load({fetch}) {
+            const res = await fetch('/api/${routeHash}.json');
+            const {data} = await res.json();
+            const customFormattingSettingsRes = await fetch('/api/customFormattingSettings.json');
+            const { customFormattingSettings } = await customFormattingSettingsRes.json();
+            return {
+                props: {
+                    data,
+                    customFormattingSettings
                 }
             }
-            `
-    } else {
-        moduleContext = `
-            export async function load({fetch}) {
-                ${loadCustomSettingsSnippet}
-                return {
-                    props: {
-                        customFormattingSettings
-                    }
-                }
-            }
+        }
         `
-    }
+
     return moduleContext
 } 
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
     let routeHash = getRouteHash(filename)
+
+    let queryDeclarations = ''
+    
+    if(hasQueries(filename)) {
+        queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
+        .map(id => `let ${id} 
+        $: data, ${id} = data.${id};`)
+        .join('\n') || '';  
+    } 
+
     let defaultProps = `
         import { page } from '$app/stores';
-        import { setContext, getContext } from 'svelte';
         import { pageHasQueries } from '@evidence-dev/components/ui/stores';
+        import { setContext, getContext } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import BigValue from '${componentSource}/viz/BigValue.svelte';
@@ -81,67 +74,25 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
-        import { PAGE_QUERY_RESULTS, CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
-
-        let routeHash = '${routeHash}';
+        import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
+        import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
+        
+        export let data = {};
         export let customFormattingSettings;
+        
+        let routeHash = '${routeHash}';
+
+        $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
 
         setContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, {
             getCustomFormats: () => {
                 return customFormattingSettings.customFormats || [];
             }
         });
+
+        ${queryDeclarations}
         `
-  
-    if(hasQueries(filename)){
-        let queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
-                                         .map(id => `let ${id} = getContext(PAGE_QUERY_RESULTS).getData('${id}');`)
-                                         .join('\n') || '';
-        defaultProps = `
-            export let data;
 
-            pageHasQueries.update(value => value = true);
-
-            setContext(PAGE_QUERY_RESULTS, {
-                getData: (queryName) => {
-                    let originalData = data[queryName];
-                    let evidenceTypedData = [];
-
-                    let columnTypes = data.evidencemeta?.queries?.find(query => query.id === queryName)?.columnTypes;
-
-                    for (var i = 0; i < originalData.length; i++) {
-                        let nextItem = originalData[i];
-                        if (nextItem && columnTypes) {
-                            if (!nextItem.hasOwnProperty('_evidenceColumnTypes')) {
-                                Object.defineProperty(nextItem, '_evidenceColumnTypes', {
-                                    enumerable: false,
-                                    value: columnTypes,
-                                });
-                            }
-                        }
-                        evidenceTypedData.push(nextItem);
-                    }
-                    return evidenceTypedData;
-                },
-                getColumnTypes: (queryName) => {
-                    let columnTypes = data.evidencemeta?.queries?.filter(query => query.id === queryName)?.map(record => record.columnTypes);
-                    if (columnTypes && columnTypes.length > 0) {
-                        return columnTypes[0];
-                    }
-                }
-            });
-
-            ${queryDeclarations}
-
-            import QueryViewer from '@evidence-dev/components/ui/QueryViewer.svelte';
-            ${defaultProps}
-        `
-    } else {
-        defaultProps = `
-        pageHasQueries.update(value => value = false)
-        ${defaultProps}
-    `
-    }
     return defaultProps
 }
 
@@ -175,8 +126,9 @@ const updateExtractedQueriesDir = function(content, filename){
         let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
         let inputQueryString = compiledQueryString // original, as written 
         let compiled = false // default flag, switched to true if query is compiled
+        let status = "not run"
         queries.push(
-            {id, compiledQueryString, inputQueryString, compiled}
+            {id, compiledQueryString, inputQueryString, compiled, status}
         )
     });
 
@@ -218,17 +170,14 @@ const updateExtractedQueriesDir = function(content, filename){
         removeSync(queryDir)
         return [];
     }
-    let queryHash = md5(JSON.stringify(queries))
-    if (fs.existsSync(`${queryDir}/${queryHash}.json`)){
-        return queryIds;
-    }
     if (queries.length > 0) {
         if(!fs.existsSync(queryDir)){
             fs.mkdirSync(queryDir)
+            writeJSONSync(`${queryDir}/queries.json`, queries);
         }else{
             emptyDirSync(queryDir)
+            writeJSONSync(`${queryDir}/queries.json`, queries);
         }
-        writeJSONSync(`${queryDir}/${queryHash}.json`, queries);
     }
     return queryIds;
 }
@@ -240,9 +189,13 @@ function highlighter(code, lang) {
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
-    <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/>
+    {#if data.${lang} }
+        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/> 
+    {/if}
     `;
 }
+
+// 
 
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
     let queryIdsByFile = {};

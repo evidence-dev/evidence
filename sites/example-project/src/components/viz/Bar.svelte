@@ -1,8 +1,8 @@
 <script>
-    import {getContext} from 'svelte'
+    import {getContext, beforeUpdate} from 'svelte'
     import { propKey, configKey } from './context'
-    let props = getContext(propKey)
-    let config = getContext(configKey)
+    $: props = getContext(propKey)
+    $: config = getContext(configKey)
     
     import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
     import getStackedData from '$lib/modules/getStackedData.js';
@@ -11,7 +11,9 @@
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
+    const ySet = y ? true : false     // Hack, see chart.svelte
     export let series = undefined;
+    const seriesSet = series ? true : false     // Hack, see chart.svelte
     export let options = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
     export let type = 'stacked' // stacked, grouped, or stacked100
@@ -22,23 +24,23 @@
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
 
-    let barMaxWidth;
+    let barMaxWidth = 60;
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    let x = $props.x;
-    let swapXY = $props.swapXY;
-    let xType = $props.xType;
-    let xMismatch = $props.xMismatch;
-    let columnSummary = $props.columnSummary;
-    let sort = $props.sort;
-    y = y ?? $props.y;
-    series = series ?? $props.series;
+    $: data = $props.data;
+    $: x = $props.x;
+    $: y = ySet ? y : $props.y;
+    $: swapXY = $props.swapXY;
+    $: xType = $props.xType;
+    $: xMismatch = $props.xMismatch;
+    $: columnSummary = $props.columnSummary;
+    $: sort = $props.sort;
+    $: series = seriesSet ? series : $props.series;
 
     let stackedData;
     let sortOrder;
 
-    if(!series && typeof y !== 'object'){
+    $: if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
 
@@ -81,9 +83,7 @@
 
     }
 
-    barMaxWidth = 60;
-
-    let baseConfig = {
+    $: baseConfig = {
             type: "bar",
             stack: stackName,
             label: {
@@ -102,15 +102,11 @@
             }
     }
  
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    $: seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
-    config.update(d => {d.series.push(...seriesConfig); return d})
+    $: config.update(d => {d.series.push(...seriesConfig); return d})
 
-    if(options){
-        config.update(d => {return {...d, ...options}})
-    }
-
-    let chartOverrides = {
+    $: chartOverrides = {
          // Evidence definition of axes (yAxis = dependent, xAxis = independent)
          xAxis: {
              boundaryGap: ['1%', '2%'],
@@ -118,30 +114,38 @@
          }
     }
 
-    if(chartOverrides){
-        config.update(d => {
-            if(type.includes("stacked")){
-                d.tooltip = {...d.tooltip, order: 'seriesDesc'} 
-            } else {
-                d.tooltip = {...d.tooltip, order: 'seriesAsc'} 
-            }
-            if(type === "stacked100"){
-                if(swapXY){
-                    d.xAxis = {...d.xAxis, max: 1};
+    beforeUpdate(() => {
+        // beforeUpdate ensures that these overrides always run before we render the chart. 
+        // otherwise, this block won't re-execute after a change to the data object, and 
+        // the chart will re-render using the base config from Chart.svelte
+
+        if(options){
+            config.update(d => {return {...d, ...options}})
+        }
+
+        if(chartOverrides){
+            config.update(d => {
+                if(type.includes("stacked")){
+                    d.tooltip = {...d.tooltip, order: 'seriesDesc'} 
                 } else {
-                    d.yAxis = {...d.yAxis, max: 1};
+                    d.tooltip = {...d.tooltip, order: 'seriesAsc'} 
                 }
+                if(type === "stacked100"){
+                    if(swapXY){
+                        d.xAxis = {...d.xAxis, max: 1};
+                    } else {
+                        d.yAxis = {...d.yAxis, max: 1};
+                    }
+                }
+                if(swapXY){
+                    d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
+                    d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
+                } else {
+                    d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
+                    d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
+                }
+                return d})
             }
-            if(swapXY){
-                d.yAxis = {...d.yAxis, ...chartOverrides.xAxis};
-                d.xAxis = {...d.xAxis, ...chartOverrides.yAxis};
-            } else {
-                d.yAxis = {...d.yAxis, ...chartOverrides.yAxis};
-                d.xAxis = {...d.xAxis, ...chartOverrides.xAxis};
-            }
-            return d})
-    }
-
-
+    })
     
 </script>
