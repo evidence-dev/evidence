@@ -33,6 +33,19 @@
     export let size = undefined;
     export let tooltipTitle = undefined;
 
+    // This should be reworked to fit better with svelte's reactivity. 
+
+    // We rewrite the x and y values with fallbacks if they aren't present
+    // the fallback logic *depends* on the values of x and y 
+    // when x and y are replaced by the fallbacks, the fallback logic doesn't reset. 
+    // if the y value isn't set, var y gets populated with a fall back from the data. 
+    // if the data changes, we are now acting as if the fallback from above was entered by the user, and 
+    // then we throw if the fallback column is now missing. 
+
+    // This is a hack to get around the above
+    const ySet = y ? true : false 
+    const xSet = x ? true : false 
+
     export let swapXY = false; // Flipped axis chart
     $: if(swapXY === "true" || swapXY === true){
         swapXY = true;
@@ -183,6 +196,28 @@ $: {
     // ---------------------------------------------------------------------------------------
     // Make assumptions to complete required props
     // ---------------------------------------------------------------------------------------
+    // If no x column was supplied, assume first column in dataset is x
+        if(!xSet){
+            x = columnNames[0]
+        }
+
+        // If no y column(s) supplied, assume all number columns other than x are the y columns:
+        if(!ySet) {
+            console.log('y fallback')
+            uColNames = columnNames.filter(function(col){
+                return ![x, series, size].includes(col)
+            });
+
+            for(let i = 0; i < uColNames.length; i++){
+                uColName = uColNames[i]
+                uColType = columnSummary[uColName].type
+                if(uColType === "number"){
+                    unusedColumns.push(uColName)
+                }
+            }
+
+            y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
+        }
         // Establish required columns based on chart type:
         if(bubble){
             reqCols = {
@@ -201,28 +236,6 @@ $: {
             }
         }
 
-        // If no x column supplied, assume first column in dataset is x:
-        if(!x){
-            x = columnNames[0]
-        }
-
-        // If no y column(s) supplied, assume all columns other than x are the y columns:
-        uColNames = columnNames.filter(function(col){
-            return ![x, series, size].includes(col)
-        });
-
-        for(let i = 0; i < uColNames.length; i++){
-            uColName = uColNames[i]
-            uColType = columnSummary[uColName].type
-            if(uColType === "number"){
-                unusedColumns.push(uColName)
-            }
-        }
-
-        if(!y && reqCols['y']){
-            y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
-        }
-        
         // Check which columns were not supplied to the chart:
         for(let property in reqCols){
             if(reqCols[property] == null){

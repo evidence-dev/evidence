@@ -10,7 +10,9 @@
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
+    const ySet = y ? true : false     // Hack, see chart.svelte
     export let series = undefined;
+    const seriesSet = series ? true : false     // Hack, see chart.svelte
     export let options = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
 
@@ -35,8 +37,9 @@
     $: yFormat = $props.yFormat;
     $: xMismatch = $props.xMismatch;
     $: columnSummary = $props.columnSummary;
-    $: y = y ?? $props.y;
-    $: series = series ?? $props.series;
+    $: y = ySet ? y : $props.y;
+    $: series = seriesSet ? series : $props.series;
+    $: size = size ?? $props.size;
     $: yMin = $props.yMin;
     $: tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
 

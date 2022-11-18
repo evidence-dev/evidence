@@ -9,6 +9,8 @@
     import { formatValue } from '../modules/formatting';
 
     export let x = undefined;
+    const xSet = x ? true : false     // Hack, see chart.svelte
+
 
     export let fillColor = undefined;
     export let fillOpacity = 1;
@@ -16,6 +18,9 @@
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     $: data = $props.data;
     $: x = x ?? $props.x;
+    $: x = xSet ? x : $props.x;
+
+    
     $: xFormat = $props.xFormat;
     $: yFormat = $props.yFormat;
 

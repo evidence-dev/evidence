@@ -10,7 +10,9 @@
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
+    const ySet = y ? true : false     // Hack, see chart.svelte
     export let series = undefined;
+    const seriesSet = series ? true : false     // Hack, see chart.svelte
     export let options = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
 
@@ -26,12 +28,12 @@
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
     $: data = $props.data;
     $: x = $props.x;
+    $: y = ySet ? y : $props.y;
     $: swapXY = $props.swapXY;
     $: xType = $props.xType;
     $: xMismatch = $props.xMismatch;
     $: columnSummary = $props.columnSummary;
-    $: y = y ?? $props.y;
-    $: series = series ?? $props.series;
+    $: series = seriesSet ? series : $props.series;
 
     let stackName;
     $: if(!series && typeof y !== 'object'){
