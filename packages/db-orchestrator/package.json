@@ -6,6 +6,7 @@
   "author": "evidence.dev",
   "license": "MIT",
   "dependencies": {
+    "@evidence-dev/athena": "workspace:^",
     "@evidence-dev/bigquery": "workspace:^",
     "@evidence-dev/snowflake": "workspace:^",
     "@evidence-dev/postgres": "workspace:^",

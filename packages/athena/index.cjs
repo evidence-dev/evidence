@@ -120,9 +120,9 @@ const runQuery = async (queryString, database) => {
   const location = database ? database.s3_location : process.env.ATHENA_S3_LOCATION
   const db = database ? database.name : process.env.ATHENA_DATABASE
   const credentials = {
-    accessKeyId: database ? database.accessKeyId : process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: database ? database.secretAccessKey : process.env.AWS_SECRET_ACCESS_KEY,
-    sessionToken: database ? database.sessionToken : process.env.AWS_SESSION_TOKEN
+    accessKeyId: database && database.accessKeyId || process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: database && database.secretAccessKey || process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: database && database.sessionToken || process.env.AWS_SESSION_TOKEN
   }
   const client = new AthenaClient({ region, credentials })
 

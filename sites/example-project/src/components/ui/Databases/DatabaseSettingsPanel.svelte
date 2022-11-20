@@ -5,6 +5,7 @@
     import RedshiftForm from '@evidence-dev/components/ui/Databases/RedshiftForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
     import SqliteForm from '@evidence-dev/components/ui/Databases/SqliteForm.svelte'
+    import AthenaForm from '@evidence-dev/components/ui/Databases/AthenaForm.svelte'
     import { slide, blur } from 'svelte/transition'
 
     export let settings 
@@ -23,7 +24,8 @@
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
         {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
-        {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm}
+        {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm},
+        {id: 'athena', name: 'Athena (experimental)', formComponent: AthenaForm},
 	];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
