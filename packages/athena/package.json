@@ -1,0 +1,19 @@
+{
+  "name": "@evidence-dev/athena",
+  "version": "0.1.0",
+  "description": "Athena driver for Evidence projects",
+  "main": "index.cjs",
+  "author": "Charles Julian Knight",
+  "license": "MIT",
+  "scripts": {
+    "test": "uvu test test.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-athena": "^3.213.0",
+    "@evidence-dev/db-commons": "workspace:^"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
+  },
+  "type": "module"
+}
