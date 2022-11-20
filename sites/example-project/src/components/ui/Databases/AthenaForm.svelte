@@ -57,15 +57,6 @@
       placeholder: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
       additionalInstructions: 'If left blank, it will try to pick them up from your environment if available',
       value: credentials.secretAccessKey ?? ''
-    },
-    {
-      id: 'sessionToken',
-      label: 'AWS Access Key ID',
-      type: 'password',
-      optional: true,
-      placeholder: 'AQoDYXdzEJr...',
-      additionalInstructions: 'If left blank, it will try to pick them up from your environment if available',
-      value: credentials.sessionToken ?? ''
     }
   ]
 </script>

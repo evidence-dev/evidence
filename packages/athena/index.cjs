@@ -14,13 +14,13 @@ async function sleep (ms) {
 }
 
 function zip (keys, values) {
-  keys.reduce((acc, k, i) => ({ ...acc, [k]: values[i] }), {})
+  return keys.reduce((acc, k, i) => ({ ...acc, [k]: values[i] }), {})
 }
 
 async function awaitCompletion (client, QueryExecutionId) {
   while (true) {
     try {
-      const { QueryExecution } = client.send(new GetQueryExecutionCommand({ QueryExecutionId }))
+      const { QueryExecution } = await client.send(new GetQueryExecutionCommand({ QueryExecutionId }))
       const { Status } = QueryExecution
       if (Status.State === 'FAILED') {
         throw new Error(Status.StateChangeReason)
@@ -85,7 +85,7 @@ function nativeTypeToEvidenceType (type) {
 function convertToEvidence (columnInfo) {
   return columnInfo.map(column => {
     const name = column.Name.toLowerCase()
-    let evidenceType = nativeTypeToEvidenceType(columnInfo.Type)
+    let evidenceType = nativeTypeToEvidenceType(column.Type)
     let typeFidelity = 'precise'
     if (!evidenceType) {
       evidenceType = EvidenceType.STRING
@@ -103,7 +103,7 @@ async function loadAllResults (client, QueryExecutionId) {
       QueryExecutionId,
       NextToken
     }))
-    rows = [...rows, standardizeResults(results.ResultSet)]
+    rows = [...rows, ...standardizeResults(results.ResultSet)]
     if (!NextToken) {
       return {
         rows,
@@ -120,9 +120,9 @@ const runQuery = async (queryString, database) => {
   const location = database ? database.s3_location : process.env.ATHENA_S3_LOCATION
   const db = database ? database.name : process.env.ATHENA_DATABASE
   const credentials = {
-    accessKeyId: database && database.accessKeyId || process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: database && database.secretAccessKey || process.env.AWS_SECRET_ACCESS_KEY,
-    sessionToken: database && database.sessionToken || process.env.AWS_SESSION_TOKEN
+    accessKeyId: (database && database.accessKeyId) || process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: (database && database.secretAccessKey) || process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: (database && database.sessionToken) || process.env.AWS_SESSION_TOKEN
   }
   const client = new AthenaClient({ region, credentials })
 
