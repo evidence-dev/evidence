@@ -28,7 +28,8 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
-const runFileWatcher = function(sourceRelative,targetRelative,filePattern) {
+const runFileWatcher = function(watchPatterns) {
+  
   const ignoredFiles = [
     "./pages/settings/**", 
     "./pages/settings.+(*)",
@@ -36,22 +37,25 @@ const runFileWatcher = function(sourceRelative,targetRelative,filePattern) {
     "./pages/api.+(*)"
   ]
 
-  const watcher = chokidar.watch(path.join(sourceRelative,filePattern), {ignored:ignoredFiles})
+  var watchers = []
 
-  const sourcePath = p => path.join('./', p)
-  const targetPath = p => path.join(targetRelative, path.relative(sourceRelative, p))
+  watchPatterns.forEach((pattern,item) => {
+    watchers[item] = chokidar.watch(path.join(pattern.sourceRelative, pattern.filePattern), { ignored: ignoredFiles});
 
-  watcher
-      .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-      .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-      .on('unlink', path => fs.rmSync(targetPath(path)))
-      .on('addDir', path => {
-        if(!fs.existsSync(targetPath(path))){
-          fs.mkdirSync(targetPath(path))}
-        })
-      .on('unlinkDir', path => fs.rmdirSync(targetPath(path)))
-  ;
-  return watcher 
+    const sourcePath = p => path.join('./', p)
+    const targetPath = p => path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, p))
+
+    watchers[item]
+        .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
+        .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
+        .on('unlink', path => fs.rmSync(targetPath(path)))
+        .on('addDir', path => {
+          if(!fs.existsSync(targetPath(path))){
+            fs.mkdirSync(targetPath(path))}
+          })
+        .on('unlinkDir', path => fs.rmdirSync(targetPath(path)));
+  })
+  return watchers 
 }
 
 const flattenArguments = function(args) {
@@ -72,6 +76,14 @@ const flattenArguments = function(args) {
   }
 }
 
+const watchPatterns = 
+    [
+      {'sourceRelative': './pages/','targetRelative':'./.evidence/template/src/pages/','filePattern':'**'} // markdown pages
+      ,{'sourceRelative': './static/','targetRelative':'./.evidence/template/static/','filePattern':'**'} // static files (eg images)
+      ,{'sourceRelative': './components/','targetRelative':'./.evidence/template/src/components/','filePattern':'**'} // custome components
+      ,{'sourceRelative': '.','targetRelative':'./.evidence/template/src/','filePattern':'app.css'} // custom theme file
+    ]
+
 const prog = sade('evidence')
 
 prog
@@ -79,11 +91,7 @@ prog
   .describe("launch the local evidence development environment")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/','**')
-    const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/','**')
-    const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/','**')
-    const themeWatcher = runFileWatcher('.', './.evidence/template/src/','app.css')
-    const layoutWatcher = runFileWatcher('./pages/', './.evidence/template/src/pages/','__layout.svelte')
+    const watchers = runFileWatcher(watchPatterns)
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
@@ -96,11 +104,7 @@ prog
 
     child.on('exit', function () {
       child.kill()
-      watcher.close()
-      staticWatcher.close()
-      componentWatcher.close()
-      themeWatcher.close()
-      layoutWatcher.close()
+      watchers.forEach(watcher => watcher.close())
     })
 
   }); 
@@ -110,11 +114,7 @@ prog
   .describe("build production outputs")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/','**')
-    const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/','**')
-    const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/','**')
-    const themeWatcher = runFileWatcher('.', './.evidence/template/src/','app.css')
-    const layoutWatcher = runFileWatcher('./pages/', './.evidence/template/src/pages/','__layout.svelte')
+    const watchers = runFileWatcher(watchPatterns)
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 
@@ -138,11 +138,7 @@ prog
         console.error("Build failed")
       }
       child.kill();
-      watcher.close();
-      staticWatcher.close();
-      componentWatcher.close();
-      themeWatcher.close();
-      layoutWatcher.close();
+      watchers.forEach(watcher => watcher.close())
       if (code !== 0) {
         throw `Build process exited with code ${code}`;
       }
