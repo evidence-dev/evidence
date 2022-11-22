@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 5.0.15
+
+### Patch Changes
+
+- 44b1412: Remove the need for a hard page refresh when editing queries, and provide live feedback on the status of queries while they run
+- Updated dependencies [44b1412]
+  - @evidence-dev/db-orchestrator@1.1.9
+  - @evidence-dev/preprocess@1.2.5
+  - @evidence-dev/components@1.3.12
+
 ## 5.0.14
 
 ### Patch Changes

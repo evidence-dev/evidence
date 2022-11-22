@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.3.12
+
+### Patch Changes
+
+- 44b1412: Remove the need for a hard page refresh when editing queries, and provide live feedback on the status of queries while they run
+
 ## 1.3.11
 
 ### Patch Changes
