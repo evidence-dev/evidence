@@ -29,7 +29,7 @@
 
   // Slicer
   let index = 0;
-  let size = 5;
+  let size = parseInt(rows);
   $: max = Math.max(data.length - size, 0);
   $: dataPage = data.slice(index, index + size);
   let updatedSlice;
