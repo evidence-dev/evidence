@@ -203,7 +203,6 @@ $: {
 
         // If no y column(s) supplied, assume all number columns other than x are the y columns:
         if(!ySet) {
-            console.log('y fallback')
             uColNames = columnNames.filter(function(col){
                 return ![x, series, size].includes(col)
             });
