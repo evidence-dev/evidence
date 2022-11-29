@@ -45,6 +45,14 @@ p, ul, ol {
 	font-feature-settings: "onum";
 }
 
+ul ul, ol ol  {
+	margin-block-end: 0em;
+}
+
+li + li {
+	margin-top: 0.25em;
+}
+
 h1, h2, h3, h4, h5, h6  {
 	font-weight: normal;
 	font-family: var(--ui-font-family);
@@ -54,22 +62,21 @@ h1, h2, h3, h4, h5, h6  {
 }
 
 h1:first-of-type {
-	font-size: 1.2em;
+	font-size: 2em;
 	font-weight: bold;
 	color: var(--grey-800);
 	border-top: none;
-	padding-top: none;
+	padding-top: 0;
 	margin: 0em 0 0.3em 0; 
 }
 
 h1 {
-	font-size: 1.2em;
+	font-size: 2em;
 	font-weight: bold;
 	color: var(--grey-800);
 	display: block;
 	border-top: 1px solid var(--grey-200);
 	padding-top: 0.3em;
-	margin: 1.1em 0 0.3em 0; 
 }
 
 
@@ -78,32 +85,32 @@ h1:active {
 }
 
 h2 { 
-	font-size: 1em;
+	font-size: 1.5em;
 	font-weight: bold;
 	color: var(--grey-800);
 }
 
 h3 {
-	font-size: 1em;
+	font-size: 1.17em;
 	font-style: italic;
 	font-family: 'Spectral', serif;
 }
 
 h4 {
-	font-size: 0.7em;
+	font-size: 1em;
 	text-transform: lowercase;
 	font-family: 'Spectral SC', serif;
 	letter-spacing: 0.04em;
 }
 
 h5 {
-	font-size:0.68em;
+	font-size:0.83em;
 	font-family: 'Spectral', serif;
 	letter-spacing: 0.05em;
 }
 
 h6 {
-	font-size: 0.65em;
+	font-size: 0.67em;
 	font-family: 'Spectral', serif;
 	letter-spacing: 0.025em;
 }

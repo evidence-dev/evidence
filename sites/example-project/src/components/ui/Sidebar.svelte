@@ -26,7 +26,7 @@
 <aside class="sidebar" class:open>
     <div class="sticky">
         <div class=nav-header>
-            <a href='/' on:click={() => open = !open}><h1 class=project-title>Evidence</h1></a>
+            <a href='/' on:click={() => open = !open}><div class=project-title>Evidence</div></a>
         </div>
         <nav>
 			{#if folderList}
@@ -92,6 +92,13 @@ aside.sidebar {
     border-right: 1px solid var(--grey-300);
 }
 
+.project-title{
+		font-size: 1.2em;
+		font-weight: bold;
+		color: var(--grey-800);
+		margin: 0 0 0.3em 0; 
+		padding-top: 0.3em;
+	}
 .sticky {
     position: sticky;
     top: 0;
@@ -309,6 +316,7 @@ span.alert-icon {
 	aside.open {
 		left: 0;
 	}
+
 
 	div.nav-footer {
 		display: none ;
