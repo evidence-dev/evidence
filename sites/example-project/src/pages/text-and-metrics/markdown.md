@@ -10,32 +10,32 @@
 
 ##### Heading Level 5
 
-# Lists
-## Unordered List
+## Lists
+### Unordered List
 - Item 1
 - Item 2
 - Item 3
 
-## Unordered List with Sub-items
+### Unordered List with Sub-items
 - Item 1
   - Sub-item A
   - Sub-item B
 - Item 2
 - Item 3
 
-## Ordered List
+### Ordered List
 1. Item 1
 1. Item 2
 1. Item 3
 
-## Ordered List with Sub-items
+### Ordered List with Sub-items
 1. Item 1
    1. Sub-item A
    1. Sub-item B
 1. Item 2
 1. Item 3
 
-# Text Decoration
+## Text Decoration
 **Bold**  
 *Italic*  
 ~~Strikethrough~~  
@@ -47,7 +47,7 @@ Text<sub>subscript</sub>
 ## Highlighting
 This is how you <mark>highlight some text.</mark>
 
-# Blockquotes
+## Blockquotes
 
 > This is a blockquote.
 
@@ -60,23 +60,23 @@ It can be nice to be able to use italics selectively in blockquotes
 >
 > -- _Garfield_
 
-# Code
+## Code
 `let x = 100`
 
-# Horizontal Rule
+## Horizontal Rule
 Three asterisks create a horizontal rule:
 ***
 
-# Links
+## Links
 Link to [Google](https://google.com)
 
-# URLs & Email Addresses
+## URLs & Email Addresses
 <https://google.com>  
 <fake@example.com>
 
-# Images
+## Images
 ![fav](/favicon.ico)
-# Tables
+## Tables
 | Column One | Column Two | Column Three |
 |:----------:|:----------:|:----------:|
 | A | B | C |
