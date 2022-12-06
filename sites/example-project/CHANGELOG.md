@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 1.3.13
+
+### Patch Changes
+
+- 81755d7: Minor bug fix
+- 1922765: fix missing rows option in data table
+
 ## 1.3.12
 
 ### Patch Changes
