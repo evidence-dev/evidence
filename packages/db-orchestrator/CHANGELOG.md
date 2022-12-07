@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.10
+
+### Patch Changes
+
+- Updated dependencies [a4371ed]
+  - @evidence-dev/duckdb@0.0.2
+
 ## 1.1.9
 
 ### Patch Changes
