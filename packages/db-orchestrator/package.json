@@ -12,6 +12,7 @@
     "@evidence-dev/mysql": "workspace:^",
     "@evidence-dev/redshift": "workspace:^",
     "@evidence-dev/sqlite": "workspace:^",
+    "@evidence-dev/duckdb": "workspace:^",
     "@evidence-dev/telemetry": "workspace:^",
     "@evidence-dev/db-commons": "workspace:^",
     "blueimp-md5": "2.18.0",
