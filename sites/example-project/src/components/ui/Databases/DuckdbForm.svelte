@@ -69,7 +69,6 @@
             disableSave = false;
         }
     }
-
 </script>
 
 {#each opts as opt}
