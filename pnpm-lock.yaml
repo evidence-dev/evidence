@@ -109,10 +109,10 @@ importers:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
       dotenv: ^16.0.1
-      duckdb-async: 0.6.0
+      duckdb-async: 0.6.1
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
-      duckdb-async: 0.6.0
+      duckdb-async: 0.6.1
     devDependencies:
       dotenv: 16.0.1
 
@@ -8082,18 +8082,18 @@ packages:
   /downloadjs/1.4.7:
     resolution: {integrity: sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=}
 
-  /duckdb-async/0.6.0:
-    resolution: {integrity: sha512-yM02KjbvxQnSOo88/elVAVFqg9Yg06roFmAvwaWQTlAtbqfCItCiWFtR2ozDbwx40o9tRcvA1Fwl6jE0PSebOQ==}
+  /duckdb-async/0.6.1:
+    resolution: {integrity: sha512-HFNPYikh1+nJYyrdEJCLfm4CQaAQKPf7Oq0Jj66rrmJBHdvP0z2SRwlFUeuID54ZSbYdQZbeKgzvOuXmD4lQjA==}
     dependencies:
-      duckdb: 0.6.0
+      duckdb: 0.6.1
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb/0.6.0:
-    resolution: {integrity: sha512-zr8yUy6jh4QBur0icXYBxfsadvsjw9xVe9QOtmweIj1T4QmnjFdNr4coRn2ZPWE811BoMTpep+CSt3D0GDT0QQ==}
+  /duckdb/0.6.1:
+    resolution: {integrity: sha512-lvSCKHL9jG9e5k1QS9AWx2qJblwPnqUEBlkJb3MYCuPP088kETEn9bkLfwFY2+4KAQIJFquyJWj2rYXxEoBjVQ==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.9
