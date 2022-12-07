@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.3.14
+
+### Patch Changes
+
+- 975fdb1: including missing changeset for previous merge
+
 ## 1.3.13
 
 ### Patch Changes
