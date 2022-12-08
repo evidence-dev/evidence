@@ -8,8 +8,4 @@
 ]
 </script>
 
-<FunnelChart data={funnelData} nameCol=name valueCol=value title="Funnel Chart" subtitle="Simple Funnel Chart" legend outlineColor="white"  />
-
-<Chart data={funnelData} funnel nameCol=name valueCol=value areaHeight={400} legend >
-    <Funnel funnelSort="ascending" ></Funnel>
-</Chart>
+<FunnelChart data={funnelData} nameCol=name valueCol=value title="Funnel Chart" subtitle="Simple Funnel Chart" outlineColor="white" />

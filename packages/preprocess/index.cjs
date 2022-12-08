@@ -66,7 +66,6 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import Bubble from '${componentSource}/viz/Bubble.svelte';
         import Scatter from '${componentSource}/viz/Scatter.svelte';
         import Hist from '${componentSource}/viz/Hist.svelte';
-        import Funnel from "${componentSource}/viz/Funnel.svelte";
         import AreaChart from '${componentSource}/viz/AreaChart.svelte';
         import BarChart from '${componentSource}/viz/BarChart.svelte';
         import BubbleChart from '${componentSource}/viz/BubbleChart.svelte';
