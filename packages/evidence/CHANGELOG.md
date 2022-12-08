@@ -1,5 +1,27 @@
 # @evidence-dev/evidence
 
+## 5.0.18
+
+### Patch Changes
+
+- Updated dependencies [975fdb1]
+  - @evidence-dev/components@1.3.14
+
+## 5.0.17
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@1.1.10
+
+## 5.0.16
+
+### Patch Changes
+
+- 64e939f: bump svelte
+- Updated dependencies [81755d7]
+- Updated dependencies [1922765]
+  - @evidence-dev/components@1.3.13
+
 ## 5.0.15
 
 ### Patch Changes
