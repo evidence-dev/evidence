@@ -31,8 +31,6 @@
     export let y = undefined;
     export let series = undefined;
     export let size = undefined;
-    export let nameCol = undefined
-    export let valueCol = undefined;
     export let tooltipTitle = undefined;
 
     // This should be reworked to fit better with svelte's reactivity. 
@@ -63,13 +61,12 @@
     export let chartType = "Chart"; // Used to label chart error messages
     export let bubble = false;
     export let hist = false;
-    export let funnel = false;
     let reqCols;
 
     // X axis:
     export let xType = undefined; // category or value
     export let xAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
-    export let xBaseline = funnel ? false : true;
+    export let xBaseline = true;
     xBaseline = (xBaseline === "true" || xBaseline === true);
     export let xTickMarks = false;
     xTickMarks = (xTickMarks === "true" || xTickMarks === true);
@@ -101,8 +98,6 @@
 
     export let stacked100 = false;
 
-    export let areaHeight = undefined;
-
 // ---------------------------------------------------------------------------------------
 // Variable Declaration
 // ---------------------------------------------------------------------------------------
@@ -121,8 +116,6 @@
     let xUnitSummary;
     let yUnitSummary;       
     let xDistinct;
-    let nameColFormat;
-    let valueColFormat;
 
     // Individual Config Sections:
     let horizAxisConfig;
@@ -235,11 +228,6 @@ $: {
             reqCols = {
                 "x": x
             }
-        } else if(funnel){
-            reqCols = {
-                "nameCol": nameCol,
-                "valueCol": valueCol
-            }
         } else {
             reqCols = {
                 "x": x,
@@ -272,8 +260,6 @@ $: {
             }
         };
         if(size){inputCols.push(size)};
-        if(nameCol){inputCols.push(nameCol)}
-        if(valueCol){inputCols.push(valueCol)}
         if(series){optCols.push(series)};
         if(tooltipTitle){optCols.push(tooltipTitle)}
 
@@ -342,7 +328,7 @@ $: {
                 : getSortedData(data, x, true) 
             : data;
     
-    // ---------------------------------------------------------------------------------------  
+    // ---------------------------------------------------------------------------------------
     // Standardize date columns
     // ---------------------------------------------------------------------------------------
 
@@ -382,14 +368,6 @@ $: {
             }
         }
 
-        if(nameCol) {
-            nameColFormat = columnSummary[nameCol].format;
-        }
-
-        if (valueCol) {
-            valueColFormat = columnSummary[valueCol].format;
-        }
-
         xAxisTitle = xAxisTitle === 'true' ? formatTitle(x, xFormat) : xAxisTitle === 'false' ? '' : xAxisTitle;
         yAxisTitle = yAxisTitle === 'true' ? typeof y === 'object' ? '' : formatTitle(y, yFormat) : yAxisTitle === 'false' ? '' : yAxisTitle;
 
@@ -405,7 +383,7 @@ $: {
     // ---------------------------------------------------------------------------------------
     // Add props to store to let child components access them
     // ---------------------------------------------------------------------------------------
-        props.update(d => {return {...d, data, x, y, nameCol, valueCol, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, nameCol, nameColFormat, valueColFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle, tooltipTitle}});
+        props.update(d => {return {...d, data, x, y, series, swapXY, sort, xType, xFormat, yFormat, sizeFormat, xMismatch, size, yMin, columnSummary, xAxisTitle, yAxisTitle, tooltipTitle}});
 
     // ---------------------------------------------------------------------------------------
     // Axis Configuration
@@ -529,7 +507,7 @@ $: {
     // ---------------------------------------------------------------------------------------
     // Set up chart area
     // ---------------------------------------------------------------------------------------
-        chartAreaHeight = areaHeight ||  180; // standard height for chart area across all charts
+        chartAreaHeight = 180; // standard height for chart area across all charts
 
         hasTitle = title ? true : false;
         hasSubtitle = subtitle ? true: false;
@@ -611,7 +589,7 @@ $: {
             },
             tooltip: {
                 trigger: "axis",
-                // formatter function is overridden in ScatterPlot, BubbleChart, Histogram and FunnelChart
+                // formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
                 formatter: function(params){
                     let output
                     let xVal
