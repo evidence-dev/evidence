@@ -103,10 +103,10 @@
 
 
 <style>
-	:root {
+    :root {
         --min-width: 25%;
         --max-width: none;
-	}
+    }
     :global(.sparkline svg) {
         height: 16px;
     }
