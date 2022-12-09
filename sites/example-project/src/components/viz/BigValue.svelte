@@ -103,6 +103,10 @@
 
 
 <style>
+	:root {
+        --min-width: 25%;
+        --max-width: none;
+	}
     :global(.sparkline svg) {
         height: 16px;
     }
@@ -125,8 +129,8 @@
         user-select: none;
         -webkit-user-select:none ;
         vertical-align:top;
-        min-width: 25%;
-        max-width: 1em;
+        min-width: var(--min-width);
+        max-width: var(--max-width);
     }
     p {
         margin: 0;
