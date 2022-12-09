@@ -90,11 +90,11 @@
         {/if}
     </div> 
     {#if comparison}
-        <p class=comparison style={`color:${comparisonColor}`}> 
+        <div class=comparison style={`color:${comparisonColor}`}> 
             {@html positive ? "&#9650;" : "&#9660;"} 
-            <Value {data} column={comparison}/> 
-            <span class="comparison-type">{comparisonTitle}</span>
-        </p> 
+            <p><Value {data} column={comparison}/></p>
+            <p class="comparison-type">{comparisonTitle}</p>
+        </div> 
     {/if}
     {/if}
 </div>  
@@ -137,13 +137,14 @@
         text-shadow: 1px solid white;
     }
 
-    .value{
+    .value {
         font-size: 1.2em;
         font-weight: bold;
         color: var(--grey-700);
     }
 
-    .comparison{
+    .comparison {
+        display: flex;
         font-size: .65em;
         font-weight: bold;
         font-family: var(--ui-compact-font-family);
@@ -152,6 +153,8 @@
     .comparison-type {
         color: var(--grey-700);
         font-weight: normal;
+        max-width: 15em;
+        margin-left: 0.5em;
     }
 
 </style> 
