@@ -146,7 +146,6 @@
     }
 
     .comparison {
-        display: flex;
         font-size: .65em;
         font-weight: bold;
         font-family: var(--ui-compact-font-family);
@@ -155,7 +154,6 @@
     .comparison-type {
         color: var(--grey-700);
         font-weight: normal;
-        margin-left: 0.5em;
     }
 
 </style> 
