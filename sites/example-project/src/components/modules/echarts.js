@@ -442,7 +442,13 @@ export default(node, option, renderer) => {
     
     let resizeObserver
     const containerElement = document.querySelector('div.content > article')
-    const resizeChart = () => { chart.resize() }
+    const resizeChart = () => {
+        chart.resize({
+            animation: {
+                duration: 100
+            }
+        })
+    }
     
     if (window.ResizeObserver && containerElement) {
         resizeObserver = new ResizeObserver(resizeChart)
