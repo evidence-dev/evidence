@@ -11,11 +11,15 @@
     export let comparison = null
     export let sparkline = null 
 
-    export let title =  null
+    export let title = null
     export let comparisonTitle = null 
 
     // Delta controls 
     export let downIsGood = false
+
+    export let maxWidth = "none"
+    export let minWidth = "18%"
+
     let positive = true
     let comparisonColor = "var(--grey-700)"
 
@@ -65,7 +69,13 @@
 </script>
 
 
-<div class=container>
+<div
+    class=container 
+    style={`
+        min-width: ${minWidth};
+        max-width: ${maxWidth};
+    `}
+>
     {#if error}
     <ErrorChart chartType="Big Value" error={error.message}/>
     {:else}
@@ -99,14 +109,7 @@
     {/if}
 </div>  
 
-
-
-
 <style>
-    :root {
-        --min-width: 25%;
-        --max-width: none;
-    }
     :global(.sparkline svg) {
         height: 16px;
     }
@@ -129,8 +132,6 @@
         user-select: none;
         -webkit-user-select:none ;
         vertical-align:top;
-        min-width: var(--min-width);
-        max-width: var(--max-width);
     }
     p {
         margin: 0;
