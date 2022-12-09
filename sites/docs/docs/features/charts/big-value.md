@@ -16,7 +16,7 @@ hide_table_of_contents: false
     comparison='monthly_growth' 
     sparkline='date'
     comparisonTitle="Month over Month"
-    --max-width='1em'
+    maxWidth='10em'
 /> 
 ```
 
@@ -37,8 +37,8 @@ Multiple cards will align themselves into a row.
 * **title** - (Optional) title of the card. Defaults to the title of the value column.
 * **comparisonTitle** - (Optional) text to the right of the comparison. Defaults to the title of the comparison column.
 * **downIsGood** - (Optional) if present, negative comparison values appear in green, and positive values appear in red. 
-* **--min-width** - (Optional) overrides min-width of component, 25% by default. 
-* **--max-width** - (Optional) adds a max-width to the component, none by default. 
+* **minWidth** - (Optional) overrides min-width of component, 18% by default. 
+* **maxWidth** - (Optional) adds a max-width to the component, none by default. 
 
 
 
