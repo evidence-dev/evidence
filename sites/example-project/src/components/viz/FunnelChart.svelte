@@ -49,6 +49,10 @@
     let height;
     let width;
 
+    // set min and max
+    let min = 0;
+    let max;
+
     $: columnSummary = getColumnSummary(data);
     $: name = name ?? formatTitle(valueCol, columnSummary[nameCol].title);
     $: nameColFormat = columnSummary[nameCol].format;
@@ -90,6 +94,10 @@
     // Chart Configuration
     // ---------------------------------------------------------------------------------------
 
+    $: data.forEach((item) => {
+        if(max < item[valueCol] || !max) max = item[valueCol]
+    })
+
     $: seriesConfig = {
         type: "funnel",
         name,
@@ -97,8 +105,8 @@
         top: 60,
         bottom: 60,
         width: '80%',
-        min: 0,
-        max: 100,
+        min,
+        max,
         minSize: '0%',
         maxSize: '100%',
         
