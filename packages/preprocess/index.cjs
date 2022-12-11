@@ -46,10 +46,11 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let queryDeclarations = ''
     
     if(hasQueries(filename)) {
-        queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
-        .map(id => `let ${id} 
-        $: data, ${id} = data.${id};`)
-        .join('\n') || '';  
+        queryDeclarations = 
+        `
+        let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;
+        $: ({${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data);
+        `
     } 
 
     let defaultProps = `
