@@ -68,18 +68,6 @@ const mapResultsToEvidenceColumnTypes = function (results) {
     });
 };
 
-const standardizeResult = async(result) => {
-    var output = [];
-    result.forEach(row => {
-        const lowerCasedRow = {};
-        for (const [key, value] of Object.entries(row)) {
-            lowerCasedRow[key.toLowerCase()] = value;
-        }   
-        output.push(lowerCasedRow);
-    });
-	return output;
-}
-
 const runQuery = async (queryString, database) => {
     try {
         const credentials =  {
@@ -116,9 +104,7 @@ const runQuery = async (queryString, database) => {
         var pool = new Pool(credentials);
         var result = await pool.query(queryString)
 
-        const standardizedRows = await standardizeResult(result.rows);
-
-        return { rows: standardizedRows, columnTypes : mapResultsToEvidenceColumnTypes(result) };
+        return { rows: result.rows, columnTypes : mapResultsToEvidenceColumnTypes(result) };
     } catch (err) {
         if (err.message) {
             throw err.message.replace(/\n|\r/g, " ")
