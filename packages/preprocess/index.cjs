@@ -55,7 +55,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
 
     let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries } from '@evidence-dev/components/ui/stores';
+        import { pageHasQueries, routeHash } from '@evidence-dev/components/ui/stores';
         import { setContext, getContext } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
@@ -80,8 +80,8 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         
         export let data = {};
         export let customFormattingSettings;
-        
-        let routeHash = '${routeHash}';
+
+        routeHash.set('${routeHash}');
 
         $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
 
