@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 1.1.0
+
+### Minor Changes
+
+- c68f658: Add maxWidth and minWidth style props to BigValue component. Default set for minWidth to give smaller BigValues more room.
+
 ## 1.0.4
 
 ### Patch Changes

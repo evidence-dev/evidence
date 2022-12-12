@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [79dca60]
+- Updated dependencies [755b1bb]
+- Updated dependencies [c68f658]
+  - @evidence-dev/preprocess@1.2.6
+  - @evidence-dev/components@1.4.0
+
 ## 5.0.18
 
 ### Patch Changes
