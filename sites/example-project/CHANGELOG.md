@@ -1,5 +1,15 @@
 # @evidence-dev/components
 
+## 1.4.0
+
+### Minor Changes
+
+- c68f658: Add maxWidth and minWidth style props to BigValue component. Default set for minWidth to give smaller BigValues more room.
+
+### Patch Changes
+
+- 79dca60: Fixes bug which prevented dev mode reloading on changes to queries in paramatarized pages
+
 ## 1.3.14
 
 ### Patch Changes
