@@ -228,6 +228,12 @@ aside.toc {
 .header-bar {
 	display: flex;
 	justify-content: space-between;
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.73);
+    -webkit-backdrop-filter: blur(10px) saturate(1.8);
+    backdrop-filter: blur(10px) saturate(1.8);
 }
 @media (max-width: 1440px) {
 	div.content {
