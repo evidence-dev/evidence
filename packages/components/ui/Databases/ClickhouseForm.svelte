@@ -26,11 +26,11 @@
         {
             id: "port", 
             label: "Port", 
-            type: "number", 
+            type: "text", 
             optional: true, 
             override: false,
             placeholder: "8123", 
-            value: credentials.port ?? "8123"
+            value: credentials.port ?? "8123",
         },
         {
             id: "database", 
