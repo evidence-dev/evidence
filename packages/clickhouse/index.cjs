@@ -1,21 +1,23 @@
 const path = require('path')
 const { processQueryResults } = require('@evidence-dev/db-commons')
-const { ClickHouse } = require('clickhouse');
+const { ClickHouse } = require('clickhouse')
 
 const runQuery = async (queryString, database) => {
     try {
-        const clickhouse = new ClickHouse({
-            url: process.env["CLICKHOUSE_URL"],
-            port: process.env["CLICKHOUSE_PORT"],
+        const opts = {
+            url: database.url || process.env["CLICKHOUSE_URL"] || process.env["url"] || process.env["URL"],
+            port: database.port || process.env["CLICKHOUSE_PORT"] || process.env["port"] || process.env["PORT"] || 8123,
             basicAuth: {
-                "username": process.env["CLICKHOUSE_USERNAME"],
-                "password": process.env["CLICKHOUSE_PASSWORD"],
+                username: database.user || process.env["CLICKHOUSE_USERNAME"] || process.env["username"] || process.env["USERNAME"],
+                password: database.password || process.env["CLICKHOUSE_PASSWORD"] || process.env["password"] || process.env["PASSWORD"],
             },
+            format: "tsv",
             config: {
-                database: database
+                database: database.database || process.env["CLICKHOUSE_DATABASE"] || process.env["database"] || process.env["DATABASE"]
             }
-        })
-        const rows = await clickhouse.query(queryString).toPromise();
+        }
+        const clickhouse = new ClickHouse(opts)
+        const rows = await clickhouse.query(queryString).toPromise()
         return processQueryResults(rows)
     } catch(err) {
         if (err.message) {
