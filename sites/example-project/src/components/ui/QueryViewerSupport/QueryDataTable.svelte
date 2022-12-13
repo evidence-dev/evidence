@@ -28,6 +28,13 @@
         return
       }
 
+      const hasScrolledToTop = event.deltaY < 0 && index === 0
+      const hasScrolledToBottom = event.deltaY > 0 && index === max
+
+      if (hasScrolledToTop || hasScrolledToBottom) {
+        return
+      }
+
       event.preventDefault()
       index= Math.min(Math.max(0, index + Math.floor(event.deltaY/Math.abs(event.deltaY))), max)
       slice()
