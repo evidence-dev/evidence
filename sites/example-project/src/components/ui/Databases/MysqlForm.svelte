@@ -10,6 +10,8 @@
         database: credentials.database,
         user: credentials.user,
         password: credentials.password,
+        port: credentials.port,
+        ssl: credentials.ssl,
         socketPath: credentials.socketPath
     }
 
@@ -49,6 +51,24 @@
             override: false,
             placeholder: "password", 
             value: credentials.password ?? ""
+        },
+        {
+            id: "port", 
+            label: "Port", 
+            type: "text", 
+            optional: true, 
+            override: false,
+            placeholder: "3306", 
+            value: credentials.port ?? ""
+        },
+        {
+            id: "ssl", 
+            label: "SSL", 
+            type: "text", 
+            optional: true, 
+            override: false,
+            placeholder: "true", 
+            value: credentials.ssl ?? ""
         },
         {
             id: "socketPath", 
