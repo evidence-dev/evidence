@@ -104,6 +104,7 @@
 
     button.dev-controls {
         float: right;
+        background-color: transparent;
         text-align: center;
         margin: 0 0 0 1.5em;
         padding: 0.25em 1em 0.25em 1em;
@@ -139,9 +140,5 @@
             display: none;
         }
     }
-     
-
-
-
 
 </style>

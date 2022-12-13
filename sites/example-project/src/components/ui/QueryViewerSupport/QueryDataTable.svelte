@@ -105,7 +105,7 @@
 </div>
 {/if}
 
-<DownloadData {data} {queryID} />
+<DownloadData class=download-button {data} {queryID} />
 
 </div>
 
@@ -171,7 +171,6 @@ span {
   -webkit-font-smoothing: antialiased;
   font-size: 0.8em;
   float: right;
-
 }
 
 
@@ -192,29 +191,33 @@ span {
   background-color: white;
 }
 
-  .container::-webkit-scrollbar {
-    height: var(--scrollbar-size);
-    width: var(--scrollbar-size);
-  }
-  .container::-webkit-scrollbar-track {
-    background-color: var(--scrollbar-track-color);
-  }
-  .container::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-color);
-    border-radius: 7px;
-    background-clip: padding-box;
-  }
-  .container::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-active-color);
-  }
-  .container::-webkit-scrollbar-thumb:vertical {
-    min-height: var(--scrollbar-minlength);
-    border: 3px solid transparent;
-  }
-  .container::-webkit-scrollbar-thumb:horizontal {
-    min-width: var(--scrollbar-minlength);
-    border: 3px solid transparent;
-  }
+.container::-webkit-scrollbar {
+  height: var(--scrollbar-size);
+  width: var(--scrollbar-size);
+}
+.container::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-color);
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 7px;
+  background-clip: padding-box;
+}
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-active-color);
+}
+.container::-webkit-scrollbar-thumb:vertical {
+  min-height: var(--scrollbar-minlength);
+  border: 3px solid transparent;
+}
+.container::-webkit-scrollbar-thumb:horizontal {
+  min-width: var(--scrollbar-minlength);
+  border: 3px solid transparent;
+}
+
+.results-pane :global(.download-button) {
+  margin-top: 5px;
+}
 
 table{
   width:100%;
