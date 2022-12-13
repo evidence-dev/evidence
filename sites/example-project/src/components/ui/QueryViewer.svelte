@@ -71,7 +71,7 @@
     <!-- Title -->
     <div class="container" transition:slide|local>
       <div class="container-a">
-        <button on:click={toggleSQL} class="title">
+        <button type="button" on:click={toggleSQL} class="title">
           <ChevronToggle toggled={$showSQL}/> {queryID}
         </button>
         <!-- Compile Toggle  -->
@@ -90,7 +90,7 @@
           {/if}
       </div>
       <!-- Status -->
-      <button class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>
+      <button type="button" class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>
           {#if error}
             {#if dev && error.message === "Missing database credentials"}
               {error.message}.

@@ -59,9 +59,9 @@
         {#if $pageHasQueries}
             <span transition:blur|local>
                 {#if $showQueries}
-                <button class="dev-controls hide" on:click={toggleQueries}>Hide Queries</button>
+                <button type="button" class="dev-controls hide" on:click={toggleQueries}>Hide Queries</button>
                 {:else}
-                <button class="dev-controls show" on:click={toggleQueries}>Show Queries</button>
+                <button type="button" class="dev-controls show" on:click={toggleQueries}>Show Queries</button>
                 {/if}
             </span>
         {/if}
