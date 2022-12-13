@@ -1,5 +1,5 @@
 <script>
-    import {getContext} from 'svelte'
+    import {getContext, beforeUpdate} from 'svelte'
     import { propKey, configKey } from './context'
     let props = getContext(propKey)
     let config = getContext(configKey)
@@ -10,7 +10,9 @@
     import getCompletedData from '$lib/modules/getCompletedData.js';
 
     export let y = undefined;
+    const ySet = y ? true : false     // Hack, see chart.svelte
     export let series = undefined;
+    const seriesSet = series ? true : false     // Hack, see chart.svelte
     export let options = undefined;
     export let name = undefined; // name to appear in legend (for single series graphics)
 
@@ -19,22 +21,22 @@
     export let fillColor = undefined;
     export let fillOpacity = undefined;
     export let line = true;
-    line = (line === "true" || line === true);
+    $: line = (line === "true" || line === true);
 
     export let handleMissing = "gap";
 
     // Prop check. If local props supplied, use those. Otherwise fall back to global props.
-    let data = $props.data;
-    let x = $props.x;
-    let swapXY = $props.swapXY;
-    let xType = $props.xType;
-    let xMismatch = $props.xMismatch;
-    let columnSummary = $props.columnSummary;
-    y = y ?? $props.y;
-    series = series ?? $props.series;
+    $: data = $props.data;
+    $: x = $props.x;
+    $: y = ySet ? y : $props.y;
+    $: swapXY = $props.swapXY;
+    $: xType = $props.xType;
+    $: xMismatch = $props.xMismatch;
+    $: columnSummary = $props.columnSummary;
+    $: series = seriesSet ? series : $props.series;
 
     let stackName;
-    if(!series && typeof y !== 'object'){
+    $: if(!series && typeof y !== 'object'){
         // Single Series
         name = name ?? formatTitle(y, columnSummary[y].title);
     } else {
@@ -45,11 +47,11 @@
         xType = xType === "value" ? "category" : xType;
     }
 
-    if(handleMissing === "zero"){
+    $: if(handleMissing === "zero"){
         data = replaceNulls(data, y)
     }
 
-    let baseConfig = {
+    $: baseConfig = {
             type: "line",
             stack: stackName,
             areaStyle: {
@@ -69,16 +71,16 @@
             }
     }
 
-    let seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
+    $: seriesConfig = getSeriesConfig(data, x, y, series, swapXY, baseConfig, name, xMismatch, columnSummary);
     
-    config.update(d => {d.series.push(...seriesConfig); return d})
+    $: config.update(d => {d.series.push(...seriesConfig); return d})
 
-    if(options){
+    $: if(options){
         config.update(d => {return {...d, ...options}})
     }
 
 
-    let chartOverrides = {
+    $: chartOverrides = {
          yAxis: { 
              boundaryGap: ['0%', '1%'],
          },
@@ -88,7 +90,7 @@
          },
      }
 
-    if(chartOverrides){
+    beforeUpdate(() => {
         config.update(d => {
             d.tooltip = {...d.tooltip, order: 'seriesDesc'} // Areas always stacked 
             if(swapXY){
@@ -106,6 +108,6 @@
                 }
             }
             return d})
-    }
+    })
 
 </script>

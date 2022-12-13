@@ -1,5 +1,32 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.10
+
+### Patch Changes
+
+- Updated dependencies [a4371ed]
+  - @evidence-dev/duckdb@0.0.2
+
+## 1.1.9
+
+### Patch Changes
+
+- 44b1412: Remove the need for a hard page refresh when editing queries, and provide live feedback on the status of queries while they run
+
+## 1.1.8
+
+### Patch Changes
+
+- Updated dependencies [e93acbf]
+- Updated dependencies [bb5d0e2]
+  - @evidence-dev/sqlite@1.1.3
+  - @evidence-dev/db-commons@0.1.2
+  - @evidence-dev/bigquery@1.2.3
+  - @evidence-dev/mysql@0.1.3
+  - @evidence-dev/postgres@0.2.4
+  - @evidence-dev/redshift@0.0.3
+  - @evidence-dev/snowflake@0.1.4
+
 ## 1.1.7
 
 ### Patch Changes

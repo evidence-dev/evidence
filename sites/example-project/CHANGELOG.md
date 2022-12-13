@@ -1,5 +1,41 @@
 # @evidence-dev/components
 
+## 1.4.0
+
+### Minor Changes
+
+- c68f658: Add maxWidth and minWidth style props to BigValue component. Default set for minWidth to give smaller BigValues more room.
+
+### Patch Changes
+
+- 79dca60: Fixes bug which prevented dev mode reloading on changes to queries in paramatarized pages
+
+## 1.3.14
+
+### Patch Changes
+
+- 975fdb1: including missing changeset for previous merge
+
+## 1.3.13
+
+### Patch Changes
+
+- 81755d7: Minor bug fix
+- 1922765: fix missing rows option in data table
+
+## 1.3.12
+
+### Patch Changes
+
+- 44b1412: Remove the need for a hard page refresh when editing queries, and provide live feedback on the status of queries while they run
+
+## 1.3.11
+
+### Patch Changes
+
+- 76f5617: Updates to dev workspace
+- de49590: Prevent parameterized pages from showing in sidebar at root level, addresses #410
+
 ## 1.3.10
 
 ### Patch Changes

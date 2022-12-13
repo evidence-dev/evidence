@@ -1,5 +1,56 @@
 # @evidence-dev/evidence
 
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [79dca60]
+- Updated dependencies [755b1bb]
+- Updated dependencies [c68f658]
+  - @evidence-dev/preprocess@1.2.6
+  - @evidence-dev/components@1.4.0
+
+## 5.0.18
+
+### Patch Changes
+
+- Updated dependencies [975fdb1]
+  - @evidence-dev/components@1.3.14
+
+## 5.0.17
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@1.1.10
+
+## 5.0.16
+
+### Patch Changes
+
+- 64e939f: bump svelte
+- Updated dependencies [81755d7]
+- Updated dependencies [1922765]
+  - @evidence-dev/components@1.3.13
+
+## 5.0.15
+
+### Patch Changes
+
+- 44b1412: Remove the need for a hard page refresh when editing queries, and provide live feedback on the status of queries while they run
+- Updated dependencies [44b1412]
+  - @evidence-dev/db-orchestrator@1.1.9
+  - @evidence-dev/preprocess@1.2.5
+  - @evidence-dev/components@1.3.12
+
+## 5.0.14
+
+### Patch Changes
+
+- Updated dependencies [76f5617]
+- Updated dependencies [de49590]
+  - @evidence-dev/components@1.3.11
+  - @evidence-dev/db-orchestrator@1.1.8
+
 ## 5.0.13
 
 ### Patch Changes

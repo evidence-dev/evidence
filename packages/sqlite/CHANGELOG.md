@@ -1,5 +1,13 @@
 # @evidence-dev/sqlite
 
+## 1.1.3
+
+### Patch Changes
+
+- e93acbf: Bumping dependency for sqlite3 to resolve issues with install time on arm64
+- Updated dependencies [bb5d0e2]
+  - @evidence-dev/db-commons@0.1.2
+
 ## 1.1.2
 
 ### Patch Changes

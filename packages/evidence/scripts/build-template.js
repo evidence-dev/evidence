@@ -26,7 +26,6 @@ fs.outputFileSync('./template/svelte.config.js',
     `
     import evidencePreprocess from '@evidence-dev/preprocess'
     import adapter from '@sveltejs/adapter-static';
-    import FullReload from 'vite-plugin-full-reload'
     
     /** @type {import('@sveltejs/kit').Config} */
     
@@ -46,10 +45,7 @@ fs.outputFileSync('./template/svelte.config.js',
                 },
                 ssr: {
                     external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url', '@evidence-dev/telemetry']
-                },
-                plugins: [
-                    FullReload.default(['./.evidence-queries/extracted/**'], {delay: 150}),
-                ]
+                }
             }
         }
     };

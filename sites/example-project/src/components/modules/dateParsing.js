@@ -2,7 +2,7 @@ import {tidy, mutate} from "@tidyjs/tidy";
 
 export function standardizeDateString(date){
 
-    if(date){
+    if(date && typeof date === "string"){
         // Parses an individual string into a JS date object
 
         let dateSplit = date.split(" ")

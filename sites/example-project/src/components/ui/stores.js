@@ -5,4 +5,5 @@ import { browser } from '$app/env';
 // Persist ShowQueries user choice
 export const showQueries = writable(dev && browser && (localStorage.getItem('showQueries')!='false'));
 showQueries.subscribe((value) => browser && (localStorage.setItem('showQueries',(value))));
-export const pageHasQueries = writable();
+export const pageHasQueries = writable(true);
+export const routeHash = writable('');

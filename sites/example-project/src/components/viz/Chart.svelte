@@ -1,164 +1,187 @@
 <script>
-        import {writable} from 'svelte/store'
-        import {setContext} from 'svelte'
-        import { propKey, configKey } from './context'
+    import {writable} from 'svelte/store'
+    import {setContext} from 'svelte'
+    import { propKey, configKey } from './context'
 
-        let props = writable({})
-        let config = writable({})
+    let props = writable({})
+    let config = writable({})
 
-        setContext(propKey, props)
-        setContext(configKey, config)
+    $: setContext(propKey, props)
+    $: setContext(configKey, config)
 
-        import ECharts from "./ECharts.svelte";
-        import getColumnSummary from '../modules/getColumnSummary';
-        import getDistinctValues from '../modules/getDistinctValues';
-        import getStackPercentages from '../modules/getStackPercentages.js';
-        import getSortedData from '../modules/getSortedData.js';
-        import { standardizeDateColumn } from '../modules/dateParsing.js';
-        import { formatAxisValue } from '../modules/formatting';
-        import formatTitle from '../modules/formatTitle.js';
-        import { formatValue } from '../modules/formatting.js';
-        import ErrorChart from './ErrorChart.svelte';
-        import checkInputs from '../modules/checkInputs';
-        import {colours} from '../modules/colours'
+    import ECharts from "./ECharts.svelte";
+    import getColumnSummary from '../modules/getColumnSummary';
+    import getDistinctValues from '../modules/getDistinctValues';
+    import getStackPercentages from '../modules/getStackPercentages.js';
+    import getSortedData from '../modules/getSortedData.js';
+    import { standardizeDateColumn } from '../modules/dateParsing.js';
+    import { formatAxisValue } from '../modules/formatting';
+    import formatTitle from '../modules/formatTitle.js';
+    import { formatValue } from '../modules/formatting.js';
+    import ErrorChart from './ErrorChart.svelte';
+    import checkInputs from '../modules/checkInputs';
+    import {colours} from '../modules/colours'
 
-    // ---------------------------------------------------------------------------------------
-    // Input Props
-    // ---------------------------------------------------------------------------------------
-        // Data and columns:
-        export let data = undefined;
-        export let x = undefined;
-        export let y = undefined;
-        export let series = undefined;
-        export let size = undefined;
-        export let tooltipTitle = undefined;
+// ---------------------------------------------------------------------------------------
+// Input Props
+// ---------------------------------------------------------------------------------------
+    // Data and columns:
+    export let data = undefined;
+    export let x = undefined;
+    export let y = undefined;
+    export let series = undefined;
+    export let size = undefined;
+    export let tooltipTitle = undefined;
 
-        export let swapXY = false; // Flipped axis chart
-        if(swapXY === "true" || swapXY === true){
-            swapXY = true;
-        } else {
-            swapXY = false;
-        }
+    // This should be reworked to fit better with svelte's reactivity. 
 
-        // Chart titles:
-        export let title = undefined;
-        export let subtitle = undefined;
+    // We rewrite the x and y values with fallbacks if they aren't present
+    // the fallback logic *depends* on the values of x and y 
+    // when x and y are replaced by the fallbacks, the fallback logic doesn't reset. 
+    // if the y value isn't set, var y gets populated with a fall back from the data. 
+    // if the data changes, we are now acting as if the fallback from above was entered by the user, and 
+    // then we throw if the fallback column is now missing. 
 
-        // Chart type:
-        export let chartType = "Chart"; // Used to label chart error messages
-        export let bubble = false;
-        export let hist = false;
-        let reqCols;
+    // This is a hack to get around the above
+    const ySet = y ? true : false 
+    const xSet = x ? true : false 
 
-        // X axis:
-        export let xType = undefined; // category or value
-        export let xAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
-        export let xBaseline = true;
-        xBaseline = (xBaseline === "true" || xBaseline === true);
-        export let xTickMarks = false;
-        xTickMarks = (xTickMarks === "true" || xTickMarks === true);
-        export let xGridlines = false;
-        xGridlines = (xGridlines === "true" || xGridlines === true);
-        export let xAxisLabels = true;
-        xAxisLabels = (xAxisLabels === "true" || xAxisLabels === true);
-        export let sort = true; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
-        sort = (sort === "true" || sort === true);
+    export let swapXY = false; // Flipped axis chart
+    $: if(swapXY === "true" || swapXY === true){
+        swapXY = true;
+    } else {
+        swapXY = false;
+    }
 
-        // Y axis:
-        export let yAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
-        export let yBaseline = false;
-        yBaseline = (yBaseline === "true" || yBaseline === true);
-        export let yTickMarks = false;
-        yTickMarks = (yTickMarks === "true" || yTickMarks === true);
-        export let yGridlines = true;
-        yGridlines = (yGridlines === "true" || yGridlines === true);
-        export let yAxisLabels = true;
-        yAxisLabels = (yAxisLabels === "true" || yAxisLabels === true);
-        export let yMin = undefined;
-        export let yMax = undefined;
+    // Chart titles:
+    export let title = undefined;
+    export let subtitle = undefined;
 
-        // Legend:
-        export let legend = undefined;
+    // Chart type:
+    export let chartType = "Chart"; // Used to label chart error messages
+    export let bubble = false;
+    export let hist = false;
+    let reqCols;
 
-        // Additional Config Options:
-        export let options = undefined; // additional ECharts config object that will append to the config generated by our API
+    // X axis:
+    export let xType = undefined; // category or value
+    export let xAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
+    export let xBaseline = true;
+    xBaseline = (xBaseline === "true" || xBaseline === true);
+    export let xTickMarks = false;
+    xTickMarks = (xTickMarks === "true" || xTickMarks === true);
+    export let xGridlines = false;
+    xGridlines = (xGridlines === "true" || xGridlines === true);
+    export let xAxisLabels = true;
+    xAxisLabels = (xAxisLabels === "true" || xAxisLabels === true);
+    export let sort = true; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
+    sort = (sort === "true" || sort === true);
 
-        export let stacked100 = false;
+    // Y axis:
+    export let yAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
+    export let yBaseline = false;
+    yBaseline = (yBaseline === "true" || yBaseline === true);
+    export let yTickMarks = false;
+    yTickMarks = (yTickMarks === "true" || yTickMarks === true);
+    export let yGridlines = true;
+    yGridlines = (yGridlines === "true" || yGridlines === true);
+    export let yAxisLabels = true;
+    yAxisLabels = (yAxisLabels === "true" || yAxisLabels === true);
+    export let yMin = undefined;
+    export let yMax = undefined;
 
-    // ---------------------------------------------------------------------------------------
-    // Variable Declaration
-    // ---------------------------------------------------------------------------------------
-        // Column Summary:
-        let columnSummary;
-        let columnNames;
-        let uColNames = [];
-        let unusedColumns = [];
-        let uColType;
-        let uColName;
-        let xDataType;
-        let xMismatch;
-        let xFormat;
-        let yFormat;
-        let sizeFormat;
-        let xUnitSummary;
-        let yUnitSummary;       
-        let xDistinct;
+    // Legend:
+    export let legend = undefined;
 
-        // Individual Config Sections:
-        let horizAxisConfig;
-        let verticalAxisConfig;
-        let horizAxisTitleConfig;      
-        let chartConfig;
-  
-        // Chart area sizing:
-        let chartAreaHeight;
-        let hasTitle;
-        let hasSubtitle;
-        let hasLegend;
-        let hasTopAxisTitle;
-        let hasBottomAxisTitle;
-        let titleFontSize;
-        let subtitleFontSize;
-        let titleBoxPadding;
-        let titleBoxHeight;
-        let chartAreaPaddingTop;
-        let chartAreaPaddingBottom;
-        let bottomAxisTitleSize;
-        let topAxisTitleSize; 
-        let legendHeight;
-        let legendPaddingTop;
-        let legendTop;
-        let chartTop;
-        let chartBottom;
-        let chartContainerHeight;
-        let topAxisTitleTop;
+    // Additional Config Options:
+    export let options = undefined; // additional ECharts config object that will append to the config generated by our API
 
-        let horizAxisTitle;
+    export let stacked100 = false;
 
-        // Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate):
-        let maxBars;
-        let barCount;
-        let heightMultiplier;
+// ---------------------------------------------------------------------------------------
+// Variable Declaration
+// ---------------------------------------------------------------------------------------
+    // Column Summary:
+    let columnSummary;
+    let columnNames;
+    let uColNames = [];
+    let unusedColumns = [];
+    let uColType;
+    let uColName;
+    let xDataType;
+    let xMismatch;
+    let xFormat;
+    let yFormat;
+    let sizeFormat;
+    let xUnitSummary;
+    let yUnitSummary;       
+    let xDistinct;
 
-        // Set final chart height:
-        let height;
-        let width;
+    // Individual Config Sections:
+    let horizAxisConfig;
+    let verticalAxisConfig;
+    let horizAxisTitleConfig;      
+    let chartConfig;
+
+    // Chart area sizing:
+    let chartAreaHeight;
+    let hasTitle;
+    let hasSubtitle;
+    let hasLegend;
+    let hasTopAxisTitle;
+    let hasBottomAxisTitle;
+    let titleFontSize;
+    let subtitleFontSize;
+    let titleBoxPadding;
+    let titleBoxHeight;
+    let chartAreaPaddingTop;
+    let chartAreaPaddingBottom;
+    let bottomAxisTitleSize;
+    let topAxisTitleSize; 
+    let legendHeight;
+    let legendPaddingTop;
+    let legendTop;
+    let chartTop;
+    let chartBottom;
+    let chartContainerHeight;
+    let topAxisTitleTop;
+
+    let horizAxisTitle;
+
+    // Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate):
+    let maxBars;
+    let barCount;
+    let heightMultiplier;
+
+    // Set final chart height:
+    let height;
+    let width;
 
 
-        let missingCols = [];
+    let missingCols = [];
 
-        // Error Handling:
+    // Error Handling:
 
-        let inputCols = [];
-        let optCols = [];
-        let i;
+    let inputCols = [];
+    let optCols = [];
+    let i;
 
-        // Date String Handling:
-        let dateCols;
-        let columnSummaryArray;
+    let error;
 
-let error;
-try{
+    // Date String Handling:
+    let columnSummaryArray;
+    let dateCols;
+
+$: {
+    try{
+    error = undefined
+    missingCols = [];
+    unusedColumns = []
+    // Error Handling:
+    inputCols = []
+    optCols = [];
+    uColName = []
+    
     checkInputs(data); // check that dataset exists
 
     // ---------------------------------------------------------------------------------------
@@ -173,28 +196,27 @@ try{
     // ---------------------------------------------------------------------------------------
     // Make assumptions to complete required props
     // ---------------------------------------------------------------------------------------
-        // If no x column supplied, assume first column in dataset is x:
-        if(!x){
+    // If no x column was supplied, assume first column in dataset is x
+        if(!xSet){
             x = columnNames[0]
         }
 
-        // If no y column(s) supplied, assume all columns other than x are the y columns:
-        uColNames = columnNames.filter(function(col){
-            return ![x, series, size].includes(col)
-        });
+        // If no y column(s) supplied, assume all number columns other than x are the y columns:
+        if(!ySet) {
+            uColNames = columnNames.filter(function(col){
+                return ![x, series, size].includes(col)
+            });
 
-        for(let i = 0; i < uColNames.length; i++){
-            uColName = uColNames[i]
-            uColType = columnSummary[uColName].type
-            if(uColType === "number"){
-                unusedColumns.push(uColName)
+            for(let i = 0; i < uColNames.length; i++){
+                uColName = uColNames[i]
+                uColType = columnSummary[uColName].type
+                if(uColType === "number"){
+                    unusedColumns.push(uColName)
+                }
             }
-        }
 
-        if(!y){
             y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
         }
-
         // Establish required columns based on chart type:
         if(bubble){
             reqCols = {
@@ -295,7 +317,7 @@ try{
         // Check for x mismatch:
         xMismatch = (xDataType === "value" && xType === "category");
 
- 
+
 
     // ---------------------------------------------------------------------------------------
     // Sort data based on xType
@@ -305,22 +327,21 @@ try{
                 getSortedData(data, y, false) 
                 : getSortedData(data, x, true) 
             : data;
-         
+    
     // ---------------------------------------------------------------------------------------
     // Standardize date columns
     // ---------------------------------------------------------------------------------------
 
-      columnSummaryArray = getColumnSummary(data, "array");
-      dateCols = columnSummaryArray.filter(d => d.type === "date")
-      dateCols = dateCols.map(d => d.id);
+    columnSummaryArray = getColumnSummary(data, "array");
+    dateCols = columnSummaryArray.filter(d => d.type === "date")
+    dateCols = dateCols.map(d => d.id);
 
-      if(dateCols.length > 0){
+    if(dateCols.length > 0){
         for(let i = 0; i < dateCols.length; i++){
-          data = standardizeDateColumn(data, dateCols[i]);
+            data = standardizeDateColumn(data, dateCols[i]);
         }
-      }
-
-
+    }
+            
     // ---------------------------------------------------------------------------------------
     // Get format codes for axes
     // ---------------------------------------------------------------------------------------
@@ -642,10 +663,12 @@ try{
 
         config.update(d => { return chartConfig });
 
-} catch(e) {
-    error = e.message;
-    props.update(d => { return {...d, error} })
+    } catch(e) {
+        error = e.message;
+        props.update(d => { return {...d, error} })
+    }
 }
+
 </script>
 
 
