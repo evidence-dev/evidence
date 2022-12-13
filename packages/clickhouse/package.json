@@ -1,0 +1,19 @@
+{
+  "name": "@evidence-dev/clickhouse",
+  "version": "0.0.1",
+  "description": "Clickhouse driver for Evidence projects",
+  "main": "index.cjs",
+  "author": "Yz Li",
+  "license": "MIT",
+  "scripts": {
+    "test": "uvu test test.js"
+  },
+  "dependencies": {
+    "clickhouse": "2.6.0",
+    "@evidence-dev/db-commons": "workspace:^"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
+  },
+  "type": "module"
+}
