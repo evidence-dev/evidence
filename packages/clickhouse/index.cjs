@@ -4,7 +4,7 @@ const { ClickHouse } = require('clickhouse');
 
 const runQuery = async (queryString, database) => {
     try {
-        const clickhouse = new Clickhouse({
+        const clickhouse = new ClickHouse({
             url: process.env["CLICKHOUSE_URL"],
             port: process.env["CLICKHOUSE_PORT"],
             basicAuth: {
