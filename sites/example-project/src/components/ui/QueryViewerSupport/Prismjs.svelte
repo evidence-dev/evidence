@@ -8,9 +8,7 @@
 </script>
 
 <pre in:blur>
-  <code class="language-sql">
-    {@html Prism.highlight(code, Prism.languages['sql'])}
-  </code>
+  <code class="language-sql">{@html Prism.highlight(code, Prism.languages['sql'])}</code>
 </pre>
 
 
@@ -24,6 +22,7 @@
     }
 
     pre {
+      white-space: normal;
       margin: 0 0 0 0; /* Makes the block jump around on transition */  
       font-size:12px;
       display: block;
