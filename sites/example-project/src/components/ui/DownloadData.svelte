@@ -3,11 +3,7 @@
 
     export let data;
     export let queryID;
-    export let onHover = false;
-    export let hovering;
-
-
-    function downloadData(data) {
+    export let downloadData = (data) => {
         const options = { 
             fieldSeparator: ',',
             quoteStrings: '"',
@@ -22,15 +18,15 @@
  
         const csvExporter = new ExportToCsv(options);
       
-        csvExporter.generateCsv(data);
+        csvExporter.generateCsv(data);     
     }
 
 </script>
 
-<span class=download-icon class:download-icon-hidden={onHover} class:active={hovering} on:click={downloadData(data)}>
+<button class={$$props.class} on:click={downloadData(data)}>
     <span>Download</span>
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
-</span>
+  </button>
 
 <style>
     svg {
@@ -39,15 +35,13 @@
         margin-bottom: auto;
     }
 
-    .download-icon {
+    button {
         display: grid;
         grid-row: auto;
         grid-template-columns: auto auto;
         gap: 3px;
         float: right;
         /* margin-left: 5px; */
-        margin-top: 3px;
-        margin-right: 7px;
         cursor: pointer;
         font-family: sans-serif;
         font-size: 0.7rem;
@@ -55,26 +49,20 @@
         vertical-align: text-top;
         justify-items: center;
         position:relative;
+        background-color: transparent;
+        border: none;
     }
 
-    .download-icon-hidden {
-        visibility: hidden;
-    }
-
-    .download-icon:hover {
+    button:hover {
         color: var(--grey-500);
     }
 
-    .download-icon:hover svg {
+    button:hover svg {
         stroke: var(--grey-500);
     }
-
-    .active {
-        visibility: visible;
-    }
-
+    
     @media print {
-        .download-icon {
+        button {
             display: none;
         }
     }
