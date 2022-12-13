@@ -1,5 +1,14 @@
 # @evidence-dev/components
 
+## 1.4.1
+
+### Patch Changes
+
+- 3b27c0e: Freeze header bar to top of screen when scrolling
+- 9728baf: Fix charts rendering issue in webkit browsers
+- 75d5863: Fix indetation in sql viewer
+- bb18575: Add instructions on how to set up different data environments.
+
 ## 1.4.0
 
 ### Minor Changes
