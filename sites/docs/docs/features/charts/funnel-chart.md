@@ -10,7 +10,7 @@ hide_table_of_contents: false
 ![funnel](/img/exg-funnel-nt.svg)
 
 ```markdown
-<AreaChart 
+<FunnelChart 
     data={query_name} 
     nameCol=column_name
     valueCol=column_value
@@ -21,10 +21,10 @@ hide_table_of_contents: false
 
 ### Ascending
 
-![funnel](/img/exg-funnel-ascending-nt.svg)
+![ascending-funnel](/img/exg-funnel-ascending-nt.svg)
 
 ```markdown
-<AreaChart 
+<FunnelChart 
     data={query_name} 
     nameCol=column_name
     valueCol=column_value
@@ -34,10 +34,10 @@ hide_table_of_contents: false
 
 ### Alignment
 
-![funnel](/img/exg-funnel-left-aligned-nt.svg)
+![left-aligned-funnel](/img/exg-funnel-left-aligned-nt.svg)
 
 ```markdown
-<AreaChart 
+<FunnelChart 
     data={query_name} 
     nameCol=column_name
     valueCol=column_value
