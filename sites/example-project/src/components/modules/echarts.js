@@ -445,7 +445,7 @@ export default(node, option, renderer) => {
     const resizeChart = () => {
         chart.resize({
             animation: {
-                duration: 100
+                duration: 500
             }
         })
     }
