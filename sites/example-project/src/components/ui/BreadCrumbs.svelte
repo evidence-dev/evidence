@@ -59,9 +59,9 @@
         {#if $pageHasQueries}
             <span transition:blur|local>
                 {#if $showQueries}
-                <span class="dev-controls hide" on:click={toggleQueries}>Hide Queries</span>
+                <button class="dev-controls hide" on:click={toggleQueries}>Hide Queries</button>
                 {:else}
-                <span class="dev-controls show" on:click={toggleQueries}>Show Queries</span>
+                <button class="dev-controls show" on:click={toggleQueries}>Show Queries</button>
                 {/if}
             </span>
         {/if}
@@ -69,7 +69,7 @@
 </div>
 
 <style>
-    div{
+    div {
         padding: 0 0.5em 0 1.5em;
         box-sizing: border-box;
         width: 100%;
@@ -79,33 +79,34 @@
   		scrollbar-width: none;  
     }
 
-    span.container{
+    span.container {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
-    span{
+    span, button {
         font-size: small;
         font-family: var(--ui-font-family-compact);
         -webkit-font-smoothing: antialiased;
         color:var(--grey-700)
     }
 
-    a{
+    a {
         text-transform: capitalize;
         text-decoration: none;
         color: var(--grey-700);
     }
-    a:hover{
+    a:hover {
         color:var(--grey-999);
         transition:all 0.2s;
     }
 
-    span.dev-controls {
+    button.dev-controls {
         float: right;
         text-align: center;
-        margin: 0 0 0 1.5em; 
-        padding: 0.05em 0.25em 0.05em 0.25em;
+        margin: 0 0 0 1.5em;
+        padding: 0.25em 1em 0.25em 1em;
         border: 1px solid var(--grey-300);
         border-radius: 3px;
         font-size: 0.8em;
@@ -115,16 +116,16 @@
         -webkit-user-select: none;
         -moz-user-select: none;
         -webkit-font-smoothing: antialiased;
-        width: 8em;
+        width: 9em;
         transition:box-shadow 350ms;
     }
 
-    span.dev-controls:hover{
+    button.dev-controls:hover {
         box-shadow: 0 5px 5px 2px var(--grey-100);
         transition:all 350ms;
     }
 
-    span.dev-controls.show{
+    button.dev-controls.show {
 		background: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);
         text-decoration: none;
 		-webkit-background-clip: text;
@@ -134,7 +135,7 @@
      }
 
      @media (max-width: 600px) {
-        span.dev-controls {
+        button.dev-controls {
             display: none;
         }
     }
