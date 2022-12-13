@@ -258,6 +258,14 @@
     margin-top: 10px;
   }
 
+  span {
+    font-family: var(--ui-font-family-compact);
+    -webkit-font-smoothing: antialiased;
+    font-size: 0.8em;
+    float: right;
+    color: grey;
+  }
+
   .container {
     width: 100%;
     overflow-x: auto;
