@@ -188,7 +188,7 @@
         </div>
       {/if}
     </div>
-    <DownloadData {data} {queryID} onHover={true} {hovering} />
+    <DownloadData class=download-button {data} {queryID} />
   </div>
 {:else}
   <ErrorChart {error} chartType="Data Table" />
@@ -247,6 +247,15 @@
 
   .page-labels {
     line-height: 2em;
+  }
+
+  .table-container :global(.download-button) {
+    visibility: hidden;
+  }
+
+  .table-container:hover :global(.download-button) {
+    visibility: visible;
+    margin-top: 10px;
   }
 
   span {
