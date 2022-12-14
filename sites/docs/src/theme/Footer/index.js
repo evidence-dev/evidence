@@ -4,15 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
-import {useThemeConfig} from '@docusaurus/theme-common';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
-import ThemedImage from '@theme/ThemedImage';
+import React from "react";
+import clsx from "clsx";
+import Link from "@docusaurus/Link";
+import { useThemeConfig } from "@docusaurus/theme-common";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import styles from "./styles.module.css";
+import ThemedImage from "@theme/ThemedImage";
 
-function FooterLink({to, href, label, prependBaseUrlToHref, ...props}) {
+function FooterLink({ to, href, label, prependBaseUrlToHref, ...props }) {
   const toUrl = useBaseUrl(to);
   const normalizedHref = useBaseUrl(href, {
     forcePrependBaseUrl: true,
@@ -27,19 +27,20 @@ function FooterLink({to, href, label, prependBaseUrlToHref, ...props}) {
         : {
             to: toUrl,
           })}
-      {...props}>
+      {...props}
+    >
       {label}
     </Link>
   );
 }
 
-const FooterLogo = ({sources, alt}) => (
+const FooterLogo = ({ sources, alt }) => (
   <ThemedImage className="footer__logo" alt={alt} sources={sources} />
 );
 
 function Footer() {
-  const {footer} = useThemeConfig();
-  const {copyright, links = [], logo = {}} = footer || {};
+  const { footer } = useThemeConfig();
+  const { copyright, links = [], logo = {} } = footer || {};
   const sources = {
     light: useBaseUrl(logo.src),
     dark: useBaseUrl(logo.srcDark || logo.src),
@@ -51,21 +52,22 @@ function Footer() {
 
   return (
     <footer
-      className={clsx('footer', {
-        'footer--dark': footer.style === 'dark',
-      })}>
-      <div className="container">
+      className={clsx("footer", {
+        "footer--dark": footer.style === "dark",
+      })}
+    >
+      <div className={styles.footer__container}>
         {links && links.length > 0 && (
-          <div className="row footer__links">
+          <div className={`row ${styles.footer__links}`}>
             {links.map((linkItem, i) => (
-              <div key={i} className="col footer__col">
+              <div key={i} className={`col ${styles.footer__col}`}>
                 {linkItem.title != null ? (
                   <h4 className="footer__title">{linkItem.title}</h4>
                 ) : null}
                 {linkItem.items != null &&
                 Array.isArray(linkItem.items) &&
                 linkItem.items.length > 0 ? (
-                  <ul className="footer__items">
+                  <ul className={styles.footer__items}>
                     {linkItem.items.map((item, key) =>
                       item.html ? (
                         <li
@@ -80,7 +82,7 @@ function Footer() {
                         <li key={item.href || item.to} className="footer__item">
                           <FooterLink {...item} />
                         </li>
-                      ),
+                      )
                     )}
                   </ul>
                 ) : null}
@@ -113,9 +115,19 @@ function Footer() {
           </div>
         )}
       </div>
-      <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script> 
-<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
-  </footer>
+      <script
+        async
+        defer
+        src="https://scripts.simpleanalyticscdn.com/latest.js"
+      ></script>
+      <noscript>
+        <img
+          src="https://queue.simpleanalyticscdn.com/noscript.gif"
+          alt=""
+          referrerpolicy="no-referrer-when-downgrade"
+        />
+      </noscript>
+    </footer>
   );
 }
 

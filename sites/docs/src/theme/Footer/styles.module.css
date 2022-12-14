@@ -7,9 +7,49 @@
 
 .footerLogoLink {
   opacity: 0.5;
-  transition: opacity var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+  transition: opacity var(--ifm-transition-fast)
+    var(--ifm-transition-timing-default);
 }
 
 .footerLogoLink:hover {
   opacity: 1;
+}
+
+.footer__items {
+  list-style: none;
+  padding: 0;
+}
+
+.footer__container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer__col {
+  text-align: center;
+  padding: 0 5em;
+}
+
+@media only screen and (max-width: 600px) {
+  .footer__col {
+    padding: 0;
+  }
+
+  .footer__links {
+    gap: 2rem;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .footer__links {
+    gap: 1rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .footer__col {
+    text-align: left;
+  }
 }
