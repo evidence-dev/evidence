@@ -1,0 +1,19 @@
+<svg width="576" height="428" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 576 428">
+<rect width="576" height="428" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0"></rect>
+<polyline points="472.1 90.8 482.1 90.8" fill="none" stroke="hsla(207, 65%, 39%, 1)"></polyline>
+<polyline points="379.7 152.4 389.7 152.4" fill="none" stroke="hsla(195, 49%, 51%, 1)"></polyline>
+<polyline points="289.4 214 299.4 214" fill="none" stroke="hsla(207, 69%, 79%, 1)"></polyline>
+<polyline points="210.5 275.6 220.5 275.6" fill="none" stroke="hsla(202, 28%, 65%, 1)"></polyline>
+<polyline points="116.7 337.2 126.7 337.2" fill="none" stroke="hsla(179, 37%, 65%, 1)"></polyline>
+<polygon points="57.6 60 518.4 60 425.8 121.6 57.6 121.6" fill="hsla(207, 65%, 39%, 1)" stroke="white" stroke-linejoin="round"></polygon>
+<polygon points="57.6 121.6 425.8 121.6 333.6 183.2 57.6 183.2" fill="hsla(195, 49%, 51%, 1)" stroke="white" stroke-linejoin="round"></polygon>
+<polygon points="57.6 183.2 333.6 183.2 245.2 244.8 57.6 244.8" fill="hsla(207, 69%, 79%, 1)" stroke="white" stroke-linejoin="round"></polygon>
+<polygon points="57.6 244.8 245.2 244.8 175.8 306.4 57.6 306.4" fill="hsla(202, 28%, 65%, 1)" stroke="white" stroke-linejoin="round"></polygon>
+<polygon points="57.6 306.4 175.8 306.4 57.6 368 57.6 368" fill="hsla(179, 37%, 65%, 1)" stroke="white" stroke-linejoin="round"></polygon>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" x="487.08369230769233" y="90.8" fill="hsla(207, 65%, 39%, 1)" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">leads</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" xml:space="preserve" x="394.68738461538464" y="152.39999999999998" fill="hsla(195, 49%, 51%, 1)" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">sales call</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" xml:space="preserve" x="304.4178461538462" y="214" fill="hsla(207, 69%, 79%, 1)" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">follow up</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" x="225.49107692307692" y="275.59999999999997" fill="hsla(202, 28%, 65%, 1)" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">conversation</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" x="131.67692307692306" y="337.2" fill="hsla(179, 37%, 65%, 1)" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">sale</text>
+<path d="M0 0l0 0l0 0l0 0Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
+</svg>
