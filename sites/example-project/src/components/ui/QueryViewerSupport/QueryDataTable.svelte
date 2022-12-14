@@ -24,7 +24,7 @@
   }
 
   const updateIndex = throttle((event) => {
-    index= Math.min(Math.max(0, index + Math.floor(event.deltaY/Math.abs(event.deltaY))), max)
+    index = Math.min(Math.max(0, index + Math.floor(event.deltaY/Math.abs(event.deltaY))), max)
     slice()
   }, 60)
 
