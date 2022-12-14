@@ -3,6 +3,7 @@
   import DownloadData from '../DownloadData.svelte'
   import getColumnSummary from '$lib/modules/getColumnSummary.js';
   import { formatValue } from '$lib/modules/formatting.js';
+  import { throttle } from 'echarts';
 
   export let queryID;
   export let data;  
@@ -22,23 +23,27 @@
     dataPage = updatedSlice
   }
 
-    function handleWheel(event){
-      // abort if scroll is in x-direction
-      if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
-        return
-      }
+  const updateIndex = throttle((event) => {
+    index= Math.min(Math.max(0, index + Math.floor(event.deltaY/Math.abs(event.deltaY))), max)
+    slice()
+  }, 60)
 
-      const hasScrolledToTop = event.deltaY < 0 && index === 0
-      const hasScrolledToBottom = event.deltaY > 0 && index === max
-
-      if (hasScrolledToTop || hasScrolledToBottom) {
-        return
-      }
-
-      event.preventDefault()
-      index= Math.min(Math.max(0, index + Math.floor(event.deltaY/Math.abs(event.deltaY))), max)
-      slice()
+  function handleWheel(event){
+    // abort if scroll is in x-direction
+    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+      return
     }
+
+    const hasScrolledToTop = event.deltaY < 0 && index === 0
+    const hasScrolledToBottom = event.deltaY > 0 && index === max
+
+    if (hasScrolledToTop || hasScrolledToBottom) {
+      return
+    }
+
+    event.preventDefault()
+    updateIndex(event)
+  }
 </script>
 
 <div class="results-pane" transition:slide|local>
