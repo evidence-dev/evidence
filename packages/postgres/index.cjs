@@ -114,6 +114,14 @@ const runQuery = async (queryString, database) => {
         })
 
         var pool = new Pool(credentials);
+
+        // Set schema if specified. Can't be done using the connection string / credentials. See issue: https://github.com/brianc/node-postgres/issues/1123#issuecomment-501510375 & solution: https://node-postgres.com/apis/pool#events
+        const schema = database ? database.schema : process.env["POSTGRES_SCHEMA"] || process.env["schema"] || process.env["SCHEMA"];
+        if (schema) {
+            pool.on('connect', (client) => {
+                client.query(`SET search_path TO ${schema}`)
+            })
+        }
         var result = await pool.query(queryString)
 
         const standardizedRows = await standardizeResult(result.rows);
