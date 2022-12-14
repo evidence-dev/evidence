@@ -1,6 +1,6 @@
 {
   "name": "evidence-test-environment",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "private": true,
   "scripts": {
     "build": "evidence build",
