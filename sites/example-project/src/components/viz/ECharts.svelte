@@ -9,6 +9,8 @@
     export let height = '291px'
     export let width = '100%'
 
+    export let data;
+
     let downloadChart = false;
     let copying = false
 
@@ -34,7 +36,8 @@
 
 <EchartsCopyTarget {config} {height} {width} {copying}/> 
 
-<DownloadData class=download-button downloadData={() => {downloadChart = true; setTimeout(() => { downloadChart = false}, 0);}} />
+<DownloadData text="Download data" {data} class=download-button />
+<DownloadData text="Save Chart" class=download-button downloadData={() => {downloadChart = true; setTimeout(() => { downloadChart = false}, 0);}} />
 
 </div>
 

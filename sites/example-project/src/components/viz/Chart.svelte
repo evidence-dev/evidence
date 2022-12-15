@@ -675,7 +675,7 @@ $: {
 {#if !error}
 
 <slot></slot>
-<ECharts config={$config} {height} {width}/>
+<ECharts config={$config} {height} {width} {data}/>
 
 {:else}
 
