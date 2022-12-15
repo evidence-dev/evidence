@@ -112,6 +112,30 @@ Entering `localhost:3000` in your browser tells your browser to send a request t
 
 If you navigate to a page in your Evidence project and look at the URL, you will see that each page in Evidence corresponds to a URL (e.g., `localhost:3000/examples`).
 
+## Change host
+Don't want to use localhost? To update your host open `package.json` , under the `scripts` object update the `dev` script to have `--host 0.0.0.0` (or to whatever ip address you'd like to use). 
+
+Example package.json
+```json
+{
+  "name": "my-evidence-project",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "evidence build",
+    "dev": "evidence dev -o --host 0.0.0.0",
+    "test": "evidence build"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=14.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@evidence-dev/evidence": "^6.0.1"
+  }
+}
+```
+
 ## In Review 
 
 We've run the following four commands in our terminal, and we should have a working Evidence site visible in our web browser at `localhost:3000`. 
