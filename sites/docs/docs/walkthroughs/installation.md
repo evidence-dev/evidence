@@ -105,12 +105,29 @@ To stop the dev server, use `Ctrl` + `C`
 
 When the dev server is running, you will be able to see your pages in your browser at [localhost:3000](http://localhost:3000)
 
-## Localhost
+### Localhost
 If you have not tried web development before, `localhost:3000` may look foreign to you. This is your **URL** for local web development and tells your browser where to send requests. You can think of it in the same way as a normal URL like `google.com`.
 
 Entering `localhost:3000` in your browser tells your browser to send a request to the local server which is using port 3000. If your development server is running, it will receive that request and send back the files needed to display your webpage.
 
 If you navigate to a page in your Evidence project and look at the URL, you will see that each page in Evidence corresponds to a URL (e.g., `localhost:3000/examples`).
+
+### Development Server Options
+
+You can change how the dev server runs by adding command line interface (CLI) "arguments". Add `--` followed by the arguments you need:
+```shell
+npm run dev -- --[setting] [option]
+```
+
+#### Run using an alternative port
+```shell
+npm run dev -- --port 4000
+```
+
+#### Run from an alternative host
+```shell
+npm run dev -- --host 0.0.0.0
+```
 
 ## In Review 
 
