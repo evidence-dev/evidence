@@ -17,17 +17,15 @@ const getQueryCachePaths = (queryString, queryTime) => {
     }
 }
 
-const updateCache = function (devMode, queryString, data, columnTypes, queryTime) {
-    if (devMode) {
-        const {cacheDirectory, resultsCacheFile, columnTypeCacheFile} = getQueryCachePaths(queryString, queryTime);
-        if (!pathExistsSync(cacheDirectory)) {
-            emptyDirSync(cacheDirectory);
-            mkdirSync(cacheDirectory, { recursive: true });
-        }
-        writeJSONSync(resultsCacheFile, data, { throws: false });
-        if (columnTypes) {
-            writeJSONSync(columnTypeCacheFile, columnTypes, { throws: false });
-        }
+const updateCache = function (queryString, data, columnTypes, queryTime) {
+    const {cacheDirectory, resultsCacheFile, columnTypeCacheFile} = getQueryCachePaths(queryString, queryTime);
+    if (!pathExistsSync(cacheDirectory)) {
+        emptyDirSync(cacheDirectory);
+        mkdirSync(cacheDirectory, { recursive: true });
+    }
+    writeJSONSync(resultsCacheFile, data, { throws: false });
+    if (columnTypes) {
+        writeJSONSync(columnTypeCacheFile, columnTypes, { throws: false });
     }
 }
 
@@ -82,11 +80,10 @@ const runQueries = async function (routeHash, dev) {
             let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
 
             let cache, columnTypeCache;
-            if (dev) {
-                const { resultsCacheFile, columnTypeCacheFile } = getQueryCachePaths(query.compiledQueryString, queryTime);
-                cache = readJSONSync(resultsCacheFile, { throws: false });
-                columnTypeCache = readJSONSync(columnTypeCacheFile, { throws: false });
-            }
+            const { resultsCacheFile, columnTypeCacheFile } = getQueryCachePaths(query.compiledQueryString, queryTime);
+            cache = readJSONSync(resultsCacheFile, { throws: false });
+            columnTypeCache = readJSONSync(columnTypeCacheFile, { throws: false });
+
             if (cache) {
                 logEvent("cache-query", dev, settings);
                 data[query.id] = cache;
@@ -114,7 +111,7 @@ const runQueries = async function (routeHash, dev) {
                     queries[queryIndex].status = "done"
                     writeJSONSync(queryFile, queries)
 
-                    updateCache(dev, query.compiledQueryString, data[query.id], columnTypes, queryTime);
+                    updateCache(query.compiledQueryString, data[query.id], columnTypes, queryTime);
 
                     logEvent("db-query", dev, settings)
                 } catch(err) {
