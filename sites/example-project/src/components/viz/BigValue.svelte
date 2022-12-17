@@ -95,6 +95,7 @@
                     hover = {false}
                     linked = 'id'
                     width = 75
+                    tabindex = {-1}
                 />
             </div>
         {/if}
