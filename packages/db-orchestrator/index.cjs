@@ -77,8 +77,7 @@ const runQueries = async function (routeHash, dev) {
         data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 
         for (let queryIndex in queries) {
             let query = queries[queryIndex];
-            let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
-
+            let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());
             let cache, columnTypeCache;
             const { resultsCacheFile, columnTypeCacheFile } = getQueryCachePaths(query.compiledQueryString, queryTime);
             cache = readJSONSync(resultsCacheFile, { throws: false });
