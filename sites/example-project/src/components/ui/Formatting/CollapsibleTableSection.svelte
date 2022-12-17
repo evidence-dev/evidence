@@ -47,16 +47,6 @@
     cursor: pointer;
     /* border: 1px solid var(--grey-200); */
   }
-
-  button[area-expanded="true"] .vert {
-    display: none;
-  }
-  svg {
-    margin-top: 0.1em;
-    height: 1em;
-    width: 1em;
-    outline: 1px solid;
-  }
  
   .collapsibleContents {
     padding: 0.5em 0.5em 1.5em 0.5em;
