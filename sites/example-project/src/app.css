@@ -57,26 +57,26 @@ h1, h2, h3, h4, h5, h6  {
 	font-weight: normal;
 	font-family: var(--ui-font-family);
 	line-height: 1.5;
-	margin: 1.0em 0 0.3em 0; 
+	margin: 0.8em 0 0.3em 0; 
 	scroll-margin-top: var(--header-height); /* ensure that table of contents links scroll with room for the header */
 }
 
 h1:first-of-type {
-	font-size: 2em;
+	font-size: 1.8em;
 	font-weight: bold;
 	color: var(--grey-800);
 	border-top: none;
 	padding-top: 0;
-	margin: 0em 0 0.3em 0; 
+	margin: 0em 0 0.2em 0; 
 }
 
 h1 {
-	font-size: 2em;
+	font-size: 1.8em;
 	font-weight: bold;
 	color: var(--grey-800);
 	display: block;
 	border-top: 1px solid var(--grey-200);
-	padding-top: 0.3em;
+	padding-top: 0.2em;
 }
 
 
@@ -85,15 +85,15 @@ h1:active {
 }
 
 h2 { 
-	font-size: 1.5em;
+	font-size: 1.3em;
 	font-weight: bold;
 	color: var(--grey-800);
 }
 
 h3 {
-	font-size: 1.17em;
-	font-style: italic;
-	font-family: 'Spectral', serif;
+	font-size: 1em;
+	font-weight: bold;
+	color: var(--grey-800);
 }
 
 h4 {
