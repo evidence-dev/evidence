@@ -132,20 +132,20 @@
 
     .title {
         font-size: 0.8em;
-        font-weight: bold;
+        font-weight: 500;
         color: var(--grey-700);
         text-shadow: 1px solid white;
     }
 
     .value{
         font-size: 1.2em;
-        font-weight: bold;
+        font-weight: 500;
         color: var(--grey-700);
     }
 
     .comparison{
         font-size: .65em;
-        font-weight: bold;
+        font-weight: 500;
         font-family: var(--ui-compact-font-family);
     }
 
