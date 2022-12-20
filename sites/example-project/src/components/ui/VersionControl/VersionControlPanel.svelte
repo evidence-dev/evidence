@@ -51,7 +51,7 @@
             <span class=item-label>Git Repo Published</span>
             {#if settings.gitRepo}
             <div class=result-msg>
-                <a href={settings.gitRepo.replace(".git", "")} target="_blank"><span class=repo-location>{settings.gitRepo.replace(".git", "")}</span></a>  
+                <a href={settings.gitRepo.replace(".git", "")} target="_blank" rel="noreferrer"><span class=repo-location>{settings.gitRepo.replace(".git", "")}</span></a>  
             </div>
             {:else}
             <span class=help-icon>
