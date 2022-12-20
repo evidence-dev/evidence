@@ -56,7 +56,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '@evidence-dev/components/ui/stores';
-        import { setContext, getContext } from 'svelte';
+        import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import BigValue from '${componentSource}/viz/BigValue.svelte';
@@ -118,7 +118,9 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     
         }
     
-        applyEvidenceTypes(data)
+        beforeUpdate(() => {
+            applyEvidenceTypes(data)
+        })
 
         ${queryDeclarations}
         `
