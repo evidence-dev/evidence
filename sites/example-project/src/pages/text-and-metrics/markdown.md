@@ -10,6 +10,8 @@
 
 ##### Heading Level 5
 
+###### Heading Level 6
+
 ## Lists
 ### Unordered List
 - Item 1

@@ -46,6 +46,7 @@
         text-transform: uppercase;
         font-weight: normal;
         font-size: 14px;
+        font-style: normal;
     }
     select {
         -webkit-appearance: none;

@@ -93,24 +93,25 @@ h2 {
 h3 {
 	font-size: 1em;
 	font-weight: bold;
+	font-style: italic;
 	color: var(--grey-800);
 }
 
 h4 {
-	font-size: 1em;
+	font-size: 0.9em;
 	text-transform: lowercase;
 	font-family: 'Spectral SC', serif;
 	letter-spacing: 0.04em;
 }
 
 h5 {
-	font-size:0.83em;
+	font-size:0.8em;
 	font-family: 'Spectral', serif;
 	letter-spacing: 0.05em;
 }
 
 h6 {
-	font-size: 0.67em;
+	font-size: 0.65em;
 	font-family: 'Spectral', serif;
 	letter-spacing: 0.025em;
 }

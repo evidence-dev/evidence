@@ -31,6 +31,7 @@
 
   h3 {
     margin: 0;
+    font-style: normal;
   }
 
   button {

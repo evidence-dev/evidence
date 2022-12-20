@@ -95,7 +95,7 @@ aside.sidebar {
 .project-title{
 	font-size: 1.2em;	
 	margin: 0 0 0.3em 0; 
-	padding-top: 0.2em;
+	padding-top: 0.3em;
 	}
 .sticky {
     position: sticky;

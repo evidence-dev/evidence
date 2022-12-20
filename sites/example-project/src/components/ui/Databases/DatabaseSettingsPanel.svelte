@@ -202,6 +202,7 @@ p.error {
 h3 {
     text-transform: uppercase;
     font-weight: normal;
+    font-style: normal;
     font-size: 14px;
 }
 
