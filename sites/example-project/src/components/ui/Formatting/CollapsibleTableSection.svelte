@@ -11,7 +11,7 @@
 <div class="collapsibleSection">
   <collapsibleHeader>
     <button area-expanded={expanded} on:click|preventDefault={toggleExpanded}>
-      <h2>{headerText}</h2>
+      <h3>{headerText}</h3>
       <ChevronToggle toggled={expanded} size=16/>
     </button>
   </collapsibleHeader>
@@ -29,7 +29,7 @@
     vertical-align: middle;
   }
 
-  h2 {
+  h3 {
     margin: 0;
   }
 

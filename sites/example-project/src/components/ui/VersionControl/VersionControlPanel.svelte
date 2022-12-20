@@ -12,7 +12,7 @@
 <div class=container>
 
     <div class=panel> 
-    <h1>Version Control</h1>
+    <h2>Version Control</h2>
         Use version control to keep track of changes to your project. A published git repo is needed if you want to deploy your Evidence project online.
     
         <div class=git-item>
@@ -81,7 +81,7 @@
 
     .panel {
         border-top: 1px solid var(--grey-200);
-        padding:1.0em;
+        padding: 0em 1em 1em 1em;
     }
 
     .panel:first-of-type {

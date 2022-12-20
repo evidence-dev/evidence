@@ -76,9 +76,9 @@
 <form on:submit|preventDefault={submitForm} autocomplete="off" in:blur|local>
     <div class=container>
         <div class=panel> 
-            <h1>Database Connection</h1>
+            <h2>Database Connection</h2>
             <p>Evidence supports one database connection per project.</p>
-            <h2>Connection Type</h2>
+            <h3>Connection Type</h3>
             <select data-test-id='dbConnectionType' bind:value={selectedDatabase} on:change={databaseChange}>
             {#each databaseOptions as option}
                 <option data-test-id={option.id} id={option.id} value={option} label={option.name}>
@@ -195,7 +195,7 @@ p.error {
     word-break: break-all;
 }
 
-h2 {
+h3 {
     text-transform: uppercase;
     font-weight: normal;
     font-size: 14px;
@@ -221,7 +221,7 @@ h2 {
 
 .panel {
     border-top: 1px solid var(--grey-200);
-    padding:1.0em;
+    padding: 0em 1em 1em 1em;
 }
 
 .panel:first-of-type {
