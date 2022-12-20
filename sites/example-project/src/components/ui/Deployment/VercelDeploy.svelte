@@ -34,7 +34,7 @@
 
 <div class='setting-row'>
     <span class='setting'>Install Command</span>  
-    <div class='setting-value'><VariableCopy text={'build/'}/> </div>
+    <div class='setting-value'><VariableCopy text={'npm install'}/> </div>
 </div>
 
 

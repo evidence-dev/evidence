@@ -1,5 +1,46 @@
 # @evidence-dev/components
 
+## 1.4.2
+
+### Patch Changes
+
+- 1b052b2: Bug fix for column title formatting
+- 0ca1dd2: Add accessibility to QueryViewer, DataTable, BreadCrumbs, ECharts, and DownloadData
+- 9bd0f88: Fixes bug which prevented live updates on query status in development mode
+- 32e797f: Add port and ssl options to MySQL form
+
+## 1.4.1
+
+### Patch Changes
+
+- 3b27c0e: Freeze header bar to top of screen when scrolling
+- 9728baf: Fix charts rendering issue in webkit browsers
+- 75d5863: Fix indetation in sql viewer
+- bb18575: Add instructions on how to set up different data environments.
+
+## 1.4.0
+
+### Minor Changes
+
+- c68f658: Add maxWidth and minWidth style props to BigValue component. Default set for minWidth to give smaller BigValues more room.
+
+### Patch Changes
+
+- 79dca60: Fixes bug which prevented dev mode reloading on changes to queries in paramatarized pages
+
+## 1.3.14
+
+### Patch Changes
+
+- 975fdb1: including missing changeset for previous merge
+
+## 1.3.13
+
+### Patch Changes
+
+- 81755d7: Minor bug fix
+- 1922765: fix missing rows option in data table
+
 ## 1.3.12
 
 ### Patch Changes

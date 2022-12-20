@@ -1,5 +1,12 @@
 # @evidence-dev/preprocess
 
+## 1.2.6
+
+### Patch Changes
+
+- 79dca60: Fixes bug which prevented dev mode reloading on changes to queries in paramatarized pages
+- 755b1bb: Fix bug which caused bare query references to return undefined while page was loading
+
 ## 1.2.5
 
 ### Patch Changes

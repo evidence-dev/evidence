@@ -1,5 +1,57 @@
 # @evidence-dev/evidence
 
+## 6.0.2
+
+### Patch Changes
+
+- Updated dependencies [1b052b2]
+- Updated dependencies [0ca1dd2]
+- Updated dependencies [9bd0f88]
+- Updated dependencies [32e797f]
+  - @evidence-dev/components@1.4.2
+
+## 6.0.1
+
+### Patch Changes
+
+- Updated dependencies [3b27c0e]
+- Updated dependencies [9728baf]
+- Updated dependencies [75d5863]
+- Updated dependencies [bb18575]
+  - @evidence-dev/components@1.4.1
+
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [79dca60]
+- Updated dependencies [755b1bb]
+- Updated dependencies [c68f658]
+  - @evidence-dev/preprocess@1.2.6
+  - @evidence-dev/components@1.4.0
+
+## 5.0.18
+
+### Patch Changes
+
+- Updated dependencies [975fdb1]
+  - @evidence-dev/components@1.3.14
+
+## 5.0.17
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@1.1.10
+
+## 5.0.16
+
+### Patch Changes
+
+- 64e939f: bump svelte
+- Updated dependencies [81755d7]
+- Updated dependencies [1922765]
+  - @evidence-dev/components@1.3.13
+
 ## 5.0.15
 
 ### Patch Changes

@@ -2,11 +2,14 @@
     import echarts from "$lib/modules/echarts";
     import echartsCanvasDownload from "$lib/modules/echartsCanvasDownload";
     import EchartsCopyTarget from "./EchartsCopyTarget.svelte";
+    import DownloadData from "../ui/DownloadData.svelte";
 
     export let config = undefined;    
 
     export let height = '291px'
     export let width = '100%'
+
+    export let data;
 
     let downloadChart = false;
     let copying = false
@@ -33,10 +36,12 @@
 
 <EchartsCopyTarget {config} {height} {width} {copying}/> 
 
-<span class=download-icon on:click={() => {downloadChart = true; setTimeout(() => { downloadChart = false}, 0);}}>
-  <span>Download</span>
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
-</span>
+{#if data}
+<DownloadData text="Download data" {data} class=download-button />
+{/if}
+<DownloadData text="Save image" class=download-button downloadData={() => {downloadChart = true; setTimeout(() => { downloadChart = false}, 0);}}>
+  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M20.4 14.5L16 10 4 20"></path></svg>
+</DownloadData>
 
 </div>
 
@@ -63,10 +68,6 @@
       break-inside: avoid;
     }
 
-    .download-icon {
-      display: none;
-    }
-
     .chart-container {
       padding: 0;
     }
@@ -83,41 +84,13 @@
     padding-bottom: 15px;
   }
 
-  .chart-container:hover .download-icon {
+  .chart-container :global(.download-button) {
+    visibility: hidden;
+  }
+
+  .chart-container:hover :global(.download-button) {
     visibility: visible;
+    margin-top: -10px;
+    margin-right: 16px;
   }
-
-
-  svg {
-      stroke: var(--grey-400);
-      margin-top: auto;
-      margin-bottom: auto;
-  }
-
-  .download-icon {
-      visibility: hidden;
-      display: grid;
-      grid-row: auto;
-      grid-template-columns: auto auto;
-      gap: 3px;
-      float: right;
-      /* margin-left: 5px; */
-      margin-top: -10px;
-      margin-right: 16px;
-      cursor: pointer;
-      font-family: sans-serif;
-      font-size: 0.7rem;
-      color: var(--grey-400);
-      vertical-align: text-top;
-      justify-items: center;
-      position:relative;
-  }
-
-  .download-icon:hover {
-      color: var(--grey-500);
-  }
-  .download-icon:hover svg {
-      stroke: var(--grey-500);
-  }
-
 </style>

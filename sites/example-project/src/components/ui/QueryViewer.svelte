@@ -71,9 +71,9 @@
     <!-- Title -->
     <div class="container" transition:slide|local>
       <div class="container-a">
-        <div on:click={toggleSQL} class="title">
-          <span><ChevronToggle toggled={$showSQL}/> {queryID}</span>
-        </div>
+        <button type="button" on:click={toggleSQL} class="title">
+          <ChevronToggle toggled={$showSQL}/> {queryID}
+        </button>
         <!-- Compile Toggle  -->
           {#if $showSQL && showCompilerToggle}
             <CompilerToggle bind:showCompiled = {showCompiled}/>
@@ -90,8 +90,7 @@
           {/if}
       </div>
       <!-- Status -->
-      <div class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>  
-        <span> 
+      <button type="button" class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>
           {#if error}
             {#if dev && error.message === "Missing database credentials"}
               {error.message}.
@@ -104,9 +103,8 @@
           {:else}
               ran successfully but no data was returned
           {/if}
-        </span>  
       <!-- Results -->
-      </div>
+      </button>
         {#if queryResult.length > 0 && !error && $showResults}
             <DataTable data={queryResult} {queryID}/>
         {/if}
@@ -224,29 +222,31 @@
       color: var(--blue-700);
     }
 
-    div.title {
-        border-top-left-radius: 6px;
-        border-top-right-radius: 6px;
+    button {
+        font-family: var(--ui-font-family-compact);
+        -webkit-font-smoothing: antialiased;
+        font-size: 12px; 
+        -webkit-user-select: none;
+        user-select: none;
+        white-space:nowrap;
+        text-align: left;
+        width: 100%;
         background-color: var(--grey-100);
-        border-top: 1px solid var(--grey-200);
+        border: none;
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
         margin-bottom: 0px;
         cursor: pointer;
+        padding: 5px;
     }
 
-    span{
-        font-family: var(--ui-font-family-compact);
-        -webkit-font-smoothing: antialiased;
-        font-size: 12px; 
-        padding: 0 6px;
-        -webkit-user-select: none;
-        user-select: none;
-        white-space:nowrap;
-
+    button.title {
+      border-top: 1px solid var(--grey-200);
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
     }
 
-    div.results {
+    button.results {
         padding:0.3em 0.6em;
         margin-top: 0px;
         background-color: white;

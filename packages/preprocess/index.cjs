@@ -46,15 +46,16 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let queryDeclarations = ''
     
     if(hasQueries(filename)) {
-        queryDeclarations = fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$'))
-        .map(id => `let ${id} 
-        $: data, ${id} = data.${id};`)
-        .join('\n') || '';  
+        queryDeclarations = 
+        `
+        let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;
+        $: ({${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data);
+        `
     } 
 
     let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries } from '@evidence-dev/components/ui/stores';
+        import { pageHasQueries, routeHash } from '@evidence-dev/components/ui/stores';
         import { setContext, getContext } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
@@ -71,6 +72,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import BubbleChart from '${componentSource}/viz/BubbleChart.svelte';
         import DataTable from '${componentSource}/viz/DataTable.svelte';
         import LineChart from '${componentSource}/viz/LineChart.svelte';
+        import FunnelChart from "${componentSource}/viz/FunnelChart.svelte";
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
@@ -79,8 +81,8 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         
         export let data = {};
         export let customFormattingSettings;
-        
-        let routeHash = '${routeHash}';
+
+        routeHash.set('${routeHash}');
 
         $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
 
