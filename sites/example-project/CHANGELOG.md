@@ -1,5 +1,23 @@
 # @evidence-dev/components
 
+## 1.4.2
+
+### Patch Changes
+
+- 1b052b2: Bug fix for column title formatting
+- 0ca1dd2: Add accessibility to QueryViewer, DataTable, BreadCrumbs, ECharts, and DownloadData
+- 9bd0f88: Fixes bug which prevented live updates on query status in development mode
+- 32e797f: Add port and ssl options to MySQL form
+
+## 1.4.1
+
+### Patch Changes
+
+- 3b27c0e: Freeze header bar to top of screen when scrolling
+- 9728baf: Fix charts rendering issue in webkit browsers
+- 75d5863: Fix indetation in sql viewer
+- bb18575: Add instructions on how to set up different data environments.
+
 ## 1.4.0
 
 ### Minor Changes

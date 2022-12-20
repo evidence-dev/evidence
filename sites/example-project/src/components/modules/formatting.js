@@ -119,7 +119,7 @@ export const defaultExample = (valueType) => {
     case "number":
       return 1234;
     case "date":
-      return "Jan 3, 2022";
+      return "2022-01-03";
     default:
       return undefined;
   }

@@ -29,6 +29,7 @@
     }
 </script>
 
+<p>To use different data environments in production vs development, <a class=docs-link href=https://docs.evidence.dev/deployment/environments>use different environment variable values.</a></p>
 <div class=titles>
     <span class=title>Key</span><span class=title>Value</span> 
 </div>
@@ -82,6 +83,15 @@
         color: var(--grey-800);
         text-transform: uppercase;
         letter-spacing: 0.07em;
+    }
+
+    .docs-link {
+        color: var(--blue-600);
+        text-decoration: none;
+    }
+
+    .docs-link:hover {
+        color: var(--blue-800);
     }
 </style>
 

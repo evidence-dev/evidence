@@ -80,7 +80,8 @@
     <div class=container>
         <div class=panel> 
             <h1>Database Connection</h1>
-            <p>Evidence supports one database connection per project.</p>
+            <p>Evidence supports one database type per project. </p>
+            <p>These credentials will be used when running locally. For your production environment, see the deployment panel.</p>
             <h2>Connection Type</h2>
             <select data-test-id='dbConnectionType' bind:value={selectedDatabase} on:change={databaseChange}>
             {#each databaseOptions as option}

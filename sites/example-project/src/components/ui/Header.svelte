@@ -15,13 +15,7 @@
 <style>
 header {
     grid-area: header;
-    position: sticky;
-    z-index: 2;
-    top: 0;
     height: var(--header-height);
-    background-color: rgba(255, 255, 255, 0.73);
-    -webkit-backdrop-filter: blur(20px) saturate(1.8);
-    backdrop-filter: blur(20px) saturate(1.8);
     width: 100%;
 }
 

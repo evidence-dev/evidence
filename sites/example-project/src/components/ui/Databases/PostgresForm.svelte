@@ -52,7 +52,17 @@
 			placeholder: '5432',
 			value: credentials.port ?? ''
 		},
+		{
+			id: 'schema',
+			label: 'Schema',
+			type: 'text',
+			optional: true,
+			override: false,
+			placeholder: 'public',
+			value: credentials.schema ?? '',
+			additionalInstructions: 'The default schema to run queries against.'
 
+		},
 		{
 			id: 'ssl',
 			label: 'SSL',
