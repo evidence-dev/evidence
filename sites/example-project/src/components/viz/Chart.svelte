@@ -74,7 +74,7 @@
     xGridlines = (xGridlines === "true" || xGridlines === true);
     export let xAxisLabels = true;
     xAxisLabels = (xAxisLabels === "true" || xAxisLabels === true);
-    export let sort = true; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
+    export let sort = false; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
     sort = (sort === "true" || sort === true);
 
     // Y axis:
@@ -327,6 +327,11 @@ $: {
                 getSortedData(data, y, false) 
                 : getSortedData(data, x, true) 
             : data;
+
+        // Always sort time axes by x - this prevents the lines from being drawn out of order
+        if(xDataType === "time"){
+            data = getSortedData(data, x, true);
+        }
     
     // ---------------------------------------------------------------------------------------
     // Standardize date columns
