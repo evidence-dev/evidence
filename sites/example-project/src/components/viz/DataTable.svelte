@@ -169,6 +169,8 @@
       filteredData = filteredData.sort(sort);
   }
 
+  // Reset sort condition when data object is changed
+  $: data, sortBy = {col: null, ascending: null};
 
   // ---------------------------------------------------------------------------------------
   // PAGINATION
