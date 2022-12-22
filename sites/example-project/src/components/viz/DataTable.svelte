@@ -35,8 +35,8 @@
 
   let hovering = false;
 
-  let marginTop = '1em';
-  let marginBottom = '0em';
+  let marginTop = '1.5em';
+  let marginBottom = '1em';
   let paddingBottom = '1.5em';
 
   // Table features
@@ -135,6 +135,7 @@
               showNoResults = filteredData.length === 0
           } else {
               filteredData = data;
+              showNoResults = false;
           }
   }
 
@@ -213,7 +214,7 @@
   }
 
   let tableData
-  $: tableData = dataSubset(data, $props.columns.map(d => d.name))
+  $: tableData = $props.columns.length > 0 ? dataSubset(data, $props.columns.map(d => d.name)) : data;
 
 </script>
 
@@ -366,7 +367,7 @@
 <div class=noresults class:shownoresults={showNoResults}>No Results</div>
 
 {#if downloadable}
-  <DownloadData data={tableData} onHover={true} {hovering} class=download-button/>
+  <DownloadData class=download-button data={tableData}/>
 {/if}
 
 </div>
@@ -379,11 +380,10 @@
 
   .table-container {
       font-size: 9.5pt;
-      margin-bottom: 20px;
   }
 
   .container {
-      width:100%;
+      width:97%;
       overflow-x: auto;
       /* border-bottom: 1px solid var(--grey-200);    */
       scrollbar-width: thin; 
@@ -491,7 +491,7 @@
 
   .pagination {
       font-size: 10pt;
-      height: 23px;
+      height: 5px;
       font-family: sans-serif;
       color: var(--grey-500);
       user-select: none;
@@ -596,13 +596,12 @@
 
 .table-container :global(.download-button) {
     visibility: hidden;
-  }
+}
 
-  .table-container:hover :global(.download-button) {
-    visibility: visible;
-    margin-top: -10px;
-    margin-right: 16px;
-  }
+.table-container:hover :global(.download-button) {
+  visibility: visible;
+  margin-top: 8px;
+}
 
 @media print {
   .avoidbreaks {
