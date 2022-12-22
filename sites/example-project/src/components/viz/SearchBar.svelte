@@ -70,4 +70,18 @@
     *:focus {
         outline: none;
     }
+
+    @media (max-width: 600px) {
+        .search-container {
+            width: 98%;
+            height: 28px;
+        }
+    }
+
+
+    @media print {
+        .search-container {
+            visibility: hidden;
+        }
+    }
 </style>

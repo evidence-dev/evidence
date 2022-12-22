@@ -380,10 +380,11 @@
 
   .table-container {
       font-size: 9.5pt;
+      width: 97%;
   }
 
   .container {
-      width:97%;
+      width:100%;
       overflow-x: auto;
       /* border-bottom: 1px solid var(--grey-200);    */
       scrollbar-width: thin; 
