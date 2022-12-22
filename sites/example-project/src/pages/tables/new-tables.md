@@ -1,7 +1,3 @@
-<script>
-import Column from '$lib/viz/Column.svelte'
-</script>
-
 ```tableq
 select date('2020-04-30') as date, 87 as value_usd, 'Austria' as country, 'B' as category, 100384 as country_id
 union all

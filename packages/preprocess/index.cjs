@@ -71,6 +71,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import BarChart from '${componentSource}/viz/BarChart.svelte';
         import BubbleChart from '${componentSource}/viz/BubbleChart.svelte';
         import DataTable from '${componentSource}/viz/DataTable.svelte';
+        import Column from '${componentSource}/viz/Column.svelte';
         import LineChart from '${componentSource}/viz/LineChart.svelte';
         import FunnelChart from "${componentSource}/viz/FunnelChart.svelte";
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
