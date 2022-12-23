@@ -255,7 +255,7 @@
                       "
                       on:click={sortable ? sort(column.id) : ''}
                   >
-                      {column.label ? column.label : formatColumnTitles ? columnSummary.filter(d => d.id === column.id)[0].title : columnSummary.filter(d => d.id === column.id)[0].id}
+                      {column.title ? column.title : formatColumnTitles ? columnSummary.filter(d => d.id === column.id)[0].title : columnSummary.filter(d => d.id === column.id)[0].id}
                       {#if sortBy.col === column.id}
                           <span class=icon-container>
                               {#if sortBy.ascending}

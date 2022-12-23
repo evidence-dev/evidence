@@ -13,19 +13,18 @@ hide_table_of_contents: false
 ```html
 <DataTable data={query_name} search=true>
     <Column id=date/>
-    <Column id=country_id align=center title="Country ID"/>
-    <Column id=country/>
+    <Column id=country title="Country Name">
     <Column id=value_usd/>
 </DataTable>
 ```
-![datatable](/img/datatable-new.png)
+![datatable](/img/datatable-selected.png)
 
 ### Displaying All Columns in Query
 ```html
 <DataTable data={query_name} search=true/>
 ```
 
-![datatable](/img/datatable-new.png)
+![datatable](/img/datatable-all.png)
 
 
 ## DataTable
