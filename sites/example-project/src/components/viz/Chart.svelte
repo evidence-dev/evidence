@@ -160,6 +160,8 @@
 
     let missingCols = [];
 
+    let originalRun = true;
+
     // Error Handling:
 
     let inputCols = [];
@@ -248,6 +250,19 @@ $: {
             throw Error(new Intl.ListFormat().format(missingCols) + " are required");
         }
 
+        // Fix for stacked100 overwriting y variable. Bandaid fix - not a long-term solution:
+        if(stacked100 === true && y.includes("_pct") && originalRun === false){
+            if(typeof y === 'object'){
+                for(let i=0; i<y.length; i++){
+                    y[i] = y[i].replace("_pct", "")
+                }
+                originalRun = false;
+            } else {
+                y = y.replace("_pct", "")
+                originalRun = false;
+            }
+        }
+
         // Check the inputs supplied to the chart:
         if(x){inputCols.push(x)};
         if(y){
@@ -276,8 +291,10 @@ $: {
                 for(let i=0; i<y.length; i++){
                     y[i] = y[i] + '_pct'
                 }
+                originalRun = false;
             } else {
                 y = y + '_pct'
+                originalRun = false;
             }
 
             // Re-run column summary for new columns (not ideal):
@@ -673,6 +690,8 @@ $: {
         props.update(d => { return {...d, error} })
     }
 }
+
+$: data
 
 </script>
 
