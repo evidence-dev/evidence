@@ -56,7 +56,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '@evidence-dev/components/ui/stores';
-        import { setContext, getContext } from 'svelte';
+        import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import BigValue from '${componentSource}/viz/BigValue.svelte';
@@ -91,6 +91,36 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
                 return customFormattingSettings.customFormats || [];
             }
         });
+        
+        const applyEvidenceTypes = function(data) {
+
+            let includedQueries = data.evidencemeta?.queries
+
+            if(includedQueries) {
+                // iterate through each query 
+                for(let i = 0; i < includedQueries.length; i++) {
+                    // for each of the query objects in data
+                    let query = data[includedQueries[i].id]
+                    let colTypes = data.evidencemeta?.queries[i].columnTypes
+                    // iterate through each row in the query
+                    for(let j = 0; j < query.length; j++) {
+                        // for each row in the query
+                        if(colTypes) {
+                            // include column types in the row object as a non enumerable property
+                            Object.defineProperty(query[j], '_evidenceColumnTypes', {
+                                enumerable: false,
+                                value: colTypes,
+                            });
+                        }
+                    }
+                }
+            }
+    
+        }
+    
+        beforeUpdate(() => {
+            applyEvidenceTypes(data)
+        })
 
         ${queryDeclarations}
         `
