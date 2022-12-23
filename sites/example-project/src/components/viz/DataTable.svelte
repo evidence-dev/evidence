@@ -216,7 +216,7 @@
   }
 
   let tableData
-  $: tableData = $props.columns.length > 0 ? dataSubset(data, $props.columns.map(d => d.name)) : data;
+  $: tableData = $props.columns.length > 0 ? dataSubset(data, $props.columns.map(d => d.id)) : data;
 
 </script>
 
@@ -246,17 +246,17 @@
           {#if $props.columns.length > 0}
               {#each $props.columns as column, i}
                   <th
-                      class="{columnSummary.filter(d => d.id === column.name)[0].type}"
+                      class="{columnSummary.filter(d => d.id === column.id)[0].type}"
                       style="
                       text-align: {column.align};
                       color: {headerFontColor};
                       background-color: {headerColor};
                       cursor: {sortable ? 'pointer' : 'auto'};
                       "
-                      on:click={sortable ? sort(column.name) : ''}
+                      on:click={sortable ? sort(column.id) : ''}
                   >
-                      {column.label ? column.label : formatColumnTitles ? columnSummary.filter(d => d.id === column.name)[0].title : columnSummary.filter(d => d.id === column.name)[0].id}
-                      {#if sortBy.col === column.name}
+                      {column.label ? column.label : formatColumnTitles ? columnSummary.filter(d => d.id === column.id)[0].title : columnSummary.filter(d => d.id === column.id)[0].id}
+                      {#if sortBy.col === column.id}
                           <span class=icon-container>
                               {#if sortBy.ascending}
                                   <span class=sort-icon>
@@ -325,13 +325,11 @@
           {#if $props.columns.length > 0}
               {#each $props.columns as column, i}
                   <td 
-                  class="{columnSummary.filter(d => d.id === column.name)[0].type}"
+                  class="{columnSummary.filter(d => d.id === column.id)[0].type}"
                   class:row-lines={rowLines}
                   style="
-                      background-color: {column.color};
                       text-align: {column.align};
-                      color: {column.fontColor};
-                  ">{formatValue(row[column.name], columnSummary.filter(d => d.id === column.name)[0].format)}</td>
+                  ">{formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}</td>
               {/each}
           {:else}
               {#each columnSummary as column, i}

@@ -54,9 +54,10 @@ union all
 select date('2020-05-26') as date, 100 as value_usd, 'Zimbabwe' as country, 'A' as category, 100337 as country_id
 ```
 
-<DataTable data={tableq} search=true sortable=true rows=40 downloadable=true>
-    <Column name=date/>
-    <Column name=country_id align=center/>
-    <Column name=country/>
-    <Column name=value_usd/>
+<DataTable data={tableq} search=true sortable=true rows=10 downloadable=true>
+    <Column id=date/>
+    <Column id=country_id label = "Country ID" align=center/>
+    <Column id=country/>
+    <Column id=category/>
+    <Column id=value_usd/>
 </DataTable>

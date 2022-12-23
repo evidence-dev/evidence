@@ -6,28 +6,22 @@
 
     let error;
 
-    export let name;
+    export let id;
 
     // Simple check of column name in dataset. Should be replaced with robust error handling in the future:
-    $: if(!Object.keys($props.data[0]).includes(name)){
-        error = "Error in table: " + name + " does not exist in the dataset"
+    $: if(!Object.keys($props.data[0]).includes(id)){
+        error = "Error in table: " + id + " does not exist in the dataset"
         throw new Error(error)
     }
 
-    export let label = undefined;
-    export let color = undefined;
-
+    export let title = undefined;
     export let align = undefined;
     if(align === "centre"){ align = "center"};
 
-    export let fontColor = undefined;
-
     let options = {
-        name: name,
-        label: label,
-        color: color,
+        id: id,
+        title: title,
         align: align,
-        fontColor: fontColor,
     }
 
     props.update(d => {
