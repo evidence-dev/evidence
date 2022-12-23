@@ -546,22 +546,6 @@
       outline: none;
   }
 
-  .search-bar {
-      border: 1px solid var(--grey-200);
-      border-radius: 2px;
-      font-size: 8pt;
-      float: right;
-      margin-bottom: 5px;
-      padding: 3px 4px 3px 4px;
-  }
-
-  .search-icon {
-      height: 16px;
-      width: 16px;
-      color: var(--grey-400);
-      float: right;
-  }
-
   ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
       color: var(--grey-400);
       opacity: 1; /* Firefox */
