@@ -7,24 +7,50 @@ hide_table_of_contents: false
 
 <h1 class="community-header"><span class="gradient">&lt;DataTable/></span></h1>
 
-![datatable](/img/datatable-medianrent.png)
+## Example
 
-```markdown
-<DataTable
-    data={query_name} 
-/>
+### Selecting Specific Columns
+```html
+<DataTable data={query_name} search=true>
+    <Column id=date/>
+    <Column id=country_id align=center title="Country ID"/>
+    <Column id=country/>
+    <Column id=value_usd/>
+</DataTable>
 ```
-### Required Props
-* **data** - query name, wrapped in curly braces
+![datatable](/img/datatable-new.png)
 
-### Optional Props
-* **rows** - # of rows to show in the table before paginating results. Default is 5 rows
-* **rowNumbers** - turn index number column of table on or off. Default is on. Turn off with `rowNumbers=false`
-* **rowLines** - turn table row borders on or off. Default is on. Turn off with `rowLines=false`
+### Displaying All Columns in Query
+```html
+<DataTable data={query_name} search=true/>
+```
+
+![datatable](/img/datatable-new.png)
+
+
+## DataTable
+
+### All Options
+* **data** - query name, wrapped in curly braces
+* **rows** - (Optional) # of rows to show in the table before paginating results. Default is 10 rows
+* **rowNumbers** - (Optional) true | false - turns on or off row index numbers (off by default)
+* **rowLines** - (Optional) true | false - turns on or off borders at the bottom of each row (on by default)
+* **rowShading** - (Optional) true | false - shades every second row in light grey (off by default)
+* **sortable** - (Optional) true | false - enable sort for each column - click the column title to sort (on by default)
+* **search** - (Optional) true | false - add a search bar to the top of your table (off by default)
+* **downloadable** - (Optional) true | false - enable download data button below the table on hover (on by default)
+* **formatColumnTitles** - (Optional) true | false - enable auto-formatting of column titles. Turn off to show raw SQL column names (on by default)
 
 ### Formatting
 Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/features/value-formatting) section for more details.
 
+## Column
+Use the `Column` component to choose specific columns to display in your table. If you don't supply any columns to the table, it will display all columns from your query result.
+
+### All Options
+* **id** - column id (from SQL query)
+* **title** - (Optional) override title of column. Evidence will auto-format your column titles, but you can use this prop if the formatted column title is not what you would like
+* **align** - (Optional) left | center | right - align header and contents of column
 
 
 
