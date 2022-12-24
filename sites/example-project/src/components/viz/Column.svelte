@@ -6,6 +6,9 @@
     export let name;
     export let label;
     export let color;
+    export let img=false;
+    export let height;
+    export let width;
 
     // Experimental - color lookups
     switch (color) {
@@ -41,6 +44,9 @@
         align: align,
         fontColor: fontColor,
         contentType: contentType,
+        img: img,
+        height: height,
+        width: width,
     }
 
     props.update(d => {

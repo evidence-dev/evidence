@@ -379,10 +379,26 @@ $: goToPage = (pageNumber) => {
                     style="
                         background-color: {column.color};
                         text-align: {column.align};
+                        height: {column.height};
+                        width: {column.width};
                         color: {column.fontColor};
                         border-bottom: {borders};
                         padding: 0 {cellPadding} 0 {cellPadding};
-                    ">{formatValue(row[column.name], columnSummary.filter(d => d.id === column.name)[0].format)}</td>
+                    ">
+                    {#if column.img}
+                    <img 
+                        src={row[column.img]} 
+                        alt={row[column.name]} 
+                        style="
+                            margin: 0.5em auto 0.5em auto;
+                            height: {column.height};
+                            width: {column.width};
+                            "
+                    />
+                    {:else}
+                    {formatValue(row[column.name], columnSummary.filter(d => d.id === column.name)[0].format)}
+                    {/if}
+                    </td>
                 {/each}
             {:else}
                 {#each columnSummary as column, i}
