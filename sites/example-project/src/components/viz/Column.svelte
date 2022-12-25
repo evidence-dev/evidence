@@ -9,6 +9,7 @@
     export let img=false;
     export let height;
     export let width;
+    export let link;
 
     // Experimental - color lookups
     switch (color) {
@@ -47,6 +48,7 @@
         img: img,
         height: height,
         width: width,
+        link: link,
     }
 
     props.update(d => {

@@ -395,6 +395,11 @@ $: goToPage = (pageNumber) => {
                             width: {column.width};
                             "
                     />
+                    {:else if column.link}
+                    <a 
+                        href={row[column.link]}>
+                        {formatValue(row[column.name], columnSummary.filter(d => d.id === column.name)[0].format)}
+                    </a>
                     {:else}
                     {formatValue(row[column.name], columnSummary.filter(d => d.id === column.name)[0].format)}
                     {/if}
