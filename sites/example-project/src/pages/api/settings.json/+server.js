@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import fs from 'fs';
 import path from 'path';
 import gitRemoteOriginUrl from 'git-remote-origin-url'; // get the git repo

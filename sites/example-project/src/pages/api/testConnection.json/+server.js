@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import { testConnection } from '@evidence-dev/db-orchestrator'
 import { dev } from '$app/environment';
 import { json } from '@sveltejs/kit';
