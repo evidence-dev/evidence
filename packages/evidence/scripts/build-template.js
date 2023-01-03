@@ -37,15 +37,6 @@ fs.outputFileSync('./template/svelte.config.js',
             files: {
                 routes: 'src/pages',
                 lib: 'src/components'
-            },
-            vite: {
-                optimizeDeps: {
-                    include: ['echarts-stat', 'export-to-csv', 'ssf', 'downloadjs'],
-                    exclude: ['@evidence-dev/components']
-                },
-                ssr: {
-                    external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url', '@evidence-dev/telemetry']
-                }
             }
         }
     };
@@ -53,6 +44,24 @@ fs.outputFileSync('./template/svelte.config.js',
     export default config    
     `
 )
+
+fs.outputFileSync('./template/vite.config.js', 
+    `
+    import { sveltekit } from '@sveltejs/kit/vite'
+
+    const config = {
+        plugins: [sveltekit()],
+        optimizeDeps: {
+            include: ['echarts-stat', 'export-to-csv', 'ssf', 'downloadjs'],
+            exclude: ['@evidence-dev/components']
+        },
+        ssr: {
+            external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url', '@evidence-dev/telemetry']
+        }
+    }
+
+    export default config
+    `)
 
 // Create a readme 
 fs.outputFileSync('./template/README.md',
