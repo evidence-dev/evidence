@@ -2,9 +2,9 @@
   "name": "@evidence-dev/components",
   "version": "1.4.2",
   "scripts": {
-    "dev": "svelte-kit package && svelte-kit dev",
-    "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
+    "dev": "svelte-kit package && vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
     "package": "svelte-kit package && pnpm clean-package",
     "clean-package": "node scripts/clean-package.js",
     "prepublishOnly": "pnpm package",
