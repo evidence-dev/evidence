@@ -28,9 +28,11 @@
         />
       </td>
       <td class="align_right">{formatExample(format)}</td>
-      <td on:click={() => deleteHandler(format)} tooltip="Remove">
-        <div class="deleteIcon"><TiDeleteOutline /></div>
-      </td>
+      <td>
+        <button type=button on:click={() => deleteHandler(format)} tooltip="Remove">
+          <div class="deleteIcon"><TiDeleteOutline /></div>
+        </button>
+    </td>
     </tr>
   {/each}
 </table>
@@ -39,8 +41,14 @@
   .deleteIcon {
     color: var(--red-600);
     width: 16px;
-    height: 16px;
     cursor: pointer;
+  }
+  
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    vertical-align: middle;
   }
 
   .deleteIcon:hover {
