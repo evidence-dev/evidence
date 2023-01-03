@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { dev } from '$app/env';
 
-export async function get() {
+export async function GET() {
     if (!dev) {
         return {
             status: 404

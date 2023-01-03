@@ -10,7 +10,7 @@ function getLocalGitRepo () {
     }
 }
 
-export async function get() {
+export async function GET() {
     if (!dev) {
         return {
             status: 404
@@ -43,7 +43,7 @@ export async function get() {
 }
 
 
-export async function post({request}) {    
+export async function POST({request}) {    
     const {settings} = await request.json();
     // read original settings file 
     let originalSettings = {}

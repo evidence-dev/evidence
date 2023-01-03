@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export async function get({params}) {
+export async function GET({params}) {
   const { route } = params;
   let status = []
   let queries

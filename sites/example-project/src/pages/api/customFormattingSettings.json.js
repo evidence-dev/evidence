@@ -8,7 +8,7 @@ const DEFAULT_CUSTOM_FORMATTING_SETTINGS = {
   customFormats: [],
 };
 
-export async function get() {
+export async function GET() {
   let customFormattingSettings = {};
   try {
     customFormattingSettings = getCustomFormattingSettings() || customFormattingSettings;
@@ -23,7 +23,7 @@ export async function get() {
   };
 }
 
-export async function post({request}) {
+export async function POST({request}) {
   const { newCustomFormat } = await request.json();
 
   let customFormattingSettings = getCustomFormattingSettings() || {};
@@ -40,7 +40,7 @@ export async function post({request}) {
   return { body: customFormattingSettings };
 }
 
-export async function del({request}) {
+export async function DELETE({request}) {
   const { formatTag } = await request.json();
   let customFormattingSettings = getCustomFormattingSettings() || {};
   if (formatTag) {
