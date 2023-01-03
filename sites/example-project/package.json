@@ -12,6 +12,7 @@
   },
   "type": "module",
   "dependencies": {
+    "svelte": "3.55.0",
     "@evidence-dev/telemetry": "1.0.4",
     "@tidyjs/tidy": "2.4.4",
     "downloadjs": "1.4.7",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@sveltejs/package": "1.0.1",
+    "typescript": "4.9.4",
     "vite": "3.2.0",
     "cross-env": "^7.0.3",
     "fs-extra": "^10.0.1",

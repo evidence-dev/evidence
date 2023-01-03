@@ -35,7 +35,7 @@
   "dependencies": {
     "@evidence-dev/preprocess": "workspace:^",
     "@evidence-dev/telemetry": "workspace:^",
-    "@sveltejs/adapter-static": "1.0.0-next.49",
+    "@sveltejs/adapter-static": "1.0.0",
     "chokidar": "3.5.3",
     "fs-extra": "10.0.1",
     "sade": "^1.8.1"
@@ -43,10 +43,10 @@
   "peerDependencies": {
     "@evidence-dev/components": "workspace:^",
     "@evidence-dev/db-orchestrator": "workspace:^",
-    "@sveltejs/kit": "1.0.0-next.579",
-    "svelte": "3.53.1",
-    "@sveltejs/vite-plugin-svelte": "2.0.0",
-    "vite": "4.0.0",
+    "@sveltejs/kit": "1.0.1",
+    "svelte": "3.55.0",
+    "@sveltejs/vite-plugin-svelte": "2.0.2",
+    "vite": "4.0.4",
     "svelte2tsx": "0.4.7",
     "typescript": "4.5.4",
     "git-remote-origin-url": "4.0.0"
