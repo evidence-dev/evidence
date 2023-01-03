@@ -50,7 +50,7 @@
 			>
 		</button>
 		{#if folderList.filter((d) => d.folder === folder)[0].folderNameError}
-			<span class="folder-label nolink name-error" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<span class="folder-label nolink name-error" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
 				<span class="alert-icon-folder">
 					<MdErrorOutline/>
 					<span class=info-msg>Folder names cannot include spaces. Use hyphens instead.</span>
@@ -58,13 +58,13 @@
 				{folderLabel}
 			</span>
 		{:else if folderList.filter((d) => d.folder === folder)[0].folderLink}
-			<a href={'/' + folder} aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
+			<a href={'/' + folder} aria-expanded={expanded} on:click={toggle}>
                 <div class=folder-label class:selected={$page.url.pathname === folderHrefUri} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}>
 				{folderLabel}
                 </div>
 			</a>
 		{:else}
-			<span class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<span class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
 				{folderLabel}
 			</span>
 		{/if}
@@ -75,7 +75,7 @@
 			{#each folderContents as item}
 				{#if !item.label.includes('[') && !(item.filename === "index.md" && item.hrefUri === item.folderHrefUri)}
 					{#if dev && item.nameError}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
+						<a href={item.href} on:click={() => open = !open} style="">
 							<div class="content-item name-error">
 								<span class="alert-icon-item">
 									<MdErrorOutline/>
@@ -85,7 +85,7 @@
 							</div>
 						</a>
 					{:else}
-						<a href={item.href} sveltekit:prefetch on:click={() => (open = !open)}>
+						<a href={item.href} on:click={() => (open = !open)}>
 							<div class:selected={$page.url.pathname === item.hrefUri} class="content-item">
 								{item.label}
 							</div>

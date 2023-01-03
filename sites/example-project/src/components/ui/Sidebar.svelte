@@ -39,7 +39,7 @@
             {#each noFolders as item}
                 {#if item.href !== '/'}
 					{#if dev && item.nameError}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
+						<a href={item.href} on:click={() => open = !open} style="">
 							<div class=name-error class:selected="{"/"+$page.url.pathname.split('/')[1] === item.href}">
 								<span class="alert-icon">
 									<MdErrorOutline/>
@@ -49,7 +49,7 @@
 							</div>
 						</a>
 					{:else}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
+						<a href={item.href} on:click={() => open = !open} style="">
 							<div class:selected="{"/"+$page.url.pathname.split('/')[1] === item.hrefUri}">
 								{item.label}
 							</div>

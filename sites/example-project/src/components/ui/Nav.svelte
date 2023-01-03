@@ -6,7 +6,7 @@
 
 <div class="nav-container">
 	{#each sections as section}
-		<a aria-current="{currentSection === section.href ? 'page' : undefined}" sveltekit:prefetch href={section.href} >{section.label}</a>
+		<a aria-current="{currentSection === section.href ? 'page' : undefined}" href={section.href}>{section.label}</a>
 	{/each}
 </div>
 
