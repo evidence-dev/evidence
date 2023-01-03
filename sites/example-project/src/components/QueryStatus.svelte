@@ -13,8 +13,11 @@
   );
 
   async function getStatus() {
-    const req = endpoint != ""? `/api/${endpoint}/status.json` : `/api/status.json`;
-    const res = await fetch(req);
+    if (endpoint == "") {
+        return [];
+    }
+
+    const res = await fetch(`/api/${endpoint}/status.json`);
     const { status } = await res.json();
 
     if (res.ok) {
@@ -48,10 +51,14 @@
     return true;
   }
 
-  onMount(async () => {
-    setInterval(async () => {
+  onMount(() => {
+    const interval = setInterval(() => {
       checkStatusAndInvalidate(statuses);
     }, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
   });
 </script>
 
