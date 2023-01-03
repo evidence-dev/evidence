@@ -2,16 +2,51 @@
 
 <script context="module">
 	// Build nav links
-	const rootMDFiles = import.meta.glob('/src/pages/*.md');
-	const levelOneIndexFiles = import.meta.glob('/src/pages/*/index.md');
-	const levelOneMDFiles = import.meta.glob('/src/pages/*/*.md');
-	const levelTwoIndexFiles = import.meta.glob('/src/pages/*/*/index.md');
+	const firstLevel = import.meta.glob('/src/pages/*/+page.md');
+	const secondLevel = import.meta.glob('/src/pages/*/*/+page.md');
+
+    const keys = Object.keys(firstLevel).map((key) => key.replace(/\/\+page\.md$/, ''));
+    const indexedPages = new Map();
+    for (const key in keys) {
+        indexedPages.set(key, false);
+    }
+    const rootMDFiles = ["/src/pages/index.md"];
+    const levelOneIndexFiles = [];
+    const levelOneMDFiles = [];
+    const levelTwoIndexFiles = [];
+
+    function indexify(s) {
+        return s.replace(/\+page\.md$/, 'index.md');
+    }
+
+    function mdify(s) {
+        return s.replace(/\/\+page\.md$/, '.md');
+    }
+
+    for (const path in secondLevel) {
+        if (keys.some((key) => path.startsWith(key))) {
+            levelOneMDFiles.push(mdify(path));
+            indexedPages.set(path.replace(/\/\+page\.md$/, ''), true);
+        } else {
+            levelOneMDFiles.push(indexify(path));
+            levelTwoIndexFiles.push(indexify(path));
+        }
+    }
+    for (const path in firstLevel) {
+        if (indexedPages.get(path.replace(/\/\+page\.md$/, ''))) {
+            levelOneIndexFiles.push(indexify(path));
+            rootMDFiles.push(indexify(path));
+        } else {
+            rootMDFiles.push(mdify(path));
+        }
+    }
+
 
 	let menu = [];
 	let pathEnd;
 	let pathSplit;
 
-	for(let path in rootMDFiles) {
+	for(let path of rootMDFiles) {
 		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
 		if (path.includes('[')) continue;
 		menu.push({
@@ -28,7 +63,7 @@
 		})
 	}
 
-	for(let path in levelOneIndexFiles) {
+	for(let path of levelOneIndexFiles) {
 		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
 		pathSplit = pathEnd.split("/")
 		menu.push({
@@ -45,7 +80,7 @@
 		})
 	}
 
-	for(let path in levelOneMDFiles) {
+	for(let path of levelOneMDFiles) {
 		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
 		pathSplit = pathEnd.split("/")
 		if(!path.includes("/index.md") && !path.includes("[")){
@@ -64,7 +99,7 @@
 		}
 	}
 
-	for(let path in levelTwoIndexFiles) {
+	for(let path of levelTwoIndexFiles) {
 		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
 		pathSplit = pathEnd.split("/")
 		menu.push({
