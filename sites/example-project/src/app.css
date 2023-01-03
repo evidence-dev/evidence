@@ -91,9 +91,8 @@ h2 {
 }
 
 h3 {
-	font-size: 1em;
+	font-size: 0.9em;
 	font-weight: bold;
-	font-style: italic;
 	color: var(--grey-800);
 }
 
