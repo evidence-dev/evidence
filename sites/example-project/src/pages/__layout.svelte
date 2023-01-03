@@ -140,7 +140,7 @@
 {/if}
 
 <div class="grid">
-	{#if $page.path !== '/settings'}
+	{#if $page.url.pathname !== '/settings'}
 		<div class="header-bar">
 			<Header {menu} {folderList}/>
 			<Hamburger bind:open/>
@@ -148,8 +148,8 @@
 	{/if}
 	<Sidebar bind:open {menu} {folderList}/>
 	<main in:blur|local>
-	  <div class=content class:settings-content={$page.path === '/settings'}>
-		<article class:settings-article={$page.path === '/settings'}>
+	  <div class=content class:settings-content={$page.url.pathname === '/settings'}>
+		<article class:settings-article={$page.url.pathname === '/settings'}>
 			<slot/>
 			<p>&nbsp;</p>
 		</article>

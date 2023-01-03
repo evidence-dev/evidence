@@ -40,7 +40,7 @@
                 {#if item.href !== '/'}
 					{#if dev && item.nameError}
 						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-							<div class=name-error class:selected="{"/"+$page.path.split('/')[1] === item.href}">
+							<div class=name-error class:selected="{"/"+$page.url.pathname.split('/')[1] === item.href}">
 								<span class="alert-icon">
 									<MdErrorOutline/>
 									<span class=info-msg>Filenames cannot include spaces. Use hyphens instead.</span>
@@ -50,7 +50,7 @@
 						</a>
 					{:else}
 						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-							<div class:selected="{"/"+$page.path.split('/')[1] === item.hrefUri}">
+							<div class:selected="{"/"+$page.url.pathname.split('/')[1] === item.hrefUri}">
 								{item.label}
 							</div>
 						</a>
@@ -62,7 +62,7 @@
         </nav>
         {#if dev}
         <div class="nav-footer">
-			<a href='/settings' class="settings-link" class:selected="{$page.path === '/settings'}">
+			<a href='/settings' class="settings-link" class:selected="{$page.url.pathname === '/settings'}">
 				<span class="settings-icon">
 					<IoMdSettings/>
 				</span>

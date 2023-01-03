@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
     export let sections = [{href:"/", label:"Home"}]
-    $: currentSection = "/" + $page.path.split('/')[1];
+    $: currentSection = "/" + $page.url.pathname.split('/')[1];
 </script>
 
 <div class="nav-container">

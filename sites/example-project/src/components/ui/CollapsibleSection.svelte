@@ -20,7 +20,7 @@
 	let expanded = false;
 
 	function toggle() {
-        if($page.path !== folderHrefUri){
+        if($page.url.pathname !== folderHrefUri){
 		    open = !open;
 			expanded = true;
         } else {
@@ -31,12 +31,12 @@
 </script>
 
 <div class="collapsible">
-	<div class="folder" class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
+	<div class="folder" class:selected={$page.url.pathname === folderHrefUri} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}>
 		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
 				class=collapse-icon
-                class:selected={$page.path === folderHrefUri}
-                class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}
+                class:selected={$page.url.pathname === folderHrefUri}
+                class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}
 				style="tran"
 				width="9"
 				height="9"
@@ -50,7 +50,7 @@
 			>
 		</button>
 		{#if folderList.filter((d) => d.folder === folder)[0].folderNameError}
-			<span class="folder-label nolink name-error" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<span class="folder-label nolink name-error" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
 				<span class="alert-icon-folder">
 					<MdErrorOutline/>
 					<span class=info-msg>Folder names cannot include spaces. Use hyphens instead.</span>
@@ -59,12 +59,12 @@
 			</span>
 		{:else if folderList.filter((d) => d.folder === folder)[0].folderLink}
 			<a href={'/' + folder} aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
-                <div class=folder-label class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
+                <div class=folder-label class:selected={$page.url.pathname === folderHrefUri} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}>
 				{folderLabel}
                 </div>
 			</a>
 		{:else}
-			<span class="folder-label nolink" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<span class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
 				{folderLabel}
 			</span>
 		{/if}
@@ -86,7 +86,7 @@
 						</a>
 					{:else}
 						<a href={item.href} sveltekit:prefetch on:click={() => (open = !open)}>
-							<div class:selected={$page.path === item.hrefUri} class="content-item">
+							<div class:selected={$page.url.pathname === item.hrefUri} class="content-item">
 								{item.label}
 							</div>
 						</a>
