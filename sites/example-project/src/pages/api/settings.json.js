@@ -43,8 +43,8 @@ export async function get() {
 }
 
 
-export function post(request) {    
-    const {settings} = JSON.parse(request.body)
+export async function post({request}) {    
+    const {settings} = await request.json();
     // read original settings file 
     let originalSettings = {}
     if (fs.existsSync('evidence.settings.json')) {

@@ -23,8 +23,8 @@ export async function get() {
   };
 }
 
-export function post(request) {
-  const { newCustomFormat } = JSON.parse(request.body);
+export async function post({request}) {
+  const { newCustomFormat } = await request.json();
 
   let customFormattingSettings = getCustomFormattingSettings() || {};
 
@@ -40,8 +40,8 @@ export function post(request) {
   return { body: customFormattingSettings };
 }
 
-export function del(request) {
-  const { formatTag } = JSON.parse(request.body);
+export async function del({request}) {
+  const { formatTag } = await request.json();
   let customFormattingSettings = getCustomFormattingSettings() || {};
   if (formatTag) {
     if (!customFormattingSettings.customFormats) {
