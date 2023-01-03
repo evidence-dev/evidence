@@ -85,7 +85,7 @@ prog
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
-    const child = spawn('npx svelte-kit dev', flatArgs, {
+    const child = spawn('npx vite dev', flatArgs, {
       shell: true, 
       detached: false, 
       cwd:'.evidence/template', 
@@ -112,7 +112,7 @@ prog
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 
-    const child = spawn('npx svelte-kit build', flatArgs, {
+    const child = spawn('npx vite build', flatArgs, {
       shell: true, 
       cwd:'.evidence/template', 
       stdio: "inherit"});
