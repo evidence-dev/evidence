@@ -1,3 +1,4 @@
+import { json } from "@sveltejs/kit";
 import fs from "fs";
 import path from "path";
 
@@ -16,11 +17,7 @@ export async function GET() {
     // custom settings will be empty for now.
   }
   let result = { customFormattingSettings };
-  return {
-    header: "accept: application/json",
-    status: 200,
-    body: result,
-  };
+  return json(result);
 }
 
 export async function POST({request}) {
@@ -37,7 +34,7 @@ export async function POST({request}) {
     }
     saveCustomFormattingSettings(customFormattingSettings);
   }
-  return { body: customFormattingSettings };
+  return json(customFormattingSettings);
 }
 
 export async function DELETE({request}) {
@@ -55,7 +52,7 @@ export async function DELETE({request}) {
     }
     saveCustomFormattingSettings(customFormattingSettings);
   }
-  return { body: customFormattingSettings };
+  return json(customFormattingSettings);
 }
 
 function getCustomFormattingSettings() {

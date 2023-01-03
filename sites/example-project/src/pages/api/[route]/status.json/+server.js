@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { json } from '@sveltejs/kit';
 
 export async function GET({params}) {
   const { route } = params;
@@ -12,9 +13,5 @@ export async function GET({params}) {
     });
   }   
 
-  return {
-      body: {
-        status
-      }
-  };
+  return json({ status })
 }

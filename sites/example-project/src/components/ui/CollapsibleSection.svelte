@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
-	import { dev } from '$app/env';
+	import { dev } from '$app/environment';
 	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
 
 	export let folder;

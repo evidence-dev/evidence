@@ -118,7 +118,7 @@
 	import { navigating } from '$app/stores';
 	import { blur } from "svelte/transition";
 	import { page } from "$app/stores";
-	import {dev} from '$app/env'
+	import {dev} from '$app/environment'
 
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
 	import Header from '@evidence-dev/components/ui/Header.svelte'
@@ -128,7 +128,7 @@
 	
 	import QueryStatus from "@evidence-dev/components/QueryStatus.svelte";
 	
-	export let open = false  
+	let open = false;
 </script>
 
 <svelte:head>

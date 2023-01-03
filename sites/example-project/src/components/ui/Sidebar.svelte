@@ -1,6 +1,6 @@
 <script>
     import { page } from '$app/stores';
-	import { dev } from '$app/env';
+	import { dev } from '$app/environment';
 	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte'
 	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte'
 	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
