@@ -2,10 +2,10 @@
   "name": "@evidence-dev/components",
   "version": "1.4.2",
   "scripts": {
-    "dev": "svelte-kit package && vite dev",
+    "dev": "svelte-package && vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "package": "svelte-kit package && pnpm clean-package",
+    "package": "svelte-package && pnpm clean-package",
     "clean-package": "node scripts/clean-package.js",
     "prepublishOnly": "pnpm package",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
@@ -28,6 +28,7 @@
     "directory": "../../packages/components"
   },
   "devDependencies": {
+    "@sveltejs/package": "1.0.1",
     "cross-env": "^7.0.3",
     "fs-extra": "^10.0.1",
     "jest": "^28.1.2"

@@ -11,12 +11,12 @@ const config = {
 		files: {
 			routes: 'src/pages',
 			lib: 'src/components'
-		},
-		package: {
-			dir: '../../packages/components',
-			emitTypes: true
 		}
-	}
+	},
+    package: {
+        dir: '../../packages/components',
+        emitTypes: true
+    }
 };
 
 export default config;
