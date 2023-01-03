@@ -12,11 +12,11 @@
 
 <div class="toggle" transition:slide|local>
     {#if showCompiled}
-        <span class = "on">Compiled</span>
-        <span on:click={toggleCompiled} class = "off">Written</span>
+        <button class = "on">Compiled</button>
+        <button on:click={toggleCompiled} class = "off">Written</button>
     {:else}
-        <span on:click={toggleCompiled} class = "off">Compiled</span>
-        <span class = "on">Written</span>
+        <button on:click={toggleCompiled} class = "off">Compiled</button>
+        <button class = "on">Written</button>
     {/if}
 </div>
 
@@ -25,7 +25,7 @@
         background-color: var(--grey-100);
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
-        padding: 14px 0 2px 20px;
+        padding: 10px 0 6px 12px;
         font-family: var(--ui-font-family);
         font-size:10px;
         font-weight: bold;
@@ -34,25 +34,29 @@
         -moz-user-select: none;
     }
 
-    span {
+    button {
         padding:2px 4px 2px 4px;
         border-radius: 3px;
         cursor: pointer;
+        background-color: transparent;
+        font-size: 1em;
+        font-weight: bold;
     }
 
-    span.off {
+    button.off {
         color: var(--grey-600);
         border: 1px solid var(--grey-100); 
         transition: all 400ms;
     }
 
-    span.off:hover {
+    button.off:hover {
         color: var(--grey-700);
         border: 1px solid var(--grey-300); 
         transition: all 400ms;
+        background-color: none;
     }
 
-    span.on {
+    button.on {
         color: var(--blue-700);
         background-color: var(--blue-100);
         border: 1px solid var(--blue-200); 

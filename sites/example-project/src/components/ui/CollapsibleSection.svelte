@@ -50,13 +50,13 @@
 			>
 		</button>
 		{#if folderList.filter((d) => d.folder === folder)[0].folderNameError}
-			<span class="folder-label nolink name-error" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<button class="folder-label nolink name-error" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
 				<span class="alert-icon-folder">
 					<MdErrorOutline/>
 					<span class=info-msg>Folder names cannot include spaces. Use hyphens instead.</span>
 				</span>
 				{folderLabel}
-			</span>
+			</button>
 		{:else if folderList.filter((d) => d.folder === folder)[0].folderLink}
 			<a href={'/' + folder} aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
                 <div class=folder-label class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
@@ -64,9 +64,9 @@
                 </div>
 			</a>
 		{:else}
-			<span class="folder-label nolink" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<button class="folder-label nolink" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
 				{folderLabel}
-			</span>
+			</button>
 		{/if}
 	</div>
 
@@ -165,7 +165,12 @@
 		cursor: pointer;
         padding-right: 0rem;
         padding-left: 0.3rem;
-        width: 100%;
+		line-height: 1.6;
+        
+	}
+
+	button.expandable {
+		width: 100%;
         height: 100%;
 		display: flex;
 		align-items: center;
