@@ -1,6 +1,5 @@
 <script>
   import { fly, scale } from "svelte/transition";
-  import { page } from "$app/stores";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { routeHash } from '@evidence-dev/components/ui/stores';
