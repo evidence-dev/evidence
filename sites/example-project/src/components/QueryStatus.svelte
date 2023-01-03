@@ -13,7 +13,8 @@
   );
 
   async function getStatus() {
-    const res = await fetch(`/api/${endpoint}/status.json`);
+    const req = endpoint != ""? `/api/${endpoint}/status.json` : `/api/status.json`;
+    const res = await fetch(req);
     const { status } = await res.json();
 
     if (res.ok) {
