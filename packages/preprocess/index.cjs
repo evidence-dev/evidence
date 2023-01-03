@@ -8,7 +8,7 @@ const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 
 const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/index/g,"")
+    let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
     let routeHash = md5(route)
     return routeHash
 }
@@ -17,27 +17,6 @@ const hasQueries = function(filename){
     let hash = getRouteHash(filename)
     return fs.existsSync("./.evidence-queries/extracted/"+hash)
 }
-
-const createModuleContext = function(filename){
-    let routeHash = getRouteHash(filename)
-    let moduleContext = 
-        ` 
-        export async function load({fetch}) {
-            const res = await fetch('/api/${routeHash}.json');
-            const {data} = await res.json();
-            const customFormattingSettingsRes = await fetch('/api/customFormattingSettings.json');
-            const { customFormattingSettings } = await customFormattingSettingsRes.json();
-            return {
-                props: {
-                    data,
-                    customFormattingSettings
-                }
-            }
-        }
-        `
-
-    return moduleContext
-} 
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
@@ -79,8 +58,10 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
         import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
         
-        export let data = {};
-        export let customFormattingSettings;
+        let props;
+        export { props as data }; // little hack to make the data name not overlap
+        let { data = {}, customFormattingSettings } = props;
+        $: ({ data = {}, customFormattingSettings } = props);
 
         routeHash.set('${routeHash}');
 
@@ -264,15 +245,6 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
                     }
                     if(!content.match(/\<script\>/)){
                         return {code: '<script> </script>' + content}
-                    }
-                }
-            }
-        },
-        {
-            script({filename, attributes}) { 
-                if(filename.endsWith(".md")){
-                    if(attributes.context == "module"){
-                        return {code: createModuleContext(filename)}
                     }
                 }
             }
