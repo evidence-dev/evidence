@@ -8,7 +8,7 @@ select 1000 as total_sales_usd
 
 The successful value metric is <Value data={summary}/> and shows up inline.
 
-# Value Errors
+## Value Errors
 
 Errors in the Value component are inlined into your text. Here's an example of an empty Value tag: <Value/> which will return an error, but will stay within your text. You can hover over the error to see an error message describing the problem.
 
@@ -19,7 +19,7 @@ Errors in the Value component are inlined into your text. Here's an example of a
 * Non-existent row with correct column: <Value data={summary} column=total_calls row=20/>
 * Wrong query result name: error `abc is not defined` will appear at page-level
 
-# Value Placeholders
+## Value Placeholders
 If you like to mock up reports before you're ready to fill in real data, you can also override the Value error with a **placeholder**. Input the text you want to use as your placeholder and it will appear in blue font with square brackets, inline with your text.
 
 Here are a few examples of placeholders: 

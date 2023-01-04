@@ -17,7 +17,7 @@
 <form>
 <div class=container>
     <div class=panel> 
-        <h1>Telemetry</h1>
+        <h2>Telemetry</h2>
         <p>Evidence collects anonymous usage data to help us understand how often the tool is being used.</p>
         <CollapsibleTableSection headerText="More" expanded={false}>
         <p>Each time you run a query, we get the following pieces of information:
@@ -63,7 +63,7 @@
 
     .panel {
         border-top: 1px solid var(--grey-200);
-        padding:1.0em;
+        padding: 0em 1em 1em 1em;
     }
 
     .panel:first-of-type {

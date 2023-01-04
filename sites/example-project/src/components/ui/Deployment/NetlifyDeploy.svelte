@@ -10,7 +10,7 @@
 <p>You'll need to set up a git repo before deploying to netlify.</p>
 {:else }
 
-<h1>Deploying to Netlify</h1>
+<h2>Deploying to Netlify</h2>
 
 <ol>
     <li><a href='https://app.netlify.com/start' target=_blank rel="noreferrer">Start a new netlify project &rarr;</a></li>
