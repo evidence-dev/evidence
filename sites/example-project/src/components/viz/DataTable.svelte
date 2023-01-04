@@ -10,9 +10,7 @@
   import SearchBar from './SearchBar.svelte'
   import checkInputs from '$lib/modules/checkInputs.js'
   import DownloadData from '$lib/ui/DownloadData.svelte'
-
-  import TiArrowSortedUp from 'svelte-icons/ti/TiArrowSortedUp.svelte'
-  import TiArrowSortedDown from 'svelte-icons/ti/TiArrowSortedDown.svelte'
+  import SortIcon from '$lib/ui/SortIcon.svelte'
 
   import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte'
   import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte'
@@ -257,17 +255,7 @@
                   >
                       {column.title ? column.title : formatColumnTitles ? columnSummary.filter(d => d.id === column.id)[0].title : columnSummary.filter(d => d.id === column.id)[0].id}
                       {#if sortBy.col === column.id}
-                          <span class=icon-container>
-                              {#if sortBy.ascending}
-                                  <span class=sort-icon>
-                                      <TiArrowSortedUp/>
-                                  </span>
-                              {:else}
-                                  <span class=sort-icon>
-                                      <TiArrowSortedDown/>
-                                  </span>
-                              {/if}
-                          </span>
+                          <SortIcon ascending={sortBy.ascending}/>
                       {/if}
                   </th>
               {/each}
@@ -286,17 +274,7 @@
                   {formatColumnTitles ? column.title : column.id}
                   </span>
                   {#if sortBy.col === column.id}
-                      <span class=icon-container>
-                      {#if sortBy.ascending}
-                          <span class=sort-icon>
-                              <TiArrowSortedUp/>
-                          </span>
-                      {:else}
-                          <span class=sort-icon>
-                              <TiArrowSortedDown/>
-                          </span>
-                      {/if}
-                      </span>
+                      <SortIcon ascending={sortBy.ascending}/>
                   {/if}
               </th>
               {/each}
