@@ -67,6 +67,11 @@
             width: 98%;
             height: 28px;
         }
+
+        .search-bar {
+            font-size: 16px;
+            width: calc(100% - 40px);
+        }
     }
 
 
