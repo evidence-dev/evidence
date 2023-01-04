@@ -331,7 +331,7 @@
       <button class=page-changer disabled={currentPage === 1} on:click={() => goToPage(currentPage - 2)}><div class=page-icon >
           <MdNavigateBefore/>
       </div></button>
-      <span>Page {currentPage} / {pageCount}</span>
+      <span class=page-count>Page {currentPage.toLocaleString()} / {pageCount.toLocaleString()}</span>
       <button class=page-changer disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
           <MdNavigateNext/>
       </div></button>
@@ -564,6 +564,24 @@
 .table-container:hover :global(.download-button) {
   visibility: visible;
   margin-top: 8px;
+}
+
+
+@media (max-width: 600px) {
+
+    .page-changer {
+        height: 1.2em;
+        width: 1.2em;
+    }
+    .page-icon {
+        height: 1.2em;
+        width: 1.2em;
+    }
+
+    .page-count {
+        font-size: 1.1em;
+    }
+
 }
 
 @media print {

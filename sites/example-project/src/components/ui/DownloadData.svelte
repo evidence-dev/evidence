@@ -65,6 +65,12 @@
         stroke: var(--grey-500);
     }
     
+    @media (max-width: 600px) {
+        button {
+            display: none;
+        }
+    }
+    
     @media print {
         button {
             display: none;
