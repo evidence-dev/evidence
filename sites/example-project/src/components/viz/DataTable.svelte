@@ -328,8 +328,24 @@
                   class="{columnSummary.filter(d => d.id === column.id)[0].type}"
                   class:row-lines={rowLines}
                   style="
-                      text-align: {column.align};
-                  ">{formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}</td>
+                        text-align: {column.align};
+                        height: {column.height};
+                        width: {column.width};
+                  ">
+                  {#if column.img}
+                  <img 
+                  src={row[column.img]} 
+                  alt={row[column.id]} 
+                  style="
+                      margin: 0.5em auto 0.5em auto;
+                      height: {column.height};
+                      width: {column.width};
+                      "
+                  />
+                  {:else}
+                  {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
+                  {/if}
+                  </td>
               {/each}
           {:else}
               {#each columnSummary as column, i}

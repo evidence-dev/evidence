@@ -16,12 +16,18 @@
 
     export let title = undefined;
     export let align = undefined;
+    export let img = false;
+    export let height;
+    export let width;
     if(align === "centre"){ align = "center"};
 
     let options = {
         id: id,
         title: title,
         align: align,
+        img: img,
+        height: height,
+        width: width,
     }
 
     props.update(d => {
