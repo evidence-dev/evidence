@@ -325,28 +325,27 @@
 {#if paginated && pageCount > 1}
 <div class=pagination>
   <div class=page-labels>
-      <button class=page-changer disabled={currentPage === 1} on:click={() => goToPage(0)}><div class=page-icon >
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(0)}><div class=page-icon >
           <MdFirstPage/>
       </div></button>
-      <button class=page-changer disabled={currentPage === 1} on:click={() => goToPage(currentPage - 2)}><div class=page-icon >
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(currentPage - 2)}><div class=page-icon >
           <MdNavigateBefore/>
       </div></button>
       <span class=page-count>Page {currentPage.toLocaleString()} / {pageCount.toLocaleString()}</span>
-      <button class=page-changer disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
           <MdNavigateNext/>
       </div></button>
-      <button class=page-changer disabled={currentPage === pageCount} on:click={() => goToPage(pageCount - 1)}><div class=page-icon >
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(pageCount - 1)}><div class=page-icon >
           <MdLastPage/>
       </div></button>
   </div>
+        <DownloadData class=download-button data={tableData} display={hovering}/>
 </div>
 {/if}
 
 <div class=noresults class:shownoresults={showNoResults}>No Results</div>
 
-{#if downloadable}
-  <DownloadData class=download-button data={tableData}/>
-{/if}
+
 
 </div>
 
@@ -457,7 +456,7 @@
 
   .page-changer {
       padding: 0;
-      vertical-align: middle;
+      color: var(--grey-400);
       height: 1.1em;
       width: 1.1em;
   }
@@ -469,24 +468,25 @@
   }
 
   .pagination {
-      font-size: 10pt;
-      height: 5px;
-      font-family: sans-serif;
+      font-size: 12px;
+      display: flex; 
+      align-items: center;
+      justify-content: space-between;
+      height: 2em; 
+      font-family: var(--ui-font-family);
       color: var(--grey-500);
       user-select: none;
       text-align: right; 
-      margin-right: 5px; 
-      margin-top: 8px; 
-      margin-bottom: 3px;
+      margin-top: 0.5em; 
+      font-variant-numeric: tabular-nums;
   }
 
 
   .page-labels {
-      display: grid;
-      justify-content: center;
-      align-content: center;
-      gap: 4px;
-      grid-auto-flow: column;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center ;
+      gap: 3px;
   }
 
   .selected {
@@ -495,18 +495,24 @@
   }
 
   .page-changer {
-      font-size: 15pt;
+      font-size: 20px;
       font-family: sans-serif;
-      color: var(--blue-600);
       background: none;
       border: none;
       cursor: pointer;
+      transition: color 200ms; 
+  }
+
+  .page-changer.hovering {
+    color: var(--blue-600);
+    transition: color 200ms; 
   }
 
   .page-changer:disabled {
       cursor: auto;
       color: var(--grey-300);
       user-select: none;
+      transition: color 200ms; 
   }
 
   .page-icon {
@@ -557,14 +563,8 @@
   display: block;
 }
 
-.table-container :global(.download-button) {
-    visibility: hidden;
-}
 
-.table-container:hover :global(.download-button) {
-  visibility: visible;
-  margin-top: 8px;
-}
+
 
 
 @media (max-width: 600px) {

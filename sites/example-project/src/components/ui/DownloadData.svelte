@@ -1,9 +1,11 @@
 <script>
     import { ExportToCsv } from 'export-to-csv';
+    import { fade } from 'svelte/transition';
 
     export let data;
     export let queryID;
     export let text = 'Download';
+    export let display 
 
     export let downloadData = (data) => {
         const options = { 
@@ -25,44 +27,45 @@
 
 </script>
 
-<button type="button" class={$$props.class} on:click={downloadData(data)}>
-    <span>{text}</span>
-    <slot>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
-    </slot>
-  </button>
+{#if display}
+    <button type="button" class={$$props.class} on:click={downloadData(data)} transition:fade|local="{{ duration: 200 }}">
+        <span>{text}</span>
+        <slot>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
+        </slot>
+    </button>
+{/if}
 
-<style>
+<style> 
     button :global(svg) {
-        stroke: var(--grey-400);
+        stroke: var(--grey-500);
         margin-top: auto;
         margin-bottom: auto;
     }
 
     button {
-        display: grid;
-        grid-row: auto;
-        grid-template-columns: auto auto;
-        gap: 3px;
-        float: right;
-        /* margin-left: 5px; */
+        display: flex;
         cursor: pointer;
-        font-family: sans-serif;
-        font-size: 0.7rem;
-        color: var(--grey-400);
-        vertical-align: text-top;
-        justify-items: center;
-        position:relative;
+        font-family: var(--ui-font-family);
+        font-size: 1em;
+        color: var(--grey-500);
+        justify-items: flex-end;
         background-color: transparent;
         border: none;
+        padding:0;
+        margin:0 5px; 
+        gap: 3px;
+        transition: color 200ms; 
     }
 
     button:hover {
-        color: var(--grey-500);
+        color: var(--blue-600);
+        transition: color 200ms; 
     }
 
     button:hover :global(svg) {
-        stroke: var(--grey-500);
+        stroke: var(--blue-600);
+        transition: color 200ms;
     }
     
     @media (max-width: 600px) {
