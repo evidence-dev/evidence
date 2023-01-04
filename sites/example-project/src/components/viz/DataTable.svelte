@@ -342,6 +342,11 @@
                       width: {column.width};
                       "
                   />
+                  {:else if column.link}
+                    <a 
+                        href={row[column.link]}>
+                        {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
+                    </a>
                   {:else}
                   {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
                   {/if}

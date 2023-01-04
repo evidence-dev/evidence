@@ -64,6 +64,7 @@ select date('2020-05-26') as date, 100 as value_usd, 'Zimbabwe' as country, 'A' 
 >
     <Column id=country/>
     <Column id=country img=flag height=50px/>
+    <Column id=country link=flag/>
     <Column id=category/>
     <Column id=country_id/>
     <Column id=date/>

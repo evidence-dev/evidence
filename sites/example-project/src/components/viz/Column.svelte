@@ -17,6 +17,7 @@
     export let title = undefined;
     export let align = undefined;
     export let img = false;
+    export let link;
     export let height;
     export let width;
     if(align === "centre"){ align = "center"};
@@ -28,6 +29,7 @@
         img: img,
         height: height,
         width: width,
+        link: link,
     }
 
     props.update(d => {
