@@ -20,6 +20,7 @@
     export let link;
     export let height;
     export let width;
+    export let html = undefined;
     if(align === "centre"){ align = "center"};
 
     let options = {
@@ -30,6 +31,7 @@
         height: height,
         width: width,
         link: link,
+        html: html
     }
 
     props.update(d => {

@@ -347,6 +347,11 @@
                         href={row[column.link]}>
                         {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
                     </a>
+                  {:else if column.html}
+                  <!-- This replace column names passed in the string with the reference to the correct row -->
+                    {#each column.html.match(/{(.*?)}/g) as match}
+                        {@html column.html.replace(match, row[match.slice(1,-1)])}
+                    {/each}
                   {:else}
                   {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
                   {/if}

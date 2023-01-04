@@ -68,6 +68,22 @@ select date('2020-05-26') as date, 100 as value_usd, 'Zimbabwe' as country, 'A' 
     <Column id=category/>
     <Column id=country_id/>
     <Column id=date/>
+    <Column 
+        id=country 
+        html={`
+        <img src={flag} height=50px/>
+        `}
+    />
+    <Column 
+        id=value_usd
+        html={`
+            <ul>
+                <li>value:</li>
+                <li>{value_usd}</li>
+            </ul>
+        `}
+        align=left
+    />
 </DataTable>
 
 
