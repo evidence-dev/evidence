@@ -28,19 +28,22 @@
 </script>
 
 {#if display}
-    <button type="button" class={$$props.class} on:click={downloadData(data)} transition:fade|local="{{ duration: 200 }}">
-        <span>{text}</span>
-        <slot>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
-        </slot>
-    </button>
+    <div transition:fade|local="{{ duration: 200 }}">
+        <button type="button" class={$$props.class} on:click={downloadData(data)} >
+            <span>{text}</span>
+            <slot>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
+            </slot>
+        </button>
+    </div>
 {/if}
 
 <style> 
     button :global(svg) {
-        stroke: var(--grey-500);
+        stroke: var(--grey-400);
         margin-top: auto;
         margin-bottom: auto;
+        transition: stroke 200ms;
     }
 
     button {
@@ -48,8 +51,9 @@
         cursor: pointer;
         font-family: var(--ui-font-family);
         font-size: 1em;
-        color: var(--grey-500);
+        color: var(--grey-400);
         justify-items: flex-end;
+        align-items: baseline;
         background-color: transparent;
         border: none;
         padding:0;
@@ -59,13 +63,13 @@
     }
 
     button:hover {
-        color: var(--blue-600);
+        color: var(--blue-600); 
         transition: color 200ms; 
     }
 
     button:hover :global(svg) {
         stroke: var(--blue-600);
-        transition: color 200ms;
+        transition: stroke 200ms;
     }
     
     @media (max-width: 600px) {
