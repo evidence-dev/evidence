@@ -193,9 +193,12 @@
           displayedData = filteredData.slice(index, index+rows);
       }
 
+  let displayedPageLength = 0;
+
   $: if(paginated){
           pageCount = Math.ceil(filteredData.length / rows);
           displayedData = filteredData.slice(index, index+rows);
+          displayedPageLength = displayedData.length;
       } else {
           currentPage = 1;
           displayedData = filteredData;
@@ -332,6 +335,7 @@
           <MdNavigateBefore/>
       </div></button>
       <span class=page-count>Page {currentPage.toLocaleString()} / {pageCount.toLocaleString()}</span>
+      <span class=print-page-count> {displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span>
       <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
           <MdNavigateNext/>
       </div></button>
@@ -563,6 +567,9 @@
   display: block;
 }
 
+.print-page-count {
+    display: none;
+}
 
 
 
@@ -591,6 +598,18 @@
 
   .pagination {
     break-inside: avoid;
+  }
+
+  .page-changer {
+    display: none;
+  }
+
+  .page-count {
+    display: none;
+  }
+
+  .print-page-count {
+    display: inline; 
   }
 
 }
