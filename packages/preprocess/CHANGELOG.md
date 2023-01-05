@@ -1,5 +1,15 @@
 # @evidence-dev/preprocess
 
+## 1.3.0
+
+### Minor Changes
+
+- e098028: Add FunnelChart component
+
+### Patch Changes
+
+- f5ec614: Ensure that precise evidence types are populated on all query objects
+
 ## 1.2.6
 
 ### Patch Changes
