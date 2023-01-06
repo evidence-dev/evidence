@@ -101,7 +101,7 @@
       
   let index = 0
 
-
+  let inputPage = null;
 
   // ---------------------------------------------------------------------------------------
   // SEARCH
@@ -115,7 +115,11 @@
   $: runSearch = (searchValue) => {
           if(searchValue !== ""){
               filteredData = [];
+
+              // Reset pagination to first page:
               index = 0;
+              inputPage = null;
+              
               for(let i=0;i<data.length;i++){
                   thisRow = data[i]
                   for(let j=0; j<columnSummary.length; j++){
@@ -134,6 +138,10 @@
           } else {
               filteredData = data;
               showNoResults = false;
+
+              // Reset pagination to first page:
+              index = 0;
+              inputPage = null;
           }
   }
 
@@ -189,6 +197,9 @@
           index = (pageNumber * rows);
           max = index + rows;
           currentPage = Math.ceil(max / rows);
+          if(inputPage){
+            inputPage = Math.ceil(max / rows);
+          }
           totalRows = filteredData.length;
           displayedData = filteredData.slice(index, index+rows);
       }
@@ -334,7 +345,7 @@
       <button class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(currentPage - 2)}><div class=page-icon >
           <MdNavigateBefore/>
       </div></button>
-      <span class=page-count>Page {currentPage.toLocaleString()} / {pageCount.toLocaleString()}</span>
+      <span class=page-count>Page <input class=page-input class:hovering="{hovering}" class:error="{inputPage > pageCount}"type=number bind:value={inputPage} on:keyup={() => goToPage((inputPage ?? 1) - 1)} on:change={() => goToPage((inputPage ?? 1) - 1)} placeholder={currentPage}/> / <span class=page-count style="margin-left: 4px;">{pageCount.toLocaleString()}</span></span>
       <span class=print-page-count> {displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span>
       <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
           <MdNavigateNext/>
@@ -420,7 +431,7 @@
   }
 
   th {
-      border-bottom: thin solid var(--grey-600);
+      border-bottom: 1px solid var(--grey-600);
   }
 
   .row-lines {
@@ -524,6 +535,42 @@
       width: 1em;
   }
 
+  .page-input {
+    width: 23px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--grey-500);
+  }
+
+
+/* Remove number buttons in input box*/
+  .page-input::-webkit-outer-spin-button,
+  .page-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+    /* Firefox */
+    .page-input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    .page-input.hovering {
+        border: 1px solid var(--grey-200);
+    }
+
+    .page-input.error {
+    border: 1px solid var(--red-600);
+  }
+
+  .page-input::placeholder {
+    color: var(--grey-500);
+  }
+
   button:enabled > .page-icon:hover {
       color: var(--blue-800);
   }
@@ -586,6 +633,10 @@
     }
 
     .page-count {
+        font-size: 1.1em;
+    }
+
+    .page-input {
         font-size: 1.1em;
     }
 
