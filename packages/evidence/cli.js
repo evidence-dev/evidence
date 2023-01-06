@@ -28,6 +28,11 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
+const clearQueryCache = function() {
+  fs.removeSync(".evidence/template/.evidence-queries/cache")
+  console.log("Cleared query cache")
+}
+
 const runFileWatcher = function(sourceRelative,targetRelative) {
   const ignoredFiles = [
     "./pages/settings/**", 
@@ -79,6 +84,7 @@ prog
   .describe("launch the local evidence development environment")
   .action((args) => {
     populateTemplate()
+    clearQueryCache()
     const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
     const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
     const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/')
@@ -106,6 +112,7 @@ prog
   .describe("build production outputs")
   .action((args) => {
     populateTemplate()
+    clearQueryCache()
     const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
     const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
     const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/')
