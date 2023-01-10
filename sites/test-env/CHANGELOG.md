@@ -1,5 +1,12 @@
 # evidence-test-environment
 
+## 1.0.38
+
+### Patch Changes
+
+- Updated dependencies [175c091]
+  - @evidence-dev/evidence@8.0.0
+
 ## 1.0.37
 
 ### Patch Changes
