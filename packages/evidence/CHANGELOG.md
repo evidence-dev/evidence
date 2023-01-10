@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 8.0.0
+
+### Patch Changes
+
+- 175c091: clear query cache at start of build
+- Updated dependencies [8894ea3]
+- Updated dependencies [141dc5b]
+  - @evidence-dev/db-orchestrator@1.1.12
+  - @evidence-dev/preprocess@1.4.0
+  - @evidence-dev/components@1.6.0
+
 ## 7.0.0
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.12
+
+### Patch Changes
+
+- 8894ea3: Prevent redundant queries being executed during build for parameterized pages
+
 ## 1.1.11
 
 ### Patch Changes

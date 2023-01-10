@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 1.4.0
+
+### Minor Changes
+
+- 141dc5b: Improved DataTable component
+
 ## 1.3.0
 
 ### Minor Changes

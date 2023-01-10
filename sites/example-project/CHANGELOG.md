@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.6.0
+
+### Minor Changes
+
+- 141dc5b: Improved DataTable component
+
 ## 1.5.0
 
 ### Minor Changes
