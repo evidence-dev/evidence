@@ -94,6 +94,8 @@
           }
       }
 
+      error = undefined;
+
   } catch (e) {
       error = e.message;
   }
@@ -231,10 +233,6 @@
   $: tableData = $props.columns.length > 0 ? dataSubset(data, $props.columns.map(d => d.id)) : data;
 
 </script>
-
-{#if $props.error}
-<ErrorChart/>
-{/if}
 
 {#if !error}
 
