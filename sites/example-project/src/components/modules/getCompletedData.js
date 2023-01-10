@@ -116,7 +116,9 @@ export default function getCompletedData(data, x, y, series, nullsZero=false, fi
             filledData = tidy(
                 data,
                 complete(
-                    [x, series]
+                    [x, series],
+                    // Nully values in the x and series columns to be treated as nulls
+                    {[series]: null, [x]: null}
                 )
             )
         }
