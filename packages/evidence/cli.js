@@ -84,7 +84,6 @@ prog
   .describe("launch the local evidence development environment")
   .action((args) => {
     populateTemplate()
-    clearQueryCache()
     const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
     const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
     const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/')
