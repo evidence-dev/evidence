@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "scripts": {
     "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
@@ -22,7 +22,7 @@
     "prismjs": "1.29.0",
     "ssf": "^0.11.2",
     "svelte-icons": "2.1.0",
-    "svelte-tiny-linked-charts": "1.1.2"
+    "svelte-tiny-linked-charts": "1.1.4"
   },
   "publishConfig": {
     "directory": "../../packages/components"

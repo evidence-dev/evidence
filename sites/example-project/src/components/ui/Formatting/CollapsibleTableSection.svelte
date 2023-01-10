@@ -11,7 +11,7 @@
 <div class="collapsibleSection">
   <collapsibleHeader>
     <button area-expanded={expanded} on:click|preventDefault={toggleExpanded}>
-      <h2>{headerText}</h2>
+      <h3>{headerText}</h3>
       <ChevronToggle toggled={expanded} size=16/>
     </button>
   </collapsibleHeader>
@@ -29,8 +29,9 @@
     vertical-align: middle;
   }
 
-  h2 {
+  h3 {
     margin: 0;
+    font-style: normal;
   }
 
   button {
@@ -46,16 +47,6 @@
     padding: 0.5em 0.5em;
     cursor: pointer;
     /* border: 1px solid var(--grey-200); */
-  }
-
-  button[area-expanded="true"] .vert {
-    display: none;
-  }
-  svg {
-    margin-top: 0.1em;
-    height: 1em;
-    width: 1em;
-    outline: 1px solid;
   }
  
   .collapsibleContents {

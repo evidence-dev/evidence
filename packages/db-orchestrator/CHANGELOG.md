@@ -1,5 +1,13 @@
 # @evidence-dev/db-orchestrator
 
+## 1.1.11
+
+### Patch Changes
+
+- Updated dependencies [c013859]
+  - @evidence-dev/postgres@0.2.5
+  - @evidence-dev/redshift@0.0.4
+
 ## 1.1.10
 
 ### Patch Changes

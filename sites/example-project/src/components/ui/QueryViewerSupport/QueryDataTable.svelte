@@ -127,7 +127,9 @@
 </div>
 {/if}
 
-<DownloadData class=download-button {data} {queryID} />
+<div class=footer>
+  <DownloadData class=download-button {data} {queryID} display/>
+</div>
 
 </div>
 
@@ -310,5 +312,11 @@ th.type-indicator {
 
 tr.type-indicator { 
   border-bottom: 1px solid var(--grey-100)
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 12px;
 }
 </style>

@@ -1,5 +1,26 @@
 # @evidence-dev/components
 
+## 1.5.0
+
+### Minor Changes
+
+- 94805f9: Add data download option to Charts
+- e098028: Add FunnelChart component
+- 2a1ff16: Support scroll on datatables
+
+### Patch Changes
+
+- fed8cf3: fix install command
+- d41cbe4: Fixes column title formatting for ID columns
+- 6445c6f: Changes custom date format example input
+- 12aced0: Fix 100% stacked chart reactivity
+- ea10232: Cleaning up svelte warnings
+- c013859: Adds optional schema field for postgres connector
+- c50ce10: bump tiny charts library
+- 1f339fb: Improve accessiblity of clickable elements by making them <button> elements
+- 224c553: Updates to visual hierarchy of H1-H6 and lists
+- 7afdf97: Removes sort by default for Charts (Bar, Line, Area)
+
 ## 1.4.2
 
 ### Patch Changes

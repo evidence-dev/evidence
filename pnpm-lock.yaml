@@ -300,7 +300,7 @@ importers:
       prismjs: 1.29.0
       ssf: ^0.11.2
       svelte-icons: 2.1.0
-      svelte-tiny-linked-charts: 1.1.2
+      svelte-tiny-linked-charts: 1.1.4
     dependencies:
       '@evidence-dev/telemetry': link:../../packages/telemetry
       '@tidyjs/tidy': 2.4.4
@@ -312,7 +312,7 @@ importers:
       prismjs: 1.29.0
       ssf: 0.11.2
       svelte-icons: 2.1.0
-      svelte-tiny-linked-charts: 1.1.2
+      svelte-tiny-linked-charts: 1.1.4
     devDependencies:
       cross-env: 7.0.3
       fs-extra: 10.0.1
@@ -15211,8 +15211,8 @@ packages:
   /svelte-icons/2.1.0:
     resolution: {integrity: sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==}
 
-  /svelte-tiny-linked-charts/1.1.2:
-    resolution: {integrity: sha512-RCcBN0ukH1OpwlelrGRyFLSAVKrvXdZU5gS8G66Q02WvaXbJ8rg2s+YKa+zTOa93I/1unORe/jwsUQkzPxQBTw==}
+  /svelte-tiny-linked-charts/1.1.4:
+    resolution: {integrity: sha512-tuVriw4Ow4SahpWmb24vXPfX18Uv5qHjZCQ09sI9m9tdPrXrgU8CsURXdmq5daZKk5tNaDol/NGY6Jt3SrLeNA==}
     dev: false
 
   /svelte/3.53.1:
