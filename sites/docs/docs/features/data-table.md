@@ -13,7 +13,7 @@ hide_table_of_contents: false
 ```html
 <DataTable data={query_name} search=true>
     <Column id=date/>
-    <Column id=country title="Country Name">
+    <Column id=country title="Country Name"/>
     <Column id=value_usd/>
 </DataTable>
 ```
