@@ -47,6 +47,15 @@
   export let downloadable = true;
   downloadable = (downloadable === "true" || downloadable === true);
 
+  // Row Links:
+  export let rowLink = undefined;
+
+  function handleRowClick(url) {
+        if(rowLink){
+            window.location = url;
+        }
+    }
+
   let error = undefined;
 
   // ---------------------------------------------------------------------------------------
@@ -296,7 +305,11 @@
 
       {#each displayedData as row, i}
       
-      <tr class:shaded-row={rowShading && i % 2 === 0}>
+      <tr 
+        class:shaded-row={rowShading && i % 2 === 0}
+        class:row-link={rowLink != undefined}
+        on:click={() => handleRowClick(row[rowLink])}
+        >
           {#if rowNumbers}
           <td 
               class="index" 
@@ -626,6 +639,14 @@
   font-weight:normal;
   font-style: italic;
 }
+
+.row-link {
+    cursor: pointer;
+  }
+
+  .row-link:hover {
+    background-color: var(--blue-100);
+  }
 
 .noresults {
   display: none;

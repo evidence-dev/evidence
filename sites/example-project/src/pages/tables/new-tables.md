@@ -54,7 +54,7 @@ union all
 select date('2020-05-26') as date, 100 as value_usd, 'Zimbabwe' as country, 'A' as category, 100337 as country_id, 'ZW' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/ZW.png' as flag
 ```
 
-<DataTable data={tableq} search=true rowShading=true>
+<DataTable data={tableq} search=true rowShading=true rowLink=flag>
     <Column id=flag contentType=image height=30px align=center />
     <Column id=flag contentType=link openInNewTab=true linkLabel=country />
     <Column id=country/>
