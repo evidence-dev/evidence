@@ -332,6 +332,17 @@
                         width: {column.width};
                         "
                     />
+                  {:else if column.contentType === "link"}
+                    <a 
+                        href={row[column.id]}
+                        target={column.openInNewTab ? "_blank" : ""}
+                        >
+                        {#if column.linkLabel != undefined}
+                            {formatValue(row[column.linkLabel], columnSummary.filter(d => d.id === column.linkLabel)[0].format)}
+                        {:else}
+                            {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
+                        {/if}
+                    </a>
                   {:else}
                     {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
                   {/if}

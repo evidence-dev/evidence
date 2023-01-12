@@ -21,9 +21,15 @@
     // COLUMN CONTENT TYPES:
     export let contentType = undefined;
 
-    // For images:
+    // Images:
     export let height = undefined;
     export let width = undefined;
+
+    // Links:
+    export let openInNewTab = false;
+    openInNewTab = (openInNewTab === "true" || openInNewTab === true);
+
+    export let linkLabel = undefined;
 
     let options = {
         id: id,
@@ -31,7 +37,9 @@
         align: align,
         contentType: contentType,
         height: height,
-        width: width
+        width: width,
+        openInNewTab: openInNewTab,
+        linkLabel: linkLabel
     }
 
     props.update(d => {

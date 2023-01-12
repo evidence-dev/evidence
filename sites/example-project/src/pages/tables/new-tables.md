@@ -56,6 +56,7 @@ select date('2020-05-26') as date, 100 as value_usd, 'Zimbabwe' as country, 'A' 
 
 <DataTable data={tableq} search=true rowShading=true>
     <Column id=flag contentType=image height=30px align=center />
+    <Column id=flag contentType=link openInNewTab=true linkLabel=country />
     <Column id=country/>
     <Column id=country_id label = "Country ID" align=center/>
     <Column id=category/>
