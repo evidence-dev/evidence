@@ -18,10 +18,20 @@
     export let align = undefined;
     if(align === "centre"){ align = "center"};
 
+    // COLUMN CONTENT TYPES:
+    export let contentType = undefined;
+
+    // For images:
+    export let height = undefined;
+    export let width = undefined;
+
     let options = {
         id: id,
         title: title,
         align: align,
+        contentType: contentType,
+        height: height,
+        width: width
     }
 
     props.update(d => {
