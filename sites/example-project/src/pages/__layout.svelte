@@ -279,6 +279,10 @@ aside.toc {
   main * {
     visibility: hidden;
   }
+
+  .header-bar {
+	visibility: hidden;
+  }
   article, article * {
     visibility: visible;
   }
