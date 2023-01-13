@@ -645,7 +645,7 @@
   }
 
   .row-link:hover {
-    background-color: var(--blue-100);
+    background-color: #f0f5fc;
   }
 
 .noresults {
