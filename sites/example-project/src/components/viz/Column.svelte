@@ -24,6 +24,7 @@
     // Images:
     export let height = undefined;
     export let width = undefined;
+    export let alt = undefined;
 
     // Links:
     export let openInNewTab = false;
@@ -38,6 +39,7 @@
         contentType: contentType,
         height: height,
         width: width,
+        alt: alt,
         openInNewTab: openInNewTab,
         linkLabel: linkLabel
     }

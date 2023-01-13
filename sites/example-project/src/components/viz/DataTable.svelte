@@ -338,7 +338,7 @@
                   {#if column.contentType === "image"}
                     <img 
                     src={row[column.id]} 
-                    alt={row[column.id]} 
+                    alt={column.alt ? row[column.alt] : row[column.id]} 
                     style="
                         margin: 0.5em auto 0.5em auto;
                         height: {column.height};
