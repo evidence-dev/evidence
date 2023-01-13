@@ -17,7 +17,7 @@
 		"export-to-csv": "0.2.1",
 		"ssf": "^0.11.2",
 		"git-remote-origin-url": "4.0.0",
-		"svelte": "3.44.3",
+		"svelte": "3.53.1",
 		"svelte-icons": "2.1.0",
 		"svelte2tsx": "0.4.7",
 		"typescript": "4.5.4",
@@ -29,8 +29,10 @@
 		"blueimp-md5": "2.19.0"
 	},
 	"scripts": {
+		"dev": "pnpm --filter ./sites/example-project dev", 
+		"build:dev-workspace": "pnpm --filter ./sites/example-project build", 
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
-		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts"
+		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts "
 	}
 }

@@ -12,7 +12,7 @@ inter retinentibus inaniter pontum! `pages/index.md`
 
 
 
-## Pascua tigres inde
+### Pascua tigres inde
 
 Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
 
@@ -23,7 +23,7 @@ Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
 - Et vocem inquit
 - Dum aequi Xanthique minantia nec taurum
 
-## Aniles orantem Saeculaque pars a aetas nostrum
+#### Aniles orantem Saeculaque pars a aetas nostrum
 
 Opposuitque solis ausis vivo est adventum rudis, nunc fuerant: si
 [laedi](http://sic-conamine.org/), et. Nostro verba et celer purpura utraque

@@ -6,3 +6,4 @@ import { browser } from '$app/env';
 export const showQueries = writable(dev && browser && (localStorage.getItem('showQueries')!='false'));
 showQueries.subscribe((value) => browser && (localStorage.setItem('showQueries',(value))));
 export const pageHasQueries = writable(true);
+export const routeHash = writable('');

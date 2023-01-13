@@ -11,7 +11,6 @@ export async function get() {
         let queryProgress = {}
         if (fs.existsSync('.evidence-queries/status.json')) {
             queryProgress = JSON.parse(fs.readFileSync('.evidence-queries/status.json', 'utf8'));
-            console.log("Status checked!!")
         }
         return {
             header: "accept: application/json",

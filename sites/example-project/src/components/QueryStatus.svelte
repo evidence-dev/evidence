@@ -3,8 +3,8 @@
   import { page } from "$app/stores";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
-  import md5 from "blueimp-md5";
-  export let endpoint = md5($page.path);
+  import { routeHash } from '@evidence-dev/components/ui/stores';
+  export let endpoint = $routeHash;
 
   let loadingPromise;
   let statuses = [];

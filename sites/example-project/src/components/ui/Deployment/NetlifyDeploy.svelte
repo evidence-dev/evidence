@@ -10,10 +10,10 @@
 <p>You'll need to set up a git repo before deploying to netlify.</p>
 {:else }
 
-<h1>Deploying to Netlify</h1>
+<h2>Deploying to Netlify</h2>
 
 <ol>
-    <li><a href='https://app.netlify.com/start' target=_blank>Start a new netlify project &rarr;</a></li>
+    <li><a href='https://app.netlify.com/start' target=_blank rel="noreferrer">Start a new netlify project &rarr;</a></li>
     <li>Choose the repo containing this project</li>
     <li>Update the <code>site settings</code> to match those below</li>
 

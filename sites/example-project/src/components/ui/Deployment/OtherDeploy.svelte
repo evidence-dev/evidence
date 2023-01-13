@@ -4,13 +4,13 @@
     export let settings
 </script>
 
-<h1>Deploying your Project</h1>
+<h2>Deploying your Project</h2>
 
 <p>
     In production, Evidence functions like a static site generator: 
 </p>
 <ol>
-    <li>Running <code>npm run build</code> will build a static site in the <code>/build</code> directory which you can host in a variety of environments</li>
+    <li>Running <code>npm run build</code> will build a static site in the <code>/build</code> directory using the credentials in the database connections panel, which you can host in a variety of environments</li>
     <li>You can share your database credentials with your production environment by setting the environment variables listed below</li>
 </ol>
 

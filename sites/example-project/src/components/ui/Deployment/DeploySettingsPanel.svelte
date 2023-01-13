@@ -19,9 +19,9 @@
 <form>
 <div class=container>
     <div class=panel> 
-    <h1>Deployment</h1>
+    <h2>Deployment</h2>
     <p>Evidence projects can be deployed to a variety of cloud environments. If you haven't done this type of thing before, we would suggest using Netlify.</p>
-    <h2>Deployment Environment</h2>
+    <h3>Deployment Environment</h3>
     <select bind:value={selectedDeployment}>
         {#each deploymentOptions as option}
         <option value={option}>
@@ -42,10 +42,11 @@
 </footer>
 </form>
 <style>
-    h2 {
+    h3 {
         text-transform: uppercase;
         font-weight: normal;
         font-size: 14px;
+        font-style: normal;
     }
     select {
         -webkit-appearance: none;
@@ -84,7 +85,7 @@
 
     .panel {
         border-top: 1px solid var(--grey-200);
-        padding:1.0em;
+        padding: 0em 1em 1em 1em;
     }
 
     .panel:first-of-type {

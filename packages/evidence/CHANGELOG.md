@@ -1,5 +1,90 @@
 # @evidence-dev/evidence
 
+## 8.0.0
+
+### Patch Changes
+
+- 175c091: clear query cache at start of build
+- Updated dependencies [8894ea3]
+- Updated dependencies [141dc5b]
+  - @evidence-dev/db-orchestrator@1.1.12
+  - @evidence-dev/preprocess@1.4.0
+  - @evidence-dev/components@1.6.0
+
+## 7.0.0
+
+### Patch Changes
+
+- Updated dependencies [94805f9]
+- Updated dependencies [fed8cf3]
+- Updated dependencies [e098028]
+- Updated dependencies [2a1ff16]
+- Updated dependencies [d41cbe4]
+- Updated dependencies [6445c6f]
+- Updated dependencies [12aced0]
+- Updated dependencies [ea10232]
+- Updated dependencies [c013859]
+- Updated dependencies [c50ce10]
+- Updated dependencies [1f339fb]
+- Updated dependencies [224c553]
+- Updated dependencies [7afdf97]
+- Updated dependencies [f5ec614]
+  - @evidence-dev/components@1.5.0
+  - @evidence-dev/preprocess@1.3.0
+  - @evidence-dev/db-orchestrator@1.1.11
+
+## 6.0.2
+
+### Patch Changes
+
+- Updated dependencies [1b052b2]
+- Updated dependencies [0ca1dd2]
+- Updated dependencies [9bd0f88]
+- Updated dependencies [32e797f]
+  - @evidence-dev/components@1.4.2
+
+## 6.0.1
+
+### Patch Changes
+
+- Updated dependencies [3b27c0e]
+- Updated dependencies [9728baf]
+- Updated dependencies [75d5863]
+- Updated dependencies [bb18575]
+  - @evidence-dev/components@1.4.1
+
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [79dca60]
+- Updated dependencies [755b1bb]
+- Updated dependencies [c68f658]
+  - @evidence-dev/preprocess@1.2.6
+  - @evidence-dev/components@1.4.0
+
+## 5.0.18
+
+### Patch Changes
+
+- Updated dependencies [975fdb1]
+  - @evidence-dev/components@1.3.14
+
+## 5.0.17
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@1.1.10
+
+## 5.0.16
+
+### Patch Changes
+
+- 64e939f: bump svelte
+- Updated dependencies [81755d7]
+- Updated dependencies [1922765]
+  - @evidence-dev/components@1.3.13
+
 ## 5.0.15
 
 ### Patch Changes

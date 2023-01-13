@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "5.0.15",
+  "version": "8.0.0",
   "description": "dependencies for evidence projects",
   "type": "module",
   "keywords": [
@@ -44,7 +44,7 @@
     "@evidence-dev/components": "workspace:^",
     "@evidence-dev/db-orchestrator": "workspace:^",
     "@sveltejs/kit": "1.0.0-next.202",
-    "svelte": "3.44.3",
+    "svelte": "3.53.1",
     "@sveltejs/vite-plugin-svelte": "1.0.0-next.41",
     "vite": "2.9.5",
     "svelte2tsx": "0.4.7",

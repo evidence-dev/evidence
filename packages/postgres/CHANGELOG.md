@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 0.2.5
+
+### Patch Changes
+
+- c013859: Adds optional schema field for postgres connector
+
 ## 0.2.4
 
 ### Patch Changes

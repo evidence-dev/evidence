@@ -1,13 +1,13 @@
 <script>
     import { ExportToCsv } from 'export-to-csv';
+    import { fade } from 'svelte/transition';
 
     export let data;
     export let queryID;
-    export let onHover = false;
-    export let hovering;
+    export let text = 'Download';
+    export let display 
 
-
-    function downloadData(data) {
+    export let downloadData = (data) => {
         const options = { 
             fieldSeparator: ',',
             quoteStrings: '"',
@@ -22,59 +22,64 @@
  
         const csvExporter = new ExportToCsv(options);
       
-        csvExporter.generateCsv(data);
+        csvExporter.generateCsv(data);     
     }
 
 </script>
 
-<span class=download-icon class:download-icon-hidden={onHover} class:active={hovering} on:click={downloadData(data)}>
-    <span>Download</span>
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
-</span>
+{#if display}
+    <div transition:fade|local="{{ duration: 200 }}">
+        <button type="button" class={$$props.class} on:click={downloadData(data)} >
+            <span>{text}</span>
+            <slot>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"></path></svg>
+            </slot>
+        </button>
+    </div>
+{/if}
 
-<style>
-    svg {
+<style> 
+    button :global(svg) {
         stroke: var(--grey-400);
         margin-top: auto;
         margin-bottom: auto;
+        transition: stroke 200ms;
     }
 
-    .download-icon {
-        display: grid;
-        grid-row: auto;
-        grid-template-columns: auto auto;
-        gap: 3px;
-        float: right;
-        /* margin-left: 5px; */
-        margin-top: 3px;
-        margin-right: 7px;
+    button {
+        display: flex;
         cursor: pointer;
-        font-family: sans-serif;
-        font-size: 0.7rem;
+        font-family: var(--ui-font-family);
+        font-size: 1em;
         color: var(--grey-400);
-        vertical-align: text-top;
-        justify-items: center;
-        position:relative;
+        justify-items: flex-end;
+        align-items: baseline;
+        background-color: transparent;
+        border: none;
+        padding:0;
+        margin:0 5px; 
+        gap: 3px;
+        transition: color 200ms; 
     }
 
-    .download-icon-hidden {
-        visibility: hidden;
+    button:hover {
+        color: var(--blue-600); 
+        transition: color 200ms; 
     }
 
-    .download-icon:hover {
-        color: var(--grey-500);
+    button:hover :global(svg) {
+        stroke: var(--blue-600);
+        transition: stroke 200ms;
     }
-
-    .download-icon:hover svg {
-        stroke: var(--grey-500);
+    
+    @media (max-width: 600px) {
+        button {
+            display: none;
+        }
     }
-
-    .active {
-        visibility: visible;
-    }
-
+    
     @media print {
-        .download-icon {
+        button {
             display: none;
         }
     }

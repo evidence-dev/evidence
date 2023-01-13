@@ -28,8 +28,13 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
+const clearQueryCache = function() {
+  fs.removeSync(".evidence/template/.evidence-queries/cache")
+  console.log("Cleared query cache")
+}
+
 const runFileWatcher = function(watchPatterns) {
-  
+
   const ignoredFiles = [
     "./pages/settings/**", 
     "./pages/settings.+(*)",
@@ -114,7 +119,9 @@ prog
   .describe("build production outputs")
   .action((args) => {
     populateTemplate()
+    clearQueryCache()
     const watchers = runFileWatcher(watchPatterns)
+
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 

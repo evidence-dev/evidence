@@ -24,7 +24,8 @@
 
   </script>
 
-  <div 
+  <button 
+    type=button
     class=container 
     class:copied
     on:click="{() => {
@@ -51,10 +52,10 @@
   <Copy class="bx--snippet__icon"/>
   {/if}
 
-</div>
+</button>
 
   <style>
-    div.container {
+    button.container {
         box-sizing: border-box;
         background-color: var(--grey-100);
         border-radius: 4px 4px 4px 4px;
@@ -73,22 +74,24 @@
         transition: all 400ms;
         width: 100%;
         font-family: var(--monospace-font-family);
+        line-height: 1.6;
+        font-size: inherit;
     }
 
-    div.container:hover {
+    button.container:hover {
         border-color: var(--blue-500);
         background-color: var(--blue-100);
         color: var(--blue-800);
         transition: all 400ms;
     }
     
-    div.container:active {
+    button.container:active {
         border-color: var(--green-500);
         background-color: var(--green-100);
         color: var(--green-800);
     }
 
-    div.container.copied {
+    button.container.copied {
         border-color: var(--green-500);
         background-color: var(--green-100);
         color: var(--green-900);
@@ -100,6 +103,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-align: left;
      }
 
 

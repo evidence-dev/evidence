@@ -5,6 +5,8 @@
     import RedshiftForm from '@evidence-dev/components/ui/Databases/RedshiftForm.svelte'
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
     import SqliteForm from '@evidence-dev/components/ui/Databases/SqliteForm.svelte'
+    import DuckdbForm from '@evidence-dev/components/ui/Databases/DuckdbForm.svelte'
+
     import { slide, blur } from 'svelte/transition'
 
     export let settings 
@@ -23,7 +25,8 @@
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
         {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
-        {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm}
+        {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm},
+        {id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm}
 	];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
@@ -76,9 +79,10 @@
 <form on:submit|preventDefault={submitForm} autocomplete="off" in:blur|local>
     <div class=container>
         <div class=panel> 
-            <h1>Database Connection</h1>
+            <h2>Database Connection</h2>
             <p>Evidence supports one database connection per project.</p>
-            <h2>Connection Type</h2>
+            <p>These credentials will be used when running locally. For your production environment, see the deployment panel.</p>
+            <h3>Connection Type</h3>
             <select data-test-id='dbConnectionType' bind:value={selectedDatabase} on:change={databaseChange}>
             {#each databaseOptions as option}
                 <option data-test-id={option.id} id={option.id} value={option} label={option.name}>
@@ -195,9 +199,10 @@ p.error {
     word-break: break-all;
 }
 
-h2 {
+h3 {
     text-transform: uppercase;
     font-weight: normal;
+    font-style: normal;
     font-size: 14px;
 }
 
@@ -221,7 +226,7 @@ h2 {
 
 .panel {
     border-top: 1px solid var(--grey-200);
-    padding:1.0em;
+    padding: 0em 1em 1em 1em;
 }
 
 .panel:first-of-type {

@@ -3,6 +3,7 @@
   import DownloadData from '../DownloadData.svelte'
   import getColumnSummary from '$lib/modules/getColumnSummary.js';
   import { formatValue } from '$lib/modules/formatting.js';
+  import { throttle } from 'echarts';
 
   export let queryID;
   export let data;  
@@ -22,6 +23,27 @@
     dataPage = updatedSlice
   }
 
+  const updateIndex = throttle((event) => {
+    index = Math.min(Math.max(0, index + Math.floor(event.deltaY/Math.abs(event.deltaY))), max)
+    slice()
+  }, 60)
+
+  function handleWheel(event){
+    // abort if scroll is in x-direction
+    if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+      return
+    }
+
+    const hasScrolledToTop = event.deltaY < 0 && index === 0
+    const hasScrolledToBottom = event.deltaY > 0 && index === max
+
+    if (hasScrolledToTop || hasScrolledToBottom) {
+      return
+    }
+
+    event.preventDefault()
+    updateIndex(event)
+  }
 </script>
 
 <div class="results-pane" transition:slide|local>
@@ -46,7 +68,7 @@
         {/each}
       <tr/>
     </thead>
-        <tbody>
+        <tbody on:wheel={handleWheel}>
             {#each dataPage as row, i}
               <tr>
                   <td class="index" style="width:10%">
@@ -105,7 +127,9 @@
 </div>
 {/if}
 
-<DownloadData {data} {queryID} />
+<div class=footer>
+  <DownloadData class=download-button {data} {queryID} display/>
+</div>
 
 </div>
 
@@ -171,7 +195,6 @@ span {
   -webkit-font-smoothing: antialiased;
   font-size: 0.8em;
   float: right;
-
 }
 
 
@@ -192,29 +215,33 @@ span {
   background-color: white;
 }
 
-  .container::-webkit-scrollbar {
-    height: var(--scrollbar-size);
-    width: var(--scrollbar-size);
-  }
-  .container::-webkit-scrollbar-track {
-    background-color: var(--scrollbar-track-color);
-  }
-  .container::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-color);
-    border-radius: 7px;
-    background-clip: padding-box;
-  }
-  .container::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-active-color);
-  }
-  .container::-webkit-scrollbar-thumb:vertical {
-    min-height: var(--scrollbar-minlength);
-    border: 3px solid transparent;
-  }
-  .container::-webkit-scrollbar-thumb:horizontal {
-    min-width: var(--scrollbar-minlength);
-    border: 3px solid transparent;
-  }
+.container::-webkit-scrollbar {
+  height: var(--scrollbar-size);
+  width: var(--scrollbar-size);
+}
+.container::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-color);
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 7px;
+  background-clip: padding-box;
+}
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-active-color);
+}
+.container::-webkit-scrollbar-thumb:vertical {
+  min-height: var(--scrollbar-minlength);
+  border: 3px solid transparent;
+}
+.container::-webkit-scrollbar-thumb:horizontal {
+  min-width: var(--scrollbar-minlength);
+  border: 3px solid transparent;
+}
+
+.results-pane :global(.download-button) {
+  margin-top: 10px;
+}
 
 table{
   width:100%;
@@ -285,5 +312,11 @@ th.type-indicator {
 
 tr.type-indicator { 
   border-bottom: 1px solid var(--grey-100)
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 12px;
 }
 </style>

@@ -1,5 +1,73 @@
 # @evidence-dev/components
 
+## 1.6.0
+
+### Minor Changes
+
+- 141dc5b: Improved DataTable component
+
+## 1.5.0
+
+### Minor Changes
+
+- 94805f9: Add data download option to Charts
+- e098028: Add FunnelChart component
+- 2a1ff16: Support scroll on datatables
+
+### Patch Changes
+
+- fed8cf3: fix install command
+- d41cbe4: Fixes column title formatting for ID columns
+- 6445c6f: Changes custom date format example input
+- 12aced0: Fix 100% stacked chart reactivity
+- ea10232: Cleaning up svelte warnings
+- c013859: Adds optional schema field for postgres connector
+- c50ce10: bump tiny charts library
+- 1f339fb: Improve accessiblity of clickable elements by making them <button> elements
+- 224c553: Updates to visual hierarchy of H1-H6 and lists
+- 7afdf97: Removes sort by default for Charts (Bar, Line, Area)
+
+## 1.4.2
+
+### Patch Changes
+
+- 1b052b2: Bug fix for column title formatting
+- 0ca1dd2: Add accessibility to QueryViewer, DataTable, BreadCrumbs, ECharts, and DownloadData
+- 9bd0f88: Fixes bug which prevented live updates on query status in development mode
+- 32e797f: Add port and ssl options to MySQL form
+
+## 1.4.1
+
+### Patch Changes
+
+- 3b27c0e: Freeze header bar to top of screen when scrolling
+- 9728baf: Fix charts rendering issue in webkit browsers
+- 75d5863: Fix indetation in sql viewer
+- bb18575: Add instructions on how to set up different data environments.
+
+## 1.4.0
+
+### Minor Changes
+
+- c68f658: Add maxWidth and minWidth style props to BigValue component. Default set for minWidth to give smaller BigValues more room.
+
+### Patch Changes
+
+- 79dca60: Fixes bug which prevented dev mode reloading on changes to queries in paramatarized pages
+
+## 1.3.14
+
+### Patch Changes
+
+- 975fdb1: including missing changeset for previous merge
+
+## 1.3.13
+
+### Patch Changes
+
+- 81755d7: Minor bug fix
+- 1922765: fix missing rows option in data table
+
 ## 1.3.12
 
 ### Patch Changes

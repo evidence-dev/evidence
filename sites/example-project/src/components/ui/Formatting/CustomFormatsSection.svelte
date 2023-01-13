@@ -168,6 +168,7 @@
     width: 35%;
     text-transform: uppercase;
     font-weight: normal;
+    font-size: 14px;
     color: var(--grey-800);
   }
   button {
@@ -220,25 +221,6 @@
     display: flex;
     justify-content: flex-end;
     padding-top: 0.5em;
-  }
-
-  .separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin-block-start: 0.5em;
-    color: var(--grey-600);
-    font-weight: bold;
-  }
-  .separator::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid var(--grey-200);
-  }
-
-  .separator:not(:empty)::after {
-    margin-left: 1.5em;
-    margin-top: 0.1em;
   }
   .error {
     color: var(--red-600);

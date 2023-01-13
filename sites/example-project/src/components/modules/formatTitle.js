@@ -18,7 +18,7 @@ export default function formatTitle(column, columnFormat) {
     // Set name to proper casing:
     function toTitleCase(str) {
         return str.replace(
-        /\w\S*/g,
+        /\S*/g,
         function(txt) {
             if(!acronyms.includes(txt) && !lowercase.includes(txt)){
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
