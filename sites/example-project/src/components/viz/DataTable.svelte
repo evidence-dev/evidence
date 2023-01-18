@@ -106,16 +106,17 @@
           }
       }
 
+    // Hide link column if columns have not been explicitly selected:
+    for(let i=0; i<columnSummary.length; i++){
+            columnSummary[i].show = (showLinkCol === false && columnSummary[i].id === link) ? false : true
+    }
+
+
       error = undefined;
 
   } catch (e) {
       error = e.message;
   }
-  
-  // Hide link column if columns have not been explicitly selected:
-  $: for(let i=0; i<columnSummary.length; i++){
-        columnSummary[i].show = (showLinkCol === false && columnSummary[i].id === link) ? false : true
-    }
       
   let index = 0
 
