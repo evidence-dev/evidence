@@ -39,7 +39,7 @@ select date('2020-05-18') as date, 59 as value_usd, 'Philippines' as country, 'D
 union all
 select date('2020-05-19') as date, 113 as value_usd, 'Qatar' as country, 'C' as category, 100181 as country_id, 'QA' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/QA.png' as flag, 'https://www.google.ca/search?q=qatar' as country_url
 union all
-select date('2020-05-20') as date, 190 as value_usd, 'Romania' as country, 'A' as category, 101384 as country_id, 'RO' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/RO.png' as flag, 'https://www.google.ca/search?q=romania' as country_url
+select date('2020-05-20') as date, 190 as value_usd, 'Romania' as country, 'A' as category, 101384 as country_id, 'RO' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/RO.png' as flag, 'https://www.google.ca/search?q=romania ! startups' as country_url
 union all
 select date('2020-05-21') as date, 190 as value_usd, 'Sweden' as country, 'B' as category, 101847 as country_id, 'SE' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/SE.png' as flag, 'https://www.google.ca/search?q=sweden' as country_url
 union all
@@ -60,7 +60,9 @@ select date('2020-05-26') as date, 100 as value_usd, 'Zimbabwe' as country, 'A' 
     <Column id=flag contentType=image height=40px  align=center />
     <Column id=category align=center/>
     <Column id=value_usd/>
-    <Column id=country_url contentType=link linkLabel="Details &rarr;" title="Country Details" align=right/>
+    <Column id=country_url contentType=link linkLabel="Details &rarr;" title="Country Details" align=right openInNewTab=true/>
 </DataTable>
 
+
+<DataTable data={tableq} link=country_url showLinkCol=false/>
 

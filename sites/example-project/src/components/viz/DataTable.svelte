@@ -48,13 +48,16 @@
   downloadable = (downloadable === "true" || downloadable === true);
 
   // Row Links:
-  export let rowLink = undefined;
+  export let link = undefined;
 
   function handleRowClick(url) {
-        if(rowLink){
+        if(link){
             window.location = url;
         }
     }
+
+  export let showLinkCol = false; // hides link column when columns have not been explicitly selected
+  showLinkCol = (showLinkCol === "true" || showLinkCol === true);
 
   let error = undefined;
 
@@ -109,6 +112,10 @@
       error = e.message;
   }
   
+  // Hide link column if columns have not been explicitly selected:
+  $: for(let i=0; i<columnSummary.length; i++){
+        columnSummary[i].show = (showLinkCol === false && columnSummary[i].id === link) ? false : true
+    }
       
   let index = 0
 
@@ -281,7 +288,7 @@
                   </th>
               {/each}
           {:else}
-              {#each columnSummary as column, i}
+              {#each columnSummary.filter(d => d.show === true) as column, i}
               <th
                   class="{column.type}"
                   style="
@@ -307,8 +314,8 @@
       
       <tr 
         class:shaded-row={rowShading && i % 2 === 0}
-        class:row-link={rowLink != undefined}
-        on:click={() => handleRowClick(row[rowLink])}
+        class:row-link={link != undefined}
+        on:click={() => handleRowClick(row[link])}
         >
           {#if rowNumbers}
           <td 
@@ -366,7 +373,7 @@
                 </td>
               {/each}
           {:else}
-              {#each columnSummary as column, i}
+              {#each columnSummary.filter(d => d.show === true) as column, i}
               <td 
               class="{column.type}"
               class:row-lines={rowLines}
