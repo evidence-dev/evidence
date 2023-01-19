@@ -279,12 +279,12 @@ aside.toc {
 		top: 0;
 		right: 0;
 		background-color: rgba(255, 255, 255, 0.73);
-    -webkit-backdrop-filter: blur(10px) saturate(1.8);
-    backdrop-filter: blur(10px) saturate(1.8);
+		-webkit-backdrop-filter: blur(10px) saturate(1.8);
+		backdrop-filter: blur(10px) saturate(1.8);
 	}
 	.header-button.open {
 		z-index: 7;
-    	width: fit-content;
+		width: fit-content;
 		background-color: transparent;
 		backdrop-filter: none;
 	}
