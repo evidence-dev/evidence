@@ -155,6 +155,7 @@
         font-size: .65em;
         font-weight: 500;
         font-family: var(--ui-compact-font-family);
+        font-feature-settings: normal;
     }
 
     .comparison-type {
