@@ -18,10 +18,30 @@
     export let align = undefined;
     if(align === "centre"){ align = "center"};
 
+    // COLUMN CONTENT TYPES:
+    export let contentType = undefined;
+
+    // Images:
+    export let height = undefined;
+    export let width = undefined;
+    export let alt = undefined;
+
+    // Links:
+    export let openInNewTab = false;
+    openInNewTab = (openInNewTab === "true" || openInNewTab === true);
+
+    export let linkLabel = undefined;
+
     let options = {
         id: id,
         title: title,
         align: align,
+        contentType: contentType,
+        height: height,
+        width: width,
+        alt: alt,
+        openInNewTab: openInNewTab,
+        linkLabel: linkLabel
     }
 
     props.update(d => {

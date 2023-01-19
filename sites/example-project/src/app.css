@@ -15,13 +15,16 @@ body, html {
 }
 
 img {
-	max-width: 100%;
 	text-align: center;
-	border-radius: 4px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }	
+
+article > img {
+	max-width: 100%;
+	border-radius: 4px;
+}
 
 body {
 	font-family: 'Spectral', serif;

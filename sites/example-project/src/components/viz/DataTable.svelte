@@ -47,6 +47,18 @@
   export let downloadable = true;
   downloadable = (downloadable === "true" || downloadable === true);
 
+  // Row Links:
+  export let link = undefined;
+
+  function handleRowClick(url) {
+        if(link){
+            window.location = url;
+        }
+    }
+
+  export let showLinkCol = false; // hides link column when columns have not been explicitly selected
+  showLinkCol = (showLinkCol === "true" || showLinkCol === true);
+
   let error = undefined;
 
   // ---------------------------------------------------------------------------------------
@@ -94,12 +106,17 @@
           }
       }
 
+    // Hide link column if columns have not been explicitly selected:
+    for(let i=0; i<columnSummary.length; i++){
+            columnSummary[i].show = (showLinkCol === false && columnSummary[i].id === link) ? false : true
+    }
+
+
       error = undefined;
 
   } catch (e) {
       error = e.message;
   }
-  
       
   let index = 0
 
@@ -272,7 +289,7 @@
                   </th>
               {/each}
           {:else}
-              {#each columnSummary as column, i}
+              {#each columnSummary.filter(d => d.show === true) as column, i}
               <th
                   class="{column.type}"
                   style="
@@ -296,7 +313,11 @@
 
       {#each displayedData as row, i}
       
-      <tr class:shaded-row={rowShading && i % 2 === 0}>
+      <tr 
+        class:shaded-row={rowShading && i % 2 === 0}
+        class:row-link={link != undefined}
+        on:click={() => handleRowClick(row[link])}
+        >
           {#if rowNumbers}
           <td 
               class="index" 
@@ -319,10 +340,41 @@
                   class:row-lines={rowLines}
                   style="
                       text-align: {column.align};
-                  ">{formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}</td>
+                      height: {column.height};
+                      width: {column.width};
+                  ">
+                  {#if column.contentType === "image"}
+                    <img 
+                    src={row[column.id]} 
+                    alt={column.alt ? row[column.alt] : row[column.id].replace(/^(.*[\\\/])/g, "").replace(/[.][^.]+$/g, "")} 
+                    style="
+                        margin: 0.5em auto 0.5em auto;
+                        height: {column.height};
+                        width: {column.width};
+                        "
+                    />
+                  {:else if column.contentType === "link"}
+                    <a 
+                        href={row[column.id]}
+                        target={column.openInNewTab ? "_blank" : ""}
+                        >
+                        {#if column.linkLabel != undefined}
+                            {#if row[column.linkLabel] != undefined}
+                                {formatValue(row[column.linkLabel], columnSummary.filter(d => d.id === column.linkLabel)[0].format)}
+                            {:else}
+                                {column.linkLabel}
+                            {/if}
+                        {:else}
+                            {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
+                        {/if}
+                    </a>
+                  {:else}
+                    {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
+                  {/if}
+                </td>
               {/each}
           {:else}
-              {#each columnSummary as column, i}
+              {#each columnSummary.filter(d => d.show === true) as column, i}
               <td 
               class="{column.type}"
               class:row-lines={rowLines}
@@ -599,6 +651,14 @@
   font-weight:normal;
   font-style: italic;
 }
+
+.row-link {
+    cursor: pointer;
+  }
+
+  .row-link:hover {
+    background-color: #f0f5fc;
+  }
 
 .noresults {
   display: none;
