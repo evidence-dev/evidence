@@ -1,5 +1,19 @@
 # @evidence-dev/components
 
+## 1.7.0
+
+### Minor Changes
+
+- d83c741: Adds image, link, and row link support in DataTable
+
+### Patch Changes
+
+- afda5ba: Fix reactivity of DataTable on errors
+- 5a44815: Ability to style project by overwriting app.css
+- 84dc796: Fixes treatment of nulls in charts
+- c993d09: Prevent header shading showing up in PDF / print export
+- 8a7bd67: Fixes bug where styling from the Settings page leaked into other pages
+
 ## 1.6.0
 
 ### Minor Changes

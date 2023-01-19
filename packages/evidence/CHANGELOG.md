@@ -1,5 +1,18 @@
 # @evidence-dev/evidence
 
+## 9.0.0
+
+### Patch Changes
+
+- 5a44815: Ability to style project by overwriting app.css
+- Updated dependencies [afda5ba]
+- Updated dependencies [5a44815]
+- Updated dependencies [84dc796]
+- Updated dependencies [d83c741]
+- Updated dependencies [c993d09]
+- Updated dependencies [8a7bd67]
+  - @evidence-dev/components@1.7.0
+
 ## 8.0.0
 
 ### Patch Changes
