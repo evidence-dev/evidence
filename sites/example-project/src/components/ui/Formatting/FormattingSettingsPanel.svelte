@@ -7,8 +7,7 @@
   import CurrencyFormatGrid from "./CurrencyFormatGrid.svelte";
   import Prism from "../QueryViewerSupport/Prismjs.svelte";
 
-  let exampleQuery = `
-select 
+  let exampleQuery = `select 
   growth as growth_pct, -- formatted as a percentage
   sales as sales_usd    -- formatted as US dollars
 from table` 

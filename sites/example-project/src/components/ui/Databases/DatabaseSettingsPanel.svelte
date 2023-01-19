@@ -97,7 +97,7 @@
         </div>
         {/if}
         {#if testResult}
-        <div class=panel transition:slide|local>
+        <div class="panel test-result" transition:slide|local>
             {#await testResult}
                 <span class="indicator running" /><span>Testing connection</span>
             {:then result} 
@@ -231,6 +231,10 @@ h3 {
 
 .panel:first-of-type {
     border-top:none;
+}
+
+.panel.test-result {
+    padding-top: 1em;
 }
 
 select {
