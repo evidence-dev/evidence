@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 10.0.0
+
+### Patch Changes
+
+- Updated dependencies [9d42aae]
+- Updated dependencies [b665eb2]
+- Updated dependencies [453919a]
+- Updated dependencies [80eaa2d]
+- Updated dependencies [5e5cf29]
+  - @evidence-dev/components@1.8.0
+
 ## 9.0.0
 
 ### Patch Changes
