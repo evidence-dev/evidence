@@ -17,14 +17,15 @@ hide_table_of_contents: false
     <Column id=value_usd/>
 </DataTable>
 ```
-![datatable](/img/datatable-selected.png)
+
+<img src='/img/datatable-selected.png' width='500px'/>
 
 ### Displaying All Columns in Query
 ```html
 <DataTable data={query_name} search=true/>
 ```
 
-![datatable](/img/datatable-all.png)
+<img src='/img/datatable-all.png' width='500px'/>
 
 
 ### Including Images
@@ -37,7 +38,7 @@ hide_table_of_contents: false
     <Column id=value_usd />
 </DataTable>
 ```
-![datatable-image](/img/datatable-image.png)
+<img src='/img/datatable-image.png' width='500px'/>
 
 ### Links
 
@@ -50,7 +51,7 @@ hide_table_of_contents: false
     <Column id=value_usd />
 </DataTable>
 ```
-![datatable-linklabel](/img/datatable-linklabel.png)
+<img src='/img/datatable-linklabel.png' width='500px'/>
 
 #### Link Label - Consistent String Label
 ```html
@@ -63,7 +64,7 @@ hide_table_of_contents: false
 </DataTable>
 ```
 
-![datatable-linklabel-string](/img/datatable-linklabel-string.png)
+<img src='/img/datatable-linklabel-string.png' width='500px'/>
 
 ### Row Links
 This example includes a column `country_url` which contains a country name as a search term in Google (e.g., `https://google.ca/search?q=canada`)
@@ -76,7 +77,7 @@ This example includes a column `country_url` which contains a country name as a 
 </DataTable>
 ```
 
-![datatable-rowlink-external](/img/datatable-rowlink-external.gif)
+<img src='/img/datatable-rowlink-external.gif' width='500px'/>
 
 
 ## DataTable
