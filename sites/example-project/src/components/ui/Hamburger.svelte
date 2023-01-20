@@ -2,7 +2,7 @@
 	export let open = false
 </script>
 
-<button class:open on:click={() => open = !open}>
+<button aria-label="hamburger menu" class:open on:click={() => open = !open}>
 	<svg width=32 height=24>
 		<line id="top" x1=0 y1=2  x2=32 y2=2/>
 		<line id="middle" x1=0 y1=12 x2=32 y2=12/>
@@ -36,9 +36,18 @@
         font-size: 16px;
         background-color: hsla(217, 33%, 97%, 0);
 	}
+
+	button.open {
+		margin-top: 0.8em;
+		transition: all 0.1s ease-in;
+	}
 	
 	.open svg {
 		transform: scale(0.7);
+	}
+
+	svg {
+		transform: scale(0.85);
 	}
 	
 	.open #top {
