@@ -318,6 +318,9 @@
         class:row-link={link != undefined}
         on:click={() => handleRowClick(row[link])}
         >
+        {#if link}
+            <a style="display:none;" href={row[link]}>{row[link]}</a>
+        {/if}
           {#if rowNumbers}
           <td 
               class="index" 
