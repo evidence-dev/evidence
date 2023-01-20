@@ -1,8 +1,8 @@
 <script>
     import {writable} from 'svelte/store'
     import {setContext} from 'svelte'
+    import { mode } from '$app/env'
     import { propKey, configKey } from './context'
-
     let props = writable({})
     let config = writable({})
 
@@ -686,7 +686,12 @@ $: {
         config.update(d => { return chartConfig });
 
     } catch(e) {
+
         error = e.message;
+        // if the build is in production fail instead of sending the error to the chart
+        if (mode === "production"){
+            throw error
+        }
         props.update(d => { return {...d, error} })
     }
 }
