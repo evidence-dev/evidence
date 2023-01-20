@@ -1,5 +1,18 @@
 # @evidence-dev/components
 
+## 1.8.0
+
+### Minor Changes
+
+- 453919a: Fix the menu button disappearing in the sidebar
+
+### Patch Changes
+
+- 9d42aae: Minor spacing fixes in settings menu
+- b665eb2: Fixes BigValue comparison styling for Windows
+- 80eaa2d: Fixes default image styling
+- 5e5cf29: Fixes link column behaviour for parameterized pages
+
 ## 1.7.0
 
 ### Minor Changes
