@@ -39,6 +39,7 @@
 
 	button.open {
 		margin-top: 0.8em;
+		transition: all 0.1s ease-in;
 	}
 	
 	.open svg {
