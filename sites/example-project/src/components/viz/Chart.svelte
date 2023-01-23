@@ -1,8 +1,8 @@
 <script>
     import {writable} from 'svelte/store'
     import {setContext} from 'svelte'
-    import { mode } from '$app/env'
     import { propKey, configKey } from './context'
+    const strictBuild = (import.meta.env.VITE_BUILD_STRICT === 'true')
     let props = writable({})
     let config = writable({})
 
@@ -42,6 +42,7 @@
     // if the data changes, we are now acting as if the fallback from above was entered by the user, and 
     // then we throw if the fallback column is now missing. 
 
+    
     // This is a hack to get around the above
     const ySet = y ? true : false 
     const xSet = x ? true : false 
@@ -686,10 +687,9 @@ $: {
         config.update(d => { return chartConfig });
 
     } catch(e) {
-
         error = e.message;
         // if the build is in production fail instead of sending the error to the chart
-        if (mode === "production"){
+        if (strictBuild){
             throw error
         }
         props.update(d => { return {...d, error} })
