@@ -12,7 +12,7 @@
 
     export let title = undefined;
     export let subtitle = undefined;
-    export let legend = false;
+    export let legend =  true;
 
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
@@ -36,6 +36,7 @@
     let subtitleFontSize;
     let titleBoxPadding;
     let titleBoxHeight;
+    let chartAreaTopPosition;
     let chartAreaPaddingTop;
     let chartAreaPaddingBottom;
     let legendHeight;
@@ -60,7 +61,7 @@
     // ---------------------------------------------------------------------------------------
     // Set up chart area
     // ---------------------------------------------------------------------------------------
-    chartAreaHeight = 410; // standard height for chart area across all charts
+    chartAreaHeight = 250; // standard height for chart area across all charts
 
     hasTitle = title ? true : false;
     hasSubtitle = subtitle ? true: false;
@@ -68,11 +69,10 @@
 
     titleFontSize = 15;
     subtitleFontSize = 13;
-    titleBoxPadding = 6 * (hasSubtitle);
-
+    titleBoxPadding = 10 * (hasSubtitle);
     titleBoxHeight = (hasTitle * titleFontSize) + (hasSubtitle * subtitleFontSize) + (titleBoxPadding * Math.max(hasTitle, hasSubtitle));
-
-    chartAreaPaddingTop = 10;
+    chartAreaTopPosition = (hasTitle * 45) + (hasSubtitle * 20)
+    chartAreaPaddingTop = 2;
     chartAreaPaddingBottom = 8;
 
     legendHeight = 15;
@@ -89,7 +89,6 @@
     // Set final chart height:
     height = chartContainerHeight + 'px';
     width = '100%';
-
     // ---------------------------------------------------------------------------------------
     // Chart Configuration
     // ---------------------------------------------------------------------------------------
@@ -102,13 +101,14 @@
         type: "funnel",
         name,
         left: '10%',
-        top: 60,
+        top: chartAreaTopPosition,
         bottom: 60,
         width: '80%',
         min,
         max,
-        minSize: '0%',
-        maxSize: '100%',
+        minSize: '30%',
+        maxSize: '90%',
+        gap: 2,
         
         funnelAlign,
         sort: funnelSort,
@@ -122,7 +122,8 @@
         },
         label: {
             show: true,
-            position: labelPosition
+            position: labelPosition,
+            formatter:  '{c} \n {d}%'
         },
        
         labelLayout: { hideOverlap: true },
@@ -131,7 +132,7 @@
         },
         itemStyle: {
             borderColor: outlineColor,
-            borderWidth: outlineWidth
+            borderWidth: outlineWidth,
         },
         tooltip: {
             formatter: function(params){
@@ -166,6 +167,7 @@
         },
         legend: {
             show: legend,
+            orient: 'horizontal',
             type: "scroll",
             top: legendTop,
             padding: [0, 0, 0, 0]
