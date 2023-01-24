@@ -41,4 +41,4 @@
 <DataTable data={federal_reserve_districts} rows=2/>
 
 ## Big Value
-<BigValue data={federal_reserve_districts.filter(d => d.name == $page.params.district)} value=distinct_institutions/>
+<BigValue data={federal_reserve_districts.filter(d => d.name == $page.params.district)} value=distinct_institutions comparison=distinct_institutions/>
