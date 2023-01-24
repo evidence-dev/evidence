@@ -1,7 +1,7 @@
 
 ```federal_reserve_districts
     select 
-        fed_reserve_district as name, 
+        upper(fed_reserve_district) as name, 
         count(distinct institution_name) as distinct_institutions,
         from `bigquery-public-data.fdic_banks.institutions`
     group by 1
