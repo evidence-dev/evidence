@@ -1,4 +1,4 @@
-<script >
+<script>
     import {getContext} from 'svelte'
     import { propKey, strictBuild } from './context'
 

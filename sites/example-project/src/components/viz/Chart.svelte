@@ -41,7 +41,6 @@
     // if the data changes, we are now acting as if the fallback from above was entered by the user, and 
     // then we throw if the fallback column is now missing. 
 
-    
     // This is a hack to get around the above
     const ySet = y ? true : false 
     const xSet = x ? true : false 

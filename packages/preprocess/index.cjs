@@ -6,7 +6,7 @@ const md5 = require("blueimp-md5");
 const fs = require('fs')
 const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
-
+const strictBuild = (process.env.VITE_BUILD_STRICT === 'true')
 const getRouteHash = function(filename){
     let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/index/g,"")
     let routeHash = md5(route)
@@ -192,6 +192,10 @@ const updateExtractedQueriesDir = function(content, filename){
                             // tried <100 times but compiled string is too long, likely circular  
                             query.compileError = 'Compiler error: circular reference'
                             query.compiledQueryString = 'Compiler error: circular reference'
+                            // if build is strict and we detect circular reference, force a failure
+                            if (strictBuild){
+                                throw new Error(query.compileError)
+                            }
                         }
                     }
                 }) 
@@ -219,7 +223,7 @@ function highlighter(code, lang) {
     code = code.replace(/'/g, "&apos;");
     code = code.replace(/"/g, "&quot;");
 
-    // Repalce curly braces or Svelte will try to evaluate as a JS expression
+    // Replace curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     return `
     {#if data.${lang} }
