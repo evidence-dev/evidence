@@ -7,6 +7,7 @@ const fs = require('fs')
 const fsExtra = require('fs-extra')
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 const strictBuild = (process.env.VITE_BUILD_STRICT === 'true')
+const circularRefErrorMsg = 'Compiler error: circular reference'
 const getRouteHash = function(filename){
     let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/index/g,"")
     let routeHash = md5(route)
@@ -175,27 +176,26 @@ const updateExtractedQueriesDir = function(content, filename){
             if(references){
                 query.compiled = true
                 references.forEach(reference => {
-                    referencedQueryID = reference.replace("${", "").replace("}", "").trim()
-                    if(!queryIds.includes(referencedQueryID)){
-                        errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
-                        query.compileError = errorMessage
-                        query.compiledQueryString = errorMessage
-                    } else if(i == maxIterations) {
-                        // tried 100 times, still have references, likely circular 
-                        query.compileError = 'Compiler error: circular reference'
-                        query.compiledQueryString = 'Compiler error: circular reference'
-                    } else {
-                        let referencedQuery = "(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
-                        try {
+                    try {
+                        referencedQueryID = reference.replace("${", "").replace("}", "").trim()
+                        if(!queryIds.includes(referencedQueryID)){
+                            errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
+                            throw new Error(errorMessage)
+                        } else if(i >= maxIterations) {
+                            // tried 100 times, still have references, likely circular 
+                            throw new Error(circularRefErrorMsg)
+                        } else {
+                            let referencedQuery = "(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
                             query.compiledQueryString = query.compiledQueryString.replace(reference, referencedQuery)
-                        } catch {
-                            // tried <100 times but compiled string is too long, likely circular  
-                            query.compileError = 'Compiler error: circular reference'
-                            query.compiledQueryString = 'Compiler error: circular reference'
-                            // if build is strict and we detect circular reference, force a failure
-                            if (strictBuild){
-                                throw new Error(query.compileError)
-                            }
+                        }
+                    }catch(e){
+                        // if error is unknown use default circular ref. error
+                        e = (e.message === undefined || e.message === null) ? Error(circularRefErrorMsg) : e
+                        query.compileError = e.message
+                        query.compiledQueryString = e.message
+                        // if build is strict and we detect circular reference, force a failure
+                        if (strictBuild){
+                            throw new Error(e.message)
                         }
                     }
                 }) 
