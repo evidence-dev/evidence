@@ -3,7 +3,7 @@
 ```federal_reserve_districts
 select 
     fed_reserve_district as name, 
-    CONCAT("/parameterized-pages/", fed_reserve_district) as link,
+    "/parameterized-pages/" || fed_reserve_district || "/" as link,
     count(distinct institution_name) as distinct_institutions,
     from `bigquery-public-data.fdic_banks.institutions`
 group by 1
