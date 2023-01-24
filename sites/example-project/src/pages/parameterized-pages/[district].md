@@ -32,5 +32,13 @@
     y=distinct_institutions
 />
 
+## Data Table
+<DataTable
+    data={federal_reserve_districts.filter(d => d.name == $page.params.district | d.distinct_institutions === 12)}
+    rows=5
+    />
+
+<DataTable data={federal_reserve_districts} rows=2/>
+
 ## Big Value
 <BigValue data={federal_reserve_districts.filter(d => d.name == $page.params.district)} value=distinct_institutions/>
