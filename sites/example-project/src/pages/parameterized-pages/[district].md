@@ -7,7 +7,7 @@
     group by 1
 ```
 
-# {$page.params.district}
+# Details for <Value data={federal_reserve_districts.filter(d => d.name === $page.params.district)} column=name/>
 
 <DataTable data={federal_reserve_districts.filter(d => d.name == $page.params.district)} />
 
