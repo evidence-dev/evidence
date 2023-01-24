@@ -7,6 +7,8 @@
     group by 1
 ```
 
+
+
 # Details for <Value data={federal_reserve_districts.filter(d => d.name === $page.params.district)} column=name/>
 
 <DataTable data={federal_reserve_districts.filter(d => d.name == $page.params.district)} />
@@ -42,3 +44,19 @@
 
 ## Big Value
 <BigValue data={federal_reserve_districts.filter(d => d.name == $page.params.district)} value=distinct_institutions comparison=distinct_institutions/>
+
+
+```categories
+select 
+category,
+'/parameterized-pages/' || category || '/' as link,
+sum(sales) as sales_usd
+from orders
+group by 1
+```
+
+# Details for <Value data={categories.filter(d => d.category === $page.params.district)} column=category/>
+
+## Sales
+
+<BigValue data={categories.filter(d => d.category === $page.params.district)} value=sales_usd/>
