@@ -5,7 +5,7 @@
     import getSortedData from "$lib/modules/getSortedData";
     import checkInputs from "$lib/modules/checkInputs";
     import ErrorChart from './ErrorChart.svelte';
-
+    import { strictBuild } from './context';
     export let data   
     export let value = null
     export let comparison = null
@@ -64,6 +64,9 @@
 
     } catch(e) {
         error = e
+        if (strictBuild){
+            throw error
+        }
     }
 
 </script>

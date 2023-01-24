@@ -119,6 +119,7 @@ const runQueries = async function (routeHash, dev) {
                     logEvent("db-error", dev, settings)
                     queries[queryIndex].status = "error"
                     writeJSONSync(queryFile, queries)
+                    // if build is strict and the query fails, stop the build
                     if(strictBuild){
                         throw err
                     }
@@ -152,6 +153,10 @@ const testConnection = async function (dev) {
         process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
         result = err;
         logEvent("db-connection-error", dev, settings)
+        // if build is strict and database connection fails, stop the build
+        if(strictBuild){
+            throw err
+        }
     } 
     return result
 }

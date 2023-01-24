@@ -1,8 +1,7 @@
 <script>
     import {writable} from 'svelte/store'
     import {setContext} from 'svelte'
-    import { propKey, configKey } from './context'
-    const strictBuild = (import.meta.env.VITE_BUILD_STRICT === 'true')
+    import { propKey, configKey, strictBuild } from './context'
     let props = writable({})
     let config = writable({})
 

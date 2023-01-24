@@ -2,7 +2,7 @@
   import {writable} from 'svelte/store'
   import {setContext} from 'svelte'
   import { slide } from 'svelte/transition';
-  import { propKey } from './context'
+  import { propKey, strictBuild } from './context'
   import getColumnSummary from '$lib/modules/getColumnSummary.js';
   import { convertColumnToDate } from "$lib/modules/dateParsing.js";
   import { formatValue } from '$lib/modules/formatting.js';
@@ -16,7 +16,6 @@
   import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte'
   import MdNavigateNext from 'svelte-icons/md/MdNavigateNext.svelte'
   import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
-
   // Set up props store
   let props = writable({})
   setContext(propKey, props)
@@ -116,6 +115,9 @@
 
   } catch (e) {
       error = e.message;
+      if(strictBuild){
+        throw error
+      }
   }
       
   let index = 0
