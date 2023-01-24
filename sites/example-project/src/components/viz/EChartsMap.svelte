@@ -1,0 +1,22 @@
+<script>
+    import echartsMap from "$lib/modules/echartsMap";
+
+    export let config = undefined;    
+
+    export let height = '291px'
+    export let width = '100%'
+
+</script>
+
+<div 
+    class="chart" 
+    style="
+        height: {height};
+        width: {width};
+        margin-left: 0;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        overflow: visible;
+    "
+    use:echartsMap={config}
+/>
