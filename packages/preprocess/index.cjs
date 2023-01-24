@@ -193,7 +193,7 @@ const updateExtractedQueriesDir = function(content, filename){
                         e = (e.message === undefined || e.message === null) ? Error(circularRefErrorMsg) : e
                         query.compileError = e.message
                         query.compiledQueryString = e.message
-                        // if build is strict and we detect circular reference, force a failure
+                        // if build is strict and we detect an error, force a failure
                         if (strictBuild){
                             throw new Error(e.message)
                         }
