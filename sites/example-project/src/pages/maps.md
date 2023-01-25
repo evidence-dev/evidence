@@ -81,9 +81,13 @@ select "United States of America" as name, 500 as value
 ```
 
 ```us_abbrev
-select "CA" as name, "CA" as abbrev, 100 as value
+select "CA" as name, 100 as sales
 union all
-select "NY" as name, "NY" as abbrev, 100 as value
+select "TX" as name, 120 as sales
+union all
+select "FL" as name, 20 as sales
+union all
+select "WA" as name, 5 as sales
 
 ```
 
@@ -94,9 +98,19 @@ discede?
 
 <USMap
     data={us_abbrev}
+    state=name
+    value=sales
     abbreviations=true
-    min=50
-    title="US State Map"
+/>
+
+Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
+pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
+discede?
+
+<USMap
+    data={demoData}
+    state=name
+    value=sales
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore

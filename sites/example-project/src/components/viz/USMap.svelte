@@ -1,15 +1,31 @@
 <script>
     import EChartsMap from './EChartsMap.svelte'
+    import ErrorChart from './ErrorChart.svelte';
     import {colours} from '../modules/colours'
 
     export let data = undefined; 
 
+    export let state = undefined;
+    export let value = undefined;
+
     export let min = undefined;
+    export let max = undefined;
 
     export let title = undefined;
+    export let subtitle = undefined;
 
-    let minValue = min ?? Math.min(...data.map(d => d.value))
-    let maxValue = Math.max(...data.map(d => d.value))
+    let chartType = "US State Map";
+    let error;
+
+    if(state == undefined){
+      error = "Map requires a state column"
+    } else if(value == undefined){
+      error = "Map requires a value column"
+    }
+
+
+    let minValue = min ?? Math.min(...data.map(d => d[value]))
+    let maxValue = max ?? Math.max(...data.map(d => d[value]))
 
     let config 
 
@@ -18,9 +34,16 @@
 
     let nameProperty = abbreviations ? "abbrev" : "name"
 
+    let mapData = data;
+    for(let i=0; i<data.length; i++){
+      mapData[i].name = data[i][state];
+      mapData[i].value = data[i][value];
+    }
+
     $: config = {
         title: {
           text: title,
+          subtext: subtitle,
           padding: 0,
             itemGap: 7,
             textStyle: {
@@ -98,7 +121,7 @@
         },
         series: [
           {
-            name: 'Value',
+            name: value,
             type: 'map',
             zoom: 1.1,
             top: 45,
@@ -111,12 +134,12 @@
               }
             },
             itemStyle: {
-                borderColor: 'lightgrey',
-                areaColor: '#f7f7f7',
+                borderColor: colours.grey400,
+                areaColor: colours.grey100,
             },
             emphasis: {
               itemStyle: {
-                areaColor: '#c7c9c9',
+                areaColor: colours.grey300,
               },
               label: {
                 color: colours.grey900
@@ -125,13 +148,13 @@
             select: {
               disabled: false,
               itemStyle: {
-                areaColor: '#c7c9c9',
+                areaColor: colours.grey300,
               },
               label: {
                 color: colours.grey900
               }
             },
-            data: data,
+            data: mapData,
             // layoutCenter: ['45%', '55%'],
             // layoutSize: 550
             // left: 0,
@@ -144,7 +167,15 @@
 
       $: data, config
 
+
 </script>
+
+{#if !error}
 
 <EChartsMap {config} {data}/>
 
+{:else}
+
+<ErrorChart {error} {chartType}/>
+
+{/if}
