@@ -1,24 +1,39 @@
 import * as echarts from 'echarts';
-import usaMap from './usaMap.json'
+import usStateMap from './usStateMap.json'
 // import worldMap from './worldMap.json'
 
 export default(node, option, renderer) => {
 
-    echarts.registerMap('US', usaMap, {
+    echarts.registerMap('US', usStateMap, {
         Alaska: {
-        left: -145,
-        top: 45,
-        width: 15
+            left: -143,
+            top: 45,
+            width: 15
+        },
+        AK: {
+            left: -143,
+            top: 45,
+            width: 15
         },
         Hawaii: {
-        left: -140,
-        top: 28,
-        width: 5
+            left: -135,
+            top: 28,
+            width: 5
+        },
+        HI: {
+            left: -135,
+            top: 28,
+            width: 5
         },
         'Puerto Rico': {
-        left: -76,
-        top: 26,
-        width: 2
+            left: -76,
+            top: 26,
+            width: 2
+        },   
+        PR: {
+            left: -76,
+            top: 26,
+            width: 2
         }
     });
 

@@ -3,7 +3,7 @@
     import echartsCanvasDownload from "$lib/modules/echartsCanvasDownload";
     import EchartsCopyTarget from "./EchartsCopyTarget.svelte";
     import DownloadData from "../ui/DownloadData.svelte";
-
+ 
     export let config = undefined;    
 
     export let height = '291px'
