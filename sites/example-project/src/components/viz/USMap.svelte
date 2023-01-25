@@ -31,6 +31,104 @@
 
     let config 
 
+    // color palettes
+    export let colorScale = 'blue';
+    let colorArray;
+    $: if(colorScale === 'green'){
+      colorArray = [
+        '#f7fcfd',
+        '#e5f5f9',
+        '#ccece6',
+        '#99d8c9',
+        '#66c2a4',
+        '#41ae76',
+        '#238b45',
+        '#006d2c',
+        '#00441b'
+
+        // '#c6f5c4',
+        // '#a7dea4',
+        // '#83c480',
+        // '#6db369',
+        // '#51994d',
+        // '#3c8c37',
+        // '#2c8026',
+        // '#1c7016',
+        // '#0f610a',
+        // '#075202',
+      ]
+    } else if(colorScale === 'blue'){
+      colorArray = [
+        '#f7fbff',
+        '#deebf7',
+        '#c6dbef',
+        '#9ecae1',
+        '#6baed6',
+        '#4292c6',
+        '#2171b5',
+        '#08519c',
+        '#08306b'      
+      ]
+    } else if(colorScale === 'red'){
+      colorArray = [
+        '#fff5f0',
+        '#fee0d2',
+        '#fcbba1',
+        '#fc9272',
+        '#fb6a4a',
+        '#ef3b2c',
+        '#cb181d',
+        '#a50f15',
+        '#67000d'
+      ]
+    } else if(colorScale === 'bluegreen'){
+      colorArray = [
+        // '#313695',
+        // '#4575b4',
+        // '#74add1',
+        // '#abd9e9',
+        // '#e0f3f8',
+        // '#ffffbf',
+        // '#fee090',
+        // '#fdae61',
+        // '#f46d43',
+        // '#d73027',
+        // '#a50026',
+
+        // '#ffffd9',
+        // '#edf8b1',
+        // '#c7e9b4',
+        // '#7fcdbb',
+        // '#41b6c4',
+        // '#1d91c0',
+        // '#225ea8',
+        // '#253494',
+        // '#081d58'  
+        
+        '#f7fcf0',
+        '#e0f3db',
+        '#ccebc5',
+        '#a8ddb5',
+        '#7bccc4',
+        '#4eb3d3',
+        '#2b8cbe',
+        '#0868ac',
+        '#084081'
+
+        // 'rgb(53, 74, 146)',
+        // 'rgb(59, 119, 183)',
+        // 'rgb(102, 162, 213)',
+        // 'rgb(156, 201, 235)',
+        // 'rgb(204, 230, 247)',
+        // 'rgb(234, 215, 192)',
+        // 'rgb(235, 163, 112)',
+        // 'rgb(216, 116, 83)',
+        // 'rgb(188, 72, 59)',
+        // 'rgb(156, 41, 56)',
+
+      ]
+    }
+
     export let abbreviations = false;
     abbreviations = (abbreviations === "true" || abbreviations === true);
 
@@ -101,29 +199,7 @@
           itemWidth: 15,
           show: false,
           inRange: {
-            color: [
-            //   '#313695',
-            //   '#4575b4',
-            //   '#74add1',
-            //   '#abd9e9',
-            //   '#e0f3f8',
-            //   '#ffffbf',
-            //   '#fee090',
-            //   '#fdae61',
-            //   '#f46d43',
-            //   '#d73027',
-            //   '#a50026',
-            '#c6f5c4',
-            '#a7dea4',
-            '#83c480',
-            '#6db369',
-            '#51994d',
-            '#3c8c37',
-            '#2c8026',
-            '#1c7016',
-            '#0f610a',
-            '#075202',
-            ]
+            color: colorArray
           },
           text: ['High', 'Low'],
           calculable: false,
