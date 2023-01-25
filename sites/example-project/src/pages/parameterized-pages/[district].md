@@ -1,62 +1,28 @@
 
 ```federal_reserve_districts
     select 
-        upper(fed_reserve_district) as name, 
+        fed_reserve_district as name, 
         count(distinct institution_name) as distinct_institutions,
         from `bigquery-public-data.fdic_banks.institutions`
     group by 1
 ```
 
-
-
 # Details for <Value data={federal_reserve_districts.filter(d => d.name === $page.params.district)} column=name/>
 
 <DataTable data={federal_reserve_districts.filter(d => d.name == $page.params.district)} />
 
-## Bar Chart
-<BarChart
-    data={federal_reserve_districts}
-    x=name
-    y=distinct_institutions
-/>
-
-## Line Chart
-<LineChart
-    data={federal_reserve_districts}
-    x=name
-    y=distinct_institutions
-/>
-
-## Scatter Plot
-<ScatterPlot
-    data={federal_reserve_districts}
-    x=name
-    y=distinct_institutions
-/>
-
-## Data Table
-<DataTable
-    data={federal_reserve_districts.filter(d => d.name == $page.params.district | d.distinct_institutions === 12)}
-    rows=5
-    />
-
-<DataTable data={federal_reserve_districts} rows=2/>
-
-## Big Value
-<BigValue data={federal_reserve_districts.filter(d => d.name == $page.params.district)} value=distinct_institutions comparison=distinct_institutions/>
-
-
-```categories
-select 
-category,
-'/parameterized-pages/' || category || '/' as link,
-sum(sales) as sales_usd
-from orders
-group by 1
+```over_time
+select fed_reserve_district, date_trunc(established_date, year) as established_date, count(*) as banks 
+from `bigquery-public-data.fdic_banks.institutions`
+where established_date >= '1960-01-01'
+and established_date <= '2005-01-01'
+group by fed_reserve_district, established_date
 ```
 
-# Details for <Value data={categories.filter(d => d.category === $page.params.district)} column=category/>
+<LineChart
+    data={over_time.filter(d => d.fed_reserve_district === $page.params.district)}
+    x=established_date
+    y=banks
+    title="Banks Established By Year in {$page.params.district}"
+/>
 
-## Sales
-
-<BigValue data={categories.filter(d => d.category === $page.params.district)} value=sales_usd/>
