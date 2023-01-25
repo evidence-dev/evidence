@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte';
+    import { page } from '$app/stores'
 
     let headers;
 
@@ -35,7 +36,7 @@
 {#if headers && headers.length > 1}
 {#each headers as header, i}
     <a 
-    href={'#' + encodeURIComponent(header.innerText + i)} 
+    href={$page.path + '#' + encodeURIComponent(header.innerText + i)} 
     class={header.nodeName == 'H1' ? 'h1' : 'h2'}
     >
         {header.innerText}
