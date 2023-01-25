@@ -1,6 +1,9 @@
 <script>
     import EChartsMap from './EChartsMap.svelte'
     import ErrorChart from './ErrorChart.svelte';
+    import checkInputs from '../modules/checkInputs';
+    import formatTitle from '../modules/formatTitle.js';
+    import getColumnSummary from '../modules/getColumnSummary';
     import {colours} from '../modules/colours'
 
     export let data = undefined; 
@@ -23,7 +26,6 @@
       error = "Map requires a value column"
     }
 
-
     let minValue = min ?? Math.min(...data.map(d => d[value]))
     let maxValue = max ?? Math.max(...data.map(d => d[value]))
 
@@ -33,6 +35,14 @@
     abbreviations = (abbreviations === "true" || abbreviations === true);
 
     let nameProperty = abbreviations ? "abbrev" : "name"
+
+    let columnSummary
+    try {
+      checkInputs(data, [state, value]);
+      columnSummary = getColumnSummary(data);
+    } catch(e) {
+      error = e.message;
+    }
 
     let mapData = data;
     for(let i=0; i<data.length; i++){
@@ -121,7 +131,7 @@
         },
         series: [
           {
-            name: value,
+            name: formatTitle(value, columnSummary[value].format),
             type: 'map',
             zoom: 1.1,
             top: 45,

@@ -81,13 +81,13 @@ select "United States of America" as name, 500 as value
 ```
 
 ```us_abbrev
-select "CA" as name, 100 as sales
+select "CA" as name, 100 as sales_usd
 union all
-select "TX" as name, 120 as sales
+select "TX" as name, 120 as sales_usd
 union all
-select "FL" as name, 20 as sales
+select "FL" as name, 20 as sales_usd
 union all
-select "WA" as name, 5 as sales
+select "WA" as name, 5 as sales_usd
 
 ```
 
@@ -99,7 +99,7 @@ discede?
 <USMap
     data={us_abbrev}
     state=name
-    value=sales
+    value=sales_usd
     abbreviations=true
 />
 
@@ -110,7 +110,7 @@ discede?
 <USMap
     data={demoData}
     state=name
-    value=sales
+    value=value
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
