@@ -20,7 +20,22 @@
 
     $: config = {
         title: {
-          text: title
+          text: title,
+          padding: 0,
+            itemGap: 7,
+            textStyle: {
+                fontSize: 14,
+                color: colours.grey700
+            },
+            subtextStyle: {
+                fontSize: 13,
+                color: colours.grey600,
+                overflow: "break"
+            },
+            top: '0%'
+        },
+        textStyle: {
+            fontFamily: "sans-serif"
         },
         tooltip: {
           trigger: 'item',
