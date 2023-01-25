@@ -1,6 +1,5 @@
 import * as echarts from 'echarts';
 import usStateMap from './usStateMap.json'
-// import worldMap from './worldMap.json'
 
 export default(node, option, renderer) => {
 
@@ -8,10 +7,7 @@ export default(node, option, renderer) => {
 
     const chart = echarts.init(node, {renderer: 'svg'});   
 
-
 	chart.setOption(option);
-
-
       
     let resizeObserver
     const containerElement = document.querySelector('div.content > article')
