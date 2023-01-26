@@ -19,7 +19,7 @@
     export let outlineWidth = undefined;
     export let labelPosition = "right";
     export let funnelAlign = "center";
-    export let funnelSort = "descending";
+    export let funnelSort = "none";
 
     // ---------------------------------------------------------------------------------------
     // Variable Declaration
