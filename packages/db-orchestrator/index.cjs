@@ -3,7 +3,7 @@ const md5 = require("blueimp-md5")
 const chalk = require('chalk')
 const logEvent = require('@evidence-dev/telemetry')
 const readline = require('readline');
-
+const strictBuild = (process.env.VITE_BUILD_STRICT === 'true')
 const cacheDirectory = "./.evidence-queries/cache";
 
 const getQueryCachePaths = (queryString, queryTime) => {
@@ -68,7 +68,6 @@ const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
 const runQueries = async function (routeHash, dev) {
     const settings = readJSONSync('./evidence.settings.json', {throws:false})
     const runQuery = await importDBAdapter(settings)
-
     let routePath = `./.evidence-queries/extracted/${routeHash}`
     let queryFile = `${routePath}/queries.json`
     let queries = readJSONSync(queryFile, { throws: false }) 
@@ -120,6 +119,10 @@ const runQueries = async function (routeHash, dev) {
                     logEvent("db-error", dev, settings)
                     queries[queryIndex].status = "error"
                     writeJSONSync(queryFile, queries)
+                    // if build is strict and the query fails, stop the build
+                    if(strictBuild){
+                        throw err
+                    }
                 } 
             }
         }
@@ -150,6 +153,10 @@ const testConnection = async function (dev) {
         process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
         result = err;
         logEvent("db-connection-error", dev, settings)
+        // if build is strict and database connection fails, stop the build
+        if(strictBuild){
+            throw err
+        }
     } 
     return result
 }

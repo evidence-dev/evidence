@@ -89,6 +89,31 @@ const watchPatterns =
       ,{'sourceRelative': '.','targetRelative':'./.evidence/template/src/','filePattern':'app.css'} // custom theme file
     ]
 
+    const buildHelper = function(command, args){
+      const watchers = runFileWatcher(watchPatterns)
+      const flatArgs = flattenArguments(args);
+      // Run svelte kit build in the hidden directory 
+      const child = spawn(command, flatArgs, {
+        shell: true, 
+        cwd:'.evidence/template', 
+        stdio: "inherit",
+      });
+      // Copy the outputs to the root of the project upon successful exit 
+      child.on('exit', function (code) {
+        if(code === 0) {
+          fs.copySync('./.evidence/template/build', './build')
+          console.log("Build complete --> /build ")
+        } else {
+          console.error("Build failed")
+        }
+        child.kill();
+        watchers.forEach(watcher => watcher.close())
+        if (code !== 0) {
+          throw `Build process exited with code ${code}`;
+        }
+      })
+    }
+  
 const prog = sade('evidence')
 
 prog
@@ -120,37 +145,17 @@ prog
   .action((args) => {
     populateTemplate()
     clearQueryCache()
-    const watchers = runFileWatcher(watchPatterns)
+    buildHelper("npx svelte-kit build", args)
 
-    const flatArgs = flattenArguments(args);
+  });
 
-    // Run svelte kit build in the hidden directory 
-    const child = spawn('npx svelte-kit build', flatArgs, {
-      shell: true, 
-      cwd:'.evidence/template', 
-      stdio: "inherit"});
-
-    // child.stdout.on('data', (data) => {
-    // });
-    // child.stderr.on('data', (data) => {
-    //   console.error(`${data}`);
-    // });
-    // Copy the outputs to the root of the project upon successful exit 
-
-    child.on('exit', function (code) {
-      if(code === 0) {
-        fs.copySync('./.evidence/template/build', './build')
-        console.log("Build complete --> /build ")
-      } else {
-        console.error("Build failed")
-      }
-      child.kill();
-      watchers.forEach(watcher => watcher.close())
-      if (code !== 0) {
-        throw `Build process exited with code ${code}`;
-      }
-    })
-
+  prog
+  .command('build:strict')
+  .describe("build production outputs and fails on error")
+  .action((args) => {
+    populateTemplate()
+    clearQueryCache()
+    buildHelper('VITE_BUILD_STRICT=true npx svelte-kit build', args)
   }); 
 
 

@@ -1,8 +1,7 @@
 <script>
     import {writable} from 'svelte/store'
     import {setContext} from 'svelte'
-    import { propKey, configKey } from './context'
-
+    import { propKey, configKey, strictBuild } from './context'
     let props = writable({})
     let config = writable({})
 
@@ -687,6 +686,10 @@ $: {
 
     } catch(e) {
         error = e.message;
+        // if the build is in production fail instead of sending the error to the chart
+        if (strictBuild){
+            throw error
+        }
         props.update(d => { return {...d, error} })
     }
 }
