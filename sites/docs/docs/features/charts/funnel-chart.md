@@ -34,6 +34,8 @@ hide_table_of_contents: false
 
 ### Alignment
 
+#### Left
+
 ![left-aligned-funnel](/img/exg-funnel-left-aligned-nt.svg)
 
 ```markdown
@@ -42,6 +44,19 @@ hide_table_of_contents: false
     nameCol=column_name
     valueCol=column_value
     funnelAlign=left
+/>
+```
+
+#### Right
+
+![right-aligned-funnel](/img/exg-funnel-right-aligned-nt.svg)
+
+```markdown
+<FunnelChart
+    data={query_name}
+    nameCol=column_name
+    valueCol=column_value
+    funnelAlign=right
 />
 ```
 
