@@ -111,7 +111,7 @@
     }
 
 
-      error = undefined;
+     error = undefined;
 
   } catch (e) {
       error = e.message;
@@ -248,12 +248,27 @@
       })
   }
 
+  /**
+   * Will find the matching column in columnSummary or throw an error if not found
+   * @param column
+   */
+  function safeExtractColumn(column) {
+    const foundCol = columnSummary.filter(d => d.id === column.id)
+    if (foundCol === undefined || foundCol.length !== 1 ){
+        error = (column.id === undefined) ? "please add an id properties to all the <Column ... /> element" : `column ${column.id} not found`
+        return ""
+    }
+
+    return foundCol[0]
+  }
+
   let tableData
   $: tableData = $props.columns.length > 0 ? dataSubset(data, $props.columns.map(d => d.id)) : data;
 
+
 </script>
 
-{#if !error}
+{#if error === undefined}
 
 <slot></slot>
 <div class="table-container" transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
@@ -275,7 +290,7 @@
           {#if $props.columns.length > 0}
               {#each $props.columns as column, i}
                   <th
-                      class="{columnSummary.filter(d => d.id === column.id)[0].type}"
+                      class="{safeExtractColumn(column).type}"
                       style="
                       text-align: {column.align};
                       color: {headerFontColor};
@@ -284,7 +299,7 @@
                       "
                       on:click={sortable ? sort(column.id) : ''}
                   >
-                      {column.title ? column.title : formatColumnTitles ? columnSummary.filter(d => d.id === column.id)[0].title : columnSummary.filter(d => d.id === column.id)[0].id}
+                      {column.title ? column.title : formatColumnTitles ? safeExtractColumn(column).title : safeExtractColumn(column).id}
                       {#if sortBy.col === column.id}
                           <SortIcon ascending={sortBy.ascending}/>
                       {/if}
@@ -341,7 +356,7 @@
           {#if $props.columns.length > 0}
               {#each $props.columns as column, i}
                   <td 
-                  class="{columnSummary.filter(d => d.id === column.id)[0].type}"
+                  class="{safeExtractColumn(column).type}"
                   class:row-lines={rowLines}
                   style="
                       text-align: {column.align};
@@ -365,16 +380,16 @@
                         >
                         {#if column.linkLabel != undefined}
                             {#if row[column.linkLabel] != undefined}
-                                {formatValue(row[column.linkLabel], columnSummary.filter(d => d.id === column.linkLabel)[0].format)}
+                                {formatValue(row[column.linkLabel], safeExtractColumn(column).format)}
                             {:else}
                                 {column.linkLabel}
                             {/if}
                         {:else}
-                            {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
+                            {formatValue(row[column.id], safeExtractColumn(column).format)}
                         {/if}
                     </a>
                   {:else}
-                    {formatValue(row[column.id], columnSummary.filter(d => d.id === column.id)[0].format)}
+                    {formatValue(row[column.id], safeExtractColumn(column).format)}
                   {/if}
                 </td>
               {/each}
