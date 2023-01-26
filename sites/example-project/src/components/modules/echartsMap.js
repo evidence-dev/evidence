@@ -1,11 +1,11 @@
-import * as echarts from 'echarts';
+import {init, registerMap} from 'echarts';
 import usStateMap from './usStateMap.json'
 
 export default(node, option, renderer) => {
 
-    echarts.registerMap('US', usStateMap);
+    registerMap('US', usStateMap);
 
-    const chart = echarts.init(node, {renderer: 'svg'});   
+    const chart = init(node, 'none', {renderer: 'svg'});   
 
 	chart.setOption(option);
       

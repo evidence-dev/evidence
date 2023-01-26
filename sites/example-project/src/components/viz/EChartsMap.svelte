@@ -26,7 +26,6 @@
     class="chart" 
     style="
         width: {width};
-        height: {height};
         margin-left: 0;
         margin-top: 15px;
         margin-bottom: 10px;
@@ -74,6 +73,24 @@
   
       .chart-container {
         padding: 0;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .chart {
+        height: 190px;
+      }
+    }
+
+    @media screen and (max-width: 600px) and (min-width: 480px) {
+      .chart {
+        height: 240px;
+      }
+    }
+
+    @media screen and (min-width: 600px) {
+      .chart {
+        height: 330px;
       }
     }
 
