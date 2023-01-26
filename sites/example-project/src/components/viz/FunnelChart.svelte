@@ -9,6 +9,7 @@
     export let data = undefined;
     export let nameCol = undefined;
     export let valueCol = undefined;
+    export let showPercent = false;
 
     export let title = undefined;
     export let subtitle = undefined;
@@ -40,7 +41,7 @@
     let chartAreaPaddingTop;
     let chartAreaPaddingBottom;
     let legendHeight;
-    let legendPaddingTop;
+    let legendPaddingTop; 
     let legendTop;
     let chartTop;
     let chartBottom;
@@ -57,11 +58,12 @@
     $: columnSummary = getColumnSummary(data);
     $: name = name ?? formatTitle(valueCol, columnSummary[nameCol].title);
     $: nameColFormat = columnSummary[nameCol].format;
+    $: valueColFormat = columnSummary[valueCol].format;
 
     // ---------------------------------------------------------------------------------------
     // Set up chart area
     // ---------------------------------------------------------------------------------------
-    chartAreaHeight = 250; // standard height for chart area across all charts
+    chartAreaHeight = 220; // standard height for chart area across all charts
 
     hasTitle = title ? true : false;
     hasSubtitle = subtitle ? true: false;
@@ -71,7 +73,7 @@
     subtitleFontSize = 13;
     titleBoxPadding = 10 * (hasSubtitle);
     titleBoxHeight = (hasTitle * titleFontSize) + (hasSubtitle * subtitleFontSize) + (titleBoxPadding * Math.max(hasTitle, hasSubtitle));
-    chartAreaTopPosition = (hasTitle * 45) + (hasSubtitle * 20)
+    chartAreaTopPosition = (hasTitle * 60) + (hasSubtitle * 20)
     chartAreaPaddingTop = 2;
     chartAreaPaddingBottom = 8;
 
@@ -100,9 +102,9 @@
     $: seriesConfig = {
         type: "funnel",
         name,
-        left: '10%',
+        left: funnelAlign === 'center' ? '10%' : '',
         top: chartAreaTopPosition,
-        bottom: 60,
+        bottom: 10,
         width: '80%',
         min,
         max,
@@ -123,9 +125,14 @@
         label: {
             show: true,
             position: labelPosition,
-            formatter:  '{c} \n {d}%'
+            formatter: function(params){
+                if(showPercent == "true"){
+                    return `${formatValue(params.value, valueColFormat)}(${params.percent}%)`;
+                } else {
+                    return formatValue(params.value, valueColFormat);
+                };   
+            },
         },
-       
         labelLayout: { hideOverlap: true },
         emphasis: {
             focus: "series",

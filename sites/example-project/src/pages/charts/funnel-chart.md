@@ -9,3 +9,6 @@
 </script>
 
 <FunnelChart data={funnelData} nameCol=name valueCol=value title="Funnel Chart" subtitle="Simple Funnel Chart" outlineColor="white" />
+<FunnelChart data={funnelData} nameCol=name valueCol=value title="Funnel Chart" subtitle="Ascending" outlineColor="white" funnelSort="ascending" />
+<FunnelChart data={funnelData} nameCol=name valueCol=value title="Funnel Chart" subtitle="Right Aligned" outlineColor="white" funnelAlign="right" />
+<FunnelChart data={funnelData} nameCol=name valueCol=value title="Funnel Chart" subtitle="Left Aligned" outlineColor="white" funnelAlign="left" />
