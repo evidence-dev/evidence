@@ -127,7 +127,7 @@
             position: labelPosition,
             formatter: function(params){
                 if(showPercent == "true"){
-                    return `${formatValue(params.value, valueColFormat)}(${params.percent}%)`;
+                    return `${formatValue(params.value, valueColFormat)} \n(${params.percent}%)`;
                 } else {
                     return formatValue(params.value, valueColFormat);
                 };   
@@ -143,7 +143,7 @@
         },
         tooltip: {
             formatter: function(params){
-                return `<span style='font-weight:600;'>${formatValue(params.name, nameColFormat)}</span></br><span>Value:</span><span style='margin-left: 4px;'> ${params.value}</span>`
+                return `<span style='font-weight:600;'>${formatValue(params.name, nameColFormat)}</span></br><span>${name}:</span><span style='margin-left: 4px;'> ${params.value}</span>`
             },
             padding: 6,
                 borderRadius: 4, 
