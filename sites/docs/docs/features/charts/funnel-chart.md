@@ -7,7 +7,7 @@ hide_table_of_contents: false
 
 <h1 class="community-header"><span class="gradient">&lt;Funnel Chart/></span></h1>
 
-![funnel](/img/exg-funnel-nt.svg)
+![funnel](/img/funnel-default.png)
 
 ```markdown
 <FunnelChart 
@@ -21,7 +21,7 @@ hide_table_of_contents: false
 
 ### Ascending
 
-![ascending-funnel](/img/exg-funnel-ascending-nt.svg)
+![ascending-funnel](/img//funnel-asc.png)
 
 ```markdown
 <FunnelChart 
@@ -34,9 +34,7 @@ hide_table_of_contents: false
 
 ### Alignment
 
-#### Left
-
-![left-aligned-funnel](/img/exg-funnel-left-aligned-nt.svg)
+![left-aligned-funnel](/img//funnel-align.png)
 
 ```markdown
 <FunnelChart 
@@ -47,18 +45,6 @@ hide_table_of_contents: false
 />
 ```
 
-#### Right
-
-![right-aligned-funnel](/img/exg-funnel-right-aligned-nt.svg)
-
-```markdown
-<FunnelChart
-    data={query_name}
-    nameCol=column_name
-    valueCol=column_value
-    funnelAlign=right
-/>
-```
 
 ## Props
 

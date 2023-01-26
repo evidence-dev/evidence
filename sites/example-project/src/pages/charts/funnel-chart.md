@@ -18,6 +18,8 @@ select 14 as customers, 'Order' as stage,
 
 <FunnelChart data={funnel_data} nameCol=stage valueCol=customers title="Funnel Chart" subtitle="Descending" outlineColor="white" funnelSort="Descending"/>
 
+<FunnelChart data={funnel_data} nameCol=stage valueCol=customers title="Funnel Chart" subtitle="Ascending" outlineColor="white" funnelSort="ascending"/>
+
 <FunnelChart data={funnel_data} nameCol=stage valueCol=customers title="Funnel Chart" subtitle="Right Aligned" outlineColor="white" funnelAlign="right"/>
 
 <FunnelChart data={funnel_data} nameCol=stage valueCol=customers title="Funnel Chart" subtitle="Left Aligned" outlineColor="white" funnelAlign="left"/>
