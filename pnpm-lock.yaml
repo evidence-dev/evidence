@@ -285,6 +285,12 @@ importers:
       remark-math: 3.0.1
       url-loader: 4.1.1_file-loader@6.2.0
 
+  sites/docs-evidence:
+    specifiers:
+      '@evidence-dev/evidence': workspace:^
+    dependencies:
+      '@evidence-dev/evidence': link:../../packages/evidence
+
   sites/example-project:
     specifiers:
       '@evidence-dev/telemetry': 1.0.4
@@ -9640,6 +9646,7 @@ packages:
 
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
+    requiresBuild: true
 
   /graceful-fs/4.2.8:
     resolution: {integrity: sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==}

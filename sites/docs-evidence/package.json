@@ -1,0 +1,17 @@
+{
+  "name": "my-evidence-project",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "evidence build",
+    "dev": "evidence dev -o",
+    "test": "evidence build"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=14.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@evidence-dev/evidence": "workspace:^"
+  }
+}

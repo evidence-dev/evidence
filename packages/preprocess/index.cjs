@@ -5,6 +5,24 @@ const visit = require('unist-util-visit')
 const md5 = require("blueimp-md5");
 const fs = require('fs')
 const fsExtra = require('fs-extra')
+const { supportedLangs } = require("./supportedLanguages.cjs");
+// This is future proofing for when we add support for Prism highlighting
+const prismLangs = new Set()
+const PrismComponents = require("prismjs/components");
+
+supportedLangs.forEach((supportedLanguage) => {
+    prismLangs.add(supportedLanguage)
+    if (supportedLanguage in PrismComponents.languages) {
+        const languageComponent = PrismComponents.languages[supportedLanguage]
+        if (languageComponent.alias) {
+            if (Array.isArray(languageComponent.alias)) {
+                languageComponent.alias.forEach(a => prismLangs.add(a))
+            } else {
+                prismLangs.add(languageComponent.alias)
+            }
+        }
+    }
+})
 const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
 
 const getRouteHash = function(filename){
@@ -78,6 +96,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
         import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
+        import CodeBlock from '${componentSource}/ui/CodeBlock.svelte';
         import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
         
         export let data = {};
@@ -156,6 +175,8 @@ const updateExtractedQueriesDir = function(content, filename){
 
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
+         // Prevent "real" code blocks from being interpreted as queries
+         if (prismLangs.has(id.toLowerCase())) return
         let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
         let inputQueryString = compiledQueryString // original, as written 
         let compiled = false // default flag, switched to true if query is compiled
@@ -221,6 +242,10 @@ function highlighter(code, lang) {
 
     // Repalce curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
+    // Ensure that "real" code blocks are rendered with syntax highlighting.
+    if (prismLangs.has(lang.toLowerCase())) {
+        return `<CodeBlock source="${code}"></CodeBlock>`;
+        }
     return `
     {#if data.${lang} }
         <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/> 

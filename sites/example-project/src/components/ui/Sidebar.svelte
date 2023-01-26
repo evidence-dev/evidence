@@ -7,6 +7,7 @@
 
 	export let menu;
 	export let folderList;
+	export let projectTitle = 'Evidence';
 
 	// Keep only folders with at least 1 page that is not index.md or a parameterized page (path contains '[')
 	folderList = folderList.filter(d => d.fileCount > 0)
@@ -26,7 +27,7 @@
 <aside class="sidebar" class:open>
     <div class="sticky">
         <div class=nav-header>
-            <a href='/' on:click={() => open = !open}><h2 class=project-title>Evidence</h2></a>
+            <a href='/' on:click={() => open = !open}><h2 class=project-title>{projectTitle}</h2></a>
         </div>
         <nav>
 			{#if folderList}

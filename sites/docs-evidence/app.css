@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Spectral+SC&display=swap');
+
+
+html {
+	scroll-behavior: smooth;
+}
+
+body, html {
+	height: 100%;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+img {
+	text-align: center;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+	border-radius: 4px;
+}	
+
+td > img {
+	max-width: unset;
+	border-radius: unset;
+}
+
+body {
+	font-family: 'Spectral', serif;
+	font-size: 18px;
+	line-height: 1.6;
+	font-weight: normal;
+	color: var(--grey-900);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+	/* background-color: #F8FAFC ; */
+}
+
+p, ul, ol {
+	margin-block-end: 1em;
+	margin-block-start: 0em;
+	-moz-font-feature-settings: "onum";
+	-ms-font-feature-settings: "onum";
+	-webkit-font-feature-settings: "onum";
+	font-feature-settings: "onum";
+}
+
+ul ul, ol ol  {
+	margin-block-end: 0em;
+}
+
+li + li {
+	margin-top: 0.25em;
+}
+
+h1, h2, h3, h4, h5, h6  {
+	font-weight: normal;
+	font-family: var(--ui-font-family);
+	line-height: 1.5;
+	margin: 0.8em 0 0.3em 0; 
+	scroll-margin-top: var(--header-height); /* ensure that table of contents links scroll with room for the header */
+}
+
+h1:first-of-type {
+	font-size: 1.8em;
+	font-weight: bold;
+	color: var(--grey-800);
+	border-top: none;
+	padding-top: 0;
+	margin: 0em 0 0.2em 0; 
+}
+
+h1 {
+	font-size: 1.8em;
+	font-weight: bold;
+	color: var(--grey-800);
+	display: block;
+	border-top: 1px solid var(--grey-200);
+	padding-top: 0.2em;
+}
+
+
+h1:active {
+	display: block;
+}
+
+h2 { 
+	font-size: 1.3em;
+	font-weight: bold;
+	color: var(--grey-800);
+}
+
+h3 {
+	font-size: 0.9em;
+	font-weight: bold;
+	color: var(--grey-800);
+}
+
+h4 {
+	font-size: 0.9em;
+	text-transform: lowercase;
+	font-family: 'Spectral SC', serif;
+	letter-spacing: 0.04em;
+}
+
+h5 {
+	font-size:0.8em;
+	font-family: 'Spectral', serif;
+	letter-spacing: 0.05em;
+}
+
+h6 {
+	font-size: 0.65em;
+	font-family: 'Spectral', serif;
+	letter-spacing: 0.025em;
+}
+
+article a {
+		color: var(--blue-link);
+		text-decoration: underline;
+		text-decoration-color: var(--blue-100); 
+		text-decoration-thickness: .1em;
+		text-underline-offset: 0.05em;
+	}
+
+article a:hover {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: var(--blue-200); 
+	text-decoration-thickness: .1em;
+	text-underline-offset: 0.05em;
+}
+
+
+hr {
+	display: block;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	margin-left: auto;
+	margin-right: auto;
+	border-top: 1px solid var(--grey-200);
+	border-bottom:none;
+	border-left:none;
+	border-right:none;
+	width: 75%;
+	
+}
+
+code {
+	font-family: var(--monospace-font-family);
+	font-size: 0.85em;
+	background-color: var(--grey-100);
+	padding: 0.05em 0.2em;
+	border: solid 1px var(--grey-200);
+	border-radius: 4px;
+	color: var(--grey-800);
+	-webkit-user-select: all;
+	-moz-user-select: all;
+	user-select: all;
+}
+
+blockquote {
+
+	border-left: 4px solid var(--grey-300);
+	padding: 0em 0em 0em 0.75em;
+	margin-left: 0;
+	margin-right: 0;
+	color: var(--grey-600);
+
+}
+
+
+@media (max-width: 600px) {
+	body {
+		font-size: 16px;
+	}
+}
+
+article > table{
+    min-width:100%;
+    font-size: 0.75em;
+    border-collapse: collapse;
+    font-family: var(--ui-font-family);
+    text-align: left;
+    margin: 1em auto 1.5em auto;
+}
+
+article > table th{
+	font-weight: 600;
+	border-bottom: 1px solid var(--grey-800);
+	padding:0 8px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+article > table td{
+	max-width: 1px;
+	padding: 4px 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* border: 1px solid var(--grey-200); */
+}
+
+article > table tr:nth-child(even){
+	background-color: var(--grey-100);
+}
+
+:root {
+	/* Layout header height */
+	--header-height: 3.5rem; 
+	/* Font stacks */
+	--monospace-font-family:  Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace;
+	--ui-font-family: "SF Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
+	--ui-font-family-compact: "SF Compact Display", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--color1: #923d59;
+	--color2: #488f96;
+	--color3: #518eca;
+	--color4: #B3A9A0;
+	--color5: #3F6C51;
+	--color6: #ffc857;
+	--color7: #495867;
+	--color8: #bfdbf7;
+	--color9: #bc4749;
+	--color10: #EEEBD0;
+	--color11: #F68E5F;
+	--color12: #923d59;
+	--color13: #488f96;
+	--color14: #518eca;
+	--color15: #B3A9A0;
+	--color16: #3F6C51;
+	--color17: #ffc857;
+	--color18: #495867;
+	--color19: #bfdbf7;
+	--color20: #bc4749;
+
+	/* Colour System */
+	--blue-100: hsla(202, 100%, 95%, 1);
+	--blue-200: hsla(204, 100%, 85%, 1);
+	--blue-300: hsla(206, 95%, 72%, 1);
+	--blue-400: hsla(208, 90%, 63%, 1);
+	--blue-500: hsla(210, 85%, 54%, 1);
+	--blue-600: hsla(212, 96%, 44%, 1);
+	--blue-700: hsla(214, 98%, 38%, 1);
+	--blue-800: hsla(217, 98%, 33%, 1);
+	--blue-900: hsla(220, 99%, 24%, 1);
+	--blue-999: hsla(222, 100%, 18%, 1);
+	--blue-link: hsla(205, 62%, 38%, 1);
+	--green-100: hsla(167, 100%, 94%, 1);
+	--green-200: hsla(166, 100%, 87%, 1);
+	--green-300: hsla(163, 93%, 76%, 1);
+	--green-400: hsla(161, 90%, 63%, 1);
+	--green-500: hsla(159, 88%, 44%, 1);
+	--green-600: hsla(158, 91%, 35%, 1);
+	--green-700: hsla(156, 93%, 28%, 1);
+	--green-800: hsla(154, 95%, 23%, 1);
+	--green-900: hsla(152, 100%, 18%, 1);
+	--green-999: hsla(150, 100%, 14%, 1);
+	--grey-100: hsla(217, 33%, 97%, 1);
+	--grey-200: hsla(215, 15%, 91%, 1);
+	--grey-300: hsla(211, 16%, 82%, 1);
+	--grey-400: hsla(212, 13%, 65%, 1);
+	--grey-500: hsla(212, 10%, 53%, 1);
+	--grey-600: hsla(212, 12%, 43%, 1);
+	--grey-700: hsla(210, 14%, 37%, 1);
+	--grey-800: hsla(210, 18%, 30%, 1);
+	--grey-900: hsla(210, 20%, 25%, 1);
+	--grey-999: hsla(211, 24%, 16%, 1);
+	--red-50: #fdf1f1; 
+	--red-100: hsla(0, 100%, 95%, 1);
+	--red-200: hsla(0, 100%, 87%, 1);
+	--red-300: hsla(0, 100%, 80%, 1);
+	--red-400: hsla(0, 91%, 69%, 1);
+	--red-500: hsla(0, 83%, 62%, 1);
+	--red-600: hsla(356, 75%, 53%, 1);
+	--red-700: hsla(354, 85%, 44%, 1);
+	--red-800: hsla(352, 90%, 35%, 1);
+	--red-900: hsla(350, 94%, 28%, 1);
+	--red-999: hsla(348, 94%, 20%, 1);
+	--yellow-100: hsla(49, 100%, 96%, 1);
+	--yellow-200: hsla(48, 100%, 88%, 1);
+	--yellow-300: hsla(48, 95%, 76%, 1);
+	--yellow-400: hsla(48, 94%, 68%, 1);
+	--yellow-500: hsla(44, 92%, 63%, 1);
+	--yellow-600: hsla(42, 87%, 55%, 1);
+	--yellow-700: hsla(36, 77%, 49%, 1);
+	--yellow-800: hsla(29, 80%, 44%, 1);
+	--yellow-900: hsla(22, 82%, 39%, 1);
+	--yellow-999: hsla(15, 86%, 30%, 1);
+	
+}
+
+@media print {
+
+	@page {
+		margin-top: 17mm;
+		margin-bottom: 13mm;
+		margin-left: 30mm;
+		margin-right: 30mm;
+	}
+
+	html {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		color-adjust: exact;	
+	}
+
+	h1, h2, h3 {
+		page-break-inside: avoid;
+	}
+	
+	h1::after, h2::after, h3::after {
+		content: "";
+		display: block;
+		height: 100px;
+		margin-bottom: -100px;
+	}
+
+	article {
+		orphans: 2;
+		widows: 2;	
+	}
+}

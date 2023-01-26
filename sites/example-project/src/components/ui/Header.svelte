@@ -1,14 +1,17 @@
 <script>
     import BreadCrumbs from './BreadCrumbs.svelte';
     import PrintButton from './PrintButton.svelte';
+    import GithubLink from './GithubLink.svelte';
     export let menu;
     export let folderList;
+    export let url="https://github.com/evidence-dev/"
 </script>
 
 <header>
     <div class="breadcrumb-container">
         <BreadCrumbs {menu} {folderList}/>
         <PrintButton/>
+        <GithubLink {url}/>
     </div>
 </header>
 
