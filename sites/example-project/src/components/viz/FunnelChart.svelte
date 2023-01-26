@@ -9,7 +9,6 @@
     export let data = undefined;
     export let nameCol = undefined;
     export let valueCol = undefined;
-    export let showPercent = false;
 
     export let title = undefined;
     export let subtitle = undefined;
@@ -126,11 +125,7 @@
             show: true,
             position: labelPosition,
             formatter: function(params){
-                if(showPercent == "true"){
-                    return `${formatValue(params.value, valueColFormat)} \n(${params.percent}%)`;
-                } else {
                     return formatValue(params.value, valueColFormat);
-                };   
             },
         },
         labelLayout: { hideOverlap: true },
