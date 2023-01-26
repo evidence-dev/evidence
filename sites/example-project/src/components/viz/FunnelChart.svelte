@@ -16,7 +16,7 @@
 
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
-    export let labelPosition = "right";
+    export let labelPosition = "inside";
     export let funnelAlign = "center";
     export let funnelSort = "none";
 
