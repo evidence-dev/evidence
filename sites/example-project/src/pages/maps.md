@@ -1,6 +1,4 @@
 <script>
-import USMap from '$lib/viz/USMap.svelte'
-
 let demoData = [
               { name: 'Alabama', population: 4822023 },
               { name: 'Alaska', population: 731449 },
@@ -111,7 +109,7 @@ discede?
     data={demoData}
     state=name
     value=population
-    colorScale=bluegreen
+    colorScale=blue
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
