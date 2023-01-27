@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 11.0.0
+
+### Minor Changes
+
+- c801fa9: New capability to fail build if there are errors in components or queries
+
+### Patch Changes
+
+- Updated dependencies [ccbca9c]
+- Updated dependencies [c801fa9]
+  - @evidence-dev/components@1.9.0
+  - @evidence-dev/db-orchestrator@1.2.0
+  - @evidence-dev/preprocess@1.5.0
+
 ## 10.0.0
 
 ### Patch Changes

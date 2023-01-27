@@ -1,5 +1,15 @@
 # @evidence-dev/components
 
+## 1.9.0
+
+### Minor Changes
+
+- c801fa9: New capability to fail build if there are errors in components or queries
+
+### Patch Changes
+
+- ccbca9c: Fixes table of contents links for parameterized pages
+
 ## 1.8.0
 
 ### Minor Changes
