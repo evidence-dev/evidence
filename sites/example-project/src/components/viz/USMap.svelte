@@ -1,6 +1,7 @@
 <script>
     import EChartsMap from './EChartsMap.svelte'
     import ErrorChart from './ErrorChart.svelte';
+    import { strictBuild } from './context';
     import checkInputs from '../modules/checkInputs';
     import formatTitle from '../modules/formatTitle.js';
     import getColumnSummary from '../modules/getColumnSummary';
@@ -221,6 +222,9 @@
       }
     } catch(e) {
       error = e.message;
+      if (strictBuild){
+        throw error
+      }
     }
 
       $: data, config
