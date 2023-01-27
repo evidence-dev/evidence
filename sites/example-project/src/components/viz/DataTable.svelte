@@ -253,13 +253,13 @@
    * @param column
    */
   function safeExtractColumn(column) {
-    const foundCol = columnSummary.filter(d => d.id === column.id)
-    if (foundCol === undefined || foundCol.length !== 1 ){
-        error = (column.id === undefined) ? "please add an id properties to all the <Column ... /> element" : `column ${column.id} not found`
-        return ""
+    const foundCols = columnSummary.filter(d => d.id === column.id)
+    if (foundCols === undefined || foundCols.length !== 1 ){
+        error = (column.id === undefined) ? "please add an id property to all the <Column ... />" : `column ${column.id} not found`
+        return
     }
 
-    return foundCol[0]
+    return foundCols[0]
   }
 
   let tableData
