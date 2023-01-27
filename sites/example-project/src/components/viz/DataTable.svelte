@@ -252,7 +252,11 @@
   function safeExtractColumn(column) {
     const foundCols = columnSummary.filter(d => d.id === column.id)
     if (foundCols === undefined || foundCols.length !== 1 ){
-        error = (column.id === undefined) ? new Error("please add an id property to all the <Column ... />") : new Error(`column ${column.id} not found`)
+        error = (column.id === undefined) ? new Error(`please add an "id" property to all the <Column ... />`) : new Error(`column with id: "${column.id}" not found`)
+        if(strictBuild){
+            throw error
+        }
+        console.warn(error.message)
         return ""
     }
 
