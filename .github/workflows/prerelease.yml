@@ -3,8 +3,7 @@ name: Prerelease
 on:
   push:
     branches:
-      # temporary for testing the feature, will move to main
-      - 594-set-up-pre-release-branch
+      - main
 jobs:
   prerelease:
     if: github.repository == 'evidence-dev/evidence'
@@ -14,7 +13,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
-          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
       - uses: pnpm/action-setup@v2.2.1
         with:
