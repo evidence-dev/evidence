@@ -364,7 +364,7 @@
                       height: {column.height};
                       width: {column.width};
                   ">
-                  {#if column.contentType === "image"}
+                  {#if column.contentType === "image" && row[column.id] !== undefined}
                     <img 
                     src={row[column.id]} 
                     alt={column.alt ? row[column.alt] : row[column.id].replace(/^(.*[\\\/])/g, "").replace(/[.][^.]+$/g, "")} 
@@ -374,7 +374,7 @@
                         width: {column.width};
                         "
                     />
-                  {:else if column.contentType === "link"}
+                  {:else if column.contentType === "link" && row[column.id] !== undefined}
                     <a 
                         href={row[column.id]}
                         target={column.openInNewTab ? "_blank" : ""}
