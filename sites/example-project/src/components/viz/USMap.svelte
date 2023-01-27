@@ -20,15 +20,6 @@
     let chartType = "US State Map";
     let error;
 
-    if(state == undefined){
-      error = "Map requires a state column"
-    } else if(value == undefined){
-      error = "Map requires a value column"
-    }
-
-    let minValue = min ?? Math.min(...data.map(d => d[value]))
-    let maxValue = max ?? Math.max(...data.map(d => d[value]))
-
     let config 
 
     // color palettes
@@ -92,9 +83,18 @@
     let columnSummary
     $: try {
       error = undefined;
-      columnSummary = getColumnSummary(data);
+      if(!state){
+        throw new Error("state is required")
+      } else if(!value){
+        throw new Error("value is required")
+      }
       checkInputs(data, [state, value]);
- 
+    
+      let minValue = min ?? Math.min(...data.map(d => d[value]))
+      let maxValue = max ?? Math.max(...data.map(d => d[value]))
+
+      columnSummary = getColumnSummary(data);
+
       let mapData = JSON.parse(JSON.stringify(data));
       for(let i=0; i<data.length; i++){
         mapData[i].name = data[i][state];
