@@ -197,12 +197,13 @@
         ],
         media: [{
           query: {
-              maxWidth: 600               
+              maxWidth: 500               
           },
           option: {
               series: [                   
                   {
                   top: title ? subtitle ? 48 : 32 : 25,
+                  zoom: title ? subtitle ? 0.9 : 1.1 : 1.1
                   }
               ]
           }
@@ -211,7 +212,8 @@
           option: {
             series: [
               {
-                top: title ? subtitle ? 53 : 45 : 35
+                top: title ? subtitle ? 53 : 45 : 35,
+                zoom: title ? subtitle ? 1.1 : 1.1 : 1.1
               }
             ]
           }

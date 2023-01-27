@@ -104,8 +104,10 @@ discede?
     data={us_abbrev}
     state=name
     value=sales_usd
-    colorScale=red
+    colorScale=blue
     abbreviations=true
+    title="US Sales Data"
+    subtitle="Texas leading in sales"
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
