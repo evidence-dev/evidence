@@ -1,12 +1,13 @@
 <script>
-    import echarts from "$lib/modules/echarts";
+    import echartsMap from "$lib/modules/echartsMap";
     import echartsCanvasDownload from "$lib/modules/echartsCanvasDownload";
     import EchartsCopyTarget from "./EchartsCopyTarget.svelte";
     import DownloadData from "../ui/DownloadData.svelte";
- 
+
+
     export let config = undefined;    
 
-    export let height = '291px'
+    export let height = '310px'
     export let width = '100%'
 
     export let data;
@@ -14,6 +15,7 @@
     let downloadChart = false;
     let copying = false
     let hovering = false
+
 </script>
 
 <svelte:window on:copy={() => {copying = true; setTimeout(() => { copying = false }, 0);}}/>
@@ -23,15 +25,13 @@
 <div 
     class="chart" 
     style="
-        height: {height};
         width: {width};
         margin-left: 0;
         margin-top: 15px;
         margin-bottom: 10px;
         overflow: visible;
-        display: {copying ? 'none' : 'inherit'}
     "
-    use:echarts={config}
+    use:echartsMap={config}
 />
 
 <EchartsCopyTarget {config} {height} {width} {copying}/> 
@@ -46,6 +46,7 @@
 </div>
 
 </div>
+
 
 {#if downloadChart}
 <div 
@@ -65,30 +66,49 @@
 {/if}
 
 <style>
-  @media print {
+    @media print {
+      .chart {
+        break-inside: avoid;
+      }
+  
+      .chart-container {
+        padding: 0;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .chart {
+        height: 190px;
+      }
+    }
+
+    @media screen and (max-width: 600px) and (min-width: 480px) {
+      .chart {
+        height: 240px;
+      }
+    }
+
+    @media screen and (min-width: 600px) {
+      .chart {
+        height: 330px;
+      }
+    }
+
     .chart {
-      break-inside: avoid;
+      -moz-user-select: none;  
+      -webkit-user-select: none;  
+      -ms-user-select: none;  
+      -o-user-select: none;  
+      user-select: none;
     }
-
-    .chart-container {
-      padding: 0;
+  
+    .chart-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin: 3px 12px;
+      font-size: 12px;
+      height: 9px
     }
-  }
-  .chart {
-    -moz-user-select: none;  
-    -webkit-user-select: none;  
-    -ms-user-select: none;  
-    -o-user-select: none;  
-    user-select: none;
-  }
-
-  .chart-footer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin: 3px 12px;
-    font-size: 12px;
-    height: 9px
-  }
-
-</style>
+  
+  </style>

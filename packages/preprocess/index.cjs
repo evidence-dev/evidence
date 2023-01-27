@@ -78,6 +78,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
+        import USMap from '${componentSource}/viz/USMap.svelte';
         import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
         import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
         
