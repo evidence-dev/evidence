@@ -58,7 +58,7 @@
   export let showLinkCol = false; // hides link column when columns have not been explicitly selected
   showLinkCol = (showLinkCol === "true" || showLinkCol === true);
 
-  let error = undefined;
+  let error = undefined
 
   // ---------------------------------------------------------------------------------------
   // Add props to store to let child components access them
@@ -109,9 +109,6 @@
     for(let i=0; i<columnSummary.length; i++){
             columnSummary[i].show = (showLinkCol === false && columnSummary[i].id === link) ? false : true
     }
-
-
-     error = undefined;
 
   } catch (e) {
       error = e.message;
@@ -255,8 +252,8 @@
   function safeExtractColumn(column) {
     const foundCols = columnSummary.filter(d => d.id === column.id)
     if (foundCols === undefined || foundCols.length !== 1 ){
-        error = (column.id === undefined) ? "please add an id property to all the <Column ... />" : `column ${column.id} not found`
-        return
+        error = (column.id === undefined) ? new Error("please add an id property to all the <Column ... />") : new Error(`column ${column.id} not found`)
+        return ""
     }
 
     return foundCols[0]
