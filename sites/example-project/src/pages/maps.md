@@ -89,6 +89,12 @@ select "WA" as name, 5 as sales_usd
 
 ```
 
+```testabb
+select "CA" as namef, 100 as value
+union all 
+select "TX" as namef, 200 as value
+```
+
 ## US State Map
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
@@ -98,6 +104,7 @@ discede?
     data={us_abbrev}
     state=name
     value=sales_usd
+    colorScale=red
     abbreviations=true
 />
 
@@ -109,7 +116,8 @@ discede?
     data={demoData}
     state=name
     value=population
-    colorScale=blue
+    colorScale=red
+    abbreviations=false
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore

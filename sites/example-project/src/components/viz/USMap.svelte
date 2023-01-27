@@ -86,25 +86,22 @@
 
     export let abbreviations = false;
     abbreviations = (abbreviations === "true" || abbreviations === true);
-    $: abbreviations
 
     let nameProperty = abbreviations ? "abbrev" : "name"
 
     let columnSummary
-    try {
-      checkInputs(data, [state, value]);
+    $: try {
+      error = undefined;
       columnSummary = getColumnSummary(data);
-    } catch(e) {
-      error = e.message;
-    }
+      checkInputs(data, [state, value]);
+ 
+      let mapData = JSON.parse(JSON.stringify(data));
+      for(let i=0; i<data.length; i++){
+        mapData[i].name = data[i][state];
+        mapData[i].value = data[i][value];
+      }
 
-    let mapData = data;
-    $: for(let i=0; i<data.length; i++){
-      mapData[i].name = data[i][state];
-      mapData[i].value = data[i][value];
-    }
-
-    $: config = {
+      config = {
         title: {
           text: title,
           subtext: subtitle,
@@ -220,9 +217,12 @@
           }
         }]
       }
+    } catch(e) {
+      error = e.message;
+    }
 
       $: data, config
-
+    
 
 </script>
 
