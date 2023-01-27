@@ -33,6 +33,7 @@
 		"build:dev-workspace": "pnpm --filter ./sites/example-project build", 
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build", 
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
+		"release:next": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm publish --tag next",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
 		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts "
 	}
