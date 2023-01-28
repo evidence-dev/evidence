@@ -59,6 +59,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { pageHasQueries, routeHash } from '@evidence-dev/components/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
+        import VennDiagram from '${componentSource}/diagrams/VennDiagram.svelte';
         import Value from '${componentSource}/viz/Value.svelte';
         import BigValue from '${componentSource}/viz/BigValue.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
