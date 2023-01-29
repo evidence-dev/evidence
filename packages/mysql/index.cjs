@@ -78,9 +78,25 @@ const runQuery = async (queryString, database) => {
             database: database ? database.database : process.env["MYSQL_DATABASE"] || process.env["database"] || process.env["DATABASE"],
             password: database ? database.password : process.env["MYSQL_PASSWORD"] || process.env["password"] || process.env["PASSWORD"],
             port: database ? database.port : process.env["MYSQL_PORT"] || process.env["port"] || process.env["PORT"],
-            ssl: database ? database.ssl : process.env["MYSQL_SSL"] || process.env["ssl"] || process.env["SSL"],
             socketPath: database ? database.socketPath : process.env["MYSQL_SOCKETPATH"] || process.env["socketPath"] || process.env["SOCKETPATH"],
             decimalNumbers: true
+        }
+        
+        let ssl_opt = database ? database.ssl : process.env["MYSQL_SSL"] || process.env["ssl"] || process.env["SSL"]
+        
+        if (ssl_opt === "true") {
+            credentials = Object.assign(credentials, {ssl: {}});
+        } else if (ssl_opt === "Amazon RDS") {
+            credentials = Object.assign(credentials, {ssl: 'Amazon RDS'});
+        } else if (ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined) {
+            credentials = credentials
+        } else {
+            try {
+                let obj = JSON.parse(ssl_opt);
+                credentials = Object.assign(credentials, {ssl: obj});
+            } catch (e) {
+                console.log(e)
+            }
         }
 
         var pool = mysql.createPool(credentials);
