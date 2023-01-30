@@ -1,5 +1,16 @@
 # @evidence-dev/db-orchestrator
 
+## 1.2.0
+
+### Minor Changes
+
+- c801fa9: New capability to fail build if there are errors in components or queries
+
+### Patch Changes
+
+- Updated dependencies [6f2dbf2]
+  - @evidence-dev/mysql@0.1.4
+
 ## 1.1.12
 
 ### Patch Changes
