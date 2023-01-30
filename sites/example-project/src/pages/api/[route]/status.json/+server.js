@@ -1,6 +1,7 @@
 import fs from 'fs';
+import { json } from '@sveltejs/kit';
 
-export async function get({params}) {
+export async function GET({params}) {
   const { route } = params;
   let status = []
   let queries
@@ -12,9 +13,5 @@ export async function get({params}) {
     });
   }   
 
-  return {
-      body: {
-        status
-      }
-  };
+  return json({ status })
 }

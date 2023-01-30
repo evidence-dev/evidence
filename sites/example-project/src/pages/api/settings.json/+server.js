@@ -1,8 +1,11 @@
+export const prerender = false;
+
 import fs from 'fs';
 import path from 'path';
 import gitRemoteOriginUrl from 'git-remote-origin-url'; // get the git repo
-import { dev } from '$app/env';
+import { dev } from '$app/environment';
 import logEvent from '@evidence-dev/telemetry'; 
+import { json } from '@sveltejs/kit';
 
 function getLocalGitRepo () {
     if(fs.existsSync(path.join(path.resolve('../../'), '.git'))){
@@ -10,11 +13,9 @@ function getLocalGitRepo () {
     }
 }
 
-export async function get() {
+export async function GET() {
     if (!dev) {
-        return {
-            status: 404
-        }
+        return new Response(undefined, { status: 404 })
     }
     else { 
         let settings = {}
@@ -31,20 +32,13 @@ export async function get() {
         }catch {
             
         }
-        return {
-            header: "accept: application/json",
-            status: 200,
-            body: {
-                settings,
-                gitIgnore
-            }
-        }
+        return json({ settings, gitIgnore })
     }
 }
 
 
-export function post(request) {    
-    const {settings} = JSON.parse(request.body)
+export async function POST({request}) {    
+    const {settings} = await request.json();
     // read original settings file 
     let originalSettings = {}
     if (fs.existsSync('evidence.settings.json')) {
@@ -83,9 +77,7 @@ export function post(request) {
             fs.writeFileSync('../../.gitignore', gitIgnore)
         }
     }
-    return {
-        body: settings
-    }
+    return json(settings)
 }
 
 // Breaking changes in new verion of Svelte kit - merged on Jan 19, 2022

@@ -2,7 +2,7 @@
     export let organization = "evidence.dev"
 </script>
 
-<a href="/" rel="prefetch" sveltekit:prefetch>{organization}</a>
+<a href="/">{organization}</a>
 
 <style>
     a {

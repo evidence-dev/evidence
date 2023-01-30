@@ -2,16 +2,17 @@
   "name": "@evidence-dev/components",
   "version": "1.4.2",
   "scripts": {
-    "dev": "svelte-kit package && svelte-kit dev",
-    "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
-    "package": "svelte-kit package && pnpm clean-package",
+    "dev": "svelte-package && vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "package": "svelte-package && pnpm clean-package",
     "clean-package": "node scripts/clean-package.js",
     "prepublishOnly": "pnpm package",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "type": "module",
   "dependencies": {
+    "svelte": "3.55.0",
     "@evidence-dev/telemetry": "1.0.4",
     "@tidyjs/tidy": "2.4.4",
     "downloadjs": "1.4.7",
@@ -21,13 +22,15 @@
     "git-remote-origin-url": "4.0.0",
     "prismjs": "1.29.0",
     "ssf": "^0.11.2",
-    "svelte-icons": "2.1.0",
-    "svelte-tiny-linked-charts": "1.1.4"
+    "svelte-icons": "2.1.0"
   },
   "publishConfig": {
     "directory": "../../packages/components"
   },
   "devDependencies": {
+    "@sveltejs/package": "1.0.1",
+    "typescript": "4.9.4",
+    "vite": "3.2.0",
     "cross-env": "^7.0.3",
     "fs-extra": "^10.0.1",
     "jest": "^28.1.2"
