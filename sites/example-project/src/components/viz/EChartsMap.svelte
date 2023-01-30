@@ -12,6 +12,8 @@
 
     export let data;
 
+    export let hasLink = false;
+
     let downloadChart = false;
     let copying = false
     let hovering = false
@@ -31,7 +33,7 @@
         margin-bottom: 10px;
         overflow: visible;
     "
-    use:echartsMap={config}
+    use:echartsMap={{config, hasLink}}
 />
 
 <EchartsCopyTarget {config} {height} {width} {copying}/> 
