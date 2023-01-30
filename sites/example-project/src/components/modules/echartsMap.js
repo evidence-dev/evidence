@@ -5,9 +5,11 @@ export default(node, option, renderer) => {
 
     registerMap('US', usStateMap);
 
+    let hasLink = option.hasLink;
+
     const chart = init(node, 'none', {renderer: 'svg'});   
 
-	chart.setOption(option);
+	chart.setOption(option.config);
       
     let resizeObserver
     const containerElement = document.querySelector('div.content > article')
@@ -19,6 +21,14 @@ export default(node, option, renderer) => {
         })
     }
     
+    if(hasLink){
+        chart.on('click', function (params) {
+            if(params.data && params.data.link){
+                window.location = params.data.link;
+            }
+        });    
+    }
+
     if (window.ResizeObserver && containerElement) {
         resizeObserver = new ResizeObserver(resizeChart)
         resizeObserver.observe(containerElement)
@@ -28,7 +38,7 @@ export default(node, option, renderer) => {
 
     return {
 		update(option){
-			chart.setOption(option, true, true);
+			chart.setOption(option.config, true, true);
 		},
         destroy() {
             if (resizeObserver) {

@@ -17,6 +17,9 @@
 
     export let title = undefined;
     export let subtitle = undefined;
+    
+    export let link = undefined;
+    let hasLink = link !== undefined;
 
     let chartType = "US State Map";
     let error;
@@ -100,6 +103,9 @@
       for(let i=0; i<data.length; i++){
         mapData[i].name = data[i][state];
         mapData[i].value = data[i][value];
+        if(link){
+          mapData[i].link = data[i][link];
+        }
       }
 
       config = {
@@ -234,7 +240,16 @@
 
 {#if !error}
 
-<EChartsMap {config} {data}/>
+<EChartsMap {config} {data} {hasLink}/>
+
+{#if link}
+  {#each data as row}
+    {#if row[link] !== undefined}
+      <!-- svelte-ignore a11y-missing-content -->
+      <a href={row[link]} style="display: none;">{row[link]}</a>
+    {/if}
+  {/each}
+{/if}
 
 {:else}
 
