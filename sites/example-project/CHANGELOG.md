@@ -1,5 +1,24 @@
 # @evidence-dev/components
 
+## 1.9.0
+
+### Minor Changes
+
+- c0f69cb: Updated the examples for funnel chart in docs, addressed PR feedback
+- 5fbbb9c: US state map
+- c801fa9: New capability to fail build if there are errors in components or queries
+- 470291c: Addition of error handling on <DataTable .../> with unknown or missing column.id fixing #580
+
+### Patch Changes
+
+- e2550fd: Add link function to US map
+- ccbca9c: Fixes table of contents links for parameterized pages
+- fa4edec: Reduced funnel chart height, added legend and updated label to show values.
+- c06c1a1: Adds US Map component to page imports
+- 77cc9c9: Adds strict error handling option to USMap
+- 2e81dbe: Reduces size of imports from echarts library
+- db92de1: Adds a minimal venn diagram to available components.
+
 ## 1.8.0
 
 ### Minor Changes
