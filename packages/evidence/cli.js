@@ -28,6 +28,12 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
+const isPage = /^[^_].*\.md$/
+
+function isPageRoute(path) {
+  return isPage.test(path.split('/').slice(-1))
+}
+
 const runFileWatcher = function(sourceRelative,targetRelative) {
   const ignoredFiles = [
     "./pages/settings/**", 
@@ -40,11 +46,23 @@ const runFileWatcher = function(sourceRelative,targetRelative) {
 
   const sourcePath = p => path.join('./', p)
   const targetPath = p => path.join(targetRelative, path.relative(sourceRelative, p))
+  const pagePath =   p => p.endsWith("index.md")? targetPath(p).replace("index.md", "+page.md") : targetPath(p).replace(".md", "/+page.md")
+
+  function handleFileChange(path) {
+    if(isPageRoute(path)){
+        if (!fs.existsSync(pagePath(path))) {
+            fs.mkdirSync(pagePath(path).replace("/+page.md", ""))
+        }
+        fs.copyFileSync(sourcePath(path), pagePath(path))
+    } else {
+        fs.copyFileSync(sourcePath(path), targetPath(path))
+    }
+  }
 
   watcher
-      .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-      .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-      .on('unlink', path => fs.rmSync(targetPath(path)))
+      .on('add', handleFileChange)
+      .on('change', handleFileChange)
+      .on('unlink', path => isPageRoute(path)? fs.rmSync(pagePath(path)) : fs.rmSync(targetPath(path)))
       .on('addDir', path => {
         if(!fs.existsSync(targetPath(path))){
           fs.mkdirSync(targetPath(path))}
@@ -85,7 +103,7 @@ prog
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
-    const child = spawn('npx svelte-kit dev', flatArgs, {
+    const child = spawn('npx vite dev', flatArgs, {
       shell: true, 
       detached: false, 
       cwd:'.evidence/template', 
@@ -112,7 +130,7 @@ prog
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit build in the hidden directory 
-    const child = spawn('npx svelte-kit build', flatArgs, {
+    const child = spawn('npx vite build', flatArgs, {
       shell: true, 
       cwd:'.evidence/template', 
       stdio: "inherit"});

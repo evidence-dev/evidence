@@ -6,7 +6,7 @@
 
     export let folderList;
 
-    $: pathArray = $page.path.split('/').slice(1)
+    $: pathArray = $page.url.pathname.split('/').slice(1)
 
     const buildCrumbs = function (pathArray) {
         let crumbs = [

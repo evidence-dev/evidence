@@ -1,6 +1,5 @@
 <script>
   import { fly, scale } from "svelte/transition";
-  import { page } from "$app/stores";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { routeHash } from '@evidence-dev/components/ui/stores';
@@ -13,6 +12,10 @@
   );
 
   async function getStatus() {
+    if (endpoint == "") {
+        return [];
+    }
+
     const res = await fetch(`/api/${endpoint}/status.json`);
     const { status } = await res.json();
 
@@ -47,10 +50,14 @@
     return true;
   }
 
-  onMount(async () => {
-    setInterval(async () => {
+  onMount(() => {
+    const interval = setInterval(() => {
       checkStatusAndInvalidate(statuses);
     }, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
   });
 </script>
 

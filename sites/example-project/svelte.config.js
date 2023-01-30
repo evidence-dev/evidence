@@ -11,21 +11,12 @@ const config = {
 		files: {
 			routes: 'src/pages',
 			lib: 'src/components'
-		},
-		package: {
-			dir: '../../packages/components',
-			emitTypes: true
-		},
-		vite: {
-			optimizeDeps: {
-				include: ['echarts-stat'],
-				exclude: ['@evidence-dev/components']
-			},
-			ssr: {
-				external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
-			}
 		}
-	}
+	},
+    package: {
+        dir: '../../packages/components',
+        emitTypes: true
+    }
 };
 
 export default config;

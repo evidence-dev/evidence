@@ -1,3 +1,6 @@
+export const prerender = false;
+
+import { json } from "@sveltejs/kit";
 import fs from "fs";
 import path from "path";
 
@@ -8,7 +11,7 @@ const DEFAULT_CUSTOM_FORMATTING_SETTINGS = {
   customFormats: [],
 };
 
-export async function get() {
+export async function GET() {
   let customFormattingSettings = {};
   try {
     customFormattingSettings = getCustomFormattingSettings() || customFormattingSettings;
@@ -16,15 +19,11 @@ export async function get() {
     // custom settings will be empty for now.
   }
   let result = { customFormattingSettings };
-  return {
-    header: "accept: application/json",
-    status: 200,
-    body: result,
-  };
+  return json(result);
 }
 
-export function post(request) {
-  const { newCustomFormat } = JSON.parse(request.body);
+export async function POST({request}) {
+  const { newCustomFormat } = await request.json();
 
   let customFormattingSettings = getCustomFormattingSettings() || {};
 
@@ -37,11 +36,11 @@ export function post(request) {
     }
     saveCustomFormattingSettings(customFormattingSettings);
   }
-  return { body: customFormattingSettings };
+  return json(customFormattingSettings);
 }
 
-export function del(request) {
-  const { formatTag } = JSON.parse(request.body);
+export async function DELETE({request}) {
+  const { formatTag } = await request.json();
   let customFormattingSettings = getCustomFormattingSettings() || {};
   if (formatTag) {
     if (!customFormattingSettings.customFormats) {
@@ -55,7 +54,7 @@ export function del(request) {
     }
     saveCustomFormattingSettings(customFormattingSettings);
   }
-  return { body: customFormattingSettings };
+  return json(customFormattingSettings);
 }
 
 function getCustomFormattingSettings() {

@@ -1,6 +1,6 @@
 <script>
     import { page } from '$app/stores';
-	import { dev } from '$app/env';
+	import { dev } from '$app/environment';
 	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte'
 	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte'
 	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
@@ -39,8 +39,8 @@
             {#each noFolders as item}
                 {#if item.href !== '/'}
 					{#if dev && item.nameError}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-							<div class=name-error class:selected="{"/"+$page.path.split('/')[1] === item.href}">
+						<a href={item.href} on:click={() => open = !open} style="">
+							<div class=name-error class:selected="{"/"+$page.url.pathname.split('/')[1] === item.href}">
 								<span class="alert-icon">
 									<MdErrorOutline/>
 									<span class=info-msg>Filenames cannot include spaces. Use hyphens instead.</span>
@@ -49,8 +49,8 @@
 							</div>
 						</a>
 					{:else}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-							<div class:selected="{"/"+$page.path.split('/')[1] === item.hrefUri}">
+						<a href={item.href} on:click={() => open = !open} style="">
+							<div class:selected="{"/"+$page.url.pathname.split('/')[1] === item.hrefUri}">
 								{item.label}
 							</div>
 						</a>
@@ -62,7 +62,7 @@
         </nav>
         {#if dev}
         <div class="nav-footer">
-			<a href='/settings' class="settings-link" class:selected="{$page.path === '/settings'}">
+			<a href='/settings' class="settings-link" class:selected="{$page.url.pathname === '/settings'}">
 				<span class="settings-icon">
 					<IoMdSettings/>
 				</span>

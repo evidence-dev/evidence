@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
-	import { dev } from '$app/env';
+	import { dev } from '$app/environment';
 	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
 
 	export let folder;
@@ -20,7 +20,7 @@
 	let expanded = false;
 
 	function toggle() {
-        if($page.path !== folderHrefUri){
+        if($page.url.pathname !== folderHrefUri){
 		    open = !open;
 			expanded = true;
         } else {
@@ -31,12 +31,12 @@
 </script>
 
 <div class="collapsible">
-	<div class="folder" class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
+	<div class="folder" class:selected={$page.url.pathname === folderHrefUri} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}>
 		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
 				class=collapse-icon
-                class:selected={$page.path === folderHrefUri}
-                class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}
+                class:selected={$page.url.pathname === folderHrefUri}
+                class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}
 				style="tran"
 				width="9"
 				height="9"
@@ -50,7 +50,8 @@
 			>
 		</button>
 		{#if folderList.filter((d) => d.folder === folder)[0].folderNameError}
-			<button class="folder-label nolink name-error" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+			<button>
+			<span class="folder-label nolink name-error" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
 				<span class="alert-icon-folder">
 					<MdErrorOutline/>
 					<span class=info-msg>Folder names cannot include spaces. Use hyphens instead.</span>
@@ -58,15 +59,15 @@
 				{folderLabel}
 			</button>
 		{:else if folderList.filter((d) => d.folder === folder)[0].folderLink}
-			<a href={'/' + folder} aria-expanded={expanded} sveltekit:prefetch on:click={toggle}>
-                <div class=folder-label class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
+		<a href={'/' + folder} aria-expanded={expanded} on:click={toggle}>
+                <div class=folder-label class:selected={$page.url.pathname === folderHrefUri} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}>
 				{folderLabel}
                 </div>
 			</a>
-		{:else}
-			<button class="folder-label nolink" class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri} aria-expanded={expanded} sveltekit:prefetch on:click={() => expanded = !expanded}>
+		{:else}		
+			<span class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
 				{folderLabel}
-			</button>
+			</span>
 		{/if}
 	</div>
 
@@ -75,7 +76,7 @@
 			{#each folderContents as item}
 				{#if !item.label.includes('[') && !(item.filename === "index.md" && item.hrefUri === item.folderHrefUri)}
 					{#if dev && item.nameError}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
+						<a href={item.href} on:click={() => open = !open} style="">
 							<div class="content-item name-error">
 								<span class="alert-icon-item">
 									<MdErrorOutline/>
@@ -85,8 +86,8 @@
 							</div>
 						</a>
 					{:else}
-						<a href={item.href} sveltekit:prefetch on:click={() => (open = !open)}>
-							<div class:selected={$page.path === item.hrefUri} class="content-item">
+						<a href={item.href} on:click={() => (open = !open)}>
+							<div class:selected={$page.url.pathname === item.hrefUri} class="content-item">
 								{item.label}
 							</div>
 						</a>
