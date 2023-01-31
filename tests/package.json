@@ -1,0 +1,13 @@
+{
+  "name": "ui-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "UI tests solution for Evidence",
+  "scripts": {
+    "test": "playwright test --config playwright.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.30.0",
+    "dotenv": "^16.0.1"
+  }
+}

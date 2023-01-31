@@ -1,0 +1,32 @@
+name: UI-Tests
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  wait_for_preview:
+    name: Wait for vercel-preview
+    runs-on: ubuntu-latest
+    outputs:
+      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
+    steps:
+      - name: Wait for preview-deployment
+        uses: patrickedqvist/wait-for-vercel-preview@main
+        id: waitForVercelPreviewDeployment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 120
+  tests:
+    name: UI Tests
+    needs: wait_for_preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - uses: microsoft/playwright-github-action@v1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test:ui
+        env:
+          BASE_URL: ${{ needs.wait_for_preview.outputs.preview_url }}

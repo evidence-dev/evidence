@@ -9,3 +9,8 @@ customization/
 /packages/evidence/template
 *.sqlite
 *.sqlite-journal
+
+# Ignore playright artifacts
+**/test-results/**
+**/playwright-report/**
+**/playwright/.cache/**

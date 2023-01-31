@@ -11,7 +11,13 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "type": "module",
-  "dependencies": {
+  "publishConfig": {
+    "directory": "../../packages/components"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "fs-extra": "^10.0.1",
+    "jest": "^28.1.2",    
     "@evidence-dev/telemetry": "1.0.4",
     "@tidyjs/tidy": "2.4.4",
     "downloadjs": "1.4.7",
@@ -23,14 +29,6 @@
     "ssf": "^0.11.2",
     "svelte-icons": "2.1.0",
     "svelte-tiny-linked-charts": "1.1.4"
-  },
-  "publishConfig": {
-    "directory": "../../packages/components"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "fs-extra": "^10.0.1",
-    "jest": "^28.1.2"
   },
   "jest": {
     "verbose": true
