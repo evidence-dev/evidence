@@ -1,6 +1,6 @@
 <script>
 
-let sankeyData= [
+let sankeyData = [
       {
         source: 'source',
         target: 'google',
