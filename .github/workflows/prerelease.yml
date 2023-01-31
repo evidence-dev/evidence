@@ -24,7 +24,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Publish tag:next to npm registry
-        run: VERSION=$(git rev-parse --short HEAD); pnpm -r exec npm pkg set version="0.0.0-$VERSION"; pnpm publish --tag next --no-git-checks --dry-run
+        run: release:next
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
