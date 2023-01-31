@@ -20,9 +20,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 16.x
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
       - name: Publish tag:next to npm registry
         run: pnpm run release:next
         env:
