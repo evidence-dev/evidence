@@ -3,7 +3,7 @@ name: Prerelease
 on:
   push:
     branches:
-      - main
+      - 594-set-up-pre-release-branch
 jobs:
   prerelease:
     if: github.repository == 'evidence-dev/evidence'
