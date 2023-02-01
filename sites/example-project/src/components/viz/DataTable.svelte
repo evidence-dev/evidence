@@ -34,7 +34,7 @@
 
   let marginTop = '1.5em';
   let marginBottom = '1em';
-  let paddingBottom = '1.5em';
+  let paddingBottom = '0em';
 
   // Table features
   export let search = false;
@@ -425,7 +425,15 @@
           <MdLastPage/>
       </div></button>
   </div>
+    {#if downloadable}
         <DownloadData class=download-button data={tableData} display={hovering}/>
+    {/if}
+</div>
+{:else}
+<div class=table-footer>
+    {#if downloadable}
+        <DownloadData class=download-button data={tableData} display={hovering}/>
+    {/if}
 </div>
 {/if}
 
@@ -564,6 +572,7 @@
       user-select: none;
       text-align: right; 
       margin-top: 0.5em; 
+      margin-bottom: 1.8em;
       font-variant-numeric: tabular-nums;
   }
 
@@ -617,6 +626,14 @@
     color: var(--grey-500);
   }
 
+  .table-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px 0px;
+    font-size: 12px;
+    height: 9px
+  }
 
 /* Remove number buttons in input box*/
   .page-input::-webkit-outer-spin-button,
