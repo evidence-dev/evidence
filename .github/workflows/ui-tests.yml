@@ -11,11 +11,12 @@ jobs:
       preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
     steps:
       - name: Wait for preview-deployment
-        uses: patrickedqvist/wait-for-vercel-preview@main
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
         id: waitForVercelPreviewDeployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 120
+          max_timeout: 180
+          check_interval: 5
   tests:
     name: UI Tests
     needs: wait_for_preview
