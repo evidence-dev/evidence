@@ -25,8 +25,17 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - uses: microsoft/playwright-github-action@v1
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run test:ui
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright Browser
+        run: npx playwright install --with-deps
+      - name: Run UI Tests
+        run: pnpm run test:ui
         env:
           BASE_URL: ${{ needs.wait_for_preview.outputs.preview_url }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
