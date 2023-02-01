@@ -15,6 +15,7 @@ jobs:
         id: waitForVercelPreviewDeployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          environment: "evidence-development-workspace"
           max_timeout: 180
           check_interval: 5
   tests:
@@ -22,16 +23,20 @@ jobs:
     needs: wait_for_preview
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 6.23.2
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install Playwright Browser
-        run: npx playwright install --with-deps
-      - name: Run UI Tests
-        run: pnpm run test:ui
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: npx playwright install --with-deps
+      - run: pnpm run test:ui
         env:
           BASE_URL: ${{ needs.wait_for_preview.outputs.preview_url }}
       - uses: actions/upload-artifact@v3
