@@ -23,6 +23,9 @@ const config = {
 			},
 			ssr: {
 				external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+			},
+			css: {
+				postcss: './postcss.config.cjs'
 			}
 		}
 	}
