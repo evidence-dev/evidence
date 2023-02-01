@@ -165,7 +165,7 @@
 <QueryStatus /> 
 {/if}
 
-<style>
+<style lang='postcss'>
 .grid {
   display: grid;
   grid-template-areas:
@@ -274,7 +274,7 @@ aside.toc {
 		z-index: 2;
 		position: fixed;
 		display: flex;
-		justify-content: end;
+		justify-content: flex-end;
 		width: 10%;
 		top: 0;
 		right: 0;
