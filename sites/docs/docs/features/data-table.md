@@ -171,7 +171,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 ### All Options
 * **data** - query name, wrapped in curly braces
-* **rows** - (Optional) # of rows to show in the table before paginating results. Default is 10 rows
+* **rows** - (Optional) # of rows to show in the table before paginating results. Default is 10 rows. Use `rows=all` to show all rows in the table.
 * **rowNumbers** - (Optional) true | false - turns on or off row index numbers (off by default)
 * **rowLines** - (Optional) true | false - turns on or off borders at the bottom of each row (on by default)
 * **rowShading** - (Optional) true | false - shades every second row in light grey (off by default)
