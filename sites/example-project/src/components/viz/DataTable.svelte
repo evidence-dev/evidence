@@ -572,6 +572,7 @@
       user-select: none;
       text-align: right; 
       margin-top: 0.5em; 
+      margin-bottom: 1.8em;
       font-variant-numeric: tabular-nums;
   }
 
