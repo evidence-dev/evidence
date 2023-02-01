@@ -381,16 +381,16 @@
                         >
                         {#if column.linkLabel != undefined}
                             {#if row[column.linkLabel] != undefined}
-                                {formatValue(row[column.linkLabel], safeExtractColumn(column).format)}
+                                {formatValue(row[column.linkLabel], safeExtractColumn(column).format, safeExtractColumn(column).columnUnitSummary)}
                             {:else}
                                 {column.linkLabel}
                             {/if}
                         {:else}
-                            {formatValue(row[column.id], safeExtractColumn(column).format)}
+                            {formatValue(row[column.id], safeExtractColumn(column).format, safeExtractColumn(column).columnUnitSummary)}
                         {/if}
                     </a>
                   {:else}
-                    {formatValue(row[column.id], safeExtractColumn(column).format)}
+                    {formatValue(row[column.id], safeExtractColumn(column).format, safeExtractColumn(column).columnUnitSummary)}
                   {/if}
                 </td>
               {/each}
@@ -399,7 +399,7 @@
               <td 
               class="{column.type}"
               class:row-lines={rowLines}
-              >{formatValue(row[column.id], column.format)}</td>
+              >{formatValue(row[column.id], column.format, column.columnUnitSummary)}</td>
               {/each}
           {/if}
       </tr>
