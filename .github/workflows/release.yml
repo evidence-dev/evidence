@@ -30,7 +30,6 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: npx playwright install
       # - run: pnpm build
 
       - name: Create Release Pull Request or Publish to npm

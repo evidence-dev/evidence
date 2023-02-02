@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "UI tests solution for Evidence",
   "scripts": {
-    "test": "playwright test --config playwright.config.ts"
+    "test:ui": "playwright test --config playwright.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.30.0",
