@@ -12,5 +12,8 @@
     "@evidence-dev/duckdb": "workspace:^",
     "@evidence-dev/db-commons": "workspace:^"
   },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
+  },
   "type": "module"
 }
