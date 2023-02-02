@@ -1,7 +1,7 @@
 {
   "name": "@evidence-dev/csv",
   "version": "0.0.1",
-  "description": "Redshift driver for Evidence projects",
+  "description": "CSV driver for Evidence projects, based on DuckDB driver",
   "main": "index.cjs",
   "author": "Sean Hughes",
   "license": "MIT",
