@@ -6,8 +6,10 @@
     import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
     import SqliteForm from '@evidence-dev/components/ui/Databases/SqliteForm.svelte'
     import DuckdbForm from '@evidence-dev/components/ui/Databases/DuckdbForm.svelte'
+    import CSVForm from '@evidence-dev/components/ui/Databases/CSVForm.svelte'
 
     import { slide, blur } from 'svelte/transition'
+    import { select } from '@tidyjs/tidy';
 
     export let settings 
     export let gitIgnore
@@ -26,11 +28,11 @@
         {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood
 		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
         {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm},
-        {id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm}
+        {id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm},
+        {id: 'csv', name: 'CSV', formComponent: CSVForm}
 	];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
-
     let disableSave = false;
 
     async function runTest() {
@@ -72,7 +74,11 @@
 
     function databaseChange() {
         testResult = null;
-        disableSave = true;
+        if(selectedDatabase.id === "csv"){
+            disableSave = false;
+        } else {
+            disableSave = true;
+        }
     }
 </script>
 

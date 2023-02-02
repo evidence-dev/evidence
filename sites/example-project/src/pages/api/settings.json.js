@@ -82,6 +82,52 @@ export function post(request) {
             })
             fs.writeFileSync('../../.gitignore', gitIgnore)
         }
+    } else if(settings.database === "duckdb"){
+        let gitIgnore;
+        let hasGitIgnore = fs.existsSync('../../.gitignore');
+        gitIgnore = hasGitIgnore ? fs.readFileSync('../../.gitignore', 'utf8') : "";
+        let extensions = [".duckdb", ".db"]
+        if(settings.credentials.gitignoreDuckdb === false){
+            let regex
+            if(hasGitIgnore){
+                extensions.forEach(ext => {
+                    regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+                    gitIgnore = gitIgnore.replace(regex, "")
+                })
+                fs.writeFileSync('../../.gitignore', gitIgnore)
+            }
+        } else if(settings.credentials.gitignoreDuckdb === true){
+            extensions.forEach(ext => {
+                regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+                if(!gitIgnore.match(regex)){
+                    gitIgnore = gitIgnore + ("\n" + ext)
+                }
+            })
+            fs.writeFileSync('../../.gitignore', gitIgnore)
+        }
+    } else if(settings.database === "csv"){
+            let gitIgnore;
+            let hasGitIgnore = fs.existsSync('../../.gitignore');
+            gitIgnore = hasGitIgnore ? fs.readFileSync('../../.gitignore', 'utf8') : "";
+            let extensions = [".csv"]
+            if(settings.credentials.gitignoreCsv === false){
+                let regex
+                if(hasGitIgnore){
+                    extensions.forEach(ext => {
+                        regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+                        gitIgnore = gitIgnore.replace(regex, "")
+                    })
+                    fs.writeFileSync('../../.gitignore', gitIgnore)
+                }
+            } else if(settings.credentials.gitignoreCsv === true){
+                extensions.forEach(ext => {
+                    regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+                    if(!gitIgnore.match(regex)){
+                        gitIgnore = gitIgnore + ("\n" + ext)
+                    }
+                })
+                fs.writeFileSync('../../.gitignore', gitIgnore)
+            }
     }
     return {
         body: settings

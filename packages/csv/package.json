@@ -1,0 +1,16 @@
+{
+  "name": "@evidence-dev/csv",
+  "version": "0.0.1",
+  "description": "Redshift driver for Evidence projects",
+  "main": "index.cjs",
+  "author": "Sean Hughes",
+  "license": "MIT",
+  "scripts": {
+    "test": "uvu test test.js"
+  },
+  "dependencies": {
+    "@evidence-dev/duckdb": "workspace:^",
+    "@evidence-dev/db-commons": "workspace:^"
+  },
+  "type": "module"
+}
