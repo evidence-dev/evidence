@@ -1,5 +1,7 @@
 import { test } from '@playwright/test';
 
-test('go to preview page', async ({ page }) => {
+const target = (process.env.CI) ? "preview" : "localhost"
+const title = `UI Tests can reach: ${target}`
+test(title, async ({ page }) => {
   await page.goto('/');
 });
