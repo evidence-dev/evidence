@@ -3,6 +3,11 @@ module.exports = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
+      fontFamily: {
+        monospace: ["Menlo", "Monaco", '"Lucida Console"', '"Liberation Mono"', '"DejaVu Sans Mono"', '"Bitstream Vera Sans Mono"', '"Courier New"', "monospace"],
+        ui: ['"SF Display"', "-apple-system", "BlinkMacSystemFont", "Roboto", "Helvetica", "Arial", "sans-serif", '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"'],
+        ui_compact: ['"SF Compact Display"', "-apple-system", "BlinkMacSystemFont", "Roboto", "Helvetica", "Arial", "sans-serif", '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"'],
+      },
       colors: {
         blue: {
           100: 'hsl(202, 100%, 95%, <alpha-value>)',
@@ -43,28 +48,28 @@ module.exports = {
         },
         red: {
           50: "#fdf1f1",
-          100: ',hsl(0, 100%, 95%, <alpha-value>)',
-          200: ',hsl(0, 100%, 87%, <alpha-value>)',
-          300: ',hsl(0, 100%, 80%, <alpha-value>)',
-          400: ',hsl(0, 91%, 69%, <alpha-value>)',
-          500: ',hsl(0, 83%, 62%, <alpha-value>)',
-          600: ',hsl(356, 75%, 53%, <alpha-value>)',
-          700: ',hsl(354, 85%, 44%, <alpha-value>)',
-          800: ',hsl(352, 90%, 35%, <alpha-value>)',
-          900: ',hsl(350, 94%, 28%, <alpha-value>)',
-          999: ',hsl(348, 94%, 20%, <alpha-value>)'
+          100: 'hsl(0, 100%, 95%, <alpha-value>)',
+          200: 'hsl(0, 100%, 87%, <alpha-value>)',
+          300: 'hsl(0, 100%, 80%, <alpha-value>)',
+          400: 'hsl(0, 91%, 69%, <alpha-value>)',
+          500: 'hsl(0, 83%, 62%, <alpha-value>)',
+          600: 'hsl(356, 75%, 53%, <alpha-value>)',
+          700: 'hsl(354, 85%, 44%, <alpha-value>)',
+          800: 'hsl(352, 90%, 35%, <alpha-value>)',
+          900: 'hsl(350, 94%, 28%, <alpha-value>)',
+          999: 'hsl(348, 94%, 20%, <alpha-value>)'
         },
         yellow: {
-          100: ',hsl(49, 100%, 96%, <alpha-value>)',
-          200: ',hsl(48, 100%, 88%, <alpha-value>)',
-          300: ',hsl(48, 95%, 76%, <alpha-value>)',
-          400: ',hsl(48, 94%, 68%, <alpha-value>)',
-          500: ',hsl(44, 92%, 63%, <alpha-value>)',
-          600: ',hsl(42, 87%, 55%, <alpha-value>)',
-          700: ',hsl(36, 77%, 49%, <alpha-value>)',
-          800: ',hsl(29, 80%, 44%, <alpha-value>)',
-          900: ',hsl(22, 82%, 39%, <alpha-value>)',
-          999: ',hsl(15, 86%, 30%, <alpha-value>)'
+          100: 'hsl(49, 100%, 96%, <alpha-value>)',
+          200: 'hsl(48, 100%, 88%, <alpha-value>)',
+          300: 'hsl(48, 95%, 76%, <alpha-value>)',
+          400: 'hsl(48, 94%, 68%, <alpha-value>)',
+          500: 'hsl(44, 92%, 63%, <alpha-value>)',
+          600: 'hsl(42, 87%, 55%, <alpha-value>)',
+          700: 'hsl(36, 77%, 49%, <alpha-value>)',
+          800: 'hsl(29, 80%, 44%, <alpha-value>)',
+          900: 'hsl(22, 82%, 39%, <alpha-value>)',
+          999: 'hsl(15, 86%, 30%, <alpha-value>)'
         },
         color: {
           1: '#923d59',
