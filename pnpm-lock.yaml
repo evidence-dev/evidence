@@ -77,9 +77,12 @@ importers:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
       '@evidence-dev/duckdb': workspace:^
+      dotenv: ^16.0.1
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
       '@evidence-dev/duckdb': link:../duckdb
+    devDependencies:
+      dotenv: 16.0.1
 
   packages/db-commons:
     specifiers:
