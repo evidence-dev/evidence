@@ -1,0 +1,29 @@
+name: Prerelease
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  prerelease:
+    if: github.repository == 'evidence-dev/evidence'
+    name: Prerelease
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 6.23.2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+      - name: Publish tag:next to npm registry
+        run: pnpm run release:next
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

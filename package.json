@@ -33,6 +33,7 @@
 		"build:dev-workspace": "pnpm --filter ./sites/example-project build", 
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build", 
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
+		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
 		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts "
 	}
