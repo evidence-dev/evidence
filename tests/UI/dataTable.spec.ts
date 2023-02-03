@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page, Locator } from '@playwright/test';
 import { supportLocalDev } from './local'
 
 
@@ -10,37 +10,37 @@ test.beforeEach(async({page})=>{
 
 test.describe('DataTable: New Table', () => {
   test('first table should display all rows', async ({ page }) => {
-    const tables = await page.getByRole('table').all()
-    const rows = await tables[0].getByRole('row').all()
+    const tables : Locator[] = await page.getByRole('table').all()
+    const rows : Locator[] = await tables[0].getByRole('row').all()
     await expect(rows).toHaveLength(11)
   });
 
   test('second table should display all rows', async ({ page }) => {
-    const tables = await page.getByRole('table').all()
-    const rows = await tables[1].getByRole('row').all()
+    const tables : Locator[] = await page.getByRole('table').all()
+    const rows : Locator[] = await tables[1].getByRole('row').all()
     await expect(rows).toHaveLength(11)
     
   });
   test('searching in a table should filter rows', async({page}) => {
-    const searches =  await page.getByPlaceholder('Search').all()
+    const searches : Locator[] =  await page.getByPlaceholder('Search').all()
     await expect(searches).toHaveLength(1)
     await searches[0].click()
     await searches[0].fill('Canada')
     await searches[0].press('Enter')
-    const table = await page.getByRole('table').all()
-    const filteredRows = await table[0].getByRole('row').all()
+    const tables : Locator[] = await page.getByRole('table').all()
+    const filteredRows : Locator[] = await tables[0].getByRole('row').all()
 
     await expect(filteredRows).toHaveLength(2)
   })
 
   test('pressing on next page should get the next rows', async({page}) => {
 
-    let secondRowText = await getSecondRowCountryText(page)
+    let secondRowText : string = await getSecondRowCountryText(page)
     await expect(secondRowText.trim()).toEqual('Australia')
 
     // click on next page
-    const tableSections = await page.locator('.table-container').all()
-    const allPageButtons = await tableSections[0].locator('.page-changer').all()
+    const tableSections : Locator[] = await page.locator('.table-container').all()
+    const allPageButtons : Locator[] = await tableSections[0].locator('.page-changer').all()
 
     await allPageButtons[2].click()
     // expect a different second row with new values
@@ -57,10 +57,10 @@ test.describe('DataTable: New Table', () => {
    * @returns 
    */
   async function getSecondRowCountryText(page : Page) : Promise<string>{
-    const tables = await page.getByRole('table').all()
-    const rows = await tables[0].getByRole('row').all()
+    const tables : Locator[] = await page.getByRole('table').all()
+    const rows : Locator[] = await tables[0].getByRole('row').all()
     // row 0 is the header
-    const secondRowItems = await rows[2].getByRole('cell').all()
+    const secondRowItems : Locator[] = await rows[2].getByRole('cell').all()
     return await secondRowItems[0].textContent()
   }
 })
