@@ -8,7 +8,7 @@ export type options = {
 }
 
 /**
- * Support running the test dev mode
+ * Support running the test in dev mode
  * where the page is constantly loading
  * @param options should match the Page.goto options
  * @returns modified options

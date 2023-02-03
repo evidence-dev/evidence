@@ -39,9 +39,3 @@ jobs:
       - run: pnpm run test:ui
         env:
           BASE_URL: ${{ needs.wait_for_preview.outputs.preview_url }}
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30

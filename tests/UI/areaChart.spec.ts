@@ -8,7 +8,7 @@ test.beforeEach(async({page})=>{
 
 
 test.describe('Charts: Area', () => {
-  test('user should get able to hide/show query and see SQL code', async ({ page }) => {
+  test('should be able to hide/show query and see SQL code', async ({ page }) => {
     const showQueryButton : Locator = await page.getByRole('button', { name: 'show-queries' })
     const hideQueryButton : Locator = await page.getByRole('button', { name: 'hide-queries' })
     const showSQLButton : Locator = await page.getByRole('button', { name: 'show-sql' })
@@ -16,6 +16,7 @@ test.describe('Charts: Area', () => {
     // show and hide button must be mutual exclusive
     const isHideVisible : boolean = await hideQueryButton.isVisible()
     const isShowVisible : boolean = await showQueryButton.isVisible()
+    // if one is visible the other must not be hidden
     expect(isHideVisible).toEqual(!isShowVisible)
 
     
@@ -47,7 +48,7 @@ test.describe('Charts: Area', () => {
       await expect(SQLCodeContainers[0]).toBeVisible()
     }
   });
-  test('should see save/download button and tooltip when mouse is hover the chart', async ({ page }) => {
+  test('should see save button, download button and tooltip when mouse is hover the chart', async ({ page }) => {
     await page.locator('g').first().hover()
     // wait for svelte animation
     await page.waitForTimeout(300)
