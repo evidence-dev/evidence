@@ -1,4 +1,4 @@
-import { test, expect, Page, Locator } from '@playwright/test';
+import { test, expect, Locator } from '@playwright/test';
 import { supportLocalDev } from './local'
 
 test.beforeEach(async({page})=>{
@@ -31,14 +31,12 @@ test.describe('Charts: Area', () => {
     }
 
     if(await showQueryButton.isVisible()){
+      
       await showQueryButton.click()
-
-
-
-      // show SQL button should be visible
+      // show-SQL button should be visible
       await expect(showSQLButton).toBeVisible()
 
-      // click on the show SQL button
+      // click on the show-SQL button
       await showSQLButton.click()
 
       // wait for animation
@@ -48,6 +46,23 @@ test.describe('Charts: Area', () => {
       expect(SQLCodeContainers.length).toEqual(1)
       await expect(SQLCodeContainers[0]).toBeVisible()
     }
-
   });
+  test('should see save/download button and tooltip when mouse is hover the chart', async ({ page }) => {
+    await page.locator('g').first().hover()
+    // wait for svelte animation
+    await page.waitForTimeout(300)
+  
+    // grab the save and download button
+    const saveImageButton : Locator = await page.getByRole('button', { name: 'Save image' })
+    const downloadDataButton : Locator = await page.getByRole('button', { name: 'Download data' })
+
+    // button should be visible
+    await expect(saveImageButton).toBeVisible()
+    await expect(downloadDataButton).toBeVisible()
+
+    // tooltip should be visible
+    const tooltip : Locator = await page.locator("#tooltip")
+    await expect(tooltip).toBeVisible()
+  })
+
 })

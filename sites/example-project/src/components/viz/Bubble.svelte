@@ -106,25 +106,25 @@
                 formatter: function(params) {
                     if(multiSeries){
                         if(tooltipTitle){
-                            tooltipOutput = `<span style='font-weight:600'>${formatValue(params.value[3], "0")}</span><br/>
+                            tooltipOutput = `<span id="tooltip" style='font-weight:600'>${formatValue(params.value[3], "0")}</span><br/>
                             ${formatTitle(series)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.seriesName)}</span><br/>
                             ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
                             ${formatTitle(typeof y === 'object' ? params.seriesName : y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
                             ${formatTitle(size, sizeFormat)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
                         } else {
-                            tooltipOutput = `<span style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>
+                            tooltipOutput = `<span id="tooltip" style='font-weight:600'>${formatValue(params.seriesName)}</span><br/>
                             ${formatTitle(x, xFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
                             ${formatTitle(typeof y === 'object' ? params.seriesName : y, yFormat)}: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
                             ${formatTitle(size, sizeFormat)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>: <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
                         }                    
                     } else {
                         if(tooltipTitle){
-                            tooltipOutput = `<span style='font-weight:600;'>${formatValue(params.value[3],"0")}</span><br/>
+                            tooltipOutput = `<span id="tooltip" style='font-weight:600;'>${formatValue(params.value[3],"0")}</span><br/>
                             <span style='font-weight: 400;'>${formatTitle(x, xFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
                             <span style='font-weight: 400;'>${formatTitle(y, yFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
                             <span style='font-weight: 400;'>${formatTitle(size, sizeFormat)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
                         } else {
-                            tooltipOutput = `<span style='font-weight: 600;'>${formatTitle(x, xFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
+                            tooltipOutput = `<span id="tooltip" style='font-weight: 600;'>${formatTitle(x, xFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[0], xFormat)}</span><br/>
                             <span style='font-weight: 600;'>${formatTitle(y, yFormat)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[1], yFormat)}</span><br/>
                             <span style='font-weight: 600;'>${formatTitle(size, sizeFormat)} <span style='font-weight: 400; color:var(--grey-400);'> (size)</span>:</span> <span style='float:right; margin-left: 15px;'>${formatValue(params.value[2], sizeFormat)}</span>`
                         }                    }
