@@ -9,7 +9,7 @@
 
   // Passing in value from dataset:
   export let data = null
-  export let row = 0    
+  export let row = 0
   export let column = null
 
   // Placeholder text when data not supplied:
@@ -124,7 +124,7 @@
       cursor: help;
       position:relative;
       text-transform: none;
-      margin-top: auto;
+      margin: auto;
       line-height: 1.3em;
   }
 
