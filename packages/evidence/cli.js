@@ -28,12 +28,6 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
-const isPage = /^[^_].*\.md$/
-
-function isPageRoute(path) {
-  return isPage.test(path.split('/').slice(-1))
-}
-
 const runFileWatcher = function(sourceRelative,targetRelative) {
   const ignoredFiles = [
     "./pages/settings/**", 
@@ -48,27 +42,26 @@ const runFileWatcher = function(sourceRelative,targetRelative) {
   const targetPath = p => path.join(targetRelative, path.relative(sourceRelative, p))
   const pagePath =   p => p.endsWith("index.md")? targetPath(p).replace("index.md", "+page.md") : targetPath(p).replace(".md", "/+page.md")
 
-  function handleFileChange(path) {
-    if(isPageRoute(path)){
-        if (!fs.existsSync(pagePath(path))) {
-            fs.mkdirSync(pagePath(path).replace("/+page.md", ""))
-        }
-        fs.copyFileSync(sourcePath(path), pagePath(path))
-    } else {
-        fs.copyFileSync(sourcePath(path), targetPath(path))
-    }
+  const syncFile = (file) => {
+    let source = sourcePath(file)
+    let svelteKitPagePath = pagePath(source)
+    let target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
+    fs.copySync(source, target)
+  }
+
+  const unlinkFile = (file) => { 
+    let source = sourcePath(file)
+    let svelteKitPagePath = pagePath(source)
+    let target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
+    fs.removeSync(target)
   }
 
   watcher
-      .on('add', handleFileChange)
-      .on('change', handleFileChange)
-      .on('unlink', path => isPageRoute(path)? fs.rmSync(pagePath(path)) : fs.rmSync(targetPath(path)))
-      .on('addDir', path => {
-        if(!fs.existsSync(targetPath(path))){
-          fs.mkdirSync(targetPath(path))}
-        })
-      .on('unlinkDir', path => fs.rmdirSync(targetPath(path)))
-  ;
+      .on('add', syncFile)
+      .on('change', syncFile)
+      .on('unlink', unlinkFile)
+      .on('addDir', path => {fs.ensureDirSync(targetPath(path))})
+      .on('unlinkDir', path => fs.removeSync(targetPath(path)));
   return watcher 
 }
 
