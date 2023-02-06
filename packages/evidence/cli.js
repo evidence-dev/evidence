@@ -40,19 +40,19 @@ const runFileWatcher = function(sourceRelative,targetRelative) {
 
   const sourcePath = p => path.join('./', p)
   const targetPath = p => path.join(targetRelative, path.relative(sourceRelative, p))
-  const pagePath =   p => p.endsWith("index.md")? targetPath(p).replace("index.md", "+page.md") : targetPath(p).replace(".md", "/+page.md")
+  const pagePath =  p => p.endsWith("index.md")? targetPath(p).replace("index.md", "+page.md") : targetPath(p).replace(".md", "/+page.md")
 
   const syncFile = (file) => {
-    let source = sourcePath(file)
-    let svelteKitPagePath = pagePath(source)
-    let target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
+    const source = sourcePath(file)
+    const svelteKitPagePath = pagePath(source)
+    const target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
     fs.copySync(source, target)
   }
 
   const unlinkFile = (file) => { 
-    let source = sourcePath(file)
-    let svelteKitPagePath = pagePath(source)
-    let target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
+    const source = sourcePath(file)
+    const svelteKitPagePath = pagePath(source)
+    const target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
     fs.removeSync(target)
   }
 
@@ -61,7 +61,7 @@ const runFileWatcher = function(sourceRelative,targetRelative) {
       .on('change', syncFile)
       .on('unlink', unlinkFile)
       .on('addDir', path => {fs.ensureDirSync(targetPath(path))})
-      .on('unlinkDir', path => fs.removeSync(targetPath(path)));
+      .on('unlinkDir', path => fs.rmdirSync(targetPath(path)));
   return watcher 
 }
 
@@ -96,7 +96,7 @@ prog
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
-    const child = spawn('npx vite dev', flatArgs, {
+    const child = spawn('npx vite dev --port 3000', flatArgs, {
       shell: true, 
       detached: false, 
       cwd:'.evidence/template', 

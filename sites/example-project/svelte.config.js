@@ -7,7 +7,9 @@ const config = {
 	extensions: ['.svelte', ".md"],
 	preprocess: evidencePreprocess(true), // Modify preprocess to allow for loading of $lib instead of package version of components library
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			strict: false
+		}),
 		files: {
 			routes: 'src/pages',
 			lib: 'src/components'
