@@ -1,13 +1,16 @@
 # Features Needed
-- Ability to reorder sidebar
-- Admonitions
-- A footer with links to sections etc
-- Tabs
-- SEO
+- FrontMatter
+    - Ability to reorder sidebar
+    - SEO
+    - Better control of Query Visibility
 - Search
+- A footer with links to sections etc
+- Edit favicon
+- Admonitions
+- Tabs
+- Link to Slack Community
+- Simple Analytics
 - Dark Mode
-- Better control of Query Visibility
-
 
 # Done
 - CodeBlocks
