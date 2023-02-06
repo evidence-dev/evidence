@@ -302,8 +302,6 @@ importers:
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: ^1.1.5
       typescript: 4.9.4
-    dependencies:
-      svelte-tiny-linked-charts: 1.1.5
     devDependencies:
       '@evidence-dev/telemetry': link:../../packages/telemetry
       '@sveltejs/package': 1.0.1_niwyv7xychq2ag6arq5eqxbomm
@@ -320,6 +318,7 @@ importers:
       ssf: 0.11.2
       svelte: 3.55.0
       svelte-icons: 2.1.0
+      svelte-tiny-linked-charts: 1.1.5
       typescript: 4.9.4
     publishDirectory: ../../packages/components
 
@@ -15732,7 +15731,7 @@ packages:
 
   /svelte-tiny-linked-charts/1.1.5:
     resolution: {integrity: sha512-27AlRKnz82GfswxoLkNjFtn1+C10bkpZb4kRH7d3qQVbgLLgNJY2ICSuWa+49Qh6jDFn6e/+qx3wWIz8kMmMkA==}
-    dev: false
+    dev: true
 
   /svelte/3.55.0:
     resolution: {integrity: sha512-uGu2FVMlOuey4JoKHKrpZFkoYyj0VLjJdz47zX5+gVK5odxHM40RVhar9/iK2YFRVxvfg9FkhfVlR0sjeIrOiA==}

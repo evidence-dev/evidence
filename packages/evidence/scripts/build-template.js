@@ -51,7 +51,6 @@ fs.outputFileSync('./template/svelte.config.js',
 fs.outputFileSync('./template/vite.config.js', 
     `
     import { sveltekit } from '@sveltejs/kit/vite'
-    import adapter from "@sveltejs/adapter-static"
     const config = {
         plugins: [sveltekit()],
         optimizeDeps: {
