@@ -35,7 +35,7 @@ fs.outputFileSync('./template/svelte.config.js',
         preprocess: evidencePreprocess(),
         kit: {
             adapter: adapter({
-                strict: false // TODO: figure out how to make build work without this
+                strict: false
             }),
             files: {
                 routes: 'src/pages',
@@ -50,15 +50,17 @@ fs.outputFileSync('./template/svelte.config.js',
 
 fs.outputFileSync('./template/vite.config.js', 
     `
-    import { sveltekit } from '@sveltejs/kit/vite'
+    import { sveltekit } from "@sveltejs/kit/vite"
+
+    /** @type {import('vite').UserConfig} */
     const config = {
         plugins: [sveltekit()],
         optimizeDeps: {
-            include: ['echarts-stat', 'export-to-csv', 'ssf', 'downloadjs'],
+            include: ['echarts-stat'],
             exclude: ['@evidence-dev/components']
         },
         ssr: {
-            external: ['@evidence-dev/db-orchestrator', 'git-remote-origin-url', '@evidence-dev/telemetry']
+            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
         }
     }
 
