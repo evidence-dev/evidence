@@ -3,7 +3,7 @@ import { GET } from "./api/customFormattingSettings.json/+server.js";
 // a bit gross but stops svelte from whining about prerendering endpoint with mutable methods
 // TODO: find a better way to do this
 
-export const prerender = true
+export const prerender = 'auto';
 
 export async function load({fetch, url}) {
     const routeHash = md5(url.pathname)
