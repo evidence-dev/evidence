@@ -1,7 +1,7 @@
 <script> 
     import Value from "$lib/viz/Value.svelte";
     import getColumnSummary from "$lib/modules/getColumnSummary";
-    import LinkedChart from "./_LinkedChart.svelte";
+    import { LinkedChart } from "svelte-tiny-linked-charts"
     import getSortedData from "$lib/modules/getSortedData";
     import checkInputs from "$lib/modules/checkInputs";
     import ErrorChart from './ErrorChart.svelte';
