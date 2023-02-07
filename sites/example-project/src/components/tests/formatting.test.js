@@ -1,4 +1,5 @@
-import { formatValue } from "../modules/formatting";
+import { formatValue } from "$lib/modules/formatting";
+import { test, expect } from "vitest"
 
 test("formatValue with number and format", () => {
   let columnFormat = {

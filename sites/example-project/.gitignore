@@ -6,3 +6,5 @@ evidence.settings.json
 dev
 .profile.json
 .evidence-queries
+# Ignore Junit report
+report.xml

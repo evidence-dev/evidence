@@ -6,7 +6,8 @@ import {
   findImplicitAutoFormat,
   AUTO_FORMAT_CODE,
 } from "../modules/autoFormatting";
-import { BUILT_IN_FORMATS } from "../modules/builtInFormats";
+import { BUILT_IN_FORMATS } from "$lib/modules/builtInFormats";
+import { test, expect } from "vitest"
 
 test("isAutoFormat(format) = false for incorrect formats", () => {
   expect(isAutoFormat("auto")).toBe(false);

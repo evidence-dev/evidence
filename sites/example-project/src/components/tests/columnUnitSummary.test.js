@@ -1,4 +1,5 @@
-import { getColumnUnitSummary } from "../modules/getColumnExtents";
+import { getColumnUnitSummary } from "$lib/modules/getColumnExtents";
+import { test, expect } from "vitest"
 
 test("getColumnUnitSummary returns valid unit type for mixed type array", () => {
   const data = [
