@@ -1,5 +1,17 @@
 # evidence-docs
 
+## 1.3.0
+
+### Minor Changes
+
+- c0f69cb: Updated the examples for funnel chart in docs, addressed PR feedback
+
+## 1.2.0
+
+### Minor Changes
+
+- e098028: Add FunnelChart component
+
 ## 1.1.0
 
 ### Minor Changes

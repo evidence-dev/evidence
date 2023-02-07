@@ -7,8 +7,7 @@
   import CurrencyFormatGrid from "./CurrencyFormatGrid.svelte";
   import Prism from "../QueryViewerSupport/Prismjs.svelte";
 
-  let exampleQuery = `
-select 
+  let exampleQuery = `select 
   growth as growth_pct, -- formatted as a percentage
   sales as sales_usd    -- formatted as US dollars
 from table` 
@@ -18,7 +17,7 @@ from table`
 <form>
   <div class="container">
     <div class="panel">
-      <h1>Value Formatting</h1>
+      <h2>Value Formatting</h2>
       <p>Format tags like <code>_usd</code> and <code>_pct</code> let you control how data will be formatted in Evidence.</p><p>Apply format tags by including them at the end of column names. For example:</p> 
       <div class=code-container>
         <Prism language="sql" code={exampleQuery}/>
@@ -26,7 +25,7 @@ from table`
       <p></p>
     </div>
     <div class="panel">
-      <h1>Built in Format Tags</h1>
+      <h2>Built in Format Tags</h2>
       <p>All of the built in format tags are listed below for reference.</p>
       <CollapsibleTableSection headerText={"Dates"} expanded={false}>
         <BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter(d => d.formatCategory === "date")}/>
@@ -42,7 +41,7 @@ from table`
       </CollapsibleTableSection>
     </div>
     <div class="panel">
-      <h1>Custom Format Tags</h1>
+      <h2>Custom Format Tags</h2>
       <p>
         Add new format tags to your project. Custom format tags use <a class=docs-link target=none href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68">excel-style format codes.</a>
       </p>
@@ -76,7 +75,7 @@ from table`
   }
   .panel {
     border-top: 1px solid var(--grey-200);
-    padding: 1em;
+    padding: 0em 1em 1em 1em;
   }
 
   .panel:first-of-type {

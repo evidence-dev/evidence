@@ -1,11 +1,11 @@
-import * as echarts from 'echarts';
+import {registerTheme, init} from 'echarts';
 import download from 'downloadjs';
 import {colours} from './colours'
 
 
 export default(node, option) => {
 
-	echarts.registerTheme('evidence-light', {
+	registerTheme('evidence-light', {
         "grid": {
             "left": "0%",
             "right": "4%",
@@ -437,7 +437,7 @@ export default(node, option) => {
         }
     });
 
-    const chart = echarts.init(node, 'evidence-light', {renderer: 'canvas'});   
+    const chart = init(node, 'evidence-light', {renderer: 'canvas'});   
 
     option.animation = false
 

@@ -3,7 +3,7 @@ const md5 = require("blueimp-md5")
 const chalk = require('chalk')
 const logEvent = require('@evidence-dev/telemetry')
 const readline = require('readline');
-
+const strictBuild = (process.env.VITE_BUILD_STRICT === 'true')
 const cacheDirectory = "./.evidence-queries/cache";
 
 const getQueryCachePaths = (queryString, queryTime) => {
@@ -17,17 +17,15 @@ const getQueryCachePaths = (queryString, queryTime) => {
     }
 }
 
-const updateCache = function (devMode, queryString, data, columnTypes, queryTime) {
-    if (devMode) {
-        const {cacheDirectory, resultsCacheFile, columnTypeCacheFile} = getQueryCachePaths(queryString, queryTime);
-        if (!pathExistsSync(cacheDirectory)) {
-            emptyDirSync(cacheDirectory);
-            mkdirSync(cacheDirectory, { recursive: true });
-        }
-        writeJSONSync(resultsCacheFile, data, { throws: false });
-        if (columnTypes) {
-            writeJSONSync(columnTypeCacheFile, columnTypes, { throws: false });
-        }
+const updateCache = function (queryString, data, columnTypes, queryTime) {
+    const {cacheDirectory, resultsCacheFile, columnTypeCacheFile} = getQueryCachePaths(queryString, queryTime);
+    if (!pathExistsSync(cacheDirectory)) {
+        emptyDirSync(cacheDirectory);
+        mkdirSync(cacheDirectory, { recursive: true });
+    }
+    writeJSONSync(resultsCacheFile, data, { throws: false });
+    if (columnTypes) {
+        writeJSONSync(columnTypeCacheFile, columnTypes, { throws: false });
     }
 }
 
@@ -70,7 +68,6 @@ const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
 const runQueries = async function (routeHash, dev) {
     const settings = readJSONSync('./evidence.settings.json', {throws:false})
     const runQuery = await importDBAdapter(settings)
-
     let routePath = `./.evidence-queries/extracted/${routeHash}`
     let queryFile = `${routePath}/queries.json`
     let queries = readJSONSync(queryFile, { throws: false }) 
@@ -79,14 +76,12 @@ const runQueries = async function (routeHash, dev) {
         data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 
         for (let queryIndex in queries) {
             let query = queries[queryIndex];
-            let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());              
-
+            let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());
             let cache, columnTypeCache;
-            if (dev) {
-                const { resultsCacheFile, columnTypeCacheFile } = getQueryCachePaths(query.compiledQueryString, queryTime);
-                cache = readJSONSync(resultsCacheFile, { throws: false });
-                columnTypeCache = readJSONSync(columnTypeCacheFile, { throws: false });
-            }
+            const { resultsCacheFile, columnTypeCacheFile } = getQueryCachePaths(query.compiledQueryString, queryTime);
+            cache = readJSONSync(resultsCacheFile, { throws: false });
+            columnTypeCache = readJSONSync(columnTypeCacheFile, { throws: false });
+
             if (cache) {
                 logEvent("cache-query", dev, settings);
                 data[query.id] = cache;
@@ -114,7 +109,7 @@ const runQueries = async function (routeHash, dev) {
                     queries[queryIndex].status = "done"
                     writeJSONSync(queryFile, queries)
 
-                    updateCache(dev, query.compiledQueryString, data[query.id], columnTypes, queryTime);
+                    updateCache(query.compiledQueryString, data[query.id], columnTypes, queryTime);
 
                     logEvent("db-query", dev, settings)
                 } catch(err) {
@@ -124,6 +119,10 @@ const runQueries = async function (routeHash, dev) {
                     logEvent("db-error", dev, settings)
                     queries[queryIndex].status = "error"
                     writeJSONSync(queryFile, queries)
+                    // if build is strict and the query fails, stop the build
+                    if(strictBuild){
+                        throw err
+                    }
                 } 
             }
         }
@@ -154,6 +153,10 @@ const testConnection = async function (dev) {
         process.stdout.write(chalk.red("✗ "+ query.id) + " " + chalk.grey(err) + " \n")
         result = err;
         logEvent("db-connection-error", dev, settings)
+        // if build is strict and database connection fails, stop the build
+        if(strictBuild){
+            throw err
+        }
     } 
     return result
 }

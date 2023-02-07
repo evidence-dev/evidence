@@ -178,6 +178,8 @@
 	{#if $page.url.pathname !== '/settings'}
 		<div class="header-bar">
 			<Header {menu} {folderList}/>
+		</div>
+		<div class="header-button" class:open>
 			<Hamburger bind:open/>
 		</div>
 	{/if}
@@ -270,6 +272,7 @@ aside.toc {
     -webkit-backdrop-filter: blur(10px) saturate(1.8);
     backdrop-filter: blur(10px) saturate(1.8);
 }
+
 @media (max-width: 1440px) {
 	div.content {
 		grid-template-columns: 1fr;
@@ -298,6 +301,28 @@ aside.toc {
 }
 
 @media (max-width: 850px) {
+
+	.header-bar {
+		width: 90%;
+	}
+	.header-button {
+		z-index: 2;
+		position: fixed;
+		display: flex;
+		justify-content: end;
+		width: 10%;
+		top: 0;
+		right: 0;
+		background-color: rgba(255, 255, 255, 0.73);
+		-webkit-backdrop-filter: blur(10px) saturate(1.8);
+		backdrop-filter: blur(10px) saturate(1.8);
+	}
+	.header-button.open {
+		z-index: 7;
+		width: fit-content;
+		background-color: transparent;
+		backdrop-filter: none;
+	}
 	.grid {
 		display: grid;
 		grid-template-areas:
@@ -313,6 +338,10 @@ aside.toc {
 @media print {
   main * {
     visibility: hidden;
+  }
+
+  .header-bar {
+	visibility: hidden;
   }
   article, article * {
     visibility: visible;

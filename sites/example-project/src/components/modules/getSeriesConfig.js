@@ -49,7 +49,7 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
             }
         
             // Set series name:
-            seriesName = seriesDistinct[i];
+            seriesName = seriesDistinct[i] ?? "null";
 
             tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
             seriesConfig.push(tempConfig);
@@ -86,7 +86,7 @@ export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, 
                 }
 
                 // Set series name:
-                seriesName = seriesDistinct[i] + " - " + columnSummary[y[j]].title;
+                seriesName = (seriesDistinct[i] ?? "null") + " - " + columnSummary[y[j]].title;
                 tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
                 seriesConfig.push(tempConfig);
             }

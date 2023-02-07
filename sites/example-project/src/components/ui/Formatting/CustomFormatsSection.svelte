@@ -168,6 +168,7 @@
     width: 35%;
     text-transform: uppercase;
     font-weight: normal;
+    font-size: 14px;
     color: var(--grey-800);
   }
   button {

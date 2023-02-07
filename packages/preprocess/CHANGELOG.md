@@ -1,5 +1,32 @@
 # @evidence-dev/preprocess
 
+## 1.5.0
+
+### Minor Changes
+
+- c801fa9: New capability to fail build if there are errors in components or queries
+
+### Patch Changes
+
+- c06c1a1: Adds US Map component to page imports
+- db92de1: Adds a minimal venn diagram to available components.
+
+## 1.4.0
+
+### Minor Changes
+
+- 141dc5b: Improved DataTable component
+
+## 1.3.0
+
+### Minor Changes
+
+- e098028: Add FunnelChart component
+
+### Patch Changes
+
+- f5ec614: Ensure that precise evidence types are populated on all query objects
+
 ## 1.2.6
 
 ### Patch Changes

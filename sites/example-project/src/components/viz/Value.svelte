@@ -5,7 +5,8 @@
   import checkInputs from "$lib/modules/checkInputs.js";
   import PulseNumber from "./PulseNumber.svelte";
   import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
-  
+  import { strictBuild } from "./context"
+
   // Passing in value from dataset:
   export let data = null
   export let row = 0    
@@ -67,6 +68,9 @@
           }
       } catch(e) {  
           error = e.message;
+          if (strictBuild){
+            throw error
+          }
       }
   }
 </script>

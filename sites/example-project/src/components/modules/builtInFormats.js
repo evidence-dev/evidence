@@ -386,6 +386,7 @@ export const BUILT_IN_FORMATS = [
     formatCategory: "number",
     valueType: "number",
     exampleInput: "921594675",
+    titleTagReplacement: " id",
   },
   {
     formatTag: "fract",

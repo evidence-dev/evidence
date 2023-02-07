@@ -1,5 +1,78 @@
 # @evidence-dev/components
 
+## 1.9.0
+
+### Minor Changes
+
+- c0f69cb: Updated the examples for funnel chart in docs, addressed PR feedback
+- 5fbbb9c: US state map
+- c801fa9: New capability to fail build if there are errors in components or queries
+- 470291c: Addition of error handling on <DataTable .../> with unknown or missing column.id fixing #580
+
+### Patch Changes
+
+- e2550fd: Add link function to US map
+- ccbca9c: Fixes table of contents links for parameterized pages
+- fa4edec: Reduced funnel chart height, added legend and updated label to show values.
+- c06c1a1: Adds US Map component to page imports
+- 77cc9c9: Adds strict error handling option to USMap
+- 2e81dbe: Reduces size of imports from echarts library
+- db92de1: Adds a minimal venn diagram to available components.
+
+## 1.8.0
+
+### Minor Changes
+
+- 453919a: Fix the menu button disappearing in the sidebar
+
+### Patch Changes
+
+- 9d42aae: Minor spacing fixes in settings menu
+- b665eb2: Fixes BigValue comparison styling for Windows
+- 80eaa2d: Fixes default image styling
+- 5e5cf29: Fixes link column behaviour for parameterized pages
+
+## 1.7.0
+
+### Minor Changes
+
+- d83c741: Adds image, link, and row link support in DataTable
+
+### Patch Changes
+
+- afda5ba: Fix reactivity of DataTable on errors
+- 5a44815: Ability to style project by overwriting app.css
+- 84dc796: Fixes treatment of nulls in charts
+- c993d09: Prevent header shading showing up in PDF / print export
+- 8a7bd67: Fixes bug where styling from the Settings page leaked into other pages
+
+## 1.6.0
+
+### Minor Changes
+
+- 141dc5b: Improved DataTable component
+
+## 1.5.0
+
+### Minor Changes
+
+- 94805f9: Add data download option to Charts
+- e098028: Add FunnelChart component
+- 2a1ff16: Support scroll on datatables
+
+### Patch Changes
+
+- fed8cf3: fix install command
+- d41cbe4: Fixes column title formatting for ID columns
+- 6445c6f: Changes custom date format example input
+- 12aced0: Fix 100% stacked chart reactivity
+- ea10232: Cleaning up svelte warnings
+- c013859: Adds optional schema field for postgres connector
+- c50ce10: bump tiny charts library
+- 1f339fb: Improve accessiblity of clickable elements by making them <button> elements
+- 224c553: Updates to visual hierarchy of H1-H6 and lists
+- 7afdf97: Removes sort by default for Charts (Bar, Line, Area)
+
 ## 1.4.2
 
 ### Patch Changes
