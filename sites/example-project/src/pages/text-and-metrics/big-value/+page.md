@@ -33,7 +33,7 @@ value=arr_usd1m
 title="Run Rate MRR"
 comparison=arr_growth_pct
 comparisonTitle="YTD" 
-sparkline={false}
+sparkline=established_date
 /> 
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore

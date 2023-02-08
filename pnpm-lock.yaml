@@ -26,6 +26,7 @@ importers:
       ssf: ^0.11.2
       svelte: 3.55.0
       svelte-icons: 2.1.0
+      svelte-tiny-linked-charts: ^1.1.5
       svelte2tsx: 0.4.7
       typescript: 4.5.4
       uvu: 0.5.2
@@ -53,6 +54,7 @@ importers:
       ssf: 0.11.2
       svelte: 3.55.0
       svelte-icons: 2.1.0
+      svelte-tiny-linked-charts: 1.1.5
       svelte2tsx: 0.4.7_ffneqjewvwbqqgnbzj6mjycz4a
       typescript: 4.5.4
       uvu: 0.5.2
