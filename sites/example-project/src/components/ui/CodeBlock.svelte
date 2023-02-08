@@ -29,7 +29,7 @@
     if (source !== undefined) {
       copy(source);
     }
-  }}>{#if copied}<Copy class="bx--snippet__icon" color="var(--green-600)"/>{:else}<Copy class="bx--snippet__icon" />{/if}</button>
+  }}>{#if copied}<div color="var(--green-600)">✔</div>{:else}<Copy class="bx--snippet__icon" />{/if}</button>
 {/if}
 </pre>
 
@@ -37,7 +37,7 @@
   pre {
     overflow: scroll;
     background: var(--grey-800);
-    border-radius: 3px;
+    border-radius: 5px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -62,11 +62,13 @@
         padding: 0.25em 0.35em 0.25em 0.35em;
         color: var(--grey-400);
         size: 0.75em;
+        width: 2.4em;
+        height: 2.4em;
         cursor: pointer;
         user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
-        transition: all 100ms;
+        transition: all 400ms;
         margin: 0.5em;
     }
 
@@ -74,7 +76,7 @@
         border-color: var(--grey-300);
         background-color: var(--grey-800);
         color: var(--grey-300);
-        transition: all 100ms;
+        transition: all 400ms;
     }
     
     button.container:active {
