@@ -1,10 +1,10 @@
-name: Tests
-
+name: integration
 on:
-  pull_request_target:
+  pull_request:
+    branches: [main]
 
 jobs:
-  Tests-sources:
+  tests:
     runs-on: ${{ matrix.os }}
     if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess' || github.triggering_actor == 'winterhart'}}
     timeout-minutes: 20
