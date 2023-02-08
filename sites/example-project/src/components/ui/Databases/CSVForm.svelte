@@ -1,5 +1,6 @@
 <script>    
     import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+    import Prism from "../QueryViewerSupport/Prismjs.svelte";
 
 	export let credentials;
 	export let existingCredentials;
@@ -30,9 +31,22 @@
         disableSave = false;
     }
 
+    let sourcesQuery = `select * from 'sources/myfile.csv'` 
+    let absoluteQuery = `select * from '/Users/myname/Documents/myfile.csv'`
+
 </script>
 
-<p style="margin-top: 15px;">Evidence uses DuckDB SQL syntax to query CSV files. <a class=docs-link href='https://duckdb.org/docs/sql/query_syntax/select' target='_blank' rel="noreferrer" >See the DuckDB docs for reference on query syntax</a></p>
+<p style="margin-top: 15px;">Evidence supports querying of local CSV files. CSV querying is powered by DuckDB - <a class=docs-link href='https://duckdb.org/docs/sql/query_syntax/select' target='_blank' rel="noreferrer" >see the DuckDB docs for reference on query syntax</a></p>
+
+<p>We recommend setting up a <code>sources</code> directory in the root of your Evidence project to store CSV files. You can then query them using this syntax:</p>
+<div class=code-container>
+    <Prism language="sql" code={sourcesQuery}/>
+</div>
+
+<p style="margin-top: 15px;">You can also pass in an absolute filepath:</p>
+<div class=code-container>
+    <Prism language="sql" code={absoluteQuery}/>
+</div>
 
 <div class=input-item>
     <label for={opts[0].id}>
@@ -170,6 +184,13 @@
 
     .docs-link:hover {
         color: var(--blue-800);
+    }
+
+    div.code-container {
+        background-color: var(--grey-100);
+        border: 1px solid var(--grey-200);
+        overflow: auto;
+        border-radius: 4px;
     }
 
 </style>
