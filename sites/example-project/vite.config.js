@@ -1,5 +1,4 @@
 import { sveltekit } from "@sveltejs/kit/vite"
-import { outputFile } from "fs-extra"
 
 /** @type {import('vite').UserConfig} */
 const config = {
