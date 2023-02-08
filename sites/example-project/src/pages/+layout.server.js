@@ -5,8 +5,8 @@ import { GET } from "./api/customFormattingSettings.json/+server.js";
 
 export const prerender = 'auto';
 
-export async function load({fetch, url}) {
-    const routeHash = md5(url.pathname)
+export async function load({fetch, route}) {   
+    const routeHash = md5(route.id)
 
     const res = await fetch(`/api/${routeHash}.json`);
     const {data} = await res.json();
