@@ -1,10 +1,10 @@
-name: Unit-Tests
+name: unit
 on:
   pull_request:
     branches: [main]
 
 jobs:
-  UnitTests:
+  tests:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
