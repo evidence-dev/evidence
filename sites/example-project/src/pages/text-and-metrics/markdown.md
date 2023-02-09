@@ -72,24 +72,6 @@ let y = 200;
 let z = x + y;
 ```
 
-```python
-x = 100
-y = 200
-z = x + y
-```
-
-```css
-  pre {
-    overflow: scroll;
-    background: var(--grey-800);
-    border-radius: 3px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-```
-
 ## Horizontal Rule
 Three asterisks create a horizontal rule:
 ***
