@@ -23,12 +23,6 @@
    * @type {string}
    */
    export let highlightLines;
-   console.log("highlightLines", highlightLines)
-  /**
-   * Either to show the line numbers or not.
-   * @type {boolean}
-   */
-  export let showLineNumbers = false;
   /**
    * A minimum height the code container should have.
    * By default, code section will fit the content's height..
@@ -92,7 +86,7 @@
           // Dynamically load all required languages from the cdn
           // This cannot be loaded from node_modules because it is interpolated.
           import(
-            `https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-${rl}.min.js`
+            `../../../../node_modules/prismjs/components/prism-${rl}.min.js`
           )
         )
       );
