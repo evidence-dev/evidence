@@ -2,6 +2,7 @@
   export let source;
   export let copyToClipboard = true;
   import Copy from "./Deployment/CopyIcon.svelte";
+  import Success from "./Deployment/CopySuccessIcon.svelte";
   let copied = false;
 
   const toggleCopied = function () {
@@ -13,7 +14,7 @@
       if (!copied) {
         await navigator.clipboard.writeText(text);
         copied = true;
-        setTimeout(toggleCopied, 1000);
+        setTimeout(toggleCopied, 1500);
       }
     } catch (e) {}
   };
@@ -29,14 +30,15 @@
     if (source !== undefined) {
       copy(source);
     }
-  }}>{#if copied}<div color="var(--green-600)">✔</div>{:else}<Copy class="bx--snippet__icon" />{/if}</button>
+  }}>{#if copied}<Success color=var(--green-500)/>{:else}<Copy/>{/if}</button>
 {/if}
 </pre>
 
 <style>
   pre {
     overflow: scroll;
-    background: var(--grey-800);
+    background: var(--grey-100);
+    border: 1px solid var(--grey-200);
     border-radius: 5px;
     display: flex;
     flex-direction: row;
@@ -48,19 +50,20 @@
     display: block;
     background: none;
     border: none;
-    padding: 10px;
-    color: var(--grey-100);
+    padding: 0.8em 0.8em;
+    color: var(--grey-900);
     font-size: 0.7em;
   }
 
-
-  button.container {
+  pre button.container {
+        opacity: 0;
+        transition: all 200ms ease-in-out;
         box-sizing: border-box;
-        background-color: var(--grey-800);
+        background-color: var(--grey-100);
         border-radius: 4px 4px 4px 4px;
-        border: 1px solid var(--grey-400);
+        border: 1px solid var(--grey-300);
         padding: 0.25em 0.35em 0.25em 0.35em;
-        color: var(--grey-400);
+        color: var(--grey-300);
         size: 0.75em;
         width: 2.4em;
         height: 2.4em;
@@ -68,27 +71,51 @@
         user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
-        transition: all 400ms;
         margin: 0.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    button.container:hover {
-        border-color: var(--grey-300);
-        background-color: var(--grey-800);
+
+
+  pre:hover button.container {
+        opacity: 1;
+        transition: all 200ms ease-in-out;
+        box-sizing: border-box;
+        background-color: var(--grey-100);
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid var(--grey-300);
+        padding: 0.25em 0.35em 0.25em 0.35em;
         color: var(--grey-300);
-        transition: all 400ms;
+        size: 0.75em;
+        width: 2.4em;
+        height: 2.4em;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        margin: 0.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    pre button.container:hover {
+        border-color: var(--grey-500);
+        background-color: var(--grey-100);
+        color: var(--grey-500);
+        transition: all 200ms ease-in-out;
     }
     
-    button.container:active {
-        border-color: var(--grey-300);
-        background-color: var(--grey-800);
-        color: var(--green-600);
-    }
 
-    button.container.copied {
-        border-color: var(--grey-300);
-        background-color: var(--grey-800);
-        color: var(--green-600);
 
+    pre button.container.copied {
+        border-color: var(--grey-500);
+        background-color: var(--grey-100);
+        color: var(--green-500);
+        transition: all 200ms ease-in-out;
     }
 </style>
+
+
