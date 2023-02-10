@@ -9,7 +9,6 @@
     "blueimp-md5": "^2.19.0",
     "fs-extra": "^9.1.0",
     "mdsvex": "^0.10.6",
-    "prismjs": "^1.29.0",
     "remark-parse": "8.0.2",
     "unified": "^9.1.0",
     "unist-util-visit": "^2.0.3"

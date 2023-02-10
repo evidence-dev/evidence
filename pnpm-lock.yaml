@@ -198,7 +198,6 @@ importers:
       blueimp-md5: ^2.19.0
       fs-extra: ^9.1.0
       mdsvex: ^0.10.6
-      prismjs: ^1.29.0
       remark-parse: 8.0.2
       unified: ^9.1.0
       unist-util-visit: ^2.0.3
@@ -206,7 +205,6 @@ importers:
       blueimp-md5: 2.19.0
       fs-extra: 9.1.0
       mdsvex: 0.10.6
-      prismjs: 1.29.0
       remark-parse: 8.0.2
       unified: 9.2.1
       unist-util-visit: 2.0.3
@@ -11575,7 +11573,7 @@ packages:
     dependencies:
       '@types/unist': 2.0.6
       prism-svelte: 0.4.7
-      prismjs: 1.29.0
+      prismjs: 1.24.1
       vfile-message: 2.0.4
     dev: false
 
@@ -13493,6 +13491,10 @@ packages:
 
   /prism-svelte/0.4.7:
     resolution: {integrity: sha512-yABh19CYbM24V7aS7TuPYRNMqthxwbvx6FF/Rw920YbyBWO3tnyPIqRMgHuSVsLmuHkkBS1Akyof463FVdkeDQ==}
+    dev: false
+
+  /prismjs/1.24.1:
+    resolution: {integrity: sha512-mNPsedLuk90RVJioIky8ANZEwYm5w9LcvCXrxHlwf4fNVSn8jEipMybMkWUyyF0JhnC+C4VcOVSBuHRKs1L5Ow==}
     dev: false
 
   /prismjs/1.29.0:
