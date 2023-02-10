@@ -121,6 +121,7 @@
   $: seriesConfig =  {
     type: 'sankey',
     layout: 'none',
+    layoutIterations: 0, // Preserve data order in layout
     left: '10%',
     top: orient === "vertical" ? 80 : 60,
     bottom: orient === "vertical" ? 0 : 10,
