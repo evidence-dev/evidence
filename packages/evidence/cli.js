@@ -55,10 +55,6 @@ const runFileWatcher = function(watchPatterns) {
       const source = sourcePath(file)
       const target = targetPath(source)
       const svelteKitPagePath = pagePath(target)
-      console.log('source ' + source)
-      console.log('target ' + target)
-      console.log('sk page ' + svelteKitPagePath)
-
       fs.copySync(source, svelteKitPagePath)
     }
   
