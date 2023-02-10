@@ -1,6 +1,6 @@
 # Tantum protulit caligine petunt
 
-## Uno sine at nunc pontus rectorque umeros
+## Venn Diagram
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
@@ -39,3 +39,34 @@ innuba.
 2. Ego sanguine iphis Tartara crudeles et et
 3. Peritura auro tulit harenis sucos
 4. Per turbata caput
+
+##Sankey diagram
+
+```traffic_data
+select 'google' as source, 'all_traffic' as target, 100 as count
+union all
+select 'direct' as source, 'all_traffic' as target, 50 as count
+union all
+select 'facebook' as source, 'all_traffic' as target, 25 as count
+union all
+select 'bing' as source, 'all_traffic' as target, 25 as count
+union all
+select 'linkedin' as source, 'all_traffic' as target, 25 as count
+union all
+select 'twitter' as source, 'all_traffic' as target, 25 as count
+union all
+select 'tiktok' as source, 'all_traffic' as target, 25 as count
+union all
+select 'pinterest' as source, 'all_traffic' as target, 25 as count
+union all
+select 'all_traffic' as source, '/' as target, 50 as count
+union all
+select 'all_traffic' as source, '/docs' as target, 150 as count
+union all
+select 'all_traffic' as source, '/blog' as target, 25 as count
+union all
+select 'all_traffic' as source, '/about' as target, 75 as count
+
+```
+
+<SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count />

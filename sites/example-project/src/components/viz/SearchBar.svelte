@@ -23,7 +23,7 @@
         border-radius: 4px;
         height: 22px;
         position: relative;
-        margin: 10px 3px 10px 3px;
+        margin: 25px 3px 10px 3px;
     }
 
 

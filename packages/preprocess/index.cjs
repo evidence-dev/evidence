@@ -60,6 +60,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import VennDiagram from '${componentSource}/diagrams/VennDiagram.svelte';
+        import SankeyDiagram from "${componentSource}/diagrams/SankeyDiagram.svelte";
         import Value from '${componentSource}/viz/Value.svelte';
         import BigValue from '${componentSource}/viz/BigValue.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';

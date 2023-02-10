@@ -73,6 +73,17 @@ importers:
     devDependencies:
       dotenv: 16.0.1
 
+  packages/csv:
+    specifiers:
+      '@evidence-dev/db-commons': workspace:^
+      '@evidence-dev/duckdb': workspace:^
+      dotenv: ^16.0.1
+    dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
+      '@evidence-dev/duckdb': link:../duckdb
+    devDependencies:
+      dotenv: 16.0.1
+
   packages/db-commons:
     specifiers:
       fs-extra: 10.0.0
@@ -82,6 +93,7 @@ importers:
   packages/db-orchestrator:
     specifiers:
       '@evidence-dev/bigquery': workspace:^
+      '@evidence-dev/csv': workspace:^
       '@evidence-dev/db-commons': workspace:^
       '@evidence-dev/duckdb': workspace:^
       '@evidence-dev/mysql': workspace:^
@@ -95,6 +107,7 @@ importers:
       fs-extra: 9.1.0
     dependencies:
       '@evidence-dev/bigquery': link:../bigquery
+      '@evidence-dev/csv': link:../csv
       '@evidence-dev/db-commons': link:../db-commons
       '@evidence-dev/duckdb': link:../duckdb
       '@evidence-dev/mysql': link:../mysql
@@ -6236,7 +6249,7 @@ packages:
   /axios/0.25.0:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.15.2_debug@3.2.7
+      follow-redirects: 1.15.2
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6244,7 +6257,7 @@ packages:
   /axios/0.27.2_debug@3.2.7:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2_debug@3.2.7
+      follow-redirects: 1.15.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -9146,7 +9159,7 @@ packages:
         optional: true
     dev: false
 
-  /follow-redirects/1.15.2_debug@3.2.7:
+  /follow-redirects/1.15.2:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -9154,8 +9167,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dependencies:
-      debug: 3.2.7
     dev: false
 
   /fork-ts-checker-webpack-plugin/6.5.2_webpack@5.74.0:
@@ -10004,7 +10015,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.2_debug@3.2.7
+      follow-redirects: 1.15.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -13723,6 +13734,12 @@ packages:
   /react-dev-utils/12.0.1_webpack@5.74.0:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
+    peerDependencies:
+      typescript: '>=2.7'
+      webpack: '>=4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       address: 1.1.2
@@ -13748,12 +13765,11 @@ packages:
       shell-quote: 1.7.4
       strip-ansi: 6.0.1
       text-table: 0.2.0
+      webpack: 5.74.0
     transitivePeerDependencies:
       - eslint
       - supports-color
-      - typescript
       - vue-template-compiler
-      - webpack
     dev: false
 
   /react-dom/17.0.2_react@17.0.2:

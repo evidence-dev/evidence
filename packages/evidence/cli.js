@@ -85,7 +85,8 @@ const watchPatterns =
     [
       {'sourceRelative': './pages/','targetRelative':'./.evidence/template/src/pages/','filePattern':'**'} // markdown pages
       ,{'sourceRelative': './static/','targetRelative':'./.evidence/template/static/','filePattern':'**'} // static files (eg images)
-      ,{'sourceRelative': './components/','targetRelative':'./.evidence/template/src/components/','filePattern':'**'} // custome components
+      ,{'sourceRelative': './sources/','targetRelative':'./.evidence/template/sources/','filePattern':'**'} // source files (eg csv files)
+      ,{'sourceRelative': './components/','targetRelative':'./.evidence/template/src/components/','filePattern':'**'} // custom components
       ,{'sourceRelative': '.','targetRelative':'./.evidence/template/src/','filePattern':'app.css'} // custom theme file
     ]
 
