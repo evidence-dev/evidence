@@ -4,7 +4,7 @@
     export let settings
 </script>
 
-<h1>Deploying your Project</h1>
+<h2>Deploying your Project</h2>
 
 <p>
     In production, Evidence functions like a static site generator: 

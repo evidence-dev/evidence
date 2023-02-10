@@ -1,5 +1,11 @@
 # @evidence-dev/mysql
 
+## 0.1.4
+
+### Patch Changes
+
+- 6f2dbf2: Fix mysql SSL option
+
 ## 0.1.3
 
 ### Patch Changes

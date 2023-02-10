@@ -1,5 +1,30 @@
 # @evidence-dev/db-orchestrator
 
+## 1.2.0
+
+### Minor Changes
+
+- c801fa9: New capability to fail build if there are errors in components or queries
+
+### Patch Changes
+
+- Updated dependencies [6f2dbf2]
+  - @evidence-dev/mysql@0.1.4
+
+## 1.1.12
+
+### Patch Changes
+
+- 8894ea3: Prevent redundant queries being executed during build for parameterized pages
+
+## 1.1.11
+
+### Patch Changes
+
+- Updated dependencies [c013859]
+  - @evidence-dev/postgres@0.2.5
+  - @evidence-dev/redshift@0.0.4
+
 ## 1.1.10
 
 ### Patch Changes

@@ -162,6 +162,10 @@ p {
   margin: 0;
 }
 
+p.standard-margin {
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+}
+
 table {
   font-size: 0.8em;
   padding: 0px;

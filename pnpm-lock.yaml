@@ -73,6 +73,17 @@ importers:
     devDependencies:
       dotenv: 16.0.1
 
+  packages/csv:
+    specifiers:
+      '@evidence-dev/db-commons': workspace:^
+      '@evidence-dev/duckdb': workspace:^
+      dotenv: ^16.0.1
+    dependencies:
+      '@evidence-dev/db-commons': link:../db-commons
+      '@evidence-dev/duckdb': link:../duckdb
+    devDependencies:
+      dotenv: 16.0.1
+
   packages/db-commons:
     specifiers:
       fs-extra: 10.0.0
@@ -82,6 +93,7 @@ importers:
   packages/db-orchestrator:
     specifiers:
       '@evidence-dev/bigquery': workspace:^
+      '@evidence-dev/csv': workspace:^
       '@evidence-dev/db-commons': workspace:^
       '@evidence-dev/duckdb': workspace:^
       '@evidence-dev/mysql': workspace:^
@@ -95,6 +107,7 @@ importers:
       fs-extra: 9.1.0
     dependencies:
       '@evidence-dev/bigquery': link:../bigquery
+      '@evidence-dev/csv': link:../csv
       '@evidence-dev/db-commons': link:../db-commons
       '@evidence-dev/duckdb': link:../duckdb
       '@evidence-dev/mysql': link:../mysql

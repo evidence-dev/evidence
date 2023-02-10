@@ -1,9 +1,9 @@
-import * as echarts from 'echarts';
+import {registerTheme, init} from 'echarts';
 import {colours} from './colours'
 
 
 export default(node, option, renderer) => {
-	echarts.registerTheme('evidence-light', {
+	registerTheme('evidence-light', {
         "grid": {
             "left": "0%",
             "right": "4%",
@@ -435,7 +435,7 @@ export default(node, option, renderer) => {
         }
     });
 
-    const chart = echarts.init(node, 'evidence-light', {renderer: 'svg'});   
+    const chart = init(node, 'evidence-light', {renderer: 'svg'});   
 
 	chart.setOption(option);
 

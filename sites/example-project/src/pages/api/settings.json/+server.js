@@ -36,7 +36,30 @@ export async function GET() {
     }
 }
 
+function removeFromGitignore(extensions, hasGitIgnore, gitIgnore) {
+    if(hasGitIgnore){
+        extensions.forEach(ext => {
+            // Find newline plus extension and only match those strings which are directly
+            // followed by either a new line or the end of the file contents
+            // (stops the issue of matching .sqlite within the .sqlite3 string)
+            // g means global match - same behaviour as replaceAll
+            let regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+            gitIgnore = gitIgnore.replace(regex, "")
+        })
+        fs.writeFileSync('../../.gitignore', gitIgnore)    
+    }
+}
 
+function addToGitignore(extensions, gitIgnore) {
+    extensions.forEach(ext => {
+        let regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
+        if(!gitIgnore.match(regex)){
+            gitIgnore = gitIgnore + ("\n" + ext)
+        }
+    })
+    fs.writeFileSync('../../.gitignore', gitIgnore)
+}
+ 
 export async function POST({request}) {    
     const {settings} = await request.json();
     // read original settings file 
@@ -49,45 +72,34 @@ export async function POST({request}) {
         logEvent('usageStatsDisabled', dev, originalSettings)
     }
     fs.writeFileSync('evidence.settings.json', JSON.stringify(settings));
+
+    // gitignore settings
+    let gitIgnore;
+    let hasGitIgnore = fs.existsSync('../../.gitignore');
+    gitIgnore = hasGitIgnore ? fs.readFileSync('../../.gitignore', 'utf8') : "";
+    let extensions;
+
     if(settings.database === "sqlite"){
-        let gitIgnore;
-        let hasGitIgnore = fs.existsSync('../../.gitignore');
-        gitIgnore = hasGitIgnore ? fs.readFileSync('../../.gitignore', 'utf8') : "";
-        let extensions = [".db", ".sqlite", ".sqlite3"]
+        extensions = [".db", ".sqlite", ".sqlite3"]
         if(settings.credentials.gitignoreSqlite === false){
-            let regex
-            if(hasGitIgnore){
-                extensions.forEach(ext => {
-                    // Find newline plus extension and only match those strings which are directly
-                    // followed by either a new line or the end of the file contents
-                    // (stops the issue of matching .sqlite within the .sqlite3 string)
-                    // g means global match - same behaviour as replaceAll
-                    regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
-                    gitIgnore = gitIgnore.replace(regex, "")
-                })
-                fs.writeFileSync('../../.gitignore', gitIgnore)
-            }
+            removeFromGitignore(extensions, hasGitIgnore, gitIgnore)
         } else if(settings.credentials.gitignoreSqlite === true){
-            extensions.forEach(ext => {
-                regex = new RegExp(`\n${ext}(?=\n|$)`, "g")
-                if(!gitIgnore.match(regex)){
-                    gitIgnore = gitIgnore + ("\n" + ext)
-                }
-            })
-            fs.writeFileSync('../../.gitignore', gitIgnore)
+            addToGitignore(extensions, gitIgnore)
+        }
+    } else if(settings.database === "duckdb"){
+        extensions = [".duckdb", ".db"]
+        if(settings.credentials.gitignoreDuckdb === false){
+            removeFromGitignore(extensions, hasGitIgnore, gitIgnore)
+        } else if(settings.credentials.gitignoreDuckdb === true){
+            addToGitignore(extensions, gitIgnore)
+        }
+    } else if(settings.database === "csv"){
+        extensions = [".csv"]
+        if(settings.credentials.gitignoreCsv === false){
+            removeFromGitignore(extensions, hasGitIgnore, gitIgnore)
+        } else if(settings.credentials.gitignoreCsv === true){
+            addToGitignore(extensions, gitIgnore)
         }
     }
     return json(settings)
 }
-
-// Breaking changes in new verion of Svelte kit - merged on Jan 19, 2022
-// https://github.com/sveltejs/kit/pull/3384
-// Will need to change to format below once we upgrade our sveltekit dependency:
-// export const post = async ({ request }) => {
-//     const body = await request.formData();
-//     const database = body.get("database");
-
-//     return {
-//         body: "settings saved"
-//     }
-// }

@@ -1,356 +1,764 @@
 <script>
-  import { getContext } from "svelte";
-  import { slide } from "svelte/transition";
-  import { formatValue } from "$lib/modules/formatting.js";
-  import ErrorChart from "./ErrorChart.svelte";
-  import checkInputs from "$lib/modules/checkInputs.js";
-  import getColumnSummary from "$lib/modules/getColumnSummary.js";
+  import {writable} from 'svelte/store'
+  import {setContext} from 'svelte'
+  import { slide } from 'svelte/transition';
+  import { propKey, strictBuild } from './context'
+  import getColumnSummary from '$lib/modules/getColumnSummary.js';
   import { convertColumnToDate } from "$lib/modules/dateParsing.js";
-  import DownloadData from "$lib/ui/DownloadData.svelte";
+  import { formatValue } from '$lib/modules/formatting.js';
+  import ErrorChart from './ErrorChart.svelte'
+  import SearchBar from './SearchBar.svelte'
+  import checkInputs from '$lib/modules/checkInputs.js'
+  import DownloadData from '$lib/ui/DownloadData.svelte'
+  import SortIcon from '$lib/ui/SortIcon.svelte'
 
-  // 1 - Get Inputs
-  export let data = undefined;
-  export let queryID = undefined;
-  export let rows = 5;
-  export let marginTop = "1em";
-  export let marginBottom = "0em";
-  export let paddingBottom = "1.5em";
-  export let rowNumbers = "true";
-  export let rowLines = "true";
+  import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte'
+  import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte'
+  import MdNavigateNext from 'svelte-icons/md/MdNavigateNext.svelte'
+  import MdLastPage from 'svelte-icons/md/MdLastPage.svelte'
+  // Set up props store
+  let props = writable({})
+  setContext(propKey, props)
 
-  export let hovering = false;
+  // Data, pagination, and row index numbers
+  export let data;
+  export let rows = 10; // number of rows to show
+  rows = Number.parseInt(rows)
 
-  let columnWidths;
-  let max;
-  let dataPage;
+  let paginated = data.length > rows;
+  
+  export let rowNumbers = false;
+  rowNumbers = (rowNumbers === "true" || rowNumbers === true);
+
+  let hovering = false;
+
+  let marginTop = '1.5em';
+  let marginBottom = '1em';
+  let paddingBottom = '0em';
+
+  // Table features
+  export let search = false;
+  search = (search === "true" || search === true);
+
+  export let sortable = true;
+  sortable = (sortable === "true" || sortable === true);
+
+  export let downloadable = true;
+  downloadable = (downloadable === "true" || downloadable === true);
+
+  // Row Links:
+  export let link = undefined;
+
+  function handleRowClick(url) {
+        if(link){
+            window.location = url;
+        }
+    }
+
+  export let showLinkCol = false; // hides link column when columns have not been explicitly selected
+  showLinkCol = (showLinkCol === "true" || showLinkCol === true);
+
+  let error = undefined
+
+  // ---------------------------------------------------------------------------------------
+  // Add props to store to let child components access them
+  // ---------------------------------------------------------------------------------------
+  props.update(d => {return {...d, data, columns: []}});
+
+
+  // ---------------------------------------------------------------------------------------
+  // STYLING
+  // ---------------------------------------------------------------------------------------
+  export let rowShading = false;
+  rowShading = (rowShading === "true" || rowShading === true);
+
+  export let rowLines = true;
+  rowLines = (rowLines === "true" || rowLines === true);
+
+  export let headerColor;
+  export let headerFontColor = "var(--grey-900)";
+
+  export let formatColumnTitles = true;
+  formatColumnTitles = (formatColumnTitles === "true" || formatColumnTitles === true);
+
+  // ---------------------------------------------------------------------------------------
+  // DATA SETUP
+  // ---------------------------------------------------------------------------------------
 
   let columnSummary;
-  let error;
 
-  // Slicer
-  let index = 0;
-  let size = parseInt(rows);
-  $: max = Math.max(data.length - size, 0);
-  $: dataPage = data.slice(index, index + size);
-  let updatedSlice;
+  $: try {
+      // CHECK INPUTS
+      checkInputs(data);
+      
+      // GET COLUMN SUMMARY
+      columnSummary = getColumnSummary(data, 'array');
 
-  function slice() {
-    updatedSlice = data.slice(index, index + size);
-    dataPage = updatedSlice;
-  }
-
-  $: {
-    try {
-      error = undefined;
-      // 2 - Check Inputs
-      try {
-        if (queryID && data) {
-          throw Error(
-            'Only one of "queryID" or "data" attributes should be provided'
-          );
-        } else if (queryID) {
-        }
-        checkInputs(data);
-      } catch (err) {
-        throw err;
-      }
-
-      // 3 - Get Column Summary
-      columnSummary = getColumnSummary(data, "array");
-
-      // 4 - Process Data
+      // PROCESS DATES
       // Filter for columns with type of "date"
-      let dateCols = columnSummary.filter((d) => d.type === "date");
-      dateCols = dateCols.map((d) => d.id);
+      let dateCols = columnSummary.filter(d => d.type === "date")
+      dateCols = dateCols.map(d => d.id);
 
-      if (dateCols.length > 0) {
-        for (let i = 0; i < dateCols.length; i++) {
-          data = convertColumnToDate(data, dateCols[i]);
-        }
+      if(dateCols.length > 0){
+          for(let i = 0; i < dateCols.length; i++){
+              data = convertColumnToDate(data, dateCols[i]);
+          }
       }
 
-      // Table input:
-      columnWidths = 98 / (columnSummary.length + 1);
-    } catch (e) {
-      error = e.message;
+    // Hide link column if columns have not been explicitly selected:
+    for(let i=0; i<columnSummary.length; i++){
+            columnSummary[i].show = (showLinkCol === false && columnSummary[i].id === link) ? false : true
     }
+
+  } catch (e) {
+      error = e.message;
+      if(strictBuild){
+        throw error
+      }
   }
+      
+  let index = 0
+
+  let inputPage = null;
+
+  // ---------------------------------------------------------------------------------------
+  // SEARCH
+  // ---------------------------------------------------------------------------------------
+  let searchValue = "";
+  let filteredData 
+  $: filteredData = data;
+  let thisRow;
+  let thisValue;
+  let showNoResults = false;
+  $: runSearch = (searchValue) => {
+          if(searchValue !== ""){
+              filteredData = [];
+
+              // Reset pagination to first page:
+              index = 0;
+              inputPage = null;
+              
+              for(let i=0;i<data.length;i++){
+                  thisRow = data[i]
+                  for(let j=0; j<columnSummary.length; j++){
+                      if(columnSummary[j].type === "date"){
+                          thisValue = thisRow[columnSummary[j].id].toISOString()
+                      } else {
+                          thisValue = thisRow[columnSummary[j].id].toString().toLowerCase();
+                      }
+                      if(thisValue.indexOf(searchValue.toLowerCase()) !=-1 && thisValue != null){
+                          filteredData.push(thisRow)
+                          break;
+                      } 
+                  }
+              }
+              showNoResults = filteredData.length === 0
+          } else {
+              filteredData = data;
+              showNoResults = false;
+
+              // Reset pagination to first page:
+              index = 0;
+              inputPage = null;
+          }
+  }
+
+
+  // ---------------------------------------------------------------------------------------
+  // SORTING
+  // ---------------------------------------------------------------------------------------
+
+  let sortBy = {col: null, ascending: null};
+
+  $: sort = (column) => {
+
+      if (sortBy.col == column) {
+          sortBy.ascending = !sortBy.ascending
+      } else {
+          sortBy.col = column
+          sortBy.ascending = true
+      }
+      
+      // Modifier to sorting function for ascending or descending
+      let sortModifier = (sortBy.ascending) ? 1 : -1;
+      
+      let sort = (a, b) => 
+          (a[column] < b[column]) 
+          ? -1 * sortModifier 
+          : (a[column] > b[column]) 
+          ? 1 * sortModifier 
+          : 0;
+      
+      data.sort(sort)
+      filteredData = filteredData.sort(sort);
+  }
+
+  // Reset sort condition when data object is changed
+  $: data, sortBy = {col: null, ascending: null};
+
+  // ---------------------------------------------------------------------------------------
+  // PAGINATION
+  // ---------------------------------------------------------------------------------------
+
+  let totalRows 
+  $: totalRows = filteredData.length;
+
+  let displayedData = filteredData
+
+  let pageCount
+  let currentPage = 1
+
+  $: currentPage = Math.ceil((index + rows) / rows);
+  let max
+
+  $: goToPage = (pageNumber) => {
+          index = (pageNumber * rows);
+          max = index + rows;
+          currentPage = Math.ceil(max / rows);
+          if(inputPage){
+            inputPage = Math.ceil(max / rows);
+          }
+          totalRows = filteredData.length;
+          displayedData = filteredData.slice(index, index+rows);
+      }
+
+  let displayedPageLength = 0;
+
+  $: if(paginated){
+          pageCount = Math.ceil(filteredData.length / rows);
+          displayedData = filteredData.slice(index, index+rows);
+          displayedPageLength = displayedData.length;
+      } else {
+          currentPage = 1;
+          displayedData = filteredData;
+      }
+
+  // ---------------------------------------------------------------------------------------
+  // DATA FOR EXPORT
+  // ---------------------------------------------------------------------------------------
+
+  function dataSubset(data, selectedCols){
+      return data.map(obj=>{
+          var toReturn={} //object that would give each desired key for each part in arr
+          selectedCols.forEach(key=>toReturn[key]=obj[key]) //placing wanted keys in toReturn
+          return toReturn
+      })
+  }
+
+  /**
+   * Will find the matching column in columnSummary or throw an error if not found
+   * @param column
+   */
+  function safeExtractColumn(column) {
+    const foundCols = columnSummary.filter(d => d.id === column.id)
+    if (foundCols === undefined || foundCols.length !== 1 ){
+        error = (column.id === undefined) ? new Error(`please add an "id" property to all the <Column ... />`) : new Error(`column with id: "${column.id}" not found`)
+        if(strictBuild){
+            throw error
+        }
+        console.warn(error.message)
+        return ""
+    }
+
+    return foundCols[0]
+  }
+
+  let tableData
+  $: tableData = $props.columns.length > 0 ? dataSubset(data, $props.columns.map(d => d.id)) : data;
+
+
 </script>
 
-{#if !error}
-  <div
-    class="table-container"
-    class:avoidbreaks={rows <= 20}
-    transition:slide|local
-    style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}"
-    on:mouseenter={() => (hovering = true)}
-    on:mouseleave={() => (hovering = false)}
-  >
-    <div class="container">
-      <table>
-        <thead>
+{#if error === undefined}
+
+<slot></slot>
+<div class="table-container" transition:slide|local style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}" on:mouseenter={() => hovering = true} on:mouseleave={() => hovering = false}>
+  {#if search}
+      <SearchBar bind:value={searchValue} searchFunction={runSearch}/>
+  {/if}
+<div class=container>
+  <table>
+      <thead>
           <tr>
-            {#if rowNumbers === "true"}
-              <th class="index" style="width:2%" />
-            {/if}
-            {#each columnSummary as column}
+              {#if rowNumbers}
+              <th 
+                  class="index" 
+                  style="
+                      width:2%;
+                      background-color: {headerColor};
+                      "></th>
+              {/if}
+          {#if $props.columns.length > 0}
+              {#each $props.columns as column, i}
+                  <th
+                      class="{safeExtractColumn(column).type}"
+                      style="
+                      text-align: {column.align};
+                      color: {headerFontColor};
+                      background-color: {headerColor};
+                      cursor: {sortable ? 'pointer' : 'auto'};
+                      "
+                      on:click={sortable ? sort(column.id) : ''}
+                  >
+                      {column.title ? column.title : formatColumnTitles ? safeExtractColumn(column).title : safeExtractColumn(column).id}
+                      {#if sortBy.col === column.id}
+                          <SortIcon ascending={sortBy.ascending}/>
+                      {/if}
+                  </th>
+              {/each}
+          {:else}
+              {#each columnSummary.filter(d => d.show === true) as column, i}
               <th
-                class={column.type}
-                style="width:{columnWidths}%"
-                evidenceType={column.evidenceColumnType?.evidenceType ||
-                  "unavailable"}
-                evidenceTypeFidelity={column.evidenceColumnType?.typeFidelity ||
-                  "unavailable"}
-              >
-                {column.title}
+                  class="{column.type}"
+                  style="
+                  color: {headerFontColor};
+                  background-color: {headerColor};
+                  cursor: {sortable ? 'pointer' : 'auto'};
+                  "
+                  on:click={sortable ? sort(column.id) : ''}
+                  >
+                  <span class=col-header>
+                  {formatColumnTitles ? column.title : column.id}
+                  </span>
+                  {#if sortBy.col === column.id}
+                      <SortIcon ascending={sortBy.ascending}/>
+                  {/if}
               </th>
-            {/each}
-          </tr><tr />
-        </thead>
-        <tbody>
-          {#each dataPage as row, i}
-            <tr
-              class="data"
-              style={rowLines === "false" || i === dataPage.length - 1
-                ? ""
-                : "border-bottom: thin solid rgb(231, 231, 231);"}
-            >
-              {#if rowNumbers === "true"}
-                <td class="index" style="width:2%">
-                  {#if i === 0}
-                    {(index + i + 1).toLocaleString()}
+              {/each}
+          {/if}
+          </tr>
+      </thead>
+
+      {#each displayedData as row, i}
+      
+      <tr 
+        class:shaded-row={rowShading && i % 2 === 0}
+        class:row-link={link != undefined}
+        on:click={() => handleRowClick(row[link])}
+        >
+        {#if link}
+            <a style="display:none;" href={row[link]}>{row[link]}</a>
+        {/if}
+          {#if rowNumbers}
+          <td 
+              class="index" 
+              class:row-lines={rowLines}
+              style="
+                  width:2%;
+              ">
+          {#if i === 0}
+          {(index+i+1).toLocaleString()}
+          {:else}
+          {(index+i+1).toLocaleString()}
+          {/if}
+          </td>
+          {/if}
+          
+          {#if $props.columns.length > 0}
+              {#each $props.columns as column, i}
+                  <td 
+                  class="{safeExtractColumn(column).type}"
+                  class:row-lines={rowLines}
+                  style="
+                      text-align: {column.align};
+                      height: {column.height};
+                      width: {column.width};
+                  ">
+                  {#if column.contentType === "image" && row[column.id] !== undefined}
+                    <img 
+                    src={row[column.id]} 
+                    alt={column.alt ? row[column.alt] : row[column.id].replace(/^(.*[\\\/])/g, "").replace(/[.][^.]+$/g, "")} 
+                    style="
+                        margin: 0.5em auto 0.5em auto;
+                        height: {column.height};
+                        width: {column.width};
+                        "
+                    />
+                  {:else if column.contentType === "link" && row[column.id] !== undefined}
+                    <a 
+                        href={row[column.id]}
+                        target={column.openInNewTab ? "_blank" : ""}
+                        >
+                        {#if column.linkLabel != undefined}
+                            {#if row[column.linkLabel] != undefined}
+                                {formatValue(row[column.linkLabel], safeExtractColumn(column).format, safeExtractColumn(column).columnUnitSummary)}
+                            {:else}
+                                {column.linkLabel}
+                            {/if}
+                        {:else}
+                            {formatValue(row[column.id], safeExtractColumn(column).format, safeExtractColumn(column).columnUnitSummary)}
+                        {/if}
+                    </a>
                   {:else}
-                    {(index + i + 1).toLocaleString()}
+                    {formatValue(row[column.id], safeExtractColumn(column).format, safeExtractColumn(column).columnUnitSummary)}
                   {/if}
                 </td>
-              {/if}
-              {#each Object.values(row) as cell, j}
-                {#if cell == null}
-                  <td
-                    class="null {columnSummary[j].type}"
-                    style="width:{columnWidths}%"
-                  >
-                    {"Ø"}
-                  </td>
-                {:else if columnSummary[j].type === "number"}
-                  <td class="number" style="width:{columnWidths}%;">
-                    {formatValue(
-                      cell,
-                      columnSummary[j].format,
-                      columnSummary[j].columnUnitSummary
-                    )}
-                  </td>
-                {:else if columnSummary[j].type === "date"}
-                  <td
-                    class="string"
-                    style="width:{columnWidths}%"
-                    title={formatValue(cell, columnSummary[j].format)}
-                  >
-                    <div>
-                      {formatValue(cell, columnSummary[j].format)}
-                    </div>
-                  </td>
-                {:else if columnSummary[j].type === "string"}
-                  <td class="string" style="width:{columnWidths}%" title={cell}>
-                    <div>
-                      {cell || "Ø"}
-                    </div>
-                  </td>
-                {:else if columnSummary[j].type === "boolean"}
-                  <td class="string" style="width:{columnWidths}%" title={cell}>
-                    <div>
-                      {cell ?? "Ø"}
-                    </div>
-                  </td>
-                {:else}
-                  <td class="other" style="width:{columnWidths}%">
-                    {cell || "Ø"}
-                  </td>
-                {/if}
               {/each}
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-      {#if max > 0}
-        <div class="pagination">
-          <input
-            type="range"
-            {max}
-            step="1"
-            bind:value={index}
-            on:input={slice}
-            class="slider"
-          />
-          <span class="page-labels">
-            {(index + size).toLocaleString()} of {(max + size).toLocaleString()}
-          </span>
-        </div>
-      {/if}
-    </div>
-    <DownloadData class=download-button {data} {queryID} />
+          {:else}
+              {#each columnSummary.filter(d => d.show === true) as column, i}
+              <td 
+              class="{column.type}"
+              class:row-lines={rowLines}
+              >{formatValue(row[column.id], column.format, column.columnUnitSummary)}</td>
+              {/each}
+          {/if}
+      </tr>
+      {/each}
+  </table>
+</div>
+
+{#if paginated && pageCount > 1}
+<div class=pagination>
+  <div class=page-labels>
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(0)}><div class=page-icon >
+          <MdFirstPage/>
+      </div></button>
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(currentPage - 2)}><div class=page-icon >
+          <MdNavigateBefore/>
+      </div></button>
+      <span class=page-count>Page <input class=page-input class:hovering="{hovering}" class:error="{inputPage > pageCount}"type=number bind:value={inputPage} on:keyup={() => goToPage((inputPage ?? 1) - 1)} on:change={() => goToPage((inputPage ?? 1) - 1)} placeholder={currentPage}/> / <span class=page-count style="margin-left: 4px;">{pageCount.toLocaleString()}</span></span>
+      <span class=print-page-count> {displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span>
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
+          <MdNavigateNext/>
+      </div></button>
+      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(pageCount - 1)}><div class=page-icon >
+          <MdLastPage/>
+      </div></button>
   </div>
+    {#if downloadable}
+        <DownloadData class=download-button data={tableData} display={hovering}/>
+    {/if}
+</div>
 {:else}
-  <ErrorChart {error} chartType="Data Table" />
+<div class=table-footer>
+    {#if downloadable}
+        <DownloadData class=download-button data={tableData} display={hovering}/>
+    {/if}
+</div>
+{/if}
+
+<div class=noresults class:shownoresults={showNoResults}>No Results</div>
+
+
+
+</div>
+
+{:else}
+  <ErrorChart {error} chartType="Data Table"/>
 {/if}
 
 <style>
-  div.pagination {
-    padding: 0px 5px;
-    align-content: center;
-    border-top: 1px solid rgb(235, 238, 240);
-    height: 1.5em;
-  }
 
-  .slider {
-    -webkit-appearance: none;
-    width: 75%;
-    height: 10px;
-    margin: 0 0;
-    background: #dfeffe;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: 0.2s;
-    transition: opacity 0.2s;
-    border-radius: 10px;
-    display: inline-block;
-    cursor: pointer;
-  }
-
-  .slider:hover {
-    opacity: 1;
-  }
-
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 10px;
-    height: 10px;
-    background: #3488e9;
-    cursor: pointer;
-    border-radius: 10px;
-  }
-
-  .slider::-moz-range-thumb {
-    width: 10px;
-    height: 10px;
-    background: #3488e9;
-    cursor: pointer;
-  }
-
-  .slider::-moz-range-thumb {
-    width: 10px;
-    height: 10px;
-    background: #3488e9;
-    cursor: pointer;
-  }
-
-  .page-labels {
-    line-height: 2em;
-  }
-
-  .table-container :global(.download-button) {
-    visibility: hidden;
-  }
-
-  .table-container:hover :global(.download-button) {
-    visibility: visible;
-    margin-top: 10px;
-  }
-
-  span {
-    font-family: var(--ui-font-family-compact);
-    -webkit-font-smoothing: antialiased;
-    font-size: 0.8em;
-    float: right;
-    color: grey;
+  .table-container {
+      font-size: 9.5pt;
+      width: 97%;
   }
 
   .container {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    border-bottom: 2px solid rgb(235, 238, 240);
+      width:100%;
+      overflow-x: auto;
+      /* border-bottom: 1px solid var(--grey-200);    */
+      scrollbar-width: thin; 
+      scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
+      background-color: white;
+  }
+
+  :root {
+    --scrollbar-track-color: transparent;
+    --scrollbar-color: rgba(0,0,0,.2);
+    --scrollbar-active-color: rgba(0,0,0,.4);
+    --scrollbar-size: .75rem;
+    --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
+}
+
+  .container::-webkit-scrollbar {
+    height: var(--scrollbar-size);
+    width: var(--scrollbar-size);
+  }
+  .container::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track-color);
+  }
+  .container::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    border-radius: 7px;
+    background-clip: padding-box;
+  }
+  .container::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-active-color);
+  }
+  .container::-webkit-scrollbar-thumb:vertical {
+    min-height: var(--scrollbar-minlength);
+    border: 3px solid transparent;
+  }
+  .container::-webkit-scrollbar-thumb:horizontal {
+    min-width: var(--scrollbar-minlength);
+    border: 3px solid transparent;
   }
 
   table {
-    width: 100%;
-    font-size: calc(0.75em - 0px);
-    border-collapse: collapse;
-    font-family: sans-serif;
+      display: table;
+      font-family: sans-serif;
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+  }
+
+  th, td {
+      padding: 2px 8px;
+      white-space: nowrap;
+      overflow: hidden;
   }
 
   th {
-    max-width: 1px;
-    font-weight: 600;
-    border-bottom: 1px solid rgb(110, 110, 110);
-    padding: 0px 8px;
-    text-overflow: ellipsis;
-    overflow: hidden;
+      border-bottom: 1px solid var(--grey-600);
   }
 
-  td {
-    max-width: 1px;
-    padding: 4px 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .row-lines {
+      border-bottom: thin solid var(--grey-200);
   }
 
-  td div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .shaded-row {
+      background-color: var(--grey-100);
   }
 
   .string {
-    text-align: left;
+      text-align: left;
   }
 
-  .other {
-    text-align: right;
-  }
-
-  .date,
-  .object {
-    text-align: left;
+  .date {
+      text-align: left;
   }
 
   .number {
-    text-align: right;
+      text-align: right;
   }
 
-  .null {
-    color: var(--grey-300);
+  .boolean{
+      text-align: left; 
   }
 
-  .index {
-    color: var(--grey-300);
-    text-align: left;
-    max-width: min-content;
+  .sort-icon {
+      width: 12px;
+      height: 12px;
+      vertical-align: middle;
   }
 
-  tr:hover {
-    background-color: rgb(247, 249, 250);
+  .icon-container {
+      display: inline-flex;
+      align-items: center;
   }
 
-  /* CSS below shows full text on hover if a cell has been cut off*/
-  /* td > div:hover {
-  overflow: visible;
-  white-space: unset;
-  text-overflow: none;
-} */
+  .page-changer {
+      padding: 0;
+      color: var(--grey-400);
+      height: 1.1em;
+      width: 1.1em;
+  }
 
-  @media print {
-    .avoidbreaks {
-      break-inside: avoid;
+  .index{
+      color:var(--grey-300);
+      text-align: left;
+      max-width: min-content;
+  }
+
+  .pagination {
+      font-size: 12px;
+      display: flex; 
+      align-items: center;
+      justify-content: space-between;
+      height: 2em; 
+      font-family: var(--ui-font-family);
+      color: var(--grey-500);
+      user-select: none;
+      text-align: right; 
+      margin-top: 0.5em; 
+      margin-bottom: 1.8em;
+      font-variant-numeric: tabular-nums;
+  }
+
+
+  .page-labels {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center ;
+      gap: 3px;
+  }
+
+  .selected {
+      background: var(--grey-200);
+      border-radius: 4px;
+  }
+
+  .page-changer {
+      font-size: 20px;
+      font-family: sans-serif;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 200ms; 
+  }
+
+  .page-changer.hovering {
+    color: var(--blue-600);
+    transition: color 200ms; 
+  }
+
+  .page-changer:disabled {
+      cursor: auto;
+      color: var(--grey-300);
+      user-select: none;
+      transition: color 200ms; 
+  }
+
+  .page-icon {
+      height: 1em;
+      width: 1em;
+  }
+
+  .page-input {
+    width: 23px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--grey-500);
+  }
+
+  .table-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px 0px;
+    font-size: 12px;
+    height: 9px
+  }
+
+/* Remove number buttons in input box*/
+  .page-input::-webkit-outer-spin-button,
+  .page-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+    /* Firefox */
+    .page-input[type=number] {
+    -moz-appearance: textfield;
     }
 
-    .pagination {
-      break-inside: avoid;
+    .page-input.hovering {
+        border: 1px solid var(--grey-200);
     }
 
-    .slider {
-      display: none;
-    }
+    .page-input.error {
+    border: 1px solid var(--red-600);
   }
+
+  .page-input::placeholder {
+    color: var(--grey-500);
+  }
+
+  button:enabled > .page-icon:hover {
+      color: var(--blue-800);
+  }
+
+  *:focus {
+      outline: none;
+  }
+
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: var(--grey-400);
+      opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: var(--grey-400);
+  }
+
+  ::-ms-input-placeholder { /* Microsoft Edge */
+      color: var(--grey-400);
+  }
+
+  th {
+      user-select: none;
+  }
+
+  th.type-indicator {
+  color:var(--grey-400);
+  font-weight:normal;
+  font-style: italic;
+}
+
+.row-link {
+    cursor: pointer;
+  }
+
+  .row-link:hover {
+    background-color: #f0f5fc;
+  }
+
+.noresults {
+  display: none;
+  color: var(--grey-400);
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.shownoresults {
+  display: block;
+}
+
+.print-page-count {
+    display: none;
+}
+
+
+
+
+@media (max-width: 600px) {
+
+    .page-changer {
+        height: 1.2em;
+        width: 1.2em;
+    }
+    .page-icon {
+        height: 1.2em;
+        width: 1.2em;
+    }
+
+    .page-count {
+        font-size: 1.1em;
+    }
+
+    .page-input {
+        font-size: 1.1em;
+    }
+
+}
+
+@media print {
+  .avoidbreaks {
+    break-inside: avoid;
+  }
+
+  .pagination {
+    break-inside: avoid;
+  }
+
+  .page-changer {
+    display: none;
+  }
+
+  .page-count {
+    display: none;
+  }
+
+  .print-page-count {
+    display: inline; 
+  }
+
+}
+
 </style>

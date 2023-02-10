@@ -10,7 +10,7 @@
 <p>You'll need to set up a git repo before deploying to Vercel.</p>
 {:else }
 
-<h1>Deploying to Vercel</h1>
+<h2>Deploying to Vercel</h2>
 
 <ol>
     <li><a href='https://vercel.com/new' target=_blank rel="noreferrer">Start a new Vercel project &rarr;</a></li>

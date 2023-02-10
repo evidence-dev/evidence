@@ -89,9 +89,9 @@
                        {formatValue(cell, columnSummary[j].format, columnSummary[j].columnUnitSummary)}
                     </td>
                   {:else if columnSummary[j].type === 'date'}
-                  <td class="string" style="width:{columnWidths}%" title={formatValue(cell, columnSummary[j].format)}>
+                  <td class="string" style="width:{columnWidths}%" title={formatValue(cell, columnSummary[j].format, columnSummary[j].columnUnitSummary)}>
                     <div >
-                        {formatValue(cell, columnSummary[j].format)}
+                        {formatValue(cell, columnSummary[j].format, columnSummary[j].columnUnitSummary)}
                     </div>
                   </td>
                   {:else if columnSummary[j].type === 'string'}
@@ -127,7 +127,9 @@
 </div>
 {/if}
 
-<DownloadData class=download-button {data} {queryID} />
+<div class=footer>
+  <DownloadData class=download-button {data} {queryID} display/>
+</div>
 
 </div>
 
@@ -310,5 +312,11 @@ th.type-indicator {
 
 tr.type-indicator { 
   border-bottom: 1px solid var(--grey-100)
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 12px;
 }
 </style>

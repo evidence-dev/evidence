@@ -1,5 +1,85 @@
 # @evidence-dev/evidence
 
+## 11.0.0
+
+### Minor Changes
+
+- c801fa9: New capability to fail build if there are errors in components or queries
+
+### Patch Changes
+
+- Updated dependencies [e2550fd]
+- Updated dependencies [c0f69cb]
+- Updated dependencies [5fbbb9c]
+- Updated dependencies [ccbca9c]
+- Updated dependencies [fa4edec]
+- Updated dependencies [c06c1a1]
+- Updated dependencies [77cc9c9]
+- Updated dependencies [2e81dbe]
+- Updated dependencies [c801fa9]
+- Updated dependencies [db92de1]
+- Updated dependencies [470291c]
+  - @evidence-dev/components@1.9.0
+  - @evidence-dev/preprocess@1.5.0
+  - @evidence-dev/db-orchestrator@1.2.0
+
+## 10.0.0
+
+### Patch Changes
+
+- Updated dependencies [9d42aae]
+- Updated dependencies [b665eb2]
+- Updated dependencies [453919a]
+- Updated dependencies [80eaa2d]
+- Updated dependencies [5e5cf29]
+  - @evidence-dev/components@1.8.0
+
+## 9.0.0
+
+### Patch Changes
+
+- 5a44815: Ability to style project by overwriting app.css
+- Updated dependencies [afda5ba]
+- Updated dependencies [5a44815]
+- Updated dependencies [84dc796]
+- Updated dependencies [d83c741]
+- Updated dependencies [c993d09]
+- Updated dependencies [8a7bd67]
+  - @evidence-dev/components@1.7.0
+
+## 8.0.0
+
+### Patch Changes
+
+- 175c091: clear query cache at start of build
+- Updated dependencies [8894ea3]
+- Updated dependencies [141dc5b]
+  - @evidence-dev/db-orchestrator@1.1.12
+  - @evidence-dev/preprocess@1.4.0
+  - @evidence-dev/components@1.6.0
+
+## 7.0.0
+
+### Patch Changes
+
+- Updated dependencies [94805f9]
+- Updated dependencies [fed8cf3]
+- Updated dependencies [e098028]
+- Updated dependencies [2a1ff16]
+- Updated dependencies [d41cbe4]
+- Updated dependencies [6445c6f]
+- Updated dependencies [12aced0]
+- Updated dependencies [ea10232]
+- Updated dependencies [c013859]
+- Updated dependencies [c50ce10]
+- Updated dependencies [1f339fb]
+- Updated dependencies [224c553]
+- Updated dependencies [7afdf97]
+- Updated dependencies [f5ec614]
+  - @evidence-dev/components@1.5.0
+  - @evidence-dev/preprocess@1.3.0
+  - @evidence-dev/db-orchestrator@1.1.11
+
 ## 6.0.2
 
 ### Patch Changes

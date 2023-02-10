@@ -28,7 +28,13 @@ const populateTemplate = function() {
     fs.writeJsonSync("./.evidence/template/package.json", packageContents)
 }
 
-const runFileWatcher = function(sourceRelative,targetRelative) {
+const clearQueryCache = function() {
+  fs.removeSync(".evidence/template/.evidence-queries/cache")
+  console.log("Cleared query cache")
+}
+
+const runFileWatcher = function(watchPatterns) {
+
   const ignoredFiles = [
     "./pages/settings/**", 
     "./pages/settings.+(*)",
@@ -36,33 +42,41 @@ const runFileWatcher = function(sourceRelative,targetRelative) {
     "./pages/api.+(*)"
   ]
 
-  const watcher = chokidar.watch(path.join(sourceRelative,'**'), {ignored:ignoredFiles})
+  var watchers = []
 
-  const sourcePath = p => path.join('./', p)
-  const targetPath = p => path.join(targetRelative, path.relative(sourceRelative, p))
-  const pagePath =  p => p.endsWith("index.md")? targetPath(p).replace("index.md", "+page.md") : targetPath(p).replace(".md", "/+page.md")
+  watchPatterns.forEach((pattern,item) => {
+    watchers[item] = chokidar.watch(path.join(pattern.sourceRelative, pattern.filePattern), { ignored: ignoredFiles});
 
-  const syncFile = (file) => {
-    const source = sourcePath(file)
-    const svelteKitPagePath = pagePath(source)
-    const target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
-    fs.copySync(source, target)
-  }
+    const sourcePath = p => path.join('./', p)
+    const targetPath = p => path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, p))
+    const pagePath =  p => p.endsWith("index.md")? p.replace("index.md", "+page.md") : p.replace(".md", "/+page.md")
+  
+    const syncFile = (file) => {
+      const source = sourcePath(file)
+      const target = targetPath(source)
+      const svelteKitPagePath = pagePath(target)
+      console.log('source ' + source)
+      console.log('target ' + target)
+      console.log('sk page ' + svelteKitPagePath)
 
-  const unlinkFile = (file) => { 
-    const source = sourcePath(file)
-    const svelteKitPagePath = pagePath(source)
-    const target =  path.join(targetRelative, path.relative(sourceRelative, svelteKitPagePath))
-    fs.removeSync(target)
-  }
+      fs.copySync(source, svelteKitPagePath)
+    }
+  
+    const unlinkFile = (file) => { 
+      const source = sourcePath(file)
+      const svelteKitPagePath = pagePath(source)
+      const target =  path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, svelteKitPagePath))
+      fs.removeSync(target)
+    }
 
-  watcher
-      .on('add', syncFile)
-      .on('change', syncFile)
-      .on('unlink', unlinkFile)
-      .on('addDir', path => {fs.ensureDirSync(targetPath(path))})
-      .on('unlinkDir', path => fs.rmdirSync(targetPath(path)));
-  return watcher 
+    watchers[item]
+        .on('add', syncFile)
+        .on('change', syncFile)
+        .on('unlink', unlinkFile)
+        .on('addDir', path => {fs.ensureDirSync(targetPath(path))})
+        .on('unlinkDir', path => fs.removeSync(targetPath(path)));
+  })
+  return watchers 
 }
 
 const flattenArguments = function(args) {
@@ -83,6 +97,40 @@ const flattenArguments = function(args) {
   }
 }
 
+const watchPatterns = 
+    [
+      {'sourceRelative': './pages/','targetRelative':'./.evidence/template/src/pages/','filePattern':'**'} // markdown pages
+      ,{'sourceRelative': './static/','targetRelative':'./.evidence/template/static/','filePattern':'**'} // static files (eg images)
+      ,{'sourceRelative': './sources/','targetRelative':'./.evidence/template/sources/','filePattern':'**'} // source files (eg csv files)
+      ,{'sourceRelative': './components/','targetRelative':'./.evidence/template/src/components/','filePattern':'**'} // custom components
+      ,{'sourceRelative': '.','targetRelative':'./.evidence/template/src/','filePattern':'app.css'} // custom theme file
+    ]
+
+    const buildHelper = function(command, args){
+      const watchers = runFileWatcher(watchPatterns)
+      const flatArgs = flattenArguments(args);
+      // Run svelte kit build in the hidden directory 
+      const child = spawn(command, flatArgs, {
+        shell: true, 
+        cwd:'.evidence/template', 
+        stdio: "inherit",
+      });
+      // Copy the outputs to the root of the project upon successful exit 
+      child.on('exit', function (code) {
+        if(code === 0) {
+          fs.copySync('./.evidence/template/build', './build')
+          console.log("Build complete --> /build ")
+        } else {
+          console.error("Build failed")
+        }
+        child.kill();
+        watchers.forEach(watcher => watcher.close())
+        if (code !== 0) {
+          throw `Build process exited with code ${code}`;
+        }
+      })
+    }
+  
 const prog = sade('evidence')
 
 prog
@@ -90,9 +138,7 @@ prog
   .describe("launch the local evidence development environment")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
-    const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
-    const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/')
+    const watchers = runFileWatcher(watchPatterns)
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
@@ -105,9 +151,7 @@ prog
 
     child.on('exit', function () {
       child.kill()
-      watcher.close()
-      staticWatcher.close()
-      componentWatcher.close()
+      watchers.forEach(watcher => watcher.close())
     })
 
   }); 
@@ -117,40 +161,18 @@ prog
   .describe("build production outputs")
   .action((args) => {
     populateTemplate()
-    const watcher = runFileWatcher('./pages/','./.evidence/template/src/pages/')
-    const staticWatcher = runFileWatcher('./static/','./.evidence/template/static/')
-    const componentWatcher = runFileWatcher('./components/','./.evidence/template/src/components/')
-    const flatArgs = flattenArguments(args);
+    clearQueryCache()
+    buildHelper('npx vite build', args)
 
-    // Run svelte kit build in the hidden directory 
-    const child = spawn('npx vite build', flatArgs, {
-      shell: true, 
-      cwd:'.evidence/template', 
-      stdio: "inherit"});
+  });
 
-    // child.stdout.on('data', (data) => {
-    // });
-    // child.stderr.on('data', (data) => {
-    //   console.error(`${data}`);
-    // });
-    // Copy the outputs to the root of the project upon successful exit 
-
-    child.on('exit', function (code) {
-      if(code === 0) {
-        fs.copySync('./.evidence/template/build', './build')
-        console.log("Build complete --> /build ")
-      } else {
-        console.error("Build failed")
-      }
-      child.kill();
-      watcher.close();
-      staticWatcher.close();
-      componentWatcher.close();
-      if (code !== 0) {
-        throw `Build process exited with code ${code}`;
-      }
-    })
-
+  prog
+  .command('build:strict')
+  .describe("build production outputs and fails on error")
+  .action((args) => {
+    populateTemplate()
+    clearQueryCache()
+    buildHelper('VITE_BUILD_STRICT=true npx svelte-kit build', args)
   }); 
 
 

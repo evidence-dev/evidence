@@ -12,13 +12,13 @@
 
     export let title = undefined;
     export let subtitle = undefined;
-    export let legend = false;
+    export let legend =  true;
 
     export let outlineColor = undefined;
     export let outlineWidth = undefined;
-    export let labelPosition = "right";
+    export let labelPosition = "inside";
     export let funnelAlign = "center";
-    export let funnelSort = "descending";
+    export let funnelSort = "none";
 
     // ---------------------------------------------------------------------------------------
     // Variable Declaration
@@ -36,10 +36,11 @@
     let subtitleFontSize;
     let titleBoxPadding;
     let titleBoxHeight;
+    let chartAreaTopPosition;
     let chartAreaPaddingTop;
     let chartAreaPaddingBottom;
     let legendHeight;
-    let legendPaddingTop;
+    let legendPaddingTop; 
     let legendTop;
     let chartTop;
     let chartBottom;
@@ -56,11 +57,12 @@
     $: columnSummary = getColumnSummary(data);
     $: name = name ?? formatTitle(valueCol, columnSummary[nameCol].title);
     $: nameColFormat = columnSummary[nameCol].format;
+    $: valueColFormat = columnSummary[valueCol].format;
 
     // ---------------------------------------------------------------------------------------
     // Set up chart area
     // ---------------------------------------------------------------------------------------
-    chartAreaHeight = 410; // standard height for chart area across all charts
+    chartAreaHeight = 220; // standard height for chart area across all charts
 
     hasTitle = title ? true : false;
     hasSubtitle = subtitle ? true: false;
@@ -68,11 +70,10 @@
 
     titleFontSize = 15;
     subtitleFontSize = 13;
-    titleBoxPadding = 6 * (hasSubtitle);
-
+    titleBoxPadding = 10 * (hasSubtitle);
     titleBoxHeight = (hasTitle * titleFontSize) + (hasSubtitle * subtitleFontSize) + (titleBoxPadding * Math.max(hasTitle, hasSubtitle));
-
-    chartAreaPaddingTop = 10;
+    chartAreaTopPosition = (hasTitle * 60) + (hasSubtitle * 20)
+    chartAreaPaddingTop = 2;
     chartAreaPaddingBottom = 8;
 
     legendHeight = 15;
@@ -89,7 +90,6 @@
     // Set final chart height:
     height = chartContainerHeight + 'px';
     width = '100%';
-
     // ---------------------------------------------------------------------------------------
     // Chart Configuration
     // ---------------------------------------------------------------------------------------
@@ -101,14 +101,15 @@
     $: seriesConfig = {
         type: "funnel",
         name,
-        left: '10%',
-        top: 60,
-        bottom: 60,
+        left: funnelAlign === 'center' ? '10%' : '',
+        top: chartAreaTopPosition,
+        bottom: 10,
         width: '80%',
         min,
         max,
-        minSize: '0%',
-        maxSize: '100%',
+        minSize: '30%',
+        maxSize: '90%',
+        gap: 2,
         
         funnelAlign,
         sort: funnelSort,
@@ -122,20 +123,22 @@
         },
         label: {
             show: true,
-            position: labelPosition
+            position: labelPosition,
+            formatter: function(params){
+                    return formatValue(params.value, valueColFormat);
+            },
         },
-       
         labelLayout: { hideOverlap: true },
         emphasis: {
             focus: "series",
         },
         itemStyle: {
             borderColor: outlineColor,
-            borderWidth: outlineWidth
+            borderWidth: outlineWidth,
         },
         tooltip: {
             formatter: function(params){
-                return `<span style='font-weight:600;'>${formatValue(params.name, nameColFormat)}</span></br><span>Value:</span><span style='margin-left: 4px;'> ${params.value}</span>`
+                return `<span style='font-weight:600;'>${formatValue(params.name, nameColFormat)}</span></br><span>${name}:</span><span style='margin-left: 4px;'> ${params.value}</span>`
             },
             padding: 6,
                 borderRadius: 4, 
@@ -166,6 +169,7 @@
         },
         legend: {
             show: legend,
+            orient: 'horizontal',
             type: "scroll",
             top: legendTop,
             padding: [0, 0, 0, 0]
