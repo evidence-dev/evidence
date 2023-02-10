@@ -4,6 +4,8 @@
   import {colours} from "$lib/modules/colours";
   import { formatValue } from '$lib/modules/formatting.js';
   import {colour} from "$lib/modules/colours";
+  import formatTitle from '../modules/formatTitle.js';
+  import getColumnSummary from '../modules/getColumnSummary';
   
   export let data = undefined;
   export let sourceCol = "source";
@@ -18,11 +20,11 @@
   export let outlineColor = undefined;
   export let outlineWidth = undefined;
   export let nodeAlign = "justify";
-  export let nodeGap = 8;
+  export let nodeGap = 10;
   export let nodeWidth = 20;
   export let orient = "horizontal";
   
-  //Data Formatting  
+  // Data Formatting  
   let names = []
   let links;
   data.map((link) => names.push(link[sourceCol], link[targetCol]));
@@ -38,7 +40,7 @@
   // Variable Declaration
   // ---------------------------------------------------------------------------------------
   
-  //Chart Area sizing:
+  // Chart Area sizing:
   let chartAreaHeight;
   let hasTitle;
   let hasSubtitle;
@@ -59,6 +61,15 @@
   // Set final chart height:
   let height = '400px';
   let width = '100%';
+
+  // Tooltip formatting:
+  let columnSummary;
+  let columnNames;
+
+  let sourceFormat;
+  let targetFormat;
+  let valueFormat;
+  
   
   // ---------------------------------------------------------------------------------------
   // Set up chart area
@@ -91,6 +102,18 @@
   width = '100%';
   
   // ---------------------------------------------------------------------------------------
+  // Get column information
+  // ---------------------------------------------------------------------------------------
+      // Get column summary:
+      columnSummary = getColumnSummary(data);
+      // Get column names:
+      columnNames = Object.keys(columnSummary)
+      // Get formats:
+      sourceFormat = columnSummary[columnNames[0]].format;
+      targetFormat = columnSummary[columnNames[1]].format;
+      valueFormat = columnSummary[columnNames[2]].format;
+
+  // ---------------------------------------------------------------------------------------
   // Chart Configuration
   // ---------------------------------------------------------------------------------------
   
@@ -113,6 +136,9 @@
       show: label,
       position: orient === "vertical" ? "top" : "right",
       fontSize: orient === "vertical" ? 10.5 : 12,
+      formatter: function(params){
+        return `${formatTitle(params.data.name)}`
+      }
     },
     itemStyle: {
       borderColor: outlineColor,
@@ -120,7 +146,7 @@
     },
     tooltip: {
       formatter: function(params){
-        return params.data.name ? `${formatValue(params.data.name)}` : `${formatValue(params.data[sourceCol])} to ${formatValue(params.data.target)}, ${formatValue(params.data.value)}`
+        return params.data.name ? `<b>${formatTitle(params.data.name)}</b>` : `<b>${formatTitle(params.data[sourceCol], sourceFormat)}</b> → <b>${formatTitle(params.data.target, targetFormat)}</b><br>${formatValue(params.data.value, valueFormat)}`
       },
       padding: 6,
       borderRadius: 4, 
