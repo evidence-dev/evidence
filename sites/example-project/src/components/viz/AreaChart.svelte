@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Chart from './Chart.svelte'
     import Area from './Area.svelte'
 

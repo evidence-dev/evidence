@@ -150,7 +150,7 @@ const DERIVED_CURRENCY_FORMATS = [
 ];
 
 const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map((currency) => {
-  let derivedFormats = [];
+  let derivedFormats = []
   DERIVED_CURRENCY_FORMATS.forEach((derivedFormat) => {
     let next = {
       formatTag: currency.primaryCode + derivedFormat.derivedSuffix,

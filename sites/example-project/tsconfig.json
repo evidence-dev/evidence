@@ -1,0 +1,30 @@
+// keep ignoreDeprecations until svelte-kit/tsconfig.json contains importsNotUsedAsValues
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+      "moduleResolution": "node",
+      "outDir": "./build",
+      "module": "es2020",
+      "lib": ["es2020", "DOM"],
+      "target": "es2019",
+      "isolatedModules": true,
+      "resolveJsonModule": true,
+      "sourceMap": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "baseUrl": ".",
+      "allowJs": true,
+      "checkJs": true,
+      "strict": false,
+
+      "paths": {
+        "$lib":["./src/components"],
+        "$lib/*":["./src/components/*"],
+      },
+    },
+    "ignoreDeprecations": "5.0",
+    "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"],
+    "extends": "./.svelte-kit/tsconfig.json",
+    "exclude": ["./build/**/*", "node_modules/*"]
+}

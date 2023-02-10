@@ -30,4 +30,4 @@ export const colours = {
 	grey800: "hsla(210, 18%, 30%, 1)",
 	grey900: "hsla(210, 20%, 25%, 1)",
 	grey999: "hsla(211, 24%, 16%, 1)"
-}
+} as const

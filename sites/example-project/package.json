@@ -14,8 +14,11 @@
   "publishConfig": {
     "directory": "../../packages/components"
   },
+  "dependencies": {
+    "svelte": "^3.55.0"
+  },
   "devDependencies": {
-    "@evidence-dev/telemetry": "1.0.4",
+    "@evidence-dev/telemetry": "workspace:1.0.4",
     "@sveltejs/package": "1.0.1",
     "@tidyjs/tidy": "2.4.4",
     "cross-env": "^7.0.3",
@@ -27,7 +30,9 @@
     "git-remote-origin-url": "4.0.0",
     "prismjs": "1.29.0",
     "ssf": "^0.11.2",
-    "svelte": "3.55.0",
-    "svelte-icons": "2.1.0"
+    "svelte-icons": "2.1.0",
+    "svelte-preprocess": "^5.0.1",
+    "svelte-sequential-preprocessor": "^0.0.7",
+		"typescript": "^4.9.5"
   }
 }
