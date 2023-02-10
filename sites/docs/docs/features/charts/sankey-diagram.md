@@ -55,6 +55,7 @@ hide_table_of_contents: false
 <tr> <td>subtitle</td> <td>Chart subtitle. Appears just under title.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>label</td> <td>Turns label on or off. Label appears at top or right of the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false </td> <td class='tcenter'>true</td> </tr>
 <tr> <td>orient</td> <td>Layout direction of the nodes in the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>horizontal | vertical</td> <td class='tcenter'>horizontal</td> </tr>
+<tr> <td>sort</td> <td>Whether the nodes are sorted by size in the diagram</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false</td> <td class='tcenter'>false</td> </tr>
 <tr> <td>nodeAlign</td> <td>Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment.</td> <td class='tcenter'>-</td> <td class='tcenter'>justify | left | right</td> <td class='tcenter'>justify</td> </tr>
 <tr> <td>nodeGap</td> <td>The gap between any two rectangles in each column of the the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>number</td> <td class='tcenter'>8</td> </tr>
 <tr> <td>nodeWidth</td> <td>The node width of rectangle in the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>number</td> <td class='tcenter'>20</td> </tr>

@@ -80,6 +80,7 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
     sourceCol=source 
     targetCol=target 
     valueCol=amount_usd 
+    sort=true
 />
 
 <SankeyDiagram 

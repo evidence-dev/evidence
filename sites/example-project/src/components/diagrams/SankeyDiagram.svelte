@@ -23,6 +23,7 @@
   export let nodeGap = 10;
   export let nodeWidth = 20;
   export let orient = "horizontal";
+  export let sort = false;
   
   // Data Formatting  
   let names = []
@@ -121,7 +122,7 @@
   $: seriesConfig =  {
     type: 'sankey',
     layout: 'none',
-    layoutIterations: 0, // Preserve data order in layout
+    layoutIterations: sort==="true" ? 1 : 0, // Preserve data order in layout
     left: '10%',
     top: orient === "vertical" ? 80 : 60,
     bottom: orient === "vertical" ? 0 : 10,
