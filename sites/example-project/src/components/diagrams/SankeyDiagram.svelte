@@ -1,11 +1,11 @@
 <script>
-  import ECharts from "../viz/ECharts.svelte";
+  import ECharts from '$lib/viz/ECharts.svelte';
   
-  import {colours} from "$lib/modules/colours";
+  import {colours} from '$lib/modules/colours';
   import { formatValue } from '$lib/modules/formatting.js';
-  import {colour} from "$lib/modules/colours";
-  import formatTitle from '../modules/formatTitle.js';
-  import getColumnSummary from '../modules/getColumnSummary';
+  import {colour} from '$lib/modules/colours';
+  import formatTitle from '$lib/modules/formatTitle.js';
+  import getColumnSummary from '$lib/modules/getColumnSummary';
   
   export let data = undefined;
   export let sourceCol = "source";
