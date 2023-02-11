@@ -60,9 +60,9 @@ const runFileWatcher = function(watchPatterns) {
   
     const unlinkFile = (file) => { 
       const source = sourcePath(file)
-      const svelteKitPagePath = pagePath(source)
-      const target =  path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, svelteKitPagePath))
-      fs.removeSync(target)
+      const target = targetPath(source)
+      const svelteKitPagePath = pagePath(target)
+      fs.removeSync(svelteKitPagePath)
     }
 
     watchers[item]
