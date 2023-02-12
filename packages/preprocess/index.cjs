@@ -3,11 +3,8 @@ const unified = require('unified')
 const parse = require('remark-parse')
 const visit = require('unist-util-visit')
 const md5 = require("blueimp-md5");
-const fs = require('fs')
-const fsExtra = require('fs-extra')
-const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
-const strictBuild = (process.env.VITE_BUILD_STRICT === 'true')
-const circularRefErrorMsg = 'Compiler error: circular reference'
+const fs = require('fs-extra')
+
 const getRouteHash = function(filename){
     let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
     let routeHash = md5(route)
@@ -122,17 +119,8 @@ const ignoreIndentedCode = function() {
 	block_tokenizers.indentedCode = () => true;
 }
 
-const updateExtractedQueriesDir = function(content, filename){
-    if (!fs.existsSync("./.evidence-queries")){
-        fs.mkdirSync("./.evidence-queries");
-    }
-    if (!fs.existsSync("./.evidence-queries/extracted")){
-        fs.mkdirSync("./.evidence-queries/extracted");
-    }
-    let routeHash = getRouteHash(filename)
-    let queryDir = `./.evidence-queries/extracted/${routeHash}`
-
-    let queries = [];  
+const getQueryIds = function(content){
+    let queryIds = [];  
     let tree = unified()
         .use(parse)
         .use(ignoreIndentedCode)
@@ -140,65 +128,8 @@ const updateExtractedQueriesDir = function(content, filename){
 
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
-        let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
-        let inputQueryString = compiledQueryString // original, as written 
-        let compiled = false // default flag, switched to true if query is compiled
-        let status = "not run"
-        queries.push(
-            {id, compiledQueryString, inputQueryString, compiled, status}
-        )
+        queryIds.push(id)
     });
-
-    // Handle query chaining:
-    let maxIterations = 100
-    let queryIds = queries.map(d => d.id);
-
-    for(let i=0; i<=maxIterations; i++){
-        queries.forEach(query => {
-            let references = query.compiledQueryString.match(/\${.*?\}/gi)	
-            if(references){
-                query.compiled = true
-                references.forEach(reference => {
-                    try {
-                        referencedQueryID = reference.replace("${", "").replace("}", "").trim()
-                        if(!queryIds.includes(referencedQueryID)){
-                            errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
-                            throw new Error(errorMessage)
-                        } else if(i >= maxIterations) {
-                            // tried 100 times, still have references, likely circular 
-                            throw new Error(circularRefErrorMsg)
-                        } else {
-                            let referencedQuery = "(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
-                            query.compiledQueryString = query.compiledQueryString.replace(reference, referencedQuery)
-                        }
-                    }catch(e){
-                        // if error is unknown use default circular ref. error
-                        e = (e.message === undefined || e.message === null) ? Error(circularRefErrorMsg) : e
-                        query.compileError = e.message
-                        query.compiledQueryString = e.message
-                        // if build is strict and we detect an error, force a failure
-                        if (strictBuild){
-                            throw new Error(e.message)
-                        }
-                    }
-                }) 
-            } 
-        })
-    }
-
-    if (queries.length === 0) {
-        removeSync(queryDir)
-        return [];
-    }
-    if (queries.length > 0) {
-        if(!fs.existsSync(queryDir)){
-            fs.mkdirSync(queryDir)
-            writeJSONSync(`${queryDir}/queries.json`, queries);
-        }else{
-            emptyDirSync(queryDir)
-            writeJSONSync(`${queryDir}/queries.json`, queries);
-        }
-    }
     return queryIds;
 }
 
@@ -215,15 +146,13 @@ function highlighter(code, lang) {
     `;
 }
 
-// 
-
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
     let queryIdsByFile = {};
     return [
         {
             markup({content, filename}){
                 if(filename.endsWith(".md")){
-                    let fileQueryIds = updateExtractedQueriesDir(content, filename);
+                    let fileQueryIds = getQueryIds(content);
                     queryIdsByFile[getRouteHash(filename)] = fileQueryIds;
                 }
             }

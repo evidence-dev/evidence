@@ -3,6 +3,7 @@
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { routeHash } from '@evidence-dev/components/ui/stores';
+  import { page } from "$app/stores";
   export let endpoint = $routeHash;
 
   let loadingPromise;
@@ -16,7 +17,8 @@
         return [];
     }
 
-    const res = await fetch(`/api/${endpoint}/status.json`);
+    let statusEndpoint = `/api/status${$page.route.id}`.replace(/\/$/, "")
+    const res = await fetch(statusEndpoint);
     const { status } = await res.json();
 
     if (res.ok) {
