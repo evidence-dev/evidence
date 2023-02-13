@@ -161,7 +161,7 @@
 	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
 	import LoadingIndicator from "@evidence-dev/components/ui/LoadingIndicator.svelte";
 	
-	import QueryStatus from "$lib/QueryStatus.svelte";
+	import QueryStatus from "@evidence-dev/components/QueryStatus.svelte";
 	
 	let open = false;
 </script>

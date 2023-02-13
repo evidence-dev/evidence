@@ -11,18 +11,13 @@ const getRouteHash = function(filename){
     return routeHash
 }
 
-const hasQueries = function(filename){
-    let hash = getRouteHash(filename)
-    return fs.existsSync("./.evidence-queries/extracted/"+hash)
-}
-
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
     let routeHash = getRouteHash(filename)
 
     let queryDeclarations = ''
     
-    if(hasQueries(filename)) {
+    if(fileQueryIds?.length > 0) {
         queryDeclarations = 
         `
         let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;

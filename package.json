@@ -26,7 +26,11 @@
 		"svelte2tsx": "0.4.7",
 		"typescript": "4.5.4",
 		"uvu": "0.5.2",
-		"vite": "4.0.4"
+		"vite": "4.0.4",
+		"remark-parse": "8.0.2",
+		"unified": "9.1.0",
+		"unist-util-visit": "4.1.2",
+		"fs-extra": "10.1.0"
 	},
 	"scripts": {
 		"dev": "pnpm --filter ./sites/example-project dev", 
