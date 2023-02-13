@@ -71,9 +71,11 @@ const runQueries = async function (routeHash, dev) {
     let routePath = `./.evidence-queries/extracted/${routeHash}`
     let queryFile = `${routePath}/queries.json`
     let queries = readJSONSync(queryFile, { throws: false }) 
+    let metaQueries = readJSONSync(queryFile, { throws: false })
     let data = {}
     if (queries && queries.length > 0) {
-        data["evidencemeta"] = {queries} // eventually move to seperate metadata API (md frontmatter etc.) 
+        data.evidencemeta = {}
+        data.evidencemeta.queries = metaQueries // eventually move to seperate metadata API (md frontmatter etc.)
         for (let queryIndex in queries) {
             let query = queries[queryIndex];
             let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());
@@ -94,7 +96,7 @@ const runQueries = async function (routeHash, dev) {
             } else {
                 try {
                     queries[queryIndex].status = "running"
-                    writeJSONSync(queryFile, queries)
+                    // writeJSONSync(queryFile, queries)
                     process.stdout.write(chalk.grey("  "+ query.id +" running..."));
                     validateQuery(query);
 
