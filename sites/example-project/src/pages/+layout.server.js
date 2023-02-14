@@ -1,7 +1,8 @@
 import md5 from "blueimp-md5";
 import { GET } from "./api/customFormattingSettings.json/+server.js";
 
-export const prerender = true;
+export const prerender = true; 
+export const trailingSlash = 'always';
 
 export async function load({fetch, route}) {   
 
