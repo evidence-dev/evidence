@@ -1,5 +1,24 @@
 # @evidence-dev/evidence
 
+## 12.0.0
+
+### Minor Changes
+
+- 005a55e: Add CSV connector
+
+### Patch Changes
+
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+- Updated dependencies [85c3f94]
+- Updated dependencies [005a55e]
+- Updated dependencies [794e61c]
+- Updated dependencies [315b243]
+- Updated dependencies [c9dde3d]
+  - @evidence-dev/components@1.10.0
+  - @evidence-dev/db-orchestrator@1.3.0
+  - @evidence-dev/preprocess@1.5.1
+  - @evidence-dev/telemetry@1.0.5
+
 ## 11.0.0
 
 ### Minor Changes

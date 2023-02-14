@@ -1,5 +1,13 @@
 # @evidence-dev/bigquery
 
+## 1.2.4
+
+### Patch Changes
+
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+- Updated dependencies [c9dde3d]
+  - @evidence-dev/db-commons@0.1.3
+
 ## 1.2.3
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # evidence-test-environment
 
+## 1.0.42
+
+### Patch Changes
+
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+- Updated dependencies [005a55e]
+- Updated dependencies [c9dde3d]
+  - @evidence-dev/evidence@12.0.0
+
 ## 1.0.41
 
 ### Patch Changes
