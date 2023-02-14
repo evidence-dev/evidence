@@ -22,6 +22,7 @@ Evidence supports:
 - MySQL 
 - SQLite
 - DuckDB
+- [CSV files](/getting-started/use-local-csvs)
 - & More
 
 We're adding new connectors regularly. Feel free to [create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.

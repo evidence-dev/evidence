@@ -53,4 +53,5 @@ Paste version output here
 - [ ] MySQL
 - [ ] SQLite
 - [ ] DuckDB
+- [ ] CSV
 - [ ] Other (please specify)

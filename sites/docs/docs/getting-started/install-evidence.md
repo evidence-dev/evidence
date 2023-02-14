@@ -14,6 +14,10 @@ If this is your first time doing something like this, or you're having trouble i
 
 Evidence requires **NPM** `Version 7` or higher, and **Node.js** `Version 14` or higher.
 
+### If this is your first time working with Node & npm
+[Dowload Node.js & npm here](https://nodejs.org/en/download/)
+
+### If you already have Node & npm
 You can check which version you have using `npm -v` and `node -v`
 
 Install the latest version with `npm install -g npm@latest`
