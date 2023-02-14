@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 0.1.3
+
+### Patch Changes
+
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+
 ## 0.1.2
 
 ### Patch Changes

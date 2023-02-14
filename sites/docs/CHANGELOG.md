@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 1.3.1
+
+### Patch Changes
+
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+
 ## 1.3.0
 
 ### Minor Changes

@@ -1,5 +1,20 @@
 # @evidence-dev/components
 
+## 1.10.0
+
+### Minor Changes
+
+- 85c3f94: New UI test suite based on playwright, addition of aria-label & id on tooltip
+- 005a55e: Add CSV connector
+
+### Patch Changes
+
+- 794e61c: Fix for value formatting in DataTable
+- 315b243: Fix for data download button in DataTable
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+- Updated dependencies [c9dde3d]
+  - @evidence-dev/telemetry@1.0.5
+
 ## 1.9.0
 
 ### Minor Changes

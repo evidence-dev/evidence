@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "scripts": {
     "dev": "svelte-kit package && svelte-kit dev",
     "build": "svelte-kit build",
@@ -12,7 +12,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/telemetry": "1.0.4",
+    "@evidence-dev/telemetry": "1.0.5",
     "@tidyjs/tidy": "2.4.4",
     "downloadjs": "1.4.7",
     "echarts": "5.3.2",
