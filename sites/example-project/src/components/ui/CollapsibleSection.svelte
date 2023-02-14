@@ -32,7 +32,7 @@
 
 <div class="collapsible">
 	<div class="folder" class:selected={$page.path === folderHrefUri} class:folder-selected={"/" + $page.path.split('/')[1] === folderHrefUri}>
-		<button class="expandable" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
+		<button class="expandable" aria-label="expand-menu-button" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
 				class=collapse-icon
                 class:selected={$page.path === folderHrefUri}

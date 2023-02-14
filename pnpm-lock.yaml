@@ -338,6 +338,14 @@ importers:
     dependencies:
       '@evidence-dev/evidence': link:../../packages/evidence
 
+  tests:
+    specifiers:
+      '@playwright/test': ^1.30.0
+      dotenv: ^16.0.1
+    devDependencies:
+      '@playwright/test': 1.30.0
+      dotenv: 16.0.1
+
 packages:
 
   /@algolia/autocomplete-core/1.7.2:
@@ -4821,6 +4829,15 @@ packages:
     engines: {node: '>=8.0.0'}
     dev: false
 
+  /@playwright/test/1.30.0:
+    resolution: {integrity: sha512-SVxkQw1xvn/Wk/EvBnqWIq6NLo1AppwbYOjNLmyU0R1RoQ3rLEBtmjTnElcnz8VEtn11fptj1ECxK0tgURhajw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 17.0.45
+      playwright-core: 1.30.0
+    dev: true
+
   /@polka/url/1.0.0-next.15:
     resolution: {integrity: sha512-15spi3V28QdevleWBNXE4pIls3nFZmBbUGrW9IVPwiQczuSb9n76TCB4bsk8TSel+I1OkHEdPhu5QKMfY6rQHA==}
     dev: false
@@ -5420,7 +5437,6 @@ packages:
 
   /@types/node/17.0.45:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-    dev: false
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -12675,6 +12691,12 @@ packages:
     dependencies:
       find-up: 3.0.0
     dev: false
+
+  /playwright-core/1.30.0:
+    resolution: {integrity: sha512-7AnRmTCf+GVYhHbLJsGUtskWTE33SwMZkybJ0v6rqR1boxq2x36U7p1vDRV7HO2IwTZgmycracLxPEJI49wu4g==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /postcss-calc/8.2.4_postcss@8.4.14:
     resolution: {integrity: sha512-SmWMSJmB8MRnnULldx0lQIyhSNvuDl9HfrZkaqqE/WHAhToYsAvDq+yAsA/kIyINDszOp3Rh0GFoNuH5Ypsm3Q==}

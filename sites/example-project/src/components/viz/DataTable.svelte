@@ -410,18 +410,18 @@
 {#if paginated && pageCount > 1}
 <div class=pagination>
   <div class=page-labels>
-      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(0)}><div class=page-icon >
+      <button aria-label="first-page" class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(0)}><div class=page-icon >
           <MdFirstPage/>
       </div></button>
-      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(currentPage - 2)}><div class=page-icon >
+      <button aria-label="previous-page" class=page-changer  class:hovering="{hovering}" disabled={currentPage === 1} on:click={() => goToPage(currentPage - 2)}><div class=page-icon >
           <MdNavigateBefore/>
       </div></button>
       <span class=page-count>Page <input class=page-input class:hovering="{hovering}" class:error="{inputPage > pageCount}"type=number bind:value={inputPage} on:keyup={() => goToPage((inputPage ?? 1) - 1)} on:change={() => goToPage((inputPage ?? 1) - 1)} placeholder={currentPage}/> / <span class=page-count style="margin-left: 4px;">{pageCount.toLocaleString()}</span></span>
       <span class=print-page-count> {displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span>
-      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
+      <button aria-label="next-page" class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(currentPage)}><div class=page-icon >
           <MdNavigateNext/>
       </div></button>
-      <button class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(pageCount - 1)}><div class=page-icon >
+      <button aria-label="last-page" class=page-changer class:hovering="{hovering}" disabled={currentPage === pageCount} on:click={() => goToPage(pageCount - 1)}><div class=page-icon >
           <MdLastPage/>
       </div></button>
   </div>
