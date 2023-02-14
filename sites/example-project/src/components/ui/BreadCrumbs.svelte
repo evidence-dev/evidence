@@ -93,6 +93,7 @@
     }
 
     a {
+        display: inline-block;
         text-transform: capitalize;
         text-decoration: none;
         color: var(--grey-700);
