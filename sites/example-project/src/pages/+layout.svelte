@@ -198,7 +198,7 @@
 		</main>
 	{/if}
 </div>
-{#if !$navigating && dev}
+{#if !$navigating && dev && $page.url.pathname !== '/settings'}
 <QueryStatus /> 
 {/if}
 
