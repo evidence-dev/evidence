@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "scripts": {
     "dev": "svelte-package && vite dev --port 3000",
     "build": "vite build",
@@ -15,8 +15,8 @@
     "directory": "../../packages/components"
   },
   "devDependencies": {
-    "@evidence-dev/telemetry": "1.0.4",
     "@sveltejs/package": "1.0.1",
+    "@evidence-dev/telemetry": "1.0.5",
     "@tidyjs/tidy": "2.4.4",
     "cross-env": "^7.0.3",
     "downloadjs": "1.4.7",

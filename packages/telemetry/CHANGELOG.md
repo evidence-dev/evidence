@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 1.0.5
+
+### Patch Changes
+
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+
 ## 1.0.4
 
 ### Patch Changes

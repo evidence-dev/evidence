@@ -14,7 +14,7 @@
 		"echarts": "5.3.2",
 		"echarts-stat": "1.2.0",
 		"svelte-tiny-linked-charts": "1.1.5",
-		"eslint": "^8.33.0",
+		"eslint": "^8.34.0",
 		"export-to-csv": "0.2.1",
 		"git-remote-origin-url": "4.0.0",
 		"prettier": "2.6.2",
@@ -33,12 +33,13 @@
 		"fs-extra": "10.1.0"
 	},
 	"scripts": {
-		"dev": "pnpm --filter ./sites/example-project dev", 
-		"build:dev-workspace": "pnpm --filter ./sites/example-project build", 
-		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build", 
+		"dev": "pnpm --filter ./sites/example-project dev",
+		"build:dev-workspace": "pnpm --filter ./sites/example-project build",
+		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build",
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
+		"test:ui": "pnpm -r test:ui",
 		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts "
 	}
 }

@@ -619,7 +619,7 @@ $: {
                     if(params.length > 1){
                         // If multi-series, add series name as title of tooltip
                         xVal = params[0].value[swapXY ? 1 : 0]
-                        output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span>`
+                        output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span>`
                         for(let i = params.length - 1; i >= 0; i--){
                             yVal = params[i].value[swapXY ? 0 : 1]
                             output = output + `<br> ${params[i].marker} ${params[i].seriesName} <span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
@@ -629,13 +629,13 @@ $: {
                         xVal = params[0].value[swapXY ? 1 : 0]
                         yVal = params[0].value[swapXY ? 0 : 1]
                         yCol = params[0].seriesName
-                        output = `<span style='font-weight: 600;'>${formatTitle(x, xFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(xVal, xFormat)}</span><br/><span style='font-weight: 600;'>${formatTitle(yCol, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
+                        output = `<span id="tooltip" style='font-weight: 600;'>${formatTitle(x, xFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(xVal, xFormat)}</span><br/><span style='font-weight: 600;'>${formatTitle(yCol, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
                     } else {
                         // If single series and categorical or date x-axis, use x value as title of tooltip
                         xVal = params[0].value[swapXY ? 1 : 0]
                         yVal = params[0].value[swapXY ? 0 : 1]
                         yCol = params[0].seriesName
-                        output = `<span style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span><br/><span>${formatTitle(yCol, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
+                        output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(xVal, xFormat)}</span><br/><span>${formatTitle(yCol, yFormat)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(yVal, yFormat)}</span>`
                     }
                     return output
                 },

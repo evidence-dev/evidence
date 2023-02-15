@@ -1,5 +1,27 @@
 # @evidence-dev/db-orchestrator
 
+## 1.3.0
+
+### Minor Changes
+
+- 005a55e: Add CSV connector
+
+### Patch Changes
+
+- c9dde3d: Addition of a "next" release tag in-sync with main branch
+- Updated dependencies [005a55e]
+- Updated dependencies [c9dde3d]
+  - @evidence-dev/csv@0.1.0
+  - @evidence-dev/bigquery@1.2.4
+  - @evidence-dev/db-commons@0.1.3
+  - @evidence-dev/duckdb@0.0.3
+  - @evidence-dev/mysql@0.1.5
+  - @evidence-dev/postgres@0.2.6
+  - @evidence-dev/redshift@0.0.5
+  - @evidence-dev/snowflake@0.1.5
+  - @evidence-dev/sqlite@1.1.4
+  - @evidence-dev/telemetry@1.0.5
+
 ## 1.2.0
 
 ### Minor Changes
