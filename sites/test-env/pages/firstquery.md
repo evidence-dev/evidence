@@ -38,7 +38,7 @@ Visit <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse"
 ## Local images
 This is a picture of a cat, stored in /static/
 
-![Cute cat](kitty-cat.jpeg)
+![Cute cat](/kitty-cat.jpeg)
 
 ## Custom Components
 
