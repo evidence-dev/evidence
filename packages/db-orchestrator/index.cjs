@@ -96,7 +96,7 @@ const runQueries = async function (routeHash, dev) {
             } else {
                 try {
                     queries[queryIndex].status = "running"
-                    // writeJSONSync(queryFile, queries)
+                    writeJSONSync(queryFile, queries)
                     process.stdout.write(chalk.grey("  "+ query.id +" running..."));
                     validateQuery(query);
 
