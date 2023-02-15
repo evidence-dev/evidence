@@ -6,7 +6,7 @@ export const trailingSlash = 'always';
 
 export async function load({fetch, route}) {   
 
-    if(route.id){
+    if(route.id && route.id !== "/settings"){
         const routeHash = md5(route.id)
 
         // ensure that queries have been extracted before initiating the load process 
