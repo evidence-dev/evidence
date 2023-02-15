@@ -11,7 +11,7 @@ importers:
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/telemetry': link:packages/telemetry
       '@sveltejs/adapter-static': 1.0.0
-      '@sveltejs/kit': ^1.5.0
+      '@sveltejs/kit': 1.5.0
       '@tidyjs/tidy': 2.4.4
       blueimp-md5: 2.19.0
       downloadjs: 1.4.7
@@ -28,7 +28,7 @@ importers:
       ssf: ^0.11.2
       svelte: 3.55.0
       svelte-icons: 2.1.0
-      svelte-tiny-linked-charts: ^1.1.5
+      svelte-tiny-linked-charts: 1.1.5
       svelte2tsx: 0.4.7
       typescript: 4.5.4
       unified: 9.1.0
@@ -5673,7 +5673,7 @@ packages:
     dependencies:
       '@svgr/core': 6.5.1
       cosmiconfig: 7.0.1
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       svgo: 2.8.0
     dev: false
 
@@ -8407,7 +8407,6 @@ packages:
   /deepmerge/4.3.0:
     resolution: {integrity: sha512-z2wJZXrmeHdvYJp/Ux55wIjqo81G5Bp4c+oELTW+7ar6SogWHajt5a9gO3s3IDaGSAXjDk0vlQKN3rms8ab3og==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /default-gateway/6.0.3:
     resolution: {integrity: sha512-fwSOJsbbNzZ/CUFpqFBqYfYNLj1NbMPm8MMCIzHjC83iSJRBEGmDUxU+WP661BaBQImeC2yHwXtz+P/O9o+XEg==}
@@ -9628,7 +9627,7 @@ packages:
       chalk: 4.1.2
       chokidar: 3.5.3
       cosmiconfig: 6.0.0
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       fs-extra: 9.1.0
       glob: 7.1.7
       memfs: 3.4.7
