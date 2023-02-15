@@ -184,17 +184,19 @@
 		</div>
 	{/if}
 	<Sidebar bind:open {menu} {folderList}/>
-	<main in:blur|local>
-	  <div class=content class:settings-content={$page.url.pathname === '/settings'}>
-		<article class:settings-article={$page.url.pathname === '/settings'}>
-			<slot/>
-			<p>&nbsp;</p>
-		</article>
-		<aside class='toc'>
-			<TableOfContents/>
-		</aside>
-	  </div>
-	</main>
+	{#if !$navigating}
+		<main in:blur|local>
+		<div class=content class:settings-content={$page.url.pathname === '/settings'}>
+			<article class:settings-article={$page.url.pathname === '/settings'}>
+				<slot/>
+				<p>&nbsp;</p>
+			</article>
+			<aside class='toc'>
+				<TableOfContents/>
+			</aside>
+		</div>
+		</main>
+	{/if}
 </div>
 {#if !$navigating && dev}
 <QueryStatus /> 
