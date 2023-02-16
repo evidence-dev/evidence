@@ -50,8 +50,7 @@
 			>
 		</button>
 		{#if folderList.filter((d) => d.folder === folder)[0].folderNameError}
-			<button>
-			<span class="folder-label nolink name-error" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
+			<button class="folder-label nolink name-error" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
 				<span class="alert-icon-folder">
 					<MdErrorOutline/>
 					<span class=info-msg>Folder names cannot include spaces. Use hyphens instead.</span>
@@ -65,9 +64,9 @@
                 </div>
 			</a>
 		{:else}		
-			<span class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
+			<button class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
 				{folderLabel}
-			</span>
+			</button>
 		{/if}
 	</div>
 
