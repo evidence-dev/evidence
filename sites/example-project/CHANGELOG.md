@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 1.10.1
+
+### Patch Changes
+
+- 1e90c45: Fix for breadcrumb capitalization
+
 ## 1.10.0
 
 ### Minor Changes
