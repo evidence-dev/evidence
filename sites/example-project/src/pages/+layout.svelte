@@ -175,7 +175,7 @@
 {/if}
 
 <div class="grid">
-	{#if $page.url.pathname !== '/settings'}
+	{#if !$page.url.pathname.startsWith('/settings')}
 		<div class="header-bar">
 			<Header {menu} {folderList}/>
 		</div>
@@ -186,19 +186,21 @@
 	<Sidebar bind:open {menu} {folderList}/>
 	{#if !$navigating}
 		<main in:blur|local>
-		<div class=content class:settings-content={$page.url.pathname === '/settings'}>
-			<article class:settings-article={$page.url.pathname === '/settings'}>
+		<div class=content class:settings-content={$page.url.pathname.startsWith('/settings') }>
+			<article class:settings-article={$page.url.pathname.startsWith('/settings') }>
 				<slot/>
 				<p>&nbsp;</p>
 			</article>
+			{#if !$page.url.pathname.startsWith('/settings')}
 			<aside class='toc'>
 				<TableOfContents/>
 			</aside>
+			{/if}
 		</div>
 		</main>
 	{/if}
 </div>
-{#if !$navigating && dev && $page.url.pathname !== '/settings'}
+{#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
 <QueryStatus /> 
 {/if}
 
