@@ -1,5 +1,11 @@
 # @evidence-dev/mysql
 
+## 0.2.0
+
+### Minor Changes
+
+- a7168a4: Issue-646 SQL Connector broken due to constant being re-assigned (possibly due to a JS runtime change)
+
 ## 0.1.5
 
 ### Patch Changes
