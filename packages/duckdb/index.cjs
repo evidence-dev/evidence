@@ -9,7 +9,24 @@ const runQuery = async (queryString, database) => {
 
     try {
         const db = await Database.create(filepath, mode);
-        const rows = await db.all(queryString);
+        const statements = queryString
+          .split(";")
+          .map((statement) => statement.trim())
+          .filter((statement) => statement.length > 0);
+        const [execs, selects] = statements.reduce(
+          ([execs, selects], current) => {
+            current.startsWith("select")
+              ? selects.push(current)
+              : execs.push(current);
+            return [execs, selects];
+          },
+          [[], []]
+        );
+        if (execs.length > 0) {
+          await db.exec(execs.join(";"));
+        }
+
+        const rows = await db.all(selects[0]);
         return processQueryResults(rows);
     } catch(err) {
         if (err.message) {
