@@ -6,6 +6,16 @@ import 'dotenv/config';
 
 let results;
 
+test('multiple statements', async () => {
+  try {
+    results = await runQuery("install httpfs; load httpfs; select 1 as numbol_col;");
+    console.log(results);
+    assert.equal(results.rows[0].numbol_col, 1);
+  } catch (e) {
+    throw Error(e);
+  }
+})
+
 test('query runs', async () => {
     try{
         results = await runQuery("select 100 as number_col, current_date as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, false as bool_col");
