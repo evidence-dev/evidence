@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 1.3.1
+
+### Patch Changes
+
+- Updated dependencies [a7168a4]
+  - @evidence-dev/mysql@0.2.0
+
 ## 1.3.0
 
 ### Minor Changes
