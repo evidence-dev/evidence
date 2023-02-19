@@ -72,7 +72,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 
 const runQuery = async (queryString, database) => {
     try {
-        const credentials = {
+        let credentials = {
             user: database ? database.user : process.env["MYSQL_USER"] || process.env["user"] || process.env["USER"],
             host: database ? database.host : process.env["MYSQL_HOST"] || process.env["host"] || process.env["HOST"],
             database: database ? database.database : process.env["MYSQL_DATABASE"] || process.env["database"] || process.env["DATABASE"],
