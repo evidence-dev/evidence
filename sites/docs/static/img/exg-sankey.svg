@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="576" height="363" style="" viewBox="0 0 576 363">
+    <g transform="translate(0,-30)">
+            <path d="M20 0C105.8 0 105.8 23.4964 191.6 23.4964L191.6 102.4964C105.8 102.4964 105.8 79 20 79Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M20 87C105.8 87 105.8 102.4964 191.6 102.4964L191.6 141.9964C105.8 141.9964 105.8 126.5 20 126.5Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M20 134.5C105.8 134.5 105.8 141.9964 191.6 141.9964L191.6 161.7464C105.8 161.7464 105.8 154.25 20 154.25Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M20 162.25C105.8 162.25 105.8 161.7464 191.6 161.7464L191.6 181.4964C105.8 181.4964 105.8 182 20 182Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M20 190C105.8 190 105.8 181.4964 191.6 181.4964L191.6 201.2464C105.8 201.2464 105.8 209.75 20 209.75Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M20 217.75C105.8 217.75 105.8 201.2464 191.6 201.2464L191.6 220.9964C105.8 220.9964 105.8 237.5 20 237.5Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M20 245.5C105.8 245.5 105.8 220.9964 191.6 220.9964L191.6 240.7464C105.8 240.7464 105.8 265.25 20 265.25Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M20 273.25C105.8 273.25 105.8 240.7464 191.6 240.7464L191.6 260.4964C105.8 260.4964 105.8 293 20 293Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M211.6 201.2464C297.4 201.2464 297.4 225.75 383.2 225.75L383.2 265.25C297.4 265.25 297.4 240.7464 211.6 240.7464Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M211.6 23.4964C297.4 23.4964 297.4 32 383.2 32L383.2 150.5C297.4 150.5 297.4 141.9964 211.6 141.9964Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M211.6 240.7464C297.4 240.7464 297.4 273.25 383.2 273.25L383.2 293C297.4 293 297.4 260.4964 211.6 260.4964Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M211.6 141.9964C297.4 141.9964 297.4 158.5 383.2 158.5L383.2 217.75C297.4 217.75 297.4 201.2464 211.6 201.2464Z" transform="translate(57.6 60)" fill="#314656" fill-opacity="0.2"></path>
+            <path d="M0 0l20 0l0 79l-20 0Z" transform="translate(57.6 60)" fill="hsla(207, 65%, 39%, 1)"></path><path d="M191.6 23.4964l20 0l0 237l-20 0Z" transform="translate(57.6 60)" fill="hsla(195, 49%, 51%, 1)"></path>
+            <path d="M0 87l20 0l0 39.5l-20 0Z" transform="translate(57.6 60)" fill="hsla(207, 69%, 79%, 1)"></path><path d="M0 134.5l20 0l0 19.75l-20 0Z" transform="translate(57.6 60)" fill="hsla(202, 28%, 65%, 1)"></path>
+            <path d="M0 162.25l20 0l0 19.75l-20 0Z" transform="translate(57.6 60)" fill="hsla(179, 37%, 65%, 1)"></path><path d="M0 190l20 0l0 19.75l-20 0Z" transform="translate(57.6 60)" fill="hsla(40, 30%, 75%, 1)"></path>
+            <path d="M0 217.75l20 0l0 19.75l-20 0Z" transform="translate(57.6 60)" fill="hsla(38, 89%, 62%, 1)"></path><path d="M0 245.5l20 0l0 19.75l-20 0Z" transform="translate(57.6 60)" fill="hsla(342, 40%, 40%, 1)"></path>
+            <path d="M0 273.25l20 0l0 19.75l-20 0Z" transform="translate(57.6 60)" fill="hsla(207, 86%, 70%, 1)"></path><path d="M383.2 225.75l20 0l0 39.5l-20 0Z" transform="translate(57.6 60)" fill="hsla(160, 40%, 46%, 1)"></path>
+            <path d="M383.2 32l20 0l0 118.5l-20 0Z" transform="translate(57.6 60)" fill="hsla(207, 65%, 39%, 1)"></path>
+            <path d="M383.2 273.25l20 0l0 19.75l-20 0Z" transform="translate(57.6 60)" fill="hsla(195, 49%, 51%, 1)"></path>
+            <path d="M383.2 158.5l20 0l0 59.25l-20 0Z" transform="translate(57.6 60)" fill="hsla(207, 69%, 79%, 1)"></path>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 99.5)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">google</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(274.2 201.9964)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">all_traffic</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 166.75)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">direct</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 204.375)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">facebook</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 232.125)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">bing</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 259.875)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">linkedin</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 287.625)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">twitter</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 315.375)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">tiktok</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(82.6 343.125)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">pinterest</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(465.8 305.5)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">/</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(465.8 151.25)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">/docs</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(465.8 343.125)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">/blog</text>
+            <text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" transform="translate(465.8 248.125)" fill="#333" stroke="rgb(255,255,255)" stroke-width="2" paint-order="stroke" stroke-miterlimit="2">/about</text>
+    </g>
+</svg>
