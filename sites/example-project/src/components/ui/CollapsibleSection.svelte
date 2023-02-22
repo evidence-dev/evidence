@@ -8,8 +8,7 @@
 	let expanded = false 
 
 	function toggle() {
-		console.log('toggle')
-        if($page.url.pathname != folder.href){
+        if($page.url.pathname.split('/')[1] != folder.href){
 		    open = !open;
 			expanded = true;
         } else {
