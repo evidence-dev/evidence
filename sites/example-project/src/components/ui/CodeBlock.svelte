@@ -9,13 +9,11 @@
     copied = false;
   };
 
-  export let copy = async (text) => {
+  async function copy(){
     try {
-      if (!copied) {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(source);
         copied = true;
         setTimeout(toggleCopied, 1500);
-      }
     } catch (e) {}
   };
 </script>
