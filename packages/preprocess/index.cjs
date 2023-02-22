@@ -60,6 +60,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import VennDiagram from '${componentSource}/diagrams/VennDiagram.svelte';
+        import SankeyDiagram from "${componentSource}/diagrams/SankeyDiagram.svelte";
         import Value from '${componentSource}/viz/Value.svelte';
         import BigValue from '${componentSource}/viz/BigValue.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
@@ -76,6 +77,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import Column from '${componentSource}/viz/Column.svelte';
         import LineChart from '${componentSource}/viz/LineChart.svelte';
         import FunnelChart from "${componentSource}/viz/FunnelChart.svelte";
+        import SankeyChart from "${componentSource}/viz/SankeyChart.svelte";
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
