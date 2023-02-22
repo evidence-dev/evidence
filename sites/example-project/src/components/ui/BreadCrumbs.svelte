@@ -47,7 +47,6 @@
 
         // check in the file tree if each crumb has an href
         crumbs.forEach((path, i) => {
-            console.log(path.href + checkUrl(path.href, fileTree))
             if(!checkUrl(path.href, fileTree)){
                 path.href = 'javascript:void(0)';
             }
