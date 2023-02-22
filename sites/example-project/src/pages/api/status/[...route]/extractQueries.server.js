@@ -118,7 +118,8 @@ export const getStatusAndExtractQueries = function (route) {
         }
     
       let queryStatus = updateDirectoriesandStatus(queries, routeHash);
-    
       return queryStatus;
+  } else {
+      return [{}] // a little jank
   }
 };
