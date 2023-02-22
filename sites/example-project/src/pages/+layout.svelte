@@ -1,150 +1,62 @@
 <!-- This get's shipped with the template -- don't do local imports from $lib -->
 
 <script context="module">
-	// Build nav links
-	const firstLevel = import.meta.glob('/src/pages/*/+page.md');
-	const secondLevel = import.meta.glob('/src/pages/*/*/+page.md');
+	// Import pages and create an object structure corresponding to the file structure
+	const pages = import.meta.glob(['/src/pages/*/**/+page.md']);
+	let pagePaths = Object.keys(pages).map(path => path.replace('/src/pages/', ''))
 
-    const keys = Object.keys(firstLevel).map((key) => key.replace(/\/\+page\.md$/, ''));
-    const indexedPages = new Map();
-    for (const key in keys) {
-        indexedPages.set(key, false);
-    }
-    const rootMDFiles = ["/src/pages/index.md"];
-    const levelOneIndexFiles = [];
-    const levelOneMDFiles = [];
-    const levelTwoIndexFiles = [];
-
-    function indexify(s) {
-        return s.replace(/\+page\.md$/, 'index.md');
-    }
-
-    function mdify(s) {
-        return s.replace(/\/\+page\.md$/, '.md');
-    }
-
-    for (const path in secondLevel) {
-        if (keys.some((key) => path.startsWith(key))) {
-            levelOneMDFiles.push(mdify(path));
-            indexedPages.set(path.replace(/\/\+page\.md$/, ''), true);
-        } else {
-            levelOneMDFiles.push(indexify(path));
-            levelTwoIndexFiles.push(indexify(path));
-        }
-    }
-    for (const path in firstLevel) {
-        if (indexedPages.get(path.replace(/\/\+page\.md$/, ''))) {
-            levelOneIndexFiles.push(indexify(path));
-            rootMDFiles.push(indexify(path));
-        } else {
-            rootMDFiles.push(mdify(path));
-        }
-    }
-
-
-	let menu = [];
-	let pathEnd;
-	let pathSplit;
-
-	for(let path of rootMDFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		if (path.includes('[')) continue;
-		menu.push({
-			filename: pathEnd,
-			label: pathEnd.replace(/\.md$/, '').replace(/_/g, ' ').replace(/-/g, ' '),
-			href: "/" + pathEnd.replace(/^index\.md/, '').replace(/\.md$/, ''),
-			hrefUri: encodeURI("/" + pathEnd.replace(/^index\.md/, '').replace(/\.md$/, '')),
-			folder: undefined,
-			folderLabel: undefined,
-			folderHref: undefined,
-			folderHrefUri: undefined,
-			nameError: pathEnd.includes(" "),
-			folderNameError: undefined
-		})
+	// Create a tree structure from the array of paths 
+	let fileTree = {
+		label:'Home',
+		href:'/',
+		children:{}
 	}
+	pagePaths.forEach(function(path) {
+		path.split('/').reduce(
+			function(r, e) {
+				if(e === '+page.md'){
+					let href = path.includes('[') ? undefined : encodeURI('/' + path.replace('/+page.md', ''))
+					return r['href'] = href
+				} 
+				else {
+					let label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ')
+					return r?.children[e] || (r.children[e] = {
+						label,
+						children: {},
+						href: undefined,
+					})
+				}
+		}, 
+		fileTree)
+	})
 
-	for(let path of levelOneIndexFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		pathSplit = pathEnd.split("/")
-		menu.push({
-			filename: pathSplit[1],
-			label: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-			href: "/" + pathSplit[0],
-			hrefUri: encodeURI("/" + pathSplit[0]),
-			folder: pathSplit[0],
-			folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-			folderHref: "/" + pathSplit[0],
-			folderHrefUri: encodeURI("/" + pathSplit[0]),
-			nameError: pathEnd.includes(" "),
-			folderNameError: pathSplit[0].includes(" ")
-		})
+	// Recursively delete nodes and children nodes that don't have a label
+	function deleteEmptyNodes(node) {
+		if(node.children){
+			Object.keys(node.children).forEach(function(key) {
+				deleteEmptyNodes(node.children[key])
+				if(!node.children[key].label && !node.children[key].href){
+					delete node.children[key]
+				}
+			})
+		}
 	}
+	
+	deleteEmptyNodes(fileTree)
 
-	for(let path of levelOneMDFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		pathSplit = pathEnd.split("/")
-		if(!path.includes("/index.md") && !path.includes("[")){
-			menu.push({
-				filename: pathSplit[1],
-				label: pathSplit[1].replace(/\.md$/, '').replace(/_/g, ' ').replace(/-/g, ' ').replace(/.*\//,''),
-				href: "/" + pathEnd.replace(/\.md$/, ''),
-				hrefUri: encodeURI("/" + pathEnd.replace(/\.md$/, '')),
-				folder: pathSplit[0],
-				folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-				folderHref: "/" + pathEnd.replace(/\.md$/, '').replace(/^\.\//, '').replace(/\/([^\/]+)$/, ''),
-				folderHrefUri: encodeURI("/" + pathSplit[0]),
-				nameError: pathEnd.includes(" "),
-				folderNameError: pathSplit[0].includes(" ")
+	// Convert children objects into arrays of objects
+	function convertChildrenToArray(node) {
+		if(node.children){
+			node.children = Object.keys(node.children).map(function(key) {
+				return node.children[key]
+			})
+			node.children.forEach(function(child) {
+				convertChildrenToArray(child)
 			})
 		}
 	}
 
-	for(let path of levelTwoIndexFiles) {
-		pathEnd = path.replace('/src/pages/', '').replace(/^\.\//, '')
-		pathSplit = pathEnd.split("/")
-		menu.push({
-			filename: pathSplit[2],
-			label: pathSplit[1].replace(/_/g, ' ').replace(/-/g, ' '),
-			href: "/" + pathSplit[0] + "/" + pathSplit[1],
-			hrefUri: encodeURI("/" + pathSplit[0] + "/" + pathSplit[1]),
-			folder: pathSplit[0],
-			folderLabel: pathSplit[0].replace(/_/g, ' ').replace(/-/g, ' '),
-			folderHref: "/" + pathSplit[0],
-			folderHrefUri: encodeURI("/" + pathSplit[0]),
-			nameError: pathEnd.includes(" "),
-			folderNameError: pathSplit[0].includes(" ")
-		})
-	}
-
-	let folders = [...new Set(menu.map(item => item.folder))];
-	folders = folders.filter(d => d !== undefined);
-
-	let fileCount;
-	let folderList = [];
-	let folderObj;
-	let folderLink;
-	let contents;
-
-	let folderLab;
-	let folderHref;
-	let folderHrefUri;
-	let indexFileCount;
-	let folderNameError;
-
-	for(let i = 0; i < folders.length; i++){
-		contents = menu.filter(d => d.folder === folders[i]);
-
-		folderLab = contents[0].folderLabel;
-		folderHref = contents[0].folderHref;
-		folderHrefUri = contents[0].folderHrefUri;
-		folderNameError = contents[0].folderNameError;
-
-		fileCount = contents.filter(d => d.href !== folderHref).length;
-		indexFileCount = contents.filter(d => d.href === folderHref).length;
-		folderLink = contents.filter(d => d.href === folderHref).length > 0;
-		folderObj = {folder: folders[i], folderLabel: folderLab, folderHref: folderHref, folderHrefUri: folderHrefUri, fileCount: fileCount, indexFileCount: indexFileCount, folderLink: folderLink, folderNameError: folderNameError}
-		folderList.push(folderObj)
-	}
+	convertChildrenToArray(fileTree)
 
 </script>
 
@@ -156,9 +68,9 @@
 	import {dev} from '$app/environment'
 
 	import TableOfContents from "@evidence-dev/components/TableOfContents.svelte";
-	import Header from '@evidence-dev/components/ui/Header.svelte'
+	import Header from '$lib/ui/Header.svelte'
 	import Hamburger from '@evidence-dev/components/ui/Hamburger.svelte'
-	import Sidebar from '@evidence-dev/components/ui/Sidebar.svelte'
+	import Sidebar from '$lib/ui/Sidebar.svelte'
 	import LoadingIndicator from "@evidence-dev/components/ui/LoadingIndicator.svelte";
 	
 	import QueryStatus from "@evidence-dev/components/QueryStatus.svelte";
@@ -174,16 +86,16 @@
 	<LoadingIndicator/>
 {/if}
 
-<div class="grid">
+<div class="grid">	
 	{#if !$page.url.pathname.startsWith('/settings')}
 		<div class="header-bar">
-			<Header {menu} {folderList}/>
+			<Header {fileTree}/>
 		</div>
-		<div class="header-button" class:open>
+		<div class="header-button"  class:open>
 			<Hamburger bind:open/>
 		</div>
 	{/if}
-	<Sidebar bind:open {menu} {folderList}/>
+	<Sidebar bind:open {fileTree}/>
 	{#if !$navigating}
 		<main in:blur|local>
 		<div class=content class:settings-content={$page.url.pathname.startsWith('/settings') }>

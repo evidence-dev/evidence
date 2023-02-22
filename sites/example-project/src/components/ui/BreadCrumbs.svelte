@@ -4,9 +4,25 @@
     import { showQueries } from '@evidence-dev/components/ui/stores'
     import { pageHasQueries } from '@evidence-dev/components/ui/stores';
 
-    export let folderList;
+    export let fileTree;
 
     $: pathArray = $page.url.pathname.split('/').slice(1)
+
+    // check if a url is an href in the fileTree and return true or false
+    const checkUrl = function(href, fileTree) {
+        let found = false
+        function checkChildren(node) {
+            if(node.href === href){
+                found = true
+            } else if(node.children){
+                node.children.forEach(child => {
+                    checkChildren(child)
+                })
+            }
+        }
+        checkChildren(fileTree)
+        return found
+    }
 
     const buildCrumbs = function (pathArray) {
         let crumbs = [
@@ -29,9 +45,10 @@
             crumbs.splice(1, crumbs.length-3, {href: upOne, title:'...'})
         }
 
-        // Check if folder contains no index files - if so, disable breadcrumb link:
+        // check in the file tree if each crumb has an href
         crumbs.forEach((path, i) => {
-            if(folderList.filter(d => d.folderHref === path.href && d.indexFileCount === 0).length > 0){
+            console.log(path.href + checkUrl(path.href, fileTree))
+            if(!checkUrl(path.href, fileTree)){
                 path.href = 'javascript:void(0)';
             }
         })

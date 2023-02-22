@@ -1,26 +1,15 @@
 <script>
 	import { page } from '$app/stores';
 	import { slide } from 'svelte/transition';
-	import { dev } from '$app/environment';
-	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
 
 	export let folder;
-	export let menu;
-	export let open;
-	export let folderList;
+	export let open 
 
-	let folderContents = menu.filter((d) => d.folder === folder);
-	folderContents = folderContents.sort((a, b) => {
-        return (a.label < b.label ? -1 : 1)
-    });
-
-
-	let folderLabel = folderList.filter(d => d.folder === folder)[0].folderLabel;
-	let folderHrefUri = folderList.filter(d => d.folder === folder)[0].folderHrefUri;
-	let expanded = false;
+	let expanded = false 
 
 	function toggle() {
-        if($page.url.pathname !== folderHrefUri){
+		console.log('toggle')
+        if($page.url.pathname != folder.href){
 		    open = !open;
 			expanded = true;
         } else {
@@ -31,12 +20,12 @@
 </script>
 
 <div class="collapsible">
-	<div class="folder" class:selected={$page.url.pathname === folderHrefUri} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}>
+	<div class="folder" class:selected={$page.url.pathname === folder.href} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folder.href}>
 		<button class="expandable" aria-label="expand-menu-button" aria-expanded={expanded} on:click={() => (expanded = !expanded)} >
 			<svg
 				class=collapse-icon
-                class:selected={$page.url.pathname === folderHrefUri}
-                class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}
+                class:selected={$page.url.pathname === folder.href}
+                class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folder.href}
 				style="tran"
 				width="9"
 				height="9"
@@ -49,48 +38,28 @@
 				<path d="M9 5l7 7-7 7" /></svg
 			>
 		</button>
-		{#if folderList.filter((d) => d.folder === folder)[0].folderNameError}
-			<button class="folder-label nolink name-error" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
-				<span class="alert-icon-folder">
-					<MdErrorOutline/>
-					<span class=info-msg>Folder names cannot include spaces. Use hyphens instead.</span>
-				</span>
-				{folderLabel}
-			</button>
-		{:else if folderList.filter((d) => d.folder === folder)[0].folderLink}
-		<a href={'/' + folder} aria-expanded={expanded} on:click={toggle}>
-                <div class=folder-label class:selected={$page.url.pathname === folderHrefUri} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri}>
-				{folderLabel}
+		{#if folder.href}
+			<a href={folder.href} aria-expanded={expanded} on:click={toggle}>
+                <div class=folder-label class:selected={$page.url.pathname === folder.href} class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folder.href}>
+					{folder.label} 
                 </div>
 			</a>
 		{:else}		
-			<button class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folderHrefUri} aria-expanded={expanded} on:click={() => expanded = !expanded}>
-				{folderLabel}
-			</button>
-		{/if}
+			<button class="folder-label nolink" class:folder-selected={"/" + $page.url.pathname.split('/')[1] === folder.href} aria-expanded={expanded} on:click={() => expanded = !expanded}>
+				{folder.label} 
+			</button>	 
+		{/if} 
 	</div>
 
 	{#if expanded}
 		<div class="contents" hidden={!expanded} transition:slide>
-			{#each folderContents as item}
-				{#if !item.label.includes('[') && !(item.filename === "index.md" && item.hrefUri === item.folderHrefUri)}
-					{#if dev && item.nameError}
-						<a href={item.href} on:click={() => open = !open} style="">
-							<div class="content-item name-error">
-								<span class="alert-icon-item">
-									<MdErrorOutline/>
-									<span class=info-msg>Filenames cannot include spaces. Use hyphens instead.</span>
-								</span>
-								<span class=name-error>{item.label}</span>
-							</div>
-						</a>
-					{:else}
-						<a href={item.href} on:click={() => (open = !open)}>
-							<div class:selected={$page.url.pathname === item.hrefUri} class="content-item">
-								{item.label}
-							</div>
-						</a>
-					{/if}
+			{#each folder.children as child}
+				{#if child.href && child.label}
+					<a href={child.href} on:click={toggle}>
+						<div class:selected={$page.url.pathname === child.href} class="content-item">
+							{child.label}
+						</div>
+					</a>
 				{/if}
 			{/each}
 		</div>
@@ -166,15 +135,18 @@
         padding-right: 0rem;
         padding-left: 0.3rem;
 		line-height: 1.6;
+		margin: 0;
         
 	}
 
 	button.expandable {
-		width: 100%;
+		width: 1.2rem;
         height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		padding-right: 0;
+		padding-left: 0;
 	}
 
 	svg {
