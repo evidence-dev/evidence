@@ -124,10 +124,10 @@ importers:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
       dotenv: ^16.0.1
-      duckdb-async: 0.6.1
+      duckdb-async: 0.7.0
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
-      duckdb-async: 0.6.1
+      duckdb-async: 0.7.0
     devDependencies:
       dotenv: 16.0.1
 
@@ -4316,7 +4316,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.2
+      debug: 4.3.4
       espree: 9.2.0
       globals: 13.12.0
       ignore: 4.0.6
@@ -4431,7 +4431,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.2
+      debug: 4.3.4
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -4586,7 +4586,7 @@ packages:
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
-      glob: 7.1.7
+      glob: 7.2.3
       graceful-fs: 4.2.10
       istanbul-lib-coverage: 3.2.0
       istanbul-lib-instrument: 5.2.0
@@ -8192,18 +8192,18 @@ packages:
   /downloadjs/1.4.7:
     resolution: {integrity: sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=}
 
-  /duckdb-async/0.6.1:
-    resolution: {integrity: sha512-HFNPYikh1+nJYyrdEJCLfm4CQaAQKPf7Oq0Jj66rrmJBHdvP0z2SRwlFUeuID54ZSbYdQZbeKgzvOuXmD4lQjA==}
+  /duckdb-async/0.7.0:
+    resolution: {integrity: sha512-P6+IMblbFX8psQpC8ZBnoxrm3HSXKMCfnqjzPL5sUB9nbF1GVWUxsh8Oqn21p49VLin7eEEmybjhwny/rUmBNg==}
     dependencies:
-      duckdb: 0.6.1
+      duckdb: 0.7.0
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb/0.6.1:
-    resolution: {integrity: sha512-lvSCKHL9jG9e5k1QS9AWx2qJblwPnqUEBlkJb3MYCuPP088kETEn9bkLfwFY2+4KAQIJFquyJWj2rYXxEoBjVQ==}
+  /duckdb/0.7.0:
+    resolution: {integrity: sha512-G5mCd5xk5HCbnhplpdz7Ej27uVRftvLRZqd+liQ3Cb3oEcLn8a0pJ7yF1WRjaUJVrTHTiu8mO68lO9aGeLe4bw==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.9
@@ -8324,7 +8324,7 @@ packages:
     resolution: {integrity: sha512-F27oB3WuHDzvR2DOGNTaYy0D5o0cnrv8TeI482VM4kYgQd/FT9lUQwuNsJ0oOHtBUq7eiW5ytqzp7nBFknL+GA==}
     engines: {node: '>=10.13.0'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.10
       tapable: 2.2.0
     dev: true
 
@@ -8332,7 +8332,7 @@ packages:
     resolution: {integrity: sha512-EGAbGvH7j7Xt2nc0E7D99La1OiEs8LnyimkRgwExpUMScN6O+3x9tIWs7PLQZVNx4YD+00skHXPXi1yQHpAmZA==}
     engines: {node: '>=10.13.0'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.10
       tapable: 2.2.0
     dev: true
 
@@ -9294,7 +9294,7 @@ packages:
       cosmiconfig: 6.0.0
       deepmerge: 4.2.2
       fs-extra: 9.1.0
-      glob: 7.1.7
+      glob: 7.2.3
       memfs: 3.4.7
       minimatch: 3.1.2
       schema-utils: 2.7.0
@@ -10748,7 +10748,7 @@ packages:
       chalk: 4.1.2
       ci-info: 3.2.0
       deepmerge: 4.2.2
-      glob: 7.1.7
+      glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 28.1.2
       jest-environment-node: 28.1.2
@@ -10787,7 +10787,7 @@ packages:
       chalk: 4.1.2
       ci-info: 3.2.0
       deepmerge: 4.2.2
-      glob: 7.1.7
+      glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 28.1.2
       jest-environment-node: 28.1.2
@@ -10997,7 +10997,7 @@ packages:
       cjs-module-lexer: 1.2.2
       collect-v8-coverage: 1.0.1
       execa: 5.1.1
-      glob: 7.1.7
+      glob: 7.2.3
       graceful-fs: 4.2.10
       jest-haste-map: 28.1.1
       jest-message-util: 28.1.1
@@ -12194,7 +12194,7 @@ packages:
     hasBin: true
     dependencies:
       env-paths: 2.2.1
-      glob: 7.1.7
+      glob: 7.2.3
       graceful-fs: 4.2.10
       make-fetch-happen: 10.2.1
       nopt: 6.0.0
@@ -14465,7 +14465,7 @@ packages:
     resolution: {integrity: sha512-xA93uxUD/rogV7BV59agW/JHPGXeREMWiZc9jhcwY4YdZ7QOtC7qbomYg0n4wyk2lJhggjvKvhNX8wln/Aldhg==}
     engines: {node: '>=8.10.0'}
     dependencies:
-      debug: 4.3.2
+      debug: 4.3.4
       extend: 3.0.2
     transitivePeerDependencies:
       - supports-color
@@ -14489,7 +14489,7 @@ packages:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
     hasBin: true
     dependencies:
-      glob: 7.1.7
+      glob: 7.2.3
     dev: true
 
   /rimraf/3.0.2:
@@ -14780,7 +14780,7 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
     dependencies:
-      glob: 7.1.7
+      glob: 7.2.3
       interpret: 1.4.0
       rechoir: 0.6.2
     dev: false
@@ -15565,7 +15565,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@istanbuljs/schema': 0.1.3
-      glob: 7.1.7
+      glob: 7.2.3
       minimatch: 3.1.2
     dev: true
 
@@ -16442,7 +16442,7 @@ packages:
     engines: {node: '>=10.13.0'}
     dependencies:
       glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.10
     dev: true
 
   /watchpack/2.4.0:
