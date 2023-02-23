@@ -62,3 +62,11 @@ npm install
 npm run dev
 ```
 
+You can also use them directly like this
+
+<CodeBlock>
+let x = 100;
+let y = 200;
+let z = x + y;
+</CodeBlock>
+

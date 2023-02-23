@@ -255,7 +255,7 @@ function highlighter(code, lang) {
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
     // Ensure that "real" code blocks are rendered not run as queries
     if (getPrismLangs().has(lang.toLowerCase())) {
-        return `<CodeBlock source="${code}"></CodeBlock>`;
+        return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
         }
     return `
     {#if data.${lang} }

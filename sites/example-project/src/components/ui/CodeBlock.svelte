@@ -1,6 +1,6 @@
 <script>
   export let source;
-  export let copyToClipboard = true;
+  export let copyToClipboard = false;
   import Copy from "./Deployment/CopyIcon.svelte";
   import Success from "./Deployment/CopySuccessIcon.svelte";
   let copied = false;
@@ -18,7 +18,11 @@
   };
 </script>
 
-<pre><code>{#if source}{source}{:else}<slot />{/if}</code>
+<pre>
+<code>{#if source}{source}
+{:else}<slot />
+{/if}
+</code>
 {#if copyToClipboard}
 <button
   type="button"
@@ -28,7 +32,13 @@
     if (source !== undefined) {
       copy(source);
     }
-  }}>{#if copied}<Success color=var(--green-500)/>{:else}<Copy/>{/if}</button>
+  }}>
+{#if copied}
+<Success color=var(--green-500)/>
+{:else}
+<Copy/>
+{/if}
+</button>
 {/if}
 </pre>
 
