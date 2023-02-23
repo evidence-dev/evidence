@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/duckdb",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "DuckDB driver for Evidence projects",
   "main": "index.cjs",
   "author": "Josh Wills",
@@ -9,7 +9,7 @@
     "test": "uvu test test.js"
   },
   "dependencies": {
-    "duckdb-async": "0.6.1",
+    "duckdb-async": "0.7.0",
     "@evidence-dev/db-commons": "workspace:^"
   },
   "devDependencies": {
