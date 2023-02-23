@@ -16,7 +16,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: "Preview – evidence-development-workspace"
-          max_timeout: 300
+          max_timeout: 500
           check_interval: 5
   tests:
     name: UI Tests
