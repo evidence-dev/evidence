@@ -62,6 +62,24 @@ npm install
 npm run dev
 ```
 
+### SQL
+
+```sql reviews
+select * from reviews
+```
+
+```sql
+select * from a_table_that_isnt_connected
+```
+
+
+```orders
+select * from orders
+```
+
+
+
+
 You can also use them directly like this
 
 <CodeBlock>
