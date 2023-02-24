@@ -153,9 +153,9 @@ hr {
 
 code {
 	font-family: var(--monospace-font-family);
-	font-size: 0.85em;
+	font-size: 0.7em;
 	background-color: var(--grey-100);
-	padding: 0.05em 0.2em;
+	padding: 0.2em 0.2em;
 	border: solid 1px var(--grey-200);
 	border-radius: 4px;
 	color: var(--grey-800);
