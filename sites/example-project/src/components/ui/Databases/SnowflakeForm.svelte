@@ -12,7 +12,7 @@
             type: "text", 
             optional: false,
             override: false,
-            placeholder: "xx16244.us-central1.gcp",
+            placeholder: "xy12345.us-central1.gcp or xy12345.ap-southeast-1 or xy12345",
             value: credentials.account,
             dataTestId: "snowflakeAccount"
         },
