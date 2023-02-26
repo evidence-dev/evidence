@@ -14,7 +14,8 @@
             override: false,
             placeholder: "xy12345.us-central1.gcp or xy12345.ap-southeast-1 or xy12345",
             value: credentials.account,
-            dataTestId: "snowflakeAccount"
+            dataTestId: "snowflakeAccount",
+            additionalInstructions: "The account number must be of any of these format options (xy12345.us-central1.gcp or xy12345.ap-southeast-1 or xy12345)"
         },
         {
             id: "username", 
