@@ -12,10 +12,10 @@
             type: "text", 
             optional: false,
             override: false,
-            placeholder: "xy12345.us-central1.gcp or xy12345.ap-southeast-1 or xy12345",
+            placeholder: "xy12345.us-east4.gcp | xy12345.eu-west-1 | xy12345",
             value: credentials.account,
             dataTestId: "snowflakeAccount",
-            additionalInstructions: "The account number must be of any of these format options (xy12345.us-central1.gcp or xy12345.ap-southeast-1 or xy12345)"
+            additionalInstructions: "The account number typically uses one of these formats: xy12345.us-east4.gcp, xy12345.eu-west-1 or xy12345. For more info see https://docs.snowflake.com/en/user-guide/admin-account-identifier"
         },
         {
             id: "username", 
