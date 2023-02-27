@@ -5,6 +5,7 @@ import fs from 'fs-extra'
 const templatePaths = [
     '.npmrc',
     'static/',
+    'sources/',
     'src/app.css',
     'src/app.html',
     'src/global.d.ts',

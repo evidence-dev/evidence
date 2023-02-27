@@ -16,7 +16,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: "Preview – evidence-development-workspace"
-          max_timeout: 300
+          max_timeout: 500
           check_interval: 5
   tests:
     name: UI Tests
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - uses: pnpm/action-setup@v2.2.1
@@ -34,8 +34,6 @@ jobs:
         with:
           node-version: 16.x
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: npx playwright install --with-deps
-      - run: pnpm run test:ui
+      - run: pnpm install --frozen-lockfile && cd ./tests && npx playwright install --with-deps && pnpm run test:ui
         env:
           BASE_URL: ${{ needs.wait_for_preview.outputs.preview_url }}
