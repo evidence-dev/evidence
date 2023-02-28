@@ -253,32 +253,37 @@ const updateExtractedQueriesDir = function (content, filename) {
     return queryIds;
 }
 
-function highlighter(code, lang, meta) {
+function createQueryViewer(queryID) {
+    return `
+    {#if data.${queryID} }
+        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${queryID ?? 'untitled'}" queryResult = {data.${queryID ?? 'untitled'}}/> 
+    {/if}
+    `;
+}
+
+function highlighter(code, arg1, arg2) {
     code = code.replace(/'/g, "&apos;");
     code = code.replace(/"/g, "&quot;");
 
     // Replace curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g, "&rbrace;");
 
-    // read in second argument to code block as a queryID if the first argument is "sql"
-    if (lang.toLowerCase() === "sql" && meta) {
-        let queryID = meta ?? null;
-        return `
-        {#if data.${queryID} }
-            <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${queryID ?? 'untitled'}" queryResult = {data.${queryID ?? 'untitled'}}/> 
-        {/if}
-        `;
-    }
+    // If the first code block argument is "sql", AND there is a second argument, read in second argument to code block as a queryID
+    if (arg1.toLowerCase() === "sql" && arg2) {
+        if (arg2.includes(" ")) {
+            throw new Error("Query ID cannot contain spaces")
+        }
+        let queryID = arg2 ?? null;
+        return createQueryViewer(queryID);
+    } 
 
     // Ensure that "real" code blocks are rendered not run as queries
-    if (getPrismLangs().has(lang.toLowerCase())) {
+    else if (getPrismLangs().has(arg1.toLowerCase())) {
         return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
     }
-return `
-    {#if data.${lang} }
-        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/> 
-    {/if}
-    `;
+
+    // Else use the first argument as the queryID
+    else return createQueryViewer(arg1);
 }
 
 // 
