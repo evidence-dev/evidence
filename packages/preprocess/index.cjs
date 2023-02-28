@@ -8,6 +8,7 @@ const fsExtra = require('fs-extra')
 const { supportedLangs } = require("./supportedLanguages.cjs");
 // This is includes future proofing to add support for Prism highlighting
 const PrismComponents = require("prismjs/components");
+const prqljs = require("prql-js");
 
 const getPrismLangs = function () {
     let prismLangs = new Set()
@@ -189,9 +190,20 @@ const updateExtractedQueriesDir = function (content, filename) {
         if (id.toLowerCase() === 'sql' && node.meta) {
             id=node.meta;
         }
+        
+        let compiledQueryString;
+        // If language is PRQL, check for a queryID after, in which case we want to run the compiled query
+        if (id.toLowerCase() === 'prql' && node.meta) {
+            id=node.meta;
+            compiledQueryString = prqljs.compile(node.value.trim())
+        }
+        else compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
+
+
         // Prevent "real" code blocks from being interpreted as queries
         if (getPrismLangs().has(id.toLowerCase())) return
-        let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
+
+        
         let inputQueryString = compiledQueryString // original, as written 
         let compiled = false // default flag, switched to true if query is compiled
         let status = "not run"
@@ -269,7 +281,14 @@ function highlighter(code, lang, meta) {
     code = code.replace(/{/g, "&lbrace;").replace(/}/g, "&rbrace;");
 
     // If the first code block label (lang) is "sql", AND there is a second label (meta), read in second label to code block as a queryID
-    if (lang.toLowerCase() === "sql" && meta) {
+    if (lang.toLowerCase() === "sql"  && meta) {
+        if (meta.includes(" ")) {
+            throw new Error("Query ID cannot contain spaces")
+        }
+        let queryID = meta ?? null;
+        return createQueryViewer(queryID);
+    } 
+    if (lang.toLowerCase() === "prql"  && meta) {
         if (meta.includes(" ")) {
             throw new Error("Query ID cannot contain spaces")
         }

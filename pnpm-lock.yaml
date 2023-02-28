@@ -211,6 +211,7 @@ importers:
       blueimp-md5: ^2.19.0
       fs-extra: ^9.1.0
       mdsvex: ^0.10.6
+      prql-js: 0.5.2
       remark-parse: 8.0.2
       unified: ^9.1.0
       unist-util-visit: ^2.0.3
@@ -218,6 +219,7 @@ importers:
       blueimp-md5: 2.19.0
       fs-extra: 9.1.0
       mdsvex: 0.10.6
+      prql-js: 0.5.2
       remark-parse: 8.0.2
       unified: 9.2.1
       unist-util-visit: 2.0.3
@@ -6334,7 +6336,7 @@ packages:
   /axios/0.25.0:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6342,7 +6344,7 @@ packages:
   /axios/0.27.2_debug@3.2.7:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -9263,7 +9265,7 @@ packages:
         optional: true
     dev: false
 
-  /follow-redirects/1.15.2:
+  /follow-redirects/1.15.2_debug@3.2.7:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -9271,6 +9273,8 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dependencies:
+      debug: 3.2.7
     dev: false
 
   /fork-ts-checker-webpack-plugin/6.5.2_webpack@5.74.0:
@@ -10135,7 +10139,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -13748,6 +13752,10 @@ packages:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
     dev: false
 
+  /prql-js/0.5.2:
+    resolution: {integrity: sha512-Akh2Btd+DBo8BT5OWb/4cAOoyu4oHpK31JI3zz1s7/cP+bVZvTjn/FfYcicpwNtvGad3431D0Mc6QRaNHnWzAg==}
+    dev: false
+
   /pseudomap/1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
 
@@ -13881,12 +13889,6 @@ packages:
   /react-dev-utils/12.0.1_webpack@5.74.0:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
-    peerDependencies:
-      typescript: '>=2.7'
-      webpack: '>=4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       address: 1.1.2
@@ -13916,7 +13918,9 @@ packages:
     transitivePeerDependencies:
       - eslint
       - supports-color
+      - typescript
       - vue-template-compiler
+      - webpack
     dev: false
 
   /react-dom/17.0.2_react@17.0.2:

@@ -69,7 +69,7 @@ select * from reviews
 ```
 
 ```sql
-select * from a_table_that_isnt_connected
+select * from a_table_that_is_not_connected
 ```
 
 
@@ -78,6 +78,13 @@ select * from orders
 ```
 
 
+### PRQL
+
+```prql marketing_spend_from_a_prql_query
+from marketing_spend
+filter month_begin >= '2020-01-01'
+take 10
+```
 
 
 You can also use them directly like this
