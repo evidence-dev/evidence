@@ -124,10 +124,10 @@ importers:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
       dotenv: ^16.0.1
-      duckdb-async: 0.7.0
+      duckdb-async: 0.7.1
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
-      duckdb-async: 0.7.0
+      duckdb-async: 0.7.1
     devDependencies:
       dotenv: 16.0.1
 
@@ -6342,7 +6342,7 @@ packages:
   /axios/0.27.2_debug@3.2.7:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -8192,18 +8192,18 @@ packages:
   /downloadjs/1.4.7:
     resolution: {integrity: sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=}
 
-  /duckdb-async/0.7.0:
-    resolution: {integrity: sha512-P6+IMblbFX8psQpC8ZBnoxrm3HSXKMCfnqjzPL5sUB9nbF1GVWUxsh8Oqn21p49VLin7eEEmybjhwny/rUmBNg==}
+  /duckdb-async/0.7.1:
+    resolution: {integrity: sha512-PhCnR0ia3vfjiqdvjya5sLhRV9oOihWXQ0I5hmmgIBtzriMmWHTlFITAcPDv96zB71hPXRGnoaV3d70N2dk5LQ==}
     dependencies:
-      duckdb: 0.7.0
+      duckdb: 0.7.1
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb/0.7.0:
-    resolution: {integrity: sha512-G5mCd5xk5HCbnhplpdz7Ej27uVRftvLRZqd+liQ3Cb3oEcLn8a0pJ7yF1WRjaUJVrTHTiu8mO68lO9aGeLe4bw==}
+  /duckdb/0.7.1:
+    resolution: {integrity: sha512-RwFqUO83beq68DcK4XnVLNQXa/AGIXtvg5oI1onclfslo5JYnX+5zI5d0iP/WmpjxiUOGl0Z1bcO0pNvhA/CdA==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.9
@@ -9271,6 +9271,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
+
+  /follow-redirects/1.15.2_debug@3.2.7:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 3.2.7
     dev: false
 
   /fork-ts-checker-webpack-plugin/6.5.2_webpack@5.74.0:
