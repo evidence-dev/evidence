@@ -1,16 +1,21 @@
 <script>
+    import { dev } from '$app/env';
     export let error;
     export let chartType;
 </script>
 
+
 <div width=100% class="error">
     <div class="wrapper">
         <div class="chart-type">{chartType}</div>
-        {#if chartType.includes("Value")}
-        <div class="value-message">{error}</div>
-        {:else}
-        <div class="message">{error}</div>
-        {/if}
+        <div class={chartType.includes("Value") ? "value-message" : "message"}>
+            {#if dev && error === "SQL Error: Missing database credentials"}
+              {error}.
+              <a class=credentials-link href='/settings'> Add credentials &rarr;</a>
+            {:else}
+              {error}
+            {/if}
+        </div>
     </div>
 </div>
 
