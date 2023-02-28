@@ -261,29 +261,29 @@ function createQueryViewer(queryID) {
     `;
 }
 
-function highlighter(code, arg1, arg2) {
+function highlighter(code, lang, meta) {
     code = code.replace(/'/g, "&apos;");
     code = code.replace(/"/g, "&quot;");
 
     // Replace curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g, "&rbrace;");
 
-    // If the first code block argument is "sql", AND there is a second argument, read in second argument to code block as a queryID
-    if (arg1.toLowerCase() === "sql" && arg2) {
-        if (arg2.includes(" ")) {
+    // If the first code block label (lang) is "sql", AND there is a second label (meta), read in second label to code block as a queryID
+    if (lang.toLowerCase() === "sql" && meta) {
+        if (meta.includes(" ")) {
             throw new Error("Query ID cannot contain spaces")
         }
-        let queryID = arg2 ?? null;
+        let queryID = meta ?? null;
         return createQueryViewer(queryID);
     } 
 
     // Ensure that "real" code blocks are rendered not run as queries
-    else if (getPrismLangs().has(arg1.toLowerCase())) {
+    else if (getPrismLangs().has(lang.toLowerCase())) {
         return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
     }
 
-    // Else use the first argument as the queryID
-    else return createQueryViewer(arg1);
+    // Else use the first label as the queryID
+    else return createQueryViewer(lang);
 }
 
 // 
