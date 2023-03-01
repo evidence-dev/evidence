@@ -116,4 +116,7 @@ from table`
     }
 
 
+  code {
+    font-size: 1em;
+  }
 </style>
