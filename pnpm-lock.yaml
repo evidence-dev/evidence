@@ -11,7 +11,7 @@ importers:
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/telemetry': link:packages/telemetry
       '@sveltejs/adapter-static': 1.0.0
-      '@sveltejs/kit': 1.5.0
+      '@sveltejs/kit': 1.0.0
       '@tidyjs/tidy': 2.4.4
       blueimp-md5: 2.19.0
       downloadjs: 1.4.7
@@ -42,8 +42,8 @@ importers:
       '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/telemetry': link:packages/telemetry
-      '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.5.0
-      '@sveltejs/kit': 1.5.0_svelte@3.55.0+vite@4.0.4
+      '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.0.0
+      '@sveltejs/kit': 1.0.0_svelte@3.55.0+vite@4.0.4
       '@tidyjs/tidy': 2.4.4
       blueimp-md5: 2.19.0
       downloadjs: 1.4.7
@@ -5120,17 +5120,17 @@ packages:
       '@sveltejs/kit': ^1.0.0
     dev: false
 
-  /@sveltejs/adapter-static/1.0.0_@sveltejs+kit@1.5.0:
+  /@sveltejs/adapter-static/1.0.0_@sveltejs+kit@1.0.0:
     resolution: {integrity: sha512-ZrQhRgSa2TsH+zvrOIKpdVsAhExafpsn+w6Gv1WHzV76RZ2XOYFa8xi6hEzRjeeAL++ac0dsZHzp8M4X7YIabg==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
-      '@sveltejs/kit': 1.5.0_svelte@3.55.0+vite@4.0.4
+      '@sveltejs/kit': 1.0.0_svelte@3.55.0+vite@4.0.4
     dev: true
 
-  /@sveltejs/kit/1.5.0_svelte@3.55.0+vite@4.0.4:
-    resolution: {integrity: sha512-AkWgCO9i2djZjTqCgIQJ5XfnSzRINowh2w2Gk9wDRuTwxKizSuYe3jNvds/HCDDGHo8XE5E0yWNC9j2XxbrX+g==}
-    engines: {node: ^16.14 || >=18}
+  /@sveltejs/kit/1.0.0_svelte@3.55.0+vite@4.0.4:
+    resolution: {integrity: sha512-6VgD5C3i2XOT7GRBi5LaPPLiFAmpiDkhKJNVt8fLg1RmaL6f7rT4Kiwi2XGpYRj3V1F4t1QRdsfmAkkDUKY3OA==}
+    engines: {node: '>=16.14'}
     hasBin: true
     requiresBuild: true
     peerDependencies:
@@ -5150,7 +5150,7 @@ packages:
       sirv: 2.0.2
       svelte: 3.55.0
       tiny-glob: 0.2.9
-      undici: 5.18.0
+      undici: 5.14.0
       vite: 4.0.4
     transitivePeerDependencies:
       - supports-color
@@ -5387,7 +5387,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       cosmiconfig: 7.0.0
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       svgo: 1.3.2
     dev: false
 
@@ -8071,11 +8071,6 @@ packages:
 
   /deep-is/0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
-
-  /deepmerge/4.2.2:
-    resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
-    engines: {node: '>=0.10.0'}
-    dev: false
 
   /deepmerge/4.3.0:
     resolution: {integrity: sha512-z2wJZXrmeHdvYJp/Ux55wIjqo81G5Bp4c+oELTW+7ar6SogWHajt5a9gO3s3IDaGSAXjDk0vlQKN3rms8ab3og==}
@@ -15904,8 +15899,8 @@ packages:
     resolution: {integrity: sha512-BQFnUDuAQ4Yf/cYY5LNrK9NCJFKriaRbD9uR1fTeXnBeoa97W0i41qkZfGO9pSo8I5KzjAcSY2XYtdf0oKd7KQ==}
     dev: false
 
-  /undici/5.18.0:
-    resolution: {integrity: sha512-1iVwbhonhFytNdg0P4PqyIAXbdlVZVebtPDvuM36m66mRw4OGrCm2MYynJv/UENFLdP13J1nPVQzVE2zTs1OeA==}
+  /undici/5.14.0:
+    resolution: {integrity: sha512-yJlHYw6yXPPsuOH0x2Ib1Km61vu4hLiRRQoafs+WUgX1vO64vgnxiCEN9dpIrhZyHFsai3F0AEj4P9zy19enEQ==}
     engines: {node: '>=12.18'}
     dependencies:
       busboy: 1.6.0
