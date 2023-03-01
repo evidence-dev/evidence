@@ -3,7 +3,30 @@ const unified = require('unified')
 const parse = require('remark-parse')
 const visit = require('unist-util-visit')
 const md5 = require("blueimp-md5");
-const fs = require('fs-extra')
+const { supportedLangs } = require("./supportedLanguages.cjs");
+
+// This is includes future proofing to add support for Prism highlighting
+const PrismComponents = require("prismjs/components");
+
+const getPrismLangs = function(){
+    let prismLangs= new Set()
+    
+    supportedLangs.forEach((supportedLanguage) => {
+        prismLangs.add(supportedLanguage)
+        if (supportedLanguage in PrismComponents.languages) {
+            const languageComponent = PrismComponents.languages[supportedLanguage]
+            if (languageComponent.alias) {
+                if (Array.isArray(languageComponent.alias)) {
+                    languageComponent.alias.forEach(a => prismLangs.add(a))
+                } else {
+                    prismLangs.add(languageComponent.alias)
+                }
+            }
+        }
+    })
+
+    return prismLangs
+}
 
 const getRouteHash = function(filename){
     let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
@@ -31,6 +54,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import VennDiagram from '${componentSource}/diagrams/VennDiagram.svelte';
+        import SankeyDiagram from "${componentSource}/diagrams/SankeyDiagram.svelte";
         import Value from '${componentSource}/viz/Value.svelte';
         import BigValue from '${componentSource}/viz/BigValue.svelte';
         import Chart from '${componentSource}/viz/Chart.svelte';
@@ -47,11 +71,13 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import Column from '${componentSource}/viz/Column.svelte';
         import LineChart from '${componentSource}/viz/LineChart.svelte';
         import FunnelChart from "${componentSource}/viz/FunnelChart.svelte";
+        import SankeyChart from "${componentSource}/viz/SankeyChart.svelte";
         import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
         import Histogram from '${componentSource}/viz/Histogram.svelte';
         import ECharts from '${componentSource}/viz/ECharts.svelte';
         import USMap from '${componentSource}/viz/USMap.svelte';
         import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
+        import CodeBlock from '${componentSource}/ui/CodeBlock.svelte';
         import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
         
         let props;
@@ -123,7 +149,10 @@ const getQueryIds = function(content){
 
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
-        queryIds.push(id)
+         // Prevent "real" code blocks from being interpreted as queries
+         if (!getPrismLangs().has(id.toLowerCase())){
+             queryIds.push(id)
+         }
     });
     return queryIds;
 }
@@ -134,6 +163,10 @@ function highlighter(code, lang) {
 
     // Replace curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
+    // Ensure that "real" code blocks are rendered not run as queries
+    if (getPrismLangs().has(lang.toLowerCase())) {
+        return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
+    }
     return `
     {#if data.${lang} }
         <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/> 

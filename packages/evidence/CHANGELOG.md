@@ -1,5 +1,23 @@
 # @evidence-dev/evidence
 
+## 12.1.0
+
+### Minor Changes
+
+- a7168a4: Issue-646 SQL Connector broken due to constant being re-assigned (possibly due to a JS runtime change)
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@1.3.1
+
+## 12.0.1
+
+### Patch Changes
+
+- 856bc76: Fix allowing inclusion of a sources directory in projects
+- Updated dependencies [1e90c45]
+  - @evidence-dev/components@1.10.1
+
 ## 12.0.0
 
 ### Minor Changes
