@@ -36,4 +36,8 @@
     justify-content: flex-start;
     padding-top: 0.5em;
   }
+
+  code {
+    font-size: 1em;
+  }
 </style>
