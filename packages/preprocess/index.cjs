@@ -3,9 +3,8 @@ const unified = require('unified')
 const parse = require('remark-parse')
 const visit = require('unist-util-visit')
 const md5 = require("blueimp-md5");
-const fs = require('fs')
-const fsExtra = require('fs-extra')
 const { supportedLangs } = require("./supportedLanguages.cjs");
+
 // This is includes future proofing to add support for Prism highlighting
 const PrismComponents = require("prismjs/components");
 
@@ -28,40 +27,12 @@ const getPrismLangs = function(){
 
     return prismLangs
 }
-const { removeSync, writeJSONSync, emptyDirSync } = fsExtra
-const strictBuild = (process.env.VITE_BUILD_STRICT === 'true')
-const circularRefErrorMsg = 'Compiler error: circular reference'
+
 const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1] === "/index.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/index/g,"")
+    let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
     let routeHash = md5(route)
     return routeHash
 }
-
-const hasQueries = function(filename){
-    let hash = getRouteHash(filename)
-    return fs.existsSync("./.evidence-queries/extracted/"+hash)
-}
-
-const createModuleContext = function(filename){
-    let routeHash = getRouteHash(filename)
-    let moduleContext = 
-        ` 
-        export async function load({fetch}) {
-            const res = await fetch('/api/${routeHash}.json');
-            const {data} = await res.json();
-            const customFormattingSettingsRes = await fetch('/api/customFormattingSettings.json');
-            const { customFormattingSettings } = await customFormattingSettingsRes.json();
-            return {
-                props: {
-                    data,
-                    customFormattingSettings
-                }
-            }
-        }
-        `
-
-    return moduleContext
-} 
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
@@ -69,7 +40,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
 
     let queryDeclarations = ''
     
-    if(hasQueries(filename)) {
+    if(fileQueryIds?.length > 0) {
         queryDeclarations = 
         `
         let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;
@@ -109,8 +80,10 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import CodeBlock from '${componentSource}/ui/CodeBlock.svelte';
         import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
         
-        export let data = {};
-        export let customFormattingSettings;
+        let props;
+        export { props as data }; // little hack to make the data name not overlap
+        let { data = {}, customFormattingSettings } = props;
+        $: ({ data = {}, customFormattingSettings } = props);
 
         routeHash.set('${routeHash}');
 
@@ -167,17 +140,8 @@ const ignoreIndentedCode = function() {
 	block_tokenizers.indentedCode = () => true;
 }
 
-const updateExtractedQueriesDir = function(content, filename){
-    if (!fs.existsSync("./.evidence-queries")){
-        fs.mkdirSync("./.evidence-queries");
-    }
-    if (!fs.existsSync("./.evidence-queries/extracted")){
-        fs.mkdirSync("./.evidence-queries/extracted");
-    }
-    let routeHash = getRouteHash(filename)
-    let queryDir = `./.evidence-queries/extracted/${routeHash}`
-
-    let queries = [];  
+const getQueryIds = function(content){
+    let queryIds = [];  
     let tree = unified()
         .use(parse)
         .use(ignoreIndentedCode)
@@ -186,66 +150,10 @@ const updateExtractedQueriesDir = function(content, filename){
     visit(tree, 'code', function(node) {
         let id = node.lang ?? 'untitled'
          // Prevent "real" code blocks from being interpreted as queries
-         if (getPrismLangs().has(id.toLowerCase())) return
-        let compiledQueryString = node.value.trim() // refs get compiled and sent to db orchestrator
-        let inputQueryString = compiledQueryString // original, as written 
-        let compiled = false // default flag, switched to true if query is compiled
-        let status = "not run"
-        queries.push(
-            {id, compiledQueryString, inputQueryString, compiled, status}
-        )
+         if (!getPrismLangs().has(id.toLowerCase())){
+             queryIds.push(id)
+         }
     });
-
-    // Handle query chaining:
-    let maxIterations = 100
-    let queryIds = queries.map(d => d.id);
-
-    for(let i=0; i<=maxIterations; i++){
-        queries.forEach(query => {
-            let references = query.compiledQueryString.match(/\${.*?\}/gi)	
-            if(references){
-                query.compiled = true
-                references.forEach(reference => {
-                    try {
-                        referencedQueryID = reference.replace("${", "").replace("}", "").trim()
-                        if(!queryIds.includes(referencedQueryID)){
-                            errorMessage = 'Compiler error: '+ (referencedQueryID === "" ? "missing query reference" :"'"+ referencedQueryID + "'" + " is not a query on this page")
-                            throw new Error(errorMessage)
-                        } else if(i >= maxIterations) {
-                            // tried 100 times, still have references, likely circular 
-                            throw new Error(circularRefErrorMsg)
-                        } else {
-                            let referencedQuery = "(" + queries.filter(d => d.id === referencedQueryID)[0].compiledQueryString + ")"
-                            query.compiledQueryString = query.compiledQueryString.replace(reference, referencedQuery)
-                        }
-                    }catch(e){
-                        // if error is unknown use default circular ref. error
-                        e = (e.message === undefined || e.message === null) ? Error(circularRefErrorMsg) : e
-                        query.compileError = e.message
-                        query.compiledQueryString = e.message
-                        // if build is strict and we detect an error, force a failure
-                        if (strictBuild){
-                            throw new Error(e.message)
-                        }
-                    }
-                }) 
-            } 
-        })
-    }
-
-    if (queries.length === 0) {
-        removeSync(queryDir)
-        return [];
-    }
-    if (queries.length > 0) {
-        if(!fs.existsSync(queryDir)){
-            fs.mkdirSync(queryDir)
-            writeJSONSync(`${queryDir}/queries.json`, queries);
-        }else{
-            emptyDirSync(queryDir)
-            writeJSONSync(`${queryDir}/queries.json`, queries);
-        }
-    }
     return queryIds;
 }
 
@@ -258,7 +166,7 @@ function highlighter(code, lang) {
     // Ensure that "real" code blocks are rendered not run as queries
     if (getPrismLangs().has(lang.toLowerCase())) {
         return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
-        }
+    }
     return `
     {#if data.${lang} }
         <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/> 
@@ -266,15 +174,13 @@ function highlighter(code, lang) {
     `;
 }
 
-// 
-
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
     let queryIdsByFile = {};
     return [
         {
             markup({content, filename}){
                 if(filename.endsWith(".md")){
-                    let fileQueryIds = updateExtractedQueriesDir(content, filename);
+                    let fileQueryIds = getQueryIds(content);
                     queryIdsByFile[getRouteHash(filename)] = fileQueryIds;
                 }
             }
@@ -303,15 +209,6 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
                     }
                     if(!content.match(/\<script\>/)){
                         return {code: '<script> </script>' + content}
-                    }
-                }
-            }
-        },
-        {
-            script({filename, attributes}) { 
-                if(filename.endsWith(".md")){
-                    if(attributes.context == "module"){
-                        return {code: createModuleContext(filename)}
                     }
                 }
             }
