@@ -8,7 +8,6 @@ pre[class*="language-"] {
 	color: var(--grey-800);
 	font-family: 'monoco', Roboto Mono, monospace;
 	/* font-family:'Courier New', Courier, monospace; */
-	font-size: 1.1em;
 	line-height: 1.5em;
 
 	-moz-tab-size: 4;
