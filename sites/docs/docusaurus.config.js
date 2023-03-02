@@ -171,7 +171,8 @@ module.exports = {
     ],
   ],
   scripts: [
-    'https://scripts.simpleanalyticscdn.com/latest.js'
+    'https://scripts.simpleanalyticscdn.com/latest.js',
+    'https://scripts.simpleanalyticscdn.com/auto-events.js'
   ],
   // Add math stylesheets
   stylesheets: [
