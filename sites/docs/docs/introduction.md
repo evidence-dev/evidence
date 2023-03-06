@@ -7,7 +7,7 @@ hide_title: true
 breadcrumbs: false
 ---
 
-<h1 class="community-header">What is Evidence</h1>
+<h1 class="community-header">What is Evidence?</h1>
 
 With Evidence, you can build a polished business intelligence system using only SQL & Markdown.
 
