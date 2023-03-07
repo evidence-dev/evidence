@@ -228,43 +228,6 @@ div.nav-header a {
 	width: 100%;
 }
 
-.name-error, .name-error:hover {
-	color: var(--red-600);
-}
-
-span.alert-icon {
-        width: 18px;
-        color:var(--red-600);
-        display:inline-block;
-        vertical-align: middle;
-        line-height: 1em;
-        cursor: help;
-        position:relative;
-        text-transform: none;
-    }
-
-	.alert-icon .info-msg {
-        visibility: hidden;
-        position: absolute;
-        top: -5px;
-        left: 105%;
-		min-width: 200px;
-        padding-left: 5px;
-        padding-right: 5px;     
-        padding-top: 2px;
-        padding-bottom: 1px;   
-        color: white;
-        font-family: sans-serif;
-        font-size: 0.8em;
-        background-color: var(--grey-900);
-        opacity: 0.85;
-        border-radius: 6px;
-        z-index: 1;
-    }
-
-    .name-error:hover .info-msg {
-        visibility: visible;
-    }
 
 @media (max-width: 850px) {
 	aside.sidebar {
