@@ -1,5 +1,19 @@
 # @evidence-dev/preprocess
 
+## 2.0.0
+
+### Major Changes
+
+- 96c9c81: Upgrade to svelte kit 1.0.0, remove support for Node 14
+
+### Minor Changes
+
+- 8439630: Component for Sankey Diagram added in th example project
+
+### Patch Changes
+
+- 84b097a: Add ability to display non-SQL codeblocks in markdown
+
 ## 1.5.1
 
 ### Patch Changes

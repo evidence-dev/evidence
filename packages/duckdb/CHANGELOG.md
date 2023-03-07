@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 0.0.5
+
+### Patch Changes
+
+- d81c3af: update to duckdb 0.7.1
+
 ## 0.0.3
 
 ### Patch Changes

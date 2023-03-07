@@ -1,5 +1,17 @@
 # @evidence-dev/db-orchestrator
 
+## 2.0.0
+
+### Major Changes
+
+- 96c9c81: Upgrade to svelte kit 1.0.0, remove support for Node 14
+
+### Patch Changes
+
+- Updated dependencies [d81c3af]
+  - @evidence-dev/duckdb@0.0.5
+  - @evidence-dev/csv@0.1.1
+
 ## 1.3.1
 
 ### Patch Changes

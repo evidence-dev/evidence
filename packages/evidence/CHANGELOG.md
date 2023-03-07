@@ -1,5 +1,28 @@
 # @evidence-dev/evidence
 
+## 13.0.0
+
+### Major Changes
+
+- 96c9c81: Upgrade to svelte kit 1.0.0, remove support for Node 14
+
+### Patch Changes
+
+- f036b94: align svelte-kit version with adapter static's requirements
+- 45822a6: Updating deps to support SK 1.0.0
+- 69f2f9c: Updating deps for SK 1.0 upgrade
+- Updated dependencies [15e9176]
+- Updated dependencies [8439630]
+- Updated dependencies [96c9c81]
+- Updated dependencies [84b097a]
+- Updated dependencies [45822a6]
+- Updated dependencies [67e7597]
+- Updated dependencies [5bfde4f]
+- Updated dependencies [69f2f9c]
+  - @evidence-dev/components@2.0.0
+  - @evidence-dev/preprocess@2.0.0
+  - @evidence-dev/db-orchestrator@2.0.0
+
 ## 12.1.0
 
 ### Minor Changes

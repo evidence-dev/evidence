@@ -1,5 +1,24 @@
 # @evidence-dev/components
 
+## 2.0.0
+
+### Major Changes
+
+- 96c9c81: Upgrade to svelte kit 1.0.0, remove support for Node 14
+
+### Minor Changes
+
+- 8439630: Component for Sankey Diagram added in th example project
+
+### Patch Changes
+
+- 15e9176: Adds prompt and link to settings in the ErrorChart Component when credentials are missing
+- 84b097a: Add ability to display non-SQL codeblocks in markdown
+- 45822a6: Updating deps to support SK 1.0.0
+- 67e7597: remove unused css that was printing warnings to terminal
+- 5bfde4f: Updated the account number format on SnowflakeForm
+- 69f2f9c: Updating deps for SK 1.0 upgrade
+
 ## 1.10.1
 
 ### Patch Changes
