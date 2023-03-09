@@ -1,8 +1,8 @@
 <script>
     import { page } from '$app/stores';
     import { blur } from 'svelte/transition'
-    import { showQueries } from '@evidence-dev/components/ui/stores'
-    import { pageHasQueries } from '@evidence-dev/components/ui/stores';
+    import { showQueries } from './stores'
+    import { pageHasQueries } from './stores';
 
     export let fileTree;
 

@@ -2,7 +2,7 @@
   import { fly, scale } from "svelte/transition";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
-  import { routeHash } from '@evidence-dev/components/ui/stores';
+  import { routeHash } from './ui/stores';
   import { page } from "$app/stores";
   export let endpoint = $routeHash;
 
