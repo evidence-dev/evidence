@@ -6,7 +6,7 @@ title: Netlify
 
 Netlify lets you host a public version of your project for free, or you can create and host a password-protected version with Netlify's $15/month plan.
 
-# Deploy to netlify
+## Deploy to Netlify
 1. Run your project in development mode 
 1. Visit the [settings page](https://localhost:3000/settings)
 1. Open the deployment panel, and select 'netlify', then follow the provided instructions

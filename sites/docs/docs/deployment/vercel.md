@@ -6,7 +6,7 @@ title: Vercel
 
 Vercel lets you host a public version of your project for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month. 
 
-# Deploy to Vercel
+## Deploy to Vercel
 1. Run your project in development mode 
 1. Visit the [settings page](https://localhost:3000/settings)
 1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
