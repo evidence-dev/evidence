@@ -29,8 +29,8 @@ importers:
       svelte: 3.55.0
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.5
-      svelte2tsx: 0.4.7
-      typescript: 4.5.4
+      svelte2tsx: 0.6.0
+      typescript: 4.9.5
       unified: 9.1.0
       unist-util-visit: 4.1.2
       uvu: 0.5.2
@@ -61,8 +61,8 @@ importers:
       svelte: 3.55.0
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.5
-      svelte2tsx: 0.4.7_ffneqjewvwbqqgnbzj6mjycz4a
-      typescript: 4.5.4
+      svelte2tsx: 0.6.0_tuotfx7glloxurl4snpq7ztuqe
+      typescript: 4.9.5
       unified: 9.1.0
       unist-util-visit: 4.1.2
       uvu: 0.5.2
@@ -326,7 +326,7 @@ importers:
       svelte: 3.55.0
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.5
-      typescript: 4.9.4
+      typescript: 4.9.5
       unified: 9.1.0
       unist-util-visit: 4.1.2
     dependencies:
@@ -346,11 +346,11 @@ importers:
       svelte: 3.55.0
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.5
-      typescript: 4.9.4
+      typescript: 4.9.5
       unified: 9.1.0
       unist-util-visit: 4.1.2
     devDependencies:
-      '@sveltejs/package': 1.0.1_niwyv7xychq2ag6arq5eqxbomm
+      '@sveltejs/package': 1.0.1_tuotfx7glloxurl4snpq7ztuqe
       jest: 28.1.3
     publishDirectory: ../../packages/components
 
@@ -495,7 +495,7 @@ packages:
     resolution: {integrity: sha512-lNUmDRVGpanCsiUN3NWxFTdwmdFI53xwhkTFfHDGTYk46ca7Ind3nanJc+U6Zj9Tv+9nTCWRBscWEW1DyKOpTw==}
     engines: {node: '>=8.0.0'}
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.4.0
     dev: false
 
   /@azure/core-asynciterator-polyfill/1.0.2:
@@ -508,7 +508,7 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       '@azure/abort-controller': 1.0.4
-      tslib: 2.3.0
+      tslib: 2.4.0
     dev: false
 
   /@azure/core-http/2.2.4:
@@ -526,7 +526,7 @@ packages:
       node-fetch: 2.6.7
       process: 0.11.10
       tough-cookie: 4.0.0
-      tslib: 2.3.0
+      tslib: 2.4.0
       tunnel: 0.0.6
       uuid: 8.3.2
       xml2js: 0.4.23
@@ -541,7 +541,7 @@ packages:
       '@azure/abort-controller': 1.0.4
       '@azure/core-tracing': 1.0.0-preview.13
       '@azure/logger': 1.0.3
-      tslib: 2.3.0
+      tslib: 2.4.0
     dev: false
 
   /@azure/core-paging/1.2.1:
@@ -549,7 +549,7 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       '@azure/core-asynciterator-polyfill': 1.0.2
-      tslib: 2.3.0
+      tslib: 2.4.0
     dev: false
 
   /@azure/core-tracing/1.0.0-preview.13:
@@ -557,14 +557,14 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       '@opentelemetry/api': 1.0.4
-      tslib: 2.3.0
+      tslib: 2.4.0
     dev: false
 
   /@azure/logger/1.0.3:
     resolution: {integrity: sha512-aK4s3Xxjrx3daZr3VylxejK3vG5ExXck5WOHDJ8in/k9AqlfIyFMMT1uG7u8mNjX+QRILTIn0/Xgschfh/dQ9g==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.4.0
     dev: false
 
   /@azure/storage-blob/12.9.0:
@@ -578,7 +578,7 @@ packages:
       '@azure/core-tracing': 1.0.0-preview.13
       '@azure/logger': 1.0.3
       events: 3.3.0
-      tslib: 2.3.0
+      tslib: 2.4.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -5186,7 +5186,7 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/package/1.0.1_niwyv7xychq2ag6arq5eqxbomm:
+  /@sveltejs/package/1.0.1_tuotfx7glloxurl4snpq7ztuqe:
     resolution: {integrity: sha512-iYoDz4AEJQUfdKUfBcwtYEGYkf4NMByQL3Sl2ESnu+IXsLNsHvhH0zUDhAmUmAgcrH8fVjiR7FuJeyh+7EQtiw==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
@@ -5197,7 +5197,7 @@ packages:
       kleur: 4.1.5
       sade: 1.8.1
       svelte: 3.55.0
-      svelte2tsx: 0.5.23_niwyv7xychq2ag6arq5eqxbomm
+      svelte2tsx: 0.5.23_tuotfx7glloxurl4snpq7ztuqe
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -6482,7 +6482,7 @@ packages:
     resolution: {integrity: sha512-x1FCFnFifvYDDzTaLII71vG5uvDwgtmDTEVWAxrgeiR8VjMONcCXJx7E+USjDtHlwFmt9MysbqgF9b9Vjr6w+w==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.4.0
     dev: false
 
   /async/3.2.3:
@@ -15402,19 +15402,7 @@ packages:
     resolution: {integrity: sha512-uGu2FVMlOuey4JoKHKrpZFkoYyj0VLjJdz47zX5+gVK5odxHM40RVhar9/iK2YFRVxvfg9FkhfVlR0sjeIrOiA==}
     engines: {node: '>= 8'}
 
-  /svelte2tsx/0.4.7_ffneqjewvwbqqgnbzj6mjycz4a:
-    resolution: {integrity: sha512-1HqRb8+I8H0Gli0+w8nTmyZgbtO/jJE3g27cNKYFyN0GMdpOh0CRmiWuMH1k9N2JugkviI7wqETanqJTR0SI+A==}
-    peerDependencies:
-      svelte: ^3.24
-      typescript: ^4.1.2
-    dependencies:
-      dedent-js: 1.0.1
-      pascal-case: 3.1.2
-      svelte: 3.55.0
-      typescript: 4.5.4
-    dev: true
-
-  /svelte2tsx/0.5.23_niwyv7xychq2ag6arq5eqxbomm:
+  /svelte2tsx/0.5.23_tuotfx7glloxurl4snpq7ztuqe:
     resolution: {integrity: sha512-jYFnugTQRFmUpvLXPQrKzVYcW5ErT+0QCxg027Zx9BuvYefMZFuoBSTDYe7viPEFGrPPiLgT2m7f5n9khE7f7Q==}
     peerDependencies:
       svelte: ^3.24
@@ -15423,7 +15411,19 @@ packages:
       dedent-js: 1.0.1
       pascal-case: 3.1.2
       svelte: 3.55.0
-      typescript: 4.9.4
+      typescript: 4.9.5
+    dev: true
+
+  /svelte2tsx/0.6.0_tuotfx7glloxurl4snpq7ztuqe:
+    resolution: {integrity: sha512-TrxfQkO7CKi8Pu2eC/FyteDCdk3OOeQV5u6z7OjYAsOhsd0ClzAKqxJdvp6xxNQLrbFzf/XvCi9Fy8MQ1MleFA==}
+    peerDependencies:
+      svelte: ^3.55
+      typescript: ^4.9.4
+    dependencies:
+      dedent-js: 1.0.1
+      pascal-case: 3.1.2
+      svelte: 3.55.0
+      typescript: 4.9.5
     dev: true
 
   /svg-parser/2.0.4:
@@ -15882,14 +15882,8 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript/4.5.4:
-    resolution: {integrity: sha512-VgYs2A2QIRuGphtzFV7aQJduJ2gyfTljngLzjpfW9FoYZF6xuw1W0vW9ghCKLfcWrCFxK81CSGRAvS1pn4fIUg==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
-    dev: true
-
-  /typescript/4.9.4:
-    resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
+  /typescript/4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
     engines: {node: '>=4.2.0'}
     hasBin: true
 
