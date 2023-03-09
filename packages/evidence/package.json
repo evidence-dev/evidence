@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/evidence",
-  "version": "12.1.0",
+  "version": "13.0.0",
   "description": "dependencies for evidence projects",
   "type": "module",
   "keywords": [
@@ -53,6 +53,6 @@
     "unist-util-visit": "4.1.2"
   },
   "engines": {
-		"node": "^16.14 || >=18"
-	}
+    "node": "^16.14 || >=18"
+  }
 }
