@@ -30,13 +30,12 @@ const getPrismLangs = function(){
 
 const getRouteHash = function(filename){
     let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
-    let routeHash = md5(route)
-    return routeHash
+    return md5(route)
 }
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
-    let routeHash = getRouteHash(filename)
+    const routeH = getRouteHash(filename)
 
     let queryDeclarations = ''
     
@@ -50,7 +49,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
 
     let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash } from '@evidence-dev/components/ui/stores';
+        import { pageHasQueries, routeHash } from '$lib/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '${componentSource}/ui/BigLink.svelte';
         import VennDiagram from '${componentSource}/diagrams/VennDiagram.svelte';
@@ -85,7 +84,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         let { data = {}, customFormattingSettings } = props;
         $: ({ data = {}, customFormattingSettings } = props);
 
-        routeHash.set('${routeHash}');
+        $routeHash = '${routeH}';
 
         $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
 

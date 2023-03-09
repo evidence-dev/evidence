@@ -4,11 +4,11 @@
   $: ({ settings, customFormattingSettings, gitIgnore } = data);
 
   import { dev } from "$app/environment";
-  import DatabaseSettingsPanel from "@evidence-dev/components/ui/Databases/DatabaseSettingsPanel.svelte";
-  import VersionControlPanel from "@evidence-dev/components/ui/VersionControl/VersionControlPanel.svelte";
-  import DeploySettingsPanel from "@evidence-dev/components/ui/Deployment/DeploySettingsPanel.svelte";
-  import FormattingSettingsPanel from "@evidence-dev/components/ui/Formatting/FormattingSettingsPanel.svelte";
-  import TelemetrySettingsPanel from "@evidence-dev/components/ui/TelemetryOptOut/TelemetrySettingsPanel.svelte";
+  import DatabaseSettingsPanel from "$lib/ui/Databases/DatabaseSettingsPanel.svelte"
+  import VersionControlPanel from "$lib//ui/VersionControl/VersionControlPanel.svelte";
+  import DeploySettingsPanel from "$lib/ui/Deployment/DeploySettingsPanel.svelte";
+  import FormattingSettingsPanel from "$lib/ui/Formatting/FormattingSettingsPanel.svelte";
+  import TelemetrySettingsPanel from "$lib/ui/TelemetryOptOut/TelemetrySettingsPanel.svelte";
 </script>
 
 {#if dev}

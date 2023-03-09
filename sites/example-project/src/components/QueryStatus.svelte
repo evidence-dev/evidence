@@ -1,10 +1,10 @@
 <script>
   import { fly, scale } from "svelte/transition";
   import { invalidate } from "$app/navigation";
-  import { onMount } from "svelte";
-  import { routeHash } from './ui/stores';
+  import { routeHash } from './ui/stores'
   import { page } from "$app/stores";
-  export let endpoint = $routeHash;
+  import { onMount } from "svelte";
+  export let endpoint = $routeHash
 
   let loadingPromise;
   let statuses = [];
