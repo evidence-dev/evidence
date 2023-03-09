@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 13.0.1
+
+### Patch Changes
+
+- 8647a03: Bump TS dependencies
+
 ## 13.0.0
 
 ### Major Changes
