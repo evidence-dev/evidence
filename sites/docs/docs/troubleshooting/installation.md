@@ -88,8 +88,6 @@ The Evidence VS Code extension enables syntax highlighting and basic autocomplet
 
 1. Install from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
 
-See [VS Code Extension](/walkthroughs/vscode-extension) for more information about the extension.
-
 The VS Code extension is not required to build an Evidence project, but it makes the experience of writing your project smoother.
 
 That's it for installation - now you can start your server and use Evidence.
@@ -141,7 +139,7 @@ npm run dev
 ```
 
 ## Next Steps
-Now that you're all set up, you can keep working through the getting started guide. The next step is to [connect your database.](/getting-started/connect-database)
+Now that you're all set up, you can keep working through the getting started guide. The next step is to [connect your database.](/core-concepts/data-sources)
 
 ## Help
 If you need help with any of this, [reach out to us on Slack](/community).

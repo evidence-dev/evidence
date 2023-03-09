@@ -8,7 +8,7 @@ Evidence renders markdown files into web pages. Markdown files are stored in the
 
 When developing, pages are rendered at `localhost:3000`. Evidence will instantly reload pages when you edit and save their markdown files.
 
-Evidence is a static site generator, meaning that when you run `npm run build` it builds static HTML pages from those markdown files. If you [deploy your project](../../deployment/overview), this is how the site your users see is generated.
+Evidence is a static site generator, meaning that when you run `npm run build` it builds static HTML pages from those markdown files. If you [deploy your project](../../deployment/), this is how the site your users see is generated.
 
 ## Basic Navigation
 

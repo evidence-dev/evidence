@@ -36,7 +36,7 @@ The number of orders yesterday was <Value data={orders} column=num_orders />.
 
 Above, we've passed in the query data `orders` in curly braces `{ }`, and specified the column we want to display `num_orders` in the `column` prop.
 
-For more information on the `Value` component, see [Including Data in Text](/docs/core-concepts/components/value).
+For more information on the `Value` component, see [Including Data in Text](/components/value).
 
 
 ## Charts
@@ -55,6 +55,6 @@ Our chart library has a flexible, declarative API that lets you add default char
 
 While our library offers a lot of customizable features, our defaults let you create beautiful, publication-quality charts with as little as a single line of code.
 
-More information on the Chart Library can be found in the [Chart Library](/docs/core-concepts/components/chart-library) section.
+More information on the Chart Library can be found in the [Chart Library](/core-concepts/components/chart-library) section.
 
 Or else you can find documentation on all the charts in the [Components Reference](../../components)

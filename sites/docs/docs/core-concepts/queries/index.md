@@ -90,7 +90,7 @@ The SQL compiler detects circular and missing references. If a query includes ei
 The column names in your query result define how your data is treated when using components.
 
 - Date column names must include a date unit to be interpreted as dates in Evidence (date, week, month, qtr, year)
-- Formatting is determined by **format tags** appended to your column names. See [Formatting](./formatting) for more details
+- Formatting is determined by **format tags** appended to your column names. See [Formatting](../formatting) for more details
 
 
 ## Supported Databases
@@ -100,6 +100,6 @@ The column names in your query result define how your data is treated when using
 - MySQL
 - SQLite
 - DuckDB
-- [CSV files](/getting-started/use-local-csvs)
+- [CSV files](/core-concepts/data-sources/#use-local-csvs)
 
 We are accepting contributions for new database connectors. Please see [our contribution guide on GitHub](https://github.com/evidence-dev/evidence/blob/develop/CONTRIBUTING.md).

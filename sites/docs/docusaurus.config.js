@@ -23,7 +23,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          docId: 'get-started/overview',
+          docId: 'getting-started/install-evidence',
           // to: '/',
           position: 'left',
           label: 'Docs',
@@ -57,7 +57,7 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Introduction',
+              label: 'What is Evidence?',
               to: '/',
             },
             {
@@ -65,36 +65,24 @@ module.exports = {
               to: '/getting-started/install-evidence',
             },
             {
-              label: 'SQL Queries',
-              to: '/features/queries/sql-queries',
-            },
-            {
-              label: 'Markdown',
-              to: '/features/markdown/writing-markdown',
-            },
-            {
-              label: 'Charts',
-              to: '/features/charts/examples',
-            },
-            {
-              label: 'Tables',
-              to: '/features/data-table',
+              label: 'Core Concepts',
+              to: '/core-concepts',
             },
             {
               label: 'Deployment',
-              to: '/deployment/deployment-overview',
+              to: '/deployment'
             },
             {
-              label: 'Walkthroughs',
-              to: '/walkthroughs/installation',
+              label: 'Markdown Reference',
+              to: '/markdown'
+            },
+            {
+              label: 'Themes and Layouts',
+              to: '/themes-and-layouts'
             },
             {
               label: 'Troubleshooting',
               to: '/troubleshooting',
-            },
-            {
-              label: 'Usage Statistics',
-              to: '/usage-statistics',
             }
           ],
         },

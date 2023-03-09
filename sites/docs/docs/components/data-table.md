@@ -183,7 +183,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 * **showLinkCol** - (Optional) true | false - whether to show the column supplied to the `link` prop (false by default)
 
 ### Formatting
-Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/features/value-formatting) section for more details.
+Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/core-concepts/formatting) section for more details.
 
 ## Column
 Use the `Column` component to choose specific columns to display in your table, and to apply options to specific columns. If you don't supply any columns to the table, it will display all columns from your query result.

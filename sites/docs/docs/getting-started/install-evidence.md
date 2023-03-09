@@ -7,7 +7,7 @@ title: Install Evidence
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-If this is your first time doing something like this, or you're having trouble installing, try the [Detailed Installation Walkthrough.](/walkthroughs/installation)
+If this is your first time doing something like this, or you're having trouble installing, try the [Detailed Installation Walkthrough.](/troubleshooting/installation)
 
 
 ## System Requirements 
