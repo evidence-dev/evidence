@@ -24,6 +24,7 @@
   /* --ifm-global-spacing: 0px; */
   /* --ifm-heading-margin-top: 4em; */
   --ifm-h2-vertical-rhythm-top: 2;
+  --ifm-font-family-base: -apple-system,BlinkMacSystemFont,Inter,Segoe UI,Helvetica Neue,sans-serif;
 }
 
 .menu__link {
@@ -47,7 +48,7 @@
 /* ------- */
 
 li .theme-doc-sidebar-item-category-level-1{
-  margin-top: 1.5em;
+  margin-top: 1em;
 }
 
 .menu__link:hover {
@@ -75,7 +76,7 @@ li .theme-doc-sidebar-item-category-level-1{
 .theme-doc-sidebar-item-link:not(.theme-doc-sidebar-item-link-level-2):not(.theme-doc-sidebar-item-link-level-3) {
   text-transform: uppercase;
   font-weight: 600;
-  margin-top: 1.5em;
+  margin-top: 1em;
 }
 
 .menu__link--sublist {
@@ -85,11 +86,11 @@ li .theme-doc-sidebar-item-category-level-1{
 :is(div, nav) > ul> li > div > .menu__link--sublist {
   text-transform: uppercase;
   font-weight: 600;
-  margin-top: 1.5em;
+  margin-top: 1em;
 }
 
 button.menu__caret:not(.theme-doc-sidebar-item-category-level-2 button.menu__caret) {
-  margin-top: 1.5em;
+  margin-top: 1em;
 }
 
 
@@ -177,13 +178,15 @@ aside.theme-doc-sidebar-container {
   }
 }
 
-
+h1, h2, h3, h4, h5, h6 {
+  font-family:  Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+} 
 
 article {
   max-width: 1000px;
   margin-left: 0;
   margin-right: auto;
-  margin-top: 1.5em
+  margin-top: 1em
 }
 
 .gradient {
@@ -232,6 +235,7 @@ article {
 p {
   margin: 0;
   font-weight: 400;
+  font-family: -apple-system,BlinkMacSystemFont,Inter,Segoe UI,Helvetica Neue,sans-serif;
 }
 
 p.standard-margin {
