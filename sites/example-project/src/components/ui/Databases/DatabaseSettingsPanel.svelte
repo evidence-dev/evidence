@@ -1,12 +1,12 @@
 <script>
-    import BigqueryForm from '@evidence-dev/components/ui/Databases/BigqueryForm.svelte'
-    import PostgresForm from '@evidence-dev/components/ui/Databases/PostgresForm.svelte'
-    import SnowflakeForm from '@evidence-dev/components/ui/Databases/SnowflakeForm.svelte'
-    import RedshiftForm from '@evidence-dev/components/ui/Databases/RedshiftForm.svelte'
-    import MysqlForm from '@evidence-dev/components/ui/Databases/MysqlForm.svelte'
-    import SqliteForm from '@evidence-dev/components/ui/Databases/SqliteForm.svelte'
-    import DuckdbForm from '@evidence-dev/components/ui/Databases/DuckdbForm.svelte'
-    import CSVForm from '@evidence-dev/components/ui/Databases/CSVForm.svelte'
+    import BigqueryForm from './BigqueryForm.svelte'
+    import PostgresForm from './PostgresForm.svelte'
+    import SnowflakeForm from './SnowflakeForm.svelte'
+    import RedshiftForm from './RedshiftForm.svelte'
+    import MysqlForm from './MysqlForm.svelte'
+    import SqliteForm from './SqliteForm.svelte'
+    import DuckdbForm from './DuckdbForm.svelte'
+    import CSVForm from './CSVForm.svelte'
 
     import { slide, blur } from 'svelte/transition'
     import { select } from '@tidyjs/tidy';
