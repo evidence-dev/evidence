@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 14.0.0
+
+### Minor Changes
+
+- a7a9757: Minor import changes, adjust generated vite config, minor variable rename
+
+### Patch Changes
+
+- Updated dependencies [a7a9757]
+  - @evidence-dev/preprocess@2.1.0
+  - @evidence-dev/components@2.1.0
+
 ## 13.0.1
 
 ### Patch Changes
