@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 2.1.0
+
+### Minor Changes
+
+- a7a9757: Minor import changes, adjust generated vite config, minor variable rename
+
 ## 2.0.0
 
 ### Major Changes
