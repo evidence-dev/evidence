@@ -20,7 +20,7 @@ Components use angle brackets (`<` and `/>`) to wrap the component name, like HT
 
 ## Showing Values in Text
 
-The simplest component is the `Value` component. It displays a single value from a query. It can be used to put automatically updated values in text.
+The simplest component is the `<Value/>` component. It displays a single value from a query. It can be used to put automatically updated values in text.
 
 
 ````markdown
@@ -57,4 +57,4 @@ While our library offers a lot of customizable features, our defaults let you cr
 
 More information on the Chart Library can be found in the [Chart Library](/core-concepts/components/chart-library) section.
 
-Or else you can find documentation on all the charts in the [Components Reference](../../components)
+Or else you can find documentation on all the [Components](../../components) in the reference.

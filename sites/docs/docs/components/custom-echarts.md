@@ -1,6 +1,6 @@
 ---
-sidebar_position: 10
-title: Custom Charts
+sidebar_position: 98
+title: Custom ECharts
 hide_title: true
 hide_table_of_contents: false
 ---

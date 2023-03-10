@@ -30,7 +30,7 @@ You can also include online images by URL.
 ![Company Logo](my-logo.png)
 ```
 
-## Code Blocks
+## Code Fences
 
 Markdown code fences in Evidence run SQL queries and return data. The SQL dialect used is the same as the database you're connecting to.
 

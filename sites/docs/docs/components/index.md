@@ -438,14 +438,14 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Custom Charts](custom/custom-charts)
+### [Custom ECharts](custom-echarts)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
         <div class="lbl">Custom ECharts Treemap</div>
     </div>
     <div class="item-body-centered">
-<a href="/components/custom/custom-charts#simple-treemap">
+<a href="/components/custom-echarts#simple-treemap">
 
 ![custom-chart](/img/custom-treemap.png)
 
@@ -458,7 +458,7 @@ hide_table_of_contents: false
         <div class="lbl">Custom ECharts Funnel</div>
     </div>
     <div class="item-body-centered">
-<a href="/components/custom/custom-charts#funnel-chart">
+<a href="/components/custom-echarts#funnel-chart">
 
 ![custom-chart](/img/custom-funnel.png)
 
@@ -471,7 +471,7 @@ hide_table_of_contents: false
         <div class="lbl">Custom ECharts Pie Chart</div>
     </div>
     <div class="item-body-centered">
-<a href="/components/custom/custom-charts#pie-chart">
+<a href="/components/custom-echarts#pie-chart">
 
 ![custom-chart](/img/custom-pie.png)
 
@@ -484,7 +484,7 @@ hide_table_of_contents: false
         <div class="lbl">Custom ECharts Donut Chart</div>
     </div>
     <div class="item-body-centered">
-<a href="/components/custom/custom-charts#donut-chart">
+<a href="/components/custom-echarts#donut-chart">
 
 ![custom-chart](/img/custom-donut.png)
 
@@ -497,7 +497,7 @@ hide_table_of_contents: false
         <div class="lbl">Advanced ECharts Example</div>
     </div>
     <div class="item-body-centered">
-<a href="/components/custom/custom-charts#advanced-chart">
+<a href="/components/custom-echarts#advanced-chart">
 
 ![custom-chart](/img/exg-custom-echarts-anscombe.svg)
 

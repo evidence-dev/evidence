@@ -10,7 +10,7 @@ Evidence supports most markdown syntax. Below are some of the most common markdo
 ```markdown
 This is a paragraph. It can be as long as you want. 
 
-Add line breaks by adding two spaces at the end of a line.
+Add line breaks by leaving a blank line between paragraphs.
 ```
 
 ## Text Styles
@@ -30,8 +30,8 @@ Add line breaks by adding two spaces at the end of a line.
 - To indicate items
 
 1. This is an ordered list
-2. It uses numbers
-3. To indicate order
+1. It uses numbers
+1. To indicate order
 ```
 
 ## Headers
@@ -78,14 +78,14 @@ Evidence looks for images in the `/static` folder in the root of your project.
     `-- my-image.png
 ```
 
-## Code Blocks
+## Code Fences
 
-In Evidence, most code blocks execute SQL queries and display the results in a table.
+In Evidence, most code fences execute SQL queries and display the results in a table.
 
 The exception is if you use one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), which will render the code in a code block.
  
 ````markdown
-This code block will execute a SQL query and display the results:
+This code fence will execute a SQL query and display the results:
 
 ```widget_orders 
 SELECT * 
@@ -93,7 +93,7 @@ FROM orders
 WHERE category = 'widget'
 ```
 
-These code blocks will render as a code blocks:
+These code fences will render as a code blocks:
 
 ```python
 names = ["Alice", "Bob", "Charlie"]

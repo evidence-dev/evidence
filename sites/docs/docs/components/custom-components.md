@@ -1,22 +1,16 @@
 ---
-sidebar_position: 3
+sidebar_position: 99
 hide_table_of_contents: false
 title: Custom Components
 ---
+
+Custom components allow you to extend the functionality of Evidence, as well as to make your code more reusable.
 
 In Evidence, you can build your own components and use them anywhere in your project. This is made possible through Svelte, the JavaScript framework Evidence is built on. 
 
 Below is a **short guide** on building a simple component in Evidence. 
 
 For a fuller guide, Svelte offers a really great interactive tutorial that you can complete in your browser in about an hour: [Svelte Tutorial](https://svelte.dev/tutorial/basics)
-
-## Why build custom components?
-### For yourself:
-- **Less repetitive code** for you to write by "abstracting" it into a separate component.
-- **Easier maintenance** of your project, as you only need to edit code in one place if you want to make changes.
-
-### To share:
-- **Share functionality with others** inside or outside your organization, by sharing your component with them.
 
 :::tip Built a great component?
 Let us know in our [Slack community](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)! 
@@ -86,14 +80,16 @@ Components stored in the /components/ folder will be included in your project.</
 
 ## Building your own component: Checklist
 
-If you're building a component, here are some things to keep in mind:
+If you're building a component, here are some things to keep in mind.
 
 In your markdown file:
-1. **`import` the custom component** into any .md files where you want to use it.
+
+1. **You must `import` the custom component** into any .md files where you want to use it.
 1. **Pass any data as props** if you need to access query results in the component
 
 In the custom component:
+
+1. **Use Svelte (HTML + extra features) syntax** in this component - it will not support Markdown
 1. **Use the `/components/` folder** for your .svelte files
 1. **`export` any props you want to use** in the component
-1. **Import any [Evidence components](https://github.com/evidence-dev/evidence/tree/main/sites/example-project/src/components)** you want to use in the components
-1. **Use Svelte (HTML + extra features) syntax** in this component - it will not support Markdown
+1. **Import any [Evidence components](https://github.com/evidence-dev/evidence/tree/main/sites/example-project/src/components)** you want to use in the custom component

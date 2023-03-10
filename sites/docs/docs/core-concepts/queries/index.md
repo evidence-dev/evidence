@@ -3,12 +3,12 @@ sidebar_position: 1
 hide_title: false
 hide_table_of_contents: false
 title: Queries
-description: Markdown code blocks run SQL queries.
+description: Markdown code fences run SQL queries.
 ---
 
 ## Writing Queries
 
-Evidence runs markdown code blocks as SQL queries.
+Evidence runs markdown code fences as SQL queries.
 
 ````markdown
 ```sales_by_country
@@ -20,7 +20,7 @@ group by 1
 
 When you open a page in dev mode, Evidence runs all of the queries on the page. You can see the progress of these queries printed in the console. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries.
 
-You can include SQL queries in your page using a markdown code block (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
+You can include SQL queries in your page using a markdown code fence (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
 
 ### Using Query Results
 Reference a query in a component using `data={query_name}`

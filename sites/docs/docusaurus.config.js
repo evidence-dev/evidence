@@ -22,21 +22,23 @@ module.exports = {
       },
       items: [
         {
-          type: 'doc',
-          docId: 'getting-started/install-evidence',
-          // to: '/',
-          position: 'left',
+          // type: 'doc',
+          // docId: 'getting-started/install-evidence',
+          to: '/',
+          position: 'right',
           label: 'Docs',
         },
         {
           to: '/community',
-          position: 'left',
+          position: 'right',
           label: 'Community',
         },
         {
           href: 'https://github.com/evidence-dev/evidence',
-          label: 'Github',
+          //label: 'Github',
           position: 'right',
+          className: "header-github-link",
+          "aria-label": "GitHub repository",
         },
       ],
     },
@@ -71,6 +73,10 @@ module.exports = {
             {
               label: 'Deployment',
               to: '/deployment'
+            },
+            {
+              label: 'Component Reference',
+              to: '/components'
             },
             {
               label: 'Markdown Reference',
