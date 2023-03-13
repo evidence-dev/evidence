@@ -1,8 +1,7 @@
 <script>
     import { page } from '$app/stores';
     import { blur } from 'svelte/transition'
-    import { showQueries } from './stores'
-    import { pageHasQueries } from './stores';
+    import { showQueries, pageHasQueries } from '$lib/ui/stores'
 
     export let fileTree;
 
@@ -57,7 +56,8 @@
     $: crumbs = buildCrumbs(pathArray)
 
     function toggleQueries() {
-		showQueries.update(value => !value)
+        const value = $showQueries
+		$showQueries = !value
 	} 
 </script>
 
