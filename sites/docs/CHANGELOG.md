@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 2.0.0
+
+### Major Changes
+
+- 96c9c81: Upgrade to svelte kit 1.0.0, remove support for Node 14
+
 ## 1.3.1
 
 ### Patch Changes

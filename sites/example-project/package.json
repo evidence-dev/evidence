@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "1.10.1",
+  "version": "2.1.0",
   "scripts": {
     "dev": "svelte-package && vite dev --port 3000",
     "build": "vite build",
@@ -30,7 +30,7 @@
     "svelte": "3.55.0",
     "svelte-icons": "2.1.0",
     "svelte-tiny-linked-charts": "1.1.5",
-    "typescript": "4.9.4",
+    "typescript": "4.9.5",
     "unified": "9.1.0",
     "unist-util-visit": "4.1.2",
     "@sveltejs/kit": "1.0.0"
