@@ -39,7 +39,6 @@ pre[class*="language-"] {
 	overflow: auto;
 	position: relative;
 	margin: 0.5em 0;
-	padding: 1.0em 1em 1.25em 1em;
 }
 
 .language-css > code,

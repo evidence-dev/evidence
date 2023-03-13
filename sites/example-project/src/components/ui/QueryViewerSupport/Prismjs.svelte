@@ -53,6 +53,6 @@
       border: 3px solid transparent;
     }
     code {
-      display: inline-block;
+      display: block; /* inline-block has odd behavior when it overflows on webkit mobile */
     }
 </style>
