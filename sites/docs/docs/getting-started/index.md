@@ -23,12 +23,8 @@ Most BI tools are _frustrating_. Evidence re-imagines the BI development experie
 
 ## How does Evidence work?
 
-
-
-<div class="flex">
 <div class="how-it-works">
 <img src='/img/how-it-works.png' class="how-it-works"/>
-</div>
 </div>
 
 Evidence renders a BI website from markdown files:
