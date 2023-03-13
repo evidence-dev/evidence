@@ -124,7 +124,10 @@
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
         overflow: auto;
-        padding: 0 12px 6px 12px; 
+        padding-top: 0;
+        padding-right: 12px;
+        padding-bottom: 6px;
+        padding-left: 15px;
         scrollbar-width: thin; 
         scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
     }
