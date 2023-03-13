@@ -17,13 +17,14 @@ You can create automated reports, analysis and tools that feel like they came fr
 
 Evidence creates pages from markdown files. When you write SQL statements inside those files, Evidence runs it against your data warehouse.
 
-<img src='/img/how-it-works.png'/>
+<img src='/img/how-it-works.png' class='how-it-works'/>
 
 Evidence has a rich library of [components](/components).
 
 <!-- Evidence supports [loops](/features/advanced/templating#loops), [conditional logic](http://localhost:4567/features/advanced/templating#conditionals), [parameterized pages](/features/advanced/parameterized-pages), tests and more. -->
 
-## Who is it for? 
+## Who is it for?
+
 You don't need to be a web developer to use Evidence. The only skills you need to get started are the ability to write SQL and markdown.
 
 If you're ready to get started, [install Evidence &#8594](/getting-started/install-evidence)

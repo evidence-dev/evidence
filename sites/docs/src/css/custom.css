@@ -264,7 +264,7 @@ article {
   max-width: 1000px;
   margin-left: 0;
   margin-right: auto;
-  margin-top: 1em
+  margin-top: 1em;
 }
 
 .gradient {
@@ -489,4 +489,13 @@ h3 {
 
 .markdown > h2 {
   margin-top: 3rem;
+}
+
+/* ------------- */
+/* Images        */
+/* ------------- */
+
+img.how-it-works {
+  width:100%;
+  max-width:600px;
 }

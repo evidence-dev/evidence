@@ -30,6 +30,8 @@ You **cannot** currently easily customize the default styles of the following (a
 
 ## Page Layout
 
+<!-- @archiewood update for SK 1.0 filenames -->
+
 If you include a `__layout.svelte` file in a directory, any markdown files in that directory (and its subdirectories) will use this layout file instead of the default layout file.
 
 _The recommended approach is to copy and edit the default layout file from `[my-project]/.evidence/template/src/pages/__layout.svelte`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/pages/__layout.svelte)._
