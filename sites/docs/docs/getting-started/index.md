@@ -5,6 +5,7 @@ title: What is Evidence?
 hide_table_of_contents: true
 hide_title: false
 breadcrumbs: false
+image: /img/how-it-works.png
 ---
 
 ## _Business Intelligence as Code_
