@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
 slug: /
-title: Evidence
+title: What is Evidence?
 hide_table_of_contents: true
 hide_title: false
 breadcrumbs: false
 ---
 
-## Business Intelligence as Code
+## _Business Intelligence as Code_
 
 Evidence is a web framework for data analysts. It's an open source, code-driven alternative to drag-and-drop BI tools. 
 
