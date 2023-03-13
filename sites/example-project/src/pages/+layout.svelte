@@ -87,14 +87,14 @@
 {/if}
 
 <div class="grid">	
-	{#if !$page.url.pathname.startsWith('/settings')}
+	<!-- {#if !$page.url.pathname.startsWith('/settings')} -->
 		<div class="header-bar">
 			<Header {fileTree}/>
 		</div>
 		<div class="header-button"  class:open>
 			<Hamburger bind:open/>
 		</div>
-	{/if}
+	<!-- {/if} -->
 	<Sidebar bind:open {fileTree}/>
 	{#if !$navigating}
 		<main in:blur|local>

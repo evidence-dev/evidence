@@ -3,6 +3,8 @@
     import { blur } from 'svelte/transition'
     import { showQueries } from './stores'
     import { pageHasQueries } from './stores';
+    import HomeIcon from '$lib/ui/HomeIcon.svelte'
+
 
     export let fileTree;
 
@@ -61,16 +63,26 @@
 	} 
 </script>
 
-<div>
+<div class="main">
     <span class="container"> 
-        <span>
+        <span>  
+            {#if $page.url.pathname.startsWith('/settings')}
+            <a href="/"><HomeIcon/></a>
+            {:else}
             {#each crumbs as crumb, i}
                 {#if i > 0 }
                 &emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>  
                 {:else}
-                <a href={crumb.href}>{crumb.title}</a>  
+                <a href={crumb.href}>
+                {#if crumb.title === 'Home' }
+                <HomeIcon/>
+                {:else}
+                {crumb.title}
+                {/if}
+                </a>  
                 {/if}
             {/each}
+            {/if}
         </span>
         {#if $pageHasQueries}
             <span transition:blur|local>
@@ -85,7 +97,7 @@
 </div>
 
 <style>
-    div {
+    div.main {
         padding: 0 0.5em 0 1.5em;
         box-sizing: border-box;
         width: 100%;
