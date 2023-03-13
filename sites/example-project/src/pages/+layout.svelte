@@ -72,7 +72,6 @@
 	import Hamburger from '$lib/ui/Hamburger.svelte'
 	import Sidebar from '$lib/ui/Sidebar.svelte'
 	import LoadingIndicator from "$lib/ui/LoadingIndicator.svelte";
-	
 	import QueryStatus from "$lib/QueryStatus.svelte";
 	
 	let open = false;

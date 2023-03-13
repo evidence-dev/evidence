@@ -43,7 +43,7 @@
   "peerDependencies": {
     "@evidence-dev/components": "workspace:^",
     "@evidence-dev/db-orchestrator": "workspace:^",
-    "@sveltejs/kit": "1.0.0",
+    "@sveltejs/kit": "1.6.0",
     "svelte": "3.55.0",
     "@sveltejs/vite-plugin-svelte": "2.0.2",
     "vite": "4.0.4",

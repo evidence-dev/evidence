@@ -1,12 +1,12 @@
 <script>
-  import { fly, scale } from "svelte/transition";
   import { invalidate } from "$app/navigation";
-  import { routeHash } from './ui/stores'
   import { page } from "$app/stores";
   import { onMount } from "svelte";
-  export let endpoint = $routeHash
+  import QueryToast from "./ui/QueryToast.svelte";
+  import { delay } from '$lib/delay'
+  import { routeHash } from "./ui/stores";
+  export let endpoint = '';
 
-  let loadingPromise;
   let statuses = [];
   $: activeStatuses = statuses.filter(
     (d) => d.status != "not run" && d.status != "from cache"
@@ -28,33 +28,34 @@
     }
   }
 
-  function timeout(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  async function checkStatusAndInvalidate(priorStatuses) {
+  async function checkStatusAndInvalidate() {
     statuses = await getStatus();
     // Check if queries have been removed from the page entirely
-    if (priorStatuses.length > 0 && statuses.length === 0) {
-      loadingPromise = invalidate(`/api/${endpoint}.json`).then(() =>
-        timeout(1000)
-      );
+    if (statuses.length === 0) {
+      await invalidate((url) => url.pathname === `/api/${endpoint}.json`)
+      await delay(500)
+      
     }
     if (statuses.length > 0) {
-      statuses.forEach((query) => {
+      for(let i = 0; i < statuses.length; i++){
+        const query = statuses[i]
         if (query.status === "not run") {
-          loadingPromise = invalidate(`/api/${endpoint}.json`).then(() =>
-            timeout(1000)
-          );
+          // force svelte load on API endpoint & front-end page
+          await invalidate((url) => url.pathname === `/api/${endpoint}.json`)
+          await invalidate((url) => url.pathname === window.location.pathname)
+          await delay(500)
         }
-      });
+      }
+      await delay(500)
+      activeStatuses.push(...statuses)
     }
-    return true;
+
   }
 
   onMount(() => {
+    endpoint = $routeHash
     const interval = setInterval(() => {
-      checkStatusAndInvalidate(statuses);
+      checkStatusAndInvalidate();
     }, 100);
 
     return () => {
@@ -64,25 +65,8 @@
 </script>
 
 <div class="container">
-  {#each activeStatuses as status (status.id)}
-    {#await loadingPromise}
-      <div
-        id="toast"
-        class:running={status.status === "running" ||
-          status.status === "not run"}
-        class:error={status.status === "error"}
-        class:done={status.status === "done" || status.status === "from cache"}
-        in:scale
-        out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
-      >
-        <span class="queryID">
-          {status.id}
-        </span>
-        <span class="status">
-          {status.status}
-        </span>
-      </div>
-    {/await}
+  {#each activeStatuses as status}
+      <QueryToast bind:status={status} />
   {/each}
 </div>
 
@@ -94,49 +78,5 @@
     bottom: 0;
     margin: 1.5em 2.5em;
     width: 20em;
-  }
-
-  #toast {
-    border-radius: 4px;
-    padding: 0.3em 0.75em;
-    margin: 1em 0;
-    /* box-shadow: 0 10px 20px rgba(0,0,0,.15);
-        box-shadow: 0 3px 6px rgba(0,0,0,.10); */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-    font-size: 0.7em;
-    font-family: var(--monospace-font-family);
-    display: flex;
-    justify-content: space-between;
-    /* font-weight: 600; */
-  }
-
-  div.running {
-    border: 1px solid var(--grey-400);
-    background-color: white;
-    color: var(--grey-999);
-    transition: all 400ms;
-  }
-
-  div.error {
-    border: 1px solid var(--red-500);
-    background-color: var(--red-100);
-    color: var(--red-999);
-    transition: all 400ms;
-  }
-
-  div.done {
-    border: 1px solid var(--green-500);
-    background-color: var(--green-100);
-    color: var(--green-999);
-    transition: all 400ms;
-  }
-
-  span {
-    cursor: pointer;
-  }
-
-  span.queryID {
-    font-weight: bold;
   }
 </style>
