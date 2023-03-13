@@ -1,26 +1,13 @@
 <script>
-    import { page } from '$app/stores';
-	import { dev } from '$app/env';
-	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte'
+	import { page } from '$app/stores';
+	import { dev } from '$app/environment';
 	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte'
-	import MdErrorOutline from 'svelte-icons/md/MdErrorOutline.svelte'
-
-	export let menu;
-	export let folderList;
-
-	// Keep only folders with at least 1 page that is not index.md or a parameterized page (path contains '[')
-	folderList = folderList.filter(d => d.fileCount > 0)
-	let folderCheck = [];
-	for(let i = 0; i < folderList.length; i++){
-		folderCheck.push(folderList[i].folder)
-	}
-
-	let noFolders = menu.filter(d => d.folder === undefined || !folderCheck.includes(d.folder))
-	noFolders = noFolders.sort((a, b) => {
-        return (a.label < b.label ? -1 : 1)
-    });
-
+	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte'
+	export let fileTree;
 	export let open 
+
+	// children of the index page
+	let firstLevelFiles = fileTree?.children
 </script>
 
 <aside class="sidebar" class:open>
@@ -29,40 +16,22 @@
             <a href='/' on:click={() => open = !open}><h2 class=project-title>Evidence</h2></a>
         </div>
         <nav>
-			{#if folderList}
-            {#each folderCheck as folder}
-				<CollapsibleSection {folder} {menu} {folderList} bind:open={open}/>
-            {/each}
-            {/if}
-			
-			{#if noFolders}
-            {#each noFolders as item}
-                {#if item.href !== '/'}
-					{#if dev && item.nameError}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-							<div class=name-error class:selected="{"/"+$page.path.split('/')[1] === item.href}">
-								<span class="alert-icon">
-									<MdErrorOutline/>
-									<span class=info-msg>Filenames cannot include spaces. Use hyphens instead.</span>
-								</span>
-								{item.label}
-							</div>
-						</a>
-					{:else}
-						<a href={item.href} sveltekit:prefetch on:click={() => open = !open} style="">
-							<div class:selected="{"/"+$page.path.split('/')[1] === item.hrefUri}">
-								{item.label}
-							</div>
-						</a>
-					{/if}
-                {/if}
-            {/each}
-            {/if}
+			{#each firstLevelFiles as file}
+				{#if file.children.length > 0}
+					<CollapsibleSection folder={file} bind:open={open}/>
+				{:else if file.href}
+					<a href={file.href} on:click={() => open = !open} style="">
+						<div class:selected="{"/"+$page.url.pathname.split('/')[1] === file.href}">
+							{file.label}
+						</div>
+					</a>
+				{/if}
+			{/each}
 			<div class=spacer></div>
         </nav>
         {#if dev}
         <div class="nav-footer">
-			<a href='/settings' class="settings-link" class:selected="{$page.path === '/settings'}">
+			<a href='/settings' class="settings-link" class:selected="{$page.url.pathname === '/settings'}">
 				<span class="settings-icon">
 					<IoMdSettings/>
 				</span>

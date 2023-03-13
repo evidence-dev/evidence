@@ -2,7 +2,7 @@
     export let href
 </script>
 
-<a {href}>
+<a href={href}>
     <div>
     <span>
         <slot/>

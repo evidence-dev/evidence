@@ -1,47 +1,25 @@
 <script>
     import { onMount } from 'svelte';
-    import { page } from '$app/stores'
-
-    let headers;
-
+    let headers;    
     onMount(() => {
-    headers = document.querySelector('article').querySelectorAll('h1, h2');
-        // Add ID tags to all the headers in the article
-        headers.forEach((header, i) => {
-            header.id = encodeURIComponent(header.innerText + i) ;
-        });
-
-    let inView = []
-
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                // Add 'active' class if observation target is inside viewport
-                if (entry.intersectionRatio == 1) {
-            inView.push(entry.target)
-        }
-                // Remove 'active' class otherwise
-                else {
-                    inView = inView.filter(item => item != entry.innerText)
-                }
+        headers = document.querySelector('article').querySelectorAll('h1, h2');
+            // Add ID tags to all the headers in the article
+            headers.forEach((header, i) => {
+                header.id = encodeURIComponent(header.innerText + i) ;
             });
-        });
-
-        headers.forEach((header) => {
-            io.observe(header);
-        });
     });
 
 </script>
 
 {#if headers && headers.length > 1}
-{#each headers as header, i}
-    <a 
-    href={$page.path + '#' + encodeURIComponent(header.innerText + i)} 
-    class={header.nodeName == 'H1' ? 'h1' : 'h2'}
-    >
-        {header.innerText}
-    </a>
-{/each}
+        {#each headers as header, i}
+            <a 
+            href={'#' + encodeURIComponent(header.innerText + i)} 
+            class={header.nodeName == 'H1' ? 'h1' : 'h2'}
+            >
+                {header.innerText}
+            </a>
+        {/each}
 {/if}
 
 <style>

@@ -1,13 +1,12 @@
 <script>
     import BreadCrumbs from './BreadCrumbs.svelte';
     import PrintButton from './PrintButton.svelte';
-    export let menu;
-    export let folderList;
+    export let fileTree;
 </script>
 
 <header>
     <div class="breadcrumb-container">
-        <BreadCrumbs {menu} {folderList}/>
+        <BreadCrumbs {fileTree}/>
         <PrintButton/>
     </div>
 </header>

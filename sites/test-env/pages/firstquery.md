@@ -26,11 +26,11 @@ This section of the report only becomes visible once there is a row of data in m
 
 The query won't be able run until you connect your data warehouse.
 
-Visit <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse" target="_blank">our docs</a> to learn how to connect to your data warehouse - it only takes a few minutes:
+Visit <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse" target="_blank" rel="noreferrer" >our docs</a> to learn how to connect to your data warehouse - it only takes a few minutes:
 
-* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#bigquery" target="_blank">Connect BigQuery</a>
-* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#snowflake" target="_blank">Connect Snowflake</a>
-* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#postgresql" target="_blank">Connect PostgreSQL</a>
+* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#bigquery" target="_blank" rel="noreferrer" >Connect BigQuery</a>
+* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#snowflake" target="_blank" rel="noreferrer" >Connect Snowflake</a>
+* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#postgresql" target="_blank" rel="noreferrer" >Connect PostgreSQL</a>
 
 
 {/if}
@@ -38,7 +38,7 @@ Visit <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse"
 ## Local images
 This is a picture of a cat, stored in /static/
 
-![Cute cat](kitty-cat.jpeg)
+![Cute cat](/kitty-cat.jpeg)
 
 ## Custom Components
 

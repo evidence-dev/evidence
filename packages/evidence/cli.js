@@ -49,16 +49,28 @@ const runFileWatcher = function(watchPatterns) {
 
     const sourcePath = p => path.join('./', p)
     const targetPath = p => path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, p))
+    const pagePath =  p => p.endsWith("index.md")? p.replace("index.md", "+page.md") : p.replace(".md", "/+page.md")
+  
+    const syncFile = (file) => {
+      const source = sourcePath(file)
+      const target = targetPath(source)
+      const svelteKitPagePath = pagePath(target)
+      fs.copySync(source, svelteKitPagePath)
+    }
+  
+    const unlinkFile = (file) => { 
+      const source = sourcePath(file)
+      const target = targetPath(source)
+      const svelteKitPagePath = pagePath(target)
+      fs.removeSync(svelteKitPagePath)
+    }
 
     watchers[item]
-        .on('add', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-        .on('change', path => fs.copyFileSync(sourcePath(path), targetPath(path)))
-        .on('unlink', path => fs.rmSync(targetPath(path)))
-        .on('addDir', path => {
-          if(!fs.existsSync(targetPath(path))){
-            fs.mkdirSync(targetPath(path))}
-          })
-        .on('unlinkDir', path => fs.rmdirSync(targetPath(path)));
+        .on('add', syncFile)
+        .on('change', syncFile)
+        .on('unlink', unlinkFile)
+        .on('addDir', path => {fs.ensureDirSync(targetPath(path))})
+        .on('unlinkDir', path => fs.removeSync(targetPath(path)));
   })
   return watchers 
 }
@@ -126,7 +138,7 @@ prog
     const flatArgs = flattenArguments(args);
 
     // Run svelte kit dev in the hidden directory 
-    const child = spawn('npx svelte-kit dev', flatArgs, {
+    const child = spawn('npx vite dev --port 3000', flatArgs, {
       shell: true, 
       detached: false, 
       cwd:'.evidence/template', 
@@ -146,7 +158,7 @@ prog
   .action((args) => {
     populateTemplate()
     clearQueryCache()
-    buildHelper("npx svelte-kit build", args)
+    buildHelper('npx vite build', args)
 
   });
 

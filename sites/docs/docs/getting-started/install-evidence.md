@@ -12,7 +12,7 @@ If this is your first time doing something like this, or you're having trouble i
 
 ## System Requirements 
 
-Evidence requires **NPM** `Version 7` or higher, and **Node.js** `Version 14` or higher.
+Evidence requires **NPM** `Version 7` or higher, and **Node.js** `Version 16.14` or higher.
 
 ### If this is your first time working with Node & npm
 [Dowload Node.js & npm here](https://nodejs.org/en/download/)

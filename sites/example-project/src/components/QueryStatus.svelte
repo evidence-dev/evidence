@@ -1,9 +1,9 @@
 <script>
   import { fly, scale } from "svelte/transition";
-  import { page } from "$app/stores";
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { routeHash } from '@evidence-dev/components/ui/stores';
+  import { page } from "$app/stores";
   export let endpoint = $routeHash;
 
   let loadingPromise;
@@ -13,7 +13,12 @@
   );
 
   async function getStatus() {
-    const res = await fetch(`/api/${endpoint}/status.json`);
+    if (endpoint == "") {
+        return [];
+    }
+
+    let statusEndpoint = `/api/status${$page.route.id}`.replace(/\/$/, "")
+    const res = await fetch(statusEndpoint);
     const { status } = await res.json();
 
     if (res.ok) {
@@ -47,10 +52,14 @@
     return true;
   }
 
-  onMount(async () => {
-    setInterval(async () => {
+  onMount(() => {
+    const interval = setInterval(() => {
       checkStatusAndInvalidate(statuses);
     }, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
   });
 </script>
 

@@ -1,6 +1,6 @@
-import { dev } from '$app/env';
+import { dev } from '$app/environment';
 import { writable } from 'svelte/store';
-import { browser } from '$app/env';
+import { browser } from '$app/environment';
 
 // Persist ShowQueries user choice
 export const showQueries = writable(dev && browser && (localStorage.getItem('showQueries')!='false'));
