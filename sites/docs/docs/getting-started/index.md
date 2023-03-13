@@ -1,31 +1,47 @@
 ---
 sidebar_position: 1
 slug: /
-title: What is Evidence?
+title: Evidence
 hide_table_of_contents: true
-hide_title: true
+hide_title: false
 breadcrumbs: false
 ---
 
-<h1 class="community-header">What is Evidence?</h1>
+## Business Intelligence as Code
 
-With Evidence, you can build a polished business intelligence system using only SQL & Markdown.
+Evidence is a web framework for data analysts. It's an open source, code-driven alternative to drag-and-drop BI tools. 
 
-You can create automated reports, analysis and tools that feel like they came from the graphics department at a top-tier publication. 
+## Why Evidence?
 
-## How does it work? 
+Most BI tools are _frustrating_. Evidence re-imagines the BI development experience:
 
-Evidence creates pages from markdown files. When you write SQL statements inside those files, Evidence runs it against your data warehouse.
+- **Code-driven workflows:** Use your IDE, version control, and CI/CD tools
+- **First-class text support:** Add context, explanation and insight to your reports
+- **Blazing-fast reports:** No more loading wheels - Evidence pre-builds everything
+- **Lightweight setup:** Install and start building reports in minutes
+- **Publication-grade outputs:** A data experience you can be proud to give your users
 
-<img src='/img/how-it-works.png' class='how-it-works'/>
+## How does Evidence work?
 
-Evidence has a rich library of [components](/components).
 
-<!-- Evidence supports [loops](/features/advanced/templating#loops), [conditional logic](http://localhost:4567/features/advanced/templating#conditionals), [parameterized pages](/features/advanced/parameterized-pages), tests and more. -->
 
-## Who is it for?
+<div class="flex">
+<div class="how-it-works">
+<img src='/img/how-it-works.png' class="how-it-works"/>
+</div>
+</div>
 
-You don't need to be a web developer to use Evidence. The only skills you need to get started are the ability to write SQL and markdown.
+Evidence renders a BI website from markdown files:
+
+1. [SQL statements](core-concepts/queries) inside markdown files run queries against your data warehouse
+1. [Charts and components](core-concepts/components) are rendered using these query results
+1. [Loops and conditionals](core-concepts/loops-and-conditionals) allow displayed page content to be programmatically controlled
+1. [Templated pages](core-concepts/templated-pages) generate many pages from a single markdown template
+
+
+## Pre-requisites
+
+To use Evidence you need to know SQL. A knowledge of [basic markdown syntax](markdown) is also helpful.
 
 If you're ready to get started, [install Evidence &#8594](/getting-started/install-evidence)
 
@@ -41,4 +57,4 @@ If you're trying out Evidence, and need some support we'd love to hear from you.
 - See all the <a href="https://docs.evidence.dev/components" target="_blank">charts and components</a>.
 
 
-If there's **anything** you find difficult in the docs, please open an issue on Github or reach out to us on Slack.
+If there's **anything** you find difficult in the docs, please [open an issue](https://github.com/evidence-dev/evidence/issues/new/choose) or reach out to us on Slack.

@@ -4,7 +4,7 @@ title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
-## Connect to a Database
+## Connect your data
 
 To connect your local development environment to a database:
 
@@ -14,7 +14,7 @@ To connect your local development environment to a database:
 
 Evidence will save your credentials locally, and run a test query to confirm that it can connect.
 
-### Supported Databases
+### Supported data sources
 
 Evidence supports: 
 
@@ -30,7 +30,7 @@ Evidence supports:
 
 We're adding new connectors regularly. Feel free to [create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
 
-## Use Local CSVs
+## Local CSVs
 
 In Evidence, you can query local CSV files directly in SQL.
 
@@ -40,7 +40,7 @@ Get started by selecting the `CSV` connector on the Settings page in your projec
 
 #### Inside your Evidence Project
 
-We recommend setting up a `sources` folder in the root of your Evidence project to store CSV files. You can then query them using this syntax:
+Evidence looks for CSV files stored in a `sources` folder in the root of your Evidence project. You can then query them using this syntax:
 
 ```sql
 select * from 'sources/myfile.csv'
@@ -80,9 +80,7 @@ select * from read_csv_auto('source/myfile.csv', HEADER=TRUE);
 
 In addition to the `HEADER` argument, this function can also accept changes to the delimeter (`DELIM`), quotes (`QUOTE`), and more. 
 
-[Additional information about CSV helper functions can be found in DuckDB's docs here.](https://duckdb.org/docs/data/csv)
-
---- 
+Additional information about CSV helper functions can be found in [DuckDB's docs](https://duckdb.org/docs/data/csv).
 
 ## BigQuery
 
@@ -92,9 +90,12 @@ Follow the instructions below to set up your service account and get a JSON key.
 
 ### Create a Service Account Key
 
-1. [Go to the Service Account Page](https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts/create?supportedpurview=project&_ga=2.202527640.867747861.1622513856-469265758.1621868166&_gac=1.81391205.1622124503.CjwKCAjw47eFBhA9EiwAy8kzNKaExCvM0G229wH0PGh4USFcdB7wudKCKWt4MSEPM6wbQKCwOot1NxoCtxIQAvD_BwE) and click on your project
+1. [Go to the Service Account Page](https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts/create?supportedpurview=project) and click on your project
 2. Add a name for your service account, then click Create
-3. Assign your service account a role for BigQuery (scroll down the role dropdown to find BigQuery roles). **BigQuery User** should work, but depending on your organization's permissions settings in Google Cloud, **BigQuery Data Viewer** may be required. If you run into trouble with permissions, you may need to change this role. Reach out to us if you run into issues or need help with BigQuery permissions.
+3. Assign your service account a role for BigQuery (scroll down the role dropdown to find BigQuery roles).
+   1. **BigQuery User** should work for most use cases.
+   1. **BigQuery Data Viewer** may be required (depending on your organization's permissions settings in Google Cloud).
+   1. Reach out to us if you run into issues or need help with BigQuery permissions.
 4. Click Continue, then click Done. You should see a table of users.
 5. Click on the email address for the service account you just created, then click the **Keys** tab
 6. Click Add Key, then Create New Key, then Create
@@ -102,4 +103,4 @@ Follow the instructions below to set up your service account and get a JSON key.
 
 ## Troubleshooting
 
-If you need help with connecting to your data, please feel free to [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q). 
+If you need help with connecting to your data, please feel free to [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q).

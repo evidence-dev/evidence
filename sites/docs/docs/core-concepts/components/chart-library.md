@@ -8,7 +8,7 @@ hide_table_of_contents: false
 
 ## Chart Library
 
-Our chart library has a flexible, declarative API that lets you build customized, composable charts or choose from a selection of chart templates (Quick Charts). 
+Our chart library has a flexible, declarative API that lets you build customized, composable charts or choose from a selection of chart templates (Quick Charts). See the component reference for [a list of all charts](../../components#charts).
 
 While our library offers a lot of customizable features, our defaults let you create beautiful, publication-quality charts with as little as a single line of code.
 

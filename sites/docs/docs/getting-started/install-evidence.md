@@ -7,25 +7,8 @@ title: Install Evidence
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-If this is your first time doing something like this, or you're having trouble installing, try the [Detailed Installation Walkthrough.](/troubleshooting/installation)
+Not working? Try the [Detailed Installation Walkthrough.](/troubleshooting/installation)
 
-
-## System Requirements 
-
-Evidence requires: 
-
-- **NPM** `Version 7` or higher
-- **Node.js** `Version 16.14` or higher
-
-### First time working with Node & npm?
-
-[Download Node.js & npm here](https://nodejs.org/en/download/)
-
-### Check versions
-
-You can check which versions you have using `npm -v` and `node -v`
-
-Install the latest version with `npm install -g npm@latest`
 
 ## Install & Launch
 
@@ -61,6 +44,22 @@ npm --prefix ./reports run dev
 </TabItem>
 </Tabs>
 
+## System Requirements 
 
-### (Optional) VS Code Extension 
+Evidence requires: 
+
+- **NPM** `Version 7` or higher
+- **Node.js** `Version 16.14` or higher
+
+### First time working with Node & npm?
+
+[Download Node.js & npm here](https://nodejs.org/en/download/)
+
+### Check versions
+
+You can check which versions you have using `npm -v` and `node -v`
+
+Install the latest version with `npm install -g npm@latest`
+
+## (Optional) VS Code Extension 
 If you use VS Code we recommend installing the [Evidence VSCode Extension](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode). It adds syntax highlighting and autocomplete for _Evidence flavoured markdown_.

@@ -495,7 +495,14 @@ h3 {
 /* Images        */
 /* ------------- */
 
-img.how-it-works {
+div.how-it-works {
   width:100%;
-  max-width:600px;
+  max-width:800px;
+
+
+}
+
+div.flex{
+  display: flex;
+  justify-content: center;
 }

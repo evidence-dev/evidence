@@ -96,7 +96,7 @@ There is no order data.
 
 ## Page Variables
 
-There are a number of variables available to access information about the current page.
+There are a number of variables available to access information about the current page. These are particularly useful when creating templated pages and filters. They use the syntax `{$...}`
 
 ```markdown
 The current page path is: {$page.path} 

@@ -30,8 +30,8 @@ Add line breaks by leaving a blank line between paragraphs.
 - To indicate items
 
 1. This is an ordered list
-1. It uses numbers
-1. To indicate order
+1. It uses numbers to indicate order
+1. The numbers you type don't matter, they will be automatically numbered
 ```
 
 ## Headers
@@ -69,7 +69,7 @@ Add line breaks by leaving a blank line between paragraphs.
 
 #### Storing Images and Static Files
 
-Evidence looks for images in the `/static` folder in the root of your project.
+Evidence looks for images in the `/static` folder in the root of your project. Create it if it doesn't exist.
 
 ```
 +-- pages/
@@ -82,7 +82,7 @@ Evidence looks for images in the `/static` folder in the root of your project.
 
 In Evidence, most code fences execute SQL queries and display the results in a table.
 
-The exception is if you use one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), which will render the code in a code block.
+
  
 ````markdown
 This code fence will execute a SQL query and display the results:
@@ -92,9 +92,11 @@ SELECT *
 FROM orders 
 WHERE category = 'widget'
 ```
+````
 
-These code fences will render as a code blocks:
+The exception is if you use one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), which will render the code in a code block.
 
+````markdown
 ```python
 names = ["Alice", "Bob", "Charlie"]
 
@@ -119,6 +121,8 @@ for (name in names) {
 | Row 1    | Row 1    | Row 1    |
 | Row 2    | Row 2    | Row 2    |
 ```
+
+To display data in a table, use a [Data Table](components/data-table) instead.
 
 ## Blockquotes
 
