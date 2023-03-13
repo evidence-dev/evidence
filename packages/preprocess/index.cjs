@@ -30,11 +30,12 @@ const getPrismLangs = function(){
 
 const getRouteHash = function(filename){
     let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
-    return md5(route)
+    const hash = md5(route)
+    return hash
 }
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
-    let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
+    let componentSource = '$lib'
     const routeH = getRouteHash(filename)
 
     let queryDeclarations = ''
