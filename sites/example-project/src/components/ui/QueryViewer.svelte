@@ -254,7 +254,7 @@
     }
     
     .container {
-        margin-bottom:1.5em;
+        margin-bottom: 1.2em;
         margin-top:0.75em;
         display: flex;
         flex-direction: column;
