@@ -8,7 +8,7 @@
   export let endpoint = '';
 
   let statuses = [];
-  let previousStatus = [];
+  let previousStatuses = [];
   $: activeStatuses = statuses.filter(
     (d) => d.status != "not run" && d.status != "from cache"
   );
@@ -32,7 +32,7 @@
   async function checkStatusAndInvalidate() {
     statuses = await getStatus();
     // Check if queries have been removed from the page entirely, it allows vite/compile error to get to the page
-    if (statuses.length != previousStatus.length) {
+    if (statuses.length != previousStatuses.length) {
       await invalidate((url) => url.pathname === `/api/${endpoint}.json`)
       
     }
@@ -49,7 +49,7 @@
       activeStatuses.push(...statuses)
     }
 
-    previousStatus = statuses
+    previousStatuses = statuses
 
   }
 
