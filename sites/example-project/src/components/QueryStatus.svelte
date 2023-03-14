@@ -8,6 +8,7 @@
   export let endpoint = '';
 
   let statuses = [];
+  let previousStatus = [];
   $: activeStatuses = statuses.filter(
     (d) => d.status != "not run" && d.status != "from cache"
   );
@@ -31,13 +32,17 @@
   async function checkStatusAndInvalidate() {
     statuses = await getStatus();
     // Check if queries have been removed from the page entirely
-    if (statuses.length === 0) {
+    if (statuses.length != previousStatus.length) {
       await invalidate((url) => url.pathname === `/api/${endpoint}.json`)
       await delay(500)
       
     }
     if (statuses.length > 0) {
       for(let i = 0; i < statuses.length; i++){
+
+        if(statuses[i].status === "error"){
+          console.error(statuses[i].status)
+        }
         const query = statuses[i]
         if (query.status === "not run") {
           // force svelte load on API endpoint & front-end page
@@ -49,6 +54,8 @@
       await delay(500)
       activeStatuses.push(...statuses)
     }
+
+    previousStatus = statuses
 
   }
 
