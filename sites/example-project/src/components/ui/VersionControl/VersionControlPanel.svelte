@@ -6,7 +6,7 @@
 
 </script>
 
-<form>
+<form id=version-control>
 
 
 <div class=container>
@@ -68,7 +68,9 @@
 </footer>
 </form>
 <style>
-
+    form {
+        scroll-margin-top: 3.5rem; /* offset for sticky header */;
+    }
     .container {
         margin-top: 2em;
         border-top: 1px solid var(--grey-200);
