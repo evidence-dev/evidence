@@ -1,9 +1,7 @@
 <script>
     import { page } from '$app/stores';
     import { blur } from 'svelte/transition'
-    import { showQueries } from './stores'
-    import { pageHasQueries } from './stores';
-    import HomeIcon from '$lib/ui/HomeIcon.svelte'
+    import HomeIcon from '$lib/icons/HomeIcon.svelte'
 
 
     export let fileTree;
@@ -58,16 +56,13 @@
 
     $: crumbs = buildCrumbs(pathArray)
 
-    function toggleQueries() {
-		showQueries.update(value => !value)
-	} 
 </script>
 
 <div class="main">
     <span class="container"> 
         <span>  
             {#if $page.url.pathname.startsWith('/settings')}
-            <a href="/"><HomeIcon/></a>
+            <a href="/"><HomeIcon height=14 width=14/></a>
             {:else}
             {#each crumbs as crumb, i}
                 {#if i > 0 }
@@ -75,7 +70,7 @@
                 {:else}
                 <a href={crumb.href}>
                 {#if crumb.title === 'Home' }
-                <HomeIcon/>
+                <HomeIcon height=14 width=14/>
                 {:else}
                 {crumb.title}
                 {/if}
@@ -83,16 +78,7 @@
                 {/if}
             {/each}
             {/if}
-        </span>
-        {#if $pageHasQueries}
-            <span transition:blur|local>
-                {#if $showQueries}
-                <button type="button" aria-label="hide-queries" class="dev-controls hide" on:click={toggleQueries}>Hide Queries</button>
-                {:else}
-                <button type="button" aria-label="show-queries" class="dev-controls show" on:click={toggleQueries}>Show Queries</button>
-                {/if}
             </span>
-        {/if}
     </span>
 </div>
 
@@ -131,43 +117,5 @@
         transition:all 0.2s;
     }
 
-    button.dev-controls {
-        float: right;
-        background-color: transparent;
-        text-align: center;
-        margin: 0 0 0 1.5em;
-        padding: 0.25em 1em 0.25em 1em;
-        border: 1px solid var(--grey-300);
-        border-radius: 3px;
-        font-size: 0.8em;
-        color: var(--grey-900);
-        cursor: pointer;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -webkit-font-smoothing: antialiased;
-        width: 9em;
-        transition:box-shadow 350ms;
-    }
-
-    button.dev-controls:hover {
-        box-shadow: 0 5px 5px 2px var(--grey-100);
-        transition:all 350ms;
-    }
-
-    button.dev-controls.show {
-		background: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);
-        text-decoration: none;
-		-webkit-background-clip: text;
-        background-clip: text;
-  		-webkit-text-fill-color: transparent;
-        font-weight: bold;
-     }
-
-     @media (max-width: 600px) {
-        button.dev-controls {
-            display: none;
-        }
-    }
 
 </style>

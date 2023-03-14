@@ -69,7 +69,6 @@
 
 	import TableOfContents from "$lib/TableOfContents.svelte"
 	import Header from '$lib/ui/Header.svelte'
-	import Hamburger from '$lib/ui/Hamburger.svelte'
 	import Sidebar from '$lib/ui/Sidebar.svelte'
 	import LoadingIndicator from "$lib/ui/LoadingIndicator.svelte";
 	
@@ -87,14 +86,9 @@
 {/if}
 
 <div class="grid">	
-	<!-- {#if !$page.url.pathname.startsWith('/settings')} -->
 		<div class="header-bar">
-			<Header {fileTree}/>
+			<Header {fileTree} bind:open/>
 		</div>
-		<div class="header-button"  class:open>
-			<Hamburger bind:open/>
-		</div>
-	<!-- {/if} -->
 	<Sidebar bind:open {fileTree}/>
 	{#if !$navigating}
 		<main in:blur|local>
@@ -217,28 +211,6 @@ aside.toc {
 }
 
 @media (max-width: 850px) {
-
-	.header-bar {
-		width: 90%;
-	}
-	.header-button {
-		z-index: 2;
-		position: fixed;
-		display: flex;
-		justify-content: end;
-		width: 10%;
-		top: 0;
-		right: 0;
-		background-color: rgba(255, 255, 255, 0.73);
-		-webkit-backdrop-filter: blur(10px) saturate(1.8);
-		backdrop-filter: blur(10px) saturate(1.8);
-	}
-	.header-button.open {
-		z-index: 7;
-		width: fit-content;
-		background-color: transparent;
-		backdrop-filter: none;
-	}
 	.grid {
 		display: grid;
 		grid-template-areas:
