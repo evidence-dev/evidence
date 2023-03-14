@@ -153,7 +153,7 @@ hr {
 
 code {
 	font-family: var(--monospace-font-family);
-	font-size: 0.7em;
+	font-size: 0.75em;
 	background-color: var(--grey-100);
 	padding: 0.2em 0.2em;
 	border: solid 1px var(--grey-200);
@@ -162,6 +162,10 @@ code {
 	-webkit-user-select: all;
 	-moz-user-select: all;
 	user-select: all;
+}
+
+form code {
+	font-size: unset;
 }
 
 blockquote {

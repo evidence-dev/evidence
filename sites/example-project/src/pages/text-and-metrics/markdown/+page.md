@@ -63,7 +63,7 @@ It can be nice to be able to use italics selectively in blockquotes
 > -- _Garfield_
 
 ## Code
-`let x = 100`
+`variable_names` can be included in sentences.
 
 ## Code Block
 ```javascript

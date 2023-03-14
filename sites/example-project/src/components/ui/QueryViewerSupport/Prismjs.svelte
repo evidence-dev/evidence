@@ -24,7 +24,6 @@
     pre {
       white-space: normal;
       margin: 0 0 0 0; /* Makes the block jump around on transition */  
-      font-size:12px;
       display: block;
       scrollbar-width: thin; 
       scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
@@ -54,6 +53,6 @@
       border: 3px solid transparent;
     }
     code {
-      display: inline-block;
+      display: block; /* inline-block has odd behavior when it overflows on webkit mobile */
     }
 </style>

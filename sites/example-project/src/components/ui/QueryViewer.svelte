@@ -47,8 +47,6 @@
     inputQuery = queries[0].inputQueryString
     compiledQuery = queries[0].compiledQueryString
     showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
-    // Pre-calculate the container height for smooth slide transition 
-    codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30)
   
     // Status Bar & Results Toggle 
     error = queryResult[0]?.error_object?.error
@@ -80,7 +78,7 @@
           {/if }
           <!-- Query Display -->
           {#if $showSQL}
-            <div class=code-container transition:slide|local style={`height: ${codeContainerHeight}em;`}>
+            <div class=code-container transition:slide|local>
               {#if showCompiled}
                 <Prism code={compiledQuery}/>
               {:else}
@@ -126,7 +124,10 @@
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
         overflow: auto;
-        padding: 0 12px 6px 12px; 
+        padding-top: 0;
+        padding-right: 12px;
+        padding-bottom: 6px;
+        padding-left: 15px;
         scrollbar-width: thin; 
         scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
     }
@@ -253,9 +254,10 @@
     }
     
     .container {
-        margin-bottom:1.5em;
-        font-size: 0.8em;
+        margin-bottom: 1.2em;
         margin-top:0.75em;
+        display: flex;
+        flex-direction: column;
     }
 
     .container-a {
@@ -263,6 +265,8 @@
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
     }
     /* container-a avoids whitespace appearing in the slide transition */
 
