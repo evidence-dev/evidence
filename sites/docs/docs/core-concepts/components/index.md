@@ -6,17 +6,25 @@ description: Components are used to display charts and other visual elements
 
 ## What are Components?
 
-Components are used to build charts and other visual elements in Evidence.
+Evidence has a built in [component library](/components/) to create charts and other visual elements.
 
-Components use angle brackets (`<` and `/>`) to wrap the component name, like HTML syntax. You then pass in data and configuration as `props`:  
+Components use angle brackets (`<.../>`) to wrap the component name, like HTML syntax. Data from a query, and configuration options are passed in as properties, or "props":
 
 ```html
-<ComponentName
-    propOne=value 
-    propTwo="another value" 
-    ...
+<BarChart 
+  data = {orders_by_month} 
+  x = order_month
+  y = sales_usd0k 
+  series = category
+  title = 'Sales by Category'
 />
 ```
+
+<div style={{textAlign: 'center'}}>
+
+![Category Bar Chart](/img/category-chart.png)
+
+</div>
 
 ## Showing Values in Text
 
@@ -30,31 +38,36 @@ SELECT
     100 AS num_orders
 ```
 
-The number of orders yesterday was <Value data={orders} column=num_orders />.
+The number of orders yesterday was <Value data = {orders} column = num_orders />.
 
 ````
 
 Above, we've passed in the query data `orders` in curly braces `{ }`, and specified the column we want to display `num_orders` in the `column` prop.
 
-For more information on the `Value` component, see [Including Data in Text](/components/value).
+For more information on the `Value` component, see the [Value docs](/components/value).
 
 
 ## Charts
 
 Our chart library has a flexible, declarative API that lets you add default chart types, or create your own.
 
-```markdown
-<BarChart data={sales_by_region} />
-```
+While our library offers a lot of customizable features, we include sensible defaults that look good out of the box.
 
-<div style={{textAlign: 'center'}}>
+### Props and defaults
 
-![intro-chart](/img/exg-intro-chart.svg)
+At a minimum, all charts require a data prop, but for other props Evidence has default assumptions to reduce the amount of configuration required.
 
-</div>
+**Data**
+- All charts require a data prop, which should contain a query result wrapped in `{...}` (e.g., `data={query_name}`)
 
-While our library offers a lot of customizable features, our defaults let you create beautiful, publication-quality charts with as little as a single line of code.
+**x and y**
+- All x-y coordinate (AKA Cartesian) charts require `x` and `y` columns to create the axes and scales for the chart
+- `y` can accept multiple columns, but can only plot on a single axis at this time.
+- We have built-in assumptions to make writing the chart code easier:
+  - If you don't supply `x`, the first column in the dataset is assumed to be `x`
+  - If you don't supply `y`, any numerical columns that you have not already assigned to the chart are assumed to be `y`
 
-More information on the Chart Library can be found in the [Chart Library](/core-concepts/components/chart-library) section.
-
-Or else you can find documentation on all the [Components](../../components) in the reference.
+**Multiple Series**
+- To plot multiple series (or groups) on your chart, you can do one of the following (or both):
+  - Include a `series` column, which contains category or group names (e.g, `series=country`)
+  - Include multiple `y` columns - each column will be treated as an individual series (e.g., `y={["y1", "y2"]}`)

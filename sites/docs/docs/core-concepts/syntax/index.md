@@ -3,65 +3,54 @@ title: Syntax
 description: Extended markdown with additional functionality.
 ---
 
-_Evidence-flavored Markdown_ extends standard markdown with additional functionality.
+_Evidence flavored Markdown_ extends markdown with additional functionality.
 
 ## Markdown
 
-Evidence supports almost all Markdown syntax. For more details see the [Markdown Reference](/markdown).
-
+Evidence supports almost all Markdown syntax. See [Markdown Reference](/markdown).
 
 ```markdown
 # Evidence uses Markdown
 
 Markdown can be used to write expressively in text.
 - it supports lists,
-- **bolding** and *italics*
-- ~~strikethroughs~~ and `inline code`
-
-## Links 🔗
-
-You can drop in links to [other Evidence pages](/another-page) and [external resources](https://google.com)
+- **bolding** and _italics_ and `inline code`,
+- links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 
 ## Images 🖼️
 
-Evidence looks for images saved in your `static` folder, eg `static/my-logo.png`.
-You can also include online images by URL.
-
+Evidence looks for images in your `static` folder, e.g. `static/my-logo.png`.
 ![Company Logo](my-logo.png)
 ```
 
-## Code Fences
+## SQL
 
-Markdown code fences in Evidence run SQL queries and return data. The SQL dialect used is the same as the database you're connecting to.
+Markdown code fences in Evidence run SQL queries and return data. The SQL dialect matches the database you're connecting to. [More on Queries](/core-concepts/queries).
 
 ````markdown
-```orders
+```orders_by_month
 select 
-    date_trunc('year', order_datetime) as year,
+    date_trunc('month', order_datetime) as order_month,
+    count(*) as number_of_orders,
     sum(sales) as sales_usd
 from orders
-group by 1
-```
-````
-
-The exception is if you name your code fence with one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), such as `python` or `r`. In this case, the code fence will render a code block.
-
-````markdown
-```python
-names = ["Alice", "Bob", "Charlie"]
-for name in names:
-    print("Hello, " + name)
+group by 1, order by 1 desc
 ```
 ````
 
 ## Components
 
-Evidence supports a number of components that are used to create charts and other visual elements.
+Evidence has a built in [component library](/components/) to create charts and other visual elements. [More on Components](/core-concepts/components).
 
 ```markdown
-<LineChart data={orders} />
+<LineChart 
+    data = {orders_by_month}    
+    y = sales_usd 
+    title = 'Sales by Month, USD' 
+/>
 ```
 
+![Line Chart](/img/syntax-line-chart.png)
 ## Expressions
 
 Curly braces execute JavaScript expressions.
@@ -70,26 +59,38 @@ Curly braces execute JavaScript expressions.
 2 + 2 = {2 + 2} 
 <!-- Result: 2 + 2 = 4 -->
 
-There are {orders.length} years of data.  
-<!-- Result: There are 3 years of data. -->
+There are {orders.length} months of data.  
+<!-- Result: There are 36 months of data. -->
 
-The first year is {orders[0].year}. 
-<!-- Result: The first year is 2020. -->
+There were {orders_by_month[0].number_of_orders} orders last month. 
+<!-- Result: There were 3634 orders last month. -->
 ```
 
 
-## Control Statements
+## Loops
 
-You can control what is displayed in your pages using conditional statements and loops.
+Create repeating elements by looping through data. [More on Loops](/core-concepts/loops).
 
 ```markdown
-{#if orders.length > 0}
+{#each orders_by_month as month}
 
-<DataTable data={orders} />
+- There were <Value data={month} column=number_of_orders/> orders in <Value data={month} />. 
 
-{:else}
-  
-There is no order data.
+{/each}
+```
+
+## If / Else
+
+Control what is displayed using data through if and else statements. [More on If / Else](/core-concepts/if-else).
+
+```js
+{#if orders_by_month[0].sales_usd > orders_by_month[1].sales_usd} 
+
+Sales are up month-over-month.
+
+{:else} 
+
+Sales are down vs last month. See [category detail](/sales-by-category).
 
 {/if}
 ```
@@ -102,3 +103,17 @@ There are a number of variables available to access information about the curren
 The current page path is: {$page.path} 
 <!-- Result: The current page path is: /core-concepts/syntax/ -->
 ```
+
+## Code Fences in Other Languages
+
+It can be useful to include code that isn't SQL, eg for documentation or examples.
+
+If a code fence is named one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), such as `python` or `r`, the code fence will render a code block. The code is _not_ executed.
+
+````markdown
+```python
+names = ["Alice", "Bob", "Charlie"]
+for name in names:
+    print("Hello, " + name)
+```
+````

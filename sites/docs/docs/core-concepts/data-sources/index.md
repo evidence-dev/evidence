@@ -4,6 +4,8 @@ title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
+Evidence supports connecting to a database, or local data files.
+
 ## Connect your data
 
 To connect your local development environment to a database:
@@ -16,21 +18,21 @@ Evidence will save your credentials locally, and run a test query to confirm tha
 
 ### Supported data sources
 
-Evidence supports: 
+Evidence supports:
 
-- [BigQuery](#bigquery)
-- Snowflake 
+- [BigQuery](/guides/bigquery)
+- Snowflake
 - Redshift
-- PostgreSQL 
-- MySQL 
+- PostgreSQL
+- MySQL
 - SQLite
 - DuckDB
-- [CSV files](#use-local-csvs) and parquet files
+- [CSV files](#local-data-files)
 - & More
 
-We're adding new connectors regularly. Feel free to [create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
+We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
 
-## Local CSVs
+## Local Data Files
 
 In Evidence, you can query local CSV files directly in SQL.
 
@@ -46,60 +48,35 @@ Evidence looks for CSV files stored in a `sources` folder in the root of your Ev
 select * from 'sources/myfile.csv'
 ```
 
-You can also use the CSV connector to connect to parquet files.
+#### Absolute Filepaths
 
-```sql
-select * from 'sources/myfile.parquet'
-```
-
-#### Anywhere on your Filesystem
-
-You can also pass in an absolute filepath:
+You can pass in an absolute filepath:
 
 ```sql
 select * from 'Users/myname/Downloads/myfile.csv'
 ```
 
-:::info Relative Filepaths
-Please note that using a relative filepath from inside your Evidence project won't work as expected.
+#### Relative Filepaths
 
-If you must do this, prepend `../../` to your relative path - this will bring you to the root of your Evidence project, and the rest of your relative path should work as expected.
+Paths are **relative to two files deep** in your Evidence project. For example, to query a CSV in the root of an Evidence project, you would use this syntax:
 
-:::
+```sql
+select * from '../../myfile.csv'
+```
 
 ### SQL Syntax for Querying CSVs
-Evidence uses DuckDB to run SQL against a CSV file. 
+Evidence uses DuckDB to run SQL against a CSVs. For query syntax, see the [DuckDB docs](https://duckdb.org/docs/sql/query_syntax/select).
 
-[See the DuckDB docs for information on query syntax](https://duckdb.org/docs/sql/query_syntax/select)
 
-### Issues with Headers
-If you run into problems getting your query to recognize the headers in your CSV file, you can use the `read_csv_auto` helper function provided by DuckDB. For example:
+### Parsing Headers
+When parsing headers in CSV files, the `read_csv_auto` helper function provided by DuckDB can be helpful.
 ```sql
 select * from read_csv_auto('source/myfile.csv', HEADER=TRUE);
 ```
 
 In addition to the `HEADER` argument, this function can also accept changes to the delimeter (`DELIM`), quotes (`QUOTE`), and more. 
 
-Additional information about CSV helper functions can be found in [DuckDB's docs](https://duckdb.org/docs/data/csv).
-
-## BigQuery
-
-Evidence supports connecting to Google BigQuery by using a [service account](https://cloud.google.com/iam/docs/service-accounts) and a JSON key. 
-
-Follow the instructions below to set up your service account and get a JSON key. 
-
-### Create a Service Account Key
-
-1. [Go to the Service Account Page](https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts/create?supportedpurview=project) and click on your project
-2. Add a name for your service account, then click Create
-3. Assign your service account a role for BigQuery (scroll down the role dropdown to find BigQuery roles).
-   1. **BigQuery User** should work for most use cases.
-   1. **BigQuery Data Viewer** may be required (depending on your organization's permissions settings in Google Cloud).
-   1. Reach out to us if you run into issues or need help with BigQuery permissions.
-4. Click Continue, then click Done. You should see a table of users.
-5. Click on the email address for the service account you just created, then click the **Keys** tab
-6. Click Add Key, then Create New Key, then Create
-7. Google will download a JSON Key File to your computer
+Additional information about CSV helper functions can be found in the [DuckDB docs](https://duckdb.org/docs/data/csv).
 
 ## Troubleshooting
 

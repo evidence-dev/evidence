@@ -4,7 +4,7 @@ hide_table_of_contents: false
 title: Deployment Overview
 ---
 
-In production, Evidence is a [static site generator](https://www.netlify.com/blog/2020/04/14/what-is-a-static-site-generator-and-3-ways-to-find-the-best-one/). This means it doesn't run queries when someone visits your site, but pre-builds all possible pages beforehand.
+In production, Evidence is a [static site generator](https://www.netlify.com/blog/2020/04/14/what-is-a-static-site-generator-and-3-ways-to-find-the-best-one/). This means it doesn't run queries when someone visits your site, but pre-builds all possible pages as HTML beforehand.
 
 You can host your Evidence project using Evidence Cloud, cloud services like Netlify or Vercel, or your own infrastructure.
 
@@ -37,7 +37,7 @@ The command `npm run build:strict` is a much less permissive build command. Use 
 This command will fail if:
 
 - **Any SQL query fails.** A successful query returning no rows is *not* a failure
-- **Any component renders an error state.** A component passed a valid query returning no rows *will* fail - you avoid this with a, [{#if} statement](/core-concepts/loops-and-conditionals#conditional-logic) if needed.
+- **Any component renders an error state.** A component passed a valid query returning no rows *will* fail - you avoid this with a, [{#if} statement](/core-concepts/if-else) if needed.
 
 ## Storing Credentials
 

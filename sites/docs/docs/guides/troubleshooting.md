@@ -1,5 +1,6 @@
 ---
 title: Troubleshooting
+sidebar_position: 2
 ---
 
 :::tip Running into Problems?

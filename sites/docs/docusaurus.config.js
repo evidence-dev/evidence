@@ -87,8 +87,8 @@ module.exports = {
               to: '/themes-and-layouts'
             },
             {
-              label: 'Troubleshooting',
-              to: '/troubleshooting',
+              label: 'Guides',
+              to: '/guides',
             }
           ],
         },

@@ -32,7 +32,6 @@ Evidence renders a BI website from markdown files:
 
 1. [SQL statements](core-concepts/queries) inside markdown files run queries against your data warehouse
 1. [Charts and components](core-concepts/components) are rendered using these query results
-1. [Loops and conditionals](core-concepts/loops-and-conditionals) allow displayed page content to be programmatically controlled
 1. [Templated pages](core-concepts/templated-pages) generate many pages from a single markdown template
 
 

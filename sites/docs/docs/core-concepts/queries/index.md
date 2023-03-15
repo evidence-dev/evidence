@@ -2,7 +2,7 @@
 sidebar_position: 1
 hide_title: false
 hide_table_of_contents: false
-title: Queries
+title: SQL Queries
 description: Markdown code fences run SQL queries.
 ---
 
@@ -84,22 +84,3 @@ Some SQL dialects require sub-queries to be aliased, including Postgres and MySQ
 The SQL compiler detects circular and missing references. If a query includes either a circular reference or a missing reference, Evidence will display an error that looks like a syntax error in a normal SQL query. Queries with compiler errors are not sent to your database.
 
 ![circular-error-single](/img/circular-error-single.png)
-
-
-## Data Types & Formatting
-The column names in your query result define how your data is treated when using components.
-
-- Date column names must include a date unit to be interpreted as dates in Evidence (date, week, month, qtr, year)
-- Formatting is determined by **format tags** appended to your column names. See [Formatting](../formatting) for more details
-
-
-## Supported Databases
-- BigQuery
-- Snowflake
-- PostgreSQL
-- MySQL
-- SQLite
-- DuckDB
-- [CSV files](/core-concepts/data-sources/#use-local-csvs)
-
-We are accepting contributions for new database connectors. Please see [our contribution guide on GitHub](https://github.com/evidence-dev/evidence/blob/develop/CONTRIBUTING.md).

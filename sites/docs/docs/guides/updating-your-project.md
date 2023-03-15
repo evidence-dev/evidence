@@ -1,5 +1,6 @@
 ---
 title: Updating Your Project
+sidebar_position: 3
 ---
 
 When new versions of Evidence are released, we post release notes in [Slack](/community). You can also take a look at our pull requests on GitHub to see which changes are being made.
