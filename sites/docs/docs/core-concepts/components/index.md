@@ -6,7 +6,7 @@ description: Components are used to display charts and other visual elements
 
 ## What are Components?
 
-Evidence has a built in [component library](/components/) to create charts and other visual elements.
+Evidence has a built in [component library](/components/all-components) to create charts and other visual elements.
 
 Components use angle brackets (`<.../>`) to wrap the component name, like HTML syntax. Data from a query, and configuration options are passed in as properties, or "props":
 

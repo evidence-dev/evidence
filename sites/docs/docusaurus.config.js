@@ -68,15 +68,15 @@ module.exports = {
             },
             {
               label: 'Core Concepts',
-              to: '/core-concepts',
+              to: '/core-concepts/syntax',
             },
             {
               label: 'Deployment',
-              to: '/deployment'
+              to: '/deployment/overview'
             },
             {
               label: 'Component Reference',
-              to: '/components'
+              to: '/components/all-components'
             },
             {
               label: 'Markdown Reference',
@@ -88,7 +88,7 @@ module.exports = {
             },
             {
               label: 'Guides',
-              to: '/guides',
+              to: '/guides/troubleshooting',
             }
           ],
         },

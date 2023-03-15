@@ -40,7 +40,7 @@ group by 1, order by 1 desc
 
 ## Components
 
-Evidence has a built in [component library](/components/) to create charts and other visual elements. [More on Components](/core-concepts/components).
+Evidence has a built in [component library](/components/all-components) to create charts and other visual elements. [More on Components](/core-concepts/components).
 
 ```markdown
 <LineChart 
