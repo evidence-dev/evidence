@@ -57,7 +57,7 @@
         // populate sparklineData from data where timeseries is the key and value is the value
         if(data && sparkline && value) {
             if(LinkedChart === undefined){
-                throw new Error('fail to import LinkedChart')
+                throw new Error('fail to import <LinkedChart/>')
             }
             let sortedData = getSortedData(data, sparkline, true)
             for(let i = 0; i < sortedData.length; i++) {
