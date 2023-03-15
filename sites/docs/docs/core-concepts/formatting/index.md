@@ -159,8 +159,8 @@ Supported currencies:
   <tr><td>SEK</td><td>Swedish Krona</td></tr>
 </table>
 
+In order to use currency tags, use the currency code, optionally appended with:
 
-In order to use currency tags, use the currency code, appended with:
 - a number indicating the number of decimal places to show (0-2)
 - a letter indication the order of magnitude to show ("","k", "m", "b")
 
@@ -394,7 +394,7 @@ For example, the available tags for USD are:
 
 </table>
 
-### Percetages
+### Percentages
 
 <table>
 <thead>

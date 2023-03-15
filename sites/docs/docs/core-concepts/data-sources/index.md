@@ -74,7 +74,7 @@ When parsing headers in CSV files, the `read_csv_auto` helper function provided 
 select * from read_csv_auto('source/myfile.csv', HEADER=TRUE);
 ```
 
-In addition to the `HEADER` argument, this function can also accept changes to the delimeter (`DELIM`), quotes (`QUOTE`), and more. 
+In addition to the `HEADER` argument, this function can also accept changes to the delimiter (`DELIM`), quotes (`QUOTE`), and more. 
 
 Additional information about CSV helper functions can be found in the [DuckDB docs](https://duckdb.org/docs/data/csv).
 

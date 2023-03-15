@@ -8,7 +8,7 @@ Programmatically control what is displayed using data through `{#if}` and `{:els
 
 ## If and Else Statements
 
-Conditionals are critical tool for managing information overload, and ensuring that your reporting is consistently showing actionable information.
+Conditionals are useful for managing information overload, and ensuring that your reporting is consistently showing actionable information.
 
 Conditionals allow you to show a section of your document if a condition is met. You can optionally include `{:else}` and `{:else if}` blocks inside of your `{#if}...{/if}` blocks.
 

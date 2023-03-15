@@ -8,19 +8,18 @@ breadcrumbs: false
 image: /img/how-it-works.png
 ---
 
-## Motivation
+Evidence is a code-based alternative to dashboard-style BI tools. It's a web framework for building data websites.
 
-Evidence is a response to frustration with modern, dashboard-based BI tools.
+The "modern" BI layer has a poor developer experience, and decision makers don’t really like the outputs they get. These two issues are closely related. The drag-and-drop experience is so slow and low-leverage that the only way to get all the content on the page is to push a lot of cognitive load onto the end user: global filters, drill down modals, grids of charts without context.
 
-In our experience, the BI layer is the weakest part of the modern data stack. The BI layer has a poor developer experience, and decision makers don’t really like the outputs they get. These two issues are closely related. The drag and drop experience is so slow and low-leverage that the only way to get all the content on the page is to push a lot of cognitive load onto the end user: global filters, drill down modals, grids of charts without context.
-
-Evidence takes a code first approach to BI, providing:
+Evidence provides:
 
 - **Code-driven workflows:** Use your IDE, version control, and CI/CD tools
-- **First-class text support:** Add context, explanation and insight to your reports
-- **Blazing-fast reports:** No more loading wheels - Evidence pre-builds everything
-- **Lightweight setup:** Install and start building reports in minutes
-- **Publication-grade outputs:** A data experience you can be proud to give your users
+- **First-class text support:** Add context, explanation and insight to your reports using markdown
+- **Fast reports:** Pages are pre-built into static HTML websites
+- **A lightweight setup:** Install the open source package and start building reports immediately
+
+To get started, [install Evidence](/getting-started/install-evidence)
 
 ## How does Evidence work?
 
