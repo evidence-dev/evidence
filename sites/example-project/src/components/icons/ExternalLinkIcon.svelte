@@ -1,10 +1,11 @@
 <script>
-  export let color="--grey-900"
+  export let color
   export let height=24
   export let width=24
+  export let verticalOffset=0
 </script>
 
-<span class=icon-container>
+<span class=icon-container style="padding-bottom: {verticalOffset}px">
   <span class=icon style="color: var({color}); height: {height}px; width:{width}px">
     <svg
         xmlns="http://www.w3.org/2000/svg"

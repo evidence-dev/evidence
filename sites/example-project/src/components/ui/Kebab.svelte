@@ -33,7 +33,7 @@
   on:mouseenter={toggleDropdown}
   on:mouseleave={toggleDropdown}
     >
-  <button class=menu><KebabIcon /></button>
+  <button class=menu><KebabIcon color=--grey-900/></button>
     {#if showDropdown}
     <ul class=dropdown-items>
       {#each options as option}

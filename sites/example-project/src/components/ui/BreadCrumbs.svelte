@@ -62,7 +62,7 @@
     <span class="container"> 
         <span>  
             {#if $page.url.pathname.startsWith('/settings')}
-            <a href="/"><HomeIcon height=14 width=14/></a>
+            <a href="/"><HomeIcon height=14 width=14 verticalOffset=2/></a>
             {:else}
             {#each crumbs as crumb, i}
                 {#if i > 0 }
@@ -70,7 +70,7 @@
                 {:else}
                 <a href={crumb.href}>
                 {#if crumb.title === 'Home' }
-                <HomeIcon height=14 width=14/>
+                <HomeIcon height=14 width=14 verticalOffset=2/>
                 {:else}
                 {crumb.title}
                 {/if}
@@ -111,6 +111,7 @@
         text-transform: capitalize;
         text-decoration: none;
         color: var(--grey-700);
+
     }
     a:hover {
         color:var(--grey-999);
