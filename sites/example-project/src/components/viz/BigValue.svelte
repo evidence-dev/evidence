@@ -56,6 +56,9 @@
 
         // populate sparklineData from data where timeseries is the key and value is the value
         if(data && sparkline && value) {
+            if(LinkedChart === undefined){
+                throw new Error('fail to import LinkedChart')
+            }
             let sortedData = getSortedData(data, sparkline, true)
             for(let i = 0; i < sortedData.length; i++) {
                     sparklineData[sortedData[i][sparkline]] = sortedData[i][value]
@@ -87,18 +90,18 @@
         <Value {data} column={value}/> 
         {#if sparkline}
             <div class=sparkline>
-                <LinkedChart 
-                    data = {sparklineData}
-                    type = line
-                    grow = {true}
-                    barMinWidth = 0
-                    gap = 0
-                    fill = var(--grey-400)
-                    align = left
-                    hover = {false}
-                    linked = 'id'
-                    width = 75
-                    tabindex = {-1}
+                <svelte:component this={LinkedChart}
+                data = {sparklineData}
+                type = line
+                grow = {true}
+                barMinWidth = 0
+                gap = 0
+                fill = var(--grey-400)
+                align = left
+                hover = {false}
+                linked = 'id'
+                width = 75
+                tabindex = {-1}
                 />
             </div>
         {/if}
