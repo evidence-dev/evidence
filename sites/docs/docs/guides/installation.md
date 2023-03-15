@@ -117,6 +117,8 @@ You can change how the dev server runs by adding command line interface (CLI) "a
 npm run dev -- --[setting] [option]
 ```
 
+Evidence uses Vite, and supports the same options - see [Vite CLI Options](https://vitejs.dev/guide/cli.html#cli-options) supports.
+
 #### Run using an alternative port
 ```shell
 npm run dev -- --port 4000

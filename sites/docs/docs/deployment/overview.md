@@ -46,7 +46,7 @@ In production, Evidence expects to find your database credentials in **environme
 To find the environment variables that you'll need to set for your project: 
 
 1. Run your project in development mode
-1. Visit the [settings page](https://localhost:3000)
+1. Visit the [settings page](https://localhost:3000/settings)
 1. Open the deployment panel, and select 'self-host'
 
 :::info

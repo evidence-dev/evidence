@@ -1,6 +1,6 @@
 ---
 sidebar_position: 0
-title: Component Reference
+title: All Components
 hide_title: false
 hide_table_of_contents: false
 ---

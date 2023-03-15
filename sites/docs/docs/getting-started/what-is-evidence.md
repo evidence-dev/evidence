@@ -8,13 +8,13 @@ breadcrumbs: false
 image: /img/how-it-works.png
 ---
 
-## _Business Intelligence as Code_
+## Motivation
 
-Evidence is a web framework for data analysts. It's an open source, code-driven alternative to drag-and-drop BI tools. 
+Evidence is a response to frustration with modern, dashboard-based BI tools.
 
-## Why Evidence?
+In our experience, the BI layer is the weakest part of the modern data stack. The BI layer has a poor developer experience, and decision makers don’t really like the outputs they get. These two issues are closely related. The drag and drop experience is so slow and low-leverage that the only way to get all the content on the page is to push a lot of cognitive load onto the end user: global filters, drill down modals, grids of charts without context.
 
-Most BI tools are _frustrating_. Evidence re-imagines the BI development experience:
+Evidence takes a code first approach to BI, providing:
 
 - **Code-driven workflows:** Use your IDE, version control, and CI/CD tools
 - **First-class text support:** Add context, explanation and insight to your reports
