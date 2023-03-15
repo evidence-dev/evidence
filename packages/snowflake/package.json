@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "snowflake-sdk": "1.6.13",
-    "@evidence-dev/db-commons": "workspace:^"
+    "@evidence-dev/db-commons": "workspace:^",
+    "asn1.js":"^5.0.0"
   },
   "devDependencies": {
     "dotenv": "^16.0.1"

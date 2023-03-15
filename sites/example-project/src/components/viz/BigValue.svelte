@@ -56,6 +56,7 @@
 
         // populate sparklineData from data where timeseries is the key and value is the value
         if(data && sparkline && value) {
+            // allow to load the LinkedChart
             if(LinkedChart === undefined){
                 throw new Error('fail to import <LinkedChart/>')
             }
