@@ -41,5 +41,16 @@
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
 		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts "
+	},
+	"pnpm": {
+		"overrides": {
+			"got@<11.8.5": ">=11.8.5",
+			"jsonwebtoken@<=8.5.1": ">=9.0.0",
+			"trim@<0.0.3": ">=0.0.3",
+			"undici@<5.19.1": ">=5.19.1",
+			"undici@>=2.0.0 <5.19.1": ">=5.19.1",
+			"jsonwebtoken@<9.0.0": ">=9.0.0",
+			"nth-check@<2.0.1": ">=2.0.1"
+		}
 	}
 }
