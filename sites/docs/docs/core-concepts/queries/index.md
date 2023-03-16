@@ -31,8 +31,6 @@ For example, if your query name was `sales_by_country`:
 <LineChart data={sales_by_country}/>
 ```
 
-Query chaining enables analysts to reference the results of a query from other queries.
-
 ## Query Chaining
 
 Reference other queries by writing the query name inside `${ }`.

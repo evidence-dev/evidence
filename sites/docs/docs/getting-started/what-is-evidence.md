@@ -23,9 +23,7 @@ To get started, [install Evidence](/getting-started/install-evidence)
 
 ## How does Evidence work?
 
-<div class="how-it-works">
-<img src='/img/how-it-works.png' class="how-it-works"/>
-</div>
+<img src='/img/how-it-works.png' width="800px"/>
 
 Evidence renders a BI website from markdown files:
 
@@ -39,10 +37,6 @@ Evidence renders a BI website from markdown files:
 To use Evidence you need to know SQL. A knowledge of [basic markdown syntax](markdown) is also helpful.
 
 If you're ready to get started, [install Evidence &#8594](/getting-started/install-evidence)
-
-:::note Public Alpha
-Evidence is in public alpha: there will be bugs and things will change before we reach a stable release.
-:::
 
 ## Getting help
 

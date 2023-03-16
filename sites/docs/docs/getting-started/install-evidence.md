@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="standalone" label="Stand-alone" default>
 
-```shell
+```
 npx degit evidence-dev/template my-project
 cd my-project 
 npm install 
@@ -24,7 +24,7 @@ npm run dev
 
 <TabItem value="dbt" label="Alongside dbt">
 
-```shell
+```
 cd path/to/your/dbt/project
 npx degit evidence-dev/template reports
 npm --prefix ./reports install
@@ -63,7 +63,8 @@ Evidence requires:
 Check your versions with `node -v` and `npm -v`
 
 - Update to the latest npm version with `npm install -g npm@latest`
-- [Download Node.js](https://nodejs.org/en/download/) (comes with npm)
+
+<a class="external" href="https://nodejs.org/en/download">Download Node.js + NPM</a>
 
 ## VS Code Extension 
 If you use VS Code, we recommend installing the [Evidence VSCode Extension](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode). It adds syntax highlighting and autocomplete for Evidence flavoured markdown.

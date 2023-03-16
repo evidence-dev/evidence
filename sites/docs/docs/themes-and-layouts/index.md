@@ -1,10 +1,8 @@
 ---
 sidebar_position: 4
 hide_table_of_contents: false
-title: Custom Styles & Themes
+title: Customizing Styles & Themes
 ---
-
-# Customizing Styles & Themes
 
 Evidence supports customizing the look and feel of your project by overwriting default code files. We plan to make this easier in the future.
 

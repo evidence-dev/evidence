@@ -1,10 +1,8 @@
 ---
 sidebar_position: 9
 title: Bubble Chart
-
 hide_table_of_contents: false
 ---
-
 
 
 ![bubble](/img/exg-multi-series-bubble-nt.svg) 

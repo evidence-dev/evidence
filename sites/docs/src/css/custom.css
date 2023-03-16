@@ -165,17 +165,6 @@ aside.theme-doc-sidebar-container {
 /* Buttons        */
 /* -------------- */
 
-    /*
-    --ifm-button-border-color: var(--ifm-button-background-color);
-    --ifm-button-border-width: var(--ifm-global-border-width);
-    --ifm-button-color: var(--ifm-font-color-base-inverse);
-    --ifm-button-font-weight: var(--ifm-font-weight-bold);
-    --ifm-button-padding-horizontal: 1.5rem;
-    --ifm-button-padding-vertical: 0.375rem;
-    --ifm-button-size-multiplier: 1;
-    --ifm-button-transition-duration: var(--ifm-transition-fast);
-
-    --ifm-button-group-spacing: 2px; */
 
 a.waitlist {
   background-color: var(--ifm-color-primary-darkest);
@@ -195,7 +184,24 @@ a.waitlist:hover {
   text-decoration: none;
   color: var(--ifm-color-white);
   box-shadow: 0 0 1em var(--ifm-color-primary-lighter);
-  
+}
+
+a.external {
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-color-white);
+  border: var(--ifm-global-border-width);
+  border-radius: var(--ifm-button-border-radius);
+  padding: 0.3em 0.7em 0.3em 0.7em;
+  margin: 1em 1em 0 1em;
+  font-weight: 600;
+  display: inline-block;
+  transition: all var(--ifm-transition-fast) linear;
+}
+
+a.external:hover {
+  text-decoration: none;
+  color: var(--ifm-color-white);
+  box-shadow: 0 0 0.5em var(--ifm-color-primary-lighter);
 }
 
 /* -------------- */
@@ -499,13 +505,6 @@ h3 {
 /* ------------- */
 /* Images        */
 /* ------------- */
-
-div.how-it-works {
-  width:100%;
-  max-width:800px;
-
-
-}
 
 div.flex{
   display: flex;
