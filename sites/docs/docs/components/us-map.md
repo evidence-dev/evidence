@@ -1,11 +1,11 @@
 ---
 sidebar_position: 12
 title: Maps
-hide_title: true
+
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;USMap/></span></h1>
+
 
 ## Examples
 
@@ -65,13 +65,83 @@ hide_table_of_contents: false
 ## USMap
 
 ### All Options
-* **data** - query name, wrapped in curly braces
-* **state** - column to be used as the name for each state
-* **value** - column to be used as the value determining the colour of each state
-* **abbreviations** - (Optional) false | true - if true, map will look for two letter abbreviations rather than full names. Default is false
-* **colorScale** - (Optional) blue | green | red | bluegreen - default is blue
-* **min** - (Optional) minimum value for the colour scale. Anything below the minimum will be shown in the same colour as the min value
-* **max** - (Optional) maximum value for the colour scale. Anything above the maximum will be shown in the same colour as the max value
-* **title** - (Optional) title appearing above the map. Is inclued when you click to save the map image
-* **subtitle** - (Optional) subtitle appearing just above the map. Is inclued when you click to save the map image
-* **link** - (Optional) column containing links. When supplied, allows you to click each state on the map and navigate to the link
+
+<table>						 
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>	
+        <td>data</td>	
+        <td>Query name, wrapped in curly braces</td>	
+        <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>query name</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>state</td>	
+        <td>Column to be used as the name for each state</td>	
+        <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>value</td>	
+        <td>Column to be used as the value determining the colour of each state</td>	
+        <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>abbreviations</td>	
+        <td>If true, map will look for two letter abbreviations rather than full names</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>false | true</td>	
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
+        <td>colorScale</td>	
+        <td>Colour scale to be used</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>blue | green | red | bluegreen</td>	
+        <td class='tcenter'>blue</td>
+    </tr>
+    <tr>	
+        <td>min</td>	
+        <td>Minimum value for the colour scale. Anything below the minimum will be shown in the same colour as the min value</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>number</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>max</td>	
+        <td>Maximum value for the colour scale. Anything above the maximum will be shown in the same colour as the max value</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>number</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>title</td>	
+        <td>Title appearing above the map. Is included when you click to save the map image</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>string</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>subtitle</td>	
+        <td>Subtitle appearing just above the map. Is included when you click to save the map image</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>string</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>link</td>	
+        <td>Column containing links. When supplied, allows you to click each state on the map and navigate to the link</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+</table>

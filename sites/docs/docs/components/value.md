@@ -1,11 +1,11 @@
 ---
 sidebar_position: 1
 title: Value
-hide_title: true
+
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;Value/></span></h1>
+
 
 The Value component accepts a query and displays a formatted value inline in text. 
 
@@ -49,13 +49,36 @@ Override errors with the optional `placeholder` argument. This is useful for dra
 ![value-placeholder](/img/value-placeholder.png)
 
 ## All Options 
-* **data** - query name, wrapped in curly braces
-* **column** - (Optional) column name to pull values from
-* **row** - (Optional) specific row number to display
-* **placeholder** - (Optional) text to display in place of an error
 
-
-
-
-
-
+<table>						 
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>
+        <th>Default</th>	
+    </tr>
+    <tr>	
+        <td>data</td>	
+        <td>Query name, wrapped in curly braces</td>	
+        <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>column</td>	
+        <td>Column to pull values from</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>First column</td>
+    </tr>
+    <tr>	
+        <td>row</td>	
+        <td>Row number to display. [0] is the first row.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>0</td>
+    </tr>
+    <tr>	
+        <td>placeholder</td>	
+        <td>Text to display in place of an error</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+</table>

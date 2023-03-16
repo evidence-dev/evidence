@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 title: Big Value
-hide_title: true
+
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;BigValue/></span></h1>
+
 
 `<BigValue />` displays a large value, and can be configured to include a comparison and a sparkline.
 
@@ -32,17 +32,79 @@ Multiple cards will align themselves into a row.
 
 
 ## All Options 
-* **data** - query name, wrapped in curly braces
-* **value** - required column to pull the main value from.
-* **comparison** - (Optional) column to pull the comparison value from. 
-* **sparkline** - (Optional) column to pull the date from to create the sparkline. 
-* **title** - (Optional) title of the card. Defaults to the title of the value column.
-* **comparisonTitle** - (Optional) text to the right of the comparison. Defaults to the title of the comparison column.
-* **downIsGood** - (Optional) if present, negative comparison values appear in green, and positive values appear in red. 
-* **minWidth** - (Optional) overrides min-width of component, 18% by default. 
-* **maxWidth** - (Optional) adds a max-width to the component, none by default. 
 
-
-
+<table>						 
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>	
+        <td>data</td>	
+        <td>Query name, wrapped in curly braces</td>	
+        <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>query name</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>value</td>	
+        <td>Column to pull the main value from.</td>	
+        <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>comparison</td>	
+        <td>Column to pull the comparison value from.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>sparkline</td>	
+        <td>Column to pull the date from to create the sparkline.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>title</td>	
+        <td>Title of the card.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>string</td>	
+        <td class='tcenter'>Title of the value column.</td>
+    </tr>
+    <tr>	
+        <td>comparisonTitle</td>	
+        <td>Text to the right of the comparison.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>string</td>	
+        <td class='tcenter'>Title of the comparison column.</td>
+    </tr>
+    <tr>	
+        <td>downIsGood</td>	
+        <td>If present, negative comparison values appear in green, and positive values appear in red.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
+        <td>minWidth</td>	
+        <td>Overrides min-width of component</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>% or px value</td>	
+        <td class='tcenter'>18%</td>
+    </tr>
+    <tr>	
+        <td>maxWidth</td>	
+        <td>Adds a max-width to the component</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>% or px value</td>	
+        <td class='tcenter'>none</td>
+    </tr>
+</table>
+        
 
 
