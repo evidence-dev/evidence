@@ -5,7 +5,7 @@
 
   import { dev } from "$app/environment";
   import DatabaseSettingsPanel from "$lib/ui/Databases/DatabaseSettingsPanel.svelte"
-  import VersionControlPanel from "$lib//ui/VersionControl/VersionControlPanel.svelte";
+  import VersionControlPanel from "$lib/ui/VersionControl/VersionControlPanel.svelte";
   import DeploySettingsPanel from "$lib/ui/Deployment/DeploySettingsPanel.svelte";
   import FormattingSettingsPanel from "$lib/ui/Formatting/FormattingSettingsPanel.svelte";
   import TelemetrySettingsPanel from "$lib/ui/TelemetryOptOut/TelemetrySettingsPanel.svelte";
