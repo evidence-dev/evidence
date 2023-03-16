@@ -30,11 +30,12 @@ const getPrismLangs = function(){
 
 const getRouteHash = function(filename){
     let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
-    return md5(route)
+    const hash = md5(route)
+    return hash
 }
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
-    let componentSource = componentDevelopmentMode ? '$lib' : '@evidence-dev/components';
+    let componentSource = '$lib'
     const routeH = getRouteHash(filename)
 
     let queryDeclarations = ''
@@ -51,33 +52,33 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '$lib/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
-        import BigLink from '${componentSource}/ui/BigLink.svelte';
-        import VennDiagram from '${componentSource}/diagrams/VennDiagram.svelte';
-        import SankeyDiagram from "${componentSource}/diagrams/SankeyDiagram.svelte";
-        import Value from '${componentSource}/viz/Value.svelte';
-        import BigValue from '${componentSource}/viz/BigValue.svelte';
-        import Chart from '${componentSource}/viz/Chart.svelte';
-        import Area from '${componentSource}/viz/Area.svelte';
-        import Line from '${componentSource}/viz/Line.svelte';
-        import Bar from '${componentSource}/viz/Bar.svelte';
-        import Bubble from '${componentSource}/viz/Bubble.svelte';
-        import Scatter from '${componentSource}/viz/Scatter.svelte';
-        import Hist from '${componentSource}/viz/Hist.svelte';
-        import AreaChart from '${componentSource}/viz/AreaChart.svelte';
-        import BarChart from '${componentSource}/viz/BarChart.svelte';
-        import BubbleChart from '${componentSource}/viz/BubbleChart.svelte';
-        import DataTable from '${componentSource}/viz/DataTable.svelte';
-        import Column from '${componentSource}/viz/Column.svelte';
-        import LineChart from '${componentSource}/viz/LineChart.svelte';
-        import FunnelChart from "${componentSource}/viz/FunnelChart.svelte";
-        import SankeyChart from "${componentSource}/viz/SankeyChart.svelte";
-        import ScatterPlot from '${componentSource}/viz/ScatterPlot.svelte';
-        import Histogram from '${componentSource}/viz/Histogram.svelte';
-        import ECharts from '${componentSource}/viz/ECharts.svelte';
-        import USMap from '${componentSource}/viz/USMap.svelte';
-        import QueryViewer from '${componentSource}/ui/QueryViewer.svelte';
-        import CodeBlock from '${componentSource}/ui/CodeBlock.svelte';
-        import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '${componentSource}/modules/globalContexts';
+        import BigLink from '$lib/ui/BigLink.svelte';
+        import VennDiagram from '$lib/diagrams/VennDiagram.svelte';
+        import SankeyDiagram from "$lib/diagrams/SankeyDiagram.svelte";
+        import Value from '$lib/viz/Value.svelte';
+        import BigValue from '$lib/viz/BigValue.svelte';
+        import Chart from '$lib/viz/Chart.svelte';
+        import Area from '$lib/viz/Area.svelte';
+        import Line from '$lib/viz/Line.svelte';
+        import Bar from '$lib/viz/Bar.svelte';
+        import Bubble from '$lib/viz/Bubble.svelte';
+        import Scatter from '$lib/viz/Scatter.svelte';
+        import Hist from '$lib/viz/Hist.svelte';
+        import AreaChart from '$lib/viz/AreaChart.svelte';
+        import BarChart from '$lib/viz/BarChart.svelte';
+        import BubbleChart from '$lib/viz/BubbleChart.svelte';
+        import DataTable from '$lib/viz/DataTable.svelte';
+        import Column from '$lib/viz/Column.svelte';
+        import LineChart from '$lib/viz/LineChart.svelte';
+        import FunnelChart from "$lib/viz/FunnelChart.svelte";
+        import SankeyChart from "$lib/viz/SankeyChart.svelte";
+        import ScatterPlot from '$lib/viz/ScatterPlot.svelte';
+        import Histogram from '$lib/viz/Histogram.svelte';
+        import ECharts from '$lib/viz/ECharts.svelte';
+        import USMap from '$lib/viz/USMap.svelte';
+        import QueryViewer from '$lib/ui/QueryViewer.svelte';
+        import CodeBlock from '$lib/ui/CodeBlock.svelte';
+        import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '$lib/modules/globalContexts';
         
         let props;
         export { props as data }; // little hack to make the data name not overlap

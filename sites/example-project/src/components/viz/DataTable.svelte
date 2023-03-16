@@ -19,7 +19,7 @@
   // Set up props store
   let props = writable({})
   setContext(propKey, props)
-
+  
   // Data, pagination, and row index numbers
   export let data;
   export let rows = 10; // number of rows to show
@@ -88,6 +88,7 @@
   let columnSummary;
 
   $: try {
+      error = undefined
       // CHECK INPUTS
       checkInputs(data);
       
@@ -268,7 +269,6 @@
 
 
 </script>
-
 {#if error === undefined}
 
 <slot></slot>
