@@ -22,7 +22,7 @@ Filters make use of _search parameters_ (a.k.a. "query strings") in the URL. Any
 In Evidence, the value of a search parameter `channel` is accessible in a page via:
 
 ```js
-{$page.query.get('channel')}
+{$page.url.searchParams.get('channel')}
 ```
 
 ## Generating filter URLS
@@ -55,7 +55,7 @@ To filter the data shown by a component, use the javascript filter method on the
 <!-- TODO @archiewood: update to SK 1.0 syntax -->
 
 ```js title="Filter method"
-.filter(d => d.channel === $page.query.get('channel')) 
+.filter(d => d.channel === $page.url.searchParams.get('channel')) 
 ```
 
 We can use this to filter a `<DataTable/>` component:
@@ -72,8 +72,8 @@ from orders
 group by 1,2
 ```
 
-{#if $page.query.get('channel')} <!-- Check for a filter in the URL -->
-<DataTable data={items.filter(d=>d.channel === $page.query.get('channel'))}/>
+{#if $page.url.searchParams.get('channel')} <!-- Check for a filter in the URL -->
+<DataTable data={items.filter(d=>d.channel === $page.url.searchParams.get('channel'))}/>
 {:else} <!-- If not, show all data -->
 <DataTable data={items}/>
 {/if}

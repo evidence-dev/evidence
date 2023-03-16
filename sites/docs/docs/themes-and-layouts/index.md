@@ -32,11 +32,11 @@ You **cannot** currently easily customize the default styles of the following (a
 
 <!-- @archiewood update for SK 1.0 filenames -->
 
-If you include a `__layout.svelte` file in a directory, any markdown files in that directory (and its subdirectories) will use this layout file instead of the default layout file.
+If you include a `+layout.svelte` file in a directory, any markdown files in that directory (and its subdirectories) will use this layout file instead of the default layout file.
 
-_The recommended approach is to copy and edit the default layout file from `[my-project]/.evidence/template/src/pages/__layout.svelte`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/pages/__layout.svelte)._
+_The recommended approach is to copy and edit the default layout file from `[my-project]/.evidence/template/src/pages/+layout.svelte`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/pages/+layout.svelte)._
 
-### What can be customized with __layout.svelte?
+### What can be customized with +layout.svelte?
 
 By default, Evidence includes a number of features on every page, which can be removed or customized e.g.
 - Sidebar 
