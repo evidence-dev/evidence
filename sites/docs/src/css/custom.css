@@ -71,6 +71,11 @@
   font-weight: 600;
 }
 
+.navbar__item:hover {
+  text-decoration: underline;
+  color: unset;
+}
+
 .navbar__logo {
   height: 3rem;
 }
@@ -111,8 +116,8 @@ li .theme-doc-sidebar-item-category-level-1{
   transition: transform var(--ifm-transition-fast) linear;
 }
 
-.menu__list-item--collapsed .menu__caret:hover {
-  transform: rotateZ(90deg);
+.menu__link.menu__link--sublist.menu__link--sublist-caret:hover::after {
+  transform: rotateZ(180deg);
 }
 
 .theme-doc-sidebar-item-link {
