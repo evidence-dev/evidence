@@ -264,6 +264,7 @@
     
     .container {
         margin-bottom: 1.2em;
+        margin-bottom: 1.2em;
         margin-top:0.75em;
         display: flex;
         flex-direction: column;
@@ -274,6 +275,8 @@
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
       display: flex;
       flex-direction: column;
     }

@@ -142,10 +142,10 @@
               for(let i=0;i<data.length;i++){
                   thisRow = data[i]
                   for(let j=0; j<columnSummary.length; j++){
-                      if(columnSummary[j].type === "date"){
+                      if(columnSummary[j].type === "date" && thisRow[columnSummary[j].id] != null){
                           thisValue = thisRow[columnSummary[j].id].toISOString()
                       } else {
-                          thisValue = thisRow[columnSummary[j].id].toString().toLowerCase();
+                          thisValue = (thisRow[columnSummary[j].id] ?? "").toString().toLowerCase();
                       }
                       if(thisValue.indexOf(searchValue.toLowerCase()) !=-1 && thisValue != null){
                           filteredData.push(thisRow)
