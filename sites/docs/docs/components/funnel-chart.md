@@ -1,11 +1,9 @@
 ---
 sidebar_position: 9
 title: Funnel Chart
-hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;FunnelChart/></span></h1>
 
 ![funnel](/img/funnel-default.png)
 

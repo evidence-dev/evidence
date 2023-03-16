@@ -1,11 +1,9 @@
 ---
 sidebar_position: 10
 title: Histogram
-hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;Histogram/></span></h1>
 
 ![histogram](/img/exg-histogram-nt.svg) 
 

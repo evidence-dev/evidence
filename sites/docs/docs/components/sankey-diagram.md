@@ -1,11 +1,9 @@
 ---
 sidebar_position: 9
 title: Sankey Diagram
-hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;SankeyDiagram/></span></h1>
 
 
 ![sankey](/img/exg-sankey.svg)

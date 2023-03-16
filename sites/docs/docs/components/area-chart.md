@@ -1,11 +1,8 @@
 ---
 sidebar_position: 6
 title: "Area Chart"
-hide_title: true
 hide_table_of_contents: false
 ---
-
-<h1 class="community-header"><span class="gradient">&lt;AreaChart/></span></h1>
 
 ![area](/img/exg-area-nt.svg) 
 

@@ -1,11 +1,11 @@
 ---
 sidebar_position: 9
 title: Bubble Chart
-hide_title: true
+
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;BubbleChart/></span></h1>
+
 
 ![bubble](/img/exg-multi-series-bubble-nt.svg) 
 

@@ -1,11 +1,9 @@
 ---
 sidebar_position: 7
 title: Bar Chart
-hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;BarChart/></span></h1>
 
 ![bar](/img/exg-bar-nt.svg) 
 

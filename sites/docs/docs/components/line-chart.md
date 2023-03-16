@@ -1,11 +1,9 @@
 ---
 sidebar_position: 5
 title: Line Chart
-hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;LineChart/></span></h1>
 
 ![line](/img/exg-line-nt.svg) 
 

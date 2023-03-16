@@ -1,11 +1,9 @@
 ---
 sidebar_position: 11
 title: Mixed-Type
-hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">Mixed-Type Charts</span></h1>
 
 You can combine multiple chart types inside a single `<Chart>` tag to create mixed-type charts.
 

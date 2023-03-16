@@ -1,11 +1,9 @@
 ---
 sidebar_position: 8
 title: Scatter Plot
-hide_title: true
 hide_table_of_contents: false
 ---
 
-<h1 class="community-header"><span class="gradient">&lt;ScatterPlot/></span></h1>
 
 ![scatter-plot](/img/exg-scatter-nt.svg) 
 
