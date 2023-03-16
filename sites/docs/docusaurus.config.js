@@ -3,7 +3,8 @@
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
-module.exports = {
+
+const config = {
   title: 'Evidence Docs',
   tagline: 'Get Started with Evidence',
   url: 'https://docs.evidence.dev',
@@ -137,6 +138,10 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Evidence Technologies, Inc.`,
     },
+    prism: {
+      darkTheme: require('prism-react-renderer/themes/palenight'),
+      additionalLanguages: ['sql'],
+    },
   },
   presets: [
     [
@@ -179,3 +184,13 @@ module.exports = {
     },
   ],
 };
+
+
+async function createConfig() {
+  const lightTheme = (await import('./src/utils/prismLight.mjs')).default;
+  config.themeConfig.prism.theme = lightTheme;
+
+  return config;
+}
+
+module.exports = createConfig();
