@@ -20,7 +20,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - uses: pnpm/action-setup@v2.2.1
         with:
-          version: 7
+          version: 6.23.2
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
