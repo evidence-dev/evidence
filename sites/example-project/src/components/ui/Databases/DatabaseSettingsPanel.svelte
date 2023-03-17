@@ -22,7 +22,7 @@
     // Available connector types and fallback
     const databaseOptions = [
         {name: 'Choose a database'},
-		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/walkthroughs/bigquery"},
+		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/guides/bigquery"},
 		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
 		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
         {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood

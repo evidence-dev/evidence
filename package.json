@@ -1,4 +1,8 @@
 {
+	"engines": {
+        "pnpm": "7"
+    },
+	
 	"devDependencies": {
 		"@changesets/cli": "2.21.0",
 		"@evidence-dev/components": "link:packages/components",
