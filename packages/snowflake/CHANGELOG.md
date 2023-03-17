@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 0.2.0
+
+### Minor Changes
+
+- f7a08956: Addition of missing dependencies in multiple pkg, fix the LinkedChart by moving to svelte:component
+
 ## 0.1.5
 
 ### Patch Changes
