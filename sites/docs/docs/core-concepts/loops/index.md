@@ -18,7 +18,7 @@ Loops enable you to iterate over the rows in a query result, and reference the r
 {/each}
 ```
 
-If you have more content than you would like to loop over on a single page, consider using a [templated page](../pages/#templated-pages).
+If you have more content than you would like to loop over on a single page, consider using a [templated page](../templated-pages).
 
 ## Example
 

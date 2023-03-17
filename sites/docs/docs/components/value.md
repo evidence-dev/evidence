@@ -16,10 +16,10 @@ By default, `Value` will display the value from the first row of the first colum
 ```
 
 ## Specifying Rows and Columns 
-Optionally supply a `column` and/or a `row` argument to display other values from `data`. 
+Optionally supply a `column` and/or a `row` argument to display other values from `data`. `row` is zero-indexed, so `row=0` displays the first row.
 
 ```markdown
-<!-- Show the 6th row from column_name -->
+<!-- Show the **7th row** from column_name -->
 <Value 
     data={query_name}
     column=column_name 
@@ -71,7 +71,7 @@ Override errors with the optional `placeholder` argument. This is useful for dra
     </tr>
     <tr>	
         <td>row</td>	
-        <td>Row number to display. [0] is the first row.</td>	
+        <td>Row number to display. 0 is the first row.</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>0</td>
     </tr>

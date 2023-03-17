@@ -14,7 +14,7 @@ Evidence supports almost all Markdown syntax. See [Markdown Reference](/markdown
 
 Markdown can be used to write expressively in text.
 - it supports lists,
-- **bolding** and _italics_ and `inline code`,
+- **bolding**, _italics_ and `inline code`,
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
 
 ## Images 🖼️
@@ -51,6 +51,7 @@ Evidence has a built in [component library](/components/all-components) to creat
 ```
 
 ![Line Chart](/img/syntax-line-chart.png)
+
 ## Expressions
 
 Curly braces execute JavaScript expressions.

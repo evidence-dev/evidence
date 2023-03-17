@@ -73,9 +73,13 @@ group by 1,2
 ```
 
 {#if $page.url.searchParams.get('channel')} <!-- Check for a filter in the URL -->
+
 <DataTable data={items.filter(d=>d.channel === $page.url.searchParams.get('channel'))}/>
+
 {:else} <!-- If not, show all data -->
+
 <DataTable data={items}/>
+
 {/if}
 ````
 

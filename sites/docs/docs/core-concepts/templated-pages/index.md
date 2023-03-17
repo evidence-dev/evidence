@@ -51,7 +51,7 @@ This means that the code will look in the query result `d` and include only thos
 
 Adding this to a `<Value/>` component:
 
-```markdown
+```js
 <Value
     data={customers.filter(d => d.customer_name === $page.params.customer)} 
     column=sales_usd

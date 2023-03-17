@@ -11,19 +11,25 @@ export default {
   ...lightTheme,
   styles: [
     // ...lightTheme.styles,
-    {    types: ['atrule', 'boolean', 'constant', 'id', 'important', 'symbol'],
+    {    types: ['atrule', 'boolean', 'constant', 'id', 'symbol'],
     style: {
       color: '#7c4dff'
     }
   },
   {
-    types: ['attr-name', 'attribute', 'builtin', 'cdata', 'char', 'class', 'operator', 'property', 'punctuation'],
+    types: ['attr-name', 'attribute', 'builtin', 'cdata', 'char', 'class', 'operator', 'property'],
     style: {
       color: '#39adb5'
     }
   },
   {
-    types: ['attr-value', 'pseudo-class', 'pseudo-element', 'string', 'variable'],
+    types: ['punctuation'],
+    style: {
+      color: '#7A8694'
+    }
+  },
+  {
+    types: ['attr-value', 'pseudo-class', 'pseudo-element', 'string', 'variable', 'url'],
     style: {
       color: '#f6a434'
     }
@@ -35,7 +41,7 @@ export default {
     }
   },
   {
-    types: ['deleted', 'entity', 'selector', 'tag', 'url', 'variable'],
+    types: ['deleted', 'entity', 'selector'],
     style: {
       color: '#e53935'
     }
@@ -43,7 +49,8 @@ export default {
   {
     types: ['function', 'number'],
     style: {
-      color: '#046ade'
+      color: '#046ade',
+      fontWeight: 'bold'
     }
   },
   {
@@ -56,6 +63,32 @@ export default {
     types: ['hexcode', 'unit'],
     style: {
       color: '#f76d47'
+    }
+  },
+  {
+    types: ['bold'],
+    style: {
+      fontWeight: 'bold'
+    }
+  },
+  {
+    types: ['italic'],
+    style: {
+      fontStyle: 'italic'
+    }
+  },
+  {
+    types: ['title'],
+    style: {
+      fontWeight: 'bold',
+      color: '#236aa4'
+
+    }
+  },
+  {
+    types: ['tag'],
+    style: {
+      color: '#236aa4'
     }
   },
   {

@@ -29,7 +29,7 @@ This will give you a URL that GitHub will use to trigger builds
 * Add a new file in `.github/workflows` called `main.yml`
 4. Add the following text to the `main.yml` file you just created. Be sure that the indentation in your `main.yml` matches the below. 
 
-```
+```yaml
 name: Schedule Vercel Deploy
 on:
   workflow_dispatch:
