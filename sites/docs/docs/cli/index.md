@@ -12,6 +12,9 @@ hide_table_of_contents: false
 | `npm run dev` | Start the development server in the current directory. |
 | `npm run build` | Build the project for production. |
 | `npm run build:strict` | Build, but fails on query or component errors. |
+| `r` | Restart the dev server (when running). |
+
+You can stop the server with `Ctrl` + `C` / `⌘` + `C`.
 
 ## Options
 
@@ -28,6 +31,8 @@ Some of the most common are:
 | `--open [path]` | Open browser to `path` on startup (`string`) | Default `--open /` opens in root of the project. |
 | `--host [host]` | Specify hostname (`string`) | `--host 0.0.0.0` can be helpful in containers | 
 | `--port <port>` | Specify port (`number`) | Automatically increment if default `3000` is in use. |
+
+
 
 ## Environment Variables
 

@@ -1,6 +1,6 @@
 ---
 sidebar_position: 11
-title: Mixed-Type
+title: Mixed-Type Charts
 hide_table_of_contents: false
 ---
 

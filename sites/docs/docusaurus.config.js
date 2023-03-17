@@ -99,17 +99,17 @@ const config = {
             {
               label: 'Home',
               href: 'https://evidence.dev',
-              target: '_self',
+
             },
             {
               label: 'Examples',
               href: 'https://evidence.dev/examples',
-              target: '_self',
+
             },
             {
               label: 'Blog',
               href: 'https://evidence.dev/blog',
-              target: '_self',
+
             },
 
           ],

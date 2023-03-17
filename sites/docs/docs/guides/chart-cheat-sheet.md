@@ -1,3 +1,8 @@
+---
+title: Chart Cheat Sheet
+sidebar_position: 3
+---
+
 ## Chart Elements
 
 ![chart-elements-one](/img/chart-elements-one.png)

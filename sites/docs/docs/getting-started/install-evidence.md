@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="standalone" label="Stand-alone" default>
 
-```
+```shell
 npx degit evidence-dev/template my-project
 cd my-project 
 npm install 
@@ -24,7 +24,7 @@ npm run dev
 
 <TabItem value="dbt" label="With dbt">
 
-```
+```shell
 cd path/to/your/dbt/project
 npx degit evidence-dev/template reports
 npm --prefix ./reports install
@@ -44,12 +44,12 @@ npm --prefix ./reports run dev
 1. Wait for the codespace to start up
 1. In the terminal in the Codespace, run:
 
-```
+```shell
 npm install 
 npm run dev -- --host 0.0.0.0
 ```
 
-**N.B.** Codespaces is much faster on the Desktop app: After the Codespace has booted select the hamburger menu &rarr; Open in VS Code Desktop.
+**Note:** Codespaces is much faster on the Desktop app. After the Codespace has booted, select the hamburger menu &rarr; Open in VS Code Desktop.
 
 </TabItem>
 
