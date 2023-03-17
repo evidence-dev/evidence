@@ -3,7 +3,8 @@
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
-module.exports = {
+
+const config = {
   title: 'Evidence Docs',
   tagline: 'Get Started with Evidence',
   url: 'https://docs.evidence.dev',
@@ -22,21 +23,23 @@ module.exports = {
       },
       items: [
         {
-          type: 'doc',
-          docId: 'introduction',
-          // to: '/',
-          position: 'left',
+          // type: 'doc',
+          // docId: 'getting-started/install-evidence',
+          to: '/',
+          position: 'right',
           label: 'Docs',
         },
         {
           to: '/community',
-          position: 'left',
+          position: 'right',
           label: 'Community',
         },
         {
           href: 'https://github.com/evidence-dev/evidence',
-          label: 'Github',
+          //label: 'Github',
           position: 'right',
+          className: "header-github-link",
+          "aria-label": "GitHub repository",
         },
       ],
     },
@@ -57,7 +60,7 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Introduction',
+              label: 'What is Evidence?',
               to: '/',
             },
             {
@@ -65,36 +68,28 @@ module.exports = {
               to: '/getting-started/install-evidence',
             },
             {
-              label: 'SQL Queries',
-              to: '/features/queries/sql-queries',
-            },
-            {
-              label: 'Markdown',
-              to: '/features/markdown/writing-markdown',
-            },
-            {
-              label: 'Charts',
-              to: '/features/charts/examples',
-            },
-            {
-              label: 'Tables',
-              to: '/features/data-table',
+              label: 'Core Concepts',
+              to: '/core-concepts/syntax',
             },
             {
               label: 'Deployment',
-              to: '/deployment/deployment-overview',
+              to: '/deployment/overview'
             },
             {
-              label: 'Walkthroughs',
-              to: '/walkthroughs/installation',
+              label: 'Component Reference',
+              to: '/components/all-components'
             },
             {
-              label: 'Troubleshooting',
-              to: '/troubleshooting',
+              label: 'Markdown Reference',
+              to: '/markdown'
             },
             {
-              label: 'Usage Statistics',
-              to: '/usage-statistics',
+              label: 'Themes and Layouts',
+              to: '/themes-and-layouts'
+            },
+            {
+              label: 'Guides',
+              to: '/guides/troubleshooting',
             }
           ],
         },
@@ -104,17 +99,17 @@ module.exports = {
             {
               label: 'Home',
               href: 'https://evidence.dev',
-              target: '_self',
+
             },
             {
               label: 'Examples',
               href: 'https://evidence.dev/examples',
-              target: '_self',
+
             },
             {
               label: 'Blog',
               href: 'https://evidence.dev/blog',
-              target: '_self',
+
             },
 
           ],
@@ -142,6 +137,10 @@ module.exports = {
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Evidence Technologies, Inc.`,
+    },
+    prism: {
+      darkTheme: require('prism-react-renderer/themes/palenight'),
+      additionalLanguages: ['sql'],
     },
   },
   presets: [
@@ -171,7 +170,8 @@ module.exports = {
     ],
   ],
   scripts: [
-    'https://scripts.simpleanalyticscdn.com/latest.js'
+    'https://scripts.simpleanalyticscdn.com/latest.js',
+    'https://scripts.simpleanalyticscdn.com/auto-events.js'
   ],
   // Add math stylesheets
   stylesheets: [
@@ -184,3 +184,13 @@ module.exports = {
     },
   ],
 };
+
+
+async function createConfig() {
+  const lightTheme = (await import('./src/utils/prismLight.mjs')).default;
+  config.themeConfig.prism.theme = lightTheme;
+
+  return config;
+}
+
+module.exports = createConfig();

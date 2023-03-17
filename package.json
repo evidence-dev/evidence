@@ -1,4 +1,4 @@
-{
+{	
 	"devDependencies": {
 		"@changesets/cli": "2.21.0",
 		"@evidence-dev/components": "link:packages/components",
@@ -36,11 +36,13 @@
 		"dev": "pnpm --filter ./sites/example-project dev",
 		"build:dev-workspace": "pnpm --filter ./sites/example-project build",
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build",
+		"build:docs": "pnpm --filter ./sites/docs build",
 		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
-		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts "
+		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts ",
+		"docs": "pnpm --filter ./sites/docs start"
 	},
 	"pnpm": {
 		"overrides": {
