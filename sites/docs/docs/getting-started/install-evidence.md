@@ -22,7 +22,7 @@ npm run dev
 
 </TabItem>
 
-<TabItem value="dbt" label="Alongside dbt">
+<TabItem value="dbt" label="With dbt">
 
 ```
 cd path/to/your/dbt/project
@@ -37,6 +37,22 @@ npm --prefix ./reports run dev
 <p class="standard-margin">Open your browser and go to <a href="http://localhost:3000">http://localhost:3000</a></p>
 
 </TabItem>
+
+<TabItem value="codespaces" label="Codespaces">
+
+1. In the <a href="https://github.com/evidence-dev/template/" alt="template repo">template repo</a> click the green "Use this template" button, and select "Open in a Codespace".
+1. Wait for the codespace to start up
+1. In the terminal in the Codespace, run:
+
+```
+npm install 
+npm run dev -- --host 0.0.0.0
+```
+
+**N.B.** Codespaces is much faster on the Desktop app: After the Codespace has booted select the hamburger menu &rarr; Open in VS Code Desktop.
+
+</TabItem>
+
 
 <TabItem value="docker" label="Docker">
 <p class="standard-margin">Evidence provides a development Docker image.</p>
