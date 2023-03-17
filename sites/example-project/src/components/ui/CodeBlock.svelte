@@ -60,7 +60,6 @@
     border: none;
     padding: 0.8em 0.8em;
     color: var(--grey-900);
-    font-size: 0.7em;
   }
 
   pre button.container {

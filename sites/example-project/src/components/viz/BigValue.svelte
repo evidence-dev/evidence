@@ -25,8 +25,7 @@
 
     let sparklineData = {}  
 
-    let error;
-
+    let error = undefined
     $: try {
         error = undefined
 
@@ -53,9 +52,9 @@
             positive = data[0][comparison] >= 0
             comparisonColor = (positive && !downIsGood) || (!positive && downIsGood) ? "var(--green-700)" : "var(--red-700)" 
         }
-
         // populate sparklineData from data where timeseries is the key and value is the value
         if(data && sparkline && value) {
+            // allow to load the LinkedChart
             let sortedData = getSortedData(data, sparkline, true)
             for(let i = 0; i < sortedData.length; i++) {
                     sparklineData[sortedData[i][sparkline]] = sortedData[i][value]
@@ -69,6 +68,19 @@
         }
     }
 
+    /**
+    * Hack to let time to LinkedChart to be loaded
+    */
+    function isLinkedChartReady() {
+        try {
+            if(LinkedChart){
+                return true
+            }
+        }catch(e){
+            return false
+        }
+        return false
+    }
 </script>
 
 
@@ -86,21 +98,25 @@
     <div class=value> 
         <Value {data} column={value}/> 
         {#if sparkline}
-            <div class=sparkline>
-                <LinkedChart 
-                    data = {sparklineData}
-                    type = line
-                    grow = {true}
-                    barMinWidth = 0
-                    gap = 0
-                    fill = var(--grey-400)
-                    align = left
-                    hover = {false}
-                    linked = 'id'
-                    width = 75
-                    tabindex = {-1}
-                />
-            </div>
+            {#if isLinkedChartReady()}
+                <div class='sparkline'>
+                    <svelte:component 
+                    this={LinkedChart}
+                    data={sparklineData}
+                    type='line'
+                    grow={true}
+                    barMinWidth=1
+                    gap=0
+                    fill='var(--grey-400)'
+                    align='left'
+                    hover={false}
+                    linked='id'
+                    width=75
+                    tabindex={-1}
+                    />
+                </div>
+            {/if}
+
         {/if}
     </div> 
     {#if comparison}
@@ -166,4 +182,4 @@
         font-weight: normal;
     }
 
-</style> 
+</style>

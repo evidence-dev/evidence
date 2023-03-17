@@ -121,7 +121,7 @@
 {#if max > 0}
 <div class="pagination">
 <input type="range" max={max} step=1 bind:value={index} on:input={slice} class="slider">
-<span style="padding-top: 1px;">
+<span>
 {(index+size).toLocaleString()} of {(max+size).toLocaleString()} 
 </span>
 </div>
@@ -136,12 +136,14 @@
 <style>
 div.pagination {
   padding: 0px 5px;
-  padding-top: 1px;
-  padding-bottom: 0px;
   align-content: center;
   border-bottom: 1px solid var(--grey-200);   
-  height: 1.5em;
+  height: 1.25em;
   background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .slider {
@@ -193,7 +195,7 @@ div.pagination {
 span {
   font-family: var(--ui-font-family-compact);
   -webkit-font-smoothing: antialiased;
-  font-size: 0.8em;
+  font-size: calc(1em - 6px);
   float: right;
 }
 
@@ -245,7 +247,7 @@ span {
 
 table{
   width:100%;
-  font-size: calc(1em - 4px);
+  font-size: calc(1em - 7px);
   border-collapse: collapse;
   font-family: var(--ui-font-family);
   font-variant-numeric: tabular-nums;
@@ -298,10 +300,6 @@ td div{
   color:var(--grey-300);
   text-align: left;
   max-width: min-content;
-}
-
-.results-pane {
-  margin-bottom: 40px;
 }
 
 th.type-indicator {

@@ -4,7 +4,7 @@
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
-  import {showQueries} from '@evidence-dev/components/ui/stores'
+  import {showQueries} from '$lib/ui/stores'
   import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
   import { writable } from 'svelte/store';
   import { browser } from '$app/environment';
@@ -47,8 +47,6 @@
     inputQuery = queries[0].inputQueryString
     compiledQuery = queries[0].compiledQueryString
     showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
-    // Pre-calculate the container height for smooth slide transition 
-    codeContainerHeight =  Math.min(Math.max(compiledQuery.split(/\r\n|\r|\n/).length, inputQuery.split(/\r\n|\r|\n/).length)*1.5 +1, 30)
   
     // Status Bar & Results Toggle 
     error = queryResult[0]?.error_object?.error
@@ -66,7 +64,7 @@
   
  </script>
 
- <div in:blur|local> 
+ <div in:blur|local class="over-container"> 
  {#if $showQueries}
     <!-- Title -->
     <div class="container" transition:slide|local>
@@ -80,7 +78,7 @@
           {/if }
           <!-- Query Display -->
           {#if $showSQL}
-            <div class=code-container transition:slide|local style={`height: ${codeContainerHeight}em;`}>
+            <div class=code-container transition:slide|local>
               {#if showCompiled}
                 <Prism code={compiledQuery}/>
               {:else}
@@ -121,14 +119,24 @@
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
     }
 
+    .over-container {
+      overflow-y: hidden;
+      overflow-x: scroll;
+    }
+
     .code-container {
         background-color: var(--grey-100);
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
-        overflow: auto;
-        padding: 0 12px 6px 12px; 
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-top: 0;
+        padding-right: 12px;
+        padding-bottom: 6px;
+        padding-left: 15px;
         scrollbar-width: thin; 
         scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
+        
     }
     .code-container::-webkit-scrollbar {
       height: var(--scrollbar-size);
@@ -162,6 +170,7 @@
         border-right: 1px solid var(--grey-200);
         border-bottom: 1px solid var(--grey-200);
         overflow-x: auto;
+        overflow-y: hidden;
         scrollbar-width: thin; 
         scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
     }
@@ -189,6 +198,7 @@
       min-width: var(--scrollbar-minlength);
       border: 3px solid transparent;
     }
+
     
     .closed {
         border-bottom-left-radius: 6px;
@@ -253,9 +263,10 @@
     }
     
     .container {
-        margin-bottom:1.5em;
-        font-size: 0.8em;
+        margin-bottom: 1.2em;
         margin-top:0.75em;
+        display: flex;
+        flex-direction: column;
     }
 
     .container-a {
@@ -263,6 +274,8 @@
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
     }
     /* container-a avoids whitespace appearing in the slide transition */
 

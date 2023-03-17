@@ -168,7 +168,7 @@ prog
   .action((args) => {
     populateTemplate()
     clearQueryCache()
-    buildHelper('VITE_BUILD_STRICT=true npx svelte-kit build', args)
+    buildHelper('VITE_BUILD_STRICT=true npx vite build', args)
   }); 
 
 

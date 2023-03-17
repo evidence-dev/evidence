@@ -96,24 +96,11 @@ td {
 .wide_column {
   min-width: 120px;
 }
-.medium_column {
-  min-width: 80px;
-}
 .narrow_column {
   max-width: 60px;
 }
 .input_box {
   width: 100%;
-}
-
-div.input-item {
-  font-family: var(--ui-font-family);
-  color: var(--grey-999);
-  font-size: 16px;
-  margin-top: 1.25em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 input {

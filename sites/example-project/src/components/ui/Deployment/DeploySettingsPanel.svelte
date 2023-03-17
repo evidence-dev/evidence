@@ -1,13 +1,14 @@
 <script>
     export let settings
+    import EvidenceDeploy from "./EvidenceDeploy.svelte";
     import NetlifyDeploy from "./NetlifyDeploy.svelte";
     import VercelDeploy from "./VercelDeploy.svelte";
     import OtherDeploy from "./OtherDeploy.svelte";
     import { slide, blur } from 'svelte/transition'
 
     let deploymentOptions = [
-        {name: 'Choose a deployment target'},
-		{id: 'netlify', name: 'Netlify', formComponent: NetlifyDeploy},
+		{id: 'evidence', name: 'Evidence Cloud', formComponent: EvidenceDeploy},
+        {id: 'netlify', name: 'Netlify', formComponent: NetlifyDeploy},
         {id: 'vercel', name: 'Vercel', formComponent: VercelDeploy},
 		{id: 'other', name: 'Self-host (other)', formComponent: OtherDeploy}
 	];
@@ -20,7 +21,7 @@
 <div class=container>
     <div class=panel> 
     <h2>Deployment</h2>
-    <p>Evidence projects can be deployed to a variety of cloud environments. If you haven't done this type of thing before, we would suggest using Netlify.</p>
+    <p>Evidence projects can be deployed to a variety of cloud environments. The easiest way to deploy your project is with <b>Evidence Cloud</b>.</p>
     <h3>Deployment Environment</h3>
     <select bind:value={selectedDeployment}>
         {#each deploymentOptions as option}

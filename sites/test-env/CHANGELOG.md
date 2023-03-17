@@ -1,5 +1,33 @@
 # evidence-test-environment
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [a7a9757]
+  - @evidence-dev/evidence@14.0.0
+
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies [8647a03]
+  - @evidence-dev/evidence@13.0.1
+
+## 2.0.0
+
+### Major Changes
+
+- 96c9c81: Upgrade to svelte kit 1.0.0, remove support for Node 14
+
+### Patch Changes
+
+- Updated dependencies [f036b94]
+- Updated dependencies [96c9c81]
+- Updated dependencies [45822a6]
+- Updated dependencies [69f2f9c]
+  - @evidence-dev/evidence@13.0.0
+
 ## 1.0.44
 
 ### Patch Changes
