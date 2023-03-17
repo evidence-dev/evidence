@@ -28,7 +28,12 @@
     "react-dom": "^17.0.1",
     "rehype-katex": "5",
     "remark-math": "3",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "@algolia/client-search":"4.15.0"
+  },
+  "devDependencies": {
+     "typescript": "4.9.5",
+     "webpack":"^5.76.1"
   },
   "browserslist": {
     "production": [
