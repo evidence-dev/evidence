@@ -1,5 +1,23 @@
 # @evidence-dev/evidence
 
+## 15.0.0
+
+### Minor Changes
+
+- f7a08956: Addition of missing dependencies in multiple pkg, fix the LinkedChart by moving to svelte:component
+- 54904e9e: Hot Fix, Fix show/hide Query button, rework on reactivity and query toast, move build:strict to vite command
+
+### Patch Changes
+
+- Updated dependencies [f7a08956]
+- Updated dependencies [f1b25b51]
+- Updated dependencies [e4f698a4]
+- Updated dependencies [406cdc6e]
+- Updated dependencies [54904e9e]
+  - @evidence-dev/preprocess@2.2.0
+  - @evidence-dev/components@2.2.0
+  - @evidence-dev/db-orchestrator@2.0.1
+
 ## 14.0.0
 
 ### Minor Changes

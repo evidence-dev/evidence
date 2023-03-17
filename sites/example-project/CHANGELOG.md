@@ -1,5 +1,18 @@
 # @evidence-dev/components
 
+## 2.2.0
+
+### Minor Changes
+
+- f7a08956: Addition of missing dependencies in multiple pkg, fix the LinkedChart by moving to svelte:component
+- 54904e9e: Hot Fix, Fix show/hide Query button, rework on reactivity and query toast, move build:strict to vite command
+
+### Patch Changes
+
+- f1b25b51: update links to docs
+- e4f698a4: Add Evidence deploy option
+- 406cdc6e: Fix for DataTable search bug
+
 ## 2.1.0
 
 ### Minor Changes

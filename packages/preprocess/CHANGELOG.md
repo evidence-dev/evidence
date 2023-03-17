@@ -1,5 +1,12 @@
 # @evidence-dev/preprocess
 
+## 2.2.0
+
+### Minor Changes
+
+- f7a08956: Addition of missing dependencies in multiple pkg, fix the LinkedChart by moving to svelte:component
+- 54904e9e: Hot Fix, Fix show/hide Query button, rework on reactivity and query toast, move build:strict to vite command
+
 ## 2.1.0
 
 ### Minor Changes
