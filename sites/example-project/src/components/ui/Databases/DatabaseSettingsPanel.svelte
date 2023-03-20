@@ -21,16 +21,16 @@
 
     // Available connector types and fallback
     const databaseOptions = [
-    {name: 'Choose a data source'},
-		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/guides/bigquery"},
-		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
-		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
-    {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood
-		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
-    {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm},
-    {id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm},
-    {id: 'csv', name: 'CSV', formComponent: CSVForm}
-	];
+        {name: 'Choose a data source'},
+        {id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/guides/bigquery"},
+        {id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
+        {id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
+        {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood
+        {id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
+        {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm},
+        {id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm},
+        {id: 'csv', name: 'CSV', formComponent: CSVForm}
+    ];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
     let disableSave = false;

@@ -23,17 +23,23 @@
   function toggleDropdown() {
     showDropdown = !showDropdown;
   }
+
+  function closeDropdown() {
+    showDropdown = false;
+  }
 </script>
 
 
 <div 
-  class="dropdown"
-  on:click={toggleDropdown}
-  on:keydown={toggleDropdown}
-  on:mouseenter={toggleDropdown}
-  on:mouseleave={toggleDropdown}
+  type=button
+  class=kebab
+  
     >
-  <button class=menu><KebabIcon color=--grey-900/></button>
+  <button 
+    type=button 
+    class=menu
+    on:click={toggleDropdown}
+  ><KebabIcon color=--grey-900/></button>
     {#if showDropdown}
     <ul class=dropdown-items>
       {#each options as option}
@@ -63,7 +69,7 @@
       {/each}
     </ul>
     {/if}
-</div>
+  </div>
 
 <style>
   .dropdown {
@@ -72,17 +78,17 @@
     
   }
 
-  button.menu {
+  button {
     background-color: unset;
-    margin: 16px;
     padding: 0;
-    font-size: unset;
-    border: none;
     cursor: pointer;
+    border: none;
   }
 
-
-
+  button.menu {
+    margin: 16px;
+    font-size: unset;
+  }
 
   ul {
     position: absolute;
@@ -124,12 +130,8 @@
   }
 
   button.dropdown {
-    padding: 0;
     font-family: var(--ui-font-family);
     font-size: 14px;
-    background-color: unset;
-    border: none;
-    cursor: pointer;
     color: var(--grey-900);
     text-align: left;
     box-sizing: border-box;

@@ -59,8 +59,8 @@
 <div class="main">
     <span class="container"> 
         <span>  
-            {#if $page.url.pathname.startsWith('/settings')}
-            <a href="/"><HomeIcon height=14 width=14 verticalOffset=2/></a>
+            {#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
+            <a href="/"><HomeIcon height=14 width=14 verticalOffset=3/> Home</a>
             {:else}
             {#each crumbs as crumb, i}
                 {#if i > 0 }
@@ -68,7 +68,7 @@
                 {:else}
                 <a href={crumb.href}>
                 {#if crumb.title === 'Home' }
-                <HomeIcon height=14 width=14 verticalOffset=2/>
+                 <HomeIcon height=14 width=14 verticalOffset=3/>
                 {:else}
                 {crumb.title}
                 {/if}
