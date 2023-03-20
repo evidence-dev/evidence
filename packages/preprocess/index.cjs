@@ -53,6 +53,9 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { pageHasQueries, routeHash } from '$lib/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '$lib/ui/BigLink.svelte';
+        import Tab from "$lib/ui/Tabs/Tab.svelte";
+        import Tabs from "$lib/ui/Tabs/Tabs.svelte";
+        
         import VennDiagram from '$lib/diagrams/VennDiagram.svelte';
         import SankeyDiagram from "$lib/diagrams/SankeyDiagram.svelte";
         import Value from '$lib/viz/Value.svelte';
