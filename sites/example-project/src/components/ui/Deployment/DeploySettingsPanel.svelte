@@ -38,7 +38,7 @@
     {/if}
 </div>
 <footer>
-    <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/deployment/deployment-overview">Deploying your Project &rarr;</a></span>
+    <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/deployment/overview">Deploying your Project &rarr;</a></span>
 
 </footer>
 </form>

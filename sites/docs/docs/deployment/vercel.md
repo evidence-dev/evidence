@@ -6,7 +6,7 @@ title: Vercel
 
 Vercel lets you host a public version of your project for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month. 
 
-# Deploy to Vercel
+## Deploy to Vercel
 1. Run your project in development mode 
 1. Visit the [settings page](https://localhost:3000/settings)
 1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
@@ -29,7 +29,7 @@ This will give you a URL that GitHub will use to trigger builds
 * Add a new file in `.github/workflows` called `main.yml`
 4. Add the following text to the `main.yml` file you just created. Be sure that the indentation in your `main.yml` matches the below. 
 
-```
+```yaml
 name: Schedule Vercel Deploy
 on:
   workflow_dispatch:

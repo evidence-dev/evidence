@@ -4,7 +4,7 @@
   import DataTable from './QueryViewerSupport/QueryDataTable.svelte'
   import ChevronToggle from "./ChevronToggle.svelte"
   import Prism from "./QueryViewerSupport/Prismjs.svelte";
-  import {showQueries} from './stores'
+  import {showQueries} from '$lib/ui/stores'
   import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
   import { writable } from 'svelte/store';
   import { browser } from '$app/environment';
@@ -64,7 +64,7 @@
   
  </script>
 
- <div in:blur|local> 
+ <div in:blur|local class="over-container"> 
  {#if $showQueries}
     <!-- Title -->
     <div class="container" transition:slide|local>
@@ -119,17 +119,24 @@
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
     }
 
+    .over-container {
+      overflow-y: hidden;
+      overflow-x: scroll;
+    }
+
     .code-container {
         background-color: var(--grey-100);
         border-left: 1px solid var(--grey-200);
         border-right: 1px solid var(--grey-200);
-        overflow: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
         padding-top: 0;
         padding-right: 12px;
         padding-bottom: 6px;
         padding-left: 15px;
         scrollbar-width: thin; 
         scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
+        
     }
     .code-container::-webkit-scrollbar {
       height: var(--scrollbar-size);
@@ -163,6 +170,7 @@
         border-right: 1px solid var(--grey-200);
         border-bottom: 1px solid var(--grey-200);
         overflow-x: auto;
+        overflow-y: hidden;
         scrollbar-width: thin; 
         scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
     }
@@ -190,6 +198,7 @@
       min-width: var(--scrollbar-minlength);
       border: 3px solid transparent;
     }
+
     
     .closed {
         border-bottom-left-radius: 6px;

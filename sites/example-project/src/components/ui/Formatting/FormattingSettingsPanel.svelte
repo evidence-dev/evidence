@@ -56,7 +56,7 @@ from table`
       >Learn more about <a
         class="docs-link"
         target=none
-        href="https://docs.evidence.dev/features/value-formatting"
+        href="https://docs.evidence.dev/core-concepts/formatting/"
         > formatting in Evidence &rarr;</a
       ></span
     >

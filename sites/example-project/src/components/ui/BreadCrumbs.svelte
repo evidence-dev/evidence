@@ -2,8 +2,6 @@
     import { page } from '$app/stores';
     import { blur } from 'svelte/transition'
     import HomeIcon from '$lib/icons/HomeIcon.svelte'
-
-
     export let fileTree;
 
     $: pathArray = $page.url.pathname.split('/').slice(1)

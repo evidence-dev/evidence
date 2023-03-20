@@ -64,7 +64,7 @@
 
 </div>
 <footer>
-    <span>Learn more about <a class=docs-link href="https://docs.evidence.dev/walkthroughs/version-control">Setting Up Version Control &rarr;</a></span> 
+    <span>Learn more about <a class=docs-link href="https://docs.github.com/en/get-started/using-git/about-git">Setting Up Version Control &rarr;</a></span> 
 </footer>
 </form>
 <style>

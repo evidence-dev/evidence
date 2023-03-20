@@ -1,6 +1,6 @@
 # Code Blocks
 
-Often it's useful to include code blocks in your documentation. You do this by using special reserved keywords to name your code blocs.
+Often it's useful to include code blocks in your documentation. You do this by using special reserved keywords to name your code fences.
 
 ## Code Blocks
 
