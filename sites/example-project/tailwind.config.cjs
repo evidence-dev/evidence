@@ -1,8 +1,16 @@
+const plugin = require('tailwindcss/plugin')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js,svelte,ts}"],
   theme: {
     extend: {
+      textShadow: {
+        DEFAULT: '1px solid var(--tw-shadow-color)'
+      },
+      gridTemplateRows: {
+        auto: "auto"
+      },
       fontFamily: {
         monospace: [
           "Menlo",
@@ -127,5 +135,17 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Add support for textShadow
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') }
+      )
+    }),
+  ],
 };

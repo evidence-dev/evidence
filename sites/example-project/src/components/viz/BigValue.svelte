@@ -85,7 +85,8 @@
 
 
 <div
-    class="inline-block font-ui py-[.75em] pr-[.75em] pl-0 mr-[0.75em] [margin-block-end:1em] items-center select-none align-top"
+    data-viz="BigValue"
+    class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center select-none align-top"
     style={`
         min-width: ${minWidth};
         max-width: ${maxWidth};
@@ -94,7 +95,7 @@
     {#if error}
     <ErrorChart chartType="Big Value" error={error.message}/>
     {:else}
-    <p class="text-sm font-medium text-grey-700 [text-shadow:1px_solid_white] m-0">{title}</p> 
+    <p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p> 
     <div class="relative"> 
         <Value {data} column={value}/> 
         {#if sparkline}
@@ -120,7 +121,7 @@
         {/if}
     </div> 
     {#if comparison}
-        <p class="m-0 text-xs font-medium font-ui [font-feature-settings:normal]" style={`color:${comparisonColor}`}> 
+        <p class="m-0 text-xs font-medium font-ui" style={`color:${comparisonColor}`}> 
             {@html positive ? "&#9650;" : "&#9660;"} 
             <Value {data} column={comparison}/>
             <span class="text-grey-700 font-normal">{comparisonTitle}</span>
@@ -134,7 +135,7 @@
         TODO: Identify if this can be moved to app.css, or scoped to this component.
         Leaky global styles are problematic
      */
-    :global(.sparkline svg) {
+    div[data-viz="BigValue"] :global(svg) {
         height: 16px;
     }
 </style> 
