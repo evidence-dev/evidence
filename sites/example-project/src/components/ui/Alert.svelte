@@ -24,7 +24,7 @@
       @apply text-green-800 bg-green-50;
     }
     &.warning {
-      @apply text-gray-800 bg-gray-50;
+      @apply text-yellow-800 bg-yellow-50;
     }
   }
 </style>
