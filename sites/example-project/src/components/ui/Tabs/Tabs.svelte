@@ -35,7 +35,7 @@
 	setContext("TAB_REGISTRATION", tabItems)
 </script>
 <section>
-	<nav class="flex gap-x-4 gap-y-1 flex-wrap">
+	<nav class="flex gap-x-4 gap-y-1 flex-wrap mb-2">
 		{#each $tabItems.tabs as tab}
 			<button on:click={() => $tabItems.active = tab.id}
                 class="px-4 pt-2 border-b-2 border-blue-300 text-sm whitespace-nowrap"
