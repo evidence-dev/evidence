@@ -46,7 +46,7 @@
       } else if (target === null) {
         // Handle null case (e.g. disable portal functionality)
         placeholder.parentElement.insertBefore(el, placeholder);
-        el.hiddne = false
+        el.hidden = false
         return;
       } else {
         // Unknown case
