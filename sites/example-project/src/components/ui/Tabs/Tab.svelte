@@ -15,7 +15,11 @@
 	 */
 	export let selected
 		
+	/**
+	 * @type {import("svelte/store").Writable<{ tabs: {label: string, id: string}[], active: string, tabsId: string}>}
+	 */
 	const tabs = getContext("TAB_REGISTRATION")
+
 	onMount(() => {
         $tabs.tabs = [...$tabs.tabs, { label, id }]
 		if (selected) $tabs.active = id
@@ -32,7 +36,7 @@
     onDestroy(() => {
         $tabs.tabs = $tabs.tabs.filter(t => t.id !== id)
         if ($tabs.active === id) {
-            $tabs.active = $tabs.tabs[0].id
+            $tabs.active = $tabs.tabs[0]?.id
         }
     })
 	
