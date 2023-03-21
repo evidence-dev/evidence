@@ -9,6 +9,7 @@ test.beforeEach(async({page})=>{
 
 test.describe('Charts: Area', () => {
   test('should be able to hide/show query and see SQL code', async ({ page }) => {
+    const pageMenuButton : Locator = await page.getByRole('banner').getByRole('button', { name: 'page menu button' });
     const showQueryButton : Locator = await page.getByRole('button', { name: 'show-queries' })
     const hideQueryButton : Locator = await page.getByRole('button', { name: 'hide-queries' })
     const showSQLButton : Locator = await page.getByRole('button', { name: 'show-sql' })
@@ -16,12 +17,16 @@ test.describe('Charts: Area', () => {
     // show and hide button must be mutual exclusive
     const isHideVisible : boolean = await hideQueryButton.isVisible()
     const isShowVisible : boolean = await showQueryButton.isVisible()
-    // if one is visible the other must not be hidden
-    expect(isHideVisible).toEqual(!isShowVisible)
 
-    
+    // click on the page menu button
+    await pageMenuButton.click()
+    // wait for animation
+    await page.waitForTimeout(100)
+
     // if hide query button is visible, user should be able to hide query section
     if(await hideQueryButton.isVisible()){
+        // if one is visible the other must not be hidden
+        expect(isShowVisible).toEqual(false)
         await hideQueryButton.click()
 
         // wait for the svelte dom manipulation
@@ -32,7 +37,9 @@ test.describe('Charts: Area', () => {
     }
 
     if(await showQueryButton.isVisible()){
-      
+      // if one is visible the other must not be hidden
+      expect(isHideVisible).toEqual(false)
+
       await showQueryButton.click()
       // show-SQL button should be visible
       await expect(showSQLButton).toBeVisible()
@@ -49,7 +56,7 @@ test.describe('Charts: Area', () => {
     }
   });
   test('should see save button, download button and tooltip when mouse is hover the chart', async ({ page }) => {
-    await page.locator('g').first().hover()
+    await page.locator('g').locator('g path').first().hover()
     // wait for svelte animation
     await page.waitForTimeout(300)
   
