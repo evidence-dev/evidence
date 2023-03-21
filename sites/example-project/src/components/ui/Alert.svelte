@@ -6,9 +6,14 @@
    * @type {"default" | "info" | "danger" | "success" | "warning"}
    */
   export let status = "default";
+
+  /**
+   * @type {boolean}
+   */
+  export let sticky = false
 </script>
 
-<div class="alert {status}" role="alert">
+<div class="alert {status}" role="alert" class:sticky>
   <span class="h-6 block">
     <TiInfo />
   </span>
@@ -19,7 +24,7 @@
 
 <style lang="postcss">
   .alert {
-    @apply p-4 mb-4 text-sm rounded text-gray-800 bg-gray-50 font-medium font-sans border flex items-center gap-2;
+    @apply p-4 mb-4 text-sm rounded text-gray-800 bg-gray-50 font-medium font-sans border flex items-center gap-2 top-14;
   }
   .alert.info {
     @apply text-blue-800 bg-blue-50 border-blue-800;
