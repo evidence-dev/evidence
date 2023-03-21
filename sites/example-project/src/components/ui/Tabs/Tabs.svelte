@@ -56,10 +56,11 @@
          active:bg-gray-100
         transition-colors rounded-t;
 
-        &.active {
+        
+    }
+	nav button.active {
             @apply border-green-500
             hover:border-green-600 hover:bg-gray-200
             active:border-green-700 active:bg-gray-100
         }
-    }
 </style>
