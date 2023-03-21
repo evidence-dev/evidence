@@ -6,14 +6,7 @@ import adapter from "@sveltejs/adapter-static";
 
 const config = {
   extensions: [".svelte", ".md"],
-  preprocess: [
-    ...evidencePreprocess(true),
-    preprocess({
-      postcss: {
-        configFilePath: "./postcss.config.cjs"
-      },
-    }),
-  ], // Modify preprocess to allow for loading of $lib instead of package version of components library
+  preprocess: evidencePreprocess(true), // Modify preprocess to allow for loading of $lib instead of package version of components library
   kit: {
     adapter: adapter({
       strict: false,
