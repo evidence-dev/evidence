@@ -97,7 +97,7 @@
         align-items: center;
     }
 
-    span, button {
+    span {
         font-size: small;
         font-family: var(--ui-font-family-compact);
         -webkit-font-smoothing: antialiased;

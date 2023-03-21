@@ -5,14 +5,15 @@
   import { showQueries } from './stores'
   import { pageHasQueries } from './stores';
   let options = [
+    { label: "Show / Hide Queries", prod: true },
+    { label: "Export PDF", prod: true },  
     { label: "Connect Data Source", url: "/settings/#connect-database", prod: false},
     { label: "Deploy Project", url: "/settings/#deploy", prod: false},
-    { label: "Show / Hide Queries", prod: true },
-    { label: "Export PDF", prod: true },
+    { label: "Project Settings", url: "/settings", prod: false },
     { label: "Docs", url: "https://docs.evidence.dev", prod: false },
     { label: "Get Help on Slack", url: "https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q", prod: true },
   ];
-  
+
 
   function toggleQueries() {
     showQueries.update((value) => !value);
@@ -30,14 +31,11 @@
 </script>
 
 
-<div 
-  type=button
-  class=kebab
-  
-    >
+<div>
   <button 
     type=button 
     class=menu
+    aria-label="page menu button"
     on:click={toggleDropdown}
   ><KebabIcon color=--grey-900/></button>
     {#if showDropdown}
@@ -47,16 +45,14 @@
         <li>
         {#if option.label === "Show / Hide Queries"}
         {#if $pageHasQueries}  
-        <button class=dropdown on:click={toggleQueries} on:keydown={toggleQueries}>
             {#if $showQueries}
-              Hide Queries
+            <button class=dropdown aria-label="hide-queries" on:click={toggleQueries} on:keydown={toggleQueries}>Hide Queries</button>
             {:else}
-              Show Queries
+            <button class=dropdown aria-label="hide-queries" on:click={toggleQueries} on:keydown={toggleQueries}>Show Queries</button>
             {/if}
-          </button>
         {/if}
         {:else if option.label === "Export PDF"}
-          <button class=dropdown on:click={() => print()}>{option.label}</button>
+          <button class="dropdown first" on:click={() => print()}>{option.label}</button>
         {:else}
           {#if option.url.includes("http")}
           <a href={option.url} target=_blank rel=noreferrer>{option.label}<ExternalLinkIcon height=12 width=12/></a>

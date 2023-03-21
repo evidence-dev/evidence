@@ -1,7 +1,7 @@
 <script>
     import BreadCrumbs from './BreadCrumbs.svelte';
     import Hamburger from './Hamburger.svelte';
-    import Kebab from './Kebab.svelte';
+    import PageMenu from './PageMenu.svelte';
     export let fileTree;
 	import { page } from '$app/stores';
     export let open = false;
@@ -12,7 +12,7 @@
         <Hamburger bind:open/>
         <BreadCrumbs {fileTree}/>
 		{#if !$page.url.pathname.includes('/settings')}
-		<Kebab/>
+		<PageMenu/>
 		{/if}
     </div>
 </header>
