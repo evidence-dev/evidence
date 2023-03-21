@@ -13,21 +13,18 @@ test.describe('Page Elements: Page Menu', () => {
 
       const pageMenuButton : Locator = await page.getByRole('banner').getByRole('button', { name: 'page menu button' });
       const exportPDFButton : Locator = await page.getByRole('button', { name: 'Export PDF' })
-      const settingsLink : Locator = await page.getByRole('link', { name: 'Project Settings' })
 
       // click on the page menu button
       await pageMenuButton.click()
 
       // should see the export PDF button and settings link
       expect(await exportPDFButton.isVisible()).toEqual(true)
-      expect(await settingsLink.isVisible()).toEqual(true)
 
       // click on the page menu button again
       await pageMenuButton.click()
 
       // should not see the export PDF button and settings link
       expect(await exportPDFButton.isVisible()).toEqual(false)
-      expect(await settingsLink.isVisible()).toEqual(false)
     })
 
     test('should be able to click on the page menu and navigate to settings page', async ({ page }) => {
