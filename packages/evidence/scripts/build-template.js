@@ -57,11 +57,11 @@ fs.outputFileSync('./template/vite.config.js',
     {
         plugins: [sveltekit()],
         optimizeDeps: {
-             include: ['echarts-stat'],
+            include: ['echarts-stat', 'echarts', 'svelte-icons'],
             exclude: ['@evidence-dev/components']
         },
         ssr: {
-            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5', 'echarts', 'echarts-stas']
         },
         server: {
             fs: {
