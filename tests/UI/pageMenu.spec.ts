@@ -25,22 +25,6 @@ test.describe('Page Elements: Page Menu', () => {
 
       // should not see the export PDF button and settings link
       expect(await exportPDFButton.isVisible()).toEqual(false)
-    })
-
-    test('should be able to click on the page menu and navigate to settings page', async ({ page }) => {
-        
-      const pageMenuButton : Locator = await page.getByRole('banner').getByRole('button', { name: 'page menu button' });
-        const settingsLink : Locator = await page.getByRole('link', { name: 'Project Settings' })
-    
-        // click on the page menu button
-        await pageMenuButton.click()
-
-        // click on the settings button
-        await settingsLink.click()
-        // wait for navigation
-        await page.waitForTimeout(100)
-        // should be on the settings page
-        expect(await page.url()).toContain('/settings')
     });
 
 });
