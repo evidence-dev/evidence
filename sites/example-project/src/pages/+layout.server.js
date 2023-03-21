@@ -3,12 +3,8 @@ import { GET } from "./api/customFormattingSettings.json/+server.js";
 export const prerender = true; 
 export const trailingSlash = 'always';
 
-export async function load({fetch, route, url, params}) {
+export async function load({fetch, route}) {
     console.info("route", route.id)
-    console.info("params", params)
-    console.info("fetch", fetch)
-    console.info("url", url)
-
     if(route.id && route.id !== "/settings"){
         const routeHash = md5(route.id)
         // ensure that queries have been extracted before initiating the load process 
