@@ -46,9 +46,9 @@
         {#if option.label === "Show / Hide Queries"}
         {#if $pageHasQueries}  
             {#if $showQueries}
-            <button class=dropdown aria-label="hide-queries" on:click={toggleQueries} on:keydown={toggleQueries}>Hide Queries</button>
+            <button class=dropdown aria-label="hide-queries" on:click={toggleQueries}>Hide Queries</button>
             {:else}
-            <button class=dropdown aria-label="hide-queries" on:click={toggleQueries} on:keydown={toggleQueries}>Show Queries</button>
+            <button class=dropdown aria-label="show-queries" on:click={toggleQueries}>Show Queries</button>
             {/if}
         {/if}
         {:else if option.label === "Export PDF"}
