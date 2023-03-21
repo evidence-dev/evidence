@@ -1,6 +1,7 @@
 <script>
   // Based on the alert from FlowBite: https://flowbite.com/docs/components/alerts/
   import TiInfo from "svelte-icons/ti/TiInfo.svelte";
+  import {portal} from "./Portal.svelte"
   /**
    * Defines the color of the alert
    * @type {"default" | "info" | "danger" | "success" | "warning"}
@@ -8,12 +9,13 @@
   export let status = "default";
 
   /**
+   * Note that this is pretty specific to the current evidence page layout
    * @type {boolean}
    */
   export let sticky = false
 </script>
 
-<div class="alert {status}" role="alert" class:sticky>
+<div class="alert {status}" role="alert" class:sticky use:portal={{prepend: true, target: sticky ? "#evidence-content" : null}}>
   <span class="h-6 block">
     <TiInfo />
   </span>
@@ -22,9 +24,10 @@
   </div>
 </div>
 
+
 <style lang="postcss">
   .alert {
-    @apply p-4 mb-4 text-sm rounded text-gray-800 bg-gray-50 font-medium font-sans border flex items-center gap-2 top-14;
+    @apply p-4 mb-4 text-sm rounded text-gray-800 bg-gray-50 font-medium font-sans border flex items-center gap-2 top-14 w-full;
   }
   .alert.info {
     @apply text-blue-800 bg-blue-50 border-blue-800;

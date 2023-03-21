@@ -96,7 +96,7 @@
 	{/if}
 	<Sidebar bind:open {fileTree}/>
 	{#if !$navigating}
-		<main in:blur|local>
+		<main in:blur|local id="evidence-content">
 		<div class=content class:settings-content={$page.url.pathname.startsWith('/settings') }>
 			<article class:settings-article={$page.url.pathname.startsWith('/settings') }>
 				<slot/>
