@@ -10,9 +10,9 @@
     "fs-extra": "^9.1.0",
     "mdsvex": "^0.10.6",
     "remark-parse": "8.0.2",
-    "unified": "^9.1.0",
-    "unist-util-visit": "^2.0.3",
     "svelte": "3.55.0",
-    "svelte-preprocess": "5.0.3"
+    "svelte-preprocess": "5.0.3",
+    "unified": "^9.1.0",
+    "unist-util-visit": "^2.0.3"
   }
 }

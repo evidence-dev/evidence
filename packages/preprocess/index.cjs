@@ -41,6 +41,6 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
         }),
         // Add both script tags to all markdown files, if they are missing 
         addScriptTags,
-        processFrontmatter()
+        processFrontmatter(),
     ]
 } 
