@@ -240,7 +240,7 @@ importers:
       mdsvex: ^0.10.6
       remark-parse: 8.0.2
       svelte: 3.55.0
-      svelte-preprocess: ^5.0.3
+      svelte-preprocess: 5.0.3
       unified: ^9.1.0
       unist-util-visit: ^2.0.3
     dependencies:
@@ -4671,7 +4671,7 @@ packages:
     resolution: {integrity: sha512-jn7qwGFmJHwUSphV8zZneO3GmtlgLsmhs/LQyVvQbIIa+fzGMUiHI4HXJZL3FT8MJmgXWbLGiVVY7ElvHq6vDA==}
     deprecated: This is a stub types definition. sass provides its own type definitions, so you do not need this installed.
     dependencies:
-      sass: 1.59.3
+      sass: 1.60.0
     dev: true
 
   /@types/sax/1.2.4:
@@ -12923,8 +12923,8 @@ packages:
       mkdirp: 0.5.6
       rimraf: 2.7.1
 
-  /sass/1.59.3:
-    resolution: {integrity: sha512-QCq98N3hX1jfTCoUAsF3eyGuXLsY7BCnCEg9qAact94Yc21npG2/mVOqoDvE0fCbWDqiM4WlcJQla0gWG2YlxQ==}
+  /sass/1.60.0:
+    resolution: {integrity: sha512-updbwW6fNb5gGm8qMXzVO7V4sWf7LMXnMly/JEyfbfERbVH46Fn6q02BX7/eHTdKpE7d+oTkMMQpFWNUMfFbgQ==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
