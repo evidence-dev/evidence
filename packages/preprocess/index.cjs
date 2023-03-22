@@ -4,6 +4,13 @@ const parse = require('remark-parse')
 const visit = require('unist-util-visit')
 const md5 = require("blueimp-md5");
 const { supportedLangs } = require("./supportedLanguages.cjs");
+const preprocess = require("svelte-preprocess")
+
+const tailwindcss = require("tailwindcss");
+const nesting = require("tailwindcss/nesting");
+const autoprefixer = require("autoprefixer");
+const tailwindConfig = require('./tailwind.config.cjs')
+
 
 // This is includes future proofing to add support for Prism highlighting
 const PrismComponents = require("prismjs/components");
@@ -223,6 +230,17 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
                     }
                 }
             }
-        }
+        },
+        preprocess({
+            postcss: {
+                plugins: [
+                    nesting(),
+                    //Some plugins, like tailwindcss/nesting, need to run before Tailwind,
+                    tailwindcss(tailwindConfig),
+                    //But others, like autoprefixer, need to run after,
+                    autoprefixer,                
+                ]
+            },
+        }),      
     ]
 } 
