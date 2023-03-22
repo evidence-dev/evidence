@@ -37,7 +37,6 @@
   let compiledQuery
   let showCompilerToggle
   let showCompiled = true 
-  let codeContainerHeight
   let error
   let nRecords
   let nProperties
@@ -64,35 +63,32 @@
   
  </script>
 
- <div in:blur|local class="visible-query-{$showQueries} over-container "> 
- <!-- {#if $showQueries} -->
+ <div class="over-container visible-query-{$showQueries} "> 
     <!-- Title -->
-    <div class="container " transition:slide|local>
+    <div class="container  "  transition:slide|local>
       <div class="container-a">
         <button type="button" aria-label="show-sql" on:click={toggleSQL} class="title">
           <ChevronToggle toggled={$showSQL}/> {queryID}
         </button>
         <!-- Compile Toggle  -->
           {#if $showSQL && showCompilerToggle}
-            <CompilerToggle bind:showCompiled = {showCompiled}/>
+            <CompilerToggle bind:showCompiled={showCompiled}/>
           {/if }
           <!-- Query Display -->
-          {#if $showSQL}
-            <div class=code-container transition:slide|local>
+            <div class='code-container visible-query-{$showSQL}' >
               {#if showCompiled}
                 <Prism code={compiledQuery}/>
               {:else}
                 <Prism code={inputQuery}/>
               {/if}
             </div>  
-          {/if}
       </div>
       <!-- Status -->
       <button type="button" aria-label="view-query" class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>
           {#if error}
             {#if dev && error.message === "Missing database credentials"}
               {error.message}.
-              <a class=credentials-link href='/settings'> Add credentials &rarr;</a>
+              <a class='credentials-link' href='/settings'> Add credentials &rarr;</a>
             {:else}
               {error.message} 
             {/if}
@@ -107,7 +103,6 @@
             <DataTable data={queryResult} {queryID}/>
         {/if}
     </div>
- <!-- {/if} -->
 </div>
  
 <style>
@@ -117,11 +112,6 @@
       --scrollbar-active-color: rgba(0,0,0,.4);
       --scrollbar-size: .75rem;
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
-    }
-
-    .over-container {
-      overflow-y: hidden;
-      overflow-x: scroll;
     }
 
     .code-container {
@@ -145,18 +135,25 @@
     .code-container::-webkit-scrollbar-track {
       background-color: var(--scrollbar-track-color);
     }
+
     .visible-query-false {
-      transition: height 100ms 1000ms, opacity 1900ms 300ms;
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
+      max-height: 0;
+      transform: scaleY(0);
+      transform-style:flat;
     }
 
     .visible-query-true {
-      opacity: 1;
-      height: auto;
-      transition: height 100ms 1000ms, opacity 1900ms 300ms;
+      max-height: auto;
+      transform: scaleY(1);
+      transform-style:flat;
+      transition: all .2s ease-in-out;
     }
+
+    .over-container {
+      overflow-y: hidden;
+      overflow-x: scroll;
+    }
+
     .code-container::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-color);
       border-radius: 7px;
