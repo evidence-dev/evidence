@@ -79,10 +79,6 @@
 	const prefetchStrategy = (dev) ? "tap" : "hover"
 </script>
 
-<svelte:head>
-	<title>Evidence</title>
-</svelte:head>
-
 {#if $navigating}
 	<LoadingIndicator/>
 {/if}
