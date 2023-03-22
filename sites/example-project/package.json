@@ -19,7 +19,7 @@
     "@tidyjs/tidy": "2.4.4",
     "cross-env": "^7.0.3",
     "downloadjs": "1.4.7",
-    "echarts": "5.3.2",
+    "echarts": "5.4.1",
     "echarts-stat": "1.2.0",
     "export-to-csv": "0.2.1",
     "fs-extra": "10.1.0",

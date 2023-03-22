@@ -64,10 +64,10 @@
   
  </script>
 
- <div in:blur|local class="over-container"> 
- {#if $showQueries}
+ <div in:blur|local class="visible-query-{$showQueries} over-container "> 
+ <!-- {#if $showQueries} -->
     <!-- Title -->
-    <div class="container" transition:slide|local>
+    <div class="container " transition:slide|local>
       <div class="container-a">
         <button type="button" aria-label="show-sql" on:click={toggleSQL} class="title">
           <ChevronToggle toggled={$showSQL}/> {queryID}
@@ -107,7 +107,7 @@
             <DataTable data={queryResult} {queryID}/>
         {/if}
     </div>
- {/if}
+ <!-- {/if} -->
 </div>
  
 <style>
@@ -144,6 +144,18 @@
     }
     .code-container::-webkit-scrollbar-track {
       background-color: var(--scrollbar-track-color);
+    }
+    .visible-query-false {
+      transition: height 100ms 1000ms, opacity 1900ms 300ms;
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .visible-query-true {
+      opacity: 1;
+      height: auto;
+      transition: height 100ms 1000ms, opacity 1900ms 300ms;
     }
     .code-container::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-color);
