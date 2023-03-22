@@ -9,9 +9,7 @@ const config = {
   preprocess: [
     ...evidencePreprocess(true),
     preprocess({
-      postcss: {
-        configFilePath: "./postcss.config.cjs"
-      },
+      postcss: true,
     }),
   ], // Modify preprocess to allow for loading of $lib instead of package version of components library
   kit: {
