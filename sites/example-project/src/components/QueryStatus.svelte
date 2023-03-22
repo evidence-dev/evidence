@@ -31,8 +31,9 @@
 
   async function checkStatusAndInvalidate() {
     statuses = await getStatus();
+    // previous not empty check prevents executing the same query multi-times on startup
     // Check if queries have been removed from the page entirely, it allows vite/compile error to get to the page
-    if (statuses.length != previousStatuses.length) {
+    if (previousStatuses.length !== 0 && statuses.length != previousStatuses.length) {
       await invalidate((url) => url.pathname === `/api/${endpoint}.json`)
       
     }

@@ -75,6 +75,7 @@
 	import QueryStatus from "$lib/QueryStatus.svelte";
 	
 	let open = false;
+	//TODO: Offer this as a build parameter
 	// in dev. mode prevent prefetch on "hover"
 	const prefetchStrategy = (dev) ? "tap" : "hover"
 </script>
