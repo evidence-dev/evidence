@@ -48,6 +48,7 @@ module.exports = {
         ],
       },
       colors: {
+        pony: "#311341",
         blue: {
           100: "hsl(202, 100%, 95%, <alpha-value>)",
           200: "hsl(204, 100%, 85%, <alpha-value>)",

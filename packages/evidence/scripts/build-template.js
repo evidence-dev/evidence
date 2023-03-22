@@ -14,7 +14,9 @@ const templatePaths = [
     'src/pages/+layout.server.js',
     'src/pages/settings/',
     'src/pages/api/',
-    'src/components/'
+    'src/components/',
+    'tailwind.config.cjs',
+    'postcss.config.cjs'
 ]
 
 fs.emptyDirSync("./template/")
@@ -27,13 +29,19 @@ templatePaths.forEach(p => {
 fs.outputFileSync('./template/svelte.config.js', 
     `
     import evidencePreprocess from '@evidence-dev/preprocess'
+    import preprocess from "svelte-preprocess";
     import adapter from '@sveltejs/adapter-static';
     
     /** @type {import('@sveltejs/kit').Config} */
     
     const config = {
-        extensions: ['.svelte', ".md"],
-        preprocess: evidencePreprocess(),
+        extensions: ['.svelte', ".md"], 
+        preprocess: [
+            ...evidencePreprocess(true),
+            preprocess({
+              postcss: true,
+            }),
+        ],
         kit: {
             adapter: adapter({
                 strict: false
