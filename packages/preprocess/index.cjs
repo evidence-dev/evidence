@@ -4,7 +4,7 @@ const getPrismLangs = require('./src/utils/get-prism-langs.cjs')
 const addScriptTags = require("./src/add-script-tags.cjs")
 const processQueries = require('./src/process-queries.cjs')
 // This is includes future proofing to add support for Prism highlighting
-
+const processFrontmatter = require('./src/process-frontmatter/process-frontmatter.cjs')
 
 
 function highlighter(code, lang) {
@@ -41,5 +41,6 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
         }),
         // Add both script tags to all markdown files, if they are missing 
         addScriptTags,
+        processFrontmatter()
     ]
 } 
