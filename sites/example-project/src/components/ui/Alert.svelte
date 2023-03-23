@@ -19,7 +19,6 @@
   class="alert {status}"
   role="alert"
   class:sticky
-  use:portal={{ prepend: true, target: sticky ? "#evidence-content" : null }}
 >
   <span class="h-6 block">
     <TiInfo />
