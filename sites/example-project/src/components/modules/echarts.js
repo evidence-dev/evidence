@@ -450,7 +450,9 @@ export default(node, option, renderer) => {
         })
     }
     
-    if (window.ResizeObserver && containerElement) {
+    if (window.ResizeObserver && containerElement && false) {
+        // TODO: This was originally added to combat a bug here: https://github.com/evidence-dev/evidence/pull/450
+        // Another solution is required. Something like lodash debounce might be an easy win to solve this.
         resizeObserver = new ResizeObserver(resizeChart)
         resizeObserver.observe(containerElement)
     } else {

@@ -63,7 +63,8 @@
   
  </script>
 
- <div class="over-container visible-query-{$showQueries} "> 
+ <div class="over-container" in:blur|local> 
+  {#if $showQueries}
     <!-- Title -->
     <div class="container  "  transition:slide|local>
       <div class="container-a">
@@ -75,13 +76,15 @@
             <CompilerToggle bind:showCompiled={showCompiled}/>
           {/if }
           <!-- Query Display -->
-            <div class='code-container visible-query-{$showSQL}' >
+          {#if $showSQL}
+            <div class='code-container' transition:slide|local>
               {#if showCompiled}
                 <Prism code={compiledQuery}/>
               {:else}
                 <Prism code={inputQuery}/>
               {/if}
-            </div>  
+            </div> 
+            {/if} 
       </div>
       <!-- Status -->
       <button type="button" aria-label="view-query" class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>
@@ -103,6 +106,7 @@
             <DataTable data={queryResult} {queryID}/>
         {/if}
     </div>
+    {/if}
 </div>
  
 <style>
@@ -134,19 +138,6 @@
     }
     .code-container::-webkit-scrollbar-track {
       background-color: var(--scrollbar-track-color);
-    }
-
-    .visible-query-false {
-      max-height: 0;
-      transform: scaleY(0);
-      transform-style:flat;
-    }
-
-    .visible-query-true {
-      max-height: auto;
-      transform: scaleY(1);
-      transform-style:flat;
-      transition: all .2s ease-in-out;
     }
 
     .over-container {
