@@ -1,6 +1,6 @@
 import {registerTheme, init} from 'echarts';
 import {colours} from './colours'
-import debounce from "lodash.debounce"
+import debounce from "debounce"
 
 export default(node, option, renderer) => {
 	registerTheme('evidence-light', {
@@ -448,7 +448,7 @@ export default(node, option, renderer) => {
                 duration: 500
             }
         })
-    }, 100, { trailing: true })
+    }, 100)
     
     if (window.ResizeObserver && containerElement) {
         // TODO: This was originally added to combat a bug here: https://github.com/evidence-dev/evidence/pull/450
