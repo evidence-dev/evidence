@@ -2,6 +2,9 @@
         MDSvex comes in handy here because it takes frontmatter and shoves it into the metadata object.
         This means that all we need to do is build out the expected page metadata
     -->
+{#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title)}
+  <h1>{metadata.title ?? metadata.og?.title}</h1>
+{/if}
 <svelte:head>
   <!-- Title has a default case; so we need to handle it in a special way -->
   {#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title)}

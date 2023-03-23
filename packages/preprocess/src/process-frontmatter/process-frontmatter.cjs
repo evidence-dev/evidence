@@ -15,7 +15,7 @@ module.exports = () => {
             if (!filename.endsWith("+page.md")) return
             if (!handleOgContent) handleOgContent = await readFile(`${__dirname}/handle-og.svelte`)
             return {
-                code: content + handleOgContent
+                code: handleOgContent + content
             }
         },
         script: ({content, filename, attributes}) => {
