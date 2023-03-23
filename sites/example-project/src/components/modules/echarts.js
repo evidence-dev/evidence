@@ -1,6 +1,6 @@
 import {registerTheme, init} from 'echarts';
 import {colours} from './colours'
-
+import debounce from "lodash.debounce"
 
 export default(node, option, renderer) => {
 	registerTheme('evidence-light', {
@@ -442,15 +442,15 @@ export default(node, option, renderer) => {
     
     let resizeObserver
     const containerElement = document.querySelector('div.content > article')
-    const resizeChart = () => {
+    const resizeChart = debounce(() => {
         chart.resize({
             animation: {
                 duration: 500
             }
         })
-    }
+    }, 100, { trailing: true })
     
-    if (window.ResizeObserver && containerElement && false) {
+    if (window.ResizeObserver && containerElement) {
         // TODO: This was originally added to combat a bug here: https://github.com/evidence-dev/evidence/pull/450
         // Another solution is required. Something like lodash debounce might be an easy win to solve this.
         resizeObserver = new ResizeObserver(resizeChart)
