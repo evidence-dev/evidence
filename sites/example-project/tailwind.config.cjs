@@ -4,7 +4,11 @@ const plugin = require('tailwindcss/plugin')
 module.exports = {
   content: {
     relative: true,
-    files: ["./src/**/*.{html,js,svelte,ts,md}", "../../pages/**/*.md"]
+    files: [
+      "./src/**/*.{html,js,svelte,ts,md}", // This is used for everything in base evidence template
+      "../../pages/**/*.{html,js,svelte,ts,md}", // This is used in end user projects to let them access tailwind classes
+      "../../src/**/*.{html,js,svelte,ts,md}", // This is used in end user projects to let them access tailwind classes
+    ]
   },
   theme: {
     extend: {
