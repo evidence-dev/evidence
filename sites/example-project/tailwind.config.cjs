@@ -2,7 +2,10 @@ const plugin = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js,svelte,ts}"],
+  content: {
+    relative: true,
+    files: ["./src/**/*.{html,js,svelte,ts,md}", "../../pages/**/*.md"]
+  },
   theme: {
     extend: {
       textShadow: {
