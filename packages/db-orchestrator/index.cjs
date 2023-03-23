@@ -104,7 +104,6 @@ const runQueries = async function (routeHash, dev) {
                     */
                     const queryIndex = _queryIndex + (batchNum * BATCH_SIZE)
 
-                    console.log(`Processing query ${queryIndex} [${query.id}] (query ${_queryIndex} + (${batchNum} * ${BATCH_SIZE}))`)
                     let queryTime = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours());
                     let cache, columnTypeCache;
                     const { resultsCacheFile, columnTypeCacheFile } = getQueryCachePaths(query.compiledQueryString, queryTime);
