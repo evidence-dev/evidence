@@ -8,9 +8,11 @@
 
   /**
    * Note that this is pretty specific to the current evidence page layout
-   * @type {boolean}
+   * @type {boolean | string}
    */
   export let sticky = false;
+
+  $: if (typeof sticky === "string") sticky = sticky.toLowerCase() === "true"
 </script>
 
 <div
