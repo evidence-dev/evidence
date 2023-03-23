@@ -40,7 +40,7 @@
     {#each $tabItems.tabs as tab}
       <button
         on:click={() => ($tabItems.active = tab.id)}
-        class="px-4 pt-2 border-b-2 border-blue-300 text-sm whitespace-nowrap"
+        class="px-4 pt-2 border-b-2 border-gray-300 text-sm whitespace-nowrap font-sans"
         class:active={$tabItems.active === tab.id}
       >
         {tab.label}
@@ -59,9 +59,9 @@
          active:bg-gray-100
         transition-colors rounded-t;
     &.active {
-      @apply border-green-500
-            hover:border-green-600 hover:bg-gray-200
-            active:border-green-700 active:bg-gray-100;
+      @apply border-blue-500
+            hover:border-blue-600 hover:bg-gray-200
+            active:border-blue-700 active:bg-gray-100;
     }
   }
 </style>
