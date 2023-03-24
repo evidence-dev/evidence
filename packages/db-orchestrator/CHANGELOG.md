@@ -1,5 +1,11 @@
 # @evidence-dev/db-orchestrator
 
+## 2.0.2
+
+### Patch Changes
+
+- fa958c52: Performance Improvements; Queries now run in batches of 2; Charts are less eager to resize
+
 ## 2.0.1
 
 ### Patch Changes

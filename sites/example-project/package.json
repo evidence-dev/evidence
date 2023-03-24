@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/components",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "scripts": {
     "dev": "svelte-package && vite dev --port 3000",
     "build": "vite build",
