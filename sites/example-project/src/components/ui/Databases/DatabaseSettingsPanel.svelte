@@ -21,16 +21,16 @@
 
     // Available connector types and fallback
     const databaseOptions = [
-        {name: 'Choose a database'},
-		{id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/guides/bigquery"},
-		{id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
-		{id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
+        {name: 'Choose a data source'},
+        {id: 'bigquery', name: 'BigQuery', formComponent: BigqueryForm, docsHref: "https://docs.evidence.dev/guides/bigquery"},
+        {id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm},
+        {id: 'mysql', name: 'MySQL', formComponent: MysqlForm},
         {id: 'redshift', name: 'Redshift', formComponent: RedshiftForm}, // Redshift uses the postgres connector under the hood
-		{id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
+        {id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm},
         {id: 'sqlite', name: 'SQLite', formComponent: SqliteForm},
         {id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm},
         {id: 'csv', name: 'CSV', formComponent: CSVForm}
-	];
+    ];
 
     let selectedDatabase = databaseOptions.filter(d => d.id === settings.database)[0] ?? databaseOptions[0];
     let disableSave = false;
@@ -82,11 +82,11 @@
     }
 </script>
 
-<form on:submit|preventDefault={submitForm} autocomplete="off" in:blur|local>
+<form on:submit|preventDefault={submitForm} autocomplete="off" in:blur|local id=connect-database>
     <div class=container>
         <div class=panel> 
-            <h2>Database Connection</h2>
-            <p>Evidence supports one database connection per project.</p>
+            <h2>Data Source Connection</h2>
+            <p>Evidence supports one data source per project.</p>
             <p>These credentials will be used when running locally. For your production environment, see the deployment panel.</p>
             <h3>Connection Type</h3>
             <select data-test-id='dbConnectionType' bind:value={selectedDatabase} on:change={databaseChange}>
@@ -228,6 +228,10 @@ h3 {
     border-radius: 5px 5px 0 0;
     font-size: 14px; 
     font-family: var(--ui-font-family);
+}
+
+form {
+    scroll-margin-top: 3.5rem; /* offset for sticky header */
 }
 
 .panel {

@@ -1,12 +1,12 @@
 <script>
-    import IoIosCheckmarkCircle from 'svelte-icons/io/IoIosCheckmarkCircle.svelte'
-    import IoIosCloseCircle from 'svelte-icons/io/IoIosCloseCircle.svelte'
-    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+    import CheckmarkCircleIcon from '$lib/icons/CheckmarkCircleIcon.svelte'
+    import CloseCircleIcon from '$lib/icons/CloseCircleIcon.svelte'
+    import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte'
     export let settings
 
 </script>
 
-<form>
+<form id=version-control>
 
 
 <div class=container>
@@ -18,11 +18,11 @@
         <div class=git-item>
             {#if settings.localGitRepo}
                 <span class=gitcheck-icon>
-                <IoIosCheckmarkCircle/>
+                <CheckmarkCircleIcon height=25 width=25/>
                 </span>
             {:else}
                 <span class=gitx-icon>
-                <IoIosCloseCircle/>
+                <CloseCircleIcon height=25 width=25/>
                 </span>
             {/if}
             <span class=item-label>Local Git Repo</span>
@@ -32,7 +32,7 @@
                 </div>
             {:else}
             <span class=help-icon>
-                <IoIosHelpCircleOutline/>
+                <HelpCircleIcon height=18 width=18 verticalOffset=2/>
                 <span class=info-msg>Use your code editor to initialize a repo or run `git init` in a terminal</span>
             </span>
             {/if}
@@ -41,11 +41,11 @@
         <div class=git-item>
             {#if settings.gitRepo}
                 <span class=gitcheck-icon>
-                <IoIosCheckmarkCircle/>
+                <CheckmarkCircleIcon height=25 width=25/>
                 </span>
             {:else}
                 <span class=gitx-icon>
-                <IoIosCloseCircle/>
+                <CloseCircleIcon height=25 width=25/>
                 </span>
             {/if}   
             <span class=item-label>Git Repo Published</span>
@@ -55,7 +55,7 @@
             </div>
             {:else}
             <span class=help-icon>
-                <IoIosHelpCircleOutline/>
+                <HelpCircleIcon height=18 width=18 verticalOffset=2/>
                 <span class=info-msg>Publish your git repo to a platform like GitHub or GitLab</span>
             </span>
             {/if}
@@ -68,7 +68,9 @@
 </footer>
 </form>
 <style>
-
+    form {
+        scroll-margin-top: 3.5rem; /* offset for sticky header */;
+    }
     .container {
         margin-top: 2em;
         border-top: 1px solid var(--grey-200);
@@ -111,22 +113,12 @@
     .gitcheck-icon {
         color: var(--green-700);
         float: right;
-        width: 25px;
-        vertical-align: middle;
-        line-height: 1em;
-        position:relative;
-        text-transform: none;
         margin-right: 5px;
     }
 
     .gitx-icon {
         color: var(--red-700);
-        width: 25px;
         float: right;
-        vertical-align: middle;
-        line-height: 1em;
-        position:relative;
-        text-transform: none;
         margin-right: 5px;
     }
 
