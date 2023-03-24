@@ -4,8 +4,8 @@ import { sveltekit } from "@sveltejs/kit/vite"
 const config = {
     plugins: [sveltekit()],
     optimizeDeps: {
-        include: ['echarts-stat'],
-        exclude: ['@evidence-dev/components']
+        include: ['echarts-stat', 'echarts'],
+        exclude: ['@evidence-dev/components', 'svelte-icons', 'svelte-tiny-linked-charts']
     },
     ssr: {
         external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
