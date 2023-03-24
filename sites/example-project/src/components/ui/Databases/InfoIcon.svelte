@@ -1,5 +1,5 @@
 <script>
-    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+    import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte'
     import { fade } from 'svelte/transition';
 
     let visible = false
@@ -13,7 +13,7 @@
     on:mouseenter={showMessage} on:mouseleave={hideMessage}
     class="additional-info-icon"
 >
-    <IoIosHelpCircleOutline/>
+    <HelpCircleIcon/>
     {#if visible}
     <span transition:fade class=info-msg>
         <slot></slot>
