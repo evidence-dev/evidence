@@ -37,7 +37,6 @@
   let compiledQuery
   let showCompilerToggle
   let showCompiled = true 
-  let codeContainerHeight
   let error
   let nRecords
   let nProperties
@@ -64,35 +63,35 @@
   
  </script>
 
- <div in:blur|local class="over-container"> 
- {#if $showQueries}
+ <div class="over-container" in:blur|local> 
+  {#if $showQueries}
     <!-- Title -->
-    <div class="container" transition:slide|local>
+    <div class="container  "  transition:slide|local>
       <div class="container-a">
         <button type="button" aria-label="show-sql" on:click={toggleSQL} class="title">
           <ChevronToggle toggled={$showSQL}/> {queryID}
         </button>
         <!-- Compile Toggle  -->
           {#if $showSQL && showCompilerToggle}
-            <CompilerToggle bind:showCompiled = {showCompiled}/>
+            <CompilerToggle bind:showCompiled={showCompiled}/>
           {/if }
           <!-- Query Display -->
           {#if $showSQL}
-            <div class=code-container transition:slide|local>
+            <div class='code-container' transition:slide|local>
               {#if showCompiled}
                 <Prism code={compiledQuery}/>
               {:else}
                 <Prism code={inputQuery}/>
               {/if}
-            </div>  
-          {/if}
+            </div> 
+            {/if} 
       </div>
       <!-- Status -->
       <button type="button" aria-label="view-query" class = {"status-bar" + (error ? " error": " success") + ($showResults ? " open": " closed")} on:click={toggleResults}>
           {#if error}
             {#if dev && error.message === "Missing database credentials"}
               {error.message}.
-              <a class=credentials-link href='/settings'> Add credentials &rarr;</a>
+              <a class='credentials-link' href='/settings'> Add credentials &rarr;</a>
             {:else}
               {error.message} 
             {/if}
@@ -107,7 +106,7 @@
             <DataTable data={queryResult} {queryID}/>
         {/if}
     </div>
- {/if}
+    {/if}
 </div>
  
 <style>
@@ -117,11 +116,6 @@
       --scrollbar-active-color: rgba(0,0,0,.4);
       --scrollbar-size: .75rem;
       --scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
-    }
-
-    .over-container {
-      overflow-y: hidden;
-      overflow-x: scroll;
     }
 
     .code-container {
@@ -145,6 +139,12 @@
     .code-container::-webkit-scrollbar-track {
       background-color: var(--scrollbar-track-color);
     }
+
+    .over-container {
+      overflow-y: hidden;
+      overflow-x: scroll;
+    }
+
     .code-container::-webkit-scrollbar-thumb {
       background-color: var(--scrollbar-color);
       border-radius: 7px;

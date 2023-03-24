@@ -74,6 +74,9 @@
 	import QueryStatus from "$lib/QueryStatus.svelte";
 	
 	let open = false;
+	//TODO: Offer this as a build parameter
+	// in dev. mode prevent prefetch on "hover"
+	const prefetchStrategy = (dev) ? "tap" : "hover"
 </script>
 
 <svelte:head>
@@ -84,7 +87,7 @@
 	<LoadingIndicator/>
 {/if}
 
-<div class="grid">	
+<div data-sveltekit-preload-data={prefetchStrategy} class="grid">	
 		<div class="header-bar">
 			<Header {fileTree} bind:open/>
 		</div>
