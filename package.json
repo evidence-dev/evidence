@@ -14,12 +14,14 @@
 		"downloadjs": "1.4.7",
 		"echarts": "5.3.2",
 		"echarts-stat": "1.2.0",
-		"eslint": "^8.36.0",
 		"export-to-csv": "0.2.1",
 		"fs-extra": "10.1.0",
 		"git-remote-origin-url": "4.0.0",
-		"prettier": "2.6.2",
-		"prettier-plugin-svelte": "2.7.0",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.8.1",
 		"prismjs": "1.29.0",
 		"remark-parse": "8.0.2",
 		"ssf": "^0.11.2",
@@ -44,7 +46,9 @@
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
 		"postinstall": "pnpm --filter ./packages/preprocess build && pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts ",
-		"docs": "pnpm --filter ./sites/docs start"
+		"docs": "pnpm --filter ./sites/docs start",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"pnpm": {
 		"overrides": {
