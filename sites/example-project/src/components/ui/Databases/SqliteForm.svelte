@@ -1,5 +1,5 @@
 <script>    
-    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+    import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte'
 
 	export let credentials;
 	export let existingCredentials;
@@ -79,7 +79,7 @@
 
         {#if opt.additionalInstructions}
         <span class="additional-info-icon">
-                <IoIosHelpCircleOutline/>
+                <HelpCircleIcon height=18 width=18 verticalOffset=2/>
                 <span class=info-msg>{opt.additionalInstructions}</span>
         </span>
         {/if}
@@ -128,14 +128,8 @@
 <style>
 
     span.additional-info-icon {
-        width: 18px;
         color:var(--grey-600);
-        display:inline-block;
-        vertical-align: middle;
-        line-height: 1em;
         cursor: help;
-        position:relative;
-        text-transform: none;
     }
 
     div.input-item{

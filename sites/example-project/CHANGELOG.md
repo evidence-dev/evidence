@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 2.2.1
+
+### Patch Changes
+
+- 847e8c81: Adds a "Kebab" style page menu to all (non settings) pages, with links to deployment, docs and buttons to show / hide queries.
+- fa958c52: Performance Improvements; Queries now run in batches of 2; Charts are less eager to resize
+
 ## 2.2.0
 
 ### Minor Changes

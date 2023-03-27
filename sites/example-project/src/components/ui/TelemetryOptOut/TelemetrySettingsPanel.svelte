@@ -14,7 +14,7 @@
     }
 </script>
 
-<form>
+<form id=telemetry>
 <div class=container>
     <div class=panel> 
         <h2>Telemetry</h2>
@@ -51,6 +51,9 @@
 </footer>
 </form>
 <style>
+    form {
+        scroll-margin-top: 3.5rem; /* offset for sticky header */;
+    }
     .container {
         margin-top: 2em;
         border-top: 1px solid var(--grey-200);

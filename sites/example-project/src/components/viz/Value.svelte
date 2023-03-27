@@ -4,7 +4,7 @@
   import { convertColumnToDate } from "$lib/modules/dateParsing.js";
   import checkInputs from "$lib/modules/checkInputs.js";
   import PulseNumber from "./PulseNumber.svelte";
-  import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+  import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte'
   import { strictBuild } from "./context"
 
   // Passing in value from dataset:
@@ -83,7 +83,7 @@
   <span class="error">
       <span class=error-label>Error</span>
       <span class="additional-info-icon">
-          <IoIosHelpCircleOutline/>
+          <HelpCircleIcon height=18 width=18 verticalOffset=2/>
       </span>
       <span class=error-msg>{error}</span>
   </span>

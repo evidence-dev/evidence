@@ -14,7 +14,7 @@ from table`
 
 </script>
 
-<form>
+<form id=formatting>
   <div class="container">
     <div class="panel">
       <h2>Value Formatting</h2>
@@ -64,6 +64,10 @@ from table`
 </form>
 
 <style>
+  form {
+        scroll-margin-top: 3.5rem; /* offset for sticky header */;
+  }
+  
   .container {
     margin-top: 2em;
     border-top: 1px solid var(--grey-200);

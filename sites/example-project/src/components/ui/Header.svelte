@@ -1,13 +1,19 @@
 <script>
     import BreadCrumbs from './BreadCrumbs.svelte';
-    import PrintButton from './PrintButton.svelte';
+    import Hamburger from './Hamburger.svelte';
+    import PageMenu from './PageMenu.svelte';
     export let fileTree;
+	import { page } from '$app/stores';
+    export let open = false;
 </script>
 
 <header>
-    <div class="breadcrumb-container">
+    <div class="header-container">
+        <Hamburger bind:open/>
         <BreadCrumbs {fileTree}/>
-        <PrintButton/>
+		{#if !$page.url.pathname.includes('/settings')}
+		<PageMenu/>
+		{/if}
     </div>
 </header>
 
@@ -18,7 +24,7 @@ header {
     width: 100%;
 }
 
-div.breadcrumb-container {
+div.header-container {
 	height: var(--header-height);
 	box-sizing: border-box;
 	display: flex;
