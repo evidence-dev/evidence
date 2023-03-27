@@ -492,12 +492,12 @@ hide_table_of_contents: false
 </div>
 </div>
 
-<div  class="gallery-item-grid">
+<div class="gallery-item-grid">
     <div class="item-header">
         <div class="lbl">Advanced ECharts Example</div>
     </div>
     <div class="item-body-centered">
-<a href="/components/custom-echarts#advanced-chart">
+    <a href="/components/custom-echarts#advanced-chart">
 
 ![custom-chart](/img/exg-custom-echarts-anscombe.svg)
 
@@ -508,5 +508,45 @@ hide_table_of_contents: false
 
 
 
+
+</div>
+
+## UI Components
+
+<div class="gallery-container-grid">
+
+### [Alert](alert)
+
+ <div class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Alert</div>
+    </div>
+    <div class="item-body-centered">
+    <a href="/components/alert">
+
+![Alert](/img/alerts.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+<div class="gallery-container-grid">
+
+### [Tabs](tabs)
+
+ <div class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Tabs</div>
+    </div>
+    <div class="item-body-centered">
+    <a href="/components/tabs">
+
+![Tabs](/img/tabs.png)
+
+</a>
+</div>
+</div>
 
 </div>
