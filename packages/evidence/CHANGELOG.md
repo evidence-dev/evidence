@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 15.0.1
+
+### Patch Changes
+
+- fa958c52: Performance Improvements; Queries now run in batches of 2; Charts are less eager to resize
+- Updated dependencies [847e8c81]
+- Updated dependencies [fa958c52]
+  - @evidence-dev/components@2.2.1
+  - @evidence-dev/db-orchestrator@2.0.2
+
 ## 15.0.0
 
 ### Minor Changes
