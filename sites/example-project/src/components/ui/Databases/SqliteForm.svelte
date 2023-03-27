@@ -79,7 +79,7 @@
 
         {#if opt.additionalInstructions}
         <span class="additional-info-icon">
-                <HelpCircleIcon height=18 width=18 verticalOffset=2/>
+            <HelpCircleIcon height=18 width=18 verticalOffset=2 color="--grey-600"/>
                 <span class=info-msg>{opt.additionalInstructions}</span>
         </span>
         {/if}
@@ -128,8 +128,14 @@
 <style>
 
     span.additional-info-icon {
+        width: 18px;
         color:var(--grey-600);
+        display:inline-block;
+        vertical-align: middle;
+        line-height: 1em;
         cursor: help;
+        position:relative;
+        text-transform: none;
     }
 
     div.input-item{

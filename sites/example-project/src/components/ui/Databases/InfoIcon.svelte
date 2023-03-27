@@ -13,7 +13,7 @@
     on:mouseenter={showMessage} on:mouseleave={hideMessage}
     class="additional-info-icon"
 >
-    <HelpCircleIcon/>
+    <HelpCircleIcon height=18 width=18 verticalOffset=2 color="--grey-600"/>
     {#if visible}
     <span transition:fade class=info-msg>
         <slot></slot>

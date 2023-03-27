@@ -6,7 +6,7 @@
 </script>
 
 <span class=icon-container style="padding-bottom: {verticalOffset}px">
-  <span class=icon style="color: var({color}); height: {height}px; width:{width}px">
+  <span class=icon style="fill: var({color}); height: {height}px; width:{width}px">
     <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 16 16"

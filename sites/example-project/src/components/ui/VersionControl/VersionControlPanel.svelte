@@ -18,11 +18,11 @@
         <div class=git-item>
             {#if settings.localGitRepo}
                 <span class=gitcheck-icon>
-                <CheckmarkCircleIcon height=25 width=25/>
+                <CheckmarkCircleIcon height=25 width=25 color="--green-700"/>
                 </span>
             {:else}
                 <span class=gitx-icon>
-                <CloseCircleIcon height=25 width=25/>
+                <CloseCircleIcon height=25 width=25 color="--red-700"/>
                 </span>
             {/if}
             <span class=item-label>Local Git Repo</span>
@@ -41,11 +41,11 @@
         <div class=git-item>
             {#if settings.gitRepo}
                 <span class=gitcheck-icon>
-                <CheckmarkCircleIcon height=25 width=25/>
+                <CheckmarkCircleIcon height=25 width=25 color="--green-700"/>
                 </span>
             {:else}
                 <span class=gitx-icon>
-                <CloseCircleIcon height=25 width=25/>
+                <CloseCircleIcon height=25 width=25 color="--red-700"/>
                 </span>
             {/if}   
             <span class=item-label>Git Repo Published</span>
