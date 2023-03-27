@@ -1,5 +1,5 @@
 ---
-sidebar_position: 98
+sidebar_position: 13
 title: Custom ECharts
 hide_table_of_contents: false
 ---

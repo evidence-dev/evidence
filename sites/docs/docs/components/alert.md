@@ -1,5 +1,6 @@
 ---
 title: Alert
+sidebar_position: 30
 ---
 
 ![alert](/img/alerts.png)

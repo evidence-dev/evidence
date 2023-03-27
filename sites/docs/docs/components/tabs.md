@@ -1,5 +1,6 @@
 ---
 title: Tabs
+sidebar_position: 31
 ---
 
 ![tabs](/img/tabs.png)
