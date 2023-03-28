@@ -50,7 +50,7 @@ const getCredentials = async(database) => {
 const runQuery = async (queryString, database) => {
     try {
         const credentials = await getCredentials(database)
-        const connection = new BigQuery(credentials)
+        const connection = new BigQuery({...credentials, maxRetries: 10})
 
         const [job] = await connection.createQueryJob({query: queryString });
         const [rows] = await job.getQueryResults();
