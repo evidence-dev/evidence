@@ -5,6 +5,7 @@ const visit = require('unist-util-visit')
 const md5 = require("blueimp-md5");
 const { supportedLangs } = require("./supportedLanguages.cjs");
 
+
 // This is includes future proofing to add support for Prism highlighting
 const PrismComponents = require("prismjs/components");
 
@@ -52,7 +53,11 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '$lib/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
+        import Alert from '$lib/ui/Alert.svelte';
         import BigLink from '$lib/ui/BigLink.svelte';
+        import Tab from "$lib/ui/Tabs/Tab.svelte";
+        import Tabs from "$lib/ui/Tabs/Tabs.svelte";
+        
         import VennDiagram from '$lib/diagrams/VennDiagram.svelte';
         import SankeyDiagram from "$lib/diagrams/SankeyDiagram.svelte";
         import Value from '$lib/viz/Value.svelte';
@@ -222,6 +227,6 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
                     }
                 }
             }
-        }
+        },   
     ]
 } 

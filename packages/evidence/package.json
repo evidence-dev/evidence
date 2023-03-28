@@ -54,7 +54,12 @@
     "typescript": "4.9.5",
     "git-remote-origin-url": "4.0.0",
     "unist-util-visit": "4.1.2",
-    "svelte-tiny-linked-charts": "1.1.5"
+    "svelte-tiny-linked-charts": "1.1.5",
+    "svelte-preprocess": "5.0.3",
+    "postcss": "^8.4.14",
+    "postcss-load-config": "^4.0.1",
+    "autoprefixer": "^10.4.7",
+    "tailwindcss": "^3.1.5"
   },
   "engines": {
     "node": "^16.14 || >=18"
