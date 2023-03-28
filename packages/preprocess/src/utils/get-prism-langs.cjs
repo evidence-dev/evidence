@@ -1,6 +1,10 @@
 const PrismComponents = require("prismjs/components");
+/** @type {string[]} */
 const { supportedLangs } = require("./supportedLanguages.cjs");
 
+/**
+ * @returns {Set<string>}
+ */
 const getPrismLangs = function(){
     let prismLangs= new Set()
     

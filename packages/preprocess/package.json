@@ -5,6 +5,9 @@
   "main": "index.cjs",
   "author": "evidence.dev",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "blueimp-md5": "^2.19.0",
     "fs-extra": "^9.1.0",
@@ -13,8 +16,10 @@
     "svelte": "3.55.0",
     "svelte-preprocess": "5.0.3",
     "unified": "^9.1.0",
-    "unist-util-visit": "^2.0.3",
-    "svelte": "3.55.0",
-    "svelte-preprocess": "5.0.3"
+    "unist-util-visit": "^2.0.3"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "jest": "^28.1.3"
   }
 }

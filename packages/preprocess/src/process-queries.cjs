@@ -1,14 +1,5 @@
-const unified = require('unified')
-const parse = require('remark-parse')
-const visit = require('unist-util-visit')
-const md5 = require("blueimp-md5");
-const getPrismLangs = require('./utils/get-prism-langs.cjs')
-
-const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
-    const hash = md5(route)
-    return hash
-}
+const {getRouteHash} = require("./utils/get-route-hash.cjs")
+const {getQueryIds} = require("./utils/get-query-ids.cjs")
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     const routeH = getRouteHash(filename)
@@ -16,6 +7,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let queryDeclarations = ''
     
     if(fileQueryIds?.length > 0) {
+        // Get query results from load function
         queryDeclarations = 
         `
         let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;
@@ -111,31 +103,6 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
 
     return defaultProps
 }
-// Unified parser step to ignore indented code blocks. 
-// Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
-// Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
-const ignoreIndentedCode = function() {
-	const Parser = this.Parser;
-	const block_tokenizers = Parser.prototype.blockTokenizers;
-	block_tokenizers.indentedCode = () => true;
-}
-
-const getQueryIds = function(content){
-    let queryIds = [];  
-    let tree = unified()
-        .use(parse)
-        .use(ignoreIndentedCode)
-        .parse(content)   
-
-    visit(tree, 'code', function(node) {
-        let id = node.lang ?? 'untitled'
-         // Prevent "real" code blocks from being interpreted as queries
-         if (!getPrismLangs().has(id.toLowerCase())){
-             queryIds.push(id)
-         }
-    });
-    return queryIds;
-}
 
 /**
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
@@ -143,8 +110,8 @@ const getQueryIds = function(content){
 const processQueries = (componentDevelopmentMode) => {
     let queryIdsByFile = {}
     return {
-        markup({content, filename}){
-            if(filename.endsWith(".md")){
+        markup({content, filename}) {
+            if(filename.endsWith(".md")) {
                 let fileQueryIds = getQueryIds(content);
                 queryIdsByFile[getRouteHash(filename)] = fileQueryIds;
             }
