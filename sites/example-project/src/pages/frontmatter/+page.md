@@ -34,4 +34,4 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 
 
 You can access any of your frontmatter values by surrounding them with `{}`.
-For example, this page has `some_arbitrary_frontmatter` included in it's own frontmatter, which has a value of `{some_arbitrary_frontmatter}`
+For example, this page has `some_arbitrary_frontmatter` included in it's own frontmatter, which has a value of "{some_arbitrary_frontmatter}"
