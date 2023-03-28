@@ -1,5 +1,5 @@
 <script>    
-    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+    import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte'
 
 	export let credentials;
 	export let existingCredentials;
@@ -79,7 +79,7 @@
 
         {#if opt.additionalInstructions}
         <span class="additional-info-icon">
-                <IoIosHelpCircleOutline/>
+            <HelpCircleIcon height=18 width=18 verticalOffset=2 color="--grey-600"/>
                 <span class=info-msg>{opt.additionalInstructions}</span>
         </span>
         {/if}

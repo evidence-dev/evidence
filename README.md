@@ -20,8 +20,7 @@ Evidence compiles your markdown documents into a fast and reliable website. It t
 Evidence supports loops, conditionals, parameterized pages, tests and more. It's easy to get started and you can build data products which are both more sophisticated and dramatically easier to use than what you can build with a typical BI tool.
 
 
-# Getting Started 
-Evidence is in alpha. A lot of things will change between now and our stable release.  
+# Getting Started
 
 ## Installation 
 

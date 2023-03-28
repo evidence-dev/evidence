@@ -5,15 +5,17 @@
 	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte'
 	export let fileTree;
 	export let open 
+	import CloseIcon from '$lib/icons/CloseIcon.svelte';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children
 </script>
 
-<aside class="sidebar" class:open>
+<aside class="sidebar" class:open >
     <div class="sticky">
         <div class=nav-header>
             <a href='/' on:click={() => open = !open}><h2 class=project-title>Evidence</h2></a>
+			<button class=close on:click={() => open = !open}><CloseIcon height=36 width=36/></button>
         </div>
         <nav>
 			{#each firstLevelFiles as file}
@@ -62,10 +64,15 @@ aside.sidebar {
 }
 
 .project-title{
-	font-size: 1.2em;	
+	font-size: 22px;	
 	margin: 0 0 0.3em 0; 
 	padding-top: 0.3em;
 	}
+
+button.close{
+	display:none;
+}
+
 .sticky {
     position: sticky;
     top: 0;
@@ -152,8 +159,10 @@ div.selected:hover {
 }
 
 div.nav-header {
-	padding: 0.2rem 1rem 1.2rem 1.2rem;
+	padding: 0.2rem 0.2rem 0 1.2rem;
 	grid-area: header;
+	display: flex;
+	justify-content: space-between;
 }
 
 .nav-header {
@@ -234,7 +243,7 @@ div.nav-header a {
 		grid-area: none; 
 		position: fixed;
 		height: 100%;
-		width: 100%; 
+		width: 80%; 
 		left: -100%;
 		transition: left 0.3s ease-in-out; 	
 		background-color: hsla(217, 33%, 97%, .83);
@@ -254,6 +263,16 @@ div.nav-header a {
 
 	.spacer {
 		display: block;
+	}
+
+	button.close {
+		display: inline;
+		background-color: transparent;
+		border: none;
+		padding: 0.4em 0.4em;
+		cursor: pointer;
+		margin:0;
+		color: var(--grey-900);
 	}
 
 }

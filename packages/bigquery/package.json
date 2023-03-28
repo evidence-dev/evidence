@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "fs-extra": "9.1.0",
-    "@google-cloud/bigquery": "5.6.0",
+    "@google-cloud/bigquery": "6.2.0",
     "@evidence-dev/db-commons": "workspace:^"
   },
   "devDependencies": {

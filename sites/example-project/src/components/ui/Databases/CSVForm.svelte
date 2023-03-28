@@ -1,5 +1,5 @@
 <script>    
-    import IoIosHelpCircleOutline from 'svelte-icons/io/IoIosHelpCircleOutline.svelte'
+    import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte'
     import Prism from "../QueryViewerSupport/Prismjs.svelte";
 
 	export let credentials;
@@ -53,7 +53,7 @@
         {opts[0].label}
         {#if opts[0].additionalInstructions}
         <span class="additional-info-icon">
-                <IoIosHelpCircleOutline/>
+            <HelpCircleIcon height=18 width=18 verticalOffset=2 color="--grey-600"/>
                 <span class=info-msg>{opts[0].additionalInstructions}</span>
         </span>
         {/if}

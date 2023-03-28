@@ -69,12 +69,14 @@
 
 	import TableOfContents from "$lib/TableOfContents.svelte"
 	import Header from '$lib/ui/Header.svelte'
-	import Hamburger from '$lib/ui/Hamburger.svelte'
 	import Sidebar from '$lib/ui/Sidebar.svelte'
 	import LoadingIndicator from "$lib/ui/LoadingIndicator.svelte";
 	import QueryStatus from "$lib/QueryStatus.svelte";
 	
 	let open = false;
+	//TODO: Offer this as a build parameter
+	// in dev. mode prevent prefetch on "hover"
+	const prefetchStrategy = (dev) ? "tap" : "hover"
 </script>
 
 <svelte:head>
@@ -85,15 +87,10 @@
 	<LoadingIndicator/>
 {/if}
 
-<div class="grid">	
-	{#if !$page.url.pathname.startsWith('/settings')}
+<div data-sveltekit-preload-data={prefetchStrategy} class="grid">	
 		<div class="header-bar">
-			<Header {fileTree}/>
+			<Header {fileTree} bind:open/>
 		</div>
-		<div class="header-button"  class:open>
-			<Hamburger bind:open/>
-		</div>
-	{/if}
 	<Sidebar bind:open {fileTree}/>
 	{#if !$navigating}
 		<main in:blur|local id="evidence-content">
