@@ -53,6 +53,12 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         import USMap from '$lib/viz/USMap.svelte';
         import QueryViewer from '$lib/ui/QueryViewer.svelte';
         import CodeBlock from '$lib/ui/CodeBlock.svelte';
+
+        import Alert from '$lib/ui/Alert.svelte';
+
+        import Tabs from '$lib/ui/Tabs/Tabs.svelte';
+        import Tab from '$lib/ui/Tabs/Tab.svelte';
+
         import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '$lib/modules/globalContexts';
         
         let props;
