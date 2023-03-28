@@ -37,7 +37,7 @@
     class=menu
     aria-label="page menu button"
     on:click={toggleDropdown}
-  ><KebabIcon color=--grey-900/></button>
+  ><KebabIcon color=--grey-600/></button>
     {#if showDropdown}
     <ul class=dropdown-items>
       {#each options as option}
@@ -55,7 +55,7 @@
           <button class="dropdown first" on:click={() => print()}>{option.label}</button>
         {:else}
           {#if option.url.includes("http")}
-          <a href={option.url} target=_blank rel=noreferrer>{option.label}<ExternalLinkIcon height=12 width=12/></a>
+          <a href={option.url} target=_blank rel=noreferrer>{option.label}<ExternalLinkIcon height=12 width=12 color="--red-700"/></a>
           {:else}
           <a href={option.url} target=_self>{option.label}</a>
           {/if}
