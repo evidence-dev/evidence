@@ -8,6 +8,8 @@ Evidence renders markdown files into web pages. When developing, the markdown fi
 
 Evidence instantly reloads pages when their markdown files are edited and saved.
 
+You can configure the metadata (e.g. title, description, etc) using [frontmatter](/markdown#frontmatter)
+
 ## File Based Routing
 
 The URL to access a page is determined by the path to the markdown file in the `/pages` directory:
