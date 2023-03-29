@@ -8,8 +8,6 @@ Evidence renders markdown files into web pages. When developing, the markdown fi
 
 Evidence instantly reloads pages when their markdown files are edited and saved.
 
-You can configure the metadata (e.g. title, description, etc) using [frontmatter](/markdown#frontmatter)
-
 ## File Based Routing
 
 The URL to access a page is determined by the path to the markdown file in the `/pages` directory:
@@ -28,3 +26,7 @@ This allows you to organize your pages in a way that makes sense for your users,
 ## Templated Pages
 
 - `pages/customers/[customer].md` creates a page for each customer using the `[customer].md` template. See [templated pages](../templated-pages) for details.
+
+## Frontmatter 
+
+You can include page metadata, such as a title, using [frontmatter](/markdown#frontmatter).
