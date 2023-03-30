@@ -26,3 +26,7 @@ This allows you to organize your pages in a way that makes sense for your users,
 ## Templated Pages
 
 - `pages/customers/[customer].md` creates a page for each customer using the `[customer].md` template. See [templated pages](../templated-pages) for details.
+
+## Frontmatter 
+
+You can include page metadata, such as a title, using [frontmatter](/markdown#frontmatter).

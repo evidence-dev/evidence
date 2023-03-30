@@ -34,7 +34,7 @@
         {#if dev}
         <div class="nav-footer">
 			<a href='/settings' class="settings-link" class:selected="{$page.url.pathname === '/settings'}">
-				<span class="settings-icon">
+				<span class="settings-icon flex justify-center items-center">
 					<IoMdSettings/>
 				</span>
 				<a class="settings-label" href='/settings'>				
@@ -185,7 +185,6 @@ div.nav-header a {
 	display: flex;
 	font-size: 16px;
 }
-
 .settings-link {
 	display: grid;
 	grid-template-columns: 2rem auto;
