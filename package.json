@@ -43,7 +43,7 @@
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
 		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
-		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts ",
+		"postinstall": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/preprocess --filter ./packages/evidence build && pnpm install --ignore-scripts ",
 		"docs": "pnpm --filter ./sites/docs start"
 	},
 	"pnpm": {
