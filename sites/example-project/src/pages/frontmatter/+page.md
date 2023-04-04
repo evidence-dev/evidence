@@ -1,5 +1,5 @@
 ---
-title: A page title
+title: Frontmatter in Evidence
 description: Here is a detailed description of the page that is typically up to 160 characters
 og:
     title: Title for social
@@ -13,7 +13,7 @@ If you send somebody a link to this page; it should show something different fro
 Frontmatter is surrounded with a "fence" (`---`), and the content looks like this:
 
 <pre>
-title: A page title
+title: Frontmatter in Evidence
 description: Here is a detailed description of the page that is typically up to 160 characters
 og:
     title: Title for social

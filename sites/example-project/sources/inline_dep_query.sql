@@ -1,0 +1,1 @@
+SELECT t * 4 as x FROM ${query_on_the_page}
