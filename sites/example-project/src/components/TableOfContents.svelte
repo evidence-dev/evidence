@@ -1,13 +1,12 @@
 <script>
-  import ContentsList from './ContentsList.svelte';
-  import { navigating, page } from '$app/stores'
-
+	import ContentsList from './ContentsList.svelte';
+	import { navigating, page } from '$app/stores';
 </script>
 
 <div class="container">
-  {#if !$navigating && $page.url.pathname !== '/settings'}
-    <ContentsList/>
-  {/if}
+	{#if !$navigating && $page.url.pathname !== '/settings'}
+		<ContentsList />
+	{/if}
 </div>
 
 <style>

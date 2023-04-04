@@ -1,33 +1,34 @@
 // Populate the template that's shipped with the package using a subset of files from the example-project
 import path from 'path';
-import fs from 'fs-extra'
+import fs from 'fs-extra';
 
 const templatePaths = [
-    '.npmrc',
-    'static/',
-    'sources/',
-    'src/app.css',
-    'src/app.html',
-    'src/global.d.ts',
-    'src/pages/+page.md',
-    'src/pages/+layout.svelte',
-    'src/pages/+layout.server.js',
-    'src/pages/settings/',
-    'src/pages/api/',
-    'src/components/',
-    'tailwind.config.cjs',
-    'postcss.config.cjs'
-]
+	'.npmrc',
+	'static/',
+	'sources/',
+	'src/app.css',
+	'src/app.html',
+	'src/global.d.ts',
+	'src/pages/+page.md',
+	'src/pages/+layout.svelte',
+	'src/pages/+layout.server.js',
+	'src/pages/settings/',
+	'src/pages/api/',
+	'src/components/',
+	'tailwind.config.cjs',
+	'postcss.config.cjs'
+];
 
-fs.emptyDirSync("./template/")
+fs.emptyDirSync('./template/');
 
-templatePaths.forEach(p => {
-    fs.copySync(path.join("../../sites/example-project", p), path.join("./template", p))
-})
+templatePaths.forEach((p) => {
+	fs.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
+});
 
 // Create a clean SK config (workspace's is modified)
-fs.outputFileSync('./template/svelte.config.js', 
-    `
+fs.outputFileSync(
+	'./template/svelte.config.js',
+	`
     import evidencePreprocess from '@evidence-dev/preprocess'
     import preprocess from "svelte-preprocess";
     import adapter from '@sveltejs/adapter-static';
@@ -55,10 +56,11 @@ fs.outputFileSync('./template/svelte.config.js',
     
     export default config    
     `
-)
+);
 
-fs.outputFileSync('./template/vite.config.js', 
-    `import { sveltekit } from "@sveltejs/kit/vite"
+fs.outputFileSync(
+	'./template/vite.config.js',
+	`import { sveltekit } from "@sveltejs/kit/vite"
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
      const config = 
@@ -77,11 +79,13 @@ fs.outputFileSync('./template/vite.config.js',
             }
         }
     }
-    export default config`)
+    export default config`
+);
 
-// Create a readme 
-fs.outputFileSync('./template/README.md',
-`
+// Create a readme
+fs.outputFileSync(
+	'./template/README.md',
+	`
 # Evidence Template Project
 
 Thank you for checking out Evidence. 
@@ -93,4 +97,4 @@ Thank you for checking out Evidence.
 - [Github](https://github.com/evidence-dev/evidence)
 
 `
-)
+);

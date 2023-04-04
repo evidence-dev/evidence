@@ -5,11 +5,10 @@ title: Filters
 Filters dynamically change what data is shown _in a specific component_.
 
 :::tip
-Adding too many filters to a page increases mental load for end users, and the chance they could "get the wrong answer". 
+Adding too many filters to a page increases mental load for end users, and the chance they could "get the wrong answer".
 :::
 
 To dynamically change data _across a whole page_, [templated pages](../templated-pages) are more suitable and intuitive for end users.
-
 
 ## Filtering via URL search parameters
 
@@ -22,7 +21,9 @@ Filters make use of _search parameters_ (a.k.a. "query strings") in the URL. Any
 In Evidence, the value of a search parameter `channel` is accessible in a page via:
 
 ```js
-{$page.url.searchParams.get('channel')}
+{
+	$page.url.searchParams.get('channel');
+}
 ```
 
 ## Generating filter URLS
@@ -46,6 +47,7 @@ group by 1
 ## Filter
 
 <DataTable data={channels} link=filter_link />
+```
 ````
 
 ## Filtering a query result
@@ -55,7 +57,7 @@ To filter the data shown by a component, use the javascript filter method on the
 <!-- TODO @archiewood: update to SK 1.0 syntax -->
 
 ```js title="Filter method"
-.filter(d => d.channel === $page.url.searchParams.get('channel')) 
+.filter(d => d.channel === $page.url.searchParams.get('channel'))
 ```
 
 We can use this to filter a `<DataTable/>` component:

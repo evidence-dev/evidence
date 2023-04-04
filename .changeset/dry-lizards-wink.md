@@ -1,5 +1,5 @@
 ---
-"@evidence-dev/components": minor
+'@evidence-dev/components': minor
 ---
 
 TailwindCSS has been integrated into the project and themed according to Evidence's styles.

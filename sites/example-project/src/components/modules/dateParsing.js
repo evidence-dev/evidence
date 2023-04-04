@@ -1,58 +1,51 @@
-import {tidy, mutate} from "@tidyjs/tidy";
+import { tidy, mutate } from '@tidyjs/tidy';
 
-export function standardizeDateString(date){
+export function standardizeDateString(date) {
+	if (date && typeof date === 'string') {
+		// Parses an individual string into a JS date object
 
-    if(date && typeof date === "string"){
-        // Parses an individual string into a JS date object
+		let dateSplit = date.split(' ');
 
-        let dateSplit = date.split(" ")
-        
-        // If date doesn't contain timestamp, add one at midnight (avoids timezone interpretation issue)
-        if(!date.includes(":")){
-            date = date + "T00:00:00"
-        }
-        
-        // Remove any character groups beyond 2 (date and time):
-        if(dateSplit.length > 2){
-            date = dateSplit[0] + " " + dateSplit[1]
-        }
+		// If date doesn't contain timestamp, add one at midnight (avoids timezone interpretation issue)
+		if (!date.includes(':')) {
+			date = date + 'T00:00:00';
+		}
 
-        // Replace microseconds if needed:
-        const re = /\.([^\s]+)/;
-        date = date.replace(re, "")
+		// Remove any character groups beyond 2 (date and time):
+		if (dateSplit.length > 2) {
+			date = dateSplit[0] + ' ' + dateSplit[1];
+		}
 
-        // Remove "Z" to avoid timezone interpretation issue:
-        date = date.replace("Z", "")
+		// Replace microseconds if needed:
+		const re = /\.([^\s]+)/;
+		date = date.replace(re, '');
 
-        // Replace spaces with "T" to conform to ECMA standard:
-        date = date.replace(" ", "T")
-    }
+		// Remove "Z" to avoid timezone interpretation issue:
+		date = date.replace('Z', '');
 
-    return date
+		// Replace spaces with "T" to conform to ECMA standard:
+		date = date.replace(' ', 'T');
+	}
 
+	return date;
 }
 
 export function convertColumnToDate(data, column) {
-    // Replaces a date column's string values with JS date objects, using the standardizeDateString function
+	// Replaces a date column's string values with JS date objects, using the standardizeDateString function
 
-    data = tidy(
-        data,
-        mutate({ [column]: (d) => d[column] ? new Date(standardizeDateString(d[column])) : null}),
-    );
+	data = tidy(
+		data,
+		mutate({ [column]: (d) => (d[column] ? new Date(standardizeDateString(d[column])) : null) })
+	);
 
-    return data;
-
+	return data;
 }
 
 export function standardizeDateColumn(data, column) {
-    // Replaces a date column's string values with standardized date strings, using the standardizeDateString function
-    // Used in Chart.svelte, where using Date objects leads to errors
+	// Replaces a date column's string values with standardized date strings, using the standardizeDateString function
+	// Used in Chart.svelte, where using Date objects leads to errors
 
-    data = tidy(
-        data,
-        mutate({ [column]: (d) => standardizeDateString(d[column])}),
-    );
+	data = tidy(data, mutate({ [column]: (d) => standardizeDateString(d[column]) }));
 
-    return data;
-
+	return data;
 }

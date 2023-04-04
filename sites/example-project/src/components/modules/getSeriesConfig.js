@@ -1,156 +1,164 @@
-import getDistinctValues from './getDistinctValues.js'
+import getDistinctValues from './getDistinctValues.js';
 
-export default function getSeriesConfig(data, x, y, series, swapXY, baseConfig, name=null, xMismatch, columnSummary, size=null, tooltipTitle=null) {
+export default function getSeriesConfig(
+	data,
+	x,
+	y,
+	series,
+	swapXY,
+	baseConfig,
+	name = null,
+	xMismatch,
+	columnSummary,
+	size = null,
+	tooltipTitle = null
+) {
+	function generateTempConfig(seriesData, seriesName, baseConfig) {
+		let tempConfig = {
+			name: seriesName,
+			data: seriesData
+		};
+		tempConfig = { ...baseConfig, ...tempConfig };
+		return tempConfig;
+	}
 
-    function generateTempConfig(seriesData, seriesName, baseConfig) {
-        let tempConfig = {
-            name: seriesName,
-            data: seriesData
-        }
-        tempConfig = {...baseConfig, ...tempConfig};
-        return tempConfig;
-    }
+	let i;
+	let j;
+	let legend;
+	let tempConfig;
+	let seriesConfig = [];
+	let seriesData;
+	let filteredData;
+	let seriesName;
+	let seriesDistinct;
 
-    let i;
-    let j;
-    let legend;
-    let tempConfig;
-    let seriesConfig = [];
-    let seriesData;
-    let filteredData;
-    let seriesName;
-    let seriesDistinct;
-    
-    // 1) Series column with single y column
-    if (series != null && typeof y !== "object") {
-        legend = true;
-        seriesDistinct = getDistinctValues(data, series);
+	// 1) Series column with single y column
+	if (series != null && typeof y !== 'object') {
+		legend = true;
+		seriesDistinct = getDistinctValues(data, series);
 
-        for (i = 0; i < seriesDistinct.length; i++) {
-            // Filter for specific series:
-            filteredData = data.filter((d) => d[series] === seriesDistinct[i]);
+		for (i = 0; i < seriesDistinct.length; i++) {
+			// Filter for specific series:
+			filteredData = data.filter((d) => d[series] === seriesDistinct[i]);
 
-            if(swapXY){
-                seriesData = filteredData.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
-            } else {
-                seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
-            }
-        
-            // Append size column if supplied (for bubble chart):
-            if(size){
-                let sizeData = filteredData.map((d) => d[size])
-                seriesData.forEach((item, index) => item.push(sizeData[index]));
-            }
+			if (swapXY) {
+				seriesData = filteredData.map((d) => [d[y], xMismatch ? d[x].toString() : d[x]]);
+			} else {
+				seriesData = filteredData.map((d) => [xMismatch ? d[x].toString() : d[x], d[y]]);
+			}
 
-            // Append tooltip label if supplied:
-            if(tooltipTitle){
-                let tooltipData = filteredData.map((d) => d[tooltipTitle])
-                seriesData.forEach((item, index) => item.push(tooltipData[index]));
-            }
-        
-            // Set series name:
-            seriesName = seriesDistinct[i] ?? "null";
+			// Append size column if supplied (for bubble chart):
+			if (size) {
+				let sizeData = filteredData.map((d) => d[size]);
+				seriesData.forEach((item, index) => item.push(sizeData[index]));
+			}
 
-            tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
-            seriesConfig.push(tempConfig);
-        }
-    }
+			// Append tooltip label if supplied:
+			if (tooltipTitle) {
+				let tooltipData = filteredData.map((d) => d[tooltipTitle]);
+				seriesData.forEach((item, index) => item.push(tooltipData[index]));
+			}
 
-    // 2) Series column with multiple y columns
-    if (series != null && typeof y === "object" && y.length > 1) {
-        legend = true;
+			// Set series name:
+			seriesName = seriesDistinct[i] ?? 'null';
 
-        seriesDistinct = getDistinctValues(data, series);
-        for (i = 0; i < seriesDistinct.length; i++) {
-            // Filter for specific series:
-            filteredData = data.filter((d) => d[series] === seriesDistinct[i]);
-     
-            for (j = 0; j < y.length; j++) {
+			tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
+			seriesConfig.push(tempConfig);
+		}
+	}
 
-                if(swapXY){
-                    seriesData = filteredData.map((d) => [d[y[j]], (xMismatch ? d[x].toString() : d[x])]);
-                } else {
-                    seriesData = filteredData.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[j]]]);
-                }
-   
-                // Append size column if supplied (for bubble chart):
-                if(size){
-                    let sizeData = filteredData.map((d) => d[size])
-                    seriesData.forEach((item, index) => item.push(sizeData[index]));
-                }
+	// 2) Series column with multiple y columns
+	if (series != null && typeof y === 'object' && y.length > 1) {
+		legend = true;
 
-                // Append tooltip label if supplied:
-                if(tooltipTitle){
-                    let tooltipData = filteredData.map((d) => d[tooltipTitle])
-                    seriesData.forEach((item, index) => item.push(tooltipData[index]));
-                }
+		seriesDistinct = getDistinctValues(data, series);
+		for (i = 0; i < seriesDistinct.length; i++) {
+			// Filter for specific series:
+			filteredData = data.filter((d) => d[series] === seriesDistinct[i]);
 
-                // Set series name:
-                seriesName = (seriesDistinct[i] ?? "null") + " - " + columnSummary[y[j]].title;
-                tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
-                seriesConfig.push(tempConfig);
-            }
-        }
-    }
+			for (j = 0; j < y.length; j++) {
+				if (swapXY) {
+					seriesData = filteredData.map((d) => [d[y[j]], xMismatch ? d[x].toString() : d[x]]);
+				} else {
+					seriesData = filteredData.map((d) => [xMismatch ? d[x].toString() : d[x], d[y[j]]]);
+				}
 
-    // 3) Multiple y columns without series column
-    if (series == null && typeof y === "object" && y.length > 1) {
-        legend = true;
+				// Append size column if supplied (for bubble chart):
+				if (size) {
+					let sizeData = filteredData.map((d) => d[size]);
+					seriesData.forEach((item, index) => item.push(sizeData[index]));
+				}
 
-        for (i = 0; i < y.length; i++) {
+				// Append tooltip label if supplied:
+				if (tooltipTitle) {
+					let tooltipData = filteredData.map((d) => d[tooltipTitle]);
+					seriesData.forEach((item, index) => item.push(tooltipData[index]));
+				}
 
-            if(swapXY){
-                seriesData = data.map((d) => [d[y[i]], (xMismatch ? d[x].toString() : d[x])]);
-            } else {
-                seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y[i]]]);
-            }
-        
-            // Append size column if supplied (for bubble chart):
-            if(size){
-                let sizeData = data.map((d) => d[size])
-                seriesData.forEach((item, index) => item.push(sizeData[index]));
-            }
+				// Set series name:
+				seriesName = (seriesDistinct[i] ?? 'null') + ' - ' + columnSummary[y[j]].title;
+				tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
+				seriesConfig.push(tempConfig);
+			}
+		}
+	}
 
-            // Append tooltip label if supplied:
-            if(tooltipTitle){
-                let tooltipData = data.map((d) => d[tooltipTitle])
-                seriesData.forEach((item, index) => item.push(tooltipData[index]));
-            }
-        
-            seriesName = columnSummary[y[i]].title;
-            tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
-            seriesConfig.push(tempConfig);
-        }
-    }
-    
-    // 4) Single y column without series column
-    if(series == null && typeof y !== "object") {
-        legend = false;
+	// 3) Multiple y columns without series column
+	if (series == null && typeof y === 'object' && y.length > 1) {
+		legend = true;
 
-        if(swapXY){
-            seriesData = data.map((d) => [d[y], (xMismatch ? d[x].toString() : d[x])]);
-        } else {
-            seriesData = data.map((d) => [(xMismatch ? d[x].toString() : d[x]), d[y]]);
-        }
+		for (i = 0; i < y.length; i++) {
+			if (swapXY) {
+				seriesData = data.map((d) => [d[y[i]], xMismatch ? d[x].toString() : d[x]]);
+			} else {
+				seriesData = data.map((d) => [xMismatch ? d[x].toString() : d[x], d[y[i]]]);
+			}
 
-        // Append size column if supplied (for bubble chart):
-        if(size){
-            let sizeData = data.map((d) => d[size])
-            seriesData.forEach((item, index) => item.push(sizeData[index]));
-        }
+			// Append size column if supplied (for bubble chart):
+			if (size) {
+				let sizeData = data.map((d) => d[size]);
+				seriesData.forEach((item, index) => item.push(sizeData[index]));
+			}
 
-        // Append tooltip label if supplied:
-        if(tooltipTitle){
-            let tooltipData = data.map((d) => d[tooltipTitle])
-            seriesData.forEach((item, index) => item.push(tooltipData[index]));
-        }
+			// Append tooltip label if supplied:
+			if (tooltipTitle) {
+				let tooltipData = data.map((d) => d[tooltipTitle]);
+				seriesData.forEach((item, index) => item.push(tooltipData[index]));
+			}
 
-        seriesName = columnSummary[y].title;
+			seriesName = columnSummary[y[i]].title;
+			tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
+			seriesConfig.push(tempConfig);
+		}
+	}
 
-        tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
-        seriesConfig.push(tempConfig);
-    }
+	// 4) Single y column without series column
+	if (series == null && typeof y !== 'object') {
+		legend = false;
 
-    return seriesConfig;
+		if (swapXY) {
+			seriesData = data.map((d) => [d[y], xMismatch ? d[x].toString() : d[x]]);
+		} else {
+			seriesData = data.map((d) => [xMismatch ? d[x].toString() : d[x], d[y]]);
+		}
 
+		// Append size column if supplied (for bubble chart):
+		if (size) {
+			let sizeData = data.map((d) => d[size]);
+			seriesData.forEach((item, index) => item.push(sizeData[index]));
+		}
+
+		// Append tooltip label if supplied:
+		if (tooltipTitle) {
+			let tooltipData = data.map((d) => d[tooltipTitle]);
+			seriesData.forEach((item, index) => item.push(tooltipData[index]));
+		}
+
+		seriesName = columnSummary[y].title;
+
+		tempConfig = generateTempConfig(seriesData, seriesName, baseConfig);
+		seriesConfig.push(tempConfig);
+	}
+
+	return seriesConfig;
 }

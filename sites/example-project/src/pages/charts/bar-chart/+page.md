@@ -109,6 +109,7 @@ select 'South' as country, 101 as value, 1996 as year
 ```
 
 ## Bar
+
 <BarChart 
     data={simple_bar} 
     x=country 
@@ -117,6 +118,7 @@ select 'South' as country, 101 as value, 1996 as year
 />
 
 ## Stacked Bar
+
 <BarChart 
     data={simpler_bar_unordered} 
     x=year 
@@ -125,9 +127,11 @@ select 'South' as country, 101 as value, 1996 as year
 />
 
 ### Stacked Bar with Negative Values
+
 <BarChart data={countries} x=year y=value series=country/>
 
 ## Grouped Bar
+
 <BarChart 
     data={simpler_bar_unordered} 
     x=year 
@@ -137,9 +141,11 @@ select 'South' as country, 101 as value, 1996 as year
 />
 
 ### Grouped Bar with Negative Values
+
 <BarChart data={countries} x=year y=value series=country type=grouped/>
 
 ## Horizontal Bar
+
 <BarChart 
     data={simple_bar}
     x=country 
@@ -149,6 +155,7 @@ select 'South' as country, 101 as value, 1996 as year
 />
 
 ## Horizontal Stacked Bar
+
 <BarChart 
     data={simpler_bar_unordered} 
     swapXY=true 
@@ -162,6 +169,7 @@ select 'South' as country, 101 as value, 1996 as year
 <BarChart data={countries} x=year y=value series=country swapXY=true xType=category/>
 
 ## Horizontal Grouped Bar
+
 <BarChart 
     data={simpler_bar_unordered} 
     swapXY=true 
@@ -172,6 +180,6 @@ select 'South' as country, 101 as value, 1996 as year
     xType=category
 />
 
-
 ## Long Bar Chart
+
 <BarChart data={textP} x=category y=complaints swapXY=true sort=true/>

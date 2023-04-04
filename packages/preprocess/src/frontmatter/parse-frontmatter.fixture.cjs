@@ -1,13 +1,13 @@
 const missingFrontmatter = `
 # Header!
-`
+`;
 
 const emptyFrontmatter = `
 ---
 ---
 
 # Header!
-`
+`;
 
 const basicFrontmatter = `
 ---
@@ -16,7 +16,7 @@ title: Hi!
 ---
 
 # Header!
-`
+`;
 
 const complexFrontmatter = `
 ---
@@ -35,7 +35,7 @@ object:
     nested:
         some: key
 ---
-`
+`;
 
 const extraFrontmatter = `
 ---
@@ -45,7 +45,7 @@ title: This is the correct frontmatter
 title: This is the wrong frontmatter
 ---
 
-`
+`;
 
 const frontmatterWithMarkdownTable = `
 ---

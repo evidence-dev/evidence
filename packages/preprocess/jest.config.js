@@ -1,8 +1,6 @@
 /** @type {import('jest').Config} */
 const config = {
-    testMatch: [
-        "**/*.spec.cjs"
-    ]
-}
+	testMatch: ['**/*.spec.cjs']
+};
 
-module.exports = config
+module.exports = config;

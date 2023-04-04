@@ -2,10 +2,10 @@
 
 This is the source for Evidence's public documentation.
 
-
 ## Local Installation
 
 From this directory, run the following.
+
 ```
     npm install
     npm run start

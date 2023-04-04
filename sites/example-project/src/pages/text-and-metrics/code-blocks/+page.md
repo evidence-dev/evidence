@@ -6,19 +6,19 @@ Often it's useful to include code blocks in your documentation. You do this by u
 
 Below are a few examples
 
-### Normal SQL 
+### Normal SQL
 
-```input 
-select 
+```input
+select
     complaint_description as description,
-    extract(date from created_date) as date, 
-    count(*) as number_of_complaints 
-from `bigquery-public-data.austin_311.311_service_requests` 
+    extract(date from created_date) as date,
+    count(*) as number_of_complaints
+from `bigquery-public-data.austin_311.311_service_requests`
 where created_date >= timestamp_sub(current_timestamp(), interval 180 day)
-group by 1,2 
+group by 1,2
 ```
 
-```working_reference 
+```working_reference
     select count(*) as n_days from ${input}
 ```
 
@@ -40,18 +40,17 @@ y = np.array([4, 5, 6])
 z = x + y
 ```
 
-
 ### CSS
 
 ```css
 pre {
-    overflow: scroll;
-    background: var(--grey-800);
-    border-radius: 3px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+	overflow: scroll;
+	background: var(--grey-800);
+	border-radius: 3px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
 }
 ```
 
@@ -59,13 +58,13 @@ pre {
 
 ```html
 <head>
-<title>My Page</title>
+	<title>My Page</title>
 </head>
 <body>
-<h1>My Page</h1>
-<p>This is my page.</p>
-<!-- a really long line of code-->
-<p>Here is another paragraph. It is really long and will need scroll if possible.</p>
+	<h1>My Page</h1>
+	<p>This is my page.</p>
+	<!-- a really long line of code-->
+	<p>Here is another paragraph. It is really long and will need scroll if possible.</p>
 </body>
 ```
 
@@ -87,4 +86,3 @@ let x = 100;
 let y = 200;
 let z = x + y;
 </CodeBlock>
-

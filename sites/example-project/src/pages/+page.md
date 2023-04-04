@@ -6,4 +6,4 @@ If you are developing a new feature, add a page to this project. The page will b
 
 If you notice a feature is missing from this project, please add a page or create an issue on Github.
 
-Thanks! 
+Thanks!

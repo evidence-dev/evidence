@@ -1,13 +1,12 @@
-jest.mock('fs')
+jest.mock('fs');
 
-
-const {parseFrontmatter} = require("./parse-frontmatter.cjs")
-const fs = require('fs')
+const { parseFrontmatter } = require('./parse-frontmatter.cjs');
+const fs = require('fs');
 const {
     emptyFrontmatter, missingFrontmatter, basicFrontmatter, complexFrontmatter, extraFrontmatter, frontmatterWithMarkdownTable, markdownTableWithoutFrontmatter
 } = require("./parse-frontmatter.fixture.cjs")
 
-fs.statSync.mockReturnValue({ isFile: () => true })
+fs.statSync.mockReturnValue({ isFile: () => true });
 
 describe("Parse frontmatter", () => {
     it("Should return undefined for missing frontmatter", async () => {

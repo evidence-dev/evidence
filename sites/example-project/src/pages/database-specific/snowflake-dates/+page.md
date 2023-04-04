@@ -5,7 +5,7 @@
 ## Timestamp Types
 
 ```timestamps
-select 
+select
     to_date('2020-04-22') as date,
     to_timestamp('2020-04-22') as timestamp,
     to_timestamp_tz('2020-04-22') as timestamp_tz,
@@ -19,24 +19,22 @@ select
 <Value data={timestamps} column=timestamp_ntz/>
 <Value data={timestamps} column=timestamp_ltz/>
 
-
-
 ## Date
 
 ```snowflake_date
-select 
+select
         to_date('2020-04-22') as date,
         100 as sales_usd
 union all
-select 
+select
         to_date('2020-04-23') as date,
         110 as sales_usd
 union all
-select 
+select
         to_date('2020-04-24') as date,
         120 as sales_usd
 union all
-select 
+select
         to_date('2020-04-25') as date,
         140 as sales_usd
 ```
@@ -49,24 +47,22 @@ select
     y=sales_usd
 />
 
-
-
 ## Timestamp
 
 ```snowflake_timestamp
-select 
+select
         to_timestamp('2020-04-22') as timestamp,
         100 as sales_usd
 union all
-select 
+select
         to_timestamp('2020-04-23') as timestamp,
         110 as sales_usd
 union all
-select 
+select
         to_timestamp('2020-04-24') as timestamp,
         120 as sales_usd
 union all
-select 
+select
         to_timestamp('2020-04-25') as timestamp,
         140 as sales_usd
 ```
@@ -82,19 +78,19 @@ select
 ## Timestamp_tz
 
 ```snowflake_timestamp_tz
-select 
+select
         to_timestamp_tz('2020-04-22') as timestamp_tz,
         100 as sales_usd
 union all
-select 
+select
         to_timestamp_tz('2020-04-23') as timestamp_tz,
         110 as sales_usd
 union all
-select 
+select
         to_timestamp_tz('2020-04-24') as timestamp_tz,
         120 as sales_usd
 union all
-select 
+select
         to_timestamp_tz('2020-04-25') as timestamp_tz,
         140 as sales_usd
 ```
@@ -110,19 +106,19 @@ select
 ## Timestamp_ntz
 
 ```snowflake_timestamp_ntz
-select 
+select
         to_timestamp_ntz('2020-04-22') as timestamp_ntz,
         100 as sales_usd
 union all
-select 
+select
         to_timestamp_ntz('2020-04-23') as timestamp_ntz,
         110 as sales_usd
 union all
-select 
+select
         to_timestamp_ntz('2020-04-24') as timestamp_ntz,
         120 as sales_usd
 union all
-select 
+select
         to_timestamp_ntz('2020-04-25') as timestamp_ntz,
         140 as sales_usd
 ```
@@ -138,19 +134,19 @@ select
 ## Timestamp_ltz
 
 ```snowflake_timestamp_ltz
-select 
+select
         to_timestamp_ltz('2020-04-22') as timestamp_ltz,
         100 as sales_usd
 union all
-select 
+select
         to_timestamp_ltz('2020-04-23') as timestamp_ltz,
         110 as sales_usd
 union all
-select 
+select
         to_timestamp_ltz('2020-04-24') as timestamp_ltz,
         120 as sales_usd
 union all
-select 
+select
         to_timestamp_ltz('2020-04-25') as timestamp_ltz,
         140 as sales_usd
 ```

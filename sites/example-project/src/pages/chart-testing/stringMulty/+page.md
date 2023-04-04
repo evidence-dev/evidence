@@ -80,4 +80,3 @@ let nulls =
 <h2>Bubble Chart</h2>
 <BubbleChart data={full} size=y1 title="Full Data" legend=true/>
 <BubbleChart data={nulls}  size=y1 title="Nulls"/>
-

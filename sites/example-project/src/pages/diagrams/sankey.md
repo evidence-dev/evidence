@@ -49,8 +49,6 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 
 <SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count />
 
-
-
 ```apple_income_statement
 select 'iphone' as source, 'product revenue' as target, 51 as amount_usd
 union all
@@ -93,7 +91,6 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
     orient="vertical"
 />
 
-
 ### Pascua tigres inde
 
 Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
@@ -109,4 +106,3 @@ Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
 2. Ego sanguine iphis Tartara crudeles et et
 3. Peritura auro tulit harenis sucos
 4. Per turbata caput
-

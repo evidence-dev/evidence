@@ -7,10 +7,8 @@ pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
 
 Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt;
-attigimus restabat exitus. Praedaeque ademit. *Vix* eundem, saevarum et nescia
+attigimus restabat exitus. Praedaeque ademit. _Vix_ eundem, saevarum et nescia
 inter retinentibus inaniter pontum! `pages/index.md`
-
-
 
 ### Pascua tigres inde
 
@@ -38,7 +36,7 @@ innuba.
 
 ## Rotatis nostra non parsque talia discussit
 
-Oculos ubi, quem medium duo da pater quoque oculi. Tu oculis mihi, *suis*
+Oculos ubi, quem medium duo da pater quoque oculi. Tu oculis mihi, _suis_
 permanet vidit insilit adfectat. Pars obliquis. Fui quoque beatum infixum
 Tethyn.
 
@@ -51,7 +49,7 @@ Tethyn.
 Est **eadem** ad arbor resolvent repetens liceat exarsit amores [caelum
 pactus](http://www.cecidit.com/) victor. Pallentem ver **Cyane domo nam**, nunc
 ripa vestis tum petii suos videtur bracchia successit, namque. Potuit Scythiam
-ignotos **fors tot video** erat in fuit quaesitis *solum* terrae. Gradibus
+ignotos **fors tot video** erat in fuit quaesitis _solum_ terrae. Gradibus
 formam apro: ante visurus; edidit nitore per coniunx membra territa. Licet arcus
 terra haeret locus Circe consequar in palmas coniunx.
 
@@ -64,7 +62,7 @@ pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
 
 Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt;
-attigimus restabat exitus. Praedaeque ademit. *Vix* eundem, saevarum et nescia
+attigimus restabat exitus. Praedaeque ademit. _Vix_ eundem, saevarum et nescia
 inter retinentibus inaniter pontum!
 
 ## Pascua tigres inde
@@ -93,7 +91,7 @@ innuba.
 
 ## Rotatis nostra non parsque talia discussit
 
-Oculos ubi, quem medium duo da pater quoque oculi. Tu oculis mihi, *suis*
+Oculos ubi, quem medium duo da pater quoque oculi. Tu oculis mihi, _suis_
 permanet vidit insilit adfectat. Pars obliquis. Fui quoque beatum infixum
 Tethyn.
 
@@ -106,7 +104,7 @@ Tethyn.
 Est **eadem** ad arbor resolvent repetens liceat exarsit amores [caelum
 pactus](http://www.cecidit.com/) victor. Pallentem ver **Cyane domo nam**, nunc
 ripa vestis tum petii suos videtur bracchia successit, namque. Potuit Scythiam
-ignotos **fors tot video** erat in fuit quaesitis *solum* terrae. Gradibus
+ignotos **fors tot video** erat in fuit quaesitis _solum_ terrae. Gradibus
 formam apro: ante visurus; edidit nitore per coniunx membra territa. Licet arcus
 terra haeret locus Circe consequar in palmas coniunx.
 
@@ -116,7 +114,7 @@ terra haeret locus Circe consequar in palmas coniunx.
 
 Lorem markdownum omnia cycnorum defendite cubito. [Convicia quo
 gratus](http://lacrimas.org/), fuit ferar haud nec ulcisci tellure, letoque
-Minturnaeque maximus *Di pars talibus*.
+Minturnaeque maximus _Di pars talibus_.
 
 1. Quos exit ultima
 2. Fata peti fuit
@@ -142,7 +140,7 @@ vetat ait fuit factis Danae ensem vicimus. Ex illum rapidi quantum procul abluit
 rorantesque deus sopita, atque. Tepido fidae hydros natus; est
 [tectis](http://in.org/) litora Hodites inseris ineamus. Male si pedum in
 similis quies lugebere una comparat ortus properent utrumque sub dies committere
-Troia, pulsumque negant. Cerebrumque fuerit *mille cederet*.
+Troia, pulsumque negant. Cerebrumque fuerit _mille cederet_.
 
 1. Mirabere o hic tot forma nostra tremuere
 2. Aequos post tamen
@@ -150,7 +148,7 @@ Troia, pulsumque negant. Cerebrumque fuerit *mille cederet*.
 
 ## Et huc
 
-Me feritate *exire est Anius* venter constabat atque: iacens. Peti utque mollia
+Me feritate _exire est Anius_ venter constabat atque: iacens. Peti utque mollia
 Antigonen fuerat altore silentia videt. Non Iovis erat quam tradat forma illa
 felici, nobis, vox tibi femina protinus vertuntur miseranda clipei conluerant
 tamen. Flores [praesens de erat](http://quiquae.com/tantospulmone.html) tantum
@@ -174,7 +172,7 @@ nomina undis tutus, nec. Moto [donec hastile](http://vestigia.com/de-illa.html).
 Orbem laevo crimen e Pegasus retracto seque miserantibus. Atlantis natas,
 ignorans revelli; magna contraria quae tutela neve!
 
-Astris est imago veteres menti facta ut forma: ille tota *decentia te* quicquid
+Astris est imago veteres menti facta ut forma: ille tota _decentia te_ quicquid
 patrio se inmortalis. Deflentem narrata?
 
 ## Superantque agam volucresque petet
@@ -188,16 +186,16 @@ me, vulnere! Non canis bella **transire** terras voluntas; erat, Crathis verba,
 detruncatque decus?
 
 > Parte lina, et per adiit de **quam femina amoris** patiere o magis. Reddebant
-> in venit feres testatus est nunc, super tangeris toris. Videt *caedis
-> pluvialis potiere* capax Balearica evitata stratis silvas es accepit, structa
+> in venit feres testatus est nunc, super tangeris toris. Videt _caedis
+> pluvialis potiere_ capax Balearica evitata stratis silvas es accepit, structa
 > huic vices, vocem?
 
 ## Quique fessamque Telamone Dauno
 
 Praecluditur trahit et **geminata poenarum stridente** corpore in Phoebo flamma
-quae, nisi. Fervet manusque ademptis, tactis ut totidem animos? Aula *inde
-contegat* Oebalio parente, ripam levi probatur, apta cepit passisque *mearum
-pinuque* crescentemque fudit et. Cadentum displicet ullum laetabitur amans
+quae, nisi. Fervet manusque ademptis, tactis ut totidem animos? Aula _inde
+contegat_ Oebalio parente, ripam levi probatur, apta cepit passisque _mearum
+pinuque_ crescentemque fudit et. Cadentum displicet ullum laetabitur amans
 infantem mando innoxia novemque curam [nam](http://haec-loquentis.com/mirator)
 avidi solus **plurimus orba laedi**, sed passim miseri! Abanteis lugendae.
 

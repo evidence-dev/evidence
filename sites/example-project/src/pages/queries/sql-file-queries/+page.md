@@ -15,8 +15,9 @@ SELECT 10 as t
 
 Evidence supports using `.sql` files directly; instead of inlining your queries.
 This provides a few benefits:
- - Reuse common queries across pages
- - Take advantage of your editor's support for your database (e.g. syntax highlighting, autocomplete, etc.)
+
+- Reuse common queries across pages
+- Take advantage of your editor's support for your database (e.g. syntax highlighting, autocomplete, etc.)
 
 <Alert status="warning">
 If you haven't read about <a href="/frontmatter" target="_blank">frontmatter</a> yet, you should start there.
@@ -67,14 +68,16 @@ Note that all slashes (`/`) will be replaced with underscores (`_`), so `nested/
 
 It is also noteworthy that when trying to view queries; all sql file queries will be placed at the bottom of the page.
 
---- 
+---
 
 Your query can contain anything; for the examples on this page, we have some very simple queries
 
 #### test_query.sql
+
 <CodeBlock source="SELECT 1 as t;"/>
 
 #### nested/test_query.sql
+
 <CodeBlock source="SELECT 2 as t;"/>
 
 #### dep_query.sql

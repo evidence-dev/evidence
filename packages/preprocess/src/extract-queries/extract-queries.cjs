@@ -16,9 +16,9 @@ const warnedSources = {}
 // Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
 // Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
 const ignoreIndentedCode = function () {
-  const Parser = this.Parser;
-  const block_tokenizers = Parser.prototype.blockTokenizers;
-  block_tokenizers.indentedCode = () => true;
+	const Parser = this.Parser;
+	const block_tokenizers = Parser.prototype.blockTokenizers;
+	block_tokenizers.indentedCode = () => true;
 };
 
 /**
@@ -106,27 +106,27 @@ const extractExternalQueries = (content, filename) => {
  * @returns {Query[]}
  */
 const extractInlineQueries = (content) => {
-  let queries = [];
-  let tree = unified().use(remarkParse).use(ignoreIndentedCode).parse(content);
-  const prismLangs = getPrismLangs()
+	let queries = [];
+	let tree = unified().use(remarkParse).use(ignoreIndentedCode).parse(content);
+	const prismLangs = getPrismLangs();
 
-  visit(tree, "code", function (node) {
-    let id = node.lang ?? "untitled";
-    if (!prismLangs.has(id.toLowerCase()) && id.toLowerCase() !== 'plaintext') {
-      // Prevent prism code blocks from being interpreted as queries
-      let compiledQueryString = node.value.trim(); // refs get compiled and sent to db orchestrator
-      let inputQueryString = compiledQueryString; // original, as written
-      let compiled = false; // default flag, switched to true if query is compiled
-      queries.push({
-        id,
-        compiledQueryString,
-        inputQueryString,
-        compiled,
-        inline: true
-      });
-    }
-  });
-  return queries;
+	visit(tree, 'code', function (node) {
+		let id = node.lang ?? 'untitled';
+		if (!prismLangs.has(id.toLowerCase()) && id.toLowerCase() !== 'plaintext') {
+			// Prevent prism code blocks from being interpreted as queries
+			let compiledQueryString = node.value.trim(); // refs get compiled and sent to db orchestrator
+			let inputQueryString = compiledQueryString; // original, as written
+			let compiled = false; // default flag, switched to true if query is compiled
+			queries.push({
+				id,
+				compiledQueryString,
+				inputQueryString,
+				compiled,
+				inline: true
+			});
+		}
+	});
+	return queries;
 };
 
 /**
@@ -134,23 +134,23 @@ const extractInlineQueries = (content) => {
  * @returns {Query[]}
  */
 const extractQueries = (content) => {
-  const queries = [];
+	const queries = [];
 
-  queries.push(...extractExternalQueries(content));
-  queries.push(...extractInlineQueries(content));
-  return queries;
+	queries.push(...extractExternalQueries(content));
+	queries.push(...extractInlineQueries(content));
+	return queries;
 };
 
 /**
- * 
- * @param {string} content File Content 
+ *
+ * @param {string} content File Content
  * @returns {string[]}
  */
 const getQueryIds = (content) => {
-  return extractQueries(content).map((q) => q.id);
+	return extractQueries(content).map((q) => q.id);
 };
 
 module.exports = {
-  extractQueries,
-  getQueryIds,
+	extractQueries,
+	getQueryIds
 };

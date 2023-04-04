@@ -128,5 +128,5 @@ select "TX" as state, date("2022-12-01") as month, 321 as value
 ```
 
 # Detail for {$page.params.state}
-<LineChart data={state_trend.filter(d => d.state === $page.params.state)} x=month y=value/>
 
+<LineChart data={state_trend.filter(d => d.state === $page.params.state)} x=month y=value/>

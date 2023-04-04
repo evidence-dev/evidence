@@ -107,4 +107,3 @@ let nulls =
 <BubbleChart data={full} size=y1 title="Full Data" legend=true/>
 <BubbleChart data={missingX}  size=y1 title="Missing X" legend=true/>
 <BubbleChart data={nulls}  size=y1 title="Nulls"/>
-

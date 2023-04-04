@@ -72,9 +72,11 @@ let countries = [
 </script>
 
 ## Basic Bubble Chart
+
 <BubbleChart data={smallb} x=x y=y size=size xAxisTitle=true yAxisTitle=true/>
 
 ## Bubble Chart
+
 <BubbleChart
     data={countries}
     x=debt_to_gdp
@@ -83,7 +85,7 @@ let countries = [
     tooltipTitle=country
 />
 
-## Multi-Series Bubble Chart 
+## Multi-Series Bubble Chart
 
 <BubbleChart
     data={countries}

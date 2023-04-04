@@ -1,8 +1,8 @@
-const getPrismLangs = require('./get-prism-langs.cjs')
+const getPrismLangs = require('./get-prism-langs.cjs');
 
 function highlighter(code, lang) {
-    code = code.replace(/'/g, "&apos;");
-    code = code.replace(/"/g, "&quot;");
+	code = code.replace(/'/g, '&apos;');
+	code = code.replace(/"/g, '&quot;');
 
     // Replace curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
@@ -12,9 +12,11 @@ function highlighter(code, lang) {
     }
     return `
     {#if data.${lang} }
-        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${lang ?? 'untitled'}" queryResult = {data.${lang ?? 'untitled'}}/> 
+        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${
+					lang ?? 'untitled'
+				}" queryResult = {data.${lang ?? 'untitled'}}/> 
     {/if}
     `;
 }
 
-module.exports = {highlighter}
+module.exports = { highlighter };

@@ -3,7 +3,6 @@ name: Feature request
 about: Suggest an idea for Evidence
 title: ''
 assignees: ''
-
 ---
 
 **Feature Description**

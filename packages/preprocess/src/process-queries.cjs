@@ -7,18 +7,21 @@ const {frontmatterRegex, containsFrontmatter} = require("./frontmatter/frontmatt
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     const routeH = getRouteHash(filename)
 
-    let queryDeclarations = ''
-    
-    if(fileQueryIds?.length > 0) {
-        // Get query results from load function
-        queryDeclarations = 
-        `
-        let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;
-        $: ({${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data);
-        `
-    } 
+	let queryDeclarations = '';
 
-    let defaultProps = `
+	if (fileQueryIds?.length > 0) {
+		// Get query results from load function
+		queryDeclarations = `
+        let {${fileQueryIds
+					?.filter((queryId) => queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$'))
+					.map((id) => id)} } = data;
+        $: ({${fileQueryIds
+					?.filter((queryId) => queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$'))
+					.map((id) => id)} } = data);
+        `;
+	}
+
+	let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '$lib/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
@@ -102,10 +105,10 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         })
 
         ${queryDeclarations}
-        `
+        `;
 
-    return defaultProps
-}
+	return defaultProps;
+};
 
 /**
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
@@ -146,7 +149,4 @@ const processQueries = (componentDevelopmentMode) => {
             }
         }
 
-    }
-}
-
-module.exports = processQueries
+module.exports = processQueries;

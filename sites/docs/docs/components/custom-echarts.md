@@ -4,10 +4,10 @@ title: Custom ECharts
 hide_table_of_contents: false
 ---
 
-
-Our chart library is based on [ECharts](https://echarts.apache.org/examples/en/index.html), a powerful and flexible open source JavaScript chart library. We use many of the features in ECharts, and combine them with custom data transformation, logic, and theming. 
+Our chart library is based on [ECharts](https://echarts.apache.org/examples/en/index.html), a powerful and flexible open source JavaScript chart library. We use many of the features in ECharts, and combine them with custom data transformation, logic, and theming.
 
 ## `<ECharts>` Component
+
 If you would like to create a fully custom chart, you can use our built-in `<ECharts>` component. This component accepts a JavaScript object containing a chart configuration. To test this out, you can find an example on the [ECharts example page](https://echarts.apache.org/examples/en/index.html) and paste the option object into the Evidence `<ECharts>` component.
 
 This will let you create a chart that matches Evidence theming, but gives you access to the [full suite](https://echarts.apache.org/en/option.html#title) of ECharts features.
@@ -15,6 +15,7 @@ This will let you create a chart that matches Evidence theming, but gives you ac
 The downside of this approach is that `<ECharts>` requires data to be included in the configuration object, which can be difficult depending on the type of chart you need. If you would like to use specialized ECharts features, but retain the data management you get with Evidence charts, we recommend building a [mixed-type chart](/components/mixed-type-charts) and passing in an `options` object for the specific features you need.
 
 ## How to Build the Configuration
+
 To create a JavaScript object in an Evidence markdown page, you need to add a `<script>` tag. Any objects or variables you create in that script tag are then accessible by the rest of your page using curly braces. For example, if you create a variable named `myVar`, you can show the contents of that variable in your markdown using `{myVar}`.
 
 ## Examples
@@ -27,7 +28,7 @@ ECharts requires the data object to have a specific format. For example in the t
 
 ![custom-treemap](/img/custom-treemap.png)
 
-``````
+````
 ```sales_by_country
 select "Canada" as country, 100 as sales
 union all
@@ -75,17 +76,17 @@ from ${sales_by_country}
     }
 />
 
-``````
+````
 
 ### Funnel Chart
+
 [Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=funnel)
 
 ECharts requires the data object to have a specific format. For example in the funnel chart show below it expects the columns to be called “name” and “value”. The `funnel_data` query in the code below renames the fields from the original query so ECharts can use them.
 
 ![custom-funnel](/img/custom-funnel.png)
 
-
-``````
+````
 ```funnel_stages
 select "Emailed" as stage, 129 as count
 union all
@@ -115,16 +116,17 @@ from ${funnel_stages}
         }
     }
 />
-``````
+````
 
 ### Pie Chart
+
 [Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=pie-simple)
 
 ECharts requires the data object to have a specific format. For example in the pie chart show below it expects the columns to be called “name” and “value”. The `pie_data` query in the code below renames the fields from the original query so ECharts can use them.
 
 ![custom-pie](/img/custom-pie.png)
 
-``````
+````
 ```pie_query
 select "Apple" as pie, 60 as count
 union all
@@ -154,16 +156,17 @@ from ${pie_query}
       }
     }
 />
-``````
+````
 
 ### Donut Chart
+
 [Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=pie-doughnut)
 
 ECharts requires the data object to have a specific format. For example in the donut chart show below it expects the columns to be called “name” and “value”. The `donut_data` query in the code below renames the fields from the original query so ECharts can use them.
 
 ![custom-donut](/img/custom-donut.png)
 
-``````
+````
 ```donut_query
 select "Glazed" as donut, 213 as count
 union all
@@ -194,9 +197,10 @@ from ${donut_query}
       }
     }
 />
-``````
+````
 
 ### Advanced Chart
+
 [Link to ECharts example](https://echarts.apache.org/examples/en/editor.html?c=scatter-anscombe-quartet)
 
 ![custom-chart](/img/exg-custom-echarts-anscombe.svg)

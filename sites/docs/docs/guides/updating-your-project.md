@@ -10,5 +10,3 @@ To get the new changes, run `npm update` in the root of your project. This will 
 For major updates (which may include breaking changes), run `npm install @evidence-dev/evidence@latest`.
 
 If you run into any problems with updates, reach out on [Slack](/community) or email <support@evidence.dev>.
-
-
