@@ -1,6 +1,6 @@
 const {getRouteHash} = require("./utils/get-route-hash.cjs")
-const {getQueryIds} = require("./utils/get-query-ids.cjs")
-
+const {getQueryIds, extractQueries} = require("./extract-queries/extract-queries.cjs")
+const {highlighter} = require("./utils/highlighter.cjs")
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     const routeH = getRouteHash(filename)
 
@@ -112,8 +112,16 @@ const processQueries = (componentDevelopmentMode) => {
     return {
         markup({content, filename}) {
             if(filename.endsWith(".md")) {
-                let fileQueryIds = getQueryIds(content);
-                queryIdsByFile[getRouteHash(filename)] = fileQueryIds;
+                // TODO: We have content available here, and should probably use it
+                let fileQueries = extractQueries(content);
+                queryIdsByFile[getRouteHash(filename)] = fileQueries.map(q => q.id);
+
+                const externalQueryViews = "\n\n\n" + fileQueries.filter(q => !q.inline).map(q => {
+                    return highlighter(q.compiledQueryString, q.id.toLowerCase())
+                }).join("\n")
+                return {
+                    code: content + externalQueryViews
+                }
             }
         },    
         script({content, filename, attributes}) {

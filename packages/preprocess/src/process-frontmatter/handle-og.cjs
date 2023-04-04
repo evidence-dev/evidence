@@ -1,3 +1,4 @@
+module.exports = `
 <!-- 
     MDSvex comes in handy here because it takes frontmatter and shoves it into the metadata object.
     This means that all we need to do is build out the expected page metadata
@@ -31,3 +32,4 @@
 {/if}
 {/if}
 </svelte:head>
+`
