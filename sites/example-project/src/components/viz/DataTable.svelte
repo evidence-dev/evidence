@@ -382,7 +382,7 @@
 											src={row[column.id]}
 											alt={column.alt
 												? row[column.alt]
-												: row[column.id].replace(/^(.*[\\\/])/g, '').replace(/[.][^.]+$/g, '')}
+												: row[column.id].replace(/^(.*[/])/g, '').replace(/[.][^.]+$/g, '')}
 											style="
                         margin: 0.5em auto 0.5em auto;
                         height: {column.height};
