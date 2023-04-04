@@ -133,3 +133,26 @@ To display data in a table, use a [Data Table](../components/data-table) instead
 > > And can be nested
 ```
 
+## Frontmatter
+
+To attach metadata (e.g. a title) to your page, use Frontmatter.
+
+Frontmatter is formatted like this:
+```markdown
+---
+title: Evidence Docs
+---
+```
+
+You can put whatever data you would like here, and it uses a [yaml syntax](https://yaml.org/), but some properties are special:
+
+| Property         | Effect                                                                                                                       |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `title`          | changes the name of the tab, and also adds a header to your page                                                             |
+| `description`    | is used for search engines                                                                                                   |
+| `og`             | changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc                             |
+| `og.title`       | changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vise versa) |
+| `og.description` | changes the body of the embed                                                                                                |
+| `og.image`       | will appear in the embed if specified, but it is not required.                                                               |
+
+Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
