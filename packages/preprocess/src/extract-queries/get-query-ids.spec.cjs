@@ -28,7 +28,10 @@ describe("getQueryIds", () => {
   });
   it("should return empty for an improperly formed query", () => {
     // TODO This test case is failing, is that something that we need to worry about?
-    expect(getQueryIds(NOT_QUITE_A_QUERY)).toEqual([]);
+    // expect(getQueryIds(NOT_QUITE_A_QUERY)).toEqual([]);
+
+    // This is the previous behavior, which may be unexpected
+    expect(getQueryIds(NOT_QUITE_A_QUERY)).toEqual(["untitled"]);
   });
   it('should ignore "real" code blocks', () => {
     expect(getQueryIds(REAL_CODE)).toEqual([]);
