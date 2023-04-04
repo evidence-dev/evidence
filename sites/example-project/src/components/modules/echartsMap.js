@@ -1,7 +1,7 @@
 import { init, registerMap } from 'echarts';
 import usStateMap from './usStateMap.json';
 
-export default (node, option, renderer) => {
+export default (node, option) => {
 	registerMap('US', usStateMap);
 
 	let hasLink = option.hasLink;

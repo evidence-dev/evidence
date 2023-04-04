@@ -7,7 +7,7 @@ export default function getSeriesConfig(
 	series,
 	swapXY,
 	baseConfig,
-	name = null,
+	name,
 	xMismatch,
 	columnSummary,
 	size = null,
@@ -24,7 +24,6 @@ export default function getSeriesConfig(
 
 	let i;
 	let j;
-	let legend;
 	let tempConfig;
 	let seriesConfig = [];
 	let seriesData;
@@ -34,7 +33,6 @@ export default function getSeriesConfig(
 
 	// 1) Series column with single y column
 	if (series != null && typeof y !== 'object') {
-		legend = true;
 		seriesDistinct = getDistinctValues(data, series);
 
 		for (i = 0; i < seriesDistinct.length; i++) {
@@ -69,8 +67,6 @@ export default function getSeriesConfig(
 
 	// 2) Series column with multiple y columns
 	if (series != null && typeof y === 'object' && y.length > 1) {
-		legend = true;
-
 		seriesDistinct = getDistinctValues(data, series);
 		for (i = 0; i < seriesDistinct.length; i++) {
 			// Filter for specific series:
@@ -105,8 +101,6 @@ export default function getSeriesConfig(
 
 	// 3) Multiple y columns without series column
 	if (series == null && typeof y === 'object' && y.length > 1) {
-		legend = true;
-
 		for (i = 0; i < y.length; i++) {
 			if (swapXY) {
 				seriesData = data.map((d) => [d[y[i]], xMismatch ? d[x].toString() : d[x]]);
@@ -134,8 +128,6 @@ export default function getSeriesConfig(
 
 	// 4) Single y column without series column
 	if (series == null && typeof y !== 'object') {
-		legend = false;
-
 		if (swapXY) {
 			seriesData = data.map((d) => [d[y], xMismatch ? d[x].toString() : d[x]]);
 		} else {

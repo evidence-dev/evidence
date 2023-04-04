@@ -62,16 +62,8 @@
 	{yMax}
 	{title}
 	{subtitle}
-	chartType="Scatter Plot"
+	{chartType}
 	{sort}
 >
-	<Scatter
-		{shape}
-		{fillColor}
-		{opacity}
-		{outlineColor}
-		{outlineWidth}
-		{pointSize}
-		useTooltip="true"
-	/>
+	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 </Chart>

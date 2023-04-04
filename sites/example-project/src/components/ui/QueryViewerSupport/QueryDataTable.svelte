@@ -1,5 +1,5 @@
 <script>
-	import { blur, slide, fade } from 'svelte/transition';
+	import { blur, slide } from 'svelte/transition';
 	import DownloadData from '../DownloadData.svelte';
 	import getColumnSummary from '$lib/modules/getColumnSummary.js';
 	import { formatValue } from '$lib/modules/formatting.js';

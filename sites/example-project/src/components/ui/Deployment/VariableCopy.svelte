@@ -15,7 +15,9 @@
 				copied = true;
 				setTimeout(toggleCopied, 2000);
 			}
-		} catch (e) {}
+		} catch {
+			/* ignore errors */
+		}
 	};
 
 	import Copy from './CopyIcon.svelte';

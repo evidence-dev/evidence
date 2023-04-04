@@ -15,3 +15,7 @@ yarn.lock
 
 
 **/.evidence*
+/packages/preprocess/src/process-frontmatter/handle-og.svelte
+**/template/*
+**/packages/components/*
+**/sites/docs/*

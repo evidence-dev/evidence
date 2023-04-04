@@ -26,7 +26,7 @@ export default function checkInputs(data, reqCols, optCols) {
 	}
 
 	if (reqCols != undefined) {
-		if (!reqCols instanceof Array) {
+		if (!(reqCols instanceof Array)) {
 			throw Error('reqCols must be passed in as an array');
 		}
 

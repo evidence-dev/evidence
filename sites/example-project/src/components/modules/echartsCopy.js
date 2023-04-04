@@ -1,7 +1,7 @@
 import { registerTheme, init } from 'echarts';
 import { colours } from './colours';
 
-export default (node, option, renderer) => {
+export default (node, option) => {
 	registerTheme('evidence-light', {
 		grid: {
 			left: '0%',

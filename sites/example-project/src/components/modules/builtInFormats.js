@@ -183,7 +183,7 @@ const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map((currency) => {
 			next.formatCode = `${symbolInFormatCode}${derivedFormat.valueFormatCode}`;
 		}
 		if (derivedFormat.axisValueFormatCode) {
-			next.axisFormatCode = axisValueFormatCode;
+			next.axisFormatCode = derivedFormat.axisValueFormatCode;
 		}
 		derivedFormats.push(next);
 	});

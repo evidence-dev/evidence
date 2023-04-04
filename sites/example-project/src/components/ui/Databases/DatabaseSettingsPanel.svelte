@@ -9,7 +9,6 @@
 	import CSVForm from './CSVForm.svelte';
 
 	import { slide, blur } from 'svelte/transition';
-	import { select } from '@tidyjs/tidy';
 
 	export let settings;
 	export let gitIgnore;

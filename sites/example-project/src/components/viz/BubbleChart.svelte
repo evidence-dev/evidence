@@ -65,9 +65,9 @@
 	{yMax}
 	{title}
 	{subtitle}
-	chartType="Bubble Chart"
-	bubble="true"
+	{chartType}
+	{bubble}
 	{sort}
 >
-	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} useTooltip="true" />
+	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 </Chart>

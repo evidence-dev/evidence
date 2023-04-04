@@ -5,7 +5,7 @@
 
 	async function save() {
 		settings.send_anonymous_usage_stats = usageStats ? 'yes' : 'no';
-		const submitted = await fetch('/api/settings.json', {
+		await fetch('/api/settings.json', {
 			method: 'POST',
 			body: JSON.stringify({
 				settings

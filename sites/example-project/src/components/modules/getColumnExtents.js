@@ -57,13 +57,14 @@ function summarizeUnits(series) {
 				case 'null': //typically this will be object
 					nullCount++;
 					break;
-				case 'number':
+				case 'number': {
 					numberCount++;
 					let thisDecimalPlaces = nextElement.toString().split('.')[1]?.length;
 					if (thisDecimalPlaces && thisDecimalPlaces > maxDecimals) {
 						maxDecimals = thisDecimalPlaces;
 					}
 					break;
+				}
 				case 'string':
 					stringCount++;
 					break;

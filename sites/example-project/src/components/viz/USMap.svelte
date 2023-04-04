@@ -174,11 +174,6 @@
 					roam: false,
 					map: 'US',
 					nameProperty: nameProperty,
-					emphasis: {
-						label: {
-							show: true
-						}
-					},
 					itemStyle: {
 						borderColor: colours.grey400,
 						areaColor: colours.grey100
@@ -188,6 +183,7 @@
 							areaColor: colours.grey300
 						},
 						label: {
+							show: true,
 							color: colours.grey900
 						}
 					},

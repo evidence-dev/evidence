@@ -51,7 +51,7 @@ export const formatValue = (value, columnFormat = undefined, columnUnitSummary =
 	} catch (error) {
 		//fallback to default
 		console.warn(
-			`Unexpected error calling applyFormatting(${value}, ${columnFormat}, ${VALUE_FORMATTING_CONTEXT}, ${columnUnits}). Error=${error}`
+			`Unexpected error calling applyFormatting(${value}, ${columnFormat}, ${VALUE_FORMATTING_CONTEXT}, ${columnUnitSummary}). Error=${error}`
 		);
 		return value;
 	}

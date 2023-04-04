@@ -27,10 +27,6 @@
 	function toggleDropdown() {
 		showDropdown = !showDropdown;
 	}
-
-	function closeDropdown() {
-		showDropdown = false;
-	}
 </script>
 
 <div>

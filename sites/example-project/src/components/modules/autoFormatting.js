@@ -54,7 +54,7 @@ const IMPLICIT_COLUMN_AUTO_FORMATS = [
 		format: {
 			formatCode: AUTO_FORMAT_CODE,
 			valueType: 'number',
-			exampleInput: 931201212031223422,
+			exampleInput: 93120121,
 			_autoFormat: {
 				autoFormatFunction: (typedValue) => {
 					if (typedValue !== null && typedValue !== undefined && !isNaN(typedValue)) {

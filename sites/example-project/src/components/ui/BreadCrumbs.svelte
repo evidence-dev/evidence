@@ -1,6 +1,5 @@
 <script>
 	import { page } from '$app/stores';
-	import { blur } from 'svelte/transition';
 	import HomeIcon from '$lib/icons/HomeIcon.svelte';
 	export let fileTree;
 
@@ -44,7 +43,7 @@
 		}
 
 		// check in the file tree if each crumb has an href
-		crumbs.forEach((path, i) => {
+		crumbs.forEach((path) => {
 			if (!checkUrl(path.href, fileTree)) {
 				path.href = 'javascript:void(0)';
 			}

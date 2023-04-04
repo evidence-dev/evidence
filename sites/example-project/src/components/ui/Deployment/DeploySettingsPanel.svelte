@@ -4,7 +4,7 @@
 	import NetlifyDeploy from './NetlifyDeploy.svelte';
 	import VercelDeploy from './VercelDeploy.svelte';
 	import OtherDeploy from './OtherDeploy.svelte';
-	import { slide, blur } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
 	let deploymentOptions = [
 		{ id: 'evidence', name: 'Evidence Cloud', formComponent: EvidenceDeploy },

@@ -28,7 +28,9 @@ export async function GET() {
 		try {
 			settings.localGitRepo = getLocalGitRepo();
 			settings.gitRepo = await gitRemoteOriginUrl();
-		} catch {}
+		} catch {
+			/* ignore errors */
+		}
 		return json({ settings, gitIgnore });
 	}
 }

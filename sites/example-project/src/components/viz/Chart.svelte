@@ -757,7 +757,7 @@
 				chartConfig = { ...chartConfig, ...options };
 			}
 
-			config.update((d) => {
+			config.update(() => {
 				return chartConfig;
 			});
 		} catch (e) {

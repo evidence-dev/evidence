@@ -14,7 +14,9 @@
 			await navigator.clipboard.writeText(source);
 			copied = true;
 			setTimeout(toggleCopied, 1500);
-		} catch (e) {}
+		} catch {
+			/* ignore errors */
+		}
 	}
 </script>
 

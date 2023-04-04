@@ -2,7 +2,7 @@ import { registerTheme, init } from 'echarts';
 import { colours } from './colours';
 import debounce from 'debounce';
 
-export default (node, option, renderer) => {
+export default (node, option) => {
 	registerTheme('evidence-light', {
 		grid: {
 			left: '0%',
