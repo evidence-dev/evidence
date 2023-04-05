@@ -32,6 +32,7 @@ const extractExternalQueries = (content, filename) => {
     console.warn(
       `Malformed frontmatter found in ${filename}. Unable to extract external queries.`
     );
+    return []
   }
 
   /**
@@ -40,14 +41,38 @@ const extractExternalQueries = (content, filename) => {
   return frontmatter.sources.map((source) => {
     if (typeof source === "string") {
       const id = source.split(".sql")[0].replace("/", "_").replace("\\", "_");
-      const content = fs.readFileSync(`./sources/${source}`).toString().trim();
-      return {
-        id,
-        compiledQueryString: content,
-        inputQueryString: content,
-        compiled: false,
-        inline: false,
-      };
+      try {
+        const content = fs.readFileSync(`./sources/${source}`).toString().trim();
+        return {
+          id: id.toLowerCase(),
+          compiledQueryString: content,
+          inputQueryString: content,
+          compiled: false,
+          inline: false,
+        };  
+      } catch {
+        console.warn(`Failed to load sql file ${source}`)
+      }
+    } else if (typeof source === "object") {
+      const usedKey = Object.keys(source)[0]
+      // Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
+      if (Object.keys(source).length > 1) {
+        console.warn(`Source object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${source[usedKey]} will be imported.`)
+      }
+
+      try {
+        const content = fs.readFileSync(`./sources/${source[usedKey]}`)
+        return {
+          id: usedKey.toLowerCase(),
+          compiledQueryString: content,
+          inputQueryString: content,
+          compiled: false,
+          inline: false,
+        };  
+      } catch {
+        console.warn(`Failed to load sql file ${source[usedKey]}`)
+      }
+        
     }
   });
 };
