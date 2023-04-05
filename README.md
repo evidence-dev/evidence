@@ -1,24 +1,27 @@
-![evidence-logo](/readme/evidence-logo.svg)
+<!-- TODO: replace -->
+![evidence-logo](sites/docs/static/img/evidence.svg)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-# Business Intelligence for Modern Data Teams
+# Business Intelligence as Code
 
-Build a polished business intelligence system using only SQL and markdown. 
+Evidence is an open source, code-based alternative to drag-and-drop business intelligence tools.
 
-Evidence offers a modern development workflow for analysts and a polished user experience for decision-makers.
+You write SQL queries alongside markdown files and Evidence compiles them into a data website.
 
 # How It Works
-Evidence creates pages from markdown files. When you write SQL statements inside those files, Evidence runs it against your data warehouse.
+Evidence creates pages from markdown files. When you add SQL queries, Evidence runs them against your database.
 
-![how-it-works](/readme/how-it-works.png)
+![how-it-works](sites/docs/static/img/how-it-works.png)
 
-You can reference the results of those queries directly in your markdown document's text, or you can use them to make charts, graphs, and tables using our built-in component library.
+You can reference the results of those queries directly in your markdown document's text, or you can use them to make charts, graphs, and tables using our built-in components.
 
-Evidence compiles your markdown documents into a fast and reliable website. It tests your queries and keeps the site up-to-date with your data warehouse.
+Evidence renders a BI website from markdown files:
 
-Evidence supports loops, conditionals, parameterized pages, tests and more. It's easy to get started and you can build data products which are both more sophisticated and dramatically easier to use than what you can build with a typical BI tool.
-
+- **SQL statements** inside markdown files run queries against your data warehouse
+- **Charts and components** are rendered using these query results
+- **Templated pages** generate many pages from a single markdown template
+- **Loops** and **If / Else** statements allow control of what is displayed to users
 
 # Getting Started
 
@@ -30,7 +33,7 @@ Evidence supports loops, conditionals, parameterized pages, tests and more. It's
 
 **Install Locally:**
 
-Check out the [documentation](https://docs.evidence.dev) for a complete walk through.
+Check out the [documentation](https://docs.evidence.dev) for a walkthrough and other install options.
 
 ```
 npx degit evidence-dev/template my-project
@@ -49,4 +52,4 @@ Follow us on [Twitter](https://twitter.com/evidence_dev) to receive the latest u
 If you are interested in contributing, please join us on our [slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.  
 
 # License
-Evidence is licensed under the MIT license. See the [LICENSE](readme/license.md) file for licensing information.
+Evidence is licensed under the MIT license. See the [LICENSE](LICENSE.md) file for licensing information.
