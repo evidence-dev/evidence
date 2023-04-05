@@ -36,10 +36,25 @@ const extractExternalQueries = (content, filename) => {
   }
 
   /**
+   * 
+   * @param {string} source 
+   * @returns {boolean}
+   */
+  const validateSource = (source) => {
+    if (!source.endsWith(".sql")) {
+      console.warn(`${source} does not appear to be a .sql file, it will not be loaded`)
+      return false
+    }
+
+    return true
+  }
+
+  /**
    * @type Query[]
    */
   return frontmatter.sources.map((source) => {
     if (typeof source === "string") {
+      if (!validateSource(source)) return false
       const id = source.split(".sql")[0].replace("/", "_").replace("\\", "_");
       try {
         const content = fs.readFileSync(`./sources/${source}`).toString().trim();
@@ -55,13 +70,17 @@ const extractExternalQueries = (content, filename) => {
       }
     } else if (typeof source === "object") {
       const usedKey = Object.keys(source)[0]
+
+      const value = source[usedKey];
       // Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
       if (Object.keys(source).length > 1) {
-        console.warn(`Source object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${source[usedKey]} will be imported.`)
+        console.warn(`Source object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${value} will be imported.`)
       }
 
+      if (!validateSource(value)) return false
+
       try {
-        const content = fs.readFileSync(`./sources/${source[usedKey]}`)
+        const content = fs.readFileSync(`./sources/${value}`)
         return {
           id: usedKey.toLowerCase(),
           compiledQueryString: content,
@@ -70,11 +89,11 @@ const extractExternalQueries = (content, filename) => {
           inline: false,
         };  
       } catch {
-        console.warn(`Failed to load sql file ${source[usedKey]}`)
+        console.warn(`Failed to load sql file ${value}`)
       }
         
     }
-  });
+  }).filter(Boolean) // filter out queries that returned false;
 };
 
 /**
