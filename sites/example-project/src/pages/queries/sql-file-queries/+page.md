@@ -1,11 +1,10 @@
 ---
-title: External Queries
+title: SQL File Queries
 
 sources:
     - test_query.sql
-    - nested/test_query.sql
+    - test_query_nested: nested/test_query.sql
     - dep_query.sql
-    - inline_dep_query.sql
 ---
 
 ```query_on_the_page
@@ -22,7 +21,7 @@ If you haven't read about <a href="/frontmatter" target="_blank">frontmatter</a>
 </Alert>
 
 
-## Using external queries
+## Using sql file queries
 
 ### Basic Usage
 
@@ -64,7 +63,7 @@ You can now access `my_query.sql` and `my_group/my_query.sql` with frontmatter:
 
 Note that all slashes (`/`) will be replaced with underscores (`_`), so `nested/my_query.sql` is accessible as `nested_my_query.sql`.
 
-It is also noteworthy that when trying to view queries; all external queries will be placed at the bottom of the page.
+It is also noteworthy that when trying to view queries; all sql file queries will be placed at the bottom of the page.
 
 --- 
 
@@ -79,9 +78,18 @@ Your query can contain anything; for the examples on this page, we have some ver
 #### dep_query.sql
 <CodeBlock source="SELECT t * 2 as x FROM ${test_query}"/>
 
-#### inline_dep_query.sql
-<CodeBlock source="SELECT t * 4 as x FROM ${query_on_the_page}"/>
+### Aliasing Query Names
 
+It is possible to escape the default name for your queries by using some simple yaml syntax:
+<CodeBlock source={`---
+sources:
+  - default_query_name.sql        # This will be referenced as default_query_name
+  - alias: default_query_name.sql # This will be referenced as alias
+#        ^ This is the key
+---`}/>
+
+The format is `alias: query_file.sql`, instead of just `query_file.sql`, this can lead
+to any query file that you would like, and can be helpful if you have many subdirectories 
 
 ## Test Query
 
@@ -93,16 +101,10 @@ Result <Value data={test_query} value="t"/>
 
 This is from `nested/test_query.sql`
 
-Result = <Value data={nested_test_query} value="t"/>
+Result = <Value data={test_query_nested} value="t"/>
 
 ## Query with File dependency
 
 This is from `dep_query.sql`; it depends on `test_query.sql`
 
 Result = <Value data={dep_query} value="x"/>
-
-## Query with Inline dependency
-
-This is from `inline_dep_query.sql`; it depends on `query_on_the_page`; which is declared on the page in which it is used.
-
-Result = <Value data={inline_dep_query} value="x"/>

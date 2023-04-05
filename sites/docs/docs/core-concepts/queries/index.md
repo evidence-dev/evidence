@@ -83,13 +83,13 @@ The SQL compiler detects circular and missing references. If a query includes ei
 
 ![circular-error-single](/img/circular-error-single.png)
 
-## External SQL Files
+## SQL File Queries
 
 Evidence also has support for queries outside the markdown, which is especially useful when you have a query that is being used on more than one page.
 
 ### Basic Usage
 
-To use external sql files, you need to place them in the `sources` directory, and then reference them in your [frontmatter](/markdown/#frontmatter).
+To use sql file queries, you need to place them in the `sources` directory, and then reference them in your [frontmatter](/markdown/#frontmatter).
 
 An example setup could be:
 
@@ -119,30 +119,4 @@ In your evidence file, you can now reference `my_query` and `some_category_my_ca
 
 ### Advanced Usage
 
-External query files can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_query` depends on `some_category_my_category_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.
-
-#### External File Dependencies on Inline Queries
-
-External query files can also depend on inline queries, which can be helpful if you have a common query that you need to filter differently for each page.
-
-For example, in some query file:
-```sql
-SELECT * FROM some_table
-    WHERE some_table.id IN (${page_query})
-```
-
-Then, in your page:
-```markdown
-    ```page_query
-    SELECT 1
-    ```
-```
-
-The final query will look like:
-
-```sql
-SELECT * FROM some_table
-    WHERE some_table.id IN (SELECT 1)
-```
-
-This allows you to control what the file queries from the page, increasing the flexibility of the query files.
+SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_query` depends on `some_category_my_category_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.
