@@ -82,14 +82,16 @@ export const getStatusAndExtractQueries = function (route) {
               } else if (i >= maxIterations) {
                 throw new Error(circularRefErrorMsg);
               } else {
-                let referencedQuery =
-                  "(" +
-                  queries.filter((d) => d.id === referencedQueryID)[0]
-                    .compiledQueryString +
-                  ")";
+                const referencedQuery = queries.filter((d) => d.id === referencedQueryID)[0]
+                if (!query.inline && referencedQuery.inline) {
+                  console.warn(`Cannot reference inline query from sql file! ${query.id}->${referencedQuery.id}`)
+                  return
+                }
+                const queryString =
+                  `(${referencedQuery.compiledQueryString})`;
                 query.compiledQueryString = query.compiledQueryString.replace(
                   reference,
-                  referencedQuery
+                  queryString
                 );
               }
             } catch (e) {
