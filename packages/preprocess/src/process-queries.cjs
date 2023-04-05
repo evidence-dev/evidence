@@ -120,7 +120,7 @@ const processQueries = (componentDevelopmentMode) => {
                     return highlighter(q.compiledQueryString, q.id.toLowerCase())
                 }).join("\n")
                 return {
-                    code: content + externalQueryViews
+                    code: externalQueryViews + content
                 }
             }
         },    
