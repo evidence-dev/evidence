@@ -10,11 +10,9 @@ Evidence is an open source, code-based alternative to drag-and-drop business int
 You write SQL queries alongside markdown files and Evidence compiles them into a data website.
 
 # How It Works
-Evidence creates pages from markdown files. When you add SQL queries, Evidence runs them against your database.
 
 ![how-it-works](sites/docs/static/img/how-it-works.png)
 
-You can reference the results of those queries directly in your markdown document's text, or you can use them to make charts, graphs, and tables using our built-in components.
 
 Evidence renders a BI website from markdown files:
 
