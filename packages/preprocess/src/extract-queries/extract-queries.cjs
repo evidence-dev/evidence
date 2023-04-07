@@ -85,7 +85,7 @@ const extractExternalQueries = (content, filename) => {
       if (!validateSource(value)) return false
 
       try {
-        const content = fs.readFileSync(`./sources/${value}`)
+        const content = fs.readFileSync(`./sources/${value}`).toString().trim()
         return {
           id: usedKey.toLowerCase(),
           compiledQueryString: content,
