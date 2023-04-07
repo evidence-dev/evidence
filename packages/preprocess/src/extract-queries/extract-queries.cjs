@@ -5,8 +5,8 @@ const fs = require("fs");
 const getPrismLangs = require('../utils/get-prism-langs.cjs')
 const {
   parseFrontmatter,
-} = require("../process-frontmatter/parse-frontmatter.cjs");
 
+} = require("../frontmatter/parse-frontmatter.cjs");
 /** @typedef {{id: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
 
 

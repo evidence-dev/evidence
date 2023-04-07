@@ -3,7 +3,7 @@ const {highlighter} = require("./src/utils/highlighter.cjs")
 const addScriptTags = require("./src/add-script-tags.cjs")
 const processQueries = require('./src/process-queries.cjs')
 // This is includes future proofing to add support for Prism highlighting
-const processFrontmatter = require('./src/process-frontmatter/process-frontmatter.cjs')
+const processFrontmatter = require('./src/frontmatter/process-frontmatter.cjs')
 
 module.exports = function evidencePreprocess(componentDevelopmentMode = false){
     return [
@@ -25,7 +25,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false){
         processFrontmatter(),
     ]
 } 
-module.exports.parseFrontmatter = require("./src/process-frontmatter/parse-frontmatter.cjs").parseFrontmatter
+module.exports.parseFrontmatter = require("./src/frontmatter/parse-frontmatter.cjs").parseFrontmatter
 const extractQueries = require("./src/extract-queries/extract-queries.cjs")
 module.exports.extractQueries = extractQueries.extractQueries
 module.exports.getQueryIds = extractQueries.getQueryIds
