@@ -5,10 +5,12 @@ const fs = require("fs");
 const getPrismLangs = require('../utils/get-prism-langs.cjs')
 const {
   parseFrontmatter,
-
 } = require("../frontmatter/parse-frontmatter.cjs");
+const chalk = require('chalk')
 /** @typedef {{id: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
 
+
+const warnedSources = {}
 
 // Unified parser step to ignore indented code blocks.
 // Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
@@ -42,7 +44,10 @@ const extractExternalQueries = (content, filename) => {
    */
   const validateSource = (source) => {
     if (!source.endsWith(".sql")) {
-      console.warn(`${source} does not appear to be a .sql file, it will not be loaded`)
+      if (!warnedSources[source]) {
+        warnedSources[source] = true
+        console.warn(chalk.bold.red(`! ${source}`) + chalk.gray(" does not appear to be a .sql file, and will not be loaded"))
+      }
       return false
     }
 
