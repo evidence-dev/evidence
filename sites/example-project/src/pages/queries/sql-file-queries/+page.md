@@ -4,7 +4,9 @@ title: SQL File Queries
 sources:
     - test_query.sql
     - test_query_nested: nested/test_query.sql
-    - dep_query.sql
+    - DEP_query.sql
+    - not_sql.python
+    - should_break.sql
 ---
 
 ```query_on_the_page
@@ -76,7 +78,7 @@ Your query can contain anything; for the examples on this page, we have some ver
 <CodeBlock source="SELECT 2 as t;"/>
 
 #### dep_query.sql
-<CodeBlock source="SELECT t * 2 as x FROM ${test_query}"/>
+<CodeBlock source="SELECT t * 2 as x FROM $&#123;test_query}"/>
 
 ### Aliasing Query Names
 
