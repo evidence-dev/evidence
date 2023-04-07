@@ -238,6 +238,7 @@ importers:
       '@faker-js/faker': ^7.6.0
       '@types/jest': ^29.5.0
       blueimp-md5: ^2.19.0
+      chalk: 4.1.0
       fs-extra: ^9.1.0
       jest: ^28.1.3
       mdsvex: ^0.10.6
@@ -251,6 +252,7 @@ importers:
       yaml: ^2.2.1
     dependencies:
       blueimp-md5: 2.19.0
+      chalk: 4.1.0
       fs-extra: 9.1.0
       mdsvex: 0.10.6_svelte@3.55.0
       prismjs: 1.29.0
@@ -6853,7 +6855,6 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-    dev: false
 
   /char-regex/1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
@@ -8318,7 +8319,7 @@ packages:
       '@humanwhocodes/module-importer': 1.0.1
       '@nodelib/fs.walk': 1.2.8
       ajv: 6.12.6
-      chalk: 4.1.0
+      chalk: 4.1.2
       cross-spawn: 7.0.3
       debug: 4.3.4
       doctrine: 3.0.0
