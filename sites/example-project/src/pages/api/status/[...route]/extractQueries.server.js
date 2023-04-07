@@ -83,9 +83,8 @@ export const getStatusAndExtractQueries = function (route) {
                 throw new Error(circularRefErrorMsg);
               } else {
                 const referencedQuery = queries.filter((d) => d.id === referencedQueryID)[0]
-                if (!query.inline && referencedQuery.inline) {
-                  console.warn(`Cannot reference inline query from sql file! ${query.id}->${referencedQuery.id}`)
-                  return
+                if (!query.inline && referencedQuery.inline) {                  
+                  throw new Error(`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`)
                 }
                 const queryString =
                   `(${referencedQuery.compiledQueryString})`;
