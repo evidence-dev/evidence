@@ -135,6 +135,10 @@ To display data in a table, use a [Data Table](../components/data-table) instead
 
 ## Frontmatter
 
+:::note
+Frontmatter does not support Javascript statements at this time; and things may behave unexpectedly if wrapped in `{}`
+:::
+
 To attach metadata (e.g. a title) to your page, use Frontmatter.
 
 Frontmatter is formatted like this:
