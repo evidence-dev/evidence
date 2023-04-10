@@ -11,7 +11,7 @@
     { label: "Deploy Project", url: "/settings/#deploy", prod: false},
     { label: "Project Settings", url: "/settings", prod: false },
     { label: "Docs", url: "https://docs.evidence.dev", prod: false },
-    { label: "Get Help on Slack", url: "https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q", prod: true },
+    { label: "Get Help on Slack", url: "https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q", prod: false },
   ];
 
 
