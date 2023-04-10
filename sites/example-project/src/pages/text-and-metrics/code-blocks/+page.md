@@ -22,6 +22,16 @@ group by 1,2
     select count(*) as n_days from ${input}
 ```
 
+```sql reviews
+select * from reviews
+```
+
+```sql
+select * from a_table_that_isnt_connected
+```
+
+
+
 ### JavaScript
 
 ```javascript
