@@ -15,8 +15,15 @@
   ];
 
 
+  function print() {
+    window.print();
+    closeDropdown();
+  }
+
+
   function toggleQueries() {
     showQueries.update((value) => !value);
+    closeDropdown();
   }
 
   let showDropdown = false;
@@ -28,6 +35,14 @@
   function closeDropdown() {
     showDropdown = false;
   }
+
+  function handleBlur() {
+    setTimeout(() => {
+      if (!document.activeElement.closest("#dropdown-items")) {
+        closeDropdown();
+      }
+    }, 0);
+  }
 </script>
 
 
@@ -37,9 +52,10 @@
     class=menu
     aria-label="page menu button"
     on:click={toggleDropdown}
+    on:blur={handleBlur}
   ><KebabIcon color=--grey-600/></button>
     {#if showDropdown}
-    <ul class=dropdown-items>
+    <ul class=dropdown-items id=dropdown-items>
       {#each options as option}
         {#if dev || option.prod}
         <li>
@@ -52,12 +68,12 @@
             {/if}
         {/if}
         {:else if option.label === "Export PDF"}
-          <button class="dropdown first" on:click={() => print()}>{option.label}</button>
+          <button class="dropdown first" on:click={print}>{option.label}</button>
         {:else}
           {#if option.url.includes("http")}
-          <a href={option.url} target=_blank rel=noreferrer>{option.label}<ExternalLinkIcon height=12 width=12 color="--red-700"/></a>
+          <a href={option.url} target=_blank rel=noreferrer on:click={closeDropdown}>{option.label}<ExternalLinkIcon height=12 width=12 color="--red-700"/></a>
           {:else}
-          <a href={option.url} target=_self>{option.label}</a>
+          <a href={option.url} target=_self on:click={closeDropdown}>{option.label}</a>
           {/if}
         {/if}
       </li>
