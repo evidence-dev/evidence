@@ -95,6 +95,7 @@
     padding: 0;
     cursor: pointer;
     border: none;
+    line-height: normal;
   }
 
   button.menu {
@@ -107,7 +108,7 @@
     top: 100%;
     right: 10px;
     min-width: 170px;
-    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
     padding: 8px 0 8px 0;
     border-radius: 5px;
     z-index: 1;
@@ -133,7 +134,7 @@
     color: var(--grey-900);
     display: flex;
     justify-content: space-between;
-    padding: 8px 12px;
+    padding: 10px 12px;
     line-height: normal;
     box-sizing: border-box;
     font-size: 14px;
@@ -148,6 +149,6 @@
     text-align: left;
     box-sizing: border-box;
     width: 100%;
-    padding: 8px 12px;
+    padding: 10px 12px;
   }
 </style>
