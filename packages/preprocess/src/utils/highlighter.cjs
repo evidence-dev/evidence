@@ -1,6 +1,6 @@
 const getPrismLangs = require('./get-prism-langs.cjs')
 
-function highlighter(code, lang) {
+function highlighter(code, lang = "") {
     code = code.replace(/'/g, "&apos;");
     code = code.replace(/"/g, "&quot;");
 
