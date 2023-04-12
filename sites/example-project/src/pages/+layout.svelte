@@ -85,9 +85,7 @@
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="grid">	
 		<div class="header-bar">
-			<div class=header-content>
-				<Header {fileTree} bind:open/>
-			</div>
+			<Header {fileTree} bind:open/>
 		</div>
 	<Sidebar bind:open {fileTree}/>
 	{#if !$navigating}
@@ -173,25 +171,14 @@ aside.toc {
 }
 
 .header-bar {
-	margin: auto;
-	max-width:100ch;
-	min-width: 0;
-	width: 100%;
-	display: grid;
-	grid-template-columns: 4fr ;
-	gap: 0 5ch;
-	position: sticky;
+	display: flex;
+	justify-content: space-between;
+    position: sticky;
     z-index: 2;
     top: 0;
     background-color: rgba(255, 255, 255, 0.73);
-    -webkit-backdrop-filter: blur(8px) saturate(1.8);
-    backdrop-filter: blur(8px) saturate(1.8);
-}
-
-.header-content {
-
-	max-width: 70ch;
-	padding: 0 1.5em 0 1.5em
+    -webkit-backdrop-filter: blur(10px) saturate(1.8);
+    backdrop-filter: blur(10px) saturate(1.8);
 }
 
 @media (max-width: 1440px) {
@@ -219,7 +206,6 @@ aside.toc {
 	aside.toc {
 		display: none;
 	}
-
 }
 
 @media (max-width: 850px) {
