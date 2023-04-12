@@ -1,14 +1,8 @@
-const unified = require('unified')
-const parse = require('remark-parse')
-const visit = require('unist-util-visit')
-const md5 = require("blueimp-md5");
-const getPrismLangs = require('./utils/get-prism-langs.cjs')
+const {getRouteHash} = require("./utils/get-route-hash.cjs")
+const {extractQueries} = require("./extract-queries/extract-queries.cjs")
+const {highlighter} = require("./utils/highlighter.cjs")
+const {frontmatterRegex, containsFrontmatter} = require("./frontmatter/frontmatter.regex.cjs")
 
-const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
-    const hash = md5(route)
-    return hash
-}
 
 const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
     const routeH = getRouteHash(filename)
@@ -16,6 +10,7 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
     let queryDeclarations = ''
     
     if(fileQueryIds?.length > 0) {
+        // Get query results from load function
         queryDeclarations = 
         `
         let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;
@@ -111,31 +106,6 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
 
     return defaultProps
 }
-// Unified parser step to ignore indented code blocks. 
-// Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
-// Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
-const ignoreIndentedCode = function() {
-	const Parser = this.Parser;
-	const block_tokenizers = Parser.prototype.blockTokenizers;
-	block_tokenizers.indentedCode = () => true;
-}
-
-const getQueryIds = function(content){
-    let queryIds = [];  
-    let tree = unified()
-        .use(parse)
-        .use(ignoreIndentedCode)
-        .parse(content)   
-
-    visit(tree, 'code', function(node) {
-        let id = node.lang ?? 'untitled'
-         // Prevent "real" code blocks from being interpreted as queries
-         if (!getPrismLangs().has(id.toLowerCase())){
-             queryIds.push(id)
-         }
-    });
-    return queryIds;
-}
 
 /**
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
@@ -143,10 +113,28 @@ const getQueryIds = function(content){
 const processQueries = (componentDevelopmentMode) => {
     let queryIdsByFile = {}
     return {
-        markup({content, filename}){
-            if(filename.endsWith(".md")){
-                let fileQueryIds = getQueryIds(content);
-                queryIdsByFile[getRouteHash(filename)] = fileQueryIds;
+        markup({content, filename}) {
+            if(filename.endsWith(".md")) {
+                let fileQueries = extractQueries(content);
+                queryIdsByFile[getRouteHash(filename)] = fileQueries.map(q => q.id);
+
+                const externalQueryViews = "\n\n\n" + fileQueries.filter(q => !q.inline).map(q => {
+                    return highlighter(q.compiledQueryString, q.id.toLowerCase())
+                }).join("\n")
+
+                // Page contains frontmatter
+                const frontmatter = containsFrontmatter(content);
+                if (frontmatter) {
+                    const contentWithoutFrontmatter = content.substring(frontmatter.length + 6)
+                    const output = `---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter
+                    return {
+                        code: output
+                    }
+                }
+
+                return {
+                    code: externalQueryViews + content
+                }
             }
         },    
         script({content, filename, attributes}) {

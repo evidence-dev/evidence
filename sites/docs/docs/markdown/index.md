@@ -135,7 +135,7 @@ To display data in a table, use a [Data Table](../components/data-table) instead
 
 ## Frontmatter
 
-To attach metadata (e.g. a title) to your page, use Frontmatter.
+To attach metadata (e.g. a title) to your page, you can use Frontmatter. Note that frontmatter _must_ appear as the first thing in your page; no content can come before it, or it won't be loaded properly.
 
 Frontmatter is formatted like this:
 ```markdown

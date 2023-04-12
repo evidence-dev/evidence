@@ -1,5 +1,3 @@
-const {readFile} = require("fs/promises")
-
 /**
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
@@ -10,10 +8,10 @@ module.exports = () => {
      */
     let handleOgContent
     return {
-        markup: async ({content, filename}) => {
+        markup: ({content, filename}) => {
             if (typeof filename === "undefined") return
             if (!filename.endsWith("+page.md")) return
-            if (!handleOgContent) handleOgContent = await readFile(`${__dirname}/handle-og.svelte`)
+            if (!handleOgContent) handleOgContent = require("./handle-og.cjs")
             return {
                 code: handleOgContent + content
             }
