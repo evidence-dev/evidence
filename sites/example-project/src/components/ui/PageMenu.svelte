@@ -4,7 +4,6 @@
   import ExternalLinkIcon from '$lib/icons/ExternalLinkIcon.svelte';
   import { showQueries } from './stores'
   import { pageHasQueries } from './stores';
-  import { clickoutside } from '@svelteuidev/composables';
   let options = [
     { label: "Show / Hide Queries", prod: true },
     { label: "Export PDF", prod: true },  
@@ -17,6 +16,7 @@
 
 
   function print() {
+    showDropdown = false;
     window.print();
   }
 
@@ -31,6 +31,29 @@
     showDropdown = !showDropdown;
   }
 
+  // Copied from https://github.com/svelteuidev/svelteui/blob/main/packages/svelteui-composables/src/actions/use-click-outside/use-click-outside.ts
+  function clickoutside(node, params) {
+    const { enabled: initialEnabled, callback } = params
+
+    const handleOutsideClick = ({ target }) => {
+      if (!node.contains(target)) callback(node)
+    }
+
+    function update({ enabled }) {
+      if (enabled) {
+        window.addEventListener("click", handleOutsideClick)
+      } else {
+        window.removeEventListener("click", handleOutsideClick)
+      }
+    }
+    update({ enabled: initialEnabled })
+    return {
+      update,
+      destroy() {
+        window.removeEventListener("click", handleOutsideClick)
+      }
+    }
+  }
 </script>
 
 

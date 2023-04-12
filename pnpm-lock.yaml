@@ -346,7 +346,6 @@ importers:
       '@sveltejs/kit': 1.13.0
       '@sveltejs/package': 1.0.1
       '@sveltejs/vite-plugin-svelte': ^2.0.3
-      '@svelteuidev/composables': 0.11.1
       '@tidyjs/tidy': 2.4.4
       autoprefixer: ^10.4.7
       cross-env: ^7.0.3
@@ -375,7 +374,6 @@ importers:
     dependencies:
       '@evidence-dev/telemetry': link:../../packages/telemetry
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4
-      '@svelteuidev/composables': 0.11.1
       '@tidyjs/tidy': 2.4.4
       cross-env: 7.0.3
       debounce: 1.2.1
@@ -4106,10 +4104,6 @@ packages:
       vitefu: 0.2.4_vite@4.0.4
     transitivePeerDependencies:
       - supports-color
-
-  /@svelteuidev/composables/0.11.1:
-    resolution: {integrity: sha512-TTRGTDlrJD22KT/X8L2he5hu3rDorzzB591sgzDjtCi35vKF6Z/ijuc/ngNCFHA+2WxcDGBGPs7YewEgv2yEKg==}
-    dev: false
 
   /@svgr/babel-plugin-add-jsx-attribute/5.4.0:
     resolution: {integrity: sha512-ZFf2gs/8/6B8PnSofI0inYXr2SDNTDScPXhN7k5EqD4aZ3gi6u+rbmZHVB8IM3wDyx8ntKACZbtXSm7oZGRqVg==}
