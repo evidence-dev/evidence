@@ -25,8 +25,8 @@
 		z-index: 10;
         margin-top: 1.0em;
 		margin-bottom: 1.0em;
-		margin-left: 1.0em;
-		margin-right: 0;
+		/* margin-left: 1.0em; */
+		margin-right: 1.0em;
         border: none;
 		padding: 0px;
         text-align: center;

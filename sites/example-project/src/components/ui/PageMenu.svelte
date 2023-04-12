@@ -99,7 +99,7 @@
   }
 
   button.menu {
-    margin: 16px;
+    margin: 16px 0px 16px 16px;
     font-size: unset;
   }
 
