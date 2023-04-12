@@ -9,6 +9,29 @@ const chalk = require("chalk");
 
 const warnedSources = {};
 
+/**
+ * 
+ * @param {string} source 
+ * @returns Query
+ */
+const readFileToQuery = (source) => {
+  try {
+    const content = fs
+      .readFileSync(`./sources/${source}`)
+      .toString()
+      .trim();
+    return {
+      id: id.toLowerCase(),
+      compiledQueryString: content,
+      inputQueryString: content,
+      compiled: false,
+      inline: false,
+    };
+  } catch {
+    console.warn(`Failed to load sql file ${source}`);
+  }
+}
+
 // Unified parser step to ignore indented code blocks.
 // Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
 // Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
@@ -64,23 +87,9 @@ const extractExternalQueries = (content, filename) => {
       if (typeof source === "string") {
         if (!validateSource(source)) return false;
         const id = source.split(".sql")[0].replace("/", "_").replace("\\", "_");
-        try {
-          const content = fs
-            .readFileSync(`./sources/${source}`)
-            .toString()
-            .trim();
-          return {
-            id: id.toLowerCase(),
-            compiledQueryString: content,
-            inputQueryString: content,
-            compiled: false,
-            inline: false,
-          };
-        } catch {
-          console.warn(`Failed to load sql file ${source}`);
-        }
+        return readFileToQuery(source)
       } else if (typeof source === "object") {
-        const usedKey = Object.keys(source)[0];
+        const usedKey = Object.keys(source)?.[0] ?? "";
 
         const value = source[usedKey];
         // Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
@@ -91,22 +100,7 @@ const extractExternalQueries = (content, filename) => {
         }
 
         if (!validateSource(value)) return false;
-
-        try {
-          const content = fs
-            .readFileSync(`./sources/${value}`)
-            .toString()
-            .trim();
-          return {
-            id: usedKey.toLowerCase(),
-            compiledQueryString: content,
-            inputQueryString: content,
-            compiled: false,
-            inline: false,
-          };
-        } catch {
-          console.warn(`Failed to load sql file ${value}`);
-        }
+        return readFileToQuery(value)
       }
     })
     .filter(Boolean); // filter out queries that returned false;
