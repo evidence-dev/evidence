@@ -47,10 +47,29 @@ title: This is the wrong frontmatter
 
 `
 
+const frontmatterWithMarkdownTable = `
+---
+title: Hello!
+---
+| Column One | Column Two | Column Three |
+|:-----:|:-----:|:-------:|
+| 100 | 100 | 1,004 |
+| 2134 | 140 | 1,130 |
+`
+
+const markdownTableWithoutFrontmatter = `
+| Column One | Column Two | Column Three |
+|:-----:|:-----:|:-------:|
+| 100 | 100 | 1,004 |
+| 2134 | 140 | 1,130 |
+`
+
 module.exports = {
     emptyFrontmatter,
     basicFrontmatter,
     complexFrontmatter,
     extraFrontmatter,
-    missingFrontmatter
+    missingFrontmatter,
+    markdownTableWithoutFrontmatter,
+    frontmatterWithMarkdownTable
 }

@@ -13,8 +13,7 @@ function highlighter(code, lang, meta) {
 
     // Replace curly braces or Svelte will try to evaluate as a JS expression
     code = code.replace(/{/g, "&lbrace;").replace(/}/g,"&rbrace;");
-    
-    if (lang.toLowerCase() === "sql" && meta || !getPrismLangs().has(lang.toLowerCase())) {
+    if (lang.toLowerCase() === "sql" && meta || !getPrismLangs().has(lang?.toLowerCase() ?? "")) {
         const queryId = lang.toLowerCase() === "sql" && meta ? meta : lang
         return `
         {#if data.${queryId} }

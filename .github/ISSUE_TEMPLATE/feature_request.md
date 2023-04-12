@@ -2,7 +2,6 @@
 name: Feature request
 about: Suggest an idea for Evidence
 title: ''
-labels: enhancement
 assignees: ''
 
 ---

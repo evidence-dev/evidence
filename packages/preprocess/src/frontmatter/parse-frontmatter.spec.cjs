@@ -4,7 +4,7 @@ jest.mock('fs')
 const {parseFrontmatter} = require("./parse-frontmatter.cjs")
 const fs = require('fs')
 const {
-    emptyFrontmatter, missingFrontmatter, basicFrontmatter, complexFrontmatter, extraFrontmatter
+    emptyFrontmatter, missingFrontmatter, basicFrontmatter, complexFrontmatter, extraFrontmatter, frontmatterWithMarkdownTable, markdownTableWithoutFrontmatter
 } = require("./parse-frontmatter.fixture.cjs")
 
 fs.statSync.mockReturnValue({ isFile: () => true })
@@ -36,6 +36,14 @@ describe("Parse frontmatter", () => {
     it("Should only parse the first frontmatter block", async () => {
         const result = await parseFrontmatter(extraFrontmatter)
         expect(result).toEqual({title: "This is the correct frontmatter"})
-
     })
+    it("Should extract frontmatter when there is a markdown table on the page, along with frontmatter", async () => {
+        const result = await parseFrontmatter(frontmatterWithMarkdownTable)
+        expect(result).toEqual({title: "Hello!"})
+    })
+    it("Should extract nothing when there is a markdown table on the page, but no frontmatter", async () => {
+        const result = await parseFrontmatter(markdownTableWithoutFrontmatter)
+        expect(result).toBeUndefined()
+    })
+
 })
