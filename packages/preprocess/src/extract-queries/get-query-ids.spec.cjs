@@ -10,6 +10,7 @@ const {
   INDENTED_QUERY,
   ONE_QUERY,
   TWO_QUERIES,
+  REAL_MARKDOWN_FILE,
 } = require("./get-query-ids.fixture.cjs");
 
 describe("getQueryIds", () => {
@@ -42,4 +43,13 @@ describe("getQueryIds", () => {
   it("should ignore indented queries", () => {
     expect(getQueryIds(INDENTED_QUERY)).toEqual([]);
   });
+
+  it("should handle all cases in a \"real\" markdown file", () => {
+    const ids = getQueryIds(REAL_MARKDOWN_FILE)
+    expect(ids).toEqual([
+      "input",
+      "working_reference",
+      "reviews"
+    ])
+  })
 });
