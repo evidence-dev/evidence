@@ -1,4 +1,4 @@
-const frontmatterRegex = /---((?:.|\s)+?)---/;
+const frontmatterRegex = /^\s*---((?:.|\s)+?)---/;
 /**
  * @param {string} toCheck
  * @returns {string | false}
