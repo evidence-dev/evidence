@@ -15,6 +15,7 @@ describe("highlighter", () => {
     const result = highlighter("SELECT 1;", "sql", "my_query_id");
     expect(result).toMatch(/<QueryViewer/);
     expect(result).toMatch(/queryID = "my_query_id"/);
+    expect(result).toMatch(/queryResult = {data.my_query_id}/);
   });
   it("should output a code block for a sql block without a query id", () => {
     const result = highlighter("SELECT 1;", "sql");

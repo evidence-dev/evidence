@@ -47,13 +47,10 @@
     inputQuery = queries[0].inputQueryString
     compiledQuery = queries[0].compiledQueryString
     showCompilerToggle = (queries[0].compiled && queries[0].compileError === undefined)
-  
-    if(!queryResult?.[0]) {
-      console.warn(`${queries[0].id} might be missing result.`)
-    }
+
 
     // Status Bar & Results Toggle 
-    error = queryResult?.[0]?.error_object?.error
+    error = queryResult[0]?.error_object?.error
     nRecords = null
     nProperties = null
     // Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
