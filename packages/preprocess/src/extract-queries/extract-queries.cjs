@@ -10,16 +10,14 @@ const chalk = require("chalk");
 const warnedSources = {};
 
 /**
- * 
- * @param {string} source 
+ *
+ * @param {string} source
+ * @param {string} id
  * @returns Query
  */
-const readFileToQuery = (source) => {
+const readFileToQuery = (source, id) => {
   try {
-    const content = fs
-      .readFileSync(`./sources/${source}`)
-      .toString()
-      .trim();
+    const content = fs.readFileSync(`./sources/${source}`).toString().trim();
     return {
       id: id.toLowerCase(),
       compiledQueryString: content,
@@ -30,7 +28,7 @@ const readFileToQuery = (source) => {
   } catch {
     console.warn(`Failed to load sql file ${source}`);
   }
-}
+};
 
 // Unified parser step to ignore indented code blocks.
 // Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
@@ -87,7 +85,7 @@ const extractExternalQueries = (content, filename) => {
       if (typeof source === "string") {
         if (!validateSource(source)) return false;
         const id = source.split(".sql")[0].replace("/", "_").replace("\\", "_");
-        return readFileToQuery(source)
+        return readFileToQuery(source, id);
       } else if (typeof source === "object") {
         const usedKey = Object.keys(source)?.[0] ?? "";
 
@@ -100,7 +98,7 @@ const extractExternalQueries = (content, filename) => {
         }
 
         if (!validateSource(value)) return false;
-        return readFileToQuery(value)
+        return readFileToQuery(value, usedKey);
       }
     })
     .filter(Boolean); // filter out queries that returned false;
