@@ -26,7 +26,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 	];
 };
 module.exports.parseFrontmatter =
-	require('./src/process-frontmatter/parse-frontmatter.cjs').parseFrontmatter;
+	require('./src/frontmatter/parse-frontmatter.cjs').parseFrontmatter;
 const extractQueries = require('./src/extract-queries/extract-queries.cjs');
 module.exports.extractQueries = extractQueries.extractQueries;
 module.exports.getQueryIds = extractQueries.getQueryIds;

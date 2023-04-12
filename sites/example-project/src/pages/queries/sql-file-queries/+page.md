@@ -86,15 +86,14 @@ Your query can contain anything; for the examples on this page, we have some ver
 ### Aliasing Query Names
 
 It is possible to escape the default name for your queries by using some simple yaml syntax:
-<CodeBlock source={`---
+```yaml
+---
 sources:
-
 - default_query_name.sql # This will be referenced as default_query_name
 - alias: default_query_name.sql # This will be referenced as alias
-
-# ^ This is the key
-
----`}/>
+#      ^ This is the key
+---
+```
 
 The format is `alias: query_file.sql`, instead of just `query_file.sql`, this can lead
 to any query file that you would like, and can be helpful if you have many subdirectories
