@@ -1,16 +1,13 @@
-const unified = require("unified");
-const remarkParse = require("remark-parse");
-const visit = require("unist-util-visit");
-const fs = require("fs");
-const getPrismLangs = require('../utils/get-prism-langs.cjs')
-const {
-  parseFrontmatter,
-} = require("../frontmatter/parse-frontmatter.cjs");
-const chalk = require('chalk')
+const unified = require('unified');
+const remarkParse = require('remark-parse');
+const visit = require('unist-util-visit');
+const fs = require('fs');
+const getPrismLangs = require('../utils/get-prism-langs.cjs');
+const { parseFrontmatter } = require('../frontmatter/parse-frontmatter.cjs');
+const chalk = require('chalk');
 /** @typedef {{id: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
 
-
-const warnedSources = {}
+const warnedSources = {};
 
 // Unified parser step to ignore indented code blocks.
 // Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
@@ -27,78 +24,82 @@ const ignoreIndentedCode = function () {
  * @returns {Query[]}
  */
 const extractExternalQueries = (content, filename) => {
-  const frontmatter = parseFrontmatter(content);
-  if (!frontmatter) return [];
-  if (!frontmatter.sources) return [];
-  if (!Array.isArray(frontmatter.sources)) {
-    console.warn(
-      `Malformed frontmatter found in ${filename}. Unable to extract external queries.`
-    );
-    return []
-  }
+	const frontmatter = parseFrontmatter(content);
+	if (!frontmatter) return [];
+	if (!frontmatter.sources) return [];
+	if (!Array.isArray(frontmatter.sources)) {
+		console.warn(`Malformed frontmatter found in ${filename}. Unable to extract external queries.`);
+		return [];
+	}
 
-  /**
-   * 
-   * @param {string} source 
-   * @returns {boolean}
-   */
-  const validateSource = (source) => {
-    if (!source.endsWith(".sql")) {
-      if (!warnedSources[source]) {
-        warnedSources[source] = true
-        console.warn(chalk.bold.red(`! ${source}`) + chalk.gray(" does not appear to be a .sql file, and will not be loaded"))
-      }
-      return false
-    }
+	/**
+	 *
+	 * @param {string} source
+	 * @returns {boolean}
+	 */
+	const validateSource = (source) => {
+		if (!source.endsWith('.sql')) {
+			if (!warnedSources[source]) {
+				warnedSources[source] = true;
+				console.warn(
+					chalk.bold.red(`! ${source}`) +
+						chalk.gray(' does not appear to be a .sql file, and will not be loaded')
+				);
+			}
+			return false;
+		}
 
-    return true
-  }
+		return true;
+	};
 
-  /**
-   * @type Query[]
-   */
-  return frontmatter.sources.map((source) => {
-    if (typeof source === "string") {
-      if (!validateSource(source)) return false
-      const id = source.split(".sql")[0].replace("/", "_").replace("\\", "_");
-      try {
-        const content = fs.readFileSync(`./sources/${source}`).toString().trim();
-        return {
-          id: id.toLowerCase(),
-          compiledQueryString: content,
-          inputQueryString: content,
-          compiled: false,
-          inline: false,
-        };  
-      } catch {
-        console.warn(`Failed to load sql file ${source}`)
-      }
-    } else if (typeof source === "object") {
-      const usedKey = Object.keys(source)[0]
+	/**
+	 * @type Query[]
+	 */
+	return frontmatter.sources
+		.map((source) => {
+			if (typeof source === 'string') {
+				if (!validateSource(source)) return false;
+				const id = source.split('.sql')[0].replace('/', '_').replace('\\', '_');
+				try {
+					const content = fs.readFileSync(`./sources/${source}`).toString().trim();
+					return {
+						id: id.toLowerCase(),
+						compiledQueryString: content,
+						inputQueryString: content,
+						compiled: false,
+						inline: false
+					};
+				} catch {
+					console.warn(`Failed to load sql file ${source}`);
+				}
+			} else if (typeof source === 'object') {
+				const usedKey = Object.keys(source)[0];
 
-      const value = source[usedKey];
-      // Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
-      if (Object.keys(source).length > 1) {
-        console.warn(`Source object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${value} will be imported.`)
-      }
+				const value = source[usedKey];
+				// Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
+				if (Object.keys(source).length > 1) {
+					console.warn(
+						`Source object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${value} will be imported.`
+					);
+				}
 
-      if (!validateSource(value)) return false
+				if (!validateSource(value)) return false;
 
-      try {
-        const content = fs.readFileSync(`./sources/${value}`).toString().trim()
-        return {
-          id: usedKey.toLowerCase(),
-          compiledQueryString: content,
-          inputQueryString: content,
-          compiled: false,
-          inline: false,
-        };  
-      } catch {
-        console.warn(`Failed to load sql file ${value}`)
-      }
-        
-    }
-  }).filter(Boolean) // filter out queries that returned false;
+				try {
+					const content = fs.readFileSync(`./sources/${value}`).toString().trim();
+					return {
+						id: usedKey.toLowerCase(),
+						compiledQueryString: content,
+						inputQueryString: content,
+						compiled: false,
+						inline: false
+					};
+				} catch {
+					console.warn(`Failed to load sql file ${value}`);
+				}
+			}
+		})
+		.filter(Boolean); // filter out queries that returned false;
 };
 
 /**

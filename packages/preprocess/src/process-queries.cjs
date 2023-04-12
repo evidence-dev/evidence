@@ -1,11 +1,10 @@
-const {getRouteHash} = require("./utils/get-route-hash.cjs")
-const {extractQueries} = require("./extract-queries/extract-queries.cjs")
-const {highlighter} = require("./utils/highlighter.cjs")
-const {frontmatterRegex, containsFrontmatter} = require("./frontmatter/frontmatter.regex.cjs")
+const { getRouteHash } = require('./utils/get-route-hash.cjs');
+const { extractQueries } = require('./extract-queries/extract-queries.cjs');
+const { highlighter } = require('./utils/highlighter.cjs');
+const { frontmatterRegex, containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
-
-const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
-    const routeH = getRouteHash(filename)
+const createDefaultProps = function (filename, componentDevelopmentMode, fileQueryIds) {
+	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
 
@@ -114,39 +113,48 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
 const processQueries = (componentDevelopmentMode) => {
-    let queryIdsByFile = {}
-    return {
-        markup({content, filename}) {
-            if(filename.endsWith(".md")) {
-                let fileQueries = extractQueries(content);
-                queryIdsByFile[getRouteHash(filename)] = fileQueries.map(q => q.id);
+	let queryIdsByFile = {};
+	return {
+		markup({ content, filename }) {
+			if (filename.endsWith('.md')) {
+				let fileQueries = extractQueries(content);
+				queryIdsByFile[getRouteHash(filename)] = fileQueries.map((q) => q.id);
 
-                const externalQueryViews = "\n\n\n" + fileQueries.filter(q => !q.inline).map(q => {
-                    return highlighter(q.compiledQueryString, q.id.toLowerCase())
-                }).join("\n")
+				const externalQueryViews =
+					'\n\n\n' +
+					fileQueries
+						.filter((q) => !q.inline)
+						.map((q) => {
+							return highlighter(q.compiledQueryString, q.id.toLowerCase());
+						})
+						.join('\n');
 
-                // Page contains frontmatter
-                const frontmatter = containsFrontmatter(content);
-                if (frontmatter) {
-                    const contentWithoutFrontmatter = content.substring(frontmatter.length + 6)
-                    const output = `---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter
-                    return {
-                        code: output
-                    }
-                }
+				// Page contains frontmatter
+				const frontmatter = containsFrontmatter(content);
+				if (frontmatter) {
+					const contentWithoutFrontmatter = content.substring(frontmatter.length + 6);
+					const output =
+						`---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter;
+					return {
+						code: output
+					};
+				}
 
-                return {
-                    code: externalQueryViews + content
-                }
-            }
-        },    
-        script({content, filename, attributes}) {
-            if(filename.endsWith(".md")){
-                if(attributes.context != "module") {
-                    let queryIds = queryIdsByFile[getRouteHash(filename)];
-                    return {code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content }
-                }
-            }
-        }
-
+				return {
+					code: externalQueryViews + content
+				};
+			}
+		},
+		script({ content, filename, attributes }) {
+			if (filename.endsWith('.md')) {
+				if (attributes.context != 'module') {
+					let queryIds = queryIdsByFile[getRouteHash(filename)];
+					return {
+						code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content
+					};
+				}
+			}
+		}
+	};
+};
 module.exports = processQueries;

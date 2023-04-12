@@ -56,58 +56,51 @@ export const getStatusAndExtractQueries = function (route) {
 		let maxIterations = 15;
 		let queryIds = queries.map((d) => d.id);
 
-    for (let i = 0; i <= maxIterations; i++) {
-      queries.forEach((query) => {
-        let references = query.compiledQueryString.match(/\${.*?\}/gi);
-        if (references) {
-          query.compiled = true;
-          references.forEach((reference) => {
-            try {
-              let referencedQueryID = reference
-                .replace("${", "")
-                .replace("}", "")
-                .trim();
-              if (!queryIds.includes(referencedQueryID)) {
-                let errorMessage =
-                  "Compiler error: " +
-                  (referencedQueryID === ""
-                    ? "missing query reference"
-                    : "'" +
-                      referencedQueryID +
-                      "'" +
-                      " is not a query on this page");
-                throw new Error(errorMessage);
-              } else if (i >= maxIterations) {
-                throw new Error(circularRefErrorMsg);
-              } else {
-                const referencedQuery = queries.filter((d) => d.id === referencedQueryID)[0]
-                if (!query.inline && referencedQuery.inline) {                  
-                  throw new Error(`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`)
-                }
-                const queryString =
-                  `(${referencedQuery.compiledQueryString})`;
-                query.compiledQueryString = query.compiledQueryString.replace(
-                  reference,
-                  queryString
-                );
-              }
-            } catch (e) {
-              // if error is unknown use default circular ref. error
-              e =
-                e.message === undefined || e.message === null
-                  ? Error(circularRefErrorMsg)
-                  : e;
-              query.compileError = e.message;
-              query.compiledQueryString = e.message;
-              // if build is strict and we detect an error, force a failure
-              if (strictBuild) {
-                throw new Error(e.message);
-              }
-            }
-          });
-        }
-      });
-    }
+		for (let i = 0; i <= maxIterations; i++) {
+			queries.forEach((query) => {
+				let references = query.compiledQueryString.match(/\${.*?\}/gi);
+				if (references) {
+					query.compiled = true;
+					references.forEach((reference) => {
+						try {
+							let referencedQueryID = reference.replace('${', '').replace('}', '').trim();
+							if (!queryIds.includes(referencedQueryID)) {
+								let errorMessage =
+									'Compiler error: ' +
+									(referencedQueryID === ''
+										? 'missing query reference'
+										: "'" + referencedQueryID + "'" + ' is not a query on this page');
+								throw new Error(errorMessage);
+							} else if (i >= maxIterations) {
+								throw new Error(circularRefErrorMsg);
+							} else {
+								const referencedQuery = queries.filter((d) => d.id === referencedQueryID)[0];
+								if (!query.inline && referencedQuery.inline) {
+									throw new Error(
+										`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`
+									);
+								}
+								const queryString = `(${referencedQuery.compiledQueryString})`;
+								query.compiledQueryString = query.compiledQueryString.replace(
+									reference,
+									queryString
+								);
+							}
+						} catch (_e) {
+							// if error is unknown use default circular ref. error
+							const e =
+								_e.message === undefined || _e.message === null ? Error(circularRefErrorMsg) : _e;
+							query.compileError = e.message;
+							query.compiledQueryString = e.message;
+							// if build is strict and we detect an error, force a failure
+							if (strictBuild) {
+								throw new Error(e.message);
+							}
+						}
+					});
+				}
+			});
+		}
 
 		let queryStatus = updateDirectoriesandStatus(queries, routeHash);
 		return queryStatus;

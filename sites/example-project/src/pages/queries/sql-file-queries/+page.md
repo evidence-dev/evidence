@@ -2,11 +2,11 @@
 title: SQL File Queries
 
 sources:
-    - test_query.sql
-    - test_query_nested: nested/test_query.sql
-    - DEP_query.sql
-    - not_sql.python
-    - should_break.sql
+  - test_query.sql
+  - test_query_nested: nested/test_query.sql
+  - DEP_query.sql
+  - not_sql.python
+  - should_break.sql
 ---
 
 ```query_on_the_page
@@ -22,7 +22,6 @@ This provides a few benefits:
 <Alert status="warning">
 If you haven't read about <a href="/frontmatter" target="_blank">frontmatter</a> yet, you should start there.
 </Alert>
-
 
 ## Using sql file queries
 
@@ -81,6 +80,7 @@ Your query can contain anything; for the examples on this page, we have some ver
 <CodeBlock source="SELECT 2 as t;"/>
 
 #### dep_query.sql
+
 <CodeBlock source="SELECT t * 2 as x FROM $&#123;test_query}"/>
 
 ### Aliasing Query Names
@@ -88,13 +88,16 @@ Your query can contain anything; for the examples on this page, we have some ver
 It is possible to escape the default name for your queries by using some simple yaml syntax:
 <CodeBlock source={`---
 sources:
-  - default_query_name.sql        # This will be referenced as default_query_name
-  - alias: default_query_name.sql # This will be referenced as alias
-#        ^ This is the key
+
+- default_query_name.sql # This will be referenced as default_query_name
+- alias: default_query_name.sql # This will be referenced as alias
+
+# ^ This is the key
+
 ---`}/>
 
 The format is `alias: query_file.sql`, instead of just `query_file.sql`, this can lead
-to any query file that you would like, and can be helpful if you have many subdirectories 
+to any query file that you would like, and can be helpful if you have many subdirectories
 
 ## Test Query
 
