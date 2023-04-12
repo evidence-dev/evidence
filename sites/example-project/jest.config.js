@@ -1,7 +1,7 @@
 /** @type {import('jest').Config} */
 const config = {
 	testMatch: ['**/*.spec.js'],
-    verbose: true
+	verbose: true
 };
 
-export default config
+export default config;

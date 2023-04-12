@@ -1,4 +1,7 @@
 <script>
+	// This is a little gross but I have no idea where this is coming from
+	/*global formcarry */
+
 	import { blur } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	let email = null;
