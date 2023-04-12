@@ -14,3 +14,4 @@ customization/
 **/test-results/**
 **/playwright-report/**
 **/playwright/.cache/**
+.parcel-cache
