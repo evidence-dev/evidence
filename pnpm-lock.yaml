@@ -346,6 +346,7 @@ importers:
       '@sveltejs/kit': 1.13.0
       '@sveltejs/package': 1.0.1
       '@sveltejs/vite-plugin-svelte': ^2.0.3
+      '@svelteuidev/composables': 0.11.1
       '@tidyjs/tidy': 2.4.4
       autoprefixer: ^10.4.7
       cross-env: ^7.0.3
@@ -374,6 +375,7 @@ importers:
     dependencies:
       '@evidence-dev/telemetry': link:../../packages/telemetry
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4
+      '@svelteuidev/composables': 0.11.1
       '@tidyjs/tidy': 2.4.4
       cross-env: 7.0.3
       debounce: 1.2.1
@@ -400,7 +402,7 @@ importers:
       postcss: 8.4.21
       postcss-load-config: 4.0.1_postcss@8.4.21
       svelte-preprocess: 4.10.7_t7k4oeewo5564rvfkh2vtbgu4e
-      tailwindcss: 3.2.7_postcss@8.4.21
+      tailwindcss: 3.2.7
       vite: 4.0.4
     publishDirectory: ../../packages/components
 
@@ -4105,6 +4107,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@svelteuidev/composables/0.11.1:
+    resolution: {integrity: sha512-TTRGTDlrJD22KT/X8L2he5hu3rDorzzB591sgzDjtCi35vKF6Z/ijuc/ngNCFHA+2WxcDGBGPs7YewEgv2yEKg==}
+    dev: false
+
   /@svgr/babel-plugin-add-jsx-attribute/5.4.0:
     resolution: {integrity: sha512-ZFf2gs/8/6B8PnSofI0inYXr2SDNTDScPXhN7k5EqD4aZ3gi6u+rbmZHVB8IM3wDyx8ntKACZbtXSm7oZGRqVg==}
     engines: {node: '>=10'}
@@ -5434,7 +5440,7 @@ packages:
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5442,7 +5448,7 @@ packages:
   /axios/0.25.0:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -7904,16 +7910,6 @@ packages:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
     dev: false
 
-  /follow-redirects/1.15.2:
-    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: false
-
   /follow-redirects/1.15.2_debug@3.2.7:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
@@ -8791,7 +8787,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -12272,12 +12268,6 @@ packages:
   /react-dev-utils/12.0.1_a37q6j7dwawz22saey2vgkpwqm:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
-    peerDependencies:
-      typescript: '>=2.7'
-      webpack: '>=4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       address: 1.2.2
@@ -12308,7 +12298,9 @@ packages:
     transitivePeerDependencies:
       - eslint
       - supports-color
+      - typescript
       - vue-template-compiler
+      - webpack
     dev: false
 
   /react-dom/17.0.2_react@17.0.2:
@@ -13970,12 +13962,10 @@ packages:
       stable: 0.1.8
     dev: false
 
-  /tailwindcss/3.2.7_postcss@8.4.21:
+  /tailwindcss/3.2.7:
     resolution: {integrity: sha512-B6DLqJzc21x7wntlH/GsZwEXTBttVSl1FtCzC8WP4oBc/NKef7kaax5jeihkkCEWc831/5NDJ9gRNDK6NEioQQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3

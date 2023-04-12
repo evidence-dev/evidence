@@ -4,6 +4,7 @@
   import ExternalLinkIcon from '$lib/icons/ExternalLinkIcon.svelte';
   import { showQueries } from './stores'
   import { pageHasQueries } from './stores';
+  import { clickoutside } from '@svelteuidev/composables';
   let options = [
     { label: "Show / Hide Queries", prod: true },
     { label: "Export PDF", prod: true },  
@@ -17,13 +18,11 @@
 
   function print() {
     window.print();
-    closeDropdown();
   }
 
 
   function toggleQueries() {
     showQueries.update((value) => !value);
-    closeDropdown();
   }
 
   let showDropdown = false;
@@ -32,27 +31,15 @@
     showDropdown = !showDropdown;
   }
 
-  function closeDropdown() {
-    showDropdown = false;
-  }
-
-  function handleBlur() {
-    setTimeout(() => {
-      if (!document.activeElement.closest("#dropdown-items")) {
-        closeDropdown();
-      }
-    }, 0);
-  }
 </script>
 
 
-<div>
+<div use:clickoutside={{ enabled: showDropdown, callback: () => showDropdown = false }}>
   <button 
     type=button 
     class=menu
     aria-label="page menu button"
     on:click={toggleDropdown}
-    on:blur={handleBlur}
   ><KebabIcon color=--grey-600/></button>
     {#if showDropdown}
     <ul class=dropdown-items id=dropdown-items>
@@ -71,9 +58,9 @@
           <button class="dropdown first" on:click={print}>{option.label}</button>
         {:else}
           {#if option.url.includes("http")}
-          <a href={option.url} target=_blank rel=noreferrer on:click={closeDropdown}>{option.label}<ExternalLinkIcon height=12 width=12 color="--red-700"/></a>
+          <a href={option.url} target=_blank rel=noreferrer>{option.label}<ExternalLinkIcon height=12 width=12 color="--red-700"/></a>
           {:else}
-          <a href={option.url} target=_self on:click={closeDropdown}>{option.label}</a>
+          <a href={option.url} target=_self >{option.label}</a>
           {/if}
         {/if}
       </li>
