@@ -1,7 +1,7 @@
 <script>
 	export let credentials;
 	export let existingCredentials;
-    export let disableSave;
+	export let disableSave;
 
 	credentials = { ...existingCredentials };
 
@@ -61,7 +61,6 @@
 			placeholder: 'public',
 			value: credentials.schema ?? '',
 			additionalInstructions: 'The default schema to run queries against.'
-
 		},
 		{
 			id: 'ssl',
@@ -71,7 +70,8 @@
 			override: false,
 			placeholder: 'no-verify',
 			value: credentials.ssl ?? '',
-			additionalInstructions: 'Options are true, false, no-verify. When using Heroku this is commonly required.'
+			additionalInstructions:
+				'Options are true, false, no-verify. When using Heroku this is commonly required.'
 		},
 		{
 			id: 'connectionString',
@@ -79,7 +79,8 @@
 			type: 'text',
 			optional: true,
 			override: true,
-			placeholder: "postgres://ewfeijgrftj:[password]@ec2-57-211-78-100.compute-1.amazonaws.com:5432/kencd6d32m0s51",
+			placeholder:
+				'postgres://ewfeijgrftj:[password]@ec2-57-211-78-100.compute-1.amazonaws.com:5432/kencd6d32m0s51',
 			additionalInstructions:
 				'If your database host provides a connection string, you can use that here in place of the user/password fields above.',
 			value: credentials.connectionString ?? ''
@@ -89,4 +90,4 @@
 	import GenericForm from './GenericForm.svelte';
 </script>
 
-<GenericForm {opts} bind:credentials bind:disableSave/>
+<GenericForm {opts} bind:credentials bind:disableSave />

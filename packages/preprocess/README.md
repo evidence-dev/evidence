@@ -31,10 +31,8 @@ flowchart TD
     AddScriptTags --> InjectFrontmatter
 ```
 
-#### Notes:
+\*1 Evidence will render with the static adapter by default; which means that "runtime" becomes "buildtime".
 
-*1 Evidence will render with the static adapter by default; which means that "runtime" becomes "buildtime".
+\*2 This is handled by the [db-orchestrator package](../db-orchestrator/), not preprocess - but it is an important step.
 
-*2 This is handled by the [db-orchestrator package](../db-orchestrator/), not preprocess - but it is an important step.
-
-*3 This occurs in [`/pages/api/[route].json`](../../sites/example-project//src/pages/api/%5Broute%5D.json/%2Bserver.js). The Svelte Static Adapter pre-renders the result JSON files.
+\*3 This occurs in [`/pages/api/[route].json`](../../sites/example-project//src/pages/api/%5Broute%5D.json/%2Bserver.js). The Svelte Static Adapter pre-renders the result JSON files.

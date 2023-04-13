@@ -1,18 +1,18 @@
 {
-  "name": "evidence-test-environment",
-  "version": "2.0.4",
-  "private": true,
-  "scripts": {
-    "build": "evidence build",
-    "dev": "evidence dev",
-    "test": "evidence build"
-  },
-  "engines": {
-    "npm": ">=7.0.0",
-    "node": ">=14.0.0"
-  },
-  "type": "module",
-  "dependencies": {
-    "@evidence-dev/evidence": "workspace:^"
-  }
+	"name": "evidence-test-environment",
+	"version": "2.0.4",
+	"private": true,
+	"scripts": {
+		"build": "evidence build",
+		"dev": "evidence dev",
+		"test": "evidence build"
+	},
+	"engines": {
+		"npm": ">=7.0.0",
+		"node": ">=14.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@evidence-dev/evidence": "workspace:^"
+	}
 }

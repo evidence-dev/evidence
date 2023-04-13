@@ -4,16 +4,15 @@ title: Mixed-Type Charts
 hide_table_of_contents: false
 ---
 
-
 You can combine multiple chart types inside a single `<Chart>` tag to create mixed-type charts.
-
 
 ## Examples
 
 ### Mixed-Type Chart
+
 This example uses multiple y columns and multiple series types (bar and line)
 
-![composable](/img/exg-composable-multi-type-nt.svg) 
+![composable](/img/exg-composable-multi-type-nt.svg)
 
 ```markdown
 <Chart data={fda_recalls}>
@@ -36,6 +35,7 @@ This structure also gives you control over the individual series on your chart. 
 ```
 
 ## Chart `<Chart>`
+
 ```markdown
 <Chart data={query_name}>
     Insert primitives here
@@ -43,6 +43,7 @@ This structure also gives you control over the individual series on your chart. 
 ```
 
 #### Data Props
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
@@ -50,7 +51,7 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>Any non-assigned numeric columns</td>	</tr>
 <tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-</table>						
+</table>
 
 #### Chart Props
 
@@ -73,15 +74,18 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>options</td>	<td>JavaScript object to add or override chart configuration settings (see Custom Charts page)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object</td>	<td class='tcenter'>-</td>	</tr>
-</table>														
+</table>
 
 ### Line `<Line/>`
+
 ```markdown
 <Chart data={query_name}>
     <Line/>
 </Chart>
 ```
+
 #### Props
+
 <table>						
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart. Can be different than the y supplied to Chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>y supplied to Chart</td>	</tr>
@@ -96,15 +100,18 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>markerSize</td>	<td>Size of each shape (in pixels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>8</td>	</tr>
 <tr>	<td>handleMissing</td>	<td>Treatment of missing values in the dataset</td>	<td class='tcenter'>-</td>	<td class='tcenter'>gap | connect | zero</td>	<td class='tcenter'>gap</td>	</tr>
 <tr>	<td>options</td>	<td>JavaScript object to add or override chart configuration settings (see Custom Charts page)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object</td>	<td class='tcenter'>-</td>	</tr>
-</table>						
+</table>
 
 ### Area `<Area/>`
+
 ```markdown
 <Chart data={query_name}>
     <Area/>
 </Chart>
 ```
+
 #### Props
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart. Can be different than the y supplied to Chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>y supplied to Chart</td>	</tr>
@@ -115,15 +122,18 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>line</td>	<td>Show line on top of the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
 <tr>	<td>handleMissing</td>	<td>Treatment of missing values in the dataset</td>	<td class='tcenter'>-</td>	<td class='tcenter'>gap | connect | zero</td>	<td class='tcenter'>gap (single series) | zero (multi-series)</td>	</tr>
 <tr>	<td>options</td>	<td>JavaScript object to add or override chart configuration settings (see Custom Charts page)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object</td>	<td class='tcenter'>-</td>	</tr>
-</table>						
+</table>
 
 ### Bar `<Bar/>`
+
 ```markdown
 <Chart data={query_name}>
     <Bar/>
 </Chart>
 ```
+
 #### Props
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart. Can be different than the y supplied to Chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>y supplied to Chart</td>	</tr>
@@ -136,15 +146,18 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>outlineWidth</td>	<td>Width of line surrounding each bar</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
 <tr>	<td>outlineColor</td>	<td>Color to use for outline if outlineWidth > 0</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>options</td>	<td>JavaScript object to add or override chart configuration settings (see Custom Charts page)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object</td>	<td class='tcenter'>-</td>	</tr>
-</table>						
+</table>
 
 ### Scatter `<Scatter/>`
+
 ```markdown
 <Chart data={query_name}>
     <Scatter/>
 </Chart>
 ```
+
 #### Props
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart. Can be different than the y supplied to Chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>y supplied to Chart</td>	</tr>
@@ -157,15 +170,18 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>outlineWidth</td>	<td>Width of line surrounding each shape</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
 <tr>	<td>outlineColor</td>	<td>Color to use for outline if outlineWidth > 0</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>options</td>	<td>JavaScript object to add or override chart configuration settings (see Custom Charts page)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object</td>	<td class='tcenter'>-</td>	</tr>
-</table>						
+</table>
 
 ### Bubble `<Bubble/>`
+
 ```markdown
 <Chart data={query_name}>
     <Bubble/>
 </Chart>
 ```
+
 #### Props
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart. Can be different than the y supplied to Chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>y supplied to Chart</td>	</tr>
@@ -180,18 +196,21 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>outlineWidth</td>	<td>Width of line surrounding each shape</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
 <tr>	<td>outlineColor</td>	<td>Color to use for outline if outlineWidth > 0</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>options</td>	<td>JavaScript object to add or override chart configuration settings (see Custom Charts page)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object</td>	<td class='tcenter'>-</td>	</tr>
-</table>												
+</table>
 
 ### Hist `<Hist/>`
+
 ```markdown
 <Chart data={query_name}>
     <Hist/>
 </Chart>
 ```
+
 #### Props
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>x</td>	<td>Column which contains the data you want to summarize</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>x supplied to Chart</td>	</tr>
 <tr>	<td>fillColor</td>	<td>Color to override default series color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>fillOpacity</td>	<td>% of the full color that should be rendered, with remainder being transparent</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number (0 to 1)</td>	<td class='tcenter'>1</td>	</tr>
-</table>						
+</table>

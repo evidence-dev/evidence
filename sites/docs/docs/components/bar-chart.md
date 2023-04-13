@@ -4,8 +4,7 @@ title: Bar Chart
 hide_table_of_contents: false
 ---
 
-
-![bar](/img/exg-bar-nt.svg) 
+![bar](/img/exg-bar-nt.svg)
 
 ```markdown
 <BarChart 
@@ -18,7 +17,8 @@ hide_table_of_contents: false
 ## Examples
 
 ### Bar
-![bar](/img/exg-bar-nt.svg) 
+
+![bar](/img/exg-bar-nt.svg)
 
 ```markdown
 <BarChart 
@@ -30,7 +30,8 @@ hide_table_of_contents: false
 ```
 
 ### Horizontal Bar
-![bar](/img/exg-horizontal-bar-nt.svg) 
+
+![bar](/img/exg-horizontal-bar-nt.svg)
 
 ```markdown
 <BarChart 
@@ -42,7 +43,8 @@ hide_table_of_contents: false
 ```
 
 ### Stacked Bar
-![bar](/img/exg-stacked-bar-nt.svg) 
+
+![bar](/img/exg-stacked-bar-nt.svg)
 
 ```markdown
 <BarChart 
@@ -54,7 +56,8 @@ hide_table_of_contents: false
 ```
 
 ### 100% Stacked Bar
-![bar](/img/100-stacked-bar.svg) 
+
+![bar](/img/100-stacked-bar.svg)
 
 ```markdown
 <BarChart 
@@ -67,7 +70,8 @@ hide_table_of_contents: false
 ```
 
 ### Horizontal Stacked Bar
-![bar](/img/exg-horizontal-stacked-bar-nt.svg) 
+
+![bar](/img/exg-horizontal-stacked-bar-nt.svg)
 
 ```markdown
 <BarChart 
@@ -82,7 +86,8 @@ hide_table_of_contents: false
 ```
 
 ### Horizontal 100% Stacked Bar
-![bar](/img/100-horiz-stacked-bar.svg) 
+
+![bar](/img/100-horiz-stacked-bar.svg)
 
 ```markdown
 <BarChart 
@@ -98,7 +103,8 @@ hide_table_of_contents: false
 ```
 
 ### Grouped Bar
-![bar](/img/exg-grouped-bar-nt.svg) 
+
+![bar](/img/exg-grouped-bar-nt.svg)
 
 ```markdown
 <BarChart 
@@ -111,7 +117,8 @@ hide_table_of_contents: false
 ```
 
 ### Horizontal Grouped Bar
-![bar](/img/exg-horizontal-grouped-bar-nt.svg) 
+
+![bar](/img/exg-horizontal-grouped-bar-nt.svg)
 
 ```markdown
 <BarChart 
@@ -126,9 +133,10 @@ hide_table_of_contents: false
 ```
 
 ### Long Bar Chart
+
 If you create a bar chart with many x-axis items (e.g., names of departments), Evidence will extend the height of the chart for you to avoid the bars becoming squished. See Long Bar example below.
 
-![long-bar](/img/exg-long-bar.svg) 
+![long-bar](/img/exg-long-bar.svg)
 
 ```markdown
 <BarChart 
@@ -143,6 +151,7 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 ## Props
 
 ### Data
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
@@ -150,9 +159,10 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>Any non-assigned numeric columns</td>	</tr>
 <tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default sort is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false </td>	</tr>
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-</table>																																																	
+</table>
 
 ### Series
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>type</td>	<td>Grouping method to use for multi-series charts</td>	<td class='tcenter'>-</td>	<td class='tcenter'>stacked | grouped | stacked100</td>	<td class='tcenter'>stacked</td>	</tr>
@@ -161,9 +171,10 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 <tr>	<td>fillOpacity</td>	<td>% of the full color that should be rendered, with remainder being transparent</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number (0 to 1)</td>	<td class='tcenter'>1</td>	</tr>
 <tr>	<td>outlineWidth</td>	<td>Width of line surrounding each bar</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
 <tr>	<td>outlineColor</td>	<td>Color to use for outline if outlineWidth > 0</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-</table>											
+</table>
 
 ### Chart
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>swapXY</td>	<td>Swap the x and y axes to create a horizontal chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
@@ -182,5 +193,4 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-</table>												
-
+</table>

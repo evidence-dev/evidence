@@ -1,8 +1,8 @@
 ---
 sidebar_position: 5
 hide_table_of_contents: false
-title: "Number Formatting"
-description: "Formats are defined using the column names in your SQL query"
+title: 'Number Formatting'
+description: 'Formats are defined using the column names in your SQL query'
 ---
 
 Formats for numbers and dates are defined using the column names in your SQL query.
@@ -21,7 +21,7 @@ Evidence supports a variety of date/time, number, percentage, and currency forma
 
 ## Custom Value Format Tags
 
-Custom formats can be added in the Value Formatting Section of the Evidence Settings.  Formats can be coded using [Excel style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68).
+Custom formats can be added in the Value Formatting Section of the Evidence Settings. Formats can be coded using [Excel style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68).
 
 ## Title Formatting
 
@@ -63,6 +63,7 @@ You can choose to handle these numbers differently by choosing a specific format
 <!-- These are pasted in from the settings menu HTML, with edits -->
 
 ### Dates
+
 <table class="wide">
 <thead >
     <th class="align_left narrow_column">Format Tag</th>
@@ -142,6 +143,7 @@ You can choose to handle these numbers differently by choosing a specific format
 ### Currencies
 
 Supported currencies:
+
 <table>
   <thead><th>Code</th><th>Currency</th></thead>
   <tr><td>USD</td><td>United States Dollar</td></tr>
@@ -249,7 +251,7 @@ For example, the available tags for USD are:
     <td>usd2b</td> 
     <td>$#,##0.00,,,"B"</td> 
     <td class="tright">9784564301.12</td> 
-    <td class="tright">$9.78B</td> 
+    <td class="tright">$9.78B</td>
 
 </tr>
 
@@ -388,7 +390,7 @@ For example, the available tags for USD are:
     <td>sci</td> 
     <td>0.00E+0</td> 
     <td class="tright">16546.1561</td> 
-    <td class="tright">1.65E+4</td> 
+    <td class="tright">1.65E+4</td>
 
 </tr>
 
@@ -431,9 +433,8 @@ For example, the available tags for USD are:
     <td>pct3</td> 
     <td>#,##0.000%</td> 
     <td class="tright">0.731</td> 
-    <td class="tright">73.100%</td> 
+    <td class="tright">73.100%</td>
 
 </tr>
 
 </table>
-

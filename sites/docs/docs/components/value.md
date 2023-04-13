@@ -5,9 +5,7 @@ title: Value
 hide_table_of_contents: false
 ---
 
-
-
-The Value component accepts a query and displays a formatted value inline in text. 
+The Value component accepts a query and displays a formatted value inline in text.
 
 By default, `Value` will display the value from the first row of the first column of the referenced data.
 
@@ -15,11 +13,13 @@ By default, `Value` will display the value from the first row of the first colum
 <Value data={query_name} /> <!-- First row from the first column -->
 ```
 
-## Specifying Rows and Columns 
+## Specifying Rows and Columns
+
 Optionally supply a `column` and/or a `row` argument to display other values from `data`. `row` is zero-indexed, so `row=0` displays the first row.
 
 ```markdown
 <!-- Show the **7th row** from column_name -->
+
 <Value 
     data={query_name}
     column=column_name 
@@ -40,7 +40,8 @@ when there were <Value data={monthly_orders} column=orders/> orders.
 ![summary-sentence](/img/tutorial-img/needful-things-value-in-text-nowindow.png)
 
 ## Adding a Placeholder
-Override errors with the optional `placeholder` argument. This is useful for drafting reports *before* writing your queries.   
+
+Override errors with the optional `placeholder` argument. This is useful for drafting reports _before_ writing your queries.
 
 ```markdown
 <Value placeholder="Report Date"/>
@@ -48,7 +49,7 @@ Override errors with the optional `placeholder` argument. This is useful for dra
 
 ![value-placeholder](/img/value-placeholder.png)
 
-## All Options 
+## All Options
 
 <table>						 
     <tr>	

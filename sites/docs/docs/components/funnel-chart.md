@@ -4,7 +4,6 @@ title: Funnel Chart
 hide_table_of_contents: false
 ---
 
-
 ![funnel](/img/funnel-default.png)
 
 ```markdown
@@ -42,7 +41,6 @@ hide_table_of_contents: false
     funnelAlign=left
 />
 ```
-
 
 ## Props
 

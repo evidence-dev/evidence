@@ -8,13 +8,14 @@ Evidence supports customizing the look and feel of your project by overwriting d
 
 ## Base Styles
 
-Include an `app.css` file in your project root directory. 
+Include an `app.css` file in your project root directory.
 
 _The recommended approach is to copy and edit the default css file from `[my-project]/.evidence/template/src/app.css`, also found in the [Evidence Github repo](https://github.com/evidence-dev/evidence/blob/main/sites/example-project/src/app.css)._
 
 ### What can be customized with app.css?
 
 You can customize the default styles (font, size, color etc) of most HTML elements, by adjusting the default css for the project, e.g.
+
 - Headers
 - Body text
 - Images
@@ -23,6 +24,7 @@ You can customize the default styles (font, size, color etc) of most HTML elemen
 - etc
 
 You **cannot** currently easily customize the default styles of the following (as these are not defined in the core css styles):
+
 - Evidence Chart colors and themes
 - Evidence Components
 
@@ -37,7 +39,8 @@ _The recommended approach is to copy and edit the default layout file from `[my-
 ### What can be customized with +layout.svelte?
 
 By default, Evidence includes a number of features on every page, which can be removed or customized e.g.
-- Sidebar 
+
+- Sidebar
 - Header
 - Table of Contents
 

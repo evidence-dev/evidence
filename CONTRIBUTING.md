@@ -1,6 +1,6 @@
 # Contributing to Evidence
 
-Thank you for being an important part of the Evidence community! ❤️ 
+Thank you for being an important part of the Evidence community! ❤️
 
 This guide is meant for anyone who would like to contribute to Evidence - either through code or through suggestions and ideas. Even if you've never contributed to an open source project before, you are welcome to contribute to Evidence.
 
@@ -49,32 +49,35 @@ If your problem relates to sensitive or private information, please don't post a
 ### Testing Changes Manually
 
 Follow these steps to test your changes
+
 1. In the project root folder, run `pnpm install` (you will need to install pnpm if you don't have it `npm i -g pnpm`)
 2. `pnpm run dev`
 
-You should be able to open the `Evidence Development Workspace` on  `localhost:3000`. Any subsequent changes you make will be reflected on the website.
+You should be able to open the `Evidence Development Workspace` on `localhost:3000`. Any subsequent changes you make will be reflected on the website.
 
-
-Note that changes to the `components` package should be done within `./sites/example-project/src/components`.  During the build, `./sites/example-project/src/components` will be copied over to `./packages/components`).  All other packages can be updated directly in `./packages`.
+Note that changes to the `components` package should be done within `./sites/example-project/src/components`. During the build, `./sites/example-project/src/components` will be copied over to `./packages/components`). All other packages can be updated directly in `./packages`.
 
 ### Running the Test Suite locally.
+
 The automated test suite should run upon PR creation via Github actions.
-You can also run the tests locally via `pnpm test`.  Note that for the DB tests, enviroment variables need to be test.  Under each DB package, you can add a `.env` file with the credentials needed for each DB type.  Take a look at the `index.cjs` file for the variables required for each DB driver.
+You can also run the tests locally via `pnpm test`. Note that for the DB tests, enviroment variables need to be test. Under each DB package, you can add a `.env` file with the credentials needed for each DB type. Take a look at the `index.cjs` file for the variables required for each DB driver.
 
 ### Pull Requests
+
 Pull requests are welcome! We review pull requests as they are submitted and will reach out to you with any questions or comments.
 
 Follow these steps to submit a pull request for your changes:
+
 1. Create a fork of the `evidence` repo
 2. Commit your changes to your fork
 3. Test your changes to make sure all results are as expected
-4. Add a changeset<sup>*</sup>
+4. Add a changeset<sup>\*</sup>
 5. Open a pull request against the `main` branch of the `evidence` repo
 
 [Here's an example of a pull request](https://github.com/evidence-dev/evidence/pull/165) from a community member who built Evidence's MySQL connector.
 
+#### <sup>\*</sup>Adding a Changeset
 
-#### <sup>*</sup>Adding a Changeset
 Changesets ensure that package versions are updated correctly before releasing onto NPM.
 
 1. `cd` to the root of the monorepo
@@ -85,9 +88,6 @@ Changesets ensure that package versions are updated correctly before releasing o
    3. Unless you're making changes that will break someone's project, or change it in a really unexpected way, just do a patch release
 4. Commit the release notes to your branch so they'll be included as part of the PR
    1. the file will be called three random words like delighted-fish-brick.md
-
-
-
 
 ## Join Our Team
 

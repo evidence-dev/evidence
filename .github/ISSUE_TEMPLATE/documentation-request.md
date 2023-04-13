@@ -4,17 +4,17 @@ about: Suggest an improvement to our documentation
 title: ''
 labels: documentation
 assignees: ''
-
 ---
 
 **Request Type**
+
 - [ ] Small Fix (wording, errors, typos, etc.)
 - [ ] Explanation Improvement (make a description clearer for the reader of the docs)
 - [ ] Walkthrough Request (new tutorial for a particular feature or use case)
 - [ ] Other
 
 **Description**
-What would you like to see improved? 
+What would you like to see improved?
 
 **If improving on existing content, where is that content located?**
 E.g., Get Started > Project Structure > Nested Pages

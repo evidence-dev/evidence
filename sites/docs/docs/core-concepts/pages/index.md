@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Pages
-description: Evidence renders markdown files into web pages. 
+description: Evidence renders markdown files into web pages.
 ---
 
 Evidence renders markdown files into web pages. When developing, the markdown file `/pages/example.md` is rendered at [localhost:3000/example](localhost:3000/example).
@@ -27,6 +27,6 @@ This allows you to organize your pages in a way that makes sense for your users,
 
 - `pages/customers/[customer].md` creates a page for each customer using the `[customer].md` template. See [templated pages](../templated-pages) for details.
 
-## Frontmatter 
+## Frontmatter
 
 You can include page metadata, such as a title, using [frontmatter](/markdown#frontmatter).

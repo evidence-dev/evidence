@@ -25,10 +25,7 @@
 	},
 	"tokenColors": [
 		{
-			"scope": [
-				"meta.embedded",
-				"source.groovy.embedded"
-			],
+			"scope": ["meta.embedded", "source.groovy.embedded"],
 			"settings": {
 				"foreground": "#D4D4D4"
 			}
@@ -190,10 +187,7 @@
 			}
 		},
 		{
-			"scope": [
-				"meta.preprocessor",
-				"entity.name.function.preprocessor"
-			],
+			"scope": ["meta.preprocessor", "entity.name.function.preprocessor"],
 			"settings": {
 				"foreground": "#569cd6"
 			}
@@ -235,19 +229,13 @@
 			}
 		},
 		{
-			"scope": [
-				"storage.modifier",
-				"keyword.operator.noexcept"
-			],
+			"scope": ["storage.modifier", "keyword.operator.noexcept"],
 			"settings": {
 				"foreground": "#569cd6"
 			}
 		},
 		{
-			"scope": [
-				"string",
-				"meta.embedded.assembly"
-			],
+			"scope": ["string", "meta.embedded.assembly"],
 			"settings": {
 				"foreground": "#f8cf90"
 			}
@@ -283,9 +271,7 @@
 		},
 		{
 			"name": "Reset JavaScript string interpolation expression",
-			"scope": [
-				"meta.template.expression"
-			],
+			"scope": ["meta.template.expression"],
 			"settings": {
 				"foreground": "#d4d4d4"
 			}
@@ -345,10 +331,7 @@
 			}
 		},
 		{
-			"scope": [
-				"punctuation.section.embedded.begin.php",
-				"punctuation.section.embedded.end.php"
-			],
+			"scope": ["punctuation.section.embedded.begin.php", "punctuation.section.embedded.end.php"],
 			"settings": {
 				"foreground": "#569cd6"
 			}
@@ -472,7 +455,7 @@
 				"meta.definition.variable.name",
 				"support.variable",
 				"entity.name.variable",
-				"constant.other.placeholder", // placeholders in strings
+				"constant.other.placeholder" // placeholders in strings
 			],
 			"settings": {
 				"foreground": "#9CDCFE"
@@ -480,19 +463,14 @@
 		},
 		{
 			"name": "Constants and enums",
-			"scope": [
-				"variable.other.constant",
-				"variable.other.enummember"
-			],
+			"scope": ["variable.other.constant", "variable.other.enummember"],
 			"settings": {
-				"foreground": "#4FC1FF",
+				"foreground": "#4FC1FF"
 			}
 		},
 		{
 			"name": "Object keys, TS grammar specific",
-			"scope": [
-				"meta.object-literal.key"
-			],
+			"scope": ["meta.object-literal.key"],
 			"settings": {
 				"foreground": "#9CDCFE"
 			}
@@ -539,10 +517,7 @@
 			}
 		},
 		{
-			"scope": [
-				"keyword.operator.or.regexp",
-				"keyword.control.anchor.regexp"
-			],
+			"scope": ["keyword.operator.or.regexp", "keyword.control.anchor.regexp"],
 			"settings": {
 				"foreground": "#DCDCAA"
 			}
@@ -578,20 +553,14 @@
 			}
 		},
 		{
-			"scope": [
-				"fenced_code.block.language",
-				"punctuation.definition.markdown"
-			],
+			"scope": ["fenced_code.block.language", "punctuation.definition.markdown"],
 			"settings": {
 				"fontStyle": "bold italic",
 				"foreground": "#d4d4d4ec"
 			}
 		},
 		{
-			"scope": [
-				"meta.embedded.block.sql",
-				"keyword.operator.star.sql"
-			],
+			"scope": ["meta.embedded.block.sql", "keyword.operator.star.sql"],
 			"settings": {
 				"foreground": "#d4d4d4bd"
 			}
@@ -604,7 +573,7 @@
 				"keyword.other.order.sql"
 			],
 			"settings": {
-				"foreground": "#477ab4d7",
+				"foreground": "#477ab4d7"
 			}
 		},
 		{
@@ -614,27 +583,27 @@
 				"string.quoted.other.backtick.sql"
 			],
 			"settings": {
-				"foreground": "#629b5a",
+				"foreground": "#629b5a"
 			}
 		},
 		{
 			"scope": "punctuation.separator.key-value.svelte",
 			"settings": {
-				"foreground": "#8a8a8a",
+				"foreground": "#8a8a8a"
 			}
 		},
 		{
 			"scope": "punctuation.accessor.ts",
 			"settings": {
-				"foreground": "#8a8a8a",
+				"foreground": "#8a8a8a"
 			}
 		}
 	],
 	"semanticHighlighting": true,
 	"semanticTokenColors": {
-		"newOperator":"#C586C0",
-		"stringLiteral":"#ce7878",
+		"newOperator": "#C586C0",
+		"stringLiteral": "#ce7878",
 		"customLiteral": "#DCDCAA",
-		"numberLiteral": "#b5cea8",
+		"numberLiteral": "#b5cea8"
 	}
 }

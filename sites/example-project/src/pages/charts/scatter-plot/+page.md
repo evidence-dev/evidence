@@ -118,6 +118,7 @@ from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
 ```
 
 ## Scatter Plot
+
 <ScatterPlot 
     data={census} 
     y=median_rent_usd 
@@ -128,6 +129,7 @@ from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
 />
 
 ## Multi-Series Scatter Plot
+
 <ScatterPlot
     data={countries}
     x=gdp_usd
