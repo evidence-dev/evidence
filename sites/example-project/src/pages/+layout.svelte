@@ -167,7 +167,6 @@
 		padding: 0px;
 	}
 
-
 	.header-bar {
 		display: flex;
 		justify-content: space-between;
@@ -205,7 +204,6 @@
 	}
 
 	@media (max-width: 850px) {
-
 		.grid {
 			display: grid;
 			grid-template-areas:
