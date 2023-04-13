@@ -204,10 +204,6 @@
 	}
 
 	@media (max-width: 850px) {
-		.header-bar {
-			width: 90%;
-		}
-
 		.grid {
 			display: grid;
 			grid-template-areas:
