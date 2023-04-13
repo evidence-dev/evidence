@@ -86,6 +86,7 @@
 		border-radius: 5px 5px 0 0;
 		font-size: 14px;
 		font-family: var(--ui-font-family);
+		min-width: 100%;
 	}
 
 	.panel {
