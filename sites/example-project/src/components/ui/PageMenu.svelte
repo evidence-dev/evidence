@@ -2,6 +2,7 @@
 	import { dev } from '$app/environment';
 	import KebabIcon from '$lib/icons/KebabIcon.svelte';
 	import ExternalLinkIcon from '$lib/icons/ExternalLinkIcon.svelte';
+	import clickOutside from '$lib/modules/clickOutside';
 	import { showQueries } from './stores';
 	import { pageHasQueries } from './stores';
 	let options = [
@@ -32,33 +33,9 @@
 	function toggleDropdown() {
 		showDropdown = !showDropdown;
 	}
-
-	// Copied from https://github.com/svelteuidev/svelteui/blob/main/packages/svelteui-composables/src/actions/use-click-outside/use-click-outside.ts
-	function clickoutside(node, params) {
-		const { enabled: initialEnabled, callback } = params;
-
-		const handleOutsideClick = ({ target }) => {
-			if (!node.contains(target)) callback(node);
-		};
-
-		function update({ enabled }) {
-			if (enabled) {
-				window.addEventListener('click', handleOutsideClick);
-			} else {
-				window.removeEventListener('click', handleOutsideClick);
-			}
-		}
-		update({ enabled: initialEnabled });
-		return {
-			update,
-			destroy() {
-				window.removeEventListener('click', handleOutsideClick);
-			}
-		};
-	}
 </script>
 
-<div use:clickoutside={{ enabled: showDropdown, callback: () => (showDropdown = false) }}>
+<div use:clickOutside={{ enabled: showDropdown, callback: () => (showDropdown = false) }}>
 	<button type="button" class="menu" aria-label="page menu button" on:click={toggleDropdown}
 		><KebabIcon color="--grey-600" /></button
 	>
