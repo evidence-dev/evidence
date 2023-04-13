@@ -133,12 +133,12 @@ let series = ['San Francisco', 'Atlanta', 'New York', 'Washington', 'Chicago', '
 # US Bank Analysis
 
 ```banks
-select state_name, 
+select state_name,
 case
     when active = true then 'Active'
     when active = false then 'Inactive'
     else 'Inactive'
-end as active, count(*) as banks 
+end as active, count(*) as banks
 from `bigquery-public-data.fdic_banks.institutions`
 group by state_name, active
 order by banks desc
@@ -147,7 +147,7 @@ order by banks desc
 <BarChart swapXY=true data={banks} x=state_name y=banks series=active/>
 
 ```dates
-select date_trunc(established_date, year) as established_date, count(*)  as banks 
+select date_trunc(established_date, year) as established_date, count(*)  as banks
 from `bigquery-public-data.fdic_banks.institutions`
 group by established_date
 order by established_date asc
@@ -156,7 +156,7 @@ order by established_date asc
 <AreaChart data={dates} line=false x=established_date y=banks title="Bank Creation by Year" subtitle="1900s saw significant increase in bank creation" yAxisTitle="banks created per year" xAxisTitle="Establishment Year"/>
 
 ```dates_state
-select fed_reserve_district, date_trunc(established_date, year) as established_date, count(*) as banks 
+select fed_reserve_district, date_trunc(established_date, year) as established_date, count(*) as banks
 from `bigquery-public-data.fdic_banks.institutions`
 where established_date >= '1960-01-01'
 and established_date <= '2005-01-01'
@@ -168,6 +168,7 @@ group by fed_reserve_district, established_date
 <Chart data={dates_state} x=established_date y=banks series=fed_reserve_district line={false} fillOpacity=1>
 
     <Scatter boundGapRight={['4%','4%']}/>
+
 </Chart>
 
 <AreaChart data={bankData} x=established_date y=banks series=fed_reserve_district/>
@@ -176,13 +177,11 @@ group by fed_reserve_district, established_date
 
 <AreaChart data={banksFilledZero} x=established_date y=banks series=fed_reserve_district />
 
-
 ```dates_num
-select fed_reserve_district, extract( year from established_date) as established_date, count(*) as banks 
+select fed_reserve_district, extract( year from established_date) as established_date, count(*) as banks
 from `bigquery-public-data.fdic_banks.institutions`
 group by fed_reserve_district, established_date
 ```
-
 
 {#each series as series}
 

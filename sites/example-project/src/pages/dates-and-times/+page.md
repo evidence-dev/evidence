@@ -1,6 +1,7 @@
 # Dates and Times
 
 ## Query Viewer
+
 ```date_query
 select date('2020-04-25') as date, 100 as value
 union all
@@ -17,17 +18,17 @@ limit 100
 ```
 
 ## Value Component
-<Value data={date_query}/>  
+
+<Value data={date_query}/>
 
 ## DataTable Component
+
 <DataTable data={date_query}/>
 
 ## Chart
+
 <LineChart
     data={date_query}
     x=date
     y=value
 />
-
-
-

@@ -5,62 +5,66 @@ title: Data Table
 hide_table_of_contents: false
 ---
 
-
-
 ## Examples
 
 ### Selecting Specific Columns
+
 ```html
-<DataTable data={query_name} search=true>
-    <Column id=date/>
-    <Column id=country title="Country Name"/>
-    <Column id=value_usd/>
+<DataTable data="{query_name}" search="true">
+	<Column id="date" />
+	<Column id="country" title="Country Name" />
+	<Column id="value_usd" />
 </DataTable>
 ```
 
 <img src='/img/datatable-selected.png' width='500px'/>
 
 ### Displaying All Columns in Query
+
 ```html
-<DataTable data={query_name} search=true/>
+<DataTable data="{query_name}" search="true" />
 ```
 
 <img src='/img/datatable-all.png' width='500px'/>
 
-
 ### Including Images
+
 ```html
-<DataTable data={countries}>
-    <Column id=flag contentType=image height=30px align=center />
-    <Column id=country />
-    <Column id=country_id align=center />
-    <Column id=category />
-    <Column id=value_usd />
+<DataTable data="{countries}">
+	<Column id="flag" contentType="image" height="30px" align="center" />
+	<Column id="country" />
+	<Column id="country_id" align="center" />
+	<Column id="category" />
+	<Column id="value_usd" />
 </DataTable>
 ```
+
 <img src='/img/datatable-image.png' width='500px'/>
 
 ### Link Columns
 
 #### Link Column with Unique Labels
+
 ```html
-<DataTable data={countries}>
-    <Column id=country_url contentType=link linkLabel=country />
-    <Column id=country_id align=center />
-    <Column id=category />
-    <Column id=value_usd />
+<DataTable data="{countries}">
+	<Column id="country_url" contentType="link" linkLabel="country" />
+	<Column id="country_id" align="center" />
+	<Column id="category" />
+	<Column id="value_usd" />
 </DataTable>
 ```
+
 <img src='/img/datatable-linklabel.png' width='500px'/>
 
 #### Link Column with Consistent String Label
+
 ```html
-<DataTable data={countries}>
-    <Column id=country />
-    <Column id=country_id align=center />
-    <Column id=category />
-    <Column id=value_usd />
-    <Column id=country_url contentType=link linkLabel="Details &rarr;" />
+<DataTable data="{countries}">
+	<Column id="country" />
+	<Column id="country_id" align="center" />
+	<Column id="category" />
+	<Column id="value_usd" />
+	<Column id="country_url" contentType="link" linkLabel="Details &rarr;" />
 </DataTable>
 ```
 
@@ -69,25 +73,27 @@ hide_table_of_contents: false
 ### Row Links
 
 #### External Links
+
 This example includes a column `country_url` which contains a country name as a search term in Google (e.g., `https://google.ca/search?q=canada`)
+
 ```html
-<DataTable data={countries} search=true link=country_url>
-    <Column id=country />
-    <Column id=country_id align=center />
-    <Column id=category />
-    <Column id=value_usd />
+<DataTable data="{countries}" search="true" link="country_url">
+	<Column id="country" />
+	<Column id="country_id" align="center" />
+	<Column id="category" />
+	<Column id="value_usd" />
 </DataTable>
 ```
 
 <img src='/img/datatable-rowlink-external.gif' width='500px'/>
 
-
 #### Link to Pages in Your Project
+
 In this example, the SQL query contains a column with links to parameterized pages in the project. Below is an example of the SQL that could be used to generate such links:
 
 ```sql
-select 
-    fed_reserve_district as name, 
+select
+    fed_reserve_district as name,
     CONCAT("/parameterized-pages/", fed_reserve_district) as district_link,
     count(distinct institution_name) as distinct_institutions,
 from `bigquery-public-data.fdic_banks.institutions`
@@ -95,12 +101,11 @@ group by 1
 ```
 
 You can then use the `link` property of the DataTable to use your link column as a row link (`district_link` in this example):
+
 ```html
-<DataTable 
-    data={federal_reserve_districts} 
-    link=district_link
-/>
+<DataTable data="{federal_reserve_districts}" link="district_link" />
 ```
+
 By default, the link column of your table is hidden. If you would like it to be displayed in the table, you can use `showLinkCol=true`.
 
 <img src='/img/datatable-internal-linkedtable.gif' width='500px'/>
@@ -108,67 +113,65 @@ By default, the link column of your table is hidden. If you would like it to be 
 ### Styling
 
 #### Row Shading + Row Lines
+
 ```html
-<DataTable 
-    data={countries} 
-    rowShading=true 
-/>
+<DataTable data="{countries}" rowShading="true" />
 ```
+
 <img src='/img/datatable-rowshading.png' width='500px'/>
 
 #### Row Shading + No Row Lines
+
 ```html
-<DataTable 
-    data={countries} 
-    rowShading=true 
-    rowLines=false 
-/>
+<DataTable data="{countries}" rowShading="true" rowLines="false" />
 ```
+
 <img src='/img/datatable-rowshading-nolines.png' width='500px'/>
 
 #### No Lines or Shading
+
 ```html
-<DataTable 
-    data={countries} 
-    rowLines=false 
-/>
+<DataTable data="{countries}" rowLines="false" />
 ```
+
 <img src='/img/datatable-nolines.png' width='500px'/>
 
-
 ### Column Alignment
+
 ```html
-<DataTable data={query_name}>
-    <Column id=country align=right />
-    <Column id=country_id align=center />
-    <Column id=category align=left />
-    <Column id=value_usd align=left />
+<DataTable data="{query_name}">
+	<Column id="country" align="right" />
+	<Column id="country_id" align="center" />
+	<Column id="category" align="left" />
+	<Column id="value_usd" align="left" />
 </DataTable>
 ```
+
 <img src='/img/datatable-align.png' width='500px'/>
 
 ### Custom Column Titles
+
 ```html
-<DataTable data={query_name}>
-    <Column id=country title="Country Name" />
-    <Column id=country_id align=center title="ID"/>
-    <Column id=category align=center title="Product Category" />
-    <Column id=value_usd title="Sales in 2022" />
+<DataTable data="{query_name}">
+	<Column id="country" title="Country Name" />
+	<Column id="country_id" align="center" title="ID" />
+	<Column id="category" align="center" title="Product Category" />
+	<Column id="value_usd" title="Sales in 2022" />
 </DataTable>
 ```
+
 <img src='/img/datatable-coltitle-override.png' width='500px'/>
 
 ### Raw Column Names
+
 ```html
-<DataTable 
-    data={query_name} 
-    formatColumnTitles=false 
-/>
+<DataTable data="{query_name}" formatColumnTitles="false" />
 ```
+
 <img src='/img/datatable-raw-colnames.png' width='500px'/>
 
-
 ## DataTable
+
 ### All Options
 
 <table>						 
@@ -259,9 +262,11 @@ By default, the link column of your table is hidden. If you would like it to be 
 </table>
 
 ### Formatting
+
 Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/core-concepts/formatting) section for more details.
 
 ## Column
+
 Use the `Column` component to choose specific columns to display in your table, and to apply options to specific columns. If you don't supply any columns to the table, it will display all columns from your query result.
 
 ### All Options

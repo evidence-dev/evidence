@@ -1,7 +1,7 @@
 {
-    "Insert SQL query block": {
+	"Insert SQL query block": {
 		"prefix": "SQL query block",
-		"body": ["```${1:query_name}","\t${2:}", "```\n\n"],
+		"body": ["```${1:query_name}", "\t${2:}", "```\n\n"],
 		"description": "Insert SQL query block"
 	},
 	"Insert <Chart>": {
@@ -19,7 +19,7 @@
 		"body": ["<AreaChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert AreaChart"
 	},
-    "Insert <BarChart/>": {
+	"Insert <BarChart/>": {
 		"prefix": "BarChart",
 		"body": ["<BarChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
 		"description": "Insert BarChart"
@@ -31,7 +31,9 @@
 	},
 	"Insert <BubbleChart/>": {
 		"prefix": "BubbleChart",
-		"body": ["<BubbleChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"],
+		"body": [
+			"<BubbleChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"
+		],
 		"description": "Insert BubbleChart"
 	},
 	"Insert <Histogram/>": {
@@ -66,7 +68,9 @@
 	},
 	"Insert markdown table": {
 		"prefix": "table",
-		"body": ["| ${1:Column 1} | ${2:Column 2} | ${3:Column 3} |\n| -------- | -------- | -------- |\n| ${4:   1    } | ${5:   2    } | ${6:   3    } |\n| ${7:   4    } | ${8:   5    } | ${9:   6    } |\n\n"],
+		"body": [
+			"| ${1:Column 1} | ${2:Column 2} | ${3:Column 3} |\n| -------- | -------- | -------- |\n| ${4:   1    } | ${5:   2    } | ${6:   3    } |\n| ${7:   4    } | ${8:   5    } | ${9:   6    } |\n\n"
+		],
 		"description": "Insert Markdown Table"
 	}
 }

@@ -1,19 +1,19 @@
 {
-    "name": "@evidence-dev/mysql",
-    "version": "0.2.0",
-    "description": "MySQL driver for Evidence projects",
-    "main": "index.cjs",
-    "author": "evidence.dev",
-    "license": "MIT",
-    "scripts": {
-        "test": "uvu test test.js"
-    },
-    "dependencies": {
-        "mysql2": "^2.3.2",
-        "@evidence-dev/db-commons": "workspace:^"
-    },
-    "devDependencies": {
-        "dotenv": "^16.0.1"
-    },
-    "type": "module"
+	"name": "@evidence-dev/mysql",
+	"version": "0.2.0",
+	"description": "MySQL driver for Evidence projects",
+	"main": "index.cjs",
+	"author": "evidence.dev",
+	"license": "MIT",
+	"scripts": {
+		"test": "uvu test test.js"
+	},
+	"dependencies": {
+		"mysql2": "^2.3.2",
+		"@evidence-dev/db-commons": "workspace:^"
+	},
+	"devDependencies": {
+		"dotenv": "^16.0.1"
+	},
+	"type": "module"
 }

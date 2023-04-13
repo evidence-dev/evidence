@@ -8,7 +8,7 @@ Evidence supports most markdown syntax. Below are some of the most common markdo
 ## Text Paragraphs
 
 ```markdown
-This is a paragraph. It can be as long as you want. 
+This is a paragraph. It can be as long as you want.
 
 Add line breaks by leaving a blank line between paragraphs.
 ```
@@ -17,7 +17,7 @@ Add line breaks by leaving a blank line between paragraphs.
 
 ```markdown
 **Bold** text is wrapped in double asterisks
-*Italic* text is wrapped in single asterisks
+_Italic_ text is wrapped in single asterisks
 ~~Strikethrough~~ text is wrapped in double tildes
 `Inline code` is wrapped in backticks
 ```
@@ -50,7 +50,6 @@ Add line breaks by leaving a blank line between paragraphs.
 ###### H6 Header
 ```
 
-
 ## Links
 
 ```markdown
@@ -82,14 +81,12 @@ Evidence looks for images in the `/static` folder in the root of your project. C
 
 In Evidence, most code fences execute SQL queries and display the results in a table.
 
-
- 
 ````markdown
 This code fence will execute a SQL query and display the results:
 
-```widget_orders 
-SELECT * 
-FROM orders 
+```widget_orders
+SELECT *
+FROM orders
 WHERE category = 'widget'
 ```
 ````
@@ -130,14 +127,20 @@ To display data in a table, use a [Data Table](../components/data-table) instead
 > This is a blockquote
 >
 > It can span multiple lines
+>
 > > And can be nested
 ```
 
 ## Frontmatter
 
-To attach metadata (e.g. a title) to your page, use Frontmatter.
+:::note
+Frontmatter does not support Javascript statements at this time; and things may behave unexpectedly if wrapped in `{}`
+:::
+
+To attach metadata (e.g. a title) to your page, you can use Frontmatter. Note that frontmatter _must_ appear as the first thing in your page; no content can come before it, or it won't be loaded properly.
 
 Frontmatter is formatted like this:
+
 ```markdown
 ---
 title: Evidence Docs

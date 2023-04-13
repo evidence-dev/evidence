@@ -1,7 +1,7 @@
 # BigQuery Dates
 
 ```dates
-select 
+select
     CAST('2022-07-21' AS DATE) as date,
     CAST('2022-07-21 11:21:24' AS DATETIME) as datetime,
     CAST('2022-07-21 11:21:24Z' AS TIMESTAMP) as timestamp,
@@ -9,7 +9,6 @@ select
 ```
 
 {console.log(dates)}
-
 
 ```fff
 select '11:10' as time, 100 as value
@@ -26,4 +25,3 @@ select '11:14' as time, 122 as value
 <LineChart
     data={fff}
 />
-

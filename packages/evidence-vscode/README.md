@@ -19,11 +19,13 @@ This extension provides language support and basic autocomplete for Evidence Mar
   - Templating (Loops, Conditionals)
 
 ## Requirements
+
 Evidence VS Code requires the Svelte for VS Code extension. This will be installed automatically when you install Evidence VS Code.
 
 ## Support
 
 If you run into any issues setting up the extension, please reach out:
+
 - [Open an issue on GitHub](https://github.com/evidence-dev/evidence/issues)
 - Post in our [Slack community](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
 - Email <support@evidence.dev>

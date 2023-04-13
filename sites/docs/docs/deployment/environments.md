@@ -33,7 +33,7 @@ Add your dev database credentials for your dev environment via the **settings pa
 Add your prod database credentials as environment variables. The specific instructions depend on how you are deploying Evidence. Instructions can be be found in the deployment section of the settings page of your local project.
 
 :::note
-If you are using separate schemas, you will need to add the optional `schema` parameter to your credentials in dev, and an environment variable in prod. This is only currently supported for Postgres. 
+If you are using separate schemas, you will need to add the optional `schema` parameter to your credentials in dev, and an environment variable in prod. This is only currently supported for Postgres.
 :::
 
 [^1]: Also known as _projects_ (BigQuery)

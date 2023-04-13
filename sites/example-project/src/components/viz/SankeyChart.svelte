@@ -1,165 +1,170 @@
 <script>
-  import ECharts from "./ECharts.svelte";
-  
-  import {colours} from '../modules/colours';
-  import { formatValue } from "../modules/formatting";
-  
-  export let data = undefined;
-  export let sourceCol = "source";
-  export let targetCol = "target";
-  export let valueCol = "value";
-  
-  export let title = undefined;
-  export let subtitle = undefined;
-  export let legend = false;
+	import ECharts from './ECharts.svelte';
 
-  export let outlineColor = undefined;
-  export let outlineWidth = undefined;
-  export let nodeAlign = "justify";
-  export let nodeGap = 8;
-  export let nodeWidth = 20;
-  export let orient = "horizontal";
+	import { colours } from '../modules/colours';
+	import { formatValue } from '../modules/formatting';
 
-//Data Formatting  
-    let names = []
-    let links;
-    data.map((link) => names.push(link[sourceCol], link[targetCol]));
-    let nameData = [...new Set(names)].map(node => ({name: node}))
-  $: links = data.map((link) => { return {
-    source: link[sourceCol],
-    target: link[targetCol],
-    value:  link[valueCol]
-  }})
-// ---------------------------------------------------------------------------------------
-// Variable Declaration
-// ---------------------------------------------------------------------------------------
+	export let data = undefined;
+	export let sourceCol = 'source';
+	export let targetCol = 'target';
+	export let valueCol = 'value';
 
-  //Chart Area sizing:
-    let chartAreaHeight;
-    let hasTitle;
-    let hasSubtitle;
-    let hasLegend;
-    let titleFontSize;
-    let subtitleFontSize;
-    let titleBoxPadding;
-    let titleBoxHeight;
-    let chartAreaPaddingTop;
-    let chartAreaPaddingBottom;
-    let legendHeight;
-    let legendPaddingTop;
-    let legendTop;
-    let chartTop;
-    let chartBottom;
-    let chartContainerHeight;
+	export let title = undefined;
+	export let subtitle = undefined;
+	export let legend = false;
 
-    // Set final chart height:
-    let height = '400px';
-    let width = '100%';
-   
-    // ---------------------------------------------------------------------------------------
-    // Set up chart area
-    // ---------------------------------------------------------------------------------------
-    chartAreaHeight = 300; // standard height for chart area across all charts
-    hasTitle = title ? true : false;
-    hasSubtitle = subtitle ? true: false;
-    hasLegend = legend
+	export let outlineColor = undefined;
+	export let outlineWidth = undefined;
+	export let nodeAlign = 'justify';
+	export let nodeGap = 8;
+	export let nodeWidth = 20;
+	export let orient = 'horizontal';
 
-    titleFontSize = 15;
-    subtitleFontSize = 13;
-    titleBoxPadding = 10 * (hasSubtitle);
-    titleBoxHeight = (hasTitle * titleFontSize) + (hasSubtitle * subtitleFontSize) + (titleBoxPadding * Math.max(hasTitle, hasSubtitle));
-    chartAreaPaddingTop = 10;
-    chartAreaPaddingBottom = 8;
+	//Data Formatting
+	let names = [];
+	let links;
+	data.map((link) => names.push(link[sourceCol], link[targetCol]));
+	let nameData = [...new Set(names)].map((node) => ({ name: node }));
+	$: links = data.map((link) => {
+		return {
+			source: link[sourceCol],
+			target: link[targetCol],
+			value: link[valueCol]
+		};
+	});
+	// ---------------------------------------------------------------------------------------
+	// Variable Declaration
+	// ---------------------------------------------------------------------------------------
 
-    legendHeight = 15;
-    legendHeight = legendHeight * hasLegend;
+	//Chart Area sizing:
+	let chartAreaHeight;
+	let hasTitle;
+	let hasSubtitle;
+	let hasLegend;
+	let titleFontSize;
+	let subtitleFontSize;
+	let titleBoxPadding;
+	let titleBoxHeight;
+	let chartAreaPaddingTop;
+	let chartAreaPaddingBottom;
+	let legendHeight;
+	let legendPaddingTop;
+	let legendTop;
+	let chartTop;
+	let chartBottom;
+	let chartContainerHeight;
 
-    legendPaddingTop = 7;
-    legendPaddingTop = legendPaddingTop * Math.max(hasTitle, hasSubtitle);
+	// Set final chart height:
+	let height = '400px';
+	let width = '100%';
 
-    legendTop = titleBoxHeight + legendPaddingTop;
-    chartTop = legendTop + legendHeight + chartAreaPaddingTop;
-    chartBottom = chartAreaPaddingBottom;
-    chartContainerHeight = chartAreaHeight + chartTop + chartBottom;
+	// ---------------------------------------------------------------------------------------
+	// Set up chart area
+	// ---------------------------------------------------------------------------------------
+	chartAreaHeight = 300; // standard height for chart area across all charts
+	hasTitle = title ? true : false;
+	hasSubtitle = subtitle ? true : false;
+	hasLegend = legend;
 
-    // Set final chart height:
-    height = chartContainerHeight + 'px';
-    width = '100%';
+	titleFontSize = 15;
+	subtitleFontSize = 13;
+	titleBoxPadding = 10 * hasSubtitle;
+	titleBoxHeight =
+		hasTitle * titleFontSize +
+		hasSubtitle * subtitleFontSize +
+		titleBoxPadding * Math.max(hasTitle, hasSubtitle);
+	chartAreaPaddingTop = 10;
+	chartAreaPaddingBottom = 8;
 
-// ---------------------------------------------------------------------------------------
-// Chart Configuration
-// ---------------------------------------------------------------------------------------
+	legendHeight = 15;
+	legendHeight = legendHeight * hasLegend;
 
-  let seriesConfig 
-  $: seriesConfig =  {
-    type: 'sankey',
-    layout: 'none',
-    left: '10%',
-    top: orient === "vertical" ? 80 : 60,
-    bottom: orient === "vertical" ? 0 : 10,
-    width: '70%',
-    nodeGap: nodeGap,
-    nodeWidth: nodeWidth,
-    nodeAlign: nodeAlign,
-    orient: orient,
-    emphasis: {
-        focus: 'adjacency'
-        },
-    label: {
-        show: true,
-        position: orient === "vertical" ? "top" : "right",
-        fontSize: 12,
-        },
-    itemStyle: {
-        borderColor: outlineColor,
-        borderWidth: outlineWidth
-        },
-    tooltip: {
-        formatter: function(params){
-             return params.data.name ? `${formatValue(params.data.name)}` : `${formatValue(params.data[sourceCol])} to ${formatValue(params.data.target)}, ${formatValue(params.data.value)}`
-        },
-        padding: 6,
-        borderRadius: 4, 
-        borderWidth: 1,
-        borderColor: colours.grey400,
-        backgroundColor: 'white',
-        extraCssText: 'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
-        textStyle: {
-            color: colours.grey900,
-            fontSize: 12,
-            fontWeight: 400
-            },
-        order:'valueDesc'
-        },
+	legendPaddingTop = 7;
+	legendPaddingTop = legendPaddingTop * Math.max(hasTitle, hasSubtitle);
 
-    data: nameData,
-    links: links,
-  }
+	legendTop = titleBoxHeight + legendPaddingTop;
+	chartTop = legendTop + legendHeight + chartAreaPaddingTop;
+	chartBottom = chartAreaPaddingBottom;
+	chartContainerHeight = chartAreaHeight + chartTop + chartBottom;
 
-    $: config = { 
-      title: {
-          text: title,
-          subtext: subtitle,
-          subtextStyle: {
-              width: width
-            },
-        },
-        tooltip: {
-          trigger: "item",
-        },
-        legend: {
-          show: legend,
-          type: "scroll",
-          top: legendTop,
-          padding: [0, 0, 0, 0]
-        },
-        series: [seriesConfig]
-    }
+	// Set final chart height:
+	height = chartContainerHeight + 'px';
+	width = '100%';
 
+	// ---------------------------------------------------------------------------------------
+	// Chart Configuration
+	// ---------------------------------------------------------------------------------------
+
+	let seriesConfig;
+	$: seriesConfig = {
+		type: 'sankey',
+		layout: 'none',
+		left: '10%',
+		top: orient === 'vertical' ? 80 : 60,
+		bottom: orient === 'vertical' ? 0 : 10,
+		width: '70%',
+		nodeGap: nodeGap,
+		nodeWidth: nodeWidth,
+		nodeAlign: nodeAlign,
+		orient: orient,
+		emphasis: {
+			focus: 'adjacency'
+		},
+		label: {
+			show: true,
+			position: orient === 'vertical' ? 'top' : 'right',
+			fontSize: 12
+		},
+		itemStyle: {
+			borderColor: outlineColor,
+			borderWidth: outlineWidth
+		},
+		tooltip: {
+			formatter: function (params) {
+				return params.data.name
+					? `${formatValue(params.data.name)}`
+					: `${formatValue(params.data[sourceCol])} to ${formatValue(
+							params.data.target
+					  )}, ${formatValue(params.data.value)}`;
+			},
+			padding: 6,
+			borderRadius: 4,
+			borderWidth: 1,
+			borderColor: colours.grey400,
+			backgroundColor: 'white',
+			extraCssText:
+				'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
+			textStyle: {
+				color: colours.grey900,
+				fontSize: 12,
+				fontWeight: 400
+			},
+			order: 'valueDesc'
+		},
+
+		data: nameData,
+		links: links
+	};
+
+	$: config = {
+		title: {
+			text: title,
+			subtext: subtitle,
+			subtextStyle: {
+				width: width
+			}
+		},
+		tooltip: {
+			trigger: 'item'
+		},
+		legend: {
+			show: legend,
+			type: 'scroll',
+			top: legendTop,
+			padding: [0, 0, 0, 0]
+		},
+		series: [seriesConfig]
+	};
 </script>
 
-<ECharts
- config={config}
- {width}
- {height}
-/>
+<ECharts {config} {width} {height} />

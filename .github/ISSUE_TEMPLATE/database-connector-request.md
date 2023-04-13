@@ -4,7 +4,6 @@ about: Suggest a database you would like to connect to Evidence
 title: ''
 labels: connectors, enhancement
 assignees: ''
-
 ---
 
 **What do you use this database for?**

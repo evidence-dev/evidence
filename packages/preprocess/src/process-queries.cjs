@@ -1,29 +1,26 @@
-const unified = require('unified')
-const parse = require('remark-parse')
-const visit = require('unist-util-visit')
-const md5 = require("blueimp-md5");
-const getPrismLangs = require('./utils/get-prism-langs.cjs')
+const { getRouteHash } = require('./utils/get-route-hash.cjs');
+const { extractQueries } = require('./extract-queries/extract-queries.cjs');
+const { highlighter } = require('./utils/highlighter.cjs');
+const { frontmatterRegex, containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
-const getRouteHash = function(filename){
-    let route = filename.split("/src/pages")[1] === "/+page.md" ? "/" : filename.split("/src/pages")[1].replace(".md","").replace(/\/\+page/g,"")
-    const hash = md5(route)
-    return hash
-}
+const createDefaultProps = function (filename, componentDevelopmentMode, fileQueryIds) {
+	const routeH = getRouteHash(filename);
 
-const createDefaultProps = function(filename, componentDevelopmentMode, fileQueryIds){
-    const routeH = getRouteHash(filename)
+	let queryDeclarations = '';
 
-    let queryDeclarations = ''
-    
-    if(fileQueryIds?.length > 0) {
-        queryDeclarations = 
-        `
-        let {${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data;
-        $: ({${fileQueryIds?.filter(queryId => queryId.match('^([a-zA-Z_$][a-zA-Z0-9\d_$]*)$')).map(id => id)} } = data);
-        `
-    } 
+	if (fileQueryIds?.length > 0) {
+		// Get query results from load function
+		queryDeclarations = `
+        let {${fileQueryIds
+					?.filter((queryId) => queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$'))
+					.map((id) => id)} } = data;
+        $: ({${fileQueryIds
+					?.filter((queryId) => queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$'))
+					.map((id) => id)} } = data);
+        `;
+	}
 
-    let defaultProps = `
+	let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '$lib/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
@@ -107,58 +104,57 @@ const createDefaultProps = function(filename, componentDevelopmentMode, fileQuer
         })
 
         ${queryDeclarations}
-        `
+        `;
 
-    return defaultProps
-}
-// Unified parser step to ignore indented code blocks. 
-// Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
-// Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
-const ignoreIndentedCode = function() {
-	const Parser = this.Parser;
-	const block_tokenizers = Parser.prototype.blockTokenizers;
-	block_tokenizers.indentedCode = () => true;
-}
-
-const getQueryIds = function(content){
-    let queryIds = [];  
-    let tree = unified()
-        .use(parse)
-        .use(ignoreIndentedCode)
-        .parse(content)   
-
-    visit(tree, 'code', function(node) {
-        let id = node.lang ?? 'untitled'
-         // Prevent "real" code blocks from being interpreted as queries
-         if (!getPrismLangs().has(id.toLowerCase())){
-             queryIds.push(id)
-         }
-    });
-    return queryIds;
-}
+	return defaultProps;
+};
 
 /**
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
 const processQueries = (componentDevelopmentMode) => {
-    let queryIdsByFile = {}
-    return {
-        markup({content, filename}){
-            if(filename.endsWith(".md")){
-                let fileQueryIds = getQueryIds(content);
-                queryIdsByFile[getRouteHash(filename)] = fileQueryIds;
-            }
-        },    
-        script({content, filename, attributes}) {
-            if(filename.endsWith(".md")){
-                if(attributes.context != "module") {
-                    let queryIds = queryIdsByFile[getRouteHash(filename)];
-                    return {code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content }
-                }
-            }
-        }
+	let queryIdsByFile = {};
+	return {
+		markup({ content, filename }) {
+			if (filename.endsWith('.md')) {
+				let fileQueries = extractQueries(content);
+				queryIdsByFile[getRouteHash(filename)] = fileQueries.map((q) => q.id);
 
-    }
-}
+				const externalQueryViews =
+					'\n\n\n' +
+					fileQueries
+						.filter((q) => !q.inline)
+						.map((q) => {
+							return highlighter(q.compiledQueryString, q.id.toLowerCase());
+						})
+						.join('\n');
 
-module.exports = processQueries
+				// Page contains frontmatter
+				const frontmatter = containsFrontmatter(content);
+				if (frontmatter) {
+					const contentWithoutFrontmatter = content.substring(frontmatter.length + 6);
+					const output =
+						`---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter;
+					return {
+						code: output
+					};
+				}
+
+				return {
+					code: externalQueryViews + content
+				};
+			}
+		},
+		script({ content, filename, attributes }) {
+			if (filename.endsWith('.md')) {
+				if (attributes.context != 'module') {
+					let queryIds = queryIdsByFile[getRouteHash(filename)];
+					return {
+						code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content
+					};
+				}
+			}
+		}
+	};
+};
+module.exports = processQueries;

@@ -4,8 +4,7 @@ title: Scatter Plot
 hide_table_of_contents: false
 ---
 
-
-![scatter-plot](/img/exg-scatter-nt.svg) 
+![scatter-plot](/img/exg-scatter-nt.svg)
 
 ```markdown
 <ScatterPlot 
@@ -18,7 +17,8 @@ hide_table_of_contents: false
 ## Examples
 
 ### Scatter Plot
-![scatter-plot](/img/exg-scatter-nt.svg) 
+
+![scatter-plot](/img/exg-scatter-nt.svg)
 
 ```markdown
 <ScatterPlot 
@@ -31,7 +31,8 @@ hide_table_of_contents: false
 ```
 
 ### Multi-Series Scatter Plot
-![scatter-plot](/img/exg-multi-series-scatter-nt.svg) 
+
+![scatter-plot](/img/exg-multi-series-scatter-nt.svg)
 
 ```markdown
 <ScatterPlot 
@@ -47,6 +48,7 @@ hide_table_of_contents: false
 ## Props
 
 ### Data
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
@@ -55,9 +57,10 @@ hide_table_of_contents: false
 <tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>tooltipTitle</td>	<td>Column to use as the title for each tooltip. Typically, this is a name to identify each point.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-</table>																																																	
+</table>
 
 ### Series
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>shape</td>	<td>Options for which shape to use for scatter points</td>	<td class='tcenter'>-</td>	<td class='tcenter'>circle | emptyCircle | rect | triangle | diamond</td>	<td class='tcenter'>circle</td>	</tr>
@@ -66,9 +69,10 @@ hide_table_of_contents: false
 <tr>	<td>fillColor</td>	<td>Color to override default series color. Only accepts a single color.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>outlineWidth</td>	<td>Width of line surrounding each shape</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
 <tr>	<td>outlineColor</td>	<td>Color to use for outline if outlineWidth > 0</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-</table>												
+</table>
 
 ### Chart
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>title</td>	<td>Chart title. Appears at top left of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
@@ -86,5 +90,4 @@ hide_table_of_contents: false
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-</table>											
-
+</table>

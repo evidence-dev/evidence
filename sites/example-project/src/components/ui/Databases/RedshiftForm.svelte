@@ -1,7 +1,7 @@
 <script>
 	export let credentials;
 	export let existingCredentials;
-    export let disableSave;
+	export let disableSave;
 
 	credentials = { ...existingCredentials };
 
@@ -69,7 +69,7 @@
 			type: 'text',
 			optional: true,
 			override: true,
-			placeholder: "postgres://[username]:[password]@[host]:[port]/[database]",
+			placeholder: 'postgres://[username]:[password]@[host]:[port]/[database]',
 			additionalInstructions:
 				'If your database host provides a connection string, you can use that here in place of the user/password fields above.',
 			value: credentials.connectionString ?? ''
@@ -79,4 +79,4 @@
 	import GenericForm from './GenericForm.svelte';
 </script>
 
-<GenericForm {opts} bind:credentials bind:disableSave/>
+<GenericForm {opts} bind:credentials bind:disableSave />

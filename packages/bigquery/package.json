@@ -1,20 +1,20 @@
 {
-  "name": "@evidence-dev/bigquery",
-  "version": "1.2.4",
-  "description": "BigQuery driver for Evidence projects",
-  "main": "index.cjs",
-  "author": "evidence.dev",
-  "license": "MIT",
-  "scripts": {
-    "test": "uvu test test.js"
-  },
-  "dependencies": {
-    "fs-extra": "9.1.0",
-    "@google-cloud/bigquery": "6.2.0",
-    "@evidence-dev/db-commons": "workspace:^"
-  },
-  "devDependencies": {
-    "dotenv": "^16.0.1"
-  },
-  "type": "module"
+	"name": "@evidence-dev/bigquery",
+	"version": "1.2.4",
+	"description": "BigQuery driver for Evidence projects",
+	"main": "index.cjs",
+	"author": "evidence.dev",
+	"license": "MIT",
+	"scripts": {
+		"test": "uvu test test.js"
+	},
+	"dependencies": {
+		"fs-extra": "9.1.0",
+		"@google-cloud/bigquery": "6.2.0",
+		"@evidence-dev/db-commons": "workspace:^"
+	},
+	"devDependencies": {
+		"dotenv": "^16.0.1"
+	},
+	"type": "module"
 }

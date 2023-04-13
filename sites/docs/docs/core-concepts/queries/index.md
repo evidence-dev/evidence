@@ -23,6 +23,7 @@ When you open a page in dev mode, Evidence runs all of the queries on the page. 
 You can include SQL queries in your page using a markdown code fence (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
 
 ### Using Query Results
+
 Reference a query in a component using `data={query_name}`
 
 For example, if your query name was `sales_by_country`:
@@ -36,7 +37,6 @@ For example, if your query name was `sales_by_country`:
 Reference other queries by writing the query name inside `${ }`.
 
 For example, if you want to reference a query named `sales_by_region`, you would write `${sales_by_region}` into your SQL query, you would write:
-
 
 ````sql
 ```sales_by_region
@@ -82,3 +82,39 @@ Some SQL dialects require sub-queries to be aliased, including Postgres and MySQ
 The SQL compiler detects circular and missing references. If a query includes either a circular reference or a missing reference, Evidence will display an error that looks like a syntax error in a normal SQL query. Queries with compiler errors are not sent to your database.
 
 ![circular-error-single](/img/circular-error-single.png)
+
+## SQL File Queries
+
+Evidence also has support for queries outside the markdown, which is especially useful when you have a query that is being used on more than one page.
+
+### Basic Usage
+
+To use sql file queries, you need to place them in the `sources` directory, and then reference them in your [frontmatter](/markdown/#frontmatter).
+
+An example setup could be:
+
+```
+my-evidence-project/
+  pages/
+    my_page.md
+  sources/
+    my_query.sql
+    some_category/
+        my_category_query.sql
+```
+
+These queries can then be used on `my_page.md` with the following [frontmatter](/markdown/#frontmatter)
+
+```yaml
+---
+sources:
+  - my_query.sql
+  - some_category/my_category_query.sql
+---
+```
+
+In your evidence file, you can now reference `my_query` and `some_category_my_category_query` (note that `/` became `_`) the same way you would use any other query.
+
+### Advanced Usage
+
+SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_query` depends on `some_category_my_category_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.

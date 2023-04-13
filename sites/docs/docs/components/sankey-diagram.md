@@ -4,9 +4,8 @@ title: Sankey Diagram
 hide_table_of_contents: false
 ---
 
-
-
 ![sankey](/img/exg-sankey.svg)
+
 ```markdown
 <SankeyDiagram 
     data={query_name} 
@@ -16,10 +15,10 @@ hide_table_of_contents: false
 />
 ```
 
-
 ## Vertical
 
 ![sankey](/img/exg-sankey-vertical.svg)
+
 ```markdown
 <SankeyDiagram 
     data={query_name} 
@@ -29,7 +28,6 @@ hide_table_of_contents: false
     orient = vertical
 />
 ```
-
 
 ## Props
 
@@ -46,7 +44,6 @@ hide_table_of_contents: false
 
 ### Chart
 
-
 <table>
 <tr> <th class='tleft'>Name</th> <th class='tleft'>Description</th> <th>Required?</th> <th>Options</th> <th>Default</th> </tr>
 <tr> <td>title</td> <td>Chart title. Appears at top left of chart.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
@@ -60,4 +57,3 @@ hide_table_of_contents: false
 <tr> <td>outlineColor</td> <td>Border color. Only accepts a single color.</td> <td class='tcenter'>-</td> <td class='tcenter'>CSS name | hexademical | RGB | HSL</td> <td class='tcenter'>transparent</td> </tr>
 <tr> <td>outlineWidth</td> <td>Border Width. It should be a natural number.</td> <td class='tcenter'>-</td> <td class='tcenter'>number</td> <td class='tcenter'>1</td> </tr>
 </table>
-

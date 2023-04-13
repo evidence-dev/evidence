@@ -39,8 +39,7 @@ jobs:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
           BIGQUERY_PROJECT_ID: ${{ secrets.BIGQUERY_PROJECT_ID }}
           BIGQUERY_CLIENT_EMAIL: ${{ secrets.BIGQUERY_CLIENT_EMAIL }}
-          BIGQUERY_PRIVATE_KEY:  ${{ secrets.BIGQUERY_PRIVATE_KEY }}
-          SEND_ANONYMOUS_USAGE_STATS:  ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
-          SQLITE_FILENAME: ":memory:"
-          DUCKDB_FILENAME: ":memory:"
-
+          BIGQUERY_PRIVATE_KEY: ${{ secrets.BIGQUERY_PRIVATE_KEY }}
+          SEND_ANONYMOUS_USAGE_STATS: ${{ secrets.SEND_ANONYMOUS_USAGE_STATS }}
+          SQLITE_FILENAME: ':memory:'
+          DUCKDB_FILENAME: ':memory:'

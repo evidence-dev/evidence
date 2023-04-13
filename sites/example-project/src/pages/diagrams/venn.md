@@ -5,9 +5,9 @@ pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
 
 <VennDiagram
-    labels={["Title A", "Title B", "Title C"]}
-    amounts={["AMOUNT A", "AMOUNT B", "AMOUNT C"]}
-    overlaps={["A", "AB", "BC", "AC", "ABC"]}
+labels={["Title A", "Title B", "Title C"]}
+amounts={["AMOUNT A", "AMOUNT B", "AMOUNT C"]}
+overlaps={["A", "AB", "BC", "AC", "ABC"]}
 />
 
 Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt;

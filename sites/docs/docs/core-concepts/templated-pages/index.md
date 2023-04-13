@@ -24,7 +24,7 @@ The file name in the square brackets becomes a parameter you can reference in th
 In the above example, you could create a file that looks like this.
 
 ```bash
-pages/ 
+pages/
 `-- customers/
     `-- [customer].md
 ```
@@ -38,7 +38,9 @@ The parameter passed in the URL can be used to filter for a value in a query res
 A parameter on the page `[customer].md` is accessed through the variable:
 
 ```js
-{$page.params.customer}
+{
+	$page.params.customer;
+}
 ```
 
 You can apply a filter to a query result by appending this code to the query name. This is a standard JavaScript method for filtering data.
@@ -53,7 +55,7 @@ Adding this to a `<Value/>` component:
 
 ```js
 <Value
-    data={customers.filter(d => d.customer_name === $page.params.customer)} 
+    data={customers.filter(d => d.customer_name === $page.params.customer)}
     column=sales_usd
 />
 ```
@@ -71,7 +73,9 @@ let filtered_customers = customers.filter(d => d.customer_name === $page.params.
     column=sales_usd
 />
 ```
+
 :::
+
 ## Populating templated pages
 
 So far, we've created the template for a set of pages, but haven't specified what specific pages to create, or to put it another way, what values we want the parameter to take.
@@ -101,6 +105,7 @@ group by 1
 ````
 
 ### 2. With an `{#each}` loop
+
 ````markdown
 ```customers
 select
@@ -122,7 +127,7 @@ group by 1
 Creating folders with parameters can be useful when nesting inside templated pages:
 
 ```
-pages/ 
+pages/
 `-- customers/
     `-- [customer]/
         |-- index.md

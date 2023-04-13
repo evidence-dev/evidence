@@ -37,7 +37,6 @@ Evidence renders a BI website from markdown files:
 1. [Templated pages](core-concepts/templated-pages) generate many pages from a single markdown template
 1. [Loops](core-concepts/loops) and [If / Else](core-concepts/if-else) statements allow control of what is displayed to users
 
-
 ## Pre-requisites
 
 To use Evidence you need to know SQL. A knowledge of [basic markdown syntax](markdown) is also helpful.
@@ -45,6 +44,7 @@ To use Evidence you need to know SQL. A knowledge of [basic markdown syntax](mar
 ## Getting help
 
 If you're trying out Evidence, and need some support we'd love to hear from you.
+
 - Message us on <a href='https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q' target="_blank">Slack</a>
 - Open an issue on <a href='https://github.com/evidence-dev/evidence' target="_blank">Github</a>
 - See all the <a href="https://docs.evidence.dev/components/all-components" target="_blank">charts and components</a>.
