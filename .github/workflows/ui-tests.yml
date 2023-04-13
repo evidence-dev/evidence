@@ -15,7 +15,7 @@ jobs:
         id: waitForVercelPreviewDeployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: "Preview – evidence-development-workspace"
+          environment: 'Preview – evidence-development-workspace'
           max_timeout: 500
           check_interval: 5
   tests:

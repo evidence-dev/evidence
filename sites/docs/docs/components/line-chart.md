@@ -4,8 +4,7 @@ title: Line Chart
 hide_table_of_contents: false
 ---
 
-
-![line](/img/exg-line-nt.svg) 
+![line](/img/exg-line-nt.svg)
 
 ```markdown
 <LineChart 
@@ -18,7 +17,8 @@ hide_table_of_contents: false
 ## Examples
 
 ### Line
-![line](/img/exg-line-nt.svg) 
+
+![line](/img/exg-line-nt.svg)
 
 ```markdown
 <LineChart 
@@ -30,7 +30,8 @@ hide_table_of_contents: false
 ```
 
 ### Multi-Series Line
-![multi-series-line](/img/exg-multi-series-line-nt.svg) 
+
+![multi-series-line](/img/exg-multi-series-line-nt.svg)
 
 ```markdown
 <LineChart 
@@ -44,13 +45,14 @@ hide_table_of_contents: false
 ```
 
 ### Multiple y Columns
-![multiple-y-line](/img/exg-multiple-y-line-nt.svg) 
+
+![multiple-y-line](/img/exg-multiple-y-line-nt.svg)
 
 ```markdown
-<LineChart 
-    data={fda_recalls}  
-    x=year
-    y={["voluntary_recalls", "fda_recalls"]}
+<LineChart
+data={fda_recalls}  
+ x=year
+y={["voluntary_recalls", "fda_recalls"]}
 />
 ```
 
@@ -65,6 +67,7 @@ Evidence will automatically pick the first column as `x` and use all other numer
 ## Props
 
 ### Data
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
@@ -73,9 +76,10 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>handleMissing</td>	<td>Treatment of missing values in the dataset</td>	<td class='tcenter'>-</td>	<td class='tcenter'>gap | connect | zero</td>	<td class='tcenter'>gap</td>	</tr>
-</table>																																																	
+</table>
 
 ### Series
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>lineColor</td>	<td>Color to override default series color. Only accepts a single color.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
@@ -85,9 +89,10 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>markers</td>	<td>Turn on/off markers (shapes rendered onto the points of a line)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>markerShape</td>	<td>Shape to use if markers=true</td>	<td class='tcenter'>-</td>	<td class='tcenter'>circle | emptyCircle | rect | triangle | diamond</td>	<td class='tcenter'>circle</td>	</tr>
 <tr>	<td>markerSize</td>	<td>Size of each shape (in pixels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>8</td>	</tr>
-</table>											
+</table>
 
 ### Chart
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>title</td>	<td>Chart title. Appears at top left of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
@@ -105,5 +110,4 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-</table>											
-
+</table>

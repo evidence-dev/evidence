@@ -1,15 +1,15 @@
-import { sveltekit } from "@sveltejs/kit/vite"
+import { sveltekit } from '@sveltejs/kit/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-    plugins: [sveltekit()],
-    optimizeDeps: {
-        include: ['echarts-stat', 'echarts'],
-        exclude: ['@evidence-dev/components', 'svelte-icons', 'svelte-tiny-linked-charts']
-    },
-    ssr: {
-        external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
-    }
-}
+	plugins: [sveltekit()],
+	optimizeDeps: {
+		include: ['echarts-stat', 'echarts'],
+		exclude: ['@evidence-dev/components', 'svelte-icons', 'svelte-tiny-linked-charts']
+	},
+	ssr: {
+		external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+	}
+};
 
-export default config
+export default config;

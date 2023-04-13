@@ -59,7 +59,7 @@ Once you have the right Node.js and npm versions installed, you're ready to crea
 
 ## Create an Evidence Project
 
-`npx degit` is a command to download the code from a github repository. This is going to download our template project and place it into a directory called 'my-project'. 
+`npx degit` is a command to download the code from a github repository. This is going to download our template project and place it into a directory called 'my-project'.
 
 ```shell
 npx degit evidence-dev/template my-project
@@ -71,7 +71,7 @@ After this step, you will have the files you need (they will be in the `my-proje
 
 ## Install Dependencies
 
-You will need to run an installation on your new directory using the `install` command in npm. This will identify and download any dependencies from the files in the Evidence package. 
+You will need to run an installation on your new directory using the `install` command in npm. This will identify and download any dependencies from the files in the Evidence package.
 
 For example, Evidence utilizes other npm packages and will require specific versions of those packages - npm handles all of this for you.
 
@@ -80,6 +80,7 @@ The command will work on whichever directory you are in when you run it, so navi
 ```shell
 cd my-project
 ```
+
 `cd` means **change directory** - we are telling the terminal to go into the my-project directory.
 
 Now that we are in our project, we can run the installation step:
@@ -96,7 +97,7 @@ The Evidence VS Code extension enables syntax highlighting and basic autocomplet
 
 1. In VS Code, search for "Evidence" in the Extensions menu and click to install
 
-    ![extension-menu](/img/extensions-menu-search.png)
+   ![extension-menu](/img/extensions-menu-search.png)
 
 1. Install from the the [VS Code Marketplace webpage](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
 
@@ -129,6 +130,7 @@ If you navigate to a page in your Evidence project and look at the URL, you will
 ### Development Server Options
 
 You can change how the dev server runs by adding command line interface (CLI) "arguments". Add `--` followed by the arguments you need:
+
 ```shell
 npm run dev -- --[setting] [option]
 ```
@@ -147,15 +149,15 @@ npm run dev -- --port 4000
 npm run dev -- --host 0.0.0.0
 ```
 
-## In Review 
+## In Review
 
-We've run the following four commands in our terminal, and we should have a working Evidence site visible in our web browser at `localhost:3000`. 
+We've run the following four commands in our terminal, and we should have a working Evidence site visible in our web browser at `localhost:3000`.
 
 ```shell
 npx degit evidence-dev/template my-project
-cd my-project 
-npm install 
-npm run dev 
+cd my-project
+npm install
+npm run dev
 ```
 
 ## Next Steps

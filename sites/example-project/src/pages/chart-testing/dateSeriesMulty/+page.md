@@ -215,7 +215,6 @@ let nulls =
 <BarChart data={missingY} series=series title="Missing Y" type=stacked10/>
 <BarChart data={nulls}  series=series title="Nulls" type=stacked10/>
 
-
 <!-- <h2>horizontal Stacked Bar Chart</h2>
 <BarChart data={full}  swapXY=true series=series title="Full Data" xType=value/>
 <BarChart data={missingY}  swapXY=true series=series title="Missing Y"/>

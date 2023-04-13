@@ -64,10 +64,10 @@ select 'China' as country, 101 as value, 1996 as year
 
 <BarChart swapXY=true xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
 
-
 <AreaChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
 
 ## Issues
+
 100% stacks do not work in composable charts:
 
 <Chart data={simpler_bar_unordered} x=year y=value series=country >
@@ -76,7 +76,6 @@ select 'China' as country, 101 as value, 1996 as year
 
 Y-axis title gets cut off when 100% stack is used:
 <BarChart xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
-
 
 ## Single Series Stack
 
@@ -94,6 +93,7 @@ select 'China' as country, 65 as value, 1994 as year
 More we can do here to make a single series example publication-quality.
 
 Ideas:
+
 - Replace y-axis labels with data labels in the bar
 - Remove whitespace on either side of bar
 - Alternate legend placement (right or left)

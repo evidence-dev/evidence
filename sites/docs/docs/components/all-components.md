@@ -5,7 +5,6 @@ hide_title: false
 hide_table_of_contents: false
 ---
 
-
 ## Data Components
 
 <div class="gallery-container-grid">
@@ -36,9 +35,9 @@ hide_table_of_contents: false
 
 ![Big Value](/img/bigvalue-needful-things.png)
 </a>
-</div>
-</div>
 
+</div>
+</div>
 
 ### [Data Table](data-table)
 
@@ -51,10 +50,9 @@ hide_table_of_contents: false
 
 ![Big Value](/img/datatable-all.png)
 </a>
+
 </div>
 </div>
-
-
 
 </div>
 
@@ -71,8 +69,8 @@ hide_table_of_contents: false
     <div class="item-body-centered">
         <a href="/components/line-chart#line">
 
-![line](/img/exg-line-nt.svg) 
-        
+![line](/img/exg-line-nt.svg)
+
 </a>
 </div>
 </div>
@@ -85,7 +83,7 @@ hide_table_of_contents: false
 
 <a href="/components/line-chart#multi-series-line">
 
-![multi-series-line](/img/exg-multi-series-line-nt.svg) 
+![multi-series-line](/img/exg-multi-series-line-nt.svg)
 
 </a>
 </div> 
@@ -99,7 +97,7 @@ hide_table_of_contents: false
 
 <a href="/components/line-chart#multiple-y-columns">
 
-![multiple-y-line](/img/exg-multiple-y-line-nt.svg) 
+![multiple-y-line](/img/exg-multiple-y-line-nt.svg)
 
 </a>
 </div> 
@@ -114,12 +112,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/area-chart#area">
 
-![area](/img/exg-area-nt.svg) 
+![area](/img/exg-area-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -128,12 +125,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/area-chart#stacked-area">
 
-![stacked-area](/img/exg-stacked-area-nt.svg) 
+![stacked-area](/img/exg-stacked-area-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -142,7 +138,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/area-chart#100-stacked-area">
 
-![stacked-area](/img/100-stacked-area.svg) 
+![stacked-area](/img/100-stacked-area.svg)
 
 </a>
 </div>
@@ -157,12 +153,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#bar">
 
-![bar](/img/exg-bar-nt.svg) 
+![bar](/img/exg-bar-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -171,12 +166,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#stacked-bar">
 
-![stacked-bar](/img/exg-stacked-bar-nt.svg) 
+![stacked-bar](/img/exg-stacked-bar-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -185,12 +179,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#100-stacked-bar">
 
-![stacked-bar](/img/100-stacked-bar.svg) 
+![stacked-bar](/img/100-stacked-bar.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -199,12 +192,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#grouped-bar">
 
-![grouped-bar](/img/exg-grouped-bar-nt.svg) 
+![grouped-bar](/img/exg-grouped-bar-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -213,12 +205,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#horizontal-bar">
 
-![horizontal-bar](/img/exg-horizontal-bar-nt.svg) 
+![horizontal-bar](/img/exg-horizontal-bar-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -227,12 +218,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#horizontal-stacked-bar">
 
-![horizontal-stacked-bar](/img/exg-horizontal-stacked-bar-nt.svg) 
+![horizontal-stacked-bar](/img/exg-horizontal-stacked-bar-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -241,12 +231,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#horizontal-100-stacked-bar">
 
-![horizontal-stacked-bar](/img/100-horiz-stacked-bar.svg) 
+![horizontal-stacked-bar](/img/100-horiz-stacked-bar.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -255,7 +244,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bar-chart#horizontal-grouped-bar">
 
-![horizontal-grouped-bar](/img/exg-horizontal-grouped-bar-nt.svg) 
+![horizontal-grouped-bar](/img/exg-horizontal-grouped-bar-nt.svg)
 
 </a>
 </div>
@@ -268,7 +257,7 @@ hide_table_of_contents: false
     <div class="item-body-top">
 <a href="/components/bar-chart#long-bar-chart">
 
-![long-bar](/img/exg-long-bar.svg) 
+![long-bar](/img/exg-long-bar.svg)
 
 </a>
 </div>
@@ -283,12 +272,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/scatter-plot#scatter-plot">
 
-![scatter](/img/exg-scatter-nt.svg) 
+![scatter](/img/exg-scatter-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -297,7 +285,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/scatter-plot#multi-series-scatter-plot">
 
-![multi-series-scatter](/img/exg-multi-series-scatter-nt.svg) 
+![multi-series-scatter](/img/exg-multi-series-scatter-nt.svg)
 
 </a>
 </div>
@@ -312,12 +300,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bubble-chart#bubble">
 
-![bubble](/img/exg-bubble-nt.svg) 
+![bubble](/img/exg-bubble-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -326,15 +313,13 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/bubble-chart#multi-series-bubble">
 
-![multi-series-bubble](/img/exg-multi-series-bubble-nt.svg) 
+![multi-series-bubble](/img/exg-multi-series-bubble-nt.svg)
 
 </a>
 </div>
 </div>
 
-
 ### [Funnel](funnel-chart)
-
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -390,8 +375,6 @@ hide_table_of_contents: false
 </div>
 </div>
 
-
-
 ### [Histogram](histogram)
 
 <div  class="gallery-item-grid">
@@ -401,12 +384,11 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/histogram#histogram">
 
-![histogram](/img/exg-histogram-nt.svg) 
+![histogram](/img/exg-histogram-nt.svg)
 
 </a>
 </div>
 </div>
-
 
 ### [Mixed Type Charts](mixed-type-charts)
 
@@ -504,10 +486,6 @@ hide_table_of_contents: false
 </a>
 </div>
 </div>
-
-
-
-
 
 </div>
 

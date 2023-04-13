@@ -1,5 +1,5 @@
 module.exports = {
-    opengraphSvelte: `
+	opengraphSvelte: `
 <!-- 
     MDSvex comes in handy here because it takes frontmatter and shoves it into the metadata object.
     This means that all we need to do is build out the expected page metadata
@@ -34,4 +34,4 @@ module.exports = {
 {/if}
 </svelte:head>
     `
-}
+};

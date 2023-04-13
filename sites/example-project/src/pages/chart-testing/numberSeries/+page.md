@@ -185,14 +185,14 @@ let full5 =
 <BarChart data={numberSeriesMissingY} series=series swapXY=true title="Missing Y"/>
 <BarChart data={numberSeriesMissingX} series=series swapXY=true title="Missing X"/>
 <BarChart data={numberSeriesXSync} series=series swapXY=true title="X out of sync"/>
-<BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls"/> 
+<BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls"/>
 
 <h2>Horizontal 100% Stacked Bar Chart</h2>
 <BarChart data={numberSeriesFull} series=series swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true type=stacked100/>
 <BarChart data={numberSeriesMissingY} series=series swapXY=true title="Missing Y" type=stacked100/>
 <BarChart data={numberSeriesMissingX} series=series swapXY=true title="Missing X" type=stacked100/>
 <BarChart data={numberSeriesXSync} series=series swapXY=true title="X out of sync" type=stacked100/>
-<BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls" type=stacked100/> 
+<BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls" type=stacked100/>
 
 <h2>Grouped Bar Chart</h2>
 <BarChart data={numberSeriesFull} series=series type=grouped title="Full Data"/>

@@ -28,14 +28,14 @@ The query won't be able run until you connect your data warehouse.
 
 Visit <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse" target="_blank" rel="noreferrer" >our docs</a> to learn how to connect to your data warehouse - it only takes a few minutes:
 
-* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#bigquery" target="_blank" rel="noreferrer" >Connect BigQuery</a>
-* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#snowflake" target="_blank" rel="noreferrer" >Connect Snowflake</a>
-* <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#postgresql" target="_blank" rel="noreferrer" >Connect PostgreSQL</a>
-
+- <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#bigquery" target="_blank" rel="noreferrer" >Connect BigQuery</a>
+- <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#snowflake" target="_blank" rel="noreferrer" >Connect Snowflake</a>
+- <a href="https://docs.evidence.dev/getting-started/connect-data-warehouse#postgresql" target="_blank" rel="noreferrer" >Connect PostgreSQL</a>
 
 {/if}
 
 ## Local images
+
 This is a picture of a cat, stored in /static/
 
 ![Cute cat](/kitty-cat.jpeg)

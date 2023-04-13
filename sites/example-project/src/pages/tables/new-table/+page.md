@@ -63,6 +63,4 @@ select date('2020-05-26') as date, 100 as value_usd, 'Zimbabwe' as country, 'A' 
     <Column id=country_url contentType=link linkLabel="Details &rarr;" title="Country Details" align=right openInNewTab=true/>
 </DataTable>
 
-
 <DataTable data={tableq} link=country_url showLinkCol=true/>
-

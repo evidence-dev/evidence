@@ -1,6 +1,5 @@
 # SQLite Dates
 
-
 ```table_list
 SELECT name FROM sqlite_schema WHERE type ='table'
 ```
@@ -22,7 +21,7 @@ group by date order by 1 desc
 ```
 
 ```order_summary
-select order_month, count(*) as orders 
+select order_month, count(*) as orders
 from ${orders}
 group by 1
 order by 1 asc
@@ -50,6 +49,3 @@ limit 100
     x=order_month
     y=orders
 />
-
-
-

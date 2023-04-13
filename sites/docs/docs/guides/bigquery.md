@@ -3,12 +3,11 @@ title: BigQuery
 sidebar_position: 5
 ---
 
-
 ## BigQuery
 
-Evidence supports connecting to Google BigQuery by using a [service account](https://cloud.google.com/iam/docs/service-accounts) and a JSON key. 
+Evidence supports connecting to Google BigQuery by using a [service account](https://cloud.google.com/iam/docs/service-accounts) and a JSON key.
 
-Follow the instructions below to set up your service account and get a JSON key. 
+Follow the instructions below to set up your service account and get a JSON key.
 
 ### Create a Service Account Key
 

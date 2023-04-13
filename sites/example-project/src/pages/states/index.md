@@ -19,4 +19,3 @@ select max(month) as month from ${state_current}
     title="Sales by State"
     subtitle="{most_recent_month[0].month}"
 />
-

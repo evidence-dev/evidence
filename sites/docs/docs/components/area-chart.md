@@ -1,10 +1,10 @@
 ---
 sidebar_position: 6
-title: "Area Chart"
+title: 'Area Chart'
 hide_table_of_contents: false
 ---
 
-![area](/img/exg-area-nt.svg) 
+![area](/img/exg-area-nt.svg)
 
 ```markdown
 <AreaChart 
@@ -14,11 +14,11 @@ hide_table_of_contents: false
 />
 ```
 
-
 ## Examples
 
 ### Area
-![area](/img/exg-area-nt.svg) 
+
+![area](/img/exg-area-nt.svg)
 
 ```markdown
 <AreaChart 
@@ -29,7 +29,8 @@ hide_table_of_contents: false
 ```
 
 ### Stacked Area
-![stacked-area](/img/exg-stacked-area-nt.svg) 
+
+![stacked-area](/img/exg-stacked-area-nt.svg)
 
 ```markdown
 <AreaChart 
@@ -41,7 +42,8 @@ hide_table_of_contents: false
 ```
 
 ### 100% Stacked Area
-![100-stacked-area](/img/100-stacked-area.svg) 
+
+![100-stacked-area](/img/100-stacked-area.svg)
 
 ```markdown
 <AreaChart 
@@ -56,6 +58,7 @@ hide_table_of_contents: false
 ## Props
 
 ### Data
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
@@ -64,18 +67,20 @@ hide_table_of_contents: false
 <tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default sort is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>handleMissing</td>	<td>Treatment of missing values in the dataset</td>	<td class='tcenter'>-</td>	<td class='tcenter'>gap | connect | zero</td>	<td class='tcenter'>gap (single series) | zero (multi-series)</td>	</tr>
-</table>																																																	
+</table>
 
 ### Series
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>type</td>	<td>Grouping method to use for multi-series charts</td>	<td class='tcenter'>-</td>	<td class='tcenter'>stacked | stacked100</td>	<td class='tcenter'>stacked</td>	</tr>
 <tr>	<td>fillColor</td>	<td>Color to override default series color. Only accepts a single color.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>fillOpacity</td>	<td>% of the full color that should be rendered, with remainder being transparent</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number (0 to 1)</td>	<td class='tcenter'>0.7</td>	</tr>
 <tr>	<td>line</td>	<td>Show line on top of the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-</table>											
+</table>
 
 ### Chart
+
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>title</td>	<td>Chart title. Appears at top left of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
@@ -93,4 +98,4 @@ hide_table_of_contents: false
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-</table>												
+</table>

@@ -99,9 +99,10 @@ select 3 as measure
 ```
 
 ## Histogram
+
 <Histogram data={simpler_bar} x=value/>
 <Histogram data={census} x=median_rent_usd/>
 
 ## Histogram for Small Integers
-<Histogram data={single_values} x=measure/>
 
+<Histogram data={single_values} x=measure/>

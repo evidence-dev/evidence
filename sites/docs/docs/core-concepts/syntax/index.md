@@ -13,6 +13,7 @@ Evidence supports almost all Markdown syntax. See [Markdown Reference](/markdown
 # Evidence uses Markdown
 
 Markdown can be used to write expressively in text.
+
 - it supports lists,
 - **bolding**, _italics_ and `inline code`,
 - links to [external sites](https://google.com) and other [Evidence pages](/another/page)
@@ -29,7 +30,7 @@ Markdown code fences in Evidence run SQL queries and return data. The SQL dialec
 
 ````markdown
 ```orders_by_month
-select 
+select
     date_trunc('month', order_datetime) as order_month,
     count(*) as number_of_orders,
     sum(sales) as sales_usd
@@ -57,16 +58,18 @@ Evidence has a built in [component library](/components/all-components) to creat
 Curly braces execute JavaScript expressions.
 
 ```markdown
-2 + 2 = {2 + 2} 
+2 + 2 = {2 + 2}
+
 <!-- Result: 2 + 2 = 4 -->
 
-There are {orders.length} months of data.  
+There are {orders.length} months of data.
+
 <!-- Result: There are 36 months of data. -->
 
-There were {orders_by_month[0].number_of_orders} orders last month. 
+There were {orders_by_month[0].number_of_orders} orders last month.
+
 <!-- Result: There were 3634 orders last month. -->
 ```
-
 
 ## Loops
 
@@ -75,7 +78,7 @@ Create repeating elements by looping through data. [More on Loops](/core-concept
 ```markdown
 {#each orders_by_month as month}
 
-- There were <Value data={month} column=number_of_orders/> orders in <Value data={month} />. 
+- There were <Value data={month} column=number_of_orders/> orders in <Value data={month} />.
 
 {/each}
 ```
@@ -85,11 +88,11 @@ Create repeating elements by looping through data. [More on Loops](/core-concept
 Control what is displayed using data through if and else statements. [More on If / Else](/core-concepts/if-else).
 
 ```js
-{#if orders_by_month[0].sales_usd > orders_by_month[1].sales_usd} 
+{#if orders_by_month[0].sales_usd > orders_by_month[1].sales_usd}
 
 Sales are up month-over-month.
 
-{:else} 
+{:else}
 
 Sales are down vs last month. See [category detail](/sales-by-category).
 
@@ -101,7 +104,8 @@ Sales are down vs last month. See [category detail](/sales-by-category).
 There are a number of variables available to access information about the current page. These are particularly useful when creating templated pages and filters. They use the syntax `{$...}`
 
 ```markdown
-The current page path is: {$page.path} 
+The current page path is: {$page.path}
+
 <!-- Result: The current page path is: /core-concepts/syntax/ -->
 ```
 
