@@ -86,11 +86,12 @@ Your query can contain anything; for the examples on this page, we have some ver
 ### Aliasing Query Names
 
 It is possible to escape the default name for your queries by using some simple yaml syntax:
+
 ```yaml
 ---
 sources:
-- default_query_name.sql # This will be referenced as default_query_name
-- alias: default_query_name.sql # This will be referenced as alias
+  - default_query_name.sql # This will be referenced as default_query_name
+  - alias: default_query_name.sql # This will be referenced as alias
 #      ^ This is the key
 ---
 ```

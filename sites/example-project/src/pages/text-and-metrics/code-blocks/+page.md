@@ -30,8 +30,6 @@ select * from reviews
 select * from a_table_that_isnt_connected
 ```
 
-
-
 ### JavaScript
 
 ```javascript
