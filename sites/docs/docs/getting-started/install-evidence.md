@@ -7,15 +7,14 @@ title: Install Evidence
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 <Tabs>
 <TabItem value="standalone" label="Stand-alone" default>
 
 ```shell
 npx degit evidence-dev/template my-project
-cd my-project 
-npm install 
-npm run dev 
+cd my-project
+npm install
+npm run dev
 ```
 
 <p class="standard-margin">Open your browser and go to <a href="http://localhost:3000">http://localhost:3000</a></p>
@@ -45,14 +44,13 @@ npm --prefix ./reports run dev
 1. In the terminal in the Codespace, run:
 
 ```shell
-npm install 
+npm install
 npm run dev -- --host 0.0.0.0
 ```
 
 **Note:** Codespaces is much faster on the Desktop app. After the Codespace has booted, select the hamburger menu &rarr; Open in VS Code Desktop.
 
 </TabItem>
-
 
 <TabItem value="docker" label="Docker">
 <p class="standard-margin">Evidence provides a development Docker image.</p>
@@ -62,16 +60,13 @@ npm run dev -- --host 0.0.0.0
 
 <hr/>
 
-
-
 The <code>template</code> project running in your browser contains a tutorial on how to use Evidence.
 
 _Need step by step instructions? Visit our [Detailed Installation Walkthrough.](/guides/installation)_
 
+## System Requirements
 
-## System Requirements 
-
-Evidence requires: 
+Evidence requires:
 
 - **Node.js** `Version 16.14` or higher
 - **NPM** `Version 7` or higher
@@ -82,5 +77,6 @@ Check your versions with `node -v` and `npm -v`
 
 <a class="external" href="https://nodejs.org/en/download">Download Node.js + NPM</a>
 
-## VS Code Extension 
+## VS Code Extension
+
 If you use VS Code, we recommend installing the [Evidence VSCode Extension](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode). It adds syntax highlighting and autocomplete for Evidence flavoured markdown.

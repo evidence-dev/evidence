@@ -33,9 +33,9 @@ Check out the [documentation](https://docs.evidence.dev) for a walkthrough and o
 
 ```shell
 npx degit evidence-dev/template my-project
-cd my-project 
-npm install 
-npm run dev 
+cd my-project
+npm install
+npm run dev
 ```
 
 # Join the Evidence Community
@@ -46,7 +46,7 @@ Follow us on [Twitter](https://twitter.com/evidence_dev) to receive the latest u
 
 # Contributing
 
-If you are interested in contributing, please join us on our [slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.  
+If you are interested in contributing, please join us on our [slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.
 
 # License
 

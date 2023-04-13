@@ -30,7 +30,6 @@ This is the warning alert
 This is the dangerous alert
 </Alert>
 
-
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sollicitudin est nisi, et varius quam eleifend quis. Donec non pulvinar arcu. Donec vitae lacus iaculis, mollis eros at, convallis eros. Curabitur in risus nibh. Nunc placerat, est a sodales mollis, risus tellus blandit lectus, quis varius nulla nulla et dui. Phasellus diam leo, sodales quis massa at, tempor hendrerit urna. Nunc eget diam id velit varius auctor at ut felis. Suspendisse sit amet feugiat lacus. Curabitur ultrices neque in odio accumsan, at maximus lorem tincidunt. In tincidunt pretium facilisis. Pellentesque bibendum sapien nunc, et finibus magna volutpat vel.
 
 Nulla augue nunc, mattis ut imperdiet eget, aliquet id lorem. Aenean et lectus vitae mauris efficitur accumsan. Sed fringilla arcu ullamcorper, vehicula magna ac, finibus eros. Nulla elementum imperdiet justo. In hac habitasse platea dictumst. Proin ligula risus, tristique ac fringilla ut, pretium non augue. Nullam auctor eu nibh in fringilla. Etiam varius eros vel fermentum tincidunt. Nulla nisl tortor, auctor at nulla nec, malesuada volutpat dui. Cras aliquet lorem non commodo blandit.

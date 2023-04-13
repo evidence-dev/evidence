@@ -10,4 +10,3 @@ sidebar_position: 3
 #### Horizontal Chart (`swapXY=true`)
 
 ![chart-elements-two](/img/chart-elements-two.png)
-

@@ -1,4 +1,3 @@
-
 ```funnel_data
 select 97 as customers, 'Show' as stage
 union all
@@ -10,9 +9,6 @@ select 40 as customers, 'Inquiry' as stage,
 union all
 select 14 as customers, 'Order' as stage,
 ```
-
-
-
 
 <FunnelChart data={funnel_data} nameCol=stage valueCol=customers title="Funnel Chart" subtitle="Simple Funnel Chart" outlineColor="white"/>
 

@@ -32,4 +32,4 @@ module.exports = `
 {/if}
 {/if}
 </svelte:head>
-`
+`;

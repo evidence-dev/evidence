@@ -1,25 +1,24 @@
 <script>
-    import { onMount } from 'svelte';
-    let headers;    
-    onMount(() => {
-        headers = document.querySelector('article').querySelectorAll('h1, h2');
-            // Add ID tags to all the headers in the article
-            headers.forEach((header, i) => {
-                header.id = encodeURIComponent(header.innerText + i) ;
-            });
-    });
-
+	import { onMount } from 'svelte';
+	let headers;
+	onMount(() => {
+		headers = document.querySelector('article').querySelectorAll('h1, h2');
+		// Add ID tags to all the headers in the article
+		headers.forEach((header, i) => {
+			header.id = encodeURIComponent(header.innerText + i);
+		});
+	});
 </script>
 
 {#if headers && headers.length > 1}
-        {#each headers as header, i}
-            <a 
-            href={'#' + encodeURIComponent(header.innerText + i)} 
-            class={header.nodeName == 'H1' ? 'h1' : 'h2'}
-            >
-                {header.innerText}
-            </a>
-        {/each}
+	{#each headers as header, i}
+		<a
+			href={'#' + encodeURIComponent(header.innerText + i)}
+			class={header.nodeName == 'H1' ? 'h1' : 'h2'}
+		>
+			{header.innerText}
+		</a>
+	{/each}
 {/if}
 
 <style>
@@ -54,5 +53,4 @@
 	a.h1 {
 		margin-block-start: 0.6em;
 	}
-
 </style>

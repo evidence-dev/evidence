@@ -5,11 +5,9 @@ title: Big Value
 hide_table_of_contents: false
 ---
 
-
-
 `<BigValue />` displays a large value, and can be configured to include a comparison and a sparkline.
 
-## Example 
+## Example
 
 ```markdown
 <BigValue 
@@ -19,19 +17,18 @@ hide_table_of_contents: false
     sparkline='date'
     comparisonTitle="Month over Month"
     maxWidth='10em'
-/> 
+/>
 ```
 
 ![bigvalue](/img/bigvalueexample.png)
 
-## Multiple cards 
+## Multiple cards
 
-Multiple cards will align themselves into a row. 
+Multiple cards will align themselves into a row.
 
 ![bigvalue](/img/bigvaluerow.png)
 
-
-## All Options 
+## All Options
 
 <table>						 
     <tr>	
@@ -105,6 +102,3 @@ Multiple cards will align themselves into a row.
         <td class='tcenter'>none</td>
     </tr>
 </table>
-        
-
-

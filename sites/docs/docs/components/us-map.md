@@ -5,29 +5,20 @@ title: Maps
 hide_table_of_contents: false
 ---
 
-
-
 ## Examples
 
 ### Full State Names
+
 ```html
-<USMap
-    data={map_data}
-    state=state_name
-    value=sales_usd
-/>
+<USMap data="{map_data}" state="state_name" value="sales_usd" />
 ```
 
 <img src='/img/map-fullname.png' width='400px'/>
 
 ### State Abbreviations
+
 ```html
-<USMap
-    data={map_data}
-    state=state_abbrev
-    value=sales_usd
-    abbreviations=true
-/>
+<USMap data="{map_data}" state="state_abbrev" value="sales_usd" abbreviations="true" />
 ```
 
 <img src='/img/map-abbrev.png' width='400px'/>
@@ -35,32 +26,36 @@ hide_table_of_contents: false
 ### Color Scales
 
 #### `colorScale=blue`
+
 <img src='/img/map-blue.png' width='400px'/>
 
 #### `colorScale=green`
+
 <img src='/img/map-green.png' width='400px'/>
 
 #### `colorScale=red`
+
 <img src='/img/map-red.png' width='400px'/>
 
 #### `colorScale=bluegreen`
+
 <img src='/img/map-bluegreen.png' width='400px'/>
 
 ### Links
+
 ```html
-<USMap 
-    data={state_current} 
-    state=state 
-    value=value 
-    abbreviations=true
-    link=state_link
-    title="Sales by State"
-    subtitle="{most_recent_month[0].month}"
+<USMap
+	data="{state_current}"
+	state="state"
+	value="value"
+	abbreviations="true"
+	link="state_link"
+	title="Sales by State"
+	subtitle="{most_recent_month[0].month}"
 />
 ```
 
 <img src='/img/map-links.gif' width='500px'/>
-
 
 ## USMap
 

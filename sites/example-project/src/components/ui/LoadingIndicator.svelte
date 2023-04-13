@@ -13,6 +13,16 @@
 	});
 </script>
 
+{#if visible}
+	<div class="progress-container">
+		<div class="progress" style="width: {p * 100}%" />
+	</div>
+{/if}
+
+{#if p >= 0.4}
+	<div class="fade" />
+{/if}
+
 <style>
 	.progress-container {
 		position: absolute;
@@ -27,7 +37,7 @@
 		left: 0;
 		top: 0;
 		height: 100%;
-		background-image: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);;
+		background-image: -webkit-linear-gradient(315deg, var(--blue-600) 0%, var(--green-600) 75%);
 		transition: width 0.4s;
 	}
 	.fade {
@@ -48,13 +58,3 @@
 		}
 	}
 </style>
-
-{#if visible}
-	<div class="progress-container">
-		<div class="progress" style="width: {p * 100}%" />
-	</div>
-{/if}
-
-{#if p >= 0.4}
-	<div class="fade" />
-{/if}

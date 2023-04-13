@@ -1,6 +1,6 @@
 # Evidence Template Project
 
-Thank you for checking out Evidence. This is the project template that you should use to get started. 
+Thank you for checking out Evidence. This is the project template that you should use to get started.
 
 ## Getting Started
 
@@ -8,12 +8,12 @@ Check out the [documentation](https://docs.evidence.dev) for a complete walk thr
 
 ```
 npx degit evidence-dev/template my-project
-cd my-project 
-npm install 
-npm run dev 
+cd my-project
+npm install
+npm run dev
 ```
 
-Don't clone this repo, just download the code using the steps above. 
+Don't clone this repo, just download the code using the steps above.
 
 ## Learning More
 

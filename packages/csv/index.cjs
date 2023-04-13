@@ -1,4 +1,3 @@
-const runQuery = require('@evidence-dev/duckdb')
+const runQuery = require('@evidence-dev/duckdb');
 
-module.exports = runQuery
-
+module.exports = runQuery;
