@@ -1,22 +1,30 @@
 const getPrismLangs = require('./get-prism-langs.cjs');
 
-function highlighter(code, lang) {
+/**
+ *
+ * @param {string} code
+ * @param {string} lang
+ * @param {string | undefined} meta
+ * @returns
+ */
+function highlighter(code, lang, meta) {
 	code = code.replace(/'/g, '&apos;');
 	code = code.replace(/"/g, '&quot;');
 
 	// Replace curly braces or Svelte will try to evaluate as a JS expression
 	code = code.replace(/{/g, '&lbrace;').replace(/}/g, '&rbrace;');
-	// Ensure that "real" code blocks are rendered not run as queries
-	if (getPrismLangs().has(lang?.toLowerCase() ?? '')) {
-		return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
+	if ((lang.toLowerCase() === 'sql' && meta) || !getPrismLangs().has(lang?.toLowerCase() ?? '')) {
+		const queryId = lang.toLowerCase() === 'sql' && meta ? meta : lang;
+		return `
+        {#if data.${queryId} }
+            <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${
+							queryId ?? 'untitled'
+						}" queryResult = {data.${queryId ?? 'untitled'}}/> 
+        {/if}
+        `;
 	}
-	return `
-    {#if data.${lang} }
-        <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${
-					lang ?? 'untitled'
-				}" queryResult = {data.${lang ?? 'untitled'}}/> 
-    {/if}
-    `;
+	// Ensure that "real" code blocks are rendered not run as queries
+	return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
 }
 
 module.exports = { highlighter };
