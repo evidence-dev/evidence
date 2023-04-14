@@ -2,6 +2,7 @@
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import Hamburger from './Hamburger.svelte';
 	import PageMenu from './PageMenu.svelte';
+	import QueryToggleButton from './QueryToggleButton.svelte';
 	export let fileTree;
 	import { page } from '$app/stores';
 	export let open = false;
@@ -12,7 +13,10 @@
 		<Hamburger bind:open />
 		<BreadCrumbs {fileTree} />
 		{#if !$page.url.pathname.includes('/settings')}
-			<PageMenu />
+			<div class="option-tray">
+				<QueryToggleButton />
+				<PageMenu />
+			</div>
 		{/if}
 	</div>
 </header>
@@ -22,6 +26,12 @@
 		grid-area: header;
 		height: var(--header-height);
 		width: 100%;
+	}
+
+	.option-tray {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
 	}
 
 	div.header-container {

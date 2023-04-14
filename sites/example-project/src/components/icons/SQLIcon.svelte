@@ -6,22 +6,22 @@
 
 <span class="icon-container" style="padding-bottom: {verticalOffset}px">
 	<span class="icon" style="height: {height}px; width:{width}px">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-			<g transform="rotate(90 12 12)">
-				<path
-					fill="currentColor"
-					d="M20 14a2 2 0 1 1-.001-3.999A2 2 0 0 1 20 14ZM6 12a2 2 0 1 1-3.999.001A2 2 0 0 1 6 12Zm8 0a2 2 0 1 1-3.999.001A2 2 0 0 1 14 12Z"
-				/>
-			</g>
+		<svg fill="currentColor" viewBox="0 0 32 32" id="icon" xmlns="http://www.w3.org/2000/svg">
+			<polygon points="24 21 24 9 22 9 22 23 30 23 30 21 24 21" />
+			<path
+				d="M18,9H14a2,2,0,0,0-2,2V21a2,2,0,0,0,2,2h1v2a2,2,0,0,0,2,2h2V25H17V23h1a2,2,0,0,0,2-2V11A2,2,0,0,0,18,9ZM14,21V11h4V21Z"
+			/>
+			<path
+				d="M8,23H2V21H8V17H4a2,2,0,0,1-2-2V11A2,2,0,0,1,4,9h6v2H4v4H8a2,2,0,0,1,2,2v4A2,2,0,0,1,8,23Z"
+			/>
 		</svg>
 	</span>
 </span>
 
 <style>
 	.icon {
-		width: 24px;
-		height: 24px;
 		align-items: center;
+		vertical-align: middle;
 	}
 
 	.icon-container {

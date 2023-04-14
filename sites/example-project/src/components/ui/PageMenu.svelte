@@ -3,10 +3,7 @@
 	import KebabIcon from '$lib/icons/KebabIcon.svelte';
 	import ExternalLinkIcon from '$lib/icons/ExternalLinkIcon.svelte';
 	import clickOutside from '$lib/modules/clickOutside';
-	import { showQueries } from './stores';
-	import { pageHasQueries } from './stores';
 	let options = [
-		{ label: 'Show / Hide Queries', prod: true },
 		{ label: 'Export PDF', prod: true },
 		{ label: 'Connect Data Source', url: '/settings/#connect-database', prod: false },
 		{ label: 'Deploy Project', url: '/settings/#deploy', prod: false },
@@ -24,10 +21,6 @@
 		window.print();
 	}
 
-	function toggleQueries() {
-		showQueries.update((value) => !value);
-	}
-
 	let showDropdown = false;
 
 	function toggleDropdown() {
@@ -37,30 +30,18 @@
 
 <div use:clickOutside={{ enabled: showDropdown, callback: () => (showDropdown = false) }}>
 	<button type="button" class="menu" aria-label="page menu button" on:click={toggleDropdown}
-		><KebabIcon color="--grey-600" /></button
+		><KebabIcon /></button
 	>
 	{#if showDropdown}
 		<ul class="dropdown-items" id="dropdown-items">
 			{#each options as option}
 				{#if dev || option.prod}
 					<li>
-						{#if option.label === 'Show / Hide Queries'}
-							{#if $pageHasQueries}
-								{#if $showQueries}
-									<button class="dropdown" aria-label="hide-queries" on:click={toggleQueries}
-										>Hide Queries</button
-									>
-								{:else}
-									<button class="dropdown" aria-label="show-queries" on:click={toggleQueries}
-										>Show Queries</button
-									>
-								{/if}
-							{/if}
-						{:else if option.label === 'Export PDF'}
+						{#if option.label === 'Export PDF'}
 							<button class="dropdown first" on:click={print}>{option.label}</button>
 						{:else if option.url.includes('http')}
 							<a href={option.url} target="_blank" rel="noreferrer"
-								>{option.label}<ExternalLinkIcon height="12" width="12" color="--red-700" /></a
+								>{option.label}<ExternalLinkIcon height="12" width="12" color="--grey-700" /></a
 							>
 						{:else}
 							<a href={option.url} target="_self">{option.label}</a>
@@ -89,6 +70,12 @@
 	button.menu {
 		margin: 16px;
 		font-size: unset;
+		color: var(--grey-600);
+	}
+
+	button.menu:hover {
+		color: var(--grey-900);
+		transition: all 0.2s;
 	}
 
 	ul {
