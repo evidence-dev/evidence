@@ -1,7 +1,7 @@
 <script>
 	import { showQueries } from './stores';
 	import { pageHasQueries } from './stores';
-	import SQLIcon from '$lib/icons/SqlIcon.svelte';
+	import SQLIcon from '$lib/icons/SQLIcon.svelte';
 	import SQLHideIcon from '$lib/icons/SQLHideIcon.svelte';
 	function toggleQueries() {
 		showQueries.update((value) => !value);
