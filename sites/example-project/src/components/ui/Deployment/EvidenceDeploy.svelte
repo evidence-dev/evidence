@@ -42,15 +42,15 @@
 	}
 
 	ul {
-	  list-style: none;
+		list-style: none;
 	}
 
 	ul li::before {
-	  content: "\2022";
-	  color: var(--grey-800);
-	  font-weight: bold;
-	  display: inline-block;
-	  width: 0.9em;
-	  margin-left: 1.5em;
+		content: '\2022';
+		color: var(--grey-800);
+		font-weight: bold;
+		display: inline-block;
+		width: 0.9em;
+		margin-left: 1.5em;
 	}
 </style>

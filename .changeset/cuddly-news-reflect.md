@@ -1,5 +1,5 @@
 ---
-"@evidence-dev/components": minor
+'@evidence-dev/components': minor
 ---
 
 Clearing minor visual regressions
