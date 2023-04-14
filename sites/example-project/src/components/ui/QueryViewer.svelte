@@ -24,12 +24,6 @@
 		$showSQL = !$showSQL;
 	};
 
-	const toggleResults = function () {
-		if (!error && nRecords > 0) {
-			$showResults = !$showResults;
-		}
-	};
-
 	// Query text & Compiler Toggle
 	let showResults = writable(
 		browser && (localStorage.getItem('showResults_'.concat(queryID)) === 'true' || false)
@@ -37,6 +31,12 @@
 	showResults.subscribe(
 		(value) => browser && localStorage.setItem('showResults_'.concat(queryID), value)
 	);
+
+	const toggleResults = function () {
+		if (!error && nRecords > 0) {
+			$showResults = !$showResults;
+		}
+	};
 
 	let queries;
 	let inputQuery;
