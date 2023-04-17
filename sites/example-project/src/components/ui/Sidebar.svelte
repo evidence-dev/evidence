@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
+	import { base } from '$app/paths';
 	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte';
 	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte';
 	export let fileTree;
@@ -36,14 +37,14 @@
 		{#if dev}
 			<div class="nav-footer">
 				<a
-					href="/settings"
+					href="{base}/settings"
 					class="settings-link"
-					class:selected={$page.url.pathname === '/settings'}
+					class:selected={$page.url.pathname === `${base}/settings`}
 				>
 					<span class="settings-icon flex justify-center items-center">
 						<IoMdSettings />
 					</span>
-					<a class="settings-label" href="/settings"> Settings </a>
+					<a class="settings-label" href="{base}/settings"> Settings </a>
 				</a>
 			</div>
 		{/if}

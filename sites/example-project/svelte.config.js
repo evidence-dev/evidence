@@ -21,7 +21,7 @@ const config = {
 			lib: 'src/components'
 		},
 		paths: {
-			base: process.env.EVIDENCE_BASE_PATH ?? '/'
+			base: process.env.EVIDENCE_BASE_PATH ?? ''
 		}
 	},
 	package: {

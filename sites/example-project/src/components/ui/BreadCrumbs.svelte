@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import HomeIcon from '$lib/icons/HomeIcon.svelte';
 	export let fileTree;
 
@@ -57,12 +58,12 @@
 <div class="main">
 	<span class="container">
 		<span>
-			{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
-				<a href="/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
+			{#if $page.url.pathname.startsWith(`${base}/settings`) || $page.url.pathname === '/'}
+				<a href="{base}/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
 			{:else}
 				{#each crumbs as crumb, i}
 					{#if i > 0}
-						&emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>
+						&emsp13;/&emsp13;<a href="{base}{crumb.href}">{crumb.title}</a>
 					{:else}
 						<a href={crumb.href}>
 							{#if crumb.title === 'Home'}

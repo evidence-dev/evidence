@@ -1,5 +1,6 @@
 <script>
 	import { slide, blur } from 'svelte/transition';
+	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
 	import DataTable from './QueryViewerSupport/QueryDataTable.svelte';
 	import ChevronToggle from './ChevronToggle.svelte';
@@ -103,7 +104,7 @@
 				{#if error}
 					{#if dev && error.message === 'Missing database credentials'}
 						{error.message}.
-						<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
+						<a class="credentials-link" href="{base}/settings"> Add credentials &rarr;</a>
 					{:else}
 						{error.message}
 					{/if}

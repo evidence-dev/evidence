@@ -9,6 +9,7 @@
 	import CSVForm from './CSVForm.svelte';
 
 	import { slide, blur } from 'svelte/transition';
+	import { base } from '$app/paths';
 
 	export let settings;
 	export let gitIgnore;
@@ -43,7 +44,7 @@
 	async function runTest() {
 		const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 		await sleep(1000);
-		const res = await fetch('/api/testConnection.json', {
+		const res = await fetch(`${base}/api/testConnection.json`, {
 			method: 'POST'
 		});
 		let result = await res.json();
@@ -57,7 +58,7 @@
 	async function save() {
 		settings.database = selectedDatabase.id;
 		settings.credentials = credentials;
-		const submitted = await fetch('/api/settings.json', {
+		const submitted = await fetch(`${base}/api/settings.json`, {
 			method: 'POST',
 			body: JSON.stringify({
 				settings

@@ -1,11 +1,12 @@
 <script>
 	import CollapsibleTableSection from '../Formatting/CollapsibleTableSection.svelte';
+	import { base } from '$app/paths';
 	export let settings;
 	let usageStats = (settings.send_anonymous_usage_stats ?? 'yes') === 'yes';
 
 	async function save() {
 		settings.send_anonymous_usage_stats = usageStats ? 'yes' : 'no';
-		await fetch('/api/settings.json', {
+		await fetch(`${base}/api/settings.json`, {
 			method: 'POST',
 			body: JSON.stringify({
 				settings

@@ -64,6 +64,7 @@
 	import { navigating } from '$app/stores';
 	import { blur } from 'svelte/transition';
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import { dev } from '$app/environment';
 
 	import TableOfContents from '$lib/TableOfContents.svelte';
@@ -81,6 +82,10 @@
 {#if $navigating}
 	<LoadingIndicator />
 {/if}
+
+<svelte:head>
+	<base href={base}/>
+</svelte:head>
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="grid">
 	<div class="header-bar">

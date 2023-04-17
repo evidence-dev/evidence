@@ -1,8 +1,9 @@
 <script>
+	import { base } from '$app/paths';
 	export let organization = 'evidence.dev';
 </script>
 
-<a href="/">{organization}</a>
+<a href="{base}/">{organization}</a>
 
 <style>
 	a {

@@ -4,7 +4,7 @@
 	import ssf from 'ssf';
 	export let builtInFormats = {};
 	export let customFormattingSettings = {};
-
+	import { base } from '$app/paths';
 	const valueTypeOptions = ['number', 'date'];
 
 	let formatTag;
@@ -13,7 +13,7 @@
 	let newFormatValidationErrors = '';
 
 	async function deleteCustomFormat(format) {
-		const submitted = await fetch('/api/customFormattingSettings.json', {
+		const submitted = await fetch(`${base}/api/customFormattingSettings.json`, {
 			method: 'DELETE',
 			body: JSON.stringify({
 				formatTag: format.formatTag
@@ -30,7 +30,7 @@
 		if (validationErrors && validationErrors.length > 0) {
 			newFormatValidationErrors = validationErrors.join('<br/>');
 		} else {
-			const submitted = await fetch('/api/customFormattingSettings.json', {
+			const submitted = await fetch(`${base}/api/customFormattingSettings.json`, {
 				method: 'POST',
 				body: JSON.stringify({
 					newCustomFormat: { formatTag, formatCode, valueType }

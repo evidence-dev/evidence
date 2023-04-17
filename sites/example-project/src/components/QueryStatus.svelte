@@ -5,6 +5,7 @@
 	import QueryToast from './ui/QueryToast.svelte';
 	import { delay } from '$lib/delay';
 	import { routeHash } from './ui/stores';
+	import { base } from '$app/paths';
 	export let endpoint = '';
 
 	let statuses = [];
@@ -16,8 +17,9 @@
 			return [];
 		}
 
-		let statusEndpoint = `/api/status${$page.route.id}`.replace(/\/$/, '');
+		let statusEndpoint = `${base}/api/status${$page.route.id}`.replace(/\/$/, '');
 		const res = await fetch(statusEndpoint);
+		console.log(await res.text());
 		const { status } = await res.json();
 
 		if (res.ok) {

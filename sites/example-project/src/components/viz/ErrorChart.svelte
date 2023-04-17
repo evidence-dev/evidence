@@ -1,5 +1,6 @@
 <script>
 	import { dev } from '$app/environment';
+	import { base } from '$app/paths';
 	export let error;
 	export let chartType;
 
@@ -19,7 +20,7 @@
 			{error}
 		</div>
 		{#if dev && error === MissingCredentialsError}
-			<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
+			<a class="credentials-link" href="{base}/settings"> Add credentials &rarr;</a>
 		{/if}
 	</div>
 </div>
