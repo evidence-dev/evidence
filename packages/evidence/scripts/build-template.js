@@ -50,6 +50,9 @@ fs.outputFileSync(
             files: {
                 routes: 'src/pages',
                 lib: 'src/components'
+            },
+            paths: {
+                base: process.env.EVIDENCE_BASE_PATH ?? '/'
             }
         }
     };
