@@ -4,6 +4,8 @@
 	import HomeIcon from '$lib/icons/HomeIcon.svelte';
 	export let fileTree;
 
+	const voidLink = 'javascript:void(0)'
+
 	$: pathArray = $page.url.pathname.split('/').slice(1);
 
 	// check if a url is an href in the fileTree and return true or false
@@ -46,7 +48,7 @@
 		// check in the file tree if each crumb has an href
 		crumbs.forEach((path) => {
 			if (!checkUrl(path.href, fileTree)) {
-				path.href = 'javascript:void(0)';
+				path.href = voidLink;
 			}
 		});
 		return crumbs;
@@ -63,7 +65,7 @@
 			{:else}
 				{#each crumbs as crumb, i}
 					{#if i > 0}
-						&emsp13;/&emsp13;<a href="{base}{crumb.href}">{crumb.title}</a>
+						&emsp13;/&emsp13;<a href="{crumb.href === voidLink ? '' : base}{crumb.href}">{crumb.title}</a>
 					{:else}
 						<a href={crumb.href}>
 							{#if crumb.title === 'Home'}

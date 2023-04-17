@@ -15,7 +15,7 @@
 <aside class="sidebar" class:open>
 	<div class="sticky">
 		<div class="nav-header">
-			<a href="/" on:click={() => (open = !open)}><h2 class="project-title">Evidence</h2></a>
+			<a href="{base}/" on:click={() => (open = !open)}><h2 class="project-title">Evidence</h2></a>
 			<button class="close" on:click={() => (open = !open)}
 				><CloseIcon height="36" width="36" /></button
 			>
@@ -25,7 +25,7 @@
 				{#if file.children.length > 0}
 					<CollapsibleSection folder={file} bind:open />
 				{:else if file.href}
-					<a href={file.href} on:click={() => (open = !open)} style="">
+					<a href="{base}{file.href}" on:click={() => (open = !open)} style="">
 						<div class:selected={'/' + $page.url.pathname.split('/')[1] === file.href}>
 							{file.label}
 						</div>

@@ -19,7 +19,6 @@
 
 		let statusEndpoint = `${base}/api/status${$page.route.id}`.replace(/\/$/, '');
 		const res = await fetch(statusEndpoint);
-		console.log(await res.text());
 		const { status } = await res.json();
 
 		if (res.ok) {
