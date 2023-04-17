@@ -20,3 +20,4 @@ yarn.lock
 /packages/components/*
 **/sites/docs/*
 **/dist/*
+.changeset/*
