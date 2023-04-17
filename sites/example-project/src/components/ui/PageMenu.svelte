@@ -1,5 +1,6 @@
 <script>
 	import { dev } from '$app/environment';
+	import { base } from '$app/paths';
 	import KebabIcon from '$lib/icons/KebabIcon.svelte';
 	import ExternalLinkIcon from '$lib/icons/ExternalLinkIcon.svelte';
 	import clickOutside from '$lib/modules/clickOutside';
@@ -63,7 +64,7 @@
 								>{option.label}<ExternalLinkIcon height="12" width="12" color="--red-700" /></a
 							>
 						{:else}
-							<a href={option.url} target="_self">{option.label}</a>
+							<a href="{base}{option.url}" target="_self">{option.label}</a>
 						{/if}
 					</li>
 				{/if}
