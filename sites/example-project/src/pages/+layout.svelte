@@ -1,5 +1,4 @@
 <!-- This get's shipped with the template -- don't do local imports from $lib -->
-
 <script context="module">
 	// Import pages and create an object structure corresponding to the file structure
 	const pages = import.meta.glob(['/src/pages/*/**/+page.md']);

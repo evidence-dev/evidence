@@ -249,6 +249,7 @@
 		border-radius: 5px 5px 0 0;
 		font-size: 14px;
 		font-family: var(--ui-font-family);
+		min-width: 100%;
 	}
 
 	form {
@@ -272,7 +273,7 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
-		padding: 0.75em;
+		padding: 0.3rem 0.6rem;
 		width: 100%;
 		border: 1px solid var(--grey-200);
 		font-family: var(--ui-font-family);

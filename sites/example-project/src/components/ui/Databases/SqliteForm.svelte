@@ -225,7 +225,7 @@
 		border: 1px solid var(--grey-300);
 		color: var(--grey-700);
 		border-radius: 0px 4px 4px 0px;
-		padding: 0.35rem;
+		padding: 0.15em 0.35em;
 		font-size: 16px;
 		vertical-align: middle;
 		height: 1.95rem;

@@ -88,6 +88,7 @@ from table`;
 		border-radius: 5px 5px 0 0;
 		font-size: 14px;
 		font-family: var(--ui-font-family);
+		min-width: 100%;
 	}
 	.panel {
 		border-top: 1px solid var(--grey-200);
