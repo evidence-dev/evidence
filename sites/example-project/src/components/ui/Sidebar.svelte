@@ -221,7 +221,7 @@
 		color: var(--blue-800);
 	}
 
-	.settings-icon {
+	.settings-icon :global(svg) {
 		padding: 0.082rem 0rem 0rem 0.5rem;
 		color: var(--grey-500);
 		height: 22px;
