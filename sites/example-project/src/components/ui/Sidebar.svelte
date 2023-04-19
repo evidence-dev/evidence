@@ -222,10 +222,10 @@
 	}
 
 	.settings-icon :global(svg) {
-		padding: 0.082rem 0rem 0rem 0.5rem;
+		padding: 0.08rem 0.28rem 0.1rem 0.4rem;
 		color: var(--grey-500);
-		height: 22px;
-		width: 22px;
+		height: 24px;
+		width: 24px;
 	}
 
 	.nav-footer a {
