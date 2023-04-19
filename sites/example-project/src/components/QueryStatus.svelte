@@ -33,14 +33,14 @@
 		// previous not empty check prevents executing the same query multi-times on startup
 		// Check if queries have been removed from the page entirely, it allows vite/compile error to get to the page
 		if (previousStatuses.length !== 0 && statuses.length != previousStatuses.length) {
-			await invalidate((url) => url.pathname === `/api/${endpoint}.json`);
+			await invalidate((url) => url.pathname === `${base}/api/${endpoint}.json`);
 		}
 		if (statuses.length > 0) {
 			for (let i = 0; i < statuses.length; i++) {
 				const query = statuses[i];
 				if (query.status === 'not run') {
 					// force svelte load on API endpoint & front-end page
-					await invalidate((url) => url.pathname === `/api/${endpoint}.json`);
+					await invalidate((url) => url.pathname === `${base}/api/${endpoint}.json`);
 					await invalidate((url) => url.pathname === window.location.pathname);
 					await delay(1000);
 				}

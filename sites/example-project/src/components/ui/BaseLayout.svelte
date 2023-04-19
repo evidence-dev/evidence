@@ -3,6 +3,7 @@
 	import { navigating } from '$app/stores';
 	import { blur } from 'svelte/transition';
 	import { Nav, BreadCrumbs, LoadingIndicator, Logo } from '@evidence-dev/components';
+	import { base } from '$app/paths';
 </script>
 
 <svelte:head>
@@ -17,10 +18,10 @@
 	<Logo organization="Cozzini Brothers" />
 	<Nav
 		sections={[
-			{ href: '/', label: 'Home' },
-			{ href: '/examples', label: 'Examples' },
-			{ href: '/FAQ', label: 'FAQ' },
-			{ href: '/blog', label: 'Blog' }
+			{ href: `${base}/`, label: 'Home' },
+			{ href: `${base}/examples`, label: 'Examples' },
+			{ href: `${base}/FAQ`, label: 'FAQ' },
+			{ href: `${base}/blog`, label: 'Blog' }
 		]}
 	/>
 </div>

@@ -3,7 +3,7 @@
 	export let organization = 'evidence.dev';
 </script>
 
-<a href="{base}/">{organization}</a>
+<a href="{base}">{organization}</a>
 
 <style>
 	a {

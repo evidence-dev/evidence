@@ -5,7 +5,7 @@ export const prerender = true;
 export const trailingSlash = 'always';
 
 export async function load({ fetch, route }) {
-	if (route.id && route.id !== '/settings') {
+	if (route.id && route.id !== `${base}/settings`) {
 		const routeHash = md5(route.id);
 		// ensure that queries have been extracted before initiating the load process
 		let statusEndpoint = `${base}/api/status${route.id}`.replace(/\/$/, '');

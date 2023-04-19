@@ -6,7 +6,7 @@
 
 	const voidLink = 'javascript:void(0)'
 
-	$: pathArray = $page.url.pathname.split('/').slice(1);
+	$: pathArray = $page.url.pathname.split(base).slice(1);
 
 	// check if a url is an href in the fileTree and return true or false
 	const checkUrl = function (href, fileTree) {
@@ -27,14 +27,14 @@
 	const buildCrumbs = function (pathArray) {
 		let crumbs = [
 			{
-				href: '/',
+				href: base,
 				title: 'Home'
 			}
 		];
 		pathArray.forEach((path, i) => {
 			if (path != '') {
 				let crumb = {
-					href: '/' + pathArray.slice(0, i + 1).join('/'),
+					href: base + pathArray.slice(0, i + 1).join(base),
 					title: decodeURIComponent(path.replace(/_/g, ' ').replace(/-/g, ' '))
 				};
 				crumbs.push(crumb);
@@ -60,8 +60,8 @@
 <div class="main">
 	<span class="container">
 		<span>
-			{#if $page.url.pathname.startsWith(`${base}/settings`) || $page.url.pathname === '/'}
-				<a href="{base}/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
+			{#if $page.url.pathname.startsWith(`${base}/settings`) || $page.url.pathname === base}
+				<a href="{base}"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
 			{:else}
 				{#each crumbs as crumb, i}
 					{#if i > 0}

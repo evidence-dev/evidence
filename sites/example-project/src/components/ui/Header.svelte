@@ -4,6 +4,7 @@
 	import PageMenu from './PageMenu.svelte';
 	export let fileTree;
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	export let open = false;
 </script>
 
@@ -11,7 +12,7 @@
 	<div class="header-container">
 		<Hamburger bind:open />
 		<BreadCrumbs {fileTree} />
-		{#if !$page.url.pathname.includes('/settings')}
+		{#if !$page.url.pathname.includes(`${base}/settings`)}
 			<PageMenu />
 		{/if}
 	</div>

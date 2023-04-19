@@ -1,10 +1,12 @@
+
+<script> import { base } from "$app/paths"; </script>
 # Federal reserve districts
 
 <DataTable data={federal_reserve_districts} link=link/>
 
 {#each federal_reserve_districts as district}
 
-    - [{district.name}]({district.link}), {district.distinct_institutions}
+    - [{district.name}]({base}{district.link}), {district.distinct_institutions}
 
 {/each}
 

@@ -9,9 +9,9 @@
 	let options = [
 		{ label: 'Show / Hide Queries', prod: true },
 		{ label: 'Export PDF', prod: true },
-		{ label: 'Connect Data Source', url: '/settings/#connect-database', prod: false },
-		{ label: 'Deploy Project', url: '/settings/#deploy', prod: false },
-		{ label: 'Project Settings', url: '/settings', prod: false },
+		{ label: 'Connect Data Source', url: `${base}/settings/#connect-database`, prod: false },
+		{ label: 'Deploy Project', url: `${base}/settings/#deploy`, prod: false },
+		{ label: 'Project Settings', url: `${base}/settings`, prod: false },
 		{ label: 'Docs', url: 'https://docs.evidence.dev', prod: false },
 		{
 			label: 'Get Help on Slack',

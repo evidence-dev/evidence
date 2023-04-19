@@ -9,7 +9,7 @@
 	let expanded = false;
 
 	function toggle() {
-		if ($page.url.pathname.split('/')[1] != folder.href) {
+		if ($page.url.pathname.split(base)[1] != folder.href) {
 			open = !open;
 			expanded = true;
 		} else {
@@ -22,7 +22,7 @@
 	<div
 		class="folder"
 		class:selected={$page.url.pathname === folder.href}
-		class:folder-selected={'/' + $page.url.pathname.split('/')[1] === folder.href}
+		class:folder-selected={base + $page.url.pathname.split(base)[1] === folder.href}
 	>
 		<button
 			class="expandable"
@@ -33,7 +33,7 @@
 			<svg
 				class="collapse-icon"
 				class:selected={$page.url.pathname === folder.href}
-				class:folder-selected={'/' + $page.url.pathname.split('/')[1] === folder.href}
+				class:folder-selected={base + $page.url.pathname.split(base)[1] === folder.href}
 				style="tran"
 				width="9"
 				height="9"
@@ -51,7 +51,7 @@
 				<div
 					class="folder-label"
 					class:selected={$page.url.pathname === folder.href}
-					class:folder-selected={'/' + $page.url.pathname.split('/')[1] === folder.href}
+					class:folder-selected={base + $page.url.pathname.split(base)[1] === folder.href}
 				>
 					{folder.label}
 				</div>
@@ -59,7 +59,7 @@
 		{:else}
 			<button
 				class="folder-label nolink"
-				class:folder-selected={'/' + $page.url.pathname.split('/')[1] === folder.href}
+				class:folder-selected={base + $page.url.pathname.split(base)[1] === folder.href}
 				aria-expanded={expanded}
 				on:click={() => (expanded = !expanded)}
 			>
