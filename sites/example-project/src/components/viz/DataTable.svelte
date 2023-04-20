@@ -1,5 +1,6 @@
 <script>
 	import { writable } from 'svelte/store';
+	import { base } from '$app/paths';
 	import { setContext } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import { propKey, strictBuild } from './context';
@@ -57,6 +58,12 @@
 
 	export let showLinkCol = false; // hides link column when columns have not been explicitly selected
 	showLinkCol = showLinkCol === 'true' || showLinkCol === true;
+
+	/**
+	 * Automatically adds a the base path prefix to links
+	 * @type {boolean}
+	 */
+	export let relativeLinks = false;
 
 	let error = undefined;
 
@@ -348,7 +355,7 @@
 						on:click={() => handleRowClick(row[link])}
 					>
 						{#if link}
-							<a style="display:none;" href={row[link]}>{row[link]}</a>
+							<a style="display:none;" href={relativeLinks ? `${base}${row[link]}` : row[link]}>{row[link]}</a>
 						{/if}
 						{#if rowNumbers}
 							<td
@@ -390,7 +397,7 @@
                         "
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										<a href={row[column.id]} target={column.openInNewTab ? '_blank' : ''}>
+										<a href={relativeLinks ? `${base}${row[column.id]}` : row[column.id]} target={column.openInNewTab ? '_blank' : ''}>
 											{#if column.linkLabel != undefined}
 												{#if row[column.linkLabel] != undefined}
 													{formatValue(

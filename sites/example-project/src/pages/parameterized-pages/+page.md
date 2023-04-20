@@ -2,7 +2,7 @@
 <script> import { base } from "$app/paths"; </script>
 # Federal reserve districts
 
-<DataTable data={federal_reserve_districts} link=link/>
+<DataTable data={federal_reserve_districts} link=link relativeLinks/>
 
 {#each federal_reserve_districts as district}
 

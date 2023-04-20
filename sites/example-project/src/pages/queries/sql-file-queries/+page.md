@@ -9,6 +9,8 @@ sources:
   - should_break.sql
 ---
 
+<script> import { base } from "$app/paths"; </script>
+
 ```query_on_the_page
 SELECT 10 as t
 ```
@@ -20,7 +22,7 @@ This provides a few benefits:
 - Take advantage of your editor's support for your database (e.g. syntax highlighting, autocomplete, etc.)
 
 <Alert status="warning">
-If you haven't read about <a href="/frontmatter" target="_blank">frontmatter</a> yet, you should start there.
+If you haven't read about <a href="{base}/frontmatter" target="_blank">frontmatter</a> yet, you should start there.
 </Alert>
 
 ## Using sql file queries

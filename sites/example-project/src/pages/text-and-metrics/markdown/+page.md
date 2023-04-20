@@ -1,3 +1,5 @@
+<script> import { base } from "$app/paths"; </script>
+
 # Markdown
 
 # Heading Level 1
@@ -116,7 +118,7 @@ Link to [Google](https://google.com)
 
 ## Images
 
-![fav](/favicon.ico)
+![fav]({base}/favicon.ico)
 
 ## Tables
 
