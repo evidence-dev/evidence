@@ -69,7 +69,7 @@
 	}
 
 	async function submitForm() {
-		if (credentialsEdited) {
+		if (credentialsEdited || selectedDatabase.id === 'csv') {
 			await save();
 			testResult = runTest();
 		} else {
