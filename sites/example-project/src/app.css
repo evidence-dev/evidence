@@ -102,12 +102,6 @@ ol {
 	}
 }
 
-/* ordered lists */
-
-ol ol ol {
-	list-style-type: lower-roman;
-}
-
 h1,
 h2,
 h3,
