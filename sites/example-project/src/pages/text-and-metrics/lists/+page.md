@@ -50,3 +50,28 @@ Then more text
       - Let's go deeper
         - I'm going to stop now
 - A third list item
+
+
+## Combinations
+
+- 1st level unordered list `(ul)`
+  1. 2nd level ordered list `(ul ol)`
+     - 3rd level unordered list `(ul ol ul)`
+  2. 2nd level ordered list `(ul ol)`
+     1. 3rd level ordered list `(ul ol ol)`
+- 1st level unordered list `(ul)`
+  - 2nd level unordered list `(ul ul)`
+    - 3rd level unordered list `(ul ul ul)`
+  - 2nd level unordered list `(ul ul)`
+    1. 3rd level ordered list `(ul ul ol)`
+
+1. 1st level ordered list `(ol)`
+   1. 2nd level ordered list `(ol ol)`
+      - 3rd level unordered list `(ol ol ul)`
+   2. 2nd level ordered list `(ol ol)`
+      1. 3rd level ordered list `(ol ol ol)`
+1. 1st level ordered list `(ol)`
+   - 2nd level unordered list `(ol ul)`
+     - 3rd level unordered list `(ol ul ul)`
+   - 2nd level unordered list `(ol ul)`
+     1. 3rd level ordered list `(ol ul ol)`
