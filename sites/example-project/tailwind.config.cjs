@@ -139,6 +139,12 @@ module.exports = {
 					19: '#bfdbf7',
 					20: '#bc4749'
 				}
+			},
+			listStyleType: {
+				circle: "circle",
+				square: "square",
+				"lower-alpha": "lower-alpha",
+				"lower-roman": "lower-roman"
 			}
 		}
 	},
