@@ -20,32 +20,32 @@
 	}
 </script>
 
-<pre class="my-5">
-<code class=" break-words"
+<pre class="my-5 relative">
+	<div class="absolute" style="height:100%;width:100%">
+		{#if copyToClipboard}
+		
+				<button
+					type="button"
+					class="container absolute right-0 top-0"
+					class:copied
+					on:click={() => {
+						if (source !== undefined) {
+							copy(source);
+						}
+					}}>
+		{#if copied}
+						<Success color="var(--green-500)" />
+					{:else}
+						<Copy />
+					{/if}
+		</button>
+		{/if}
+		</div>
+<code class="my-2"
 		>{#if source}{source}
 		{:else}<slot />
 		{/if}
 </code>		
-<div class="relative w-full">
-{#if copyToClipboard}
-
-		<button
-			type="button"
-			class="container absolute right-0 top-0"
-			class:copied
-			on:click={() => {
-				if (source !== undefined) {
-					copy(source);
-				}
-			}}>
-{#if copied}
-				<Success color="var(--green-500)" />
-			{:else}
-				<Copy />
-			{/if}
-</button>
-{/if}
-</div>
 </pre>
 
 <style>
@@ -66,6 +66,8 @@
 		border: none;
 		padding: 0.8em 0.8em;
 		color: var(--grey-900);
+
+
 	}
 
 	pre button.container {
@@ -101,7 +103,6 @@
 		color: var(--grey-300);
 		size: 0.75em;
 		width: 2.4em;
-		height: 2.4em;
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
