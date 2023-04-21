@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 1.2.5
+
+### Patch Changes
+
+- 7b2177e5: "Fixed an issue with wide numeric type columns values not showing up on Evidence"
+
 ## 1.2.4
 
 ### Patch Changes

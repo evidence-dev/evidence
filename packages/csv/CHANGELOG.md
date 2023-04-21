@@ -1,5 +1,11 @@
 # @evidence-dev/csv
 
+## 0.1.2
+
+### Patch Changes
+
+- fb5e6088: [fix] - use in-memory database for DuckDB Layer in CSV Connector
+
 ## 0.1.1
 
 ### Patch Changes
