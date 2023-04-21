@@ -47,7 +47,7 @@
 
 <style>
 	pre {
-		overflow: scroll;
+		overflow: auto;
 		background: var(--grey-100);
 		border: 1px solid var(--grey-200);
 		border-radius: 5px;
@@ -81,7 +81,7 @@
 		user-select: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
-		margin: 0.5em;
+		margin: 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
