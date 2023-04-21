@@ -56,9 +56,6 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 	pre {
-		overflow: auto;
-		scrollbar-width: thin;
-		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 		background: var(--grey-100);
 		border: 1px solid var(--grey-200);
 		border-radius: 5px;
@@ -91,11 +88,15 @@
 		border: 3px solid transparent;
 	}
 	pre code {
+		overflow: auto;
+		position: relative;
 		display: block;
 		background: none;
 		border: none;
 		padding: 0.8em 0.8em;
 		color: var(--grey-900);
+		scrollbar-width: thin; 
+		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 	}
 
 	pre button.container {
@@ -113,6 +114,7 @@
 		-moz-user-select: none;
 		margin: 0.5em;
 		display: flex;
+		z-index: 20;
 		align-items: center;
 		justify-content: center;
 	}
