@@ -26,14 +26,14 @@
 		
 				<button
 					type="button"
-					class="container absolute right-0 top-0"
+					class="container absolute right-0 top-0 h-8 w-8"
 					class:copied
 					on:click={() => {
 						if (source !== undefined) {
 							copy(source);
 						}
 					}}>
-		{#if copied}
+					{#if copied}
 						<Success color="var(--green-500)" />
 					{:else}
 						<Copy />
@@ -79,9 +79,6 @@
 		border: 1px solid var(--grey-300);
 		padding: 0.25em 0.35em 0.25em 0.35em;
 		color: var(--grey-300);
-		size: 1em;
-		width: 2.4em;
-		height: 2.4em;
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
@@ -101,8 +98,7 @@
 		border: 1px solid var(--grey-300);
 		padding: 0.25em 0.35em 0.25em 0.35em;
 		color: var(--grey-300);
-		size: 0.75em;
-		width: 2.4em;
+		/* width: 2.4em; */
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
