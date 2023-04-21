@@ -64,26 +64,26 @@
 		align-items: flex-start;
 		justify-content: space-between;
 	}
-	pre::-webkit-scrollbar {
+	pre code::-webkit-scrollbar {
 		height: var(--scrollbar-size);
 		width: var(--scrollbar-size);
 	}
-	pre::-webkit-scrollbar-track {
+	pre code::-webkit-scrollbar-track {
 		background-color: var(--scrollbar-track-color);
 	}
-	pre::-webkit-scrollbar-thumb {
+	pre code::-webkit-scrollbar-thumb {
 		background-color: var(--scrollbar-color);
 		border-radius: 7px;
 		background-clip: padding-box;
 	}
-	pre::-webkit-scrollbar-thumb:hover {
+	pre code::-webkit-scrollbar-thumb:hover {
 		background-color: var(--scrollbar-active-color);
 	}
-	pre::-webkit-scrollbar-thumb:vertical {
+	pre code::-webkit-scrollbar-thumb:vertical {
 		min-height: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
-	pre::-webkit-scrollbar-thumb:horizontal {
+	pre code::-webkit-scrollbar-thumb:horizontal {
 		min-width: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
