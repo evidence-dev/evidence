@@ -97,6 +97,10 @@ ul ul ul {
 
 /* ordered lists */
 
+ol {
+	list-style-type: decimal;
+}
+
 ol ol {
 	list-style-type: lower-alpha;
 }
