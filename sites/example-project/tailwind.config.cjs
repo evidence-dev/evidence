@@ -141,10 +141,10 @@ module.exports = {
 				}
 			},
 			listStyleType: {
-				circle: "circle",
-				square: "square",
-				"lower-alpha": "lower-alpha",
-				"lower-roman": "lower-roman"
+				circle: 'circle',
+				square: 'square',
+				'lower-alpha': 'lower-alpha',
+				'lower-roman': 'lower-roman'
 			}
 		}
 	},

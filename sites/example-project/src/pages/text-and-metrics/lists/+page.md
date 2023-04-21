@@ -51,7 +51,6 @@ Then more text
         - I'm going to stop now
 - A third list item
 
-
 ## Combinations
 
 - 1st level unordered list `(ul)`
