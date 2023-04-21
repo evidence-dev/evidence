@@ -13,6 +13,7 @@
 	export let title = undefined;
 	export let subtitle = undefined;
 	export let legend = true;
+	legend = legend === 'true' || legend === true;
 
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
@@ -75,7 +76,8 @@
 		hasTitle * titleFontSize +
 		hasSubtitle * subtitleFontSize +
 		titleBoxPadding * Math.max(hasTitle, hasSubtitle);
-	chartAreaTopPosition = hasTitle * 60 + hasSubtitle * 20;
+	chartAreaTopPosition =
+		(hasLegend ? 30 : 10) + hasTitle * 23 + (hasTitle ? hasSubtitle * 25 : hasSubtitle * 30);
 	chartAreaPaddingTop = 2;
 	chartAreaPaddingBottom = 8;
 
