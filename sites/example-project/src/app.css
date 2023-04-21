@@ -56,13 +56,50 @@ ol {
 	font-feature-settings: 'onum';
 }
 
-ul ul,
-ol ol {
-	margin-block-end: 0em;
+/* lists */
+
+ol {
+	@apply list-decimal ps-10;
+}
+ul {
+	@apply list-disc ps-10;
 }
 
-li + li {
-	margin-top: 0.25em;
+/* 1st level list */
+ul,
+ol {
+	/* 2nd level unordered list */
+	& ul {
+		@apply list-circle;
+	}
+	/* 2nd level ordered list */
+	& ol {
+		@apply list-lower-alpha;
+	}
+
+	/* any 2nd level list */
+	& ul,
+	& ol {
+		margin-block-end: 0em;
+
+		/* 3rd level unordered list */
+		& ul {
+			@apply list-square;
+		}
+		/* 3rd level ordered list */
+		& ol {
+			@apply list-lower-roman;
+		}
+	}
+
+	li {
+		@apply list-item;
+		text-align: -webkit-match-parent;
+
+		& + li {
+			@apply mt-1;
+		}
+	}
 }
 
 h1,
