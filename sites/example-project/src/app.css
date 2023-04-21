@@ -59,20 +59,22 @@ ol {
 /* lists */
 
 li {
-    display: list-item;
-    text-align: -webkit-match-parent;
+	display: list-item;
+	text-align: -webkit-match-parent;
 }
 
 li + li {
 	margin-top: 0.25em;
 }
 
-ul, ol {
+ul,
+ol {
 	list-style: reset;
-	padding-inline-start: 40px
+	padding-inline-start: 40px;
 }
 
-ul ul, ol ol {
+ul ul,
+ol ol {
 	margin-block-end: 0em;
 }
 
@@ -82,21 +84,25 @@ ul {
 	list-style-type: disc;
 }
 
-ul ul, ol ul {
-    list-style-type: circle
+ul ul,
+ol ul {
+	list-style-type: circle;
 }
-ol ol ul, ol ul ul, ul ol ul, ul ul ul {
-    list-style-type: square
-}	
+ol ol ul,
+ol ul ul,
+ul ol ul,
+ul ul ul {
+	list-style-type: square;
+}
 
 /* ordered lists */
 
-ol ol { 
-	list-style-type: lower-alpha ; 
-} 
+ol ol {
+	list-style-type: lower-alpha;
+}
 
 ol ol ol {
-	list-style-type: lower-roman ; 
+	list-style-type: lower-roman;
 }
 
 h1,

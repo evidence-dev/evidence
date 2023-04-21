@@ -17,16 +17,16 @@ Ordered lists are used to present a series of related content in a numbered list
 3. A third list item
 4. A fourth list item
 
-There's often a lot of paragraphs, images, and other content between list items. 
+There's often a lot of paragraphs, images, and other content between list items.
 
-Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Nulla nec odio. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc. Sed adipiscing ornare risus. Morbi est est, blandit sit amet, sagittis vel, euismod vel, velit. Pellentesque egestas sem. Suspendisse commodo ullamcorper magna. 
+Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Nulla nec odio. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc. Sed adipiscing ornare risus. Morbi est est, blandit sit amet, sagittis vel, euismod vel, velit. Pellentesque egestas sem. Suspendisse commodo ullamcorper magna.
 
 1. Item 1
-    1. Sub-item A
-    1. Sub-item B
-        1. Sub-sub-item i
-        1. Sub-sub-item ii
-            1. Sub-sub-item ii
+   1. Sub-item A
+   1. Sub-item B
+      1. Sub-sub-item i
+      1. Sub-sub-item ii
+         1. Sub-sub-item ii
 1. Item 2
 1. Item 3
 
