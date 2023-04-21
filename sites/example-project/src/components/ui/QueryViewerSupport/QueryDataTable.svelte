@@ -30,7 +30,7 @@
 
 	function handleWheel(event) {
 		// abort if scroll is in x-direction
-		if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+		if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) {
 			return;
 		}
 
