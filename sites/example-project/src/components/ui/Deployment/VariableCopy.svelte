@@ -20,8 +20,6 @@
 			/* ignore errors */
 		}
 	};
-
-
 </script>
 
 <button
@@ -46,11 +44,11 @@
 		{/if}
 	</span>
 	<div class="w-4 h-4">
-	{#if copied}
-		<Copy class="bx--snippet__icon" color="var(--green-900)" />
-	{:else}
-		<Copy class="bx--snippet__icon" />
-	{/if}	
+		{#if copied}
+			<Copy class="bx--snippet__icon" color="var(--green-900)" />
+		{:else}
+			<Copy class="bx--snippet__icon" />
+		{/if}
 	</div>
 </button>
 

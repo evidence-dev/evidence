@@ -23,21 +23,20 @@
 <pre class="my-5 relative">
 	<div class="absolute" style="height:100%;width:100%">
 		{#if copyToClipboard}
-		
-				<button
-					type="button"
-					class="container absolute right-0 top-0 h-8 w-8"
-					class:copied
-					on:click={() => {
-						if (source !== undefined) {
-							copy(source);
-						}
-					}}>
+			<button
+				type="button"
+				class="container absolute right-0 top-0 h-8 w-8"
+				class:copied
+				on:click={() => {
+					if (source !== undefined) {
+						copy(source);
+					}
+				}}>
 					{#if copied}
-						<Success color="var(--green-500)" />
-					{:else}
-						<Copy />
-					{/if}
+					<Success color="var(--green-500)" />
+				{:else}
+					<Copy />
+				{/if}
 		</button>
 		{/if}
 		</div>
@@ -66,8 +65,6 @@
 		border: none;
 		padding: 0.8em 0.8em;
 		color: var(--grey-900);
-
-
 	}
 
 	pre button.container {
