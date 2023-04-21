@@ -95,7 +95,6 @@
 		border: 1px solid var(--grey-300);
 		padding: 0.25em 0.35em 0.25em 0.35em;
 		color: var(--grey-300);
-		/* width: 2.4em; */
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
