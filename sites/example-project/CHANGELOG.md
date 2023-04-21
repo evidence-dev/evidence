@@ -1,5 +1,14 @@
 # @evidence-dev/components
 
+## 2.3.1
+
+### Patch Changes
+
+- e2b0b5d1: Fix legend and chart spacing for funnel chart
+- 5be07009: Fix horizontal table scroll bug on Windows
+- 6d5d22dd: Fix query viewer still visible on windows (OS)
+- aff6c041: fix list styling
+
 ## 2.3.0
 
 ### Minor Changes
