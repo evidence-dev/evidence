@@ -20,16 +20,18 @@
 	}
 </script>
 
-<pre>
-<code
+<pre class="my-5">
+<code class=" break-words"
 		>{#if source}{source}
 		{:else}<slot />
 		{/if}
-</code>
+</code>		
+<div class="relative w-full">
 {#if copyToClipboard}
+
 		<button
 			type="button"
-			class="container"
+			class="container absolute right-0 top-0"
 			class:copied
 			on:click={() => {
 				if (source !== undefined) {
@@ -42,7 +44,8 @@
 				<Copy />
 			{/if}
 </button>
-	{/if}
+{/if}
+</div>
 </pre>
 
 <style>
@@ -74,14 +77,14 @@
 		border: 1px solid var(--grey-300);
 		padding: 0.25em 0.35em 0.25em 0.35em;
 		color: var(--grey-300);
-		size: 0.75em;
+		size: 1em;
 		width: 2.4em;
 		height: 2.4em;
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
-		margin: 0;
+		margin: 0.5em;
 		display: flex;
 		align-items: center;
 		justify-content: center;
