@@ -40,16 +40,15 @@ test('query runs', async () => {
 	);
 });
 
-792
+792;
 test('numeric types are retrieved correctly', async () => {
 	results = await runQuery(
-		"select CAST(1.23456789 AS NUMERIC) as numeric_number, CAST(1.23456789 AS FLOAT64) as float64_number, CAST(1.23456789 AS DECIMAL) as decimal_number, CAST(1.23456789 AS STRING) as string_number"
+		'select CAST(1.23456789 AS NUMERIC) as numeric_number, CAST(1.23456789 AS FLOAT64) as float64_number, CAST(1.23456789 AS DECIMAL) as decimal_number, CAST(1.23456789 AS STRING) as string_number'
 	);
 	let actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
 	let actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
 	let actualTypePrecisions = results.columnTypes.map((columnType) => columnType.typeFidelity);
 	let actualValues = Object.keys(results.rows[0]).map((key) => results.rows[0][key]);
-
 
 	let expectedColumnTypes = ['number', 'number', 'number', 'string'];
 	let expectedColumnNames = ['numeric_number', 'float64_number', 'decimal_number', 'string_number'];
@@ -71,7 +70,7 @@ test('numeric types are retrieved correctly', async () => {
 		expectedTypePrecision.length === actualTypePrecisions.length &&
 			expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
 	);
-	assert.equal(expectedValues, actualValues)
+	assert.equal(expectedValues, actualValues);
 });
 
 test.run();
