@@ -48,8 +48,17 @@
 </pre>
 
 <style>
+	:root {
+		--scrollbar-track-color: transparent;
+		--scrollbar-color: rgba(0, 0, 0, 0.2);
+		--scrollbar-active-color: rgba(0, 0, 0, 0.4);
+		--scrollbar-size: 0.75rem;
+		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
+	}
 	pre {
 		overflow: auto;
+		scrollbar-width: thin;
+		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 		background: var(--grey-100);
 		border: 1px solid var(--grey-200);
 		border-radius: 5px;
@@ -58,7 +67,29 @@
 		align-items: flex-start;
 		justify-content: space-between;
 	}
-
+	pre::-webkit-scrollbar {
+		height: var(--scrollbar-size);
+		width: var(--scrollbar-size);
+	}
+	pre::-webkit-scrollbar-track {
+		background-color: var(--scrollbar-track-color);
+	}
+	pre::-webkit-scrollbar-thumb {
+		background-color: var(--scrollbar-color);
+		border-radius: 7px;
+		background-clip: padding-box;
+	}
+	pre::-webkit-scrollbar-thumb:hover {
+		background-color: var(--scrollbar-active-color);
+	}
+	pre::-webkit-scrollbar-thumb:vertical {
+		min-height: var(--scrollbar-minlength);
+		border: 3px solid transparent;
+	}
+	pre::-webkit-scrollbar-thumb:horizontal {
+		min-width: var(--scrollbar-minlength);
+		border: 3px solid transparent;
+	}
 	pre code {
 		display: block;
 		background: none;
