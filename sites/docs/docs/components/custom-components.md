@@ -68,8 +68,8 @@ Add a folder called `components/` in the root of your project. This is where Evi
 <BarChart data="{query}" />
 ```
 
-## Modifying an existing component
-Adapting any existing components to your needs is straightforward as well. You can achieve this by duplicating an existing component into your `/components` directory, modifying that new component file, and importing the new component as needed in your project.
+## Modifying an existing component: Changing the project name
+Modify an existing component by copying the component's source code into the /components directory, modifying it, and importing the new component as needed in your project.
 
 In this example, we will modify the title at the upper-left of our reports to have a label of "Invoices", rather than "Evidence".
 
@@ -90,7 +90,7 @@ First, create the `components/` directory if this is your first custom component
 With this new version of the component now created as a copy of the original, we are going to make our modifications.
 
 After opening the `components/MySidebar.svelte` file, modify the h2 with a class of `project-title` to have inner text of "Invoicing", similar to the following:
-```html title="MySidebar.svelte"
+```svelte title="MySidebar.svelte"
 <div class="nav-header">
     <a href="/" on:click={() => (open = !open)}><h2 class="project-title">Invoicing</h2></a>
     <button class="close" on:click={() => (open = !open)}><CloseIcon height="36" width="36" /></button>
@@ -103,11 +103,11 @@ To use our new sidebar, you must import it in place of the existing sidebar. The
 
 We start by copying the file `+layout.svelte` from `.evidence/template/src/pages/` into `/pages`, the same directory where we put new report [pages](/components/pages) as we create them. After opening this newly copied file, modify the import statement for the `Sidebar` component (inside the script tag) as follows:
 
-```javascript title="+layout.svelte"
+```svelte title="+layout.svelte"
 import Sidebar from "$lib/MySidebar.svelte";
 ```
 
-As noted in the comments on one of the snippets above, `$lib` refers to the `component/` directory in the root of our project. Since we didn't change the export name of our component, we only need to change the reference to the file and can leave everything else the same.
+As noted in the comments on one of the snippets above, `$lib` refers to the `/components` directory in the root of our project. Since we didn't change the export name of our component, we only need to change the reference to the file and can leave everything else the same.
 
 With these modifications, our project should now read "Invoices" as the title. This same approach can be used to modify any other UI elements as well.
 
