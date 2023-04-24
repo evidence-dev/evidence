@@ -71,12 +71,13 @@ Follow these steps to submit a pull request for your changes:
 1. Create a fork of the `evidence` repo
 2. Commit your changes to your fork
 3. Test your changes to make sure all results are as expected
-4. Add a changeset<sup>\*</sup>
-5. Open a pull request against the `main` branch of the `evidence` repo
+4. Format your code to prevent linting errors `pnpm run format`  
+5. Add a [changeset](#adding-a-changeset)
+6. Open a pull request against the `main` branch of the `evidence` repo
 
 [Here's an example of a pull request](https://github.com/evidence-dev/evidence/pull/165) from a community member who built Evidence's MySQL connector.
 
-#### <sup>\*</sup>Adding a Changeset
+#### Adding a Changeset
 
 Changesets ensure that package versions are updated correctly before releasing onto NPM.
 
