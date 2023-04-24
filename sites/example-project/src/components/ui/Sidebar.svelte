@@ -10,12 +10,14 @@
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
+
+	$: console.log(fileTree.children)
 </script>
 
 <aside class="sidebar" class:open>
 	<div class="sticky">
 		<div class="nav-header">
-			<a href="{base}" on:click={() => (open = !open)}><h2 class="project-title">Evidence</h2></a>
+			<a href={base} on:click={() => (open = !open)}><h2 class="project-title">Evidence</h2></a>
 			<button class="close" on:click={() => (open = !open)}
 				><CloseIcon height="36" width="36" /></button
 			>
@@ -25,11 +27,13 @@
 				{#if file.children.length > 0}
 					<CollapsibleSection folder={file} bind:open />
 				{:else if file.href}
-					<a href="{base}{file.href}" on:click={() => (open = !open)} style="">
-						<div class:selected={base + $page.url.pathname.split(base)[1] === file.href}>
+					<a href="{file.href}" on:click={() => (open = !open)} style="">
+						<div class:selected={$page.url.pathname.split(base)[1] === file.href}>
 							{file.label}
 						</div>
 					</a>
+				{:else}
+					<pre class="block">{file.href}</pre>
 				{/if}
 			{/each}
 			<div class="spacer" />
@@ -37,14 +41,14 @@
 		{#if dev}
 			<div class="nav-footer">
 				<a
-					href="{base}/settings"
+					href="/settings"
 					class="settings-link"
-					class:selected={$page.url.pathname === `${base}/settings`}
+					class:selected={$page.url.pathname === `$/settings`}
 				>
 					<span class="settings-icon flex justify-center items-center">
 						<IoMdSettings />
 					</span>
-					<a class="settings-label" href="{base}/settings"> Settings </a>
+					<a class="settings-label" href="/settings"> Settings </a>
 				</a>
 			</div>
 		{/if}

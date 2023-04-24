@@ -11,7 +11,7 @@
 		children: {}
 	};
 	pagePaths.forEach(function (path) {
-		path.split(base).reduce(function (r, e) {
+		path.split('/').reduce(function (r, e) {
 			if (e === '+page.md') {
 				let href = path.includes('[') ? undefined : encodeURI(base + '/' + path.replace('/+page.md', ''));
 				return (r['href'] = href);

@@ -6,7 +6,7 @@
 
 	const voidLink = 'javascript:void(0)'
 
-	$: pathArray = $page.url.pathname.split(base).slice(1);
+	$: pathArray = $page.url.pathname.split('/').slice(base === '/' ? 1 : 2);
 
 	// check if a url is an href in the fileTree and return true or false
 	const checkUrl = function (href, fileTree) {

@@ -52,7 +52,7 @@
 
 	function handleRowClick(url) {
 		if (link) {
-			window.location = url;
+			window.location = (relativeLinks ? base : '') + url;
 		}
 	}
 
@@ -354,9 +354,6 @@
 						class:row-link={link != undefined}
 						on:click={() => handleRowClick(row[link])}
 					>
-						{#if link}
-							<a style="display:none;" href={relativeLinks ? `${base}${row[link]}` : row[link]}>{row[link]}</a>
-						{/if}
 						{#if rowNumbers}
 							<td
 								class="index"
@@ -397,7 +394,6 @@
                         "
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										<a href={relativeLinks ? `${base}${row[column.id]}` : row[column.id]} target={column.openInNewTab ? '_blank' : ''}>
 											{#if column.linkLabel != undefined}
 												{#if row[column.linkLabel] != undefined}
 													{formatValue(
@@ -415,7 +411,6 @@
 													safeExtractColumn(column).columnUnitSummary
 												)}
 											{/if}
-										</a>
 									{:else}
 										{formatValue(
 											row[column.id],
