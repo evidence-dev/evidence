@@ -4,7 +4,7 @@
 ---
 
 :::caution
-Deploying to Github pages requires more javascript knowledge than alternatives like [Netlify](/deployment/netlify) or [Vercel](/deployment/vercel), if you are unsure, consider using another method.
+Deploying to Github pages requires more javascript knowledge than alternatives like [Evidence Cloud](/deployment/evidence-cloud) [Netlify](/deployment/netlify) or [Vercel](/deployment/vercel), if you are unsure, consider using another method.
 :::
 
 ## Deploying to Github Pages
