@@ -4,6 +4,10 @@ hide_table_of_contents: false
 title: Vercel
 ---
 
+:::caution
+Note that because of missing dependencies, Vercel cannot be used with DuckDB. Consider [Netlify](/deployment/netlify) as an alternative if you are using DuckDB. 
+:::
+
 Vercel lets you host a public version of your project for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
 
 ## Deploy to Vercel
