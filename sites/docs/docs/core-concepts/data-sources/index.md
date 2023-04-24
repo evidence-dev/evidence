@@ -80,6 +80,17 @@ In addition to the `HEADER` argument, this function can also accept changes to t
 
 Additional information about CSV helper functions can be found in the [DuckDB docs](https://duckdb.org/docs/data/csv).
 
+## SSL with PostgreSQL
+
+To connect to a Postgres database using SSL, you may need to modify the SSL settings used. Once you have selected a PostgreSQL data connection type, you can set the SSL value as follows:
+ - false: Don't connect using SSL (default)
+ - true: Connect using SSL, validating the SSL certificates. Self-signed certificates will fail using this approach.
+ - no-verify: Connect using SSL, but don't validate the certificates.
+
+Other SSL options will require the use of a custom connection string. Evidence uses the node-postgres package to manage these connections, and the details of additional SSL options via the connection string can be found at the [package documentation](https://node-postgres.com/features/ssl).
+
+One scenario might be a Postgres platform that issues a self-signed certificate for the database connection, but provides a CA certificate to validate that self-signed certificate. In this scenario you could use a CONNECTION STRING value as follows: `postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootcert=/path/to/file/ca-certificate.crt`. Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
+
 ## Troubleshooting
 
 If you need help with connecting to your data, please feel free to [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q).
