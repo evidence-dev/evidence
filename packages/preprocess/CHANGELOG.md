@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 2.3.1
+
+### Patch Changes
+
+- aff6c041: fix list styling
+
 ## 2.3.0
 
 ### Minor Changes

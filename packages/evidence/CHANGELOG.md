@@ -1,5 +1,18 @@
 # @evidence-dev/evidence
 
+## 16.0.1
+
+### Patch Changes
+
+- aff6c041: fix list styling
+- Updated dependencies [e2b0b5d1]
+- Updated dependencies [5be07009]
+- Updated dependencies [6d5d22dd]
+- Updated dependencies [aff6c041]
+  - @evidence-dev/components@2.3.1
+  - @evidence-dev/preprocess@2.3.1
+  - @evidence-dev/db-orchestrator@2.0.3
+
 ## 16.0.0
 
 ### Patch Changes
