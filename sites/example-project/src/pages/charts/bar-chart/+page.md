@@ -183,3 +183,13 @@ select 'South' as country, 101 as value, 1996 as year
 ## Long Bar Chart
 
 <BarChart data={textP} x=category y=complaints swapXY=true sort=true/>
+
+## Bar Chart with Custom Height
+
+<BarChart 
+    data={simple_bar} 
+    x=country 
+    y=value 
+    xAxisTitle=Region
+	chartAreaHeight=380
+/>
