@@ -157,7 +157,7 @@
 
 	.over-container {
 		overflow-y: hidden;
-		overflow-x: scroll;
+		overflow-x: auto;
 	}
 
 	.code-container::-webkit-scrollbar-thumb {

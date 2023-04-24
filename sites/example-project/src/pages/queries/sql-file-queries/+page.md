@@ -31,39 +31,22 @@ If you haven't read about <a href="{base}/frontmatter" target="_blank">frontmatt
 
 In your project; create a `sources` folder. It should look something like this:
 
-<CodeBlock source={`my_project/
-  pages/
-    my_page.md
-  sources/
-    my_query.sql`}/>
+<CodeBlock source={`my_project/ pages/ my_page.md sources/ my_query.sql`}/>
 
 <br/>
 You can now access `my_query.sql` with frontmatter:
 
-<CodeBlock source={`---
-    sources:
-        - my_query.sql
----`}/>
+<CodeBlock source={`--- sources: - my_query.sql ---`}/>
 
 ### Usage with Subdirectories
 
 You can also use directories within your sources to organize your queries:
-<CodeBlock source={`my_project/
-  pages/
-    my_page.md
-  sources/
-    my_query.sql
-    my_group/
-      my_query`}/>
+<CodeBlock source={`my_project/ pages/ my_page.md sources/ my_query.sql my_group/ my_query`}/>
 
 <br/>
 You can now access `my_query.sql` and `my_group/my_query.sql` with frontmatter:
 
-<CodeBlock source={`---
-    sources:
-        - my_query.sql
-        - nested/my_query.sql
----`}/>
+<CodeBlock source={`--- sources: - my_query.sql - nested/my_query.sql ---`}/>
 
 Note that all slashes (`/`) will be replaced with underscores (`_`), so `nested/my_query.sql` is accessible as `nested_my_query.sql`.
 
