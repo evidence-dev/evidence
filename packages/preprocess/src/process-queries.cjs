@@ -22,6 +22,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
 
 	let defaultProps = `
         import { page } from '$app/stores';
+        import { base } from '$app/paths';
         import { pageHasQueries, routeHash } from '$lib/ui/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
         import BigLink from '$lib/ui/BigLink.svelte';

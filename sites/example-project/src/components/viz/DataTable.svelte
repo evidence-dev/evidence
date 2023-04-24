@@ -52,18 +52,12 @@
 
 	function handleRowClick(url) {
 		if (link) {
-			window.location = (relativeLinks ? base : '') + url;
+			window.location = (url.startsWith("/") ? base : '') + url;
 		}
 	}
 
 	export let showLinkCol = false; // hides link column when columns have not been explicitly selected
 	showLinkCol = showLinkCol === 'true' || showLinkCol === true;
-
-	/**
-	 * Automatically adds a the base path prefix to links
-	 * @type {boolean}
-	 */
-	export let relativeLinks = false;
 
 	let error = undefined;
 
