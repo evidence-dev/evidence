@@ -101,7 +101,7 @@ After opening the `components/MySidebar.svelte` file, modify the h2 with a class
 
 To use our new sidebar, you must import it in place of the existing sidebar. The general approach we will follow here is described in [themes and layouts.](/themes-and-layouts).
 
-We start by copying the file `+layout.svelte` from `.evidence/template/src/pages/` into `/pages`, the same directory where we put new report [pages](/components/pages) as we create them. After opening this newly copied file, modify the import statement for the `Sidebar` component (inside the script tag) as follows:
+We start by copying the file `+layout.svelte` from `.evidence/template/src/pages/` into `/pages`, the same directory where we put new report [pages](/core-concepts/pages) as we create them. After opening this newly copied file, modify the import statement for the `Sidebar` component (inside the script tag) as follows:
 
 ```svelte title="+layout.svelte"
 import Sidebar from "$lib/MySidebar.svelte";
