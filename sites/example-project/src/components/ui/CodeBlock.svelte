@@ -95,7 +95,7 @@
 		border: none;
 		padding: 0.8em 0.8em;
 		color: var(--grey-900);
-		scrollbar-width: thin; 
+		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 	}
 
