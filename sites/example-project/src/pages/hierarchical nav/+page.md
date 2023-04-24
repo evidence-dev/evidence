@@ -1,4 +1,5 @@
 <script> import { base } from "$app/paths"; </script>
+
 # This is the root page for this directory
 
 There is also a page at level 1, and level 3. There is no page at level 2.

@@ -1,4 +1,6 @@
 <script>
+	import { base } from '$app/paths';
+
 	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
 
 	export let credentials;

@@ -52,7 +52,7 @@
 
 	function handleRowClick(url) {
 		if (link) {
-			window.location = (url.startsWith("/") ? base : '') + url;
+			window.location = (url.startsWith('/') ? base : '') + url;
 		}
 	}
 
@@ -388,23 +388,23 @@
                         "
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-											{#if column.linkLabel != undefined}
-												{#if row[column.linkLabel] != undefined}
-													{formatValue(
-														row[column.linkLabel],
-														safeExtractColumn(column).format,
-														safeExtractColumn(column).columnUnitSummary
-													)}
-												{:else}
-													{column.linkLabel}
-												{/if}
-											{:else}
+										{#if column.linkLabel != undefined}
+											{#if row[column.linkLabel] != undefined}
 												{formatValue(
-													row[column.id],
+													row[column.linkLabel],
 													safeExtractColumn(column).format,
 													safeExtractColumn(column).columnUnitSummary
 												)}
+											{:else}
+												{column.linkLabel}
 											{/if}
+										{:else}
+											{formatValue(
+												row[column.id],
+												safeExtractColumn(column).format,
+												safeExtractColumn(column).columnUnitSummary
+											)}
+										{/if}
 									{:else}
 										{formatValue(
 											row[column.id],

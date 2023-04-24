@@ -4,7 +4,7 @@
 	import HomeIcon from '$lib/icons/HomeIcon.svelte';
 	export let fileTree;
 
-	const voidLink = 'javascript:void(0)'
+	const voidLink = 'javascript:void(0)';
 
 	$: pathArray = $page.url.pathname.split('/').slice(base === '/' ? 1 : 2);
 
@@ -61,11 +61,13 @@
 	<span class="container">
 		<span>
 			{#if $page.url.pathname.startsWith(`${base}/settings`) || $page.url.pathname === base}
-				<a href="{base}"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
+				<a href={base}><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
 			{:else}
 				{#each crumbs as crumb, i}
 					{#if i > 0}
-						&emsp13;/&emsp13;<a href="{crumb.href === voidLink ? '' : base}{crumb.href}">{crumb.title}</a>
+						&emsp13;/&emsp13;<a href="{crumb.href === voidLink ? '' : base}{crumb.href}"
+							>{crumb.title}</a
+						>
 					{:else}
 						<a href={crumb.href}>
 							{#if crumb.title === 'Home'}

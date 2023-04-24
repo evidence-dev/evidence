@@ -11,7 +11,7 @@
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
 
-	$: console.log(fileTree.children)
+	$: console.log(fileTree.children);
 </script>
 
 <aside class="sidebar" class:open>
@@ -27,7 +27,7 @@
 				{#if file.children.length > 0}
 					<CollapsibleSection folder={file} bind:open />
 				{:else if file.href}
-					<a href="{file.href}" on:click={() => (open = !open)} style="">
+					<a href={file.href} on:click={() => (open = !open)} style="">
 						<div class:selected={$page.url.pathname.split(base)[1] === file.href}>
 							{file.label}
 						</div>
