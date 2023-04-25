@@ -70,4 +70,5 @@
 	{sort}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
+	<slot></slot>
 </Chart>

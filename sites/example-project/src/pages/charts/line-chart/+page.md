@@ -1,3 +1,12 @@
+<script>
+import HLine from '$lib/viz/HLine.svelte'
+import VLine from '$lib/viz/VLine.svelte'
+import HArea from '$lib/viz/HArea.svelte'
+import VArea from '$lib/viz/VArea.svelte'
+import MArea from '$lib/viz/MArea.svelte'
+
+</script>
+
 ```fda_recalls
 SELECT date_trunc(recall_initiation_date, year) as year,
 sum(if(voluntary_mandated = "Voluntary: Firm Initiated", 1, 0)) as voluntary_recalls,
@@ -111,7 +120,9 @@ select 'China' as country, 101 as value, 1996 as year
 
 ## Multi-Series Line
 
-<LineChart data={simpler_bar} x=year y=value series=country/>
+<LineChart data={simpler_bar} x=year y=value series=country>
+    <HLine yVal=157 label="Target"/>
+</LineChart>
 
 ## Muliple y Column Line
 

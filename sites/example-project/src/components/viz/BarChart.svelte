@@ -70,4 +70,5 @@
 	{stacked100}
 >
 	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
+	<slot></slot>
 </Chart>
