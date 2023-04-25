@@ -9,8 +9,6 @@ sources:
   - should_break.sql
 ---
 
-<script> import { base } from "$app/paths"; </script>
-
 ```query_on_the_page
 SELECT 10 as t
 ```

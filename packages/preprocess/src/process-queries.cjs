@@ -1,10 +1,12 @@
 const { getRouteHash } = require('./utils/get-route-hash.cjs');
 const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
-const { frontmatterRegex, containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
+const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
 const createDefaultProps = function (filename, componentDevelopmentMode, fileQueryIds) {
 	const routeH = getRouteHash(filename);
+
+    console.log("preprocess route hash", {filename, routeH})
 
 	let queryDeclarations = '';
 
@@ -65,6 +67,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
         $: ({ data = {}, customFormattingSettings } = props);
 
         $routeHash = '${routeH}';
+
+        console.log('${routeH}')
+        console.log(data, props)
 
         $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
 

@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"build": "evidence build",
-		"dev": "evidence dev",
+		"dev": "evidence dev --host 0.0.0.0",
 		"test": "evidence build"
 	},
 	"engines": {

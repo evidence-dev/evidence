@@ -1,5 +1,3 @@
-<script> import { base } from "$app/paths"; </script>
-
 # Markdown
 
 # Heading Level 1

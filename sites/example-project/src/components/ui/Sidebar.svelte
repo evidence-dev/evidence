@@ -10,8 +10,6 @@
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
-
-	$: console.log(fileTree.children);
 </script>
 
 <aside class="sidebar" class:open>
@@ -43,7 +41,7 @@
 				<a
 					href="/settings"
 					class="settings-link"
-					class:selected={$page.url.pathname === `$/settings`}
+					class:selected={$page.url.pathname === `/settings`}
 				>
 					<span class="settings-icon flex justify-center items-center">
 						<IoMdSettings />
