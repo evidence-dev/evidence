@@ -71,7 +71,7 @@ Follow these steps to submit a pull request for your changes:
 1. Create a fork of the `evidence` repo
 2. Commit your changes to your fork
 3. Test your changes to make sure all results are as expected
-4. Format your code to prevent linting errors `pnpm run format`  
+4. Format your code to prevent linting errors `pnpm run format`
 5. Add a [changeset](#adding-a-changeset)
 6. Open a pull request against the `main` branch of the `evidence` repo
 
