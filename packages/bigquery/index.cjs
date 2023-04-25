@@ -1,5 +1,25 @@
 const { BigQuery } = require('@google-cloud/bigquery');
-const { EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const { EvidenceType, TypeFidelity, getEnv } = require('@evidence-dev/db-commons');
+
+const envMap = {
+	projectId: [
+		{ key: 'BIGQUERY_PROJECT_ID', deprecated: true },
+		{ key: 'project_id', deprecated: true },
+		{ key: 'PROJECT_ID', deprecated: true }
+	],
+	credentials: {
+		client_email: [
+			{ key: 'BIGQUERY_CLIENT_EMAIL', deprecated: true },
+			{ key: 'client_email', deprecated: true },
+			{ key: 'CLIENT_EMAIL', deprecated: true }
+		],
+		private_key: [
+			{ key: 'BIGQUERY_PRIVATE_KEY', deprecated: true },
+			{ key: 'private_key', deprecated: true },
+			{ key: 'PRIVATE_KEY', deprecated: true }
+		]
+	}
+};
 
 const standardizeResult = async (result) => {
 	var output = [];
@@ -43,20 +63,10 @@ const getCredentials = async (database) => {
 			return creds;
 		} else {
 			const creds = {
-				projectId:
-					process.env['BIGQUERY_PROJECT_ID'] ||
-					process.env['project_id'] ||
-					process.env['PROJECT_ID'],
+				projectId: getEnv(envMap, 'projectId'),
 				credentials: {
-					client_email:
-						process.env['BIGQUERY_CLIENT_EMAIL'] ||
-						process.env['client_email'] ||
-						process.env['CLIENT_EMAIL'],
-					private_key: (
-						process.env['BIGQUERY_PRIVATE_KEY'] ||
-						process.env['private_key'] ||
-						process.env['PRIVATE_KEY']
-					).replace(/\\n/g, '\n')
+					client_email: getEnv(envMap, 'credentials', 'client_email'),
+					private_key: getEnv(envMap, 'credentials', 'private_key')?.trim()
 				}
 			};
 			return creds;
