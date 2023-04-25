@@ -1,5 +1,4 @@
 <script>
-	export let size = 16;
 	export let title = undefined;
 	$: labelled = $$props['aria-label'] || $$props['aria-labelledby'] || title;
 	$: attributes = {
@@ -13,9 +12,9 @@
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 32 32"
 	fill="currentColor"
+	width="100%"
+	height="100%"
 	preserveAspectRatio="xMidYMid meet"
-	width={size}
-	height={size}
 	{...attributes}
 	{...$$restProps}
 >
