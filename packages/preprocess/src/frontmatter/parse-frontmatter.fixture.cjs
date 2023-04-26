@@ -87,6 +87,6 @@ module.exports = {
 	missingFrontmatter,
 	markdownTableWithoutFrontmatter,
 	frontmatterWithMarkdownTable,
-  frontmatterWithTitle,
-  frontmatterWithTitleHidden,
+	frontmatterWithTitle,
+	frontmatterWithTitleHidden
 };

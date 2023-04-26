@@ -3,7 +3,7 @@
     This means that all we need to do is build out the expected page metadata
 -->
 <!-- Show title as h1 if defined, and not hidden -->
-{#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title) && metadata.hide_title !== true}
+{#if typeof metadata !== 'undefined' && (metadata.title || metadata.og?.title) && metadata.hide_title !== true}
 	<h1>{metadata.title ?? metadata.og?.title}</h1>
 {/if}
 <svelte:head>
