@@ -64,6 +64,21 @@ const markdownTableWithoutFrontmatter = `
 | 2134 | 140 | 1,130 |
 `;
 
+const frontmatterWithTitle = `
+---
+title: Hello!
+---
+And some content
+`;
+
+const frontmatterWithTitleHidden = `
+---
+title: Hello!
+hide_title: true
+---
+And some content
+`;
+
 module.exports = {
 	emptyFrontmatter,
 	basicFrontmatter,
@@ -71,5 +86,7 @@ module.exports = {
 	extraFrontmatter,
 	missingFrontmatter,
 	markdownTableWithoutFrontmatter,
-	frontmatterWithMarkdownTable
+	frontmatterWithMarkdownTable,
+	frontmatterWithTitle,
+	frontmatterWithTitleHidden
 };
