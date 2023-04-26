@@ -10,7 +10,8 @@ const {
 	extraFrontmatter,
 	frontmatterWithMarkdownTable,
 	markdownTableWithoutFrontmatter,
-	frontmatterWithTitle
+	frontmatterWithTitle,
+	frontmatterWithTitleHidden
 } = require('./parse-frontmatter.fixture.cjs');
 
 fs.statSync.mockReturnValue({ isFile: () => true });
