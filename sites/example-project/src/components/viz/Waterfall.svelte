@@ -94,6 +94,12 @@
       itemStyle: {
           color: 'grey'
       },
+	  label: {
+		normal: {
+			show: true,
+			position: swapXY ? 'right' : 'top'
+		}
+        },
 		tooltip: {
 			show: false
 		}
@@ -106,6 +112,12 @@
       itemStyle: {
           color: 'green'
       },
+	  label: {
+		normal: {
+			show: true,
+			position: swapXY ? 'right' : 'top'
+		}
+        },
 		tooltip: {
 			show: false
 		}
@@ -118,6 +130,12 @@
       itemStyle: {
         color: 'darkred'
       },
+	  label: {
+		normal: {
+			show: true,
+			position: swapXY ? 'left' : 'bottom'
+		}
+        },
 		tooltip: {
 			show: false
 		}
