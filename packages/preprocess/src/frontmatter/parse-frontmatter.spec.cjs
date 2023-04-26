@@ -9,7 +9,8 @@ const {
 	complexFrontmatter,
 	extraFrontmatter,
 	frontmatterWithMarkdownTable,
-	markdownTableWithoutFrontmatter
+	markdownTableWithoutFrontmatter,
+	frontmatterWithTitle
 } = require('./parse-frontmatter.fixture.cjs');
 
 fs.statSync.mockReturnValue({ isFile: () => true });
@@ -47,5 +48,13 @@ describe('Parse frontmatter', () => {
 	it('Should extract nothing when there is a markdown table on the page, but no frontmatter', async () => {
 		const result = await parseFrontmatter(markdownTableWithoutFrontmatter);
 		expect(result).toBeUndefined();
+	});
+	it('Should display a title only', async () => {
+		const result = await parseFrontmatter(frontmatterWithTitle);
+		expect(result).toEqual({ title: 'Hello!' });
+	});
+	it('Should display a title and hide_title property', async () => {
+		const result = await parseFrontmatter(frontmatterWithTitleHidden);
+		expect(result).toEqual({ title: 'Hello!', hide_title: true });
 	});
 });
