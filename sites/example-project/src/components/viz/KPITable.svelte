@@ -70,10 +70,10 @@ $: try {
     <thead>
         <tr>
             <th></th>
-            {#if $props.columns[0]?.description || description}<th>Description</th>{/if}
-            <th>Value</th>
-            {#if delta}<th>Abs. Change</th>{/if}
-            {#if pctChange}<th>% Change</th>{/if}
+            {#if $props.columns[0]?.description || description}<th class="left">Description</th>{/if}
+            <th class="right">Value</th>
+            {#if delta}<th class="right">Abs. Change</th>{/if}
+            {#if pctChange}<th class="right">% Change</th>{/if}
         </tr>
     </thead>
     
@@ -81,21 +81,21 @@ $: try {
         {#if $props.columns.length > 0}
             {#each $props.columns as column, i}
                     <tr>
-                        <td><b>{#if column.title}{column.title}{:else}{formatTitle(column.id)}{/if}</b></td>
-                        {#if $props.columns[0]?.description || description}<td>{$props.columns[i]?.description ? $props.columns[i].description : " "}</td>{/if}
-                        <td>{fmt(data[row][column.id], column.format)}</td>
-                        {#if delta}<td>{fmt(data[row][column.id] - data[comparisonRow][column.id], column.format)}</td>{/if}
-                        {#if pctChange}<td>{fmt((data[row][column.id] - data[comparisonRow][column.id]) / data[comparisonRow][column.id],'+0.0%;-0.0%;-')}</td>{/if}
+                        <td class="left"><b>{#if column.title}{column.title}{:else}{formatTitle(column.id)}{/if}</b></td>
+                        {#if $props.columns[0]?.description || description}<td class="left">{$props.columns[i]?.description ? $props.columns[i].description : " "}</td>{/if}
+                        <td class="right">{fmt(data[row][column.id], column.format)}</td>
+                        {#if delta}<td class="right">{fmt(data[row][column.id] - data[comparisonRow][column.id], column.format)}</td>{/if}
+                        {#if pctChange}<td class="right">{fmt((data[row][column.id] - data[comparisonRow][column.id]) / data[comparisonRow][column.id],'+0.0%;-0.0%;-')}</td>{/if}
                     </tr>
             {/each}
         {:else}
             {#each Object.entries(data[row]) as [key, value], i}
                 {#if (showFirstColumn && i === 0) || i > 0}
                     <tr>
-                        <td><b>{formatTitle(key)}</b></td>
-                        <td>{fmt(value)}</td>
-                        {#if delta}<td>{fmt(value - data[comparisonRow][key])}</td>{/if}
-                        {#if pctChange}<td>{fmt((value - data[comparisonRow][key]) / data[comparisonRow][key],'+0.0%;-0.0%;-')}</td>{/if}
+                        <td class="left"><b>{formatTitle(key)}</b></td>
+                        <td class="right">{fmt(value)}</td>
+                        {#if delta}<td class="right">{fmt(value - data[comparisonRow][key])}</td>{/if}
+                        {#if pctChange}<td class="right">{fmt((value - data[comparisonRow][key]) / data[comparisonRow][key],'+0.0%;-0.0%;-')}</td>{/if}
                         
                     </tr>
                 {/if}
@@ -109,5 +109,13 @@ $: try {
         font-variant-numeric: tabular-nums;
         max-width: unset;
     }
+
+    .left {
+        text-align: left;
+    }
+
+    .right {
+        text-align: right;
+    }   
 
 </style>

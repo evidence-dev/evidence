@@ -15,17 +15,11 @@ group by month
 order by month desc
 ```
 
-<DataTable data={orders}/>
 
-<DataTable data={orders}>
-    <Column id=sales/>
-</DataTable>
-
-
-## Vs Last Month
-<KPITable data={orders} delta pctChange comparisonRow=1/>
+<KPITable data={orders}/>
 
 ## Vs Last Year
+
 <KPITable data={orders} delta pctChange comparisonRow=12/>
 
 <KPITable data={orders} delta pctChange comparisonRow=12>
