@@ -2,10 +2,6 @@
 title: Expressions
 ---
 
-<script>
-    import {format as ssfFmt} from 'ssf'
-</script>
-
 ```sql orders
 SELECT
     date_trunc('month', order_datetime) AS month,
