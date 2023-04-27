@@ -52,7 +52,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
         import CodeBlock from '$lib/ui/CodeBlock.svelte';
 
         import Alert from '$lib/ui/Alert.svelte';
-
+        import Accordion from '$lib/ui/Accordion.svelte';
+        import AnchorButton from '$lib/ui/AnchorButton.svelte';
+        import Modal from '$lib/ui/Modal.svelte'
         import Tabs from '$lib/ui/Tabs/Tabs.svelte';
         import Tab from '$lib/ui/Tabs/Tab.svelte';
 
