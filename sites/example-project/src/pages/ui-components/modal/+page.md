@@ -4,9 +4,10 @@
 </script>
 
 ## Modal
+
 <Modal innerText={innerText} title= 'Title for the modal' />
 
-### Modifications: 
+### Modifications:
+
 - The modal will remain closed by default.It can changed to remain open by adding the prop: `open = true`
 - Title can be added by using the prop `title = 'Title for the modal'`
-
