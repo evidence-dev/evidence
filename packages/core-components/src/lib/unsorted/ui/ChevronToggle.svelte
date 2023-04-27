@@ -4,11 +4,12 @@
 
 <script>
 	export let toggled = false;
+	export let vertical = false;
 	export let color = '#2d2d2d';
 	export let size = 10;
 </script>
 
-<span aria-expanded={toggled}>
+<span aria-expanded={toggled} data-vertical={vertical}>
 	<svg viewBox="0 0 16 16" width={size} height={size}
 		><path
 			fill={color}
@@ -18,7 +19,7 @@
 	>
 </span>
 
-<style>
+<style lang="scss">
 	svg {
 		display: inline-block;
 		vertical-align: middle;
@@ -31,5 +32,13 @@
 
 	[aria-expanded='true'] svg {
 		transform: rotate(0.25turn);
+	}
+
+	[data-vertical='true'] {
+		transform: rotate(0.25turn);
+	}
+
+	[aria-expanded='true'][data-vertical='true'] svg {
+		transform: rotate(0.5turn);
 	}
 </style>
