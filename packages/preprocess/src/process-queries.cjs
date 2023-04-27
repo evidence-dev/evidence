@@ -6,8 +6,6 @@ const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 const createDefaultProps = function (filename, componentDevelopmentMode, fileQueryIds) {
 	const routeH = getRouteHash(filename);
 
-	console.log('preprocess route hash', { filename, routeH });
-
 	let queryDeclarations = '';
 
 	if (fileQueryIds?.length > 0) {
@@ -67,9 +65,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
         $: ({ data = {}, customFormattingSettings } = props);
 
         $routeHash = '${routeH}';
-
-        console.log('${routeH}')
-        console.log(data, props)
 
         $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
 
