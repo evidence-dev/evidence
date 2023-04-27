@@ -69,7 +69,7 @@ $: try {
 <table>
     <thead>
         <tr>
-            <th>Metric</th>
+            <th></th>
             {#if $props.columns[0]?.description || description}<th>Description</th>{/if}
             <th>Value</th>
             {#if delta}<th>Abs. Change</th>{/if}
@@ -83,8 +83,8 @@ $: try {
                     <tr>
                         <td><b>{#if column.title}{column.title}{:else}{formatTitle(column.id)}{/if}</b></td>
                         {#if $props.columns[0]?.description || description}<td>{$props.columns[i]?.description ? $props.columns[i].description : " "}</td>{/if}
-                        <td>{fmt(data[row][column.id])}</td>
-                        {#if delta}<td>{fmt(data[row][column.id] - data[comparisonRow][column.id])}</td>{/if}
+                        <td>{fmt(data[row][column.id], column.format)}</td>
+                        {#if delta}<td>{fmt(data[row][column.id] - data[comparisonRow][column.id], column.format)}</td>{/if}
                         {#if pctChange}<td>{fmt((data[row][column.id] - data[comparisonRow][column.id]) / data[comparisonRow][column.id],'+0.0%;-0.0%;-')}</td>{/if}
                     </tr>
             {/each}

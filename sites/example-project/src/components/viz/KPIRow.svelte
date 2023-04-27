@@ -10,6 +10,7 @@
     export let id;
     export let title = undefined;
     export let description = undefined;
+    export let format = undefined;
 
     // Simple check of column name in dataset. Should be replaced with robust error handling in the future:
 	$: checkColumnName();
@@ -38,6 +39,7 @@
 		id: id,
 		title: title,
         description: description,
+        format: format
 	};
 
 

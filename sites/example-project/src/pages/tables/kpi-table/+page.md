@@ -28,10 +28,10 @@ order by month desc
 ## Vs Last Year
 <KPITable data={orders} delta pctChange comparisonRow=12/>
 
-<KPITable data={orders} delta pctChange comparisonRow=1>
-    <KPIRow id=sales/>
+<KPITable data={orders} delta pctChange comparisonRow=12>
+    <KPIRow id=sales format='$##0,k'/>
     <KPIRow id=num_orders/>
-    <KPIRow id=aov title="AOV" />
+    <KPIRow id=aov title="AOV" format="$0.00"/>
 </KPITable>
 
 
