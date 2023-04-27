@@ -4,7 +4,7 @@ title: Expressions
 
 ```sql orders
 SELECT '2022-12-01' AS month, 645 AS num_orders, 987 AS sales
-UNION ALL 
+UNION ALL
 SELECT '2022-11-01' AS month, 752 AS num_orders, 960 AS sales
 UNION ALL
 SELECT '2022-10-01' AS month, 1000 AS num_orders, 1000 AS sales
