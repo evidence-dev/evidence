@@ -40,6 +40,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
         import BarChart from '$lib/viz/BarChart.svelte';
         import BubbleChart from '$lib/viz/BubbleChart.svelte';
         import DataTable from '$lib/viz/DataTable.svelte';
+        import KPITable from '$lib/viz/KPITable.svelte';
         import Column from '$lib/viz/Column.svelte';
         import LineChart from '$lib/viz/LineChart.svelte';
         import FunnelChart from "$lib/viz/FunnelChart.svelte";
