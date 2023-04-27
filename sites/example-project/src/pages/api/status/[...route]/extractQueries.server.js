@@ -1,7 +1,7 @@
 import md5 from 'blueimp-md5';
 import fs from 'fs-extra';
 import preprocessor from '@evidence-dev/preprocess';
-import {base} from "$app/paths";
+import { base } from '$app/paths';
 
 const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
 const circularRefErrorMsg = 'Compiler error: circular reference';
@@ -46,9 +46,9 @@ const updateDirectoriesandStatus = function (queries, routeHash) {
 
 export const getStatusAndExtractQueries = function (route) {
 	let routeHash = md5(`${base}/${route}`);
-	let fileRoute = `./src/pages/${route.split(base).join("")}/+page.md`;
+	let fileRoute = `./src/pages/${route.split(base).join('')}/+page.md`;
 
-	console.log("extractQueries.server.js", {fileRoute, routeHash})
+	console.log('extractQueries.server.js', { fileRoute, routeHash });
 
 	let content = fs.readFileSync(fileRoute);
 	content = content ? content.toString() : null;

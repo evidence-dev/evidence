@@ -6,7 +6,7 @@ export const trailingSlash = 'always';
 
 /** @type {import("@sveltejs/kit").Load} */
 export async function load({ fetch, route }) {
-	console.log("layout.server.js", {route: route.id, hash: md5(route.id)})
+	console.log('layout.server.js', { route: route.id, hash: md5(route.id) });
 	if (route.id && route.id !== `${base}/settings`) {
 		const routeHash = md5(route.id);
 		// ensure that queries have been extracted before initiating the load process

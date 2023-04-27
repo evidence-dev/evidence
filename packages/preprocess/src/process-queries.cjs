@@ -6,7 +6,7 @@ const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 const createDefaultProps = function (filename, componentDevelopmentMode, fileQueryIds) {
 	const routeH = getRouteHash(filename);
 
-    console.log("preprocess route hash", {filename, routeH})
+	console.log('preprocess route hash', { filename, routeH });
 
 	let queryDeclarations = '';
 
