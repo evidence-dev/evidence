@@ -3,13 +3,31 @@ title: Expressions
 ---
 
 ```sql orders
-SELECT
-    date_trunc('month', order_datetime) AS month,
-    count(*) AS num_orders,
-    sum(sales) as total_sales
-FROM orders
-GROUP BY 1
-order by 1 desc
+SELECT '2022-12-01' AS month, 645 AS num_orders, 987 AS sales
+UNION ALL 
+SELECT '2022-11-01' AS month, 752 AS num_orders, 960 AS sales
+UNION ALL
+SELECT '2022-10-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-09-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-08-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-07-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-06-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-05-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-04-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-03-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-02-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2022-01-01' AS month, 1000 AS num_orders, 1000 AS sales
+UNION ALL
+SELECT '2021-12-01' AS month, 600 AS num_orders, 600 AS sales
 ```
 
 ## Number formatting
