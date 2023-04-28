@@ -1,13 +1,12 @@
 <script>
-  import Modal from '$lib/ui/Modal.svelte'
   let innerText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 </script>
 
 ## Modal
 
-<Modal innerText={innerText} title= 'Title for the modal' />
+<Modal innerText={innerText} title= 'Modal Title' />
 
 ### Modifications:
 
-- The modal will remain closed by default.It can changed to remain open by adding the prop: `open = true`
-- Title can be added by using the prop `title = 'Title for the modal'`
+- The modal will remain closed by default. It can changed to remain open by adding the prop: `open = true`.
+- Title can be added by using the prop `title = 'Title for the modal'`.
