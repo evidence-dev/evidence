@@ -1,12 +1,18 @@
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 const path = require('path');
-const { processQueryResults } = require('@evidence-dev/db-commons');
+const { processQueryResults, getEnv } = require('@evidence-dev/db-commons');
+
+const envMap = {
+	filename: [
+		{ key: 'SQLITE_FILENAME', deprecated: true },
+		{ key: 'FILENAME', deprecated: true },
+		{ key: 'filename', deprecated: true }
+	]
+};
 
 const runQuery = async (queryString, database) => {
-	const filename = database
-		? database.filename
-		: process.env['SQLITE_FILENAME'] || process.env['filename'] || process.env['FILENAME'];
+	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
 	try {
 		const db = await open({
