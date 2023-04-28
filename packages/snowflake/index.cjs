@@ -1,4 +1,33 @@
+const { getEnv } = require('@evidence-dev/db-commons');
 const createConnection = require('snowflake-sdk');
+
+const envMap = {
+	account: [
+		{ key: 'SNOWFLAKE_ACCOUNT', deprecated: true },
+		{ key: 'ACCOUNT', deprecated: true },
+		{ key: 'account', deprecated: true }
+	],
+	username: [
+		{ key: 'SNOWFLAKE_USERNAME', deprecated: true },
+		{ key: 'USERNAME', deprecated: true },
+		{ key: 'username', deprecated: true }
+	],
+	password: [
+		{ key: 'SNOWFLAKE_PASSWORD', deprecated: true },
+		{ key: 'PASSWORD', deprecated: true },
+		{ key: 'password', deprecated: true }
+	],
+	database: [
+		{ key: 'SNOWFLAKE_DATABASE', deprecated: true },
+		{ key: 'DATABASE', deprecated: true },
+		{ key: 'database', deprecated: true }
+	],
+	warehouse: [
+		{ key: 'SNOWFLAKE_WAREHOUSE', deprecated: true },
+		{ key: 'WAREHOUSE', deprecated: true },
+		{ key: 'warehouse', deprecated: true }
+	]
+};
 
 const execute = async (connection, queryString) => {
 	return new Promise((resolve, reject) => {
@@ -106,21 +135,11 @@ const standardizeResult = async (result) => {
 const runQuery = async (queryString, database) => {
 	try {
 		var connection = createConnection.createConnection({
-			account: database
-				? database.account
-				: process.env['SNOWFLAKE_ACCOUNT'] || process.env['account'] || process.env['ACCOUNT'],
-			username: database
-				? database.username
-				: process.env['SNOWFLAKE_USERNAME'] || process.env['username'] || process.env['USERNAME'],
-			password: database
-				? database.password
-				: process.env['SNOWFLAKE_PASSWORD'] || process.env['password'] || process.env['PASSWORD'],
-			database: database
-				? database.database
-				: process.env['SNOWFLAKE_DATABASE'] || process.env['database'] || process.env['DATABASE'],
-			warehouse: database
-				? database.warehouse
-				: process.env['SNOWFLAKE_WAREHOUSE'] || process.env['warehouse'] || process.env['WAREHOUSE']
+			account: database ? database.account : getEnv(envMap, 'account'),
+			username: database ? database.username : getEnv(envMap, 'username'),
+			password: database ? database.password : getEnv(envMap, 'password'),
+			database: database ? database.database : getEnv(envMap, 'database'),
+			warehouse: database ? database.warehouse : getEnv(envMap, 'warehouse')
 		});
 
 		const result = await execute(connection, queryString);
