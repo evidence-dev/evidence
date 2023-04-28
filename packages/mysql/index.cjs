@@ -1,6 +1,40 @@
-const { number } = require('echarts');
+const { getEnv } = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const mysqlTypes = mysql.Types;
+
+const envMap = {
+	host: [
+		{ key: 'MYSQL_HOST', deprecated: true },
+		{ key: 'host', deprecated: true },
+		{ key: 'HOST', deprecated: true }
+	],
+	port: [
+		{ key: 'MYSQL_PORT', deprecated: true },
+		{ key: 'port', deprecated: true },
+		{ key: 'PORT', deprecated: true }
+	],
+	database: [
+		{ key: 'MYSQL_DATABASE', deprecated: true },
+		{ key: 'database', deprecated: true },
+		{ key: 'DATABASE', deprecated: true }
+	],
+	user: [
+		{ key: 'MYSQL_USER', deprecated: true },
+		{ key: 'user', deprecated: true },
+		{ key: 'USER', deprecated: true }
+	],
+	socketPath: [
+		{ key: 'MYSQL_SOCKETPATH', deprecated: true },
+		{ key: 'socket_path', deprecated: true },
+		{ key: 'SOCKETPATH', deprecated: true }
+	],
+	ssl: [
+		{ key: 'MYSQL_SSL', deprecated: true },
+		{ key: 'ssl', deprecated: true },
+		{ key: 'SSL', deprecated: true }
+	]
+};
+
 const standardizeResult = async (result) => {
 	var output = [];
 	result.forEach((row) => {
@@ -72,30 +106,28 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 const runQuery = async (queryString, database) => {
 	try {
 		let credentials = {
-			user: database
-				? database.user
-				: process.env['MYSQL_USER'] || process.env['user'] || process.env['USER'],
+			user: database ? database.user : getEnv(envMap, 'user'),
 			host: database
 				? database.host
-				: process.env['MYSQL_HOST'] || process.env['host'] || process.env['HOST'],
+				: getEnv(envMap, 'host'),
 			database: database
 				? database.database
-				: process.env['MYSQL_DATABASE'] || process.env['database'] || process.env['DATABASE'],
+				: getEnv(envMap, 'database'),
 			password: database
 				? database.password
-				: process.env['MYSQL_PASSWORD'] || process.env['password'] || process.env['PASSWORD'],
+				: getEnv(envMap, 'password'),
 			port: database
 				? database.port
-				: process.env['MYSQL_PORT'] || process.env['port'] || process.env['PORT'],
+				: getEnv(envMap, 'port'),
 			socketPath: database
 				? database.socketPath
-				: process.env['MYSQL_SOCKETPATH'] || process.env['socketPath'] || process.env['SOCKETPATH'],
+				: getEnv(envMap, 'socketPath'),
 			decimalNumbers: true
 		};
 
 		let ssl_opt = database
 			? database.ssl
-			: process.env['MYSQL_SSL'] || process.env['ssl'] || process.env['SSL'];
+			: getEnv(envMap, 'ssl');
 
 		if (ssl_opt === 'true') {
 			credentials = Object.assign(credentials, { ssl: {} });
