@@ -1,11 +1,19 @@
 const path = require('path');
-const { processQueryResults } = require('@evidence-dev/db-commons');
+const { processQueryResults, getEnv } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
+
+const envMap = {
+	filename: [
+		{ key: 'DUCKDB_FILENAME', deprecated: true },
+		{ key: 'filename', deprecated: true },
+		{ key: 'FILENAME', deprecated: true }
+	]
+}
 
 const runQuery = async (queryString, database) => {
 	const filename = database
 		? database.filename
-		: process.env['DUCKDB_FILENAME'] || process.env['filename'] || process.env['FILENAME'];
+		: getEnv(envMap, 'filename')
 	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
