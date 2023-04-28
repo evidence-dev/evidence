@@ -1,5 +1,11 @@
 # @evidence-dev/components
 
+## 2.3.2
+
+### Patch Changes
+
+- 97babfb2: Fix <CodeBlock /> on Windows (OS)
+
 ## 2.3.1
 
 ### Patch Changes
