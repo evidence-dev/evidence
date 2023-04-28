@@ -1,6 +1,50 @@
 const pg = require('pg');
 const { Pool } = pg;
-const { EvidenceType } = require('@evidence-dev/db-commons');
+const { EvidenceType, getEnv } = require('@evidence-dev/db-commons');
+
+const envMap = {
+	host: [
+		{ key: 'PG_HOST', deprecated: true },
+		{ key: 'host', deprecated: true },
+		{ key: 'HOST', deprecated: true }
+	],
+	port: [
+		{ key: 'PG_PORT', deprecated: true },
+		{ key: 'port', deprecated: true },
+		{ key: 'PORT', deprecated: true }
+	],
+	database: [
+		{ key: 'PG_DATABASE', deprecated: true },
+		{ key: 'database', deprecated: true },
+		{ key: 'DATABASE', deprecated: true }
+	],
+	user: [
+		{ key: 'PG_USER', deprecated: true },
+		{ key: 'user', deprecated: true },
+		{ key: 'USER', deprecated: true }
+	],
+	password: [
+		{ key: 'PG_PASSWORD', deprecated: true },
+		{ key: 'password', deprecated: true },
+		{ key: 'PASSWORD', deprecated: true }
+	],
+	ssl: [
+		{ key: 'PG_SSL', deprecated: true },
+		{ key: 'ssl', deprecated: true },
+		{ key: 'SSL', deprecated: true }
+	],
+	connString: [
+		{ key: 'PG_CONNECTIONSTRING', deprecated: true },
+		{ key: 'CONNECTIONSTRING', deprecated: true },
+		{ key: 'connectionString', deprecated: true }
+	],
+	schema: [
+		{ key: 'PG_SCHEMA', deprecated: true },
+		{ key: 'schema', deprecated: true },
+		{ key: 'SCHEMA', deprecated: true }
+	]
+}
+
 
 /**
  * Some types that are not defined in the PG library
@@ -84,27 +128,25 @@ const runQuery = async (queryString, database) => {
 		const credentials = {
 			user: database
 				? database.user
-				: process.env['POSTGRES_USER'] || process.env['user'] || process.env['USER'],
+				: getEnv(envMap, 'user'),
 			host: database
 				? database.host
-				: process.env['POSTGRES_HOST'] || process.env['host'] || process.env['HOST'],
+				: getEnv(envMap, 'host'),
 			database: database
 				? database.database
-				: process.env['POSTGRES_DATABASE'] || process.env['database'] || process.env['DATABASE'],
+				: getEnv(envMap, 'database'),
 			password: database
 				? database.password
-				: process.env['POSTGRES_PASSWORD'] || process.env['password'] || process.env['PASSWORD'],
+				: getEnv(envMap, 'password'),
 			port: database
 				? database.port
-				: process.env['POSTGRES_PORT'] || process.env['port'] || process.env['PORT'],
+				: getEnv(envMap, 'port'),
 			ssl: database
 				? database.ssl
-				: process.env['POSTGRES_SSL'] || process.env['ssl'] || process.env['SSL'],
+				: getEnv(envMap, 'ssl'),
 			connectionString: database
 				? database.connectionString
-				: process.env['POSTGRES_CONNECTIONSTRING'] ||
-				  process.env['connectionString'] ||
-				  process.env['CONNECTIONSTRING']
+				: getEnv(envMap, 'connString')
 		};
 
 		// Override types returned by pg package. The package will return some numbers as strings
@@ -133,7 +175,7 @@ const runQuery = async (queryString, database) => {
 		// Set schema if specified. Can't be done using the connection string / credentials. See issue: https://github.com/brianc/node-postgres/issues/1123#issuecomment-501510375 & solution: https://node-postgres.com/apis/pool#events
 		const schema = database
 			? database.schema
-			: process.env['POSTGRES_SCHEMA'] || process.env['schema'] || process.env['SCHEMA'];
+			: getEnv(envMap, 'schema');
 		if (schema) {
 			pool.on('connect', (client) => {
 				client.query(`SET search_path TO ${schema}`);
