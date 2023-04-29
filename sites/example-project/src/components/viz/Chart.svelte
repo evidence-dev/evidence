@@ -97,11 +97,11 @@
 
 	export let stacked100 = false;
 
-	export let chartAreaHeight = 180;
+	export let chartAreaHeight;
 	chartAreaHeight = Number(chartAreaHeight);
 
 	// What other chartAreaHeight values would be considered invalid?
-	if (typeof chartAreaHeight != 'number' || chartAreaHeight < 0) {
+	if (isNaN(chartAreaHeight) || chartAreaHeight < 0) {
 		chartAreaHeight = 180;
 	}
 
