@@ -3,7 +3,7 @@
 	import echartsCanvasDownload from '$lib/modules/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
-	import {createEventDispatcher} from "svelte";
+	import { createEventDispatcher } from 'svelte';
 
 	export let config = undefined;
 
@@ -44,7 +44,7 @@
         overflow: visible;
         display: {copying ? 'none' : 'inherit'}
     "
-		use:echarts={{...config, dispatch}}
+		use:echarts={{ ...config, dispatch }}
 	/>
 
 	<EchartsCopyTarget {config} {height} {width} {copying} />

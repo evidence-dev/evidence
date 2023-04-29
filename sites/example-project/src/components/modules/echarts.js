@@ -427,10 +427,10 @@ export default (node, option) => {
 	chart.setOption(option);
 
 	const dispatch = option.dispatch;
-	chart.on("click", function (params) {
-        dispatch("click", params);
-    });
-	
+	chart.on('click', function (params) {
+		dispatch('click', params);
+	});
+
 	let resizeObserver;
 	const containerElement = document.querySelector('div.content > article');
 	const resizeChart = debounce(() => {
