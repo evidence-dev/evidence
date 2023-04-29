@@ -110,4 +110,6 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excluding header and footer) in pixels. Adjusting the chart height will affect all viewport sizes and may impact the mobile experience for your users.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
+<tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excluding header and footer) in pixels. Adjusting the chart height will affect all viewport sizes and may impact the mobile experience for your users.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
 </table>
