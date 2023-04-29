@@ -137,3 +137,14 @@ from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
     tooltipTitle=country
     series=continent
 />
+
+## Multi-Series Scatter Plot with Custom Height
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+    chartAreaHeight=380
+/>

@@ -120,3 +120,7 @@ select 'China' as country, 101 as value, 1996 as year
 ## Multiple y Column and Series Line
 
 <LineChart data={fda_recalls_class} x=year series=classification y={['voluntary_recalls', 'fda_recalls']}/>
+
+## Multi-Series Line with Custom Height
+
+<LineChart data={simpler_bar} x=year y=value series=country chartAreaHeight=380/>

@@ -21,3 +21,13 @@ x=established_date
     y=banks 
     series=fed_reserve_district
 />
+
+## Stacked Area with Custom Height
+
+<AreaChart 
+    data={dates_state} 
+    x=established_date 
+    y=banks 
+    series=fed_reserve_district
+    chartAreaHeight=380
+/>

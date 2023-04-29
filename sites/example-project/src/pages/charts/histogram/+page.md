@@ -106,3 +106,7 @@ select 3 as measure
 ## Histogram for Small Integers
 
 <Histogram data={single_values} x=measure/>
+
+## Histogram with Custom Height
+
+<Histogram data={simpler_bar} x=value chartAreaHeight=380/>
