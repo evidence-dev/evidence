@@ -97,8 +97,13 @@
 
 	export let stacked100 = false;
 
-	export let chartAreaHeight = 180; // Default can be removed when defaults are set by each chart type component
+	export let chartAreaHeight = 180;
 	chartAreaHeight = Number(chartAreaHeight);
+
+	// What other chartAreaHeight values would be considered invalid?
+	if (typeof chartAreaHeight != 'number' || chartAreaHeight < 0) {
+		chartAreaHeight = 180;
+	}
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration

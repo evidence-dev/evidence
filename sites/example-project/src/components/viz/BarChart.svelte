@@ -39,7 +39,7 @@
 	export let fillOpacity = undefined;
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
-	export let chartAreaHeight = 180;
+	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
 </script>
