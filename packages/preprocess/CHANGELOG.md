@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 2.3.2
+
+### Patch Changes
+
+- 14a6bff7: Add ability to hide title from page when defined in frontmatter
+
 ## 2.3.1
 
 ### Patch Changes

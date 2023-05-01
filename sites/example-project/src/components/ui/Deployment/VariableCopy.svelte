@@ -1,5 +1,6 @@
 <script>
 	import { blur } from 'svelte/transition';
+	import Copy from './CopyIcon.svelte';
 	export let text = undefined;
 	export let hideText = false;
 	let copied = false;
@@ -19,13 +20,11 @@
 			/* ignore errors */
 		}
 	};
-
-	import Copy from './CopyIcon.svelte';
 </script>
 
 <button
 	type="button"
-	class="container"
+	class="container h-6 w-6"
 	class:copied
 	on:click={() => {
 		if (text !== undefined) {
@@ -44,11 +43,13 @@
 			</span>
 		{/if}
 	</span>
-	{#if copied}
-		<Copy class="bx--snippet__icon" color="var(--green-900)" />
-	{:else}
-		<Copy class="bx--snippet__icon" />
-	{/if}
+	<div class="w-4 h-4">
+		{#if copied}
+			<Copy class="bx--snippet__icon" color="var(--green-900)" />
+		{:else}
+			<Copy class="bx--snippet__icon" />
+		{/if}
+	</div>
 </button>
 
 <style>

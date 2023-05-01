@@ -6,14 +6,14 @@
 	<li>Schedule updates to your data</li>
 	<li>Re-build when you push changes to your project</li>
 </ul>
-<p>Evidence Cloud is in private beta. To join the waitlist, sign up below.</p>
+<p>Evidence Cloud is in private beta. Request early access below.</p>
 <div class="new-format-buttons">
 	<button
 		type="button"
 		on:click={() =>
 			window.open(
 				'https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=product&utm_campaign=deploy_panel'
-			)}>Join Waitlist</button
+			)}>Request Early Access</button
 	>
 </div>
 

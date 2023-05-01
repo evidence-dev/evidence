@@ -12,7 +12,7 @@ sidebar_position: 31
     </Tab>
     <Tab label="Second Tab">
         Content of the Second Tab
-    /Tab>
+    </Tab>
 </Tabs>
 ```
 
