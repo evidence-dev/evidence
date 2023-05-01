@@ -10,7 +10,9 @@ _Evidence flavored Markdown_ extends markdown with additional functionality.
 Evidence supports almost all Markdown syntax. See [Markdown Reference](/markdown).
 
 ```markdown
-# Evidence uses Markdown
+---
+title: Evidence uses Markdown
+---
 
 Markdown can be used to write expressively in text.
 

@@ -21,4 +21,4 @@ It allows you to:
 
 Evidence Cloud is currently in private beta. To get early access, sign up below.
 
-<a class="waitlist" href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q">Join Waitlist</a>
+<a class="waitlist" href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=docs">Get Early Access</a>
