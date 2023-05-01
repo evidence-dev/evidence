@@ -8,12 +8,10 @@ const envMap = {
 		{ key: 'filename', deprecated: true },
 		{ key: 'FILENAME', deprecated: true }
 	]
-}
+};
 
 const runQuery = async (queryString, database) => {
-	const filename = database
-		? database.filename
-		: getEnv(envMap, 'filename')
+	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 

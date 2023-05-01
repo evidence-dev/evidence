@@ -91,5 +91,4 @@ exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
 
-
-exports.getEnv = require('./src/getEnv.cjs').getEnv 
+exports.getEnv = require('./src/getEnv.cjs').getEnv;

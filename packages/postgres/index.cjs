@@ -43,8 +43,7 @@ const envMap = {
 		{ key: 'schema', deprecated: true },
 		{ key: 'SCHEMA', deprecated: true }
 	]
-}
-
+};
 
 /**
  * Some types that are not defined in the PG library
@@ -126,27 +125,13 @@ const standardizeResult = async (result) => {
 const runQuery = async (queryString, database) => {
 	try {
 		const credentials = {
-			user: database
-				? database.user
-				: getEnv(envMap, 'user'),
-			host: database
-				? database.host
-				: getEnv(envMap, 'host'),
-			database: database
-				? database.database
-				: getEnv(envMap, 'database'),
-			password: database
-				? database.password
-				: getEnv(envMap, 'password'),
-			port: database
-				? database.port
-				: getEnv(envMap, 'port'),
-			ssl: database
-				? database.ssl
-				: getEnv(envMap, 'ssl'),
-			connectionString: database
-				? database.connectionString
-				: getEnv(envMap, 'connString')
+			user: database ? database.user : getEnv(envMap, 'user'),
+			host: database ? database.host : getEnv(envMap, 'host'),
+			database: database ? database.database : getEnv(envMap, 'database'),
+			password: database ? database.password : getEnv(envMap, 'password'),
+			port: database ? database.port : getEnv(envMap, 'port'),
+			ssl: database ? database.ssl : getEnv(envMap, 'ssl'),
+			connectionString: database ? database.connectionString : getEnv(envMap, 'connString')
 		};
 
 		// Override types returned by pg package. The package will return some numbers as strings
@@ -173,9 +158,7 @@ const runQuery = async (queryString, database) => {
 		var pool = new Pool(credentials);
 
 		// Set schema if specified. Can't be done using the connection string / credentials. See issue: https://github.com/brianc/node-postgres/issues/1123#issuecomment-501510375 & solution: https://node-postgres.com/apis/pool#events
-		const schema = database
-			? database.schema
-			: getEnv(envMap, 'schema');
+		const schema = database ? database.schema : getEnv(envMap, 'schema');
 		if (schema) {
 			pool.on('connect', (client) => {
 				client.query(`SET search_path TO ${schema}`);

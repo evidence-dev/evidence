@@ -1,19 +1,19 @@
 {
-  "name": "@evidence-dev/db-commons",
-  "version": "0.1.3",
-  "description": "Shared modules for Evidence Database Drivers ",
-  "main": "index.cjs",
-  "author": "evidence.dev",
-  "license": "MIT",
-  "dependencies": {
-    "fs-extra": "10.0.0"
-  },
-  "type": "module",
-  "devDependencies": {
-    "@jest/globals": "^29.5.0",
-    "jest": "^28.1.3"
-  },
-  "scripts": {
-    "test": "jest"
-  }
+	"name": "@evidence-dev/db-commons",
+	"version": "0.1.3",
+	"description": "Shared modules for Evidence Database Drivers ",
+	"main": "index.cjs",
+	"author": "evidence.dev",
+	"license": "MIT",
+	"dependencies": {
+		"fs-extra": "10.0.0"
+	},
+	"type": "module",
+	"devDependencies": {
+		"@jest/globals": "^29.5.0",
+		"jest": "^28.1.3"
+	},
+	"scripts": {
+		"test": "jest"
+	}
 }

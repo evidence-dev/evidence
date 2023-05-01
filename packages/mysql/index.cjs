@@ -107,27 +107,15 @@ const runQuery = async (queryString, database) => {
 	try {
 		let credentials = {
 			user: database ? database.user : getEnv(envMap, 'user'),
-			host: database
-				? database.host
-				: getEnv(envMap, 'host'),
-			database: database
-				? database.database
-				: getEnv(envMap, 'database'),
-			password: database
-				? database.password
-				: getEnv(envMap, 'password'),
-			port: database
-				? database.port
-				: getEnv(envMap, 'port'),
-			socketPath: database
-				? database.socketPath
-				: getEnv(envMap, 'socketPath'),
+			host: database ? database.host : getEnv(envMap, 'host'),
+			database: database ? database.database : getEnv(envMap, 'database'),
+			password: database ? database.password : getEnv(envMap, 'password'),
+			port: database ? database.port : getEnv(envMap, 'port'),
+			socketPath: database ? database.socketPath : getEnv(envMap, 'socketPath'),
 			decimalNumbers: true
 		};
 
-		let ssl_opt = database
-			? database.ssl
-			: getEnv(envMap, 'ssl');
+		let ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
 
 		if (ssl_opt === 'true') {
 			credentials = Object.assign(credentials, { ssl: {} });
