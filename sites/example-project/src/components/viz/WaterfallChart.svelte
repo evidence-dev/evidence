@@ -3,14 +3,15 @@
 	import Waterfall from './Waterfall.svelte';
 
 	export let data = undefined;
+
 	export let y = undefined;
 	export let series = undefined;
 	export let xType = undefined;
 
-	export let category = undefined;
-	export let x = category;
+	// export let category = undefined;
+	export let x = undefined;
 
-	export let value = undefined;
+	// export let value = undefined;
 	export let total = undefined;
 
 	export let title = undefined;
@@ -65,5 +66,5 @@
 	chartType="Waterfall Chart"
 	{sort}
 >
-	<Waterfall {data} {category} {value} {total} />
+	<Waterfall {data} {total} />
 </Chart>
