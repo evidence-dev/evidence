@@ -4,41 +4,49 @@ const { EvidenceType, getEnv } = require('@evidence-dev/db-commons');
 
 const envMap = {
 	host: [
-		{ key: 'POSTGRES_HOST', deprecated: true },
+		{ key: 'EVIDENCE_POSTGRES_HOST', deprecated: false },
+		{ key: 'POSTGRES_HOST', deprecated: false },
 		{ key: 'host', deprecated: true },
 		{ key: 'HOST', deprecated: true }
 	],
 	port: [
-		{ key: 'POSTGRES_PORT', deprecated: true },
+		{ key: 'EVIDENCE_POSTGRES_PORT', deprecated: false },
+		{ key: 'POSTGRES_PORT', deprecated: false },
 		{ key: 'port', deprecated: true },
 		{ key: 'PORT', deprecated: true }
 	],
 	database: [
-		{ key: 'POSTGRES_DATABASE', deprecated: true },
+		{ key: 'EVIDENCE_POSTGRES_DATABASE', deprecated: false },
+		{ key: 'POSTGRES_DATABASE', deprecated: false },
 		{ key: 'database', deprecated: true },
 		{ key: 'DATABASE', deprecated: true }
 	],
 	user: [
-		{ key: 'POSTGRES_USER', deprecated: true },
+		{ key: 'EVIDENCE_POSTGRES_USER', deprecated: false },
+		{ key: 'POSTGRES_USER', deprecated: false },
 		{ key: 'user', deprecated: true },
 		{ key: 'USER', deprecated: true }
 	],
 	password: [
-		{ key: 'POSTGRES_PASSWORD', deprecated: true },
+		{ key: 'EVIDENCE_POSTGRES_PASSWORD', deprecated: false },
+		{ key: 'POSTGRES_PASSWORD', deprecated: false },
 		{ key: 'password', deprecated: true },
 		{ key: 'PASSWORD', deprecated: true }
 	],
 	ssl: [
-		{ key: 'POSTGRES_SSL', deprecated: true },
+		{ key: 'EVIDENCE_POSTGRES_SSL', deprecated: false },
+		{ key: 'POSTGRES_SSL', deprecated: false },
 		{ key: 'ssl', deprecated: true },
 		{ key: 'SSL', deprecated: true }
 	],
 	connString: [
-		{ key: 'POSTGRES_CONNECTIONSTRING', deprecated: true },
+		{ key: 'EVIDENCE_POSTGRES_CONNECTIONSTRING', deprecated: false },
+		{ key: 'POSTGRES_CONNECTIONSTRING', deprecated: false },
 		{ key: 'CONNECTIONSTRING', deprecated: true },
 		{ key: 'connectionString', deprecated: true }
 	],
 	schema: [
+		{ key: 'EVIDENCE_POSTGRES_SCHEMA', deprecated: false },
 		{ key: 'POSTGRES_SCHEMA', deprecated: true },
 		{ key: 'schema', deprecated: true },
 		{ key: 'SCHEMA', deprecated: true }

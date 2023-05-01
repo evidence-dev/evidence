@@ -3,18 +3,22 @@ const { EvidenceType, TypeFidelity, getEnv } = require('@evidence-dev/db-commons
 
 const envMap = {
 	projectId: [
-		{ key: 'BIGQUERY_PROJECT_ID', deprecated: true },
+		{ key: 'EVIDENCE_BIGQUERY_PROJECT_ID', deprecated: false },
+		{ key: 'BIGQUERY_PROJECT_ID', deprecated: false },
 		{ key: 'project_id', deprecated: true },
-		{ key: 'PROJECT_ID', deprecated: true }
+		{ key: 'PROJECT_ID', deprecated: true },
+
 	],
 	credentials: {
 		client_email: [
-			{ key: 'BIGQUERY_CLIENT_EMAIL', deprecated: true },
+			{ key: 'EVIDENCE_BIGQUERY_CLIENT_EMAIL', deprecated: false },
+			{ key: 'BIGQUERY_CLIENT_EMAIL', deprecated: false },
 			{ key: 'client_email', deprecated: true },
 			{ key: 'CLIENT_EMAIL', deprecated: true }
 		],
 		private_key: [
-			{ key: 'BIGQUERY_PRIVATE_KEY', deprecated: true },
+			{ key: 'EVIDENCE_BIGQUERY_PRIVATE_KEY', deprecated: false },
+			{ key: 'BIGQUERY_PRIVATE_KEY', deprecated: false },
 			{ key: 'private_key', deprecated: true },
 			{ key: 'PRIVATE_KEY', deprecated: true }
 		]

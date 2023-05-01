@@ -5,7 +5,8 @@ const { processQueryResults, getEnv } = require('@evidence-dev/db-commons');
 
 const envMap = {
 	filename: [
-		{ key: 'SQLITE_FILENAME', deprecated: true },
+		{ key: 'EVIDENCE_SQLITE_FILENAME', deprecated: false },
+		{ key: 'SQLITE_FILENAME', deprecated: false },
 		{ key: 'FILENAME', deprecated: true },
 		{ key: 'filename', deprecated: true }
 	]

@@ -4,32 +4,38 @@ const mysqlTypes = mysql.Types;
 
 const envMap = {
 	host: [
-		{ key: 'MYSQL_HOST', deprecated: true },
+		{ key: 'EVIDENCE_MYSQL_HOST', deprecated: false },
+		{ key: 'MYSQL_HOST', deprecated: false },
 		{ key: 'host', deprecated: true },
 		{ key: 'HOST', deprecated: true }
 	],
 	port: [
-		{ key: 'MYSQL_PORT', deprecated: true },
+		{ key: 'EVIDENCE_MYSQL_PORT', deprecated: false },
+		{ key: 'MYSQL_PORT', deprecated: false },
 		{ key: 'port', deprecated: true },
 		{ key: 'PORT', deprecated: true }
 	],
 	database: [
-		{ key: 'MYSQL_DATABASE', deprecated: true },
+		{ key: 'EVIDENCE_MYSQL_DATABASE', deprecated: false },
+		{ key: 'MYSQL_DATABASE', deprecated: false },
 		{ key: 'database', deprecated: true },
 		{ key: 'DATABASE', deprecated: true }
 	],
 	user: [
-		{ key: 'MYSQL_USER', deprecated: true },
+		{ key: 'EVIDENCE_MYSQL_USER', deprecated: false },
+		{ key: 'MYSQL_USER', deprecated: false },
 		{ key: 'user', deprecated: true },
 		{ key: 'USER', deprecated: true }
 	],
 	socketPath: [
-		{ key: 'MYSQL_SOCKETPATH', deprecated: true },
+		{ key: 'EVIDENCE_MYSQL_SOCKETPATH', deprecated: false },
+		{ key: 'MYSQL_SOCKETPATH', deprecated: false },
 		{ key: 'socket_path', deprecated: true },
 		{ key: 'SOCKETPATH', deprecated: true }
 	],
 	ssl: [
-		{ key: 'MYSQL_SSL', deprecated: true },
+		{ key: 'EVIDENCE_MYSQL_SSL', deprecated: false },
+		{ key: 'MYSQL_SSL', deprecated: false },
 		{ key: 'ssl', deprecated: true },
 		{ key: 'SSL', deprecated: true }
 	]

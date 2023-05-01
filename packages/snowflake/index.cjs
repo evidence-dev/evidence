@@ -3,27 +3,32 @@ const createConnection = require('snowflake-sdk');
 
 const envMap = {
 	account: [
-		{ key: 'SNOWFLAKE_ACCOUNT', deprecated: true },
+		{ key: 'EVIDENCE_SNOWFLAKE_ACCOUNT', deprecated: false },
+		{ key: 'SNOWFLAKE_ACCOUNT', deprecated: false },
 		{ key: 'ACCOUNT', deprecated: true },
 		{ key: 'account', deprecated: true }
 	],
 	username: [
-		{ key: 'SNOWFLAKE_USERNAME', deprecated: true },
+		{ key: 'EVIDENCE_SNOWFLAKE_USERNAME', deprecated: false },
+		{ key: 'SNOWFLAKE_USERNAME', deprecated: false },
 		{ key: 'USERNAME', deprecated: true },
 		{ key: 'username', deprecated: true }
 	],
 	password: [
-		{ key: 'SNOWFLAKE_PASSWORD', deprecated: true },
+		{ key: 'EVIDENCE_SNOWFLAKE_PASSWORD', deprecated: false },
+		{ key: 'SNOWFLAKE_PASSWORD', deprecated: false },
 		{ key: 'PASSWORD', deprecated: true },
 		{ key: 'password', deprecated: true }
 	],
 	database: [
-		{ key: 'SNOWFLAKE_DATABASE', deprecated: true },
+		{ key: 'EVIDENCE_SNOWFLAKE_DATABASE', deprecated: false },
+		{ key: 'SNOWFLAKE_DATABASE', deprecated: false },
 		{ key: 'DATABASE', deprecated: true },
 		{ key: 'database', deprecated: true }
 	],
 	warehouse: [
-		{ key: 'SNOWFLAKE_WAREHOUSE', deprecated: true },
+		{ key: 'EVIDENCE_SNOWFLAKE_WAREHOUSE', deprecated: false },
+		{ key: 'SNOWFLAKE_WAREHOUSE', deprecated: false },
 		{ key: 'WAREHOUSE', deprecated: true },
 		{ key: 'warehouse', deprecated: true }
 	]

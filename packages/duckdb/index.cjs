@@ -1,10 +1,10 @@
-const path = require('path');
 const { processQueryResults, getEnv } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 
 const envMap = {
 	filename: [
-		{ key: 'DUCKDB_FILENAME', deprecated: true },
+		{ key: 'EVIDENCE_DUCKDB_FILENAME', deprecated: false },
+		{ key: 'DUCKDB_FILENAME', deprecated: false },
 		{ key: 'filename', deprecated: true },
 		{ key: 'FILENAME', deprecated: true }
 	]
