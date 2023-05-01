@@ -5,6 +5,12 @@ title: 'Number Formatting'
 description: 'Formats are defined using the column names in your SQL query'
 ---
 
+[Format tags](#format-tags) are the primary way to format numbers and dates in Evidence. Format tags are appended to column names in your SQL query to format how they are displayed in components.
+
+[The format function](#format-function) can be used directly, when using numbers outside components. For example, when using [expressions](../syntax/#expressions) it is not possible to use format tags.
+
+## Format Tags
+
 Formats for numbers and dates are defined using the column names in your SQL query.
 
 A **format tag** can be appended to your column name to ensure the right format (see table below for accepted tags).
@@ -15,15 +21,15 @@ Formatting can be configured in the Value Formatting Section of the Evidence Set
 
 Format tags are case-insensitive, so `growth_pct` and `GROWTH_PCT` are equivalent.
 
-## Built-in Value Format Tags
+### Built-in Value Format Tags
 
 Evidence supports a variety of date/time, number, percentage, and currency formats. You can find the full list of format tags [below](#format-reference)
 
-## Custom Value Format Tags
+### Custom Value Format Tags
 
 Custom formats can be added in the Value Formatting Section of the Evidence Settings. Formats can be coded using [Excel style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68).
 
-## Title Formatting
+### Title Formatting
 
 When creating a table, Evidence formats column titles based on the name of the column and its format tag. Format tags that do not add to the meaning of the column name are not printed as part of the title.
 
@@ -52,17 +58,17 @@ When creating a table, Evidence formats column titles based on the name of the c
 </tr>
 </table>
 
-## Large Numbers
+### Large Numbers
 
 Evidence automatically formats large numbers into shortened versions based on the size of the median number in a column (e.g., 4,000,000 &rarr; 4M).
 
 You can choose to handle these numbers differently by choosing a specific format code. For example, if Evidence is formatting a column as millions, but you want to see all numbers in thousands, you could use the `num0k` format tag, which will show all numbers in the column in thousands with 0 decimal places.
 
-## Format Reference
+### Format Reference
 
 <!-- These are pasted in from the settings menu HTML, with edits -->
 
-### Dates
+#### Dates
 
 <table class="wide">
 <thead >
@@ -140,7 +146,7 @@ You can choose to handle these numbers differently by choosing a specific format
 </tr>
 </table >
 
-### Currencies
+#### Currencies
 
 Supported currencies:
 
@@ -257,7 +263,7 @@ For example, the available tags for USD are:
 
 </table>
 
-### Numbers
+#### Numbers
 
 <table>
 <thead>
@@ -396,7 +402,7 @@ For example, the available tags for USD are:
 
 </table>
 
-### Percentages
+#### Percentages
 
 <table>
 <thead>
@@ -438,3 +444,38 @@ For example, the available tags for USD are:
 </tr>
 
 </table>
+
+
+## Format Function
+
+The format function is used to format expressions which return _numbers_. The format function _cannot_ be used to format dates or times. The syntax is:
+
+```javascript
+fmt(expression, formatCode)
+```
+
+This is useful when you cannot use a component.
+
+
+
+:::info Format Codes
+The format function, `fmt()` accepts Excel style format codes, not format tags
+:::
+
+### Example
+
+In the below example, we return a value from a calculation. In this situtation we cannot use the `Value` component, which only accepts a single row. Instead we use the `Format` function to format the result.
+
+
+````markdown
+```sql sales_per_year
+select
+    date_part('year', order_datetime) AS year,
+    sum(sales) AS total_sales
+from orders
+group by year
+order by year desc
+```
+
+Sales are {fmt(sales_per_year[0].total_sales - sales_per_year[1].total_sales, '+#,##0;-#,##0')} vs last year.
+````
