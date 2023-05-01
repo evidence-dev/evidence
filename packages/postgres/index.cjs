@@ -4,42 +4,42 @@ const { EvidenceType, getEnv } = require('@evidence-dev/db-commons');
 
 const envMap = {
 	host: [
-		{ key: 'PG_HOST', deprecated: true },
+		{ key: 'POSTGRES_HOST', deprecated: true },
 		{ key: 'host', deprecated: true },
 		{ key: 'HOST', deprecated: true }
 	],
 	port: [
-		{ key: 'PG_PORT', deprecated: true },
+		{ key: 'POSTGRES_PORT', deprecated: true },
 		{ key: 'port', deprecated: true },
 		{ key: 'PORT', deprecated: true }
 	],
 	database: [
-		{ key: 'PG_DATABASE', deprecated: true },
+		{ key: 'POSTGRES_DATABASE', deprecated: true },
 		{ key: 'database', deprecated: true },
 		{ key: 'DATABASE', deprecated: true }
 	],
 	user: [
-		{ key: 'PG_USER', deprecated: true },
+		{ key: 'POSTGRES_USER', deprecated: true },
 		{ key: 'user', deprecated: true },
 		{ key: 'USER', deprecated: true }
 	],
 	password: [
-		{ key: 'PG_PASSWORD', deprecated: true },
+		{ key: 'POSTGRES_PASSWORD', deprecated: true },
 		{ key: 'password', deprecated: true },
 		{ key: 'PASSWORD', deprecated: true }
 	],
 	ssl: [
-		{ key: 'PG_SSL', deprecated: true },
+		{ key: 'POSTGRES_SSL', deprecated: true },
 		{ key: 'ssl', deprecated: true },
 		{ key: 'SSL', deprecated: true }
 	],
 	connString: [
-		{ key: 'PG_CONNECTIONSTRING', deprecated: true },
+		{ key: 'POSTGRES_CONNECTIONSTRING', deprecated: true },
 		{ key: 'CONNECTIONSTRING', deprecated: true },
 		{ key: 'connectionString', deprecated: true }
 	],
 	schema: [
-		{ key: 'PG_SCHEMA', deprecated: true },
+		{ key: 'POSTGRES_SCHEMA', deprecated: true },
 		{ key: 'schema', deprecated: true },
 		{ key: 'SCHEMA', deprecated: true }
 	]
