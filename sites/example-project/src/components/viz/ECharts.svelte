@@ -51,7 +51,7 @@
 		/>
 	{/if}
 
-	<EchartsCopyTarget {config} {height} {width} copying={copying || printing} />
+	<EchartsCopyTarget {config} {height} {width} {copying} {printing} />
 
 	<div class="chart-footer">
 		<DownloadData
