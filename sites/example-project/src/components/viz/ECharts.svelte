@@ -24,12 +24,10 @@
 			copying = false;
 		}, 0);
 	}}
-	on:beforeprint={() => {
-		printing = true;
-	}}
-	on:afterprint={() => {
-		printing = false;
-	}}
+	on:beforeprint={() => (printing = true)}
+	on:afterprint={() => (printing = false)}
+	on:export-beforeprint={() => (printing = true)}
+	on:export-afterprint={() => (printing = false)}
 />
 
 <div

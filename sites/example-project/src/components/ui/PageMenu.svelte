@@ -19,10 +19,13 @@
 		}
 	];
 
+    const beforeprint = new Event('beforeprint');
+    const afterprint = new Event('afterprint');
 	function print() {
-		window.dispatchEvent(new Event('beforeprint'));
+		showDropdown = false;
+		window.dispatchEvent(beforeprint);
 		setTimeout(() => window.print(), 0);
-		setTimeout(() => window.dispatchEvent(new Event('afterprint')), 0);
+		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
 
 	function toggleQueries() {
