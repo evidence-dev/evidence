@@ -19,8 +19,8 @@
 		}
 	];
 
-    const beforeprint = new Event('beforeprint');
-    const afterprint = new Event('afterprint');
+	const beforeprint = new Event('beforeprint');
+	const afterprint = new Event('afterprint');
 	function print() {
 		showDropdown = false;
 		window.dispatchEvent(beforeprint);

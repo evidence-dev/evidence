@@ -421,7 +421,7 @@ export default (node, option) => {
 		}
 	});
 
-    const { config, ratio } = option;
+	const { config, ratio } = option;
 
 	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
 	config.animation = false; // disable animation
