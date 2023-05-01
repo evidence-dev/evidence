@@ -96,7 +96,7 @@ let countries = [
     tooltipTitle=country
 />
 
-## Buuble Chart with Custom Height
+## Bubble Chart with Custom Height
 
 <BubbleChart
     data={countries}
