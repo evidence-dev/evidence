@@ -118,3 +118,14 @@ In your evidence file, you can now reference `my_query` and `some_category_my_ca
 ### Advanced Usage
 
 SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_query` depends on `some_category_my_category_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.
+
+If the name of your query file is long, or doesn't match how it is being used on the page; it is easy to change how it is refernced on the page. Instead of importing your query as ` - query.sql`, you can import is as ` - renamed: query.sql`. Now instead of the data being `{query}`, it is `{renamed}`.
+
+```markdown
+---
+sources:
+  - default_query_name.sql # This will be referenced as default_query_name
+  - alias: default_query_name.sql # This will be referenced as alias
+#      ^ This is the key
+---
+```
