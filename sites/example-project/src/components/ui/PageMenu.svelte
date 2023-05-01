@@ -19,10 +19,11 @@
 		}
 	];
 
-	function print() {
-		showDropdown = false;
-		window.print();
-	}
+    function print() {
+        window.dispatchEvent(new Event("beforeprint"));
+        setTimeout(() => window.print(), 0);
+        setTimeout(() => window.dispatchEvent(new Event("afterprint")), 0);
+    }
 
 	function toggleQueries() {
 		showQueries.update((value) => !value);
