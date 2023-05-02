@@ -436,5 +436,5 @@ export default (node, option) => {
 	});
 
 	// Replace the contents with an img tag
-	node.innerHTML = `<img src = ${src} width=100%/>`;
+	node.innerHTML = `<img src=${src} width="100%" style="position: absolute; top: 0" />`;
 };

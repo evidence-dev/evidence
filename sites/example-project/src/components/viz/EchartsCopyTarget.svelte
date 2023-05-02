@@ -18,6 +18,7 @@
           margin-top: 15px;
           margin-bottom: 10px;
           overflow: visible;
+          break-inside: avoid;
       "
 		use:eChartsCopy={{ config, ratio: printing ? 4 : 2 }}
 	/>
