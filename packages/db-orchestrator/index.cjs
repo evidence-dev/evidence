@@ -11,7 +11,7 @@ const logEvent = require('@evidence-dev/telemetry');
 const readline = require('readline');
 const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
 const cacheDirectory = './.evidence-queries/cache';
-const { getEnv } = require("@evidence-dev/db-commons");
+const { getEnv } = require('@evidence-dev/db-commons');
 
 const getQueryCachePaths = (queryString, queryTime) => {
 	let queryTimeMD5 = md5(queryTime);
@@ -59,13 +59,11 @@ const envMap = {
 		{ key: 'DATABASE', deprecated: true },
 		{ key: 'EVIDENCE_DATABASE', deprecated: false }
 	]
-}
+};
 
 const importDBAdapter = async function (settings) {
 	try {
-		const databaseType = settings
-			? settings.database
-			: getEnv(envMap, 'databaseType');
+		const databaseType = settings ? settings.database : getEnv(envMap, 'databaseType');
 		const { default: runQuery } = await import('@evidence-dev/' + databaseType);
 		return runQuery;
 	} catch {

@@ -6,17 +6,16 @@ const envMap = {
 		{ key: 'EVIDENCE_BIGQUERY_PROJECT_ID', deprecated: false },
 		{ key: 'BIGQUERY_PROJECT_ID', deprecated: false },
 		{ key: 'project_id', deprecated: true },
-		{ key: 'PROJECT_ID', deprecated: true },
-
+		{ key: 'PROJECT_ID', deprecated: true }
 	],
 	credentials: {
-		client_email: [
+		clientEmail: [
 			{ key: 'EVIDENCE_BIGQUERY_CLIENT_EMAIL', deprecated: false },
 			{ key: 'BIGQUERY_CLIENT_EMAIL', deprecated: false },
 			{ key: 'client_email', deprecated: true },
 			{ key: 'CLIENT_EMAIL', deprecated: true }
 		],
-		private_key: [
+		privateKey: [
 			{ key: 'EVIDENCE_BIGQUERY_PRIVATE_KEY', deprecated: false },
 			{ key: 'BIGQUERY_PRIVATE_KEY', deprecated: false },
 			{ key: 'private_key', deprecated: true },
@@ -69,8 +68,8 @@ const getCredentials = async (database) => {
 			const creds = {
 				projectId: getEnv(envMap, 'projectId'),
 				credentials: {
-					client_email: getEnv(envMap, 'credentials', 'client_email'),
-					private_key: getEnv(envMap, 'credentials', 'private_key')?.trim()
+					client_email: getEnv(envMap, 'credentials', 'clientEmail'),
+					private_key: getEnv(envMap, 'credentials', 'privateKey')?.trim()
 				}
 			};
 			return creds;
