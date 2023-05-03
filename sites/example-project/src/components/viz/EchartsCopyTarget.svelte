@@ -5,9 +5,10 @@
 	export let height = '291px';
 	export let width = '100%';
 	export let copying = false;
+	export let printing = false;
 </script>
 
-{#if copying}
+{#if copying || printing}
 	<div
 		class="chart"
 		style="
@@ -17,7 +18,8 @@
           margin-top: 15px;
           margin-bottom: 10px;
           overflow: visible;
+          break-inside: avoid;
       "
-		use:eChartsCopy={config}
+		use:eChartsCopy={{ config, ratio: printing ? 4 : 2 }}
 	/>
 {/if}
