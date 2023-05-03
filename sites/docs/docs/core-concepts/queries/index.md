@@ -108,24 +108,25 @@ These queries can then be used on `my_page.md` with the following [frontmatter](
 ```yaml
 ---
 sources:
+  - q4_data: my_query.sql
+  - q4_sales_reps: some_category/my_category_query.sql
+---
+```
+
+In your evidence file, you can now reference `q4_data` and `q4_sales_reps` the same way you would use any other query.
+
+Optionally, you can omit the query name, and the filename will be used instead; these queries will be available at `my_query` and `some_category_my_category_query` (note that `/` became `_`).
+
+```yaml
+---
+sources:
   - my_query.sql
   - some_category/my_category_query.sql
 ---
 ```
 
-In your evidence file, you can now reference `my_query` and `some_category_my_category_query` (note that `/` became `_`) the same way you would use any other query.
-
 ### Advanced Usage
 
+#### File Query Chaining
+
 SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_query` depends on `some_category_my_category_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.
-
-If the name of your query file is long, or doesn't match how it is being used on the page; it is easy to change how it is refernced on the page. Instead of importing your query as ` - query.sql`, you can import is as ` - renamed: query.sql`. Now instead of the data being `{query}`, it is `{renamed}`.
-
-```markdown
----
-sources:
-  - default_query_name.sql # This will be referenced as default_query_name
-  - alias: default_query_name.sql # This will be referenced as alias
-#      ^ This is the key
----
-```
