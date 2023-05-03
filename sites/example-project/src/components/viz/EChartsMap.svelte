@@ -15,7 +15,7 @@
 
 	let downloadChart = false;
 	let copying = false;
-    let printing = false;
+	let printing = false;
 	let hovering = false;
 </script>
 
