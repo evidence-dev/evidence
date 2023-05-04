@@ -25,7 +25,8 @@
 	export let rows = 10; // number of rows to show
 	rows = Number.parseInt(rows);
 
-	let paginated = data.length > rows;
+	let paginated;
+	$: data, rows, paginated = data.length > rows;
 
 	export let rowNumbers = false;
 	rowNumbers = rowNumbers === 'true' || rowNumbers === true;
