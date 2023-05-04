@@ -1,9 +1,8 @@
 ---
 title: Big Value
-sources: 
+sources:
   - orders_with_comparisons: orders_with_comparisons.sql
 ---
-
 
 <BigValue 
 data = {orders_with_comparisons} 
@@ -28,10 +27,10 @@ Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
 
-<LineChart 
-    data = {orders_with_comparisons.filter(d => d.category === "Sinister Toys")} 
-    y=sales_usd0k
-    yAxisTitle="Sales"
+<LineChart
+data = {orders_with_comparisons.filter(d => d.category === "Sinister Toys")}
+y=sales_usd0k
+yAxisTitle="Sales"
 />
 
 ## Uno sine at nunc pontus rectorque umeros

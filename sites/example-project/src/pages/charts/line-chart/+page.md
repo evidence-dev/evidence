@@ -5,7 +5,6 @@ sources:
   - orders_by_category: orders_by_category.sql
 ---
 
-
 ```simpler_bar
 select 'Canada' as country, 60 as value, 1990 as year
 union all

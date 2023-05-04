@@ -56,7 +56,6 @@ union all
 select 'China' as country, 101 as value, 1996 as year
 ```
 
-
 ```single_values
 select 1 as measure
 union all

@@ -1,10 +1,8 @@
 ---
 title: Markdown Tables
 sources:
-    - orders_by_category: orders_by_category.sql
+  - orders_by_category: orders_by_category.sql
 ---
-
-
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida

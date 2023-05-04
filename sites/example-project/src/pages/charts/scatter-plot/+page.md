@@ -112,7 +112,6 @@ let countries = [
 ]
 </script>
 
-
 ## Scatter Plot
 
 <ScatterPlot

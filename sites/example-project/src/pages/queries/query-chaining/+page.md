@@ -5,9 +5,9 @@
 # Query Chaining
 
 ```sql orders_by_category
-select 
-    date_trunc('month', order_datetime) as month, 
-    category, 
+select
+    date_trunc('month', order_datetime) as month,
+    category,
     sum(sales) as sales_usd0k,
     count(sales) as num_orders_num0,
     sales_usd0k / count(sales) as aov_usd2
@@ -19,7 +19,6 @@ order by month, sales_usd0k desc
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
 <DataTable data={orders_by_category}/>
-
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 

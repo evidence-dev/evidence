@@ -9,9 +9,9 @@ Below are a few examples
 ### Normal SQL
 
 ```sql orders_by_category
-select 
-    date_trunc('month', order_datetime) as month, 
-    category, 
+select
+    date_trunc('month', order_datetime) as month,
+    category,
     sum(sales) as sales_usd0k,
     count(sales) as num_orders_num0
 from orders
