@@ -65,7 +65,7 @@ select '2020-05-26' as date, 100 as value_usd, 'Zimbabwe' as country, 'A' as cat
 />
 
 <DataTable
-    data={tableq.filter(x => x.country.includes(externalFilterValue))}
-    link=country_url
-    showLinkCol=true
+data={tableq.filter(x => x.country.includes(externalFilterValue))}
+link=country_url
+showLinkCol=true
 />
