@@ -1,29 +1,32 @@
 ---
 title: Mixed Type Charts
 sources:
-- orders_by_category: orders_by_category.sql
+  - orders_by_category: orders_by_category.sql
 ---
 
 ## Bar and Line Chart
 
+<Chart
+data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+x=month
 
-
-<Chart 
-    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
-    x=month
 >
+
     <Bar y=sales_usd0k/>
     <Line y=num_orders_num0/>
-</Chart>
 
+</Chart>
 
 ## Bar and Line Chart with Custom Height
 
-<Chart 
-    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
-    x=month
-    chartAreaHeight=380
+<Chart
+data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+x=month
+chartAreaHeight=380
+
 >
+
     <Bar y=sales_usd0k/>
     <Line y=num_orders_num0/>
+
 </Chart>

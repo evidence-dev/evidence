@@ -1,14 +1,14 @@
 ---
 title: Area Chart
 sources:
-- orders_by_category: orders_by_category.sql
+  - orders_by_category: orders_by_category.sql
 ---
 
 ## Area
 
 <AreaChart
-    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
-    x=month
+data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+x=month
 />
 
 ## Stacked Area
