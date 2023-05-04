@@ -16,6 +16,7 @@
 
 	let downloadChart = false;
 	let copying = false;
+	let printing = false;
 	let hovering = false;
 </script>
 
@@ -26,6 +27,10 @@
 			copying = false;
 		}, 0);
 	}}
+	on:beforeprint={() => (printing = true)}
+	on:afterprint={() => (printing = false)}
+	on:export-beforeprint={() => (printing = true)}
+	on:export-afterprint={() => (printing = false)}
 />
 
 <div
@@ -33,21 +38,23 @@
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
 >
-	<div
-		class="chart"
-		style="
-        height: {height};
-        width: {width};
-        margin-left: 0;
-        margin-top: 15px;
-        margin-bottom: 10px;
-        overflow: visible;
-        display: {copying ? 'none' : 'inherit'}
-    "
-		use:echarts={{ ...config, dispatch }}
-	/>
+	{#if !printing}
+		<div
+			class="chart"
+			style="
+            height: {height};
+            width: {width};
+            margin-left: 0;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            overflow: visible;
+            display: {copying ? 'none' : 'inherit'}
+        "
+      use:echarts={{ ...config, dispatch }}
+		/>
+	{/if}
 
-	<EchartsCopyTarget {config} {height} {width} {copying} />
+	<EchartsCopyTarget {config} {height} {width} {copying} {printing} />
 
 	<div class="chart-footer">
 		<DownloadData
