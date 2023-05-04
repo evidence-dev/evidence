@@ -93,17 +93,17 @@ In this example, the SQL query contains a column with links to parameterized pag
 
 ```sql
 select
-    fed_reserve_district as name,
-    CONCAT("/parameterized-pages/", fed_reserve_district) as district_link,
-    count(distinct institution_name) as distinct_institutions,
-from `bigquery-public-data.fdic_banks.institutions`
+    category,
+    '/parameterized-pages/' || category as category_link,
+    sum(sales) as sales_usd0
+from orders
 group by 1
 ```
 
-You can then use the `link` property of the DataTable to use your link column as a row link (`district_link` in this example):
+You can then use the `link` property of the DataTable to use your link column as a row link (`category_link` in this example):
 
 ```html
-<DataTable data="{federal_reserve_districts}" link="district_link" />
+<DataTable data="{orders}" link="category_link" />
 ```
 
 By default, the link column of your table is hidden. If you would like it to be displayed in the table, you can use `showLinkCol=true`.

@@ -56,18 +56,6 @@ union all
 select 'China' as country, 101 as value, 1996 as year
 ```
 
-```mobility
-select DATE(date) as date, retail_and_recreation_percent_change_from_baseline as retail
-from `bigquery-public-data.covid19_google_mobility.mobility_report`
-where country_region = "Canada"
-and sub_region_2 = "Toronto Division"
-order by date desc
-```
-
-```census
-select median_rent as median_rent_usd, income_per_capita as income_per_capita_usd
-from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
-```
 
 ```single_values
 select 1 as measure
@@ -101,7 +89,6 @@ select 3 as measure
 ## Histogram
 
 <Histogram data={simpler_bar} x=value/>
-<Histogram data={census} x=median_rent_usd/>
 
 ## Histogram for Small Integers
 

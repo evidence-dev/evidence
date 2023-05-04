@@ -4,24 +4,27 @@
 
 # Query Chaining
 
-```input
-select
-    complaint_description as description,
-    extract(date from created_date) as date,
-    count(*) as number_of_complaints
-from `bigquery-public-data.austin_311.311_service_requests`
-where created_date >= timestamp_sub(current_timestamp(), interval 180 day)
-group by 1,2
+```sql orders_by_category
+select 
+    date_trunc('month', order_datetime) as month, 
+    category, 
+    sum(sales) as sales_usd0k,
+    count(sales) as num_orders_num0,
+    sales_usd0k / count(sales) as aov_usd2
+from orders
+group by month, category
+order by month, sales_usd0k desc
 ```
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-<DataTable data={input}/>
+<DataTable data={orders_by_category}/>
+
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
 ```working_reference
-select count(*) as n_days from ${input}
+select count(*) as n_months from ${orders_by_category}
 ```
 
 <DataTable data={working_reference}/>

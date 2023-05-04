@@ -62,12 +62,14 @@ Below are a few examples
 
 \`\`\`input
 select 
-    complaint_description as description,
-    extract(date from created_date) as date, 
-    count(*) as number_of_complaints 
-from \`bigquery-public-data.austin_311.311_service_requests\` 
-where created_date >= timestamp_sub(current_timestamp(), interval 180 day)
-group by 1,2 
+    date_trunc('month', order_datetime) as month, 
+    category, 
+    sum(sales) as sales_usd0k,
+    count(sales) as num_orders_num0,
+    sales_usd0k / count(sales) as aov_usd2
+from orders
+group by month, category
+order by month, sales_usd0k desc
 \`\`\`
 
 \`\`\`working_reference
