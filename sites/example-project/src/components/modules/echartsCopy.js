@@ -436,5 +436,12 @@ export default (node, option) => {
 	});
 
 	// Replace the contents with an img tag
-	node.innerHTML = `<img src=${src} width="100%" style="position: absolute; top: 0" />`;
+	node.innerHTML = `<img src=${src} width="100%" style="
+        position: absolute; 
+        top: 0;
+        user-select: all;
+        -webkit-user-select: all;
+        -moz-user-select: all;
+        -ms-user-select: all;
+    " />`;
 };

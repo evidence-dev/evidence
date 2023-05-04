@@ -3,6 +3,7 @@
 	import echartsCanvasDownload from '$lib/modules/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
+	import { flush } from 'svelte/internal';
 
 	export let config = undefined;
 
@@ -22,6 +23,7 @@
 <svelte:window
 	on:copy={() => {
 		copying = true;
+		flush();
 		setTimeout(() => {
 			copying = false;
 		}, 0);
@@ -41,11 +43,13 @@
 		<div
 			class="chart"
 			style="
+            height: {height};
             width: {width};
             margin-left: 0;
             margin-top: 15px;
             margin-bottom: 10px;
             overflow: visible;
+            display: {copying ? 'none' : 'inherit'}
         "
 			use:echartsMap={{ config, hasLink }}
 		/>
