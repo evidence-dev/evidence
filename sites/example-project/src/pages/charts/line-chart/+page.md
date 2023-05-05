@@ -1,46 +1,9 @@
-```fda_recalls
-SELECT date_trunc(recall_initiation_date, year) as year,
-sum(if(voluntary_mandated = "Voluntary: Firm Initiated", 1, 0)) as voluntary_recalls,
-sum(if(voluntary_mandated = "FDA Mandated", 1, 0)) as fda_recalls
-FROM `bigquery-public-data.fda_food.food_enforcement`
-where recall_initiation_date > '2000-01-01'
-group by year
-```
-
-```fda_recalls_class
-SELECT date_trunc(recall_initiation_date, year) as year, classification,
-sum(if(voluntary_mandated = "Voluntary: Firm Initiated", 1, 0)) as voluntary_recalls,
-sum(if(voluntary_mandated = "FDA Mandated", 1, 0)) as fda_recalls
-FROM `bigquery-public-data.fda_food.food_enforcement`
-where recall_initiation_date > '2000-01-01'
-group by year, classification
-```
-
-```daily_complaints
-    select
-        extract(date from created_date) as date,
-        count(*) as number_of_complaints
-    from `bigquery-public-data.austin_311.311_service_requests`
-    group by 1
-    order by 1 desc
-    limit 150
-```
-
-```daily_volume_yoy
-with daily_vol as (
-        select
-        extract(year from created_date) as year,
-        extract(dayofyear from created_date) as day_of_year,
-        count(*) as vol
-    from `bigquery-public-data.austin_311.311_service_requests`
-    where extract(year from created_date) >= extract(year from current_date()) - 2
-    group by 1,2)
-
-select
-    *,
-    sum(vol) over(partition by year order by day_of_year) as cum_vol
-from daily_vol
-```
+---
+title: Line Chart
+sources:
+  - orders_by_month: orders_by_month.sql
+  - orders_by_category: orders_by_category.sql
+---
 
 ```simpler_bar
 select 'Canada' as country, 60 as value, 1990 as year
@@ -103,10 +66,10 @@ select 'China' as country, 101 as value, 1996 as year
 ## Line
 
 <LineChart 
-    data={daily_complaints} 
-    x=date 
-    y=number_of_complaints 
-    yAxisTitle="calls to Austin 311 per day"
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
 />
 
 ## Multi-Series Line
@@ -115,8 +78,12 @@ select 'China' as country, 101 as value, 1996 as year
 
 ## Muliple y Column Line
 
-<LineChart data={fda_recalls} x=year y={['voluntary_recalls', 'fda_recalls']}/>
+<LineChart data={orders_by_month} x=month y={["sales_usd0k","num_orders_num0"]}/>
 
 ## Multiple y Column and Series Line
 
-<LineChart data={fda_recalls_class} x=year series=classification y={['voluntary_recalls', 'fda_recalls']}/>
+<LineChart data={orders_by_category} x=month series=category y={["sales_usd0k","num_orders_num0"]}/>
+
+## Multi-Series Line with Custom Height
+
+<LineChart data={simpler_bar} x=year y=value series=country chartAreaHeight=380/>
