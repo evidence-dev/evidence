@@ -10,12 +10,17 @@ jobs:
     outputs:
       preview_url: ${{ steps.waitForNetlifyPreviewDeployment.outputs.url }}
     steps:
+      - name: Wait for Pages changed to neutral
+        uses: fountainhead/action-wait-for-check@v1.0.0
+        id: wait-for-Netlify
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          checkName: 'Pages changed'
       - name: Wait for preview-deployment
         uses: josephduffy/wait-for-netlify-action@v1
         id: waitForNetlifyPreviewDeployment
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          environment: 'Preview – evidence-development-workspace'
           site_name: evidence-development-workspace
           max_timeout: 500
           check_interval: 5
