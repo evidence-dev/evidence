@@ -50,7 +50,7 @@
             overflow: visible;
             display: {copying ? 'none' : 'inherit'}
         "
-      use:echarts={{ ...config, dispatch }}
+			use:echarts={{ ...config, dispatch }}
 		/>
 	{/if}
 
