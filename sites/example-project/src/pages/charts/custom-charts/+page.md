@@ -1,4 +1,4 @@
-## Custom ECharts
+# Custom ECharts
 
 <script>
 const dataAll = [
@@ -150,6 +150,28 @@ let options = {
     }
   ]
 };
+
+// Clickable Chart
+    export let clickedData = undefined;
+
+    function click_handler(ev) {
+        const params = ev.detail;
+        console.log(params);
+        clickedData = params.data;
+    }
+
 </script>
 
 <ECharts config={options}/>
+
+
+
+## Clickable Chart
+
+
+<ECharts
+    config={options}
+    on:click={click_handler}
+/>
+
+Clicked: {JSON.stringify(clickedData)}
