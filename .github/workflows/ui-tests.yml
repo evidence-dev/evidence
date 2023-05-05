@@ -16,6 +16,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: 'Preview – evidence-development-workspace'
+          site_name: https://evidence-development-workspace.netlify.app
           max_timeout: 500
           check_interval: 5
   tests:
