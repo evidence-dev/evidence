@@ -5,14 +5,14 @@ on:
 
 jobs:
   wait_for_preview:
-    name: Wait for vercel-preview
+    name: Wait for netlify-preview
     runs-on: ubuntu-latest
     outputs:
-      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
+      preview_url: ${{ steps.waitForNetlifyPreviewDeployment.outputs.url }}
     steps:
       - name: Wait for preview-deployment
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        id: waitForVercelPreviewDeployment
+        uses: josephduffy/wait-for-netlify-action@v1
+        id: waitForNetlifyPreviewDeployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: 'Preview – evidence-development-workspace'
