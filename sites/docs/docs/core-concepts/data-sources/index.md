@@ -16,6 +16,8 @@ To connect your local development environment to a database:
 
 Evidence will save your credentials locally, and run a test query to confirm that it can connect.
 
+Connections to databases in production are managed via [environment variables](/cli#environment-variables)
+
 ### Supported data sources
 
 Evidence supports:
@@ -35,7 +37,7 @@ We're adding new connectors regularly. [Create a GitHub issue](https://github.co
 The source code for Evidence's connectors is available [on GitHub](https://github.com/evidence-dev/evidence/tree/main/packages)
 
 
-## Data Source Specific Info
+## Data source specific info
 
 All databases can be connected via the UI settings page as described above. Where relevant, additional information is provided below.
 
@@ -112,7 +114,7 @@ DuckDB is a local file-based database. It should be stored in the root of your E
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
-### CSV and Parquet Files
+### CSV and Parquet files
 
 In Evidence, you can query local CSV or Parquet files directly in SQL.
 
