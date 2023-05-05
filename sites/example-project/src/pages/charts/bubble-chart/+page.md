@@ -95,3 +95,15 @@ let countries = [
     series=continent
     tooltipTitle=country
 />
+
+## Bubble Chart with Custom Height
+
+<BubbleChart
+    data={countries}
+    x=inflation_rate_pct1
+    y=jobless_rate_pct1
+    size=gdp_usd
+    series=continent
+    tooltipTitle=country
+    chartAreaHeight=380
+/>

@@ -5,17 +5,23 @@ on:
 
 jobs:
   wait_for_preview:
-    name: Wait for vercel-preview
+    name: Wait for netlify-preview
     runs-on: ubuntu-latest
     outputs:
-      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
+      preview_url: ${{ steps.waitForNetlifyPreviewDeployment.outputs.url }}
     steps:
-      - name: Wait for preview-deployment
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        id: waitForVercelPreviewDeployment
+      - name: Wait for Pages changed to neutral
+        uses: fountainhead/action-wait-for-check@v1.0.0
+        id: wait-for-Netlify
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: 'Preview – evidence-development-workspace'
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          checkName: 'Pages changed'
+      - name: Wait for preview-deployment
+        uses: josephduffy/wait-for-netlify-action@v1
+        id: waitForNetlifyPreviewDeployment
+        with:
+          site_name: evidence-development-workspace
           max_timeout: 500
           check_interval: 5
   tests:

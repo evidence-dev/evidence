@@ -97,6 +97,14 @@
 
 	export let stacked100 = false;
 
+	export let chartAreaHeight;
+	chartAreaHeight = Number(chartAreaHeight);
+
+	// What other chartAreaHeight values would be considered invalid?
+	if (isNaN(chartAreaHeight) || chartAreaHeight < 0) {
+		chartAreaHeight = 180;
+	}
+
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -123,7 +131,6 @@
 	let chartConfig;
 
 	// Chart area sizing:
-	let chartAreaHeight;
 	let hasTitle;
 	let hasSubtitle;
 	let hasLegend;
@@ -442,7 +449,8 @@
 					columnSummary,
 					xAxisTitle,
 					yAxisTitle,
-					tooltipTitle
+					tooltipTitle,
+					chartAreaHeight
 				};
 			});
 
@@ -568,7 +576,6 @@
 			// ---------------------------------------------------------------------------------------
 			// Set up chart area
 			// ---------------------------------------------------------------------------------------
-			chartAreaHeight = 180; // standard height for chart area across all charts
 
 			hasTitle = title ? true : false;
 			hasSubtitle = subtitle ? true : false;
