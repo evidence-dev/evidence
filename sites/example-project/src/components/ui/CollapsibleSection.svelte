@@ -68,7 +68,7 @@
 	</div>
 
 	{#if expanded}
-		<div class="contents" hidden={!expanded} transition:slide>
+		<div hidden={!expanded} transition:slide>
 			{#each folder.children as child}
 				{#if child.href && child.label}
 					<a href={child.href} on:click={toggle}>
