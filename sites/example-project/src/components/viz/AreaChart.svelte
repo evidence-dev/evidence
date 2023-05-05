@@ -27,6 +27,7 @@
 	export let line = undefined;
 	export let fillColor = undefined;
 	export let fillOpacity = undefined;
+	export let chartAreaHeight = undefined;
 
 	export let handleMissing = undefined;
 
@@ -62,6 +63,7 @@
 	{chartType}
 	{sort}
 	{stacked100}
+	{chartAreaHeight}
 >
 	<Area {line} {fillColor} {fillOpacity} {handleMissing} {type} />
 </Chart>
