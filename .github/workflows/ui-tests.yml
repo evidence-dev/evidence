@@ -24,6 +24,8 @@ jobs:
     needs: wait_for_preview
     runs-on: ubuntu-latest
     steps:
+      - name: Print Preview URL
+        run: echo ${{ needs.wait_for_preview.outputs.preview_url }}
       - name: Checkout Repo
         uses: actions/checkout@v3
         with:
