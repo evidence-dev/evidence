@@ -164,10 +164,7 @@ let options = {
 
 <ECharts config={options}/>
 
-
-
 ## Clickable Chart
-
 
 <ECharts
     config={options}
