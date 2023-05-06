@@ -1,11 +1,5 @@
 <script>
 
-import HLine from '$lib/viz/HLine.svelte'
-import VLine from '$lib/viz/VLine.svelte'
-import HArea from '$lib/viz/HArea.svelte'
-import VArea from '$lib/viz/VArea.svelte'
-import MArea from '$lib/viz/MArea.svelte'
-
 let regions = [
     {region: 'West', score_a: 59, score_b: 51},
     {region: 'West', score_a: 70, score_b: 43},
@@ -144,5 +138,5 @@ from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
     tooltipTitle=country
     series=continent
 >
-    <MArea xMin=17000 xMax=24000 yMin=-0.035 yMax=0.055 label="Big and stagnant"/>
+    <ReferenceArea xMin=17000 xMax=24000 yMin=-0.035 yMax=0.055 label="Big and stagnant"/>
 </ScatterPlot>

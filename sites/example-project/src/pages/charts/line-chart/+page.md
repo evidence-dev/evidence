@@ -1,12 +1,3 @@
-<script>
-import HLine from '$lib/viz/HLine.svelte'
-import VLine from '$lib/viz/VLine.svelte'
-import HArea from '$lib/viz/HArea.svelte'
-import VArea from '$lib/viz/VArea.svelte'
-import MArea from '$lib/viz/MArea.svelte'
-
-</script>
-
 ```fda_recalls
 SELECT date_trunc(recall_initiation_date, year) as year,
 sum(if(voluntary_mandated = "Voluntary: Firm Initiated", 1, 0)) as voluntary_recalls,
@@ -109,19 +100,56 @@ union all
 select 'China' as country, 101 as value, 1996 as year
 ```
 
-## Line
+```annotate2
+select 0 as startval, 1000 as endval, 'Normal' as label, 'green' as color
+union all
+select 2200 as startval, 2500 as endval, 'Elevated' as label, 'yellow' as color
+union all
+select 4125 as startval, 5000 as endval, 'Emergency' as label, 'red' as color
+```
+
+```annotate
+select '2020-12-05' as start_date, '2022-12-31' as end_date, 'Campaign A' as label
+union all
+select '2023-02-14' as start_date, '2023-03-20' as end_date, 'Campaign B' as label
+union all
+select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
+```
 
 <LineChart 
     data={daily_complaints} 
     x=date 
     y=number_of_complaints 
-    yAxisTitle="calls to Austin 311 per day"
-/>
+    title="Complaint Calls to Austin 311"
+>
+    <ReferenceArea data={annotate} xMin=start_date xMax=end_date label=label/>
+</LineChart>
+
+<LineChart 
+    data={daily_complaints} 
+    x=date 
+    y=number_of_complaints 
+    title="Complaint Calls to Austin 311"
+>
+    <ReferenceArea yMin=0 yMax=1000 color=green label=Normal labelPosition=bottomRight/>
+    <ReferenceArea yMin=1000 yMax=2000 color=yellow label=Elevated labelColor=grey labelPosition=right/>
+    <ReferenceArea yMin=2000 color=red label=Emergency labelPosition=topRight/>
+    <ReferenceLine xVal='2023-01-30' label="Garbage Strike" showValueInLabel=false/>
+</LineChart>
+
+<LineChart 
+    data={daily_complaints} 
+    x=date 
+    y=number_of_complaints 
+    title="Complaint Calls to Austin 311"
+>
+    <ReferenceLine yVal=3000/>
+</LineChart>
 
 ## Multi-Series Line
 
 <LineChart data={simpler_bar} x=year y=value series=country>
-    <HLine yVal=157 label="Target"/>
+    <ReferenceLine xVal=1995 label="Launch" showValueInLabel=false/>
 </LineChart>
 
 ## Muliple y Column Line

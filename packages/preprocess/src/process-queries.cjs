@@ -50,6 +50,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
         import USMap from '$lib/viz/USMap.svelte';
         import QueryViewer from '$lib/ui/QueryViewer.svelte';
         import CodeBlock from '$lib/ui/CodeBlock.svelte';
+        import ReferenceLine from '$lib/viz/ReferenceLine.svelte';
+        import ReferenceArea from '$lib/viz/ReferenceArea.svelte';
 
         import Alert from '$lib/ui/Alert.svelte';
 

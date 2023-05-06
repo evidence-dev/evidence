@@ -115,7 +115,11 @@ select 'South' as country, 101 as value, 1996 as year
     x=country 
     y=value 
     xAxisTitle=Region
-/>
+>
+    <ReferenceArea yMin=30 yMax=60/>
+    <ReferenceArea xMin=Northwest xMax=North/>
+    <ReferenceLine xVal=North/>
+</BarChart>
 
 ## Stacked Bar
 
@@ -152,7 +156,9 @@ select 'South' as country, 101 as value, 1996 as year
     y=value 
     xAxisTitle=Country 
     swapXY=true
-/>
+>
+    <ReferenceLine yVal=66/>
+</BarChart>
 
 ## Horizontal Stacked Bar
 
