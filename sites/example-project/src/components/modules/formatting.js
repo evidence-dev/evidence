@@ -175,10 +175,8 @@ function applyFormatting(
 }
 function getEffectiveFormattingCode(columnFormat, formattingContext = VALUE_FORMATTING_CONTEXT) {
 	if (typeof columnFormat === 'string') {
-		console.warn(
-			`The first arg to getEffectiveFormattingCode(${columnFormat}, ${formattingContext}) should be an object, not a string`
-		);
-		return columnFormat; //TODO issue-333 consolidate legacy support
+		// This should only be used by end users, not by components.
+		return columnFormat;
 	} else {
 		if (formattingContext === AXIS_FORMATTING_CONTEXT && columnFormat?.axisFormatCode) {
 			return columnFormat.axisFormatCode;

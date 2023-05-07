@@ -2,4 +2,4 @@
 '@evidence-dev/components': patch
 ---
 
-Fix <CodeBlock /> on Windows (OS)
+Make download buttons non-copyable

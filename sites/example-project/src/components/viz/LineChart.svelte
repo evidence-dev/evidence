@@ -28,6 +28,7 @@
 	export let lineType = undefined;
 	export let lineOpacity = undefined;
 	export let lineWidth = undefined;
+	export let chartAreaHeight = undefined;
 
 	export let markers = undefined;
 	export let markerShape = undefined;
@@ -61,6 +62,7 @@
 	{subtitle}
 	chartType="Line Chart"
 	{sort}
+	{chartAreaHeight}
 >
 	<Line
 		{lineColor}

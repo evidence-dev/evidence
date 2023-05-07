@@ -30,6 +30,7 @@
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
 	export let pointSize = undefined;
+	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
 
@@ -64,6 +65,7 @@
 	{subtitle}
 	{chartType}
 	{sort}
+	{chartAreaHeight}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 	<slot></slot>

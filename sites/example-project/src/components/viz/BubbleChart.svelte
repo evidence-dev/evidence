@@ -31,6 +31,7 @@
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
 	export let scaleTo = undefined;
+	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
 
@@ -68,6 +69,7 @@
 	{chartType}
 	{bubble}
 	{sort}
+	{chartAreaHeight}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 	<slot></slot>

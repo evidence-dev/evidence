@@ -39,6 +39,7 @@
 	export let fillOpacity = undefined;
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
+	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
 </script>
@@ -68,6 +69,7 @@
 	chartType="Bar Chart"
 	{sort}
 	{stacked100}
+	{chartAreaHeight}
 >
 	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
 	<slot></slot>

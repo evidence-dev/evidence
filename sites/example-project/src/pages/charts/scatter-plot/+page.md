@@ -113,20 +113,13 @@ let countries = [
 ]
 </script>
 
-```census
-select median_rent as median_rent_usd, income_per_capita as income_per_capita_usd
-from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
-```
-
 ## Scatter Plot
 
-<ScatterPlot 
-    data={census} 
-    y=median_rent_usd 
-    x=income_per_capita_usd 
-    yAxisTitle="Median Rent" 
-    xAxisTitle="Income Per Capita" 
-    sort=false
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
 />
 
 ## Multi-Series Scatter Plot
@@ -137,6 +130,15 @@ from `bigquery-public-data.census_bureau_acs.state_2017_1yr`
     y=gdp_growth_pct1
     tooltipTitle=country
     series=continent
->
-    <ReferenceArea xMin=17000 xMax=24000 yMin=-0.035 yMax=0.055 label="Big and stagnant"/>
-</ScatterPlot>
+/>
+
+## Multi-Series Scatter Plot with Custom Height
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+    chartAreaHeight=380
+/>
