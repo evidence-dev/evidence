@@ -79,6 +79,16 @@ union all
 select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ```
 
+```daily_complaints
+    select
+        extract(date from created_date) as date,
+        count(*) as number_of_complaints
+    from `bigquery-public-data.austin_311.311_service_requests`
+    group by 1
+    order by 1 desc
+    limit 150
+```
+
 <LineChart 
     data={daily_complaints} 
     x=date 
@@ -86,6 +96,15 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
     title="Complaint Calls to Austin 311"
 >
     <ReferenceArea data={annotate} xMin=start_date xMax=end_date label=label/>
+</LineChart>
+
+<LineChart 
+    data={daily_complaints} 
+    x=date 
+    y=number_of_complaints 
+    title="Complaint Calls to Austin 311"
+>
+    <ReferenceLine yVal=2500 label=Threshold/>
 </LineChart>
 
 <LineChart 
