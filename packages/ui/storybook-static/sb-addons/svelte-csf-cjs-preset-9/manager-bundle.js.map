@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["global-externals:@storybook/addons", "../../../../../node_modules/.pnpm/@storybook+addon-svelte-csf@3.0.2_bbpf75lldro5cjjstol63m2m6e/node_modules/@storybook/addon-svelte-csf/dist/cjs/constants.js", "../../../../../node_modules/.pnpm/@storybook+addon-svelte-csf@3.0.2_bbpf75lldro5cjjstol63m2m6e/node_modules/@storybook/addon-svelte-csf/dist/cjs/preset/manager.js"],
+  "sourcesContent": ["export default __STORYBOOKADDONS__;\nconst { addons, types, mockChannel } = __STORYBOOKADDONS__;\nexport { addons, types, mockChannel };", "export const ADDON_ID = 'storybook/svelte-csf';", "import { addons } from '@storybook/addons';\nimport { ADDON_ID } from '../constants';\n\n// Register the addon\naddons.register(ADDON_ID, () => {});"],
+  "mappings": ";AAAA,IAAOA,EAAQ,oBACT,CAAE,OAAAC,EAAQ,MAAAC,EAAO,YAAAC,CAAY,EAAI,oBCDhC,IAAMC,EAAW,uBCIxBC,EAAO,SAASC,EAAU,IAAM,CAAC,CAAC",
+  "names": ["addons_default", "addons", "types", "mockChannel", "ADDON_ID", "addons", "ADDON_ID"]
+}
