@@ -142,3 +142,4 @@ let countries = [
     series=continent
     chartAreaHeight=380
 />
+
