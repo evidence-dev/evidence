@@ -7,4 +7,4 @@
 ### Checklist
 
 - [ ] For UI or styling changes, I have added a screenshot or gif showing before & after
-- [ ] I have added a [changeset](https://github.com/evidence-dev/evidence/blob/main/CONTRIBUTING.md#adding-a-changeset)
+- [ ] I have added a [changeset](https://github.com/evidence-dev/evidence/blob/main/CONTRIBUTING.md#adding-a-changeset) (not required for docs changes)
