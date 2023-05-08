@@ -6,6 +6,9 @@ description: Components are used to display charts and other visual elements
 
 Docs change
 
+Another commit
+
+
 ## What are Components?
 
 Evidence has a built in [component library](/components/all-components) to create charts and other visual elements.
