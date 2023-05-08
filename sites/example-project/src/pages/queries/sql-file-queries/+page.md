@@ -9,7 +9,7 @@ sources:
   - should_break.sql
 ---
 
-```query_on_the_page
+```sql query_on_the_page
 SELECT 10 as t
 ```
 
