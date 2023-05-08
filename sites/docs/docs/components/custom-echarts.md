@@ -29,7 +29,7 @@ ECharts requires the data object to have a specific format. For example in the t
 ![custom-treemap](/img/custom-treemap.png)
 
 ````
-```sales_by_country
+```sql sales_by_country
 select "Canada" as country, 100 as sales
 union all
 select "US" as country, 250 as sales
@@ -39,7 +39,7 @@ union all
 select "Australia" as country, 95 as sales
 ```
 
-```test_data
+```sql test_data
 select country as name, sales as value
 from ${sales_by_country}
 ```
@@ -87,7 +87,7 @@ ECharts requires the data object to have a specific format. For example in the f
 ![custom-funnel](/img/custom-funnel.png)
 
 ````
-```funnel_stages
+```sql funnel_stages
 select "Emailed" as stage, 129 as count
 union all
 select "Meeting" as stage, 86 as count
@@ -97,7 +97,7 @@ union all
 select "Signed" as stage, 44 as count
 ```
 
-```funnel_data
+```sql funnel_data
 select stage as name, count as value
 from ${funnel_stages}
 ```
@@ -127,7 +127,7 @@ ECharts requires the data object to have a specific format. For example in the p
 ![custom-pie](/img/custom-pie.png)
 
 ````
-```pie_query
+```sql pie_query
 select "Apple" as pie, 60 as count
 union all
 select "Blueberry" as pie, 70 as count
@@ -137,7 +137,7 @@ union all
 select "Pecan" as pie, 35 as count
 ```
 
-```pie_data
+```sql pie_data
 select pie as name, count as value
 from ${pie_query}
 ```
@@ -167,7 +167,7 @@ ECharts requires the data object to have a specific format. For example in the d
 ![custom-donut](/img/custom-donut.png)
 
 ````
-```donut_query
+```sql donut_query
 select "Glazed" as donut, 213 as count
 union all
 select "Cruller" as donut, 442 as count
@@ -177,7 +177,7 @@ union all
 select "Cream-filled" as donut, 350 as count
 ```
 
-```donut_data
+```sql donut_data
 select donut as name, count as value
 from ${donut_query}
 ```

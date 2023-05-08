@@ -37,7 +37,7 @@ It's possible to create these links manually, but it's easier to generate them a
 Construct unique values for each row, and create links for each row in the table.
 
 ````markdown
-```channels
+```sql channels
 select
     channel,
     '?channel=' || channel as filter_link
@@ -65,7 +65,7 @@ We can use this to filter a `<DataTable/>` component:
 ````markdown
 ## Filtered Component
 
-```items
+```sql items
 select
     email,
     channel,

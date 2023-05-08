@@ -19,7 +19,7 @@ group by month, category
 order by month, sales_usd0k desc
 ```
 
-```working_reference
+```sql working_reference
     select count(*) as n_months from ${orders_by_category}
 ```
 

@@ -31,7 +31,7 @@ Components use angle brackets (`<.../>`) to wrap the component name, like HTML s
 The simplest component is the `<Value/>` component. It displays a single value from a query. It can be used to put automatically updated values in text.
 
 ````markdown
-```orders
+```sql orders
 SELECT
     '2021-01-01' AS date,
     100 AS num_orders

@@ -4,7 +4,7 @@
 
 ## Timestamp Types
 
-```timestamps
+```sql timestamps
 select
     to_date('2020-04-22') as date,
     to_timestamp('2020-04-22') as timestamp,
@@ -21,7 +21,7 @@ select
 
 ## Date
 
-```snowflake_date
+```sql snowflake_date
 select
         to_date('2020-04-22') as date,
         100 as sales_usd
@@ -49,7 +49,7 @@ select
 
 ## Timestamp
 
-```snowflake_timestamp
+```sql snowflake_timestamp
 select
         to_timestamp('2020-04-22') as timestamp,
         100 as sales_usd
@@ -77,7 +77,7 @@ select
 
 ## Timestamp_tz
 
-```snowflake_timestamp_tz
+```sql snowflake_timestamp_tz
 select
         to_timestamp_tz('2020-04-22') as timestamp_tz,
         100 as sales_usd
@@ -105,7 +105,7 @@ select
 
 ## Timestamp_ntz
 
-```snowflake_timestamp_ntz
+```sql snowflake_timestamp_ntz
 select
         to_timestamp_ntz('2020-04-22') as timestamp_ntz,
         100 as sales_usd
@@ -133,7 +133,7 @@ select
 
 ## Timestamp_ltz
 
-```snowflake_timestamp_ltz
+```sql snowflake_timestamp_ltz
 select
         to_timestamp_ltz('2020-04-22') as timestamp_ltz,
         100 as sales_usd
