@@ -1,6 +1,6 @@
 # BigQuery Dates
 
-```dates
+```sql dates
 select
     CAST('2022-07-21' AS DATE) as date,
     CAST('2022-07-21 11:21:24' AS DATETIME) as datetime,
@@ -10,7 +10,7 @@ select
 
 {console.log(dates)}
 
-```fff
+```sql fff
 select '11:10' as time, 100 as value
 union all
 select '11:11' as time, 105 as value

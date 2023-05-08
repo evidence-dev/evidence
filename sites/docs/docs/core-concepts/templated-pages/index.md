@@ -89,7 +89,7 @@ Whilst you could add markdown style links for each parameter value, it is easier
 Create a link per row in the SQL query and pass it to the `<DataTable/>`.
 
 ````markdown
-```customers
+```sql customers
 select
     customer_name,
     'customers/' || customer_name as customer_link,
@@ -107,7 +107,7 @@ group by 1
 ### 2. With an `{#each}` loop
 
 ````markdown
-```customers
+```sql customers
 select
     customer_name,
     sum(sales) as sales_usd
