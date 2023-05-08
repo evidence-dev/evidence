@@ -1,6 +1,6 @@
 # Sankey Diagram
 
-```simple_sankey
+```sql simple_sankey
 select 'products' as source, 'profits' as target, 100 as amount
 union all
 select 'products' as source, 'expenses' as target, 50 as amount
@@ -20,7 +20,7 @@ parvas, indicat quaeritis adhaesi negate. Exsangue sibique Minos Echidnaeae
 miseranda infelix nunc dapes iunctisque praetereunt abluere moenia ferunt aere
 innuba.
 
-```traffic_data
+```sql traffic_data
 select 'google' as source, 'all_traffic' as target, 100 as count
 union all
 select 'direct' as source, 'all_traffic' as target, 50 as count
@@ -49,7 +49,7 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 
 <SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count />
 
-```apple_income_statement
+```sql apple_income_statement
 select 'iphone' as source, 'product revenue' as target, 51 as amount_usd
 union all
 select 'mac' as source, 'product revenue' as target, 10 as amount_usd

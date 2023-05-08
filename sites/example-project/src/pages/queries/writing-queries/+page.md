@@ -2,7 +2,7 @@
 
 ## A working query
 
-```working_query
+```sql working_query
 
 select
 13 as metric,
@@ -12,7 +12,7 @@ current_date() as today
 
 ## A broken query
 
-```broken_query
+```sql broken_query
 
 select 100/2 as whoops
 

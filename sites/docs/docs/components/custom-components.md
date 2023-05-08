@@ -44,7 +44,7 @@ Add a folder called `components/` in the root of your project. This is where Evi
 	import Hello from '$lib/Hello.svelte';
 </script>
 
-```sales_by_country select 'Canada' as country, 100 as sales_usd union all select 'USA' as country,
+```sql sales_by_country select 'Canada' as country, 100 as sales_usd union all select 'USA' as country,
 200 as sales_usd union all select 'UK' as country, 300 as sales_usd ```
 
 <!-- To use data in the component, pass it to the component as a prop

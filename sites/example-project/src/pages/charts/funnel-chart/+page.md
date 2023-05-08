@@ -1,4 +1,4 @@
-```funnel_data
+```sql funnel_data
 select 97 as customers, 'Show' as stage
 union all
 select 102 as customers, 'Click' as stage,

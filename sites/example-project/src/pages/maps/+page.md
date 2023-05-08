@@ -57,7 +57,7 @@ let demoData = [
 
 # Maps
 
-```map_data
+```sql map_data
 select "Arkansas" as name, 100 as value
 union all
 select "Illinois" as name, 200 as value
@@ -70,7 +70,7 @@ select "California" as name, 2000 as value
 
 ```
 
-```world_map
+```sql world_map
 select "Canada" as name, 260 as value
 union all
 select "United Kingdom" as name, 300 as value
@@ -78,7 +78,7 @@ union all
 select "United States of America" as name, 500 as value
 ```
 
-```us_abbrev
+```sql us_abbrev
 select "CA" as name, 100 as sales_usd
 union all
 select "TX" as name, 120 as sales_usd
@@ -89,7 +89,7 @@ select "WA" as name, 5 as sales_usd
 
 ```
 
-```testabb
+```sql testabb
 select "CA" as namef, 100 as value
 union all
 select "TX" as namef, 200 as value

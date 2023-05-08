@@ -1,6 +1,6 @@
 # Value Component
 
-```summary
+```sql summary
 select 1000 as total_sales_usd
 ```
 
