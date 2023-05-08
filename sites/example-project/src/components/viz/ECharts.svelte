@@ -3,6 +3,7 @@
 	import echartsCanvasDownload from '$lib/modules/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
+	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
 
 	export let config = undefined;
@@ -23,6 +24,7 @@
 <svelte:window
 	on:copy={() => {
 		copying = true;
+		flush();
 		setTimeout(() => {
 			copying = false;
 		}, 0);

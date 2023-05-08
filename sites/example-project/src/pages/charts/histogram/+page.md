@@ -1,4 +1,4 @@
-```simpler_bar
+```sql simpler_bar
 select 'Canada' as country, 60 as value, 1990 as year
 union all
 select 'Canada' as country, 83 as value, 1991 as year
@@ -56,7 +56,7 @@ union all
 select 'China' as country, 101 as value, 1996 as year
 ```
 
-```single_values
+```sql single_values
 select 1 as measure
 union all
 select 1 as measure

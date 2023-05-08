@@ -1,4 +1,4 @@
-```tableq
+```sql tableq
 select date('2020-04-30') as date, 87 as value_usd, 'Austria' as country, 'B' as category, 100384 as country_id, 'AT' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AT.png' as flag, 'https://www.google.ca/search?q=austria' as country_url
 union all
 select date('2020-05-01') as date, 95 as value_usd, 'Australia' as country, 'C' as category, 104942 as country_id, 'AU' as country_code, 'https://flaglog.com/codes/standardized-rectangle-120px/AU.png' as flag, 'https://www.google.ca/search?q=australia' as country_url
