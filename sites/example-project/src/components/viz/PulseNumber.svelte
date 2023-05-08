@@ -16,6 +16,6 @@
 		transition: all 1s;
 	}
 	span.flash {
-		color: var(--blue-600);
+		color: var(--gray-600);
 	}
 </style>
