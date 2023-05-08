@@ -1,6 +1,8 @@
 <script>
 	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from './context';
+	import { formatValue } from '$lib/modules/formatting.js';
+
 	let props = getContext(propKey);
 	let config = getContext(configKey);
 
@@ -13,10 +15,13 @@
 	export let lineColor = undefined;
 	export let labelColor = undefined;
 	export let lineWidth = undefined;
+	export let lineType = 'dashed'; // solid, dashed, or dotted
 
 	export let showValueInLabel = true;
 	showValueInLabel = showValueInLabel === 'true' || showValueInLabel === true;
 
+	$: xFormat = $props.xFormat;
+	$: yFormat = $props.yFormat;
 	$: swapXY = $props.swapXY;
 
 	$: if(swapXY){
@@ -71,11 +76,20 @@
         label: {
           show: true,
           position: 'insideEndTop',
-          formatter: showValueInLabel ? '{b} ({c})' : '{b}',
+          formatter: function (params) {
+			let result;
+			if(params.name === ""){
+				// If no label supplied
+				result = showValueInLabel ? `${formatValue(params.value, yVal ? yFormat: xVal ? xFormat : 'string')}` : "";
+			} else {
+				result = showValueInLabel ? `${params.name} (${formatValue(params.value, yVal ? yFormat: xVal ? xFormat : 'string')})` : `${params.name}`;
+			}
+			return result
+		  },
           color: labelColor ?? color ?? 'var(--grey-600)',
           fontWeight: 'medium',
 		  textBorderColor: 'white',
-		  textBorderWidth: 0.5
+		  textBorderWidth: 0.7
         },
 		tooltip: {
 			show: true
@@ -87,7 +101,8 @@
         },
         lineStyle: {
             color: lineColor ?? color ?? 'var(--grey-600)',
-            width: lineWidth ? parseInt(lineWidth) : 1
+            width: lineWidth ? parseInt(lineWidth) : 1,
+			type: lineType
         }
       }
 	};

@@ -15,7 +15,9 @@ sources:
     x=category 
     y=sales_usd0k 
     xAxisTitle=Category
-/>
+>
+    <ReferenceLine yVal=34234 label="Sales Targett" showValueInLabel=false/>
+</BarChart>
 
 ## Stacked Bar
 

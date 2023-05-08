@@ -95,7 +95,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
     y=number_of_complaints 
     title="Complaint Calls to Austin 311"
 >
-    <ReferenceArea data={annotate} xMin=start_date xMax=end_date label=label/>
+    <ReferenceLine data={annotate} xVal=start_date label=label/>
 </LineChart>
 
 <LineChart 
@@ -104,7 +104,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
     y=number_of_complaints 
     title="Complaint Calls to Austin 311"
 >
-    <ReferenceLine yVal=2500 label=Threshold/>
+    <ReferenceLine yVal=2500 showValueInLabel=true label="s"/>
 </LineChart>
 
 <LineChart 
