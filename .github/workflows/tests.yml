@@ -13,9 +13,8 @@ on:
       - 'sites/example-project/src/pages/**'
 
 jobs:
-  Tests-sources:
+  Tests:
     runs-on: ${{ matrix.os }}
-    if: ${{ github.triggering_actor == 'archiewood' || github.triggering_actor == 'mcrascal' || github.triggering_actor == 'ud3sh' || github.triggering_actor == 'hughess' || github.triggering_actor == 'winterhart' ||  github.triggering_actor == 'itsmebriand'  ||  github.triggering_actor == 'csjh'}}
     timeout-minutes: 20
     strategy:
       fail-fast: false
