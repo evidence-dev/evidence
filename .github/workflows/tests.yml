@@ -10,7 +10,6 @@ on:
       - 'LICENSE.md'
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/pull_request_template.md'
-      - 'sites/example-project/src/pages/**'
 
 jobs:
   Tests:
