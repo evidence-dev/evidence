@@ -8,10 +8,6 @@
 	export let series = undefined;
 	export let xType = undefined;
 
-	export let title = undefined;
-	export let subtitle = undefined;
-	export let legend = undefined;
-	export let xAxisTitle = undefined;
 	export let yAxisTitle = undefined;
 	export let xGridlines = undefined;
 	export let yGridlines = undefined;

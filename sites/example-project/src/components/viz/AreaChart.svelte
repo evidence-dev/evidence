@@ -2,11 +2,6 @@
 	import Chart from './Chart.svelte';
 	import Area from './Area.svelte';
 
-	export let data = undefined;
-	export let x = undefined;
-	export let y = undefined;
-	export let series = undefined;
-	export let xType = undefined;
 
 	export let title = undefined;
 	export let subtitle = undefined;
