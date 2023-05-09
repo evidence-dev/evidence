@@ -14,8 +14,7 @@ test('query runs', async () => {
 			assert.instance(results.columnTypes, Array);
 			assert.type(results.rows[0], 'object');
 			assert.equal(results.rows[0].number_col, 100);
-            assert.equal(results.rows[0].bool_col, false);
-            console.log(results)
+			assert.equal(results.rows[0].bool_col, false);
 
 			const actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
 			const actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
@@ -50,7 +49,7 @@ test('query runs', async () => {
 			throw Error(e);
 		}
 	} else {
-		console.log('MySQL tests not currently configured to run during the automated builds');
+		console.log('SQL Server tests not currently configured to run during the automated builds');
 		return;
 	}
 });

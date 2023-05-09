@@ -7,7 +7,7 @@
 	import SqliteForm from './SqliteForm.svelte';
 	import DuckdbForm from './DuckdbForm.svelte';
 	import CSVForm from './CSVForm.svelte';
-    import MSSQLForm from './MSSQLForm.svelte';
+	import MSSQLForm from './MSSQLForm.svelte';
 
 	import { slide, blur } from 'svelte/transition';
 
@@ -35,7 +35,7 @@
 		{ id: 'sqlite', name: 'SQLite', formComponent: SqliteForm },
 		{ id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm },
 		{ id: 'csv', name: 'CSV', formComponent: CSVForm },
-        { id: 'mssql', name: 'SQL Server', formComponent: MSSQLForm }
+		{ id: 'mssql', name: 'SQL Server', formComponent: MSSQLForm }
 	];
 
 	let selectedDatabase =

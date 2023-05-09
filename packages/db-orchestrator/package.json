@@ -10,7 +10,7 @@
 		"@evidence-dev/snowflake": "workspace:^",
 		"@evidence-dev/postgres": "workspace:^",
 		"@evidence-dev/mysql": "workspace:^",
-        "@evidence-dev/mssql": "workspace:^",
+		"@evidence-dev/mssql": "workspace:^",
 		"@evidence-dev/redshift": "workspace:^",
 		"@evidence-dev/sqlite": "workspace:^",
 		"@evidence-dev/duckdb": "workspace:^",
