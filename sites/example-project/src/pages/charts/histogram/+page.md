@@ -87,11 +87,15 @@ select 3 as measure
 
 ## Histogram
 
-<Histogram data={simpler_bar} x=value/>
+<Histogram data={simpler_bar} x=value>
+    <ReferenceArea yMin=6 yMax=10 label="GoodRange" labelPosition=right/>
+</Histogram>
 
 ## Histogram for Small Integers
 
-<Histogram data={single_values} x=measure/>
+<Histogram data={single_values} x=measure>
+    <ReferenceLine yVal=4.5/>
+</Histogram>
 
 ## Histogram with Custom Height
 

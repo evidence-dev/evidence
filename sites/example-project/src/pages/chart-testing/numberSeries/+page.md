@@ -174,11 +174,15 @@ let full5 =
 <BarChart data={numberSeriesNulls} series=series title="Nulls"/>
 
 <h2>100% Stacked Bar Chart</h2>
-<BarChart data={numberSeriesFull} series=series title="Full Data" type=stacked100/>
+<BarChart data={numberSeriesFull} series=series title="Full Data" type=stacked100>
+    <ReferenceLine yVal=0.55/>
+</BarChart> 
 <BarChart data={numberSeriesMissingY} series=series title="Missing Y" type=stacked100/>
 <BarChart data={numberSeriesMissingX} series=series title="Missing X" type=stacked100/>
 <BarChart data={numberSeriesXSync} series=series title="X out of sync" type=stacked100/>
-<BarChart data={numberSeriesNulls} series=series title="Nulls" type=stacked100/>
+<BarChart data={numberSeriesNulls} series=series title="Nulls" type=stacked100>
+  <ReferenceLine yVal=0.55/>
+</BarChart> 
 
 <h2>Horizontal Stacked Bar Chart</h2>
 <BarChart data={numberSeriesFull} series=series swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true/>
@@ -188,7 +192,10 @@ let full5 =
 <BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls"/>
 
 <h2>Horizontal 100% Stacked Bar Chart</h2>
-<BarChart data={numberSeriesFull} series=series swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true type=stacked100/>
+<BarChart data={numberSeriesFull} series=series chartAreaHeight=500 swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true type=stacked100>
+  <ReferenceLine yVal=0.52/>
+  <ReferenceArea xMin=1 xMax=2 label="FFFF"/>
+</BarChart>
 <BarChart data={numberSeriesMissingY} series=series swapXY=true title="Missing Y" type=stacked100/>
 <BarChart data={numberSeriesMissingX} series=series swapXY=true title="Missing X" type=stacked100/>
 <BarChart data={numberSeriesXSync} series=series swapXY=true title="X out of sync" type=stacked100/>

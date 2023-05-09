@@ -88,7 +88,17 @@ let nulls =
 
  </script>
 
-<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+```abc
+select 'a1' as start, 'a3' as end, 'ABC' as label
+union all
+select 'a5' as start, 'a6' as end, 'DEF' as label
+```
+
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false>
+    <!-- <ReferenceArea data={abc} xMin=start xMax=end label=label/> -->
+        <ReferenceArea xMin=a1 xMax=a3 label="ABC"/>
+
+</BarChart>
 
 <h1>Series Column with String X Axis</h1>
 <h2>Line Chart</h2>

@@ -12,15 +12,24 @@
 	export let data = undefined;
 
 	export let color = undefined;
-	export let opacity = 0.1;
+	export let opacity = 1;
 	export let labelColor = undefined;
 	export let border = false;
 	export let borderColor = undefined;
 	export let borderType = undefined;
 	export let borderWidth = undefined;
-	export let labelPosition = 'topLeft';
+	export let labelPosition = undefined;
 
-	switch(labelPosition){
+	$: swapXY = $props.swapXY;
+
+	$: if(swapXY){
+		[xMin, xMax, yMin, yMax] = [yMin, yMax, xMin, xMax];
+		labelPosition = labelPosition ?? 'topRight';
+	} else {
+		labelPosition = labelPosition ?? 'topLeft';
+	}
+
+	$: switch(labelPosition){
 		case 'topLeft':
 			labelPosition = 'insideTopLeft'
 			break;
@@ -59,7 +68,6 @@
 			break;
 	}
 
-
 	let configData = [];
 	$: if(data){
 		configData = [];
@@ -96,27 +104,27 @@
 
 	$: baseConfig = {
         type: 'line',
-            markArea: {
-        data: configData,
-	    animation: false,
-        emphasis: {
-            disabled: true
-        },
-		itemStyle: {
-			color: color ?? 'var(--blue-100)',
-			opacity: opacity,
-			borderWidth: border ? borderWidth ?? 1 : null,
-			borderColor: borderColor ?? color ?? 'var(--blue-200)',
-			borderType: borderType ?? 'dashed'
-		},
-		label: {
-			show: true,
-			position: labelPosition,
-			color: labelColor ?? color ?? 'var(--blue-300)'
-		},
+        markArea: {
+			data: configData,
+			silent: true,
+			animation: false,
+			emphasis: {
+				disabled: true
+			},
+			itemStyle: {
+				color: color ?? '#EDF6FD',
+				opacity: opacity,
+				borderWidth: border ? (borderWidth ?? 1) : null,
+				borderColor: borderColor ?? (color ?? '#82C0EF'),
+				borderType: borderType ?? 'dashed'
+			},
+			label: {
+				show: true,
+				position: labelPosition,
+				color: labelColor ?? (color ? 'var(--grey-500)' : '#82C0EF')
+			},
       },
 	  zlevel: 0
-
 	};
 
 	$: config.update((d) => {

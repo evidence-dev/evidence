@@ -26,6 +26,7 @@
 
 	$: if(swapXY){
 		[xVal, yVal] = [yVal, xVal];
+		[xFormat, yFormat] = [yFormat, xFormat];
 	}
 
 	let configData = [];
@@ -73,6 +74,7 @@
         type: 'line',
         markLine: {
         data: configData,
+		silent: true,
         label: {
           show: true,
           position: 'insideEndTop',
@@ -86,69 +88,27 @@
 			}
 			return result
 		  },
-          color: labelColor ?? color ?? 'var(--grey-600)',
+          color: labelColor ?? (color ?? 'var(--grey-600)'),
           fontWeight: 'medium',
 		  textBorderColor: 'white',
 		  textBorderWidth: 0.7
         },
-		tooltip: {
-			show: true
-		},
 		animation: false,
 		symbol: 'none',
         emphasis: {
             disabled: true
         },
         lineStyle: {
-            color: lineColor ?? color ?? 'var(--grey-600)',
+            color: lineColor ?? (color ?? 'var(--grey-600)'),
             width: lineWidth ? parseInt(lineWidth) : 1,
 			type: lineType
         }
       }
 	};
 
-	// $: seriesConfig = getSeriesConfig(
-	// 	data,
-	// 	x,
-	// 	y,
-	// 	series,
-	// 	swapXY,
-	// 	baseConfig,
-	// 	name,
-	// 	xMismatch,
-	// 	columnSummary
-	// );
-
 	$: config.update((d) => {
 		d.series.push(baseConfig);
 		return d;
 	});
 
-	// $: if (options) {
-	// 	config.update((d) => {
-	// 		return { ...d, ...options };
-	// 	});
-	// }
-
-	// $: chartOverrides = {
-	// 	yAxis: {
-	// 		boundaryGap: ['0%', '1%']
-	// 	},
-	// 	xAxis: {
-	// 		boundaryGap: [xType === 'time' ? '2%' : '0%', '2%']
-	// 	}
-	// };
-
-	// beforeUpdate(() => {
-	// 	config.update((d) => {
-	// 		if (swapXY) {
-	// 			d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
-	// 			d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
-	// 		} else {
-	// 			d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
-	// 			d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
-	// 		}
-	// 		return d;
-	// 	});
-	// });
 </script>
