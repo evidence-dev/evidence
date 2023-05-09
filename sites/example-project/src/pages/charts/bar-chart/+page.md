@@ -16,7 +16,7 @@ sources:
     y=sales_usd0k 
     xAxisTitle=Category
 >
-    <ReferenceLine yVal=34234 label="Sales Targett" showValueInLabel=false/>
+    <ReferenceLine y=34234 label="Sales Targett" showValueInLabel=false/>
 </BarChart>
 
 ## Stacked Bar
@@ -68,7 +68,7 @@ sources:
     xAxisTitle=Country 
     swapXY=true
 >
-    <ReferenceLine yVal=66/>
+    <ReferenceLine y=66/>
 </BarChart>
 
 ## Horizontal Stacked Bar

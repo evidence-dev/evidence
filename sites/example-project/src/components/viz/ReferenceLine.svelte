@@ -6,8 +6,8 @@
 	let props = getContext(propKey);
 	let config = getContext(configKey);
 
-    export let xVal = undefined;
-	export let yVal = undefined;
+    export let x = undefined;
+	export let y = undefined;
 	export let data = undefined;
 	export let label = undefined;
 
@@ -25,45 +25,45 @@
 	$: swapXY = $props.swapXY;
 
 	$: if(swapXY){
-		[xVal, yVal] = [yVal, xVal];
+		[x, y] = [y, x];
 		[xFormat, yFormat] = [yFormat, xFormat];
 	}
 
 	let configData = [];
 	$: if(data){
 		configData = [];
-		if(xVal){			
+		if(x){			
 			for(let i=0; i < data.length; i++){
 				configData.push(
 					{
 						name: data[i][label],
-						xAxis: data[i][xVal]
+						xAxis: data[i][x]
 					}
 				)
 			}
-		} else if(yVal){
+		} else if(y){
 			for(let i=0; i < data.length; i++){
 				configData.push(
 					{
 						name: data[i][label],
-						yAxis: data[i][yVal]
+						yAxis: data[i][y]
 					}
 				)
 			}
 		}
 	} else {
-		if(xVal){
+		if(x){
 			configData.push(
 				{
 					name: label,
-					xAxis: xVal
+					xAxis: x
 				}
 			)
-		} else if(yVal){
+		} else if(y){
 			configData.push(
 				{
 					name: label,
-					yAxis: yVal
+					yAxis: y
 				}
 			)
 		}
@@ -82,9 +82,9 @@
 			let result;
 			if(params.name === ""){
 				// If no label supplied
-				result = showValueInLabel ? `${formatValue(params.value, yVal ? yFormat: xVal ? xFormat : 'string')}` : "";
+				result = showValueInLabel ? `${formatValue(params.value, y ? yFormat: x ? xFormat : 'string')}` : "";
 			} else {
-				result = showValueInLabel ? `${params.name} (${formatValue(params.value, yVal ? yFormat: xVal ? xFormat : 'string')})` : `${params.name}`;
+				result = showValueInLabel ? `${params.name} (${formatValue(params.value, y ? yFormat: x ? xFormat : 'string')})` : `${params.name}`;
 			}
 			return result
 		  },

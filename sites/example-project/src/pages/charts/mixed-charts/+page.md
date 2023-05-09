@@ -11,7 +11,7 @@ data={orders_by_category.filter(d => d.category === "Sinister Toys")}
 x=month>
   <Bar y=sales_usd0k/>
   <Line y=num_orders_num0/>
-  <ReferenceLine xVal='2020-01-01' label=date lineColor=grey/>
+  <ReferenceLine x='2020-01-01' label=date lineColor=grey/>
 </Chart>
 
 ## Bar and Line Chart with Custom Height

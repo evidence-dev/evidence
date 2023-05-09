@@ -89,14 +89,15 @@ let nulls =
  </script>
 
 ```abc
-select 'a1' as start, 'a3' as end, 'ABC' as label
+select 'a1' as start, 'a3' as tend, 'ABC' as label
 union all
-select 'a5' as start, 'a6' as end, 'DEF' as label
+select 'a5' as start, 'a6' as tend, 'DEF' as label
 ```
 
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=false>
-    <!-- <ReferenceArea data={abc} xMin=start xMax=end label=label/> -->
-        <ReferenceArea xMin=a1 xMax=a3 label="ABC"/>
+    <!-- <ReferenceArea data={abc} x1=start x2=tend label=label/> -->
+        <!-- <ReferenceArea x1=a1 x2=a3 label="ABC"/> -->
+        <ReferenceLine data={abc} x=start label=label showValueInLabel=false/>
 
 </BarChart>
 

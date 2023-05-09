@@ -95,7 +95,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
     y=number_of_complaints 
     title="Complaint Calls to Austin 311"
 >
-    <ReferenceArea data={annotate} xMin=start_date xMax=end_date label=label/>
+    <ReferenceArea data={annotate} x1=start_date x2=end_date y1=2000 label=label/>
 </LineChart>
 
 <LineChart 
@@ -104,7 +104,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
     y=number_of_complaints 
     title="Complaint Calls to Austin 311"
 >
-    <ReferenceLine yVal=2500 showValueInLabel=true label="s"/>
+    <ReferenceLine y=2500 showValueInLabel=true label="s"/>
 </LineChart>
 
 <LineChart 
@@ -113,10 +113,10 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
     y=number_of_complaints 
     title="Complaint Calls to Austin 311"
 >
-    <ReferenceArea yMin=0 yMax=1000 color=#d8f2d8 labelColor=#79b379 label=Normal labelPosition=bottomRight/>
-    <ReferenceArea yMin=1000 yMax=2000 color=#fffcd4 label=Elevated labelColor=#e0bd48 labelPosition=right/>
-    <ReferenceArea opacity=0.5 yMin=2000 color=#ffe2e0 labelColor=#cf625b label=Emergency labelPosition=topRight/>
-    <ReferenceLine xVal='2023-01-30' label="Garbage Strike" showValueInLabel=false/>
+    <ReferenceArea y1=0 y2=1000 color=#d8f2d8 labelColor=#79b379 label=Normal labelPosition=bottomRight/>
+    <ReferenceArea y1=1000 y2=2000 color=#fffcd4 label=Elevated labelColor=#e0bd48 labelPosition=right/>
+    <ReferenceArea opacity=0.5 y1=2000 color=#ffe2e0 labelColor=#cf625b label=Emergency labelPosition=topRight/>
+    <ReferenceLine x='2023-01-30' label="Garbage Strike" showValueInLabel=false/>
 </LineChart>
 
 <LineChart 
@@ -129,7 +129,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ## Multi-Series Line
 
 <LineChart data={simpler_bar} x=year y=value series=country>
-    <ReferenceLine xVal=1995 label="Launch" showValueInLabel=false/>
+    <ReferenceLine x=1995 label="Launch" showValueInLabel=false/>
 </LineChart>
 
 ## Muliple y Column Line

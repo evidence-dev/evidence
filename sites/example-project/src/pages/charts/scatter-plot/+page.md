@@ -121,7 +121,7 @@ let countries = [
     y=gdp_growth_pct1
     tooltipTitle=country
 >
-    <ReferenceLine yVal=0.065/>
+    <ReferenceLine y=0.065/>
 </ScatterPlot>
 
 ## Multi-Series Scatter Plot
@@ -133,7 +133,7 @@ let countries = [
     tooltipTitle=country
     series=continent
 >
-    <ReferenceLine yVal=0.065/>
+    <ReferenceLine y=0.065/>
 </ScatterPlot>
 
 ## Multi-Series Scatter Plot with Custom Height
