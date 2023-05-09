@@ -485,7 +485,7 @@
 						show: yTickMarks
 					},
 					boundaryGap: false,
-					z: 2
+					z: 1
 				};
 			} else {
 				horizAxisConfig = {
@@ -512,7 +512,7 @@
 						margin: 6
 					},
 					scale: true,
-					z: 2
+					z: 1
 				};
 			}
 
@@ -538,7 +538,7 @@
 						//     },
 					},
 					scale: true,
-					z: 2
+					z: 1
 				};
 			} else {
 				verticalAxisConfig = {
@@ -573,7 +573,7 @@
 					min: yMin,
 					max: yMax,
 					boundaryGap: ['0%', '1%'],
-					z: 2
+					z: 1
 				};
 			}
 

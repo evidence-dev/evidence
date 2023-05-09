@@ -114,8 +114,9 @@
 			position: labelPosition,
 			color: labelColor ?? color ?? 'var(--blue-300)'
 		},
-		z: 0
-      }
+      },
+	  zlevel: 0
+
 	};
 
 	$: config.update((d) => {
