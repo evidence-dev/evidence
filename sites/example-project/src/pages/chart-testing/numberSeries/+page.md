@@ -182,7 +182,7 @@ let full5 =
 <BarChart data={numberSeriesXSync} series=series title="X out of sync" type=stacked100/>
 <BarChart data={numberSeriesNulls} series=series title="Nulls" type=stacked100>
   <ReferenceLine y=0.55/>
-</BarChart> 
+</BarChart>
 
 <h2>Horizontal Stacked Bar Chart</h2>
 <BarChart data={numberSeriesFull} series=series swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true/>

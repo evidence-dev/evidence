@@ -311,7 +311,7 @@ let titles  = [
 <AreaChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]}/>
 <AreaChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]}>
     <ReferenceArea x1=2016 x2=2018 label=Recession/>
-</AreaChart>    
+</AreaChart>
 
 <h2>100% Stacked Area Chart</h2>
 <AreaChart data={full} series=fed_reserve_district x=established_date title={titles[0]} type=stacked100/>

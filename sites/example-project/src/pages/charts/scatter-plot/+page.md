@@ -116,24 +116,28 @@ let countries = [
 ## Scatter Plot
 
 <ScatterPlot
-    data={countries}
-    x=gdp_usd
-    y=gdp_growth_pct1
-    tooltipTitle=country
+data={countries}
+x=gdp_usd
+y=gdp_growth_pct1
+tooltipTitle=country
 >
+
     <ReferenceLine y=0.065/>
+
 </ScatterPlot>
 
 ## Multi-Series Scatter Plot
 
 <ScatterPlot
-    data={countries}
-    x=gdp_usd
-    y=gdp_growth_pct1
-    tooltipTitle=country
-    series=continent
+data={countries}
+x=gdp_usd
+y=gdp_growth_pct1
+tooltipTitle=country
+series=continent
 >
+
     <ReferenceLine y=0.065/>
+
 </ScatterPlot>
 
 ## Multi-Series Scatter Plot with Custom Height
@@ -146,4 +150,3 @@ let countries = [
     series=continent
     chartAreaHeight=380
 />
-
