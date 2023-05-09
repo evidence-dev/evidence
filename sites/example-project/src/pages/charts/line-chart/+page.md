@@ -104,7 +104,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
     y=number_of_complaints 
     title="Complaint Calls to Austin 311"
 >
-    <ReferenceLine y=2500 showValueInLabel=true label="s"/>
+    <ReferenceLine y=600 showValueInLabel=true label="Target"/>
 </LineChart>
 
 <LineChart 

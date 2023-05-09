@@ -125,7 +125,10 @@
           color: labelColor ?? (color ?? 'var(--grey-600)'),
           fontWeight: 'medium',
 		  textBorderColor: 'white',
-		  textBorderWidth: 0.7
+		  textBorderWidth: 1
+		//   backgroundColor: 'hsla(360, 100%, 100%, 0.6)',
+		//   padding: 1.5,
+		//   borderRadius: 2
         },
 		animation: false,
 		symbol: 'none',

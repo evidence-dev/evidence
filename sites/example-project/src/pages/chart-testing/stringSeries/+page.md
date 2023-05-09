@@ -126,7 +126,9 @@ select 'a5' as start, 'a6' as tend, 'DEF' as label
 <AreaChart data={nulls} series=series title="Nulls" handleNulls=zero type=stacked100/>
 
 <h2>Stacked Bar Chart</h2>
-<BarChart data={full} series=series title="Full Data" sort=false/>
+<BarChart data={full} series=series title="Full Data" sort=false>
+    <ReferenceLine y=5 label="Target"/>
+</BarChart>
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
 <BarChart data={missingY} series=series title="Missing Y"/>
 <BarChart data={nulls} series=series title="Nulls"/>
