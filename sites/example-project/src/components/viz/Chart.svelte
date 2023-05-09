@@ -450,7 +450,8 @@
 					xAxisTitle,
 					yAxisTitle,
 					tooltipTitle,
-					chartAreaHeight
+					chartAreaHeight,
+					chartType
 				};
 			});
 

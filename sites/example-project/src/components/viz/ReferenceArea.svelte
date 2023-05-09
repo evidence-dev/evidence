@@ -1,6 +1,8 @@
 <script>
 	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from './context';
+	import checkInputs from '$lib/modules/checkInputs';
+	import ErrorChart from './ErrorChart.svelte';
 	let props = getContext(propKey);
 	let config = getContext(configKey);
 
@@ -20,13 +22,29 @@
 	export let borderWidth = undefined;
 	export let labelPosition = undefined;
 
-	$: swapXY = $props.swapXY;
+	let chartType;
+	let error;
+	let swapXY;
 
-	$: if(swapXY){
-		[x1, x2, y1, y2] = [y1, y2, x1, x2];
-		labelPosition = labelPosition ?? 'topRight';
-	} else {
-		labelPosition = labelPosition ?? 'topLeft';
+	$: try {
+		chartType = $props.chartType;
+	} catch(e) {
+		chartType = "Reference Area"
+		error = "Reference Area cannot be used outside of a chart component";
+	}
+
+	$: if(!error){
+		try{
+			swapXY = $props.swapXY;
+			if(swapXY){
+				[x1, x2, y1, y2] = [y1, y2, x1, x2];
+				labelPosition = labelPosition ?? 'topRight';
+			} else {
+				labelPosition = labelPosition ?? 'topLeft';
+			}
+		} catch(e) {
+			error = e;
+		}
 	}
 
 	$: switch(labelPosition){
@@ -69,22 +87,36 @@
 	}
 
 	let configData = [];
-	$: if(data){
-		configData = [];
-		for(let i=0; i < data.length; i++){
-			configData.push(
-				[
-					{
-						name: data[i][label],
-						xAxis: data[i][x1],
-						yAxis: data[i][y1]
-					},
-					{
-						xAxis: data[i][x2],
-						yAxis: data[i][y2]
-					}
-				]
-			)
+	let inputs = [x1, x2, y1, y2, label];
+	let reqCols = [];
+	$: for(let i=0; i < inputs.length; i++){
+		reqCols = [];
+		if(inputs[i] !== undefined){
+			reqCols.push(inputs[i])
+		}
+	}
+	
+	$: if(data && !error){
+		try{
+			checkInputs(data, reqCols);
+			configData = [];
+			for(let i=0; i < data.length; i++){
+				configData.push(
+					[
+						{
+							name: data[i][label],
+							xAxis: data[i][x1],
+							yAxis: data[i][y1]
+						},
+						{
+							xAxis: data[i][x2],
+							yAxis: data[i][y2]
+						}
+					]
+				)
+			}
+		} catch(e) {
+			error = e;
 		}
 	} else {
 		configData.push(
@@ -102,7 +134,10 @@
 		)
 	}
 
-	$: baseConfig = {
+	let baseConfig;
+
+	$: if(!error){
+		baseConfig = {
         type: 'line',
         markArea: {
 			data: configData,
@@ -127,9 +162,14 @@
 	  zlevel: 0
 	};
 
-	$: config.update((d) => {
+	config.update((d) => {
 		d.series.push(baseConfig);
 		return d;
 	});
+}
 
 </script>
+
+{#if error}
+	<ErrorChart {error} chartType={chartType === "Reference Area" ? chartType : `${chartType}: Reference Area`}/>
+{/if}

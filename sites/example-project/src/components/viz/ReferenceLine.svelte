@@ -2,6 +2,8 @@
 	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from './context';
 	import { formatValue } from '$lib/modules/formatting.js';
+	import checkInputs from '$lib/modules/checkInputs';
+	import ErrorChart from './ErrorChart.svelte';
 
 	let props = getContext(propKey);
 	let config = getContext(configKey);
@@ -20,36 +22,66 @@
 	export let showValueInLabel = true;
 	showValueInLabel = showValueInLabel === 'true' || showValueInLabel === true;
 
-	$: xFormat = $props.xFormat;
-	$: yFormat = $props.yFormat;
-	$: swapXY = $props.swapXY;
+	let error;
+	let chartType;
+	let xFormat;
+	let yFormat;
+	let swapXY;
 
-	$: if(swapXY){
-		[x, y] = [y, x];
-		[xFormat, yFormat] = [yFormat, xFormat];
+	$: try {
+		chartType = $props.chartType;
+	} catch(e) {
+		chartType = "Reference Line"
+		error = "Reference Line cannot be used outside of a chart component";
 	}
 
+	$: if(!error) {
+		try {
+			xFormat = $props.xFormat;
+			yFormat = $props.yFormat;
+			swapXY = $props.swapXY;
+
+			if(swapXY){
+				[x, y] = [y, x];
+				[xFormat, yFormat] = [yFormat, xFormat];
+			}
+		} catch(e) {
+			error = e;
+		}
+	}
+
+
 	let configData = [];
-	$: if(data){
-		configData = [];
-		if(x){			
-			for(let i=0; i < data.length; i++){
-				configData.push(
-					{
-						name: data[i][label],
-						xAxis: data[i][x]
+	$: if(data && !error){
+		try{
+			configData = [];
+			if(x){			
+				checkInputs(data, [x]);
+				for(let i=0; i < data.length; i++){
+					if(data[i][x] !== null){
+						configData.push(
+							{
+								name: data[i][label],
+								xAxis: data[i][x]
+							}
+						)
 					}
-				)
-			}
-		} else if(y){
-			for(let i=0; i < data.length; i++){
-				configData.push(
-					{
-						name: data[i][label],
-						yAxis: data[i][y]
+				}
+			} else if(y){
+				checkInputs(data, [y]);
+				for(let i=0; i < data.length; i++){
+					if(data[i][y] !== null){
+						configData.push(
+							{
+								name: data[i][label],
+								yAxis: data[i][y]
+							}
+						)
 					}
-				)
+				}
 			}
+		} catch(e) {
+			error = e;
 		}
 	} else {
 		if(x){
@@ -69,8 +101,10 @@
 		}
 	}
 
+	let baseConfig;
 
-	$: baseConfig = {
+	$: if(!error){
+		baseConfig = {
         type: 'line',
         markLine: {
         data: configData,
@@ -104,11 +138,16 @@
 			type: lineType
         }
       }
-	};
+	}
 
-	$: config.update((d) => {
+	config.update((d) => {
 		d.series.push(baseConfig);
 		return d;
-	});
+	});	
+};
 
 </script>
+
+{#if error}
+	<ErrorChart {error} chartType={chartType === "Reference Line" ? chartType : `${chartType}: Reference Line`}/>
+{/if}
