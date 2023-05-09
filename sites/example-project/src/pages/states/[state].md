@@ -1,4 +1,4 @@
-```state_current
+```sql state_current
 select "CA" as state, "2022-12" as month, 198 as value
 union all
 select "NY" as state, "2022-12" as month, 321 as value
@@ -53,7 +53,7 @@ select "WV" as state, "2022-12" as month, 321 as value
 
 ```
 
-```state_trend
+```sql state_trend
 select "CA" as state, date("2022-01-01") as month, 100 as value
 union all
 select "CA" as state, date("2022-02-01") as month, 103 as value

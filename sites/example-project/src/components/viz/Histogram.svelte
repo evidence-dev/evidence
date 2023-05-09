@@ -20,6 +20,7 @@
 	export let yTickMarks = undefined;
 	export let yMin = 0;
 	export let yMax = undefined;
+	export let chartAreaHeight = undefined;
 
 	export let fillColor = undefined;
 	export let fillOpacity = undefined;
@@ -45,6 +46,7 @@
 	{subtitle}
 	chartType="Histogram"
 	hist="true"
+	{chartAreaHeight}
 >
 	<Hist {fillColor} {fillOpacity} />
 </Chart>

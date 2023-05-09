@@ -1,6 +1,6 @@
 # 100% Stacked Charts
 
-```simpler_bar_unordered
+```sql simpler_bar_unordered
 select 'Canada' as country, 87 as value, 1994 as year
 union all
 select 'Canada' as country, 83 as value, 1991 as year
@@ -79,7 +79,7 @@ Y-axis title gets cut off when 100% stack is used:
 
 ## Single Series Stack
 
-```simpler_bar_oneyear
+```sql simpler_bar_oneyear
 select 'Canada' as country, 87 as value, 1994 as year
 union all
 select 'US' as country, 65 as value, 1994 as year

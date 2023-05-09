@@ -3,6 +3,8 @@
 	import echartsCanvasDownload from '$lib/modules/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
+	import { flush } from 'svelte/internal';
+	import { createEventDispatcher } from 'svelte';
 
 	export let config = undefined;
 
@@ -10,6 +12,8 @@
 	export let width = '100%';
 
 	export let data;
+
+	const dispatch = createEventDispatcher();
 
 	let downloadChart = false;
 	let copying = false;
@@ -20,6 +24,7 @@
 <svelte:window
 	on:copy={() => {
 		copying = true;
+		flush();
 		setTimeout(() => {
 			copying = false;
 		}, 0);
@@ -47,7 +52,7 @@
             overflow: visible;
             display: {copying ? 'none' : 'inherit'}
         "
-			use:echarts={config}
+			use:echarts={{ ...config, dispatch }}
 		/>
 	{/if}
 
