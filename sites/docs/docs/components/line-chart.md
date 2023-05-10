@@ -50,9 +50,9 @@ hide_table_of_contents: false
 
 ```markdown
 <LineChart
-data={fda_recalls}  
- x=year
-y={["voluntary_recalls", "fda_recalls"]}
+    data={fda_recalls}  
+    x=year
+    y={["voluntary_recalls", "fda_recalls"]}
 />
 ```
 
