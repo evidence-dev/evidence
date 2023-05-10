@@ -94,12 +94,7 @@ union all
 select 'a5' as start, 'a6' as tend, 'DEF' as label
 ```
 
-<BarChart data={full} series=series swapXY=true title="Full Data" sort=false>
-    <!-- <ReferenceArea data={abc} x1=start x2=tend label=label/> -->
-        <!-- <ReferenceArea x1=a1 x2=a3 label="ABC"/> -->
-        <ReferenceLine data={abc} x=start label=label showValueInLabel=false/>
-
-</BarChart>
+<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
 
 <h1>Series Column with String X Axis</h1>
 <h2>Line Chart</h2>

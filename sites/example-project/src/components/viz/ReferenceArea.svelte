@@ -6,10 +6,10 @@
 	let props = getContext(propKey);
 	let config = getContext(configKey);
 
-	export let x1 = undefined;
-	export let x2 = undefined;
-	export let y1 = undefined;
-	export let y2 = undefined;
+	export let xMin = undefined;
+	export let xMax = undefined;
+	export let yMin = undefined;
+	export let yMax = undefined;
 	export let label = undefined;
 	export let data = undefined;
 
@@ -76,7 +76,7 @@
 		try {
 			swapXY = $props.swapXY;
 			if (swapXY) {
-				[x1, x2, y1, y2] = [y1, y2, x1, x2];
+				[xMin, xMax, yMin, yMax] = [yMin, yMax, xMin, xMax];
 				labelPosition = labelPosition ?? 'topRight';
 			} else {
 				labelPosition = labelPosition ?? 'topLeft';
@@ -125,7 +125,7 @@
 	}
 
 	let configData = [];
-	let inputs = [x1, x2, y1, y2, label];
+	let inputs = [xMin, xMax, yMin, yMax, label];
 	let reqCols = [];
 	$: for (let i = 0; i < inputs.length; i++) {
 		reqCols = [];
@@ -142,12 +142,12 @@
 				configData.push([
 					{
 						name: data[i][label],
-						xAxis: data[i][x1],
-						yAxis: data[i][y1]
+						xAxis: data[i][xMin],
+						yAxis: data[i][yMin]
 					},
 					{
-						xAxis: data[i][x2],
-						yAxis: data[i][y2]
+						xAxis: data[i][xMax],
+						yAxis: data[i][yMax]
 					}
 				]);
 			}
@@ -158,12 +158,12 @@
 		configData.push([
 			{
 				name: label,
-				xAxis: x1,
-				yAxis: y1
+				xAxis: xMin,
+				yAxis: yMin
 			},
 			{
-				xAxis: x2,
-				yAxis: y2
+				xAxis: xMax,
+				yAxis: yMax
 			}
 		]);
 	}

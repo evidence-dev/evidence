@@ -192,10 +192,7 @@ let full5 =
 <BarChart data={numberSeriesNulls} series=series swapXY=true title="Nulls"/>
 
 <h2>Horizontal 100% Stacked Bar Chart</h2>
-<BarChart data={numberSeriesFull} series=series chartAreaHeight=500 swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true type=stacked100>
-  <ReferenceLine y=0.52/>
-  <ReferenceArea x1=1 x2=2 label="FFFF"/>
-</BarChart>
+<BarChart data={numberSeriesFull} series=series chartAreaHeight=500 swapXY=true title="Full Data" xType=category yBaseline=true yTickMarks=true xTickMarks=true type=stacked100/>
 <BarChart data={numberSeriesMissingY} series=series swapXY=true title="Missing Y" type=stacked100/>
 <BarChart data={numberSeriesMissingX} series=series swapXY=true title="Missing X" type=stacked100/>
 <BarChart data={numberSeriesXSync} series=series swapXY=true title="X out of sync" type=stacked100/>

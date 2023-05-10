@@ -310,7 +310,7 @@ let titles  = [
 <AreaChart data={missingX} series=fed_reserve_district x=established_date title={titles[2]}/>
 <AreaChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]}/>
 <AreaChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]}>
-    <ReferenceArea x1=2016 x2=2018 label=Recession/>
+    <ReferenceArea xMin=2016 xMax=2018 label=Recession/>
 </AreaChart>
 
 <h2>100% Stacked Area Chart</h2>
@@ -321,9 +321,7 @@ let titles  = [
 <AreaChart data={nulls} series=fed_reserve_district x=established_date title={titles[4]} type=stacked100/>
 
 <h2>Stacked Bar Chart</h2>
-<BarChart data={full} series=fed_reserve_district x=established_date title={titles[0]}>
-        <ReferenceArea x1=2016 x2=2018 label=Recession/>
-</BarChart>
+<BarChart data={full} series=fed_reserve_district x=established_date title={titles[0]}/>
 <BarChart data={missingY} series=fed_reserve_district x=established_date title={titles[1]}/>
 <BarChart data={missingX} series=fed_reserve_district x=established_date title={titles[2]}/>
 <BarChart data={xSync} series=fed_reserve_district x=established_date title={titles[3]}/>

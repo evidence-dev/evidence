@@ -17,7 +17,7 @@ y=sales_usd0k
 xAxisTitle=Category
 >
 
-    <ReferenceLine y=34234 label="Sales Target" showValueInLabel=false/>
+    <ReferenceLine y=34234 label="Sales Target" hideValue=false/>
 
 </BarChart>
 

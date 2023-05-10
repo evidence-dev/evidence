@@ -26,8 +26,8 @@
 	export let labelBackground = false;
 	$: labelBackground = labelBackground === 'true' || labelBackground === true;
 
-	export let showValueInLabel = true;
-	$: showValueInLabel = showValueInLabel === 'true' || showValueInLabel === true;
+	export let hideValue = true;
+	$: hideValue = hideValue === 'true' || hideValue === true;
 
 	let colorList = {
 		red: {lineColor: '#b04646', labelColor: '#b04646'},
@@ -174,11 +174,11 @@
 						let result;
 						if (params.name === '') {
 							// If no label supplied
-							result = showValueInLabel
+							result = hideValue
 								? `${formatValue(params.value, y ? yFormat : x ? xFormat : 'string')}`
 								: '';
 						} else {
-							result = showValueInLabel
+							result = hideValue
 								? `${params.name} (${formatValue(
 										params.value,
 										y ? yFormat : x ? xFormat : 'string'

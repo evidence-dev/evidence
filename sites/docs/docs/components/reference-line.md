@@ -90,7 +90,7 @@ A reference line can be produced by hardcoding values or by supplying a dataset,
 <tr>	<td>x</td>	<td>x-axis value where line will be plotted</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>y</td>	<td>y-axis value where line will be plotted</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>label</td>	<td>Text to show as label for the line</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>showValueInLabel</td>	<td>Whether the x or y value should be included in the label</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true - If no label supplied, value will become the label. If label is supplied, value will appear in parentheses after the label.</td>	</tr>
+<tr>	<td>hideValue</td>	<td>Option to remove the value from the label</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false - If no label supplied, value will become the label. If label is supplied, value will appear in parentheses after the label.</td>	</tr>
 </table>
 
 - If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
@@ -103,7 +103,7 @@ A reference line can be produced by hardcoding values or by supplying a dataset,
 <tr>	<td>x</td>	<td>Column containing x-axis values</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>y</td>	<td>Column containing y-axis values</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>label</td>	<td>Column containing a label to use for each line</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>showValueInLabel</td>	<td>Whether the x or y value should be included in the label</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true - If no label supplied, value will become the label. If label is supplied, value will appear in parentheses after the label.</td>	</tr>
+<tr>	<td>hideValue</td>	<td>Option to remove the value from the label</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false - If no label supplied, value will become the label. If label is supplied, value will appear in parentheses after the label.</td>	</tr>
 </table>
 
 - If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
@@ -112,6 +112,7 @@ A reference line can be produced by hardcoding values or by supplying a dataset,
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
+<tr>	<td>labelPosition</td>	<td>Where label will appear on the line</td>	<td class='tcenter'>-</td>	<td class='tcenter'>aboveStart | aboveCenter | aboveEnd <br/> belowStart | belowCenter | belowEnd</td>	<td class='tcenter'>aboveEnd</td>	</tr>
 <tr>	<td>color</td>	<td>Color to override default line and label colors</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>lineColor</td>	<td>Color to override default line color. If used, takes precedence over `color`</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>labelColor</td>	<td>Color to override default label color. If used, takes precedence over `color`</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
