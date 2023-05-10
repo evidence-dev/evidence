@@ -127,7 +127,7 @@ select 'a5' as start, 'a6' as tend, 'DEF' as label
 
 <h2>Stacked Bar Chart</h2>
 <BarChart data={full} series=series title="Full Data" sort=false>
-    <ReferenceLine y=5 label="Target"/>
+    <ReferenceLine y=10 label="Target" labelBackground=true labelTextOutline=false/>
 </BarChart>
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
 <BarChart data={missingY} series=series title="Missing Y"/>

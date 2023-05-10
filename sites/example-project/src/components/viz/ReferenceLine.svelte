@@ -19,8 +19,14 @@
 	export let lineWidth = undefined;
 	export let lineType = 'dashed'; // solid, dashed, or dotted
 
+	export let labelTextOutline = true;
+	$: labelTextOutline = labelTextOutline === 'true' || labelTextOutline === true;
+
+	export let labelBackground = false;
+	$: labelBackground = labelBackground === 'true' || labelBackground === true;
+
 	export let showValueInLabel = true;
-	showValueInLabel = showValueInLabel === 'true' || showValueInLabel === true;
+	$: showValueInLabel = showValueInLabel === 'true' || showValueInLabel === true;
 
 	let error;
 	let chartType;
@@ -123,10 +129,10 @@
 					color: labelColor ?? color ?? 'var(--grey-600)',
 					fontWeight: 'medium',
 					textBorderColor: 'white',
-					textBorderWidth: 1
-					//   backgroundColor: 'hsla(360, 100%, 100%, 0.6)',
-					//   padding: 1.5,
-					//   borderRadius: 2
+					textBorderWidth: labelTextOutline ? 1 : 0,
+					backgroundColor: labelBackground ? 'hsla(360, 100%, 100%, 0.6)' : '',
+					padding: 1.5,
+					borderRadius: 1.5
 				},
 				animation: false,
 				symbol: 'none',
