@@ -79,7 +79,13 @@
 				[xMin, xMax, yMin, yMax] = [yMin, yMax, xMin, xMax];
 				labelPosition = labelPosition ?? 'topRight';
 			} else {
-				labelPosition = labelPosition ?? 'topLeft';
+				if(yMin && yMax && xMin && xMax){
+					labelPosition = labelPosition ?? 'topLeft';
+				} else if(yMin || yMax){
+					labelPosition = labelPosition ?? 'right';
+				} else {
+					labelPosition = labelPosition ?? 'top';
+				}
 			}
 		} catch (e) {
 			error = e;

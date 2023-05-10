@@ -97,9 +97,9 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=num_orders_num0 
     yAxisTitle="Orders per Month"
 >
-    <ReferenceArea yMin=2500 color=green label="Good" labelPosition=right border=true/>
-    <ReferenceArea yMin=1500 yMax=2500 color=yellow label="Okay" labelPosition=right/>
-    <ReferenceArea yMin=0 yMax=1500 color=red label="Bad" labelPosition=right/>
+    <ReferenceArea yMin=2500 color=green label="Good" border=true/>
+    <ReferenceArea yMin=1500 yMax=2500 color=yellow label="Okay"/>
+    <ReferenceArea yMin=0 yMax=1500 color=red label="Bad"/>
 </LineChart>
 
 <ScatterPlot
