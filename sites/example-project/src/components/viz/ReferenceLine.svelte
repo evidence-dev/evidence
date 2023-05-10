@@ -129,7 +129,7 @@
 					color: labelColor ?? color ?? 'var(--grey-600)',
 					fontWeight: 'medium',
 					textBorderColor: 'white',
-					textBorderWidth: labelTextOutline ? 1 : 0,
+					textBorderWidth: labelTextOutline ? 1.5 : 0,
 					backgroundColor: labelBackground ? 'hsla(360, 100%, 100%, 0.6)' : '',
 					padding: 1.5,
 					borderRadius: 1.5
@@ -140,7 +140,7 @@
 					disabled: true
 				},
 				lineStyle: {
-					color: lineColor ?? color ?? 'var(--grey-600)',
+					color: lineColor ?? color ?? 'var(--grey-400)',
 					width: lineWidth ? parseInt(lineWidth) : 1,
 					type: lineType
 				}
