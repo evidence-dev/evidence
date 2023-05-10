@@ -33,7 +33,7 @@
 		red: {lineColor: '#b04646', labelColor: '#b04646'},
 		green: {lineColor: 'var(--green-700)', labelColor: 'var(--green-700)'},
 		yellow: {lineColor: 'var(--yellow-600)', labelColor: 'var(--yellow-700)'},
-		grey: {lineColor: 'var(--grey-500)', labelColor: 'var(--grey-500)'},
+		grey: {lineColor: 'var(--grey-500)', labelColor: 'var(--grey-600)'},
 		blue: {lineColor: 'var(--blue-500)', labelColor: 'var(--blue-500)'}
 	}
 
@@ -87,36 +87,19 @@
 		}
 	}
 
-	$: switch (labelPosition) {
-		case 'aboveEnd':
-			labelPosition = 'insideEndTop';
-			break;
-		case 'aboveStart':
-			labelPosition = 'insideStartTop';
-			break;
-		case 'aboveCenter':
-			labelPosition = 'insideMiddleTop';
-			break;
-		case 'aboveCentre':
-			labelPosition = 'insideMiddleTop';
-			break;
-		case 'belowEnd':
-			labelPosition = 'insideEndBottom';
-			break;
-		case 'belowStart':
-			labelPosition = 'insideStartBottom';
-			break;
-		case 'belowCenter':
-			labelPosition = 'insideMiddleBottom';
-			break;
-		case 'belowCentre':
-			labelPosition = 'insideMiddleBottom';
-			break;
-		default:
-			labelPosition = 'insideEndTop';
+	const labelPositions= {
+		aboveEnd: 'insideEndTop',
+		aboveStart: 'insideStartTop',
+		aboveCenter: 'insideMiddleTop',
+		aboveCentre: 'insideMiddleTop',
+		belowEnd: 'insideEndBottom',
+		belowStart: 'insideStartBottom',
+		belowCenter: 'insideMiddleBottom',
+		belowCentre: 'insideMiddleBottom'
 	}
 
-
+	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop'
+	
 	let configData = [];
 	$: if (data && !error) {
 		try {

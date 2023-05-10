@@ -86,43 +86,20 @@
 		}
 	}
 
-	$: switch (labelPosition) {
-		case 'topLeft':
-			labelPosition = 'insideTopLeft';
-			break;
-		case 'topRight':
-			labelPosition = 'insideTopRight';
-			break;
-		case 'topCenter':
-			labelPosition = 'insideTop';
-			break;
-		case 'topCentre':
-			labelPosition = 'insideTop';
-			break;
-		case 'bottomRight':
-			labelPosition = 'insideBottomRight';
-			break;
-		case 'bottomCenter':
-			labelPosition = 'insideBottom';
-			break;
-		case 'bottomCentre':
-			labelPosition = 'insideBottom';
-			break;
-		case 'right':
-			labelPosition = 'insideRight';
-			break;
-		case 'left':
-			labelPosition = 'insideLeft';
-			break;
-		case 'center':
-			labelPosition = 'inside';
-			break;
-		case 'centre':
-			labelPosition = 'inside';
-			break;
-		default:
-			labelPosition = 'insideTopLeft';
+	const labelPositions= {
+		topLeft: 'insideTopLeft',
+		top: 'insideTop',
+		topRight: 'insideTopRight',
+		bottomLeft: 'insideBottomLeft',
+		bottom: 'insideBottom',
+		bottomRight: 'insideBottomRight',
+		left: 'insideLeft',
+		center: 'inside',
+		centre: 'inside',
+		right: 'insideRight'
 	}
+
+	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop'
 
 	let configData = [];
 	let inputs = [xMin, xMax, yMin, yMax, label];
