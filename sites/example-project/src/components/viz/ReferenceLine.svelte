@@ -19,6 +19,7 @@
 	export let lineWidth = undefined;
 	export let lineType = 'dashed'; // solid, dashed, or dotted
 
+	export let labelPosition = 'endAbove';
 	export let labelTextOutline = true;
 	$: labelTextOutline = labelTextOutline === 'true' || labelTextOutline === true;
 
@@ -55,6 +56,36 @@
 			error = e;
 		}
 	}
+
+	$: switch (labelPosition) {
+		case 'endAbove':
+			labelPosition = 'insideEndTop';
+			break;
+		case 'startAbove':
+			labelPosition = 'insideStartTop';
+			break;
+		case 'centerAbove':
+			labelPosition = 'insideMiddleTop';
+			break;
+		case 'centreAbove':
+			labelPosition = 'insideMiddleTop';
+			break;
+		case 'endBelow':
+			labelPosition = 'insideEndBottom';
+			break;
+		case 'startBelow':
+			labelPosition = 'insideStartBottom';
+			break;
+		case 'centerBelow':
+			labelPosition = 'insideMiddleBottom';
+			break;
+		case 'centreBelow':
+			labelPosition = 'insideMiddleBottom';
+			break;
+		default:
+			labelPosition = 'insideEndTop';
+	}
+
 
 	let configData = [];
 	$: if (data && !error) {
@@ -108,7 +139,7 @@
 				silent: true,
 				label: {
 					show: true,
-					position: 'insideEndTop',
+					position: labelPosition,
 					formatter: function (params) {
 						let result;
 						if (params.name === '') {

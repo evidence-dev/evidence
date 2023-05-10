@@ -81,6 +81,8 @@
 		case 'centre':
 			labelPosition = 'inside';
 			break;
+		default:
+			labelPosition = 'insideTopLeft';
 	}
 
 	let configData = [];
