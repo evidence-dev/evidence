@@ -116,7 +116,7 @@ A reference area can be produced by hardcoding values or by supplying a dataset,
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>labelPosition</td>	<td>Where label will appear within the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>topLeft | topCenter | topRight <br/> left | center | right <br/> bottomLeft | bottomCenter | bottomRight</td>	<td class='tcenter'>topLeft</td>	</tr>
+<tr>	<td>labelPosition</td>	<td>Where label will appear within the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>topLeft | top | topRight <br/> left | center | right <br/> bottomLeft | bottom | bottomRight</td>	<td class='tcenter'>topLeft</td>	</tr>
 <tr>	<td>color</td>	<td>Color to override default area and label colors</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>labelColor</td>	<td>Color to override default label color. If used, takes precedence over `color`</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>border</td>	<td>Whether border should be shown</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
