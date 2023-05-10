@@ -14,6 +14,7 @@
 	export let data = undefined;
 
 	export let color = undefined;
+	export let areaColor = undefined;
 	export let opacity = 1;
 	export let labelColor = undefined;
 	export let border = false;
@@ -21,6 +22,44 @@
 	export let borderType = undefined;
 	export let borderWidth = undefined;
 	export let labelPosition = undefined;
+
+	let defaultColor = 'blue';
+	
+	let colorList = {
+		red: {areaColor: '#fceeed', labelColor: '#b04646', borderColor: '#b04646'},
+		green: {areaColor: '#e6f5e6', labelColor: '#65a665', borderColor: '#65a665'},
+		yellow: {areaColor: '#fffede', labelColor: '#e8bb09', borderColor: '#e8bb09'},
+		grey: {areaColor: 'var(--grey-100)', labelColor: 'var(--grey-500)', borderColor: 'var(--grey-500)'},
+		blue: {areaColor: '#EDF6FD', labelColor: '#51a2e0', borderColor: '#51a2e0'}
+	}
+	
+	if(labelColor){
+		if(Object.keys(colorList).includes(labelColor)){
+			labelColor =  colorList[labelColor].labelColor
+		}
+	} 
+
+	if(borderColor){
+		if(Object.keys(colorList).includes(borderColor)){
+			borderColor =  colorList[borderColor].borderColor
+		}
+	} 
+
+	if(areaColor){
+		if(Object.keys(colorList).includes(areaColor)){
+			areaColor =  colorList[areaColor].areaColor
+		}
+	} 
+
+	if(Object.keys(colorList).includes(color)){
+		areaColor = areaColor ?? colorList[color].areaColor;
+		labelColor = labelColor ?? colorList[color].labelColor;
+		borderColor = borderColor ?? colorList[color].borderColor;
+	} else {
+		areaColor = areaColor ?? colorList[defaultColor].areaColor;
+		labelColor = labelColor ?? colorList[defaultColor].labelColor;
+		borderColor = borderColor ?? colorList[defaultColor].borderColor;
+	}
 
 	let chartType;
 	let error;
@@ -142,16 +181,16 @@
 					disabled: true
 				},
 				itemStyle: {
-					color: color ?? '#EDF6FD',
+					color: areaColor,
 					opacity: opacity,
 					borderWidth: border ? borderWidth ?? 1 : null,
-					borderColor: borderColor ?? color ?? '#82C0EF',
+					borderColor: borderColor,
 					borderType: borderType ?? 'dashed'
 				},
 				label: {
 					show: true,
 					position: labelPosition,
-					color: labelColor ?? (color ? 'var(--grey-500)' : '#82C0EF')
+					color: labelColor
 				}
 			},
 			zlevel: 0

@@ -19,7 +19,7 @@
 	export let lineWidth = undefined;
 	export let lineType = 'dashed'; // solid, dashed, or dotted
 
-	export let labelPosition = 'endAbove';
+	export let labelPosition = 'aboveEnd';
 	export let labelTextOutline = true;
 	$: labelTextOutline = labelTextOutline === 'true' || labelTextOutline === true;
 
@@ -28,6 +28,36 @@
 
 	export let showValueInLabel = true;
 	$: showValueInLabel = showValueInLabel === 'true' || showValueInLabel === true;
+
+	let colorList = {
+		red: {lineColor: '#b04646', labelColor: '#b04646'},
+		green: {lineColor: 'var(--green-700)', labelColor: 'var(--green-700)'},
+		yellow: {lineColor: 'var(--yellow-600)', labelColor: 'var(--yellow-700)'},
+		grey: {lineColor: 'var(--grey-500)', labelColor: 'var(--grey-500)'},
+		blue: {lineColor: 'var(--blue-500)', labelColor: 'var(--blue-500)'}
+	}
+
+	let defaultColor = 'grey';
+
+	if(labelColor){
+		if(Object.keys(colorList).includes(labelColor)){
+			labelColor =  colorList[labelColor].labelColor
+		}
+	} 
+
+	if(lineColor){
+		if(Object.keys(colorList).includes(lineColor)){
+			lineColor =  colorList[lineColor].lineColor
+		}
+	}
+	
+	if(Object.keys(colorList).includes(color)){
+		lineColor = lineColor ?? colorList[color].lineColor;
+		labelColor = labelColor ?? colorList[color].labelColor;
+	} else {
+		lineColor = lineColor ?? colorList[defaultColor].lineColor
+		labelColor = labelColor ?? colorList[defaultColor].labelColor;
+	}
 
 	let error;
 	let chartType;
@@ -58,28 +88,28 @@
 	}
 
 	$: switch (labelPosition) {
-		case 'endAbove':
+		case 'aboveEnd':
 			labelPosition = 'insideEndTop';
 			break;
-		case 'startAbove':
+		case 'aboveStart':
 			labelPosition = 'insideStartTop';
 			break;
-		case 'centerAbove':
+		case 'aboveCenter':
 			labelPosition = 'insideMiddleTop';
 			break;
-		case 'centreAbove':
+		case 'aboveCentre':
 			labelPosition = 'insideMiddleTop';
 			break;
-		case 'endBelow':
+		case 'belowEnd':
 			labelPosition = 'insideEndBottom';
 			break;
-		case 'startBelow':
+		case 'belowStart':
 			labelPosition = 'insideStartBottom';
 			break;
-		case 'centerBelow':
+		case 'belowCenter':
 			labelPosition = 'insideMiddleBottom';
 			break;
-		case 'centreBelow':
+		case 'belowCentre':
 			labelPosition = 'insideMiddleBottom';
 			break;
 		default:
@@ -157,7 +187,7 @@
 						}
 						return result;
 					},
-					color: labelColor ?? color ?? 'var(--grey-600)',
+					color: labelColor,
 					fontWeight: 'medium',
 					textBorderColor: 'white',
 					textBorderWidth: labelTextOutline ? 1.5 : 0,
@@ -171,7 +201,7 @@
 					disabled: true
 				},
 				lineStyle: {
-					color: lineColor ?? color ?? 'var(--grey-400)',
+					color: lineColor,
 					width: lineWidth ? parseInt(lineWidth) : 1,
 					type: lineType
 				}
