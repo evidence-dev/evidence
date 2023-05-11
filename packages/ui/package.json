@@ -19,7 +19,9 @@
   "type": "module",
   "types": "./dist/index.d.ts",
   "version": "0.0.1",
-
+  "evidence": {
+    "components": true
+  },
   "dependencies": {
     "@evidence-dev/tailwind": "workspace:^1.0.0"
   },
