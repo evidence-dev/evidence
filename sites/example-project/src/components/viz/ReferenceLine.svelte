@@ -173,7 +173,7 @@
 					color: labelColor,
 					fontWeight: 'medium',
 					textBorderColor: 'white',
-					textBorderWidth: labelTextOutline ? 1.5 : 0,
+					// textBorderWidth: labelTextOutline ? 1.5 : 0,
 					backgroundColor: labelBackground ? 'hsla(360, 100%, 100%, 0.6)' : '',
 					padding: 1.5,
 					borderRadius: 1.5

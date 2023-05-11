@@ -46,7 +46,7 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceLine y=90000 label="Target" labelPosition=belowEnd/>
+    <ReferenceLine y=90000 label="Target" labelPosition=belowEnd color=red labelBackground=true/>
 </LineChart>
 
 #### x-axis
@@ -99,7 +99,7 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
 >
     <ReferenceArea yMin=2500 color=green label="Good" border=true/>
     <ReferenceArea yMin=1500 yMax=2500 color=yellow label="Okay"/>
-    <ReferenceArea yMin=0 yMax=1500 color=red label="Bad"/>
+    <ReferenceArea yMin=0 yMax=1500 color=red label="Bad" labelPosition=right/>
 </LineChart>
 
 <ScatterPlot
@@ -112,6 +112,14 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=grey border=true/>
 </ScatterPlot>
 
+<BarChart 
+    data={orders_by_category_2021} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+>
+    <ReferenceArea xMin='2021-01-01' xMax='2021-04-01'/>
+</BarChart> 
 
 ### From Database
 <LineChart 
