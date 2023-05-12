@@ -31,33 +31,33 @@
 	$: hideValue = hideValue === 'true' || hideValue === true;
 
 	let colorList = {
-		red: {lineColor: '#b04646', labelColor: '#b04646'},
-		green: {lineColor: colours.green700, labelColor: colours.green700},
-		yellow: {lineColor: colours.yellow600, labelColor: colours.yellow700},
-		grey: {lineColor: colours.grey500, labelColor: colours.grey600},
-		blue: {lineColor: colours.blue500, labelColor: colours.blue500}
-	}
+		red: { lineColor: '#b04646', labelColor: '#b04646' },
+		green: { lineColor: colours.green700, labelColor: colours.green700 },
+		yellow: { lineColor: colours.yellow600, labelColor: colours.yellow700 },
+		grey: { lineColor: colours.grey500, labelColor: colours.grey600 },
+		blue: { lineColor: colours.blue500, labelColor: colours.blue500 }
+	};
 
 	let defaultColor = 'grey';
 
-	$: if(labelColor){
-		if(Object.keys(colorList).includes(labelColor)){
-			labelColor =  colorList[labelColor].labelColor
-		}
-	} 
-
-	$: if(lineColor){
-		if(Object.keys(colorList).includes(lineColor)){
-			lineColor =  colorList[lineColor].lineColor
+	$: if (labelColor) {
+		if (Object.keys(colorList).includes(labelColor)) {
+			labelColor = colorList[labelColor].labelColor;
 		}
 	}
-	
-	$: if(Object.keys(colorList).includes(color)){
+
+	$: if (lineColor) {
+		if (Object.keys(colorList).includes(lineColor)) {
+			lineColor = colorList[lineColor].lineColor;
+		}
+	}
+
+	$: if (Object.keys(colorList).includes(color)) {
 		lineColor = lineColor ?? colorList[color].lineColor;
 		labelColor = labelColor ?? colorList[color].labelColor;
 	} else {
-		lineColor = lineColor ?? (color ?? colorList[defaultColor].lineColor)
-		labelColor = labelColor ?? (color ?? colorList[defaultColor].labelColor)
+		lineColor = lineColor ?? color ?? colorList[defaultColor].lineColor;
+		labelColor = labelColor ?? color ?? colorList[defaultColor].labelColor;
 	}
 
 	let error;
@@ -88,7 +88,7 @@
 		}
 	}
 
-	const labelPositions= {
+	const labelPositions = {
 		aboveEnd: 'insideEndTop',
 		aboveStart: 'insideStartTop',
 		aboveCenter: 'insideMiddleTop',
@@ -97,10 +97,10 @@
 		belowStart: 'insideStartBottom',
 		belowCenter: 'insideMiddleBottom',
 		belowCentre: 'insideMiddleBottom'
-	}
+	};
 
-	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop'
-	
+	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop';
+
 	let configData = [];
 	$: if (data && !error) {
 		try {

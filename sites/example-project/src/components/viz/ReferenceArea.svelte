@@ -25,41 +25,45 @@
 	export let labelPosition = undefined;
 
 	let defaultColor = 'blue';
-	
+
 	let colorList = {
-		red: {areaColor: '#fceeed', labelColor: '#b04646', borderColor: '#b04646'},
-		green: {areaColor: '#e6f5e6', labelColor: '#65a665', borderColor: '#65a665'},
-		yellow: {areaColor: '#fff9e0', labelColor: '#edb131', borderColor: '#edb131'},
-		grey: {areaColor: 'hsl(217, 33%, 97%)', labelColor: 'hsl(212, 10%, 53%)', borderColor: 'hsl(212, 10%, 53%)'},
-		blue: {areaColor: '#EDF6FD', labelColor: '#51a2e0', borderColor: '#51a2e0'}
+		red: { areaColor: '#fceeed', labelColor: '#b04646', borderColor: '#b04646' },
+		green: { areaColor: '#e6f5e6', labelColor: '#65a665', borderColor: '#65a665' },
+		yellow: { areaColor: '#fff9e0', labelColor: '#edb131', borderColor: '#edb131' },
+		grey: {
+			areaColor: 'hsl(217, 33%, 97%)',
+			labelColor: 'hsl(212, 10%, 53%)',
+			borderColor: 'hsl(212, 10%, 53%)'
+		},
+		blue: { areaColor: '#EDF6FD', labelColor: '#51a2e0', borderColor: '#51a2e0' }
+	};
+
+	$: if (labelColor) {
+		if (Object.keys(colorList).includes(labelColor)) {
+			labelColor = colorList[labelColor].labelColor;
+		}
 	}
-	
-	$: if(labelColor){
-		if(Object.keys(colorList).includes(labelColor)){
-			labelColor =  colorList[labelColor].labelColor
-		}
-	} 
 
-	$: if(borderColor){
-		if(Object.keys(colorList).includes(borderColor)){
-			borderColor =  colorList[borderColor].borderColor
+	$: if (borderColor) {
+		if (Object.keys(colorList).includes(borderColor)) {
+			borderColor = colorList[borderColor].borderColor;
 		}
-	} 
+	}
 
-	$: if(areaColor){
-		if(Object.keys(colorList).includes(areaColor)){
-			areaColor =  colorList[areaColor].areaColor
+	$: if (areaColor) {
+		if (Object.keys(colorList).includes(areaColor)) {
+			areaColor = colorList[areaColor].areaColor;
 		}
-	} 
+	}
 
-	$: if(Object.keys(colorList).includes(color)){
+	$: if (Object.keys(colorList).includes(color)) {
 		areaColor = areaColor ?? colorList[color].areaColor;
 		labelColor = labelColor ?? colorList[color].labelColor;
 		borderColor = borderColor ?? colorList[color].borderColor;
 	} else {
-		areaColor = areaColor ?? (color ?? colorList[defaultColor].areaColor);
-		labelColor = labelColor ?? (color ?? colorList[defaultColor].labelColor);
-		borderColor = borderColor ?? (color ?? colorList[defaultColor].borderColor);
+		areaColor = areaColor ?? color ?? colorList[defaultColor].areaColor;
+		labelColor = labelColor ?? color ?? colorList[defaultColor].labelColor;
+		borderColor = borderColor ?? color ?? colorList[defaultColor].borderColor;
 	}
 
 	let chartType;
@@ -80,9 +84,9 @@
 				[xMin, xMax, yMin, yMax] = [yMin, yMax, xMin, xMax];
 				labelPosition = labelPosition ?? 'topRight';
 			} else {
-				if(yMin && yMax && xMin && xMax){
+				if (yMin && yMax && xMin && xMax) {
 					labelPosition = labelPosition ?? 'topLeft';
-				} else if(yMin || yMax){
+				} else if (yMin || yMax) {
 					labelPosition = labelPosition ?? 'right';
 				} else {
 					labelPosition = labelPosition ?? 'top';
@@ -93,7 +97,7 @@
 		}
 	}
 
-	const labelPositions= {
+	const labelPositions = {
 		topLeft: 'insideTopLeft',
 		top: 'insideTop',
 		topRight: 'insideTopRight',
@@ -104,9 +108,9 @@
 		center: 'inside',
 		centre: 'inside',
 		right: 'insideRight'
-	}
+	};
 
-	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop'
+	$: labelPosition = labelPositions[labelPosition] ?? 'insideEndTop';
 
 	let configData = [];
 	let inputs = [xMin, xMax, yMin, yMax, label];
