@@ -69,7 +69,7 @@ hide_table_of_contents: false
 
 ## Annotations
 
-Histograms can include reference lines and reference areas using the [`ReferenceLine`](/components/reference-line) and [`ReferenceArea`](/components/reference-area) components. These components are used within a chart component like so:
+Histograms can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <Histogram data={sales_data} x=category>

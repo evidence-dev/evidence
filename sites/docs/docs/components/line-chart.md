@@ -115,7 +115,7 @@ Evidence will automatically pick the first column as `x` and use all other numer
 
 ## Annotations
 
-Line charts can include reference lines and reference areas using the [`ReferenceLine`](/components/reference-line) and [`ReferenceArea`](/components/reference-area) components. These components are used within a chart component like so:
+Line charts can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <LineChart data={sales_data} x=date y=sales>

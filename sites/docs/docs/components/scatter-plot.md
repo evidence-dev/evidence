@@ -95,7 +95,7 @@ hide_table_of_contents: false
 
 ## Annotations
 
-Scatter plots can include reference lines and reference areas using the [`ReferenceLine`](/components/reference-line) and [`ReferenceArea`](/components/reference-area) components. These components are used within a chart component like so:
+Scatter plots can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <ScatterPlot data={sales_data} x=date y=sales>

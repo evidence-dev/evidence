@@ -99,7 +99,7 @@ hide_table_of_contents: false
 
 ## Annotations
 
-Bubble charts can include reference lines and reference areas using the [`ReferenceLine`](/components/reference-line) and [`ReferenceArea`](/components/reference-area) components. These components are used within a chart component like so:
+Bubble charts can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <BubbleChart data={sales_data} x=date y=sales>
