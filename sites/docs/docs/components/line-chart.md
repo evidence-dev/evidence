@@ -112,3 +112,14 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 </table>
+
+## Annotations
+
+Line charts can include reference lines and reference areas using the [`ReferenceLine`](/components/reference-line) and [`ReferenceArea`](/components/reference-area) components. These components are used within a chart component like so:
+
+```html
+<LineChart data={sales_data} x=date y=sales>
+  <ReferenceLine data={target_data} y=target label=name/>
+  <ReferenceArea xMin='2020-03-14' xMax='2020-05-01'/>
+</LineChart>
+```

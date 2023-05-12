@@ -406,7 +406,7 @@ hide_table_of_contents: false
 </div>
 
 
-### [Reference Line](reference-line)
+### [Annotations](reference-line)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -433,8 +433,6 @@ hide_table_of_contents: false
 </a>
 </div>
 </div>
-
-### [Reference Area](reference-area)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
