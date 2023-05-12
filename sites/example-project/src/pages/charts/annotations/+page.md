@@ -46,7 +46,7 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceLine y=90000 label="Target" labelPosition=belowEnd color=red labelBackground=true/>
+    <ReferenceLine y=90000 label="Target" labelPosition=belowEnd color=green/>
 </LineChart>
 
 #### x-axis

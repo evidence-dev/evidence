@@ -4,6 +4,7 @@
 	import { formatValue } from '$lib/modules/formatting.js';
 	import checkInputs from '$lib/modules/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
+	import { colours } from '$lib/modules/colours';
 
 	let props = getContext(propKey);
 	let config = getContext(configKey);
@@ -20,10 +21,10 @@
 	export let lineType = 'dashed'; // solid, dashed, or dotted
 
 	export let labelPosition = 'aboveEnd';
-	export let labelTextOutline = true;
+	export let labelTextOutline = false;
 	$: labelTextOutline = labelTextOutline === 'true' || labelTextOutline === true;
 
-	export let labelBackground = false;
+	export let labelBackground = true;
 	$: labelBackground = labelBackground === 'true' || labelBackground === true;
 
 	export let hideValue = true;
@@ -31,10 +32,10 @@
 
 	let colorList = {
 		red: {lineColor: '#b04646', labelColor: '#b04646'},
-		green: {lineColor: 'var(--green-700)', labelColor: 'var(--green-700)'},
-		yellow: {lineColor: 'var(--yellow-600)', labelColor: 'var(--yellow-700)'},
-		grey: {lineColor: 'var(--grey-500)', labelColor: 'var(--grey-600)'},
-		blue: {lineColor: 'var(--blue-500)', labelColor: 'var(--blue-500)'}
+		green: {lineColor: colours.green700, labelColor: colours.green700},
+		yellow: {lineColor: colours.yellow600, labelColor: colours.yellow700},
+		grey: {lineColor: colours.grey500, labelColor: colours.grey600},
+		blue: {lineColor: colours.blue500, labelColor: colours.blue500}
 	}
 
 	let defaultColor = 'grey';
@@ -173,9 +174,9 @@
 					color: labelColor,
 					fontWeight: 'medium',
 					textBorderColor: 'white',
-					// textBorderWidth: labelTextOutline ? 1.5 : 0,
-					backgroundColor: labelBackground ? 'hsla(360, 100%, 100%, 0.6)' : '',
-					padding: 1.5,
+					textBorderWidth: labelTextOutline ? 1.5 : 0,
+					backgroundColor: labelBackground ? 'hsla(360, 100%, 100%, 0.7)' : '',
+					padding: 1,
 					borderRadius: 1.5
 				},
 				animation: false,
