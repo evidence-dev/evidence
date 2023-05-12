@@ -74,7 +74,7 @@ At a minimum, all charts require a data prop, but for other props Evidence has d
 
 ### Annotations
 
-Charts can include reference lines and reference areas using the [`ReferenceLine`](/components/reference-line) and [`ReferenceArea`](/components/reference-area) components. These components are used within a chart component like so:
+Charts can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <LineChart data={sales_data} x=date y=sales>
