@@ -9,93 +9,111 @@ Reference areas allow you to add highlighted ranges to a chart. These ranges can
 - Along the y-axis (e.g., control threshold for a metric)
 - Both (e.g, highlighting a specific series of points in the middle of the chart)
 
-Reference areas can be produced by hardcoding the x and y-axis values (e.g., `x1='2020-03-14' x2='2020-06-30'`) or by supplying a dataset (e.g., `start_date`, `end_date`, `name`).
+Reference areas can be produced by defining the x and y-axis values inline (e.g., `xMin='2020-03-14' xMax='2020-06-30'`) or by supplying a dataset (e.g., `start_date`, `end_date`, `name`).
 
 When a dataset is provided, `ReferenceArea` can generate multiple areas - one for each row in the dataset. 
 
-![line](/img/exg-line-nt.svg)
+## Examples
 
-```markdown
-<LineChart data={query_name} x=column_x y=column_y>
-    <ReferenceLine y=2500 label="Target"/>
+### X-axis Defined Inline
+<img src="/img/refarea-x-multi.png"  width='600px'/>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow/>
+    <ReferenceArea xMin='2021-03-14' xMax='2021-08-15' label=Second/>
 </LineChart>
 ```
 
-## Examples
+### Y-axis Defined Inline
+<img src="/img/refarea-y-ranges.png"  width='600px'/>
 
-### Hardcoded Values
-
-![line](/img/exg-line-nt.svg)
-
-```markdown
-<LineChart 
-    data={daily_complaints} 
-    x=date 
-    y=number_of_complaints 
-    yAxisTitle="calls to Austin 311 per day"
-/>
+```html
+<LineChart data={orders_by_month} x=month y=num_orders_num0 yAxisTitle="Orders per Month">
+    <ReferenceArea yMin=2500 color=green label="Good"/>
+    <ReferenceArea yMin=1000 yMax=2500 color=yellow label="Okay"/>
+    <ReferenceArea yMin=0 yMax=1000 color=red label="Bad"/>
+</LineChart>
 ```
 
-### Values from Database
+### X-axis from Data
+<img src="/img/refarea-x-multi-data.png"  width='600px'/>
 
-![multi-series-line](/img/exg-multi-series-line-nt.svg)
-
-```markdown
-<LineChart 
-    data={daily_volume_yoy} 
-    x=day_of_year 
-    y=cum_vol 
-    series=year 
-    yAxisTitle="cumulative calls" 
-    xAxisTitle="day of year"
-/>
+```html
+<LineChart data={query_name} x=column_x y=column_y>
+    <ReferenceArea data={campaigns} xMin=start_date xMax=end_date label=campaign_name/>
+</LineChart>
 ```
 
-### Horizontal Charts
+### Bar Chart
+<img src="/img/refarea-bar.png"  width='600px'/>
 
-![multiple-y-line](/img/exg-multiple-y-line-nt.svg)
-
-```markdown
-<LineChart
-data={fda_recalls}  
- x=year
-y={["voluntary_recalls", "fda_recalls"]}
-/>
+```html
+<BarChart data={orders_by_category_2021} x=month y=sales_usd0k series=category>
+    <ReferenceArea xMin='2021-01-01' xMax='2021-04-01'/>
+</BarChart> 
 ```
 
-### Custom Area Styling
-![multiple-y-line](/img/exg-multiple-y-line-nt.svg)
+#### Continuous Axis Bar Charts
+On a continous x-axis (dates or numbers), the reference area will start and stop at the exact point on the x-axis. This means it will appear in the middle of whichever bar is at that point. If you would prefer to see the area cover the full bar, there are 2 ways to achieve this:
+1. Add a buffer on either side of the range you want to highlight (e.g., instead of ending the area at `2020-07-01`, end it at `2020-07-15`)
+2. Change your x-axis to categorical data (using `xType=category`). If using a date axis, you may also want to retain the axis label formatting for dates - to achieve this, you can use a format tag for your x-axis column (e.g., `x=date_mmm`)
 
-```markdown
-<LineChart
-data={fda_recalls}  
- x=year
-y={["voluntary_recalls", "fda_recalls"]}
-/>
+### Reference Area Box
+<img src="/img/refarea-box.png"  width='600px'/>
+
+```html
+<ScatterPlot data={countries} x=gdp_usd y=gdp_growth_pct1 tooltipTitle=country series=continent>
+    <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=grey border=true/>
+</ScatterPlot>
 ```
 
-### Changing Label Position
-![multiple-y-line](/img/exg-multiple-y-line-nt.svg)
+### Labels
+<img src="/img/refarea-label-positions.png"  width='600px'/>
 
-```markdown
-<LineChart
-data={fda_recalls}  
- x=year
-y={["voluntary_recalls", "fda_recalls"]}
-/>
+```html
+<LineChart data={orders_by_month} x=month y=sales_usd0k>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=left labelPosition=left/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=center labelPosition=center/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=right labelPosition=right/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomLeft labelPosition=bottomLeft/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottom labelPosition=bottom/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomRight labelPosition=bottomRight/>
+</LineChart>
 ```
+
+#### Label Overlaps
+Reference areas appear behind chart gridlines, including reference area labels. If you are seeing an overlap between the gridlines and the reference area label, you can avoi this by turning gridlines off (`yGridlines=false`).
+
+### Colours
+<img src="/img/refarea-colors.png"  width='600px'/>
+
+```html
+<LineChart data={orders_by_month} x=month y=sales_usd0k >
+    <ReferenceArea xMax='2019-04-01' label=blue color=blue/>
+    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=red color=red/>
+    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=yellow color=yellow/>
+    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=green color=green/>
+    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=grey color=grey/>
+    <ReferenceArea xMin='2021-09-01' label=custom color=#f2dbff labelColor=#4d1070/>
+</LineChart>
+```
+
 
 ## Props
-A reference area can be produced by hardcoding values or by supplying a dataset, and the required props are different for each of those cases.
+A reference area can be produced by defining values inline or by supplying a dataset, and the required props are different for each of those cases.
 
-### Option 1: Hardcoding Values
+### Option 1: Defining Values Inline
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>x1</td>	<td>x-axis value where area should start. If left out, range will extend to the start of the x-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x2</td>	<td>x-axis value where area should end. If left out, range will extend to the end of the x-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y1</td>	<td>y-axis value where area should start. If left out, range will extend to the start of the y-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2</td>	<td>y-axis value where area should end. If left out, range will extend to the end of the y-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>xMin</td>	<td>x-axis value where area should start. If left out, range will extend to the start of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>xMax</td>	<td>x-axis value where area should end. If left out, range will extend to the end of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yMin</td>	<td>y-axis value where area should start. If left out, range will extend to the start of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yMax</td>	<td>y-axis value where area should end. If left out, range will extend to the end of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>label</td>	<td>Text to show as label for the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
 </table>
 
@@ -104,10 +122,10 @@ A reference area can be produced by hardcoding values or by supplying a dataset,
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x1</td>	<td>Column containing x-axis values for area start. If left out, range will extend to the start of the x-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x2</td>	<td>Column containing x-axis values for area end. If left out, range will extend to the end of the x-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y1</td>	<td>Column containing y-axis values for area start. If left out, range will extend to the start of the y-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2</td>	<td>Column containing y-axis values for area end. If left out, range will extend to the end of the y-axis.</td>	<td class='tcenter'>At least 1 of x1, x2, y1, or y2 required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>xMin</td>	<td>Column containing x-axis values for area start. If left out, range will extend to the start of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>xMax</td>	<td>Column containing x-axis values for area end. If left out, range will extend to the end of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yMin</td>	<td>Column containing y-axis values for area start. If left out, range will extend to the start of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yMax</td>	<td>Column containing y-axis values for area end. If left out, range will extend to the end of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>label</td>	<td>Column containing a label to use for each area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 </table>
 

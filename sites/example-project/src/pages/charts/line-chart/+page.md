@@ -79,41 +79,6 @@ union all
 select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ```
 
-```daily_complaints
-    select
-        extract(date from created_date) as date,
-        count(*) as number_of_complaints
-    from `bigquery-public-data.austin_311.311_service_requests`
-    group by 1
-    order by 1 desc
-    limit 150
-```
-
-<LineChart
-data={daily_complaints}
-x=date
-y=number_of_complaints
-title="Complaint Calls to Austin 311"
-/>
-
-<LineChart
-data={daily_complaints}
-x=date
-y=number_of_complaints
-title="Complaint Calls to Austin 311"
->
-
-    <ReferenceLine y=600 hideValue=true label="Target"/>
-
-</LineChart>
-
-<LineChart
-data={daily_complaints}
-x=date
-y=number_of_complaints
-title="Complaint Calls to Austin 311"
-/>
-
 <LineChart 
     data={orders_by_month} 
     x=month

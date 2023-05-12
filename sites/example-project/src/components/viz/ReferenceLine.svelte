@@ -27,7 +27,7 @@
 	export let labelBackground = true;
 	$: labelBackground = labelBackground === 'true' || labelBackground === true;
 
-	export let hideValue = true;
+	export let hideValue = false;
 	$: hideValue = hideValue === 'true' || hideValue === true;
 
 	let colorList = {
@@ -40,24 +40,24 @@
 
 	let defaultColor = 'grey';
 
-	if(labelColor){
+	$: if(labelColor){
 		if(Object.keys(colorList).includes(labelColor)){
 			labelColor =  colorList[labelColor].labelColor
 		}
 	} 
 
-	if(lineColor){
+	$: if(lineColor){
 		if(Object.keys(colorList).includes(lineColor)){
 			lineColor =  colorList[lineColor].lineColor
 		}
 	}
 	
-	if(Object.keys(colorList).includes(color)){
+	$: if(Object.keys(colorList).includes(color)){
 		lineColor = lineColor ?? colorList[color].lineColor;
 		labelColor = labelColor ?? colorList[color].labelColor;
 	} else {
-		lineColor = lineColor ?? colorList[defaultColor].lineColor
-		labelColor = labelColor ?? colorList[defaultColor].labelColor;
+		lineColor = lineColor ?? (color ?? colorList[defaultColor].lineColor)
+		labelColor = labelColor ?? (color ?? colorList[defaultColor].labelColor)
 	}
 
 	let error;
@@ -158,11 +158,11 @@
 						let result;
 						if (params.name === '') {
 							// If no label supplied
-							result = hideValue
+							result = !hideValue
 								? `${formatValue(params.value, y ? yFormat : x ? xFormat : 'string')}`
 								: '';
 						} else {
-							result = hideValue
+							result = !hideValue
 								? `${params.name} (${formatValue(
 										params.value,
 										y ? yFormat : x ? xFormat : 'string'

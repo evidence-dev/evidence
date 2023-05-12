@@ -79,7 +79,6 @@
 		if (type.includes('stacked')) {
 			// Set up stacks
 			stackName = stackName ?? 'stack1';
-			console.log(stackName)
 		} else {
 			stackName = 'stack1';
 		}

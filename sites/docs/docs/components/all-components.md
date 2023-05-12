@@ -405,6 +405,77 @@ hide_table_of_contents: false
 </div>
 </div>
 
+
+### [Reference Line](reference-line)
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Reference Line - y-axis</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/reference-line#y-axis-defined-inline">
+
+![refline-y-basic](/img/refline-y-basic.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Reference Line - x-axis</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/reference-line#x-axis-from-data">
+
+![refline-x-multi](/img/refline-x-multi.png)
+
+</a>
+</div>
+</div>
+
+### [Reference Area](reference-area)
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Reference Area - x-axis</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/reference-area#x-axis-ranges">
+
+![refarea-x-multi-data](/img/refarea-x-multi-data.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Reference Area - y-axis</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/reference-area#y-axis-ranges">
+
+![refarea-x-multi-data](/img/refarea-y-ranges.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Reference Area - Box</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/reference-area#reference-area-box">
+
+![refarea-box](/img/refarea-box.png)
+
+</a>
+</div>
+</div>
+
+
 ### [Maps](us-map)
 
 <div  class="gallery-item-grid">

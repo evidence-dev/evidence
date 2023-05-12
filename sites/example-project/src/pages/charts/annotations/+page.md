@@ -28,9 +28,17 @@ let countries = [
 </script>
 
 ```multiple_dates
-select '2019-12-05' as start_date, '2019-12-31' as end_date, 'Campaign A' as name
+select '2019-12-05' as start_date, '2019-12-31' as end_date
 union all
-select '2020-07-14' as start_date, '2020-08-20' as end_date, 'Campaign B' as name
+select '2020-07-14' as start_date, '2020-08-20' as end_date
+union all
+select '2021-04-14' as start_date, '2021-05-03' as end_date
+```
+
+```campaigns
+select '2019-07-05' as start_date, '2019-11-30' as end_date, 'Campaign A' as name
+union all
+select '2020-07-14' as start_date, '2020-12-20' as end_date, 'Campaign B' as name
 union all
 select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
 ```
@@ -46,8 +54,19 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceLine y=90000 label="Target" labelPosition=belowEnd color=green/>
+    <ReferenceLine y=90000 label="Target"/>
 </LineChart>
+
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceLine y=90000 label="Target" labelPosition=belowEnd/>
+    <ReferenceLine y=105000 label="Forecast"/>
+</LineChart>
+
 
 #### x-axis
 <LineChart 
@@ -56,7 +75,7 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceLine x='2019-09-18' label="Launch" hideValue=false/>
+    <ReferenceLine x='2019-09-18' label="Launch" hideValue=true/>
 </LineChart>
 
 ### From Database
@@ -69,6 +88,45 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     <ReferenceLine data={multiple_dates} x=start_date/>
 </LineChart>
 
+### Custom Styling
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceLine y=110000 color=red hideValue=true lineWidth=3 lineType=solid/>
+</LineChart>
+
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceLine y=40000 label=aboveStart labelPosition=aboveStart hideValue=true/>
+    <ReferenceLine y=40000 label=aboveCenter labelPosition=aboveCenter hideValue=true/>
+    <ReferenceLine y=40000 label=aboveEnd labelPosition=aboveEnd hideValue=true/>
+    <ReferenceLine y=40000 label=belowStart labelPosition=belowStart hideValue=true/>
+    <ReferenceLine y=40000 label=belowCenter labelPosition=belowCenter hideValue=true/>
+    <ReferenceLine y=40000 label=belowEnd labelPosition=belowEnd hideValue=true/>
+</LineChart>
+
+
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceLine y=15000 color=red label=red/>
+    <ReferenceLine y=35000 color=yellow label=yellow/>
+    <ReferenceLine y=55000 color=green label=green/>
+    <ReferenceLine y=75000 color=blue label=blue/>
+    <ReferenceLine y=95000 color=grey label=grey/>
+    <ReferenceLine y=115000 color=#63178f label=custom/>
+</LineChart>
+
 ## Reference Area
 
 ### Hardcoded
@@ -78,7 +136,7 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow labelPosition=centre/>
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow/>
     <ReferenceArea xMin='2021-03-14' xMax='2021-08-15' label=Second/>
 </LineChart>
 
@@ -97,9 +155,9 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=num_orders_num0 
     yAxisTitle="Orders per Month"
 >
-    <ReferenceArea yMin=2500 color=green label="Good" border=true/>
-    <ReferenceArea yMin=1500 yMax=2500 color=yellow label="Okay"/>
-    <ReferenceArea yMin=0 yMax=1500 color=red label="Bad" labelPosition=right/>
+    <ReferenceArea yMin=2500 color=green label="Good"/>
+    <ReferenceArea yMin=1000 yMax=2500 color=yellow label="Okay"/>
+    <ReferenceArea yMin=0 yMax=1000 color=red label="Bad" labelPosition=right/>
 </LineChart>
 
 <ScatterPlot
@@ -128,59 +186,43 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
 >
-    <ReferenceArea data={multiple_dates} xMin=start_date xMax=end_date label=name color=grey/>
+    <ReferenceArea data={multiple_dates} xMin=start_date xMax=end_date color=grey/>
 </LineChart>
 
-## BigQuery Examples
-
-```daily_complaints
-    select
-        extract(date from created_date) as date,
-        count(*) as number_of_complaints
-    from `bigquery-public-data.austin_311.311_service_requests`
-    group by 1
-    order by 1 desc
-    limit 150
-```
-
-```annotate
-select '2020-12-05' as start_date, '2022-12-31' as end_date, 'Campaign A' as label
-union all
-select '2023-02-14' as start_date, '2023-03-20' as end_date, 'Campaign B' as label
-union all
-select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
-```
-
-<LineChart
-data={daily_complaints}
-x=date
-y=number_of_complaints
-title="Complaint Calls to Austin 311"
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
 >
-
-    <ReferenceArea data={annotate} xMin=start_date xMax=end_date yMin=2000 label=label/>
-
+    <ReferenceArea data={campaigns} xMin=start_date xMax=end_date label=name/>
 </LineChart>
 
-<LineChart
-data={daily_complaints}
-x=date
-y=number_of_complaints
-title="Complaint Calls to Austin 311"
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
 >
-
-    <ReferenceLine y=600 hideValue=true label="Target"/>
-
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=left labelPosition=left/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=center labelPosition=center/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=right labelPosition=right/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomLeft labelPosition=bottomLeft/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottom labelPosition=bottom/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomRight labelPosition=bottomRight/>
 </LineChart>
 
-<LineChart
-data={daily_complaints}
-x=date
-y=number_of_complaints
-title="Complaint Calls to Austin 311"
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
 >
-    <ReferenceArea yMin=0 yMax=1000 color=#d8f2d8 labelColor=#79b379 label=Normal labelPosition=bottomRight/>
-    <ReferenceArea yMin=1000 yMax=2000 color=#fffcd4 label=Elevated labelColor=#e0bd48 labelPosition=right/>
-    <ReferenceArea yMin=2000 color=#ffeceb labelColor=#cf625b label=Emergency labelPosition=topRight/>
-    <ReferenceLine x='2023-01-30' label="Garbage Strike" hideValue=false/>
+    <ReferenceArea xMax='2019-04-01' label=blue color=blue/>
+    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=red color=red/>
+    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=yellow color=yellow/>
+    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=green color=green/>
+    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=grey color=grey/>
+    <ReferenceArea xMin='2021-09-01' label=custom color=#f2dbff labelColor=#4d1070/>
 </LineChart>

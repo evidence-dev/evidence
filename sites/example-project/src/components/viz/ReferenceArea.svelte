@@ -18,6 +18,7 @@
 	export let opacity = 1;
 	export let labelColor = undefined;
 	export let border = false;
+	$: border = border === 'true' || border === true;
 	export let borderColor = undefined;
 	export let borderType = undefined;
 	export let borderWidth = undefined;
@@ -33,32 +34,32 @@
 		blue: {areaColor: '#EDF6FD', labelColor: '#51a2e0', borderColor: '#51a2e0'}
 	}
 	
-	if(labelColor){
+	$: if(labelColor){
 		if(Object.keys(colorList).includes(labelColor)){
 			labelColor =  colorList[labelColor].labelColor
 		}
 	} 
 
-	if(borderColor){
+	$: if(borderColor){
 		if(Object.keys(colorList).includes(borderColor)){
 			borderColor =  colorList[borderColor].borderColor
 		}
 	} 
 
-	if(areaColor){
+	$: if(areaColor){
 		if(Object.keys(colorList).includes(areaColor)){
 			areaColor =  colorList[areaColor].areaColor
 		}
 	} 
 
-	if(Object.keys(colorList).includes(color)){
+	$: if(Object.keys(colorList).includes(color)){
 		areaColor = areaColor ?? colorList[color].areaColor;
 		labelColor = labelColor ?? colorList[color].labelColor;
 		borderColor = borderColor ?? colorList[color].borderColor;
 	} else {
-		areaColor = areaColor ?? colorList[defaultColor].areaColor;
-		labelColor = labelColor ?? colorList[defaultColor].labelColor;
-		borderColor = borderColor ?? colorList[defaultColor].borderColor;
+		areaColor = areaColor ?? (color ?? colorList[defaultColor].areaColor);
+		labelColor = labelColor ?? (color ?? colorList[defaultColor].labelColor);
+		borderColor = borderColor ?? (color ?? colorList[defaultColor].borderColor);
 	}
 
 	let chartType;
