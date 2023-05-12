@@ -28,7 +28,7 @@
 	let colorList = {
 		red: {areaColor: '#fceeed', labelColor: '#b04646', borderColor: '#b04646'},
 		green: {areaColor: '#e6f5e6', labelColor: '#65a665', borderColor: '#65a665'},
-		yellow: {areaColor: '#fffede', labelColor: '#e8bb09', borderColor: '#e8bb09'},
+		yellow: {areaColor: '#fff9e0', labelColor: '#edb131', borderColor: '#edb131'},
 		grey: {areaColor: 'hsl(217, 33%, 97%)', labelColor: 'hsl(212, 10%, 53%)', borderColor: 'hsl(212, 10%, 53%)'},
 		blue: {areaColor: '#EDF6FD', labelColor: '#51a2e0', borderColor: '#51a2e0'}
 	}
