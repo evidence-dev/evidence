@@ -185,7 +185,7 @@
 				},
 				lineStyle: {
 					color: lineColor,
-					width: lineWidth ? parseInt(lineWidth) : 1,
+					width: lineWidth ? parseInt(lineWidth) : 1.3,
 					type: lineType
 				}
 			}
