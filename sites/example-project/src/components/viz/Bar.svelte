@@ -48,6 +48,8 @@
 			data = getCompletedData(data, x, y, series, false, xType !== 'time');
 			xType = 'category';
 		}
+
+		stackName = 'stack1';
 	} else {
 		// Multi Series
 		// Sort by stack total for category axis
@@ -77,8 +79,9 @@
 		if (type.includes('stacked')) {
 			// Set up stacks
 			stackName = stackName ?? 'stack1';
+			console.log(stackName)
 		} else {
-			stackName = null;
+			stackName = 'stack1';
 		}
 	}
 

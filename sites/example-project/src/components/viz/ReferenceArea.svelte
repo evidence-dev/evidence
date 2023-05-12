@@ -155,7 +155,8 @@
 
 	$: if (!error) {
 		baseConfig = {
-			type: 'line',
+			type: chartType === 'Bar Chart' ? 'bar' : 'line',
+			stack: 'stack1',
 			markArea: {
 				data: configData,
 				silent: true,
