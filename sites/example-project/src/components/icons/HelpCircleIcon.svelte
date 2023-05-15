@@ -20,12 +20,12 @@
 
 <style>
 	.icon {
+		display: flex;
 		align-items: center;
 		vertical-align: middle;
 	}
 
 	.icon-container {
-		display: inline-flex;
 		align-items: center;
 		vertical-align: middle;
 	}
