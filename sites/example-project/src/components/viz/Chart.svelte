@@ -2,6 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { propKey, configKey, strictBuild } from './context';
+	
 	let props = writable({});
 	let config = writable({});
 
@@ -19,7 +20,7 @@
 	import { formatValue } from '../modules/formatting.js';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '../modules/checkInputs';
-	import { colours } from '../modules/colours';
+	import { colour, colours } from '../modules/colours';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -28,6 +29,7 @@
 	export let data = undefined;
 	export let x = undefined;
 	export let y = undefined;
+	export let y2 = undefined;
 	export let series = undefined;
 	export let size = undefined;
 	export let tooltipTitle = undefined;
@@ -43,6 +45,7 @@
 
 	// This is a hack to get around the above
 	const ySet = y ? true : false;
+	const y2Set = y2 ? true : false;
 	const xSet = x ? true : false;
 
 	export let swapXY = false; // Flipped axis chart
@@ -89,6 +92,19 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 
+	// Y2 axis:
+	export let y2AxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
+	export let y2Baseline = false;
+	y2Baseline = y2Baseline === 'true' || y2Baseline === true;
+	export let y2TickMarks = false;
+	y2TickMarks = y2TickMarks === 'true' || y2TickMarks === true;
+	export let y2Gridlines = true;
+	y2Gridlines = y2Gridlines === 'true' || y2Gridlines === true;
+	export let y2AxisLabels = true;
+	y2AxisLabels = y2AxisLabels === 'true' || y2AxisLabels === true;
+	export let y2Min = undefined;
+	export let y2Max = undefined;
+
 	// Legend:
 	export let legend = undefined;
 
@@ -119,9 +135,11 @@
 	let xMismatch;
 	let xFormat;
 	let yFormat;
+	let y2Format;
 	let sizeFormat;
 	let xUnitSummary;
 	let yUnitSummary;
+	let y2UnitSummary;
 	let xDistinct;
 
 	// Individual Config Sections:
@@ -179,6 +197,17 @@
 	let columnSummaryArray;
 	let dateCols;
 
+	// Helper function for getting column formats:
+	function getFormatByTitle(obj, title) {
+		for (const key in obj) {
+			if (obj.hasOwnProperty(key) && obj[key].title === title) {
+			return obj[key].format;
+			}
+		}
+		return null; // Return null if no match is found
+	}
+
+
 	$: {
 		try {
 			error = undefined;
@@ -209,7 +238,7 @@
 			}
 
 			// If no y column(s) supplied, assume all number columns other than x are the y columns:
-			if (!ySet) {
+			if (!ySet && !y2Set) {
 				uColNames = columnNames.filter(function (col) {
 					return ![x, series, size].includes(col);
 				});
@@ -224,6 +253,8 @@
 
 				y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
 			}
+
+			console.log(y)
 			// Establish required columns based on chart type:
 			if (bubble) {
 				reqCols = {
@@ -279,6 +310,15 @@
 					}
 				} else {
 					inputCols.push(y);
+				}
+			}
+			if (y2) {
+				if (typeof y2 === 'object') {
+					for (i = 0; i < y2.length; i++) {
+						inputCols.push(y2[i]);
+					}
+				} else {
+					inputCols.push(y2);
 				}
 			}
 			if (size) {
@@ -393,6 +433,15 @@
 				}
 			}
 
+			if (y2) {
+				if (typeof y2 === 'object') {
+					y2Format = columnSummary[y2[0]].format;
+				} else {
+					y2Format = columnSummary[y2].format;
+				}
+			}
+
+
 			if (size) {
 				sizeFormat = columnSummary[size].format;
 			}
@@ -407,6 +456,14 @@
 				}
 			}
 
+			if (y2) {
+				if (typeof y2 === 'object') {
+					y2UnitSummary = columnSummary[y2[0]].columnUnitSummary;
+				} else {
+					y2UnitSummary = columnSummary[y2].columnUnitSummary;
+				}
+			}
+
 			xAxisTitle =
 				xAxisTitle === 'true' ? formatTitle(x, xFormat) : xAxisTitle === 'false' ? '' : xAxisTitle;
 			yAxisTitle =
@@ -418,6 +475,15 @@
 					? ''
 					: yAxisTitle;
 
+			y2AxisTitle =
+				y2AxisTitle === 'true'
+					? typeof y2 === 'object'
+						? ''
+						: formatTitle(y2, y2Format)
+					: y2AxisTitle === 'false'
+					? ''
+					: y2AxisTitle;
+
 			// ---------------------------------------------------------------------------------------
 			// Set legend flag
 			// ---------------------------------------------------------------------------------------
@@ -425,7 +491,7 @@
 				legend = legend === 'true' || legend === true;
 			}
 
-			legend = legend ?? (series != undefined || typeof y === 'object');
+			legend = legend ?? (series != undefined || typeof y === 'object' || typeof y2 === 'object');
 
 			// ---------------------------------------------------------------------------------------
 			// Add props to store to let child components access them
@@ -436,19 +502,23 @@
 					data,
 					x,
 					y,
+					y2,
 					series,
 					swapXY,
 					sort,
 					xType,
 					xFormat,
 					yFormat,
+					y2Format,
 					sizeFormat,
 					xMismatch,
 					size,
 					yMin,
+					y2Min,
 					columnSummary,
 					xAxisTitle,
 					yAxisTitle,
+					y2AxisTitle,
 					tooltipTitle,
 					chartAreaHeight
 				};
@@ -458,6 +528,7 @@
 			// Axis Configuration
 			// ---------------------------------------------------------------------------------------
 			xDistinct = getDistinctValues(data, x);
+			let secondaryAxis;
 
 			if (swapXY) {
 				horizAxisConfig = {
@@ -486,6 +557,38 @@
 					},
 					boundaryGap: false
 				};
+
+				// secondary y-axis:
+				if(y2){
+					secondaryAxis = {
+						type: 'value',
+						position: 'top',
+						axisLabel: {
+							show: y2AxisLabels,
+							hideOverlap: true,
+							showMaxLabel: true,
+							formatter: function (value) {
+								return formatAxisValue(value, y2Format, y2UnitSummary);
+							},
+							margin: 4
+						},
+						min: y2Min,
+						max: y2Max,
+						splitLine: {
+							show: y2Gridlines
+						},
+						axisLine: {
+							show: y2Baseline,
+							onZero: false
+						},
+						axisTick: {
+							show: y2TickMarks
+						},
+						boundaryGap: false
+					}
+
+					horizAxisConfig = [horizAxisConfig, secondaryAxis];
+				}
 			} else {
 				horizAxisConfig = {
 					type: xType,
@@ -556,7 +659,8 @@
 						margin: 4,
 						formatter: function (value) {
 							return formatAxisValue(value, yFormat, yUnitSummary);
-						}
+						},
+						color: y2 ? colour[0] : null
 					},
 					name: yAxisTitle,
 					nameLocation: 'end',
@@ -564,13 +668,56 @@
 						align: 'left',
 						verticalAlign: 'top',
 						backgroundColor: 'white',
-						padding: [0, 5, 0, 0]
+						padding: [0, 5, 0, 0],
+						color: y2 ? colour[0] : null
 					},
 					nameGap: 6,
 					min: yMin,
 					max: yMax,
 					boundaryGap: ['0%', '1%']
 				};
+
+				// if(y2){
+					secondaryAxis = {
+						type: 'value',
+						show: false,
+						alignTicks: true,
+						splitLine: {
+							show: y2Gridlines
+						},
+						axisLine: {
+							show: y2Baseline,
+							onZero: false
+						},
+						axisTick: {
+							show: y2TickMarks
+						},
+						axisLabel: {
+							show: y2AxisLabels,
+							hideOverlap: true,
+							margin: 4,
+							formatter: function (value) {
+								return formatAxisValue(value, y2Format, yUnitSummary);
+							},
+							color: colour[1]
+						},
+						name: y2AxisTitle,
+						nameLocation: 'end',
+						nameTextStyle: {
+							align: 'right',
+							verticalAlign: 'top',
+							backgroundColor: 'white',
+							padding: [0, 0, 0, 5],
+							color: colour[1]
+						},
+						nameGap: 6,
+						min: yMin,
+						max: yMax,
+						boundaryGap: ['0%', '1%']
+				}
+
+				verticalAxisConfig = [verticalAxisConfig, secondaryAxis];
+				// }
 			}
 
 			// ---------------------------------------------------------------------------------------
@@ -668,6 +815,11 @@
 						let yVal;
 						let yCol;
 						if (params.length > 1) {
+							console.log(params)
+							// console.log(getFormatByTitle(columnSummary, "Sales ($)"))
+							// THIS WILL BREAK FOR COMBINED SERIES WHERE CONCATENATED. SERIES NAME IS NOT ALWAYS COLUMN NAME!!!
+							/// -----
+							
 							// If multi-series, add series name as title of tooltip
 							xVal = params[0].value[swapXY ? 1 : 0];
 							output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(
@@ -682,7 +834,8 @@
 										params[i].seriesName
 									} <span style='float:right; margin-left: 10px;'>${formatValue(
 										yVal,
-										yFormat
+										// yFormat
+										getFormatByTitle(columnSummary, params[i].seriesName)
 									)}</span>`;
 							}
 						} else if (xType === 'value') {
@@ -780,6 +933,8 @@
 	}
 
 	$: data;
+
+	$: console.log($config)
 </script>
 
 {#if !error}

@@ -53,6 +53,7 @@ sources:
     data={marketing_spend}
     x=month_begin 
     y=spend
+    y2=spend
     series=marketing_channel
     type=grouped
 />

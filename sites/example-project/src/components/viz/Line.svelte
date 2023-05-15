@@ -11,6 +11,11 @@
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
+	export let y2 = undefined;
+	if(y2){
+		$props.y2 = y2;
+	}
+	const y2Set = y2 ? true : false; // Hack, see chart.svelte
 	export let series = undefined;
 	const seriesSet = series ? true : false; // Hack, see chart.svelte
 	export let options = undefined;
@@ -32,6 +37,7 @@
 	$: data = $props.data;
 	$: x = $props.x;
 	$: y = ySet ? y : $props.y;
+	$: y2 = y2Set ? y2 : $props.y2;
 	$: swapXY = $props.swapXY;
 	$: xType = $props.xType;
 	$: xMismatch = $props.xMismatch;
@@ -84,6 +90,7 @@
 		data,
 		x,
 		y,
+		y2,
 		series,
 		swapXY,
 		baseConfig,
@@ -91,6 +98,7 @@
 		xMismatch,
 		columnSummary
 	);
+	
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
 		return d;
@@ -114,11 +122,14 @@
 	beforeUpdate(() => {
 		config.update((d) => {
 			if (swapXY) {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+				// d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 			} else {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+				// d.yAxis = [ ...d.yAxis, ...chartOverrides.yAxis ];
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
+				if(y2){
+					d.yAxis[1] = {...d.yAxis[1], show: true};
+				}
 			}
 			return d;
 		});

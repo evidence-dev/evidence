@@ -39,12 +39,29 @@
 	let chartType = 'Scatter Plot';
 
 	let useTooltip = true;
+
+	export let y2 = undefined;
+	export let y2AxisTitle = undefined;
+	export let y2Gridlines = undefined;
+	export let y2AxisLabels = undefined;
+	export let y2Baseline = undefined;
+	export let y2TickMarks = undefined;
+	export let y2Min = undefined;
+	export let y2Max = undefined;
 </script>
 
 <Chart
 	{data}
 	{x}
 	{y}
+	{y2}
+	{y2AxisTitle}
+	{y2Gridlines}
+	{y2AxisLabels}
+	{y2Baseline}
+	{y2TickMarks}
+	{y2Min}	
+	{y2Max}
 	{series}
 	{tooltipTitle}
 	{xType}

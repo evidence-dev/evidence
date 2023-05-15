@@ -118,6 +118,7 @@ let countries = [
     data={countries}
     x=gdp_usd
     y=gdp_growth_pct1
+    y2=gdp_growth_pct1
     tooltipTitle=country
 />
 

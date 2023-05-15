@@ -11,6 +11,8 @@
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
+	export let y2 = undefined;
+	const y2Set = y2 ? true : false; // Hack, see chart.svelte
 	export let series = undefined;
 	const seriesSet = series ? true : false; // Hack, see chart.svelte
 	export let options = undefined;
@@ -35,12 +37,15 @@
 	$: xType = $props.xType;
 	$: xFormat = $props.xFormat;
 	$: yFormat = $props.yFormat;
+	$: y2Format = $props.y2Format;
 	$: xMismatch = $props.xMismatch;
 	$: columnSummary = $props.columnSummary;
 	$: y = ySet ? y : $props.y;
+	$: y2 = y2Set ? y2 : $props.y2;
 	$: series = seriesSet ? series : $props.series;
 	$: size = size ?? $props.size;
 	$: yMin = $props.yMin;
+	$: y2Min = $props.y2Min;
 	$: tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
 
 	$: if (!series && typeof y !== 'object') {
@@ -185,6 +190,7 @@
 		data,
 		x,
 		y,
+		y2,
 		series,
 		swapXY,
 		baseConfig,
@@ -201,10 +207,10 @@
 
 	// Chart-level config settings:
 	$: chartOverrides = {
-		yAxis: {
-			scale: true,
-			boundaryGap: ['1%', '1%']
-		},
+		// yAxis: {
+		// 	scale: true,
+		// 	boundaryGap: ['1%', '1%']
+		// },
 		xAxis: {
 			boundaryGap: [xType === 'time' ? '2%' : '1%', '2%']
 		}
@@ -213,11 +219,14 @@
 	beforeUpdate(() => {
 		config.update((d) => {
 			if (swapXY) {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+				// d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 			} else {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+				// d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
+				if(y2){
+					d.yAxis[1] = {...d.yAxis[1], show: true};
+				}
 			}
 			if (useTooltip) {
 				d.tooltip = { ...d.tooltip, ...tooltipOverride.tooltip };

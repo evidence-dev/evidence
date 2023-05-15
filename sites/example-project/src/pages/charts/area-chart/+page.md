@@ -9,6 +9,7 @@ sources:
 <AreaChart
 data={orders_by_category.filter(d => d.category === "Sinister Toys")}
 x=month
+y=sales_usd0k
 />
 
 ## Stacked Area

@@ -11,6 +11,8 @@
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
+	export let y2 = undefined;
+	const y2Set = y2 ? true : false; // Hack, see chart.svelte
 	export let series = undefined;
 	const seriesSet = series ? true : false; // Hack, see chart.svelte
 	export let options = undefined;
@@ -29,6 +31,7 @@
 	$: data = $props.data;
 	$: x = $props.x;
 	$: y = ySet ? y : $props.y;
+	$: y2 = y2Set ? y2 : $props.y2;
 	$: swapXY = $props.swapXY;
 	$: xType = $props.xType;
 	$: xMismatch = $props.xMismatch;
@@ -75,6 +78,7 @@
 		data,
 		x,
 		y,
+		y2,
 		series,
 		swapXY,
 		baseConfig,

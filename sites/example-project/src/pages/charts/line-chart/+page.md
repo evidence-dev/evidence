@@ -78,7 +78,7 @@ select 'China' as country, 101 as value, 1996 as year
 
 ## Muliple y Column Line
 
-<LineChart data={orders_by_month} x=month y={["sales_usd0k","num_orders_num0"]}/>
+<LineChart data={orders_by_month} x=month y="sales_usd0k" y2="num_orders_num0" yAxisTitle=true y2AxisTitle=true/>
 
 ## Multiple y Column and Series Line
 

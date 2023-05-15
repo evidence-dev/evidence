@@ -8,17 +8,19 @@ sources:
 
 <Chart
 data={orders_by_category.filter(d => d.category === "Sinister Toys")}
-x=month>
-<Bar y=sales_usd0k/>
-<Line y=num_orders_num0/>
+x=month
+y=num_orders_num0
+>
+  <Bar y=num_orders_num0/>
+  <Line y2=sales_usd0k/>
 </Chart>
 
 ## Bar and Line Chart with Custom Height
 
-<Chart
+<!-- <Chart
 data={orders_by_category.filter(d => d.category === "Sinister Toys")}
 x=month
 chartAreaHeight=380>
 <Bar y=sales_usd0k/>
 <Line y=num_orders_num0/>
-</Chart>
+</Chart> -->
