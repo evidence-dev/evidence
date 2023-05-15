@@ -20,12 +20,12 @@
 
 <style>
 	.icon {
-		display: flex;
 		align-items: center;
 		vertical-align: middle;
 	}
 
 	.icon-container {
+		display: inline-flex;
 		align-items: center;
 		vertical-align: middle;
 	}
@@ -33,5 +33,6 @@
 	svg {
 		margin: auto;
 		display: block;
+		height: 100%;
 	}
 </style>
