@@ -5,7 +5,7 @@
 
 	credentials = { ...existingCredentials };
     
-    credentials.project_id = credentials.project_id ?? ' ';
+    credentials.project_id = credentials.project_id ?? '';
 
 	let files;
 
@@ -16,6 +16,8 @@
 		}
 		disableSave = false;
 	}
+
+    $: disableSave = !credentials.project_id;
 </script>
 
 <div class="separator">Service Account</div>
