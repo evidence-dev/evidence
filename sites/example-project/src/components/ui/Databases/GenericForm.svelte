@@ -66,6 +66,11 @@
 				bind:value={credentials[opt.id]}
 				on:keyup={handleChange}
 			/>
+		{:else if opt.type === 'toggle'}
+			<label class="switch">
+				<input type="checkbox" bind:checked={credentials[opt.id]} on:change={handleChange} />
+				<span class="slider" />
+			</label>
 		{/if}
 	</div>
 {/each}
@@ -102,11 +107,68 @@
 				bind:value={credentials[opt.id]}
 				on:keyup={handleChange}
 			/>
+		{:else if opt.type === 'toggle'}
+			<label class="switch">
+				<input type="checkbox" bind:checked={credentials[opt.id]} on:change={handleChange} />
+				<span class="slider" />
+			</label>
 		{/if}
 	</div>
 {/each}
 
 <style>
+	.switch {
+		position: relative;
+		display: inline-block;
+		width: 2.8rem;
+		height: 1.75rem;
+		margin-left: auto;
+		margin-right: 2px;
+	}
+
+	.switch input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		-webkit-transition: 0.4s;
+		transition: 0.4s;
+		border-radius: 25px;
+	}
+
+	.slider:before {
+		position: absolute;
+		content: '';
+		height: 1.25rem;
+		width: 1.25rem;
+		left: 4px;
+		bottom: 4px;
+		background-color: white;
+		-webkit-transition: 0.4s;
+		transition: 0.4s;
+		border-radius: 50%;
+		box-shadow: 0px 1px 2px var(--grey-500);
+	}
+
+	input:checked + .slider {
+		background-color: var(--green-500);
+	}
+
+	input:checked + .slider:before {
+		-webkit-transform: translateX(1.1rem);
+		-ms-transform: translateX(1.1rem);
+		transform: translateX(1.1rem);
+	}
+
 	div.input-item {
 		font-family: var(--ui-font-family);
 		color: var(--grey-999);
