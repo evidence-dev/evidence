@@ -18,6 +18,7 @@ function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
 		case mssql.TYPES.SmallDateTime:
 		case mssql.TYPES.DateTimeOffset:
 		case mssql.TYPES.Date:
+		case mssql.TYPES.DateTime2:
 			return 'date';
 
 		case mssql.TYPES.VarChar:
@@ -32,6 +33,16 @@ function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
 		case mssql.TYPES.Bit:
 			return 'boolean';
 
+		case mssql.TYPES.Time:
+		case mssql.TYPES.UniqueIdentifier:
+		case mssql.TYPES.Binary:
+		case mssql.TYPES.VarBinary:
+		case mssql.TYPES.Image:
+		case mssql.TYPES.TVP:
+		case mssql.TYPES.UDT:
+		case mssql.TYPES.Geography:
+		case mssql.TYPES.Geometry:
+		case mssql.TYPES.Variant:
 		default:
 			return defaultType;
 	}
@@ -56,12 +67,17 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 const runQuery = async (queryString, database) => {
 	try {
 		const trust_server_certificate =
+			database?.trust_server_certificate ??
 			process.env['MSSQL_TRUST_SERVER_CERTIFICATE'] ??
 			process.env['trust_server_certificate'] ??
 			process.env['TRUST_SERVER_CERTIFICATE'] ??
 			'false';
 		const encrypt =
-			process.env['MSSQL_ENCRYPT'] ?? process.env['encrypt'] ?? process.env['ENCRYPT'] ?? 'true';
+			database?.encrypt ??
+			process.env['MSSQL_ENCRYPT'] ??
+			process.env['encrypt'] ??
+			process.env['ENCRYPT'] ??
+			'true';
 		const credentials = {
 			user: database
 				? database.user
@@ -75,9 +91,13 @@ const runQuery = async (queryString, database) => {
 			password: database
 				? database.password
 				: process.env['MSSQL_PASSWORD'] || process.env['password'] || process.env['PASSWORD'],
-			port: database
-				? database.port
-				: process.env['MSSQL_PORT'] || process.env['port'] || process.env['PORT'],
+			port: parseInt(
+				database?.port ??
+					process.env['MSSQL_PORT'] ??
+					process.env['port'] ??
+					process.env['PORT'] ??
+					1433
+			),
 			options: {
 				trustServerCertificate: trust_server_certificate === 'true',
 				encrypt: encrypt === 'true'

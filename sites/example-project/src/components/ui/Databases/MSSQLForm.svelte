@@ -52,7 +52,7 @@
 			value: credentials.port ?? ''
 		},
 		{
-			id: 'trust-server-certificate',
+			id: 'trust_server_certificate',
 			label: 'Trust Server Certificate',
 			type: 'text',
 			additionalInstructions: 'Should be true for local dev / self-signed certificates',
