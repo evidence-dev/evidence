@@ -33,5 +33,6 @@
 	svg {
 		margin: auto;
 		display: block;
+		height: 100%;
 	}
 </style>
