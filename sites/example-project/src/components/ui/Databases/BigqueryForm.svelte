@@ -4,8 +4,8 @@
 	export let disableSave;
 
 	credentials = { ...existingCredentials };
-    
-    credentials.project_id = credentials.project_id ?? '';
+
+	credentials.project_id = credentials.project_id ?? '';
 
 	let files;
 
@@ -17,7 +17,7 @@
 		disableSave = false;
 	}
 
-    $: disableSave = !credentials.project_id;
+	$: disableSave = !credentials.project_id;
 </script>
 
 <div class="separator">Service Account</div>
@@ -25,7 +25,7 @@
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <div class="input-item">
 	<label> JSON Keyfile </label>
-	{#if credentials.project_id && credentials.private_key && credentials.client_email}
+	{#if credentials.project_id}
 		<input
 			id="file-input"
 			type="file"
@@ -47,8 +47,14 @@
 
 <div class="input-item">
 	<label for="project"> Project ID </label>
-    <!-- displaying the project_id is dependent on private_key so that the bound project_id in gcloud oauth isn't shown -->
-	<input type="text" id="project" name="project" value={credentials?.private_key? credentials?.project_id : ' '} disabled />
+	<!-- displaying the project_id is dependent on private_key so that the bound project_id in gcloud oauth isn't shown -->
+	<input
+		type="text"
+		id="project"
+		name="project"
+		value={credentials?.private_key ? credentials?.project_id : ' '}
+		disabled
+	/>
 </div>
 <div class="input-item">
 	<label for="pk"> Private Key </label>
@@ -110,7 +116,7 @@
 		color: var(--grey-800);
 	}
 
-    .separator {
+	.separator {
 		display: flex;
 		align-items: center;
 		text-align: center;
@@ -119,7 +125,7 @@
 		font-weight: bold;
 	}
 
-    .separator::after {
+	.separator::after {
 		content: '';
 		flex: 1;
 		border-bottom: 1px solid var(--grey-200);

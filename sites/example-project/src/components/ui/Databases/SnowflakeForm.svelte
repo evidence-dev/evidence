@@ -32,10 +32,11 @@
 			id: 'password',
 			label: 'Password',
 			type: 'password',
-			optional: false,
+			optional: true,
 			override: false,
 			value: credentials.password,
-			dataTestId: 'snowflakePassword'
+			dataTestId: 'snowflakePassword',
+			additionalInstructions: "If you're using SSO Browser Authentication, leave this field blank."
 		},
 		{
 			id: 'database',
@@ -56,6 +57,16 @@
 			placeholder: 'my_wh',
 			value: credentials.warehouse,
 			dataTestId: 'snowflakeWarehouse'
+		},
+		{
+			id: 'externalbrowser',
+			label: 'Use SSO Authentication',
+			type: 'toggle',
+			optional: true,
+			override: false,
+			value: credentials.externalbrowser ?? false,
+			additionalInstructions:
+				"Only available locally. If you're using password authentication, leave this false."
 		}
 	];
 
