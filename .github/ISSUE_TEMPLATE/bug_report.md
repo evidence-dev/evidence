@@ -53,6 +53,7 @@ Package versions (`npm list --depth=0`):
 - [ ] BigQuery
 - [ ] Snowflake
 - [ ] Redshift
+- [ ] SQL Server
 - [ ] MySQL
 - [ ] SQLite
 - [ ] DuckDB

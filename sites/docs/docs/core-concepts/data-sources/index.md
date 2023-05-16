@@ -24,6 +24,7 @@ Evidence supports:
 - Snowflake
 - Redshift
 - PostgreSQL
+- Microsoft SQL Server
 - MySQL
 - SQLite
 - DuckDB
