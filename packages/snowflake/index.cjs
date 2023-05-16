@@ -103,8 +103,44 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
+const getCredentials = (database) => {
+	if (database) {
+		return {
+			account: database.account,
+			username: database.username,
+			password: database.password,
+			database: database.database,
+			warehouse: database.warehouse,
+			authenticator: database.externalbrowser ? 'externalbrowser' : undefined
+		};
+	} else {
+		return {
+			account: process.env['SNOWFLAKE_ACCOUNT'] || process.env['account'] || process.env['ACCOUNT'],
+			username:
+				process.env['SNOWFLAKE_USERNAME'] || process.env['username'] || process.env['USERNAME'],
+			password:
+				process.env['SNOWFLAKE_PASSWORD'] || process.env['password'] || process.env['PASSWORD'],
+			database:
+				process.env['SNOWFLAKE_DATABASE'] || process.env['database'] || process.env['DATABASE'],
+			warehouse:
+				process.env['SNOWFLAKE_WAREHOUSE'] || process.env['warehouse'] || process.env['WAREHOUSE'],
+			authenticator:
+				process.env['SNOWFLAKE_EXTERNALBROWSER'] ||
+				process.env['externalbrowser'] ||
+				process.env['EXTERNALBROWSER']
+					? 'externalbrowser'
+					: undefined
+		};
+	}
+};
+
 const runQuery = async (queryString, database) => {
 	try {
+		const credentials = getCredentials(database);
+		if (credentials.authenticator === 'externalbrowser') {
+			delete credentials.password;
+		}
+
 		var connection = createConnection.createConnection({
 			account: database
 				? database.account
@@ -120,7 +156,17 @@ const runQuery = async (queryString, database) => {
 				: process.env['SNOWFLAKE_DATABASE'] || process.env['database'] || process.env['DATABASE'],
 			warehouse: database
 				? database.warehouse
-				: process.env['SNOWFLAKE_WAREHOUSE'] || process.env['warehouse'] || process.env['WAREHOUSE']
+				: process.env['SNOWFLAKE_WAREHOUSE'] ||
+				  process.env['warehouse'] ||
+				  process.env['WAREHOUSE'],
+			authenticator:
+				(database
+					? database.externalbrowser
+					: process.env['SNOWFLAKE_EXTERNALBROWSER'] ||
+					  process.env['externalbrowser'] ||
+					  process.env['EXTERNALBROWSER']) === 'true'
+					? 'externalbrowser'
+					: undefined
 		});
 
 		const result = await execute(connection, queryString);

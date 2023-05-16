@@ -69,8 +69,8 @@ const getCredentials = async (database) => {
 const runQuery = async (queryString, database) => {
 	try {
 		const credentials = await getCredentials(database);
-        // for gcloud oauth
-        if (!credentials.client_email && !credentials.private_key) delete credentials.credentials;
+		// for gcloud oauth
+		if (!credentials.client_email && !credentials.private_key) delete credentials.credentials;
 
 		const connection = new BigQuery({ ...credentials, maxRetries: 10 });
 
