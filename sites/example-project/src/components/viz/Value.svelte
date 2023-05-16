@@ -85,7 +85,7 @@
 	<span class="error">
 		<span class="error-label">Error</span>
 		<span class="additional-info-icon">
-			<HelpCircleIcon height="18" width="18" verticalOffset="2" color="--grey-000" />
+			<HelpCircleIcon height="18" width="18" verticalOffset="1" color="--grey-100" />
 		</span>
 		<span class="error-msg">{error}</span>
 	</span>
@@ -117,7 +117,10 @@
 	}
 
 	.additional-info-icon {
-		display: inline;
+		display: flex;
+		align-items: center;
+		height: 100%;
+		width: 100%;
 		vertical-align: middle;
 		width: 14px;
 		color: white;
