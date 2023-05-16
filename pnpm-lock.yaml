@@ -25,7 +25,7 @@ importers:
       blueimp-md5: 2.19.0
       debounce: ^1.2.1
       downloadjs: 1.4.7
-      echarts: 5.3.2
+      echarts: 5.4.2
       echarts-stat: 1.2.0
       eslint: ^8.28.0
       eslint-config-prettier: ^8.5.0
@@ -61,7 +61,7 @@ importers:
       blueimp-md5: 2.19.0
       debounce: 1.2.1
       downloadjs: 1.4.7
-      echarts: 5.3.2
+      echarts: 5.4.2
       echarts-stat: 1.2.0
       eslint: 8.36.0
       eslint-config-prettier: 8.8.0_eslint@8.36.0
@@ -386,7 +386,7 @@ importers:
       cross-env: ^7.0.3
       debounce: ^1.2.1
       downloadjs: 1.4.7
-      echarts: 5.4.1
+      echarts: 5.4.2
       echarts-stat: 1.2.0
       export-to-csv: 0.2.1
       fs-extra: 10.1.0
@@ -413,7 +413,7 @@ importers:
       cross-env: 7.0.3
       debounce: 1.2.1
       downloadjs: 1.4.7
-      echarts: 5.4.1
+      echarts: 5.4.2
       echarts-stat: 1.2.0
       export-to-csv: 0.2.1
       fs-extra: 10.1.0
@@ -6425,7 +6425,7 @@ packages:
   /axios/0.27.2_debug@3.2.7:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2_debug@3.2.7
+      follow-redirects: 1.15.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -8185,19 +8185,11 @@ packages:
   /echarts-stat/1.2.0:
     resolution: {integrity: sha512-zLd7Kgs+tuTSeaK0VQEMNmnMivEkhvHIk1gpBtLzpRerfcIQ+Bd5XudOMmtwpaTc1WDZbA7d1V//iiBccR46Qg==}
 
-  /echarts/5.3.2:
-    resolution: {integrity: sha512-LWCt7ohOKdJqyiBJ0OGBmE9szLdfA9sGcsMEi+GGoc6+Xo75C+BkcT/6NNGRHAWtnQl2fNow05AQjznpap28TQ==}
+  /echarts/5.4.2:
+    resolution: {integrity: sha512-2W3vw3oI2tWJdyAz+b8DuWS0nfXtSDqlDmqgin/lfzbkB01cuMEN66KWBlmur3YMp5nEDEEt5s23pllnAzB4EA==}
     dependencies:
       tslib: 2.3.0
-      zrender: 5.3.1
-    dev: true
-
-  /echarts/5.4.1:
-    resolution: {integrity: sha512-9ltS3M2JB0w2EhcYjCdmtrJ+6haZcW6acBolMGIuf01Hql1yrIV01L1aRj7jsaaIULJslEP9Z3vKlEmnJaWJVQ==}
-    dependencies:
-      tslib: 2.3.0
-      zrender: 5.4.1
-    dev: false
+      zrender: 5.4.3
 
   /ee-first/1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -8958,18 +8950,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
-
-  /follow-redirects/1.15.2_debug@3.2.7:
-    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 3.2.7
     dev: false
 
   /for-each/0.3.3:
@@ -17061,17 +17041,10 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  /zrender/5.3.1:
-    resolution: {integrity: sha512-7olqIjy0gWfznKr6vgfnGBk7y4UtdMvdwFmK92vVQsQeDPyzkHW1OlrLEKg6GHz1W5ePf0FeN1q2vkl/HFqhXw==}
+  /zrender/5.4.3:
+    resolution: {integrity: sha512-DRUM4ZLnoaT0PBVvGBDO9oWIDBKFdAVieNWxWwK0niYzJCMwGchRk21/hsE+RKkIveH3XHCyvXcJDkgLVvfizQ==}
     dependencies:
       tslib: 2.3.0
-    dev: true
-
-  /zrender/5.4.1:
-    resolution: {integrity: sha512-M4Z05BHWtajY2241EmMPHglDQAJ1UyHQcYsxDNzD9XLSkPDqMq4bB28v9Pb4mvHnVQ0GxyTklZ/69xCFP6RXBA==}
-    dependencies:
-      tslib: 2.3.0
-    dev: false
 
   /zwitch/1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}

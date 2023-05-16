@@ -26,7 +26,7 @@
 			id: 'bigquery',
 			name: 'BigQuery',
 			formComponent: BigqueryForm,
-			docsHref: 'https://docs.evidence.dev/guides/bigquery'
+			docsHref: 'https://docs.evidence.dev/core-concepts/data-sources/#bigquery'
 		},
 		{ id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm },
 		{ id: 'mysql', name: 'MySQL', formComponent: MysqlForm },
