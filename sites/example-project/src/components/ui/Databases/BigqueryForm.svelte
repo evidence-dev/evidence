@@ -75,7 +75,7 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		vertical-align: middle;
-		font-size: 16px;
+		font-size: 14px;
 	}
 	input:required {
 		box-shadow: none;

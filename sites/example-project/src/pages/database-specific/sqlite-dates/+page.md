@@ -1,15 +1,15 @@
 # SQLite Dates
 
-```table_list
+```sql table_list
 SELECT name FROM sqlite_schema WHERE type ='table'
 ```
 
-```orders
+```sql orders
 select * from orders
 limit 100
 ```
 
-```orders_by_month
+```sql orders_by_month
 select
   substr(order_datetime,1,7) as date,
   count(*) as number_of_orders,
@@ -20,19 +20,19 @@ from orders
 group by date order by 1 desc
 ```
 
-```order_summary
+```sql order_summary
 select order_month, count(*) as orders
 from ${orders}
 group by 1
 order by 1 asc
 ```
 
-```reviews
+```sql reviews
 select * from reviews
 limit 100
 ```
 
-```marketing_spend
+```sql marketing_spend
 select * from marketing_spend
 limit 100
 ```

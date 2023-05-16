@@ -84,7 +84,7 @@ In Evidence, most code fences execute SQL queries and display the results in a t
 ````markdown
 This code fence will execute a SQL query and display the results:
 
-```widget_orders
+```sql widget_orders
 SELECT *
 FROM orders
 WHERE category = 'widget'
@@ -152,10 +152,12 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 | Property         | Effect                                                                                                                       |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `title`          | changes the name of the tab, and also adds a header to your page                                                             |
+| `hide_title`     | if true, the title will not show as a header on the page                                                                     |
 | `description`    | is used for search engines                                                                                                   |
 | `og`             | changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc                             |
-| `og.title`       | changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vise versa) |
+| `og.title`       | changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa) |
 | `og.description` | changes the body of the embed                                                                                                |
 | `og.image`       | will appear in the embed if specified, but it is not required.                                                               |
+| `sources`        | references SQL queries stored in the /sources directory.                                                                     |
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.

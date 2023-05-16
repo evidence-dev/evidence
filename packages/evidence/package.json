@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "15.0.1",
+	"version": "16.0.2",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -59,7 +59,7 @@
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
 		"autoprefixer": "^10.4.7",
-		"tailwindcss": "^3.1.5"
+		"tailwindcss": "^3.3.1"
 	},
 	"engines": {
 		"node": "^16.14 || >=18"

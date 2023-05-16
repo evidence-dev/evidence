@@ -1,5 +1,29 @@
 # @evidence-dev/preprocess
 
+## 2.3.2
+
+### Patch Changes
+
+- 14a6bff7: Add ability to hide title from page when defined in frontmatter
+
+## 2.3.1
+
+### Patch Changes
+
+- aff6c041: fix list styling
+
+## 2.3.0
+
+### Minor Changes
+
+- 3b41627d: External .sql files are now supported using the sources directory and frontmatter
+
+### Patch Changes
+
+- 822417fb: Added improved support for frontmatter
+- 3b3ceb17: Add the basic Alert Component
+- 3de027b4: Added Tabs component
+
 ## 2.2.0
 
 ### Minor Changes

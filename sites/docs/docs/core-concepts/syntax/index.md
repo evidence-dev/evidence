@@ -10,7 +10,9 @@ _Evidence flavored Markdown_ extends markdown with additional functionality.
 Evidence supports almost all Markdown syntax. See [Markdown Reference](/markdown).
 
 ```markdown
-# Evidence uses Markdown
+---
+title: Evidence uses Markdown
+---
 
 Markdown can be used to write expressively in text.
 
@@ -29,7 +31,7 @@ Evidence looks for images in your `static` folder, e.g. `static/my-logo.png`.
 Markdown code fences in Evidence run SQL queries and return data. The SQL dialect matches the database you're connecting to. [More on Queries](/core-concepts/queries).
 
 ````markdown
-```orders_by_month
+```sql orders_by_month
 select
     date_trunc('month', order_datetime) as order_month,
     count(*) as number_of_orders,

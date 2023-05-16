@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "2.2.1",
+	"version": "2.3.2",
 	"scripts": {
 		"dev": "svelte-package && vite dev --port 3000",
 		"build": "vite build",
@@ -45,7 +45,7 @@
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
 		"svelte-preprocess": "^4.10.7",
-		"tailwindcss": "^3.1.5",
+		"tailwindcss": "^3.3.1",
 		"vite": "^4.0.4"
 	}
 }

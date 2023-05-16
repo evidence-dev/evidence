@@ -87,7 +87,7 @@
 
 <div
 	data-viz="BigValue"
-	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center select-none align-top"
+	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
 	style={`
         min-width: ${minWidth};
         max-width: ${maxWidth};

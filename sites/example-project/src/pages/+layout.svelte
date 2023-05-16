@@ -1,5 +1,4 @@
 <!-- This get's shipped with the template -- don't do local imports from $lib -->
-
 <script context="module">
 	// Import pages and create an object structure corresponding to the file structure
 	const pages = import.meta.glob(['/src/pages/*/**/+page.md']);
@@ -204,10 +203,6 @@
 	}
 
 	@media (max-width: 850px) {
-		.header-bar {
-			width: 90%;
-		}
-
 		.grid {
 			display: grid;
 			grid-template-areas:

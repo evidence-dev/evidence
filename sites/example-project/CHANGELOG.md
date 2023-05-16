@@ -1,5 +1,38 @@
 # @evidence-dev/components
 
+## 2.3.2
+
+### Patch Changes
+
+- 97babfb2: Fix <CodeBlock /> on Windows (OS)
+
+## 2.3.1
+
+### Patch Changes
+
+- e2b0b5d1: Fix legend and chart spacing for funnel chart
+- 5be07009: Fix horizontal table scroll bug on Windows
+- 6d5d22dd: Fix query viewer still visible on windows (OS)
+- aff6c041: fix list styling
+
+## 2.3.0
+
+### Minor Changes
+
+- 218ce1a6: Clearing minor visual regressions
+- 2cf93f09: TailwindCSS has been integrated into the project and themed according to Evidence's styles.
+  Minor version bump because this may interact with downstream projects.
+- 3b41627d: External .sql files are now supported using the sources directory and frontmatter
+
+### Patch Changes
+
+- 822417fb: Added improved support for frontmatter
+- 138a3891: hide pagemenu on click outside of menu
+- 3b3ceb17: Add the basic Alert Component
+- 3de027b4: Added Tabs component
+- 195f1004: Fix icon color regressions
+- 2cf93f09: BigValue & ErrorChart now use Tailwind for all styles
+
 ## 2.2.1
 
 ### Patch Changes

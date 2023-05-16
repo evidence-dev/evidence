@@ -11,7 +11,7 @@ description: Markdown code fences run SQL queries.
 Evidence runs markdown code fences as SQL queries.
 
 ````markdown
-```sales_by_country
+```sql sales_by_country
 select country, sum(sales) as sales
 from international_transactions
 group by 1
@@ -39,7 +39,7 @@ Reference other queries by writing the query name inside `${ }`.
 For example, if you want to reference a query named `sales_by_region`, you would write `${sales_by_region}` into your SQL query, you would write:
 
 ````sql
-```sales_by_region
+```sql sales_by_region
 select
     region,
     sum(sales) as sales
@@ -47,7 +47,7 @@ from production.daily_sales
 group by 1
 ```
 
-```average_sales
+```sql average_sales
 select
     avg(sales) as average_sales
 from ${sales_by_region}
@@ -118,3 +118,19 @@ In your evidence file, you can now reference `my_query` and `some_category_my_ca
 ### Advanced Usage
 
 SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_query` depends on `some_category_my_category_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.
+
+## Query Cache
+
+Evidence caches query results to reduce the number of queries sent to your database.
+
+Results from queries are cached for one hour, and identical SQL will return the cached results.
+
+The cache is cleared at the _start_ of each build, so new builds will always use fresh data (though identical queries will only run once per build).
+
+### Clearing the Cache Manually
+
+Cached results are stored in your project in `.evidence/template/.evidence-queries`. You can clear the cache by deleting this directory.
+
+```shell
+rm -rf .evidence/template/.evidence-queries
+```

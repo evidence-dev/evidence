@@ -37,7 +37,7 @@ let sankeyData = [
 <SankeyChart data={sankeyData} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
 <SankeyChart data={sankeyData} title="Sankey" subtitle="A simple sankey chart" orient="vertical" valueCol=count />
 
-```traffic_data
+```sql traffic_data
 select 'google' as source, 'all_traffic' as target, 100 as count
 union all
 select 'direct' as source, 'all_traffic' as target, 50 as count

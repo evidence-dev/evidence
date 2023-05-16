@@ -3,7 +3,8 @@ module.exports = `
     MDSvex comes in handy here because it takes frontmatter and shoves it into the metadata object.
     This means that all we need to do is build out the expected page metadata
 -->
-{#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title)}
+<!-- Show title as h1 if defined, and not hidden -->
+{#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title) && metadata.hide_title !== true}
 <h1>{metadata.title ?? metadata.og?.title}</h1>
 {/if}
 <svelte:head>

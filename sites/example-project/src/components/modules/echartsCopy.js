@@ -421,18 +421,27 @@ export default (node, option) => {
 		}
 	});
 
-	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
-	option.animation = false; // disable animation
+	const { config, ratio } = option;
 
-	chart.setOption(option);
+	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
+	config.animation = false; // disable animation
+
+	chart.setOption(config);
 
 	let src = chart.getConnectedDataURL({
 		type: 'jpeg',
-		pixelRatio: 2,
+		pixelRatio: ratio,
 		backgroundColor: '#fff',
 		excludeComponents: ['toolbox']
 	});
 
 	// Replace the contents with an img tag
-	node.innerHTML = `<img src = ${src} width=100%/>`;
+	node.innerHTML = `<img src=${src} width="100%" style="
+        position: absolute; 
+        top: 0;
+        user-select: all;
+        -webkit-user-select: all;
+        -moz-user-select: all;
+        -ms-user-select: all;
+    " />`;
 };
