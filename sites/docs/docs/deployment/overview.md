@@ -6,7 +6,7 @@ title: Deployment Overview
 
 In production, Evidence is a [static site generator](https://www.netlify.com/blog/2020/04/14/what-is-a-static-site-generator-and-3-ways-to-find-the-best-one/). This means it doesn't run queries when someone visits your site, but pre-builds all possible pages as HTML beforehand.
 
-You can host your Evidence project using Evidence Cloud, cloud services like Netlify or Vercel, or your own infrastructure.
+You can host your Evidence project using Evidence Cloud, cloud services like Netlify or Vercel, or your own infrastructure. Evidence does not currently support Github Pages, there is more information on [GitHub](https://github.com/evidence-dev/evidence/issues/603).
 
 ## Evidence Cloud
 
