@@ -33,7 +33,7 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 		let standardizedDBType = dataBaseType.toUpperCase();
 		if (standardizedDBType.indexOf('(') >= 0) {
 			//handles NUMBER(precision, scale) etc
-			standardizedDBType = standardizedDBType.substring(0, dataType.indexOf('(')).trim();
+			standardizedDBType = standardizedDBType.substring(0, standardizedDBType.indexOf('(')).trim();
 		}
 		switch (standardizedDBType) {
 			case 'BOOLEAN':
@@ -141,33 +141,7 @@ const runQuery = async (queryString, database) => {
 			delete credentials.password;
 		}
 
-		var connection = createConnection.createConnection({
-			account: database
-				? database.account
-				: process.env['SNOWFLAKE_ACCOUNT'] || process.env['account'] || process.env['ACCOUNT'],
-			username: database
-				? database.username
-				: process.env['SNOWFLAKE_USERNAME'] || process.env['username'] || process.env['USERNAME'],
-			password: database
-				? database.password
-				: process.env['SNOWFLAKE_PASSWORD'] || process.env['password'] || process.env['PASSWORD'],
-			database: database
-				? database.database
-				: process.env['SNOWFLAKE_DATABASE'] || process.env['database'] || process.env['DATABASE'],
-			warehouse: database
-				? database.warehouse
-				: process.env['SNOWFLAKE_WAREHOUSE'] ||
-				  process.env['warehouse'] ||
-				  process.env['WAREHOUSE'],
-			authenticator:
-				(database
-					? database.externalbrowser
-					: process.env['SNOWFLAKE_EXTERNALBROWSER'] ||
-					  process.env['externalbrowser'] ||
-					  process.env['EXTERNALBROWSER']) === 'true'
-					? 'externalbrowser'
-					: undefined
-		});
+		const connection = createConnection.createConnection(credentials);
 
 		const result = await execute(connection, queryString);
 		const standardizedResults = await standardizeResult(result.rows);
