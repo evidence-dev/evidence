@@ -1,4 +1,4 @@
-const mssql = require('mssql');
+let mssql = require('mssql');
 
 function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
 	switch (data_type) {
@@ -66,6 +66,17 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 
 const runQuery = async (queryString, database) => {
 	try {
+		try {
+			mssql =
+				database?.authentication_method === 'windows'
+					? require('mssql/msnodesqlv8')
+					: require('mssql');
+		} catch (e) {
+			throw new Error(
+				"Could not load Windows Authentication. Please ensure you're on a Windows machine."
+			);
+		}
+
 		const trust_server_certificate =
 			database?.trust_server_certificate ??
 			process.env['MSSQL_TRUST_SERVER_CERTIFICATE'] ??
@@ -99,6 +110,7 @@ const runQuery = async (queryString, database) => {
 					1433
 			),
 			options: {
+				trustedConnection: database?.authentication_method === 'windows',
 				trustServerCertificate: trust_server_certificate === 'true',
 				encrypt: encrypt === 'true',
 				authentication: {

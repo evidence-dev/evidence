@@ -247,7 +247,15 @@
 		bind:credentials
 		bind:disableSave
 	/>
-<GenericForm {opts} bind:credentials bind:disableSave />
+{:else if credentials.authentication_method === 'windows'}
+	<p class="mt-4">
+		When using Windows Authentication, the SQL Server connector automatically detects credentials
+		from your operating system. See the <a
+			href="https://learn.microsoft.com/en-us/sql/relational-databases/security/choose-an-authentication-mode?view=sql-server-ver16#connecting-through-windows-authentication"
+			target="_blank"
+			rel="noreferrer">Microsoft documentation</a
+		> for more details.
+	</p>
 {:else}
 	<GenericForm opts={sql_auth} bind:credentials bind:disableSave />
 {/if}

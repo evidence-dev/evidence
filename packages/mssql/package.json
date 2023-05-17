@@ -16,5 +16,8 @@
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
+	"optionalDependencies": {
+		"msnodesqlv8": "^2"
+	},
 	"type": "module"
 }

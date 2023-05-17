@@ -225,11 +225,14 @@ importers:
       '@evidence-dev/db-commons': workspace:^
       '@types/mssql': ^8.1.2
       dotenv: ^16.0.1
+      msnodesqlv8: ^2
       mssql: ^9.1.1
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
       '@types/mssql': 8.1.2
       mssql: 9.1.1
+    optionalDependencies:
+      msnodesqlv8: 2.7.0
     devDependencies:
       dotenv: 16.0.3
 
@@ -6425,7 +6428,7 @@ packages:
   /axios/0.27.2_debug@3.2.7:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -8950,6 +8953,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
+
+  /follow-redirects/1.15.2_debug@3.2.7:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 3.2.7
     dev: false
 
   /for-each/0.3.3:
@@ -11959,6 +11974,18 @@ packages:
       msgpackr-extract: 3.0.2
     dev: true
 
+  /msnodesqlv8/2.7.0:
+    resolution: {integrity: sha512-Zh9PHr8MpQe+261hh7GaeXl/7x1xuTVUtSS6dFHC79ldb7ZQGKXfl8xwVPIk2OGN59HJZ8CI85/AQP8oxE0E6Q==}
+    engines: {node: '>=10'}
+    os: [win32, linux, darwin]
+    requiresBuild: true
+    dependencies:
+      nan: 2.17.0
+      node-abi: 3.33.0
+      prebuild-install: 7.1.1
+    dev: false
+    optional: true
+
   /mssql/9.1.1:
     resolution: {integrity: sha512-m0yTx9xzUtTvJpWJHqknUXUDPRnJXZYOOFNygnNIXn1PBkLsC/rkXQdquObd+M0ZPlBhGC00Jg28zG0wCl7VWg==}
     engines: {node: '>=10'}
@@ -12013,6 +12040,11 @@ packages:
     dependencies:
       lru-cache: 7.18.3
     dev: false
+
+  /nan/2.17.0:
+    resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
+    dev: false
+    optional: true
 
   /nanoid/3.3.1:
     resolution: {integrity: sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==}
