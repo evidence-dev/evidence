@@ -26,6 +26,7 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
+- [Microsoft SQL Server](#mssql)
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
@@ -91,6 +92,16 @@ postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootc
 ```
 
 Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
+
+### Microsoft SQL Server {#mssql}
+
+#### Trust Server Certificate
+
+The `trustServerCertificate` option indicates whether the channel will be encrypted while bypassing walking the certificate chain to validate trust. This option is disabled by default.
+
+#### Encrypt
+
+The `encrypt` option indicates whether SQL Server uses SSL encryption for all data sent between the client and server if the server has a certificate installed. Necessary for Azure databases.
 
 ### MySQL
 
