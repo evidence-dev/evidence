@@ -59,7 +59,7 @@
 			optional: true,
 			override: false,
 			placeholder: 'false',
-			value: credentials.options?.trustServerCertificate ?? ''
+			value: credentials.trustServerCertificate ?? ''
 		},
 		{
 			id: 'encrypt',
@@ -69,7 +69,7 @@
 			optional: true,
 			override: false,
 			placeholder: 'true',
-			value: credentials.options?.encrypt ?? ''
+			value: credentials.encrypt ?? ''
 		}
 	];
 	import GenericForm from './GenericForm.svelte';
