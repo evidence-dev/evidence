@@ -42,4 +42,8 @@
 			@apply text-yellow-800 bg-yellow-50;
 		}
 	}
+
+	:global(.alert p) {
+		@apply mb-0;
+	}
 </style>
