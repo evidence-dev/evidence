@@ -1,16 +1,7 @@
 name: Tests
 
 on:
-  pull_request:
-    paths-ignore:
-      - 'sites/docs/**'
-      - 'readme/**'
-      - 'README.md'
-      - 'CONTRIBUTING.md'
-      - 'LICENSE.md'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/pull_request_template.md'
-      - 'sites/example-project/src/pages/**'
+  pull_request_target:
 
 jobs:
   Tests-sources:
