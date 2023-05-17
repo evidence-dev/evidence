@@ -11,6 +11,7 @@ import fs from 'fs/promises';
 export const isValidPackage = async (path) => {
 	const s = await fs.stat(path);
 	if (!s.isDirectory()) return false;
+
 	const c = await fs.readdir(path);
 	if (!c.includes('package.json')) return false;
 

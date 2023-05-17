@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const EvidenceComponentConfigSchema = z.object({
-	overrides: z.record(z.string(), z.string()).optional(),
+	overrides: z.array(z.string()).optional(),
 	aliases: z
 		.record(
 			z.string({ description: 'Component Name' }),

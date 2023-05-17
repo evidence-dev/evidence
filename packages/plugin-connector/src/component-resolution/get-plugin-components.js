@@ -2,6 +2,7 @@ import { discoverEvidencePlugins } from '../plugin-discovery';
 import { getComponentsForPackage } from './get-components-for-package';
 import { loadConfig } from '../plugin-discovery/resolve-evidence-config';
 import { getRootModules } from '../plugin-discovery/get-root-modules';
+import chalk from 'chalk';
 
 /**
  * @param {EvidenceConfig} config
@@ -19,6 +20,7 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 		pluginDiscoveries = await discoverEvidencePlugins();
 	}
 
+	// TODO: Ensure that there are no duplicate overrides
 	// Load all the components
 	const components = await Promise.all(
 		pluginDiscoveries.components.map(
@@ -30,7 +32,7 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 				pluginPackage.package.name,
 				await getComponentsForPackage(
 					rootDir,
-					pluginPackage.package.name,
+					pluginPackage.path,
 					config.components[pluginPackage.package.name]
 				)
 			]
@@ -51,19 +53,29 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 				/** @type {PluginComponent} */
 				const componentObj = { package: packageName };
 
-				const [alias] = Object.entries(packageConfig?.aliases ?? {}).find(
-					([, target]) => target === component
-				) ?? [];
+				const [alias] =
+					Object.entries(packageConfig?.aliases ?? {}).find(([, target]) => target === component) ??
+					[];
 
 				if (alias) {
 					componentObj.aliasOf = component;
 				}
 
-				if (alias) {
-					acc[alias] = componentObj;
-				} else {
-					acc[component] = componentObj;
+				const componentOutputName = alias ?? component
+
+				if (acc[componentOutputName]) {
+					console.warn(
+						chalk.yellow(`[!] ${acc[componentOutputName].package} already has a component ${componentOutputName}`)
+					);
 				}
+
+				if(packageConfig.overrides?.includes(componentOutputName)) {
+					componentObj.overriden = {
+						package: acc[componentOutputName].package
+					}
+				}
+
+				acc[componentOutputName] = componentObj;
 			}
 			return acc;
 		},

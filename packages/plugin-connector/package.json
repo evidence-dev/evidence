@@ -15,7 +15,6 @@
   "dependencies": {
     "@types/estree": "^1.0.1",
     "chalk": "^5.2.0",
-    "esm": "^3.2.25",
     "svelte": "^3.59.1",
     "svelte-preprocess": "^5.0.3",
     "yaml": "^2.2.2",

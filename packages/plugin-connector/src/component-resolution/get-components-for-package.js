@@ -9,12 +9,11 @@ import { fileLoader } from './loaders/file-loader';
  * Loads components from a package, given a root directory, package name, and configuration.
  *
  * @param {string} rootDir - The root directory for the package.
- * @param {string} packageName
+ * @param {string} packagePath
  * @param {EvidenceComponentConfig} config
  * @return {Promise<Set<string>>} An array containing the package name and a set of component names.
  */
-export const getComponentsForPackage = async (rootDir, packageName, config) => {
-	const packagePath = path.resolve(rootDir, 'node_modules', packageName);
+export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 	const validEvidencePackage = await isValidPackage(packagePath);
 
 	/** @type {Set<string>} */
@@ -61,24 +60,6 @@ export const getComponentsForPackage = async (rootDir, packageName, config) => {
 			fileComponents.forEach((c) => providedComponents.add(c));
 		}
 	}
-
-	/*
-	// Apply aliases
-	if (config.aliases) {
-		Object.entries(config.aliases).forEach(([componentName, alias]) => {
-			if (providedComponents.has(componentName)) {
-				providedComponents.add(alias);
-				providedComponents.delete(componentName);
-			}
-		});
-	}
-	// Overrides are implicitly aliases
-	if (config.overrides) {
-		Object.entries(config.overrides).forEach(([from, to]) => {
-
-		});
-	}
-	*/
 
 	return providedComponents;
 };

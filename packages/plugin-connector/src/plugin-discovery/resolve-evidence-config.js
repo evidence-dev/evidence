@@ -5,12 +5,6 @@ import { EvidenceConfigSchema } from './schemas/evidence-config.schema';
 import { isValidPackage } from './is-valid-package';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import path from 'path';
-import mod from 'module';
-import { getPluginComponents } from '../component-resolution/get-plugin-components';
-import { getComponentsForPackage } from '../component-resolution/get-components-for-package';
-// @ts-ignore
-const _require = mod.createRequire(process.cwd());
-_require('svelte/register');
 
 /** @type {EvidenceConfig} */
 const emptyConfig = { components: {} };
@@ -78,7 +72,6 @@ export const resolveEvidencePackages = async (rootDir) => {
 	const componentPackages = await Promise.all(
 		Object.keys(configContent.components).map(
 			/**
-			 *
 			 * @param {string} packageName
 			 * @returns {Promise<EvidencePluginPackage<ValidPackage> | false>}
 			 */
