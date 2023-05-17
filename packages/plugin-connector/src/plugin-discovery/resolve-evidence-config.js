@@ -76,7 +76,7 @@ export const resolveEvidencePackages = async (rootDir) => {
 			 * @returns {Promise<EvidencePluginPackage<ValidPackage> | false>}
 			 */
 			async (packageName) => {
-				const packagePath = path.resolve(rootDir, "node_modules", packageName);
+				const packagePath = path.resolve(rootDir, 'node_modules', packageName);
 				const validPackage = await isValidPackage(packagePath);
 				if (!validPackage) return false;
 				return {

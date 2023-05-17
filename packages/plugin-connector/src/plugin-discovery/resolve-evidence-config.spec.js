@@ -3,7 +3,7 @@ vi.mock('fs/promises');
 
 import fs from 'fs/promises';
 import {
-    handleAt,
+	handleAt,
 	handleAtParsed,
 	invalidMinimalConfig,
 	validConfig,
@@ -34,8 +34,7 @@ describe('loadConfig', () => {
 		const config = loadConfig(__dirname);
 
 		expect(config).resolves.toEqual(handleAtParsed);
-
-    });
+	});
 
 	it('should load a verbose configuration', () => {
 		mockedReadFile.mockResolvedValueOnce(validConfig);
@@ -45,15 +44,15 @@ describe('loadConfig', () => {
 		expect(config).resolves.toEqual(validConfigParsed);
 	});
 
-    it('should fail to load invalid configuration, but recover safely', () => {
-        mockedReadFile.mockResolvedValueOnce(invalidMinimalConfig);
+	it('should fail to load invalid configuration, but recover safely', () => {
+		mockedReadFile.mockResolvedValueOnce(invalidMinimalConfig);
 		const config = loadConfig(__dirname);
-        expect(config).resolves.toEqual({components: {}})
-    })
+		expect(config).resolves.toEqual({ components: {} });
+	});
 
-    it('should fail to load missing configuration, but recover safely', () => {
-        mockedReadFile.mockRejectedValueOnce(new Error('ENOENT'));
+	it('should fail to load missing configuration, but recover safely', () => {
+		mockedReadFile.mockRejectedValueOnce(new Error('ENOENT'));
 		const config = loadConfig(__dirname);
-        expect(config).resolves.toEqual({components: {}})
-    })
+		expect(config).resolves.toEqual({ components: {} });
+	});
 });

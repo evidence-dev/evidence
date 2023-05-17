@@ -240,7 +240,6 @@ importers:
       '@types/jest': ^29.5.1
       '@types/node': ^20.1.2
       chalk: ^5.2.0
-      esm: ^3.2.25
       jest: ^29.5.0
       parcel: ^2.8.3
       svelte: ^3.59.1
@@ -252,7 +251,6 @@ importers:
     dependencies:
       '@types/estree': 1.0.1
       chalk: 5.2.0
-      esm: 3.2.25
       svelte: 3.59.1
       svelte-preprocess: 5.0.3_gmmus3lprw664mkdmboocppfke
       yaml: 2.2.2

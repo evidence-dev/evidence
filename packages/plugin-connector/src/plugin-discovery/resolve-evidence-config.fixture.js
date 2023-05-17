@@ -1,22 +1,21 @@
 export const validMinimalConfig = `
 components: {}
-`
+`;
 export const validMinimalConfigParsed = {
-    components: {}
-}
+	components: {}
+};
 
 export const handleAt = `
 components:
     "@evidence-dev/ui": {}
     @evidence-dev/ui-d3: {}
-`
+`;
 export const handleAtParsed = {
-    components: {
-        "@evidence-dev/ui": {},
-        "@evidence-dev/ui-d3": {}
-    }
-}
-
+	components: {
+		'@evidence-dev/ui': {},
+		'@evidence-dev/ui-d3': {}
+	}
+};
 
 export const validConfig = `
 components:
@@ -32,23 +31,23 @@ components:
         aliases:
             BarChart: D3BarChart
             Text: AliasedText
-`
+`;
 export const validConfigParsed = {
-    components: {
-        "@evidence-dev/ui": {},
-        "@evidence-dev/ui-d3": {
-            "overrides": {
-                "LineChart": "LineChart",
-                "Text": "AliasedText"
-            },
-            "aliases": {
-                "BarChart": "D3BarChart",
-                "Text": "AliasedText"
-            }
-        }
-    }
-}
+	components: {
+		'@evidence-dev/ui': {},
+		'@evidence-dev/ui-d3': {
+			overrides: {
+				LineChart: 'LineChart',
+				Text: 'AliasedText'
+			},
+			aliases: {
+				BarChart: 'D3BarChart',
+				Text: 'AliasedText'
+			}
+		}
+	}
+};
 
 export const invalidMinimalConfig = `
 components: []
-`
+`;

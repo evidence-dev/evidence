@@ -115,9 +115,9 @@ export async function fileLoader(rootDir) {
 	const results = await Promise.all(
 		componentPaths.map(async (componentPath) => ({
 			include: await isLibraryComponent(await fs.readFile(componentPath).then((p) => p.toString())),
-            componentName: componentPath.split("/").pop()?.split(".").shift() ?? ""
+			componentName: componentPath.split('/').pop()?.split('.').shift() ?? ''
 		}))
 	);
 
-	return results.filter(r => r.include).map(r => r.componentName);
+	return results.filter((r) => r.include).map((r) => r.componentName);
 }

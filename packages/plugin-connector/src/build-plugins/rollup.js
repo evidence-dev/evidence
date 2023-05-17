@@ -1,7 +1,6 @@
-
 /**
- * 
+ *
  */
 export function evidenceRollup() {
-    throw new Error("Evidence Rollup Plugin not implemented")
+	throw new Error('Evidence Rollup Plugin not implemented');
 }
