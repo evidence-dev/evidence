@@ -26,7 +26,7 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
-- [Microsoft SQL Server](mssql)
+- [Microsoft SQL Server](#mssql)
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
