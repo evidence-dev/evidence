@@ -1,3 +1,7 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
 	// Based on the alert from FlowBite: https://flowbite.com/docs/components/alerts/
 	/**

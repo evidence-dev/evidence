@@ -2,7 +2,15 @@ import chalk from 'chalk';
 import fs from 'fs/promises';
 import yaml from 'yaml';
 import { EvidenceConfigSchema } from './schemas/evidence-config.schema';
+import { isValidPackage } from './is-valid-package';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
+import path from 'path';
+import mod from 'module';
+import { getPluginComponents } from '../component-resolution/get-plugin-components';
+import { getComponentsForPackage } from '../component-resolution/get-components-for-package';
+// @ts-ignore
+const _require = mod.createRequire(process.cwd());
+_require('svelte/register');
 
 /** @type {EvidenceConfig} */
 const emptyConfig = { components: {} };
@@ -16,12 +24,15 @@ export const loadConfig = async (rootDir) => {
 	const configPath = `${rootDir}/evidence.plugins.yaml`;
 
 	try {
-		const configFileContent = await fs.readFile(configPath, 'utf8').then((r) => r.toString()).then(s => {
-      // Surround all YAML key that begin with "@" in quotes
-      // Skipping keys that are already quoted (e.g. beginning of line or whitespace)
-      s = s.replaceAll(/($|\s)(@.+):/g, '$1"$2":')
-      return yaml.parse(s)
-    });
+		const configFileContent = await fs
+			.readFile(configPath, 'utf8')
+			.then((r) => r.toString())
+			.then((s) => {
+				// Surround all YAML key that begin with "@" in quotes
+				// Skipping keys that are already quoted (e.g. beginning of line or whitespace)
+				s = s.replaceAll(/($|\s)(@.+):/g, '$1"$2":');
+				return yaml.parse(s);
+			});
 		const configResult = EvidenceConfigSchema.safeParse(configFileContent);
 		if (!configResult.success) {
 			console.error(
@@ -29,9 +40,8 @@ export const loadConfig = async (rootDir) => {
 					`[!] evidence.plugins.yaml does not contain a valid configuration. \n    Plugins will not be loaded. This may lead to unexpected behavior.`
 				)
 			);
-			const formattedError = cleanZodErrors(configResult.error.format())
-      console.log(formattedError)
-      console.error(chalk.red('|   Discovered Errors:'));
+			const formattedError = cleanZodErrors(configResult.error.format());
+			console.error(chalk.red('|   Discovered Errors:'));
 			const redPipe = chalk.red('|');
 			console.error(
 				`${redPipe}   ${yaml.stringify(formattedError).replace(/\n/g, `\n${redPipe}   `)}`
@@ -58,13 +68,38 @@ export const loadConfig = async (rootDir) => {
 /**
  * Leverages evidence.plugins.yaml to resolve plugins
  * @param {string} rootDir
- * @returns {Promise<EvidencePluginPackage[]>}
+ * @returns {Promise<PackageDiscoveryResult>}
  */
 export const resolveEvidencePackages = async (rootDir) => {
 	/** @type {EvidenceConfig} */
-	let configContent = await loadConfig(rootDir);
+	const configContent = await loadConfig(rootDir);
 
-	console.log(configContent);
+	/** @type {EvidencePluginPackage<ValidPackage>[]} */
+	const componentPackages = await Promise.all(
+		Object.keys(configContent.components).map(
+			/**
+			 *
+			 * @param {string} packageName
+			 * @returns {Promise<EvidencePluginPackage<ValidPackage> | false>}
+			 */
+			async (packageName) => {
+				const packagePath = path.resolve(rootDir, "node_modules", packageName);
+				const validPackage = await isValidPackage(packagePath);
+				if (!validPackage) return false;
+				return {
+					package: validPackage,
+					path: packagePath
+				};
+			}
+		)
+	).then(
+		(pack) => /** @type {EvidencePluginPackage<ValidPackage>[]} */ (pack.filter((p) => p !== false))
+	);
 
-	return [];
+	// configContent.components
+	// const components = await getPluginComponents(configContent);
+	return {
+		components: componentPackages,
+		databases: []
+	};
 };

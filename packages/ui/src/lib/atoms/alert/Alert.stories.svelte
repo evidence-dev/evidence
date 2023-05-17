@@ -1,7 +1,7 @@
 <script>
-    import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
-    import Alert from "./Alert.svelte";
-  </script>
+  import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
+  import Alert from "./Alert.svelte";
+</script>
   
   <Meta
     title="Example/Alert"
@@ -42,3 +42,9 @@
   name="Info"
 args={{ status: "info" }}
     />
+
+  <Story
+    name="Danger"
+    args={{ status: "danger" }}
+    />
+    

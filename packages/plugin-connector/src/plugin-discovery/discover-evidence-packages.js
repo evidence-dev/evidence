@@ -1,51 +1,14 @@
 import fs from "fs/promises";
-import chalk from "chalk";
-
-import { EvidencePackageSchema } from "./schemas/evidence-package.schema";
-
-/**
- * Checks a directory to see if it is a package
- * and if it is a package, if it includes
- * the evidence block that marks it as a plugin
- * @param {string} path
- * @returns {Promise<false | EvidencePackage>}
- */
-const isEvidencePackage = async (path) => {
-  const s = await fs.stat(path);
-  if (!s.isDirectory()) return false;
-  const c = await fs.readdir(path);
-  if (!c.includes("package.json")) return false;
-
-  const packageContent = await fs.readFile(`${path}/package.json`).then(
-    /** @param {Buffer} fileContent */
-    (fileContent) => JSON.parse(fileContent.toString())
-  );
-  if ("evidence" in packageContent) {
-    const zodResult = EvidencePackageSchema.safeParse(packageContent);
-    if (zodResult.success) return zodResult.data;
-    else {
-      console.warn(
-        chalk.yellow(
-          `[!] ${chalk.bold(
-            `"${path.split("node_modules/")[1]}"`
-          )} is possibly intended to contain evidence plugins, but has a malformed evidence field in it's package.json!`
-        )
-      );
-      return false;
-    }
-  } else {
-    return false;
-  }
-};
+import { isValidPackage } from "./is-valid-package";
 
 /**
  * Traverses a node_modules directory.
  * Returns a set of qualified package names that have evidence in their package.json
  * @param {string} path
- * @returns {Promise<Set<{package: EvidencePackage, path: string}>>}
+ * @returns {Promise<Set<{package: ValidPackage, path: string}>>}
  */
 const traverse = async (path) => {
-  /** @type {Set<{package: EvidencePackage, path: string}>} */
+  /** @type {Set<{package: ValidPackage, path: string}>} */
   const output = new Set();
 
   // Iterate through node_modules
@@ -66,7 +29,7 @@ const traverse = async (path) => {
     const stat = await fs.stat(itemPath);
     if (stat.isDirectory()) {
       // First make sure it is a folder, then check if it is a plugin
-      const packageContent = await isEvidencePackage(itemPath);
+      const packageContent = await isValidPackage(itemPath);
       if (packageContent) {
         output.add({ package: packageContent, path: item });
       }
@@ -91,7 +54,7 @@ const traverse = async (path) => {
  * }
  *
  * @param {string} start
- * @returns {Promise<EvidencePluginPackage[]>}
+ * @returns {Promise<EvidencePluginPackage<ValidPackage>[]>}
  */
 export const discoverEvidencePackages = async (start) => {
   const node_modules = `${start}/node_modules`;

@@ -1,12 +1,13 @@
 import preprocess from 'svelte-preprocess';
 import evidencePreprocess from '@evidence-dev/preprocess';
 import adapter from '@sveltejs/adapter-static';
-
+import {evidencePlugins} from '@evidence-dev/plugin-connector';
 /** @type {import('@sveltejs/kit').Config} */
 
 const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
+		// evidencePlugins(),
 		...evidencePreprocess(true),
 		preprocess({
 			postcss: true

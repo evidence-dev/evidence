@@ -1,24 +1,29 @@
-import type { z } from "zod";
-import type { EvidencePackageSchema } from "../src/plugin-discovery/schemas/evidence-package.schema.js";
-import { EvidenceConfigSchema } from "../src/plugin-discovery/schemas/evidence-config.schema.js";
+import type { z } from 'zod';
+import type {
+	EvidencePackageSchema,
+	GenericPackageSchema,
+	ValidPackageSchema
+} from '../src/plugin-discovery/schemas/evidence-package.schema.js';
+import {
+	EvidenceComponentConfigSchema,
+	EvidenceConfigSchema
+} from '../src/plugin-discovery/schemas/evidence-config.schema.js';
 
 declare global {
-  declare type EvidencePlugins = {
-    components: EvidencePackage[];
-    databases: DatabaseConnector[];
-  };
+	type GenericPackage = z.infer<typeof GenericPackageSchema>;
+	type EvidencePackage = z.infer<typeof EvidencePackageSchema>;
+	type ValidPackage = z.infer<typeof ValidPackageSchema>;
 
-  declare type EvidencePackage = z.infer<typeof EvidencePackageSchema>;
+	type EvidenceConfig = z.infer<typeof EvidenceConfigSchema>;
+	type EvidenceComponentConfig = z.infer<typeof EvidenceComponentConfigSchema>;
 
-  declare type EvidenceConfig = z.infer<typeof EvidenceConfigSchema>;
+	type EvidencePluginPackage<T extends ValidPackage> = {
+		package: T;
+		path: string;
+	};
 
-  declare type EvidencePluginPackage = {
-    package: EvidencePackage;
-    path: string;
-  };
-
-  declare type EvidencePluginDiscoveryResult = {
-    components: EvidencePluginPackage[];
-    databases: EvidencePluginPackage[];
-  };
+	type PackageDiscoveryResult = {
+		components: EvidencePluginPackage<ValidPackage>[];
+		databases: EvidencePluginPackage<EvidencePackage>[];
+	};
 }

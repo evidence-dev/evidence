@@ -13,9 +13,11 @@
     "prepublishOnly": "npm run package",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "chromatic": "npx chromatic --project-token=chpt_c7afdf83f264eaf"
   },
   "svelte": "./dist/index.js",
+  "main": "./dist/index.js",
   "type": "module",
   "types": "./dist/index.d.ts",
   "version": "0.0.1",
@@ -39,6 +41,7 @@
     "@sveltejs/kit": "^1.5.0",
     "@sveltejs/package": "^2.0.0",
     "autoprefixer": "^10.4.14",
+    "chromatic": "^6.17.4",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-storybook": "^0.6.12",
@@ -60,8 +63,8 @@
   },
   "exports": {
     ".": {
-      "svelte": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js"
     }
   },
   "files": [
@@ -71,5 +74,7 @@
   ],
   "peerDependencies": {
     "svelte": "^3.54.0"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "@evidence-dev/ui@0.0.1"
 }
