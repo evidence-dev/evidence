@@ -5,10 +5,9 @@
 	export let credentials;
 	export let disableSave;
 
-	$: requiredOpts = opts.filter((d) => d.optional !== true);
-	$: optionalOpts = opts.filter((d) => d.optional === true);
-	$: overrideOpts = opts.filter((d) => d.optional === true && d.override === true);
-    $: opts, handleChange();
+	let requiredOpts = opts.filter((d) => d.optional !== true);
+	let optionalOpts = opts.filter((d) => d.optional === true);
+	let overrideOpts = opts.filter((d) => d.optional === true && d.override === true);
 
 	function handleChange() {
 		let filledFields = 0;
