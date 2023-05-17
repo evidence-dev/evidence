@@ -8,7 +8,7 @@
 	$: requiredOpts = opts.filter((d) => d.optional !== true);
 	$: optionalOpts = opts.filter((d) => d.optional === true);
 	$: overrideOpts = opts.filter((d) => d.optional === true && d.override === true);
-	$: opts, handleChange();
+    $: opts, handleChange();
 
 	function handleChange() {
 		let filledFields = 0;
