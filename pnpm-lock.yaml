@@ -236,6 +236,7 @@ importers:
       '@parcel/packager-ts': ^2.8.3
       '@parcel/transformer-inline-string': ^2.8.3
       '@parcel/transformer-typescript-types': ^2.8.3
+      '@types/estree': ^1.0.1
       '@types/jest': ^29.5.1
       '@types/node': ^20.1.2
       chalk: ^5.2.0
@@ -249,6 +250,7 @@ importers:
       yaml: ^2.2.2
       zod: ^3.21.4
     dependencies:
+      '@types/estree': 1.0.1
       chalk: 5.2.0
       esm: 3.2.25
       svelte: 3.59.1
@@ -7165,12 +7167,12 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.3
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.1
 
   /@types/eslint/8.21.3:
     resolution: {integrity: sha512-fa7GkppZVEByMWGbTtE5MbmXWJTVbrjjaS8K6uQj+XtuuUv1fsuPAxhygfqLmsb/Ufb3CV8deFCpiMfAgi00Sw==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.1
       '@types/json-schema': 7.0.11
 
   /@types/esm/3.2.0:
@@ -7181,6 +7183,9 @@ packages:
 
   /@types/estree/0.0.51:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
+
+  /@types/estree/1.0.1:
+    resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
 
   /@types/express-serve-static-core/4.17.33:
     resolution: {integrity: sha512-TPBqmR/HRYI3eC2E5hmiivIzv+bidAfXofM+sbonAGvyDhySGw9/PQZFt2BLOrjUUR++4eJVpx6KnLQK1Fk9tA==}

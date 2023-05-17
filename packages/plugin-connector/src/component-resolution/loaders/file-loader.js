@@ -47,7 +47,7 @@ export const findSvelteComponents = async (root) => {
  *  </script>
  *
  * @param {boolean} found
- * @param {import("estree").Node}
+ * @param {import("estree").Node} currentNode
  * @returns {boolean}
  */
 const astDeclarationSearch = (found, currentNode) => {
