@@ -9,7 +9,8 @@ export const evidencePlugins = () => {
     return {
         /** @type {import("svelte/types/compiler/preprocess").MarkupPreprocessor}} */
         markup: async () => {
-            await componentPlugins
+            const c = await componentPlugins
+            // TODO: Dynamically import components 😎
         },
         /** @type {import("svelte/types/compiler/preprocess").Preprocessor}} */
         style: async () => {

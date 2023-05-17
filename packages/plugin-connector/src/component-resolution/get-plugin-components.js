@@ -5,7 +5,7 @@ import { getRootModules } from '../plugin-discovery/get-root-modules';
 import chalk from 'chalk';
 
 /**
- * @param {EvidenceConfig} config
+ * @param {EvidenceConfig} [config]
  * @param {PackageDiscoveryResult} [pluginDiscoveries] Optional: Pass in already discovered plugins
  * @returns {Promise<PluginComponents>}
  */
@@ -61,18 +61,20 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 					componentObj.aliasOf = component;
 				}
 
-				const componentOutputName = alias ?? component
+				const componentOutputName = alias ?? component;
 
 				if (acc[componentOutputName]) {
 					console.warn(
-						chalk.yellow(`[!] ${acc[componentOutputName].package} already has a component ${componentOutputName}`)
+						chalk.yellow(
+							`[!] ${acc[componentOutputName].package} already has a component ${componentOutputName}`
+						)
 					);
 				}
 
-				if(packageConfig.overrides?.includes(componentOutputName)) {
+				if (packageConfig.overrides?.includes(componentOutputName)) {
 					componentObj.overriden = {
 						package: acc[componentOutputName].package
-					}
+					};
 				}
 
 				acc[componentOutputName] = componentObj;

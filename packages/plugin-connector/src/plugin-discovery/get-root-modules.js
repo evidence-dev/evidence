@@ -19,7 +19,7 @@ const hasNodeModules = async (p) => {
  */
 export const getRootModules = async (startingPoint) => {
     // Either use the entry file or a specific startingPoint
-    const entryFile = startingPoint ?? process.argv[1]
+    const entryFile = startingPoint ?? process.cwd()
     // Split the entryfile path on "node_modules", this will help if the main file is nested
     // e.g. if sveltekit, main file will be node_modules/@sveltejs/kit/node_modules
     // node_modules/.pnpm/vite@4.0.4/node_modules/vite/bin/vite.js

@@ -7,7 +7,7 @@ import {evidencePlugins} from '@evidence-dev/plugin-connector';
 const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
-		// evidencePlugins(),
+		evidencePlugins(),
 		...evidencePreprocess(true),
 		preprocess({
 			postcss: true
