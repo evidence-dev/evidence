@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { discoverEvidencePlugins } from '../plugin-discovery';
 import { getComponentsForPackage } from './get-components-for-package';
 import { loadConfig } from '../plugin-discovery/resolve-evidence-config';
@@ -53,7 +52,7 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 				const componentObj = { package: packageName };
 
 				const [alias] = Object.entries(packageConfig?.aliases ?? {}).find(
-					([_, target]) => target === component
+					([, target]) => target === component
 				) ?? [];
 
 				if (alias) {
@@ -70,30 +69,6 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 		},
 		{}
 	);
-
-	// // Apply overrides and aliases
-	// Object.entries(config.components).forEach(
-	// 	/**
-	// 	 * @param {[string, EvidenceComponentConfig]} v
-	// 	 * @returns
-	// 	 */
-	// 	([packageName, config]) => {
-	// 		if (config.overrides) {
-	// 			Object.entries(config.overrides).forEach(([from, to]) => {
-	// 				if (componentMap[from]) {
-	// 					// We have an override specified more than once.
-	// 					// TODO: make this error prettier
-	// 					throw new Error(`Overrides specified more than once: ${from}`);
-	// 				}
-	// 				acc[from] = {
-	// 					package: packageName,
-	// 					component: to
-	// 				};
-	// 			});
-	// 		}
-	// 	},
-	// 	{}
-	// );
 
 	return componentMap;
 }
