@@ -100,7 +100,57 @@ const runQuery = async (queryString, database) => {
 			),
 			options: {
 				trustServerCertificate: trust_server_certificate === 'true',
-				encrypt: encrypt === 'true'
+				encrypt: encrypt === 'true',
+				authentication: {
+					type:
+						database?.authentication_method ??
+						process.env['MSSQL_AUTHENTICATION_METHOD'] ??
+						process.env['authentication_method'] ??
+						process.env['AUTHENTICATION_METHOD'] ??
+						'default',
+					options: {
+						clientId:
+							database?.client_id ??
+							process.env['MSSQL_CLIENT_ID'] ??
+							process.env['client_id'] ??
+							process.env['CLIENT_ID'],
+						clientSecret:
+							database?.client_secret ??
+							process.env['MSSQL_CLIENT_SECRET'] ??
+							process.env['client_secret'] ??
+							process.env['CLIENT_SECRET'],
+						tenantId:
+							database?.tenant_id ??
+							process.env['MSSQL_TENANT_ID'] ??
+							process.env['tenant_id'] ??
+							process.env['TENANT_ID'],
+						msiEndpoint:
+							database?.msi_endpoint ??
+							process.env['MSSQL_MSI_ENDPOINT'] ??
+							process.env['msi_endpoint'] ??
+							process.env['MSI_ENDPOINT'],
+						msiSecret:
+							database?.msi_secret ??
+							process.env['MSSQL_MSI_SECRET'] ??
+							process.env['msi_secret'] ??
+							process.env['MSI_SECRET'],
+						token:
+							database?.token ??
+							process.env['MSSQL_TOKEN'] ??
+							process.env['token'] ??
+							process.env['TOKEN'],
+						userName:
+							database?.username ??
+							process.env['MSSQL_USERNAME'] ??
+							process.env['username'] ??
+							process.env['USERNAME'],
+						password:
+							database?.password ??
+							process.env['MSSQL_PASSWORD'] ??
+							process.env['password'] ??
+							process.env['PASSWORD']
+					}
+				}
 			}
 		};
 
