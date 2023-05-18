@@ -1,5 +1,16 @@
 # @evidence-dev/db-orchestrator
 
+## 2.1.0
+
+### Minor Changes
+
+- f15e5685: Added SQL Server driver
+
+### Patch Changes
+
+- Updated dependencies [f15e5685]
+  - @evidence-dev/mssql@0.2.0
+
 ## 2.0.3
 
 ### Patch Changes
