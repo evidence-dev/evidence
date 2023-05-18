@@ -1,5 +1,12 @@
 # evidence-docs
 
+## 2.0.1
+
+### Patch Changes
+
+- c95f69ed: added mssql to list of supported databases
+- a3cf89e7: Allow setting of the chartAreaHeight via props on supported chart types
+
 ## 2.0.0
 
 ### Major Changes
