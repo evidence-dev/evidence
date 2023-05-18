@@ -78,7 +78,7 @@ const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
 };
 
 const runQueries = async function (routeHash, dev) {
-    if (!pathExistsSync('./evidence.settings.json')) {
+	if (!pathExistsSync('./evidence.settings.json')) {
 		writeJSONSync('./evidence.settings.json', {
 			database: 'duckdb',
 			credentials: { filename: 'needful_things.duckdb', gitignoreDuckdb: null }
