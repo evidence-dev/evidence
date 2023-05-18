@@ -75,4 +75,10 @@
 	span.queryID {
 		font-weight: bold;
 	}
+
+	@media print {
+		#toast {
+			display: none;
+		}
+	}
 </style>

@@ -20,3 +20,4 @@ yarn.lock
 **/sites/docs/*
 **/dist/*   
 .changeset/*
+**/sites/example-project/src/pages/**/+page.md

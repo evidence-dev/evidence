@@ -1,5 +1,5 @@
 ---
-sidebar_position: 12
+sidebar_position: 15
 title: Maps
 
 hide_table_of_contents: false
