@@ -7,6 +7,7 @@
 	import SqliteForm from './SqliteForm.svelte';
 	import DuckdbForm from './DuckdbForm.svelte';
 	import CSVForm from './CSVForm.svelte';
+	import MSSQLForm from './MSSQLForm.svelte';
 
 	import { slide, blur } from 'svelte/transition';
 
@@ -25,7 +26,7 @@
 			id: 'bigquery',
 			name: 'BigQuery',
 			formComponent: BigqueryForm,
-			docsHref: 'https://docs.evidence.dev/guides/bigquery'
+			docsHref: 'https://docs.evidence.dev/core-concepts/data-sources/#bigquery'
 		},
 		{ id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm },
 		{ id: 'mysql', name: 'MySQL', formComponent: MysqlForm },
@@ -33,7 +34,8 @@
 		{ id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm },
 		{ id: 'sqlite', name: 'SQLite', formComponent: SqliteForm },
 		{ id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm },
-		{ id: 'csv', name: 'CSV', formComponent: CSVForm }
+		{ id: 'csv', name: 'CSV', formComponent: CSVForm },
+		{ id: 'mssql', name: 'SQL Server', formComponent: MSSQLForm }
 	];
 
 	let selectedDatabase =

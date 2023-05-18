@@ -2,7 +2,7 @@
 
 ## Query Viewer
 
-```date_query
+```sql date_query
 select date('2020-04-25') as date, 100 as value
 union all
 select date('2020-04-26') as date, 103 as value
