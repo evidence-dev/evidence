@@ -32,7 +32,7 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 		return providedComponents;
 	}
 
-	if (config.provides) {
+	if (config.provides.length) {
 		// Use this value as the first truth
 		config.provides.forEach((c) => providedComponents.add(c));
 	} else if (!validEvidencePackage.evidence) {
@@ -56,7 +56,8 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 			manifestComponents.forEach((c) => providedComponents.add(c));
 		} else {
 			// Use file discovery
-			const fileComponents = await fileLoader(packagePath);
+			// TODO: Look at package.svelte field for directory, instead of assuming dist.
+			const fileComponents = await fileLoader(path.resolve(packagePath, 'dist'));
 			fileComponents.forEach((c) => providedComponents.add(c));
 		}
 	}
