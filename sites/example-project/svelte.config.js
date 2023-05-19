@@ -18,10 +18,10 @@ const config = {
 			strict: false
 		}),
 		files: {
-			routes: 'src/pages',
+			routes: 'src/pages'
 			// lib: 'src/components'
 		}
-	},
+	}
 	// package: {
 	// 	dir: '../../packages/components',
 	// 	emitTypes: true

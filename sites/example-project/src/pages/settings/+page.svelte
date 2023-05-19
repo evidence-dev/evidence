@@ -4,14 +4,10 @@
 	$: ({ settings, customFormattingSettings, gitIgnore } = data);
 
 	import { dev } from '$app/environment';
-	// import DatabaseSettingsPanel from '$lib/ui/Databases/DatabaseSettingsPanel.svelte';
-	// import VersionControlPanel from '$lib/ui/VersionControl/VersionControlPanel.svelte';
-	// import DeploySettingsPanel from '$lib/ui/Deployment/DeploySettingsPanel.svelte';
-	// import FormattingSettingsPanel from '$lib/ui/Formatting/FormattingSettingsPanel.svelte';
-	// import TelemetrySettingsPanel from '$lib/ui/TelemetryOptOut/TelemetrySettingsPanel.svelte';
 </script>
 
 {#if dev}
+	<!-- eslint-disable no-undef -->
 	<DatabaseSettingsPanel {settings} {gitIgnore} />
 	<VersionControlPanel {settings} />
 	<DeploySettingsPanel {settings} />
