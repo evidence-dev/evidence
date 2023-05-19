@@ -9,14 +9,14 @@ export const evidencePlugins = () => {
 	return {
 		/** @type {import("svelte/types/compiler/preprocess").MarkupPreprocessor}} */
 		markup: async () => {
-			await componentPlugins;
+			await componentPlugins.catch();
 			// TODO: Dynamically import components 😎
 		},
 		/** @type {import("svelte/types/compiler/preprocess").Preprocessor}} */
 		style: async () => {},
 		/** @type {import("svelte/types/compiler/preprocess").Preprocessor}} */
 		script: async () => {
-			await componentPlugins;
+			await componentPlugins.catch();
 		}
 	};
 };
