@@ -12,7 +12,6 @@ import {
 	validMinimalConfigParsed
 } from './resolve-evidence-config.fixture';
 import { loadConfig } from './resolve-evidence-config';
-import chalk from 'chalk';
 
 /** @type {import("vitest").MockedFunction<typeof import("fs/promises").readFile>} */
 let mockedReadFile = /** @type {import("vitest").MockedFunction<typeof fs.readFile>} */ (

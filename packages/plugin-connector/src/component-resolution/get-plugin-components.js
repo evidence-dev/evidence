@@ -12,7 +12,7 @@ import chalk from 'chalk';
 export async function getPluginComponents(cfg, pluginDiscoveries) {
 	const rootDir = await getRootModules();
 
-	const config = cfg ?? await loadConfig(rootDir);
+	const config = cfg ?? (await loadConfig(rootDir));
 
 	if (!pluginDiscoveries) {
 		pluginDiscoveries = await discoverEvidencePlugins();
@@ -51,8 +51,7 @@ export async function getPluginComponents(cfg, pluginDiscoveries) {
 				const componentObj = { package: packageName };
 
 				const [alias] =
-					Object.entries(packageConfig.aliases).find(([, target]) => target === component) ??
-					[];
+					Object.entries(packageConfig.aliases).find(([, target]) => target === component) ?? [];
 
 				if (alias) {
 					componentObj.aliasOf = component;
@@ -74,7 +73,7 @@ export async function getPluginComponents(cfg, pluginDiscoveries) {
 					};
 				}
 
-			acc[componentOutputName] = componentObj;
+				acc[componentOutputName] = componentObj;
 			}
 			return acc;
 		},
