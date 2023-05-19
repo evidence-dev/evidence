@@ -29,7 +29,7 @@ importers:
       echarts-stat: 1.2.0
       eslint: ^8.28.0
       eslint-config-prettier: ^8.5.0
-      eslint-plugin-svelte3: ^4.0.0
+      eslint-plugin-svelte: ^2.28.0
       export-to-csv: 0.2.1
       fs-extra: 10.1.0
       git-remote-origin-url: 4.0.0
@@ -65,7 +65,7 @@ importers:
       echarts-stat: 1.2.0
       eslint: 8.36.0
       eslint-config-prettier: 8.8.0_eslint@8.36.0
-      eslint-plugin-svelte3: 4.0.0_vezcccjdrb6iqu72g7u324thc4
+      eslint-plugin-svelte: 2.28.0_vezcccjdrb6iqu72g7u324thc4
       export-to-csv: 0.2.1
       fs-extra: 10.1.0
       git-remote-origin-url: 4.0.0
@@ -5542,18 +5542,6 @@ packages:
       typescript: 5.0.4
     dev: true
 
-  /@parcel/types/2.8.3:
-    resolution: {integrity: sha512-FECA1FB7+0UpITKU0D6TgGBpGxYpVSMNEENZbSJxFSajNy3wrko+zwBKQmFOLOiPcEtnGikxNs+jkFWbPlUAtw==}
-    dependencies:
-      '@parcel/cache': 2.8.3_@parcel+core@2.8.3
-      '@parcel/diagnostic': 2.8.3
-      '@parcel/fs': 2.8.3_@parcel+core@2.8.3
-      '@parcel/package-manager': 2.8.3_@parcel+core@2.8.3
-      '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.8.3_@parcel+core@2.8.3
-      utility-types: 3.10.0
-    dev: true
-
   /@parcel/types/2.8.3_@parcel+core@2.8.3:
     resolution: {integrity: sha512-FECA1FB7+0UpITKU0D6TgGBpGxYpVSMNEENZbSJxFSajNy3wrko+zwBKQmFOLOiPcEtnGikxNs+jkFWbPlUAtw==}
     dependencies:
@@ -5601,7 +5589,7 @@ packages:
       '@parcel/core': 2.8.3
       '@parcel/diagnostic': 2.8.3
       '@parcel/logger': 2.8.3
-      '@parcel/types': 2.8.3
+      '@parcel/types': 2.8.3_@parcel+core@2.8.3
       '@parcel/utils': 2.8.3
       chrome-trace-event: 1.0.3
       nullthrows: 1.1.1
@@ -10851,14 +10839,30 @@ packages:
       - ts-node
     dev: true
 
-  /eslint-plugin-svelte3/4.0.0_vezcccjdrb6iqu72g7u324thc4:
-    resolution: {integrity: sha512-OIx9lgaNzD02+MDFNLw0GEUbuovNcglg+wnd/UY0fbZmlQSz7GlQiQ1f+yX0XvC07XPcDOnFcichqI3xCwp71g==}
+  /eslint-plugin-svelte/2.28.0_vezcccjdrb6iqu72g7u324thc4:
+    resolution: {integrity: sha512-bXPXKnjq5uKoVAQtC2E0L1Vp+mmJ3nlC9jyz8zwfZ99pQROL2h7Hes01QdYil1vxgh6tLXl5YVpZ2wwyAbBz5g==}
+    engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
-      eslint: '>=8.0.0'
-      svelte: ^3.2.0
+      eslint: ^7.0.0 || ^8.0.0-0
+      svelte: ^3.37.0
+    peerDependenciesMeta:
+      svelte:
+        optional: true
     dependencies:
+      '@eslint-community/eslint-utils': 4.3.0_eslint@8.36.0
+      '@jridgewell/sourcemap-codec': 1.4.14
+      debug: 4.3.4
       eslint: 8.36.0
+      esutils: 2.0.3
+      known-css-properties: 0.27.0
+      postcss: 8.4.23
+      postcss-load-config: 3.1.4_postcss@8.4.23
+      postcss-safe-parser: 6.0.0_postcss@8.4.23
       svelte: 3.55.0
+      svelte-eslint-parser: 0.28.0_svelte@3.55.0
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
     dev: true
 
   /eslint-scope/5.1.1:
@@ -18856,6 +18860,21 @@ packages:
 
   /svelte-eslint-parser/0.27.0_svelte@3.55.0:
     resolution: {integrity: sha512-x9cBbCZwLdCnNE3yPqGhvAqEl9FCILC6AaV2xRtwzaMCpvpqO7ceONXj9xka3fQFczSqLzkwOxP4Ln4cIQNqXg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      svelte: ^3.37.0
+    peerDependenciesMeta:
+      svelte:
+        optional: true
+    dependencies:
+      eslint-scope: 7.1.1
+      eslint-visitor-keys: 3.3.0
+      espree: 9.5.0
+      svelte: 3.55.0
+    dev: true
+
+  /svelte-eslint-parser/0.28.0_svelte@3.55.0:
+    resolution: {integrity: sha512-qWg5M3CIp7LkcdG5bpn44QEd48UxvgxG5L+Sbl701EG8Wujht7EqJuJhqgzvO3bbI9ENbWCXK49eCcwiNnpMzw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       svelte: ^3.37.0
