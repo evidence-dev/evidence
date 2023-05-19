@@ -4,7 +4,8 @@
 	"description": "",
 	"type": "module",
 	"scripts": {
-		"test": "vitest",
+		"test": "vitest --run",
+		"test:watch": "vitest",
 		"build": "parcel build",
 		"watch": "parcel watch",
 		"check": "tsc --noEmit -p tsconfig.json"

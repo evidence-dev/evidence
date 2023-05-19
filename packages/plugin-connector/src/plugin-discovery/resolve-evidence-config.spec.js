@@ -19,39 +19,39 @@ let mockedReadFile = /** @type {import("vitest").MockedFunction<typeof fs.readFi
 );
 
 describe('loadConfig', () => {
-	it('should load a valid configuration', () => {
+	it('should load a valid configuration', async () => {
 		mockedReadFile.mockResolvedValueOnce(validMinimalConfig);
 
-		const config = loadConfig(__dirname);
+		const config = await loadConfig(__dirname);
 
-		expect(config).resolves.toEqual(validMinimalConfigParsed);
+		expect(config).toEqual(validMinimalConfigParsed);
 	});
 
-	it('should properly escape @ symbols in keys when appropriate', () => {
+	it('should properly escape @ symbols in keys when appropriate', async () => {
 		mockedReadFile.mockResolvedValueOnce(handleAt);
 
-		const config = loadConfig(__dirname);
+		const config = await loadConfig(__dirname);
 
-		expect(config).resolves.toEqual(handleAtParsed);
+		expect(config).toEqual(handleAtParsed);
 	});
 
-	it('should load a verbose configuration', () => {
+	it('should load a verbose configuration', async () => {
 		mockedReadFile.mockResolvedValueOnce(validConfig);
 
-		const config = loadConfig(__dirname);
-
-		expect(config).resolves.toEqual(validConfigParsed);
+		const config = await loadConfig(__dirname);
+		
+		expect(config).toEqual(validConfigParsed);
 	});
 
-	it('should fail to load invalid configuration, but recover safely', () => {
+	it('should fail to load invalid configuration, but recover safely', async () => {
 		mockedReadFile.mockResolvedValueOnce(invalidMinimalConfig);
-		const config = loadConfig(__dirname);
-		expect(config).resolves.toEqual({ components: {} });
+		const config = await loadConfig(__dirname);
+		expect(config).toEqual({ components: {} });
 	});
 
-	it('should fail to load missing configuration, but recover safely', () => {
+	it('should fail to load missing configuration, but recover safely', async () => {
 		mockedReadFile.mockRejectedValueOnce(new Error('ENOENT'));
-		const config = loadConfig(__dirname);
-		expect(config).resolves.toEqual({ components: {} });
+		const config = await loadConfig(__dirname);
+		expect(config).toEqual({ components: {} });
 	});
 });

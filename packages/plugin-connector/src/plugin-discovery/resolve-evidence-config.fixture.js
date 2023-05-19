@@ -12,8 +12,16 @@ components:
 `;
 export const handleAtParsed = {
 	components: {
-		'@evidence-dev/ui': {},
-		'@evidence-dev/ui-d3': {}
+		'@evidence-dev/ui': {
+			overrides: [],
+			aliases: {},
+			provides: []
+		},
+		'@evidence-dev/ui-d3': {
+			overrides: [],
+			aliases: {},
+			provides: []
+		}
 	}
 };
 
@@ -26,24 +34,29 @@ components:
         # Override other LineCharts with own LineChart
         # TODO: How does this interact with aliases?
         overrides:
-            LineChart: LineChart
-            Text: AliasedText
+            - LineChart
+            - AliasedText
         aliases:
             BarChart: D3BarChart
             Text: AliasedText
 `;
 export const validConfigParsed = {
 	components: {
-		'@evidence-dev/ui': {},
+		'@evidence-dev/ui': {
+			overrides: [],
+			aliases: {},
+			provides: []
+		},
 		'@evidence-dev/ui-d3': {
-			overrides: {
-				LineChart: 'LineChart',
-				Text: 'AliasedText'
-			},
+			overrides: [
+				"LineChart",
+				"AliasedText"
+			],
 			aliases: {
 				BarChart: 'D3BarChart',
 				Text: 'AliasedText'
-			}
+			},
+			provides: []
 		}
 	}
 };
