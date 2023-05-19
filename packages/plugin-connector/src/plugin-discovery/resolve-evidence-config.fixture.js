@@ -48,10 +48,7 @@ export const validConfigParsed = {
 			provides: []
 		},
 		'@evidence-dev/ui-d3': {
-			overrides: [
-				"LineChart",
-				"AliasedText"
-			],
+			overrides: ['LineChart', 'AliasedText'],
 			aliases: {
 				BarChart: 'D3BarChart',
 				Text: 'AliasedText'

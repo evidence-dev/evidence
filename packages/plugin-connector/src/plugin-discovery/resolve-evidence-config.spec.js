@@ -39,7 +39,7 @@ describe('loadConfig', () => {
 		mockedReadFile.mockResolvedValueOnce(validConfig);
 
 		const config = await loadConfig(__dirname);
-		
+
 		expect(config).toEqual(validConfigParsed);
 	});
 
