@@ -10,7 +10,11 @@ export const evidencePlugins = () => {
 	return {
 		/** @type {import("svelte/types/compiler/preprocess").MarkupPreprocessor}} */
 		markup: async ({ content, filename }) => {
-			const components = await componentPlugins;
+			const components = await componentPlugins.catch(() => false);
+			if (!components) {
+				return;
+			}
+
 			/** @type{Record<string, string[]>} */
 			const packages = {};
 
@@ -31,8 +35,6 @@ export const evidencePlugins = () => {
 		/** @type {import("svelte/types/compiler/preprocess").Preprocessor}} */
 		style: async () => {},
 		/** @type {import("svelte/types/compiler/preprocess").Preprocessor}} */
-		script: async () => {
-			await componentPlugins.catch();
-		}
+		script: async () => {}
 	};
 };
