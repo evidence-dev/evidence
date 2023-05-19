@@ -8,11 +8,11 @@
 	$: props = getContext(propKey);
 	$: config = getContext(configKey);
 
-	import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
-	import getStackedData from '$lib/modules/getStackedData.js';
-	import getSortedData from '$lib/modules/getSortedData.js';
-	import formatTitle from '$lib/modules/formatTitle';
-	import getCompletedData from '$lib/modules/getCompletedData.js';
+	import getSeriesConfig from '@evidence-dev/component-utilities/getSeriesConfig';
+	import getStackedData from '@evidence-dev/component-utilities/getStackedData';
+	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
+	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte

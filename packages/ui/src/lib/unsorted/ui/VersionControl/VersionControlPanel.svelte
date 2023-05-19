@@ -3,9 +3,9 @@
 </script>
 
 <script>
-	import CheckmarkCircleIcon from '$lib/icons/CheckmarkCircleIcon.svelte';
-	import CloseCircleIcon from '$lib/icons/CloseCircleIcon.svelte';
-	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
+	import CheckmarkCircleIcon from '../../icons/CheckmarkCircleIcon.svelte';
+	import CloseCircleIcon from '../../icons/CloseCircleIcon.svelte';
+	import HelpCircleIcon from '../../icons/HelpCircleIcon.svelte';
 	export let settings;
 </script>
 

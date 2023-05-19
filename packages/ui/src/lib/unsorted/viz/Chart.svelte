@@ -13,17 +13,17 @@
 	$: setContext(configKey, config);
 
 	import ECharts from './ECharts.svelte';
-	import getColumnSummary from '../modules/getColumnSummary';
-	import getDistinctValues from '../modules/getDistinctValues';
-	import getStackPercentages from '../modules/getStackPercentages.js';
-	import getSortedData from '../modules/getSortedData.js';
-	import { standardizeDateColumn } from '../modules/dateParsing.js';
-	import { formatAxisValue } from '../modules/formatting';
-	import formatTitle from '../modules/formatTitle.js';
-	import { formatValue } from '../modules/formatting.js';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
+	import getStackPercentages from '@evidence-dev/component-utilities/getStackPercentages';
+	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
+	import { standardizeDateColumn } from '@evidence-dev/component-utilities/dateParsing';
+	import { formatAxisValue } from '@evidence-dev/component-utilities/formatting';
+	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
-	import checkInputs from '../modules/checkInputs';
-	import { colours } from '../modules/colours';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import { colours } from '@evidence-dev/component-utilities/colours';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props

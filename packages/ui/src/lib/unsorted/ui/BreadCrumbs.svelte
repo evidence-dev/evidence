@@ -4,7 +4,7 @@
 
 <script>
 	import { page } from '$app/stores';
-	import HomeIcon from '$lib/icons/HomeIcon.svelte';
+	import HomeIcon from '../icons/HomeIcon.svelte';
 	export let fileTree;
 
 	$: pathArray = $page.url.pathname.split('/').slice(1);

@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import eChartsCopy from '$lib/modules/echartsCopy.js';
+	import eChartsCopy from '@evidence-dev/component-utilities/echartsCopy';
 
 	export let config = undefined;
 	export let height = '291px';

@@ -6,10 +6,10 @@
 	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
 	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte';
-	import CollapsibleSection from '$lib/ui/CollapsibleSection.svelte';
+	import CollapsibleSection from '../ui/CollapsibleSection.svelte';
 	export let fileTree;
 	export let open;
-	import CloseIcon from '$lib/icons/CloseIcon.svelte';
+	import CloseIcon from '../icons/CloseIcon.svelte';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;

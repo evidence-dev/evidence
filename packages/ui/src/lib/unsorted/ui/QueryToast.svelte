@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { delay } from '$lib/delay';
+	import { delay } from '../delay';
 	import { onMount } from 'svelte';
 	import { scale, fly } from 'svelte/transition';
 

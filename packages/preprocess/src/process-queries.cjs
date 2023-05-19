@@ -1,7 +1,7 @@
 const { getRouteHash } = require('./utils/get-route-hash.cjs');
 const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
-const { frontmatterRegex, containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
+const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
 const createDefaultProps = function (filename, componentDevelopmentMode, fileQueryIds) {
 	const routeH = getRouteHash(filename);
@@ -22,44 +22,13 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
 
 	let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash } from '$lib/ui/stores';
+        import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
         
-        // Components
-        import BigLink from '$lib/ui/BigLink.svelte';
-        import VennDiagram from '$lib/diagrams/VennDiagram.svelte';
-        import SankeyDiagram from "$lib/diagrams/SankeyDiagram.svelte";
-        import Value from '$lib/viz/Value.svelte';
-        import BigValue from '$lib/viz/BigValue.svelte';
-        import Chart from '$lib/viz/Chart.svelte';
-        import Area from '$lib/viz/Area.svelte';
-        import Line from '$lib/viz/Line.svelte';
-        import Bar from '$lib/viz/Bar.svelte';
-        import Bubble from '$lib/viz/Bubble.svelte';
-        import Scatter from '$lib/viz/Scatter.svelte';
-        import Hist from '$lib/viz/Hist.svelte';
-        import AreaChart from '$lib/viz/AreaChart.svelte';
-        import BarChart from '$lib/viz/BarChart.svelte';
-        import BubbleChart from '$lib/viz/BubbleChart.svelte';
-        import DataTable from '$lib/viz/DataTable.svelte';
-        import Column from '$lib/viz/Column.svelte';
-        import LineChart from '$lib/viz/LineChart.svelte';
-        import FunnelChart from "$lib/viz/FunnelChart.svelte";
-        import SankeyChart from "$lib/viz/SankeyChart.svelte";
-        import ScatterPlot from '$lib/viz/ScatterPlot.svelte';
-        import Histogram from '$lib/viz/Histogram.svelte';
-        import ECharts from '$lib/viz/ECharts.svelte';
-        import USMap from '$lib/viz/USMap.svelte';
-        import QueryViewer from '$lib/ui/QueryViewer.svelte';
-        import CodeBlock from '$lib/ui/CodeBlock.svelte';
-
-        import Tabs from '$lib/ui/Tabs/Tabs.svelte';
-        import Tab from '$lib/ui/Tabs/Tab.svelte';
-
         // Functions
-        import { formatValue as fmt } from '$lib/modules/formatting';
+        import { formatValue as fmt } from '@evidence-dev/component-utilities/formatting';
 
-        import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '$lib/modules/globalContexts';
+		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
         
         let props;
         export { props as data }; // little hack to make the data name not overlap

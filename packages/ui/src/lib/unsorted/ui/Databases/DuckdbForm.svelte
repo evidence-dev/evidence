@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
+	import HelpCircleIcon from '../../icons/HelpCircleIcon.svelte';
 
 	export let credentials;
 	export let existingCredentials;

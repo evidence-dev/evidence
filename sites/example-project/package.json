@@ -15,6 +15,7 @@
 		"directory": "../../packages/components"
 	},
 	"dependencies": {
+		"@evidence-dev/component-utilities": "workspace:^1.0.0",
 		"@evidence-dev/plugin-connector": "workspace:^1.0.0",
 		"@evidence-dev/telemetry": "1.0.5",
 		"@evidence-dev/ui": "workspace:^0.0.1",

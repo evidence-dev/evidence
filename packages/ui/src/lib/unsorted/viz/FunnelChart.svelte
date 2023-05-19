@@ -5,10 +5,10 @@
 <script>
 	import ECharts from './ECharts.svelte';
 
-	import formatTitle from '$lib/modules/formatTitle';
-	import { formatValue } from '../modules/formatting';
-	import getColumnSummary from '../modules/getColumnSummary';
-	import { colours } from '../modules/colours';
+	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import { colours } from '@evidence-dev/component-utilities/colours';
 
 	export let data = undefined;
 	export let nameCol = undefined;

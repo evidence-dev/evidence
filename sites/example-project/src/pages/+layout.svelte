@@ -65,11 +65,11 @@
 	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
 
-	import TableOfContents from '$lib/TableOfContents.svelte';
-	import Header from '$lib/ui/Header.svelte';
-	import Sidebar from '$lib/ui/Sidebar.svelte';
-	import LoadingIndicator from '$lib/ui/LoadingIndicator.svelte';
-	import QueryStatus from '$lib/QueryStatus.svelte';
+	// import TableOfContents from '$lib/TableOfContents.svelte';
+	// import Header from '$lib/ui/Header.svelte';
+	// import Sidebar from '$lib/ui/Sidebar.svelte';
+	// import LoadingIndicator from '$lib/ui/LoadingIndicator.svelte';
+	// import QueryStatus from '$lib/QueryStatus.svelte';
 
 	let open = false;
 	//TODO: Offer this as a build parameter

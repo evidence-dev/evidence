@@ -3,12 +3,12 @@
 </script>
 
 <script>
-	import getColumnSummary from '$lib/modules/getColumnSummary.js';
-	import { formatValue } from '$lib/modules/formatting.js';
-	import { convertColumnToDate } from '$lib/modules/dateParsing.js';
-	import checkInputs from '$lib/modules/checkInputs.js';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import PulseNumber from './PulseNumber.svelte';
-	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
+	import HelpCircleIcon from '../icons/HelpCircleIcon.svelte';
 	import { strictBuild } from './context';
 
 	// Passing in value from dataset:

@@ -4,11 +4,10 @@
 
 <script>
 	import { dev } from '$app/environment';
-	import KebabIcon from '$lib/icons/KebabIcon.svelte';
-	import ExternalLinkIcon from '$lib/icons/ExternalLinkIcon.svelte';
-	import clickOutside from '$lib/modules/clickOutside';
-	import { showQueries } from './stores';
-	import { pageHasQueries } from './stores';
+	import KebabIcon from '../icons/KebabIcon.svelte';
+	import ExternalLinkIcon from '../icons/ExternalLinkIcon.svelte';
+	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
+	import { showQueries, pageHasQueries } from '@evidence-dev/component-utilities/stores';
 	let options = [
 		{ label: 'Show / Hide Queries', prod: true },
 		{ label: 'Export PDF', prod: true },

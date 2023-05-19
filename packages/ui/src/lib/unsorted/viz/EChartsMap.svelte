@@ -3,8 +3,8 @@
 </script>
 
 <script>
-	import echartsMap from '$lib/modules/echartsMap';
-	import echartsCanvasDownload from '$lib/modules/echartsCanvasDownload';
+	import echartsMap from '@evidence-dev/component-utilities/echartsMap';
+	import echartsCanvasDownload from '@evidence-dev/component-utilities/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
 	import { flush } from 'svelte/internal';

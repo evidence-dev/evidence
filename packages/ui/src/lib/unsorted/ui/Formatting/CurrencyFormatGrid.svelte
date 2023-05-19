@@ -4,8 +4,8 @@
 
 <script>
 	import { blur, slide } from 'svelte/transition';
-	import { SUPPORTED_CURRENCIES } from '$lib/modules/builtInFormats';
-	import { defaultExample, formatExample } from '$lib/modules/formatting';
+	import { SUPPORTED_CURRENCIES } from '@evidence-dev/component-utilities/builtInFormats';
+	import { defaultExample, formatExample } from '@evidence-dev/component-utilities/formatting';
 	export let formats;
 	let selectedCurrency = 'Choose a currency';
 </script>

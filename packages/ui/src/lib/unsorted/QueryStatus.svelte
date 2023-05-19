@@ -7,8 +7,8 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import QueryToast from './ui/QueryToast.svelte';
-	import { delay } from '$lib/delay';
-	import { routeHash } from './ui/stores';
+	import { delay } from './delay';
+	import { routeHash } from '@evidence-dev/component-utilities/stores';
 	export let endpoint = '';
 
 	let statuses = [];

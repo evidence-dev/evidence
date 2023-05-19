@@ -3,11 +3,11 @@
 </script>
 
 <script>
-	import Value from '$lib/viz/Value.svelte';
-	import getColumnSummary from '$lib/modules/getColumnSummary';
+	import Value from './Value.svelte';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { LinkedChart } from 'svelte-tiny-linked-charts';
-	import getSortedData from '$lib/modules/getSortedData';
-	import checkInputs from '$lib/modules/checkInputs';
+	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from './context';
 	export let data;

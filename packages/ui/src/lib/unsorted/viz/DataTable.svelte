@@ -7,14 +7,14 @@
 	import { setContext } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import { propKey, strictBuild } from './context';
-	import getColumnSummary from '$lib/modules/getColumnSummary.js';
-	import { convertColumnToDate } from '$lib/modules/dateParsing.js';
-	import { formatValue } from '$lib/modules/formatting.js';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import SearchBar from './SearchBar.svelte';
-	import checkInputs from '$lib/modules/checkInputs.js';
-	import DownloadData from '$lib/ui/DownloadData.svelte';
-	import SortIcon from '$lib/ui/SortIcon.svelte';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import DownloadData from '../ui/DownloadData.svelte';
+	import SortIcon from '../ui/SortIcon.svelte';
 
 	import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte';
 	import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte';

@@ -5,8 +5,8 @@
 <script>
 	import ECharts from './ECharts.svelte';
 
-	import { colours } from '../modules/colours';
-	import { formatValue } from '../modules/formatting';
+	import { colours } from '@evidence-dev/component-utilities/colours';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 
 	export let data = undefined;
 	export let sourceCol = 'source';

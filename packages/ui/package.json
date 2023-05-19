@@ -25,6 +25,7 @@
 		"components": true
 	},
 	"dependencies": {
+		"@evidence-dev/component-utilities": "workspace:^1.0.0",
 		"@evidence-dev/tailwind": "workspace:^1.0.0"
 	},
 	"devDependencies": {

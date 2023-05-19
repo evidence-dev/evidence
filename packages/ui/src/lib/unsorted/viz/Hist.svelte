@@ -9,8 +9,8 @@
 	let config = getContext(configKey);
 
 	import ecStat from 'echarts-stat';
-	import getDistinctValues from '$lib/modules/getDistinctValues.js';
-	import { formatValue } from '../modules/formatting';
+	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 
 	export let x = undefined;
 	const xSet = x ? true : false; // Hack, see chart.svelte

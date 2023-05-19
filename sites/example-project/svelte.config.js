@@ -7,8 +7,8 @@ import { evidencePlugins } from '@evidence-dev/plugin-connector';
 const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
-		evidencePlugins(),
 		...evidencePreprocess(true),
+		evidencePlugins(),
 		preprocess({
 			postcss: true
 		})
@@ -19,13 +19,13 @@ const config = {
 		}),
 		files: {
 			routes: 'src/pages',
-			lib: 'src/components'
+			// lib: 'src/components'
 		}
 	},
-	package: {
-		dir: '../../packages/components',
-		emitTypes: true
-	}
+	// package: {
+	// 	dir: '../../packages/components',
+	// 	emitTypes: true
+	// }
 };
 
 export default config;

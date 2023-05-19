@@ -8,10 +8,10 @@
 	let props = getContext(propKey);
 	let config = getContext(configKey);
 
-	import getSeriesConfig from '$lib/modules/getSeriesConfig.js';
-	import formatTitle from '$lib/modules/formatTitle';
-	import replaceNulls from '$lib/modules/replaceNulls.js';
-	import getCompletedData from '$lib/modules/getCompletedData.js';
+	import getSeriesConfig from '@evidence-dev/component-utilities/getSeriesConfig';
+	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+	import replaceNulls from '@evidence-dev/component-utilities/replaceNulls';
+	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte

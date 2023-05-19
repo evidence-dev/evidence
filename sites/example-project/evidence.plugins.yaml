@@ -1,4 +1,2 @@
 components:
-  @evidence-dev/ui:
-    aliases:
-      EvidenceAlert: Alert
+  @evidence-dev/ui: {}

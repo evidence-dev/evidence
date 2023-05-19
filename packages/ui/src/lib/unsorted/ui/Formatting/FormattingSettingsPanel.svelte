@@ -4,7 +4,7 @@
 
 <script>
 	export let customFormattingSettings;
-	import { BUILT_IN_FORMATS } from '$lib/modules/builtInFormats';
+	import { BUILT_IN_FORMATS } from '@evidence-dev/component-utilities/builtInFormats';
 	import BuiltInFormatGrid from './BuiltInFormatGrid.svelte';
 	import CustomFormatsSection from './CustomFormatsSection.svelte';
 	import CollapsibleTableSection from './CollapsibleTableSection.svelte';

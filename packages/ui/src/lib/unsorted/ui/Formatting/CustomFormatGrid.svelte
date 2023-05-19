@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { defaultExample, formatExample } from '$lib/modules/formatting';
+	import { defaultExample, formatExample } from '@evidence-dev/component-utilities/formatting';
 	import TiDeleteOutline from 'svelte-icons/ti/TiDeleteOutline.svelte';
 	export let formats;
 	export let deleteHandler;

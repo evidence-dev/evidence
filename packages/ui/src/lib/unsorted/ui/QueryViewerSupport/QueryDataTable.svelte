@@ -5,8 +5,8 @@
 <script>
 	import { blur, slide } from 'svelte/transition';
 	import DownloadData from '../DownloadData.svelte';
-	import getColumnSummary from '$lib/modules/getColumnSummary.js';
-	import { formatValue } from '$lib/modules/formatting.js';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import { throttle } from 'echarts';
 
 	export let queryID;

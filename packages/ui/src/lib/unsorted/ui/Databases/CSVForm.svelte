@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
+	import HelpCircleIcon from '../../icons/HelpCircleIcon.svelte';
 	import Prism from '../QueryViewerSupport/Prismjs.svelte';
 
 	export let credentials;

@@ -1,0 +1,27 @@
+{
+  "name": "@evidence-dev/component-utilities",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "exports": {
+    "./*": "./src/*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^0.31.1"
+  },
+  "scripts": {
+    "test": "vitest"
+  },
+  "type": "module",
+  "dependencies": {
+    "@tidyjs/tidy": "2.4.4",
+    "debounce": "^1.2.1",
+    "downloadjs": "1.4.7",
+    "echarts": "5.4.2",
+    "ssf": "^0.11.2",
+    "svelte": "^3.59.1"
+  }
+}

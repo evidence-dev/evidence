@@ -3,13 +3,13 @@
 </script>
 
 <script>
-	import ECharts from '$lib/viz/ECharts.svelte';
+	import ECharts from '../viz/ECharts.svelte';
 
-	import { colours } from '$lib/modules/colours';
-	import { formatValue } from '$lib/modules/formatting.js';
-	import { colour } from '$lib/modules/colours';
-	import formatTitle from '$lib/modules/formatTitle.js';
-	import getColumnSummary from '$lib/modules/getColumnSummary';
+	import { colours } from '@evidence-dev/component-utilities/colours';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import { colour } from '@evidence-dev/component-utilities/colours';
+	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 
 	export let data = undefined;
 	export let sourceCol = 'source';

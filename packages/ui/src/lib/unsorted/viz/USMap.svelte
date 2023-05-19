@@ -6,10 +6,10 @@
 	import EChartsMap from './EChartsMap.svelte';
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from './context';
-	import checkInputs from '../modules/checkInputs';
-	import formatTitle from '../modules/formatTitle.js';
-	import getColumnSummary from '../modules/getColumnSummary';
-	import { colours } from '../modules/colours';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import { colours } from '@evidence-dev/component-utilities/colours';
 
 	export let data = undefined;
 
