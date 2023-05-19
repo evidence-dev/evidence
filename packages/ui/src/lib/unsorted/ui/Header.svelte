@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import Hamburger from './Hamburger.svelte';

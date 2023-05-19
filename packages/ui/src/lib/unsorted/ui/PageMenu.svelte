@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { dev } from '$app/environment';
 	import KebabIcon from '$lib/icons/KebabIcon.svelte';

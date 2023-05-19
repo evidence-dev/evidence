@@ -19,10 +19,10 @@ export { default as QueryViewer } from './QueryViewer.svelte';
 export { default as Sidebar } from './Sidebar.svelte';
 export { default as SortIcon } from './SortIcon.svelte';
 
-export * from "./Databases";
-export * from "./Deployment";
-export * from "./Formatting";
-export * from "./QueryViewerSupport";
-export * from "./Tabs";
-export * from "./TelemetryOptOut";
-export * from "./VersionControl";
+export * from './Databases';
+export * from './Deployment';
+export * from './Formatting';
+export * from './QueryViewerSupport';
+export * from './Tabs';
+export * from './TelemetryOptOut';
+export * from './VersionControl';

@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { page } from '$app/stores';
 	export let sections = [{ href: '/', label: 'Home' }];

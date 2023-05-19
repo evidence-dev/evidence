@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import MdSearch from 'svelte-icons/md/MdSearch.svelte';
 

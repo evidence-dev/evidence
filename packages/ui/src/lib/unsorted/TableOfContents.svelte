@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import ContentsList from './ContentsList.svelte';
 	import { navigating, page } from '$app/stores';

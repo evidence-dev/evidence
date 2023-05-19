@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { blur } from 'svelte/transition';
 	import Copy from './CopyIcon.svelte';

@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { getContext } from 'svelte';
 	import { propKey, configKey } from './context';
@@ -23,7 +24,6 @@
 	$: x = xSet ? x : $props.x;
 
 	$: xFormat = $props.xFormat;
-	$: yFormat = $props.yFormat;
 
 	// Determine right method to use based on distinct x values (echarts-stat limitation causes some errors otherwise)
 	let method;

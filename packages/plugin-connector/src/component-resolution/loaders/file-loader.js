@@ -117,7 +117,7 @@ export async function fileLoader(rootDir) {
 			include: await isLibraryComponent(
 				await fs.readFile(componentPath).then((p) => p.toString())
 			).catch((e) => {
-				throw new Error(`Error while identifying ${componentPath}`, {cause: e});
+				throw new Error(`Error while identifying ${componentPath}`, { cause: e });
 			}),
 			// Get the name of the component, takes the last part of the path and removes the file extension
 			componentName: componentPath.split('/').pop()?.split('.').shift() ?? ''

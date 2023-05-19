@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import CheckmarkCircleIcon from '$lib/icons/CheckmarkCircleIcon.svelte';
 	import CloseCircleIcon from '$lib/icons/CloseCircleIcon.svelte';

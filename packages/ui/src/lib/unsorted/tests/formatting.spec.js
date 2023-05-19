@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { formatValue } from '../modules/formatting';
 
 describe('formatValue', () => {

@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import CustomFormatGrid from './CustomFormatGrid.svelte';
 	import CollapsibleTableSection from './CollapsibleTableSection.svelte';

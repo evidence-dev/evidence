@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import Value from '$lib/viz/Value.svelte';
 	import getColumnSummary from '$lib/modules/getColumnSummary';

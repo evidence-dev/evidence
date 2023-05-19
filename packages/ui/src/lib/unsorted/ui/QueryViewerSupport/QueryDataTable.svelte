@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { blur, slide } from 'svelte/transition';
 	import DownloadData from '../DownloadData.svelte';

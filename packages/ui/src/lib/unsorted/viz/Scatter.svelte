@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from './context';
@@ -43,7 +44,6 @@
 	$: y = ySet ? y : $props.y;
 	$: series = seriesSet ? series : $props.series;
 	$: size = size ?? $props.size;
-	$: yMin = $props.yMin;
 	$: tooltipTitle = tooltipTitle ?? $props.tooltipTitle;
 
 	$: if (!series && typeof y !== 'object') {

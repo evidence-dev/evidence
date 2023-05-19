@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { defaultExample, formatExample } from '$lib/modules/formatting';
 	export let formats;

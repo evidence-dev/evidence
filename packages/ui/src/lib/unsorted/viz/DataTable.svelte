@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
@@ -301,7 +302,7 @@
 							/>
 						{/if}
 						{#if $props.columns.length > 0}
-							{#each $props.columns as column, i}
+							{#each $props.columns as column}
 								<th
 									class={safeExtractColumn(column).type}
 									style="
@@ -323,7 +324,7 @@
 								</th>
 							{/each}
 						{:else}
-							{#each columnSummary.filter((d) => d.show === true) as column, i}
+							{#each columnSummary.filter((d) => d.show === true) as column}
 								<th
 									class={column.type}
 									style="
@@ -371,7 +372,7 @@
 						{/if}
 
 						{#if $props.columns.length > 0}
-							{#each $props.columns as column, i}
+							{#each $props.columns as column}
 								<td
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
@@ -423,7 +424,7 @@
 								</td>
 							{/each}
 						{:else}
-							{#each columnSummary.filter((d) => d.show === true) as column, i}
+							{#each columnSummary.filter((d) => d.show === true) as column}
 								<td class={column.type} class:row-lines={rowLines}
 									>{formatValue(row[column.id], column.format, column.columnUnitSummary)}</td
 								>

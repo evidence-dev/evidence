@@ -1,6 +1,7 @@
 <script context="module">
-    export const evidenceInclude = true;
+	export const evidenceInclude = true;
 </script>
+
 <script>
 	import EChartsMap from './EChartsMap.svelte';
 	import ErrorChart from './ErrorChart.svelte';
@@ -244,7 +245,6 @@
 	{#if link}
 		{#each data as row}
 			{#if row[link] !== undefined}
-				<!-- svelte-ignore a11y-missing-content -->
 				<a href={row[link]} style="display: none;">{row[link]}</a>
 			{/if}
 		{/each}
