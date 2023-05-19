@@ -115,6 +115,7 @@ export async function fileLoader(rootDir) {
 	const results = await Promise.all(
 		componentPaths.map(async (componentPath) => ({
 			include: await isLibraryComponent(await fs.readFile(componentPath).then((p) => p.toString())),
+			// Get the name of the component, takes the last part of the path and removes the file extension
 			componentName: componentPath.split('/').pop()?.split('.').shift() ?? ''
 		}))
 	);

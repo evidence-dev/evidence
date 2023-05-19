@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
 export const EvidenceComponentConfigSchema = z.object({
-	overrides: z.array(z.string()).optional(),
+	overrides: z.array(z.string()).default([]),
 	aliases: z
 		.record(
 			z.string({ description: 'Component Name' }),
 			z.string({ description: 'Alias to apply' })
 		)
-		.optional(),
+		.default({}),
 
-	provides: z.array(z.string()).optional()
+	provides: z.array(z.string()).default([])
 });
 
 export const EvidenceConfigSchema = z

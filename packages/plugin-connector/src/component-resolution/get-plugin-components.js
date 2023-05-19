@@ -5,16 +5,14 @@ import { getRootModules } from '../plugin-discovery/get-root-modules';
 import chalk from 'chalk';
 
 /**
- * @param {EvidenceConfig} [config]
+ * @param {EvidenceConfig} [cfg]
  * @param {PackageDiscoveryResult} [pluginDiscoveries] Optional: Pass in already discovered plugins
  * @returns {Promise<PluginComponents>}
  */
-export async function getPluginComponents(config, pluginDiscoveries) {
+export async function getPluginComponents(cfg, pluginDiscoveries) {
 	const rootDir = await getRootModules();
 
-	if (!config) {
-		config = await loadConfig(rootDir);
-	}
+	const config = cfg ?? await loadConfig(rootDir);
 
 	if (!pluginDiscoveries) {
 		pluginDiscoveries = await discoverEvidencePlugins();
@@ -38,10 +36,9 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 			]
 		)
 	);
-	const packageMap = Object.fromEntries(components);
 
 	// Now we will smush all of this into Record<ComponentName, PackageName>
-	const componentMap = Object.entries(packageMap).reduce(
+	const componentMap = components.reduce(
 		/**
 		 * @param {PluginComponents} acc
 		 * @param {[string, Set<string>]} p
@@ -54,7 +51,7 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 				const componentObj = { package: packageName };
 
 				const [alias] =
-					Object.entries(packageConfig?.aliases ?? {}).find(([, target]) => target === component) ??
+					Object.entries(packageConfig.aliases).find(([, target]) => target === component) ??
 					[];
 
 				if (alias) {
@@ -77,7 +74,7 @@ export async function getPluginComponents(config, pluginDiscoveries) {
 					};
 				}
 
-				acc[componentOutputName] = componentObj;
+			acc[componentOutputName] = componentObj;
 			}
 			return acc;
 		},

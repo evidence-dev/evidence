@@ -86,7 +86,7 @@ export const resolveEvidencePackages = async (rootDir) => {
 			}
 		)
 	).then(
-		(pack) => /** @type {EvidencePluginPackage<ValidPackage>[]} */ (pack.filter((p) => p !== false))
+		(pack) => /** @type {Exclude<typeof pack[number], false>[]} */ (pack.filter(Boolean))
 	);
 
 	// configContent.components
