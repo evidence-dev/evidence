@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import CollapsibleTableSection from '../Formatting/CollapsibleTableSection.svelte';
 	export let settings;

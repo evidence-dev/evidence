@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import echartsMap from '$lib/modules/echartsMap';
 	import echartsCanvasDownload from '$lib/modules/echartsCanvasDownload';

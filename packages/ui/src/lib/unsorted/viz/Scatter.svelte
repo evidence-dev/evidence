@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from './context';

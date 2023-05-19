@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import { slide } from 'svelte/transition';
 

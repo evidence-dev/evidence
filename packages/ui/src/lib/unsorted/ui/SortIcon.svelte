@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import TiArrowSortedUp from 'svelte-icons/ti/TiArrowSortedUp.svelte';
 	import TiArrowSortedDown from 'svelte-icons/ti/TiArrowSortedDown.svelte';

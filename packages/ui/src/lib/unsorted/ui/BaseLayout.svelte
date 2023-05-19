@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import '../global.css';
 	import { navigating } from '$app/stores';

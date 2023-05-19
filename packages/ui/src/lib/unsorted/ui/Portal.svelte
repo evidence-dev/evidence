@@ -1,4 +1,6 @@
 <script context="module">
+    export const evidenceInclude = true;
+
 	// Modified version of https://github.com/romkor/svelte-portal/blob/master/src/Portal.svelte
 	import { tick } from 'svelte';
 

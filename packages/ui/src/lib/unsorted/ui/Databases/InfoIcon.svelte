@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
 	import { fade } from 'svelte/transition';

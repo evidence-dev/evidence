@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <h2>Deploying to Evidence Cloud</h2>
 <p>Evidence's Cloud hosting service allows you to:</p>
 <ul>

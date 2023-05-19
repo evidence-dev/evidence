@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import getColumnSummary from '$lib/modules/getColumnSummary.js';
 	import { formatValue } from '$lib/modules/formatting.js';

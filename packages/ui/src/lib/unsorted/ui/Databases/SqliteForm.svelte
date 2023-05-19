@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
 
@@ -5,9 +8,9 @@
 	export let existingCredentials;
 	export let gitIgnore;
 	existingCredentials.gitignoreSqlite = gitIgnore
-		? gitIgnore.match(/\n.db(?=\n|$)/) &&
-		  gitIgnore.match(/\n.sqlite3(?=\n|$)/) &&
-		  gitIgnore.match(/\n.sqlite(?=\n|$)/)
+		? gitIgnore.match(/.db(?=|$)/) &&
+		  gitIgnore.match(/.sqlite3(?=|$)/) &&
+		  gitIgnore.match(/.sqlite(?=|$)/)
 		: false;
 	export let disableSave;
 

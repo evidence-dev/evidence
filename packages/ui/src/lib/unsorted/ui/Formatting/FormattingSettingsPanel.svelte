@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	export let customFormattingSettings;
 	import { BUILT_IN_FORMATS } from '$lib/modules/builtInFormats';

@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
@@ -630,7 +633,7 @@
 			// ---------------------------------------------------------------------------------------
 			horizAxisTitle = swapXY ? yAxisTitle : xAxisTitle;
 			if (horizAxisTitle !== '') {
-				horizAxisTitle = horizAxisTitle + ' \u2192'; // u2192 is js escaped version of &rarr;
+				horizAxisTitle = horizAxisTitle + ' →'; // u2192 is js escaped version of &rarr;
 			}
 
 			horizAxisTitleConfig = {

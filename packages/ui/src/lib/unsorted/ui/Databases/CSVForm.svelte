@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import HelpCircleIcon from '$lib/icons/HelpCircleIcon.svelte';
 	import Prism from '../QueryViewerSupport/Prismjs.svelte';
@@ -5,7 +8,7 @@
 	export let credentials;
 	export let existingCredentials;
 	export let gitIgnore;
-	existingCredentials.gitignoreCsv = gitIgnore ? gitIgnore.match(/\n.csv(?=\n|$)/) : false;
+	existingCredentials.gitignoreCsv = gitIgnore ? gitIgnore.match(/.csv(?=|$)/) : false;
 	export let disableSave;
 
 	credentials = { ...existingCredentials };

@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import FaRegFilePdf from 'svelte-icons/fa/FaRegFilePdf.svelte';
 </script>

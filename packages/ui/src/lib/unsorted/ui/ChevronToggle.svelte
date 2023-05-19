@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	export let toggled = false;
 	export let color = '#2d2d2d';

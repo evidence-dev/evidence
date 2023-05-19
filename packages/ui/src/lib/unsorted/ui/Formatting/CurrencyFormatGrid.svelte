@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import { blur, slide } from 'svelte/transition';
 	import { SUPPORTED_CURRENCIES } from '$lib/modules/builtInFormats';

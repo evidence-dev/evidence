@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import BigqueryForm from './BigqueryForm.svelte';
 	import PostgresForm from './PostgresForm.svelte';

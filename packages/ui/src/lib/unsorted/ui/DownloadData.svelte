@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import { ExportToCsv } from 'export-to-csv';
 	import { fade } from 'svelte/transition';

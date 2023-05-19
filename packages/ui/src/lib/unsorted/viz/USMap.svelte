@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import EChartsMap from './EChartsMap.svelte';
 	import ErrorChart from './ErrorChart.svelte';

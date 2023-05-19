@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	export let settings;
 	import EvidenceDeploy from './EvidenceDeploy.svelte';

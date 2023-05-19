@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import { page } from '$app/stores';
 	import HomeIcon from '$lib/icons/HomeIcon.svelte';

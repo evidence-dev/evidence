@@ -1,3 +1,6 @@
+<script context="module">
+    export const evidenceInclude = true;
+</script>
 <script>
 	import Chart from './Chart.svelte';
 	import Scatter from './Scatter.svelte';
