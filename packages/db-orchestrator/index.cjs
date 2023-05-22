@@ -83,6 +83,12 @@ const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
 };
 
 const runQueries = async function (routeHash, dev) {
+	if (!pathExistsSync('./evidence.settings.json')) {
+		writeJSONSync('./evidence.settings.json', {
+			database: 'duckdb',
+			credentials: { filename: 'needful_things.duckdb', gitignoreDuckdb: null }
+		});
+	}
 	const settings = readJSONSync('./evidence.settings.json', { throws: false });
 	const runQuery = await importDBAdapter(settings);
 	let routePath = `./.evidence-queries/extracted/${routeHash}`;
