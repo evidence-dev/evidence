@@ -17,9 +17,7 @@ const emptyConfig = { components: {} };
 export const loadConfig = async (rootDir) => {
 	const configPath = `${rootDir}/evidence.plugins.yaml`;
 	try {
-		const configFileContent = await fs
-			.readFile(configPath, 'utf8')
-			.then((r) => r.toString());
+		const configFileContent = await fs.readFile(configPath, 'utf8').then((r) => r.toString());
 		// Surround all YAML key that begin with "@" in quotes
 		// Skipping keys that are already quoted (e.g. beginning of line or whitespace)
 		const rawConfig = yaml.parse(configFileContent.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
