@@ -16,18 +16,15 @@ const emptyConfig = { components: {} };
  */
 export const loadConfig = async (rootDir) => {
 	const configPath = `${rootDir}/evidence.plugins.yaml`;
-
 	try {
 		const configFileContent = await fs
 			.readFile(configPath, 'utf8')
-			.then((r) => r.toString())
-			.then((s) => {
-				// Surround all YAML key that begin with "@" in quotes
-				// Skipping keys that are already quoted (e.g. beginning of line or whitespace)
-				s = s.replaceAll(/($|\s)(@.+):/g, '$1"$2":');
-				return yaml.parse(s);
-			});
-		const configResult = EvidenceConfigSchema.safeParse(configFileContent);
+			.then((r) => r.toString());
+		// Surround all YAML key that begin with "@" in quotes
+		// Skipping keys that are already quoted (e.g. beginning of line or whitespace)
+		const rawConfig = yaml.parse(configFileContent.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
+
+		const configResult = EvidenceConfigSchema.safeParse(rawConfig);
 		if (!configResult.success) {
 			console.error(
 				chalk.bold.red(
@@ -47,13 +44,13 @@ export const loadConfig = async (rootDir) => {
 		return configResult.data;
 	} catch (e) {
 		if (!(e instanceof Error)) throw e;
-		if (e.message === 'ENOENT') {
-			console.error(
-				chalk.red.bold(
-					`[!] evidence.plugins.yaml file not found in ${rootDir}.\n    This may lead to unexpected behavior.`
-				)
-			);
-			return emptyConfig;
+		if (e.message.startsWith('ENOENT')) {
+			console.warn('Could not find evidence plugins file. Using defaults.');
+			return EvidenceConfigSchema.parse({
+				components: {
+					'@evidence-dev/ui': {}
+				}
+			});
 		}
 		throw e;
 	}
