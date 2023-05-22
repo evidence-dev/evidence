@@ -5,8 +5,7 @@
 		"dev": "svelte-package && vite dev --port 3000",
 		"build": "vite build",
 		"preview": "vite preview --port 3000",
-		"package": "svelte-package && pnpm clean-package",
-		"clean-package": "node scripts/clean-package.js",
+		"package": "svelte-package",
 		"prepublishOnly": "pnpm package",
 		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
 	},
