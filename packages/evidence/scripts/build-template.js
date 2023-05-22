@@ -31,6 +31,7 @@ fs.outputFileSync(
     import evidencePreprocess from '@evidence-dev/preprocess'
     import preprocess from "svelte-preprocess";
     import adapter from '@sveltejs/adapter-static';
+    import { evidencePlugins } from '@evidence-dev/plugin-connector';
     
     /** @type {import('@sveltejs/kit').Config} */
     
@@ -38,6 +39,7 @@ fs.outputFileSync(
         extensions: ['.svelte', ".md"], 
         preprocess: [
             ...evidencePreprocess(true),
+            evidencePlugins(),
             preprocess({
               postcss: true,
             }),

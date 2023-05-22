@@ -19,6 +19,7 @@ importers:
       '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/telemetry': link:packages/telemetry
+      '@evidence-dev/ui': link:packages/ui
       '@sveltejs/adapter-static': 1.0.0
       '@sveltejs/kit': 1.13.0
       '@tidyjs/tidy': 2.4.4
@@ -56,6 +57,7 @@ importers:
       '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/telemetry': link:packages/telemetry
+      '@evidence-dev/ui': link:packages/ui
       '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.13.0
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4
       '@tidyjs/tidy': 2.4.4
@@ -185,6 +187,7 @@ importers:
       '@evidence-dev/db-orchestrator': workspace:^
       '@evidence-dev/preprocess': workspace:^
       '@evidence-dev/telemetry': workspace:^
+      '@evidence-dev/ui': workspace:^0.0.1
       '@sveltejs/adapter-static': 1.0.0
       '@sveltejs/kit': 1.13.0
       chokidar: 3.5.3
@@ -202,6 +205,7 @@ importers:
     devDependencies:
       '@evidence-dev/components': link:../../sites/example-project
       '@evidence-dev/db-orchestrator': link:../db-orchestrator
+      '@evidence-dev/ui': link:../ui
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4
       svelte: 3.55.0
       vite: 4.0.4
@@ -588,9 +592,15 @@ importers:
 
   sites/test-env:
     specifiers:
+      '@evidence-dev/component-utilities': workspace:^1.0.0
       '@evidence-dev/evidence': workspace:^
+      '@evidence-dev/plugin-connector': workspace:^1.0.0
+      '@evidence-dev/ui': workspace:^0.0.1
     dependencies:
+      '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/evidence': link:../../packages/evidence
+      '@evidence-dev/plugin-connector': link:../../packages/plugin-connector
+      '@evidence-dev/ui': link:../../packages/ui
 
   tests:
     specifiers:
