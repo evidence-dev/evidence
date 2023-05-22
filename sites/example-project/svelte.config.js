@@ -22,10 +22,6 @@ const config = {
 			// lib: 'src/components'
 		}
 	}
-	// package: {
-	// 	dir: '../../packages/components',
-	// 	emitTypes: true
-	// }
 };
 
 export default config;

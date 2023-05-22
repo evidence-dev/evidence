@@ -14,7 +14,6 @@ const templatePaths = [
 	'src/pages/+layout.server.js',
 	'src/pages/settings/',
 	'src/pages/api/',
-	'src/components/',
 	'tailwind.config.cjs',
 	'postcss.config.cjs'
 ];
