@@ -1,5 +1,26 @@
 # @evidence-dev/evidence
 
+## 17.0.0
+
+### Patch Changes
+
+- 922d2c6c: Add click handler to eCharts
+- Updated dependencies [5d623eda]
+- Updated dependencies [52c540d5]
+- Updated dependencies [5f813cdd]
+- Updated dependencies [9ad17fbf]
+- Updated dependencies [61b60097]
+- Updated dependencies [ae3a487e]
+- Updated dependencies [3a023d5c]
+- Updated dependencies [185f1b8d]
+- Updated dependencies [f15e5685]
+- Updated dependencies [ec8d363a]
+- Updated dependencies [a3cf89e7]
+- Updated dependencies [b333b0ea]
+  - @evidence-dev/components@2.4.0
+  - @evidence-dev/preprocess@2.4.0
+  - @evidence-dev/db-orchestrator@2.1.0
+
 ## 16.0.2
 
 ### Patch Changes

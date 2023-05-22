@@ -72,4 +72,5 @@
 	{chartAreaHeight}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
+	<slot />
 </Chart>

@@ -92,3 +92,14 @@ hide_table_of_contents: false
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 </table>
+
+## Annotations
+
+Scatter plots can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+
+```html
+<ScatterPlot data={sales_data} x=date y=sales>
+  <ReferenceLine data={target_data} y=target label=name/>
+  <ReferenceArea xMin='2020-03-14' xMax='2020-05-01'/>
+</ScatterPlot>
+```

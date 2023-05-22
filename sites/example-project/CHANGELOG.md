@@ -1,5 +1,25 @@
 # @evidence-dev/components
 
+## 2.4.0
+
+### Minor Changes
+
+- 52c540d5: ReferenceLine and ReferenceArea components
+- 61b60097: Expose format function to end users
+- f15e5685: Added SQL Server driver
+
+### Patch Changes
+
+- 5d623eda: Error icon in value component is now vertically centered and color is white
+- 5f813cdd: Fixed chart width not adjusting properly when printing to PDF
+- 9ad17fbf: Fixed visual regression of collapsible section dropdown's transition animation
+- ae3a487e: Make download buttons non-copyable
+- 3a023d5c: Update docs link
+- 185f1b8d: Fixed component copy-paste not working in Firefox
+- ec8d363a: Update DataTable paginated property when dataset size changes
+- a3cf89e7: Allow setting of the chartAreaHeight via props on supported chart types
+- b333b0ea: Update echarts version
+
 ## 2.3.2
 
 ### Patch Changes

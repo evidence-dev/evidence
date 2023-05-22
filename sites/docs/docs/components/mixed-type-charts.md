@@ -215,3 +215,15 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>fillColor</td>	<td>Color to override default series color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>fillOpacity</td>	<td>% of the full color that should be rendered, with remainder being transparent</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number (0 to 1)</td>	<td class='tcenter'>1</td>	</tr>
 </table>
+
+## Annotations
+
+Mixed type charts can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+
+```html
+<Chart data={sales_data} x=date y=sales>
+  <Line y=sales/>
+  <ReferenceLine data={target_data} y=target label=name/>
+  <ReferenceArea xMin='2020-03-14' xMax='2020-05-01'/>
+</Chart>
+```
