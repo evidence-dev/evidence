@@ -1,5 +1,12 @@
 # @evidence-dev/preprocess
 
+## 2.4.0
+
+### Minor Changes
+
+- 52c540d5: ReferenceLine and ReferenceArea components
+- 61b60097: Expose format function to end users
+
 ## 2.3.2
 
 ### Patch Changes

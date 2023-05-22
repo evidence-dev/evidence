@@ -72,4 +72,5 @@
 	{chartAreaHeight}
 >
 	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
+	<slot />
 </Chart>

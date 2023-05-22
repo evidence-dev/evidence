@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "2.3.2",
+	"version": "2.4.0",
 	"scripts": {
 		"dev": "svelte-package && vite dev --port 3000",
 		"build": "vite build",
@@ -21,7 +21,7 @@
 		"cross-env": "^7.0.3",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.1",
+		"echarts": "5.4.2",
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
 		"fs-extra": "10.1.0",
