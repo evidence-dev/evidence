@@ -30,7 +30,7 @@ Evidence supports:
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
-- [CSV and Parquet files](#local-data-files)
+- [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
 We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
