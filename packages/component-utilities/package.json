@@ -13,7 +13,8 @@
 		"vitest": "^0.31.1"
 	},
 	"scripts": {
-		"test": "vitest"
+		"test": "vitest --run",
+		"test:watch": "vitest"
 	},
 	"type": "module",
 	"dependencies": {
