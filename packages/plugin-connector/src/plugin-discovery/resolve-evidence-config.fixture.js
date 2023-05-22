@@ -1,12 +1,16 @@
-export const validMinimalConfig = `
-components: {}
-`;
-export const validMinimalConfigParsed = {
+export const defaultConfig = {
 	'@evidence-dev/ui': {
 		overrides: [],
 		aliases: {},
 		provides: []
-	},
+	}
+};
+
+export const validMinimalConfig = `
+components: {}
+`;
+export const validMinimalConfigParsed = {
+	components: {}
 };
 
 export const handleAt = `

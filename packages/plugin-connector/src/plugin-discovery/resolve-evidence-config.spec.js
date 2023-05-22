@@ -3,6 +3,7 @@ vi.mock('fs/promises');
 
 import fs from 'fs/promises';
 import {
+	defaultConfig,
 	handleAt,
 	handleAtParsed,
 	invalidMinimalConfig,
@@ -52,6 +53,6 @@ describe('loadConfig', () => {
 	it('should fail to load missing configuration, but recover safely', async () => {
 		mockedReadFile.mockRejectedValueOnce(new Error('ENOENT'));
 		const config = await loadConfig(__dirname);
-		expect(config).toEqual({ components: {} });
+		expect(config).toEqual({ components: defaultConfig });
 	});
 });
