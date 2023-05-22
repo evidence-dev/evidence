@@ -187,7 +187,7 @@ importers:
       '@evidence-dev/db-orchestrator': workspace:^
       '@evidence-dev/preprocess': workspace:^
       '@evidence-dev/telemetry': workspace:^
-      '@evidence-dev/ui': workspace:^0.0.1
+      '@evidence-dev/ui': workspace:^
       '@sveltejs/adapter-static': 1.0.0
       '@sveltejs/kit': 1.13.0
       chokidar: 3.5.3
