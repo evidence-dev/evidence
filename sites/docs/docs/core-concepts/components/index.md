@@ -71,3 +71,13 @@ At a minimum, all charts require a data prop, but for other props Evidence has d
 - To plot multiple series (or groups) on your chart, you can do one of the following (or both):
   - Include a `series` column, which contains category or group names (e.g, `series=country`)
   - Include multiple `y` columns - each column will be treated as an individual series (e.g., `y={["y1", "y2"]}`)
+
+### Annotations
+
+Charts can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+
+```html
+<LineChart data={sales_data} x=date y=sales>
+  <ReferenceLine data={target_data} y=target label=name/>
+</LineChart>
+```

@@ -29,7 +29,17 @@ export const colours = {
 	grey700: 'hsla(210, 14%, 37%, 1)',
 	grey800: 'hsla(210, 18%, 30%, 1)',
 	grey900: 'hsla(210, 20%, 25%, 1)',
-	grey999: 'hsla(211, 24%, 16%, 1)'
+	grey999: 'hsla(211, 24%, 16%, 1)',
+	yellow100: 'hsl(49, 100%, 96%, 1)',
+	yellow200: 'hsl(48, 100%, 88%, 1)',
+	yellow300: 'hsl(48, 95%, 76%, 1)',
+	yellow400: 'hsl(48, 94%, 68%, 1)',
+	yellow500: 'hsl(44, 92%, 63%, 1)',
+	yellow600: 'hsl(42, 87%, 55%, 1)',
+	yellow700: 'hsl(36, 77%, 49%, 1)',
+	yellow800: 'hsl(29, 80%, 44%, 1)',
+	yellow900: 'hsl(22, 82%, 39%, 1)',
+	yellow999: 'hsl(15, 86%, 30%, 1)'
 };
 
 export const colour = [
