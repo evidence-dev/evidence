@@ -88,6 +88,7 @@ const processQueries = (componentDevelopmentMode) => {
 	let queryIdsByFile = {};
 	return {
 		markup({ content, filename }) {
+			console.log({content, filename})
 			if (filename.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
 				queryIdsByFile[getRouteHash(filename)] = fileQueries.map((q) => q.id);
