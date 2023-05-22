@@ -42,11 +42,11 @@
 		"build:dev-workspace": "run-s build:example-project",
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build",
 		"build:docs": "pnpm --filter ./sites/docs build",
-		"release": "run-s package:ui package:example-project build:evidence && pnpm changeset publish",
+		"release": "run-s package:ui package:example-project build:tailwind build:evidence && pnpm changeset publish",
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
-		"test": "run-s package:ui package:example-project build:evidence && pnpm i --frozen-lockfile && pnpm -r test",
+		"test": "run-s package:ui package:example-project build:tailwind build:evidence && pnpm i --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
-		"postinstall": "run-s build:preprocess build:plugin-connector package:ui package:example-project build:evidence && pnpm install --ignore-scripts",
+		"postinstall": "run-s build:preprocess build:tailwind build:plugin-connector package:ui package:example-project build:evidence && pnpm install --ignore-scripts",
 		"docs": "pnpm --filter ./sites/docs start",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
@@ -56,7 +56,8 @@
 		"build:evidence": "pnpm --filter ./packages/evidence build",
 		"build:preprocess": "pnpm --filter ./packages/preprocess build",
 		"build:plugin-connector": "pnpm --filter ./packages/plugin-connector build",
-		"build:example-project": "pnpm --filter ./sites/example-project build"
+		"build:example-project": "pnpm --filter ./sites/example-project build",
+		"build:tailwind": "pnpm --filter ./packages/tailwind build"
 	},
 	"pnpm": {
 		"overrides": {
