@@ -2,7 +2,11 @@ export const validMinimalConfig = `
 components: {}
 `;
 export const validMinimalConfigParsed = {
-	components: {}
+	'@evidence-dev/ui': {
+		overrides: [],
+		aliases: {},
+		provides: []
+	},
 };
 
 export const handleAt = `
