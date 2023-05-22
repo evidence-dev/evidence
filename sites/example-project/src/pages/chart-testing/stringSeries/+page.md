@@ -88,6 +88,12 @@ let nulls =
 
  </script>
 
+```abc
+select 'a1' as start, 'a3' as tend, 'ABC' as label
+union all
+select 'a5' as start, 'a6' as tend, 'DEF' as label
+```
+
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
 
 <h1>Series Column with String X Axis</h1>
@@ -115,7 +121,9 @@ let nulls =
 <AreaChart data={nulls} series=series title="Nulls" handleNulls=zero type=stacked100/>
 
 <h2>Stacked Bar Chart</h2>
-<BarChart data={full} series=series title="Full Data" sort=false/>
+<BarChart data={full} series=series title="Full Data" sort=false>
+    <ReferenceLine y=10 label="Target" labelBackground=true labelTextOutline=false/>
+</BarChart>
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
 <BarChart data={missingY} series=series title="Missing Y"/>
 <BarChart data={nulls} series=series title="Nulls"/>

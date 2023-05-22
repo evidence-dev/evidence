@@ -66,4 +66,5 @@
 	{chartAreaHeight}
 >
 	<Area {line} {fillColor} {fillOpacity} {handleMissing} {type} />
+	<slot />
 </Chart>

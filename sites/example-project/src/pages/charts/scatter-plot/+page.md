@@ -1,4 +1,5 @@
 <script>
+
 let regions = [
     {region: 'West', score_a: 59, score_b: 51},
     {region: 'West', score_a: 70, score_b: 43},
@@ -115,21 +116,29 @@ let countries = [
 ## Scatter Plot
 
 <ScatterPlot
-    data={countries}
-    x=gdp_usd
-    y=gdp_growth_pct1
-    tooltipTitle=country
-/>
+data={countries}
+x=gdp_usd
+y=gdp_growth_pct1
+tooltipTitle=country
+>
+
+    <ReferenceLine y=0.065/>
+
+</ScatterPlot>
 
 ## Multi-Series Scatter Plot
 
 <ScatterPlot
-    data={countries}
-    x=gdp_usd
-    y=gdp_growth_pct1
-    tooltipTitle=country
-    series=continent
-/>
+data={countries}
+x=gdp_usd
+y=gdp_growth_pct1
+tooltipTitle=country
+series=continent
+>
+
+    <ReferenceLine y=0.065/>
+
+</ScatterPlot>
 
 ## Multi-Series Scatter Plot with Custom Height
 
