@@ -9,7 +9,7 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"duckdb-async": "0.7.1",
+		"duckdb-async": "0.8.0",
 		"@evidence-dev/db-commons": "workspace:^"
 	},
 	"devDependencies": {
