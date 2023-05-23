@@ -58,12 +58,13 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 			// Use file discovery
 
 			// Attempt to extract the folder that contains built assets
-			const mainFilePath = path.parse("main" in validEvidencePackage 
-				? path.resolve(packagePath, validEvidencePackage.main)
-				: "svelte" in validEvidencePackage
+			const mainFilePath = path.parse(
+				'main' in validEvidencePackage
+					? path.resolve(packagePath, validEvidencePackage.main)
+					: 'svelte' in validEvidencePackage
 					? path.resolve(packagePath, validEvidencePackage.svelte)
 					: path.resolve(packagePath, validEvidencePackage.exports['.'])
-			).dir
+			).dir;
 
 			const fileComponents = await fileLoader(mainFilePath);
 			fileComponents.forEach((c) => providedComponents.add(c));

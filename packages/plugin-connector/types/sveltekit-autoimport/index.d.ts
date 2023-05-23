@@ -1,4 +1,3 @@
-
 declare module 'sveltekit-autoimport' {
 	import { MarkupPreprocessor } from 'svelte/types/compiler/preprocess/types';
 
