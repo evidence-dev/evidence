@@ -2,15 +2,11 @@
 	"name": "@evidence-dev/components",
 	"version": "2.3.2",
 	"scripts": {
-		"dev": "svelte-package && vite dev --port 3000",
+		"dev": "vite dev --port 3000",
 		"build": "vite build",
-		"preview": "vite preview --port 3000",
-		"prepublishOnly": "pnpm package"
+		"preview": "vite preview --port 3000"
 	},
 	"type": "module",
-	"publishConfig": {
-		"directory": "../../packages/components"
-	},
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^1.0.0",
 		"@evidence-dev/plugin-connector": "workspace:^1.0.0",
