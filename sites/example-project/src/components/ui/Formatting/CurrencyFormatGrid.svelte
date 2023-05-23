@@ -56,7 +56,7 @@
 		margin: 0.5em 0 1.5em -7px;
 		transition: all 400ms;
 		cursor: pointer;
-        font-size: 14px;
+		font-size: 14px;
 	}
 	select:hover {
 		border: 1px solid var(--grey-300);

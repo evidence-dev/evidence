@@ -182,7 +182,7 @@
 		padding: 0.35em;
 		margin-left: auto;
 		width: 62%;
-        font-size: 14px;
+		font-size: 14px;
 	}
 	select:hover {
 		border: 1px solid var(--grey-300);
