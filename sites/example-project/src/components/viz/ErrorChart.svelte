@@ -17,9 +17,9 @@
 			class:w-[7.8em]={chartType.includes('Value')}
 		>
 			{error}
+			{#if dev && error === MissingCredentialsError}
+				<br><a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
+			{/if}
 		</div>
-		{#if dev && error === MissingCredentialsError}
-			<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
-		{/if}
 	</div>
 </div>
