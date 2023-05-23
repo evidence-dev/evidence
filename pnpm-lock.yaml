@@ -588,7 +588,6 @@ importers:
       svelte-preprocess: 4.10.7_t7k4oeewo5564rvfkh2vtbgu4e
       tailwindcss: 3.3.1
       vite: 4.0.4
-    publishDirectory: ../../packages/components
 
   sites/test-env:
     specifiers:
