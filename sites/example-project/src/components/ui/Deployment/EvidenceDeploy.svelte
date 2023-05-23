@@ -43,6 +43,7 @@
 
 	ul {
 		list-style: none;
+        padding-inline-start: 0px;
 	}
 
 	ul li::before {
