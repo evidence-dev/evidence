@@ -56,8 +56,16 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 			manifestComponents.forEach((c) => providedComponents.add(c));
 		} else {
 			// Use file discovery
-			// TODO: Look at package.svelte field for directory, instead of assuming dist.
-			const fileComponents = await fileLoader(path.resolve(packagePath, 'dist'));
+
+			// Attempt to extract the folder that contains built assets
+			const mainFilePath = path.parse("main" in validEvidencePackage 
+				? path.resolve(packagePath, validEvidencePackage.main)
+				: "svelte" in validEvidencePackage
+					? path.resolve(packagePath, validEvidencePackage.svelte)
+					: path.resolve(packagePath, validEvidencePackage.exports['.'])
+			).dir
+
+			const fileComponents = await fileLoader(mainFilePath);
 			fileComponents.forEach((c) => providedComponents.add(c));
 		}
 	}

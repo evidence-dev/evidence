@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
-		"build": "parcel build",
+		"build": "tsc --noEmit -p tsconfig.json && parcel build",
 		"watch": "parcel watch",
 		"check": "tsc --noEmit -p tsconfig.json"
 	},

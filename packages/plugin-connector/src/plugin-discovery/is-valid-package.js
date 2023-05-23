@@ -26,7 +26,7 @@ export const isValidPackage = async (path) => {
 			chalk.yellow(
 				`[!] ${chalk.bold(
 					`"${path.split('node_modules/')[1]}"`
-				)} is possibly intended to contain evidence plugins, but has a malformed evidence field in it's package.json!`
+				)} could not be loaded as a plugin, it is missing a name or main field.`
 			)
 		);
 		return false;
