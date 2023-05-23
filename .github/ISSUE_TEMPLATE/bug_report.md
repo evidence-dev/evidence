@@ -6,56 +6,26 @@ labels: 'bug, to-review'
 assignees: ''
 ---
 
-## Bug Description
+## Steps To Reproduce
 
-Describe what happened
+Steps we can take to reproduce the issue you're seeing. Sample data is helpful.
 
-## Severity
+### Environment
 
-- [ ] High - I'm not able to use Evidence until this bug is fixed
-- [ ] Medium - I'm able to use Evidence, but a feature I need to use is not working
-- [ ] Low - I'm able to keep using Evidence as normal, but flagging this for the team to fix
+- Node version (`node -v`): 
+- npm version (`npm -v`):
+- OS:
+- Browser:
+- Database:
 
 ## Expected Behavior
 
 Describe what you expected to happen
 
-## Error Messages and Screenshots
+## Actual Behaviour
 
-If you received any error messages, please post them here. Screenshots are also helpful.
-
-## Steps To Reproduce
-
-Let us know the steps we can take to reproduce the issue you're seeing. Sample data helps speed up the process of reproducing.
-
-1.
-2.
-3.
+Describe what happened. Error messages and screenshots are helpful.
 
 ## Workarounds
 
-Is there anything you can do in advance of this being fixed?
-
-## Do you want to contribute a fix for this bug?
-
-If so, let us know and we can help you get started.
-
-## Environment Information
-
-Operating System (e.g., MacOS, Windows 10):
-Node version (`node -v`):
-npm version (`npm -v`):
-Package versions (`npm list --depth=0`):
-
-## Database
-
-- [ ] Postgres
-- [ ] BigQuery
-- [ ] Snowflake
-- [ ] Redshift
-- [ ] SQL Server
-- [ ] MySQL
-- [ ] SQLite
-- [ ] DuckDB
-- [ ] CSV
-- [ ] Other (please specify)
+Anything you can do in advance of this being fixed?
