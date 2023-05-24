@@ -32,8 +32,8 @@ export const loadConfig = async (rootDir) => {
 			console.error(
 				`${redPipe}   ${yaml.stringify(formattedError).replace(/\n/g, `\n${redPipe}   `)}`
 			);
+			throw new Error("Invalid evidence.plugins.yaml");
 
-			process.exit(1);
 		}
 
 		return configResult.data;

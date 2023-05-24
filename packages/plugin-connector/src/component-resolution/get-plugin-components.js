@@ -16,8 +16,6 @@ export async function getPluginComponents(cfg, discoveries) {
 
 	const pluginDiscoveries = discoveries ?? (await discoverEvidencePlugins());
 
-	// TODO: Ensure that there are no duplicate overrides
-
 	Object.values(config.components).reduce(
 		/**
 		 * @param {Set<string>} acc
@@ -31,7 +29,7 @@ export async function getPluginComponents(cfg, discoveries) {
 							`[!] ${override} is overriden more than once. Please ensure that a component is overriden only once.`
 						)
 					);
-					process.exit(1);
+					throw new Error("Invalid evidence.plugins.yaml");
 				}
 				acc.add(override);
 			}
