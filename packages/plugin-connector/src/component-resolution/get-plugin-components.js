@@ -6,19 +6,39 @@ import chalk from 'chalk';
 
 /**
  * @param {EvidenceConfig} [cfg]
- * @param {PackageDiscoveryResult} [pluginDiscoveries] Optional: Pass in already discovered plugins
+ * @param {PackageDiscoveryResult} [discoveries] Optional: Pass in already discovered plugins
  * @returns {Promise<PluginComponents>}
  */
-export async function getPluginComponents(cfg, pluginDiscoveries) {
+export async function getPluginComponents(cfg, discoveries) {
 	const rootDir = await getRootModules();
 
 	const config = cfg ?? (await loadConfig(rootDir));
 
-	if (!pluginDiscoveries) {
-		pluginDiscoveries = await discoverEvidencePlugins();
-	}
+	const pluginDiscoveries = discoveries ?? (await discoverEvidencePlugins());
 
 	// TODO: Ensure that there are no duplicate overrides
+
+	Object.values(config.components).reduce(
+		/**
+		 * @param {Set<string>} acc 
+		 * @param {EvidenceComponentConfig} v 
+		 */
+		(acc, v) => {
+			for (const override of v.overrides) {
+				if (acc.has(override)) {
+					console.error(
+						chalk.red(
+							`[!] ${override} is overriden more than once. Please ensure that a component is overriden only once.`
+						)
+					);
+					process.exit(1);
+				}
+				acc.add(override);
+			}
+			return acc
+		}, new Set()
+	);
+
 	// Load all the components
 	const components = await Promise.all(
 		pluginDiscoveries.components.map(
@@ -68,9 +88,17 @@ export async function getPluginComponents(cfg, pluginDiscoveries) {
 				}
 
 				if (packageConfig.overrides?.includes(componentOutputName)) {
-					componentObj.overriden = {
-						package: acc[componentOutputName].package
-					};
+					if (!acc[componentOutputName]) {
+						console.warn(
+							chalk.yellow(
+								`[!] ${packageName} cannot override it's own component ${componentOutputName}`
+							)
+						)
+					} else {
+						componentObj.overriden = {
+							package: acc[componentOutputName].package
+						};	
+					}
 				}
 
 				acc[componentOutputName] = componentObj;
