@@ -18,7 +18,7 @@
 		>
 			{error}
 			{#if dev && error === MissingCredentialsError}
-				<br /><a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
+				<br /><a class="credentials-link" href="/settings"> Add&nbsp;credentials&nbsp;&rarr;</a>
 			{/if}
 		</div>
 	</div>
