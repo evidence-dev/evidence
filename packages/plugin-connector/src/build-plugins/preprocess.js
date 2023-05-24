@@ -2,11 +2,30 @@ import { getPluginComponents } from '../component-resolution/get-plugin-componen
 import autoImport from 'sveltekit-autoimport';
 
 /**
- * TODO: Can we do this all in one processor, or do we need multiple?
  * @type {() => import("svelte/types/compiler/preprocess").PreprocessorGroup}
  */
 export const evidencePlugins = () => {
 	const componentPlugins = getPluginComponents();
+
+	const packages = componentPlugins.then((components) => {
+		/** @type {Record<string,string[]>} */
+		const packages = {};
+		
+		for (const [component, data] of Object.entries(components)) {
+			if (!packages[data.package]) packages[data.package] = [];
+			const import_name = data.aliasOf ? `${data.aliasOf} as ${component}` : component;
+			packages[data.package].push(import_name);
+		}
+		return packages;
+	});
+
+	const autoImporter = packages.then((packages) =>
+		autoImport({
+			include: ['**/*.(svelte|md)'],
+			module: packages
+		})
+	);
+
 	return {
 		/** @type {import("svelte/types/compiler/preprocess").MarkupPreprocessor}} */
 		markup: async ({ content, filename }) => {
@@ -15,20 +34,7 @@ export const evidencePlugins = () => {
 				return;
 			}
 
-			/** @type{Record<string, string[]>} */
-			const packages = {};
-
-			for (const [component, data] of Object.entries(components)) {
-				if (!packages[data.package]) packages[data.package] = [];
-				const import_name = data.aliasOf ? `${data.aliasOf} as ${component}` : component;
-				packages[data.package].push(import_name);
-			}
-
-			/** @type {{ markup: import("svelte/types/compiler/preprocess").MarkupPreprocessor }}} */
-			const { markup: autoimport_process_markup } = autoImport({
-				include: ['**/*.(svelte|md)'],
-				module: packages
-			});
+			const { markup: autoimport_process_markup } = await autoImporter;
 
 			return autoimport_process_markup({ content, filename });
 		},
