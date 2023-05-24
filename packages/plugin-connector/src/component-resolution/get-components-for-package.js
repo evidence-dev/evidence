@@ -26,7 +26,7 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 	if (validEvidencePackage.evidence && !validEvidencePackage.evidence.components) {
 		console.warn(
 			chalk.yellow(
-				`[!] ${validEvidencePackage.name} is being used as a component plugin, but does not contain plugins.`
+				`[!] ${validEvidencePackage.name} is being used as a component plugin, but does not contain components.`
 			)
 		);
 		return providedComponents;
