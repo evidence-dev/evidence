@@ -117,7 +117,7 @@ export async function fileLoader(rootDir) {
 				throw new Error(`Error while identifying ${componentPath}`, { cause: e });
 			}),
 			// Get the name of the component, takes the last part of the path and removes the file extension
-			componentName: componentPath.split('/').pop()?.split('.').shift() ?? ''
+			componentName: path.basename(componentPath, path.extname(componentPath)),
 		}))
 	);
 
