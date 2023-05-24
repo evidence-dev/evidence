@@ -20,8 +20,8 @@ export async function getPluginComponents(cfg, discoveries) {
 
 	Object.values(config.components).reduce(
 		/**
-		 * @param {Set<string>} acc 
-		 * @param {EvidenceComponentConfig} v 
+		 * @param {Set<string>} acc
+		 * @param {EvidenceComponentConfig} v
 		 */
 		(acc, v) => {
 			for (const override of v.overrides) {
@@ -35,8 +35,9 @@ export async function getPluginComponents(cfg, discoveries) {
 				}
 				acc.add(override);
 			}
-			return acc
-		}, new Set()
+			return acc;
+		},
+		new Set()
 	);
 
 	// Load all the components
@@ -93,11 +94,11 @@ export async function getPluginComponents(cfg, discoveries) {
 							chalk.yellow(
 								`[!] ${packageName} cannot override it's own component ${componentOutputName}`
 							)
-						)
+						);
 					} else {
 						componentObj.overriden = {
 							package: acc[componentOutputName].package
-						};	
+						};
 					}
 				}
 
