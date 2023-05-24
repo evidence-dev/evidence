@@ -46,13 +46,10 @@ export const findSvelteComponents = async (root) => {
  *      export const evidenceInclude = true
  *  </script>
  *
- * @param {boolean} found
  * @param {import("estree").Node} currentNode
  * @returns {boolean}
  */
-const astDeclarationSearch = (found, currentNode) => {
-	// We already found one; don't do any more work
-	if (found) return found;
+const nodeIsEvidenceDeclaration = (currentNode) => {
 	// If this isn't the right kind of declaration, ignore it
 	if (currentNode.type !== 'ExportNamedDeclaration') return false;
 
@@ -96,11 +93,11 @@ export const isLibraryComponent = async (fileContent) => {
 	const parseResult = svelteParse(fileContent);
 	// If there is a <script> tag, check there
 	if (parseResult.instance) {
-		result = result || parseResult.instance.content.body.reduce(astDeclarationSearch, false);
+		result = result || Boolean(parseResult.instance.content.body.find(nodeIsEvidenceDeclaration));
 	}
 	// If there is a <script context="module"> tag, check there
 	if (parseResult.module) {
-		result = result || parseResult.module.content.body.reduce(astDeclarationSearch, false);
+		result = result || Boolean(parseResult.module.content.body.find(nodeIsEvidenceDeclaration));
 	}
 	return result;
 };
