@@ -6,9 +6,6 @@ import { isValidPackage } from './is-valid-package';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import path from 'path';
 
-/** @type {EvidenceConfig} */
-const emptyConfig = { components: {} };
-
 /**
  *
  * @param {string} rootDir
@@ -36,7 +33,7 @@ export const loadConfig = async (rootDir) => {
 				`${redPipe}   ${yaml.stringify(formattedError).replace(/\n/g, `\n${redPipe}   `)}`
 			);
 
-			return emptyConfig;
+			process.exit(1);
 		}
 
 		return configResult.data;
@@ -82,8 +79,6 @@ export const resolveEvidencePackages = async (rootDir) => {
 		)
 	).then((pack) => /** @type {Exclude<typeof pack[number], false>[]} */ (pack.filter(Boolean)));
 
-	// configContent.components
-	// const components = await getPluginComponents(configContent);
 	return {
 		components: componentPackages,
 		databases: []
