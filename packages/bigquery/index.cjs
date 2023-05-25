@@ -32,21 +32,12 @@ const standardizeResult = async (result) => {
 };
 
 const getCredentials = async (database) => {
+	const access_token =
+		database.token ?? process.env['BIGQUERY_TOKEN'] ?? process.env['token'] ?? process.env['TOKEN'];
 	let oauth;
-	if (
-		database.token ??
-		process.env['BIGQUERY_TOKEN'] ??
-		process.env['token'] ??
-		process.env['TOKEN']
-	) {
+	if (access_token) {
 		oauth = new OAuth2Client();
-		oauth.setCredentials({
-			access_token:
-				database.token ??
-				process.env['BIGQUERY_TOKEN'] ??
-				process.env['token'] ??
-				process.env['TOKEN']
-		});
+		oauth.setCredentials({ access_token });
 	}
 
 	return {
