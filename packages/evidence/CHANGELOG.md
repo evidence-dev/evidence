@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 17.0.1
+
+### Patch Changes
+
+- 42ea6aff: Make build:strict compatible with Windows OS
+- Updated dependencies [f34ac566]
+  - @evidence-dev/db-orchestrator@2.1.1
+
 ## 17.0.0
 
 ### Patch Changes
