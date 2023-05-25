@@ -14,7 +14,7 @@
 	async function handleUpload() {
 		for (const file of files) {
 			const fileContents = await file.text();
-			credentials = JSON.parse(fileContents);
+			credentials = { ...credentials, ...JSON.parse(fileContents) };
 		}
 		disableSave = false;
 	}

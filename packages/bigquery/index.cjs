@@ -31,36 +31,65 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
-const getCredentials = async (database) => {
-	const access_token =
-		database.token ?? process.env['BIGQUERY_TOKEN'] ?? process.env['token'] ?? process.env['TOKEN'];
-	let oauth;
-	if (access_token) {
-		oauth = new OAuth2Client();
-		oauth.setCredentials({ access_token });
+const getCredentials = (database = {}) => {
+	const authentication_method =
+		database.authenticator ??
+		process.env['BIGQUERY_AUTHENTICATOR'] ??
+		process.env['authenticator'] ??
+		process.env['AUTHENTICATOR'];
+
+	if (authentication_method === 'service-account') {
+		return {
+			projectId:
+				database.project_id ??
+				process.env['BIGQUERY_PROJECT_ID'] ??
+				process.env['project_id'] ??
+				process.env['PROJECT_ID'],
+			credentials: {
+				client_email:
+					database.client_email ??
+					process.env['BIGQUERY_CLIENT_EMAIL'] ??
+					process.env['client_email'] ??
+					process.env['CLIENT_EMAIL'],
+				private_key: (
+					database.private_key ??
+					process.env['BIGQUERY_PRIVATE_KEY'] ??
+					process.env['private_key'] ??
+					process.env['PRIVATE_KEY']
+				).replace(/\\n/g, '\n')
+			}
+		};
+	} else if (authentication_method === 'oauth') {
+		const access_token =
+			database.token ??
+			process.env['BIGQUERY_TOKEN'] ??
+			process.env['token'] ??
+			process.env['TOKEN'];
+		let oauth;
+		if (access_token) {
+			oauth = new OAuth2Client();
+			oauth.setCredentials({ access_token });
+		}
+
+		return {
+			authClient: oauth,
+			projectId:
+				database.project_id ??
+				process.env['BIGQUERY_PROJECT_ID'] ??
+				process.env['project_id'] ??
+				process.env['PROJECT_ID']
+		};
+	} else if (authentication_method === 'gcloud-cli') {
+		return {
+			projectId:
+				database.project_id ??
+				process.env['BIGQUERY_PROJECT_ID'] ??
+				process.env['project_id'] ??
+				process.env['PROJECT_ID']
+		};
 	}
 
-	return {
-		authClient: oauth,
-		projectId:
-			database.project_id ??
-			process.env['BIGQUERY_PROJECT_ID'] ??
-			process.env['project_id'] ??
-			process.env['PROJECT_ID'],
-		credentials: {
-			client_email:
-				database.client_email ??
-				process.env['BIGQUERY_CLIENT_EMAIL'] ??
-				process.env['client_email'] ??
-				process.env['CLIENT_EMAIL'],
-			private_key: (
-				database.private_key ??
-				process.env['BIGQUERY_PRIVATE_KEY'] ??
-				process.env['private_key'] ??
-				process.env['PRIVATE_KEY']
-			).replace(/\\n/g, '\n')
-		}
-	};
+	throw new Error(`Invalid authentication method: ${authentication_method}`);
 };
 
 const runQuery = async (queryString, database) => {
