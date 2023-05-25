@@ -1,11 +1,13 @@
 <script>
+	import AuthSelect from './AuthSelect.svelte';
+
 	export let credentials;
 	export let existingCredentials;
 	export let disableSave;
 
 	credentials = { ...existingCredentials };
-
 	credentials.project_id = credentials.project_id ?? '';
+	credentials.authenticator = credentials.authenticator ?? 'gcloud-cli';
 
 	let files;
 
@@ -18,59 +20,81 @@
 	}
 
 	$: disableSave = !credentials.project_id;
+
+	const options = [
+		{
+			value: 'gcloud-cli',
+			description: 'GCloud CLI'
+		},
+		{
+			value: 'service-account',
+			description: 'Service Account'
+		},
+		{
+			value: 'oauth',
+			description: 'OAuth Access Token'
+		}
+	];
 </script>
 
-<div class="separator">Service Account</div>
+<AuthSelect {options} bind:selected={credentials.authenticator} />
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
-<div class="input-item">
-	<label> JSON Keyfile </label>
-	{#if credentials.project_id}
+{#if credentials.authenticator === 'service-account'}
+	<div class="input-item">
+		<label for="file-input"> JSON Keyfile </label>
+		{#if credentials.project_id}
+			<input
+				id="file-input"
+				type="file"
+				accept="application/json"
+				bind:files
+				on:change={handleUpload}
+			/>
+		{:else}
+			<input
+				id="file-input"
+				type="file"
+				accept="application/json"
+				bind:files
+				on:change={handleUpload}
+				required
+			/>
+		{/if}
+	</div>
+	<div class="input-item">
+		<label for="project"> Project ID </label>
 		<input
-			id="file-input"
-			type="file"
-			accept="application/json"
-			bind:files
-			on:change={handleUpload}
+			type="text"
+			id="project"
+			name="project"
+			value={credentials?.project_id ?? ' '}
+			disabled
 		/>
-	{:else}
-		<input
-			id="file-input"
-			type="file"
-			accept="application/json"
-			bind:files
-			on:change={handleUpload}
-			required
-		/>
-	{/if}
-</div>
-
-<div class="input-item">
-	<label for="project"> Project ID </label>
-	<!-- displaying the project_id is dependent on private_key so that the bound project_id in gcloud oauth isn't shown -->
-	<input
-		type="text"
-		id="project"
-		name="project"
-		value={credentials?.private_key ? credentials?.project_id : ' '}
-		disabled
-	/>
-</div>
-<div class="input-item">
-	<label for="pk"> Private Key </label>
-	<input type="password" id="pk" value={credentials?.private_key ?? ''} disabled />
-</div>
-<div class="input-item">
-	<label for="client-email"> Client Email </label>
-	<input type="text" id="client-email" value={credentials?.client_email ?? ' '} disabled />
-</div>
-
-<div class="separator">GCloud OAuth (local-only)</div>
-
-<div class="input-item">
-	<label for="project-id"> Project ID </label>
-	<input type="text" id="project-id" bind:value={credentials.project_id} />
-</div>
+	</div>
+	<div class="input-item">
+		<label for="private-key"> Private Key </label>
+		<input type="password" id="private-key" value={credentials?.private_key ?? ''} disabled />
+	</div>
+	<div class="input-item">
+		<label for="client-email"> Client Email </label>
+		<input type="text" id="client-email" value={credentials?.client_email ?? ' '} disabled />
+	</div>
+{:else if credentials.authenticator === 'oauth'}
+	<div class="input-item">
+		<label for="project-id"> Project ID </label>
+		<input type="text" id="project-id" bind:value={credentials.project_id} />
+	</div>
+	<div class="input-item">
+		<label for="token"> Access Token </label>
+		<input type="text" id="token" bind:value={credentials.token} />
+	</div>
+{:else}
+	<!-- gcloud -->
+	<div class="input-item">
+		<label for="project-id"> Project ID </label>
+		<input type="text" id="project-id" bind:value={credentials.project_id} />
+	</div>
+{/if}
 
 <style>
 	div.input-item {
@@ -114,25 +138,5 @@
 		font-weight: normal;
 		font-size: 14px;
 		color: var(--grey-800);
-	}
-
-	.separator {
-		display: flex;
-		align-items: center;
-		text-align: center;
-		margin-block-start: 2.5em;
-		color: var(--grey-600);
-		font-weight: bold;
-	}
-
-	.separator::after {
-		content: '';
-		flex: 1;
-		border-bottom: 1px solid var(--grey-200);
-	}
-
-	.separator:not(:empty)::after {
-		margin-left: 1.5em;
-		margin-top: 0.1em;
 	}
 </style>

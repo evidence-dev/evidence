@@ -9,9 +9,10 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"fs-extra": "9.1.0",
+		"@evidence-dev/db-commons": "workspace:^",
 		"@google-cloud/bigquery": "6.2.0",
-		"@evidence-dev/db-commons": "workspace:^"
+		"fs-extra": "9.1.0",
+		"google-auth-library": "^8.8.0"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"

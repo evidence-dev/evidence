@@ -1,4 +1,5 @@
 const { BigQuery } = require('@google-cloud/bigquery');
+const { OAuth2Client } = require('google-auth-library');
 const { EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 
 const standardizeResult = async (result) => {
@@ -31,46 +32,49 @@ const standardizeResult = async (result) => {
 };
 
 const getCredentials = async (database) => {
-	try {
-		if (database) {
-			const creds = {
-				projectId: database.project_id,
-				credentials: {
-					client_email: database.client_email,
-					private_key: database.private_key
-				}
-			};
-			return creds;
-		} else {
-			const creds = {
-				projectId:
-					process.env['BIGQUERY_PROJECT_ID'] ||
-					process.env['project_id'] ||
-					process.env['PROJECT_ID'],
-				credentials: {
-					client_email:
-						process.env['BIGQUERY_CLIENT_EMAIL'] ||
-						process.env['client_email'] ||
-						process.env['CLIENT_EMAIL'],
-					private_key: (
-						process.env['BIGQUERY_PRIVATE_KEY'] ||
-						process.env['private_key'] ||
-						process.env['PRIVATE_KEY']
-					).replace(/\\n/g, '\n')
-				}
-			};
-			return creds;
-		}
-	} catch {
-		throw new Error('Missing database credentials');
+	let oauth;
+	if (
+		database.token ??
+		process.env['BIGQUERY_TOKEN'] ??
+		process.env['token'] ??
+		process.env['TOKEN']
+	) {
+		oauth = new OAuth2Client();
+		oauth.setCredentials({
+			access_token:
+				database.token ??
+				process.env['BIGQUERY_TOKEN'] ??
+				process.env['token'] ??
+				process.env['TOKEN']
+		});
 	}
+
+	return {
+		authClient: oauth,
+		projectId:
+			database.project_id ??
+			process.env['BIGQUERY_PROJECT_ID'] ??
+			process.env['project_id'] ??
+			process.env['PROJECT_ID'],
+		credentials: {
+			client_email:
+				database.client_email ??
+				process.env['BIGQUERY_CLIENT_EMAIL'] ??
+				process.env['client_email'] ??
+				process.env['CLIENT_EMAIL'],
+			private_key: (
+				database.private_key ??
+				process.env['BIGQUERY_PRIVATE_KEY'] ??
+				process.env['private_key'] ??
+				process.env['PRIVATE_KEY']
+			).replace(/\\n/g, '\n')
+		}
+	};
 };
 
 const runQuery = async (queryString, database) => {
 	try {
-		const credentials = await getCredentials(database);
-		// for gcloud oauth
-		if (!credentials.client_email && !credentials.private_key) delete credentials.credentials;
+		const credentials = getCredentials(database);
 
 		const connection = new BigQuery({ ...credentials, maxRetries: 10 });
 

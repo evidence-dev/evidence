@@ -91,10 +91,12 @@ importers:
       '@google-cloud/bigquery': 6.2.0
       dotenv: ^16.0.1
       fs-extra: 9.1.0
+      google-auth-library: ^8.8.0
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
       '@google-cloud/bigquery': 6.2.0
       fs-extra: 9.1.0
+      google-auth-library: 8.8.0
     devDependencies:
       dotenv: 16.0.3
 
@@ -3638,7 +3640,7 @@ packages:
       duplexify: 4.1.2
       ent: 2.2.0
       extend: 3.0.2
-      google-auth-library: 8.7.0
+      google-auth-library: 8.8.0
       retry-request: 5.0.2
       teeny-request: 8.0.3
     transitivePeerDependencies:
@@ -9421,8 +9423,8 @@ packages:
   /globrex/0.1.2:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
 
-  /google-auth-library/8.7.0:
-    resolution: {integrity: sha512-1M0NG5VDIvJZEnstHbRdckLZESoJwguinwN8Dhae0j2ZKIQFIV63zxm6Fo6nM4xkgqUr2bbMtV5Dgo+Hy6oo0Q==}
+  /google-auth-library/8.8.0:
+    resolution: {integrity: sha512-0iJn7IDqObDG5Tu9Tn2WemmJ31ksEa96IyK0J0OZCpTh6CrC6FrattwKX87h3qKVuprCJpdOGKc1Xi8V0kMh8Q==}
     engines: {node: '>=12'}
     dependencies:
       arrify: 2.0.1
