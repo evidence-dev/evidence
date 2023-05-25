@@ -9,6 +9,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"package": "svelte-kit sync && svelte-package && publint",
+		"package:watch": "svelte-package --watch",
 		"prepare": "svelte-kit sync",
 		"prepublishOnly": "npm run package",
 		"preview": "vite preview",
@@ -25,8 +26,8 @@
 		"components": true
 	},
 	"dependencies": {
-		"@evidence-dev/component-utilities": "workspace:^1.0.0",
-		"@evidence-dev/tailwind": "workspace:^1.0.0"
+		"@evidence-dev/component-utilities": "plugins-demo",
+		"@evidence-dev/tailwind": "plugins-demo"
 	},
 	"devDependencies": {
 		"@storybook/addon-essentials": "^7.0.9",

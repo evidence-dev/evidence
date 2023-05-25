@@ -47,7 +47,7 @@ describe('loadConfig', () => {
 	it('should fail to load invalid configuration, but recover safely', async () => {
 		mockedReadFile.mockResolvedValueOnce(invalidMinimalConfig);
 		const config = loadConfig(__dirname);
-		expect(config).rejects.toBeInstanceOf(Error)
+		expect(config).rejects.toBeInstanceOf(Error);
 	});
 
 	it('should fail to load missing configuration, but recover safely', async () => {

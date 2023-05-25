@@ -29,7 +29,7 @@ export async function getPluginComponents(cfg, discoveries) {
 							`[!] ${override} is overriden more than once. Please ensure that a component is overriden only once.`
 						)
 					);
-					throw new Error("Invalid evidence.plugins.yaml");
+					throw new Error('Invalid evidence.plugins.yaml');
 				}
 				acc.add(override);
 			}
