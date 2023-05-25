@@ -10,6 +10,8 @@ Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt;
 attigimus restabat exitus. Praedaeque ademit. _Vix_ eundem, saevarum et nescia
 inter retinentibus inaniter pontum! `pages/index.md`
 
+You can use emoji 😂 but don't go overboard. 
+
 ### Pascua tigres inde
 
 Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.

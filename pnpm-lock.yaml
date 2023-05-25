@@ -380,6 +380,7 @@ importers:
       '@sveltejs/kit': 1.13.0
       '@sveltejs/package': 1.0.1
       '@sveltejs/vite-plugin-svelte': ^2.0.3
+      '@tailwindcss/typography': ^0.5.9
       '@tidyjs/tidy': 2.4.4
       '@types/jest': ^29.5.0
       autoprefixer: ^10.4.7
@@ -402,6 +403,7 @@ importers:
       svelte-preprocess: ^4.10.7
       svelte-tiny-linked-charts: 1.1.5
       tailwindcss: ^3.3.1
+      tua-body-scroll-lock: ^1.2.1
       typescript: 4.9.5
       unified: 9.1.0
       unist-util-visit: 4.1.2
@@ -424,12 +426,14 @@ importers:
       svelte: 3.55.0
       svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.5
+      tua-body-scroll-lock: 1.2.1
       typescript: 4.9.5
       unified: 9.1.0
       unist-util-visit: 4.1.2
     devDependencies:
       '@sveltejs/package': 1.0.1_tuotfx7glloxurl4snpq7ztuqe
       '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.55.0+vite@4.0.4
+      '@tailwindcss/typography': 0.5.9_tailwindcss@3.3.1
       '@types/jest': 29.5.0
       autoprefixer: 10.4.14_postcss@8.4.21
       jest: 28.1.3
@@ -5341,6 +5345,18 @@ packages:
     dependencies:
       defer-to-connect: 2.0.1
     dev: false
+
+  /@tailwindcss/typography/0.5.9_tailwindcss@3.3.1:
+    resolution: {integrity: sha512-t8Sg3DyynFysV9f4JDOVISGsjazNb48AeIYQwcL+Bsq5uf4RYL75C1giZ43KISjeDGBaTN3Kxh7Xj/vRSMJUUg==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 3.3.1_postcss@8.4.21
+    dev: true
 
   /@techteamer/ocsp/1.0.0:
     resolution: {integrity: sha512-lNAOoFHaZN+4huo30ukeqVrUmfC+avoEBYQ11QAnAw1PFhnI5oBCg8O/TNiCoEWix7gNGBIEjrQwtPREqKMPog==}
@@ -11354,6 +11370,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
 
+  /lodash.castarray/4.4.0:
+    resolution: {integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==}
+    dev: true
+
   /lodash.curry/4.1.1:
     resolution: {integrity: sha512-/u14pXGviLaweY5JI0IUzgzF2J6Ne8INyzAZjImcryjgkZ+ebruBxy2/JaOOkTqScddcYtakjhSaeemV8lR0tA==}
     dev: false
@@ -11365,6 +11385,10 @@ packages:
   /lodash.flow/3.5.0:
     resolution: {integrity: sha512-ff3BX/tSioo+XojX4MOsOMhJw0nZoUEF011LX8g8d3gvjVbxd89cCio4BCXronjxcTUIJUoqKEUA+n4CqvvRPw==}
     dev: false
+
+  /lodash.isplainobject/4.0.6:
+    resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
+    dev: true
 
   /lodash.isstring/4.0.1:
     resolution: {integrity: sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==}
@@ -13220,6 +13244,14 @@ packages:
       postcss: 8.4.21
       postcss-value-parser: 4.2.0
     dev: false
+
+  /postcss-selector-parser/6.0.10:
+    resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
+    engines: {node: '>=4'}
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
+    dev: true
 
   /postcss-selector-parser/6.0.11:
     resolution: {integrity: sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g==}
@@ -15741,6 +15773,10 @@ packages:
       wcwidth: 1.0.1
       yargs: 15.4.1
     dev: true
+
+  /tua-body-scroll-lock/1.2.1:
+    resolution: {integrity: sha512-DuGbQxIBSbz7/aAwh0oMThOwCwDdYzsU8nF5XQPAvoeOBWp/qhjrZfOtc84gj6CQLZu5L1+TgMNX6fW3OuafHA==}
+    dev: false
 
   /tunnel-agent/0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}

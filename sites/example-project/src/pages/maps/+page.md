@@ -56,6 +56,7 @@ let demoData = [
 </script>
 
 # Maps
+## US State Map
 
 ```sql map_data
 select "Arkansas" as name, 100 as value
@@ -95,7 +96,6 @@ union all
 select "TX" as namef, 200 as value
 ```
 
-## US State Map
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
