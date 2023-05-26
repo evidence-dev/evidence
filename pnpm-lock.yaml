@@ -15,7 +15,7 @@ importers:
     specifiers:
       '@changesets/cli': 2.21.0
       '@evidence-dev/components': link:packages/components
-      '@evidence-dev/core-components': link:packages/ui
+      '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
@@ -53,7 +53,7 @@ importers:
     devDependencies:
       '@changesets/cli': 2.21.0
       '@evidence-dev/components': link:packages/components
-      '@evidence-dev/core-components': link:packages/ui
+      '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
