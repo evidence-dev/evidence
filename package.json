@@ -6,7 +6,7 @@
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/preprocess": "link:packages/preprocess",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
-		"@evidence-dev/core-components": "link:packages/ui",
+		"@evidence-dev/core-components": "link:packages/core-components",
 		"@sveltejs/adapter-static": "1.0.0",
 		"@sveltejs/kit": "1.13.0",
 		"@tidyjs/tidy": "2.4.4",
@@ -39,19 +39,19 @@
 		"vite": "4.0.4"
 	},
 	"scripts": {
-		"dev": "run-p dev:example-project dev:ui",
+		"dev": "run-p dev:example-project dev:core-components",
 		"build:dev-workspace": "run-s build:example-project",
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build",
 		"build:docs": "pnpm --filter ./sites/docs build",
-		"release": "run-s package:ui build:tailwind build:evidence build:plugin-connector && pnpm changeset publish",
+		"release": "run-s package:core-components build:tailwind build:evidence build:plugin-connector && pnpm changeset publish",
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
-		"test": "run-s package:ui build:tailwind build:evidence && pnpm i --frozen-lockfile && pnpm -r test",
+		"test": "run-s package:core-components build:tailwind build:evidence && pnpm i --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
-		"postinstall": "run-s build:preprocess build:tailwind build:plugin-connector package:ui build:evidence && pnpm install --ignore-scripts",
+		"postinstall": "run-s build:preprocess build:tailwind build:plugin-connector package:core-components build:evidence && pnpm install --ignore-scripts",
 		"docs": "pnpm --filter ./sites/docs start",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"package:ui": "pnpm --filter ./packages/ui package",
+		"package:core-components": "pnpm --filter ./packages/core-components package",
 		"package:evidence": "pnpm --filter ./packages/evidence package",
 		"build:evidence": "pnpm --filter ./packages/evidence build",
 		"build:preprocess": "pnpm --filter ./packages/preprocess build",
@@ -59,7 +59,7 @@
 		"build:example-project": "pnpm --filter ./sites/example-project build",
 		"build:tailwind": "pnpm --filter ./packages/tailwind build",
 		"dev:example-project": "pnpm --filter ./sites/example-project dev",
-		"dev:ui": "pnpm --filter ./packages/ui package:watch"
+		"dev:core-components": "pnpm --filter ./packages/core-components package:watch"
 	},
 	"pnpm": {
 		"overrides": {
