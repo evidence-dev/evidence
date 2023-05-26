@@ -8,6 +8,19 @@ By default, new Evidence projects are configured with all the components needed 
 If you want to create new plugins, see [Creating a Plugin](./creating-a-plugin).
 :::
 
+## Installing Plugins
+
+To install a plugin, use the `npm install` command. Make sure you include the `--save` flag or the plugin
+will not be saved with your project.
+
+For example:
+
+```bash
+npm install --save @acme/charting 
+```
+
+Once the plugin is installed, you can add it to your plugin file and begin using it in your project
+
 ## Plugin file syntax
 
 ### Basic Example

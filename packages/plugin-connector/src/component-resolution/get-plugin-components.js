@@ -81,7 +81,7 @@ export async function getPluginComponents(cfg, discoveries) {
 				if (acc[componentOutputName] && !packageConfig.overrides.includes(componentOutputName)) {
 					console.warn(
 						chalk.yellow(
-							`[!] ${packageName} and ${acc[componentOutputName].package} both provide ${componentOutputName}. ${acc[componentOutputName].package} will be used, to use ${packageName}, specify an alias or explicit override.`
+							`[!] ${packageName} and ${acc[componentOutputName].package} both provide ${componentOutputName}. ${acc[componentOutputName].package} will be used, to use ${packageName}, specify an alias or explicit override. (https://docs.evidence.dev/plugins#component-aliases)`
 						)
 					);
 					return acc;
