@@ -78,12 +78,13 @@ export async function getPluginComponents(cfg, discoveries) {
 
 				const componentOutputName = alias ?? component;
 
-				if (acc[componentOutputName]) {
+				if (acc[componentOutputName] && !packageConfig.overrides.includes(componentOutputName)) {
 					console.warn(
 						chalk.yellow(
-							`[!] ${acc[componentOutputName].package} already has a component ${componentOutputName}`
+							`[!] ${packageName} and ${acc[componentOutputName].package} both provide ${componentOutputName}. ${acc[componentOutputName].package} will be used, to use ${packageName}, specify an alias or explicit override.`
 						)
 					);
+					return acc;
 				}
 
 				if (packageConfig.overrides?.includes(componentOutputName)) {

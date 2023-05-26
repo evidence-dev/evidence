@@ -10,7 +10,6 @@ export const evidencePlugins = () => {
 	const packages = componentPlugins.then((components) => {
 		/** @type {Record<string,string[]>} */
 		const packages = {};
-
 		for (const [component, data] of Object.entries(components)) {
 			if (!packages[data.package]) packages[data.package] = [];
 			const import_name = data.aliasOf ? `${data.aliasOf} as ${component}` : component;
