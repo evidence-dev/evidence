@@ -12,7 +12,7 @@ Steps we can take to reproduce the issue you're seeing. Sample data is helpful.
 
 ### Environment
 
-- Node version (`node -v`): 
+- Node version (`node -v`):
 - npm version (`npm -v`):
 - OS:
 - Browser:
