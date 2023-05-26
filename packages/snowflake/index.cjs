@@ -224,15 +224,15 @@ const getCredentials = async (database = {}) => {
 			process.env['passphrase'] ??
 			process.env['PASSPHRASE'];
 
-        const private_key_object = crypto.createPrivateKey({
-            key: private_key,
-            format: 'pem',
-            passphrase
-        });
-        const decrypted_private_key = private_key_object.export({
-            type: 'pkcs8',
-            format: 'pem'
-        });
+		const private_key_object = crypto.createPrivateKey({
+			key: private_key,
+			format: 'pem',
+			passphrase
+		});
+		const decrypted_private_key = private_key_object.export({
+			type: 'pkcs8',
+			format: 'pem'
+		});
 
 		return {
 			privateKey: decrypted_private_key,
