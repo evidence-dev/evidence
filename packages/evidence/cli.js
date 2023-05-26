@@ -121,6 +121,9 @@ const watchPatterns = [
 	{ sourceRelative: '.', targetRelative: './.evidence/template/src/', filePattern: 'app.css' } // custom theme file
 ];
 
+const strictMode = function () {
+	process.env['VITE_BUILD_STRICT'] = true;
+};
 const buildHelper = function (command, args) {
 	const watchers = runFileWatcher(watchPatterns);
 	const flatArgs = flattenArguments(args);
@@ -185,7 +188,8 @@ prog
 	.action((args) => {
 		populateTemplate();
 		clearQueryCache();
-		buildHelper('VITE_BUILD_STRICT=true npx vite build', args);
+		strictMode();
+		buildHelper('npx vite build', args);
 	});
 
 prog.parse(process.argv);
