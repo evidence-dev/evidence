@@ -50,5 +50,3 @@
 	<Alert status="danger">This is an alert</Alert>
 	<Alert status="default">This is an alert</Alert>
 </Story>
-
-<Alert status="warning" sticky>Hi</Alert>
