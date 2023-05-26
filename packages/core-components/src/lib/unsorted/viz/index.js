@@ -22,5 +22,7 @@ export { default as SankeyChart } from './SankeyChart.svelte';
 export { default as ScatterPlot } from './ScatterPlot.svelte';
 export { default as Scatter } from './Scatter.svelte';
 export { default as SearchBar } from './SearchBar.svelte';
+export { default as ReferenceLine } from './ReferenceLine.svelte';
+export { default as ReferenceArea } from './ReferenceArea.svelte';
 export { default as USMap } from './USMap.svelte';
 export { default as Value } from './Value.svelte';
