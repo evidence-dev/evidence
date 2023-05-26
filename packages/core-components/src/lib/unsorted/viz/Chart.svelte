@@ -454,7 +454,8 @@
 					xAxisTitle,
 					yAxisTitle,
 					tooltipTitle,
-					chartAreaHeight
+					chartAreaHeight,
+					chartType
 				};
 			});
 
@@ -488,7 +489,8 @@
 					axisTick: {
 						show: yTickMarks
 					},
-					boundaryGap: false
+					boundaryGap: false,
+					z: 2
 				};
 			} else {
 				horizAxisConfig = {
@@ -514,7 +516,8 @@
 								  },
 						margin: 6
 					},
-					scale: true
+					scale: true,
+					z: 2
 				};
 			}
 
@@ -539,7 +542,8 @@
 						//         return formatAxisValue(value, xFormat, xUnitSummary)
 						//     },
 					},
-					scale: true
+					scale: true,
+					z: 2
 				};
 			} else {
 				verticalAxisConfig = {
@@ -573,7 +577,8 @@
 					nameGap: 6,
 					min: yMin,
 					max: yMax,
-					boundaryGap: ['0%', '1%']
+					boundaryGap: ['0%', '1%'],
+					z: 2
 				};
 			}
 

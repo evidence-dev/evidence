@@ -78,4 +78,5 @@
 		{markerSize}
 		{handleMissing}
 	/>
+	<slot />
 </Chart>

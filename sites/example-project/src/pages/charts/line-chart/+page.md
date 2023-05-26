@@ -63,7 +63,21 @@ union all
 select 'China' as country, 101 as value, 1996 as year
 ```
 
-## Line
+```annotate2
+select 0 as startval, 1000 as endval, 'Normal' as label, 'green' as color
+union all
+select 2200 as startval, 2500 as endval, 'Elevated' as label, 'yellow' as color
+union all
+select 4125 as startval, 5000 as endval, 'Emergency' as label, 'red' as color
+```
+
+```annotate
+select '2020-12-05' as start_date, '2022-12-31' as end_date, 'Campaign A' as label
+union all
+select '2023-02-14' as start_date, '2023-03-20' as end_date, 'Campaign B' as label
+union all
+select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
+```
 
 <LineChart 
     data={orders_by_month} 

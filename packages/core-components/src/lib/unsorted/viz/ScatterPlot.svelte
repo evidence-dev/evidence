@@ -72,4 +72,5 @@
 	{chartAreaHeight}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
+	<slot />
 </Chart>

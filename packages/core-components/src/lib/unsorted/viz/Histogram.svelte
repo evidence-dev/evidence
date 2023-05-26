@@ -53,4 +53,5 @@
 	{chartAreaHeight}
 >
 	<Hist {fillColor} {fillOpacity} />
+	<slot />
 </Chart>

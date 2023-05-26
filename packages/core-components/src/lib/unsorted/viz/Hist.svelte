@@ -97,7 +97,8 @@
 					params.value[1]
 				}</span>`;
 			}
-		}
+		},
+		z: 3
 	};
 
 	$: config.update((d) => {

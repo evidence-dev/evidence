@@ -52,6 +52,8 @@
 			data = getCompletedData(data, x, y, series, false, xType !== 'time');
 			xType = 'category';
 		}
+
+		stackName = 'stack1';
 	} else {
 		// Multi Series
 		// Sort by stack total for category axis
@@ -82,7 +84,7 @@
 			// Set up stacks
 			stackName = stackName ?? 'stack1';
 		} else {
-			stackName = null;
+			stackName = 'stack1';
 		}
 	}
 

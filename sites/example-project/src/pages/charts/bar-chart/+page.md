@@ -10,12 +10,16 @@ sources:
 
 ## Bar
 
-<BarChart 
-    data={orders_by_category} 
-    x=category 
-    y=sales_usd0k 
-    xAxisTitle=Category
-/>
+<BarChart
+data={orders_by_category}
+x=category
+y=sales_usd0k
+xAxisTitle=Category
+>
+
+    <ReferenceLine y=34234 label="Sales Target" hideValue=false/>
+
+</BarChart>
 
 ## Stacked Bar
 
@@ -59,13 +63,17 @@ sources:
 
 ## Horizontal Bar
 
-<BarChart 
-    data={orders_by_category}
-    x=category 
-    y=sales_usd0k 
-    xAxisTitle=Country 
-    swapXY=true
-/>
+<BarChart
+data={orders_by_category}
+x=category
+y=sales_usd0k
+xAxisTitle=Country
+swapXY=true
+>
+
+    <ReferenceLine y=66/>
+
+</BarChart>
 
 ## Horizontal Stacked Bar
 
