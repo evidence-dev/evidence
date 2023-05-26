@@ -1,14 +1,16 @@
 const createConnection = require('snowflake-sdk');
+const crypto = require('crypto');
+const http = require('http');
+const { readJSONSync, writeJSONSync } = require('fs-extra');
 
-const execute = async (connection, queryString) => {
+const execute = async (connection, queryString, useAsync = false) => {
+	const connectMethod = useAsync ? 'connectAsync' : 'connect';
+	await connection[connectMethod](function (err) {
+		if (err) {
+			throw 'Unable to connect: ' + err.message;
+		}
+	});
 	return new Promise((resolve, reject) => {
-		connection.connect(function (err, conn) {
-			if (err) {
-				reject('Unable to connect: ' + err.message);
-			} else {
-				connection_ID = conn.getId();
-			}
-		});
 		connection.execute({
 			sqlText: queryString,
 			complete: function (err, stmt, rows) {
@@ -103,47 +105,236 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
-const getCredentials = (database) => {
-	if (database) {
+let snowflake_access_token;
+const redirect_uri = 'http://localhost:8085';
+const initiateOAuth = async (client_id, client_secret, account) => {
+	const open = (await import('open')).default;
+	const fetch = (await import('node-fetch')).default;
+
+	const token_endpoint = `https://${account}.snowflakecomputing.com/oauth/token-request`;
+	const authorization_endpoint = `https://${account}.snowflakecomputing.com/oauth/authorize?client_id=${encodeURIComponent(
+		client_id
+	)}&response_type=code&redirect_uri=${encodeURIComponent(redirect_uri)}`;
+
+	const result = await new Promise((resolve, reject) => {
+		const server = http
+			.createServer(async function (req, res) {
+				const params = new URL(req.url, redirect_uri).searchParams;
+
+				if (params.has('error')) {
+					reject(`Snowflake OAuth Error: ${params.get('error')}`);
+				} else {
+					const code = params.get('code');
+
+					const response = await fetch(token_endpoint, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+							Authorization: 'Basic ' + btoa(`${client_id}:${client_secret}`)
+						},
+						body: new URLSearchParams({
+							grant_type: 'authorization_code',
+							code,
+							redirect_uri
+						})
+					});
+
+					const json = await response.json();
+
+					resolve(json);
+				}
+
+				res.end();
+				server.close();
+			})
+			.listen(8085);
+
+		open(authorization_endpoint);
+	});
+
+	const database = readJSONSync('./evidence.settings.json') ?? {};
+	database.refresh_token = result.refresh_token;
+	writeJSONSync('./evidence.settings.json', database);
+
+	return result.access_token;
+};
+
+const refreshAccessToken = async (client_id, client_secret, account) => {
+	const fetch = (await import('node-fetch')).default;
+	const refresh_token = readJSONSync('./evidence.settings.json')?.refresh_token;
+	if (!refresh_token) {
+		snowflake_access_token = await initiateOAuth(client_id, client_secret, account);
+		return snowflake_access_token;
+	}
+
+	const response = await fetch(`https://${account}.snowflakecomputing.com/oauth/token-request`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+			Authorization: 'Basic ' + btoa(`${client_id}:${client_secret}`)
+		},
+		body: new URLSearchParams({
+			grant_type: 'refresh_token',
+			refresh_token,
+			redirect_uri
+		})
+	});
+
+	const json = await response.json();
+
+	return json.access_token;
+};
+
+const getCredentials = async (database = {}) => {
+	const authenticator =
+		database.authenticator ??
+		process.env['SNOWFLAKE_AUTHENTICATOR'] ??
+		process.env['authenticator'] ??
+		process.env['AUTHENTICATOR'];
+	const account =
+		database.account ??
+		process.env['SNOWFLAKE_ACCOUNT'] ??
+		process.env['account'] ??
+		process.env['ACCOUNT'];
+	const username =
+		database.username ??
+		process.env['SNOWFLAKE_USERNAME'] ??
+		process.env['username'] ??
+		process.env['USERNAME'];
+	const default_database =
+		database.database ??
+		process.env['SNOWFLAKE_DATABASE'] ??
+		process.env['database'] ??
+		process.env['DATABASE'];
+	const warehouse =
+		database.warehouse ??
+		process.env['SNOWFLAKE_WAREHOUSE'] ??
+		process.env['warehouse'] ??
+		process.env['WAREHOUSE'];
+
+	if (authenticator === 'snowflake_jwt') {
+		const private_key =
+			database.private_key ??
+			process.env['SNOWFLAKE_PRIVATE_KEY'] ??
+			process.env['private_key'] ??
+			process.env['PRIVATE_KEY'];
+		const passphrase =
+			database.passphrase ??
+			process.env['SNOWFLAKE_PASSPHRASE'] ??
+			process.env['passphrase'] ??
+			process.env['PASSPHRASE'];
+
+        const private_key_object = crypto.createPrivateKey({
+            key: private_key,
+            format: 'pem',
+            passphrase
+        });
+        const decrypted_private_key = private_key_object.export({
+            type: 'pkcs8',
+            format: 'pem'
+        });
+
 		return {
-			account: database.account,
-			username: database.username,
-			password: database.password,
-			database: database.database,
-			warehouse: database.warehouse,
-			authenticator: database.externalbrowser ? 'externalbrowser' : undefined
+			privateKey: decrypted_private_key,
+			username,
+			account,
+			database: default_database,
+			warehouse,
+			authenticator
 		};
-	} else {
+	} else if (authenticator === 'externalbrowser') {
 		return {
-			account: process.env['SNOWFLAKE_ACCOUNT'] || process.env['account'] || process.env['ACCOUNT'],
-			username:
-				process.env['SNOWFLAKE_USERNAME'] || process.env['username'] || process.env['USERNAME'],
+			username,
+			account,
+			database: default_database,
+			warehouse,
+			authenticator
+		};
+	} else if (authenticator === 'oauth') {
+		if (!snowflake_access_token) {
+			snowflake_access_token = await refreshAccessToken(
+				database.client_id ??
+					process.env['SNOWFLAKE_CLIENT_ID'] ??
+					process.env['client_id'] ??
+					process.env['CLIENT_ID'],
+				database.client_secret ??
+					process.env['SNOWFLAKE_CLIENT_SECRET'] ??
+					process.env['client_secret'] ??
+					process.env['CLIENT_SECRET'],
+				account
+			);
+			setInterval(
+				async () =>
+					(snowflake_access_token = await refreshAccessToken(
+						database.client_id ??
+							process.env['SNOWFLAKE_CLIENT_ID'] ??
+							process.env['client_id'] ??
+							process.env['CLIENT_ID'],
+						database.client_secret ??
+							process.env['SNOWFLAKE_CLIENT_SECRET'] ??
+							process.env['client_secret'] ??
+							process.env['CLIENT_SECRET'],
+						account
+					)),
+				600 * 1000
+			);
+		}
+
+		return {
+			username,
+			account,
+			database: default_database,
+			warehouse,
+			authenticator,
+			token: snowflake_access_token
+		};
+	} else if (authenticator === 'okta') {
+		return {
+			username,
 			password:
-				process.env['SNOWFLAKE_PASSWORD'] || process.env['password'] || process.env['PASSWORD'],
-			database:
-				process.env['SNOWFLAKE_DATABASE'] || process.env['database'] || process.env['DATABASE'],
-			warehouse:
-				process.env['SNOWFLAKE_WAREHOUSE'] || process.env['warehouse'] || process.env['WAREHOUSE'],
+				database.password ??
+				process.env['SNOWFLAKE_PASSWORD'] ??
+				process.env['password'] ??
+				process.env['PASSWORD'],
+			account,
+			database: default_database,
+			warehouse,
 			authenticator:
-				process.env['SNOWFLAKE_EXTERNALBROWSER'] ||
-				process.env['externalbrowser'] ||
-				process.env['EXTERNALBROWSER']
-					? 'externalbrowser'
-					: undefined
+				database.okta_url ??
+				process.env['SNOWFLAKE_OKTA_URL'] ??
+				process.env['okta_url'] ??
+				process.env['OKTA_URL']
+		};
+	} else if (authenticator === 'snowflake') {
+		return {
+			username,
+			password:
+				database.password ??
+				process.env['SNOWFLAKE_PASSWORD'] ??
+				process.env['password'] ??
+				process.env['PASSWORD'],
+			account,
+			database: default_database,
+			warehouse
 		};
 	}
+
+	throw new Error(`Invalid authenticator: ${authenticator}`);
 };
 
 const runQuery = async (queryString, database) => {
 	try {
-		const credentials = getCredentials(database);
-		if (credentials.authenticator === 'externalbrowser') {
-			delete credentials.password;
-		}
+		const credentials = await getCredentials(database);
 
 		const connection = createConnection.createConnection(credentials);
 
-		const result = await execute(connection, queryString);
+		const result = await execute(
+			connection,
+			queryString,
+			credentials.authenticator?.startsWith('https://') ||
+				credentials.authenticator === 'externalbrowser'
+		);
+
 		const standardizedResults = await standardizeResult(result.rows);
 		return { rows: standardizedResults, columnTypes: mapResultsToEvidenceColumnTypes(result) };
 	} catch (err) {
