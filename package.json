@@ -6,7 +6,7 @@
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/preprocess": "link:packages/preprocess",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
-		"@evidence-dev/ui": "link:packages/ui",
+		"@evidence-dev/core-components": "link:packages/ui",
 		"@sveltejs/adapter-static": "1.0.0",
 		"@sveltejs/kit": "1.13.0",
 		"@tidyjs/tidy": "2.4.4",

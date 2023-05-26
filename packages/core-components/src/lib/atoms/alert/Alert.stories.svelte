@@ -22,6 +22,9 @@
 		},
 		sticky: {
 			control: 'boolean'
+		},
+		evidenceInclude: {
+			control: 'hidden'
 		}
 	}}
 	args={{
@@ -39,3 +42,13 @@
 <Story name="Info" args={{ status: 'info' }} />
 
 <Story name="Danger" args={{ status: 'danger' }} />
+
+<Story name="All the Variants">
+	<Alert status="warning">This is an alert</Alert>
+	<Alert status="info">This is an alert</Alert>
+	<Alert status="success">This is an alert</Alert>
+	<Alert status="danger">This is an alert</Alert>
+	<Alert status="default">This is an alert</Alert>
+</Story>
+
+<Alert status="warning" sticky>Hi</Alert>

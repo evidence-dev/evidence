@@ -1,5 +1,5 @@
 {
-	"name": "@evidence-dev/ui",
+	"name": "@evidence-dev/core-components",
 	"scripts": {
 		"build": "vite build && npm run package",
 		"build-storybook": "storybook build",
@@ -78,5 +78,5 @@
 		"svelte": "^3.54.0"
 	},
 	"readme": "ERROR: No README data found!",
-	"_id": "@evidence-dev/ui@0.0.1"
+	"_id": "@evidence-dev/core-components@0.0.1"
 }

@@ -1,5 +1,5 @@
 export const defaultConfig = {
-	'@evidence-dev/ui': {
+	'@evidence-dev/core-components': {
 		overrides: [],
 		aliases: {},
 		provides: []
@@ -15,17 +15,17 @@ export const validMinimalConfigParsed = {
 
 export const handleAt = `
 components:
-    "@evidence-dev/ui": {}
-    @evidence-dev/ui-d3: {}
+    "@evidence-dev/core-components": {}
+    @evidence-dev/core-components-d3: {}
 `;
 export const handleAtParsed = {
 	components: {
-		'@evidence-dev/ui': {
+		'@evidence-dev/core-components': {
 			overrides: [],
 			aliases: {},
 			provides: []
 		},
-		'@evidence-dev/ui-d3': {
+		'@evidence-dev/core-components-d3': {
 			overrides: [],
 			aliases: {},
 			provides: []
@@ -36,9 +36,9 @@ export const handleAtParsed = {
 export const validConfig = `
 components:
     # No Configuration
-    "@evidence-dev/ui": {}
+    "@evidence-dev/core-components": {}
     # Configurations
-    @evidence-dev/ui-d3:
+    @evidence-dev/core-components-d3:
         # Override other LineCharts with own LineChart
         overrides:
             - LineChart
@@ -49,12 +49,12 @@ components:
 `;
 export const validConfigParsed = {
 	components: {
-		'@evidence-dev/ui': {
+		'@evidence-dev/core-components': {
 			overrides: [],
 			aliases: {},
 			provides: []
 		},
-		'@evidence-dev/ui-d3': {
+		'@evidence-dev/core-components-d3': {
 			overrides: ['LineChart', 'AliasedText'],
 			aliases: {
 				BarChart: 'D3BarChart',

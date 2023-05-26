@@ -16,6 +16,6 @@
 		"@evidence-dev/component-utilities": "workspace:^1.0.0",
 		"@evidence-dev/evidence": "workspace:^",
 		"@evidence-dev/plugin-connector": "workspace:^1.0.0",
-		"@evidence-dev/ui": "workspace:^0.0.1"
+		"@evidence-dev/core-components": "workspace:^0.0.1"
 	}
 }

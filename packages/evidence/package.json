@@ -31,7 +31,7 @@
 	"devDependencies": {
 		"@evidence-dev/components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
-		"@evidence-dev/ui": "workspace:^",
+		"@evidence-dev/core-components": "workspace:^",
 		"@sveltejs/kit": "1.13.0",
 		"svelte": "3.55.0",
 		"vite": "^4.0.4"
@@ -48,7 +48,7 @@
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
-		"@evidence-dev/ui": "workspace:^",
+		"@evidence-dev/core-components": "workspace:^",
 		"@sveltejs/kit": "1.13.0",
 		"autoprefixer": "^10.4.7",
 		"debounce": "^1.2.1",

@@ -42,7 +42,7 @@ export const loadConfig = async (rootDir) => {
 			console.warn('Could not find evidence plugins file. Using defaults.');
 			return EvidenceConfigSchema.parse({
 				components: {
-					'@evidence-dev/ui': {}
+					'@evidence-dev/core-components': {}
 				}
 			});
 		}
