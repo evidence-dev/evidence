@@ -14,7 +14,8 @@ const config = {
 	], // Modify preprocess to allow for loading of $lib instead of package version of components library
 	kit: {
 		adapter: adapter({
-			strict: false
+			strict: false,
+			precompress: true
 		}),
 		files: {
 			routes: 'src/pages',
