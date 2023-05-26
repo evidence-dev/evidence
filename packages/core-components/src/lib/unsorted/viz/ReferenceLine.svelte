@@ -5,10 +5,10 @@
 <script>
 	import { getContext } from 'svelte';
 	import { propKey, configKey } from './context';
-	import { formatValue } from '$lib/modules/formatting.js';
-	import checkInputs from '$lib/modules/checkInputs';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting.js';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
-	import { colours } from '$lib/modules/colours';
+	import { colours } from '@evidence-dev/component-utilities/colours';
 
 	let props = getContext(propKey);
 	let config = getContext(configKey);
