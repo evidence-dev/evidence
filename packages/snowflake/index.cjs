@@ -1,7 +1,5 @@
 const createConnection = require('snowflake-sdk');
 const crypto = require('crypto');
-const http = require('http');
-const { readJSONSync, writeJSONSync } = require('fs-extra');
 
 const execute = async (connection, queryString, useAsync = false) => {
 	const connectMethod = useAsync ? 'connectAsync' : 'connect';
@@ -105,86 +103,6 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
-let snowflake_access_token;
-const redirect_uri = 'http://localhost:8085';
-const initiateOAuth = async (client_id, client_secret, account) => {
-	const open = (await import('open')).default;
-	const fetch = (await import('node-fetch')).default;
-
-	const token_endpoint = `https://${account}.snowflakecomputing.com/oauth/token-request`;
-	const authorization_endpoint = `https://${account}.snowflakecomputing.com/oauth/authorize?client_id=${encodeURIComponent(
-		client_id
-	)}&response_type=code&redirect_uri=${encodeURIComponent(redirect_uri)}`;
-
-	const result = await new Promise((resolve, reject) => {
-		const server = http
-			.createServer(async function (req, res) {
-				const params = new URL(req.url, redirect_uri).searchParams;
-
-				if (params.has('error')) {
-					reject(`Snowflake OAuth Error: ${params.get('error')}`);
-				} else {
-					const code = params.get('code');
-
-					const response = await fetch(token_endpoint, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-							Authorization: 'Basic ' + btoa(`${client_id}:${client_secret}`)
-						},
-						body: new URLSearchParams({
-							grant_type: 'authorization_code',
-							code,
-							redirect_uri
-						})
-					});
-
-					const json = await response.json();
-
-					resolve(json);
-				}
-
-				res.end();
-				server.close();
-			})
-			.listen(8085);
-
-		open(authorization_endpoint);
-	});
-
-	const database = readJSONSync('./evidence.settings.json') ?? {};
-	database.refresh_token = result.refresh_token;
-	writeJSONSync('./evidence.settings.json', database);
-
-	return result.access_token;
-};
-
-const refreshAccessToken = async (client_id, client_secret, account) => {
-	const fetch = (await import('node-fetch')).default;
-	const refresh_token = readJSONSync('./evidence.settings.json')?.refresh_token;
-	if (!refresh_token) {
-		snowflake_access_token = await initiateOAuth(client_id, client_secret, account);
-		return snowflake_access_token;
-	}
-
-	const response = await fetch(`https://${account}.snowflakecomputing.com/oauth/token-request`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-			Authorization: 'Basic ' + btoa(`${client_id}:${client_secret}`)
-		},
-		body: new URLSearchParams({
-			grant_type: 'refresh_token',
-			refresh_token,
-			redirect_uri
-		})
-	});
-
-	const json = await response.json();
-
-	return json.access_token;
-};
-
 const getCredentials = async (database = {}) => {
 	const authenticator =
 		database.authenticator ??
@@ -249,44 +167,6 @@ const getCredentials = async (database = {}) => {
 			database: default_database,
 			warehouse,
 			authenticator
-		};
-	} else if (authenticator === 'oauth') {
-		if (!snowflake_access_token) {
-			snowflake_access_token = await refreshAccessToken(
-				database.client_id ??
-					process.env['SNOWFLAKE_CLIENT_ID'] ??
-					process.env['client_id'] ??
-					process.env['CLIENT_ID'],
-				database.client_secret ??
-					process.env['SNOWFLAKE_CLIENT_SECRET'] ??
-					process.env['client_secret'] ??
-					process.env['CLIENT_SECRET'],
-				account
-			);
-			setInterval(
-				async () =>
-					(snowflake_access_token = await refreshAccessToken(
-						database.client_id ??
-							process.env['SNOWFLAKE_CLIENT_ID'] ??
-							process.env['client_id'] ??
-							process.env['CLIENT_ID'],
-						database.client_secret ??
-							process.env['SNOWFLAKE_CLIENT_SECRET'] ??
-							process.env['client_secret'] ??
-							process.env['CLIENT_SECRET'],
-						account
-					)),
-				600 * 1000
-			);
-		}
-
-		return {
-			username,
-			account,
-			database: default_database,
-			warehouse,
-			authenticator,
-			token: snowflake_access_token
 		};
 	} else if (authenticator === 'okta') {
 		return {

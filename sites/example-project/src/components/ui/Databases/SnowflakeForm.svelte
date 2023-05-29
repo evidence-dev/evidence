@@ -170,69 +170,6 @@
 				dataTestId: 'snowflakeWarehouse'
 			}
 		],
-		oauth: [
-			{
-				id: 'account',
-				label: 'Account',
-				type: 'text',
-				optional: false,
-				override: false,
-				placeholder: 'xy12345.us-east4.gcp | xy12345.eu-west-1 | xy12345',
-				value: credentials.account,
-				dataTestId: 'snowflakeAccount',
-				additionalInstructions:
-					'The account number typically uses one of these formats: xy12345.us-east4.gcp, xy12345.eu-west-1 or xy12345. For more info see https://docs.snowflake.com/en/user-guide/admin-account-identifier'
-			},
-			{
-				id: 'username',
-				label: 'Username',
-				type: 'text',
-				optional: false,
-				override: false,
-				placeholder: 'weyland-yutani',
-				value: credentials.username,
-				dataTestId: 'snowflakeUsername'
-			},
-			{
-				id: 'client_id',
-				label: 'Client ID',
-				type: 'text',
-				optional: false,
-				override: false,
-				placeholder: 'hwn7XwBDE4P1eAVWRuNz36D7B+X=',
-				value: credentials.username,
-				dataTestId: 'snowflakeUsername'
-			},
-			{
-				id: 'client_secret',
-				label: 'Client Secret',
-				type: 'password',
-				optional: false,
-				override: false,
-				value: credentials.client_secret,
-				dataTestId: 'clientSecret'
-			},
-			{
-				id: 'database',
-				label: 'Database',
-				type: 'text',
-				optional: false,
-				override: false,
-				placeholder: 'my-database',
-				value: credentials.database,
-				dataTestId: 'snowflakeDatabase'
-			},
-			{
-				id: 'warehouse',
-				label: 'Warehouse',
-				type: 'text',
-				optional: false,
-				override: false,
-				placeholder: 'my_wh',
-				value: credentials.warehouse,
-				dataTestId: 'snowflakeWarehouse'
-			}
-		],
 		snowflake_jwt: [
 			{
 				id: 'account',
@@ -292,10 +229,6 @@
 		{
 			value: 'snowflake',
 			description: 'Password Authentication'
-		},
-		{
-			value: 'oauth',
-			description: 'OAuth'
 		},
 		{
 			value: 'externalbrowser',
@@ -400,25 +333,5 @@
 		font-weight: normal;
 		font-size: 14px;
 		color: var(--grey-800);
-	}
-
-	.separator {
-		display: flex;
-		align-items: center;
-		text-align: center;
-		margin-block-start: 2.5em;
-		color: var(--grey-600);
-		font-weight: bold;
-	}
-
-	.separator::after {
-		content: '';
-		flex: 1;
-		border-bottom: 1px solid var(--grey-200);
-	}
-
-	.separator:not(:empty)::after {
-		margin-left: 1.5em;
-		margin-top: 0.1em;
 	}
 </style>
