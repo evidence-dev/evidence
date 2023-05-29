@@ -151,10 +151,10 @@ importers:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
       dotenv: ^16.0.1
-      duckdb-async: 0.7.1
+      duckdb-async: 0.8.0
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
-      duckdb-async: 0.7.1
+      duckdb-async: 0.8.0
     devDependencies:
       dotenv: 16.0.3
 
@@ -6425,7 +6425,7 @@ packages:
   /axios/0.27.2_debug@3.2.7:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@3.2.7
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -8130,18 +8130,18 @@ packages:
   /downloadjs/1.4.7:
     resolution: {integrity: sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q==}
 
-  /duckdb-async/0.7.1:
-    resolution: {integrity: sha512-PhCnR0ia3vfjiqdvjya5sLhRV9oOihWXQ0I5hmmgIBtzriMmWHTlFITAcPDv96zB71hPXRGnoaV3d70N2dk5LQ==}
+  /duckdb-async/0.8.0:
+    resolution: {integrity: sha512-8KfNFblbtz4SCYlMzzQD3+pxfgIHe2YIydBe1o4I0QQqrwK2kG0Td34zICV5Un0IgDnNOR8v53ze9ogSzQ5lPA==}
     dependencies:
-      duckdb: 0.7.1
+      duckdb: 0.8.0
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb/0.7.1:
-    resolution: {integrity: sha512-RwFqUO83beq68DcK4XnVLNQXa/AGIXtvg5oI1onclfslo5JYnX+5zI5d0iP/WmpjxiUOGl0Z1bcO0pNvhA/CdA==}
+  /duckdb/0.8.0:
+    resolution: {integrity: sha512-hD05w83kdDkmRZoKwFK4PiA2fByczPp49rY6cREh23NoVHXJ3I4VpROsW8vNC9Gx7KP7lZpWvT7rQ/MHvrWI5g==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.10
@@ -8950,6 +8950,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
+
+  /follow-redirects/1.15.2_debug@3.2.7:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 3.2.7
     dev: false
 
   /for-each/0.3.3:
