@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 17.0.3
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@2.1.3
+
 ## 17.0.2
 
 ### Patch Changes
