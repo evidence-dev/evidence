@@ -65,11 +65,8 @@ const getCredentials = (database = {}) => {
 			process.env['BIGQUERY_TOKEN'] ??
 			process.env['token'] ??
 			process.env['TOKEN'];
-		let oauth;
-		if (access_token) {
-			oauth = new OAuth2Client();
-			oauth.setCredentials({ access_token });
-		}
+		const oauth = new OAuth2Client();
+		oauth.setCredentials({ access_token });
 
 		return {
 			authClient: oauth,
@@ -79,7 +76,7 @@ const getCredentials = (database = {}) => {
 				process.env['project_id'] ??
 				process.env['PROJECT_ID']
 		};
-	} else if (authentication_method === 'gcloud-cli') {
+	} else {
 		return {
 			projectId:
 				database.project_id ??
@@ -88,8 +85,6 @@ const getCredentials = (database = {}) => {
 				process.env['PROJECT_ID']
 		};
 	}
-
-	throw new Error(`Invalid authentication method: ${authentication_method}`);
 };
 
 const runQuery = async (queryString, database) => {

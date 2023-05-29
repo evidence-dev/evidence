@@ -305,7 +305,7 @@ const getCredentials = async (database = {}) => {
 				process.env['okta_url'] ??
 				process.env['OKTA_URL']
 		};
-	} else if (authenticator === 'snowflake') {
+	} else {
 		return {
 			username,
 			password:
@@ -318,8 +318,6 @@ const getCredentials = async (database = {}) => {
 			warehouse
 		};
 	}
-
-	throw new Error(`Invalid authenticator: ${authenticator}`);
 };
 
 const runQuery = async (queryString, database) => {

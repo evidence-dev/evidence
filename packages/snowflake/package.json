@@ -11,6 +11,7 @@
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:^",
 		"asn1.js": "^5.0.0",
+		"fs-extra": "^11.1.1",
 		"node-fetch": "^3.3.1",
 		"open": "^9.1.0",
 		"snowflake-sdk": "1.6.13"
