@@ -280,10 +280,10 @@
 	<div class="input-item">
 		<label for="private-key"> Private Key </label>
 		<input
-			type="text"
+			type="password"
 			id="private-key"
 			name="private-key"
-			value={credentials?.private_key ?? ' '}
+			value={credentials?.private_key ?? ''}
 			disabled
 		/>
 	</div>
