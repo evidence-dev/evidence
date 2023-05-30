@@ -1,5 +1,55 @@
+const { getEnv } = require('@evidence-dev/db-commons');
 const createConnection = require('snowflake-sdk');
 const crypto = require('crypto');
+
+const envMap = {
+    authenticator: [
+        { key: 'EVIDENCE_SNOWFLAKE_AUTHENTICATOR', deprecated: false },
+        { key: 'SNOWFLAKE_AUTHENTICATOR', deprecated: false },
+    ],
+	account: [
+		{ key: 'EVIDENCE_SNOWFLAKE_ACCOUNT', deprecated: false },
+		{ key: 'SNOWFLAKE_ACCOUNT', deprecated: false },
+		{ key: 'ACCOUNT', deprecated: true },
+		{ key: 'account', deprecated: true }
+	],
+	username: [
+		{ key: 'EVIDENCE_SNOWFLAKE_USERNAME', deprecated: false },
+		{ key: 'SNOWFLAKE_USERNAME', deprecated: false },
+		{ key: 'USERNAME', deprecated: true },
+		{ key: 'username', deprecated: true }
+	],
+	password: [
+		{ key: 'EVIDENCE_SNOWFLAKE_PASSWORD', deprecated: false },
+		{ key: 'SNOWFLAKE_PASSWORD', deprecated: false },
+		{ key: 'PASSWORD', deprecated: true },
+		{ key: 'password', deprecated: true }
+	],
+	database: [
+		{ key: 'EVIDENCE_SNOWFLAKE_DATABASE', deprecated: false },
+		{ key: 'SNOWFLAKE_DATABASE', deprecated: false },
+		{ key: 'DATABASE', deprecated: true },
+		{ key: 'database', deprecated: true }
+	],
+	warehouse: [
+		{ key: 'EVIDENCE_SNOWFLAKE_WAREHOUSE', deprecated: false },
+		{ key: 'SNOWFLAKE_WAREHOUSE', deprecated: false },
+		{ key: 'WAREHOUSE', deprecated: true },
+		{ key: 'warehouse', deprecated: true }
+	],
+    privateKey: [
+        { key: 'EVIDENCE_SNOWFLAKE_PRIVATE_KEY', deprecated: false },
+        { key: 'SNOWFLAKE_PRIVATE_KEY', deprecated: false },
+    ],
+    passphrase: [
+        { key: 'EVIDENCE_SNOWFLAKE_PASSPHRASE', deprecated: false },
+        { key: 'SNOWFLAKE_PASSPHRASE', deprecated: false },
+    ],
+    okta_url: [
+        { key: 'EVIDENCE_SNOWFLAKE_OKTA_URL', deprecated: false },
+        { key: 'SNOWFLAKE_OKTA_URL', deprecated: false },
+    ]
+};
 
 const execute = async (connection, queryString, useAsync = false) => {
 	const connectMethod = useAsync ? 'connectAsync' : 'connect';
@@ -104,43 +154,15 @@ const standardizeResult = async (result) => {
 };
 
 const getCredentials = async (database = {}) => {
-	const authenticator =
-		database.authenticator ??
-		process.env['SNOWFLAKE_AUTHENTICATOR'] ??
-		process.env['authenticator'] ??
-		process.env['AUTHENTICATOR'];
-	const account =
-		database.account ??
-		process.env['SNOWFLAKE_ACCOUNT'] ??
-		process.env['account'] ??
-		process.env['ACCOUNT'];
-	const username =
-		database.username ??
-		process.env['SNOWFLAKE_USERNAME'] ??
-		process.env['username'] ??
-		process.env['USERNAME'];
-	const default_database =
-		database.database ??
-		process.env['SNOWFLAKE_DATABASE'] ??
-		process.env['database'] ??
-		process.env['DATABASE'];
-	const warehouse =
-		database.warehouse ??
-		process.env['SNOWFLAKE_WAREHOUSE'] ??
-		process.env['warehouse'] ??
-		process.env['WAREHOUSE'];
+	const authenticator = database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'snowflake';
+	const account = database.account ?? getEnv(envMap, 'account');
+	const username = database.username ?? getEnv(envMap, 'username');
+	const default_database = database.database ?? getEnv(envMap, 'database');
+	const warehouse = database.warehouse ?? getEnv(envMap, 'warehouse');
 
 	if (authenticator === 'snowflake_jwt') {
-		const private_key =
-			database.private_key ??
-			process.env['SNOWFLAKE_PRIVATE_KEY'] ??
-			process.env['private_key'] ??
-			process.env['PRIVATE_KEY'];
-		const passphrase =
-			database.passphrase ??
-			process.env['SNOWFLAKE_PASSPHRASE'] ??
-			process.env['passphrase'] ??
-			process.env['PASSPHRASE'];
+		const private_key = database.private_key ?? getEnv(envMap, 'privateKey');
+		const passphrase = database.passphrase ?? getEnv(envMap, 'passphrase');
 
 		const private_key_object = crypto.createPrivateKey({
 			key: private_key,
@@ -171,28 +193,16 @@ const getCredentials = async (database = {}) => {
 	} else if (authenticator === 'okta') {
 		return {
 			username,
-			password:
-				database.password ??
-				process.env['SNOWFLAKE_PASSWORD'] ??
-				process.env['password'] ??
-				process.env['PASSWORD'],
+			password: database.password ?? getEnv(envMap, 'password'),
 			account,
 			database: default_database,
 			warehouse,
-			authenticator:
-				database.okta_url ??
-				process.env['SNOWFLAKE_OKTA_URL'] ??
-				process.env['okta_url'] ??
-				process.env['OKTA_URL']
+			authenticator: database.okta_url ?? getEnv(envMap, 'okta_url')
 		};
 	} else {
 		return {
 			username,
-			password:
-				database.password ??
-				process.env['SNOWFLAKE_PASSWORD'] ??
-				process.env['password'] ??
-				process.env['PASSWORD'],
+			password: database.password ?? getEnv(envMap, 'password'),
 			account,
 			database: default_database,
 			warehouse

@@ -22,7 +22,7 @@ from table`;
 				in Evidence.
 			</p>
 			<p>Apply format tags by including them at the end of column names. For example:</p>
-			<div class="code-container">
+			<div class="code-container p-2">
 				<Prism language="sql" code={exampleQuery} />
 			</div>
 			<p />
