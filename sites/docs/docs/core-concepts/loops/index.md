@@ -22,7 +22,7 @@ If you have more content than you would like to loop over on a single page, cons
 
 ## Example
 
-Imagine you were creating a report on the performance of your organization's locations. You could use a loop to generate a section of your report for each location. When a new location appears in your query results, a new section will appear in your report.
+Imagine you were creating a report on the performance of your organization's cities. You could use a loop to generate a section of your report for each city. When a new city appears in your query results, a new section will appear in your report.
 
 The following table is being returned by the query `location_summary`
 
@@ -32,16 +32,16 @@ The following table is being returned by the query `location_summary`
 | 2   | Los Angeles | 5000      | 0.45             |
 | 3   | Toronto     | 4000      | 0.70             |
 
-By using an `{#each}` block, we can iterate over each of the rows in `location_summary`, and reference the current row with the alias `location`. Here we'll create a header, and a paragraph for each of the three locations.
+By using an `{#each}` block, we can iterate over each of the rows in `location_summary`, and reference the current row with the alias `city`. Here we'll create a header, and a paragraph for each of the three locations.
 
 ```markdown
 Daily sales:
 
-{#each location_summary as location}
+{#each location_summary as city}
 
-## {location.name}
+## {city.name}
 
-<Value data={location.sales_usd}/> in sales at a <Value data={location.gross_margin_pct}/> gross margin.
+<Value data={city} column=sales_usd/> in sales at a <Value data={city} column=gross_margin_pct/> gross margin.
 
 {/each}
 ```

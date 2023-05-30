@@ -1,5 +1,25 @@
 # @evidence-dev/db-orchestrator
 
+## 2.1.3
+
+### Patch Changes
+
+- Updated dependencies [57217c6e]
+  - @evidence-dev/duckdb@0.0.6
+  - @evidence-dev/csv@0.1.3
+
+## 2.1.2
+
+### Patch Changes
+
+- 1c330b52: stop default connection to duckdb
+
+## 2.1.1
+
+### Patch Changes
+
+- f34ac566: added default connection to duckdb
+
 ## 2.1.0
 
 ### Minor Changes
