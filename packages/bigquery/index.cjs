@@ -3,20 +3,20 @@ const { OAuth2Client } = require('google-auth-library');
 const { EvidenceType, TypeFidelity, getEnv } = require('@evidence-dev/db-commons');
 
 const envMap = {
-    authenticator: [
-        { key: 'EVIDENCE_BIGQUERY_AUTHENTICATOR', deprecated: false },
-        { key: 'BIGQUERY_AUTHENTICATOR', deprecated: false },
-    ],
+	authenticator: [
+		{ key: 'EVIDENCE_BIGQUERY_AUTHENTICATOR', deprecated: false },
+		{ key: 'BIGQUERY_AUTHENTICATOR', deprecated: false }
+	],
 	projectId: [
 		{ key: 'EVIDENCE_BIGQUERY_PROJECT_ID', deprecated: false },
 		{ key: 'BIGQUERY_PROJECT_ID', deprecated: false },
 		{ key: 'project_id', deprecated: true },
 		{ key: 'PROJECT_ID', deprecated: true }
 	],
-    token: [
-        { key: 'EVIDENCE_BIGQUERY_TOKEN', deprecated: false },
-        { key: 'BIGQUERY_TOKEN', deprecated: false }
-    ],
+	token: [
+		{ key: 'EVIDENCE_BIGQUERY_TOKEN', deprecated: false },
+		{ key: 'BIGQUERY_TOKEN', deprecated: false }
+	],
 	credentials: {
 		clientEmail: [
 			{ key: 'EVIDENCE_BIGQUERY_CLIENT_EMAIL', deprecated: false },
@@ -67,14 +67,10 @@ const getCredentials = (database = {}) => {
 
 	if (authentication_method === 'service-account') {
 		return {
-			projectId:
-				database.project_id ?? getEnv(envMap, 'projectId'),
+			projectId: database.project_id ?? getEnv(envMap, 'projectId'),
 			credentials: {
-				client_email:
-					database.client_email ?? getEnv(envMap, 'credentials', 'clientEmail'),
-				private_key: (
-					database.private_key ?? getEnv(envMap, 'credentials', 'privateKey')
-				)?.trim()
+				client_email: database.client_email ?? getEnv(envMap, 'credentials', 'clientEmail'),
+				private_key: (database.private_key ?? getEnv(envMap, 'credentials', 'privateKey'))?.trim()
 			}
 		};
 	} else if (authentication_method === 'oauth') {
@@ -88,8 +84,7 @@ const getCredentials = (database = {}) => {
 		};
 	} else {
 		return {
-			projectId:
-				database.project_id ?? getEnv(envMap, 'projectId'),
+			projectId: database.project_id ?? getEnv(envMap, 'projectId')
 		};
 	}
 };

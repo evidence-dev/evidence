@@ -3,10 +3,10 @@ const createConnection = require('snowflake-sdk');
 const crypto = require('crypto');
 
 const envMap = {
-    authenticator: [
-        { key: 'EVIDENCE_SNOWFLAKE_AUTHENTICATOR', deprecated: false },
-        { key: 'SNOWFLAKE_AUTHENTICATOR', deprecated: false },
-    ],
+	authenticator: [
+		{ key: 'EVIDENCE_SNOWFLAKE_AUTHENTICATOR', deprecated: false },
+		{ key: 'SNOWFLAKE_AUTHENTICATOR', deprecated: false }
+	],
 	account: [
 		{ key: 'EVIDENCE_SNOWFLAKE_ACCOUNT', deprecated: false },
 		{ key: 'SNOWFLAKE_ACCOUNT', deprecated: false },
@@ -37,18 +37,18 @@ const envMap = {
 		{ key: 'WAREHOUSE', deprecated: true },
 		{ key: 'warehouse', deprecated: true }
 	],
-    privateKey: [
-        { key: 'EVIDENCE_SNOWFLAKE_PRIVATE_KEY', deprecated: false },
-        { key: 'SNOWFLAKE_PRIVATE_KEY', deprecated: false },
-    ],
-    passphrase: [
-        { key: 'EVIDENCE_SNOWFLAKE_PASSPHRASE', deprecated: false },
-        { key: 'SNOWFLAKE_PASSPHRASE', deprecated: false },
-    ],
-    okta_url: [
-        { key: 'EVIDENCE_SNOWFLAKE_OKTA_URL', deprecated: false },
-        { key: 'SNOWFLAKE_OKTA_URL', deprecated: false },
-    ]
+	privateKey: [
+		{ key: 'EVIDENCE_SNOWFLAKE_PRIVATE_KEY', deprecated: false },
+		{ key: 'SNOWFLAKE_PRIVATE_KEY', deprecated: false }
+	],
+	passphrase: [
+		{ key: 'EVIDENCE_SNOWFLAKE_PASSPHRASE', deprecated: false },
+		{ key: 'SNOWFLAKE_PASSPHRASE', deprecated: false }
+	],
+	okta_url: [
+		{ key: 'EVIDENCE_SNOWFLAKE_OKTA_URL', deprecated: false },
+		{ key: 'SNOWFLAKE_OKTA_URL', deprecated: false }
+	]
 };
 
 const execute = async (connection, queryString, useAsync = false) => {
