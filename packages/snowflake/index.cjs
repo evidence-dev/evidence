@@ -52,29 +52,42 @@ const envMap = {
 };
 
 const execute = async (connection, queryString, useAsync = false) => {
-	const connectMethod = useAsync ? 'connectAsync' : 'connect';
-	await connection[connectMethod](function (err) {
-		if (err) {
-			throw 'Unable to connect: ' + err.message;
-		}
-	});
 	return new Promise((resolve, reject) => {
-		connection.execute({
-			sqlText: queryString,
-			complete: function (err, stmt, rows) {
+		function finishExecution() {
+			connection.execute({
+				sqlText: queryString,
+				complete: function (err, stmt, rows) {
+					if (err) {
+						reject(err);
+					} else {
+						let columns;
+						if (stmt) {
+							columns = stmt.getColumns()?.map((next) => {
+								return { name: next.getName(), type: next.getType() };
+							});
+						}
+						resolve({ rows, columns });
+					}
+				}
+			});
+		}
+
+		if (useAsync) {
+			connection
+				.connectAsync((err) => {
+					if (err) {
+						reject(err);
+					}
+				})
+				.then(finishExecution);
+		} else {
+			connection.connect((err) => {
 				if (err) {
 					reject(err);
-				} else {
-					let columns;
-					if (stmt) {
-						columns = stmt.getColumns()?.map((next) => {
-							return { name: next.getName(), type: next.getType() };
-						});
-					}
-					resolve({ rows, columns });
 				}
-			}
-		});
+			});
+			finishExecution();
+		}
 	});
 };
 
