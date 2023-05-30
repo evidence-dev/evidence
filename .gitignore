@@ -15,3 +15,6 @@ customization/
 **/playwright-report/**
 **/playwright/.cache/**
 .parcel-cache
+
+**/storybook-static/**
+*.log

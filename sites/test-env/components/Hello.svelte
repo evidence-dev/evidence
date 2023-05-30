@@ -1,6 +1,6 @@
 <script>
 	export let query;
-	import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
+	import { BarChart } from '@evidence-dev/core-components';
 </script>
 
 <p>
