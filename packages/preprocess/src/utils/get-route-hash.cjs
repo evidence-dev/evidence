@@ -12,9 +12,14 @@ module.exports = {
 		if (isIndex) return md5('/');
 
 		let route = filename
-			.split('/src/pages')[1]
+			.split('/src/pages')?.[1]
 			.replace('.md', '')
 			.replace(/\/\+page/g, '');
+		if (!route) {
+			throw new Error(
+				`Failed to generate route hash for ${filename} (${JSON.stringify({ isIndex })})`
+			);
+		}
 		return md5(route);
 	}
 };

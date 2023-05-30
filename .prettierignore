@@ -20,4 +20,7 @@ yarn.lock
 **/sites/docs/*
 **/dist/*   
 .changeset/*
+
+*.yaml
+/packages/ui/storybook-static/*
 **/sites/example-project/src/pages/**/+page.md

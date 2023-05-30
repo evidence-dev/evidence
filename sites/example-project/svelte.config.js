@@ -1,13 +1,14 @@
 import preprocess from 'svelte-preprocess';
 import evidencePreprocess from '@evidence-dev/preprocess';
 import adapter from '@sveltejs/adapter-static';
-
+import { evidencePlugins } from '@evidence-dev/plugin-connector';
 /** @type {import('@sveltejs/kit').Config} */
 
 const config = {
 	extensions: ['.svelte', '.md'],
 	preprocess: [
 		...evidencePreprocess(true),
+		evidencePlugins(),
 		preprocess({
 			postcss: true
 		})
@@ -17,13 +18,9 @@ const config = {
 			strict: false
 		}),
 		files: {
-			routes: 'src/pages',
-			lib: 'src/components'
+			routes: 'src/pages'
+			// lib: 'src/components'
 		}
-	},
-	package: {
-		dir: '../../packages/components',
-		emitTypes: true
 	}
 };
 

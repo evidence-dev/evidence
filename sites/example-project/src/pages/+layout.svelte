@@ -65,17 +65,13 @@
 	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
 
-	import TableOfContents from '$lib/TableOfContents.svelte';
-	import Header from '$lib/ui/Header.svelte';
-	import Sidebar from '$lib/ui/Sidebar.svelte';
-	import LoadingIndicator from '$lib/ui/LoadingIndicator.svelte';
-	import QueryStatus from '$lib/QueryStatus.svelte';
-
 	let open = false;
 	//TODO: Offer this as a build parameter
 	// in dev. mode prevent prefetch on "hover"
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 </script>
+
+<!-- eslint-disable no-undef -->
 
 {#if $navigating}
 	<LoadingIndicator />
