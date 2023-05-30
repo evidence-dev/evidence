@@ -1,9 +1,8 @@
 export const load = async ({ fetch, route, data: { customFormattingSettings, routeHash } }) => {
 	if (route.id && route.id !== '/settings') {
 		const res = await fetch(`/api/${routeHash}.json`);
-        // sveltekit inlines json but not arraybuffers, do not change
-		const buffer = await res.arrayBuffer();
-        const { data } = JSON.parse(new TextDecoder().decode(buffer));
+        // has to be cloned to bypass the proxy https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
+		const { data } = await res.clone().json();
 
 		return {
 			data,
