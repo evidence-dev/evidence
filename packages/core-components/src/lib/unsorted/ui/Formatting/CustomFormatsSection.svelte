@@ -145,7 +145,7 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		vertical-align: middle;
-		font-size: 16px;
+		font-size: 14px;
 	}
 	input:required {
 		box-shadow: none;
@@ -186,6 +186,7 @@
 		padding: 0.35em;
 		margin-left: auto;
 		width: 62%;
+		font-size: 14px;
 	}
 	select:hover {
 		border: 1px solid var(--grey-300);

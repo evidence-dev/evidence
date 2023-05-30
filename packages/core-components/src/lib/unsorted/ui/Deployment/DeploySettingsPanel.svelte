@@ -63,7 +63,7 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
-		padding: 0.75em;
+		padding: 0.35em;
 		width: 100%;
 		border: 1px solid var(--grey-200);
 		font-family: var(--ui-font-family);

@@ -1,5 +1,4 @@
 const {
-	readdirSync,
 	readJSONSync,
 	writeJSONSync,
 	pathExistsSync,
@@ -12,6 +11,7 @@ const logEvent = require('@evidence-dev/telemetry');
 const readline = require('readline');
 const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
 const cacheDirectory = './.evidence-queries/cache';
+const { getEnv } = require('@evidence-dev/db-commons');
 
 const getQueryCachePaths = (queryString, queryTime) => {
 	let queryTimeMD5 = md5(queryTime);
@@ -54,11 +54,16 @@ const validateQuery = function (query) {
 	}
 };
 
+const envMap = {
+	databaseType: [
+		{ key: 'DATABASE', deprecated: true },
+		{ key: 'EVIDENCE_DATABASE', deprecated: false }
+	]
+};
+
 const importDBAdapter = async function (settings) {
 	try {
-		databaseType = settings
-			? settings.database
-			: process.env['DATABASE'] || process.env['database'];
+		const databaseType = settings ? settings.database : getEnv(envMap, 'databaseType');
 		const { default: runQuery } = await import('@evidence-dev/' + databaseType);
 		return runQuery;
 	} catch {
@@ -78,12 +83,6 @@ const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
 };
 
 const runQueries = async function (routeHash, dev) {
-	if (!pathExistsSync('./evidence.settings.json')) {
-		writeJSONSync('./evidence.settings.json', {
-			database: 'duckdb',
-			credentials: { filename: 'needful_things.duckdb', gitignoreDuckdb: null }
-		});
-	}
 	const settings = readJSONSync('./evidence.settings.json', { throws: false });
 	const runQuery = await importDBAdapter(settings);
 	let routePath = `./.evidence-queries/extracted/${routeHash}`;

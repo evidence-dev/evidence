@@ -33,6 +33,7 @@
 		height: 22px;
 		position: relative;
 		margin: 25px 3px 10px 3px;
+		box-sizing: content-box;
 	}
 
 	.search-icon {
@@ -45,6 +46,7 @@
 		transform: translateY(-50%);
 		-ms-transform: translateY(-50%);
 		color: var(--grey-400);
+		box-sizing: content-box;
 	}
 
 	.search-bar {
@@ -61,6 +63,13 @@
 		font-size: 9pt;
 
 		width: calc(100% - 30px);
+
+		font-family: Arial;
+		line-height: normal;
+	}
+
+	input.search-bar::placeholder {
+		color: var(--grey-700);
 	}
 
 	*:focus {

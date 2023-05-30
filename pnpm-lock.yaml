@@ -207,9 +207,14 @@ importers:
 
   packages/db-commons:
     specifiers:
+      '@jest/globals': ^29.5.0
       fs-extra: 10.0.0
+      jest: ^28.1.3
     dependencies:
       fs-extra: 10.0.0
+    devDependencies:
+      '@jest/globals': 29.5.0
+      jest: 28.1.3
 
   packages/db-orchestrator:
     specifiers:
@@ -247,10 +252,10 @@ importers:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
       dotenv: ^16.0.1
-      duckdb-async: 0.7.1
+      duckdb-async: 0.8.0
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
-      duckdb-async: 0.7.1
+      duckdb-async: 0.8.0
     devDependencies:
       dotenv: 16.0.3
 
@@ -520,9 +525,9 @@ importers:
 
   sites/example-project:
     specifiers:
-      '@evidence-dev/component-utilities': workspace:^1.0.0
+      '@evidence-dev/component-utilities': workspace:^0.0.1
       '@evidence-dev/core-components': workspace:^0.0.1
-      '@evidence-dev/plugin-connector': workspace:^1.0.0
+      '@evidence-dev/plugin-connector': workspace:^0.0.1
       '@evidence-dev/telemetry': 1.0.5
       '@sveltejs/kit': 1.13.0
       '@sveltejs/package': 1.0.1
@@ -591,10 +596,10 @@ importers:
 
   sites/test-env:
     specifiers:
-      '@evidence-dev/component-utilities': workspace:^1.0.0
+      '@evidence-dev/component-utilities': workspace:^0.0.1
       '@evidence-dev/core-components': workspace:^0.0.1
       '@evidence-dev/evidence': workspace:^
-      '@evidence-dev/plugin-connector': workspace:^1.0.0
+      '@evidence-dev/plugin-connector': workspace:^0.0.1
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
@@ -1029,7 +1034,6 @@ packages:
       '@jridgewell/gen-mapping': 0.3.2
       '@jridgewell/trace-mapping': 0.3.17
       jsesc: 2.5.2
-    dev: false
 
   /@babel/generator/7.21.5:
     resolution: {integrity: sha512-SrKK/sRv8GesIW1bDagf9cCG38IOMYZusoe1dfg0D8aiUe3Amvoj1QtjTPAWcfrZFvIwlleLb0gxzQidL9w14w==}
@@ -2367,7 +2371,6 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@babel/traverse/7.21.5:
     resolution: {integrity: sha512-AhQoI3YjWi6u/y/ntv7k48mcrCXmus0t79J9qPNlk/lAsFlCiJ047RmbfMOawySTHtywXhbXgpx/8nXMYd+oFw==}
@@ -4272,6 +4275,16 @@ packages:
       jest-mock: 28.1.3
     dev: true
 
+  /@jest/environment/29.5.0:
+    resolution: {integrity: sha512-5FXw2+wD29YU1d4I2htpRX7jYnAyTRjP2CsXQdo9SAM8g3ifxWPSV0HnClSn71xwctr0U3oZIIH+dtbfmnbXVQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    dependencies:
+      '@jest/fake-timers': 29.5.0
+      '@jest/types': 29.5.0
+      '@types/node': 14.18.40
+      jest-mock: 29.5.0
+    dev: true
+
   /@jest/expect-utils/28.1.3:
     resolution: {integrity: sha512-wvbi9LUrHJLn3NlDW6wF2hvIMtd4JUl2QNVrjq+IBSHirgfrR3o9RnVtxzdEGO2n9JyIWwHnLfby5KzqBGg2YA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -4296,6 +4309,16 @@ packages:
       - supports-color
     dev: true
 
+  /@jest/expect/29.5.0:
+    resolution: {integrity: sha512-PueDR2HGihN3ciUNGr4uelropW7rqUfTiOn+8u0leg/42UhblPxHkfoh0Ruu3I9Y1962P3u2DY4+h7GVTSVU6g==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    dependencies:
+      expect: 29.5.0
+      jest-snapshot: 29.5.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@jest/fake-timers/28.1.3:
     resolution: {integrity: sha512-D/wOkL2POHv52h+ok5Oj/1gOG9HSywdoPtFsRCUmlCILXNn5eIWmcnd3DIiWlJnpGvQtmajqBP95Ei0EimxfLw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -4308,6 +4331,18 @@ packages:
       jest-util: 28.1.3
     dev: true
 
+  /@jest/fake-timers/29.5.0:
+    resolution: {integrity: sha512-9ARvuAAQcBwDAqOnglWq2zwNIRUDtk/SCkp/ToGEhFv5r86K21l+VEs0qNTaXtyiY0lEePl3kylijSYJQqdbDg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    dependencies:
+      '@jest/types': 29.5.0
+      '@sinonjs/fake-timers': 10.0.2
+      '@types/node': 14.18.40
+      jest-message-util: 29.5.0
+      jest-mock: 29.5.0
+      jest-util: 29.5.0
+    dev: true
+
   /@jest/globals/28.1.3:
     resolution: {integrity: sha512-XFU4P4phyryCXu1pbcqMO0GSQcYe1IsalYCDzRNyhetyeyxMcIxa11qPNDpVNLeretItNqEmYYQn1UYz/5x1NA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -4315,6 +4350,18 @@ packages:
       '@jest/environment': 28.1.3
       '@jest/expect': 28.1.3
       '@jest/types': 28.1.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@jest/globals/29.5.0:
+    resolution: {integrity: sha512-S02y0qMWGihdzNbUiqSAiKSpSozSuHX5UYc7QbnHP+D9Lyw8DgGGCinrN9uSuHPeKgSSzvPom2q1nAtBvUsvPQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    dependencies:
+      '@jest/environment': 29.5.0
+      '@jest/expect': 29.5.0
+      '@jest/types': 29.5.0
+      jest-mock: 29.5.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5575,6 +5622,18 @@ packages:
     resolution: {integrity: sha512-Ky+XkAkqPZSm3NLBeUng77EBQl3cmeJhITaGHdYH8kjVB+aun3S4XBRti2zt17mtt0mIUDiNxYeoJm6drVvBJQ==}
     dependencies:
       type-detect: 4.0.8
+    dev: true
+
+  /@sinonjs/commons/2.0.0:
+    resolution: {integrity: sha512-uLa0j859mMrg2slwQYdO/AkrOfmH+X6LTVmNTS9CqexuE2IvVORIkSpJLqePAbEnKJ77aMmCwr1NUZ57120Xcg==}
+    dependencies:
+      type-detect: 4.0.8
+    dev: true
+
+  /@sinonjs/fake-timers/10.0.2:
+    resolution: {integrity: sha512-SwUDyjWnah1AaNl7kxsa7cfLhlTYoiyhDAIgyh+El30YvXs/o7OLXpYH88Zdhyx9JExKrmHDJ+10bwIcY80Jmw==}
+    dependencies:
+      '@sinonjs/commons': 2.0.0
     dev: true
 
   /@sinonjs/fake-timers/9.1.2:
@@ -10318,18 +10377,18 @@ packages:
   /downloadjs/1.4.7:
     resolution: {integrity: sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q==}
 
-  /duckdb-async/0.7.1:
-    resolution: {integrity: sha512-PhCnR0ia3vfjiqdvjya5sLhRV9oOihWXQ0I5hmmgIBtzriMmWHTlFITAcPDv96zB71hPXRGnoaV3d70N2dk5LQ==}
+  /duckdb-async/0.8.0:
+    resolution: {integrity: sha512-8KfNFblbtz4SCYlMzzQD3+pxfgIHe2YIydBe1o4I0QQqrwK2kG0Td34zICV5Un0IgDnNOR8v53ze9ogSzQ5lPA==}
     dependencies:
-      duckdb: 0.7.1
+      duckdb: 0.8.0
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb/0.7.1:
-    resolution: {integrity: sha512-RwFqUO83beq68DcK4XnVLNQXa/AGIXtvg5oI1onclfslo5JYnX+5zI5d0iP/WmpjxiUOGl0Z1bcO0pNvhA/CdA==}
+  /duckdb/0.8.0:
+    resolution: {integrity: sha512-hD05w83kdDkmRZoKwFK4PiA2fByczPp49rY6cREh23NoVHXJ3I4VpROsW8vNC9Gx7KP7lZpWvT7rQ/MHvrWI5g==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.10
@@ -13372,6 +13431,15 @@ packages:
       '@types/node': 20.1.2
     dev: true
 
+  /jest-mock/29.5.0:
+    resolution: {integrity: sha512-GqOzvdWDE4fAV2bWQLQCkujxYWL7RxjCnj71b5VhDAGOevB3qj3Ovg26A5NI84ZpODxyzaozXLOh2NCgkbvyaw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    dependencies:
+      '@jest/types': 29.5.0
+      '@types/node': 14.18.40
+      jest-util: 29.5.0
+    dev: true
+
   /jest-pnp-resolver/1.2.3_jest-resolve@28.1.3:
     resolution: {integrity: sha512-+3NpwQEnRoIBtx4fyhblQDPgJI0H1IEIkX7ShLUjPGA7TtUTvI1oiKi3SR4oBR0hQhQR80l4WAe5RrXBwWMA8w==}
     engines: {node: '>=6'}
@@ -13504,6 +13572,37 @@ packages:
       jest-util: 28.1.3
       natural-compare: 1.4.0
       pretty-format: 28.1.3
+      semver: 7.3.8
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /jest-snapshot/29.5.0:
+    resolution: {integrity: sha512-x7Wolra5V0tt3wRs3/ts3S6ciSQVypgGQlJpz2rsdQYoUKxMxPNaoHMGJN6qAuPJqS+2iQ1ZUn5kl7HCyls84g==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    dependencies:
+      '@babel/core': 7.21.3
+      '@babel/generator': 7.21.3
+      '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.21.3
+      '@babel/plugin-syntax-typescript': 7.20.0_@babel+core@7.21.3
+      '@babel/traverse': 7.21.3
+      '@babel/types': 7.21.5
+      '@jest/expect-utils': 29.5.0
+      '@jest/transform': 29.5.0
+      '@jest/types': 29.5.0
+      '@types/babel__traverse': 7.18.3
+      '@types/prettier': 2.7.2
+      babel-preset-current-node-syntax: 1.0.1_@babel+core@7.21.3
+      chalk: 4.1.0
+      expect: 29.5.0
+      graceful-fs: 4.2.11
+      jest-diff: 29.5.0
+      jest-get-type: 29.4.3
+      jest-matcher-utils: 29.5.0
+      jest-message-util: 29.5.0
+      jest-util: 29.5.0
+      natural-compare: 1.4.0
+      pretty-format: 29.5.0
       semver: 7.3.8
     transitivePeerDependencies:
       - supports-color

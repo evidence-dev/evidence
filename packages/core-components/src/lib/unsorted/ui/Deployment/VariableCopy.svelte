@@ -62,7 +62,7 @@
 		background-color: var(--grey-100);
 		border-radius: 4px 4px 4px 4px;
 		border: 1px solid var(--grey-200);
-		padding: 0.25em 0.25em 0.25em 0.25em;
+		padding: 0.9em 0.35em;
 		color: var(--grey-800);
 		size: 0.75em;
 		cursor: pointer;

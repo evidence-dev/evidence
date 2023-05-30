@@ -8,5 +8,12 @@
 	"dependencies": {
 		"fs-extra": "10.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"devDependencies": {
+		"@jest/globals": "^29.5.0",
+		"jest": "^28.1.3"
+	},
+	"scripts": {
+		"test": "jest"
+	}
 }
