@@ -9,8 +9,8 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"mysql2": "^2.3.2",
-		"@evidence-dev/db-commons": "workspace:^"
+		"@evidence-dev/db-commons": "workspace:^",
+		"mysql2": "^2.3.2"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"
