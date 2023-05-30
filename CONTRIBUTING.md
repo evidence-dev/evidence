@@ -51,11 +51,13 @@ If your problem relates to sensitive or private information, please don't post a
 Follow these steps to test your changes
 
 1. In the project root folder, run `pnpm install` (you will need to install pnpm if you don't have it `npm i -g pnpm`)
-2. `pnpm run dev`
+2. In the `packages/core-components` folder, run `pnpm run package:watch`
+3. In another terminal, in the project root folder, run `pnpm run dev:example-site`
 
 You should be able to open the `Evidence Development Workspace` on `localhost:3000`. Any subsequent changes you make will be reflected on the website.
 
-Note that changes to the `components` package should be done within `./sites/example-project/src/components`. During the build, `./sites/example-project/src/components` will be copied over to `./packages/components`). All other packages can be updated directly in `./packages`.
+Note that changes to the `components` package should be done within `./packages/core-components`, they are provided automatically to the
+example project through the plugin system.
 
 ### Running the Test Suite locally.
 
