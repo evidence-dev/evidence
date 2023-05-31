@@ -1,7 +1,12 @@
 const { getEnv } = require('@evidence-dev/db-commons');
 const createConnection = require('snowflake-sdk');
+const crypto = require('crypto');
 
 const envMap = {
+	authenticator: [
+		{ key: 'EVIDENCE_SNOWFLAKE_AUTHENTICATOR', deprecated: false },
+		{ key: 'SNOWFLAKE_AUTHENTICATOR', deprecated: false }
+	],
 	account: [
 		{ key: 'EVIDENCE_SNOWFLAKE_ACCOUNT', deprecated: false },
 		{ key: 'SNOWFLAKE_ACCOUNT', deprecated: false },
@@ -31,34 +36,58 @@ const envMap = {
 		{ key: 'SNOWFLAKE_WAREHOUSE', deprecated: false },
 		{ key: 'WAREHOUSE', deprecated: true },
 		{ key: 'warehouse', deprecated: true }
+	],
+	privateKey: [
+		{ key: 'EVIDENCE_SNOWFLAKE_PRIVATE_KEY', deprecated: false },
+		{ key: 'SNOWFLAKE_PRIVATE_KEY', deprecated: false }
+	],
+	passphrase: [
+		{ key: 'EVIDENCE_SNOWFLAKE_PASSPHRASE', deprecated: false },
+		{ key: 'SNOWFLAKE_PASSPHRASE', deprecated: false }
+	],
+	okta_url: [
+		{ key: 'EVIDENCE_SNOWFLAKE_OKTA_URL', deprecated: false },
+		{ key: 'SNOWFLAKE_OKTA_URL', deprecated: false }
 	]
 };
 
-const execute = async (connection, queryString) => {
+const execute = async (connection, queryString, useAsync = false) => {
 	return new Promise((resolve, reject) => {
-		connection.connect(function (err, conn) {
-			if (err) {
-				reject('Unable to connect: ' + err.message);
-			} else {
-				connection_ID = conn.getId();
-			}
-		});
-		connection.execute({
-			sqlText: queryString,
-			complete: function (err, stmt, rows) {
+		function finishExecution() {
+			connection.execute({
+				sqlText: queryString,
+				complete: function (err, stmt, rows) {
+					if (err) {
+						reject(err);
+					} else {
+						let columns;
+						if (stmt) {
+							columns = stmt.getColumns()?.map((next) => {
+								return { name: next.getName(), type: next.getType() };
+							});
+						}
+						resolve({ rows, columns });
+					}
+				}
+			});
+		}
+
+		if (useAsync) {
+			connection
+				.connectAsync((err) => {
+					if (err) {
+						reject(err);
+					}
+				})
+				.then(finishExecution);
+		} else {
+			connection.connect((err) => {
 				if (err) {
 					reject(err);
-				} else {
-					let columns;
-					if (stmt) {
-						columns = stmt.getColumns()?.map((next) => {
-							return { name: next.getName(), type: next.getType() };
-						});
-					}
-					resolve({ rows, columns });
 				}
-			}
-		});
+			});
+			finishExecution();
+		}
 	});
 };
 
@@ -67,7 +96,7 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 		let standardizedDBType = dataBaseType.toUpperCase();
 		if (standardizedDBType.indexOf('(') >= 0) {
 			//handles NUMBER(precision, scale) etc
-			standardizedDBType = standardizedDBType.substring(0, dataType.indexOf('(')).trim();
+			standardizedDBType = standardizedDBType.substring(0, standardizedDBType.indexOf('(')).trim();
 		}
 		switch (standardizedDBType) {
 			case 'BOOLEAN':
@@ -137,17 +166,76 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
-const runQuery = async (queryString, database) => {
-	try {
-		var connection = createConnection.createConnection({
-			account: database ? database.account : getEnv(envMap, 'account'),
-			username: database ? database.username : getEnv(envMap, 'username'),
-			password: database ? database.password : getEnv(envMap, 'password'),
-			database: database ? database.database : getEnv(envMap, 'database'),
-			warehouse: database ? database.warehouse : getEnv(envMap, 'warehouse')
+const getCredentials = async (database = {}) => {
+	const authenticator = database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'snowflake';
+	const account = database.account ?? getEnv(envMap, 'account');
+	const username = database.username ?? getEnv(envMap, 'username');
+	const default_database = database.database ?? getEnv(envMap, 'database');
+	const warehouse = database.warehouse ?? getEnv(envMap, 'warehouse');
+
+	if (authenticator === 'snowflake_jwt') {
+		const private_key = database.private_key ?? getEnv(envMap, 'privateKey');
+		const passphrase = database.passphrase ?? getEnv(envMap, 'passphrase');
+
+		const private_key_object = crypto.createPrivateKey({
+			key: private_key,
+			format: 'pem',
+			passphrase
+		});
+		const decrypted_private_key = private_key_object.export({
+			type: 'pkcs8',
+			format: 'pem'
 		});
 
-		const result = await execute(connection, queryString);
+		return {
+			privateKey: decrypted_private_key,
+			username,
+			account,
+			database: default_database,
+			warehouse,
+			authenticator
+		};
+	} else if (authenticator === 'externalbrowser') {
+		return {
+			username,
+			account,
+			database: default_database,
+			warehouse,
+			authenticator
+		};
+	} else if (authenticator === 'okta') {
+		return {
+			username,
+			password: database.password ?? getEnv(envMap, 'password'),
+			account,
+			database: default_database,
+			warehouse,
+			authenticator: database.okta_url ?? getEnv(envMap, 'okta_url')
+		};
+	} else {
+		return {
+			username,
+			password: database.password ?? getEnv(envMap, 'password'),
+			account,
+			database: default_database,
+			warehouse
+		};
+	}
+};
+
+const runQuery = async (queryString, database) => {
+	try {
+		const credentials = await getCredentials(database);
+
+		const connection = createConnection.createConnection(credentials);
+
+		const result = await execute(
+			connection,
+			queryString,
+			credentials.authenticator?.startsWith('https://') ||
+				credentials.authenticator === 'externalbrowser'
+		);
+
 		const standardizedResults = await standardizeResult(result.rows);
 		return { rows: standardizedResults, columnTypes: mapResultsToEvidenceColumnTypes(result) };
 	} catch (err) {

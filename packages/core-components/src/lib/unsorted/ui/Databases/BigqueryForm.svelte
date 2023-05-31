@@ -3,58 +3,102 @@
 </script>
 
 <script>
+	import AuthSelect from './AuthSelect.svelte';
+
 	export let credentials;
 	export let existingCredentials;
 	export let disableSave;
 
 	credentials = { ...existingCredentials };
+	credentials.project_id = credentials.project_id ?? '';
+	credentials.authenticator = credentials.authenticator ?? 'gcloud-cli';
 
 	let files;
 
 	async function handleUpload() {
 		for (const file of files) {
 			const fileContents = await file.text();
-			credentials = JSON.parse(fileContents);
+			credentials = { ...credentials, ...JSON.parse(fileContents) };
 		}
 		disableSave = false;
 	}
+
+	$: disableSave = !credentials.project_id;
+
+	const options = [
+		{
+			value: 'gcloud-cli',
+			description: 'GCloud CLI'
+		},
+		{
+			value: 'service-account',
+			description: 'Service Account'
+		},
+		{
+			value: 'oauth',
+			description: 'OAuth Access Token'
+		}
+	];
 </script>
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
-<div class="input-item">
-	<label> JSON Keyfile </label>
-	{#if credentials.project_id && credentials.private_key && credentials.client_email}
-		<input
-			id="file-input"
-			type="file"
-			accept="application/json"
-			bind:files
-			on:change={handleUpload}
-		/>
-	{:else}
-		<input
-			id="file-input"
-			type="file"
-			accept="application/json"
-			bind:files
-			on:change={handleUpload}
-			required
-		/>
-	{/if}
-</div>
+<AuthSelect {options} bind:selected={credentials.authenticator} />
 
-<div class="input-item">
-	<label for="project"> Project ID </label>
-	<input type="text" id="project" name="project" value={credentials?.project_id ?? ' '} disabled />
-</div>
-<div class="input-item">
-	<label for="pk"> Private Key </label>
-	<input type="password" id="pk" value={credentials?.private_key ?? ''} disabled />
-</div>
-<div class="input-item">
-	<label for="client-email"> Client Email </label>
-	<input type="text" id="client-email" value={credentials?.client_email ?? ' '} disabled />
-</div>
+{#if credentials.authenticator === 'service-account'}
+	<div class="input-item">
+		<label for="file-input"> JSON Keyfile </label>
+		{#if credentials.project_id}
+			<input
+				id="file-input"
+				type="file"
+				accept="application/json"
+				bind:files
+				on:change={handleUpload}
+			/>
+		{:else}
+			<input
+				id="file-input"
+				type="file"
+				accept="application/json"
+				bind:files
+				on:change={handleUpload}
+				required
+			/>
+		{/if}
+	</div>
+	<div class="input-item">
+		<label for="project"> Project ID </label>
+		<input
+			type="text"
+			id="project"
+			name="project"
+			value={credentials?.project_id ?? ' '}
+			disabled
+		/>
+	</div>
+	<div class="input-item">
+		<label for="private-key"> Private Key </label>
+		<input type="password" id="private-key" value={credentials?.private_key ?? ''} disabled />
+	</div>
+	<div class="input-item">
+		<label for="client-email"> Client Email </label>
+		<input type="text" id="client-email" value={credentials?.client_email ?? ' '} disabled />
+	</div>
+{:else if credentials.authenticator === 'oauth'}
+	<div class="input-item">
+		<label for="project-id"> Project ID </label>
+		<input type="text" id="project-id" bind:value={credentials.project_id} />
+	</div>
+	<div class="input-item">
+		<label for="token"> Access Token </label>
+		<input type="text" id="token" bind:value={credentials.token} />
+	</div>
+{:else}
+	<!-- gcloud -->
+	<div class="input-item">
+		<label for="project-id"> Project ID </label>
+		<input type="text" id="project-id" bind:value={credentials.project_id} />
+	</div>
+{/if}
 
 <style>
 	div.input-item {

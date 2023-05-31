@@ -1,12 +1,21 @@
 const { BigQuery } = require('@google-cloud/bigquery');
+const { OAuth2Client } = require('google-auth-library');
 const { EvidenceType, TypeFidelity, getEnv } = require('@evidence-dev/db-commons');
 
 const envMap = {
+	authenticator: [
+		{ key: 'EVIDENCE_BIGQUERY_AUTHENTICATOR', deprecated: false },
+		{ key: 'BIGQUERY_AUTHENTICATOR', deprecated: false }
+	],
 	projectId: [
 		{ key: 'EVIDENCE_BIGQUERY_PROJECT_ID', deprecated: false },
 		{ key: 'BIGQUERY_PROJECT_ID', deprecated: false },
 		{ key: 'project_id', deprecated: true },
 		{ key: 'PROJECT_ID', deprecated: true }
+	],
+	token: [
+		{ key: 'EVIDENCE_BIGQUERY_TOKEN', deprecated: false },
+		{ key: 'BIGQUERY_TOKEN', deprecated: false }
 	],
 	credentials: {
 		clientEmail: [
@@ -53,35 +62,37 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
-const getCredentials = async (database) => {
-	try {
-		if (database) {
-			const creds = {
-				projectId: database.project_id,
-				credentials: {
-					client_email: database.client_email,
-					private_key: database.private_key
-				}
-			};
-			return creds;
-		} else {
-			const creds = {
-				projectId: getEnv(envMap, 'projectId'),
-				credentials: {
-					client_email: getEnv(envMap, 'credentials', 'clientEmail'),
-					private_key: getEnv(envMap, 'credentials', 'privateKey')?.trim()
-				}
-			};
-			return creds;
-		}
-	} catch {
-		throw new Error('Missing database credentials');
+const getCredentials = (database = {}) => {
+	const authentication_method = database.authenticator ?? getEnv(envMap, 'authenticator');
+
+	if (authentication_method === 'service-account') {
+		return {
+			projectId: database.project_id ?? getEnv(envMap, 'projectId'),
+			credentials: {
+				client_email: database.client_email ?? getEnv(envMap, 'credentials', 'clientEmail'),
+				private_key: (database.private_key ?? getEnv(envMap, 'credentials', 'privateKey'))?.trim()
+			}
+		};
+	} else if (authentication_method === 'oauth') {
+		const access_token = database.token ?? getEnv(envMap, 'token');
+		const oauth = new OAuth2Client();
+		oauth.setCredentials({ access_token });
+
+		return {
+			authClient: oauth,
+			projectId: database.project_id ?? getEnv(envMap, 'projectId')
+		};
+	} else {
+		return {
+			projectId: database.project_id ?? getEnv(envMap, 'projectId')
+		};
 	}
 };
 
 const runQuery = async (queryString, database) => {
 	try {
-		const credentials = await getCredentials(database);
+		const credentials = getCredentials(database);
+
 		const connection = new BigQuery({ ...credentials, maxRetries: 10 });
 
 		const [job] = await connection.createQueryJob({ query: queryString });
