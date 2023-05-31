@@ -2,48 +2,48 @@ const { getEnv } = require('@evidence-dev/db-commons');
 const mssql = require('mssql');
 
 const envMap = {
-    user: [
-        { key: 'EVIDENCE_MSSQL_USER', deprecated: false },
-        { key: 'MSSQL_USER', deprecated: false },
-        { key: 'user', deprecated: true },
-        { key: 'USER', deprecated: true }
-    ],
+	user: [
+		{ key: 'EVIDENCE_MSSQL_USER', deprecated: false },
+		{ key: 'MSSQL_USER', deprecated: false },
+		{ key: 'user', deprecated: true },
+		{ key: 'USER', deprecated: true }
+	],
 	host: [
 		{ key: 'EVIDENCE_MSSQL_HOST', deprecated: false },
 		{ key: 'MSSQL_HOST', deprecated: false },
 		{ key: 'host', deprecated: true },
 		{ key: 'HOST', deprecated: true }
 	],
-    database: [
-        { key: 'EVIDENCE_MSSQL_DATABASE', deprecated: false },
-        { key: 'MSSQL_DATABASE', deprecated: false },
-        { key: 'database', deprecated: true },
-        { key: 'DATABASE', deprecated: true }
-    ],
-    password: [
-        { key: 'EVIDENCE_MSSQL_PASSWORD', deprecated: false },
-        { key: 'MSSQL_PASSWORD', deprecated: false },
-        { key: 'password', deprecated: true },
-        { key: 'PASSWORD', deprecated: true }
-    ],
-    port: [
-        { key: 'EVIDENCE_MSSQL_PORT', deprecated: false },
-        { key: 'MSSQL_PORT', deprecated: false },
-        { key: 'port', deprecated: true },
-        { key: 'PORT', deprecated: true }
-    ],
-    trustServerCertificate: [
-        { key: 'EVIDENCE_MSSQL_TRUST_SERVER_CERTIFICATE', deprecated: false },
-        { key: 'MSSQL_TRUST_SERVER_CERTIFICATE', deprecated: false },
-        { key: 'trust_server_certificate', deprecated: true },
-        { key: 'TRUST_SERVER_CERTIFICATE', deprecated: true },
-    ],
-    encrypt: [
-        { key: 'EVIDENCE_MSSQL_ENCRYPT', deprecated: false },
-        { key: 'MSSQL_ENCRYPT', deprecated: false },
-        { key: 'encrypt', deprecated: true },
-        { key: 'ENCRYPT', deprecated: true },
-    ],
+	database: [
+		{ key: 'EVIDENCE_MSSQL_DATABASE', deprecated: false },
+		{ key: 'MSSQL_DATABASE', deprecated: false },
+		{ key: 'database', deprecated: true },
+		{ key: 'DATABASE', deprecated: true }
+	],
+	password: [
+		{ key: 'EVIDENCE_MSSQL_PASSWORD', deprecated: false },
+		{ key: 'MSSQL_PASSWORD', deprecated: false },
+		{ key: 'password', deprecated: true },
+		{ key: 'PASSWORD', deprecated: true }
+	],
+	port: [
+		{ key: 'EVIDENCE_MSSQL_PORT', deprecated: false },
+		{ key: 'MSSQL_PORT', deprecated: false },
+		{ key: 'port', deprecated: true },
+		{ key: 'PORT', deprecated: true }
+	],
+	trustServerCertificate: [
+		{ key: 'EVIDENCE_MSSQL_TRUST_SERVER_CERTIFICATE', deprecated: false },
+		{ key: 'MSSQL_TRUST_SERVER_CERTIFICATE', deprecated: false },
+		{ key: 'trust_server_certificate', deprecated: true },
+		{ key: 'TRUST_SERVER_CERTIFICATE', deprecated: true }
+	],
+	encrypt: [
+		{ key: 'EVIDENCE_MSSQL_ENCRYPT', deprecated: false },
+		{ key: 'MSSQL_ENCRYPT', deprecated: false },
+		{ key: 'encrypt', deprecated: true },
+		{ key: 'ENCRYPT', deprecated: true }
+	]
 };
 
 function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
@@ -112,7 +112,8 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 
 const runQuery = async (queryString, database = {}) => {
 	try {
-		const trust_server_certificate = database.trust_server_certificate ?? getEnv(envMap, 'trustServerCertificate') ?? 'false';
+		const trust_server_certificate =
+			database.trust_server_certificate ?? getEnv(envMap, 'trustServerCertificate') ?? 'false';
 		const encrypt = database.encrypt ?? getEnv(envMap, 'encrypt') ?? 'true';
 		const credentials = {
 			user: database.user ?? getEnv(envMap, 'user'),
