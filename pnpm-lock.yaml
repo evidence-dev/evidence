@@ -125,8 +125,8 @@ importers:
 
   packages/core-components:
     specifiers:
-      '@evidence-dev/component-utilities': plugins-demo
-      '@evidence-dev/tailwind': plugins-demo
+      '@evidence-dev/component-utilities': workspace:^
+      '@evidence-dev/tailwind': workspace:^
       '@storybook/addon-essentials': ^7.0.9
       '@storybook/addon-interactions': ^7.0.9
       '@storybook/addon-links': ^7.0.9

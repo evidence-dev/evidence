@@ -40,7 +40,6 @@
 		"vite": "4.0.4"
 	},
 	"scripts": {
-		"dev": "run-p dev:example-project dev:core-components",
 		"build:dev-workspace": "run-s build:example-project",
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build",
 		"build:docs": "pnpm --filter ./sites/docs build",
