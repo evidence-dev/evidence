@@ -52,7 +52,7 @@ Follow these steps to test your changes
 
 1. In the project root folder, run `pnpm install` (you will need to install pnpm if you don't have it `npm i -g pnpm`)
 2. In the `packages/core-components` folder, run `pnpm run package:watch`
-3. In another terminal, in the project root folder, run `pnpm run dev:example-site`
+3. In another terminal, in the project root folder, run `pnpm run dev:example-project`
 
 You should be able to open the `Evidence Development Workspace` on `localhost:3000`. Any subsequent changes you make will be reflected on the website.
 
