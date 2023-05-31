@@ -26,8 +26,8 @@
 		"components": true
 	},
 	"dependencies": {
-		"@evidence-dev/component-utilities": "plugins-demo",
-		"@evidence-dev/tailwind": "plugins-demo"
+		"@evidence-dev/component-utilities": "workspace:^",
+		"@evidence-dev/tailwind": "workspace:^"
 	},
 	"devDependencies": {
 		"@storybook/addon-essentials": "^7.0.9",
