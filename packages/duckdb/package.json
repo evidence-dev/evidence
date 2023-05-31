@@ -9,8 +9,8 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"duckdb-async": "0.8.0",
-		"@evidence-dev/db-commons": "workspace:^"
+		"@evidence-dev/db-commons": "workspace:^",
+		"duckdb-async": "0.8.0"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"

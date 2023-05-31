@@ -9,9 +9,9 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"sqlite3": "5.1.2",
+		"@evidence-dev/db-commons": "workspace:^",
 		"sqlite": "4.0.25",
-		"@evidence-dev/db-commons": "workspace:^"
+		"sqlite3": "5.1.2"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"
