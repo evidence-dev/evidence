@@ -20,6 +20,7 @@ importers:
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/preprocess': link:packages/preprocess
+      '@evidence-dev/tailwind': link:packages/tailwind
       '@evidence-dev/telemetry': link:packages/telemetry
       '@sveltejs/adapter-static': 1.0.0
       '@sveltejs/kit': 1.13.0
@@ -51,6 +52,8 @@ importers:
       unist-util-visit: 4.1.2
       uvu: 0.5.2
       vite: 4.0.4
+    dependencies:
+      '@evidence-dev/tailwind': link:packages/tailwind
     devDependencies:
       '@changesets/cli': 2.21.0
       '@evidence-dev/component-utilities': link:packages/component-utilities
@@ -127,8 +130,8 @@ importers:
 
   packages/core-components:
     specifiers:
-      '@evidence-dev/component-utilities': plugins-demo
-      '@evidence-dev/tailwind': plugins-demo
+      '@evidence-dev/component-utilities': workspace:^
+      '@evidence-dev/tailwind': workspace:^
       '@storybook/addon-essentials': ^7.0.9
       '@storybook/addon-interactions': ^7.0.9
       '@storybook/addon-links': ^7.0.9
