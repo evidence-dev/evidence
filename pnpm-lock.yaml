@@ -15,7 +15,6 @@ importers:
     specifiers:
       '@changesets/cli': 2.21.0
       '@evidence-dev/component-utilities': link:packages/component-utilities
-      '@evidence-dev/components': link:packages/components
       '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
@@ -58,7 +57,6 @@ importers:
     devDependencies:
       '@changesets/cli': 2.21.0
       '@evidence-dev/component-utilities': link:packages/component-utilities
-      '@evidence-dev/components': link:packages/components
       '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
@@ -275,7 +273,6 @@ importers:
   packages/evidence:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
-      '@evidence-dev/components': workspace:^
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/db-orchestrator': workspace:^
       '@evidence-dev/plugin-connector': workspace:^
@@ -298,7 +295,6 @@ importers:
       sade: 1.8.1
     devDependencies:
       '@evidence-dev/component-utilities': link:../component-utilities
-      '@evidence-dev/components': link:../../sites/example-project
       '@evidence-dev/core-components': link:../core-components
       '@evidence-dev/db-orchestrator': link:../db-orchestrator
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4

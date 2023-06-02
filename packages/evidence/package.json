@@ -30,7 +30,6 @@
 	],
 	"devDependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
-		"@evidence-dev/components": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
 		"@sveltejs/kit": "1.13.0",
@@ -48,7 +47,6 @@
 	},
 	"peerDependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
-		"@evidence-dev/components": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
 		"@sveltejs/kit": "1.13.0",
