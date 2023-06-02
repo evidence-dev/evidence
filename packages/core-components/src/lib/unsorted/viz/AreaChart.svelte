@@ -30,6 +30,7 @@
 
 	export let line = undefined;
 	export let fillColor = undefined;
+	export let lineColor = undefined;
 	export let fillOpacity = undefined;
 	export let chartAreaHeight = undefined;
 
@@ -69,6 +70,6 @@
 	{stacked100}
 	{chartAreaHeight}
 >
-	<Area {line} {fillColor} {fillOpacity} {handleMissing} {type} />
+	<Area {line} {fillColor} {lineColor} {fillOpacity} {handleMissing} {type} />
 	<slot />
 </Chart>
