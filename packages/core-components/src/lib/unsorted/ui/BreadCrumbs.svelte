@@ -13,7 +13,7 @@
 	const checkUrl = function (href, fileTree) {
 		let found = false;
 		function checkChildren(node) {
-			if (node.href === href) {
+			if (node.href === href || (href.startsWith(node.href) && node.isTemplated)) {
 				found = true;
 			} else if (node.children) {
 				node.children.forEach((child) => {
