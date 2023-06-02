@@ -39,6 +39,7 @@
 	},
 	"dependencies": {
 		"@evidence-dev/preprocess": "workspace:^",
+        "@evidence-dev/plugin-connector": "workspace:^",
 		"@evidence-dev/telemetry": "workspace:^",
 		"@sveltejs/adapter-static": "1.0.0",
 		"chokidar": "3.5.3",
