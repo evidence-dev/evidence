@@ -1,5 +1,6 @@
 {
 	"name": "@evidence-dev/core-components",
+    "license": "MIT",
 	"scripts": {
 		"build": "vite build && npm run package",
 		"build-storybook": "storybook build",

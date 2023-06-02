@@ -4,7 +4,7 @@
 	"description": "",
 	"keywords": [],
 	"author": "",
-	"license": "ISC",
+	"license": "MIT",
 	"devDependencies": {
 		"parcel": "^2.8.3",
 		"typescript": "^5.0.4"
