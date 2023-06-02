@@ -15,7 +15,6 @@
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
-		"@evidence-dev/evidence": "workspace:^",
-		"@evidence-dev/plugin-connector": "workspace:^"
+		"@evidence-dev/evidence": "workspace:^"
 	}
 }
