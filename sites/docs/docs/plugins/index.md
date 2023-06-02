@@ -64,7 +64,7 @@ if you aren't sure that you want to use this feature, you probably don't want to
 Overrides can be specified as an array:
 ```yaml
 components:
-    @evidence-dev/ui: {}
+    @evidence-dev/core-components: {}
     @acme/charting:
         overrides:
             - QueryViewer
@@ -73,7 +73,7 @@ components:
 If you want to replace `QueryViewer` with a component named `CustomQueryViewer`, apply an alias to `CustomQueryViewer` first:
 ```yaml
 components:
-    @evidence-dev/ui: {}
+    @evidence-dev/core-components: {}
     @acme/charting:
         aliases:
             CustomQueryViewer: QueryViewer # Rename CustomQueryViewer

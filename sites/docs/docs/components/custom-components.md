@@ -62,7 +62,7 @@ select 'UK' as country, 300 as sales_usd
      If you need any Evidence components inside your custom component, you must import them explicitly -->
 <script>
 	export let query;
-	import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
+	import { BarChart } from '@evidence-dev/core-components';
 </script>
 
 <p>
