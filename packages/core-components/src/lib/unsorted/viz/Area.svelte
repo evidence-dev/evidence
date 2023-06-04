@@ -23,6 +23,7 @@
 	export let type = 'stacked'; // stacked or stacked100
 
 	export let fillColor = undefined;
+	export let lineColor = undefined;
 	export let fillOpacity = undefined;
 	export let line = true;
 	$: line = line === 'true' || line === true;
@@ -64,7 +65,8 @@
 		},
 		connectNulls: handleMissing === 'connect',
 		lineStyle: {
-			width: line ? 1 : 0
+			width: line ? 1 : 0,
+			color: lineColor
 		},
 		label: {
 			show: false
