@@ -9,7 +9,7 @@ const templatePaths = [
 	'src/app.css',
 	'src/app.html',
 	'src/global.d.ts',
-    'src/hooks.client.js',
+	'src/hooks.client.js',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
 	'src/pages/+layout.server.js',
