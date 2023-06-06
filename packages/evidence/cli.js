@@ -21,10 +21,6 @@ const populateTemplate = function () {
 	});
 
 	fs.copySync(path.join(__dirname, '/template'), './.evidence/template/');
-
-	// package.json is awkward to have in the monorepo, but vite needs it to find the root of the project
-	const packageContents = { type: 'module' };
-	fs.writeJsonSync('./.evidence/template/package.json', packageContents);
 };
 
 const clearQueryCache = function () {
