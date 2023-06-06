@@ -12,8 +12,8 @@
 
 <style>
 	label {
-        margin-top: 1rem;
-        display: block;
+		margin-top: 1rem;
+		display: block;
 		text-transform: uppercase;
 		font-weight: normal;
 		font-size: 14px;
