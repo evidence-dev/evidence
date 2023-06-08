@@ -58,8 +58,15 @@
 	$: crumbs = buildCrumbs(pathArray);
 </script>
 
-<div class="main">
-	<span class="container">
+<!-- max-w explanation:
+    100vw (initial) 
+    1em + 32px (hamburger) / 18rem (sidebar) + 16px (sidebar grid gap)
+    56px (page menu)
+-->
+<div
+	class="main min-[850px]:max-w-[calc(100vw-18rem-16px-56px)] max-[850px]:max-w-[calc(100vw-1em-32px-56px)]"
+>
+	<span class="container truncate">
 		<span>
 			{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
 				<a href="/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
