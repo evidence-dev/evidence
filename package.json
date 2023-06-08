@@ -2,11 +2,11 @@
 	"devDependencies": {
 		"@changesets/cli": "2.21.0",
 		"@evidence-dev/component-utilities": "link:packages/component-utilities",
-		"@evidence-dev/components": "link:packages/components",
 		"@evidence-dev/core-components": "link:packages/core-components",
 		"@evidence-dev/db-orchestrator": "link:packages/db-orchestrator",
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/preprocess": "link:packages/preprocess",
+		"@evidence-dev/plugin-connector": "link:packages/plugin-connector",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
 		"@sveltejs/adapter-static": "1.0.0",
 		"@sveltejs/kit": "1.13.0",

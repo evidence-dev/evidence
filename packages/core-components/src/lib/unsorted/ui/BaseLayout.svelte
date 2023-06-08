@@ -6,7 +6,6 @@
 	import '../../app.css';
 	import { navigating } from '$app/stores';
 	import { blur } from 'svelte/transition';
-	// import { Nav, BreadCrumbs, LoadingIndicator, Logo } from '@evidence-dev/components';
 	import Nav from './Nav.svelte';
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import LoadingIndicator from './LoadingIndicator.svelte';

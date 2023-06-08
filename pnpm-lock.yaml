@@ -15,10 +15,10 @@ importers:
     specifiers:
       '@changesets/cli': 2.21.0
       '@evidence-dev/component-utilities': link:packages/component-utilities
-      '@evidence-dev/components': link:packages/components
       '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
+      '@evidence-dev/plugin-connector': link:packages/plugin-connector
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/tailwind': link:packages/tailwind
       '@evidence-dev/telemetry': link:packages/telemetry
@@ -57,10 +57,10 @@ importers:
     devDependencies:
       '@changesets/cli': 2.21.0
       '@evidence-dev/component-utilities': link:packages/component-utilities
-      '@evidence-dev/components': link:packages/components
       '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
+      '@evidence-dev/plugin-connector': link:packages/plugin-connector
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/telemetry': link:packages/telemetry
       '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.13.0
@@ -116,7 +116,7 @@ importers:
       downloadjs: 1.4.7
       echarts: 5.4.2
       ssf: ^0.11.2
-      svelte: ^3.59.1
+      svelte: 3.55.0
       vitest: ^0.31.1
     dependencies:
       '@tidyjs/tidy': 2.4.4
@@ -124,7 +124,7 @@ importers:
       downloadjs: 1.4.7
       echarts: 5.4.2
       ssf: 0.11.2
-      svelte: 3.59.1
+      svelte: 3.55.0
     devDependencies:
       vitest: 0.31.1
 
@@ -146,21 +146,28 @@ importers:
       '@sveltejs/package': ^2.0.0
       autoprefixer: ^10.4.14
       chromatic: ^6.17.4
+      echarts: 5.4.2
+      echarts-stat: 1.2.0
       eslint: ^8.28.0
       eslint-config-prettier: ^8.5.0
       eslint-plugin-storybook: ^0.6.12
       eslint-plugin-svelte: ^2.26.0
+      export-to-csv: 0.2.1
       postcss: ^8.4.23
       postcss-load-config: ^4.0.1
       prettier: ^2.8.0
       prettier-plugin-svelte: ^2.8.1
+      prismjs: 1.29.0
       publint: ^0.1.9
       react: ^17.0.1
       react-dom: ^17.0.1
+      ssf: 0.11.2
       storybook: ^7.0.9
       svelte: ^3.54.0
       svelte-check: ^3.0.1
+      svelte-icons: 2.1.0
       svelte-preprocess: ^5.0.3
+      svelte-tiny-linked-charts: 1.1.5
       tailwindcss: ^3.3.1
       tslib: ^2.4.1
       typescript: ^5.0.0
@@ -169,6 +176,13 @@ importers:
     dependencies:
       '@evidence-dev/component-utilities': link:../component-utilities
       '@evidence-dev/tailwind': link:../tailwind
+      echarts: 5.4.2
+      echarts-stat: 1.2.0
+      export-to-csv: 0.2.1
+      prismjs: 1.29.0
+      ssf: 0.11.2
+      svelte-icons: 2.1.0
+      svelte-tiny-linked-charts: 1.1.5
     devDependencies:
       '@storybook/addon-essentials': 7.0.9_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/addon-interactions': 7.0.9_sfoxds7t5ydpegc3knd667wn6m
@@ -273,9 +287,9 @@ importers:
   packages/evidence:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
-      '@evidence-dev/components': workspace:^
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/db-orchestrator': workspace:^
+      '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/preprocess': workspace:^
       '@evidence-dev/telemetry': workspace:^
       '@sveltejs/adapter-static': 1.0.0
@@ -286,6 +300,7 @@ importers:
       svelte: 3.55.0
       vite: ^4.0.4
     dependencies:
+      '@evidence-dev/plugin-connector': link:../plugin-connector
       '@evidence-dev/preprocess': link:../preprocess
       '@evidence-dev/telemetry': link:../telemetry
       '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.13.0
@@ -294,7 +309,6 @@ importers:
       sade: 1.8.1
     devDependencies:
       '@evidence-dev/component-utilities': link:../component-utilities
-      '@evidence-dev/components': link:../../sites/example-project
       '@evidence-dev/core-components': link:../core-components
       '@evidence-dev/db-orchestrator': link:../db-orchestrator
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4
@@ -370,7 +384,7 @@ importers:
       '@types/node': ^20.1.2
       chalk: ^5.2.0
       parcel: ^2.8.3
-      svelte: ^3.59.1
+      svelte: 3.55.0
       svelte-preprocess: ^5.0.3
       sveltekit-autoimport: ^1.7.0
       typescript: ^5.0.4
@@ -380,8 +394,8 @@ importers:
     dependencies:
       '@types/estree': 1.0.1
       chalk: 5.2.0
-      svelte: 3.59.1
-      svelte-preprocess: 5.0.3_gmmus3lprw664mkdmboocppfke
+      svelte: 3.55.0
+      svelte-preprocess: 5.0.3_te34cpvlju4yjc65c47pehvaqa
       sveltekit-autoimport: 1.7.0
       yaml: 2.2.2
       zod: 3.21.4
@@ -618,12 +632,10 @@ importers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/evidence': workspace:^
-      '@evidence-dev/plugin-connector': workspace:^
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
       '@evidence-dev/evidence': link:../../packages/evidence
-      '@evidence-dev/plugin-connector': link:../../packages/plugin-connector
 
   tests:
     specifiers:
@@ -6516,12 +6528,12 @@ packages:
     dependencies:
       '@storybook/builder-vite': 7.0.9_j3n3bmbdtt5x6j7a7ljkizyfq4
       '@storybook/node-logger': 7.0.9
-      '@storybook/svelte': 7.0.9_svelte@3.59.1
-      '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.59.1+vite@4.3.5
+      '@storybook/svelte': 7.0.9_svelte@3.55.0
+      '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.55.0+vite@4.3.5
       magic-string: 0.27.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      svelte: 3.59.1
+      svelte: 3.55.0
       sveltedoc-parser: 4.2.1
       ts-dedent: 2.2.0
       vite: 4.3.5
@@ -6530,6 +6542,26 @@ packages:
       - supports-color
       - typescript
       - vite-plugin-glimmerx
+    dev: true
+
+  /@storybook/svelte/7.0.9_svelte@3.55.0:
+    resolution: {integrity: sha512-3cU7j8bOQ+ZeeEnoNzYunts+faRoxSAXfnULC/gTcJU27MCMcCevpbQhwXKSrhp8m3rGushrbJgeLmmkQ6GslA==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      svelte: ^3.1.0
+    dependencies:
+      '@storybook/client-logger': 7.0.9
+      '@storybook/core-client': 7.0.9
+      '@storybook/core-events': 7.0.9
+      '@storybook/docs-tools': 7.0.9
+      '@storybook/global': 5.0.0
+      '@storybook/preview-api': 7.0.9
+      '@storybook/types': 7.0.9
+      svelte: 3.55.0
+      sveltedoc-parser: 4.2.1
+      type-fest: 2.19.0
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@storybook/svelte/7.0.9_svelte@3.59.1:
@@ -6742,6 +6774,25 @@ packages:
       vitefu: 0.2.4_vite@4.0.4
     transitivePeerDependencies:
       - supports-color
+
+  /@sveltejs/vite-plugin-svelte/2.0.3_svelte@3.55.0+vite@4.3.5:
+    resolution: {integrity: sha512-o+cguBFdwIGtRbNkYOyqTM7KvRUffxh5bfK4oJsWKG2obu+v/cbpT03tJrGl58C7tRXo/aEC0/axN5FVHBj0nA==}
+    engines: {node: ^14.18.0 || >= 16}
+    peerDependencies:
+      svelte: ^3.54.0
+      vite: ^4.0.0
+    dependencies:
+      debug: 4.3.4
+      deepmerge: 4.3.1
+      kleur: 4.1.5
+      magic-string: 0.29.0
+      svelte: 3.55.0
+      svelte-hmr: 0.15.1_svelte@3.55.0
+      vite: 4.3.5
+      vitefu: 0.2.4_vite@4.3.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /@sveltejs/vite-plugin-svelte/2.0.3_svelte@3.59.1+vite@4.3.5:
     resolution: {integrity: sha512-o+cguBFdwIGtRbNkYOyqTM7KvRUffxh5bfK4oJsWKG2obu+v/cbpT03tJrGl58C7tRXo/aEC0/axN5FVHBj0nA==}
@@ -19260,53 +19311,6 @@ packages:
       typescript: 5.0.4
     dev: true
 
-  /svelte-preprocess/5.0.3_gmmus3lprw664mkdmboocppfke:
-    resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
-    engines: {node: '>= 14.10.0'}
-    requiresBuild: true
-    peerDependencies:
-      '@babel/core': ^7.10.2
-      coffeescript: ^2.5.1
-      less: ^3.11.3 || ^4.0.0
-      postcss: ^7 || ^8
-      postcss-load-config: ^2.1.0 || ^3.0.0 || ^4.0.0
-      pug: ^3.0.0
-      sass: ^1.26.8
-      stylus: ^0.55.0
-      sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
-      svelte: ^3.23.0
-      typescript: '>=3.9.5 || ^4.0.0 || ^5.0.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      coffeescript:
-        optional: true
-      less:
-        optional: true
-      postcss:
-        optional: true
-      postcss-load-config:
-        optional: true
-      pug:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@types/pug': 2.0.6
-      detect-indent: 6.1.0
-      magic-string: 0.27.0
-      sorcery: 0.11.0
-      strip-indent: 3.0.0
-      svelte: 3.59.1
-      typescript: 5.0.4
-    dev: false
-
   /svelte-preprocess/5.0.3_svelte@3.55.0:
     resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
     engines: {node: '>= 14.10.0'}
@@ -19351,6 +19355,53 @@ packages:
       sorcery: 0.11.0
       strip-indent: 3.0.0
       svelte: 3.55.0
+    dev: false
+
+  /svelte-preprocess/5.0.3_te34cpvlju4yjc65c47pehvaqa:
+    resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
+    engines: {node: '>= 14.10.0'}
+    requiresBuild: true
+    peerDependencies:
+      '@babel/core': ^7.10.2
+      coffeescript: ^2.5.1
+      less: ^3.11.3 || ^4.0.0
+      postcss: ^7 || ^8
+      postcss-load-config: ^2.1.0 || ^3.0.0 || ^4.0.0
+      pug: ^3.0.0
+      sass: ^1.26.8
+      stylus: ^0.55.0
+      sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
+      svelte: ^3.23.0
+      typescript: '>=3.9.5 || ^4.0.0 || ^5.0.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      coffeescript:
+        optional: true
+      less:
+        optional: true
+      postcss:
+        optional: true
+      postcss-load-config:
+        optional: true
+      pug:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@types/pug': 2.0.6
+      detect-indent: 6.1.0
+      magic-string: 0.27.0
+      sorcery: 0.11.0
+      strip-indent: 3.0.0
+      svelte: 3.55.0
+      typescript: 5.0.4
     dev: false
 
   /svelte-preprocess/5.0.3_tuotfx7glloxurl4snpq7ztuqe:
@@ -19410,6 +19461,7 @@ packages:
   /svelte/3.59.1:
     resolution: {integrity: sha512-pKj8fEBmqf6mq3/NfrB9SLtcJcUvjYSWyePlfCqN9gujLB25RitWK8PvFzlwim6hD/We35KbPlRteuA6rnPGcQ==}
     engines: {node: '>= 8'}
+    dev: true
 
   /svelte2tsx/0.5.23_tuotfx7glloxurl4snpq7ztuqe:
     resolution: {integrity: sha512-jYFnugTQRFmUpvLXPQrKzVYcW5ErT+0QCxg027Zx9BuvYefMZFuoBSTDYe7viPEFGrPPiLgT2m7f5n9khE7f7Q==}
@@ -19464,7 +19516,7 @@ packages:
       '@rollup/pluginutils': 4.2.1
       estree-walker: 2.0.2
       magic-string: 0.26.7
-      svelte: 3.59.1
+      svelte: 3.55.0
     dev: false
 
   /svg-parser/2.0.4:

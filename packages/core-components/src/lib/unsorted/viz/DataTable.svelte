@@ -377,9 +377,10 @@
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
 									style="
-                      text-align: {column.align};
-                      height: {column.height};
-                      width: {column.width};
+                    						text-align: {column.align};
+                      						height: {column.height};
+                      						width: {column.width};
+											white-space: {column.wrap ? 'normal' : 'nowrap'};
                   "
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}

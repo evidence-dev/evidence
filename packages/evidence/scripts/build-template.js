@@ -9,6 +9,7 @@ const templatePaths = [
 	'src/app.css',
 	'src/app.html',
 	'src/global.d.ts',
+	'src/hooks.client.js',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
 	'src/pages/+layout.server.js',
@@ -69,7 +70,7 @@ fs.outputFileSync(
         plugins: [sveltekit()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts'],
-            exclude: ['@evidence-dev/components', 'svelte-icons', 'svelte-tiny-linked-charts']
+            exclude: ['svelte-icons', 'svelte-tiny-linked-charts']
         },
         ssr: {
             external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']

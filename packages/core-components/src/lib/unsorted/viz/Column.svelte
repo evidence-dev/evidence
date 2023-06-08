@@ -37,6 +37,7 @@
 	if (align === 'centre') {
 		align = 'center';
 	}
+	export let wrap = false;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -56,6 +57,7 @@
 		id: id,
 		title: title,
 		align: align,
+		wrap: wrap,
 		contentType: contentType,
 		height: height,
 		width: width,
