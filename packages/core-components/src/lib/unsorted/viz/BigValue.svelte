@@ -37,6 +37,10 @@
 			throw new Error('value is required');
 		}
 
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+
 		checkInputs(data, [value]);
 
 		let columnSummary = getColumnSummary(data, 'array');
