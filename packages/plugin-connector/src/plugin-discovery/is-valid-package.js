@@ -9,8 +9,29 @@ import fs from 'fs/promises';
  * @returns {Promise<false | ValidPackage>}
  */
 export const isValidPackage = async (path) => {
-	const s = await fs.stat(path);
-	if (!s.isDirectory()) return false;
+    try {
+        const s = await fs.stat(path);
+        if (!s.isDirectory()) return false;
+    } catch (e) {
+        if (e instanceof Error && (/** @type{NodeJS.ErrnoException} */(e)).code !== 'ENOENT') {
+            console.warn(
+                chalk.yellow(
+                    `[!] An error occured while loading ${chalk.bold(
+                        `"${path.split('node_modules/')[1]}"`
+                    )}: ${e}.`
+                )
+            )
+        } else {
+            console.warn(
+                chalk.yellow(
+                    `[!] ${chalk.bold(
+                        `"${path.split('node_modules/')[1]}"`
+                    )} could not be found in your node_modules. Check for spelling errors or try running npm install.`
+                )
+            );
+        }
+        return false;
+    }
 
 	const c = await fs.readdir(path);
 	if (!c.includes('package.json')) return false;
