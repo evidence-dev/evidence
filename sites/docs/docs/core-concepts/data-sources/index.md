@@ -56,7 +56,7 @@ gcloud auth application-default login
 
 Evidence will use the credentials stored by the gcloud CLI to connect to BigQuery.
 
-> *Note: Since gcloud requires browser access, this method is only available on local deployments.*
+> *Note: Since gcloud requires browser access, this method is only available when developing locally.*
 
 #### Create a Service Account Key
 
