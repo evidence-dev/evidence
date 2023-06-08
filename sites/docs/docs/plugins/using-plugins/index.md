@@ -59,7 +59,7 @@ made available in the Evidence project as `AcmeChart`
 components:
     @acme/charting:
         aliases:
-            AcmeChart: LongNameForAChart
+            LongNameForAChart: AcmeChart
 ```
 
 ### Component Overrides
@@ -82,7 +82,7 @@ components:
     @evidence-dev/core-components: {}
     @acme/charting:
         aliases:
-            QueryViewer: CustomQueryViewer # Rename CustomQueryViewer
+            CustomQueryViewer: QueryViewer # Rename CustomQueryViewer
         overrides:
             - QueryViewer # Override QueryViewer with the now renamed CustomQueryViewer
 ```
