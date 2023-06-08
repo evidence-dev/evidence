@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/redshift",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Redshift driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Archie Wood",

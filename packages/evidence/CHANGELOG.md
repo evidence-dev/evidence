@@ -1,5 +1,29 @@
 # @evidence-dev/evidence
 
+## 18.0.0
+
+### Major Changes
+
+- 4cd28cf5: Add support for component plugins; move @evidence-dev/components to @evidence-dev/core-components
+
+### Patch Changes
+
+- fb6ac548: switched plugin-connector to evidence dep
+- ac3d47d3: fixes bugs preventing usage directly from npm
+- c8932e5e: added hooks.client.js to template
+- 84208c04: updated licenses, general cleanup
+- Updated dependencies [4c04edd0]
+- Updated dependencies [ac3d47d3]
+- Updated dependencies [7873115f]
+- Updated dependencies [d7d4dfce]
+- Updated dependencies [4cd28cf5]
+- Updated dependencies [84208c04]
+  - @evidence-dev/db-orchestrator@2.2.0
+  - @evidence-dev/component-utilities@1.0.0
+  - @evidence-dev/core-components@1.0.0
+  - @evidence-dev/plugin-connector@1.0.0
+  - @evidence-dev/preprocess@3.0.0
+
 ## 17.0.3
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # evidence-test-environment
 
+## 2.0.12
+
+### Patch Changes
+
+- fb6ac548: switched plugin-connector to evidence dep
+- Updated dependencies [fb6ac548]
+- Updated dependencies [ac3d47d3]
+- Updated dependencies [c8932e5e]
+- Updated dependencies [7873115f]
+- Updated dependencies [d7d4dfce]
+- Updated dependencies [4cd28cf5]
+- Updated dependencies [84208c04]
+  - @evidence-dev/evidence@18.0.0
+  - @evidence-dev/component-utilities@1.0.0
+  - @evidence-dev/core-components@1.0.0
+
 ## 2.0.11
 
 ### Patch Changes

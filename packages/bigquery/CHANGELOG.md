@@ -1,5 +1,17 @@
 # @evidence-dev/bigquery
 
+## 1.3.0
+
+### Minor Changes
+
+- 4c04edd0: Changed expected environment variables to reduce ambiguity
+- 5b6156d9: added support for new authentication methods for bigquery and snowflake
+
+### Patch Changes
+
+- Updated dependencies [4c04edd0]
+  - @evidence-dev/db-commons@0.2.0
+
 ## 1.2.5
 
 ### Patch Changes
