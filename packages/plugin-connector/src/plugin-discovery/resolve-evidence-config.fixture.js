@@ -44,8 +44,8 @@ components:
             - LineChart
             - AliasedText
         aliases:
-            BarChart: D3BarChart
-            Text: AliasedText
+            D3BarChart: BarChart
+            AliasedText: Text
 `;
 export const validConfigParsed = {
 	components: {
@@ -57,8 +57,8 @@ export const validConfigParsed = {
 		'@evidence-dev/core-components-d3': {
 			overrides: ['LineChart', 'AliasedText'],
 			aliases: {
-				BarChart: 'D3BarChart',
-				Text: 'AliasedText'
+				D3BarChart: 'BarChart',
+				AliasedText: 'Text'
 			},
 			provides: []
 		}
