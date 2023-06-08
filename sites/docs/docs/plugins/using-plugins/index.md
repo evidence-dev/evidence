@@ -11,7 +11,7 @@ Evidence uses a plugin system to load components (charts, buttons, and other vis
 By default, new Evidence projects are configured with all the components needed to create most reports, but if you want to add others, this guide will cover methods for doing so.
 
 :::info
-If you want to create new plugins, see [Creating a Plugin](./creating-a-plugin).
+If you want to create new plugins, see [Creating a Plugin](/plugins/creating-a-plugin).
 :::
 
 ## Installing Plugins

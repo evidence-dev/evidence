@@ -49,4 +49,4 @@ components:
 
 ## Using your Plugin
 
-See [installing plugins](/plugins#installing-plugins)
+See [installing plugins](/plugins/using-plugins#installing-plugins)
