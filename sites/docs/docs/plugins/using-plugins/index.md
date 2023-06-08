@@ -26,7 +26,9 @@ npm install --save @acme/charting
 
 Once the plugin is installed, you can add it to your plugin file and begin using it in your project.
 
-> **Note:** Adding new packages to your plugin file will not immediately take effect in your project. You will need to restart the Evidence server for the changes to take effect. This can be done by pressing the 'r' key in the terminal window where you have Evidence running.
+:::info
+Changes or additions to your plugins file will not take effect in your project without restarting the Evidence server. This can also be done by pressing the 'r' key in the terminal window where you have Evidence running.
+:::
 
 ## Plugin file syntax
 
