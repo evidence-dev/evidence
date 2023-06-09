@@ -1,0 +1,26 @@
+---
+title: Accordion
+sidebar_position: 30
+---
+
+![accordion](/img/accordion.png)
+
+```markdown
+<Accordion>
+  <AccordionItem title="Item 1">
+    This is the first item's accordion body.
+  </AccordionItem>
+  <AccordionItem title="Item 2">
+    This is the second item's accordion body.
+  </AccordionItem>
+  <AccordionItem title="Item 3">
+    This is the third item's accordion body.
+  </AccordionItem>
+</Accordion>
+```
+
+## Props
+
+| Name   | Description                                                             | Required | 
+|--------|-------------------------------------------------------------------------|----------|
+| title  | The title of the accordion item. This will be displayed as the header   | Yes      | 
