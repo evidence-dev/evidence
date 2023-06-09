@@ -22,13 +22,20 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"evidence": {
 		"components": true
 	},
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
-		"@evidence-dev/tailwind": "workspace:^"
+		"@evidence-dev/tailwind": "workspace:^",
+		"echarts": "5.4.2",
+		"echarts-stat": "1.2.0",
+		"export-to-csv": "0.2.1",
+		"prismjs": "1.29.0",
+		"ssf": "0.11.2",
+		"svelte-icons": "2.1.0",
+		"svelte-tiny-linked-charts": "1.1.5"
 	},
 	"devDependencies": {
 		"@storybook/addon-essentials": "^7.0.9",

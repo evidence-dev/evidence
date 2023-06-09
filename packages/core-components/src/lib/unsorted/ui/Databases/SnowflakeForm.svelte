@@ -232,7 +232,7 @@
 	const options = [
 		{
 			value: 'snowflake',
-			description: 'Password Authentication'
+			description: 'Snowflake Account (default)'
 		},
 		{
 			value: 'externalbrowser',

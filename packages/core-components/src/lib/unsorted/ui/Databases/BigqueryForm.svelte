@@ -28,7 +28,7 @@
 	const options = [
 		{
 			value: 'gcloud-cli',
-			description: 'GCloud CLI'
+			description: 'GCloud CLI (default)'
 		},
 		{
 			value: 'service-account',
@@ -94,6 +94,16 @@
 	</div>
 {:else}
 	<!-- gcloud -->
+	<div class="mt-5">
+		<p>
+			If you have the <a rel="noreferrer" target="_blank" href="https://cloud.google.com/sdk/gcloud"
+				>gcloud CLI</a
+			> installed, you can log in to BigQuery using the following command. Evidence will use the credentials
+			stored by the gcloud CLI to connect to BigQuery.
+		</p>
+		<pre><code class="block p-1">gcloud auth application-default login</code></pre>
+	</div>
+
 	<div class="input-item">
 		<label for="project-id"> Project ID </label>
 		<input type="text" id="project-id" bind:value={credentials.project_id} />
