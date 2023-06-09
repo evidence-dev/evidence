@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 18.0.2
+
+### Patch Changes
+
+- Updated dependencies [2b7809e6]
+  - @evidence-dev/core-components@1.0.2
+
 ## 18.0.1
 
 ### Patch Changes
