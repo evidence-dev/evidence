@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 1.0.2
+
+### Patch Changes
+
+- 2b7809e6: added authenticator env var to listing, warning for browser-only auth
+
 ## 1.0.1
 
 ### Patch Changes
