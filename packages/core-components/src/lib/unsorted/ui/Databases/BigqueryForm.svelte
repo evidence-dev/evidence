@@ -11,7 +11,7 @@
 
 	credentials = { ...existingCredentials };
 	credentials.project_id = credentials.project_id ?? '';
-	credentials.authenticator = credentials.authenticator ?? 'gcloud-cli';
+	credentials.authenticator = credentials.authenticator ?? 'service-account';
 
 	let files;
 
@@ -27,12 +27,12 @@
 
 	const options = [
 		{
-			value: 'gcloud-cli',
-			description: 'GCloud CLI (default)'
+			value: 'service-account',
+			description: 'Service Account (default)'
 		},
 		{
-			value: 'service-account',
-			description: 'Service Account'
+			value: 'gcloud-cli',
+			description: 'GCloud CLI'
 		},
 		{
 			value: 'oauth',
