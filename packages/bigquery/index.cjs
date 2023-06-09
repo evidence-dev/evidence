@@ -63,7 +63,8 @@ const standardizeResult = async (result) => {
 };
 
 const getCredentials = (database = {}) => {
-	const authentication_method = database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'service-account';
+	const authentication_method =
+		database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'service-account';
 
 	if (authentication_method === 'gcloud-cli') {
 		return {
