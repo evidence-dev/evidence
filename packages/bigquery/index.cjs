@@ -65,13 +65,9 @@ const standardizeResult = async (result) => {
 const getCredentials = (database = {}) => {
 	const authentication_method = database.authenticator ?? getEnv(envMap, 'authenticator');
 
-	if (authentication_method === 'service-account') {
+	if (authentication_method === 'gcloud-cli') {
 		return {
-			projectId: database.project_id ?? getEnv(envMap, 'projectId'),
-			credentials: {
-				client_email: database.client_email ?? getEnv(envMap, 'credentials', 'clientEmail'),
-				private_key: (database.private_key ?? getEnv(envMap, 'credentials', 'privateKey'))?.trim()
-			}
+			projectId: database.project_id ?? getEnv(envMap, 'projectId')
 		};
 	} else if (authentication_method === 'oauth') {
 		const access_token = database.token ?? getEnv(envMap, 'token');
@@ -84,7 +80,11 @@ const getCredentials = (database = {}) => {
 		};
 	} else {
 		return {
-			projectId: database.project_id ?? getEnv(envMap, 'projectId')
+			projectId: database.project_id ?? getEnv(envMap, 'projectId'),
+			credentials: {
+				client_email: database.client_email ?? getEnv(envMap, 'credentials', 'clientEmail'),
+				private_key: (database.private_key ?? getEnv(envMap, 'credentials', 'privateKey'))?.trim()
+			}
 		};
 	}
 };

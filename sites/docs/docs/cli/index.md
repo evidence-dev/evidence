@@ -42,15 +42,21 @@ All Redshift environment variables are set using the PostgreSQL variables.
 
 | Variable                   | Description                                                     | Options (if applicable)                                                               |
 | -------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| EVIDENCE_DATABASE                   | The database to use.                                            | `bigquery` , `snowflake` , `redshift`, `postgres`, `mysql`, `sqlite`, `duckdb`, `csv` |
+| EVIDENCE_DATABASE                   | The database to use.                                            | `bigquery` , `snowflake` , `redshift`, `postgres`, `mssql`, `mysql`, `sqlite`, `duckdb`, `csv` |
 | EVIDENCE_BIGQUERY_PROJECT_ID        | BigQuery Project ID                                             |                                                                                       |
 | EVIDENCE_BIGQUERY_CLIENT_EMAIL      | BigQuery Client Email                                           |                                                                                       |
 | EVIDENCE_BIGQUERY_PRIVATE_KEY       | BigQuery Private Key                                            |                                                                                       |
+| EVIDENCE_BIGQUERY_AUTHENTICATOR     | BigQuery Authenticator                                          | `oauth`, `gcloud-cli`, `service-account`                                              |
+| EVIDENCE_BIGQUERY_TOKEN             | BigQuery OAuth Token                                            |                                                                                       |
 | EVIDENCE_SNOWFLAKE_ACCOUNT          | Snowflake Account ID                                            |                                                                                       |
 | EVIDENCE_SNOWFLAKE_USERNAME         | Snowflake Username                                              |                                                                                       |
 | EVIDENCE_SNOWFLAKE_PASSWORD         | Snowflake Password                                              |                                                                                       |
 | EVIDENCE_SNOWFLAKE_DATABASE         | Snowflake Database                                              |                                                                                       |
 | EVIDENCE_SNOWFLAKE_WAREHOUSE        | Snowflake Warehouse                                             |                                                                                       |
+| EVIDENCE_SNOWFLAKE_AUTHENTICATOR    | Snowflake Authenticator                                         | `snowflake_jwt`, `externalbrowser`, `okta`, `snowflake`                               |
+| EVIDENCE_SNOWFLAKE_PRIVATE_KEY      | Snowflake Private Key                                           |                                                                                       |
+| EVIDENCE_SNOWFLAKE_PASSPHRASE       | Snowflake Passphrase                                            |                                                                                       |
+| EVIDENCE_SNOWFLAKE_OKTA_URL         | Snowflake Okta URL                                              |                                                                                       |
 | EVIDENCE_POSTGRES_USER              | Postgres Username                                               |                                                                                       |
 | EVIDENCE_POSTGRES_HOST              | Postgres Host                                                   |                                                                                       |
 | EVIDENCE_POSTGRES_DATABASE          | Postgres Database                                               |                                                                                       |
