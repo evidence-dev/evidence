@@ -1,3 +1,7 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';

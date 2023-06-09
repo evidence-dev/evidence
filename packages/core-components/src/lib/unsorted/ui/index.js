@@ -1,3 +1,6 @@
+export { default as Accordion } from './Accordion.svelte';
+export { default as AccordionItem } from './AccordionItem.svelte';
+export { default as AnchorButton } from './AnchorButton.svelte';
 export { default as BaseLayout } from './BaseLayout.svelte';
 export { default as BigLink } from './BigLink.svelte';
 export { default as BreadCrumbs } from './BreadCrumbs.svelte';
@@ -10,6 +13,7 @@ export { default as Hamburger } from './Hamburger.svelte';
 export { default as Header } from './Header.svelte';
 export { default as LoadingIndicator } from './LoadingIndicator.svelte';
 export { default as Logo } from './Logo.svelte';
+export { default as Modal } from './Modal.svelte';
 export { default as Nav } from './Nav.svelte';
 export { default as PageMenu } from './PageMenu.svelte';
 export { default as Portal } from './Portal.svelte';

@@ -1,5 +1,9 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
-	import CloseIcon from '$lib/icons/CloseIcon.svelte';
+	import CloseIcon from '../icons/CloseIcon.svelte';
 	export let open = false;
 	export let title = '';
 	export let buttonText = '';
@@ -30,7 +34,7 @@
 				{#if title.trim() != ''}
 					{title}
 					<button
-						class="flex items-center justify-center border rounded-full hover:bg-gray-200"
+						class="flex items-center justify-center border-none hover:bg-gray-200"
 						on:click={() => isOpen()}
 					>
 						<CloseIcon />
@@ -38,7 +42,7 @@
 				{/if}
 				{#if title.trim() == ''}
 					<button
-						class=" flex items-center justify-center p-0.5 absolute border border-white rounded-full right-0 top-0 hover:bg-gray-200 ml-4"
+						class=" flex items-center justify-center border-none p-0.5 absolute right-0 top-0 hover:bg-gray-200 ml-4"
 						on:click={() => isOpen()}
 					>
 						<CloseIcon />

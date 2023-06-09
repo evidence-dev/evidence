@@ -1,3 +1,7 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
 	import { getContext, onMount } from 'svelte';
 	import ChevronToggle from './ChevronToggle.svelte';
