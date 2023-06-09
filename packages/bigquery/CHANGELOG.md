@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 1.3.1
+
+### Patch Changes
+
+- 44c0c4ca: changed bigquery default connector
+
 ## 1.3.0
 
 ### Minor Changes
