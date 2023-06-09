@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "",
 	"type": "module",
 	"scripts": {

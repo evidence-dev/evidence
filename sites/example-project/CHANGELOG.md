@@ -1,5 +1,22 @@
 # @evidence-dev/components
 
+## 2.4.1
+
+### Patch Changes
+
+- 5b6156d9: added support for new authentication methods for bigquery and snowflake
+- ac3d47d3: fixes bugs preventing usage directly from npm
+- 84208c04: updated licenses, general cleanup
+- 2bb85b15: various visual regression fixes
+- Updated dependencies [ac3d47d3]
+- Updated dependencies [7873115f]
+- Updated dependencies [d7d4dfce]
+- Updated dependencies [4cd28cf5]
+- Updated dependencies [84208c04]
+  - @evidence-dev/component-utilities@1.0.0
+  - @evidence-dev/core-components@1.0.0
+  - @evidence-dev/plugin-connector@1.0.0
+
 ## 2.4.0
 
 ### Minor Changes
