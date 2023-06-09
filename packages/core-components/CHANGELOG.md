@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 1.0.1
+
+### Patch Changes
+
+- 44c0c4ca: changed bigquery default connector
+- a38148b5: Fixing the multi-line alert spacing
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,5 +1,14 @@
 # @evidence-dev/components
 
+## 2.4.2
+
+### Patch Changes
+
+- d3a30089: Multi-line alert spacing fixed.
+- Updated dependencies [44c0c4ca]
+- Updated dependencies [a38148b5]
+  - @evidence-dev/core-components@1.0.1
+
 ## 2.4.1
 
 ### Patch Changes

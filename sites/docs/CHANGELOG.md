@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 2.0.3
+
+### Patch Changes
+
+- 44c0c4ca: changed bigquery default connector
+
 ## 2.0.2
 
 ### Patch Changes

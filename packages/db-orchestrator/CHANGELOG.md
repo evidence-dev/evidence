@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 2.2.1
+
+### Patch Changes
+
+- Updated dependencies [44c0c4ca]
+  - @evidence-dev/bigquery@1.3.1
+
 ## 2.2.0
 
 ### Minor Changes

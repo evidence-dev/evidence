@@ -1,5 +1,14 @@
 # @evidence-dev/evidence
 
+## 18.0.1
+
+### Patch Changes
+
+- Updated dependencies [44c0c4ca]
+- Updated dependencies [a38148b5]
+  - @evidence-dev/core-components@1.0.1
+  - @evidence-dev/db-orchestrator@2.2.1
+
 ## 18.0.0
 
 ### Major Changes
