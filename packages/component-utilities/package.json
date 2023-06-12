@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
 	"exports": {
@@ -8,7 +8,7 @@
 	},
 	"keywords": [],
 	"author": "",
-	"license": "ISC",
+	"license": "MIT",
 	"devDependencies": {
 		"vitest": "^0.31.1"
 	},
@@ -23,6 +23,6 @@
 		"downloadjs": "1.4.7",
 		"echarts": "5.4.2",
 		"ssf": "^0.11.2",
-		"svelte": "^3.59.1"
+		"svelte": "3.55.0"
 	}
 }

@@ -41,5 +41,9 @@
 		&.warning {
 			@apply text-yellow-800 bg-yellow-50;
 		}
+
+		& :global(p) {
+			@apply mb-0;
+		}
 	}
 </style>

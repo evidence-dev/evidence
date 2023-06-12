@@ -17,11 +17,62 @@
 		];
 		credentials = settings.credentials;
 		if (settings.database == 'bigquery') {
-			credentials = {
-				project_id: settings.credentials.project_id,
-				client_email: settings.credentials.client_email,
-				private_key: settings.credentials.private_key
-			};
+			if (credentials.authenticator === 'oauth') {
+				credentials = {
+					project_id: credentials.project_id,
+					token: credentials.token
+				};
+			} else if (credentials.authenticator === 'gcloud-cli') {
+				credentials = {
+					project_id: credentials.project_id
+				};
+			} else {
+				credentials = {
+					project_id: credentials.project_id,
+					client_email: credentials.client_email,
+					private_key: credentials.private_key
+				};
+			}
+			if (settings.credentials.authenticator)
+				credentials.authenticator = settings.credentials.authenticator;
+		}
+		if (settings.database == 'snowflake') {
+			if (credentials.authenticator === 'externalbrowser') {
+				credentials = {
+					account: credentials.account,
+					username: credentials.username,
+					warehouse: credentials.warehouse,
+					database: credentials.database
+				};
+			} else if (credentials.authenticator === 'okta') {
+				credentials = {
+					okta_url: credentials.okta_url,
+					account: credentials.account,
+					username: credentials.username,
+					password: credentials.password,
+					warehouse: credentials.warehouse,
+					database: credentials.database
+				};
+			} else if (credentials.authenticator === 'snowflake_jwt') {
+				credentials = {
+					account: credentials.account,
+					username: credentials.username,
+					private_key: credentials.private_key,
+					passphrase: credentials.passphrase,
+					warehouse: credentials.warehouse,
+					database: credentials.database
+				};
+			} else {
+				credentials = {
+					account: credentials.account,
+					username: credentials.username,
+					password: credentials.password,
+					warehouse: credentials.warehouse,
+					database: credentials.database
+				};
+			}
+			if (settings.credentials.authenticator)
+				credentials.authenticator = settings.credentials.authenticator;
 		}
 		for (const key in credentials) {
 			if (key != 'gitignoreSqlite') {
@@ -42,20 +93,34 @@
 		>use different environment variable values.</a
 	>
 </p>
-<div class="titles">
-	<span class="title">Key</span><span class="title">Value</span>
-</div>
 
-{#each targetEnvVars as envVar}
-	<div class="environment-variable">
-		<div class="var-name">
-			<VariableCopy text={envVar.name} />
-		</div>
-		<div class="var-value">
-			<VariableCopy text={envVar.value} hideText={true} />
-		</div>
+{#if credentials.authenticator === 'externalbrowser'}
+	<hr />
+	<p>
+		External browser authentication isn't supported in cloud deployments, as it needs access to a
+		browser. Set up one of the other authentication options for a deployment.
+	</p>
+{:else if credentials.authenticator === 'gcloud-cli'}
+	<hr />
+	<p>
+		GCloud authentication isn't supported in cloud deployments, as it needs access to a browser. Set
+		up one of the other authentication options for a deployment.
+	</p>
+{:else}
+	<div class="titles">
+		<span class="title">Key</span><span class="title">Value</span>
 	</div>
-{/each}
+	{#each targetEnvVars as envVar}
+		<div class="environment-variable">
+			<div class="var-name">
+				<VariableCopy text={envVar.name} />
+			</div>
+			<div class="var-value">
+				<VariableCopy text={envVar.value} hideText={true} />
+			</div>
+		</div>
+	{/each}
+{/if}
 
 <style>
 	div.environment-variable {

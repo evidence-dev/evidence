@@ -5,14 +5,14 @@
 <script>
 	import './prismtheme.css';
 	import { blur } from 'svelte/transition';
-
 	import Prism from 'prismjs';
-	import 'prismjs/components/prism-sql.js';
+	import { prism_sql } from './prism-sql';
+
 	export let code = '';
 </script>
 
 <pre in:blur>
-  <code class="language-sql">{@html Prism.highlight(code, Prism.languages['sql'])}</code>
+  <code class="language-sql">{@html Prism.highlight(code, prism_sql)}</code>
 </pre>
 
 <style>

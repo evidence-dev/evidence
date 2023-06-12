@@ -69,8 +69,7 @@ export async function getPluginComponents(cfg, discoveries) {
 				/** @type {PluginComponent} */
 				const componentObj = { package: packageName };
 
-				const [alias] =
-					Object.entries(packageConfig.aliases).find(([, target]) => target === component) ?? [];
+				const alias = packageConfig.aliases[component];
 
 				if (alias) {
 					componentObj.aliasOf = component;

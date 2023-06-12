@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 0.2.0
+
+### Minor Changes
+
+- 4c04edd0: Changed expected environment variables to reduce ambiguity
+
 ## 0.1.3
 
 ### Patch Changes
