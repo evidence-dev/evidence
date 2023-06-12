@@ -37,9 +37,9 @@
 			throw new Error('value is required');
 		}
 
-        if (!Array.isArray(data)) {
-            data = [data];
-        }
+		if (!Array.isArray(data)) {
+			data = [data];
+		}
 
 		checkInputs(data, [value]);
 
