@@ -21,7 +21,8 @@ export const evidencePlugins = () => {
 	const autoImporter = packages.then((packages) =>
 		autoImport({
 			include: ['**/*.(svelte|md)'],
-			module: packages
+			module: packages,
+			components: [{ directory: '../../components', flat: true }]
 		})
 	);
 

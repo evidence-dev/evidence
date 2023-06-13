@@ -6,7 +6,7 @@ declare module 'sveltekit-autoimport' {
 		exclude?: string[];
 		module?: Record<string, string[]>;
 		mapping?: unknown;
-		components?: unknown;
+		components?: (string | { directory: string; flat?: boolean; prefix?: string })[];
 	};
 
 	export default function (args: AutoImportArgs): { markup: MarkupPreprocessor };

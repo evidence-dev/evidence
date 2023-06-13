@@ -3,6 +3,9 @@ import { getComponentsForPackage } from './get-components-for-package';
 import { loadConfig } from '../plugin-discovery/resolve-evidence-config';
 import { getRootModules } from '../plugin-discovery/get-root-modules';
 import chalk from 'chalk';
+import { findSvelteComponents } from './loaders/file-loader';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * @param {EvidenceConfig} [cfg]
@@ -106,6 +109,21 @@ export async function getPluginComponents(cfg, discoveries) {
 		},
 		{}
 	);
+
+	if (fs.existsSync(`${rootDir}/components`)) {
+		const user_components = await findSvelteComponents(`${rootDir}/components`);
+		for (const component_file of user_components) {
+			const component = path.basename(component_file, '.svelte');
+			if (componentMap[component]) {
+				console.warn(
+					chalk.yellow(
+						`[!] The components folder and ${componentMap[component].package} both provide ${component}. The component from the components folder will be used. To use the component from ${componentMap[component].package}, specify an alias (https://docs.evidence.dev/plugins/using-plugins/#component-aliases) or explicitly import the component.`
+					)
+				);
+				delete componentMap[component];
+			}
+		}
+	}
 
 	return componentMap;
 }
