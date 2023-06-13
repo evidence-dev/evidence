@@ -66,23 +66,23 @@
 <span
 	class="main min-[850px]:max-w-[calc(100vw-18rem-16px-56px)] max-[850px]:max-w-[calc(100vw-1em-32px-56px)] truncate"
 >
-    {#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
-        <a href="/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
-    {:else}
-        {#each crumbs as crumb, i}
-            {#if i > 0}
-                &emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>
-            {:else}
-                <a href={crumb.href}>
-                    {#if crumb.title === 'Home'}
-                        <HomeIcon height="14" width="14" verticalOffset="3" />
-                    {:else}
-                        {crumb.title}
-                    {/if}
-                </a>
-            {/if}
-        {/each}
-    {/if}
+	{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
+		<a href="/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
+	{:else}
+		{#each crumbs as crumb, i}
+			{#if i > 0}
+				&emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>
+			{:else}
+				<a href={crumb.href}>
+					{#if crumb.title === 'Home'}
+						<HomeIcon height="14" width="14" verticalOffset="3" />
+					{:else}
+						{crumb.title}
+					{/if}
+				</a>
+			{/if}
+		{/each}
+	{/if}
 </span>
 
 <style>
