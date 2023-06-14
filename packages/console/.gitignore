@@ -1,9 +1,9 @@
-.DS_Store
+.evidence/template
+.svelte-kit
+build
 node_modules
-/build
-/dist
-/.svelte-kit
-/package
+.DS_Store
+dist
 .env
 .env.*
 !.env.example

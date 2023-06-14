@@ -4,6 +4,7 @@
 
 <script>
 	import { query, setData } from './duckdb';
+    import { DataTable } from "@evidence-dev/core-components";
 
 	/** @type{Record<string, unknown[]>} */
 	export let data;
@@ -28,6 +29,28 @@
 	`;
 
 	$: paginated_results = query(paginated_query);
+
+    /**
+     * @param {import('apache-arrow').Table} table
+     * @returns {Record<string, unknown>[]}
+     */
+    function arrowTableToJSON(table) {
+        const rows = [];
+        
+        for (let i = 0; i < table.numRows; i++) {
+            const row = {};
+            const table_row = table.get(i);
+            for (const column of table.schema.fields) {
+                row[column.name] = table_row[column.name];
+                if (typeof row[column.name] === 'bigint') {
+                    row[column.name] = Number(row[column.name]);
+                }
+            }
+            rows.push(row);
+        }
+
+        return rows;
+    }
 </script>
 
 <div class="container mx-auto pt-16">
@@ -38,6 +61,14 @@
 		/>
 	</div>
 </div>
+
+{#await paginated_results}
+    Loading...
+{:then results}
+    <DataTable data={arrowTableToJSON(results)} />
+{:catch error}
+    {error.message}
+{/await}
 
 <article class="prose prose-invert sm:prose-sm mx-auto my-10 px-10 bg-black">
 	<div class="h-72 my-3">
@@ -54,12 +85,10 @@
 						</tr>
 					</thead>
 					<tbody>
-                        {console.log(results), ""}
 						{#each Array(results.numRows) as _, row_number}
 							{@const row = (_, results.get(row_number))}
 							<tr>
 								{#each results.schema.fields as column}
-                                    {console.log([column], row[column.name]), ""}
 									<td>{row[column.name]}</td>
 								{/each}
 							</tr>
