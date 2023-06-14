@@ -187,6 +187,10 @@ Paths are **relative to two files deep** in your Evidence project. For example, 
 select * from '../../myfile.csv'
 ```
 
+:::info
+The `../../` prefix is needed because Evidence creates and runs inside the hidden folder `.evidence/template/`. The `pages` and the `sources` folders are special, and are copied into this hidden folder by default.
+:::
+
 #### SQL Syntax for Querying CSVs
 
 Evidence uses DuckDB to run SQL against a CSVs. For query syntax, see the [DuckDB docs](https://duckdb.org/docs/sql/query_syntax/select).
