@@ -586,6 +586,7 @@ importers:
   sites/example-project:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
+      '@evidence-dev/console': workspace:^
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/telemetry': 1.0.5
@@ -620,6 +621,7 @@ importers:
       vite: ^4.0.4
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
+      '@evidence-dev/console': link:../../packages/console
       '@evidence-dev/core-components': link:../../packages/core-components
       '@evidence-dev/plugin-connector': link:../../packages/plugin-connector
       '@evidence-dev/telemetry': link:../../packages/telemetry
