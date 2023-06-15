@@ -1,5 +1,5 @@
 <script>
-	import { slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
     import { DownloadData } from '@evidence-dev/core-components';
 
 	import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte';
@@ -7,40 +7,33 @@
 	import MdNavigateNext from 'svelte-icons/md/MdNavigateNext.svelte';
 	import MdLastPage from 'svelte-icons/md/MdLastPage.svelte';
 
-	// Data, pagination, and row index numbers
+    /** @type {import("apache-arrow").Table} */
 	export let data;
+
+    /** @type {number} */
 	export let rows = 10; // number of rows to show
 
-	$: paginated = data.length > rows;
-    $: totalRows = data.length;
+    /** @type {number} */
+    export let totalRows;
+
+    /** @type {number} */
+    export let page = 1;
+
+	$: paginated = totalRows > rows;
 
 	let inputPage = null;
 
-	let displayedData ;
-
-	let max;
-    let index = 0;
-    $: currentPage = Math.ceil((index + rows) / rows);
 	$: goToPage = (pageNumber) => {
-		index = pageNumber * rows;
-		max = index + rows;
-		currentPage = Math.ceil(max / rows);
-		if (inputPage) {
-			inputPage = Math.ceil(max / rows);
-		}
-		totalRows = data.length;
-		displayedData = data.slice(index, index + rows);
+		page = pageNumber;
+        inputPage = pageNumber;
 	};
 
     let pageCount;
     let displayedPageLength = 0;
 	$: if (paginated) {
-		pageCount = Math.ceil(data.length / rows);
-		displayedData = data.slice(index, index + rows);
-		displayedPageLength = displayedData.length;
+		pageCount = Math.ceil(totalRows / rows);
 	} else {
-		currentPage = 1;
-		displayedData = data;
+		page = 1;
 	}
 
     let hovering = false;
@@ -48,7 +41,7 @@
 
 <div
     class="table-container"
-    transition:slide|local
+    in:fade|local
     style="margin-top: 1.5em; margin-bottom: 1em; padding-bottom: 0em"
     on:mouseenter={() => (hovering = true)}
     on:mouseleave={() => (hovering = false)}
@@ -87,7 +80,7 @@
                     aria-label="first-page"
                     class="page-changer"
                     class:hovering
-                    disabled={currentPage === 1}
+                    disabled={page === 1}
                     on:click={() => goToPage(0)}
                 >
                     <div class="page-icon">
@@ -98,8 +91,8 @@
                     aria-label="previous-page"
                     class="page-changer"
                     class:hovering
-                    disabled={currentPage === 1}
-                    on:click={() => goToPage(currentPage - 2)}
+                    disabled={page === 1}
+                    on:click={() => goToPage(page - 2)}
                 >
                     <div class="page-icon">
                         <MdNavigateBefore />
@@ -114,7 +107,7 @@
                         bind:value={inputPage}
                         on:keyup={() => goToPage((inputPage ?? 1) - 1)}
                         on:change={() => goToPage((inputPage ?? 1) - 1)}
-                        placeholder={currentPage}
+                        placeholder={page}
                     />
                     /
                     <span class="page-count" style="margin-left: 4px;">{pageCount.toLocaleString()}</span>
@@ -126,8 +119,8 @@
                     aria-label="next-page"
                     class="page-changer"
                     class:hovering
-                    disabled={currentPage === pageCount}
-                    on:click={() => goToPage(currentPage)}
+                    disabled={page === pageCount}
+                    on:click={() => goToPage(page + 1)}
                 >
                     <div class="page-icon">
                         <MdNavigateNext />
@@ -137,7 +130,7 @@
                     aria-label="last-page"
                     class="page-changer"
                     class:hovering
-                    disabled={currentPage === pageCount}
+                    disabled={page === pageCount}
                     on:click={() => goToPage(pageCount - 1)}
                 >
                     <div class="page-icon">
@@ -145,11 +138,11 @@
                     </div>
                 </button>
             </div>
-            <DownloadData class="download-button" {data} display={hovering} />
+            <DownloadData class="download-button" {data} display={true} />
         </div>
     {:else}
         <div class="table-footer">
-            <DownloadData class="download-button" {data} display={hovering} />
+            <DownloadData class="download-button" {data} display={true} />
         </div>
     {/if}
 </div>
@@ -288,108 +281,5 @@
 		border-radius: 4px;
 		font-size: 12px;
 		color: var(--grey-500);
-	}
-
-	.table-footer {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		margin: 10px 0px;
-		font-size: 12px;
-		height: 9px;
-	}
-
-	/* Remove number buttons in input box*/
-	.page-input::-webkit-outer-spin-button,
-	.page-input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-
-	/* Firefox */
-	.page-input[type='number'] {
-		-moz-appearance: textfield;
-		appearance: textfield;
-	}
-
-	.page-input.hovering {
-		border: 1px solid var(--grey-200);
-	}
-
-	.page-input.error {
-		border: 1px solid var(--red-600);
-	}
-
-	.page-input::placeholder {
-		color: var(--grey-500);
-	}
-
-	button:enabled > .page-icon:hover {
-		color: var(--blue-800);
-	}
-
-	*:focus {
-		outline: none;
-	}
-
-	::placeholder {
-		/* Chrome, Firefox, Opera, Safari 10.1+ */
-		color: var(--grey-400);
-		opacity: 1; /* Firefox */
-	}
-
-	:-ms-input-placeholder {
-		/* Internet Explorer 10-11 */
-		color: var(--grey-400);
-	}
-
-	::-ms-input-placeholder {
-		/* Microsoft Edge */
-		color: var(--grey-400);
-	}
-
-	th {
-		user-select: none;
-	}
-
-	.print-page-count {
-		display: none;
-	}
-
-	@media (max-width: 600px) {
-		.page-changer {
-			height: 1.2em;
-			width: 1.2em;
-		}
-		.page-icon {
-			height: 1.2em;
-			width: 1.2em;
-		}
-
-		.page-count {
-			font-size: 1.1em;
-		}
-
-		.page-input {
-			font-size: 1.1em;
-		}
-	}
-
-	@media print {
-		.pagination {
-			break-inside: avoid;
-		}
-
-		.page-changer {
-			display: none;
-		}
-
-		.page-count {
-			display: none;
-		}
-
-		.print-page-count {
-			display: inline;
-		}
 	}
 </style>
