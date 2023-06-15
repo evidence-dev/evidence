@@ -1,23 +1,15 @@
 {
 	"compilerOptions": {
-        "types": ["@sveltejs/kit"],
+		"types": ["@sveltejs/kit"],
 		"paths": {
-			"$lib": [
-				"./components"
-			],
-			"$lib/*": [
-				"./components/*"
-			]
+			"$lib": ["./components"],
+			"$lib/*": ["./components/*"]
 		},
 		"rootDirs": ["."],
 		"importsNotUsedAsValues": "error",
 		"isolatedModules": true,
 		"preserveValueImports": true,
-		"lib": [
-			"esnext",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["esnext", "DOM", "DOM.Iterable"],
 		"moduleResolution": "node",
 		"module": "esnext",
 		"target": "esnext"
@@ -27,7 +19,7 @@
 		"./components/**/*.ts",
 		"./components/**/*.js",
 		"./components/**/*.svelte",
-        "./pages/**/*.ts",
+		"./pages/**/*.ts",
 		"./pages/**/*.js",
 		"./pages/**/*.svelte"
 	],

@@ -40,7 +40,7 @@
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
-    "evidence": {
-        "components": true
-    }
+	"evidence": {
+		"components": true
+	}
 }
