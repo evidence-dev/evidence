@@ -8,7 +8,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-        "@evidence-dev/console": "workspace:^",
+		"@evidence-dev/console": "workspace:^",
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/plugin-connector": "workspace:^",

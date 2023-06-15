@@ -9,10 +9,7 @@
 
 	/** @type {Record<string, unknown[]>} */
 	export let data;
-
-	let sql_query = `
-        select * from data limit 100
-    `.trim();
+	export let sql_query = 'select * from data limit 100';
 
 	let limit = 10;
 	let pagination = 1;
