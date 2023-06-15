@@ -52,7 +52,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"package:core-components": "pnpm --filter ./packages/core-components package",
-        "package:console": "pnpm --filter ./packages/console package",
+		"package:console": "pnpm --filter ./packages/console package",
 		"package:evidence": "pnpm --filter ./packages/evidence package",
 		"build:evidence": "pnpm --filter ./packages/evidence build",
 		"build:preprocess": "pnpm --filter ./packages/preprocess build",
