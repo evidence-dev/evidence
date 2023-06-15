@@ -4,7 +4,7 @@
 	"scripts": {
 		"dev": "evidence dev",
 		"build": "evidence build && npm run package",
-		"preview": "serve build",
+		"preview": "npx serve build",
 		"package": "svelte-kit sync && svelte-package -i components && publint",
 		"prepublishOnly": "npm run package"
 	},
