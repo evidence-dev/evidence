@@ -5,7 +5,7 @@
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { DownloadData, ErrorChart } from '@evidence-dev/core-components';
-	const strictBuild = false;
+	import { strictBuild } from '@evidence-dev/core-components/dist/unsorted/viz/context';
 
 	import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte';
 	import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte';
