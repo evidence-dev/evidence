@@ -39,14 +39,10 @@ npm --prefix ./reports run dev
 
 <TabItem value="codespaces" label="Codespaces">
 
-1. In the <a href="https://github.com/evidence-dev/template/" alt="template repo">template repo</a> click the green "Use this template" button, and select "Open in a Codespace".
-1. Wait for the codespace to start up
-1. In the terminal in the Codespace, run:
-
-```shell
-npm install
-npm run dev -- --host 0.0.0.0
-```
+<a class="external" href="https://github.com/codespaces/new?machine=standardLinux32gb&repo=399252557&ref=main&geo=UsEast">
+Create Evidence Codespace
+</a>
+<br/><br/>
 
 **Note:** Codespaces is much faster on the Desktop app. After the Codespace has booted, select the hamburger menu &rarr; Open in VS Code Desktop.
 
