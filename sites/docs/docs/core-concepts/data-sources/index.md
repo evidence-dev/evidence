@@ -56,6 +56,8 @@ gcloud auth application-default login
 
 Evidence will use the credentials stored by the gcloud CLI to connect to BigQuery.
 
+> *Note: Since gcloud requires browser access, this method is only available when developing locally.*
+
 #### Create a Service Account Key
 
 1. [Go to the Service Account Page](https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts/create?supportedpurview=project) and click on your project
@@ -85,7 +87,19 @@ Now you can copy the access token and use it in your Evidence project.
 
 ### Snowflake
 
-Evidence supports connecting to Snowflake using [Basic Authentication](https://docs.snowflake.com/en/user-guide/api-authentication), [Key-Pair Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth.html), [Browser-Based SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-browser-based-sso), or [Native SSO through Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-native-sso-okta).
+Evidence supports connecting to Snowflake using a [Snowflake Account](https://docs.snowflake.com/en/user-guide/api-authentication), [Key-Pair Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth.html), [Browser-Based SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-browser-based-sso), or [Native SSO through Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-native-sso-okta).
+
+#### Snowflake Account
+The Snowflake Account authentication method uses your Snowflake username and password to authenticate. If you don't have access to these, you will need to use one of the other authentication methods.
+
+#### Key-Pair Authentication
+The Key-Pair Authentication method uses a public/private key pair to authenticate. To use this method, you will need to [generate a public/private key pair](https://docs.snowflake.com/en/user-guide/key-pair-auth.html#label-generating-a-key-pair) and upload the public key to Snowflake.
+
+#### Browser-Based SSO
+The Browser-Based SSO method uses a browser-based SSO flow to authenticate. To use this method, you will need to [connect an SSO provider](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-configure-idp) to your Snowflake account.
+
+#### Native SSO through Okta
+The Native SSO through Okta method uses Okta to authenticate. To use this method, you will need to have an Okta account with MFA disabled connected to your Snowflake account.
 
 ### Redshift
 
@@ -172,6 +186,10 @@ Paths are **relative to two files deep** in your Evidence project. For example, 
 ```sql
 select * from '../../myfile.csv'
 ```
+
+:::info
+The `../../` prefix is needed because Evidence creates and runs inside the hidden folder `.evidence/template/`. The `pages` and the `sources` folders are special, and are copied into this hidden folder by default.
+:::
 
 #### SQL Syntax for Querying CSVs
 

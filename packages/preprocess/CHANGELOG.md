@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 3.0.0
+
+### Major Changes
+
+- 4cd28cf5: Add support for component plugins; move @evidence-dev/components to @evidence-dev/core-components
+
 ## 2.4.0
 
 ### Minor Changes

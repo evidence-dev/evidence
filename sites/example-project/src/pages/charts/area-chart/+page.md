@@ -11,6 +11,14 @@ data={orders_by_category.filter(d => d.category === "Sinister Toys")}
 x=month
 />
 
+## Area with Custom Line Color
+
+<AreaChart
+data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+x=month
+lineColor=red
+/>
+
 ## Stacked Area
 
 <AreaChart 
