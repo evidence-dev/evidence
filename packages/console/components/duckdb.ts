@@ -1,4 +1,4 @@
-import { ConsoleLogger, AsyncDuckDB } from '@duckdb/duckdb-wasm';
+import { ConsoleLogger, AsyncDuckDB, AsyncDuckDBConnection } from '@duckdb/duckdb-wasm';
 import duckdb_wasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
 import duckdb_worker from '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker';
 import { browser } from '$app/environment';
@@ -40,14 +40,14 @@ async function setData(table: string, data: any) {
 	resolve_initial_data();
 }
 
-async function query(sql: string) {
-	if (!browser) return {};
+async function query(sql: string): Promise<ReturnType<AsyncDuckDBConnection['query']> | null> {
+	if (!browser) return null;
 
 	await setting_data;
 
 	const connection = await db.connect();
 
-	return connection.query<Record<string, any>>(sql);
+	return connection.query(sql);
 }
 
 export { query, setData }; // so we can import this elsewhere
