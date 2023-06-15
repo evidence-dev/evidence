@@ -7,7 +7,7 @@
 	import { query, setData } from './duckdb';
 	import DataTable from './DataTable.svelte';
 
-	/** @type{Record<string, unknown[]>} */
+	/** @type {Record<string, unknown[]>} */
 	export let data;
 
 	let sql_query = `
@@ -25,10 +25,7 @@
 
 	$: paginated_results = query(`
 	    WITH query as (${sql_query.replace(/;$/, '')})
-        SELECT
-            row_number() over() as row,
-            * 
-        FROM query GROUP BY all
+        SELECT * FROM query
 	    LIMIT ${limit}
 	    OFFSET ${(pagination - 1) * limit};
 	`);

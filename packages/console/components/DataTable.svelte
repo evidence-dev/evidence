@@ -1,11 +1,10 @@
 <script>
-	import { slide } from 'svelte/transition';
+	import { slide, blur } from 'svelte/transition';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { DownloadData, ErrorChart } from '@evidence-dev/core-components';
-	import { strictBuild } from '@evidence-dev/core-components/dist/unsorted/viz/context';
 
 	import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte';
 	import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte';
@@ -46,9 +45,6 @@
 		}
 	} catch (e) {
 		error = e.message;
-		if (strictBuild) {
-			throw error;
-		}
 	}
 
 	// ---------------------------------------------------------------------------------------
@@ -95,13 +91,7 @@
 				<thead>
 					<tr>
 						{#each columnSummary.filter((d) => d.show === true) as column}
-							<th
-								class={column.type}
-								style="
-                                    color: var(--grey-900);
-                                    cursor: auto;
-                                "
-							>
+							<th class={column.type}>
 								<span class="col-header">
 									{column.title}
 								</span>
@@ -110,8 +100,8 @@
 					</tr>
 				</thead>
 
-				{#each data as row}
-					<tr>
+				{#each data as row (row)}
+					<tr in:blur>
 						{#each columnSummary as column}
 							<td class="{column.type} row-lines">
 								{formatValue(row[column.id], column.format, column.columnUnitSummary)}
@@ -169,7 +159,7 @@
 						class="page-changer"
 						class:hovering
 						disabled={currentPage === pageCount}
-						on:click={() => goToPage(pageCount - 1)}
+						on:click={() => goToPage(pageCount)}
 					>
 						<div class="page-icon">
 							<MdLastPage />
