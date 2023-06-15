@@ -4,7 +4,7 @@
 
 <script>
 	import { query, setData } from './duckdb';
-    import { DataTable } from "@evidence-dev/core-components";
+    import DataTable from "./DataTable.svelte";
 
 	/** @type{Record<string, unknown[]>} */
 	export let data;
@@ -65,7 +65,7 @@
 {#await paginated_results}
     Loading...
 {:then results}
-    <DataTable data={arrowTableToJSON(results)} />
+    <DataTable data={results} />
 {:catch error}
     {error.message}
 {/await}
