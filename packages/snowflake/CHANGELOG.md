@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 0.3.1
+
+### Patch Changes
+
+- 168af3bb: Add optional role and schema fields for snowflake
+
 ## 0.3.0
 
 ### Minor Changes

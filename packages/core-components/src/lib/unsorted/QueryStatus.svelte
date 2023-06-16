@@ -56,13 +56,18 @@
 
 	onMount(() => {
 		endpoint = $routeHash;
-		const interval = setInterval(() => {
-			checkStatusAndInvalidate();
-		}, 100);
+		let keep_running = true;
 
-		return () => {
-			clearInterval(interval);
+		const loop = async () => {
+			while (keep_running) {
+				await checkStatusAndInvalidate();
+				await delay(100);
+			}
 		};
+
+		loop();
+
+		return () => (keep_running = false);
 	});
 </script>
 
