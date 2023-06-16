@@ -8,6 +8,14 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs>
+<TabItem value="vscode" label="VSCode Extension" default>
+
+Download from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
+
+</TabItem>
+
+
+
 <TabItem value="standalone" label="Stand-alone" default>
 
 ```shell
