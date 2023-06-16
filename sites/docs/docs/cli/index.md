@@ -40,8 +40,8 @@ Evidence does not currently support a `.env` file, but you can set environment v
 
 All Redshift environment variables are set using the PostgreSQL variables.
 
-| Variable                   | Description                                                     | Options (if applicable)                                                               |
-| -------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Variable                            | Description                                                     | Options (if applicable)                                                               |
+| ----------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | EVIDENCE_DATABASE                   | The database to use.                                            | `bigquery` , `snowflake` , `redshift`, `postgres`, `mssql`, `mysql`, `sqlite`, `duckdb`, `csv` |
 | EVIDENCE_BIGQUERY_PROJECT_ID        | BigQuery Project ID                                             |                                                                                       |
 | EVIDENCE_BIGQUERY_CLIENT_EMAIL      | BigQuery Client Email                                           |                                                                                       |
@@ -53,6 +53,8 @@ All Redshift environment variables are set using the PostgreSQL variables.
 | EVIDENCE_SNOWFLAKE_PASSWORD         | Snowflake Password                                              |                                                                                       |
 | EVIDENCE_SNOWFLAKE_DATABASE         | Snowflake Database                                              |                                                                                       |
 | EVIDENCE_SNOWFLAKE_WAREHOUSE        | Snowflake Warehouse                                             |                                                                                       |
+| EVIDENCE_SNOWFLAKE_ROLE             | Snowflake Role                                                  |                                                                                       |
+| EVIDENCE_SNOWFLAKE_SCHEMA           | Snowflake Schema                                                |                                                                                       |
 | EVIDENCE_SNOWFLAKE_AUTHENTICATOR    | Snowflake Authenticator                                         | `snowflake_jwt`, `externalbrowser`, `okta`, `snowflake`                               |
 | EVIDENCE_SNOWFLAKE_PRIVATE_KEY      | Snowflake Private Key                                           |                                                                                       |
 | EVIDENCE_SNOWFLAKE_PASSPHRASE       | Snowflake Passphrase                                            |                                                                                       |
@@ -74,4 +76,4 @@ All Redshift environment variables are set using the PostgreSQL variables.
 | EVIDENCE_MYSQL_SSL                  | MySQL SSL                                                       | `true` , `false`, `no-verify`                                                         |
 | EVIDENCE_SQLITE_FILENAME            | SQLite Filename                                                 |                                                                                       |
 | EVIDENCE_DUCKDB_FILENAME            | DuckDB Filename                                                 |                                                                                       |
-| SEND_ANONYMOUS_USAGE_STATS | Send [anonymous usage stats](localhost:3000/settings#telemetry) | `yes` , `no`                                                                          |
+| SEND_ANONYMOUS_USAGE_STATS          | Send [anonymous usage stats](localhost:3000/settings#telemetry) | `yes` , `no`                                                                          |

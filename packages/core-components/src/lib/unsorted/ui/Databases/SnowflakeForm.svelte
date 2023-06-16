@@ -65,6 +65,26 @@
 				placeholder: 'my_wh',
 				value: credentials.warehouse,
 				dataTestId: 'snowflakeWarehouse'
+			},
+			{
+				id: 'role',
+				label: 'Role',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.role,
+				dataTestId: 'snowflakeRole'
+			},
+			{
+				id: 'schema',
+				label: 'Schema',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.schema,
+				dataTestId: 'snowflakeSchema'
 			}
 		],
 		okta: [
@@ -128,6 +148,26 @@
 				placeholder: 'my_wh',
 				value: credentials.warehouse,
 				dataTestId: 'snowflakeWarehouse'
+			},
+			{
+				id: 'role',
+				label: 'Role',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.role,
+				dataTestId: 'snowflakeRole'
+			},
+			{
+				id: 'schema',
+				label: 'Schema',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.schema,
+				dataTestId: 'snowflakeSchema'
 			}
 		],
 		externalbrowser: [
@@ -172,6 +212,26 @@
 				placeholder: 'my_wh',
 				value: credentials.warehouse,
 				dataTestId: 'snowflakeWarehouse'
+			},
+			{
+				id: 'role',
+				label: 'Role',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.role,
+				dataTestId: 'snowflakeRole'
+			},
+			{
+				id: 'schema',
+				label: 'Schema',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.schema,
+				dataTestId: 'snowflakeSchema'
 			}
 		],
 		snowflake_jwt: [
@@ -216,6 +276,26 @@
 				placeholder: 'my_wh',
 				value: credentials.warehouse,
 				dataTestId: 'snowflakeWarehouse'
+			},
+			{
+				id: 'role',
+				label: 'Role',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.role,
+				dataTestId: 'snowflakeRole'
+			},
+			{
+				id: 'schema',
+				label: 'Schema',
+				type: 'text',
+				optional: true,
+				override: false,
+				placeholder: 'public',
+				value: credentials.schema,
+				dataTestId: 'snowflakeSchema'
 			},
 			{
 				id: 'passphrase',
