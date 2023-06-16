@@ -8,7 +8,21 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs>
-<TabItem value="standalone" label="Stand-alone" default>
+<TabItem value="vscode" label="VSCode Extension" default>
+
+1. Download the Evidence Extensinon from the VSCode Marketplace
+2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project` to create a new project
+3. Click `Start Evidence`
+
+<a class="external" href="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">
+Download VSCode Extension
+</a>
+
+</TabItem>
+
+
+
+<TabItem value="standalone" label="Command Line" default>
 
 ```shell
 npx degit evidence-dev/template my-project
@@ -72,7 +86,3 @@ Check your versions with `node -v` and `npm -v`
 - Update to the latest npm version with `npm install -g npm@latest`
 
 <a class="external" href="https://nodejs.org/en/download">Download Node.js + NPM</a>
-
-## VS Code Extension
-
-If you use VS Code, we recommend installing the [Evidence VSCode Extension](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode). It adds syntax highlighting and autocomplete for Evidence flavoured markdown.
