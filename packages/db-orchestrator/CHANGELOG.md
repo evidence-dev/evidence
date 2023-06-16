@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 2.2.2
+
+### Patch Changes
+
+- Updated dependencies [168af3bb]
+  - @evidence-dev/snowflake@0.3.1
+
 ## 2.2.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @evidence-dev/core-components
 
+## 1.0.3
+
+### Patch Changes
+
+- 168af3bb: Add optional role and schema fields for snowflake
+- 929a0074: fixes breadcrumb links, long breadcrumbs causing x-axis scrollbar, and bigvalue with object instead of array
+- eb886615: switch to async + while loop to prevent requests building up
+
 ## 1.0.2
 
 ### Patch Changes
