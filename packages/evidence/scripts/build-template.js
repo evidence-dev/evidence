@@ -12,6 +12,7 @@ const templatePaths = [
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
 	'src/pages/+layout.server.js',
+	'src/pages/+layout.js',
 	'src/pages/settings/',
 	'src/pages/api/',
 	'tailwind.config.cjs',
