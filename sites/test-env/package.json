@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "2.0.11",
+	"version": "2.0.15",
 	"private": true,
 	"scripts": {
 		"build": "evidence build",
@@ -13,6 +13,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@evidence-dev/component-utilities": "workspace:^",
+		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/evidence": "workspace:^"
 	}
 }

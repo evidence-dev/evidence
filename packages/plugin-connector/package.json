@@ -1,0 +1,52 @@
+{
+	"name": "@evidence-dev/plugin-connector",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"scripts": {
+		"test": "vitest --run",
+		"test:watch": "vitest",
+		"build": "tsc --noEmit -p tsconfig.json && parcel build",
+		"watch": "parcel watch",
+		"check": "tsc --noEmit -p tsconfig.json"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@types/estree": "^1.0.1",
+		"chalk": "^5.2.0",
+		"svelte": "3.55.0",
+		"svelte-preprocess": "^5.0.3",
+		"sveltekit-autoimport": "^1.7.0",
+		"yaml": "^2.2.2",
+		"zod": "^3.21.4"
+	},
+	"devDependencies": {
+		"@parcel/core": "^2.8.3",
+		"@parcel/packager-ts": "^2.8.3",
+		"@parcel/transformer-inline-string": "^2.8.3",
+		"@parcel/transformer-typescript-types": "^2.8.3",
+		"@types/node": "^20.1.2",
+		"parcel": "^2.8.3",
+		"typescript": "^5.0.4",
+		"vitest": "^0.25.3"
+	},
+	"targets": {
+		"types": false,
+		"main": {
+			"context": "node"
+		},
+		"module": {
+			"context": "node"
+		}
+	},
+	"exports": {
+		"import": "./dist/index.mjs",
+		"require": "./dist/index.cjs"
+	},
+	"main": "dist/index.cjs",
+	"module": "dist/index.mjs",
+	"source": "src/index.js",
+	"types": "./types/index.d.ts"
+}

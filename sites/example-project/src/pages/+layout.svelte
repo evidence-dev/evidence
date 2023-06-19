@@ -8,7 +8,8 @@
 	let fileTree = {
 		label: 'Home',
 		href: '/',
-		children: {}
+		children: {},
+		isTemplated: false
 	};
 	pagePaths.forEach(function (path) {
 		path.split('/').reduce(function (r, e) {
@@ -17,12 +18,14 @@
 				return (r['href'] = href);
 			} else {
 				let label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
+				r.isTemplated = e.includes('[');
 				return (
 					r?.children[e] ||
 					(r.children[e] = {
 						label,
 						children: {},
-						href: undefined
+						href: undefined,
+						isTemplated: false
 					})
 				);
 			}
@@ -65,17 +68,13 @@
 	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
 
-	import TableOfContents from '$lib/TableOfContents.svelte';
-	import Header from '$lib/ui/Header.svelte';
-	import Sidebar from '$lib/ui/Sidebar.svelte';
-	import LoadingIndicator from '$lib/ui/LoadingIndicator.svelte';
-	import QueryStatus from '$lib/QueryStatus.svelte';
-
 	let open = false;
 	//TODO: Offer this as a build parameter
 	// in dev. mode prevent prefetch on "hover"
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 </script>
+
+<!-- eslint-disable no-undef -->
 
 {#if $navigating}
 	<LoadingIndicator />

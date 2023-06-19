@@ -106,7 +106,7 @@ Sales are down vs last month. See [category detail](/sales-by-category).
 There are a number of variables available to access information about the current page. These are particularly useful when creating templated pages and filters. They use the syntax `{$...}`
 
 ```markdown
-The current page path is: {$page.path}
+The current page path is: {$page.route.id}
 
 <!-- Result: The current page path is: /core-concepts/syntax/ -->
 ```

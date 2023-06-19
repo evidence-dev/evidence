@@ -1,10 +1,12 @@
 {
 	"devDependencies": {
 		"@changesets/cli": "2.21.0",
-		"@evidence-dev/components": "link:packages/components",
+		"@evidence-dev/component-utilities": "link:packages/component-utilities",
+		"@evidence-dev/core-components": "link:packages/core-components",
 		"@evidence-dev/db-orchestrator": "link:packages/db-orchestrator",
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/preprocess": "link:packages/preprocess",
+		"@evidence-dev/plugin-connector": "link:packages/plugin-connector",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
 		"@sveltejs/adapter-static": "1.0.0",
 		"@sveltejs/kit": "1.13.0",
@@ -20,6 +22,7 @@
 		"export-to-csv": "0.2.1",
 		"fs-extra": "10.1.0",
 		"git-remote-origin-url": "4.0.0",
+		"npm-run-all": "^4.1.5",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"prismjs": "1.29.0",
@@ -37,18 +40,26 @@
 		"vite": "4.0.4"
 	},
 	"scripts": {
-		"dev": "pnpm --filter ./sites/example-project dev",
-		"build:dev-workspace": "pnpm --filter ./sites/example-project build",
+		"build:dev-workspace": "run-s build:example-project",
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build",
 		"build:docs": "pnpm --filter ./sites/docs build",
-		"release": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm changeset publish",
+		"release": "run-s package:core-components build:tailwind build:evidence build:plugin-connector && pnpm changeset publish",
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
-		"test": "pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --frozen-lockfile && pnpm -r test",
+		"test": "run-s package:core-components build:tailwind build:evidence && pnpm i --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
-		"postinstall": "pnpm --filter ./packages/preprocess build && pnpm --filter ./sites/example-project package && pnpm --filter ./packages/evidence build && pnpm install --ignore-scripts ",
+		"postinstall": "run-s build:preprocess build:tailwind build:plugin-connector package:core-components build:evidence && pnpm install --ignore-scripts",
 		"docs": "pnpm --filter ./sites/docs start",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"package:core-components": "pnpm --filter ./packages/core-components package",
+		"package:evidence": "pnpm --filter ./packages/evidence package",
+		"build:evidence": "pnpm --filter ./packages/evidence build",
+		"build:preprocess": "pnpm --filter ./packages/preprocess build",
+		"build:plugin-connector": "pnpm --filter ./packages/plugin-connector build",
+		"build:example-project": "pnpm --filter ./sites/example-project build",
+		"build:tailwind": "pnpm --filter ./packages/tailwind build",
+		"dev:example-project": "pnpm --filter ./sites/example-project dev",
+		"dev:core-components": "pnpm --filter ./packages/core-components package:watch"
 	},
 	"pnpm": {
 		"overrides": {
@@ -60,5 +71,8 @@
 			"jsonwebtoken@<9.0.0": ">=9.0.0",
 			"nth-check@<2.0.1": ">=2.0.1"
 		}
+	},
+	"dependencies": {
+		"@evidence-dev/tailwind": "link:packages/tailwind"
 	}
 }

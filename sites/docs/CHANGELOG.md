@@ -1,5 +1,20 @@
 # evidence-docs
 
+## 2.0.3
+
+### Patch Changes
+
+- 44c0c4ca: changed bigquery default connector
+
+## 2.0.2
+
+### Patch Changes
+
+- 5b6156d9: added support for new authentication methods for bigquery and snowflake
+- 7873115f: Added lineColor prop to AreaChart
+- 4c04edd0: Updated environment var docs
+- 84208c04: updated licenses, general cleanup
+
 ## 2.0.1
 
 ### Patch Changes

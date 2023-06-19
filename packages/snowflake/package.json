@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/snowflake",
-	"version": "0.2.0",
+	"version": "0.3.1",
 	"description": "Snowflake driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -9,9 +9,12 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"snowflake-sdk": "1.6.13",
 		"@evidence-dev/db-commons": "workspace:^",
-		"asn1.js": "^5.0.0"
+		"asn1.js": "^5.0.0",
+		"fs-extra": "^11.1.1",
+		"node-fetch": "^3.3.1",
+		"open": "^9.1.0",
+		"snowflake-sdk": "1.6.13"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"

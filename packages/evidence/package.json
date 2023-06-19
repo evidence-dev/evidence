@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "17.0.3",
+	"version": "18.0.3",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -29,7 +29,8 @@
 		"template"
 	],
 	"devDependencies": {
-		"@evidence-dev/components": "workspace:^",
+		"@evidence-dev/component-utilities": "workspace:^",
+		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
 		"@sveltejs/kit": "1.13.0",
 		"svelte": "3.55.0",
@@ -37,6 +38,7 @@
 	},
 	"dependencies": {
 		"@evidence-dev/preprocess": "workspace:^",
+		"@evidence-dev/plugin-connector": "workspace:^",
 		"@evidence-dev/telemetry": "workspace:^",
 		"@sveltejs/adapter-static": "1.0.0",
 		"chokidar": "3.5.3",
@@ -44,22 +46,23 @@
 		"sade": "^1.8.1"
 	},
 	"peerDependencies": {
-		"@evidence-dev/components": "workspace:^",
+		"@evidence-dev/component-utilities": "workspace:^",
+		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
 		"@sveltejs/kit": "1.13.0",
+		"autoprefixer": "^10.4.7",
 		"debounce": "^1.2.1",
-		"svelte": "3.55.0",
-		"vite": "4.0.4",
-		"svelte2tsx": "0.6.0",
-		"typescript": "4.9.5",
 		"git-remote-origin-url": "4.0.0",
-		"unist-util-visit": "4.1.2",
-		"svelte-tiny-linked-charts": "1.1.5",
-		"svelte-preprocess": "5.0.3",
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
-		"autoprefixer": "^10.4.7",
-		"tailwindcss": "^3.3.1"
+		"svelte": "3.55.0",
+		"svelte-preprocess": "5.0.3",
+		"svelte-tiny-linked-charts": "1.1.5",
+		"svelte2tsx": "0.6.0",
+		"tailwindcss": "^3.3.1",
+		"typescript": "4.9.5",
+		"unist-util-visit": "4.1.2",
+		"vite": "4.0.4"
 	},
 	"engines": {
 		"node": "^16.14 || >=18"

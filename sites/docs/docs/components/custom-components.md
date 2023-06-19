@@ -44,8 +44,13 @@ Add a folder called `components/` in the root of your project. This is where Evi
 	import Hello from '$lib/Hello.svelte';
 </script>
 
-```sql sales_by_country select 'Canada' as country, 100 as sales_usd union all select 'USA' as country,
-200 as sales_usd union all select 'UK' as country, 300 as sales_usd ```
+```sql sales_by_country 
+select 'Canada' as country, 100 as sales_usd 
+union all 
+select 'USA' as country, 200 as sales_usd 
+union all 
+select 'UK' as country, 300 as sales_usd 
+```
 
 <!-- To use data in the component, pass it to the component as a prop
      You can use multiple queries, and name the props anything you like -->
@@ -57,7 +62,7 @@ Add a folder called `components/` in the root of your project. This is where Evi
      If you need any Evidence components inside your custom component, you must import them explicitly -->
 <script>
 	export let query;
-	import BarChart from '@evidence-dev/components/viz/BarChart.svelte';
+	import { BarChart } from '@evidence-dev/core-components';
 </script>
 
 <p>

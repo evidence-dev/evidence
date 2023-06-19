@@ -1,5 +1,48 @@
 # evidence-test-environment
 
+## 2.0.15
+
+### Patch Changes
+
+- Updated dependencies [168af3bb]
+- Updated dependencies [929a0074]
+- Updated dependencies [eb886615]
+  - @evidence-dev/core-components@1.0.3
+  - @evidence-dev/evidence@18.0.3
+
+## 2.0.14
+
+### Patch Changes
+
+- Updated dependencies [2b7809e6]
+  - @evidence-dev/core-components@1.0.2
+  - @evidence-dev/evidence@18.0.2
+
+## 2.0.13
+
+### Patch Changes
+
+- Updated dependencies [44c0c4ca]
+- Updated dependencies [a38148b5]
+  - @evidence-dev/core-components@1.0.1
+  - @evidence-dev/evidence@18.0.1
+
+## 2.0.12
+
+### Patch Changes
+
+- fb6ac548: switched plugin-connector to evidence dep
+- Updated dependencies [fb6ac548]
+- Updated dependencies [ac3d47d3]
+- Updated dependencies [c8932e5e]
+- Updated dependencies [7873115f]
+- Updated dependencies [d7d4dfce]
+- Updated dependencies [4cd28cf5]
+- Updated dependencies [84208c04]
+  - @evidence-dev/evidence@18.0.0
+  - @evidence-dev/component-utilities@1.0.0
+  - @evidence-dev/core-components@1.0.0
+
 ## 2.0.11
 
 ### Patch Changes

@@ -301,6 +301,13 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>left</td>
     </tr>
     <tr>	
+        <td>wrap</td>
+        <td>Wrap column text</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
         <td>contentType</td>
         <td>Lets you specify how to treat the content within a column. See below for contentType-specific options.</td>
         <td class='tcenter'>-</td>

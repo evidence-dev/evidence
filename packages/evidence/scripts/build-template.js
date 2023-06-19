@@ -14,7 +14,6 @@ const templatePaths = [
 	'src/pages/+layout.server.js',
 	'src/pages/settings/',
 	'src/pages/api/',
-	'src/components/',
 	'tailwind.config.cjs',
 	'postcss.config.cjs'
 ];
@@ -32,6 +31,7 @@ fs.outputFileSync(
     import evidencePreprocess from '@evidence-dev/preprocess'
     import preprocess from "svelte-preprocess";
     import adapter from '@sveltejs/adapter-static';
+    import { evidencePlugins } from '@evidence-dev/plugin-connector';
     
     /** @type {import('@sveltejs/kit').Config} */
     
@@ -39,6 +39,7 @@ fs.outputFileSync(
         extensions: ['.svelte', ".md"], 
         preprocess: [
             ...evidencePreprocess(true),
+            evidencePlugins(),
             preprocess({
               postcss: true,
             }),
@@ -68,7 +69,7 @@ fs.outputFileSync(
         plugins: [sveltekit()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts'],
-            exclude: ['@evidence-dev/components', 'svelte-icons', 'svelte-tiny-linked-charts']
+            exclude: ['svelte-icons', 'svelte-tiny-linked-charts']
         },
         ssr: {
             external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']

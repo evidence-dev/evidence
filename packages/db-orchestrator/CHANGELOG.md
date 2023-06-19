@@ -1,5 +1,41 @@
 # @evidence-dev/db-orchestrator
 
+## 2.2.2
+
+### Patch Changes
+
+- Updated dependencies [168af3bb]
+  - @evidence-dev/snowflake@0.3.1
+
+## 2.2.1
+
+### Patch Changes
+
+- Updated dependencies [44c0c4ca]
+  - @evidence-dev/bigquery@1.3.1
+
+## 2.2.0
+
+### Minor Changes
+
+- 4c04edd0: Changed expected environment variables to reduce ambiguity
+
+### Patch Changes
+
+- Updated dependencies [4c04edd0]
+- Updated dependencies [5b6156d9]
+- Updated dependencies [0d720b18]
+  - @evidence-dev/bigquery@1.3.0
+  - @evidence-dev/db-commons@0.2.0
+  - @evidence-dev/duckdb@0.1.0
+  - @evidence-dev/mysql@0.3.0
+  - @evidence-dev/postgres@0.3.0
+  - @evidence-dev/snowflake@0.3.0
+  - @evidence-dev/sqlite@1.2.0
+  - @evidence-dev/mssql@0.2.1
+  - @evidence-dev/csv@0.1.4
+  - @evidence-dev/redshift@0.0.6
+
 ## 2.1.3
 
 ### Patch Changes

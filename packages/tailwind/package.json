@@ -1,0 +1,25 @@
+{
+	"name": "@evidence-dev/tailwind",
+	"version": "1.0.0",
+	"description": "",
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"parcel": "^2.8.3",
+		"typescript": "^5.0.4"
+	},
+	"dependencies": {
+		"tailwindcss": "^3.3.1"
+	},
+	"scripts": {
+		"build": "parcel build"
+	},
+	"exports": {
+		"import": "./dist/index.mjs",
+		"require": "./dist/index.cjs"
+	},
+	"main": "dist/index.cjs",
+	"module": "dist/index.mjs",
+	"source": "index.js"
+}
