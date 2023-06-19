@@ -1,9 +1,10 @@
-import { ConsoleLogger, AsyncDuckDB, AsyncDuckDBConnection } from '@duckdb/duckdb-wasm';
+import { ConsoleLogger, AsyncDuckDB } from '@duckdb/duckdb-wasm';
 import duckdb_wasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
 import duckdb_worker from '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker';
 import { browser } from '$app/environment';
 
-let db: AsyncDuckDB;
+/** @type {AsyncDuckDB} */
+let db;
 
 async function initDB() {
 	if (!browser) return;
@@ -21,10 +22,18 @@ async function initDB() {
 
 const tables = new Set();
 
-let resolve_initial_data: Function;
+/** @type {Function} */
+let resolve_initial_data;
 let setting_data = new Promise((r) => (resolve_initial_data = r));
 
-async function setData(table: string, data: any) {
+/**
+ * Sets the contents of `table` to the JSON object `data`.
+ * 
+ * @param {string} table 
+ * @param {any} data 
+ * @returns {void}
+ */
+async function setData(table, data) {
 	if (!browser) return;
 	if (!db) await initDB();
 
@@ -40,7 +49,14 @@ async function setData(table: string, data: any) {
 	resolve_initial_data();
 }
 
-async function query(sql: string): Promise<ReturnType<AsyncDuckDBConnection['query']> | null> {
+
+/**
+ * Queries the database with the given SQL statement.
+ * 
+ * @param {string} sql 
+ * @returns {Promise<ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null>}
+ */
+async function query(sql) {
 	if (!browser) return null;
 
 	await setting_data;

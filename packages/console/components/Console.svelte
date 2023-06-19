@@ -12,7 +12,7 @@
 	export let sql_query = 'select * from data limit 100';
 
 	let limit = 10;
-	let pagination = 1;
+	let currentPage = 1;
 
 	$: setData('data', data);
 
@@ -24,7 +24,7 @@
 	    WITH query as (${sql_query.replace(/;$/, '')})
         SELECT * FROM query
 	    LIMIT ${limit}
-	    OFFSET ${(pagination - 1) * limit};
+	    OFFSET ${(currentPage - 1) * limit};
 	`);
 
 	let results = null;
@@ -42,9 +42,8 @@
 	function arrowTableToJSON(table) {
 		const rows = [];
 
-		for (let i = 0; i < table.numRows; i++) {
+		for (const table_row of table) {
 			const row = {};
-			const table_row = table.get(i);
 			for (const column of table.schema.fields) {
 				row[column.name] = table_row[column.name];
 				if (typeof row[column.name] === 'bigint') {
@@ -68,5 +67,5 @@
 </div>
 
 {#if results}
-	<DataTable data={results} {totalRows} bind:currentPage={pagination} />
+	<DataTable data={results} {totalRows} bind:currentPage />
 {/if}
