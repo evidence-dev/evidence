@@ -13,7 +13,7 @@
 	const checkUrl = function (href, fileTree) {
 		let found = false;
 		function checkChildren(node) {
-			if (node.href === href) {
+			if (node.href === href || (href.startsWith(node.href) && node.isTemplated)) {
 				found = true;
 			} else if (node.children) {
 				node.children.forEach((child) => {
@@ -58,27 +58,33 @@
 	$: crumbs = buildCrumbs(pathArray);
 </script>
 
-<div class="main">
-	<span class="container">
-		<span>
-			{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
-				<a href="/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
-			{:else}
-				{#each crumbs as crumb, i}
-					{#if i > 0}
-						&emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>
-					{:else}
-						<a href={crumb.href}>
-							{#if crumb.title === 'Home'}
-								<HomeIcon height="14" width="14" verticalOffset="3" />
-							{:else}
-								{crumb.title}
-							{/if}
-						</a>
-					{/if}
-				{/each}
-			{/if}
-		</span>
+<!-- max-w explanation:
+    100vw (initial) 
+    1em + 32px (hamburger) / 18rem (sidebar) + 16px (sidebar grid gap)
+    56px (page menu)
+-->
+
+<div
+	class="main truncate min-[850px]:max-w-[calc(100vw-18rem-16px-56px)] max-[850px]:max-w-[calc(100vw-1em-32px-56px)]"
+>
+	<span>
+		{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
+			<a href="/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
+		{:else}
+			{#each crumbs as crumb, i}
+				{#if i > 0}
+					&emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>
+				{:else}
+					<a href={crumb.href}>
+						{#if crumb.title === 'Home'}
+							<HomeIcon height="14" width="14" verticalOffset="3" />
+						{:else}
+							{crumb.title}
+						{/if}
+					</a>
+				{/if}
+			{/each}
+		{/if}
 	</span>
 </div>
 
@@ -87,16 +93,9 @@
 		padding: 0 0.5em 0 1.5em;
 		box-sizing: border-box;
 		width: 100%;
-		overflow: auto;
 		white-space: nowrap;
 		-ms-overflow-style: none;
 		scrollbar-width: none;
-	}
-
-	span.container {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
 	}
 
 	span {
@@ -107,7 +106,6 @@
 	}
 
 	a {
-		display: inline-block;
 		text-transform: capitalize;
 		text-decoration: none;
 		color: var(--grey-700);

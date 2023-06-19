@@ -1,22 +1,10 @@
 # Creating a Plugin
 
-## Initializing your Plugin
+You can create your own plugins to add components to Evidence. Plugins are Svelte libraries.
 
-Writing a components plugin is very similar to creating a SvelteKit library
+## Starting from a Template
 
-Start by initializing a library:
-
-```bash
-npm create svelte
-```
-
-Next, open `package.json`, and add the following flag; this tells evidence that your package is a component plugin.
-
-```json
-"evidence": {
-    "components": true
-}
-```
+The easiest way to get started is from the example component library [**on GitHub**](https://github.com/evidence-dev/labs), with a live demo of the components [here](https://labs.evidence.dev).
 
 ## Exporting Components
 

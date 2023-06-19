@@ -37,6 +37,14 @@ const envMap = {
 		{ key: 'WAREHOUSE', deprecated: true },
 		{ key: 'warehouse', deprecated: true }
 	],
+	role: [
+		{ key: 'EVIDENCE_SNOWFLAKE_ROLE', deprecated: false },
+		{ key: 'SNOWFLAKE_ROLE', deprecated: false }
+	],
+	schema: [
+		{ key: 'EVIDENCE_SNOWFLAKE_SCHEMA', deprecated: false },
+		{ key: 'SNOWFLAKE_SCHEMA', deprecated: false }
+	],
 	privateKey: [
 		{ key: 'EVIDENCE_SNOWFLAKE_PRIVATE_KEY', deprecated: false },
 		{ key: 'SNOWFLAKE_PRIVATE_KEY', deprecated: false }
@@ -172,6 +180,8 @@ const getCredentials = async (database = {}) => {
 	const username = database.username ?? getEnv(envMap, 'username');
 	const default_database = database.database ?? getEnv(envMap, 'database');
 	const warehouse = database.warehouse ?? getEnv(envMap, 'warehouse');
+	const role = database.role ?? getEnv(envMap, 'role');
+	const schema = database.schema ?? getEnv(envMap, 'schema');
 
 	if (authenticator === 'snowflake_jwt') {
 		const private_key = database.private_key ?? getEnv(envMap, 'privateKey');
@@ -193,6 +203,8 @@ const getCredentials = async (database = {}) => {
 			account,
 			database: default_database,
 			warehouse,
+			role,
+			schema,
 			authenticator
 		};
 	} else if (authenticator === 'externalbrowser') {
@@ -201,6 +213,8 @@ const getCredentials = async (database = {}) => {
 			account,
 			database: default_database,
 			warehouse,
+			role,
+			schema,
 			authenticator
 		};
 	} else if (authenticator === 'okta') {
@@ -210,6 +224,8 @@ const getCredentials = async (database = {}) => {
 			account,
 			database: default_database,
 			warehouse,
+			role,
+			schema,
 			authenticator: database.okta_url ?? getEnv(envMap, 'okta_url')
 		};
 	} else {
@@ -218,7 +234,9 @@ const getCredentials = async (database = {}) => {
 			password: database.password ?? getEnv(envMap, 'password'),
 			account,
 			database: default_database,
-			warehouse
+			warehouse,
+			schema,
+			role
 		};
 	}
 };
