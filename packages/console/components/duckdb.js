@@ -28,9 +28,9 @@ let setting_data = new Promise((r) => (resolve_initial_data = r));
 
 /**
  * Sets the contents of `table` to the JSON object `data`.
- * 
- * @param {string} table 
- * @param {any} data 
+ *
+ * @param {string} table
+ * @param {any} data
  * @returns {void}
  */
 async function setData(table, data) {
@@ -49,11 +49,10 @@ async function setData(table, data) {
 	resolve_initial_data();
 }
 
-
 /**
  * Queries the database with the given SQL statement.
- * 
- * @param {string} sql 
+ *
+ * @param {string} sql
  * @returns {Promise<ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null>}
  */
 async function query(sql) {

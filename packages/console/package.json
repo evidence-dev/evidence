@@ -23,13 +23,15 @@
 		"@duckdb/duckdb-wasm": "^1.26.0",
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
-		"@evidence-dev/evidence": "workspace:^"
+		"@evidence-dev/evidence": "workspace:^",
+		"debounce": "^1.2.1"
 	},
 	"peerDependencies": {
 		"svelte": "^3.54.0"
 	},
 	"devDependencies": {
 		"@sveltejs/package": "^2.0.0",
+		"@types/debounce": "^1.2.1",
 		"apache-arrow": "^12.0.1",
 		"publint": "^0.1.9",
 		"svelte": "^3.54.0",
