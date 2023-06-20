@@ -45,6 +45,25 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
 	return undefined;
 };
 
+export function getFormatObjectFromString(formatString) {
+	let potentialFormatTag = formatString;
+	let customFormats = getCustomFormats();
+	let matchingFormat = [...BUILT_IN_FORMATS, ...customFormats].find(
+		(format) => format.formatTag?.toLowerCase() === potentialFormatTag?.toLowerCase()
+	);
+	let newFormat = {};
+	if (matchingFormat) {
+		return matchingFormat;
+	} else {
+		newFormat = {
+			formatTag: 'custom',
+			formatCode: potentialFormatTag,
+			valueType: 'number'
+		}
+		return newFormat;
+	}
+}
+
 export const formatValue = (value, columnFormat = undefined, columnUnitSummary = undefined) => {
 	try {
 		return applyFormatting(value, columnFormat, columnUnitSummary, VALUE_FORMATTING_CONTEXT);

@@ -5,6 +5,7 @@
 <script>
 	import { getContext } from 'svelte';
 	import { propKey, strictBuild } from './context';
+	import { getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
 
 	let props = getContext(propKey);
 
@@ -53,6 +54,12 @@
 
 	export let linkLabel = undefined;
 
+	// Formatting:
+	export let fmt = undefined;
+	if(fmt){
+		fmt = getFormatObjectFromString(fmt);
+	}
+
 	let options = {
 		id: id,
 		title: title,
@@ -63,7 +70,8 @@
 		width: width,
 		alt: alt,
 		openInNewTab: openInNewTab,
-		linkLabel: linkLabel
+		linkLabel: linkLabel,
+		fmt: fmt
 	};
 
 	props.update((d) => {

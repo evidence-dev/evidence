@@ -10,6 +10,7 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { colours } from '@evidence-dev/component-utilities/colours';
+	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
 
 	export let data = undefined;
 
@@ -21,6 +22,11 @@
 
 	export let title = undefined;
 	export let subtitle = undefined;
+
+	export let fmt = undefined;
+	if(fmt){
+		fmt = getFormatObjectFromString(fmt);
+	}
 
 	export let link = undefined;
 	let hasLink = link !== undefined;
@@ -140,6 +146,21 @@
 				axisPointer: {
 					// Use axis to trigger tooltip
 					type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+				},
+				formatter: function(params) {
+					let tooltipOutput = `
+						<span id="tooltip" style='font-weight: 600;'>${params.name}</span>
+						<br/>
+						<span>${formatTitle(
+								value,
+								fmt
+							)}: </span>
+							<span style='float:right; margin-left: 10px;'>${formatValue(
+								params.value,
+								fmt
+							)}</span>`;
+
+					return tooltipOutput;
 				},
 				padding: 6,
 				borderRadius: 4,

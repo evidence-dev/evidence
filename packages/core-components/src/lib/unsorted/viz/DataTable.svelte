@@ -401,7 +401,7 @@
 												{#if row[column.linkLabel] != undefined}
 													{formatValue(
 														row[column.linkLabel],
-														safeExtractColumn(column).format,
+														column.fmt ?? safeExtractColumn(column).format,
 														safeExtractColumn(column).columnUnitSummary
 													)}
 												{:else}
@@ -410,7 +410,7 @@
 											{:else}
 												{formatValue(
 													row[column.id],
-													safeExtractColumn(column).format,
+													column.fmt ?? safeExtractColumn(column).format,
 													safeExtractColumn(column).columnUnitSummary
 												)}
 											{/if}
@@ -418,7 +418,7 @@
 									{:else}
 										{formatValue(
 											row[column.id],
-											safeExtractColumn(column).format,
+											column.fmt ?? safeExtractColumn(column).format,
 											safeExtractColumn(column).columnUnitSummary
 										)}
 									{/if}
