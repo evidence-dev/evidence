@@ -6,7 +6,7 @@
 	import { browser } from '$app/environment';
 	import { query, setData } from './duckdb';
 	import DataTable from './DataTable.svelte';
-	import { debounce } from 'debounce';
+	import debounce from 'debounce';
 
 	/** @type {Record<string, unknown[]>} */
 	export let data;
@@ -29,7 +29,7 @@
 	/** @type {Promise<null | Awaited<ReturnType<typeof query>>} */
 	let paginated_results = Promise.resolve(null);
 	const updateResults = () =>
-        (paginated_results = query(`
+		(paginated_results = query(`
             WITH query as (${sql_query.replace(/;$/, '')})
             SELECT * FROM query
             LIMIT ${limit}
@@ -37,7 +37,7 @@
     `));
 	const debouncedUpdateResults = debounce(updateResults, debounce_delay);
 	$: sql_query, debouncedUpdateResults(); // for user input
-    $: currentPage, updateResults(); // for page change
+	$: currentPage, updateResults(); // for page change
 
 	/** @type {Awaited<typeof paginated_results>} */
 	let results = null;
