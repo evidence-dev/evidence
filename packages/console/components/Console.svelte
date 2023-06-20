@@ -6,9 +6,9 @@
 	import { browser } from '$app/environment';
 	import { query, setData } from './duckdb';
 	import DataTable from './DataTable.svelte';
-    import { ErrorChart } from "@evidence-dev/core-components"
+	import { ErrorChart } from '@evidence-dev/core-components';
 	import debounce from 'debounce';
-    import { makeTable } from "apache-arrow";
+	import { makeTable } from 'apache-arrow';
 
 	/** @type {Record<string, unknown[]>} */
 	export let data;
@@ -23,7 +23,8 @@
 
 	let total_rows = Promise.resolve(makeTable({ total_rows: new Int8Array([0]) }));
 	const updateTotalRows = debounce(
-		() => (total_rows = query(`SELECT COUNT(*) as total_rows FROM (${sql_query.replace(/;$/, '')})`)),
+		() =>
+			(total_rows = query(`SELECT COUNT(*) as total_rows FROM (${sql_query.replace(/;$/, '')})`)),
 		debounce_delay
 	);
 	$: sql_query, updateTotalRows();
@@ -44,16 +45,18 @@
 	/** @type {Awaited<typeof paginated_results>} */
 	let results = null;
 	let totalRows = 0;
-    let error;
-	$: Promise.all([paginated_results, total_rows]).then(([_results, total_rows_table]) => {
-		if (!browser) return;
-		totalRows = Number(total_rows_table.get(0).total_rows);
-		results = arrowTableToJSON(_results);
-        error = undefined;
-	}).catch((e) => {
-        if (e.message.startsWith("Parser Error")) return;
-        error = e.message;
-    });
+	let error;
+	$: Promise.all([paginated_results, total_rows])
+		.then(([_results, total_rows_table]) => {
+			if (!browser) return;
+			totalRows = Number(total_rows_table.get(0).total_rows);
+			results = arrowTableToJSON(_results);
+			error = undefined;
+		})
+		.catch((e) => {
+			if (e.message.startsWith('Parser Error')) return;
+			error = e.message;
+		});
 
 	/**
 	 * @param {Awaited<ReturnType<typeof query>>} table
@@ -87,7 +90,7 @@
 </div>
 
 {#if error}
-    <ErrorChart {error} chartType="Data Table" />
+	<ErrorChart {error} chartType="Data Table" />
 {:else if results}
 	<DataTable data={results} {totalRows} bind:currentPage />
 {/if}
