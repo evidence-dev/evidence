@@ -59,7 +59,7 @@ export function getFormatObjectFromString(formatString) {
 			formatTag: 'custom',
 			formatCode: potentialFormatTag,
 			valueType: 'number'
-		}
+		};
 		return newFormat;
 	}
 }

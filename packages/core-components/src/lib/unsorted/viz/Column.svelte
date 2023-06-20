@@ -56,7 +56,7 @@
 
 	// Formatting:
 	export let fmt = undefined;
-	if(fmt){
+	if (fmt) {
 		fmt = getFormatObjectFromString(fmt);
 	}
 

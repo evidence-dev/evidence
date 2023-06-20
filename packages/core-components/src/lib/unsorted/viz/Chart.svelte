@@ -20,7 +20,10 @@
 	import { standardizeDateColumn } from '@evidence-dev/component-utilities/dateParsing';
 	import { formatAxisValue } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { colours } from '@evidence-dev/component-utilities/colours';
@@ -80,7 +83,7 @@
 	export let sort = false; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
 	sort = sort === 'true' || sort === true;
 	export let xFmt = undefined;
-	if(xFmt){
+	if (xFmt) {
 		xFmt = getFormatObjectFromString(xFmt);
 	}
 
@@ -97,13 +100,13 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let yFmt = undefined;
-	if(yFmt){
+	if (yFmt) {
 		yFmt = getFormatObjectFromString(yFmt);
 	}
 
 	// Other column formats:
 	export let sizeFmt = undefined;
-	if(sizeFmt){
+	if (sizeFmt) {
 		sizeFmt = getFormatObjectFromString(sizeFmt);
 	}
 
@@ -400,8 +403,8 @@
 			// ---------------------------------------------------------------------------------------
 			// Get format codes for axes
 			// ---------------------------------------------------------------------------------------
-			if(xFmt){
-				xFormat = xFmt;				
+			if (xFmt) {
+				xFormat = xFmt;
 			} else {
 				xFormat = columnSummary[x].format;
 			}
@@ -409,7 +412,7 @@
 			if (!y) {
 				yFormat = 'str';
 			} else {
-				if (yFmt){
+				if (yFmt) {
 					yFormat = yFmt;
 				} else {
 					if (typeof y === 'object') {
@@ -421,7 +424,7 @@
 			}
 
 			if (size) {
-				if(sizeFmt){
+				if (sizeFmt) {
 					sizeFormat = sizeFmt;
 				} else {
 					sizeFormat = columnSummary[size].format;
@@ -816,7 +819,6 @@
 	}
 
 	$: data;
-
 </script>
 
 {#if !error}

@@ -4,7 +4,10 @@
 
 <script>
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import PulseNumber from './PulseNumber.svelte';
@@ -21,7 +24,7 @@
 
 	// Value Formatting:
 	export let fmt = undefined;
-	if(fmt){
+	if (fmt) {
 		fmt = getFormatObjectFromString(fmt);
 	}
 
@@ -68,7 +71,7 @@
 
 					value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
-					if(!fmt){
+					if (!fmt) {
 						fmt = columnSummary[0].format;
 					}
 				} else {

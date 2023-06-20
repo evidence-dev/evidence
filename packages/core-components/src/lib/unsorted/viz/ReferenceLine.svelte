@@ -5,7 +5,10 @@
 <script>
 	import { getContext } from 'svelte';
 	import { propKey, configKey } from './context';
-	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
 	import { colours } from '@evidence-dev/component-utilities/colours';
@@ -35,7 +38,7 @@
 	$: hideValue = hideValue === 'true' || hideValue === true;
 
 	export let valueFmt = undefined;
-	if(valueFmt){
+	if (valueFmt) {
 		valueFmt = getFormatObjectFromString(valueFmt);
 	}
 

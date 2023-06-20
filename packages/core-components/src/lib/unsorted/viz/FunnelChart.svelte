@@ -6,7 +6,10 @@
 	import ECharts from './ECharts.svelte';
 
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { colours } from '@evidence-dev/component-utilities/colours';
 
@@ -15,7 +18,7 @@
 	export let valueCol = undefined;
 
 	export let valueFmt = undefined;
-	if(valueFmt){
+	if (valueFmt) {
 		valueFmt = getFormatObjectFromString(valueFmt);
 	}
 
@@ -68,11 +71,11 @@
 	$: name = name ?? formatTitle(valueCol, columnSummary[nameCol].title);
 	$: nameColFormat = columnSummary[nameCol].format;
 	let valueColFormat;
-	$: if(valueFmt){
-			valueColFormat = valueFmt;
-		} else {
-			valueColFormat = columnSummary[valueCol].format;
-		}
+	$: if (valueFmt) {
+		valueColFormat = valueFmt;
+	} else {
+		valueColFormat = columnSummary[valueCol].format;
+	}
 
 	// ---------------------------------------------------------------------------------------
 	// Set up chart area

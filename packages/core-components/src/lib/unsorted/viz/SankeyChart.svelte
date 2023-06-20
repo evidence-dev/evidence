@@ -6,7 +6,10 @@
 	import ECharts from './ECharts.svelte';
 
 	import { colours } from '@evidence-dev/component-utilities/colours';
-	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 
 	export let data = undefined;
 	export let sourceCol = 'source';
@@ -14,7 +17,7 @@
 	export let valueCol = 'value';
 
 	export let valueFmt = undefined;
-	if(valueFmt){
+	if (valueFmt) {
 		valueFmt = getFormatObjectFromString(valueFmt);
 	}
 
