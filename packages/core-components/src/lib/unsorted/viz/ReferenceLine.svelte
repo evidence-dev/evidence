@@ -5,10 +5,7 @@
 <script>
 	import { getContext } from 'svelte';
 	import { propKey, configKey } from './context';
-	import {
-		formatValue,
-		getFormatObjectFromString
-	} from '@evidence-dev/component-utilities/formatting';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
 	import { colours } from '@evidence-dev/component-utilities/colours';
@@ -36,11 +33,6 @@
 
 	export let hideValue = false;
 	$: hideValue = hideValue === 'true' || hideValue === true;
-
-	export let valueFmt = undefined;
-	if (valueFmt) {
-		valueFmt = getFormatObjectFromString(valueFmt);
-	}
 
 	let colorList = {
 		red: { lineColor: '#b04646', labelColor: '#b04646' },
@@ -171,13 +163,13 @@
 						if (params.name === '') {
 							// If no label supplied
 							result = !hideValue
-								? `${formatValue(params.value, valueFmt ?? (y ? yFormat : x ? xFormat : 'string'))}`
+								? `${formatValue(params.value, y ? yFormat : x ? xFormat : 'string')}`
 								: '';
 						} else {
 							result = !hideValue
 								? `${params.name} (${formatValue(
 										params.value,
-										valueFmt ?? (y ? yFormat : x ? xFormat : 'string')
+										y ? yFormat : x ? xFormat : 'string'
 								  )})`
 								: `${params.name}`;
 						}

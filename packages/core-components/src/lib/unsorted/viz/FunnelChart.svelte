@@ -18,9 +18,6 @@
 	export let valueCol = undefined;
 
 	export let valueFmt = undefined;
-	if (valueFmt) {
-		valueFmt = getFormatObjectFromString(valueFmt);
-	}
 
 	export let title = undefined;
 	export let subtitle = undefined;
@@ -72,6 +69,7 @@
 	$: nameColFormat = columnSummary[nameCol].format;
 	let valueColFormat;
 	$: if (valueFmt) {
+		valueFmt = getFormatObjectFromString(valueFmt, columnSummary[valueCol].format.valueType);
 		valueColFormat = valueFmt;
 	} else {
 		valueColFormat = columnSummary[valueCol].format;

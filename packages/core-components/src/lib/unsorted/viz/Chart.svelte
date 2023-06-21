@@ -83,9 +83,6 @@
 	export let sort = false; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
 	sort = sort === 'true' || sort === true;
 	export let xFmt = undefined;
-	if (xFmt) {
-		xFmt = getFormatObjectFromString(xFmt);
-	}
 
 	// Y axis:
 	export let yAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
@@ -100,15 +97,9 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let yFmt = undefined;
-	if (yFmt) {
-		yFmt = getFormatObjectFromString(yFmt);
-	}
 
 	// Other column formats:
 	export let sizeFmt = undefined;
-	if (sizeFmt) {
-		sizeFmt = getFormatObjectFromString(sizeFmt);
-	}
 
 	// Legend:
 	export let legend = undefined;
@@ -404,6 +395,8 @@
 			// Get format codes for axes
 			// ---------------------------------------------------------------------------------------
 			if (xFmt) {
+				xFmt = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
+				// Override with provided format
 				xFormat = xFmt;
 			} else {
 				xFormat = columnSummary[x].format;
@@ -413,6 +406,12 @@
 				yFormat = 'str';
 			} else {
 				if (yFmt) {
+					if (typeof y === 'object') {
+						yFmt = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
+					} else {
+						yFmt = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
+					}
+					// Override with provided format
 					yFormat = yFmt;
 				} else {
 					if (typeof y === 'object') {
@@ -425,6 +424,8 @@
 
 			if (size) {
 				if (sizeFmt) {
+					sizeFmt = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
+					// Override with provided format
 					sizeFormat = sizeFmt;
 				} else {
 					sizeFormat = columnSummary[size].format;

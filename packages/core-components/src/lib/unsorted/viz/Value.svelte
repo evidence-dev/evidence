@@ -24,9 +24,6 @@
 
 	// Value Formatting:
 	export let fmt = undefined;
-	if (fmt) {
-		fmt = getFormatObjectFromString(fmt);
-	}
 
 	let value;
 	let error;
@@ -71,7 +68,9 @@
 
 					value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
-					if (!fmt) {
+					if (fmt) {
+						fmt = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+					} else {
 						fmt = columnSummary[0].format;
 					}
 				} else {

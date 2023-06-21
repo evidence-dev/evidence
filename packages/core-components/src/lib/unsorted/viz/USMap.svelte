@@ -27,9 +27,6 @@
 	export let subtitle = undefined;
 
 	export let fmt = undefined;
-	if (fmt) {
-		fmt = getFormatObjectFromString(fmt);
-	}
 
 	export let link = undefined;
 	let hasLink = link !== undefined;
@@ -111,6 +108,11 @@
 		let maxValue = max ?? Math.max(...data.map((d) => d[value]));
 
 		columnSummary = getColumnSummary(data);
+
+		// Override format for values:
+		if (fmt) {
+			fmt = getFormatObjectFromString(fmt, columnSummary[value].format);
+		}
 
 		let mapData = JSON.parse(JSON.stringify(data));
 		for (let i = 0; i < data.length; i++) {

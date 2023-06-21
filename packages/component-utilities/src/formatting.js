@@ -4,6 +4,7 @@ import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from './globalContexts';
 import { findImplicitAutoFormat, autoFormat, fallbackFormat, isAutoFormat } from './autoFormatting';
 import { BUILT_IN_FORMATS } from './builtInFormats';
 import { standardizeDateString } from './dateParsing';
+import { inferValueType } from './inferColumnTypes';
 
 const AXIS_FORMATTING_CONTEXT = 'axis';
 const VALUE_FORMATTING_CONTEXT = 'value';
@@ -45,7 +46,7 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
 	return undefined;
 };
 
-export function getFormatObjectFromString(formatString) {
+export function getFormatObjectFromString(formatString, valueType = undefined) {
 	let potentialFormatTag = formatString;
 	let customFormats = getCustomFormats();
 	let matchingFormat = [...BUILT_IN_FORMATS, ...customFormats].find(
@@ -57,9 +58,11 @@ export function getFormatObjectFromString(formatString) {
 	} else {
 		newFormat = {
 			formatTag: 'custom',
-			formatCode: potentialFormatTag,
-			valueType: 'number'
+			formatCode: potentialFormatTag
 		};
+		if (valueType) {
+			newFormat.valueType = valueType;
+		}
 		return newFormat;
 	}
 }
@@ -154,6 +157,9 @@ function applyFormatting(
 	if (value === undefined || value === null) {
 		return '-';
 	}
+
+	// let valueType = columnFormat.valueType ?? inferValueType(value);
+
 	let result = undefined;
 	if (columnFormat) {
 		try {
@@ -221,5 +227,7 @@ function maybeExtractFormatTag(columnName) {
 
 export function fmt(value, format) {
 	let formatObj = getFormatObjectFromString(format);
+	let valueType = inferValueType(value);
+	formatObj.valueType = valueType;
 	return formatValue(value, formatObj);
 }
