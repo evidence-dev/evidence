@@ -5,7 +5,7 @@ title: 'Value Formatting'
 description: 'Number and date formatting options in Evidence'
 ---
 
-The easiest way to format numbers and dates in Evidence is through component props. You can pass in any of the follwing:
+The easiest way to format numbers and dates in Evidence is through component props. You can pass in any of the following:
 - Excel-style format codes
 - Evidence's [built-in formats](#built-in-formats)
 - [Custom formats](#custom-formats)
