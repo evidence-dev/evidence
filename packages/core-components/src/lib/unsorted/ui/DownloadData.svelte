@@ -24,6 +24,14 @@
 			useKeysAsHeaders: true
 		};
 
+		for (const row of data) {
+			for (const key in row) {
+				if (row[key] instanceof Date) {
+					row[key] = row[key].toISOString();
+				}
+			}
+		}
+
 		const csvExporter = new ExportToCsv(options);
 
 		csvExporter.generateCsv(data);
