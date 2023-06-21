@@ -218,3 +218,8 @@ function maybeExtractFormatTag(columnName) {
 		return undefined;
 	}
 }
+
+export function fmt(value, format) {
+	let formatObj = getFormatObjectFromString(format);
+	return formatValue(value, formatObj);
+}

@@ -15,6 +15,7 @@
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
+	export let sizeFmt = undefined;
 
 	export let title = undefined;
 	export let subtitle = undefined;
@@ -54,9 +55,10 @@
 	{data}
 	{x}
 	{y}
+	{size}
 	{xFmt}
 	{yFmt}
-	{size}
+	{sizeFmt}
 	{tooltipTitle}
 	{series}
 	{xType}
