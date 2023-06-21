@@ -88,62 +88,19 @@
 {:else if !error}
 	<PulseNumber value={formatValue(value, fmt)} />
 {:else}
-	<span class="group inline-flex gap-1 items-center relative cursor-help text-white font-sans text-sm bg-red-700 rounded-2xl pl-2 pr-[1px] mx-0.5">
+	<span
+		class="group inline-flex gap-1 items-center relative cursor-help text-white font-sans text-sm bg-red-700 rounded-2xl pl-2 pr-[1px] mx-0.5"
+	>
 		<span class="inline pl-1">Error</span>
 		<Icon src={HelpCircle} class="w-6 h-6 text-gray-100 pb-0.5 pt-[1px]" />
-		<span class="hidden group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md">{error}</span>
+		<span
+			class="hidden group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md"
+			>{error}</span
+		>
 	</span>
 {/if}
 
 <style>
-	.error {
-		position: relative;
-		cursor: help;
-		color: white;
-		font-family: sans-serif;
-		font-size: 0.75em;
-		background-color: var(--red-700);
-		border-radius: 20px;
-		padding: 0px 6px 0px 6px;
-		margin-left: 1px;
-		margin-right: 2px;
-	}
-
-	.error-label {
-		display: inline;
-		padding-left: 3px;
-	}
-
-	.additional-info-icon {
-		cursor: help;
-		position: relative;
-		text-transform: none;
-	}
-
-	.error .error-msg {
-		display: none;
-		position: absolute;
-		top: -5px;
-		left: 105%;
-		max-width: 400px;
-		min-width: 150px;
-		padding-left: 10px;
-		padding-right: 8px;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		color: white;
-		font-family: sans-serif;
-		font-size: 0.9rem;
-		background-color: var(--grey-900);
-		opacity: 0.9;
-		border-radius: 6px;
-		z-index: 1;
-	}
-
-	.error:hover .error-msg {
-		display: inline;
-	}
-
 	.placeholder {
 		display: inline;
 		position: relative;

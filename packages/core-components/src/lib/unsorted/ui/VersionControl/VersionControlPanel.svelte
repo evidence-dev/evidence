@@ -3,8 +3,8 @@
 </script>
 
 <script>
-	import { Icon } from "@steeze-ui/svelte-icon";
-	import { CircleX, CircleCheck, HelpCircle} from "@steeze-ui/tabler-icons";
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CircleX, CircleCheck, HelpCircle } from '@steeze-ui/tabler-icons';
 
 	export let settings;
 </script>

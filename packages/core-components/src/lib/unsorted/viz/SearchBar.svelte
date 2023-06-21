@@ -3,9 +3,8 @@
 </script>
 
 <script>
-	import { Icon } from "@steeze-ui/svelte-icon";
-	import { Search } from "@steeze-ui/tabler-icons";
-
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Search } from '@steeze-ui/tabler-icons';
 
 	export let placeholder = 'Search';
 	export let value;
@@ -21,7 +20,7 @@
 		on:keyup={() => searchFunction(value)}
 	/>
 	<div class="search-icon">
-		<Icon src={Search} class="pl-0.5"/>
+		<Icon src={Search} class="pl-0.5" />
 	</div>
 </div>
 

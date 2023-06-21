@@ -16,8 +16,8 @@
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
 
-	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from "@steeze-ui/tabler-icons"
-	import { Icon } from "@steeze-ui/svelte-icon"
+	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
 	// Set up props store
 	let props = writable({});
 	setContext(propKey, props);
@@ -444,7 +444,7 @@
 						disabled={currentPage === 1}
 						on:click={() => goToPage(0)}
 						><div class="page-icon flex items-center">
-							<Icon src={ChevronsLeft}/>
+							<Icon src={ChevronsLeft} />
 						</div></button
 					>
 					<button
@@ -454,7 +454,7 @@
 						disabled={currentPage === 1}
 						on:click={() => goToPage(currentPage - 2)}
 						><div class="page-icon h-[0.83em] flex items-center">
-							<Icon src={ChevronLeft} class="h-[0.83em]"/>
+							<Icon src={ChevronLeft} class="h-[0.83em]" />
 						</div></button
 					>
 					<span class="page-count"
@@ -482,7 +482,7 @@
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(currentPage)}
 						><div class="page-icon h-[0.83em] flex items-center">
-							<Icon src={ChevronRight} class="h-[0.83em]"/>
+							<Icon src={ChevronRight} class="h-[0.83em]" />
 						</div></button
 					>
 					<button
@@ -492,7 +492,7 @@
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(pageCount - 1)}
 						><div class="page-icon flex items-center">
-							<Icon src={ChevronsRight}/>
+							<Icon src={ChevronsRight} />
 						</div></button
 					>
 				</div>
