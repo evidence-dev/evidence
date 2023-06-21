@@ -4,7 +4,8 @@
 
 <script>
 	import { page } from '$app/stores';
-	import HomeIcon from '../icons/HomeIcon.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Home } from '@steeze-ui/tabler-icons';
 	export let fileTree;
 
 	$: pathArray = $page.url.pathname.split('/').slice(1);
@@ -62,22 +63,26 @@
     100vw (initial) 
     1em + 32px (hamburger) / 18rem (sidebar) + 16px (sidebar grid gap)
     56px (page menu)
+
+	TODO: Can this be done without magic?
 -->
 
 <div
 	class="main truncate min-[850px]:max-w-[calc(100vw-18rem-16px-56px)] max-[850px]:max-w-[calc(100vw-1em-32px-56px)]"
 >
-	<span>
+	<span class="h-8 inline-flex items-center">
 		{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
-			<a href="/"><HomeIcon height="14" width="14" verticalOffset="3" /> Home</a>
+			<a href="/" class="inline-flex gap-1 items-center"
+				><Icon src={Home} class="h-4 w-4 inline-block" /> Home</a
+			>
 		{:else}
 			{#each crumbs as crumb, i}
 				{#if i > 0}
 					&emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>
 				{:else}
-					<a href={crumb.href}>
+					<a href={crumb.href} class="inline-flex gap-1 items-center">
 						{#if crumb.title === 'Home'}
-							<HomeIcon height="14" width="14" verticalOffset="3" />
+							<Icon src={Home} class="h-4 w-4 inline-block" />
 						{:else}
 							{crumb.title}
 						{/if}

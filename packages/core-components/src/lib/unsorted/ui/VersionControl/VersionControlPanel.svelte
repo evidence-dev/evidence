@@ -3,9 +3,9 @@
 </script>
 
 <script>
-	import CheckmarkCircleIcon from '../../icons/CheckmarkCircleIcon.svelte';
-	import CloseCircleIcon from '../../icons/CloseCircleIcon.svelte';
-	import HelpCircleIcon from '../../icons/HelpCircleIcon.svelte';
+	import { Icon } from "@steeze-ui/svelte-icon";
+	import { CircleX, CircleCheck, HelpCircle} from "@steeze-ui/tabler-icons";
+
 	export let settings;
 </script>
 
@@ -19,11 +19,11 @@
 			<div class="git-item">
 				{#if settings.localGitRepo}
 					<span class="gitcheck-icon">
-						<CheckmarkCircleIcon height="25" width="25" color="--green-700" />
+						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-green-700" />
 					</span>
 				{:else}
 					<span class="gitx-icon">
-						<CloseCircleIcon height="25" width="25" color="--red-700" />
+						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-red-700" />
 					</span>
 				{/if}
 				<span class="item-label">Local Git Repo</span>
@@ -33,7 +33,7 @@
 					</div>
 				{:else}
 					<span class="help-icon">
-						<HelpCircleIcon height="18" width="18" verticalOffset="2" />
+						<Icon src={HelpCircle} class="h-5 w-5 pb-0.5" />
 						<span class="info-msg"
 							>Use your code editor to initialize a repo or run `git init` in a terminal</span
 						>
@@ -44,11 +44,11 @@
 			<div class="git-item">
 				{#if settings.gitRepo}
 					<span class="gitcheck-icon">
-						<CheckmarkCircleIcon height="25" width="25" color="--green-700" />
+						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-green-700" />
 					</span>
 				{:else}
 					<span class="gitx-icon">
-						<CloseCircleIcon height="25" width="25" color="--red-700" />
+						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-red-700" />
 					</span>
 				{/if}
 				<span class="item-label">Git Repo Published</span>
@@ -60,7 +60,7 @@
 					</div>
 				{:else}
 					<span class="help-icon">
-						<HelpCircleIcon height="18" width="18" verticalOffset="2" />
+						<Icon src={HelpCircle} class="h-5 w-5 pb-0.5" />
 						<span class="info-msg">Publish your git repo to a platform like GitHub or GitLab</span>
 					</span>
 				{/if}

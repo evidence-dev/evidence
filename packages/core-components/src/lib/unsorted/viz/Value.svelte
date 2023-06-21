@@ -7,8 +7,10 @@
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { HelpCircle } from '@steeze-ui/tabler-icons';
+
 	import PulseNumber from './PulseNumber.svelte';
-	import HelpCircleIcon from '../icons/HelpCircleIcon.svelte';
 	import { strictBuild } from './context';
 
 	// Passing in value from dataset:
@@ -86,21 +88,15 @@
 {:else if !error}
 	<PulseNumber value={formatValue(value, fmt)} />
 {:else}
-	<span class="error">
-		<span class="error-label">Error</span>
-		<span class="additional-info-icon">
-			<HelpCircleIcon height="18" width="18" verticalOffset="1" color="--grey-100" />
-		</span>
-		<span class="error-msg">{error}</span>
+	<span class="group inline-flex gap-1 items-center relative cursor-help text-white font-sans text-sm bg-red-700 rounded-2xl pl-2 pr-[1px] mx-0.5">
+		<span class="inline pl-1">Error</span>
+		<Icon src={HelpCircle} class="w-6 h-6 text-gray-100 pb-0.5 pt-[1px]" />
+		<span class="hidden group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md">{error}</span>
 	</span>
 {/if}
 
 <style>
 	.error {
-		display: inline-grid;
-		grid-template-columns: auto auto;
-		grid-row: auto;
-		column-gap: 3px;
 		position: relative;
 		cursor: help;
 		color: white;
@@ -115,24 +111,13 @@
 
 	.error-label {
 		display: inline;
-		vertical-align: middle;
 		padding-left: 3px;
-		margin-top: auto;
 	}
 
 	.additional-info-icon {
-		display: flex;
-		align-items: center;
-		height: 100%;
-		width: 100%;
-		vertical-align: middle;
-		width: 14px;
-		color: white;
 		cursor: help;
 		position: relative;
 		text-transform: none;
-		margin: auto;
-		line-height: 1.3em;
 	}
 
 	.error .error-msg {

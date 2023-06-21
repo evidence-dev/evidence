@@ -132,6 +132,9 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/tailwind': workspace:^
+      '@steeze-ui/simple-icons': ^1.5.0
+      '@steeze-ui/svelte-icon': ^1.4.1
+      '@steeze-ui/tabler-icons': ^2.1.0
       '@storybook/addon-essentials': ^7.0.9
       '@storybook/addon-interactions': ^7.0.9
       '@storybook/addon-links': ^7.0.9
@@ -165,7 +168,6 @@ importers:
       storybook: ^7.0.9
       svelte: ^3.54.0
       svelte-check: ^3.0.1
-      svelte-icons: 2.1.0
       svelte-preprocess: ^5.0.3
       svelte-tiny-linked-charts: 1.1.5
       tailwindcss: ^3.3.1
@@ -176,12 +178,14 @@ importers:
     dependencies:
       '@evidence-dev/component-utilities': link:../component-utilities
       '@evidence-dev/tailwind': link:../tailwind
+      '@steeze-ui/simple-icons': 1.5.0_svelte@3.59.1
+      '@steeze-ui/svelte-icon': 1.4.1_svelte@3.59.1
+      '@steeze-ui/tabler-icons': 2.1.0_svelte@3.59.1
       echarts: 5.4.2
       echarts-stat: 1.2.0
       export-to-csv: 0.2.1
       prismjs: 1.29.0
       ssf: 0.11.2
-      svelte-icons: 2.1.0
       svelte-tiny-linked-charts: 1.1.5
     devDependencies:
       '@storybook/addon-essentials': 7.0.9_sfoxds7t5ydpegc3knd667wn6m
@@ -5729,6 +5733,30 @@ packages:
       lodash.union: 4.6.0
       lodash.values: 4.3.0
     dev: true
+
+  /@steeze-ui/simple-icons/1.5.0_svelte@3.59.1:
+    resolution: {integrity: sha512-B/lxdcopBPsd4QnbuFuR1/20jHX03e/Kelv88IdCN4rpX8pVshBVJmnhj4ASWmitpkbVjlih4Tx6yBQ4l+djHA==}
+    peerDependencies:
+      svelte: ^3.54.0
+    dependencies:
+      svelte: 3.59.1
+    dev: false
+
+  /@steeze-ui/svelte-icon/1.4.1_svelte@3.59.1:
+    resolution: {integrity: sha512-O8KiL+1rjdhVzdBC5AKzDbc/NLZehOVU+nBj24t6BK22mWCe4o5YDbb04LesN9mBgB8NRRlaV6T81zLGY8xZHQ==}
+    peerDependencies:
+      svelte: ^3.54.0
+    dependencies:
+      svelte: 3.59.1
+    dev: false
+
+  /@steeze-ui/tabler-icons/2.1.0_svelte@3.59.1:
+    resolution: {integrity: sha512-c3BJTt9Gi+73H/fKLOG9shDQrcdUfw19ELfLP7GLO+rF/R8wxTjdqcg0/C4HJajT21+Z6R+sBNIaB/rfdfQPpA==}
+    peerDependencies:
+      svelte: ^3.54.0
+    dependencies:
+      svelte: 3.59.1
+    dev: false
 
   /@storybook/addon-actions/7.0.9_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-xEO/Ekj6m6p1l4CXGh75BNBD/sqF7TqnUA/f2T3UCtLf9xVMoGEczxNi28iZq2RHoIAaV2aKArqjM+qTwoLjZw==}
@@ -19461,7 +19489,6 @@ packages:
   /svelte/3.59.1:
     resolution: {integrity: sha512-pKj8fEBmqf6mq3/NfrB9SLtcJcUvjYSWyePlfCqN9gujLB25RitWK8PvFzlwim6hD/We35KbPlRteuA6rnPGcQ==}
     engines: {node: '>= 8'}
-    dev: true
 
   /svelte2tsx/0.5.23_tuotfx7glloxurl4snpq7ztuqe:
     resolution: {integrity: sha512-jYFnugTQRFmUpvLXPQrKzVYcW5ErT+0QCxg027Zx9BuvYefMZFuoBSTDYe7viPEFGrPPiLgT2m7f5n9khE7f7Q==}

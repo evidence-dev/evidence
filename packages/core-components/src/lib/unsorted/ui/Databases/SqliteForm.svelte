@@ -3,7 +3,8 @@
 </script>
 
 <script>
-	import HelpCircleIcon from '../../icons/HelpCircleIcon.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { HelpCircle } from '@steeze-ui/tabler-icons';
 
 	export let credentials;
 	export let existingCredentials;
@@ -87,7 +88,7 @@
 
 			{#if opt.additionalInstructions}
 				<span class="additional-info-icon">
-					<HelpCircleIcon height="18" width="18" verticalOffset="2" color="--grey-600" />
+					<Icon src={HelpCircle} class="h-5 text-gray-600 pb-0.5" />
 					<span class="info-msg">{opt.additionalInstructions}</span>
 				</span>
 			{/if}
