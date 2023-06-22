@@ -73,7 +73,7 @@
 	<span class="h-8 inline-flex items-center">
 		{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
 			<a href="/" class="inline-flex gap-1 items-center"
-				><Icon src={Home} class="h-4 w-4 inline-block" /> Home</a
+				><Icon src={Home} class="h-4 w-4 inline-block stroke-1" /> Home</a
 			>
 		{:else}
 			{#each crumbs as crumb, i}
@@ -82,7 +82,7 @@
 				{:else}
 					<a href={crumb.href} class="inline-flex gap-1 items-center">
 						{#if crumb.title === 'Home'}
-							<Icon src={Home} class="h-4 w-4 inline-block" />
+							<Icon src={Home} class="h-4 w-4 inline-block stroke-1" />
 						{:else}
 							{crumb.title}
 						{/if}
