@@ -44,8 +44,8 @@
 		</button>
 		{/if}
 		</div>
-<code>
-		{#if source}{source}
+<code
+		>{#if source}{source}
 		{:else}<slot />
 		{/if}
 </code>		
