@@ -3,66 +3,97 @@ import duckdb_wasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
 import duckdb_worker from '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker';
 import { browser } from '$app/environment';
 
-/** @type {AsyncDuckDB} */
-let db;
+class DuckDBInstance {
+	constructor() {
+		this.db = undefined;
+		this.tables = new Set();
+		this.setting_data = new Promise((r) => (this.resolve_initial_data = r));
+	}
 
-async function initDB() {
-	if (!browser) return;
-	if (db) return db;
+	async initDB() {
+		if (!browser) return;
+		if (this.db) return this.db;
 
-	// Instantiate worker
-	const logger = new ConsoleLogger();
-	const worker = new duckdb_worker();
+		// Instantiate worker
+		const logger = new ConsoleLogger();
+		const worker = new duckdb_worker();
 
-	// and asynchronous database
-	let uninstantiated_db = new AsyncDuckDB(logger, worker);
-	await uninstantiated_db.instantiate(duckdb_wasm);
-	db = uninstantiated_db;
+		// and asynchronous database
+		let uninstantiated_db = new AsyncDuckDB(logger, worker);
+		await uninstantiated_db.instantiate(duckdb_wasm);
+		this.db = uninstantiated_db;
+	}
+
+	/**
+	 *
+	 * @param {string} table
+	 * @param {any} data
+	 * @returns
+	 */
+	async setData(table, data) {
+		if (!browser) return;
+		if (!this.db) await this.initDB();
+
+		await this.db.registerFileText(`${table}.json`, JSON.stringify(data));
+		const connection = await this.db.connect();
+
+		if (this.tables.has(table)) {
+			await connection.query(`DROP TABLE ${table}`);
+		} else this.tables.add(table);
+
+		await connection.insertJSONFromPath(`${table}.json`, { schema: 'main', name: table });
+
+		this.resolve_initial_data();
+	}
+
+	/**
+	 *
+	 * @param {string} sql
+	 * @returns
+	 */
+	async query(sql) {
+		if (!browser) return null;
+
+		await this.setting_data;
+
+		const connection = await this.db.connect();
+
+		return connection.query(sql);
+	}
 }
 
-const tables = new Set();
-
-/** @type {Function} */
-let resolve_initial_data;
-let setting_data = new Promise((r) => (resolve_initial_data = r));
+// @ts-expect-error to be fixed in typescript#52534
+/** @type {WeakMap<symbol, DuckDBInstance>} */
+// @ts-expect-error to be fixed in typescript#52534
+const instances = new WeakMap();
 
 /**
  * Sets the contents of `table` to the JSON object `data`.
  *
+ * @param {symbol} instance
  * @param {string} table
  * @param {any} data
- * @returns {void}
+ * @returns
  */
-async function setData(table, data) {
+async function setData(instance, table, data) {
 	if (!browser) return;
-	if (!db) await initDB();
+	if (!instances.has(instance)) instances.set(instance, new DuckDBInstance());
 
-	await db.registerFileText(`${table}.json`, JSON.stringify(data));
-	const connection = await db.connect();
-
-	if (tables.has(table)) {
-		await connection.query(`DROP TABLE ${table}`);
-	} else tables.add(table);
-
-	await connection.insertJSONFromPath(`${table}.json`, { schema: 'main', name: table });
-
-	resolve_initial_data();
+	return instances.get(instance)?.setData(table, data);
 }
 
 /**
  * Queries the database with the given SQL statement.
  *
+ * @param {symbol} instance
  * @param {string} sql
- * @returns {Promise<ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null>}
+ * @returns
  */
-async function query(sql) {
-	if (!browser) return null;
+async function query(instance, sql) {
+	if (!browser) return;
+	if (!instances.has(instance)) instances.set(instance, new DuckDBInstance());
 
-	await setting_data;
-
-	const connection = await db.connect();
-
-	return connection.query(sql);
+	return instances.get(instance)?.query(sql);
 }
 
 export { query, setData }; // so we can import this elsewhere
