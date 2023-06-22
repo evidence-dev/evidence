@@ -158,8 +158,6 @@ function applyFormatting(
 		return '-';
 	}
 
-	// let valueType = columnFormat.valueType ?? inferValueType(value);
-
 	let result = undefined;
 	if (columnFormat) {
 		try {

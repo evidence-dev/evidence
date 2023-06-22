@@ -21,9 +21,9 @@ from table`;
 	x=date
 	y=sales
 	yFmt=euro
-/>`
+/>`;
 
-	let valueExample = `<Value data={sales_data} column=sales fmt='$#,##0' />`
+	let valueExample = `<Value data={sales_data} column=sales fmt='$#,##0' />`;
 </script>
 
 <form id="formatting">
@@ -31,21 +31,24 @@ from table`;
 		<div class="panel">
 			<h2>Value Formatting</h2>
 			<p>
-				Evidence supports built-in formats (like <code>usd</code> and <code>pct</code>) and Excel-style formats (like <code>$#,##0.0</code>). The easiest way to apply these formats is using component props. 
-				
-				For example:
+				Evidence supports built-in formats (like <code>usd</code> and <code>pct</code>) and
+				Excel-style formats (like <code>$#,##0.0</code>). The easiest way to apply these formats is
+				using component props. For example:
 			</p>
 			<p>In the Value component, you can use the <code>fmt</code> prop</p>
 			<div class="code-container p-2">
 				<Prism language="html" code={valueExample} />
 			</div>
-			<br/>
+			<br />
 			<p>In charts, you can use the <code>xFmt</code> and <code>yFmt</code> props</p>
 			<div class="code-container p-2">
 				<Prism language="jsx" code={componentExample} />
 			</div>
-			<br/>
-			<p>You can also set formats within your SQL queries using SQL format tags. Use these by aliasing your column names and appending a format. For example:</p>
+			<br />
+			<p>
+				You can also set formats within your SQL queries using SQL format tags. Use these by
+				aliasing your column names and appending a format. For example:
+			</p>
 			<div class="code-container p-2">
 				<Prism language="sql" code={exampleQuery} />
 			</div>
