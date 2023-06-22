@@ -24,9 +24,11 @@
 			useKeysAsHeaders: true
 		};
 
+		const data_copy = JSON.parse(JSON.stringify(data));
+
 		const csvExporter = new ExportToCsv(options);
 
-		csvExporter.generateCsv(data);
+		csvExporter.generateCsv(data_copy);
 	};
 </script>
 
