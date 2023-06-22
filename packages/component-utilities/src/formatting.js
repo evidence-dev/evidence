@@ -46,6 +46,12 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
 	return undefined;
 };
 
+/**
+ * Returns an Evidence format object to be used in the applyFormatting function
+ * @param {string} formatString string containing an Excel-style format code, or a format name matching a built-in or custom format
+ * @param {string} valueType optional - a string representing the data type within the column that will be formatted ('number', 'date', 'boolean', or 'string)
+ * @returns a format object based on the formatString matching a built-in or custom format name, or a new custom format object containing an Excel-style format code
+ */
 export function getFormatObjectFromString(formatString, valueType = undefined) {
 	let potentialFormatTag = formatString;
 	let customFormats = getCustomFormats();
@@ -223,6 +229,12 @@ function maybeExtractFormatTag(columnName) {
 	}
 }
 
+/**
+ * Formats a value to whichever format is passed in
+ * @param {*} value the value to be formatted
+ * @param {string} format string containing an Excel-style format code, or a format name matching a built-in or custom format
+ * @returns a formatted value
+ */
 export function fmt(value, format) {
 	let formatObj = getFormatObjectFromString(format);
 	let valueType = inferValueType(value);
