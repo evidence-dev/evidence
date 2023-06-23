@@ -9,12 +9,8 @@
 	export let ascending;
 </script>
 
-<span class="inline-flex items-center align-bottom mb-2 ml-1">
-	<span class="w-3 h-3 items-center">
-		{#if ascending}
-			<Icon src={ChevronUp} />
-		{:else}
-			<Icon src={ChevronDown} />
-		{/if}
-	</span>
-</span>
+{#if ascending}
+	<Icon src={ChevronUp} class="w-3 h-3 inline mb-0.5"/>
+{:else}
+	<Icon src={ChevronDown} class="w-3 h-3 inline mb-0.5"/>
+{/if}
