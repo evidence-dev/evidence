@@ -25,6 +25,8 @@ templatePaths.forEach((p) => {
 	fs.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
 });
 
+fs.emptyDirSync('./template/sources');
+
 // Create a clean SK config (workspace's is modified)
 fs.outputFileSync(
 	'./template/svelte.config.js',
