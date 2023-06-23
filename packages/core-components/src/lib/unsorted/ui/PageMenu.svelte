@@ -69,7 +69,7 @@
 						{:else if option.url.includes('http')}
 							<a href={option.url} target="_blank" rel="noreferrer">
 								{option.label}
-								<Icon src={ExternalLink} class="text-gray-900 h-3 w-3" />
+								<Icon src={ExternalLink} class="h-3 w-3" />
 							</a>
 						{:else}
 							<a href={option.url} target="_self">{option.label}</a>
