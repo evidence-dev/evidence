@@ -4,7 +4,7 @@
 
 <script>
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { HelpCircle } from '@steeze-ui/tabler-icons';
+	import { InfoCircle } from '@steeze-ui/tabler-icons';
 
 	export let credentials;
 	export let existingCredentials;
@@ -80,12 +80,12 @@
 
 {#each opts as opt}
 	<div class="input-item">
-		<label for={opt.id}>
+		<label for={opt.id} class="flex items-center gap-1">
 			{opt.label}
 
 			{#if opt.additionalInstructions}
 				<span class="additional-info-icon">
-					<Icon src={HelpCircle} class="h-5 text-gray-600 pb-0.5" />
+					<Icon src={InfoCircle} class="h-5 text-gray-600 pb-0.5" />
 					<span class="info-msg">{opt.additionalInstructions}</span>
 				</span>
 			{/if}
@@ -156,6 +156,7 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	.basic {
@@ -181,7 +182,6 @@
 	}
 
 	label {
-		width: 30%;
 		text-transform: uppercase;
 		font-weight: normal;
 		font-size: 14px;

@@ -4,7 +4,7 @@
 
 <script>
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { HelpCircle } from '@steeze-ui/tabler-icons';
+	import { InfoCircle } from '@steeze-ui/tabler-icons';
 
 	import { fade } from 'svelte/transition';
 
@@ -21,7 +21,7 @@
 	on:mouseleave={hideMessage}
 	class="additional-info-icon"
 >
-	<Icon src={HelpCircle} class="h-5 text-gray-600 pb-0.5" />
+	<Icon src={InfoCircle} class="h-5 text-gray-600 pb-0.5" />
 	{#if visible}
 		<span transition:fade class="info-msg">
 			<slot />

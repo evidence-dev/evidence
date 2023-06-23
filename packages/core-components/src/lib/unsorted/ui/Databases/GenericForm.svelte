@@ -42,7 +42,7 @@
 
 {#each requiredOpts as opt}
 	<div class="input-item">
-		<label for={opt.id}>
+		<label for={opt.id} class="flex items-center gap-1">
 			{opt.label}
 
 			{#if opt.additionalInstructions}
@@ -85,7 +85,7 @@
 
 {#each optionalOpts as opt}
 	<div class="input-item">
-		<label for={opt.id}>
+		<label for={opt.id} class="flex items-center gap-1">
 			{opt.label}
 
 			{#if opt.additionalInstructions}
@@ -206,7 +206,6 @@
 	}
 
 	label {
-		width: 35%;
 		text-transform: uppercase;
 		font-weight: normal;
 		font-size: 14px;

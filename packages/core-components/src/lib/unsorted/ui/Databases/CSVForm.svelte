@@ -64,7 +64,7 @@
 </div>
 
 <div class="input-item">
-	<label for={opts[0].id}>
+	<label for={opts[0].id} class="flex items-center gap-1">
 		{opts[0].label}
 		{#if opts[0].additionalInstructions}
 			<span class="additional-info-icon">
@@ -101,10 +101,10 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	label {
-		width: 30%;
 		text-transform: uppercase;
 		font-weight: normal;
 		font-size: 14px;
