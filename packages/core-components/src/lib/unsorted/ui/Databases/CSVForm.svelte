@@ -4,7 +4,7 @@
 
 <script>
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { HelpCircle } from '@steeze-ui/tabler-icons';
+	import { InfoCircle } from '@steeze-ui/tabler-icons';
 
 	import Prism from '../QueryViewerSupport/Prismjs.svelte';
 
@@ -68,7 +68,7 @@
 		{opts[0].label}
 		{#if opts[0].additionalInstructions}
 			<span class="additional-info-icon">
-				<Icon src={HelpCircle} class="h-4 -mr-1 text-gray-600" />
+				<Icon src={InfoCircle} class="h-4 -mr-1 text-gray-600" />
 				<span class="info-msg">{opts[0].additionalInstructions}</span>
 			</span>
 		{/if}
