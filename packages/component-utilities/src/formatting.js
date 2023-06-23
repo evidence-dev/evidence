@@ -4,6 +4,7 @@ import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from './globalContexts';
 import { findImplicitAutoFormat, autoFormat, fallbackFormat, isAutoFormat } from './autoFormatting';
 import { BUILT_IN_FORMATS } from './builtInFormats';
 import { standardizeDateString } from './dateParsing';
+import { inferValueType } from './inferColumnTypes';
 
 const AXIS_FORMATTING_CONTEXT = 'axis';
 const VALUE_FORMATTING_CONTEXT = 'value';
@@ -44,6 +45,33 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
 
 	return undefined;
 };
+
+/**
+ * Returns an Evidence format object to be used in the applyFormatting function
+ * @param {string} formatString string containing an Excel-style format code, or a format name matching a built-in or custom format
+ * @param {string} valueType optional - a string representing the data type within the column that will be formatted ('number', 'date', 'boolean', or 'string)
+ * @returns a format object based on the formatString matching a built-in or custom format name, or a new custom format object containing an Excel-style format code
+ */
+export function getFormatObjectFromString(formatString, valueType = undefined) {
+	let potentialFormatTag = formatString;
+	let customFormats = getCustomFormats();
+	let matchingFormat = [...BUILT_IN_FORMATS, ...customFormats].find(
+		(format) => format.formatTag?.toLowerCase() === potentialFormatTag?.toLowerCase()
+	);
+	let newFormat = {};
+	if (matchingFormat) {
+		return matchingFormat;
+	} else {
+		newFormat = {
+			formatTag: 'custom',
+			formatCode: potentialFormatTag
+		};
+		if (valueType) {
+			newFormat.valueType = valueType;
+		}
+		return newFormat;
+	}
+}
 
 export const formatValue = (value, columnFormat = undefined, columnUnitSummary = undefined) => {
 	try {
@@ -135,6 +163,7 @@ function applyFormatting(
 	if (value === undefined || value === null) {
 		return '-';
 	}
+
 	let result = undefined;
 	if (columnFormat) {
 		try {
@@ -198,4 +227,17 @@ function maybeExtractFormatTag(columnName) {
 	} else {
 		return undefined;
 	}
+}
+
+/**
+ * Formats a value to whichever format is passed in
+ * @param {*} value the value to be formatted
+ * @param {string} format string containing an Excel-style format code, or a format name matching a built-in or custom format
+ * @returns a formatted value
+ */
+export function fmt(value, format) {
+	let formatObj = getFormatObjectFromString(format);
+	let valueType = inferValueType(value);
+	formatObj.valueType = valueType;
+	return formatValue(value, formatObj);
 }

@@ -20,7 +20,10 @@
 	import { standardizeDateColumn } from '@evidence-dev/component-utilities/dateParsing';
 	import { formatAxisValue } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { colours } from '@evidence-dev/component-utilities/colours';
@@ -79,6 +82,7 @@
 	xAxisLabels = xAxisLabels === 'true' || xAxisLabels === true;
 	export let sort = false; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
 	sort = sort === 'true' || sort === true;
+	export let xFmt = undefined;
 
 	// Y axis:
 	export let yAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
@@ -92,6 +96,10 @@
 	yAxisLabels = yAxisLabels === 'true' || yAxisLabels === true;
 	export let yMin = undefined;
 	export let yMax = undefined;
+	export let yFmt = undefined;
+
+	// Other column formats:
+	export let sizeFmt = undefined;
 
 	// Legend:
 	export let legend = undefined;
@@ -386,19 +394,42 @@
 			// ---------------------------------------------------------------------------------------
 			// Get format codes for axes
 			// ---------------------------------------------------------------------------------------
-			xFormat = columnSummary[x].format;
+			if (xFmt) {
+				xFmt = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
+				// Override with provided format
+				xFormat = xFmt;
+			} else {
+				xFormat = columnSummary[x].format;
+			}
+
 			if (!y) {
 				yFormat = 'str';
 			} else {
-				if (typeof y === 'object') {
-					yFormat = columnSummary[y[0]].format;
+				if (yFmt) {
+					if (typeof y === 'object') {
+						yFmt = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
+					} else {
+						yFmt = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
+					}
+					// Override with provided format
+					yFormat = yFmt;
 				} else {
-					yFormat = columnSummary[y].format;
+					if (typeof y === 'object') {
+						yFormat = columnSummary[y[0]].format;
+					} else {
+						yFormat = columnSummary[y].format;
+					}
 				}
 			}
 
 			if (size) {
-				sizeFormat = columnSummary[size].format;
+				if (sizeFmt) {
+					sizeFmt = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
+					// Override with provided format
+					sizeFormat = sizeFmt;
+				} else {
+					sizeFormat = columnSummary[size].format;
+				}
 			}
 
 			xUnitSummary = columnSummary[x].columnUnitSummary;
