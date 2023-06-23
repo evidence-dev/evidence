@@ -84,7 +84,7 @@
 			// Set up stacks
 			stackName = stackName ?? 'stack1';
 		} else {
-			stackName = 'stack1';
+			stackName = undefined;
 		}
 	}
 
