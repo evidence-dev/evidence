@@ -58,41 +58,41 @@ let demoData = [
 # Maps
 
 ```sql map_data
-select "Arkansas" as name, 100 as value
+select 'Arkansas' as name, 100 as value
 union all
-select "Illinois" as name, 200 as value
+select 'Illinois' as name, 200 as value
 union all
-select "Florida" as name, 1000 as value
+select 'Florida' as name, 1000 as value
 union all
-select "New York" as name, 1110 as value
+select 'New York' as name, 1110 as value
 union all
-select "California" as name, 2000 as value
+select 'California' as name, 2000 as value
 
 ```
 
 ```sql world_map
-select "Canada" as name, 260 as value
+select 'Canada' as name, 260 as value
 union all
-select "United Kingdom" as name, 300 as value
+select 'United Kingdom' as name, 300 as value
 union all
-select "United States of America" as name, 500 as value
+select 'United States of America' as name, 500 as value
 ```
 
 ```sql us_abbrev
-select "CA" as name, 100 as sales_usd
+select 'CA' as name, 100 as sales_usd
 union all
-select "TX" as name, 120 as sales_usd
+select 'TX' as name, 120 as sales_usd
 union all
-select "FL" as name, 20 as sales_usd
+select 'FL' as name, 20 as sales_usd
 union all
-select "WA" as name, 5 as sales_usd
+select 'WA' as name, 5 as sales_usd
 
 ```
 
 ```sql testabb
-select "CA" as namef, 100 as value
+select 'CA' as namef, 100 as value
 union all
-select "TX" as namef, 200 as value
+select 'TX' as namef, 200 as value
 ```
 
 ## US State Map
