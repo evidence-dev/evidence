@@ -86,13 +86,13 @@ export const resolveEvidencePackages = async (rootDir) => {
 		Object.keys(configContent.components).map(validatePlugin(rootDir))
 	).then((pack) => /** @type {Exclude<typeof pack[number], false>[]} */ (pack.filter(Boolean)));
 
-	/** @type {EvidencePluginPackage<EvidencePackage>[]} */
+	/** @type {EvidencePluginPackage<EvidenceDatabasePackage>[]} */
 	const databasePackages = await Promise.all(
 		Object.keys(configContent.databases).map(validatePlugin(rootDir))
 	).then(
 		(pack) =>
-			/** @type {EvidencePluginPackage<EvidencePackage>[]} */
-			(pack.filter((p) => p && Boolean(p.package.evidence)))
+			/** @type {EvidencePluginPackage<EvidenceDatabasePackage>[]} */
+			(pack.filter((p) => p && Boolean(p.package.evidence?.databases)))
 	);
 
 	return {
