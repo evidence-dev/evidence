@@ -52,16 +52,9 @@ Follow these steps to test your changes, once you've started the example project
 you should be able to open the `Evidence Development Workspace` on `localhost:3000`.
 Any subsequent changes you make will be reflected on the website.
 
-#### Testing Database Connectors
-
-1. In the project root folder, run `pnpm install` (you will need to install pnpm if you don't have it `npm i -g pnpm`)
-2. In the project root folder, run `pnpm run dev:example-project`
-
-#### Testing UI Components
-
-1. In the project root folder, run `pnpm install` (you will need to install pnpm if you don't have it `npm i -g pnpm`)
-2. In the `packages/core-components` folder, run `pnpm run package:watch`
-3. In another terminal, in the project root folder, run `pnpm run dev:example-project`
+1. In the project root folder, run `pnpm install` (install pnpm if you don't have it `npm i -g pnpm`)
+1. Run `pnpm run dev:core-components`
+1. **In another terminal**, run `pnpm run dev:example-project`
 
 ### Running the Test Suite locally.
 
