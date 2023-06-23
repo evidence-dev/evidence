@@ -6,6 +6,7 @@ import { resolveEvidencePackages } from './resolve-evidence-config';
  * @this {void}
  */
 export async function discoverEvidencePlugins() {
+	// TODO: Make this pass-in-able
 	const rootDir = await getRootModules();
 
 	return await resolveEvidencePackages(rootDir);

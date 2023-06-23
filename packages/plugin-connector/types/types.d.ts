@@ -23,7 +23,7 @@ declare global {
 	type GenericPackage = z.infer<typeof GenericPackageSchema>;
 	type EvidencePackage = z.infer<typeof EvidencePackageSchema>;
 
-	type EvidenceDatabasePackage = EvidencePackage & { evidence: { databases: NonNullable<EvidencePackage["evidence"]["databases"]> } };
+	type EvidenceDatabasePackage = EvidencePackage & { evidence: { databases: NonNullable<EvidencePackage["evidence"]["databases"]> }, main: string };
 
 	type ValidPackage = z.infer<typeof ValidPackageSchema>;
 

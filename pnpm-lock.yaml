@@ -381,8 +381,11 @@ importers:
       '@parcel/transformer-inline-string': ^2.8.3
       '@parcel/transformer-typescript-types': ^2.8.3
       '@types/estree': ^1.0.1
+      '@types/mock-fs': ^4.13.1
       '@types/node': ^20.1.2
       chalk: ^5.2.0
+      commander: ^11.0.0
+      mock-fs: ^5.2.0
       parcel: ^2.8.3
       svelte: 3.55.0
       svelte-preprocess: ^5.0.3
@@ -404,7 +407,10 @@ importers:
       '@parcel/packager-ts': 2.8.3_@parcel+core@2.8.3
       '@parcel/transformer-inline-string': 2.8.3_@parcel+core@2.8.3
       '@parcel/transformer-typescript-types': 2.8.3_lbk4o2leuotmbqt3yd35lse6hq
+      '@types/mock-fs': 4.13.1
       '@types/node': 20.1.2
+      commander: 11.0.0
+      mock-fs: 5.2.0
       parcel: 2.8.3
       typescript: 5.0.4
       vitest: 0.25.8
@@ -4314,7 +4320,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.5.0
       '@jest/types': 29.5.0
-      '@types/node': 14.18.40
+      '@types/node': 20.1.2
       jest-mock: 29.5.0
     dev: true
 
@@ -4370,7 +4376,7 @@ packages:
     dependencies:
       '@jest/types': 29.5.0
       '@sinonjs/fake-timers': 10.0.2
-      '@types/node': 14.18.40
+      '@types/node': 20.1.2
       jest-message-util: 29.5.0
       jest-mock: 29.5.0
       jest-util: 29.5.0
@@ -7405,6 +7411,12 @@ packages:
     resolution: {integrity: sha512-Z61JK7DKDtdKTWwLeElSEBcWGRLY8g95ic5FoQqI9CMx0ns/Ghep3B4DfcEimiKMvtamNVULVNKEsiwV3aQmXw==}
     dev: true
 
+  /@types/mock-fs/4.13.1:
+    resolution: {integrity: sha512-m6nFAJ3lBSnqbvDZioawRvpLXSaPyn52Srf7OfzjubYbYX8MTUdIgDxQl0wEapm4m/pNYSd9TXocpQ0TvZFlYA==}
+    dependencies:
+      '@types/node': 20.1.2
+    dev: true
+
   /@types/mssql/8.1.2:
     resolution: {integrity: sha512-hoDM+mZUClfXu0J1pyVdbhv2Ve0dl0TdagAE3M5rd1slqoVEEHuNObPD+giwtJgyo99CcS58qbF9ektVKdxSfQ==}
     dependencies:
@@ -9468,6 +9480,11 @@ packages:
   /comma-separated-tokens/1.0.8:
     resolution: {integrity: sha512-GHuDRO12Sypu2cV70d1dkA2EUmXHgntrzbpvOB+Qy+49ypNfGgFQIC2fhhXbnyrJRynDCAARsT7Ou0M6hirpfw==}
     dev: false
+
+  /commander/11.0.0:
+    resolution: {integrity: sha512-9HMlXtt/BNoYr8ooyjjNRdIilOTkVJXB+GhxMTtOKwk0R4j4lS4NpjuqmRxroBfnfTSHQIHQB7wryHhXarNjmQ==}
+    engines: {node: '>=16'}
+    dev: true
 
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -13624,7 +13641,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.5.0
-      '@types/node': 14.18.40
+      '@types/node': 20.1.2
       jest-util: 29.5.0
     dev: true
 
@@ -15048,6 +15065,11 @@ packages:
       yargs: 16.2.0
       yargs-parser: 20.2.4
       yargs-unparser: 2.0.0
+    dev: true
+
+  /mock-fs/5.2.0:
+    resolution: {integrity: sha512-2dF2R6YMSZbpip1V1WHKGLNjr/k48uQClqMVb5H3MOvwc9qhYis3/IWbj02qIg/Y8MDXKFF4c5v0rxx2o6xTZw==}
+    engines: {node: '>=12.0.0'}
     dev: true
 
   /mock-require/3.0.3:
