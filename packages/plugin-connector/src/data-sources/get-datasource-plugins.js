@@ -1,5 +1,3 @@
-import { loadConfig } from '../plugin-discovery/resolve-evidence-config';
-import { getRootModules } from '../plugin-discovery/get-root-modules';
 import { discoverEvidencePlugins } from '../plugin-discovery';
 import { buildConnector } from './build-connector';
 import chalk from 'chalk';
@@ -10,10 +8,6 @@ import path from 'path';
  * @returns {Promise<PluginDatabases>}
  */
 export async function getDatasourcePlugins(cfg, discoveries) {
-	const rootDir = await getRootModules();
-
-	const config = cfg ?? (await loadConfig(rootDir));
-
 	const pluginDiscoveries = discoveries ?? (await discoverEvidencePlugins());
 
 	return await pluginDiscoveries.databases.reduce(
@@ -54,23 +48,4 @@ export async function getDatasourcePlugins(cfg, discoveries) {
 		},
 		Promise.resolve({})
 	);
-
-	// // TODO: Load all sources
-	// // TODO: Handle databases that are supported by multiple plugins
-	// await Promise.all(sources.map(async (source) => {
-	//     const dbType = source.type
-	//     const dbPlugin = dbMap[dbType]
-	//     if (!dbPlugin) {
-	//         console.error(
-	//             chalk.red(
-	//                 `[!] No database plugin found for ${dbType}`
-	//             )
-	//         )
-	//         throw new Error('Missing database plugin!')
-	//     }
-	//     const runner = await dbPlugin.factory(source.options, source.sourceDirectory)
-	//     return {
-	//         source, runner
-	//     }
-	// }))
 }
