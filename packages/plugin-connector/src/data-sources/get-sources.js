@@ -75,7 +75,7 @@ async function getConnectionParams(sourceDir) {
  *
  * @param {string} sourceDir - The path to the source directory.
  * @param {Array<string>} contents - An array of filenames in the source directory.
- * @return {Promise<Array<{filepath: string, content: string}>>} - A promise that resolves to an array of objects
+ * @return {Promise<DatasourceQuery[]>} - A promise that resolves to an array of objects
  * containing the filepath and content of each query file.
  */
 async function getQueries(sourceDir, contents) {
