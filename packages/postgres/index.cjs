@@ -204,10 +204,8 @@ module.exports = runQuery;
  */
  module.exports.getRunner = async (opts) => {
 	return async (queryContent, queryPath) => {
+		// Filter out non-sql files
 		if (!queryPath.endsWith(".sql")) return null;
-		return runQuery(queryContent, opts).then(({ rows, columnTypes }) => {
-			const out = { data: rows, columns: columnTypes.map(ct => ({ title: ct.name, type: ct.evidenceType })) };
-			return out
-		})
+		return runQuery(queryContent, opts)
 	}
 }
