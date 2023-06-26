@@ -187,3 +187,27 @@ const runQuery = async (queryString, database) => {
 };
 
 module.exports = runQuery;
+/**
+ * @typedef {Object} PostgresOptions
+ * @property {string} host
+ * @property {string} database
+ * @property {string} user
+ * @property {string} password
+ * @property {number} port
+ * @property {Object | undefined} ssl
+ */
+
+/**
+ *
+ * @param {PostgresOptions} opts
+ * @returns
+ */
+ module.exports.getRunner = async (opts) => {
+	return async (queryContent, queryPath) => {
+		if (!queryPath.endsWith(".sql")) return null;
+		return runQuery(queryContent, opts).then(({ rows, columnTypes }) => {
+			const out = { data: rows, columns: columnTypes.map(ct => ({ title: ct.name, type: ct.evidenceType })) };
+			return out
+		})
+	}
+}

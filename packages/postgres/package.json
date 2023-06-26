@@ -12,5 +12,13 @@
 		"@evidence-dev/db-commons": "workspace:^",
 		"pg": "8.7.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"postgres",
+			"postgresql",
+			"pg",
+			"pgsql"
+		]
+	}
 }
