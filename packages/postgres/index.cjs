@@ -202,10 +202,10 @@ module.exports = runQuery;
  * @param {PostgresOptions} opts
  * @returns
  */
- module.exports.getRunner = async (opts) => {
+module.exports.getRunner = async (opts) => {
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
-		if (!queryPath.endsWith(".sql")) return null;
-		return runQuery(queryContent, opts)
-	}
-}
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts);
+	};
+};

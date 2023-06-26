@@ -1,8 +1,8 @@
-import fs from "fs/promises";
-import path from "path";
-import yaml from "yaml";
-import chalk from "chalk";
-import { DatasourceSpecFileSchema } from "./schemas/datasource-spec.schema";
+import fs from 'fs/promises';
+import path from 'path';
+import yaml from 'yaml';
+import chalk from 'chalk';
+import { DatasourceSpecFileSchema } from './schemas/datasource-spec.schema';
 
 /**
  * Returns the path to the sources directory, if it exists in the current directory.
@@ -10,27 +10,24 @@ import { DatasourceSpecFileSchema } from "./schemas/datasource-spec.schema";
  * @returns {Promise<string|null>} The path to the sources directory or null.
  */
 export const getSourcesDir = async () => {
-    // Get the absolute path to the current working directory
-    const pwd = path.resolve("./");
+	// Get the absolute path to the current working directory
+	const pwd = path.resolve('./');
 
-    // Get the contents of the current directory
-    const contents = await fs.readdir(pwd, { withFileTypes: true });
+	// Get the contents of the current directory
+	const contents = await fs.readdir(pwd, { withFileTypes: true });
 
-    // Find the sources directory in the contents
-    const sourcesDir = contents.find(
-        (c) => c.name === "sources" && c.isDirectory()
-    );
+	// Find the sources directory in the contents
+	const sourcesDir = contents.find((c) => c.name === 'sources' && c.isDirectory());
 
-    // If sources directory doesn't exist, log a warning message
-    if (!sourcesDir) {
-        console.warn(chalk.yellow("[!] No Sources Found!"));
-        return null;
-    }
+	// If sources directory doesn't exist, log a warning message
+	if (!sourcesDir) {
+		console.warn(chalk.yellow('[!] No Sources Found!'));
+		return null;
+	}
 
-    // Return the path to the sources directory
-    return path.join(pwd, "sources");
+	// Return the path to the sources directory
+	return path.join(pwd, 'sources');
 };
-
 
 /**
  * Get a list of all sources and their connection info
@@ -38,22 +35,24 @@ export const getSourcesDir = async () => {
  * @returns {Promise<DatasourceSpec[]>} An array of DatasourceSpecs
  */
 export const getSources = async (sourcesDir) => {
-    const sourcesDirectories = await fs.readdir(sourcesDir);
-    /** @type {DatasourceSpec[]} */
-    const datasourceSpecs = await Promise.all(sourcesDirectories.map(async (dirName) => {
-        const sourceDir = path.join(sourcesDir, dirName);
-        const contents = await fs.readdir(sourceDir);
-        // TODO: Check environment variables for options (or option overrides)
-        const connParams = await getConnectionParams(sourceDir);
-        const queries = await getQueries(sourceDir, contents);
-        return {
-            ...connParams,
-            sourceDirectory: sourceDir,
-            queries: queries,
-        };
-    })).then(r => r.filter(Boolean));
+	const sourcesDirectories = await fs.readdir(sourcesDir);
+	/** @type {DatasourceSpec[]} */
+	const datasourceSpecs = await Promise.all(
+		sourcesDirectories.map(async (dirName) => {
+			const sourceDir = path.join(sourcesDir, dirName);
+			const contents = await fs.readdir(sourceDir);
+			// TODO: Check environment variables for options (or option overrides)
+			const connParams = await getConnectionParams(sourceDir);
+			const queries = await getQueries(sourceDir, contents);
+			return {
+				...connParams,
+				sourceDirectory: sourceDir,
+				queries: queries
+			};
+		})
+	).then((r) => r.filter(Boolean));
 
-    return datasourceSpecs;
+	return datasourceSpecs;
 };
 
 /**
@@ -64,9 +63,11 @@ export const getSources = async (sourcesDir) => {
  * @return {Promise<DatasourceSpecFile>} A Promise that resolves to a validated datasource specification.
  */
 async function getConnectionParams(sourceDir) {
-    const connParamsRaw = await fs.readFile(path.join(sourceDir, "connection.yaml")).then(r => r.toString());
-    const connParamsUnchecked = yaml.parse(connParamsRaw);
-    return DatasourceSpecFileSchema.parse(connParamsUnchecked);
+	const connParamsRaw = await fs
+		.readFile(path.join(sourceDir, 'connection.yaml'))
+		.then((r) => r.toString());
+	const connParamsUnchecked = yaml.parse(connParamsRaw);
+	return DatasourceSpecFileSchema.parse(connParamsUnchecked);
 }
 
 /**
@@ -80,10 +81,12 @@ async function getConnectionParams(sourceDir) {
  * containing the filepath and content of each query file.
  */
 async function getQueries(sourceDir, contents) {
-    const queryFiles = contents.filter((s) => s !== "connection.yaml");
-    const queries = await Promise.all(queryFiles.map(async (filename) => ({
-        filepath: `${sourceDir}/${filename}`,
-        content: await fs.readFile(`${sourceDir}/${filename}`).then(r => r.toString()),
-    })));
-    return queries;
+	const queryFiles = contents.filter((s) => s !== 'connection.yaml');
+	const queries = await Promise.all(
+		queryFiles.map(async (filename) => ({
+			filepath: `${sourceDir}/${filename}`,
+			content: await fs.readFile(`${sourceDir}/${filename}`).then((r) => r.toString())
+		}))
+	);
+	return queries;
 }

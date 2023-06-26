@@ -6,7 +6,9 @@ const PackageExportSchema = z.union([
 		{ exports: z.object({ '.': z.string() }) },
 		{ description: 'Use the exports field of the package.json' }
 	),
-	z.object({ svelte: z.string() }, { description: 'Use the svelte field of the package.json' }).optional()
+	z
+		.object({ svelte: z.string() }, { description: 'Use the svelte field of the package.json' })
+		.optional()
 ]);
 
 const BasePackageSchema = z.object({
