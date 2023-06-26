@@ -43,6 +43,7 @@ export const getSources = async (sourcesDir) => {
     const datasourceSpecs = await Promise.all(sourcesDirectories.map(async (dirName) => {
         const sourceDir = path.join(sourcesDir, dirName);
         const contents = await fs.readdir(sourceDir);
+        // TODO: Check environment variables for options (or option overrides)
         const connParams = await getConnectionParams(sourceDir);
         const queries = await getQueries(sourceDir, contents);
         return {
