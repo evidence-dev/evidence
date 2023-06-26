@@ -525,6 +525,7 @@ importers:
 
   packages/universal-sql:
     specifiers:
+      '@types/node': ^20.3.2
       apache-arrow: ^12.0.1
       chalk: ^5.2.0
       duckdb: ^0.8.1
@@ -534,6 +535,8 @@ importers:
       chalk: 5.2.0
       duckdb: 0.8.1
       parquet-wasm: 0.3.1
+    devDependencies:
+      '@types/node': 20.3.2
 
   sites/docs:
     specifiers:
@@ -7482,6 +7485,10 @@ packages:
 
   /@types/node/20.3.1:
     resolution: {integrity: sha512-EhcH/wvidPy1WeML3TtYFGR83UzjxeWRen9V402T8aUGYsCHOmfoisV3ZSg03gAFIbLq8TnWOJ0f4cALtnSEUg==}
+
+  /@types/node/20.3.2:
+    resolution: {integrity: sha512-vOBLVQeCQfIcF/2Y7eKFTqrMnizK5lRNQ7ykML/5RuwVXVWxYkgwS7xbt4B6fKCUPgbSL5FSsjHQpaGQP/dQmw==}
+    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
