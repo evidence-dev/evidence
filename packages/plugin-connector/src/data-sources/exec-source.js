@@ -1,3 +1,5 @@
+import {buildParquetFromResultSet} from "@evidence-dev/universal-sql"
+import fs from "fs/promises"
 /**
  * 
  * @param {DatasourceSpec} source 
@@ -20,6 +22,12 @@ export const execSource = async (source, supportedDbs) => {
         })
     )
 
-    console.log(results)
-
-}
+    for (const query of results) {
+        const {result} = query
+        if (!result) continue
+        const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows)
+        await fs.writeFile(query.filepath.split(".")[0] + ".parquet", parquetBuffer)
+    }
+    
+    
+}   
