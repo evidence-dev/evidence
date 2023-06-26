@@ -139,4 +139,10 @@ hide_table_of_contents: false
         <td class='tcenter'>column name</td>	
         <td class='tcenter'>-</td>
     </tr>
+    <tr>	
+        <td>fmt</td>	
+        <td>Format to use for values (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
+        <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
+        <td class='tcenter'>-</td>
+    </tr>
 </table>

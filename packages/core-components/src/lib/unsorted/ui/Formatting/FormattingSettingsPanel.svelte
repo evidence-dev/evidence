@@ -15,6 +15,15 @@
   growth as growth_pct, -- formatted as a percentage
   sales as sales_usd    -- formatted as US dollars
 from table`;
+
+	let componentExample = `<LineChart
+	data={sales_data}
+	x=date
+	y=sales
+	yFmt=euro
+/>`;
+
+	let valueExample = `<Value data={sales_data} column=sales fmt='$#,##0' />`;
 </script>
 
 <form id="formatting">
@@ -22,18 +31,32 @@ from table`;
 		<div class="panel">
 			<h2>Value Formatting</h2>
 			<p>
-				Format tags like <code>_usd</code> and <code>_pct</code> let you control how data will be formatted
-				in Evidence.
+				Evidence supports built-in formats (like <code>usd</code> and <code>pct</code>) and
+				Excel-style formats (like <code>$#,##0.0</code>). The easiest way to apply these formats is
+				using component props. For example:
 			</p>
-			<p>Apply format tags by including them at the end of column names. For example:</p>
+			<p>In the Value component, you can use the <code>fmt</code> prop</p>
+			<div class="code-container p-2">
+				<Prism language="html" code={valueExample} />
+			</div>
+			<br />
+			<p>In charts, you can use the <code>xFmt</code> and <code>yFmt</code> props</p>
+			<div class="code-container p-2">
+				<Prism language="jsx" code={componentExample} />
+			</div>
+			<br />
+			<p>
+				You can also set formats within your SQL queries using SQL format tags. Use these by
+				aliasing your column names and appending a format. For example:
+			</p>
 			<div class="code-container p-2">
 				<Prism language="sql" code={exampleQuery} />
 			</div>
 			<p />
 		</div>
 		<div class="panel">
-			<h2>Built in Format Tags</h2>
-			<p>All of the built in format tags are listed below for reference.</p>
+			<h2>Built-in Formats</h2>
+			<p>All built-in formats are listed below for reference.</p>
 			<CollapsibleTableSection headerText={'Dates'} expanded={false}>
 				<BuiltInFormatGrid formats={BUILT_IN_FORMATS.filter((d) => d.formatCategory === 'date')} />
 			</CollapsibleTableSection>
@@ -54,9 +77,9 @@ from table`;
 			</CollapsibleTableSection>
 		</div>
 		<div class="panel">
-			<h2>Custom Format Tags</h2>
+			<h2>Custom Formats</h2>
 			<p>
-				Add new format tags to your project. Custom format tags use <a
+				Add new formats to your project. Custom formats use <a
 					class="docs-link"
 					target="none"
 					href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68"

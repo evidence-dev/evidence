@@ -15,6 +15,10 @@
 	export let comparison = null;
 	export let sparkline = null;
 
+	// Formatting:
+	export let fmt = undefined;
+	export let comparisonFmt = undefined;
+
 	export let title = null;
 	export let comparisonTitle = null;
 
@@ -106,7 +110,7 @@
 	{:else}
 		<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
 		<div class="relative">
-			<Value {data} column={value} />
+			<Value {data} column={value} {fmt} />
 			{#if sparkline}
 				{#if isLinkedChartReady()}
 					<div class="inline-block">
@@ -131,7 +135,7 @@
 		{#if comparison}
 			<p class="m-0 text-xs font-medium font-ui" style={`color:${comparisonColor}`}>
 				{@html positive ? '&#9650;' : '&#9660;'}
-				<Value {data} column={comparison} />
+				<Value {data} column={comparison} fmt={comparisonFmt} />
 				<span class="text-grey-700 font-normal">{comparisonTitle}</span>
 			</p>
 		{/if}

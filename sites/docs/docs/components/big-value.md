@@ -101,4 +101,18 @@ Multiple cards will align themselves into a row.
         <td class='tcenter'>% or px value</td>	
         <td class='tcenter'>none</td>
     </tr>
+    <tr>	
+        <td>fmt</td>	
+        <td>Sets format for the value (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>comparisonFmt</td>	
+        <td>Sets format for the comparison (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
+        <td class='tcenter'>-</td>
+    </tr>
 </table>

@@ -53,6 +53,9 @@
 
 	export let linkLabel = undefined;
 
+	// Formatting:
+	export let fmt = undefined;
+
 	let options = {
 		id: id,
 		title: title,
@@ -63,7 +66,8 @@
 		width: width,
 		alt: alt,
 		openInNewTab: openInNewTab,
-		linkLabel: linkLabel
+		linkLabel: linkLabel,
+		fmt: fmt
 	};
 
 	props.update((d) => {
