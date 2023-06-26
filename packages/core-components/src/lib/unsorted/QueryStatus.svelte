@@ -13,7 +13,9 @@
 
 	let statuses = [];
 	let previousStatuses = [];
-	$: activeStatuses = statuses.filter((d) => d.status != 'not run' && d.status != 'from cache');
+	$: activeStatuses = statuses.filter(
+		(d) => d.status != 'not run' && d.status != 'from cache' && d.status != 'dynamic query'
+	);
 
 	async function getStatus() {
 		if (endpoint == '') {
