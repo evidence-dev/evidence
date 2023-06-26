@@ -9,9 +9,6 @@
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
-	"devDependencies": {
-		"vitest": "^0.31.1"
-	},
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest"
@@ -24,5 +21,9 @@
 		"echarts": "5.4.2",
 		"ssf": "^0.11.2",
 		"svelte": "3.55.0"
+	},
+	"devDependencies": {
+		"vitest": "^0.31.1"
 	}
+
 }

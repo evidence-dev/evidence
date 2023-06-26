@@ -8,6 +8,7 @@
 		"test": "vitest --run",
 		"test:watch": "vitest",
 		"build": "tsc --noEmit -p tsconfig.json && parcel build",
+		"build:debug": "parcel build --no-optimize",
 		"watch": "parcel watch",
 		"check": "tsc --noEmit -p tsconfig.json"
 	},
@@ -15,6 +16,7 @@
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
+		"@evidence-dev/universal-sql": "workspace:^",
 		"@types/estree": "^1.0.1",
 		"chalk": "^5.2.0",
 		"svelte": "3.55.0",
