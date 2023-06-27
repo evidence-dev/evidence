@@ -25,8 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
-      - run: pnpm install --ignore-scripts
-      - run: pnpm run postinstall
+      - run: pnpm install --frozen-lockfile
       - run: pnpm test
         env:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
