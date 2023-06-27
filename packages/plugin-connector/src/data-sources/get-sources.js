@@ -30,6 +30,29 @@ export const getSourcesDir = async () => {
 };
 
 /**
+ * @param {string} sourceName
+ * @returns {Record<string, string>}
+ */
+export const loadSourceOptions = (sourceName) => {
+	/** @type {any} */
+	const out = {};
+	const keyRegex = /^EVIDENCE_SOURCE_([a-zA-Z]+?)_([a-zA-Z0-1_]+)$/;
+	for (const [key, value] of Object.entries(process.env)) {
+		const parts = keyRegex.exec(key);
+		if (!parts) continue;
+		if (parts?.length < 3) continue;
+		if (parts[1].toLowerCase() !== sourceName.toLowerCase()) continue;
+		const rawOptKey = parts[2].split('_');
+		let t = out;
+		for (const optKey of rawOptKey) {
+			if (!t[optKey]) t[optKey] = {};
+		}
+		t[rawOptKey[rawOptKey.length - 1]] = value;
+	}
+	return out;
+};
+
+/**
  * Get a list of all sources and their connection info
  * @param {string} sourcesDir The path to the sources directory
  * @returns {Promise<DatasourceSpec[]>} An array of DatasourceSpecs
@@ -41,8 +64,16 @@ export const getSources = async (sourcesDir) => {
 		sourcesDirectories.map(async (dirName) => {
 			const sourceDir = path.join(sourcesDir, dirName);
 			const contents = await fs.readdir(sourceDir);
-			// TODO: Check environment variables for options (or option overrides)
+
 			const connParams = await getConnectionParams(sourceDir);
+			if (!connParams.name) connParams.name = /** @type {string} */ sourceDir.split('/').shift();
+			if (!connParams.name)
+				throw new Error(
+					`Unexpected error determining datasource name, please add an explicit name in connection.yaml (${sourceDir})`,
+				);
+			// Load Options from Environment
+			connParams.options = { ...connParams.options, ...loadSourceOptions(connParams.name) };
+
 			const queries = await getQueries(sourceDir, contents);
 			return {
 				...connParams,

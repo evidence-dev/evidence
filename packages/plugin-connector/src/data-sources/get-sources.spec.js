@@ -1,12 +1,13 @@
-import { getSources } from './get-sources';
+import {getSources, loadSourceOptions} from './get-sources';
 import mockfs from 'mock-fs';
 import { describe, it, expect, beforeEach } from 'vitest';
 
-beforeEach(() => {
-	mockfs({
-		sources: {
-			sqlite: {
-				'connection.yaml': `
+describe('getSources', () => {
+	beforeEach(() => {
+		mockfs({
+			sources: {
+				sqlite: {
+					'connection.yaml': `
 # Optional; defaults to directory name
 name: sqlite
 table_prefix: test
@@ -20,12 +21,11 @@ type: sqlite
 # EVIDENCE_SOURCE_[source-name]_[option-name]
 # EVIDENCE_SOURCE_SALES_PATH: /data/sales.db
 # EVIDENCE_SOURCE_SALES_PATH: https://s3.acme.co/data/sales.db`
+				}
 			}
-		}
+		});
 	});
-});
 
-describe('getSources', () => {
 	it('should be defined', () => {
 		expect(getSources).toBeDefined();
 	});
@@ -37,3 +37,16 @@ describe('getSources', () => {
 		expect(result[0].type).toEqual('sqlite');
 	});
 });
+
+describe("loadSourceOptions", () => {
+	it("should be defined", () => {
+		expect(loadSourceOptions).toBeDefined()
+	})
+	it("should properly detect an environment variable", () => {
+		process.env.EVIDENCE_SOURCE_TEST_value = "Hello!"
+		const result = loadSourceOptions("test")
+		expect("value" in result).toBeTruthy()
+		expect(result["value"]).toEqual("Hello!")
+
+	})
+})
