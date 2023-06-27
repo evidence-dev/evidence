@@ -34,7 +34,12 @@
 			</td>
 			<td class="align_right">{formatExample(format)}</td>
 			<td>
-				<button type="button" on:click={() => deleteHandler(format)} tooltip="Remove" class="mb-0.5">
+				<button
+					type="button"
+					on:click={() => deleteHandler(format)}
+					tooltip="Remove"
+					class="mb-0.5"
+				>
 					<div class="deleteIcon">
 						<Icon src={CircleX} />
 					</div>
