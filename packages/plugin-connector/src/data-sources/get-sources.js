@@ -69,7 +69,7 @@ export const getSources = async (sourcesDir) => {
 			if (!connParams.name) connParams.name = /** @type {string} */ sourceDir.split('/').shift();
 			if (!connParams.name)
 				throw new Error(
-					`Unexpected error determining datasource name, please add an explicit name in connection.yaml (${sourceDir})`,
+					`Unexpected error determining datasource name, please add an explicit name in connection.yaml (${sourceDir})`
 				);
 			// Load Options from Environment
 			connParams.options = { ...connParams.options, ...loadSourceOptions(connParams.name) };
@@ -97,7 +97,10 @@ async function getConnectionParams(sourceDir) {
 	const connParamsRaw = await fs
 		.readFile(path.join(sourceDir, 'connection.yaml'))
 		.then((r) => r.toString());
-	const connParamsUnchecked = yaml.parse(connParamsRaw);
+
+	const connParamsUnchecked = yaml.parse(connParamsRaw).catch((/** @type {Error} */ e) => {
+		throw new Error(`Error parsing connection.yaml file; ${sourceDir}`, { cause: e });
+	});
 	return DatasourceSpecFileSchema.parse(connParamsUnchecked);
 }
 
