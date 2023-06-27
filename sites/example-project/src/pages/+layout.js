@@ -38,10 +38,10 @@ async function setParquetURL(table, url) {
 	const connection = await db.connect();
 
 	const file_name = `${table}.parquet`;
-    await db.registerFileURL(file_name, url, 4, false);
-    await connection.query(
-        `CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
-    );
+	await db.registerFileURL(file_name, url, 4, false);
+	await connection.query(
+		`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
+	);
 
 	await connection.close();
 }
@@ -54,7 +54,7 @@ async function setParquetURL(table, url) {
  */
 async function query(sql) {
 	if (!browser) return null;
-    if (!db) await initDB();
+	if (!db) await initDB();
 
 	const connection = await db.connect();
 	const res = await connection.query(sql).then(arrowTableToJSON);
@@ -69,11 +69,13 @@ async function query(sql) {
  * @param {import("apache-arrow").Type} type
  */
 function apacheToEvidenceType(type) {
-	switch (type.typeId) { // maybe just replace with `typeof`
+	switch (
+		type.typeId // maybe just replace with `typeof`
+	) {
 		case Type.Date:
 			return 'date';
 		case Type.Float:
-        case Type.Int:
+		case Type.Int:
 			return 'number';
 		case Type.Bool:
 			return 'boolean';
