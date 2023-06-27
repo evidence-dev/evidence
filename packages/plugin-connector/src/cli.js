@@ -46,22 +46,9 @@ program
 		const datasources = await getSources(datasourceDir);
 		const plugins = await getDatasourcePlugins();
 		for (const source of datasources) {
-			await execSource(source, plugins);
-
-			// const plugin = plugins[source.type];
-			// const runner = await plugin.factory(source.options, source.sourceDirectory);
-			// for (const query of source.queries) {
-			// 	const result = await runner(query.content, query.filepath);
-			// 	console.log(result);
-			// }
+			await execSource(source, plugins, source.sourceDirectory);
 		}
 	});
-
-// program.command('load-duckdb')
-// .description('Load DuckDB')
-// .action(async () => {
-// 	await loadDuckDb()
-// })
 
 program
 	.command('root-modules-dir')
