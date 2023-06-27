@@ -6,6 +6,7 @@ import * as chokidar from 'chokidar';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
+import {updateDatasourceOutputs} from "@evidence-dev/plugin-connector";
 
 const populateTemplate = function () {
 	// Create the template project in .evidence/template
@@ -187,5 +188,12 @@ prog
 		strictMode();
 		buildHelper('npx vite build', args);
 	});
+
+prog
+	.command("build:sources")
+	.describe('creates .parquet files from source queries')
+	.action(async () => {
+		updateDatasourceOutputs(`./static/data`)
+	})
 
 prog.parse(process.argv);
