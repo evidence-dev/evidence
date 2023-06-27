@@ -24,7 +24,6 @@ jobs:
         with:
           node-version: 16
           cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
       - name: Check Linting & Formatting
         run: pnpm run lint
