@@ -9,7 +9,7 @@ const config = {
 			'./node_modules/@evidence-dev/core-components/dist/**/*.{html,js,svelte,ts,md}',
 			'../../node_modules/@evidence-dev/core-components/dist/**/*.{html,js,svelte,ts,md}'
 		]
-	}, 
+	},
 	theme: {
 		extend: {}
 	},
