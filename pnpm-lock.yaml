@@ -580,6 +580,7 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
+      '@evidence-dev/duckdb': workspace:^0.1.0
       '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/telemetry': 1.0.5
       '@sveltejs/kit': 1.13.0
@@ -614,6 +615,7 @@ importers:
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
+      '@evidence-dev/duckdb': link:../../packages/duckdb
       '@evidence-dev/plugin-connector': link:../../packages/plugin-connector
       '@evidence-dev/telemetry': link:../../packages/telemetry
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4
