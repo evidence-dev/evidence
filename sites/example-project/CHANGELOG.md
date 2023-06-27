@@ -1,5 +1,20 @@
 # @evidence-dev/components
 
+## 2.4.5
+
+### Patch Changes
+
+- 963d060c: removed redundant lines from tailwind.config.js
+- 4ced5e33: Prevent data json from being generated multiple times for templated pages
+- Updated dependencies [d999fe37]
+- Updated dependencies [4e94b57a]
+- Updated dependencies [121c7868]
+- Updated dependencies [ed2f4728]
+- Updated dependencies [f6be30cf]
+  - @evidence-dev/core-components@1.1.0
+  - @evidence-dev/component-utilities@1.1.0
+  - @evidence-dev/plugin-connector@1.1.0
+
 ## 2.4.4
 
 ### Patch Changes

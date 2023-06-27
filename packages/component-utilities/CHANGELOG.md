@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 1.1.0
+
+### Minor Changes
+
+- 121c7868: Adds formatting control to components
+
 ## 1.0.0
 
 ### Major Changes
