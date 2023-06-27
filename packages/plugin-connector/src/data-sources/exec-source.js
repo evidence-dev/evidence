@@ -26,7 +26,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	);
 
 	/** @type {Set<string>} */
-	const outputFilenames = new Set()
+	const outputFilenames = new Set();
 
 	for (const query of results) {
 		const { result } = query;
@@ -35,10 +35,10 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const fileparts = query.filepath.split('/');
 		const outputFilename = fileparts.pop()?.split('.')[0] + '.parquet';
 		const outputSubdir = fileparts.join('/').split('sources').slice(1).join('/');
-		outputFilenames.add(path.join(outputSubdir, outputFilename))
+		outputFilenames.add(path.join(outputSubdir, outputFilename));
 		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename), parquetBuffer);
 	}
 
-	return Array.from(outputFilenames)
+	return Array.from(outputFilenames);
 };

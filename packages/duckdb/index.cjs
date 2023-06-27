@@ -57,4 +57,3 @@ module.exports.getRunner = async (opts) => {
 		return runQuery(queryContent, opts);
 	};
 };
-
