@@ -15,7 +15,11 @@ By default, `Value` will display the value from the first row of the first colum
 
 ## Specifying Rows and Columns
 
-Optionally supply a `column` and/or a `row` argument to display other values from `data`. `row` is zero-indexed, so `row=0` displays the first row.
+Optionally supply a `column` and/or a `row` argument to display other values from `data`. 
+
+:::info Row index
+`row` is zero-indexed, so `row=0` displays the first row.
+:::
 
 ```markdown
 <!-- Show the **7th row** from column_name -->
@@ -49,6 +53,9 @@ Override errors with the optional `placeholder` argument. This is useful for dra
 
 ![value-placeholder](/img/value-placeholder.png)
 
+## Formatting Values
+Evidence supports a variety of formats - see [value formatting](/core-concepts/formatting) and the `fmt` prop below for more info.
+
 ## All Options
 
 <table>						 
@@ -80,6 +87,12 @@ Override errors with the optional `placeholder` argument. This is useful for dra
         <td>placeholder</td>	
         <td>Text to display in place of an error</td>	
         <td class='tcenter'>-</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>fmt</td>	
+        <td>Format to use for the value (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
+        <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
         <td class='tcenter'>-</td>
     </tr>
 </table>

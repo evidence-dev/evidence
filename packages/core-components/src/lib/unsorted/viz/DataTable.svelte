@@ -9,7 +9,10 @@
 	import { propKey, strictBuild } from './context';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import SearchBar from './SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
@@ -399,7 +402,12 @@
 												{#if row[column.linkLabel] != undefined}
 													{formatValue(
 														row[column.linkLabel],
-														safeExtractColumn(column).format,
+														column.fmt
+															? getFormatObjectFromString(
+																	column.fmt,
+																	safeExtractColumn(column).format.valueType
+															  )
+															: safeExtractColumn(column).format,
 														safeExtractColumn(column).columnUnitSummary
 													)}
 												{:else}
@@ -408,7 +416,12 @@
 											{:else}
 												{formatValue(
 													row[column.id],
-													safeExtractColumn(column).format,
+													column.fmt
+														? getFormatObjectFromString(
+																column.fmt,
+																safeExtractColumn(column).format.valueType
+														  )
+														: safeExtractColumn(column).format,
 													safeExtractColumn(column).columnUnitSummary
 												)}
 											{/if}
@@ -416,7 +429,12 @@
 									{:else}
 										{formatValue(
 											row[column.id],
-											safeExtractColumn(column).format,
+											column.fmt
+												? getFormatObjectFromString(
+														column.fmt,
+														safeExtractColumn(column).format.valueType
+												  )
+												: safeExtractColumn(column).format,
 											safeExtractColumn(column).columnUnitSummary
 										)}
 									{/if}

@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { getContext } from 'svelte';
+	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from './context';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
@@ -194,6 +194,34 @@
 			return d;
 		});
 	}
+
+	$: chartOverrides = {
+		// Evidence definition of axes (yAxis = dependent, xAxis = independent)
+		xAxis: {
+			axisTick: {
+				alignWithLabel: false
+			}
+		}
+	};
+
+	beforeUpdate(() => {
+		// beforeUpdate ensures that these overrides always run before we render the chart.
+		// otherwise, this block won't re-execute after a change to the data object, and
+		// the chart will re-render using the base config from Chart.svelte
+
+		if (chartOverrides) {
+			config.update((d) => {
+				if (swapXY) {
+					d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+					d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
+				} else {
+					d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
+				}
+				return d;
+			});
+		}
+	});
 </script>
 
 {#if error}

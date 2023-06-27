@@ -4,7 +4,10 @@
 
 <script>
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -21,8 +24,10 @@
 	// Placeholder text when data not supplied:
 	export let placeholder = null;
 
+	// Value Formatting:
+	export let fmt = undefined;
+
 	let value;
-	let fmt;
 	let error;
 
 	let columnSummary;
@@ -65,7 +70,11 @@
 
 					value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
-					fmt = columnSummary[0].format;
+					if (fmt) {
+						fmt = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+					} else {
+						fmt = columnSummary[0].format;
+					}
 				} else {
 					throw Error(
 						'No data provided. If you referenced a query result, check that the name is correct.'

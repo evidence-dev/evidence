@@ -12,6 +12,9 @@
 	export let series = undefined;
 	export let xType = undefined;
 
+	export let yFmt = undefined;
+	export let xFmt = undefined;
+
 	export let title = undefined;
 	export let subtitle = undefined;
 	export let legend = undefined;
@@ -47,6 +50,8 @@
 	{data}
 	{x}
 	{y}
+	{xFmt}
+	{yFmt}
 	{series}
 	{xType}
 	{legend}
