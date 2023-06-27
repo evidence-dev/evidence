@@ -13,7 +13,6 @@ export { default as Logo } from './Logo.svelte';
 export { default as Nav } from './Nav.svelte';
 export { default as PageMenu } from './PageMenu.svelte';
 export { default as Portal } from './Portal.svelte';
-export { default as PrintButton } from './PrintButton.svelte';
 export { default as QueryToast } from './QueryToast.svelte';
 export { default as QueryViewer } from './QueryViewer.svelte';
 export { default as Sidebar } from './Sidebar.svelte';

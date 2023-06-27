@@ -3,8 +3,10 @@
 </script>
 
 <script>
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CircleX } from '@steeze-ui/tabler-icons';
 	import { defaultExample, formatExample } from '@evidence-dev/component-utilities/formatting';
-	import TiDeleteOutline from 'svelte-icons/ti/TiDeleteOutline.svelte';
+
 	export let formats;
 	export let deleteHandler;
 </script>
@@ -32,8 +34,15 @@
 			</td>
 			<td class="align_right">{formatExample(format)}</td>
 			<td>
-				<button type="button" on:click={() => deleteHandler(format)} tooltip="Remove">
-					<div class="deleteIcon"><TiDeleteOutline /></div>
+				<button
+					type="button"
+					on:click={() => deleteHandler(format)}
+					tooltip="Remove"
+					class="mb-0.5"
+				>
+					<div class="deleteIcon">
+						<Icon src={CircleX} />
+					</div>
 				</button>
 			</td>
 		</tr>

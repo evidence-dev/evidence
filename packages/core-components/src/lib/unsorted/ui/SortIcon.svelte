@@ -3,34 +3,14 @@
 </script>
 
 <script>
-	import TiArrowSortedUp from 'svelte-icons/ti/TiArrowSortedUp.svelte';
-	import TiArrowSortedDown from 'svelte-icons/ti/TiArrowSortedDown.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ChevronUp, ChevronDown } from '@steeze-ui/tabler-icons';
 
 	export let ascending;
 </script>
 
-<span class="icon-container">
-	<span class="sort-icon">
-		{#if ascending}
-			<TiArrowSortedUp />
-		{:else}
-			<TiArrowSortedDown />
-		{/if}
-	</span>
-</span>
-
-<style>
-	.sort-icon {
-		width: 12px;
-		height: 12px;
-		align-items: center;
-	}
-
-	.icon-container {
-		display: inline-flex;
-		align-items: center;
-		vertical-align: bottom;
-		margin-bottom: 0.6em;
-		margin-left: 0.2em;
-	}
-</style>
+{#if ascending}
+	<Icon src={ChevronUp} class="w-3 h-3 inline mb-0.5" />
+{:else}
+	<Icon src={ChevronDown} class="w-3 h-3 inline mb-0.5" />
+{/if}

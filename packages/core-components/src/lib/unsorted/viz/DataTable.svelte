@@ -19,10 +19,8 @@
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
 
-	import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte';
-	import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte';
-	import MdNavigateNext from 'svelte-icons/md/MdNavigateNext.svelte';
-	import MdLastPage from 'svelte-icons/md/MdLastPage.svelte';
+	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
 	// Set up props store
 	let props = writable({});
 	setContext(propKey, props);
@@ -463,8 +461,8 @@
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(0)}
-						><div class="page-icon">
-							<MdFirstPage />
+						><div class="page-icon flex items-center">
+							<Icon src={ChevronsLeft} />
 						</div></button
 					>
 					<button
@@ -473,8 +471,8 @@
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(currentPage - 2)}
-						><div class="page-icon">
-							<MdNavigateBefore />
+						><div class="page-icon h-[0.83em] flex items-center">
+							<Icon src={ChevronLeft} class="h-[0.83em]" />
 						</div></button
 					>
 					<span class="page-count"
@@ -501,8 +499,8 @@
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(currentPage)}
-						><div class="page-icon">
-							<MdNavigateNext />
+						><div class="page-icon h-[0.83em] flex items-center">
+							<Icon src={ChevronRight} class="h-[0.83em]" />
 						</div></button
 					>
 					<button
@@ -511,8 +509,8 @@
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(pageCount - 1)}
-						><div class="page-icon">
-							<MdLastPage />
+						><div class="page-icon flex items-center">
+							<Icon src={ChevronsRight} />
 						</div></button
 					>
 				</div>
