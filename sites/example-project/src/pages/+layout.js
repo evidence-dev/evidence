@@ -6,7 +6,7 @@ let db;
 
 async function initDB() {
 	if (!browser) return;
-	if (db) return db;
+	if (db) return;
 
 	// Instantiate worker
 	const duckdb_worker = (
@@ -19,46 +19,31 @@ async function initDB() {
 	const worker = new duckdb_worker();
 
 	// and asynchronous database
-	let uninstantiated_db = new AsyncDuckDB(logger, worker);
-	await uninstantiated_db.instantiate(duckdb_wasm);
-	await uninstantiated_db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
-
-	db = uninstantiated_db;
+	db = new AsyncDuckDB(logger, worker);
+	await db.instantiate(duckdb_wasm);
+	await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
 }
 
-/** @type {Function} */
-let resolve_initial_data;
-let setting_data = new Promise((r) => (resolve_initial_data = r));
-
 /**
- * Sets the contents of `table` to the JSON object `data`.
+ * Adds a new view to the database, pointing to the provided parquet URL.
  *
  * @param {string} table
- * @param {any} data
+ * @param {string} url
  * @returns {Promise<void>}
  */
-async function setData(table, data) {
+async function setParquetURL(table, url) {
 	if (!browser) return;
 	if (!db) await initDB();
 
-	console.time(`setting data for ${table}`);
 	const connection = await db.connect();
 
-	if (typeof data === 'object') {
-		await db.registerFileText(`${table}.json`, JSON.stringify(data));
-		await connection.insertJSONFromPath(`${table}.json`, { schema: 'main', name: table });
-	} else if (typeof data === 'string') {
-		const random_file_name = `${Math.random().toString(36).substring(7)}.parquet`;
-		await db.registerFileURL(random_file_name, data, 4, false);
-		await connection.query(
-			`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${random_file_name}');`
-		);
-	}
+	const file_name = `${table}.parquet`;
+    await db.registerFileURL(file_name, url, 4, false);
+    await connection.query(
+        `CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
+    );
 
 	await connection.close();
-	console.timeEnd(`setting data for ${table}`);
-
-	resolve_initial_data();
 }
 
 /**
@@ -69,8 +54,7 @@ async function setData(table, data) {
  */
 async function query(sql) {
 	if (!browser) return null;
-
-	await setting_data;
+    if (!db) await initDB();
 
 	const connection = await db.connect();
 	const res = await connection.query(sql).then(arrowTableToJSON);
@@ -80,14 +64,16 @@ async function query(sql) {
 }
 
 /**
+ * Converts an Apache Arrow type to an Evidence type.
  *
  * @param {import("apache-arrow").Type} type
  */
 function apacheToEvidenceType(type) {
-	switch (type.typeId) {
+	switch (type.typeId) { // maybe just replace with `typeof`
 		case Type.Date:
 			return 'date';
 		case Type.Float:
+        case Type.Int:
 			return 'number';
 		case Type.Bool:
 			return 'boolean';
@@ -129,7 +115,7 @@ export const load = async ({ fetch, route, data: parentData }) => {
 		//     await setData(key, value);
 		// }
 
-		await setData('taxis', '/taxis.parquet');
+		await setParquetURL('taxis', '/taxis.parquet');
 
 		return {
 			__db: { query },
