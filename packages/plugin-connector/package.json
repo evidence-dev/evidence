@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"type": "module",
-	"bin": "./dist/debugger.js",
+	"bin": "./dist/cli.js",
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
