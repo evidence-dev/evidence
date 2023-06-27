@@ -34,7 +34,7 @@ const updateDirectoriesandStatus = function (queries, routeHash) {
 	}
 
 	let status = queries.map((query) => {
-		return { id: query.id, status: query.status };
+		return { id: query.id, status: "dynamic query" }; // TODO: revamp functionality w parquet generation
 	});
 
 	return status;
