@@ -187,6 +187,7 @@ const runQuery = async (queryString, database) => {
 };
 
 module.exports = runQuery;
+
 /**
  * @typedef {Object} PostgresOptions
  * @property {string} host
@@ -198,11 +199,21 @@ module.exports = runQuery;
  */
 
 /**
- *
+ * @typedef {Object} QueryResult
+ * @property { Record<string, any>[] } rows
+ * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
+ */
+
+/**
  * @param {PostgresOptions} opts
- * @returns
+ * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
  */
 module.exports.getRunner = async (opts) => {
+	/**
+	 * @param {string} queryContent
+	 * @param {string} queryPath
+	 * @returns {Promise<QueryResult>}
+	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
