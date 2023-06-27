@@ -99,9 +99,12 @@ async function getConnectionParams(sourceDir) {
 		.readFile(path.join(sourceDir, 'connection.yaml'))
 		.then((r) => r.toString());
 
-	const connParamsUnchecked = yaml.parse(connParamsRaw).catch((/** @type {Error} */ e) => {
+	let connParamsUnchecked;
+	try {
+		connParamsUnchecked = yaml.parse(connParamsRaw);
+	} catch (e) {
 		throw new Error(`Error parsing connection.yaml file; ${sourceDir}`, { cause: e });
-	});
+	}
 
 	const validationResult = DatasourceSpecFileSchema.safeParse(connParamsUnchecked);
 	if (!validationResult.success) {
@@ -114,6 +117,7 @@ async function getConnectionParams(sourceDir) {
 		);
 		throw new Error('Unable to load connection.yaml');
 	}
+	return validationResult.data;
 }
 
 /**
