@@ -10,7 +10,8 @@
 		"build": "tsc --noEmit -p tsconfig.json && parcel build",
 		"build:debug": "parcel build --no-optimize",
 		"watch": "parcel watch",
-		"check": "tsc --noEmit -p tsconfig.json"
+		"check": "tsc --noEmit -p tsconfig.json",
+		"postinstall": "parcel build"
 	},
 	"keywords": [],
 	"author": "",

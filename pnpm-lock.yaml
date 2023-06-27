@@ -289,6 +289,7 @@ importers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/db-orchestrator': workspace:^
+      '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/preprocess': workspace:^
       '@evidence-dev/telemetry': workspace:^
       '@sveltejs/adapter-static': 1.0.0
@@ -299,6 +300,7 @@ importers:
       svelte: 3.55.0
       vite: ^4.0.4
     dependencies:
+      '@evidence-dev/plugin-connector': link:../plugin-connector
       '@evidence-dev/preprocess': link:../preprocess
       '@evidence-dev/telemetry': link:../telemetry
       '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.13.0
