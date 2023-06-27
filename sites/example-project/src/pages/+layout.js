@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { Type } from "apache-arrow";
+import { Type } from 'apache-arrow';
 
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
 let db;
@@ -80,40 +80,40 @@ async function query(sql) {
 }
 
 /**
- * 
- * @param {import("apache-arrow").Type} type 
+ *
+ * @param {import("apache-arrow").Type} type
  */
 function apacheToEvidenceType(type) {
-    switch (type.typeId) {
-        case Type.Date:
-            return "date";
-        case Type.Float:
-            return "number";
-        case Type.Bool:
-            return "boolean";
-        case Type.Dictionary:
-        default:
-            return "string";
-    }
+	switch (type.typeId) {
+		case Type.Date:
+			return 'date';
+		case Type.Float:
+			return 'number';
+		case Type.Bool:
+			return 'boolean';
+		case Type.Dictionary:
+		default:
+			return 'string';
+	}
 }
 
 /**
- * 
- * @param {import("apache-arrow").Table} table 
- * @returns 
+ *
+ * @param {import("apache-arrow").Table} table
+ * @returns
  */
 function arrowTableToJSON(table) {
 	if (table == null) return [];
-    const arr = table.toArray();
+	const arr = table.toArray();
 
-    Object.defineProperty(arr, '_evidenceColumnTypes', {
-        enumerable: false,
-        value: table.schema.fields.map((field) => ({
-            name: field.name,
-            evidenceType: apacheToEvidenceType(field.type),
-            typeFidelity: "precise"
-        }))
-    });
+	Object.defineProperty(arr, '_evidenceColumnTypes', {
+		enumerable: false,
+		value: table.schema.fields.map((field) => ({
+			name: field.name,
+			evidenceType: apacheToEvidenceType(field.type),
+			typeFidelity: 'precise'
+		}))
+	});
 
 	return arr;
 }
