@@ -1,88 +1,10 @@
-const {
-	readJSONSync,
-	writeJSONSync,
-	pathExistsSync,
-	emptyDirSync,
-	mkdirSync
-} = require('fs-extra');
-const md5 = require('blueimp-md5');
+const { readJSONSync } = require('fs-extra');
 const chalk = require('chalk');
 const logEvent = require('@evidence-dev/telemetry');
 const readline = require('readline');
 const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
-const cacheDirectory = './.evidence-queries/cache';
-const { getEnv } = require('@evidence-dev/db-commons');
 
-const getQueryCachePaths = (queryString, queryTime) => {
-	let queryTimeMD5 = md5(queryTime);
-	let queryStringMD5 = md5(queryString);
-	let path = `${cacheDirectory}/${queryTimeMD5}`;
-	return {
-		cacheDirectory: path,
-		resultsCacheFile: `${cacheDirectory}/${queryTimeMD5}/${queryStringMD5}.json`,
-		columnTypeCacheFile: `${cacheDirectory}/${queryTimeMD5}/${queryStringMD5}-column-types.json`
-	};
-};
-
-const updateCache = function (queryString, data, columnTypes, queryTime) {
-	const { cacheDirectory, resultsCacheFile, columnTypeCacheFile } = getQueryCachePaths(
-		queryString,
-		queryTime
-	);
-	if (!pathExistsSync(cacheDirectory)) {
-		emptyDirSync(cacheDirectory);
-		mkdirSync(cacheDirectory, { recursive: true });
-	}
-	writeJSONSync(resultsCacheFile, data, { throws: false });
-	if (columnTypes) {
-		writeJSONSync(columnTypeCacheFile, columnTypes, { throws: false });
-	}
-};
-
-const validateQuery = function (query) {
-	if (query.id === 'untitled') {
-		throw 'Queries require a title';
-	}
-	if (query.id === 'evidencemeta') {
-		throw "Invalid query name: 'evidencemeta'";
-	}
-	if (query.compiledQueryString.length === 0) {
-		throw 'Enter a query';
-	}
-	if (query.compileError) {
-		throw query.compileError;
-	}
-};
-
-const envMap = {
-	databaseType: [
-		{ key: 'DATABASE', deprecated: true },
-		{ key: 'EVIDENCE_DATABASE', deprecated: false }
-	]
-};
-
-const importDBAdapter = async function (settings) {
-	try {
-		const databaseType = settings ? settings.database : getEnv(envMap, 'databaseType');
-		const { default: runQuery } = await import('@evidence-dev/' + databaseType);
-		return runQuery;
-	} catch {
-		const runQuery = async function () {
-			throw 'Missing database credentials';
-		};
-		return runQuery;
-	}
-};
-
-/** adds columnTypes to metadata in the page `data` object */
-const populateColumnTypeMetadata = (data, queryIndex, columnTypes) => {
-	let queryMetaData = data.evidencemeta?.queries?.[queryIndex];
-	if (queryMetaData && columnTypes) {
-		queryMetaData.columnTypes = columnTypes;
-	}
-};
-
-const runQueries = async function (routeHash, dev) {
+const runQueries = async function (routeHash) {
 	let routePath = `./.evidence-queries/extracted/${routeHash}`;
 	let queryFile = `${routePath}/queries.json`;
 	let queries = readJSONSync(queryFile, { throws: false });
