@@ -193,7 +193,7 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 ##### Continuous Axis Bar Charts
 On a continous x-axis (dates or numbers), the reference area will start and stop at the exact point on the x-axis. This means it will appear in the middle of whichever bar is at that point. If you would prefer to see the area cover the full bar, there are 2 ways to achieve this:
 1. Add a buffer on either side of the range you want to highlight (e.g., instead of ending the area at `2020-07-01`, end it at `2020-07-15`)
-2. Change your x-axis to categorical data (using `xType=category`). If using a date axis, you may also want to retain the axis label formatting for dates - to achieve this, you can use a format tag for your x-axis column (e.g., `x=date_mmm`)
+2. Change your x-axis to categorical data (using `xType=category`). If using a date axis, you may also want to retain the axis label formatting for dates - to achieve this, you can use the `xFmt` prop (e.g., `xFmt=mmm`)
 
 #### Reference Area Box
 <img src="/img/refarea-box.png"  width='600px'/>

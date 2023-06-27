@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="vscode" label="VSCode Extension" default>
 
-1. Download the Evidence Extensinon from the VSCode Marketplace
+1. Download the Evidence Extension from the VSCode Marketplace
 2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project` to create a new project
 3. Click `Start Evidence`
 

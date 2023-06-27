@@ -9,17 +9,18 @@
 	import { propKey, strictBuild } from './context';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import SearchBar from './SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
 
-	import MdFirstPage from 'svelte-icons/md/MdFirstPage.svelte';
-	import MdNavigateBefore from 'svelte-icons/md/MdNavigateBefore.svelte';
-	import MdNavigateNext from 'svelte-icons/md/MdNavigateNext.svelte';
-	import MdLastPage from 'svelte-icons/md/MdLastPage.svelte';
+	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
 	// Set up props store
 	let props = writable({});
 	setContext(propKey, props);
@@ -401,7 +402,12 @@
 												{#if row[column.linkLabel] != undefined}
 													{formatValue(
 														row[column.linkLabel],
-														safeExtractColumn(column).format,
+														column.fmt
+															? getFormatObjectFromString(
+																	column.fmt,
+																	safeExtractColumn(column).format.valueType
+															  )
+															: safeExtractColumn(column).format,
 														safeExtractColumn(column).columnUnitSummary
 													)}
 												{:else}
@@ -410,7 +416,12 @@
 											{:else}
 												{formatValue(
 													row[column.id],
-													safeExtractColumn(column).format,
+													column.fmt
+														? getFormatObjectFromString(
+																column.fmt,
+																safeExtractColumn(column).format.valueType
+														  )
+														: safeExtractColumn(column).format,
 													safeExtractColumn(column).columnUnitSummary
 												)}
 											{/if}
@@ -418,7 +429,12 @@
 									{:else}
 										{formatValue(
 											row[column.id],
-											safeExtractColumn(column).format,
+											column.fmt
+												? getFormatObjectFromString(
+														column.fmt,
+														safeExtractColumn(column).format.valueType
+												  )
+												: safeExtractColumn(column).format,
 											safeExtractColumn(column).columnUnitSummary
 										)}
 									{/if}
@@ -445,8 +461,8 @@
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(0)}
-						><div class="page-icon">
-							<MdFirstPage />
+						><div class="page-icon flex items-center">
+							<Icon src={ChevronsLeft} />
 						</div></button
 					>
 					<button
@@ -455,8 +471,8 @@
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(currentPage - 2)}
-						><div class="page-icon">
-							<MdNavigateBefore />
+						><div class="page-icon h-[0.83em] flex items-center">
+							<Icon src={ChevronLeft} class="h-[0.83em]" />
 						</div></button
 					>
 					<span class="page-count"
@@ -483,8 +499,8 @@
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(currentPage)}
-						><div class="page-icon">
-							<MdNavigateNext />
+						><div class="page-icon h-[0.83em] flex items-center">
+							<Icon src={ChevronRight} class="h-[0.83em]" />
 						</div></button
 					>
 					<button
@@ -493,8 +509,8 @@
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(pageCount - 1)}
-						><div class="page-icon">
-							<MdLastPage />
+						><div class="page-icon flex items-center">
+							<Icon src={ChevronsRight} />
 						</div></button
 					>
 				</div>

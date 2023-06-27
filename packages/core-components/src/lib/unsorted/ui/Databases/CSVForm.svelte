@@ -3,7 +3,9 @@
 </script>
 
 <script>
-	import HelpCircleIcon from '../../icons/HelpCircleIcon.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { InfoCircle } from '@steeze-ui/tabler-icons';
+
 	import Prism from '../QueryViewerSupport/Prismjs.svelte';
 
 	export let credentials;
@@ -62,11 +64,11 @@
 </div>
 
 <div class="input-item">
-	<label for={opts[0].id}>
+	<label for={opts[0].id} class="flex items-center gap-1">
 		{opts[0].label}
 		{#if opts[0].additionalInstructions}
 			<span class="additional-info-icon">
-				<HelpCircleIcon height="18" width="18" verticalOffset="2" color="--grey-600" />
+				<Icon src={InfoCircle} class="h-4 -mr-1 text-gray-600" />
 				<span class="info-msg">{opts[0].additionalInstructions}</span>
 			</span>
 		{/if}
@@ -99,10 +101,10 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	label {
-		width: 30%;
 		text-transform: uppercase;
 		font-weight: normal;
 		font-size: 14px;

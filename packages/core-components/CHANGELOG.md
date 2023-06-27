@@ -1,5 +1,19 @@
 # @evidence-dev/core-components
 
+## 1.1.0
+
+### Minor Changes
+
+- d999fe37: Consolidate all icons to steeze-ui and tabler icons
+- 121c7868: Adds formatting control to components
+
+### Patch Changes
+
+- 4e94b57a: standardize exported date strings to ISO
+- f6be30cf: Fix for grouped bar charts
+- Updated dependencies [121c7868]
+  - @evidence-dev/component-utilities@1.1.0
+
 ## 1.0.3
 
 ### Patch Changes

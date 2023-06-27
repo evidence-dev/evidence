@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
@@ -17,6 +17,7 @@
 		"blueimp-md5": "^2.19.0",
 		"chalk": "4.1.0",
 		"fs-extra": "^9.1.0",
+		"hast-util-select": "^5.0.5",
 		"mdsvex": "^0.10.6",
 		"prismjs": "^1.29.0",
 		"remark-parse": "8.0.2",
