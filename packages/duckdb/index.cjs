@@ -51,7 +51,6 @@ module.exports.getRunner = async (opts) => {
 	 * @param {string} queryPath
 	 * @returns {Promise<QueryResult>}
 	 */
-	console.log({opts})
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
