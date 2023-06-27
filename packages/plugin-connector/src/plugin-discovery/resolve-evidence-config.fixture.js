@@ -10,7 +10,8 @@ export const validMinimalConfig = `
 components: {}
 `;
 export const validMinimalConfigParsed = {
-	components: {}
+	components: {},
+	databases: {}
 };
 
 export const handleAt = `
@@ -30,7 +31,8 @@ export const handleAtParsed = {
 			aliases: {},
 			provides: []
 		}
-	}
+	},
+	databases: {}
 };
 
 export const validConfig = `
@@ -62,7 +64,8 @@ export const validConfigParsed = {
 			},
 			provides: []
 		}
-	}
+	},
+	databases: {}
 };
 
 export const invalidMinimalConfig = `
