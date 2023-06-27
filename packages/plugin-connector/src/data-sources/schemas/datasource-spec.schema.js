@@ -11,7 +11,7 @@ export const DatasourceSpecFileSchema = z.object({
 	name: z
 		.string()
 		.optional()
-		.refine((s) => typeof s === 'undefined' || s?.toString().match(/^[a-zA-Z0-9]+$/)?.length),
+		.refine((s) => typeof s === 'undefined' || s?.toString().match(/^[a-zA-Z0-9_-]+$/)?.length),
 	options: z.any()
 });
 
