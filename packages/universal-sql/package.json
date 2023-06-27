@@ -8,8 +8,6 @@
 	"main": "./src/index.js",
 	"scripts": {
 		"build": "tsc ./src/index.js --d --emitDeclarationOnly --allowJs",
-		"test": "vitest --run",
-		"test:watch": "vitest",
 		"check": "tsc ./src/index.js --d --emitDeclarationOnly --allowJs"
 	},
 	"type": "module",
