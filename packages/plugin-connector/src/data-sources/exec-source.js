@@ -1,6 +1,6 @@
 import { buildParquetFromResultSet } from '@evidence-dev/universal-sql';
 import fs from 'fs/promises';
-import path from "path";
+import path from 'path';
 /**
  *
  * @param {DatasourceSpec} source
@@ -29,10 +29,10 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const { result } = query;
 		if (!result) continue;
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
-		const fileparts = query.filepath.split('/')
-		const outputFilename = fileparts.pop()?.split(".")[0]  + '.parquet'
-		const outputSubdir = fileparts.join("/").split("sources").slice(1).join("/")
-		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true })
+		const fileparts = query.filepath.split('/');
+		const outputFilename = fileparts.pop()?.split('.')[0] + '.parquet';
+		const outputSubdir = fileparts.join('/').split('sources').slice(1).join('/');
+		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename), parquetBuffer);
 	}
 };
