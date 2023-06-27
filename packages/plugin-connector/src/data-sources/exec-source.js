@@ -6,7 +6,7 @@ import path from 'path';
  * @param {DatasourceSpec} source
  * @param {PluginDatabases} supportedDbs
  * @param {string} outDir
- * @returns {Promise<void>}
+ * @returns {Promise<string[]>} Returns a list of generated parquet files
  */
 export const execSource = async (source, supportedDbs, outDir) => {
 	if (!(source.type in supportedDbs)) {
@@ -25,6 +25,9 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		})
 	);
 
+	/** @type {Set<string>} */
+	const outputFilenames = new Set()
+
 	for (const query of results) {
 		const { result } = query;
 		if (!result) continue;
@@ -32,7 +35,10 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const fileparts = query.filepath.split('/');
 		const outputFilename = fileparts.pop()?.split('.')[0] + '.parquet';
 		const outputSubdir = fileparts.join('/').split('sources').slice(1).join('/');
+		outputFilenames.add(path.join(outputSubdir, outputFilename))
 		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename), parquetBuffer);
 	}
+
+	return Array.from(outputFilenames)
 };

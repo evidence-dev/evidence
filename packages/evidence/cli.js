@@ -193,7 +193,7 @@ prog
 	.command('build:sources')
 	.describe('creates .parquet files from source queries')
 	.action(async () => {
-		updateDatasourceOutputs(`./static/data`);
+		updateDatasourceOutputs(`./static/data`, '/data');
 	});
 
 prog.parse(process.argv);
