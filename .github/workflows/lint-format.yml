@@ -22,6 +22,8 @@ jobs:
           node-version: 16.x
           cache: pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Run postinstall scripts
+        run: pnpm run postinstall
       - name: Check Linting & Formatting
         run: pnpm run lint
