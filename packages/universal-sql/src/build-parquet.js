@@ -19,24 +19,27 @@ export async function buildParquetFromResultSet(columns, data) {
 	const m = columns.map((c) => {
 		const rawValues = data.map((d) => d[c.name] ?? `Null`);
 
-		// TODO: Make this work properly.
-
 		/** @type {import("apache-arrow").Vector} */
 		let values;
-		if (c.evidenceType === 'number') {
-			values = vectorFromArray(rawValues, new Float64());
-		} else if (c.evidenceType === 'string') {
-			values = vectorFromArray(rawValues, new Utf8());
-		} else if (c.evidenceType === 'date') {
-			values = vectorFromArray(rawValues, new Timestamp());
-		} else if (c.evidenceType === 'boolean') {
-			values = vectorFromArray(rawValues, new Bool());
-		} else {
-			throw new Error(
-				'Unrecognized EvidenceType: ' +
-					c.evidenceType +
-					'\n This is likely an error in a datasource connector.'
-			);
+		switch (c.evidenceType) {
+			case 'number':
+				values = vectorFromArray(rawValues, new Float64());
+				break;
+			case 'string':
+				values = vectorFromArray(rawValues, new Utf8());
+				break;
+			case 'date':
+				values = vectorFromArray(rawValues, new Timestamp());
+				break;
+			case 'boolean':
+				values = vectorFromArray(rawValues, new Bool());
+				break;
+			default:
+				throw new Error(
+					'Unrecognized EvidenceType: ' +
+						c.evidenceType +
+						'\n This is likely an error in a datasource connector.'
+				);
 		}
 
 		return [c.name, values];
@@ -48,7 +51,5 @@ export async function buildParquetFromResultSet(columns, data) {
 
 	const IPC = tableToIPC(t, 'stream');
 
-	const parquetBuffer = writeParquet(IPC, writerProperties);
-
-	return parquetBuffer;
+	return writeParquet(IPC, writerProperties);
 }

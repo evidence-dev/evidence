@@ -4,6 +4,7 @@ import fs from 'fs/promises';
  *
  * @param {DatasourceSpec} source
  * @param {PluginDatabases} supportedDbs
+ * @returns {Promise<void>}
  */
 export const execSource = async (source, supportedDbs) => {
 	if (!(source.type in supportedDbs)) {

@@ -53,7 +53,7 @@ export const loadConfig = async (rootDir) => {
 /**
  * Wrapper function to create a package validator function
  * @param {string} rootDir
- * @returns
+ * @returns {(packageName: string) => Promise<EvidencePluginPackage<ValidPackage> | false>}
  */
 const validatePlugin =
 	(rootDir) =>
