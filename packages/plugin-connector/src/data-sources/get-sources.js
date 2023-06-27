@@ -3,6 +3,7 @@ import path from 'path';
 import yaml from 'yaml';
 import chalk from 'chalk';
 import { DatasourceSpecFileSchema } from './schemas/datasource-spec.schema';
+import { cleanZodErrors } from '../lib/clean-zod-errors.js';
 
 /**
  * Returns the path to the sources directory, if it exists in the current directory.
@@ -101,7 +102,18 @@ async function getConnectionParams(sourceDir) {
 	const connParamsUnchecked = yaml.parse(connParamsRaw).catch((/** @type {Error} */ e) => {
 		throw new Error(`Error parsing connection.yaml file; ${sourceDir}`, { cause: e });
 	});
-	return DatasourceSpecFileSchema.parse(connParamsUnchecked);
+
+	const validationResult = DatasourceSpecFileSchema.safeParse(connParamsUnchecked);
+	if (!validationResult.success) {
+		console.error(chalk.bold.red(`[!] connection.yaml has errors (${sourceDir}`));
+		const formattedError = cleanZodErrors(validationResult.error.format());
+		console.error(chalk.red('|   Discovered Errors:'));
+		const redPipe = chalk.red('|');
+		console.error(
+			`${redPipe}   ${yaml.stringify(formattedError).replace(/\n/g, `\n${redPipe}   `)}`
+		);
+		throw new Error('Unable to load connection.yaml');
+	}
 }
 
 /**
