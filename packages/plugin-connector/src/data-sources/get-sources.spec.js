@@ -1,4 +1,4 @@
-import {getSources, loadSourceOptions} from './get-sources';
+import { getSources, loadSourceOptions } from './get-sources';
 import mockfs from 'mock-fs';
 import { describe, it, expect, beforeEach } from 'vitest';
 
@@ -38,15 +38,14 @@ type: sqlite
 	});
 });
 
-describe("loadSourceOptions", () => {
-	it("should be defined", () => {
-		expect(loadSourceOptions).toBeDefined()
-	})
-	it("should properly detect an environment variable", () => {
-		process.env.EVIDENCE_SOURCE_TEST_value = "Hello!"
-		const result = loadSourceOptions("test")
-		expect("value" in result).toBeTruthy()
-		expect(result["value"]).toEqual("Hello!")
-
-	})
-})
+describe('loadSourceOptions', () => {
+	it('should be defined', () => {
+		expect(loadSourceOptions).toBeDefined();
+	});
+	it('should properly detect an environment variable', () => {
+		process.env.EVIDENCE_SOURCE_TEST_value = 'Hello!';
+		const result = loadSourceOptions('test');
+		expect('value' in result).toBeTruthy();
+		expect(result['value']).toEqual('Hello!');
+	});
+});
