@@ -54,9 +54,6 @@ function summarizeUnits(series) {
 				case 'undefined':
 					undefinedCount++;
 					break;
-				case 'null': //typically this will be object
-					nullCount++;
-					break;
 				case 'number': {
 					numberCount++;
 					let thisDecimalPlaces = nextElement.toString().split('.')[1]?.length;
@@ -76,9 +73,6 @@ function summarizeUnits(series) {
 					} else {
 						objectCount++;
 					}
-					break;
-				case 'date':
-					dateCount++;
 					break;
 				case 'function':
 				default:

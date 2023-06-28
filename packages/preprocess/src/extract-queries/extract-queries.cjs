@@ -131,6 +131,9 @@ const extractInlineQueries = (content) => {
 	return queries;
 };
 
+const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
+const circularRefErrorMsg = 'Compiler error: circular reference';
+
 /**
  * @param {string} filename
  * @returns {Query[]}
@@ -140,6 +143,50 @@ const extractQueries = (content) => {
 
 	queries.push(...extractExternalQueries(content));
 	queries.push(...extractInlineQueries(content));
+
+	// Handle query chaining:
+	const maxIterations = 15;
+	const queryIds = new Set(queries.map((d) => d.id));
+	const interpolated_variables = new Set();
+
+	for (let i = 0; i <= maxIterations; i++) {
+		queries.forEach((query) => {
+			const references = query.compiledQueryString.match(/\${.*?\}/gi);
+			if (references && references.some((d) => !interpolated_variables.has(d))) {
+				references.forEach((reference) => {
+					try {
+						const referencedQueryID = reference.replace('${', '').replace('}', '').trim();
+						if (!queryIds.has(referencedQueryID)) {
+							interpolated_variables.add(reference);
+						} else if (i >= maxIterations) {
+							throw new Error(circularRefErrorMsg);
+						} else {
+							const referencedQuery = queries.find((d) => d.id === referencedQueryID);
+							if (!query.inline && referencedQuery.inline) {
+								throw new Error(
+									`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`
+								);
+							}
+							const queryString = `(${referencedQuery.compiledQueryString})`;
+							query.compiledQueryString = query.compiledQueryString.replace(reference, queryString);
+							query.compiled = true;
+						}
+					} catch (_e) {
+						// if error is unknown use default circular ref. error
+						const e =
+							_e.message === undefined || _e.message === null ? Error(circularRefErrorMsg) : _e;
+						query.compileError = e.message;
+						query.compiledQueryString = e.message;
+						// if build is strict and we detect an error, force a failure
+						if (strictBuild) {
+							throw new Error(e.message);
+						}
+					}
+				});
+			}
+		});
+	}
+
 	return queries;
 };
 
