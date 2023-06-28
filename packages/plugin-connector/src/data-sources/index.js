@@ -24,6 +24,7 @@ export async function updateDatasourceOutputs(outDir, prefix) {
 		}
 	}
 	// Write basic JSON Manifest
+    await fs.mkdir(outDir, { recursive: true });
 	await fs.writeFile(
 		path.join(outDir, 'manifest.json'),
 		JSON.stringify({ renderedFiles: outputFiles })
