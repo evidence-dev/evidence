@@ -29,3 +29,31 @@ const runQuery = async (queryString, database) => {
 };
 
 module.exports = runQuery;
+
+/**
+ * @typedef {Object} DuckDBOptions
+ * @property {string} filename
+ */
+
+/**
+ * @typedef {Object} QueryResult
+ * @property { Record<string, any>[] } rows
+ * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
+ */
+
+/**
+ * @param {DuckDBOptions} opts
+ * @returns { (queryString: string, queryOpts: DuckDBOptions ) => Promise<QueryResult> }
+ */
+module.exports.getRunner = async (opts) => {
+	/**
+	 * @param {string} queryContent
+	 * @param {string} queryPath
+	 * @returns {Promise<QueryResult>}
+	 */
+	return async (queryContent, queryPath) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts);
+	};
+};

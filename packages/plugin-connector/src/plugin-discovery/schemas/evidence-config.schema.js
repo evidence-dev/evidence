@@ -12,8 +12,15 @@ export const EvidenceComponentConfigSchema = z.object({
 	provides: z.array(z.string()).default([])
 });
 
+export const EvidenceDatasourceConfigSchema = z.object({
+	overrides: z.array(z.string()).default([])
+});
+
 export const EvidenceConfigSchema = z
 	.object({
-		components: z.record(z.string(), EvidenceComponentConfigSchema)
+		components: z.record(z.string(), EvidenceComponentConfigSchema),
+		databases: z
+			.record(z.string({ description: 'Plugin Package Name' }), EvidenceDatasourceConfigSchema)
+			.default({})
 	})
 	.nonstrict();

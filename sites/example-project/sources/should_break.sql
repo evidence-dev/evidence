@@ -1,1 +1,0 @@
-SELECT * FROM ${query_on_the_page}

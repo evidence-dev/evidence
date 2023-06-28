@@ -8,18 +8,21 @@ jobs:
     name: Check project linting
     runs-on: ubuntu-latest
     steps:
+      - name: Disable autoclrf
+        run: git config --global core.autocrlf false
+
       - name: Checkout Repo
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Set up pnpm
-        uses: pnpm/action-setup@v2.2.1
+        uses: pnpm/action-setup@v2.2.4
         with:
-          version: 6.23.2
+          version: 7.30.5
       - name: Set up node v16
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 16
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
