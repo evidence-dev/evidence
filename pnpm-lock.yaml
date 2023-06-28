@@ -661,10 +661,12 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
+      '@evidence-dev/duckdb': workspace:^
       '@evidence-dev/evidence': workspace:^
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
+      '@evidence-dev/duckdb': link:../../packages/duckdb
       '@evidence-dev/evidence': link:../../packages/evidence
 
   tests:

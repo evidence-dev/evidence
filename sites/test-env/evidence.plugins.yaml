@@ -1,2 +1,4 @@
 components:
   @evidence-dev/core-components: {}
+databases:
+  @evidence-dev/duckdb: {}
