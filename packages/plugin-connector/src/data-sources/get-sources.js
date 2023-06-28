@@ -66,12 +66,14 @@ export const getSources = async (sourcesDir) => {
 			const sourceDir = path.join(sourcesDir, dirName);
 			const contents = await fs.readdir(sourceDir);
 
-			const connParams = await getConnectionParams(sourceDir);
+			const connParams = await loadConnectionConfiguration(sourceDir);
 			if (!connParams.name) connParams.name = /** @type {string} */ sourceDir.split(/[/\\]/).shift();
 			if (!connParams.name)
 				throw new Error(
 					`Unexpected error determining datasource name, please add an explicit name in connection.yaml (${sourceDir})`
 				);
+			// Load Options from connection.options.yaml
+			connParams.options = { ...connParams.options, ...(await loadConnectionOptions(sourceDir))}
 			// Load Options from Environment
 			connParams.options = { ...connParams.options, ...loadSourceOptions(connParams.name) };
 
@@ -94,7 +96,7 @@ export const getSources = async (sourcesDir) => {
  * @param {string} sourceDir - The directory containing the connection.yaml file.
  * @return {Promise<DatasourceSpecFile>} A Promise that resolves to a validated datasource specification.
  */
-async function getConnectionParams(sourceDir) {
+async function loadConnectionConfiguration(sourceDir) {
 	const connParamsRaw = await fs
 		.readFile(path.join(sourceDir, 'connection.yaml'))
 		.then((r) => r.toString());
@@ -121,6 +123,22 @@ async function getConnectionParams(sourceDir) {
 }
 
 /**
+ * @returns {Promise<any>}
+ * @param {string} sourceDir
+ */
+async function loadConnectionOptions(sourceDir) {
+	const optionsFilePath = path.join(sourceDir, 'connection.options.yaml')
+	const optionsFileExists = await fs.stat(optionsFilePath).then(() => true).catch(() => false)
+	if (!optionsFileExists) return {}
+	const optionsFile = await fs.readFile(optionsFilePath).then(r => r.toString())
+	try {
+		return yaml.parse(optionsFile)
+	} catch (e) {
+		throw new Error(`Error parsing connection.options.yaml file; ${sourceDir}`, { cause: e });
+	}
+}
+
+/**
  * Retrieves the contents of all query files in the source directory,
  * excluding the 'connection.yaml' file, and returns them as an array of
  * objects containing the filepath and content of each query file.
@@ -131,7 +149,7 @@ async function getConnectionParams(sourceDir) {
  * containing the filepath and content of each query file.
  */
 async function getQueries(sourceDir, contents) {
-	const queryFiles = contents.filter((s) => s !== 'connection.yaml');
+	const queryFiles = contents.filter((s) => s !== 'connection.yaml' && s !== 'connection.options.yaml');
 	const queries = await Promise.all(
 		queryFiles.map(async (filename) => ({
 			filepath: `${sourceDir}/${filename}`,
