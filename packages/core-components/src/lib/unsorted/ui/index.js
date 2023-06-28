@@ -1,4 +1,3 @@
-export { default as BaseLayout } from './BaseLayout.svelte';
 export { default as BigLink } from './BigLink.svelte';
 export { default as BreadCrumbs } from './BreadCrumbs.svelte';
 export { default as ChevronToggle } from './ChevronToggle.svelte';
