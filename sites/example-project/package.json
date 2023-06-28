@@ -8,6 +8,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@duckdb/duckdb-wasm": "^1.27.0",
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/duckdb": "workspace:^0.1.0",
