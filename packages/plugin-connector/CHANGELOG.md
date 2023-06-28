@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 1.1.0
+
+### Minor Changes
+
+- ed2f4728: allow for components folder to be used as a component plugin
+
 ## 1.0.0
 
 ### Major Changes

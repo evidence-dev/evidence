@@ -1,5 +1,21 @@
 # @evidence-dev/evidence
 
+## 19.0.0
+
+### Patch Changes
+
+- 7fd1f889: emptied sources folder in template
+- Updated dependencies [d999fe37]
+- Updated dependencies [4e94b57a]
+- Updated dependencies [121c7868]
+- Updated dependencies [ed2f4728]
+- Updated dependencies [f6be30cf]
+- Updated dependencies [8865684b]
+  - @evidence-dev/core-components@1.1.0
+  - @evidence-dev/component-utilities@1.1.0
+  - @evidence-dev/plugin-connector@1.1.0
+  - @evidence-dev/preprocess@3.0.1
+
 ## 18.0.3
 
 ### Patch Changes

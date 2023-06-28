@@ -28,7 +28,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         import { setContext, getContext, beforeUpdate } from 'svelte';
         
         // Functions
-        import { formatValue as fmt } from '@evidence-dev/component-utilities/formatting';
+        import { fmt } from '@evidence-dev/component-utilities/formatting';
 
 		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
         

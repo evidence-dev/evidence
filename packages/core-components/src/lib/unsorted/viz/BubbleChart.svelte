@@ -13,6 +13,10 @@
 	export let series = undefined;
 	export let xType = undefined;
 
+	export let yFmt = undefined;
+	export let xFmt = undefined;
+	export let sizeFmt = undefined;
+
 	export let title = undefined;
 	export let subtitle = undefined;
 	export let legend = undefined;
@@ -52,6 +56,9 @@
 	{x}
 	{y}
 	{size}
+	{xFmt}
+	{yFmt}
+	{sizeFmt}
 	{tooltipTitle}
 	{series}
 	{xType}

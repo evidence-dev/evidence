@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 3.0.1
+
+### Patch Changes
+
+- 8865684b: added ability for classes to be added to markdown-generated tags
+
 ## 3.0.0
 
 ### Major Changes

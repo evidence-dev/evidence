@@ -3,13 +3,16 @@
 </script>
 
 <script>
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Settings, X } from '@steeze-ui/tabler-icons';
+
 	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
-	import IoMdSettings from 'svelte-icons/io/IoMdSettings.svelte';
+
 	import CollapsibleSection from '../ui/CollapsibleSection.svelte';
+
 	export let fileTree;
 	export let open;
-	import CloseIcon from '../icons/CloseIcon.svelte';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
@@ -19,9 +22,9 @@
 	<div class="sticky">
 		<div class="nav-header">
 			<a href="/" on:click={() => (open = !open)}><h2 class="project-title">Evidence</h2></a>
-			<button class="close" on:click={() => (open = !open)}
-				><CloseIcon height="36" width="36" /></button
-			>
+			<button class="close" on:click={() => (open = !open)}>
+				<Icon src={X} class="h-9 w-9" />
+			</button>
 		</div>
 		<nav>
 			{#each firstLevelFiles as file}
@@ -45,7 +48,7 @@
 					class:selected={$page.url.pathname === '/settings'}
 				>
 					<span class="settings-icon flex justify-center items-center">
-						<IoMdSettings />
+						<Icon src={Settings} class="w-4 h-4 p-0" />
 					</span>
 					<a class="settings-label" href="/settings"> Settings </a>
 				</a>
@@ -226,10 +229,7 @@
 	}
 
 	.settings-icon :global(svg) {
-		padding: 0.08rem 0.28rem 0.1rem 0.4rem;
 		color: var(--grey-500);
-		height: 24px;
-		width: 24px;
 	}
 
 	.nav-footer a {
