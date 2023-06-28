@@ -1,11 +1,11 @@
 import {
-	tableFromArrays,
-	tableToIPC,
-	vectorFromArray,
-	Float64,
-	Utf8,
-	Timestamp,
-	Bool
+    tableFromArrays,
+    tableToIPC,
+    vectorFromArray,
+    Float64,
+    Utf8,
+    Bool,
+    TimestampMillisecond
 } from 'apache-arrow';
 import { Compression, writeParquet, WriterPropertiesBuilder } from 'parquet-wasm/node/arrow1.js';
 
@@ -29,7 +29,8 @@ export async function buildParquetFromResultSet(columns, data) {
 				values = vectorFromArray(rawValues, new Utf8());
 				break;
 			case 'date':
-				values = vectorFromArray(rawValues, new Timestamp());
+				// TODO: What gives with timezones
+				values = vectorFromArray(rawValues, new TimestampMillisecond());
 				break;
 			case 'boolean':
 				values = vectorFromArray(rawValues, new Bool());
