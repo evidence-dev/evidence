@@ -48,6 +48,7 @@
 	"peerDependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
+		"@evidence-dev/tailwind": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
 		"@sveltejs/kit": "1.13.0",
 		"autoprefixer": "^10.4.7",
