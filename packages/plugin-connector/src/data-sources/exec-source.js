@@ -35,7 +35,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
 		/* Split on / or \ (windows compatibility) */
 		const fileparts = query.filepath.split(/[/\\]/);
-		const outputFilename = fileparts.pop()?.split('.')[0] + '.parquet';
+		const outputFilename = fileparts.pop()?.split('.')[0];
 
 		const outputSubdir = path.join(
 			...path
@@ -43,9 +43,10 @@ export const execSource = async (source, supportedDbs, outDir) => {
 				.split('sources')
 				.slice(1)
 		);
-		outputFilenames.add(path.join(outputSubdir, outputFilename));
+		outputFilenames.add(path.join(outputSubdir, outputFilename + '.parquet'));
 		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
-		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename), parquetBuffer);
+		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename + '.parquet'), parquetBuffer);
+		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename + '.schema.json'), JSON.stringify(result.columnTypes));
 	}
 
 	return Array.from(outputFilenames);
