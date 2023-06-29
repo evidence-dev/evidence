@@ -43,7 +43,7 @@ const getColumnType = (t) => {
                     typeFidelity: "precise"
                 }
             }
-            console.log(t)
+            console.log(t, JSON.stringify(t))
             throw new Error("could not infer type of ", t)
     }
 }
@@ -69,10 +69,12 @@ const buildRow = (schema, tableName, rowNum) => {
         if (schema[colName].type === "id") {
             output[colName] = rowNum
         } else {
-            const {category, item, options} = schema[colName]
+            const {category, item, options, targetField} = schema[colName]
             if (!(category in faker)) throw new Error(`${category} is not a valid category; please see https://fakerjs.dev/api/`)
             if (!(item in faker[category])) throw new Error(`${category}.${item} does not exist; please see https://fakerjs.dev/api/`)
             output[colName] = faker[category][item](options)
+            if (targetField)
+                output[colName] = output[colName][targetField]
         }
 
     }
@@ -86,6 +88,7 @@ const buildRow = (schema, tableName, rowNum) => {
 export const getRunner = (options, directory) => {
     console.warn("You are using the faker-datasource, this is not recommended for production use.")
     return async (content, path) => {
+
         const definition = yaml.parse(content)
 
         if (!("rows" in definition)) throw new Error(`${path.split("/").pop()} is missing required required field "rows"`)
