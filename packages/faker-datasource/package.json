@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@faker-js/faker": "8.0.2",
     "yaml": "^2.3.1"
