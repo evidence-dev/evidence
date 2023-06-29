@@ -673,11 +673,13 @@ importers:
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/duckdb': workspace:^
       '@evidence-dev/evidence': workspace:^
+      '@evidence-dev/faker-datasource': workspace:^
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
       '@evidence-dev/duckdb': link:../../packages/duckdb
       '@evidence-dev/evidence': link:../../packages/evidence
+      '@evidence-dev/faker-datasource': link:../../packages/faker-datasource
 
   tests:
     specifiers:
