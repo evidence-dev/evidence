@@ -1,11 +1,11 @@
 import {
-    tableFromArrays,
-    tableToIPC,
-    vectorFromArray,
-    Float64,
-    Utf8,
-    Bool,
-    TimestampMillisecond
+	tableFromArrays,
+	tableToIPC,
+	vectorFromArray,
+	Float64,
+	Utf8,
+	Bool,
+	TimestampMillisecond
 } from 'apache-arrow';
 import { Compression, writeParquet, WriterPropertiesBuilder } from 'parquet-wasm/node/arrow1.js';
 

@@ -115,7 +115,7 @@ export const load = async ({ fetch, route, data: parentData }) => {
 		const { data } = await res.clone().json();
 
 		for (const url of renderedFiles) {
-		    await setParquetURL(url.split("/").at(-1).slice(0, -".parquet".length), url);
+			await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
 		}
 
 		// await setParquetURL('taxis', '/taxis.parquet');

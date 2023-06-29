@@ -38,7 +38,7 @@
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
 		"vite": "4.3.9",
-        "@duckdb/duckdb-wasm": "1.27.0"
+		"@duckdb/duckdb-wasm": "1.27.0"
 	},
 	"scripts": {
 		"build:dev-workspace": "run-s build:example-project",

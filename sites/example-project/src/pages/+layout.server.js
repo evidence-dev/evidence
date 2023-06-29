@@ -14,13 +14,15 @@ export async function load({ fetch, route }) {
 		const customFormattingSettingsRes = await GET();
 		const { customFormattingSettings } = await customFormattingSettingsRes.json();
 
-        /** @type {{ renderedFiles: string[] }} */
-        const { renderedFiles = [] } = await fetch("/data/manifest.json").then((res) => res.json()).catch(() => ({}));
+		/** @type {{ renderedFiles: string[] }} */
+		const { renderedFiles = [] } = await fetch('/data/manifest.json')
+			.then((res) => res.json())
+			.catch(() => ({}));
 
 		return {
 			routeHash,
 			customFormattingSettings,
-            renderedFiles
+			renderedFiles
 		};
 	}
 }
