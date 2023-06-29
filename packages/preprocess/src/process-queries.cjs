@@ -13,10 +13,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$')
 		);
 		queryDeclarations += `
+            import debounce from 'debounce';
             ${valid_ids.map((id) => `let ${id} = [];`).join('\n')}
             ${valid_ids
 							.map(
-								(id) => `$: __db.query(\`${duckdbQueries[id]}\`).then((value) => ${id} = value);`
+								(id) => `const _query_${id} = debounce(
+                                            (query) => __db.query(query).then((value) => ${id} = value),
+                                            200
+                                        );
+                                        $: _query_${id}(\`${duckdbQueries[id]}\`);`
 							)
 							.join('\n')}
         `;

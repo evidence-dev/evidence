@@ -67,7 +67,8 @@ export const getSources = async (sourcesDir) => {
 			const contents = await fs.readdir(sourceDir);
 
 			const connParams = await getConnectionParams(sourceDir);
-			if (!connParams.name) connParams.name = /** @type {string} */ sourceDir.split(/[/\\]/).shift();
+			if (!connParams.name)
+				connParams.name = /** @type {string} */ sourceDir.split(/[/\\]/).shift();
 			if (!connParams.name)
 				throw new Error(
 					`Unexpected error determining datasource name, please add an explicit name in connection.yaml (${sourceDir})`

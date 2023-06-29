@@ -46,7 +46,10 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		outputFilenames.add(path.join(outputSubdir, outputFilename + '.parquet'));
 		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename + '.parquet'), parquetBuffer);
-		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename + '.schema.json'), JSON.stringify(result.columnTypes));
+		await fs.writeFile(
+			path.join(outDir, outputSubdir, outputFilename + '.schema.json'),
+			JSON.stringify(result.columnTypes)
+		);
 	}
 
 	return Array.from(outputFilenames);

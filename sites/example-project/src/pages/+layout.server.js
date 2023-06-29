@@ -3,6 +3,7 @@ import { GET } from './api/customFormattingSettings.json/+server.js';
 export const prerender = true;
 export const trailingSlash = 'always';
 
+/** @type {import("./$types").LayoutServerLoad} */
 export async function load({ fetch, route }) {
 	if (route.id && route.id !== '/settings') {
 		const routeHash = md5(route.id);
@@ -12,9 +13,16 @@ export async function load({ fetch, route }) {
 
 		const customFormattingSettingsRes = await GET();
 		const { customFormattingSettings } = await customFormattingSettingsRes.json();
+
+		/** @type {{ renderedFiles: string[] }} */
+		const { renderedFiles = [] } = await fetch('/data/manifest.json')
+			.then((res) => res.json())
+			.catch(() => ({}));
+
 		return {
 			routeHash,
-			customFormattingSettings
+			customFormattingSettings,
+			renderedFiles
 		};
 	}
 }
