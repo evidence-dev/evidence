@@ -9,7 +9,7 @@
 		"@evidence-dev/plugin-connector": "link:packages/plugin-connector",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
 		"@sveltejs/adapter-static": "1.0.0",
-		"@sveltejs/kit": "1.13.0",
+		"@sveltejs/kit": "1.21.0",
 		"@tidyjs/tidy": "2.4.4",
 		"blueimp-md5": "2.19.0",
 		"debounce": "^1.2.1",
@@ -37,7 +37,8 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "4.0.4"
+		"vite": "4.3.9",
+		"@duckdb/duckdb-wasm": "1.27.0"
 	},
 	"scripts": {
 		"build:dev-workspace": "run-s build:example-project",

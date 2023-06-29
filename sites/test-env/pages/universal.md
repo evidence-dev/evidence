@@ -5,7 +5,7 @@
 <input type="text" bind:value={insert_limit_here} />
 
 ```something
-select * from taxis ${insert_limit_here}
+select * from test ${insert_limit_here}
 ```
 
 ```something_else
