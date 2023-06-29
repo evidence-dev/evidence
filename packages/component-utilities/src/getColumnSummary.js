@@ -24,7 +24,7 @@ export default function getColumnSummary(data, returnType = 'object') {
 	const columnSummary = {};
 
 	for (const colName of Object.keys(data[0])) {
-		const evidenceColumnType = getColumnEvidenceType(data.slice(0,1), colName);
+		const evidenceColumnType = getColumnEvidenceType(data, colName);
 		const type = evidenceColumnType.evidenceType;
 		const columnUnitSummary =
 			evidenceColumnType.evidenceType === 'number'
