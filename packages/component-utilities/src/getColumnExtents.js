@@ -2,99 +2,63 @@ import { tidy, summarize, min, max, median } from '@tidyjs/tidy';
 
 /**
  *
- * @param {*} data
- * @param {*} column
- * @returns undefined if not all the defined values are numbers
+ * @param {Record<string, unknown>[]} data
+ * @param {string} columnName
+ * @returns {{ min?: number, max?: number, median?: number, maxDecimals: number, unitType: string }}
  */
 export function getColumnUnitSummary(data, columnName) {
-	let seriesSummary;
-	let seriesExtents = tidy(
+	const seriesExtents = tidy(
 		data,
 		summarize({ min: min(columnName), max: max(columnName), median: median(columnName) })
 	)[0];
 
 	//TODO try to use summerize spec in tidy
-	let { maxDecimals, unitType } = summarizeUnits(data.map((row) => row[columnName]));
+	const { maxDecimals, unitType } = summarizeUnits(data.map((row) => row[columnName]));
 
-	seriesSummary = {
+	return {
 		min: seriesExtents.min,
 		max: seriesExtents.max,
 		median: seriesExtents.median,
 		maxDecimals: maxDecimals,
 		unitType: unitType
 	};
-	return seriesSummary;
 }
+
+/**
+ * 
+ * @param {Record<string, unknown>[]} data 
+ * @param {string} column 
+ * @returns {[number?, number?]}
+ */
 export function getColumnExtentsLegacy(data, column) {
-	var domainData = tidy(data, summarize({ min: min(column), max: max(column) }));
-	let minValue = domainData[0].min;
-	let maxValue = domainData[0].max;
-	return [minValue, maxValue];
+	const domainData = tidy(data, summarize({ min: min(column), max: max(column) }))[0];
+	return [domainData.min, domainData.max];
 }
 
+/**
+ * 
+ * @param {number[]} series 
+ * @returns {{ maxDecimals: number, unitType: string }}
+ */
 function summarizeUnits(series) {
-	let undefinedCount = 0;
-	let nullCount = 0;
-	let stringCount = 0;
-	let numberCount = 0;
-	let dateCount = 0;
-	let objectCount = 0;
-
-	let maxDecimals = 0;
-
 	if (series === undefined || series === null || series.length === 0) {
 		return {
 			maxDecimals: 0,
 			unitType: 'unknown'
 		};
 	} else {
-		for (let i = 0; i < series.length; i++) {
-			let nextElement = series[i];
-			switch (typeof nextElement) {
-				case 'undefined':
-					undefinedCount++;
-					break;
-				case 'number': {
-					numberCount++;
-					let thisDecimalPlaces = nextElement.toString().split('.')[1]?.length;
-					if (thisDecimalPlaces && thisDecimalPlaces > maxDecimals) {
-						maxDecimals = thisDecimalPlaces;
-					}
-					break;
-				}
-				case 'string':
-					stringCount++;
-					break;
-				case 'object':
-					if (nextElement instanceof Date) {
-						dateCount++;
-					} else if (nextElement === null) {
-						nullCount++;
-					} else {
-						objectCount++;
-					}
-					break;
-				case 'function':
-				default:
-					break;
-			}
+        let maxDecimals = 0;
+
+		for (const element of series) {
+			const decimal_places = element?.toString().split('.')[1]?.length;
+            if (decimal_places > maxDecimals) {
+                maxDecimals = decimal_places;
+            }
 		}
-		let unitType = undefined;
-		let emptyValueCount = undefinedCount + nullCount;
-		if (numberCount + emptyValueCount === series.length) {
-			unitType = 'number';
-		} else if (stringCount + emptyValueCount === series.length) {
-			unitType = 'string';
-		} else if (dateCount + emptyValueCount === series.length) {
-			unitType = 'date';
-		} else if (objectCount + emptyValueCount === series.length) {
-			unitType = 'object';
-		} else {
-			unitType = 'unknown';
-		}
+        
 		return {
 			maxDecimals: maxDecimals,
-			unitType: unitType
+			unitType: "number"
 		};
 	}
 }
