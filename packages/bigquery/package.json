@@ -17,5 +17,11 @@
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"bigquery",
+			"bq"
+		]
+	}
 }
