@@ -1,26 +1,17 @@
 // To-do, replace with import from db-commons
 
-var EvidenceType;
-(function (EvidenceType) {
-	EvidenceType['BOOLEAN'] = 'boolean';
-	EvidenceType['NUMBER'] = 'number';
-	EvidenceType['STRING'] = 'string';
-	EvidenceType['DATE'] = 'date';
-})(EvidenceType || (EvidenceType = {}));
-
-var TypeFidelity;
-(function (TypeFidelity) {
-	TypeFidelity['INFERRED'] = 'inferred';
-	TypeFidelity['PRECISE'] = 'precise';
-})(TypeFidelity || (TypeFidelity = {}));
-
+/**
+ * 
+ * @param {unknown} columnValue 
+ * @returns {import("./types.js").EvidenceType}
+ */
 export const inferValueType = function (columnValue) {
 	if (typeof columnValue === 'number') {
-		return EvidenceType.NUMBER;
+		return 'number';
 	} else if (typeof columnValue === 'boolean') {
-		return EvidenceType.BOOLEAN;
+		return 'boolean';
 	} else if (typeof columnValue === 'string') {
-		let result = EvidenceType.STRING;
+		const result = 'string';
 		if (columnValue && columnValue.includes('-')) {
 			let testDateStr = columnValue;
 			if (!columnValue.includes(':')) {
@@ -31,7 +22,7 @@ export const inferValueType = function (columnValue) {
 				if (testDate.toLocaleString().length > 0) {
 					let numCheck = Number.parseInt(testDate.toLocaleString().substring(0, 1));
 					if (numCheck != null && !isNaN(numCheck)) {
-						result = EvidenceType.DATE;
+						return 'date';
 					}
 				}
 			} catch (err) {
@@ -40,9 +31,9 @@ export const inferValueType = function (columnValue) {
 		}
 		return result;
 	} else if (columnValue instanceof Date) {
-		return EvidenceType.DATE;
+		return 'date';
 	} else {
-		return EvidenceType.STRING;
+		return 'string';
 	}
 };
 
@@ -55,12 +46,12 @@ export default function inferColumnTypes(rows) {
 			);
 			if (firstRowWithColumnValue) {
 				let inferredType = inferValueType(firstRowWithColumnValue[column]);
-				return { name: column, evidenceType: inferredType, typeFidelity: TypeFidelity.INFERRED };
+				return { name: column, evidenceType: inferredType, typeFidelity: 'inferred' };
 			} else {
 				return {
 					name: column,
-					evidenceType: EvidenceType.STRING,
-					typeFidelity: TypeFidelity.INFERRED
+					evidenceType: 'string',
+					typeFidelity: 'inferred'
 				};
 			}
 		});

@@ -1,5 +1,10 @@
 import { tidy, mutate } from '@tidyjs/tidy';
 
+/**
+ * 
+ * @param {string | Date} date 
+ * @returns {string | Date}
+ */
 export function standardizeDateString(date) {
 	if (date && typeof date === 'string') {
 		// Parses an individual string into a JS date object
@@ -30,6 +35,12 @@ export function standardizeDateString(date) {
 	return date;
 }
 
+/**
+ * 
+ * @param {Record<string, string | Date>[]} data 
+ * @param {string} column 
+ * @returns {Record<string, unknown>[]}
+ */
 export function convertColumnToDate(data, column) {
 	// Replaces a date column's string values with JS date objects, using the standardizeDateString function
 
@@ -41,6 +52,12 @@ export function convertColumnToDate(data, column) {
 	return data;
 }
 
+/**
+ * 
+ * @param {Record<string, string | Date>[]} data 
+ * @param {string} column 
+ * @returns  {Record<string, unknown>[]}
+ */
 export function standardizeDateColumn(data, column) {
 	// Replaces a date column's string values with standardized date strings, using the standardizeDateString function
 	// Used in Chart.svelte, where using Date objects leads to errors

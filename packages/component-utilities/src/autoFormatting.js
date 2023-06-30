@@ -12,6 +12,9 @@ const AUTO_FORMAT_MEDIAN_PRECISION = 3;
  * These won't be shown in the settings panel.
  * The ORDER in the array will take precedence as a columnName/evidenceType can be matched to multiple formats
  */
+/** 
+ * @type {import("./types.js").FormatDescription[]} 
+ */
 const IMPLICIT_COLUMN_AUTO_FORMATS = [
 	{
 		name: 'year',
@@ -98,6 +101,7 @@ const IMPLICIT_COLUMN_AUTO_FORMATS = [
  * @returns {number | undefined} the value in the given unit
  */
 export const applyColumnUnits = (value, unit) => {
+    if (!value) return value;
 	switch (unit) {
 		case 'T':
 			return value / 1000000000000;
@@ -114,10 +118,10 @@ export const applyColumnUnits = (value, unit) => {
 
 /**
  *
- * @param {*} format the format to update with auto formatting
- * @param {*} formatCode the code to use
- * @param {*} truncateNumbers should k, M, B column units be applied?
- * @returns the format
+ * @param {import('./types.js').Format} format the format to update with auto formatting
+ * @param {string} formatCode the code to use
+ * @param {boolean} truncateUnits should k, M, B column units be applied?
+ * @returns {import('./types.js').Format}
  */
 export const configureAutoFormatting = (format, formatCode = '@', truncateUnits = false) => {
 	format._autoFormat = {
@@ -127,6 +131,12 @@ export const configureAutoFormatting = (format, formatCode = '@', truncateUnits 
 	return format;
 };
 
+/**
+ * 
+ * @param {import("./types.js").Format} format 
+ * @param {string} effectiveCode 
+ * @returns {boolean}
+ */
 export const isAutoFormat = (format, effectiveCode) => {
 	let matchesCode = (effectiveCode || format.formatCode)?.toLowerCase() === AUTO_FORMAT_CODE;
 	let autoFormatCode = format._autoFormat?.autoFormatFunction || format._autoFormat?.autoFormatCode;
@@ -137,6 +147,12 @@ export const isAutoFormat = (format, effectiveCode) => {
 	}
 };
 
+/**
+ * 
+ * @param {import("./types.js").ColumnUnitSummary | undefined} columnUnitSummary 
+ * @param {number} maxDisplayDecimals 
+ * @returns 
+ */
 export const generateImplicitNumberFormat = (columnUnitSummary, maxDisplayDecimals = 7) => {
 	let effectiveFormatCode;
 	let columnUnits = '';
@@ -144,7 +160,7 @@ export const generateImplicitNumberFormat = (columnUnitSummary, maxDisplayDecima
 	let median = columnUnitSummary?.median;
 	let truncateUnits;
 
-	if (median !== undefined) {
+	if (columnUnitSummary && median !== undefined) {
 		let medianInUnitTerms;
 		columnUnits = getAutoColumnUnit(median);
 		if (columnUnits) {
@@ -176,6 +192,13 @@ export const generateImplicitNumberFormat = (columnUnitSummary, maxDisplayDecima
 	};
 };
 
+/**
+ * 
+ * @param {string} columnName 
+ * @param {import("./types.js").EvidenceTypeDescriptor} evidenceTypeDescriptor 
+ * @param {import("./types.js").ColumnUnitSummary} columnUnitSummary 
+ * @returns 
+ */
 export const findImplicitAutoFormat = (columnName, evidenceTypeDescriptor, columnUnitSummary) => {
 	let matched = IMPLICIT_COLUMN_AUTO_FORMATS.find((implicitFormat) =>
 		implicitFormat.matchingFunction(columnName, evidenceTypeDescriptor, columnUnitSummary)
@@ -192,10 +215,10 @@ export const findImplicitAutoFormat = (columnName, evidenceTypeDescriptor, colum
 
 /**
  * Formatting logic for formats with formatCode=AUTO_FORMAT_CODE
- * @param {*} typedValue the value to be formatted
- * @param {*} columnFormat the auto formatting description with _autoFormat settings
- * @param {*} columnUnitSummary the summary of units in the column (only applicable to numbered columns)
- * @returns formattedv value
+ * @param {number | string | boolean | Date} typedValue the value to be formatted
+ * @param {import('./types.js').Format} columnFormat the auto formatting description with _autoFormat settings
+ * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary the summary of units in the column (only applicable to numbered columns)
+ * @returns formatted value
  */
 export const autoFormat = (typedValue, columnFormat, columnUnitSummary = undefined) => {
 	if (columnFormat._autoFormat?.autoFormatFunction) {
@@ -228,7 +251,7 @@ export const autoFormat = (typedValue, columnFormat, columnUnitSummary = undefin
 /**
  * Formatting for any column without formatting settings
  * @param {*} typedValue a value of type number|date|string
- * @returns the formatted value
+ * @returns {string} the formatted value
  */
 export const fallbackFormat = (typedValue) => {
 	if (typeof typedValue === 'number') {
@@ -278,6 +301,7 @@ export function computeNumberAutoFormatCode(
  * @returns {string} the appropriate unit (B, M, k or '') for the given value
  */
 function getAutoColumnUnit(value) {
+    if (value === undefined) return '';
 	let absoluteValue = Math.abs(value);
 	if (absoluteValue >= 5000000000000) {
 		return 'T';
@@ -292,6 +316,11 @@ function getAutoColumnUnit(value) {
 	}
 }
 
+/**
+ * 
+ * @param {number} value 
+ * @returns {number}
+ */
 function base10Exponent(value) {
 	if (value === 0) {
 		return 0;

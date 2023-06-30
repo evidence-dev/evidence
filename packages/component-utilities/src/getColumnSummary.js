@@ -4,23 +4,14 @@ import { lookupColumnFormat } from './formatting.js';
 import formatTitle from './formatTitle.js';
 
 /**
- * @typedef {Object} ColumnSummary
- * @property {string} title
- * @property {string} type
- * @property {Object} evidenceColumnType
- * @property {ReturnType<typeof lookupColumnFormat>} format
- * @property {ReturnType<typeof getColumnUnitSummary>} columnUnitSummary
- */
-
-/**
  * @function
  * @template T
  * @param {Record<string, unknown>[]} data 
  * @param {T} returnType 
- * @returns {T extends 'object' ? Record<string, ColumnSummary> : (ColumnSummary & { id: string })[]}
+ * @returns {T extends 'object' ? Record<string, import('./types.js').ColumnSummary> : (import('./types.js').ColumnSummary & { id: string })[]}
  */
 export default function getColumnSummary(data, returnType = 'object') {
-    /** @type {Record<string, ColumnSummary>} */
+    /** @type {Record<string, import('./types.js').ColumnSummary>} */
 	const columnSummary = {};
 
 	for (const colName of Object.keys(data[0])) {
@@ -28,7 +19,7 @@ export default function getColumnSummary(data, returnType = 'object') {
 		const type = evidenceColumnType.evidenceType;
 		const columnUnitSummary =
 			evidenceColumnType.evidenceType === 'number'
-				? getColumnUnitSummary(data, colName)
+				? getColumnUnitSummary(data.slice(0, 1000), colName)
 				: {
 						maxDecimals: 0,
 						unitType: evidenceColumnType.evidenceType

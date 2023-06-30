@@ -1,11 +1,14 @@
 // Copied from https://github.com/svelteuidev/svelteui/blob/main/packages/svelteui-composables/src/actions/use-click-outside/use-click-outside.ts
-export default function clickoutside(node, params) {
-	const { enabled: initialEnabled, callback } = params;
+/** @type {import("svelte/action").Action<HTMLElement, { enabled?: boolean, callback?: (node: HTMLElement) => void }>} */
+export default function clickoutside(node, params = {}) {
+	const { enabled: initialEnabled, callback = () => {} } = params;
 
+    /** @type {EventListener} */
 	const handleOutsideClick = ({ target }) => {
 		if (!node.contains(target)) callback(node);
 	};
 
+    /** @type {(props: { enabled?: boolean }) => void} */
 	function update({ enabled }) {
 		if (enabled) {
 			window.addEventListener('click', handleOutsideClick);

@@ -1,6 +1,11 @@
+/**
+ * 
+ * @param {import("./types.js").EvidenceQueryResults | string} data 
+ * @param {string[] | undefined} reqCols 
+ * @param {string[] | undefined} optCols 
+ */
 export default function checkInputs(data, reqCols, optCols) {
 	// reqCols is an array of columns to check in the dataset
-	let columns = [];
 
 	// Check if dataset was provided
 	if (data == undefined) {
@@ -32,7 +37,7 @@ export default function checkInputs(data, reqCols, optCols) {
 
 		// Check if columns were provided
 		// let missingCols = [];
-		for (var i = 0; i < reqCols.length; i++) {
+		for (let i = 0; i < reqCols.length; i++) {
 			if (reqCols[i] == null) {
 				// missingCols.push(reqCols[i]);
 				throw Error('Missing required columns');
@@ -50,22 +55,19 @@ export default function checkInputs(data, reqCols, optCols) {
 		// }
 
 		// Get list of all columns in dataset
-		for (const [key] of Object.entries(data[0])) {
-			columns.push(key);
-		}
+        const columns = Object.keys(data[0]);
 
 		// Check if provided columns are in the dataset
-		let currentCol;
-		for (i = 0; i < reqCols.length; i++) {
-			currentCol = reqCols[i];
+		for (let i = 0; i < reqCols.length; i++) {
+			const currentCol = reqCols[i];
 			if (!columns.includes(currentCol)) {
 				throw Error("'" + currentCol + "' is not a column in the dataset");
 			}
 		}
 
 		if (optCols != undefined && optCols[0] != null) {
-			for (i = 0; i < optCols.length; i++) {
-				currentCol = optCols[i];
+			for (let i = 0; i < optCols.length; i++) {
+				const currentCol = optCols[i];
 				if (!columns.includes(currentCol)) {
 					throw Error("'" + currentCol + "' is not a column in the dataset");
 				}

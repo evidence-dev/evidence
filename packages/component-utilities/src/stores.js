@@ -6,6 +6,6 @@ import { writable } from 'svelte/store';
 export const showQueries = writable(
 	dev && browser && localStorage.getItem('showQueries') != 'false'
 );
-showQueries.subscribe((value) => browser && localStorage.setItem('showQueries', value));
+showQueries.subscribe((value) => browser && localStorage.setItem('showQueries', String(value)));
 export const pageHasQueries = writable(true);
 export const routeHash = writable('');
