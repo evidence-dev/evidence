@@ -11,69 +11,54 @@ export default function checkInputs(data, reqCols, optCols) {
 	if (data == undefined) {
 		throw Error('No dataset provided');
 	} else if (typeof data !== 'object') {
-		throw Error(
-			"'" +
-				data +
-				"'" +
-				' is not a recognized query result. Data should be provided in the format: data = {' +
-				data.replace('data.', '') +
-				'}'
-		);
+		throw Error(`'${data}' is not a recognized query result. Data should be provided in the format: data = {${data.replace('data.', '')}}`);
 	} else if (data[0] == undefined) {
-		throw Error(
-			'Dataset is empty: query ran successfully, but no data was returned from the database'
-		);
+		throw Error('Dataset is empty: query ran successfully, but no data was returned from the database');
 	}
 
 	// Check if data warehouse returned an error
 	if (data[0]?.error_object?.error != null) {
-		throw Error('SQL Error: ' + data[0]?.error_object?.error?.message);
+		throw Error('SQL Error: ' + data[0]?.error_object.error.message);
 	}
 
-	if (reqCols != undefined) {
-		if (!(reqCols instanceof Array)) {
-			throw Error('reqCols must be passed in as an array');
-		}
+    if (reqCols == undefined) return;
 
-		// Check if columns were provided
-		// let missingCols = [];
-		for (let i = 0; i < reqCols.length; i++) {
-			if (reqCols[i] == null) {
-				// missingCols.push(reqCols[i]);
-				throw Error('Missing required columns');
-			}
-		}
+    if (!Array.isArray(reqCols)) {
+        throw Error('reqCols must be passed in as an array');
+    }
 
-		// let errorString;
-		// if(missingCols.length > 0){
-		//     errorString = missingCols[0]
-		//     for(i = 1; i < missingCols.length; i++){
-		//         errorString = errorString + ", " + missingCols[i];
-		//     }
-		//     errorString = errorString + " not provided";
-		//     throw Error(errorString);
-		// }
+    // Check if columns were provided
+    // let missingCols = [];
+    if (reqCols.some((col) => col == null)) {
+        throw Error('Missing required columns');
+    }
 
-		// Get list of all columns in dataset
-        const columns = Object.keys(data[0]);
+    // let errorString;
+    // if(missingCols.length > 0){
+    //     errorString = missingCols[0]
+    //     for(i = 1; i < missingCols.length; i++){
+    //         errorString = errorString + ", " + missingCols[i];
+    //     }
+    //     errorString = errorString + " not provided";
+    //     throw Error(errorString);
+    // }
 
-		// Check if provided columns are in the dataset
-		for (let i = 0; i < reqCols.length; i++) {
-			const currentCol = reqCols[i];
-			if (!columns.includes(currentCol)) {
-				throw Error("'" + currentCol + "' is not a column in the dataset");
-			}
-		}
+    // Get list of all columns in dataset
+    const columns = Object.keys(data[0]);
 
-		if (optCols != undefined && optCols[0] != null) {
-			for (let i = 0; i < optCols.length; i++) {
-				const currentCol = optCols[i];
-				if (!columns.includes(currentCol)) {
-					throw Error("'" + currentCol + "' is not a column in the dataset");
-				}
-			}
-		}
-	}
+    // Check if provided columns are in the dataset
+    for (const currentCol of reqCols) {
+        if (!columns.includes(currentCol)) {
+            throw Error("'" + currentCol + "' is not a column in the dataset");
+        }
+    }
+
+    if (optCols == undefined || optCols[0] != null) return;
+    for (const currentCol of optCols) {
+        if (!columns.includes(currentCol)) {
+            throw Error("'" + currentCol + "' is not a column in the dataset");
+        }
+    }
 	// IDEAS:
 	// Trigger a function call when error is caught - that function somehow sends us to the Error chart component
 	// rather than letting the rest of the current component file continue running?
