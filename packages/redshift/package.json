@@ -12,5 +12,10 @@
 		"@evidence-dev/db-commons": "workspace:^",
 		"@evidence-dev/postgres": "workspace:^"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"redshift"
+		]
+	}
 }

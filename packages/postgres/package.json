@@ -18,7 +18,8 @@
 			"postgres",
 			"postgresql",
 			"pg",
-			"pgsql"
+			"pgsql",
+			"psql"
 		]
 	}
 }
