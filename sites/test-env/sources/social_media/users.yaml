@@ -1,0 +1,36 @@
+rows: 20000
+fuzz: 2500
+
+
+schema:
+    id:
+        type: id
+    user_name:
+        category: internet
+        item: userName
+    full_name:
+        category: person
+        item: fullName
+    email:
+        category: internet
+        item: email
+    created_at:
+        category: date
+        item: recent
+        options:
+            days: 365 # Past Year
+    gender:
+        category: helpers
+        item: arrayElement
+        options:
+            # This is not intended to be an exhaustive or accurate list;
+            # and it uses arrayElement instead of people.gender
+            # to create a weighted list for the purpose of demonstration only
+            - Male
+            - Male
+            - Male
+            - Female
+            - Female
+            - Female
+            - Transgender
+            - Other

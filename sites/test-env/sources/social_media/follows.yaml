@@ -1,0 +1,23 @@
+rows: 20000
+schema:
+    id:
+        type: id
+    follower_id:
+        type: fk
+        target:
+            table: "users.yaml"
+
+    following_id:
+        type: fk
+        target:
+            table: "users.yaml"
+
+filters:
+    - type: ne
+      fields:
+          - follower_id
+          - following_id
+    - type: unique
+      fields:
+          - follower_id
+          - following_id
