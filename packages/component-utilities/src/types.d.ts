@@ -5,7 +5,7 @@ export type EvidenceTypeDescriptor = {
 };
 
 export type EvidenceQueryResults = Record<string, EvidenceTypeUnion>[] & {
-    0: {
+    0: EvidenceTypeUnion & {
         error_object: {
             error: Error;
         }
@@ -32,7 +32,7 @@ export type Format = {
 export type FormatDescription = {
     name: string;
     description: string;
-    matchingFunction: (columnName: string, evidenceTypeDescriptor: EvidenceTypeDescriptor, columnUnitSummary: ColumnUnitSummary) => boolean,
+    matchingFunction: (columnName: string, evidenceTypeDescriptor: EvidenceTypeDescriptor, columnUnitSummary: ColumnUnitSummary | undefined) => boolean,
     format: Format
 }
 

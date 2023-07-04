@@ -1,10 +1,10 @@
 import ssf from 'ssf';
 import { getContext } from 'svelte';
-import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from './globalContexts';
-import { findImplicitAutoFormat, autoFormat, fallbackFormat, isAutoFormat } from './autoFormatting';
-import { BUILT_IN_FORMATS } from './builtInFormats';
-import { standardizeDateString } from './dateParsing';
-import { inferValueType } from './inferColumnTypes';
+import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from './globalContexts.js';
+import { findImplicitAutoFormat, autoFormat, fallbackFormat, isAutoFormat } from './autoFormatting.js';
+import { BUILT_IN_FORMATS } from './builtInFormats.js';
+import { standardizeDateString } from './dateParsing.js';
+import { inferValueType } from './inferColumnTypes.js';
 
 const AXIS_FORMATTING_CONTEXT = 'axis';
 const VALUE_FORMATTING_CONTEXT = 'value';
@@ -14,15 +14,17 @@ export const getCustomFormats = () => {
 };
 
 /**
- * @param {*} columnName the name of the column
- * @returns a format object (built-in or custom) based on the column name if it matches the pattern column_${formatTag}, otherwise returns undefined
+ * @param {string} columnName the name of the column
+ * @param {import('./types.js').EvidenceTypeDescriptor} columnEvidenceType the evidence type of the column
+ * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary the unit summary of the column
+ * @returns {import("./types.js").Format | undefined} a format object (built-in or custom) based on the column name if it matches the pattern column_${formatTag}, otherwise returns undefined
  */
 export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSummary) => {
-	let potentialFormatTag = maybeExtractFormatTag(columnName);
-
 	if (columnEvidenceType.evidenceType === 'string') {
 		return undefined;
 	}
+
+    const potentialFormatTag = maybeExtractFormatTag(columnName);
 
 	if (potentialFormatTag) {
 		let customFormats = getCustomFormats();
@@ -73,6 +75,13 @@ export function getFormatObjectFromString(formatString, valueType = undefined) {
 	}
 }
 
+/**
+ * 
+ * @param {import('./types.js').EvidenceTypeUnion} value 
+ * @param {string | undefined} columnFormat 
+ * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary 
+ * @returns 
+ */
 export const formatValue = (value, columnFormat = undefined, columnUnitSummary = undefined) => {
 	try {
 		return applyFormatting(value, columnFormat, columnUnitSummary, VALUE_FORMATTING_CONTEXT);
@@ -154,6 +163,14 @@ export const formatExample = (format) => {
 	return '';
 };
 
+/**
+ * 
+ * @param {import('./types.js').EvidenceTypeUnion} value 
+ * @param {string | undefined} columnFormat 
+ * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary 
+ * @param {typeof VALUE_FORMATTING_CONTEXT | typeof AXIS_FORMATTING_CONTEXT} formattingContext 
+ * @returns 
+ */
 function applyFormatting(
 	value,
 	columnFormat = undefined,
@@ -216,14 +233,14 @@ function getEffectiveFormattingCode(columnFormat, formattingContext = VALUE_FORM
 
 /**
  * Extracts a possible format tag from a column name based on the column name pattern
- * @returns "column_${formatTag}" will return ${formatTag} or undefined if the columnName doesn't match the pattern
+ * @param {string} columnName
+ * @returns {string | undefined} "column_${formatTag}" will return ${formatTag} or undefined if the columnName doesn't match the pattern
  */
 function maybeExtractFormatTag(columnName) {
-	let normalizedColName = columnName.toLowerCase();
-	let lastUnderScoreIndex = normalizedColName.lastIndexOf('_');
+	const lastUnderScoreIndex = columnName.lastIndexOf('_');
 
 	if (lastUnderScoreIndex > 0) {
-		return normalizedColName.substr(lastUnderScoreIndex).replace('_', '');
+		return columnName.toLowerCase().slice(lastUnderScoreIndex).replace('_', '');
 	} else {
 		return undefined;
 	}
@@ -231,13 +248,13 @@ function maybeExtractFormatTag(columnName) {
 
 /**
  * Formats a value to whichever format is passed in
- * @param {*} value the value to be formatted
+ * @param {import('./types.js').EvidenceTypeUnion} value the value to be formatted
  * @param {string} format string containing an Excel-style format code, or a format name matching a built-in or custom format
  * @returns a formatted value
  */
 export function fmt(value, format) {
-	let formatObj = getFormatObjectFromString(format);
-	let valueType = inferValueType(value);
+	const formatObj = getFormatObjectFromString(format);
+	const valueType = inferValueType(value);
 	formatObj.valueType = valueType;
 	return formatValue(value, formatObj);
 }

@@ -11,8 +11,6 @@ const AUTO_FORMAT_MEDIAN_PRECISION = 3;
  * This will only be applied to columns that cannot be matched to existing custom or built-in formats.
  * These won't be shown in the settings panel.
  * The ORDER in the array will take precedence as a columnName/evidenceType can be matched to multiple formats
- */
-/** 
  * @type {import("./types.js").FormatDescription[]} 
  */
 const IMPLICIT_COLUMN_AUTO_FORMATS = [
@@ -95,13 +93,13 @@ const IMPLICIT_COLUMN_AUTO_FORMATS = [
 ];
 
 /**
- *
- * @param {number | undefined} value
+ * @template T
+ * @param {number | T} value
  * @param {string} unit
- * @returns {number | undefined} the value in the given unit
+ * @returns {number | T} the value in the given unit
  */
 export const applyColumnUnits = (value, unit) => {
-    if (!value) return value;
+    if (typeof value !== 'number') return value;
 	switch (unit) {
 		case 'T':
 			return value / 1000000000000;
@@ -196,7 +194,7 @@ export const generateImplicitNumberFormat = (columnUnitSummary, maxDisplayDecima
  * 
  * @param {string} columnName 
  * @param {import("./types.js").EvidenceTypeDescriptor} evidenceTypeDescriptor 
- * @param {import("./types.js").ColumnUnitSummary} columnUnitSummary 
+ * @param {import("./types.js").ColumnUnitSummary | undefined} columnUnitSummary 
  * @returns 
  */
 export const findImplicitAutoFormat = (columnName, evidenceTypeDescriptor, columnUnitSummary) => {

@@ -37,25 +37,22 @@ export const inferValueType = function (columnValue) {
 	}
 };
 
+/**
+ * 
+ * @param {import("./types.js").EvidenceQueryResults} rows 
+ * @returns {import("./types.js").EvidenceTypeDescriptor[] | undefined}
+ */
 export default function inferColumnTypes(rows) {
 	if (rows && rows.length > 0) {
-		let columns = Object.keys(rows[0]);
-		let columnTypes = columns?.map((column) => {
-			let firstRowWithColumnValue = rows.find((element) =>
-				element[column] == null ? false : true
-			);
-			if (firstRowWithColumnValue) {
-				let inferredType = inferValueType(firstRowWithColumnValue[column]);
-				return { name: column, evidenceType: inferredType, typeFidelity: 'inferred' };
-			} else {
-				return {
-					name: column,
-					evidenceType: 'string',
-					typeFidelity: 'inferred'
-				};
-			}
+		const columns = Object.keys(rows[0]);
+		return columns.map((column) => {
+			const firstRowWithColumnValue = rows.find((element) => element[column] != null);
+            return {
+                name: column,
+                evidenceType: firstRowWithColumnValue? inferValueType(firstRowWithColumnValue[column]) : 'string',
+                typeFidelity: 'inferred'
+            };
 		});
-		return columnTypes;
 	}
 	return undefined;
 }

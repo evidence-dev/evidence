@@ -8,14 +8,11 @@ import { tidy, replaceNully } from '@tidyjs/tidy';
  */
 export default function replaceNulls(data, columns) {
     /** @type {Record<string, unknown>} */
-	let colObj = {};
-	if (Array.isArray(columns)) {
-		for (let i = 0; i < columns.length; i++) {
-			colObj[columns[i]] = 0;
-		}
-	} else {
-		colObj[columns] = 0;
-	}
+	const colObj = {};
+    if (!Array.isArray(columns)) columns = [columns];
+    for (const column of columns) {
+        colObj[column] = 0;
+    }
 	data = tidy(data, replaceNully(colObj));
 	return data;
 }
