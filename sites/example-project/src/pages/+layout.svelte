@@ -72,6 +72,9 @@
 	//TODO: Offer this as a build parameter
 	// in dev. mode prevent prefetch on "hover"
 	const prefetchStrategy = dev ? 'tap' : 'hover';
+
+	const systemUrls = ["/settings", "/explore"]
+	$: isSystemUrl = systemUrls.find(s => $page.url.pathname.startsWith(s))
 </script>
 
 <!-- eslint-disable no-undef -->
@@ -87,12 +90,12 @@
 	<Sidebar bind:open {fileTree} />
 	{#if !$navigating}
 		<main in:blur|local id="evidence-content">
-			<div class="content" class:settings-content={$page.url.pathname.startsWith('/settings')}>
-				<article class:settings-article={$page.url.pathname.startsWith('/settings')}>
+			<div class="content" class:settings-content={isSystemUrl}>
+				<article class:settings-article={isSystemUrl}>
 					<slot />
 					<p>&nbsp;</p>
 				</article>
-				{#if !$page.url.pathname.startsWith('/settings')}
+				{#if !isSystemUrl}
 					<aside class="toc">
 						<TableOfContents />
 					</aside>
@@ -101,7 +104,7 @@
 		</main>
 	{/if}
 </div>
-{#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
+{#if !$navigating && dev && !isSystemUrl}
 	<QueryStatus />
 {/if}
 
