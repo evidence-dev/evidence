@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { Type } from 'apache-arrow';
+import { selectBundle, ConsoleLogger, AsyncDuckDB } from '@duckdb/duckdb-wasm';
 
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
 let db;
@@ -8,19 +9,22 @@ async function initDB() {
 	if (!browser) return;
 	if (db) return;
 
-	// Instantiate worker
-	const duckdb_worker = (
-		await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker')
-	).default;
-	const { ConsoleLogger, AsyncDuckDB } = await import('@duckdb/duckdb-wasm');
-	const duckdb_wasm = (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default;
-
-	const logger = new ConsoleLogger();
-	const worker = new duckdb_worker();
+    const DUCKDB_CONFIG = await selectBundle({
+        mvp: {
+            mainModule: './duckdb-mvp.wasm',
+            mainWorker: './duckdb-browser-mvp.worker.js',
+        },
+        eh: {
+            mainModule: './duckdb-eh.wasm',
+            mainWorker: './duckdb-browser-eh.worker.js',
+        },
+    });
+    const logger = new ConsoleLogger();
+    const worker = new Worker(DUCKDB_CONFIG.mainWorker);
 
 	// and asynchronous database
 	db = new AsyncDuckDB(logger, worker);
-	await db.instantiate(duckdb_wasm);
+	await db.instantiate(DUCKDB_CONFIG.mainModule, DUCKDB_CONFIG.pthreadWorker);
 	await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
 }
 
