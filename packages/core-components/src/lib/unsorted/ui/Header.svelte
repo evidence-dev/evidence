@@ -15,7 +15,7 @@
 	<div class="header-container">
 		<Hamburger bind:open />
 		<BreadCrumbs {fileTree} />
-		{#if !$page.url.pathname.includes('/settings')}
+		{#if $page.data.isUserPage}
 			<PageMenu />
 		{/if}
 	</div>

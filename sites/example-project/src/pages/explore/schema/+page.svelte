@@ -1,11 +1,8 @@
 <script>
-	import { readable } from 'svelte/store';
 	import { browser } from '$app/environment';
 
 	export let data;
 	let { __db: db } = data;
-
-	let errors = [];
 
 	async function loadMetadata() {
 		if (!browser) return {};
@@ -54,6 +51,6 @@
 	{/each}
 {:catch e}
 	An error was encountered while loading project schema.
-	
+
 	<pre class="px-4 py-2 bg-red-800 text-white">{e.message}</pre>
 {/await}

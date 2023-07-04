@@ -71,7 +71,7 @@
 	class="main truncate min-[850px]:max-w-[calc(100vw-18rem-16px-56px)] max-[850px]:max-w-[calc(100vw-1em-32px-56px)]"
 >
 	<span class="h-8 inline-flex items-center">
-		{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
+		{#if !$page.data.isUserPage || $page.url.pathname === '/'}
 			<a href="/" class="inline-flex gap-1 items-center"
 				><Icon src={Home} class="h-4 w-4 inline-block stroke-1" /> Home</a
 			>

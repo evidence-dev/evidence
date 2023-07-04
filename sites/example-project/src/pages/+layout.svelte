@@ -65,16 +65,14 @@
 	import '../app.css';
 	import { navigating } from '$app/stores';
 	import { blur } from 'svelte/transition';
-	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
+
+    export let data;
 
 	let open = false;
 	//TODO: Offer this as a build parameter
 	// in dev. mode prevent prefetch on "hover"
 	const prefetchStrategy = dev ? 'tap' : 'hover';
-
-	const systemUrls = ["/settings", "/explore"]
-	$: isSystemUrl = systemUrls.find(s => $page.url.pathname.startsWith(s))
 </script>
 
 <!-- eslint-disable no-undef -->
@@ -90,12 +88,12 @@
 	<Sidebar bind:open {fileTree} />
 	{#if !$navigating}
 		<main in:blur|local id="evidence-content">
-			<div class="content" class:settings-content={isSystemUrl}>
-				<article class:settings-article={isSystemUrl}>
+			<div class="content" class:settings-content={!data.isUserPage}>
+				<article class:settings-article={!data.isUserPage}>
 					<slot />
 					<p>&nbsp;</p>
 				</article>
-				{#if !isSystemUrl}
+				{#if data.isUserPage}
 					<aside class="toc">
 						<TableOfContents />
 					</aside>
@@ -104,7 +102,7 @@
 		</main>
 	{/if}
 </div>
-{#if !$navigating && dev && !isSystemUrl}
+{#if !$navigating && dev && data.isUserPage}
 	<QueryStatus />
 {/if}
 
