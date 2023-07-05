@@ -53,8 +53,6 @@ importers:
       unist-util-visit: 4.1.2
       uvu: 0.5.2
       vite: 4.3.9
-    dependencies:
-      '@evidence-dev/tailwind': link:packages/tailwind
     devDependencies:
       '@changesets/cli': 2.21.0
       '@duckdb/duckdb-wasm': 1.27.0
@@ -64,6 +62,7 @@ importers:
       '@evidence-dev/evidence': link:packages/evidence
       '@evidence-dev/plugin-connector': link:packages/plugin-connector
       '@evidence-dev/preprocess': link:packages/preprocess
+      '@evidence-dev/tailwind': link:packages/tailwind
       '@evidence-dev/telemetry': link:packages/telemetry
       '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.21.0
       '@sveltejs/kit': 1.21.0_svelte@3.55.0+vite@4.3.9
@@ -359,9 +358,13 @@ importers:
   packages/faker-datasource:
     specifiers:
       '@faker-js/faker': 8.0.2
+      '@types/cli-progress': ^3.11.0
+      cli-progress: ^3.12.0
       yaml: ^2.3.1
     dependencies:
       '@faker-js/faker': 8.0.2
+      '@types/cli-progress': 3.11.0
+      cli-progress: 3.12.0
       yaml: 2.3.1
 
   packages/mssql:
@@ -8135,6 +8138,12 @@ packages:
     resolution: {integrity: sha512-mEo1sAde+UCE6b2hxn332f1g1E8WfYRu6p5SvTKr2ZKC1f7gFJXk4h5PyGP9Dt6gCaG8y8XhwnXWC6Iy2cmBng==}
     dev: true
 
+  /@types/cli-progress/3.11.0:
+    resolution: {integrity: sha512-XhXhBv1R/q2ahF3BM7qT5HLzJNlIL0wbcGyZVjqOTqAybAnsLisd7gy1UCyIqpL+5Iv6XhlSyzjLCnI2sIdbCg==}
+    dependencies:
+      '@types/node': 20.3.2
+    dev: false
+
   /@types/command-line-args/5.2.0:
     resolution: {integrity: sha512-UuKzKpJJ/Ief6ufIaIzr3A/0XnluX7RvFgwkV89Yzvm77wCh1kFaFmqN8XEnGcN62EuHdedQjEMb8mYxFLGPyA==}
 
@@ -10190,6 +10199,13 @@ packages:
     dependencies:
       restore-cursor: 3.1.0
     dev: true
+
+  /cli-progress/3.12.0:
+    resolution: {integrity: sha512-tRkV3HJ1ASwm19THiiLIXLO7Im7wlTuKnvkYaTkyoAPefqjNg7W7DHKUlGRxy9vxDvbyCYQkQozvptuMkGCg8A==}
+    engines: {node: '>=4'}
+    dependencies:
+      string-width: 4.2.3
+    dev: false
 
   /cli-spinners/2.9.0:
     resolution: {integrity: sha512-4/aL9X3Wh0yiMQlE+eeRhWP6vclO3QRtw1JHKIT0FFUs5FjpFmESqtMvYZ0+lbzBw900b95mS0hohy+qn2VK/g==}
