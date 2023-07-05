@@ -1,5 +1,30 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- Updated dependencies [cb0fc468]
+- Updated dependencies [4e783f36]
+  - @evidence-dev/bigquery@2.0.0-usql.0
+  - @evidence-dev/csv@1.0.0-usql.0
+  - @evidence-dev/duckdb@1.0.0-usql.0
+  - @evidence-dev/mssql@1.0.0-usql.0
+  - @evidence-dev/mysql@1.0.0-usql.0
+  - @evidence-dev/postgres@1.0.0-usql.0
+  - @evidence-dev/redshift@1.0.0-usql.0
+  - @evidence-dev/snowflake@1.0.0-usql.0
+  - @evidence-dev/sqlite@2.0.0-usql.0
+
 ## 2.2.2
 
 ### Patch Changes

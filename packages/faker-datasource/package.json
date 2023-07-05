@@ -1,6 +1,6 @@
 {
   "name": "@evidence-dev/faker-datasource",
-  "version": "1.0.0",
+  "version": "2.0.0-usql.0",
   "description": "",
   "main": "index.mjs",
   "scripts": {

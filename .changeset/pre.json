@@ -28,5 +28,9 @@
     "evidence-test-environment": "2.0.16",
     "ui-tests": "1.1.0"
   },
-  "changesets": []
+  "changesets": [
+    "honest-shoes-jump",
+    "ninety-berries-yell",
+    "sweet-seahorses-fly"
+  ]
 }
