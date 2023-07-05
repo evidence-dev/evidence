@@ -1,4 +1,4 @@
-# Tokker User Analytics
+# Not Twitter User Analytics
 
 ```total_users
 SELECT COUNT(*) as userCount FROM users;
