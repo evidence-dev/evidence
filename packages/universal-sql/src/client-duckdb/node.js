@@ -91,7 +91,7 @@ function apacheToEvidenceType(type) {
  * @param {import("apache-arrow").Table} table
  * @returns
  */
-function arrowTableToJSON(table) {
+export function arrowTableToJSON(table) {
 	if (table == null) return [];
 	const arr = table.toArray();
 
