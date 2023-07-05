@@ -107,23 +107,26 @@ function arrowTableToJSON(table) {
 }
 
 /** @type {import("./$types").LayoutLoad} */
-export const load = async ({ fetch, data: { customFormattingSettings, routeHash, renderedFiles, isUserPage } }) => {
-    let data = {};
+export const load = async ({
+	fetch,
+	data: { customFormattingSettings, routeHash, renderedFiles, isUserPage }
+}) => {
+	let data = {};
 	if (isUserPage) {
 		const res = await fetch(`/api/${routeHash}.json`);
 		// has to be cloned to bypass the proxy https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
 		({ data } = await res.clone().json());
-    }
-    for (const url of renderedFiles) {
-        await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
-    }
+	}
+	for (const url of renderedFiles) {
+		await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
+	}
 
-    // await setParquetURL('taxis', '/taxis.parquet');
+	// await setParquetURL('taxis', '/taxis.parquet');
 
-    return {
-        __db: { query },
-        data,
-        customFormattingSettings,
-        isUserPage
-    };
+	return {
+		__db: { query },
+		data,
+		customFormattingSettings,
+		isUserPage
+	};
 };

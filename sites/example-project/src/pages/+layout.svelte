@@ -67,7 +67,7 @@
 	import { blur } from 'svelte/transition';
 	import { dev } from '$app/environment';
 
-    export let data;
+	export let data;
 
 	let open = false;
 	//TODO: Offer this as a build parameter

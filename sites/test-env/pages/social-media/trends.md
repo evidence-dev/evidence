@@ -14,7 +14,7 @@ WITH EVERYTHING AS (
     FROM hashtags h
         INNER JOIN post_tags pt on h.id = pt.hashtag_id
         INNER JOIN posts p on pt.post_id = p.id
-    
+
     WHERE w > (CURRENT_DATE - INTERVAL '5 WEEK')
     GROUP BY DATE_TRUNC('day', p.created_at), h.tag, h.id
     ORDER BY 2, 1 desc
@@ -115,7 +115,6 @@ x="w"
     {/each}
 </ul>
 
-
 <label>
     Inspect a tag
     <select bind:value={currentTag} class="bg-gray-100 block">
@@ -124,8 +123,6 @@ x="w"
         {/each}
     </select>
 </label>
-
-
 
 {#if currentTag}
 <BigValue data={total_posts} value="postCount" title="Posts with #{currentTag?.tag}"/>

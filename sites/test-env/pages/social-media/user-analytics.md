@@ -21,7 +21,6 @@ SELECT userCount, userCount - LAG(userCount, -1) OVER (order by m desc) as delta
 <BigValue title="Total Users" data={total_users} value="userCount" />
 <BigValue title="New Users this Month" comparisonTitle="vs Last Month" data={users_by_month} value="userCount" comparison="delta"/>
 
-
 <Chart data={users_by_month} x="m" title="New users & delta by month">
     <Line  y="userCount"/>
     <Bar  y="delta"/>

@@ -25,9 +25,9 @@ export function getColumnUnitSummary(data, columnName) {
 }
 
 /**
- * 
- * @param {Record<string, unknown>[]} data 
- * @param {string} column 
+ *
+ * @param {Record<string, unknown>[]} data
+ * @param {string} column
  * @returns {[number?, number?]}
  */
 export function getColumnExtentsLegacy(data, column) {
@@ -36,8 +36,8 @@ export function getColumnExtentsLegacy(data, column) {
 }
 
 /**
- * 
- * @param {number[]} series 
+ *
+ * @param {number[]} series
  * @returns {{ maxDecimals: number, unitType: string }}
  */
 function summarizeUnits(series) {
@@ -47,18 +47,18 @@ function summarizeUnits(series) {
 			unitType: 'unknown'
 		};
 	} else {
-        let maxDecimals = 0;
+		let maxDecimals = 0;
 
 		for (const element of series) {
 			const decimal_places = element?.toString().split('.')[1]?.length;
-            if (decimal_places > maxDecimals) {
-                maxDecimals = decimal_places;
-            }
+			if (decimal_places > maxDecimals) {
+				maxDecimals = decimal_places;
+			}
 		}
-        
+
 		return {
 			maxDecimals: maxDecimals,
-			unitType: "number"
+			unitType: 'number'
 		};
 	}
 }
