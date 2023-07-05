@@ -56,8 +56,6 @@ export async function query(sql) {
 	const res = await connection.query(sql).then(arrowTableToJSON);
 	await connection.close();
 
-    console.log({ browser: res });
-
 	return res;
 }
 

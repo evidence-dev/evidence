@@ -2,6 +2,7 @@ import { NODE_RUNTIME, DuckDBDataProtocol, createDuckDB, ConsoleLogger } from '@
 import { createRequire } from 'module';
 import { resolve, dirname } from "path";
 import { Type } from 'apache-arrow';
+import { cache_for_hash } from "../cache-duckdb.js";
 const require = createRequire(import.meta.url);
 const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
 
@@ -52,16 +53,19 @@ export function setParquetURL(table, url) {
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
+ * @param {{ route_hash: string, query_name: string }} cache_options
  * @returns {ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null}
  */
-export function query(sql) {
+export function query(sql, cache_options) {
 	const connection = db.connect();
-	const res = arrowTableToJSON(connection.query(sql));
+	const res = connection.query(sql);
     connection.close();
 
-    console.log({ node: res })
+    if (cache_options) {
+        cache_for_hash(cache_options.route_hash, sql, cache_options.query_name, res);
+    }
 
-	return res;
+	return arrowTableToJSON(res);
 }
 
 /**
