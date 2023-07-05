@@ -1,3 +1,4 @@
+import { runQueries } from '@evidence-dev/db-orchestrator';
 import md5 from 'blueimp-md5';
 import { GET } from './api/customFormattingSettings.json/+server.js';
 export const prerender = true;
@@ -22,7 +23,8 @@ export async function load({ fetch, route }) {
 		return {
 			routeHash,
 			customFormattingSettings,
-			renderedFiles
+			renderedFiles,
+            evidencemeta: runQueries(routeHash)
 		};
 	}
 }
