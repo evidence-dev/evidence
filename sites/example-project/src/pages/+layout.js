@@ -14,8 +14,6 @@ export const load = async ({ fetch, route, data: parentData }) => {
 			await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
 		}
 
-		// await setParquetURL('taxis', '/taxis.parquet');
-
 		return {
 			__db: { query },
 			data,
