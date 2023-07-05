@@ -1,114 +1,4 @@
-import { browser } from '$app/environment';
-import { Type } from 'apache-arrow';
-import { selectBundle, ConsoleLogger, AsyncDuckDB } from '@duckdb/duckdb-wasm';
-
-/** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
-let db;
-
-async function initDB() {
-	if (!browser) return;
-	if (db) return;
-
-    const DUCKDB_CONFIG = await selectBundle({
-        mvp: {
-            mainModule: './duckdb-mvp.wasm',
-            mainWorker: './duckdb-browser-mvp.worker.js',
-        },
-        eh: {
-            mainModule: './duckdb-eh.wasm',
-            mainWorker: './duckdb-browser-eh.worker.js',
-        },
-    });
-    const logger = new ConsoleLogger();
-    const worker = new Worker(DUCKDB_CONFIG.mainWorker);
-
-	// and asynchronous database
-	db = new AsyncDuckDB(logger, worker);
-	await db.instantiate(DUCKDB_CONFIG.mainModule, DUCKDB_CONFIG.pthreadWorker);
-	await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
-}
-
-/**
- * Adds a new view to the database, pointing to the provided parquet URL.
- *
- * @param {string} table
- * @param {string} url
- * @returns {Promise<void>}
- */
-async function setParquetURL(table, url) {
-	if (!browser) return;
-	if (!db) await initDB();
-
-	const connection = await db.connect();
-
-	const file_name = `${table}.parquet`;
-	await db.registerFileURL(file_name, url, 4, false);
-	await connection.query(
-		`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
-	);
-
-	await connection.close();
-}
-
-/**
- * Queries the database with the given SQL statement.
- *
- * @param {string} sql
- * @returns {Promise<ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null>}
- */
-async function query(sql) {
-	if (!browser) return null;
-	if (!db) await initDB();
-
-	const connection = await db.connect();
-	const res = await connection.query(sql).then(arrowTableToJSON);
-	await connection.close();
-
-	return res;
-}
-
-/**
- * Converts an Apache Arrow type to an Evidence type.
- *
- * @param {import("apache-arrow").Type} type
- */
-function apacheToEvidenceType(type) {
-	switch (
-		type.typeId // maybe just replace with `typeof`
-	) {
-		case Type.Date:
-			return 'date';
-		case Type.Float:
-		case Type.Int:
-			return 'number';
-		case Type.Bool:
-			return 'boolean';
-		case Type.Dictionary:
-		default:
-			return 'string';
-	}
-}
-
-/**
- *
- * @param {import("apache-arrow").Table} table
- * @returns
- */
-function arrowTableToJSON(table) {
-	if (table == null) return [];
-	const arr = table.toArray();
-
-	Object.defineProperty(arr, '_evidenceColumnTypes', {
-		enumerable: false,
-		value: table.schema.fields.map((field) => ({
-			name: field.name,
-			evidenceType: apacheToEvidenceType(field.type),
-			typeFidelity: 'precise'
-		}))
-	});
-
-	return arr;
-}
+import { initDB, setParquetURL, query } from "@evidence-dev/universal-sql/client-duckdb";
 
 /** @type {import("./$types").LayoutLoad} */
 export const load = async ({ fetch, route, data: parentData }) => {
@@ -117,6 +7,8 @@ export const load = async ({ fetch, route, data: parentData }) => {
 		const res = await fetch(`/api/${routeHash}.json`);
 		// has to be cloned to bypass the proxy https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
 		const { data } = await res.clone().json();
+
+        await initDB();
 
 		for (const url of renderedFiles) {
 			await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
