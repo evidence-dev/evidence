@@ -1,0 +1,18 @@
+rows: 600000
+fuzz: 100000
+schema:
+    id:
+        type: id
+    user_id:
+        type: fk
+        target:
+            table: users.yaml
+    post_id:
+        type: fk
+        target:
+            table: posts.yaml
+filters:
+    - type: unique
+      fields:
+          - user_id
+          - post_id

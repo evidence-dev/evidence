@@ -1,0 +1,17 @@
+rows: 250000
+fuzz: 25000
+schema:
+    id:
+        type: id
+    user_id:
+        type: fk
+        target:
+            table: users.yaml
+    content:
+        category: lorem
+        item: paragraph
+    created_at:
+        category: date
+        item: recent
+        options:
+            days: 365 # Past Year

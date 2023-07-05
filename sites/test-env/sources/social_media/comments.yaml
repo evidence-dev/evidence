@@ -1,0 +1,22 @@
+rows: 500000
+fuzz: 25000
+schema:
+    id:
+        type: id
+    user_id:
+        type: fk
+        target:
+            table: users.yaml
+    post_id:
+        type: fk
+        target:
+            table: posts.yaml
+    content:
+        category: lorem
+        item: sentence
+    
+    # TODO: Do we need a sanity check somehow?
+    # These could be before the post itself was created
+    created_at:
+        category: date
+        item: recent
