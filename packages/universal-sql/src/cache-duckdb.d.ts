@@ -9,8 +9,8 @@
 export function cache_for_hash(route_hash: string, sql_string: string, query_name: string, data: import("apache-arrow").Table): void;
 
 /**
- * Gets the cached SQL for a route hash
+ * Gets the cached SQL results for a route hash
  * @param {string} route_hash md5 hash of the route id
- * @returns {FormData}
+ * @returns {Record<string, unknown>}
  */
-export function get_cached_sql(route_hash: string): FormData;
+export function get_cached_sql(route_hash: string): Record<string, unknown>;

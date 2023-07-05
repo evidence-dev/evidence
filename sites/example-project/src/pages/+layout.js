@@ -1,12 +1,17 @@
+import { building } from "$app/environment";
 import { initDB, setParquetURL, query } from "@evidence-dev/universal-sql/client-duckdb";
 
 /** @type {import("./$types").LayoutLoad} */
 export const load = async ({ fetch, route, data: parentData }) => {
 	if (route.id && route.id !== '/settings') {
-		const { customFormattingSettings, routeHash, renderedFiles } = parentData;
-		const res = await fetch(`/api/${routeHash}.json`);
-		// has to be cloned to bypass the proxy https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
-		const { data } = await res.clone().json();
+		const { customFormattingSettings, routeHash, renderedFiles, evidencemeta } = parentData;
+
+        let data = {};
+        if (!building) {
+            const res = await fetch(`/api/${routeHash}.json`);
+            if (res.ok) data = await res.json();
+        }
+        data.evidencemeta = evidencemeta;
 
         await initDB();
 
@@ -15,7 +20,7 @@ export const load = async ({ fetch, route, data: parentData }) => {
 		}
 
 		return {
-			__db: { query },
+			__db: { query: (sql, query_name) => query(sql, { route_hash: routeHash, query_name }) },
 			data,
 			customFormattingSettings
 		};

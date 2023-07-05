@@ -1,5 +1,5 @@
-import { arrowToIPC } from "apache-arrow";
-import { writeFileSync, readFileSync, existsSync, readdirSync } from "fs";
+// import { tableFromJSON, tableToIPC, Table } from "apache-arrow/table";
+import { writeFileSync, readFileSync, existsSync, readdirSync, mkdirSync } from "fs";
 import { basename } from "path";
 
 /**
@@ -11,30 +11,38 @@ import { basename } from "path";
  * @returns {void}
  */
 export function cache_for_hash(route_hash, sql_string, query_name, data) {
-    const sql_path = `./.evidence-queries/cache/${route_hash}/queries.json`;
-    if (!existsSync(sql_path)) writeFileSync(sql_path, "[]");
+    const sql_path = `./.evidence-queries/cache/${route_hash}/_queries.json`;
+    if (!existsSync(sql_path)) {
+        mkdirSync(`./.evidence-queries/cache/${route_hash}`, { recursive: true });
+        writeFileSync(sql_path, "[]");
+    }
     const sql_cache = new Set(JSON.parse(readFileSync(sql_path, "utf-8")));
     sql_cache.add(sql_string);
     writeFileSync(sql_path, JSON.stringify(Array.from(sql_cache)));
 
-    const route_path = `./.evidence-queries/cache/${route_hash}/${query_name}.arrow`;
-    writeFileSync(route_path, arrowToIPC(data));
+    const route_path = `./.evidence-queries/cache/${route_hash}/${query_name}.json`;
+    writeFileSync(route_path, JSON.stringify(data.toArray().map((row) => row.toJSON())));
+
+    // todo: check if this is horrible
+    mkdirSync(`./.svelte-kit/output/client/api`, { recursive: true });
+    writeFileSync(`./.svelte-kit/output/client/api/${route_hash}.json`, JSON.stringify(get_cached_sql(route_hash)));
 }
 
 /**
- * Gets the cached SQL for a route hash
+ * Gets the cached SQL results for a route hash
  * @param {string} route_hash md5 hash of the route id
- * @returns {FormData}
+ * @returns {Record<string, unknown>}
  */
 export function get_cached_sql(route_hash) {
     const route_path = `./.evidence-queries/cache/${route_hash}`;
-    if (!existsSync(route_path)) return new FormData();
+    if (!existsSync(route_path)) return {};
 
-    const form_data = new FormData();
+    const data = {};
     const files = readdirSync(route_path);
     for (const file of files) {
-        if (!(file.endsWith(".arrow"))) continue;
-        form_data.append(basename(file, ".arrow"), readFileSync(`${route_path}/${file}`));
+        if (file === "_queries.json") continue;
+        data[basename(file, ".json")] = JSON.parse(readFileSync(`${route_path}/${file}`, "utf-8"));
     }
-    return form_data;
+
+    return data;
 }

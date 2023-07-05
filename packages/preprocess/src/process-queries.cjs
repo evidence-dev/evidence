@@ -14,21 +14,21 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		);
 		queryDeclarations += `
             import debounce from 'debounce';
-            ${valid_ids.map((id) => `let ${id} = [];`).join('\n')}
             ${valid_ids.map((id) => `
-                            const _query_${id} = debounce(
-                                (query) => __db.query(query).then((value) => ${id} = value),
-                                200
-                            );
-                            $: {
-                                if (typeof window !== 'undefined') {
-                                    _query_${id}(\`${duckdbQueries[id]}\`);
-                                } else {
-                                    ${id} = __db.query(\`${duckdbQueries[id]}\`);
-                                }
-                            }`
-                        )
-                        .join('\n')}
+                let ${id} = data.${id} ?? [];
+                $: ${id} = data.${id} ?? [];
+                const _query_${id} = debounce(
+                    (query) => __db.query(query).then((value) => ${id} = value),
+                    200
+                );
+                $: {
+                    if (typeof window !== 'undefined') {
+                        /* _query_${id}(\`${duckdbQueries[id]}\`); */
+                    } else {
+                        ${id} = __db.query(\`${duckdbQueries[id]}\`, "${id}");
+                    }
+                }
+            `).join('\n')}
         `;
 	}
 
