@@ -8,7 +8,7 @@
 </script>
 
 <div class="container">
-	{#if !$navigating && $page.url.pathname !== '/settings'}
+	{#if !$navigating && $page.data.isUserPage}
 		<ContentsList />
 	{/if}
 </div>
