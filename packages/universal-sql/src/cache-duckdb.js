@@ -23,9 +23,14 @@ export function cache_for_hash(route_hash, sql_string, query_name, data) {
     const route_path = `./.evidence-queries/cache/${route_hash}/${query_name}.json`;
     writeFileSync(route_path, JSON.stringify(data.toArray().map((row) => row.toJSON())));
 
-    // todo: check if this is horrible
+    // for buildtime
+    // dependent on https://github.com/sveltejs/kit/blob/master/packages/kit/src/core/adapt/builder.js#L183 writeClient
     mkdirSync(`./.svelte-kit/output/client/api`, { recursive: true });
     writeFileSync(`./.svelte-kit/output/client/api/${route_hash}.json`, JSON.stringify(get_cached_sql(route_hash)));
+
+    // for dev time
+    mkdirSync(`./static/api`, { recursive: true });
+    writeFileSync(`./static/api/${route_hash}.json`, JSON.stringify(get_cached_sql(route_hash)));
 }
 
 /**

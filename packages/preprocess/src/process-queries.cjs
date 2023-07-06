@@ -23,9 +23,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
                 );
                 $: {
                     if (typeof window !== 'undefined') {
-                        /* _query_${id}(\`${duckdbQueries[id]}\`); */
+                        _query_${id}(\`${duckdbQueries[id].replaceAll("`", "\\`")}\`);
                     } else {
-                        ${id} = __db.query(\`${duckdbQueries[id]}\`, "${id}");
+                        ${id} = __db.query(\`${duckdbQueries[id].replaceAll("`", "\\`")}\`, "${id}");
                     }
                 }
             `).join('\n')}
