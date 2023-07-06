@@ -1,4 +1,4 @@
-import { Type } from 'apache-arrow';
+import { arrowTableToJSON } from './both.js';
 import {
 	ConsoleLogger,
 	AsyncDuckDB,
@@ -9,6 +9,11 @@ import {
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
 let db;
 
+/**
+ * Initializes the database.
+ *
+ * @returns {Promise<void>}
+ */
 export async function initDB() {
 	if (db) return;
 
@@ -72,45 +77,4 @@ export async function query(sql) {
 	return res;
 }
 
-/**
- * Converts an Apache Arrow type to an Evidence type.
- *
- * @param {import("apache-arrow").Type} type
- */
-function apacheToEvidenceType(type) {
-	switch (
-		type.typeId // maybe just replace with `typeof`
-	) {
-		case Type.Date:
-			return 'date';
-		case Type.Float:
-		case Type.Int:
-			return 'number';
-		case Type.Bool:
-			return 'boolean';
-		case Type.Dictionary:
-		default:
-			return 'string';
-	}
-}
-
-/**
- *
- * @param {import("apache-arrow").Table} table
- * @returns
- */
-export function arrowTableToJSON(table) {
-	if (table == null) return [];
-	const arr = table.toArray();
-
-	Object.defineProperty(arr, '_evidenceColumnTypes', {
-		enumerable: false,
-		value: table.schema.fields.map((field) => ({
-			name: field.name,
-			evidenceType: apacheToEvidenceType(field.type),
-			typeFidelity: 'precise'
-		}))
-	});
-
-	return arr;
-}
+export { arrowTableToJSON };

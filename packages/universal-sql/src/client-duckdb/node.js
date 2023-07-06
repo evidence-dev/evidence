@@ -1,3 +1,4 @@
+import { arrowTableToJSON } from './both.js';
 import {
 	NODE_RUNTIME,
 	DuckDBDataProtocol,
@@ -6,7 +7,6 @@ import {
 } from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
 import { createRequire } from 'module';
 import { resolve, dirname } from 'path';
-import { Type } from 'apache-arrow';
 import { cache_for_hash } from '../cache-duckdb.js';
 const require = createRequire(import.meta.url);
 const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
@@ -14,6 +14,11 @@ const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
 /** @type {Awaited<ReturnType<typeof createDuckDB>>} */
 let db;
 
+/**
+ * Initializes the database.
+ *
+ * @returns {Promise<void>}
+ */
 export async function initDB() {
 	if (db) return;
 
@@ -73,45 +78,4 @@ export function query(sql, cache_options) {
 	return arrowTableToJSON(res);
 }
 
-/**
- * Converts an Apache Arrow type to an Evidence type.
- *
- * @param {import("apache-arrow").Type} type
- */
-function apacheToEvidenceType(type) {
-	switch (
-		type.typeId // maybe just replace with `typeof`
-	) {
-		case Type.Date:
-			return 'date';
-		case Type.Float:
-		case Type.Int:
-			return 'number';
-		case Type.Bool:
-			return 'boolean';
-		case Type.Dictionary:
-		default:
-			return 'string';
-	}
-}
-
-/**
- *
- * @param {import("apache-arrow").Table} table
- * @returns
- */
-export function arrowTableToJSON(table) {
-	if (table == null) return [];
-	const arr = table.toArray();
-
-	Object.defineProperty(arr, '_evidenceColumnTypes', {
-		enumerable: false,
-		value: table.schema.fields.map((field) => ({
-			name: field.name,
-			evidenceType: apacheToEvidenceType(field.type),
-			typeFidelity: 'precise'
-		}))
-	});
-
-	return arr;
-}
+export { arrowTableToJSON };

@@ -18,15 +18,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			
 			// partially bypasses weird reactivity stuff with \`select\` elements
 			function data_update(data) {
-				${valid_ids.map((id) => 
-					`${id} = data.${id};`
-				).join('\n')}
+				${valid_ids.map((id) => `${id} = data.${id} ?? [];`).join('\n')}
 			}
 
 			$: data_update(data);
 
-            ${valid_ids.map((id) => 
-			`
+            ${valid_ids
+							.map(
+								(id) =>
+									`
                 let ${id} = data.${id} ?? [];
                 const _query_${id} = browser? 
                     debounce((query) => __db.query(query).then((value) => ${id} = value), 200) :
