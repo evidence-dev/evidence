@@ -1,8 +1,13 @@
-import { NODE_RUNTIME, DuckDBDataProtocol, createDuckDB, ConsoleLogger } from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
+import {
+	NODE_RUNTIME,
+	DuckDBDataProtocol,
+	createDuckDB,
+	ConsoleLogger
+} from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
 import { createRequire } from 'module';
-import { resolve, dirname } from "path";
+import { resolve, dirname } from 'path';
 import { Type } from 'apache-arrow';
-import { cache_for_hash } from "../cache-duckdb.js";
+import { cache_for_hash } from '../cache-duckdb.js';
 const require = createRequire(import.meta.url);
 const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
 
@@ -12,17 +17,17 @@ let db;
 export async function initDB() {
 	if (db) return;
 
-    const DUCKDB_BUNDLES = {
-        mvp: {
-            mainModule: resolve(DUCKDB_DIST, './duckdb-mvp.wasm'),
-            mainWorker: resolve(DUCKDB_DIST, './duckdb-node-mvp.worker.cjs'),
-        },
-        eh: {
-            mainModule: resolve(DUCKDB_DIST, './duckdb-eh.wasm'),
-            mainWorker: resolve(DUCKDB_DIST, './duckdb-node-eh.worker.cjs'),
-        },
-    };
-    const logger = new ConsoleLogger();
+	const DUCKDB_BUNDLES = {
+		mvp: {
+			mainModule: resolve(DUCKDB_DIST, './duckdb-mvp.wasm'),
+			mainWorker: resolve(DUCKDB_DIST, './duckdb-node-mvp.worker.cjs')
+		},
+		eh: {
+			mainModule: resolve(DUCKDB_DIST, './duckdb-eh.wasm'),
+			mainWorker: resolve(DUCKDB_DIST, './duckdb-node-eh.worker.cjs')
+		}
+	};
+	const logger = new ConsoleLogger();
 
 	// and synchronous database
 	db = await createDuckDB(DUCKDB_BUNDLES, logger, NODE_RUNTIME);
@@ -59,11 +64,11 @@ export function setParquetURL(table, url) {
 export function query(sql, cache_options) {
 	const connection = db.connect();
 	const res = connection.query(sql);
-    connection.close();
+	connection.close();
 
-    if (cache_options) {
-        cache_for_hash(cache_options.route_hash, sql, cache_options.query_name, res);
-    }
+	if (cache_options) {
+		cache_for_hash(cache_options.route_hash, sql, cache_options.query_name, res);
+	}
 
 	return arrowTableToJSON(res);
 }

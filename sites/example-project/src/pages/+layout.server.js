@@ -1,4 +1,4 @@
-import { getQueries } from "@evidence-dev/db-orchestrator";
+import { getQueries } from '@evidence-dev/db-orchestrator';
 import md5 from 'blueimp-md5';
 import { GET } from './api/customFormattingSettings.json/+server.js';
 export const prerender = true;
@@ -24,7 +24,7 @@ export async function load({ fetch, route }) {
 			routeHash,
 			customFormattingSettings,
 			renderedFiles,
-            evidencemeta: getQueries(routeHash)
+			evidencemeta: getQueries(routeHash)
 		};
 	}
 }

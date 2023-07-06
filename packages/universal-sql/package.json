@@ -16,18 +16,18 @@
 		"duckdb": "^0.8.1",
 		"parquet-wasm": "0.3.1"
 	},
-    "peerDependencies": {
-        "@duckdb/duckdb-wasm": "^11.0.0"
-    },
-    "exports": {
-        ".": {
-            "default": "./src/index.js",
-            "types": "./src/index.d.ts"
-        },
-        "./client-duckdb": {
-            "browser": "./src/client-duckdb/browser.js",
-            "node": "./src/client-duckdb/node.js",
-            "types": "./src/client-duckdb/browser.d.ts"
-        }
-    }
+	"peerDependencies": {
+		"@duckdb/duckdb-wasm": "^11.0.0"
+	},
+	"exports": {
+		".": {
+			"default": "./src/index.js",
+			"types": "./src/index.d.ts"
+		},
+		"./client-duckdb": {
+			"browser": "./src/client-duckdb/browser.js",
+			"node": "./src/client-duckdb/node.js",
+			"types": "./src/client-duckdb/browser.d.ts"
+		}
+	}
 }

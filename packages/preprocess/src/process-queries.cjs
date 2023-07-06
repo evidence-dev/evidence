@@ -14,7 +14,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		);
 		queryDeclarations += `
             import debounce from 'debounce';
-            ${valid_ids.map((id) => `
+            ${valid_ids
+							.map(
+								(id) => `
                 let ${id} = data.${id} ?? [];
                 $: ${id} = data.${id} ?? [];
                 const _query_${id} = debounce(
@@ -23,12 +25,17 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
                 );
                 $: {
                     if (typeof window !== 'undefined') {
-                        _query_${id}(\`${duckdbQueries[id].replaceAll("`", "\\`")}\`);
+                        _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
                     } else {
-                        ${id} = __db.query(\`${duckdbQueries[id].replaceAll("`", "\\`")}\`, "${id}");
+                        ${id} = __db.query(\`${duckdbQueries[id].replaceAll(
+									'`',
+									'\\`'
+								)}\`, "${id}");
                     }
                 }
-            `).join('\n')}
+            `
+							)
+							.join('\n')}
         `;
 	}
 

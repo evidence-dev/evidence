@@ -1,5 +1,10 @@
 import { Type } from 'apache-arrow';
-import { ConsoleLogger, AsyncDuckDB, DuckDBDataProtocol, getPlatformFeatures } from '@duckdb/duckdb-wasm';
+import {
+	ConsoleLogger,
+	AsyncDuckDB,
+	DuckDBDataProtocol,
+	getPlatformFeatures
+} from '@duckdb/duckdb-wasm';
 
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
 let db;
@@ -7,14 +12,22 @@ let db;
 export async function initDB() {
 	if (db) return;
 
-    const useEh = await getPlatformFeatures().then(x => x.wasmExceptions);
+	const useEh = await getPlatformFeatures().then((x) => x.wasmExceptions);
 
-    const DUCKDB_CONFIG = useEh?
-        { mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default, mainWorker: (await import("@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker")).default } :
-        { mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default, mainWorker: (await import("@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker")).default };
+	const DUCKDB_CONFIG = useEh
+		? {
+				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default,
+				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker'))
+					.default
+		  }
+		: {
+				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default,
+				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
+					.default
+		  };
 
-    const logger = new ConsoleLogger();
-    const worker = new DUCKDB_CONFIG.mainWorker();
+	const logger = new ConsoleLogger();
+	const worker = new DUCKDB_CONFIG.mainWorker();
 
 	// and asynchronous database
 	db = new AsyncDuckDB(logger, worker);

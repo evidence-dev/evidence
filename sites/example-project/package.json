@@ -10,7 +10,7 @@
 	"dependencies": {
 		"@duckdb/duckdb-wasm": "^1.27.0",
 		"@evidence-dev/component-utilities": "workspace:^",
-        "@evidence-dev/universal-sql": "workspace:^",
+		"@evidence-dev/universal-sql": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/duckdb": "workspace:^",
 		"@evidence-dev/plugin-connector": "workspace:^",

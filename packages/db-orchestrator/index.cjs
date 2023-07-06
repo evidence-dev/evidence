@@ -8,7 +8,7 @@ const getQueries = function (routeHash) {
 	let routePath = `./.evidence-queries/extracted/${routeHash}`;
 	let queryFile = `${routePath}/queries.json`;
 	let queries = readJSONSync(queryFile, { throws: false });
-	return { queries }
+	return { queries };
 };
 
 const testConnection = async function (dev) {
