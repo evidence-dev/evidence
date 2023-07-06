@@ -65,8 +65,9 @@
 	import '../app.css';
 	import { navigating } from '$app/stores';
 	import { blur } from 'svelte/transition';
-	import { page } from '$app/stores';
 	import { dev } from '$app/environment';
+
+	export let data;
 
 	let open = false;
 	//TODO: Offer this as a build parameter
@@ -87,12 +88,12 @@
 	<Sidebar bind:open {fileTree} />
 	{#if !$navigating}
 		<main in:blur|local id="evidence-content">
-			<div class="content" class:settings-content={$page.url.pathname.startsWith('/settings')}>
-				<article class:settings-article={$page.url.pathname.startsWith('/settings')}>
+			<div class="content" class:settings-content={!data.isUserPage}>
+				<article class:settings-article={!data.isUserPage}>
 					<slot />
 					<p>&nbsp;</p>
 				</article>
-				{#if !$page.url.pathname.startsWith('/settings')}
+				{#if data.isUserPage}
 					<aside class="toc">
 						<TableOfContents />
 					</aside>
@@ -101,7 +102,7 @@
 		</main>
 	{/if}
 </div>
-{#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
+{#if !$navigating && dev && data.isUserPage}
 	<QueryStatus />
 {/if}
 

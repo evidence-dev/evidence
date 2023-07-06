@@ -1,4 +1,4 @@
-const { processQueryResults, getEnv } = require('@evidence-dev/db-commons');
+const { getEnv } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 
 const envMap = {
@@ -10,6 +10,36 @@ const envMap = {
 	]
 };
 
+function nativeTypeToEvidenceType(data) {
+	switch (typeof data) {
+		case 'number':
+			return 'number';
+		case 'string':
+			return 'string';
+		case 'boolean':
+			return 'boolean';
+		case 'object':
+			if (data instanceof Date) {
+				return 'date';
+			}
+			return undefined;
+		default:
+			return 'string';
+	}
+}
+
+const mapResultsToEvidenceColumnTypes = function (rows) {
+	return Object.entries(rows[0]).map(([name, value]) => {
+		let typeFidelity = 'precise';
+		let evidenceType = nativeTypeToEvidenceType(value);
+		if (!evidenceType) {
+			typeFidelity = 'inferred';
+			evidenceType = 'string';
+		}
+		return { name, evidenceType, typeFidelity };
+	});
+};
+
 const runQuery = async (queryString, database) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
@@ -18,7 +48,7 @@ const runQuery = async (queryString, database) => {
 	try {
 		const db = await Database.create(filepath, mode);
 		const rows = await db.all(queryString);
-		return processQueryResults(rows);
+		return { rows, columnTypes: mapResultsToEvidenceColumnTypes(rows) };
 	} catch (err) {
 		if (err.message) {
 			throw err.message;

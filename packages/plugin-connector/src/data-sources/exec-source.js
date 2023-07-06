@@ -19,23 +19,24 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	const db = supportedDbs[source.type];
 	const runner = await db.factory(source.options, source.sourceDirectory);
 
-	console.log(`Executing ${source.name}`)
+	console.log(`Executing ${source.name}`);
 	const results = await Promise.all(
 		source.queries.map(async (q) => {
-			const filename = q.filepath.split("/").pop()
+			const filename = q.filepath.split('/').pop();
 			console.log(` >| Executing ${filename}`);
 			const before = performance.now();
 			return {
 				...q,
 				result: await runner(q.content, q.filepath).then((x) => {
-					console.log(` <| Finished ${filename} (took ${(performance.now() - before).toFixed(2)}ms)`);
+					console.log(
+						` <| Finished ${filename} (took ${(performance.now() - before).toFixed(2)}ms)`
+					);
 					return x;
 				})
 			};
 		})
 	);
-	console.log(`Finished ${source.name}`)
-
+	console.log(`Finished ${source.name}`);
 
 	/** @type {Set<string>} */
 	const outputFilenames = new Set();

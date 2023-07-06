@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "1.1.0",
+	"version": "2.0.0-usql.1",
 	"description": "",
 	"type": "module",
 	"bin": "./dist/cli.js",
@@ -10,8 +10,7 @@
 		"build": "tsc --noEmit -p tsconfig.json && parcel build",
 		"build:debug": "parcel build --no-optimize",
 		"watch": "parcel watch",
-		"check": "tsc --noEmit -p tsconfig.json",
-		"postinstall": "parcel build"
+		"check": "tsc --noEmit -p tsconfig.json"
 	},
 	"keywords": [],
 	"author": "",

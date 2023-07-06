@@ -62,7 +62,6 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
-
 /**
  * @param {BigQueryOptions} database
  */
@@ -78,7 +77,7 @@ const getCredentials = (database = {}) => {
 		const access_token = database.token ?? getEnv(envMap, 'token');
 		const oauth = new OAuth2Client();
 		oauth.setCredentials({ access_token });
-		
+
 		return {
 			authClient: oauth,
 			projectId: database.project_id ?? getEnv(envMap, 'projectId')
@@ -196,7 +195,6 @@ module.exports = runQuery;
 /**
  * @typedef {BigQueryBaseOptions & (BigQueryServiceAccountOptions | BigQueryOauthOptions | BigQueryCliOptions)} BigQueryOptions
  */
-
 
 /**
  * @typedef {Object} QueryResult

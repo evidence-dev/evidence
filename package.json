@@ -9,6 +9,7 @@
 		"@evidence-dev/universal-sql": "link:packages/universal-sql",
 		"@evidence-dev/plugin-connector": "link:packages/plugin-connector",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
+		"@evidence-dev/tailwind": "link:packages/tailwind",
 		"@sveltejs/adapter-static": "1.0.0",
 		"@sveltejs/kit": "1.21.0",
 		"@tidyjs/tidy": "2.4.4",
@@ -73,8 +74,5 @@
 			"jsonwebtoken@<9.0.0": ">=9.0.0",
 			"nth-check@<2.0.1": ">=2.0.1"
 		}
-	},
-	"dependencies": {
-		"@evidence-dev/tailwind": "link:packages/tailwind"
 	}
 }

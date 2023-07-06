@@ -15,6 +15,7 @@
 		{ label: 'Connect Data Source', url: '/settings/#connect-database', prod: false },
 		{ label: 'Deploy Project', url: '/settings/#deploy', prod: false },
 		{ label: 'Project Settings', url: '/settings', prod: false },
+		{ label: 'View Project Schema', url: '/explore/schema', prod: false }, // TODO: Make this configurable
 		{ label: 'Docs', url: 'https://docs.evidence.dev', prod: false },
 		{
 			label: 'Get Help on Slack',

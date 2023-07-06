@@ -15,12 +15,12 @@ import formatTitle from './formatTitle.js';
 /**
  * @function
  * @template T
- * @param {Record<string, unknown>[]} data 
- * @param {T} returnType 
+ * @param {Record<string, unknown>[]} data
+ * @param {T} returnType
  * @returns {T extends 'object' ? Record<string, ColumnSummary> : (ColumnSummary & { id: string })[]}
  */
 export default function getColumnSummary(data, returnType = 'object') {
-    /** @type {Record<string, ColumnSummary>} */
+	/** @type {Record<string, ColumnSummary>} */
 	const columnSummary = {};
 
 	for (const colName of Object.keys(data[0])) {

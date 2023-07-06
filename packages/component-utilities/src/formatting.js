@@ -27,7 +27,7 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
 	if (potentialFormatTag) {
 		let customFormats = getCustomFormats();
 		let matchingFormat = [...BUILT_IN_FORMATS, ...customFormats].find(
-			(format) => format.formatTag?.toLowerCase() === potentialFormatTag?.toLowerCase()
+			(format) => format.formatTag?.toLowerCase() === potentialFormatTag?.toLowerCase?.()
 		);
 		if (matchingFormat) {
 			return matchingFormat;
@@ -56,7 +56,7 @@ export function getFormatObjectFromString(formatString, valueType = undefined) {
 	let potentialFormatTag = formatString;
 	let customFormats = getCustomFormats();
 	let matchingFormat = [...BUILT_IN_FORMATS, ...customFormats].find(
-		(format) => format.formatTag?.toLowerCase() === potentialFormatTag?.toLowerCase()
+		(format) => format.formatTag?.toLowerCase() === potentialFormatTag?.toLowerCase?.()
 	);
 	let newFormat = {};
 	if (matchingFormat) {
