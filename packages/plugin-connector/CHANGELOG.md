@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- e6091323: chore: remove postinstall script
+
 ## 2.0.0-usql.0
 
 ### Major Changes
