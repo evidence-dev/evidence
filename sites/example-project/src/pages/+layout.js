@@ -1,14 +1,14 @@
 import { browser, building } from '$app/environment';
 import { initDB, setParquetURL, query } from '@evidence-dev/universal-sql/client-duckdb';
 
-/** @type {import("./$types").LayoutLoad} */
+/** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({ fetch, route, data: parentData }) => {
 	if (route.id && route.id !== '/settings') {
 		const { customFormattingSettings, routeHash, renderedFiles, evidencemeta } = parentData;
 
 		let data = {};
+		// let SSR saturate the cache first
 		if (!building && browser) {
-			// let SSR saturate the cache first
 			const res = await fetch(`/api/${routeHash}.json`);
 			if (res.ok) data = await res.json();
 		}

@@ -4,7 +4,7 @@ import { GET } from './api/customFormattingSettings.json/+server.js';
 export const prerender = true;
 export const trailingSlash = 'always';
 
-/** @type {import("./$types").LayoutServerLoad} */
+/** @satisfies {import("./$types").LayoutServerLoad} */
 export async function load({ fetch, route }) {
 	if (route.id && route.id !== '/settings') {
 		const routeHash = md5(route.id);
