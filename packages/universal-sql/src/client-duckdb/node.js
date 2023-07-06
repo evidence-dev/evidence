@@ -11,7 +11,7 @@ import { cache_for_hash } from '../cache-duckdb.js';
 const require = createRequire(import.meta.url);
 const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
 
-/** @type {Awaited<ReturnType<typeof createDuckDB>>} */
+/** @type {import("@duckdb/duckdb-wasm/dist/types/src/bindings/bindings_node_base").DuckDBNodeBindings} */
 let db;
 
 /**
@@ -64,7 +64,7 @@ export function setParquetURL(table, url) {
  *
  * @param {string} sql
  * @param {{ route_hash: string, query_name: string }} cache_options
- * @returns {ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null}
+ * @returns {import('apache-arrow').Table | null}
  */
 export function query(sql, cache_options) {
 	const connection = db.connect();

@@ -9,7 +9,7 @@ export function initDB(): Promise<void>;
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @returns {Promise<ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null>}
+ * @returns {Promise<import('apache-arrow').Table | null>}
  */
 export function query(sql: string): Promise<import('apache-arrow').Table | null>;
 

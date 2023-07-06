@@ -65,7 +65,7 @@ export async function setParquetURL(table, url) {
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @returns {Promise<ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null>}
+ * @returns {Promise<import("apache-arrow").Table | null>}
  */
 export async function query(sql) {
 	if (!db) await initDB();

@@ -10,7 +10,7 @@ export function initDB(): Promise<void>;
  *
  * @param {string} sql
  * @param {{ route_hash: string, query_name: string }} cache_options
- * @returns {ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null}
+ * @returns {import('apache-arrow').Table | null}
  */
 export function query(
 	sql: string,
