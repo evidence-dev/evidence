@@ -1,5 +1,10 @@
 import { browser, building } from '$app/environment';
-import { tableFromIPC, initDB, setParquetURLs, query } from '@evidence-dev/universal-sql/client-duckdb';
+import {
+	tableFromIPC,
+	initDB,
+	setParquetURLs,
+	query
+} from '@evidence-dev/universal-sql/client-duckdb';
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({
