@@ -1,3 +1,4 @@
+import { getQueries } from '@evidence-dev/db-orchestrator';
 import md5 from 'blueimp-md5';
 import { GET } from './api/customFormattingSettings.json/+server.js';
 export const prerender = true;
@@ -5,7 +6,7 @@ export const trailingSlash = 'always';
 
 const system_routes = ['/settings', '/explore'];
 
-/** @type {import("./$types").LayoutServerLoad} */
+/** @satisfies {import("./$types").LayoutServerLoad} */
 export async function load({ fetch, route }) {
 	const isUserPage =
 		route.id && system_routes.every((system_route) => !route.id.startsWith(system_route));
@@ -30,6 +31,7 @@ export async function load({ fetch, route }) {
 		routeHash,
 		customFormattingSettings,
 		renderedFiles,
-		isUserPage
+		isUserPage,
+		evidencemeta: getQueries(routeHash)
 	};
 }

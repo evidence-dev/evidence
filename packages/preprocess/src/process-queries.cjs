@@ -14,14 +14,25 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		);
 		queryDeclarations += `
             import debounce from 'debounce';
-            ${valid_ids.map((id) => `let ${id} = [];`).join('\n')}
+            import { browser } from '$app/environment';
+			
+			// partially bypasses weird reactivity stuff with \`select\` elements
+			function data_update(data) {
+				${valid_ids.map((id) => `${id} = data.${id} ?? [];`).join('\n')}
+			}
+
+			$: data_update(data);
+
             ${valid_ids
 							.map(
-								(id) => `const _query_${id} = debounce(
-                                            (query) => __db.query(query).then((value) => ${id} = value),
-                                            200
-                                        );
-                                        $: _query_${id}(\`${duckdbQueries[id]}\`);`
+								(id) =>
+									`
+                let ${id} = data.${id} ?? [];
+                const _query_${id} = browser? 
+                    debounce((query) => __db.query(query).then((value) => ${id} = value), 200) :
+                             (query) => (${id} = __db.query(query, "${id}"));
+                $: _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
+            `
 							)
 							.join('\n')}
         `;

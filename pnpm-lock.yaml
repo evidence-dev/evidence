@@ -23,6 +23,7 @@ importers:
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/tailwind': link:packages/tailwind
       '@evidence-dev/telemetry': link:packages/telemetry
+      '@evidence-dev/universal-sql': link:packages/universal-sql
       '@sveltejs/adapter-static': 1.0.0
       '@sveltejs/kit': 1.21.0
       '@tidyjs/tidy': 2.4.4
@@ -64,6 +65,7 @@ importers:
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/tailwind': link:packages/tailwind
       '@evidence-dev/telemetry': link:packages/telemetry
+      '@evidence-dev/universal-sql': link:packages/universal-sql
       '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.21.0
       '@sveltejs/kit': 1.21.0_svelte@3.55.0+vite@4.3.9
       '@tidyjs/tidy': 2.4.4
@@ -297,6 +299,7 @@ importers:
       '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/preprocess': workspace:^
       '@evidence-dev/telemetry': workspace:^
+      '@evidence-dev/universal-sql': workspace:^
       '@sveltejs/adapter-static': 1.0.0
       '@sveltejs/kit': 1.21.0
       chokidar: 3.5.3
@@ -308,6 +311,7 @@ importers:
       '@evidence-dev/plugin-connector': link:../plugin-connector
       '@evidence-dev/preprocess': link:../preprocess
       '@evidence-dev/telemetry': link:../telemetry
+      '@evidence-dev/universal-sql': link:../universal-sql
       '@sveltejs/adapter-static': 1.0.0_@sveltejs+kit@1.21.0
       chokidar: 3.5.3
       fs-extra: 10.0.1
@@ -544,12 +548,14 @@ importers:
 
   packages/universal-sql:
     specifiers:
-      apache-arrow: ^12.0.1
+      '@duckdb/duckdb-wasm': ^1.27.0
+      apache-arrow: ^11.0.0
       chalk: ^5.2.0
       duckdb: ^0.8.1
       parquet-wasm: 0.3.1
     dependencies:
-      apache-arrow: 12.0.1
+      '@duckdb/duckdb-wasm': 1.27.0
+      apache-arrow: 11.0.0
       chalk: 5.3.0
       duckdb: 0.8.1
       parquet-wasm: 0.3.1
@@ -597,12 +603,12 @@ importers:
 
   sites/example-project:
     specifiers:
-      '@duckdb/duckdb-wasm': ^1.27.0
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/duckdb': workspace:^1.0.0-usql.0
       '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/telemetry': 1.0.5
+      '@evidence-dev/universal-sql': workspace:^
       '@sveltejs/kit': 1.21.0
       '@sveltejs/package': 1.0.1
       '@sveltejs/vite-plugin-svelte': ^2.0.3
@@ -633,12 +639,12 @@ importers:
       unist-util-visit: 4.1.2
       vite: 4.3.9
     dependencies:
-      '@duckdb/duckdb-wasm': 1.27.0
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
       '@evidence-dev/duckdb': link:../../packages/duckdb
       '@evidence-dev/plugin-connector': link:../../packages/plugin-connector
       '@evidence-dev/telemetry': link:../../packages/telemetry
+      '@evidence-dev/universal-sql': link:../../packages/universal-sql
       '@sveltejs/kit': 1.21.0_svelte@3.55.0+vite@4.3.9
       '@tidyjs/tidy': 2.4.4
       cross-env: 7.0.3
@@ -8448,10 +8454,6 @@ packages:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
     dev: false
 
-  /@types/node/18.14.5:
-    resolution: {integrity: sha512-CRT4tMK/DHYhw1fcCEBwME9CSaZNclxfzVMe7GsO6ULSwsttbj70wSiX6rZdIjGblu93sTJxLdhNIT85KKI7Qw==}
-    dev: false
-
   /@types/node/18.7.23:
     resolution: {integrity: sha512-DWNcCHolDq0ZKGizjx2DZjR/PqsYwAcYUJmfMWqtVU2MBMG5Mo+xFZrhGId5r/O5HOuMPyQEcM6KUBp5lBZZBg==}
 
@@ -9244,22 +9246,6 @@ packages:
       json-bignum: 0.0.3
       pad-left: 2.1.0
       tslib: 2.6.0
-
-  /apache-arrow/12.0.1:
-    resolution: {integrity: sha512-g17ARsc/KEAzViy8PEFsDBlL4ZLx3BesgQCplDLgUWtY0aFWNdEmfaZsbbXVRDfQ21D7vbUKtu0ZWNgcbxDrig==}
-    hasBin: true
-    dependencies:
-      '@types/command-line-args': 5.2.0
-      '@types/command-line-usage': 5.0.2
-      '@types/node': 18.14.5
-      '@types/pad-left': 2.1.1
-      command-line-args: 5.2.1
-      command-line-usage: 6.1.3
-      flatbuffers: 23.3.3
-      json-bignum: 0.0.3
-      pad-left: 2.1.0
-      tslib: 2.6.0
-    dev: false
 
   /app-root-dir/1.0.2:
     resolution: {integrity: sha512-jlpIfsOoNoafl92Sz//64uQHGSyMrD2vYG5d8o2a4qGvyNCvXur7bzIsWtAC/6flI2RYAp3kv8rsfBtaLm7w0g==}
@@ -12487,10 +12473,6 @@ packages:
 
   /flatbuffers/2.0.4:
     resolution: {integrity: sha512-4rUFVDPjSoP0tOII34oQf+72NKU7E088U5oX7kwICahft0UB2kOQ9wUzzCp+OHxByERIfxRDCgX5mP8Pjkfl0g==}
-
-  /flatbuffers/23.3.3:
-    resolution: {integrity: sha512-jmreOaAT1t55keaf+Z259Tvh8tR/Srry9K8dgCgvizhKSEr6gLGgaOJI2WFL5fkOpGOGRZwxUrlFn0GCmXUy6g==}
-    dev: false
 
   /flatted/3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
