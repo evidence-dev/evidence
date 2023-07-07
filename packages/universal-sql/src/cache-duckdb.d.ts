@@ -14,8 +14,9 @@ export function cache_for_hash(
 ): void;
 
 /**
- * Gets the cached SQL results for a route hash
- * @param {string} route_hash md5 hash of the route id
- * @returns {Record<string, unknown>}
+ * Gets the cached arrow response for a given route hash and query name
+ * @param {string} route_hash
+ * @param {string} query_name
+ * @returns {Buffer}
  */
-export function get_cached_sql(route_hash: string): Record<string, unknown>;
+export function get_cache_for_hash(route_hash: string, query_name: string): Buffer;
