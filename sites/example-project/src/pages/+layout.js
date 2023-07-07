@@ -3,7 +3,8 @@ import {
 	tableFromIPC,
 	initDB,
 	setParquetURLs,
-	query
+	query,
+	updateSearchPath
 } from '@evidence-dev/universal-sql/client-duckdb';
 
 /** @satisfies {import("./$types").LayoutLoad} */
@@ -26,6 +27,8 @@ export const load = async ({
 	await initDB();
 
 	await setParquetURLs(renderedFiles);
+
+	await updateSearchPath(Object.keys(renderedFiles))
 
 	return {
 		__db: {

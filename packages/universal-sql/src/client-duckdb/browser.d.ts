@@ -8,6 +8,13 @@ export { tableFromIPC } from 'apache-arrow';
 export function initDB(): Promise<void>;
 
 /**
+ * Updates the duckdb search path to include only the list of included schemas
+ * @param {string[]} schemas
+ * @returns {Promise<void>}
+ */
+export function updateSearchPath(schemas): Promise<void>;
+
+/**
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql

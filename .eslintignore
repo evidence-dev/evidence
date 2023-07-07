@@ -21,3 +21,4 @@ yarn.lock
 **/sites/docs/*
 **/dist/*
 .changeset/*
+**/static/data/*

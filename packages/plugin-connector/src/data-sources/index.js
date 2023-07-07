@@ -14,13 +14,15 @@ export async function updateDatasourceOutputs(outDir, prefix) {
 	const datasources = await getSources(datasourceDir);
 	const plugins = await getDatasourcePlugins();
 	// TODO: Run in parallel?
-	const outputFiles = [];
+	/** @type {Record<string, string[]>} */
+	const outputFiles = {};
 	for (const source of datasources) {
+		outputFiles[source.name] = [];
 		const newFiles = await execSource(source, plugins, outDir);
 		if (prefix) {
-			outputFiles.push(...newFiles.map((nf) => `${prefix}${nf}`));
+			outputFiles[source.name].push(...newFiles.map((nf) => `${prefix}${nf}`));
 		} else {
-			outputFiles.push(...newFiles);
+			outputFiles[source.name].push(...newFiles);
 		}
 	}
 	// Write basic JSON Manifest

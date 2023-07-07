@@ -8,10 +8,7 @@ export const DatasourceQuerySchema = z.object({
 
 export const DatasourceSpecFileSchema = z.object({
 	type: z.string(),
-	name: z
-		.string()
-		.optional()
-		.refine((s) => typeof s === 'undefined' || s?.toString().match(/^[a-zA-Z0-9_-]+$/)?.length),
+	name: z.string().refine((s) => s?.toString().match(/^[a-zA-Z0-9_-]+$/)?.length),
 	options: z.any()
 });
 
