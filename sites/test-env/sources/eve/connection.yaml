@@ -1,0 +1,4 @@
+name: eve
+type: api
+options:
+    base_url: https://esi.evetech.net/latest

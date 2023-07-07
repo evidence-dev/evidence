@@ -17,6 +17,7 @@
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/duckdb": "workspace:^",
 		"@evidence-dev/evidence": "workspace:^",
-		"@evidence-dev/faker-datasource": "workspace:^"
+		"@evidence-dev/faker-datasource": "workspace:^",
+		"@evidence-dev/generic-api-datasource": "workspace:^"
 	}
 }

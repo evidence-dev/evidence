@@ -1,0 +1,24 @@
+{
+	"name": "@evidence-dev/generic-api-datasource",
+	"version": "0.0.0",
+	"description": "",
+	"main": "index.mjs",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"node-fetch": "^3.3.1",
+		"yaml": "^2.3.1",
+		"zod": "^3.21.4"
+	},
+	"evidence": {
+		"databases": [
+			"api",
+			"rest",
+			"graphql"
+		]
+	}
+}

@@ -44,7 +44,9 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	for (const query of results) {
 		const { result } = query;
 		if (!result) continue;
-		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
+		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows).catch(e => {
+			throw new Error(`Failed to create arrow table for ${query.filepath}`, { cause: e });
+		});
 		/* Split on / or \ (windows compatibility) */
 		const fileparts = query.filepath.split(/[/\\]/);
 		const outputFilename = fileparts.pop()?.split('.')[0];

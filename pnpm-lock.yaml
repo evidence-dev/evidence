@@ -19,6 +19,7 @@ importers:
       '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
+      '@evidence-dev/generic-api-datasource': link:packages/sources/generic-api
       '@evidence-dev/plugin-connector': link:packages/plugin-connector
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/tailwind': link:packages/tailwind
@@ -61,6 +62,7 @@ importers:
       '@evidence-dev/core-components': link:packages/core-components
       '@evidence-dev/db-orchestrator': link:packages/db-orchestrator
       '@evidence-dev/evidence': link:packages/evidence
+      '@evidence-dev/generic-api-datasource': link:packages/sources/generic-api
       '@evidence-dev/plugin-connector': link:packages/plugin-connector
       '@evidence-dev/preprocess': link:packages/preprocess
       '@evidence-dev/tailwind': link:packages/tailwind
@@ -510,6 +512,16 @@ importers:
     devDependencies:
       dotenv: 16.3.1
 
+  packages/sources/generic-api:
+    specifiers:
+      node-fetch: ^3.3.1
+      yaml: ^2.3.1
+      zod: ^3.21.4
+    dependencies:
+      node-fetch: 3.3.1
+      yaml: 2.3.1
+      zod: 3.21.4
+
   packages/sqlite:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
@@ -683,12 +695,14 @@ importers:
       '@evidence-dev/duckdb': workspace:^
       '@evidence-dev/evidence': workspace:^
       '@evidence-dev/faker-datasource': workspace:^
+      '@evidence-dev/generic-api-datasource': workspace:^
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
       '@evidence-dev/duckdb': link:../../packages/duckdb
       '@evidence-dev/evidence': link:../../packages/evidence
       '@evidence-dev/faker-datasource': link:../../packages/faker-datasource
+      '@evidence-dev/generic-api-datasource': link:../../packages/sources/generic-api
 
   tests:
     specifiers:

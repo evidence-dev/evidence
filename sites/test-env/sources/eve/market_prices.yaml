@@ -1,0 +1,4 @@
+path: /markets/prices/
+
+query:
+    datasource: tranquility
