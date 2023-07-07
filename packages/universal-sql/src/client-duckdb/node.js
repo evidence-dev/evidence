@@ -41,20 +41,22 @@ export async function initDB() {
 }
 
 /**
- * Adds a new view to the database, pointing to the provided parquet URL.
+ * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {string} table
- * @param {string} url
+ * @param {string[]} urls
  * @returns {void}
  */
-export function setParquetURL(table, url) {
+export function setParquetURLs(urls) {
 	const connection = db.connect();
 
-	const file_name = `${table}.parquet`;
-	db.registerFileURL(file_name, `./static${url}`, DuckDBDataProtocol.NODE_FS, false);
-	connection.query(
-		`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
-	);
+	for (const url of urls) {
+		const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+		const file_name = `${table}.parquet`;
+		db.registerFileURL(file_name, `./static${url}`, DuckDBDataProtocol.NODE_FS, false);
+		connection.query(
+			`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
+		);
+	}
 
 	connection.close();
 }

@@ -1,5 +1,5 @@
 import { browser, building } from '$app/environment';
-import { initDB, setParquetURL, query } from '@evidence-dev/universal-sql/client-duckdb';
+import { initDB, setParquetURLs, query } from '@evidence-dev/universal-sql/client-duckdb';
 import { tableFromIPC } from 'apache-arrow';
 
 /** @satisfies {import("./$types").LayoutLoad} */
@@ -21,9 +21,7 @@ export const load = async ({
 
 	await initDB();
 
-	for (const url of renderedFiles) {
-		await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
-	}
+	await setParquetURLs(renderedFiles);
 
 	return {
 		__db: {

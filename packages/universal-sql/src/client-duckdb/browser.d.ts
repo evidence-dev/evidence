@@ -14,13 +14,12 @@ export function initDB(): Promise<void>;
 export function query(sql: string): Promise<import('apache-arrow').Table | null>;
 
 /**
- * Adds a new view to the database, pointing to the provided parquet URL.
+ * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {string} table
- * @param {string} url
+ * @param {string[]} urls
  * @returns {Promise<void>}
  */
-export function setParquetURL(table: string, url: string): Promise<void>;
+export function setParquetURLs(urls: string): Promise<void>;
 
 /**
  * Converts an Apache Arrow table to a Javascript array.

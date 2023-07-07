@@ -18,13 +18,12 @@ export function query(
 ): import('apache-arrow').Table | null;
 
 /**
- * Adds a new view to the database, pointing to the provided parquet URL.
+ * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {string} table
- * @param {string} url
+ * @param {string[]} urls
  * @returns {void}
  */
-export function setParquetURL(table: string, url: string): void;
+export function setParquetURLs(urls: string): void;
 
 /**
  * Converts an Apache Arrow table to a Javascript array.
