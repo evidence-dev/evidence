@@ -1,5 +1,25 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.2
+
+### Minor Changes
+
+- f62bd26e: prerenders clientside duckdb queries in their initial state to allow for some form of prerendering
+
+### Patch Changes
+
+- ef2a9106: Sources are now segmented into schemas to prevent source name conflicts
+- c29d827d: Add a query console page; improve usability of schema explorer
+- Updated dependencies [ef2a9106]
+- Updated dependencies [4053c976]
+- Updated dependencies [f62bd26e]
+  - @evidence-dev/plugin-connector@2.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.1
+  - @evidence-dev/component-utilities@2.0.0-usql.1
+  - @evidence-dev/db-orchestrator@3.0.0-usql.1
+  - @evidence-dev/preprocess@4.0.0-usql.1
+  - @evidence-dev/core-components@2.0.0-usql.1
+
 ## 20.0.0-usql.1
 
 ### Patch Changes

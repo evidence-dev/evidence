@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- 4053c976: Fix custom formatting sometimes breaking when undefined
+
 ## 2.0.0-usql.0
 
 ### Major Changes

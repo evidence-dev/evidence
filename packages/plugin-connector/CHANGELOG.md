@@ -1,5 +1,14 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- ef2a9106: Sources are now segmented into schemas to prevent source name conflicts
+- Updated dependencies [ef2a9106]
+- Updated dependencies [f62bd26e]
+  - @evidence-dev/universal-sql@2.0.0-usql.1
+
 ## 2.0.0-usql.1
 
 ### Patch Changes

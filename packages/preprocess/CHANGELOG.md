@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.1
+
+### Minor Changes
+
+- f62bd26e: prerenders clientside duckdb queries in their initial state to allow for some form of prerendering
+
 ## 4.0.0-usql.0
 
 ### Major Changes
