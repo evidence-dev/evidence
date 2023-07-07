@@ -6,6 +6,8 @@ import {
 	getPlatformFeatures
 } from '@duckdb/duckdb-wasm';
 
+export { tableFromIPC } from 'apache-arrow';
+
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
 let db;
 

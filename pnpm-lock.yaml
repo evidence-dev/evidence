@@ -548,10 +548,14 @@ importers:
 
   packages/universal-sql:
     specifiers:
+      '@duckdb/duckdb-wasm': ^1.27.0
+      apache-arrow: ^11.0.0
       chalk: ^5.2.0
       duckdb: ^0.8.1
       parquet-wasm: 0.3.1
     dependencies:
+      '@duckdb/duckdb-wasm': 1.27.0
+      apache-arrow: 11.0.0
       chalk: 5.3.0
       duckdb: 0.8.1
       parquet-wasm: 0.3.1
@@ -599,7 +603,6 @@ importers:
 
   sites/example-project:
     specifiers:
-      '@duckdb/duckdb-wasm': ^1.27.0
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
       '@evidence-dev/duckdb': workspace:^1.0.0-usql.0
@@ -636,7 +639,6 @@ importers:
       unist-util-visit: 4.1.2
       vite: 4.3.9
     dependencies:
-      '@duckdb/duckdb-wasm': 1.27.0
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
       '@evidence-dev/duckdb': link:../../packages/duckdb

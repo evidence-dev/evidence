@@ -1,3 +1,5 @@
+export { tableFromIPC } from 'apache-arrow';
+
 /**
  * Initializes the database.
  *

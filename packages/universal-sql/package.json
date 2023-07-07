@@ -14,9 +14,7 @@
 	"dependencies": {
 		"chalk": "^5.2.0",
 		"duckdb": "^0.8.1",
-		"parquet-wasm": "0.3.1"
-	},
-	"peerDependencies": {
+		"parquet-wasm": "0.3.1",
 		"@duckdb/duckdb-wasm": "^1.27.0",
 		"apache-arrow": "^11.0.0"
 	},
