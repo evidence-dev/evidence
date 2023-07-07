@@ -11,6 +11,8 @@ import { cache_for_hash } from '../cache-duckdb.js';
 const require = createRequire(import.meta.url);
 const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
 
+export { tableFromIPC } from 'apache-arrow';
+
 /** @type {import("@duckdb/duckdb-wasm/dist/types/src/bindings/bindings_node_base").DuckDBNodeBindings} */
 let db;
 
