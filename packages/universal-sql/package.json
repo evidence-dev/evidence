@@ -12,9 +12,23 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"apache-arrow": "^12.0.1",
 		"chalk": "^5.2.0",
 		"duckdb": "^0.8.1",
 		"parquet-wasm": "0.3.1"
+	},
+	"peerDependencies": {
+		"@duckdb/duckdb-wasm": "^1.27.0",
+		"apache-arrow": "^11.0.0"
+	},
+	"exports": {
+		".": {
+			"default": "./src/index.js",
+			"types": "./src/index.d.ts"
+		},
+		"./client-duckdb": {
+			"browser": "./src/client-duckdb/browser.js",
+			"node": "./src/client-duckdb/node.js",
+			"types": "./src/client-duckdb/browser.d.ts"
+		}
 	}
 }

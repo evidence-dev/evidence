@@ -4,15 +4,11 @@ const logEvent = require('@evidence-dev/telemetry');
 const readline = require('readline');
 const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
 
-const runQueries = async function (routeHash) {
+const getQueries = function (routeHash) {
 	let routePath = `./.evidence-queries/extracted/${routeHash}`;
 	let queryFile = `${routePath}/queries.json`;
 	let queries = readJSONSync(queryFile, { throws: false });
-	let data = {};
-	if (queries && queries.length > 0) {
-		data.evidencemeta = { queries };
-	}
-	return data;
+	return { queries };
 };
 
 const testConnection = async function (dev) {
@@ -46,6 +42,6 @@ const testConnection = async function (dev) {
 };
 
 module.exports = {
-	runQueries,
+	getQueries,
 	testConnection
 };
