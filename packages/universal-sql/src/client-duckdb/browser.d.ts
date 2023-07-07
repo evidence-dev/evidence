@@ -13,7 +13,6 @@ export function initDB(): Promise<void>;
  * @returns {Promise<void>}
  */
 export function updateSearchPath(schemas): Promise<void>;
-
 /**
  * Queries the database with the given SQL statement.
  *
@@ -25,10 +24,10 @@ export function query(sql: string): Promise<import('apache-arrow').Table | null>
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {string[]} urls
+ * @param {Record<string, string[]>} urls
  * @returns {Promise<void>}
  */
-export function setParquetURLs(urls: string): Promise<void>;
+export function setParquetURLs(urls: Record<string, string[]>): Promise<void>;
 
 /**
  * Converts an Apache Arrow table to a Javascript array.
