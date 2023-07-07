@@ -67,7 +67,7 @@ export const getSources = async (sourcesDir) => {
 			const contents = await fs.readdir(sourceDir);
 
 			const connParams = await loadConnectionConfiguration(sourceDir);
-			if (!connParams.name) connParams.name = /** @type {string} */ sourceDir.split(/[/\\]/).pop();
+			if (!connParams.name) connParams.name = /** @type {string} */ (sourceDir.split(/[/\\]/).pop());
 
 			if (!connParams.name)
 				throw new Error(

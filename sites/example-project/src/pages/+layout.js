@@ -29,9 +29,10 @@ async function initDB() {
  *
  * @param {string} table
  * @param {string} url
+ * @param {string} schema
  * @returns {Promise<void>}
  */
-async function setParquetURL(table, url) {
+async function setParquetURL(table, url, schema) {
 	if (!browser) return;
 	if (!db) await initDB();
 
@@ -40,9 +41,44 @@ async function setParquetURL(table, url) {
 	const file_name = `${table}.parquet`;
 	await db.registerFileURL(file_name, url, 4, false);
 	await connection.query(
-		`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
+		`CREATE OR REPLACE VIEW ${schema}.${table} AS SELECT * FROM read_parquet('${file_name}');`
 	);
 
+	await connection.close();
+}
+
+/**
+ * Updates the duckdb search path to include only the list of included schemas
+ * @param {string[]} schemas
+ * @returns {Promise<void>}
+ */
+async function updateSearchPath(schemas) {
+	if (!browser) return;
+	if (!db) await initDB();
+
+	const connection = await db.connect();
+
+	await connection.query(`PRAGMA search_path='${schemas.join(',')}'`);
+
+	await connection.close();
+}
+
+/**
+ * Creates a new DuckDB Schema
+ * @param {string} name
+ * @returns {Promise<void>}
+ */
+async function createSchema(name) {
+	if (!browser) return;
+	if (!name) {
+		console.warn(`Cannot create schema, name was not provided`);
+		return;
+	}
+	if (!db) await initDB();
+
+	const connection = await db.connect();
+
+	await connection.query(`CREATE SCHEMA IF NOT EXISTS ${name};`);
 	await connection.close();
 }
 
@@ -117,9 +153,14 @@ export const load = async ({
 		// has to be cloned to bypass the proxy https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
 		({ data } = await res.clone().json());
 	}
-	for (const url of renderedFiles) {
-		await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
+
+	for (const source in renderedFiles) {
+		await createSchema(source);
+		for (const url of renderedFiles[source]) {
+			await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url, source);
+		}
 	}
+	await updateSearchPath(Object.keys(renderedFiles));
 
 	// await setParquetURL('taxis', '/taxis.parquet');
 
