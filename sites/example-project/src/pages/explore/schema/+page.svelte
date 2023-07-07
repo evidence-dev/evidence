@@ -22,7 +22,7 @@
 		return Object.fromEntries(metadatas);
 	}
 
-	let selectedTable = "";
+	let selectedTable = '';
 </script>
 
 <h1 class="text-xl">Project Schema</h1>
@@ -31,42 +31,42 @@
 {#await loadMetadata()}
 	Loading Schema Information...
 {:then metadata}
-<section>
-	<div>
-		<h2 class="text-base font-normal font-mono mt-0"> Tables </h2>
-		<ul class="list-none m-0 p-0 flex flex-col gap-1">
-		{#each Object.entries(metadata) as [name, meta] (name)}
-			<li class="font-mono m-0 text-sm">
-				<button class="bg-gray-100 px-2 py-1" 
-				class:bg-gray-200={selectedTable === meta}
-				on:click={() => selectedTable = meta}
-				>
-					{name}
-				</button>
-			</li>
-		{/each}
-		</ul>
-	</div>
-	<div>
-		<h2 class="text-base font-normal font-mono mt-0"> Columns </h2>
-		<ul class="text-sm flex flex-wrap gap-2">
-		{#each selectedTable.columns ?? [] as col}
-		<dl class="p-2">
-			<dt class="font-semibold">{col.column_name}</dt>
-			<dd class="px-2">
-				<dl class="px-4">
-					<dt class="font-semibold">Data Type</dt>
-					<dd class="px-2">{col.data_type}</dd>
-					<dt class="font-semibold">Nullable</dt>
-					<dd class="px-2">{col.is_nullable}</dd>
-				</dl>
-			</dd>
-		</dl>
-		{/each}
-		</ul>
-	</div>
-</section>
-
+	<section>
+		<div>
+			<h2 class="text-base font-normal font-mono mt-0">Tables</h2>
+			<ul class="list-none m-0 p-0 flex flex-col gap-1">
+				{#each Object.entries(metadata) as [name, meta] (name)}
+					<li class="font-mono m-0 text-sm">
+						<button
+							class="bg-gray-100 px-2 py-1"
+							class:bg-gray-200={selectedTable === meta}
+							on:click={() => (selectedTable = meta)}
+						>
+							{name}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		</div>
+		<div>
+			<h2 class="text-base font-normal font-mono mt-0">Columns</h2>
+			<ul class="text-sm flex flex-wrap gap-2">
+				{#each selectedTable.columns ?? [] as col}
+					<dl class="p-2">
+						<dt class="font-semibold">{col.column_name}</dt>
+						<dd class="px-2">
+							<dl class="px-4">
+								<dt class="font-semibold">Data Type</dt>
+								<dd class="px-2">{col.data_type}</dd>
+								<dt class="font-semibold">Nullable</dt>
+								<dd class="px-2">{col.is_nullable}</dd>
+							</dl>
+						</dd>
+					</dl>
+				{/each}
+			</ul>
+		</div>
+	</section>
 {:catch e}
 	An error was encountered while loading project schema.
 

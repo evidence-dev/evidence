@@ -43,9 +43,24 @@ export async function initDB() {
 }
 
 /**
+ * Updates the duckdb search path to include only the list of included schemas
+ * @param {string[]} schemas
+ * @returns {Promise<void>}
+ */
+export async function updateSearchPath(schemas) {
+	if (!db) await initDB();
+
+	const connection = await db.connect();
+
+	await connection.query(`PRAGMA search_path='${schemas.join(',')}'`);
+
+	await connection.close();
+}
+
+/**
  * Adds a new view to the database, pointing to the provided parquet URL.
  *
- * @param {string[]} urls
+ * @param {Record<string, string[]>} urls
  * @returns {Promise<void>}
  */
 export async function setParquetURLs(urls) {
@@ -53,13 +68,16 @@ export async function setParquetURLs(urls) {
 
 	const connection = await db.connect();
 
-	for (const url of urls) {
-		const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
-		const file_name = `${table}.parquet`;
-		await db.registerFileURL(file_name, url, DuckDBDataProtocol.HTTP, false);
-		await connection.query(
-			`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
-		);
+	for (const source in urls) {
+		await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`)
+		for (const url of urls[source]) {
+			const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+			const file_name = `${table}.parquet`;
+			await db.registerFileURL(file_name, url, DuckDBDataProtocol.HTTP, false);
+			await connection.query(
+				`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
+			);
+		}
 	}
 
 	await connection.close();
