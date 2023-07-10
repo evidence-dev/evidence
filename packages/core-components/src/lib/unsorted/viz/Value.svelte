@@ -70,9 +70,9 @@
 
 					value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
-					if (fmt) {
+					if (typeof fmt === 'string') {
 						fmt = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
-					} else {
+					} else if (typeof fmt === 'undefined') {
 						fmt = columnSummary[0].format;
 					}
 				} else {
