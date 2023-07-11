@@ -1,5 +1,6 @@
 const { getEnv } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
+const path = require('path');
 
 const envMap = {
 	filename: [
@@ -42,11 +43,10 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 
 const runQuery = async (queryString, database) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
-	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
-		const db = await Database.create(filepath, mode);
+		const db = await Database.create(filename, mode);
 		const rows = await db.all(queryString);
 		return { rows, columnTypes: mapResultsToEvidenceColumnTypes(rows) };
 	} catch (err) {
@@ -75,7 +75,10 @@ module.exports = runQuery;
  * @param {DuckDBOptions} opts
  * @returns { (queryString: string, queryOpts: DuckDBOptions ) => Promise<QueryResult> }
  */
-module.exports.getRunner = async (opts) => {
+module.exports.getRunner = async (opts, directory) => {
+	if (!opts.filename) {
+		console.error(`Missing required duckdb option 'filename' (${directory})`);
+	}
 	/**
 	 * @param {string} queryContent
 	 * @param {string} queryPath
@@ -84,6 +87,6 @@ module.exports.getRunner = async (opts) => {
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, { ...opts, filename: path.join(directory, opts.filename) });
 	};
 };

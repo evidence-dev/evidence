@@ -1,7 +1,7 @@
 import { arrowTableToJSON } from './both.js';
 import {
-	ConsoleLogger,
 	AsyncDuckDB,
+	ConsoleLogger,
 	DuckDBDataProtocol,
 	getPlatformFeatures
 } from '@duckdb/duckdb-wasm';
