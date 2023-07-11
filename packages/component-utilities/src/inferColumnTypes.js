@@ -14,7 +14,7 @@ var TypeFidelity;
 	TypeFidelity['PRECISE'] = 'precise';
 })(TypeFidelity || (TypeFidelity = {}));
 
-const inferValueType = function (columnValue) {
+export const inferValueType = function (columnValue) {
 	if (typeof columnValue === 'number') {
 		return EvidenceType.NUMBER;
 	} else if (typeof columnValue === 'boolean') {

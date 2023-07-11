@@ -10,6 +10,8 @@
 	export let x = undefined;
 	export let legend = false;
 
+	export let xFmt;
+
 	export let title = undefined;
 	export let subtitle = undefined;
 	export let xAxisTitle = undefined;
@@ -33,6 +35,7 @@
 <Chart
 	{data}
 	{x}
+	{xFmt}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}

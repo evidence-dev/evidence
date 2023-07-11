@@ -61,7 +61,7 @@
 		let errors = [];
 		if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(formatTag)) {
 			errors.push(
-				`"${formatTag}" is not a valid format tag. The format tag should always start with a letter and only contain letters and numbers.`
+				`"${formatTag}" is not a valid format name. The format name should always start with a letter and only contain letters and numbers.`
 			);
 		}
 		let testValue = 10;
@@ -85,7 +85,7 @@
 			builtInFormats.find((format) => format.formatTag === formatTag) ||
 			customFormattingSettings.customFormats?.find((format) => format.formatTag === formatTag)
 		) {
-			errors.push(`The format tag "${formatTag}"" is already assigned to an existing format.`);
+			errors.push(`The format name "${formatTag}"" is already assigned to an existing format.`);
 		}
 		return errors;
 	}
@@ -112,7 +112,7 @@
 		</select>
 	</div>
 	<div class="input-item">
-		<label for="formatTag">Format Tag</label>
+		<label for="formatTag">Format Name</label>
 		<input id="formatTag" type="text" placeholder="myformat" bind:value={formatTag} />
 	</div>
 	<div class="input-item">

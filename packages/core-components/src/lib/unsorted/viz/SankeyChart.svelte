@@ -6,12 +6,20 @@
 	import ECharts from './ECharts.svelte';
 
 	import { colours } from '@evidence-dev/component-utilities/colours';
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 
 	export let data = undefined;
 	export let sourceCol = 'source';
 	export let targetCol = 'target';
 	export let valueCol = 'value';
+
+	export let valueFmt = undefined;
+	if (valueFmt) {
+		valueFmt = getFormatObjectFromString(valueFmt);
+	}
 
 	export let title = undefined;
 	export let subtitle = undefined;
@@ -129,7 +137,7 @@
 					? `${formatValue(params.data.name)}`
 					: `${formatValue(params.data[sourceCol])} to ${formatValue(
 							params.data.target
-					  )}, ${formatValue(params.data.value)}`;
+					  )}: ${formatValue(params.data.value, valueFmt)}`;
 			},
 			padding: 6,
 			borderRadius: 4,

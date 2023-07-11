@@ -10,6 +10,10 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { colours } from '@evidence-dev/component-utilities/colours';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 
 	export let data = undefined;
 
@@ -21,6 +25,8 @@
 
 	export let title = undefined;
 	export let subtitle = undefined;
+
+	export let fmt = undefined;
 
 	export let link = undefined;
 	let hasLink = link !== undefined;
@@ -103,6 +109,11 @@
 
 		columnSummary = getColumnSummary(data);
 
+		// Override format for values:
+		if (fmt) {
+			fmt = getFormatObjectFromString(fmt, columnSummary[value].format);
+		}
+
 		let mapData = JSON.parse(JSON.stringify(data));
 		for (let i = 0; i < data.length; i++) {
 			mapData[i].name = data[i][state];
@@ -140,6 +151,15 @@
 				axisPointer: {
 					// Use axis to trigger tooltip
 					type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+				},
+				formatter: function (params) {
+					let tooltipOutput = `
+						<span id="tooltip" style='font-weight: 600;'>${params.name}</span>
+						<br/>
+						<span>${formatTitle(value, fmt)}: </span>
+							<span style='float:right; margin-left: 10px;'>${formatValue(params.value, fmt)}</span>`;
+
+					return tooltipOutput;
 				},
 				padding: 6,
 				borderRadius: 4,

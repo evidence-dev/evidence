@@ -12,6 +12,7 @@ const templatePaths = [
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
 	'src/pages/+layout.server.js',
+	'src/pages/+layout.js',
 	'src/pages/settings/',
 	'src/pages/api/',
 	'tailwind.config.cjs',
@@ -23,6 +24,8 @@ fs.emptyDirSync('./template/');
 templatePaths.forEach((p) => {
 	fs.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
 });
+
+fs.emptyDirSync('./template/sources');
 
 // Create a clean SK config (workspace's is modified)
 fs.outputFileSync(

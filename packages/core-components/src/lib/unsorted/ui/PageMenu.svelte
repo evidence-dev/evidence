@@ -4,8 +4,9 @@
 
 <script>
 	import { dev } from '$app/environment';
-	import KebabIcon from '../icons/KebabIcon.svelte';
-	import ExternalLinkIcon from '../icons/ExternalLinkIcon.svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { DotsVertical, ExternalLink } from '@steeze-ui/tabler-icons';
+
 	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
 	import { showQueries, pageHasQueries } from '@evidence-dev/component-utilities/stores';
 	let options = [
@@ -43,9 +44,9 @@
 </script>
 
 <div use:clickOutside={{ enabled: showDropdown, callback: () => (showDropdown = false) }}>
-	<button type="button" class="menu" aria-label="page menu button" on:click={toggleDropdown}
-		><KebabIcon color="--grey-600" /></button
-	>
+	<button type="button" class="menu" aria-label="page menu button" on:click={toggleDropdown}>
+		<Icon src={DotsVertical} class="text-gray-600 w-6 h-6" />
+	</button>
 	{#if showDropdown}
 		<ul class="dropdown-items" id="dropdown-items">
 			{#each options as option}
@@ -54,21 +55,22 @@
 						{#if option.label === 'Show / Hide Queries'}
 							{#if $pageHasQueries}
 								{#if $showQueries}
-									<button class="dropdown" aria-label="hide-queries" on:click={toggleQueries}
-										>Hide Queries</button
-									>
+									<button class="dropdown" aria-label="hide-queries" on:click={toggleQueries}>
+										Hide Queries
+									</button>
 								{:else}
-									<button class="dropdown" aria-label="show-queries" on:click={toggleQueries}
-										>Show Queries</button
-									>
+									<button class="dropdown" aria-label="show-queries" on:click={toggleQueries}>
+										Show Queries
+									</button>
 								{/if}
 							{/if}
 						{:else if option.label === 'Export PDF'}
 							<button class="dropdown first" on:click={print}>{option.label}</button>
 						{:else if option.url.includes('http')}
-							<a href={option.url} target="_blank" rel="noreferrer"
-								>{option.label}<ExternalLinkIcon height="12" width="12" color="--red-700" /></a
-							>
+							<a href={option.url} target="_blank" rel="noreferrer">
+								{option.label}
+								<Icon src={ExternalLink} class="h-3 w-3" />
+							</a>
 						{:else}
 							<a href={option.url} target="_self">{option.label}</a>
 						{/if}

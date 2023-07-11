@@ -23,7 +23,7 @@ test('query runs', async () => {
 
 		let expectedColumnTypes = ['number', 'date', 'date', 'string', 'boolean'];
 		let expectedColumnNames = ['number_col', 'date_col', 'timestamp_col', 'string_col', 'bool_col'];
-		let expectedTypePrecision = Array(5).fill(TypeFidelity.INFERRED);
+		let expectedTypePrecision = Array(5).fill(TypeFidelity.PRECISE);
 
 		assert.equal(
 			true,

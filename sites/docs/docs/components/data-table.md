@@ -301,6 +301,13 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>left</td>
     </tr>
     <tr>	
+        <td>fmt</td>
+        <td>Format the values in the column (<a href='/core-concepts/formatting'>see available formats</a>)</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>Excel-style format | built-in format | custom format</td>
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
         <td>wrap</td>
         <td>Wrap column text</td>
         <td class='tcenter'>-</td>
