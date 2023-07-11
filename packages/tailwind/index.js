@@ -85,9 +85,27 @@ export const colors = {
 	}
 };
 
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 export const config = {
 	theme: {
+		fontFamily: {
+			sans: [
+				`Inter, ${defaultTheme.fontFamily.sans}`,
+				{
+					// open fours by default
+					fontFeatureSettings: '"cv02"'
+				}
+			],
+			serif: [
+				`Spectral, ${defaultTheme.fontFamily.serif}`,
+				{
+					// proportional oldstyle figures by default
+					// fontFeatureSettings: '"onum"'
+				}
+			]
+		},
 		extend: {
 			colors: colors,
 			fontFamily: {
