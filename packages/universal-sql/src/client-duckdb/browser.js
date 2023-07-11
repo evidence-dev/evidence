@@ -49,7 +49,7 @@ export async function initDB() {
 /**
  * Updates the duckdb search path to include only the list of included schemas
  * @param {string[]} schemas
- * @returns {void}
+ * @returns {Promise<void>}
  */
 export async function updateSearchPath(schemas) {
 	if (!db) await initDB();
