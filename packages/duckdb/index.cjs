@@ -43,11 +43,10 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 
 const runQuery = async (queryString, database) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
-	const filepath = filename;
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
-		const db = await Database.create(filepath, mode);
+		const db = await Database.create(filename, mode);
 		const rows = await db.all(queryString);
 		return { rows, columnTypes: mapResultsToEvidenceColumnTypes(rows) };
 	} catch (err) {
