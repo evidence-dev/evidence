@@ -30,7 +30,7 @@ export const load = async ({
 	fetch,
 	data: { customFormattingSettings, routeHash, isUserPage, evidencemeta }
 }) => {
-	await database_initialization;
+	if (!browser) await database_initialization;
 
 	const data = {};
 
@@ -47,7 +47,9 @@ export const load = async ({
 	return {
 		__db: {
 			query(sql, query_name) {
-				if (browser) return query(sql);
+				if (browser) {
+					return database_initialization.then(() => query(sql));
+				}
 
 				const query_results = query(sql, { route_hash: routeHash, query_name });
 

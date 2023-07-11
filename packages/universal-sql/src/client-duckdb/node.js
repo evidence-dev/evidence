@@ -47,7 +47,6 @@ export async function initDB() {
 	connection = db.connect();
 }
 
-
 /**
  * Updates the duckdb search path to include only the list of included schemas
  * @param {string[]} schemas
