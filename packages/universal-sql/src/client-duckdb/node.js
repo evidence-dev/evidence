@@ -1,12 +1,12 @@
 import { arrowTableToJSON } from './both.js';
 import {
-	NODE_RUNTIME,
-	DuckDBDataProtocol,
+	ConsoleLogger,
 	createDuckDB,
-	ConsoleLogger
+	DuckDBDataProtocol,
+	NODE_RUNTIME
 } from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
 import { createRequire } from 'module';
-import { resolve, dirname } from 'path';
+import { dirname, resolve } from 'path';
 import { cache_for_hash } from '../cache-duckdb.js';
 
 const require = createRequire(import.meta.url);
@@ -42,7 +42,6 @@ export async function initDB() {
 	await db.instantiate();
 	db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
 }
-
 
 /**
  * Updates the duckdb search path to include only the list of included schemas
