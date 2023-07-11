@@ -28,7 +28,7 @@ export const load = async ({
 
 	await setParquetURLs(renderedFiles);
 
-	await updateSearchPath(Object.keys(renderedFiles))
+	await updateSearchPath(Object.keys(renderedFiles));
 
 	return {
 		__db: {

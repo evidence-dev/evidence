@@ -1,5 +1,6 @@
 const { getEnv } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
+const path = require('path');
 
 const envMap = {
 	filename: [
@@ -75,7 +76,10 @@ module.exports = runQuery;
  * @param {DuckDBOptions} opts
  * @returns { (queryString: string, queryOpts: DuckDBOptions ) => Promise<QueryResult> }
  */
-module.exports.getRunner = async (opts) => {
+module.exports.getRunner = async (opts, directory) => {
+	if (!opts.filename) {
+		console.error(`Missing required duckdb option 'filename' (${directory})`);
+	}
 	/**
 	 * @param {string} queryContent
 	 * @param {string} queryPath
@@ -84,6 +88,6 @@ module.exports.getRunner = async (opts) => {
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, { ...opts, filename: path.join(directory, opts.filename) });
 	};
 };
