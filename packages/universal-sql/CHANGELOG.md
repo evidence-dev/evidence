@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- 9b1ac9b7: make everything use a single connection
+
 ## 2.0.0-usql.1
 
 ### Minor Changes

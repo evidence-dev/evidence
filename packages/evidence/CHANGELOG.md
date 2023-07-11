@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.3
+
+### Patch Changes
+
+- 9b1ac9b7: removed evidencemeta on the data object
+- 9b1ac9b7: make everything use a single connection
+- Updated dependencies [9b1ac9b7]
+- Updated dependencies [9b1ac9b7]
+  - @evidence-dev/preprocess@4.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.2
+  - @evidence-dev/plugin-connector@2.0.0-usql.3
+
 ## 20.0.0-usql.2
 
 ### Minor Changes

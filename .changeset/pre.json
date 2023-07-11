@@ -29,6 +29,7 @@
     "ui-tests": "1.1.0"
   },
   "changesets": [
+    "healthy-kiwis-repeat",
     "honest-shoes-jump",
     "ninety-berries-yell",
     "spicy-dogs-drop",
@@ -36,6 +37,7 @@
     "sweet-seahorses-fly",
     "swift-owls-reply",
     "thirty-mirrors-yawn",
-    "three-doors-run"
+    "three-doors-run",
+    "unlucky-files-prove"
   ]
 }
