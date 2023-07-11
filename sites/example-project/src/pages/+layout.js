@@ -43,7 +43,6 @@ export const load = async ({
 			}) ?? []
 		);
 	}
-	data.evidencemeta = evidencemeta;
 
 	return {
 		__db: {
@@ -61,6 +60,7 @@ export const load = async ({
 		},
 		data,
 		customFormattingSettings,
-		isUserPage
+		isUserPage,
+		evidencemeta
 	};
 };
