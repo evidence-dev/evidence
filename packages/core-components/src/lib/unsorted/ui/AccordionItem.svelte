@@ -6,6 +6,7 @@
 	import { getContext, onMount } from 'svelte';
 	import { ChevronDown, ChevronUp } from '@steeze-ui/tabler-icons';
 	import  { Icon } from '@steeze-ui/svelte-icon';
+	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
 
 	export let title = '';
 
@@ -32,12 +33,12 @@
 	});
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div bind:this={node} on:click={() => accordionContext.setActiveItem(index)} class="accordion-item">
-	<button
+
+<div bind:this={node} class="accordion-item">
+	<button on:click={() => accordionContext.setActiveItem(index)}
 		class="flex justify-between items-center w-full box-border px-4 bg-white border-none cursor-pointer transition ease-in-out duration-300 hover:bg-gray-100 focus:outline-none"
 	>
-		<h3 class="text-lg m-4">{title}</h3>
+		<h3 class="text-lg my-3">{title}</h3>
 		{#if toggled}
 			<Icon src={ChevronUp} class="text-gray-600 w-6 h-6"/>
 		{:else}

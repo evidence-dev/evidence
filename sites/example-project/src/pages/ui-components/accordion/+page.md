@@ -1,4 +1,6 @@
-## Accordion
+---
+title: Accordion
+---
 
 <Accordion>
   <AccordionItem title="Item 1">
@@ -9,5 +11,27 @@
   </AccordionItem>
   <AccordionItem title="Item 3">
     This is the third item's accordion body.
+  </AccordionItem>
+</Accordion>
+
+
+Markdown does not work in accordions currently
+
+<Accordion>
+  <AccordionItem title="Testing HTML">
+  <b> bold </b> and <i> italics </i>
+  </AccordionItem>
+  <AccordionItem title="Testing Markdown">
+  
+  **bold** and _italics_
+  
+  </AccordionItem>
+</Accordion>
+
+
+Content
+
+<Accordion>
+  <AccordionItem title="Testing conent">
   </AccordionItem>
 </Accordion>

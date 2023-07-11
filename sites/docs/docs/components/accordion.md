@@ -11,13 +11,17 @@ sidebar_position: 30
     This is the first item's accordion body.
   </AccordionItem>
   <AccordionItem title="Item 2">
-    This is the second item's accordion body.
+    This is the second item's accordion body with <b>bold text</b>.
   </AccordionItem>
   <AccordionItem title="Item 3">
     This is the third item's accordion body.
   </AccordionItem>
 </Accordion>
 ```
+
+Note that accordions _do not_ support using markdown in the body text. 
+
+To style text, use HTML.
 
 ## Props
 
