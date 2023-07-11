@@ -11,6 +11,9 @@ export { tableFromIPC } from 'apache-arrow';
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
 let db;
 
+/** @type {import("@duckdb/duckdb-wasm").AsyncDuckDBConnection} */
+let connection;
+
 /**
  * Initializes the database.
  *
@@ -40,6 +43,7 @@ export async function initDB() {
 	db = new AsyncDuckDB(logger, worker);
 	await db.instantiate(DUCKDB_CONFIG.mainModule);
 	await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
+	connection = await db.connect();
 }
 
 /**
@@ -50,11 +54,7 @@ export async function initDB() {
 export async function updateSearchPath(schemas) {
 	if (!db) await initDB();
 
-	const connection = await db.connect();
-
 	await connection.query(`PRAGMA search_path='${schemas.join(',')}'`);
-
-	await connection.close();
 }
 
 /**
@@ -65,8 +65,6 @@ export async function updateSearchPath(schemas) {
  */
 export async function setParquetURLs(urls) {
 	if (!db) await initDB();
-
-	const connection = await db.connect();
 
 	for (const source in urls) {
 		await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
@@ -79,8 +77,6 @@ export async function setParquetURLs(urls) {
 			);
 		}
 	}
-
-	await connection.close();
 }
 
 /**
@@ -92,9 +88,7 @@ export async function setParquetURLs(urls) {
 export async function query(sql) {
 	if (!db) await initDB();
 
-	const connection = await db.connect();
 	const res = await connection.query(sql).then(arrowTableToJSON);
-	await connection.close();
 
 	return res;
 }

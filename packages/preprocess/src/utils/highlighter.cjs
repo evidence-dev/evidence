@@ -17,8 +17,8 @@ function highlighter(code, lang, meta) {
 		const queryId = lang.toLowerCase() === 'sql' && meta ? meta : lang;
 		return `
         {#if ${queryId} }
-            <QueryViewer 
-                pageQueries = {data.evidencemeta.queries}
+            <QueryViewer
+                pageQueries = {$page.data.evidencemeta.queries}
                 queryID = "${queryId ?? 'untitled'}"
                 queryResult = {${queryId ?? 'untitled'}}
             /> 

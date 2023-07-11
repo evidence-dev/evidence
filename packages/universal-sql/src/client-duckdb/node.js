@@ -17,6 +17,9 @@ export { tableFromIPC } from 'apache-arrow';
 /** @type {import("@duckdb/duckdb-wasm/dist/types/src/bindings/bindings_node_base").DuckDBNodeBindings} */
 let db;
 
+/** @type {import("@duckdb/duckdb-wasm/dist/types/src/bindings/connection").DuckDBConnection} */
+let connection;
+
 /**
  * Initializes the database.
  *
@@ -41,19 +44,16 @@ export async function initDB() {
 	db = await createDuckDB(DUCKDB_BUNDLES, logger, NODE_RUNTIME);
 	await db.instantiate();
 	db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
+	connection = db.connect();
 }
 
 /**
  * Updates the duckdb search path to include only the list of included schemas
  * @param {string[]} schemas
- * @returns {Promise<void>}
+ * @returns {void}
  */
 export function updateSearchPath(schemas) {
-	const connection = db.connect();
-
 	connection.query(`PRAGMA search_path='${schemas.join(',')}'`);
-
-	connection.close();
 }
 
 /**
@@ -63,8 +63,6 @@ export function updateSearchPath(schemas) {
  * @returns {void}
  */
 export async function setParquetURLs(urls) {
-	const connection = db.connect();
-
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
 		for (const url of urls[source]) {
@@ -76,8 +74,6 @@ export async function setParquetURLs(urls) {
 			);
 		}
 	}
-
-	connection.close();
 }
 
 /**
@@ -88,9 +84,7 @@ export async function setParquetURLs(urls) {
  * @returns {import('apache-arrow').Table | null}
  */
 export function query(sql, cache_options) {
-	const connection = db.connect();
 	const res = connection.query(sql);
-	connection.close();
 
 	if (cache_options) {
 		cache_for_hash(cache_options.route_hash, sql, cache_options.query_name, res);
