@@ -3,7 +3,9 @@
 </script>
 
 <script>
-	import CloseIcon from '../icons/CloseIcon.svelte';
+	import { X } from '@steeze-ui/tabler-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
 	export let open = false;
 	export let title = '';
 	export let buttonText = '';
@@ -19,9 +21,7 @@
 	>{buttonText}</button
 >
 {#if open}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		on:click={() => isOpen()}
 		class="modal z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center lg:p-0"
 	>
 		<div class="fixed inset-0 bg-gray-900 opacity-50" />
@@ -37,15 +37,15 @@
 						class="flex items-center justify-center border-none hover:bg-gray-200"
 						on:click={() => isOpen()}
 					>
-						<CloseIcon />
+						<Icon src={X} class="text-gray-600 w-6 h-6"/>
 					</button>
 				{/if}
 				{#if title.trim() == ''}
 					<button
-						class=" flex items-center justify-center border-none p-0.5 absolute right-0 top-0 hover:bg-gray-200 ml-4"
+						class=" flex items-center justify-center border-none p-0.5 absolute right-0 top-0 ml-4"
 						on:click={() => isOpen()}
 					>
-						<CloseIcon />
+						<Icon src={X} class="text-gray-600 w-6 h-6 mt-2 mr-2 hover:bg-gray-200"/>
 					</button>
 				{/if}
 			</div>

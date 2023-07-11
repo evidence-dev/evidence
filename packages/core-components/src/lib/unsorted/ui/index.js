@@ -1,6 +1,6 @@
 export { default as Accordion } from './Accordion.svelte';
 export { default as AccordionItem } from './AccordionItem.svelte';
-export { default as AnchorButton } from './AnchorButton.svelte';
+export { default as LinkButton } from './LinkButton.svelte';
 export { default as BigLink } from './BigLink.svelte';
 export { default as BreadCrumbs } from './BreadCrumbs.svelte';
 export { default as ChevronToggle } from './ChevronToggle.svelte';

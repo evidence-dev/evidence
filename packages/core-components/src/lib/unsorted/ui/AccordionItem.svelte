@@ -4,7 +4,8 @@
 
 <script>
 	import { getContext, onMount } from 'svelte';
-	import ChevronToggle from './ChevronToggle.svelte';
+	import { ChevronDown, ChevronUp } from '@steeze-ui/tabler-icons';
+	import  { Icon } from '@steeze-ui/svelte-icon';
 
 	export let title = '';
 
@@ -34,10 +35,14 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div bind:this={node} on:click={() => accordionContext.setActiveItem(index)} class="accordion-item">
 	<button
-		class="flex justify-between w-full box-border px-4 pb-2 bg-white border-none cursor-pointer transition ease-in-out duration-300 hover:bg-gray-100 focus:outline-none"
+		class="flex justify-between items-center w-full box-border px-4 bg-white border-none cursor-pointer transition ease-in-out duration-300 hover:bg-gray-100 focus:outline-none"
 	>
-		<h3 class="text-lg">{title}</h3>
-		<ChevronToggle {toggled} vertical="true" size="20" />
+		<h3 class="text-lg m-4">{title}</h3>
+		{#if toggled}
+			<Icon src={ChevronUp} class="text-gray-600 w-6 h-6"/>
+		{:else}
+			<Icon src={ChevronDown} class="text-gray-600 w-6 h-6"/>
+		{/if}
 	</button>
 	<div
 		bind:this={content}

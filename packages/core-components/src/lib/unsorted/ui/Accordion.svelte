@@ -15,6 +15,8 @@
 	setContext('accordion', { setActiveItem, activeItem });
 </script>
 
-<div class="my-6 divide-y rounded border border-neutral-200 min-w-full">
-	<slot />
+<div class="my-6 divide-y border border-neutral-200 rounded">
+	<div class="overflow-hidden divide-y rounded">
+		<slot />
+	</div>
 </div>
