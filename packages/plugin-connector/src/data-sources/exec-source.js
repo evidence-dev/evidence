@@ -22,7 +22,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	console.log(`Executing ${source.name}`);
 	const results = await Promise.all(
 		source.queries.map(async (q) => {
-			const filename = q.filepath.split('/').pop();
+			const filename = q.filepath.split(path.sep).pop();
 			console.log(` >| Executing ${filename}`);
 			const before = performance.now();
 			return {
@@ -46,7 +46,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		if (!result) continue;
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
 		/* Split on / or \ (windows compatibility) */
-		const fileparts = query.filepath.split(/[/\\]/);
+		const fileparts = query.filepath.split(path.sep);
 		const outputFilename = fileparts.pop()?.split('.')[0];
 
 		const outputSubdir = path.join(
