@@ -27,11 +27,3 @@ Markdown does not work in accordions currently
   
   </AccordionItem>
 </Accordion>
-
-
-Content
-
-<Accordion>
-  <AccordionItem title="Testing conent">
-  </AccordionItem>
-</Accordion>

@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { X } from '@steeze-ui/tabler-icons';
+	import { Calculator, X } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
 	export let open = false;
@@ -51,8 +51,8 @@
 			</div>
 			<div
 				class="h-auto max-h-96 overflow-y-auto px-10 {title.trim() != ''
-					? 'py-4'
-					: 'py-6'} text-base break-normal"
+					? 'my-4'
+					: 'my-6'} text-base break-normal"
 			>
 				{innerText}
 				<slot />
@@ -60,3 +60,4 @@
 		</div>
 	</div>
 {/if}
+
