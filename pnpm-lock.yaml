@@ -494,6 +494,7 @@ importers:
   packages/snowflake:
     specifiers:
       '@evidence-dev/db-commons': workspace:^
+      '@types/snowflake-sdk': ^1.6.13
       asn1.js: ^5.0.0
       dotenv: ^16.0.1
       fs-extra: ^11.1.1
@@ -502,6 +503,7 @@ importers:
       snowflake-sdk: 1.6.13
     dependencies:
       '@evidence-dev/db-commons': link:../db-commons
+      '@types/snowflake-sdk': 1.6.13
       asn1.js: 5.4.1
       fs-extra: 11.1.1
       node-fetch: 3.3.1
@@ -8579,6 +8581,13 @@ packages:
       '@types/http-errors': 2.0.1
       '@types/mime': 3.0.1
       '@types/node': 20.3.3
+
+  /@types/snowflake-sdk/1.6.13:
+    resolution: {integrity: sha512-WOOyHcrJWozRlapES0T7+Uk2e55xIW+ur81xKx1RbzHwgelosGiu+kvwvbLPVpkoh9p0sOvuPUednil1LLLW5Q==}
+    dependencies:
+      '@types/node': 20.3.3
+      generic-pool: 3.9.0
+    dev: false
 
   /@types/sockjs/0.3.33:
     resolution: {integrity: sha512-f0KEEe05NvUnat+boPTZ0dgaLZ4SfSouXUgv5noUiefG2ajgKjmETo9ZJyuqsl7dfl2aHlLJUiki6B4ZYldiiw==}
