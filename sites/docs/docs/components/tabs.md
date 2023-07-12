@@ -3,7 +3,7 @@ title: Tabs
 sidebar_position: 31
 ---
 
-![tabs](/img/tabs.png)
+<img src="/img/tabs.png" alt="tabs" width="600"/>
 
 ```markdown
 <Tabs>
