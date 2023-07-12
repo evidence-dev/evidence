@@ -72,7 +72,7 @@ fs.outputFileSync(
         plugins: [sveltekit()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts'],
-            exclude: ['svelte-icons', 'svelte-tiny-linked-charts']
+            exclude: ['svelte-tiny-linked-charts']
         },
         ssr: {
             external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
