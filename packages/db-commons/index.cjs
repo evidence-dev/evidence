@@ -1,17 +1,42 @@
-var EvidenceType;
-(function (EvidenceType) {
-	EvidenceType['BOOLEAN'] = 'boolean';
-	EvidenceType['NUMBER'] = 'number';
-	EvidenceType['STRING'] = 'string';
-	EvidenceType['DATE'] = 'date';
-})(EvidenceType || (EvidenceType = {}));
+/**
+ * Enum for evidence types
+ * @readonly
+ * @enum {'boolean' | 'number' | 'string' | 'date'}
+ */
+const EvidenceType = /** @type {const} */ ({
+	BOOLEAN: 'boolean',
+	NUMBER: 'number',
+	STRING: 'string',
+	DATE: 'date'
+});
 
-var TypeFidelity;
-(function (TypeFidelity) {
-	TypeFidelity['INFERRED'] = 'inferred';
-	TypeFidelity['PRECISE'] = 'precise';
-})(TypeFidelity || (TypeFidelity = {}));
+/**
+ * Enum for evidence type fidelity
+ * @readonly
+ * @enum {'inferred' | 'precise'}
+ */
+const TypeFidelity = /** @type {const} */ ({
+	INFERRED: 'inferred',
+	PRECISE: 'precise'
+});
 
+/**
+ * @typedef {Object} ColumnDefinition
+ * @property {string} name
+ * @property {EvidenceType} evidenceType
+ * @property {TypeFidelity} typeFidelity
+ */
+
+/** @typedef {number | boolean | string | Date} EvidenceColumnType */
+
+// TODO: should be generic but jsdoc doesn't like that for some reason?
+/** @typedef {(queryString: string, database: Record<string, unknown>) => Promise<QueryResult>} RunQuery */
+
+/**
+ * Infers the evidence type of a column value
+ * @param {unknown} columnValue
+ * @returns {EvidenceType}
+ */
 const inferValueType = function (columnValue) {
 	if (typeof columnValue === 'number') {
 		return EvidenceType.NUMBER;
@@ -44,44 +69,35 @@ const inferValueType = function (columnValue) {
 	}
 };
 
+/**
+ * Infers the evidence type of each column in a set of rows
+ * @param {Record<string, unknown>[]} rows
+ * @returns {ColumnDefinition[] | undefined}
+ */
 const inferColumnTypes = function (rows) {
-	if (rows && rows.length > 0) {
-		let columns = Object.keys(rows[0]);
-		let columnTypes = columns?.map((column) => {
-			let firstRowWithColumnValue = rows.find((element) =>
-				element[column] == null ? false : true
-			);
-			if (firstRowWithColumnValue) {
-				let inferredType = inferValueType(firstRowWithColumnValue[column]);
-				return { name: column, evidenceType: inferredType, typeFidelity: TypeFidelity.INFERRED };
-			} else {
-				return {
-					name: column,
-					evidenceType: EvidenceType.STRING,
-					typeFidelity: TypeFidelity.INFERRED
-				};
-			}
-		});
-		return columnTypes;
-	}
-	return undefined;
+	if (!rows) return undefined;
+	if (rows.length === 0) return [];
+
+	const columns = Object.keys(rows[0]);
+	const columnTypes = columns.map((column) => {
+		const firstRowWithColumnValue = rows.find((element) => element[column] != null);
+		const inferredType = firstRowWithColumnValue
+			? inferValueType(firstRowWithColumnValue[column])
+			: EvidenceType.STRING;
+		return { name: column, evidenceType: inferredType, typeFidelity: TypeFidelity.INFERRED };
+	});
+
+	return columnTypes;
 };
 
+/**
+ * Processes query results
+ * @param {unknown} queryResults
+ * @returns {QueryResult}
+ */
 const processQueryResults = function (queryResults) {
-	let rows;
-	let columnTypes;
-
-	if (queryResults.rows) {
-		rows = queryResults.rows;
-	} else {
-		rows = queryResults;
-	}
-
-	if (queryResults.columnTypes) {
-		columnTypes = queryResults.columnTypes;
-	} else {
-		columnTypes = inferColumnTypes(rows);
-	}
+	const rows = queryResults.rows ?? queryResults;
+	const columnTypes = queryResults.columnTypes ?? inferColumnTypes(rows);
 
 	return { rows, columnTypes };
 };
