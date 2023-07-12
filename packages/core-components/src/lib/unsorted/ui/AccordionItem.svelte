@@ -6,7 +6,6 @@
 	import { getContext, onMount } from 'svelte';
 	import { ChevronDown, ChevronUp } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
 
 	export let title = '';
 

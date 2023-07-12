@@ -3,9 +3,8 @@
 </script>
 
 <script>
-	import { Calculator, X } from '@steeze-ui/tabler-icons';
+	import { X } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
 	export let open = false;
 	export let title = '';
 	export let buttonText = '';
