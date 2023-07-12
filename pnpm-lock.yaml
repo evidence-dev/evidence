@@ -130,7 +130,7 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/tailwind': workspace:^
-      '@steeze-ui/simple-icons': ^1.5.0
+      '@steeze-ui/simple-icons': ^1.4.1
       '@steeze-ui/svelte-icon': ^1.4.1
       '@steeze-ui/tabler-icons': ^2.1.0
       '@storybook/addon-essentials': ^7.0.9
