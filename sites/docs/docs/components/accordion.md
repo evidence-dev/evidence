@@ -3,7 +3,7 @@ title: Accordion
 sidebar_position: 30
 ---
 
-![accordion](/img/accordion.png)
+<img src="/img/accordion.png" alt="accordion" width="600"/>
 
 ```markdown
 <Accordion>
@@ -18,6 +18,8 @@ sidebar_position: 30
   </AccordionItem>
 </Accordion>
 ```
+
+## Styling
 
 Note that accordions _do not_ support using markdown in the body text. 
 
