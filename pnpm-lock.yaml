@@ -295,6 +295,7 @@ importers:
       '@evidence-dev/db-orchestrator': workspace:^
       '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/preprocess': workspace:^
+      '@evidence-dev/tailwind': workspace:^
       '@evidence-dev/telemetry': workspace:^
       '@sveltejs/adapter-static': 1.0.0
       '@sveltejs/kit': 1.13.0
@@ -315,6 +316,7 @@ importers:
       '@evidence-dev/component-utilities': link:../component-utilities
       '@evidence-dev/core-components': link:../core-components
       '@evidence-dev/db-orchestrator': link:../db-orchestrator
+      '@evidence-dev/tailwind': link:../tailwind
       '@sveltejs/kit': 1.13.0_svelte@3.55.0+vite@4.0.4
       svelte: 3.55.0
       vite: 4.0.4
@@ -8570,7 +8572,7 @@ packages:
   /axios/0.27.2_debug@3.2.7:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.2_debug@3.2.7
+      follow-redirects: 1.15.2
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -11650,18 +11652,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
-
-  /follow-redirects/1.15.2_debug@3.2.7:
-    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 3.2.7
     dev: false
 
   /for-each/0.3.3:
