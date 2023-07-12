@@ -15,10 +15,8 @@ import {
 } from './resolve-evidence-config.fixture';
 import { loadConfig } from './resolve-evidence-config';
 
-/** @type {import("vitest").MockedFunction<typeof import("fs/promises").readFile>} */
-let mockedReadFile = /** @type {import("vitest").MockedFunction<typeof fs.readFile>} */ (
-	fs.readFile
-);
+fs.readFile = /** @type {any} */ (vi.fn());
+const mockedReadFile = vi.mocked(fs.readFile);
 
 describe('loadConfig', () => {
 	it('should load a valid configuration', async () => {
