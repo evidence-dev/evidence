@@ -55,7 +55,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 				.split('sources')
 				.slice(1)
 		);
-		outputFilenames.add(path.join(outputSubdir, outputFilename + '.parquet'));
+		outputFilenames.add(new URL(`file:///${path.join(outputSubdir, outputFilename + '.parquet').slice(1)}`).pathname);
 		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename + '.parquet'), parquetBuffer);
 		await fs.writeFile(

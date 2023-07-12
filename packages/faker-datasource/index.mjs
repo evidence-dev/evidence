@@ -122,7 +122,7 @@ const generateTable = (directory) => async (content, filepath) => {
 	if (tableMap.has(filepath)) {
 		return tableMap.get(filepath);
 	}
-	console.log(`  |  | Generating ${filepath}`);
+	console.log(`  |  | Generating ${path.basename(filepath)}`);
 
 	tableMap.set(filepath, wrappingPromise);
 	try {
