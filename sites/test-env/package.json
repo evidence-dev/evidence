@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "evidence build",
 		"dev": "evidence dev",
-		"test": "evidence build"
+		"test": "evidence build:sources && evidence build"
 	},
 	"engines": {
 		"npm": ">=7.0.0",
