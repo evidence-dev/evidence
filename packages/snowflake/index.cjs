@@ -1,5 +1,5 @@
-const { getEnv } = require('@evidence-dev/db-commons');
-const createConnection = require('snowflake-sdk');
+const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const snowflake = require('snowflake-sdk');
 const crypto = require('crypto');
 
 const envMap = {
@@ -59,6 +59,13 @@ const envMap = {
 	]
 };
 
+/**
+ *
+ * @param {snowflake.Connection} connection
+ * @param {string} queryString
+ * @param {boolean} useAsync
+ * @returns {Promise<{ rows?: Record<string, unknown>[], columns?: { name: string, type: string }[] }>}
+ */
 const execute = async (connection, queryString, useAsync = false) => {
 	return new Promise((resolve, reject) => {
 		function finishExecution() {
@@ -99,6 +106,12 @@ const execute = async (connection, queryString, useAsync = false) => {
 	});
 };
 
+/**
+ *
+ * @param {string} dataBaseType
+ * @param {undefined} defaultResultEvidenceType
+ * @returns {EvidenceType | undefined}
+ */
 const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceType = undefined) {
 	if (dataBaseType) {
 		let standardizedDBType = dataBaseType.toUpperCase();
@@ -108,7 +121,7 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 		}
 		switch (standardizedDBType) {
 			case 'BOOLEAN':
-				return 'boolean';
+				return EvidenceType.BOOLEAN;
 			case 'INT':
 			case 'INTEGER':
 			case 'BIGINT':
@@ -123,20 +136,20 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 			case 'DOUBLE PRECISION':
 			case 'REAL':
 			case 'FIXED':
-				return 'number';
+				return EvidenceType.NUMBER;
 			case 'VARCHAR':
 			case 'CHAR':
 			case 'CHARACTER':
 			case 'STRING':
 			case 'TEXT':
 			case 'TIME':
-				return 'string';
+				return EvidenceType.STRING;
 			case 'TIMESTAMP':
 			case 'TIMESTAMP_LTZ':
 			case 'TIMESTAMP_NTZ':
 			case 'TIMESTAMP_TZ':
 			case 'DATE':
-				return 'date';
+				return EvidenceType.DATE;
 			case 'VARIANT':
 			case 'ARRAY':
 			case 'OBJECT':
@@ -146,13 +159,18 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 	return defaultResultEvidenceType;
 };
 
+/**
+ *
+ * @param {Awaited<ReturnType<typeof execute>>} results
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[] | undefined}
+ */
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.columns?.map((field) => {
-		let typeFidelity = 'precise';
+		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.type);
 		if (!evidenceType) {
-			typeFidelity = 'inferred';
-			evidenceType = 'string';
+			typeFidelity = TypeFidelity.INFERRED;
+			evidenceType = EvidenceType.STRING;
 		}
 		return {
 			name: field.name.toLowerCase(), // opening an issue for this -- not sure if we should just respect snowflake capitalizing all column names, or not. makes for unpleasant syntax elsewhere
@@ -162,9 +180,14 @@ const mapResultsToEvidenceColumnTypes = function (results) {
 	});
 };
 
-const standardizeResult = async (result) => {
-	var output = [];
-	result.forEach((row) => {
+/**
+ *
+ * @param {Record<string, unknown>[] | undefined} result
+ * @returns {Record<string, unknown>[]}
+ */
+const standardizeResult = (result) => {
+	const output = [];
+	result?.forEach((row) => {
 		const lowerCasedRow = {};
 		for (const [key, value] of Object.entries(row)) {
 			lowerCasedRow[key.toLowerCase()] = value;
@@ -175,9 +198,10 @@ const standardizeResult = async (result) => {
 };
 
 /**
- * @param {SnowflakeOptions} [database]
+ * @param {Partial<SnowflakeOptions>} database
+ * @returns {snowflake.ConnectionOptions}
  */
-const getCredentials = async (database = {}) => {
+const getCredentials = (database = {}) => {
 	const authenticator = database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'snowflake';
 	const account = database.account ?? getEnv(envMap, 'account');
 	const username = database.username ?? getEnv(envMap, 'username');
@@ -244,11 +268,12 @@ const getCredentials = async (database = {}) => {
 	}
 };
 
+/** @type {import('@evidence-dev/db-commons').RunQuery<SnowflakeOptions>} */
 const runQuery = async (queryString, database) => {
 	try {
-		const credentials = await getCredentials(database);
+		const credentials = getCredentials(database);
 
-		const connection = createConnection.createConnection(credentials);
+		const connection = snowflake.createConnection(credentials);
 
 		const result = await execute(
 			connection,
@@ -257,7 +282,7 @@ const runQuery = async (queryString, database) => {
 				credentials.authenticator === 'externalbrowser'
 		);
 
-		const standardizedResults = await standardizeResult(result.rows);
+		const standardizedResults = standardizeResult(result.rows);
 		return { rows: standardizedResults, columnTypes: mapResultsToEvidenceColumnTypes(result) };
 	} catch (err) {
 		if (err.message) {
@@ -289,7 +314,7 @@ module.exports = runQuery;
 
 /**
  * @typedef {Object} SnowflakeBrowserOptions
- * @property {'externalBrowser'} authenticator
+ * @property {'externalbrowser'} authenticator
  */
 
 /**
@@ -303,22 +328,8 @@ module.exports = runQuery;
  * @typedef {SnowflakeBaseOptions & (SnowflakeJwtOptions | SnowflakeBrowserOptions | SnowflakeOktaOptions)} SnowflakeOptions
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {SnowflakeOptions} opts
- * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
- */
+/** @type {import('@evidence-dev/db-commons').GetRunner<SnowflakeOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;

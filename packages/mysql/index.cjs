@@ -1,4 +1,4 @@
-const { getEnv } = require('@evidence-dev/db-commons');
+const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const mysqlTypes = mysql.Types;
 
@@ -41,8 +41,13 @@ const envMap = {
 	]
 };
 
-const standardizeResult = async (result) => {
-	var output = [];
+/**
+ *
+ * @param {Record<string, unknown>[]} result
+ * @returns {Record<string, unknown>[]}
+ */
+const standardizeResult = (result) => {
+	const output = [];
 	result.forEach((row) => {
 		const lowerCasedRow = {};
 		for (const [key, value] of Object.entries(row)) {
@@ -53,6 +58,12 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
+/**
+ *
+ * @param {number} dataTypeId
+ * @param {undefined} defaultType
+ * @returns {EvidenceType | undefined}
+ */
 const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
 	// No native bool https://stackoverflow.com/questions/289727/which-mysql-data-type-to-use-for-storing-boolean-values
 
@@ -66,18 +77,18 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 		case mysqlTypes['NEWDECIMAL']:
 		case mysqlTypes['INT24']:
 		case mysqlTypes['LONGLONG']:
-			return 'number';
+			return EvidenceType.NUMBER;
 		case mysqlTypes['TIMESTAMP']:
 		case mysqlTypes['DATE']:
 		case mysqlTypes['TIME']:
 		case mysqlTypes['DATETIME']:
 		case mysqlTypes['YEAR']:
 		case mysqlTypes['NEWDATE']:
-			return 'date';
+			return EvidenceType.DATE;
 		case mysqlTypes['VARCHAR']:
 		case mysqlTypes['VAR_STRING']:
 		case mysqlTypes['STRING']:
-			return 'string';
+			return EvidenceType.STRING;
 		case mysqlTypes['BIT']:
 		case mysqlTypes['JSON']:
 		case mysqlTypes['NULL']:
@@ -93,13 +104,18 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 	}
 };
 
+/**
+ *
+ * @param {mysql.FieldPacket[]} fields
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[] | undefined}
+ */
 const mapResultsToEvidenceColumnTypes = function (fields) {
 	return fields?.map((field) => {
-		let typeFidelity = 'precise';
+		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.columnType);
 		if (!evidenceType) {
-			typeFidelity = 'inferred';
-			evidenceType = 'string';
+			typeFidelity = TypeFidelity.INFERRED;
+			evidenceType = EvidenceType.STRING;
 		}
 		return {
 			name: field.name,
@@ -109,6 +125,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 	});
 };
 
+/** @type {import('@evidence-dev/db-commons').RunQuery<MySQLOptions>} */
 const runQuery = async (queryString, database) => {
 	try {
 		let credentials = {
@@ -142,7 +159,7 @@ const runQuery = async (queryString, database) => {
 		const promisePool = pool.promise();
 		const [rows, fields] = await promisePool.query(queryString);
 
-		const standardizedRows = await standardizeResult(rows);
+		const standardizedRows = standardizeResult(rows);
 		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(fields) };
 	} catch (err) {
 		if (err.message) {
@@ -166,22 +183,8 @@ module.exports = runQuery;
  * @property {number} decimalNumbers
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {MySQLOptions} opts
- * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
- */
+/** @type {import('@evidence-dev/db-commons').GetRunner<MySQLOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;

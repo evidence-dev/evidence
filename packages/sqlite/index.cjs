@@ -12,6 +12,7 @@ const envMap = {
 	]
 };
 
+/** @type {import('@evidence-dev/db-commons').RunQuery<SQLiteOptions>} */
 const runQuery = async (queryString, database) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
@@ -43,22 +44,8 @@ module.exports = runQuery;
  * @property {string} filename
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {SQLiteOptions} opts
- * @returns { (queryString: string, queryOpts: SQLiteOptions ) => Promise<QueryResult> }
- */
+/** @type {import('@evidence-dev/db-commons').GetRunner<SQLiteOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;

@@ -39,7 +39,7 @@ const envMap = {
  * @returns {Record<string, unknown>[]}
  */
 const standardizeResult = (result) => {
-	var output = [];
+	const output = [];
 	result.forEach((row) => {
 		const standardized = {};
 		for (const [key, value] of Object.entries(row)) {
@@ -68,7 +68,7 @@ const standardizeResult = (result) => {
 };
 
 /**
- * @param {BigQueryOptions} database
+ * @param {Partial<BigQueryOptions>} database
  * @returns {import("@google-cloud/bigquery").BigQueryOptions}
  */
 const getCredentials = (database = {}) => {
@@ -99,7 +99,7 @@ const getCredentials = (database = {}) => {
 	}
 };
 
-/** @type {import("@evidence-dev/db-commons").RunQuery} */
+/** @type {import("@evidence-dev/db-commons").RunQuery<BigQueryOptions>} */
 const runQuery = async (queryString, database) => {
 	try {
 		const credentials = getCredentials(database);
@@ -214,10 +214,7 @@ module.exports = runQuery;
  * @typedef {BigQueryBaseOptions & (BigQueryServiceAccountOptions | BigQueryOauthOptions | BigQueryCliOptions)} BigQueryOptions
  */
 
-/**
- * @param {BigQueryOptions} opts
- * @returns {(queryString: string, queryPath: string) => Promise<QueryResult>}
- */
+/** @type {import("@evidence-dev/db-commons").GetRunner<BigQueryOptions>} */
 module.exports.getRunner = async (opts) => {
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
