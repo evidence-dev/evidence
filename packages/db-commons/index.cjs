@@ -27,11 +27,6 @@ const TypeFidelity = /** @type {const} */ ({
  * @property {TypeFidelity} typeFidelity
  */
 
-/** @typedef {number | boolean | string | Date} EvidenceColumnType */
-
-// TODO: should be generic but jsdoc doesn't like that for some reason?
-/** @typedef {(queryString: string, database: Record<string, unknown>) => Promise<QueryResult>} RunQuery */
-
 /**
  * Infers the evidence type of a column value
  * @param {unknown} columnValue
