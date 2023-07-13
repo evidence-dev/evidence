@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- df7a8c5a: Ignore source files larger than 100Mb
+
 ## 2.0.0-usql.4
 
 ### Patch Changes
