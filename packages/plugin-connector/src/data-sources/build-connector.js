@@ -7,7 +7,9 @@ import { DatabaseConnectorSchema } from './schemas/query-runner.schema';
  * @return {Promise<DatabaseConnector>} A promise that resolves to the built database connector.
  */
 export const buildConnector = async (packageMain, supports) => {
-	const connectorPackage = await import(packageMain);
+	// https://github.com/nodejs/node/issues/31710 thanks windows
+	const crossPlatformPackage = new URL(`file:///${packageMain}`).href;
+	const connectorPackage = await import(crossPlatformPackage);
 	const connector = DatabaseConnectorSchema.parse({ ...connectorPackage, supports });
 
 	return connector;
