@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.3
+
+### Patch Changes
+
+- Updated dependencies [cff22ece]
+  - @evidence-dev/sqlite@2.0.0-usql.1
+
 ## 3.0.0-usql.2
 
 ### Patch Changes

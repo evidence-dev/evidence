@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "2.0.0-usql.3",
+	"version": "2.0.0-usql.4",
 	"description": "",
 	"type": "module",
 	"bin": "./dist/cli.js",

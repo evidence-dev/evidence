@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- cff22ece: Only read files on demand, prevents attempted loading of very large db files
+
 ## 2.0.0-usql.3
 
 ### Patch Changes

@@ -607,7 +607,7 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
-      '@evidence-dev/duckdb': workspace:^1.0.0-usql.0
+      '@evidence-dev/duckdb': workspace:^1.0.0-usql.1
       '@evidence-dev/plugin-connector': workspace:^
       '@evidence-dev/telemetry': 1.0.5
       '@evidence-dev/universal-sql': workspace:^

@@ -1,5 +1,11 @@
 # @evidence-dev/sqlite
 
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- cff22ece: Fix SQLite database wrapper
+
 ## 2.0.0-usql.0
 
 ### Major Changes
