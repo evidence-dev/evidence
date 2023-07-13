@@ -29,15 +29,20 @@
     "ui-tests": "1.1.0"
   },
   "changesets": [
+    "famous-bags-change",
+    "fluffy-readers-sing",
     "healthy-kiwis-repeat",
     "honest-shoes-jump",
     "ninety-berries-yell",
+    "shy-insects-explain",
+    "smooth-chairs-end",
     "spicy-dogs-drop",
     "spotty-cows-dream",
     "sweet-seahorses-fly",
     "swift-owls-reply",
     "thirty-mirrors-yawn",
     "three-doors-run",
-    "unlucky-files-prove"
+    "unlucky-files-prove",
+    "violet-clouds-tell"
   ]
 }

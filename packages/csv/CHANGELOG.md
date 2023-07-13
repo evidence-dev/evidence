@@ -1,5 +1,12 @@
 # @evidence-dev/csv
 
+## 1.0.0-usql.1
+
+### Patch Changes
+
+- Updated dependencies [e12fef6c]
+  - @evidence-dev/duckdb@1.0.0-usql.1
+
 ## 1.0.0-usql.0
 
 ### Major Changes

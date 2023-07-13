@@ -1,5 +1,19 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.4
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
+### Patch Changes
+
+- 7b45b820: Swap out large favicon images
+- Updated dependencies [78f2fab2]
+- Updated dependencies [e12fef6c]
+  - @evidence-dev/core-components@2.0.0-usql.2
+  - @evidence-dev/duckdb@1.0.0-usql.1
+
 ## 3.0.0-usql.3
 
 ### Patch Changes

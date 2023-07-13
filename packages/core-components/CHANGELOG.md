@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.2
+
+### Minor Changes
+
+- 78f2fab2: Adds modal, accordion and link button UI components
+
 ## 2.0.0-usql.1
 
 ### Patch Changes

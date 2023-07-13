@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.4
+
+### Patch Changes
+
+- 20aad351: Add universal-sql to excluded deps in vite configuration
+- Updated dependencies [78f2fab2]
+- Updated dependencies [de129514]
+  - @evidence-dev/core-components@2.0.0-usql.2
+  - @evidence-dev/preprocess@4.0.0-usql.3
+  - @evidence-dev/db-orchestrator@3.0.0-usql.2
+
 ## 20.0.0-usql.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.3
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
 ## 4.0.0-usql.2
 
 ### Patch Changes

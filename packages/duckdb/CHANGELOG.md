@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.0-usql.1
+
+### Patch Changes
+
+- e12fef6c: Bump DuckDB to 0.8.1
+
 ## 1.0.0-usql.0
 
 ### Major Changes
