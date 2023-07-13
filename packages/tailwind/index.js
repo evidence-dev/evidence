@@ -102,7 +102,7 @@ export const config = {
 				`Spectral, ${defaultTheme.fontFamily.serif}`,
 				{
 					// proportional oldstyle figures by default
-					// fontFeatureSettings: '"onum"'
+					fontFeatureSettings: '"pnum", "onum"'
 				}
 			]
 		},

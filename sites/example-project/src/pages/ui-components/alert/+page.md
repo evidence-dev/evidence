@@ -11,7 +11,9 @@
 </label>
 
 <Alert {sticky}>
-This is the default alert{#if sticky}; it is also sticky!{/if}
+
+This is the *default* alert{#if sticky}; it is also sticky!{/if}
+
 </Alert>
 
 <Alert status="info">
