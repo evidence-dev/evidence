@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import {readFileSync} from "fs";
 import path from 'path';
 import yaml from 'yaml';
 import chalk from 'chalk';
@@ -160,7 +161,9 @@ async function getQueries(sourceDir, contents) {
 	const queries = await Promise.all(
 		queryFiles.map(async (filename) => ({
 			filepath: `${sourceDir}/${filename}`,
-			content: await fs.readFile(`${sourceDir}/${filename}`).then((r) => r.toString())
+			get content() {
+				return readFileSync(`${sourceDir}/${filename}`).toString()
+			}
 		}))
 	);
 	return queries;
