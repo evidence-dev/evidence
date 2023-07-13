@@ -4,7 +4,6 @@ import path from 'path';
 import { performance } from 'perf_hooks';
 
 /**
- *
  * @param {DatasourceSpec} source
  * @param {PluginDatabases} supportedDbs
  * @param {string} outDir
