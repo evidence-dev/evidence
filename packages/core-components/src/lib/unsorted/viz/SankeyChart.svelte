@@ -17,9 +17,7 @@
 	export let valueCol = 'value';
 
 	export let valueFmt = undefined;
-	if (valueFmt) {
-		valueFmt = getFormatObjectFromString(valueFmt);
-	}
+	$: format_object = valueFmt ? getFormatObjectFromString(valueFmt) : undefined;
 
 	export let title = undefined;
 	export let subtitle = undefined;
@@ -137,7 +135,7 @@
 					? `${formatValue(params.data.name)}`
 					: `${formatValue(params.data[sourceCol])} to ${formatValue(
 							params.data.target
-					  )}: ${formatValue(params.data.value, valueFmt)}`;
+					  )}: ${formatValue(params.data.value, format_object)}`;
 			},
 			padding: 6,
 			borderRadius: 4,

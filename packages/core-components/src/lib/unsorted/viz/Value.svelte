@@ -26,6 +26,7 @@
 
 	// Value Formatting:
 	export let fmt = undefined;
+	let format_object;
 
 	let value;
 	let error;
@@ -71,9 +72,9 @@
 					value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
 					if (fmt) {
-						fmt = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+						format_object = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
 					} else {
-						fmt = columnSummary[0].format;
+						format_object = columnSummary[0].format;
 					}
 				} else {
 					throw Error(
@@ -95,7 +96,7 @@
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<PulseNumber value={formatValue(value, fmt)} />
+	<PulseNumber value={formatValue(value, format_object)} />
 {:else}
 	<span
 		class="group inline-flex gap-1 items-center relative cursor-help text-white font-sans text-sm bg-red-700 rounded-2xl pl-2 pr-[1px] mx-0.5"
