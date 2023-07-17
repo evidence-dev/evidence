@@ -3,14 +3,14 @@
 </script>
 
 <script>
-    export let title="Definitions";
+	export let title = 'Definitions';
 </script>
 
 <details class="mb-4 mt-3 ml-1">
-    <summary class="italic text-base text-grey-800 cursor-pointer">
-        {title}
-    </summary>
-    <div class="ml-3 pt-3 mb-6 text-base">
-        <slot></slot>
-    </div>
+	<summary class="italic text-base text-grey-800 cursor-pointer">
+		{title}
+	</summary>
+	<div class="ml-3 pt-3 mb-6 text-base">
+		<slot />
+	</div>
 </details>
