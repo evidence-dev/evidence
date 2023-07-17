@@ -75,13 +75,13 @@
 	}
 </script>
 
-<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased">
+<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased select-none">
 	<Header bind:mobileSidebarOpen />
 	<Sidebar {fileTree} bind:mobileSidebarOpen />
 	<div class="lg:pl-72">
 		<main class="py-10">
 			<div class="px-4 sm:px-6 lg:px-8">
-				<article class="max-w-3xl mx-auto">
+				<article class="max-w-3xl mx-auto select-all">
 					{#if !$navigating}
 						<slot />
 					{:else}

@@ -3,31 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-	body {
-		font-family: 'Spectral', serif;
-		font-size: 18px;
-		line-height: 1.6;
-		font-weight: normal;
-		color: var(--grey-900);
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		padding: 0 0 0 0;
-		margin: 0 0 0 0;
-		/* background-color: #F8FAFC ; */
-	}
-
-	body,
-	html {
-		height: 100%;
-		user-select: none;
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
-}
-
 @layer components {
+	.markdown {
+		@apply leading-relaxed font-serif text-lg antialiased select-text;
+	}
+
 	img.markdown {
 		text-align: center;
 		display: block;
@@ -40,6 +20,7 @@
 	p.markdown,
 	ul.markdown,
 	ol.markdown {
+
 		margin-block-end: 1em;
 		margin-block-start: 0em;
 		font-feature-settings: 'pnum', 'onum';
