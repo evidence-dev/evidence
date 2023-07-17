@@ -25,6 +25,9 @@ module.exports = () => {
 				// There is no frontmatter, and we want to make sure that it as at least defined.
 				// Technically this won't _break_ things, just spam the logs with a vite warning.
 				return { code: content + ';const metadata = undefined;' };
+			} else {
+				// exporting makes tailwind break HMR
+				return { code: content.replace('export const metadata =', 'const metadata =') };
 			}
 		}
 	};
