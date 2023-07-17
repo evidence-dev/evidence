@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 1.2.0
+
+### Minor Changes
+
+- 78f2fab2: Adds modal, accordion and link button UI components
+
+### Patch Changes
+
+- 75560a31: Consolidate tailwind presets into tailwind package
+
 ## 1.1.0
 
 ### Minor Changes
