@@ -682,12 +682,14 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/core-components': workspace:^
+      '@evidence-dev/csv': workspace:1.0.0-usql.1
       '@evidence-dev/duckdb': workspace:^
       '@evidence-dev/evidence': workspace:^
       '@evidence-dev/faker-datasource': workspace:^
     dependencies:
       '@evidence-dev/component-utilities': link:../../packages/component-utilities
       '@evidence-dev/core-components': link:../../packages/core-components
+      '@evidence-dev/csv': link:../../packages/csv
       '@evidence-dev/duckdb': link:../../packages/duckdb
       '@evidence-dev/evidence': link:../../packages/evidence
       '@evidence-dev/faker-datasource': link:../../packages/faker-datasource
