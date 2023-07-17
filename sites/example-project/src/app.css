@@ -558,9 +558,9 @@
 	/* Layout header height */
 	--header-height: 3.5rem;
 	/* Font stacks */
-	--monospace-font-family: theme(fontFamily.monospace);
-	--ui-font-family: theme(fontFamily.ui);
-	--ui-font-family-compact: theme(fontFamily.ui_compact);
+	--monospace-font-family: theme(fontFamily.mono);
+	--ui-font-family: theme(fontFamily.sans);
+	--ui-font-family-compact: theme(fontFamily.sans);
 	--color1: theme(colors.color.1);
 	--color2: theme(colors.color.2);
 	--color3: theme(colors.color.3);
@@ -592,8 +592,8 @@
 	--blue-700: theme(colors.blue.700);
 	--blue-800: theme(colors.blue.800);
 	--blue-900: theme(colors.blue.900);
-	--blue-999: theme(colors.blue.999);
-	--blue-link: theme(colors.blue.link);
+	--blue-999: theme(colors.blue.950);
+	--blue-link: theme(colors.blue.600);
 	--green-100: theme(colors.green.100);
 	--green-200: theme(colors.green.200);
 	--green-300: theme(colors.green.300);
@@ -603,17 +603,17 @@
 	--green-700: theme(colors.green.700);
 	--green-800: theme(colors.green.800);
 	--green-900: theme(colors.green.900);
-	--green-999: theme(colors.green.999);
-	--grey-100: theme(colors.grey.100);
-	--grey-200: theme(colors.grey.200);
-	--grey-300: theme(colors.grey.300);
-	--grey-400: theme(colors.grey.400);
-	--grey-500: theme(colors.grey.500);
-	--grey-600: theme(colors.grey.600);
-	--grey-700: theme(colors.grey.700);
-	--grey-800: theme(colors.grey.800);
-	--grey-900: theme(colors.grey.900);
-	--grey-999: theme(colors.grey.999);
+	--green-999: theme(colors.green.950);
+	--grey-100: theme(colors.gray.100);
+	--grey-200: theme(colors.gray.200);
+	--grey-300: theme(colors.gray.300);
+	--grey-400: theme(colors.gray.400);
+	--grey-500: theme(colors.gray.500);
+	--grey-600: theme(colors.gray.600);
+	--grey-700: theme(colors.gray.700);
+	--grey-800: theme(colors.gray.800);
+	--grey-900: theme(colors.gray.900);
+	--grey-999: theme(colors.gray.950);
 	--red-50: theme(colors.red.50);
 	--red-100: theme(colors.red.100);
 	--red-200: theme(colors.red.200);
@@ -624,7 +624,7 @@
 	--red-700: theme(colors.red.700);
 	--red-800: theme(colors.red.800);
 	--red-900: theme(colors.red.900);
-	--red-999: theme(colors.red.999);
+	--red-999: theme(colors.red.950);
 	--yellow-100: theme(colors.yellow.100);
 	--yellow-200: theme(colors.yellow.200);
 	--yellow-300: theme(colors.yellow.300);
@@ -634,7 +634,7 @@
 	--yellow-700: theme(colors.yellow.700);
 	--yellow-800: theme(colors.yellow.800);
 	--yellow-900: theme(colors.yellow.900);
-	--yellow-999: theme(colors.yellow.999);
+	--yellow-999: theme(colors.yellow.950);
 }
 
 @media print {
