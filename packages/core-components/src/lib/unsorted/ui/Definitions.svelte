@@ -6,7 +6,7 @@
     export let title="Definitions";
 </script>
 
-<details class="mb-4 mt-3">
+<details class="mb-4 mt-3 ml-1">
     <summary class="italic text-base text-grey-800 cursor-pointer">
         {title}
     </summary>
