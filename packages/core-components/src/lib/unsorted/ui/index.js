@@ -8,6 +8,7 @@ export { default as EmailSignup } from './EmailSignup.svelte';
 export { default as Hamburger } from './Hamburger.svelte';
 export { default as Header } from './Header.svelte';
 export { default as LoadingIndicator } from './LoadingIndicator.svelte';
+export { default as LoadingSkeleton } from './LoadingSkeleton.svelte';
 export { default as Logo } from './Logo.svelte';
 export { default as Nav } from './Nav.svelte';
 export { default as PageMenu } from './PageMenu.svelte';

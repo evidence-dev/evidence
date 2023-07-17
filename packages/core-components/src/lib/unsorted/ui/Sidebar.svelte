@@ -1,287 +1,160 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Settings, X } from '@steeze-ui/tabler-icons';
-
 	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
+
 	import { dev } from '$app/environment';
-
-	import CollapsibleSection from '../ui/CollapsibleSection.svelte';
-
+	import CollapsibleSection from './CollapsibleSection.svelte';
 	export let fileTree;
-	export let open;
+	import { fly, fade } from 'svelte/transition';
+	// import { lock, unlock } from 'tua-body-scroll-lock';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
+
+	export let mobileSidebarOpen = false;
+
+	// prevent scrolling of the underlying when the mobile sidebar is open 
+	const toggleScrollLock = (mobileSidebarOpen) => {
+		if(browser){
+			if(!mobileSidebarOpen){
+				// unlock(); // unlock body scroll
+			} else {
+				// lock(); // lock body scroll
+			}
+		}
+	};
+
+	$: toggleScrollLock(mobileSidebarOpen);
 </script>
 
-<aside class="sidebar" class:open>
-	<div class="sticky">
-		<div class="nav-header">
-			<a href="/" on:click={() => (open = !open)}><h2 class="project-title">Evidence</h2></a>
-			<button class="close" on:click={() => (open = !open)}>
-				<Icon src={X} class="h-9 w-9" />
-			</button>
-		</div>
-		<nav>
-			{#each firstLevelFiles as file}
-				{#if file.children.length > 0}
-					<CollapsibleSection folder={file} bind:open />
-				{:else if file.href}
-					<a href={file.href} on:click={() => (open = !open)} style="">
-						<div class:selected={'/' + $page.url.pathname.split('/')[1] === file.href}>
-							{file.label}
-						</div>
-					</a>
-				{/if}
-			{/each}
-			<div class="spacer" />
+{#if mobileSidebarOpen}
+<div class="fixed lg:hidden inset-0 bg-gray-100/40 z-40 backdrop-blur-sm" transition:fade|local={{duration: 200}} on:click={() => mobileSidebarOpen = false} on:keypress={() => mobileSidebarOpen = false}></div>
+<div	class="fixed inset-y-12 z-50 flex w-72 flex-col h-full overflow-hidden select-none"	in:fly|local={{ x: -100, duration: 400}}	out:fly|local={{ x: -100, duration: 200}}>
+	<div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white pb-4 pt-6">
+		<nav class="flex flex-1 flex-col overflow-y-auto overflow-x-hidden px-6">
+			<ul class="flex flex-1 flex-col gap-y-7">
+				<li>
+					<ul class="-mx-2 space-y-1">
+						{#each firstLevelFiles as file}
+							<li>
+								{#if file.children.length > 0}
+									<CollapsibleSection folder={file} />
+								{:else if file.href}
+									<a
+										href={file.href}
+										class="text-gray-800 hover:bg-gray-50 hover:text-blue-600 group flex gap-x-3 rounded-md p-2 text-sm leading-6 capitalize transition-colors duration-0"
+										class:selected={'/' + $page.url.pathname.split('/')[1] === file.href
+									}
+									>
+										{file.label}
+									</a>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</li>
+			</ul>
 		</nav>
 		{#if dev}
-			<div class="nav-footer">
+		<div class="mt-auto px-6 mb-12">
+			<a
+				href="/settings"
+				class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:text-blue-600 transition-colors duration-0"
+			>
+				<svg
+					class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-blue-600"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+					/>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+					/>
+				</svg>
+				Settings
+			</a>
+		</div>
+		{/if}
+	</div>
+</div>
+
+{/if}
+
+<!-- Desktop Sidebar -->
+<div
+	class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col h-full overflow-hidden select-none"
+>
+	<div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white pb-4">
+		<div class="flex h-12 w-full shrink-0 items-center px-6">
+			<a href="/" class="text-gray-800 font-sans text-md tracking-wide font-semibold"> evidence </a>
+		</div>
+
+		<nav class="flex flex-1 flex-col overflow-y-auto overflow-x-hidden px-6">
+			<ul class="flex flex-1 flex-col gap-y-7">
+				<li>
+					<ul class="-mx-2 space-y-1">
+						{#each firstLevelFiles as file}
+							<li>
+								{#if file.children.length > 0}
+									<CollapsibleSection folder={file} />
+								{:else if file.href}
+									<a
+										href={file.href}
+										class="text-gray-800 hover:bg-gray-50 hover:text-blue-600 group flex gap-x-3 rounded-md p-2 text-sm leading-6 capitalize transition-colors duration-0"
+										class:selected={'/' + $page.url.pathname.split('/')[1] === file.href}
+									>
+										{file.label}
+									</a>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		{#if dev}
+			<div class="mt-auto px-6">
 				<a
 					href="/settings"
-					class="settings-link"
-					class:selected={$page.url.pathname === '/settings'}
+					class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:text-blue-600 transition-colors duration-0"
 				>
-					<span class="settings-icon flex justify-center items-center">
-						<Icon src={Settings} class="w-4 h-4 p-0" />
-					</span>
-					<a class="settings-label" href="/settings"> Settings </a>
+					<svg
+						class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-blue-600"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+						/>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+						/>
+					</svg>
+					Settings
 				</a>
 			</div>
 		{/if}
 	</div>
-</aside>
+</div>
 
 <style>
-	:root {
-		--scrollbar-track-color: transparent;
-		--scrollbar-color: rgba(0, 0, 0, 0.2);
-		--scrollbar-active-color: rgba(0, 0, 0, 0.4);
-		--scrollbar-size: 0.75rem;
-		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical)*/
-	}
-
-	aside.sidebar {
-		grid-area: sidebar;
-		position: relative;
-		z-index: 3;
-		background-color: var(--grey-100);
-		border-right: 1px solid var(--grey-300);
-	}
-
-	.project-title {
-		font-size: 22px;
-		margin: 0 0 0.3em 0;
-		padding-top: 0.3em;
-	}
-
-	button.close {
-		display: none;
-	}
-
-	.sticky {
-		position: sticky;
-		top: 0;
-		padding: 0;
-		height: 100vh;
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 3rem 1fr 4rem;
-		grid-template-areas:
-			'header'
-			'nav'
-			'footer';
-	}
-
-	nav {
-		overflow-y: scroll;
-		overflow-x: hidden;
-		grid-area: nav;
-		scrollbar-width: thin;
-		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
-	}
-
-	nav::-webkit-scrollbar {
-		height: var(--scrollbar-size);
-		width: var(--scrollbar-size);
-	}
-	nav::-webkit-scrollbar-track {
-		background-color: var(--scrollbar-track-color);
-	}
-	nav::-webkit-scrollbar-thumb {
-		background-color: var(--scrollbar-color);
-		border-radius: 7px;
-		background-clip: padding-box;
-	}
-	nav::-webkit-scrollbar-thumb:hover {
-		background-color: var(--scrollbar-active-color);
-	}
-	nav::-webkit-scrollbar-thumb:vertical {
-		min-height: var(--scrollbar-minlength);
-		border: 3px solid transparent;
-	}
-	nav::-webkit-scrollbar-thumb:horizontal {
-		min-width: var(--scrollbar-minlength);
-		border: 3px solid transparent;
-	}
-
-	a {
-		text-transform: capitalize;
-		color: var(--grey-700);
-		display: inline-block;
-		text-decoration: none;
-		font-family: var(--ui-font-family);
-		-webkit-font-smoothing: antialiased;
-	}
-
-	nav a {
-		font-size: 15px;
-		display: block;
-		color: var(--grey-700);
-	}
-
-	nav div {
-		padding: 0.2rem 1rem 0.2rem 1.2rem;
-	}
-
-	nav div:hover {
-		color: var(--grey-900);
-	}
-
-	nav a:hover {
-		text-decoration: none;
-		background-color: none;
-		text-decoration: none;
-	}
-
-	div.selected {
-		color: var(--blue-600);
-		font-weight: 500;
-	}
-
-	div.selected:hover {
-		color: var(--blue-800);
-	}
-
-	div.nav-header {
-		padding: 0.2rem 0.2rem 0 1.2rem;
-		grid-area: header;
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.nav-header {
-		overflow: hidden;
-	}
-
-	div.nav-header a {
-		display: block;
-	}
-
-	.nav-footer {
-		padding: 1.2rem 1rem 1.2rem 1.2rem;
-		box-sizing: border-box;
-		position: absolute;
-		bottom: 0;
-		height: 100%;
-		width: 100%;
-		border-top: 1px solid var(--grey-200);
-		grid-area: footer;
-		display: flex;
-		font-size: 16px;
-	}
-	.settings-link {
-		display: grid;
-		grid-template-columns: 2rem auto;
-	}
-
-	.settings-label {
-		color: var(--grey-700);
-	}
-
-	.settings-link:hover .settings-icon {
-		color: var(--grey-700);
-	}
-
-	.settings-link:hover a {
-		color: var(--grey-900);
-	}
-
-	.settings-link.selected a {
-		color: var(--blue-600);
-	}
-
-	.settings-link.selected .settings-icon {
-		color: var(--blue-600);
-	}
-
-	.settings-link.selected:hover a {
-		color: var(--blue-800);
-	}
-
-	.settings-link.selected:hover .settings-icon {
-		color: var(--blue-800);
-	}
-
-	.settings-icon :global(svg) {
-		color: var(--grey-500);
-	}
-
-	.nav-footer a {
-		color: var(--grey-700);
-	}
-
-	.spacer {
-		display: none;
-		height: 100px;
-		width: 100%;
-	}
-
-	@media (max-width: 850px) {
-		aside.sidebar {
-			grid-area: none;
-			position: fixed;
-			height: 100%;
-			width: 80%;
-			left: -100%;
-			transition: left 0.3s ease-in-out;
-			background-color: hsla(217, 33%, 97%, 0.83);
-			-webkit-backdrop-filter: blur(20px) saturate(1.8);
-			backdrop-filter: blur(20px) saturate(1.8);
-			border-right: 1px solid var(--grey-300);
-		}
-
-		aside.open {
-			left: 0;
-		}
-
-		div.nav-footer {
-			display: none;
-		}
-
-		.spacer {
-			display: block;
-		}
-
-		button.close {
-			display: inline;
-			background-color: transparent;
-			border: none;
-			padding: 0.4em 0.4em;
-			cursor: pointer;
-			margin: 0;
-			color: var(--grey-900);
-		}
-	}
-
-	@media print {
-		aside {
-			display: none;
-		}
+	.selected {
+		@apply bg-gray-50 text-blue-600;
 	}
 </style>
