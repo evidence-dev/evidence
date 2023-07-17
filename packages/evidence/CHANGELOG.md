@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.7
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@3.0.0-usql.4
+
 ## 20.0.0-usql.6
 
 ### Patch Changes

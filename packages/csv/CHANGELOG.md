@@ -1,5 +1,11 @@
 # @evidence-dev/csv
 
+## 1.0.0-usql.2
+
+### Minor Changes
+
+- 3b49d3b6: Update csv adapter to function as db plugin
+
 ## 1.0.0-usql.1
 
 ### Patch Changes

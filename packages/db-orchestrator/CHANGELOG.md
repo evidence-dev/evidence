@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.4
+
+### Patch Changes
+
+- Updated dependencies [3b49d3b6]
+  - @evidence-dev/csv@1.0.0-usql.2
+
 ## 3.0.0-usql.3
 
 ### Patch Changes
