@@ -62,6 +62,7 @@
 </script>
 
 <script>
+	import '../fonts.css';
 	import '../app.css';
 	import { navigating } from '$app/stores';
 	import { blur } from 'svelte/transition';
