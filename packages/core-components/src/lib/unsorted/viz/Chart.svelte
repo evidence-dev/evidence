@@ -395,9 +395,7 @@
 			// Get format codes for axes
 			// ---------------------------------------------------------------------------------------
 			if (xFmt) {
-				xFmt = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
-				// Override with provided format
-				xFormat = xFmt;
+				xFormat = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
 			} else {
 				xFormat = columnSummary[x].format;
 			}
@@ -407,12 +405,10 @@
 			} else {
 				if (yFmt) {
 					if (typeof y === 'object') {
-						yFmt = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
+						yFormat = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
 					} else {
-						yFmt = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
+						yFormat = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
 					}
-					// Override with provided format
-					yFormat = yFmt;
 				} else {
 					if (typeof y === 'object') {
 						yFormat = columnSummary[y[0]].format;
@@ -424,9 +420,7 @@
 
 			if (size) {
 				if (sizeFmt) {
-					sizeFmt = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
-					// Override with provided format
-					sizeFormat = sizeFmt;
+					sizeFormat = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
 				} else {
 					sizeFormat = columnSummary[size].format;
 				}
