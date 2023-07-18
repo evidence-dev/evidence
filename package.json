@@ -72,6 +72,7 @@
 			"nth-check@<2.0.1": ">=2.0.1"
 		}
 	},
+	"packageManager": "pnpm@8.6.5",
 	"dependencies": {
 		"@evidence-dev/tailwind": "link:packages/tailwind"
 	}
