@@ -5,25 +5,18 @@
 
 @layer components {
 	.markdown {
-		@apply leading-relaxed font-serif text-lg antialiased select-text;
+		@apply leading-relaxed font-serif text-lg antialiased;
 	}
 
 	img.markdown {
-		text-align: center;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		max-width: 100%;
-		border-radius: 4px;
+		@apply mx-auto h-auto max-w-full rounded-lg;
 	}
 
 	p.markdown,
 	ul.markdown,
 	ol.markdown {
-
 		margin-block-end: 1em;
 		margin-block-start: 0em;
-		font-feature-settings: 'pnum', 'onum';
 	}
 
 	/* lists */
@@ -78,50 +71,24 @@
 	h4.markdown,
 	h5.markdown,
 	h6.markdown {
-		font-weight: normal;
-		font-family: var(--ui-font-family);
-		line-height: 1.5;
-		margin: 0.8em 0 0.3em 0;
 		scroll-margin-top: var(
 			--header-height
 		); /* ensure that table of contents links scroll with room for the header */
 	}
 
-	h1.markdown:first-of-type {
-		font-size: 1.8em;
-		font-weight: bold;
-		color: var(--grey-800);
-		border-top: none;
-		padding-top: 0;
-		margin: 0em 0 0.2em 0;
-	}
-
 	h1.markdown {
-		font-size: 1.8em;
-		font-weight: bold;
-		color: var(--grey-800);
-		display: block;
-		border-top: 1px solid var(--grey-200);
-		padding-top: 0.2em;
-	}
-
-	h1.markdown:active {
-		display: block;
+		@apply font-sans leading-normal mt-7 mb-4 text-2xl font-extrabold text-gray-800;
 	}
 
 	h2.markdown {
-		font-size: 1.3em;
-		font-weight: bold;
-		color: var(--grey-800);
+		@apply font-sans leading-normal mt-6 mb-1 text-2xl font-bold text-gray-800;
 	}
 
 	h3.markdown {
-		font-size: 0.9em;
-		font-weight: bold;
-		color: var(--grey-800);
+		@apply font-sans leading-normal mt-4 mb-1 text-xl text-gray-800 border-b border-gray-100;
 	}
 
-	h4.markdown {
+	/* h4.markdown {
 		font-size: 0.9em;
 		text-transform: lowercase;
 		font-family: 'Spectral SC', serif;
@@ -138,48 +105,22 @@
 		font-size: 0.65em;
 		font-family: 'Spectral', serif;
 		letter-spacing: 0.025em;
-	}
+	} */
 
-	article a.markdown {
-		color: var(--blue-link);
-		text-decoration: underline;
-		text-decoration-color: var(--blue-100);
-		text-decoration-thickness: 0.1em;
-		text-underline-offset: 0.05em;
-	}
-
-	article a.markdown:hover {
-		color: inherit;
-		text-decoration: underline;
-		text-decoration-color: var(--blue-200);
-		text-decoration-thickness: 0.1em;
-		text-underline-offset: 0.05em;
+	a.markdown {
+		@apply font-medium text-stone-800 underline decoration-slate-300 decoration-1 hover:text-blue-600 hover:decoration-2 hover:decoration-blue-500 transition-all duration-200;
 	}
 
 	hr.markdown {
-		display: block;
-		margin-top: 1.5em;
-		margin-bottom: 1.5em;
-		margin-left: auto;
-		margin-right: auto;
-		border-top: 1px solid var(--grey-200);
-		border-bottom: none;
-		border-left: none;
-		border-right: none;
-		width: 75%;
+		@apply h-px my-8 max-w-xl mx-auto bg-gray-200 border-0;
+	}
+
+	mark {
+		@apply bg-gradient-to-b px-0.5 from-white via-yellow-100 to-white hover:backdrop-blur-xl;
 	}
 
 	code.markdown {
-		font-family: var(--monospace-font-family);
-		font-size: 0.75em;
-		background-color: var(--grey-100);
-		padding: 0.2em 0.2em;
-		border: solid 1px var(--grey-200);
-		border-radius: 4px;
-		color: var(--grey-800);
-		-webkit-user-select: all;
-		-moz-user-select: all;
-		user-select: all;
+		@apply font-mono text-gray-800 text-sm bg-gray-100 rounded px-1 select-all py-0.5;
 	}
 
 	form code {

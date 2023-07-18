@@ -81,7 +81,7 @@
 	<div class="lg:pl-72">
 		<main class="py-10">
 			<div class="px-4 sm:px-6 lg:px-8">
-				<article class="max-w-3xl mx-auto select-all">
+				<article class="max-w-2xl mx-auto select-auto">
 					{#if !$navigating}
 						<slot />
 					{:else}
