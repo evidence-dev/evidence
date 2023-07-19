@@ -185,10 +185,18 @@
 		}
 
 		// Modifier to sorting function for ascending or descending
-		let sortModifier = sortBy.ascending ? 1 : -1;
+		const sortModifier = sortBy.ascending ? 1 : -1;
 
-		let sort = (a, b) =>
-			a[column] < b[column] ? -1 * sortModifier : a[column] > b[column] ? 1 * sortModifier : 0;
+		const forceTopOfAscending = (val) =>
+			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
+
+		const sort = (a, b) =>
+			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
+				? -1 * sortModifier
+				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
+				  a[column] > b[column]
+				? 1 * sortModifier
+				: 0;
 
 		data.sort(sort);
 		filteredData = filteredData.sort(sort);
