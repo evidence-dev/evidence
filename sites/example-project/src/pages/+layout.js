@@ -34,7 +34,7 @@ export const load = async ({
 
 	const data = {};
 
-	// saturate the cache
+	// tell sveltekit to prerender these endpoints, but note that they aren't actually usable until `__db.query` is run
 	if (!browser && isUserPage) {
 		await Promise.all(
 			evidencemeta.queries?.map(({ id }) => fetch(`/api/${routeHash}/${id}.arrow`)) ?? []
