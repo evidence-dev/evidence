@@ -6,7 +6,7 @@ export { default as BreadCrumbs } from './BreadCrumbs.svelte';
 export { default as ChevronToggle } from './ChevronToggle.svelte';
 export { default as CodeBlock } from './CodeBlock.svelte';
 export { default as CollapsibleSection } from './CollapsibleSection.svelte';
-export { default as Definitions } from './Definitions.svelte';
+export { default as Details } from './Details.svelte';
 export { default as DownloadData } from './DownloadData.svelte';
 export { default as EmailSignup } from './EmailSignup.svelte';
 export { default as Hamburger } from './Hamburger.svelte';

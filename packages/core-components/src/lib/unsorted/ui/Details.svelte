@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	export let title = 'Definitions';
+	export let title = 'Details';
 </script>
 
 <details class="mb-4 mt-3 ml-1">

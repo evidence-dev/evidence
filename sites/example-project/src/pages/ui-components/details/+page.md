@@ -1,6 +1,6 @@
-## Definitions
+## Details
 
-<Definitions>
+<Details title="Definitions">
     Definition of metrics in Solutions Targets
 
     ### Time to Proposal
@@ -12,13 +12,13 @@
 
     *Source:*
     Hubspot
- </Definitions>
+ </Details>
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
 
- <Definitions title="Metric Info">
+ <Details title="Metric Info">
     Definition of metrics in Solutions Targets
 
     ### Time to Proposal
@@ -30,12 +30,12 @@ discede?
 
     *Source:*
     Hubspot
- </Definitions>
+ </Details>
 
- <Definitions title="Sources">    
+ <Details title="Sources">    
 
     - **The Economist**: September 24,2015
     - **New York Times analysis on emissions**: October 12, 2016
 
 
- </Definitions>
+ </Details>
