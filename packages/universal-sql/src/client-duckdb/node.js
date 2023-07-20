@@ -80,20 +80,14 @@ export async function setParquetURLs(urls) {
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @param {{ route_hash: string, query_name: string, prerendering: boolean }} cache_options
+ * @param {{ route_hash: string, query_name: string, prerendering: boolean }} [cache_options]
  * @returns {import('apache-arrow').Table | null}
  */
 export function query(sql, cache_options) {
 	const res = connection.query(sql);
 
 	if (cache_options) {
-		cache_for_hash(
-			cache_options.route_hash,
-			sql,
-			cache_options.query_name,
-			res,
-			cache_options.prerendering
-		);
+		cache_for_hash(sql, res, cache_options);
 	}
 
 	return arrowTableToJSON(res);

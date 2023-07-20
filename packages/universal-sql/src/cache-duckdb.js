@@ -6,14 +6,12 @@ const { tableToIPC } = require('apache-arrow');
 
 /**
  * Caches DuckDB queries that have been
- * @param {string} route_hash md5 hash of the route id
  * @param {string} sql_string SQL string executed
- * @param {string} query_name name of the query
  * @param {import("apache-arrow").Table} data result of the query
- * @param {boolean} [data] whether or not we're prerendering
+ * @param {{ route_hash: string, query_name: string, prerendering: boolean }} cache_options
  * @returns {void}
  */
-export function cache_for_hash(route_hash, sql_string, query_name, data, prerendering = false) {
+export function cache_for_hash(sql_string, data, { route_hash, query_name, prerendering }) {
 	// keeps a cache of the sql queries for each route
 	// for later refreshing without fully rebuilding the site
 	const cache_path = `./.evidence-queries/cache/${route_hash}`;

@@ -11,12 +11,12 @@ export function initDB(): Promise<void>;
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @param {{ route_hash: string, query_name: string }} cache_options
+ * @param {{ route_hash: string, query_name: string, prerendering: boolean }} [cache_options]
  * @returns {import('apache-arrow').Table | null}
  */
 export function query(
 	sql: string,
-	cache_options?: { route_hash: string; query_name: string }
+	cache_options?: { route_hash: string; query_name: string; prerendering: boolean }
 ): import('apache-arrow').Table | null;
 
 /**
