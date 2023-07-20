@@ -6,7 +6,7 @@ import {
 	query,
 	updateSearchPath
 } from '@evidence-dev/universal-sql/client-duckdb';
-import {profile} from "@evidence-dev/component-utilities/profile";
+import { profile } from '@evidence-dev/component-utilities/profile';
 
 const initDb = async () => {
 	let renderedFiles = {};
@@ -26,7 +26,7 @@ const initDb = async () => {
 	await updateSearchPath(Object.keys(renderedFiles));
 };
 
-const database_initialization = profile(initDb)
+const database_initialization = profile(initDb);
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({
