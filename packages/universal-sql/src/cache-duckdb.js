@@ -6,13 +6,12 @@ const { tableToIPC } = require('apache-arrow');
 
 /**
  * Caches DuckDB queries that have been
- * @param {string} route_hash md5 hash of the route id
  * @param {string} sql_string SQL string executed
- * @param {string} query_name name of the query
  * @param {import("apache-arrow").Table} data result of the query
+ * @param {{ route_hash: string, query_name: string, prerendering: boolean }} cache_options
  * @returns {void}
  */
-export function cache_for_hash(route_hash, sql_string, query_name, data) {
+export function cache_for_hash(sql_string, data, { route_hash, query_name, prerendering }) {
 	// keeps a cache of the sql queries for each route
 	// for later refreshing without fully rebuilding the site
 	const cache_path = `./.evidence-queries/cache/${route_hash}`;
@@ -27,6 +26,13 @@ export function cache_for_hash(route_hash, sql_string, query_name, data) {
 
 	// write the data to cache
 	writeFileSync(`${cache_path}/${query_name}.arrow`, tableToIPC(data));
+
+	if (prerendering) {
+		// simulate prerendering during build
+		const prerender_path = `.svelte-kit/output/prerendered/dependencies/api/${route_hash}`;
+		mkdirSync(prerender_path, { recursive: true });
+		writeFileSync(`${prerender_path}/${query_name}.arrow`, tableToIPC(data));
+	}
 }
 
 /**
