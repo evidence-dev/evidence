@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser, building } from '$app/environment';
 import {
 	tableFromIPC,
 	initDB,
@@ -34,13 +34,6 @@ export const load = async ({
 
 	const data = {};
 
-	// tell sveltekit to prerender these endpoints, but note that they aren't actually usable until `__db.query` is run
-	if (!browser && isUserPage) {
-		await Promise.all(
-			evidencemeta.queries?.map(({ id }) => fetch(`/api/${routeHash}/${id}.arrow`)) ?? []
-		);
-	}
-
 	// let SSR saturate the cache first
 	if (browser && isUserPage) {
 		await Promise.all(
@@ -56,10 +49,9 @@ export const load = async ({
 			query(sql, query_name) {
 				if (browser) {
 					return database_initialization.then(() => query(sql));
-				} else {
-					// during SSR, add cache instructions so prerendering works properly
-					return query(sql, { route_hash: routeHash, query_name });
 				}
+
+				return query(sql, { route_hash: routeHash, query_name });
 			}
 		},
 		data,
