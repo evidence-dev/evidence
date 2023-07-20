@@ -51,7 +51,7 @@ export const load = async ({
 					return database_initialization.then(() => query(sql));
 				}
 
-				return query(sql, { route_hash: routeHash, query_name });
+				return query(sql, { route_hash: routeHash, query_name, prerendering: building });
 			}
 		},
 		data,
