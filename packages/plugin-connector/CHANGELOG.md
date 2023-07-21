@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.8
+
+### Minor Changes
+
+- e6f550f3: Improve data source return type validation to be more performance and stringent
+
 ## 2.0.0-usql.7
 
 ### Patch Changes
