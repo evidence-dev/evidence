@@ -4,6 +4,14 @@ hide_table_of_contents: false
 title: Netlify
 ---
 
+:::caution
+All URLs on Netlify are converted to lowercase. This can cause issues if you're using `$page.params` to filter data in your project. It's recommended to use `.toLowerCase()` to convert all URLs to lowercase before filtering data, like this:
+
+```js
+data.filter((item) => item.name.toLowerCase() === $page.params.name.toLowerCase())
+```
+:::
+
 Netlify lets you host a public version of your project for free, or you can create and host a password-protected version with Netlify's $15/month plan.
 
 ## Deploy to Netlify

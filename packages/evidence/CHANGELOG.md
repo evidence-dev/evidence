@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 20.0.0
+
+### Patch Changes
+
+- Updated dependencies [78f2fab2]
+- Updated dependencies [75560a31]
+- Updated dependencies [de129514]
+  - @evidence-dev/core-components@1.2.0
+  - @evidence-dev/preprocess@3.1.0
+  - @evidence-dev/db-orchestrator@2.2.3
+
 ## 20.0.0-usql.8
 
 ### Patch Changes

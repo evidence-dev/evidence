@@ -1,5 +1,19 @@
 # @evidence-dev/components
 
+## 2.5.0
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
+### Patch Changes
+
+- 7b45b820: Swap out large favicon images
+- 75560a31: Consolidate tailwind presets into tailwind package
+- Updated dependencies [78f2fab2]
+- Updated dependencies [75560a31]
+  - @evidence-dev/core-components@1.2.0
+
 ## 3.0.0-usql.7
 
 ### Patch Changes
