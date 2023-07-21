@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.3
+
+### Patch Changes
+
+- ca7337ba: fix prerendering for all pages
+
 ## 2.0.0-usql.2
 
 ### Patch Changes

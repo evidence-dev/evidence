@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- e1174aa1: added profile function to note load and query times
+
 ## 2.0.0-usql.1
 
 ### Patch Changes

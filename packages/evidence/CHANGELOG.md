@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.8
+
+### Patch Changes
+
+- e1174aa1: added profile function to note load and query times
+- ca7337ba: fix prerendering for all pages
+- Updated dependencies [e1174aa1]
+- Updated dependencies [ca7337ba]
+  - @evidence-dev/component-utilities@2.0.0-usql.2
+  - @evidence-dev/preprocess@4.0.0-usql.4
+  - @evidence-dev/universal-sql@2.0.0-usql.3
+  - @evidence-dev/core-components@2.0.0-usql.3
+  - @evidence-dev/plugin-connector@2.0.0-usql.7
+
 ## 20.0.0-usql.7
 
 ### Patch Changes
