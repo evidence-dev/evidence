@@ -112,6 +112,23 @@
 						Est commodo anim quis culpa.
 					</li>
 				</ul>
+				<div class="mt-6 font-mono p-3 rounded-md border">
+					Development Mode
+					<ul>
+						<li class="py-1">
+							Project Settings
+						</li>
+						<li  class="py-1">
+							Deploy 
+						</li>
+						<li  class="py-1">
+							Docs 
+						</li>
+						<li  class="py-1">
+							Slack 
+						</li>
+					</ul>
+				</div>
 			</div>
 		</aside>
 	</div>
