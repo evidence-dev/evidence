@@ -40,6 +40,7 @@
 		"svelte-tiny-linked-charts": "1.1.5"
 	},
 	"devDependencies": {
+		"@steeze-ui/heroicons": "^2.2.3",
 		"@storybook/addon-essentials": "^7.0.9",
 		"@storybook/addon-interactions": "^7.0.9",
 		"@storybook/addon-links": "^7.0.9",

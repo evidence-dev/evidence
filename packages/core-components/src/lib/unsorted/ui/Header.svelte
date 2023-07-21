@@ -3,20 +3,22 @@
 	export let mobileSidebarOpen;
 </script>
 
-<div
-	class="sticky top-0 z-50 flex h-12 shrink-0 items-center gap-x-4 border-b border-gray-200/40 bg-white/40 backdrop-blur-md px-4 sm:gap-x-6 sm:px-6 lg:px-8"
-	class:solid={mobileSidebarOpen}
+<header
+	class=" sticky top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b bg-white/90 backdrop-blur"
 >
-	<div class="flex items-center gap-3">
+	<div class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start">
+		<a href="/" class="text-gray-800 font-sans text-md tracking-wide font-semibold hidden md:block">
+			evidence
+		</a>
 		<button
 			type="button"
-			class="text-gray-900 hover:bg-gray-100 rounded-lg p-1 lg:hidden transition-all duration-500"
+			class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 md:hidden transition-all duration-500"
 			on:click={() => {
 				mobileSidebarOpen = !mobileSidebarOpen;
 			}}
 		>
 			{#if mobileSidebarOpen}
-				<span class="sr-only">Open sidebar</span>
+				<span class="sr-only">Close sidebar</span>
 
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +31,7 @@
 					/>
 				</svg>
 			{:else}
-				<span class="sr-only">Close sidebar</span>
+				<span class="sr-only">Open sidebar</span>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
@@ -46,82 +48,46 @@
 				</svg>
 			{/if}
 		</button>
-		<div>
-			<a href="/" class="font-sans text-md text-gray-800 tracking-wide font-semibold antialiased">
-				evidence
-			</a>
+	</div>
+</header>
+
+<!-- <div class="relative">
+	<button
+		type="button"
+		class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900"
+		aria-expanded="false"
+	>
+		<span>Solutions</span>
+		<svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+			<path
+				fill-rule="evenodd"
+				d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+				clip-rule="evenodd"
+			/>
+		</svg>
+	</button>
+	<div class="absolute left-1/2 z-10 mt-5 flex w-screen max-w-min -translate-x-1/2 px-4">
+		<div
+			class="w-56 shrink border rounded-md bg-white p-1 text-sm leading-6 text-gray-950 shadow-md ring-1 ring-gray-900/5"
+		>
+			<a href="#" class="block p-2 hover:bg-gray-100 rounded-md transition-colors duration-75"
+				>Analytics</a
+			>
+			<a href="#" class="block p-2 hover:bg-gray-100 rounded-md transition-colors duration-75"
+				>Engagement</a
+			>
+			<a href="#" class="block p-2 hover:bg-gray-100 rounded-md transition-colors duration-75"
+				>Security</a
+			>
+			<a href="#" class="block p-2 hover:bg-gray-100 rounded-md transition-colors duration-75"
+				>Integrations</a
+			>
+			<a href="#" class="block p-2 hover:bg-gray-100 rounded-md transition-colors duration-75"
+				>Automations</a
+			>
+			<a href="#" class="block p-2 hover:bg-gray-100 rounded-md transition-colors duration-75"
+				>Reports</a
+			>
 		</div>
 	</div>
-	<!-- Separator -->
-	<!-- <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" /> -->
-
-	<div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-		<div class="flex items-center gap-x-4 lg:gap-x-6">
-			<!-- Separator -->
-			<!-- <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" /> -->
-
-			<!-- dropdown -->
-			{#if dropDownOpen}
-				<div class="relative block xl:hidden">
-					<button
-						type="button"
-						class="-m-1.5 flex items-center p-1.5"
-						id="user-menu-button"
-						aria-expanded="false"
-						aria-haspopup="true"
-					>
-						<span class="sr-only">Open page menu</span>
-						<span class="hidden lg:flex lg:items-center">
-							<span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 24 24"
-									fill="currentColor"
-									class="w-6 h-6"
-								>
-									<path
-										fill-rule="evenodd"
-										d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-										clip-rule="evenodd"
-									/>
-								</svg>
-							</span>
-						</span>
-					</button>
-					<div
-						class="absolute right-0 z-10 mt-2.5 w-44 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none px-3"
-						role="menu"
-						aria-orientation="vertical"
-						aria-labelledby="user-menu-button"
-						tabindex="-1"
-					>
-						<!-- Active: "bg-gray-50", Not Active: "" -->
-						<a
-							href="#"
-							class="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 rounded-md"
-							role="menuitem"
-							tabindex="-1"
-							id="user-menu-item-1">Show Queries</a
-						>
-						<a
-							href="#"
-							class="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 rounded-md"
-							role="menuitem"
-							tabindex="-1"
-							id="user-menu-item-1">Settings</a
-						>
-					</div>
-				</div>
-			{/if}
-		</div>
-	</div>
-</div>
-
-
-<style>
-	/* conditional styling of the header */
-	.solid {
-		@apply bg-white border-gray-200 transition-colors duration-200;
-	}
-
-</style>
+</div> -->

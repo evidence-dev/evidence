@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { onMount } from 'svelte';
 	let headers;
@@ -13,7 +9,7 @@
 		});
 	});
 </script>
-
+<p>Hello!</p>
 {#if headers && headers.length > 1}
 	{#each headers as header, i}
 		<a

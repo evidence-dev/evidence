@@ -59,12 +59,11 @@
 </script>
 
 <script>
-	import '../fonts.css';
 	import '../app.css';
 
 	import { navigating } from '$app/stores';
 	import { dev } from '$app/environment';
-	import { Header, Sidebar, LoadingSkeleton } from '@evidence-dev/core-components';
+	import { LoadingSkeleton, Sidebar, BreadCrumbs, Header, ContentsList } from '@evidence-dev/core-components';
 	let open = false;
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -75,20 +74,45 @@
 	}
 </script>
 
-<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased select-none">
+<div
+	data-sveltekit-preload-data={prefetchStrategy}
+	class="antialiased text-gray-900 bg-white select-none"
+>
 	<Header bind:mobileSidebarOpen />
-	<Sidebar {fileTree} bind:mobileSidebarOpen />
-	<div class="lg:pl-72">
-		<main class="py-10">
-			<div class="px-4 sm:px-6 lg:px-8">
-				<article class="max-w-2xl mx-auto select-auto">
-					{#if !$navigating}
-						<slot />
-					{:else}
-						<LoadingSkeleton /> 
-					{/if}
-				</article>
+	<div class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex justify-start">
+		<Sidebar {fileTree} bind:mobileSidebarOpen />
+
+		<main class="flex-1 overflow-x-hidden md:px-4 py-8">
+			<div class="">
+				{#if !$navigating}
+					<BreadCrumbs {fileTree} />
+					<slot />
+				{:else}
+					<LoadingSkeleton />
+				{/if}
 			</div>
 		</main>
+		<aside class="hidden lg:block w-48">
+			<div class="fixed h-screen md:px-4 py-8 text-sm text-gray-500 ">
+				Contents
+				<ul>
+					<li class="py-1">
+						Est commodo anim quis culpa.
+					</li>
+					<li  class="py-1">
+						Enim minim nostrud laboris. 
+					</li>
+					<li  class="py-1">
+						Id est labore labore. Laboris quis 
+					</li>
+					<li  class="py-1">
+						Exercitation minim anim incididunt officia. 
+					</li>
+					<li  class="py-1">
+						Est commodo anim quis culpa.
+					</li>
+				</ul>
+			</div>
+		</aside>
 	</div>
 </div>

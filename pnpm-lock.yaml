@@ -132,6 +132,7 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/tailwind': workspace:^
+      '@steeze-ui/heroicons': ^2.2.3
       '@steeze-ui/simple-icons': ^1.5.0
       '@steeze-ui/svelte-icon': ^1.4.1
       '@steeze-ui/tabler-icons': ^2.1.0
@@ -178,6 +179,7 @@ importers:
     dependencies:
       '@evidence-dev/component-utilities': link:../component-utilities
       '@evidence-dev/tailwind': link:../tailwind
+      '@steeze-ui/heroicons': 2.2.3
       '@steeze-ui/simple-icons': 1.5.0_svelte@3.59.1
       '@steeze-ui/svelte-icon': 1.4.1_svelte@3.59.1
       '@steeze-ui/tabler-icons': 2.1.0_svelte@3.59.1
@@ -5743,6 +5745,10 @@ packages:
       lodash.union: 4.6.0
       lodash.values: 4.3.0
     dev: true
+
+  /@steeze-ui/heroicons/2.2.3:
+    resolution: {integrity: sha512-bv4YK375U9TDS50SmJ5VdFy2UmMhgKbJCCbo6IUU3qs2luEj2VX6sQoDy96j8AIKttxMd62ih1j0lZj7CTjIfA==}
+    dev: false
 
   /@steeze-ui/simple-icons/1.5.0_svelte@3.59.1:
     resolution: {integrity: sha512-B/lxdcopBPsd4QnbuFuR1/20jHX03e/Kelv88IdCN4rpX8pVshBVJmnhj4ASWmitpkbVjlih4Tx6yBQ4l+djHA==}
