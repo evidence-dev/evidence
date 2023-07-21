@@ -30,33 +30,35 @@ export const QueryResultSchema = z
 			})
 		)
 	})
-	.refine((data) => {
-		// Validate that all columnTypes appear
-		if (data.rows.length) {
-			// Filter to column types where name is not in row
-			// Then map columnTypes to their names to make things easier
-			// If there are any columns that were not filtered out; provide an error to zod
+	.refine(
+		(data) => {
+			// Validate that all columnTypes appear
+			if (data.rows.length) {
+				// Filter to column types where name is not in row
+				// Then map columnTypes to their names to make things easier
+				// If there are any columns that were not filtered out; provide an error to zod
+				const missingColumns = data.columnTypes
+					.filter((ct) => !(ct.name in data.rows[0]))
+					.map((ct) => ct.name);
+
+				if (missingColumns.length) {
+					return false;
+				}
+			}
+			return true;
+		},
+		(data) => {
 			const missingColumns = data.columnTypes
 				.filter((ct) => !(ct.name in data.rows[0]))
 				.map((ct) => ct.name);
-
-			if (missingColumns.length) {
-				return false
-			}
-		}
-		return true;
-	}, (data) => {
-		const missingColumns = data.columnTypes
-				.filter((ct) => !(ct.name in data.rows[0]))
-				.map((ct) => ct.name);
-		return {
-			path: ["columnTypes"],
-			message: `Datasource result has columns declared that are missing from results: ${missingColumns.join(
-				', '
+			return {
+				path: ['columnTypes'],
+				message: `Datasource result has columns declared that are missing from results: ${missingColumns.join(
+					', '
 				)}`
-		};
-
-	})
+			};
+		}
+	)
 	.refine(
 		(data) => {
 			// Validate that all columns in the returned rows have declared column types
@@ -76,7 +78,7 @@ export const QueryResultSchema = z
 			const colNames = data.columnTypes.map((ct) => ct.name);
 			const extraColumns = Object.keys(data.rows[0]).filter((rowKey) => !colNames.includes(rowKey));
 			return {
-				path: ["rows"],
+				path: ['rows'],
 				message: `First row of results columns not provided in columnTypes: ${extraColumns.join(
 					', '
 				)}`
