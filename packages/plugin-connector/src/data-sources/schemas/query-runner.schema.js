@@ -13,12 +13,7 @@ export const QueryResultSchema = z
 				// result has no rows, we can't validate this
 				// but this is a correct result set
 				if (data.length === 0) return true;
-				try {
-					z.record(z.string(), z.any()).parse(data[0]);
-				} catch {
-					return false;
-				}
-				return true;
+				return z.record(z.string(), z.any()).safeParse(data[0]).success;
 			},
 			{ message: 'Data connector returned invalid rows' }
 		),
