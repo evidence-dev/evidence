@@ -83,7 +83,10 @@ export const QueryResultSchema = z
 
 export const QueryRunnerSchema = z
 	.function()
-	.args(z.string({ description: 'QueryString' }), z.string({ description: 'QueryFilepath' }))
+	.args(
+		z.string({ description: 'QueryString' }).or(z.null({ description: 'ExceededSizeQueryString' })),
+		z.string({ description: 'QueryFilepath' })
+	)
 	.returns(z.promise(QueryResultSchema.or(z.null())));
 
 export const DatabaseConnectorFactorySchema = z
