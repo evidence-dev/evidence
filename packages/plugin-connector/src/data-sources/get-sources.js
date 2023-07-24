@@ -65,6 +65,9 @@ export const getSources = async (sourcesDir) => {
 	const datasourceSpecs = await Promise.all(
 		sourcesDirectories.map(async (dirName) => {
 			const sourceDir = path.join(sourcesDir, dirName);
+			const possibleDir = await fs.stat(sourceDir);
+			if (!possibleDir.isDirectory()) return false;
+
 			const contents = await fs.readdir(sourceDir);
 
 			const connParams = await loadConnectionConfiguration(sourceDir);
@@ -87,7 +90,7 @@ export const getSources = async (sourcesDir) => {
 				queries: queries
 			};
 		})
-	).then((r) => r.filter(Boolean));
+	).then((r) => /** @type {Exclude<typeof r[number], false>[]} */ (r.filter(Boolean)));
 
 	return datasourceSpecs;
 };
