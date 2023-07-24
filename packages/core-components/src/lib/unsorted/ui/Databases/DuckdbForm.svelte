@@ -26,7 +26,7 @@
 			id: 'filename',
 			label: 'Filename',
 			type: 'filename',
-			additionalInstructions: 'Name of file stored in the same directory as your Evidence project',
+			additionalInstructions: 'Name of file stored in the same directory as your Evidence project. For MotherDuck, use "md:?motherduck_token=[TOKEN], and select No extension.',
 			optional: false,
 			override: false,
 			placeholder: 'mydatabase',
@@ -113,8 +113,9 @@
 				bind:value={ext}
 				on:change={handleKey}
 			>
-				<option value=".db">.db</option>
 				<option value=".duckdb">.duckdb</option>
+				<option value=".db">.db</option>
+				<option value="">No extension</option>
 			</select>
 
 			<input
