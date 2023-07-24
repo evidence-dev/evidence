@@ -3,7 +3,7 @@ import { QueryResultSchema } from './query-runner.schema';
 
 export const DatasourceQuerySchema = z.object({
 	filepath: z.string(),
-	content: z.string()
+	content: z.string().or(z.null())
 });
 
 export const DatasourceSpecFileSchema = z.object({

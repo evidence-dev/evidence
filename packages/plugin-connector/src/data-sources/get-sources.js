@@ -1,5 +1,4 @@
 import fs from 'fs/promises';
-import { statSync } from 'fs';
 import path from 'path';
 import yaml from 'yaml';
 import chalk from 'chalk';
@@ -158,21 +157,25 @@ async function loadConnectionOptions(sourceDir) {
  * containing the filepath and content of each query file.
  */
 async function getQueries(sourceDir, contents) {
-	const queryFiles = contents
-		.filter((s) => s !== 'connection.yaml' && s !== 'connection.options.yaml')
-		.filter((s) => {
-			const smallEnough = statSync(path.join(sourceDir, s)).size < 100 * 1024 * 1024;
-			if (!smallEnough) {
-				console.warn(`${s} is not being treated as a source query, file size too large`);
-			}
-			return smallEnough;
-		});
+	const queryFiles = contents.filter(
+		(s) => s !== 'connection.yaml' && s !== 'connection.options.yaml'
+	);
 
 	const queries = await Promise.all(
-		queryFiles.map(async (filename) => ({
-			filepath: path.join(sourceDir, filename),
-			content: await fs.readFile(path.join(sourceDir, filename)).then((r) => r.toString())
-		}))
+		queryFiles.map(async (filename) => {
+			const filepath = path.join(sourceDir, filename);
+			const { size } = await fs.stat(filepath);
+			let content;
+			if (size > 100 * 1024 * 1024) {
+				console.warn(`${filename} is over 100MB, skipping`);
+				content = null;
+			} else {
+				content = await fs.readFile(path.join(sourceDir, filename)).then((r) => r.toString());
+			}
+
+			return { filepath, content };
+		})
 	);
+
 	return queries;
 }
