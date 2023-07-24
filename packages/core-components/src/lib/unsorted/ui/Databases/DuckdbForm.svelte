@@ -26,7 +26,8 @@
 			id: 'filename',
 			label: 'Filename',
 			type: 'filename',
-			additionalInstructions: 'Name of file stored in the same directory as your Evidence project. For MotherDuck, use "md:?motherduck_token=[TOKEN], and select No extension.',
+			additionalInstructions:
+				'Name of file stored in the same directory as your Evidence project. For MotherDuck, use "md:?motherduck_token=[TOKEN], and select No extension.',
 			optional: false,
 			override: false,
 			placeholder: 'mydatabase',
