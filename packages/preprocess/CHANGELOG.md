@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 3.1.1
+
+### Patch Changes
+
+- 9f568270: stop exporting the metadata object from mdsvex frontmatter
+
 ## 3.1.0
 
 ### Minor Changes
