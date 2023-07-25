@@ -37,7 +37,7 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "4.4.7"
+		"vite": "4.3.9"
 	},
 	"scripts": {
 		"build:dev-workspace": "run-s build:example-project",
