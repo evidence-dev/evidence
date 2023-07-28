@@ -12,8 +12,8 @@ import {
 	validConfigParsed,
 	validMinimalConfig,
 	validMinimalConfigParsed
-} from './resolve-evidence-config.fixture';
-import { loadConfig } from './resolve-evidence-config';
+} from './load-config.fixture';
+import { loadConfig } from './load-config';
 
 fs.readFile = /** @type {any} */ (vi.fn());
 const mockedReadFile = vi.mocked(fs.readFile);
