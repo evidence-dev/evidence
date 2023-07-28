@@ -5,15 +5,17 @@ const { loadConfig } = require('@evidence-dev/plugin-connector/load-config');
 const config = {
 	content: {
 		relative: true,
-		get files()  {
-			const pluginConfig = loadConfig('../../')
+		get files() {
+			const pluginConfig = loadConfig('../../');
 			const components = pluginConfig.components;
-			const componentPaths = Object.keys(components).map((pluginName) => [
-				`./node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`,
-				`../../node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`
-			]).flat()
+			const componentPaths = Object.keys(components)
+				.map((pluginName) => [
+					`./node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`,
+					`../../node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`
+				])
+				.flat();
 
-			console.log({componentPaths})
+			console.log({ componentPaths });
 			return [
 				'./src/**/*.{html,js,svelte,ts,md}', // This is used for everything in base evidence template
 				...componentPaths
