@@ -1,5 +1,11 @@
 # evidence-test-environment
 
+## 3.0.0-usql.13
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.13
+
 ## 3.0.0-usql.12
 
 ### Patch Changes

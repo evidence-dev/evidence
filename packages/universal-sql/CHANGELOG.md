@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- Queries now wait for setParquetUrls, and will time out if they are not processed within 5 seconds
+
 ## 2.0.0-usql.5
 
 ### Patch Changes
