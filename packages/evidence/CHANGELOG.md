@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.12
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.5
+  - @evidence-dev/plugin-connector@2.0.0-usql.11
+
 ## 20.0.0-usql.11
 
 ### Patch Changes

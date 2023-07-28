@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- Don't count the database as initialized until parquet urls are set (tables are created)
+
 ## 2.0.0-usql.4
 
 ### Patch Changes
