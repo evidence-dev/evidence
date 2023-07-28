@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.10
+
+### Minor Changes
+
+- cfb0f248: Respect component plugin's tailwind configuration
+
+### Patch Changes
+
+- Updated dependencies [cfb0f248]
+- Updated dependencies [8ffbb361]
+  - @evidence-dev/plugin-connector@2.0.0-usql.9
+
 ## 20.0.0-usql.9
 
 ### Patch Changes

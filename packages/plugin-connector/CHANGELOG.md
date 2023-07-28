@@ -1,5 +1,15 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.9
+
+### Minor Changes
+
+- cfb0f248: Respect component plugin's tailwind configuration
+
+### Patch Changes
+
+- 8ffbb361: skip massive files and non-directories in sources
+
 ## 2.0.0-usql.8
 
 ### Minor Changes

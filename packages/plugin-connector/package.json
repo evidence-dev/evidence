@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "2.0.0-usql.8",
+	"version": "2.0.0-usql.9",
 	"description": "",
 	"type": "module",
 	"bin": "./dist/debugger/cli.js",
@@ -64,7 +64,7 @@
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
-			"require": "./dist/index.cjs"	
+			"require": "./dist/index.cjs"
 		},
 		"./load-config": "./dist/loadConfig/load-config.js"
 	},
