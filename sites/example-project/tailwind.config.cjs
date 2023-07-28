@@ -1,14 +1,24 @@
 const evidenceTailwind = require('@evidence-dev/tailwind').config;
+const { loadConfig } = require('@evidence-dev/plugin-connector/load-config');
 
 /** @type {import("tailwindcss").Config} */
 const config = {
 	content: {
 		relative: true,
-		files: [
-			'./src/**/*.{html,js,svelte,ts,md}', // This is used for everything in base evidence template
-			'./node_modules/@evidence-dev/core-components/dist/**/*.{html,js,svelte,ts,md}',
-			'../../node_modules/@evidence-dev/core-components/dist/**/*.{html,js,svelte,ts,md}'
-		]
+		get files()  {
+			const pluginConfig = loadConfig('../../')
+			const components = pluginConfig.components;
+			const componentPaths = Object.keys(components).map((pluginName) => [
+				`./node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`,
+				`../../node_modules/${pluginName}/dist/**/*.{html,js,svelte,ts,md}`
+			]).flat()
+
+			console.log({componentPaths})
+			return [
+				'./src/**/*.{html,js,svelte,ts,md}', // This is used for everything in base evidence template
+				...componentPaths
+			];
+		}
 	},
 	theme: {
 		extend: {}
