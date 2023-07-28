@@ -1,4 +1,4 @@
-import { arrowTableToJSON } from './both.js';
+import { arrowTableToJSON, getPromise, withTimeout } from './both.js';
 import {
 	AsyncDuckDB,
 	ConsoleLogger,
@@ -14,20 +14,9 @@ let db;
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDBConnection} */
 let connection;
 
-/**
- * Indicate if the database has already started initializing
- */
+const { resolve: resolveInit, reject: rejectInit, promise: initPromise } = getPromise();
+const { resolve: resolveTables, reject: rejectTables, promise: tablesPromise } = getPromise();
 let initializing = false;
-
-// Unwrap a promise so we can manually resolve / reject it
-let resolveInit, rejectInit;
-/**
- * DB Initialization promise. Resolves once Parquet URLs are set.
- */
-let initPromise = new Promise((res, rej) => {
-	resolveInit = res;
-	rejectInit = rej;
-});
 
 /**
  * Initializes the database.
@@ -40,14 +29,7 @@ export async function initDB() {
 
 	// If the database is already initializing, don't try to do it twice
 	// Instead, let the call wait for the initPromise
-	if (initializing)
-		return Promise.race([
-			initPromise,
-			new Promise((_, rej) =>
-				// If the database isn't initialized after 5 seconds, throw an error
-				setTimeout(() => rej(new Error('Timeout while initializing database')), 5000)
-			)
-		]);
+	if (initializing) return withTimeout(initPromise);
 	// This call is the first (to execute), don't let anybody else try
 	// to initialize the database
 	initializing = true;
@@ -74,6 +56,7 @@ export async function initDB() {
 		await db.instantiate(DUCKDB_CONFIG.mainModule);
 		await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
 		connection = await db.connect();
+		resolveInit();
 	} catch (e) {
 		rejectInit(e);
 		throw e;
@@ -99,6 +82,7 @@ export async function updateSearchPath(schemas) {
  */
 export async function setParquetURLs(urls) {
 	if (!db) await initDB();
+
 	try {
 		for (const source in urls) {
 			await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
@@ -111,9 +95,9 @@ export async function setParquetURLs(urls) {
 				);
 			}
 		}
-		resolveInit();
+		resolveTables();
 	} catch (e) {
-		rejectInit(e);
+		rejectTables(e);
 		throw e;
 	}
 }
@@ -125,8 +109,12 @@ export async function setParquetURLs(urls) {
  * @returns {Promise<import("apache-arrow").Table | null>}
  */
 export async function query(sql) {
+	// After this point, the database has been initialized
 	if (!db) await initDB();
+	// We need to wait for tables to be available
+	await withTimeout(tablesPromise);
 
+	// Now we can safely execute our query
 	const res = await connection.query(sql).then(arrowTableToJSON);
 
 	return res;

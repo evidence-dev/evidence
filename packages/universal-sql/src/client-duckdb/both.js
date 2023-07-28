@@ -42,3 +42,27 @@ export function arrowTableToJSON(table) {
 
 	return arr;
 }
+
+/**
+ * Creates a new Promise object and returns it along with its resolve and reject functions.
+ *
+ * @return {{resolve: CallableFunction, reject: CallableFunction, promise: Promise<void>}} An object containing the resolve and reject functions, as well as the Promise object.
+ */
+export function getPromise() {
+	let resolve, reject;
+	let promise = new Promise((res, rej) => {
+		resolve = res;
+		reject = rej;
+	});
+	return { resolve, reject, promise };
+}
+
+export function withTimeout(p) {
+	return Promise.race([
+		p,
+		new Promise((_, rej) =>
+			// If the database isn't initialized after 5 seconds, throw an error
+			setTimeout(() => rej(new Error('Timeout while initializing database')), 5000)
+		)
+	]);
+}

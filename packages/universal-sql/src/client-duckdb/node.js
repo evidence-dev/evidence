@@ -1,4 +1,4 @@
-import { arrowTableToJSON } from './both.js';
+import { arrowTableToJSON, getPromise } from './both.js';
 import {
 	ConsoleLogger,
 	createDuckDB,
@@ -8,6 +8,7 @@ import {
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
 import { cache_for_hash } from '../cache-duckdb.js';
+import { withTimeout } from './both.js';
 
 const require = createRequire(import.meta.url);
 const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
@@ -20,19 +21,8 @@ let db;
 /** @type {import("@duckdb/duckdb-wasm/dist/types/src/bindings/connection").DuckDBConnection} */
 let connection;
 
-/**
- * Indicate if the database has already started initializing
- */
+const { resolve: resolveInit, reject: rejectInit, promise: initPromise } = getPromise();
 let initializing = false;
-
-// Unwrap a promise so we can manually resolve / reject it
-
-let resolveInit, rejectInit;
-/** @type {Promise<void>} */
-let initPromise = new Promise((res, rej) => {
-	resolveInit = res;
-	rejectInit = rej;
-});
 
 /**
  * Initializes the database.
@@ -45,14 +35,7 @@ export async function initDB() {
 
 	// If the database is already initializing, don't try to do it twice
 	// Instead, let the call wait for the initPromise
-	if (initializing)
-		return Promise.race([
-			initPromise,
-			new Promise((_, rej) =>
-				// If the database isn't initialized after 5 seconds, throw an error
-				setTimeout(() => rej(new Error('Timeout while initializing database')), 5000)
-			)
-		]);
+	if (initializing) return withTimeout(initPromise);
 
 	// This call is the first (to execute), don't let anybody else try
 	// to initialize the database
@@ -76,6 +59,7 @@ export async function initDB() {
 		await db.instantiate();
 		db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
 		connection = db.connect();
+		resolveInit();
 	} catch (e) {
 		rejectInit(e);
 		throw e;
@@ -98,22 +82,16 @@ export function updateSearchPath(schemas) {
  * @returns {void}
  */
 export async function setParquetURLs(urls) {
-	try {
-		for (const source in urls) {
-			connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
-			for (const url of urls[source]) {
-				const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
-				const file_name = `${table}.parquet`;
-				db.registerFileURL(file_name, `./static${url}`, DuckDBDataProtocol.NODE_FS, false);
-				connection.query(
-					`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
-				);
-			}
+	for (const source in urls) {
+		connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
+		for (const url of urls[source]) {
+			const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+			const file_name = `${table}.parquet`;
+			db.registerFileURL(file_name, `./static${url}`, DuckDBDataProtocol.NODE_FS, false);
+			connection.query(
+				`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
+			);
 		}
-		resolveInit();
-	} catch (e) {
-		rejectInit(e);
-		throw e;
 	}
 }
 
