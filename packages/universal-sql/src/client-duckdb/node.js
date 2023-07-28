@@ -21,30 +21,59 @@ let db;
 let connection;
 
 /**
+ * Indicate if the database has already started initializing
+ */
+let initializing = false;
+
+// Unwrap a promise so we can manually resolve / reject it
+
+let resolveInit, rejectInit;
+/** @type {Promise<void>} */
+let initPromise = new Promise((res, rej) => {
+	resolveInit = res;
+	rejectInit = rej;
+});
+
+/**
  * Initializes the database.
  *
  * @returns {Promise<void>}
  */
 export async function initDB() {
+	// If the database is already available, don't do anything
 	if (db) return;
 
-	const DUCKDB_BUNDLES = {
-		mvp: {
-			mainModule: resolve(DUCKDB_DIST, './duckdb-mvp.wasm'),
-			mainWorker: resolve(DUCKDB_DIST, './duckdb-node-mvp.worker.cjs')
-		},
-		eh: {
-			mainModule: resolve(DUCKDB_DIST, './duckdb-eh.wasm'),
-			mainWorker: resolve(DUCKDB_DIST, './duckdb-node-eh.worker.cjs')
-		}
-	};
-	const logger = new ConsoleLogger();
+	// If the database is already initializing, don't try to do it twice
+	// Instead, let the call wait for the initPromise
+	if (initializing) return initPromise;
+	// This call is the first (to execute), don't let anybody else try
+	// to initialize the database
+	initializing = true;
 
-	// and synchronous database
-	db = await createDuckDB(DUCKDB_BUNDLES, logger, NODE_RUNTIME);
-	await db.instantiate();
-	db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
-	connection = db.connect();
+	try {
+		const DUCKDB_BUNDLES = {
+			mvp: {
+				mainModule: resolve(DUCKDB_DIST, './duckdb-mvp.wasm'),
+				mainWorker: resolve(DUCKDB_DIST, './duckdb-node-mvp.worker.cjs')
+			},
+			eh: {
+				mainModule: resolve(DUCKDB_DIST, './duckdb-eh.wasm'),
+				mainWorker: resolve(DUCKDB_DIST, './duckdb-node-eh.worker.cjs')
+			}
+		};
+		const logger = new ConsoleLogger();
+	
+		// and synchronous database
+		db = await createDuckDB(DUCKDB_BUNDLES, logger, NODE_RUNTIME);
+		await db.instantiate();
+		db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
+		connection = db.connect();
+		resolveInit()
+	} catch (e) {
+		rejectInit(e)
+		throw e
+	}
+
 }
 
 /**

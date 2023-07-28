@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- Reduce risk of queries attempting to execute prior to database initialization
+
 ## 2.0.0-usql.3
 
 ### Patch Changes

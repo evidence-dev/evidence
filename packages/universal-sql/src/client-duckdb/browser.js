@@ -15,35 +15,61 @@ let db;
 let connection;
 
 /**
+ * Indicate if the database has already started initializing
+ */
+let initializing = false;
+
+// Unwrap a promise so we can manually resolve / reject it
+let resolveInit, rejectInit
+let initPromise = new Promise((res, rej) => {
+	resolveInit = res;
+	rejectInit = rej;
+});
+
+/**
  * Initializes the database.
  *
  * @returns {Promise<void>}
  */
 export async function initDB() {
+	// If the database is already available, don't do anything
 	if (db) return;
 
-	const useEh = await getPlatformFeatures().then((x) => x.wasmExceptions);
+	// If the database is already initializing, don't try to do it twice
+	// Instead, let the call wait for the initPromise
+	if (initializing) return initPromise
+	// This call is the first (to execute), don't let anybody else try
+	// to initialize the database
+	initializing = true;
+	try {
+		const useEh = await getPlatformFeatures().then((x) => x.wasmExceptions);
 
-	const DUCKDB_CONFIG = useEh
-		? {
-				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default,
-				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker'))
-					.default
-		  }
-		: {
-				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default,
-				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
-					.default
-		  };
+		const DUCKDB_CONFIG = useEh
+			? {
+					mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default,
+					mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker'))
+						.default
+			  }
+			: {
+					mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default,
+					mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
+						.default
+			  };
+	
+		const logger = new ConsoleLogger();
+		const worker = new DUCKDB_CONFIG.mainWorker();
+	
+		// and asynchronous database
+		db = new AsyncDuckDB(logger, worker);
+		await db.instantiate(DUCKDB_CONFIG.mainModule);
+		await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
+		connection = await db.connect();
+		resolveInit()
+	} catch (e) {
+		rejectInit(e)
+		throw e
+	}
 
-	const logger = new ConsoleLogger();
-	const worker = new DUCKDB_CONFIG.mainWorker();
-
-	// and asynchronous database
-	db = new AsyncDuckDB(logger, worker);
-	await db.instantiate(DUCKDB_CONFIG.mainModule);
-	await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
-	connection = await db.connect();
 }
 
 /**
