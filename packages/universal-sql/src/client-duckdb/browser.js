@@ -20,7 +20,10 @@ let connection;
 let initializing = false;
 
 // Unwrap a promise so we can manually resolve / reject it
-let resolveInit, rejectInit
+let resolveInit, rejectInit;
+/**
+ * DB Initialization promise. Resolves once Parquet URLs are set.
+ */
 let initPromise = new Promise((res, rej) => {
 	resolveInit = res;
 	rejectInit = rej;
@@ -37,7 +40,14 @@ export async function initDB() {
 
 	// If the database is already initializing, don't try to do it twice
 	// Instead, let the call wait for the initPromise
-	if (initializing) return initPromise
+	if (initializing)
+		return Promise.race([
+			initPromise,
+			new Promise((_, rej) =>
+				// If the database isn't initialized after 5 seconds, throw an error
+				setTimeout(() => rej(new Error('Timeout while initializing database')), 5000)
+			)
+		]);
 	// This call is the first (to execute), don't let anybody else try
 	// to initialize the database
 	initializing = true;
@@ -55,21 +65,19 @@ export async function initDB() {
 					mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
 						.default
 			  };
-	
+
 		const logger = new ConsoleLogger();
 		const worker = new DUCKDB_CONFIG.mainWorker();
-	
+
 		// and asynchronous database
 		db = new AsyncDuckDB(logger, worker);
 		await db.instantiate(DUCKDB_CONFIG.mainModule);
 		await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
 		connection = await db.connect();
-		resolveInit()
 	} catch (e) {
-		rejectInit(e)
-		throw e
+		rejectInit(e);
+		throw e;
 	}
-
 }
 
 /**
@@ -91,17 +99,22 @@ export async function updateSearchPath(schemas) {
  */
 export async function setParquetURLs(urls) {
 	if (!db) await initDB();
-
-	for (const source in urls) {
-		await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
-		for (const url of urls[source]) {
-			const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
-			const file_name = `${table}.parquet`;
-			await db.registerFileURL(file_name, url, DuckDBDataProtocol.HTTP, false);
-			await connection.query(
-				`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
-			);
+	try {
+		for (const source in urls) {
+			await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
+			for (const url of urls[source]) {
+				const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+				const file_name = `${table}.parquet`;
+				await db.registerFileURL(file_name, url, DuckDBDataProtocol.HTTP, false);
+				await connection.query(
+					`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
+				);
+			}
 		}
+		resolveInit();
+	} catch (e) {
+		rejectInit(e);
+		throw e;
 	}
 }
 

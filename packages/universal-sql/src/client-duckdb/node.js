@@ -45,7 +45,15 @@ export async function initDB() {
 
 	// If the database is already initializing, don't try to do it twice
 	// Instead, let the call wait for the initPromise
-	if (initializing) return initPromise;
+	if (initializing)
+		return Promise.race([
+			initPromise,
+			new Promise((_, rej) =>
+				// If the database isn't initialized after 5 seconds, throw an error
+				setTimeout(() => rej(new Error('Timeout while initializing database')), 5000)
+			)
+		]);
+
 	// This call is the first (to execute), don't let anybody else try
 	// to initialize the database
 	initializing = true;
@@ -62,18 +70,16 @@ export async function initDB() {
 			}
 		};
 		const logger = new ConsoleLogger();
-	
+
 		// and synchronous database
 		db = await createDuckDB(DUCKDB_BUNDLES, logger, NODE_RUNTIME);
 		await db.instantiate();
 		db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
 		connection = db.connect();
-		resolveInit()
 	} catch (e) {
-		rejectInit(e)
-		throw e
+		rejectInit(e);
+		throw e;
 	}
-
 }
 
 /**
@@ -92,16 +98,22 @@ export function updateSearchPath(schemas) {
  * @returns {void}
  */
 export async function setParquetURLs(urls) {
-	for (const source in urls) {
-		connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
-		for (const url of urls[source]) {
-			const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
-			const file_name = `${table}.parquet`;
-			db.registerFileURL(file_name, `./static${url}`, DuckDBDataProtocol.NODE_FS, false);
-			connection.query(
-				`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
-			);
+	try {
+		for (const source in urls) {
+			connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
+			for (const url of urls[source]) {
+				const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+				const file_name = `${table}.parquet`;
+				db.registerFileURL(file_name, `./static${url}`, DuckDBDataProtocol.NODE_FS, false);
+				connection.query(
+					`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
+				);
+			}
 		}
+		resolveInit();
+	} catch (e) {
+		rejectInit(e);
+		throw e;
 	}
 }
 
