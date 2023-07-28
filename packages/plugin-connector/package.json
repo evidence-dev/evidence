@@ -3,7 +3,7 @@
 	"version": "2.0.0-usql.8",
 	"description": "",
 	"type": "module",
-	"bin": "./dist/cli.js",
+	"bin": "./dist/debugger/cli.js",
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
@@ -51,11 +51,22 @@
 			"context": "node",
 			"source": "./src/cli.js",
 			"outputFormat": "esmodule"
+		},
+		"loadConfig": {
+			"context": "node",
+			"source": "./src/plugin-discovery/load-config.js",
+			"outputFormat": "commonjs",
+			"optimize": false,
+			"isLibrary": true,
+			"sourceMap": false
 		}
 	},
 	"exports": {
-		"import": "./dist/index.mjs",
-		"require": "./dist/index.cjs"
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"	
+		},
+		"./load-config": "./dist/loadConfig/load-config.js"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",
