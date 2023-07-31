@@ -155,6 +155,13 @@ DuckDB is a local file-based database. It should be stored in the root of your E
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
+
+#### MotherDuck
+
+To connect to MotherDuck, you will need a [service token](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
+
+In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`, and select `No extension` from the dropdown.
+
 ### CSV and Parquet files
 
 In Evidence, you can query local CSV or Parquet files directly in SQL.
