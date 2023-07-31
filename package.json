@@ -8,15 +8,15 @@
 		"@evidence-dev/preprocess": "link:packages/preprocess",
 		"@evidence-dev/plugin-connector": "link:packages/plugin-connector",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
-		"@sveltejs/adapter-static": "1.0.0",
-		"@sveltejs/kit": "1.13.0",
+		"@sveltejs/adapter-static": "2.0.2",
+		"@sveltejs/kit": "1.22.3",
 		"@tidyjs/tidy": "2.4.4",
 		"blueimp-md5": "2.19.0",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
 		"echarts": "5.4.2",
 		"echarts-stat": "1.2.0",
-		"eslint": "^8.28.0",
+		"eslint": "8.45.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"export-to-csv": "0.2.1",
@@ -37,7 +37,7 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "4.0.4"
+		"vite": "4.3.9"
 	},
 	"scripts": {
 		"build:dev-workspace": "run-s build:example-project",
