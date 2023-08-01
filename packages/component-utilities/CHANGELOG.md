@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.3
+
+### Patch Changes
+
+- 64ab3074: Add USQL Context wrappers to component utilities
+
 ## 2.0.0-usql.2
 
 ### Patch Changes

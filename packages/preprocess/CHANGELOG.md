@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.6
+
+### Patch Changes
+
+- 64ab3074: Add USQL Context wrappers to component utilities
+
 ## 4.0.0-usql.5
 
 ### Patch Changes
