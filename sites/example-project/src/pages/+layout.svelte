@@ -4,6 +4,7 @@
 	const pages = import.meta.glob(['/src/pages/*/**/+page.md']);
 	let pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', ''));
 
+	import { fly } from 'svelte/transition';
 	// Create a tree structure from the array of paths
 	let fileTree = {
 		label: 'Home',
@@ -63,9 +64,17 @@
 
 	import { navigating } from '$app/stores';
 	import { dev } from '$app/environment';
-	import { LoadingSkeleton, Sidebar, BreadCrumbs, Header, ContentsList } from '@evidence-dev/core-components';
+	import {
+		LoadingSkeleton,
+		Sidebar,
+		BreadCrumbs,
+		Header,
+		ContentsList
+	} from '@evidence-dev/core-components';
 	let open = false;
 	const prefetchStrategy = dev ? 'tap' : 'hover';
+
+	export let data;
 
 	let mobileSidebarOpen = false;
 
@@ -74,61 +83,36 @@
 	}
 </script>
 
-<div
-	data-sveltekit-preload-data={prefetchStrategy}
-	class="antialiased text-gray-900 bg-white select-none"
->
+<div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<Header bind:mobileSidebarOpen />
 	<div class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex justify-start">
 		<Sidebar {fileTree} bind:mobileSidebarOpen />
-
-		<main class="flex-1 overflow-x-hidden md:px-4 py-8">
-			<div class="">
-				{#if !$navigating}
-					<BreadCrumbs {fileTree} />
+		<main class="flex-1 overflow-x-hidden md:px-8 py-8">
+			<BreadCrumbs {fileTree} />
+			{#if !$navigating}
+				<!-- <div>
+					<div class="inline-flex h-2 w-2 bg-green-600 rounded-full justify-center items-center">
+						<div class="inline-block h-2 w-2 bg-green-600/30 rounded-full animate-ping" />
+					</div>
+					<span class="px-1 text-xs text-gray-500">Updated 7 hours ago</span>
+				</div> -->
+				<article class="select-auto">
 					<slot />
-				{:else}
-					<LoadingSkeleton />
-				{/if}
-			</div>
+				</article>
+			{:else}
+				<LoadingSkeleton />
+			{/if}
 		</main>
 		<aside class="hidden lg:block w-48">
-			<div class="fixed h-screen md:px-4 py-8 text-sm text-gray-500 ">
+			<div class="fixed w-48 h-screen md:px-4 py-8 text-sm text-gray-500">
 				Contents
 				<ul>
-					<li class="py-1">
-						Est commodo anim quis culpa.
-					</li>
-					<li  class="py-1">
-						Enim minim nostrud laboris. 
-					</li>
-					<li  class="py-1">
-						Id est labore labore. Laboris quis 
-					</li>
-					<li  class="py-1">
-						Exercitation minim anim incididunt officia. 
-					</li>
-					<li  class="py-1">
-						Est commodo anim quis culpa.
-					</li>
+					<li class="py-1">Est commodo anim quis culpa.</li>
+					<li class="py-1">Enim minim nostrud laboris.</li>
+					<li class="py-1">Id est labore labore. Laboris quis</li>
+					<li class="py-1">Exercitation minim anim incididunt officia.</li>
+					<li class="py-1">Est commodo anim quis culpa.</li>
 				</ul>
-				<div class="mt-6 font-mono p-3 rounded-md border">
-					Development Mode
-					<ul>
-						<li class="py-1">
-							Project Settings
-						</li>
-						<li  class="py-1">
-							Deploy 
-						</li>
-						<li  class="py-1">
-							Docs 
-						</li>
-						<li  class="py-1">
-							Slack 
-						</li>
-					</ul>
-				</div>
 			</div>
 		</aside>
 	</div>

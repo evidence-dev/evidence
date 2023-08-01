@@ -168,7 +168,7 @@
 						{/if}
 						{#each file.children as file, href}
 							<a
-								class=" group inline-block py-1 capitalize transition-all duration-200 truncate whitespace-break-spaces"
+								class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-200 truncate whitespace-break-spaces"
 								href={file.href}
 								class:selected={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							>

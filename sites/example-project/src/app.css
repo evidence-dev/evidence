@@ -397,27 +397,20 @@
 		@apply font-sans leading-normal mt-4 mb-1 text-xl text-gray-800 border-b border-gray-100;
 	}
 
-	/* h4.markdown {
-		font-size: 0.9em;
-		text-transform: lowercase;
-		font-family: 'Spectral SC', serif;
-		letter-spacing: 0.04em;
+	h4.markdown {
+		@apply font-sans ;
 	}
 
 	h5.markdown {
-		font-size: 0.8em;
-		font-family: 'Spectral', serif;
-		letter-spacing: 0.05em;
+		@apply font-sans ;
 	}
 
 	h6.markdown {
-		font-size: 0.65em;
-		font-family: 'Spectral', serif;
-		letter-spacing: 0.025em;
-	} */
+		@apply font-sans ;
+	}
 
 	a.markdown {
-		@apply font-medium text-stone-800 underline decoration-slate-300 decoration-1 hover:text-blue-600 hover:decoration-2 hover:decoration-blue-500 transition-all duration-200;
+		@apply font-medium underline decoration-slate-400 decoration-1 hover:text-blue-600 hover:decoration-2 hover:decoration-blue-500 transition-all duration-200;
 	}
 
 	hr.markdown {

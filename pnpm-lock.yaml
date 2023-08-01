@@ -132,6 +132,7 @@ importers:
     specifiers:
       '@evidence-dev/component-utilities': workspace:^
       '@evidence-dev/tailwind': workspace:^
+      '@rgossiaux/svelte-headlessui': ^2.0.0
       '@steeze-ui/heroicons': ^2.2.3
       '@steeze-ui/simple-icons': ^1.5.0
       '@steeze-ui/svelte-icon': ^1.4.1
@@ -179,7 +180,6 @@ importers:
     dependencies:
       '@evidence-dev/component-utilities': link:../component-utilities
       '@evidence-dev/tailwind': link:../tailwind
-      '@steeze-ui/heroicons': 2.2.3
       '@steeze-ui/simple-icons': 1.5.0_svelte@3.59.1
       '@steeze-ui/svelte-icon': 1.4.1_svelte@3.59.1
       '@steeze-ui/tabler-icons': 2.1.0_svelte@3.59.1
@@ -190,6 +190,8 @@ importers:
       ssf: 0.11.2
       svelte-tiny-linked-charts: 1.1.5
     devDependencies:
+      '@rgossiaux/svelte-headlessui': 2.0.0_svelte@3.59.1
+      '@steeze-ui/heroicons': 2.2.3
       '@storybook/addon-essentials': 7.0.9_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/addon-interactions': 7.0.9_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/addon-links': 7.0.9_sfoxds7t5ydpegc3knd667wn6m
@@ -5622,6 +5624,14 @@ packages:
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
 
+  /@rgossiaux/svelte-headlessui/2.0.0_svelte@3.59.1:
+    resolution: {integrity: sha512-ksh245HqMM8yqkzd/OyAK2FCHZYOSA3ldLIHab7C9S60FmifqT24JFVgi8tZpsDEMk3plbfQvfah93n5IEi8sg==}
+    peerDependencies:
+      svelte: ^3.47.0
+    dependencies:
+      svelte: 3.59.1
+    dev: true
+
   /@rollup/pluginutils/4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
@@ -5748,7 +5758,7 @@ packages:
 
   /@steeze-ui/heroicons/2.2.3:
     resolution: {integrity: sha512-bv4YK375U9TDS50SmJ5VdFy2UmMhgKbJCCbo6IUU3qs2luEj2VX6sQoDy96j8AIKttxMd62ih1j0lZj7CTjIfA==}
-    dev: false
+    dev: true
 
   /@steeze-ui/simple-icons/1.5.0_svelte@3.59.1:
     resolution: {integrity: sha512-B/lxdcopBPsd4QnbuFuR1/20jHX03e/Kelv88IdCN4rpX8pVshBVJmnhj4ASWmitpkbVjlih4Tx6yBQ4l+djHA==}
