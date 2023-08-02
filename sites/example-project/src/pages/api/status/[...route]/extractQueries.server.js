@@ -7,37 +7,15 @@ const updateDirectoriesandStatus = function (queries, routeHash) {
 
 	fs.ensureDirSync(queryDir);
 
-	const existingQueries = fs.readJSONSync(`${queryDir}/queries.json`, {
-		throws: false
-	});
-
-	queries.forEach((query) => {
-		query.queryStringMD5 = md5(query.compiledQueryString);
-		if (existingQueries) {
-			let existingQuery = existingQueries.find(
-				(existing) => existing.id === query.id && existing.queryStringMD5 === query.queryStringMD5
-			);
-			if (existingQuery) {
-				query.status = existingQuery.status;
-			} else {
-				query.status = 'not run';
-			}
-		} else {
-			query.status = 'not run';
-		}
-	});
-
 	if (queries.length === 0) {
 		fs.emptyDirSync(queryDir);
 	} else {
 		fs.writeJSONSync(`${queryDir}/queries.json`, queries);
 	}
 
-	let status = queries.map((query) => {
+	return queries.map((query) => {
 		return { id: query.id, status: 'dynamic query' }; // TODO: revamp functionality w parquet generation
 	});
-
-	return status;
 };
 
 export const getStatusAndExtractQueries = function (route) {
