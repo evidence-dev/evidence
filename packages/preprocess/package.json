@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "4.0.0-usql.6",
+	"version": "4.0.0-usql.7",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
@@ -11,7 +11,8 @@
 		"test": "jest",
 		"build": "parcel build",
 		"watch": "parcel watch",
-		"dev": "parcel watch"
+		"dev": "parcel watch",
+		"prepublish": "parcel build"
 	},
 	"dependencies": {
 		"blueimp-md5": "^2.19.0",

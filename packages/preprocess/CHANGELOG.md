@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.7
+
+### Patch Changes
+
+- Fix build issue
+
 ## 4.0.0-usql.6
 
 ### Patch Changes
