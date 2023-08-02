@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.4
+
 ## 2.0.0-usql.5
 
 ### Patch Changes

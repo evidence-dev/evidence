@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.8
+
+### Patch Changes
+
+- Remove usql context; proper approach is to use page store now. Context is not reactive; and would require a store which is the behavior already present in \$app/stores.page
+
 ## 4.0.0-usql.7
 
 ### Patch Changes

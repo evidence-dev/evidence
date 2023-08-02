@@ -42,7 +42,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
-        import { setUsqlContext } from '@evidence-dev/component-utilities/usqlContext';
         import { setContext, getContext, beforeUpdate } from 'svelte';
         
         // Functions
@@ -54,8 +53,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         export { props as data }; // little hack to make the data name not overlap
         let { data = {}, customFormattingSettings, __db } = props;
         $: ({ data = {}, customFormattingSettings, __db } = props);
-
-        setUsqlContext(__db)
 
         $routeHash = '${routeH}';
 
@@ -69,7 +66,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         ${queryDeclarations}
         `;
-
+		console.log({defaultProps})
 	return defaultProps;
 };
 
