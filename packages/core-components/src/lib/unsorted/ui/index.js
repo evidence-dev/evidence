@@ -8,7 +8,6 @@ export { default as Header } from './Header.svelte';
 export { default as LoadingIndicator } from './LoadingIndicator.svelte';
 export { default as LoadingSkeleton } from './LoadingSkeleton.svelte';
 export { default as Logo } from './Logo.svelte';
-export { default as PageMenu } from './PageMenu.svelte';
 export { default as Portal } from './Portal.svelte';
 export { default as QueryToast } from './QueryToast.svelte';
 export { default as QueryViewer } from './QueryViewer.svelte';

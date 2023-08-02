@@ -306,11 +306,20 @@
 		url('/fonts/Spectral/Spectral-BlackItalic.woff') format('woff');
 }
 
-
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	html {
+		@apply scroll-smooth;
+	}
+
+	body {
+		@apply select-none;
+	}
+}
 
 @layer components {
 	.markdown {
@@ -397,15 +406,15 @@
 	}
 
 	h4.markdown {
-		@apply font-sans ;
+		@apply font-sans;
 	}
 
 	h5.markdown {
-		@apply font-sans ;
+		@apply font-sans;
 	}
 
 	h6.markdown {
-		@apply font-sans ;
+		@apply font-sans;
 	}
 
 	a.markdown {
@@ -421,7 +430,7 @@
 	}
 
 	code.markdown {
-		@apply font-mono text-gray-800 text-sm bg-gray-100 rounded px-1 select-all py-0.5 ;
+		@apply font-mono text-gray-800 text-sm bg-gray-100 rounded px-1 select-all py-0.5;
 	}
 
 	form code {

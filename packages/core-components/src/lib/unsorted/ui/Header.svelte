@@ -135,6 +135,7 @@
 								<MenuItem let:active>
 									<a
 										href="/settings/#deploy"
+										target="_self"
 										class:active
 										class="w-full block text-left py-1 px-1 hover:bg-gray-100/80 rounded-md"
 									>
