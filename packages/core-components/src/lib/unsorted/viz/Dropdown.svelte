@@ -4,7 +4,7 @@
 
 <script>
 	import { profile } from '@evidence-dev/component-utilities/profile';
-	import { inputs } from '@evidence-dev/component-utilities/inputs';
+	import { inputs } from '@evidence-dev/component-utilities/stores';
 	import { browser } from '$app/environment';
 	import debounce from 'debounce';
 	import { page } from '$app/stores';
@@ -32,8 +32,8 @@
 	$: db = $page.data.__db;
 	/** @type {{ tag: unknown, value: unknown }[]} */
 	$: data = $page.data.data?.[component_identifier] ?? [];
-	$: search(`select ${tag} as tag, ${value} as value from ${from} where ${where}`);
-
+	// todo: check if `from (select * from (${from})) would be better, allow for subqueries
+	$: search(`select (${tag}) as tag, (${value}) as value from ${from} where (${where})`);
 	$: selected = data[0]?.value;
 	$: $inputs[name] = selected;
 
@@ -45,7 +45,8 @@
 	$: browser && db.query('SELECT 1').then(() => (loadingDuckDB = false));
 </script>
 
-<select disabled={loadingDuckDB} bind:value={selected}>
+<!-- do not switch to binding, select bind:value invalidates dependents (so `data` would be invalidated) -->
+<select disabled={loadingDuckDB} on:change={(e) => (selected = e.currentTarget.value)}>
 	{#each data as { tag, value }}
 		<option {value}>{tag}</option>
 	{/each}

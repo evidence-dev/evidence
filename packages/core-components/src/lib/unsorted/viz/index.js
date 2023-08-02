@@ -8,6 +8,7 @@ export { default as Bubble } from './Bubble.svelte';
 export { default as Chart } from './Chart.svelte';
 export { default as Column } from './Column.svelte';
 export { default as DataTable } from './DataTable.svelte';
+export { default as Dropdown } from './Dropdown.svelte';
 export { default as EchartsCopyTarget } from './EchartsCopyTarget.svelte';
 export { default as EChartsMap } from './EChartsMap.svelte';
 export { default as ECharts } from './ECharts.svelte';
