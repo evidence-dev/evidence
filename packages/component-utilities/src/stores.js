@@ -9,3 +9,4 @@ export const showQueries = writable(
 showQueries.subscribe((value) => browser && localStorage.setItem('showQueries', value));
 export const pageHasQueries = writable(true);
 export const routeHash = writable('');
+export const inputs = writable({});

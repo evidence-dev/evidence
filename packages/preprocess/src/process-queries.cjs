@@ -41,7 +41,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 	let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
+        import { pageHasQueries, routeHash, inputs } from '@evidence-dev/component-utilities/stores';
         import { setContext, getContext, beforeUpdate } from 'svelte';
         
         // Functions
@@ -55,8 +55,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         $: ({ data = {}, customFormattingSettings, __db } = props);
 
         $routeHash = '${routeH}';
+		$inputs = {};
+		$: inputs = $inputs;
 
-        $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
+        $: pageHasQueries.set(Object.keys(data).length > 0);
 
         setContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, {
             getCustomFormats: () => {
@@ -66,7 +68,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         ${queryDeclarations}
         `;
-		console.log({defaultProps})
+	console.log({ defaultProps });
 	return defaultProps;
 };
 
