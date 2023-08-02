@@ -380,9 +380,8 @@
 	h4.markdown,
 	h5.markdown,
 	h6.markdown {
-		scroll-margin-top: var(
-			--header-height
-		); /* ensure that table of contents links scroll with room for the header */
+		@apply scroll-mt-12 break-inside-avoid;
+		/* ensure that table of contents links scroll with room for the header */
 	}
 
 	h1.markdown {
@@ -422,7 +421,7 @@
 	}
 
 	code.markdown {
-		@apply font-mono text-gray-800 text-sm bg-gray-100 rounded px-1 select-all py-0.5;
+		@apply font-mono text-gray-800 text-sm bg-gray-100 rounded px-1 select-all py-0.5 ;
 	}
 
 	form code {
@@ -547,23 +546,9 @@
 }
 
 @media print {
-	@page {
-		margin-top: 17mm;
-		margin-bottom: 13mm;
-		margin-left: 30mm;
-		margin-right: 30mm;
-	}
-
 	html {
 		-webkit-print-color-adjust: exact;
 		print-color-adjust: exact;
-		color-adjust: exact;
-	}
-
-	h1,
-	h2,
-	h3 {
-		page-break-inside: avoid;
 	}
 
 	h1::after,

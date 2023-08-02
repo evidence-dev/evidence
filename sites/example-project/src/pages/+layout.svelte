@@ -61,7 +61,6 @@
 
 <script>
 	import '../app.css';
-
 	import { navigating } from '$app/stores';
 	import { dev } from '$app/environment';
 	import {
@@ -71,10 +70,7 @@
 		Header,
 		ContentsList
 	} from '@evidence-dev/core-components';
-	let open = false;
 	const prefetchStrategy = dev ? 'tap' : 'hover';
-
-	export let data;
 
 	let mobileSidebarOpen = false;
 
@@ -85,10 +81,14 @@
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<Header bind:mobileSidebarOpen />
-	<div class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex justify-start">
-		<Sidebar {fileTree} bind:mobileSidebarOpen />
-		<main class="flex-1 overflow-x-hidden md:px-8 py-8">
-			<BreadCrumbs {fileTree} />
+	<div class="max-w-7xl print:max-w-prose mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start">
+		<div class="print:hidden">
+			<Sidebar {fileTree} bind:mobileSidebarOpen />
+		</div>
+		<main class="flex-1 overflow-x-hidden md:px-8 print:px-0 print:md:px-0 py-8">
+			<div class="print:hidden">
+				<BreadCrumbs {fileTree} />
+			</div>
 			{#if !$navigating}
 				<!-- <div>
 					<div class="inline-flex h-2 w-2 bg-green-600 rounded-full justify-center items-center">
@@ -103,17 +103,19 @@
 				<LoadingSkeleton />
 			{/if}
 		</main>
-		<aside class="hidden lg:block w-48">
-			<div class="fixed w-48 h-screen md:px-4 py-8 text-sm text-gray-500">
-				Contents
-				<ul>
-					<li class="py-1">Est commodo anim quis culpa.</li>
-					<li class="py-1">Enim minim nostrud laboris.</li>
-					<li class="py-1">Id est labore labore. Laboris quis</li>
-					<li class="py-1">Exercitation minim anim incididunt officia.</li>
-					<li class="py-1">Est commodo anim quis culpa.</li>
-				</ul>
-			</div>
-		</aside>
+		<div class="print:hidden">
+			<aside class="hidden lg:block w-48">
+				<div class="fixed w-48 h-screen md:px-4 py-8 text-sm text-gray-500">
+					Contents
+					<ul>
+						<li class="py-1">Est commodo anim quis culpa.</li>
+						<li class="py-1">Enim minim nostrud laboris.</li>
+						<li class="py-1">Id est labore labore. Laboris quis</li>
+						<li class="py-1">Exercitation minim anim incididunt officia.</li>
+						<li class="py-1">Est commodo anim quis culpa.</li>
+					</ul>
+				</div>
+			</aside>
+		</div>
 	</div>
 </div>
