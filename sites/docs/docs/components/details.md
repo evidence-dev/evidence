@@ -34,8 +34,9 @@ The details component allows you to add a collapsible section to your markdown. 
 
 ## Props
 
-| Name   | Description                                                             | Required | 
-|--------|-------------------------------------------------------------------------|----------|
-| title  | The text show next to the triangle icon.                                | No       |
+| Name   | Description                                                | Required | Default  |
+|--------|------------------------------------------------------------|----------|----------|
+| title  | The text shown next to the triangle icon.                  | -       | Details  |
+| open   | Whether expanded or closed by default.                     | -       | false    |
 
 
