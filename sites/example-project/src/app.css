@@ -1,311 +1,3 @@
-/* Fonts */
-/* TODO - extract into the tailwind plugin */
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 100;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-Thin.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-Thin.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 100;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-ThinItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-ThinItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 200;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-ExtraLight.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-ExtraLight.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 200;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-ExtraLightItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-ExtraLightItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 300;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-Light.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-Light.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 300;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-LightItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-LightItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 400;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-Regular.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-Regular.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 400;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-Italic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-Italic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 500;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-Medium.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-Medium.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 500;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-MediumItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-MediumItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 600;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-SemiBold.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-SemiBold.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 600;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-SemiBoldItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-SemiBoldItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 700;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-Bold.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-Bold.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 700;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-BoldItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-BoldItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 800;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-ExtraBold.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-ExtraBold.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 800;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 900;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-Black.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-Black.woff?v=3.19') format('woff');
-}
-@font-face {
-	font-family: 'Inter';
-	font-style: italic;
-	font-weight: 900;
-	font-display: block;
-	src: url('/fonts/Inter-3.19/Inter-BlackItalic.woff2?v=3.19') format('woff2'),
-		url('/fonts/Inter-3.19/Inter-BlackItalic.woff?v=3.19') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 100;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-Light.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-Light.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 100;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-LightItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-LightItalic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 200;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-ExtraLight.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-ExtraLight.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 200;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-ExtraLightItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-ExtraLightItalic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 300;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-Light.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-Light.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 300;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-LightItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-LightItalic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 400;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-Regular.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-Regular.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 400;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-Italic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-Italic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 500;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-Medium.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-Medium.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 500;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-MediumItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-MediumItalic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 600;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-SemiBold.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-SemiBold.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 600;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-SemiBoldItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-SemiBoldItalic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 700;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-Bold.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-Bold.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 700;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-BoldItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-BoldItalic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 800;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-ExtraBold.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-ExtraBold.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 800;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-ExtraBoldItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-ExtraBoldItalic.woff') format('woff');
-}
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 900;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-Black.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-Black.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 900;
-	font-display: block;
-	src: url('/fonts/Spectral/Spectral-BlackItalic.woff2') format('woff2'),
-		url('/fonts/Spectral/Spectral-BlackItalic.woff') format('woff');
-}
-
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
 @tailwind components;
@@ -318,6 +10,314 @@
 
 	body {
 		@apply select-none;
+	}
+
+	/* Fonts */
+	/* TODO - extract into the tailwind plugin */
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 100;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-Thin.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-Thin.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 100;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-ThinItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-ThinItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 200;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-ExtraLight.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-ExtraLight.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 200;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-ExtraLightItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-ExtraLightItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 300;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-Light.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-Light.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 300;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-LightItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-LightItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 400;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-Regular.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-Regular.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 400;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-Italic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-Italic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 500;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-Medium.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-Medium.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 500;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-MediumItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-MediumItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 600;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-SemiBold.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-SemiBold.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 600;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-SemiBoldItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-SemiBoldItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 700;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-Bold.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-Bold.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 700;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-BoldItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-BoldItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 800;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-ExtraBold.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-ExtraBold.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 800;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		font-style: normal;
+		font-weight: 900;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-Black.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-Black.woff?v=3.19') format('woff');
+	}
+	@font-face {
+		font-family: 'Inter';
+		font-style: italic;
+		font-weight: 900;
+		font-display: block;
+		src: url('/fonts/Inter-3.19/Inter-BlackItalic.woff2?v=3.19') format('woff2'),
+			url('/fonts/Inter-3.19/Inter-BlackItalic.woff?v=3.19') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 100;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-Light.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-Light.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 100;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-LightItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-LightItalic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 200;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-ExtraLight.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-ExtraLight.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 200;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-ExtraLightItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-ExtraLightItalic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 300;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-Light.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-Light.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 300;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-LightItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-LightItalic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 400;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-Regular.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-Regular.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 400;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-Italic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-Italic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 500;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-Medium.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-Medium.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 500;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-MediumItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-MediumItalic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 600;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-SemiBold.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-SemiBold.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 600;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-SemiBoldItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-SemiBoldItalic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 700;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-Bold.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-Bold.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 700;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-BoldItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-BoldItalic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 800;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-ExtraBold.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-ExtraBold.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 800;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-ExtraBoldItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-ExtraBoldItalic.woff') format('woff');
+	}
+
+	@font-face {
+		font-family: 'Spectral';
+		font-style: normal;
+		font-weight: 900;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-Black.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-Black.woff') format('woff');
+	}
+	@font-face {
+		font-family: 'Spectral';
+		font-style: italic;
+		font-weight: 900;
+		font-display: block;
+		src: url('/fonts/Spectral/Spectral-BlackItalic.woff2') format('woff2'),
+			url('/fonts/Spectral/Spectral-BlackItalic.woff') format('woff');
 	}
 }
 
@@ -389,36 +389,40 @@
 	h4.markdown,
 	h5.markdown,
 	h6.markdown {
-		@apply scroll-mt-14 break-inside-avoid;
+		@apply scroll-mt-14 break-inside-avoid font-sans;
 		/* ensure that table of contents links scroll with room for the header */
+	}
+	h1.title {
+		/* this is hacky - should instead apply a title class directly when injected in preprocess */
+		@apply leading-relaxed mt-4 mb-4 text-3xl font-extrabold text-gray-800 break-inside-avoid;
 	}
 
 	h1.markdown {
-		@apply font-sans leading-normal mt-7 mb-4 text-2xl font-extrabold text-gray-800;
+		@apply leading-relaxed mt-7 mb-4 text-3xl font-bold text-gray-800;
 	}
 
 	h2.markdown {
-		@apply font-sans leading-normal mt-6 mb-1 text-2xl font-bold text-gray-800;
+		@apply leading-relaxed mt-6 mb-3 text-xl font-bold text-gray-800;
 	}
 
 	h3.markdown {
-		@apply font-sans leading-normal mt-4 mb-1 text-xl text-gray-800 border-b border-gray-100;
+		@apply leading-relaxed mt-5 mb-2 font-semibold text-lg text-gray-900;
 	}
 
 	h4.markdown {
-		@apply font-sans;
+		@apply leading-normal mt-4 mb-1 text-base text-gray-950 ;
 	}
 
 	h5.markdown {
-		@apply font-sans;
+		@apply leading-normal underline mt-4 mb-1 text-xs text-gray-950;
 	}
 
 	h6.markdown {
-		@apply font-sans;
+		@apply leading-normal mt-4 mb-1 text-xs text-gray-950;
 	}
 
 	a.markdown {
-		@apply font-medium underline decoration-slate-400 decoration-1 hover:text-blue-600 hover:decoration-2 hover:decoration-blue-500 transition-all duration-200;
+		@apply font-medium underline decoration-1 text-blue-600 hover:text-blue-500 transition-all duration-200;
 	}
 
 	hr.markdown {
