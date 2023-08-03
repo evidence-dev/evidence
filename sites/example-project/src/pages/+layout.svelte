@@ -68,7 +68,7 @@
 		Sidebar,
 		BreadCrumbs,
 		Header,
-		ContentsList
+		TableOfContents
 	} from '@evidence-dev/core-components';
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -81,7 +81,9 @@
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<Header bind:mobileSidebarOpen />
-	<div class="max-w-7xl print:max-w-prose mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start">
+	<div
+		class="max-w-7xl print:max-w-prose mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start"
+	>
 		<div class="print:hidden">
 			<Sidebar {fileTree} bind:mobileSidebarOpen />
 		</div>
@@ -104,18 +106,7 @@
 			{/if}
 		</main>
 		<div class="print:hidden">
-			<aside class="hidden lg:block w-48">
-				<div class="fixed w-48 h-screen md:px-4 py-8 text-sm text-gray-500">
-					Contents
-					<ul>
-						<li class="py-1">Est commodo anim quis culpa.</li>
-						<li class="py-1">Enim minim nostrud laboris.</li>
-						<li class="py-1">Id est labore labore. Laboris quis</li>
-						<li class="py-1">Exercitation minim anim incididunt officia.</li>
-						<li class="py-1">Est commodo anim quis culpa.</li>
-					</ul>
-				</div>
-			</aside>
+			<TableOfContents /> 
 		</div>
 	</div>
 </div>

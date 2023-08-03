@@ -55,23 +55,25 @@
 	$: crumbs = buildCrumbs(pathArray);
 </script>
 
-<div class="inline-flex items-center text-sm capitalize gap-1 text-gray-500 mb-4">
-	{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
-		<a href="/"> Home </a>
-	{:else}
-		{#each crumbs as crumb, i}
-			{#if i > 0}
-				<Icon src={ChevronRight} size="12px" theme="solid" />
-				<a href={crumb.href}>{crumb.title}</a>
-			{:else}
-				<a href={crumb.href}>
-					{#if crumb.title === 'Home'}
-						<span> Home </span>
-					{:else}
-						{crumb.title}
-					{/if}
-				</a>
-			{/if}
-		{/each}
-	{/if}
+<div class="flex items-start">
+	<div class="inline-flex items-center text-sm capitalize gap-1 text-gray-500 mb-4">
+		{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
+			<a href="/"> Home </a>
+		{:else}
+			{#each crumbs as crumb, i}
+				{#if i > 0}
+					<Icon src={ChevronRight} size="12px" theme="solid" />
+					<a href={crumb.href}>{crumb.title}</a>
+				{:else}
+					<a href={crumb.href}>
+						{#if crumb.title === 'Home'}
+							<span> Home </span>
+						{:else}
+							{crumb.title}
+						{/if}
+					</a>
+				{/if}
+			{/each}
+		{/if}
+	</div>
 </div>

@@ -1,23 +1,15 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import ContentsList from './ContentsList.svelte';
 	import { navigating, page } from '$app/stores';
 </script>
 
-<div class="container">
-	{#if !$navigating && $page.url.pathname !== '/settings'}
-		<ContentsList />
+<aside class="hidden lg:block w-48">
+	{#if !$navigating}
+		<div class="fixed w-48 top-20 bottom-20 px-3 overflow-auto ">
+			<ContentsList />
+		</div>
 	{/if}
-</div>
+</aside>
 
-<style>
-	div.container {
-		position: sticky;
-		top: var(--header-height);
-		height: 70vh;
-		overflow-y: auto;
-	}
-</style>
+<!-- <div class="hidden: md:block  overflow-y-auto flex-1 text-sm text-gray-500"> -->
+<!-- <div class="flex flex-col pb-6"> -->

@@ -2,19 +2,23 @@
 	import { onMount } from 'svelte';
 	let headers;
 	onMount(() => {
-		headers = document.querySelector('article').querySelectorAll('h1, h2');
+		headers = document.querySelectorAll('h1.markdown, h2.markdown');
 		// Add ID tags to all the headers in the article
 		headers.forEach((header, i) => {
 			header.id = encodeURIComponent(header.innerText + i);
 		});
 	});
 </script>
-<p>Hello!</p>
+
 {#if headers && headers.length > 1}
+<span class="block text-xs sticky top-0 mb-2 text-gray-950 bg-white shadow-white font-medium">
+	On this page
+</span>
 	{#each headers as header, i}
-		<a
-			href={'#' + encodeURIComponent(header.innerText + i)}
-			class={header.nodeName == 'H1' ? 'h1' : 'h2'}
+		<a href={'#' + encodeURIComponent(header.innerText + i)} 
+			class={header.nodeName.toLowerCase()}
+			class:first={i === 0}
+			
 		>
 			{header.innerText}
 		</a>
@@ -23,34 +27,23 @@
 
 <style>
 	a {
-		display: block;
-		padding-block-end: 0.6em;
-		padding-block-start: 0em;
-		font-size: 0.7em;
-		text-decoration: none;
-		color: var(--grey-800);
-		transition-property: border color;
-		transition-duration: 600ms;
-		font-family: var(--ui-font-family-compact);
+		@apply block text-gray-600 text-xs transition-all duration-200 py-1;
 	}
 
+	/* a.h1.first {
+		@apply mt-0;
+	} */
+
 	a:hover {
-		color: var(--blue-600);
-		transition-property: color border;
-		transition-duration: 600ms;
+		@apply underline;
 	}
 
 	a.h2 {
-		/* margin-left: 0.1em; */
-		padding-left: 0.8em;
-		border-left: 1px solid var(--grey-200);
-	}
-
-	a.h2:hover {
-		border-left: 1px solid var(--blue-200);
+		@apply pl-0 text-gray-500;
 	}
 
 	a.h1 {
-		margin-block-start: 0.6em;
+		@apply mt-3 font-semibold block bg-white shadow shadow-white;
 	}
+
 </style>
