@@ -15,7 +15,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		queryDeclarations += `
             import debounce from 'debounce';
             import { browser } from '$app/environment';
-			import {profile} from '@evidence-dev/component-utilities/profile';
+			import { profile } from '@evidence-dev/component-utilities/profile';
 			
 			// partially bypasses weird reactivity stuff with \`select\` elements
 			function data_update(data) {
@@ -36,13 +36,22 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
             `
 							)
 							.join('\n')}
+
+			if (!browser) {
+				onDestroy(inputs_store.subscribe((inputs) => {
+					${valid_ids
+						.filter((id) => duckdbQueries[id].includes('inputs'))
+						.map((id) => `${id} = _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);`)
+						.join('\n')}
+				}));
+			}
         `;
 	}
 
 	let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash, inputs as inputs_store } from '@evidence-dev/component-utilities/stores';
-        import { setContext, getContext, beforeUpdate } from 'svelte';
+        import { setContext, getContext, beforeUpdate, onDestroy } from 'svelte';
         
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
@@ -55,8 +64,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         $: ({ data = {}, customFormattingSettings, __db } = props);
 
         $routeHash = '${routeH}';
-		$inputs_store = {};
-		$: inputs = $inputs_store;
+		// do not switch to $: inputs = $inputs_store
+		// reactive statements do not rerun during SSR
+		let inputs = $inputs_store = {};
+		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);
 
@@ -68,7 +79,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         ${queryDeclarations}
         `;
-	console.log({ defaultProps });
+
 	return defaultProps;
 };
 

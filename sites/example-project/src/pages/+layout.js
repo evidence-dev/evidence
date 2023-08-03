@@ -39,12 +39,30 @@ export const load = async ({
 
 	// let SSR saturate the cache first
 	if (browser && isUserPage) {
-		await Promise.all(
+		const page_queries_promise = Promise.all(
 			evidencemeta.queries?.map(async ({ id }) => {
 				const res = await fetch(`/api/${routeHash}/${id}.arrow`);
 				if (res.ok) data[id] = (await tableFromIPC(res)).toArray();
 			}) ?? []
 		);
+
+		const component_queries_promise = (async () => {
+			const res = await fetch(`/api/${routeHash}/all-queries.json`);
+			const arr = await (res.ok ? res.json() : []);
+
+			const set = new Set(arr);
+			evidencemeta.queries?.forEach(({ id }) => set.delete(id));
+			const component_queries = Array.from(set);
+
+			return Promise.all(
+				component_queries.map(async (id) => {
+					const res = await fetch(`/api/${routeHash}/${id}.arrow`);
+					if (res.ok) data[id] = (await tableFromIPC(res)).toArray();
+				})
+			);
+		})();
+
+		await Promise.all([component_queries_promise, page_queries_promise]);
 	}
 
 	return {
