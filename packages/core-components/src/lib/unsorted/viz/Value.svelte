@@ -13,7 +13,6 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { HelpCircle } from '@steeze-ui/tabler-icons';
 
-	import PulseNumber from './PulseNumber.svelte';
 	import { strictBuild } from './context';
 
 	// Passing in value from dataset:
@@ -95,15 +94,16 @@
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<PulseNumber value={formatValue(value, fmt)} />
+	<span>
+		{formatValue(value, fmt)}
+	</span>
 {:else}
 	<span
-		class="group inline-flex gap-1 items-center relative cursor-help text-white font-sans text-sm bg-red-700 rounded-2xl pl-2 pr-[1px] mx-0.5"
+		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-2 border border-red-600 py-0.5 bg-red-50 rounded-sm"
 	>
-		<span class="inline pl-1">Error</span>
-		<Icon src={HelpCircle} class="w-6 h-6 text-gray-100 pb-0.5 pt-[1px]" />
+		<span class="inline font-sans font-medium text-xs text-red-600">error</span>
 		<span
-			class="hidden group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md"
+			class="hidden text-white font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md"
 			>{error}</span
 		>
 	</span>
