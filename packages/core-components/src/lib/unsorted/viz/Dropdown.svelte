@@ -12,7 +12,7 @@
 	export let value;
 
 	/** @type {string} */
-	export let tag = value;
+	export let label = value;
 
 	/** @type {string} */
 	export let from;
@@ -33,9 +33,9 @@
 		: (query) => (data = profile(db.query, query, component_identifier));
 
 	$: db = $page.data.__db;
-	/** @type {{ tag: unknown, value: unknown }[]} */
+	/** @type {{ label: unknown, value: unknown }[]} */
 	$: data = $page.data.data?.[component_identifier] ?? [];
-	$: search(`select (${tag}) as tag, (${value}) as value from ${from} where (${where})`);
+	$: search(`select (${label}) as label, (${value}) as value from ${from} where (${where})`);
 	$: selected = data[0]?.value;
 	$: $inputs[name] = selected;
 
@@ -51,7 +51,7 @@
 	do not switch to binding, select bind:value invalidates its dependencies 
 	(so `data` would be invalidated) -->
 <select disabled={loadingDuckDB} on:change={(e) => (selected = e.currentTarget.value)}>
-	{#each data as { tag, value }}
-		<option {value}>{tag}</option>
+	{#each data as { label, value }}
+		<option {value}>{label}</option>
 	{/each}
 </select>
