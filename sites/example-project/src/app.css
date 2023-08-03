@@ -389,7 +389,7 @@
 	h4.markdown,
 	h5.markdown,
 	h6.markdown {
-		@apply scroll-mt-20 break-inside-avoid;
+		@apply scroll-mt-14 break-inside-avoid;
 		/* ensure that table of contents links scroll with room for the header */
 	}
 
