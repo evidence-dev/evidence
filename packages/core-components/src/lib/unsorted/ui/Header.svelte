@@ -73,7 +73,7 @@
 					</MenuButton>
 					<MenuItems class="absolute top-12 right-0 z-50 flex max-w-min outline-none">
 						<div
-							class="shrink w-44 border border-gray-300 rounded-lg bg-white/80 backdrop-blur-md px-1 py-1 text-sm leading-6 text-gray-950 shadow-xl"
+							class="shrink w-44 border border-gray-300 rounded-lg bg-white px-1 py-1 text-sm leading-6 text-gray-950 shadow-xl"
 						>
 							<MenuItem
 								let:active
@@ -82,7 +82,7 @@
 								}}
 							>
 								<div
-									class="w-full text-left py-1 px-2 hover:bg-gray-100/80 rounded-[0.25rem] cursor-pointer"
+									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
 									class:active
 								>
 									Print
@@ -96,7 +96,7 @@
 								}}
 							>
 								<div
-									class="w-full text-left py-1 px-2 hover:bg-gray-100/80 rounded-[0.25rem] cursor-pointer"
+									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
 									class:active
 								>
 									{$showQueries ? 'Hide ' : 'Show '} Queries
@@ -108,7 +108,7 @@
 									<a
 										href="/settings"
 										class:active
-										class="w-full block text-left py-1 px-2 hover:bg-gray-100/80 rounded-[0.25rem]"
+										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
 									>
 										<div class="flex items-center justify-between">
 											<span> Settings </span>
@@ -137,7 +137,7 @@
 										href="/settings/#deploy"
 										target="_self"
 										class:active
-										class="w-full block text-left py-1 px-2 hover:bg-gray-100/80 rounded-[0.25rem]"
+										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
 									>
 										<div class="flex items-center justify-between">
 											<span> Deploy </span>
@@ -163,7 +163,7 @@
 										href="https://docs.evidence.dev"
 										target="_blank"
 										class:active
-										class="w-full block text-left py-1 px-2 hover:bg-gray-100/80 rounded-[0.25rem]"
+										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
 									>
 										<div class="flex items-center justify-between">
 											<span> Documentation </span>
@@ -190,7 +190,7 @@
 										href="https://docs.evidence.dev"
 										target="_blank"
 										class:active
-										class="w-full block text-left py-1 px-1 hover:bg-gray-100/80 rounded-md"
+										class="w-full block text-left py-1 px-1 hover:bg-gray-100 rounded-md"
 									>
 										<div class="flex items-center justify-between">
 											<span> Slack </span>
@@ -223,6 +223,6 @@
 
 <style>
 	.active {
-		@apply bg-gray-100/80;
+		@apply bg-gray-100;
 	}
 </style>
