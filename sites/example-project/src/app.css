@@ -500,6 +500,7 @@
 	--color20: theme(colors.color.20);
 
 	/* Colour System */
+	--blue-50: theme(colors.blue.50);
 	--blue-100: theme(colors.blue.100);
 	--blue-200: theme(colors.blue.200);
 	--blue-300: theme(colors.blue.300);
@@ -511,6 +512,7 @@
 	--blue-900: theme(colors.blue.900);
 	--blue-999: theme(colors.blue.950);
 	--blue-link: theme(colors.blue.700);
+	--green-50: theme(colors.green.50);
 	--green-100: theme(colors.green.100);
 	--green-200: theme(colors.green.200);
 	--green-300: theme(colors.green.300);
@@ -521,6 +523,7 @@
 	--green-800: theme(colors.green.800);
 	--green-900: theme(colors.green.900);
 	--green-999: theme(colors.green.950);
+	--grey-50: theme(colors.gray.50);
 	--grey-100: theme(colors.gray.100);
 	--grey-200: theme(colors.gray.200);
 	--grey-300: theme(colors.gray.300);
@@ -542,6 +545,7 @@
 	--red-800: theme(colors.red.800);
 	--red-900: theme(colors.red.900);
 	--red-999: theme(colors.red.950);
+	--yellow-50: theme(colors.yellow.50);
 	--yellow-100: theme(colors.yellow.100);
 	--yellow-200: theme(colors.yellow.200);
 	--yellow-300: theme(colors.yellow.300);
