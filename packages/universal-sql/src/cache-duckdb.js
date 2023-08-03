@@ -32,6 +32,14 @@ export function cache_for_hash(sql_string, data, { route_hash, query_name, prere
 		const prerender_path = `.svelte-kit/output/prerendered/dependencies/api/${route_hash}`;
 		mkdirSync(prerender_path, { recursive: true });
 		writeFileSync(`${prerender_path}/${query_name}.arrow`, tableToIPC(data));
+
+		// keep track of the query names for the page
+		const component_queries_path = `${prerender_path}/queries.json`;
+		const component_queries = existsSync(component_queries_path)
+			? JSON.parse(readFileSync(component_queries_path, 'utf-8'))
+			: [];
+		component_queries.push(query_name);
+		writeFileSync(component_queries_path, JSON.stringify(component_queries));
 	}
 }
 
