@@ -6,7 +6,6 @@
 	import { profile } from '@evidence-dev/component-utilities/profile';
 	import { inputs } from '@evidence-dev/component-utilities/stores';
 	import { browser } from '$app/environment';
-	import debounce from 'debounce';
 	import { page } from '$app/stores';
 
 	/** @type {string} */
@@ -17,6 +16,10 @@
 
 	/** @type {string} */
 	export let from;
+	// checks for select and a whitespace after
+	$: if (/select\s/i.test(from)) {
+		from = `(${from})`;
+	}
 
 	/** @type {string} */
 	export let where = 'true';
@@ -26,13 +29,12 @@
 	$: component_identifier = `_Dropdown-${name}`;
 
 	const search = browser
-		? debounce((query) => profile(db.query, query).then((value) => (data = value)), 200)
+		? (query) => profile(db.query, query).then((value) => (data = value))
 		: (query) => (data = profile(db.query, query, component_identifier));
 
 	$: db = $page.data.__db;
 	/** @type {{ tag: unknown, value: unknown }[]} */
 	$: data = $page.data.data?.[component_identifier] ?? [];
-	// todo: check if `from (select * from (${from})) would be better, allow for subqueries
 	$: search(`select (${tag}) as tag, (${value}) as value from ${from} where (${where})`);
 	$: selected = data[0]?.value;
 	$: $inputs[name] = selected;
@@ -45,7 +47,9 @@
 	$: browser && db.query('SELECT 1').then(() => (loadingDuckDB = false));
 </script>
 
-<!-- do not switch to binding, select bind:value invalidates dependents (so `data` would be invalidated) -->
+<!--
+	do not switch to binding, select bind:value invalidates its dependencies 
+	(so `data` would be invalidated) -->
 <select disabled={loadingDuckDB} on:change={(e) => (selected = e.currentTarget.value)}>
 	{#each data as { tag, value }}
 		<option {value}>{tag}</option>
