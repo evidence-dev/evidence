@@ -394,7 +394,7 @@
 	}
 	h1.title {
 		/* this is hacky - should instead apply a title class directly when injected in preprocess */
-		@apply leading-relaxed mt-4 mb-4 text-3xl font-extrabold text-gray-800 break-inside-avoid;
+		@apply leading-relaxed mt-7 mb-4 text-3xl font-extrabold text-gray-800 break-inside-avoid;
 	}
 
 	h1.markdown {
@@ -414,7 +414,7 @@
 	}
 
 	h5.markdown {
-		@apply leading-normal underline mt-4 mb-1 text-xs text-gray-950;
+		@apply leading-normal underline decoration-gray-500 mt-4 mb-1 text-xs text-gray-950;
 	}
 
 	h6.markdown {
@@ -434,7 +434,7 @@
 	}
 
 	code.markdown {
-		@apply font-mono text-gray-800 text-sm bg-gray-100 rounded px-1 select-all py-0.5;
+		@apply font-mono text-gray-800 text-sm bg-gray-50 rounded px-1 select-all py-0.5;
 	}
 
 	form code {
