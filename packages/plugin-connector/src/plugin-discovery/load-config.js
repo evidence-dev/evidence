@@ -1,6 +1,6 @@
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import chalk from 'chalk';
-import { readFileSync } from 'fs';
+import fs from 'fs';
 import yaml from 'yaml';
 import { EvidenceConfigSchema } from './schemas/evidence-config.schema';
 
@@ -11,7 +11,7 @@ import { EvidenceConfigSchema } from './schemas/evidence-config.schema';
 export const loadConfig = (rootDir) => {
 	const configPath = `${rootDir}/evidence.plugins.yaml`;
 	try {
-		const configFileContent = readFileSync(configPath, 'utf8').toString();
+		const configFileContent = fs.readFileSync(configPath, 'utf8').toString();
 		// Surround all YAML key that begin with "@" in quotes
 		// Skipping keys that are already quoted (e.g. beginning of line or whitespace)
 		const rawConfig = yaml.parse(configFileContent.replaceAll(/($|\s)(@.+):/g, '$1"$2":'));
@@ -36,12 +36,7 @@ export const loadConfig = (rootDir) => {
 	} catch (e) {
 		if (!(e instanceof Error)) throw e;
 		if (e.message.startsWith('ENOENT')) {
-			console.warn('Could not find evidence plugins file. Using defaults.');
-			return EvidenceConfigSchema.parse({
-				components: {
-					'@evidence-dev/core-components': {}
-				}
-			});
+			throw new Error(`Could not find evidence plugins file. (Look at ${configPath})`, { cause: e})
 		}
 		throw e;
 	}
