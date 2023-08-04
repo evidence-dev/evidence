@@ -59,6 +59,7 @@
 </script>
 
 <script>
+	import '@evidence-dev/tailwind/fonts.css';
 	import '../app.css';
 	import { navigating, page } from '$app/stores';
 	import { dev } from '$app/environment';
