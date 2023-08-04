@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.9
+
+### Patch Changes
+
+- Clean up console logs
+
 ## 4.0.0-usql.8
 
 ### Patch Changes

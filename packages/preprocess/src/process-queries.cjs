@@ -66,7 +66,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         ${queryDeclarations}
         `;
-		console.log({defaultProps})
 	return defaultProps;
 };
 
