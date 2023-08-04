@@ -43,12 +43,14 @@ const envMap = {
 
 /**
  *
- * @param {Record<string, unknown>[]} result
+ * @param {mysql.RowDataPacket[]} result
  * @returns {Record<string, unknown>[]}
  */
 const standardizeResult = (result) => {
+	/** @type {Record<string, unknown>[]} */
 	const output = [];
 	result.forEach((row) => {
+		/** @type {Record<string, unknown>} */
 		const lowerCasedRow = {};
 		for (const [key, value] of Object.entries(row)) {
 			lowerCasedRow[key.toLowerCase()] = value;
@@ -111,6 +113,7 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
  */
 const mapResultsToEvidenceColumnTypes = function (fields) {
 	return fields?.map((field) => {
+		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.columnType);
 		if (!evidenceType) {
@@ -128,7 +131,8 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 /** @type {import('@evidence-dev/db-commons').RunQuery<MySQLOptions>} */
 const runQuery = async (queryString, database) => {
 	try {
-		let credentials = {
+		/** @type {import("mysql2").PoolOptions} */
+		const credentials = {
 			user: database ? database.user : getEnv(envMap, 'user'),
 			host: database ? database.host : getEnv(envMap, 'host'),
 			database: database ? database.database : getEnv(envMap, 'database'),
@@ -138,24 +142,22 @@ const runQuery = async (queryString, database) => {
 			decimalNumbers: true
 		};
 
-		let ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
+		const ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
 
 		if (ssl_opt === 'true') {
-			credentials = Object.assign(credentials, { ssl: {} });
+			credentials.ssl = {};
 		} else if (ssl_opt === 'Amazon RDS') {
-			credentials = Object.assign(credentials, { ssl: 'Amazon RDS' });
-		} else if (ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined) {
-			credentials = credentials;
-		} else {
+			credentials.ssl = 'Amazon RDS';
+		} else if (!(ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined)) {
 			try {
-				let obj = JSON.parse(ssl_opt);
-				credentials = Object.assign(credentials, { ssl: obj });
+				const obj = JSON.parse(ssl_opt);
+				credentials.ssl = obj;
 			} catch (e) {
 				console.log(e);
 			}
 		}
 
-		var pool = mysql.createPool(credentials);
+		const pool = mysql.createPool(credentials);
 		const promisePool = pool.promise();
 		const [rows, fields] = await promisePool.query(queryString);
 

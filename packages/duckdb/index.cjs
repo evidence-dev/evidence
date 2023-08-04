@@ -41,6 +41,7 @@ function nativeTypeToEvidenceType(data) {
  */
 const mapResultsToEvidenceColumnTypes = function (rows) {
 	return Object.entries(rows[0]).map(([name, value]) => {
+		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(value);
 		if (!evidenceType) {

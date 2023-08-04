@@ -39,8 +39,10 @@ const envMap = {
  * @returns {Record<string, unknown>[]}
  */
 const standardizeResult = (result) => {
+	/** @type {Record<string, unknown>[]} */
 	const output = [];
 	result.forEach((row) => {
+		/** @type {Record<string, unknown>} */
 		const standardized = {};
 		for (const [key, value] of Object.entries(row)) {
 			if (typeof value === 'object') {
@@ -172,14 +174,15 @@ const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefi
  */
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.schema?.fields?.map((field) => {
+		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(field.type);
+		let evidenceType = nativeTypeToEvidenceType(/** @type {string} */(field.type));
 		if (!evidenceType) {
 			typeFidelity = TypeFidelity.INFERRED;
 			evidenceType = EvidenceType.STRING;
 		}
 		return {
-			name: field.name,
+			name: /** @type {string} */(field.name),
 			evidenceType: evidenceType,
 			typeFidelity: typeFidelity
 		};

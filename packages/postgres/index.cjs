@@ -68,9 +68,16 @@ const pgBuiltInTypeExtentions = {
 	_CHAR: 1002
 };
 
+
+/**
+ * Extracts the union of values of an object type
+ * @template T
+ * @typedef {T[keyof T]} MemberOf
+ */
+
 /**
  *
- * @param {pg["types"]["builtins"]} dataTypeId
+ * @param {MemberOf<(typeof pg)["types"]["builtins"]>} dataTypeId
  * @param {undefined} defaultType
  * @returns {EvidenceType | undefined}
  */
@@ -112,6 +119,7 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
  */
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.fields?.map((field) => {
+		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.dataTypeID);
 		if (!evidenceType) {
@@ -132,8 +140,10 @@ const mapResultsToEvidenceColumnTypes = function (results) {
  * @returns {Record<string, unknown>[]}
  */
 const standardizeResult = (result) => {
+	/** @type {Record<string, unknown>[]} */
 	const output = [];
 	result.forEach((row) => {
+		/** @type {Record<string, unknown>} */
 		const lowerCasedRow = {};
 		for (const [key, value] of Object.entries(row)) {
 			lowerCasedRow[key.toLowerCase()] = value;

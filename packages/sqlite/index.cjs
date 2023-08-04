@@ -45,11 +45,6 @@ module.exports = runQuery;
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<SQLiteOptions>} */
 module.exports.getRunner = async (opts, directory) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
