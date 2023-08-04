@@ -1,8 +1,6 @@
 <script>
-	import { page, navigating } from '$app/stores';
+	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-
-	import { dev } from '$app/environment';
 	export let fileTree;
 	import { fly, fade } from 'svelte/transition';
 	// import { lock, unlock } from 'tua-body-scroll-lock';
@@ -77,7 +75,7 @@
 					>
 						Home
 					</a>
-					{#each firstLevelFiles as file, href}
+					{#each firstLevelFiles as file}
 						{#if file.children.length === 0}
 							<a
 								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-200"
@@ -89,7 +87,7 @@
 						{/if}
 					{/each}
 				</div>
-				{#each firstLevelFiles as file, href}
+				{#each firstLevelFiles as file}
 					{#if file.children.length > 0}
 						<div class="flex flex-col pb-6">
 							{#if file.href}
@@ -107,7 +105,7 @@
 									{file.label}
 								</span>
 							{/if}
-							{#each file.children as file, href}
+							{#each file.children as file}
 								<a
 									class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-200"
 									href={file.href}
@@ -138,7 +136,7 @@
 				>
 					Home
 				</a>
-				{#each firstLevelFiles as file, href}
+				{#each firstLevelFiles as file}
 					{#if file.children.length === 0}
 						<a
 							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-200"
@@ -150,7 +148,7 @@
 					{/if}
 				{/each}
 			</div>
-			{#each firstLevelFiles as file, href}
+			{#each firstLevelFiles as file}
 				{#if file.children.length > 0}
 					<div class="flex flex-col pb-6">
 						{#if file.href}
@@ -168,7 +166,7 @@
 								{file.label}
 							</span>
 						{/if}
-						{#each file.children as file, href}
+						{#each file.children as file}
 							<a
 								class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-200 truncate whitespace-break-spaces"
 								href={file.href}

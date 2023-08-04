@@ -64,10 +64,6 @@
 {/if}
 
 <style>
-	h3 {
-		@apply uppercase text-sm leading-loose py-3;
-	}
-
 	h2 {
 		@apply font-semibold text-lg pt-3 pb-2;
 	}

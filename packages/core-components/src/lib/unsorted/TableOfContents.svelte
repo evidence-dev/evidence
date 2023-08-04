@@ -1,6 +1,6 @@
 <script>
 	import ContentsList from './ContentsList.svelte';
-	import { navigating, page } from '$app/stores';
+	import { navigating } from '$app/stores';
 </script>
 
 <aside class="hidden lg:block w-48">

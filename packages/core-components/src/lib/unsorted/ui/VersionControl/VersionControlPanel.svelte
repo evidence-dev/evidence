@@ -87,10 +87,6 @@
 		@apply font-semibold text-lg pt-3 pb-2;
 	}
 
-	p {
-		@apply text-sm py-2;
-	}
-
 	.container {
 		margin-top: 2em;
 		border-top: 1px solid var(--grey-200);

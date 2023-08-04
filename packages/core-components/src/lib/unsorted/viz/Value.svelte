@@ -10,8 +10,6 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { HelpCircle } from '@steeze-ui/tabler-icons';
 
 	import { strictBuild } from './context';
 
