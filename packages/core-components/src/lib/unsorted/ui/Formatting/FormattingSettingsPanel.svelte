@@ -158,4 +158,12 @@ from table`;
 	.docs-link:hover {
 		color: var(--blue-800);
 	}
+
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2; 
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
 </style>

@@ -4,7 +4,6 @@
 	const pages = import.meta.glob(['/src/pages/*/**/+page.md']);
 	let pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', ''));
 
-	import { fly } from 'svelte/transition';
 	// Create a tree structure from the array of paths
 	let fileTree = {
 		label: 'Home',
@@ -61,7 +60,7 @@
 
 <script>
 	import '../app.css';
-	import { navigating } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 	import { dev } from '$app/environment';
 	import {
 		LoadingSkeleton,
@@ -89,7 +88,9 @@
 		</div>
 		<main class="flex-1 overflow-x-hidden md:px-8 print:px-0 print:md:px-0 py-8">
 			<div class="print:hidden">
+				{#if $page.route.id !== '/settings'}
 				<BreadCrumbs {fileTree} />
+				{/if}
 			</div>
 			{#if !$navigating}
 				<!-- <div>

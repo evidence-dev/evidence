@@ -47,6 +47,14 @@
 {/if}
 
 <style>
+	
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2; 
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
 	span.setting {
 		font-size: 0.85em;
 		color: var(--grey-800);

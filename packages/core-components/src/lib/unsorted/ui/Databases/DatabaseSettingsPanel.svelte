@@ -96,7 +96,7 @@
 <form on:submit|preventDefault={submitForm} autocomplete="off" in:blur|local id="connect-database">
 	<div class="container">
 		<div class="panel">
-			<h2>Data Source Connection</h2>
+			<h2>Connection</h2>
 			<p>Evidence supports one data source per project.</p>
 			<p>
 				These credentials will be used when running locally. For your production environment, see
@@ -225,20 +225,25 @@
 	span.indicator.fail {
 		background-color: var(--red-600);
 	}
-
+	
 	p.error {
 		font-family: 'monoco', Roboto Mono, monospace;
 		padding-top: 1em;
 		word-break: break-all;
 	}
-
+	
 	h3 {
-		text-transform: uppercase;
-		font-weight: normal;
-		font-style: normal;
-		font-size: 14px;
+		@apply uppercase text-sm leading-loose py-3; 
+	}
+	
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2; 
 	}
 
+	p {
+		@apply text-sm py-2;
+	}
+	
 	.docs-link {
 		color: var(--blue-600);
 		text-decoration: none;
@@ -351,4 +356,5 @@
 		transition-property: background, color;
 		transition-duration: 350ms;
 	}
+
 </style>

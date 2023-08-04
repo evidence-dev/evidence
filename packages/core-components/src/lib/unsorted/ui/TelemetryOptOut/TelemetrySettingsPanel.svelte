@@ -27,32 +27,35 @@
 				used.
 			</p>
 			<CollapsibleTableSection headerText="More" expanded={false}>
-				<p>Each time you run a query, we get the following pieces of information:</p>
-				<ol>
-					<li>
-						A random identifier that is stored in <code>.evidence/template/.profile.json</code>
-					</li>
-					<li>An anonymized identifier based on the git repository you're using for the project</li>
-					<li>Whether your project is running in development or build mode</li>
-					<li>
-						Whether your query returned from the cache, from your database, or returned an error
-					</li>
-					<li>The type of Evidence database connector you are using (postgres, snowflake, etc.)</li>
-					<li>The operating system your project is running on (windows, mac, etc.)</li>
-				</ol>
-				<p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
-				<div class="input-item">
-					<label for="telemetry-toggle"> Share anonymous usage data </label>
-					<label class="switch">
-						<input
-							type="checkbox"
-							bind:checked={usageStats}
-							on:change={save}
-							id="telemetry-toggle"
-						/>
-						<span class="slider" />
-					</label>
+				<div>
+					<p>Each time you run a query, we get the following pieces of information:</p>
+					<ol class="list-decimal px-8">
+						<li>
+							A random identifier that is stored in <code>.evidence/template/.profile.json</code>
+						</li>
+						<li>An anonymized identifier based on the git repository you're using for the project</li>
+						<li>Whether your project is running in development or build mode</li>
+						<li>
+							Whether your query returned from the cache, from your database, or returned an error
+						</li>
+						<li>The type of Evidence database connector you are using (postgres, snowflake, etc.)</li>
+						<li>The operating system your project is running on (windows, mac, etc.)</li>
+					</ol>
+					<p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
+					<div class="input-item">
+						<label for="telemetry-toggle"> Share anonymous usage data </label>
+						<label class="switch">
+							<input
+								type="checkbox"
+								bind:checked={usageStats}
+								on:change={save}
+								id="telemetry-toggle"
+							/>
+							<span class="slider" />
+						</label>
+					</div>
 				</div>
+
 			</CollapsibleTableSection>
 		</div>
 	</div>
@@ -68,6 +71,14 @@
 </form>
 
 <style>
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2; 
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
+	
 	form {
 		scroll-margin-top: 3.5rem; /* offset for sticky header */
 	}

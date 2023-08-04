@@ -22,6 +22,14 @@
 </div>
 
 <style>
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2; 
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
+	
 	button {
 		margin-right: 0.25em;
 		margin-left: 0.25em;
