@@ -1,4 +1,4 @@
-import { arrowTableToJSON } from './both.js';
+import { arrowTableToJSON, getPromise, withTimeout } from './both.js';
 import {
 	AsyncDuckDB,
 	ConsoleLogger,
@@ -14,36 +14,53 @@ let db;
 /** @type {import("@duckdb/duckdb-wasm").AsyncDuckDBConnection} */
 let connection;
 
+const { resolve: resolveInit, reject: rejectInit, promise: initPromise } = getPromise();
+const { resolve: resolveTables, reject: rejectTables, promise: tablesPromise } = getPromise();
+let initializing = false;
+
 /**
  * Initializes the database.
  *
  * @returns {Promise<void>}
  */
 export async function initDB() {
+	// If the database is already available, don't do anything
 	if (db) return;
 
-	const useEh = await getPlatformFeatures().then((x) => x.wasmExceptions);
+	// If the database is already initializing, don't try to do it twice
+	// Instead, let the call wait for the initPromise
+	if (initializing) return withTimeout(initPromise);
+	// This call is the first (to execute), don't let anybody else try
+	// to initialize the database
+	initializing = true;
+	try {
+		const useEh = await getPlatformFeatures().then((x) => x.wasmExceptions);
 
-	const DUCKDB_CONFIG = useEh
-		? {
-				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default,
-				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker'))
-					.default
-		  }
-		: {
-				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default,
-				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
-					.default
-		  };
+		const DUCKDB_CONFIG = useEh
+			? {
+					mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default,
+					mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker'))
+						.default
+			  }
+			: {
+					mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default,
+					mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
+						.default
+			  };
 
-	const logger = new ConsoleLogger();
-	const worker = new DUCKDB_CONFIG.mainWorker();
+		const logger = new ConsoleLogger();
+		const worker = new DUCKDB_CONFIG.mainWorker();
 
-	// and asynchronous database
-	db = new AsyncDuckDB(logger, worker);
-	await db.instantiate(DUCKDB_CONFIG.mainModule);
-	await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
-	connection = await db.connect();
+		// and asynchronous database
+		db = new AsyncDuckDB(logger, worker);
+		await db.instantiate(DUCKDB_CONFIG.mainModule);
+		await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
+		connection = await db.connect();
+		resolveInit();
+	} catch (e) {
+		rejectInit(e);
+		throw e;
+	}
 }
 
 /**
@@ -66,16 +83,22 @@ export async function updateSearchPath(schemas) {
 export async function setParquetURLs(urls) {
 	if (!db) await initDB();
 
-	for (const source in urls) {
-		await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
-		for (const url of urls[source]) {
-			const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
-			const file_name = `${table}.parquet`;
-			await db.registerFileURL(file_name, url, DuckDBDataProtocol.HTTP, false);
-			await connection.query(
-				`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
-			);
+	try {
+		for (const source in urls) {
+			await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
+			for (const url of urls[source]) {
+				const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+				const file_name = `${source}_${table}.parquet`;
+				await db.registerFileURL(file_name, url, DuckDBDataProtocol.HTTP, false);
+				await connection.query(
+					`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
+				);
+			}
 		}
+		resolveTables();
+	} catch (e) {
+		rejectTables(e);
+		throw e;
 	}
 }
 
@@ -86,8 +109,12 @@ export async function setParquetURLs(urls) {
  * @returns {Promise<import("apache-arrow").Table | null>}
  */
 export async function query(sql) {
+	// After this point, the database has been initialized
 	if (!db) await initDB();
+	// We need to wait for tables to be available
+	await withTimeout(tablesPromise);
 
+	// Now we can safely execute our query
 	const res = await connection.query(sql).then(arrowTableToJSON);
 
 	return res;

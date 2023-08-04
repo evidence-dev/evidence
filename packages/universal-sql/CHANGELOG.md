@@ -1,5 +1,29 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- Queries now wait for setParquetUrls, and will time out if they are not processed within 5 seconds
+
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- Don't count the database as initialized until parquet urls are set (tables are created)
+
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- Reduce risk of queries attempting to execute prior to database initialization
+
+## 2.0.0-usql.3
+
+### Patch Changes
+
+- ca7337ba: fix prerendering for all pages
+
 ## 2.0.0-usql.2
 
 ### Patch Changes

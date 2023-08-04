@@ -64,11 +64,14 @@ export const getSources = async (sourcesDir) => {
 	const datasourceSpecs = await Promise.all(
 		sourcesDirectories.map(async (dirName) => {
 			const sourceDir = path.join(sourcesDir, dirName);
+			const possibleDir = await fs.stat(sourceDir);
+			if (!possibleDir.isDirectory()) return false;
+
 			const contents = await fs.readdir(sourceDir);
 
 			const connParams = await loadConnectionConfiguration(sourceDir);
 			if (!connParams.name)
-				connParams.name = /** @type {string} */ (sourceDir.split(/[/\\]/).pop());
+				connParams.name = /** @type {string} */ (sourceDir.split(path.sep).pop());
 
 			if (!connParams.name)
 				throw new Error(
@@ -86,7 +89,7 @@ export const getSources = async (sourcesDir) => {
 				queries: queries
 			};
 		})
-	).then((r) => r.filter(Boolean));
+	).then((r) => /** @type {Exclude<typeof r[number], false>[]} */ (r.filter(Boolean)));
 
 	return datasourceSpecs;
 };
@@ -157,11 +160,22 @@ async function getQueries(sourceDir, contents) {
 	const queryFiles = contents.filter(
 		(s) => s !== 'connection.yaml' && s !== 'connection.options.yaml'
 	);
+
 	const queries = await Promise.all(
-		queryFiles.map(async (filename) => ({
-			filepath: `${sourceDir}/${filename}`,
-			content: await fs.readFile(`${sourceDir}/${filename}`).then((r) => r.toString())
-		}))
+		queryFiles.map(async (filename) => {
+			const filepath = path.join(sourceDir, filename);
+			const { size } = await fs.stat(filepath);
+			let content;
+			if (size > 100 * 1024 * 1024) {
+				console.warn(`${filename} is over 100MB, skipping`);
+				content = null;
+			} else {
+				content = await fs.readFile(path.join(sourceDir, filename)).then((r) => r.toString());
+			}
+
+			return { filepath, content };
+		})
 	);
+
 	return queries;
 }

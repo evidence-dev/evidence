@@ -69,8 +69,7 @@
 	$: nameColFormat = columnSummary[nameCol].format;
 	let valueColFormat;
 	$: if (valueFmt) {
-		valueFmt = getFormatObjectFromString(valueFmt, columnSummary[valueCol].format.valueType);
-		valueColFormat = valueFmt;
+		valueColFormat = getFormatObjectFromString(valueFmt, columnSummary[valueCol].format.valueType);
 	} else {
 		valueColFormat = columnSummary[valueCol].format;
 	}

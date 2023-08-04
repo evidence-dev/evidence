@@ -31,6 +31,13 @@ declare global {
 		main: string;
 	};
 
+	type PluginDatabases = {
+		[database: string]: {
+			package: EvidencePluginPackage<EvidenceDatabasePackage>;
+			factory: DatabaseConnectorFactory;
+		};
+	};
+
 	type ValidPackage = z.infer<typeof ValidPackageSchema>;
 
 	type EvidenceConfig = z.infer<typeof EvidenceConfigSchema>;

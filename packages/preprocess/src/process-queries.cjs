@@ -15,6 +15,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		queryDeclarations += `
             import debounce from 'debounce';
             import { browser } from '$app/environment';
+			import {profile} from '@evidence-dev/component-utilities/profile';
 			
 			// partially bypasses weird reactivity stuff with \`select\` elements
 			function data_update(data) {
@@ -23,14 +24,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 			$: data_update(data);
 
+
             ${valid_ids
 							.map(
-								(id) =>
-									`
+								(id) => `
                 let ${id} = data.${id} ?? [];
-                const _query_${id} = browser? 
-                    debounce((query) => __db.query(query).then((value) => ${id} = value), 200) :
-                             (query) => (${id} = __db.query(query, "${id}"));
+                const _query_${id} = browser
+					  ? debounce((query) => profile(__db.query, query).then((value) => ${id} = value), 200)
+					  : (query) => (${id} = profile(__db.query, query, "${id}"));
                 $: _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
             `
 							)
@@ -65,7 +66,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         ${queryDeclarations}
         `;
-
 	return defaultProps;
 };
 

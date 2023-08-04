@@ -95,6 +95,7 @@
 	let nameProperty = abbreviations ? 'abbrev' : 'name';
 
 	let columnSummary;
+	let format_object;
 	$: try {
 		error = undefined;
 		if (!state) {
@@ -111,7 +112,7 @@
 
 		// Override format for values:
 		if (fmt) {
-			fmt = getFormatObjectFromString(fmt, columnSummary[value].format);
+			format_object = getFormatObjectFromString(fmt, columnSummary[value].format);
 		}
 
 		let mapData = JSON.parse(JSON.stringify(data));
@@ -156,8 +157,8 @@
 					let tooltipOutput = `
 						<span id="tooltip" style='font-weight: 600;'>${params.name}</span>
 						<br/>
-						<span>${formatTitle(value, fmt)}: </span>
-							<span style='float:right; margin-left: 10px;'>${formatValue(params.value, fmt)}</span>`;
+						<span>${formatTitle(value, format_object)}: </span>
+							<span style='float:right; margin-left: 10px;'>${formatValue(params.value, format_object)}</span>`;
 
 					return tooltipOutput;
 				},

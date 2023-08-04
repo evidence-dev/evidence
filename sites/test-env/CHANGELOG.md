@@ -1,5 +1,121 @@
 # evidence-test-environment
 
+## 3.0.0-usql.17
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.17
+
+## 3.0.0-usql.16
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.4
+  - @evidence-dev/core-components@2.0.0-usql.6
+  - @evidence-dev/evidence@20.0.0-usql.16
+
+## 3.0.0-usql.15
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.15
+
+## 3.0.0-usql.14
+
+### Patch Changes
+
+- Updated dependencies [64ab3074]
+  - @evidence-dev/component-utilities@2.0.0-usql.3
+  - @evidence-dev/core-components@2.0.0-usql.5
+  - @evidence-dev/evidence@20.0.0-usql.14
+
+## 3.0.0-usql.13
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.13
+
+## 3.0.0-usql.12
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.12
+
+## 3.0.0-usql.11
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.11
+
+## 3.0.0-usql.10
+
+### Patch Changes
+
+- Updated dependencies [cfb0f248]
+  - @evidence-dev/evidence@20.0.0-usql.10
+
+## 3.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [9ade9c88]
+- Updated dependencies [9432c6e4]
+- Updated dependencies [be1cc666]
+  - @evidence-dev/core-components@2.0.0-usql.4
+  - @evidence-dev/evidence@20.0.0-usql.9
+
+## 2.0.17
+
+### Patch Changes
+
+- Updated dependencies [78f2fab2]
+- Updated dependencies [75560a31]
+  - @evidence-dev/core-components@1.2.0
+  - @evidence-dev/evidence@20.0.0
+
+## 3.0.0-usql.8
+
+### Patch Changes
+
+- Updated dependencies [e1174aa1]
+- Updated dependencies [ca7337ba]
+  - @evidence-dev/component-utilities@2.0.0-usql.2
+  - @evidence-dev/evidence@20.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.3
+
+## 3.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [3b49d3b6]
+  - @evidence-dev/csv@1.0.0-usql.2
+  - @evidence-dev/evidence@20.0.0-usql.7
+
+## 3.0.0-usql.6
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.6
+
+## 3.0.0-usql.5
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.5
+
+## 3.0.0-usql.4
+
+### Patch Changes
+
+- Updated dependencies [78f2fab2]
+- Updated dependencies [20aad351]
+- Updated dependencies [e12fef6c]
+  - @evidence-dev/core-components@2.0.0-usql.2
+  - @evidence-dev/evidence@20.0.0-usql.4
+  - @evidence-dev/duckdb@1.0.0-usql.1
+
 ## 3.0.0-usql.3
 
 ### Patch Changes

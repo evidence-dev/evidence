@@ -1,5 +1,18 @@
 # @evidence-dev/duckdb
 
+## 0.1.1
+
+### Patch Changes
+
+- 4e783f36: get precise types instead of inferring
+- e12fef6c: Bump DuckDB to 0.8.1
+
+## 1.0.0-usql.1
+
+### Patch Changes
+
+- e12fef6c: Bump DuckDB to 0.8.1
+
 ## 1.0.0-usql.0
 
 ### Major Changes

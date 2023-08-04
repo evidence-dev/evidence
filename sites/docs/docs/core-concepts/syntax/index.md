@@ -115,7 +115,7 @@ The current page path is: {$page.route.id}
 
 It can be useful to include code that isn't SQL, eg for documentation or examples.
 
-If a code fence is named one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), such as `python` or `r`, the code fence will render a code block. The code is _not_ executed.
+If a code fence is named one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/src/utils/supportedLanguages.cjs), such as `python` or `r`, the code fence will render a code block. The code is _not_ executed.
 
 ````markdown
 ```python

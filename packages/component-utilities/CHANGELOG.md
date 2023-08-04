@@ -1,5 +1,23 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- Remove usql context; proper approach is to use page store now. Context is not reactive; and would require a store which is the behavior already present in \$app/stores.page
+
+## 2.0.0-usql.3
+
+### Patch Changes
+
+- 64ab3074: Add USQL Context wrappers to component utilities
+
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- e1174aa1: added profile function to note load and query times
+
 ## 2.0.0-usql.1
 
 ### Patch Changes

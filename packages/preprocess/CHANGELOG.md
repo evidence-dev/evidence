@@ -1,5 +1,57 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.9
+
+### Patch Changes
+
+- Clean up console logs
+
+## 4.0.0-usql.8
+
+### Patch Changes
+
+- Remove usql context; proper approach is to use page store now. Context is not reactive; and would require a store which is the behavior already present in \$app/stores.page
+
+## 4.0.0-usql.7
+
+### Patch Changes
+
+- Fix build issue
+
+## 4.0.0-usql.6
+
+### Patch Changes
+
+- 64ab3074: Add USQL Context wrappers to component utilities
+
+## 4.0.0-usql.5
+
+### Patch Changes
+
+- 9f568270: stop exporting the metadata object from mdsvex frontmatter
+
+## 3.1.0
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
+### Patch Changes
+
+- 75560a31: Consolidate tailwind presets into tailwind package
+
+## 4.0.0-usql.4
+
+### Patch Changes
+
+- e1174aa1: added profile function to note load and query times
+
+## 4.0.0-usql.3
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
 ## 4.0.0-usql.2
 
 ### Patch Changes

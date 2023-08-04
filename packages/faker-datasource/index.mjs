@@ -129,15 +129,19 @@ const generateTable = (directory) => async (content, filepath) => {
 		const definition = yaml.parse(content);
 
 		if (!('rows' in definition))
-			throw new Error(`${filepath.split('/').pop()} is missing required required field "rows"`);
+			throw new Error(
+				`${filepath.split(path.sep).pop()} is missing required required field "rows"`
+			);
 		if (!(typeof definition.rows === 'number'))
-			throw new Error(`${filepath.split('/').pop()} "rows" must be a number`);
+			throw new Error(`${filepath.split(path.sep).pop()} "rows" must be a number`);
 		if (!('schema' in definition))
-			throw new Error(`${filepath.split('/').pop()} is missing required required field "schema"`);
+			throw new Error(
+				`${filepath.split(path.sep).pop()} is missing required required field "schema"`
+			);
 		if (!(typeof definition.schema === 'object'))
-			throw new Error(`${filepath.split('/').pop()} "schema" must be an object`);
+			throw new Error(`${filepath.split(path.sep).pop()} "schema" must be an object`);
 
-		const name = filepath.split('/').pop().split('.').shift();
+		const name = filepath.split(path.sep).pop().split('.').shift();
 
 		const rows = [];
 

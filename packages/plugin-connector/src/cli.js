@@ -3,7 +3,7 @@ import { getDatasourcePlugins } from './data-sources/get-datasource-plugins';
 import { getRootModules } from './plugin-discovery/get-root-modules';
 
 import { Command } from 'commander';
-import { loadConfig } from './plugin-discovery/resolve-evidence-config';
+import { loadConfig } from './plugin-discovery/load-config';
 import { execSource } from './data-sources/exec-source';
 
 const program = new Command();
