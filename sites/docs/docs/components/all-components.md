@@ -562,6 +562,25 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
+### [Accordion](accordion)
+
+ <div class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Accordion</div>
+    </div>
+    <div class="item-body-centered">
+    <a href="/components/accordion">
+
+![Accordion](/img/accordion.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+<div class="gallery-container-grid">
+
 ### [Alert](alert)
 
  <div class="gallery-item-grid">
@@ -578,6 +597,27 @@ hide_table_of_contents: false
 </div>
 
 </div>
+
+
+<div class="gallery-container-grid">
+
+### [Modal](modal)
+
+ <div class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Modal</div>
+    </div>
+    <div class="item-body-centered">
+    <a href="/components/modal">
+
+![Modal](/img/modal.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
 
 <div class="gallery-container-grid">
 

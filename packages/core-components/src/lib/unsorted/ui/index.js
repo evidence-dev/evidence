@@ -1,3 +1,6 @@
+export { default as Accordion } from './Accordion.svelte';
+export { default as AccordionItem } from './AccordionItem.svelte';
+export { default as LinkButton } from './LinkButton.svelte';
 export { default as BigLink } from './BigLink.svelte';
 export { default as BreadCrumbs } from './BreadCrumbs.svelte';
 export { default as ChevronToggle } from './ChevronToggle.svelte';
@@ -8,6 +11,7 @@ export { default as Header } from './Header.svelte';
 export { default as LoadingIndicator } from './LoadingIndicator.svelte';
 export { default as LoadingSkeleton } from './LoadingSkeleton.svelte';
 export { default as Logo } from './Logo.svelte';
+export { default as Modal } from './Modal.svelte';
 export { default as Portal } from './Portal.svelte';
 export { default as QueryToast } from './QueryToast.svelte';
 export { default as QueryViewer } from './QueryViewer.svelte';

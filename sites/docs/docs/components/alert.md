@@ -3,7 +3,7 @@ title: Alert
 sidebar_position: 30
 ---
 
-![alert](/img/alerts.png)
+<img src="/img/alerts.png" alt="alert" width="600"/>
 
 ```markdown
 <Alert>

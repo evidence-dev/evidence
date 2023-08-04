@@ -402,8 +402,8 @@ importers:
         specifier: workspace:^
         version: link:../db-commons
       duckdb-async:
-        specifier: 0.8.0
-        version: 0.8.0
+        specifier: 0.8.1
+        version: 0.8.1
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -475,6 +475,9 @@ importers:
       '@evidence-dev/db-orchestrator':
         specifier: workspace:^
         version: link:../db-orchestrator
+      '@evidence-dev/tailwind':
+        specifier: workspace:^
+        version: link:../tailwind
       '@sveltejs/kit':
         specifier: 1.13.0
         version: 1.13.0(svelte@3.55.0)(vite@4.0.4)
@@ -10549,18 +10552,18 @@ packages:
   /downloadjs@1.4.7:
     resolution: {integrity: sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q==}
 
-  /duckdb-async@0.8.0:
-    resolution: {integrity: sha512-8KfNFblbtz4SCYlMzzQD3+pxfgIHe2YIydBe1o4I0QQqrwK2kG0Td34zICV5Un0IgDnNOR8v53ze9ogSzQ5lPA==}
+  /duckdb-async@0.8.1:
+    resolution: {integrity: sha512-/g5/zxC5XXXeQVEs86AtWVnzOmS7FBgVm976sJ75Tvrovms+QC5V+0SLNOl6VJQUT55NvvlrwX1zQybQfa+48w==}
     dependencies:
-      duckdb: 0.8.0
+      duckdb: 0.8.1
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb@0.8.0:
-    resolution: {integrity: sha512-hD05w83kdDkmRZoKwFK4PiA2fByczPp49rY6cREh23NoVHXJ3I4VpROsW8vNC9Gx7KP7lZpWvT7rQ/MHvrWI5g==}
+  /duckdb@0.8.1:
+    resolution: {integrity: sha512-a2SJDuvBVKy5muYFxXTANlqdNX1daF3NHzpqRdrk0Qx5n3Sh7BxL66O+WY9epaDFukiXEpz45sds5T1LaPaHog==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.10
