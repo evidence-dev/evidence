@@ -68,7 +68,6 @@ const pgBuiltInTypeExtentions = {
 	_CHAR: 1002
 };
 
-
 /**
  * Extracts the union of values of an object type
  * @template T

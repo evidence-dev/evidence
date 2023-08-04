@@ -176,13 +176,13 @@ const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.schema?.fields?.map((field) => {
 		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(/** @type {string} */(field.type));
+		let evidenceType = nativeTypeToEvidenceType(/** @type {string} */ (field.type));
 		if (!evidenceType) {
 			typeFidelity = TypeFidelity.INFERRED;
 			evidenceType = EvidenceType.STRING;
 		}
 		return {
-			name: /** @type {string} */(field.name),
+			name: /** @type {string} */ (field.name),
 			evidenceType: evidenceType,
 			typeFidelity: typeFidelity
 		};
