@@ -410,7 +410,7 @@
 	}
 
 	h4.markdown {
-		@apply leading-normal mt-4 mb-1 text-base text-gray-950 ;
+		@apply leading-normal mt-4 mb-1 text-base text-gray-950;
 	}
 
 	h5.markdown {
