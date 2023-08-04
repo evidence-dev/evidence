@@ -11,14 +11,14 @@
 </script>
 
 {#if headers && headers.length > 1}
-<span class="block text-xs sticky top-0 mb-2 text-gray-950 bg-white shadow-white font-medium">
-	On this page
-</span>
+	<span class="block text-xs sticky top-0 mb-2 text-gray-950 bg-white shadow-white font-medium">
+		On this page
+	</span>
 	{#each headers as header, i}
-		<a href={'#' + encodeURIComponent(header.innerText + i)} 
+		<a
+			href={'#' + encodeURIComponent(header.innerText + i)}
 			class={header.nodeName.toLowerCase()}
 			class:first={i === 0}
-			
 		>
 			{header.innerText}
 		</a>
@@ -45,5 +45,4 @@
 	a.h1 {
 		@apply mt-3 font-semibold block bg-white shadow shadow-white;
 	}
-
 </style>

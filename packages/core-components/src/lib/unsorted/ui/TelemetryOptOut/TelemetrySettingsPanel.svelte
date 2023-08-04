@@ -33,12 +33,16 @@
 						<li>
 							A random identifier that is stored in <code>.evidence/template/.profile.json</code>
 						</li>
-						<li>An anonymized identifier based on the git repository you're using for the project</li>
+						<li>
+							An anonymized identifier based on the git repository you're using for the project
+						</li>
 						<li>Whether your project is running in development or build mode</li>
 						<li>
 							Whether your query returned from the cache, from your database, or returned an error
 						</li>
-						<li>The type of Evidence database connector you are using (postgres, snowflake, etc.)</li>
+						<li>
+							The type of Evidence database connector you are using (postgres, snowflake, etc.)
+						</li>
 						<li>The operating system your project is running on (windows, mac, etc.)</li>
 					</ol>
 					<p>Sharing anonymous usage data is one of the best ways you can support Evidence.</p>
@@ -55,7 +59,6 @@
 						</label>
 					</div>
 				</div>
-
 			</CollapsibleTableSection>
 		</div>
 	</div>
@@ -72,13 +75,13 @@
 
 <style>
 	h2 {
-		@apply font-semibold text-lg pt-3 pb-2; 
+		@apply font-semibold text-lg pt-3 pb-2;
 	}
 
 	p {
 		@apply text-sm py-2;
 	}
-	
+
 	form {
 		scroll-margin-top: 3.5rem; /* offset for sticky header */
 	}

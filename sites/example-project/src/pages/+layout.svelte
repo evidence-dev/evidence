@@ -89,7 +89,7 @@
 		<main class="flex-1 overflow-x-hidden md:px-8 print:px-0 print:md:px-0 py-8">
 			<div class="print:hidden">
 				{#if $page.route.id !== '/settings'}
-				<BreadCrumbs {fileTree} />
+					<BreadCrumbs {fileTree} />
 				{/if}
 			</div>
 			{#if !$navigating}
@@ -107,7 +107,7 @@
 			{/if}
 		</main>
 		<div class="print:hidden">
-			<TableOfContents /> 
+			<TableOfContents />
 		</div>
 	</div>
 </div>

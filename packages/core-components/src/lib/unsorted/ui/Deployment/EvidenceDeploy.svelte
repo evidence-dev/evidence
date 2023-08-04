@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <h2>Deploying to Evidence Cloud</h2>
 <p>Evidence's Cloud hosting service allows you to:</p>
 <ul>
@@ -23,13 +19,13 @@
 
 <style>
 	h2 {
-		@apply font-semibold text-lg pt-3 pb-2; 
+		@apply font-semibold text-lg pt-3 pb-2;
 	}
 
 	p {
 		@apply text-sm py-2;
 	}
-	
+
 	button {
 		margin-right: 0.25em;
 		margin-left: 0.25em;

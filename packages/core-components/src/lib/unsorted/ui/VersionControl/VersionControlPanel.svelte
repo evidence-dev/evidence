@@ -84,7 +84,7 @@
 	}
 
 	h2 {
-		@apply font-semibold text-lg pt-3 pb-2; 
+		@apply font-semibold text-lg pt-3 pb-2;
 	}
 
 	p {

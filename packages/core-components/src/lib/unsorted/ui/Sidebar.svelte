@@ -126,9 +126,11 @@
 {/if}
 
 <!-- Desktop Sidebar -->
-<aside class="w-48 hidden md:flex flex-none ">
+<aside class="w-48 hidden md:flex flex-none">
 	{#if !mobileSidebarOpen}
-		<div class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500">
+		<div
+			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500"
+		>
 			<div class="flex flex-col pb-6">
 				<a
 					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-200"

@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import BigqueryForm from './BigqueryForm.svelte';
 	import PostgresForm from './PostgresForm.svelte';
@@ -225,25 +221,25 @@
 	span.indicator.fail {
 		background-color: var(--red-600);
 	}
-	
+
 	p.error {
 		font-family: 'monoco', Roboto Mono, monospace;
 		padding-top: 1em;
 		word-break: break-all;
 	}
-	
+
 	h3 {
-		@apply uppercase text-sm leading-loose py-3; 
+		@apply uppercase text-sm leading-loose py-3;
 	}
-	
+
 	h2 {
-		@apply font-semibold text-lg pt-3 pb-2; 
+		@apply font-semibold text-lg pt-3 pb-2;
 	}
 
 	p {
 		@apply text-sm py-2;
 	}
-	
+
 	.docs-link {
 		color: var(--blue-600);
 		text-decoration: none;
@@ -356,5 +352,4 @@
 		transition-property: background, color;
 		transition-duration: 350ms;
 	}
-
 </style>

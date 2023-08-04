@@ -86,7 +86,7 @@
 		border: 3px solid transparent;
 	}
 	pre code {
-		@apply overflow-auto relative block p-3 text-gray-900 text-sm; 
+		@apply overflow-auto relative block p-3 text-gray-900 text-sm;
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 	}
