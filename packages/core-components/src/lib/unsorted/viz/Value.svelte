@@ -97,7 +97,7 @@
 	</span>
 {:else}
 	<span
-		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-600 py-[1px] bg-red-50 rounded"
+		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-200 py-[1px] bg-red-50 rounded"
 	>
 		<span class="inline font-sans font-medium text-xs text-red-600">error</span>
 		<span
