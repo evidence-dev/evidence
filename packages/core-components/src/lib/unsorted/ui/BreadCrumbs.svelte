@@ -55,7 +55,7 @@
 	$: crumbs = buildCrumbs(pathArray);
 </script>
 
-<div class="flex items-start">
+<div class="flex items-start mt-12">
 	<div class="inline-flex items-center text-sm capitalize gap-1 text-gray-500 mb-4">
 		{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
 			<a href="/"> Home </a>
