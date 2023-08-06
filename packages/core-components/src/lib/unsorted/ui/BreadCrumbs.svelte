@@ -46,7 +46,7 @@
 		// check in the file tree if each crumb has an href
 		crumbs.forEach((path) => {
 			if (!checkUrl(path.href, fileTree)) {
-				path.href = 'javascript:void(0)';
+				path.href = null;
 			}
 		});
 		return crumbs;
@@ -63,7 +63,11 @@
 			{#each crumbs as crumb, i}
 				{#if i > 0}
 					<Icon src={ChevronRight} size="12px" theme="solid" />
-					<a href={crumb.href}>{crumb.title}</a>
+					{#if crumb.href}
+						<a href={crumb.href}>{crumb.title}</a>
+					{:else}
+						<span>{crumb.title}</span>
+					{/if}
 				{:else}
 					<a href={crumb.href}>
 						{#if crumb.title === 'Home'}
