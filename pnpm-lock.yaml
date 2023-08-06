@@ -215,6 +215,9 @@ importers:
       svelte-tiny-linked-charts:
         specifier: 1.1.5
         version: 1.1.5
+      tua-body-scroll-lock:
+        specifier: ^1.4.0
+        version: 1.4.0
     devDependencies:
       '@rgossiaux/svelte-headlessui':
         specifier: ^2.0.0
@@ -19806,6 +19809,10 @@ packages:
       wcwidth: 1.0.1
       yargs: 15.4.1
     dev: true
+
+  /tua-body-scroll-lock@1.4.0:
+    resolution: {integrity: sha512-pbl411d7RSxjYXt5pB5GdBQ5BraVg1PMvr8BSUXc4buCMeK1OYu7L10PuOU8EhdfWoxGiAfvLrioSQe6Cr9m1g==}
+    dev: false
 
   /tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}

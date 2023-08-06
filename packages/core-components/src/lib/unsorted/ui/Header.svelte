@@ -162,6 +162,7 @@
 									<a
 										href="https://docs.evidence.dev"
 										target="_blank"
+										rel="noreferrer"
 										class:active
 										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
 									>
@@ -189,6 +190,7 @@
 									<a
 										href="https://docs.evidence.dev"
 										target="_blank"
+										rel="noreferrer"
 										class:active
 										class="w-full block text-left py-1 px-1 hover:bg-gray-100 rounded-md"
 									>

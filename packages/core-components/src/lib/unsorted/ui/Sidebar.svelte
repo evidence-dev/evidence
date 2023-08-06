@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	export let fileTree;
 	import { fly, fade } from 'svelte/transition';
-	// import { lock, unlock } from 'tua-body-scroll-lock';
+	import { lock, unlock } from 'tua-body-scroll-lock';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
@@ -14,9 +14,9 @@
 	const toggleScrollLock = (mobileSidebarOpen) => {
 		if (browser) {
 			if (!mobileSidebarOpen) {
-				// unlock(); // unlock body scroll
+				unlock(); // unlock body scroll
 			} else {
-				// lock(); // lock body scroll
+				lock(); // lock body scroll
 			}
 		}
 	};
