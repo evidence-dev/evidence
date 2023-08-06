@@ -99,7 +99,7 @@
 					</div>
 					<span class="px-1 text-xs text-gray-500">Updated 7 hours ago</span>
 				</div> -->
-				<article class="select-auto">
+				<article class="select-text">
 					<slot />
 				</article>
 			{:else}
