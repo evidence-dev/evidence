@@ -66,7 +66,7 @@
 					{#if crumb.href}
 						<a href={crumb.href}>{crumb.title}</a>
 					{:else}
-						<span>{crumb.title}</span>
+						<span class=" cursor-default">{crumb.title}</span>
 					{/if}
 				{:else}
 					<a href={crumb.href}>
