@@ -70,7 +70,7 @@
 			<div class="flex-grow px-8 h-[calc(100vh-8rem)] overflow-auto text-base sm:text-sm">
 				<div class="flex flex-col pb-6">
 					<a
-						class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-200"
+						class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 						href="/"
 					>
 						Home
@@ -78,7 +78,7 @@
 					{#each firstLevelFiles as file}
 						{#if file.children.length === 0}
 							<a
-								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-200"
+								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
 								href={file.href}
 								class:selected={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							>
@@ -92,14 +92,14 @@
 						<div class="flex flex-col pb-6">
 							{#if file.href}
 								<a
-									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-200"
+									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 									href={file.href}
 								>
 									{file.label}
 								</a>
 							{:else}
 								<span
-									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-200"
+									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 									href={file.href}
 								>
 									{file.label}
@@ -107,7 +107,7 @@
 							{/if}
 							{#each file.children as file}
 								<a
-									class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-200"
+									class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
 									href={file.href}
 									class:selected={$page.url.pathname.toUpperCase() ===
 										file.href.toUpperCase() + '/'}
@@ -131,7 +131,7 @@
 		>
 			<div class="flex flex-col pb-6">
 				<a
-					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-200"
+					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100"
 					href="/"
 				>
 					Home
@@ -139,7 +139,7 @@
 				{#each firstLevelFiles as file}
 					{#if file.children.length === 0}
 						<a
-							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-200"
+							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100"
 							href={file.href}
 							class:selected={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 						>
@@ -153,14 +153,14 @@
 					<div class="flex flex-col pb-6">
 						{#if file.href}
 							<a
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize transition-all duration-200"
+								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize transition-all duration-100"
 								href={file.href}
 							>
 								{file.label}
 							</a>
 						{:else}
 							<span
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-200"
+								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100"
 								href={file.href}
 							>
 								{file.label}
@@ -168,7 +168,7 @@
 						{/if}
 						{#each file.children as file}
 							<a
-								class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-200 truncate whitespace-break-spaces"
+								class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate whitespace-break-spaces"
 								href={file.href}
 								class:selected={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							>
@@ -177,7 +177,7 @@
 							<!-- Inlining a number in here  -->
 							<!-- <div class="flex justify-between items-center gap-3 hover:text-gray-950 pr-3 group">
 								<a
-									class="text-xs tabular-nums group transition-all duration-200  inline-block group  "
+									class="text-xs tabular-nums group transition-all duration-100  inline-block group  "
 									href={file.href}
 									class:selected={$page.url.pathname.toUpperCase() ===
 										file.href.toUpperCase() + '/'}

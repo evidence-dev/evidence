@@ -57,27 +57,23 @@
 
 <div class="flex items-start mt-12">
 	<div class="inline-flex items-center text-sm capitalize gap-1 text-gray-500 mb-4">
-		{#if $page.url.pathname.startsWith('/settings') || $page.url.pathname === '/'}
-			<a href="/"> Home </a>
-		{:else}
-			{#each crumbs as crumb, i}
-				{#if i > 0}
-					<Icon src={ChevronRight} size="12px" theme="solid" />
-					{#if crumb.href}
-						<a href={crumb.href}>{crumb.title}</a>
-					{:else}
-						<span class=" cursor-default">{crumb.title}</span>
-					{/if}
+		{#each crumbs as crumb, i}
+			{#if i > 0}
+				<Icon src={ChevronRight} size="12px" theme="solid" />
+				{#if crumb.href}
+					<a href={crumb.href} class="hover:underline transition-all duration-100">{crumb.title}</a>
 				{:else}
-					<a href={crumb.href}>
-						{#if crumb.title === 'Home'}
-							<span> Home </span>
-						{:else}
-							{crumb.title}
-						{/if}
-					</a>
+					<span class=" cursor-default">{crumb.title}</span>
 				{/if}
-			{/each}
-		{/if}
+			{:else}
+				<a href={crumb.href}>
+					{#if crumb.title === 'Home'}
+						<a href='/' class="hover:underline"> Home </a>
+					{:else}
+						{crumb.title}
+					{/if}
+				</a>
+			{/if}
+		{/each}
 	</div>
 </div>
