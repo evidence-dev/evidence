@@ -5,7 +5,13 @@
 
 	import { dev } from '$app/environment';
 
-	import { DatabaseSettingsPanel, VersionControlPanel, DeploySettingsPanel, FormattingSettingsPanel, TelemetrySettingsPanel} from '@evidence-dev/core-components';
+	import {
+		DatabaseSettingsPanel,
+		VersionControlPanel,
+		DeploySettingsPanel,
+		FormattingSettingsPanel,
+		TelemetrySettingsPanel
+	} from '@evidence-dev/core-components';
 </script>
 
 {#if dev}
