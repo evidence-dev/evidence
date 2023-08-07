@@ -28,7 +28,8 @@
 	font-style: italic;
 	font-weight: 200;
 	font-display: block;
-	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraLightItalic.woff2?v=3.19') format('woff2'),
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraLightItalic.woff2?v=3.19')
+			format('woff2'),
 		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraLightItalic.woff?v=3.19') format('woff');
 }
 
@@ -79,7 +80,8 @@
 	font-style: italic;
 	font-weight: 500;
 	font-display: block;
-	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-MediumItalic.woff2?v=3.19') format('woff2'),
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-MediumItalic.woff2?v=3.19')
+			format('woff2'),
 		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-MediumItalic.woff?v=3.19') format('woff');
 }
 
@@ -96,7 +98,8 @@
 	font-style: italic;
 	font-weight: 600;
 	font-display: block;
-	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-SemiBoldItalic.woff2?v=3.19') format('woff2'),
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-SemiBoldItalic.woff2?v=3.19')
+			format('woff2'),
 		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-SemiBoldItalic.woff?v=3.19') format('woff');
 }
 
@@ -130,7 +133,8 @@
 	font-style: italic;
 	font-weight: 800;
 	font-display: block;
-	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff2?v=3.19') format('woff2'),
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff2?v=3.19')
+			format('woff2'),
 		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff?v=3.19') format('woff');
 }
 
