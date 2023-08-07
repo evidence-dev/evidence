@@ -68,7 +68,7 @@
 			{:else}
 				<a href={crumb.href}>
 					{#if crumb.title === 'Home'}
-						<a href='/' class="hover:underline"> Home </a>
+						<a href="/" class="hover:underline"> Home </a>
 					{:else}
 						{crumb.title}
 					{/if}
