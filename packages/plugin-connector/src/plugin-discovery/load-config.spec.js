@@ -3,10 +3,8 @@ import { vi, describe, it, expect } from 'vitest';
 vi.mock('fs/promises');
 vi.mock('fs');
 
-import fs from 'fs/promises';
-import fsLegacy from 'fs';
+import fs from 'fs';
 import {
-	defaultConfig,
 	handleAt,
 	handleAtParsed,
 	invalidMinimalConfig,
@@ -17,10 +15,8 @@ import {
 } from './load-config.fixture';
 import { loadConfig } from './load-config';
 
-fs.readFile = /** @type {any} */ (vi.fn());
-const mockedReadFile = vi.mocked(fs.readFile);
-fsLegacy.readFileSync = /** @type {any} */ (vi.fn());
-const mockedReadFileSync = vi.mocked(fsLegacy.readFileSync);
+fs.readFileSync = /** @type {any} */ (vi.fn());
+const mockedReadFileSync = vi.mocked(fs.readFileSync);
 
 describe('loadConfig', () => {
 	it('should load a valid configuration', async () => {
