@@ -11,6 +11,30 @@
 	body {
 		@apply select-none;
 	}
+
+	/* osx style scrollbars */
+	.pretty-scrollbar {
+		scrollbar-width: thin;
+		scrollbar-color: theme('colors.gray.200') transparent;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar {
+		height: 0.75rem;
+		width: 6px;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar-thumb {
+		background-color: transparent;
+		border-radius: 7px;
+	}
+
+	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
+		background-color: theme('colors.gray.200');
+	}
 }
 
 @layer components {
