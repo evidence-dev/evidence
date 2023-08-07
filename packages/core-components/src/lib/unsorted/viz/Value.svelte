@@ -21,6 +21,15 @@
 	export let row = 0;
 	export let column = null;
 
+	// alias for column
+	export let value = null;
+	$: if (value && column) {
+		console.warn(
+			'Both "value" and "column" were supplied as props to Value. "value" will be ignored.'
+		);
+	}
+	$: column = column ?? value;
+
 	// Placeholder text when data not supplied:
 	export let placeholder = null;
 
@@ -28,7 +37,7 @@
 	export let fmt = undefined;
 	let format_object;
 
-	let value;
+	let selected_value;
 	let error;
 
 	let columnSummary;
@@ -69,7 +78,7 @@
 						}
 					}
 
-					value = data[row][column];
+					selected_value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
 					if (fmt) {
 						format_object = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
@@ -96,7 +105,7 @@
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<PulseNumber value={formatValue(value, format_object)} />
+	<PulseNumber value={formatValue(selected_value, format_object)} />
 {:else}
 	<span
 		class="group inline-flex gap-1 items-center relative cursor-help text-white font-sans text-sm bg-red-700 rounded-2xl pl-2 pr-[1px] mx-0.5"
