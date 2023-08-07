@@ -162,9 +162,9 @@ module.exports = runQuery;
  * @property {string} host
  * @property {string} database
  * @property {string} password
- * @property {number} port
- * @property {boolean} trust_server_certificate
- * @property {boolean} encrypt
+ * @property {`${number}`} port
+ * @property {`${boolean}`} trust_server_certificate
+ * @property {`${boolean}`} encrypt
  */
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<MsSQLOptions>} */

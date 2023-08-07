@@ -38,6 +38,7 @@ const inferValueType = function (columnValue) {
 	} else if (typeof columnValue === 'boolean') {
 		return EvidenceType.BOOLEAN;
 	} else if (typeof columnValue === 'string') {
+		/** @type {EvidenceType} */
 		let result = EvidenceType.STRING;
 		if (columnValue && (columnValue.match(/-/g) || []).length === 2) {
 			let testDateStr = columnValue;
@@ -87,7 +88,7 @@ const inferColumnTypes = function (rows) {
 
 /**
  * Processes query results
- * @param {unknown} queryResults
+ * @param {QueryResult | QueryResult["rows"]} queryResults
  * @returns {QueryResult}
  */
 const processQueryResults = function (queryResults) {

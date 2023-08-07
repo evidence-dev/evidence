@@ -183,6 +183,7 @@ module.exports = runQuery;
  * @property {number} port
  * @property {string} socketPath
  * @property {number} decimalNumbers
+ * @property {string} ssl
  */
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<MySQLOptions>} */

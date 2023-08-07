@@ -220,6 +220,8 @@ module.exports = runQuery;
  * @property {string} password
  * @property {number} port
  * @property {Object | undefined} ssl
+ * @property {string} connectionString
+ * @property {string} schema
  */
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<PostgresOptions>} */
