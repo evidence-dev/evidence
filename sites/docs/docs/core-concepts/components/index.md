@@ -4,6 +4,9 @@ title: Component Overview
 description: Components are used to display charts and other visual elements
 ---
 
+# More info! 
+
+
 ## What are Components?
 
 Evidence has a built in [component library](/components/all-components) to create charts and other visual elements.
@@ -43,6 +46,7 @@ The number of orders yesterday was <Value data = {orders} column = num_orders />
 Above, we've passed in the query data `orders` in curly braces `{ }`, and specified the column we want to display `num_orders` in the `column` prop.
 
 For more information on the `Value` component, see the [Value docs](/components/value).
+
 
 ## Charts
 

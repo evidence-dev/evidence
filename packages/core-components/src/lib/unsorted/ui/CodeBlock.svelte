@@ -60,13 +60,7 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 	pre {
-		background: var(--grey-100);
-		border: 1px solid var(--grey-200);
-		border-radius: 5px;
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		justify-content: space-between;
+		@apply bg-gray-50 border rounded-md flex items-start justify-between;
 	}
 	pre code::-webkit-scrollbar {
 		height: var(--scrollbar-size);
@@ -92,13 +86,7 @@
 		border: 3px solid transparent;
 	}
 	pre code {
-		overflow: auto;
-		position: relative;
-		display: block;
-		background: none;
-		border: none;
-		padding: 0.8em 0.8em;
-		color: var(--grey-900);
+		@apply overflow-auto relative block p-3 text-gray-900 text-sm;
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 	}

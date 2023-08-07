@@ -35,9 +35,6 @@ export default (node, option) => {
 			'#f3f3f3'
 		],
 		backgroundColor: 'rgba(255, 255, 255, 0)',
-		textStyle: {
-			fontFamily: 'sans-serif'
-		},
 		title: {
 			padding: 0,
 			itemGap: 7,

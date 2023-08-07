@@ -9,6 +9,16 @@ const config = {
 	},
 	ssr: {
 		external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+	},
+	server: {
+		fs: {
+			strict: process.env.NODE_ENV !== 'development'
+		}
+	},
+	build: {
+		rollupOptions: {
+			external: [/^@evidence-dev\/tailwind\/fonts\//]
+		}
 	}
 };
 
