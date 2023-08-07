@@ -127,7 +127,7 @@
 <aside class="w-48 hidden md:flex flex-none">
 	{#if !mobileSidebarOpen}
 		<div
-			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500"
+			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500 pretty-scrollbar"
 		>
 			<div class="flex flex-col pb-6">
 				<a
