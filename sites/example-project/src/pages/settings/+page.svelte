@@ -1,7 +1,7 @@
 <script>
 	export let data;
-	let { settings, customFormattingSettings, gitIgnore } = data;
-	$: ({ settings, customFormattingSettings, gitIgnore } = data);
+	let { settings, customFormattingSettings } = data;
+	$: ({ settings, customFormattingSettings } = data);
 
 	import { dev } from '$app/environment';
 </script>

@@ -20,7 +20,10 @@ const mockedReadFileSync = vi.mocked(fs.readFileSync);
 
 describe('loadConfig', () => {
 	it('should load a valid configuration', async () => {
-		mockedReadFileSync.mockImplementationOnce(()=>{console.trace("Hi"); return validMinimalConfig});
+		mockedReadFileSync.mockImplementationOnce(() => {
+			console.trace('Hi');
+			return validMinimalConfig;
+		});
 
 		const config = loadConfig(__dirname);
 
@@ -49,7 +52,9 @@ describe('loadConfig', () => {
 	});
 
 	it('should fail to load missing configuration', async () => {
-		mockedReadFileSync.mockImplementationOnce(() => {throw new Error('ENOENT')});
+		mockedReadFileSync.mockImplementationOnce(() => {
+			throw new Error('ENOENT');
+		});
 		expect(() => loadConfig(__dirname)).toThrowError();
 	});
 });

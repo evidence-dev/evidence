@@ -43,7 +43,7 @@ export const loadSourceOptions = (sourceName) => {
 		if (!parts) continue;
 		if (parts?.length < 2) continue;
 		if (!parts[1].toLowerCase().startsWith(sourceName.toLowerCase())) continue;
-		const rawOptKey = parts[1].substring(sourceName.length+1).split("_")
+		const rawOptKey = parts[1].substring(sourceName.length + 1).split('_');
 		let t = out;
 		for (const optKey of rawOptKey) {
 			if (!t[optKey]) t[optKey] = {};
