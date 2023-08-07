@@ -20,7 +20,8 @@
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.cjs"
 		},
-		"./fonts.css": "./fonts.css"
+		"./fonts.css": "./fonts.css",
+		"./fonts/*": "./fonts/*"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",
