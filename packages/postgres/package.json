@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/postgres",
-	"version": "0.3.0",
+	"version": "1.0.0-usql.0",
 	"description": "PostgreSQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -12,5 +12,14 @@
 		"@evidence-dev/db-commons": "workspace:^",
 		"pg": "8.7.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"postgres",
+			"postgresql",
+			"pg",
+			"pgsql",
+			"psql"
+		]
+	}
 }

@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/redshift",
-	"version": "0.0.6",
+	"version": "1.0.0-usql.0",
 	"description": "Redshift driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Archie Wood",
@@ -12,5 +12,10 @@
 		"@evidence-dev/db-commons": "workspace:^",
 		"@evidence-dev/postgres": "workspace:^"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"redshift"
+		]
+	}
 }

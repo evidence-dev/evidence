@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs-extra';
 
 const templatePaths = [
-	'.npmrc',
 	'static/',
 	'sources/',
 	'src/app.css',
@@ -14,6 +13,7 @@ const templatePaths = [
 	'src/pages/+layout.server.js',
 	'src/pages/+layout.js',
 	'src/pages/settings/',
+	'src/pages/explore',
 	'src/pages/api/',
 	'tailwind.config.cjs',
 	'postcss.config.cjs'
@@ -72,7 +72,7 @@ fs.outputFileSync(
         plugins: [sveltekit()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts'],
-            exclude: ['svelte-icons', 'svelte-tiny-linked-charts']
+            exclude: ['svelte-icons', 'svelte-tiny-linked-charts', '@evidence-dev/universal-sql']
         },
         ssr: {
             external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']

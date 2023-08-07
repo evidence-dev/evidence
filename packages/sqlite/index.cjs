@@ -14,10 +14,9 @@ const envMap = {
 
 const runQuery = async (queryString, database) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
-	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
 	try {
 		const db = await open({
-			filename: filepath,
+			filename: filename,
 			driver: sqlite3.Database,
 			mode: sqlite3.OPEN_READONLY
 		});
@@ -37,3 +36,32 @@ const runQuery = async (queryString, database) => {
 };
 
 module.exports = runQuery;
+
+/**
+ * @typedef {Object} SQLiteOptions
+ * @property {string} filename
+ */
+
+/**
+ * @typedef {Object} QueryResult
+ * @property { Record<string, any>[] } rows
+ * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
+ */
+
+/**
+ * @param {SQLiteOptions} opts
+ * @param {string} directory
+ * @returns { (queryString: string, queryOpts: SQLiteOptions ) => Promise<QueryResult> }
+ */
+module.exports.getRunner = async (opts, directory) => {
+	/**
+	 * @param {string} queryContent
+	 * @param {string} queryPath
+	 * @returns {Promise<QueryResult>}
+	 */
+	return async (queryContent, queryPath) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, { ...opts, filename: path.join(directory, opts.filename) });
+	};
+};

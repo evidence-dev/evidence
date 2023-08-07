@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sqlite",
-	"version": "1.2.0",
+	"version": "2.0.0-usql.1",
 	"description": "SQLite driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Edgar Ramírez-Mondragón",
@@ -16,5 +16,10 @@
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"sqlite"
+		]
+	}
 }

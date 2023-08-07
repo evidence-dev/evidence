@@ -1,5 +1,40 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- Remove usql context; proper approach is to use page store now. Context is not reactive; and would require a store which is the behavior already present in \$app/stores.page
+
+## 2.0.0-usql.3
+
+### Patch Changes
+
+- 64ab3074: Add USQL Context wrappers to component utilities
+
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- e1174aa1: added profile function to note load and query times
+
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- 4053c976: Fix custom formatting sometimes breaking when undefined
+
+## 2.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
 ## 1.1.0
 
 ### Minor Changes

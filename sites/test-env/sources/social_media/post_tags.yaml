@@ -1,0 +1,19 @@
+rows: 650000
+fuzz: 100000
+schema:
+    id:
+        type: id
+    post_id:
+        type: fk
+        target:
+            table: posts.yaml
+    hashtag_id:
+        type: fk
+        target:
+            table: hashtags.yaml
+
+filters:
+    - type: unique
+      fields:
+        - post_id
+        - hashtag_id

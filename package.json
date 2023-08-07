@@ -6,10 +6,12 @@
 		"@evidence-dev/db-orchestrator": "link:packages/db-orchestrator",
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/preprocess": "link:packages/preprocess",
+		"@evidence-dev/universal-sql": "link:packages/universal-sql",
 		"@evidence-dev/plugin-connector": "link:packages/plugin-connector",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
+		"@evidence-dev/tailwind": "link:packages/tailwind",
 		"@sveltejs/adapter-static": "1.0.0",
-		"@sveltejs/kit": "1.13.0",
+		"@sveltejs/kit": "1.21.0",
 		"@tidyjs/tidy": "2.4.4",
 		"blueimp-md5": "2.19.0",
 		"debounce": "^1.2.1",
@@ -37,7 +39,8 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "4.0.4"
+		"vite": "4.3.9",
+		"@duckdb/duckdb-wasm": "1.27.0"
 	},
 	"scripts": {
 		"build:dev-workspace": "run-s build:example-project",
@@ -47,7 +50,7 @@
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
 		"test": "run-s package:core-components build:tailwind build:evidence && pnpm i --frozen-lockfile && pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
-		"postinstall": "run-s build:preprocess build:tailwind build:plugin-connector package:core-components build:evidence && pnpm install --ignore-scripts",
+		"postinstall": "run-s build:plugin-connector build:preprocess build:tailwind package:core-components build:evidence && pnpm install --ignore-scripts",
 		"docs": "pnpm --filter ./sites/docs start",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
@@ -71,8 +74,5 @@
 			"jsonwebtoken@<9.0.0": ">=9.0.0",
 			"nth-check@<2.0.1": ">=2.0.1"
 		}
-	},
-	"dependencies": {
-		"@evidence-dev/tailwind": "link:packages/tailwind"
 	}
 }

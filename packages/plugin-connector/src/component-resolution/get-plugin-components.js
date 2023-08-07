@@ -1,6 +1,6 @@
 import { discoverEvidencePlugins } from '../plugin-discovery';
 import { getComponentsForPackage } from './get-components-for-package';
-import { loadConfig } from '../plugin-discovery/resolve-evidence-config';
+import { loadConfig } from '../plugin-discovery/load-config';
 import { getRootModules } from '../plugin-discovery/get-root-modules';
 import chalk from 'chalk';
 import { findSvelteComponents } from './loaders/file-loader';

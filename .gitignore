@@ -4,6 +4,7 @@ dist
 .env
 .pnpm-debug.log
 .vscode
+.fleet
 customization/
 /packages/components
 /packages/evidence/template
@@ -18,3 +19,5 @@ customization/
 
 **/storybook-static/**
 *.log
+connection.options.yaml
+**/static/data

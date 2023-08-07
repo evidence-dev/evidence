@@ -62,6 +62,9 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
+/**
+ * @param {BigQueryOptions} database
+ */
 const getCredentials = (database = {}) => {
 	const authentication_method =
 		database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'service-account';
@@ -166,3 +169,52 @@ const mapResultsToEvidenceColumnTypes = function (results) {
 };
 
 module.exports = runQuery;
+/**
+ * @typedef {Object} BigQueryBaseOptions
+ * @property {string} project_id
+ */
+
+/**
+ * @typedef {Object} BigQueryServiceAccountOptions
+ * @property {'service-account'} authenticator
+ * @property {string} client_email
+ * @property {string} private_key
+ */
+
+/**
+ * @typedef {Object} BigQueryOauthOptions
+ * @property {'oauth'} authenticator
+ * @property {string} token
+ */
+
+/**
+ * @typedef {Object} BigQueryCliOptions
+ * @property {'gcloud-cli'} authenticator
+ */
+
+/**
+ * @typedef {BigQueryBaseOptions & (BigQueryServiceAccountOptions | BigQueryOauthOptions | BigQueryCliOptions)} BigQueryOptions
+ */
+
+/**
+ * @typedef {Object} QueryResult
+ * @property { Record<string, any>[] } rows
+ * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
+ */
+
+/**
+ * @param {BigQueryOptions} opts
+ * @returns { (queryString: string, queryOpts: BigQueryOptions ) => Promise<QueryResult> }
+ */
+module.exports.getRunner = async (opts) => {
+	/**
+	 * @param {string} queryContent
+	 * @param {string} queryPath
+	 * @returns {Promise<QueryResult>}
+	 */
+	return async (queryContent, queryPath) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts);
+	};
+};

@@ -1,5 +1,204 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.17
+
+### Patch Changes
+
+- Clean up console logs
+- Updated dependencies
+  - @evidence-dev/preprocess@4.0.0-usql.9
+
+## 20.0.0-usql.16
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.4
+  - @evidence-dev/preprocess@4.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.6
+
+## 20.0.0-usql.15
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/preprocess@4.0.0-usql.7
+
+## 20.0.0-usql.14
+
+### Patch Changes
+
+- Updated dependencies [64ab3074]
+  - @evidence-dev/component-utilities@2.0.0-usql.3
+  - @evidence-dev/preprocess@4.0.0-usql.6
+  - @evidence-dev/core-components@2.0.0-usql.5
+
+## 20.0.0-usql.13
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.6
+  - @evidence-dev/plugin-connector@2.0.0-usql.12
+
+## 20.0.0-usql.12
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.5
+  - @evidence-dev/plugin-connector@2.0.0-usql.11
+
+## 20.0.0-usql.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.4
+  - @evidence-dev/plugin-connector@2.0.0-usql.10
+
+## 20.0.0-usql.10
+
+### Minor Changes
+
+- cfb0f248: Respect component plugin's tailwind configuration
+
+### Patch Changes
+
+- Updated dependencies [cfb0f248]
+- Updated dependencies [8ffbb361]
+  - @evidence-dev/plugin-connector@2.0.0-usql.9
+
+## 20.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [9ade9c88]
+- Updated dependencies [e6f550f3]
+- Updated dependencies [9f568270]
+- Updated dependencies [9432c6e4]
+- Updated dependencies [be1cc666]
+  - @evidence-dev/core-components@2.0.0-usql.4
+  - @evidence-dev/plugin-connector@2.0.0-usql.8
+  - @evidence-dev/preprocess@4.0.0-usql.5
+
+## 20.0.0
+
+### Patch Changes
+
+- Updated dependencies [78f2fab2]
+- Updated dependencies [75560a31]
+- Updated dependencies [de129514]
+  - @evidence-dev/core-components@1.2.0
+  - @evidence-dev/preprocess@3.1.0
+  - @evidence-dev/db-orchestrator@2.2.3
+
+## 20.0.0-usql.8
+
+### Patch Changes
+
+- e1174aa1: added profile function to note load and query times
+- ca7337ba: fix prerendering for all pages
+- Updated dependencies [e1174aa1]
+- Updated dependencies [ca7337ba]
+  - @evidence-dev/component-utilities@2.0.0-usql.2
+  - @evidence-dev/preprocess@4.0.0-usql.4
+  - @evidence-dev/universal-sql@2.0.0-usql.3
+  - @evidence-dev/core-components@2.0.0-usql.3
+  - @evidence-dev/plugin-connector@2.0.0-usql.7
+
+## 20.0.0-usql.7
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@3.0.0-usql.4
+
+## 20.0.0-usql.6
+
+### Patch Changes
+
+- Updated dependencies [df7a8c5a]
+  - @evidence-dev/plugin-connector@2.0.0-usql.5
+
+## 20.0.0-usql.5
+
+### Patch Changes
+
+- Updated dependencies [cff22ece]
+  - @evidence-dev/plugin-connector@2.0.0-usql.4
+  - @evidence-dev/db-orchestrator@3.0.0-usql.3
+
+## 20.0.0-usql.4
+
+### Patch Changes
+
+- 20aad351: Add universal-sql to excluded deps in vite configuration
+- Updated dependencies [78f2fab2]
+- Updated dependencies [de129514]
+  - @evidence-dev/core-components@2.0.0-usql.2
+  - @evidence-dev/preprocess@4.0.0-usql.3
+  - @evidence-dev/db-orchestrator@3.0.0-usql.2
+
+## 20.0.0-usql.3
+
+### Patch Changes
+
+- 9b1ac9b7: removed evidencemeta on the data object
+- 9b1ac9b7: make everything use a single connection
+- Updated dependencies [9b1ac9b7]
+- Updated dependencies [9b1ac9b7]
+  - @evidence-dev/preprocess@4.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.2
+  - @evidence-dev/plugin-connector@2.0.0-usql.3
+
+## 20.0.0-usql.2
+
+### Minor Changes
+
+- f62bd26e: prerenders clientside duckdb queries in their initial state to allow for some form of prerendering
+
+### Patch Changes
+
+- ef2a9106: Sources are now segmented into schemas to prevent source name conflicts
+- c29d827d: Add a query console page; improve usability of schema explorer
+- Updated dependencies [ef2a9106]
+- Updated dependencies [4053c976]
+- Updated dependencies [f62bd26e]
+  - @evidence-dev/plugin-connector@2.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.1
+  - @evidence-dev/component-utilities@2.0.0-usql.1
+  - @evidence-dev/db-orchestrator@3.0.0-usql.1
+  - @evidence-dev/preprocess@4.0.0-usql.1
+  - @evidence-dev/core-components@2.0.0-usql.1
+
+## 20.0.0-usql.1
+
+### Patch Changes
+
+- Updated dependencies [e6091323]
+  - @evidence-dev/plugin-connector@2.0.0-usql.1
+
+## 20.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- Updated dependencies [cb0fc468]
+- Updated dependencies [75560a31]
+  - @evidence-dev/component-utilities@2.0.0-usql.0
+  - @evidence-dev/core-components@2.0.0-usql.0
+  - @evidence-dev/db-orchestrator@3.0.0-usql.0
+  - @evidence-dev/plugin-connector@2.0.0-usql.0
+  - @evidence-dev/preprocess@4.0.0-usql.0
+
 ## 19.0.0
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "19.0.0",
+	"version": "20.0.0-usql.17",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -32,13 +32,14 @@
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
+		"@sveltejs/kit": "1.21.0",
 		"@evidence-dev/tailwind": "workspace:^",
-		"@sveltejs/kit": "1.13.0",
 		"svelte": "3.55.0",
-		"vite": "^4.0.4"
+		"vite": "4.3.9"
 	},
 	"dependencies": {
 		"@evidence-dev/preprocess": "workspace:^",
+		"@evidence-dev/universal-sql": "workspace:^",
 		"@evidence-dev/plugin-connector": "workspace:^",
 		"@evidence-dev/telemetry": "workspace:^",
 		"@sveltejs/adapter-static": "1.0.0",
@@ -49,9 +50,7 @@
 	"peerDependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
-		"@evidence-dev/tailwind": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
-		"@sveltejs/kit": "1.13.0",
 		"autoprefixer": "^10.4.7",
 		"debounce": "^1.2.1",
 		"git-remote-origin-url": "4.0.0",
@@ -63,8 +62,7 @@
 		"svelte2tsx": "0.6.0",
 		"tailwindcss": "^3.3.1",
 		"typescript": "4.9.5",
-		"unist-util-visit": "4.1.2",
-		"vite": "4.0.4"
+		"unist-util-visit": "4.1.2"
 	},
 	"engines": {
 		"node": "^16.14 || >=18"

@@ -1,19 +1,23 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "1.1.0",
+	"version": "2.0.0-usql.12",
 	"description": "",
 	"type": "module",
+	"bin": "./dist/debugger/cli.js",
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
 		"build": "tsc --noEmit -p tsconfig.json && parcel build",
+		"build:debug": "parcel build --no-optimize",
 		"watch": "parcel watch",
-		"check": "tsc --noEmit -p tsconfig.json"
+		"check": "tsc --noEmit -p tsconfig.json",
+		"prepublish": "tsc --noEmit -p tsconfig.json && parcel build"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
+		"@evidence-dev/universal-sql": "workspace:^",
 		"@types/estree": "^1.0.1",
 		"chalk": "^5.2.0",
 		"svelte": "3.55.0",
@@ -27,10 +31,13 @@
 		"@parcel/packager-ts": "^2.8.3",
 		"@parcel/transformer-inline-string": "^2.8.3",
 		"@parcel/transformer-typescript-types": "^2.8.3",
+		"@types/mock-fs": "^4.13.1",
 		"@types/node": "^20.1.2",
+		"commander": "^11.0.0",
+		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
 		"typescript": "^5.0.4",
-		"vitest": "^0.25.3"
+		"vitest": "^0.34.1"
 	},
 	"targets": {
 		"types": false,
@@ -39,11 +46,27 @@
 		},
 		"module": {
 			"context": "node"
+		},
+		"debugger": {
+			"context": "node",
+			"source": "./src/cli.js",
+			"outputFormat": "esmodule"
+		},
+		"loadConfig": {
+			"context": "node",
+			"source": "./src/plugin-discovery/load-config.js",
+			"outputFormat": "commonjs",
+			"optimize": false,
+			"isLibrary": true,
+			"sourceMap": false
 		}
 	},
 	"exports": {
-		"import": "./dist/index.mjs",
-		"require": "./dist/index.cjs"
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		},
+		"./load-config": "./dist/loadConfig/load-config.js"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",

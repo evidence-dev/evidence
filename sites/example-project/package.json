@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "2.4.5",
+	"version": "3.0.0-usql.14",
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
@@ -9,11 +9,13 @@
 	"type": "module",
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
+		"@evidence-dev/universal-sql": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
+		"@evidence-dev/duckdb": "workspace:^1.0.0-usql.1",
 		"@evidence-dev/plugin-connector": "workspace:^",
 		"@evidence-dev/telemetry": "1.0.5",
 		"@fontsource/spectral": "^5.0.3",
-		"@sveltejs/kit": "1.13.0",
+		"@sveltejs/kit": "1.21.0",
 		"@tidyjs/tidy": "2.4.4",
 		"cross-env": "^7.0.3",
 		"debounce": "^1.2.1",
@@ -44,6 +46,6 @@
 		"postcss-load-config": "^4.0.1",
 		"svelte-preprocess": "^4.10.7",
 		"tailwindcss": "^3.3.1",
-		"vite": "^4.0.4"
+		"vite": "4.3.9"
 	}
 }

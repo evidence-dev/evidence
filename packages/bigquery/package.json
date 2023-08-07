@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/bigquery",
-	"version": "1.3.1",
+	"version": "2.0.0-usql.0",
 	"description": "BigQuery driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -17,5 +17,11 @@
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"bigquery",
+			"bq"
+		]
+	}
 }

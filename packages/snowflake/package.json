@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/snowflake",
-	"version": "0.3.1",
+	"version": "1.0.0-usql.0",
 	"description": "Snowflake driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -19,5 +19,10 @@
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"databases": [
+			"snowflake"
+		]
+	}
 }

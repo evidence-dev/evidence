@@ -1,5 +1,167 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.14
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.4
+  - @evidence-dev/core-components@2.0.0-usql.6
+
+## 3.0.0-usql.13
+
+### Patch Changes
+
+- Updated dependencies [64ab3074]
+  - @evidence-dev/component-utilities@2.0.0-usql.3
+  - @evidence-dev/core-components@2.0.0-usql.5
+
+## 3.0.0-usql.12
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.6
+  - @evidence-dev/plugin-connector@2.0.0-usql.12
+
+## 3.0.0-usql.11
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.5
+  - @evidence-dev/plugin-connector@2.0.0-usql.11
+
+## 3.0.0-usql.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.4
+  - @evidence-dev/plugin-connector@2.0.0-usql.10
+
+## 3.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [cfb0f248]
+- Updated dependencies [8ffbb361]
+  - @evidence-dev/plugin-connector@2.0.0-usql.9
+
+## 3.0.0-usql.8
+
+### Patch Changes
+
+- 9ade9c88: Add Definitions component
+- Updated dependencies [9ade9c88]
+- Updated dependencies [e6f550f3]
+- Updated dependencies [9432c6e4]
+- Updated dependencies [be1cc666]
+  - @evidence-dev/core-components@2.0.0-usql.4
+  - @evidence-dev/plugin-connector@2.0.0-usql.8
+
+## 2.5.0
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
+### Patch Changes
+
+- 7b45b820: Swap out large favicon images
+- 75560a31: Consolidate tailwind presets into tailwind package
+- Updated dependencies [78f2fab2]
+- Updated dependencies [75560a31]
+  - @evidence-dev/core-components@1.2.0
+
+## 3.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [e1174aa1]
+- Updated dependencies [ca7337ba]
+  - @evidence-dev/component-utilities@2.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.3
+  - @evidence-dev/core-components@2.0.0-usql.3
+  - @evidence-dev/plugin-connector@2.0.0-usql.7
+
+## 3.0.0-usql.6
+
+### Patch Changes
+
+- Updated dependencies [df7a8c5a]
+  - @evidence-dev/plugin-connector@2.0.0-usql.5
+
+## 3.0.0-usql.5
+
+### Patch Changes
+
+- Updated dependencies [cff22ece]
+  - @evidence-dev/plugin-connector@2.0.0-usql.4
+
+## 3.0.0-usql.4
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
+### Patch Changes
+
+- 7b45b820: Swap out large favicon images
+- Updated dependencies [78f2fab2]
+- Updated dependencies [e12fef6c]
+  - @evidence-dev/core-components@2.0.0-usql.2
+  - @evidence-dev/duckdb@1.0.0-usql.1
+
+## 3.0.0-usql.3
+
+### Patch Changes
+
+- Updated dependencies [9b1ac9b7]
+  - @evidence-dev/universal-sql@2.0.0-usql.2
+  - @evidence-dev/plugin-connector@2.0.0-usql.3
+
+## 3.0.0-usql.2
+
+### Patch Changes
+
+- Updated dependencies [ef2a9106]
+- Updated dependencies [4053c976]
+- Updated dependencies [f62bd26e]
+  - @evidence-dev/plugin-connector@2.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.1
+  - @evidence-dev/component-utilities@2.0.0-usql.1
+  - @evidence-dev/core-components@2.0.0-usql.1
+
+## 3.0.0-usql.1
+
+### Patch Changes
+
+- Updated dependencies [e6091323]
+  - @evidence-dev/plugin-connector@2.0.0-usql.1
+
+## 3.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- 75560a31: Consolidate tailwind presets into tailwind package
+- Updated dependencies [cb0fc468]
+- Updated dependencies [4e783f36]
+- Updated dependencies [75560a31]
+  - @evidence-dev/component-utilities@2.0.0-usql.0
+  - @evidence-dev/core-components@2.0.0-usql.0
+  - @evidence-dev/duckdb@1.0.0-usql.0
+  - @evidence-dev/plugin-connector@2.0.0-usql.0
+
 ## 2.4.5
 
 ### Patch Changes

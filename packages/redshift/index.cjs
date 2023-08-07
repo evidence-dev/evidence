@@ -1,3 +1,1 @@
-const runQuery = require('@evidence-dev/postgres');
-
-module.exports = runQuery;
+module.exports = require('@evidence-dev/postgres');

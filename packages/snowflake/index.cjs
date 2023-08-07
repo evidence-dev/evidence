@@ -174,6 +174,9 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
+/**
+ * @param {SnowflakeOptions} [database]
+ */
 const getCredentials = async (database = {}) => {
 	const authenticator = database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'snowflake';
 	const account = database.account ?? getEnv(envMap, 'account');
@@ -266,3 +269,59 @@ const runQuery = async (queryString, database) => {
 };
 
 module.exports = runQuery;
+
+/**
+ * @typedef {Object} SnowflakeBaseOptions
+ * @property {string} account
+ * @property {string} username
+ * @property {string} database
+ * @property {string} warehouse
+ * @property {string} role
+ * @property {string} schema
+ */
+
+/**
+ * @typedef {Object} SnowflakeJwtOptions
+ * @property {'snowflake_jwt'} authenticator
+ * @property {string} private_key
+ * @property {string} passphrase
+ */
+
+/**
+ * @typedef {Object} SnowflakeBrowserOptions
+ * @property {'externalBrowser'} authenticator
+ */
+
+/**
+ * @typedef {Object} SnowflakeOktaOptions
+ * @property {'okta'} authenticator
+ * @property {string} password
+ * @property {string} okta_url
+ */
+
+/**
+ * @typedef {SnowflakeBaseOptions & (SnowflakeJwtOptions | SnowflakeBrowserOptions | SnowflakeOktaOptions)} SnowflakeOptions
+ */
+
+/**
+ * @typedef {Object} QueryResult
+ * @property { Record<string, any>[] } rows
+ * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
+ */
+
+/**
+ * @param {SnowflakeOptions} opts
+ * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
+ */
+module.exports.getRunner = async (opts) => {
+	/**
+	 * @param {string} queryContent
+	 * @param {string} queryPath
+	 * @returns {Promise<QueryResult>}
+	 */
+	return async (queryContent, queryPath) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts);
+	};
+};

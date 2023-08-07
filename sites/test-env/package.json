@@ -1,11 +1,11 @@
 {
 	"name": "evidence-test-environment",
-	"version": "2.0.16",
+	"version": "3.0.0-usql.17",
 	"private": true,
 	"scripts": {
 		"build": "evidence build",
 		"dev": "evidence dev",
-		"test": "evidence build"
+		"test": "evidence build:sources && evidence build"
 	},
 	"engines": {
 		"npm": ">=7.0.0",
@@ -15,6 +15,9 @@
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
-		"@evidence-dev/evidence": "workspace:^"
+		"@evidence-dev/csv": "workspace:1.0.0-usql.2",
+		"@evidence-dev/duckdb": "workspace:^",
+		"@evidence-dev/evidence": "workspace:^",
+		"@evidence-dev/faker-datasource": "workspace:^"
 	}
 }
