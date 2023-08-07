@@ -8,7 +8,6 @@
 
 {#if dev}
 	<!-- eslint-disable no-undef -->
-	<DatabaseSettingsPanel {settings} {gitIgnore} />
 	<VersionControlPanel {settings} />
 	<DeploySettingsPanel {settings} />
 	<FormattingSettingsPanel {settings} {customFormattingSettings} />
