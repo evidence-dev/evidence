@@ -50,11 +50,11 @@ export const loadSourceOptions = (sourceName) => {
 			if (i < rawOptKey.length - 1) {
 				// We haven't reached the final key
 				if (!t[key]) t[key] = {};
-				t = t[key]
+				t = t[key];
 			} else {
-				t[key] = value
+				t[key] = value;
 			}
-		})
+		});
 	}
 	return out;
 };

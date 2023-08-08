@@ -6,7 +6,6 @@
 	import { dev } from '$app/environment';
 
 	import {
-		DatabaseSettingsPanel,
 		VersionControlPanel,
 		DeploySettingsPanel,
 		FormattingSettingsPanel,

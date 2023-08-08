@@ -3,8 +3,8 @@
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import { dev } from '$app/environment';
-	import {Icon} from "@steeze-ui/svelte-icon";
-	import {Settings, _3dCubeSphere, Link, X, Menu2, Dots, Table} from "@steeze-ui/tabler-icons";
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Settings, _3dCubeSphere, Link, X, Menu2, Dots, Table } from '@steeze-ui/tabler-icons';
 </script>
 
 <header
@@ -25,17 +25,17 @@
 		>
 			{#if mobileSidebarOpen}
 				<span class="sr-only">Close sidebar</span>
-				<Icon class="w-5 h-5" src={X}/>
+				<Icon class="w-5 h-5" src={X} />
 			{:else}
 				<span class="sr-only">Open sidebar</span>
-				<Icon class="w-5 h-5" src={Menu2}/>
+				<Icon class="w-5 h-5" src={Menu2} />
 			{/if}
 		</button>
 		<div class="flex gap-6 text-sm items-center">
 			<div class="relative">
 				<Menu class="outline-none">
 					<MenuButton class="outline-none rounded-md focus:bg-gray-50 hover:bg-gray-100 px-1 py-1">
-						<Icon src={Dots} class="w-6 h-6"/>
+						<Icon src={Dots} class="w-6 h-6" />
 					</MenuButton>
 					<MenuItems class="absolute top-12 right-0 z-50 flex max-w-min outline-none">
 						<div
@@ -78,7 +78,7 @@
 									>
 										<div class="flex items-center justify-between">
 											<span> Settings </span>
-											<Icon src={Settings} class="text-gray-300 w-4 h-4"/>
+											<Icon src={Settings} class="text-gray-300 w-4 h-4" />
 										</div>
 									</a>
 								</MenuItem>
@@ -91,7 +91,7 @@
 									>
 										<div class="flex items-center justify-between">
 											<span> Deploy </span>
-											<Icon src={_3dCubeSphere} class="text-gray-300 h-4 w-4"/>
+											<Icon src={_3dCubeSphere} class="text-gray-300 h-4 w-4" />
 										</div>
 									</a>
 								</MenuItem>
@@ -105,11 +105,10 @@
 									>
 										<div class="flex items-center justify-between">
 											<span> Schema Explorer </span>
-											<Icon src={Table} class="text-gray-300 h-4 w-4"/>
+											<Icon src={Table} class="text-gray-300 h-4 w-4" />
 										</div>
 									</a>
 								</MenuItem>
-								
 
 								<MenuItem let:active>
 									<a
@@ -121,8 +120,7 @@
 									>
 										<div class="flex items-center justify-between">
 											<span> Documentation </span>
-											<Icon src={Link} class="text-gray-300 h-4 w-4"/>
-
+											<Icon src={Link} class="text-gray-300 h-4 w-4" />
 										</div>
 									</a>
 								</MenuItem>
