@@ -94,7 +94,7 @@
 	>
 {:else if !error}
 	<span>
-		{formatValue(value, fmt)}
+		{formatValue(value, format_object)} 
 	</span>
 {:else}
 	<span
