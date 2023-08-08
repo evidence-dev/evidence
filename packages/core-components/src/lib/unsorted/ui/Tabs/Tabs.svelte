@@ -65,7 +65,7 @@
 
 <style lang="postcss">
 	nav button:not(.active) {
-		@apply hover:bg-gray-100 hover:text-gray-600 text-gray-400;
+		@apply hover:bg-gray-200 active:bg-gray-100 hover:text-gray-600 text-gray-400;
 	}
 
 	button.active {
