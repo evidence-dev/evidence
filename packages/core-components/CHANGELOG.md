@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.8
+
+### Patch Changes
+
+- Adjust icon usage, dependencies
+
 ## 2.0.0-usql.7
 
 ### Patch Changes

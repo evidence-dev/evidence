@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ChevronRight } from '@steeze-ui/heroicons';
+	import { ChevronRight } from '@steeze-ui/tabler-icons';
 	export let fileTree;
 
 	$: pathArray = $page.url.pathname.split('/').slice(1);

@@ -22,13 +22,14 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "2.0.0-usql.7",
+	"version": "2.0.0-usql.8",
 	"evidence": {
 		"components": true
 	},
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/tailwind": "workspace:^",
+		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/svelte-icon": "^1.4.1",
 		"@steeze-ui/tabler-icons": "^2.1.0",
@@ -41,8 +42,6 @@
 		"tua-body-scroll-lock": "^1.4.0"
 	},
 	"devDependencies": {
-		"@rgossiaux/svelte-headlessui": "^2.0.0",
-		"@steeze-ui/heroicons": "^2.2.3",
 		"@storybook/addon-essentials": "^7.0.9",
 		"@storybook/addon-interactions": "^7.0.9",
 		"@storybook/addon-links": "^7.0.9",

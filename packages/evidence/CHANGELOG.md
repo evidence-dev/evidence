@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.21
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@2.0.0-usql.8
+
 ## 20.0.0-usql.20
 
 ### Patch Changes
