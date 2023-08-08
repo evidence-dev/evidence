@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 0.2.0
+
+### Minor Changes
+
+- 134b7d13: Allow connection to MotherDuck
+
 ## 0.1.1
 
 ### Patch Changes
