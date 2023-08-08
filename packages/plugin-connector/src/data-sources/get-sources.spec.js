@@ -39,37 +39,39 @@ type: sqlite
 });
 
 describe('loadSourceOptions', () => {
+	beforeEach(() => {
+		vi.unstubAllEnvs();
+	});
 	it('should be defined', () => {
 		expect(loadSourceOptions).toBeDefined();
 	});
 	it('should properly load an environment variable', () => {
-		vi.stubEnv("EVIDENCE_SOURCE_test_value",'Hello!');
-		const result = loadSourceOptions('test');
-		expect('value' in result).toBeTruthy();
-		expect(result['value']).toEqual('Hello!');
-	});
-	
-	it('should properly load an environment variable that has incorrect casing', () => {
-		vi.stubEnv("EVIDENCE_SOURCE_TEST_value",'Hello!');
+		vi.stubEnv('EVIDENCE_SOURCE_test_value', 'Hello!');
 		const result = loadSourceOptions('test');
 		expect('value' in result).toBeTruthy();
 		expect(result['value']).toEqual('Hello!');
 	});
 
-	it('should properly load an environment variable for a source that contains "_', () => {
-		vi.stubEnv("EVIDENCE_SOURCE_under_score_value",'Hello!');
+	it('should properly load an environment variable that has incorrect casing', () => {
+		vi.stubEnv('EVIDENCE_SOURCE_TEST_value', 'Hello!');
+		const result = loadSourceOptions('test');
+		expect('value' in result).toBeTruthy();
+		expect(result['value']).toEqual('Hello!');
+	});
+
+	it('should properly load an environment variable for a source that contains "_"', () => {
+		vi.stubEnv('EVIDENCE_SOURCE_under_score_value', 'Hello!');
 		const result = loadSourceOptions('under_score');
 		expect('value' in result).toBeTruthy();
 		expect(result['value']).toEqual('Hello!');
 	});
 
 	it('should properly load an environment variable for a nested option', () => {
-		vi.stubEnv("EVIDENCE_SOURCE_TEST_nested_value",'Hello!');
+		vi.stubEnv('EVIDENCE_SOURCE_TEST_nested_value', 'Hello!');
 		const result = loadSourceOptions('test');
-		console.warn(result)
-		expect('nested' in result).toBeTruthy()
+		console.warn(result);
+		expect('nested' in result).toBeTruthy();
 		expect('value' in result['nested']).toBeTruthy();
 		expect(result['nested']['value']).toEqual('Hello!');
-
-	})
+	});
 });

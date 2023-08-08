@@ -138,7 +138,7 @@
 	}
 
 	a.markdown {
-		@apply font-medium text-blue-600 hover:underline ;
+		@apply font-medium text-blue-600 hover:underline;
 	}
 
 	hr.markdown {

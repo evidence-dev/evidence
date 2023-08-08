@@ -43,12 +43,18 @@ export const loadSourceOptions = (sourceName) => {
 		if (!parts) continue;
 		if (parts?.length < 2) continue;
 		if (!parts[1].toLowerCase().startsWith(sourceName.toLowerCase())) continue;
-		const rawOptKey = parts[1].substring(sourceName.length+1).split("_")
+		const rawOptKey = parts[1].substring(sourceName.length + 1).split('_');
 		let t = out;
-		for (const optKey of rawOptKey) {
-			if (!t[optKey]) t[optKey] = {};
-		}
-		t[rawOptKey[rawOptKey.length - 1]] = value;
+
+		rawOptKey.forEach((key, i) => {
+			if (i < rawOptKey.length - 1) {
+				// We haven't reached the final key
+				if (!t[key]) t[key] = {};
+				t = t[key];
+			} else {
+				t[key] = value;
+			}
+		});
 	}
 	return out;
 };

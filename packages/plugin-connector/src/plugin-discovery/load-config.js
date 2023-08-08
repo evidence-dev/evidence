@@ -36,7 +36,9 @@ export const loadConfig = (rootDir) => {
 	} catch (e) {
 		if (!(e instanceof Error)) throw e;
 		if (e.message.startsWith('ENOENT')) {
-			throw new Error(`Could not find evidence plugins file. (Look at ${configPath})`, { cause: e})
+			throw new Error(`Could not find evidence plugins file. (Look at ${configPath})`, {
+				cause: e
+			});
 		}
 		throw e;
 	}
