@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- 69126c94: change internal filename generation
+
 ## 2.0.0-usql.6
 
 ### Patch Changes
