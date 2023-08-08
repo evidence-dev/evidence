@@ -193,6 +193,9 @@ importers:
       '@evidence-dev/tailwind':
         specifier: workspace:^
         version: link:../tailwind
+      '@rgossiaux/svelte-headlessui':
+        specifier: ^2.0.0
+        version: 2.0.0(svelte@3.55.0)
       '@steeze-ui/simple-icons':
         specifier: ^1.5.0
         version: 1.5.1
@@ -224,12 +227,6 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
     devDependencies:
-      '@rgossiaux/svelte-headlessui':
-        specifier: ^2.0.0
-        version: 2.0.0(svelte@3.55.0)
-      '@steeze-ui/heroicons':
-        specifier: ^2.2.3
-        version: 2.2.3
       '@storybook/addon-essentials':
         specifier: ^7.0.9
         version: 7.2.1(react-dom@17.0.2)(react@17.0.2)
@@ -6334,7 +6331,7 @@ packages:
       svelte: ^3.47.0
     dependencies:
       svelte: 3.55.0
-    dev: true
+    dev: false
 
   /@rollup/pluginutils@4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
@@ -6409,10 +6406,6 @@ packages:
       p-map: 4.0.0
       webpack-sources: 3.2.3
     dev: false
-
-  /@steeze-ui/heroicons@2.2.3:
-    resolution: {integrity: sha512-bv4YK375U9TDS50SmJ5VdFy2UmMhgKbJCCbo6IUU3qs2luEj2VX6sQoDy96j8AIKttxMd62ih1j0lZj7CTjIfA==}
-    dev: true
 
   /@steeze-ui/simple-icons@1.5.1:
     resolution: {integrity: sha512-XspfzOCghi5QZZ+CUJM/WKgVEBZVhXxPMBW/m4t6WY4U1KDKYEgcZufLzt+rBVQHQgv4LpWaPeAHlNQbETQ3eA==}
