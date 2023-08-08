@@ -63,7 +63,6 @@ export const QueryResultSchema = z
 					(rowKey) => !colNames.includes(rowKey)
 				);
 				if (extraColumns.length) {
-					console.error({ colNames, extraColumns });
 					return false;
 				}
 			}

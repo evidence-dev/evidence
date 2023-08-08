@@ -39,6 +39,9 @@ type: sqlite
 });
 
 describe('loadSourceOptions', () => {
+	beforeEach(() => {
+		vi.unstubAllEnvs();
+	});
 	it('should be defined', () => {
 		expect(loadSourceOptions).toBeDefined();
 	});
@@ -56,7 +59,7 @@ describe('loadSourceOptions', () => {
 		expect(result['value']).toEqual('Hello!');
 	});
 
-	it('should properly load an environment variable for a source that contains "_', () => {
+	it('should properly load an environment variable for a source that contains "_"', () => {
 		vi.stubEnv('EVIDENCE_SOURCE_under_score_value', 'Hello!');
 		const result = loadSourceOptions('under_score');
 		expect('value' in result).toBeTruthy();

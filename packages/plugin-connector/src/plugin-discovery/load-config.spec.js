@@ -21,7 +21,6 @@ const mockedReadFileSync = vi.mocked(fs.readFileSync);
 describe('loadConfig', () => {
 	it('should load a valid configuration', async () => {
 		mockedReadFileSync.mockImplementationOnce(() => {
-			console.trace('Hi');
 			return validMinimalConfig;
 		});
 
