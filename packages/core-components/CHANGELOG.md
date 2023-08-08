@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [f051417f]
+  - @evidence-dev/tailwind@1.0.0-usql.1
+
 ## 2.0.0-usql.6
 
 ### Patch Changes

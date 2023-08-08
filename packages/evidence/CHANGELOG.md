@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.19
+
+### Patch Changes
+
+- @evidence-dev/core-components@2.0.0-usql.7
+
 ## 20.0.0-usql.18
 
 ### Minor Changes
