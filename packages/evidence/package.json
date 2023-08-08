@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "20.0.0-usql.19",
+	"version": "20.0.0-usql.20",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -51,6 +51,7 @@
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/db-orchestrator": "workspace:^",
+		"@evidence-dev/tailwind": "workspace:^",
 		"autoprefixer": "^10.4.7",
 		"debounce": "^1.2.1",
 		"git-remote-origin-url": "4.0.0",

@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.20
+
+### Patch Changes
+
+- Add tailwind as peer dep
+
 ## 20.0.0-usql.19
 
 ### Patch Changes
