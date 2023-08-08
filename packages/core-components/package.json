@@ -37,9 +37,12 @@
 		"export-to-csv": "0.2.1",
 		"prismjs": "1.29.0",
 		"ssf": "0.11.2",
-		"svelte-tiny-linked-charts": "1.1.5"
+		"svelte-tiny-linked-charts": "1.1.5",
+		"tua-body-scroll-lock": "^1.4.0"
 	},
 	"devDependencies": {
+		"@rgossiaux/svelte-headlessui": "^2.0.0",
+		"@steeze-ui/heroicons": "^2.2.3",
 		"@storybook/addon-essentials": "^7.0.9",
 		"@storybook/addon-interactions": "^7.0.9",
 		"@storybook/addon-links": "^7.0.9",

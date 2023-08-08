@@ -50,7 +50,7 @@
 	}
 </script>
 
-<div class="results-pane" transition:slide|local>
+<div class="results-pane py-2" transition:slide|local>
 	<div class="container">
 		<table in:blur>
 			<thead>
@@ -210,9 +210,9 @@
 	}
 
 	span {
+		@apply text-xs;
 		font-family: var(--ui-font-family-compact);
 		-webkit-font-smoothing: antialiased;
-		font-size: calc(1em - 6px);
 		float: right;
 	}
 
@@ -262,8 +262,8 @@
 	}
 
 	table {
+		@apply text-xs;
 		width: 100%;
-		font-size: calc(1em - 7px);
 		border-collapse: collapse;
 		font-family: var(--ui-font-family);
 		font-variant-numeric: tabular-nums;
