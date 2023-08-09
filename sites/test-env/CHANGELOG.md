@@ -1,5 +1,42 @@
 # evidence-test-environment
 
+## 3.0.0-usql.21
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@2.0.0-usql.8
+  - @evidence-dev/evidence@20.0.0-usql.21
+
+## 3.0.0-usql.20
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.20
+
+## 3.0.0-usql.19
+
+### Patch Changes
+
+- @evidence-dev/core-components@2.0.0-usql.7
+- @evidence-dev/evidence@20.0.0-usql.19
+
+## 3.0.0-usql.18
+
+### Patch Changes
+
+- Updated dependencies [73cfef71]
+- Updated dependencies [87aaf1c3]
+  - @evidence-dev/evidence@20.0.0-usql.18
+
+## 3.0.0-usql.17
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.17
+
 ## 3.0.0-usql.16
 
 ### Patch Changes

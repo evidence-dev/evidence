@@ -1,5 +1,45 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.21
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@2.0.0-usql.8
+
+## 20.0.0-usql.20
+
+### Patch Changes
+
+- Add tailwind as peer dep
+
+## 20.0.0-usql.19
+
+### Patch Changes
+
+- @evidence-dev/core-components@2.0.0-usql.7
+
+## 20.0.0-usql.18
+
+### Minor Changes
+
+- 87aaf1c3: removed explore pages from built site
+
+### Patch Changes
+
+- 73cfef71: Removed legacy database settings UI
+- Updated dependencies [69126c94]
+  - @evidence-dev/universal-sql@2.0.0-usql.7
+  - @evidence-dev/plugin-connector@2.0.0-usql.13
+
+## 20.0.0-usql.17
+
+### Patch Changes
+
+- Clean up console logs
+- Updated dependencies
+  - @evidence-dev/preprocess@4.0.0-usql.9
+
 ## 20.0.0-usql.16
 
 ### Patch Changes

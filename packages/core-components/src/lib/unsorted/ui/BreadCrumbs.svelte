@@ -1,11 +1,7 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { page } from '$app/stores';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Home } from '@steeze-ui/tabler-icons';
+	import { ChevronRight } from '@steeze-ui/tabler-icons';
 	export let fileTree;
 
 	$: pathArray = $page.url.pathname.split('/').slice(1);
@@ -50,7 +46,7 @@
 		// check in the file tree if each crumb has an href
 		crumbs.forEach((path) => {
 			if (!checkUrl(path.href, fileTree)) {
-				path.href = 'javascript:void(0)';
+				path.href = null;
 			}
 		});
 		return crumbs;
@@ -59,64 +55,25 @@
 	$: crumbs = buildCrumbs(pathArray);
 </script>
 
-<!-- max-w explanation:
-    100vw (initial) 
-    1em + 32px (hamburger) / 18rem (sidebar) + 16px (sidebar grid gap)
-    56px (page menu)
-
-	TODO: Can this be done without magic?
--->
-
-<div
-	class="main truncate min-[850px]:max-w-[calc(100vw-18rem-16px-56px)] max-[850px]:max-w-[calc(100vw-1em-32px-56px)]"
->
-	<span class="h-8 inline-flex items-center">
-		{#if !$page.data.isUserPage || $page.url.pathname === '/'}
-			<a href="/" class="inline-flex gap-1 items-center"
-				><Icon src={Home} class="h-4 w-4 inline-block stroke-1" /> Home</a
-			>
-		{:else}
-			{#each crumbs as crumb, i}
-				{#if i > 0}
-					&emsp13;/&emsp13;<a href={crumb.href}>{crumb.title}</a>
+<div class="flex items-start mt-12">
+	<div class="inline-flex items-center text-sm capitalize gap-1 text-gray-500 mb-4">
+		{#each crumbs as crumb, i}
+			{#if i > 0}
+				<Icon src={ChevronRight} size="12px" theme="solid" />
+				{#if crumb.href}
+					<a href={crumb.href} class="hover:underline transition-all duration-100">{crumb.title}</a>
 				{:else}
-					<a href={crumb.href} class="inline-flex gap-1 items-center">
-						{#if crumb.title === 'Home'}
-							<Icon src={Home} class="h-4 w-4 inline-block stroke-1" />
-						{:else}
-							{crumb.title}
-						{/if}
-					</a>
+					<span class=" cursor-default">{crumb.title}</span>
 				{/if}
-			{/each}
-		{/if}
-	</span>
+			{:else}
+				<a href={crumb.href}>
+					{#if crumb.title === 'Home'}
+						<a href="/" class="hover:underline"> Home </a>
+					{:else}
+						{crumb.title}
+					{/if}
+				</a>
+			{/if}
+		{/each}
+	</div>
 </div>
-
-<style>
-	div.main {
-		padding: 0 0.5em 0 1.5em;
-		box-sizing: border-box;
-		width: 100%;
-		white-space: nowrap;
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-
-	span {
-		font-size: small;
-		font-family: var(--ui-font-family-compact);
-		-webkit-font-smoothing: antialiased;
-		color: var(--grey-700);
-	}
-
-	a {
-		text-transform: capitalize;
-		text-decoration: none;
-		color: var(--grey-700);
-	}
-	a:hover {
-		color: var(--grey-999);
-		transition: all 0.2s;
-	}
-</style>

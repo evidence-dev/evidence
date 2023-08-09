@@ -1,5 +1,11 @@
 # @evidence-dev/tailwind
 
+## 1.0.0-usql.1
+
+### Minor Changes
+
+- f051417f: add `fonts.css` export for new fonts
+
 ## 1.0.0
 
 ### Major Changes

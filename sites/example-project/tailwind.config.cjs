@@ -15,7 +15,6 @@ const config = {
 				])
 				.flat();
 
-			console.log({ componentPaths });
 			return [
 				'./src/**/*.{html,js,svelte,ts,md}', // This is used for everything in base evidence template
 				...componentPaths

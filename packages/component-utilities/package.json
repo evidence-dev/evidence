@@ -23,6 +23,6 @@
 		"svelte": "3.55.0"
 	},
 	"devDependencies": {
-		"vitest": "^0.31.1"
+		"vitest": "^0.34.1"
 	}
 }
