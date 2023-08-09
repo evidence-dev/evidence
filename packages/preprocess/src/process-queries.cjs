@@ -3,15 +3,27 @@ const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
+// prettier obliterates the formatting of queryDeclarations
+// prettier-ignore
 const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQueries = {}) {
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
 
 	if (Object.keys(duckdbQueries).length > 0) {
-		const valid_ids = Object.keys(duckdbQueries).filter((queryId) =>
-			queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$')
-		);
+		const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
+		const valid_ids = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query));
+
+		// prerendered queries: stuff without ${}
+		// reactive queries: stuff with ${}
+		const IS_REACTIVE_QUERY = /\${.*?}/s;
+		const reactive_ids = valid_ids.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id]));
+		const prerendered_ids = valid_ids.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id]));
+
+		// input queries: reactive with ${inputs...} in it
+		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
+		const input_ids = reactive_ids.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id]));
+
 		queryDeclarations += `
             import debounce from 'debounce';
             import { browser } from '$app/environment';
@@ -19,30 +31,38 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			
 			// partially bypasses weird reactivity stuff with \`select\` elements
 			function data_update(data) {
-				${valid_ids.map((id) => `${id} = data.${id} ?? [];`).join('\n')}
+				${valid_ids.map((id) => `
+					${id} = data.${id} ?? [];
+				`).join('\n')}
 			}
 
 			$: data_update(data);
 
+			${valid_ids.map((id) => `
+				$: _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
+				let ${id} = data.${id} ?? [];
+			`).join('\n')}
 
-            ${valid_ids
-							.map(
-								(id) => `
-                let ${id} = data.${id} ?? [];
-                const _query_${id} = browser
-					  ? debounce((query) => profile(__db.query, query).then((value) => ${id} = value), 200)
-					  : (query) => (${id} = profile(__db.query, query, "${id}"));
-                $: _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
-            `
-							)
-							.join('\n')}
+			${prerendered_ids.map((id) => `
+				if (!browser) {
+					profile(__db.query, _query_string_${id}, "${id}");
+				}
+			`).join('\n')}
+
+            ${reactive_ids.map((id) => `
+				const _query_${id} = browser
+					? debounce((query) => profile(__db.query, query).then((value) => ${id} = value), 200)
+					: (query) => (${id} = profile(__db.query, query, "${id}"));
+
+				$: _query_${id}(_query_string_${id});
+			`).join('\n')}
 
 			if (!browser) {
 				onDestroy(inputs_store.subscribe((inputs) => {
-					${valid_ids
-						.filter((id) => duckdbQueries[id].includes('inputs'))
-						.map((id) => `${id} = _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);`)
-						.join('\n')}
+                    // do not switch to using _query_string, we need the string to re-evaluate (no reactivity on server)
+					${input_ids.map((id) => `
+						${id} = _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
+					`).join('\n')}
 				}));
 			}
         `;
@@ -78,7 +98,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         });
 
         ${queryDeclarations}
-        `;
+    `;
 
 	return defaultProps;
 };
