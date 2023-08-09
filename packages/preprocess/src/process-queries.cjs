@@ -44,8 +44,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			`).join('\n')}
 
 			${prerendered_ids.map((id) => `
-				if (!browser) {
-					profile(__db.query, _query_string_${id}, "${id}");
+				$: if (!browser) {
+					${id} = profile(__db.query, _query_string_${id}, "${id}");
 				}
 			`).join('\n')}
 
