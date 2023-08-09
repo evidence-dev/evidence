@@ -18,3 +18,10 @@ export function cache_for_hash(
  * @returns {Buffer}
  */
 export function get_cache_for_hash(route_hash: string, query_name: string): Buffer;
+
+/**
+ * Gets all the queries that run on a given page
+ * @param {string} route_hash
+ * @returns {string}
+ */
+export function get_all_page_queries(route_hash: string): string;

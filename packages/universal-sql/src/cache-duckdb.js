@@ -34,12 +34,7 @@ export function cache_for_hash(sql_string, data, { route_hash, query_name, prere
 		writeFileSync(`${prerender_path}/${query_name}.arrow`, tableToIPC(data));
 
 		// keep track of the query names for the page
-		const component_queries_path = `${prerender_path}/queries.json`;
-		const component_queries = existsSync(component_queries_path)
-			? JSON.parse(readFileSync(component_queries_path, 'utf-8'))
-			: [];
-		component_queries.push(query_name);
-		writeFileSync(component_queries_path, JSON.stringify(component_queries));
+		writeFileSync(`${prerender_path}/all-queries.json`, JSON.stringify(Object.keys(sql_cache)));
 	}
 }
 
@@ -52,4 +47,14 @@ export function cache_for_hash(sql_string, data, { route_hash, query_name, prere
 export function get_cache_for_hash(route_hash, query_name) {
 	const cache_path = `./.evidence-queries/cache/${route_hash}`;
 	return readFileSync(`${cache_path}/${query_name}.arrow`);
+}
+
+/**
+ * Gets all the queries that run on a given page
+ * @param {string} route_hash
+ * @returns {string}
+ */
+export function get_all_page_queries(route_hash) {
+	const cache_path = `./.evidence-queries/cache/${route_hash}`;
+	return JSON.stringify(Object.keys(JSON.parse(readFileSync(`${cache_path}/_queries.json`))));
 }
