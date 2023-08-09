@@ -70,13 +70,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 	let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash, inputs as inputs_store } from '@evidence-dev/component-utilities/stores';
+        import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
         import { setContext, getContext, beforeUpdate, onDestroy } from 'svelte';
+		import { writable } from 'svelte/store';
         
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
@@ -84,9 +85,13 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         $: ({ data = {}, customFormattingSettings, __db } = props);
 
         $routeHash = '${routeH}';
+
 		// do not switch to $: inputs = $inputs_store
 		// reactive statements do not rerun during SSR
-		let inputs = $inputs_store = {};
+		let inputs_store = writable({});
+		setContext(INPUTS_CONTEXT_KEY, inputs_store);
+
+		let inputs = {};
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);

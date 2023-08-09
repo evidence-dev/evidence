@@ -4,9 +4,12 @@
 
 <script>
 	import { profile } from '@evidence-dev/component-utilities/profile';
-	import { inputs } from '@evidence-dev/component-utilities/stores';
+	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
+	import { getContext } from 'svelte';
+
+	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
 	/** @type {string} */
 	export let value;
