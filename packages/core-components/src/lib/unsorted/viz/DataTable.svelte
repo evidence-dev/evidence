@@ -435,19 +435,27 @@
 											{/if}
 										</a>
 									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
-										<div class="m-0 text-xs font-medium font-ui" style={`color:${((row[column.id] >= 0 && !column.downIsGood) || (row[column.id] < 0 && column.downIsGood)) ? 'var(--green-700)' : 'var(--red-700)'}`}>
+										<div
+											class="m-0 text-xs font-medium font-ui"
+											style={`color:${
+												(row[column.id] >= 0 && !column.downIsGood) ||
+												(row[column.id] < 0 && column.downIsGood)
+													? 'var(--green-700)'
+													: 'var(--red-700)'
+											}`}
+										>
 											<div style="text-align: right;">
 												<span>
-												{formatValue(
-													row[column.id],
-													column.fmt
-														? getFormatObjectFromString(
-																column.fmt,
-																safeExtractColumn(column).format.valueType
-														)
-														: safeExtractColumn(column).format,
-													safeExtractColumn(column).columnUnitSummary
-												)}
+													{formatValue(
+														row[column.id],
+														column.fmt
+															? getFormatObjectFromString(
+																	column.fmt,
+																	safeExtractColumn(column).format.valueType
+															  )
+															: safeExtractColumn(column).format,
+														safeExtractColumn(column).columnUnitSummary
+													)}
 												</span>
 												{#if column.deltaSymbol}
 													<span>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span>

@@ -58,8 +58,8 @@ select date '2020-05-26' as date, 100 as value_usd, 0.011 as yoy, 'Zimbabwe' as 
     <Column id=country />
     <Column id=country_id align=center/>
     <Column id=category align=center/>
-    <Column id=value_usd/>
-    <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg" deltaSymbol=false deltaLabel="vs PY"/>
+    <Column id=value_usd contentType=delta fmt='[>=0]"+ "$#,##0;"- "$#,##0' deltaSymbol=false/>
+    <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg" deltaSymbol=false/>
     <Column id=country_url contentType=link linkLabel="Details &rarr;" title="Country Details" align=right openInNewTab=true/>
 </DataTable>
 

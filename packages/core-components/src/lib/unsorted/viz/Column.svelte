@@ -64,7 +64,6 @@
 	export let deltaSymbol = true;
 	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
 
-
 	let options = {
 		id: id,
 		title: title,
