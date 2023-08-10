@@ -61,7 +61,6 @@
 	export let downIsGood = false;
 	downIsGood = downIsGood === 'true' || downIsGood === true;
 
-	export let deltaLabel = undefined;
 	export let deltaSymbol = true;
 	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
 
@@ -79,7 +78,6 @@
 		linkLabel: linkLabel,
 		fmt: fmt,
 		downIsGood: downIsGood,
-		deltaLabel: deltaLabel,
 		deltaSymbol: deltaSymbol
 	};
 
