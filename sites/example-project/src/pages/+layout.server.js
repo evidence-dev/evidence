@@ -7,11 +7,17 @@ export const trailingSlash = 'always';
 const system_routes = ['/settings', '/explore'];
 
 /** @satisfies {import("./$types").LayoutServerLoad} */
-export async function load({ fetch, route }) {
+export async function load({ fetch, route, params }) {
 	const isUserPage =
 		route.id && system_routes.every((system_route) => !route.id.startsWith(system_route));
 
 	const routeHash = md5(route.id);
+	const paramsHash = md5(
+		Object.entries(params)
+			.sort()
+			.map(([key, value]) => `${key}:${value}`)
+			.join('\x1F')
+	);
 
 	if (isUserPage) {
 		// ensure that queries have been extracted before initiating the load process
@@ -24,6 +30,7 @@ export async function load({ fetch, route }) {
 
 	return {
 		routeHash,
+		paramsHash,
 		customFormattingSettings,
 		isUserPage,
 		evidencemeta: getQueries(routeHash)

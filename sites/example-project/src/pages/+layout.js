@@ -31,7 +31,7 @@ const database_initialization = profile(initDb);
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({
 	fetch,
-	data: { customFormattingSettings, routeHash, isUserPage, evidencemeta }
+	data: { customFormattingSettings, routeHash, paramsHash, isUserPage, evidencemeta }
 }) => {
 	if (!browser) await database_initialization;
 
@@ -40,8 +40,10 @@ export const load = async ({
 	// let SSR saturate the cache first
 	if (browser && isUserPage) {
 		const page_queries_promise = Promise.all(
-			evidencemeta.queries?.map(async ({ id }) => {
-				const res = await fetch(`/api/${routeHash}/${id}.arrow`);
+			evidencemeta.queries?.map(async ({ id, compiledQueryString }) => {
+				const additional_hash = /\${.*?}/s.test(compiledQueryString) ? paramsHash : routeHash;
+
+				const res = await fetch(`/api/${routeHash}/${additional_hash}/${id}.arrow`);
 				if (res.ok) data[id] = (await tableFromIPC(res)).toArray();
 			}) ?? []
 		);
@@ -55,9 +57,11 @@ export const load = async ({
 			const component_queries = Array.from(set);
 
 			return Promise.all(
-				component_queries.map(async (id) => {
-					const res = await fetch(`/api/${routeHash}/${id}.arrow`);
-					if (res.ok) data[id] = (await tableFromIPC(res)).toArray();
+				component_queries.map(async (query_name) => {
+					// we have no way of knowing if page parameters are used in component queries
+					// so they should always use paramsHash
+					const res = await fetch(`/api/${routeHash}/${paramsHash}/${query_name}.arrow`);
+					if (res.ok) data[query_name] = (await tableFromIPC(res)).toArray();
 				})
 			);
 		})();
@@ -72,7 +76,22 @@ export const load = async ({
 					return database_initialization.then(() => query(sql));
 				}
 
-				return query(sql, { route_hash: routeHash, query_name, prerendering: building });
+				// if the query interpolates variables then we need to make each page
+				// have a unique prerendered query in case it interpolates $page.params
+				// if the query isn't in evidencemeta.queries it's a component query which
+				// is always interpolated, so count that as true
+				const evidencemeta_query = evidencemeta.queries?.find(({ id }) => id === query_name);
+				const additional_hash =
+					evidencemeta_query == undefined || /\${.*?}/s.test(evidencemeta_query.compiledQueryString)
+						? paramsHash
+						: routeHash;
+
+				return query(sql, {
+					route_hash: routeHash,
+					additional_hash,
+					query_name,
+					prerendering: building
+				});
 			}
 		},
 		data,

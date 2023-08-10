@@ -99,7 +99,7 @@ export async function setParquetURLs(urls) {
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @param {{ route_hash: string, query_name: string, prerendering: boolean }} [cache_options]
+ * @param {Parameters<typeof cache_for_hash>[2]} [cache_options]
  * @returns {import('apache-arrow').Table | null}
  */
 export function query(sql, cache_options) {
