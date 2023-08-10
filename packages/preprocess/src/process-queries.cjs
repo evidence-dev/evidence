@@ -26,7 +26,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		queryDeclarations += `
             import debounce from 'debounce';
-            import { browser } from '$app/environment';
+            import { browser, dev } from '$app/environment';
 			import { profile } from '@evidence-dev/component-utilities/profile';
 			
 			// partially bypasses weird reactivity stuff with \`select\` elements
@@ -46,6 +46,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			${prerendered_ids.map((id) => `
 				$: if (!browser) {
 					${id} = profile(__db.query, _query_string_${id}, "${id}");
+				}
+				$: if (dev && browser) {
+					profile(__db.query, _query_string_${id}).then((value) => ${id} = value);
 				}
 			`).join('\n')}
 
