@@ -38,6 +38,7 @@
 		align = 'center';
 	}
 	export let wrap = false;
+	wrap = wrap === 'true' || wrap === true;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -56,6 +57,15 @@
 	// Formatting:
 	export let fmt = undefined;
 
+	// Delta:
+	export let downIsGood = false;
+	downIsGood = downIsGood === 'true' || downIsGood === true;
+
+	export let deltaLabel = undefined;
+	export let deltaSymbol = true;
+	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+
+
 	let options = {
 		id: id,
 		title: title,
@@ -67,7 +77,10 @@
 		alt: alt,
 		openInNewTab: openInNewTab,
 		linkLabel: linkLabel,
-		fmt: fmt
+		fmt: fmt,
+		downIsGood: downIsGood,
+		deltaLabel: deltaLabel,
+		deltaSymbol: deltaSymbol
 	};
 
 	props.update((d) => {
