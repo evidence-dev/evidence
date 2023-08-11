@@ -61,10 +61,10 @@
 	export let scaleColor = 'green';
 
 	let colorList = {
-	'green': 'hsla(129, 33%, 57%,',
-	'red': 'hsla(0, 56%, 56%,',
-	'blue': 'hsla(198, 56%, 56%,',
-	}
+		green: 'hsla(129, 33%, 57%,',
+		red: 'hsla(0, 56%, 56%,',
+		blue: 'hsla(198, 56%, 56%,'
+	};
 
 	let useColor = colorList[scaleColor];
 
