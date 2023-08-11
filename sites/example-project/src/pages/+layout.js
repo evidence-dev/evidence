@@ -41,6 +41,7 @@ export const load = async ({
 	if (browser && isUserPage) {
 		const page_queries_promise = Promise.all(
 			evidencemeta.queries?.map(async ({ id, compiledQueryString }) => {
+				// see explanation below
 				const additional_hash = /\${.*?}/s.test(compiledQueryString) ? paramsHash : routeHash;
 
 				const res = await fetch(`/api/${routeHash}/${additional_hash}/${id}.arrow`);
@@ -49,9 +50,12 @@ export const load = async ({
 		);
 
 		const component_queries_promise = (async () => {
+			// get every query that's run in the component
 			const res = await fetch(`/api/${routeHash}/all-queries.json`);
 			const arr = await (res.ok ? res.json() : []);
 
+			// remove all the queries that are already in evidencemeta.queries
+			// because they will be fetched in page_queries_promise
 			const set = new Set(arr);
 			evidencemeta.queries?.forEach(({ id }) => set.delete(id));
 			const component_queries = Array.from(set);
@@ -88,10 +92,10 @@ export const load = async ({
 
 				return callback(
 					query(sql, {
-					route_hash: routeHash,
-					additional_hash,
-					query_name,
-					prerendering: building
+						route_hash: routeHash,
+						additional_hash,
+						query_name,
+						prerendering: building
 					})
 				);
 			}

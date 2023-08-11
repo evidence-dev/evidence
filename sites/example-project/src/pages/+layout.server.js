@@ -15,8 +15,8 @@ export async function load({ fetch, route, params }) {
 	const paramsHash = md5(
 		Object.entries(params)
 			.sort()
-			.map(([key, value]) => `${key}:${value}`)
-			.join('\x1F')
+			.map(([key, value]) => `${key}\x1F${value}`)
+			.join('\x1E')
 	);
 
 	if (isUserPage) {
