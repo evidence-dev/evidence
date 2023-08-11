@@ -390,6 +390,9 @@
                       						height: {column.height};
                       						width: {column.width};
 											white-space: {column.wrap ? 'normal' : 'nowrap'};
+											background-color: {
+												column.contentType === "colorscale" ? `${column.useColor} ${row[column.id] / (column.colorMax ?? Math.max(...data.map(d => d[column.id])))})` : ''
+											}
                   "
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}

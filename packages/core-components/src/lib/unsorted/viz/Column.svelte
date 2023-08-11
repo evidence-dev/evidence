@@ -56,6 +56,18 @@
 	// Formatting:
 	export let fmt = undefined;
 
+	// Color Scale:
+	export let colorMax = undefined;
+	export let scaleColor = 'green';
+
+	let colorList = {
+	'green': 'hsla(129, 33%, 57%,',
+	'red': 'hsla(0, 56%, 56%,',
+	'blue': 'hsla(198, 56%, 56%,',
+	}
+
+	let useColor = colorList[scaleColor];
+
 	let options = {
 		id: id,
 		title: title,
@@ -67,7 +79,9 @@
 		alt: alt,
 		openInNewTab: openInNewTab,
 		linkLabel: linkLabel,
-		fmt: fmt
+		fmt: fmt,
+		colorMax: colorMax,
+		useColor: useColor
 	};
 
 	props.update((d) => {
