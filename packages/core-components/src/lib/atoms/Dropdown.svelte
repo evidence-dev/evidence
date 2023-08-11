@@ -31,9 +31,8 @@
 	export let name;
 	$: component_identifier = `_Dropdown-${name}`;
 
-	const search = browser
-		? (query) => profile(db.query, query).then((value) => (data = value))
-		: (query) => (data = profile(db.query, query, component_identifier));
+	const search = (query) =>
+		profile(db.query, query, component_identifier, (value) => (data = value));
 
 	$: db = $page.data.__db;
 	/** @type {{ label: unknown, value: unknown }[]} */

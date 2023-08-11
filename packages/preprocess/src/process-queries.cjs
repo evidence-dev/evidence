@@ -44,25 +44,35 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			`).join('\n')}
 
 			${prerendered_ids.map((id) => `
-				$: if (!browser) {
-					${id} = profile(__db.query, _query_string_${id}, "${id}");
-				}
-				$: if (dev && browser) {
-					profile(__db.query, _query_string_${id}).then((value) => ${id} = value);
+				// prerenderable queries should be server side rendered and only server side rendered
+				// they're cached so they don't need to be rerun on the client
+				// but, if we're in dev mode, we want to rerun the query on the client, because SSR is not
+				// guaranteed to have run
+				$: if (!browser || dev) {
+					profile(__db.query, _query_string_${id}, "${id}", (value) => ${id} = value);
 				}
 			`).join('\n')}
 
+			// no point in debouncing on the server, so make it identity function
+			const debounce_on_browser = browser ? debounce : (fn) => fn;
+
+			// all reactive queries have to be able to run on server and client
             ${reactive_ids.map((id) => `
-				const _query_${id} = browser
-					? debounce((query) => profile(__db.query, query).then((value) => ${id} = value), 200)
-					: (query) => (${id} = profile(__db.query, query, "${id}"));
+				const _query_${id} = debounce_on_browser(
+					(query) => profile(
+						__db.query,
+						query, "${id}", (value) => (${id} = value)
+					), 
+					200
+				);
 
 				$: _query_${id}(_query_string_${id});
 			`).join('\n')}
 
 			if (!browser) {
+				// reactivity doesn't happen on the server, so we need to manually subscribe to the inputs store
+				// and update the queries when the inputs change
 				onDestroy(inputs_store.subscribe((inputs) => {
-                    // do not switch to using _query_string, we need the string to re-evaluate (no reactivity on server)
 					${input_ids.map((id) => `
 						${id} = _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
 					`).join('\n')}

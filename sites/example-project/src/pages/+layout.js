@@ -71,9 +71,9 @@ export const load = async ({
 
 	return {
 		__db: {
-			query(sql, query_name) {
+			query(sql, query_name, callback = (x) => x) {
 				if (browser) {
-					return database_initialization.then(() => query(sql));
+					return database_initialization.then(() => query(sql)).then(callback);
 				}
 
 				// if the query interpolates variables then we need to make each page
@@ -86,12 +86,14 @@ export const load = async ({
 						? paramsHash
 						: routeHash;
 
-				return query(sql, {
+				return callback(
+					query(sql, {
 					route_hash: routeHash,
 					additional_hash,
 					query_name,
 					prerendering: building
-				});
+					})
+				);
 			}
 		},
 		data,
