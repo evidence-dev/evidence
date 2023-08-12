@@ -163,12 +163,15 @@
 						if (params.name === '') {
 							// If no label supplied
 							result = !hideValue
-								? `${formatValue(params.value, y ? yFormat : x ? xFormat : 'string')}`
+								? `${formatValue(
+										y ? params.data.yAxis : x ? params.data.xAxis : params.value,
+										y ? yFormat : x ? xFormat : 'string'
+								  )}`
 								: '';
 						} else {
 							result = !hideValue
 								? `${params.name} (${formatValue(
-										params.value,
+										y ? params.data.yAxis : x ? params.data.xAxis : params.value,
 										y ? yFormat : x ? xFormat : 'string'
 								  )})`
 								: `${params.name}`;
