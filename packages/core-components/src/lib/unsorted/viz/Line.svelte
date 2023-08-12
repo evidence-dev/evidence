@@ -31,6 +31,7 @@
 	export let markerSize = 8;
 
 	export let handleMissing = 'gap';
+	export let stepping = false; // shows step line. It can be true, false. Or 'start', 'middle', 'end' to configure turn point of step line.
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
@@ -81,7 +82,8 @@
 		},
 		showSymbol: markers,
 		symbol: markerShape,
-		symbolSize: markerSize
+		symbolSize: markerSize,
+		step: stepping
 	};
 
 	$: seriesConfig = getSeriesConfig(
