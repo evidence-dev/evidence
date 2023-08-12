@@ -46,5 +46,5 @@
 </script>
 
 {#if selected}
-	<b>{label}: </b><slot />
+	<slot />
 {/if}

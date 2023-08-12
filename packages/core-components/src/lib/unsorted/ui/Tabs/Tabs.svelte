@@ -13,10 +13,10 @@
 	export let id;
 
 	/**
-	 * activeTabColor sets background color of the active tab button.
+	 * color sets the background color for the active tab button.
 	 * @type {string}
 	 */
-	export let activeTabColor = 'rgb(239, 86, 47)'; // or '#ef562f' or 'hsl(12, 86%, 56%)'
+	export let color = 'rgb(230, 246,255)'; // or '#ef562f' or 'hsl(12, 86%, 56%)'
 
 	/**
 	 * @type {import("svelte/store").Writable<{ tabs: {label: string, id: string}[], active: string, tabsId: string}>}
@@ -49,26 +49,26 @@
 	<nav class="my-6 flex flex-wrap gap-x-4 gap-y-1">
 		{#each $tabItems.tabs as tab}
 			<button
-				style="--activeTabColor:{activeTabColor}"
+				style="--activeTabColor:{color}"
 				on:click={() => ($tabItems.active = tab.id)}
-				class="p-4 rounded-lg flex-1 text-sm whitespace-nowrap font-sans font-medium transition duration-200 ease-in"
+				class="p-4 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition duration-300 ease-in"
 				class:active={$tabItems.active === tab.id}
 			>
 				{tab.label}
 			</button>
 		{/each}
 	</nav>
-	<div class="my-6 p-4 rounded-lg bg-gray-50 text-base text-gray-500">
+	<div class="p-5 text-base">
 		<slot />
 	</div>
 </section>
 
 <style lang="postcss">
 	nav button:not(.active) {
-		@apply hover:bg-gray-200 active:bg-gray-100 hover:text-gray-600 text-gray-400;
+		@apply text-gray-400 hover:bg-gray-200 hover:text-gray-600 active:bg-gray-50;
 	}
 
 	button.active {
-		@apply bg-[var(--activeTabColor)] text-white;
+		@apply border-b-2 bg-[var(--activeTabColor)] text-black active:bg-gray-50 border-blue-200;
 	}
 </style>
