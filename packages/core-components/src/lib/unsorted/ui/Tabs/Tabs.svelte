@@ -13,10 +13,27 @@
 	export let id;
 
 	/**
-	 * color sets the background color for the active tab button.
+	 * color can be provided to set custom background color for active tab.
 	 * @type {string}
 	 */
-	export let color = 'rgb(230, 246,255)'; // or '#ef562f' or 'hsl(12, 86%, 56%)'
+	export let color = '#268aed'; // or any 6 digit hex color code.
+	const colorArray = hexToRgbArray(color);
+
+	function hexToRgbArray(hexColor) {
+		const hexDigits = hexColor.replace(/\s+/g, '').replace('#', '');
+
+		// Check if the provided color contains valid hex characters.
+		if (!/^[0-9a-fA-F]{6}$/.test(hexDigits)) {
+			return null;
+		}
+
+		// Convert hex digit pairs to decimal RGB values.
+		return [
+			parseInt(hexDigits.slice(0, 2), 16), // R
+			parseInt(hexDigits.slice(2, 4), 16), // G
+			parseInt(hexDigits.slice(4, 6), 16) //  B
+		];
+	}
 
 	/**
 	 * @type {import("svelte/store").Writable<{ tabs: {label: string, id: string}[], active: string, tabsId: string}>}
@@ -49,9 +66,9 @@
 	<nav class="my-6 flex flex-wrap gap-x-4 gap-y-1">
 		{#each $tabItems.tabs as tab}
 			<button
-				style="--activeTabColor:{color}"
+				style="--activeTabColor:{colorArray}"
 				on:click={() => ($tabItems.active = tab.id)}
-				class="p-4 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition duration-300 ease-in"
+				class="mt-2 p-4 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition duration-200 ease-in"
 				class:active={$tabItems.active === tab.id}
 			>
 				{tab.label}
@@ -65,10 +82,12 @@
 
 <style lang="postcss">
 	nav button:not(.active) {
-		@apply text-gray-400 hover:bg-gray-200 hover:text-gray-600 active:bg-gray-50;
+		@apply text-gray-400 hover:bg-gray-200 hover:text-gray-600 active:bg-gray-100;
 	}
 
 	button.active {
-		@apply border-b-2 bg-[var(--activeTabColor)] text-black active:bg-gray-50 border-blue-200;
+		@apply text-black active:bg-gray-100;
+		background-color: rgba(var(--activeTabColor), 0.1);
+		border-bottom: 2px solid rgba(var(--activeTabColor), 1);
 	}
 </style>
