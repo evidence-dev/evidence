@@ -60,6 +60,8 @@
 	// Delta:
 	export let downIsGood = false;
 	downIsGood = downIsGood === 'true' || downIsGood === true;
+	export let showValue = true;
+	showValue = showValue === 'true' || showValue === true;
 
 	export let deltaSymbol = true;
 	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
@@ -77,7 +79,8 @@
 		linkLabel: linkLabel,
 		fmt: fmt,
 		downIsGood: downIsGood,
-		deltaSymbol: deltaSymbol
+		deltaSymbol: deltaSymbol,
+		showValue: showValue
 	};
 
 	props.update((d) => {

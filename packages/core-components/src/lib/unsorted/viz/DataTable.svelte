@@ -444,7 +444,8 @@
 													: 'var(--red-700)'
 											}`}
 										>
-											<div style="text-align: right;">
+											<div style="text-align: {column.align ?? 'right'};">
+												{#if column.showValue}
 												<span>
 													{formatValue(
 														row[column.id],
@@ -457,6 +458,7 @@
 														safeExtractColumn(column).columnUnitSummary
 													)}
 												</span>
+												{/if}
 												{#if column.deltaSymbol}
 													<span>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span>
 												{/if}
