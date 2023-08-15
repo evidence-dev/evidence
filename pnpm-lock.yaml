@@ -885,9 +885,6 @@ importers:
       '@evidence-dev/universal-sql':
         specifier: workspace:^
         version: link:../../packages/universal-sql
-      '@fontsource/spectral':
-        specifier: ^5.0.3
-        version: 5.0.3
       '@sveltejs/kit':
         specifier: 1.22.3
         version: 1.22.3(svelte@3.55.0)(vite@4.3.9)
@@ -4299,10 +4296,6 @@ packages:
   /@floating-ui/utils@0.1.1:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
     dev: true
-
-  /@fontsource/spectral@5.0.3:
-    resolution: {integrity: sha512-bGd/waySS/RBhMarAkkjaLLEC+G3fQ7aNlccurJArxfgxx5e1AfUR8FtiUtvn/GXLSX8khdhIE7lzGkya+QQgw==}
-    dev: false
 
   /@gar/promisify@1.1.3:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
