@@ -43,6 +43,7 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 
 const runQuery = async (queryString, database) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
+	// TODO: Validate
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {

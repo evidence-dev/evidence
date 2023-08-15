@@ -598,6 +598,25 @@ hide_table_of_contents: false
 
 </div>
 
+<div class="gallery-container-grid">
+
+### [Details](details)
+
+ <div class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Details</div>
+    </div>
+    <div class="item-body-centered">
+    <a href="/components/details">
+
+![Details](/img/details-expanded.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
 
 <div class="gallery-container-grid">
 

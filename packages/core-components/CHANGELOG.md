@@ -35,6 +35,14 @@
 - 9432c6e4: limit `getFormatObjectFromString` in Value.svelte
 - be1cc666: force NaN, null, and undefined to the top of ascending sort order and vice versa
 
+## 1.2.1
+
+### Patch Changes
+
+- 9ade9c88: Add Definitions component
+- 9432c6e4: limit `getFormatObjectFromString` in Value.svelte
+- be1cc666: force NaN, null, and undefined to the top of ascending sort order and vice versa
+
 ## 1.2.0
 
 ### Minor Changes

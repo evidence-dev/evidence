@@ -81,6 +81,16 @@
   - @evidence-dev/core-components@2.0.0-usql.4
   - @evidence-dev/plugin-connector@2.0.0-usql.8
 
+## 2.5.1
+
+### Patch Changes
+
+- 9ade9c88: Add Definitions component
+- Updated dependencies [9ade9c88]
+- Updated dependencies [9432c6e4]
+- Updated dependencies [be1cc666]
+  - @evidence-dev/core-components@1.2.1
+
 ## 2.5.0
 
 ### Minor Changes
