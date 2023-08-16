@@ -24,7 +24,8 @@ lineColor=red
 <AreaChart
 data={orders_by_category.filter(d => d.category === "Sinister Toys")}
 x=month
-stepping=true
+step=true
+stepPosition=middle
 />
 
 ## Stacked Area

@@ -29,7 +29,10 @@
 	$: line = line === 'true' || line === true;
 
 	export let handleMissing = 'gap';
-	export let stepping = false; // shows step line. It can be true, false. Or 'start', 'middle', 'end' to configure turn point of step line.
+
+	export let step = false; // shows step line. It can be true, false. Or 'start', 'middle', 'end' to configure turn point of step line.
+	$: step = step === 'true' || step === true;
+	export let stepPosition = 'end';
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
@@ -76,7 +79,7 @@
 		emphasis: {
 			focus: 'series'
 		},
-		step: stepping
+		step: step ? stepPosition : false
 	};
 
 	$: seriesConfig = getSeriesConfig(

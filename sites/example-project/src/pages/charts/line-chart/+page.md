@@ -106,4 +106,4 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 
 ## Multi-Series Line with Steps
 
-<LineChart data={simpler_bar} x=year y=value series=country stepping=true/>
+<LineChart data={simpler_bar} x=year y=value series=country step=true/>

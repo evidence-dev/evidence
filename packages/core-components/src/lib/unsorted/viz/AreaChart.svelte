@@ -38,7 +38,8 @@
 	export let chartAreaHeight = undefined;
 
 	export let handleMissing = undefined;
-	export let stepping = undefined;
+	export let step = undefined;
+	export let stepPosition = undefined;
 
 	export let sort = undefined;
 
@@ -76,6 +77,6 @@
 	{stacked100}
 	{chartAreaHeight}
 >
-	<Area {line} {fillColor} {lineColor} {fillOpacity} {handleMissing} {type} {stepping} />
+	<Area {line} {fillColor} {lineColor} {fillOpacity} {handleMissing} {type} {step} {stepPosition} />
 	<slot />
 </Chart>
