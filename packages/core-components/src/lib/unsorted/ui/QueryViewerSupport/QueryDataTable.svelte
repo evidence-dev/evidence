@@ -50,7 +50,7 @@
 	}
 </script>
 
-<div class="results-pane py-2" transition:slide|local>
+<div class="results-pane py-1" transition:slide|local>
 	<div class="container">
 		<table in:blur>
 			<thead>
@@ -270,9 +270,7 @@
 	}
 
 	th {
-		font-weight: bold;
-		/* border-bottom: thin solid lightgray; */
-		padding: 0px 8px;
+		@apply font-medium py-0 px-2;
 	}
 
 	td {
