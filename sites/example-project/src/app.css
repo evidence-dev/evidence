@@ -56,10 +56,10 @@
 	/* lists */
 
 	ol.markdown {
-		@apply list-decimal ps-10;
+		@apply list-decimal ps-6;
 	}
 	ul.markdown {
-		@apply list-disc ps-10;
+		@apply list-disc ps-6;
 	}
 
 	/* 1st level list */
@@ -97,8 +97,16 @@
 				@apply mt-1;
 			}
 		}
+
+	}
+	ol.markdown > li.markdown::marker {
+		@apply text-gray-800;
 	}
 
+	ul.markdown > li.markdown::marker {
+		@apply text-gray-800;
+	}
+	
 	h1.markdown,
 	h2.markdown,
 	h3.markdown,
@@ -116,15 +124,15 @@
 
 	h1.title {
 		/* this is hacky - should instead apply a title class directly when injected in preprocess */
-		@apply mt-5 mb-2 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
+		@apply mt-5 mb-1 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
 	}
 
 	h1.markdown {
-		@apply mt-5 mb-2 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
+		@apply mt-5 mb-1 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
 	}
 
 	h2.markdown {
-		@apply mt-3 mb-2 text-xl font-semibold text-gray-800;
+		@apply mt-3 mb-1 text-xl font-semibold text-gray-800;
 	}
 
 	h3.markdown {
