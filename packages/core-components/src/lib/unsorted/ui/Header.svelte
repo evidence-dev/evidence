@@ -85,7 +85,7 @@
 									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
 									class:active
 								>
-									Print
+									Print PDF
 								</div>
 							</MenuItem>
 
