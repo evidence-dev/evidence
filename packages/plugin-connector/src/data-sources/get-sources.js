@@ -4,6 +4,7 @@ import yaml from 'yaml';
 import chalk from 'chalk';
 import { DatasourceSpecFileSchema } from './schemas/datasource-spec.schema';
 import { cleanZodErrors } from '../lib/clean-zod-errors.js';
+import { createHash } from 'node:crypto';
 
 /**
  * Returns the path to the sources directory, if it exists in the current directory.
@@ -100,6 +101,26 @@ export const getSources = async (sourcesDir) => {
 	return datasourceSpecs;
 };
 
+const hash_location = './.evidence/template/.evidence-queries/sources/hashes.json';
+
+/**
+ * Gets the hashes of all source files, at the time of their last execution.
+ * @returns {Promise<Record<string, Record<string, string | null>>>}
+ */
+export async function getPastSourceHashes() {
+	const hashes = await fs.readFile(hash_location, 'utf-8').catch(() => '{}');
+	return JSON.parse(hashes);
+}
+
+/**
+ * Saves the supplied source hashes
+ * @param {Record<string, Record<string, string | null>>} hashes
+ */
+export async function saveSourceHashes(hashes) {
+	await fs.mkdir(path.dirname(hash_location), { recursive: true });
+	await fs.writeFile(hash_location, JSON.stringify(hashes));
+}
+
 /**
  * Reads a YAML file containing connection parameters from the given source directory,
  * parses it, and returns a validated datasource specification.
@@ -171,15 +192,17 @@ async function getQueries(sourceDir, contents) {
 		queryFiles.map(async (filename) => {
 			const filepath = path.join(sourceDir, filename);
 			const { size } = await fs.stat(filepath);
-			let content;
+			let content, hash;
 			if (size > 100 * 1024 * 1024) {
 				console.warn(`${filename} is over 100MB, skipping`);
 				content = null;
+				hash = null;
 			} else {
 				content = await fs.readFile(path.join(sourceDir, filename)).then((r) => r.toString());
+				hash = createHash('md5').update(content).digest('hex');
 			}
 
-			return { filepath, content };
+			return { filepath, content, hash, name: path.basename(filepath).split('.')[0] };
 		})
 	);
 
