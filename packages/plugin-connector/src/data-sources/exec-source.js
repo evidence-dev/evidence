@@ -45,7 +45,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		if (!result) continue;
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
 		/* Split on / or \ (windows compatibility) */
-		const fileparts = query.filepath.split(/[/\\]/);
+		const fileparts = path.dirname(query.filepath).split(/[/\\]/);
 
 		const outputSubdir = path.join(
 			...path
