@@ -308,6 +308,7 @@
 	}
 
 	article {
+		@apply max-w-prose px-8 mx-auto my-5;
 		orphans: 2;
 		widows: 2;
 	}
