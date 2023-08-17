@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import yaml from 'yaml';
 import chalk from 'chalk';
-import { DatasourceSpecFileSchema } from './schemas/datasource-spec.schema';
+import { DatasourceSpecFileSchema, DatasourceCacheSchema } from './schemas/datasource-spec.schema';
 import { cleanZodErrors } from '../lib/clean-zod-errors.js';
 import { createHash } from 'node:crypto';
 
@@ -109,7 +109,16 @@ const hash_location = './.evidence/template/.evidence-queries/sources/hashes.jso
  */
 export async function getPastSourceHashes() {
 	const hashes = await fs.readFile(hash_location, 'utf-8').catch(() => '{}');
-	return JSON.parse(hashes);
+	const parsed = JSON.parse(hashes);
+	const validated = DatasourceCacheSchema.safeParse(parsed);
+
+	if (!validated.success) {
+		console.error(chalk.bold.red('[!] Unable to parse source query hashes, ignoring'));
+		await fs.writeFile(hash_location, '{}');
+		return {};
+	}
+
+	return validated.data;
 }
 
 /**

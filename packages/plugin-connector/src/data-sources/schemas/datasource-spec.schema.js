@@ -24,3 +24,5 @@ export const DatasourceQueryResultSchema = z.object({
 	result: QueryResultSchema,
 	name: z.string({ description: 'Output Table / Store name' })
 });
+
+export const DatasourceCacheSchema = z.record(z.record(z.string().or(z.null())));
