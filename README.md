@@ -22,7 +22,7 @@ Evidence renders a website from markdown files:
 # Install
 
 1. Download the [Evidence VSCode Extension](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
-2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project` 
+2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project`
 3. Click the Start Evidence button in the bottom status bar
 
 See docs for [other install options](https://docs.evidence.dev/getting-started/install-evidence) (CLI, Docker, etc)
