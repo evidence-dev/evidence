@@ -40,7 +40,7 @@ export async function updateDatasourceOutputs(
 		.filter(
 			(source) =>
 				source.queries.length > 0 ||
-				console.log('No queries left for source', source.name, 'after filtration')
+				console.log(`No queries left for source ${source.name} after filtration`)
 		);
 
 	for (const source of filteredDatasources) {
