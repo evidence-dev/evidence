@@ -27,6 +27,20 @@ hide_table_of_contents: false
 
 <img src='/img/datatable-all.png' width='500px'/>
 
+### Deltas
+
+```html
+<DataTable data="{countries}">
+	<Column id="country" />
+	<Column id="category" />
+	<Column id="value_usd" />
+    <Column id="yoy" contentType=delta fmt=pct title="Y/Y Chg"/>
+</DataTable>
+```
+
+<img src='/img/datatable-deltas.png' width='500px'/>
+
+
 ### Including Images
 
 ```html
@@ -318,7 +332,7 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td>contentType</td>
         <td>Lets you specify how to treat the content within a column. See below for contentType-specific options.</td>
         <td class='tcenter'>-</td>
-        <td class='tcenter'>link | image</td>
+        <td class='tcenter'>link | image | delta</td>
         <td class='tcenter'>-</td>
     </tr>
 </table>
@@ -383,5 +397,41 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>-</td>
         <td class='tcenter'>true | false</td>
         <td class='tcenter'>false</td>
+    </tr>
+</table>
+
+
+### Deltas
+
+`contentType=delta`
+
+<table>
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>
+        <td>delteSymbol</td>
+        <td>Whether to show the up/down delta arrow symbol</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
+    </tr>
+    <tr>
+        <td>downIsGood</td>
+        <td>If present, negative comparison values appear in green, and positive values appear in red.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>
+        <td>showValue</td>
+        <td>Whether to show the delta value. Set this to false to show only the delta arrow indicator.</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
     </tr>
 </table>

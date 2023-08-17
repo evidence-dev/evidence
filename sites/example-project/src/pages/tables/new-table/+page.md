@@ -57,12 +57,16 @@ select date '2020-05-26' as date, 100 as value_usd, 0.011 as yoy, 'Zimbabwe' as 
 <DataTable data={tableq} search=true rowShading=false link=country_url>
     <Column id=country />
     <Column id=country_id align=center/>
+    <Column id=flag contentType=image width=50px align=centre/>
     <Column id=category align=center/>
     <Column id=value_usd/>
     <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg"/>
-        <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg" deltaSymbol=true align=center showValue=false/>
-
     <Column id=country_url contentType=link linkLabel="Details &rarr;" title="Country Details" align=right openInNewTab=true/>
 </DataTable>
 
-<DataTable data={tableq} link=country_url showLinkCol=true/>
+<DataTable data={tableq}>
+	<Column id="country" />
+	<Column id="category" />
+	<Column id="value_usd" />
+    <Column id="yoy" contentType=delta fmt=pct title="Y/Y Chg"/>
+</DataTable>
