@@ -19,24 +19,13 @@ Evidence renders a website from markdown files:
 - **Templated pages** generate many pages from a single markdown template
 - **Loops** and **If / Else** statements allow control of what is displayed to users
 
-# Getting Started
+# Install
 
-## Installation
+1. Download the [Evidence VSCode Extension](https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode)
+2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project`
+3. Click the Start Evidence button in the bottom status bar
 
-**Try Online:**
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/evidence?file=pages%2Findex.md)
-
-**Install Locally:**
-
-Check out the [documentation](https://docs.evidence.dev) for a walkthrough and other install options.
-
-```shell
-npx degit evidence-dev/template my-project
-cd my-project
-npm install
-npm run dev
-```
+See docs for [other install options](https://docs.evidence.dev/getting-started/install-evidence) (CLI, Docker, etc)
 
 # Join the Evidence Community
 
