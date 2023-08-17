@@ -446,18 +446,18 @@
 										>
 											<div style="text-align: {column.align ?? 'right'};">
 												{#if column.showValue}
-												<span>
-													{formatValue(
-														row[column.id],
-														column.fmt
-															? getFormatObjectFromString(
-																	column.fmt,
-																	safeExtractColumn(column).format.valueType
-															  )
-															: safeExtractColumn(column).format,
-														safeExtractColumn(column).columnUnitSummary
-													)}
-												</span>
+													<span>
+														{formatValue(
+															row[column.id],
+															column.fmt
+																? getFormatObjectFromString(
+																		column.fmt,
+																		safeExtractColumn(column).format.valueType
+																  )
+																: safeExtractColumn(column).format,
+															safeExtractColumn(column).columnUnitSummary
+														)}
+													</span>
 												{/if}
 												{#if column.deltaSymbol}
 													<span>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span>
