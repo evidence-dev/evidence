@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.0-usql.17",
+	"version": "3.0.0-usql.21",
 	"private": true,
 	"scripts": {
 		"build": "evidence build",

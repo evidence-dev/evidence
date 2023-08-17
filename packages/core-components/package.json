@@ -22,13 +22,14 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "2.0.0-usql.6",
+	"version": "2.0.0-usql.8",
 	"evidence": {
 		"components": true
 	},
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/tailwind": "workspace:^",
+		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/svelte-icon": "^1.4.1",
 		"@steeze-ui/tabler-icons": "^2.1.0",
@@ -37,7 +38,8 @@
 		"export-to-csv": "0.2.1",
 		"prismjs": "1.29.0",
 		"ssf": "0.11.2",
-		"svelte-tiny-linked-charts": "1.1.5"
+		"svelte-tiny-linked-charts": "1.1.5",
+		"tua-body-scroll-lock": "^1.4.0"
 	},
 	"devDependencies": {
 		"@storybook/addon-essentials": "^7.0.9",
@@ -73,7 +75,7 @@
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"vite": "^4.3.0",
-		"vitest": "^0.25.8"
+		"vitest": "^0.34.1"
 	},
 	"overrides": {
 		"svelte2tsx": "^0.6.15"

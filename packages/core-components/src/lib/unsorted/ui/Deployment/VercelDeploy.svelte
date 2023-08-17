@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
@@ -60,6 +56,14 @@
 {/if}
 
 <style>
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
+
 	a {
 		color: var(--blue-600);
 		text-decoration: none;
