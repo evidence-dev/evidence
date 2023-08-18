@@ -10,7 +10,7 @@ schema:
     post_id:
         type: fk
         target:
-            table: posts.yaml
+            table: ./posts/posts.yaml
 filters:
     - type: unique
       fields:
