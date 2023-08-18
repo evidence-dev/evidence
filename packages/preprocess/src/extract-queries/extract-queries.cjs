@@ -31,7 +31,7 @@ const readFileToQuery = (externalQuery, id) => {
 };
 
 // Unified parser step to ignore indented code blocks.
-// Adapted from the mdsvex externalQuery, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
+// Adapted from the mdsvex source, here: https://github.com/pngwn/MDsveX/blob/master/packages/mdsvex/src/parsers/index.ts
 // Discussion & background here:  https://github.com/evidence-dev/evidence/issues/286
 const ignoreIndentedCode = function () {
 	const Parser = this.Parser;
