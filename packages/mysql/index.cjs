@@ -1,4 +1,4 @@
-const { getEnv } = require('@evidence-dev/db-commons');
+const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const mysqlTypes = mysql.Types;
 
@@ -41,9 +41,16 @@ const envMap = {
 	]
 };
 
-const standardizeResult = async (result) => {
-	var output = [];
+/**
+ *
+ * @param {mysql.RowDataPacket[]} result
+ * @returns {Record<string, unknown>[]}
+ */
+const standardizeResult = (result) => {
+	/** @type {Record<string, unknown>[]} */
+	const output = [];
 	result.forEach((row) => {
+		/** @type {Record<string, unknown>} */
 		const lowerCasedRow = {};
 		for (const [key, value] of Object.entries(row)) {
 			lowerCasedRow[key.toLowerCase()] = value;
@@ -53,6 +60,12 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
+/**
+ *
+ * @param {number} dataTypeId
+ * @param {undefined} defaultType
+ * @returns {EvidenceType | undefined}
+ */
 const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
 	// No native bool https://stackoverflow.com/questions/289727/which-mysql-data-type-to-use-for-storing-boolean-values
 
@@ -66,18 +79,18 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 		case mysqlTypes['NEWDECIMAL']:
 		case mysqlTypes['INT24']:
 		case mysqlTypes['LONGLONG']:
-			return 'number';
+			return EvidenceType.NUMBER;
 		case mysqlTypes['TIMESTAMP']:
 		case mysqlTypes['DATE']:
 		case mysqlTypes['TIME']:
 		case mysqlTypes['DATETIME']:
 		case mysqlTypes['YEAR']:
 		case mysqlTypes['NEWDATE']:
-			return 'date';
+			return EvidenceType.DATE;
 		case mysqlTypes['VARCHAR']:
 		case mysqlTypes['VAR_STRING']:
 		case mysqlTypes['STRING']:
-			return 'string';
+			return EvidenceType.STRING;
 		case mysqlTypes['BIT']:
 		case mysqlTypes['JSON']:
 		case mysqlTypes['NULL']:
@@ -93,13 +106,19 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 	}
 };
 
+/**
+ *
+ * @param {mysql.FieldPacket[]} fields
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[] | undefined}
+ */
 const mapResultsToEvidenceColumnTypes = function (fields) {
 	return fields?.map((field) => {
-		let typeFidelity = 'precise';
+		/** @type {TypeFidelity} */
+		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.columnType);
 		if (!evidenceType) {
-			typeFidelity = 'inferred';
-			evidenceType = 'string';
+			typeFidelity = TypeFidelity.INFERRED;
+			evidenceType = EvidenceType.STRING;
 		}
 		return {
 			name: field.name,
@@ -109,9 +128,11 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 	});
 };
 
+/** @type {import('@evidence-dev/db-commons').RunQuery<MySQLOptions>} */
 const runQuery = async (queryString, database) => {
 	try {
-		let credentials = {
+		/** @type {import("mysql2").PoolOptions} */
+		const credentials = {
 			user: database ? database.user : getEnv(envMap, 'user'),
 			host: database ? database.host : getEnv(envMap, 'host'),
 			database: database ? database.database : getEnv(envMap, 'database'),
@@ -121,28 +142,26 @@ const runQuery = async (queryString, database) => {
 			decimalNumbers: true
 		};
 
-		let ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
+		const ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
 
 		if (ssl_opt === 'true') {
-			credentials = Object.assign(credentials, { ssl: {} });
+			credentials.ssl = {};
 		} else if (ssl_opt === 'Amazon RDS') {
-			credentials = Object.assign(credentials, { ssl: 'Amazon RDS' });
-		} else if (ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined) {
-			credentials = credentials;
-		} else {
+			credentials.ssl = 'Amazon RDS';
+		} else if (!(ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined)) {
 			try {
-				let obj = JSON.parse(ssl_opt);
-				credentials = Object.assign(credentials, { ssl: obj });
+				const obj = JSON.parse(ssl_opt);
+				credentials.ssl = obj;
 			} catch (e) {
 				console.log(e);
 			}
 		}
 
-		var pool = mysql.createPool(credentials);
+		const pool = mysql.createPool(credentials);
 		const promisePool = pool.promise();
 		const [rows, fields] = await promisePool.query(queryString);
 
-		const standardizedRows = await standardizeResult(rows);
+		const standardizedRows = standardizeResult(rows);
 		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(fields) };
 	} catch (err) {
 		if (err.message) {
@@ -164,24 +183,11 @@ module.exports = runQuery;
  * @property {number} port
  * @property {string} socketPath
  * @property {number} decimalNumbers
+ * @property {string} ssl
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {MySQLOptions} opts
- * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
- */
+/** @type {import('@evidence-dev/db-commons').GetRunner<MySQLOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;

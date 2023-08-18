@@ -12,6 +12,9 @@
 		"@evidence-dev/db-commons": "workspace:^",
 		"pg": "8.7.1"
 	},
+	"devDependencies": {
+		"@types/pg": "^8.10.2"
+	},
 	"type": "module",
 	"evidence": {
 		"databases": [

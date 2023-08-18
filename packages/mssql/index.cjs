@@ -1,4 +1,4 @@
-const { getEnv } = require('@evidence-dev/db-commons');
+const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 const mssql = require('mssql');
 
 const envMap = {
@@ -46,6 +46,12 @@ const envMap = {
 	]
 };
 
+/**
+ *
+ * @param {(() => mssql.ISqlType) | mssql.ISqlType} data_type
+ * @param {undefined} defaultType
+ * @returns {EvidenceType | undefined}
+ */
 function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
 	switch (data_type) {
 		case mssql.TYPES.Int:
@@ -58,14 +64,14 @@ function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
 		case mssql.TYPES.Numeric:
 		case mssql.TYPES.SmallMoney:
 		case mssql.TYPES.Money:
-			return 'number';
+			return EvidenceType.NUMBER;
 
 		case mssql.TYPES.DateTime:
 		case mssql.TYPES.SmallDateTime:
 		case mssql.TYPES.DateTimeOffset:
 		case mssql.TYPES.Date:
 		case mssql.TYPES.DateTime2:
-			return 'date';
+			return EvidenceType.DATE;
 
 		case mssql.TYPES.VarChar:
 		case mssql.TYPES.NVarChar:
@@ -74,10 +80,10 @@ function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
 		case mssql.TYPES.Xml:
 		case mssql.TYPES.Text:
 		case mssql.TYPES.NText:
-			return 'string';
+			return EvidenceType.STRING;
 
 		case mssql.TYPES.Bit:
-			return 'boolean';
+			return EvidenceType.BOOLEAN;
 
 		case mssql.TYPES.Time:
 		case mssql.TYPES.UniqueIdentifier:
@@ -94,13 +100,19 @@ function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
 	}
 }
 
+/**
+ *
+ * @param {mssql.IColumnMetadata} fields
+ * @returns
+ */
 const mapResultsToEvidenceColumnTypes = function (fields) {
 	return Object.values(fields).map((field) => {
-		let typeFidelity = 'precise';
+		/** @type {TypeFidelity} */
+		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.type);
 		if (!evidenceType) {
-			typeFidelity = 'inferred';
-			evidenceType = 'string';
+			typeFidelity = TypeFidelity.INFERRED;
+			evidenceType = EvidenceType.STRING;
 		}
 		return {
 			name: field.name,
@@ -110,6 +122,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 	});
 };
 
+/** @type {import("@evidence-dev/db-commons").RunQuery<MsSQLOptions>} */
 const runQuery = async (queryString, database = {}) => {
 	try {
 		const trust_server_certificate =
@@ -127,6 +140,7 @@ const runQuery = async (queryString, database = {}) => {
 			}
 		};
 
+		/** @type {mssql.ConnectionPool} */
 		const pool = await mssql.connect(credentials);
 		const { recordset } = await pool.query(queryString);
 
@@ -148,27 +162,13 @@ module.exports = runQuery;
  * @property {string} host
  * @property {string} database
  * @property {string} password
- * @property {number} port
- * @property {boolean} trust_server_certificate
- * @property {boolean} encrypt
+ * @property {`${number}`} port
+ * @property {`${boolean}`} trust_server_certificate
+ * @property {`${boolean}`} encrypt
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {MsSQLOptions} opts
- * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
- */
+/** @type {import('@evidence-dev/db-commons').GetRunner<MsSQLOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;

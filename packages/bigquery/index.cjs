@@ -1,4 +1,11 @@
-const { BigQuery } = require('@google-cloud/bigquery');
+const {
+	BigQuery,
+	BigQueryDate,
+	BigQueryDatetime,
+	BigQueryTime,
+	BigQueryTimestamp,
+	Geography
+} = require('@google-cloud/bigquery');
 const { OAuth2Client } = require('google-auth-library');
 const { EvidenceType, TypeFidelity, getEnv } = require('@evidence-dev/db-commons');
 
@@ -33,28 +40,33 @@ const envMap = {
 	}
 };
 
-const standardizeResult = async (result) => {
-	var output = [];
+/**
+ * Standardizes the result of a BigQuery query
+ * @param {Record<string, unknown>[]} result
+ * @returns {Record<string, unknown>[]}
+ */
+const standardizeResult = (result) => {
+	/** @type {Record<string, unknown>[]} */
+	const output = [];
 	result.forEach((row) => {
+		/** @type {Record<string, unknown>} */
 		const standardized = {};
 		for (const [key, value] of Object.entries(row)) {
-			if (typeof value === 'object') {
-				if (value) {
-					if (value.value) {
-						standardized[key] = value.value;
-					} else {
-						//This is a bigQuery specific workaround for https://github.com/evidence-dev/evidence/issues/792
-						try {
-							standardized[key] = Number(value);
-						} catch (err) {
-							standardized[key] = value;
-						}
-					}
-				} else {
-					standardized[key] = null;
-				}
-			} else {
+			if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number') {
 				standardized[key] = value;
+			} else if (
+				value instanceof BigQueryDatetime ||
+				value instanceof BigQueryTimestamp ||
+				value instanceof BigQueryDate
+			) {
+				if (value instanceof BigQueryDatetime) value.value += 'Z';
+				standardized[key] = new Date(value.value);
+			} else if (value instanceof BigQueryTime || value instanceof Geography) {
+				standardized[key] = value.value;
+			} else if (value instanceof Buffer) {
+				standardized[key] = value.toString('base64');
+			} else if (typeof value?.toNumber === 'function') {
+				standardized[key] = value.toNumber();
 			}
 		}
 		output.push(standardized);
@@ -63,7 +75,8 @@ const standardizeResult = async (result) => {
 };
 
 /**
- * @param {BigQueryOptions} database
+ * @param {Partial<BigQueryOptions>} database
+ * @returns {import("@google-cloud/bigquery").BigQueryOptions}
  */
 const getCredentials = (database = {}) => {
 	const authentication_method =
@@ -93,6 +106,7 @@ const getCredentials = (database = {}) => {
 	}
 };
 
+/** @type {import("@evidence-dev/db-commons").RunQuery<BigQueryOptions>} */
 const runQuery = async (queryString, database) => {
 	try {
 		const credentials = getCredentials(database);
@@ -102,9 +116,10 @@ const runQuery = async (queryString, database) => {
 		const [job] = await connection.createQueryJob({ query: queryString });
 		const [rows] = await job.getQueryResults();
 		const [, , response] = await job.getQueryResults({
-			autoPaginate: false
+			autoPaginate: false,
+			wrapIntegers: false
 		});
-		const standardizedRows = await standardizeResult(rows);
+		const standardizedRows = standardizeResult(rows);
 		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(response) };
 	} catch (err) {
 		if (err.errors) {
@@ -115,6 +130,12 @@ const runQuery = async (queryString, database) => {
 	}
 };
 
+/**
+ *
+ * @param {string} nativeFieldType
+ * @param {undefined} defaultType
+ * @returns {EvidenceType | undefined}
+ */
 const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefined) {
 	switch (nativeFieldType) {
 		case 'BOOL':
@@ -134,34 +155,40 @@ const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefi
 		case 'FLOAT64':
 		case 'FLOAT':
 			return EvidenceType.NUMBER;
-		case 'STRING':
-			return EvidenceType.STRING;
 		case 'TIME':
+		case 'STRING':
+		case 'BYTES':
+		case 'GEOGRAPHY':
+		case 'INTERVAL':
+			return EvidenceType.STRING;
 		case 'TIMESTAMP':
 		case 'DATE':
 		case 'DATETIME':
 			return EvidenceType.DATE;
 		case 'STRUCT':
 		case 'ARRAY':
-		case 'BYTES':
-		case 'GEOGRAPHY':
-		case 'INTERVAL':
 		case 'JSON':
 		default:
 			return defaultType;
 	}
 };
 
+/**
+ *
+ * @param {import("@google-cloud/bigquery").QueryRowsResponse[2]} results
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[] | undefined}
+ */
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.schema?.fields?.map((field) => {
+		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(field.type);
+		let evidenceType = nativeTypeToEvidenceType(/** @type {string} */ (field.type));
 		if (!evidenceType) {
 			typeFidelity = TypeFidelity.INFERRED;
 			evidenceType = EvidenceType.STRING;
 		}
 		return {
-			name: field.name,
+			name: /** @type {string} */ (field.name),
 			evidenceType: evidenceType,
 			typeFidelity: typeFidelity
 		};
@@ -196,22 +223,8 @@ module.exports = runQuery;
  * @typedef {BigQueryBaseOptions & (BigQueryServiceAccountOptions | BigQueryOauthOptions | BigQueryCliOptions)} BigQueryOptions
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {BigQueryOptions} opts
- * @returns { (queryString: string, queryOpts: BigQueryOptions ) => Promise<QueryResult> }
- */
+/** @type {import("@evidence-dev/db-commons").GetRunner<BigQueryOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;

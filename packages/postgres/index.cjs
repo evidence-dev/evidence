@@ -1,6 +1,6 @@
 const pg = require('pg');
 const { Pool } = pg;
-const { EvidenceType, getEnv } = require('@evidence-dev/db-commons');
+const { EvidenceType, getEnv, TypeFidelity } = require('@evidence-dev/db-commons');
 
 const envMap = {
 	host: [
@@ -57,10 +57,6 @@ const envMap = {
  * Some types that are not defined in the PG library
  */
 const pgBuiltInTypeExtentions = {
-	CHAR: 18,
-	JSON: 114,
-	JSONB: 3802,
-	XML: 142,
 	UUID: 2950,
 	NAME: 19,
 	JSONPATH: 4072,
@@ -71,6 +67,19 @@ const pgBuiltInTypeExtentions = {
 	_BOOL: 1000,
 	_CHAR: 1002
 };
+
+/**
+ * Extracts the union of values of an object type
+ * @template T
+ * @typedef {T[keyof T]} MemberOf
+ */
+
+/**
+ *
+ * @param {MemberOf<(typeof pg)["types"]["builtins"]>} dataTypeId
+ * @param {undefined} defaultType
+ * @returns {EvidenceType | undefined}
+ */
 const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
 	switch (dataTypeId) {
 		case pg.types.builtins.BOOL:
@@ -86,9 +95,9 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 		case pg.types.builtins.VARCHAR:
 		case pg.types.builtins.TEXT:
 		case pg.types.builtins.STRING:
-		case pgBuiltInTypeExtentions.CHAR:
-		case pgBuiltInTypeExtentions.JSON:
-		case pgBuiltInTypeExtentions.XML:
+		case pg.types.builtins.CHAR:
+		case pg.types.builtins.JSON:
+		case pg.types.builtins.XML:
 		case pgBuiltInTypeExtentions.NAME:
 			return EvidenceType.STRING;
 		case pg.types.builtins.DATE:
@@ -102,12 +111,18 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 	}
 };
 
+/**
+ *
+ * @param {pg.QueryResult} results
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[] | undefined}
+ */
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.fields?.map((field) => {
-		let typeFidelity = 'precise';
+		/** @type {TypeFidelity} */
+		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.dataTypeID);
 		if (!evidenceType) {
-			typeFidelity = 'inferred';
+			typeFidelity = TypeFidelity.INFERRED;
 			evidenceType = EvidenceType.STRING;
 		}
 		return {
@@ -118,9 +133,16 @@ const mapResultsToEvidenceColumnTypes = function (results) {
 	});
 };
 
-const standardizeResult = async (result) => {
-	var output = [];
+/**
+ *
+ * @param {Record<string, unknown>[]} result
+ * @returns {Record<string, unknown>[]}
+ */
+const standardizeResult = (result) => {
+	/** @type {Record<string, unknown>[]} */
+	const output = [];
 	result.forEach((row) => {
+		/** @type {Record<string, unknown>} */
 		const lowerCasedRow = {};
 		for (const [key, value] of Object.entries(row)) {
 			lowerCasedRow[key.toLowerCase()] = value;
@@ -130,6 +152,7 @@ const standardizeResult = async (result) => {
 	return output;
 };
 
+/** @type {import('@evidence-dev/db-commons').RunQuery<PostgresOptions>} */
 const runQuery = async (queryString, database) => {
 	try {
 		const credentials = {
@@ -172,9 +195,10 @@ const runQuery = async (queryString, database) => {
 				client.query(`SET search_path TO ${schema}`);
 			});
 		}
-		var result = await pool.query(queryString);
+		/** @type {pg.QueryResult} */
+		const result = await pool.query(queryString);
 
-		const standardizedRows = await standardizeResult(result.rows);
+		const standardizedRows = standardizeResult(result.rows);
 
 		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(result) };
 	} catch (err) {
@@ -196,24 +220,12 @@ module.exports = runQuery;
  * @property {string} password
  * @property {number} port
  * @property {Object | undefined} ssl
+ * @property {string} connectionString
+ * @property {string} schema
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {PostgresOptions} opts
- * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
- */
+/** @type {import('@evidence-dev/db-commons').GetRunner<PostgresOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;

@@ -4,7 +4,8 @@ import {
 	initDB,
 	setParquetURLs,
 	query,
-	updateSearchPath
+	updateSearchPath,
+	arrowTableToJSON
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 
@@ -19,6 +20,10 @@ const initDb = async () => {
 	} else {
 		const res = await fetch('/data/manifest.json');
 		if (res.ok) ({ renderedFiles } = await res.json());
+	}
+
+	if (!renderedFiles) {
+		throw new Error('Unable to load source manifest. Do you need to run build:sources?');
 	}
 
 	await initDB();
@@ -45,7 +50,10 @@ export const load = async ({
 				const additional_hash = /\${.*?}/s.test(compiledQueryString) ? paramsHash : routeHash;
 
 				const res = await fetch(`/api/${routeHash}/${additional_hash}/${id}.arrow`);
-				if (res.ok) data[id] = (await tableFromIPC(res)).toArray();
+				if (res.ok) {
+					const table = await tableFromIPC(res);
+					data[id] = arrowTableToJSON(table);
+				}
 			}) ?? []
 		);
 
