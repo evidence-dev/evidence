@@ -8,7 +8,10 @@ declare global {
 			__db: {
 				query(
 					query: string,
-					options: { query_name: string; callback: (results: Record<string, unknown>[]) => unknown }
+					options?: {
+						query_name?: string;
+						callback?: (results: Record<string, unknown>[]) => unknown;
+					}
 				): void;
 				// Waits for database to finish loading
 				// This includes fetching `manifest.json`, intitializing the WASM and WebWorker

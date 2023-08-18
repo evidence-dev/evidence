@@ -32,7 +32,10 @@
 	$: component_identifier = `_Dropdown-${name}`;
 
 	const search = (query) =>
-		profile(db.query, query, component_identifier, (value) => (data = value));
+		profile(db.query, query, {
+			query_name: component_identifier,
+			callback: (value) => (data = value)
+		});
 
 	$: db = $page.data.__db;
 	/** @type {{ label: unknown, value: unknown }[]} */
@@ -46,7 +49,7 @@
 	fine as a substitute for weird export stuff
 	*/
 	let loadingDuckDB = browser;
-	$: browser && db.query('SELECT 1').then(() => (loadingDuckDB = false));
+	$: browser && db.load().then(() => (loadingDuckDB = false));
 </script>
 
 <!--

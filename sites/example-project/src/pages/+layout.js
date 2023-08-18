@@ -73,11 +73,15 @@ export const load = async ({
 		await Promise.all([component_queries_promise, page_queries_promise]);
 	}
 
-	return {
+	return /** @type {App.PageData} */ ({
 		__db: {
-			query(sql, query_name, callback = (x) => x) {
+			query(sql, { query_name, callback = (x) => x }) {
 				if (browser) {
-					return database_initialization.then(() => query(sql)).then(callback);
+					return (async () => {
+						await database_initialization;
+						const result = await query(sql);
+						return callback(result);
+					})();
 				}
 
 				// if the query interpolates variables then we need to make each page
@@ -98,11 +102,14 @@ export const load = async ({
 						prerendering: building
 					})
 				);
+			},
+			async load() {
+				return database_initialization;
 			}
 		},
 		data,
 		customFormattingSettings,
 		isUserPage,
 		evidencemeta
-	};
+	});
 };

@@ -51,7 +51,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				guaranteed to have run
 			*/''}
 				$: if (!browser || dev) {
-					profile(__db.query, _query_string_${id}, "${id}", (value) => ${id} = value);
+					profile(
+						__db.query,
+						_query_string_${id},
+						{ query_name: "${id}", callback: (value) => ${id} = value }
+					);
 				}
 			`).join('\n')}
 
@@ -63,7 +67,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				const _query_${id} = debounce_on_browser(
 					(query) => profile(
 						__db.query,
-						query, "${id}", (value) => (${id} = value)
+						query,
+						{ query_name: "${id}", callback: (value) => (${id} = value) }
 					), 
 					200
 				);
