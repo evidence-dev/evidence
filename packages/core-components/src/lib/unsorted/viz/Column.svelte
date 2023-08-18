@@ -66,7 +66,6 @@
 	export let deltaSymbol = true;
 	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
 
-	let options;
 	$: options = {
 		id: id,
 		title: title,
@@ -84,11 +83,11 @@
 		showValue: showValue
 	};
 
-        /**
-         * Ensures that column props (e.g. title) are reflected in the table's state.
-         * Without this function, props are only used on first render, and are not reactive
-         * @returns {void}
-         */
+	/**
+	 * Ensures that column props (e.g. title) are reflected in the table's state.
+	 * Without this function, props are only used on first render, and are not reactive
+	 * @returns {void}
+	 */
 	const updateProps = () => {
 		props.update((d) => {
 			const matchingIndex = d.columns.findIndex((c) => c.id === id);
