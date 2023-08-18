@@ -9,7 +9,7 @@
     </Tab>
 </Tabs>
 
-<Tabs id="my-tabs" color="#f6635c">
+<Tabs id="my-colored-tabs" color="#f6635c">
     <Tab label="Tab 1">
         This is the content of Tab 1.
     </Tab>
