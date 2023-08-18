@@ -109,5 +109,8 @@
 		openInNewTab,
 		linkLabel,
 		fmt,
+		downIsGood,
+		showValue,
+		deltaSymbol,
 		updateProps();
 </script>
