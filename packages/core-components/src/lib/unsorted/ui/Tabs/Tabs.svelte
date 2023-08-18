@@ -6,6 +6,11 @@
 	import { onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 
+	const classes = {
+		notActive: 'text-gray-400 hover:text-gray-600 hover:bg-gray-200',
+		active: 'text-black border-b-2 border-[--borderColor] bg-[--bgColor]'
+	};
+
 	/**
 	 * id can be provided to enable tab selection to persist across reloads (e.g. with query params)
 	 * @type {string}
@@ -73,8 +78,10 @@
 				style:--bgColor={bgColor}
 				style:--borderColor={borderColor}
 				on:click={() => ($tabItems.active = tab.id)}
-				class="mt-2 p-4 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition duration-200 ease-in"
-				class:active={$tabItems.active === tab.id}
+				class="mt-2 p-4 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition duration-200 ease-in active:bg-gray-100 {$tabItems.active ===
+				tab.id
+					? classes.active
+					: classes.notActive} "
 			>
 				{tab.label}
 			</button>
@@ -84,15 +91,3 @@
 		<slot />
 	</div>
 </section>
-
-<style lang="postcss">
-	nav button:not(.active) {
-		@apply text-gray-400 hover:bg-gray-200 hover:text-gray-600 active:bg-gray-100;
-	}
-
-	button.active {
-		@apply text-black active:bg-gray-100;
-		background-color: var(--bgColor);
-		border-bottom: 2px solid var(--borderColor);
-	}
-</style>
