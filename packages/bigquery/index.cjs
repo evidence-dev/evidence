@@ -1,4 +1,11 @@
-const { BigQuery } = require('@google-cloud/bigquery');
+const {
+	BigQuery,
+	BigQueryDate,
+	BigQueryDatetime,
+	BigQueryTime,
+	BigQueryTimestamp,
+	Geography
+} = require('@google-cloud/bigquery');
 const { OAuth2Client } = require('google-auth-library');
 const { EvidenceType, TypeFidelity, getEnv } = require('@evidence-dev/db-commons');
 
@@ -45,23 +52,21 @@ const standardizeResult = (result) => {
 		/** @type {Record<string, unknown>} */
 		const standardized = {};
 		for (const [key, value] of Object.entries(row)) {
-			if (typeof value === 'object') {
-				if (value) {
-					if (value.value) {
-						standardized[key] = value.value;
-					} else {
-						//This is a bigQuery specific workaround for https://github.com/evidence-dev/evidence/issues/792
-						try {
-							standardized[key] = Number(value);
-						} catch (err) {
-							standardized[key] = value;
-						}
-					}
-				} else {
-					standardized[key] = null;
-				}
-			} else {
+			if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number') {
 				standardized[key] = value;
+			} else if (
+				value instanceof BigQueryDatetime ||
+				value instanceof BigQueryTimestamp ||
+				value instanceof BigQueryDate
+			) {
+				if (value instanceof BigQueryDatetime) value.value += 'Z';
+				standardized[key] = new Date(value.value);
+			} else if (value instanceof BigQueryTime || value instanceof Geography) {
+				standardized[key] = value.value;
+			} else if (value instanceof Buffer) {
+				standardized[key] = value.toString('base64');
+			} else if (typeof value?.toNumber === 'function') {
+				standardized[key] = value.toNumber();
 			}
 		}
 		output.push(standardized);
@@ -111,7 +116,8 @@ const runQuery = async (queryString, database) => {
 		const [job] = await connection.createQueryJob({ query: queryString });
 		const [rows] = await job.getQueryResults();
 		const [, , response] = await job.getQueryResults({
-			autoPaginate: false
+			autoPaginate: false,
+			wrapIntegers: false
 		});
 		const standardizedRows = standardizeResult(rows);
 		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(response) };
@@ -149,18 +155,18 @@ const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefi
 		case 'FLOAT64':
 		case 'FLOAT':
 			return EvidenceType.NUMBER;
-		case 'STRING':
-			return EvidenceType.STRING;
 		case 'TIME':
+		case 'STRING':
+		case 'BYTES':
+		case 'GEOGRAPHY':
+		case 'INTERVAL':
+			return EvidenceType.STRING;
 		case 'TIMESTAMP':
 		case 'DATE':
 		case 'DATETIME':
 			return EvidenceType.DATE;
 		case 'STRUCT':
 		case 'ARRAY':
-		case 'BYTES':
-		case 'GEOGRAPHY':
-		case 'INTERVAL':
 		case 'JSON':
 		default:
 			return defaultType;
