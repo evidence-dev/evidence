@@ -7,7 +7,7 @@
 	import { writable } from 'svelte/store';
 
 	const classes = {
-		notActive: 'text-gray-400 hover:text-gray-600 hover:bg-gray-200',
+		notActive: 'text-gray-600 hover:text-gray-800 hover:bg-gray-200',
 		active: 'text-black border-b-2 border-[--borderColor] bg-[--bgColor]'
 	};
 
@@ -88,7 +88,7 @@
 				style:--bgColor={bgColor}
 				style:--borderColor={borderColor}
 				on:click={() => ($tabItems.active = tab.id)}
-				class="mt-2 p-4 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition duration-200 ease-in active:bg-gray-100 {$tabItems.active ===
+				class="mt-2 p-2 rounded-t flex-1 text-sm font-sans whitespace-nowrap transition duration-200 ease-in active:bg-gray-100 {$tabItems.active ===
 				tab.id
 					? classes.active
 					: classes.notActive} "
@@ -97,7 +97,7 @@
 			</button>
 		{/each}
 	</nav>
-	<div class="p-5 text-base">
+	<div class="text-base">
 		<slot />
 	</div>
 </section>
