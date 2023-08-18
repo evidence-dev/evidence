@@ -21,11 +21,11 @@
 	 * color can be provided to set custom background color for active tab.
 	 * @type {string}
 	 */
-	export let color = '#268aed';
+	export let color = 'hsla(207, 65%, 39%, 1)';
 	color = color.replace(/\s+/g, ''); // clean string
 
-	const bgColor = isValidColorString(color) ? addOpacityToColor(color) : '#268aed1a';
-	const borderColor = isValidColorString(color) ? color : '#268aed';
+	const bgColor = isValidColorString(color) ? addOpacityToColor(color) : 'hsla(207, 65%, 39%, 0.1)';
+	const borderColor = isValidColorString(color) ? color : 'hsla(207, 65%, 39%, 1)';
 
 	function isHex(inputColor) {
 		const hexRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/i;
