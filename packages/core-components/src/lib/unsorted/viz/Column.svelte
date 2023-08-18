@@ -56,34 +56,33 @@
 
 	// Formatting:
 	export let fmt = undefined;
-	export let downIsGood = false;
-	export let showValue = true;
-	export let deltaSymbol = true;
 
-	const getOptions = () => {
-		downIsGood = downIsGood === 'true' || downIsGood === true;
-		showValue = showValue === 'true' || showValue === true;
-		deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
-		return {
-			id: id,
-			title: title,
-			align: align,
-			wrap: wrap,
-			contentType: contentType,
-			height: height,
-			width: width,
-			alt: alt,
-			openInNewTab: openInNewTab,
-			linkLabel: linkLabel,
-			fmt: fmt,
-			downIsGood: downIsGood,
-			deltaSymbol: deltaSymbol,
-			showValue: showValue
-		};
+	// Delta:
+	export let downIsGood = false;
+	downIsGood = downIsGood === 'true' || downIsGood === true;
+	export let showValue = true;
+	showValue = showValue === 'true' || showValue === true;
+	export let deltaSymbol = true;
+	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+
+	$: options = {
+		id: id,
+		title: title,
+		align: align,
+		wrap: wrap,
+		contentType: contentType,
+		height: height,
+		width: width,
+		alt: alt,
+		openInNewTab: openInNewTab,
+		linkLabel: linkLabel,
+		fmt: fmt,
+		downIsGood: downIsGood,
+		deltaSymbol: deltaSymbol,
+		showValue: showValue
 	};
 
 	const updateProps = () => {
-		const options = getOptions();
 		props.update((d) => {
 			const matchingIndex = d.columns.findIndex((c) => c.id === id);
 			if (matchingIndex === -1) {
@@ -98,19 +97,5 @@
 			return d;
 		});
 	};
-	$: id,
-		title,
-		align,
-		wrap,
-		contentType,
-		height,
-		width,
-		alt,
-		openInNewTab,
-		linkLabel,
-		fmt,
-		downIsGood,
-		showValue,
-		deltaSymbol,
-		updateProps();
+	$: options, updateProps();
 </script>
