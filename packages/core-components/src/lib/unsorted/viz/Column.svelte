@@ -58,6 +58,7 @@
 
 	// Color Scale:
 	export let colorMax = undefined;
+	export let colorMin = undefined;
 	export let scaleColor = 'green';
 
 	let colorList = {
@@ -81,6 +82,7 @@
 		linkLabel: linkLabel,
 		fmt: fmt,
 		colorMax: colorMax,
+		colorMin: colorMin,
 		useColor: useColor
 	};
 

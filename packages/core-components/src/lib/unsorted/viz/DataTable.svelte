@@ -382,6 +382,14 @@
 
 						{#if $props.columns.length > 0}
 							{#each $props.columns as column}
+								{@const column_min =
+									column.colorMin ??
+									columnSummary.find((entry) => entry.id === column.id)?.columnUnitSummary.min}
+								{@const column_max =
+									column.colorMax ??
+									columnSummary.find((entry) => entry.id === column.id)?.columnUnitSummary.max}
+								{@const is_nonzero =
+									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 								<td
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
@@ -390,10 +398,9 @@
                       						height: {column.height};
                       						width: {column.width};
 											white-space: {column.wrap ? 'normal' : 'nowrap'};
-											background-color: {column.contentType === 'colorscale'
-										? `${column.useColor} ${
-												row[column.id] /
-												(column.colorMax ?? Math.max(...data.map((d) => d[column.id])))
+											{column.contentType === 'colorscale' && is_nonzero
+										? ` background-color: ${column.useColor} ${
+												(row[column.id] - column_min) / (column_max - column_min)
 										  })`
 										: ''}
                   "
