@@ -238,7 +238,7 @@ importers:
         version: 7.0.27(react-dom@17.0.2)(react@17.0.2)
       '@storybook/addon-svelte-csf':
         specifier: ^3.0.2
-        version: 3.0.3(@storybook/svelte@7.2.1)(@storybook/theming@7.2.1)(@sveltejs/vite-plugin-svelte@2.4.3)(svelte@3.55.0)(vite@4.3.9)
+        version: 3.0.3(@storybook/svelte@7.0.27)(@storybook/theming@7.0.27)(@sveltejs/vite-plugin-svelte@2.4.3)(svelte@3.55.0)(vite@4.3.9)
       '@storybook/blocks':
         specifier: ^7.0.9
         version: 7.0.27(react-dom@17.0.2)(react@17.0.2)
@@ -4100,7 +4100,7 @@ packages:
       '@docusaurus/utils-validation': 2.4.1(@docusaurus/types@2.4.1)
       '@slorber/static-site-generator-webpack-plugin': 4.0.7
       '@svgr/webpack': 6.5.1
-      autoprefixer: 10.4.14(postcss@8.4.27)
+      autoprefixer: 10.4.14(postcss@8.4.25)
       babel-loader: 8.3.0(@babel/core@7.22.9)(webpack@5.88.1)
       babel-plugin-dynamic-import-node: 2.3.3
       boxen: 6.2.1
@@ -4111,10 +4111,10 @@ packages:
       combine-promises: 1.1.0
       commander: 5.1.0
       copy-webpack-plugin: 11.0.0(webpack@5.88.1)
-      core-js: 3.32.0
+      core-js: 3.31.1
       css-loader: 6.8.1(webpack@5.88.1)
       css-minimizer-webpack-plugin: 4.2.2(clean-css@5.3.2)(webpack@5.88.1)
-      cssnano: 5.1.15(postcss@8.4.27)
+      cssnano: 5.1.15(postcss@8.4.25)
       del: 6.1.1
       detect-port: 1.5.1
       escape-html: 1.0.3
@@ -4128,8 +4128,8 @@ packages:
       leven: 3.1.0
       lodash: 4.17.21
       mini-css-extract-plugin: 2.7.6(webpack@5.88.1)
-      postcss: 8.4.27
-      postcss-loader: 7.3.3(postcss@8.4.27)(webpack@5.88.1)
+      postcss: 8.4.25
+      postcss-loader: 7.3.3(postcss@8.4.25)(webpack@5.88.1)
       prompts: 2.4.2
       react: 17.0.2
       react-dev-utils: 12.0.1(eslint@8.46.0)(typescript@4.9.5)(webpack@5.88.1)
@@ -7063,7 +7063,7 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/addon-svelte-csf@3.0.3(@storybook/svelte@7.2.1)(@storybook/theming@7.2.1)(@sveltejs/vite-plugin-svelte@2.4.3)(svelte@3.55.0)(vite@4.3.9):
+  /@storybook/addon-svelte-csf@3.0.3(@storybook/svelte@7.0.27)(@storybook/theming@7.0.27)(@sveltejs/vite-plugin-svelte@2.4.3)(svelte@3.55.0)(vite@4.3.9):
     resolution: {integrity: sha512-X/AcLB1uZ2CZT68/R3tsRHSBciUv9rLbkzl6fbAN2TqGfdvwBcYjpho0FslLMBzUUhW7XlYgroikDCKnSkHdmg==}
     peerDependencies:
       '@storybook/svelte': ^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0
@@ -7081,14 +7081,14 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.22.6
-      '@storybook/svelte': 7.2.1(svelte@3.55.0)
-      '@storybook/theming': 7.2.1(react-dom@17.0.2)(react@17.0.2)
+      '@storybook/svelte': 7.0.27(svelte@3.55.0)
+      '@storybook/theming': 7.0.27(react-dom@17.0.2)(react@17.0.2)
       '@sveltejs/vite-plugin-svelte': 2.4.3(svelte@3.55.0)(vite@4.3.9)
       fs-extra: 11.1.1
       magic-string: 0.30.2
       svelte: 3.55.0
       ts-dedent: 2.2.0
-      vite: 4.3.9(@types/node@20.4.7)
+      vite: 4.3.9(@types/node@20.4.1)
     dev: true
 
   /@storybook/addon-toolbars@7.0.27(react-dom@17.0.2)(react@17.0.2):
@@ -7625,7 +7625,7 @@ packages:
       '@storybook/builder-vite': 7.0.27(typescript@5.1.6)(vite@4.3.9)
       '@storybook/node-logger': 7.0.27
       '@storybook/svelte': 7.0.27(svelte@3.55.0)
-      '@sveltejs/vite-plugin-svelte': 2.4.4(svelte@3.55.0)(vite@4.3.9)
+      '@sveltejs/vite-plugin-svelte': 2.4.3(svelte@3.55.0)(vite@4.3.9)
       magic-string: 0.30.2
       svelte: 3.55.0
       sveltedoc-parser: 4.2.1
@@ -10259,7 +10259,7 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.21.10
-      caniuse-lite: 1.0.30001515
+      caniuse-lite: 1.0.30001521
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
@@ -17175,7 +17175,7 @@ packages:
       postcss: 8.4.25
       yaml: 2.3.1
 
-  /postcss-loader@7.3.3(postcss@8.4.27)(webpack@5.88.1):
+  /postcss-loader@7.3.3(postcss@8.4.25)(webpack@5.88.1):
     resolution: {integrity: sha512-YgO/yhtevGO/vJePCQmTxiaEwER94LABZN0ZMT4A0vsak9TpO+RvKRs7EmJ8peIlB9xfXCsS7M8LjqncsUZ5HA==}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
@@ -20228,7 +20228,7 @@ packages:
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
-      terser: 5.19.2
+      terser: 5.19.0
       webpack: 5.88.1(webpack-cli@4.10.0)
 
   /terser@5.19.0:
