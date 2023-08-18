@@ -50,17 +50,18 @@ export const load = async ({
 				const additional_hash = /\${.*?}/s.test(compiledQueryString) ? paramsHash : routeHash;
 
 				const res = await fetch(`/api/${routeHash}/${additional_hash}/${id}.arrow`);
-				if (res.ok) {
-					const table = await tableFromIPC(res);
-					data[id] = arrowTableToJSON(table);
-				}
+				if (!res.ok) return;
+
+				const table = await tableFromIPC(res);
+				data[id] = arrowTableToJSON(table);
 			}) ?? []
 		);
 
 		const component_queries_promise = (async () => {
 			// get every query that's run in the component
 			const res = await fetch(`/api/${routeHash}/all-queries.json`);
-			const arr = await (res.ok ? res.json() : []);
+			if (!res.ok) return;
+			const arr = await res.json();
 
 			// remove all the queries that are already in evidencemeta.queries
 			// because they will be fetched in page_queries_promise
@@ -73,7 +74,10 @@ export const load = async ({
 					// we have no way of knowing if page parameters are used in component queries
 					// so they should always use paramsHash
 					const res = await fetch(`/api/${routeHash}/${paramsHash}/${query_name}.arrow`);
-					if (res.ok) data[query_name] = (await tableFromIPC(res)).toArray();
+					if (!res.ok) return;
+
+					const table = await tableFromIPC(res);
+					data[query_name] = arrowTableToJSON(table);
 				})
 			);
 		})();
