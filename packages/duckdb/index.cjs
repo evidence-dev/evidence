@@ -1,4 +1,4 @@
-const { getEnv } = require('@evidence-dev/db-commons');
+const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
 
@@ -11,36 +11,48 @@ const envMap = {
 	]
 };
 
+/**
+ *
+ * @param {unknown} data
+ * @returns {EvidenceType | undefined}
+ */
 function nativeTypeToEvidenceType(data) {
 	switch (typeof data) {
 		case 'number':
-			return 'number';
+			return EvidenceType.NUMBER;
 		case 'string':
-			return 'string';
+			return EvidenceType.STRING;
 		case 'boolean':
-			return 'boolean';
+			return EvidenceType.BOOLEAN;
 		case 'object':
 			if (data instanceof Date) {
-				return 'date';
+				return EvidenceType.DATE;
 			}
-			return undefined;
+			throw new Error(`Unsupported object type: ${data}`);
 		default:
-			return 'string';
+			return EvidenceType.STRING;
 	}
 }
 
+/**
+ *
+ * @param {Record<string, unknown>[]} rows
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
+ */
 const mapResultsToEvidenceColumnTypes = function (rows) {
 	return Object.entries(rows[0]).map(([name, value]) => {
-		let typeFidelity = 'precise';
+		/** @type {TypeFidelity} */
+		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(value);
 		if (!evidenceType) {
-			typeFidelity = 'inferred';
-			evidenceType = 'string';
+			typeFidelity = TypeFidelity.INFERRED;
+			evidenceType = EvidenceType.STRING;
 		}
 		return { name, evidenceType, typeFidelity };
 	});
 };
 
+/** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
@@ -71,19 +83,12 @@ module.exports = runQuery;
  * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
  */
 
-/**
- * @param {DuckDBOptions} opts
- * @returns { (queryString: string, queryOpts: DuckDBOptions ) => Promise<QueryResult> }
- */
+/** @type {import("@evidence-dev/db-commons").GetRunner<DuckDBOptions>} */
 module.exports.getRunner = async (opts, directory) => {
 	if (!opts.filename) {
 		console.error(`Missing required duckdb option 'filename' (${directory})`);
 	}
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
+
 	return async (queryContent, queryPath) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
