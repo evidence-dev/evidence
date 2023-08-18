@@ -4,7 +4,8 @@ import {
 	initDB,
 	setParquetURLs,
 	query,
-	updateSearchPath
+	updateSearchPath,
+	arrowTableToJSON
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 
@@ -46,7 +47,10 @@ export const load = async ({
 		await Promise.all(
 			evidencemeta.queries?.map(async ({ id }) => {
 				const res = await fetch(`/api/${routeHash}/${id}.arrow`);
-				if (res.ok) data[id] = (await tableFromIPC(res)).toArray();
+				if (res.ok) {
+					const table = await tableFromIPC(res);
+					data[id] = arrowTableToJSON(table);
+				}
 			}) ?? []
 		);
 	}
