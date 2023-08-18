@@ -38,6 +38,7 @@
 		align = 'center';
 	}
 	export let wrap = false;
+	wrap = wrap === 'true' || wrap === true;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -55,8 +56,14 @@
 
 	// Formatting:
 	export let fmt = undefined;
+	export let downIsGood = false;
+	export let showValue = true;
+	export let deltaSymbol = true;
 
 	const getOptions = () => {
+		downIsGood = downIsGood === 'true' || downIsGood === true;
+		showValue = showValue === 'true' || showValue === true;
+		deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
 		return {
 			id: id,
 			title: title,
@@ -68,7 +75,10 @@
 			alt: alt,
 			openInNewTab: openInNewTab,
 			linkLabel: linkLabel,
-			fmt: fmt
+			fmt: fmt,
+			downIsGood: downIsGood,
+			deltaSymbol: deltaSymbol,
+			showValue: showValue
 		};
 	};
 
