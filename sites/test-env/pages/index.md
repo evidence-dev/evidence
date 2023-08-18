@@ -4,7 +4,8 @@
 </script>
 
 This page contains a simple demo query console for the new Universal SQL engine for Evidence.
-You can view a basic explainer of the schema in the new [schema explorer](/explore/schema), this should improve over time.
+You can view a basic explainer of the schema in the new [schema explorer](/explore/schema), this should improve over
+time.
 
 <textarea bind:value={tempQueryString} class="px-2 py-1 bg-gray-100 border border-gray-900 w-full h-72 font-mono"/>
 

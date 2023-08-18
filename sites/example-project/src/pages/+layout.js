@@ -22,6 +22,10 @@ const initDb = async () => {
 		if (res.ok) ({ renderedFiles } = await res.json());
 	}
 
+	if (!renderedFiles) {
+		throw new Error('Unable to load source manifest. Do you need to run build:sources?');
+	}
+
 	await initDB();
 	await setParquetURLs(renderedFiles);
 	await updateSearchPath(Object.keys(renderedFiles));

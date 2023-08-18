@@ -113,6 +113,11 @@ const watchPatterns = [
 		filePattern: '**'
 	}, // source files (eg csv files)
 	{
+		sourceRelative: './queries',
+		targetRelative: './.evidence/template/queries',
+		filePattern: '**'
+	},
+	{
 		sourceRelative: './components/',
 		targetRelative: './.evidence/template/src/components/',
 		filePattern: '**'
