@@ -178,7 +178,6 @@ async function getQueries(sourceDir, contents) {
 					 * @returns {Promise<boolean>}
 					 */
 					async function isDir(dirPath) {
-						console.log("isDir", {dirPath})
 						const stats = await fs.lstat(dirPath);
 						return stats.isDirectory();
 					}
