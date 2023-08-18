@@ -115,7 +115,7 @@ const watchPatterns = [
 	{
 		sourceRelative: './queries',
 		targetRelative: './.evidence/template/queries',
-		filePattern: "**"
+		filePattern: '**'
 	},
 	{
 		sourceRelative: './components/',

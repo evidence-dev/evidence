@@ -22,7 +22,7 @@ const initDb = async () => {
 	}
 
 	if (!renderedFiles) {
-		throw new Error("Unable to load source manifest. Do you need to run build:sources?")
+		throw new Error('Unable to load source manifest. Do you need to run build:sources?');
 	}
 
 	await initDB();

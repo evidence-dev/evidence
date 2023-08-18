@@ -1,5 +1,6 @@
 ---
 queries:
-- external.sql
+  - external.sql
 ---
+
 <DataTable data={external}/>
