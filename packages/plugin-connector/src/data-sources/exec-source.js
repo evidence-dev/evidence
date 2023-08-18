@@ -44,15 +44,11 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const { result } = query;
 		if (!result) continue;
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
-		/* Split on / or \ (windows compatibility) */
-		const fileparts = path.dirname(query.filepath).split(/[/\\]/);
 
-		const outputSubdir = path.join(
-			...path
-				.join(...fileparts)
-				.split('sources')
-				.slice(1)
-		);
+		const queryDirectory = path.dirname(query.filepath);
+		const sourcesPath = path.dirname(source.sourceDirectory);
+		const outputSubdir = queryDirectory.replace(sourcesPath, '');
+
 		outputFilenames.add(
 			new URL(`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`).pathname
 		);
