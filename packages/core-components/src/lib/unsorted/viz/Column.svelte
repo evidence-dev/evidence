@@ -62,9 +62,11 @@
 	downIsGood = downIsGood === 'true' || downIsGood === true;
 	export let showValue = true;
 	showValue = showValue === 'true' || showValue === true;
+
 	export let deltaSymbol = true;
 	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
 
+	let options;
 	$: options = {
 		id: id,
 		title: title,
