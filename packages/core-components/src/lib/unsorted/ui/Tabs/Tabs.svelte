@@ -22,25 +22,35 @@
 	 * @type {string}
 	 */
 	export let color = '#268aed';
-	color = color.replace(/\s+/g, '').toLowerCase(); // clean string
+	color = color.replace(/\s+/g, ''); // clean string
 
 	const bgColor = isValidColorString(color) ? addOpacityToColor(color) : '#268aed1a';
 	const borderColor = isValidColorString(color) ? color : '#268aed';
 
+	function isHex(inputColor) {
+		const hexRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/i;
+		return hexRegex.test(inputColor);
+	}
+
+	function isRGB(inputColor) {
+		const rgbRegex = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i;
+		return rgbRegex.test(inputColor);
+	}
+
+	function isHSL(inputColor) {
+		const hslRegex = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\s*\)$/i;
+		return hslRegex.test(inputColor);
+	}
+
 	function isValidColorString(inputColor) {
-		const hexRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
-		const rgbRegex = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/;
-		const hslRegex = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\s*\)$/;
-		return hexRegex.test(inputColor) || rgbRegex.test(inputColor) || hslRegex.test(inputColor);
+		return isHex(inputColor) || isRGB(inputColor) || isHSL(inputColor);
 	}
 
 	function addOpacityToColor(colorString) {
-		if (colorString.startsWith('#')) {
+		if (isHex(colorString)) {
 			return colorString + '1a';
-		} else if (colorString.startsWith('rgb(') || colorString.startsWith('rgba(')) {
+		} else if (isRGB(colorString) || isHSL(colorString)) {
 			return colorString.replace(/(\)|\s|$)/, ', 0.1$1');
-		} else if (colorString.startsWith('hsl(')) {
-			return colorString.slice(0, -1) + ', 0.1)';
 		}
 	}
 
