@@ -56,22 +56,48 @@
 	// Formatting:
 	export let fmt = undefined;
 
-	let options = {
-		id: id,
-		title: title,
-		align: align,
-		wrap: wrap,
-		contentType: contentType,
-		height: height,
-		width: width,
-		alt: alt,
-		openInNewTab: openInNewTab,
-		linkLabel: linkLabel,
-		fmt: fmt
+	const getOptions = () => {
+		return {
+			id: id,
+			title: title,
+			align: align,
+			wrap: wrap,
+			contentType: contentType,
+			height: height,
+			width: width,
+			alt: alt,
+			openInNewTab: openInNewTab,
+			linkLabel: linkLabel,
+			fmt: fmt
+		};
 	};
 
-	props.update((d) => {
-		d.columns.push(options);
-		return d;
-	});
+	const updateProps = () => {
+		const options = getOptions();
+		props.update((d) => {
+			const matchingIndex = d.columns.findIndex((c) => c.id === id);
+			if (matchingIndex === -1) {
+				d.columns.push(options);
+			} else {
+				d.columns = [
+					...d.columns.slice(0, matchingIndex),
+					options,
+					...d.columns.slice(matchingIndex + 1)
+				];
+			}
+			return d;
+		});
+	};
+	$: id,
+		title,
+		align,
+		wrap,
+		contentType,
+		height,
+		width,
+		alt,
+		openInNewTab,
+		linkLabel,
+		fmt,
+		updateProps();
 </script>
