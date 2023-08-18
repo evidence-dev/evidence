@@ -383,11 +383,9 @@
 						{#if $props.columns.length > 0}
 							{#each $props.columns as column}
 								{@const column_min =
-									column.colorMin ??
-									columnSummary.find((entry) => entry.id === column.id)?.columnUnitSummary.min}
+									column.colorMin ?? safeExtractColumn(column).columnUnitSummary.min}
 								{@const column_max =
-									column.colorMax ??
-									columnSummary.find((entry) => entry.id === column.id)?.columnUnitSummary.max}
+									column.colorMax ?? safeExtractColumn(column).columnUnitSummary.max}
 								{@const is_nonzero =
 									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 								<td
