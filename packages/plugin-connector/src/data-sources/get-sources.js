@@ -105,7 +105,7 @@ const hash_location = './.evidence/template/.evidence-queries/sources/hashes.jso
 
 /**
  * Gets the hashes of all source files, at the time of their last execution.
- * @returns {Promise<Record<string, Record<string, string | null>>>}
+ * @returns {Promise<import("zod").infer<typeof DatasourceCacheSchema>>}
  */
 export async function getPastSourceHashes() {
 	const hashes = await fs.readFile(hash_location, 'utf-8').catch(() => '{}');
@@ -123,7 +123,7 @@ export async function getPastSourceHashes() {
 
 /**
  * Saves the supplied source hashes
- * @param {Record<string, Record<string, string | null>>} hashes
+ * @param {import("zod").infer<typeof DatasourceCacheSchema>} hashes
  */
 export async function saveSourceHashes(hashes) {
 	await fs.mkdir(path.dirname(hash_location), { recursive: true });
