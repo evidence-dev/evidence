@@ -163,9 +163,61 @@ async function loadConnectionOptions(sourceDir) {
  * containing the filepath and content of each query file.
  */
 async function getQueries(sourceDir, contents) {
-	const queryFiles = contents.filter(
-		(s) => s !== 'connection.yaml' && s !== 'connection.options.yaml'
+	const queryFiles = await Promise.all(
+		contents
+			.filter((s) => s !== 'connection.yaml' && s !== 'connection.options.yaml')
+			.flatMap(
+				/**
+				 * @param {string} s
+				 * @returns {Promise<string[]>}
+				 */
+
+				async (s) => {
+					/**
+					 * @param {string} dirPath
+					 * @returns {Promise<boolean>}
+					 */
+					async function isDir(dirPath) {
+						console.log("isDir", {dirPath})
+						const stats = await fs.lstat(dirPath);
+						return stats.isDirectory();
+					}
+
+					/**
+					 * @param {string} dirPath
+					 * @returns {Promise<string[]>}
+					 */
+					async function loadDirRecursive(dirPath) {
+						const content = await fs.readdir(dirPath);
+						let output = [];
+						for (const filePath of content) {
+							if (await isDir(path.join(dirPath, filePath))) {
+								output.push(...(await loadDirRecursive(path.join(dirPath, filePath))));
+							} else {
+								output.push(path.join(dirPath, filePath));
+							}
+						}
+						return output;
+					}
+
+					const fullPath = path.join(sourceDir, s);
+					if (await isDir(fullPath)) {
+						// TODO: Recurse
+						const recursed = await loadDirRecursive(fullPath);
+						return recursed.map(r => path.relative(sourceDir, r))
+					} else {
+						return [s];
+					}
+				}
+			)
+	).then(
+		/**
+		 * @param {string[][]} r
+		 * @returns {string[]}
+		 */
+		(r) => r.flat(1)
 	);
+	console.log({queryFiles})
 
 	const queries = await Promise.all(
 		queryFiles.map(async (filename) => {
