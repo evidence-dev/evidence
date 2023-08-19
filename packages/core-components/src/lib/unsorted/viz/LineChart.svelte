@@ -42,6 +42,7 @@
 	export let markerSize = undefined;
 
 	export let handleMissing = undefined;
+
 	export let step = undefined;
 	export let stepPosition = undefined;
 

@@ -1,6 +1,6 @@
 ---
-'@evidence-dev/core-components': major
-'@evidence-dev/components': major
+'@evidence-dev/core-components': patch
+'@evidence-dev/components': patch
 ---
 
-adds feature to have stepped line chart and area chart.
+adds feature to have stepped line & area chart.

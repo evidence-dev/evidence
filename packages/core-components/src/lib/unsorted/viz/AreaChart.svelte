@@ -38,6 +38,7 @@
 	export let chartAreaHeight = undefined;
 
 	export let handleMissing = undefined;
+
 	export let step = undefined;
 	export let stepPosition = undefined;
 

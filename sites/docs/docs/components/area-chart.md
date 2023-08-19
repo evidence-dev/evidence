@@ -55,6 +55,20 @@ hide_table_of_contents: false
 />
 ```
 
+### Area with Step Line
+
+![Area-with-step-line](/img/exg-multi-series-step-area.png)
+
+```markdown
+<AreaChart
+    data={simpler_bar}
+    x=year
+    y=value
+    series=country
+    step=true
+/>
+```
+
 ## Props
 
 ### Data
@@ -103,6 +117,8 @@ hide_table_of_contents: false
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>step</td>	<td>Specifies whether the chart is displayed as a step line.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
+<tr>	<td>stepPosition</td>	<td>Configures the position of turn points for a step line chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>'start' | 'middle' | 'end'</td>	<td class='tcenter'>'end'</td>	</tr>
 </table>
 
 ## Annotations
@@ -110,8 +126,8 @@ hide_table_of_contents: false
 Area charts can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
-<AreaChart data={sales_data} x=date y=sales>
-  <ReferenceLine data={target_data} y=target label=name/>
-  <ReferenceArea xMin='2020-03-14' xMax='2020-05-01'/>
+<AreaChart data="{sales_data}" x="date" y="sales">
+	<ReferenceLine data="{target_data}" y="target" label="name" />
+	<ReferenceArea xMin="2020-03-14" xMax="2020-05-01" />
 </AreaChart>
 ```

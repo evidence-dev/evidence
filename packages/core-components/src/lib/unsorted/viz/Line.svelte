@@ -32,8 +32,17 @@
 
 	export let handleMissing = 'gap';
 
-	export let step = false; // shows step line. It can be true, false. Or 'start', 'middle', 'end' to configure turn point of step line.
+	/**
+	 * Enables step mode for this chart.
+	 * @type {boolean}
+	 */
+	export let step = false;
 	$: step = step === 'true' || step === true;
+
+	/**
+	 * Configures position of steps (e.g. before or after)
+	 * @type {'start' | 'middle' | 'end' }
+	 */
 	export let stepPosition = 'end';
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
