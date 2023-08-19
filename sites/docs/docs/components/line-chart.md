@@ -46,7 +46,7 @@ hide_table_of_contents: false
 
 ### Multi-Series Line with Steps
 
-![Multi-series-line-with-steps](/img/exg-multi-series-step-line.png)
+<img src='/img/exg-multi-series-step-line.png' width='500px'/>
 
 ```markdown
 <LineChart

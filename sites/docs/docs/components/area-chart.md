@@ -57,7 +57,7 @@ hide_table_of_contents: false
 
 ### Area with Step Line
 
-![Area-with-step-line](/img/exg-multi-series-step-area.png)
+<img src='/img/exg-multi-series-step-area.png' width='500px'/>
 
 ```markdown
 <AreaChart
