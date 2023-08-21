@@ -1,5 +1,12 @@
 # evidence-test-environment
 
+## 3.0.0-usql.23
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.23
+
 ## 3.0.0-usql.22
 
 ### Patch Changes

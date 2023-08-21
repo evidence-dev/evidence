@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "20.0.0-usql.22",
+	"version": "20.0.0-usql.23",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -26,7 +26,8 @@
 		"prepublishOnly": "npm run build"
 	},
 	"files": [
-		"template"
+		"template",
+		"cli.js"
 	],
 	"devDependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",

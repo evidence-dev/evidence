@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.23
+
+### Patch Changes
+
+- Fix publish issue
+
 ## 20.0.0-usql.22
 
 ### Patch Changes
