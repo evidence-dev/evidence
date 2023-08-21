@@ -44,23 +44,18 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const { result } = query;
 		if (!result) continue;
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
-		/* Split on / or \ (windows compatibility) */
-		const fileparts = query.filepath.split(/[/\\]/);
-		const outputFilename = fileparts.pop()?.split('.')[0];
 
-		const outputSubdir = path.join(
-			...path
-				.join(...fileparts)
-				.split('sources')
-				.slice(1)
-		);
+		const queryDirectory = path.dirname(query.filepath);
+		const sourcesPath = path.dirname(source.sourceDirectory);
+		const outputSubdir = queryDirectory.replace(sourcesPath, '');
+
 		outputFilenames.add(
-			new URL(`file:///${path.join(outputSubdir, outputFilename + '.parquet').slice(1)}`).pathname
+			new URL(`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`).pathname
 		);
 		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
-		await fs.writeFile(path.join(outDir, outputSubdir, outputFilename + '.parquet'), parquetBuffer);
+		await fs.writeFile(path.join(outDir, outputSubdir, query.name + '.parquet'), parquetBuffer);
 		await fs.writeFile(
-			path.join(outDir, outputSubdir, outputFilename + '.schema.json'),
+			path.join(outDir, outputSubdir, query.name + '.schema.json'),
 			JSON.stringify(result.columnTypes)
 		);
 	}
