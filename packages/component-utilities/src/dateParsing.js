@@ -39,7 +39,7 @@ export function convertColumnToDate(data, column) {
 
 	data = tidy(
 		data,
-		mutate({ [column]: (d) => new Date(standardizeDateString(d[column])) ?? null })
+		mutate({ [column]: (d) => (d[column] ? new Date(standardizeDateString(d[column])) : null) })
 	);
 
 	return data;
