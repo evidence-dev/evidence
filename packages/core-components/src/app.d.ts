@@ -13,9 +13,11 @@ declare global {
 						callback?: (results: Record<string, unknown>[]) => unknown;
 					}
 				): void;
-				// Waits for database to finish loading
-				// This includes fetching `manifest.json`, intitializing the WASM and WebWorker
-				// setting up parquet connections, and updating the schema search path
+				/**
+				 * Waits for database to finish loading
+				 * This includes fetching `manifest.json`, intitializing the WASM and WebWorker
+				 * setting up parquet connections, and updating the schema search path
+				 */
 				load(): Promise<void>;
 			};
 			data: Record<string, Record<string, unknown>[]>;
