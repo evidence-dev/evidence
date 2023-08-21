@@ -33,7 +33,7 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 			} else {
 				filledData = tidy(
 					data,
-					complete({ [x]: vectorSeq(xDistinct, interval), [series]: series })
+					complete({ [x]: vectorSeq(xDistinct, interval), [series]: series }, { [y]: null })
 				);
 			}
 		} else {
