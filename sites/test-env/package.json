@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.0-usql.21",
+	"version": "3.0.0-usql.22",
 	"private": true,
 	"scripts": {
 		"build": "evidence build",
@@ -16,7 +16,7 @@
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
-		"@evidence-dev/csv": "workspace:1.0.0-usql.2",
+		"@evidence-dev/csv": "workspace:1.0.0-usql.3",
 		"@evidence-dev/duckdb": "workspace:^",
 		"@evidence-dev/evidence": "workspace:^",
 		"@evidence-dev/faker-datasource": "workspace:^"

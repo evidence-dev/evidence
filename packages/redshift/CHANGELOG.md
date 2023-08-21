@@ -1,5 +1,14 @@
 # @evidence-dev/redshift
 
+## 1.0.0-usql.1
+
+### Patch Changes
+
+- 29c149d6: added stricter types to db adapters
+- Updated dependencies [29c149d6]
+  - @evidence-dev/db-commons@0.2.1-usql.0
+  - @evidence-dev/postgres@1.0.0-usql.1
+
 ## 1.0.0-usql.0
 
 ### Major Changes

@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.22
+
+### Patch Changes
+
+- 17a82581: standardize date objects in `standardizeDateString`
+- efa96920: External SQL files now live in queries rather than sources
+- 4b6262d8: added `build:sources` filtration options to cli
+- 29c149d6: added stricter types to db adapters
+- Updated dependencies [17a82581]
+- Updated dependencies [efa96920]
+- Updated dependencies [4b6262d8]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+  - @evidence-dev/preprocess@4.0.0-usql.10
+  - @evidence-dev/plugin-connector@2.0.0-usql.14
+  - @evidence-dev/core-components@2.0.0-usql.9
+  - @evidence-dev/db-orchestrator@3.0.0-usql.5
+
 ## 20.0.0-usql.21
 
 ### Patch Changes

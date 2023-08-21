@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- 17a82581: standardize date objects in `standardizeDateString`
+
 ## 2.0.0-usql.4
 
 ### Patch Changes

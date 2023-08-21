@@ -881,7 +881,7 @@ importers:
         specifier: workspace:^
         version: link:../../packages/core-components
       '@evidence-dev/duckdb':
-        specifier: workspace:^1.0.0-usql.1
+        specifier: workspace:^1.0.0-usql.2
         version: link:../../packages/duckdb
       '@evidence-dev/plugin-connector':
         specifier: workspace:^
@@ -996,7 +996,7 @@ importers:
         specifier: workspace:^
         version: link:../../packages/core-components
       '@evidence-dev/csv':
-        specifier: workspace:1.0.0-usql.2
+        specifier: workspace:1.0.0-usql.3
         version: link:../../packages/csv
       '@evidence-dev/duckdb':
         specifier: workspace:^

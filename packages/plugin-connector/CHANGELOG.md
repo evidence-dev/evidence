@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.14
+
+### Patch Changes
+
+- 4b6262d8: added `build:sources` filtration options to cli
+
 ## 2.0.0-usql.13
 
 ### Patch Changes

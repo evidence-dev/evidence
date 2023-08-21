@@ -1,5 +1,13 @@
 # @evidence-dev/sqlite
 
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- 29c149d6: added stricter types to db adapters
+- Updated dependencies [29c149d6]
+  - @evidence-dev/db-commons@0.2.1-usql.0
+
 ## 2.0.0-usql.1
 
 ### Patch Changes

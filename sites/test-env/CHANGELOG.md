@@ -1,5 +1,19 @@
 # evidence-test-environment
 
+## 3.0.0-usql.22
+
+### Patch Changes
+
+- Updated dependencies [17a82581]
+- Updated dependencies [efa96920]
+- Updated dependencies [4b6262d8]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+  - @evidence-dev/evidence@20.0.0-usql.22
+  - @evidence-dev/csv@1.0.0-usql.3
+  - @evidence-dev/duckdb@1.0.0-usql.2
+  - @evidence-dev/core-components@2.0.0-usql.9
+
 ## 3.0.0-usql.21
 
 ### Patch Changes

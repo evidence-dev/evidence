@@ -1,5 +1,17 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.18
+
+### Patch Changes
+
+- Updated dependencies [17a82581]
+- Updated dependencies [4b6262d8]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+  - @evidence-dev/plugin-connector@2.0.0-usql.14
+  - @evidence-dev/duckdb@1.0.0-usql.2
+  - @evidence-dev/core-components@2.0.0-usql.9
+
 ## 3.0.0-usql.17
 
 ### Patch Changes
