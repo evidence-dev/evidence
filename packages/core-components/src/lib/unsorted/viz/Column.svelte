@@ -38,6 +38,7 @@
 		align = 'center';
 	}
 	export let wrap = false;
+	wrap = wrap === 'true' || wrap === true;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -69,6 +70,15 @@
 
 	let useColor = colorList[scaleColor];
 
+	// Delta:
+	export let downIsGood = false;
+	downIsGood = downIsGood === 'true' || downIsGood === true;
+	export let showValue = true;
+	showValue = showValue === 'true' || showValue === true;
+
+	export let deltaSymbol = true;
+	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+
 	let options = {
 		id: id,
 		title: title,
@@ -81,6 +91,9 @@
 		openInNewTab: openInNewTab,
 		linkLabel: linkLabel,
 		fmt: fmt,
+		downIsGood: downIsGood,
+		deltaSymbol: deltaSymbol,
+		showValue: showValue,
 		colorMax: colorMax,
 		colorMin: colorMin,
 		useColor: useColor
