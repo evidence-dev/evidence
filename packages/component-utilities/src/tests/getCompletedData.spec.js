@@ -3,14 +3,14 @@ import getCompletedData from '../getCompletedData';
 import { genSeries } from './getCompletedData.fixture.js';
 
 const sortFunc = (a, b) => {
-    const deltaValue = a.value - b.value
-    if (deltaValue !== 0) return deltaValue
-    const deltaTime = a.time - b.time
-    if (deltaTime !== 0) return deltaTime
-    const deltaSeries = a.series?.charCodeAt(0) ?? -1 - b.series?.charCodeAt(0) ?? -1
-	if (deltaSeries !== 0) return deltaSeries
-	return 0
-}
+	const deltaSeries = a.series?.charCodeAt(0) ?? -1 - b.series?.charCodeAt(0) ?? -1;
+	if (deltaSeries !== 0) return deltaSeries;
+	const deltaTime = a.time - b.time;
+	if (deltaTime !== 0) return deltaTime;
+	const deltaValue = a.value - b.value;
+	if (deltaValue !== 0) return deltaValue;
+	return 0;
+};
 
 const series = [];
 
@@ -23,22 +23,35 @@ const series = [];
 for (const xHasGaps of [true, false]) {
 	for (const yHasNulls of [true, false]) {
 		for (const seriesAlwaysExists of [true, false]) {
-			series.push({
-				xHasGaps,yHasNulls,seriesAlwaysExists,
-				data: genSeries({ xHasGaps, yHasNulls, seriesAlwaysExists })
-			});
+			for (const xType of ['date', 'number'])
+				series.push({
+					xHasGaps,
+					yHasNulls,
+					seriesAlwaysExists,
+					xType,
+					data: genSeries({
+						xHasGaps,
+						yHasNulls,
+						seriesAlwaysExists,
+						xType,
+						seriesLen: 3,
+						seriesCount: 2,
+						maxInterval: 1,
+						maxOffset: 0
+					})
+				});
 		}
 	}
 }
 
 describe('getCompletedData', () => {
 	describe.each(series)(
-		'xHasGaps = $xHasGaps, yHasNulls = $yHasNulls, seriesAlwaysExists = $seriesAlwaysExists',
+		'xHasGaps = $xHasGaps, yHasNulls = $yHasNulls, seriesAlwaysExists = $seriesAlwaysExists, xType = "$xType"',
 		/**
 		 * @param {ReturnType<typeof genSeries>} opts
 		 */
 		(opts) => {
-			const { data, series } = opts.data
+			const { data, series } = opts.data;
 			it('returns no duplicate rows', () => {
 				const result = getCompletedData(data, 'time', 'value', 'series', false, false);
 				for (const row of result) {
@@ -49,13 +62,16 @@ describe('getCompletedData', () => {
 						).length
 					).toBe(1);
 				}
-			})
+			});
 
 			it('replaces nulls with zero if nullsZero is set', () => {
 				const result = getCompletedData(data, 'time', 'value', 'series', true, true);
 
 				for (const row of data.filter((r) => r.value === null)) {
-					expect(result.find((r) => r.series === row.series && r.time === row.time).value).toBe(0);
+					expect(
+						result.find((r) => r.series === row.series && r.time.toString() === row.time.toString())
+							?.value
+					).toBeCloseTo(0);
 				}
 			});
 
@@ -67,50 +83,46 @@ describe('getCompletedData', () => {
 			});
 
 			it('returns the original data if series is not defined', () => {
-				// TODO: Unfuck this
-				// Need to see if interpolation is happening here
-				// Also read the function to check what should be happening
-				// This is an AI generated test case and could be completely wrong.
 				const result = getCompletedData(data, 'time', 'value', undefined, false, false);
 
-				const r = result.sort(sortFunc)
-                const d = data.sort(sortFunc)
-                expect(r).toEqual(d)
+				const r = result.sort(sortFunc);
+				const d = data.sort(sortFunc);
+				expect(r).toEqual(d);
 			});
 
 			it('fills missing x-axis values with null if fillX is set and not nullsZero', () => {
 				const result = getCompletedData(data, 'time', 'value', 'series', false, true);
 				// Expect specific behavior here based on your function's logic
 				for (const seriesName in series) {
-					for (const row of result.filter(r => r.series === seriesName)) {
-						const inputRow = data.find(d => d.series === row.series && d.time === row.time)
+					for (const row of result.filter((r) => r.series === seriesName)) {
+						const inputRow = data.find((d) => d.series === row.series && d.time === row.time);
 						if (inputRow) {
 							// This row already existed
-							expect(row.value).toEqual(inputRow.value)
+							expect(row.value).toEqual(inputRow.value);
 						} else {
 							// This row was inserted
-							expect(row.value).toBe(null)
+							expect(row.value).toBe(null);
 						}
 					}
 				}
 			});
 
-            it('fills missing x-axis values with zero if fillX and nullsZero are set', () => {
-                const result = getCompletedData(data, 'time', 'value', 'series', true, true);
-                // Expect specific behavior here based on your function's logic
-                for (const seriesName in series) {
-                    for (const row of result.filter(r => r.series === seriesName)) {
-                        const inputRow = data.find(d => d.series === row.series && d.time === row.time)
-                        if (inputRow && inputRow.value !== null) {
-                            // This row already existed
-                            expect(row.value).toEqual(inputRow.value)
-                        } else {
-                            // This row was inserted
-                            expect(row.value).toBe(0)
-                        }
-                    }
-                }
-            });
+			it('fills missing x-axis values with zero if fillX and nullsZero are set', () => {
+				const result = getCompletedData(data, 'time', 'value', 'series', true, true);
+				// Expect specific behavior here based on your function's logic
+				for (const seriesName in series) {
+					for (const row of result.filter((r) => r.series === seriesName)) {
+						const inputRow = data.find((d) => d.series === row.series && d.time === row.time);
+						if (inputRow && inputRow.value !== null) {
+							// This row already existed
+							expect(row.value).toEqual(inputRow.value);
+						} else {
+							// This row was inserted
+							expect(row.value).toBe(0);
+						}
+					}
+				}
+			});
 		}
 	);
 });

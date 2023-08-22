@@ -18,22 +18,21 @@ export function getDiffs(arr) {
  * @return {number} The greatest common divisor of the input numbers a and b.
  */
 export function gcd(a, b) {
-
 	// Treat non-numeric types as 0
 	if (typeof a !== 'number' || isNaN(a)) a = 0;
 	if (typeof b !== 'number' || isNaN(b)) b = 0;
 
 	// Handle negative numbers properly
 	// Never reaches base case w/o this
-	if (a < 0) a = Math.abs(a);
-	if (b < 0) b = Math.abs(b);
-
-	// Get greatest common divisor of the differences between values
-	if (a < b) return gcd(b, a);
+	a = Math.abs(a);
+	b = Math.abs(b);
 
 	// base case
-	if (Math.abs(b) < 0.001) return a;
-	else return gcd(b, a - Math.floor(a / b) * b);
+	if (b <= 0.01) {
+		return a;
+	} else {
+		return gcd(b, a % b);
+	}
 }
 
 /**
@@ -83,7 +82,7 @@ export function extent(values, valueof) {
  * @return {Array<number>} An array containing the sequenced numbers.
  */
 export function vectorSeq(values, period) {
-    let [min, max] = extent(values);
+	let [min, max] = extent(values);
 
 	const sequence = [];
 	let value = min;
@@ -105,11 +104,12 @@ export function findInterval(arr) {
 	if (arr.length <= 1) {
 		return;
 	}
+
 	// Sort array ascending
 	arr.sort(function (a, b) {
 		return a - b;
 	});
-    
+
 	// 1. Multiply array by 100
 	arr = arr.map(function (x) {
 		return x * 100000000;
@@ -117,10 +117,9 @@ export function findInterval(arr) {
 
 	// 2. Get diffs
 	arr = getDiffs(arr);
-    
-	// 3. Calculate greatest common divisor of diffs and divide by 100
-	let interval = arr.reduce(gcd) / 100000000;
-	interval = Math.round((interval + Number.EPSILON) * 100000000) / 100000000;
 
+	// 3. Calculate greatest common divisor of diffs and divide by 100
+	let interval = arr.reduce((a, b) => gcd(a, b)) / 100000000;
+	interval = Math.round((interval + Number.EPSILON) * 100000000) / 100000000;
 	return interval;
 }

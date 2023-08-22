@@ -1,4 +1,4 @@
-import { tidy, complete } from '@tidyjs/tidy';
+import { tidy, complete, mutate } from '@tidyjs/tidy';
 import getDistinctValues from './getDistinctValues';
 import { findInterval, vectorSeq } from './helpers/getCompletedData.helpers.js';
 
@@ -14,51 +14,70 @@ import { findInterval, vectorSeq } from './helpers/getCompletedData.helpers.js';
  * @return {Array<object>} An array containing the filled data objects.
  */
 export default function getCompletedData(data, x, y, series, nullsZero = false, fillX = false) {
-	/** @type {Array<number>} */
-	let xDistinct = getDistinctValues(data, x);
-	/** @type {number} */
-	let interval;
-	/** @type {Array<object>} */
-	let filledData;
-
-	if (series) {
-		if (fillX) {
-			interval = findInterval(xDistinct);
-
-			if (nullsZero) {
-				filledData = tidy(
-					data,
-					complete({ [x]: vectorSeq(xDistinct, interval), [series]: series }, { [y]: 0 })
-				);
-			} else {
-				filledData = tidy(
-					data,
-					complete({ [x]: vectorSeq(xDistinct, interval), [series]: series }, { [y]: null })
-				);
-			}
+	const groups = Array.from(data).reduce((a, v) => {
+		if (series) {
+			if (!a[v[series]]) a[v[series]] = [];
+			a[v[series]].push(v);
 		} else {
-			filledData = tidy(
-				data,
-				complete(
-					[x, series],
-					// Nully values in the x and series columns to be treated as nulls
-					{ [series]: null, [x]: null }
-				)
+			if (!a.default) a.default = [];
+			a.default.push(v);
+		}
+		return a;
+	}, {});
+
+	const output = [];
+	for (const [key, value] of Object.entries(groups)) {
+		/** @type {Array<number>} */
+		let xDistinct;
+
+		let xIsDate = false;
+
+		if (value[0]?.[x] instanceof Date) {
+			xDistinct = getDistinctValues(
+				value.map((d) => ({ ...d, [x]: d[x].getTime() })),
+				x
+			);
+			xIsDate = true;
+		} else {
+			xDistinct = getDistinctValues(value, x);
+		}
+
+		/** @type {number} */
+		let interval = findInterval(xDistinct);
+
+		const nullySpec = { series: null };
+		if (nullsZero) {
+			nullySpec[y] = 0;
+		} else {
+			// Ensure null for consistency
+			nullySpec[y] = null;
+		}
+
+		const expandKeys = {};
+		if (fillX) {
+			// Array of all possible x values
+			expandKeys[x] = vectorSeq(xDistinct, interval);
+		}
+		if (series) {
+			expandKeys[series] = series;
+		}
+
+		const tidyFuncs = [];
+
+		if (Object.keys(expandKeys).length === 0) {
+			tidyFuncs.push(complete([x], nullySpec));
+			// empty object, no special configuration
+		} else {
+			tidyFuncs.push(complete(expandKeys, nullySpec));
+		}
+		if (xIsDate) {
+			tidyFuncs.push(
+				mutate({
+					[x]: (val) => new Date(val[x])
+				})
 			);
 		}
-	} else {
-		if (fillX) {
-			interval = findInterval(xDistinct);
-
-			if (nullsZero) {
-				filledData = tidy(data, complete({ [x]: vectorSeq(xDistinct, interval) }, { [y]: 0 }));
-			} else {
-				filledData = tidy(data, complete({ [x]: vectorSeq(xDistinct, interval) }));
-			}
-		} else {
-			filledData = tidy(data, complete([x]));
-		}
+		output.push(...tidy(value, ...tidyFuncs));
 	}
-
-	return filledData;
+	return output;
 }

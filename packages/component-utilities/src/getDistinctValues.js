@@ -1,9 +1,6 @@
 export default function getDistinctValues(data, column) {
-	let distinctValues = [];
-	const distinctValueSet = new Set();
-	data.forEach((d) => {
-		distinctValueSet.add(d[column]);
-	});
-	distinctValues = [...distinctValueSet];
-	return distinctValues;
+	return data.reduce((a, v) => {
+		if (a.includes(v[column])) return a;
+		return [...a, v[column]];
+	}, []);
 }

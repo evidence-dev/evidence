@@ -51,7 +51,7 @@
 	}
 
 	$: if (handleMissing === 'zero') {
-		data = replaceNulls(data, y);
+		data = getCompletedData(data, x, y, series, true);
 	}
 
 	$: baseConfig = {
