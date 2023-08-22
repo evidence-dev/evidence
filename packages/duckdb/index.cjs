@@ -1,4 +1,9 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	stringifyNonstringColumns
+} = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
 
@@ -10,39 +15,6 @@ const envMap = {
 		{ key: 'FILENAME', deprecated: true }
 	]
 };
-
-/**
- *
- * @param {Record<string, unknown>[]} results
- * @param {import('@evidence-dev/db-commons').ColumnDefinition[]} columns
- * @returns {Record<string, unknown>[]}
- */
-function stringifyNonstringColumns(results, columns) {
-	// fast paths if processing isn't necessary
-	if (columns.every(({ evidenceType }) => evidenceType !== EvidenceType.STRING)) return results;
-	if (
-		results.length > 0 &&
-		columns
-			.filter(({ evidenceType }) => evidenceType !== EvidenceType.STRING)
-			.every(({ name }) => typeof results[0][name] === 'string')
-	)
-		return results;
-
-	for (const row of results) {
-		for (const { name } of columns.filter(
-			({ evidenceType }) => evidenceType === EvidenceType.STRING
-		)) {
-			if (row[name] instanceof Buffer) {
-				row[name] = row[name].toString();
-			} else if (typeof row[name] === 'object') {
-				row[name] = JSON.stringify(row[name]);
-			} else if (typeof row[name] !== 'string') {
-				row[name] = String(row[name]);
-			}
-		}
-	}
-	return results;
-}
 
 /**
  *

@@ -101,7 +101,7 @@ function applyColumnTypes(rows, columnTypes) {
 				columns[column_name] === EvidenceType.STRING &&
 				typeof row[column_name] !== 'string'
 			) {
-				row[column_name] = String(row[column_name]);
+				row[column_name] = JSON.stringify(row[column_name]);
 			} else if (
 				columns[column_name] === EvidenceType.NUMBER &&
 				typeof row[column_name] !== 'number'
@@ -113,6 +113,41 @@ function applyColumnTypes(rows, columnTypes) {
 		}
 	}
 	return rows;
+}
+
+/**
+ *
+ * @param {Record<string, unknown>[]} results
+ * @param {ColumnDefinition[]} columns
+ * @returns {Record<string, unknown>[]}
+ */
+function stringifyNonstringColumns(results, columns) {
+	// fast paths if processing isn't necessary
+	// if no column is an evidence string
+	if (columns.every(({ evidenceType }) => evidenceType !== EvidenceType.STRING)) return results;
+	// if every column that is an evidence string, is a string
+	if (
+		results.length > 0 &&
+		columns
+			.filter(({ evidenceType }) => evidenceType === EvidenceType.STRING)
+			.every(({ name }) => typeof results[0][name] === 'string')
+	)
+		return results;
+
+	for (const row of results) {
+		for (const { name } of columns.filter(
+			({ evidenceType }) => evidenceType === EvidenceType.STRING
+		)) {
+			if (row[name] instanceof Buffer) {
+				row[name] = row[name].toString();
+			} else if (typeof row[name] === 'object') {
+				row[name] = JSON.stringify(row[name]);
+			} else if (typeof row[name] !== 'string') {
+				row[name] = String(row[name]);
+			}
+		}
+	}
+	return results;
 }
 
 /**
@@ -132,5 +167,6 @@ exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
 exports.applyColumnTypes = applyColumnTypes;
+exports.stringifyNonstringColumns = stringifyNonstringColumns;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;
