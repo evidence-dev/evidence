@@ -14,21 +14,19 @@ const envMap = {
 /**
  *
  * @param {unknown} data
- * @returns {EvidenceType | undefined}
+ * @returns {EvidenceType}
  */
 function nativeTypeToEvidenceType(data) {
 	switch (typeof data) {
 		case 'number':
 			return EvidenceType.NUMBER;
-		case 'string':
-			return EvidenceType.STRING;
 		case 'boolean':
 			return EvidenceType.BOOLEAN;
 		case 'object':
 			if (data instanceof Date) {
 				return EvidenceType.DATE;
 			}
-			throw new Error(`Unsupported object type: ${data}`);
+		// eslint-disable-next-line no-fallthrough
 		default:
 			return EvidenceType.STRING;
 	}
@@ -41,13 +39,8 @@ function nativeTypeToEvidenceType(data) {
  */
 const mapResultsToEvidenceColumnTypes = function (rows) {
 	return Object.entries(rows[0]).map(([name, value]) => {
-		/** @type {TypeFidelity} */
-		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(value);
-		if (!evidenceType) {
-			typeFidelity = TypeFidelity.INFERRED;
-			evidenceType = EvidenceType.STRING;
-		}
+		const typeFidelity = TypeFidelity.PRECISE;
+		const evidenceType = nativeTypeToEvidenceType(value);
 		return { name, evidenceType, typeFidelity };
 	});
 };
