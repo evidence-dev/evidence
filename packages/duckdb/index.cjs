@@ -60,6 +60,7 @@ const runQuery = async (queryString, database) => {
 		const result = await db.all(queryString);
 		const columnTypes = mapResultsToEvidenceColumnTypes(result);
 		const rows = convertStringColumns(result, columnTypes);
+
 		return { rows, columnTypes };
 	} catch (err) {
 		if (err.message) {

@@ -292,7 +292,9 @@ const runQuery = async (queryString, database) => {
 
 		const standardizedResults = standardizeResult(result.rows);
 		const columnTypes = mapResultsToEvidenceColumnTypes(result);
-		return { rows: convertStringColumns(standardizedResults, columnTypes), columnTypes };
+		const rows = convertStringColumns(standardizedResults, columnTypes);
+
+		return { rows, columnTypes };
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
