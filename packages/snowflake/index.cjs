@@ -60,6 +60,28 @@ const envMap = {
 };
 
 /**
+ * 
+ * @param {Record<string, unknown>[]} results 
+ * @param {import('@evidence-dev/db-commons').ColumnDefinition[]} columns
+ * @returns {Record<string, unknown>[]}
+ */
+function stringifyNonstringColumns(results, columns) {
+	if (columns.every(({ evidenceType }) => evidenceType !== EvidenceType.STRING)) return results;
+	for (const row of results) {
+		for (const { name } of columns.filter(({ evidenceType }) => evidenceType === EvidenceType.STRING)) {
+			if (row[name] instanceof Buffer) {
+				row[name] = row[name].toString();
+			} else if (typeof row[name] === 'object') {
+				row[name] = JSON.stringify(row[name]);
+			} else if (typeof row[name] !== 'string') {
+				row[name] = String(row[name]);
+			}
+		}
+	}
+	return results;
+}
+
+/**
  *
  * @param {snowflake.Connection} connection
  * @param {string} queryString
@@ -286,7 +308,8 @@ const runQuery = async (queryString, database) => {
 		);
 
 		const standardizedResults = standardizeResult(result.rows);
-		return { rows: standardizedResults, columnTypes: mapResultsToEvidenceColumnTypes(result) };
+		const columnTypes = mapResultsToEvidenceColumnTypes(result);
+		return { rows: stringifyNonstringColumns(standardizedResults, columnTypes), columnTypes };
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
