@@ -13,6 +13,39 @@ const envMap = {
 
 /**
  *
+ * @param {Record<string, unknown>[]} results
+ * @param {import('@evidence-dev/db-commons').ColumnDefinition[]} columns
+ * @returns {Record<string, unknown>[]}
+ */
+function stringifyNonstringColumns(results, columns) {
+	// fast paths if processing isn't necessary
+	if (columns.every(({ evidenceType }) => evidenceType !== EvidenceType.STRING)) return results;
+	if (
+		results.length > 0 &&
+		columns
+			.filter(({ evidenceType }) => evidenceType !== EvidenceType.STRING)
+			.every(({ name }) => typeof results[0][name] === 'string')
+	)
+		return results;
+
+	for (const row of results) {
+		for (const { name } of columns.filter(
+			({ evidenceType }) => evidenceType === EvidenceType.STRING
+		)) {
+			if (row[name] instanceof Buffer) {
+				row[name] = row[name].toString();
+			} else if (typeof row[name] === 'object') {
+				row[name] = JSON.stringify(row[name]);
+			} else if (typeof row[name] !== 'string') {
+				row[name] = String(row[name]);
+			}
+		}
+	}
+	return results;
+}
+
+/**
+ *
  * @param {unknown} data
  * @returns {EvidenceType}
  */
@@ -52,8 +85,10 @@ const runQuery = async (queryString, database) => {
 
 	try {
 		const db = await Database.create(filename, mode);
-		const rows = await db.all(queryString);
-		return { rows, columnTypes: mapResultsToEvidenceColumnTypes(rows) };
+		const result = await db.all(queryString);
+		const columnTypes = mapResultsToEvidenceColumnTypes(result);
+		const rows = stringifyNonstringColumns(result, columnTypes);
+		return { rows, columnTypes };
 	} catch (err) {
 		if (err.message) {
 			throw err.message;
