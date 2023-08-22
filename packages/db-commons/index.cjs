@@ -87,20 +87,50 @@ const inferColumnTypes = function (rows) {
 };
 
 /**
+ *
+ * @param {Record<string, unknown>[]} rows
+ * @param {ColumnDefinition[]} columnTypes
+ */
+function applyColumnTypes(rows, columnTypes) {
+	const columns = Object.fromEntries(columnTypes.map((x) => [x.name, x.evidenceType]));
+	for (const row of rows) {
+		for (const column_name in row) {
+			if (columns[column_name] === EvidenceType.BOOLEAN && typeof row[column_name] !== 'boolean') {
+				row[column_name] = Boolean(row[column_name]);
+			} else if (
+				columns[column_name] === EvidenceType.STRING &&
+				typeof row[column_name] !== 'string'
+			) {
+				row[column_name] = String(row[column_name]);
+			} else if (
+				columns[column_name] === EvidenceType.NUMBER &&
+				typeof row[column_name] !== 'number'
+			) {
+				row[column_name] = Number(row[column_name]);
+			} else if (columns[column_name] === EvidenceType.DATE && !(row instanceof Date)) {
+				row[column_name] = new Date(row[column_name]);
+			}
+		}
+	}
+	return rows;
+}
+
+/**
  * Processes query results
  * @param {QueryResult | QueryResult["rows"]} queryResults
  * @returns {QueryResult}
  */
 const processQueryResults = function (queryResults) {
-	const rows = queryResults.rows ?? queryResults;
-	const columnTypes = queryResults.columnTypes ?? inferColumnTypes(rows);
+	const unprocessed_rows = queryResults.rows ?? queryResults;
+	const columnTypes = queryResults.columnTypes ?? inferColumnTypes(unprocessed_rows);
 
-	return { rows, columnTypes };
+	return { rows: applyColumnTypes(unprocessed_rows, columnTypes), columnTypes };
 };
 
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
+exports.applyColumnTypes = applyColumnTypes;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;
