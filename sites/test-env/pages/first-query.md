@@ -9,8 +9,8 @@ In either case, you (or your audience) can hide or show queries using the button
 ```my_first_query
 
 select
-    101 as my_first_metric,
-    200 as my_second_metric
+101 as my_first_metric,
+200 as my_second_metric
 
 ```
 
