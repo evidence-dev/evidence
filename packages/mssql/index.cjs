@@ -1,5 +1,12 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	convertStringColumns,
+	convertNumberColumns
+} = require('@evidence-dev/db-commons');
 const mssql = require('mssql');
+const TYPES = mssql.TYPES;
 
 const envMap = {
 	user: [
@@ -52,51 +59,45 @@ const envMap = {
  * @param {undefined} defaultType
  * @returns {EvidenceType | undefined}
  */
-function nativeTypeToEvidenceType(data_type, defaultType = undefined) {
+function nativeTypeToEvidenceType(data_type) {
 	switch (data_type) {
-		case mssql.TYPES.Int:
-		case mssql.TYPES.TinyInt:
-		case mssql.TYPES.BigInt:
-		case mssql.TYPES.SmallInt:
-		case mssql.TYPES.Float:
-		case mssql.TYPES.Real:
-		case mssql.TYPES.Decimal:
-		case mssql.TYPES.Numeric:
-		case mssql.TYPES.SmallMoney:
-		case mssql.TYPES.Money:
+		case TYPES.Int:
+		case TYPES.TinyInt:
+		case TYPES.BigInt:
+		case TYPES.SmallInt:
+		case TYPES.Float:
+		case TYPES.Real:
+		case TYPES.Decimal:
+		case TYPES.Numeric:
+		case TYPES.SmallMoney:
+		case TYPES.Money:
 			return EvidenceType.NUMBER;
 
-		case mssql.TYPES.DateTime:
-		case mssql.TYPES.SmallDateTime:
-		case mssql.TYPES.DateTimeOffset:
-		case mssql.TYPES.Date:
-		case mssql.TYPES.DateTime2:
-			return EvidenceType.DATE;
-
-		case mssql.TYPES.VarChar:
-		case mssql.TYPES.NVarChar:
-		case mssql.TYPES.Char:
-		case mssql.TYPES.NChar:
-		case mssql.TYPES.Xml:
-		case mssql.TYPES.Text:
-		case mssql.TYPES.NText:
-			return EvidenceType.STRING;
-
-		case mssql.TYPES.Bit:
+		case TYPES.Bit:
 			return EvidenceType.BOOLEAN;
 
-		case mssql.TYPES.Time:
-		case mssql.TYPES.UniqueIdentifier:
-		case mssql.TYPES.Binary:
-		case mssql.TYPES.VarBinary:
-		case mssql.TYPES.Image:
-		case mssql.TYPES.TVP:
-		case mssql.TYPES.UDT:
-		case mssql.TYPES.Geography:
-		case mssql.TYPES.Geometry:
-		case mssql.TYPES.Variant:
+		case TYPES.DateTime:
+		case TYPES.SmallDateTime:
+		case TYPES.DateTimeOffset:
+		case TYPES.Date:
+		case TYPES.DateTime2:
+		case TYPES.Time:
+			return EvidenceType.DATE;
+
+		case TYPES.VarChar:
+		case TYPES.NVarChar:
+		case TYPES.Char:
+		case TYPES.NChar:
+		case TYPES.Xml:
+		case TYPES.Text:
+		case TYPES.NText:
+		case TYPES.Binary:
+		case TYPES.VarBinary:
+		case TYPES.Image:
+		case TYPES.UniqueIdentifier:
+		case TYPES.Variant:
 		default:
-			return defaultType;
+			return EvidenceType.STRING;
 	}
 }
 
@@ -144,7 +145,11 @@ const runQuery = async (queryString, database = {}) => {
 		const pool = await mssql.connect(credentials);
 		const { recordset } = await pool.query(queryString);
 
-		return { rows: recordset, columnTypes: mapResultsToEvidenceColumnTypes(recordset.columns) };
+		const columnTypes = mapResultsToEvidenceColumnTypes(recordset.columns);
+		const convertedStringRows = convertStringColumns(recordset, columnTypes);
+		const convertedBigIntRows = convertNumberColumns(convertedStringRows, columnTypes);
+
+		return { rows: convertedBigIntRows, columnTypes };
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');

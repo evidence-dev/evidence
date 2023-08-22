@@ -2,7 +2,7 @@ const {
 	getEnv,
 	EvidenceType,
 	TypeFidelity,
-	stringifyNonstringColumns
+	convertStringColumns
 } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
@@ -59,7 +59,7 @@ const runQuery = async (queryString, database) => {
 		const db = await Database.create(filename, mode);
 		const result = await db.all(queryString);
 		const columnTypes = mapResultsToEvidenceColumnTypes(result);
-		const rows = stringifyNonstringColumns(result, columnTypes);
+		const rows = convertStringColumns(result, columnTypes);
 		return { rows, columnTypes };
 	} catch (err) {
 		if (err.message) {

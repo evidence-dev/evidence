@@ -116,23 +116,41 @@ function applyColumnTypes(rows, columnTypes) {
 }
 
 /**
+ * Checks if all the columns of type `evidenceType` in a set of rows
+ * conform to the proper `typeof` or `instanceof`
+ * @param {Record<string, unknown>[]} rows
+ * @param {ColumnDefinition[]} columns
+ * @param {EvidenceType} evidenceType
+ */
+function conformsTo(rows, columns, evidenceType) {
+	if (columns.every(({ evidenceType: columnType }) => columnType !== evidenceType)) return rows;
+	if (rows.length === 0) return rows;
+
+	const firstRow = rows[0];
+	const columnsUnderInvestigation = columns.filter(
+		({ evidenceType: columnType }) => columnType === evidenceType
+	);
+
+	switch (evidenceType) {
+		case EvidenceType.STRING:
+			return columnsUnderInvestigation.every(({ name }) => typeof firstRow[name] === 'string');
+		case EvidenceType.NUMBER:
+			return columnsUnderInvestigation.every(({ name }) => typeof firstRow[name] === 'number');
+		case EvidenceType.BOOLEAN:
+			return columnsUnderInvestigation.every(({ name }) => typeof firstRow[name] === 'boolean');
+		case EvidenceType.DATE:
+			return columnsUnderInvestigation.every(({ name }) => firstRow[name] instanceof Date);
+	}
+}
+
+/**
  *
  * @param {Record<string, unknown>[]} results
  * @param {ColumnDefinition[]} columns
  * @returns {Record<string, unknown>[]}
  */
-function stringifyNonstringColumns(results, columns) {
-	// fast paths if processing isn't necessary
-	// if no column is an evidence string
-	if (columns.every(({ evidenceType }) => evidenceType !== EvidenceType.STRING)) return results;
-	// if every column that is an evidence string, is a string
-	if (
-		results.length > 0 &&
-		columns
-			.filter(({ evidenceType }) => evidenceType === EvidenceType.STRING)
-			.every(({ name }) => typeof results[0][name] === 'string')
-	)
-		return results;
+function convertStringColumns(results, columns) {
+	if (conformsTo(results, columns, EvidenceType.STRING)) return results;
 
 	for (const row of results) {
 		for (const { name } of columns.filter(
@@ -144,6 +162,26 @@ function stringifyNonstringColumns(results, columns) {
 				row[name] = JSON.stringify(row[name]);
 			} else if (typeof row[name] !== 'string') {
 				row[name] = String(row[name]);
+			}
+		}
+	}
+	return results;
+}
+
+/**
+ *
+ * @param {Record<string, unknown>[]} rows
+ * @param {import('@evidence-dev/db-commons').ColumnDefinition[]} columns
+ */
+function convertNumberColumns(results, columns) {
+	if (conformsTo(results, columns, EvidenceType.NUMBER)) return results;
+
+	for (const row of results) {
+		for (const { name } of columns.filter(
+			({ evidenceType }) => evidenceType === EvidenceType.NUMBER
+		)) {
+			if (typeof row[name] !== 'number') {
+				row[name] = Number(row[name]);
 			}
 		}
 	}
@@ -167,6 +205,7 @@ exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
 exports.applyColumnTypes = applyColumnTypes;
-exports.stringifyNonstringColumns = stringifyNonstringColumns;
+exports.convertStringColumns = convertStringColumns;
+exports.convertNumberColumns = convertNumberColumns;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;
