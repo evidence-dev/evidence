@@ -64,7 +64,7 @@ const standardizeResult = (result) => {
 			} else if (value instanceof BigQueryTime || value instanceof Geography) {
 				standardized[key] = value.value;
 			} else if (value instanceof Buffer) {
-				standardized[key] = value.toString('base64');
+				standardized[key] = value.toString();
 			} else if (typeof value?.toNumber === 'function') {
 				standardized[key] = value.toNumber();
 			}
@@ -136,7 +136,7 @@ const runQuery = async (queryString, database) => {
  * @param {undefined} defaultType
  * @returns {EvidenceType | undefined}
  */
-const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefined) {
+const nativeTypeToEvidenceType = function (nativeFieldType) {
 	switch (nativeFieldType) {
 		case 'BOOL':
 		case 'BOOLEAN':
@@ -155,21 +155,20 @@ const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefi
 		case 'FLOAT64':
 		case 'FLOAT':
 			return EvidenceType.NUMBER;
+		case 'TIMESTAMP':
+		case 'DATE':
+		case 'DATETIME':
+			return EvidenceType.DATE;
 		case 'TIME':
 		case 'STRING':
 		case 'BYTES':
 		case 'GEOGRAPHY':
 		case 'INTERVAL':
-			return EvidenceType.STRING;
-		case 'TIMESTAMP':
-		case 'DATE':
-		case 'DATETIME':
-			return EvidenceType.DATE;
 		case 'STRUCT':
 		case 'ARRAY':
 		case 'JSON':
 		default:
-			return defaultType;
+			return EvidenceType.STRING;
 	}
 };
 
@@ -180,17 +179,12 @@ const nativeTypeToEvidenceType = function (nativeFieldType, defaultType = undefi
  */
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.schema?.fields?.map((field) => {
-		/** @type {TypeFidelity} */
-		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(/** @type {string} */ (field.type));
-		if (!evidenceType) {
-			typeFidelity = TypeFidelity.INFERRED;
-			evidenceType = EvidenceType.STRING;
-		}
+		const typeFidelity = TypeFidelity.PRECISE;
+		const evidenceType = nativeTypeToEvidenceType(/** @type {string} */ (field.type));
 		return {
 			name: /** @type {string} */ (field.name),
-			evidenceType: evidenceType,
-			typeFidelity: typeFidelity
+			evidenceType,
+			typeFidelity
 		};
 	});
 };
