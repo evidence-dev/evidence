@@ -60,15 +60,26 @@ const envMap = {
 };
 
 /**
- * 
- * @param {Record<string, unknown>[]} results 
+ *
+ * @param {Record<string, unknown>[]} results
  * @param {import('@evidence-dev/db-commons').ColumnDefinition[]} columns
  * @returns {Record<string, unknown>[]}
  */
 function stringifyNonstringColumns(results, columns) {
+	// fast paths if processing isn't necessary
 	if (columns.every(({ evidenceType }) => evidenceType !== EvidenceType.STRING)) return results;
+	if (
+		results.length > 0 &&
+		columns
+			.filter(({ evidenceType }) => evidenceType !== EvidenceType.STRING)
+			.every(({ name }) => typeof results[0][name] === 'string')
+	)
+		return results;
+
 	for (const row of results) {
-		for (const { name } of columns.filter(({ evidenceType }) => evidenceType === EvidenceType.STRING)) {
+		for (const { name } of columns.filter(
+			({ evidenceType }) => evidenceType === EvidenceType.STRING
+		)) {
 			if (row[name] instanceof Buffer) {
 				row[name] = row[name].toString();
 			} else if (typeof row[name] === 'object') {

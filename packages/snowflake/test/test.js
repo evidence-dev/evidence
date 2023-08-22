@@ -139,9 +139,7 @@ test('query runs', async () => {
 			true,
 			expectedColumnTypes.length === actualColumnTypes.length &&
 				expectedColumnTypes.every((value, index) =>
-					value === 'date'
-						? rows[index] instanceof Date
-						: typeof rows[index] === value
+					value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
 				)
 		);
 		assert.equal(
