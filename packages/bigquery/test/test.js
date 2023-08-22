@@ -52,7 +52,11 @@ test('query runs', async () => {
 			new Date('2021-01-01T12:34:56.000Z').getTime(),
 			'DATETIME types should be converted to JS Date objects'
 		);
-		assert.equal(result.interval_col, '0-0 5 0:0:0', 'INTERVAL types should be converted to strings');
+		assert.equal(
+			result.interval_col,
+			'0-0 5 0:0:0',
+			'INTERVAL types should be converted to strings'
+		);
 		assert.equal(result.numeric_col, 123456, 'NUMERIC types should be converted to JS Numbers');
 		assert.equal(
 			result.bignumeric_col,
