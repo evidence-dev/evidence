@@ -1,7 +1,5 @@
-import {vi, describe, it, expect} from "vitest"
-vi.mock('fs', () => ({isFile: ()=>true}))
-
-const fs = require('fs');
+import { vi, describe, it, expect } from 'vitest';
+vi.mock('fs', () => ({ isFile: () => true }));
 
 const { getQueryIds } = require('./extract-queries.cjs');
 const {

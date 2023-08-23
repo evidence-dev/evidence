@@ -1,6 +1,5 @@
 {@partial "basic-partial.md"}
 
-
 ```test_query
 SELECT 1
 UNION
@@ -17,6 +16,5 @@ SELECT 2
 
 {@partial "has-script-tag.md"}
 {@partial "uses-var-from-script.md"}
-
 
 {@partial "uses-markdown.md"}

@@ -1,6 +1,5 @@
-import {describe, it, expect} from "vitest";
+import { describe, it, expect } from 'vitest';
 const { highlighter } = require('./highlighter.cjs');
-
 
 describe('highlighter', () => {
 	it("should output a query viewer for an 'unknown' language", () => {

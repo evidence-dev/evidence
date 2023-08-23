@@ -1,8 +1,8 @@
-import {vi, describe, it, expect} from "vitest"
-vi.mock('fs', () => ({isFile: ()=>true}))
+import { vi, describe, it, expect } from 'vitest';
+vi.mock('fs', () => ({ isFile: () => true }));
 
 const { parseFrontmatter } = require('./parse-frontmatter.cjs');
-const fs = require('fs');
+
 const {
 	emptyFrontmatter,
 	missingFrontmatter,

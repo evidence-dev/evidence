@@ -1,4 +1,4 @@
-import {describe, it, expect} from "vitest";
+import { describe, it, expect } from 'vitest';
 const md5 = require('blueimp-md5');
 const { faker } = require('@faker-js/faker');
 const { getRouteHash } = require('./get-route-hash.cjs');
