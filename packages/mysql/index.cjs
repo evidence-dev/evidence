@@ -1,6 +1,6 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const { getEnv, EvidenceType, TypeFidelity, convertStringColumns } = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
-const mysqlTypes = mysql.Types;
+const Types = mysql.Types;
 
 const envMap = {
 	host: [
@@ -62,47 +62,36 @@ const standardizeResult = (result) => {
 
 /**
  *
- * @param {number} dataTypeId
- * @param {undefined} defaultType
- * @returns {EvidenceType | undefined}
+ * @param {typeof Types[keyof typeof Types]} dataTypeId
+ * @returns {EvidenceType}
  */
-const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
+const nativeTypeToEvidenceType = function (dataTypeId) {
 	// No native bool https://stackoverflow.com/questions/289727/which-mysql-data-type-to-use-for-storing-boolean-values
 
+	// based on mysql2/lib/parsers/binary_parser.js
 	switch (dataTypeId) {
-		case mysqlTypes['DECIMAL']:
-		case mysqlTypes['TINY']:
-		case mysqlTypes['SHORT']:
-		case mysqlTypes['LONG']:
-		case mysqlTypes['FLOAT']:
-		case mysqlTypes['DOUBLE']:
-		case mysqlTypes['NEWDECIMAL']:
-		case mysqlTypes['INT24']:
-		case mysqlTypes['LONGLONG']:
+		case Types.TINY:
+		case Types.SHORT:
+		case Types.LONG:
+		case Types.INT24:
+		case Types.YEAR:
+		case Types.FLOAT:
+		case Types.DOUBLE:
+		case Types.DECIMAL:
+		case Types.NEWDECIMAL:
+		case Types.LONGLONG:
 			return EvidenceType.NUMBER;
-		case mysqlTypes['TIMESTAMP']:
-		case mysqlTypes['DATE']:
-		case mysqlTypes['TIME']:
-		case mysqlTypes['DATETIME']:
-		case mysqlTypes['YEAR']:
-		case mysqlTypes['NEWDATE']:
+		case Types.DATE:
+		case Types.DATETIME:
+		case Types.TIMESTAMP:
+		case Types.NEWDATE:
 			return EvidenceType.DATE;
-		case mysqlTypes['VARCHAR']:
-		case mysqlTypes['VAR_STRING']:
-		case mysqlTypes['STRING']:
-			return EvidenceType.STRING;
-		case mysqlTypes['BIT']:
-		case mysqlTypes['JSON']:
-		case mysqlTypes['NULL']:
-		case mysqlTypes['ENUM']:
-		case mysqlTypes['SET']:
-		case mysqlTypes['TINY_BLOB']:
-		case mysqlTypes['MEDIUM_BLOB']:
-		case mysqlTypes['LONG_BLOB']:
-		case mysqlTypes['BLOB']:
-		case mysqlTypes['GEOMETRY']:
+		case Types.NULL:
+		case Types.TIME:
+		case Types.GEOMETRY:
+		case Types.JSON:
 		default:
-			return defaultType;
+			return EvidenceType.STRING;
 	}
 };
 
@@ -113,17 +102,12 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
  */
 const mapResultsToEvidenceColumnTypes = function (fields) {
 	return fields?.map((field) => {
-		/** @type {TypeFidelity} */
-		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(field.columnType);
-		if (!evidenceType) {
-			typeFidelity = TypeFidelity.INFERRED;
-			evidenceType = EvidenceType.STRING;
-		}
+		const typeFidelity = TypeFidelity.PRECISE;
+		const evidenceType = nativeTypeToEvidenceType(field.columnType);
 		return {
 			name: field.name,
-			evidenceType: evidenceType,
-			typeFidelity: typeFidelity
+			evidenceType,
+			typeFidelity
 		};
 	});
 };
@@ -150,8 +134,7 @@ const runQuery = async (queryString, database) => {
 			credentials.ssl = 'Amazon RDS';
 		} else if (!(ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined)) {
 			try {
-				const obj = JSON.parse(ssl_opt);
-				credentials.ssl = obj;
+				credentials.ssl = JSON.parse(ssl_opt);
 			} catch (e) {
 				console.log(e);
 			}
@@ -159,10 +142,13 @@ const runQuery = async (queryString, database) => {
 
 		const pool = mysql.createPool(credentials);
 		const promisePool = pool.promise();
-		const [rows, fields] = await promisePool.query(queryString);
+		const [result, fields] = await promisePool.query(queryString);
 
-		const standardizedRows = standardizeResult(rows);
-		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(fields) };
+		const columnTypes = mapResultsToEvidenceColumnTypes(fields);
+		const standardizedRows = standardizeResult(result);
+		const rows = convertStringColumns(standardizedRows, columnTypes);
+
+		return { rows, columnTypes };
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
