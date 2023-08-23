@@ -5,13 +5,13 @@ import { findInterval, vectorSeq } from './helpers/getCompletedData.helpers.js';
 /**
  * This function fills missing data points in the given data array for a specific series.
  *
- * @param {Array<object>} data - The data as an array of objects.
+ * @param {Record<string, unknown>[]} data - The data as an array of objects.
  * @param {string} x - The property used as x-axis.
  * @param {string} y - The property used as y-axis.
  * @param {string} series - The specific series in the data to be filled.
  * @param {boolean} [nullsZero=false] - A flag indicating whether nulls should be replaced with zero.
  * @param {boolean} [fillX=false] - A flag indicating whether the x-axis values should be filled (based on the found interval distance).
- * @return {Array<object>} An array containing the filled data objects.
+ * @return {Record<string, unknown>[]} An array containing the filled data objects.
  */
 export default function getCompletedData(data, x, y, series, nullsZero = false, fillX = false) {
 	const groups = Array.from(data).reduce((a, v) => {
@@ -34,7 +34,7 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 
 		if (value[0]?.[x] instanceof Date) {
 			xDistinct = getDistinctValues(
-				value.map((d) => ({ ...d, [x]: d[x].getTime() })),
+				value.map((d) => ({ [x]: d[x].getTime() })),
 				x
 			);
 			xIsDate = true;
