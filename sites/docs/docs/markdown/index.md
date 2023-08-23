@@ -161,3 +161,27 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 | `sources`        | references SQL queries stored in the /sources directory.                                                                     |
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
+
+## Partials
+
+Evidence supports re-using portions of pages by using Partials.
+
+Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}`
+
+There are several caveats to using partials:
+ - Partials can reference queries from the page, but they cannot declare queries.
+ - Partials do not support live reload, or hot module replacement. You will need to refresh the page when you change a partial.
+
+### Example
+
+To create and use a basic partial, first create the files `./partials/my-first-partial.md`, and `./pages/partial-test.md`.
+
+`./partials/my-first-partial.md`
+```md
+# This is my first partial
+```
+
+`./pages/partial-test.md`
+```md
+{@partial "my-first-partial.md"}
+```

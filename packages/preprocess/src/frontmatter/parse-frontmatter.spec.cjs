@@ -1,4 +1,5 @@
-jest.mock('fs');
+import {vi, describe, it, expect} from "vitest"
+vi.mock('fs', () => ({isFile: ()=>true}))
 
 const { parseFrontmatter } = require('./parse-frontmatter.cjs');
 const fs = require('fs');
@@ -13,8 +14,6 @@ const {
 	frontmatterWithTitle,
 	frontmatterWithTitleHidden
 } = require('./parse-frontmatter.fixture.cjs');
-
-fs.statSync.mockReturnValue({ isFile: () => true });
 
 describe('Parse frontmatter', () => {
 	it('Should return undefined for missing frontmatter', async () => {
