@@ -32,7 +32,6 @@ export const genSeries = ({
 	maxOffset = 100,
 	xType = 'number'
 } = {}) => {
-
 	const data = [];
 
 	const len = faker.number.int({ min: minSeriesLen, max: maxSeriesLen });
@@ -54,7 +53,7 @@ export const genSeries = ({
 			])
 	);
 	for (const [seriesName, d] of Object.entries(series)) {
-		const initialValue = xType === 'number' ? d.offset : new Date()
+		const initialValue = xType === 'number' ? d.offset : new Date();
 		const genTime = (i) =>
 			xType === 'number'
 				? initialValue + i * d.interval

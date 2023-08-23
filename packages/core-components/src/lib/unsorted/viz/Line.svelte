@@ -10,7 +10,6 @@
 
 	import getSeriesConfig from '@evidence-dev/component-utilities/getSeriesConfig';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-	import replaceNulls from '@evidence-dev/component-utilities/replaceNulls';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
 	export let y = undefined;

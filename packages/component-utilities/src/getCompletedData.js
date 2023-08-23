@@ -26,24 +26,8 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 	}, {});
 
 	const output = [];
-	for (const [key, value] of Object.entries(groups)) {
-		/** @type {Array<number>} */
-		let xDistinct;
-
-		let xIsDate = false;
-
-		if (value[0]?.[x] instanceof Date) {
-			xDistinct = getDistinctValues(
-				value.map((d) => ({ [x]: d[x].getTime() })),
-				x
-			);
-			xIsDate = true;
-		} else {
-			xDistinct = getDistinctValues(value, x);
-		}
-
-		/** @type {number} */
-		let interval = findInterval(xDistinct);
+	for (const value of Object.values(groups)) {
+		let xIsDate = value[0]?.[x] instanceof Date;
 
 		const nullySpec = { series: null };
 		if (nullsZero) {
@@ -55,6 +39,19 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 
 		const expandKeys = {};
 		if (fillX) {
+			/** @type {Array<number>} */
+			let xDistinct;
+
+			if (xIsDate)
+				xDistinct = getDistinctValues(
+					value.map((d) => ({ [x]: d[x].getTime() })),
+					x
+				);
+			else xDistinct = getDistinctValues(value, x);
+
+			/** @type {number} */
+			let interval = findInterval(xDistinct);
+
 			// Array of all possible x values
 			expandKeys[x] = vectorSeq(xDistinct, interval);
 		}

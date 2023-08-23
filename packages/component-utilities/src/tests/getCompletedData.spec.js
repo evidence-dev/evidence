@@ -1,4 +1,4 @@
-import { test, describe, vi, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import getCompletedData from '../getCompletedData';
 import { genSeries } from './getCompletedData.fixture.js';
 
