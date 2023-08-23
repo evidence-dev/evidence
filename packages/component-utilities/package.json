@@ -10,6 +10,8 @@
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
+		"@faker-js/faker": "^8.0.2",
+		"@vitest/ui": "^0.34.2",
 		"vitest": "^0.31.1"
 	},
 	"scripts": {

@@ -10,7 +10,6 @@
 
 	import getSeriesConfig from '@evidence-dev/component-utilities/getSeriesConfig';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-	import replaceNulls from '@evidence-dev/component-utilities/replaceNulls';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
 	export let y = undefined;
@@ -64,7 +63,7 @@
 	}
 
 	$: if (handleMissing === 'zero') {
-		data = replaceNulls(data, y);
+		data = getCompletedData(data, x, y, series, true);
 	}
 
 	$: baseConfig = {

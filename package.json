@@ -59,7 +59,8 @@
 		"build:example-project": "pnpm --filter ./sites/example-project build",
 		"build:tailwind": "pnpm --filter ./packages/tailwind build",
 		"dev:example-project": "pnpm --filter ./sites/example-project dev",
-		"dev:core-components": "pnpm --filter ./packages/core-components package:watch"
+		"dev:core-components": "pnpm --filter ./packages/core-components package:watch",
+		"test:component-utilities:watch": "pnpm --filter ./packages/component-utilities test:watch"
 	},
 	"pnpm": {
 		"overrides": {
