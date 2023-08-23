@@ -121,10 +121,11 @@ function applyColumnTypes(rows, columnTypes) {
  * @param {Record<string, unknown>[]} rows
  * @param {ColumnDefinition[]} columns
  * @param {EvidenceType} evidenceType
+ * @returns {boolean}
  */
 function conformsTo(rows, columns, evidenceType) {
-	if (columns.every(({ evidenceType: columnType }) => columnType !== evidenceType)) return rows;
-	if (rows.length === 0) return rows;
+	if (columns.every(({ evidenceType: columnType }) => columnType !== evidenceType)) return true;
+	if (rows.length === 0) return true;
 
 	const firstRow = rows[0];
 	const columnsUnderInvestigation = columns.filter(
