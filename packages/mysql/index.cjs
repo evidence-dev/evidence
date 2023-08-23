@@ -128,7 +128,8 @@ const runQuery = async (queryString, database) => {
 			password: database ? database.password : getEnv(envMap, 'password'),
 			port: database ? database.port : getEnv(envMap, 'port'),
 			socketPath: database ? database.socketPath : getEnv(envMap, 'socketPath'),
-			decimalNumbers: true
+			decimalNumbers: true,
+			stringifyObjects: true
 		};
 
 		const ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
