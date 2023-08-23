@@ -203,7 +203,7 @@ async function getQueries(sourceDir, contents) {
 					if (await isDir(fullPath)) {
 						// TODO: Recurse
 						const recursed = await loadDirRecursive(fullPath);
-						return recursed.map(r => path.relative(sourceDir, r))
+						return recursed.map((r) => path.relative(sourceDir, r));
 					} else {
 						return [s];
 					}
@@ -216,7 +216,7 @@ async function getQueries(sourceDir, contents) {
 		 */
 		(r) => r.flat(1)
 	);
-	console.log({queryFiles})
+	console.log({ queryFiles });
 
 	const queries = await Promise.all(
 		queryFiles.map(async (filename) => {
