@@ -1,7 +1,6 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
-import { TypeFidelity } from '@evidence-dev/db-commons';
 import 'dotenv/config';
 
 let results;
@@ -9,27 +8,53 @@ let results;
 test('query runs', async () => {
 	if (process.env.MYSQL_DATABASE) {
 		try {
-			results = await runQuery(
-				"select 100 as number_col, CURDATE() as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, false as bool_col"
-			);
+			results = await runQuery(`
+				SELECT
+					18446744073709551615 as bigint_col,
+					CAST(1 AS DECIMAL) as decimal_col,
+					CAST(1.5 AS FLOAT) as float_col,
+					CAST(1.5 AS DOUBLE) as double_col,
+					b'1' as bit_col,
+					DATE '2020-01-01' as date_col,
+					TIMESTAMP '2020-01-01 10:00:00' as timestamp_col,
+					TIME '10:00:00' as time_col,
+					CAST(NOW() AS YEAR) as year_col,
+					CAST(NOW() AS DATETIME) as datetime_col,
+					'hello' as varchar_col
+			`);
 			assert.instance(results.rows, Array);
 			assert.instance(results.columnTypes, Array);
 			assert.type(results.rows[0], 'object');
-			assert.equal(results.rows[0].number_col, 100);
 
-			let actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
-			let actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
-			let actualTypePrecisions = results.columnTypes.map((columnType) => columnType.typeFidelity);
+			const actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
+			const actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
 
-			let expectedColumnTypes = ['number', 'date', 'date', 'string', 'number'];
-			let expectedColumnNames = [
-				'number_col',
+			const expectedColumnTypes = [
+				'number',
+				'number',
+				'number',
+				'number',
+				'string',
+				'date',
+				'date',
+				'string',
+				'number',
+				'date',
+				'string'
+			];
+			const expectedColumnNames = [
+				'bigint_col',
+				'decimal_col',
+				'float_col',
+				'double_col',
+				'bit_col',
 				'date_col',
 				'timestamp_col',
-				'string_col',
-				'bool_col'
+				'time_col',
+				'year_col',
+				'datetime_col',
+				'varchar_col'
 			];
-			let expectedTypePrecision = Array(5).fill(TypeFidelity.PRECISE);
 
 			assert.equal(
 				true,
@@ -41,10 +66,13 @@ test('query runs', async () => {
 				expectedColumnNames.length === actualColumnNames.length &&
 					expectedColumnNames.every((value, index) => value === actualColumnNames[index])
 			);
+			const rows = Object.values(results.rows[0]);
 			assert.equal(
 				true,
-				expectedTypePrecision.length === actualTypePrecisions.length &&
-					expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
+				expectedColumnTypes.length === actualColumnTypes.length &&
+					expectedColumnTypes.every((value, index) =>
+						value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
+					)
 			);
 		} catch (e) {
 			throw Error(e);

@@ -1,4 +1,9 @@
-const { getEnv, EvidenceType, TypeFidelity, convertStringColumns } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	convertStringColumns
+} = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const Types = mysql.Types;
 
