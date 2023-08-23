@@ -56,7 +56,6 @@ const envMap = {
 /**
  *
  * @param {(() => mssql.ISqlType) | mssql.ISqlType} data_type
- * @param {undefined} defaultType
  * @returns {EvidenceType | undefined}
  */
 function nativeTypeToEvidenceType(data_type) {
@@ -109,12 +108,8 @@ function nativeTypeToEvidenceType(data_type) {
 const mapResultsToEvidenceColumnTypes = function (fields) {
 	return Object.values(fields).map((field) => {
 		/** @type {TypeFidelity} */
-		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(field.type);
-		if (!evidenceType) {
-			typeFidelity = TypeFidelity.INFERRED;
-			evidenceType = EvidenceType.STRING;
-		}
+		const typeFidelity = TypeFidelity.PRECISE;
+		const evidenceType = nativeTypeToEvidenceType(field.type);
 		return {
 			name: field.name,
 			evidenceType: evidenceType,

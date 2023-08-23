@@ -133,8 +133,7 @@ const runQuery = async (queryString, database) => {
 /**
  *
  * @param {string} nativeFieldType
- * @param {undefined} defaultType
- * @returns {EvidenceType | undefined}
+ * @returns {EvidenceType}
  */
 const nativeTypeToEvidenceType = function (nativeFieldType) {
 	switch (nativeFieldType) {

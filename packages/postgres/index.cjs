@@ -1,6 +1,11 @@
 const pg = require('pg');
 const { Pool } = pg;
-const { EvidenceType, getEnv, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	EvidenceType,
+	getEnv,
+	TypeFidelity,
+	convertStringColumns
+} = require('@evidence-dev/db-commons');
 
 const envMap = {
 	host: [
@@ -77,10 +82,9 @@ const pgBuiltInTypeExtentions = {
 /**
  *
  * @param {MemberOf<(typeof pg)["types"]["builtins"]>} dataTypeId
- * @param {undefined} defaultType
- * @returns {EvidenceType | undefined}
+ * @returns {EvidenceType}
  */
-const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
+const nativeTypeToEvidenceType = function (dataTypeId) {
 	switch (dataTypeId) {
 		case pg.types.builtins.BOOL:
 			return EvidenceType.BOOLEAN;
@@ -92,22 +96,20 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 		case pg.types.builtins.FLOAT4:
 		case pg.types.builtins.FLOAT8:
 			return EvidenceType.NUMBER;
-		case pg.types.builtins.VARCHAR:
-		case pg.types.builtins.TEXT:
-		case pg.types.builtins.STRING:
-		case pg.types.builtins.CHAR:
-		case pg.types.builtins.JSON:
-		case pg.types.builtins.XML:
-		case pgBuiltInTypeExtentions.NAME:
-			return EvidenceType.STRING;
 		case pg.types.builtins.DATE:
-		case pg.types.builtins.TIME:
-		case pg.types.builtins.TIMETZ:
 		case pg.types.builtins.TIMESTAMP:
 		case pg.types.builtins.TIMESTAMPTZ:
 			return EvidenceType.DATE;
+		case pg.types.builtins.VARCHAR:
+		case pg.types.builtins.TEXT:
+		case pg.types.builtins.CHAR:
+		case pg.types.builtins.JSON:
+		case pg.types.builtins.XML:
+		case pg.types.builtins.TIME:
+		case pg.types.builtins.TIMETZ:
+		case pgBuiltInTypeExtentions.NAME:
 		default:
-			return defaultType;
+			return EvidenceType.STRING;
 	}
 };
 
@@ -119,16 +121,12 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.fields?.map((field) => {
 		/** @type {TypeFidelity} */
-		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(field.dataTypeID);
-		if (!evidenceType) {
-			typeFidelity = TypeFidelity.INFERRED;
-			evidenceType = EvidenceType.STRING;
-		}
+		const typeFidelity = TypeFidelity.PRECISE;
+		const evidenceType = nativeTypeToEvidenceType(field.dataTypeID);
 		return {
 			name: field.name.toLowerCase(),
-			evidenceType: evidenceType,
-			typeFidelity: typeFidelity
+			evidenceType,
+			typeFidelity
 		};
 	});
 };
@@ -172,17 +170,17 @@ const runQuery = async (queryString, database) => {
 		var types = require('pg').types;
 
 		// Override bigint:
-		types.setTypeParser(20, function (val) {
+		types.setTypeParser(types.builtins.INT8, function (val) {
 			return parseInt(val, 10);
 		});
 
 		// Override numeric/decimal:
-		types.setTypeParser(1700, function (val) {
+		types.setTypeParser(types.builtins.NUMERIC, function (val) {
 			return parseFloat(val);
 		});
 
 		// Override money (incl. removing currency symbol):
-		types.setTypeParser(790, function (val) {
+		types.setTypeParser(types.builtins.MONEY, function (val) {
 			return parseFloat(val.replace(/[^0-9.]/g, ''));
 		});
 
@@ -199,8 +197,10 @@ const runQuery = async (queryString, database) => {
 		const result = await pool.query(queryString);
 
 		const standardizedRows = standardizeResult(result.rows);
+		const columnTypes = mapResultsToEvidenceColumnTypes(result);
+		const rows = convertStringColumns(standardizedRows, columnTypes);
 
-		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(result) };
+		return { rows, columnTypes };
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');

@@ -2,7 +2,7 @@ import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
 import 'dotenv/config';
-import { testQueryResults } from "@evidence-dev/db-commons";
+import { testQueryResults } from '@evidence-dev/db-commons';
 
 let results;
 

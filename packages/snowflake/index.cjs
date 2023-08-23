@@ -114,10 +114,9 @@ const execute = async (connection, queryString, useAsync = false) => {
 /**
  *
  * @param {string} dataBaseType
- * @param {undefined} defaultResultEvidenceType
- * @returns {EvidenceType | undefined}
+ * @returns {EvidenceType}
  */
-const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceType = undefined) {
+const nativeTypeToEvidenceType = function (dataBaseType) {
 	if (dataBaseType) {
 		let standardizedDBType = dataBaseType.toUpperCase();
 		if (standardizedDBType.indexOf('(') >= 0) {
@@ -142,13 +141,6 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 			case 'REAL':
 			case 'FIXED':
 				return EvidenceType.NUMBER;
-			case 'VARCHAR':
-			case 'CHAR':
-			case 'CHARACTER':
-			case 'STRING':
-			case 'TEXT':
-			case 'TIME':
-				return EvidenceType.STRING;
 			case 'TIMESTAMP':
 			case 'TIMESTAMP_LTZ':
 			case 'TIMESTAMP_NTZ':
@@ -158,10 +150,16 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 			case 'VARIANT':
 			case 'ARRAY':
 			case 'OBJECT':
-				return defaultResultEvidenceType;
+			case 'VARCHAR':
+			case 'CHAR':
+			case 'CHARACTER':
+			case 'STRING':
+			case 'TEXT':
+			case 'TIME':
+				return EvidenceType.STRING;
 		}
 	}
-	return defaultResultEvidenceType;
+	return EvidenceType.STRING;
 };
 
 /**
@@ -172,16 +170,12 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
 const mapResultsToEvidenceColumnTypes = function (results) {
 	return results?.columns?.map((field) => {
 		/** @type {TypeFidelity} */
-		let typeFidelity = TypeFidelity.PRECISE;
-		let evidenceType = nativeTypeToEvidenceType(field.type);
-		if (!evidenceType) {
-			typeFidelity = TypeFidelity.INFERRED;
-			evidenceType = EvidenceType.STRING;
-		}
+		const typeFidelity = TypeFidelity.PRECISE;
+		const evidenceType = nativeTypeToEvidenceType(field.type);
 		return {
 			name: field.name.toLowerCase(), // opening an issue for this -- not sure if we should just respect snowflake capitalizing all column names, or not. makes for unpleasant syntax elsewhere
-			evidenceType: evidenceType,
-			typeFidelity: typeFidelity
+			evidenceType,
+			typeFidelity
 		};
 	});
 };
