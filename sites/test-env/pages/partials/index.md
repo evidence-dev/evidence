@@ -10,7 +10,7 @@ SELECT 2
 
 {@partial "declares-query.md"}
 
-{partial_declared_query}
+{partial_declared_query[0]}
 
 {@partial "uses-unique-component.md"}
 

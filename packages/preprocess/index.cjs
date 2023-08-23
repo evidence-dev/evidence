@@ -41,3 +41,4 @@ module.exports.parseFrontmatter =
 const extractQueries = require('./src/extract-queries/extract-queries.cjs');
 module.exports.extractQueries = extractQueries.extractQueries;
 module.exports.getQueryIds = extractQueries.getQueryIds;
+module.exports.injectPartials = injectPartials.injectPartials
