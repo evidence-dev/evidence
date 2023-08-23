@@ -168,9 +168,9 @@ Evidence supports re-using portions of pages by using Partials.
 
 Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}`
 
-There are several caveats to using partials:
- - Partials can reference queries from the page, but they cannot declare queries.
- - Partials do not support live reload, or hot module replacement. You will need to refresh the page when you change a partial.
+:::note
+Partials do not support live reload, or hot module replacement. You will need to refresh the page when you change a partial.
+:::
 
 ### Example
 
