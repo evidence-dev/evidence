@@ -2,6 +2,7 @@ import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
 import 'dotenv/config';
+import { testQueryResults } from '@evidence-dev/db-commons';
 
 let results;
 
@@ -49,11 +50,6 @@ test('query runs', async () => {
 		assert.instance(results.columnTypes, Array);
 		assert.type(results.rows[0], 'object');
 		assert.equal(results.rows[0].number_col, 1);
-
-		const rows = Object.values(results.rows[0]);
-
-		const actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
-		const actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
 
 		const expectedColumnTypes = [
 			'number',
@@ -130,25 +126,7 @@ test('query runs', async () => {
 			'geography_col'
 		];
 
-		assert.equal(
-			true,
-			expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
-		);
-		assert.equal(
-			true,
-			expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) =>
-					value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
-				)
-		);
-		assert.equal(
-			true,
-			expectedColumnNames.length === actualColumnNames.length &&
-				expectedColumnNames.every(
-					(value, index) => value.toUpperCase() === actualColumnNames?.[index]?.toUpperCase()
-				)
-		);
+		testQueryResults(results, expectedColumnTypes, expectedColumnNames);
 	} catch (e) {
 		throw Error(e);
 	}

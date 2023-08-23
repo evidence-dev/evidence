@@ -200,6 +200,41 @@ const processQueryResults = function (queryResults) {
 	return { rows: applyColumnTypes(unprocessed_rows, columnTypes), columnTypes };
 };
 
+const assert = require('uvu/assert');
+/**
+ *
+ * @param {QueryResult} results
+ * @param {EvidenceType[]} expectedColumnTypes
+ * @param {string[]} expectedColumnNames
+ */
+function testQueryResults(results, expectedColumnTypes, expectedColumnNames) {
+	const actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
+	const actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
+	const rows = Object.values(results.rows[0]);
+
+	assert.equal(
+		true,
+		expectedColumnTypes.length === actualColumnTypes.length &&
+			expectedColumnTypes.every((value, index) => value === actualColumnTypes[index]),
+		'expected column types to match'
+	);
+	assert.equal(
+		true,
+		expectedColumnNames.length === actualColumnNames.length &&
+			expectedColumnNames.every((value, index) => value === actualColumnNames[index]),
+		'expected column names to match'
+	);
+
+	assert.equal(
+		true,
+		expectedColumnTypes.length === actualColumnTypes.length &&
+			expectedColumnTypes.every((value, index) =>
+				value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
+			),
+		'expected row value type to match column type'
+	);
+}
+
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
@@ -207,5 +242,6 @@ exports.inferColumnTypes = inferColumnTypes;
 exports.applyColumnTypes = applyColumnTypes;
 exports.convertStringColumns = convertStringColumns;
 exports.convertNumberColumns = convertNumberColumns;
+exports.testQueryResults = testQueryResults;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

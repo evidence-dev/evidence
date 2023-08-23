@@ -2,6 +2,7 @@ import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
 import 'dotenv/config';
+import { testQueryResults } from "@evidence-dev/db-commons";
 
 let results;
 
@@ -39,9 +40,6 @@ test('query runs', async () => {
 		assert.instance(results.rows, Array);
 		assert.instance(results.columnTypes, Array);
 		assert.type(results.rows[0], 'object');
-
-		const actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
-		const actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
 
 		const expectedColumnTypes = [
 			'number',
@@ -100,24 +98,7 @@ test('query runs', async () => {
 			'union_col'
 		];
 
-		assert.equal(
-			true,
-			expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
-		);
-		assert.equal(
-			true,
-			expectedColumnNames.length === actualColumnNames.length &&
-				expectedColumnNames.every((value, index) => value === actualColumnNames[index])
-		);
-		const rows = Object.values(results.rows[0]);
-		assert.equal(
-			true,
-			expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) =>
-					value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
-				)
-		);
+		testQueryResults(results, expectedColumnTypes, expectedColumnNames);
 	} catch (e) {
 		throw Error(e);
 	}

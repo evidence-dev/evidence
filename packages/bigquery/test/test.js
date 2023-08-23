@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
-import { TypeFidelity } from '@evidence-dev/db-commons';
+import { TypeFidelity, testQueryResults } from '@evidence-dev/db-commons';
 import 'dotenv/config';
 
 let results;
@@ -64,9 +64,6 @@ test('query runs', async () => {
 			'BIGNUMERIC types should be converted to JS Numbers'
 		);
 
-		const actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
-		const actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
-
 		const expectedColumnTypes = [
 			'string',
 			'number',
@@ -96,25 +93,7 @@ test('query runs', async () => {
 			'datetime_col'
 		];
 
-		assert.equal(
-			true,
-			expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
-		);
-		assert.equal(
-			true,
-			expectedColumnNames.length === actualColumnNames.length &&
-				expectedColumnNames.every((value, index) => value === actualColumnNames[index])
-		);
-
-		const rows = Object.values(result);
-		assert.equal(
-			true,
-			expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) =>
-					value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
-				)
-		);
+		testQueryResults(results, expectedColumnTypes, expectedColumnNames);
 	} catch (e) {
 		throw Error(e);
 	}
