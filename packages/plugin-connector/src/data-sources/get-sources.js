@@ -246,7 +246,6 @@ async function getQueries(sourceDir, contents) {
 		 */
 		(r) => r.flat(1)
 	);
-	console.log({ queryFiles });
 
 	const queries = await Promise.all(
 		queryFiles.map(async (filename) => {
