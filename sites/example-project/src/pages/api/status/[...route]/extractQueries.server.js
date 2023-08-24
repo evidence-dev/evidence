@@ -50,7 +50,7 @@ export const getStatusAndExtractQueries = function (route) {
 	content = content ? content.toString() : null;
 
 	if (content) {
-		let partialInjectedContent = preprocessor.injectPartials(content.toString())
+		let partialInjectedContent = preprocessor.injectPartials(content.toString());
 		let queries = preprocessor.extractQueries(partialInjectedContent);
 
 		// Handle query chaining:
