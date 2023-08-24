@@ -9,7 +9,7 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:^",
+		"@evidence-dev/db-commons": "workspace:",
 		"mysql2": "^2.3.2"
 	},
 	"devDependencies": {

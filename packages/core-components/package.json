@@ -27,8 +27,8 @@
 		"components": true
 	},
 	"dependencies": {
-		"@evidence-dev/component-utilities": "workspace:^",
-		"@evidence-dev/tailwind": "workspace:^",
+		"@evidence-dev/component-utilities": "workspace:",
+		"@evidence-dev/tailwind": "workspace:",
 		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/svelte-icon": "^1.4.1",

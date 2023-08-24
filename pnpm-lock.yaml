@@ -144,7 +144,7 @@ importers:
   packages/bigquery:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       '@google-cloud/bigquery':
         specifier: 6.2.0
@@ -188,10 +188,10 @@ importers:
   packages/core-components:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../component-utilities
       '@evidence-dev/tailwind':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../tailwind
       '@rgossiaux/svelte-headlessui':
         specifier: ^2.0.0
@@ -333,10 +333,10 @@ importers:
   packages/csv:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       '@evidence-dev/duckdb':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../duckdb
     devDependencies:
       dotenv:
@@ -359,37 +359,37 @@ importers:
   packages/db-orchestrator:
     dependencies:
       '@evidence-dev/bigquery':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../bigquery
       '@evidence-dev/csv':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../csv
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       '@evidence-dev/duckdb':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../duckdb
       '@evidence-dev/mssql':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../mssql
       '@evidence-dev/mysql':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../mysql
       '@evidence-dev/postgres':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../postgres
       '@evidence-dev/redshift':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../redshift
       '@evidence-dev/snowflake':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../snowflake
       '@evidence-dev/sqlite':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../sqlite
       '@evidence-dev/telemetry':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../telemetry
       blueimp-md5:
         specifier: 2.18.0
@@ -404,7 +404,7 @@ importers:
   packages/duckdb:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       duckdb-async:
         specifier: 0.8.1
@@ -417,16 +417,16 @@ importers:
   packages/evidence:
     dependencies:
       '@evidence-dev/plugin-connector':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../plugin-connector
       '@evidence-dev/preprocess':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../preprocess
       '@evidence-dev/telemetry':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../telemetry
       '@evidence-dev/universal-sql':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../universal-sql
       '@sveltejs/adapter-static':
         specifier: 1.0.0
@@ -475,16 +475,16 @@ importers:
         version: 4.1.2
     devDependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../core-components
       '@evidence-dev/db-orchestrator':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-orchestrator
       '@evidence-dev/tailwind':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../tailwind
       '@sveltejs/kit':
         specifier: 1.21.0
@@ -563,7 +563,7 @@ importers:
   packages/mssql:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       '@types/mssql':
         specifier: ^8.1.2
@@ -579,7 +579,7 @@ importers:
   packages/mysql:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       mysql2:
         specifier: ^2.3.2
@@ -592,7 +592,7 @@ importers:
   packages/plugin-connector:
     dependencies:
       '@evidence-dev/universal-sql':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../universal-sql
       '@types/estree':
         specifier: ^1.0.1
@@ -653,7 +653,7 @@ importers:
   packages/postgres:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       pg:
         specifier: 8.7.1
@@ -718,16 +718,16 @@ importers:
   packages/redshift:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       '@evidence-dev/postgres':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../postgres
 
   packages/snowflake:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       '@types/snowflake-sdk':
         specifier: ^1.6.13
@@ -755,7 +755,7 @@ importers:
   packages/sqlite:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../db-commons
       sqlite:
         specifier: 4.0.25
@@ -875,22 +875,22 @@ importers:
   sites/example-project:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/core-components
       '@evidence-dev/duckdb':
-        specifier: workspace:^1.0.0-usql.2
+        specifier: 'workspace:'
         version: link:../../packages/duckdb
       '@evidence-dev/plugin-connector':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/plugin-connector
       '@evidence-dev/telemetry':
         specifier: 1.0.5
         version: link:../../packages/telemetry
       '@evidence-dev/universal-sql':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/universal-sql
       '@fontsource/spectral':
         specifier: ^5.0.3
@@ -990,22 +990,22 @@ importers:
   sites/test-env:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/core-components
       '@evidence-dev/csv':
-        specifier: workspace:1.0.0-usql.3
+        specifier: 'workspace:'
         version: link:../../packages/csv
       '@evidence-dev/duckdb':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../../packages/faker-datasource
 
   tests:
