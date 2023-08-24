@@ -1,5 +1,5 @@
 {
-	"include": ["types/index.d.ts", "src/**/*.js"],
+	"include": ["types/index.d.ts", "src/**/*.{cjs,js}"],
 	"compilerOptions": {
 		/* Visit https://aka.ms/tsconfig to read more about this file */
 
