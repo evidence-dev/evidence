@@ -50,7 +50,8 @@ export const getStatusAndExtractQueries = function (route) {
 	content = content ? content.toString() : null;
 
 	if (content) {
-		let queries = preprocessor.extractQueries(content.toString());
+		let partialInjectedContent = preprocessor.injectPartials(content.toString());
+		let queries = preprocessor.extractQueries(partialInjectedContent);
 
 		// Handle query chaining:
 		let maxIterations = 15;
