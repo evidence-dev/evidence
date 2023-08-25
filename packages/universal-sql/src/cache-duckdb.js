@@ -6,6 +6,21 @@ const require = createRequire(import.meta.url);
 const { tableToIPC, tableFromIPC } = require('apache-arrow');
 // blocking duckdb-wasm uses cjs and need to have same Table declaration for instanceof
 
+/*
+Caching strategy:
+- SQL string and the corresponding output from that is fed to `cache_for_hash`
+- Additional route and query information is also given
+- If the SQL has not been cached yet, it is written to
+	1. the cache folder, and, if we're building,
+	2. the location sveltekit writes prerendered API routes (`prerender_path`)
+
+- The SQL string and hash of the resulting arrow table are then written to a route-specific _queries.json
+  which will be used when we're refreshing routes in the future (will likely change by then)
+
+- A subset of _queries.json (just query name -> result hash object) is written to a route-specific 
+  `all-queries.json` which is used by `+layout.js` to load the prerendered data
+*/
+
 /** @type {typeof writeFileSync} */
 const writeToPossiblyNonexistentFile = (path, data) => {
 	mkdirSync(dirname(path), { recursive: true });
