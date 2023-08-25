@@ -44,45 +44,26 @@ export const load = async ({
 
 	// let SSR saturate the cache first
 	if (browser && isUserPage) {
-		const page_queries_promise = Promise.all(
-			evidencemeta.queries?.map(async ({ id, compiledQueryString }) => {
-				// see explanation below
-				const additional_hash = /\${.*?}/s.test(compiledQueryString) ? paramsHash : routeHash;
-
-				const res = await fetch(`/api/${routeHash}/${additional_hash}/${id}.arrow`);
-				if (!res.ok) return;
-
-				const table = await tableFromIPC(res);
-				data[id] = arrowTableToJSON(table);
-			}) ?? []
-		);
-
-		const component_queries_promise = (async () => {
+		const queries_promise = (async () => {
 			// get every query that's run in the component
-			const res = await fetch(`/api/${routeHash}/all-queries.json`);
+			const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
 			if (!res.ok) return;
-			const arr = await res.json();
-
-			// remove all the queries that are already in evidencemeta.queries
-			// because they will be fetched in page_queries_promise
-			const set = new Set(arr);
-			evidencemeta.queries?.forEach(({ id }) => set.delete(id));
-			const component_queries = Array.from(set);
+			const sql_cache_with_hashed_query_strings = await res.json();
 
 			return Promise.all(
-				component_queries.map(async (query_name) => {
-					// we have no way of knowing if page parameters are used in component queries
-					// so they should always use paramsHash
-					const res = await fetch(`/api/${routeHash}/${paramsHash}/${query_name}.arrow`);
-					if (!res.ok) return;
+				Object.entries(sql_cache_with_hashed_query_strings).map(
+					async ([query_name, query_hash]) => {
+						const res = await fetch(`/api/prerendered_queries/${query_hash}.arrow`);
+						if (!res.ok) return;
 
-					const table = await tableFromIPC(res);
-					data[query_name] = arrowTableToJSON(table);
-				})
+						const table = await tableFromIPC(res);
+						data[query_name] = arrowTableToJSON(table);
+					}
+				)
 			);
 		})();
 
-		await Promise.all([component_queries_promise, page_queries_promise]);
+		await queries_promise;
 	}
 
 	return /** @type {App.PageData} */ ({
@@ -96,20 +77,10 @@ export const load = async ({
 					})();
 				}
 
-				// if the query interpolates variables then we need to make each page
-				// have a unique prerendered query in case it interpolates $page.params
-				// if the query isn't in evidencemeta.queries it's a component query which
-				// is always interpolated, so count that as true
-				const evidencemeta_query = evidencemeta.queries?.find(({ id }) => id === query_name);
-				const additional_hash =
-					evidencemeta_query == undefined || /\${.*?}/s.test(evidencemeta_query.compiledQueryString)
-						? paramsHash
-						: routeHash;
-
 				return callback(
 					query(sql, {
 						route_hash: routeHash,
-						additional_hash,
+						additional_hash: paramsHash,
 						query_name,
 						prerendering: building
 					})
