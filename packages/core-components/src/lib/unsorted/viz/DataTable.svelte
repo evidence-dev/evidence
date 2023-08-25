@@ -18,6 +18,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
+	import InvisibleLinks from '../../atoms/InvisibleLinks.svelte';
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -287,6 +288,14 @@
 
 {#if error === undefined}
 	<slot />
+
+	{#if link}
+		<InvisibleLinks {data} {link} />
+	{/if}
+	{#each $props.columns.filter((column) => column.contentType === 'link') as column}
+		<InvisibleLinks {data} link={column.id} />
+	{/each}
+
 	<div
 		class="table-container"
 		transition:slide|local
@@ -361,9 +370,6 @@
 						class:row-link={link != undefined}
 						on:click={() => handleRowClick(row[link])}
 					>
-						{#if link}
-							<a style="display:none;" href={row[link]}>{row[link]}</a>
-						{/if}
 						{#if rowNumbers}
 							<td
 								class="index"
