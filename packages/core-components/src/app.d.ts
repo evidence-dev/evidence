@@ -6,13 +6,31 @@ declare global {
 		// interface Locals {}
 		interface PageData {
 			__db: {
-				query(
+				/**
+				 *
+				 * @param query - the SQL query to execute
+				 * @param options - an object providing optional functionality.
+				 *
+				 * Supplying `query_name` will cause the query's results to be available on the page as `data[query_name]`.
+				 *
+				 * Supplying `callback` will run the callback synchronously with the results on the server, and asynchronously on the client.
+				 * - `callback` is run as the results are being returned from the query - `return callback(results)`
+				 * - This allows for less duplicated code to account for the two runtimes
+				 * - `callback` defaults to the identity function, `(x) => x`
+				 */
+				query<T = Record<string, unknown>[]>(
 					query: string,
 					options?: {
 						query_name?: string;
-						callback?: (results: Record<string, unknown>[]) => unknown;
 					}
-				): void;
+				): T | Promise<T>;
+				query<T>(
+					query: string,
+					options: {
+						query_name?: string;
+						callback: (results: Record<string, unknown>[]) => T;
+					}
+				): T | Promise<T>;
 				/**
 				 * Waits for database to finish loading
 				 * This includes fetching `manifest.json`, intitializing the WASM and WebWorker
