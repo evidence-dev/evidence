@@ -44,11 +44,7 @@
 	$: selected = data[0]?.value;
 	$: $inputs[name] = selected;
 
-	/*
-	initial query when db is still loading awaits `database_initialization`, so dummy query works 
-	fine as a substitute for weird export stuff
-	*/
-	let loadingDuckDB = browser;
+	let loadingDuckDB = false;
 	$: browser && db.load().then(() => (loadingDuckDB = false));
 </script>
 
