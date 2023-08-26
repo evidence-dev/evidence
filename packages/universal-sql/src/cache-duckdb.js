@@ -39,7 +39,7 @@ function getCacheFolder(route_hash, additional_hash) {
  * @returns {string}
  */
 function hash(buffer) {
-	return createHash('sha-1').update(buffer).digest('hex');
+	return createHash('md5').update(buffer).digest('hex');
 }
 
 /**
