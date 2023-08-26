@@ -44,7 +44,7 @@
 	$: selected = data[0]?.value;
 	$: $inputs[name] = selected;
 
-	let loadingDuckDB = false;
+	let loadingDuckDB = true;
 	$: browser && db.load().then(() => (loadingDuckDB = false));
 </script>
 
