@@ -25,7 +25,7 @@ export async function GET() {
 		.catch(() => false);
 
 	// If we can't find a pages directory, we should abort
-	if (!srcExists && !pagesExists) throw new error(500, './src/pages and ./pages both missing.');
+	if (!srcExists && !pagesExists) throw error(500, './src/pages and ./pages both missing.');
 
 	// trunc to the pages directory
 	const pagesDir = (srcExists ? srcPath : pagesPath).split('pages')[0] + 'pages';
@@ -51,7 +51,7 @@ export async function GET() {
 			if (!route.startsWith('/')) route = `/${route}`;
 
 			// Read the contents of the file
-			const fileContent = await fs.readFile(pageFilepath).then((r) => r.toString());
+			const fileContent = await fs.readFile(pageFilepath, 'utf-8');
 
 			// Exec the preprocessing step to ensure that we don't drop stuff from partials
 			const preprocessedContent = await sveltePreprocess(fileContent, preprocess(), {
@@ -81,5 +81,5 @@ export async function GET() {
 
 	const manifest = await getDirPages(pagesDir);
 
-	return new Response(JSON.stringify(manifest, null, 2).replaceAll('\\n', '\n'));
+	return new Response(JSON.stringify(manifest)
 }
