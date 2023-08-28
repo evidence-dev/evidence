@@ -33,37 +33,41 @@ const initDb = async () => {
 
 const database_initialization = profile(initDb);
 
+/** @type {(...params: Parameters<import("./$types").LayoutLoad>) => Promise<App.PageData["data"]>} */
+async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch }) {
+	// get every query that's run in the component
+	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
+	if (!res.ok) return {};
+
+	const sql_cache_with_hashed_query_strings = await res.json();
+
+	const resolved_entries = await Promise.all(
+		Object.entries(sql_cache_with_hashed_query_strings).map(async ([query_name, query_hash]) => {
+			const res = await fetch(`/api/prerendered_queries/${query_hash}.arrow`);
+			if (!res.ok) return null;
+
+			const table = await tableFromIPC(res);
+			return [query_name, arrowTableToJSON(table)];
+		})
+	);
+
+	return Object.fromEntries(resolved_entries.filter(Boolean));
+}
+
 /** @satisfies {import("./$types").LayoutLoad} */
-export const load = async ({
-	fetch,
-	data: { customFormattingSettings, routeHash, paramsHash, isUserPage, evidencemeta }
-}) => {
+export const load = async (event) => {
+	const {
+		data: { customFormattingSettings, routeHash, paramsHash, isUserPage, evidencemeta }
+	} = event;
+
 	if (!browser) await database_initialization;
 
-	const data = {};
+	/** @type {App.PageData["data"]} */
+	let data = {};
 
 	// let SSR saturate the cache first
 	if (browser && isUserPage) {
-		const queries_promise = (async () => {
-			// get every query that's run in the component
-			const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
-			if (!res.ok) return;
-			const sql_cache_with_hashed_query_strings = await res.json();
-
-			return Promise.all(
-				Object.entries(sql_cache_with_hashed_query_strings).map(
-					async ([query_name, query_hash]) => {
-						const res = await fetch(`/api/prerendered_queries/${query_hash}.arrow`);
-						if (!res.ok) return;
-
-						const table = await tableFromIPC(res);
-						data[query_name] = arrowTableToJSON(table);
-					}
-				)
-			);
-		})();
-
-		await queries_promise;
+		data = await getPrerenderedQueries(event);
 	}
 
 	return /** @type {App.PageData} */ ({
