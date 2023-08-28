@@ -388,6 +388,12 @@
 
 						{#if $props.columns.length > 0}
 							{#each $props.columns as column}
+								{@const column_min =
+									column.colorMin ?? safeExtractColumn(column).columnUnitSummary.min}
+								{@const column_max =
+									column.colorMax ?? safeExtractColumn(column).columnUnitSummary.max}
+								{@const is_nonzero =
+									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 								<td
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
@@ -396,6 +402,11 @@
                       						height: {column.height};
                       						width: {column.width};
 											white-space: {column.wrap ? 'normal' : 'nowrap'};
+											{column.contentType === 'colorscale' && is_nonzero
+										? ` background-color: ${column.useColor} ${
+												(row[column.id] - column_min) / (column_max - column_min)
+										  })`
+										: ''}
                   "
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
