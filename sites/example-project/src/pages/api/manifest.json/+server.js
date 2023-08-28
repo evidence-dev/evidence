@@ -37,8 +37,6 @@ export async function GET() {
 		// Get directory contents
 		const dirContent = await fs.readdir(dirPath, { withFileTypes: true });
 		const output = {};
-		if (!dirPath.includes('queries') && !dirContent.some((d) => d.name === 'queries'))
-			return output;
 
 		if (dirContent.some((d) => d.name === '+page.md')) {
 			// Get the web url of the route
