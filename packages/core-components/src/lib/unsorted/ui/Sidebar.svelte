@@ -4,6 +4,7 @@
 	export let fileTree;
 	import { fly, fade } from 'svelte/transition';
 	import { lock, unlock } from 'tua-body-scroll-lock';
+	import { afterUpdate } from 'svelte';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
@@ -11,17 +12,18 @@
 	export let mobileSidebarOpen = false;
 
 	// prevent scrolling of the underlying when the mobile sidebar is open
-	const toggleScrollLock = (mobileSidebarOpen) => {
-		if (browser) {
+	afterUpdate(() => {
+		// afterupdate ensures that the mobileScrollable div is mounted before we lock everything else
+		if(browser) {
+			let scrollableElement = document.querySelector('#mobileScrollable');	
 			if (!mobileSidebarOpen) {
-				unlock(); // unlock body scroll
+				unlock(scrollableElement); // unlock body scroll
 			} else {
-				lock(); // lock body scroll
+				lock(scrollableElement); // lock body scroll
 			}
 		}
-	};
+	});
 
-	$: toggleScrollLock(mobileSidebarOpen);
 </script>
 
 {#if mobileSidebarOpen}
@@ -67,7 +69,10 @@
 					</button>
 				</span>
 			</div>
-			<div class="flex-grow px-8 h-[calc(100vh-8rem)] overflow-auto text-base sm:text-sm">
+			<div
+				class="flex-grow px-8 sm:pb-0 pb-4 h-[calc(100vh-8rem)] overflow-auto text-base sm:text-sm pretty-scrollbar"
+				id="mobileScrollable"
+			>
 				<div class="flex flex-col pb-6">
 					<a
 						class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
