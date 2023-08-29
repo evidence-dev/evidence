@@ -317,7 +317,7 @@
 	}
 
 	th.type-indicator {
-		@apply text-gray-500 font-normal; 
+		@apply text-gray-400 font-normal; 
 	}
 
 	tr.type-indicator {
