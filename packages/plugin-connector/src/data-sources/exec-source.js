@@ -1,7 +1,8 @@
-import { buildParquetFromResultSet } from '@evidence-dev/universal-sql';
+import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import fs from 'fs/promises';
 import path from 'path';
 import { performance } from 'perf_hooks';
+import { z } from 'zod';
 
 /**
  * @param {DatasourceSpec} source
@@ -15,6 +16,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		throw new Error(`Unsupported database type: ${source.type}`);
 	}
 
+	const batchSize = 100 * 100 * 10; // 1 mil
 	const db = supportedDbs[source.type];
 	const runner = await db.factory(source.options, source.sourceDirectory);
 
@@ -22,40 +24,74 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	/** @type {Set<string>} */
 	const outputFilenames = new Set();
 
-	const sourceBefore = performance.now()
+	const sourceBefore = performance.now();
 	for (const query of source.queries) {
 		const filename = query.filepath.split(path.sep).pop();
 		console.log(` >| Executing ${filename}`);
-		const before = performance.now();
-		const result = await runner(query.content, query.filepath);
-		console.log(
-			` || Executed ${filename} (took ${(performance.now() - before).toFixed(2)}ms)`
-		);
-		if (!result) {
-			console.log(
-				` <| Finished ${filename}. Returned no results! (took ${(performance.now() - before).toFixed(2)}ms)\n`
-			);		
-			continue
+		const beforeQuery = performance.now();
+
+		let result;
+		try {
+			const _r = runner(query.content, query.filepath, batchSize);
+			if (_r instanceof Promise) {
+				result = await _r.catch((e) => {
+					if (e instanceof z.ZodError) console.log(e.format());
+					else console.log(e);
+					return null;
+				});
+			} else result = _r;
+		} catch (e) {
+			if (e instanceof z.ZodError)
+				console.log(/**@type {Error & { format: () => any}}*/ (e).format());
+			else console.log(e);
+			result = null;
 		}
 
-		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
+		console.log(` || Executed ${filename} (took ${(performance.now() - beforeQuery).toFixed(2)}ms)`);
+		if (!result) {
+			console.log(
+				` <| Finished ${filename}. Returned no results! (took ${(
+					performance.now() - beforeQuery
+				).toFixed(2)}ms)\n`
+			);
+			continue;
+		}
 
 		const queryDirectory = path.dirname(query.filepath);
 		const sourcesPath = path.dirname(source.sourceDirectory);
 		const outputSubdir = queryDirectory.replace(sourcesPath, '');
-
-		outputFilenames.add(
-			new URL(`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`).pathname
-		);
+		const outputFilename = new URL(
+			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
+		).pathname;
+		console.log(` || Writing ${filename} results to disk`);
+		const beforeFile = performance.now()
 		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
-		await fs.writeFile(path.join(outDir, outputSubdir, query.name + '.parquet'), parquetBuffer);
+
+		const rows = /** @type {any[] | Generator<any[]>} */ (result.rows);
+
+		if (result?.expectedRowCount ?? 0 > 1000000) {
+			console.warn(` || ${filename} is expected to return ~${result.expectedRowCount?.toLocaleString()} rows. This may take some time!`)
+		}
+		const writtenRows = await buildMultipartParquet(result.columnTypes, rows, outputFilename, batchSize);
+		if (!writtenRows) {
+			console.log(
+				` <| Finished ${filename}. No rows returned, did not create parquet file (took ${(
+					performance.now() - beforeQuery
+				).toFixed(2)}ms)\n`
+			);
+			continue;
+		}
+		outputFilenames.add(outputFilename);
 		await fs.writeFile(
 			path.join(outDir, outputSubdir, query.name + '.schema.json'),
 			JSON.stringify(result.columnTypes)
 		);
+		console.log(` || Wrote ${filename} results (took ${(performance.now() - beforeFile).toFixed(2)}ms)`)
 
 		console.log(
-			` <| Finished ${filename} Returned ${result?.rows.length} rows. (took ${(performance.now() - before).toFixed(2)}ms)\n`
+			` <| Finished ${filename} Returned ${writtenRows} rows. (took ${(
+				performance.now() - beforeQuery
+			).toFixed(2)}ms)\n`
 		);
 	}
 

@@ -10,7 +10,8 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:^",
-		"pg": "8.7.1"
+		"pg": "^8.11.3",
+		"pg-cursor": "^2.10.3"
 	},
 	"devDependencies": {
 		"@types/pg": "^8.10.2"

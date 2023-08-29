@@ -1,6 +1,7 @@
 const pg = require('pg');
 const { Pool } = pg;
 const { EvidenceType, getEnv, TypeFidelity } = require('@evidence-dev/db-commons');
+const Cursor = require('pg-cursor');
 
 const envMap = {
 	host: [
@@ -153,7 +154,7 @@ const standardizeResult = (result) => {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<PostgresOptions>} */
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database, batchSize) => {
 	try {
 		const credentials = {
 			user: database ? database.user : getEnv(envMap, 'user'),
@@ -195,12 +196,36 @@ const runQuery = async (queryString, database) => {
 				client.query(`SET search_path TO ${schema}`);
 			});
 		}
-		/** @type {pg.QueryResult} */
-		const result = await pool.query(queryString);
 
-		const standardizedRows = standardizeResult(result.rows);
 
-		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(result) };
+		const connection = await pool.connect();
+		try {
+			const lengthQuery = await connection.query(`
+WITH root as (${queryString}) SELECT COUNT(*) as rows FROM root
+			`)
+			const rowCount = lengthQuery.rows[0].rows
+
+			const cursor = connection.query(new Cursor(queryString));
+
+			const rowsPerBatch = batchSize ?? 100000;
+			const firstBatch = await cursor.read(rowsPerBatch);
+
+			return {
+				rows: async function* () {
+					yield firstBatch;
+					let results;
+					while ((results = await cursor.read(rowsPerBatch)) && results.length > 0) yield results;
+					connection.release();
+					pool.end();
+				},
+				columnTypes: mapResultsToEvidenceColumnTypes(cursor._result),
+				expectedRowCount: rowCount
+			};
+		} catch (e) {
+			await connection.release();
+			await pool.end();
+			throw e;
+		}
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
@@ -226,9 +251,9 @@ module.exports = runQuery;
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<PostgresOptions>} */
 module.exports.getRunner = async (opts) => {
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, opts, batchSize);
 	};
 };

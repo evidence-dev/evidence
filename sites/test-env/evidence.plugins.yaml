@@ -4,3 +4,4 @@ databases:
     @evidence-dev/duckdb: { }
     @evidence-dev/faker-datasource: { }
     @evidence-dev/csv: { }
+    @evidence-dev/postgres: { }
