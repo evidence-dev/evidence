@@ -180,28 +180,15 @@
 	}
 
 	table.markdown {
-		min-width: 100%;
-		font-size: 0.75em;
-		border-collapse: collapse;
-		font-family: var(--ui-font-family);
-		text-align: center;
-		margin: 1em auto 1.5em auto;
+		@apply min-w-full  border-collapse text-center mx-auto my-5;
 	}
 
-	table.markdown th.markdown {
-		font-weight: 600;
-		border-bottom: 1px solid var(--grey-800);
-		padding: 0 8px;
-		text-overflow: ellipsis;
-		overflow: hidden;
+	th.markdown {
+		@apply text-sm text-gray-800 font-medium border-b border-gray-800 py-0 px-2 text-ellipsis overflow-hidden;
 	}
 
-	table.markdown td.markdown {
-		max-width: 1px;
-		padding: 4px 8px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		/* border: 1px solid var(--grey-200); */
+	td.markdown {
+		@apply text-sm text-gray-800 py-1 px-2 overflow-hidden text-ellipsis; 
 	}
 }
 
