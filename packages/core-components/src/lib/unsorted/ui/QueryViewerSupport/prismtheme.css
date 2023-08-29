@@ -1,13 +1,11 @@
 code[class*='language-'],
 pre[class*='language-'] {
+	@apply font-mono text-gray-800; 
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;
 	word-break: normal;
 	word-wrap: normal;
-	color: var(--grey-800);
-	font-family: 'monoco', Roboto Mono, monospace;
-	/* font-family:'Courier New', Courier, monospace; */
 	line-height: 1.5em;
 
 	-moz-tab-size: 4;
@@ -164,8 +162,9 @@ pre[class*='language-'] {
 }
 
 .token.punctuation {
-	color: #a3c7d9;
+	/* color: #a3c7d9; */
 	/* color: #39adb5; */
+	@apply text-gray-600;
 }
 
 .token.regex {
@@ -177,7 +176,7 @@ pre[class*='language-'] {
 }
 
 .token.string {
-	color: #f6a434;
+	color: #e89521;
 }
 
 .token.symbol {
