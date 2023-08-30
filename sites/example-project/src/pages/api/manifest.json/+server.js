@@ -1,7 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
 import preprocess from '@evidence-dev/preprocess';
-import { preprocess as sveltePreprocess } from 'svelte/compiler';
 import { error } from '@sveltejs/kit';
 
 export const prerender = true;
@@ -52,17 +51,13 @@ export async function GET() {
 			const fileContent = await fs.readFile(pageFilepath, 'utf-8');
 
 			// Exec the preprocessing step to ensure that we don't drop stuff from partials
-			const preprocessedContent = await sveltePreprocess(fileContent, preprocess(), {
-				filename: pageFilepath
-			}).then((r) => `\n${r.code}`);
-
 			// Construct metadata
 			output.__page = {
 				path: route,
 				// Object matching the frontmatter on the page; may or may not exist
 				frontMatter: preprocess.parseFrontmatter(fileContent),
 				// Retrive all queries from the page, this will always be an array
-				queries: preprocess.extractQueries(preprocessedContent, pageFilepath),
+				queries: preprocess.extractQueries(preprocess.injectPartials(fileContent), pageFilepath),
 				content: fileContent
 			};
 		}
@@ -79,5 +74,5 @@ export async function GET() {
 
 	const manifest = await getDirPages(pagesDir);
 
-	return new Response(JSON.stringify(manifest)
+	return new Response(JSON.stringify(manifest));
 }
