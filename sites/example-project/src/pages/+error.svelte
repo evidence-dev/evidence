@@ -19,7 +19,7 @@
 <h1 class="my-0 py-0">Error: {$page.status}</h1>
 {#if $page.status === 404}
 	
-	<h2 class="my-0 py-0">Page Not Found</h2>
+	<h2 class="mt-0 mb-8 py-0">Page Not Found</h2>
 	<p>
 		The page <span class="font-mono text-base bg-gray-200">{$page.url.pathname}</span> does not exist in this project.
 	</p>
