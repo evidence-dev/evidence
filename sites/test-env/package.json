@@ -16,10 +16,10 @@
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
-		"@evidence-dev/csv": "workspace:1.0.0-usql.3",
+		"@evidence-dev/csv": "workspace:^",
 		"@evidence-dev/duckdb": "workspace:^",
 		"@evidence-dev/evidence": "workspace:^",
 		"@evidence-dev/faker-datasource": "workspace:^",
-		"@evidence-dev/postgres": "workspace:1.0.0-usql.1"
+		"@evidence-dev/postgres": "workspace:^"
 	}
 }

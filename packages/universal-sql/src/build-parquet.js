@@ -14,10 +14,9 @@ import path from 'path';
 // relative addressing (e.g. ./client-duckdb/node.js) doesn't work
 import { initDB, query } from '@evidence-dev/universal-sql/client-duckdb';
 import { isGeneratorObject } from 'util/types';
-import chunk from "lodash.chunk"
+import chunk from 'lodash.chunk';
 
 /**
- *
  * @param {string} type
  * @param {any[]} rawValues
  * @returns {import("apache-arrow").Vector}
@@ -48,41 +47,49 @@ function convertArrayToVector(type, rawValues) {
  * @param {Generator<T[] | Promise<T[]> | T[] | Promise<T[]>} data
  * @param {string} outputFilename
  * @param {number} [batchSize]
- * @returns {Promise<number>} Number of rows written
+ * @returns {Promise<number>} Number of rows
  */
-export async function buildMultipartParquet(columns, data, outputFilename, batchSize = 100 * 1) {
-	let currentBatch = [];
+export async function buildMultipartParquet(columns, data, outputFilename, batchSize = 1000000) {
 	let batchNum = 0;
 	const outputPrefix = outputFilename.split('.parquet')[0];
 	let tmpFilenames = [];
 	let rowCount = 0;
 
-	const flush = async () => {
+	const flush = async (results) => {
+		// Convert JS Objects -> Arrow
 		const vectorized = Object.fromEntries(
 			columns.map((c) => [
 				c.name,
 				convertArrayToVector(
 					c.evidenceType,
-					currentBatch.map((i) => i[c.name])
+					results.map((i) => i[c.name])
 				)
 			])
 		);
 		const table = tableFromArrays(vectorized);
-		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
 
+		// Converts the arrow table to a buffer
 		const IPC = tableToIPC(table, 'stream');
 
+		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
+		// Converts the arrow buffer to a parquet buffer
+		// This can be slow; it includes the compression step
+		console.debug(` || Compressing batch ${batchNum}`);
+		const parquetBuffer = writeParquet(IPC, writerProperties);
+
+		console.debug(` || Writing batch ${batchNum} with ${results.length} rows.`);
 		const tempFilename = path.join('.', 'sources', outputPrefix + `.${batchNum++}.parquet`);
-		await fs.writeFile(tempFilename, writeParquet(IPC, writerProperties));
+		await fs.writeFile(tempFilename, parquetBuffer);
+
+		console.debug(` || Batch ${batchNum - 1} written.`);
 		tmpFilenames.push(tempFilename);
-		rowCount += currentBatch.length;
-		currentBatch = [];
+		rowCount += results.length;
 	};
 
 	if (typeof data === 'function') data = data();
 	if (data instanceof Promise) data = await data;
 	// Data is an array, but not a nested one
-	// Wrap it in an array for the sake of simplicity
+	// We expect a set of result sets;
 	if (Array.isArray(data) && !Array.isArray(data[0])) data = [data];
 
 	// Handle generators
@@ -90,50 +97,56 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 	if (isGeneratorObject(data)) {
 		let i;
 		while ((i = await data.next())) {
-			if (i.value) currentBatch.push(...i.value);
-			if (currentBatch.length >= batchSize) await flush();
+			if (i.value) await flush(i.value);
 			if (i.done) break;
 		}
 	} else {
-		for await (const _results of data) {
-			const results = await _results;
-			currentBatch.push(...results);
-			if (currentBatch.length >= batchSize) {
-				// Time to flush
-				await flush();
+		let currentBatch = [];
+		for (const results of data) {
+			// If the array is longer than the batch size; it gets chunked
+			for (const batch of chunk(results, batchSize)) {
+				// Iterate through the split up chunks
+				// Batch them and flush when needed
+				
+				currentBatch = currentBatch.concat(batch);
+				
+				if (currentBatch.length >= batchSize) {
+					// Time to flush
+					await flush(currentBatch);
+					currentBatch = [];
+				}
 			}
 		}
+		// Ensure nothing is left over
+		await flush(currentBatch)
 	}
 
-	// Flush final, incomplete batch
-	if (currentBatch.length) await flush();
-
 	if (!tmpFilenames.length) return 0;
-	
+
 	await initDB();
 
 	while (tmpFilenames.length > 10) {
-		let intermediateFilenames = chunk(tmpFilenames, 10)
-		let newTmpFilenames = []
+		let intermediateFilenames = chunk(tmpFilenames, 10);
+		let newTmpFilenames = [];
 
 		for (const files of intermediateFilenames) {
-			const selectFiles = files.map(f => `SELECT * FROM '${f}'`).join("\nUNION\n")
-			const intermediateFilename = path.join('.', 'sources', outputPrefix + `.intermediate.${batchNum++}.parquet`);
-			const copyToNewTemp = `COPY (${selectFiles}) TO '${intermediateFilename}' (FORMAT 'PARQUET', CODEC 'ZSTD')`
+			const selectFiles = files.map((f) => `SELECT * FROM '${f}'`).join('\nUNION\n');
+			const intermediateFilename = path.join(
+				'.',
+				'sources',
+				outputPrefix + `.intermediate.${batchNum++}.parquet`
+			);
+			const copyToNewTemp = `COPY (${selectFiles}) TO '${intermediateFilename}' (FORMAT 'PARQUET', CODEC 'ZSTD')`;
 			await query(copyToNewTemp);
-			newTmpFilenames.push(intermediateFilename)
+			newTmpFilenames.push(intermediateFilename);
 			for (const file of files) {
-				await fs.rm(file)
+				await fs.rm(file);
 			}
 		}
 
-		tmpFilenames = newTmpFilenames
+		tmpFilenames = newTmpFilenames;
 	}
 
-	
-
-	
-	
 	const select = tmpFilenames.map((filename) => `SELECT * FROM '${filename}'`).join('\nUNION\n');
 	const copy = `COPY (${select}) TO '${path.join(
 		'.',
@@ -141,33 +154,11 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 		'data',
 		outputFilename
 	)}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
-	
+
 	await query(copy);
 
 	for (const tmpFile of tmpFilenames) {
 		await fs.rm(tmpFile);
 	}
 	return rowCount;
-}
-
-/**
- * Constructs a Buffer from provided table metadata
- * @param {{name: string, evidenceType: string}[]} columns
- * @param {any[]} data
- * @returns {Promise<Uint8Array>}
- */
-export async function buildParquetFromResultSet(columns, data) {
-	const m = columns.map((c) => {
-		const rawValues = data.map((d) => d[c.name] ?? `Null`);
-
-		return [c.name, convertArrayToVector(c.evidenceType, rawValues)];
-	});
-
-	const t = tableFromArrays(Object.fromEntries(m));
-
-	const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
-
-	const IPC = tableToIPC(t, 'stream');
-
-	return writeParquet(IPC, writerProperties);
 }
