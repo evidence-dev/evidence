@@ -14,6 +14,8 @@
 		}
 		return output;
 	};
+
+	$: expanded = expand($page.error);
 </script>
 
 <h1 class="my-0 py-0">Error: {$page.status}</h1>
@@ -26,12 +28,11 @@
 {:else if $page.status === 500}
 	<h2 class="mt-0 mb-8 py-0">Application Error</h2>
 
-	{@const e = $page.error}
-	{#if e.message} <p class="font-mono text-sm bg-gray-200 px-2 py-2">{e.message}</p>{/if}
-	{#if e.stack || e.cause}
+	{#if $page.error.message}
+		<p class="font-mono text-sm bg-gray-200 px-2 py-2">{$page.error.message}</p>{/if}
+	{#if $page.error.stack || $page.error.cause}
 		<Accordion>
 			<AccordionItem title="Error Details">
-				{@const expanded = expand(e)}
 				<div class="relative">
 					<span class="absolute top-2 right-2">
 						<CopyButton textToCopy={expanded} />
