@@ -62,15 +62,31 @@ const envMap = {
 };
 
 const importDBAdapter = async function (settings) {
+	let databaseType;
 	try {
-		const databaseType = settings ? settings.database : getEnv(envMap, 'databaseType');
-		const { default: runQuery } = await import('@evidence-dev/' + databaseType);
-		return runQuery;
+		databaseType = settings ? settings.database : getEnv(envMap, 'databaseType');
 	} catch {
-		const runQuery = async function () {
-			throw 'Missing database credentials';
+		// fall through
+	}
+	if (!databaseType) {
+		return async function () {
+			throw "Couldn't find variable specifying database type; set the EVIDENCE_DATABASE environment variable, or specify a database in settings.";
 		};
-		return runQuery;
+	}
+
+	try {
+		const adapter = await import(`@evidence-dev/${databaseType}`);
+		return adapter.default;
+	} catch (e) {
+		return async function () {
+			if (e.message?.startsWith('Cannot find package')) {
+				throw `No database adapter found for ${databaseType}. Double-check spelling, or ask for help on Slack.`;
+			} else if (e.message) {
+				throw e.message;
+			} else {
+				throw `Unknown error occurred. Information for support: ${JSON.stringify(e)}`;
+			}
+		};
 	}
 };
 
