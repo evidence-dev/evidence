@@ -14,6 +14,7 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
+	import InvisibleLinks from '$lib/atoms/InvisibleLinks.svelte';
 
 	export let data = undefined;
 
@@ -264,11 +265,7 @@
 	<EChartsMap {config} {data} {hasLink} />
 
 	{#if link}
-		{#each data as row}
-			{#if row[link] !== undefined}
-				<a href={row[link]} style="display: none;">{row[link]}</a>
-			{/if}
-		{/each}
+		<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />
