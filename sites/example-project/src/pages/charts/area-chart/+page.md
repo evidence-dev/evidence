@@ -19,6 +19,15 @@ x=month
 lineColor=red
 />
 
+## Area with Step Line
+
+<AreaChart
+data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+x=month
+step=true
+stepPosition=middle
+/>
+
 ## Stacked Area
 
 <AreaChart 
