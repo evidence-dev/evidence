@@ -1,9 +1,9 @@
 ```sql state_current
-select "CA" as state, "2022-12" as month, 198 as value, "states/CA" as state_link
+select 'CA' as state, '2022-12' as month, 198 as value, '/states/CA' as state_link
 union all
-select "NY" as state, "2022-12" as month, 321 as value, "states/NY" as state_link
+select 'NY' as state, '2022-12' as month, 321 as value, '/states/NY' as state_link
 union all
-select "TX" as state, "2022-12" as month, 321 as value, "states/TX" as state_link
+select 'TX' as state, '2022-12' as month, 321 as value, '/states/TX' as state_link
 ```
 
 ```sql most_recent_month
