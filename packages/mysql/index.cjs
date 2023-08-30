@@ -27,6 +27,12 @@ const envMap = {
 		{ key: 'user', deprecated: true },
 		{ key: 'USER', deprecated: true }
 	],
+	password: [
+		{ key: 'EVIDENCE_MYSQL_PASSWORD', deprecated: false },
+		{ key: 'MYSQL_PASSWORD', deprecated: false },
+		{ key: 'password', deprecated: true },
+		{ key: 'PASSWORD', deprecated: true }
+	],
 	socketPath: [
 		{ key: 'EVIDENCE_MYSQL_SOCKETPATH', deprecated: false },
 		{ key: 'MYSQL_SOCKETPATH', deprecated: false },
