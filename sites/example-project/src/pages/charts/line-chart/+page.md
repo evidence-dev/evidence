@@ -92,7 +92,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 
 <LineChart data={simpler_bar} x=year y=value series=country/>
 
-## Muliple y Column Line
+## Multiple y Column Line
 
 <LineChart data={orders_by_month} x=month y={["sales_usd0k","num_orders_num0"]}/>
 
@@ -103,3 +103,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ## Multi-Series Line with Custom Height
 
 <LineChart data={simpler_bar} x=year y=value series=country chartAreaHeight=380/>
+
+## Multi-Series Line with Steps
+
+<LineChart data={simpler_bar} x=year y=value series=country step=true/>
