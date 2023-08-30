@@ -9,7 +9,7 @@ The easiest way to get started with Evidence is to use the VSCode Extension.
 
 ## VSCode Extension
 
-1. Download Evidence from the VSCode Marketplace
+1. Install Evidence from the VSCode Marketplace
 2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project`
 3. Click `Start Evidence` in the bottom status bar
 
@@ -17,22 +17,8 @@ The easiest way to get started with Evidence is to use the VSCode Extension.
 The template project running in your browser contains a tutorial on how to use Evidence.
 
 <a class="external" href="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">
-Download VSCode Extension
+Install VSCode Extension
 </a>
-
-## System Requirements
-
-Evidence requires:
-
-- **Node.js** `Version 16.14` or higher
-- **NPM** `Version 7` or higher
-
-Check your versions with `node -v` and `npm -v`
-
-- Update to the latest npm version with `npm install -g npm@latest`
-
-<a class="external" href="https://nodejs.org/en/download">Download Node.js + NPM</a>
-
 
 ## Other Options
 
@@ -83,3 +69,7 @@ Create Evidence Codespace
 <p class="standard-margin">See our <a href="https://github.com/evidence-dev/docker-devenv">Docker Development Environment repository</a> for instructions.</p>
 </TabItem>
 </Tabs>
+
+## System Requirements
+
+See [system requirements page](/guides/system-requirements).

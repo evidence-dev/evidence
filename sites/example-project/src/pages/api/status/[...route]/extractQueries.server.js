@@ -46,65 +46,58 @@ const updateDirectoriesandStatus = function (queries, routeHash) {
 export const getStatusAndExtractQueries = function (route) {
 	let routeHash = md5(route);
 	let fileRoute = `./src/pages/${route}/+page.md`;
-	let content = fs.readFileSync(fileRoute);
-	content = content ? content.toString() : null;
+	let content = fs.readFileSync(fileRoute, 'utf-8');
 
-	if (content) {
-		let queries = preprocessor.extractQueries(content.toString());
+	let partialInjectedContent = preprocessor.injectPartials(content);
+	let queries = preprocessor.extractQueries(partialInjectedContent);
 
-		// Handle query chaining:
-		let maxIterations = 15;
-		let queryIds = queries.map((d) => d.id);
+	// Handle query chaining:
+	let maxIterations = 15;
+	let queryIds = queries.map((d) => d.id);
 
-		for (let i = 0; i <= maxIterations; i++) {
-			queries.forEach((query) => {
-				let references = query.compiledQueryString.match(/\${.*?\}/gi);
-				if (references) {
-					query.compiled = true;
-					references.forEach((reference) => {
-						try {
-							let referencedQueryID = reference.replace('${', '').replace('}', '').trim();
-							if (!queryIds.includes(referencedQueryID)) {
-								let errorMessage =
-									'Compiler error: ' +
-									(referencedQueryID === ''
-										? 'missing query reference'
-										: "'" + referencedQueryID + "'" + ' is not a query on this page');
-								throw new Error(errorMessage);
-							} else if (i >= maxIterations) {
-								throw new Error(circularRefErrorMsg);
-							} else {
-								const referencedQuery = queries.filter((d) => d.id === referencedQueryID)[0];
-								if (!query.inline && referencedQuery.inline) {
-									throw new Error(
-										`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`
-									);
-								}
-								const queryString = `(${referencedQuery.compiledQueryString})`;
-								query.compiledQueryString = query.compiledQueryString.replace(
-									reference,
-									queryString
+	for (let i = 0; i <= maxIterations; i++) {
+		queries.forEach((query) => {
+			let references = query.compiledQueryString.match(/\${.*?\}/gi);
+			if (references) {
+				query.compiled = true;
+				references.forEach((reference) => {
+					try {
+						let referencedQueryID = reference.replace('${', '').replace('}', '').trim();
+						if (!queryIds.includes(referencedQueryID)) {
+							let errorMessage =
+								'Compiler error: ' +
+								(referencedQueryID === ''
+									? 'missing query reference'
+									: "'" + referencedQueryID + "'" + ' is not a query on this page');
+							throw new Error(errorMessage);
+						} else if (i >= maxIterations) {
+							throw new Error(circularRefErrorMsg);
+						} else {
+							const referencedQuery = queries.filter((d) => d.id === referencedQueryID)[0];
+							if (!query.inline && referencedQuery.inline) {
+								throw new Error(
+									`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`
 								);
 							}
-						} catch (_e) {
-							// if error is unknown use default circular ref. error
-							const e =
-								_e.message === undefined || _e.message === null ? Error(circularRefErrorMsg) : _e;
-							query.compileError = e.message;
-							query.compiledQueryString = e.message;
-							// if build is strict and we detect an error, force a failure
-							if (strictBuild) {
-								throw new Error(e.message);
-							}
+							const queryString = `(${referencedQuery.compiledQueryString})`;
+							query.compiledQueryString = query.compiledQueryString.replace(reference, queryString);
 						}
-					});
-				}
-			});
-		}
-
-		let queryStatus = updateDirectoriesandStatus(queries, routeHash);
-		return queryStatus;
-	} else {
-		return [{}]; // a little jank
+					} catch (_e) {
+						// if error is unknown use default circular ref. error
+						const e =
+							_e.message === undefined || _e.message === null ? Error(circularRefErrorMsg) : _e;
+						query.compileError = e.message;
+						query.compiledQueryString = e.message;
+						// if build is strict and we detect an error, force a failure
+						if (strictBuild) {
+							throw new Error(e.message);
+						}
+					}
+				});
+			}
+		});
 	}
+
+	let queryStatus = updateDirectoriesandStatus(queries, routeHash);
+	return queryStatus;
 };
