@@ -1,13 +1,12 @@
 {
 	"name": "@evidence-dev/universal-sql",
-	"version": "2.0.0-usql.7",
+	"version": "2.0.0-usql.8",
 	"description": "",
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"main": "./src/index.js",
 	"scripts": {
-		"build": "tsc ./src/index.js --d --emitDeclarationOnly --allowJs",
 		"check": "tsc ./src/index.js --d --emitDeclarationOnly --allowJs"
 	},
 	"type": "module",

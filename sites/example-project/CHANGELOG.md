@@ -1,5 +1,20 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.19
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [7c8a9f9d]
+- Updated dependencies [afbb50fc]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/plugin-connector@2.0.0-usql.15
+  - @evidence-dev/core-components@2.0.0-usql.10
+  - @evidence-dev/duckdb@1.0.0-usql.3
+  - @evidence-dev/universal-sql@2.0.0-usql.8
+
 ## 3.0.0-usql.18
 
 ### Patch Changes

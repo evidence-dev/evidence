@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.0-usql.23",
+	"version": "3.0.0-usql.24",
 	"private": true,
 	"scripts": {
 		"build": "evidence build",
@@ -14,11 +14,11 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@evidence-dev/component-utilities": "workspace:",
-		"@evidence-dev/core-components": "workspace:",
-		"@evidence-dev/csv": "workspace:",
-		"@evidence-dev/duckdb": "workspace:",
-		"@evidence-dev/evidence": "workspace:",
-		"@evidence-dev/faker-datasource": "workspace:"
+		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.6",
+		"@evidence-dev/core-components": "workspace:2.0.0-usql.10",
+		"@evidence-dev/csv": "workspace:1.0.0-usql.4",
+		"@evidence-dev/duckdb": "workspace:1.0.0-usql.3",
+		"@evidence-dev/evidence": "workspace:20.0.0-usql.24",
+		"@evidence-dev/faker-datasource": "workspace:2.0.0-usql.1"
 	}
 }

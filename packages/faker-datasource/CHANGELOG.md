@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+
 ## 2.0.0-usql.0
 
 ### Major Changes

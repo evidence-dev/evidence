@@ -1,5 +1,20 @@
 # evidence-test-environment
 
+## 3.0.0-usql.24
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [08b1907f]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/csv@1.0.0-usql.4
+  - @evidence-dev/core-components@2.0.0-usql.10
+  - @evidence-dev/duckdb@1.0.0-usql.3
+  - @evidence-dev/evidence@20.0.0-usql.24
+  - @evidence-dev/faker-datasource@2.0.0-usql.1
+
 ## 3.0.0-usql.23
 
 ### Patch Changes

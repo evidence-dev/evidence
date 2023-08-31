@@ -1,5 +1,15 @@
 # @evidence-dev/csv
 
+## 1.0.0-usql.4
+
+### Patch Changes
+
+- 08b1907f: Ensure ":memory:" is passed as db to duckdb connector
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [20127231]
+  - @evidence-dev/db-commons@0.2.1-usql.1
+  - @evidence-dev/duckdb@1.0.0-usql.3
+
 ## 1.0.0-usql.3
 
 ### Patch Changes
