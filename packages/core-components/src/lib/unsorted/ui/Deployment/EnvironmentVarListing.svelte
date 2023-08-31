@@ -75,7 +75,7 @@
 				credentials.authenticator = settings.credentials.authenticator;
 		}
 		for (const key in credentials) {
-			if (key != 'gitignoreSqlite') {
+			if (!key.startsWith('gitignore')) {
 				let envVar = {
 					name: `EVIDENCE_${settings.database.toUpperCase()}_${key.toUpperCase()}`,
 					value: settings.credentials[key]
