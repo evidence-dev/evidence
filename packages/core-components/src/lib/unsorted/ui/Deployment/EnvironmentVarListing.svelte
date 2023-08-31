@@ -11,7 +11,7 @@
 	if (settings.credentials) {
 		targetEnvVars = [
 			{
-				name: 'DATABASE',
+				name: 'EVIDENCE_DATABASE',
 				value: settings.database
 			}
 		];
@@ -77,7 +77,7 @@
 		for (const key in credentials) {
 			if (key != 'gitignoreSqlite') {
 				let envVar = {
-					name: settings.database.toUpperCase() + '_' + key.toUpperCase(),
+					name: `EVIDENCE_${settings.database.toUpperCase()}_${key.toUpperCase()}`,
 					value: settings.credentials[key]
 				};
 				targetEnvVars.push(envVar);
