@@ -22,20 +22,20 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	/** @type {Set<string>} */
 	const outputFilenames = new Set();
 
-	const sourceBefore = performance.now()
+	const sourceBefore = performance.now();
 	for (const query of source.queries) {
 		const filename = query.filepath.split(path.sep).pop();
 		console.log(` >| Executing ${filename}`);
 		const before = performance.now();
 		const result = await runner(query.content, query.filepath);
-		console.log(
-			` || Executed ${filename} (took ${(performance.now() - before).toFixed(2)}ms)`
-		);
+		console.log(` || Executed ${filename} (took ${(performance.now() - before).toFixed(2)}ms)`);
 		if (!result) {
 			console.log(
-				` <| Finished ${filename}. Returned no results! (took ${(performance.now() - before).toFixed(2)}ms)\n`
-			);		
-			continue
+				` <| Finished ${filename}. Returned no results! (took ${(
+					performance.now() - before
+				).toFixed(2)}ms)\n`
+			);
+			continue;
 		}
 
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
@@ -55,7 +55,9 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		);
 
 		console.log(
-			` <| Finished ${filename} Returned ${result?.rows.length} rows. (took ${(performance.now() - before).toFixed(2)}ms)\n`
+			` <| Finished ${filename} Returned ${result?.rows.length} rows. (took ${(
+				performance.now() - before
+			).toFixed(2)}ms)\n`
 		);
 	}
 
