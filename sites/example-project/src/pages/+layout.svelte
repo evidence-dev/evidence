@@ -8,7 +8,8 @@
 	let fileTree = {
 		label: 'Home',
 		href: '/',
-		children: {}
+		children: {},
+		isTemplated: false
 	};
 	pagePaths.forEach(function (path) {
 		path.split('/').reduce(function (r, e) {
@@ -17,12 +18,14 @@
 				return (r['href'] = href);
 			} else {
 				let label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
+				r.isTemplated = e.includes('[');
 				return (
 					r?.children[e] ||
 					(r.children[e] = {
 						label,
 						children: {},
-						href: undefined
+						href: undefined,
+						isTemplated: false
 					})
 				);
 			}
