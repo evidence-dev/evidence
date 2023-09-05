@@ -102,6 +102,9 @@
 				These credentials will be used when running locally. For your production environment, see
 				the deployment panel.
 			</p>
+			<p>
+				To use the demo database included with the starter template, choose <code>DuckDB</code> and <code>needful_things.duckdb</code>
+			</p>
 			<h3>Connection Type</h3>
 			<select
 				data-test-id="dbConnectionType"
