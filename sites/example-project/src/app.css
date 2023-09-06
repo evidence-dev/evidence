@@ -97,7 +97,6 @@
 				@apply mt-1;
 			}
 		}
-
 	}
 	ol.markdown > li.markdown::marker {
 		@apply text-gray-800;
@@ -106,7 +105,7 @@
 	ul.markdown > li.markdown::marker {
 		@apply text-gray-800;
 	}
-	
+
 	h1.markdown,
 	h2.markdown,
 	h3.markdown,
@@ -117,10 +116,10 @@
 		/* ensure that table of contents links scroll with room for the header */
 	}
 
-    h1.title:first-of-type,
-    h1.markdown:first-of-type {
-        @apply mt-1 mb-2;
-    }
+	h1.title:first-of-type,
+	h1.markdown:first-of-type {
+		@apply mt-1 mb-2;
+	}
 
 	h1.title {
 		/* this is hacky - should instead apply a title class directly when injected in preprocess */
@@ -140,15 +139,15 @@
 	}
 
 	h4.markdown {
-		@apply mt-1 text-sm  font-semibold text-gray-800 ;
+		@apply mt-1 text-sm  font-semibold text-gray-800;
 	}
 
 	h5.markdown {
-		@apply mt-1 text-xs font-semibold  text-gray-800 ;
+		@apply mt-1 text-xs font-semibold  text-gray-800;
 	}
 
 	h6.markdown {
-		@apply mt-1 text-xs text-gray-950 ;
+		@apply mt-1 text-xs text-gray-950;
 	}
 
 	a.markdown {
@@ -160,7 +159,7 @@
 	}
 
 	mark {
-		@apply bg-gradient-to-b px-0.5 from-white via-white rounded to-yellow-200/90 ;
+		@apply bg-gradient-to-b px-0.5 from-white via-white rounded to-yellow-200/90;
 	}
 
 	code.markdown {
@@ -188,7 +187,7 @@
 	}
 
 	td.markdown {
-		@apply text-sm text-gray-800 py-1 px-2 overflow-hidden text-ellipsis; 
+		@apply text-sm text-gray-800 py-1 px-2 overflow-hidden text-ellipsis;
 	}
 }
 

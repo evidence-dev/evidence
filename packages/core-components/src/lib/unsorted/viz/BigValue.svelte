@@ -108,7 +108,7 @@
 	{#if error}
 		<ErrorChart chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm text-gray-600 ">{title}</p>
+		<p class="text-sm text-gray-600">{title}</p>
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">
 			<Value {data} column={value} {fmt} />
 			{#if sparkline}

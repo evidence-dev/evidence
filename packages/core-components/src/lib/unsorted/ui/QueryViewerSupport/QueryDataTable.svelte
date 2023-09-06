@@ -271,7 +271,7 @@
 
 	th {
 		@apply py-0 px-2  font-medium;
-	}	
+	}
 
 	td {
 		padding: 2px 8px;
@@ -317,7 +317,7 @@
 	}
 
 	th.type-indicator {
-		@apply text-gray-400 font-normal; 
+		@apply text-gray-400 font-normal;
 	}
 
 	tr.type-indicator {

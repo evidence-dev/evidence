@@ -1,6 +1,6 @@
 code[class*='language-'],
 pre[class*='language-'] {
-	@apply font-mono text-gray-800; 
+	@apply font-mono text-gray-800;
 	text-align: left;
 	white-space: pre;
 	word-spacing: normal;

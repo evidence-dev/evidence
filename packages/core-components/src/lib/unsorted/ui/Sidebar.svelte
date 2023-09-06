@@ -14,8 +14,8 @@
 	// prevent scrolling of the underlying when the mobile sidebar is open
 	afterUpdate(() => {
 		// afterupdate ensures that the mobileScrollable div is mounted before we lock everything else
-		if(browser) {
-			let scrollableElement = document.querySelector('#mobileScrollable');	
+		if (browser) {
+			let scrollableElement = document.querySelector('#mobileScrollable');
 			if (!mobileSidebarOpen) {
 				unlock(scrollableElement); // unlock body scroll
 			} else {
@@ -23,7 +23,6 @@
 			}
 		}
 	});
-
 </script>
 
 {#if mobileSidebarOpen}
