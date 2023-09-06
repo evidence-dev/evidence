@@ -172,6 +172,11 @@ function applyFormatting(
 			try {
 				if (columnFormat.valueType === 'date' && typeof value === 'string') {
 					typedValue = new Date(standardizeDateString(value));
+				} else if (value instanceof Date) {
+					// "2023-09-06T22:40:43.000Z" minus the Z is interpreted 
+					// as local time
+					// similar in behavior to standardizeDateString
+					typedValue = new Date(value.toISOString().slice(0, -1));
 				} else if (
 					columnFormat.valueType === 'number' &&
 					typeof value !== 'number' &&
