@@ -18,13 +18,23 @@
 	export let row = 0;
 	export let column = null;
 
+	// alias for column
+	export let value = null;
+	$: if (value && column) {
+		console.warn(
+			'Both "value" and "column" were supplied as props to Value. "value" will be ignored.'
+		);
+	}
+	$: column = column ?? value;
+
 	// Placeholder text when data not supplied:
 	export let placeholder = null;
 
 	// Value Formatting:
 	export let fmt = undefined;
+	let format_object;
 
-	let value;
+	let selected_value;
 	let error;
 
 	let columnSummary;
@@ -65,12 +75,12 @@
 						}
 					}
 
-					value = data[row][column];
+					selected_value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
 					if (fmt) {
-						fmt = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+						format_object = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
 					} else {
-						fmt = columnSummary[0].format;
+						format_object = columnSummary[0].format;
 					}
 				} else {
 					throw Error(
@@ -93,7 +103,7 @@
 	>
 {:else if !error}
 	<span>
-		{formatValue(value, fmt)}
+		{formatValue(selected_value, format_object)}
 	</span>
 {:else}
 	<span

@@ -167,6 +167,7 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     tooltipTitle=country
     series=continent
 >
+	<ReferenceLine data={[{ gdp_growth_pct1: 0.101 }]} y=gdp_growth_pct1 />
     <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=grey border=true/>
 </ScatterPlot>
 

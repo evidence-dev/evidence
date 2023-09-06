@@ -1,5 +1,21 @@
 # @evidence-dev/preprocess
 
+## 3.1.1
+
+### Patch Changes
+
+- 9f568270: stop exporting the metadata object from mdsvex frontmatter
+
+## 3.1.0
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
+### Patch Changes
+
+- 75560a31: Consolidate tailwind presets into tailwind package
+
 ## 3.0.1
 
 ### Patch Changes

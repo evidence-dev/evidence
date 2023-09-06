@@ -85,3 +85,7 @@ Charts can include [**annotations**](/components/annotations) using the `Referen
   <ReferenceLine data={target_data} y=target label=name/>
 </LineChart>
 ```
+
+## Custom Components
+
+You can also build your own reusable data viz or UI components in Evidence. See [the Custom Component Guide](/components/custom-components) for more details.

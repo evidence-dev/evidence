@@ -38,6 +38,7 @@
 		align = 'center';
 	}
 	export let wrap = false;
+	wrap = wrap === 'true' || wrap === true;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -56,7 +57,29 @@
 	// Formatting:
 	export let fmt = undefined;
 
-	let options = {
+	// Color Scale:
+	export let colorMax = undefined;
+	export let colorMin = undefined;
+	export let scaleColor = 'green';
+
+	let colorList = {
+		green: 'hsla(129, 33%, 57%,',
+		red: 'hsla(0, 56%, 56%,',
+		blue: 'hsla(198, 56%, 56%,'
+	};
+
+	let useColor = colorList[scaleColor];
+
+	// Delta:
+	export let downIsGood = false;
+	downIsGood = downIsGood === 'true' || downIsGood === true;
+	export let showValue = true;
+	showValue = showValue === 'true' || showValue === true;
+
+	export let deltaSymbol = true;
+	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+
+	$: options = {
 		id: id,
 		title: title,
 		align: align,
@@ -67,11 +90,34 @@
 		alt: alt,
 		openInNewTab: openInNewTab,
 		linkLabel: linkLabel,
-		fmt: fmt
+		fmt: fmt,
+		downIsGood: downIsGood,
+		deltaSymbol: deltaSymbol,
+		showValue: showValue,
+		colorMax: colorMax,
+		colorMin: colorMin,
+		useColor: useColor
 	};
 
-	props.update((d) => {
-		d.columns.push(options);
-		return d;
-	});
+	/**
+	 * Ensures that column props (e.g. title) are reflected in the table's state.
+	 * Without this function, props are only used on first render, and are not reactive
+	 * @returns {void}
+	 */
+	const updateProps = () => {
+		props.update((d) => {
+			const matchingIndex = d.columns.findIndex((c) => c.id === id);
+			if (matchingIndex === -1) {
+				d.columns.push(options);
+			} else {
+				d.columns = [
+					...d.columns.slice(0, matchingIndex),
+					options,
+					...d.columns.slice(matchingIndex + 1)
+				];
+			}
+			return d;
+		});
+	};
+	$: options, updateProps();
 </script>

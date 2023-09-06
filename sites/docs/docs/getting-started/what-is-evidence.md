@@ -8,7 +8,7 @@ breadcrumbs: false
 image: /img/how-it-works.png
 ---
 
-Evidence is a web framework for data analysts. It’s an open source, code-based alternative to drag-and-drop business intelligence tools.
+Evidence is an open source, code-based alternative to drag-and-drop business intelligence tools.
 
 ## Motivation
 

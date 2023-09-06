@@ -1,5 +1,18 @@
 # @evidence-dev/duckdb
 
+## 0.2.0
+
+### Minor Changes
+
+- 134b7d13: Allow connection to MotherDuck
+
+## 0.1.1
+
+### Patch Changes
+
+- 4e783f36: get precise types instead of inferring
+- e12fef6c: Bump DuckDB to 0.8.1
+
 ## 0.1.0
 
 ### Minor Changes

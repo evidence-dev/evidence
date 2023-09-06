@@ -1,5 +1,29 @@
 # @evidence-dev/components
 
+## 2.5.1
+
+### Patch Changes
+
+- 9ade9c88: Add Definitions component
+- Updated dependencies [9ade9c88]
+- Updated dependencies [9432c6e4]
+- Updated dependencies [be1cc666]
+  - @evidence-dev/core-components@1.2.1
+
+## 2.5.0
+
+### Minor Changes
+
+- de129514: Addtional UI components added
+
+### Patch Changes
+
+- 7b45b820: Swap out large favicon images
+- 75560a31: Consolidate tailwind presets into tailwind package
+- Updated dependencies [78f2fab2]
+- Updated dependencies [75560a31]
+  - @evidence-dev/core-components@1.2.0
+
 ## 2.4.5
 
 ### Patch Changes

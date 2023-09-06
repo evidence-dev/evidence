@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 const { highlighter } = require('./highlighter.cjs');
 
 describe('highlighter', () => {

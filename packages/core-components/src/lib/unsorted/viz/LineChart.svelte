@@ -43,6 +43,9 @@
 
 	export let handleMissing = undefined;
 
+	export let step = undefined;
+	export let stepPosition = undefined;
+
 	export let sort = undefined;
 </script>
 
@@ -82,6 +85,8 @@
 		{markerShape}
 		{markerSize}
 		{handleMissing}
+		{step}
+		{stepPosition}
 	/>
 	<slot />
 </Chart>

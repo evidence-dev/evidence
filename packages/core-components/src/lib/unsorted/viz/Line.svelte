@@ -10,7 +10,6 @@
 
 	import getSeriesConfig from '@evidence-dev/component-utilities/getSeriesConfig';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
-	import replaceNulls from '@evidence-dev/component-utilities/replaceNulls';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
 	export let y = undefined;
@@ -32,6 +31,19 @@
 
 	export let handleMissing = 'gap';
 
+	/**
+	 * Enables step mode for this chart.
+	 * @type {boolean}
+	 */
+	export let step = false;
+	$: step = step === 'true' || step === true;
+
+	/**
+	 * Configures position of steps (e.g. before or after)
+	 * @type {'start' | 'middle' | 'end' }
+	 */
+	export let stepPosition = 'end';
+
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
@@ -51,7 +63,7 @@
 	}
 
 	$: if (handleMissing === 'zero') {
-		data = replaceNulls(data, y);
+		data = getCompletedData(data, x, y, series, true);
 	}
 
 	$: baseConfig = {
@@ -81,7 +93,8 @@
 		},
 		showSymbol: markers,
 		symbol: markerShape,
-		symbolSize: markerSize
+		symbolSize: markerSize,
+		step: step ? stepPosition : false
 	};
 
 	$: seriesConfig = getSeriesConfig(

@@ -18,6 +18,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
+	import InvisibleLinks from '../../atoms/InvisibleLinks.svelte';
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -185,10 +186,18 @@
 		}
 
 		// Modifier to sorting function for ascending or descending
-		let sortModifier = sortBy.ascending ? 1 : -1;
+		const sortModifier = sortBy.ascending ? 1 : -1;
 
-		let sort = (a, b) =>
-			a[column] < b[column] ? -1 * sortModifier : a[column] > b[column] ? 1 * sortModifier : 0;
+		const forceTopOfAscending = (val) =>
+			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
+
+		const sort = (a, b) =>
+			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
+				? -1 * sortModifier
+				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
+				  a[column] > b[column]
+				? 1 * sortModifier
+				: 0;
 
 		data.sort(sort);
 		filteredData = filteredData.sort(sort);
@@ -279,6 +288,14 @@
 
 {#if error === undefined}
 	<slot />
+
+	{#if link}
+		<InvisibleLinks {data} {link} />
+	{/if}
+	{#each $props.columns.filter((column) => column.contentType === 'link') as column}
+		<InvisibleLinks {data} link={column.id} />
+	{/each}
+
 	<div
 		class="table-container"
 		transition:slide|local
@@ -353,9 +370,6 @@
 						class:row-link={link != undefined}
 						on:click={() => handleRowClick(row[link])}
 					>
-						{#if link}
-							<a style="display:none;" href={row[link]}>{row[link]}</a>
-						{/if}
 						{#if rowNumbers}
 							<td
 								class="index"
@@ -374,6 +388,12 @@
 
 						{#if $props.columns.length > 0}
 							{#each $props.columns as column}
+								{@const column_min =
+									column.colorMin ?? safeExtractColumn(column).columnUnitSummary.min}
+								{@const column_max =
+									column.colorMax ?? safeExtractColumn(column).columnUnitSummary.max}
+								{@const is_nonzero =
+									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 								<td
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
@@ -382,6 +402,11 @@
                       						height: {column.height};
                       						width: {column.width};
 											white-space: {column.wrap ? 'normal' : 'nowrap'};
+											{column.contentType === 'colorscale' && is_nonzero
+										? ` background-color: ${column.useColor} ${
+												(row[column.id] - column_min) / (column_max - column_min)
+										  })`
+										: ''}
                   "
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
@@ -426,6 +451,36 @@
 												)}
 											{/if}
 										</a>
+									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
+										<div
+											class="m-0 text-xs font-medium font-ui"
+											style={`color:${
+												(row[column.id] >= 0 && !column.downIsGood) ||
+												(row[column.id] < 0 && column.downIsGood)
+													? 'var(--green-700)'
+													: 'var(--red-700)'
+											}`}
+										>
+											<div style="text-align: {column.align ?? 'right'};">
+												{#if column.showValue}
+													<span>
+														{formatValue(
+															row[column.id],
+															column.fmt
+																? getFormatObjectFromString(
+																		column.fmt,
+																		safeExtractColumn(column).format.valueType
+																  )
+																: safeExtractColumn(column).format,
+															safeExtractColumn(column).columnUnitSummary
+														)}
+													</span>
+												{/if}
+												{#if column.deltaSymbol}
+													<span>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span>
+												{/if}
+											</div>
+										</div>
 									{:else}
 										{formatValue(
 											row[column.id],
