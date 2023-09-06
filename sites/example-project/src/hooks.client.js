@@ -1,7 +1,7 @@
 /** @param {Error | unknown} e  */
 const transformError = (e) => {
 	if (!(e instanceof Error)) {
-		console.log({ e });
+		console.log(`Page threw a non-error`, { error: e });
 		return JSON.parse(JSON.stringify(e));
 	} else {
 		return {
