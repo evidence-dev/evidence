@@ -1,4 +1,4 @@
-import '../src/app.postcss'
+import '../src/app.postcss';
 
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
@@ -14,7 +14,7 @@ const preview = {
 	argTypes: {
 		data: { table: { disable: true } },
 		evidenceInclude: { table: { disable: true } },
-		series: { table: { disable: true } },
+		series: { table: { disable: true } }
 	}
 };
 

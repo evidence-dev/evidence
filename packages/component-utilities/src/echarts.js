@@ -425,15 +425,15 @@ export default (node, option) => {
 	const chart = init(node, 'evidence-light', { renderer: 'svg' });
 
 	// If the x-axis of a series is numeric, or a date; ensure that it is in order
-	option.series = option.series.map(s => {
+	option.series = option.series.map((s) => {
 		if (typeof s.data[0][0] === 'number') {
-			s.data = s.data.sort((a, b) => a[0] - b[0])
+			s.data = s.data.sort((a, b) => a[0] - b[0]);
 		} else if (s.data[0][0] instanceof Date) {
-			s.data = s.data.sort((a,b) => a.getTime() - b?.getTime() ?? 0)
+			s.data = s.data.sort((a, b) => a.getTime() - b?.getTime() ?? 0);
 		}
 
 		return s;
-	})
+	});
 
 	chart.setOption(option);
 
