@@ -429,7 +429,7 @@ export default (node, option) => {
 		if (typeof s.data[0][0] === 'number') {
 			s.data = s.data.sort((a, b) => a[0] - b[0]);
 		} else if (s.data[0][0] instanceof Date) {
-			s.data = s.data.sort((a, b) => a.getTime() - b?.getTime() ?? 0);
+			s.data = s.data.sort((a, b) => a[0].getTime() - b[0]?.getTime() ?? 0);
 		}
 
 		return s;
