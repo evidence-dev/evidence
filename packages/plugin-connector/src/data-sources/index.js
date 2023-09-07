@@ -1,8 +1,49 @@
-import { getSources, getSourcesDir, getPastSourceHashes, saveSourceHashes } from './get-sources';
+import {
+	getSources,
+	getSourcesDir,
+	getPastSourceHashes,
+	saveSourceHashes,
+	getCurrentManifest
+} from './get-sources';
 import { getDatasourcePlugins } from './get-datasource-plugins';
 import { execSource } from './exec-source';
 import fs from 'fs/promises';
 import path from 'path';
+
+/**
+ *
+ * @param {Record<string, string[]>} outputFiles
+ * @param {string} outDir
+ * @param {Awaited<ReturnType<typeof getSources>>} datasources
+ */
+async function updateManifest(outputFiles, outDir, datasources) {
+	const current_manifest = await getCurrentManifest(outDir);
+
+	// delete stale datasources
+	for (const source in current_manifest.renderedFiles) {
+		if (datasources.find((ds) => ds.name === source)) continue;
+		delete current_manifest.renderedFiles[source];
+	}
+
+	// delete stale queries
+	for (const source of datasources) {
+		current_manifest.renderedFiles[source.name] = (
+			current_manifest.renderedFiles[source.name] ?? []
+		).filter((file) =>
+			source.queries.find((query) => query.name === path.basename(file, '.parquet'))
+		);
+	}
+
+	// update w/ new queries
+	for (const source in outputFiles) {
+		current_manifest.renderedFiles[source] = Array.from(
+			new Set([...outputFiles[source], ...current_manifest.renderedFiles[source]])
+		);
+	}
+
+	await fs.mkdir(outDir, { recursive: true });
+	await fs.writeFile(path.join(outDir, 'manifest.json'), JSON.stringify(current_manifest));
+}
 
 /**
  * @param {string} outDir
@@ -64,10 +105,6 @@ export async function updateDatasourceOutputs(
 			outputFiles[source.name].push(...newFiles);
 		}
 	}
-	// Write basic JSON Manifest
-	await fs.mkdir(outDir, { recursive: true });
-	await fs.writeFile(
-		path.join(outDir, 'manifest.json'),
-		JSON.stringify({ renderedFiles: outputFiles })
-	);
+
+	await updateManifest(outputFiles, outDir, datasources);
 }
