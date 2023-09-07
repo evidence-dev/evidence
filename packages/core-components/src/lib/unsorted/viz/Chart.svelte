@@ -39,6 +39,8 @@
 	export let size = undefined;
 	export let tooltipTitle = undefined;
 
+	export let showAllXAxisLabels = false;
+
 	// This should be reworked to fit better with svelte's reactivity.
 
 	// We rewrite the x and y values with fallbacks if they aren't present
@@ -818,7 +820,7 @@
 
 {#if !error}
 	<slot />
-	<ECharts config={$config} {height} {width} {data} />
+	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} />
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

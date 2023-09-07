@@ -31,6 +31,7 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let swapXY = false;
+	export let showAllXAxisLabels = false;
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -79,6 +80,7 @@
 	{sort}
 	{stacked100}
 	{chartAreaHeight}
+	{showAllXAxisLabels}
 >
 	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
 	<slot />
