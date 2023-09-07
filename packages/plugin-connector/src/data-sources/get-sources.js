@@ -2,7 +2,11 @@ import fs from 'fs/promises';
 import path from 'path';
 import yaml from 'yaml';
 import chalk from 'chalk';
-import { DatasourceSpecFileSchema, DatasourceCacheSchema } from './schemas/datasource-spec.schema';
+import {
+	DatasourceSpecFileSchema,
+	DatasourceCacheSchema,
+	DatasourceManifestSchema
+} from './schemas/datasource-spec.schema';
 import { cleanZodErrors } from '../lib/clean-zod-errors.js';
 import { createHash } from 'node:crypto';
 
@@ -101,6 +105,46 @@ export const getSources = async (sourcesDir) => {
 	return datasourceSpecs;
 };
 
+/**
+ *
+ * @template {import("zod").ZodType} T
+ * @param {T} zod_schema
+ * @param {string} file_path
+ * @param {import("zod").infer<T>} default_value
+ * @param {string} error_message
+ * @returns {Promise<import("zod").infer<T>>}
+ */
+async function validateFile(zod_schema, file_path, default_value, error_message) {
+	const string_default = JSON.stringify(default_value);
+
+	const file_contents = await fs.readFile(file_path, 'utf-8').catch(() => string_default);
+	const parsed = JSON.parse(file_contents);
+	const validated = zod_schema.safeParse(parsed);
+
+	if (!validated.success) {
+		console.error(chalk.bold.red(error_message));
+		await fs.writeFile(file_path, string_default);
+		return default_value;
+	}
+
+	return validated.data;
+}
+
+/**
+ *
+ * @param {string} outDir
+ * @returns {Promise<import("zod").infer<typeof DatasourceManifestSchema>>}
+ */
+export async function getCurrentManifest(outDir) {
+	const manifestPath = path.join(outDir, 'manifest.json');
+	return validateFile(
+		DatasourceManifestSchema,
+		manifestPath,
+		{ renderedFiles: {} },
+		'[!] Unable to parse manifest, ignoring'
+	);
+}
+
 const hash_location = './.evidence/template/.evidence-queries/sources/hashes.json';
 
 /**
@@ -108,17 +152,12 @@ const hash_location = './.evidence/template/.evidence-queries/sources/hashes.jso
  * @returns {Promise<import("zod").infer<typeof DatasourceCacheSchema>>}
  */
 export async function getPastSourceHashes() {
-	const hashes = await fs.readFile(hash_location, 'utf-8').catch(() => '{}');
-	const parsed = JSON.parse(hashes);
-	const validated = DatasourceCacheSchema.safeParse(parsed);
-
-	if (!validated.success) {
-		console.error(chalk.bold.red('[!] Unable to parse source query hashes, ignoring'));
-		await fs.writeFile(hash_location, '{}');
-		return {};
-	}
-
-	return validated.data;
+	return validateFile(
+		DatasourceCacheSchema,
+		hash_location,
+		{},
+		'[!] Unable to parse source query hashes, ignoring'
+	);
 }
 
 /**
