@@ -1,6 +1,5 @@
 ![evidence-logo](sites/docs/static/img/wordmark-black.svg)
 
-
 # Business Intelligence as Code
 
 Evidence is an open source, code-based alternative to drag-and-drop business intelligence tools.
