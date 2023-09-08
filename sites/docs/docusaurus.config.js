@@ -18,7 +18,7 @@ const config = {
 			// title: 'evidence',
 			logo: {
 				alt: 'Evidence',
-				src: 'img/wordmark-docs.png'
+				src: 'img/wordmark-docs.svg'
 			},
 			items: [
 				{
