@@ -1,4 +1,4 @@
-![evidence-logo](sites/docs/static/img/wordmark-black.svg)
+![evidence-logo](sites/docs/static/img/wordmark.svg)
 
 # Business Intelligence as Code
 
