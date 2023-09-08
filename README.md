@@ -1,4 +1,4 @@
-![evidence-logo](sites/docs/static/img/wordmark.svg)
+<img src="sites/docs/static/img/wordmark.svg" alt="evidence-logo" width=300px/>
 
 # Business Intelligence as Code
 
