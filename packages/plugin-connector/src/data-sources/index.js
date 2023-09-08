@@ -30,6 +30,7 @@ async function updateManifest(outputFiles, outDir, datasources) {
 		current_manifest.renderedFiles[source.name] = (
 			current_manifest.renderedFiles[source.name] ?? []
 		).filter((file) =>
+			// this is the same way we name files so it's safe
 			source.queries.find((query) => query.name === path.basename(file, '.parquet'))
 		);
 	}
