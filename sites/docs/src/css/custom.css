@@ -77,9 +77,9 @@
 }
 
 .navbar__logo {
-	height: 3rem;
+	height: 1.2em;
+	padding-left: 0.9em;
 }
-
 /* ------- */
 /* Sidebar */
 /* ------- */
