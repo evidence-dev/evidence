@@ -105,7 +105,7 @@ Evidence Cloud is currently in private beta. To get early access, sign up below.
 
 <details>
     <summary>How do I log out?</summary>
-    <p>Clear your cookies for <a href="https://evidence.app">evidence.app</a>.</p>
+    <p>Click on the icon showing your GitHub avatar in the top right and select <code>Sign out</code>.</p>
 </details>
 
 <details>
