@@ -1,5 +1,35 @@
 # @evidence-dev/components
 
+## 2.6.0
+
+### Minor Changes
+
+- 883c9ebb: Adds delta content type to DataTable
+- 86b94da9: Add colour scale conditional formatting to DataTable
+
+### Patch Changes
+
+- 798c0395: adds feature to have stepped line & area chart.
+- bdd8df80: remove broken conditional check in extractQueries.server.js
+- 6a9a7ad4: Updates favicon files in browser tab.
+- Updated dependencies [798c0395]
+- Updated dependencies [16112191]
+- Updated dependencies [cdbd1773]
+- Updated dependencies [883c9ebb]
+- Updated dependencies [ef3ec286]
+- Updated dependencies [86b94da9]
+- Updated dependencies [b9d54140]
+- Updated dependencies [80594acd]
+- Updated dependencies [5639ac12]
+- Updated dependencies [4ff7dcac]
+- Updated dependencies [a1fa819e]
+- Updated dependencies [fc07d945]
+- Updated dependencies [a00c7c76]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [acd0be37]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@1.1.1
+
 ## 2.5.1
 
 ### Patch Changes
