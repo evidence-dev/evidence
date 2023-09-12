@@ -25,6 +25,11 @@ Evidence renders a website from markdown files:
 
 See docs for [other install options](https://docs.evidence.dev/getting-started/install-evidence) (CLI, Docker, etc)
 
+# Publish
+
+- [Evidence Cloud](https://evidence.dev/cloud) is the easiest way to securely host your project. It's free to get started.
+- [Self-hosted](https://docs.evidence.dev/deployment/overview) options include Netlify, Vercel, your own infra, and other static site hosting platforms.
+
 # Join the Evidence Community
 
 Join our [Slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) to get involved in the community's discussion, share what you're working on, or request features.
