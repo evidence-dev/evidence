@@ -124,3 +124,21 @@ for name in names:
     print("Hello, " + name)
 ```
 ````
+
+## Partials
+
+Partials allow you to reusable chunks of Evidence code. [More on Partials](/markdown#partials).
+
+`./pages/index.md`
+```markdown
+{@partial "my-first-partial.md"}
+
+And some content specific to this page.
+```
+
+`./partials/my-first-partial.md`
+```markdown
+# This is my first partial
+
+This is some content in the partial.
+```
