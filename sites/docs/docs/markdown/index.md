@@ -164,24 +164,24 @@ Anything outside of these values won't do anything on their own, but they will b
 
 ## Partials
 
-Evidence supports re-using portions of pages by using Partials.
-
-Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}`
-
 :::note
 Partials do not support live reload, or hot module replacement. You will need to refresh the page when you change a partial.
 :::
 
-### Example
+`./pages/index.md`
+```markdown
+{@partial "my-first-partial.md"}
 
-To create and use a basic partial, first create the files `./partials/my-first-partial.md`, and `./pages/partial-test.md`.
+And some content specific to this page.
+```
 
 `./partials/my-first-partial.md`
-```md
+```markdown
 # This is my first partial
+
+This is some content in the partial.
 ```
 
-`./pages/partial-test.md`
-```md
-{@partial "my-first-partial.md"}
-```
+Evidence supports re-using chunks of Evidence markdown using Partials.
+
+Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}` (do not include the `/partial` folder in the path).
