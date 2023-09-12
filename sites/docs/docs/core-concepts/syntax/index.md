@@ -127,7 +127,7 @@ for name in names:
 
 ## Partials
 
-Partials allow you to reusable chunks of Evidence code. [More on Partials](/markdown#partials).
+Partials allow you to reuse chunks of Evidence markdown. [More on Partials](/markdown#partials).
 
 `./pages/index.md`
 ```markdown

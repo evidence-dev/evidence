@@ -182,6 +182,6 @@ And some content specific to this page.
 This is some content in the partial.
 ```
 
-Evidence supports re-using portions of pages by using Partials.
+Evidence supports re-using chunks of Evidence markdown using Partials.
 
-Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}`.
+Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}` (do not include the `/partial` folder in the path).
