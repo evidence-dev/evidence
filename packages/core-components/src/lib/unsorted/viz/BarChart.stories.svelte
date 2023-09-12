@@ -18,7 +18,6 @@
 
 <Meta
 	title="Charts/BarChart"
-	,
 	component={BarChart}
 	argTypes={{
 		title: { control: 'text' },
@@ -35,8 +34,6 @@
 
 <Template let:args>
 	<BarChart {...args} />
-
-	<DataTable data={args.data} />
 </Template>
 
 <Story name="Base" />
@@ -44,7 +41,7 @@
 <Story
 	name="Crowded"
 	args={{
-		showAllXAxisLabels: true,
+		xType: "category",
 		data: genSeries({
 			...defaultGenSeriesOpts,
 			minSeriesLen: 15,

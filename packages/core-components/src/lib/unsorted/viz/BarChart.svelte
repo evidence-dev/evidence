@@ -31,7 +31,7 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let swapXY = false;
-	export let showAllXAxisLabels = false;
+	export let showAllXAxisLabels = xType === "category";
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
