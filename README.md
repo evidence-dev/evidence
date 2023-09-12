@@ -1,6 +1,4 @@
-![evidence-logo](sites/docs/static/img/evidence.svg)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+<img src="sites/docs/static/img/wordmark.svg" alt="evidence-logo" width=300px/>
 
 # Business Intelligence as Code
 

@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 0.3.2
+
+### Patch Changes
+
+- a1fa819e: bump vulnerable deps
+
 ## 0.3.1
 
 ### Patch Changes

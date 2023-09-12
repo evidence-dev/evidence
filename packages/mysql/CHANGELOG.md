@@ -1,5 +1,11 @@
 # @evidence-dev/mysql
 
+## 0.3.1
+
+### Patch Changes
+
+- d92008d7: add password property to envMap
+
 ## 0.3.0
 
 ### Minor Changes

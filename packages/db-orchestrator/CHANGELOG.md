@@ -1,5 +1,16 @@
 # @evidence-dev/db-orchestrator
 
+## 2.2.5
+
+### Patch Changes
+
+- 615a2498: add clearer error handling to db-orchestrator
+- Updated dependencies [a1fa819e]
+- Updated dependencies [d92008d7]
+  - @evidence-dev/snowflake@0.3.2
+  - @evidence-dev/sqlite@1.2.1
+  - @evidence-dev/mysql@0.3.1
+
 ## 2.2.4
 
 ### Patch Changes
