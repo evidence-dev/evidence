@@ -3,6 +3,14 @@
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import { dev } from '$app/environment';
+
+	const beforeprint = new Event('export-beforeprint');
+	const afterprint = new Event('export-afterprint');
+	function print() {
+		window.dispatchEvent(beforeprint);
+		setTimeout(() => window.print(), 0);
+		setTimeout(() => window.dispatchEvent(afterprint), 0);
+	}
 </script>
 
 <header
@@ -77,9 +85,7 @@
 						>
 							<MenuItem
 								let:active
-								on:click={() => {
-									window.print();
-								}}
+								on:click={print}
 							>
 								<div
 									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
