@@ -147,10 +147,12 @@
 		}
 	}
 
+	const identifier = String(Math.random());
 	let baseConfig;
 
 	$: if (!error) {
 		baseConfig = {
+			id: identifier,
 			type: 'line',
 			markLine: {
 				data: configData,
@@ -200,7 +202,12 @@
 		};
 
 		config.update((d) => {
-			d.series.push(baseConfig);
+			const existingIndex = d.series.findIndex((e) => e.id === identifier);
+			if (existingIndex > -1) {
+				d.series[existingIndex] = baseConfig;
+			} else {
+				d.series.push(baseConfig);
+			}
 			return d;
 		});
 	}
