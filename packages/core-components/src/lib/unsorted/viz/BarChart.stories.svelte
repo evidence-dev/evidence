@@ -3,7 +3,6 @@
 	import { genSeries } from '@evidence-dev/component-utilities/tests/getCompletedData.fixture';
 
 	import BarChart from './BarChart.svelte';
-	import DataTable from './DataTable.svelte';
 
 	const defaultGenSeriesOpts = {
 		xHasGaps: false,
@@ -41,7 +40,7 @@
 <Story
 	name="Crowded"
 	args={{
-		xType: "category",
+		xType: 'category',
 		data: genSeries({
 			...defaultGenSeriesOpts,
 			minSeriesLen: 15,
