@@ -157,14 +157,13 @@ const runQueries = async function (routeHash, dev) {
 						if (columnTypeCache) {
 							populateColumnTypeMetadata(data, queryIndex, columnTypeCache);
 						}
-						process.stdout.write(chalk.greenBright('✓ ' + query.id) + chalk.grey(' from cache \n'));
+						console.log(`${chalk.greenBright('✓ ' + query.id)} ${chalk.grey(' from cache')}`);
 						queries[queryIndex].status = 'from cache';
 						writeJSONSync(queryFile, queries);
 					} else {
 						try {
 							queries[queryIndex].status = 'running';
 							writeJSONSync(queryFile, queries);
-							process.stdout.write(chalk.grey('  ' + query.id + ' running...'));
 							validateQuery(query);
 
 							let { rows, columnTypes } = await runQuery(
@@ -177,8 +176,8 @@ const runQueries = async function (routeHash, dev) {
 							populateColumnTypeMetadata(data, queryIndex, columnTypes);
 
 							readline.cursorTo(process.stdout, 0);
-							process.stdout.write(
-								chalk.greenBright('✓ ' + query.id) + chalk.grey(' from database \n')
+							console.log(
+								`${chalk.greenBright('✓ ' + query.id)} ${chalk.grey(' from database')}`
 							);
 
 							queries[queryIndex].status = 'done';
@@ -189,7 +188,7 @@ const runQueries = async function (routeHash, dev) {
 							logEvent('db-query', dev, settings);
 						} catch (err) {
 							readline.cursorTo(process.stdout, 0);
-							process.stdout.write(chalk.red('✗ ' + query.id) + ' ' + chalk.grey(err) + ' \n');
+							console.log(`${chalk.red(`✗ ${query.id}`)} ${chalk.grey(err)}`);
 							data[query.id] = [{ error_object: { error: { message: err } } }];
 							logEvent('db-error', dev, settings);
 							queries[queryIndex].status = 'error';
