@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/db-orchestrator",
-	"version": "3.0.0-usql.6",
+	"version": "3.0.0-usql.7",
 	"description": "DB orchestration for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -11,7 +11,7 @@
 		"@evidence-dev/db-commons": "workspace:0.2.1-usql.1",
 		"@evidence-dev/duckdb": "workspace:1.0.0-usql.3",
 		"@evidence-dev/mssql": "workspace:1.0.0-usql.2",
-		"@evidence-dev/mysql": "workspace:1.0.0-usql.2",
+		"@evidence-dev/mysql": "workspace:1.0.0-usql.3",
 		"@evidence-dev/postgres": "workspace:1.0.0-usql.2",
 		"@evidence-dev/redshift": "workspace:1.0.0-usql.2",
 		"@evidence-dev/snowflake": "workspace:1.0.0-usql.2",

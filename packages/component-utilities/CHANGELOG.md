@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- 52e114cc: move date standardization
+- ca1f90b3: Improved Logging
+
 ## 2.0.0-usql.6
 
 ### Patch Changes

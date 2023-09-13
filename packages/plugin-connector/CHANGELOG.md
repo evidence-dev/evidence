@@ -1,5 +1,15 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.16
+
+### Patch Changes
+
+- 5be92c14: don't fully overwrite manifest.json on filtered builds
+- 239a18d7: Actually ensure that zod schemas don't iterate entire QueryResult.
+- ca1f90b3: Improved Logging
+- Updated dependencies [52e114cc]
+  - @evidence-dev/universal-sql@2.0.0-usql.9
+
 ## 2.0.0-usql.15
 
 ### Patch Changes

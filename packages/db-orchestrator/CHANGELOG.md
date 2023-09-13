@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [1fbf70d9]
+  - @evidence-dev/mysql@1.0.0-usql.3
+
 ## 3.0.0-usql.6
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.25
+
+### Patch Changes
+
+- 5be92c14: fix spelling mistake
+- Updated dependencies [5be92c14]
+- Updated dependencies [239a18d7]
+- Updated dependencies [52e114cc]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/plugin-connector@2.0.0-usql.16
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+  - @evidence-dev/universal-sql@2.0.0-usql.9
+  - @evidence-dev/db-orchestrator@3.0.0-usql.7
+  - @evidence-dev/core-components@2.0.0-usql.11
+
 ## 20.0.0-usql.24
 
 ### Patch Changes

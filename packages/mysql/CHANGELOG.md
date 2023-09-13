@@ -1,5 +1,11 @@
 # @evidence-dev/mysql
 
+## 1.0.0-usql.3
+
+### Patch Changes
+
+- 1fbf70d9: Close connection when finished with pool to prevent process hang
+
 ## 1.0.0-usql.2
 
 ### Patch Changes
