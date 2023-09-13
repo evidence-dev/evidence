@@ -21,3 +21,4 @@ customization/
 *.log
 connection.options.yaml
 **/static/data
+.idea
