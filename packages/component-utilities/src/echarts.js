@@ -448,14 +448,14 @@ export default (node, option) => {
 	const updateLabelWidths = () => {
 		// Make sure we operate on an up-to-date options object
 		/** @type {import("echarts").EChartsOption} */
-		const o = chart.getOption();
-		if (!o) return;
+		const prevOption = chart.getOption();
+		if (!prevOption) return;
 		// If the options object includes showing all x axis labels
 		// Note: this isn't a standard option, but right now this is the easiest way to pass something to the action.
 		// We don't want to have multiple resize observers if we can avoid it, and this is all due for a cleanup anyways
-		if (o.showAllXAxisLabels) {
+		if (prevOption.showAllXAxisLabels) {
 			// Get all the possible x values
-			const distinctXValues = new Set(o.series.flatMap((s) => s.data.map((d) => d[0])));
+			const distinctXValues = new Set(prevOption.series.flatMap((s) => s.data.map((d) => d[0])));
 			const modConst = 4 / 5;
 			const clientWidth = node?.clientWidth ?? 0;
 
