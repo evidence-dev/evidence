@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 1.1.1
+
+### Patch Changes
+
+- 16112191: Fixes to series completion; duplicate series labels in timestamps should no longer appear
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @evidence-dev/preprocess
 
+## 3.1.2
+
+### Patch Changes
+
+- 86635f53: Adds twitter og tags based on og provided in frontmatter
+- ca551518: Add support for markdown partials
+
 ## 3.1.1
 
 ### Patch Changes

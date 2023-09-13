@@ -160,10 +160,12 @@
 		]);
 	}
 
+	const identifier = String(Math.random());
 	let baseConfig;
 
 	$: if (!error) {
 		baseConfig = {
+			id: identifier,
 			type: chartType === 'Bar Chart' ? 'bar' : 'line',
 			stack: 'stack1',
 			markArea: {
@@ -190,7 +192,12 @@
 		};
 
 		config.update((d) => {
-			d.series.push(baseConfig);
+			const existingIndex = d.series.findIndex((e) => e.id === identifier);
+			if (existingIndex > -1) {
+				d.series[existingIndex] = baseConfig;
+			} else {
+				d.series.push(baseConfig);
+			}
 			return d;
 		});
 	}
