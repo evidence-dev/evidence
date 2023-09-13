@@ -18,11 +18,11 @@ It's the easiest way to host an Evidence project, without having to worry about 
 - **Scheduled refreshes:** Daily (or more frequent) data updates to your project.
 - **Re-build on push:** Merge to your target branch to rebuild your project.
 
-## Get Early Access
+## Request Invite
 
-Evidence Cloud is currently in private beta. To get early access, sign up below.
+Evidence Cloud is currently invite-only, request one below.
 
-<a class="waitlist" href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=docs">Get Early Access</a>
+<a class="waitlist" href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=docs">Request Invite</a>
 
 ## How do I set up Evidence Cloud
 
@@ -52,6 +52,12 @@ Evidence Cloud is currently in private beta. To get early access, sign up below.
 </details>
 
 <details>
+    <summary>Why do I have a failed broken chart or query?</summary>
+    <p>As a default, a failed chart or query will not throw an error. To prevent failed charts or queries from building successfully, edit the build command in <code>package.json</code> to <code>"build": "evidence build:strict"</code> </p>
+</details>
+
+
+<details>
     <summary>Why is my project taking a long time to build?</summary>
     <p>The initial deployment takes longer as we provision your account, and may take up to 15 minutes. Subsequent builds will be much faster and will show detailed build logs as they progress.</p>
 </details>
@@ -77,14 +83,12 @@ Evidence Cloud is currently in private beta. To get early access, sign up below.
     <p>Email <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, including your login (GitHub username) and the plan you want to upgrade to.</p>
 </details>
 
-
-
-
-## Account Management
+### Account Management
 
 <details>
     <summary>How do I add a new viewer account to my project?</summary>
-    <p>Log in to Evidence Cloud at <a href="https://evidence.app">evidence.app</a>, and select your project. Click on the <code>Users</code> tab, and enter the email address of the user you want to add. They will receive an email with login details.</p>
+    <p>Log in to Evidence Cloud at <a href="https://evidence.app">evidence.app</a>, and select your project. Click on the <code>Users</code> tab, and enter the email address of the user you want to add. They will receive an email with login details. </p>
+    <p>If you need more than 5 viewers, upgrade to a paid plan.</p>
 </details>
 
 <details>
@@ -110,5 +114,5 @@ Evidence Cloud is currently in private beta. To get early access, sign up below.
 
 <details>
     <summary>Can I use Evidence Cloud with GitLab / BitBucket / another git provider?</summary>
-    <p>Not yet! If your team needs another git provider, reach out on Slack.</p>
+    <p>Not yet! If your team needs another git provider, reach out on <a href="https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q">Slack</a>.</p>
 </details>
