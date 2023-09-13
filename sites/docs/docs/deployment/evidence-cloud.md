@@ -45,9 +45,9 @@ Setting up Evidence Cloud takes less than 5 minutes.
 <details>
     <summary>What causes my data to update?</summary>
     <ul>
-        <li>Pushes to your target branch will trigger a rebuild</li>
-        <li>Clicking the <code>Redeploy</code> button in the UI</li>
-        <li>You can also set up a regular scheduled refresh</li>
+        <li>Pushes to your target branch.</li>
+        <li>Clicking the <code>Redeploy</code> button in the UI.</li>
+        <li>You can also set up a regularly scheduled refresh.</li>
     </ul>
 </details>
 
@@ -76,7 +76,7 @@ Setting up Evidence Cloud takes less than 5 minutes.
 
 <details>
     <summary>Is Evidence Cloud free?</summary>
-    <p>Evidence Cloud's Free tier offers up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to a <a href="https://evidence.dev/cloud">paid plans</a>.</p>
+    <p>Evidence Cloud's Free tier offers up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to a <a href="https://evidence.dev/cloud">paid plan</a>.</p>
 </details>
 
 <details>
@@ -119,7 +119,7 @@ Setting up Evidence Cloud takes less than 5 minutes.
     <summary>Where is my credentials file?</summary>
     <ul>
     <li><b>If you are deploying the default template:</b> You don't need them, hit the button to use the template project default credentials.</li>
-    <li><b>If you have an existing project:</b> Your credentials file is stored in <code>.evidence/template/evidence.settings.json</code>. You may need to edit your file explorer settings (<a href="https://support.microsoft.com/en-us/windows/view-hidden-files-and-folders-in-windows-97fbc472-c603-9d90-91d0-1166d1d9f4b5">windows</a>, <a href="https://discussions.apple.com/thread/7581737">mac</a>) to show hidden folders .</li>
+    <li><b>If you have an existing project:</b> Your credentials file is stored in <code>.evidence/template/evidence.settings.json</code>. You may need to edit your file explorer settings (<a href="https://support.microsoft.com/en-us/windows/view-hidden-files-and-folders-in-windows-97fbc472-c603-9d90-91d0-1166d1d9f4b5">windows</a>, <a href="https://discussions.apple.com/thread/7581737">mac</a>) to show hidden folders.</li>
     </ul>
 </details>
 
@@ -129,14 +129,6 @@ Setting up Evidence Cloud takes less than 5 minutes.
 </details>
 
 <details>
-    <summary>How can I prevent failed queries or components with errors from building successfully?</summary>
-    <p>As a default, a failed chart or query will not throw an error. To prevent failed charts or queries from building successfully, edit the build command in <code>package.json</code> to <code>"build": "evidence build:strict"</code> </p>
+    <summary>How can I prevent queries or components with errors from making it to my site?</summary>
+    <p>As a default, a failed chart or query will not throw an error. To prevent failed charts or queries from building successfully, edit the build command in <code>package.json</code> to <code>"build": "evidence build:strict"</code>.</p>
 </details>
-
-
-
-
-
-
-
-
