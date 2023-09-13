@@ -44,7 +44,11 @@ Setting up Evidence Cloud takes less than 5 minutes.
 
 <details>
     <summary>What causes my data to update?</summary>
-    <p>Pushes to your target branch will trigger a rebuild, as well as clicking the `Redeploy` button in the UI, or you can set up a scheduled refresh.</p>
+    <ul>
+        <li>Pushes to your target branch will trigger a rebuild</li>
+        <li>Clicking the <code>Redeploy</code> button in the UI</li>
+        <li>You can also set up a regular scheduled refresh</li>
+    </ul>
 </details>
 
 <details>
@@ -63,18 +67,16 @@ Setting up Evidence Cloud takes less than 5 minutes.
 </details>
 
 <details>
-    <summary>How can I set up development previews?</summary>
+    <summary>How do I set up development previews?</summary>
     <p>Alongside your <code>main</code> branch, set up a secondary project targeting a development branch (e.g. <code>dev</code>) whenever you merge changes into <code>dev</code>, you will get a preview. When you are ready to release changes, merge these into <code>main</code>.</p>
     <p>You can set up different database credentials for development deployments, which allows you to use development data before it is in your production db.</p>
 </details>
-
-
 
 ### Pricing
 
 <details>
     <summary>Is Evidence Cloud free?</summary>
-    <p>Yes, Evidence Cloud is free for up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to one of the <a href="https://evidence.dev/cloud">paid plans</a>.</p>
+    <p>Evidence Cloud's Free tier offers up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to a <a href="https://evidence.dev/cloud">paid plans</a>.</p>
 </details>
 
 <details>
@@ -100,6 +102,12 @@ Setting up Evidence Cloud takes less than 5 minutes.
 </details>
 
 ### Troubleshooting
+
+<details>
+    <summary>I've successfully deployed the template project. How do I edit it?</summary>
+    <p>Clone the git repository to your local machine (the repo URL is shown in the cloud UI), make edits to the code and/or database settings, and merge the edits to your target branch.</p>
+</details>
+
 
 <details>
     <summary>How long do builds take?</summary>
