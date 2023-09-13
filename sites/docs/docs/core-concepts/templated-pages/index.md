@@ -22,26 +22,17 @@ The following are equivalent:
 - `pages/customers/[customer].md`
 - `pages/customers/[customer]/index.md`
 
-The file name in the square brackets becomes a [parameter](#using-page-parameters) you can reference in the page, with the parameter value as text that replaces the parameter name in the URL.
-In the above example, you could create a file that looks like this.
-
-```
-pages/
-`-- customers/
-    `-- [customer].md
-```
-
-The contents of `[customer].md` would be displayed if you navigate to www.yoursite.com/customers/acme or www.yoursite.com/customers/contoso.
+The string inside the square brackets becomes a [parameter](#using-page-parameters) you can reference in the page, with the parameter value as text that replaces the parameter name in the URL.
 
 ## Using page parameters
 
-The parameter passed in the URL can be used to filter for a value in a query result (e.g. a specific customer). This parameter can then be referenced in the page, for example to filter queries and present only data relevant to the parameter value.
-
-A parameter on the page `[customer].md` is accessed through the variable:
+The parameter passed in the URL can be used in the page. For example, if the URL is `/customers/acme`, the parameter value is `acme`, and you access it in markdown as follows:
 
 ```js
 {$page.params.customer}
 ```
+
+Parameters can be used to filter query results (e.g. a for specific customer), to present only relevant information to the page.
 
 You can apply a filter to a query result by appending this code to the query name. This is a standard JavaScript method for filtering data.
 
@@ -49,7 +40,7 @@ You can apply a filter to a query result by appending this code to the query nam
 .filter(d => d.customer_name === $page.params.customer)
 ```
 
-This means that the code will look in the query result `d` and include only those rows where the `customer_name` is equal to the page's parameter variable.
+This means that the code will look in the query result `d` and include only those rows where the `customer_name` is equal to the page's parameter value.
 
 Adding this to a `<Value/>` component:
 
@@ -61,11 +52,11 @@ Adding this to a `<Value/>` component:
 ```
 
 :::tip
-If filtering lots of components, you can create a new object containing the filtered data and use that instead.
+If filtering lots of components, you can create a new data containing the filtered data and use that instead.
 
 ```markdown
 <script>
-let filtered_customers = customers.filter(d => d.customer_name === $page.params.customer)
+   let filtered_customers = customers.filter(d => d.customer_name === $page.params.customer)
 </script>
 
 <Value 
@@ -76,11 +67,11 @@ let filtered_customers = customers.filter(d => d.customer_name === $page.params.
 
 :::
 
-## Populating templated pages
+## Generating templated pages
 
 So far, we've created the template for a set of pages, but haven't specified what specific pages to create, or to put it another way, what values we want the parameter to take.
 
-For a page to exist, there must be links to it somewhere in your project.
+For a page to be built, there must be links to it somewhere in your project.
 
 Whilst you could add markdown style links for each parameter value, it is easier to programmatically generate them. Two easy options are:
 
@@ -138,7 +129,7 @@ Now `index.md` would be rendered if you navigate to www.example.com/customers/ac
 
 ## Complete example
 
-See a complete example using a table to populate a templated page for each customer.
+See a complete example using a table to generate a templated page for each customer.
 
 `index.md`
 
