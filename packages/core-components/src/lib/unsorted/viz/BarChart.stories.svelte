@@ -38,9 +38,22 @@
 <Story name="Base" />
 
 <Story
-	name="Crowded"
+	name="Crowded (Explicit X Type)"
 	args={{
 		xType: 'category',
+		data: genSeries({
+			...defaultGenSeriesOpts,
+			minSeriesLen: 15,
+			maxSeriesLen: 15,
+			minSeriesCount: 4
+		}).data
+	}}
+/>
+
+
+<Story
+	name="Crowded (Implicit X Type)"
+	args={{
 		data: genSeries({
 			...defaultGenSeriesOpts,
 			minSeriesLen: 15,
