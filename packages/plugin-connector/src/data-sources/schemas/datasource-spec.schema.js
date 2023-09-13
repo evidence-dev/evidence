@@ -26,3 +26,7 @@ export const DatasourceQueryResultSchema = z.object({
 });
 
 export const DatasourceCacheSchema = z.record(z.record(z.string().or(z.null())));
+
+export const DatasourceManifestSchema = z.object({
+	renderedFiles: z.record(z.array(z.string()))
+});
