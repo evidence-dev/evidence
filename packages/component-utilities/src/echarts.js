@@ -3,8 +3,14 @@ import { colours } from './colours';
 import debounce from 'debounce';
 
 /**
- * @param {HTMLDivElement} node
+ * @typedef {import("echarts").EChartsOption & {
+ * 		dispatch?: ReturnType<typeof import("svelte").createEventDispatcher>;
+ * 		showAllXAxisLabels?: boolean;
+ * 	}
+ * } ActionParams
  */
+
+/** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
 export default (node, option) => {
 	registerTheme('evidence-light', {
 		grid: {
