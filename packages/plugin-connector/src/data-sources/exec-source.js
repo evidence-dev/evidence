@@ -38,6 +38,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 
+		console.log(` || Writing ${filename} as parquet.`);
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
 
 		const queryDirectory = path.dirname(query.filepath);
