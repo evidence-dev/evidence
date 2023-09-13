@@ -175,10 +175,7 @@ const runQueries = async function (routeHash, dev) {
 							data[query.id] = rows;
 							populateColumnTypeMetadata(data, queryIndex, columnTypes);
 
-							readline.cursorTo(process.stdout, 0);
-							console.log(
-								`${chalk.greenBright('✓ ' + query.id)} ${chalk.grey(' from database')}`
-							);
+							console.log(`${chalk.greenBright('✓ ' + query.id)} ${chalk.grey(' from database')}`);
 
 							queries[queryIndex].status = 'done';
 							writeJSONSync(queryFile, queries);
@@ -187,7 +184,6 @@ const runQueries = async function (routeHash, dev) {
 
 							logEvent('db-query', dev, settings);
 						} catch (err) {
-							readline.cursorTo(process.stdout, 0);
 							console.log(`${chalk.red(`✗ ${query.id}`)} ${chalk.grey(err)}`);
 							data[query.id] = [{ error_object: { error: { message: err } } }];
 							logEvent('db-error', dev, settings);
