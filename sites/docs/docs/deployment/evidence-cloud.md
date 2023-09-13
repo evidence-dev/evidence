@@ -26,9 +26,12 @@ Evidence Cloud is currently invite-only, request one below.
 
 ## How do I set up Evidence Cloud
 
-1. Evidence Cloud is invite-only: If you haven't already, [request access](https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=docs)
+Setting up Evidence Cloud takes less than 5 minutes.
+
 1. Go to [evidence.app](https://evidence.app) and sign in with GitHub
-1. If you have an existing project, click Deploy Evidence Project, if you don't yet, select Create New Project from Template, then return to [evidence.app](https://evidence.app) after creating your template project in GitHub
+1. Choose an option to get started:
+   1. **If you have an existing project:** click `Deploy Evidence Project`
+   1. **If you don't have a project yet**, select `Create New Project from Template`, then return to [evidence.app](https://evidence.app) after creating your template project in GitHub
 1. Enter your deployment details, including the GitHub repo you want to use, and the domain you want to deploy it to
 1. Add your credentials, either from your local project or from the template
 1. Click `Deploy your project`
@@ -36,83 +39,96 @@ Evidence Cloud is currently invite-only, request one below.
 
 ## Frequently Asked Questions
 
-### Troubleshooting
+### Features
+
 
 <details>
-    <summary>Where is my credentials file?</summary>
+    <summary>What causes my data to update?</summary>
     <ul>
-    <li><b>If you are deploying the default template:</b> You don't need them, hit the button to use the template project default credentials.</li>
-    <li><b>If you have an existing project:</b> Your credentials file is stored in <code>.evidence/template/evidence.settings.json</code>. You may need to edit your file explorer settings (<a href="https://support.microsoft.com/en-us/windows/view-hidden-files-and-folders-in-windows-97fbc472-c603-9d90-91d0-1166d1d9f4b5">windows</a>, <a href="https://discussions.apple.com/thread/7581737">mac</a>) to show hidden folders .</li>
+        <li>Pushes to your target branch.</li>
+        <li>Clicking the <code>Redeploy</code> button in the UI.</li>
+        <li>You can also set up a regularly scheduled refresh.</li>
     </ul>
 </details>
 
 <details>
-    <summary>Why did my build fail?</summary>
-    <p>Usually this is caused by an error with your project code. Evidence will not deploy sites with errors to prevent users from seeing broken reports. Enter <code>npm run build</code> in your editor to test if the build succeeds locally. If you are still having issues, reach out on Slack.</p>
+    <summary>How frequently does Evidence Cloud refresh my data?</summary>
+    <p>You can set up data refreshes as regularly as you need.</p>
 </details>
 
 <details>
-    <summary>Why do I have a failed broken chart or query?</summary>
-    <p>As a default, a failed chart or query will not throw an error. To prevent failed charts or queries from building successfully, edit the build command in <code>package.json</code> to <code>"build": "evidence build:strict"</code> </p>
+    <summary>How do I get more frequent data refreshes?</summary>
+    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>.</p>
 </details>
 
-
 <details>
-    <summary>Why is my project taking a long time to build?</summary>
-    <p>The initial deployment takes longer as we provision your account, and may take up to 15 minutes. Subsequent builds will be much faster and will show detailed build logs as they progress.</p>
+    <summary>How does authentication work for my deployed project?</summary>
+    <p>Each viewer account is provided with a unique login to access the project. You can manage viewers in the Evidence Cloud UI.</p>
 </details>
 
-
-
 <details>
-    <summary>How can I set up development previews?</summary>
+    <summary>How do I set up development previews?</summary>
     <p>Alongside your <code>main</code> branch, set up a secondary project targeting a development branch (e.g. <code>dev</code>) whenever you merge changes into <code>dev</code>, you will get a preview. When you are ready to release changes, merge these into <code>main</code>.</p>
     <p>You can set up different database credentials for development deployments, which allows you to use development data before it is in your production db.</p>
 </details>
-
 
 ### Pricing
 
 <details>
     <summary>Is Evidence Cloud free?</summary>
-    <p>Evidence Cloud is free for up to 5 viewer accounts, and up to one connected repository. Beyond this, you'll need to upgrade to one of the <a href="https://evidence.dev/cloud">paid plans</a>).</p>
+    <p>Evidence Cloud's Free tier offers up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to a <a href="https://evidence.dev/cloud">paid plan</a>.</p>
 </details>
 
 <details>
-    <summary>How do I upgrade to the Team or Enterprise plans?</summary>
-    <p>Email <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, including your login (GitHub username) and the plan you want to upgrade to.</p>
+    <summary>How do I get onto a Team or Enterprise plan?</summary>
+    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>.</p>
 </details>
+
+
 
 ### Account Management
 
 <details>
-    <summary>How do I add a new viewer account to my project?</summary>
-    <p>Log in to Evidence Cloud at <a href="https://evidence.app">evidence.app</a>, and select your project. Click on the <code>Users</code> tab, and enter the email address of the user you want to add. They will receive an email with login details. </p>
-    <p>If you need more than 5 viewers, upgrade to a paid plan.</p>
-</details>
-
-<details>
     <summary>How do I add a new developer to my Evidence project?</summary>
-    <p>Give them access them to your <a href="https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository">github repository</a>. Only one user can manage the Evidence Cloud deployment settings at this time.</p>
+    <p>Give them access to your <a href="https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository">GitHub repository</a>. All Evidence Cloud plans come with unlimited developer accounts.</p>
+</details>
+
+
+
+
+<details>
+    <summary>Which git providers can I use with Evidence Cloud?</summary>
+    <p>Currently we support GitHub by default. If your team needs another git provider, reach out on <a href="https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q">Slack</a>.</p>
+</details>
+
+### Troubleshooting
+
+<details>
+    <summary>I've successfully deployed the template project. How do I edit it?</summary>
+    <p>Clone the git repository to your local machine (the repo URL is shown in the cloud UI), make edits to the code and/or database settings, and merge the edits to your target branch.</p>
 </details>
 
 
 <details>
-    <summary>How do I delete a project?</summary>
-    <p>Email <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, and ask.</p>
+    <summary>How long do builds take?</summary>
+    <p>Most builds will be completed in under 2 minutes, and you can track progress in the build logs. The initial deployment may take longer as we provision your account.</p>
+</details>
+
+
+<details>
+    <summary>Where is my credentials file?</summary>
+    <ul>
+    <li><b>If you are deploying the default template:</b> You don't need them, hit the button to use the template project default credentials.</li>
+    <li><b>If you have an existing project:</b> Your credentials file is stored in <code>.evidence/template/evidence.settings.json</code>. You may need to edit your file explorer settings (<a href="https://support.microsoft.com/en-us/windows/view-hidden-files-and-folders-in-windows-97fbc472-c603-9d90-91d0-1166d1d9f4b5">windows</a>, <a href="https://discussions.apple.com/thread/7581737">mac</a>) to show hidden folders.</li>
+    </ul>
 </details>
 
 <details>
-    <summary>How do I get more frequent data refreshes?</summary>
-    <p>Email <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, and ask.</p>
+    <summary>When can I expect build failures?</summary>
+    <p>Evidence will not deploy sites with errors to prevent users from seeing broken reports. Usually, this is caused by an error with your project code.  Enter <code>npm run build</code> in your editor to test if the build succeeds locally. If you are still having issues, reach out on <a href="https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q">Slack</a>.</p>
 </details>
 
 <details>
-    <summary>How do I log out?</summary>
-    <p>Click on the icon showing your GitHub avatar in the top right and select <code>Sign out</code>.</p>
-</details>
-
-<details>
-    <summary>Can I use Evidence Cloud with GitLab / BitBucket / another git provider?</summary>
-    <p>Not yet! If your team needs another git provider, reach out on <a href="https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q">Slack</a>.</p>
+    <summary>How can I prevent queries or components with errors from making it to my site?</summary>
+    <p>As a default, a failed chart or query will not throw an error. To prevent failed charts or queries from building successfully, edit the build command in <code>package.json</code> to <code>"build": "evidence build:strict"</code>.</p>
 </details>
