@@ -461,7 +461,7 @@ export default (node, option) => {
 		// We don't want to have multiple resize observers if we can avoid it, and this is all due for a cleanup anyways
 		if (o.showAllXAxisLabels) {
 			// Get all the possible x values
-			const distinctXValues = new Set(o.series.flatMap((s) => s.data.map((d) => d[0])));
+			const distinctXValues = new Set(o.series.flatMap((s) => s.data?.map((d) => d[0])));
 			const modConst = 4 / 5;
 			const clientWidth = node?.clientWidth ?? 0;
 
