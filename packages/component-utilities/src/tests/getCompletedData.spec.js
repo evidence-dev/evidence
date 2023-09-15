@@ -75,11 +75,22 @@ describe('getCompletedData', () => {
 				}
 			});
 
-			it('does not fill x-axis values if fillX is not set', () => {
+			it('returns identical columns to the original data', () => {
 				const result = getCompletedData(data, 'time', 'value', 'series', false, false);
 
-				// Expect specific behavior here based on your function's logic
-				expect(result.every((r) => data.some((d) => r.time === d.time && r.series === d.series)));
+				const r = Object.keys(result[0]);
+				const d = Object.keys(data[0]);
+				expect(r).toEqual(d);
+			});
+
+			it('contains series each with identical lengths', () => {
+				const result = getCompletedData(data, 'time', 'value', 'series', false, false);
+				let seriesLengths = [];
+				for (const seriesName in series) {
+					seriesLengths.push(result.filter((d) => d.series === seriesName).length);
+				}
+
+				expect(seriesLengths.every((val) => val === seriesLengths[0])).toEqual(true);
 			});
 
 			it('returns the original data if series is not defined', () => {
