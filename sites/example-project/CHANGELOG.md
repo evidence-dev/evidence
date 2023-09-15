@@ -1,5 +1,16 @@
 # @evidence-dev/components
 
+## 2.6.1
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+
 ## 2.6.0
 
 ### Minor Changes
