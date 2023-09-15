@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 1.1.2
+
+### Patch Changes
+
+- 4944f21c: getCompletedData() fills all x values for categorical series
+- 287126fe: Ensure that numeric and date x-axis series are sorted
+
 ## 1.1.1
 
 ### Patch Changes
