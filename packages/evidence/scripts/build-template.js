@@ -10,6 +10,7 @@ const templatePaths = [
 	'src/global.d.ts',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
+	'src/pages/extractQueries.server.js',
 	'src/pages/+layout.server.js',
 	'src/pages/+layout.js',
 	'src/pages/settings/',
@@ -75,7 +76,7 @@ fs.outputFileSync(
             exclude: ['svelte-icons', 'svelte-tiny-linked-charts', '@evidence-dev/universal-sql']
         },
         ssr: {
-            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5', '@evidence-dev/plugin-connector']
         },
         server: {
             fs: {
