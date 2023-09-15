@@ -31,6 +31,12 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let swapXY = false;
+
+	export let showAllXAxisLabels =
+		xType === 'category' ||
+		data?.[0]?._evidenceColumnTypes?.find((ect) => ect?.name?.toLowerCase() === x?.toLowerCase())
+			.evidenceType === 'string';
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -79,6 +85,7 @@
 	{sort}
 	{stacked100}
 	{chartAreaHeight}
+	{showAllXAxisLabels}
 >
 	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
 	<slot />
