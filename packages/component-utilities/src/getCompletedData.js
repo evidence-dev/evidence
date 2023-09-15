@@ -27,8 +27,8 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 
 	const output = [];
 
-	let xIsDate = Object.values(groups)[0][0]?.[x] instanceof Date; 
-		
+	let xIsDate = Object.values(groups)[0][0]?.[x] instanceof Date;
+
 	const nullySpec = { [series]: null };
 	if (nullsZero) {
 		nullySpec[y] = 0;
@@ -83,4 +83,3 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 
 	return output;
 }
-
