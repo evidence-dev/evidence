@@ -196,7 +196,7 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-</table>
+<tr>	<td>showAllXAxisLabels</td>	<td>Force every x-axis value to be shown. This can truncate labels if there are too many.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true|false</td>	<td class='tcenter'>false</td>	</tr></table>
 
 ## Annotations
 

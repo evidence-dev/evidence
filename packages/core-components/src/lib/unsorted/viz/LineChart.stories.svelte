@@ -18,8 +18,8 @@
 			xHasGaps: false,
 			yHasNulls: false,
 			seriesAlwaysExists: true,
-			maxSieriesLen: 10,
-			maxSieriesCount: 1,
+			maxSeriesLen: 10,
+			maxSeriesCount: 2,
 			xType: 'number'
 		}).data,
 		x: 'time',

@@ -10,26 +10,28 @@ const seriesNames = ['a', 'b', 'c', 'd', 'e'];
  * @property {boolean} xHasGaps Determines if the x axis will have all expected values
  * @property {boolean} yHasNulls Determines if the y axis will be nullable
  * @property {boolean} seriesAlwaysExists
- * @property {number} [seriesLen] Max length of each series
+ * @property {number} [minSeriesLen] Min length of each series
+ * @property {number} [maxSeriesLen] Max length of each series
+ * @property {number} [minSeriesCount] Min number of series
+ * @property {number} [maxSeriesCount] Max number of series
+ * @property {number} [minInterval] Min interval between x values (e.g. interval of 2 is 0,2,4)
  * @property {number} [maxInterval] Max interval between x values (e.g. interval of 2 is 0,2,4)
  * @property {number} [maxOffset] Max offset for initial x value  (e.g. interval of 2, offset of 1 is 1,3,5)
- * @property {'number' | 'date'} [xType] determines the type of the x axis
-
-
-/**
- * @param {}
- * @returns { { data: { series: MockSeries, value: number, time: number }[], series: Record<MockSeries, { interval: number }> }  }
+ * @property {'number' | 'date' | 'categories'} [xType] determines the type of the x axis
  */
-export const genSeries = ({
+
+/** @param  */
+const genNumericSeries = ({
 	xHasGaps = false,
 	yHasNulls = false,
 	seriesAlwaysExists = true,
-	maxSeriesLen = 20,
-	minSeriesLen = 10,
-	maxSeriesCount = 5,
+	minSeriesLen = 2,
+	maxSeriesLen = 10,
 	minInterval = 1,
-	maxInterval = 20,
-	maxOffset = 100,
+	maxInterval = 5,
+	minSeriesCount = 2,
+	maxSeriesCount = 5,
+	maxOffset = 10,
 	xType = 'number'
 } = {}) => {
 	const data = [];
@@ -38,8 +40,8 @@ export const genSeries = ({
 	const series = Object.fromEntries(
 		new Array(
 			faker.number.int({
-				min: 2,
-				max: maxSeriesCount
+				min: minSeriesCount,
+				max: maxSeriesCount < minSeriesCount ? minSeriesCount : maxSeriesCount
 			})
 		)
 			.fill(null)
@@ -114,4 +116,54 @@ export const genSeries = ({
 		series,
 		data
 	};
+};
+
+/** @param {GenSeriesOpts} cfg */
+const getCatagoricalSeries = ({
+	minSeriesLen,
+	maxSeriesLen,
+	minSeriesCount,
+	maxSeriesCount
+} = {}) => {
+	const seriesLength = faker.number.int({ min: minSeriesLen, max: maxSeriesLen });
+	const seriesCount = faker.number.int({ min: minSeriesCount, max: maxSeriesCount });
+	const categories = new Array(seriesLength).fill(null).map(() => faker.location.streetAddress());
+	const series = new Array(seriesCount).fill(null).map(() => faker.company.name());
+
+	const data = series.reduce((a, v) => {
+		for (const category of categories) {
+			a.push({
+				series: v,
+				category: category,
+				value: faker.number.int({ min: 0, max: 10000 })
+			});
+		}
+		return a;
+	}, []);
+
+	return {
+		series: Object.fromEntries(
+			series.map((seriesName) => [seriesName, { len: seriesLength, offset: 0, interval: 1 }])
+		),
+		data
+	};
+};
+
+/**
+ * @param {GenSeriesOpts} cfg
+ * @returns { { data: { series: MockSeries, value: number, time: number }[], series: Record<MockSeries, { interval: number }> }  }
+ */
+export const genSeries = (cfg = {}) => {
+	let v;
+	switch (cfg.xType) {
+		case 'date':
+		case 'number':
+		default:
+			v = genNumericSeries(cfg);
+			break;
+		case 'categories':
+			v = getCatagoricalSeries(cfg);
+			break;
+	}
+	return v;
 };
