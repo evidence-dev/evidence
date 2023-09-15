@@ -50,7 +50,6 @@
 	}}
 />
 
-
 <Story
 	name="Crowded (Implicit X Type)"
 	args={{

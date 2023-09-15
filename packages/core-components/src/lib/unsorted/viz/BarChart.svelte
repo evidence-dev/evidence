@@ -32,7 +32,8 @@
 	export let yMax = undefined;
 	export let swapXY = false;
 
-	export let showAllXAxisLabels = xType === 'category' || data?.[0]?._evidenceColumnTypes[x]?.evidenceType === "string";
+	export let showAllXAxisLabels =
+		xType === 'category' || data?.[0]?._evidenceColumnTypes[x]?.evidenceType === 'string';
 
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
