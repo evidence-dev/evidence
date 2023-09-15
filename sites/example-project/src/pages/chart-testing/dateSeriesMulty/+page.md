@@ -211,9 +211,9 @@ let nulls =
 
 <h2>100% Stacked Bar Chart</h2>
 <BarChart data={full}  series=series title="Full Data" type=stacked100/>
-<BarChart data={missingX}  series=series title="Missing X" type=stacked10/>
-<BarChart data={missingY} series=series title="Missing Y" type=stacked10/>
-<BarChart data={nulls}  series=series title="Nulls" type=stacked10/>
+<BarChart data={missingX}  series=series title="Missing X" type=stacked100/>
+<BarChart data={missingY} series=series title="Missing Y" type=stacked100/>
+<BarChart data={nulls}  series=series title="Nulls" type=stacked100/>
 
 <!-- <h2>horizontal Stacked Bar Chart</h2>
 <BarChart data={full}  swapXY=true series=series title="Full Data" xType=value/>

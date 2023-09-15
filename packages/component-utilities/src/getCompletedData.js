@@ -26,55 +26,61 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 	}, {});
 
 	const output = [];
-	for (const value of Object.values(groups)) {
-		let xIsDate = value[0]?.[x] instanceof Date;
 
-		const nullySpec = { series: null };
-		if (nullsZero) {
-			nullySpec[y] = 0;
-		} else {
-			// Ensure null for consistency
-			nullySpec[y] = null;
-		}
-
-		const expandKeys = {};
-		if (fillX) {
-			/** @type {Array<number>} */
-			let xDistinct;
-
-			if (xIsDate)
-				xDistinct = getDistinctValues(
-					value.map((d) => ({ [x]: d[x].getTime() })),
-					x
-				);
-			else xDistinct = getDistinctValues(value, x);
-
-			/** @type {number} */
-			let interval = findInterval(xDistinct);
-
-			// Array of all possible x values
-			expandKeys[x] = vectorSeq(xDistinct, interval);
-		}
-		if (series) {
-			expandKeys[series] = series;
-		}
-
-		const tidyFuncs = [];
-
-		if (Object.keys(expandKeys).length === 0) {
-			tidyFuncs.push(complete([x], nullySpec));
-			// empty object, no special configuration
-		} else {
-			tidyFuncs.push(complete(expandKeys, nullySpec));
-		}
-		if (xIsDate) {
-			tidyFuncs.push(
-				mutate({
-					[x]: (val) => new Date(val[x])
-				})
-			);
-		}
-		output.push(...tidy(value, ...tidyFuncs));
+	let xIsDate = Object.values(groups)[0][0]?.[x] instanceof Date; 
+		
+	const nullySpec = { [series]: null };
+	if (nullsZero) {
+		nullySpec[y] = 0;
+	} else {
+		// Ensure null for consistency
+		nullySpec[y] = null;
 	}
+
+	const expandKeys = {};
+
+	if (fillX) {
+		/** @type {Array<number>} */
+		let xDistinct;
+
+		if (xIsDate)
+			xDistinct = getDistinctValues(
+				data.map((d) => ({ [x]: d[x].getTime() })),
+				x
+			);
+		else xDistinct = getDistinctValues(data, x);
+
+		/** @type {number} */
+		let interval = findInterval(xDistinct);
+
+		// Array of all possible x values
+		expandKeys[x] = vectorSeq(xDistinct, interval);
+	} else {
+		expandKeys[x] = x;
+	}
+	if (series) {
+		expandKeys[series] = series;
+	}
+
+	const tidyFuncs = [];
+
+	if (Object.keys(expandKeys).length === 0) {
+		tidyFuncs.push(complete([x], nullySpec));
+		// empty object, no special configuration
+	} else {
+		tidyFuncs.push(complete(expandKeys, nullySpec));
+	}
+
+	if (xIsDate) {
+		tidyFuncs.push(
+			mutate({
+				[x]: (val) => new Date(val[x])
+			})
+		);
+	}
+
+	output.push(...tidy(data, ...tidyFuncs));
+
 	return output;
 }
+
