@@ -6,6 +6,20 @@ import { faker } from '@faker-js/faker';
 const seriesNames = ['a', 'b', 'c', 'd', 'e'];
 
 /**
+ * @typedef {Object} GenSeriesKeyOpts
+ * @property {string} [x]
+ * @property {string} [y]
+ * @property {MockSeries} [series]
+ */
+
+/**
+ * @typedef {Object} GenSeriesResult
+ * @property { { series: MockSeries, value: number, time: number }[] } data
+ * @property { Record<MockSeries, { interval: number }> } series
+ * @property { GenSeriesKeyOpts } keys
+ */
+
+/**
  * @typedef {Object} GenSeriesOpts
  * @property {boolean} xHasGaps Determines if the x axis will have all expected values
  * @property {boolean} yHasNulls Determines if the y axis will be nullable
@@ -18,9 +32,13 @@ const seriesNames = ['a', 'b', 'c', 'd', 'e'];
  * @property {number} [maxInterval] Max interval between x values (e.g. interval of 2 is 0,2,4)
  * @property {number} [maxOffset] Max offset for initial x value  (e.g. interval of 2, offset of 1 is 1,3,5)
  * @property {'number' | 'date' | 'categories'} [xType] determines the type of the x axis
+ * @property { GenSeriesKeyOpts} [keys] Allows changing the structure of the output
  */
 
-/** @param  */
+/**
+ * @param {GenSeriesOpts}
+ * @returns {GenSeriesResult}
+ */
 const genNumericSeries = ({
 	xHasGaps = false,
 	yHasNulls = false,
@@ -32,7 +50,12 @@ const genNumericSeries = ({
 	minSeriesCount = 2,
 	maxSeriesCount = 5,
 	maxOffset = 10,
-	xType = 'number'
+	xType = 'number',
+	keys = {
+		x: 'time',
+		y: 'value',
+		series: 'series'
+	}
 } = {}) => {
 	const data = [];
 
@@ -54,6 +77,7 @@ const genNumericSeries = ({
 				}
 			])
 	);
+
 	for (const [seriesName, d] of Object.entries(series)) {
 		const initialValue = xType === 'number' ? d.offset : new Date();
 		const genTime = (i) =>
@@ -63,9 +87,9 @@ const genNumericSeries = ({
 
 		for (let i = 0; i < len; i++) {
 			data.push({
-				series: seriesName,
-				value: faker.number.float({ min: -1000, max: 1000 }),
-				time: genTime(i)
+				[keys.series]: seriesName,
+				[keys.y]: faker.number.float({ min: -1000, max: 1000 }),
+				[keys.x]: genTime(i)
 			});
 		}
 	}
@@ -95,9 +119,9 @@ const genNumericSeries = ({
 
 		for (let i = 0; i < emptiesToCreate; i++) {
 			data.push({
-				series: null,
-				value: faker.number.float({ min: -1000, max: 1000 }),
-				time: genTime(i)
+				[keys.series]: null,
+				[keys.y]: faker.number.float({ min: -1000, max: 1000 }),
+				[keys.x]: genTime(i)
 			});
 		}
 	}
@@ -114,28 +138,39 @@ const genNumericSeries = ({
 
 	return {
 		series,
-		data
+		data,
+		keys
 	};
 };
 
-/** @param {GenSeriesOpts} cfg */
+/**
+ * @param {GenSeriesOpts}
+ * @returns {GenSeriesResult}
+ */
+
 const getCatagoricalSeries = ({
-	minSeriesLen,
-	maxSeriesLen,
-	minSeriesCount,
-	maxSeriesCount
+	minSeriesLen = 5,
+	maxSeriesLen = 50,
+	minSeriesCount = 2,
+	maxSeriesCount = 10,
+	keys = {
+		x: 'category',
+		y: 'value',
+		series: 'series'
+	}
 } = {}) => {
 	const seriesLength = faker.number.int({ min: minSeriesLen, max: maxSeriesLen });
 	const seriesCount = faker.number.int({ min: minSeriesCount, max: maxSeriesCount });
+
 	const categories = new Array(seriesLength).fill(null).map(() => faker.location.streetAddress());
 	const series = new Array(seriesCount).fill(null).map(() => faker.company.name());
 
 	const data = series.reduce((a, v) => {
 		for (const category of categories) {
 			a.push({
-				series: v,
-				category: category,
-				value: faker.number.int({ min: 0, max: 10000 })
+				[keys.series]: v,
+				[keys.x]: category,
+				[keys.y]: faker.number.int({ min: 0, max: 10000 })
 			});
 		}
 		return a;
@@ -145,13 +180,14 @@ const getCatagoricalSeries = ({
 		series: Object.fromEntries(
 			series.map((seriesName) => [seriesName, { len: seriesLength, offset: 0, interval: 1 }])
 		),
-		data
+		data,
+		keys
 	};
 };
 
 /**
  * @param {GenSeriesOpts} cfg
- * @returns { { data: { series: MockSeries, value: number, time: number }[], series: Record<MockSeries, { interval: number }> }  }
+ * @returns {GenSeriesResult}
  */
 export const genSeries = (cfg = {}) => {
 	let v;
@@ -161,7 +197,7 @@ export const genSeries = (cfg = {}) => {
 		default:
 			v = genNumericSeries(cfg);
 			break;
-		case 'categories':
+		case 'category':
 			v = getCatagoricalSeries(cfg);
 			break;
 	}

@@ -49,7 +49,7 @@
 		name = name ?? formatTitle(y, columnSummary[y].title);
 
 		if (swapXY && xType !== 'category') {
-			data = getCompletedData(data, x, y, series, false, xType !== 'time');
+			data = getCompletedData(data, x, y, series, true, xType !== 'time');
 			xType = 'category';
 		}
 
@@ -74,10 +74,10 @@
 
 		// Run fill for missing series entries, only if it's a stacked bar
 		if (swapXY || ((xType === 'value' || xType === 'category') && type.includes('stacked'))) {
-			data = getCompletedData(data, x, y, series, false, xType === 'value');
+			data = getCompletedData(data, x, y, series, true, xType === 'value');
 			xType = 'category';
 		} else if (xType === 'time' && type.includes('stacked')) {
-			data = getCompletedData(data, x, y, series, false, false);
+			data = getCompletedData(data, x, y, series, true, true);
 		}
 
 		if (type.includes('stacked')) {

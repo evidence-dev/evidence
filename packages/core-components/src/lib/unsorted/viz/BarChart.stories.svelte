@@ -1,18 +1,25 @@
 <script>
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
 	import { genSeries } from '@evidence-dev/component-utilities/tests/getCompletedData.fixture';
+	import { MissingYCase } from '@evidence-dev/component-utilities/tests/getCompletedData.fixture.manual';
 
 	import BarChart from './BarChart.svelte';
 
-	const defaultGenSeriesOpts = {
-		xHasGaps: false,
-		yHasNulls: false,
-		seriesAlwaysExists: true,
-		maxSeriesLen: 10,
-		minSeriesCount: 2,
-		maxSeriesCount: 5,
-		xType: 'categories'
-	};
+	const defaultGenSeriesOpts =
+		/** @type {import("@evidence-dev/component-utilities/tests/getCompletedData.fixture").GenSeriesOpts} */ {
+			xHasGaps: false,
+			yHasNulls: false,
+			seriesAlwaysExists: true,
+			maxSeriesLen: 10,
+			minSeriesCount: 2,
+			maxSeriesCount: 5,
+			xType: 'category',
+			keys: {
+				x: 'category',
+				y: 'value',
+				series: 'series'
+			}
+		};
 </script>
 
 <Meta
@@ -50,7 +57,9 @@
 	}}
 />
 
-<Story
+<!-- 
+	This story doesn't work because our series mocking currently doesn't include evidenceColumnTypes
+	<Story
 	name="Crowded (Implicit X Type)"
 	args={{
 		data: genSeries({
@@ -60,4 +69,14 @@
 			minSeriesCount: 4
 		}).data
 	}}
-/>
+/> 
+-->
+
+<Story
+	name="MultiSeries with Missing Entries"
+	args={{
+		type: 'stacked',
+		data: MissingYCase.data,
+		...MissingYCase.keys
+	}}
+/>>

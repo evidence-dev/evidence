@@ -805,6 +805,7 @@
 			});
 		} catch (e) {
 			error = e.message;
+			console.error(e);
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;
