@@ -35,10 +35,6 @@
 	$: xEvidencetype = data?.[0]?._evidenceColumnTypes?.find(
 		(ect) => ect.name.toLowerCase() === x.toLowerCase()
 	)?.evidenceType;
-	$: console.log(xEvidencetype);
-	$: console.log(
-		data?.[0]?._evidenceColumnTypes?.find((ect) => ect.name.toLowerCase() === x.toLowerCase())
-	);
 	export let showAllXAxisLabels = xType === 'category' || xEvidencetype === 'string';
 
 	$: {
