@@ -3,6 +3,7 @@
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import { dev } from '$app/environment';
+    import logo from './wordmark-gray-800.png';
 
 	const beforeprint = new Event('export-beforeprint');
 	const afterprint = new Event('export-afterprint');
@@ -19,9 +20,11 @@
 	<div
 		class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center"
 	>
-		<a href="/" class="text-gray-800 font-sans text-md tracking-wide font-semibold hidden md:block">
-			evidence
+		<a href="/" class="hidden md:block">
+			<img src={logo} alt='evidence' class="h-5 -mb-1 aspect-auto" href="/">			
 		</a>
+
+
 		<button
 			type="button"
 			class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 md:hidden transition-all duration-500"

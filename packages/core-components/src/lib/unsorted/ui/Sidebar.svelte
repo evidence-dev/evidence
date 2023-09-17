@@ -5,6 +5,7 @@
 	import { fly, fade } from 'svelte/transition';
 	import { lock, unlock } from 'tua-body-scroll-lock';
 	import { afterUpdate } from 'svelte';
+	import Logo from './Logo.svelte'
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
@@ -38,9 +39,9 @@
 		out:fly|local={{ x: -100, duration: 200 }}
 	>
 		<div class=" pb-4 text-gray-700">
-			<div class="py-3 px-8 mb-6 flex items-start justify-between">
-				<a href="/" class="text-gray-800 font-sans text-md tracking-wide font-semibold block">
-					evidence
+			<div class="py-3 px-8 mb-3 flex items-start justify-between">
+				<a href="/" class="block mt-1">
+					<Logo />
 				</a>
 				<span
 					on:click={() => (mobileSidebarOpen = false)}
