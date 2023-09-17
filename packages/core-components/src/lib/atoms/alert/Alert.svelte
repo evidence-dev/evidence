@@ -9,17 +9,9 @@
 	 * @type {"default" | "info" | "danger" | "success" | "warning"}
 	 */
 	export let status = 'default';
-
-	/**
-	 * Note that this is pretty specific to the current evidence page layout
-	 * @type {boolean | string}
-	 */
-	export let sticky = false;
-
-	$: if (typeof sticky === 'string') sticky = sticky.toLowerCase() === 'true';
 </script>
 
-<div class="alert {status}" role="alert" class:sticky>
+<div class="alert {status}" role="alert">
 	<div>
 		<slot />
 	</div>
