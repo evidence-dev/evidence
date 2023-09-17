@@ -15,6 +15,21 @@ title: Markdown
 
 ###### Heading Level 6
 
+# Link Headers
+
+# [Link h1](/)
+
+## [Link H2](/)
+
+### [Link H3](/)
+
+#### [Link H4](/)
+
+##### [Link H5](/)
+
+###### [Link H6](/)
+
+
 ## Lists
 
 ### Unordered List
