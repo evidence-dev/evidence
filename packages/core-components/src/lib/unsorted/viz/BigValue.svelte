@@ -99,7 +99,7 @@
 
 <div
 	data-viz="BigValue"
-	class="inline-block font-sans py-3 pr-3 pl-0 mr-3 items-center align-top"
+	class="inline-block font-sans pt-2 pb-3 pr-3 pl-0 mr-3 items-center align-top"
 	style={`
         min-width: ${minWidth};
         max-width: ${maxWidth};
@@ -108,7 +108,7 @@
 	{#if error}
 		<ErrorChart chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm text-gray-600">{title}</p>
+		<p class="text-sm text-gray-700">{title}</p>
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">
 			<Value {data} column={value} {fmt} />
 			{#if sparkline}
