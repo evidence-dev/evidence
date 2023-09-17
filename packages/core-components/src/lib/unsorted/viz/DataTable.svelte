@@ -422,11 +422,7 @@
                         "
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										<a
-											href={row[column.id]}
-											target={column.openInNewTab ? '_blank' : ''}
-											class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-										>
+									<a href={row[column.id]} target={column.openInNewTab ? '_blank' : ''} class='text-blue-600 hover:text-blue-700 transition-colors duration-200'> 
 											{#if column.linkLabel != undefined}
 												{#if row[column.linkLabel] != undefined}
 													{formatValue(
