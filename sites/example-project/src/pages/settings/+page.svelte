@@ -16,11 +16,13 @@
 
 {#if dev}
 	<!-- eslint-disable no-undef -->
-	<DatabaseSettingsPanel {settings} {gitIgnore} />
-	<VersionControlPanel {settings} />
-	<DeploySettingsPanel {settings} />
-	<FormattingSettingsPanel {settings} {customFormattingSettings} />
-	<TelemetrySettingsPanel {settings} />
+	<div class="mt-12">
+		<DatabaseSettingsPanel {settings} {gitIgnore} />
+		<VersionControlPanel {settings} />
+		<DeploySettingsPanel {settings} />
+		<FormattingSettingsPanel {settings} {customFormattingSettings} />
+		<TelemetrySettingsPanel {settings} />
+	</div>
 	<br />
 {:else}
 	<p>Settings are only available in development mode.</p>
