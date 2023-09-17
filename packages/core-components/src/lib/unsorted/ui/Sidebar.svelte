@@ -5,7 +5,7 @@
 	import { fly, fade } from 'svelte/transition';
 	import { lock, unlock } from 'tua-body-scroll-lock';
 	import { afterUpdate } from 'svelte';
-	import Logo from './Logo.svelte'
+	import Logo from './Logo.svelte';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;

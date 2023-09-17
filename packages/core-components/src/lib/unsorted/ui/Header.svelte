@@ -21,9 +21,8 @@
 		class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center"
 	>
 		<a href="/" class="hidden md:block -mb-1">
-			<Logo/>			
+			<Logo />
 		</a>
-
 
 		<button
 			type="button"
@@ -86,10 +85,7 @@
 						<div
 							class="shrink w-44 border border-gray-300 rounded-lg bg-white px-1 py-1 text-sm leading-6 text-gray-950 shadow-xl"
 						>
-							<MenuItem
-								let:active
-								on:click={print}
-							>
+							<MenuItem let:active on:click={print}>
 								<div
 									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
 									class:active
