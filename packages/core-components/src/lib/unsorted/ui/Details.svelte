@@ -15,7 +15,7 @@
 	</button>
 
 	{#if open}
-		<div class="pl-[calc(0.5rem+10px)] pt-3 mb-6" transition:slide>
+		<div class="pl-[calc(0.5rem+10px)] pt-3 mb-6" transition:slide|local>
 			<slot />
 		</div>
 	{/if}
