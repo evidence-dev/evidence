@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 2.0.4
+
+### Patch Changes
+
+- ca551518: Add support for markdown partials
+
 ## 2.0.3
 
 ### Patch Changes

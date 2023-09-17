@@ -1,6 +1,4 @@
-![evidence-logo](sites/docs/static/img/evidence.svg)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+<img src="sites/docs/static/img/wordmark.svg" alt="evidence-logo" width=300px/>
 
 # Business Intelligence as Code
 
@@ -26,6 +24,11 @@ Evidence renders a website from markdown files:
 3. Click the Start Evidence button in the bottom status bar
 
 See docs for [other install options](https://docs.evidence.dev/getting-started/install-evidence) (CLI, Docker, etc)
+
+# Publish
+
+- [Evidence Cloud](https://evidence.dev/cloud) is the easiest way to securely host your project. It's free to get started.
+- [Self-hosted](https://docs.evidence.dev/deployment/overview) options include Netlify, Vercel, your own infra, and other static site hosting platforms.
 
 # Join the Evidence Community
 

@@ -1,5 +1,44 @@
 # @evidence-dev/core-components
 
+## 2.0.1
+
+### Patch Changes
+
+- 4944f21c: getCompletedData() fills all x values for categorical series
+- 287126fe: Ensure that numeric and date x-axis series are sorted
+- 9673d6a4: fix `ReferenceLine` and `ReferenceArea` reactivity
+- 54060ffc: Add showAllXAxisLabels prop to BarChart
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+  - @evidence-dev/component-utilities@1.1.2
+
+## 2.0.0
+
+### Major Changes
+
+- acd0be37: updates sankey chart animation duration to match other charts.
+
+### Minor Changes
+
+- 883c9ebb: Adds delta content type to DataTable
+- 86b94da9: Add colour scale conditional formatting to DataTable
+
+### Patch Changes
+
+- 798c0395: adds feature to have stepped line & area chart.
+- cdbd1773: Add note to db connection settings panel
+- ef3ec286: formatValue based on `data.y/xAxis` instead of `value` in ReferenceLine
+- b9d54140: Added value prop alias for column to Value component
+- 80594acd: adds invisible links to DataTable and USMap to allow sveltekit to prerender
+- 5639ac12: Change details component styling, adds open prop
+- 4ff7dcac: fixes deployment panel environment variables
+- a1fa819e: bump vulnerable deps
+- fc07d945: Updated style to enhance visibility of tabs and tab picker. And added a prop to customize background color of tab picker button.
+- a00c7c76: Make Column component reactive to prop changes
+- e7eb0ac2: Added CopyButton component
+- Updated dependencies [16112191]
+  - @evidence-dev/component-utilities@1.1.1
+
 ## 1.2.1
 
 ### Patch Changes

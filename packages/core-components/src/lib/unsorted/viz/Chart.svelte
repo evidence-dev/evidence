@@ -39,6 +39,8 @@
 	export let size = undefined;
 	export let tooltipTitle = undefined;
 
+	export let showAllXAxisLabels = false;
+
 	// This should be reworked to fit better with svelte's reactivity.
 
 	// We rewrite the x and y values with fallbacks if they aren't present
@@ -80,7 +82,7 @@
 	xGridlines = xGridlines === 'true' || xGridlines === true;
 	export let xAxisLabels = true;
 	xAxisLabels = xAxisLabels === 'true' || xAxisLabels === true;
-	export let sort = false; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
+	export let sort = true; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
 	sort = sort === 'true' || sort === true;
 	export let xFmt = undefined;
 
@@ -803,6 +805,7 @@
 			});
 		} catch (e) {
 			error = e.message;
+			console.error(e);
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;
@@ -818,7 +821,7 @@
 
 {#if !error}
 	<slot />
-	<ECharts config={$config} {height} {width} {data} />
+	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} />
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

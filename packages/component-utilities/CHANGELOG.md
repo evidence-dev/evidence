@@ -1,5 +1,18 @@
 # @evidence-dev/component-utilities
 
+## 1.1.2
+
+### Patch Changes
+
+- 4944f21c: getCompletedData() fills all x values for categorical series
+- 287126fe: Ensure that numeric and date x-axis series are sorted
+
+## 1.1.1
+
+### Patch Changes
+
+- 16112191: Fixes to series completion; duplicate series labels in timestamps should no longer appear
+
 ## 1.1.0
 
 ### Minor Changes

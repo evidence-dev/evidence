@@ -40,6 +40,49 @@ hide_table_of_contents: false
 
 <img src='/img/datatable-deltas.png' width='500px'/>
 
+### Conditional Formatting
+
+#### Default (`scaleColor=green`)
+```html
+<DataTable data={countries}>
+    <Column id=country />
+    <Column id=country_id align=center/>
+    <Column id=category align=center/>
+    <Column id=value_usd contentType=colorscale/>
+</DataTable>
+```
+
+<img src='/img/conditional-fmt-green.png' width='500px'/>
+
+
+#### `scaleColor=red`
+
+```html
+<DataTable data={countries}>
+    <Column id=country />
+    <Column id=country_id align=center/>
+    <Column id=category align=center/>
+    <Column id=value_usd contentType=colorscale scaleColor=red/>
+</DataTable>
+```
+
+<img src='/img/conditional-fmt-red.png' width='500px'/>
+
+#### `scaleColor=blue`
+
+```html
+<DataTable data={countries}>
+    <Column id=country />
+    <Column id=country_id align=center/>
+    <Column id=category align=center/>
+    <Column id=value_usd contentType=colorscale scaleColor=blue/>
+</DataTable>
+```
+
+<img src='/img/conditional-fmt-blue.png' width='500px'/>
+
+
+
 
 ### Including Images
 
@@ -332,7 +375,7 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td>contentType</td>
         <td>Lets you specify how to treat the content within a column. See below for contentType-specific options.</td>
         <td class='tcenter'>-</td>
-        <td class='tcenter'>link | image | delta</td>
+        <td class='tcenter'>link | image | delta | colorscale</td>
         <td class='tcenter'>-</td>
     </tr>
 </table>
@@ -414,7 +457,7 @@ Use the `Column` component to choose specific columns to display in your table, 
         <th>Default</th>	
     </tr>
     <tr>
-        <td>delteSymbol</td>
+        <td>deltaSymbol</td>
         <td>Whether to show the up/down delta arrow symbol</td>
         <td class='tcenter'>-</td>
         <td class='tcenter'>true | false</td>
@@ -433,5 +476,40 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>-</td>
         <td class='tcenter'>true | false</td>
         <td class='tcenter'>true</td>
+    </tr>
+</table>
+
+### Conditional Formatting (Color Scales)
+
+`contentType=colorscale`
+
+<table>
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>
+        <td>scaleColor</td>
+        <td>Color to use for the scale</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>green | blue | red</td>
+        <td class='tcenter'>green</td>
+    </tr>
+    <tr>
+        <td>colorMin</td>
+        <td>Set a minimum for the scale. Any values below that minimum will appear in the lowest color on the scale</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>min of column</td>
+    </tr>
+    <tr>
+        <td>colorMax</td>
+        <td>Set a maximum for the scale. Any values above that maximum will appear in the highest color on the scale</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>max of column</td>
     </tr>
 </table>

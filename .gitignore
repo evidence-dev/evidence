@@ -18,3 +18,4 @@ customization/
 
 **/storybook-static/**
 *.log
+.idea
