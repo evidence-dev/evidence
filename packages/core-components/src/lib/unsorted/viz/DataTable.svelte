@@ -842,7 +842,7 @@
 	}
 
 	.row-link:hover {
-		background-color: #f0f5fc;
+		@apply bg-blue-50;
 	}
 
 	.noresults {
