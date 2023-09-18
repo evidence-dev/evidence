@@ -27,7 +27,18 @@
 		out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
 	>
 		<span class="queryID">
-			{status.id}
+			{#if status.status === 'done'}
+				Rebuilt
+			{:else if status.status === 'running'}
+				Rebuilding
+			{:else}
+				Error while rebuilding
+			{/if}
+			{#if status.id.endsWith('.connection')}
+				all queries in {status.id.split('.')[0]}
+			{:else}
+				{status.id}
+			{/if}
 		</span>
 		<span class="status">
 			{status.status}
