@@ -50,26 +50,24 @@ watcher.on('change', async (path) => {
 
 /** @type {import("vite").Plugin["configureServer"]} */
 const configureServer = (server) => {
-	server.ws.on('connection', () => {
-		/** @type {Handler} */
-		const handler = (path, manifest, error, status) => {
-			const { source, query } = getSourceAndQuery(path);
+	/** @type {Handler} */
+	const handler = (path, manifest, error, status) => {
+		const { source, query } = getSourceAndQuery(path);
 
-			server.ws.send('evidence:build-status', {
-				id: `${source}.${query}`,
-				status: error ? 'error' : status,
-				manifest
-			});
-		};
+		server.ws.send('evidence:build-status', {
+			id: `${source}.${query}`,
+			status: error ? 'error' : status,
+			manifest
+		});
+	};
 
-		/** @type {Handler} */
-		const change_handler = (path) => handler(path, {}, null, 'running');
-		/** @type {Handler} */
-		const done_handler = (path, manifest, error) => handler(path, manifest, error, 'done');
+	/** @type {Handler} */
+	const change_handler = (path) => handler(path, {}, null, 'running');
+	/** @type {Handler} */
+	const done_handler = (path, manifest, error) => handler(path, manifest, error, 'done');
 
-		build_watcher.on('change', change_handler);
-		build_watcher.on('done', done_handler);
-	});
+	build_watcher.on('change', change_handler);
+	build_watcher.on('done', done_handler);
 };
 
 /** @type {() => import("vite").Plugin} */
