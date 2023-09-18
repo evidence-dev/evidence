@@ -3,79 +3,42 @@
 </script>
 
 <script>
-	import { invalidate } from '$app/navigation';
-	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import QueryToast from './ui/QueryToast.svelte';
-	import { delay } from './delay';
-	import { routeHash } from '@evidence-dev/component-utilities/stores';
-	export let endpoint = '';
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+	import { invalidateAll } from '$app/navigation';
 
 	let statuses = [];
-	let previousStatuses = [];
-	$: activeStatuses = statuses.filter(
-		(d) => d.status != 'not run' && d.status != 'from cache' && d.status != 'dynamic query'
-	);
-
-	async function getStatus() {
-		if (endpoint == '') {
-			return [];
-		}
-
-		let statusEndpoint = `/api/status${$page.route.id}`.replace(/\/$/, '');
-		const res = await fetch(statusEndpoint);
-		const { status } = await res.json();
-
-		if (res.ok) {
-			return status;
-		} else {
-			throw new Error(status);
-		}
-	}
-
-	async function checkStatusAndInvalidate() {
-		statuses = await getStatus();
-		// previous not empty check prevents executing the same query multi-times on startup
-		// Check if queries have been removed from the page entirely, it allows vite/compile error to get to the page
-		if (previousStatuses.length !== 0 && statuses.length != previousStatuses.length) {
-			await invalidate((url) => url.pathname === `/api/${endpoint}.json`);
-		}
-		if (statuses.length > 0) {
-			for (let i = 0; i < statuses.length; i++) {
-				const query = statuses[i];
-				if (query.status === 'not run') {
-					// force svelte load on API endpoint & front-end page
-					await invalidate((url) => url.pathname === `/api/${endpoint}.json`);
-					await invalidate((url) => url.pathname === window.location.pathname);
-					await delay(1000);
-				}
+	if (browser) {
+		const source = new EventSource('/api/status');
+		source.addEventListener('message', async (event) => {
+			const data = JSON.parse(event.data);
+			if (data.status === 'done') {
+				// i don't know why this is necessary
+				// possibly because static files take a bit for the dev server
+				// to realize they exist?
+				await new Promise((resolve) => setTimeout(resolve, 1000));
+				await $page.data.__db.updateParquetURLs(data.manifest);
+				await invalidateAll();
 			}
-			activeStatuses.push(...statuses);
-		}
 
-		previousStatuses = statuses;
+			statuses.push(data);
+			statuses = statuses;
+			// remove status toast after 5 seconds
+			// should probably go in QueryToast
+			setTimeout(() => statuses.splice(statuses.indexOf(data), 1), 5000);
+		});
+
+		onDestroy(() => {
+			source.close();
+		});
 	}
-
-	onMount(() => {
-		endpoint = $routeHash;
-		let keep_running = true;
-
-		const loop = async () => {
-			while (keep_running) {
-				await checkStatusAndInvalidate();
-				await delay(100);
-			}
-		};
-
-		loop();
-
-		return () => (keep_running = false);
-	});
 </script>
 
 <div class="container">
-	{#each activeStatuses as status}
-		<QueryToast bind:status />
+	{#each statuses as status}
+		<QueryToast {status} />
 	{/each}
 </div>
 

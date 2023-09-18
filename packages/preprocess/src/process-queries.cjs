@@ -29,7 +29,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							.map(
 								(id) => `
                 let ${id} = data.${id} ?? [];
-                const _query_${id} = browser
+                $: _query_${id} = browser
 					  ? debounce((query) => profile(__db.query, query).then((value) => ${id} = value), 200)
 					  : (query) => (${id} = profile(__db.query, query, "${id}"));
                 $: _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
