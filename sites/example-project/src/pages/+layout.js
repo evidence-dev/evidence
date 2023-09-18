@@ -26,9 +26,9 @@ const initDb = async () => {
 		throw new Error('Unable to load source manifest. Do you need to run build:sources?');
 	}
 
-	await initDB();
-	await setParquetURLs(renderedFiles);
-	await updateSearchPath(Object.keys(renderedFiles));
+	await profile(initDB);
+	await profile(setParquetURLs, renderedFiles);
+	await profile(updateSearchPath, Object.keys(renderedFiles));
 };
 
 const database_initialization = profile(initDb);
@@ -63,6 +63,11 @@ export const load = async ({
 				}
 
 				return query(sql, { route_hash: routeHash, query_name, prerendering: building });
+			},
+			async updateParquetURLs(manifest) {
+				// todo: maybe diff with old?
+				const { renderedFiles } = JSON.parse(manifest);
+				await profile(setParquetURLs, renderedFiles);
 			}
 		},
 		data,
