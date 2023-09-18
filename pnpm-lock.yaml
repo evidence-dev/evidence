@@ -62,6 +62,9 @@ importers:
       blueimp-md5:
         specifier: 2.19.0
         version: 2.19.0
+      chokidar:
+        specifier: 3.5.3
+        version: 3.5.3
       debounce:
         specifier: ^1.2.1
         version: 1.2.1
@@ -188,7 +191,7 @@ importers:
   packages/core-components:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.6
+        specifier: workspace:2.0.0-usql.7
         version: link:../component-utilities
       '@evidence-dev/tailwind':
         specifier: workspace:1.0.0-usql.2
@@ -374,7 +377,7 @@ importers:
         specifier: workspace:1.0.0-usql.2
         version: link:../mssql
       '@evidence-dev/mysql':
-        specifier: workspace:1.0.0-usql.2
+        specifier: workspace:1.0.0-usql.3
         version: link:../mysql
       '@evidence-dev/postgres':
         specifier: workspace:1.0.0-usql.2
@@ -417,7 +420,7 @@ importers:
   packages/evidence:
     dependencies:
       '@evidence-dev/plugin-connector':
-        specifier: workspace:2.0.0-usql.15
+        specifier: workspace:2.0.0-usql.16
         version: link:../plugin-connector
       '@evidence-dev/preprocess':
         specifier: workspace:4.0.0-usql.11
@@ -426,7 +429,7 @@ importers:
         specifier: 'workspace:'
         version: link:../telemetry
       '@evidence-dev/universal-sql':
-        specifier: workspace:2.0.0-usql.8
+        specifier: workspace:2.0.0-usql.9
         version: link:../universal-sql
       '@sveltejs/adapter-static':
         specifier: 1.0.0
@@ -434,9 +437,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.7
         version: 10.4.14(postcss@8.4.25)
-      chokidar:
-        specifier: 3.5.3
-        version: 3.5.3
       debounce:
         specifier: ^1.2.1
         version: 1.2.1
@@ -475,13 +475,13 @@ importers:
         version: 4.1.2
     devDependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.6
+        specifier: workspace:2.0.0-usql.7
         version: link:../component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:2.0.0-usql.10
+        specifier: workspace:2.0.0-usql.11
         version: link:../core-components
       '@evidence-dev/db-orchestrator':
-        specifier: workspace:3.0.0-usql.6
+        specifier: workspace:3.0.0-usql.7
         version: link:../db-orchestrator
       '@evidence-dev/tailwind':
         specifier: workspace:1.0.0-usql.2
@@ -489,6 +489,9 @@ importers:
       '@sveltejs/kit':
         specifier: 1.21.0
         version: 1.21.0(svelte@3.55.0)(vite@4.3.9)
+      chokidar:
+        specifier: 3.5.3
+        version: 3.5.3
       svelte:
         specifier: 3.55.0
         version: 3.55.0
@@ -592,7 +595,7 @@ importers:
   packages/plugin-connector:
     dependencies:
       '@evidence-dev/universal-sql':
-        specifier: workspace:2.0.0-usql.8
+        specifier: workspace:2.0.0-usql.9
         version: link:../universal-sql
       '@types/estree':
         specifier: ^1.0.1
@@ -875,22 +878,22 @@ importers:
   sites/example-project:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.6
+        specifier: workspace:2.0.0-usql.7
         version: link:../../packages/component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:2.0.0-usql.10
+        specifier: workspace:2.0.0-usql.11
         version: link:../../packages/core-components
       '@evidence-dev/duckdb':
         specifier: workspace:1.0.0-usql.3
         version: link:../../packages/duckdb
       '@evidence-dev/plugin-connector':
-        specifier: workspace:2.0.0-usql.15
+        specifier: workspace:2.0.0-usql.16
         version: link:../../packages/plugin-connector
       '@evidence-dev/telemetry':
         specifier: 1.0.5
         version: link:../../packages/telemetry
       '@evidence-dev/universal-sql':
-        specifier: workspace:2.0.0-usql.8
+        specifier: workspace:2.0.0-usql.9
         version: link:../../packages/universal-sql
       '@fontsource/spectral':
         specifier: ^5.0.3
@@ -901,6 +904,9 @@ importers:
       '@tidyjs/tidy':
         specifier: 2.4.4
         version: 2.4.4
+      chokidar:
+        specifier: 3.5.3
+        version: 3.5.3
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -990,10 +996,10 @@ importers:
   sites/test-env:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.6
+        specifier: workspace:2.0.0-usql.7
         version: link:../../packages/component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:2.0.0-usql.10
+        specifier: workspace:2.0.0-usql.11
         version: link:../../packages/core-components
       '@evidence-dev/csv':
         specifier: workspace:1.0.0-usql.4
@@ -1002,7 +1008,7 @@ importers:
         specifier: workspace:1.0.0-usql.3
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:20.0.0-usql.24
+        specifier: workspace:20.0.0-usql.25
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
         specifier: workspace:2.0.0-usql.1
