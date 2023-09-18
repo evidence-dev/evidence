@@ -30,10 +30,12 @@ templatePaths.forEach((p) => {
 
 fs.emptyDirSync('./template/sources');
 
-
-const configFileLocation = path.join(path.parse(import.meta.url).dir, "svelte.config.js").split("file:").at(-1)
+const configFileLocation = path
+	.join(path.parse(import.meta.url).dir, 'svelte.config.js')
+	.split('file:')
+	.at(-1);
 // Create a clean SK config (workspace's is modified)
-fs.copySync(configFileLocation, './template/svelte.config.js')
+fs.copySync(configFileLocation, './template/svelte.config.js');
 
 fs.outputFileSync(
 	'./template/vite.config.js',

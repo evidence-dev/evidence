@@ -21,3 +21,6 @@ yarn.lock
 **/sites/docs/*
 **/dist/*
 .changeset/*
+
+# Ignore this file because it uses top-level await and ESLint can't parse that.
+packages/evidence/scripts/svelte.config.js
