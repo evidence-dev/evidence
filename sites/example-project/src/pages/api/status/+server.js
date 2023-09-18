@@ -17,6 +17,8 @@ const build_watcher = new EventEmitter();
 
 const watcher = watch('../../sources/**');
 watcher.on('change', async (path) => {
+	build_watcher.emit('change', path);
+
 	const { source, query } = getSourceAndQuery(path);
 
 	// go in ../.. (root) vs. . (aka .evidence/template)
@@ -31,44 +33,59 @@ watcher.on('change', async (path) => {
 	build_watcher.emit('done', path, manifest);
 });
 
-export const GET = () => {
+function createHandlers(controller) {
 	const encoder = new TextEncoder();
 
+	const handler = (path, manifest, status) => {
+		const { source, query } = getSourceAndQuery(path);
+		try {
+			controller.enqueue(
+				encoder.encode(
+					`data: ${JSON.stringify({
+						id: `${source}.${query}`,
+						status,
+						manifest
+					})}\n\n`
+				)
+			);
+		} catch (e) {
+			console.error(`Error occured while reloading source: ${e}`);
+			controller.enqueue(
+				encoder.encode(
+					`data: ${JSON.stringify({
+						id: `${source}.${query}`,
+						status: 'error',
+						manifest: {}
+					})}\n\n`
+				)
+			);
+		}
+	};
+
+	const change_handler = (path) => handler(path, {}, 'running');
+	const done_handler = (path, manifest) => handler(path, manifest, 'done');
+
+	return { change_handler, done_handler };
+}
+
+export const GET = () => {
+	let change_handler, done_handler;
 	const stream = new ReadableStream({
 		async start(controller) {
-			const handler = (path, manifest, status) => {
-				const { source, query } = getSourceAndQuery(path);
-				try {
-					controller.enqueue(
-						encoder.encode(
-							`data: ${JSON.stringify({
-								id: `${source}.${query}`,
-								status,
-								manifest
-							})}\n\n`
-						)
-					);
-				} catch (e) {
-					if (e.code === 'ERR_INVALID_STATE') {
-						// controller complains about this
-						// probably doesn't play well with vite HMR
-						return;
-					}
-					console.error(e);
-				}
-			};
+			({ change_handler, done_handler } = createHandlers(controller));
 
-			const change_handler = (path) => handler(path, {}, 'running');
-			const done_handler = (path, manifest) => handler(path, manifest, 'done');
-
-			watcher.on('change', change_handler);
+			build_watcher.on('change', change_handler);
 			build_watcher.on('done', done_handler);
 			// todo: check if 60 second timeout is enough
 			await new Promise((resolve) => setTimeout(resolve, 60000));
-			watcher.off('change', change_handler);
+			build_watcher.off('change', change_handler);
 			build_watcher.off('done', done_handler);
 
 			controller.close();
+		},
+		cancel() {
+			build_watcher.off('change', change_handler);
+			build_watcher.off('done', done_handler);
 		}
 	});
 
