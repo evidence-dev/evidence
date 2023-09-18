@@ -3,17 +3,14 @@
 </script>
 
 <script>
-	import { onDestroy } from 'svelte';
 	import QueryToast from './ui/QueryToast.svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
 
 	let statuses = [];
-	if (browser) {
-		const source = new EventSource('/api/status');
-		source.addEventListener('message', async (event) => {
-			const data = JSON.parse(event.data);
+	if (browser && import.meta.hot) {
+		import.meta.hot.on('evidence:build-status', async (data) => {
 			if (data.status === 'done') {
 				// i don't know why this is necessary
 				// possibly because static files take a bit for the dev server
@@ -25,10 +22,6 @@
 
 			statuses.push(data);
 			statuses = statuses;
-		});
-
-		onDestroy(() => {
-			source.close();
 		});
 	}
 </script>

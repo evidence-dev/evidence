@@ -66,11 +66,12 @@ fs.outputFileSync(
 fs.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
+	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit()],
+        plugins: [sveltekit(), evidenceVitePlugin()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts'],
             exclude: ['svelte-icons', 'svelte-tiny-linked-charts', '@evidence-dev/universal-sql']
