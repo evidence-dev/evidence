@@ -19,10 +19,10 @@
 
 {#if visible}
 	<div
-		id="toast"
-		class:running={status.status === 'running' || status.status === 'not run'}
+		class="toast"
+		class:running={status.status === 'running'}
 		class:error={status.status === 'error'}
-		class:done={status.status === 'done' || status.status === 'from cache'}
+		class:done={status.status === 'done'}
 		in:scale
 		out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
 	>
@@ -36,7 +36,7 @@
 {/if}
 
 <style>
-	#toast {
+	.toast {
 		border-radius: 4px;
 		padding: 0.3em 0.75em;
 		margin: 1em 0;
@@ -81,7 +81,7 @@
 	}
 
 	@media print {
-		#toast {
+		.toast {
 			display: none;
 		}
 	}

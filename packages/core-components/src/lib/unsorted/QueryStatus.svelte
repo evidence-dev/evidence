@@ -25,9 +25,6 @@
 
 			statuses.push(data);
 			statuses = statuses;
-			// remove status toast after 5 seconds
-			// should probably go in QueryToast
-			setTimeout(() => statuses.splice(statuses.indexOf(data), 1), 5000);
 		});
 
 		onDestroy(() => {
