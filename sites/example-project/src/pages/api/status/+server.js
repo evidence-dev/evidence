@@ -22,28 +22,33 @@ watcher.on('change', async (path) => {
 	const { source, query } = getSourceAndQuery(path);
 
 	// go in ../.. (root) vs. . (aka .evidence/template)
-	await updateDatasourceOutputs(`../../static/data`, '/data', {
+	const error = await updateDatasourceOutputs(`../../static/data`, '/data', {
 		sources: new Set([source]),
 		queries: new Set([query])
-	});
+	}).catch((e) => e);
 
-	// get new manifest
-	const manifest = await readFile('../../static/data/manifest.json', 'utf-8');
+	if (error) {
+		console.error(`Error occured while reloading source: ${error}`)
+		build_watcher.emit('done', path, {}, error);
+	} else {
+		// get new manifest
+		const manifest = await readFile('../../static/data/manifest.json', 'utf-8');
 
-	build_watcher.emit('done', path, manifest);
+		build_watcher.emit('done', path, manifest, null);
+	}
 });
 
 function createHandlers(controller) {
 	const encoder = new TextEncoder();
 
-	const handler = (path, manifest, status) => {
+	const handler = (path, manifest, status, error) => {
 		const { source, query } = getSourceAndQuery(path);
 		try {
 			controller.enqueue(
 				encoder.encode(
 					`data: ${JSON.stringify({
 						id: `${source}.${query}`,
-						status,
+						status: error ? 'error' : status,
 						manifest
 					})}\n\n`
 				)
@@ -62,8 +67,8 @@ function createHandlers(controller) {
 		}
 	};
 
-	const change_handler = (path) => handler(path, {}, 'running');
-	const done_handler = (path, manifest) => handler(path, manifest, 'done');
+	const change_handler = (path) => handler(path, {}, null, 'running');
+	const done_handler = (path, manifest, error) => handler(path, manifest, error, 'done');
 
 	return { change_handler, done_handler };
 }
