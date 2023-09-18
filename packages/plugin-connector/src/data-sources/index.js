@@ -115,5 +115,3 @@ export async function updateDatasourceOutputs(
 
 	await updateManifest(outputFiles, outDir, datasources);
 }
-
-export { getSources };

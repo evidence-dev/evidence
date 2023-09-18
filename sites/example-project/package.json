@@ -17,7 +17,6 @@
 		"@fontsource/spectral": "^5.0.3",
 		"@sveltejs/kit": "1.21.0",
 		"@tidyjs/tidy": "2.4.4",
-		"chokidar": "3.5.3",
 		"cross-env": "^7.0.3",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",

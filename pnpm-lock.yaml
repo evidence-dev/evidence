@@ -62,9 +62,6 @@ importers:
       blueimp-md5:
         specifier: 2.19.0
         version: 2.19.0
-      chokidar:
-        specifier: 3.5.3
-        version: 3.5.3
       debounce:
         specifier: ^1.2.1
         version: 1.2.1
@@ -489,9 +486,6 @@ importers:
       '@sveltejs/kit':
         specifier: 1.21.0
         version: 1.21.0(svelte@3.55.0)(vite@4.3.9)
-      chokidar:
-        specifier: 3.5.3
-        version: 3.5.3
       svelte:
         specifier: 3.55.0
         version: 3.55.0
@@ -907,9 +901,6 @@ importers:
       '@tidyjs/tidy':
         specifier: 2.4.4
         version: 2.4.4
-      chokidar:
-        specifier: 3.5.3
-        version: 3.5.3
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
