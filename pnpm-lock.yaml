@@ -434,6 +434,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.7
         version: 10.4.14(postcss@8.4.25)
+      chokidar:
+        specifier: 3.5.3
+        version: 3.5.3
       debounce:
         specifier: ^1.2.1
         version: 1.2.1
