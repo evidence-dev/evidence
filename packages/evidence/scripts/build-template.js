@@ -30,40 +30,10 @@ templatePaths.forEach((p) => {
 
 fs.emptyDirSync('./template/sources');
 
+
+const configFileLocation = path.join(path.parse(import.meta.url).dir, "svelte.config.js").split("file:").at(-1)
 // Create a clean SK config (workspace's is modified)
-fs.outputFileSync(
-	'./template/svelte.config.js',
-	`
-    import evidencePreprocess from '@evidence-dev/preprocess'
-    import preprocess from "svelte-preprocess";
-    import adapter from '@sveltejs/adapter-static';
-    import { evidencePlugins } from '@evidence-dev/plugin-connector';
-    
-    /** @type {import('@sveltejs/kit').Config} */
-    
-    const config = {
-        extensions: ['.svelte', ".md"], 
-        preprocess: [
-            ...evidencePreprocess(true),
-            evidencePlugins(),
-            preprocess({
-              postcss: true,
-            }),
-        ],
-        kit: {
-            adapter: adapter({
-                strict: false
-            }),
-            files: {
-                routes: 'src/pages',
-                lib: 'src/components'
-            }
-        }
-    };
-    
-    export default config    
-    `
-);
+fs.copySync(configFileLocation, './template/svelte.config.js')
 
 fs.outputFileSync(
 	'./template/vite.config.js',
