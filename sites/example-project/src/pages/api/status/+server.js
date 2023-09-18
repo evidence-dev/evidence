@@ -30,7 +30,7 @@ watcher.on('change', async (path) => {
 	}).catch((e) => e);
 
 	if (error) {
-		console.error(`Error occured while reloading source: ${error}`)
+		console.error(`Error occured while reloading source: ${error}`);
 		build_watcher.emit('done', path, {}, error);
 	} else {
 		// get new manifest
