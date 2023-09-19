@@ -1,7 +1,7 @@
 // Populate the template that's shipped with the package using a subset of files from the example-project
 import path from 'path';
-import fs from 'fs-extra';
-
+import fsExtra from 'fs-extra';
+import fs from 'fs';
 const templatePaths = [
 	'.npmrc',
 	'static/',
@@ -22,28 +22,20 @@ const templatePaths = [
 	'postcss.config.cjs'
 ];
 
-fs.emptyDirSync('./template/');
+fsExtra.emptyDirSync('./template/');
 
 templatePaths.forEach((p) => {
-	fs.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
+	fsExtra.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
 });
 
-fs.emptyDirSync('./template/sources');
+fsExtra.emptyDirSync('./template/sources');
 
-const configFileLocation = path.join(
-	...import.meta.url
-		.split(path.sep)
-		.slice(0, -1)
-		.join(path.sep)
-		.split(path.delimiter)
-		.at(-1)
-		.split(path.delimiter),
-	'svelte.config.js'
-);
+const configFileLocation = new URL(path.join(path.parse(import.meta.url).dir, 'svelte.config.js'));
+
 // Create a clean SK config (workspace's is modified)
-fs.copySync(configFileLocation, './template/svelte.config.js');
+fs.writeFileSync('./template/svelte.config.js', fs.readFileSync(configFileLocation));
 
-fs.outputFileSync(
+fsExtra.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
@@ -68,7 +60,7 @@ fs.outputFileSync(
 );
 
 // Create a readme
-fs.outputFileSync(
+fsExtra.outputFileSync(
 	'./template/README.md',
 	`
 # Evidence Template Project
