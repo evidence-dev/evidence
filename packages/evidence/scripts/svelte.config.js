@@ -54,7 +54,12 @@ async function loadUserConfiguration() {
 	const userConfig = await import(path.join(rootDir, 'svelte.config.js')).then((r) => r.default);
 
 	if ('preprocess' in userConfig) {
-		console.warn('Configuring preprocess is disabled for Evidence projects.');
+		if ('preprocess' in config) {
+			config.preprocess.push(...userConfig.preprocess);
+		} else {
+			// This case shouldn't ever be reached.
+			config.preprocess = userConfig.preprocess;
+		}
 		delete userConfig.preprocess;
 	}
 	if ('extensions' in userConfig) {
