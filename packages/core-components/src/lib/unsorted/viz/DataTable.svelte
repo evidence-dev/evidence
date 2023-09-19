@@ -640,7 +640,6 @@
 
 	table {
 		display: table;
-		font-family: sans-serif;
 		width: 100%;
 		border-collapse: collapse;
 		font-variant-numeric: tabular-nums;
@@ -734,7 +733,6 @@
 
 	.page-changer {
 		font-size: 20px;
-		font-family: sans-serif;
 		background: none;
 		border: none;
 		cursor: pointer;
@@ -848,7 +846,6 @@
 	.noresults {
 		display: none;
 		color: var(--grey-400);
-		font-family: sans-serif;
 		text-align: center;
 		margin-top: 5px;
 	}
