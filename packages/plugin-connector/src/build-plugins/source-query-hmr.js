@@ -21,30 +21,32 @@ function getSourceAndQuery(path) {
 
 const build_watcher = new EventEmitter();
 
-const watcher = watch('../../sources/**');
-watcher.on('change', async (path) => {
-	const { query, source_path } = getSourceAndQuery(path);
-	const datasources = await getSources(resolve('../../sources'));
-	const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
-	if (!datasource) return;
+if (process.env.NODE_ENV === 'development') {
+	const watcher = watch('../../sources/**');
+	watcher.on('change', async (path) => {
+		const { query, source_path } = getSourceAndQuery(path);
+		const datasources = await getSources(resolve('../../sources'));
+		const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
+		if (!datasource) return;
 
-	build_watcher.emit('change', path);
+		build_watcher.emit('change', path);
 
-	// go in ../.. (root) vs. . (aka .evidence/template)
-	const error = await updateDatasourceOutputs(`../../static/data`, '/data', {
-		sources: new Set([datasource.name]),
-		queries: datasource ? null : new Set([query]),
-		only_changed: false
-	}).catch((e) => e);
+		// go in ../.. (root) vs. . (aka .evidence/template)
+		const error = await updateDatasourceOutputs(`../../static/data`, '/data', {
+			sources: new Set([datasource.name]),
+			queries: datasource ? null : new Set([query]),
+			only_changed: false
+		}).catch((e) => e);
 
-	if (error) {
-		console.error(`Error occured while reloading source: ${error}`);
-		build_watcher.emit('done', path, {}, error);
-	} else {
-		const manifest = await readFile('../../static/data/manifest.json', 'utf-8');
-		build_watcher.emit('done', path, manifest, null);
-	}
-});
+		if (error) {
+			console.error(`Error occured while reloading source: ${error}`);
+			build_watcher.emit('done', path, {}, error);
+		} else {
+			const manifest = await readFile('../../static/data/manifest.json', 'utf-8');
+			build_watcher.emit('done', path, manifest, null);
+		}
+	});
+}
 
 /** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */
 
