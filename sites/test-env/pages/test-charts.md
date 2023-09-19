@@ -20,7 +20,7 @@ Testing
 
                         <Accordion>
                             <AccordionItem title="Line Charts">
-                            
+
                                 With Series
                                 <LineChart data={data.data} series="series" y={data.keys.y} x={data.keys.x} {handleMissing}/>
                                 Without Series

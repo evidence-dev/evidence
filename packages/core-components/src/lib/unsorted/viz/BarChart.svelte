@@ -33,14 +33,13 @@
 	export let yMax = undefined;
 	export let swapXY = false;
 
-
-	let xEvidenceType = undefined
+	let xEvidenceType = undefined;
 
 	onMount(() => {
 		xEvidenceType = data?.[0]?._evidenceColumnTypes?.find(
-				(ect) => ect.name?.toLowerCase() === x?.toLowerCase()
+			(ect) => ect.name?.toLowerCase() === x?.toLowerCase()
 		)?.evidenceType;
-	})
+	});
 
 	export let showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
 
