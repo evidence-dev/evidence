@@ -38,7 +38,7 @@ You can set environment variables to configure Evidence in both development and 
 
 Evidence does not currently support a `.env` file, but you can set environment variables in your terminal before running the command.
 
-All Redshift environment variables are set using the PostgreSQL variables.
+**All Redshift environment variables are set using the PostgreSQL variables.**
 
 | Variable                            | Description                                                     | Options (if applicable)                                                               |
 | ----------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -67,6 +67,13 @@ All Redshift environment variables are set using the PostgreSQL variables.
 | EVIDENCE_POSTGRES_SCHEMA            | Postgres Schema                                                 |                                                                                       |
 | EVIDENCE_POSTGRES_SSL               | Postgres SSL                                                    | `true` , `false`, `no-verify`                                                         |
 | EVIDENCE_POSTGRES_CONNECTIONSTRING  | Postgres Connection String                                      |                                                                                       |
+| EVIDENCE_MSSQL_HOST                 | SQL Server Host                                                 |                                                                                       |
+| EVIDENCE_MSSQL_DATABASE             | SQL Server Database                                             |                                                                                       |
+| EVIDENCE_MSSQL_USER                 | SQL Server Username                                             |                                                                                       |
+| EVIDENCE_MSSQL_PASSWORD             | SQL Server Password                                             |                                                                                       |
+| EVIDENCE_MSSQL_PORT                 | SQL Server Port                                                 |                                                                                       |
+| EVIDENCE_MSSQL_TRUST_SERVER_CERTIFICATE | SQL Server Trust Server Certificate                         | `true` , `false` (default)                                                            |
+| EVIDENCE_MSSQL_ENCRYPT              | SQL Server Encrypt                                              | `true` (default) , `false`                                                            |
 | EVIDENCE_MYSQL_USER                 | MySQL Username                                                  |                                                                                       |
 | EVIDENCE_MYSQL_HOST                 | MySQL Host                                                      |                                                                                       |
 | EVIDENCE_MYSQL_DATABASE             | MySQL Database                                                  |                                                                                       |
