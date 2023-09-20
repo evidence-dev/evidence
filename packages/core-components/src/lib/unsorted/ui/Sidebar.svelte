@@ -203,6 +203,6 @@
 
 <style>
 	.selected {
-		@apply font-medium text-gray-950;
+		@apply text-blue-600 hover:text-blue-600;
 	}
 </style>
