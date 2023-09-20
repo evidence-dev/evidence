@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.2
+
+### Patch Changes
+
+- 5d496a7b: Fix BarChart type inference
+
 ## 2.0.1
 
 ### Patch Changes
