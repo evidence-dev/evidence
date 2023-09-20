@@ -30,8 +30,6 @@ templatePaths.forEach((p) => {
 
 fsExtra.emptyDirSync('./template/sources');
 
-
-
 const configFileLocation = new URL('svelte.config.js', import.meta.url);
 // Create a clean SK config (workspace's is modified)
 fs.writeFileSync('./template/svelte.config.js', fs.readFileSync(configFileLocation));

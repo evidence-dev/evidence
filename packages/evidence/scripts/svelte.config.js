@@ -50,8 +50,8 @@ async function loadUserConfiguration() {
 
 	if (!rootDirContents.includes('svelte.config.js')) return;
 
-    const configFileLocation = path.join(rootDir, 'svelte.config.js');
-    const configURL = new URL(`file:///${configFileLocation}`).href;
+	const configFileLocation = path.join(rootDir, 'svelte.config.js');
+	const configURL = new URL(`file:///${configFileLocation}`).href;
 	/** @type {import("@sveltejs/kit").Config} */
 	const userConfig = await import(configURL).then((r) => r.default);
 
