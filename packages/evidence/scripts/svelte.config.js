@@ -50,8 +50,10 @@ async function loadUserConfiguration() {
 
 	if (!rootDirContents.includes('svelte.config.js')) return;
 
+    const configFileLocation = path.join(rootDir, 'svelte.config.js');
+    const configURL = new URL(`file:///${configFileLocation}`).href;
 	/** @type {import("@sveltejs/kit").Config} */
-	const userConfig = await import(path.join(rootDir, 'svelte.config.js')).then((r) => r.default);
+	const userConfig = await import(configURL).then((r) => r.default);
 
 	if ('preprocess' in userConfig) {
 		if ('preprocess' in config) {
