@@ -2,6 +2,15 @@ import { registerTheme, init } from 'echarts';
 import { colours } from './colours';
 import debounce from 'debounce';
 
+/**
+ * @typedef {import("echarts").EChartsOption & {
+ * 		dispatch?: ReturnType<typeof import("svelte").createEventDispatcher>;
+ * 		showAllXAxisLabels?: boolean;
+ * 	}
+ * } ActionParams
+ */
+
+/** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
 export default (node, option) => {
 	registerTheme('evidence-light', {
 		grid: {
@@ -424,17 +433,6 @@ export default (node, option) => {
 
 	const chart = init(node, 'evidence-light', { renderer: 'svg' });
 
-	// If the x-axis of a series is numeric, or a date; ensure that it is in order
-	option.series = option.series.map((s) => {
-		if (typeof s.data?.[0][0] === 'number') {
-			s.data = s.data.sort((a, b) => a[0] - b[0]);
-		} else if (s.data?.[0][0] instanceof Date) {
-			s.data = s.data.sort((a, b) => a[0].getTime() - b[0]?.getTime() ?? 0);
-		}
-
-		return s;
-	});
-
 	chart.setOption(option);
 
 	const dispatch = option.dispatch;
@@ -444,32 +442,62 @@ export default (node, option) => {
 
 	let resizeObserver;
 	const containerElement = document.querySelector('div.content > article');
-	const resizeChart = debounce(() => {
+	const onWindowResize = debounce(() => {
 		chart.resize({
 			animation: {
 				duration: 500
 			}
 		});
+		updateLabelWidths();
 	}, 100);
 
+	const updateLabelWidths = () => {
+		// Make sure we operate on an up-to-date options object
+		/** @type {import("echarts").EChartsOption} */
+		const prevOption = chart.getOption();
+		if (!prevOption) return;
+		// If the options object includes showing all x axis labels
+		// Note: this isn't a standard option, but right now this is the easiest way to pass something to the action.
+		// We don't want to have multiple resize observers if we can avoid it, and this is all due for a cleanup anyways
+		if (prevOption.showAllXAxisLabels) {
+			// Get all the possible x values
+			const distinctXValues = new Set(prevOption.series.flatMap((s) => s.data?.map((d) => d[0])));
+			const modConst = 4 / 5;
+			const clientWidth = node?.clientWidth ?? 0;
+
+			/** @type {import("echarts").EChartsOption} */
+			const newOption = {
+				xAxis: {
+					axisLabel: {
+						interval: 0,
+						overflow: 'truncate',
+						width: (clientWidth * modConst) / distinctXValues.size
+					}
+				}
+			};
+			chart.setOption(newOption);
+		}
+	};
+
 	if (window.ResizeObserver && containerElement) {
-		// TODO: This was originally added to combat a bug here: https://github.com/evidence-dev/evidence/pull/450
-		// Another solution is required. Something like lodash debounce might be an easy win to solve this.
-		resizeObserver = new ResizeObserver(resizeChart);
+		resizeObserver = new ResizeObserver(onWindowResize);
 		resizeObserver.observe(containerElement);
 	} else {
-		window.addEventListener('resize', resizeChart);
+		window.addEventListener('resize', onWindowResize);
 	}
+
+	onWindowResize();
 
 	return {
 		update(option) {
 			chart.setOption(option, true, true);
+			updateLabelWidths();
 		},
 		destroy() {
 			if (resizeObserver) {
 				resizeObserver.unobserve(containerElement);
 			} else {
-				window.removeEventListener('resize', resizeChart);
+				window.removeEventListener('resize', onWindowResize);
 			}
 			chart.dispose();
 		}

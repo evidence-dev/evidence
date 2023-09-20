@@ -1,5 +1,29 @@
 # @evidence-dev/evidence
 
+## 21.0.3
+
+### Patch Changes
+
+- 6891c4ba: User projects can now extend svelte.config.js
+
+## 21.0.2
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+
+## 21.0.1
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+
 ## 21.0.0
 
 ### Patch Changes

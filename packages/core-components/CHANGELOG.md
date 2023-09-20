@@ -1,5 +1,23 @@
 # @evidence-dev/core-components
 
+## 2.0.2
+
+### Patch Changes
+
+- 5d496a7b: Fix BarChart type inference
+
+## 2.0.1
+
+### Patch Changes
+
+- 4944f21c: getCompletedData() fills all x values for categorical series
+- 287126fe: Ensure that numeric and date x-axis series are sorted
+- 9673d6a4: fix `ReferenceLine` and `ReferenceArea` reactivity
+- 54060ffc: Add showAllXAxisLabels prop to BarChart
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+  - @evidence-dev/component-utilities@1.1.2
+
 ## 2.0.0
 
 ### Major Changes
