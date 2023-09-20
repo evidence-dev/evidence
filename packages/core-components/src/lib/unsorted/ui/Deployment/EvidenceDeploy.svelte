@@ -14,7 +14,11 @@
 
 <div class="new-format-buttons mb-3">
 	<button type="button">
-		<a class="text-white no-underline hover:no-underline" href='https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=product&utm_campaign=deploy_panel'>Request an Invite</a>
+		<a
+			class="text-white no-underline hover:no-underline"
+			href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=product&utm_campaign=deploy_panel"
+			>Request an Invite</a
+		>
 	</button>
 </div>
 

@@ -5,7 +5,7 @@
 <script>
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { DotsVertical, ExternalLink } from '@steeze-ui/tabler-icons';
+	import { DotsVertical } from '@steeze-ui/tabler-icons';
 
 	import clickOutside from '@evidence-dev/component-utilities/clickOutside';
 	import { showQueries, pageHasQueries } from '@evidence-dev/component-utilities/stores';
