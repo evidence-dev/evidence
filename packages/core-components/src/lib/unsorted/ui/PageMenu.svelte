@@ -67,9 +67,8 @@
 						{:else if option.label === 'Export PDF'}
 							<button class="dropdown first" on:click={print}>{option.label}</button>
 						{:else if option.url.includes('http')}
-							<a href={option.url} target="_blank" rel="noreferrer">
+							<a href={option.url} rel="noreferrer">
 								{option.label}
-								<Icon src={ExternalLink} class="h-3 w-3" />
 							</a>
 						{:else}
 							<a href={option.url} target="_self">{option.label}</a>

@@ -81,7 +81,6 @@ from table`;
 			<p>
 				Add new formats to your project. Custom formats use <a
 					class="docs-link"
-					target="none"
 					href="https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68"
 					>excel-style format codes.</a
 				>
@@ -93,7 +92,6 @@ from table`;
 		<span
 			>Learn more about <a
 				class="docs-link"
-				target="none"
 				href="https://docs.evidence.dev/core-concepts/formatting/"
 			>
 				formatting in Evidence &rarr;</a
