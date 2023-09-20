@@ -32,7 +32,9 @@ fsExtra.emptyDirSync('./template/sources');
 
 
 
-const configFileLocation = fs.realpathSync(new URL(path.join(path.parse(import.meta.url).dir, 'svelte.config.js')));
+const configFileLocation__ = new URL(path.join(path.parse(import.meta.url).dir, 'svelte.config.js'))
+const configFileLocation = 
+	process.platform.includes("win") ? configFileLocation__.href : fs.realpathSync(configFileLocation__);
 // Create a clean SK config (workspace's is modified)
 fs.writeFileSync('./template/svelte.config.js', fs.readFileSync(configFileLocation));
 
