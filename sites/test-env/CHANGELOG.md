@@ -1,5 +1,20 @@
 # evidence-test-environment
 
+## 2.0.22
+
+### Patch Changes
+
+- Updated dependencies [6891c4ba]
+  - @evidence-dev/evidence@21.0.3
+
+## 2.0.21
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+  - @evidence-dev/evidence@21.0.2
+
 ## 2.0.20
 
 ### Patch Changes

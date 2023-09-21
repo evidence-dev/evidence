@@ -38,7 +38,7 @@ You can set environment variables to configure Evidence in both development and 
 
 Evidence does not currently support a `.env` file, but you can set environment variables in your terminal before running the command.
 
-All Redshift environment variables are set using the PostgreSQL variables.
+**All Redshift environment variables are set using the PostgreSQL variables.**
 
 | Variable                            | Description                                                     | Options (if applicable)                                                                                 |
 | ----------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
