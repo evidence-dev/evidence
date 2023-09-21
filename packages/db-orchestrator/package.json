@@ -13,6 +13,7 @@
 		"@evidence-dev/mssql": "workspace:^",
 		"@evidence-dev/mysql": "workspace:^",
 		"@evidence-dev/postgres": "workspace:^",
+		"@evidence-dev/trino": "workspace:^",
 		"@evidence-dev/redshift": "workspace:^",
 		"@evidence-dev/snowflake": "workspace:^",
 		"@evidence-dev/sqlite": "workspace:^",

@@ -26,6 +26,7 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
+- [Trino](#trino)
 - [Microsoft SQL Server](#mssql)
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
@@ -102,8 +103,8 @@ The Browser-Based SSO method uses a browser-based SSO flow to authenticate. To u
 The Native SSO through Okta method uses Okta to authenticate. To use this method, you will need to have an Okta account with MFA disabled connected to your Snowflake account.
 
 ### Redshift
-
 The Redshift connector uses the Postgres connector under the hood, so configuration options are similar.
+
 ### PostgreSQL
 
 #### SSL
@@ -122,6 +123,8 @@ postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootc
 ```
 
 Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
+
+### Trino
 
 ### Microsoft SQL Server {#mssql}
 
