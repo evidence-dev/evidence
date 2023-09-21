@@ -1,7 +1,7 @@
-import { test } from 'uvu'
-import * as assert from 'uvu/assert'
-import runQuery from '../index.cjs'
-import { TypeFidelity } from '@evidence-dev/db-commons'
+import { test } from 'uvu';
+import * as assert from 'uvu/assert';
+import runQuery from '../index.cjs';
+import { TypeFidelity } from '@evidence-dev/db-commons';
 
 const query = `
 SELECT
@@ -36,29 +36,92 @@ ST_Point(0, 0) AS geometry_col,
 to_spherical_geography(ST_Point(0, 0)) AS spherical_geography_col,
 bing_tile_at(40.7492, 73.9675, 1) AS bing_tile_col,
 1 AS "whitespace col"
-`
+`;
 
 test('query runs', async () => {
-	const result = await runQuery(query)
+	const result = await runQuery(query);
 
-	assert.instance(result.rows, Array)
-	assert.instance(result.columnTypes, Array)
-	assert.type(result.rows[0], 'object')
-	assert.equal(result.rows[0].boolean_col, true)
-	assert.equal(result.rows[0].tinyint_col, 1)
+	assert.instance(result.rows, Array);
+	assert.instance(result.columnTypes, Array);
+	assert.type(result.rows[0], 'object');
+	assert.equal(result.rows[0].boolean_col, true);
+	assert.equal(result.rows[0].tinyint_col, 1);
 
-	const actualColumnTypes = result.columnTypes.map((columnType) => columnType.evidenceType)
-	const actualColumnNames = result.columnTypes.map((columnType) => columnType.name)
-	const actualTypePrecisions = result.columnTypes.map((columnType) => columnType.typeFidelity)
+	const actualColumnTypes = result.columnTypes.map((columnType) => columnType.evidenceType);
+	const actualColumnNames = result.columnTypes.map((columnType) => columnType.name);
+	const actualTypePrecisions = result.columnTypes.map((columnType) => columnType.typeFidelity);
 
-	const expectedColumnTypes = ['boolean', 'number', 'number', 'number', 'number', 'number', 'number', 'string', 'string', 'string', 'string', 'string', 'date', 'date', 'date', 'date', 'date', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', 'string', undefined, 'number']
-	const expectedColumnNames = ['boolean_col', 'tinyint_col', 'smallint_col', 'integer_col', 'bigint_col', 'real_col', 'double_col', 'decimal_col', 'varchar_col', 'char_col', 'varbinary_col', 'json_col', 'date_col', 'time_col', 'time_with_timezone_col', 'timestamp_col', 'timestamp_with_timezone_col', 'interval_year_to_month_col', 'interval_day_to_second_col', 'array_col', 'map_col', 'row_col', 'ipaddress_col', 'uuid_col', 'hyper_log_log_col', 'p4_hyper_log_log_col', 'q_digest_col', 'geometry_col', 'spherical_geography_col', 'bing_tile_col', 'whitespace_col']
-	const expectedTypePrecisions = Array(result.columnTypes.length).fill(TypeFidelity.PRECISE)
+	const expectedColumnTypes = [
+		'boolean',
+		'number',
+		'number',
+		'number',
+		'number',
+		'number',
+		'number',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'date',
+		'date',
+		'date',
+		'date',
+		'date',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		'string',
+		undefined,
+		'number'
+	];
+	const expectedColumnNames = [
+		'boolean_col',
+		'tinyint_col',
+		'smallint_col',
+		'integer_col',
+		'bigint_col',
+		'real_col',
+		'double_col',
+		'decimal_col',
+		'varchar_col',
+		'char_col',
+		'varbinary_col',
+		'json_col',
+		'date_col',
+		'time_col',
+		'time_with_timezone_col',
+		'timestamp_col',
+		'timestamp_with_timezone_col',
+		'interval_year_to_month_col',
+		'interval_day_to_second_col',
+		'array_col',
+		'map_col',
+		'row_col',
+		'ipaddress_col',
+		'uuid_col',
+		'hyper_log_log_col',
+		'p4_hyper_log_log_col',
+		'q_digest_col',
+		'geometry_col',
+		'spherical_geography_col',
+		'bing_tile_col',
+		'whitespace_col'
+	];
+	const expectedTypePrecisions = Array(result.columnTypes.length).fill(TypeFidelity.PRECISE);
 
-	assert.equal(actualColumnTypes, expectedColumnTypes)
-	assert.equal(actualColumnNames, expectedColumnNames)
-	assert.equal(actualTypePrecisions, expectedTypePrecisions)
+	assert.equal(actualColumnTypes, expectedColumnTypes);
+	assert.equal(actualColumnNames, expectedColumnNames);
+	assert.equal(actualTypePrecisions, expectedTypePrecisions);
+});
 
-})
-
-test.run()
+test.run();

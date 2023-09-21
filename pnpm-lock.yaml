@@ -382,6 +382,9 @@ importers:
       '@evidence-dev/telemetry':
         specifier: workspace:^
         version: link:../telemetry
+      '@evidence-dev/trino':
+        specifier: workspace:^
+        version: link:../trino
       blueimp-md5:
         specifier: 2.18.0
         version: 2.18.0
