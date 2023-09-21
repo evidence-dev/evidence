@@ -51,7 +51,7 @@
 			id: 'password',
 			label: 'Password',
 			type: 'password',
-			optional: false,
+			optional: true,
 			override: false,
 			placeholder: 'password',
 			value: credentials.password ?? ''
