@@ -12,6 +12,7 @@
 	export let size = undefined;
 	export let series = undefined;
 	export let xType = undefined;
+	export let logScale = undefined;
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
@@ -62,6 +63,7 @@
 	{tooltipTitle}
 	{series}
 	{xType}
+	{logScale}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}

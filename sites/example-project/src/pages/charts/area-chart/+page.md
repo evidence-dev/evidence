@@ -56,3 +56,13 @@ stepPosition=middle
     series=category
     chartAreaHeight=380
 />
+
+## Area with Log Scale
+
+<AreaChart 
+    data={orders_by_category} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    logScale=true
+/>

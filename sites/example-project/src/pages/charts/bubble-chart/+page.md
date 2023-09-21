@@ -107,3 +107,15 @@ let countries = [
     tooltipTitle=country
     chartAreaHeight=380
 />
+
+## Bubble with Log Scale
+
+<BubbleChart
+    data={countries}
+    x=inflation_rate_pct1
+    y=jobless_rate_pct1
+    size=gdp_usd
+    series=continent
+    tooltipTitle=country
+    logScale=true
+/>

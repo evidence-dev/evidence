@@ -87,6 +87,9 @@
 	export let xFmt = undefined;
 
 	// Y axis:
+	export let logScale = false;
+	logScale = logScale === 'true' || logScale === true;
+	export let yType = logScale === true ? 'log' : 'value'; // value or log
 	export let yAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
 	export let yBaseline = false;
 	yBaseline = yBaseline === 'true' || yBaseline === true;
@@ -493,7 +496,7 @@
 
 			if (swapXY) {
 				horizAxisConfig = {
-					type: 'value',
+					type: yType,
 					position: 'top',
 					axisLabel: {
 						show: yAxisLabels,
@@ -574,7 +577,7 @@
 				};
 			} else {
 				verticalAxisConfig = {
-					type: 'value',
+					type: yType,
 					splitLine: {
 						show: yGridlines
 					},

@@ -150,3 +150,19 @@ series=continent
     series=continent
     chartAreaHeight=380
 />
+
+
+## Scatter with Log Scale
+
+<ScatterPlot
+data={countries}
+x=gdp_usd
+y=gdp_growth_pct1
+tooltipTitle=country
+series=continent
+logScale=true
+>
+
+    <ReferenceLine y=0.065/>
+
+</ScatterPlot>
