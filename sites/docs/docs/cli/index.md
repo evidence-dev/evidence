@@ -59,9 +59,17 @@ Evidence does not currently support a `.env` file, but you can set environment v
 | EVIDENCE_SNOWFLAKE_PRIVATE_KEY      | Snowflake Private Key                                           |                                                                                       |
 | EVIDENCE_SNOWFLAKE_PASSPHRASE       | Snowflake Passphrase                                            |                                                                                       |
 | EVIDENCE_SNOWFLAKE_OKTA_URL         | Snowflake Okta URL                                              |                                                                                       |
-| EVIDENCE_POSTGRES_USER              | Postgres Username                                               |                                                                                       |
+| EVIDENCE_REDSHIFT_HOST              | Redshift Host                                                   |                                                                                       |
+| EVIDENCE_REDSHIFT_DATABASE          | Redshift Database                                               |                                                                                       |
+| EVIDENCE_REDSHIFT_USER              | Redshift Username                                               |                                                                                       |
+| EVIDENCE_REDSHIFT_PASSWORD          | Redshift Password                                               |                                                                                       |
+| EVIDENCE_REDSHIFT_PORT              | Redshift Port                                                   |                                                                                       |
+| EVIDENCE_REDSHIFT_SCHEMA            | Redshift Schema                                                 |                                                                                       |
+| EVIDENCE_REDSHIFT_SSL               | Redshift SSL                                                    | `true` , `false`, `no-verify`                                                         |
+| EVIDENCE_REDSHIFT_CONNECTIONSTRING  | Redshift Connection String                                      |                                                                                       |
 | EVIDENCE_POSTGRES_HOST              | Postgres Host                                                   |                                                                                       |
 | EVIDENCE_POSTGRES_DATABASE          | Postgres Database                                               |                                                                                       |
+| EVIDENCE_POSTGRES_USER              | Postgres Username                                               |                                                                                       |
 | EVIDENCE_POSTGRES_PASSWORD          | Postgres Password                                               |                                                                                       |
 | EVIDENCE_POSTGRES_PORT              | Postgres Port                                                   |                                                                                       |
 | EVIDENCE_POSTGRES_SCHEMA            | Postgres Schema                                                 |                                                                                       |
