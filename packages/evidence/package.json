@@ -43,12 +43,14 @@
 		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.9",
 		"@evidence-dev/plugin-connector": "workspace:2.0.0-usql.16",
 		"@evidence-dev/telemetry": "workspace:",
+		"@evidence-dev/query-store": "workspace:",
 		"@sveltejs/adapter-static": "1.0.0",
 		"chokidar": "3.5.3",
 		"fs-extra": "10.0.1",
 		"sade": "^1.8.1"
 	},
 	"peerDependencies": {
+		"@evidence-dev/query-store": "workspace:",
 		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.7",
 		"@evidence-dev/core-components": "workspace:2.0.0-usql.11",
 		"@evidence-dev/db-orchestrator": "workspace:3.0.0-usql.7",

@@ -6,7 +6,7 @@ const config = {
 	content: {
 		relative: true,
 		get files() {
-			const pluginConfig = loadConfig('../../');
+			const pluginConfig = loadConfig(process.cwd().includes(".evidence") ? '../../' : "./");
 			const components = pluginConfig.components;
 			const componentPaths = Object.keys(components)
 				.map((pluginName) => [
