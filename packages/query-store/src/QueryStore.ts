@@ -112,8 +112,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 		if (typeof query === 'string') {
 			this.#query.from({ __userQuery: sql`(${query})` }).select('*');
-		}
-		else this.#query = query;
+		} else this.#query = query;
 		// @ts-expect-error Passing undocumented parameter
 		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1] ?? this.id);
 
@@ -227,19 +226,15 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 		const queryWithComment = `--data\n${this.#query.toString()}`;
 
-		return handleMaybePromise<QueryResult[]>(
-			(result) => {
-				this.#values = result;
-				this.#loading = false;
-				this.#loaded = true;
-				return this.#fetchLength();
-			},
-			this.#exec(queryWithComment)
-		);
+		return handleMaybePromise<QueryResult[]>((result) => {
+			this.#values = result;
+			this.#loading = false;
+			this.#loaded = true;
+			return this.#fetchLength();
+		}, this.#exec(queryWithComment));
 	};
 
 	#fetchLength = () => {
-
 		if (this.#lengthLoading || this.#lengthLoaded) {
 			return;
 		}
@@ -252,33 +247,27 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			.from('original');
 		const queryWithComment = `--len\n${countQuery}`;
 
-		return handleMaybePromise<QueryResult[]>(
-			(result) => {
-				const [row] = result;
+		return handleMaybePromise<QueryResult[]>((result) => {
+			const [row] = result;
 
-				this.#length = row.length as number;
-				this.#lengthLoaded = true;
-				this.#lengthLoading = false;
+			this.#length = row.length as number;
+			this.#lengthLoaded = true;
+			this.#lengthLoading = false;
 
-				this.publish();
-			},
-			this.#exec(queryWithComment)
-		);
+			this.publish();
+		}, this.#exec(queryWithComment));
 	};
 
 	#fetchMetadata = () => {
-		return handleMaybePromise(
-			(queryResult: QueryResult[]) => {
-				this.#columns = queryResult.map((row) => ({
-					name: row.column_name!.toString(),
-					type: row.column_type!.toString()
-				}));
-				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
+		return handleMaybePromise((queryResult: QueryResult[]) => {
+			this.#columns = queryResult.map((row) => ({
+				name: row.column_name!.toString(),
+				type: row.column_type!.toString()
+			}));
+			this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
 
-				this.publish();
-			},
-			this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`)
-		);
+			this.publish();
+		}, this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`));
 	};
 
 	/////////
@@ -300,7 +289,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	 * Wraps an derivation function with memoization provided by {@link QueryStore.cache}
 	 */
 	#withStoreCache = (aggKey: string, aggFunc: AggFunction, passCurrentAsInitial = false) => {
-
 		return (...args: unknown[]) => {
 			// Build a unique ID for the target child store
 			const newQuery = aggFunc(this.#query.clone(), ...args);
@@ -309,7 +297,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 			// If there is a root; subscription operations will function against that
 			// If there isn't; then this is a root
-			const subscriber = this.root ?? this
+			const subscriber = this.root ?? this;
 
 			// If caching is enabled and the id exists in the cache
 			if (id in QueryStore.cache && !this.opts.disableCache) {
@@ -317,18 +305,24 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				const cachedQuery = QueryStore.cache[id];
 
 				if (!subscriber.#subscriptions.includes(id)) {
-					cachedQuery.subscribe(subscriber.publish)
-					subscriber.#subscriptions.push(id)
+					cachedQuery.subscribe(subscriber.publish);
+					subscriber.#subscriptions.push(id);
 				}
 
 				return cachedQuery.#proxied;
 			}
 			// Construct a new store, subscribe and cache it
-			const newStore = new QueryStore(newQuery, this.#exec, id, {
-				...this.opts,
-				initialData: passCurrentAsInitial ? this.#values : undefined,
-				initialDataDirty: true,
-			}, this.root ?? this );
+			const newStore = new QueryStore(
+				newQuery,
+				this.#exec,
+				id,
+				{
+					...this.opts,
+					initialData: passCurrentAsInitial ? this.#values : undefined,
+					initialDataDirty: true
+				},
+				this.root ?? this
+			);
 
 			subscriber.#subscriptions.push(id);
 			newStore.subscribe(subscriber.publish);
@@ -342,5 +336,5 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	agg = this.#withStoreCache('agg', mutations.agg as AggFunction);
 	orderBy = this.#withStoreCache('orderBy', mutations.orderBy as AggFunction, true);
 	limit = this.#withStoreCache('limit', (q, l) => q.limit(l), true);
-    offset = this.#withStoreCache('offset', (q, l) => q.offset(l), true);
+	offset = this.#withStoreCache('offset', (q, l) => q.offset(l), true);
 }

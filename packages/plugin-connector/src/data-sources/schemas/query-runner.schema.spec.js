@@ -89,19 +89,18 @@ describe('QueryResultSchema', () => {
 			 * Whenever `x` is read (e.g. validated) increment i to track reads
 			 */
 			get x() {
-				propAccessCount+=1;
+				propAccessCount += 1;
 				return propAccessCount;
 			}
 		});
 
 		const arrayProxy = new Proxy(a, {
 			get: ($this, $prop) => {
-				if (!Number.isNaN(parseInt($prop.toString())))
-						idxAccessCount++;
+				if (!Number.isNaN(parseInt($prop.toString()))) idxAccessCount++;
 				// @ts-ignore
-				return $this[$prop]
+				return $this[$prop];
 			}
-		})
+		});
 
 		const fixture = {
 			rows: arrayProxy,
@@ -111,10 +110,10 @@ describe('QueryResultSchema', () => {
 		QueryResultSchema.parse(fixture);
 		expect(propAccessCount).toEqual(1);
 		expect(idxAccessCount).toBeLessThan(arrayProxy.length); // Once in each refine
-		
+
 		// arrayProxy[0]
 		// expect(idxAccessCount).toEqual(2);
-	})
+	});
 
 	it('should throw when there is a column in the returned data that is not specified in columnTypes', () => {
 		const expectedMessage = JSON.stringify(

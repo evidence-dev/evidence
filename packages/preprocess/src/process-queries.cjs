@@ -13,8 +13,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$')
 		);
 		// queryDeclarations += `
-        //     import debounce from 'debounce';
-        //     import { browser } from '$app/environment';
+		//     import debounce from 'debounce';
+		//     import { browser } from '$app/environment';
 		// 	import {profile} from '@evidence-dev/component-utilities/profile';
 		//
 		// 	// partially bypasses weird reactivity stuff with \`select\` elements
@@ -25,20 +25,21 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		// 	$: data_update(data);
 		//
 		//
-        //     ${valid_ids
+		//     ${valid_ids
 		// 					.map(
 		// 						(id) => `
-        //         let ${id} = data.${id} ?? [];
-        //         const _query_${id} = browser
+		//         let ${id} = data.${id} ?? [];
+		//         const _query_${id} = browser
 		// 			  ? debounce((query) => profile(__db.query, query).then((value) => ${id} = value), 200)
 		// 			  : (query) => (${id} = profile(__db.query, query, "${id}"));
-        //         $: _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
-        //     `
+		//         $: _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
+		//     `
 		// 					)
 		// 					.join('\n')}
-        // `;
+		// `;
 
-		const queryStores = valid_ids.map(id => `
+		const queryStores = valid_ids.map(
+			(id) => `
 		const _${id} = new QueryStore(
 			\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 			queryFunc,
@@ -48,8 +49,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		/** @type {QueryStore} */
 		let ${id};
 		$: ${id} = $_${id};
-		`)
-
+		`
+		);
 
 		queryDeclarations += `
 		import {browser} from "$app/environment";
@@ -59,8 +60,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		
 		const queryFunc = q => profile(__db.query, q);	
 		
-		${queryStores.join("\n")}	
-		`
+		${queryStores.join('\n')}	
+		`;
 	}
 
 	let defaultProps = `

@@ -1,1 +1,1 @@
-export {QueryStore} from "./QueryStore.js"
+export { QueryStore } from './QueryStore.js';

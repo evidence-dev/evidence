@@ -1,7 +1,7 @@
-import type {QueryStore} from "./QueryStore";
-import type {Query} from "@uwdata/mosaic-sql"
+import type { QueryStore } from './QueryStore';
+import type { Query } from '@uwdata/mosaic-sql';
 
-export type Subscriber<T> = (value: T) => unknown
+export type Subscriber<T> = (value: T) => unknown;
 
 export type MaybePromise<T> = Promise<T> | T;
 
