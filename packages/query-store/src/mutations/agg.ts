@@ -24,7 +24,6 @@ export const agg = (q: Query, aggConfig: AggArgs): Query => {
 		}
 	}
 
-	console.log(q.toString());
 
 	return q;
 };
