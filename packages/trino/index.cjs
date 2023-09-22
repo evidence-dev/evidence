@@ -29,46 +29,60 @@ const envMap = {
 	schema: [
 		{ key: 'EVIDENCE_TRINO_SCHEMA', deprecated: false },
 		{ key: 'TRINO_SCHEMA', deprecated: true }
+	],
+	engine: [
+		{ key: 'EVIDENCE_TRINO_ENGINE', deprecated: false },
+		{ key: 'TRINO_ENGINE', deprecated: true }
 	]
 };
 
 const runQuery = async (queryString, database) => {
-	const ssl = database ? database.ssl : getEnv(envMap, 'ssl');
+	try {
+		const ssl = database ? database.ssl : getEnv(envMap, 'ssl');
 
-	const client = new trino.Client({
-		host: database ? database.host : getEnv(envMap, 'host'),
-		ssl: ssl === 'true' ? {} : undefined,
-		port: database ? database.port : getEnv(envMap, 'port'),
-		user: database ? database.user : getEnv(envMap, 'user'),
-		source: 'evidence',
-		basic_auth: database
-			? auth(database.user, database.password)
-			: auth(getEnv(envMap, 'user'), getEnv(envMap, 'password')),
-		catalog: database ? database.catalog : getEnv(envMap, 'catalog'),
-		schema: database ? database.schema : getEnv(envMap, 'schema'),
-		engine: 'trino'
-	});
+		const engine = database ? database.engine : getEnv(envMap, 'engine');
 
-	const result = await new Promise((resolve, reject) => {
-		let rows = [];
-		let columnTypes = [];
-		client.execute({
-			query: queryString,
-			columns: function (_error, newColumnTypes) {
-				columnTypes = columnTypes.concat(newColumnTypes);
-			},
-			data: function (_error, newRows) {
-				rows = rows.concat(newRows);
-			},
-			callback: function (error) {
-				error === null ? resolve({ rows, columnTypes }) : reject({ error });
-			}
+		const client = new trino.Client({
+			host: database ? database.host : getEnv(envMap, 'host'),
+			ssl: ssl === 'true' ? {} : undefined,
+			port: database ? database.port : getEnv(envMap, 'port'),
+			user: database ? database.user : getEnv(envMap, 'user'),
+			source: 'evidence',
+			basic_auth: database
+				? auth(database.user, database.password)
+				: auth(getEnv(envMap, 'user'), getEnv(envMap, 'password')),
+			catalog: database ? database.catalog : getEnv(envMap, 'catalog'),
+			schema: database ? database.schema : getEnv(envMap, 'schema'),
+			engine: engine ? engine : 'trino'
 		});
-	});
 
-	const adjustedResult = adjustResult(result);
+		const result = await new Promise((resolve, reject) => {
+			let rows = [];
+			let columnTypes = [];
+			client.execute({
+				query: queryString,
+				columns: function (_error, newColumnTypes) {
+					columnTypes = columnTypes.concat(newColumnTypes);
+				},
+				data: function (_error, newRows) {
+					rows = rows.concat(newRows);
+				},
+				callback: function (error) {
+					error === null ? resolve({ rows, columnTypes }) : reject({ error });
+				}
+			});
+		});
 
-	return adjustedResult;
+		const adjustedResult = adjustResult(result);
+
+		return adjustedResult;
+	} catch (err) {
+		if (err.error?.message) {
+			throw err.error.message.replace(/\n|\r/g, ' ');
+		} else {
+			throw err;
+		}
+	}
 };
 
 const auth = (user, password) => {

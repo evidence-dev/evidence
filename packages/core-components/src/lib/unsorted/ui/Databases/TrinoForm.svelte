@@ -27,7 +27,7 @@
 			override: false,
 			placeholder: 'true',
 			value: credentials.ssl ?? '',
-			additionalInstructions: 'Options are true and false'
+			additionalInstructions: `Options are 'true' and 'false'. Must be set to 'true' for HTTPS`
 		},
 		{
 			id: 'port',
@@ -75,6 +75,16 @@
 			placeholder: 'metadata',
 			value: credentials.schema ?? '',
 			additionalInstructions: 'The default schema to run queries against.'
+		},
+		{
+			id: 'engine',
+			label: 'Engine',
+			type: 'text',
+			optional: true,
+			override: false,
+			placeholder: 'trino',
+			value: credentials.engine ?? '',
+			additionalInstructions: `The engine to use. Options are 'trino' and 'presto'. Default is 'trino'.`
 		}
 	];
 
