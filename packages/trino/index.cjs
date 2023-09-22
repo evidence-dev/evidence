@@ -86,7 +86,7 @@ const runQuery = async (queryString, database) => {
 };
 
 const auth = (user, password) => {
-	user !== null && password !== null ? { user, password } : null;
+	return user !== null && password !== null ? { user, password } : null;
 };
 
 const adjustResult = (result) => {
