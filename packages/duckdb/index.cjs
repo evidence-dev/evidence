@@ -65,11 +65,10 @@ const runQuery = async (queryString, database, batchSize) => {
 
 		const first_rows = await iterator.next();
 
-		let batch = [];
+		let batch = [first_rows];
 
 		return {
 			rows: async function* () {
-				batch.push(first_rows);
 				for await (const row of iterator) {
 					batch.push(row);
 					if (batch.length === batchSize) {
