@@ -109,7 +109,7 @@ const processQueryResults = function (queryResults) {
  * @param {AsyncIterable<unknown>} iterable
  * @param {number} batchSize
  * @param {AsyncIterableToBatchedAsyncGeneratorOptions} options additional optional parameters
- * @returns {Promise<[Record<string, unknown>, AsyncGeneratorFunction]>}
+ * @returns {Promise<QueryResult>}
  */
 const asyncIterableToBatchedAsyncGenerator = async function (
 	iterable,
