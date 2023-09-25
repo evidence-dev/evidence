@@ -42,6 +42,8 @@
 	});
 
 	export let showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
+	$: (typeof showAllXAxisLabels === 'string')
+		showAllXAxisLabels = showAllXAxisLabels.toLowerCase() === 'true'
 
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
