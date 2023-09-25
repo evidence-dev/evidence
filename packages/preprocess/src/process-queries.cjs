@@ -113,7 +113,7 @@ const processQueries = (componentDevelopmentMode) => {
 				if (attributes.context != 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
 					return {
-						code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
+						code: content + createDefaultProps(filename, componentDevelopmentMode, duckdbQueries)
 					};
 				}
 			}
