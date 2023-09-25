@@ -1,4 +1,9 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	asyncIterableToBatchedAsyncGenerator
+} = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
 
@@ -61,25 +66,12 @@ const runQuery = async (queryString, database, batchSize) => {
 		const db = await Database.create(filename, mode);
 		const conn = await db.connect();
 		const stream = conn.stream(queryString);
-		const iterator = stream[Symbol.asyncIterator]();
 
-		const first_rows = await iterator.next();
-
-		let batch = [first_rows];
-
-		return {
-			rows: async function* () {
-				for await (const row of iterator) {
-					batch.push(row);
-					if (batch.length === batchSize) {
-						yield batch;
-						batch = [];
-					}
-				}
-				yield batch;
-			},
-			columnTypes: mapResultsToEvidenceColumnTypes([first_rows.value])
-		};
+		return await asyncIterableToBatchedAsyncGenerator(
+			stream,
+			mapResultsToEvidenceColumnTypes,
+			batchSize
+		);
 	} catch (err) {
 		if (err.message) {
 			throw err.message;

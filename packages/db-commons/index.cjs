@@ -98,9 +98,44 @@ const processQueryResults = function (queryResults) {
 	return { rows, columnTypes };
 };
 
+/**
+ * Converts an async iterable to a QueryResult
+ * @param {AsyncIterable<unknown>} iterable
+ * @param {(rows: Record<string, unknown>[]) => QueryResult} mapResultsToEvidenceColumnTypes
+ * @param {number} batchSize
+ * @param {{ standardizeRow: (row: unknown) => Record<string, unknown> }} options
+ * @returns {Promise<[Record<string, unknown>, AsyncGeneratorFunction]>}
+ */
+const asyncIterableToBatchedAsyncGenerator = async function (
+	iterable,
+	mapResultsToEvidenceColumnTypes,
+	batchSize,
+	{ standardizeRow = (x) => x } = {}
+) {
+	const iterator = iterable[Symbol.asyncIterator]();
+	const first_row = await iterator.next().then((x) => x.value);
+
+	const rows = async function* () {
+		let batch = [first_row];
+		for await (const row of iterable) {
+			batch.push(standardizeRow(row));
+			if (batch.length >= batchSize) {
+				yield batch;
+				batch = [];
+			}
+		}
+		if (batch.length > 0) {
+			yield batch;
+		}
+	};
+
+	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([first_row]) };
+};
+
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
+exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenerator;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;
