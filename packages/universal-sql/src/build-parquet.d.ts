@@ -9,10 +9,9 @@ export function buildParquetFromResultSet(
 	data: any[]
 ): Promise<Uint8Array>;
 
-
 export function buildMultipartParquet<T extends Record<string, any>>(
 	columns: { name: string; evidenceType: string }[],
 	data: Generator<T[]> | Promise<Generator<T[]>> | T[] | Promise<T[]>,
 	outputFilename: string,
 	batchSize?: number
-): Promise<string | false>
+): Promise<string | false>;

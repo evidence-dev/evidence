@@ -20,8 +20,8 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	// A 1m row table from the faker datasource may be smaller than the 250k row from postgres, because it is wider.
 	// Can we somehow guess based on the number of columns?
 	// e.g. 1-10 columns -> 1m, 11+ -> 100k?
-	
-	const batchSize = 1000 * 100 * 10; // 1 mil
+
+	const batchSize = 1000 * 1000; // 100 k
 	const db = supportedDbs[source.type];
 	const runner = await db.factory(source.options, source.sourceDirectory);
 

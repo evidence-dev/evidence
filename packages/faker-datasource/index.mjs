@@ -201,7 +201,7 @@ const generateTable = (directory) => async (content, filepath) => {
 		const output = {
 			rows: filteredRows,
 			columnTypes: buildOutputTypes(rows[0]),
-			expectedRowCount: filteredRows.length 
+			expectedRowCount: filteredRows.length
 		};
 
 		res(output);

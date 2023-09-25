@@ -110,7 +110,7 @@ export const QueryRunnerSchema = z
 	.args(
 		z.string({ description: 'QueryString' }).or(z.null({ description: 'ExceededSizeQueryString' })),
 		z.string({ description: 'QueryFilepath' }),
-		z.number({ description: "Batch Size"}).or(z.null())
+		z.number({ description: 'Batch Size' }).or(z.null())
 	)
 	.returns(z.promise(QueryResultSchema.or(z.null())).or(QueryResultSchema));
 

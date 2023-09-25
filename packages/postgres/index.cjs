@@ -197,14 +197,16 @@ const runQuery = async (queryString, database, batchSize) => {
 			});
 		}
 
-
 		const connection = await pool.connect();
 		try {
-			let cleanedString = queryString.trim()
-			if (cleanedString.endsWith(";")) cleanedString = cleanedString.substring(0, cleanedString.length - 1)
+			let cleanedString = queryString.trim();
+			if (cleanedString.endsWith(';'))
+				cleanedString = cleanedString.substring(0, cleanedString.length - 1);
 
-			const lengthQuery = await connection.query(`WITH root as (${cleanedString}) SELECT COUNT(*) as rows FROM root`).catch(() => undefined)
-			const rowCount = lengthQuery.rows[0].rows
+			const lengthQuery = await connection
+				.query(`WITH root as (${cleanedString}) SELECT COUNT(*) as rows FROM root`)
+				.catch(() => undefined);
+			const rowCount = lengthQuery.rows[0].rows;
 
 			const cursor = connection.query(new Cursor(queryString));
 
