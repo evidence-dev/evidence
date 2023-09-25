@@ -69,8 +69,8 @@ const runQuery = async (queryString, database, batchSize) => {
 
 		return await asyncIterableToBatchedAsyncGenerator(
 			stream,
-			mapResultsToEvidenceColumnTypes,
-			batchSize
+			batchSize,
+			{ mapResultsToEvidenceColumnTypes }
 		);
 	} catch (err) {
 		if (err.message) {

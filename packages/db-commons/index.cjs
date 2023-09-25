@@ -98,19 +98,23 @@ const processQueryResults = function (queryResults) {
 	return { rows, columnTypes };
 };
 
+/** 
+ * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions 
+ * @property {(rows: Record<string, unknown>[]) => QueryResult} [mapResultsToEvidenceColumnTypes]
+ * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
+ */
+
 /**
  * Converts an async iterable to a QueryResult
  * @param {AsyncIterable<unknown>} iterable
- * @param {(rows: Record<string, unknown>[]) => QueryResult} mapResultsToEvidenceColumnTypes
  * @param {number} batchSize
- * @param {{ standardizeRow: (row: unknown) => Record<string, unknown> }} options
+ * @param {AsyncIterableToBatchedAsyncGeneratorOptions} options additional optional parameters
  * @returns {Promise<[Record<string, unknown>, AsyncGeneratorFunction]>}
  */
 const asyncIterableToBatchedAsyncGenerator = async function (
 	iterable,
-	mapResultsToEvidenceColumnTypes,
 	batchSize,
-	{ standardizeRow = (x) => x } = {}
+	{ standardizeRow = (x) => x, mapResultsToEvidenceColumnTypes = () => [] } = {}
 ) {
 	const iterator = iterable[Symbol.asyncIterator]();
 	const first_row = standardizeRow(await iterator.next().then((x) => x.value));
