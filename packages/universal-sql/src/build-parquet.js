@@ -110,7 +110,7 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 				// Batch them and flush when needed
 
 				currentBatch = currentBatch.concat(batch);
-				
+
 				if (currentBatch.length >= batchSize) {
 					// Time to flush
 					await flush(currentBatch);

@@ -11,4 +11,4 @@ export async function initDB(): Promise<void>;
  * @param {string} sql
  * @returns {Promise<import('apache-arrow').Table | null>}
  */
-export function query(sql: string): Promise<import("apache-arrow").Table<any> | null>;
+export function query(sql: string): Promise<import('apache-arrow').Table<any> | null>;

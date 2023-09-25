@@ -11,4 +11,4 @@ export type EvidenceColumnType = number | boolean | string | Date;
 export type GetRunner<T extends Record<string, unknown>> = (
 	opts: T,
 	directory: string
-) => (queryContent: string, queryPath: string) => Promise<QueryResult>;
+) => (queryContent: string, queryPath: string, batchSize: number) => Promise<QueryResult>;
