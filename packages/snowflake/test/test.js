@@ -1,46 +1,62 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import runQuery from '../index.cjs';
-import { TypeFidelity } from '@evidence-dev/db-commons';
+import { TypeFidelity, batchedAsyncGeneratorToArray } from '@evidence-dev/db-commons';
 import 'dotenv/config';
 
-let results;
-
 test('query runs', async () => {
+	const { rows: row_generator, columnTypes } = await runQuery(
+		"select 100 as number_col, current_date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col"
+	);
+	const rows = await batchedAsyncGeneratorToArray(row_generator);
+	assert.instance(rows, Array);
+	assert.instance(columnTypes, Array);
+	assert.type(rows[0], 'object');
+	assert.equal(rows[0].number_col, 100);
+
+	let actualColumnTypes = columnTypes.map((columnType) => columnType.evidenceType);
+	let actualColumnNames = columnTypes.map((columnType) => columnType.name);
+	let actualTypePrecisions = columnTypes.map((columnType) => columnType.typeFidelity);
+
+	let expectedColumnTypes = ['number', 'date', 'date', 'string', 'boolean'];
+	let expectedColumnNames = ['number_col', 'date_col', 'timestamp_col', 'string_col', 'bool_col'];
+	let expectedTypePrecision = Array(5).fill(TypeFidelity.PRECISE);
+
+	assert.equal(
+		true,
+		expectedColumnTypes.length === actualColumnTypes.length &&
+			expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
+	);
+	assert.equal(
+		true,
+		expectedColumnNames.length === actualColumnNames.length &&
+			expectedColumnNames.every(
+				(value, index) => value.toUpperCase() === actualColumnNames?.[index]?.toUpperCase()
+			)
+	);
+	assert.equal(
+		true,
+		expectedTypePrecision.length === actualTypePrecisions.length &&
+			expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
+	);
+});
+
+test('query batches results properly', async () => {
 	try {
-		results = await runQuery(
-			"select 100 as number_col, current_date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col"
+		const { rows } = await runQuery(
+			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
+			undefined,
+			2
 		);
-		assert.instance(results.rows, Array);
-		assert.instance(results.columnTypes, Array);
-		assert.type(results.rows[0], 'object');
-		assert.equal(results.rows[0].number_col, 100);
 
-		let actualColumnTypes = results.columnTypes.map((columnType) => columnType.evidenceType);
-		let actualColumnNames = results.columnTypes.map((columnType) => columnType.name);
-		let actualTypePrecisions = results.columnTypes.map((columnType) => columnType.typeFidelity);
-
-		let expectedColumnTypes = ['number', 'date', 'date', 'string', 'boolean'];
-		let expectedColumnNames = ['number_col', 'date_col', 'timestamp_col', 'string_col', 'bool_col'];
-		let expectedTypePrecision = Array(5).fill(TypeFidelity.PRECISE);
-
-		assert.equal(
-			true,
-			expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
-		);
-		assert.equal(
-			true,
-			expectedColumnNames.length === actualColumnNames.length &&
-				expectedColumnNames.every(
-					(value, index) => value.toUpperCase() === actualColumnNames?.[index]?.toUpperCase()
-				)
-		);
-		assert.equal(
-			true,
-			expectedTypePrecision.length === actualTypePrecisions.length &&
-				expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
-		);
+		const arr = [];
+		for await (const batch of rows()) {
+			arr.push(batch);
+		}
+		for (const batch of arr.slice(0, -1)) {
+			assert.equal(batch.length, 2);
+		}
+		assert.equal(arr[arr.length - 1].length, 1);
 	} catch (e) {
 		throw Error(e);
 	}
