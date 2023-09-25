@@ -10,7 +10,8 @@ import {
 import { Compression, writeParquet, WriterPropertiesBuilder } from 'parquet-wasm/node/arrow1.js';
 import fs from 'fs/promises';
 import path from 'path';
-import { initDB, query } from './client-duckdb/node-async.js';
+// using node-async.js makes CLI command hang - why??
+import { initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
 
