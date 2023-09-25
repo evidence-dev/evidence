@@ -103,8 +103,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		super();
 		Object.freeze(opts);
 		// Ensure an ID Exists
-		if (!id) this.id = buildId(query);
-		else this.id = id;
+		this.id = id ?? buildId(query);
 
 		// TODO: Strip any trailing ; from queries
 		// This is hard because of comments
@@ -143,18 +142,15 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 					// Intercept 'length' property. This implies we're trying to get the total number of rows (data) in the store.
 					// If the length has not been correctly updated, initiate the async #updateLength method to calculate it.
-					else if (prop === 'length') {
-						// TODO: Conditional
-						if (!self.#lengthLoaded) {
-							try {
-								const r = self.#fetchLength();
-								if (r instanceof Promise)
-									r.catch((e) => {
-										throw new Error('Failed to update query store length', { cause: e });
-									});
-							} catch (e) {
-								throw new Error('Failed to update query store length', { cause: e });
-							}
+					else if (prop === 'length' && !self.#lengthLoaded) {
+						try {
+							const r = self.#fetchLength();
+							if (r instanceof Promise)
+								r.catch((e) => {
+									throw new Error('Failed to update query store length', { cause: e });
+								});
+						} catch (e) {
+							throw new Error('Failed to update query store length', { cause: e });
 						}
 					}
 

@@ -22,12 +22,7 @@
 	"dependencies": {
 		"@evidence-dev/universal-sql": "workspace:",
 		"@sqltools/formatter": "^1.2.5",
-		"@types/lodash.debounce": "^4.0.7",
-		"@types/nanoid": "^3.0.0",
-		"@uwdata/mosaic-sql": "^0.3.2",
-		"lodash.debounce": "^4.0.8",
-		"nanoid": "^5.0.1",
-		"sql-formatter": "^13.0.0"
+		"@uwdata/mosaic-sql": "^0.3.2"
 	},
 	"targets": {
 		"main": {

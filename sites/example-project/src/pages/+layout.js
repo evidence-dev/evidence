@@ -14,15 +14,14 @@ const initDb = async () => {
 
 	if (!browser) {
 		const { readFile } = await import('fs/promises');
-		if (process.cwd().includes('.evidence')) {
-			({ renderedFiles } = JSON.parse(
-				await readFile('../../static/data/manifest.json', 'utf-8').catch(() => '{}')
-			));
-		} else {
-			({ renderedFiles } = JSON.parse(
-				await readFile('./static/data/manifest.json', 'utf-8').catch(() => '{}')
-			));
-		}
+		({ renderedFiles } = JSON.parse(
+			await readFile(
+				process.cwd().includes('.evidence')
+					? '../../static/data/manifest.json'
+					: './static/data/manifest.json',
+				'utf-8'
+			).catch(() => '{}')
+		));
 	} else {
 		const res = await fetch('/data/manifest.json');
 		if (res.ok) ({ renderedFiles } = await res.json());
