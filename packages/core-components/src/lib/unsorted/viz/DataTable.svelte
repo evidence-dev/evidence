@@ -22,6 +22,8 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import DeltaIndicator from './DeltaIndicator.svelte';
+
 	// Set up props store
 	let props = writable({});
 	setContext(propKey, props);
@@ -467,21 +469,27 @@
 										>
 											<div style="text-align: {column.align ?? 'right'};">
 												{#if column.showValue}
-													<span>
-														{formatValue(
-															row[column.id],
-															column.fmt
-																? getFormatObjectFromString(
-																		column.fmt,
-																		safeExtractColumn(column).format.valueType
-																  )
-																: safeExtractColumn(column).format,
-															safeExtractColumn(column).columnUnitSummary
-														)}
+													<span class="inline-flex items-baseline gap-1">
+														<span class="inline-block">
+															{formatValue(
+																row[column.id],
+																column.fmt
+																	? getFormatObjectFromString(
+																			column.fmt,
+																			safeExtractColumn(column).format.valueType
+																	  )
+																	: safeExtractColumn(column).format,
+																safeExtractColumn(column).columnUnitSummary
+															)}
+														</span>
+														{#if column.deltaSymbol}
+															{#if row[column.id] >= 0}
+																<DeltaIndicator class="h-2 rotate-180" />
+															{:else}
+																<DeltaIndicator class="h-2" />
+															{/if}
+														{/if}
 													</span>
-												{/if}
-												{#if column.deltaSymbol}
-													<span>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span>
 												{/if}
 											</div>
 										</div>

@@ -4,6 +4,7 @@
 
 <script>
 	import Value from './Value.svelte';
+	import DeltaIndicator from './DeltaIndicator.svelte';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { LinkedChart } from 'svelte-tiny-linked-charts';
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
@@ -98,7 +99,6 @@
 </script>
 
 <div
-	data-viz="BigValue"
 	class="inline-block font-sans pt-2 pb-3 pr-3 pl-0 mr-3 items-center align-top"
 	style={`
         min-width: ${minWidth};
@@ -113,7 +113,7 @@
 			<Value {data} column={value} {fmt} />
 			{#if sparkline}
 				{#if isLinkedChartReady()}
-					<div class="inline-block">
+					<div data-viz="BigValue" class="inline-block">
 						<svelte:component
 							this={LinkedChart}
 							data={sparklineData}
@@ -133,11 +133,18 @@
 			{/if}
 		</div>
 		{#if comparison}
-			<p class="text-xs font-sans font-medium" style={`color:${comparisonColor}`}>
-				{@html positive ? '&#9650;' : '&#9660;'}
+			<span
+				class="text-xs font-sans font-medium flex items-baseline gap-1"
+				style={`color:${comparisonColor}`}
+			>
+				{#if positive}
+					<DeltaIndicator class=" h-2 rotate-180" />
+				{:else}
+					<DeltaIndicator class="h-2" />
+				{/if}
 				<Value {data} column={comparison} fmt={comparisonFmt} />
 				<span class="font-normal">{comparisonTitle}</span>
-			</p>
+			</span>
 		{/if}
 	{/if}
 </div>
