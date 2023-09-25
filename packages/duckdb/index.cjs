@@ -67,11 +67,9 @@ const runQuery = async (queryString, database, batchSize) => {
 		const conn = await db.connect();
 		const stream = conn.stream(queryString);
 
-		return await asyncIterableToBatchedAsyncGenerator(
-			stream,
-			batchSize,
-			{ mapResultsToEvidenceColumnTypes }
-		);
+		return await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+			mapResultsToEvidenceColumnTypes
+		});
 	} catch (err) {
 		if (err.message) {
 			throw err.message;

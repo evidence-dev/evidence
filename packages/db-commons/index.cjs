@@ -98,8 +98,8 @@ const processQueryResults = function (queryResults) {
 	return { rows, columnTypes };
 };
 
-/** 
- * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions 
+/**
+ * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
  * @property {(rows: Record<string, unknown>[]) => QueryResult} [mapResultsToEvidenceColumnTypes]
  * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
  */

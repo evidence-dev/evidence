@@ -52,7 +52,9 @@ const runQuery = async (queryString, database, batchSize) => {
 
 		const result = await DBStream.create({ opts, sql: queryString });
 
-		return await asyncIterableToBatchedAsyncGenerator(result, batchSize, { mapResultsToEvidenceColumnTypes: inferColumnTypes });
+		return await asyncIterableToBatchedAsyncGenerator(result, batchSize, {
+			mapResultsToEvidenceColumnTypes: inferColumnTypes
+		});
 	} catch (err) {
 		if (err.message) {
 			if (err.errno === 14) {
