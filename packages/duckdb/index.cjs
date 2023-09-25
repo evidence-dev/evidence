@@ -53,14 +53,34 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 };
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database, batchSize) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
 		const db = await Database.create(filename, mode);
-		const rows = await db.all(queryString);
-		return { rows, columnTypes: mapResultsToEvidenceColumnTypes(rows) };
+		const conn = await db.connect();
+		const stream = conn.stream(queryString);
+		const iterator = stream[Symbol.asyncIterator]();
+
+		const first_rows = await iterator.next();
+
+		let batch = [];
+
+		return {
+			rows: async function* () {
+				batch.push(first_rows);
+				for await (const row of iterator) {
+					batch.push(row);
+					if (batch.length === batchSize) {
+						yield batch;
+						batch = [];
+					}
+				}
+				yield batch;
+			},
+			columnTypes: mapResultsToEvidenceColumnTypes([first_rows.value])
+		};
 	} catch (err) {
 		if (err.message) {
 			throw err.message;
@@ -89,9 +109,13 @@ module.exports.getRunner = async (opts, directory) => {
 		console.error(`Missing required duckdb option 'filename' (${directory})`);
 	}
 
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, { ...opts, filename: path.join(directory, opts.filename) });
+		return runQuery(
+			queryContent,
+			{ ...opts, filename: path.join(directory, opts.filename) },
+			batchSize
+		);
 	};
 };
