@@ -40,55 +40,47 @@ Evidence does not currently support a `.env` file, but you can set environment v
 
 **All Redshift environment variables are set using the PostgreSQL variables.**
 
-| Variable                            | Description                                                     | Options (if applicable)                                                               |
-| ----------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| EVIDENCE_DATABASE                   | The database to use.                                            | `bigquery` , `snowflake` , `redshift`, `postgres`, `mssql`, `mysql`, `sqlite`, `duckdb`, `csv` |
-| EVIDENCE_BIGQUERY_PROJECT_ID        | BigQuery Project ID                                             |                                                                                       |
-| EVIDENCE_BIGQUERY_CLIENT_EMAIL      | BigQuery Client Email                                           |                                                                                       |
-| EVIDENCE_BIGQUERY_PRIVATE_KEY       | BigQuery Private Key                                            |                                                                                       |
-| EVIDENCE_BIGQUERY_AUTHENTICATOR     | BigQuery Authenticator                                          | `oauth`, `gcloud-cli`, `service-account`                                              |
-| EVIDENCE_BIGQUERY_TOKEN             | BigQuery OAuth Token                                            |                                                                                       |
-| EVIDENCE_SNOWFLAKE_ACCOUNT          | Snowflake Account ID                                            |                                                                                       |
-| EVIDENCE_SNOWFLAKE_USERNAME         | Snowflake Username                                              |                                                                                       |
-| EVIDENCE_SNOWFLAKE_PASSWORD         | Snowflake Password                                              |                                                                                       |
-| EVIDENCE_SNOWFLAKE_DATABASE         | Snowflake Database                                              |                                                                                       |
-| EVIDENCE_SNOWFLAKE_WAREHOUSE        | Snowflake Warehouse                                             |                                                                                       |
-| EVIDENCE_SNOWFLAKE_ROLE             | Snowflake Role                                                  |                                                                                       |
-| EVIDENCE_SNOWFLAKE_SCHEMA           | Snowflake Schema                                                |                                                                                       |
-| EVIDENCE_SNOWFLAKE_AUTHENTICATOR    | Snowflake Authenticator                                         | `snowflake_jwt`, `externalbrowser`, `okta`, `snowflake`                               |
-| EVIDENCE_SNOWFLAKE_PRIVATE_KEY      | Snowflake Private Key                                           |                                                                                       |
-| EVIDENCE_SNOWFLAKE_PASSPHRASE       | Snowflake Passphrase                                            |                                                                                       |
-| EVIDENCE_SNOWFLAKE_OKTA_URL         | Snowflake Okta URL                                              |                                                                                       |
-| EVIDENCE_REDSHIFT_HOST              | Redshift Host                                                   |                                                                                       |
-| EVIDENCE_REDSHIFT_DATABASE          | Redshift Database                                               |                                                                                       |
-| EVIDENCE_REDSHIFT_USER              | Redshift Username                                               |                                                                                       |
-| EVIDENCE_REDSHIFT_PASSWORD          | Redshift Password                                               |                                                                                       |
-| EVIDENCE_REDSHIFT_PORT              | Redshift Port                                                   |                                                                                       |
-| EVIDENCE_REDSHIFT_SCHEMA            | Redshift Schema                                                 |                                                                                       |
-| EVIDENCE_REDSHIFT_SSL               | Redshift SSL                                                    | `true` , `false`, `no-verify`                                                         |
-| EVIDENCE_REDSHIFT_CONNECTIONSTRING  | Redshift Connection String                                      |                                                                                       |
-| EVIDENCE_POSTGRES_HOST              | Postgres Host                                                   |                                                                                       |
-| EVIDENCE_POSTGRES_DATABASE          | Postgres Database                                               |                                                                                       |
-| EVIDENCE_POSTGRES_USER              | Postgres Username                                               |                                                                                       |
-| EVIDENCE_POSTGRES_PASSWORD          | Postgres Password                                               |                                                                                       |
-| EVIDENCE_POSTGRES_PORT              | Postgres Port                                                   |                                                                                       |
-| EVIDENCE_POSTGRES_SCHEMA            | Postgres Schema                                                 |                                                                                       |
-| EVIDENCE_POSTGRES_SSL               | Postgres SSL                                                    | `true` , `false`, `no-verify`                                                         |
-| EVIDENCE_POSTGRES_CONNECTIONSTRING  | Postgres Connection String                                      |                                                                                       |
-| EVIDENCE_MSSQL_HOST                 | SQL Server Host                                                 |                                                                                       |
-| EVIDENCE_MSSQL_DATABASE             | SQL Server Database                                             |                                                                                       |
-| EVIDENCE_MSSQL_USER                 | SQL Server Username                                             |                                                                                       |
-| EVIDENCE_MSSQL_PASSWORD             | SQL Server Password                                             |                                                                                       |
-| EVIDENCE_MSSQL_PORT                 | SQL Server Port                                                 |                                                                                       |
-| EVIDENCE_MSSQL_TRUST_SERVER_CERTIFICATE | SQL Server Trust Server Certificate                         | `true` , `false` (default)                                                            |
-| EVIDENCE_MSSQL_ENCRYPT              | SQL Server Encrypt                                              | `true` (default) , `false`                                                            |
-| EVIDENCE_MYSQL_USER                 | MySQL Username                                                  |                                                                                       |
-| EVIDENCE_MYSQL_HOST                 | MySQL Host                                                      |                                                                                       |
-| EVIDENCE_MYSQL_DATABASE             | MySQL Database                                                  |                                                                                       |
-| EVIDENCE_MYSQL_PASSWORD             | MySQL Password                                                  |                                                                                       |
-| EVIDENCE_MYSQL_PORT                 | MySQL Port                                                      |                                                                                       |
-| EVIDENCE_MYSQL_SOCKETPATH           | MySQL Socket Path                                               |                                                                                       |
-| EVIDENCE_MYSQL_SSL                  | MySQL SSL                                                       | `true` , `false`, `no-verify`                                                         |
-| EVIDENCE_SQLITE_FILENAME            | SQLite Filename                                                 |                                                                                       |
-| EVIDENCE_DUCKDB_FILENAME            | DuckDB Filename                                                 |                                                                                       |
-| SEND_ANONYMOUS_USAGE_STATS          | Send [anonymous usage stats](localhost:3000/settings#telemetry) | `yes` , `no`                                                                          |
+| Variable                            | Description                                                     | Options (if applicable)                                                                                 |
+| ----------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| EVIDENCE_DATABASE                   | The database to use.                                            | `bigquery` , `snowflake` , `redshift`, `postgres`, `trino`, `mssql`, `mysql`, `sqlite`, `duckdb`, `csv` |
+| EVIDENCE_BIGQUERY_PROJECT_ID        | BigQuery Project ID                                             |                                                                                                         |
+| EVIDENCE_BIGQUERY_CLIENT_EMAIL      | BigQuery Client Email                                           |                                                                                                         |
+| EVIDENCE_BIGQUERY_PRIVATE_KEY       | BigQuery Private Key                                            |                                                                                                         |
+| EVIDENCE_BIGQUERY_AUTHENTICATOR     | BigQuery Authenticator                                          | `oauth`, `gcloud-cli`, `service-account`                                                                |
+| EVIDENCE_BIGQUERY_TOKEN             | BigQuery OAuth Token                                            |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_ACCOUNT          | Snowflake Account ID                                            |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_USERNAME         | Snowflake Username                                              |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_PASSWORD         | Snowflake Password                                              |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_DATABASE         | Snowflake Database                                              |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_WAREHOUSE        | Snowflake Warehouse                                             |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_ROLE             | Snowflake Role                                                  |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_SCHEMA           | Snowflake Schema                                                |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_AUTHENTICATOR    | Snowflake Authenticator                                         | `snowflake_jwt`, `externalbrowser`, `okta`, `snowflake`                                                 |
+| EVIDENCE_SNOWFLAKE_PRIVATE_KEY      | Snowflake Private Key                                           |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_PASSPHRASE       | Snowflake Passphrase                                            |                                                                                                         |
+| EVIDENCE_SNOWFLAKE_OKTA_URL         | Snowflake Okta URL                                              |                                                                                                         |
+| EVIDENCE_POSTGRES_USER              | Postgres Username                                               |                                                                                                         |
+| EVIDENCE_POSTGRES_HOST              | Postgres Host                                                   |                                                                                                         |
+| EVIDENCE_POSTGRES_DATABASE          | Postgres Database                                               |                                                                                                         |
+| EVIDENCE_POSTGRES_PASSWORD          | Postgres Password                                               |                                                                                                         |
+| EVIDENCE_POSTGRES_PORT              | Postgres Port                                                   |                                                                                                         |
+| EVIDENCE_POSTGRES_SCHEMA            | Postgres Schema                                                 |                                                                                                         |
+| EVIDENCE_POSTGRES_SSL               | Postgres SSL                                                    | `true` , `false`, `no-verify`                                                                           |
+| EVIDENCE_POSTGRES_CONNECTIONSTRING  | Postgres Connection String                                      |                                                                                                         |
+| EVIDENCE_TRINO_HOST                 | Trino Host                                                      |                                                                                                         |
+| EVIDENCE_TRINO_SSL                  | Trino SSL                                                       |                                                                                                         |
+| EVIDENCE_TRINO_PORT                 | Trino Port                                                      |                                                                                                         |
+| EVIDENCE_TRINO_USER                 | Trino User                                                      |                                                                                                         |
+| EVIDENCE_TRINO_PASSWORD             | Trino Password                                                  |                                                                                                         |
+| EVIDENCE_TRINO_CATALOG              | Trino Catalog                                                   |                                                                                                         |
+| EVIDENCE_TRINO_SCHEMA               | Trino Schema                                                    |                                                                                                         |
+| EVIDENCE_MYSQL_USER                 | MySQL Username                                                  |                                                                                                         |
+| EVIDENCE_MYSQL_HOST                 | MySQL Host                                                      |                                                                                                         |
+| EVIDENCE_MYSQL_DATABASE             | MySQL Database                                                  |                                                                                                         |
+| EVIDENCE_MYSQL_PASSWORD             | MySQL Password                                                  |                                                                                                         |
+| EVIDENCE_MYSQL_PORT                 | MySQL Port                                                      |                                                                                                         |
+| EVIDENCE_MYSQL_SOCKETPATH           | MySQL Socket Path                                               |                                                                                                         |
+| EVIDENCE_MYSQL_SSL                  | MySQL SSL                                                       | `true` , `false`, `no-verify`                                                                           |
+| EVIDENCE_SQLITE_FILENAME            | SQLite Filename                                                 |                                                                                                         |
+| EVIDENCE_DUCKDB_FILENAME            | DuckDB Filename                                                 |                                                                                                         |
+| SEND_ANONYMOUS_USAGE_STATS          | Send [anonymous usage stats](localhost:3000/settings#telemetry) | `yes` , `no`                                                                                            |
