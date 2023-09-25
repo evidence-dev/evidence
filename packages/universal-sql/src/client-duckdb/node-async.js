@@ -66,7 +66,7 @@ export async function initDB() {
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @returns {import('apache-arrow').Table | null}
+ * @returns {Promise<import('apache-arrow').Table | null>}
  */
 export function query(sql) {
 	return connection.query(sql);

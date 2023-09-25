@@ -10,9 +10,7 @@ import {
 import { Compression, writeParquet, WriterPropertiesBuilder } from 'parquet-wasm/node/arrow1.js';
 import fs from 'fs/promises';
 import path from 'path';
-// This import is a little weird because of the exports field in package.json
-// relative addressing (e.g. ./client-duckdb/node.js) doesn't work
-import { initDB, query } from '@evidence-dev/universal-sql/client-duckdb';
+import { initDB, query } from './client-duckdb/node-async.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
 
@@ -78,12 +76,13 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 		const parquetBuffer = writeParquet(IPC, writerProperties);
 
 		console.debug(` || Writing batch ${batchNum} with ${results.length} rows.`);
-		const tempFilename = path.join('.', 'sources', outputPrefix + `.${batchNum++}.parquet`);
+		const tempFilename = path.join('.', 'sources', outputPrefix + `.${batchNum}.parquet`);
 		await fs.writeFile(tempFilename, parquetBuffer);
 
-		console.debug(` || Batch ${batchNum - 1} written.`);
+		console.debug(` || Batch ${batchNum} written.`);
 		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
+		batchNum++;
 	};
 
 	if (typeof data === 'function') data = data();
@@ -97,6 +96,7 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 	if (isGeneratorObject(data)) {
 		let i;
 		while ((i = await data.next())) {
+			// todo: prepare for smaller than batch size
 			if (i.value) await flush(i.value);
 			if (i.done) break;
 		}
@@ -107,7 +107,7 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 			for (const batch of chunk(results, batchSize)) {
 				// Iterate through the split up chunks
 				// Batch them and flush when needed
-				
+
 				currentBatch = currentBatch.concat(batch);
 				
 				if (currentBatch.length >= batchSize) {
@@ -118,36 +118,15 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 			}
 		}
 		// Ensure nothing is left over
-		await flush(currentBatch)
+		await flush(currentBatch);
 	}
 
 	if (!tmpFilenames.length) return 0;
 
 	await initDB();
 
-	while (tmpFilenames.length > 10) {
-		let intermediateFilenames = chunk(tmpFilenames, 10);
-		let newTmpFilenames = [];
-
-		for (const files of intermediateFilenames) {
-			const selectFiles = files.map((f) => `SELECT * FROM '${f}'`).join('\nUNION\n');
-			const intermediateFilename = path.join(
-				'.',
-				'sources',
-				outputPrefix + `.intermediate.${batchNum++}.parquet`
-			);
-			const copyToNewTemp = `COPY (${selectFiles}) TO '${intermediateFilename}' (FORMAT 'PARQUET', CODEC 'ZSTD')`;
-			await query(copyToNewTemp);
-			newTmpFilenames.push(intermediateFilename);
-			for (const file of files) {
-				await fs.rm(file);
-			}
-		}
-
-		tmpFilenames = newTmpFilenames;
-	}
-
-	const select = tmpFilenames.map((filename) => `SELECT * FROM '${filename}'`).join('\nUNION\n');
+	const parquetFiles = tmpFilenames.map((filename) => `'${filename}'`).join(',');
+	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
 	const copy = `COPY (${select}) TO '${path.join(
 		'.',
 		'static',
