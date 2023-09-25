@@ -828,6 +828,9 @@ importers:
       parquet-wasm:
         specifier: 0.3.1
         version: 0.3.1
+      web-worker:
+        specifier: ^1.2.0
+        version: 1.2.0
     devDependencies:
       '@types/mock-fs':
         specifier: ^4.13.1
@@ -21100,6 +21103,10 @@ packages:
   /web-streams-polyfill@3.2.1:
     resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
     engines: {node: '>= 8'}
+    dev: false
+
+  /web-worker@1.2.0:
+    resolution: {integrity: sha512-PgF341avzqyx60neE9DD+XS26MMNMoUQRz9NOZwW32nPQrF6p77f1htcnjBSEV8BGMKZ16choqUG4hyI0Hx7mA==}
     dev: false
 
   /webidl-conversions@3.0.1:
