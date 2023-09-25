@@ -132,10 +132,24 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([first_row]) };
 };
 
+/**
+ * Converts an async generator to an array
+ * @param {AsyncGeneratorFunction} asyncGenerator
+ * @returns {Promise<Record<string, unknown>[]>}
+ */
+const batchedAsyncGeneratorToArray = async (asyncGenerator) => {
+	const result = [];
+	for await (const batch of asyncGenerator()) {
+		result.push(...batch);
+	}
+	return result;
+}
+
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
 exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenerator;
+exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

@@ -1,7 +1,35 @@
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 const path = require('path');
-const { processQueryResults, getEnv } = require('@evidence-dev/db-commons');
+const stream = require('stream');
+const {
+	inferColumnTypes,
+	getEnv,
+	asyncIterableToBatchedAsyncGenerator
+} = require('@evidence-dev/db-commons');
+
+// https://gist.github.com/rmela/a3bed669ad6194fb2d9670789541b0c7
+class DBStream extends stream.Readable {
+	constructor() {
+		super({ objectMode: true });
+	}
+
+	static async create({ opts, sql }) {
+		const db = await open(opts);
+		const dbstream = new DBStream();
+		dbstream.stmt = await db.prepare(sql);
+		dbstream.on('end', () => dbstream.stmt.finalize(() => db.close()));
+		return dbstream;
+	}
+
+	_read() {
+		let strm = this;
+		this.stmt
+			.get()
+			.then((result) => strm.push(result ?? null))
+			.catch((err) => strm.emit('error', err));
+	}
+}
 
 const envMap = {
 	filename: [
@@ -13,16 +41,18 @@ const envMap = {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<SQLiteOptions>} */
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database, batchSize) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	try {
-		const db = await open({
+		const opts = {
 			filename: filename,
 			driver: sqlite3.Database,
 			mode: sqlite3.OPEN_READONLY
-		});
-		const result = await db.all(queryString);
-		return processQueryResults(result);
+		};
+
+		const result = await DBStream.create({ opts, sql: queryString });
+
+		return await asyncIterableToBatchedAsyncGenerator(result, inferColumnTypes, batchSize);
 	} catch (err) {
 		if (err.message) {
 			if (err.errno === 14) {
@@ -45,9 +75,13 @@ module.exports = runQuery;
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<SQLiteOptions>} */
 module.exports.getRunner = async (opts, directory) => {
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, { ...opts, filename: path.join(directory, opts.filename) });
+		return runQuery(
+			queryContent,
+			{ ...opts, filename: path.join(directory, opts.filename) },
+			batchSize
+		);
 	};
 };
