@@ -146,7 +146,7 @@ User: `<YOUR_EMAIL>/accountadmin`
 
 SSL: `true`
 
-Password: The password you use to login to you Starburst account
+Password: The password you use to login to your Starburst account
 
 Alternatively, you can also create a service account at `https://<YOUR_DOMAIN>.galaxy.starburst.io/service-accounts` and use this to connect.
 
