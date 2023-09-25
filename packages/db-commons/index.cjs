@@ -113,7 +113,7 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 	{ standardizeRow = (x) => x } = {}
 ) {
 	const iterator = iterable[Symbol.asyncIterator]();
-	const first_row = await iterator.next().then((x) => x.value);
+	const first_row = standardizeRow(await iterator.next().then((x) => x.value));
 
 	const rows = async function* () {
 		let batch = [first_row];
@@ -143,7 +143,7 @@ const batchedAsyncGeneratorToArray = async (asyncGenerator) => {
 		result.push(...batch);
 	}
 	return result;
-}
+};
 
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
