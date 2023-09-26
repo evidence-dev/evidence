@@ -143,8 +143,6 @@
 	{/if}
 </div>
 
-<pre>{JSON.stringify(data[0][0].duration)}</pre>
-
 <style>
 	/* 
         TODO: Identify if this can be moved to app.css, or scoped to this component.

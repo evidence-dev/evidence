@@ -15,7 +15,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const queryStores = valid_ids.map(
 			(id) => `
-		const _${id} = new QueryStore(
+		$: _${id} = new QueryStore(
 			\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 			queryFunc,
 			\`${id}\`,
