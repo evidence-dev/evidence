@@ -386,6 +386,9 @@ importers:
       '@evidence-dev/telemetry':
         specifier: workspace:^
         version: link:../telemetry
+      '@evidence-dev/trino':
+        specifier: workspace:^
+        version: link:../trino
       blueimp-md5:
         specifier: 2.18.0
         version: 2.18.0
@@ -759,6 +762,15 @@ importers:
       fs-extra:
         specifier: 10.0.0
         version: 10.0.0
+
+  packages/trino:
+    dependencies:
+      '@evidence-dev/db-commons':
+        specifier: workspace:^
+        version: link:../db-commons
+      presto-client:
+        specifier: ^0.13.0
+        version: 0.13.0
 
   sites/docs:
     dependencies:
@@ -17306,6 +17318,10 @@ packages:
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+
+  /presto-client@0.13.0:
+    resolution: {integrity: sha512-EL+oiqnMnGF8iPzAOiuZi5Ja7D2zIQkYZ9iJy+Ddwjapw3SZ6AzP71gN4KhqbM/9WLCFW8WxexqbWc//4L5kpg==}
+    dev: false
 
   /prettier-plugin-svelte@2.10.1(prettier@2.8.8)(svelte@3.55.0):
     resolution: {integrity: sha512-Wlq7Z5v2ueCubWo0TZzKc9XHcm7TDxqcuzRuGd0gcENfzfT4JZ9yDlCbEgxWgiPmLHkBjfOtpAWkcT28MCDpUQ==}
