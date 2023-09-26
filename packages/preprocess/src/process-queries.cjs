@@ -12,31 +12,31 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const valid_ids = Object.keys(duckdbQueries).filter((queryId) =>
 			queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$')
 		);
+
+		const queryStores = valid_ids.map(
+			(id) => `
+		$: _${id} = new QueryStore(
+			\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
+			queryFunc,
+			\`${id}\`,
+			{ initialData: data.${id} ?? profile(__db.query, \`${duckdbQueries[id].replaceAll('`', '\\`')}\`) }
+		);
+		/** @type {QueryStore} */
+		let ${id};
+		$: ${id} = $_${id};
+		`
+		);
+
 		queryDeclarations += `
-            import debounce from 'debounce';
-            import { browser } from '$app/environment';
-			import {profile} from '@evidence-dev/component-utilities/profile';
-			
-			// partially bypasses weird reactivity stuff with \`select\` elements
-			function data_update(data) {
-				${valid_ids.map((id) => `${id} = data.${id} ?? [];`).join('\n')}
-			}
-
-			$: data_update(data);
-
-
-            ${valid_ids
-							.map(
-								(id) => `
-                let ${id} = data.${id} ?? [];
-                const _query_${id} = browser
-					  ? debounce((query) => profile(__db.query, query).then((value) => ${id} = value), 200)
-					  : (query) => (${id} = profile(__db.query, query, "${id}"));
-                $: _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
-            `
-							)
-							.join('\n')}
-        `;
+		import {browser} from "$app/environment";
+		import {profile} from '@evidence-dev/component-utilities/profile';
+		import debounce from 'debounce';
+		import {QueryStore} from '@evidence-dev/query-store';
+		
+		const queryFunc = q => profile(__db.query, q);	
+		
+		${queryStores.join('\n')}	
+		`;
 	}
 
 	let defaultProps = `
@@ -113,7 +113,7 @@ const processQueries = (componentDevelopmentMode) => {
 				if (attributes.context != 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
 					return {
-						code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
+						code: content + createDefaultProps(filename, componentDevelopmentMode, duckdbQueries)
 					};
 				}
 			}
