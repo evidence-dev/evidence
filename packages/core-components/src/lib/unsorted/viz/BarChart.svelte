@@ -41,11 +41,12 @@
 		)?.evidenceType;
 	});
 
-	$: if (!showAllXaxisLabelsManuallySet) showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
+	$: if (!showAllXaxisLabelsManuallySet)
+		showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
 
 	/** @type {boolean} */
 	export let showAllXAxisLabels;
-	const showAllXaxisLabelsManuallySet = typeof showAllXAxisLabels !== 'undefined'
+	const showAllXaxisLabelsManuallySet = typeof showAllXAxisLabels !== 'undefined';
 
 	$: if (typeof showAllXAxisLabels === 'string')
 		showAllXAxisLabels = showAllXAxisLabels?.toLowerCase() === 'true';
