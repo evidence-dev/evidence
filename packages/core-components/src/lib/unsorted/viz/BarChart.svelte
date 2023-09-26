@@ -42,7 +42,8 @@
 	});
 
 	export let showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
-	$: if(typeof showAllXAxisLabels === 'string') showAllXAxisLabels = showAllXAxisLabels?.toLowerCase() === 'true';
+	$: if (typeof showAllXAxisLabels === 'string')
+		showAllXAxisLabels = showAllXAxisLabels?.toLowerCase() === 'true';
 
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
