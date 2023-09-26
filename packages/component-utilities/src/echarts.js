@@ -465,13 +465,12 @@ export default (node, option) => {
 			const modConst = 4 / 5;
 			const clientWidth = node?.clientWidth ?? 0;
 
-
 			// We disable this behavior because it doesn't make sense on horizontal bar charts
 			// Category labels will grow to be visible
 			// Value labels are interpolatable anyway
-			if (!options.swapXY) {
+			if (!option.swapXY) {
 				/** @type {import("echarts").EChartsOption} */
-				const newOption =  {
+				const newOption = {
 					xAxis: {
 						axisLabel: {
 							interval: 0,
@@ -482,8 +481,6 @@ export default (node, option) => {
 				};
 				chart.setOption(newOption);
 			}
-
-
 		}
 	};
 

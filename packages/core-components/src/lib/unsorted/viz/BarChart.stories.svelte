@@ -58,8 +58,8 @@
 />
 
 <Story
-		name="Crowded (Explicit X Type) (Horizontal)"
-		args={{
+	name="Crowded (Explicit X Type) (Horizontal)"
+	args={{
 		xType: 'category',
 		swapXY: true,
 		data: genSeries({
