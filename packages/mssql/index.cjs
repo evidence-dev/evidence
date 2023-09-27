@@ -129,7 +129,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 };
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<MsSQLOptions>} */
-const runQuery = async (queryString, database = {}, batchSize) => {
+const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 	try {
 		const trust_server_certificate =
 			database.trust_server_certificate ?? getEnv(envMap, 'trustServerCertificate') ?? 'false';

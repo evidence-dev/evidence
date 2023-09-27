@@ -11,8 +11,7 @@ const {
 	EvidenceType,
 	TypeFidelity,
 	getEnv,
-	asyncIterableToBatchedAsyncGenerator,
-	cleanQuery
+	asyncIterableToBatchedAsyncGenerator
 } = require('@evidence-dev/db-commons');
 
 const envMap = {
@@ -107,7 +106,7 @@ const getCredentials = (database = {}) => {
 };
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<BigQueryOptions>} */
-const runQuery = async (queryString, database, batchSize) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
 		const credentials = getCredentials(database);
 

@@ -42,7 +42,7 @@ const envMap = {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<SQLiteOptions>} */
-const runQuery = async (queryString, database, batchSize) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	try {
 		const opts = {

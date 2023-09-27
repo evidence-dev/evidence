@@ -1,6 +1,6 @@
 const pg = require('pg');
 const { Pool } = pg;
-const { EvidenceType, getEnv, TypeFidelity } = require('@evidence-dev/db-commons');
+const { EvidenceType, getEnv, TypeFidelity, cleanQuery } = require('@evidence-dev/db-commons');
 const Cursor = require('pg-cursor');
 
 const envMap = {
@@ -154,7 +154,7 @@ const standardizeResult = (result) => {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<PostgresOptions>} */
-const runQuery = async (queryString, database, batchSize) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
 		const credentials = {
 			user: database ? database.user : getEnv(envMap, 'user'),
@@ -199,9 +199,7 @@ const runQuery = async (queryString, database, batchSize) => {
 
 		const connection = await pool.connect();
 		try {
-			let cleanedString = queryString.trim();
-			if (cleanedString.endsWith(';'))
-				cleanedString = cleanedString.substring(0, cleanedString.length - 1);
+			const cleanedString = cleanQuery(queryString);
 
 			const lengthQuery = await connection
 				.query(`WITH root as (${cleanedString}) SELECT COUNT(*) as rows FROM root`)
@@ -210,14 +208,13 @@ const runQuery = async (queryString, database, batchSize) => {
 
 			const cursor = connection.query(new Cursor(queryString));
 
-			const rowsPerBatch = batchSize ?? 100000;
-			const firstBatch = await cursor.read(rowsPerBatch);
+			const firstBatch = await cursor.read(batchSize);
 
 			return {
 				rows: async function* () {
 					yield firstBatch;
 					let results;
-					while ((results = await cursor.read(rowsPerBatch)) && results.length > 0) yield results;
+					while ((results = await cursor.read(batchSize)) && results.length > 0) yield standardizeResult(results);
 					connection.release();
 					pool.end();
 				},

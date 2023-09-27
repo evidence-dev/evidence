@@ -59,7 +59,7 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 };
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
-const runQuery = async (queryString, database, batchSize) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
@@ -69,8 +69,8 @@ const runQuery = async (queryString, database, batchSize) => {
 		const stream = conn.stream(queryString);
 
 		const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
-		const expected_count = await db.all(count_query);
-		const expected_row_count = expected_count[0]['count_star()'];
+		const expected_count = await db.all(count_query).catch(() => null);
+		const expected_row_count = expected_count?.[0]['count_star()'];
 
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 			mapResultsToEvidenceColumnTypes

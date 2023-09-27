@@ -269,7 +269,7 @@ const getCredentials = (database = {}) => {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<SnowflakeOptions>} */
-const runQuery = async (queryString, database, batchSize) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
 		const credentials = getCredentials(database);
 
