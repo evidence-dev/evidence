@@ -2,7 +2,8 @@ const {
 	getEnv,
 	EvidenceType,
 	TypeFidelity,
-	asyncIterableToBatchedAsyncGenerator
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
 } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
@@ -67,9 +68,16 @@ const runQuery = async (queryString, database, batchSize) => {
 		const conn = await db.connect();
 		const stream = conn.stream(queryString);
 
-		return await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+		const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
+		const expected_count = await db.all(count_query);
+		const expected_row_count = expected_count[0]['count_star()'];
+
+		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 			mapResultsToEvidenceColumnTypes
 		});
+		results.expectedRowCount = expected_row_count;
+
+		return results;
 	} catch (err) {
 		if (err.message) {
 			throw err.message;
