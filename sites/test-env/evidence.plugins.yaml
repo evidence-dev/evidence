@@ -5,3 +5,4 @@ databases:
     @evidence-dev/faker-datasource: { }
     @evidence-dev/csv: { }
     @evidence-dev/postgres: { }
+    @evidence-dev/sqlite: { }
