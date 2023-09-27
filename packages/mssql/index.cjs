@@ -2,7 +2,8 @@ const {
 	getEnv,
 	EvidenceType,
 	TypeFidelity,
-	asyncIterableToBatchedAsyncGenerator
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
 } = require('@evidence-dev/db-commons');
 const mssql = require('mssql');
 
@@ -145,7 +146,12 @@ const runQuery = async (queryString, database = {}, batchSize) => {
 			}
 		};
 
-		await mssql.connect(credentials);
+		const pool = await mssql.connect(credentials);
+
+		const cleaned_string = cleanQuery(queryString);
+		const expected_count = await pool.request().query(`SELECT COUNT(*) as expected_row_count FROM (${cleaned_string}) as subquery`).catch(() => null);
+		const expected_row_count = expected_count?.recordset[0].expected_row_count;
+
 		const request = new mssql.Request();
 		request.stream = true;
 		request.query(queryString);
@@ -154,8 +160,8 @@ const runQuery = async (queryString, database = {}, batchSize) => {
 
 		const stream = request.toReadableStream();
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize);
-
 		results.columnTypes = mapResultsToEvidenceColumnTypes(columns);
+		results.expectedRowCount = expected_row_count;
 
 		return results;
 	} catch (err) {
