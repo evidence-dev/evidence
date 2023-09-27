@@ -69,7 +69,7 @@ const envMap = {
  * @param {snowflake.Connection} connection
  * @param {string} queryString
  * @param {boolean} useAsync
- * @returns {Promise<{ rows: import("stream").Readable, columns: import('snowflake-sdk').Column[] }>}
+ * @returns {Promise<{ rows: import("stream").Readable, columns: import('snowflake-sdk').Column[], totalRows: number }>}
  */
 const execute = async (connection, queryString, useAsync = false) => {
 	return new Promise((resolve, reject) => {
@@ -84,7 +84,7 @@ const execute = async (connection, queryString, useAsync = false) => {
 						const columns = stmt
 							.getColumns()
 							.map((next) => ({ name: next.getName(), type: next.getType() }));
-						resolve({ rows: stmt.streamRows(), columns });
+						resolve({ rows: stmt.streamRows(), columns, totalRows: stmt.getNumRows() });
 					}
 				}
 			});
@@ -286,6 +286,7 @@ const runQuery = async (queryString, database, batchSize) => {
 			standardizeRow
 		});
 		result.columnTypes = mapResultsToEvidenceColumnTypes(execution);
+		result.expectedRowCount = execution.totalRows;
 
 		return result;
 	} catch (err) {
