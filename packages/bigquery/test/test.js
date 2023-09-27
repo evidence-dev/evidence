@@ -154,7 +154,7 @@ test('numeric types are retrieved correctly', async () => {
 
 test('query batches results properly', async () => {
 	try {
-		const { rows } = await runQuery(
+		const { rows, expectedRowCount } = await runQuery(
 			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
 			undefined,
 			2
@@ -168,6 +168,7 @@ test('query batches results properly', async () => {
 			assert.equal(batch.length, 2);
 		}
 		assert.equal(arr[arr.length - 1].length, 1);
+		assert.equal(expectedRowCount, 5);
 	} catch (e) {
 		throw Error(e);
 	}
