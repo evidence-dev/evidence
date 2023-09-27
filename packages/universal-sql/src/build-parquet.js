@@ -95,11 +95,8 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 	// Handle generators
 	// We use this method to ensure that the `return` value is not ignored
 	if (isGeneratorObject(data)) {
-		let i;
-		while ((i = await data.next())) {
-			// todo: prepare for smaller than batch size
-			if (i.value) await flush(i.value);
-			if (i.done) break;
+		for await (const results of data) {
+			await flush(results);
 		}
 	} else {
 		let currentBatch = [];
