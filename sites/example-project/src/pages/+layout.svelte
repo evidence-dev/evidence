@@ -85,7 +85,7 @@
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<Header bind:mobileSidebarOpen />
 	<div
-		class="max-w-7xl print:max-w-prose mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start"
+		class="max-w-7xl print:w-[650px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start"
 	>
 		<div class="print:hidden">
 			<Sidebar {fileTree} bind:mobileSidebarOpen />
