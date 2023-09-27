@@ -1,7 +1,7 @@
 // Populate the template that's shipped with the package using a subset of files from the example-project
 import path from 'path';
-import fs from 'fs-extra';
-
+import fsExtra from 'fs-extra';
+import fs from 'fs';
 const templatePaths = [
 	'.npmrc',
 	'static/',
@@ -22,50 +22,19 @@ const templatePaths = [
 	'postcss.config.cjs'
 ];
 
-fs.emptyDirSync('./template/');
+fsExtra.emptyDirSync('./template/');
 
 templatePaths.forEach((p) => {
-	fs.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
+	fsExtra.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
 });
 
-fs.emptyDirSync('./template/sources');
+fsExtra.emptyDirSync('./template/sources');
 
+const configFileLocation = new URL('svelte.config.js', import.meta.url);
 // Create a clean SK config (workspace's is modified)
-fs.outputFileSync(
-	'./template/svelte.config.js',
-	`
-    import evidencePreprocess from '@evidence-dev/preprocess'
-    import preprocess from "svelte-preprocess";
-    import adapter from '@sveltejs/adapter-static';
-    import { evidencePlugins } from '@evidence-dev/plugin-connector';
-    
-    /** @type {import('@sveltejs/kit').Config} */
-    
-    const config = {
-        extensions: ['.svelte', ".md"], 
-        preprocess: [
-            ...evidencePreprocess(true),
-            evidencePlugins(),
-            preprocess({
-              postcss: true,
-            }),
-        ],
-        kit: {
-            adapter: adapter({
-                strict: false
-            }),
-            files: {
-                routes: 'src/pages',
-                lib: 'src/components'
-            }
-        }
-    };
-    
-    export default config    
-    `
-);
+fs.writeFileSync('./template/svelte.config.js', fs.readFileSync(configFileLocation));
 
-fs.outputFileSync(
+fsExtra.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
@@ -95,7 +64,7 @@ fs.outputFileSync(
 );
 
 // Create a readme
-fs.outputFileSync(
+fsExtra.outputFileSync(
 	'./template/README.md',
 	`
 # Evidence Template Project

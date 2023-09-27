@@ -58,7 +58,7 @@ Setting up Evidence Cloud takes less than 5 minutes.
 
 <details>
     <summary>How do I get more frequent data refreshes?</summary>
-    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>.</p>
+    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, or reach out on Evidence Cloud chat..</p>
 </details>
 
 <details>
@@ -67,10 +67,17 @@ Setting up Evidence Cloud takes less than 5 minutes.
 </details>
 
 <details>
+    <summary>How can I create a public Evidence Cloud site?</summary>
+    If you want your Evidence Cloud project URL to be accessible to anyone, deploy your site, and reach out on Evidence Cloud chat. We will verify your identity before making the site public.
+</details>
+
+<details>
     <summary>How do I set up development previews?</summary>
     <p>Alongside your <code>main</code> branch, set up a secondary project targeting a development branch (e.g. <code>dev</code>) whenever you merge changes into <code>dev</code>, you will get a preview. When you are ready to release changes, merge these into <code>main</code>.</p>
     <p>You can set up different database credentials for development deployments, which allows you to use development data before it is in your production db.</p>
 </details>
+
+
 
 ### Pricing
 
@@ -81,7 +88,7 @@ Setting up Evidence Cloud takes less than 5 minutes.
 
 <details>
     <summary>How do I get onto a Team or Enterprise plan?</summary>
-    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>.</p>
+    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, or reach out on Evidence Cloud chat.</p>
 </details>
 
 
@@ -92,9 +99,6 @@ Setting up Evidence Cloud takes less than 5 minutes.
     <summary>How do I add a new developer to my Evidence project?</summary>
     <p>Give them access to your <a href="https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository">GitHub repository</a>. All Evidence Cloud plans come with unlimited developer accounts.</p>
 </details>
-
-
-
 
 <details>
     <summary>Which git providers can I use with Evidence Cloud?</summary>

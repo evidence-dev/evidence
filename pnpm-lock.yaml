@@ -395,6 +395,9 @@ importers:
       '@evidence-dev/telemetry':
         specifier: workspace:^
         version: link:../telemetry
+      '@evidence-dev/trino':
+        specifier: workspace:^
+        version: link:../trino
       blueimp-md5:
         specifier: 2.18.0
         version: 2.18.0
@@ -768,6 +771,15 @@ importers:
       fs-extra:
         specifier: 10.0.0
         version: 10.0.0
+
+  packages/trino:
+    dependencies:
+      '@evidence-dev/db-commons':
+        specifier: workspace:^
+        version: link:../db-commons
+      presto-client:
+        specifier: ^0.13.0
+        version: 0.13.0
 
   sites/docs:
     dependencies:
@@ -17702,6 +17714,10 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
+  /presto-client@0.13.0:
+    resolution: {integrity: sha512-EL+oiqnMnGF8iPzAOiuZi5Ja7D2zIQkYZ9iJy+Ddwjapw3SZ6AzP71gN4KhqbM/9WLCFW8WxexqbWc//4L5kpg==}
+    dev: false
+
   /prettier-plugin-svelte@2.8.1(prettier@2.8.0)(svelte@3.55.0):
     resolution: {integrity: sha512-KA3K1J3/wKDnCxW7ZDRA/QL2Q67N7Xs3gOERqJ5X1qFjq1DdnN3K1R29scSKwh+kA8FF67pXbYytUpvN/i3iQw==}
     peerDependencies:
@@ -19214,6 +19230,7 @@ packages:
   /smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+    requiresBuild: true
     dev: false
 
   /smartwrap@1.2.5:

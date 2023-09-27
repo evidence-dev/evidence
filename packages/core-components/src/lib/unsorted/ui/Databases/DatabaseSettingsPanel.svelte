@@ -1,6 +1,7 @@
 <script>
 	import BigqueryForm from './BigqueryForm.svelte';
 	import PostgresForm from './PostgresForm.svelte';
+	import TrinoForm from './TrinoForm.svelte';
 	import SnowflakeForm from './SnowflakeForm.svelte';
 	import RedshiftForm from './RedshiftForm.svelte';
 	import MysqlForm from './MysqlForm.svelte';
@@ -29,6 +30,7 @@
 			docsHref: 'https://docs.evidence.dev/core-concepts/data-sources/#bigquery'
 		},
 		{ id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm },
+		{ id: 'trino', name: 'Trino', formComponent: TrinoForm },
 		{ id: 'mysql', name: 'MySQL', formComponent: MysqlForm },
 		{ id: 'redshift', name: 'Redshift', formComponent: RedshiftForm }, // Redshift uses the postgres connector under the hood
 		{ id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm },
