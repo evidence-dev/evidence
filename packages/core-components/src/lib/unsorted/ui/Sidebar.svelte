@@ -203,6 +203,10 @@
 
 <style>
 	.selected {
-		@apply text-blue-600 hover:text-blue-600;
+		@apply text-blue-600;
+	}
+
+	.selected:hover {
+		@apply text-blue-600;
 	}
 </style>
