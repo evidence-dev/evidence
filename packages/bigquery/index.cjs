@@ -113,11 +113,6 @@ const runQuery = async (queryString, database, batchSize) => {
 
 		const connection = new BigQuery({ ...credentials, maxRetries: 10 });
 
-		const cleaned_query = cleanQuery(queryString);
-		const count_query = `WITH root as (${cleaned_query}) SELECT COUNT(*) FROM root`;
-		const expected_count = await connection.query(count_query);
-		const expected_row_count = expected_count[0][0].f0_;
-
 		const [job] = await connection.createQueryJob({ query: queryString });
 		/** @type {import("node:stream").Transform} */
 		const stream = connection.createQueryStream(queryString);
@@ -131,7 +126,7 @@ const runQuery = async (queryString, database, batchSize) => {
 			maxResults: 0
 		});
 		result.columnTypes = mapResultsToEvidenceColumnTypes(response);
-		result.expectedRowCount = expected_row_count;
+		result.expectedRowCount = response.totalRows && Number(response.totalRows);
 
 		return result;
 	} catch (err) {
