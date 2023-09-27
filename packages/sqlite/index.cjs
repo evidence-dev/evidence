@@ -5,7 +5,8 @@ const stream = require('stream');
 const {
 	inferColumnTypes,
 	getEnv,
-	asyncIterableToBatchedAsyncGenerator
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
 } = require('@evidence-dev/db-commons');
 
 // https://gist.github.com/rmela/a3bed669ad6194fb2d9670789541b0c7
@@ -50,11 +51,19 @@ const runQuery = async (queryString, database, batchSize) => {
 			mode: sqlite3.OPEN_READONLY
 		};
 
-		const result = await DBStream.create({ opts, sql: queryString });
+		const db = await open(opts);
+		const cleaned_query = cleanQuery(queryString);
+		const count_results = await db.all(`WITH root as (${cleaned_query}) SELECT COUNT(*) FROM root`);
+		const expected_row_count = count_results[0]['COUNT(*)'];
 
-		return await asyncIterableToBatchedAsyncGenerator(result, batchSize, {
+		const stream = await DBStream.create({ opts, sql: queryString });
+
+		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 			mapResultsToEvidenceColumnTypes: inferColumnTypes
 		});
+		results.expectedRowCount = expected_row_count;
+
+		return results;
 	} catch (err) {
 		if (err.message) {
 			if (err.errno === 14) {
