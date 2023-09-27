@@ -34,15 +34,15 @@ export const QueryResultSchema = z
 			// We can't dig into generator functions
 			if (typeof data.rows === 'function') return true;
 
-			const r = data.rows;
+			const rows = data.rows;
 
 			// Validate that all columnTypes appear
-			if (r.length) {
+			if (rows.length) {
 				// Filter to column types where name is not in row
 				// Then map columnTypes to their names to make things easier
 				// If there are any columns that were not filtered out; provide an error to zod
 				const missingColumns = data.columnTypes
-					.filter((ct) => !(ct.name in r[0]))
+					.filter((ct) => !(ct.name in rows[0]))
 					.map((ct) => ct.name);
 
 				if (missingColumns.length) {
@@ -57,10 +57,10 @@ export const QueryResultSchema = z
 				return {
 					path: ['columnTypes']
 				};
-			const r = data.rows;
+			const rows = data.rows;
 
 			const missingColumns = data.columnTypes
-				.filter((ct) => !(ct.name in r[0]))
+				.filter((ct) => !(ct.name in rows[0]))
 				.map((ct) => ct.name);
 			return {
 				path: ['columnTypes'],
