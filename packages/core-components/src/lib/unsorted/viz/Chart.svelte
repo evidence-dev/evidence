@@ -25,6 +25,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
+	import { Skeleton } from '../../atoms/skeletons';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { colours } from '@evidence-dev/component-utilities/colours';
 
@@ -32,7 +33,9 @@
 	// Input Props
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
+	/** @type {import("@evidence-dev/query-store").QueryStore} */
 	export let data = undefined;
+
 	export let x = undefined;
 	export let y = undefined;
 	export let series = undefined;
@@ -813,10 +816,20 @@
 		}
 	}
 
+	import { QueryStore } from '@evidence-dev/query-store';
+
 	$: data;
+	$: console.log(data.loading);
+	$: console.log(data instanceof QueryStore);
 </script>
 
-{#if !error}
+{#if !data || data.loading}
+	<!-- We need to build the class this way to make sure tailwind doesn't prune them. -->
+	{@const heightProp = height ? `h-[${height}]` : `h-64`}
+	<div class="w-full {heightProp}">
+		<Skeleton />
+	</div>
+{:else if !error}
 	<slot />
 	<ECharts config={$config} {height} {width} {data} />
 {:else}

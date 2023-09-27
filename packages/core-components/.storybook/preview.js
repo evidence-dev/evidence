@@ -1,4 +1,4 @@
-import '../src/app.postcss'
+import '../src/app.postcss';
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
 	parameters: {
