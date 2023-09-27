@@ -214,7 +214,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 				rows: async function* () {
 					yield firstBatch;
 					let results;
-					while ((results = await cursor.read(batchSize)) && results.length > 0) yield standardizeResult(results);
+					while ((results = await cursor.read(batchSize)) && results.length > 0)
+						yield standardizeResult(results);
 					connection.release();
 					pool.end();
 				},

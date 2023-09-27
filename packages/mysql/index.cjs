@@ -163,7 +163,10 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		const cleaned_query = cleanQuery(queryString);
 		const count_query = `WITH root as (${cleaned_query}) SELECT COUNT(*) FROM root`;
 
-		const expected_count = await connection.promise().query(count_query).catch(() => null);
+		const expected_count = await connection
+			.promise()
+			.query(count_query)
+			.catch(() => null);
 		const expected_row_count = expected_count?.[0][0]['COUNT(*)'];
 
 		const query = connection.query(queryString).stream();
