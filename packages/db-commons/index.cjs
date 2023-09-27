@@ -149,11 +149,19 @@ const batchedAsyncGeneratorToArray = async (asyncGenerator) => {
 	return result;
 };
 
+const cleanQuery = (query) => {
+	let cleanedString = query.trim();
+	if (cleanedString.endsWith(';'))
+		cleanedString = cleanedString.substring(0, cleanedString.length - 1);
+	return cleanedString;
+};
+
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
 exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenerator;
 exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
+exports.cleanQuery = cleanQuery;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

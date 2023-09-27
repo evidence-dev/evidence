@@ -1,4 +1,10 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
+} = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const mysqlTypes = mysql.Types;
 
@@ -43,21 +49,16 @@ const envMap = {
 
 /**
  *
- * @param {mysql.RowDataPacket[]} result
- * @returns {Record<string, unknown>[]}
+ * @param {Record<string, unknown>} row
+ * @returns {Record<string, unknown>}
  */
-const standardizeResult = (result) => {
-	/** @type {Record<string, unknown>[]} */
-	const output = [];
-	result.forEach((row) => {
-		/** @type {Record<string, unknown>} */
-		const lowerCasedRow = {};
-		for (const [key, value] of Object.entries(row)) {
-			lowerCasedRow[key.toLowerCase()] = value;
-		}
-		output.push(lowerCasedRow);
-	});
-	return output;
+const standardizeRow = (row) => {
+	/** @type {Record<string, unknown>} */
+	const lowerCasedRow = {};
+	for (const [key, value] of Object.entries(row)) {
+		lowerCasedRow[key.toLowerCase()] = value;
+	}
+	return lowerCasedRow;
 };
 
 /**
@@ -129,7 +130,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<MySQLOptions>} */
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database, batchSize) => {
 	try {
 		/** @type {import("mysql2").PoolOptions} */
 		const credentials = {
@@ -157,12 +158,22 @@ const runQuery = async (queryString, database) => {
 			}
 		}
 
-		const pool = mysql.createPool(credentials);
-		const promisePool = pool.promise();
-		const [rows, fields] = await promisePool.query(queryString);
+		const connection = mysql.createConnection(credentials);
 
-		const standardizedRows = standardizeResult(rows);
-		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(fields) };
+		const cleaned_query = cleanQuery(queryString);
+		const count_query = `WITH root as (${cleaned_query}) SELECT COUNT(*) FROM root`;
+
+		const expected_count = await connection.promise().query(count_query);
+		const expected_row_count = expected_count[0][0]['COUNT(*)'];
+
+		const query = connection.query(queryString).stream();
+
+		const fields = await new Promise((res) => query.on('fields', res));
+		const result = await asyncIterableToBatchedAsyncGenerator(query, batchSize, { standardizeRow });
+		result.columnTypes = mapResultsToEvidenceColumnTypes(fields);
+		result.expectedRowCount = expected_row_count;
+
+		return result;
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
@@ -188,9 +199,9 @@ module.exports = runQuery;
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<MySQLOptions>} */
 module.exports.getRunner = async (opts) => {
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, opts, batchSize);
 	};
 };
