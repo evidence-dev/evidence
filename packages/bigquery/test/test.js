@@ -50,11 +50,7 @@ test('query runs', async () => {
 		new Date('2021-01-01T12:34:56.000Z').getTime(),
 		'DATETIME types should be converted to JS Date objects'
 	);
-	assert.equal(
-		result.interval_col,
-		'0-0 5 0:0:0',
-		'INTERVAL types should be converted to strings'
-	);
+	assert.equal(result.interval_col, '0-0 5 0:0:0', 'INTERVAL types should be converted to strings');
 	assert.equal(result.numeric_col, 123456, 'NUMERIC types should be converted to JS Numbers');
 	assert.equal(
 		result.bignumeric_col,
@@ -97,12 +93,12 @@ test('query runs', async () => {
 	assert.equal(
 		true,
 		expectedColumnTypes.length === actualColumnTypes.length &&
-		expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
+			expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
 	);
 	assert.equal(
 		true,
 		expectedColumnNames.length === actualColumnNames.length &&
-		expectedColumnNames.every((value, index) => value === actualColumnNames[index])
+			expectedColumnNames.every((value, index) => value === actualColumnNames[index])
 	);
 });
 
@@ -117,29 +113,24 @@ test('numeric types are retrieved correctly', async () => {
 	let actualValues = Object.keys(rows[0]).map((key) => rows[0][key]);
 
 	let expectedColumnTypes = ['number', 'number', 'number', 'string'];
-	let expectedColumnNames = [
-		'numeric_number',
-		'float64_number',
-		'decimal_number',
-		'string_number'
-	];
+	let expectedColumnNames = ['numeric_number', 'float64_number', 'decimal_number', 'string_number'];
 	let expectedTypePrecision = Array(4).fill(TypeFidelity.PRECISE);
 	let expectedValues = [1.23456789, 1.23456789, 1.23456789, '1.23456789'];
 
 	assert.equal(
 		true,
 		expectedColumnTypes.length === actualColumnTypes.length &&
-		expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
+			expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
 	);
 	assert.equal(
 		true,
 		expectedColumnNames.length === actualColumnNames.length &&
-		expectedColumnNames.every((value, index) => value === actualColumnNames[index])
+			expectedColumnNames.every((value, index) => value === actualColumnNames[index])
 	);
 	assert.equal(
 		true,
 		expectedTypePrecision.length === actualTypePrecisions.length &&
-		expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
+			expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
 	);
 	assert.equal(expectedValues, actualValues);
 });
