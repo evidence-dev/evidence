@@ -4,6 +4,11 @@ import { buildMultipartParquet } from './build-parquet';
 import mockfs from 'mock-fs';
 import fs from 'fs/promises';
 import { initDB } from './client-duckdb/node';
+import path from 'path';
+
+function adaptFilePath(filepath) {
+	return path.join(...filepath.split('/'));
+}
 
 // Spying on writeFile breaks things; but we can listen for the cleanup.
 vi.spyOn(fs, 'rm');
@@ -57,7 +62,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			'.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 	});
 
@@ -82,11 +87,11 @@ describe('buildMultipartParquet', () => {
 		expect(fs.rm).toHaveBeenCalledTimes(2);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			1,
-			'.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
-			'.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet'
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet')
 		);
 	});
 
@@ -105,7 +110,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			'.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 	});
 

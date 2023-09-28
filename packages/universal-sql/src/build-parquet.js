@@ -137,7 +137,9 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 
 	await initDB();
 
-	const parquetFiles = tmpFilenames.map((filename) => `'${filename}'`).join(',');
+	const parquetFiles = tmpFilenames
+		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
+		.join(',');
 	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
 	const copy = `COPY (${select}) TO '${path.join(
 		'.',
