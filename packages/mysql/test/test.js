@@ -33,17 +33,17 @@ test('query runs', async () => {
 			assert.equal(
 				true,
 				expectedColumnTypes.length === actualColumnTypes.length &&
-					expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
+				expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
 			);
 			assert.equal(
 				true,
 				expectedColumnNames.length === actualColumnNames.length &&
-					expectedColumnNames.every((value, index) => value === actualColumnNames[index])
+				expectedColumnNames.every((value, index) => value === actualColumnNames[index])
 			);
 			assert.equal(
 				true,
 				expectedTypePrecision.length === actualTypePrecisions.length &&
-					expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
+				expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
 			);
 		} catch (e) {
 			throw Error(e);
@@ -55,24 +55,26 @@ test('query runs', async () => {
 });
 
 test('query batches results properly and predicts rows', async () => {
-	try {
-		const { rows, expectedRowCount } = await runQuery(
-			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
-			undefined,
-			2
-		);
+	if (process.env.MYSQL_DATABASE) {
+		try {
+			const { rows, expectedRowCount } = await runQuery(
+				'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
+				undefined,
+				2
+			);
 
-		const arr = [];
-		for await (const batch of rows()) {
-			arr.push(batch);
+			const arr = [];
+			for await (const batch of rows()) {
+				arr.push(batch);
+			}
+			for (const batch of arr.slice(0, -1)) {
+				assert.equal(batch.length, 2);
+			}
+			assert.equal(arr[arr.length - 1].length, 1);
+			assert.equal(expectedRowCount, 5);
+		} catch (e) {
+			throw Error(e);
 		}
-		for (const batch of arr.slice(0, -1)) {
-			assert.equal(batch.length, 2);
-		}
-		assert.equal(arr[arr.length - 1].length, 1);
-		assert.equal(expectedRowCount, 5);
-	} catch (e) {
-		throw Error(e);
 	}
 });
 
