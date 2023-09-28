@@ -22,13 +22,13 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "2.0.0-usql.9",
+	"version": "2.0.0-usql.11",
 	"evidence": {
 		"components": true
 	},
 	"dependencies": {
-		"@evidence-dev/component-utilities": "workspace:^",
-		"@evidence-dev/tailwind": "workspace:^",
+		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.7",
+		"@evidence-dev/tailwind": "workspace:1.0.0-usql.2",
 		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/svelte-icon": "^1.4.1",

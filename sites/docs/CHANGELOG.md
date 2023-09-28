@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 2.0.4-usql.0
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+
 ## 2.0.3
 
 ### Patch Changes

@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-const QueryResultArraySchema = z.array(z.any()).refine(
+// Note that this only validates that the first item in the array
+// is a record with string keys. If the connector returns some
+// inconsistent array (e.g. [{}, 1]), it will not detect the
+// invalid row.
+const QueryResultArraySchema = z.any().refine(
 	(data) => {
 		// result is not an array, fail
 		if (!Array.isArray(data)) return false;

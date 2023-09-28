@@ -54,7 +54,14 @@ export async function initDB() {
 		// and asynchronous database
 		db = new AsyncDuckDB(logger, worker);
 		await db.instantiate(DUCKDB_CONFIG.mainModule);
-		await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
+		await db.open({
+			query: {
+				castBigIntToDouble: true,
+				castTimestampToDate: true,
+				castDecimalToDouble: true,
+				castDurationToTime64: true
+			}
+		});
 		connection = await db.connect();
 		resolveInit();
 	} catch (e) {

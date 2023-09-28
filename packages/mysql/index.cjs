@@ -122,7 +122,10 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 			evidenceType = EvidenceType.STRING;
 		}
 		return {
-			name: field.name,
+			// We use .toLowerCase() here to match the transformation of
+			// rows in standardizeResult
+			// If they do not match the results are rejected.
+			name: field.name.toLowerCase(),
 			evidenceType: evidenceType,
 			typeFidelity: typeFidelity
 		};

@@ -1,5 +1,5 @@
 <script>
-    let queryString = `SELECT 1;`.trim()
+    let queryString = `SELECT 1`.trim()
     , tempQueryString = queryString + ""
 </script>
 
