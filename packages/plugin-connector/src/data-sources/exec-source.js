@@ -29,7 +29,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	/** @type {Set<string>} */
 	const outputFilenames = new Set();
 
-	const sourceBefore = performance.now();;
+	const sourceBefore = performance.now();
 	for (const query of source.queries) {
 		const filename = query.filepath.split(path.sep).pop();
 		console.log(` >| Executing ${filename}`);

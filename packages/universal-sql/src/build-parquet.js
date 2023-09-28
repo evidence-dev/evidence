@@ -77,7 +77,14 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 		const parquetBuffer = writeParquet(IPC, writerProperties);
 
 		console.debug(` || Writing batch ${batchNum} with ${results.length} rows.`);
-		const tempFilename = path.join('.', '.evidence', 'template', '.evidence-queries', 'intermediate-parquet', outputPrefix + `.${batchNum}.parquet`);
+		const tempFilename = path.join(
+			'.',
+			'.evidence',
+			'template',
+			'.evidence-queries',
+			'intermediate-parquet',
+			outputPrefix + `.${batchNum}.parquet`
+		);
 		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
 		await fs.writeFile(tempFilename, parquetBuffer);
 
