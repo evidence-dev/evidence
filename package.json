@@ -44,7 +44,6 @@
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
 		"vite": "4.3.9",
-		"@duckdb/duckdb-wasm": "1.27.0",
 		"duckdb": "0.8.1",
 		"duckdb-async": "0.8.1"
 	},
