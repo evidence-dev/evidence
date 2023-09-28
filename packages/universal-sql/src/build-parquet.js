@@ -101,11 +101,17 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 	if (Array.isArray(data) && !Array.isArray(data[0])) data = [data];
 
 	// Handle generators
-	// We use this method to ensure that the `return` value is not ignored
 	if (isGeneratorObject(data)) {
+		let currentBatch = [];
 		for await (const results of data) {
-			await flush(results);
+			currentBatch = currentBatch.concat(results);
+
+			if (currentBatch.length >= batchSize) {
+				await flush(currentBatch);
+				currentBatch = [];
+			}
 		}
+		if (currentBatch.length) await flush(currentBatch);
 	} else {
 		let currentBatch = [];
 		for (const results of data) {
@@ -124,7 +130,7 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 			}
 		}
 		// Ensure nothing is left over
-		await flush(currentBatch);
+		if (currentBatch.length) await flush(currentBatch);
 	}
 
 	if (!tmpFilenames.length) return 0;

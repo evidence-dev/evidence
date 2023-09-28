@@ -46,7 +46,7 @@ describe('buildMultipartParquet', () => {
 		];
 		function* gen() {
 			yield [{ x: 'hello' }];
-			return [{ x: 'world' }];
+			yield [{ x: 'world' }];
 		}
 
 		const r = await buildMultipartParquet(mockCols, gen(), 'out.parquet');
@@ -56,7 +56,9 @@ describe('buildMultipartParquet', () => {
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
-		expect(fs.rm).toHaveBeenCalledWith('sources/out.0.parquet');
+		expect(fs.rm).toHaveBeenCalledWith(
+			'.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'
+		);
 	});
 
 	it('should write two temporary files when given enough rows for two batches', async () => {
@@ -68,7 +70,7 @@ describe('buildMultipartParquet', () => {
 		];
 		function* gen() {
 			yield [{ x: 'hello' }];
-			return [{ x: 'world' }];
+			yield [{ x: 'world' }];
 		}
 
 		const r = await buildMultipartParquet(mockCols, gen(), 'out.parquet', 1);
@@ -78,8 +80,14 @@ describe('buildMultipartParquet', () => {
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledTimes(2);
-		expect(fs.rm).toHaveBeenNthCalledWith(1, 'sources/out.0.parquet');
-		expect(fs.rm).toHaveBeenNthCalledWith(2, 'sources/out.1.parquet');
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			1,
+			'.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'
+		);
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			2,
+			'.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet'
+		);
 	});
 
 	it('should accept an array as the data argument', async () => {
@@ -96,7 +104,9 @@ describe('buildMultipartParquet', () => {
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
-		expect(fs.rm).toHaveBeenCalledWith('sources/out.0.parquet');
+		expect(fs.rm).toHaveBeenCalledWith(
+			'.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'
+		);
 	});
 
 	it('should handle a very large number of batches', async () => {
@@ -112,11 +122,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		// 1110 comes from batch reduction
-		// Batch reduction is used to prevent duckdb from recursing too much
-		// 1000 -> 100
-		// 100 -> 10
-		expect(fs.rm).toHaveBeenCalledTimes(1110);
+		expect(fs.rm).toHaveBeenCalledTimes(1000);
 	});
 
 	// TODO: Test how it handles invalid filepath
