@@ -33,17 +33,17 @@ test('query runs', async () => {
 			assert.equal(
 				true,
 				expectedColumnTypes.length === actualColumnTypes.length &&
-				expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
+					expectedColumnTypes.every((value, index) => value === actualColumnTypes[index])
 			);
 			assert.equal(
 				true,
 				expectedColumnNames.length === actualColumnNames.length &&
-				expectedColumnNames.every((value, index) => value === actualColumnNames[index])
+					expectedColumnNames.every((value, index) => value === actualColumnNames[index])
 			);
 			assert.equal(
 				true,
 				expectedTypePrecision.length === actualTypePrecisions.length &&
-				expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
+					expectedTypePrecision.every((value, index) => value === actualTypePrecisions[index])
 			);
 		} catch (e) {
 			throw Error(e);
