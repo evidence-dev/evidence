@@ -287,7 +287,7 @@
 			  )
 			: data;
 
-	$: if (data.error) error = data.error.message;
+	$: if (data?.error) error = data.error.message;
 </script>
 
 {#if error === undefined}

@@ -192,8 +192,6 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	$: if (data.error) error = data.error.message;
-
 	$: {
 		try {
 			error = undefined;
@@ -817,6 +815,7 @@
 	}
 
 	$: data;
+	$: if (data?.error) error = data.error.message;
 </script>
 
 {#if !error}
