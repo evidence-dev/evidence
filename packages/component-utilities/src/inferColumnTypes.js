@@ -50,11 +50,7 @@ export const inferValueType = function (columnValue) {
 
 export default function inferColumnTypes(rows) {
 	if (rows instanceof QueryStore) {
-		return rows.columns.map((ct) => ({
-			name: ct.name,
-			evidenceType: 'string', // TODO: Do we need to translate ddb types to evidence types more effectively?
-			typeFidelity: TypeFidelity.INFERRED
-		}));
+		return rows._evidenceColumnTypes;
 	}
 	if (rows && rows.length > 0) {
 		let columns = Object.keys(rows[0]);
