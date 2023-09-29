@@ -6,7 +6,7 @@ export const handleMaybePromise = <T, Returns>(
 	errorHandler?: (e: Error | unknown) => MaybePromise<Returns>
 ): MaybePromise<Returns> => {
 	try {
-		const v = execFunction()
+		const v = execFunction();
 		if (v instanceof Promise)
 			return v.then(resolvedFunction).catch((e) => {
 				if (errorHandler) return errorHandler(e);

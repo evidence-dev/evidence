@@ -59,9 +59,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	get _evidenceColumnTypes() {
 		return Array.from(this.#columns).map((ct) => ({
 			name: ct.name,
-			type: "STRING",
-			typeFidelity: "inferred"
-		}))
+			type: 'STRING',
+			typeFidelity: 'inferred'
+		}));
 	}
 
 	/** Has #fetchData been executed? */
@@ -102,10 +102,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	readonly id: string;
 
-	#error: Error | unknown
+	#error: Error | unknown;
 
 	#setError = (e: Error | unknown): void => {
-		console.debug(`QueryStore encountered a non-fatal error`, e)
+		console.debug(`QueryStore encountered a non-fatal error`, e);
 		this.#error = e;
 
 		if (e) {
@@ -114,17 +114,18 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#lengthLoaded = false;
 			this.#lengthLoading = false;
 		}
-		
-		if (this.opts.errorNotifier) this.opts.errorNotifier(this.error!)
 
-		this.publish()
-	}
+		if (this.opts.errorNotifier) this.opts.errorNotifier(this.error!);
+
+		this.publish();
+	};
 
 	get error() {
 		if (this.#error !== undefined) {
-			if (this.#error instanceof Error) return this.#error
-			return new Error("Query encountered an error", { cause: this.#error })	
-		} return undefined;
+			if (this.#error instanceof Error) return this.#error;
+			return new Error('Query encountered an error', { cause: this.#error });
+		}
+		return undefined;
 	}
 
 	constructor(
@@ -148,7 +149,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		} else this.#query = query;
 		// @ts-expect-error Passing undocumented parameter
 		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1] ?? this.id);
-		
 
 		this.#proxied = new Proxy<QueryStore & QueryResult[]>(
 			this as unknown as QueryStore & QueryResult[],
@@ -253,7 +253,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			return;
 		}
 		if (this.#error) {
-			console.debug("Refusing to execute data query; store has an error state.")
+			console.debug('Refusing to execute data query; store has an error state.');
 			return;
 		}
 		this.#loading = true;
@@ -261,13 +261,16 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 		const queryWithComment = `--data\n${this.#query.toString()}`;
 
-		return handleMaybePromise<QueryResult[], unknown>((result) => {
-			this.#values = result;
-			this.#loading = false;
-			this.#loaded = true;
-			return this.#fetchLength();
-		}, () => this.#exec(queryWithComment), this.#setError);
-
+		return handleMaybePromise<QueryResult[], unknown>(
+			(result) => {
+				this.#values = result;
+				this.#loading = false;
+				this.#loaded = true;
+				return this.#fetchLength();
+			},
+			() => this.#exec(queryWithComment),
+			this.#setError
+		);
 	};
 
 	#fetchLength = () => {
@@ -275,10 +278,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			return;
 		}
 		if (this.#error) {
-			console.debug("Refusing to execute length query; store has an error state.")
+			console.debug('Refusing to execute length query; store has an error state.');
 			return;
 		}
-		
 
 		// No need to run the length query if we already have the values available
 		if (!this.#values.length && this.#loaded) {
@@ -287,7 +289,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.publish();
 			return;
 		}
-		
+
 		this.#lengthLoading = true;
 		this.publish();
 
@@ -297,32 +299,40 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			.from('original');
 		const queryWithComment = `--len\n${countQuery}`;
 
-		return handleMaybePromise<QueryResult[], unknown>((result) => {
-			const [row] = result;
+		return handleMaybePromise<QueryResult[], unknown>(
+			(result) => {
+				const [row] = result;
 
-			this.#length = row.length as number;
-			this.#lengthLoaded = true;
-			this.#lengthLoading = false;
+				this.#length = row.length as number;
+				this.#lengthLoaded = true;
+				this.#lengthLoading = false;
 
-			this.publish();
-		}, () => this.#exec(queryWithComment), this.#setError);
+				this.publish();
+			},
+			() => this.#exec(queryWithComment),
+			this.#setError
+		);
 	};
 
 	#fetchMetadata = () => {
 		if (this.#error) {
-			console.debug("Refusing to execute metadata query; store has an error state.")
+			console.debug('Refusing to execute metadata query; store has an error state.');
 			return;
 		}
-		
-		return handleMaybePromise((queryResult: QueryResult[]) => {
-			this.#columns = queryResult.map((row) => ({
-				name: row.column_name!.toString(),
-				type: row.column_type!.toString()
-			}));
-			this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
 
-			this.publish();
-		}, () => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`), this.#setError);
+		return handleMaybePromise(
+			(queryResult: QueryResult[]) => {
+				this.#columns = queryResult.map((row) => ({
+					name: row.column_name!.toString(),
+					type: row.column_type!.toString()
+				}));
+				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
+
+				this.publish();
+			},
+			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`),
+			this.#setError
+		);
 	};
 
 	/////////

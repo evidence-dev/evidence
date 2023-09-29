@@ -1,6 +1,6 @@
 // To-do, replace with import from db-commons
 
-import { QueryStore } from "@evidence-dev/query-store";
+import { QueryStore } from '@evidence-dev/query-store';
 
 var EvidenceType;
 (function (EvidenceType) {
@@ -52,9 +52,9 @@ export default function inferColumnTypes(rows) {
 	if (rows instanceof QueryStore) {
 		return rows.columns.map((ct) => ({
 			name: ct.name,
-			evidenceType: "string", // TODO: Do we need to translate ddb types to evidence types more effectively?
+			evidenceType: 'string', // TODO: Do we need to translate ddb types to evidence types more effectively?
 			typeFidelity: TypeFidelity.INFERRED
-		}))
+		}));
 	}
 	if (rows && rows.length > 0) {
 		let columns = Object.keys(rows[0]);

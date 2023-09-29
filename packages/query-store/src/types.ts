@@ -18,7 +18,7 @@ export type QueryStoreOpts = {
 	/** If the initial data may be outdated, or belongs to the previous store (e.g. on pagination), refetch when needed */
 	initialDataDirty?: boolean;
 	/** Optional hook to enable custom error reporting behavior, can be used for toasts, alerts, etc. */
-	errorNotifier?: (error: Error) => unknown
+	errorNotifier?: (error: Error) => unknown;
 };
 
 export type QueryStoreValue = QueryStore & QueryResult[];

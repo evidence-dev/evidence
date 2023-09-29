@@ -120,7 +120,7 @@
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
 		}
 	} catch (e) {
-		console.error(e)
+		console.error(e);
 		error = e.message;
 		if (strictBuild) {
 			throw error;

@@ -192,7 +192,7 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	$: if (data.error) error = data.error.message
+	$: if (data.error) error = data.error.message;
 
 	$: {
 		try {
