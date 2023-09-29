@@ -57,6 +57,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	}
 
 	get _evidenceColumnTypes() {
+		//@ts-expect-error This implicitly is set on the return value of #exec
 		return Array.from(this.#values._evidenceColumnTypes);
 	}
 
