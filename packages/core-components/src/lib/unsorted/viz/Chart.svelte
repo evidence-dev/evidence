@@ -32,6 +32,7 @@
 	// Input Props
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
+	/** @type {import("@evidence-dev/query-store").QueryStore} */
 	export let data = undefined;
 	export let x = undefined;
 	export let y = undefined;
@@ -190,6 +191,8 @@
 	// Date String Handling:
 	let columnSummaryArray;
 	let dateCols;
+
+	$: if (data.error) error = data.error.message
 
 	$: {
 		try {

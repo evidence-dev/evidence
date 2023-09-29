@@ -26,7 +26,9 @@
 	setContext(propKey, props);
 
 	// Data, pagination, and row index numbers
+	/** @type {import("@evidence-dev/query-store").QueryStore }*/
 	export let data;
+
 	export let rows = 10; // number of rows to show
 	rows = Number.parseInt(rows);
 
@@ -118,6 +120,7 @@
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
 		}
 	} catch (e) {
+		console.error(e)
 		error = e.message;
 		if (strictBuild) {
 			throw error;
@@ -283,6 +286,8 @@
 					$props.columns.map((d) => d.id)
 			  )
 			: data;
+
+	$: if (data.error) error = data.error.message;
 </script>
 
 {#if error === undefined}
