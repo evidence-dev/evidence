@@ -1,0 +1,16 @@
+{
+	"name": "@evidence-dev/trino",
+	"version": "0.1.0",
+	"description": "Trino driver for Evidence projects",
+	"main": "index.cjs",
+	"author": "evidence.dev",
+	"license": "MIT",
+	"scripts": {
+		"test": "uvu test test.js"
+	},
+	"dependencies": {
+		"@evidence-dev/db-commons": "workspace:^",
+		"presto-client": "^0.13.0"
+	},
+	"type": "module"
+}
