@@ -57,11 +57,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	}
 
 	get _evidenceColumnTypes() {
-		return Array.from(this.#columns).map((ct) => ({
-			name: ct.name,
-			type: 'STRING',
-			typeFidelity: 'inferred'
-		}));
+		return Array.from(this.#values._evidenceColumnTypes);
 	}
 
 	/** Has #fetchData been executed? */
