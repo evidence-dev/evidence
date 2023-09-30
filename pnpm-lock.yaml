@@ -372,6 +372,9 @@ importers:
       '@evidence-dev/csv':
         specifier: workspace:^
         version: link:../csv
+      '@evidence-dev/databricks':
+        specifier: workspace:^
+        version: link:../databricks
       '@evidence-dev/db-commons':
         specifier: workspace:^
         version: link:../db-commons

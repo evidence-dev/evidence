@@ -31,6 +31,7 @@ Evidence supports:
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
+- [Databricks](#databricks)
 - [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
@@ -182,6 +183,9 @@ DuckDB is a local file-based database. It should be stored in the root of your E
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
+### Databricks
+
+Databricks is a cloud-based data lake. Evidence supports connecting to Databricks using a [personal access token](https://docs.databricks.com/en/dev-tools/auth.html#generate-a-token).
 
 #### MotherDuck
 

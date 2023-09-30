@@ -21,12 +21,6 @@ const envMap = {
 		{ key: 'path', deprecated: true },
 		{ key: 'PATH', deprecated: true }
 	],
-	clientId: [
-		{ key: 'EVIDENCE_DATABRICKS_CLIENT_ID', deprecated: false },
-		{ key: 'DATABRICKS_CLIENT_ID', deprecated: false },
-		{ key: 'clientID', deprecated: true },
-		{ key: 'CLIENT_ID', deprecated: true }
-	],
 	token: [
 		{ key: 'EVIDENCE_DATABRICKS_TOKEN', deprecated: false },
 		{ key: 'DATABRICKS_TOKEN', deprecated: false },
@@ -74,8 +68,8 @@ function nativeTypeToEvidenceType(data) {
  */
 
 /**
- * 
- * @param {Returned<Returned<import("@databricks/sql").DBSQLSession["executeStatement"]>["getSchema"]>} schema 
+ *
+ * @param {Returned<Returned<import("@databricks/sql").DBSQLSession["executeStatement"]>["getSchema"]>} schema
  * @returns {{ name: string; evidenceType: string; typeFidelity: string; }[]}
  */
 const mapResultsToEvidenceColumnTypes = function (schema) {
@@ -92,11 +86,11 @@ const mapResultsToEvidenceColumnTypes = function (schema) {
 
 const runQuery = async (queryString, database) => {
 	const credentials = {
-		authType: "access-token",
+		authType: 'access-token',
+		clientId: 'Evidence',
 		host: getEnv(envMap, 'host') ?? database.host,
 		port: getEnv(envMap, 'port') ?? database.port,
 		path: getEnv(envMap, 'path') ?? database.path,
-		clientId: getEnv(envMap, 'clientId') ?? database.clientId,
 		token: getEnv(envMap, 'token') ?? database.token
 	};
 
