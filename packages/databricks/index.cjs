@@ -36,10 +36,6 @@ function nativeTypeToEvidenceType(data) {
 		case TTypeId.DATE_TYPE:
 		case TTypeId.TIMESTAMP_TYPE:
 			return 'date';
-		case TTypeId.STRUCT_TYPE:
-		case TTypeId.MAP_TYPE:
-		case TTypeId.ARRAY_TYPE:
-			return 'string';
 		case TTypeId.DECIMAL_TYPE:
 		case TTypeId.BIGINT_TYPE:
 		case TTypeId.FLOAT_TYPE:
@@ -48,6 +44,9 @@ function nativeTypeToEvidenceType(data) {
 		case TTypeId.SMALLINT_TYPE:
 		case TTypeId.TINYINT_TYPE:
 			return 'number';
+		case TTypeId.STRUCT_TYPE:
+		case TTypeId.MAP_TYPE:
+		case TTypeId.ARRAY_TYPE:
 		case TTypeId.UNION_TYPE:
 		case TTypeId.USER_DEFINED_TYPE:
 		case TTypeId.NULL_TYPE:
@@ -84,14 +83,14 @@ const mapResultsToEvidenceColumnTypes = function (schema) {
 	});
 };
 
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database = {}) => {
 	const credentials = {
 		authType: 'access-token',
 		clientId: 'Evidence',
-		host: getEnv(envMap, 'host') ?? database.host,
-		port: getEnv(envMap, 'port') ?? database.port,
-		path: getEnv(envMap, 'path') ?? database.path,
-		token: getEnv(envMap, 'token') ?? database.token
+		host: database.host ?? getEnv(envMap, 'host'),
+		port: Number(database.port ?? getEnv(envMap, 'port') ?? 443),
+		path: database.path ?? getEnv(envMap, 'path'),
+		token: database.token ?? getEnv(envMap, 'token')
 	};
 
 	try {
