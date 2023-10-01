@@ -117,5 +117,6 @@ let countries = [
     size=gdp_usd
     series=continent
     tooltipTitle=country
-    logScale=true
+    yLog=true
+    yLogBase=8
 />

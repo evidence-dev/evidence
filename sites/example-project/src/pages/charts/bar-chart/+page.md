@@ -139,5 +139,5 @@ swapXY=true
     y=sales_usd0k 
     series=category 
     type=grouped
-    logScale=true
+    yLog=true
 />

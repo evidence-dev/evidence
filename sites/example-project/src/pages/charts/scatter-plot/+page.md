@@ -160,7 +160,7 @@ x=gdp_usd
 y=gdp_growth_pct1
 tooltipTitle=country
 series=continent
-logScale=true
+yLog=true
 >
 
     <ReferenceLine y=0.065/>

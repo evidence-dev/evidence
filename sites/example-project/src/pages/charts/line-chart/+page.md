@@ -111,4 +111,4 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 
 ## Line with Log Scale
 
-<LineChart data={simpler_bar} x=year y=value series=country logScale=true/>
+<LineChart data={simpler_bar} x=year y=value series=country yLog=true/>

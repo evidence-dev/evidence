@@ -64,5 +64,5 @@ stepPosition=middle
     x=month 
     y=sales_usd0k 
     series=category
-    logScale=true
+    yLog=true
 />
