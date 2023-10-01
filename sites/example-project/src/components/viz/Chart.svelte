@@ -692,7 +692,7 @@
 						verticalAlign: 'top',
 						backgroundColor: 'white',
 						padding: [0, 0, 0, 5],
-						color: colour[1]
+						color:  y2AxisColor === 'true' ? colour[ySeriesCount] : (y2AxisColor !== 'false' ? y2AxisColor : undefined)
 					},
 					nameGap: 6,
 					min: y2Min,
