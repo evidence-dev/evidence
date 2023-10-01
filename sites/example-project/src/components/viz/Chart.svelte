@@ -12,6 +12,7 @@
 	import ECharts from './ECharts.svelte';
 	import getColumnSummary from '../modules/getColumnSummary';
 	import getDistinctValues from '../modules/getDistinctValues';
+	import getDistinctCount from '../modules/getDistinctCount';
 	import getStackPercentages from '../modules/getStackPercentages.js';
 	import getSortedData from '../modules/getSortedData.js';
 	import { standardizeDateColumn } from '../modules/dateParsing.js';
@@ -91,6 +92,8 @@
 	yAxisLabels = yAxisLabels === 'true' || yAxisLabels === true;
 	export let yMin = undefined;
 	export let yMax = undefined;
+	export let yAxisColor = 'true';
+
 
 	// Y2 axis:
 	export let y2AxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
@@ -104,6 +107,7 @@
 	y2AxisLabels = y2AxisLabels === 'true' || y2AxisLabels === true;
 	export let y2Min = undefined;
 	export let y2Max = undefined;
+	export let y2AxisColor = 'true';
 
 	// Legend:
 	export let legend = undefined;
@@ -120,6 +124,17 @@
 	if (isNaN(chartAreaHeight) || chartAreaHeight < 0) {
 		chartAreaHeight = 180;
 	}
+
+	// axis colour setting
+	// count number of series on y axis and set color of y2 axis to that count plus 1
+	let yCount = typeof y === 'object' ? y.length : 1;
+	let seriesCount = series ? getDistinctCount(data, series) : 1;
+	
+	let ySeriesCount = yCount * seriesCount;
+
+	let y2Count = typeof y2 === 'object' ? y2.length : (y2 ? 1 : 0);
+
+	let totalSeriesCount = ySeriesCount + y2Count;
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -254,7 +269,6 @@
 				y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
 			}
 
-			console.log(y)
 			// Establish required columns based on chart type:
 			if (bubble) {
 				reqCols = {
@@ -491,7 +505,9 @@
 				legend = legend === 'true' || legend === true;
 			}
 
-			legend = legend ?? (series != undefined || typeof y === 'object' || typeof y2 === 'object');
+			console.log(totalSeriesCount)
+			console.log(y2Count)
+			legend = legend ?? totalSeriesCount > 1;
 
 			// ---------------------------------------------------------------------------------------
 			// Add props to store to let child components access them
@@ -558,37 +574,6 @@
 					boundaryGap: false
 				};
 
-				// secondary y-axis:
-				if(y2){
-					secondaryAxis = {
-						type: 'value',
-						position: 'top',
-						axisLabel: {
-							show: y2AxisLabels,
-							hideOverlap: true,
-							showMaxLabel: true,
-							formatter: function (value) {
-								return formatAxisValue(value, y2Format, y2UnitSummary);
-							},
-							margin: 4
-						},
-						min: y2Min,
-						max: y2Max,
-						splitLine: {
-							show: y2Gridlines
-						},
-						axisLine: {
-							show: y2Baseline,
-							onZero: false
-						},
-						axisTick: {
-							show: y2TickMarks
-						},
-						boundaryGap: false
-					}
-
-					horizAxisConfig = [horizAxisConfig, secondaryAxis];
-				}
 			} else {
 				horizAxisConfig = {
 					type: xType,
@@ -660,7 +645,7 @@
 						formatter: function (value) {
 							return formatAxisValue(value, yFormat, yUnitSummary);
 						},
-						color: y2 ? colour[0] : null
+						color: y2 ? (yAxisColor === 'true' ? colour[0] : (yAxisColor !== 'false' ? yAxisColor : undefined)) : undefined
 					},
 					name: yAxisTitle,
 					nameLocation: 'end',
@@ -669,7 +654,7 @@
 						verticalAlign: 'top',
 						backgroundColor: 'white',
 						padding: [0, 5, 0, 0],
-						color: y2 ? colour[0] : null
+						color: y2 ? (yAxisColor === 'true' ? colour[0] : (yAxisColor !== 'false' ? yAxisColor : undefined)) : undefined
 					},
 					nameGap: 6,
 					min: yMin,
@@ -677,48 +662,47 @@
 					boundaryGap: ['0%', '1%']
 				};
 
-				// if(y2){
-					secondaryAxis = {
-						type: 'value',
-						show: false,
-						alignTicks: true,
-						splitLine: {
-							show: y2Gridlines
+				secondaryAxis = {
+					type: 'value',
+					show: false,
+					alignTicks: true,
+					splitLine: {
+						show: y2Gridlines
+					},
+					axisLine: {
+						show: y2Baseline,
+						onZero: false
+					},
+					axisTick: {
+						show: y2TickMarks
+					},
+					axisLabel: {
+						show: y2AxisLabels,
+						hideOverlap: true,
+						margin: 4,
+						formatter: function (value) {
+							return formatAxisValue(value, y2Format, y2UnitSummary);
 						},
-						axisLine: {
-							show: y2Baseline,
-							onZero: false
-						},
-						axisTick: {
-							show: y2TickMarks
-						},
-						axisLabel: {
-							show: y2AxisLabels,
-							hideOverlap: true,
-							margin: 4,
-							formatter: function (value) {
-								return formatAxisValue(value, y2Format, yUnitSummary);
-							},
-							color: colour[1]
-						},
-						name: y2AxisTitle,
-						nameLocation: 'end',
-						nameTextStyle: {
-							align: 'right',
-							verticalAlign: 'top',
-							backgroundColor: 'white',
-							padding: [0, 0, 0, 5],
-							color: colour[1]
-						},
-						nameGap: 6,
-						min: yMin,
-						max: yMax,
-						boundaryGap: ['0%', '1%']
-				}
+						color: y2AxisColor === 'true' ? colour[ySeriesCount] : (y2AxisColor !== 'false' ? y2AxisColor : undefined)
+					},
+					name: y2AxisTitle,
+					nameLocation: 'end',
+					nameTextStyle: {
+						align: 'right',
+						verticalAlign: 'top',
+						backgroundColor: 'white',
+						padding: [0, 0, 0, 5],
+						color: colour[1]
+					},
+					nameGap: 6,
+					min: y2Min,
+					max: y2Max,
+					boundaryGap: ['0%', '1%']
+			};
 
-				verticalAxisConfig = [verticalAxisConfig, secondaryAxis];
-				// }
-			}
+			verticalAxisConfig = [verticalAxisConfig, secondaryAxis];
+
+		}
 
 			// ---------------------------------------------------------------------------------------
 			// Set up chart area
@@ -814,8 +798,8 @@
 						let xVal;
 						let yVal;
 						let yCol;
-						if (params.length > 1) {
-							console.log(params)
+						if (totalSeriesCount > 1) {
+							// console.log(params)
 							// console.log(getFormatByTitle(columnSummary, "Sales ($)"))
 							// THIS WILL BREAK FOR COMBINED SERIES WHERE CONCATENATED. SERIES NAME IS NOT ALWAYS COLUMN NAME!!!
 							/// -----
@@ -934,7 +918,7 @@
 
 	$: data;
 
-	$: console.log($config)
+	// $: console.log($config)
 </script>
 
 {#if !error}

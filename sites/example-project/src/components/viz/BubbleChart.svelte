@@ -41,12 +41,33 @@
 	let bubble = true;
 
 	let useTooltip = true;
+
+	export let y2 = undefined;
+	export let y2AxisTitle = undefined;
+	export let y2Gridlines = undefined;
+	export let y2AxisLabels = undefined;
+	export let y2Baseline = undefined;
+	export let y2TickMarks = undefined;
+	export let y2Min = undefined;
+	export let y2Max = undefined;
+
+	export let yAxisColor = undefined;
+	export let y2AxisColor = undefined;
+
 </script>
 
 <Chart
 	{data}
 	{x}
 	{y}
+	{y2}
+	{y2AxisTitle}
+	{y2Gridlines}
+	{y2AxisLabels}
+	{y2Baseline}
+	{y2TickMarks}
+	{y2Min}	
+	{y2Max}
 	{size}
 	{tooltipTitle}
 	{series}
@@ -70,6 +91,8 @@
 	{bubble}
 	{sort}
 	{chartAreaHeight}
+	{yAxisColor}
+	{y2AxisColor}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 </Chart>

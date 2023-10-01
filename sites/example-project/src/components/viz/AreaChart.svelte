@@ -47,6 +47,9 @@
 	export let y2Min = undefined;
 	export let y2Max = undefined;
 
+	export let yAxisColor = undefined;
+	export let y2AxisColor = undefined;
+
 </script>
 
 <Chart
@@ -82,6 +85,9 @@
 	{sort}
 	{stacked100}
 	{chartAreaHeight}
+	{yAxisColor}
+	{y2AxisColor}
+
 >
 	<Area {line} {fillColor} {fillOpacity} {handleMissing} {type} />
 </Chart>

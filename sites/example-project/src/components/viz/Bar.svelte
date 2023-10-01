@@ -31,7 +31,7 @@
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
-	$: y = ySet ? y : $props.y;
+	$: y = ySet ? y : (y2Set ? undefined : $props.y);
 	$: y2 = y2Set ? y2 : $props.y2;
 	$: swapXY = $props.swapXY;
 	$: xType = $props.xType;
@@ -152,14 +152,14 @@
 					if (swapXY) {
 						d.xAxis = { ...d.xAxis, max: 1 };
 					} else {
-						d.yAxis = { ...d.yAxis, max: 1 };
+						d.yAxis[0] = { ...d.yAxis[0], max: 1 };
 					}
 				}
 				if (swapXY) {
-					// d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.xAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 				} else {
-					// d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 					if(y2){
 						d.yAxis[1] = {...d.yAxis[1], show: true};

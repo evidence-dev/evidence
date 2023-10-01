@@ -24,6 +24,9 @@
 	export let yAxisLabels = undefined;
 	export let y2AxisLabels = undefined;
 
+	export let yAxisColor = undefined;
+	export let y2AxisColor = undefined;
+
 	export let xBaseline = undefined;
 	export let yBaseline = undefined;
 	export let y2Baseline = undefined;
@@ -58,6 +61,7 @@
 	{x}
 	{y}
 	{y2}
+	
 	{series}
 	{xType}
 	{legend}
@@ -72,6 +76,9 @@
 	{xAxisLabels}
 	{yAxisLabels}
 	{y2AxisLabels}
+
+	{yAxisColor}
+	{y2AxisColor}
 
 	{xBaseline}
 	{yBaseline}

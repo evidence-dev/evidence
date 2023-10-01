@@ -30,7 +30,7 @@
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
-	$: y = ySet ? y : $props.y;
+	$: y = ySet ? y : (y2Set ? undefined : $props.y);
 	$: y2 = y2Set ? y2 : $props.y2;
 	$: swapXY = $props.swapXY;
 	$: xType = $props.xType;
@@ -41,7 +41,7 @@
 	let stackName;
 	$: if (!series && typeof y !== 'object') {
 		// Single Series
-		name = name ?? formatTitle(y, columnSummary[y].title);
+		// name = name ?? formatTitle(y, columnSummary[y].title);
 	} else {
 		// Multi Series
 		stackName = 'area'; // area must be stacked for multi-series chart
@@ -112,20 +112,24 @@
 		config.update((d) => {
 			d.tooltip = { ...d.tooltip, order: 'seriesDesc' }; // Areas always stacked
 			if (swapXY) {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+				d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.xAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 			} else {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+				d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
+				if(y2){
+					d.yAxis[1] = {...d.yAxis[1], show: true};
+				}
 			}
 			if (type === 'stacked100') {
 				if (swapXY) {
 					d.xAxis = { ...d.xAxis, max: 1 };
 				} else {
-					d.yAxis = { ...d.yAxis, max: 1 };
+					d.yAxis[0] = { ...d.yAxis[0], max: 1 };
 				}
 			}
 			return d;
 		});
 	});
+
 </script>

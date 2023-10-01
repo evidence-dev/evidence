@@ -40,7 +40,7 @@
 	$: y2Format = $props.y2Format;
 	$: xMismatch = $props.xMismatch;
 	$: columnSummary = $props.columnSummary;
-	$: y = ySet ? y : $props.y;
+	$: y = ySet ? y : (y2Set ? undefined : $props.y);
 	$: y2 = y2Set ? y2 : $props.y2;
 	$: series = seriesSet ? series : $props.series;
 	$: size = size ?? $props.size;
@@ -50,7 +50,7 @@
 
 	$: if (!series && typeof y !== 'object') {
 		// Single Series
-		name = name ?? formatTitle(y, columnSummary[y].title);
+		// name = name ?? formatTitle(y, columnSummary[y].title);
 		multiSeries = false;
 	} else {
 		// Multi Series
@@ -219,10 +219,10 @@
 	beforeUpdate(() => {
 		config.update((d) => {
 			if (swapXY) {
-				// d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+				d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.xAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 			} else {
-				// d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+				d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 				if(y2){
 					d.yAxis[1] = {...d.yAxis[1], show: true};

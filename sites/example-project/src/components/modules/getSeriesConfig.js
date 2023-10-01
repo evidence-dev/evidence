@@ -49,6 +49,8 @@ export default function getSeriesConfig(
 	// colname, yAxisIndex
 
 	function combineVariables(variable1, variable2) {
+		// Returns an array of arrays, where each individual array is [column_name, yAxisIndex], where yAxisIndex is 0 for y and 1 for y2.
+		// E.g., [ ['sales', 0 ], ['gross_profit', 1]] - sales on primary axis, gross profit on secondary
 		const array = [];
 	  
 		// Helper function to check if a value is undefined
@@ -74,6 +76,8 @@ export default function getSeriesConfig(
 	  }
 
 	  let yList = combineVariables(y, y2)
+
+	//   console.log(yList)
 
 	// 1) Series column with single y column
 	if (series != null && yList.length === 1) {
@@ -174,7 +178,7 @@ export default function getSeriesConfig(
 				let tooltipData = data.map((d) => d[tooltipTitle]);
 				seriesData.forEach((item, index) => item.push(tooltipData[index]));
 			}
-
+// console.log(yList[i][0])
 			seriesName = columnSummary[yList[i][0]].title;
 
 			// Set y-axis index (used for multi-y axis charts):
@@ -187,7 +191,6 @@ export default function getSeriesConfig(
 
 	// 4) Single y column without series column
 	if (series == null && yList.length === 1) {
-
 		if (swapXY) {
 			seriesData = data.map((d) => [d[yList[0][0]], xMismatch ? d[x].toString() : d[x]]);
 		} else {
@@ -210,10 +213,9 @@ export default function getSeriesConfig(
 
 		// Set y-axis index (used for multi-y axis charts):
 		yAxisIndex = yList[0][1];
-
 		tempConfig = generateTempConfig(seriesData, seriesName, yAxisIndex, baseConfig);
 		seriesConfig.push(tempConfig);
 	}
-
+// console.log(seriesConfig)
 	return seriesConfig;
 }

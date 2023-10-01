@@ -41,13 +41,17 @@
 	let useTooltip = true;
 
 	export let y2 = undefined;
-	export let y2AxisTitle = undefined;
+	export let y2AxisTitle = 'true';
 	export let y2Gridlines = undefined;
 	export let y2AxisLabels = undefined;
 	export let y2Baseline = undefined;
 	export let y2TickMarks = undefined;
 	export let y2Min = undefined;
 	export let y2Max = undefined;
+
+	export let yAxisColor = undefined;
+	export let y2AxisColor = undefined;
+
 </script>
 
 <Chart
@@ -83,6 +87,8 @@
 	{chartType}
 	{sort}
 	{chartAreaHeight}
+	{yAxisColor}
+	{y2AxisColor}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 </Chart>
