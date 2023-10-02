@@ -484,18 +484,18 @@
 			}
 
 			let minYValue;
-			if(typeof y === 'object'){
-				minYValue = columnSummary[y[0]].columnUnitSummary.min
-				for(let i=0; i<y.length; i++){
-					if(columnSummary[y[i]].columnUnitSummary.min < minYValue){
-						minYValue = columnSummary[y[i]].columnUnitSummary.min
+			if (typeof y === 'object') {
+				minYValue = columnSummary[y[0]].columnUnitSummary.min;
+				for (let i = 0; i < y.length; i++) {
+					if (columnSummary[y[i]].columnUnitSummary.min < minYValue) {
+						minYValue = columnSummary[y[i]].columnUnitSummary.min;
 					}
 				}
 			} else {
-				minYValue = columnSummary[y].columnUnitSummary.min
+				minYValue = columnSummary[y].columnUnitSummary.min;
 			}
 
-			if(yLog === true && minYValue <= 0 && minYValue !== null){
+			if (yLog === true && minYValue <= 0 && minYValue !== null) {
 				throw Error('Log axis cannot display values less than or equal to zero');
 			}
 
