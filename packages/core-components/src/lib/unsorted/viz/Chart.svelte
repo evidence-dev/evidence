@@ -32,6 +32,7 @@
 	// Input Props
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
+	/** @type {import("@evidence-dev/query-store").QueryStore} */
 	export let data = undefined;
 	export let x = undefined;
 	export let y = undefined;
@@ -814,6 +815,7 @@
 	}
 
 	$: data;
+	$: if (data?.error) error = data.error.message;
 </script>
 
 {#if !error}
