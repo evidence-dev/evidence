@@ -822,9 +822,7 @@
 </script>
 
 {#if !data || data.loading}
-	<!-- We need to build the class this way to make sure tailwind doesn't prune them. -->
-	{@const heightProp = height ? `h-[${height}]` : `h-64`}
-	<div class="w-full {heightProp}">
+	<div class="w-full" class:h-64={!height} style="{ width ? `width: ${width}px` : ""}">
 		<Skeleton />
 	</div>
 {:else if !error}
