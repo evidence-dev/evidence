@@ -34,53 +34,54 @@
 	let sparklineData = {};
 
 	let error = undefined;
-	$: try {
-		error = undefined;
+	$: if (data)
+		try {
+			error = undefined;
 
-		if (!value) {
-			throw new Error('value is required');
-		}
+			if (!value) {
+				throw new Error('value is required');
+			}
 
-		if (!Array.isArray(data)) {
-			data = [data];
-		}
+			if (!Array.isArray(data)) {
+				data = [data];
+			}
 
-		checkInputs(data, [value]);
+			checkInputs(data, [value]);
 
-		let columnSummary = getColumnSummary(data, 'array');
+			let columnSummary = getColumnSummary(data, 'array');
 
-		// Fall back titles
-		let valueColumnSummary = columnSummary.find((d) => d.id === value);
-		title = title ?? (valueColumnSummary ? valueColumnSummary.title : null);
+			// Fall back titles
+			let valueColumnSummary = columnSummary.find((d) => d.id === value);
+			title = title ?? (valueColumnSummary ? valueColumnSummary.title : null);
 
-		if (comparison) {
-			checkInputs(data, [comparison]);
-			let comparisonColumnSummary = columnSummary.find((d) => d.id === comparison);
-			comparisonTitle =
-				comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null);
-		}
+			if (comparison) {
+				checkInputs(data, [comparison]);
+				let comparisonColumnSummary = columnSummary.find((d) => d.id === comparison);
+				comparisonTitle =
+					comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null);
+			}
 
-		if (data && comparison) {
-			positive = data[0][comparison] >= 0;
-			comparisonColor =
-				(positive && !downIsGood) || (!positive && downIsGood)
-					? 'var(--green-700)'
-					: 'var(--red-700)';
-		}
-		// populate sparklineData from data where timeseries is the key and value is the value
-		if (data && sparkline && value) {
-			// allow to load the LinkedChart
-			let sortedData = getSortedData(data, sparkline, true);
-			for (let i = 0; i < sortedData.length; i++) {
-				sparklineData[sortedData[i][sparkline]] = sortedData[i][value];
+			if (data && comparison) {
+				positive = data[0][comparison] >= 0;
+				comparisonColor =
+					(positive && !downIsGood) || (!positive && downIsGood)
+						? 'var(--green-700)'
+						: 'var(--red-700)';
+			}
+			// populate sparklineData from data where timeseries is the key and value is the value
+			if (data && sparkline && value) {
+				// allow to load the LinkedChart
+				let sortedData = getSortedData(data, sparkline, true);
+				for (let i = 0; i < sortedData.length; i++) {
+					sparklineData[sortedData[i][sparkline]] = sortedData[i][value];
+				}
+			}
+		} catch (e) {
+			error = e;
+			if (strictBuild) {
+				throw error;
 			}
 		}
-	} catch (e) {
-		error = e;
-		if (strictBuild) {
-			throw error;
-		}
-	}
 
 	/**
 	 * Hack to let time to LinkedChart to be loaded

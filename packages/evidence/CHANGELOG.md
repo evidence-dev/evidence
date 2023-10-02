@@ -1,5 +1,60 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.25
+
+### Patch Changes
+
+- 5be92c14: fix spelling mistake
+- Updated dependencies [5be92c14]
+- Updated dependencies [239a18d7]
+- Updated dependencies [52e114cc]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/plugin-connector@2.0.0-usql.16
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+  - @evidence-dev/universal-sql@2.0.0-usql.9
+  - @evidence-dev/db-orchestrator@3.0.0-usql.7
+  - @evidence-dev/core-components@2.0.0-usql.11
+
+## 20.0.0-usql.24
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [7c8a9f9d]
+- Updated dependencies [afbb50fc]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/plugin-connector@2.0.0-usql.15
+  - @evidence-dev/core-components@2.0.0-usql.10
+  - @evidence-dev/db-orchestrator@3.0.0-usql.6
+  - @evidence-dev/preprocess@4.0.0-usql.11
+  - @evidence-dev/tailwind@1.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.8
+
+## 20.0.0-usql.23
+
+### Patch Changes
+
+- Fix publish issue
+
+## 20.0.0-usql.22
+
+### Patch Changes
+
+- 17a82581: standardize date objects in `standardizeDateString`
+- efa96920: External SQL files now live in queries rather than sources
+- 4b6262d8: added `build:sources` filtration options to cli
+- 29c149d6: added stricter types to db adapters
+- Updated dependencies [17a82581]
+- Updated dependencies [efa96920]
+- Updated dependencies [4b6262d8]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+  - @evidence-dev/preprocess@4.0.0-usql.10
+  - @evidence-dev/plugin-connector@2.0.0-usql.14
+  - @evidence-dev/core-components@2.0.0-usql.9
+  - @evidence-dev/db-orchestrator@3.0.0-usql.5
+
 ## 20.0.0-usql.21
 
 ### Patch Changes

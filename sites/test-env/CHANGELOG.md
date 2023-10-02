@@ -1,5 +1,52 @@
 # evidence-test-environment
 
+## 3.0.0-usql.25
+
+### Patch Changes
+
+- Updated dependencies [52e114cc]
+- Updated dependencies [5be92c14]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+  - @evidence-dev/evidence@20.0.0-usql.25
+  - @evidence-dev/core-components@2.0.0-usql.11
+
+## 3.0.0-usql.24
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [08b1907f]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/csv@1.0.0-usql.4
+  - @evidence-dev/core-components@2.0.0-usql.10
+  - @evidence-dev/duckdb@1.0.0-usql.3
+  - @evidence-dev/evidence@20.0.0-usql.24
+  - @evidence-dev/faker-datasource@2.0.0-usql.1
+
+## 3.0.0-usql.23
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.23
+
+## 3.0.0-usql.22
+
+### Patch Changes
+
+- Updated dependencies [17a82581]
+- Updated dependencies [efa96920]
+- Updated dependencies [4b6262d8]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+  - @evidence-dev/evidence@20.0.0-usql.22
+  - @evidence-dev/csv@1.0.0-usql.3
+  - @evidence-dev/duckdb@1.0.0-usql.2
+  - @evidence-dev/core-components@2.0.0-usql.9
+
 ## 3.0.0-usql.21
 
 ### Patch Changes

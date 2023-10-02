@@ -24,76 +24,119 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
 		const input_ids = reactive_ids.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id]));
 
-		queryDeclarations += `
-            import debounce from 'debounce';
-            import { browser, dev } from '$app/environment';
-			import { profile } from '@evidence-dev/component-utilities/profile';
-			
-			${/* partially bypasses weird reactivity stuff with \`select\` elements */''}
-			function data_update(data) {
-				${valid_ids.map((id) => `
-					${id} = data.${id} ?? [];
-				`).join('\n')}
-			}
+		const prerendered_query_stores = prerendered_ids.map((id) => {
+			/*
+				explanation of _initialData_${id}:
+					prerenderable queries should be server side rendered and only server side rendered
+					they're cached so they don't need to be rerun on the client
+					but, if we're in dev mode, we want to rerun the query on the client, because SSR is not
+					guaranteed to have run
 
-			$: data_update(data);
+				_query_string_${id} is reactive so that it's initialized after user variables (svelte compiler hoists to 'bottom' of script tag)
+				it won't ever actually change (it's a static string)
 
-			${valid_ids.map((id) => `
+				_${id} is reactive for the same reason as above
+			*/
+			return `
 				$: _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				let ${id} = data.${id} ?? [];
-			`).join('\n')}
+				$: _initialData_${id} = (!browser || dev)? queryFunc(_query_string_${id}, '${id}') : data.${id} ?? [];
+				$: _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { initialData: _initialData_${id} });
+			`;
+		});
 
-			${prerendered_ids.map((id) => `
-			${/*
-				prerenderable queries should be server side rendered and only server side rendered
-				they're cached so they don't need to be rerun on the client
-				but, if we're in dev mode, we want to rerun the query on the client, because SSR is not
-				guaranteed to have run
-			*/''}
-				$: if (!browser || dev) {
-					profile(
-						__db.query,
-						_query_string_${id},
-						{ query_name: "${id}", callback: (value) => ${id} = value }
-					);
-				}
-			`).join('\n')}
+		const reactive_query_stores = reactive_ids.map((id) => {
+			const query = duckdbQueries[id].replaceAll('`', '\\`');
+			/*
+				"What the heck is happening here":
+					_${id}_initial_query:
+						Copy of the query as it is written in the source markdown file
+						It is interpolated with the initial values of any variables _at mount time_
+						and does not change after that
 
-			${/* no point in debouncing on the server, so make it identity function */''}
-			const debounce_on_browser = browser ? debounce : (fn) => fn;
+						This variable _must_ be declared; then assigned "reactively" to make sure it can reference the user's variables,
+						as it pushes the reactive assignment to the bottom of the file (after the user's scripts have run)
+						
+						We use the if to make sure it is only reactive once, and still acts as a "constant"
 
-			${/* all reactive queries have to be able to run on server and client */''}
-            ${reactive_ids.map((id) => `
-				const _query_${id} = debounce_on_browser(
-					(query) => profile(
-						__db.query,
-						query,
-						{ query_name: "${id}", callback: (value) => (${id} = value) }
-					), 
-					200
+
+					_${id}_current_query:
+						Copy of the query with the variables reactively interpolated - this is what will
+						actually be executed against the database
+
+						
+					_${id}_changed:
+						Helper variable to check if current is same as initial
+
+					
+					We care about all of this because we want to provide the initialData from SSR when the query is unchanged,
+					but we need to ensure that if the query changes, it re-executes. When constructing the QueryStore below,
+					we hinge on the change to pass intiailData (or not).
+			*/
+			return `
+				// Initial Query
+				let _${id}_initial_query;
+				$: if(!_${id}_initial_query) _${id}_initial_query = \`${query}\`;
+				onMount(() => _${id}_initial_query = \`${query}\`);
+		
+				// Current Query
+				$: _${id}_current_query = \`${query}\`;
+				
+				// Query has changed
+				$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false;
+				
+				// Actual Query Execution
+				$: _${id} = new QueryStore(
+					\`${query}\`,
+					queryFunc,
+					'${id}',
+					{
+						initialData: _${id}_changed 
+							// Query has changed, do not provide intiial data
+							? undefined 
+							// Query has not changed, provide initial data
+							: data.${id} ?? queryFunc(\`${query}\`, '${id}')
+					}
 				);
+			`;
+		});
 
-				$: _query_${id}(_query_string_${id});
-			`).join('\n')}
+		/* 
+			reactivity doesn't happen on the server, so we need to manually subscribe to the inputs store
+			and update the queries when the inputs change
+		*/
+		const input_query_stores = `
+		if (!browser) {
+			onDestroy(inputs_store.subscribe((inputs) => {
+				${input_ids.map((id) => `
+					_${id} = new QueryStore(
+						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
+						queryFunc,
+						'${id}',
+						{ initialData: queryFunc(\`${query}\`, '${id}') }
+					);
+				`).join('\n')}
+			}));
+		}
+		`;
 
-			if (!browser) {
-				${/* 
-					reactivity doesn't happen on the server, so we need to manually subscribe to the inputs store
-					and update the queries when the inputs change
-				*/''}
-				onDestroy(inputs_store.subscribe((inputs) => {
-					${input_ids.map((id) => `
-						${id} = _query_${id}(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`);
-					`).join('\n')}
-				}));
-			}
-        `;
+		queryDeclarations += `
+			import { browser, dev } from "$app/environment";
+			import { profile } from '@evidence-dev/component-utilities/profile';
+			import debounce from 'debounce';
+			import { QueryStore } from '@evidence-dev/query-store';
+			
+			const queryFunc = (query, id) => profile(__db.query, query, { query_name: id });
+
+			${prerendered_query_stores.join('\n')}
+			${reactive_query_stores.join('\n')}
+			${input_query_stores}
+		`;
 	}
 
 	let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
-        import { setContext, getContext, beforeUpdate, onDestroy } from 'svelte';
+        import { setContext, getContext, beforeUpdate, onDestroy, onMount } from 'svelte';
 		import { writable } from 'svelte/store';
         
         // Functions

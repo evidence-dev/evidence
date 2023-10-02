@@ -1,10 +1,6 @@
 import { tidy, mutate } from '@tidyjs/tidy';
 
 export function standardizeDateString(date) {
-	if (date instanceof Date) {
-		return date.toISOString().slice(0, -1);
-	}
-
 	if (date && typeof date === 'string') {
 		// Parses an individual string into a JS date object
 
@@ -39,7 +35,7 @@ export function convertColumnToDate(data, column) {
 
 	data = tidy(
 		data,
-		mutate({ [column]: (d) => new Date(standardizeDateString(d[column])) ?? null })
+		mutate({ [column]: (d) => (d[column] ? new Date(standardizeDateString(d[column])) : null) })
 	);
 
 	return data;

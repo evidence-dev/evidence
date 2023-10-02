@@ -1,5 +1,27 @@
 # @evidence-dev/mysql
 
+## 1.0.0-usql.3
+
+### Patch Changes
+
+- 1fbf70d9: Close connection when finished with pool to prevent process hang
+
+## 1.0.0-usql.2
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [20127231]
+  - @evidence-dev/db-commons@0.2.1-usql.1
+
+## 1.0.0-usql.1
+
+### Patch Changes
+
+- 29c149d6: added stricter types to db adapters
+- Updated dependencies [29c149d6]
+  - @evidence-dev/db-commons@0.2.1-usql.0
+
 ## 1.0.0-usql.0
 
 ### Major Changes

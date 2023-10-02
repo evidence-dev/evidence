@@ -1,5 +1,17 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.11
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+
+## 4.0.0-usql.10
+
+### Patch Changes
+
+- efa96920: External SQL files now live in queries rather than sources
+
 ## 4.0.0-usql.9
 
 ### Patch Changes

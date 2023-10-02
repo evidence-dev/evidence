@@ -15,7 +15,12 @@ const initDb = async () => {
 	if (!browser) {
 		const { readFile } = await import('fs/promises');
 		({ renderedFiles } = JSON.parse(
-			await readFile('../../static/data/manifest.json', 'utf-8').catch(() => '{}')
+			await readFile(
+				process.cwd().includes('.evidence')
+					? '../../static/data/manifest.json'
+					: './static/data/manifest.json',
+				'utf-8'
+			).catch(() => '{}')
 		));
 	} else {
 		const res = await fetch('/data/manifest.json');

@@ -3,7 +3,9 @@ import { QueryResultSchema } from './query-runner.schema';
 
 export const DatasourceQuerySchema = z.object({
 	filepath: z.string(),
-	content: z.string().or(z.null())
+	content: z.string().or(z.null()),
+	hash: z.string().or(z.null()),
+	name: z.string()
 });
 
 export const DatasourceSpecFileSchema = z.object({
@@ -21,4 +23,10 @@ export const DatasourceQueryResultSchema = z.object({
 	source: DatasourceQuerySchema,
 	result: QueryResultSchema,
 	name: z.string({ description: 'Output Table / Store name' })
+});
+
+export const DatasourceCacheSchema = z.record(z.record(z.string().or(z.null())));
+
+export const DatasourceManifestSchema = z.object({
+	renderedFiles: z.record(z.array(z.string()))
 });

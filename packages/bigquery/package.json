@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/bigquery",
-	"version": "2.0.0-usql.0",
+	"version": "2.0.0-usql.2",
 	"description": "BigQuery driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -9,7 +9,7 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:^",
+		"@evidence-dev/db-commons": "workspace:0.2.1-usql.1",
 		"@google-cloud/bigquery": "6.2.0",
 		"fs-extra": "9.1.0",
 		"google-auth-library": "^8.8.0"
