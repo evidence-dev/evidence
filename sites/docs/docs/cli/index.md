@@ -11,7 +11,7 @@ hide_table_of_contents: false
 | ---------------------- | ------------------------------------------------------ |
 | `npm run dev`          | Start the development server in the current directory. |
 | `npm run build`        | Build the project for production.                      |
-| `npm run build:strict` | Build, but fails on query or component errors.         |
+| `npm run build:strict` | Build, but fails on query or component errors. [Components receiving empty data will fail.](/deployment/overview#buildstrict) |
 | `r`                    | Restart the dev server (when running).                 |
 
 You can stop the server with `Ctrl` + `C` / `⌘` + `C`.
