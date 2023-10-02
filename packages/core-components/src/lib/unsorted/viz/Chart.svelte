@@ -816,11 +816,9 @@
 		}
 	}
 
-	import { QueryStore } from '@evidence-dev/query-store';
-
 	$: data;
-	$: console.log(data.loading);
-	$: console.log(data instanceof QueryStore);
+
+	$: if (data?.error) error = data.error.message;
 </script>
 
 {#if !data || data.loading}
