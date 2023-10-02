@@ -112,12 +112,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',
-						{ initialData: queryFunc(\`${query}\`, '${id}') }
+						{ initialData: queryFunc(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
 					);
 				`).join('\n')}
 			}));
 		}
 		`;
+
+		const all_query_stores = valid_ids.map((id) => `$: ${id} = $_${id};`).join('\n');
 
 		queryDeclarations += `
 			import { browser, dev } from "$app/environment";
@@ -130,6 +132,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			${prerendered_query_stores.join('\n')}
 			${reactive_query_stores.join('\n')}
 			${input_query_stores}
+			${all_query_stores}
 		`;
 	}
 
