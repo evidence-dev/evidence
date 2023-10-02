@@ -15,12 +15,58 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const queryStores = valid_ids.map(
 			(id) => `
+
+		
+		/*
+			"What the heck is happening here":
+				_${id}_initial_query:
+					Copy of the query as it is written in the source markdown file
+					It is interpolated with the initial values of any variables _at mount time_
+					and does not change after that
+
+					This variable _must_ be declared; then assigned "reactively" to make sure it can reference the user's variables,
+					as it pushes the reactive assignment to the bottom of the file (after the user's scripts have run)
+					
+					We use the if to make sure it is only reactive once, and still acts as a "constant"
+
+
+				_${id}_current_query:
+					Copy of the query with the variables reactively interpolated - this is what will
+					actually be executed against the database
+
+					
+				_${id}_changed:
+					Helper variable to check if current is same as initial
+
+				
+				We care about all of this because we want to provide the initialData from SSR when the query is unchanged,
+				but we need to ensure that if the query changes, it re-executes. When constructing the QueryStore below,
+				we hinge on the change to pass intiailData (or not).
+		*/
+		// Initial Query
+		let _${id}_initial_query
+		$: if(!_${id}_initial_query) _${id}_initial_query = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`
+		onMount(() => _${id}_initial_query = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`)
+
+		// Current Query
+		$: _${id}_current_query = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`
+		
+		// Query has changed
+		$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false
+		
+		// Actual Query Execution
 		$: _${id} = new QueryStore(
 			\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 			queryFunc,
 			\`${id}\`,
-			{ initialData: data.${id} ?? profile(__db.query, \`${duckdbQueries[id].replaceAll('`', '\\`')}\`) }
+			{ 
+				initialData: _${id}_changed 
+					// Query has changed, do not provide intiial data
+					? undefined 
+					// Query has not changed, provide initial data
+					: data.${id} ?? profile(__db.query, \`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
 		);
+
 		/** @type {QueryStore} */
 		let ${id};
 		$: ${id} = $_${id};
@@ -42,7 +88,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
-        import { setContext, getContext, beforeUpdate } from 'svelte';
+        import { setContext, getContext, beforeUpdate, onMount } from 'svelte';
         
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
@@ -113,7 +159,7 @@ const processQueries = (componentDevelopmentMode) => {
 				if (attributes.context != 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
 					return {
-						code: content + createDefaultProps(filename, componentDevelopmentMode, duckdbQueries)
+						code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
 					};
 				}
 			}

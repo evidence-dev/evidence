@@ -25,6 +25,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
+	import { Skeleton } from '../../atoms/skeletons';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { colours } from '@evidence-dev/component-utilities/colours';
 
@@ -34,6 +35,7 @@
 	// Data and columns:
 	/** @type {import("@evidence-dev/query-store").QueryStore} */
 	export let data = undefined;
+
 	export let x = undefined;
 	export let y = undefined;
 	export let series = undefined;
@@ -815,10 +817,15 @@
 	}
 
 	$: data;
+
 	$: if (data?.error) error = data.error.message;
 </script>
 
-{#if !error}
+{#if !data || data.loading}
+	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
+		<Skeleton />
+	</div>
+{:else if !error}
 	<slot />
 	<ECharts config={$config} {height} {width} {data} />
 {:else}
