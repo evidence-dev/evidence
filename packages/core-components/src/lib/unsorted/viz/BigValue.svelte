@@ -4,7 +4,6 @@
 
 <script>
 	import Value from './Value.svelte';
-	import DeltaIndicator from './DeltaIndicator.svelte';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { LinkedChart } from 'svelte-tiny-linked-charts';
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
@@ -133,18 +132,11 @@
 			{/if}
 		</div>
 		{#if comparison}
-			<span
-				class="text-xs font-sans font-medium flex items-baseline gap-1"
-				style={`color:${comparisonColor}`}
-			>
-				{#if positive}
-					<DeltaIndicator class=" h-2 rotate-180" />
-				{:else}
-					<DeltaIndicator class="h-2" />
-				{/if}
+			<p class="text-xs font-sans" style={`color:${comparisonColor}`}>
+				<span class="font-[system-ui]"> {@html positive ? '&#9650;' : '&#9660;'} </span>
 				<Value {data} column={comparison} fmt={comparisonFmt} />
-				<span class="font-normal">{comparisonTitle}</span>
-			</span>
+				<span>{comparisonTitle}</span>
+			</p>
 		{/if}
 	{/if}
 </div>

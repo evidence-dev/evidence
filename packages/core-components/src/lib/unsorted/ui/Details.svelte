@@ -8,7 +8,7 @@
 	import { slide } from 'svelte/transition';
 </script>
 
-<div class="mb-2 mt-2">
+<div class="mb-3 mt-2">
 	<button class="text-sm cursor-pointer inline-flex gap-2" on:click={() => (open = !open)}>
 		<span class={open ? 'marker rotate-marker' : 'marker'} />
 		<span> {title} </span>

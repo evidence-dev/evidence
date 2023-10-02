@@ -19,7 +19,7 @@
 
 <style lang="postcss">
 	.alert {
-		@apply p-2 mb-4 text-sm rounded text-gray-800 bg-gray-50 font-medium font-sans top-14;
+		@apply p-2 mb-4 rounded text-gray-800 bg-gray-50 top-14;
 
 		&.info {
 			@apply text-blue-800 bg-blue-50;

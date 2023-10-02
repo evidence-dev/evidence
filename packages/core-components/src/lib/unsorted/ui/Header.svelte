@@ -20,7 +20,7 @@
 	<div
 		class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center"
 	>
-		<a href="/" class="hidden md:block -mb-1">
+		<a href="/" class="hidden md:block">
 			<Logo />
 		</a>
 
