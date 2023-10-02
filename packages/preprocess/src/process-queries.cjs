@@ -54,7 +54,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					// Query has changed, do not provide intiial data
 					? undefined 
 					// Query has not changed, provide initial data
-					: data.${id} ?? profile(__db.query, \`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
+					: data.${id} ?? profile(__db.query, _${id}_current_query, '${id}') }
 		);
 
 		/** @type {QueryStore} */
