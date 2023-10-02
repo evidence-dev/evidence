@@ -66,7 +66,7 @@
 				id={opt.id}
 				name={opt.id}
 				data-test-id={opt.dataTestId ?? opt.id}
-				placeholder="password"
+				placeholder={opt.placeholder ?? 'password'}
 				bind:value={credentials[opt.id]}
 				on:keyup={handleChange}
 			/>
@@ -107,7 +107,7 @@
 				type="password"
 				id={opt.id}
 				name={opt.id}
-				placeholder="password"
+				placeholder={opt.placeholder ?? 'password'}
 				bind:value={credentials[opt.id]}
 				on:keyup={handleChange}
 			/>

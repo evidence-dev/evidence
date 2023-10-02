@@ -12,6 +12,7 @@
 		"@evidence-dev/duckdb": "workspace:^",
 		"@evidence-dev/mssql": "workspace:^",
 		"@evidence-dev/mysql": "workspace:^",
+		"@evidence-dev/databricks": "workspace:^",
 		"@evidence-dev/postgres": "workspace:^",
 		"@evidence-dev/trino": "workspace:^",
 		"@evidence-dev/redshift": "workspace:^",
