@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 0.3.1
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+
 ## 0.3.0
 
 ### Minor Changes
