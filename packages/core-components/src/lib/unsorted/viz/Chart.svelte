@@ -822,7 +822,7 @@
 </script>
 
 {#if !data || data.loading}
-	<div class="w-full" class:h-64={!height} style="{ width ? `width: ${width}px` : ""}">
+	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
 		<Skeleton />
 	</div>
 {:else if !error}
