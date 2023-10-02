@@ -467,21 +467,20 @@
 			// ---------------------------------------------------------------------------------------
 			// Get total series count
 			// ---------------------------------------------------------------------------------------
-			
+
 			let yCount = typeof y === 'object' ? y.length : 1;
 			let seriesCount = series ? getDistinctCount(data, series) : 1;
-			
-			let totalSeriesCount = yCount * seriesCount;
 
+			let totalSeriesCount = yCount * seriesCount;
 
 			// ---------------------------------------------------------------------------------------
 			// Handle errors for log axes (cannot be used with stacked charts)
 			// ---------------------------------------------------------------------------------------
 
-			if(stacked100 === true && yLog === true){
-				throw Error("Log axis cannot be used in a 100% stacked chart")
-			} else if(stackType === 'stacked' && totalSeriesCount > 1 && yLog === true){
-				throw Error("Log axis cannot be used in a stacked chart")
+			if (stacked100 === true && yLog === true) {
+				throw Error('Log axis cannot be used in a 100% stacked chart');
+			} else if (stackType === 'stacked' && totalSeriesCount > 1 && yLog === true) {
+				throw Error('Log axis cannot be used in a stacked chart');
 			}
 
 			// ---------------------------------------------------------------------------------------
