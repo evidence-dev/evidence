@@ -11,6 +11,7 @@
 	import MysqlForm from './MysqlForm.svelte';
 	import SqliteForm from './SqliteForm.svelte';
 	import DuckdbForm from './DuckdbForm.svelte';
+	import DatabricksForm from './DatabricksForm.svelte';
 	import CSVForm from './CSVForm.svelte';
 	import MSSQLForm from './MSSQLForm.svelte';
 
@@ -40,6 +41,7 @@
 		{ id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm },
 		{ id: 'sqlite', name: 'SQLite', formComponent: SqliteForm },
 		{ id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm },
+		{ id: 'databricks', name: 'Databricks', formComponent: DatabricksForm },
 		{ id: 'csv', name: 'CSV', formComponent: CSVForm },
 		{ id: 'mssql', name: 'SQL Server', formComponent: MSSQLForm }
 	];
