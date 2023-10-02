@@ -5,27 +5,19 @@ const TTypeId = thrift.TCLIService_types.TTypeId;
 const envMap = {
 	host: [
 		{ key: 'EVIDENCE_DATABRICKS_HOST', deprecated: false },
-		{ key: 'DATABRICKS_HOST', deprecated: false },
-		{ key: 'host', deprecated: true },
-		{ key: 'HOST', deprecated: true }
+		{ key: 'DATABRICKS_HOST', deprecated: false }
 	],
 	port: [
 		{ key: 'EVIDENCE_DATABRICKS_PORT', deprecated: false },
-		{ key: 'DATABRICKS_PORT', deprecated: false },
-		{ key: 'port', deprecated: true },
-		{ key: 'PORT', deprecated: true }
+		{ key: 'DATABRICKS_PORT', deprecated: false }
 	],
 	path: [
 		{ key: 'EVIDENCE_DATABRICKS_PATH', deprecated: false },
-		{ key: 'DATABRICKS_PATH', deprecated: false },
-		{ key: 'path', deprecated: true },
-		{ key: 'PATH', deprecated: true }
+		{ key: 'DATABRICKS_PATH', deprecated: false }
 	],
 	token: [
 		{ key: 'EVIDENCE_DATABRICKS_TOKEN', deprecated: false },
-		{ key: 'DATABRICKS_TOKEN', deprecated: false },
-		{ key: 'token', deprecated: true },
-		{ key: 'TOKEN', deprecated: true }
+		{ key: 'DATABRICKS_TOKEN', deprecated: false }
 	]
 };
 
