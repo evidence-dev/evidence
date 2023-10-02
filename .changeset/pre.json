@@ -26,7 +26,8 @@
     "evidence-docs": "2.0.3",
     "@evidence-dev/components": "2.5.0",
     "evidence-test-environment": "2.0.17",
-    "ui-tests": "1.1.0"
+    "ui-tests": "1.1.0",
+    "@evidence-dev/query-store": "1.0.0"
   },
   "changesets": [
     "breezy-hounds-crash",
@@ -51,6 +52,7 @@
     "large-feet-scream",
     "large-zoos-hug",
     "late-ads-tie",
+    "late-squids-wave",
     "lemon-pillows-reflect",
     "little-baboons-hear",
     "mean-pumas-run",
@@ -60,6 +62,7 @@
     "nine-bears-float",
     "orange-countries-compete",
     "pink-pets-bake",
+    "poor-carpets-sneeze",
     "popular-geese-leave",
     "popular-hotels-hope",
     "quiet-roses-brake",
@@ -76,6 +79,7 @@
     "thirty-mirrors-yawn",
     "three-doors-run",
     "twenty-points-eat",
+    "two-houses-call",
     "unlucky-files-prove",
     "warm-ads-invent",
     "wet-rockets-train",
