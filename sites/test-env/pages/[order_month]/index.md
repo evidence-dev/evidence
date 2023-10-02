@@ -1,5 +1,5 @@
 ```items
-SELECT DISTINCT(item) FROM orders;
+SELECT DISTINCT(item) FROM orders
 ```
 
 <ul>

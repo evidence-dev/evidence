@@ -1,5 +1,5 @@
 ```order_months
-SELECT DISTINCT(order_month) FROM orders;
+SELECT DISTINCT(order_month) FROM orders
 ```
 
 <ul>
