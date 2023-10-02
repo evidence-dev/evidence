@@ -53,7 +53,7 @@
 		}
 	}
 
-	export let type = undefined; // stacked, grouped, or stacked100
+	export let type = 'stacked'; // stacked, grouped, or stacked100
 	let stacked100 = type === 'stacked100';
 
 	export let fillColor = undefined;
@@ -92,6 +92,7 @@
 	{title}
 	{subtitle}
 	chartType="Bar Chart"
+	stackType={type}
 	{sort}
 	{stacked100}
 	{chartAreaHeight}

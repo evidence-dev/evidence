@@ -46,7 +46,7 @@
 
 	export let sort = undefined;
 
-	export let type = undefined; // stacked or stacked100
+	export let type = 'stacked'; // stacked or stacked100
 	let stacked100 = type === 'stacked100';
 
 	let chartType = 'Area Chart';
@@ -79,6 +79,7 @@
 	{subtitle}
 	{chartType}
 	{sort}
+	stackType={type}
 	{stacked100}
 	{chartAreaHeight}
 >
