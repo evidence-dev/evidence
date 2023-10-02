@@ -2,7 +2,6 @@
 title: Area Chart
 sources:
 - orders_by_category: orders_by_category.sql
-- negative_values: negative_values.sql
 ---
 
 ## Area
@@ -86,13 +85,3 @@ stepPosition=middle
     series=category
     yLog=true
 />
-
-## Not allowed Log charts: No negative values
-
-<AreaChart
-    data={negative_values}
-    x=date
-    y=daily_change
-    yLog=true
-/>
-
