@@ -55,27 +55,27 @@ export default function getSeriesConfig(
 
 		// Helper function to check if a value is undefined
 		function isUndefined(value) {
-		  return typeof value === 'undefined';
+			return typeof value === 'undefined';
 		}
 
 		// Helper function to add non-undefined values to the array with source indicator
 		function addValuesToArray(value, source) {
-		  if (!isUndefined(value)) {
-			if (Array.isArray(value)) {
-			  value.forEach((item) => array.push([item, source]));
-			} else {
-			  array.push([value, source]);
+			if (!isUndefined(value)) {
+				if (Array.isArray(value)) {
+					value.forEach((item) => array.push([item, source]));
+				} else {
+					array.push([value, source]);
+				}
 			}
-		  }
 		}
 
 		addValuesToArray(variable1, 0);
 		addValuesToArray(variable2, 1);
 
 		return array;
-	  }
+	}
 
-	  let yList = combineVariables(y, y2)
+	let yList = combineVariables(y, y2);
 
 	// 1) Series column with single y column
 	if (series != null && yList.length === 1) {
@@ -123,9 +123,15 @@ export default function getSeriesConfig(
 
 			for (j = 0; j < yList.length; j++) {
 				if (swapXY) {
-					seriesData = filteredData.map((d) => [d[yList[j][0]], xMismatch ? d[x].toString() : d[x]]);
+					seriesData = filteredData.map((d) => [
+						d[yList[j][0]],
+						xMismatch ? d[x].toString() : d[x]
+					]);
 				} else {
-					seriesData = filteredData.map((d) => [xMismatch ? d[x].toString() : d[x], d[yList[j][0]]]);
+					seriesData = filteredData.map((d) => [
+						xMismatch ? d[x].toString() : d[x],
+						d[yList[j][0]]
+					]);
 				}
 
 				// Append size column if supplied (for bubble chart):

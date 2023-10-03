@@ -54,7 +54,7 @@
 
 	// This is a hack to get around the above
 	const ySet = y ? true : false;
-	const y2Set = y2 ? true : false;
+	// const y2Set = y2 ? true : false;
 	const xSet = x ? true : false;
 
 	export let swapXY = false; // Flipped axis chart
@@ -214,14 +214,20 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	// Helper function for getting column formats:
-	function getFormatByTitle(obj, title) {
-		for (const key in obj) {
-			if (obj.hasOwnProperty(key) && obj[key].title === title) {
-			return obj[key].format;
-			}
+	// Helper function for multi-series tooltips:
+	// Returns the yAxisIndex for a series since we can't currently access that in ECharts' params
+	function getYAxisIndex(componentIndex, yCount, y2Count) {
+		const totalPatternCount = yCount + y2Count;
+
+		// Find the position of the index in the repeating sequence
+		const positionInPattern = componentIndex % totalPatternCount;
+
+		// If the position lies within yCount, return 0, otherwise return 1
+		if (positionInPattern < yCount) {
+			return 0;
+		} else {
+			return 1;
 		}
-		return null; // Return null if no match is found
 	}
 
 	$: {
@@ -461,7 +467,7 @@
 			}
 
 			if (y2) {
-				if(y2Fmt){
+				if (y2Fmt) {
 					if (typeof y2 === 'object') {
 						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2[0]].format.valueType);
 					} else {
@@ -530,7 +536,7 @@
 
 			// y2Count may need to be adjusted to also factor in the series column. For now, we really
 			// only need to know that it's multi-series, so > 1 is sufficient
-			let y2Count = typeof y2 === 'object' ? y2.length : (y2 ? 1 : 0);
+			let y2Count = typeof y2 === 'object' ? y2.length : y2 ? 1 : 0;
 			let totalSeriesCount = ySeriesCount + y2Count;
 
 			// ---------------------------------------------------------------------------------------
@@ -681,7 +687,13 @@
 						formatter: function (value) {
 							return formatAxisValue(value, yFormat, yUnitSummary);
 						},
-						color: y2 ? (yAxisColor === 'true' ? chartColours[0] : (yAxisColor !== 'false' ? yAxisColor : undefined)) : undefined
+						color: y2
+							? yAxisColor === 'true'
+								? chartColours[0]
+								: yAxisColor !== 'false'
+								? yAxisColor
+								: undefined
+							: undefined
 					},
 					name: yAxisTitle,
 					nameLocation: 'end',
@@ -690,7 +702,13 @@
 						verticalAlign: 'top',
 						backgroundColor: 'white',
 						padding: [0, 5, 0, 0],
-						color: y2 ? (yAxisColor === 'true' ? chartColours[0] : (yAxisColor !== 'false' ? yAxisColor : undefined)) : undefined
+						color: y2
+							? yAxisColor === 'true'
+								? chartColours[0]
+								: yAxisColor !== 'false'
+								? yAxisColor
+								: undefined
+							: undefined
 					},
 					nameGap: 6,
 					min: yMin,
@@ -720,7 +738,12 @@
 						formatter: function (value) {
 							return formatAxisValue(value, y2Format, y2UnitSummary);
 						},
-						color: y2AxisColor === 'true' ? chartColours[ySeriesCount] : (y2AxisColor !== 'false' ? y2AxisColor : undefined)
+						color:
+							y2AxisColor === 'true'
+								? chartColours[ySeriesCount]
+								: y2AxisColor !== 'false'
+								? y2AxisColor
+								: undefined
 					},
 					name: y2AxisTitle,
 					nameLocation: 'end',
@@ -729,14 +752,20 @@
 						verticalAlign: 'top',
 						backgroundColor: 'white',
 						padding: [0, 0, 0, 5],
-						color:  y2AxisColor === 'true' ? chartColours[ySeriesCount] : (y2AxisColor !== 'false' ? y2AxisColor : undefined)
+						color:
+							y2AxisColor === 'true'
+								? chartColours[ySeriesCount]
+								: y2AxisColor !== 'false'
+								? y2AxisColor
+								: undefined
 					},
 					nameGap: 6,
 					min: y2Min,
 					max: y2Max,
-					boundaryGap: ['0%', '1%']
+					boundaryGap: ['0%', '1%'],
+					z: 2
 				};
-				
+
 				verticalAxisConfig = [verticalAxisConfig, secondaryAxis];
 			}
 
@@ -818,6 +847,7 @@
 			// ---------------------------------------------------------------------------------------
 			// Build chart config and update config store so child components can access it
 			// ---------------------------------------------------------------------------------------
+
 			chartConfig = {
 				title: {
 					text: title,
@@ -849,7 +879,11 @@
 										params[i].seriesName
 									} <span style='float:right; margin-left: 10px;'>${formatValue(
 										yVal,
-										yFormat
+										// Not sure if this will work. Need to check with multi series on both axes
+										// Check if echarts does the order in the same way - y first, then y2
+										getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
+											? yFormat
+											: y2Format
 									)}</span>`;
 							}
 						} else if (xType === 'value') {
@@ -948,8 +982,6 @@
 	}
 
 	$: data;
-
-	$: console.log($config);
 </script>
 
 {#if !error}
