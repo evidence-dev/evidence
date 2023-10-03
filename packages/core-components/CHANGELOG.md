@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 2.0.3
+
+### Patch Changes
+
+- 5b5959f9: add databricks connector
+- c2540d2f: Add support for Trino as a data source
+- 7112f1b8: Fix y-axis labels being truncated on horizontal bar charts
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/component-utilities@1.1.3
+
 ## 2.0.2
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @evidence-dev/db-orchestrator
 
+## 2.3.0
+
+### Minor Changes
+
+- 5b5959f9: add databricks connector
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+  - @evidence-dev/databricks@0.1.0
+  - @evidence-dev/postgres@0.3.1
+  - @evidence-dev/trino@0.1.1
+  - @evidence-dev/redshift@0.0.7
+
 ## 2.2.5
 
 ### Patch Changes
