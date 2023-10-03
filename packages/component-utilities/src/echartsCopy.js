@@ -1,5 +1,5 @@
 import { registerTheme, init } from 'echarts';
-import { colours } from './colours';
+import { chartColours, uiColours } from './colours';
 
 export default (node, option) => {
 	registerTheme('evidence-light', {
@@ -10,29 +10,7 @@ export default (node, option) => {
 			top: '15%',
 			containLabel: true
 		},
-		color: [
-			'hsla(207, 65%, 39%, 1)', // Navy
-			'hsla(195, 49%, 51%, 1)', // Teal
-			'hsla(207, 69%, 79%, 1)', // Light Blue
-			'hsla(202, 28%, 65%, 1)', // Grey
-			'hsla(179, 37%, 65%, 1)', // Light Green
-			'hsla(40, 30%, 75%, 1)', // Tan
-			'hsla(38, 89%, 62%, 1)', // Yellow
-			'hsla(342, 40%, 40%, 1)', // Maroon
-			'hsla(207, 86%, 70%, 1)', // Blue
-			'hsla(160, 40%, 46%, 1)', // Green
-			// Grey Scale
-			'#71777d',
-			'#7e848a',
-			'#8c9196',
-			'#9a9fa3',
-			'#a8acb0',
-			'#b7babd',
-			'#c5c8ca',
-			'#d4d6d7',
-			'#e3e4e5',
-			'#f3f3f3'
-		],
+		color: chartColours,
 		backgroundColor: 'rgba(255, 255, 255, 0)',
 		textStyle: {
 			fontFamily: 'sans-serif'
@@ -42,11 +20,11 @@ export default (node, option) => {
 			itemGap: 7,
 			textStyle: {
 				fontSize: 14,
-				color: colours.grey700
+				color: uiColours.grey700
 			},
 			subtextStyle: {
 				fontSize: 13,
-				color: colours.grey600,
+				color: uiColours.grey600,
 				overflow: 'break'
 			},
 			top: '0%'
@@ -202,25 +180,25 @@ export default (node, option) => {
 			axisLine: {
 				show: true,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				}
 			},
 			axisTick: {
 				show: false,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				},
 				length: 3,
 				alignWithLabel: true
 			},
 			axisLabel: {
 				show: true,
-				color: colours.grey500
+				color: uiColours.grey500
 			},
 			splitLine: {
 				show: false,
 				lineStyle: {
-					color: [colours.grey200]
+					color: [uiColours.grey200]
 				}
 			},
 			splitArea: {
@@ -234,24 +212,24 @@ export default (node, option) => {
 			axisLine: {
 				show: false,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				}
 			},
 			axisTick: {
 				show: false,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				},
 				length: 2
 			},
 			axisLabel: {
 				show: true,
-				color: colours.grey500
+				color: uiColours.grey500
 			},
 			splitLine: {
 				show: true,
 				lineStyle: {
-					color: [colours.grey200],
+					color: [uiColours.grey200],
 					width: 1
 				}
 			},
@@ -266,24 +244,24 @@ export default (node, option) => {
 			axisLine: {
 				show: false,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				}
 			},
 			axisTick: {
 				show: false,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				},
 				length: 2
 			},
 			axisLabel: {
 				show: true,
-				color: colours.grey500
+				color: uiColours.grey500
 			},
 			splitLine: {
 				show: true,
 				lineStyle: {
-					color: [colours.grey200]
+					color: [uiColours.grey200]
 				}
 			},
 			splitArea: {
@@ -297,24 +275,24 @@ export default (node, option) => {
 			axisLine: {
 				show: true,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				}
 			},
 			axisTick: {
 				show: true,
 				lineStyle: {
-					color: colours.grey500
+					color: uiColours.grey500
 				},
 				length: 3
 			},
 			axisLabel: {
 				show: true,
-				color: colours.grey500
+				color: uiColours.grey500
 			},
 			splitLine: {
 				show: false,
 				lineStyle: {
-					color: [colours.grey200]
+					color: [uiColours.grey200]
 				}
 			},
 			splitArea: {
@@ -337,7 +315,7 @@ export default (node, option) => {
 		legend: {
 			textStyle: {
 				padding: [0, 0, 0, -7],
-				color: colours.grey500
+				color: uiColours.grey500
 			},
 			// "padding": [15,0,0,0],
 			icon: 'circle',
@@ -347,7 +325,7 @@ export default (node, option) => {
 					'M 12 27 h -2 c -0.386 0 -0.738 -0.223 -0.904 -0.572 s -0.115 -0.762 0.13 -1.062 L 17.708 15 L 9.226 4.633 c -0.245 -0.299 -0.295 -0.712 -0.13 -1.062 S 9.614 3 10 3 h 2 c 0.3 0 0.584 0.135 0.774 0.367 l 9 11 c 0.301 0.369 0.301 0.898 0 1.267 l -9 11 C 12.584 26.865 12.3 27 12 27 Z'
 				]
 			},
-			pageIconColor: colours.grey600,
+			pageIconColor: uiColours.grey600,
 			pageIconSize: 12,
 			pageTextStyle: {
 				color: 'grey'
