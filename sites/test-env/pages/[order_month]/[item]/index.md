@@ -5,7 +5,7 @@ SELECT email, item, order_month FROM orders WHERE item = '${$page.params.item}' 
 <DataTable data={specific_query} />
 
 ```arbitrary_big_query
-SELECT * FROM orders LIMIT 1;
+SELECT * FROM orders LIMIT 1
 ```
 
 <DataTable data={arbitrary_big_query} />
