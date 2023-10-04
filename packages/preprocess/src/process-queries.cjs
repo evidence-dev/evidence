@@ -26,21 +26,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const prerendered_query_stores = prerendered_ids.map((id) => {
 			/*
-				explanation of _initialData_${id}:
-					prerenderable queries should be server side rendered and only server side rendered
-					they're cached so they don't need to be rerun on the client
-					but, if we're in dev mode, we want to rerun the query on the client, because SSR is not
-					guaranteed to have run
-
-				_query_string_${id} is reactive so that it's initialized after user variables (svelte compiler hoists to 'bottom' of script tag)
-				it won't ever actually change (it's a static string)
-
-				_${id} is reactive for the same reason as above
+			    _query_string${id} is just a static string (no interpolation), so everything is constant
+			    we might want to be reactive to the data prop - a forced _${id}.fetch() might be good
+			    ala $: data, _${id}.fetch();
+				that would happen when stuff is invalidated (in dev mode) like when source
+				parquet changes (e.g. source refresh experience PR)
 			*/
 			return `
-				$: _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				$: _initialData_${id} = (!browser || dev)? queryFunc(_query_string_${id}, '${id}') : data.${id} ?? [];
-				$: _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { initialData: _initialData_${id} });
+				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
+				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { initialData: data.${id} });
 			`;
 		});
 
@@ -108,12 +102,12 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-					_${id} = new QueryStore(
+					${id} = get(new QueryStore(
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',
 						{ initialData: queryFunc(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
-					);
+					));
 				`).join('\n')}
 			}));
 		}
@@ -127,7 +121,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			import debounce from 'debounce';
 			import { QueryStore } from '@evidence-dev/query-store';
 			
-			const queryFunc = (query, id) => profile(__db.query, query, { query_name: id });
+			const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
 
 			${prerendered_query_stores.join('\n')}
 			${reactive_query_stores.join('\n')}
@@ -140,7 +134,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
         import { setContext, getContext, beforeUpdate, onDestroy, onMount } from 'svelte';
-		import { writable } from 'svelte/store';
+		import { writable, get } from 'svelte/store';
         
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
