@@ -306,7 +306,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 				this.publish();
 			},
-			() => this.#exec(queryWithComment),
+			// @ts-expect-error undocumented param
+			() => this.#exec(queryWithComment, `${this.id}_length`),
 			this.#setError
 		);
 	};
@@ -327,7 +328,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 				this.publish();
 			},
-			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`),
+			// @ts-expect-error undocumented param
+			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`, `${this.id}_metadata`),
 			this.#setError
 		);
 	};
