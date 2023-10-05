@@ -197,7 +197,7 @@ importers:
   packages/core-components:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.7
+        specifier: workspace:2.0.0-usql.8
         version: link:../component-utilities
       '@evidence-dev/query-store':
         specifier: workspace:^
@@ -432,10 +432,10 @@ importers:
         specifier: workspace:2.0.0-usql.16
         version: link:../plugin-connector
       '@evidence-dev/preprocess':
-        specifier: workspace:4.0.0-usql.11
+        specifier: workspace:4.0.0-usql.12
         version: link:../preprocess
       '@evidence-dev/query-store':
-        specifier: 'workspace:'
+        specifier: workspace:2.0.0-usql.0
         version: link:../query-store
       '@evidence-dev/telemetry':
         specifier: 'workspace:'
@@ -490,10 +490,10 @@ importers:
         version: 4.1.2
     devDependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.7
+        specifier: workspace:2.0.0-usql.8
         version: link:../component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:2.0.0-usql.11
+        specifier: workspace:2.0.0-usql.12
         version: link:../core-components
       '@evidence-dev/db-orchestrator':
         specifier: workspace:3.0.0-usql.7
@@ -607,7 +607,7 @@ importers:
   packages/plugin-connector:
     dependencies:
       '@evidence-dev/universal-sql':
-        specifier: workspace:2.0.0-usql.9
+        specifier: 'workspace:'
         version: link:../universal-sql
       '@types/estree':
         specifier: ^1.0.1
@@ -912,10 +912,10 @@ importers:
   sites/example-project:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.7
+        specifier: workspace:2.0.0-usql.8
         version: link:../../packages/component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:2.0.0-usql.11
+        specifier: workspace:2.0.0-usql.12
         version: link:../../packages/core-components
       '@evidence-dev/duckdb':
         specifier: workspace:1.0.0-usql.3
@@ -924,7 +924,7 @@ importers:
         specifier: workspace:2.0.0-usql.16
         version: link:../../packages/plugin-connector
       '@evidence-dev/query-store':
-        specifier: workspace:^1.0.0
+        specifier: workspace:^2.0.0-usql.0
         version: link:../../packages/query-store
       '@evidence-dev/telemetry':
         specifier: 1.0.5
@@ -1030,10 +1030,10 @@ importers:
   sites/test-env:
     dependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.7
+        specifier: workspace:2.0.0-usql.8
         version: link:../../packages/component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:2.0.0-usql.11
+        specifier: workspace:2.0.0-usql.12
         version: link:../../packages/core-components
       '@evidence-dev/csv':
         specifier: workspace:1.0.0-usql.4
@@ -1042,7 +1042,7 @@ importers:
         specifier: workspace:1.0.0-usql.3
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:20.0.0-usql.25
+        specifier: workspace:20.0.0-usql.26
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
         specifier: workspace:2.0.0-usql.1
