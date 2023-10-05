@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import fs from 'fs/promises';
 import path from 'path';
@@ -12,8 +13,12 @@ import { z } from 'zod';
  */
 export const execSource = async (source, supportedDbs, outDir) => {
 	if (!(source.type in supportedDbs)) {
-		// TODO: Make this error message better
-		throw new Error(`Unsupported database type: ${source.type}`);
+		const errMsg = chalk.red(
+			`[!] ${chalk.bold(`"${source.type}"`)} does not have an adapter installed, ${
+				source.name
+			} will only contain empty results.`
+		);
+		throw new Error(errMsg);
 	}
 
 	// TODO: What is a good way to determine this?

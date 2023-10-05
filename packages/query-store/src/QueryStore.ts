@@ -2,6 +2,7 @@ import { AbstractStore } from './abstract.store.js';
 import type {
 	AggFunction,
 	ColumnMetadata,
+	MaybePromise,
 	QueryResult,
 	QueryStoreOpts,
 	QueryStoreValue,
@@ -55,6 +56,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return Array.from(this.#columns);
 	}
 
+	get _evidenceColumnTypes() {
+		//@ts-expect-error This implicitly is set on the return value of #exec
+		return Array.from(this.#values._evidenceColumnTypes);
+	}
+
 	/** Has #fetchData been executed? */
 	#loaded = false;
 	get loaded() {
@@ -92,6 +98,32 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#mockResult: QueryResult = {};
 
 	readonly id: string;
+
+	#error: Error | unknown;
+
+	#setError = (e: Error | unknown): void => {
+		console.debug(`QueryStore encountered a non-fatal error`, e);
+		this.#error = e;
+
+		if (e) {
+			// This needs some testing; might cause a race, but we want to prevent the query from loading anything at this point.
+			this.#length = 0;
+			this.#lengthLoaded = false;
+			this.#lengthLoading = false;
+		}
+
+		if (this.opts.errorNotifier) this.opts.errorNotifier(this.error!);
+
+		this.publish();
+	};
+
+	get error() {
+		if (this.#error !== undefined) {
+			if (this.#error instanceof Error) return this.#error;
+			return new Error('Query encountered an error', { cause: this.#error });
+		}
+		return undefined;
+	}
 
 	constructor(
 		query: string | Query,
@@ -217,23 +249,44 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		if (this.#loading || this.#loaded) {
 			return;
 		}
+		if (this.#error) {
+			console.debug('Refusing to execute data query; store has an error state.');
+			return;
+		}
 		this.#loading = true;
 		this.publish();
 
 		const queryWithComment = `--data\n${this.#query.toString()}`;
 
-		return handleMaybePromise<QueryResult[]>((result) => {
-			this.#values = result;
-			this.#loading = false;
-			this.#loaded = true;
-			return this.#fetchLength();
-		}, this.#exec(queryWithComment));
+		return handleMaybePromise<QueryResult[], unknown>(
+			(result) => {
+				this.#values = result;
+				this.#loading = false;
+				this.#loaded = true;
+				return this.#fetchLength();
+			},
+			() => this.#exec(queryWithComment),
+			this.#setError
+		);
 	};
 
 	#fetchLength = () => {
 		if (this.#lengthLoading || this.#lengthLoaded) {
 			return;
 		}
+		if (this.#error) {
+			console.debug('Refusing to execute length query; store has an error state.');
+			return;
+		}
+
+		// No need to run the length query if we already have the values available
+		if (!this.#values.length && this.#loaded) {
+			this.#length = this.#values.length;
+			this.#lengthLoaded = true;
+			this.publish();
+			return;
+		}
+
 		this.#lengthLoading = true;
 		this.publish();
 
@@ -243,27 +296,40 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			.from('original');
 		const queryWithComment = `--len\n${countQuery}`;
 
-		return handleMaybePromise<QueryResult[]>((result) => {
-			const [row] = result;
+		return handleMaybePromise<QueryResult[], unknown>(
+			(result) => {
+				const [row] = result;
 
-			this.#length = row.length as number;
-			this.#lengthLoaded = true;
-			this.#lengthLoading = false;
+				this.#length = row.length as number;
+				this.#lengthLoaded = true;
+				this.#lengthLoading = false;
 
-			this.publish();
-		}, this.#exec(queryWithComment));
+				this.publish();
+			},
+			() => this.#exec(queryWithComment),
+			this.#setError
+		);
 	};
 
 	#fetchMetadata = () => {
-		return handleMaybePromise((queryResult: QueryResult[]) => {
-			this.#columns = queryResult.map((row) => ({
-				name: row.column_name!.toString(),
-				type: row.column_type!.toString()
-			}));
-			this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
+		if (this.#error) {
+			console.debug('Refusing to execute metadata query; store has an error state.');
+			return;
+		}
 
-			this.publish();
-		}, this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`));
+		return handleMaybePromise(
+			(queryResult: QueryResult[]) => {
+				this.#columns = queryResult.map((row) => ({
+					name: row.column_name!.toString(),
+					type: row.column_type!.toString()
+				}));
+				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
+
+				this.publish();
+			},
+			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`),
+			this.#setError
+		);
 	};
 
 	/////////

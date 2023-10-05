@@ -1,6 +1,5 @@
 <script>
-    let queryString = `SELECT 1`.trim()
-    , tempQueryString = queryString + ""
+    let queryString = `SELECT 1`.trim(), tempQueryString = queryString + ""
 </script>
 
 This page contains a simple demo query console for the new Universal SQL engine for Evidence.
