@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { buildParquetFromResultSet } from '@evidence-dev/universal-sql';
 import fs from 'fs/promises';
 import path from 'path';
@@ -11,8 +12,12 @@ import { performance } from 'perf_hooks';
  */
 export const execSource = async (source, supportedDbs, outDir) => {
 	if (!(source.type in supportedDbs)) {
-		// TODO: Make this error message better
-		throw new Error(`Unsupported database type: ${source.type}`);
+		const errMsg = chalk.red(
+			`[!] ${chalk.bold(`"${source.type}"`)} does not have an adapter installed, ${
+				source.name
+			} will only contain empty results.`
+		);
+		throw new Error(errMsg);
 	}
 
 	const db = supportedDbs[source.type];

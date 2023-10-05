@@ -2,9 +2,7 @@ export function profile(f, ...args) {
 	const before = performance.now();
 	const complete = () => {
 		const after = performance.now();
-		console.groupCollapsed(`${f.name} took ${(after - before).toFixed(0)}ms`);
-		console.log(args);
-		console.groupEnd();
+		console.debug(`${f.name} took ${(after - before).toFixed(0)}ms`);
 	};
 	// Attempt to retain `this` scope based on where profile is called
 	const r = f.call(this, ...args);

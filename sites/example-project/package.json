@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.0.0-usql.20",
+	"version": "3.0.0-usql.21",
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
@@ -8,10 +8,11 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.7",
-		"@evidence-dev/core-components": "workspace:2.0.0-usql.11",
+		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.8",
+		"@evidence-dev/core-components": "workspace:2.0.0-usql.12",
 		"@evidence-dev/duckdb": "workspace:1.0.0-usql.3",
 		"@evidence-dev/plugin-connector": "workspace:2.0.0-usql.16",
+		"@evidence-dev/query-store": "workspace:^2.0.0-usql.0",
 		"@evidence-dev/telemetry": "1.0.5",
 		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.9",
 		"@fontsource/spectral": "^5.0.3",

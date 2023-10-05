@@ -1,0 +1,32 @@
+{
+	"name": "@evidence-dev/query-store",
+	"version": "2.0.0-usql.0",
+	"description": "",
+	"main": "dist/index.js",
+	"source": "./src/index.ts",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"build": "tsc -p ./tsconfig.json",
+		"watch": "tsc -p ./tsconfig.json --watch",
+		"test": "vitest --run",
+		"test:watch": "vitest"
+	},
+	"keywords": [],
+	"author": "The Evidence Engineering Team",
+	"license": "MIT",
+	"devDependencies": {
+		"typescript": "^5.2.2",
+		"vitest": "^0.34.1"
+	},
+	"dependencies": {
+		"@evidence-dev/universal-sql": "workspace:",
+		"@sqltools/formatter": "^1.2.5",
+		"@uwdata/mosaic-sql": "^0.3.2"
+	},
+	"targets": {
+		"main": {
+			"context": "node"
+		}
+	}
+}

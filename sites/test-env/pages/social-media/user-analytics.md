@@ -1,7 +1,7 @@
 # Not Twitter User Analytics
 
 ```total_users
-SELECT COUNT(*) as userCount FROM users;
+SELECT COUNT(*) as userCount FROM users
 ```
 
 ```users_by_month
@@ -14,8 +14,6 @@ WITH raw as (
     ORDER BY 2 desc
 )
 SELECT userCount, userCount - LAG(userCount, -1) OVER (order by m desc) as delta, m from raw
-;
-
 ```
 
 <BigValue title="Total Users" data={total_users} value="userCount" />
@@ -27,7 +25,7 @@ SELECT userCount, userCount - LAG(userCount, -1) OVER (order by m desc) as delta
 </Chart>
 
 ```users_by_gender
-SELECT COUNT(*) userCount, gender FROM users group by 2 order by 2 asc;
+SELECT COUNT(*) userCount, gender FROM users group by 2 order by 2 asc
 ```
 
 <BarChart
@@ -55,7 +53,6 @@ SELECT  AVG(user_likes) as avg_likes_given,
         AVG(user_comments) as avg_comments,
         AVG(user_posts) as avg_posts
 FROM USER_METRICS
-;
 ```
 
 <BigValue title="Average Likes Given" data={avg_user_engagement} value="avg_likes_given" />
