@@ -57,6 +57,20 @@
 	}}
 />
 
+<Story
+	name="Crowded (Explicit X Type) (Horizontal)"
+	args={{
+		xType: 'category',
+		swapXY: true,
+		data: genSeries({
+			...defaultGenSeriesOpts,
+			minSeriesLen: 15,
+			maxSeriesLen: 15,
+			minSeriesCount: 4
+		}).data
+	}}
+/>
+
 <!-- 
 	This story doesn't work because our series mocking currently doesn't include evidenceColumnTypes
 	<Story
@@ -79,4 +93,4 @@
 		data: MissingYCase.data,
 		...MissingYCase.keys
 	}}
-/>>
+/>

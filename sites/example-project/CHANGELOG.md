@@ -1,5 +1,16 @@
 # @evidence-dev/components
 
+## 2.6.3
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/component-utilities@1.1.3
+
 ## 2.6.2
 
 ### Patch Changes
