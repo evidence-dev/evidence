@@ -1,5 +1,5 @@
 ```orders
-SELECT * FROM test;
+SELECT * FROM test
 ```
 
 <DataTable data={orders} />
