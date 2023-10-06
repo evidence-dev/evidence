@@ -84,7 +84,9 @@ const getCredentials = (database = {}) => {
 			projectId: database.project_id ?? getEnv(envMap, 'projectId'),
 			credentials: {
 				client_email: database.client_email ?? getEnv(envMap, 'credentials', 'clientEmail'),
-				private_key: (database.private_key ?? getEnv(envMap, 'credentials', 'privateKey'))?.replace(/\\n/g, '\n').trim()
+				private_key: (database.private_key ?? getEnv(envMap, 'credentials', 'privateKey'))
+					?.replace(/\\n/g, '\n')
+					.trim()
 			}
 		};
 	}
