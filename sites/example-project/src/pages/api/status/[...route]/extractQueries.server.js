@@ -43,12 +43,38 @@ const updateDirectoriesandStatus = function (queries, routeHash) {
 	return status;
 };
 
-export const getStatusAndExtractQueries = function (route) {
+const extractUrlParametersFromReferer = (route, referer) => {
+	const routeSegments = route.split('/');
+	const refererPath = new URL(referer).pathname;
+	const refererSegments = refererPath.split('/');
+	const parameters = {};
+	for (let i = 0; i < routeSegments.length; i++) {
+		const segment = routeSegments[i];
+		if (segment.startsWith('[') && segment.endsWith(']')) {
+			const paramName = segment.substring(1, segment.length - 1);
+			const paramValue = refererSegments[i];
+			parameters[paramName] = paramValue;
+		}
+	}
+	return parameters;
+}
+
+export const getStatusAndExtractQueries = function (event) {
+	const { params, request } = event;
+	const route = `/${event.params.route}`;
+	const requestHeaders = [...request.headers].reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+	const routeParameters = extractUrlParametersFromReferer(route, requestHeaders['referer']);
+
 	let routeHash = md5(route);
 	let fileRoute = `./src/pages/${route}/+page.md`;
 	let content = fs.readFileSync(fileRoute, 'utf-8');
 
 	let partialInjectedContent = preprocessor.injectPartials(content);
+	for (const [key, value] of Object.entries(routeParameters)) {
+		const regex = new RegExp('{{' + key + '}}', 'g');
+		partialInjectedContent = partialInjectedContent.replace(regex, value);
+	}
+
 	let queries = preprocessor.extractQueries(partialInjectedContent);
 
 	// Handle query chaining:
