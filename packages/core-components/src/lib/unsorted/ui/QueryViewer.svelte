@@ -105,11 +105,9 @@
 				on:click={toggleResults}
 			>
 				{#if error}
-					{#if dev && error.message === 'Missing database credentials'}
-						{error.message}.
+					{error.message}
+					{#if dev && error.message === 'Missing database connection.'}
 						<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
-					{:else}
-						{error.message}
 					{/if}
 				{:else if nRecords > 0}
 					<ChevronToggle toggled={$showResults} color="#3488e9" />

@@ -7,7 +7,7 @@
 	export let error;
 	export let chartType;
 
-	const MissingCredentialsError = 'SQL Error: Missing database credentials';
+	const MissingCredentialsError = 'SQL Error: Missing database connection.';
 </script>
 
 <div
