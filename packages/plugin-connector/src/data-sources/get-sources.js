@@ -42,13 +42,13 @@ export const getSourcesDir = async () => {
 export const loadSourceOptions = (sourceName) => {
 	/** @type {any} */
 	const out = {};
-	const keyRegex = /^EVIDENCE_SOURCE_([a-zA-Z0-1_]+)$/;
+	const keyRegex = /^EVIDENCE_SOURCE__([a-zA-Z0-1_]+)$/;
 	for (const [key, value] of Object.entries(process.env)) {
 		const parts = keyRegex.exec(key);
 		if (!parts) continue;
 		if (parts?.length < 2) continue;
 		if (!parts[1].toLowerCase().startsWith(sourceName.toLowerCase())) continue;
-		const rawOptKey = parts[1].substring(sourceName.length + 1).split('_');
+		const rawOptKey = parts[1].substring(sourceName.length + 2).split('__');
 		let t = out;
 
 		rawOptKey.forEach((key, i) => {
