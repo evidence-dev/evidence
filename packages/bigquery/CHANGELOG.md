@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 1.3.2
+
+### Patch Changes
+
+- 518056e8: fix for private key formatting in production
+
 ## 1.3.1
 
 ### Patch Changes
