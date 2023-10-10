@@ -2,9 +2,10 @@
 	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
 	export let settings;
+	export let datasourceSettings;
 </script>
 
-{#if !settings.credentials}
+{#if !datasourceSettings.length}
 	<p>You'll need to connect to a database before deploying to Vercel.</p>
 {:else if !settings.gitRepo}
 	<p>You'll need to set up a git repo before deploying to Vercel.</p>
@@ -41,7 +42,7 @@
 	<div class="separator">Environment Variables</div>
 	<p>Copy paste the following into environment variables</p>
 
-	<EnvironmentVarListing {settings} />
+	<EnvironmentVarListing {datasourceSettings} />
 
 	<h2>Optional</h2>
 	<ol>

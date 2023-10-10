@@ -1,7 +1,8 @@
 <script>
+	/** @type {import("./$types").PageLoadData} */
 	export let data;
-	let { settings, customFormattingSettings } = data;
-	$: ({ settings, customFormattingSettings } = data);
+	let { settings, customFormattingSettings, datasourceSettings } = data;
+	$: ({ settings, customFormattingSettings, datasourceSettings } = data);
 
 	import { dev } from '$app/environment';
 
@@ -16,7 +17,7 @@
 {#if dev}
 	<!-- eslint-disable no-undef -->
 	<VersionControlPanel {settings} />
-	<DeploySettingsPanel {settings} />
+	<DeploySettingsPanel {settings} {datasourceSettings} />
 	<FormattingSettingsPanel {settings} {customFormattingSettings} />
 	<TelemetrySettingsPanel {settings} />
 	<br />

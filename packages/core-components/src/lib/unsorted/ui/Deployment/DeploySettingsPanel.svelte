@@ -4,6 +4,7 @@
 
 <script>
 	export let settings;
+	export let datasourceSettings;
 	import EvidenceDeploy from './EvidenceDeploy.svelte';
 	import NetlifyDeploy from './NetlifyDeploy.svelte';
 	import VercelDeploy from './VercelDeploy.svelte';
@@ -39,7 +40,7 @@
 		</div>
 		{#if selectedDeployment.formComponent}
 			<div class="panel" transition:slide|local>
-				<svelte:component this={selectedDeployment.formComponent} {settings} />
+				<svelte:component this={selectedDeployment.formComponent} {settings} {datasourceSettings} />
 			</div>
 		{/if}
 	</div>
