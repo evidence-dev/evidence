@@ -1,5 +1,35 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.12
+
+### Patch Changes
+
+- 078fca3b: Error handling via QueryStores is more effective now
+- e9a63c71: Add loading states to DataTable and Chart
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/query-store@2.0.0-usql.0
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+
+## 2.0.0-usql.11
+
+### Patch Changes
+
+- Updated dependencies [52e114cc]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+
+## 2.0.0-usql.10
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/tailwind@1.0.0-usql.2
+
 ## 2.0.0-usql.9
 
 ### Patch Changes

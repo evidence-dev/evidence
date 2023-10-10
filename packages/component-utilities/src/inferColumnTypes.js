@@ -1,5 +1,7 @@
 // To-do, replace with import from db-commons
 
+import { QueryStore } from '@evidence-dev/query-store';
+
 var EvidenceType;
 (function (EvidenceType) {
 	EvidenceType['BOOLEAN'] = 'boolean';
@@ -47,6 +49,9 @@ export const inferValueType = function (columnValue) {
 };
 
 export default function inferColumnTypes(rows) {
+	if (rows instanceof QueryStore) {
+		return rows._evidenceColumnTypes;
+	}
 	if (rows && rows.length > 0) {
 		let columns = Object.keys(rows[0]);
 		let columnTypes = columns?.map((column) => {

@@ -110,7 +110,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 		const typeFidelity = TypeFidelity.PRECISE;
 		const evidenceType = nativeTypeToEvidenceType(field.columnType);
 		return {
-			name: field.name,
+			name: name: field.name.toLowerCase(),
 			evidenceType,
 			typeFidelity
 		};
@@ -119,6 +119,8 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<MySQLOptions>} */
 const runQuery = async (queryString, database) => {
+	/** @type {import("mysql2").Pool} */
+	let pool;
 	try {
 		/** @type {import("mysql2").PoolOptions} */
 		const credentials = {
@@ -146,7 +148,7 @@ const runQuery = async (queryString, database) => {
 			}
 		}
 
-		const pool = mysql.createPool(credentials);
+		pool = mysql.createPool(credentials);
 		const promisePool = pool.promise();
 		const [result, fields] = await promisePool.query(queryString);
 
@@ -160,6 +162,11 @@ const runQuery = async (queryString, database) => {
 			throw err.message.replace(/\n|\r/g, ' ');
 		} else {
 			throw err.replace(/\n|\r/g, ' ');
+		}
+	} finally {
+		// Make sure we close the connetion
+		if (pool) {
+			await pool.end();
 		}
 	}
 };

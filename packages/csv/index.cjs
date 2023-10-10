@@ -12,6 +12,6 @@ module.exports.getRunner = () => {
 		if (!queryPath.endsWith('.csv')) return null;
 		// Use DuckDBs auto CSV loading
 		// https://duckdb.org/docs/data/csv/overview.html
-		return runQuery(`SELECT * FROM '${queryPath}'`);
+		return runQuery(`SELECT * FROM '${queryPath}'`, { filename: ':memory:' });
 	};
 };

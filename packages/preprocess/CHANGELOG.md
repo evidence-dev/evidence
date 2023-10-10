@@ -1,5 +1,26 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.12
+
+### Major Changes
+
+- e1facffd: Add QueryStore concept
+
+  - Loads data as it is requested, rather than all at page-load / build
+  - Uses duckdb to get data length / column data
+  - Ties metadata, mutation queries, and data together to make component development easier
+  - Provides information regarding loading (and query errors in the future)
+
+### Patch Changes
+
+- e9a63c71: Add loading states to DataTable and Chart
+
+## 4.0.0-usql.11
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+
 ## 4.0.0-usql.10
 
 ### Patch Changes

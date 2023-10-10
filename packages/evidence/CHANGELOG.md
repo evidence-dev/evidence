@@ -1,5 +1,59 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.26
+
+### Major Changes
+
+- e1facffd: Add QueryStore concept
+
+  - Loads data as it is requested, rather than all at page-load / build
+  - Uses duckdb to get data length / column data
+  - Ties metadata, mutation queries, and data together to make component development easier
+  - Provides information regarding loading (and query errors in the future)
+
+### Patch Changes
+
+- e9a63c71: Add loading states to DataTable and Chart
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/preprocess@4.0.0-usql.12
+  - @evidence-dev/query-store@2.0.0-usql.0
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.12
+
+## 20.0.0-usql.25
+
+### Patch Changes
+
+- 5be92c14: fix spelling mistake
+- Updated dependencies [5be92c14]
+- Updated dependencies [239a18d7]
+- Updated dependencies [52e114cc]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/plugin-connector@2.0.0-usql.16
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+  - @evidence-dev/universal-sql@2.0.0-usql.9
+  - @evidence-dev/db-orchestrator@3.0.0-usql.7
+  - @evidence-dev/core-components@2.0.0-usql.11
+
+## 20.0.0-usql.24
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [7c8a9f9d]
+- Updated dependencies [afbb50fc]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/plugin-connector@2.0.0-usql.15
+  - @evidence-dev/core-components@2.0.0-usql.10
+  - @evidence-dev/db-orchestrator@3.0.0-usql.6
+  - @evidence-dev/preprocess@4.0.0-usql.11
+  - @evidence-dev/tailwind@1.0.0-usql.2
+  - @evidence-dev/universal-sql@2.0.0-usql.8
+
 ## 20.0.0-usql.23
 
 ### Patch Changes

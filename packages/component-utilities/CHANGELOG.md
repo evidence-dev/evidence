@@ -1,5 +1,26 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.8
+
+### Patch Changes
+
+- 078fca3b: Error handling via QueryStores is more effective now
+- e9a63c71: Add loading states to DataTable and Chart
+
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- 52e114cc: move date standardization
+- ca1f90b3: Improved Logging
+
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- 7c4249c0: fix falsy dates in `convertColumnToDate`
+- 20127231: Bump all versions so version pinning works
+
 ## 2.0.0-usql.5
 
 ### Patch Changes

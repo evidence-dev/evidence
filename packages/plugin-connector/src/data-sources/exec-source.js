@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { buildParquetFromResultSet } from '@evidence-dev/universal-sql';
 import fs from 'fs/promises';
 import path from 'path';
@@ -11,38 +12,38 @@ import { performance } from 'perf_hooks';
  */
 export const execSource = async (source, supportedDbs, outDir) => {
 	if (!(source.type in supportedDbs)) {
-		// TODO: Make this error message better
-		throw new Error(`Unsupported database type: ${source.type}`);
+		const errMsg = chalk.red(
+			`[!] ${chalk.bold(`"${source.type}"`)} does not have an adapter installed, ${
+				source.name
+			} will only contain empty results.`
+		);
+		throw new Error(errMsg);
 	}
 
 	const db = supportedDbs[source.type];
 	const runner = await db.factory(source.options, source.sourceDirectory);
 
 	console.log(`Executing ${source.name}`);
-	const results = await Promise.all(
-		source.queries.map(async (q) => {
-			const filename = q.filepath.split(path.sep).pop();
-			console.log(` >| Executing ${filename}`);
-			const before = performance.now();
-			return {
-				...q,
-				result: await runner(q.content, q.filepath).then((x) => {
-					console.log(
-						` <| Finished ${filename} (took ${(performance.now() - before).toFixed(2)}ms)`
-					);
-					return x;
-				})
-			};
-		})
-	);
-	console.log(`Finished ${source.name}`);
-
 	/** @type {Set<string>} */
 	const outputFilenames = new Set();
 
-	for (const query of results) {
-		const { result } = query;
-		if (!result) continue;
+	const sourceBefore = performance.now();
+	for (const query of source.queries) {
+		const filename = query.filepath.split(path.sep).pop();
+		console.log(` >| Executing ${filename}`);
+		const before = performance.now();
+		const result = await runner(query.content, query.filepath);
+		console.log(` || Executed ${filename} (took ${(performance.now() - before).toFixed(2)}ms)`);
+		if (!result) {
+			console.log(
+				` <| Finished ${filename}. Returned no results! (took ${(
+					performance.now() - before
+				).toFixed(2)}ms)\n`
+			);
+			continue;
+		}
+
+		console.log(` || Writing ${filename} as parquet.`);
 		const parquetBuffer = await buildParquetFromResultSet(result.columnTypes, result.rows);
 
 		const queryDirectory = path.dirname(query.filepath);
@@ -58,7 +59,15 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			path.join(outDir, outputSubdir, query.name + '.schema.json'),
 			JSON.stringify(result.columnTypes)
 		);
+
+		console.log(
+			` <| Finished ${filename} Returned ${result?.rows.length} rows. (took ${(
+				performance.now() - before
+			).toFixed(2)}ms)\n`
+		);
 	}
+
+	console.log(`Finished ${source.name} (took ${(performance.now() - sourceBefore).toFixed(2)}ms)`);
 
 	return Array.from(outputFilenames);
 };

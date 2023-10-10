@@ -1,10 +1,6 @@
 import { tidy, mutate } from '@tidyjs/tidy';
 
 export function standardizeDateString(date) {
-	if (date instanceof Date) {
-		return date.toISOString().slice(0, -1);
-	}
-
 	if (date && typeof date === 'string') {
 		// Parses an individual string into a JS date object
 

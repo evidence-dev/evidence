@@ -1,5 +1,44 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.21
+
+### Patch Changes
+
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/query-store@2.0.0-usql.0
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.12
+
+## 3.0.0-usql.20
+
+### Patch Changes
+
+- Updated dependencies [5be92c14]
+- Updated dependencies [239a18d7]
+- Updated dependencies [52e114cc]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/plugin-connector@2.0.0-usql.16
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+  - @evidence-dev/universal-sql@2.0.0-usql.9
+  - @evidence-dev/core-components@2.0.0-usql.11
+
+## 3.0.0-usql.19
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [7c8a9f9d]
+- Updated dependencies [afbb50fc]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/plugin-connector@2.0.0-usql.15
+  - @evidence-dev/core-components@2.0.0-usql.10
+  - @evidence-dev/duckdb@1.0.0-usql.3
+  - @evidence-dev/universal-sql@2.0.0-usql.8
+
 ## 3.0.0-usql.18
 
 ### Patch Changes

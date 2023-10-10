@@ -1,5 +1,30 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [1fbf70d9]
+  - @evidence-dev/mysql@1.0.0-usql.3
+
+## 3.0.0-usql.6
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [08b1907f]
+- Updated dependencies [20127231]
+  - @evidence-dev/csv@1.0.0-usql.4
+  - @evidence-dev/bigquery@2.0.0-usql.2
+  - @evidence-dev/db-commons@0.2.1-usql.1
+  - @evidence-dev/duckdb@1.0.0-usql.3
+  - @evidence-dev/mssql@1.0.0-usql.2
+  - @evidence-dev/mysql@1.0.0-usql.2
+  - @evidence-dev/postgres@1.0.0-usql.2
+  - @evidence-dev/redshift@1.0.0-usql.2
+  - @evidence-dev/snowflake@1.0.0-usql.2
+  - @evidence-dev/sqlite@2.0.0-usql.3
+
 ## 3.0.0-usql.5
 
 ### Patch Changes

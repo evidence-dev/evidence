@@ -205,7 +205,7 @@ prog
 	.example('npx evidence build:sources --changed')
 	.example('npx evidence build:sources --sources needful_things --queries orders,reviews')
 	.example('npx evidence build:sources --queries needful_things.orders,needful_things.reviews')
-	.example('npx evidence build:sources --sorces needful_things,social_media')
+	.example('npx evidence build:sources --sources needful_things,social_media')
 	.action(async (opts) => {
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;

@@ -6,7 +6,8 @@ export const QueryResultSchema = z
 		// is a record with string keys. If the connector returns some
 		// inconsistent array (e.g. [{}, 1]), it will not detect the
 		// invalid row.
-		rows: z.array(z.any()).refine(
+		/** @type {z.ZodEffects<z.ZodAny, Record<string,unknown>[], any>} */
+		rows: z.any().refine(
 			(data) => {
 				// result is not an array, fail
 				if (!Array.isArray(data)) return false;

@@ -1,5 +1,2 @@
 name: csv
 type: csv
-
-options:
-    filename: ./csv.csv
