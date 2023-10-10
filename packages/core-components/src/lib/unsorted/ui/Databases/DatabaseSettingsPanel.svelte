@@ -5,11 +5,13 @@
 <script>
 	import BigqueryForm from './BigqueryForm.svelte';
 	import PostgresForm from './PostgresForm.svelte';
+	import TrinoForm from './TrinoForm.svelte';
 	import SnowflakeForm from './SnowflakeForm.svelte';
 	import RedshiftForm from './RedshiftForm.svelte';
 	import MysqlForm from './MysqlForm.svelte';
 	import SqliteForm from './SqliteForm.svelte';
 	import DuckdbForm from './DuckdbForm.svelte';
+	import DatabricksForm from './DatabricksForm.svelte';
 	import CSVForm from './CSVForm.svelte';
 	import MSSQLForm from './MSSQLForm.svelte';
 
@@ -33,11 +35,13 @@
 			docsHref: 'https://docs.evidence.dev/core-concepts/data-sources/#bigquery'
 		},
 		{ id: 'postgres', name: 'PostgreSQL', formComponent: PostgresForm },
+		{ id: 'trino', name: 'Trino', formComponent: TrinoForm },
 		{ id: 'mysql', name: 'MySQL', formComponent: MysqlForm },
 		{ id: 'redshift', name: 'Redshift', formComponent: RedshiftForm }, // Redshift uses the postgres connector under the hood
 		{ id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm },
 		{ id: 'sqlite', name: 'SQLite', formComponent: SqliteForm },
 		{ id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm },
+		{ id: 'databricks', name: 'Databricks', formComponent: DatabricksForm },
 		{ id: 'csv', name: 'CSV', formComponent: CSVForm },
 		{ id: 'mssql', name: 'SQL Server', formComponent: MSSQLForm }
 	];
@@ -101,6 +105,10 @@
 			<p>
 				These credentials will be used when running locally. For your production environment, see
 				the deployment panel.
+			</p>
+			<p>
+				To use the demo database included with the starter template, choose <code>DuckDB</code> and
+				<code>needful_things.duckdb</code>
 			</p>
 			<h3>Connection Type</h3>
 			<select

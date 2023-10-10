@@ -26,10 +26,12 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
+- [Trino](#trino)
 - [Microsoft SQL Server](#mssql)
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
+- [Databricks](#databricks)
 - [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
@@ -102,8 +104,8 @@ The Browser-Based SSO method uses a browser-based SSO flow to authenticate. To u
 The Native SSO through Okta method uses Okta to authenticate. To use this method, you will need to have an Okta account with MFA disabled connected to your Snowflake account.
 
 ### Redshift
-
 The Redshift connector uses the Postgres connector under the hood, so configuration options are similar.
+
 ### PostgreSQL
 
 #### SSL
@@ -122,6 +124,32 @@ postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootc
 ```
 
 Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
+
+### Trino
+
+#### Supported Authentication Types
+
+While Trino supports multiple [authentication types](https://trino.io/docs/current/security/authentication-types.html), the connector does currently only support the password based ones. Behind the scenes, the connector is using [Basic access authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) for communicating with Trino.
+
+#### HTTPS
+
+To connect to a Trino installation that is accessible via HTTPS, you need to set the SSL option to `true` and the port to `443`/`8443` (unless you are using a non standard port for HTTPS, in which case you should use that instead).
+
+#### Starburst Quickstart
+
+[Starburst](https://www.starburst.io/), the company behind Trino, offers a SAAS solution where they run Trino for you. Once you have signed up and created a Trino cluster, you should be able to connect Evidence with the following configuration:
+
+Host: `<YOUR_DOMAIN>-<YOUR_CLUSTER_NAME>.galaxy.starburst.io`
+
+Port: `443`
+
+User: `<YOUR_EMAIL>/accountadmin`
+
+SSL: `true`
+
+Password: The password you use to login to your Starburst account
+
+Alternatively, you can also create a service account at `https://<YOUR_DOMAIN>.galaxy.starburst.io/service-accounts` and use this to connect.
 
 ### Microsoft SQL Server {#mssql}
 
@@ -155,6 +183,9 @@ DuckDB is a local file-based database. It should be stored in the root of your E
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
+### Databricks
+
+Databricks is a cloud-based data lake. Evidence supports connecting to Databricks using a [personal access token](https://docs.databricks.com/en/dev-tools/auth.html#generate-a-token).
 
 #### MotherDuck
 

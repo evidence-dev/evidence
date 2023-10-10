@@ -10,7 +10,7 @@ const AXIS_FORMATTING_CONTEXT = 'axis';
 const VALUE_FORMATTING_CONTEXT = 'value';
 
 export const getCustomFormats = () => {
-	return getContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY).getCustomFormats() || [];
+	return getContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY)?.getCustomFormats() || [];
 };
 
 /**

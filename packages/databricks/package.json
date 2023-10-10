@@ -1,0 +1,19 @@
+{
+	"name": "@evidence-dev/databricks",
+	"version": "0.1.0",
+	"description": "Databricks driver for Evidence projects",
+	"main": "index.cjs",
+	"author": "evidence.dev",
+	"license": "MIT",
+	"scripts": {
+		"test": "uvu test test.js"
+	},
+	"dependencies": {
+		"@evidence-dev/db-commons": "workspace:^",
+		"@databricks/sql": "^1.5.0"
+	},
+	"devDependencies": {
+		"dotenv": "^16.0.1"
+	},
+	"type": "module"
+}

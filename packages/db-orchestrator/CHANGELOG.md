@@ -1,5 +1,39 @@
 # @evidence-dev/db-orchestrator
 
+## 2.3.1
+
+### Patch Changes
+
+- Updated dependencies [518056e8]
+  - @evidence-dev/bigquery@1.3.2
+
+## 2.3.0
+
+### Minor Changes
+
+- 5b5959f9: add databricks connector
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+  - @evidence-dev/databricks@0.1.0
+  - @evidence-dev/postgres@0.3.1
+  - @evidence-dev/trino@0.1.1
+  - @evidence-dev/redshift@0.0.7
+
+## 2.2.5
+
+### Patch Changes
+
+- 615a2498: add clearer error handling to db-orchestrator
+- Updated dependencies [a1fa819e]
+- Updated dependencies [d92008d7]
+  - @evidence-dev/snowflake@0.3.2
+  - @evidence-dev/sqlite@1.2.1
+  - @evidence-dev/mysql@0.3.1
+
 ## 2.2.4
 
 ### Patch Changes

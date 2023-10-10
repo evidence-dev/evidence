@@ -1,5 +1,18 @@
 # evidence-docs
 
+## 2.0.5
+
+### Patch Changes
+
+- 5b5959f9: add databricks connector
+- c2540d2f: Add support for Trino as a data source
+
+## 2.0.4
+
+### Patch Changes
+
+- ca551518: Add support for markdown partials
+
 ## 2.0.3
 
 ### Patch Changes

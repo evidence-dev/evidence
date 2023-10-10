@@ -5,6 +5,7 @@
 <script>
 	import Chart from './Chart.svelte';
 	import Bar from './Bar.svelte';
+	import { onMount } from 'svelte';
 
 	export let data = undefined;
 	export let x = undefined;
@@ -31,6 +32,25 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let swapXY = false;
+
+	let xEvidenceType = undefined;
+
+	onMount(() => {
+		xEvidenceType = data?.[0]?._evidenceColumnTypes?.find(
+			(ect) => ect.name?.toLowerCase() === x?.toLowerCase()
+		)?.evidenceType;
+	});
+
+	$: if (!showAllXaxisLabelsManuallySet)
+		showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
+
+	/** @type {boolean} */
+	export let showAllXAxisLabels;
+	const showAllXaxisLabelsManuallySet = typeof showAllXAxisLabels !== 'undefined';
+
+	$: if (typeof showAllXAxisLabels === 'string')
+		showAllXAxisLabels = showAllXAxisLabels?.toLowerCase() === 'true';
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -79,6 +99,7 @@
 	{sort}
 	{stacked100}
 	{chartAreaHeight}
+	{showAllXAxisLabels}
 >
 	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
 	<slot />

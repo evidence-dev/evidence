@@ -1,5 +1,71 @@
 # @evidence-dev/components
 
+## 2.6.4
+
+### Patch Changes
+
+- Updated dependencies [1e2fad14]
+  - @evidence-dev/core-components@2.0.4
+
+## 2.6.3
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/component-utilities@1.1.3
+
+## 2.6.2
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+
+## 2.6.1
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+
+## 2.6.0
+
+### Minor Changes
+
+- 883c9ebb: Adds delta content type to DataTable
+- 86b94da9: Add colour scale conditional formatting to DataTable
+
+### Patch Changes
+
+- 798c0395: adds feature to have stepped line & area chart.
+- bdd8df80: remove broken conditional check in extractQueries.server.js
+- 6a9a7ad4: Updates favicon files in browser tab.
+- Updated dependencies [798c0395]
+- Updated dependencies [16112191]
+- Updated dependencies [cdbd1773]
+- Updated dependencies [883c9ebb]
+- Updated dependencies [ef3ec286]
+- Updated dependencies [86b94da9]
+- Updated dependencies [b9d54140]
+- Updated dependencies [80594acd]
+- Updated dependencies [5639ac12]
+- Updated dependencies [4ff7dcac]
+- Updated dependencies [a1fa819e]
+- Updated dependencies [fc07d945]
+- Updated dependencies [a00c7c76]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [acd0be37]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@1.1.1
+
 ## 2.5.1
 
 ### Patch Changes

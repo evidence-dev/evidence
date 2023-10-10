@@ -1,5 +1,79 @@
 # evidence-test-environment
 
+## 2.0.24
+
+### Patch Changes
+
+- Updated dependencies [1e2fad14]
+  - @evidence-dev/core-components@2.0.4
+  - @evidence-dev/evidence@22.0.1
+
+## 2.0.23
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/evidence@22.0.0
+  - @evidence-dev/component-utilities@1.1.3
+
+## 2.0.22
+
+### Patch Changes
+
+- Updated dependencies [6891c4ba]
+  - @evidence-dev/evidence@21.0.3
+
+## 2.0.21
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+  - @evidence-dev/evidence@21.0.2
+
+## 2.0.20
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+  - @evidence-dev/evidence@21.0.1
+
+## 2.0.19
+
+### Patch Changes
+
+- Updated dependencies [798c0395]
+- Updated dependencies [16112191]
+- Updated dependencies [cdbd1773]
+- Updated dependencies [883c9ebb]
+- Updated dependencies [ef3ec286]
+- Updated dependencies [86b94da9]
+- Updated dependencies [b9d54140]
+- Updated dependencies [80594acd]
+- Updated dependencies [ca551518]
+- Updated dependencies [5639ac12]
+- Updated dependencies [4ff7dcac]
+- Updated dependencies [a1fa819e]
+- Updated dependencies [fc07d945]
+- Updated dependencies [a00c7c76]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [ca551518]
+- Updated dependencies [acd0be37]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [b8b5633f]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@1.1.1
+  - @evidence-dev/evidence@21.0.0
+
 ## 2.0.18
 
 ### Patch Changes

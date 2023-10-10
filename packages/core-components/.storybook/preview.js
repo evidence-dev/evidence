@@ -1,3 +1,5 @@
+import '../src/app.postcss';
+
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
 	parameters: {
@@ -8,6 +10,11 @@ const preview = {
 				date: /Date$/
 			}
 		}
+	},
+	argTypes: {
+		data: { table: { disable: true } },
+		evidenceInclude: { table: { disable: true } },
+		series: { table: { disable: true } }
 	}
 };
 

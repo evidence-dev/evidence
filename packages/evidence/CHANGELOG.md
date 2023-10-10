@@ -1,5 +1,81 @@
 # @evidence-dev/evidence
 
+## 22.0.1
+
+### Patch Changes
+
+- Updated dependencies [1e2fad14]
+  - @evidence-dev/core-components@2.0.4
+  - @evidence-dev/db-orchestrator@2.3.1
+
+## 22.0.0
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/db-orchestrator@2.3.0
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/component-utilities@1.1.3
+
+## 21.0.3
+
+### Patch Changes
+
+- 6891c4ba: User projects can now extend svelte.config.js
+
+## 21.0.2
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+
+## 21.0.1
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+
+## 21.0.0
+
+### Patch Changes
+
+- ca551518: Markdown pages are now more specific before being converted to sveltekit page filepaths
+- a1fa819e: bump vulnerable deps
+- ca551518: Add support for markdown partials
+- e7eb0ac2: Improved readability of 404 and 500 error pages
+- b8b5633f: Added manifest.json endpoint
+- Updated dependencies [798c0395]
+- Updated dependencies [16112191]
+- Updated dependencies [cdbd1773]
+- Updated dependencies [883c9ebb]
+- Updated dependencies [ef3ec286]
+- Updated dependencies [86b94da9]
+- Updated dependencies [b9d54140]
+- Updated dependencies [80594acd]
+- Updated dependencies [5639ac12]
+- Updated dependencies [615a2498]
+- Updated dependencies [4ff7dcac]
+- Updated dependencies [a1fa819e]
+- Updated dependencies [fc07d945]
+- Updated dependencies [86635f53]
+- Updated dependencies [a00c7c76]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [ca551518]
+- Updated dependencies [acd0be37]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@1.1.1
+  - @evidence-dev/db-orchestrator@2.2.5
+  - @evidence-dev/preprocess@3.1.2
+
 ## 20.0.1
 
 ### Patch Changes
