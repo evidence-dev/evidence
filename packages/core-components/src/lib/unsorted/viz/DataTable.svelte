@@ -436,7 +436,7 @@
 														safeExtractColumn(column).columnUnitSummary
 													)}
 												{:else}
-													{column.linkLabel}
+													-
 												{/if}
 											{:else}
 												{formatValue(
