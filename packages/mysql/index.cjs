@@ -110,7 +110,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 		const typeFidelity = TypeFidelity.PRECISE;
 		const evidenceType = nativeTypeToEvidenceType(field.columnType);
 		return {
-			name: name: field.name.toLowerCase(),
+			name: field.name.toLowerCase(),
 			evidenceType,
 			typeFidelity
 		};
