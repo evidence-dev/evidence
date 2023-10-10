@@ -823,10 +823,6 @@
 		color: var(--grey-400);
 	}
 
-	th {
-		user-select: none;
-	}
-
 	th.type-indicator {
 		color: var(--grey-400);
 		font-weight: normal;
