@@ -104,8 +104,8 @@ export default (node, option) => {
 		},
 		boxplot: {
 			itemStyle: {
-				borderWidth: 0,
-				borderColor: '#cccccc'
+				borderWidth: 1.5,
+				// borderColor: '#cccccc'
 			}
 		},
 		parallel: {
