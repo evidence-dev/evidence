@@ -821,7 +821,7 @@
 
 {#if !error}
 	<slot />
-	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} />
+	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} />
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

@@ -1,7 +1,7 @@
 {
-	"name": "@evidence-dev/trino",
-	"version": "0.1.1",
-	"description": "Trino driver for Evidence projects",
+	"name": "@evidence-dev/databricks",
+	"version": "0.1.0",
+	"description": "Databricks driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
 	"license": "MIT",
@@ -10,7 +10,10 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:^",
-		"presto-client": "^0.13.0"
+		"@databricks/sql": "^1.5.0"
+	},
+	"devDependencies": {
+		"dotenv": "^16.0.1"
 	},
 	"type": "module"
 }

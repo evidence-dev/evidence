@@ -423,39 +423,33 @@
                         "
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										<a
-											href={row[column.id]}
-											target={column.openInNewTab ? '_blank' : ''}
-											class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-										>
-											{#if column.linkLabel != undefined}
-												{#if row[column.linkLabel] != undefined}
-													{formatValue(
+										{#if column.linkLabel != undefined}
+											{#if row[column.linkLabel] != undefined}
+												{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
+												<a href={row[column.id]} target={column.openInNewTab ? '_blank' : ''} class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+													>{formatValue(
 														row[column.linkLabel],
 														column.fmt
-															? getFormatObjectFromString(
-																	column.fmt,
-																	safeExtractColumn(column).format.valueType
-															  )
-															: safeExtractColumn(column).format,
-														safeExtractColumn(column).columnUnitSummary
-													)}
-												{:else}
-													{column.linkLabel}
-												{/if}
+															? getFormatObjectFromString(column.fmt, labelSummary.format.valueType)
+															: labelSummary.format,
+														labelSummary.columnUnitSummary
+													)}</a
+												>
 											{:else}
-												{formatValue(
-													row[column.id],
-													column.fmt
-														? getFormatObjectFromString(
-																column.fmt,
-																safeExtractColumn(column).format.valueType
-														  )
-														: safeExtractColumn(column).format,
-													safeExtractColumn(column).columnUnitSummary
-												)}
+												-
 											{/if}
-										</a>
+										{:else}
+											{formatValue(
+												row[column.id],
+												column.fmt
+													? getFormatObjectFromString(
+															column.fmt,
+															safeExtractColumn(column).format.valueType
+													  )
+													: safeExtractColumn(column).format,
+												safeExtractColumn(column).columnUnitSummary
+											)}
+										{/if}
 									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
 										<div
 											class="m-0 text-xs font-medium font-ui"
@@ -826,10 +820,6 @@
 	::-ms-input-placeholder {
 		/* Microsoft Edge */
 		color: var(--grey-400);
-	}
-
-	th {
-		user-select: none;
 	}
 
 	th.type-indicator {
