@@ -615,6 +615,9 @@ importers:
       chalk:
         specifier: ^5.2.0
         version: 5.3.0
+      chokidar:
+        specifier: ^3.5.3
+        version: 3.5.3
       svelte:
         specifier: 3.55.0
         version: 3.55.0
