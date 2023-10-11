@@ -71,7 +71,13 @@ export const execSource = async (source, supportedDbs, outDir) => {
 
 		const queryDirectory = path.dirname(query.filepath);
 		const sourcesPath = path.dirname(source.sourceDirectory);
+		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
+
+		// remove potentially old files
+		await fs.rm(path.join(outDir, querySubdir), { recursive: true }).catch(() => {});
+
 		const outputSubdir = queryDirectory.replace(sourcesPath, '');
+
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;

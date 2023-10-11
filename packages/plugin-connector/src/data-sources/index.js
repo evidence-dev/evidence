@@ -35,8 +35,14 @@ async function updateManifest(outputFiles, outDir, datasources) {
 		);
 	}
 
-	// update w/ new queries
 	for (const source in outputFiles) {
+		// remove queries that have been replaced
+		const new_queries = new Set(outputFiles[source].map((file) => path.basename(file, '.parquet')));
+		current_manifest.renderedFiles[source] = current_manifest.renderedFiles[source].filter(
+			(file) => !new_queries.has(path.basename(file, '.parquet'))
+		);
+
+		// update w/ new queries
 		current_manifest.renderedFiles[source] = Array.from(
 			new Set([...outputFiles[source], ...current_manifest.renderedFiles[source]])
 		);
