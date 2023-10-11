@@ -7,7 +7,12 @@ const {
 	Geography
 } = require('@google-cloud/bigquery');
 const { OAuth2Client } = require('google-auth-library');
-const { EvidenceType, TypeFidelity, getEnv } = require('@evidence-dev/db-commons');
+const {
+	EvidenceType,
+	TypeFidelity,
+	getEnv,
+	asyncIterableToBatchedAsyncGenerator
+} = require('@evidence-dev/db-commons');
 
 const envMap = {
 	authenticator: [
@@ -41,37 +46,31 @@ const envMap = {
 };
 
 /**
- * Standardizes the result of a BigQuery query
- * @param {Record<string, unknown>[]} result
- * @returns {Record<string, unknown>[]}
+ * Standardizes a row from a BigQuery query
+ * @param {Record<string, unknown>} result
+ * @returns {Record<string, unknown>}
  */
-const standardizeResult = (result) => {
-	/** @type {Record<string, unknown>[]} */
-	const output = [];
-	result.forEach((row) => {
-		/** @type {Record<string, unknown>} */
-		const standardized = {};
-		for (const [key, value] of Object.entries(row)) {
-			if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number') {
-				standardized[key] = value;
-			} else if (
-				value instanceof BigQueryDatetime ||
-				value instanceof BigQueryTimestamp ||
-				value instanceof BigQueryDate
-			) {
-				if (value instanceof BigQueryDatetime) value.value += 'Z';
-				standardized[key] = new Date(value.value);
-			} else if (value instanceof BigQueryTime || value instanceof Geography) {
-				standardized[key] = value.value;
-			} else if (value instanceof Buffer) {
-				standardized[key] = value.toString('base64');
-			} else if (typeof value?.toNumber === 'function') {
-				standardized[key] = value.toNumber();
-			}
+const standardizeRow = (row) => {
+	const standardized = {};
+	for (const [key, value] of Object.entries(row)) {
+		if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number') {
+			standardized[key] = value;
+		} else if (
+			value instanceof BigQueryDatetime ||
+			value instanceof BigQueryTimestamp ||
+			value instanceof BigQueryDate
+		) {
+			if (value instanceof BigQueryDatetime) value.value += 'Z';
+			standardized[key] = new Date(value.value);
+		} else if (value instanceof BigQueryTime || value instanceof Geography) {
+			standardized[key] = value.value;
+		} else if (value instanceof Buffer) {
+			standardized[key] = value.toString('base64');
+		} else if (typeof value?.toNumber === 'function') {
+			standardized[key] = value.toNumber();
 		}
-		output.push(standardized);
-	});
-	return output;
+	}
+	return standardized;
 };
 
 /**
@@ -107,20 +106,28 @@ const getCredentials = (database = {}) => {
 };
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<BigQueryOptions>} */
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
 		const credentials = getCredentials(database);
 
 		const connection = new BigQuery({ ...credentials, maxRetries: 10 });
 
 		const [job] = await connection.createQueryJob({ query: queryString });
-		const [rows] = await job.getQueryResults();
+		/** @type {import("node:stream").Transform} */
+		const stream = connection.createQueryStream(queryString);
+		const result = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+			standardizeRow
+		});
+
 		const [, , response] = await job.getQueryResults({
 			autoPaginate: false,
-			wrapIntegers: false
+			wrapIntegers: false,
+			maxResults: 0
 		});
-		const standardizedRows = standardizeResult(rows);
-		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(response) };
+		result.columnTypes = mapResultsToEvidenceColumnTypes(response);
+		result.expectedRowCount = response.totalRows && Number(response.totalRows);
+
+		return result;
 	} catch (err) {
 		if (err.errors) {
 			throw err.errors[0].message;
@@ -225,9 +232,9 @@ module.exports = runQuery;
 
 /** @type {import("@evidence-dev/db-commons").GetRunner<BigQueryOptions>} */
 module.exports.getRunner = async (opts) => {
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, opts, batchSize);
 	};
 };

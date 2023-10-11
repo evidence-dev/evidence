@@ -1,4 +1,10 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
+} = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
 
@@ -53,14 +59,25 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 };
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
 		const db = await Database.create(filename, mode);
-		const rows = await db.all(queryString);
-		return { rows, columnTypes: mapResultsToEvidenceColumnTypes(rows) };
+		const conn = await db.connect();
+		const stream = conn.stream(queryString);
+
+		const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
+		const expected_count = await db.all(count_query).catch(() => null);
+		const expected_row_count = expected_count?.[0]['count_star()'];
+
+		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+			mapResultsToEvidenceColumnTypes
+		});
+		results.expectedRowCount = expected_row_count;
+
+		return results;
 	} catch (err) {
 		if (err.message) {
 			throw err.message;
@@ -89,9 +106,13 @@ module.exports.getRunner = async (opts, directory) => {
 		console.error(`Missing required duckdb option 'filename' (${directory})`);
 	}
 
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, { ...opts, filename: path.join(directory, opts.filename) });
+		return runQuery(
+			queryContent,
+			{ ...opts, filename: path.join(directory, opts.filename) },
+			batchSize
+		);
 	};
 };
