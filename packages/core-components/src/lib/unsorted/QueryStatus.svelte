@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -71,19 +67,9 @@
 	});
 </script>
 
-<div class="container">
+<div class="fixed right-5 bottom-5 w-60 z-50">
 	{#each activeStatuses as status}
 		<QueryToast bind:status />
 	{/each}
 </div>
 
-<style>
-	div.container {
-		z-index: 1;
-		position: fixed;
-		right: 0;
-		bottom: 0;
-		margin: 1.5em 2.5em;
-		width: 20em;
-	}
-</style>

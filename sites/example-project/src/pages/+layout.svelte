@@ -71,7 +71,8 @@
 		Sidebar,
 		BreadCrumbs,
 		Header,
-		TableOfContents
+		TableOfContents,
+		QueryStatus
 	} from '@evidence-dev/core-components';
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -115,3 +116,6 @@
 		</div>
 	</div>
 </div>
+{#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
+	<QueryStatus />
+{/if}
