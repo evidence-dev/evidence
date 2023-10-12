@@ -61,6 +61,8 @@ hide_table_of_contents: false
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>size</td>	<td>Column to use to scale the size of the bubbles</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>tooltipTitle</td>	<td>Column to use as the title for each tooltip. Typically, this is a name to identify each point.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yLog</td>	<td>Whether to use a log scale for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
+<tr>	<td>yLogBase</td>	<td>Base to use when log scale is enabled</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>10</td>	</tr>
 </table>
 
 ### Series

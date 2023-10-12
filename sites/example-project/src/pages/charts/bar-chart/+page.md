@@ -143,7 +143,6 @@ swapXY=true
     labels=true
 />
 
-
 ## Stacked Bar with Labels - Total turned off
 
 <BarChart 
@@ -164,5 +163,15 @@ swapXY=true
     swapXY=true 
     sort=true
     labels=true
-    labelPosition=outside
+/>
+
+## Bar with Log Scale
+
+<BarChart 
+    data={orders_by_category_2021} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    type=grouped
+    yLog=true
 />
