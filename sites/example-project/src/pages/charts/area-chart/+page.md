@@ -56,11 +56,3 @@ stepPosition=middle
     series=category
     chartAreaHeight=380
 />
-
-## Area Chart with Labels
-
-<AreaChart
-data={orders_by_category.filter(d => d.category === "Sinister Toys")}
-x=month
-labels=true
-/>
