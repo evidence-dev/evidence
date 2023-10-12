@@ -6,7 +6,7 @@ hide_table_of_contents: false
 
 The SankeyDiagram component accepts a query and displays a flow from one set of values to another.
 
-To display a flow with multiple levels, like these examples, see [Mutl-level](#multi-level) below.
+To display a flow with multiple levels, like these examples, see [Mutli-level](#multi-level) below.
 
 ![sankey](/img/exg-sankey.svg)
 
@@ -45,29 +45,21 @@ For example, here is the source for the visuals above.
 
 ```markdown
 ```sql traffic_source
-select 'google' as source, 'all_traffic' as target, 100 as count
+select 
+    channel as source,
+    'all_traffic' as target
+    count(user_id) as count
+from web_events
+group by 1,2
+
 union all
-select 'direct' as source, 'all_traffic' as target, 50 as count
-union all
-select 'facebook' as source, 'all_traffic' as target, 25 as count
-union all
-select 'bing' as source, 'all_traffic' as target, 25 as count
-union all
-select 'tiktok' as source, 'all_traffic' as target, 25 as count
-union all
-select 'twitter' as source, 'all_traffic' as target, 25 as count
-union all
-select 'linkedin' as source, 'all_traffic' as target, 25 as count
-union all
-select 'pinterest' as source, 'all_traffic' as target, 25 as count
-union all
-select 'all_traffic' as source, '/' as target, 50 as count
-union all
-select 'all_traffic' as source, '/docs' as target, 150 as count
-union all
-select 'all_traffic' as source, '/blog' as target, 25 as count
-union all
-select 'all_traffic' as source, '/about' as target, 75 as count
+
+select 
+    'all_traffic' as source,
+    page_route as target
+    count(user_id) as count
+from web_events
+group by 1, 2
 ‍```
 
 <SankeyChart
