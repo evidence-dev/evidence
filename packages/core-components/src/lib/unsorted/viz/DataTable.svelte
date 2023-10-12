@@ -438,8 +438,10 @@
 														labelSummary.columnUnitSummary
 													)}</a
 												>
-											{:else}
+											{:else if column.linkLabel in row}
 												-
+											{:else}
+												{column.linkLabel}
 											{/if}
 										{:else}
 											{formatValue(
