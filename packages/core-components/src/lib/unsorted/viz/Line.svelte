@@ -128,7 +128,7 @@
 			lineStyle: {
 				opacity: 1,
 				width: 3
-			}
+			},
 		},
 		lineStyle: {
 			width: parseInt(lineWidth),
@@ -138,9 +138,9 @@
 			color: lineColor,
 			opacity: lineOpacity
 		},
-		showSymbol: true,
+		showSymbol: (labels || markers),
 		symbol: markerShape,
-		symbolSize: markers ? markerSize : 0,
+		symbolSize: (labels && !markers) ? 0 : markerSize,
 		step: step ? stepPosition : false
 	};
 
@@ -186,6 +186,10 @@
 			} else {
 				d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
+			}
+			// If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
+			if(labels){
+				d.axisPointer = { triggerEmphasis: false }
 			}
 			return d;
 		});

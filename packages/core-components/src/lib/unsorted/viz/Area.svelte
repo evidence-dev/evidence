@@ -33,6 +33,11 @@
 	export let line = true;
 	$: line = line === 'true' || line === true;
 
+	export let markers = false;
+	$: markers = markers === 'true' || markers === true;
+	export let markerShape = 'circle';
+	export let markerSize = 8;
+
 	export let handleMissing = 'gap';
 
 	/**
@@ -135,6 +140,9 @@
 		emphasis: {
 			focus: 'series'
 		},
+		showSymbol: (labels || markers),
+		symbol: markerShape,
+		symbolSize: (labels && !markers) ? 0 : markerSize,
 		step: step ? stepPosition : false
 	};
 
@@ -189,6 +197,10 @@
 				} else {
 					d.yAxis = { ...d.yAxis, max: 1 };
 				}
+			}
+			// If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
+			if(labels){
+				d.axisPointer = { triggerEmphasis: false }
 			}
 			return d;
 		});

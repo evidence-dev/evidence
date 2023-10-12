@@ -37,6 +37,10 @@
 	export let fillOpacity = undefined;
 	export let chartAreaHeight = undefined;
 
+	export let markers = undefined;
+	export let markerShape = undefined;
+	export let markerSize = undefined;
+
 	export let handleMissing = undefined;
 
 	export let step = undefined;
@@ -94,6 +98,9 @@
 		{type}
 		{step}
 		{stepPosition}
+		{markers}
+		{markerShape}
+		{markerSize}
 		{labels}
 		{labelSize}
 		{labelPosition}

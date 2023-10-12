@@ -792,9 +792,6 @@
 					top: chartTop,
 					containLabel: true
 				},
-				axisPointer: {
-					triggerEmphasis: false
-				},
 				xAxis: horizAxisConfig,
 				yAxis: verticalAxisConfig,
 				series: [],
