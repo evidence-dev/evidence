@@ -130,3 +130,14 @@ swapXY=true
     title="Title"
     subtitle="Subtitle"
 />
+
+## Bar with Log Scale
+
+<BarChart 
+    data={orders_by_category_2021} 
+    x=month 
+    y=sales_usd0k 
+    series=category 
+    type=grouped
+    yLog=true
+/>
