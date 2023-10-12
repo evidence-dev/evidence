@@ -98,12 +98,6 @@
 				{/if}
 			</div>
 			{#if !$navigating}
-				<!-- <div>
-					<div class="inline-flex h-2 w-2 bg-green-600 rounded-full justify-center items-center">
-						<div class="inline-block h-2 w-2 bg-green-600/30 rounded-full animate-ping" />
-					</div>
-					<span class="px-1 text-xs text-gray-500">Updated 7 hours ago</span>
-				</div> -->
 				<article class="select-text markdown">
 					<slot />
 				</article>

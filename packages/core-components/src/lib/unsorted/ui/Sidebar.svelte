@@ -138,7 +138,7 @@
 		>
 			<div class="flex flex-col pb-6">
 				<a
-					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100"
+					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100 hover:underline"
 					href="/"
 				>
 					Home
@@ -176,7 +176,7 @@
 						{#each file.children as file}
 							{#if file.href}
 								<a
-									class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate whitespace-break-spaces"
+									class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate"
 									href={file.href}
 									class:selected={$page.url.pathname.toUpperCase() ===
 										file.href.toUpperCase() + '/'}
@@ -184,20 +184,6 @@
 									{file.label}
 								</a>
 							{/if}
-							<!-- Inlining a number in here  -->
-							<!-- <div class="flex justify-between items-center gap-3 hover:text-gray-950 pr-3 group">
-								<a
-									class="text-xs tabular-nums group transition-all duration-100  inline-block group  "
-									href={file.href}
-									class:selected={$page.url.pathname.toUpperCase() ===
-										file.href.toUpperCase() + '/'}
-								>
-									{(Math.random() * 100).toLocaleString('en-us', {
-										minimumFractionDigits: 1,
-										maximumFractionDigits: 1
-									})}%
-								</a>
-							</div> -->
 						{/each}
 					</div>
 				{/if}
