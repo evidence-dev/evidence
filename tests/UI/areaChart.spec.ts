@@ -8,11 +8,9 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Charts: Area', () => {
 	test('should be able to hide/show query and see SQL code', async ({ page }) => {
-		const pageMenuButton: Locator = await page
-			.getByRole('banner')
-			.getByRole('button', { name: 'page menu button' });
-		const showQueryButton: Locator = await page.getByRole('button', { name: 'show-queries' });
-		const hideQueryButton: Locator = await page.getByRole('button', { name: 'hide-queries' });
+		const pageMenuButton: Locator = await page.locator('#headlessui-menu-button-1');
+		const showQueryButton: Locator = await page.getByRole('menuitem', { name: 'Show Queries' });
+		const hideQueryButton: Locator = await page.getByRole('menuitem', { name: 'Hide Queries' });
 		const showSQLButton: Locator = await page.getByRole('button', { name: 'show-sql' });
 
 		// show and hide button must be mutual exclusive

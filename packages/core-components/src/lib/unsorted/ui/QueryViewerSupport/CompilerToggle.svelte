@@ -24,13 +24,12 @@
 
 <style>
 	div.toggle {
-		background-color: var(--grey-100);
+		background-color: var(--grey-50);
 		border-left: 1px solid var(--grey-200);
 		border-right: 1px solid var(--grey-200);
-		padding: 10px 0 6px 12px;
+		padding: 6px 0 10px 12px;
 		font-family: var(--ui-font-family);
 		font-size: 10px;
-		font-weight: bold;
 		user-select: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
@@ -42,12 +41,12 @@
 		cursor: pointer;
 		background-color: transparent;
 		font-size: 1em;
-		font-weight: bold;
+		font-weight: 600;
 	}
 
 	button.off {
 		color: var(--grey-600);
-		border: 1px solid var(--grey-100);
+		border: 1px solid var(--grey-200);
 		transition: all 400ms;
 	}
 
