@@ -711,15 +711,17 @@
 								xFormat
 							)}</span>`;
 							for (let i = params.length - 1; i >= 0; i--) {
-								yVal = params[i].value[swapXY ? 0 : 1];
-								output =
-									output +
-									`<br> ${params[i].marker} ${
-										params[i].seriesName
-									} <span style='float:right; margin-left: 10px;'>${formatValue(
-										yVal,
-										yFormat
-									)}</span>`;
+								if (params[i].seriesName !== 'stackTotal') {
+									yVal = params[i].value[swapXY ? 0 : 1];
+									output =
+										output +
+										`<br> ${params[i].marker} ${
+											params[i].seriesName
+										} <span style='float:right; margin-left: 10px;'>${formatValue(
+											yVal,
+											yFormat
+										)}</span>`;
+								}
 							}
 						} else if (xType === 'value') {
 							// If single-series and a numerical x-axis, include x column as a normal column rather than title (so as not to show a number as the title)
@@ -780,7 +782,8 @@
 					show: legend,
 					type: 'scroll',
 					top: legendTop,
-					padding: [0, 0, 0, 0]
+					padding: [0, 0, 0, 0],
+					data: []
 				},
 				grid: {
 					left: '0.5%',
@@ -788,6 +791,9 @@
 					bottom: chartBottom,
 					top: chartTop,
 					containLabel: true
+				},
+				axisPointer: {
+					triggerEmphasis: false
 				},
 				xAxis: horizAxisConfig,
 				yAxis: verticalAxisConfig,

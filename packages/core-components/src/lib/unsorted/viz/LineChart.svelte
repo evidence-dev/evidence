@@ -47,6 +47,13 @@
 	export let stepPosition = undefined;
 
 	export let sort = undefined;
+
+	export let labels = undefined;
+	export let labelSize = undefined;
+	export let labelPosition = undefined;
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	export let showAllLabels = undefined;
 </script>
 
 <Chart
@@ -87,6 +94,12 @@
 		{handleMissing}
 		{step}
 		{stepPosition}
+		{labels}
+		{labelSize}
+		{labelPosition}
+		{labelColor}
+		{labelFmt}
+		{showAllLabels}
 	/>
 	<slot />
 </Chart>

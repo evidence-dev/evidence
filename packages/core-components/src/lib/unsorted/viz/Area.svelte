@@ -13,6 +13,11 @@
 	import replaceNulls from '@evidence-dev/component-utilities/replaceNulls';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
+
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
 	export let series = undefined;
@@ -43,11 +48,24 @@
 	 */
 	export let stepPosition = 'end';
 
+	export let labels = false;
+	labels = labels === 'true' || labels === true;
+	export let labelSize = 11;
+	export let labelPosition = 'top';
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	let labelFormat;
+	if (labelFmt) {
+		labelFormat = getFormatObjectFromString(labelFmt);
+	}
+	export let showAllLabels = false;
+
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
 	$: y = ySet ? y : $props.y;
 	$: swapXY = $props.swapXY;
+	$: yFormat = $props.yFormat;
 	$: xType = $props.xType;
 	$: xMismatch = $props.xMismatch;
 	$: columnSummary = $props.columnSummary;
@@ -69,6 +87,24 @@
 		data = replaceNulls(data, y);
 	}
 
+	// Value label positions:
+	const labelPositions = {
+		above: 'top',
+		below: 'bottom',
+		middle: 'inside'
+	};
+
+	const swapXYLabelPositions = {
+		above: 'right',
+		below: 'left',
+		middle: 'inside'
+	};
+
+	let defaultLabelPosition = swapXY ? 'right' : 'top';
+	$: labelPosition =
+		(swapXY ? swapXYLabelPositions[labelPosition] : labelPositions[labelPosition]) ??
+		defaultLabelPosition;
+
 	$: baseConfig = {
 		type: 'line',
 		stack: stackName,
@@ -82,9 +118,20 @@
 			color: lineColor
 		},
 		label: {
-			show: false
+			show: labels,
+			formatter: function (params) {
+				return params.value[swapXY ? 0 : 1] === 0
+					? ''
+					: formatValue(params.value[swapXY ? 0 : 1], labelFormat ?? yFormat);
+			},
+			fontSize: labelSize,
+			color: labelColor,
+			position: labelPosition,
+			padding: 3
 		},
-		labelLayout: { hideOverlap: true },
+		labelLayout: {
+			hideOverlap: showAllLabels ? false : true
+		},
 		emphasis: {
 			focus: 'series'
 		},
@@ -105,6 +152,8 @@
 
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
+		// Push series into legend:
+		d.legend.data.push(...seriesConfig.map((d) => d.name));
 		return d;
 	});
 

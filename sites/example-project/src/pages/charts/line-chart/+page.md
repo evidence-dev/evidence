@@ -107,3 +107,17 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ## Multi-Series Line with Steps
 
 <LineChart data={simpler_bar} x=year y=value series=country step=true/>
+
+## Line Chart with Labels
+
+
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    yFmt=eur
+    xFmt='mmm d'
+    labels=true
+    labelFmt=eur0k
+/>

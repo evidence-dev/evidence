@@ -32,7 +32,7 @@
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/svelte-icon": "^1.4.1",
 		"@steeze-ui/tabler-icons": "^2.1.0",
-		"echarts": "5.4.2",
+		"echarts": "5.4.3",
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
 		"prismjs": "1.29.0",

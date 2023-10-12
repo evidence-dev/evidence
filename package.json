@@ -14,7 +14,7 @@
 		"blueimp-md5": "2.19.0",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.2",
+		"echarts": "5.4.3",
 		"echarts-stat": "1.2.0",
 		"eslint": "8.45.0",
 		"eslint-config-prettier": "^8.5.0",

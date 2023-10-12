@@ -8,7 +8,7 @@ export default function getSeriesConfig(
 	swapXY,
 	baseConfig,
 	name,
-	xMismatch,
+	xMismatch, // this checks for scenarios where xType is string and xDataType is number. When this is the case, we need to inject strings into the x axis, or else it will cause echarts to think there are duplicate x-axis values (e.g., "4" and 4)
 	columnSummary,
 	size = null,
 	tooltipTitle = null
