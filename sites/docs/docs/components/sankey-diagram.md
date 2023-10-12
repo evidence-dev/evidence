@@ -4,9 +4,14 @@ title: Sankey Diagram
 hide_table_of_contents: false
 ---
 
+The SankeyDiagram component accepts a query and displays a flow from one set of values to another.
+
+To display a flow with multiple levels, like these examples, see [Mutl-level](#multi-level) below.
+
 ![sankey](/img/exg-sankey.svg)
 
 ```markdown
+
 <SankeyDiagram 
     data={query_name} 
     sourceCol= sourceCol
@@ -26,6 +31,52 @@ hide_table_of_contents: false
     targetCol = targetCol
     valueCol= valueCol
     orient = vertical
+/>
+```
+
+## Multi-level
+
+The syntax for multi-level sankey diagrams is the same, but the 
+underlying query must represent all the levels using the same 
+`sourceCol` and `targetCol`, so it is necessary to `union`
+ each level together.  `sourceCal` nodes on the next level will be linked to `targetCol` nodes in the previous level with the same name.  
+
+For example, here is the source for the visuals above.
+
+```markdown
+```sql traffic_source
+select 'google' as source, 'all_traffic' as target, 100 as count
+union all
+select 'direct' as source, 'all_traffic' as target, 50 as count
+union all
+select 'facebook' as source, 'all_traffic' as target, 25 as count
+union all
+select 'bing' as source, 'all_traffic' as target, 25 as count
+union all
+select 'tiktok' as source, 'all_traffic' as target, 25 as count
+union all
+select 'twitter' as source, 'all_traffic' as target, 25 as count
+union all
+select 'linkedin' as source, 'all_traffic' as target, 25 as count
+union all
+select 'pinterest' as source, 'all_traffic' as target, 25 as count
+union all
+select 'all_traffic' as source, '/' as target, 50 as count
+union all
+select 'all_traffic' as source, '/docs' as target, 150 as count
+union all
+select 'all_traffic' as source, '/blog' as target, 25 as count
+union all
+select 'all_traffic' as source, '/about' as target, 75 as count
+‍```
+
+<SankeyChart
+    data={traffic_data}
+    title="Sankey"
+    subtitle="A simple sankey chart"
+    sourceCol=source
+    targetCol=target
+    valueCol=count
 />
 ```
 
