@@ -74,7 +74,6 @@
 	table {
 		font-size: 14px;
 		border-collapse: collapse;
-		font-family: sans-serif;
 		/* Offset the cell padding to get the outside edges aligned w/ the parent */
 		margin-left: -8px;
 		width: calc(100% + 16px);

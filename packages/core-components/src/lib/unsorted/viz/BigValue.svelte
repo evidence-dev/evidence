@@ -98,8 +98,7 @@
 </script>
 
 <div
-	data-viz="BigValue"
-	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
+	class="inline-block font-sans pt-2 pb-3 pr-3 pl-0 mr-3 items-center align-top"
 	style={`
         min-width: ${minWidth};
         max-width: ${maxWidth};
@@ -108,12 +107,12 @@
 	{#if error}
 		<ErrorChart chartType="Big Value" error={error.message} />
 	{:else}
-		<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
-		<div class="relative">
+		<p class="text-sm text-gray-700">{title}</p>
+		<div class="relative text-xl font-medium text-gray-700 my-0.5">
 			<Value {data} column={value} {fmt} />
 			{#if sparkline}
 				{#if isLinkedChartReady()}
-					<div class="inline-block">
+					<div data-viz="BigValue" class="inline-block">
 						<svelte:component
 							this={LinkedChart}
 							data={sparklineData}
@@ -133,10 +132,10 @@
 			{/if}
 		</div>
 		{#if comparison}
-			<p class="m-0 text-xs font-medium font-ui" style={`color:${comparisonColor}`}>
-				{@html positive ? '&#9650;' : '&#9660;'}
+			<p class="text-xs font-sans" style={`color:${comparisonColor}`}>
+				<span class="font-[system-ui]"> {@html positive ? '&#9650;' : '&#9660;'} </span>
 				<Value {data} column={comparison} fmt={comparisonFmt} />
-				<span class="text-grey-700 font-normal">{comparisonTitle}</span>
+				<span>{comparisonTitle}</span>
 			</p>
 		{/if}
 	{/if}

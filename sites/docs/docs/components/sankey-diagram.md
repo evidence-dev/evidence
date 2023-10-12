@@ -4,9 +4,14 @@ title: Sankey Diagram
 hide_table_of_contents: false
 ---
 
+The SankeyDiagram component accepts a query and displays a flow from one set of values to another.
+
+To display a flow with multiple levels, like these examples, see [Mutli-level](#multi-level) below.
+
 ![sankey](/img/exg-sankey.svg)
 
 ```markdown
+
 <SankeyDiagram 
     data={query_name} 
     sourceCol= sourceCol
@@ -26,6 +31,44 @@ hide_table_of_contents: false
     targetCol = targetCol
     valueCol= valueCol
     orient = vertical
+/>
+```
+
+## Multi-level
+
+The syntax for multi-level sankey diagrams is the same, but the 
+underlying query must represent all the levels using the same 
+`sourceCol` and `targetCol`, so it is necessary to `union`
+ each level together.  `sourceCal` nodes on the next level will be linked to `targetCol` nodes in the previous level with the same name.  
+
+For example, here is the source for the visuals above.
+
+```markdown
+```sql traffic_source
+select 
+    channel as source,
+    'all_traffic' as target,
+    count(user_id) as count
+from web_events
+group by 1,2
+
+union all
+
+select 
+    'all_traffic' as source,
+    page_route as target,
+    count(user_id) as count
+from web_events
+group by 1, 2
+‍```
+
+<SankeyChart
+    data={traffic_data}
+    title="Sankey"
+    subtitle="A simple sankey chart"
+    sourceCol=source
+    targetCol=target
+    valueCol=count
 />
 ```
 

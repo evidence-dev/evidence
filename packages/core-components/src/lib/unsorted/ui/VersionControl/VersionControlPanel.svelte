@@ -82,6 +82,11 @@
 	form {
 		scroll-margin-top: 3.5rem; /* offset for sticky header */
 	}
+
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
 	.container {
 		margin-top: 2em;
 		border-top: 1px solid var(--grey-200);
@@ -178,7 +183,6 @@
 		padding-top: 2px;
 		padding-bottom: 1px;
 		color: white;
-		font-family: sans-serif;
 		font-size: 0.8em;
 		background-color: var(--grey-900);
 		opacity: 0.85;

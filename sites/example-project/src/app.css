@@ -1,267 +1,205 @@
 /* Write your global styles here, in PostCSS syntax */
-@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Spectral+SC&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-	scroll-behavior: smooth;
-}
-
-body,
-html {
-	height: 100%;
-	user-select: none;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-}
-
-img {
-	text-align: center;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 100%;
-	border-radius: 4px;
-}
-
-td > img {
-	max-width: unset;
-	border-radius: unset;
-}
-
-body {
-	font-family: 'Spectral', serif;
-	font-size: 18px;
-	line-height: 1.6;
-	font-weight: normal;
-	color: var(--grey-900);
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	padding: 0 0 0 0;
-	margin: 0 0 0 0;
-	/* background-color: #F8FAFC ; */
-}
-
-p,
-ul,
-ol {
-	margin-block-end: 1em;
-	margin-block-start: 0em;
-	-moz-font-feature-settings: 'onum';
-	-ms-font-feature-settings: 'onum';
-	-webkit-font-feature-settings: 'onum';
-	font-feature-settings: 'onum';
-}
-
-/* lists */
-
-ol {
-	@apply list-decimal ps-10;
-}
-ul {
-	@apply list-disc ps-10;
-}
-
-/* 1st level list */
-ul,
-ol {
-	/* 2nd level unordered list */
-	& ul {
-		@apply list-circle;
-	}
-	/* 2nd level ordered list */
-	& ol {
-		@apply list-lower-alpha;
+@layer base {
+	html {
+		@apply scroll-smooth;
 	}
 
-	/* any 2nd level list */
-	& ul,
-	& ol {
-		margin-block-end: 0em;
-
-		/* 3rd level unordered list */
-		& ul {
-			@apply list-square;
-		}
-		/* 3rd level ordered list */
-		& ol {
-			@apply list-lower-roman;
-		}
-	}
-
-	li {
-		@apply list-item;
-		text-align: -webkit-match-parent;
-
-		& + li {
-			@apply mt-1;
-		}
-	}
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-weight: normal;
-	font-family: var(--ui-font-family);
-	line-height: 1.5;
-	margin: 0.8em 0 0.3em 0;
-	scroll-margin-top: var(
-		--header-height
-	); /* ensure that table of contents links scroll with room for the header */
-}
-
-h1:first-of-type {
-	font-size: 1.8em;
-	font-weight: bold;
-	color: var(--grey-800);
-	border-top: none;
-	padding-top: 0;
-	margin: 0em 0 0.2em 0;
-}
-
-h1 {
-	font-size: 1.8em;
-	font-weight: bold;
-	color: var(--grey-800);
-	display: block;
-	border-top: 1px solid var(--grey-200);
-	padding-top: 0.2em;
-}
-
-h1:active {
-	display: block;
-}
-
-h2 {
-	font-size: 1.3em;
-	font-weight: bold;
-	color: var(--grey-800);
-}
-
-h3 {
-	font-size: 0.9em;
-	font-weight: bold;
-	color: var(--grey-800);
-}
-
-h4 {
-	font-size: 0.9em;
-	text-transform: lowercase;
-	font-family: 'Spectral SC', serif;
-	letter-spacing: 0.04em;
-}
-
-h5 {
-	font-size: 0.8em;
-	font-family: 'Spectral', serif;
-	letter-spacing: 0.05em;
-}
-
-h6 {
-	font-size: 0.65em;
-	font-family: 'Spectral', serif;
-	letter-spacing: 0.025em;
-}
-
-article a {
-	color: var(--blue-link);
-	text-decoration: underline;
-	text-decoration-color: var(--blue-100);
-	text-decoration-thickness: 0.1em;
-	text-underline-offset: 0.05em;
-}
-
-article a:hover {
-	color: inherit;
-	text-decoration: underline;
-	text-decoration-color: var(--blue-200);
-	text-decoration-thickness: 0.1em;
-	text-underline-offset: 0.05em;
-}
-
-hr {
-	display: block;
-	margin-top: 1.5em;
-	margin-bottom: 1.5em;
-	margin-left: auto;
-	margin-right: auto;
-	border-top: 1px solid var(--grey-200);
-	border-bottom: none;
-	border-left: none;
-	border-right: none;
-	width: 75%;
-}
-
-code {
-	font-family: var(--monospace-font-family);
-	font-size: 0.75em;
-	background-color: var(--grey-100);
-	padding: 0.2em 0.2em;
-	border: solid 1px var(--grey-200);
-	border-radius: 4px;
-	color: var(--grey-800);
-	-webkit-user-select: all;
-	-moz-user-select: all;
-	user-select: all;
-}
-
-form code {
-	font-size: unset;
-}
-
-blockquote {
-	border-left: 4px solid var(--grey-300);
-	padding: 0em 0em 0em 0.75em;
-	margin-left: 0;
-	margin-right: 0;
-	color: var(--grey-600);
-}
-
-@media (max-width: 600px) {
 	body {
-		font-size: 16px;
+		@apply select-none;
+	}
+
+	/* osx style scrollbars */
+	.pretty-scrollbar {
+		scrollbar-width: thin;
+		scrollbar-color: theme('colors.gray.200') transparent;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar {
+		height: 0.75rem;
+		width: 6px;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+
+	.pretty-scrollbar::-webkit-scrollbar-thumb {
+		background-color: transparent;
+		border-radius: 7px;
+	}
+
+	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
+		background-color: theme('colors.gray.200');
 	}
 }
 
-article > table {
-	min-width: 100%;
-	font-size: 0.75em;
-	border-collapse: collapse;
-	font-family: var(--ui-font-family);
-	text-align: center;
-	margin: 1em auto 1.5em auto;
-}
+@layer components {
+	.markdown {
+		@apply leading-normal font-sans text-base antialiased text-gray-700;
+	}
 
-article > table th {
-	font-weight: 600;
-	border-bottom: 1px solid var(--grey-800);
-	padding: 0 8px;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
+	img.markdown {
+		@apply mx-auto h-auto max-w-full rounded-lg;
+	}
 
-article > table td {
-	max-width: 1px;
-	padding: 4px 8px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	/* border: 1px solid var(--grey-200); */
+	article.markdown a.markdown {
+		@apply text-blue-600 underline decoration-transparent hover:decoration-blue-600  transition-all duration-200 !important;
+	}
+
+	p.markdown,
+	ul.markdown,
+	ol.markdown {
+		margin-block-end: 1.2em;
+		margin-block-start: 0em;
+	}
+
+	/* lists */
+
+	ol.markdown {
+		@apply list-decimal ps-6;
+	}
+	ul.markdown {
+		@apply list-disc ps-6;
+	}
+
+	/* 1st level list */
+	ul.markdown,
+	ol.markdown {
+		/* 2nd level unordered list */
+		& ul.markdown {
+			@apply list-circle;
+		}
+		/* 2nd level ordered list */
+		& ol.markdown {
+			@apply list-lower-alpha;
+		}
+
+		/* any 2nd level list */
+		& ul.markdown,
+		& ol.markdown {
+			@apply mt-1;
+			margin-block-end: 0em;
+
+			/* 3rd level unordered list */
+			& ul.markdown {
+				@apply list-square;
+			}
+			/* 3rd level ordered list */
+			& ol.markdown {
+				@apply list-lower-roman;
+			}
+		}
+
+		li.markdown {
+			@apply list-item;
+			text-align: -webkit-match-parent;
+
+			& + li.markdown {
+				@apply mt-1;
+			}
+		}
+	}
+	ol.markdown > li.markdown::marker {
+		@apply text-gray-800;
+	}
+
+	ul.markdown > li.markdown::marker {
+		@apply text-gray-800;
+	}
+
+	h1.markdown,
+	h2.markdown,
+	h3.markdown,
+	h4.markdown,
+	h5.markdown,
+	h6.markdown {
+		@apply scroll-mt-14 break-inside-avoid font-sans;
+		/* ensure that table of contents links scroll with room for the header */
+	}
+
+	h1.title:first-of-type,
+	h1.markdown:first-of-type {
+		@apply mt-1 mb-2;
+	}
+
+	h1.title {
+		@apply mt-5 mb-1 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
+	}
+
+	h1.markdown,
+	h1.markdown > a.markdown {
+		@apply mt-5 mb-1 text-2xl tracking-wide font-bold text-gray-800 break-inside-avoid;
+	}
+
+	h2.markdown,
+	h2.markdown > a.markdown {
+		@apply mt-3 mb-1 text-xl font-semibold text-gray-800;
+	}
+
+	h3.markdown,
+	h3.markdown > a.markdown {
+		@apply mt-2 mb-1 font-semibold text-base text-gray-800;
+	}
+
+	h4.markdown,
+	h4.markdown > a.markdown {
+		@apply mt-1 text-sm  font-semibold text-gray-800;
+	}
+
+	h5.markdown,
+	h5.markdown > a.markdown {
+		@apply mt-1 text-xs font-semibold  text-gray-800;
+	}
+
+	h6.markdown,
+	h6.markdown > a.markdown {
+		@apply mt-1 text-xs text-gray-950;
+	}
+
+	hr.markdown {
+		@apply h-px my-8 max-w-xl mx-auto bg-gray-200 border-0;
+	}
+
+	code.markdown {
+		@apply font-mono text-gray-800 text-sm bg-gray-50 border rounded px-1 select-all py-0.5;
+	}
+
+	form code {
+		font-size: unset;
+	}
+
+	blockquote.markdown {
+		@apply border-l-4 border-gray-300 pl-3 my-8;
+	}
+
+	blockquote.markdown * {
+		@apply text-gray-500;
+	}
+
+	table.markdown {
+		@apply min-w-full  border-collapse text-center mx-auto my-5;
+	}
+
+	th.markdown {
+		@apply text-sm text-gray-800 font-medium border-b border-gray-800 py-0 px-2 text-ellipsis overflow-hidden;
+	}
+
+	td.markdown {
+		@apply text-sm text-gray-800 py-1 px-2 overflow-hidden text-ellipsis;
+	}
 }
 
 :root {
 	/* Layout header height */
 	--header-height: 3.5rem;
 	/* Font stacks */
-	--monospace-font-family: theme(fontFamily.monospace);
-	--ui-font-family: theme(fontFamily.ui);
-	--ui-font-family-compact: theme(fontFamily.ui_compact);
+	--monospace-font-family: theme(fontFamily.mono);
+	--ui-font-family: theme(fontFamily.sans);
+	--ui-font-family-compact: theme(fontFamily.sans);
 	--color1: theme(colors.color.1);
 	--color2: theme(colors.color.2);
 	--color3: theme(colors.color.3);
@@ -284,6 +222,7 @@ article > table td {
 	--color20: theme(colors.color.20);
 
 	/* Colour System */
+	--blue-50: theme(colors.blue.50);
 	--blue-100: theme(colors.blue.100);
 	--blue-200: theme(colors.blue.200);
 	--blue-300: theme(colors.blue.300);
@@ -293,8 +232,9 @@ article > table td {
 	--blue-700: theme(colors.blue.700);
 	--blue-800: theme(colors.blue.800);
 	--blue-900: theme(colors.blue.900);
-	--blue-999: theme(colors.blue.999);
-	--blue-link: theme(colors.blue.link);
+	--blue-999: theme(colors.blue.950);
+	--blue-link: theme(colors.blue.700);
+	--green-50: theme(colors.green.50);
 	--green-100: theme(colors.green.100);
 	--green-200: theme(colors.green.200);
 	--green-300: theme(colors.green.300);
@@ -304,17 +244,18 @@ article > table td {
 	--green-700: theme(colors.green.700);
 	--green-800: theme(colors.green.800);
 	--green-900: theme(colors.green.900);
-	--green-999: theme(colors.green.999);
-	--grey-100: theme(colors.grey.100);
-	--grey-200: theme(colors.grey.200);
-	--grey-300: theme(colors.grey.300);
-	--grey-400: theme(colors.grey.400);
-	--grey-500: theme(colors.grey.500);
-	--grey-600: theme(colors.grey.600);
-	--grey-700: theme(colors.grey.700);
-	--grey-800: theme(colors.grey.800);
-	--grey-900: theme(colors.grey.900);
-	--grey-999: theme(colors.grey.999);
+	--green-999: theme(colors.green.950);
+	--grey-50: theme(colors.gray.50);
+	--grey-100: theme(colors.gray.100);
+	--grey-200: theme(colors.gray.200);
+	--grey-300: theme(colors.gray.300);
+	--grey-400: theme(colors.gray.400);
+	--grey-500: theme(colors.gray.500);
+	--grey-600: theme(colors.gray.600);
+	--grey-700: theme(colors.gray.700);
+	--grey-800: theme(colors.gray.800);
+	--grey-900: theme(colors.gray.900);
+	--grey-999: theme(colors.gray.950);
 	--red-50: theme(colors.red.50);
 	--red-100: theme(colors.red.100);
 	--red-200: theme(colors.red.200);
@@ -325,7 +266,8 @@ article > table td {
 	--red-700: theme(colors.red.700);
 	--red-800: theme(colors.red.800);
 	--red-900: theme(colors.red.900);
-	--red-999: theme(colors.red.999);
+	--red-999: theme(colors.red.950);
+	--yellow-50: theme(colors.yellow.50);
 	--yellow-100: theme(colors.yellow.100);
 	--yellow-200: theme(colors.yellow.200);
 	--yellow-300: theme(colors.yellow.300);
@@ -335,27 +277,13 @@ article > table td {
 	--yellow-700: theme(colors.yellow.700);
 	--yellow-800: theme(colors.yellow.800);
 	--yellow-900: theme(colors.yellow.900);
-	--yellow-999: theme(colors.yellow.999);
+	--yellow-999: theme(colors.yellow.950);
 }
 
 @media print {
-	@page {
-		margin-top: 17mm;
-		margin-bottom: 13mm;
-		margin-left: 30mm;
-		margin-right: 30mm;
-	}
-
 	html {
 		-webkit-print-color-adjust: exact;
 		print-color-adjust: exact;
-		color-adjust: exact;
-	}
-
-	h1,
-	h2,
-	h3 {
-		page-break-inside: avoid;
 	}
 
 	h1::after,

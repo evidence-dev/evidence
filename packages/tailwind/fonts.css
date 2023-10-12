@@ -1,0 +1,309 @@
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 100;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Thin.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Thin.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 100;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ThinItalic.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ThinItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 200;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraLight.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraLight.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 200;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraLightItalic.woff2?v=3.19')
+			format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraLightItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 300;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Light.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Light.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 300;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-LightItalic.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-LightItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Regular.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Regular.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 400;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Italic.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Italic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 500;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Medium.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Medium.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 500;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-MediumItalic.woff2?v=3.19')
+			format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-MediumItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 600;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-SemiBold.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-SemiBold.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 600;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-SemiBoldItalic.woff2?v=3.19')
+			format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-SemiBoldItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 700;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Bold.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Bold.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 700;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-BoldItalic.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-BoldItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 800;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraBold.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraBold.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 800;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff2?v=3.19')
+			format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-ExtraBoldItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 900;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Black.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-Black.woff?v=3.19') format('woff');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: italic;
+	font-weight: 900;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-BlackItalic.woff2?v=3.19') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Inter-3.19/Inter-BlackItalic.woff?v=3.19') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 100;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Light.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Light.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 100;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-LightItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-LightItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 200;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraLight.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraLight.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 200;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraLightItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraLightItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 300;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Light.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Light.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 300;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-LightItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-LightItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 400;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Regular.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Regular.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 400;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Italic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Italic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 500;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Medium.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Medium.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 500;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-MediumItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-MediumItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 600;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-SemiBold.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-SemiBold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 600;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-SemiBoldItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-SemiBoldItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 700;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Bold.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Bold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 700;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-BoldItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-BoldItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 800;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraBold.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraBold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 800;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraBoldItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraBoldItalic.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Spectral';
+	font-style: normal;
+	font-weight: 900;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Black.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Black.woff') format('woff');
+}
+@font-face {
+	font-family: 'Spectral';
+	font-style: italic;
+	font-weight: 900;
+	font-display: block;
+	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-BlackItalic.woff2') format('woff2'),
+		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-BlackItalic.woff') format('woff');
+}
