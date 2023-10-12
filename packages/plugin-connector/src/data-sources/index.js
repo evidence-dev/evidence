@@ -53,6 +53,51 @@ async function updateManifest(outputFiles, outDir, datasources) {
 }
 
 /**
+ * @param {string} sourceName - The name of the source.
+ * @param {object} sourceConfig - The configuration options for the source.
+ * @returns {object} - An object containing environment variables for the source.
+ */
+const generateSourceEnvironmentVariables = (sourceName, sourceConfig) => {
+	/** @type {Record<string,string>} */
+	const sourceEnvVars = {};
+
+	// Recursively generate environment variables for nested properties
+	/**
+	 * @param {any} obj
+	 */
+	const generateNestedEnvVars = (obj, currentKey = '') => {
+		for (const [key, value] of Object.entries(obj)) {
+			const newKey = currentKey ? `${currentKey}__${key}` : key;
+
+			if (typeof value === 'object') {
+				generateNestedEnvVars(value, newKey);
+			} else {
+				sourceEnvVars[`EVIDENCE_SOURCE__${sourceName}__${newKey}`] = value.toString();
+			}
+		}
+	};
+
+	// Start generating environment variables for the source
+	generateNestedEnvVars(sourceConfig);
+
+	return sourceEnvVars;
+};
+
+/**
+ * Helper function to load configured datasources
+ * @returns {Promise<(DatasourceSpec & { environmentVariables: object })[]>}
+ */
+export async function getDatasourceOptions() {
+	const datasourceDir = await getSourcesDir();
+	if (!datasourceDir) throw new Error('missing sources directory');
+	const sources = await getSources(datasourceDir);
+	return sources.map((s) => ({
+		...s,
+		environmentVariables: generateSourceEnvironmentVariables(s.name, s.options)
+	}));
+}
+
+/**
  * @param {string} outDir
  * @param {string} [prefix]
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
