@@ -1,7 +1,7 @@
 ---
 title: Area Chart
 sources:
-  - orders_by_category: orders_by_category.sql
+- orders_by_category: orders_by_category.sql
 ---
 
 ## Area
@@ -55,4 +55,33 @@ stepPosition=middle
     y=sales_usd0k 
     series=category
     chartAreaHeight=380
+/>
+
+## Area with Log Scale
+
+<AreaChart
+    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+    x=month
+    y=sales_usd0k 
+    yFmt="$###"
+    yLog=true
+    yLogBase=2
+/>
+
+## Not allowed Log charts: No Y axis
+
+<AreaChart
+    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+    x=month
+    yLog=true
+/>
+
+## Not allowed Log charts: No stacked areas
+
+<AreaChart 
+    data={orders_by_category} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    yLog=true
 />
