@@ -16,10 +16,6 @@ overrides:
 importers:
 
   .:
-    dependencies:
-      '@evidence-dev/tailwind':
-        specifier: link:packages/tailwind
-        version: link:packages/tailwind
     devDependencies:
       '@changesets/cli':
         specifier: 2.21.0
@@ -42,6 +38,9 @@ importers:
       '@evidence-dev/preprocess':
         specifier: link:packages/preprocess
         version: link:packages/preprocess
+      '@evidence-dev/tailwind':
+        specifier: link:packages/tailwind
+        version: link:packages/tailwind
       '@evidence-dev/telemetry':
         specifier: link:packages/telemetry
         version: link:packages/telemetry
@@ -221,7 +220,16 @@ importers:
       svelte-tiny-linked-charts:
         specifier: 1.1.5
         version: 1.1.5
+      tua-body-scroll-lock:
+        specifier: ^1.4.0
+        version: 1.4.0
     devDependencies:
+      '@rgossiaux/svelte-headlessui':
+        specifier: ^2.0.0
+        version: 2.0.0(svelte@3.55.0)
+      '@steeze-ui/heroicons':
+        specifier: ^2.2.3
+        version: 2.2.3
       '@storybook/addon-essentials':
         specifier: ^7.4.0
         version: 7.4.0(react-dom@17.0.1)(react@17.0.1)
@@ -893,6 +901,9 @@ importers:
       git-remote-origin-url:
         specifier: 4.0.0
         version: 4.0.0
+      inter-ui:
+        specifier: ^3.19.3
+        version: 3.19.3
       prismjs:
         specifier: 1.29.0
         version: 1.29.0
@@ -2981,7 +2992,7 @@ packages:
       node-fetch: 2.7.0
       node-int64: 0.4.0
       open: 8.4.2
-      openid-client: 5.5.0
+      openid-client: 5.6.1
       patch-package: 7.0.2
       thrift: 0.16.0
       uuid: 9.0.1
@@ -6391,6 +6402,14 @@ packages:
       '@babel/runtime': 7.22.15
     dev: true
 
+  /@rgossiaux/svelte-headlessui@2.0.0(svelte@3.55.0):
+    resolution: {integrity: sha512-ksh245HqMM8yqkzd/OyAK2FCHZYOSA3ldLIHab7C9S60FmifqT24JFVgi8tZpsDEMk3plbfQvfah93n5IEi8sg==}
+    peerDependencies:
+      svelte: ^3.47.0
+    dependencies:
+      svelte: 3.55.0
+    dev: true
+
   /@rollup/pluginutils@4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
@@ -6513,6 +6532,10 @@ packages:
       lodash.transform: 4.6.0
       lodash.union: 4.6.0
       lodash.values: 4.3.0
+    dev: true
+
+  /@steeze-ui/heroicons@2.2.3:
+    resolution: {integrity: sha512-bv4YK375U9TDS50SmJ5VdFy2UmMhgKbJCCbo6IUU3qs2luEj2VX6sQoDy96j8AIKttxMd62ih1j0lZj7CTjIfA==}
     dev: true
 
   /@steeze-ui/simple-icons@1.5.0(svelte@3.55.0):
@@ -13886,6 +13909,10 @@ packages:
     resolution: {integrity: sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==}
     dev: false
 
+  /inter-ui@3.19.3:
+    resolution: {integrity: sha512-5FG9fjuYOXocIfjzcCBhICL5cpvwEetseL3FU6tP3d6Bn7g8wODhB+I9RNGRTizCT7CUG4GOK54OPxqq3msQgg==}
+    dev: false
+
   /internal-slot@1.0.5:
     resolution: {integrity: sha512-Y+R5hJrzs52QCG2laLn4udYVnxsfny9CpOhNhUvk/SSSVyF6T27FzRbF0sroPidSu3X8oEAkOn2K804mjpt6UQ==}
     engines: {node: '>= 0.4'}
@@ -14951,8 +14978,8 @@ packages:
     resolution: {integrity: sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==}
     dev: false
 
-  /jose@4.15.1:
-    resolution: {integrity: sha512-CinpaEMmwb/59YG0N6SC3DY1imdTU5iNl08HPWR7NdyxACPeFuQbqjaocEjCDGq04KbnxSqQu702vL3ZTvKe5w==}
+  /jose@4.15.3:
+    resolution: {integrity: sha512-RZJdL9Qjd1sqNdyiVteRGV/bnWtik/+PJh1JP4kT6+x1QQMn+7ryueRys5BEueuayvSVY8CWGCisCDazeRLTuw==}
     dev: false
 
   /js-md4@0.3.2:
@@ -16724,10 +16751,10 @@ packages:
     hasBin: true
     dev: false
 
-  /openid-client@5.5.0:
-    resolution: {integrity: sha512-Y7Xl8BgsrkzWLHkVDYuroM67hi96xITyEDSkmWaGUiNX6CkcXC3XyQGdv5aWZ6dukVKBFVQCADi9gCavOmU14w==}
+  /openid-client@5.6.1:
+    resolution: {integrity: sha512-PtrWsY+dXg6y8mtMPyL/namZSYVz8pjXz3yJiBNZsEdCnu9miHLB4ELVC85WvneMKo2Rg62Ay7NkuCpM0bgiLQ==}
     dependencies:
-      jose: 4.15.1
+      jose: 4.15.3
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
@@ -20865,6 +20892,10 @@ packages:
       wcwidth: 1.0.1
       yargs: 15.4.1
     dev: true
+
+  /tua-body-scroll-lock@1.4.0:
+    resolution: {integrity: sha512-pbl411d7RSxjYXt5pB5GdBQ5BraVg1PMvr8BSUXc4buCMeK1OYu7L10PuOU8EhdfWoxGiAfvLrioSQe6Cr9m1g==}
+    dev: false
 
   /tunnel-agent@0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}

@@ -22,6 +22,7 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+
 	// Set up props store
 	let props = writable({});
 	setContext(propKey, props);
@@ -425,7 +426,10 @@
 										{#if column.linkLabel != undefined}
 											{#if row[column.linkLabel] != undefined}
 												{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
-												<a href={row[column.id]} target={column.openInNewTab ? '_blank' : ''}
+												<a
+													href={row[column.id]}
+													target={column.openInNewTab ? '_blank' : ''}
+													class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
 													>{formatValue(
 														row[column.linkLabel],
 														column.fmt
@@ -434,8 +438,10 @@
 														labelSummary.columnUnitSummary
 													)}</a
 												>
-											{:else}
+											{:else if column.linkLabel in row}
 												-
+											{:else}
+												{column.linkLabel}
 											{/if}
 										{:else}
 											{formatValue(
@@ -473,9 +479,11 @@
 															safeExtractColumn(column).columnUnitSummary
 														)}
 													</span>
-												{/if}
-												{#if column.deltaSymbol}
-													<span>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span>
+													{#if column.deltaSymbol}
+														<span class="font-[system-ui]"
+															>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span
+														>
+													{/if}
 												{/if}
 											</div>
 										</div>
@@ -634,7 +642,6 @@
 
 	table {
 		display: table;
-		font-family: sans-serif;
 		width: 100%;
 		border-collapse: collapse;
 		font-variant-numeric: tabular-nums;
@@ -728,7 +735,6 @@
 
 	.page-changer {
 		font-size: 20px;
-		font-family: sans-serif;
 		background: none;
 		border: none;
 		cursor: pointer;
@@ -832,13 +838,12 @@
 	}
 
 	.row-link:hover {
-		background-color: #f0f5fc;
+		@apply bg-blue-50;
 	}
 
 	.noresults {
 		display: none;
 		color: var(--grey-400);
-		font-family: sans-serif;
 		text-align: center;
 		margin-top: 5px;
 	}

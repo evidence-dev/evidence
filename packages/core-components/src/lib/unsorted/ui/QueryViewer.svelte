@@ -136,7 +136,7 @@
 	}
 
 	.code-container {
-		background-color: var(--grey-100);
+		background-color: var(--grey-50);
 		border-left: 1px solid var(--grey-200);
 		border-right: 1px solid var(--grey-200);
 		overflow-x: auto;
@@ -181,7 +181,7 @@
 	.status-bar {
 		margin-top: 0px;
 		margin-bottom: 0px;
-		background-color: var(--grey-100);
+		background-color: var(--grey-50);
 		border-left: 1px solid var(--grey-200);
 		border-right: 1px solid var(--grey-200);
 		border-bottom: 1px solid var(--grey-200);
@@ -256,7 +256,7 @@
 		white-space: nowrap;
 		text-align: left;
 		width: 100%;
-		background-color: var(--grey-100);
+		background-color: var(--grey-50);
 		border: none;
 		border-left: 1px solid var(--grey-200);
 		border-right: 1px solid var(--grey-200);
@@ -278,14 +278,13 @@
 	}
 
 	.container {
-		margin-bottom: 1.2em;
-		margin-top: 0.75em;
+		@apply my-3;
 		display: flex;
 		flex-direction: column;
 	}
 
 	.container-a {
-		background-color: var(--grey-100);
+		background-color: var(--grey-50);
 		border-top-left-radius: 6px;
 		border-top-right-radius: 6px;
 		box-sizing: border-box;

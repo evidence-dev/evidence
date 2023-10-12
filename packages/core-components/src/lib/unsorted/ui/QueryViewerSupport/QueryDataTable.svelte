@@ -50,7 +50,7 @@
 	}
 </script>
 
-<div class="results-pane" transition:slide|local>
+<div class="results-pane py-1" transition:slide|local>
 	<div class="container">
 		<table in:blur>
 			<thead>
@@ -210,9 +210,9 @@
 	}
 
 	span {
+		@apply text-xs;
 		font-family: var(--ui-font-family-compact);
 		-webkit-font-smoothing: antialiased;
-		font-size: calc(1em - 6px);
 		float: right;
 	}
 
@@ -262,17 +262,15 @@
 	}
 
 	table {
+		@apply text-xs;
 		width: 100%;
-		font-size: calc(1em - 7px);
 		border-collapse: collapse;
 		font-family: var(--ui-font-family);
 		font-variant-numeric: tabular-nums;
 	}
 
 	th {
-		font-weight: bold;
-		/* border-bottom: thin solid lightgray; */
-		padding: 0px 8px;
+		@apply py-0 px-2  font-medium;
 	}
 
 	td {
@@ -319,9 +317,7 @@
 	}
 
 	th.type-indicator {
-		color: var(--grey-400);
-		font-weight: normal;
-		font-style: italic;
+		@apply text-gray-400 font-normal;
 	}
 
 	tr.type-indicator {

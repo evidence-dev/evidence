@@ -8,14 +8,14 @@
 	import { slide } from 'svelte/transition';
 </script>
 
-<div class="mb-4 mt-3 ml-1">
-	<button class="italic text-base text-grey-800 cursor-pointer" on:click={() => (open = !open)}>
+<div class="mb-4 mt-3">
+	<button class="text-sm cursor-pointer inline-flex gap-2" on:click={() => (open = !open)}>
 		<span class={open ? 'marker rotate-marker' : 'marker'} />
-		{title}
+		<span> {title} </span>
 	</button>
 
 	{#if open}
-		<div class="ml-3 pt-3 mb-6 text-base" transition:slide>
+		<div class="pl-[calc(0.5rem+10px)] pt-3 mb-6" transition:slide|local>
 			<slot />
 		</div>
 	{/if}
@@ -25,8 +25,7 @@
 	.marker {
 		border-left: 5px solid transparent;
 		border-right: 5px solid transparent;
-		border-top: 9px solid var(--grey-800);
-		margin-right: 8px;
+		border-top: 9px solid var(--grey-400);
 		transform: rotate(-90deg);
 		transition: transform 0.2s ease;
 	}
