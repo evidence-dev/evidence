@@ -6,7 +6,8 @@
 '@evidence-dev/tailwind': minor
 'evidence-docs': minor
 '@evidence-dev/components': minor
+'evidence-test-environment': minor
 'ui-tests': minor
 ---
 
-Updated layout, deprecates sticky alerts
+update core layout, tailwind config, align components to new layout, deprecate sticky alert 

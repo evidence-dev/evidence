@@ -16,10 +16,6 @@ overrides:
 importers:
 
   .:
-    dependencies:
-      '@evidence-dev/tailwind':
-        specifier: link:packages/tailwind
-        version: link:packages/tailwind
     devDependencies:
       '@changesets/cli':
         specifier: 2.21.0
@@ -42,6 +38,9 @@ importers:
       '@evidence-dev/preprocess':
         specifier: link:packages/preprocess
         version: link:packages/preprocess
+      '@evidence-dev/tailwind':
+        specifier: link:packages/tailwind
+        version: link:packages/tailwind
       '@evidence-dev/telemetry':
         specifier: link:packages/telemetry
         version: link:packages/telemetry
