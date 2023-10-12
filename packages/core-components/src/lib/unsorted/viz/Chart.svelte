@@ -103,6 +103,9 @@
 	// Other column formats:
 	export let sizeFmt = undefined;
 
+	// Color palette:
+	export let colorPalette = undefined;
+
 	// Legend:
 	export let legend = undefined;
 
@@ -793,7 +796,8 @@
 				yAxis: verticalAxisConfig,
 				series: [],
 				animation: true,
-				graphic: horizAxisTitleConfig
+				graphic: horizAxisTitleConfig,
+				color: colorPalette
 			};
 
 			if (options) {
@@ -817,6 +821,8 @@
 	}
 
 	$: data;
+
+	$: console.log($config)
 </script>
 
 {#if !error}

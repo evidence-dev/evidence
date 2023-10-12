@@ -69,6 +69,8 @@
 	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
+	
+	export let colorPalette = undefined;
 </script>
 
 <Chart
@@ -100,6 +102,7 @@
 	{stacked100}
 	{chartAreaHeight}
 	{showAllXAxisLabels}
+	{colorPalette}
 >
 	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
 	<slot />

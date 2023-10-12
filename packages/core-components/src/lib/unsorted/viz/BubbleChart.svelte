@@ -49,6 +49,8 @@
 	let bubble = true;
 
 	let useTooltip = true;
+
+	export let colorPalette = undefined;
 </script>
 
 <Chart
@@ -81,6 +83,7 @@
 	{bubble}
 	{sort}
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 	<slot />

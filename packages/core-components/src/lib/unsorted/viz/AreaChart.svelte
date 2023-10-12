@@ -48,6 +48,8 @@
 	let stacked100 = type === 'stacked100';
 
 	let chartType = 'Area Chart';
+
+	export let colorPalette = undefined;
 </script>
 
 <Chart
@@ -77,6 +79,7 @@
 	{sort}
 	{stacked100}
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Area {line} {fillColor} {lineColor} {fillOpacity} {handleMissing} {type} {step} {stepPosition} />
 	<slot />

@@ -47,6 +47,8 @@
 	export let stepPosition = undefined;
 
 	export let sort = undefined;
+
+	export let colorPalette = undefined;
 </script>
 
 <Chart
@@ -75,6 +77,7 @@
 	chartType="Line Chart"
 	{sort}
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Line
 		{lineColor}

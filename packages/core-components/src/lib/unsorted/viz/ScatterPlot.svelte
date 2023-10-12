@@ -46,6 +46,8 @@
 	let chartType = 'Scatter Plot';
 
 	let useTooltip = true;
+
+	export let colorPalette = undefined;
 </script>
 
 <Chart
@@ -75,6 +77,7 @@
 	{chartType}
 	{sort}
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 	<slot />
