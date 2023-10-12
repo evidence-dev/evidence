@@ -61,17 +61,13 @@
 			{#if i > 0}
 				<Icon src={ChevronRight} size="12px" theme="solid" />
 				{#if crumb.href}
-					<a href={crumb.href} class="hover:underline transition-all duration-100">{crumb.title}</a>
+					<a href={crumb.href} class="hover:underline">{crumb.title}</a>
 				{:else}
 					<span class=" cursor-default">{crumb.title}</span>
 				{/if}
 			{:else}
-				<a href={crumb.href}>
-					{#if crumb.title === 'Home'}
-						<a href="/" class="hover:underline"> Home </a>
-					{:else}
+				<a href={crumb.href} class="hover:underline">
 						{crumb.title}
-					{/if}
 				</a>
 			{/if}
 		{/each}
