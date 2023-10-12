@@ -11,6 +11,8 @@
 	export let y = undefined;
 	export let series = undefined;
 	export let xType = undefined;
+	export let yLog = undefined;
+	export let yLogBase = undefined;
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
@@ -57,6 +59,8 @@
 	{yFmt}
 	{series}
 	{xType}
+	{yLog}
+	{yLogBase}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}
