@@ -67,7 +67,7 @@
 				{/if}
 			{:else}
 				<a href={crumb.href} class="hover:underline">
-						{crumb.title}
+					{crumb.title}
 				</a>
 			{/if}
 		{/each}

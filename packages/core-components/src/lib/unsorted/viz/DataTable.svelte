@@ -426,7 +426,10 @@
 										{#if column.linkLabel != undefined}
 											{#if row[column.linkLabel] != undefined}
 												{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
-												<a href={row[column.id]} target={column.openInNewTab ? '_blank' : ''} class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+												<a
+													href={row[column.id]}
+													target={column.openInNewTab ? '_blank' : ''}
+													class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
 													>{formatValue(
 														row[column.linkLabel],
 														column.fmt

@@ -72,4 +72,3 @@
 		<QueryToast bind:status />
 	{/each}
 </div>
-

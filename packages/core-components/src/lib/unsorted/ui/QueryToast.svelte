@@ -19,6 +19,7 @@
 		class:running={status.status === 'running' || status.status === 'not run'}
 		class:error={status.status === 'error'}
 		class:done={status.status === 'done' || status.status === 'from cache'}
+		class="print:hidden"
 		in:scale
 		out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
 	>
@@ -33,15 +34,15 @@
 
 <style>
 	#toast {
-		@apply rounded px-2 py-1 my-3 shadow text-xs flex gap-2 justify-between print:hidden;
+		@apply rounded px-2 py-1 my-3 shadow text-xs flex gap-2 justify-between;
 	}
 
 	div.running {
-		@apply border border-gray-400 bg-white text-gray-800; 
+		@apply border border-gray-400 bg-white text-gray-800;
 	}
 
 	div.error {
-		@apply border-red-200 border bg-red-50 text-red-800 transition-all duration-300;	
+		@apply border-red-200 border bg-red-50 text-red-800 transition-all duration-300;
 	}
 
 	div.done {
@@ -55,5 +56,4 @@
 	span.status {
 		@apply font-medium;
 	}
-
 </style>
