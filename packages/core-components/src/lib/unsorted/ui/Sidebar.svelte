@@ -138,7 +138,7 @@
 		>
 			<div class="flex flex-col pb-6">
 				<a
-					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100 hover:underline"
+					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
 					href="/"
 				>
 					Home
@@ -160,14 +160,14 @@
 					<div class="flex flex-col pb-6">
 						{#if file.href}
 							<a
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize transition-all duration-100"
+								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize hover:underline "
 								href={file.href}
 							>
 								{file.label}
 							</a>
 						{:else}
 							<span
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100"
+								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize"
 								href={file.href}
 							>
 								{file.label}
