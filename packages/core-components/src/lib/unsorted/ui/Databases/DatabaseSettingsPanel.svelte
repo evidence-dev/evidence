@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import BigqueryForm from './BigqueryForm.svelte';
 	import PostgresForm from './PostgresForm.svelte';
@@ -11,6 +7,7 @@
 	import MysqlForm from './MysqlForm.svelte';
 	import SqliteForm from './SqliteForm.svelte';
 	import DuckdbForm from './DuckdbForm.svelte';
+	import DatabricksForm from './DatabricksForm.svelte';
 	import CSVForm from './CSVForm.svelte';
 	import MSSQLForm from './MSSQLForm.svelte';
 
@@ -40,6 +37,7 @@
 		{ id: 'snowflake', name: 'Snowflake', formComponent: SnowflakeForm },
 		{ id: 'sqlite', name: 'SQLite', formComponent: SqliteForm },
 		{ id: 'duckdb', name: 'DuckDB', formComponent: DuckdbForm },
+		{ id: 'databricks', name: 'Databricks', formComponent: DatabricksForm },
 		{ id: 'csv', name: 'CSV', formComponent: CSVForm },
 		{ id: 'mssql', name: 'SQL Server', formComponent: MSSQLForm }
 	];
@@ -98,7 +96,7 @@
 <form on:submit|preventDefault={submitForm} autocomplete="off" in:blur|local id="connect-database">
 	<div class="container">
 		<div class="panel">
-			<h2>Data Source Connection</h2>
+			<h2>Connection</h2>
 			<p>Evidence supports one data source per project.</p>
 			<p>
 				These credentials will be used when running locally. For your production environment, see
@@ -239,10 +237,15 @@
 	}
 
 	h3 {
-		text-transform: uppercase;
-		font-weight: normal;
-		font-style: normal;
-		font-size: 14px;
+		@apply uppercase text-sm leading-loose py-3;
+	}
+
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
+	p {
+		@apply text-sm py-2;
 	}
 
 	.docs-link {

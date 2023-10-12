@@ -1,5 +1,25 @@
 # @evidence-dev/evidence
 
+## 22.0.1
+
+### Patch Changes
+
+- Updated dependencies [1e2fad14]
+  - @evidence-dev/core-components@2.0.4
+  - @evidence-dev/db-orchestrator@2.3.1
+
+## 22.0.0
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/db-orchestrator@2.3.0
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/component-utilities@1.1.3
+
 ## 21.0.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 1.1.3
+
+### Patch Changes
+
+- 7112f1b8: Fix y-axis labels being truncated on horizontal bar charts
+
 ## 1.1.2
 
 ### Patch Changes

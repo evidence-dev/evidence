@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { delay } from '../delay';
 	import { onMount } from 'svelte';
@@ -23,6 +19,7 @@
 		class:running={status.status === 'running' || status.status === 'not run'}
 		class:error={status.status === 'error'}
 		class:done={status.status === 'done' || status.status === 'from cache'}
+		class="print:hidden"
 		in:scale
 		out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
 	>
@@ -37,52 +34,26 @@
 
 <style>
 	#toast {
-		border-radius: 4px;
-		padding: 0.3em 0.75em;
-		margin: 1em 0;
-		/* box-shadow: 0 10px 20px rgba(0,0,0,.15);
-        box-shadow: 0 3px 6px rgba(0,0,0,.10); */
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-		font-size: 0.7em;
-		font-family: var(--monospace-font-family);
-		display: flex;
-		justify-content: space-between;
-		/* font-weight: 600; */
+		@apply rounded px-2 py-1 my-3 shadow text-xs flex gap-2 justify-between;
 	}
 
 	div.running {
-		border: 1px solid var(--grey-400);
-		background-color: white;
-		color: var(--grey-999);
-		transition: all 400ms;
+		@apply border border-gray-400 bg-white text-gray-800;
 	}
 
 	div.error {
-		border: 1px solid var(--red-500);
-		background-color: var(--red-100);
-		color: var(--red-999);
-		transition: all 400ms;
+		@apply border-red-200 border bg-red-50 text-red-800 transition-all duration-300;
 	}
 
 	div.done {
-		border: 1px solid var(--green-500);
-		background-color: var(--green-100);
-		color: var(--green-999);
-		transition: all 400ms;
-	}
-
-	span {
-		cursor: pointer;
+		@apply border-green-400 border bg-green-100 text-green-900 transition-all duration-300;
 	}
 
 	span.queryID {
-		font-weight: bold;
+		@apply truncate;
 	}
 
-	@media print {
-		#toast {
-			display: none;
-		}
+	span.status {
+		@apply font-medium;
 	}
 </style>

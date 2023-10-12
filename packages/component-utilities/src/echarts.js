@@ -44,9 +44,6 @@ export default (node, option) => {
 			'#f3f3f3'
 		],
 		backgroundColor: 'rgba(255, 255, 255, 0)',
-		textStyle: {
-			fontFamily: 'sans-serif'
-		},
 		title: {
 			padding: 0,
 			itemGap: 7,
@@ -465,17 +462,22 @@ export default (node, option) => {
 			const modConst = 4 / 5;
 			const clientWidth = node?.clientWidth ?? 0;
 
-			/** @type {import("echarts").EChartsOption} */
-			const newOption = {
-				xAxis: {
-					axisLabel: {
-						interval: 0,
-						overflow: 'truncate',
-						width: (clientWidth * modConst) / distinctXValues.size
+			// We disable this behavior because it doesn't make sense on horizontal bar charts
+			// Category labels will grow to be visible
+			// Value labels are interpolatable anyway
+			if (!option.swapXY) {
+				/** @type {import("echarts").EChartsOption} */
+				const newOption = {
+					xAxis: {
+						axisLabel: {
+							interval: 0,
+							overflow: 'truncate',
+							width: (clientWidth * modConst) / distinctXValues.size
+						}
 					}
-				}
-			};
-			chart.setOption(newOption);
+				};
+				chart.setOption(newOption);
+			}
 		}
 	};
 

@@ -22,6 +22,7 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+
 	// Set up props store
 	let props = writable({});
 	setContext(propKey, props);
@@ -422,35 +423,36 @@
                         "
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										<a href={row[column.id]} target={column.openInNewTab ? '_blank' : ''}>
-											{#if column.linkLabel != undefined}
-												{#if row[column.linkLabel] != undefined}
-													{formatValue(
+										{#if column.linkLabel != undefined}
+											{#if row[column.linkLabel] != undefined}
+												{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
+												<a
+													href={row[column.id]}
+													target={column.openInNewTab ? '_blank' : ''}
+													class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+													>{formatValue(
 														row[column.linkLabel],
 														column.fmt
-															? getFormatObjectFromString(
-																	column.fmt,
-																	safeExtractColumn(column).format.valueType
-															  )
-															: safeExtractColumn(column).format,
-														safeExtractColumn(column).columnUnitSummary
-													)}
-												{:else}
-													{column.linkLabel}
-												{/if}
+															? getFormatObjectFromString(column.fmt, labelSummary.format.valueType)
+															: labelSummary.format,
+														labelSummary.columnUnitSummary
+													)}</a
+												>
 											{:else}
-												{formatValue(
-													row[column.id],
-													column.fmt
-														? getFormatObjectFromString(
-																column.fmt,
-																safeExtractColumn(column).format.valueType
-														  )
-														: safeExtractColumn(column).format,
-													safeExtractColumn(column).columnUnitSummary
-												)}
+												-
 											{/if}
-										</a>
+										{:else}
+											{formatValue(
+												row[column.id],
+												column.fmt
+													? getFormatObjectFromString(
+															column.fmt,
+															safeExtractColumn(column).format.valueType
+													  )
+													: safeExtractColumn(column).format,
+												safeExtractColumn(column).columnUnitSummary
+											)}
+										{/if}
 									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
 										<div
 											class="m-0 text-xs font-medium font-ui"
@@ -475,9 +477,11 @@
 															safeExtractColumn(column).columnUnitSummary
 														)}
 													</span>
-												{/if}
-												{#if column.deltaSymbol}
-													<span>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span>
+													{#if column.deltaSymbol}
+														<span class="font-[system-ui]"
+															>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span
+														>
+													{/if}
 												{/if}
 											</div>
 										</div>
@@ -636,7 +640,6 @@
 
 	table {
 		display: table;
-		font-family: sans-serif;
 		width: 100%;
 		border-collapse: collapse;
 		font-variant-numeric: tabular-nums;
@@ -730,7 +733,6 @@
 
 	.page-changer {
 		font-size: 20px;
-		font-family: sans-serif;
 		background: none;
 		border: none;
 		cursor: pointer;
@@ -823,10 +825,6 @@
 		color: var(--grey-400);
 	}
 
-	th {
-		user-select: none;
-	}
-
 	th.type-indicator {
 		color: var(--grey-400);
 		font-weight: normal;
@@ -838,13 +836,12 @@
 	}
 
 	.row-link:hover {
-		background-color: #f0f5fc;
+		@apply bg-blue-50;
 	}
 
 	.noresults {
 		display: none;
 		color: var(--grey-400);
-		font-family: sans-serif;
 		text-align: center;
 		margin-top: 5px;
 	}
