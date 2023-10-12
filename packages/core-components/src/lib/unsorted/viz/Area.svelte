@@ -140,9 +140,9 @@
 		emphasis: {
 			focus: 'series'
 		},
-		showSymbol: (labels || markers),
+		showSymbol: labels || markers,
 		symbol: markerShape,
-		symbolSize: (labels && !markers) ? 0 : markerSize,
+		symbolSize: labels && !markers ? 0 : markerSize,
 		step: step ? stepPosition : false
 	};
 
@@ -199,8 +199,8 @@
 				}
 			}
 			// If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
-			if(labels){
-				d.axisPointer = { triggerEmphasis: false }
+			if (labels) {
+				d.axisPointer = { triggerEmphasis: false };
 			}
 			return d;
 		});
