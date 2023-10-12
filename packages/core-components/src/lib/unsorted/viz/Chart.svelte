@@ -822,7 +822,7 @@
 
 	$: data;
 
-	$: console.log($config)
+	$: console.log($config);
 </script>
 
 {#if !error}

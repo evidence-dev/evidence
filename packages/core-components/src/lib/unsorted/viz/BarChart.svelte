@@ -69,7 +69,7 @@
 	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
-	
+
 	export let colorPalette = undefined;
 </script>
 
