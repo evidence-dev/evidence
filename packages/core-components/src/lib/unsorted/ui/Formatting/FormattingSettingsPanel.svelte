@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	export let customFormattingSettings;
 	import { BUILT_IN_FORMATS } from '@evidence-dev/component-utilities/builtInFormats';
@@ -157,5 +153,13 @@ from table`;
 
 	.docs-link:hover {
 		color: var(--blue-800);
+	}
+
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
+	p {
+		@apply text-sm py-2;
 	}
 </style>

@@ -26,7 +26,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 				[
 					addClasses,
 					{
-						/* 'p': 'is-md' */
+						'*': 'markdown'
 					}
 				]
 			]

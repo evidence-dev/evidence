@@ -32,4 +32,3 @@ This is a dangerous alert
 | Name   | Description                         | Required | options                                       | Default   |
 | ------ | ----------------------------------- | -------- | --------------------------------------------- | --------- |
 | status | Changes the colors of the alert     | No       | `default` `info` `success` `warning` `danger` | `default` |
-| sticky | Makes the alert always stay in view | No       |                                               | false     |
