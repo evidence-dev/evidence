@@ -24,6 +24,24 @@ In Evidence, the value of a search parameter `channel` is accessible in a page v
 {$page.url.searchParams.get('channel')}
 ```
 
+## Ensuring builds do not look for search parameters
+
+Evidence is a static site generator, meaning that it pre-builds all the html for the site before deployment. During build, there is no URL being accessed by a user in the browser, so you cannot access search parameters.
+
+We must check if we are in a browser before accessing search parameters with the `browser` variable, which is `true` if the code is running in a browser, and `false` if it is during build.
+
+```markdown
+<script>
+    import {browser} from "$app/environment";
+</script>
+
+{#if browser && $page.url.searchParams.get('channel')}
+
+The channel is {$page.url.searchParams.get('channel')} <!-- Check we are in a browser and there is a filter in the URL -->
+
+{/if}
+```
+
 ## Generating filter URLS
 
 For users to be able to interact with a filter, they require the ability to navigate to URLs with search parameters.
@@ -58,9 +76,15 @@ To filter the data shown by a component, use the javascript filter method on the
 .filter(d => d.channel === $page.url.searchParams.get('channel'))
 ```
 
+## Full example
+
 We can use this to filter a `<DataTable/>` component:
 
 ````markdown
+<script>
+    import {browser} from "$app/environment";
+</script>
+
 ## Filtered Component
 
 ```sql items
@@ -72,7 +96,7 @@ from orders
 group by 1,2
 ```
 
-{#if $page.url.searchParams.get('channel')} <!-- Check for a filter in the URL -->
+{#if browser && $page.url.searchParams.get('channel')} <!-- Check we are in a browser and there is a filter in the URL -->
 
 <DataTable data={items.filter(d=>d.channel === $page.url.searchParams.get('channel'))}/>
 
