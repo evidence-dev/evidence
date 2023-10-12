@@ -45,7 +45,7 @@
 	}
 
 	div.done {
-		@apply border-green-300 border bg-green-100 text-green-900 transition-all duration-300;
+		@apply border-green-400 border bg-green-100 text-green-900 transition-all duration-300;
 	}
 
 	span.queryID {
