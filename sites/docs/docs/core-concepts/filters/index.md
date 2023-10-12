@@ -21,9 +21,7 @@ Filters make use of _search parameters_ (a.k.a. "query strings") in the URL. Any
 In Evidence, the value of a search parameter `channel` is accessible in a page via:
 
 ```js
-{
-	$page.url.searchParams.get('channel');
-}
+{$page.url.searchParams.get('channel')}
 ```
 
 ## Generating filter URLS
