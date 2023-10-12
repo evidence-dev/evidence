@@ -202,7 +202,6 @@
 		padding-top: 2px;
 		padding-bottom: 1px;
 		color: white;
-		font-family: sans-serif;
 		font-size: 0.8em;
 		background-color: var(--grey-900);
 		opacity: 0.85;

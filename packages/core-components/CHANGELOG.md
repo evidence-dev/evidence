@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.4
+
+### Patch Changes
+
+- 1e2fad14: Bugfix: Copy-to-clipboard does not select DataTable Headers
+
 ## 2.0.3
 
 ### Patch Changes

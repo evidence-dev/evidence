@@ -4,14 +4,13 @@
 
 <script>
 	import './prismtheme.css';
-	import { blur } from 'svelte/transition';
 	import Prism from 'prismjs';
 	import { prism_sql } from './prism-sql';
 
 	export let code = '';
 </script>
 
-<pre in:blur>
+<pre class="text-sm max-h-56 overflow-auto">
   <code class="language-sql">{@html Prism.highlight(code, prism_sql)}</code>
 </pre>
 

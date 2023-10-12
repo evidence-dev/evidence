@@ -5,7 +5,7 @@ module.exports = `
 -->
 <!-- Show title as h1 if defined, and not hidden -->
 {#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title) && metadata.hide_title !== true}
-<h1>{metadata.title ?? metadata.og?.title}</h1>
+<h1 class="title">{metadata.title ?? metadata.og?.title}</h1>
 {/if}
 <svelte:head>
 <!-- Title has a default case; so we need to handle it in a special way -->
