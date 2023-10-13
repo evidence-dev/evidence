@@ -126,7 +126,12 @@
 			formatter: function (params) {
 				return params.value[swapXY ? 0 : 1] === 0
 					? ''
-					: formatValue(params.value[swapXY ? 0 : 1], [(yLabelFormat ?? labelFormat ?? yFormat), (y2LabelFormat ?? labelFormat ?? y2Format)][getYAxisIndex(params.componentIndex, yCount, y2Count)])
+					: formatValue(
+							params.value[swapXY ? 0 : 1],
+							[yLabelFormat ?? labelFormat ?? yFormat, y2LabelFormat ?? labelFormat ?? y2Format][
+								getYAxisIndex(params.componentIndex, yCount, y2Count)
+							]
+					  );
 			},
 			fontSize: labelSize,
 			color: labelColor,
