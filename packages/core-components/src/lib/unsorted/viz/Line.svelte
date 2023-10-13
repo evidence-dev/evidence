@@ -198,12 +198,12 @@
 				}
 			}
 
-      // If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
+			// If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
 			if (labels) {
 				d.axisPointer = { triggerEmphasis: false };
 			}
 
-      return d;
+			return d;
 		});
 	});
 </script>

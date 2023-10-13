@@ -906,19 +906,19 @@
 							)}</span>`;
 							for (let i = params.length - 1; i >= 0; i--) {
 								if (params[i].seriesName !== 'stackTotal') {
-								yVal = params[i].value[swapXY ? 0 : 1];
-								output =
-									output +
-									`<br> ${params[i].marker} ${
-										params[i].seriesName
-									} <span style='float:right; margin-left: 10px;'>${formatValue(
-										yVal,
-										// Not sure if this will work. Need to check with multi series on both axes
-										// Check if echarts does the order in the same way - y first, then y2
-										getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
-											? yFormat
-											: y2Format
-									)}</span>`;
+									yVal = params[i].value[swapXY ? 0 : 1];
+									output =
+										output +
+										`<br> ${params[i].marker} ${
+											params[i].seriesName
+										} <span style='float:right; margin-left: 10px;'>${formatValue(
+											yVal,
+											// Not sure if this will work. Need to check with multi series on both axes
+											// Check if echarts does the order in the same way - y first, then y2
+											getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
+												? yFormat
+												: y2Format
+										)}</span>`;
 								}
 							}
 						} else if (xType === 'value') {

@@ -72,9 +72,8 @@
 	export let labelFmt = undefined;
 	export let showAllLabels = undefined;
 
-  export let yAxisColor = undefined;
+	export let yAxisColor = undefined;
 	export let y2AxisColor = undefined;
-
 </script>
 
 <Chart
