@@ -554,15 +554,6 @@
 			legend = legend ?? totalSeriesCount > 1;
 
 			// ---------------------------------------------------------------------------------------
-			// Get total series count
-			// ---------------------------------------------------------------------------------------
-
-			let yCount = typeof y === 'object' ? y.length : 1;
-			let seriesCount = series ? getDistinctCount(data, series) : 1;
-
-			let totalSeriesCount = yCount * seriesCount;
-
-			// ---------------------------------------------------------------------------------------
 			// Handle errors for log axes (cannot be used with stacked charts)
 			// ---------------------------------------------------------------------------------------
 
