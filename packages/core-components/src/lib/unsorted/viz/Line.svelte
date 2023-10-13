@@ -19,6 +19,8 @@
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
+	export let y2 = undefined;
+	const y2Set = y2 ? true : false; // Hack, see chart.svelte
 	export let series = undefined;
 	const seriesSet = series ? true : false; // Hack, see chart.svelte
 	export let options = undefined;
@@ -65,6 +67,7 @@
 	$: data = $props.data;
 	$: x = $props.x;
 	$: y = ySet ? y : $props.y;
+	$: y2 = y2Set ? y2 : $props.y2;
 	$: swapXY = $props.swapXY;
 	$: yFormat = $props.yFormat;
 	$: xType = $props.xType;
@@ -153,8 +156,12 @@
 		baseConfig,
 		name,
 		xMismatch,
-		columnSummary
+		columnSummary,
+		undefined,
+		undefined,
+		y2
 	);
+
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
 		// Push series into legend:
@@ -181,17 +188,22 @@
 	beforeUpdate(() => {
 		config.update((d) => {
 			if (swapXY) {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+				d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.xAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 			} else {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+				d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
+				if (y2) {
+					d.yAxis[1] = { ...d.yAxis[1], show: true };
+				}
 			}
-			// If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
+
+      // If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
 			if (labels) {
 				d.axisPointer = { triggerEmphasis: false };
 			}
-			return d;
+
+      return d;
 		});
 	});
 </script>
