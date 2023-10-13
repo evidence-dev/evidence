@@ -23,8 +23,8 @@
 	export let subtitle = undefined;
 	export let legend = undefined;
 	export let xAxisTitle = undefined;
-	export let yAxisTitle = undefined;
-	export let y2AxisTitle = undefined;
+	export let yAxisTitle = y2 ? 'true' : undefined;
+	export let y2AxisTitle = y2 ? 'true' : undefined;
 
 	export let xGridlines = undefined;
 	export let yGridlines = undefined;
