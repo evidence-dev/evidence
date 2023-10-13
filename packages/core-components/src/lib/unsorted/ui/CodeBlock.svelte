@@ -29,7 +29,7 @@
 		{#if copyToClipboard}
 			<button
 				type="button"
-				class="container absolute right-0 top-0 h-8 w-8"
+				class="container absolute right-0 top-0 h-8 w-8 transition-all duration-200 ease-in-out"
 				class:copied
 				on:click={() => {
 					if (source !== undefined) {
@@ -60,13 +60,7 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 	pre {
-		background: var(--grey-100);
-		border: 1px solid var(--grey-200);
-		border-radius: 5px;
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		justify-content: space-between;
+		@apply bg-gray-50 border rounded-md flex items-start justify-between;
 	}
 	pre code::-webkit-scrollbar {
 		height: var(--scrollbar-size);
@@ -92,20 +86,13 @@
 		border: 3px solid transparent;
 	}
 	pre code {
-		overflow: auto;
-		position: relative;
-		display: block;
-		background: none;
-		border: none;
-		padding: 0.8em 0.8em;
-		color: var(--grey-900);
+		@apply overflow-auto relative block p-3 text-gray-900 text-sm;
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 	}
 
 	pre button.container {
 		opacity: 0;
-		transition: all 200ms ease-in-out;
 		box-sizing: border-box;
 		background-color: var(--grey-100);
 		border-radius: 4px 4px 4px 4px;
@@ -124,14 +111,9 @@
 	}
 
 	pre:hover button.container {
+		@apply bg-gray-50 text-gray-500 border-gray-200 rounded;
 		opacity: 1;
-		transition: all 200ms ease-in-out;
-		box-sizing: border-box;
-		background-color: var(--grey-100);
-		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--grey-300);
 		padding: 0.25em 0.35em 0.25em 0.35em;
-		color: var(--grey-300);
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
@@ -143,16 +125,10 @@
 	}
 
 	pre button.container:hover {
-		border-color: var(--grey-500);
-		background-color: var(--grey-100);
-		color: var(--grey-500);
-		transition: all 200ms ease-in-out;
+		@apply border-gray-500 text-gray-500;
 	}
 
 	pre button.container.copied {
-		border-color: var(--grey-500);
-		background-color: var(--grey-100);
-		color: var(--green-500);
-		transition: all 200ms ease-in-out;
+		@apply text-green-600 border-gray-500;
 	}
 </style>

@@ -9,17 +9,9 @@
 	 * @type {"default" | "info" | "danger" | "success" | "warning"}
 	 */
 	export let status = 'default';
-
-	/**
-	 * Note that this is pretty specific to the current evidence page layout
-	 * @type {boolean | string}
-	 */
-	export let sticky = false;
-
-	$: if (typeof sticky === 'string') sticky = sticky.toLowerCase() === 'true';
 </script>
 
-<div class="alert {status}" role="alert" class:sticky>
+<div class="alert {status}" role="alert">
 	<div>
 		<slot />
 	</div>
@@ -27,7 +19,7 @@
 
 <style lang="postcss">
 	.alert {
-		@apply p-2 mb-4 text-sm rounded text-gray-800 bg-gray-50 font-medium font-sans top-14;
+		@apply p-2 mb-4 rounded text-gray-800 bg-gray-50 top-14;
 
 		&.info {
 			@apply text-blue-800 bg-blue-50;

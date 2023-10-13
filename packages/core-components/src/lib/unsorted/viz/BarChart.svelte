@@ -12,6 +12,8 @@
 	export let y = undefined;
 	export let series = undefined;
 	export let xType = undefined;
+	export let yLog = undefined;
+	export let yLogBase = undefined;
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
@@ -59,7 +61,7 @@
 		}
 	}
 
-	export let type = undefined; // stacked, grouped, or stacked100
+	export let type = 'stacked'; // stacked, grouped, or stacked100
 	let stacked100 = type === 'stacked100';
 
 	export let fillColor = undefined;
@@ -79,6 +81,8 @@
 	{yFmt}
 	{series}
 	{xType}
+	{yLog}
+	{yLogBase}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}
@@ -96,6 +100,7 @@
 	{title}
 	{subtitle}
 	chartType="Bar Chart"
+	stackType={type}
 	{sort}
 	{stacked100}
 	{chartAreaHeight}

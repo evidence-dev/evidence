@@ -6,10 +6,6 @@ sources:
 
 <BigValue 
 data = {orders_with_comparisons} 
-/>
-
-<BigValue 
-data = {orders_with_comparisons} 
 value=sales_usd0k
 comparison=sales_change_pct0
 comparisonTitle="vs. Last Month"
@@ -48,6 +44,12 @@ inter retinentibus inaniter pontum! `pages/index.md`
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
+
+# Error state
+<BigValue 
+data = {orders_with_comparisons} 
+/>
+
 
 ## Pascua tigres inde
 

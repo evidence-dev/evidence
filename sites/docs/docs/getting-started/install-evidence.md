@@ -10,7 +10,7 @@ The easiest way to get started with Evidence is to use the VSCode Extension.
 ## VSCode Extension
 
 1. Install Evidence from the VSCode Marketplace
-2. Open the Command Palette (F1) and enter `Evidence: New Evidence Project`
+2. Open the Command Palette (`Ctrl/Cmd + Shift + P`) and enter `Evidence: New Evidence Project`
 3. Click `Start Evidence` in the bottom status bar
 
 

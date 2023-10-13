@@ -22,9 +22,6 @@ export default (node, option) => {
 		},
 		color: chartColours,
 		backgroundColor: 'rgba(255, 255, 255, 0)',
-		textStyle: {
-			fontFamily: 'sans-serif'
-		},
 		title: {
 			padding: 0,
 			itemGap: 7,

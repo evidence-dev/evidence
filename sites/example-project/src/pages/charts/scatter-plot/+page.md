@@ -1,3 +1,10 @@
+---
+sources:
+ - negative_values.sql
+ - orders_by_category.sql
+---
+
+
 <script>
 
 let regions = [
@@ -149,4 +156,50 @@ series=continent
     tooltipTitle=country
     series=continent
     chartAreaHeight=380
+/>
+
+
+## Scatter with Log Scale
+
+<ScatterPlot
+data={countries}
+x=gdp_usd
+y=gdp_growth_pct1
+tooltipTitle=country
+series=continent
+yLog=true
+>
+
+    <ReferenceLine y=0.065/>
+
+</ScatterPlot>
+
+
+## Not allowed log charts: This should fail?
+
+<ScatterPlot
+    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+    x=month
+    yFmt="#"
+    yLog=true
+    yMax=100000
+/>
+
+## Multi Series
+
+<ScatterPlot 
+    data={orders_by_category} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    yLog=true
+/>
+
+## Not allowed log charts: No negative values
+
+<ScatterPlot
+    data={negative_values}
+    x=date
+    y=daily_change
+    yLog=true
 />

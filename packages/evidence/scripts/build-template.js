@@ -53,7 +53,12 @@ fsExtra.outputFileSync(
             fs: {
                 strict: strictFs // allow template to get dependencies outside the .evidence folder
             }
-        }
+        },
+		build: {
+			rollupOptions: {
+				external: [/^@evidence-dev\\/tailwind\\/fonts\\//]
+			}
+		}
     }
     export default config`
 );
