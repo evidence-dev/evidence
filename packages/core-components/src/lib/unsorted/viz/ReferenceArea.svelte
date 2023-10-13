@@ -219,10 +219,10 @@
 		if (chartOverrides) {
 			config.update((d) => {
 				if (swapXY) {
-					d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.xAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 				} else {
-					d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 				}
 				return d;
