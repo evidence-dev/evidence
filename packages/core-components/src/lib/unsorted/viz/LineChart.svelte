@@ -70,6 +70,8 @@
 	export let labelPosition = undefined;
 	export let labelColor = undefined;
 	export let labelFmt = undefined;
+	export let yLabelFmt = undefined;
+	export let y2LabelFmt = undefined;
 	export let showAllLabels = undefined;
 
 	export let yAxisColor = undefined;
@@ -132,6 +134,8 @@
 		{labelPosition}
 		{labelColor}
 		{labelFmt}
+		{yLabelFmt}
+		{y2LabelFmt}
 		{showAllLabels}
 	/>
 	<slot />

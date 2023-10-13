@@ -18,6 +18,7 @@
 	import getDistinctCount from '@evidence-dev/component-utilities/getDistinctCount';
 	import getStackPercentages from '@evidence-dev/component-utilities/getStackPercentages';
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
+	import getYAxisIndex from '@evidence-dev/component-utilities/getYAxisIndex';
 	import { standardizeDateColumn } from '@evidence-dev/component-utilities/dateParsing';
 	import { formatAxisValue } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
@@ -218,22 +219,6 @@
 	// Date String Handling:
 	let columnSummaryArray;
 	let dateCols;
-
-	// Helper function for multi-series tooltips:
-	// Returns the yAxisIndex for a series since we can't currently access that in ECharts' params
-	function getYAxisIndex(componentIndex, yCount, y2Count) {
-		const totalPatternCount = yCount + y2Count;
-
-		// Find the position of the index in the repeating sequence
-		const positionInPattern = componentIndex % totalPatternCount;
-
-		// If the position lies within yCount, return 0, otherwise return 1
-		if (positionInPattern < yCount) {
-			return 0;
-		} else {
-			return 1;
-		}
-	}
 
 	$: {
 		try {
@@ -607,7 +592,9 @@
 					y2AxisTitle,
 					tooltipTitle,
 					chartAreaHeight,
-					chartType
+					chartType,
+					yCount,
+					y2Count
 				};
 			});
 

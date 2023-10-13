@@ -11,6 +11,7 @@
 	import getSeriesConfig from '@evidence-dev/component-utilities/getSeriesConfig';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import getYAxisIndex from '@evidence-dev/component-utilities/getYAxisIndex';
 
 	import {
 		formatValue,
@@ -46,6 +47,16 @@
 	if (labelFmt) {
 		labelFormat = getFormatObjectFromString(labelFmt);
 	}
+	export let yLabelFmt = undefined;
+	let yLabelFormat;
+	if (yLabelFmt) {
+		yLabelFormat = getFormatObjectFromString(yLabelFmt);
+	}
+	export let y2LabelFmt = undefined;
+	let y2LabelFormat;
+	if (y2LabelFmt) {
+		y2LabelFormat = getFormatObjectFromString(y2LabelFmt);
+	}
 	export let showAllLabels = false;
 
 	export let handleMissing = 'gap';
@@ -70,6 +81,9 @@
 	$: y2 = y2Set ? y2 : $props.y2;
 	$: swapXY = $props.swapXY;
 	$: yFormat = $props.yFormat;
+	$: y2Format = $props.y2Format;
+	$: yCount = $props.yCount;
+	$: y2Count = $props.y2Count;
 	$: xType = $props.xType;
 	$: xMismatch = $props.xMismatch;
 	$: columnSummary = $props.columnSummary;
@@ -112,7 +126,7 @@
 			formatter: function (params) {
 				return params.value[swapXY ? 0 : 1] === 0
 					? ''
-					: formatValue(params.value[swapXY ? 0 : 1], labelFormat ?? yFormat);
+					: formatValue(params.value[swapXY ? 0 : 1], [(yLabelFormat ?? labelFormat ?? yFormat), (y2LabelFormat ?? labelFormat ?? y2Format)][getYAxisIndex(params.componentIndex, yCount, y2Count)])
 			},
 			fontSize: labelSize,
 			color: labelColor,
