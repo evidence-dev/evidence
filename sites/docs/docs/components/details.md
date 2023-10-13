@@ -32,7 +32,7 @@ The details component allows you to add a collapsible section to your markdown. 
 </Details>
 ```
 
-## Props
+## Options
 
 | Name   | Description                                                | Required | Default  |
 |--------|------------------------------------------------------------|----------|----------|
