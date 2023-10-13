@@ -556,7 +556,7 @@
 						minYValue = columnSummary[y[i]].columnUnitSummary.min;
 					}
 				}
-			} else {
+			} else if (y) {
 				minYValue = columnSummary[y].columnUnitSummary.min;
 			}
 
