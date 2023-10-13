@@ -31,7 +31,7 @@
 		class="chart"
 		style="
 		height: {height};
-		width: 645px;
+		width: 606px;
 		margin-left: 0;
 		margin-top: 15px;
 		margin-bottom: 10px;
