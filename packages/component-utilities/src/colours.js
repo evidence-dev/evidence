@@ -1,4 +1,4 @@
-export const colours = {
+export const uiColours = {
 	blue100: 'hsla(202, 100%, 95%, 1)',
 	blue200: 'hsla(204, 100%, 85%, 1)',
 	blue300: 'hsla(206, 95%, 72%, 1)',
@@ -42,7 +42,7 @@ export const colours = {
 	yellow999: 'hsl(15, 86%, 30%, 1)'
 };
 
-export const colour = [
+export const chartColours = [
 	'hsla(207, 65%, 39%, 1)', // Navy
 	'hsla(195, 49%, 51%, 1)', // Teal
 	'hsla(207, 69%, 79%, 1)', // Light Blue
@@ -52,7 +52,16 @@ export const colour = [
 	'hsla(38, 89%, 62%, 1)', // Yellow
 	'hsla(342, 40%, 40%, 1)', // Maroon
 	'hsla(207, 86%, 70%, 1)', // Blue
-	'hsla(160, 40%, 46%, 1)' // Green
-	//greyscale
-	//'#71777d', '#7e848a', '#8c9196', '#9a9fa3', '#a8acb0', '#b7babd', '#c5c8ca', '#d4d6d7', '#e3e4e5', '#f3f3f3'
+	'hsla(160, 40%, 46%, 1)', // Green
+	// Grey Scale
+	'#71777d',
+	'#7e848a',
+	'#8c9196',
+	'#9a9fa3',
+	'#a8acb0',
+	'#b7babd',
+	'#c5c8ca',
+	'#d4d6d7',
+	'#e3e4e5',
+	'#f3f3f3'
 ];

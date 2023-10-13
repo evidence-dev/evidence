@@ -96,6 +96,10 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 
 <LineChart data={orders_by_month} x=month y={["sales_usd0k","num_orders_num0"]}/>
 
+## Multiple y Axes
+
+<LineChart data={orders_by_month} x=month y=sales_usd0k y2=num_orders_num0/>
+
 ## Multiple y Column and Series Line
 
 <LineChart data={orders_by_category} x=month series=category y={["sales_usd0k","num_orders_num0"]}/>

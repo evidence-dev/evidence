@@ -27,7 +27,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { colours } from '@evidence-dev/component-utilities/colours';
+	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -36,6 +36,7 @@
 	export let data = undefined;
 	export let x = undefined;
 	export let y = undefined;
+	export let y2 = undefined;
 	export let series = undefined;
 	export let size = undefined;
 	export let tooltipTitle = undefined;
@@ -53,6 +54,7 @@
 
 	// This is a hack to get around the above
 	const ySet = y ? true : false;
+	// const y2Set = y2 ? true : false;
 	const xSet = x ? true : false;
 
 	export let swapXY = false; // Flipped axis chart
@@ -104,6 +106,22 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let yFmt = undefined;
+	export let yAxisColor = 'true';
+
+	// Y2 axis:
+	export let y2AxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
+	export let y2Baseline = false;
+	y2Baseline = y2Baseline === 'true' || y2Baseline === true;
+	export let y2TickMarks = false;
+	y2TickMarks = y2TickMarks === 'true' || y2TickMarks === true;
+	export let y2Gridlines = true;
+	y2Gridlines = y2Gridlines === 'true' || y2Gridlines === true;
+	export let y2AxisLabels = true;
+	y2AxisLabels = y2AxisLabels === 'true' || y2AxisLabels === true;
+	export let y2Min = undefined;
+	export let y2Max = undefined;
+	export let y2Fmt = undefined;
+	export let y2AxisColor = 'true';
 
 	// Other column formats:
 	export let sizeFmt = undefined;
@@ -139,9 +157,11 @@
 	let xMismatch;
 	let xFormat;
 	let yFormat;
+	let y2Format;
 	let sizeFormat;
 	let xUnitSummary;
 	let yUnitSummary;
+	let y2UnitSummary;
 	let xDistinct;
 
 	// Individual Config Sections:
@@ -198,6 +218,22 @@
 	// Date String Handling:
 	let columnSummaryArray;
 	let dateCols;
+
+	// Helper function for multi-series tooltips:
+	// Returns the yAxisIndex for a series since we can't currently access that in ECharts' params
+	function getYAxisIndex(componentIndex, yCount, y2Count) {
+		const totalPatternCount = yCount + y2Count;
+
+		// Find the position of the index in the repeating sequence
+		const positionInPattern = componentIndex % totalPatternCount;
+
+		// If the position lies within yCount, return 0, otherwise return 1
+		if (positionInPattern < yCount) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
 
 	$: {
 		try {
@@ -299,6 +335,15 @@
 					}
 				} else {
 					inputCols.push(y);
+				}
+			}
+			if (y2) {
+				if (typeof y2 === 'object') {
+					for (i = 0; i < y2.length; i++) {
+						inputCols.push(y2[i]);
+					}
+				} else {
+					inputCols.push(y2);
 				}
 			}
 			if (size) {
@@ -426,6 +471,22 @@
 				}
 			}
 
+			if (y2) {
+				if (y2Fmt) {
+					if (typeof y2 === 'object') {
+						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2[0]].format.valueType);
+					} else {
+						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2].format.valueType);
+					}
+				} else {
+					if (typeof y2 === 'object') {
+						y2Format = columnSummary[y2[0]].format;
+					} else {
+						y2Format = columnSummary[y2].format;
+					}
+				}
+			}
+
 			if (size) {
 				if (sizeFmt) {
 					sizeFormat = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
@@ -444,6 +505,14 @@
 				}
 			}
 
+			if (y2) {
+				if (typeof y2 === 'object') {
+					y2UnitSummary = columnSummary[y2[0]].columnUnitSummary;
+				} else {
+					y2UnitSummary = columnSummary[y2].columnUnitSummary;
+				}
+			}
+
 			xAxisTitle =
 				xAxisTitle === 'true' ? formatTitle(x, xFormat) : xAxisTitle === 'false' ? '' : xAxisTitle;
 			yAxisTitle =
@@ -454,6 +523,26 @@
 					: yAxisTitle === 'false'
 					? ''
 					: yAxisTitle;
+			y2AxisTitle =
+				y2AxisTitle === 'true'
+					? typeof y2 === 'object'
+						? ''
+						: formatTitle(y2, y2Format)
+					: y2AxisTitle === 'false'
+					? ''
+					: y2AxisTitle;
+
+			// ---------------------------------------------------------------------------------------
+			// Get total series count
+			// ---------------------------------------------------------------------------------------
+			let yCount = typeof y === 'object' ? y.length : 1;
+			let seriesCount = series ? getDistinctCount(data, series) : 1;
+			let ySeriesCount = yCount * seriesCount;
+
+			// y2Count may need to be adjusted to also factor in the series column. For now, we really
+			// only need to know that it's multi-series, so > 1 is sufficient
+			let y2Count = typeof y2 === 'object' ? y2.length : y2 ? 1 : 0;
+			let totalSeriesCount = ySeriesCount + y2Count;
 
 			// ---------------------------------------------------------------------------------------
 			// Set legend flag
@@ -462,16 +551,7 @@
 				legend = legend === 'true' || legend === true;
 			}
 
-			legend = legend ?? (series != undefined || typeof y === 'object');
-
-			// ---------------------------------------------------------------------------------------
-			// Get total series count
-			// ---------------------------------------------------------------------------------------
-
-			let yCount = typeof y === 'object' ? y.length : 1;
-			let seriesCount = series ? getDistinctCount(data, series) : 1;
-
-			let totalSeriesCount = yCount * seriesCount;
+			legend = legend ?? totalSeriesCount > 1;
 
 			// ---------------------------------------------------------------------------------------
 			// Handle errors for log axes (cannot be used with stacked charts)
@@ -508,19 +588,23 @@
 					data,
 					x,
 					y,
+					y2,
 					series,
 					swapXY,
 					sort,
 					xType,
 					xFormat,
 					yFormat,
+					y2Format,
 					sizeFormat,
 					xMismatch,
 					size,
 					yMin,
+					y2Min,
 					columnSummary,
 					xAxisTitle,
 					yAxisTitle,
+					y2AxisTitle,
 					tooltipTitle,
 					chartAreaHeight,
 					chartType
@@ -531,6 +615,7 @@
 			// Axis Configuration
 			// ---------------------------------------------------------------------------------------
 			xDistinct = getDistinctValues(data, x);
+			let secondaryAxis;
 
 			if (swapXY) {
 				horizAxisConfig = {
@@ -634,7 +719,14 @@
 						margin: 4,
 						formatter: function (value) {
 							return formatAxisValue(value, yFormat, yUnitSummary);
-						}
+						},
+						color: y2
+							? yAxisColor === 'true'
+								? chartColours[0]
+								: yAxisColor !== 'false'
+								? yAxisColor
+								: undefined
+							: undefined
 					},
 					name: yAxisTitle,
 					nameLocation: 'end',
@@ -642,7 +734,14 @@
 						align: 'left',
 						verticalAlign: 'top',
 						backgroundColor: 'white',
-						padding: [0, 5, 0, 0]
+						padding: [0, 5, 0, 0],
+						color: y2
+							? yAxisColor === 'true'
+								? chartColours[0]
+								: yAxisColor !== 'false'
+								? yAxisColor
+								: undefined
+							: undefined
 					},
 					nameGap: 6,
 					min: yMin,
@@ -650,6 +749,57 @@
 					boundaryGap: ['0%', '1%'],
 					z: 2
 				};
+
+				secondaryAxis = {
+					type: 'value',
+					show: false,
+					alignTicks: true,
+					splitLine: {
+						show: y2Gridlines
+					},
+					axisLine: {
+						show: y2Baseline,
+						onZero: false
+					},
+					axisTick: {
+						show: y2TickMarks
+					},
+					axisLabel: {
+						show: y2AxisLabels,
+						hideOverlap: true,
+						margin: 4,
+						formatter: function (value) {
+							return formatAxisValue(value, y2Format, y2UnitSummary);
+						},
+						color:
+							y2AxisColor === 'true'
+								? chartColours[ySeriesCount]
+								: y2AxisColor !== 'false'
+								? y2AxisColor
+								: undefined
+					},
+					name: y2AxisTitle,
+					nameLocation: 'end',
+					nameTextStyle: {
+						align: 'right',
+						verticalAlign: 'top',
+						backgroundColor: 'white',
+						padding: [0, 0, 0, 5],
+						color:
+							y2AxisColor === 'true'
+								? chartColours[ySeriesCount]
+								: y2AxisColor !== 'false'
+								? y2AxisColor
+								: undefined
+					},
+					nameGap: 6,
+					min: y2Min,
+					max: y2Max,
+					boundaryGap: ['0%', '1%'],
+					z: 2
+				};
+
+				verticalAxisConfig = [verticalAxisConfig, secondaryAxis];
 			}
 
 			// ---------------------------------------------------------------------------------------
@@ -718,7 +868,7 @@
 				style: {
 					text: horizAxisTitle,
 					textAlign: 'right',
-					fill: colours.grey500
+					fill: uiColours.grey500
 				},
 				cursor: 'auto',
 				// Positioning (if swapXY, top right; otherwise bottom right)
@@ -730,6 +880,7 @@
 			// ---------------------------------------------------------------------------------------
 			// Build chart config and update config store so child components can access it
 			// ---------------------------------------------------------------------------------------
+
 			chartConfig = {
 				title: {
 					text: title,
@@ -746,7 +897,7 @@
 						let xVal;
 						let yVal;
 						let yCol;
-						if (params.length > 1) {
+						if (totalSeriesCount > 1) {
 							// If multi-series, add series name as title of tooltip
 							xVal = params[0].value[swapXY ? 1 : 0];
 							output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(
@@ -761,7 +912,11 @@
 										params[i].seriesName
 									} <span style='float:right; margin-left: 10px;'>${formatValue(
 										yVal,
-										yFormat
+										// Not sure if this will work. Need to check with multi series on both axes
+										// Check if echarts does the order in the same way - y first, then y2
+										getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
+											? yFormat
+											: y2Format
 									)}</span>`;
 							}
 						} else if (xType === 'value') {
@@ -808,12 +963,12 @@
 					padding: 6,
 					borderRadius: 4,
 					borderWidth: 1,
-					borderColor: colours.grey400,
+					borderColor: uiColours.grey400,
 					backgroundColor: 'white',
 					extraCssText:
 						'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 					textStyle: {
-						color: colours.grey900,
+						color: uiColours.grey900,
 						fontSize: 12,
 						fontWeight: 400
 					},

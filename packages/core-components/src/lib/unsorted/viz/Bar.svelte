@@ -154,14 +154,14 @@
 					if (swapXY) {
 						d.xAxis = { ...d.xAxis, max: 1 };
 					} else {
-						d.yAxis = { ...d.yAxis, max: 1 };
+						d.yAxis[0] = { ...d.yAxis[0], max: 1 };
 					}
 				}
 				if (swapXY) {
-					d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.xAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 				} else {
-					d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 				}
 				return d;
