@@ -11,7 +11,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { colours } from '@evidence-dev/component-utilities/colours';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 	export let data = undefined;
 	export let nameCol = undefined;
@@ -167,12 +167,12 @@
 			padding: 6,
 			borderRadius: 4,
 			borderWidth: 1,
-			borderColor: colours.grey400,
+			borderColor: uiColours.grey400,
 			backgroundColor: 'white',
 			extraCssText:
 				'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 			textStyle: {
-				color: colours.grey900,
+				color: uiColours.grey900,
 				fontSize: 12,
 				fontWeight: 400
 			},
