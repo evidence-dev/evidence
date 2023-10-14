@@ -63,7 +63,6 @@
 	export let labelColor = undefined;
 	export let labelFmt = undefined;
 	export let showAllLabels = undefined;
-
 </script>
 
 <Chart

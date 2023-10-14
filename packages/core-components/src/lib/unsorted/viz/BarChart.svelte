@@ -83,7 +83,6 @@
 	export let showAllLabels = undefined;
 
 	export let options = undefined;
-
 </script>
 
 <Chart
