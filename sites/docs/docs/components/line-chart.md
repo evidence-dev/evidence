@@ -78,6 +78,58 @@ Because x is the first column in the dataset and we want to plot all the remaini
 
 Evidence will automatically pick the first column as `x` and use all other numerical columns for `y`.
 
+### Secondary y Axis
+
+<img src="/img/multi-y-axes.png"  width='700px'/>
+
+```markdown
+<LineChart 
+    data={orders_by_month} 
+    x=month 
+    y=sales_usd0k 
+    y2=num_orders_num0
+/>
+```
+
+### Value Labels
+
+<img src="/img/line-labels.png"  width='700px'/>
+
+```markdown
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales
+    yAxisTitle="Sales per Month"
+    yFmt=eur0k
+    labels=true
+/>
+```
+
+
+### Custom Color Palette
+
+<img src="/img/line-colorpalette.png"  width='700px'/>
+
+```markdown
+<LineChart 
+  data={simpler_bar} 
+  x=year 
+  y=value 
+  series=country
+  colorPalette={
+        [
+        '#cf0d06',
+        '#eb5752',
+        '#e88a87',
+        '#fcdad9',
+        ]
+    }
+/>
+```
+
+
+
 ## Options
 
 ### Data
@@ -151,6 +203,8 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>y2Min</td>	<td>Starting value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>y2Max</td>	<td>Maximum value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yAxisColor</td>	<td>Turns on/off color on the y-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
+<tr>	<td>y2AxisColor</td>	<td>Turns on/off color on the y2-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
 </table>
 
 ### Chart

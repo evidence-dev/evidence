@@ -1009,8 +1009,6 @@
 	}
 
 	$: data;
-
-	$: console.log($config);
 </script>
 
 {#if !error}

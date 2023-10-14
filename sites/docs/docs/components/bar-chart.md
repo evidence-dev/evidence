@@ -147,6 +147,27 @@ hide_table_of_contents: false
 />
 ```
 
+### Custom Color Palette
+
+<img src="/img/bar-colorpalette.png"  width='700px'/>
+
+```markdown
+<BarChart 
+    data={orders_by_month} 
+    x=month 
+    y=sales 
+    series=category 
+    colorPalette={
+        [
+        '#cf0d06',
+        '#eb5752',
+        '#e88a87',
+        '#fcdad9',
+        ]
+    }
+/>
+```
+
 ### Long Bar Chart
 
 If you create a bar chart with many x-axis items (e.g., names of departments), Evidence will extend the height of the chart for you to avoid the bars becoming squished. See Long Bar example below.
