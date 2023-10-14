@@ -30,6 +30,8 @@
 	export let funnelAlign = 'center';
 	export let funnelSort = 'none';
 
+	export let colorPalette = undefined;
+
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -197,7 +199,8 @@
 			top: legendTop,
 			padding: [0, 0, 0, 0]
 		},
-		series: [seriesConfig]
+		series: [seriesConfig],
+		color: colorPalette
 	};
 </script>
 

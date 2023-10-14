@@ -72,6 +72,8 @@
 
 	export let sort = undefined;
 
+	export let colorPalette = undefined;
+
 	export let labels = undefined;
 	export let labelSize = undefined;
 	export let labelPosition = undefined;
@@ -115,6 +117,7 @@
 	{stacked100}
 	{chartAreaHeight}
 	{showAllXAxisLabels}
+	{colorPalette}
 >
 	<Bar
 		{type}

@@ -30,6 +30,8 @@
 	export let nodeWidth = 20;
 	export let orient = 'horizontal';
 
+	export let colorPalette = undefined;
+
 	//Data Formatting
 	let names = [];
 	let links;
@@ -174,7 +176,8 @@
 			top: legendTop,
 			padding: [0, 0, 0, 0]
 		},
-		series: [seriesConfig]
+		series: [seriesConfig],
+		color: colorPalette
 	};
 </script>
 

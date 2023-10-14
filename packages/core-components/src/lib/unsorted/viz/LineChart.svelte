@@ -65,6 +65,8 @@
 
 	export let sort = undefined;
 
+	export let colorPalette = undefined;
+
 	export let labels = undefined;
 	export let labelSize = undefined;
 	export let labelPosition = undefined;
@@ -117,6 +119,7 @@
 	chartType="Line Chart"
 	{sort}
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Line
 		{lineColor}

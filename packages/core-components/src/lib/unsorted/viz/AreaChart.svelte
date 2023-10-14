@@ -55,6 +55,8 @@
 
 	let chartType = 'Area Chart';
 
+	export let colorPalette = undefined;
+
 	export let labels = undefined;
 	export let labelSize = undefined;
 	export let labelPosition = undefined;
@@ -93,6 +95,7 @@
 	stackType={type}
 	{stacked100}
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Area
 		{line}

@@ -57,7 +57,7 @@ test.describe('Charts: Area', () => {
 	test('should see save button, download button and tooltip when mouse is hover the chart', async ({
 		page
 	}) => {
-		await page.locator('g').locator('g path').first().hover();
+		await page.locator('canvas').first().hover();
 		// wait for svelte animation
 		await page.waitForTimeout(300);
 
