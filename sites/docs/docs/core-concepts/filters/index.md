@@ -76,6 +76,10 @@ To filter the data shown by a component, use the javascript filter method on the
 .filter(d => d.channel === $page.url.searchParams.get('channel'))
 ```
 
+:::tip
+`searchParams.get()` always returns a string, so if the query has a different type then either use: 1) an `==` equality check instead of `===` strick equality or 2) convert the type within `.filter()`.  For example, if you wanted to filter `select id from values (1), (2) as t(id)` then you'd need to `filter(d => d.id == $page.url.searchParams.get('id'))`
+:::
+
 ## Full example
 
 We can use this to filter a `<DataTable/>` component:
