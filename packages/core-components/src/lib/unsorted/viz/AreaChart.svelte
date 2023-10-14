@@ -39,6 +39,10 @@
 	export let fillOpacity = undefined;
 	export let chartAreaHeight = undefined;
 
+	export let markers = undefined;
+	export let markerShape = undefined;
+	export let markerSize = undefined;
+
 	export let handleMissing = undefined;
 
 	export let step = undefined;
@@ -52,6 +56,14 @@
 	let chartType = 'Area Chart';
 
 	export let colorPalette = undefined;
+
+	export let labels = undefined;
+	export let labelSize = undefined;
+	export let labelPosition = undefined;
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	export let showAllLabels = undefined;
+
 </script>
 
 <Chart
@@ -86,6 +98,24 @@
 	{chartAreaHeight}
 	{colorPalette}
 >
-	<Area {line} {fillColor} {lineColor} {fillOpacity} {handleMissing} {type} {step} {stepPosition} />
+	<Area
+		{line}
+		{fillColor}
+		{lineColor}
+		{fillOpacity}
+		{handleMissing}
+		{type}
+		{step}
+		{stepPosition}
+		{markers}
+		{markerShape}
+		{markerSize}
+		{labels}
+		{labelSize}
+		{labelPosition}
+		{labelColor}
+		{labelFmt}
+		{showAllLabels}
+	/>
 	<slot />
 </Chart>

@@ -97,10 +97,10 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-### Props
+### Options
 A reference line can be produced by defining values inline or by supplying a dataset, and the required props are different for each of those cases.
 
-#### Option 1: Defining Values Inline
+#### Case 1: Defining Values Inline
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -112,7 +112,7 @@ A reference line can be produced by defining values inline or by supplying a dat
 
 - If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
 
-#### Option 2: Supplying a Dataset
+#### Case 2: Supplying a Dataset
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -239,10 +239,10 @@ Reference areas appear behind chart gridlines, including reference area labels. 
 ```
 
 
-### Props
+### Options
 A reference area can be produced by defining values inline or by supplying a dataset, and the required props are different for each of those cases.
 
-#### Option 1: Defining Values Inline
+#### Case 1: Defining Values Inline
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -253,7 +253,7 @@ A reference area can be produced by defining values inline or by supplying a dat
 <tr>	<td>label</td>	<td>Text to show as label for the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
 </table>
 
-#### Option 2: Supplying a Dataset
+#### Case 2: Supplying a Dataset
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>

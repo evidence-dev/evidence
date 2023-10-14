@@ -42,7 +42,7 @@ This structure also gives you control over the individual series on your chart. 
 </Chart>
 ```
 
-#### Data Props
+#### Data Options
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -58,7 +58,7 @@ This structure also gives you control over the individual series on your chart. 
 
 </table>
 
-#### Chart Props
+#### Chart Options
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -90,7 +90,7 @@ This structure also gives you control over the individual series on your chart. 
 </Chart>
 ```
 
-#### Props
+#### Options
 
 <table>						
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -116,7 +116,7 @@ This structure also gives you control over the individual series on your chart. 
 </Chart>
 ```
 
-#### Props
+#### Options
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -138,7 +138,7 @@ This structure also gives you control over the individual series on your chart. 
 </Chart>
 ```
 
-#### Props
+#### Options
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -162,7 +162,7 @@ This structure also gives you control over the individual series on your chart. 
 </Chart>
 ```
 
-#### Props
+#### Options
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -186,7 +186,7 @@ This structure also gives you control over the individual series on your chart. 
 </Chart>
 ```
 
-#### Props
+#### Options
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
@@ -212,7 +212,7 @@ This structure also gives you control over the individual series on your chart. 
 </Chart>
 ```
 
-#### Props
+#### Options
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>

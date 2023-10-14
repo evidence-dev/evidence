@@ -406,7 +406,7 @@ export default (node, option) => {
 		}
 	});
 
-	const chart = init(node, 'evidence-light', { renderer: 'svg' });
+	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
 
 	chart.setOption(option);
 

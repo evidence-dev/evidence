@@ -27,7 +27,7 @@ This is a dangerous alert
 </Alert>
 ```
 
-## Props
+## Options
 
 | Name   | Description                         | Required | options                                       | Default   |
 | ------ | ----------------------------------- | -------- | --------------------------------------------- | --------- |

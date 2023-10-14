@@ -11,6 +11,12 @@
 	import getSeriesConfig from '@evidence-dev/component-utilities/getSeriesConfig';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import getYAxisIndex from '@evidence-dev/component-utilities/getYAxisIndex';
+
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
@@ -30,6 +36,28 @@
 	$: markers = markers === 'true' || markers === true;
 	export let markerShape = 'circle';
 	export let markerSize = 8;
+
+	export let labels = false;
+	labels = labels === 'true' || labels === true;
+	export let labelSize = 11;
+	export let labelPosition = 'top';
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	let labelFormat;
+	if (labelFmt) {
+		labelFormat = getFormatObjectFromString(labelFmt);
+	}
+	export let yLabelFmt = undefined;
+	let yLabelFormat;
+	if (yLabelFmt) {
+		yLabelFormat = getFormatObjectFromString(yLabelFmt);
+	}
+	export let y2LabelFmt = undefined;
+	let y2LabelFormat;
+	if (y2LabelFmt) {
+		y2LabelFormat = getFormatObjectFromString(y2LabelFmt);
+	}
+	export let showAllLabels = false;
 
 	export let handleMissing = 'gap';
 
@@ -52,6 +80,10 @@
 	$: y = ySet ? y : $props.y;
 	$: y2 = y2Set ? y2 : $props.y2;
 	$: swapXY = $props.swapXY;
+	$: yFormat = $props.yFormat;
+	$: y2Format = $props.y2Format;
+	$: yCount = $props.yCount;
+	$: y2Count = $props.y2Count;
 	$: xType = $props.xType;
 	$: xMismatch = $props.xMismatch;
 	$: columnSummary = $props.columnSummary;
@@ -69,13 +101,47 @@
 		data = getCompletedData(data, x, y, series, true);
 	}
 
+	// Value label positions:
+	const labelPositions = {
+		above: 'top',
+		below: 'bottom',
+		middle: 'inside'
+	};
+
+	const swapXYLabelPositions = {
+		above: 'right',
+		below: 'left',
+		middle: 'inside'
+	};
+
+	let defaultLabelPosition = swapXY ? 'right' : 'top';
+	$: labelPosition =
+		(swapXY ? swapXYLabelPositions[labelPosition] : labelPositions[labelPosition]) ??
+		defaultLabelPosition;
+
 	$: baseConfig = {
 		type: 'line',
 		label: {
-			show: false
+			show: labels,
+			formatter: function (params) {
+				return params.value[swapXY ? 0 : 1] === 0
+					? ''
+					: formatValue(
+							params.value[swapXY ? 0 : 1],
+							[yLabelFormat ?? labelFormat ?? yFormat, y2LabelFormat ?? labelFormat ?? y2Format][
+								getYAxisIndex(params.componentIndex, yCount, y2Count)
+							]
+					  );
+			},
+			fontSize: labelSize,
+			color: labelColor,
+			position: labelPosition,
+			padding: 3
+		},
+		labelLayout: {
+			hideOverlap: showAllLabels ? false : true
 		},
 		connectNulls: handleMissing === 'connect',
-		labelLayout: { hideOverlap: true },
 		emphasis: {
 			focus: 'series',
 			endLabel: {
@@ -94,9 +160,9 @@
 			color: lineColor,
 			opacity: lineOpacity
 		},
-		showSymbol: markers,
+		showSymbol: labels || markers,
 		symbol: markerShape,
-		symbolSize: markerSize,
+		symbolSize: labels && !markers ? 0 : markerSize,
 		step: step ? stepPosition : false
 	};
 
@@ -117,6 +183,9 @@
 
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
+		// Push series into legend:
+		d.legend.data.push(...seriesConfig.map((d) => d.name));
+
 		return d;
 	});
 
@@ -146,6 +215,11 @@
 				if (y2) {
 					d.yAxis[1] = { ...d.yAxis[1], show: true };
 				}
+			}
+
+			// If labels are turned on, need to turn off "emphasis" state to avoid labels flashing on hover
+			if (labels) {
+				d.axisPointer = { triggerEmphasis: false };
 			}
 
 			return d;

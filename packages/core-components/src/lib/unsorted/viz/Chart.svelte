@@ -18,6 +18,7 @@
 	import getDistinctCount from '@evidence-dev/component-utilities/getDistinctCount';
 	import getStackPercentages from '@evidence-dev/component-utilities/getStackPercentages';
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
+	import getYAxisIndex from '@evidence-dev/component-utilities/getYAxisIndex';
 	import { standardizeDateColumn } from '@evidence-dev/component-utilities/dateParsing';
 	import { formatAxisValue } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
@@ -221,22 +222,6 @@
 	// Date String Handling:
 	let columnSummaryArray;
 	let dateCols;
-
-	// Helper function for multi-series tooltips:
-	// Returns the yAxisIndex for a series since we can't currently access that in ECharts' params
-	function getYAxisIndex(componentIndex, yCount, y2Count) {
-		const totalPatternCount = yCount + y2Count;
-
-		// Find the position of the index in the repeating sequence
-		const positionInPattern = componentIndex % totalPatternCount;
-
-		// If the position lies within yCount, return 0, otherwise return 1
-		if (positionInPattern < yCount) {
-			return 0;
-		} else {
-			return 1;
-		}
-	}
 
 	$: {
 		try {
@@ -574,7 +559,7 @@
 						minYValue = columnSummary[y[i]].columnUnitSummary.min;
 					}
 				}
-			} else {
+			} else if (y) {
 				minYValue = columnSummary[y].columnUnitSummary.min;
 			}
 
@@ -610,7 +595,9 @@
 					y2AxisTitle,
 					tooltipTitle,
 					chartAreaHeight,
-					chartType
+					chartType,
+					yCount,
+					y2Count
 				};
 			});
 
@@ -908,19 +895,21 @@
 								xFormat
 							)}</span>`;
 							for (let i = params.length - 1; i >= 0; i--) {
-								yVal = params[i].value[swapXY ? 0 : 1];
-								output =
-									output +
-									`<br> ${params[i].marker} ${
-										params[i].seriesName
-									} <span style='float:right; margin-left: 10px;'>${formatValue(
-										yVal,
-										// Not sure if this will work. Need to check with multi series on both axes
-										// Check if echarts does the order in the same way - y first, then y2
-										getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
-											? yFormat
-											: y2Format
-									)}</span>`;
+								if (params[i].seriesName !== 'stackTotal') {
+									yVal = params[i].value[swapXY ? 0 : 1];
+									output =
+										output +
+										`<br> ${params[i].marker} ${
+											params[i].seriesName
+										} <span style='float:right; margin-left: 10px;'>${formatValue(
+											yVal,
+											// Not sure if this will work. Need to check with multi series on both axes
+											// Check if echarts does the order in the same way - y first, then y2
+											getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
+												? yFormat
+												: y2Format
+										)}</span>`;
+								}
 							}
 						} else if (xType === 'value') {
 							// If single-series and a numerical x-axis, include x column as a normal column rather than title (so as not to show a number as the title)
@@ -981,7 +970,8 @@
 					show: legend,
 					type: 'scroll',
 					top: legendTop,
-					padding: [0, 0, 0, 0]
+					padding: [0, 0, 0, 0],
+					data: []
 				},
 				grid: {
 					left: '0.5%',
