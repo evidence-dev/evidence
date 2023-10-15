@@ -257,7 +257,7 @@
 					}
 				}
 				if (swapXY) {
-					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.xAxis };
+					d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 				} else {
 					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
