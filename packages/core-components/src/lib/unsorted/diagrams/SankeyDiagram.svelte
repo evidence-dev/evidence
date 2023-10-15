@@ -5,7 +5,7 @@
 <script>
 	import ECharts from '../viz/ECharts.svelte';
 
-	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
+	import { chartColours } from '@evidence-dev/component-utilities/colours';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';

@@ -11,7 +11,6 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 	export let data = undefined;
 	export let nameCol = undefined;

@@ -1,5 +1,5 @@
 import { registerTheme, init } from 'echarts';
-import { evidenceThemeLight } from './echartsThemes'
+import { evidenceThemeLight } from './echartsThemes';
 import debounce from 'debounce';
 
 /**

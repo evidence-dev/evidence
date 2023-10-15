@@ -4,8 +4,6 @@
 
 <script>
 	import ECharts from './ECharts.svelte';
-
-	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import {
 		formatValue,
 		getFormatObjectFromString
@@ -134,7 +132,10 @@
 		tooltip: {
 			formatter: function (params) {
 				return params.data.name
-					? `<span style='font-weight: 600'>${formatValue(params.data.name)}</span>: ${formatValue(params.value, format_object)}`
+					? `<span style='font-weight: 600'>${formatValue(params.data.name)}</span>: ${formatValue(
+							params.value,
+							format_object
+					  )}`
 					: `<span style='font-weight: 600'>${formatValue(params.data[sourceCol])} to ${formatValue(
 							params.data.target
 					  )}</span>: ${formatValue(params.data.value, format_object)}`;
