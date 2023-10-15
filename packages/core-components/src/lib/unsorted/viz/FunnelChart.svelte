@@ -31,6 +31,9 @@
 
 	export let colorPalette = undefined;
 
+	export let showPercent = false;
+	showPercent = showPercent === 'true' || showPercent === true;
+
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -145,7 +148,13 @@
 			show: true,
 			position: labelPosition,
 			formatter: function (params) {
-				return formatValue(params.value, valueColFormat);
+				let output;
+				if (showPercent) {
+					output = `${formatValue(params.value, valueColFormat)} (${params.percent}%)`;
+				} else {
+					output = formatValue(params.value, valueColFormat);
+				}
+				return output;
 			}
 		},
 		labelLayout: { hideOverlap: true },
