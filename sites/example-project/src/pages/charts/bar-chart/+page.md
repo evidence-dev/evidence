@@ -141,6 +141,8 @@ swapXY=true
     y=sales_usd0k 
     series=category
     labels=true
+    title="Bar Chart in Dark Mode"
+    subtitle="Pretty close!"
 />
 
 ## Stacked Bar with Labels - Total turned off
