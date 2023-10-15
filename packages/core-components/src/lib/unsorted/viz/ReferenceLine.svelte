@@ -181,7 +181,7 @@
 						return result;
 					},
 					color: labelColor,
-					fontWeight: 'medium',
+					fontWeight: 400,
 					textBorderColor: 'white',
 					textBorderWidth: labelTextOutline ? 1.5 : 0,
 					backgroundColor: labelBackground ? 'hsla(360, 100%, 100%, 0.7)' : '',
