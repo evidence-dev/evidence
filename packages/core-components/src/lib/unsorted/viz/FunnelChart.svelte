@@ -149,7 +149,7 @@
 			position: labelPosition,
 			formatter: function (params) {
 				let output;
-				if(showPercent){
+				if (showPercent) {
 					output = `${formatValue(params.value, valueColFormat)} (${params.percent}%)`;
 				} else {
 					output = formatValue(params.value, valueColFormat);
