@@ -10,8 +10,8 @@
 	export let data = undefined;
 	export let name = undefined;
 	export let min = undefined;
-	export let bottomInterval = undefined;
-	export let topInterval = undefined;
+	export let intervalBottom = undefined;
+	export let intervalTop = undefined;
 	export let midpoint = undefined;
 	export let max = undefined;
 	export let confidenceInterval = undefined;
@@ -53,9 +53,9 @@
 	$: boxPlotData = generateBoxPlotData(
 		data,
 		min,
-		bottomInterval,
+		intervalBottom,
 		midpoint,
-		topInterval,
+		intervalTop,
 		max,
 		name,
 		color,
