@@ -56,7 +56,7 @@ Override errors with the optional `placeholder` argument. This is useful for dra
 ## Formatting Values
 Evidence supports a variety of formats - see [value formatting](/core-concepts/formatting) and the `fmt` prop below for more info.
 
-## All Options
+## Options
 
 <table>						 
     <tr>	

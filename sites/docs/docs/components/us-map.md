@@ -59,7 +59,7 @@ hide_table_of_contents: false
 
 ## USMap
 
-### All Options
+### Options
 
 <table>						 
     <tr>	
@@ -143,6 +143,7 @@ hide_table_of_contents: false
         <td>fmt</td>	
         <td>Format to use for values (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
+        <td class='tcenter'>-</td>
         <td class='tcenter'>-</td>
     </tr>
 </table>

@@ -222,7 +222,7 @@
 					d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 				} else {
-					d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 				}
 				return d;

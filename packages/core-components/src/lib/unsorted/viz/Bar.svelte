@@ -14,6 +14,11 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
+
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
 	export let series = undefined;
@@ -28,12 +33,27 @@
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
 
+	export let labels = false;
+	labels = labels === 'true' || labels === true;
+	export let labelSize = 11;
+	export let labelPosition = undefined;
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	let labelFormat;
+	if (labelFmt) {
+		labelFormat = getFormatObjectFromString(labelFmt);
+	}
+	export let stackTotalLabel = true;
+	stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
+	export let showAllLabels = false;
+
 	let barMaxWidth = 60;
 
 	// Prop check. If local props supplied, use those. Otherwise fall back to global props.
 	$: data = $props.data;
 	$: x = $props.x;
 	$: y = ySet ? y : $props.y;
+	$: yFormat = $props.yFormat;
 	$: swapXY = $props.swapXY;
 	$: xType = $props.xType;
 	$: xMismatch = $props.xMismatch;
@@ -43,6 +63,7 @@
 
 	let stackedData;
 	let sortOrder;
+	let defaultLabelPosition;
 
 	$: if (!series && typeof y !== 'object') {
 		// Single Series
@@ -54,6 +75,8 @@
 		}
 
 		stackName = 'stack1';
+
+		defaultLabelPosition = swapXY ? 'right' : 'top';
 	} else {
 		// Multi Series
 		// Sort by stack total for category axis
@@ -83,18 +106,53 @@
 		if (type.includes('stacked')) {
 			// Set up stacks
 			stackName = stackName ?? 'stack1';
+			defaultLabelPosition = 'inside';
 		} else {
 			stackName = undefined;
+			defaultLabelPosition = swapXY ? 'right' : 'top';
 		}
 	}
+
+	let stackTotalSeries;
+	$: if (type === 'stacked') {
+		stackTotalSeries = getStackedData(data, x, y);
+	}
+
+	// Value label positions:
+	const labelPositions = {
+		outside: 'top',
+		inside: 'inside'
+	};
+
+	const swapXYLabelPositions = {
+		outside: 'right',
+		inside: 'inside'
+	};
+
+	$: labelPosition =
+		(swapXY ? swapXYLabelPositions[labelPosition] : labelPositions[labelPosition]) ??
+		defaultLabelPosition;
 
 	$: baseConfig = {
 		type: 'bar',
 		stack: stackName,
 		label: {
-			show: false
+			show: labels,
+			formatter: function (params) {
+				let output;
+				output =
+					params.value[swapXY ? 0 : 1] === 0
+						? ''
+						: formatValue(params.value[swapXY ? 0 : 1], labelFormat ?? yFormat);
+				return output;
+			},
+			position: labelPosition,
+			fontSize: labelSize,
+			color: labelColor
 		},
-		labelLayout: { hideOverlap: true },
+		labelLayout: {
+			hideOverlap: showAllLabels ? false : true
+		},
 		emphasis: {
 			focus: 'series'
 		},
@@ -121,6 +179,47 @@
 
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
+		// Push series into legend:
+		d.legend.data.push(...seriesConfig.map((d) => d.name));
+
+		// Stacked chart total label:
+		// series !== x is to avoid an issue where same column is used for both - stackTotalLabel can't handle that
+		if (
+			labels === true &&
+			type === 'stacked' &&
+			(typeof y === 'object') | (series !== undefined) &&
+			stackTotalLabel === true &&
+			series !== x
+		) {
+			// push stack total series for total label
+			d.series.push({
+				type: 'bar',
+				stack: stackName,
+				name: 'stackTotal',
+				color: 'none',
+				data: stackTotalSeries.map((d) => [
+					swapXY ? 0 : xMismatch ? d[x].toString() : d[x],
+					swapXY ? (xMismatch ? d[x].toString() : d[x]) : 0
+				]),
+				label: {
+					show: true,
+					position: swapXY ? 'right' : 'top',
+					formatter: function (params) {
+						let sum = 0;
+						seriesConfig.forEach((s) => {
+							sum += s.data[params.dataIndex][swapXY ? 0 : 1];
+						});
+						return sum === 0 ? '' : formatValue(sum, labelFormat ?? yFormat);
+					},
+					fontWeight: 'bold',
+					fontSize: labelSize,
+					padding: swapXY ? [0, 0, 0, 5] : undefined
+				}
+			});
+
+			// disable legend selected mode when stackTotalLabel is displayed:
+			d.legend.selectedMode = false;
+		}
 		return d;
 	});
 
@@ -154,14 +253,14 @@
 					if (swapXY) {
 						d.xAxis = { ...d.xAxis, max: 1 };
 					} else {
-						d.yAxis = { ...d.yAxis, max: 1 };
+						d.yAxis[0] = { ...d.yAxis[0], max: 1 };
 					}
 				}
 				if (swapXY) {
 					d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 				} else {
-					d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 				}
 				return d;

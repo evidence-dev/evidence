@@ -71,6 +71,18 @@
 	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
+
+	export let colorPalette = undefined;
+
+	export let labels = undefined;
+	export let labelSize = undefined;
+	export let labelPosition = undefined;
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	export let stackTotalLabel = undefined;
+	export let showAllLabels = undefined;
+
+	export let options = undefined;
 </script>
 
 <Chart
@@ -105,7 +117,22 @@
 	{stacked100}
 	{chartAreaHeight}
 	{showAllXAxisLabels}
+	{colorPalette}
 >
-	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
+	<Bar
+		{type}
+		{fillColor}
+		{fillOpacity}
+		{outlineColor}
+		{outlineWidth}
+		{labels}
+		{labelSize}
+		{labelPosition}
+		{labelColor}
+		{labelFmt}
+		{stackTotalLabel}
+		{showAllLabels}
+		{options}
+	/>
 	<slot />
 </Chart>
