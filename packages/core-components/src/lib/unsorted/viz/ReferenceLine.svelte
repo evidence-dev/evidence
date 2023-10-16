@@ -8,7 +8,7 @@
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
-	import { colours } from '@evidence-dev/component-utilities/colours';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
 
 	let props = getContext(propKey);
 	let config = getContext(configKey);
@@ -36,10 +36,10 @@
 
 	let colorList = {
 		red: { lineColor: '#b04646', labelColor: '#b04646' },
-		green: { lineColor: colours.green700, labelColor: colours.green700 },
-		yellow: { lineColor: colours.yellow600, labelColor: colours.yellow700 },
-		grey: { lineColor: colours.grey500, labelColor: colours.grey600 },
-		blue: { lineColor: colours.blue500, labelColor: colours.blue500 }
+		green: { lineColor: uiColours.green700, labelColor: uiColours.green700 },
+		yellow: { lineColor: uiColours.yellow600, labelColor: uiColours.yellow700 },
+		grey: { lineColor: uiColours.grey500, labelColor: uiColours.grey600 },
+		blue: { lineColor: uiColours.blue500, labelColor: uiColours.blue500 }
 	};
 
 	let defaultColor = 'grey';
@@ -181,7 +181,7 @@
 						return result;
 					},
 					color: labelColor,
-					fontWeight: 'medium',
+					fontWeight: 400,
 					textBorderColor: 'white',
 					textBorderWidth: labelTextOutline ? 1.5 : 0,
 					backgroundColor: labelBackground ? 'hsla(360, 100%, 100%, 0.7)' : '',

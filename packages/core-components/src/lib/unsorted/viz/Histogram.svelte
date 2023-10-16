@@ -30,6 +30,8 @@
 
 	export let fillColor = undefined;
 	export let fillOpacity = undefined;
+
+	export let colorPalette = undefined;
 </script>
 
 <Chart
@@ -54,6 +56,7 @@
 	chartType="Histogram"
 	hist="true"
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Hist {fillColor} {fillOpacity} />
 	<slot />

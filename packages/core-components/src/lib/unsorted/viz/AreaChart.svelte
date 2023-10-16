@@ -11,6 +11,8 @@
 	export let y = undefined;
 	export let series = undefined;
 	export let xType = undefined;
+	export let yLog = undefined;
+	export let yLogBase = undefined;
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
@@ -37,6 +39,10 @@
 	export let fillOpacity = undefined;
 	export let chartAreaHeight = undefined;
 
+	export let markers = undefined;
+	export let markerShape = undefined;
+	export let markerSize = undefined;
+
 	export let handleMissing = undefined;
 
 	export let step = undefined;
@@ -44,10 +50,19 @@
 
 	export let sort = undefined;
 
-	export let type = undefined; // stacked or stacked100
+	export let type = 'stacked'; // stacked or stacked100
 	let stacked100 = type === 'stacked100';
 
 	let chartType = 'Area Chart';
+
+	export let colorPalette = undefined;
+
+	export let labels = undefined;
+	export let labelSize = undefined;
+	export let labelPosition = undefined;
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	export let showAllLabels = undefined;
 </script>
 
 <Chart
@@ -58,6 +73,8 @@
 	{yFmt}
 	{series}
 	{xType}
+	{yLog}
+	{yLogBase}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}
@@ -75,9 +92,29 @@
 	{subtitle}
 	{chartType}
 	{sort}
+	stackType={type}
 	{stacked100}
 	{chartAreaHeight}
+	{colorPalette}
 >
-	<Area {line} {fillColor} {lineColor} {fillOpacity} {handleMissing} {type} {step} {stepPosition} />
+	<Area
+		{line}
+		{fillColor}
+		{lineColor}
+		{fillOpacity}
+		{handleMissing}
+		{type}
+		{step}
+		{stepPosition}
+		{markers}
+		{markerShape}
+		{markerSize}
+		{labels}
+		{labelSize}
+		{labelPosition}
+		{labelColor}
+		{labelFmt}
+		{showAllLabels}
+	/>
 	<slot />
 </Chart>

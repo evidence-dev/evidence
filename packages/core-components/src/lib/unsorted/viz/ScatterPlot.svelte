@@ -11,6 +11,8 @@
 	export let y = undefined;
 	export let series = undefined;
 	export let xType = undefined;
+	export let yLog = undefined;
+	export let yLogBase = undefined;
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
@@ -46,6 +48,8 @@
 	let chartType = 'Scatter Plot';
 
 	let useTooltip = true;
+
+	export let colorPalette = undefined;
 </script>
 
 <Chart
@@ -57,6 +61,8 @@
 	{series}
 	{tooltipTitle}
 	{xType}
+	{yLog}
+	{yLogBase}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}
@@ -75,6 +81,7 @@
 	{chartType}
 	{sort}
 	{chartAreaHeight}
+	{colorPalette}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 	<slot />

@@ -229,7 +229,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 ## DataTable
 
-### All Options
+### Options
 
 <table>						 
     <tr>	
@@ -318,15 +318,11 @@ By default, the link column of your table is hidden. If you would like it to be 
     </tr>
 </table>
 
-### Formatting
-
-Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/core-concepts/formatting) section for more details.
-
 ## Column
 
 Use the `Column` component to choose specific columns to display in your table, and to apply options to specific columns. If you don't supply any columns to the table, it will display all columns from your query result.
 
-### All Options
+### Options
 
 <table>
     <tr>	

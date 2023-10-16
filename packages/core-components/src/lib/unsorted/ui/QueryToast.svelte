@@ -56,4 +56,10 @@
 	span.status {
 		@apply font-medium;
 	}
+
+	@media print {
+		#toast {
+			display: none;
+		}
+	}
 </style>
