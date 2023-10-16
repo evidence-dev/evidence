@@ -80,6 +80,7 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>options</td>	<td>JavaScript object to add or override chart configuration settings (see Custom Charts page)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
 </table>
 
 ### Line `<Line/>`
