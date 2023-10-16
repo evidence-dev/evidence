@@ -106,8 +106,7 @@
 								params[0].data[1],
 								yFormat
 						  )}</span><br/>`
-						: '') 
-				;
+						: '');
 
 				return output;
 			}
