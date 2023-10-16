@@ -78,6 +78,7 @@ hide_table_of_contents: false
 <tr> <td>showPercent</td> <td>Show percentage in data labels</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false</td> <td class='tcenter'>false</td> </tr>
 <tr> <td>funnelSort</td> <td>Data sorting of the chart.</td> <td class='tcenter'>-</td> <td class='tcenter'>none | ascending | descending</td> <td class='tcenter'>none</td> </tr>
 <tr> <td>funnelAlign</td> <td>Alignment of funnel.</td> <td class='tcenter'>-</td> <td class='tcenter'>left | right | center</td> <td class='tcenter'>center</td> </tr>
+<tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
 </table>
 
 ### Chart
