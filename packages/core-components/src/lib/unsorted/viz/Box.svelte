@@ -83,30 +83,31 @@
 				let output;
 				output =
 					`<span style="font-weight: 600;">${params[0].name}</span><br/>` +
-					(min
-						? `Minimum: <span style='float:right; margin-left: 15px;'>${formatValue(
-								params[0].data[1],
+					(max
+						? `Maximum: <span style='float:right; margin-left: 15px;'>${formatValue(
+								params[0].data[5],
 								yFormat
 						  )}</span><br/>`
 						: '') +
-					`Interval Bottom: <span style='float:right; margin-left: 15px;'>${formatValue(
-						params[0].data[2],
+					`Interval Top: <span style='float:right; margin-left: 15px;'>${formatValue(
+						params[0].data[4],
 						yFormat
 					)}</span><br/>` +
 					`Midpoint: <span style='float:right; margin-left: 15px;'>${formatValue(
 						params[0].data[3],
 						yFormat
 					)}</span><br/>` +
-					`Interval Top: <span style='float:right; margin-left: 15px;'>${formatValue(
-						params[0].data[4],
+					`Interval Bottom: <span style='float:right; margin-left: 15px;'>${formatValue(
+						params[0].data[2],
 						yFormat
 					)}</span><br/>` +
-					(max
-						? `Maximum: <span style='float:right; margin-left: 15px;'>${formatValue(
-								params[0].data[5],
+					(min
+						? `Minimum: <span style='float:right; margin-left: 15px;'>${formatValue(
+								params[0].data[1],
 								yFormat
 						  )}</span><br/>`
-						: '');
+						: '') 
+				;
 
 				return output;
 			}

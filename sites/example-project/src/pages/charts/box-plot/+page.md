@@ -28,6 +28,7 @@ select 'Larger Font' as experiment, 0.02 as min, 0.06 as value, 0.11 as max,0.03
     confidenceInterval=confidence
     swapXY=true
     yFmt='+0.0%;-0.0%;0'
+    yAxisTitle="Change vs. baseline"
 />
 
 ## Box Plot with Whiskers
@@ -40,6 +41,7 @@ select 'Larger Font' as experiment, 0.02 as min, 0.06 as value, 0.11 as max,0.03
     max=max
     confidenceInterval=confidence
     yFmt='+0.0%;-0.0%;0'
+    yAxisTitle="change vs. baseline"
 />
 
 ## Box Plot with Custom Colors
