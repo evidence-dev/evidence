@@ -115,16 +115,31 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ## Line Chart with Labels
 
 <LineChart 
-    data={orders_by_month} 
+    data={orders_by_month.filter(d => d.month <='2020-02-30')} 
     x=month
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
-    yFmt=eur
-    xFmt='mmm d'
+    yFmt=eur0k
     labels=true
-    labelFmt=eur0k
 />
 
 ## Line with Log Scale
 
 <LineChart data={simpler_bar} x=year y=value series=country yLog=true/>
+
+## Custom Color Palette
+
+<LineChart 
+  data={simpler_bar} 
+  x=year 
+  y=value 
+  series=country
+  colorPalette={
+        [
+        '#cf0d06',
+        '#eb5752',
+        '#e88a87',
+        '#fcdad9',
+        ]
+    }
+/>

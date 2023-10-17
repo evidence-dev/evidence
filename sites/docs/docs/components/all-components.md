@@ -263,6 +263,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
+
 ### [Scatter](scatter-plot)
 
 <div  class="gallery-item-grid">
@@ -389,6 +390,36 @@ hide_table_of_contents: false
 </a>
 </div>
 </div>
+
+
+### [Box Plot](box-plot)
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Box Plot</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/box-plot#basic-box-plot">
+
+![box](/img/boxplot-basic.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Horizontal Box Plot</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/box-plot#horizontal-box-plot">
+
+![box-horiz](/img/boxplot-horiz.png)
+
+</a>
+</div>
+</div>
+
 
 ### [Mixed Type Charts](mixed-type-charts)
 
