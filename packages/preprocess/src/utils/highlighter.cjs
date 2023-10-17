@@ -16,7 +16,7 @@ function highlighter(code, lang, meta) {
 	if ((lang?.toLowerCase() === 'sql' && meta) || !getPrismLangs().has(lang?.toLowerCase() ?? '')) {
 		const queryId = lang?.toLowerCase() === 'sql' && meta ? meta : lang;
 		return `
-        {#if data.${queryId} }
+        {#if ${queryId == null} || data.${queryId} }
             <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${
 							queryId ?? 'untitled'
 						}" queryResult = {data.${queryId ?? 'untitled'}}/> 
