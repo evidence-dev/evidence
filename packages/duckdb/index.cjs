@@ -14,6 +14,8 @@ function nativeTypeToEvidenceType(data) {
 	switch (typeof data) {
 		case 'number':
 			return 'number';
+		case 'bigint':
+			return 'number';
 		case 'string':
 			return 'string';
 		case 'boolean':
