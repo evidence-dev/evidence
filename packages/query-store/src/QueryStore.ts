@@ -58,18 +58,16 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	get _evidenceColumnTypes() {
 		//@ts-expect-error This implicitly is set on the return value of #exec
-		return Array.from(this.#values._evidenceColumnTypes);
+		return Array.from(this.#values._evidenceColumnTypes ?? []);
 	}
 
 	/** Has #fetchData been executed? */
-	#loaded = false;
 	get loaded() {
-		return this.#loaded;
+		return this.#dataLoaded;
 	}
 	/** Is #fetchData currently running? */
-	#loading = false;
 	get loading() {
-		return this.#loading;
+		return this.#lengthLoading || this.#dataLoading || this.#metaLoading;
 	}
 
 	/** Has #fetchLength been executed? */
@@ -81,6 +79,28 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#lengthLoading = false;
 	get lengthLoading() {
 		return this.#lengthLoading;
+	}
+
+	/** Has #fetchData been executed? */
+	#dataLoaded = false;
+	get dataLoaded() {
+		return this.#dataLoaded;
+	}
+	/** Is #fetchData currently running? */
+	#dataLoading = false;
+	get dataLoading() {
+		return this.#dataLoading;
+	}
+
+	/** Has #fetchMetadata been executed? */
+	#metaLoaded = false;
+	get metaLoaded() {
+		return this.#metaLoaded;
+	}
+	/** Is #fetchMetadataq currently running? */
+	#metaLoading = false;
+	get metaLoading() {
+		return this.#metaLoading;
 	}
 
 	#length?: number;
@@ -156,7 +176,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					let prop: string | symbol | number = _prop;
 					if (typeof prop === 'string' && /^[\d.]+$/.exec(prop)) prop = parseInt(prop);
 					if (typeof prop === 'number') {
-						if (!self.#loaded) {
+						if (!self.#dataLoaded) {
 							try {
 								const r = self.#fetchData();
 								if (r instanceof Promise)
@@ -214,7 +234,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		const { initialData, initialDataDirty } = this.opts;
 		// Maintain loading state while we wait
 		if (initialData && !this.#values.length) {
-			this.#loading = true;
+			this.#dataLoading = true;
 			this.#lengthLoading = true;
 			this.#length = 0;
 			this.publish();
@@ -222,9 +242,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				initialData.then((results) => {
 					this.#values = results;
 					this.#length = results.length;
-					this.#loading = false;
+					this.#dataLoading = false;
 					this.#lengthLoading = false;
-					this.#loaded = !initialDataDirty;
+					this.#dataLoaded = !initialDataDirty;
 					this.#lengthLoaded = !initialDataDirty;
 					this.publish();
 					if (initialDataDirty || !this.#values.length) this.#fetchData();
@@ -232,9 +252,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			} else {
 				this.#values = initialData;
 				this.#length = initialData.length;
-				this.#loading = false;
+				this.#dataLoading = false;
 				this.#lengthLoading = false;
-				this.#loaded = !initialDataDirty;
+				this.#dataLoaded = !initialDataDirty;
 				this.#lengthLoaded = !initialDataDirty;
 				this.publish();
 				if (initialDataDirty || !this.#values.length) this.#fetchData();
@@ -246,14 +266,14 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	fetch = () => this.#fetchData();
 
 	#fetchData = () => {
-		if (this.#loading || this.#loaded) {
+		if (this.#dataLoading || this.#dataLoaded) {
 			return;
 		}
 		if (this.#error) {
 			console.debug('Refusing to execute data query; store has an error state.');
 			return;
 		}
-		this.#loading = true;
+		this.#dataLoading = true;
 		this.publish();
 
 		const queryWithComment = `--data\n${this.#query.toString()}`;
@@ -261,8 +281,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return handleMaybePromise<QueryResult[], unknown>(
 			(result) => {
 				this.#values = result;
-				this.#loading = false;
-				this.#loaded = true;
+				this.#dataLoading = false;
+				this.#dataLoaded = true;
 				return this.#fetchLength();
 			},
 			() => this.#exec(queryWithComment),
@@ -280,7 +300,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		}
 
 		// No need to run the length query if we already have the values available
-		if (!this.#values.length && this.#loaded) {
+		if (!this.#values.length && this.#dataLoaded) {
 			this.#length = this.#values.length;
 			this.#lengthLoaded = true;
 			this.publish();
@@ -316,6 +336,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			console.debug('Refusing to execute metadata query; store has an error state.');
 			return;
 		}
+		this.#metaLoading = true;
 
 		return handleMaybePromise(
 			(queryResult: QueryResult[]) => {
@@ -324,7 +345,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					type: row.column_type!.toString()
 				}));
 				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
-
+				this.#metaLoading = false;
+				this.#metaLoaded = true;
 				this.publish();
 			},
 			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`),
