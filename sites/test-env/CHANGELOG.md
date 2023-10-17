@@ -1,5 +1,17 @@
 # evidence-test-environment
 
+## 3.0.0-usql.28
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/csv@1.0.0-usql.5
+  - @evidence-dev/duckdb@1.0.0-usql.4
+  - @evidence-dev/faker-datasource@2.0.0-usql.2
+  - @evidence-dev/postgres@1.0.0-usql.3
+  - @evidence-dev/sqlite@2.0.0-usql.4
+  - @evidence-dev/evidence@20.0.0-usql.28
+
 ## 3.0.0-usql.27
 
 ### Patch Changes

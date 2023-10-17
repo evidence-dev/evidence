@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- Support for streaming results
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.10
+
 ## 2.0.0-usql.17
 
 ### Patch Changes

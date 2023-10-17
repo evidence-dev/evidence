@@ -1,5 +1,14 @@
 # @evidence-dev/redshift
 
+## 1.0.0-usql.3
+
+### Patch Changes
+
+- Support for streaming results
+- Updated dependencies
+  - @evidence-dev/db-commons@0.2.1-usql.2
+  - @evidence-dev/postgres@1.0.0-usql.3
+
 ## 1.0.0-usql.2
 
 ### Patch Changes

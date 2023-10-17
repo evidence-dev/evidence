@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- Support for streaming results
+
 ## 2.0.0-usql.1
 
 ### Patch Changes
