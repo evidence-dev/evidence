@@ -101,7 +101,6 @@
 	}
 </script>
 
-
 <div
 	data-viz="BigValue"
 	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
@@ -146,7 +145,6 @@
 		{/if}
 	{/if}
 </div>
-
 
 <style>
 	/* 

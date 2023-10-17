@@ -90,7 +90,7 @@
 </script>
 
 {#if data.loading}
-<span class="placeholder">Loading...</span>
+	<span class="placeholder">Loading...</span>
 {:else if placeholder}
 	<span class="placeholder"
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
