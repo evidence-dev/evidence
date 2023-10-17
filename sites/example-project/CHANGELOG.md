@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.24
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/plugin-connector@2.0.0-usql.19
+
 ## 3.0.0-usql.23
 
 ### Patch Changes

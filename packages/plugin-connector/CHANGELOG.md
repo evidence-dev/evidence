@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- Increase batch size from 100k to 1m
+
 ## 2.0.0-usql.18
 
 ### Patch Changes

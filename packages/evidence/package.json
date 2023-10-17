@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "20.0.0-usql.28",
+	"version": "20.0.0-usql.29",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -39,7 +39,7 @@
 		"vite": "4.3.9"
 	},
 	"dependencies": {
-		"@evidence-dev/plugin-connector": "workspace:2.0.0-usql.18",
+		"@evidence-dev/plugin-connector": "workspace:2.0.0-usql.19",
 		"@evidence-dev/preprocess": "workspace:4.0.0-usql.13",
 		"@evidence-dev/telemetry": "workspace:",
 		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.10",
