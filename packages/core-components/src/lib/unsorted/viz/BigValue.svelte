@@ -101,56 +101,52 @@
 	}
 </script>
 
-{#if data.loading}
-	<div style="min-width: {minWidth}; max-width: {maxWidth};" class="inline-block h-32">
-		<Skeleton />
-	</div>
-{:else}
-	<div
-		data-viz="BigValue"
-		class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
-		style={`
-        min-width: ${minWidth};
-        max-width: ${maxWidth};
-    `}
-	>
-		{#if error}
-			<ErrorChart chartType="Big Value" error={error.message} />
-		{:else}
-			<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
-			<div class="relative">
-				<Value {data} column={value} {fmt} />
-				{#if sparkline}
-					{#if isLinkedChartReady()}
-						<div class="inline-block">
-							<svelte:component
-								this={LinkedChart}
-								data={sparklineData}
-								type="line"
-								grow={true}
-								barMinWidth="1"
-								gap="0"
-								fill="var(--grey-400)"
-								align="left"
-								hover={false}
-								linked="id"
-								width="75"
-								tabindex={-1}
-							/>
-						</div>
-					{/if}
+
+<div
+	data-viz="BigValue"
+	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
+	style={`
+	min-width: ${minWidth};
+	max-width: ${maxWidth};
+`}
+>
+	{#if error}
+		<ErrorChart chartType="Big Value" error={error.message} />
+	{:else}
+		<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
+		<div class="relative">
+			<Value {data} column={value} {fmt} />
+			{#if sparkline && !data.loading}
+				{#if isLinkedChartReady()}
+					<div class="inline-block">
+						<svelte:component
+							this={LinkedChart}
+							data={sparklineData}
+							type="line"
+							grow={true}
+							barMinWidth="1"
+							gap="0"
+							fill="var(--grey-400)"
+							align="left"
+							hover={false}
+							linked="id"
+							width="75"
+							tabindex={-1}
+						/>
+					</div>
 				{/if}
-			</div>
-			{#if comparison}
-				<p class="m-0 text-xs font-medium font-ui" style={`color:${comparisonColor}`}>
-					{@html positive ? '&#9650;' : '&#9660;'}
-					<Value {data} column={comparison} fmt={comparisonFmt} />
-					<span class="text-grey-700 font-normal">{comparisonTitle}</span>
-				</p>
 			{/if}
+		</div>
+		{#if comparison}
+			<p class="m-0 text-xs font-medium font-ui" style={`color:${comparisonColor}`}>
+				{@html positive ? '&#9650;' : '&#9660;'}
+				<Value {data} column={comparison} fmt={comparisonFmt} />
+				<span class="text-grey-700 font-normal">{comparisonTitle}</span>
+			</p>
 		{/if}
-	</div>
-{/if}
+	{/if}
+</div>
+
 
 <style>
 	/* 

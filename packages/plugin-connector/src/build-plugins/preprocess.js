@@ -16,7 +16,7 @@ export const evidencePlugins = () => {
 			packages[data.package].push(import_name);
 		}
 		return packages;
-	});
+	}).catch(() => ({}));
 
 	const autoImporter = packages.then((packages) =>
 		autoImport({

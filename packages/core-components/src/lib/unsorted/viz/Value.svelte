@@ -34,7 +34,7 @@
 		try {
 			error = undefined;
 			if (!placeholder) {
-				if (data) {
+				if (data && !data.loading) {
 					if (typeof data == 'string') {
 						throw Error(`Received: data=${data}, expected: data={${data}}`);
 					}
@@ -89,7 +89,9 @@
 	}
 </script>
 
-{#if placeholder}
+{#if data.loading}
+<span class="placeholder">Loading...</span>
+{:else if placeholder}
 	<span class="placeholder"
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
