@@ -1,5 +1,3 @@
-import { QueryStore } from '@evidence-dev/query-store';
-
 export default function checkInputs(data, reqCols, optCols) {
 	// reqCols is an array of columns to check in the dataset
 	let columns = [];
@@ -58,8 +56,6 @@ export default function checkInputs(data, reqCols, optCols) {
 			for (const [key] of Object.entries(data[0])) {
 				columns.push(key);
 			}
-			// console.log({columns, data, c: data[0] instanceof QueryStore, t: data instanceof QueryStore})
-			console.trace('Trouble Child');
 		}
 
 		// Check if provided columns are in the dataset

@@ -11,7 +11,6 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from './context';
 	import { QueryStore } from '@evidence-dev/query-store';
-	import { Skeleton } from '../../atoms/skeletons';
 
 	export let data;
 	export let value = null;
