@@ -1,5 +1,32 @@
 # evidence-test-environment
 
+## 2.1.0
+
+### Minor Changes
+
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+
+### Patch Changes
+
+- Updated dependencies [d09a32ce]
+- Updated dependencies [aafd7135]
+- Updated dependencies [75e419f8]
+- Updated dependencies [548d37ff]
+- Updated dependencies [56521bfb]
+- Updated dependencies [29ec9735]
+- Updated dependencies [410c1bc6]
+- Updated dependencies [e986ed77]
+- Updated dependencies [f8781d56]
+- Updated dependencies [1f20c79d]
+- Updated dependencies [9b8346f0]
+- Updated dependencies [1752882a]
+- Updated dependencies [614b9007]
+- Updated dependencies [90258dec]
+- Updated dependencies [71a77ca6]
+  - @evidence-dev/core-components@2.1.0
+  - @evidence-dev/component-utilities@1.2.0
+  - @evidence-dev/evidence@23.0.0
+
 ## 2.0.24
 
 ### Patch Changes

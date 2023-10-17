@@ -1,5 +1,17 @@
 # @evidence-dev/component-utilities
 
+## 1.2.0
+
+### Minor Changes
+
+- 56521bfb: Add value labels to charts
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+- 71a77ca6: Add secondary y-axis for line charts
+
+### Patch Changes
+
+- aafd7135: Consolidate echarts theme imports
+
 ## 1.1.3
 
 ### Patch Changes
