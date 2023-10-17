@@ -10,6 +10,8 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from './context';
+	import { QueryStore } from '@evidence-dev/query-store';
+	import {Skeleton} from '../../atoms/skeletons'
 	export let data;
 	export let value = null;
 	export let comparison = null;
@@ -34,7 +36,7 @@
 	let sparklineData = {};
 
 	let error = undefined;
-	$: if (data)
+	$: if (data && !data.loading)
 		try {
 			error = undefined;
 
@@ -42,12 +44,12 @@
 				throw new Error('value is required');
 			}
 
-			if (!Array.isArray(data)) {
+			if (!Array.isArray(data) && !(data instanceof QueryStore)) {
 				data = [data];
 			}
-
+			
 			checkInputs(data, [value]);
-
+			
 			let columnSummary = getColumnSummary(data, 'array');
 
 			// Fall back titles
@@ -98,6 +100,12 @@
 	}
 </script>
 
+
+{#if data.loading}
+	<div style="min-width: {minWidth}; max-width: {maxWidth};" class="inline-block h-32">
+		<Skeleton/>
+	</div>
+{:else}
 <div
 	data-viz="BigValue"
 	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
@@ -142,7 +150,7 @@
 		{/if}
 	{/if}
 </div>
-
+{/if}
 <style>
 	/* 
         TODO: Identify if this can be moved to app.css, or scoped to this component.

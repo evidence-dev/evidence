@@ -12,6 +12,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	import { strictBuild } from './context';
+	import {QueryStore} from '@evidence-dev/query-store';
 
 	// Passing in value from dataset:
 	export let data = null;
@@ -38,7 +39,7 @@
 						throw Error(`Received: data=${data}, expected: data={${data}}`);
 					}
 
-					if (!Array.isArray(data)) {
+					if (!Array.isArray(data) && !(data instanceof QueryStore)) {
 						// Accept bare objects
 						data = [data];
 					}

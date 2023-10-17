@@ -1,5 +1,5 @@
 <script>
-    let queryString = `SELECT 1`.trim(), tempQueryString = queryString + ""
+    let queryString = `SELECT 1 as x, 2 as y`.trim(), tempQueryString = queryString + ""
 </script>
 
 This page contains a simple demo query console for the new Universal SQL engine for Evidence.
@@ -17,3 +17,5 @@ ${queryString}
 ```
 
 <DataTable data={q}/>
+
+<BigValue data={q} value=x comparison=y/>
