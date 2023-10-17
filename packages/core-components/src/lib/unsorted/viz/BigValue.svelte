@@ -11,7 +11,8 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from './context';
 	import { QueryStore } from '@evidence-dev/query-store';
-	import {Skeleton} from '../../atoms/skeletons'
+	import { Skeleton } from '../../atoms/skeletons';
+
 	export let data;
 	export let value = null;
 	export let comparison = null;
@@ -47,9 +48,9 @@
 			if (!Array.isArray(data) && !(data instanceof QueryStore)) {
 				data = [data];
 			}
-			
+
 			checkInputs(data, [value]);
-			
+
 			let columnSummary = getColumnSummary(data, 'array');
 
 			// Fall back titles
@@ -100,57 +101,57 @@
 	}
 </script>
 
-
 {#if data.loading}
 	<div style="min-width: {minWidth}; max-width: {maxWidth};" class="inline-block h-32">
-		<Skeleton/>
+		<Skeleton />
 	</div>
 {:else}
-<div
-	data-viz="BigValue"
-	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
-	style={`
+	<div
+		data-viz="BigValue"
+		class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
+		style={`
         min-width: ${minWidth};
         max-width: ${maxWidth};
     `}
->
-	{#if error}
-		<ErrorChart chartType="Big Value" error={error.message} />
-	{:else}
-		<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
-		<div class="relative">
-			<Value {data} column={value} {fmt} />
-			{#if sparkline}
-				{#if isLinkedChartReady()}
-					<div class="inline-block">
-						<svelte:component
-							this={LinkedChart}
-							data={sparklineData}
-							type="line"
-							grow={true}
-							barMinWidth="1"
-							gap="0"
-							fill="var(--grey-400)"
-							align="left"
-							hover={false}
-							linked="id"
-							width="75"
-							tabindex={-1}
-						/>
-					</div>
+	>
+		{#if error}
+			<ErrorChart chartType="Big Value" error={error.message} />
+		{:else}
+			<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
+			<div class="relative">
+				<Value {data} column={value} {fmt} />
+				{#if sparkline}
+					{#if isLinkedChartReady()}
+						<div class="inline-block">
+							<svelte:component
+								this={LinkedChart}
+								data={sparklineData}
+								type="line"
+								grow={true}
+								barMinWidth="1"
+								gap="0"
+								fill="var(--grey-400)"
+								align="left"
+								hover={false}
+								linked="id"
+								width="75"
+								tabindex={-1}
+							/>
+						</div>
+					{/if}
 				{/if}
+			</div>
+			{#if comparison}
+				<p class="m-0 text-xs font-medium font-ui" style={`color:${comparisonColor}`}>
+					{@html positive ? '&#9650;' : '&#9660;'}
+					<Value {data} column={comparison} fmt={comparisonFmt} />
+					<span class="text-grey-700 font-normal">{comparisonTitle}</span>
+				</p>
 			{/if}
-		</div>
-		{#if comparison}
-			<p class="m-0 text-xs font-medium font-ui" style={`color:${comparisonColor}`}>
-				{@html positive ? '&#9650;' : '&#9660;'}
-				<Value {data} column={comparison} fmt={comparisonFmt} />
-				<span class="text-grey-700 font-normal">{comparisonTitle}</span>
-			</p>
 		{/if}
-	{/if}
-</div>
+	</div>
 {/if}
+
 <style>
 	/* 
         TODO: Identify if this can be moved to app.css, or scoped to this component.

@@ -3,7 +3,12 @@
 	import BigValue from './BigValue.svelte';
 </script>
 
-<Meta title="Viz/BigValue" component={BigValue} argTypes={{}} args={{data: {loading: true}, value: "someCol"}} />
+<Meta
+	title="Viz/BigValue"
+	component={BigValue}
+	argTypes={{}}
+	args={{ data: { loading: true }, value: 'someCol' }}
+/>
 
 <Template let:args>
 	<div class="h-64">

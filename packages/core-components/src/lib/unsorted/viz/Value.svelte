@@ -12,7 +12,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	import { strictBuild } from './context';
-	import {QueryStore} from '@evidence-dev/query-store';
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	// Passing in value from dataset:
 	export let data = null;
