@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.9
+
+### Patch Changes
+
+- 64d1405b: Loading state is now respected by Value and BigValue
+
 ## 2.0.0-usql.8
 
 ### Patch Changes

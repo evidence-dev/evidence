@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- 5828c375: Enviroment variables use \__ instead of _ to delimit option properties
+- cad09993: improve source refresh experience
+- 64d1405b: Loading state is now respected by Value and BigValue
+
 ## 2.0.0-usql.16
 
 ### Patch Changes

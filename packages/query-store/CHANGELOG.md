@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- 64d1405b: Loading state is now respected by Value and BigValue
+
 ## 2.0.0-usql.0
 
 ### Major Changes
