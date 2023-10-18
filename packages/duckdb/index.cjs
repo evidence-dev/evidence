@@ -51,12 +51,12 @@ function convertBigIntToNumber(value) {
  * @returns {Object[]} - The processed rows with BigInt values converted to numbers.
  */
 function normalizeRows(rawRows) {
-	return rawRows.map((row) => {
+	for (const row of rawRows) {
 		for (const key in row) {
 			row[key] = convertBigIntToNumber(row[key]);
 		}
-		return row;
-	});
+	}
+	return rawRows;
 }
 
 const mapResultsToEvidenceColumnTypes = function (rows) {
