@@ -3,12 +3,11 @@
 </script>
 
 <script>
-	import QueryToast from './ui/QueryToast.svelte';
+	import { toasts } from './ui/ToastWrapper.svelte';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
 
-	let statuses = [];
 	if (browser && import.meta.hot) {
 		import.meta.hot.on('evidence:build-status', async (data) => {
 			if (data.status === 'done') {
@@ -20,25 +19,40 @@
 				await invalidateAll();
 			}
 
-			statuses.push(data);
-			statuses = statuses;
+			const { status, id } = data;
+
+			const style =
+				status === 'running'
+					? 'border border-gray-400 bg-white text-gray-800'
+					: status === 'error'
+					? 'border-red-200 border bg-red-50 text-red-800 transition-all duration-300'
+					: status === 'done'
+					? 'border-green-400 border bg-green-100 text-green-900 transition-all duration-300'
+					: '';
+
+			const message =
+				status === 'running'
+					? 'Rebuilding'
+					: status === 'error'
+					? 'Error while rebuilding'
+					: status === 'done'
+					? 'Rebuilt'
+					: '';
+
+			const title = id.endsWith('.connection') ? id.split('.')[0] : id;
+
+			const unique_id = Math.random();
+			const status_as_toast = {
+				title,
+				message,
+				style,
+				id: unique_id
+			};
+
+			toasts.update(($toasts) => ($toasts.push(status_as_toast), $toasts));
+			setTimeout(() => {
+				toasts.update(($toasts) => $toasts.filter((toast) => toast.id !== unique_id));
+			}, 5000);
 		});
 	}
 </script>
-
-<div class="container">
-	{#each statuses as status}
-		<QueryToast {status} />
-	{/each}
-</div>
-
-<style>
-	div.container {
-		z-index: 1;
-		position: fixed;
-		right: 0;
-		bottom: 0;
-		margin: 1.5em 2.5em;
-		width: 20em;
-	}
-</style>
