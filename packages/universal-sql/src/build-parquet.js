@@ -14,6 +14,8 @@ import path from 'path';
 import { initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
+import { columnsToScore } from './calculateScore.js';
+import chalk from 'chalk';
 
 /**
  * @param {string} type
@@ -149,6 +151,32 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 	)}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
 	await query(copy);
+
+	const score =
+		rowCount *
+		columnsToScore(
+			columns.map(({ name, evidenceType }) => ({
+				name,
+				type:
+					evidenceType === 'number'
+						? 'DOUBLE'
+						: evidenceType === 'boolean'
+						? 'BOOLEAN'
+						: evidenceType === 'date'
+						? 'TIMESTAMP'
+						: 'VARCHAR'
+			}))
+		);
+
+	if (score > 100 * 1024 * 1024) {
+		console.warn(
+			chalk.yellow(
+				` || WARNING: ${outputFilename} is estimated to be ${Intl.NumberFormat().format(
+					score / (1024 * 1024)
+				)}mb. This may cause client-side performance issues.`
+			)
+		);
+	}
 
 	for (const tmpFile of tmpFilenames) {
 		await fs.rm(tmpFile);
