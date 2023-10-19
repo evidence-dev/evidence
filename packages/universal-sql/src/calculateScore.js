@@ -1,6 +1,4 @@
-import type { ColumnMetadata } from '../types';
-
-// generate with DESCRIBE SELECT column_type FROM test_all_types();
+/* // generate with DESCRIBE SELECT column_type FROM test_all_types();
 type DuckDBColumnType =
 	| `STRUCT(${string})`
 	| `${string}[]`
@@ -30,17 +28,31 @@ type DuckDBColumnType =
 	| 'UTINYINT'
 	| 'UUID'
 	| 'VARCHAR';
+*/
 
-function isObjectType(column_type: string): column_type is `STRUCT(${string})` | `${string}[]` {
+/**
+ * @param {string} column_type
+ * @returns {column_type is `STRUCT(${string})` | `${string}[]`}
+ */
+function isObjectType(column_type) {
 	return column_type.startsWith('STRUCT') || column_type.endsWith('[]');
 }
 
-function isDecimalType(column_type: string): column_type is `DECIMAL(${number},${number})` {
+/**
+ * @param {string} column_type
+ * @returns {column_type is `DECIMAL(${number},${number})`}
+ */
+function isDecimalType(column_type) {
 	return column_type.startsWith('DECIMAL');
 }
 
-function columnTypeToScore(column_type: string): number {
-	const NUMBER = 8; // 8 bytes in a double
+/**
+ *
+ * @param {string} column_type
+ * @returns {number}
+ */
+function columnTypeToScore(column_type) {
+	const NUMBER = 12; // 8 bytes in a double + 4 bytes heap overhead?
 	const BOOLEAN = 4; // booleans are stored as 4 byte integers
 	const STRING = 2 * 15; // assume 15 character string
 	const DATE = 48; // dates use 48 bytes
@@ -94,8 +106,12 @@ function columnTypeToScore(column_type: string): number {
 	}
 }
 
-export function columnsToScore(columns: ColumnMetadata[]): number {
-	let score = columns.length * 8; // some overhead for each column
+/**
+ * @param {{ name: string; type: string }[]} columns
+ * @returns {number}
+ */
+export function columnsToScore(columns) {
+	let score = columns.length * 4; // some overhead for each column
 
 	for (const { type } of columns) {
 		score += columnTypeToScore(type);

@@ -13,7 +13,7 @@ import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
 import { mutations } from './mutations/index.js';
-import { columnsToScore } from './utils/calculateScore.js';
+import { columnsToScore } from '@evidence-dev/universal-sql';
 
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
