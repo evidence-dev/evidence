@@ -90,14 +90,11 @@ function columnTypeToScore(column_type) {
 
 		// the badlands
 		// we should probably convert these in the client library too
-		case 'INTERVAL':
-		// return 'Uint32Array';
+		case 'INTERVAL': // return 'Uint32Array';
 		case 'TIME':
-		case 'TIME WITH TIME ZONE':
-		// return 'bigint';
+		case 'TIME WITH TIME ZONE': // return 'bigint';
 		case 'BLOB':
-		case 'BIT':
-			// return 'Uint8Array';
+		case 'BIT': // return 'Uint8Array';
 			return UNKNOWN;
 		default:
 			// column_type should be `never`
