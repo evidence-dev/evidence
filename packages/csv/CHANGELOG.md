@@ -1,5 +1,14 @@
 # @evidence-dev/csv
 
+## 1.0.0-usql.5
+
+### Patch Changes
+
+- Support for streaming results
+- Updated dependencies
+  - @evidence-dev/db-commons@0.2.1-usql.2
+  - @evidence-dev/duckdb@1.0.0-usql.4
+
 ## 1.0.0-usql.4
 
 ### Patch Changes

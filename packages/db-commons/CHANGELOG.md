@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 0.2.1-usql.2
+
+### Patch Changes
+
+- Support for streaming results
+
 ## 0.2.1-usql.1
 
 ### Patch Changes

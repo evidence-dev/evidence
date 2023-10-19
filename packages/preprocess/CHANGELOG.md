@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.13
+
+### Patch Changes
+
+- cad09993: improve source refresh experience
+
 ## 4.0.0-usql.12
 
 ### Major Changes

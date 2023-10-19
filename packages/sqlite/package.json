@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sqlite",
-	"version": "2.0.0-usql.3",
+	"version": "2.0.0-usql.4",
 	"description": "SQLite driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Edgar Ramírez-Mondragón",
@@ -9,7 +9,7 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:0.2.1-usql.1",
+		"@evidence-dev/db-commons": "workspace:0.2.1-usql.2",
 		"sqlite": "4.0.25",
 		"sqlite3": "5.1.2"
 	},

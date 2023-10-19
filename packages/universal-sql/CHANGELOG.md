@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.10
+
+### Patch Changes
+
+- Support for streaming results
+
 ## 2.0.0-usql.9
 
 ### Patch Changes

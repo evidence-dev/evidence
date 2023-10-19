@@ -26,7 +26,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	// Can we somehow guess based on the number of columns?
 	// e.g. 1-10 columns -> 1m, 11+ -> 100k?
 
-	const batchSize = 1000 * 100; // 100 k
+	const batchSize = 1000 * 1000; // 1m
 	const db = supportedDbs[source.type];
 	const runner = await db.factory(source.options, source.sourceDirectory);
 

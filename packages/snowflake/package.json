@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/snowflake",
-	"version": "1.0.0-usql.2",
+	"version": "1.0.0-usql.3",
 	"description": "Snowflake driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -9,7 +9,7 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:0.2.1-usql.1",
+		"@evidence-dev/db-commons": "workspace:0.2.1-usql.2",
 		"@types/snowflake-sdk": "^1.6.13",
 		"asn1.js": "^5.0.0",
 		"fs-extra": "^11.1.1",
