@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.1.1
+
+### Patch Changes
+
+- 9d5c11e1: move new layout libs from devdeps to deps
+
 ## 2.1.0
 
 ### Minor Changes
