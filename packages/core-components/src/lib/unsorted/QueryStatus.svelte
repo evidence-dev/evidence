@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { toasts } from './ui/ToastWrapper.svelte';
+	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
@@ -49,10 +49,7 @@
 				id: unique_id
 			};
 
-			toasts.update(($toasts) => ($toasts.push(status_as_toast), $toasts));
-			setTimeout(() => {
-				toasts.update(($toasts) => $toasts.filter((toast) => toast.id !== unique_id));
-			}, 5000);
+			toasts.add(status_as_toast, 5000);
 		});
 	}
 </script>

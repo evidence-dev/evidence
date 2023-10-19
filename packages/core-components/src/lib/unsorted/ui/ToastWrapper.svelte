@@ -1,8 +1,6 @@
-<script context="module">
-	import { writable } from 'svelte/store';
+<script>
 	import Toast from './Toast.svelte';
-
-	export const toasts = writable([]);
+	import { toasts } from '@evidence-dev/component-utilities/stores';
 </script>
 
 <div class="container">

@@ -9,3 +9,22 @@ export const showQueries = writable(
 showQueries.subscribe((value) => browser && localStorage.setItem('showQueries', value));
 export const pageHasQueries = writable(true);
 export const routeHash = writable('');
+
+function createToastsObject() {
+	const { subscribe, update } = writable([]);
+
+	return {
+		subscribe,
+		add: (toast, timeout) => {
+			console.log({toast, timeout})
+			update(($toasts) => ($toasts.push(toast), $toasts));
+			setTimeout(() => {
+				update(($toasts) => $toasts.filter((existing) => existing.id !== toast.id));
+			}, timeout);
+		}
+	};
+}
+
+/** @typedef {{ id: unknown; style?: string; title: string; message: string; }} Toast */
+/** @type {import('svelte/store').Readable<Toast[]> & { add: (toast: Toast, timeout: number) => void }} */
+export const toasts = createToastsObject();
