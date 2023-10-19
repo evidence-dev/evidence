@@ -16,7 +16,6 @@ function createToastsObject() {
 	return {
 		subscribe,
 		add: (toast, timeout) => {
-			console.log({toast, timeout})
 			update(($toasts) => ($toasts.push(toast), $toasts));
 			setTimeout(() => {
 				update(($toasts) => $toasts.filter((existing) => existing.id !== toast.id));

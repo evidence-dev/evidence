@@ -59,12 +59,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 			queryFunc,
 			\`${id}\`,
-			{ 
+			{
+				scoreNotifier,
 				initialData: _${id}_changed 
 					// Query has changed, do not provide intiial data
 					? undefined 
 					// Query has not changed, provide initial data
-					: data.${id} ?? profile(__db.query, \`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
+					: data.${id} ?? profile(__db.query, \`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}')
+			}
 		);
 
 		/** @type {QueryStore} */
@@ -79,15 +81,25 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		import debounce from 'debounce';
 		import {QueryStore} from '@evidence-dev/query-store';
 		
-		const queryFunc = q => profile(__db.query, q);	
-		
+		const queryFunc = (query) => profile(__db.query, query);	
+		const scoreNotifier = (info) => {
+			toasts.add({
+				id: Math.random(),
+				title: info.id,
+				message: \`Results estimated to use \${
+					Intl.NumberFormat().format(info.score / (1024 * 1024))
+				}mb of memory, performance may be impacted\`,
+				style: 'border-yellow-200 border bg-yellow-50 text-yellow-800 transition-all duration-300'
+			}, 5000);
+		}
+
 		${queryStores.join('\n')}	
 		`;
 	}
 
 	let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
+        import { pageHasQueries, routeHash, toasts } from '@evidence-dev/component-utilities/stores';
         import { setContext, getContext, beforeUpdate, onMount } from 'svelte';
         
         // Functions

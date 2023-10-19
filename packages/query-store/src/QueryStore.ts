@@ -13,6 +13,7 @@ import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
 import { mutations } from './mutations/index.js';
+import { columnsToScore } from './utils/calculateScore.js';
 
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
@@ -226,6 +227,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#lengthLoading = false;
 					this.#loaded = !initialDataDirty;
 					this.#lengthLoaded = !initialDataDirty;
+					this.#calculateScore();
 					this.publish();
 					if (initialDataDirty || !this.#values.length) this.#fetchData();
 				});
@@ -236,6 +238,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#lengthLoading = false;
 				this.#loaded = !initialDataDirty;
 				this.#lengthLoaded = !initialDataDirty;
+				this.#calculateScore();
 				this.publish();
 				if (initialDataDirty || !this.#values.length) this.#fetchData();
 			}
@@ -283,6 +286,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		if (!this.#values.length && this.#loaded) {
 			this.#length = this.#values.length;
 			this.#lengthLoaded = true;
+			this.#calculateScore();
 			this.publish();
 			return;
 		}
@@ -304,6 +308,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#lengthLoaded = true;
 				this.#lengthLoading = false;
 
+				this.#calculateScore();
 				this.publish();
 			},
 			() => this.#exec(queryWithComment),
@@ -325,11 +330,22 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				}));
 				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
 
+				this.#calculateScore();
 				this.publish();
 			},
 			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`),
 			this.#setError
 		);
+	};
+
+	#calculateScore = () => {
+		if (!this.opts.scoreNotifier) return;
+
+		const column_score = columnsToScore(this.#columns);
+		const score = column_score * this.length;
+		if (score < 10 * 1024 * 1024) return;
+
+		this.opts.scoreNotifier({ id: this.id, query: this.#query.toString(), score });
 	};
 
 	/////////

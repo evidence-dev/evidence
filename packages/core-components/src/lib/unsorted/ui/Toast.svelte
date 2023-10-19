@@ -6,6 +6,8 @@
 	export let message;
 </script>
 
+<!-- placeholder so tailwind knows these are used -->
+<!-- DO NOT REMOVE: border-yellow-200 border bg-yellow-50 text-yellow-800 transition-all duration-300 -->
 <div
 	class="toast {style}"
 	in:scale
@@ -37,6 +39,9 @@
 
 	span.title {
 		font-weight: bold;
+		padding-right: 2em;
+		display: flex;
+		align-items: center;
 	}
 
 	@media print {
