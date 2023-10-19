@@ -116,3 +116,15 @@ module.exports.getRunner = async (opts, directory) => {
 		);
 	};
 };
+
+module.exports.options = {
+	filename: {
+		title: 'Filename',
+		type: 'string',
+		secret: false,
+		description:
+			'DuckDB filename. This is relative to your source directory, not your project directory.',
+		default: 'needful_things.duckdb',
+		required: true
+	}
+};

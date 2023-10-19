@@ -8,7 +8,12 @@ const config = {
 		exclude: ['svelte-icons', 'svelte-tiny-linked-charts']
 	},
 	ssr: {
-		external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+		external: [
+			'@evidence-dev/db-orchestrator',
+			'@evidence-dev/telemetry',
+			'blueimp-md5',
+			'@evidence-dev/plugin-connector'
+		]
 	},
 	server: {
 		fs: {

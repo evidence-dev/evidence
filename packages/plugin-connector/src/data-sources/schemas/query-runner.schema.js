@@ -126,7 +126,35 @@ export const DatabaseConnectorFactorySchema = z
 	)
 	.returns(z.promise(QueryRunnerSchema));
 
+/**
+ * @typedef {Object} IDatasourceOptionSpecSchema
+ * @property {string} title
+ * @property {'string' | 'number' | 'boolean' | 'select'} type
+ * @property {boolean} [secret]
+ * @property {string} [description]
+ * @property {string | number | boolean | undefined} [default]
+ * @property {Record<string, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
+ */
+
+// TODO: Rewrite the schema based on the example in the postgres connector
+// TODO: Wire up the settings page properly
+// TODO: Figure out a better way to share types between packages (?) This might suck
+
+/** @type {z.ZodRecord<z.ZodType<string>, z.ZodType<IDatasourceOptionSpecSchema>>} */
+export const DatasourceOptionSpecSchema = z.record(
+	z.string(),
+	z.object({
+		title: z.string(),
+		type: z.enum(['string', 'number', 'boolean', 'select']),
+		secret: z.boolean().default(false),
+		description: z.string().optional(),
+		children: z.lazy(() => z.record(z.string(), DatasourceOptionSpecSchema)).optional(),
+		default: z.union([z.string(), z.number(), z.boolean()]).optional() // TODO: Can we easily enforce that this matches type without refine shenanigans
+	})
+);
+
 export const DatabaseConnectorSchema = z.object({
 	getRunner: DatabaseConnectorFactorySchema,
-	supports: z.array(z.string())
+	supports: z.array(z.string()),
+	options: DatasourceOptionSpecSchema
 });

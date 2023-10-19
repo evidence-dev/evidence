@@ -18,6 +18,7 @@ import {
 import {
 	DatabaseConnectorFactorySchema,
 	DatabaseConnectorSchema,
+	DatasourceOptionSpecSchema,
 	QueryResultSchema,
 	QueryRunnerSchema
 } from '../src/data-sources/schemas/query-runner.schema';
@@ -35,6 +36,7 @@ declare global {
 		[database: string]: {
 			package: EvidencePluginPackage<EvidenceDatabasePackage>;
 			factory: DatabaseConnectorFactory;
+			options: DatasourceOptionsSpec
 		};
 	};
 
@@ -60,6 +62,8 @@ declare global {
 	type DatasourceSpec = z.infer<typeof DatasourceSpecSchema>;
 
 	type DatasourceQueryResult = z.infer<typeof DatasourceQueryResultSchema>;
+
+	type DatasourceOptionsSpec = z.infer<typeof DatasourceOptionSpecSchema>;
 
 	type DatabaseConnector = z.infer<typeof DatabaseConnectorSchema>;
 

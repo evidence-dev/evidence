@@ -10,6 +10,8 @@ import { execSource } from './exec-source';
 import fs from 'fs/promises';
 import path from 'path';
 
+export { getDatasourcePlugins } from './get-datasource-plugins';
+
 /**
  *
  * @param {Record<string, string[]>} outputFiles

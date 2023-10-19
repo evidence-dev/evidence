@@ -22,7 +22,8 @@ export const EvidencePackageSchema = z.intersection(
 	BasePackageSchema.extend({
 		evidence: z.object({
 			components: z.boolean().optional(),
-			databases: z.array(z.string()).optional()
+			databases: z.array(z.string()).optional(),
+			iconUrl: z.string().url().optional()
 		})
 	}),
 	PackageExportSchema
