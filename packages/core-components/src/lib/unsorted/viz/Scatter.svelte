@@ -200,7 +200,7 @@
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
 		// Push series into legend:
-		d.legend.data.push(...seriesConfig.map((d) => d.name));
+		d.legend.data.push(...seriesConfig.map((d) => d.name.toString()));
 		return d;
 	});
 
