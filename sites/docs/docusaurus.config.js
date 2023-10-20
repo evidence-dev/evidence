@@ -135,7 +135,8 @@ const config = {
 		prism: {
 			darkTheme: require('prism-react-renderer/themes/palenight'),
 			additionalLanguages: ['sql']
-		}
+		},
+		metadata: [{property: 'og:image', content: '/img/twitter-card-white-bg.png'}],
 	},
 	presets: [
 		[
