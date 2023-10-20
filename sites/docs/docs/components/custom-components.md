@@ -15,7 +15,7 @@ Below is a **short guide** on building a simple component in Evidence.
 For a fuller guide, Svelte offers a really great interactive tutorial that you can complete in your browser in about an hour: [Svelte Tutorial](https://svelte.dev/tutorial/basics)
 
 :::tip Built a great component?
-Let us know in our [Slack community](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)!
+Let us know in our [Slack community](https://slack.evidence.dev)!
 
 We'd love to see what you've built, and may add generally applicable components to Evidence Labs, or the Evidence component library!
 :::

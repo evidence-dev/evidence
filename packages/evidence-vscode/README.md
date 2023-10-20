@@ -26,6 +26,6 @@ Evidence VS Code requires the Svelte for VS Code extension. This will be install
 
 If you run into any issues setting up the extension, please reach out:
 
-- [Open an issue on GitHub](https://github.com/evidence-dev/evidence/issues)
-- Post in our [Slack community](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
+- Open an issue [on GitHub](https://github.com/evidence-dev/evidence/issues)
+- Post in our [Slack community](https://slack.evidence.dev)
 - Email <support@evidence.dev>

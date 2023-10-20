@@ -35,7 +35,7 @@ Evidence supports:
 - [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
-We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
+We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://slack.evidence.dev) if you'd like to use Evidence with a database that isn't currently supported.
 
 The source code for Evidence's connectors is available [on GitHub](https://github.com/evidence-dev/evidence/tree/main/packages)
 
@@ -251,4 +251,4 @@ Additional information about CSV helper functions can be found in the [DuckDB do
 
 ## Troubleshooting
 
-If you need help with connecting to your data, please feel free to [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q).
+If you need help with connecting to your data, please feel free to [send us a message in Slack](https://slack.evidence.dev).

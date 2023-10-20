@@ -113,7 +113,7 @@ const config = {
 					items: [
 						{
 							label: 'Slack',
-							href: 'https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q'
+							href: 'https://slack.evidence.dev'
 						},
 						{
 							label: 'Twitter',
