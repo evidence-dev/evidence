@@ -102,7 +102,7 @@ Setting up Evidence Cloud takes less than 5 minutes.
 
 <details>
     <summary>Which git providers can I use with Evidence Cloud?</summary>
-    <p>Currently we support GitHub by default. If your team needs another git provider, reach out on <a href="https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q">Slack</a>.</p>
+    <p>Currently we support GitHub by default. If your team needs another git provider, reach out on <a href="https://slack.evidence.dev">Slack</a>.</p>
 </details>
 
 ### Troubleshooting
@@ -129,7 +129,7 @@ Setting up Evidence Cloud takes less than 5 minutes.
 
 <details>
     <summary>When can I expect build failures?</summary>
-    <p>Evidence will not deploy sites with errors to prevent users from seeing broken reports. Usually, this is caused by an error with your project code.  Enter <code>npm run build</code> in your editor to test if the build succeeds locally. If you are still having issues, reach out on <a href="https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q">Slack</a>.</p>
+    <p>Evidence will not deploy sites with errors to prevent users from seeing broken reports. Usually, this is caused by an error with your project code.  Enter <code>npm run build</code> in your editor to test if the build succeeds locally. If you are still having issues, reach out on <a href="https://slack.evidence.dev">Slack</a>.</p>
 </details>
 
 <details>
