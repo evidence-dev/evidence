@@ -136,7 +136,10 @@ const config = {
 			darkTheme: require('prism-react-renderer/themes/palenight'),
 			additionalLanguages: ['sql']
 		},
-		metadata: [{property: 'og:image', content: '/img/twitter-card-white-bg.png'}],
+		metadata: [
+			{property: 'og:image', content: '/img/twitter-card-white-bg.png'},
+			{property: 'twitter:image', content: 'https://docs.evidence.dev/img/twitter-card-white-bg.png'} // twitter cannot use relative paths
+	],
 	},
 	presets: [
 		[
