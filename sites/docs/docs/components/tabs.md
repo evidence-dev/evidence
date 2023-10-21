@@ -1,6 +1,7 @@
 ---
 title: Tabs
 sidebar_position: 31
+img: /img/tabs.png
 ---
 
 <img src="/img/tabs.png" alt="tabs" width="600"/>

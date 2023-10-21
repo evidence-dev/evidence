@@ -1,8 +1,8 @@
 ---
 sidebar_position: 15
 title: Maps
-
 hide_table_of_contents: false
+image: /img/map-fullname.png
 ---
 
 ## Examples

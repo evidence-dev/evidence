@@ -2,6 +2,7 @@
 sidebar_position: 6
 title: 'Area Chart'
 hide_table_of_contents: false
+image: /img/exg-multi-series-step-area.png
 ---
 
 ![area](/img/exg-area-nt.svg)

@@ -2,6 +2,7 @@
 sidebar_position: 7
 title: Bar Chart
 hide_table_of_contents: false
+image: /img/refarea-bar.png
 ---
 
 ![bar](/img/exg-bar-nt.svg)

@@ -1,6 +1,7 @@
 ---
 title: Accordion
 sidebar_position: 30
+image: /img/accordion.png
 ---
 
 <img src="/img/accordion.png" alt="accordion" width="600"/>

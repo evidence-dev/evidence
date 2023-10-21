@@ -1,6 +1,7 @@
 ---
 title: Alert
 sidebar_position: 30
+image: /img/alert.png
 ---
 
 <img src="/img/alerts.png" alt="alert" width="600"/>

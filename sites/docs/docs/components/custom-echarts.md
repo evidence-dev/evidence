@@ -2,6 +2,7 @@
 sidebar_position: 14
 title: Custom ECharts
 hide_table_of_contents: false
+image: /img/custom-treemap.png
 ---
 
 Our chart library is based on [ECharts](https://echarts.apache.org/examples/en/index.html), a powerful and flexible open source JavaScript chart library. We use many of the features in ECharts, and combine them with custom data transformation, logic, and theming.

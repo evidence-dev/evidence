@@ -2,6 +2,7 @@
 sidebar_position: 5
 title: Line Chart
 hide_table_of_contents: false
+image: /img/line-chart.png
 ---
 
 ![line](/img/exg-line-nt.svg)

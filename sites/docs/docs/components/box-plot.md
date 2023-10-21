@@ -2,6 +2,7 @@
 sidebar_position: 8
 title: Box Plot
 hide_table_of_contents: false
+image: /img/boxplot-basic.png
 ---
 
 <img src="/img/boxplot-basic.png" width="700"/>

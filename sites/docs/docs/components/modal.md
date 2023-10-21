@@ -1,6 +1,7 @@
 ---
 title: Modal
 sidebar_position: 30
+image: /img/modal.png
 ---
 
 <img src="/img/modal.png" alt="modal" width="600"/>

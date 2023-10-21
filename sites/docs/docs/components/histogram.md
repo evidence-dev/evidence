@@ -2,6 +2,7 @@
 sidebar_position: 10
 title: Histogram
 hide_table_of_contents: false
+image: /img/hist-chart-only.png
 ---
 
 ![histogram](/img/exg-histogram-nt.svg)

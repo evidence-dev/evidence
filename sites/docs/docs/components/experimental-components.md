@@ -2,6 +2,7 @@
 sidebar_position: 100
 title: Experimental Components
 hide_table_of_contents: false
+image: /img/labs-world-map.png
 ---
 
 [Evidence Labs](https://labs.evidence.dev) contains a collection of experimental Evidence components which can be imported into your project.

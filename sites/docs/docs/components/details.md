@@ -1,6 +1,7 @@
 ---
 title: Details
 sidebar_position: 30
+image: /img/details-expanded.png
 ---
 
 The details component allows you to add a collapsible section to your markdown. This is useful for adding additional information that you don't want to be visible by default.

@@ -1,8 +1,8 @@
 ---
 sidebar_position: 2
 title: Big Value
-
 hide_table_of_contents: false
+image: /img/bigvalue-needful_things.png
 ---
 
 `<BigValue />` displays a large value, and can be configured to include a comparison and a sparkline.

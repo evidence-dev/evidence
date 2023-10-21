@@ -1,8 +1,8 @@
 ---
 sidebar_position: 3
 title: Data Table
-
 hide_table_of_contents: false
+image: /img/datatable-all.png
 ---
 
 ## Examples

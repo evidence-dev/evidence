@@ -2,6 +2,7 @@
 sidebar_position: 9
 title: Sankey Diagram
 hide_table_of_contents: false
+image: /img/sankey.png
 ---
 
 The SankeyDiagram component accepts a query and displays a flow from one set of values to another.

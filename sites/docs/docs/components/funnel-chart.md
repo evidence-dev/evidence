@@ -2,6 +2,7 @@
 sidebar_position: 9
 title: Funnel Chart
 hide_table_of_contents: false
+image: /img/funnel-default.png
 ---
 
 <img src="/img/funnel-default.png" width="700"/>

@@ -2,6 +2,7 @@
 sidebar_position: 12
 title: Annotations
 hide_table_of_contents: false
+image: /img/annotations-example.png
 ---
 
 Annotations help you add important context directly within a chart - highlight important dates, time periods, or specific points on a chart to make it easier for your audience to pull insights from the information.

@@ -2,6 +2,7 @@
 sidebar_position: 8
 title: Scatter Plot
 hide_table_of_contents: false
+image: /img/scatter-plot.png
 ---
 
 ![scatter-plot](/img/exg-scatter-nt.svg)
