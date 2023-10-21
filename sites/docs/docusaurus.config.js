@@ -138,7 +138,7 @@ const config = {
 		},
 		metadata: [
 			{property: 'og:image', content: '/img/twitter-card-white-bg.png'},
-			{property: 'twitter:image', content: 'https://docs.evidence.dev/img/twitter-card-white-bg.png'} // twitter cannot use relative paths
+			{name: 'twitter:image', content: 'https://docs.evidence.dev/img/twitter-card-white-bg.png'} // twitter cannot use relative paths
 	],
 	},
 	presets: [
