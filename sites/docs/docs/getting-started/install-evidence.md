@@ -3,6 +3,7 @@ sidebar_position: 2
 hide_table_of_contents: false
 title: Install Evidence
 description: The easiest way to get started with Evidence is to use the VSCode Extension.
+image: /img/twitter-card-white-bg.png
 ---
 
 The easiest way to get started with Evidence is to use the VSCode Extension.

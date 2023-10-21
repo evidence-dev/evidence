@@ -2,7 +2,7 @@
 sidebar_position: 1
 title: Value
 hide_table_of_contents: false
-image: /img/value-needful_things.png
+image: /img/value-needful-things.png
 ---
 
 The Value component accepts a query and displays a formatted value inline in text.
