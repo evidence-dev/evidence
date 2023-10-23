@@ -35,7 +35,7 @@ Evidence supports:
 - [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
-We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
+We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://slack.evidence.dev) if you'd like to use Evidence with a database that isn't currently supported.
 
 The source code for Evidence's connectors is available [on GitHub](https://github.com/evidence-dev/evidence/tree/main/packages)
 
@@ -89,7 +89,7 @@ Now you can copy the access token and use it in your Evidence project.
 
 ### Snowflake
 
-Evidence supports connecting to Snowflake using a [Snowflake Account](https://docs.snowflake.com/en/user-guide/api-authentication), [Key-Pair Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth.html), [Browser-Based SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-browser-based-sso), or [Native SSO through Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-native-sso-okta).
+Evidence supports connecting to Snowflake using a [Snowflake Account](https://docs.snowflake.com/en/user-guide/api-authentication), [Key-Pair Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth.html), [Browser-Based SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-browser-based-sso), or [Native SSO through Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-native-sso-okta).  All Snowflake column names will be converted to lowercase in Evidence.
 
 #### Snowflake Account
 The Snowflake Account authentication method uses your Snowflake username and password to authenticate. If you don't have access to these, you will need to use one of the other authentication methods.
@@ -251,4 +251,4 @@ Additional information about CSV helper functions can be found in the [DuckDB do
 
 ## Troubleshooting
 
-If you need help with connecting to your data, please feel free to [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q).
+If you need help with connecting to your data, please feel free to [send us a message in Slack](https://slack.evidence.dev).

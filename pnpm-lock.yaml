@@ -193,6 +193,12 @@ importers:
       '@evidence-dev/tailwind':
         specifier: workspace:^
         version: link:../tailwind
+      '@rgossiaux/svelte-headlessui':
+        specifier: ^2.0.0
+        version: 2.0.0(svelte@3.55.0)
+      '@steeze-ui/heroicons':
+        specifier: ^2.2.3
+        version: 2.2.3
       '@steeze-ui/simple-icons':
         specifier: ^1.5.0
         version: 1.5.0(svelte@3.55.0)
@@ -224,12 +230,6 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
     devDependencies:
-      '@rgossiaux/svelte-headlessui':
-        specifier: ^2.0.0
-        version: 2.0.0(svelte@3.55.0)
-      '@steeze-ui/heroicons':
-        specifier: ^2.2.3
-        version: 2.2.3
       '@storybook/addon-essentials':
         specifier: ^7.4.0
         version: 7.4.0(react-dom@17.0.1)(react@17.0.1)
@@ -429,8 +429,8 @@ importers:
         specifier: workspace:^
         version: link:../db-commons
       duckdb-async:
-        specifier: 0.8.1
-        version: 0.8.1
+        specifier: 0.9.1
+        version: 0.9.1
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -6408,7 +6408,7 @@ packages:
       svelte: ^3.47.0
     dependencies:
       svelte: 3.55.0
-    dev: true
+    dev: false
 
   /@rollup/pluginutils@4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
@@ -6536,7 +6536,7 @@ packages:
 
   /@steeze-ui/heroicons@2.2.3:
     resolution: {integrity: sha512-bv4YK375U9TDS50SmJ5VdFy2UmMhgKbJCCbo6IUU3qs2luEj2VX6sQoDy96j8AIKttxMd62ih1j0lZj7CTjIfA==}
-    dev: true
+    dev: false
 
   /@steeze-ui/simple-icons@1.5.0(svelte@3.55.0):
     resolution: {integrity: sha512-B/lxdcopBPsd4QnbuFuR1/20jHX03e/Kelv88IdCN4rpX8pVshBVJmnhj4ASWmitpkbVjlih4Tx6yBQ4l+djHA==}
@@ -11546,17 +11546,17 @@ packages:
   /downloadjs@1.4.7:
     resolution: {integrity: sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q==}
 
-  /duckdb-async@0.8.1:
-    resolution: {integrity: sha512-/g5/zxC5XXXeQVEs86AtWVnzOmS7FBgVm976sJ75Tvrovms+QC5V+0SLNOl6VJQUT55NvvlrwX1zQybQfa+48w==}
+  /duckdb-async@0.9.1:
+    resolution: {integrity: sha512-KN5agCxdBCROVzZjOO+6m76d2s1hbxwLsfr4xhXfnIVtfcQFWq02G35pjynmKFe1qk5dXMj7pLllaKm+L9fFqQ==}
     dependencies:
-      duckdb: 0.8.1
+      duckdb: 0.9.1
     transitivePeerDependencies:
       - encoding
       - supports-color
     dev: false
 
-  /duckdb@0.8.1:
-    resolution: {integrity: sha512-a2SJDuvBVKy5muYFxXTANlqdNX1daF3NHzpqRdrk0Qx5n3Sh7BxL66O+WY9epaDFukiXEpz45sds5T1LaPaHog==}
+  /duckdb@0.9.1:
+    resolution: {integrity: sha512-mYfQXKADGUoBVOfy6OordgEkPlY6EtEIgrwRbFgVDoen2iQRVymr4RcDGhA2QTrniwgK+GnhszCu0vqrZJ1sFQ==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11

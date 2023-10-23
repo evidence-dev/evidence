@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/duckdb",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "DuckDB driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Josh Wills",
@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:^",
-		"duckdb-async": "0.8.1"
+		"duckdb-async": "0.9.1"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"

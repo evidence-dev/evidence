@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 3.2.0
+
+### Minor Changes
+
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+
 ## 3.1.2
 
 ### Patch Changes

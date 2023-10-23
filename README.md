@@ -4,13 +4,13 @@
 
 Business Intelligence as Code: Generate reports using SQL and markdown
 
-### [Docs](https://docs.evidence.dev) | [Examples](https://evidence.dev/examples) | [Cloud](https://evidence.dev/cloud) | [Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
+### [Docs](https://docs.evidence.dev) | [Examples](https://evidence.dev/examples) | [Cloud](https://evidence.dev/cloud) | [Slack](https://slack.evidence.dev)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/evidence-dev/evidence?style=social)
 ![NPM](https://img.shields.io/npm/l/%40evidence-dev%2Fevidence)
 ![npm](https://img.shields.io/npm/v/@evidence-dev/evidence?logo=npm)
 ![Release](https://img.shields.io/github/actions/workflow/status/evidence-dev/evidence/release.yml?logo=npm)
-[![Join Slack](https://img.shields.io/badge/slack-join-blue?logo=slack&amp)](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
+[![Join Slack](https://img.shields.io/badge/slack-join-blue?logo=slack&amp)](https://slack.evidence.dev)
 
 </div>
 
@@ -42,13 +42,13 @@ See docs for [other install options](https://docs.evidence.dev/getting-started/i
 
 # Join the Evidence Community
 
-Join our [Slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) to get involved in the community's discussion, share what you're working on, or request features.
+Join our [Slack channel](https://slack.evidence.dev) to get involved in the community's discussion, share what you're working on, or request features.
 
 Follow us on [Twitter](https://twitter.com/evidence_dev) to receive the latest updates on Evidence.
 
 # Contributing
 
-If you are interested in contributing, please join us on our [slack channel](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.
+If you are interested in contributing, please join us on our [slack channel](https://slack.evidence.dev), open an [issue](https://github.com/evidence-dev/evidence/issues/new), or contribute a pull request.
 
 # License
 
