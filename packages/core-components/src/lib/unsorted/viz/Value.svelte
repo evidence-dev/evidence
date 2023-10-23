@@ -12,6 +12,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	import { strictBuild } from './context';
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	// Passing in value from dataset:
 	export let data = null;
@@ -33,12 +34,12 @@
 		try {
 			error = undefined;
 			if (!placeholder) {
-				if (data) {
+				if (data && !data.loading) {
 					if (typeof data == 'string') {
 						throw Error(`Received: data=${data}, expected: data={${data}}`);
 					}
 
-					if (!Array.isArray(data)) {
+					if (!Array.isArray(data) && !(data instanceof QueryStore)) {
 						// Accept bare objects
 						data = [data];
 					}
@@ -88,7 +89,9 @@
 	}
 </script>
 
-{#if placeholder}
+{#if data.loading}
+	<span class="placeholder">Loading...</span>
+{:else if placeholder}
 	<span class="placeholder"
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>

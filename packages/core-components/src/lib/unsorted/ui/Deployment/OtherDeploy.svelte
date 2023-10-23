@@ -1,7 +1,7 @@
 <script>
 	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
-	export let settings;
+	export let datasourceSettings;
 </script>
 
 <h2>Deploying your Project</h2>
@@ -36,10 +36,10 @@
 	database connection
 </p>
 
-{#if !settings.credentials}
+{#if !datasourceSettings.length}
 	<p>Your project does not have a database connection.</p>
 {:else}
-	<EnvironmentVarListing {settings} />
+	<EnvironmentVarListing {datasourceSettings} />
 {/if}
 
 <style>

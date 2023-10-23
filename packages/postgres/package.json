@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/postgres",
-	"version": "1.0.0-usql.2",
+	"version": "1.0.0-usql.3",
 	"description": "PostgreSQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -9,8 +9,9 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:0.2.1-usql.1",
-		"pg": "8.7.1"
+		"@evidence-dev/db-commons": "workspace:^",
+		"pg": "^8.11.3",
+		"pg-cursor": "^2.10.3"
 	},
 	"devDependencies": {
 		"@types/pg": "^8.10.2"

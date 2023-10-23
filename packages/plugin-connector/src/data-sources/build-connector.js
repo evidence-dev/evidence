@@ -9,7 +9,7 @@ import { DatabaseConnectorSchema } from './schemas/query-runner.schema';
 export const buildConnector = async (packageMain, supports) => {
 	// https://github.com/nodejs/node/issues/31710 thanks windows
 	const crossPlatformPackage = new URL(`file:///${packageMain}`).href;
-	const connectorPackage = await import(crossPlatformPackage);
+	const connectorPackage = await import(crossPlatformPackage /* @vite-ignore */);
 	const connector = DatabaseConnectorSchema.parse({ ...connectorPackage, supports });
 
 	return connector;

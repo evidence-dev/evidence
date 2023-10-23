@@ -35,8 +35,14 @@ async function updateManifest(outputFiles, outDir, datasources) {
 		);
 	}
 
-	// update w/ new queries
 	for (const source in outputFiles) {
+		// remove queries that have been replaced
+		const new_queries = new Set(outputFiles[source].map((file) => path.basename(file, '.parquet')));
+		current_manifest.renderedFiles[source] = current_manifest.renderedFiles[source].filter(
+			(file) => !new_queries.has(path.basename(file, '.parquet'))
+		);
+
+		// update w/ new queries
 		current_manifest.renderedFiles[source] = Array.from(
 			new Set([...outputFiles[source], ...current_manifest.renderedFiles[source]])
 		);
@@ -44,6 +50,51 @@ async function updateManifest(outputFiles, outDir, datasources) {
 
 	await fs.mkdir(outDir, { recursive: true });
 	await fs.writeFile(path.join(outDir, 'manifest.json'), JSON.stringify(current_manifest));
+}
+
+/**
+ * @param {string} sourceName - The name of the source.
+ * @param {object} sourceConfig - The configuration options for the source.
+ * @returns {object} - An object containing environment variables for the source.
+ */
+const generateSourceEnvironmentVariables = (sourceName, sourceConfig) => {
+	/** @type {Record<string,string>} */
+	const sourceEnvVars = {};
+
+	// Recursively generate environment variables for nested properties
+	/**
+	 * @param {any} obj
+	 */
+	const generateNestedEnvVars = (obj, currentKey = '') => {
+		for (const [key, value] of Object.entries(obj)) {
+			const newKey = currentKey ? `${currentKey}__${key}` : key;
+
+			if (typeof value === 'object') {
+				generateNestedEnvVars(value, newKey);
+			} else {
+				sourceEnvVars[`EVIDENCE_SOURCE__${sourceName}__${newKey}`] = value.toString();
+			}
+		}
+	};
+
+	// Start generating environment variables for the source
+	generateNestedEnvVars(sourceConfig);
+
+	return sourceEnvVars;
+};
+
+/**
+ * Helper function to load configured datasources
+ * @returns {Promise<(DatasourceSpec & { environmentVariables: object })[]>}
+ */
+export async function getDatasourceOptions() {
+	const datasourceDir = await getSourcesDir();
+	if (!datasourceDir) throw new Error('missing sources directory');
+	const sources = await getSources(datasourceDir);
+	return sources.map((s) => ({
+		...s,
+		environmentVariables: generateSourceEnvironmentVariables(s.name, s.options)
+	}));
 }
 
 /**

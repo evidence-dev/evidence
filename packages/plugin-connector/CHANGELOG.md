@@ -1,5 +1,27 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- Increase batch size from 100k to 1m
+
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- Support for streaming results
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.10
+
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- 5828c375: Enviroment variables use \__ instead of _ to delimit option properties
+- cad09993: improve source refresh experience
+- 64d1405b: Loading state is now respected by Value and BigValue
+
 ## 2.0.0-usql.16
 
 ### Patch Changes

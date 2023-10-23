@@ -1,5 +1,45 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.24
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/plugin-connector@2.0.0-usql.19
+
+## 3.0.0-usql.23
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/duckdb@1.0.0-usql.4
+  - @evidence-dev/plugin-connector@2.0.0-usql.18
+  - @evidence-dev/universal-sql@2.0.0-usql.10
+
+## 3.0.0-usql.22
+
+### Patch Changes
+
+- Updated dependencies [b6683ba0]
+- Updated dependencies [5828c375]
+- Updated dependencies [cad09993]
+- Updated dependencies [64d1405b]
+  - @evidence-dev/core-components@2.0.0-usql.13
+  - @evidence-dev/plugin-connector@2.0.0-usql.17
+  - @evidence-dev/component-utilities@2.0.0-usql.9
+  - @evidence-dev/query-store@2.0.0-usql.1
+
+## 3.0.0-usql.21
+
+### Patch Changes
+
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/query-store@2.0.0-usql.0
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.12
+
 ## 3.0.0-usql.20
 
 ### Patch Changes

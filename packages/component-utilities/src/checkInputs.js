@@ -50,8 +50,12 @@ export default function checkInputs(data, reqCols, optCols) {
 		// }
 
 		// Get list of all columns in dataset
-		for (const [key] of Object.entries(data[0])) {
-			columns.push(key);
+		if ('columns' in data && Array.isArray(data.columns)) {
+			columns = data.columns.map((c) => c.name);
+		} else {
+			for (const [key] of Object.entries(data[0])) {
+				columns.push(key);
+			}
 		}
 
 		// Check if provided columns are in the dataset

@@ -1,21 +1,28 @@
 {
 	"name": "@evidence-dev/universal-sql",
-	"version": "2.0.0-usql.9",
+	"version": "2.0.0-usql.10",
 	"description": "",
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"main": "./src/index.js",
 	"scripts": {
-		"check": "tsc ./src/index.js --d --emitDeclarationOnly --allowJs"
+		"build": "tsc ./src/index.js --d --emitDeclarationOnly --allowJs",
+		"check": "tsc ./src/index.js --d --emitDeclarationOnly --allowJs",
+		"test": "vitest --run",
+		"test:watch": "vitest"
 	},
 	"type": "module",
 	"dependencies": {
 		"@duckdb/duckdb-wasm": "^1.27.0",
+		"@types/lodash.chunk": "^4.2.7",
+		"@types/node": "^20.8.4",
 		"apache-arrow": "^11.0.0",
 		"chalk": "^5.2.0",
 		"duckdb": "^0.8.1",
-		"parquet-wasm": "0.3.1"
+		"lodash.chunk": "^4.2.0",
+		"parquet-wasm": "0.3.1",
+		"web-worker": "^1.2.0"
 	},
 	"exports": {
 		".": {
@@ -27,5 +34,10 @@
 			"node": "./src/client-duckdb/node.js",
 			"types": "./src/client-duckdb/browser.d.ts"
 		}
+	},
+	"devDependencies": {
+		"@types/mock-fs": "^4.13.1",
+		"mock-fs": "^5.2.0",
+		"vitest": "^0.34.1"
 	}
 }

@@ -1,4 +1,10 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
+} = require('@evidence-dev/db-commons');
 const mssql = require('mssql');
 
 const envMap = {
@@ -123,7 +129,7 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 };
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<MsSQLOptions>} */
-const runQuery = async (queryString, database = {}) => {
+const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 	try {
 		const trust_server_certificate =
 			database.trust_server_certificate ?? getEnv(envMap, 'trustServerCertificate') ?? 'false';
@@ -140,11 +146,27 @@ const runQuery = async (queryString, database = {}) => {
 			}
 		};
 
-		/** @type {mssql.ConnectionPool} */
 		const pool = await mssql.connect(credentials);
-		const { recordset } = await pool.query(queryString);
 
-		return { rows: recordset, columnTypes: mapResultsToEvidenceColumnTypes(recordset.columns) };
+		const cleaned_string = cleanQuery(queryString);
+		const expected_count = await pool
+			.request()
+			.query(`SELECT COUNT(*) as expected_row_count FROM (${cleaned_string}) as subquery`)
+			.catch(() => null);
+		const expected_row_count = expected_count?.recordset[0].expected_row_count;
+
+		const request = new mssql.Request();
+		request.stream = true;
+		request.query(queryString);
+
+		const columns = await new Promise((res) => request.once('recordset', res));
+
+		const stream = request.toReadableStream();
+		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize);
+		results.columnTypes = mapResultsToEvidenceColumnTypes(columns);
+		results.expectedRowCount = expected_row_count;
+
+		return results;
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
@@ -169,9 +191,9 @@ module.exports = runQuery;
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<MsSQLOptions>} */
 module.exports.getRunner = async (opts) => {
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, opts, batchSize);
 	};
 };

@@ -1,5 +1,59 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.29
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/plugin-connector@2.0.0-usql.19
+
+## 20.0.0-usql.28
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/plugin-connector@2.0.0-usql.18
+  - @evidence-dev/universal-sql@2.0.0-usql.10
+  - @evidence-dev/db-orchestrator@3.0.0-usql.8
+
+## 20.0.0-usql.27
+
+### Patch Changes
+
+- b6683ba0: Deploy screen now shows environment variables for USQL
+- cad09993: improve source refresh experience
+- Updated dependencies [b6683ba0]
+- Updated dependencies [5828c375]
+- Updated dependencies [cad09993]
+- Updated dependencies [64d1405b]
+  - @evidence-dev/core-components@2.0.0-usql.13
+  - @evidence-dev/plugin-connector@2.0.0-usql.17
+  - @evidence-dev/preprocess@4.0.0-usql.13
+  - @evidence-dev/component-utilities@2.0.0-usql.9
+  - @evidence-dev/query-store@2.0.0-usql.1
+
+## 20.0.0-usql.26
+
+### Major Changes
+
+- e1facffd: Add QueryStore concept
+
+  - Loads data as it is requested, rather than all at page-load / build
+  - Uses duckdb to get data length / column data
+  - Ties metadata, mutation queries, and data together to make component development easier
+  - Provides information regarding loading (and query errors in the future)
+
+### Patch Changes
+
+- e9a63c71: Add loading states to DataTable and Chart
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/preprocess@4.0.0-usql.12
+  - @evidence-dev/query-store@2.0.0-usql.0
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.12
+
 ## 20.0.0-usql.25
 
 ### Patch Changes

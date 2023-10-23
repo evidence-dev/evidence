@@ -7,16 +7,18 @@ import autoImport from 'sveltekit-autoimport';
 export const evidencePlugins = () => {
 	const componentPlugins = getPluginComponents();
 
-	const packages = componentPlugins.then((components) => {
-		/** @type {Record<string,string[]>} */
-		const packages = {};
-		for (const [component, data] of Object.entries(components)) {
-			if (!packages[data.package]) packages[data.package] = [];
-			const import_name = data.aliasOf ? `${data.aliasOf} as ${component}` : component;
-			packages[data.package].push(import_name);
-		}
-		return packages;
-	});
+	const packages = componentPlugins
+		.then((components) => {
+			/** @type {Record<string,string[]>} */
+			const packages = {};
+			for (const [component, data] of Object.entries(components)) {
+				if (!packages[data.package]) packages[data.package] = [];
+				const import_name = data.aliasOf ? `${data.aliasOf} as ${component}` : component;
+				packages[data.package].push(import_name);
+			}
+			return packages;
+		})
+		.catch(() => ({}));
 
 	const autoImporter = packages.then((packages) =>
 		autoImport({

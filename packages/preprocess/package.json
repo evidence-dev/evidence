@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "4.0.0-usql.11",
+	"version": "4.0.0-usql.13",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",

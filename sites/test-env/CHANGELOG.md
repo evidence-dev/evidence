@@ -1,5 +1,45 @@
 # evidence-test-environment
 
+## 3.0.0-usql.29
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.29
+
+## 3.0.0-usql.28
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/csv@1.0.0-usql.5
+  - @evidence-dev/duckdb@1.0.0-usql.4
+  - @evidence-dev/faker-datasource@2.0.0-usql.2
+  - @evidence-dev/postgres@1.0.0-usql.3
+  - @evidence-dev/sqlite@2.0.0-usql.4
+  - @evidence-dev/evidence@20.0.0-usql.28
+
+## 3.0.0-usql.27
+
+### Patch Changes
+
+- Updated dependencies [b6683ba0]
+- Updated dependencies [cad09993]
+- Updated dependencies [64d1405b]
+  - @evidence-dev/core-components@2.0.0-usql.13
+  - @evidence-dev/evidence@20.0.0-usql.27
+  - @evidence-dev/component-utilities@2.0.0-usql.9
+
+## 3.0.0-usql.26
+
+### Patch Changes
+
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/evidence@20.0.0-usql.26
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.12
+
 ## 3.0.0-usql.25
 
 ### Patch Changes

@@ -10,6 +10,7 @@ const templatePaths = [
 	'src/global.d.ts',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
+	'src/pages/extractQueries.server.js',
 	'src/pages/+layout.server.js',
 	'src/pages/+layout.js',
 	'src/pages/settings/',
@@ -65,17 +66,18 @@ fs.outputFileSync(
 fs.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
+	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit()],
+        plugins: [sveltekit(), evidenceVitePlugin()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts'],
             exclude: ['svelte-icons', 'svelte-tiny-linked-charts', '@evidence-dev/universal-sql']
         },
         ssr: {
-            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5', '@evidence-dev/plugin-connector']
         },
         server: {
             fs: {

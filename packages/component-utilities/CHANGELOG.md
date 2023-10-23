@@ -1,5 +1,18 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.9
+
+### Patch Changes
+
+- 64d1405b: Loading state is now respected by Value and BigValue
+
+## 2.0.0-usql.8
+
+### Patch Changes
+
+- 078fca3b: Error handling via QueryStores is more effective now
+- e9a63c71: Add loading states to DataTable and Chart
+
 ## 2.0.0-usql.7
 
 ### Patch Changes

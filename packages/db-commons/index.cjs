@@ -98,9 +98,70 @@ const processQueryResults = function (queryResults) {
 	return { rows, columnTypes };
 };
 
+/**
+ * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
+ * @property {(rows: Record<string, unknown>[]) => QueryResult} [mapResultsToEvidenceColumnTypes]
+ * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
+ */
+
+/**
+ * Converts an async iterable to a QueryResult
+ * @param {AsyncIterable<unknown>} iterable
+ * @param {number} batchSize
+ * @param {AsyncIterableToBatchedAsyncGeneratorOptions} options additional optional parameters
+ * @returns {Promise<QueryResult>}
+ */
+const asyncIterableToBatchedAsyncGenerator = async function (
+	iterable,
+	batchSize,
+	{ standardizeRow = (x) => x, mapResultsToEvidenceColumnTypes = () => [] } = {}
+) {
+	const iterator = iterable[Symbol.asyncIterator]();
+	const first_row = standardizeRow(await iterator.next().then((x) => x.value));
+
+	const rows = async function* () {
+		let batch = [first_row];
+		for await (const row of iterable) {
+			batch.push(standardizeRow(row));
+			if (batch.length >= batchSize) {
+				yield batch;
+				batch = [];
+			}
+		}
+		if (batch.length > 0) {
+			yield batch;
+		}
+	};
+
+	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([first_row]) };
+};
+
+/**
+ * Converts an async generator to an array
+ * @param {AsyncGeneratorFunction} asyncGenerator
+ * @returns {Promise<Record<string, unknown>[]>}
+ */
+const batchedAsyncGeneratorToArray = async (asyncGenerator) => {
+	const result = [];
+	for await (const batch of asyncGenerator()) {
+		result.push(...batch);
+	}
+	return result;
+};
+
+const cleanQuery = (query) => {
+	let cleanedString = query.trim();
+	if (cleanedString.endsWith(';'))
+		cleanedString = cleanedString.substring(0, cleanedString.length - 1);
+	return cleanedString;
+};
+
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
+exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenerator;
+exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
+exports.cleanQuery = cleanQuery;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

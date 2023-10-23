@@ -68,7 +68,8 @@
 		Sidebar,
 		BreadCrumbs,
 		Header,
-		TableOfContents
+		TableOfContents,
+		QueryStatus
 	} from '@evidence-dev/core-components';
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -78,6 +79,10 @@
 		mobileSidebarOpen = false;
 	}
 </script>
+
+{#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
+	<QueryStatus />
+{/if}
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<Header bind:mobileSidebarOpen />

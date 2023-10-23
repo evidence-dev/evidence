@@ -10,6 +10,8 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from './context';
+	import { QueryStore } from '@evidence-dev/query-store';
+
 	export let data;
 	export let value = null;
 	export let comparison = null;
@@ -34,7 +36,7 @@
 	let sparklineData = {};
 
 	let error = undefined;
-	$: if (data)
+	$: if (data && !data.loading)
 		try {
 			error = undefined;
 
@@ -42,7 +44,7 @@
 				throw new Error('value is required');
 			}
 
-			if (!Array.isArray(data)) {
+			if (!Array.isArray(data) && !(data instanceof QueryStore)) {
 				data = [data];
 			}
 
@@ -102,9 +104,9 @@
 	data-viz="BigValue"
 	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
 	style={`
-        min-width: ${minWidth};
-        max-width: ${maxWidth};
-    `}
+	min-width: ${minWidth};
+	max-width: ${maxWidth};
+`}
 >
 	{#if error}
 		<ErrorChart chartType="Big Value" error={error.message} />
@@ -112,7 +114,7 @@
 		<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
 		<div class="relative">
 			<Value {data} column={value} {fmt} />
-			{#if sparkline}
+			{#if sparkline && !data.loading}
 				{#if isLinkedChartReady()}
 					<div class="inline-block">
 						<svelte:component

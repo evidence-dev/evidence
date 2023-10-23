@@ -1,4 +1,9 @@
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	asyncIterableToBatchedAsyncGenerator
+} = require('@evidence-dev/db-commons');
 const snowflake = require('snowflake-sdk');
 const crypto = require('crypto');
 
@@ -64,24 +69,22 @@ const envMap = {
  * @param {snowflake.Connection} connection
  * @param {string} queryString
  * @param {boolean} useAsync
- * @returns {Promise<{ rows?: Record<string, unknown>[], columns?: { name: string, type: string }[] }>}
+ * @returns {Promise<{ rows: import("stream").Readable, columns: import('snowflake-sdk').Column[], totalRows: number }>}
  */
 const execute = async (connection, queryString, useAsync = false) => {
 	return new Promise((resolve, reject) => {
 		function finishExecution() {
 			connection.execute({
 				sqlText: queryString,
-				complete: function (err, stmt, rows) {
+				streamResult: true,
+				complete: function (err, stmt) {
 					if (err) {
 						reject(err);
 					} else {
-						let columns;
-						if (stmt) {
-							columns = stmt.getColumns()?.map((next) => {
-								return { name: next.getName(), type: next.getType() };
-							});
-						}
-						resolve({ rows, columns });
+						const columns = stmt
+							.getColumns()
+							.map((next) => ({ name: next.getName(), type: next.getType() }));
+						resolve({ rows: stmt.streamRows(), columns, totalRows: stmt.getNumRows() });
 					}
 				}
 			});
@@ -165,7 +168,7 @@ const nativeTypeToEvidenceType = function (dataBaseType, defaultResultEvidenceTy
  * @returns {import('@evidence-dev/db-commons').ColumnDefinition[] | undefined}
  */
 const mapResultsToEvidenceColumnTypes = function (results) {
-	return results?.columns?.map((field) => {
+	return results.columns.map((field) => {
 		/** @type {TypeFidelity} */
 		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.type);
@@ -183,21 +186,15 @@ const mapResultsToEvidenceColumnTypes = function (results) {
 
 /**
  *
- * @param {Record<string, unknown>[] | undefined} result
- * @returns {Record<string, unknown>[]}
+ * @param {Record<string, unknown>} result
+ * @returns {Record<string, unknown>}
  */
-const standardizeResult = (result) => {
-	/** @type {Record<string, unknown>[]} */
-	const output = [];
-	result?.forEach((row) => {
-		/** @type {Record<string, unknown>} */
-		const lowerCasedRow = {};
-		for (const [key, value] of Object.entries(row)) {
-			lowerCasedRow[key.toLowerCase()] = value;
-		}
-		output.push(lowerCasedRow);
-	});
-	return output;
+const standardizeRow = (row) => {
+	const lowerCasedRow = {};
+	for (const [key, value] of Object.entries(row)) {
+		lowerCasedRow[key.toLowerCase()] = value;
+	}
+	return lowerCasedRow;
 };
 
 /**
@@ -272,21 +269,26 @@ const getCredentials = (database = {}) => {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<SnowflakeOptions>} */
-const runQuery = async (queryString, database) => {
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
 		const credentials = getCredentials(database);
 
-		const connection = snowflake.createConnection(credentials);
+		const connection = snowflake.createConnection({ ...credentials, streamResult: true });
 
-		const result = await execute(
+		const execution = await execute(
 			connection,
 			queryString,
 			credentials.authenticator?.startsWith('https://') ||
 				credentials.authenticator === 'externalbrowser'
 		);
 
-		const standardizedResults = standardizeResult(result.rows);
-		return { rows: standardizedResults, columnTypes: mapResultsToEvidenceColumnTypes(result) };
+		const result = await asyncIterableToBatchedAsyncGenerator(execution.rows, batchSize, {
+			standardizeRow
+		});
+		result.columnTypes = mapResultsToEvidenceColumnTypes(execution);
+		result.expectedRowCount = execution.totalRows;
+
+		return result;
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
@@ -333,9 +335,9 @@ module.exports = runQuery;
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<SnowflakeOptions>} */
 module.exports.getRunner = async (opts) => {
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, opts, batchSize);
 	};
 };
