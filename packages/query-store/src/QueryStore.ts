@@ -164,8 +164,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		if (typeof query === 'string') {
 			this.#query.from({ __userQuery: sql`(${query})` }).select('*');
 		} else this.#query = query;
-		// @ts-expect-error Passing undocumented parameter
-		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1] ?? this.id);
+		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1]);
 
 		const self = this;
 		this.#proxied = new Proxy<QueryStore & QueryResult[]>(
@@ -291,7 +290,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#dataLoaded = true;
 				return this.#fetchLength();
 			},
-			() => this.#exec(queryWithComment),
+			() => this.#exec(queryWithComment, this.id),
 			this.#setError
 		);
 	};
@@ -332,7 +331,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 				this.publish();
 			},
-			// @ts-expect-error undocumented param
 			() => this.#exec(queryWithComment, `${this.id}_length`),
 			this.#setError
 		);
@@ -356,7 +354,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#metaLoaded = true;
 				this.publish();
 			},
-			// @ts-expect-error undocumented param
 			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`, `${this.id}_metadata`),
 			this.#setError
 		);
