@@ -3,11 +3,10 @@
 </script>
 
 <script>
-	import { profile } from '@evidence-dev/component-utilities/profile';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import { getContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
@@ -29,30 +28,31 @@
 
 	/** @type {string} */
 	export let name;
-	$: component_identifier = `_Dropdown-${name}`;
+	setContext('dropdown_context', {
+		hasBeenSet: false,
+		setSelectedValue: (selected) => ($inputs[name] = selected)
+	});
 
-	const search = (query) =>
-		profile(db.query, query, {
-			query_name: component_identifier,
-			callback: (value) => (data = value)
-		});
+	$: component_identifier = `Dropdown-${name}`;
 
-	$: db = $page.data.__db;
-	/** @type {{ label: unknown, value: unknown }[]} */
-	$: data = $page.data.data?.[component_identifier] ?? [];
-	$: search(`select (${label}) as label, (${value}) as value from ${from} where (${where})`);
-	$: selected = data[0]?.value;
+	$: data = new QueryStore(
+		`select (${label}) as label, (${value}) as value from ${from} where (${where})`,
+		(query, query_name) => $page.data.__db.query(query, { query_name }),
+		component_identifier,
+		{ initialData: $page.data.data?.[component_identifier] }
+	);
+
+	$: selected = $data[0]?.value;
 	$: $inputs[name] = selected;
-
-	let loadingDuckDB = true;
-	$: browser && db.load().then(() => (loadingDuckDB = false));
 </script>
 
 <!--
 	do not switch to binding, select bind:value invalidates its dependencies 
 	(so `data` would be invalidated) -->
-<select disabled={loadingDuckDB} on:change={(e) => (selected = e.currentTarget.value)}>
-	{#each data as { label, value }}
+<select disabled={!$data.loaded} on:change={(e) => (selected = e.currentTarget.value)}>
+	<slot />
+
+	{#each $data as { label, value }}
 		<option {value}>{label}</option>
 	{/each}
 </select>
