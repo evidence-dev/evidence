@@ -65,7 +65,10 @@
 	let data;
 	$: hasQuery &&
 		(data = new QueryStore(
-			`select ${value_label} as label, ${value} as value from ${from} where (${where}) order by (${order})`,
+			`select distinct on (value, label)
+				${value_label} as label,
+				${value} as value
+			from ${from} where (${where}) order by (${order})`,
 			(query, query_name) => $page.data.__db.query(query, { query_name }),
 			component_identifier,
 			{ initialData: $page.data.data?.[component_identifier] }
