@@ -1,4 +1,8 @@
-<Dropdown from=reviews label="select first_name || ' ' || last_name from orders where id = order_id" value=order_id name=selected_order_id where="nps_score > 7">
+# Dropdown Example Page
+
+## Normal Usage
+
+<Dropdown label="Selected Order ID" name="selected_order_id" from=named_reviews value_label="first_name || ' ' || last_name" value=order_id where="nps_score > 7" order=first_name>
 	<DropdownOption value="All" />
 	<DropdownOption value="Top 100" />
 </Dropdown>
@@ -24,3 +28,13 @@ select * from orders
 {:else}
 <DataTable data={full_selected_order} />
 {/if}
+
+## Dropdown without a query
+
+<Dropdown label=Queryless name=queryless>
+	<DropdownOption value="Option number one" />
+	<DropdownOption value="Option number two" />
+	<DropdownOption label="Option number three" value="I'm different!" />
+</Dropdown>
+
+{inputs.queryless}

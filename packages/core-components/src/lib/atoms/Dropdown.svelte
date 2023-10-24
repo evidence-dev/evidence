@@ -10,21 +10,45 @@
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
-	/** @type {string} */
+	/**
+	 * (optional) Label above the dropdown
+	 * @type {string}
+	 */
+	export let label;
+
+	/**
+	 * Column to be used as value when selected
+	 * @type {string}
+	 */
 	export let value;
 
-	/** @type {string} */
-	export let label = value;
+	/**
+	 * (optional) Column to be used as label for each value
+	 * @type {string}
+	 */
+	export let value_label = value;
 
-	/** @type {string} */
+	/**
+	 * Table or subquery to select from
+	 * @type {string}
+	 */
 	export let from;
 	// checks for select and a whitespace after
 	$: if (/select\s/i.test(from)) {
 		from = `(${from})`;
 	}
 
-	/** @type {string} */
+	/**
+	 * (optional) Where clause for dataset
+	 * @type {string}
+	 */
 	export let where = 'true';
+
+	/**
+	 * (optional) Order by clause for dataset
+	 * @type {string}
+	 */
+	export let order = 'select null';
 
 	/** @type {string} */
 	export let name;
@@ -35,24 +59,36 @@
 
 	$: component_identifier = `Dropdown-${name}`;
 
-	$: data = new QueryStore(
-		`select (${label}) as label, (${value}) as value from ${from} where (${where})`,
-		(query, query_name) => $page.data.__db.query(query, { query_name }),
-		component_identifier,
-		{ initialData: $page.data.data?.[component_identifier] }
-	);
+	$: hasQuery = value && from;
 
-	$: selected = $data[0]?.value;
+	/** @type {QueryStore} */
+	let data;
+	$: hasQuery &&
+		(data = new QueryStore(
+			`select ${value_label} as label, ${value} as value from ${from} where (${where}) order by (${order})`,
+			(query, query_name) => $page.data.__db.query(query, { query_name }),
+			component_identifier,
+			{ initialData: $page.data.data?.[component_identifier] }
+		));
+
+	/** @type {unknown} */
+	let selected;
+	$: hasQuery && (selected = $data[0]?.value);
 	$: $inputs[name] = selected;
 </script>
+
+<!-- pretty span made with tailwind -->
+{#if label}<span class="text-sm text-gray-500 block">{label}</span>{/if}
 
 <!--
 	do not switch to binding, select bind:value invalidates its dependencies 
 	(so `data` would be invalidated) -->
-<select disabled={!$data.loaded} on:change={(e) => (selected = e.currentTarget.value)}>
+<select disabled={hasQuery && !$data.loaded} on:change={(e) => (selected = e.currentTarget.value)}>
 	<slot />
 
-	{#each $data as { label, value }}
-		<option {value}>{label}</option>
-	{/each}
+	{#if hasQuery}
+		{#each $data as { label, value }}
+			<option {value}>{label}</option>
+		{/each}
+	{/if}
 </select>
