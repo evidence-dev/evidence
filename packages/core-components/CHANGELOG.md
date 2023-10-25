@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.1.2
+
+### Patch Changes
+
+- 41df3c72: fix snowflake persisting authenticator
+
 ## 2.1.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 0.3.3
+
+### Patch Changes
+
+- f36450f5: bump snowflake-sdk version
+
 ## 0.3.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/snowflake",
-	"version": "0.3.2",
+	"version": "0.3.3",
 	"description": "Snowflake driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
