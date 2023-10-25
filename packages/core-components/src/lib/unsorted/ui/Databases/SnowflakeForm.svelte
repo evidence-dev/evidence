@@ -11,7 +11,7 @@
 	export let disableSave;
 
 	credentials = { ...existingCredentials };
-	credentials.authenticator = 'snowflake';
+	credentials.authenticator = credentials.authenticator ?? 'snowflake';
 
 	const opts = {
 		snowflake: [
