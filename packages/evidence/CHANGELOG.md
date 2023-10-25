@@ -1,5 +1,43 @@
 # @evidence-dev/evidence
 
+## 23.0.1
+
+### Patch Changes
+
+- Updated dependencies [9d5c11e1]
+  - @evidence-dev/core-components@2.1.1
+
+## 23.0.0
+
+### Minor Changes
+
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+
+### Patch Changes
+
+- 1752882a: Make logs more readable when executing queries
+- Updated dependencies [d09a32ce]
+- Updated dependencies [aafd7135]
+- Updated dependencies [75e419f8]
+- Updated dependencies [548d37ff]
+- Updated dependencies [5f660a8d]
+- Updated dependencies [56521bfb]
+- Updated dependencies [29ec9735]
+- Updated dependencies [410c1bc6]
+- Updated dependencies [e986ed77]
+- Updated dependencies [f8781d56]
+- Updated dependencies [1f20c79d]
+- Updated dependencies [e68a91f7]
+- Updated dependencies [9b8346f0]
+- Updated dependencies [614b9007]
+- Updated dependencies [90258dec]
+- Updated dependencies [71a77ca6]
+  - @evidence-dev/core-components@2.1.0
+  - @evidence-dev/component-utilities@1.2.0
+  - @evidence-dev/preprocess@3.2.0
+  - @evidence-dev/tailwind@1.1.0
+  - @evidence-dev/db-orchestrator@2.3.2
+
 ## 22.0.1
 
 ### Patch Changes

@@ -105,11 +105,13 @@
 				on:click={toggleResults}
 			>
 				{#if error}
-					{#if dev && error.message === 'Missing database credentials'}
-						{error.message}.
+					{error.message}
+					{#if dev && error.message === 'Missing database connection.'}
 						<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
-					{:else}
-						{error.message}
+					{:else if !dev && error.message === 'Missing database connection; set the EVIDENCE_DATABASE environment variable.'}
+						<a class="credentials-link" href="https://docs.evidence.dev/cli/#environment-variables"
+							>View environment variables &rarr;</a
+						>
 					{/if}
 				{:else if nRecords > 0}
 					<ChevronToggle toggled={$showResults} color="#3488e9" />

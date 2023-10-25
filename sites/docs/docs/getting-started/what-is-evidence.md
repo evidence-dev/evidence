@@ -45,7 +45,7 @@ To use Evidence you need to know SQL. A knowledge of [basic markdown syntax](mar
 
 If you're trying out Evidence, and need some support we'd love to hear from you.
 
-- Message us on <a href='https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q' target="_blank">Slack</a>
+- Message us on <a href='https://slack.evidence.dev' target="_blank">Slack</a>
 - Open an issue on <a href='https://github.com/evidence-dev/evidence' target="_blank">Github</a>
 - See all the <a href="https://docs.evidence.dev/components/all-components" target="_blank">charts and components</a>.
 

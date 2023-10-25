@@ -16,6 +16,8 @@ function nativeTypeToEvidenceType(data) {
 			return 'number';
 		case 'string':
 			return 'string';
+		case 'bigint':
+			return 'bigint';
 		case 'boolean':
 			return 'boolean';
 		case 'object':
@@ -26,6 +28,35 @@ function nativeTypeToEvidenceType(data) {
 		default:
 			return 'string';
 	}
+}
+
+/**
+ * Convert a BigInt value to a number.
+ * If the value isn't a BigInt, returns the value unchanged.
+ *
+ * @param {*} value - The value to potentially convert.
+ * @returns {*} - The converted number or the unchanged value.
+ */
+function convertBigIntToNumber(value) {
+	if (typeof value === 'bigint') {
+		return Number(value);
+	}
+	return value;
+}
+
+/**
+ * Normalize a list of row objects, converting any BigInt values to numbers.
+ *
+ * @param {Object[]} rawRows - The rows to process.
+ * @returns {Object[]} - The processed rows with BigInt values converted to numbers.
+ */
+function normalizeRows(rawRows) {
+	for (const row of rawRows) {
+		for (const key in row) {
+			row[key] = convertBigIntToNumber(row[key]);
+		}
+	}
+	return rawRows;
 }
 
 const mapResultsToEvidenceColumnTypes = function (rows) {
@@ -52,7 +83,9 @@ const runQuery = async (queryString, database) => {
 
 	try {
 		const db = await Database.create(filepath, mode);
-		const rows = await db.all(queryString);
+		const rawRows = await db.all(queryString); // renaming rows to rawRows for clarity
+		const rows = normalizeRows(rawRows);
+
 		return { rows, columnTypes: mapResultsToEvidenceColumnTypes(rows) };
 	} catch (err) {
 		if (err.message) {

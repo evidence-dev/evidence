@@ -1,5 +1,16 @@
 # evidence-docs
 
+## 2.1.0
+
+### Minor Changes
+
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+
+### Patch Changes
+
+- 1f20c79d: Minor adjustments
+- 90258dec: Add showPercent option to funnel chart
+
 ## 2.0.5
 
 ### Patch Changes

@@ -70,7 +70,11 @@ const importDBAdapter = async function (settings) {
 	}
 	if (!databaseType) {
 		return async function () {
-			throw "Couldn't find variable specifying database type; set the EVIDENCE_DATABASE environment variable, or specify a database in settings.";
+			if (process.env.NODE_ENV === 'development') {
+				throw 'Missing database connection.';
+			} else {
+				throw 'Missing database connection; set the EVIDENCE_DATABASE environment variable.';
+			}
 		};
 	}
 

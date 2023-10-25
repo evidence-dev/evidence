@@ -73,6 +73,7 @@
 	export let chartType = 'Chart'; // Used to label chart error messages
 	export let bubble = false;
 	export let hist = false;
+	export let boxplot = false;
 	let reqCols;
 
 	// X axis:
@@ -279,6 +280,8 @@
 				reqCols = {
 					x: x
 				};
+			} else if (boxplot) {
+				reqCols = {};
 			} else {
 				reqCols = {
 					x: x,
@@ -653,7 +656,7 @@
 						hideOverlap: true,
 						showMaxLabel: xType === 'category' || xType === 'value', // max label for ECharts' time axis is a stub - default for that is false
 						formatter:
-							xType === 'time'
+							xType === 'time' || xType === 'category'
 								? false
 								: function (value) {
 										return formatAxisValue(value, xFormat, xUnitSummary);
@@ -723,7 +726,6 @@
 					nameTextStyle: {
 						align: 'left',
 						verticalAlign: 'top',
-						backgroundColor: 'white',
 						padding: [0, 5, 0, 0],
 						color: y2
 							? yAxisColor === 'true'
@@ -773,7 +775,6 @@
 					nameTextStyle: {
 						align: 'right',
 						verticalAlign: 'top',
-						backgroundColor: 'white',
 						padding: [0, 0, 0, 5],
 						color:
 							y2AxisColor === 'true'
@@ -952,18 +953,8 @@
 						// Use axis to trigger tooltip
 						type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
 					},
-					padding: 6,
-					borderRadius: 4,
-					borderWidth: 1,
-					borderColor: uiColours.grey400,
-					backgroundColor: 'white',
 					extraCssText:
 						'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
-					textStyle: {
-						color: uiColours.grey900,
-						fontSize: 12,
-						fontWeight: 400
-					},
 					order: 'valueDesc'
 				},
 				legend: {
@@ -1009,8 +1000,6 @@
 	}
 
 	$: data;
-
-	$: console.log($config);
 </script>
 
 {#if !error}

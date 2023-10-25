@@ -98,9 +98,9 @@ select 'a5' as start, 'a6' as tend, 'DEF' as label
 
 <h1>Series Column with String X Axis</h1>
 <h2>Line Chart</h2>
-<BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
+<BarChart data={full} series=series swapXY=false title="Full Data" sort=false/>
 
-<LineChart data={full} series=series title="Full Data" sort=false/>
+<LineChart data={full} series=series title="Full Data" sort=false swapXY={true}/>
 <BarChart data={full} series=series swapXY=true title="Full Data" sort=false/>
 
 <LineChart data={missingY} series=series title="Missing Y - handleNulls=gaps (default)"/>
