@@ -229,9 +229,9 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		}
 	} catch (err) {
 		if (err.message) {
-			throw err.message.replace(/\n|\r/g, ' ');
+			throw new Error(err.message.replace(/\n|\r/g, ' '));
 		} else {
-			throw err.replace(/\n|\r/g, ' ');
+			throw new Error(err.replace(/\n|\r/g, ' '));
 		}
 	}
 };
@@ -257,6 +257,14 @@ module.exports.getRunner = async (opts) => {
 		if (!queryPath.endsWith('.sql')) return null;
 		return runQuery(queryContent, opts, batchSize);
 	};
+};
+
+/** @type {import('@evidence-dev/db-commons').ConnectionTester<PostgresOptions>} */
+module.exports.testConnection = async (opts) => {
+	console.log(opts)
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? "Invalid Credentials" }));
 };
 
 module.exports.options = {
