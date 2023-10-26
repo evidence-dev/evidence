@@ -1,5 +1,12 @@
-const { processQueryResults, getEnv } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
+} = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
+const path = require('path');
 
 const envMap = {
 	filename: [
@@ -10,15 +17,67 @@ const envMap = {
 	]
 };
 
-const runQuery = async (queryString, database) => {
+/**
+ *
+ * @param {unknown} data
+ * @returns {EvidenceType | undefined}
+ */
+function nativeTypeToEvidenceType(data) {
+	switch (typeof data) {
+		case 'number':
+			return EvidenceType.NUMBER;
+		case 'string':
+			return EvidenceType.STRING;
+		case 'boolean':
+			return EvidenceType.BOOLEAN;
+		case 'object':
+			if (data instanceof Date) {
+				return EvidenceType.DATE;
+			}
+			throw new Error(`Unsupported object type: ${data}`);
+		default:
+			return EvidenceType.STRING;
+	}
+}
+
+/**
+ *
+ * @param {Record<string, unknown>[]} rows
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
+ */
+const mapResultsToEvidenceColumnTypes = function (rows) {
+	return Object.entries(rows[0]).map(([name, value]) => {
+		/** @type {TypeFidelity} */
+		let typeFidelity = TypeFidelity.PRECISE;
+		let evidenceType = nativeTypeToEvidenceType(value);
+		if (!evidenceType) {
+			typeFidelity = TypeFidelity.INFERRED;
+			evidenceType = EvidenceType.STRING;
+		}
+		return { name, evidenceType, typeFidelity };
+	});
+};
+
+/** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename');
-	const filepath = filename !== ':memory:' ? '../../' + filename : filename;
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
-		const db = await Database.create(filepath, mode);
-		const rows = await db.all(queryString);
-		return processQueryResults(rows);
+		const db = await Database.create(filename, mode);
+		const conn = await db.connect();
+		const stream = conn.stream(queryString);
+
+		const count_query = `WITH root as (${cleanQuery(queryString)}) SELECT COUNT(*) FROM root`;
+		const expected_count = await db.all(count_query).catch(() => null);
+		const expected_row_count = expected_count?.[0]['count_star()'];
+
+		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+			mapResultsToEvidenceColumnTypes
+		});
+		results.expectedRowCount = expected_row_count;
+
+		return results;
 	} catch (err) {
 		if (err.message) {
 			throw err.message;
@@ -41,19 +100,19 @@ module.exports = runQuery;
  * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
  */
 
-/**
- * @param {DuckDBOptions} opts
- * @returns { (queryString: string, queryOpts: DuckDBOptions ) => Promise<QueryResult> }
- */
-module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
-	return async (queryContent, queryPath) => {
+/** @type {import("@evidence-dev/db-commons").GetRunner<DuckDBOptions>} */
+module.exports.getRunner = async (opts, directory) => {
+	if (!opts.filename) {
+		console.error(`Missing required duckdb option 'filename' (${directory})`);
+	}
+
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(
+			queryContent,
+			{ ...opts, filename: path.join(directory, opts.filename) },
+			batchSize
+		);
 	};
 };

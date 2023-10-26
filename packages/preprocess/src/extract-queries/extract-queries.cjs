@@ -7,17 +7,17 @@ const { parseFrontmatter } = require('../frontmatter/parse-frontmatter.cjs');
 const chalk = require('chalk');
 /** @typedef {{id: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
 
-const warnedSources = {};
+const warnedExternalQueries = {};
 
 /**
  *
- * @param {string} source
+ * @param {string} externalQuery
  * @param {string} id
  * @returns Query
  */
-const readFileToQuery = (source, id) => {
+const readFileToQuery = (externalQuery, id) => {
 	try {
-		const content = fs.readFileSync(`./sources/${source}`).toString().trim();
+		const content = fs.readFileSync(`./queries/${externalQuery}`).toString().trim();
 		return {
 			id: id.toLowerCase(),
 			compiledQueryString: content,
@@ -26,7 +26,7 @@ const readFileToQuery = (source, id) => {
 			inline: false
 		};
 	} catch {
-		console.warn(`Failed to load sql file ${source}`);
+		console.warn(`Failed to load sql file ${externalQuery}`);
 	}
 };
 
@@ -47,23 +47,23 @@ const ignoreIndentedCode = function () {
 const extractExternalQueries = (content, filename) => {
 	const frontmatter = parseFrontmatter(content);
 	if (!frontmatter) return [];
-	if (!frontmatter.sources) return [];
-	if (!Array.isArray(frontmatter.sources)) {
+	if (!frontmatter.queries) return [];
+	if (!Array.isArray(frontmatter.queries)) {
 		console.warn(`Malformed frontmatter found in ${filename}. Unable to extract external queries.`);
 		return [];
 	}
 
 	/**
 	 *
-	 * @param {string} source
+	 * @param {string} externalQuery
 	 * @returns {boolean}
 	 */
-	const validateSource = (source) => {
-		if (!source.endsWith('.sql')) {
-			if (!warnedSources[source]) {
-				warnedSources[source] = true;
+	const validateExternalQuery = (externalQuery) => {
+		if (!externalQuery.endsWith('.sql')) {
+			if (!warnedExternalQueries[externalQuery]) {
+				warnedExternalQueries[externalQuery] = true;
 				console.warn(
-					chalk.bold.red(`! ${source}`) +
+					chalk.bold.red(`! ${externalQuery}`) +
 						chalk.gray(' does not appear to be a .sql file, and will not be loaded')
 				);
 			}
@@ -76,24 +76,24 @@ const extractExternalQueries = (content, filename) => {
 	/**
 	 * @type Query[]
 	 */
-	return frontmatter.sources
-		.map((source) => {
-			if (typeof source === 'string') {
-				if (!validateSource(source)) return false;
-				const id = source.split('.sql')[0].replace('/', '_').replace('\\', '_');
-				return readFileToQuery(source, id);
-			} else if (typeof source === 'object') {
-				const usedKey = Object.keys(source)?.[0] ?? '';
+	return frontmatter.queries
+		.map((externalQuery) => {
+			if (typeof externalQuery === 'string') {
+				if (!validateExternalQuery(externalQuery)) return false;
+				const id = externalQuery.split('.sql')[0].replace('/', '_').replace('\\', '_');
+				return readFileToQuery(externalQuery, id);
+			} else if (typeof externalQuery === 'object') {
+				const usedKey = Object.keys(externalQuery)?.[0] ?? '';
 
-				const value = source[usedKey];
+				const value = externalQuery[usedKey];
 				// Note; this is to be obseleted, as the import syntax evolves, but for now only one key should be used.
-				if (Object.keys(source).length > 1) {
+				if (Object.keys(externalQuery).length > 1) {
 					console.warn(
-						`Source object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${value} will be imported.`
+						`ExternalQuery object has more than one key, this may lead to unintended behavior. Only ${usedKey}: ${value} will be imported.`
 					);
 				}
 
-				if (!validateSource(value)) return false;
+				if (!validateExternalQuery(value)) return false;
 				return readFileToQuery(value, usedKey);
 			}
 		})

@@ -1,21 +1,23 @@
 {
-  "name": "@evidence-dev/faker-datasource",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.mjs",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@faker-js/faker": "8.0.2",
-    "yaml": "^2.3.1"
-  },
-  "evidence": {
-    "databases": [
-      "faker"
-    ]
-  }
+	"name": "@evidence-dev/faker-datasource",
+	"version": "2.0.0-usql.2",
+	"description": "",
+	"main": "index.mjs",
+	"scripts": {
+		"test": "echo \"Error: no test specified\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@faker-js/faker": "8.0.2",
+		"@types/cli-progress": "^3.11.0",
+		"cli-progress": "^3.12.0",
+		"yaml": "^2.3.1"
+	},
+	"evidence": {
+		"databases": [
+			"faker"
+		]
+	}
 }

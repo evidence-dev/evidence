@@ -1,0 +1,22 @@
+rows: 100
+schema:
+    id:
+        type: id
+    
+    # TODO: Support for one of multiple
+    # Category / Item fields? 1 picked at random
+    tag:
+        oneof:
+          - category: company
+            item: buzzAdjective
+          - category: company
+            item: buzzNoun
+          - category: company
+            item: catchPhraseAdjective
+          - category: company
+            item: catchPhraseNoun            
+            
+filters:
+    - type: unique
+      fields:
+        - tag 

@@ -1,11 +1,7 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
-	export let settings;
+	export let datasourceSettings;
 </script>
 
 <h2>Deploying your Project</h2>
@@ -40,13 +36,20 @@
 	database connection
 </p>
 
-{#if !settings.credentials}
+{#if !datasourceSettings.length}
 	<p>Your project does not have a database connection.</p>
 {:else}
-	<EnvironmentVarListing {settings} />
+	<EnvironmentVarListing {datasourceSettings} />
 {/if}
 
 <style>
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
 	span.setting {
 		font-size: 0.85em;
 		color: var(--grey-800);

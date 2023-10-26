@@ -2,8 +2,13 @@ import fs from 'fs/promises';
 import path from 'path';
 import yaml from 'yaml';
 import chalk from 'chalk';
-import { DatasourceSpecFileSchema } from './schemas/datasource-spec.schema';
+import {
+	DatasourceSpecFileSchema,
+	DatasourceCacheSchema,
+	DatasourceManifestSchema
+} from './schemas/datasource-spec.schema';
 import { cleanZodErrors } from '../lib/clean-zod-errors.js';
+import { createHash } from 'node:crypto';
 
 /**
  * Returns the path to the sources directory, if it exists in the current directory.
@@ -32,23 +37,29 @@ export const getSourcesDir = async () => {
 
 /**
  * @param {string} sourceName
- * @returns {Record<string, string>}
+ * @returns {any}
  */
 export const loadSourceOptions = (sourceName) => {
 	/** @type {any} */
 	const out = {};
-	const keyRegex = /^EVIDENCE_SOURCE_([a-zA-Z]+?)_([a-zA-Z0-1_]+)$/;
+	const keyRegex = /^EVIDENCE_SOURCE__([a-zA-Z0-1_]+)$/;
 	for (const [key, value] of Object.entries(process.env)) {
 		const parts = keyRegex.exec(key);
 		if (!parts) continue;
-		if (parts?.length < 3) continue;
-		if (parts[1].toLowerCase() !== sourceName.toLowerCase()) continue;
-		const rawOptKey = parts[2].split('_');
+		if (parts?.length < 2) continue;
+		if (!parts[1].toLowerCase().startsWith(sourceName.toLowerCase())) continue;
+		const rawOptKey = parts[1].substring(sourceName.length + 2).split('__');
 		let t = out;
-		for (const optKey of rawOptKey) {
-			if (!t[optKey]) t[optKey] = {};
-		}
-		t[rawOptKey[rawOptKey.length - 1]] = value;
+
+		rawOptKey.forEach((key, i) => {
+			if (i < rawOptKey.length - 1) {
+				// We haven't reached the final key
+				if (!t[key]) t[key] = {};
+				t = t[key];
+			} else {
+				t[key] = value;
+			}
+		});
 	}
 	return out;
 };
@@ -64,17 +75,21 @@ export const getSources = async (sourcesDir) => {
 	const datasourceSpecs = await Promise.all(
 		sourcesDirectories.map(async (dirName) => {
 			const sourceDir = path.join(sourcesDir, dirName);
+			const possibleDir = await fs.stat(sourceDir);
+			if (!possibleDir.isDirectory()) return false;
+
 			const contents = await fs.readdir(sourceDir);
 
-			const connParams = await getConnectionParams(sourceDir);
-
+			const connParams = await loadConnectionConfiguration(sourceDir);
 			if (!connParams.name)
-				connParams.name = /** @type {string} */ sourceDir.split(/[/\\]/).pop();
+				connParams.name = /** @type {string} */ (sourceDir.split(path.sep).pop());
 
 			if (!connParams.name)
 				throw new Error(
 					`Unexpected error determining datasource name, please add an explicit name in connection.yaml (${sourceDir})`
 				);
+			// Load Options from connection.options.yaml
+			connParams.options = { ...connParams.options, ...(await loadConnectionOptions(sourceDir)) };
 			// Load Options from Environment
 			connParams.options = { ...connParams.options, ...loadSourceOptions(connParams.name) };
 
@@ -85,10 +100,74 @@ export const getSources = async (sourcesDir) => {
 				queries: queries
 			};
 		})
-	).then((r) => r.filter(Boolean));
+	).then((r) => /** @type {Exclude<typeof r[number], false>[]} */ (r.filter(Boolean)));
 
 	return datasourceSpecs;
 };
+
+/**
+ *
+ * @template {import("zod").ZodType} T
+ * @param {T} zod_schema
+ * @param {string} file_path
+ * @param {import("zod").infer<T>} default_value
+ * @param {string} error_message
+ * @returns {Promise<import("zod").infer<T>>}
+ */
+async function validateFile(zod_schema, file_path, default_value, error_message) {
+	const string_default = JSON.stringify(default_value);
+
+	const file_contents = await fs.readFile(file_path, 'utf-8').catch(() => string_default);
+	const parsed = JSON.parse(file_contents);
+	const validated = zod_schema.safeParse(parsed);
+
+	if (!validated.success) {
+		console.error(chalk.bold.red(error_message));
+		await fs.writeFile(file_path, string_default);
+		return default_value;
+	}
+
+	return validated.data;
+}
+
+/**
+ *
+ * @param {string} outDir
+ * @returns {Promise<import("zod").infer<typeof DatasourceManifestSchema>>}
+ */
+export async function getCurrentManifest(outDir) {
+	const manifestPath = path.join(outDir, 'manifest.json');
+	return validateFile(
+		DatasourceManifestSchema,
+		manifestPath,
+		{ renderedFiles: {} },
+		'[!] Unable to parse manifest, ignoring'
+	);
+}
+
+const hash_location = './.evidence/template/.evidence-queries/sources/hashes.json';
+
+/**
+ * Gets the hashes of all source files, at the time of their last execution.
+ * @returns {Promise<import("zod").infer<typeof DatasourceCacheSchema>>}
+ */
+export async function getPastSourceHashes() {
+	return validateFile(
+		DatasourceCacheSchema,
+		hash_location,
+		{},
+		'[!] Unable to parse source query hashes, ignoring'
+	);
+}
+
+/**
+ * Saves the supplied source hashes
+ * @param {import("zod").infer<typeof DatasourceCacheSchema>} hashes
+ */
+export async function saveSourceHashes(hashes) {
+	await fs.mkdir(path.dirname(hash_location), { recursive: true });
+	await fs.writeFile(hash_location, JSON.stringify(hashes));
+}
 
 /**
  * Reads a YAML file containing connection parameters from the given source directory,
@@ -97,7 +176,7 @@ export const getSources = async (sourcesDir) => {
  * @param {string} sourceDir - The directory containing the connection.yaml file.
  * @return {Promise<DatasourceSpecFile>} A Promise that resolves to a validated datasource specification.
  */
-async function getConnectionParams(sourceDir) {
+async function loadConnectionConfiguration(sourceDir) {
 	const connParamsRaw = await fs
 		.readFile(path.join(sourceDir, 'connection.yaml'))
 		.then((r) => r.toString());
@@ -124,6 +203,25 @@ async function getConnectionParams(sourceDir) {
 }
 
 /**
+ * @returns {Promise<any>}
+ * @param {string} sourceDir
+ */
+async function loadConnectionOptions(sourceDir) {
+	const optionsFilePath = path.join(sourceDir, 'connection.options.yaml');
+	const optionsFileExists = await fs
+		.stat(optionsFilePath)
+		.then(() => true)
+		.catch(() => false);
+	if (!optionsFileExists) return {};
+	const optionsFile = await fs.readFile(optionsFilePath).then((r) => r.toString());
+	try {
+		return yaml.parse(optionsFile);
+	} catch (e) {
+		throw new Error(`Error parsing connection.options.yaml file; ${sourceDir}`, { cause: e });
+	}
+}
+
+/**
  * Retrieves the contents of all query files in the source directory,
  * excluding the 'connection.yaml' file, and returns them as an array of
  * objects containing the filepath and content of each query file.
@@ -134,12 +232,77 @@ async function getConnectionParams(sourceDir) {
  * containing the filepath and content of each query file.
  */
 async function getQueries(sourceDir, contents) {
-	const queryFiles = contents.filter((s) => s !== 'connection.yaml');
-	const queries = await Promise.all(
-		queryFiles.map(async (filename) => ({
-			filepath: `${sourceDir}/${filename}`,
-			content: await fs.readFile(`${sourceDir}/${filename}`).then((r) => r.toString())
-		}))
+	const queryFiles = await Promise.all(
+		contents
+			.filter((s) => s !== 'connection.yaml' && s !== 'connection.options.yaml')
+			.flatMap(
+				/**
+				 * @param {string} s
+				 * @returns {Promise<string[]>}
+				 */
+
+				async (s) => {
+					/**
+					 * @param {string} dirPath
+					 * @returns {Promise<boolean>}
+					 */
+					async function isDir(dirPath) {
+						const stats = await fs.lstat(dirPath);
+						return stats.isDirectory();
+					}
+
+					/**
+					 * @param {string} dirPath
+					 * @returns {Promise<string[]>}
+					 */
+					async function loadDirRecursive(dirPath) {
+						const content = await fs.readdir(dirPath);
+						let output = [];
+						for (const filePath of content) {
+							if (await isDir(path.join(dirPath, filePath))) {
+								output.push(...(await loadDirRecursive(path.join(dirPath, filePath))));
+							} else {
+								output.push(path.join(dirPath, filePath));
+							}
+						}
+						return output;
+					}
+
+					const fullPath = path.join(sourceDir, s);
+					if (await isDir(fullPath)) {
+						// TODO: Recurse
+						const recursed = await loadDirRecursive(fullPath);
+						return recursed.map((r) => path.relative(sourceDir, r));
+					} else {
+						return [s];
+					}
+				}
+			)
+	).then(
+		/**
+		 * @param {string[][]} r
+		 * @returns {string[]}
+		 */
+		(r) => r.flat(1)
 	);
+
+	const queries = await Promise.all(
+		queryFiles.map(async (filename) => {
+			const filepath = path.join(sourceDir, filename);
+			const { size } = await fs.stat(filepath);
+			let content, hash;
+			if (size > 100 * 1024 * 1024) {
+				console.warn(`${filename} is over 100MB, skipping`);
+				content = null;
+				hash = null;
+			} else {
+				content = await fs.readFile(path.join(sourceDir, filename)).then((r) => r.toString());
+				hash = createHash('md5').update(content).digest('hex');
+			}
+
+			return { filepath, content, hash, name: path.basename(filepath).split('.')[0] };
+		})
+	);
+
 	return queries;
 }

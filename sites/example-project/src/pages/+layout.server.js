@@ -1,28 +1,31 @@
+import { getQueries } from '@evidence-dev/db-orchestrator';
 import md5 from 'blueimp-md5';
 import { GET } from './api/customFormattingSettings.json/+server.js';
+import { getStatusAndExtractQueries } from './extractQueries.server.js';
 export const prerender = true;
 export const trailingSlash = 'always';
 
-/** @type {import("./$types").LayoutServerLoad} */
-export async function load({ fetch, route }) {
-	if (route.id && route.id !== '/settings') {
-		const routeHash = md5(route.id);
-		// ensure that queries have been extracted before initiating the load process
-		let statusEndpoint = `/api/status${route.id}`.replace(/\/$/, '');
-		await fetch(statusEndpoint);
+const system_routes = ['/settings', '/explore'];
 
-		const customFormattingSettingsRes = await GET();
-		const { customFormattingSettings } = await customFormattingSettingsRes.json();
+/** @satisfies {import("./$types").LayoutServerLoad} */
+export async function load({ route }) {
+	const isUserPage =
+		route.id && system_routes.every((system_route) => !route.id.startsWith(system_route));
 
-		/** @type {{ renderedFiles: string[] }} */
-		const { renderedFiles = [] } = await fetch('/data/manifest.json')
-			.then((res) => res.json())
-			.catch(() => ({}));
+	const routeHash = md5(route.id);
 
-		return {
-			routeHash,
-			customFormattingSettings,
-			renderedFiles
-		};
+	if (isUserPage) {
+		// todo: remove this
+		await getStatusAndExtractQueries(route.id);
 	}
+
+	const customFormattingSettingsRes = await GET();
+	const { customFormattingSettings } = await customFormattingSettingsRes.json();
+
+	return {
+		routeHash,
+		customFormattingSettings,
+		isUserPage,
+		evidencemeta: getQueries(routeHash)
+	};
 }

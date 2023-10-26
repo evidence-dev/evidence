@@ -1,16 +1,23 @@
 <script>
+	/** @type {import("./$types").PageLoadData} */
 	export let data;
-	let { settings, customFormattingSettings, gitIgnore } = data;
-	$: ({ settings, customFormattingSettings, gitIgnore } = data);
+	let { settings, customFormattingSettings, datasourceSettings } = data;
+	$: ({ settings, customFormattingSettings, datasourceSettings } = data);
 
 	import { dev } from '$app/environment';
+
+	import {
+		VersionControlPanel,
+		DeploySettingsPanel,
+		FormattingSettingsPanel,
+		TelemetrySettingsPanel
+	} from '@evidence-dev/core-components';
 </script>
 
 {#if dev}
 	<!-- eslint-disable no-undef -->
-	<DatabaseSettingsPanel {settings} {gitIgnore} />
 	<VersionControlPanel {settings} />
-	<DeploySettingsPanel {settings} />
+	<DeploySettingsPanel {settings} {datasourceSettings} />
 	<FormattingSettingsPanel {settings} {customFormattingSettings} />
 	<TelemetrySettingsPanel {settings} />
 	<br />

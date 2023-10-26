@@ -1,5 +1,23 @@
 # @evidence-dev/db-commons
 
+## 0.2.1-usql.2
+
+### Patch Changes
+
+- Support for streaming results
+
+## 0.2.1-usql.1
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+
+## 0.2.1-usql.0
+
+### Patch Changes
+
+- 29c149d6: added stricter types to db adapters
+
 ## 0.2.0
 
 ### Minor Changes

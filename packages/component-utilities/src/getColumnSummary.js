@@ -5,12 +5,12 @@ import formatTitle from './formatTitle.js';
 
 /**
  * @function
- * @template T
- * @param {Record<string, unknown>[]} data 
- * @param {T} returnType 
+ * @template {'object' | 'array'} T
+ * @param {Record<string, unknown>[]} data
+ * @param {T} returnType
  * @returns {T extends 'object' ? Record<string, import('./types.js').ColumnSummary> : (import('./types.js').ColumnSummary & { id: string })[]}
  */
-export default function getColumnSummary(data, returnType = 'object') {
+export default function getColumnSummary(data, returnType = /** @type {T} */('object')) {
     /** @type {Record<string, import('./types.js').ColumnSummary>} */
 	const columnSummary = {};
 

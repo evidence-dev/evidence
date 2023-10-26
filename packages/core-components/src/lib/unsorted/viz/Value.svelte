@@ -10,11 +10,9 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { HelpCircle } from '@steeze-ui/tabler-icons';
 
-	import PulseNumber from './PulseNumber.svelte';
 	import { strictBuild } from './context';
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	// Passing in value from dataset:
 	export let data = null;
@@ -26,6 +24,7 @@
 
 	// Value Formatting:
 	export let fmt = undefined;
+	let format_object;
 
 	let value;
 	let error;
@@ -35,12 +34,12 @@
 		try {
 			error = undefined;
 			if (!placeholder) {
-				if (data) {
+				if (data && !data.loading) {
 					if (typeof data == 'string') {
 						throw Error(`Received: data=${data}, expected: data={${data}}`);
 					}
 
-					if (!Array.isArray(data)) {
+					if (!Array.isArray(data) && !(data instanceof QueryStore)) {
 						// Accept bare objects
 						data = [data];
 					}
@@ -71,9 +70,9 @@
 					value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
 					if (fmt) {
-						fmt = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+						format_object = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
 					} else {
-						fmt = columnSummary[0].format;
+						format_object = columnSummary[0].format;
 					}
 				} else {
 					throw Error(
@@ -90,20 +89,23 @@
 	}
 </script>
 
-{#if placeholder}
+{#if data.loading}
+	<span class="placeholder">Loading...</span>
+{:else if placeholder}
 	<span class="placeholder"
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
 {:else if !error}
-	<PulseNumber value={formatValue(value, fmt)} />
+	<span>
+		{formatValue(value, format_object)}
+	</span>
 {:else}
 	<span
-		class="group inline-flex gap-1 items-center relative cursor-help text-white font-sans text-sm bg-red-700 rounded-2xl pl-2 pr-[1px] mx-0.5"
+		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-200 py-[1px] bg-red-50 rounded"
 	>
-		<span class="inline pl-1">Error</span>
-		<Icon src={HelpCircle} class="w-6 h-6 text-gray-100 pb-0.5 pt-[1px]" />
+		<span class="inline font-sans font-medium text-xs text-red-600">error</span>
 		<span
-			class="hidden group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md"
+			class="hidden text-white font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md"
 			>{error}</span
 		>
 	</span>

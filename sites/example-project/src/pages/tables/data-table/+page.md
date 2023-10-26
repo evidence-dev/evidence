@@ -19,3 +19,9 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 ### rows=40
 
 <DataTable data={orders_by_category} rows=40 rowNumbers=true/>
+
+## Including Images 
+
+<DataTable data="{orders_by_category}">
+    <Column id="flag" contentType="image" height="30px" align="center" />
+</DataTable>

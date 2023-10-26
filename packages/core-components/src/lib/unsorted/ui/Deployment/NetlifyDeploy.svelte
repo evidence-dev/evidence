@@ -6,9 +6,10 @@
 	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
 	export let settings;
+	export let datasourceSettings;
 </script>
 
-{#if !settings.credentials}
+{#if !datasourceSettings.length}
 	<p>You'll need to connect to a database before deploying to netlify.</p>
 {:else if !settings.gitRepo}
 	<p>You'll need to set up a git repo before deploying to netlify.</p>
@@ -45,7 +46,7 @@
 		>
 	</p>
 
-	<EnvironmentVarListing {settings} />
+	<EnvironmentVarListing {datasourceSettings} />
 
 	<h2>Optional</h2>
 	<ol>
@@ -64,6 +65,13 @@
 {/if}
 
 <style>
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
+	p {
+		@apply text-sm py-2;
+	}
 	a {
 		color: var(--blue-600);
 		text-decoration: none;

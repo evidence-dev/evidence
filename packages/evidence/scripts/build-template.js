@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs-extra';
 
 const templatePaths = [
-	'.npmrc',
 	'static/',
 	'sources/',
 	'src/app.css',
@@ -11,9 +10,11 @@ const templatePaths = [
 	'src/global.d.ts',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
+	'src/pages/extractQueries.server.js',
 	'src/pages/+layout.server.js',
 	'src/pages/+layout.js',
 	'src/pages/settings/',
+	'src/pages/explore',
 	'src/pages/api/',
 	'tailwind.config.cjs',
 	'postcss.config.cjs'
@@ -65,23 +66,29 @@ fs.outputFileSync(
 fs.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
+	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
      const config = 
     {
-        plugins: [sveltekit()],
+        plugins: [sveltekit(), evidenceVitePlugin()],
         optimizeDeps: {
             include: ['echarts-stat', 'echarts'],
-            exclude: ['svelte-icons', 'svelte-tiny-linked-charts']
+            exclude: ['svelte-icons', 'svelte-tiny-linked-charts', '@evidence-dev/universal-sql']
         },
         ssr: {
-            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5']
+            external: ['@evidence-dev/db-orchestrator', '@evidence-dev/telemetry', 'blueimp-md5', '@evidence-dev/plugin-connector']
         },
         server: {
             fs: {
                 strict: strictFs // allow template to get dependencies outside the .evidence folder
             }
-        }
+        },
+		build: {
+			rollupOptions: {
+				external: [/^@evidence-dev\\/tailwind\\/fonts\\//]
+			}
+		}
     }
     export default config`
 );

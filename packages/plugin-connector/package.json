@@ -1,9 +1,9 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "1.1.0",
+	"version": "2.0.0-usql.19",
 	"description": "",
 	"type": "module",
-	"bin": "./dist/cli.js",
+	"bin": "./dist/debugger/cli.js",
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest",
@@ -11,20 +11,21 @@
 		"build:debug": "parcel build --no-optimize",
 		"watch": "parcel watch",
 		"check": "tsc --noEmit -p tsconfig.json",
-		"postinstall": "parcel build"
+		"prepublish": "tsc --noEmit -p tsconfig.json && parcel build"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
-		"@evidence-dev/universal-sql": "workspace:^",
+		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.10",
 		"@types/estree": "^1.0.1",
 		"chalk": "^5.2.0",
 		"svelte": "3.55.0",
 		"svelte-preprocess": "^5.0.3",
 		"sveltekit-autoimport": "^1.7.0",
 		"yaml": "^2.2.2",
-		"zod": "^3.21.4"
+		"zod": "^3.21.4",
+		"chokidar": "^3.5.3"
 	},
 	"devDependencies": {
 		"@parcel/core": "^2.8.3",
@@ -37,7 +38,7 @@
 		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
 		"typescript": "^5.0.4",
-		"vitest": "^0.25.3"
+		"vitest": "^0.34.1"
 	},
 	"targets": {
 		"types": false,
@@ -51,11 +52,22 @@
 			"context": "node",
 			"source": "./src/cli.js",
 			"outputFormat": "esmodule"
+		},
+		"loadConfig": {
+			"context": "node",
+			"source": "./src/plugin-discovery/load-config.js",
+			"outputFormat": "commonjs",
+			"optimize": false,
+			"isLibrary": true,
+			"sourceMap": false
 		}
 	},
 	"exports": {
-		"import": "./dist/index.mjs",
-		"require": "./dist/index.cjs"
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		},
+		"./load-config": "./dist/loadConfig/load-config.js"
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",

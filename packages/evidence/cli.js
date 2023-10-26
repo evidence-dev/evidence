@@ -31,6 +31,8 @@ const clearQueryCache = function () {
 
 const runFileWatcher = function (watchPatterns) {
 	const ignoredFiles = [
+		'./pages/explore/**',
+		'./pages/explore.+(*)',
 		'./pages/settings/**',
 		'./pages/settings.+(*)',
 		'./pages/api/**',
@@ -110,6 +112,11 @@ const watchPatterns = [
 		targetRelative: './.evidence/template/sources/',
 		filePattern: '**'
 	}, // source files (eg csv files)
+	{
+		sourceRelative: './queries',
+		targetRelative: './.evidence/template/queries',
+		filePattern: '**'
+	},
 	{
 		sourceRelative: './components/',
 		targetRelative: './.evidence/template/src/components/',
@@ -192,8 +199,21 @@ prog
 prog
 	.command('build:sources')
 	.describe('creates .parquet files from source queries')
-	.action(async () => {
-		updateDatasourceOutputs(`./static/data`, '/data');
+	.option('--changed', 'only build sources whose queries have changed')
+	.option('--sources', 'only build queries from the specified source directories')
+	.option('--queries', 'only build the specified queries')
+	.example('npx evidence build:sources --changed')
+	.example('npx evidence build:sources --sources needful_things --queries orders,reviews')
+	.example('npx evidence build:sources --queries needful_things.orders,needful_things.reviews')
+	.example('npx evidence build:sources --sources needful_things,social_media')
+	.action(async (opts) => {
+		const sources = opts.sources?.split(',') ?? null;
+		const queries = opts.queries?.split(',') ?? null;
+		updateDatasourceOutputs(`./static/data`, '/data', {
+			sources: sources ? new Set(sources) : sources,
+			queries: queries ? new Set(queries) : queries,
+			only_changed: opts.changed
+		});
 	});
 
 prog.parse(process.argv);

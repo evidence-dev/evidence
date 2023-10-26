@@ -18,6 +18,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
+	import { Skeleton } from '../../atoms/skeletons';
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -26,7 +27,9 @@
 	setContext(propKey, props);
 
 	// Data, pagination, and row index numbers
+	/** @type {import("@evidence-dev/query-store").QueryStore }*/
 	export let data;
+
 	export let rows = 10; // number of rows to show
 	rows = Number.parseInt(rows);
 
@@ -118,6 +121,7 @@
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
 		}
 	} catch (e) {
+		console.error(e);
 		error = e.message;
 		if (strictBuild) {
 			throw error;
@@ -185,10 +189,18 @@
 		}
 
 		// Modifier to sorting function for ascending or descending
-		let sortModifier = sortBy.ascending ? 1 : -1;
+		const sortModifier = sortBy.ascending ? 1 : -1;
 
-		let sort = (a, b) =>
-			a[column] < b[column] ? -1 * sortModifier : a[column] > b[column] ? 1 * sortModifier : 0;
+		const forceTopOfAscending = (val) =>
+			val === undefined || val === null || (typeof val === 'number' && isNaN(val));
+
+		const sort = (a, b) =>
+			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
+				? -1 * sortModifier
+				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
+				  a[column] > b[column]
+				? 1 * sortModifier
+				: 0;
 
 		data.sort(sort);
 		filteredData = filteredData.sort(sort);
@@ -275,9 +287,15 @@
 					$props.columns.map((d) => d.id)
 			  )
 			: data;
+
+	$: if (data?.error) error = data.error.message;
 </script>
 
-{#if error === undefined}
+{#if !data || data.loading}
+	<div class="w-full h-64">
+		<Skeleton />
+	</div>
+{:else if error === undefined}
 	<slot />
 	<div
 		class="table-container"
@@ -297,9 +315,9 @@
 							<th
 								class="index"
 								style="
-                      width:2%;
-                      background-color: {headerColor};
-                      "
+						width:2%;
+						background-color: {headerColor};
+						"
 							/>
 						{/if}
 						{#if $props.columns.length > 0}
@@ -307,11 +325,11 @@
 								<th
 									class={safeExtractColumn(column).type}
 									style="
-                      text-align: {column.align};
-                      color: {headerFontColor};
-                      background-color: {headerColor};
-                      cursor: {sortable ? 'pointer' : 'auto'};
-                      "
+						text-align: {column.align};
+						color: {headerFontColor};
+						background-color: {headerColor};
+						cursor: {sortable ? 'pointer' : 'auto'};
+						"
 									on:click={sortable ? sort(column.id) : ''}
 								>
 									{column.title
@@ -329,10 +347,10 @@
 								<th
 									class={column.type}
 									style="
-                  color: {headerFontColor};
-                  background-color: {headerColor};
-                  cursor: {sortable ? 'pointer' : 'auto'};
-                  "
+					color: {headerFontColor};
+					background-color: {headerColor};
+					cursor: {sortable ? 'pointer' : 'auto'};
+					"
 									on:click={sortable ? sort(column.id) : ''}
 								>
 									<span class="col-header">
@@ -361,8 +379,8 @@
 								class="index"
 								class:row-lines={rowLines}
 								style="
-                  width:2%;
-              "
+					width:2%;
+				"
 							>
 								{#if i === 0}
 									{(index + i + 1).toLocaleString()}
@@ -378,11 +396,11 @@
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
 									style="
-                    						text-align: {column.align};
-                      						height: {column.height};
-                      						width: {column.width};
-											white-space: {column.wrap ? 'normal' : 'nowrap'};
-                  "
+												text-align: {column.align};
+												height: {column.height};
+												width: {column.width};
+												white-space: {column.wrap ? 'normal' : 'nowrap'};
+					"
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
 										<img
@@ -391,10 +409,10 @@
 												? row[column.alt]
 												: row[column.id].replace(/^(.*[/])/g, '').replace(/[.][^.]+$/g, '')}
 											style="
-                        margin: 0.5em auto 0.5em auto;
-                        height: {column.height};
-                        width: {column.width};
-                        "
+							margin: 0.5em auto 0.5em auto;
+							height: {column.height};
+							width: {column.width};
+							"
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
 										<a href={row[column.id]} target={column.openInNewTab ? '_blank' : ''}>

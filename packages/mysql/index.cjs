@@ -1,4 +1,10 @@
-const { getEnv } = require('@evidence-dev/db-commons');
+const {
+	getEnv,
+	EvidenceType,
+	TypeFidelity,
+	asyncIterableToBatchedAsyncGenerator,
+	cleanQuery
+} = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const mysqlTypes = mysql.Types;
 
@@ -41,18 +47,26 @@ const envMap = {
 	]
 };
 
-const standardizeResult = async (result) => {
-	var output = [];
-	result.forEach((row) => {
-		const lowerCasedRow = {};
-		for (const [key, value] of Object.entries(row)) {
-			lowerCasedRow[key.toLowerCase()] = value;
-		}
-		output.push(lowerCasedRow);
-	});
-	return output;
+/**
+ *
+ * @param {Record<string, unknown>} row
+ * @returns {Record<string, unknown>}
+ */
+const standardizeRow = (row) => {
+	/** @type {Record<string, unknown>} */
+	const lowerCasedRow = {};
+	for (const [key, value] of Object.entries(row)) {
+		lowerCasedRow[key.toLowerCase()] = value;
+	}
+	return lowerCasedRow;
 };
 
+/**
+ *
+ * @param {number} dataTypeId
+ * @param {undefined} defaultType
+ * @returns {EvidenceType | undefined}
+ */
 const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) {
 	// No native bool https://stackoverflow.com/questions/289727/which-mysql-data-type-to-use-for-storing-boolean-values
 
@@ -66,18 +80,18 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 		case mysqlTypes['NEWDECIMAL']:
 		case mysqlTypes['INT24']:
 		case mysqlTypes['LONGLONG']:
-			return 'number';
+			return EvidenceType.NUMBER;
 		case mysqlTypes['TIMESTAMP']:
 		case mysqlTypes['DATE']:
 		case mysqlTypes['TIME']:
 		case mysqlTypes['DATETIME']:
 		case mysqlTypes['YEAR']:
 		case mysqlTypes['NEWDATE']:
-			return 'date';
+			return EvidenceType.DATE;
 		case mysqlTypes['VARCHAR']:
 		case mysqlTypes['VAR_STRING']:
 		case mysqlTypes['STRING']:
-			return 'string';
+			return EvidenceType.STRING;
 		case mysqlTypes['BIT']:
 		case mysqlTypes['JSON']:
 		case mysqlTypes['NULL']:
@@ -93,25 +107,36 @@ const nativeTypeToEvidenceType = function (dataTypeId, defaultType = undefined) 
 	}
 };
 
+/**
+ *
+ * @param {mysql.FieldPacket[]} fields
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[] | undefined}
+ */
 const mapResultsToEvidenceColumnTypes = function (fields) {
 	return fields?.map((field) => {
-		let typeFidelity = 'precise';
+		/** @type {TypeFidelity} */
+		let typeFidelity = TypeFidelity.PRECISE;
 		let evidenceType = nativeTypeToEvidenceType(field.columnType);
 		if (!evidenceType) {
-			typeFidelity = 'inferred';
-			evidenceType = 'string';
+			typeFidelity = TypeFidelity.INFERRED;
+			evidenceType = EvidenceType.STRING;
 		}
 		return {
-			name: field.name,
+			// We use .toLowerCase() here to match the transformation of
+			// rows in standardizeResult
+			// If they do not match the results are rejected.
+			name: field.name.toLowerCase(),
 			evidenceType: evidenceType,
 			typeFidelity: typeFidelity
 		};
 	});
 };
 
-const runQuery = async (queryString, database) => {
+/** @type {import('@evidence-dev/db-commons').RunQuery<MySQLOptions>} */
+const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
-		let credentials = {
+		/** @type {import("mysql2").PoolOptions} */
+		const credentials = {
 			user: database ? database.user : getEnv(envMap, 'user'),
 			host: database ? database.host : getEnv(envMap, 'host'),
 			database: database ? database.database : getEnv(envMap, 'database'),
@@ -121,29 +146,40 @@ const runQuery = async (queryString, database) => {
 			decimalNumbers: true
 		};
 
-		let ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
+		const ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
 
 		if (ssl_opt === 'true') {
-			credentials = Object.assign(credentials, { ssl: {} });
+			credentials.ssl = {};
 		} else if (ssl_opt === 'Amazon RDS') {
-			credentials = Object.assign(credentials, { ssl: 'Amazon RDS' });
-		} else if (ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined) {
-			credentials = credentials;
-		} else {
+			credentials.ssl = 'Amazon RDS';
+		} else if (!(ssl_opt === 'false' || ssl_opt === '' || ssl_opt === undefined)) {
 			try {
-				let obj = JSON.parse(ssl_opt);
-				credentials = Object.assign(credentials, { ssl: obj });
+				const obj = JSON.parse(ssl_opt);
+				credentials.ssl = obj;
 			} catch (e) {
 				console.log(e);
 			}
 		}
 
-		var pool = mysql.createPool(credentials);
-		const promisePool = pool.promise();
-		const [rows, fields] = await promisePool.query(queryString);
+		const connection = mysql.createConnection(credentials);
 
-		const standardizedRows = await standardizeResult(rows);
-		return { rows: standardizedRows, columnTypes: mapResultsToEvidenceColumnTypes(fields) };
+		const cleaned_query = cleanQuery(queryString);
+		const count_query = `WITH root as (${cleaned_query}) SELECT COUNT(*) FROM root`;
+
+		const expected_count = await connection
+			.promise()
+			.query(count_query)
+			.catch(() => null);
+		const expected_row_count = expected_count?.[0][0]['COUNT(*)'];
+
+		const query = connection.query(queryString).stream();
+
+		const fields = await new Promise((res) => query.on('fields', res));
+		const result = await asyncIterableToBatchedAsyncGenerator(query, batchSize, { standardizeRow });
+		result.columnTypes = mapResultsToEvidenceColumnTypes(fields);
+		result.expectedRowCount = expected_row_count;
+
+		return result;
 	} catch (err) {
 		if (err.message) {
 			throw err.message.replace(/\n|\r/g, ' ');
@@ -164,27 +200,14 @@ module.exports = runQuery;
  * @property {number} port
  * @property {string} socketPath
  * @property {number} decimalNumbers
+ * @property {string} ssl
  */
 
-/**
- * @typedef {Object} QueryResult
- * @property { Record<string, any>[] } rows
- * @property { { name: string, evidenceType: string, typeFidelity: string }[] } columnTypes
- */
-
-/**
- * @param {MySQLOptions} opts
- * @returns { (queryString: string, queryOpts: PostgresOptions ) => Promise<QueryResult> }
- */
+/** @type {import('@evidence-dev/db-commons').GetRunner<MySQLOptions>} */
 module.exports.getRunner = async (opts) => {
-	/**
-	 * @param {string} queryContent
-	 * @param {string} queryPath
-	 * @returns {Promise<QueryResult>}
-	 */
-	return async (queryContent, queryPath) => {
+	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(queryContent, opts);
+		return runQuery(queryContent, opts, batchSize);
 	};
 };

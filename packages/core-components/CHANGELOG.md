@@ -1,5 +1,135 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.13
+
+### Patch Changes
+
+- b6683ba0: Deploy screen now shows environment variables for USQL
+- cad09993: improve source refresh experience
+- 64d1405b: Loading state is now respected by Value and BigValue
+- Updated dependencies [64d1405b]
+  - @evidence-dev/component-utilities@2.0.0-usql.9
+  - @evidence-dev/query-store@2.0.0-usql.1
+
+## 2.0.0-usql.12
+
+### Patch Changes
+
+- 078fca3b: Error handling via QueryStores is more effective now
+- e9a63c71: Add loading states to DataTable and Chart
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/query-store@2.0.0-usql.0
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+
+## 2.0.0-usql.11
+
+### Patch Changes
+
+- Updated dependencies [52e114cc]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+
+## 2.0.0-usql.10
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/tailwind@1.0.0-usql.2
+
+## 2.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [17a82581]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+
+## 2.0.0-usql.8
+
+### Patch Changes
+
+- Adjust icon usage, dependencies
+
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [f051417f]
+  - @evidence-dev/tailwind@1.0.0-usql.1
+
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.4
+
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- Updated dependencies [64ab3074]
+  - @evidence-dev/component-utilities@2.0.0-usql.3
+
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- 9ade9c88: Add Definitions component
+- 9432c6e4: limit `getFormatObjectFromString` in Value.svelte
+- be1cc666: force NaN, null, and undefined to the top of ascending sort order and vice versa
+
+## 1.2.0
+
+### Minor Changes
+
+- 78f2fab2: Adds modal, accordion and link button UI components
+
+### Patch Changes
+
+- 75560a31: Consolidate tailwind presets into tailwind package
+
+## 2.0.0-usql.3
+
+### Patch Changes
+
+- Updated dependencies [e1174aa1]
+  - @evidence-dev/component-utilities@2.0.0-usql.2
+
+## 2.0.0-usql.2
+
+### Minor Changes
+
+- 78f2fab2: Adds modal, accordion and link button UI components
+
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- Updated dependencies [4053c976]
+  - @evidence-dev/component-utilities@2.0.0-usql.1
+
+## 2.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- 75560a31: Consolidate tailwind presets into tailwind package
+- Updated dependencies [cb0fc468]
+  - @evidence-dev/component-utilities@2.0.0-usql.0
+
 ## 1.1.0
 
 ### Minor Changes

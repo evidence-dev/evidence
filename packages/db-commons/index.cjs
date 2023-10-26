@@ -1,23 +1,44 @@
-var EvidenceType;
-(function (EvidenceType) {
-	EvidenceType['BOOLEAN'] = 'boolean';
-	EvidenceType['NUMBER'] = 'number';
-	EvidenceType['STRING'] = 'string';
-	EvidenceType['DATE'] = 'date';
-})(EvidenceType || (EvidenceType = {}));
+/**
+ * Enum for evidence types
+ * @readonly
+ * @enum {'boolean' | 'number' | 'string' | 'date'}
+ */
+const EvidenceType = /** @type {const} */ ({
+	BOOLEAN: 'boolean',
+	NUMBER: 'number',
+	STRING: 'string',
+	DATE: 'date'
+});
 
-var TypeFidelity;
-(function (TypeFidelity) {
-	TypeFidelity['INFERRED'] = 'inferred';
-	TypeFidelity['PRECISE'] = 'precise';
-})(TypeFidelity || (TypeFidelity = {}));
+/**
+ * Enum for evidence type fidelity
+ * @readonly
+ * @enum {'inferred' | 'precise'}
+ */
+const TypeFidelity = /** @type {const} */ ({
+	INFERRED: 'inferred',
+	PRECISE: 'precise'
+});
 
+/**
+ * @typedef {Object} ColumnDefinition
+ * @property {string} name
+ * @property {EvidenceType} evidenceType
+ * @property {TypeFidelity} typeFidelity
+ */
+
+/**
+ * Infers the evidence type of a column value
+ * @param {unknown} columnValue
+ * @returns {EvidenceType}
+ */
 const inferValueType = function (columnValue) {
 	if (typeof columnValue === 'number') {
 		return EvidenceType.NUMBER;
 	} else if (typeof columnValue === 'boolean') {
 		return EvidenceType.BOOLEAN;
 	} else if (typeof columnValue === 'string') {
+		/** @type {EvidenceType} */
 		let result = EvidenceType.STRING;
 		if (columnValue && (columnValue.match(/-/g) || []).length === 2) {
 			let testDateStr = columnValue;
@@ -44,51 +65,103 @@ const inferValueType = function (columnValue) {
 	}
 };
 
+/**
+ * Infers the evidence type of each column in a set of rows
+ * @param {Record<string, unknown>[]} rows
+ * @returns {ColumnDefinition[] | undefined}
+ */
 const inferColumnTypes = function (rows) {
-	if (rows && rows.length > 0) {
-		let columns = Object.keys(rows[0]);
-		let columnTypes = columns?.map((column) => {
-			let firstRowWithColumnValue = rows.find((element) =>
-				element[column] == null ? false : true
-			);
-			if (firstRowWithColumnValue) {
-				let inferredType = inferValueType(firstRowWithColumnValue[column]);
-				return { name: column, evidenceType: inferredType, typeFidelity: TypeFidelity.INFERRED };
-			} else {
-				return {
-					name: column,
-					evidenceType: EvidenceType.STRING,
-					typeFidelity: TypeFidelity.INFERRED
-				};
-			}
-		});
-		return columnTypes;
-	}
-	return undefined;
+	if (!rows) return undefined;
+	if (rows.length === 0) return [];
+
+	const columns = Object.keys(rows[0]);
+	const columnTypes = columns.map((column) => {
+		const firstRowWithColumnValue = rows.find((element) => element[column] != null);
+		const inferredType = firstRowWithColumnValue
+			? inferValueType(firstRowWithColumnValue[column])
+			: EvidenceType.STRING;
+		return { name: column, evidenceType: inferredType, typeFidelity: TypeFidelity.INFERRED };
+	});
+
+	return columnTypes;
 };
 
+/**
+ * Processes query results
+ * @param {QueryResult | QueryResult["rows"]} queryResults
+ * @returns {QueryResult}
+ */
 const processQueryResults = function (queryResults) {
-	let rows;
-	let columnTypes;
-
-	if (queryResults.rows) {
-		rows = queryResults.rows;
-	} else {
-		rows = queryResults;
-	}
-
-	if (queryResults.columnTypes) {
-		columnTypes = queryResults.columnTypes;
-	} else {
-		columnTypes = inferColumnTypes(rows);
-	}
+	const rows = queryResults.rows ?? queryResults;
+	const columnTypes = queryResults.columnTypes ?? inferColumnTypes(rows);
 
 	return { rows, columnTypes };
+};
+
+/**
+ * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
+ * @property {(rows: Record<string, unknown>[]) => QueryResult} [mapResultsToEvidenceColumnTypes]
+ * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
+ */
+
+/**
+ * Converts an async iterable to a QueryResult
+ * @param {AsyncIterable<unknown>} iterable
+ * @param {number} batchSize
+ * @param {AsyncIterableToBatchedAsyncGeneratorOptions} options additional optional parameters
+ * @returns {Promise<QueryResult>}
+ */
+const asyncIterableToBatchedAsyncGenerator = async function (
+	iterable,
+	batchSize,
+	{ standardizeRow = (x) => x, mapResultsToEvidenceColumnTypes = () => [] } = {}
+) {
+	const iterator = iterable[Symbol.asyncIterator]();
+	const first_row = standardizeRow(await iterator.next().then((x) => x.value));
+
+	const rows = async function* () {
+		let batch = [first_row];
+		for await (const row of iterable) {
+			batch.push(standardizeRow(row));
+			if (batch.length >= batchSize) {
+				yield batch;
+				batch = [];
+			}
+		}
+		if (batch.length > 0) {
+			yield batch;
+		}
+	};
+
+	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([first_row]) };
+};
+
+/**
+ * Converts an async generator to an array
+ * @param {AsyncGeneratorFunction} asyncGenerator
+ * @returns {Promise<Record<string, unknown>[]>}
+ */
+const batchedAsyncGeneratorToArray = async (asyncGenerator) => {
+	const result = [];
+	for await (const batch of asyncGenerator()) {
+		result.push(...batch);
+	}
+	return result;
+};
+
+const cleanQuery = (query) => {
+	let cleanedString = query.trim();
+	if (cleanedString.endsWith(';'))
+		cleanedString = cleanedString.substring(0, cleanedString.length - 1);
+	return cleanedString;
 };
 
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
+exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenerator;
+exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
+exports.cleanQuery = cleanQuery;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

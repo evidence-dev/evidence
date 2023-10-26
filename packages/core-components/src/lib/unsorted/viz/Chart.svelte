@@ -25,6 +25,7 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
+	import { Skeleton } from '../../atoms/skeletons';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { colours } from '@evidence-dev/component-utilities/colours';
 
@@ -32,7 +33,9 @@
 	// Input Props
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
+	/** @type {import("@evidence-dev/query-store").QueryStore} */
 	export let data = undefined;
+
 	export let x = undefined;
 	export let y = undefined;
 	export let series = undefined;
@@ -395,9 +398,7 @@
 			// Get format codes for axes
 			// ---------------------------------------------------------------------------------------
 			if (xFmt) {
-				xFmt = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
-				// Override with provided format
-				xFormat = xFmt;
+				xFormat = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
 			} else {
 				xFormat = columnSummary[x].format;
 			}
@@ -407,12 +408,10 @@
 			} else {
 				if (yFmt) {
 					if (typeof y === 'object') {
-						yFmt = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
+						yFormat = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
 					} else {
-						yFmt = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
+						yFormat = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
 					}
-					// Override with provided format
-					yFormat = yFmt;
 				} else {
 					if (typeof y === 'object') {
 						yFormat = columnSummary[y[0]].format;
@@ -424,9 +423,7 @@
 
 			if (size) {
 				if (sizeFmt) {
-					sizeFmt = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
-					// Override with provided format
-					sizeFormat = sizeFmt;
+					sizeFormat = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
 				} else {
 					sizeFormat = columnSummary[size].format;
 				}
@@ -820,9 +817,15 @@
 	}
 
 	$: data;
+
+	$: if (data?.error) error = data.error.message;
 </script>
 
-{#if !error}
+{#if !data || data.loading}
+	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
+		<Skeleton />
+	</div>
+{:else if !error}
 	<slot />
 	<ECharts config={$config} {height} {width} {data} />
 {:else}

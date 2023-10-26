@@ -4,6 +4,7 @@
 
 <script>
 	export let settings;
+	export let datasourceSettings;
 	import EvidenceDeploy from './EvidenceDeploy.svelte';
 	import NetlifyDeploy from './NetlifyDeploy.svelte';
 	import VercelDeploy from './VercelDeploy.svelte';
@@ -39,7 +40,7 @@
 		</div>
 		{#if selectedDeployment.formComponent}
 			<div class="panel" transition:slide|local>
-				<svelte:component this={selectedDeployment.formComponent} {settings} />
+				<svelte:component this={selectedDeployment.formComponent} {settings} {datasourceSettings} />
 			</div>
 		{/if}
 	</div>
@@ -54,10 +55,15 @@
 
 <style>
 	h3 {
-		text-transform: uppercase;
-		font-weight: normal;
-		font-size: 14px;
-		font-style: normal;
+		@apply uppercase text-sm leading-loose py-3;
+	}
+
+	h2 {
+		@apply font-semibold text-lg pt-3 pb-2;
+	}
+
+	p {
+		@apply text-sm py-2;
 	}
 	select {
 		-webkit-appearance: none;

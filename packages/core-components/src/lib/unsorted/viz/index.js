@@ -17,7 +17,6 @@ export { default as Histogram } from './Histogram.svelte';
 export { default as Hist } from './Hist.svelte';
 export { default as LineChart } from './LineChart.svelte';
 export { default as Line } from './Line.svelte';
-export { default as PulseNumber } from './PulseNumber.svelte';
 export { default as SankeyChart } from './SankeyChart.svelte';
 export { default as ScatterPlot } from './ScatterPlot.svelte';
 export { default as Scatter } from './Scatter.svelte';

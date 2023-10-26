@@ -1,5 +1,125 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.8
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/bigquery@2.0.0-usql.3
+  - @evidence-dev/csv@1.0.0-usql.5
+  - @evidence-dev/db-commons@0.2.1-usql.2
+  - @evidence-dev/duckdb@1.0.0-usql.4
+  - @evidence-dev/mssql@1.0.0-usql.3
+  - @evidence-dev/mysql@1.0.0-usql.4
+  - @evidence-dev/postgres@1.0.0-usql.3
+  - @evidence-dev/redshift@1.0.0-usql.3
+  - @evidence-dev/snowflake@1.0.0-usql.3
+  - @evidence-dev/sqlite@2.0.0-usql.4
+
+## 3.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [1fbf70d9]
+  - @evidence-dev/mysql@1.0.0-usql.3
+
+## 3.0.0-usql.6
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [08b1907f]
+- Updated dependencies [20127231]
+  - @evidence-dev/csv@1.0.0-usql.4
+  - @evidence-dev/bigquery@2.0.0-usql.2
+  - @evidence-dev/db-commons@0.2.1-usql.1
+  - @evidence-dev/duckdb@1.0.0-usql.3
+  - @evidence-dev/mssql@1.0.0-usql.2
+  - @evidence-dev/mysql@1.0.0-usql.2
+  - @evidence-dev/postgres@1.0.0-usql.2
+  - @evidence-dev/redshift@1.0.0-usql.2
+  - @evidence-dev/snowflake@1.0.0-usql.2
+  - @evidence-dev/sqlite@2.0.0-usql.3
+
+## 3.0.0-usql.5
+
+### Patch Changes
+
+- Updated dependencies [bdf8e08a]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/bigquery@2.0.0-usql.1
+  - @evidence-dev/csv@1.0.0-usql.3
+  - @evidence-dev/db-commons@0.2.1-usql.0
+  - @evidence-dev/duckdb@1.0.0-usql.2
+  - @evidence-dev/mssql@1.0.0-usql.1
+  - @evidence-dev/mysql@1.0.0-usql.1
+  - @evidence-dev/postgres@1.0.0-usql.1
+  - @evidence-dev/redshift@1.0.0-usql.1
+  - @evidence-dev/snowflake@1.0.0-usql.1
+  - @evidence-dev/sqlite@2.0.0-usql.2
+
+## 2.2.3
+
+### Patch Changes
+
+- Updated dependencies [4e783f36]
+- Updated dependencies [e12fef6c]
+  - @evidence-dev/duckdb@0.1.1
+  - @evidence-dev/csv@0.1.5
+
+## 3.0.0-usql.4
+
+### Patch Changes
+
+- Updated dependencies [3b49d3b6]
+  - @evidence-dev/csv@1.0.0-usql.2
+
+## 3.0.0-usql.3
+
+### Patch Changes
+
+- Updated dependencies [cff22ece]
+  - @evidence-dev/sqlite@2.0.0-usql.1
+
+## 3.0.0-usql.2
+
+### Patch Changes
+
+- Updated dependencies [e12fef6c]
+  - @evidence-dev/duckdb@1.0.0-usql.1
+  - @evidence-dev/csv@1.0.0-usql.1
+
+## 3.0.0-usql.1
+
+### Minor Changes
+
+- f62bd26e: prerenders clientside duckdb queries in their initial state to allow for some form of prerendering
+
+## 3.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- Updated dependencies [cb0fc468]
+- Updated dependencies [4e783f36]
+  - @evidence-dev/bigquery@2.0.0-usql.0
+  - @evidence-dev/csv@1.0.0-usql.0
+  - @evidence-dev/duckdb@1.0.0-usql.0
+  - @evidence-dev/mssql@1.0.0-usql.0
+  - @evidence-dev/mysql@1.0.0-usql.0
+  - @evidence-dev/postgres@1.0.0-usql.0
+  - @evidence-dev/redshift@1.0.0-usql.0
+  - @evidence-dev/snowflake@1.0.0-usql.0
+  - @evidence-dev/sqlite@2.0.0-usql.0
+
 ## 2.2.2
 
 ### Patch Changes

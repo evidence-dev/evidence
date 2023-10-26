@@ -44,7 +44,7 @@ export default function checkInputs(data, reqCols, optCols) {
     // }
 
     // Get list of all columns in dataset
-    const columns = Object.keys(data[0]);
+    const columns = Array.isArray(data.columns)?  data.columns.map((c) => c.name) : Object.keys(data[0]);
 
     // Check if provided columns are in the dataset
     for (const currentCol of reqCols) {

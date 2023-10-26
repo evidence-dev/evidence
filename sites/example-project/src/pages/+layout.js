@@ -1,129 +1,83 @@
-import { browser } from '$app/environment';
-import { Type } from 'apache-arrow';
+import { browser, building } from '$app/environment';
+import {
+	tableFromIPC,
+	initDB,
+	setParquetURLs,
+	query,
+	updateSearchPath,
+	arrowTableToJSON
+} from '@evidence-dev/universal-sql/client-duckdb';
+import { profile } from '@evidence-dev/component-utilities/profile';
 
-/** @type {import("@duckdb/duckdb-wasm").AsyncDuckDB} */
-let db;
+const initDb = async () => {
+	let renderedFiles = {};
 
-async function initDB() {
-	if (!browser) return;
-	if (db) return;
-
-	// Instantiate worker
-	const duckdb_worker = (
-		await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker')
-	).default;
-	const { ConsoleLogger, AsyncDuckDB } = await import('@duckdb/duckdb-wasm');
-	const duckdb_wasm = (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default;
-
-	const logger = new ConsoleLogger();
-	const worker = new duckdb_worker();
-
-	// and asynchronous database
-	db = new AsyncDuckDB(logger, worker);
-	await db.instantiate(duckdb_wasm);
-	await db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
-}
-
-/**
- * Adds a new view to the database, pointing to the provided parquet URL.
- *
- * @param {string} table
- * @param {string} url
- * @returns {Promise<void>}
- */
-async function setParquetURL(table, url) {
-	if (!browser) return;
-	if (!db) await initDB();
-
-	const connection = await db.connect();
-
-	const file_name = `${table}.parquet`;
-	await db.registerFileURL(file_name, url, 4, false);
-	await connection.query(
-		`CREATE OR REPLACE VIEW ${table} AS SELECT * FROM read_parquet('${file_name}');`
-	);
-
-	await connection.close();
-}
-
-/**
- * Queries the database with the given SQL statement.
- *
- * @param {string} sql
- * @returns {Promise<ReturnType<import("@duckdb/duckdb-wasm").AsyncDuckDBConnection['query']> | null>}
- */
-async function query(sql) {
-	if (!browser) return null;
-	if (!db) await initDB();
-
-	const connection = await db.connect();
-	const res = await connection.query(sql).then(arrowTableToJSON);
-	await connection.close();
-
-	return res;
-}
-
-/**
- * Converts an Apache Arrow type to an Evidence type.
- *
- * @param {import("apache-arrow").Type} type
- */
-function apacheToEvidenceType(type) {
-	switch (
-		type.typeId // maybe just replace with `typeof`
-	) {
-		case Type.Date:
-			return 'date';
-		case Type.Float:
-		case Type.Int:
-			return 'number';
-		case Type.Bool:
-			return 'boolean';
-		case Type.Dictionary:
-		default:
-			return 'string';
+	if (!browser) {
+		const { readFile } = await import('fs/promises');
+		({ renderedFiles } = JSON.parse(
+			await readFile(
+				process.cwd().includes('.evidence')
+					? '../../static/data/manifest.json'
+					: './static/data/manifest.json',
+				'utf-8'
+			).catch(() => '{}')
+		));
+	} else {
+		const res = await fetch('/data/manifest.json');
+		if (res.ok) ({ renderedFiles } = await res.json());
 	}
-}
 
-/**
- *
- * @param {import("apache-arrow").Table} table
- * @returns
- */
-function arrowTableToJSON(table) {
-	if (table == null) return [];
-	const arr = table.toArray();
-
-	Object.defineProperty(arr, '_evidenceColumnTypes', {
-		enumerable: false,
-		value: table.schema.fields.map((field) => ({
-			name: field.name,
-			evidenceType: apacheToEvidenceType(field.type),
-			typeFidelity: 'precise'
-		}))
-	});
-
-	return arr;
-}
-
-/** @type {import("./$types").LayoutLoad} */
-export const load = async ({ fetch, route, data: parentData }) => {
-	if (route.id && route.id !== '/settings') {
-		const { customFormattingSettings, routeHash, renderedFiles } = parentData;
-		const res = await fetch(`/api/${routeHash}.json`);
-		// has to be cloned to bypass the proxy https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
-		const { data } = await res.clone().json();
-
-		for (const url of renderedFiles) {
-			await setParquetURL(url.split('/').at(-1).slice(0, -'.parquet'.length), url);
-		}
-
-		// await setParquetURL('taxis', '/taxis.parquet');
-
-		return {
-			__db: { query },
-			data,
-			customFormattingSettings
-		};
+	if (!renderedFiles) {
+		throw new Error('Unable to load source manifest. Do you need to run build:sources?');
 	}
+
+	await profile(initDB);
+	await profile(setParquetURLs, renderedFiles);
+	await profile(updateSearchPath, Object.keys(renderedFiles));
+};
+
+const database_initialization = profile(initDb);
+
+/** @satisfies {import("./$types").LayoutLoad} */
+export const load = async ({
+	fetch,
+	data: { customFormattingSettings, routeHash, isUserPage, evidencemeta }
+}) => {
+	if (!browser) await database_initialization;
+
+	const data = {};
+
+	// let SSR saturate the cache first
+	if (browser && isUserPage) {
+		await Promise.all(
+			evidencemeta.queries?.map(async ({ id }) => {
+				const res = await fetch(`/api/${routeHash}/${id}.arrow`);
+				if (res.ok) {
+					const table = await tableFromIPC(res);
+					data[id] = arrowTableToJSON(table);
+				}
+			}) ?? []
+		);
+	}
+
+	return {
+		__db: {
+			query(sql, query_name) {
+				if (browser) {
+					return database_initialization.then(() => query(sql));
+				}
+
+				return query(sql, { route_hash: routeHash, query_name, prerendering: building });
+			},
+			async updateParquetURLs(manifest) {
+				// todo: maybe diff with old?
+				const { renderedFiles } = JSON.parse(manifest);
+				await profile(setParquetURLs, renderedFiles);
+			}
+		},
+		data,
+		customFormattingSettings,
+		isUserPage,
+		evidencemeta
+	};
 };

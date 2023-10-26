@@ -1,5 +1,7 @@
 // To-do, replace with import from db-commons
 
+import { QueryStore } from '@evidence-dev/query-store';
+
 /**
  * 
  * @param {unknown} columnValue 
@@ -43,6 +45,9 @@ export const inferValueType = function (columnValue) {
  * @returns {import("./types.js").EvidenceTypeDescriptor[] | undefined}
  */
 export default function inferColumnTypes(rows) {
+	if (rows instanceof QueryStore) {
+		return rows._evidenceColumnTypes;
+	}
 	if (rows && rows.length > 0) {
 		const columns = Object.keys(rows[0]);
 		return columns.map((column) => {

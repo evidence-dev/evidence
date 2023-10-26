@@ -6,17 +6,17 @@ sources:
 
 # {$page.params.category}
 
-<DataTable data={orders_by_category.filter(d => d.category === $page.params.category)} />
+<DataTable data={orders_by_category.filter(d => d.category?.toLowerCase() === $page.params.category?.toLowerCase())} />
 
 ## Area
 
-<AreaChart data={orders_by_category.filter(d => d.category === $page.params.category)} x=month y=sales_usd0k/>
+<AreaChart data={orders_by_category.filter(d => d.category?.toLowerCase() === $page.params.category?.toLowerCase())} x=month y=sales_usd0k/>
 
 
 ## Items
 
 <DataTable 
-  data={item_by_category.filter(d => d.category === $page.params.category)}
+  data={item_by_category.filter(d => d.category?.toLowerCase() === $page.params.category?.toLowerCase())}
   link=item>
     <Column id="item" />
 </DataTable>

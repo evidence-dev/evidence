@@ -4,86 +4,9 @@
 
 <script>
 	import VariableCopy from './VariableCopy.svelte';
-	export let settings;
-	let credentials = {};
-	let targetEnvVars = [];
+	export let datasourceSettings;
 
-	if (settings.credentials) {
-		targetEnvVars = [
-			{
-				name: 'DATABASE',
-				value: settings.database
-			}
-		];
-		credentials = settings.credentials;
-		if (settings.database == 'bigquery') {
-			if (credentials.authenticator === 'oauth') {
-				credentials = {
-					project_id: credentials.project_id,
-					token: credentials.token
-				};
-			} else if (credentials.authenticator === 'gcloud-cli') {
-				credentials = {
-					project_id: credentials.project_id
-				};
-			} else {
-				credentials = {
-					project_id: credentials.project_id,
-					client_email: credentials.client_email,
-					private_key: credentials.private_key
-				};
-			}
-			if (settings.credentials.authenticator)
-				credentials.authenticator = settings.credentials.authenticator;
-		}
-		if (settings.database == 'snowflake') {
-			if (credentials.authenticator === 'externalbrowser') {
-				credentials = {
-					account: credentials.account,
-					username: credentials.username,
-					warehouse: credentials.warehouse,
-					database: credentials.database
-				};
-			} else if (credentials.authenticator === 'okta') {
-				credentials = {
-					okta_url: credentials.okta_url,
-					account: credentials.account,
-					username: credentials.username,
-					password: credentials.password,
-					warehouse: credentials.warehouse,
-					database: credentials.database
-				};
-			} else if (credentials.authenticator === 'snowflake_jwt') {
-				credentials = {
-					account: credentials.account,
-					username: credentials.username,
-					private_key: credentials.private_key,
-					passphrase: credentials.passphrase,
-					warehouse: credentials.warehouse,
-					database: credentials.database
-				};
-			} else {
-				credentials = {
-					account: credentials.account,
-					username: credentials.username,
-					password: credentials.password,
-					warehouse: credentials.warehouse,
-					database: credentials.database
-				};
-			}
-			if (settings.credentials.authenticator)
-				credentials.authenticator = settings.credentials.authenticator;
-		}
-		for (const key in credentials) {
-			if (key != 'gitignoreSqlite') {
-				let envVar = {
-					name: settings.database.toUpperCase() + '_' + key.toUpperCase(),
-					value: settings.credentials[key]
-				};
-				targetEnvVars.push(envVar);
-			}
-		}
-	}
+	let credentials = {};
 </script>
 
 <p>
@@ -110,15 +33,17 @@
 	<div class="titles">
 		<span class="title">Key</span><span class="title">Value</span>
 	</div>
-	{#each targetEnvVars as envVar}
-		<div class="environment-variable">
-			<div class="var-name">
-				<VariableCopy text={envVar.name} />
+	{#each datasourceSettings as datasource}
+		{#each Object.entries(datasource.environmentVariables) as [key, value]}
+			<div class="environment-variable">
+				<div class="var-name">
+					<VariableCopy text={key} />
+				</div>
+				<div class="var-value">
+					<VariableCopy text={value} hideText={true} />
+				</div>
 			</div>
-			<div class="var-value">
-				<VariableCopy text={envVar.value} hideText={true} />
-			</div>
-		</div>
+		{/each}
 	{/each}
 {/if}
 

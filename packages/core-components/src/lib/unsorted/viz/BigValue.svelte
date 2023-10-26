@@ -10,6 +10,8 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from './context';
+	import { QueryStore } from '@evidence-dev/query-store';
+
 	export let data;
 	export let value = null;
 	export let comparison = null;
@@ -34,53 +36,54 @@
 	let sparklineData = {};
 
 	let error = undefined;
-	$: try {
-		error = undefined;
+	$: if (data && !data.loading)
+		try {
+			error = undefined;
 
-		if (!value) {
-			throw new Error('value is required');
-		}
+			if (!value) {
+				throw new Error('value is required');
+			}
 
-		if (!Array.isArray(data)) {
-			data = [data];
-		}
+			if (!Array.isArray(data) && !(data instanceof QueryStore)) {
+				data = [data];
+			}
 
-		checkInputs(data, [value]);
+			checkInputs(data, [value]);
 
-		let columnSummary = getColumnSummary(data, 'array');
+			let columnSummary = getColumnSummary(data, 'array');
 
-		// Fall back titles
-		let valueColumnSummary = columnSummary.find((d) => d.id === value);
-		title = title ?? (valueColumnSummary ? valueColumnSummary.title : null);
+			// Fall back titles
+			let valueColumnSummary = columnSummary.find((d) => d.id === value);
+			title = title ?? (valueColumnSummary ? valueColumnSummary.title : null);
 
-		if (comparison) {
-			checkInputs(data, [comparison]);
-			let comparisonColumnSummary = columnSummary.find((d) => d.id === comparison);
-			comparisonTitle =
-				comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null);
-		}
+			if (comparison) {
+				checkInputs(data, [comparison]);
+				let comparisonColumnSummary = columnSummary.find((d) => d.id === comparison);
+				comparisonTitle =
+					comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null);
+			}
 
-		if (data && comparison) {
-			positive = data[0][comparison] >= 0;
-			comparisonColor =
-				(positive && !downIsGood) || (!positive && downIsGood)
-					? 'var(--green-700)'
-					: 'var(--red-700)';
-		}
-		// populate sparklineData from data where timeseries is the key and value is the value
-		if (data && sparkline && value) {
-			// allow to load the LinkedChart
-			let sortedData = getSortedData(data, sparkline, true);
-			for (let i = 0; i < sortedData.length; i++) {
-				sparklineData[sortedData[i][sparkline]] = sortedData[i][value];
+			if (data && comparison) {
+				positive = data[0][comparison] >= 0;
+				comparisonColor =
+					(positive && !downIsGood) || (!positive && downIsGood)
+						? 'var(--green-700)'
+						: 'var(--red-700)';
+			}
+			// populate sparklineData from data where timeseries is the key and value is the value
+			if (data && sparkline && value) {
+				// allow to load the LinkedChart
+				let sortedData = getSortedData(data, sparkline, true);
+				for (let i = 0; i < sortedData.length; i++) {
+					sparklineData[sortedData[i][sparkline]] = sortedData[i][value];
+				}
+			}
+		} catch (e) {
+			error = e;
+			if (strictBuild) {
+				throw error;
 			}
 		}
-	} catch (e) {
-		error = e;
-		if (strictBuild) {
-			throw error;
-		}
-	}
 
 	/**
 	 * Hack to let time to LinkedChart to be loaded
@@ -101,9 +104,9 @@
 	data-viz="BigValue"
 	class="inline-block font-ui py-3 pr-3 pl-0 mr-3 items-center align-top"
 	style={`
-        min-width: ${minWidth};
-        max-width: ${maxWidth};
-    `}
+	min-width: ${minWidth};
+	max-width: ${maxWidth};
+`}
 >
 	{#if error}
 		<ErrorChart chartType="Big Value" error={error.message} />
@@ -111,7 +114,7 @@
 		<p class="text-sm font-medium text-grey-700 text-shadow shadow-white m-0">{title}</p>
 		<div class="relative">
 			<Value {data} column={value} {fmt} />
-			{#if sparkline}
+			{#if sparkline && !data.loading}
 				{#if isLinkedChartReady()}
 					<div class="inline-block">
 						<svelte:component

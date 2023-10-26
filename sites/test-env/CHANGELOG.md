@@ -1,5 +1,286 @@
 # evidence-test-environment
 
+## 3.0.0-usql.29
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.29
+
+## 3.0.0-usql.28
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/csv@1.0.0-usql.5
+  - @evidence-dev/duckdb@1.0.0-usql.4
+  - @evidence-dev/faker-datasource@2.0.0-usql.2
+  - @evidence-dev/postgres@1.0.0-usql.3
+  - @evidence-dev/sqlite@2.0.0-usql.4
+  - @evidence-dev/evidence@20.0.0-usql.28
+
+## 3.0.0-usql.27
+
+### Patch Changes
+
+- Updated dependencies [b6683ba0]
+- Updated dependencies [cad09993]
+- Updated dependencies [64d1405b]
+  - @evidence-dev/core-components@2.0.0-usql.13
+  - @evidence-dev/evidence@20.0.0-usql.27
+  - @evidence-dev/component-utilities@2.0.0-usql.9
+
+## 3.0.0-usql.26
+
+### Patch Changes
+
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/evidence@20.0.0-usql.26
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.12
+
+## 3.0.0-usql.25
+
+### Patch Changes
+
+- Updated dependencies [52e114cc]
+- Updated dependencies [5be92c14]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+  - @evidence-dev/evidence@20.0.0-usql.25
+  - @evidence-dev/core-components@2.0.0-usql.11
+
+## 3.0.0-usql.24
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [08b1907f]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/csv@1.0.0-usql.4
+  - @evidence-dev/core-components@2.0.0-usql.10
+  - @evidence-dev/duckdb@1.0.0-usql.3
+  - @evidence-dev/evidence@20.0.0-usql.24
+  - @evidence-dev/faker-datasource@2.0.0-usql.1
+
+## 3.0.0-usql.23
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.23
+
+## 3.0.0-usql.22
+
+### Patch Changes
+
+- Updated dependencies [17a82581]
+- Updated dependencies [efa96920]
+- Updated dependencies [4b6262d8]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+  - @evidence-dev/evidence@20.0.0-usql.22
+  - @evidence-dev/csv@1.0.0-usql.3
+  - @evidence-dev/duckdb@1.0.0-usql.2
+  - @evidence-dev/core-components@2.0.0-usql.9
+
+## 3.0.0-usql.21
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@2.0.0-usql.8
+  - @evidence-dev/evidence@20.0.0-usql.21
+
+## 3.0.0-usql.20
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.20
+
+## 3.0.0-usql.19
+
+### Patch Changes
+
+- @evidence-dev/core-components@2.0.0-usql.7
+- @evidence-dev/evidence@20.0.0-usql.19
+
+## 3.0.0-usql.18
+
+### Patch Changes
+
+- Updated dependencies [73cfef71]
+- Updated dependencies [87aaf1c3]
+  - @evidence-dev/evidence@20.0.0-usql.18
+
+## 3.0.0-usql.17
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.17
+
+## 3.0.0-usql.16
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.4
+  - @evidence-dev/core-components@2.0.0-usql.6
+  - @evidence-dev/evidence@20.0.0-usql.16
+
+## 3.0.0-usql.15
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.15
+
+## 3.0.0-usql.14
+
+### Patch Changes
+
+- Updated dependencies [64ab3074]
+  - @evidence-dev/component-utilities@2.0.0-usql.3
+  - @evidence-dev/core-components@2.0.0-usql.5
+  - @evidence-dev/evidence@20.0.0-usql.14
+
+## 3.0.0-usql.13
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.13
+
+## 3.0.0-usql.12
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.12
+
+## 3.0.0-usql.11
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.11
+
+## 3.0.0-usql.10
+
+### Patch Changes
+
+- Updated dependencies [cfb0f248]
+  - @evidence-dev/evidence@20.0.0-usql.10
+
+## 3.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [9ade9c88]
+- Updated dependencies [9432c6e4]
+- Updated dependencies [be1cc666]
+  - @evidence-dev/core-components@2.0.0-usql.4
+  - @evidence-dev/evidence@20.0.0-usql.9
+
+## 2.0.17
+
+### Patch Changes
+
+- Updated dependencies [78f2fab2]
+- Updated dependencies [75560a31]
+  - @evidence-dev/core-components@1.2.0
+  - @evidence-dev/evidence@20.0.0
+
+## 3.0.0-usql.8
+
+### Patch Changes
+
+- Updated dependencies [e1174aa1]
+- Updated dependencies [ca7337ba]
+  - @evidence-dev/component-utilities@2.0.0-usql.2
+  - @evidence-dev/evidence@20.0.0-usql.8
+  - @evidence-dev/core-components@2.0.0-usql.3
+
+## 3.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [3b49d3b6]
+  - @evidence-dev/csv@1.0.0-usql.2
+  - @evidence-dev/evidence@20.0.0-usql.7
+
+## 3.0.0-usql.6
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.6
+
+## 3.0.0-usql.5
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.5
+
+## 3.0.0-usql.4
+
+### Patch Changes
+
+- Updated dependencies [78f2fab2]
+- Updated dependencies [20aad351]
+- Updated dependencies [e12fef6c]
+  - @evidence-dev/core-components@2.0.0-usql.2
+  - @evidence-dev/evidence@20.0.0-usql.4
+  - @evidence-dev/duckdb@1.0.0-usql.1
+
+## 3.0.0-usql.3
+
+### Patch Changes
+
+- Updated dependencies [9b1ac9b7]
+- Updated dependencies [9b1ac9b7]
+  - @evidence-dev/evidence@20.0.0-usql.3
+
+## 3.0.0-usql.2
+
+### Patch Changes
+
+- Updated dependencies [ef2a9106]
+- Updated dependencies [4053c976]
+- Updated dependencies [f62bd26e]
+- Updated dependencies [c29d827d]
+  - @evidence-dev/evidence@20.0.0-usql.2
+  - @evidence-dev/component-utilities@2.0.0-usql.1
+  - @evidence-dev/core-components@2.0.0-usql.1
+
+## 3.0.0-usql.1
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.1
+
+## 3.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- Updated dependencies [cb0fc468]
+- Updated dependencies [4e783f36]
+- Updated dependencies [75560a31]
+  - @evidence-dev/component-utilities@2.0.0-usql.0
+  - @evidence-dev/core-components@2.0.0-usql.0
+  - @evidence-dev/duckdb@1.0.0-usql.0
+  - @evidence-dev/evidence@20.0.0-usql.0
+  - @evidence-dev/faker-datasource@2.0.0-usql.0
+
 ## 2.0.16
 
 ### Patch Changes
