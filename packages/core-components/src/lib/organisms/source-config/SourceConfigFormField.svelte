@@ -7,6 +7,7 @@
 
 	$: title = spec.title ?? key;
 	$: optionKey = spec.nest ? `_${key}` : key;
+	
 </script>
 
 <div>
@@ -17,14 +18,14 @@
 		</p>
 		{#if spec.type === 'string'}
 			{#if spec.secret}
-				<input type="password" bind:value={options[optionKey]} />
+				<input required={spec.required} type="password" bind:value={options[optionKey]} />
 			{:else}
-				<input type="text" bind:value={options[optionKey]} />
+				<input required={spec.required} type="text" bind:value={options[optionKey]} />
 			{/if}
 		{:else if spec.type === 'boolean'}
-			<input type="checkbox" bind:checked={options[optionKey]} />
+			<input required={spec.required} type="checkbox" bind:checked={options[optionKey]} />
 		{:else if spec.type === 'number'}
-			<input type="number" bind:value={options[optionKey]} />
+			<input required={spec.required} type="number" bind:value={options[optionKey]} />
 		{:else if spec.type === 'select'}
 			<select bind:value={options[optionKey]}>
 				<option disabled={spec.required} value={undefined} />

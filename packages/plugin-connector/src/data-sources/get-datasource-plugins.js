@@ -16,6 +16,7 @@ export async function getDatasourcePlugins(cfg, discoveries) {
 		 * @property {EvidencePluginPackage<EvidenceDatabasePackage>} package
 		 * @property {DatabaseConnectorFactory} factory
 		 * @property {DatasourceOptionsSpec} options
+		 * @property {ConnectionTester} testConnection
 		 */
 
 		/**
@@ -49,7 +50,8 @@ export async function getDatasourcePlugins(cfg, discoveries) {
 				acc[d] = {
 					package: v,
 					factory: factory.getRunner,
-					options: factory.options
+					options: factory.options,
+					testConnection: factory.testConnection
 				};
 			});
 			// Return the updated package map as a promise

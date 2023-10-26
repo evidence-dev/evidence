@@ -13,14 +13,11 @@
 		TelemetrySettingsPanel,
 		SourceConfig
 	} from '@evidence-dev/core-components';
-
-	console.log({ datasourceSettings });
-	console.log({ data });
 </script>
 
 {#if dev}
 	<VersionControlPanel {settings} />
-	<SourceConfig availableSourcePlugins={plugins} />
+	<SourceConfig availableSourcePlugins={plugins} sources={datasourceSettings} />
 	<DeploySettingsPanel {settings} {datasourceSettings} />
 	<FormattingSettingsPanel {settings} {customFormattingSettings} />
 	<TelemetrySettingsPanel {settings} />

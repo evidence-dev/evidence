@@ -11,7 +11,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export { getDatasourcePlugins } from './get-datasource-plugins';
-
+export { updateDatasourceOptions } from './update-datasource-options'
+export { DatasourceSpecFileSchema, DatasourceSpecSchema } from './schemas/datasource-spec.schema'
 /**
  *
  * @param {Record<string, string[]>} outputFiles

@@ -7,10 +7,9 @@
 
 	export let source;
 	export let availableSourcePlugins;
+	export let startOpen = false
 
-	let open = false;
-
-	$: console.log({ source, availableSourcePlugins, sourcePlugin });
+	let open = startOpen;
 
 	$: sourcePlugin = availableSourcePlugins?.[source.type];
 </script>

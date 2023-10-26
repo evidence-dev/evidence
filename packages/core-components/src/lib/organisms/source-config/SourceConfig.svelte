@@ -1,5 +1,5 @@
 <script>
-	import { slide } from 'svelte/transition';
+	import NewSourceForm from './NewSourceForm.svelte';
 	import SourceConfigRow from './SourceConfigRow.svelte';
 
 	// TODO: figure out types here
@@ -15,9 +15,11 @@
 	export let sources = [];
 
 	let showNewSource = sources.length === 0;
-	let newSourceType;
-	let newSourceName = 'new-source';
-	function addNewSource() {
+
+	let lastAdded;
+
+	function addNewSource(e) {
+		const { newSourceType, newSourceName } = e.detail
 		if (!newSourceType) return;
 		const target = availableSourcePlugins[newSourceType];
 		sources.push({
@@ -25,17 +27,39 @@
 			type: newSourceType,
 			package: target.package.package.name
 		});
+		lastAdded = newSourceName;
 		sources = sources;
 		showNewSource = false;
-		newSourceName = 'new-source';
 	}
 
-	async function flushChanges() {
-		await confirm('Are you sure you want to change your datasource settings?');
-		// TODO: Validate the sources
-		// TODO: names must be unique
+	/*
+		TODO: Need a way to verify connections with sources
+		
+		Package is too prominent (?)
+		
+		Find a way to collapse database types where there is no difference
+			Add a field to package
 
-		// TODO: Write logic to save; this needs to be implemented in plugin-connector
+		Look at the current database picker in main wrt Database type
+
+		Can we link direct to the source directory? (Can we open in VS Code)
+	*/
+
+
+	let duplicatePackageNames = []
+	$: if (sources.length) {
+		const allNames = sources.reduce((a,v) => {
+			if (a.sourceNames.has(v.name)) {
+				a.duplicateNames.add(v.name)
+			}
+			a.sourceNames.add(v.name)
+
+
+			return a
+
+		}, {sourceNames: new Set(), duplicateNames: new Set()})
+
+		duplicatePackageNames = Array.from(allNames.duplicateNames)
 	}
 </script>
 
@@ -44,67 +68,54 @@
 		<h2 class="font-semibold text-lg mb-2">Data Sources</h2>
 
 		<div
-			class="grid grid-rows-auto source-config-table gap-x-2 gap-y-2 justify-center items-center"
+			class="grid grid-rows-auto source-config-table gap-x-2 gap-y-2 justify-center items-center w-full"
 		>
-			<div class="contents font-bold text-sm">
-				<p class="w-4" />
-				<p>Name</p>
-				<p>Type</p>
-				<p>Package</p>
-				<p />
-			</div>
-
-			{#each sources as source}
-				<SourceConfigRow {availableSourcePlugins} {source} />
-			{/each}
-
-			<div class="col-start-5 flex justify-end items-center w-full">
-				<button
-					class="flex bg-blue-600 gap-2 mx-1 border border-blue-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-blue-700 hover:border-blue-800 transition"
-					on:click={() => (showNewSource = !showNewSource)}>Add new source</button
-				>
-				<button
-					class="flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
-					on:click={flushChanges}>Confirm Changes</button
-				>
-			</div>
-
-			{#if showNewSource}
-			<!-- TODO: Maybe this should be a modal? -->
-				<div class="col-start-5 w-full flex justify-end items-end flex-col my-4" transition:slide>
-					
-					<div class="grid grid-cols-2 gap-4 items-center">
-						<p class="w-full text-center col-span-2 font-bold">New Source:</p>
-						
-						<label for="new-source-type" class="text-right"> Database Type </label>
-						<select
-							bind:value={newSourceType}
-							name="new-source-type"
-							class="px-2 py-1 border border-gray-500 rounded"
-						>
-							{#each Object.entries(availablePackages) as [name, value]}
-								{@const supports = value.package.package.evidence.databases}
-								<optgroup label={name}>
-									{#each supports as db}
-										<option value={db}>{db}</option>
-									{/each}
-								</optgroup>
-							{/each}
-						</select>
-
-						<label for="new-source-name" class="text-right"> Source name </label>
-						<input
-							name="new-source-name"
-							class="px-2 py-1 border border-gray-500 rounded"
-							bind:value={newSourceName}
-						/>
-
-						<button
-							class="col-start-2 flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
-							on:click={addNewSource}>Confirm</button
-						>
-					</div>
+			{#if sources.length > 0}
+				<div class="contents font-bold text-sm">
+					<p class="w-4" />
+					<p>Name</p>
+					<p>Type</p>
+					<p>Package</p>
+					<p />
 				</div>
+
+				{#if duplicatePackageNames.length}
+				<div class="col-span-5">
+					<p class="text-red-500 text-bold text-sm">Duplicate Packages found; this could lead to unexpected behavior</p>
+					<ul>
+						{#each duplicatePackageNames as d}
+							<li>{d}</li>	
+						{/each}
+					</ul>
+				</div>
+				{/if}
+
+				{#each sources as source}
+					<SourceConfigRow
+						{availableSourcePlugins}
+						{source}
+						startOpen={lastAdded === source.name}
+					/>
+				{/each}
+
+				<div class="col-start-5 flex justify-end items-center w-full">
+					<button
+						class="flex bg-blue-600 gap-2 mx-1 border border-blue-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-blue-700 hover:border-blue-800 transition"
+						on:click={() => (showNewSource = !showNewSource)}>Add new source</button
+					>
+				</div>
+
+				{#if showNewSource}
+					<!-- TODO: Maybe this should be a modal? -->
+					<NewSourceForm {availablePackages} on:newSource={addNewSource}/>
+				{/if}
+			{:else}
+				<!-- There are no sources; we should show a hero to make it more clear to the user -->
+				<section class="py-8 col-span-5">
+					<!-- TODO: Make this less ugly -->
+					<button class="text-lg font-bold block text-white rounded px-4 py-2 mx-auto bg-blue-500 hover:bg-blue-700 transition">Configure your first datasource</button>
+					<NewSourceForm {availablePackages} on:newSource={addNewSource}/>
+				</section>
 			{/if}
 		</div>
 

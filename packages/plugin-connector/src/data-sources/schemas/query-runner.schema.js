@@ -118,6 +118,12 @@ export const QueryRunnerSchema = z
 	)
 	.returns(z.promise(QueryResultSchema.or(z.null())).or(QueryResultSchema));
 
+
+export const ConnectionTesterSchema = z.function().args(z.any({ description: "Connection Options" })).returns(z.promise(z.union([
+	z.literal(true),
+	z.object({ reason: z.string() })
+])))
+
 export const DatabaseConnectorFactorySchema = z
 	.function()
 	.args(
@@ -136,9 +142,7 @@ export const DatabaseConnectorFactorySchema = z
  * @property {Record<string, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
  */
 
-// TODO: Rewrite the schema based on the example in the postgres connector
-// TODO: Wire up the settings page properly
-// TODO: Figure out a better way to share types between packages (?) This might suck
+const primative = z.union([z.string(), z.number(), z.boolean()])
 
 /** @type {z.ZodRecord<z.ZodType<string>, z.ZodType<IDatasourceOptionSpecSchema>>} */
 export const DatasourceOptionSpecSchema = z.record(
@@ -149,12 +153,18 @@ export const DatasourceOptionSpecSchema = z.record(
 		secret: z.boolean().default(false),
 		description: z.string().optional(),
 		children: z.lazy(() => z.record(z.string(), DatasourceOptionSpecSchema)).optional(),
-		default: z.union([z.string(), z.number(), z.boolean()]).optional() // TODO: Can we easily enforce that this matches type without refine shenanigans
+		required: z.boolean().default(false),
+		options: z.union([
+			z.string(),
+			z.object({ value: primative, label: z.string() })
+		]).array().optional(),
+		default: primative.optional() // TODO: Can we easily enforce that this matches type without refine shenanigans
 	})
 );
 
 export const DatabaseConnectorSchema = z.object({
 	getRunner: DatabaseConnectorFactorySchema,
 	supports: z.array(z.string()),
-	options: DatasourceOptionSpecSchema
+	options: DatasourceOptionSpecSchema,
+	testConnection: ConnectionTesterSchema
 });
