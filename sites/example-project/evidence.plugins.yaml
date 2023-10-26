@@ -5,3 +5,4 @@ components:
   "@evidence-dev/core-components": {}
 databases:
   "@evidence-dev/duckdb": {}
+  "@evidence-dev/postgres": {}

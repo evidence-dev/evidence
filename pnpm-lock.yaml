@@ -963,6 +963,9 @@ importers:
       '@evidence-dev/plugin-connector':
         specifier: workspace:2.0.0-usql.19
         version: link:../../packages/plugin-connector
+      '@evidence-dev/postgres':
+        specifier: workspace:1.0.0-usql.3
+        version: link:../../packages/postgres
       '@evidence-dev/query-store':
         specifier: workspace:^2.0.0-usql.1
         version: link:../../packages/query-store
