@@ -13,16 +13,15 @@ export const inferValueType = function (columnValue) {
 	} else if (typeof columnValue === 'boolean') {
 		return 'boolean';
 	} else if (typeof columnValue === 'string') {
-		const result = 'string';
 		if (columnValue && columnValue.includes('-')) {
 			let testDateStr = columnValue;
 			if (!columnValue.includes(':')) {
 				testDateStr = columnValue + 'T00:00';
 			}
 			try {
-				let testDate = new Date(testDateStr);
+				const testDate = new Date(testDateStr);
 				if (testDate.toLocaleString().length > 0) {
-					let numCheck = Number.parseInt(testDate.toLocaleString().substring(0, 1));
+					const numCheck = Number.parseInt(testDate.toLocaleString().substring(0, 1));
 					if (numCheck != null && !isNaN(numCheck)) {
 						return 'date';
 					}
@@ -31,7 +30,7 @@ export const inferValueType = function (columnValue) {
 				//ignore
 			}
 		}
-		return result;
+		return 'string';
 	} else if (columnValue instanceof Date) {
 		return 'date';
 	} else {
@@ -41,7 +40,7 @@ export const inferValueType = function (columnValue) {
 
 /**
  *
- * @param {import("./types.js").EvidenceQueryResults} rows
+ * @param {import("./types.js").QueryStoreValue | Record<string, unknown>[]} rows
  * @returns {import("./types.js").EvidenceTypeDescriptor[] | undefined}
  */
 export default function inferColumnTypes(rows) {
