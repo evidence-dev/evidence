@@ -1,7 +1,7 @@
 /**
- * 
- * @param {import("./types.js").EvidenceQueryResults} data 
- * @param {string} column 
+ *
+ * @param {import("./types.js").EvidenceQueryResults} data
+ * @param {string} column
  * @returns {import("./types.js").EvidenceTypeUnion[]}
  */
 export default function getDistinctValues(data, column) {

@@ -3,8 +3,8 @@
 import { QueryStore } from '@evidence-dev/query-store';
 
 /**
- * 
- * @param {unknown} columnValue 
+ *
+ * @param {unknown} columnValue
  * @returns {import("./types.js").EvidenceType}
  */
 export const inferValueType = function (columnValue) {
@@ -40,8 +40,8 @@ export const inferValueType = function (columnValue) {
 };
 
 /**
- * 
- * @param {import("./types.js").EvidenceQueryResults} rows 
+ *
+ * @param {import("./types.js").EvidenceQueryResults} rows
  * @returns {import("./types.js").EvidenceTypeDescriptor[] | undefined}
  */
 export default function inferColumnTypes(rows) {
@@ -52,11 +52,13 @@ export default function inferColumnTypes(rows) {
 		const columns = Object.keys(rows[0]);
 		return columns.map((column) => {
 			const firstRowWithColumnValue = rows.find((element) => element[column] != null);
-            return {
-                name: column,
-                evidenceType: firstRowWithColumnValue? inferValueType(firstRowWithColumnValue[column]) : 'string',
-                typeFidelity: 'inferred'
-            };
+			return {
+				name: column,
+				evidenceType: firstRowWithColumnValue
+					? inferValueType(firstRowWithColumnValue[column])
+					: 'string',
+				typeFidelity: 'inferred'
+			};
 		});
 	}
 	return undefined;

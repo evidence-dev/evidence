@@ -6,8 +6,8 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"moduleResolution": "NodeNext",
-        "checkJs": true,
-        "strict": true,
-        "types": ["@sveltejs/kit"]
+		"checkJs": true,
+		"strict": true,
+		"types": ["@sveltejs/kit"]
 	}
 }

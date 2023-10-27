@@ -11,7 +11,7 @@ const AUTO_FORMAT_MEDIAN_PRECISION = 3;
  * This will only be applied to columns that cannot be matched to existing custom or built-in formats.
  * These won't be shown in the settings panel.
  * The ORDER in the array will take precedence as a columnName/evidenceType can be matched to multiple formats
- * @type {import("./types.js").FormatDescription[]} 
+ * @type {import("./types.js").FormatDescription[]}
  */
 const IMPLICIT_COLUMN_AUTO_FORMATS = [
 	{
@@ -58,7 +58,7 @@ const IMPLICIT_COLUMN_AUTO_FORMATS = [
 			exampleInput: 93120121,
 			_autoFormat: {
 				autoFormatFunction: (typedValue) => {
-					if (typedValue !== null && typedValue !== undefined && !isNaN(typedValue)) {
+					if (typedValue !== null && typedValue !== undefined && !isNaN(Number(typedValue))) {
 						return typedValue.toLocaleString('fullwide', {
 							useGrouping: false
 						});
@@ -95,11 +95,11 @@ const IMPLICIT_COLUMN_AUTO_FORMATS = [
 /**
  * @template T
  * @param {number | T} value
- * @param {string} unit
+ * @param {import('./types.js').ColumnUnits} unit
  * @returns {number | T} the value in the given unit
  */
 export const applyColumnUnits = (value, unit) => {
-    if (typeof value !== 'number') return value;
+	if (typeof value !== 'number') return value;
 	switch (unit) {
 		case 'T':
 			return value / 1000000000000;
@@ -130,9 +130,9 @@ export const configureAutoFormatting = (format, formatCode = '@', truncateUnits 
 };
 
 /**
- * 
- * @param {import("./types.js").Format} format 
- * @param {string} effectiveCode 
+ *
+ * @param {import("./types.js").Format} format
+ * @param {string} effectiveCode
  * @returns {boolean}
  */
 export const isAutoFormat = (format, effectiveCode) => {
@@ -146,13 +146,14 @@ export const isAutoFormat = (format, effectiveCode) => {
 };
 
 /**
- * 
- * @param {import("./types.js").ColumnUnitSummary | undefined} columnUnitSummary 
- * @param {number} maxDisplayDecimals 
- * @returns 
+ *
+ * @param {import("./types.js").ColumnUnitSummary | undefined} columnUnitSummary
+ * @param {number} maxDisplayDecimals
+ * @returns {Omit<import('./types.js').Format, 'exampleInput'>}
  */
 export const generateImplicitNumberFormat = (columnUnitSummary, maxDisplayDecimals = 7) => {
 	let effectiveFormatCode;
+	/** @type {import('./types.js').ColumnUnits} */
 	let columnUnits = '';
 
 	let median = columnUnitSummary?.median;
@@ -191,22 +192,20 @@ export const generateImplicitNumberFormat = (columnUnitSummary, maxDisplayDecima
 };
 
 /**
- * 
- * @param {string} columnName 
- * @param {import("./types.js").EvidenceTypeDescriptor} evidenceTypeDescriptor 
- * @param {import("./types.js").ColumnUnitSummary | undefined} columnUnitSummary 
- * @returns 
+ *
+ * @param {string} columnName
+ * @param {import("./types.js").EvidenceTypeDescriptor} evidenceTypeDescriptor
+ * @param {import("./types.js").ColumnUnitSummary | undefined} columnUnitSummary
+ * @returns {Omit<import('./types.js').Format, 'exampleInput'> | undefined}
  */
 export const findImplicitAutoFormat = (columnName, evidenceTypeDescriptor, columnUnitSummary) => {
-	let matched = IMPLICIT_COLUMN_AUTO_FORMATS.find((implicitFormat) =>
+	const matched = IMPLICIT_COLUMN_AUTO_FORMATS.find((implicitFormat) =>
 		implicitFormat.matchingFunction(columnName, evidenceTypeDescriptor, columnUnitSummary)
 	);
 	if (matched) {
 		return matched.format;
-	} else {
-		if (columnUnitSummary?.unitType === 'number' && columnUnitSummary?.median !== undefined) {
-			return generateImplicitNumberFormat(columnUnitSummary);
-		}
+	} else if (columnUnitSummary?.unitType === 'number' && columnUnitSummary?.median !== undefined) {
+		return generateImplicitNumberFormat(columnUnitSummary);
 	}
 	return undefined;
 };
@@ -219,15 +218,18 @@ export const findImplicitAutoFormat = (columnName, evidenceTypeDescriptor, colum
  * @returns formatted value
  */
 export const autoFormat = (typedValue, columnFormat, columnUnitSummary = undefined) => {
-	if (columnFormat._autoFormat?.autoFormatFunction) {
-		return columnFormat._autoFormat.autoFormatFunction(typedValue, columnFormat, columnUnitSummary);
-	} else if (columnFormat._autoFormat.autoFormatCode) {
-		let autoFormatCode = columnFormat?._autoFormat?.autoFormatCode;
-		let valueType = columnFormat.valueType;
-		if ('number' === valueType) {
-			let truncateUnits = columnFormat?._autoFormat?.truncateUnits;
+	const autoFormat = columnFormat._autoFormat;
+
+	if (autoFormat?.autoFormatFunction) {
+		return autoFormat.autoFormatFunction(typedValue, columnFormat, columnUnitSummary);
+	} else if (autoFormat.autoFormatCode) {
+		const { autoFormatCode } = autoFormat;
+		const { valueType } = columnFormat;
+		if (valueType === 'number') {
+			const truncateUnits = autoFormat?.truncateUnits;
 
 			let unitValue = typedValue;
+			/** @type {import('./types.js').ColumnUnits} */
 			let unit = '';
 
 			if (truncateUnits && columnUnitSummary?.median !== undefined) {
@@ -248,7 +250,7 @@ export const autoFormat = (typedValue, columnFormat, columnUnitSummary = undefin
 
 /**
  * Formatting for any column without formatting settings
- * @param {*} typedValue a value of type number|date|string
+ * @param {number | Date | string} [typedValue] a value of type number|date|string
  * @returns {string} the formatted value
  */
 export const fallbackFormat = (typedValue) => {
@@ -267,6 +269,8 @@ export const fallbackFormat = (typedValue) => {
 //TODO: use rewire.js to enable testing without exporting.
 /**
  * @param {number} referenceValue
+ * @param {number} [maxDisplayDecimals]
+ * @param {number} [significantDigits]
  * @returns {string} the number format code for the given reference value
  */
 export function computeNumberAutoFormatCode(
@@ -296,11 +300,12 @@ export function computeNumberAutoFormatCode(
 
 /**
  * @param {number | undefined} value
- * @returns {string} the appropriate unit (B, M, k or '') for the given value
+ * @returns {import('./types.js').ColumnUnits} the appropriate unit (B, M, k or '') for the given value
  */
 function getAutoColumnUnit(value) {
-    if (value === undefined) return '';
-	let absoluteValue = Math.abs(value);
+	if (value === undefined) return '';
+
+	const absoluteValue = Math.abs(value);
 	if (absoluteValue >= 5000000000000) {
 		return 'T';
 	} else if (absoluteValue >= 5000000000) {
@@ -315,9 +320,9 @@ function getAutoColumnUnit(value) {
 }
 
 /**
- * 
- * @param {number} value 
- * @returns {number}
+ * Returns the value k such that 10^k <= value < 10^(k+1)
+ * @param {number} value
+ * @returns {number} k
  */
 function base10Exponent(value) {
 	if (value === 0) {

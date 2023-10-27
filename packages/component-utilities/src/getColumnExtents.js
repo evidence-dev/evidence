@@ -2,8 +2,9 @@ import { tidy, summarize, min, max, median } from '@tidyjs/tidy';
 
 /**
  *
- * @param {Record<string, unknown>[]} data
- * @param {string} columnName
+ * @template {string} T
+ * @param {Record<T, number>[]} data
+ * @param {T} columnName
  * @returns {{ min?: number, max?: number, median?: number, maxDecimals: number, unitType: string }}
  */
 export function getColumnUnitSummary(data, columnName) {

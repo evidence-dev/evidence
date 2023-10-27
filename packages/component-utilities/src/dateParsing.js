@@ -1,8 +1,8 @@
 import { tidy, mutate } from '@tidyjs/tidy';
 
 /**
- * 
- * @param {string | Date} date 
+ *
+ * @param {string | Date} date
  * @returns {string | Date}
  */
 export function standardizeDateString(date) {
@@ -36,9 +36,9 @@ export function standardizeDateString(date) {
 }
 
 /**
- * 
- * @param {Record<string, string | Date>[]} data 
- * @param {string} column 
+ *
+ * @param {Record<string, string | Date>[]} data
+ * @param {string} column
  * @returns {Record<string, unknown>[]}
  */
 export function convertColumnToDate(data, column) {
@@ -53,9 +53,9 @@ export function convertColumnToDate(data, column) {
 }
 
 /**
- * 
- * @param {Record<string, string | Date>[]} data 
- * @param {string} column 
+ *
+ * @param {Record<string, string | Date>[]} data
+ * @param {string} column
  * @returns  {Record<string, unknown>[]}
  */
 export function standardizeDateColumn(data, column) {

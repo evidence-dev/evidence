@@ -10,8 +10,8 @@ import formatTitle from './formatTitle.js';
  * @param {T} returnType
  * @returns {T extends 'object' ? Record<string, import('./types.js').ColumnSummary> : (import('./types.js').ColumnSummary & { id: string })[]}
  */
-export default function getColumnSummary(data, returnType = /** @type {T} */('object')) {
-    /** @type {Record<string, import('./types.js').ColumnSummary>} */
+export default function getColumnSummary(data, returnType = /** @type {T} */ ('object')) {
+	/** @type {Record<string, import('./types.js').ColumnSummary>} */
 	const columnSummary = {};
 
 	for (const colName of Object.keys(data[0])) {
@@ -19,7 +19,7 @@ export default function getColumnSummary(data, returnType = /** @type {T} */('ob
 		const type = evidenceColumnType.evidenceType;
 		const columnUnitSummary =
 			evidenceColumnType.evidenceType === 'number'
-				? getColumnUnitSummary(data.slice(0, 1000), colName)
+				? getColumnUnitSummary(data, colName)
 				: {
 						maxDecimals: 0,
 						unitType: evidenceColumnType.evidenceType

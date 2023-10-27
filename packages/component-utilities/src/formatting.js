@@ -1,7 +1,12 @@
 import ssf from 'ssf';
 import { getContext } from 'svelte';
 import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from './globalContexts.js';
-import { findImplicitAutoFormat, autoFormat, fallbackFormat, isAutoFormat } from './autoFormatting.js';
+import {
+	findImplicitAutoFormat,
+	autoFormat,
+	fallbackFormat,
+	isAutoFormat
+} from './autoFormatting.js';
 import { BUILT_IN_FORMATS } from './builtInFormats.js';
 import { standardizeDateString } from './dateParsing.js';
 import { inferValueType } from './inferColumnTypes.js';
@@ -24,7 +29,7 @@ export const lookupColumnFormat = (columnName, columnEvidenceType, columnUnitSum
 		return undefined;
 	}
 
-    const potentialFormatTag = maybeExtractFormatTag(columnName);
+	const potentialFormatTag = maybeExtractFormatTag(columnName);
 
 	if (potentialFormatTag) {
 		let customFormats = getCustomFormats();
@@ -76,11 +81,11 @@ export function getFormatObjectFromString(formatString, valueType = undefined) {
 }
 
 /**
- * 
- * @param {import('./types.js').EvidenceTypeUnion} value 
- * @param {string | undefined} columnFormat 
- * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary 
- * @returns 
+ *
+ * @param {import('./types.js').EvidenceTypeUnion} value
+ * @param {string | undefined} columnFormat
+ * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary
+ * @returns
  */
 export const formatValue = (value, columnFormat = undefined, columnUnitSummary = undefined) => {
 	try {
@@ -164,12 +169,12 @@ export const formatExample = (format) => {
 };
 
 /**
- * 
- * @param {import('./types.js').EvidenceTypeUnion} value 
- * @param {string | undefined} columnFormat 
- * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary 
- * @param {typeof VALUE_FORMATTING_CONTEXT | typeof AXIS_FORMATTING_CONTEXT} formattingContext 
- * @returns 
+ *
+ * @param {import('./types.js').EvidenceTypeUnion} value
+ * @param {string | undefined} columnFormat
+ * @param {import('./types.js').ColumnUnitSummary | undefined} columnUnitSummary
+ * @param {typeof VALUE_FORMATTING_CONTEXT | typeof AXIS_FORMATTING_CONTEXT} formattingContext
+ * @returns
  */
 function applyFormatting(
 	value,

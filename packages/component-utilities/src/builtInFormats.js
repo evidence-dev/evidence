@@ -1,4 +1,8 @@
-import { AUTO_FORMAT_CODE, applyColumnUnits, generateImplicitNumberFormat } from './autoFormatting.js';
+import {
+	AUTO_FORMAT_CODE,
+	applyColumnUnits,
+	generateImplicitNumberFormat
+} from './autoFormatting.js';
 import ssf from 'ssf';
 
 export const SUPPORTED_CURRENCIES = [
@@ -147,11 +151,11 @@ const DERIVED_CURRENCY_FORMATS = [
 
 const CURRENCY_FORMATS = SUPPORTED_CURRENCIES.map((currency) => {
 	/**
-     * @type {{ formatTag: string; parentFormat: string; formatCategory: string; valueType: string; exampleInput: number; titleTagReplacement: string; }[]}
-     */
+	 * @type {{ formatTag: string; parentFormat: string; formatCategory: string; valueType: string; exampleInput: number; titleTagReplacement: string; }[]}
+	 */
 	let derivedFormats = [];
 	DERIVED_CURRENCY_FORMATS.forEach((derivedFormat) => {
-        /** @type {Partial<import('./types.js').Format & { formatCode: string, formatTag: string, parentFormat: string, formatCategory: string, valueType: import('./types.js').EvidenceTypeDescriptor["evidenceType"], exampleInput: string | boolean | number | Date, titleTagReplacement: string }>} */
+		/** @type {Partial<import('./types.js').Format & { formatCode: string, formatTag: string, parentFormat: string, formatCategory: string, valueType: import('./types.js').EvidenceTypeDescriptor["evidenceType"], exampleInput: string | boolean | number | Date, titleTagReplacement: string }>} */
 		let next = {
 			formatTag: currency.primaryCode + derivedFormat.derivedSuffix,
 			parentFormat: currency.primaryCode,
