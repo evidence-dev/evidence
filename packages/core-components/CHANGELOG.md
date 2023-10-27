@@ -1,5 +1,48 @@
 # @evidence-dev/core-components
 
+## 2.1.2
+
+### Patch Changes
+
+- 41df3c72: fix snowflake persisting authenticator
+
+## 2.1.1
+
+### Patch Changes
+
+- 9d5c11e1: move new layout libs from devdeps to deps
+
+## 2.1.0
+
+### Minor Changes
+
+- 5f660a8d: Add box plot
+- 56521bfb: Add value labels to charts
+- 29ec9735: Log scale for y-axis
+- 410c1bc6: Add custom color palette options to charts
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+- 71a77ca6: Add secondary y-axis for line charts
+
+### Patch Changes
+
+- d09a32ce: Fix links to work in VS Code browser
+- aafd7135: Consolidate echarts theme imports
+- 75e419f8: Fix for axis settings when secondary axis enabled
+- 548d37ff: fix regression from nullish linkLabel column fix
+- e986ed77: Update print settings
+- f8781d56: Fixes for reference area and histogram
+- 1f20c79d: Minor adjustments
+- e68a91f7: change error message for adapter import errors
+- 614b9007: display null instead of linkLabel column name when row[column.linkLabel] is null
+- 90258dec: Add showPercent option to funnel chart
+- Updated dependencies [aafd7135]
+- Updated dependencies [5f660a8d]
+- Updated dependencies [56521bfb]
+- Updated dependencies [9b8346f0]
+- Updated dependencies [71a77ca6]
+  - @evidence-dev/component-utilities@1.2.0
+  - @evidence-dev/tailwind@1.1.0
+
 ## 2.0.4
 
 ### Patch Changes

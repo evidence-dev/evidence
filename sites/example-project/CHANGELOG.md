@@ -1,5 +1,51 @@
 # @evidence-dev/components
 
+## 2.7.2
+
+### Patch Changes
+
+- Updated dependencies [41df3c72]
+  - @evidence-dev/core-components@2.1.2
+
+## 2.7.1
+
+### Patch Changes
+
+- Updated dependencies [9d5c11e1]
+  - @evidence-dev/core-components@2.1.1
+
+## 2.7.0
+
+### Minor Changes
+
+- 56521bfb: Add value labels to charts
+- 29ec9735: Log scale for y-axis
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+- 71a77ca6: Add secondary y-axis for line charts
+
+### Patch Changes
+
+- aafd7135: Consolidate echarts theme imports
+- 1f20c79d: Minor adjustments
+- Updated dependencies [d09a32ce]
+- Updated dependencies [aafd7135]
+- Updated dependencies [75e419f8]
+- Updated dependencies [548d37ff]
+- Updated dependencies [5f660a8d]
+- Updated dependencies [56521bfb]
+- Updated dependencies [29ec9735]
+- Updated dependencies [410c1bc6]
+- Updated dependencies [e986ed77]
+- Updated dependencies [f8781d56]
+- Updated dependencies [1f20c79d]
+- Updated dependencies [e68a91f7]
+- Updated dependencies [9b8346f0]
+- Updated dependencies [614b9007]
+- Updated dependencies [90258dec]
+- Updated dependencies [71a77ca6]
+  - @evidence-dev/core-components@2.1.0
+  - @evidence-dev/component-utilities@1.2.0
+
 ## 2.6.4
 
 ### Patch Changes

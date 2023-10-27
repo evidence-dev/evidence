@@ -73,6 +73,7 @@
 	export let chartType = 'Chart'; // Used to label chart error messages
 	export let bubble = false;
 	export let hist = false;
+	export let boxplot = false;
 	let reqCols;
 
 	// X axis:
@@ -279,6 +280,8 @@
 				reqCols = {
 					x: x
 				};
+			} else if (boxplot) {
+				reqCols = {};
 			} else {
 				reqCols = {
 					x: x,
@@ -653,7 +656,7 @@
 						hideOverlap: true,
 						showMaxLabel: xType === 'category' || xType === 'value', // max label for ECharts' time axis is a stub - default for that is false
 						formatter:
-							xType === 'time'
+							xType === 'time' || xType === 'category'
 								? false
 								: function (value) {
 										return formatAxisValue(value, xFormat, xUnitSummary);

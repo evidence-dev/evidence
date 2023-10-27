@@ -10,7 +10,7 @@ hide_title: true
 
 We'd love to hear what you think about Evidence and we're excited to see what you build.
 
-[<h3>Slack</h3>](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q)
+[<h3>Slack</h3>](https://slack.evidence.dev)
 
 - Get help and help others
 - Meet other Evidence developers

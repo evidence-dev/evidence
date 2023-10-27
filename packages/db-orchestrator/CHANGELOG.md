@@ -1,5 +1,20 @@
 # @evidence-dev/db-orchestrator
 
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [f36450f5]
+  - @evidence-dev/snowflake@0.3.3
+
+## 2.3.2
+
+### Patch Changes
+
+- Updated dependencies [1f9a840c]
+  - @evidence-dev/duckdb@0.2.1
+  - @evidence-dev/csv@0.1.7
+
 ## 2.3.1
 
 ### Patch Changes
