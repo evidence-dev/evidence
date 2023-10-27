@@ -1,6 +1,6 @@
 /**
  *
- * @param {import("./types.js").EvidenceQueryResults | string} data
+ * @param {import("./types.js").QueryStoreValue | string} data
  * @param {string[] | undefined} reqCols
  * @param {string[] | undefined} optCols
  */
@@ -21,11 +21,6 @@ export default function checkInputs(data, reqCols, optCols) {
 		throw Error(
 			'Dataset is empty: query ran successfully, but no data was returned from the database'
 		);
-	}
-
-	// Check if data warehouse returned an error
-	if (data[0]?.error_object?.error != null) {
-		throw Error('SQL Error: ' + data[0]?.error_object.error.message);
 	}
 
 	if (reqCols == undefined) return;
