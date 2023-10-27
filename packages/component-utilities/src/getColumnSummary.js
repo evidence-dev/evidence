@@ -6,7 +6,7 @@ import formatTitle from './formatTitle.js';
 /**
  * @function
  * @template {'object' | 'array'} T
- * @param {Record<string, unknown>[]} data
+ * @param {import("./types.js").QueryStoreValue} data
  * @param {T} returnType
  * @returns {T extends 'object' ? Record<string, import('./types.js').ColumnSummary> : (import('./types.js').ColumnSummary & { id: string })[]}
  */
@@ -15,15 +15,11 @@ export default function getColumnSummary(data, returnType = /** @type {T} */ ('o
 	const columnSummary = {};
 
 	for (const colName of Object.keys(data[0])) {
-		const evidenceColumnType = getColumnEvidenceType(data, colName);
+		const evidenceColumnType = /** @type {import("./types.js").EvidenceTypeDescriptor} */ (
+			getColumnEvidenceType(data, colName)
+		);
 		const type = evidenceColumnType.evidenceType;
-		const columnUnitSummary =
-			evidenceColumnType.evidenceType === 'number'
-				? getColumnUnitSummary(data, colName)
-				: {
-						maxDecimals: 0,
-						unitType: evidenceColumnType.evidenceType
-				  };
+		const columnUnitSummary = getColumnUnitSummary(data, colName);
 		const format = lookupColumnFormat(colName, evidenceColumnType, columnUnitSummary);
 
 		columnSummary[colName] = {

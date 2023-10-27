@@ -1,20 +1,27 @@
 import { tidy, summarize, min, max, median } from '@tidyjs/tidy';
+import getColumnEvidenceType from './getColumnEvidenceType.js';
 
 /**
  *
- * @template {string} T
- * @param {Record<T, number>[]} data
- * @param {T} columnName
+ * @param {import("./types.js").QueryStoreValue} data
+ * @param {string} column
  * @returns {{ min?: number, max?: number, median?: number, maxDecimals: number, unitType: string }}
  */
-export function getColumnUnitSummary(data, columnName) {
+export function getColumnUnitSummary(data, column) {
+	const type = getColumnEvidenceType(data, column)?.evidenceType ?? 'string';
+	if (type !== 'number') {
+		return { maxDecimals: 0, unitType: type };
+	}
+
 	const seriesExtents = tidy(
 		data,
-		summarize({ min: min(columnName), max: max(columnName), median: median(columnName) })
+		summarize({ min: min(column), max: max(column), median: median(column) })
 	)[0];
 
 	//TODO try to use summerize spec in tidy
-	const { maxDecimals, unitType } = summarizeUnits(data.map((row) => row[columnName]));
+	const { maxDecimals, unitType } = summarizeUnits(
+		/** @type {number[]} */ (data.map((row) => row[column]))
+	);
 
 	return {
 		min: seriesExtents.min,
