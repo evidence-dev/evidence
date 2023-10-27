@@ -180,7 +180,7 @@
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
 		// Push series into legend:
-		d.legend.data.push(...seriesConfig.map((d) => d.name));
+		d.legend.data.push(...seriesConfig.map((d) => d.name.toString()));
 
 		// Stacked chart total label:
 		// series !== x is to avoid an issue where same column is used for both - stackTotalLabel can't handle that
