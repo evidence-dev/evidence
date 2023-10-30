@@ -52,7 +52,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			} else result = _r;
 		} catch (e) {
 			if (e instanceof z.ZodError)
-				console.log(/**@type {Error & { format: () => any}}*/ (e).format());
+				console.log(e.format());
 			else console.log(e);
 			result = null;
 		}
