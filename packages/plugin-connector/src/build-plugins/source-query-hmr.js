@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'development') {
 		// go in ../.. (root) vs. . (aka .evidence/template)
 		const error = await updateDatasourceOutputs(`../../static/data`, '/data', {
 			sources: new Set([datasource.name]),
-			queries: datasource ? null : new Set([query]),
+			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
 			only_changed: false
 		}).catch((e) => e);
 
@@ -50,8 +50,13 @@ if (process.env.NODE_ENV === 'development') {
 
 /** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */
 
+let first_time = true;
+
 /** @type {import("vite").Plugin["configureServer"]} */
 const configureServer = (server) => {
+	if (!first_time) return;
+	first_time = false;
+
 	/** @type {Handler} */
 	const handler = (path, manifest, error, status) => {
 		const { source, query } = getSourceAndQuery(path);
