@@ -51,8 +51,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 				});
 			} else result = _r;
 		} catch (e) {
-			if (e instanceof z.ZodError)
-				console.log(e.format());
+			if (e instanceof z.ZodError) console.log(e.format());
 			else console.log(e);
 			result = null;
 		}
@@ -76,8 +75,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		// remove potentially old files
 		await fs.rm(path.join(outDir, querySubdir), { recursive: true }).catch(() => {});
 
-		const outputSubdir = queryDirectory.replace(sourcesPath, '');
-
+		const outputSubdir = path.join(querySubdir, String(query.hash));
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;
