@@ -89,7 +89,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				message: \`Results estimated to use \${
 					Intl.NumberFormat().format(info.score / (1024 * 1024))
 				}mb of memory, performance may be impacted\`,
-				style: 'border-yellow-200 border bg-yellow-50 text-yellow-800 transition-all duration-300'
+				status: 'warning'
 			}, 5000);
 		}
 

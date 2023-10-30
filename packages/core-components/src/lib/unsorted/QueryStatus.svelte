@@ -23,11 +23,11 @@
 
 			const style =
 				status === 'running'
-					? 'border border-gray-400 bg-white text-gray-800'
+					? 'info'
 					: status === 'error'
-					? 'border-red-200 border bg-red-50 text-red-800 transition-all duration-300'
+					? 'error'
 					: status === 'done'
-					? 'border-green-400 border bg-green-100 text-green-900 transition-all duration-300'
+					? 'success'
 					: '';
 
 			const message =
@@ -39,13 +39,15 @@
 					? 'Rebuilt'
 					: '';
 
+			// if the connection.yaml was rebuilt, the id will be something like
+			// needful_things.connection (the .yaml is stripped off)
 			const title = id.endsWith('.connection') ? id.split('.')[0] : id;
 
 			const unique_id = Math.random();
 			const status_as_toast = {
 				title,
 				message,
-				style,
+				status: style,
 				id: unique_id
 			};
 

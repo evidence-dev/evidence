@@ -1,52 +1,38 @@
 <script>
 	import { scale, fly } from 'svelte/transition';
 
-	export let style = '';
+	export let status = '';
 	export let title;
 	export let message;
 </script>
 
-<!-- placeholder so tailwind knows these are used -->
-<!-- DO NOT REMOVE: border-yellow-200 border bg-yellow-50 text-yellow-800 transition-all duration-300 -->
 <div
-	class="toast {style}"
+	class="print:hidden rounded py-1 px-3 my-4 mx-0 shadow-md text-xs font-[var(--monospace-font-family)] flex justify-between transition-all duration-300 border"
+	class:error={status === 'error'}
+	class:warning={status === 'warning'}
+	class:success={status === 'success'}
+	class:info={status === 'info'}
 	in:scale
 	out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
 >
-	<span class="title">{title}</span>
-	<span class="message">{message}</span>
+	<span class="cursor-pointer font-bold pr-8 flex items-center">{title}</span>
+	<span class="cursor-pointer">{message}</span>
 </div>
 
-<style>
-	.toast {
-		border-radius: 4px;
-		padding: 0.3em 0.75em;
-		margin: 1em 0;
-		/* box-shadow: 0 10px 20px rgba(0,0,0,.15);
-        box-shadow: 0 3px 6px rgba(0,0,0,.10); */
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-		font-size: 0.7em;
-		font-family: var(--monospace-font-family);
-		display: flex;
-		justify-content: space-between;
-		/* font-weight: 600; */
+<style lang="postcss">
+	.error {
+		@apply border-red-200 bg-red-50 text-red-800;
 	}
 
-	span {
-		cursor: pointer;
+	.warning {
+		@apply border-yellow-200 bg-yellow-50 text-yellow-800;
 	}
 
-	span.title {
-		font-weight: bold;
-		padding-right: 2em;
-		display: flex;
-		align-items: center;
+	.success {
+		@apply border-green-200 bg-green-50 text-green-800;
 	}
 
-	@media print {
-		.toast {
-			display: none;
-		}
+	.info {
+		@apply border-gray-200 bg-white text-gray-800;
 	}
 </style>
