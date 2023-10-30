@@ -9,7 +9,7 @@ export type Runner = (query: string) => MaybePromise<QueryResult[]>;
 
 export type AggFunction = (query: Query, ...args: any[]) => Query;
 
-export type QueryResult = Record<string, number | string | Date | boolean | null>;
+export type QueryResult = Record<string, QueryResultValue>;
 export type ColumnMetadata = { name: string; type: string };
 export type QueryStoreOpts = {
 	disableCache?: boolean;
@@ -22,3 +22,12 @@ export type QueryStoreOpts = {
 };
 
 export type QueryStoreValue = QueryStore & QueryResult[];
+
+export type EvidenceTypeDescriptor = {
+	name: string;
+	evidenceType: EvidenceType;
+	typeFidelity: TypeFidelity;
+};
+export type EvidenceType = 'boolean' | 'number' | 'string' | 'date';
+export type TypeFidelity = 'precise' | 'inferred';
+export type QueryResultValue = number | string | Date | boolean | null;

@@ -1,22 +1,11 @@
-export type EvidenceTypeDescriptor = {
-	name: string;
-	evidenceType: EvidenceType;
-	typeFidelity: TypeFidelity;
-};
+export * from '@evidence-dev/query-store';
+export * from '@evidence-dev/query-store/dist/types.js';
 
-export type EvidenceQueryResults = Record<string, EvidenceTypeUnion>[] & {
-	0: EvidenceTypeUnion & {
-		error_object: {
-			error: Error;
-		};
-	};
-};
+import { QueryStore } from '@evidence-dev/query-store/dist';
+import { QueryResult } from '@evidence-dev/query-store/dist/types.js';
 
-export type EvidenceTypeUnion = boolean | number | string | Date;
-
-export type EvidenceType = 'boolean' | 'number' | 'string' | 'date';
-
-export type TypeFidelity = 'precise' | 'inferred';
+// JSDoc makes the definition in query-store any for some reason
+export type QueryStoreValue = QueryStore & QueryResult[];
 
 export type Format = {
 	formatCode: string;

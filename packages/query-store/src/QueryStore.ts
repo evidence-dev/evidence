@@ -2,6 +2,7 @@ import { AbstractStore } from './abstract.store.js';
 import type {
 	AggFunction,
 	ColumnMetadata,
+	EvidenceTypeDescriptor,
 	MaybePromise,
 	QueryResult,
 	QueryStoreOpts,
@@ -56,7 +57,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return Array.from(this.#columns);
 	}
 
-	get _evidenceColumnTypes() {
+	get _evidenceColumnTypes(): EvidenceTypeDescriptor[] {
 		//@ts-expect-error This implicitly is set on the return value of #exec
 		return Array.from(this.#values._evidenceColumnTypes ?? []);
 	}
