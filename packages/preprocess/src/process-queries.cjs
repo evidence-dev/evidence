@@ -120,7 +120,7 @@ const processQueries = (componentDevelopmentMode) => {
 		script({ content, filename, attributes }) {
 			if (filename.endsWith('.md')) {
 				if (attributes.context != 'module') {
-					let queryIds = queryIdsByFile[getRouteHash(filename)];
+					let queryIds = queryIdsByFile[getRouteHash(filename)].filter((x) => x !== 'untitled');
 					return {
 						code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content
 					};
