@@ -35,9 +35,10 @@ We must check if we are in a browser before accessing search parameters with the
     import {browser} from "$app/environment";
 </script>
 
+<!-- Check we are in a browser and there is a filter in the URL -->
 {#if browser && $page.url.searchParams.get('channel')}
 
-The channel is {$page.url.searchParams.get('channel')} <!-- Check we are in a browser and there is a filter in the URL -->
+The channel is {$page.url.searchParams.get('channel')} 
 
 {/if}
 ```
@@ -70,11 +71,14 @@ group by 1
 
 To filter the data shown by a component, use the javascript filter method on the query result.
 
-<!-- TODO @archiewood: update to SK 1.0 syntax -->
 
 ```js title="Filter method"
 .filter(d => d.channel === $page.url.searchParams.get('channel'))
 ```
+
+:::tip
+`searchParams.get()` always returns a string, so if your query column is not a string, use an `==` equality check instead of a `===` strict equality, e.g. `filter(d => d.id == $page.url.searchParams.get('id'))`
+:::
 
 ## Full example
 
