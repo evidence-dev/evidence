@@ -28,10 +28,8 @@ export const execSource = async (source, supportedDbs, outDir) => {
 
 	const batchSize = 1000 * 1000; // 1m
 	const db = supportedDbs[source.type];
-	
-	const connectionValid = await db.testConnection(
-		source.options, source.sourceDirectory
-	)
+
+	const connectionValid = await db.testConnection(source.options, source.sourceDirectory);
 
 	if (connectionValid !== true) {
 		const errMsg = chalk.red(

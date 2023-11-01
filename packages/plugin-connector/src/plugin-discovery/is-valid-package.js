@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { ValidPackageSchema } from './schemas/evidence-package.schema';
 import fs from 'fs/promises';
+import { cleanZodErrors } from '../lib/clean-zod-errors';
 /**
  * Checks a directory to see if it is a package
  * and if it is a package, if it includes
@@ -45,11 +46,10 @@ export const isValidPackage = async (path) => {
 	else {
 		console.warn(
 			chalk.yellow(
-				`[!] ${chalk.bold(
-					`"${path.split('node_modules/')[1]}"`
-				)} could not be loaded as a plugin, it is missing a name or main field.`
+				`[!] ${chalk.bold(`"${path.split('node_modules/')[1]}"`)} could not be loaded as a plugin`
 			)
 		);
+		console.warn(cleanZodErrors(zodResult.error.format()));
 		return false;
 	}
 };

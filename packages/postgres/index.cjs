@@ -261,10 +261,9 @@ module.exports.getRunner = async (opts) => {
 
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<PostgresOptions>} */
 module.exports.testConnection = async (opts) => {
-	console.log(opts)
 	return await runQuery('SELECT 1;', opts)
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? "Invalid Credentials" }));
+		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
 };
 
 module.exports.options = {

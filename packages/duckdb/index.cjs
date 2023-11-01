@@ -121,7 +121,7 @@ module.exports.getRunner = async (opts, directory) => {
 module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? "File not found" }));
+		.catch((e) => ({ reason: e.message ?? 'File not found' }));
 	return r;
 };
 

@@ -7,7 +7,7 @@ export const load = async () => {
 			'@evidence-dev/plugin-connector'
 		);
 		const datasourceSettings = await getDatasourceOptions();
-		
+
 		const datasourcePlugins = await getDatasourcePlugins();
 		const serializedPlugins = Object.fromEntries(
 			Object.entries(datasourcePlugins).map(([k, v]) => [
@@ -15,13 +15,13 @@ export const load = async () => {
 				{
 					...v,
 					factory: undefined,
-					testConnection: undefined,
+					testConnection: undefined
 				}
 			])
 		);
 
 		return {
-			datasourceSettings: datasourceSettings.map(sp => ({...sp, queries: []})), // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
+			datasourceSettings: datasourceSettings.map((sp) => ({ ...sp, queries: [] })), // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
 			plugins: serializedPlugins
 		};
 	}
@@ -38,8 +38,6 @@ export const actions = {
 			return fail(400, { message: "Missing required field 'source'" });
 		}
 
-		console.log({ source });
-
 		const { updateDatasourceOptions, getDatasourcePlugins, DatasourceSpecFileSchema } =
 			await import('@evidence-dev/plugin-connector');
 
@@ -55,19 +53,19 @@ export const actions = {
 		const datasourcePlugins = await getDatasourcePlugins();
 
 		return {
-			updatedSource: await updateDatasourceOptions(source, datasourcePlugins).then(r => ({...r, queries: []})) // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
+			updatedSource: await updateDatasourceOptions(source, datasourcePlugins).then((r) => ({
+				...r,
+				queries: []
+			})) // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
 		};
 	},
 	testSource: async (e) => {
 		const formData = Object.fromEntries(await e.request.formData().then((r) => r.entries()));
-		console.log({formData})
 		const source = formData.source ? JSON.parse(formData.source) : null;
 
 		if (!source) {
 			return fail(400, { message: "Missing required field 'source'" });
 		}
-
-		console.log({ source });
 
 		const { getDatasourcePlugins, DatasourceSpecFileSchema, DatasourceSpecSchema } = await import(
 			'@evidence-dev/plugin-connector'
@@ -81,8 +79,8 @@ export const actions = {
 
 		const fullSpec = DatasourceSpecSchema.safeParse({
 			queries: [], // We aren't really worried about queries here
-			...source,
-		})
+			...source
+		});
 
 		if (!fullSpec.success) {
 			return fail(400, fullSpec.error.format());
@@ -93,16 +91,15 @@ export const actions = {
 		const plugin = datasourcePlugins[specFile.data.type];
 
 		if (!plugin) {
-			return fail(400, { message: `Plugin for database ${specFile.data.type} not found.`})
+			return fail(400, { message: `Plugin for database ${specFile.data.type} not found.` });
 		}
 
-		const valid = await plugin.testConnection(fullSpec.data.options, fullSpec.data.sourceDirectory)
+		const valid = await plugin.testConnection(fullSpec.data.options, fullSpec.data.sourceDirectory);
 		if (valid !== true) {
-			return fail(200, { reason: valid.reason })
-		} return {
-			success: true
+			return fail(200, { reason: valid.reason });
 		}
-
-		
+		return {
+			success: true
+		};
 	}
 };

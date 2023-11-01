@@ -19,11 +19,14 @@
 	"type": "module",
 	"evidence": {
 		"databases": [
-			"postgres",
-			"postgresql",
-			"pg",
-			"pgsql",
-			"psql"
+			[
+				"postgres",
+				"postgresql",
+				"pg",
+				"pgsql",
+				"psql"
+			],
+			"redshift"
 		],
 		"iconUrl": "https://placebear.com/g/200/200"
 	}

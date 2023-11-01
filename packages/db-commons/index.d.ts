@@ -14,5 +14,6 @@ export type GetRunner<T extends Record<string, unknown>> = (
 ) => (queryContent: string, queryPath: string, batchSize: number) => Promise<QueryResult>;
 
 export type ConnectionTester<T extends Record<string, unknown>> = (
-	opts: T, directory: string
-) => Promise<boolean>
+	opts: T,
+	directory: string
+) => Promise<boolean>;

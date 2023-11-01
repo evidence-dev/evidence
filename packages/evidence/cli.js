@@ -210,10 +210,10 @@ prog
 	.action(async (opts) => {
 		// TODO: Need a debug flag of some sort
 		if (!opts.debug)
-			process.on('uncaughtException', e => {
-				console.error(e.message)
-				process.exit(1)
-			})
+			process.on('uncaughtException', (e) => {
+				console.error(e.message);
+				process.exit(1);
+			});
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
 		updateDatasourceOutputs(`./static/data`, '/data', {

@@ -38,7 +38,7 @@ export async function getDatasourcePlugins(cfg, discoveries) {
 				v.package.name
 			);
 			// For each database in the plugin package...
-			v.package.evidence.databases?.forEach((d) => {
+			v.package.evidence.databases?.flat().forEach((d) => {
 				// If a plugin with the same database already exists in the map, throw an error
 				if (d in acc) {
 					console.error(

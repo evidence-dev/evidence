@@ -19,7 +19,7 @@
 	let lastAdded;
 
 	function addNewSource(e) {
-		const { newSourceType, newSourceName } = e.detail
+		const { newSourceType, newSourceName } = e.detail;
 		if (!newSourceType) return;
 		const target = availableSourcePlugins[newSourceType];
 		sources.push({
@@ -32,34 +32,32 @@
 		showNewSource = false;
 	}
 
-	/*
-		TODO: Need a way to verify connections with sources
+	/* 
+		TODO: Package is too prominent (?)
 		
-		Package is too prominent (?)
-		
-		Find a way to collapse database types where there is no difference
-			Add a field to package
+		TODO: Find a way to collapse database types where there is no difference
+				Add a field to package
 
-		Look at the current database picker in main wrt Database type
+		TODO: Look at the current database picker in main wrt Database type
 
-		Can we link direct to the source directory? (Can we open in VS Code)
+		TODO: Can we link direct to the source directory? (Can we open in VS Code)
 	*/
 
-
-	let duplicatePackageNames = []
+	let duplicatePackageNames = [];
 	$: if (sources.length) {
-		const allNames = sources.reduce((a,v) => {
-			if (a.sourceNames.has(v.name)) {
-				a.duplicateNames.add(v.name)
-			}
-			a.sourceNames.add(v.name)
+		const allNames = sources.reduce(
+			(a, v) => {
+				if (a.sourceNames.has(v.name)) {
+					a.duplicateNames.add(v.name);
+				}
+				a.sourceNames.add(v.name);
 
+				return a;
+			},
+			{ sourceNames: new Set(), duplicateNames: new Set() }
+		);
 
-			return a
-
-		}, {sourceNames: new Set(), duplicateNames: new Set()})
-
-		duplicatePackageNames = Array.from(allNames.duplicateNames)
+		duplicatePackageNames = Array.from(allNames.duplicateNames);
 	}
 </script>
 
@@ -75,19 +73,20 @@
 					<p class="w-4" />
 					<p>Name</p>
 					<p>Type</p>
-					<p>Package</p>
 					<p />
 				</div>
 
 				{#if duplicatePackageNames.length}
-				<div class="col-span-5">
-					<p class="text-red-500 text-bold text-sm">Duplicate Packages found; this could lead to unexpected behavior</p>
-					<ul>
-						{#each duplicatePackageNames as d}
-							<li>{d}</li>	
-						{/each}
-					</ul>
-				</div>
+					<div class="col-span-4">
+						<p class="text-red-500 text-bold text-sm">
+							Duplicate Packages found; this could lead to unexpected behavior
+						</p>
+						<ul>
+							{#each duplicatePackageNames as d}
+								<li>{d}</li>
+							{/each}
+						</ul>
+					</div>
 				{/if}
 
 				{#each sources as source}
@@ -98,23 +97,26 @@
 					/>
 				{/each}
 
-				<div class="col-start-5 flex justify-end items-center w-full">
+				<div class="col-start-4 flex justify-end items-center w-full">
 					<button
-						class="flex bg-blue-600 gap-2 mx-1 border border-blue-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-blue-700 hover:border-blue-800 transition"
+						class="flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
 						on:click={() => (showNewSource = !showNewSource)}>Add new source</button
 					>
 				</div>
 
 				{#if showNewSource}
 					<!-- TODO: Maybe this should be a modal? -->
-					<NewSourceForm {availablePackages} on:newSource={addNewSource}/>
+					<NewSourceForm {availablePackages} on:newSource={addNewSource} />
 				{/if}
 			{:else}
 				<!-- There are no sources; we should show a hero to make it more clear to the user -->
-				<section class="py-8 col-span-5">
+				<section class="py-8 col-span-4">
 					<!-- TODO: Make this less ugly -->
-					<button class="text-lg font-bold block text-white rounded px-4 py-2 mx-auto bg-blue-500 hover:bg-blue-700 transition">Configure your first datasource</button>
-					<NewSourceForm {availablePackages} on:newSource={addNewSource}/>
+					<button
+						class="text-lg font-bold block text-white rounded px-4 py-2 mx-auto bg-blue-500 hover:bg-blue-700 transition"
+						>Configure your first datasource</button
+					>
+					<NewSourceForm {availablePackages} on:newSource={addNewSource} />
 				</section>
 			{/if}
 		</div>
@@ -122,12 +124,13 @@
 		<div />
 	</div>
 	<div class="p-4 rounded-b w-full bg-gray-100 text-sm">
-		Learn more about <a href="#">Configuring Data Sources &rarr;</a>
+		<!-- TODO: Update this when we have docs -->
+		Learn more about <a href="https://docs.evidence.dev/">Configuring Data Sources &rarr;</a>
 	</div>
 </section>
 
 <style lang="postcss">
 	.source-config-table {
-		grid-template-columns: 1em auto auto auto 1fr;
+		grid-template-columns: 1em auto auto 1fr;
 	}
 </style>

@@ -969,6 +969,9 @@ importers:
       '@evidence-dev/query-store':
         specifier: workspace:^2.0.0-usql.1
         version: link:../../packages/query-store
+      '@evidence-dev/snowflake':
+        specifier: workspace:1.0.0-usql.3
+        version: link:../../packages/snowflake
       '@evidence-dev/telemetry':
         specifier: 1.0.5
         version: link:../../packages/telemetry

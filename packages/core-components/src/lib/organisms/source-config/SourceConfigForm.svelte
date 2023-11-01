@@ -14,7 +14,7 @@
 	let validationError = '';
 	let validationLoading = false;
 	let validationOkay = false;
-	const callback = ({action}) => {
+	const callback = ({ action }) => {
 		switch (action.search) {
 			case '?/updateSource':
 				configurationLoading = true;
@@ -27,38 +27,37 @@
 				validationOkay = false;
 				break;
 		}
-		return  ({ result, action }) => {
-		
-		if (result.status >= 300) {
-			// Some system failure occurred
-			alert(result.data);
-			return;
-		}
+		return ({ result, action }) => {
+			if (result.status >= 300) {
+				// Some system failure occurred
+				alert(result.data);
+				return;
+			}
 
-		switch (action.search) {
-			case '?/updateSource':
-				// TODO: Where would configurationError come from?
-				source = {
-					...source,
-					...result?.data?.updatedSource
-				};
-				configurationLoading = false;
-				configurationOkay = true
-				break;
-			case '?/testSource':
-				if (result.data?.success === true) {
-					validationError = ""
-				} else {
-					validationError = result.data?.reason
-				}
-				validationLoading = false;
-				validationOkay = true
-				break;
-		}
+			switch (action.search) {
+				case '?/updateSource':
+					// TODO: Where would configurationError come from?
+					source = {
+						...source,
+						...result?.data?.updatedSource
+					};
+					configurationLoading = false;
+					configurationOkay = true;
+					break;
+				case '?/testSource':
+					if (result.data?.success === true) {
+						validationError = '';
+					} else {
+						validationError = result.data?.reason;
+					}
+					validationLoading = false;
+					validationOkay = true;
+					break;
+			}
 
-		// If the user decides to rename it again, we need to be ready
+			// If the user decides to rename it again, we need to be ready
+		};
 	};
-	}
 </script>
 
 <form
@@ -94,7 +93,7 @@
 			formaction="?/testSource"
 			disabled={validationLoading}
 		>
-			{ validationLoading ? "Loading..." : "Test Connection"}
+			{validationLoading ? 'Loading...' : 'Test Connection'}
 		</button>
 
 		<button

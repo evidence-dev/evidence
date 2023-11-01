@@ -6,7 +6,9 @@
 
 	for (const [key, spec] of Object.entries(optionSpec)) {
 		// Assign defaults
-		if (spec.default && !options[key]) options[key] = spec.default;
+		if (spec.default && !options[key]) {
+			options[key] = spec.default;
+		}
 	}
 </script>
 

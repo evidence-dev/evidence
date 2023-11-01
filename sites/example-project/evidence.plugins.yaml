@@ -6,3 +6,4 @@ components:
 databases:
   "@evidence-dev/duckdb": {}
   "@evidence-dev/postgres": {}
+  "@evidence-dev/snowflake": {}

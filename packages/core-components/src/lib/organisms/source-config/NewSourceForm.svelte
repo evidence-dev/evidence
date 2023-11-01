@@ -9,11 +9,11 @@
 
 	function submit() {
 		dispatch('newSource', { newSourceType, newSourceName });
-        newSourceName = "";
+		newSourceName = '';
 	}
 </script>
 
-<div class="col-start-5 w-full flex justify-end items-end flex-col my-4" transition:slide>
+<div class="col-start-4 w-full flex justify-end items-end flex-col my-4" transition:slide>
 	<form class="grid grid-cols-2 gap-4 items-center" on:submit|preventDefault={() => {}}>
 		<p class="w-full text-center col-span-2 font-bold">New Source:</p>
 
@@ -27,7 +27,11 @@
 				{@const supports = value.package.package.evidence.databases}
 				<optgroup label={name}>
 					{#each supports as db}
-						<option value={db}>{db}</option>
+						{#if Array.isArray(db)}
+							<option value={db[0]}>{db[0]}</option>
+						{:else}
+							<option value={db}>{db}</option>
+						{/if}
 					{/each}
 				</optgroup>
 			{/each}

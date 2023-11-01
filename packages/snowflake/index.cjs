@@ -341,3 +341,101 @@ module.exports.getRunner = async (opts) => {
 		return runQuery(queryContent, opts, batchSize);
 	};
 };
+
+module.exports.testConnection = async (opts) => {
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+};
+
+module.exports.options = {
+	account: {
+		title: 'Account',
+		type: 'string',
+		secret: false,
+		description: '',
+		required: true
+	},
+	username: {
+		title: 'Username',
+		type: 'string',
+		secret: true,
+		description: '',
+		required: true
+	},
+	database: {
+		title: 'Database',
+		type: 'string',
+		secret: false,
+		description: '',
+		required: true
+	},
+	warehouse: {
+		title: 'Warehouse',
+		type: 'string',
+		secret: false,
+		description: '',
+		required: true
+	},
+	role: {
+		title: 'Role',
+		type: 'string',
+		secret: false,
+		description: '',
+		required: true
+	},
+	schema: {
+		title: 'Schema',
+		type: 'string',
+		secret: false,
+		description: '',
+		required: true
+	},
+	authenticator: {
+		title: 'Auth Method',
+		type: 'select',
+		secret: false,
+		description: '',
+		required: true,
+		options: [
+			{ label: 'JWT', value: 'snowflake_jwt' },
+			{ label: 'Browser', value: 'externalbrowser' },
+			{ label: 'Okta', value: 'okta' }
+		],
+		nest: false,
+		children: {
+			snowflake_jwt: {
+				private_key: {
+					title: 'Private Key',
+					type: 'string',
+					secret: true,
+					description: '',
+					required: true
+				},
+				passphrase: {
+					title: 'Passphrase',
+					type: 'string',
+					secret: true,
+					description: '',
+					required: true
+				}
+			},
+			okta: {
+				password: {
+					title: 'Password',
+					type: 'string',
+					secret: true,
+					description: '',
+					required: true
+				},
+				okta_url: {
+					title: 'Okta URL',
+					type: 'string',
+					secret: true,
+					description: '',
+					required: true
+				}
+			}
+		}
+	}
+};
