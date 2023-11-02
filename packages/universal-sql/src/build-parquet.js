@@ -81,6 +81,8 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 		console.debug(` || Writing batch ${batchNum} with ${results.length} rows.`);
 		const tempFilename = path.join(
 			'.',
+			'.evidence',
+			'template',
 			'.evidence-queries',
 			'intermediate-parquet',
 			outputPrefix + `.${batchNum}.parquet`
