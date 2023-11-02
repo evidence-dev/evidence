@@ -81,10 +81,8 @@
 	}
 </script>
 
-{#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
-	<QueryStatus />
-{/if}
-
+<!-- QueryStatus doesn't actually create any UI, just supplies toasts to ToastWrapper -->
+<QueryStatus />
 <ToastWrapper />
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
