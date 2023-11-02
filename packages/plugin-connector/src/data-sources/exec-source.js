@@ -68,20 +68,28 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 
+		// /Users/someone/sources/needful_things
 		const queryDirectory = path.dirname(query.filepath);
+		// /Users/someone/sources
 		const sourcesPath = path.dirname(source.sourceDirectory);
+		// needful_things/test
 		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
-
-		// remove potentially old files
-		await fs.rm(path.join(outDir, querySubdir), { recursive: true }).catch(() => {});
-
+		// ./static/data/needful_things/test
+		const fullQuerySubdir = path.join(outDir, querySubdir);
+		// needful_things/test/d7f02c01efa32f64521bfc18f1d38177
 		const outputSubdir = path.join(querySubdir, String(query.hash));
+		// ./static/data/needful_things/test/d7f02c01efa32f64521bfc18f1d38177
+		const fullOutputSubdir = path.join(outDir, outputSubdir);
+		// needful_things/test/d7f02c01efa32f64521bfc18f1d38177/test.parquet
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;
+
+		
+		await fs.mkdir(fullOutputSubdir, { recursive: true });
+
 		console.log(` || Writing ${filename} results to disk`);
 		const beforeFile = performance.now();
-		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 
 		const rows = /** @type {any[] | Generator<any[]>} */ (result.rows);
 
@@ -96,12 +104,24 @@ export const execSource = async (source, supportedDbs, outDir) => {
 				);
 		}
 
+		// save old files (in case SIGINT) for deleting later
+		await fs.rename(fullQuerySubdir, `${fullQuerySubdir}_temp`).catch(() => {});
+		const reclaim = async () => {
+			await fs.rename(`${fullQuerySubdir}_temp`, fullQuerySubdir).catch(() => {});
+			process.exit(0);
+		};
+		process.on('SIGINT', reclaim);
+
 		const writtenRows = await buildMultipartParquet(
 			result.columnTypes,
 			rows,
 			outputFilename,
 			batchSize
 		);
+
+		process.off('SIGINT', reclaim);
+		await fs.rm(`${fullQuerySubdir}_temp`, { recursive: true })
+
 		if (!writtenRows) {
 			console.log(
 				` <| Finished ${filename}. No rows returned, did not create parquet file (took ${(
