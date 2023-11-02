@@ -5,7 +5,7 @@ export const load = async ({ fetch, route, data: parentData }) => {
 
 		let data, json;
 		const res = await fetch(`/api/${routeHash}.json`);
-		
+
 		// don't clone the response if we're in dev mode as it causes multiple queries to fire
 		// but when building we do to bypass the proxy https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
 		if (dev) {
