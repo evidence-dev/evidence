@@ -17,7 +17,7 @@ export const load = async ({ fetch, route, data: parentData }) => {
 
 			[0] - https://github.com/sveltejs/kit/blob/master/packages/kit/src/runtime/server/page/load_data.js#L297
 		*/
-		const { data } = dev? await res.json() : await res.clone().json();
+		const { data } = dev ? await res.json() : await res.clone().json();
 
 		return {
 			data,
