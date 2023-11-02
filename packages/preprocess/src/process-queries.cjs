@@ -76,13 +76,13 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		);
 
 		queryDeclarations += `
-		import {browser} from "$app/environment";
+		import {browser,dev} from "$app/environment";
 		import {profile} from '@evidence-dev/component-utilities/profile';
 		import debounce from 'debounce';
 		import {QueryStore} from '@evidence-dev/query-store';
 		
 		const queryFunc = (query) => profile(__db.query, query);	
-		const scoreNotifier = (info) => {
+		const scoreNotifier = !dev? () => {} : (info) => {
 			toasts.add({
 				id: Math.random(),
 				title: info.id,
