@@ -52,12 +52,16 @@ if (process.env.NODE_ENV === 'development') {
 
 /** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */
 
-let first_time = true;
+const subscribed_servers = new Map();
 
 /** @type {import("vite").Plugin["configureServer"]} */
 const configureServer = (server) => {
-	if (!first_time) return;
-	first_time = false;
+	if (subscribed_servers.has(server)) return;
+	subscribed_servers.forEach((handlers) => {
+		build_watcher.off('change', handlers.change_handler);
+		build_watcher.off('done', handlers.done_handler);
+	});
+	subscribed_servers.clear();
 
 	/** @type {Handler} */
 	const handler = (path, manifest, error, status) => {
@@ -77,6 +81,8 @@ const configureServer = (server) => {
 
 	build_watcher.on('change', change_handler);
 	build_watcher.on('done', done_handler);
+
+	subscribed_servers.set(server, { change_handler, done_handler });
 };
 
 /** @type {() => import("vite").Plugin} */
