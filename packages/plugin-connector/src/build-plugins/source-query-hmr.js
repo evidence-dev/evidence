@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
 import { basename, dirname, resolve } from 'path';
-import { readFile, rm } from 'fs/promises';
+import { readFile, rm, cp } from 'fs/promises';
 
 /**
  * Extracts source, query, and source_path from a path
@@ -38,6 +38,7 @@ if (process.env.NODE_ENV === 'development') {
 			only_changed: false
 		}).catch((e) => e);
 		await rm('./.evidence-queries', { recursive: true, force: true });
+		await cp('../../static/data', './static/data', { recursive: true });
 
 		if (error) {
 			console.error(`Error occured while reloading source: ${error}`);

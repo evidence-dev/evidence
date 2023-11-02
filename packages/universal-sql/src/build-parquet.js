@@ -81,8 +81,6 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 		console.debug(` || Writing batch ${batchNum} with ${results.length} rows.`);
 		const tempFilename = path.join(
 			'.',
-			'.evidence',
-			'template',
 			'.evidence-queries',
 			'intermediate-parquet',
 			outputPrefix + `.${batchNum}.parquet`
@@ -139,16 +137,14 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 
 	await initDB();
 
+	const outputFilepath = path.join('.', 'static', 'data', outputFilename);
+	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
+
 	const parquetFiles = tmpFilenames
 		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
 		.join(',');
 	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
-	const copy = `COPY (${select}) TO '${path.join(
-		'.',
-		'static',
-		'data',
-		outputFilename
-	)}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
+	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
 	await query(copy);
 
