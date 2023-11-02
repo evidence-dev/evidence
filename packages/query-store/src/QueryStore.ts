@@ -110,6 +110,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return this.#length ?? 0;
 	}
 
+	#score?: number;
+	get score(): number {
+		return this.#score ?? 0;
+	}
+
 	/**
 	 * Svelte bases iteration on the `length` property; so that has to exist before it will try to pass a number
 	 * However, we don't want to load everything if `length` is accessed - only the data itself.
@@ -249,6 +254,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#dataLoaded = !initialDataDirty;
 					this.#lengthLoaded = !initialDataDirty;
 					this.#calculateScore();
+					this.#warnHighScore();
 					this.publish();
 					if (initialDataDirty || !this.#values.length) this.#fetchData();
 				});
@@ -260,6 +266,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#dataLoaded = !initialDataDirty;
 				this.#lengthLoaded = !initialDataDirty;
 				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 				if (initialDataDirty || !this.#values.length) this.#fetchData();
 			}
@@ -308,6 +315,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#length = this.#values.length;
 			this.#lengthLoaded = true;
 			this.#calculateScore();
+			this.#warnHighScore();
 			this.publish();
 			return;
 		}
@@ -330,6 +338,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#lengthLoading = false;
 
 				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 			},
 			() => this.#exec(queryWithComment),
@@ -354,6 +363,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#metaLoading = false;
 				this.#metaLoaded = true;
 				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 			},
 			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`),
@@ -362,13 +372,15 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	};
 
 	#calculateScore = () => {
-		if (!this.opts.scoreNotifier) return;
-
 		const column_score = columnsToScore(this.#columns);
-		const score = column_score * this.length;
-		if (score < 10 * 1024 * 1024) return;
+		this.#score = column_score * this.length;
+	};
 
-		this.opts.scoreNotifier({ id: this.id, query: this.#query.toString(), score });
+	#warnHighScore = () => {
+		if (!this.opts.scoreNotifier) return;
+		if (this.score < 10 * 1024 * 1024) return;
+
+		this.opts.scoreNotifier({ id: this.id, query: this.#query.toString(), score: this.score });
 	};
 
 	/////////

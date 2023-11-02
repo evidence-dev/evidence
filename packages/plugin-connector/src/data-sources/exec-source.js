@@ -85,7 +85,6 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;
 
-		
 		await fs.mkdir(fullOutputSubdir, { recursive: true });
 
 		console.log(` || Writing ${filename} results to disk`);
@@ -120,7 +119,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		);
 
 		process.off('SIGINT', reclaim);
-		await fs.rm(`${fullQuerySubdir}_temp`, { recursive: true })
+		await fs.rm(`${fullQuerySubdir}_temp`, { recursive: true });
 
 		if (!writtenRows) {
 			console.log(
