@@ -23,7 +23,7 @@ Markdown can be used to write expressively in text.
 ## Images 🖼️
 
 Evidence looks for images in your `static` folder, e.g. `static/my-logo.png`.
-![Company Logo](my-logo.png)
+![Company Logo](/my-logo.png)
 ```
 
 ## SQL
