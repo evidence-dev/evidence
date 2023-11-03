@@ -63,7 +63,7 @@ _Italic_ text is wrapped in single asterisks
 ```
 ![An online image](https://i.imgur.com/xyI27iZ.gif)
 
-![An image stored in the project](my-image.png)
+![An image stored in the project](/my-image.png)
 ```
 
 #### Storing Images and Static Files
