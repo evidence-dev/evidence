@@ -74,8 +74,6 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const sourcesPath = path.dirname(source.sourceDirectory);
 		// /needful_things/test
 		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
-		// static/data/needful_things/test
-		const fullQuerySubdir = path.join(outDir, querySubdir);
 		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef
 		const outputSubdir = path.join(querySubdir, String(query.hash));
 		// static/data/needful_things/test/9236c2f5bc961dd74ddeead2928327ef
