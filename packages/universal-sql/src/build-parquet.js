@@ -171,7 +171,7 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 			chalk.yellow(
 				` || WARNING: ${outputFilename} is estimated to be ${Intl.NumberFormat().format(
 					score / (1024 * 1024)
-				)}mb. This may cause client-side performance issues.`
+				)}mb uncompressed. This may cause client-side performance issues.`
 			)
 		);
 	}
