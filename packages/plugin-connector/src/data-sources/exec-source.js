@@ -103,23 +103,12 @@ export const execSource = async (source, supportedDbs, outDir) => {
 				);
 		}
 
-		// save old files (in case SIGINT) for deleting later
-		await fs.rename(fullQuerySubdir, `${fullQuerySubdir}_temp`).catch(() => {});
-		const reclaim = async () => {
-			await fs.rename(`${fullQuerySubdir}_temp`, fullQuerySubdir).catch(() => {});
-			process.exit(0);
-		};
-		process.on('SIGINT', reclaim);
-
 		const writtenRows = await buildMultipartParquet(
 			result.columnTypes,
 			rows,
 			outputFilename,
 			batchSize
 		);
-
-		process.off('SIGINT', reclaim);
-		await fs.rm(`${fullQuerySubdir}_temp`, { recursive: true });
 
 		if (!writtenRows) {
 			console.log(
@@ -130,10 +119,11 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 		outputFilenames.add(outputFilename);
-		await fs.writeFile(
-			path.join(outDir, outputSubdir, query.name + '.schema.json'),
-			JSON.stringify(result.columnTypes)
-		);
+
+		const schemaPath = path.join(outDir, outputSubdir, query.name + '.schema.json');
+		await fs.mkdir(path.dirname(schemaPath), { recursive: true });
+		await fs.writeFile(schemaPath, JSON.stringify(result.columnTypes));
+
 		console.log(
 			` || Wrote ${filename} results (took ${(performance.now() - beforeFile).toFixed(2)}ms)`
 		);
