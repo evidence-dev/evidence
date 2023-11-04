@@ -441,7 +441,13 @@
 											{:else if column.linkLabel in row}
 												-
 											{:else}
-												{column.linkLabel}
+												<a
+													href={row[column.id]}
+													target={column.openInNewTab ? '_blank' : ''}
+													class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+												>
+													{column.linkLabel}
+												</a>
 											{/if}
 										{:else}
 											{formatValue(
