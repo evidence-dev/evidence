@@ -3,6 +3,18 @@ const md5 = require('blueimp-md5');
 const Analytics = require('analytics-node');
 const { readJSONSync, writeJSONSync, pathExistsSync } = require('fs-extra');
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
+const { execSync } = require('child_process');
+
+function getGitUser() {
+	try {
+	  const name = execSync('git config --get user.name').toString().trim();
+	  const email = execSync('git config --get user.email').toString().trim();
+	  return { name, email };
+	} catch (error) {
+	  console.error('Error retrieving Git user information:', error);
+	  return null;
+	}
+}
 
 const initializeProfile = async () => {
 	const projectProfile = {
@@ -51,6 +63,9 @@ const logEvent = async (eventName, dev, settings) => {
 		}
 
 		let directoryHash = md5(process.env.HOME);
+		let gitUser = getGitUser();
+		let gitUserName = md5(gitUser.name);
+		let gitUserEmail = md5(gitUser.email);
 
 		if (usageStats === 'yes') {
 			projectProfile = await getProfile();
@@ -65,7 +80,9 @@ const logEvent = async (eventName, dev, settings) => {
 					operatingSystem: process.platform, // logs operating system name
 					nodeVersion: process.version, // logs active version of NodeJS
 					arch: process.arch,
-					directoryHash: directoryHash
+					directoryHash: directoryHash,
+					gitUserNameHash: gitUserName,
+					gitUserEmailHash: gitUserEmail
 				}
 			});
 		}
