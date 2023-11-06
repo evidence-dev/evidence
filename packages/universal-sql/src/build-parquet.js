@@ -150,6 +150,17 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 
 	await query(copy);
 
+	const { size } = await fs.stat(outputFilepath);
+	if (size > 100 * 1024 * 1024) {
+		console.warn(
+			chalk.yellow(
+				` || WARNING: ${outputFilename} has a disk size of ${Intl.NumberFormat().format(
+					size / (1024 * 1024)
+				)}mb.`
+			)
+		);
+	}
+
 	const score =
 		rowCount *
 		columnsToScore(
