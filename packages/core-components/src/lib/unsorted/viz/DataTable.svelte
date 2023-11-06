@@ -416,11 +416,9 @@
 											alt={column.alt
 												? row[column.alt]
 												: row[column.id].replace(/^(.*[/])/g, '').replace(/[.][^.]+$/g, '')}
-											style="
-                        margin: 0.5em auto 0.5em auto;
-                        height: {column.height};
-                        width: {column.width};
-                        "
+											class="mx-auto my-2 max-width-[unset] rounded-[unset]"
+											style:height={column.height}
+											style:width={column.width}
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
 										{#if column.linkLabel != undefined}
