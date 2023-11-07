@@ -400,7 +400,7 @@
 											alt={column.alt
 												? row[column.alt]
 												: row[column.id].replace(/^(.*[/])/g, '').replace(/[.][^.]+$/g, '')}
-											class="mx-auto my-2 max-width-[unset] rounded-[unset]"
+											class="mx-auto my-2 max-w-[unset] rounded-[unset]"
 											style:height={column.height}
 											style:width={column.width}
 										/>
