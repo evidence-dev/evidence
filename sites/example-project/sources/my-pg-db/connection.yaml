@@ -1,9 +1,9 @@
 # This file was automatically generated
-name: database
+name: my-pg-db
 type: postgres
 options:
-  host: psql.i.hl1.io
-  port: 55432
-  database: zipline
+  host: db.spr.ocket.cloud
+  port: 30000
+  database: sprocket_main
   ssl:
     sslmode: require

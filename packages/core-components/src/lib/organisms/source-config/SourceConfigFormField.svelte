@@ -1,9 +1,15 @@
 <script>
+	import yaml from 'yaml';
+	import { JSONPath } from '@astronautlabs/jsonpath';
+
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
 
 	export let spec;
 	export let key;
 	export let options;
+	export let disabled;
+	export let rootOptions;
+	export let reveal;
 
 	$: title = spec.title ?? key;
 
@@ -65,22 +71,45 @@
 		most_recent_children = spec?.children?.[field_value] ?? {};
 	}
 
+	$: refVal = spec.references ? JSONPath.query(rootOptions, spec.references) : null;
+	$: if (refVal?.length) field_value = refVal[0];
+
+	async function handleFile(e) {
+		const { files } = e.target;
+		if (!files) return;
+
+		const [file] = files;
+
+		switch (spec.fileFormat) {
+			case 'json':
+				try {
+					options[field_value_key] = await file.text().then((r) => JSON.parse(r));
+				} catch (e) {
+					// TODO: Handle this more effectively
+					// TODO: Field-level error handling
+					console.warn(e);
+				}
+				break;
+			case 'yaml':
+				try {
+					options[field_value_key] = await file.text().then((r) => yaml.parse(r));
+				} catch (e) {
+					// TODO: Handle this more effectively
+					// TODO: Field-level error handling
+					console.warn(e);
+				}
+				break;
+			default:
+				options[field_value_key] = await file.text();
+				break;
+		}
+	}
+
 	// Flush values back up
 	$: options[field_value_key] = field_value;
-</script>
 
-{#if spec.children}
-	<pre>{JSON.stringify(
-			{
-				field_value_key,
-				field_value,
-				most_recent_children,
-				nest: spec.nest
-			},
-			null,
-			2
-		)}</pre>
-{/if}
+	$: fieldDisabled = disabled || spec.forceReference || (spec.reference && refVal !== null);
+</script>
 
 <div>
 	<label>
@@ -89,17 +118,37 @@
 			{#if spec.required}<sup class="text-red-500">*</sup>{/if}
 		</p>
 		{#if spec.type === 'string'}
-			{#if spec.secret}
-				<input required={spec.required} type="password" bind:value={field_value} />
+			{#if spec.secret && !reveal}
+				<input
+					disabled={fieldDisabled}
+					required={spec.required}
+					type="password"
+					bind:value={field_value}
+				/>
 			{:else}
-				<input required={spec.required} type="text" bind:value={field_value} />
+				<input
+					disabled={fieldDisabled}
+					required={spec.required}
+					type="text"
+					bind:value={field_value}
+				/>
 			{/if}
 		{:else if spec.type === 'boolean'}
-			<input required={spec.required} type="checkbox" bind:checked={field_value} />
+			<input
+				disabled={fieldDisabled}
+				required={spec.required}
+				type="checkbox"
+				bind:checked={field_value}
+			/>
 		{:else if spec.type === 'number'}
-			<input required={spec.required} type="number" bind:value={field_value} />
+			<input
+				disabled={fieldDisabled}
+				required={spec.required}
+				type="number"
+				bind:value={field_value}
+			/>
 		{:else if spec.type === 'select'}
-			<select bind:value={field_value}>
+			<select disabled={fieldDisabled} bind:value={field_value}>
 				<option disabled={spec.required} value={undefined} />
 				{#each spec.options as option}
 					{#if typeof option === 'string'}
@@ -109,6 +158,8 @@
 					{/if}
 				{/each}
 			</select>
+		{:else if spec.type === 'file'}
+			<input disabled={fieldDisabled} type="file" on:change={handleFile} />
 		{/if}
 	</label>
 	{#if spec.description}
@@ -119,8 +170,10 @@
 
 	{#if Object.keys(spec?.children?.[field_value] ?? {}).length}
 		<section class="ml-4 flex flex-col gap-2">
-			{JSON.stringify(child_value_target)}
 			<SourceConfigFormSection
+				{rootOptions}
+				{reveal}
+				disabled={fieldDisabled}
 				bind:options={child_value_target}
 				optionSpec={spec.children[field_value]}
 			/>

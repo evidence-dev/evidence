@@ -9,6 +9,7 @@ export const load = async () => {
 		const datasourceSettings = await getDatasourceOptions();
 
 		const datasourcePlugins = await getDatasourcePlugins();
+
 		const serializedPlugins = Object.fromEntries(
 			Object.entries(datasourcePlugins).map(([k, v]) => [
 				k,
@@ -52,12 +53,16 @@ export const actions = {
 
 		const datasourcePlugins = await getDatasourcePlugins();
 
-		return {
-			updatedSource: await updateDatasourceOptions(source, datasourcePlugins).then((r) => ({
-				...r,
-				queries: []
-			})) // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
-		};
+		try {
+			return {
+				updatedSource: await updateDatasourceOptions(source, datasourcePlugins).then((r) => ({
+					...r,
+					queries: []
+				})) // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
+			};
+		} catch (e) {
+			return fail(500, e.message);
+		}
 	},
 	testSource: async (e) => {
 		const formData = Object.fromEntries(await e.request.formData().then((r) => r.entries()));

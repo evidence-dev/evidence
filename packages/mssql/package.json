@@ -17,7 +17,7 @@
 		"dotenv": "^16.0.1"
 	},
 	"type": "module",
-	"evidene": {
+	"evidence": {
 		"databases": [
 			"mssql"
 		]

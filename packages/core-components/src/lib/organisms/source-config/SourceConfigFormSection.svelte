@@ -3,6 +3,9 @@
 
 	export let optionSpec;
 	export let options = {};
+	export let disabled = false;
+	export let rootOptions = options;
+	export let reveal;
 
 	for (const [key, spec] of Object.entries(optionSpec)) {
 		// Assign defaults
@@ -13,5 +16,5 @@
 </script>
 
 {#each Object.entries(optionSpec) as [key, spec]}
-	<SourceConfigFormField bind:options {key} {spec} />
+	<SourceConfigFormField {reveal} {disabled} bind:options {key} {spec} {rootOptions} />
 {/each}

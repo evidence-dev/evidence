@@ -197,3 +197,57 @@ module.exports.getRunner = async (opts) => {
 		return runQuery(queryContent, opts, batchSize);
 	};
 };
+
+/** @type {import('@evidence-dev/db-commons').ConnectionTester<MsSQLOptions>} */
+module.exports.testConnection = async (opts) => {
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+};
+
+module.exports.options = {
+	server: {
+		title: 'Host',
+		secret: false,
+		type: 'string',
+		required: true
+	},
+	database: {
+		title: 'Database',
+		secret: false,
+		type: 'string',
+		required: true
+	},
+	user: {
+		title: 'Username',
+		secret: false,
+		type: 'string',
+		required: true
+	},
+	password: {
+		title: 'Password',
+		secret: true,
+		type: 'string',
+		required: true
+	},
+	port: {
+		title: 'Port',
+		secret: false,
+		type: 'number',
+		required: false
+	},
+	trust_server_certificate: {
+		title: 'Trust Server Certificate',
+		secret: false,
+		type: 'boolean',
+		description: 'Should be true for local dev / self-signed certificates',
+		default: false
+	},
+	encrypt: {
+		title: 'Encrypt',
+		secret: false,
+		type: 'boolean',
+		default: false,
+		description: 'Should be true when using azure'
+	}
+};

@@ -1,0 +1,9 @@
+# This file was automatically generated
+name: microsoft
+type: mssql
+options:
+  server: microsoft.com
+  database: windows-license-keys
+  user: bill.gates
+  trust_server_certificate: "false"
+  encrypt: true

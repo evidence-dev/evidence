@@ -1,8 +1,13 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
 	export let sourcePlugin;
 	export let source;
+
+	const dispatch = createEventDispatcher();
+
+	let reveal;
 
 	// Track the name that the source got put in with. This lets us track renaming sources
 	source.initialName = source.name;
@@ -14,6 +19,22 @@
 	let validationError = '';
 	let validationLoading = false;
 	let validationOkay = false;
+
+	function wipeValidationState() {
+		if (!validationLoading) {
+			validationError = '';
+			validationLoading = false;
+			validationOkay = false;
+		}
+	}
+	function wipeConfigurationState() {
+		if (!configurationLoading) {
+			configurationError = '';
+			configurationLoading = false;
+			configurationOkay = false;
+		}
+	}
+
 	const callback = ({ action }) => {
 		switch (action.search) {
 			case '?/updateSource':
@@ -30,19 +51,24 @@
 		return ({ result, action }) => {
 			if (result.status >= 300) {
 				// Some system failure occurred
-				alert(result.data);
+				if (typeof result.data === 'string') configurationError = result.data;
+				else if ('message' in result.data) configurationError = result.data.message;
+				else configurationError = 'Error saving datasource.';
+
+				configurationLoading = false;
+				configurationOkay = false;
+				console.log(result);
 				return;
 			}
 
 			switch (action.search) {
 				case '?/updateSource':
 					// TODO: Where would configurationError come from?
-					source = {
-						...source,
-						...result?.data?.updatedSource
-					};
+					Object.assign(source, result?.data?.updatedSource);
+					source = source;
 					configurationLoading = false;
 					configurationOkay = true;
+					dispatch('sourceUpdated', source);
 					break;
 				case '?/testSource':
 					if (result.data?.success === true) {
@@ -54,7 +80,6 @@
 					validationOkay = true;
 					break;
 			}
-
 			// If the user decides to rename it again, we need to be ready
 		};
 	};
@@ -77,8 +102,18 @@
 			Source Name
 			<input bind:value={source.name} />
 		</label>
+		<label>
+			Reveal Secrets
+			<input type="checkbox" bind:checked={reveal} />
+		</label>
 		<hr />
-		<SourceConfigFormSection bind:options={source.options} optionSpec={sourcePlugin.options} />
+		<SourceConfigFormSection
+			{reveal}
+			disabled={configurationLoading || validationLoading}
+			rootOptions={source.options}
+			bind:options={source.options}
+			optionSpec={sourcePlugin.options}
+		/>
 	</section>
 	<input type="hidden" value={JSON.stringify(source)} name="source" />
 	<div class="flex gap-2 justify-end items-center">
@@ -91,14 +126,14 @@
 		<button
 			class="flex gap-2 mr-1 text-blue-600 border text-xs px-2 py-1 border-blue-600 font-bold rounded hover:text-blue-700 hover:border-blue-700 transition h-min disabled:bg-gray-100 disabled:text-blue-400 disabled:border-blue-400"
 			formaction="?/testSource"
-			disabled={validationLoading}
+			disabled={validationLoading || configurationLoading}
 		>
 			{validationLoading ? 'Loading...' : 'Test Connection'}
 		</button>
 
 		<button
 			class="flex gap-2 mr-1 bg-green-600 border text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition h-min disabled:bg-green-400 disabled:text-gray-100 disabled:border-transparent"
-			disabled={configurationLoading}
+			disabled={configurationLoading || validationLoading}
 		>
 			Confirm Changes
 		</button>

@@ -211,3 +211,50 @@ module.exports.getRunner = async (opts) => {
 		return runQuery(queryContent, opts, batchSize);
 	};
 };
+
+module.exports.options = {
+	host: {
+		title: 'Hostname',
+		type: 'string',
+		required: true,
+		secret: false
+	},
+	port: {
+		title: 'Port',
+		type: 'number',
+		required: false,
+		secret: false
+	},
+	database: {
+		title: 'Database',
+		type: 'string',
+		required: true,
+		secret: false
+	},
+	user: {
+		title: 'Username',
+		type: 'string',
+		required: true,
+		secret: false
+	},
+	password: {
+		title: 'Password',
+		type: 'string',
+		required: true,
+		secret: true
+	},
+	ssl: {
+		title: 'SSL',
+		type: 'string',
+		required: false,
+		secret: false
+	},
+	socketPath: {
+		title: 'Socket Path',
+		type: 'string',
+		description:
+			'This is an optional field. When using Google Cloud MySQL this is commonly required.',
+		required: false,
+		secret: false
+	}
+};

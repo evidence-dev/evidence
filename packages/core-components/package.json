@@ -27,6 +27,7 @@
 		"components": true
 	},
 	"dependencies": {
+		"@astronautlabs/jsonpath": "^1.1.2",
 		"@evidence-dev/component-utilities": "workspace:",
 		"@evidence-dev/query-store": "workspace:",
 		"@evidence-dev/tailwind": "workspace:",
@@ -40,7 +41,8 @@
 		"prismjs": "1.29.0",
 		"ssf": "0.11.2",
 		"svelte-tiny-linked-charts": "1.1.5",
-		"tua-body-scroll-lock": "^1.4.0"
+		"tua-body-scroll-lock": "^1.4.0",
+		"yaml": "^2.3.4"
 	},
 	"devDependencies": {
 		"@evidence-dev/plugin-connector": "workspace:",

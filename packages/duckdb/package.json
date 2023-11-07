@@ -18,8 +18,10 @@
 	"type": "module",
 	"evidence": {
 		"databases": [
-			"duckdb",
-			"ddb"
+			[
+				"duckdb",
+				"ddb"
+			]
 		]
 	}
 }

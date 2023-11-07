@@ -15,6 +15,7 @@ export const sepSecrets = (
 		return { secret: {}, _var: {} };
 	}
 	for (const [key, value] of Object.entries(spec)) {
+		if (value.virtual) continue;
 		const metakey = `_${key}`;
 		const valuekey = value.children && value.nest ? metakey : key;
 		if (value.children) {

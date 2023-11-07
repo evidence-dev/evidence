@@ -134,9 +134,10 @@ export const DatabaseConnectorFactorySchema = z
 /**
  * @typedef {Object} IDatasourceOptionSpecSchema
  * @property {string} title
- * @property {'string' | 'number' | 'boolean' | 'select'} type
+ * @property {'string' | 'number' | 'boolean' | 'select' | 'file'} type
  * @property {boolean} [secret]
  * @property {string} [description]
+ * @property {boolean} [virtual]
  * @property {string | number | boolean | undefined} [default]
  * @property {Record<string, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
  */
@@ -148,8 +149,21 @@ export const DatasourceOptionSpecSchema = z.record(
 	z.string(),
 	z.object({
 		title: z.string(),
-		type: z.enum(['string', 'number', 'boolean', 'select']),
+		type: z.enum(['string', 'number', 'boolean', 'select', 'file']),
 		secret: z.boolean().default(false),
+		/**
+		 * Indicates that the field should not actually be persisted. Should be combined with `references`
+		 */
+		virtual: z.boolean().default(false),
+		/**
+		 * Indicates that the field should get its value from another field if it is available
+		 */
+		references: z.string().optional(),
+		/**
+		 * Indicates that the field can only get its value from the references
+		 */
+		forceReference: z.boolean().default(false),
+		fileFormat: z.enum(['json', 'yaml']).optional(),
 		description: z.string().optional(),
 		children: z.lazy(() => z.record(z.string(), DatasourceOptionSpecSchema)).optional(),
 		required: z.boolean().default(false),

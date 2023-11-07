@@ -47,6 +47,6 @@
 
 {#if open}
 	<div class="col-span-4" transition:slide>
-		<SourceConfigForm {source} {sourcePlugin} />
+		<SourceConfigForm {source} {sourcePlugin} on:sourceUpdated={(e) => (source = e.detail)} />
 	</div>
 {/if}
