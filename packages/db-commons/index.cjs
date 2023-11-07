@@ -179,22 +179,22 @@ function testQueryResults(results, expectedColumnTypes, expectedColumnNames) {
 	assert.equal(
 		true,
 		expectedColumnTypes.length === actualColumnTypes.length &&
-		expectedColumnTypes.every((value, index) => value === actualColumnTypes[index]),
+			expectedColumnTypes.every((value, index) => value === actualColumnTypes[index]),
 		'expected column types to match'
 	);
 	assert.equal(
 		true,
 		expectedColumnNames.length === actualColumnNames.length &&
-		expectedColumnNames.every((value, index) => value === actualColumnNames[index]),
+			expectedColumnNames.every((value, index) => value === actualColumnNames[index]),
 		'expected column names to match'
 	);
 
 	assert.equal(
 		true,
 		expectedColumnTypes.length === actualColumnTypes.length &&
-		expectedColumnTypes.every((value, index) =>
-			value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
-		),
+			expectedColumnTypes.every((value, index) =>
+				value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
+			),
 		'expected row value type to match column type'
 	);
 }
