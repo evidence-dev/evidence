@@ -300,7 +300,9 @@
 	<div
 		class="table-container"
 		transition:slide|local
-		style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}"
+		style:margin-top={marginTop}
+		style:margin-bottom={marginBottom}
+		style:padding-bottom={paddingBottom}
 		on:mouseenter={() => (hovering = true)}
 		on:mouseleave={() => (hovering = false)}
 	>
@@ -312,24 +314,16 @@
 				<thead>
 					<tr>
 						{#if rowNumbers}
-							<th
-								class="index"
-								style="
-                      width:2%;
-                      background-color: {headerColor};
-                      "
-							/>
+							<th class="index w-[2%]" style:background-color={headerColor} />
 						{/if}
 						{#if $props.columns.length > 0}
 							{#each $props.columns as column}
 								<th
 									class={safeExtractColumn(column).type}
-									style="
-                      text-align: {column.align};
-                      color: {headerFontColor};
-                      background-color: {headerColor};
-                      cursor: {sortable ? 'pointer' : 'auto'};
-                      "
+									style:text-align={column.align}
+									style:color={headerFontColor}
+									style:background-color={headerColor}
+									style:cursor={sortable ? 'pointer' : 'auto'}
 									on:click={sortable ? sort(column.id) : ''}
 								>
 									{column.title
@@ -346,11 +340,9 @@
 							{#each columnSummary.filter((d) => d.show === true) as column}
 								<th
 									class={column.type}
-									style="
-                  color: {headerFontColor};
-                  background-color: {headerColor};
-                  cursor: {sortable ? 'pointer' : 'auto'};
-                  "
+									style:color={headerFontColor}
+									style:background-color={headerColor}
+									style:cursor={sortable ? 'pointer' : 'auto'}
 									on:click={sortable ? sort(column.id) : ''}
 								>
 									<span class="col-header">
@@ -372,13 +364,7 @@
 						on:click={() => handleRowClick(row[link])}
 					>
 						{#if rowNumbers}
-							<td
-								class="index"
-								class:row-lines={rowLines}
-								style="
-                  width:2%;
-              "
-							>
+							<td class="index w-[2%]" class:row-lines={rowLines}>
 								{#if i === 0}
 									{(index + i + 1).toLocaleString()}
 								{:else}
@@ -398,17 +384,15 @@
 								<td
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
-									style="
-                    						text-align: {column.align};
-                      						height: {column.height};
-                      						width: {column.width};
-											white-space: {column.wrap ? 'normal' : 'nowrap'};
-											{column.contentType === 'colorscale' && is_nonzero
+									style:text-align={column.align}
+									style:height={column.height}
+									style:width={column.width}
+									style:white-space={column.wrap ? 'normal' : 'nowrap'}
+									style={column.contentType === 'colorscale' && is_nonzero
 										? ` background-color: ${column.useColor} ${
 												(row[column.id] - column_min) / (column_max - column_min)
 										  })`
 										: ''}
-                  "
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
 										<img
@@ -462,14 +446,12 @@
 									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
 										<div
 											class="m-0 text-xs font-medium font-ui"
-											style={`color:${
-												(row[column.id] >= 0 && !column.downIsGood) ||
-												(row[column.id] < 0 && column.downIsGood)
-													? 'var(--green-700)'
-													: 'var(--red-700)'
-											}`}
+											style="color: {(row[column.id] >= 0 && !column.downIsGood) ||
+											(row[column.id] < 0 && column.downIsGood)
+												? 'var(--green-700)'
+												: 'var(--red-700)'}"
 										>
-											<div style="text-align: {column.align ?? 'right'};">
+											<div style:text-align={column.align ?? 'right'}>
 												{#if column.showValue}
 													<span>
 														{formatValue(
@@ -552,8 +534,7 @@
 							placeholder={currentPage}
 						/>
 						/
-						<span class="page-count" style="margin-left: 4px;">{pageCount.toLocaleString()}</span
-						></span
+						<span class="page-count ml-1">{pageCount.toLocaleString()}</span></span
 					>
 					<span class="print-page-count">
 						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span
