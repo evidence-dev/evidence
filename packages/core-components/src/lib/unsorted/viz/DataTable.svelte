@@ -405,43 +405,48 @@
 											style:width={column.width}
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										{#if column.linkLabel != undefined}
-											{#if row[column.linkLabel] != undefined}
-												{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
-												<a
-													href={row[column.id]}
-													target={column.openInNewTab ? '_blank' : ''}
-													class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-													>{formatValue(
-														row[column.linkLabel],
-														column.fmt
-															? getFormatObjectFromString(column.fmt, labelSummary.format.valueType)
-															: labelSummary.format,
-														labelSummary.columnUnitSummary
-													)}</a
-												>
-											{:else if column.linkLabel in row}
-												-
-											{:else}
-												<a
-													href={row[column.id]}
-													target={column.openInNewTab ? '_blank' : ''}
-													class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-												>
-													{column.linkLabel}
-												</a>
-											{/if}
+										<!-- if `column.linkLabel` is a column in `row`, but undefined, display - -->
+										{#if column.linkLabel != undefined && row[column.linkLabel] == undefined && column.linkLabel in row}
+											-
 										{:else}
-											{formatValue(
-												row[column.id],
-												column.fmt
-													? getFormatObjectFromString(
-															column.fmt,
-															safeExtractColumn(column).format.valueType
-													  )
-													: safeExtractColumn(column).format,
-												safeExtractColumn(column).columnUnitSummary
-											)}
+											<a
+												href={row[column.id]}
+												target={column.openInNewTab ? '_blank' : ''}
+												class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+											>
+												{#if column.linkLabel != undefined}
+													<!-- if the linklabel is a column name, display that column -->
+													{#if row[column.linkLabel] != undefined}
+														{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
+														{formatValue(
+															row[column.linkLabel],
+															column.fmt
+																? getFormatObjectFromString(
+																		column.fmt,
+																		labelSummary.format.valueType
+																  )
+																: labelSummary.format,
+															labelSummary.columnUnitSummary
+														)}
+														<!-- otherwise, consider it a label (like Details ->) and display it -->
+													{:else}
+														{column.linkLabel}
+													{/if}
+												{:else}
+													<!-- if no linkLabel is specified, display the link itself -->
+													{@const columnSummary = safeExtractColumn(column)}
+													{formatValue(
+														row[column.id],
+														column.fmt
+															? getFormatObjectFromString(
+																	column.fmt,
+																	columnSummary.format.valueType
+															  )
+															: columnSummary.format,
+														columnSummary.columnUnitSummary
+													)}
+												{/if}
+											</a>
 										{/if}
 									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
 										<div
