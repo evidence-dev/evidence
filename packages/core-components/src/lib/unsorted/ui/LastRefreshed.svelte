@@ -37,8 +37,6 @@
 	const varTimeAgo = timeAgo(timestamp, Date.now());
 </script>
 
-<p class="text-sm py-1">
-	<a href=" " class="cursor-text" title="{new Date(timestamp).toLocaleString()} "
-		>{prefix} {varTimeAgo}</a
-	>
+<p class="text-sm py-1 cursor-text" title="{new Date(timestamp).toLocaleString()}">
+	{prefix} {varTimeAgo}
 </p>
