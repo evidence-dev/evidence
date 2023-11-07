@@ -63,8 +63,6 @@ const standardizeResult = (result) => {
 				standardized[key] = new Date(value.value);
 			} else if (value instanceof BigQueryTime || value instanceof Geography) {
 				standardized[key] = value.value;
-			} else if (value instanceof Buffer) {
-				standardized[key] = value.toString();
 			} else if (typeof value?.toNumber === 'function') {
 				standardized[key] = value.toNumber();
 			}

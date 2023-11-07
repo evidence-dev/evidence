@@ -95,17 +95,7 @@ function applyColumnTypes(rows, columnTypes) {
 	const columns = Object.fromEntries(columnTypes.map((x) => [x.name, x.evidenceType]));
 	for (const row of rows) {
 		for (const column_name in row) {
-			if (columns[column_name] === EvidenceType.BOOLEAN && typeof row[column_name] !== 'boolean') {
-				row[column_name] = Boolean(row[column_name]);
-			} else if (
-				columns[column_name] === EvidenceType.STRING &&
-				typeof row[column_name] !== 'string'
-			) {
-				row[column_name] = JSON.stringify(row[column_name]);
-			} else if (
-				columns[column_name] === EvidenceType.NUMBER &&
-				typeof row[column_name] !== 'number'
-			) {
+			if (columns[column_name] === EvidenceType.NUMBER && typeof row[column_name] === 'bigint') {
 				row[column_name] = Number(row[column_name]);
 			} else if (columns[column_name] === EvidenceType.DATE && !(row instanceof Date)) {
 				row[column_name] = new Date(row[column_name]);
@@ -146,31 +136,6 @@ function conformsTo(rows, columns, evidenceType) {
 
 /**
  *
- * @param {Record<string, unknown>[]} results
- * @param {ColumnDefinition[]} columns
- * @returns {Record<string, unknown>[]}
- */
-function convertStringColumns(results, columns) {
-	if (conformsTo(results, columns, EvidenceType.STRING)) return results;
-
-	for (const row of results) {
-		for (const { name } of columns.filter(
-			({ evidenceType }) => evidenceType === EvidenceType.STRING
-		)) {
-			if (row[name] instanceof Buffer) {
-				row[name] = row[name].toString();
-			} else if (typeof row[name] === 'object') {
-				row[name] = JSON.stringify(row[name]);
-			} else if (typeof row[name] !== 'string') {
-				row[name] = String(row[name]);
-			}
-		}
-	}
-	return results;
-}
-
-/**
- *
  * @param {Record<string, unknown>[]} rows
  * @param {import('@evidence-dev/db-commons').ColumnDefinition[]} columns
  */
@@ -181,9 +146,7 @@ function convertNumberColumns(results, columns) {
 		for (const { name } of columns.filter(
 			({ evidenceType }) => evidenceType === EvidenceType.NUMBER
 		)) {
-			if (typeof row[name] !== 'number') {
-				row[name] = Number(row[name]);
-			}
+			row[name] = Number(row[name]);
 		}
 	}
 	return results;
@@ -216,22 +179,22 @@ function testQueryResults(results, expectedColumnTypes, expectedColumnNames) {
 	assert.equal(
 		true,
 		expectedColumnTypes.length === actualColumnTypes.length &&
-			expectedColumnTypes.every((value, index) => value === actualColumnTypes[index]),
+		expectedColumnTypes.every((value, index) => value === actualColumnTypes[index]),
 		'expected column types to match'
 	);
 	assert.equal(
 		true,
 		expectedColumnNames.length === actualColumnNames.length &&
-			expectedColumnNames.every((value, index) => value === actualColumnNames[index]),
+		expectedColumnNames.every((value, index) => value === actualColumnNames[index]),
 		'expected column names to match'
 	);
 
 	assert.equal(
 		true,
 		expectedColumnTypes.length === actualColumnTypes.length &&
-			expectedColumnTypes.every((value, index) =>
-				value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
-			),
+		expectedColumnTypes.every((value, index) =>
+			value === 'date' ? rows[index] instanceof Date : typeof rows[index] === value
+		),
 		'expected row value type to match column type'
 	);
 }
@@ -241,7 +204,6 @@ exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
 exports.inferColumnTypes = inferColumnTypes;
 exports.applyColumnTypes = applyColumnTypes;
-exports.convertStringColumns = convertStringColumns;
 exports.convertNumberColumns = convertNumberColumns;
 exports.testQueryResults = testQueryResults;
 

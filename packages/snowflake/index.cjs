@@ -1,9 +1,4 @@
-const {
-	getEnv,
-	EvidenceType,
-	TypeFidelity,
-	convertStringColumns
-} = require('@evidence-dev/db-commons');
+const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 const snowflake = require('snowflake-sdk');
 const crypto = require('crypto');
 
@@ -284,9 +279,8 @@ const runQuery = async (queryString, database) => {
 				credentials.authenticator === 'externalbrowser'
 		);
 
-		const standardizedResults = standardizeResult(result.rows);
+		const rows = standardizeResult(result.rows);
 		const columnTypes = mapResultsToEvidenceColumnTypes(result);
-		const rows = convertStringColumns(standardizedResults, columnTypes);
 
 		return { rows, columnTypes };
 	} catch (err) {

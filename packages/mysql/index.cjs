@@ -1,9 +1,4 @@
-const {
-	getEnv,
-	EvidenceType,
-	TypeFidelity,
-	convertStringColumns
-} = require('@evidence-dev/db-commons');
+const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const Types = mysql.Types;
 
@@ -153,8 +148,7 @@ const runQuery = async (queryString, database) => {
 		const [result, fields] = await promisePool.query(queryString);
 
 		const columnTypes = mapResultsToEvidenceColumnTypes(fields);
-		const standardizedRows = standardizeResult(result);
-		const rows = convertStringColumns(standardizedRows, columnTypes);
+		const rows = standardizeResult(result);
 
 		return { rows, columnTypes };
 	} catch (err) {

@@ -1,11 +1,6 @@
 const pg = require('pg');
 const { Pool } = pg;
-const {
-	EvidenceType,
-	getEnv,
-	TypeFidelity,
-	convertStringColumns
-} = require('@evidence-dev/db-commons');
+const { EvidenceType, getEnv, TypeFidelity } = require('@evidence-dev/db-commons');
 
 const envMap = {
 	host: [
@@ -196,9 +191,8 @@ const runQuery = async (queryString, database) => {
 		/** @type {pg.QueryResult} */
 		const result = await pool.query(queryString);
 
-		const standardizedRows = standardizeResult(result.rows);
+		const rows = standardizeResult(result.rows);
 		const columnTypes = mapResultsToEvidenceColumnTypes(result);
-		const rows = convertStringColumns(standardizedRows, columnTypes);
 
 		return { rows, columnTypes };
 	} catch (err) {

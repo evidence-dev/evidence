@@ -2,7 +2,6 @@ const {
 	getEnv,
 	EvidenceType,
 	TypeFidelity,
-	convertStringColumns,
 	convertNumberColumns
 } = require('@evidence-dev/db-commons');
 const mssql = require('mssql');
@@ -141,8 +140,7 @@ const runQuery = async (queryString, database = {}) => {
 		const { recordset } = await pool.query(queryString);
 
 		const columnTypes = mapResultsToEvidenceColumnTypes(recordset.columns);
-		const convertedStringRows = convertStringColumns(recordset, columnTypes);
-		const convertedBigIntRows = convertNumberColumns(convertedStringRows, columnTypes);
+		const convertedBigIntRows = convertNumberColumns(recordset, columnTypes);
 
 		return { rows: convertedBigIntRows, columnTypes };
 	} catch (err) {
