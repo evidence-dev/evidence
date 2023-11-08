@@ -9,6 +9,7 @@ export { default as Details } from './Details.svelte';
 export { default as DownloadData } from './DownloadData.svelte';
 export { default as EmailSignup } from './EmailSignup.svelte';
 export { default as Header } from './Header.svelte';
+export { default as LastRefreshed } from './LastRefreshed.svelte';
 export { default as LoadingIndicator } from './LoadingIndicator.svelte';
 export { default as LoadingSkeleton } from './LoadingSkeleton.svelte';
 export { default as Logo } from './Logo.svelte';
