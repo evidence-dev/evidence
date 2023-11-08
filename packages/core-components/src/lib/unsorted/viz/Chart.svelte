@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	import { browser } from '$app/environment';
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { propKey, configKey, strictBuild } from './context';
@@ -1003,8 +1004,15 @@
 </script>
 
 {#if !error}
-	<slot />
-	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} />
+	{#if !browser}
+		<slot />
+		<div class="bg-gray-100 h-20 w-full">
+			<p class="text-3xl">I'm loading!!</p>
+		</div>
+	{:else}
+		<slot />
+		<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} />
+	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}
