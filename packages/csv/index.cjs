@@ -24,13 +24,4 @@ module.exports.testConnection = async (opts) => {
 	return r;
 };
 
-module.exports.options = {
-	filename: {
-		title: 'Filename',
-		type: 'string',
-		secret: false,
-		description:
-			'CSV filename. This is relative to your source directory, not your project directory.',
-		required: true
-	}
-};
+module.exports.options = {};

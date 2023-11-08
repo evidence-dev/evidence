@@ -1,9 +1,0 @@
-# This file was automatically generated
-name: database
-type: postgres
-options:
-  host: psql.i.hl1.io
-  port: 55432
-  database: zipline
-  ssl:
-    sslmode: require

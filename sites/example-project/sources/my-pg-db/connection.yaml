@@ -1,9 +1,0 @@
-# This file was automatically generated
-name: my-pg-db
-type: postgres
-options:
-  host: db.spr.ocket.cloud
-  port: 30000
-  database: sprocket_main
-  ssl:
-    sslmode: require

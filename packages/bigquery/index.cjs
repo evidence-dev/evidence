@@ -251,7 +251,9 @@ module.exports.options = {
 		title: 'Project ID',
 		type: 'string',
 		secret: true,
-		required: true
+		required: true,
+		references: "$.keyfile.project_id",
+		forceReference: false
 	},
 	authenticator: {
 		title: 'Authentication Method',

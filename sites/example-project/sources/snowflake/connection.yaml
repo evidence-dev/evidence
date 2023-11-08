@@ -1,0 +1,10 @@
+# This file was automatically generated
+name: snowflake
+type: snowflake
+options:
+  account: a
+  database: c
+  warehouse: d
+  role: e
+  schema: f
+  authenticator: snowflake_jwt

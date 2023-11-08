@@ -5,7 +5,10 @@ components:
   "@evidence-dev/core-components": {}
 databases:
   "@evidence-dev/bigquery": {}
+  "@evidence-dev/csv": {}
   "@evidence-dev/duckdb": {}
   "@evidence-dev/mssql": {}
+  "@evidence-dev/mysql": {}
   "@evidence-dev/postgres": {}
   "@evidence-dev/snowflake": {}
+  "@evidence-dev/sqlite": {}

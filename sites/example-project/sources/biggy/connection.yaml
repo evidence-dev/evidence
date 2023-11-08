@@ -1,5 +1,0 @@
-# This file was automatically generated
-name: biggy
-type: bigquery
-options:
-  authenticator: service-account

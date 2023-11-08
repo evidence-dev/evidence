@@ -1,7 +1,0 @@
-# This file was automatically generated
-name: asdf
-type: mssql
-options:
-  server: a
-  database: b
-  user: c

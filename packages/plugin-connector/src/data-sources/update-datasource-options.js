@@ -103,10 +103,15 @@ type: ${newOptions.type}`
  * @param {Omit<PluginDatabases, "factory">} plugins
  */
 export async function updateDatasourceOptions(newOptions, plugins) {
+
+	/** @param {*} o */
+	const denull = (o) =>
+		Object.fromEntries(Object.entries(o).filter(([k, v]) => v !== null && v !== undefined));
+
 	// First; we need to divy this up into secret, and non secret values
 	const usedPlugin = plugins[newOptions.type];
 
-	const { secret, _var: vars } = sepSecrets(newOptions.options, usedPlugin.options);
+	const { secret, _var: vars } = sepSecrets(denull(newOptions.options), usedPlugin.options);
 
 	// Then; we need to check if the folder already exists; and if it does, load the existing
 	// connection.yaml and connection.options.yaml
@@ -122,19 +127,21 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 		.then((r) => r.toString())
 		.then((r) => yaml.parse(r));
 
+
 	const mergedConnYaml = merge(
 		{ ...connYamlContent, options: undefined },
 		{ options: vars, name: newOptions.name }
 	);
+
 	const mergedOptsYaml = secret;
 
 	await fs.writeFile(
 		connYamlPath,
-		`# This file was automatically generated\n${yaml.stringify(mergedConnYaml)}`
+		`# This file was automatically generated\n${yaml.stringify(denull(mergedConnYaml))}`
 	);
 	await fs.writeFile(
 		optsYamlPath,
-		`# This file was automatically generated\n${yaml.stringify(mergedOptsYaml)}`
+		`# This file was automatically generated\n${yaml.stringify(denull(mergedOptsYaml))}`
 	);
 
 	const updatedSource = (await getSources(sourceDir)).find((r) => r.name === newOptions.name);

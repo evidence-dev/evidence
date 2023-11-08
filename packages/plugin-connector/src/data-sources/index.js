@@ -69,17 +69,23 @@ const generateSourceEnvironmentVariables = (sourceName, sourceConfig) => {
 	 * @param {any} obj
 	 */
 	const generateNestedEnvVars = (obj, currentKey = '') => {
-		for (const [key, value] of Object.entries(obj)) {
-			const newKey = currentKey ? `${currentKey}__${key}` : key;
-
-			if (typeof value === 'object') {
-				generateNestedEnvVars(value, newKey);
-			} else {
-				sourceEnvVars[`EVIDENCE_SOURCE__${sourceName}__${newKey}`] = value.toString();
+		try {
+			for (const [key, value] of Object.entries(obj)) {
+				const newKey = currentKey ? `${currentKey}__${key}` : key;
+	
+				if (typeof value === 'object') {
+					generateNestedEnvVars(value, newKey);
+				} else {
+					sourceEnvVars[`EVIDENCE_SOURCE__${sourceName}__${newKey}`] = value.toString();
+				}
 			}
+		} catch (e) {
+			console.log({ obj, currentKey })
+			throw e
 		}
-	};
 
+	};
+	
 	// Start generating environment variables for the source
 	generateNestedEnvVars(sourceConfig);
 
