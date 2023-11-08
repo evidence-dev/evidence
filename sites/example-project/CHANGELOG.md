@@ -1,5 +1,17 @@
 # @evidence-dev/components
 
+## 2.7.3
+
+### Patch Changes
+
+- 4c54ae21: prevent multiple hits to the data API in the terminal
+- 75ac7240: Add LastRefreshed component
+- Updated dependencies [8ed2af44]
+- Updated dependencies [75ac7240]
+- Updated dependencies [c4d59109]
+  - @evidence-dev/component-utilities@1.2.1
+  - @evidence-dev/core-components@2.1.3
+
 ## 2.7.2
 
 ### Patch Changes
