@@ -7,12 +7,12 @@ const { execSync } = require('child_process');
 
 function getGitUser() {
 	try {
-	  const name = execSync('git config --get user.name').toString().trim();
-	  const email = execSync('git config --get user.email').toString().trim();
-	  return { name, email };
+		const name = execSync('git config --get user.name').toString().trim();
+		const email = execSync('git config --get user.email').toString().trim();
+		return { name, email };
 	} catch (error) {
-	  console.error('Error retrieving Git user information:', error);
-	  return null;
+		console.error('Error retrieving Git user information:', error);
+		return null;
 	}
 }
 
