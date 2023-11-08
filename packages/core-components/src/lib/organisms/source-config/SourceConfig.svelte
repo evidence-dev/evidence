@@ -32,9 +32,7 @@
 		showNewSource = false;
 	}
 
-	
 	// TODO: Look at the current database picker in main wrt Database type
-	
 
 	let duplicatePackageNames = [];
 	$: if (sources.length) {
