@@ -1007,7 +1007,7 @@
 {#if !error}
 	{#if !browser}
 		<slot />
-		<ChartLoading/>
+		<ChartLoading {height}/>
 	{:else}
 		<slot />
 		<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} />
