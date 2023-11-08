@@ -172,7 +172,7 @@ export const DatasourceOptionSpecSchema = z.record(
 			.array()
 			.optional(),
 		nest: z.boolean().optional(),
-		default: primative.optional() // TODO: Can we easily enforce that this matches type without refine shenanigans
+		default: primative.optional()
 	})
 );
 

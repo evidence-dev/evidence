@@ -278,7 +278,6 @@ module.exports.options = {
 		],
 		children: {
 			'service-account': {
-				// TODO: Need to accept a file, and a function to extract fields from that file.
 				keyfile: {
 					title: 'Credentials File',
 					type: 'file',

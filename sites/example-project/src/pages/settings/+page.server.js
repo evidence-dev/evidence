@@ -43,7 +43,7 @@ export const actions = {
 			await import('@evidence-dev/plugin-connector');
 
 		// TODO: Should this actually be handled inside the plugin connector (probably)
-		// TODO: Handle deletion and move of connectors (right now it is only create / modify in place)
+		// TODO: Should renaming a connector move it?
 
 		const r = DatasourceSpecFileSchema.safeParse(source);
 

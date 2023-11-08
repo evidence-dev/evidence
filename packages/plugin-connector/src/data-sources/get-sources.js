@@ -271,7 +271,6 @@ async function getQueries(sourceDir, contents) {
 
 					const fullPath = path.join(sourceDir, s);
 					if (await isDir(fullPath)) {
-						// TODO: Recurse
 						const recursed = await loadDirRecursive(fullPath);
 						return recursed.map((r) => path.relative(sourceDir, r));
 					} else {

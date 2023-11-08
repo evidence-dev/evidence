@@ -56,10 +56,9 @@ export const postgres = {
 				type: 'boolean',
 				secret: false,
 				description: 'Should SSL be used',
-				nest: true, // TODO: Test that this works correctly
+				nest: true,
 				children: {
 					[true]: {
-						// TODO: Test that this works properly
 						sslmode: {
 							title: 'SSL Mode',
 							type: 'select',

@@ -84,7 +84,7 @@
 		{/if}
 		<label>
 			Source Name
-			<input bind:value={source.name} />
+			<input bind:value={source.name} /> <!-- TODO: Regular expression to ensure that this doesn't allow invalid values. -->
 		</label>
 		<label>
 			Reveal Secrets

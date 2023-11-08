@@ -32,16 +32,9 @@
 		showNewSource = false;
 	}
 
-	/* 
-		TODO: Package is too prominent (?)
-		
-		TODO: Find a way to collapse database types where there is no difference
-				Add a field to package
-
-		TODO: Look at the current database picker in main wrt Database type
-
-		TODO: Can we link direct to the source directory? (Can we open in VS Code)
-	*/
+	
+	// TODO: Look at the current database picker in main wrt Database type
+	
 
 	let duplicatePackageNames = [];
 	$: if (sources.length) {
