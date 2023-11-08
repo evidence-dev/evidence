@@ -2,8 +2,8 @@
 	import { slide } from 'svelte/transition';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import * as simpleIcons from "@steeze-ui/simple-icons";
-	
+	import * as simpleIcons from '@steeze-ui/simple-icons';
+
 	import { Database, Pencil } from '@steeze-ui/tabler-icons';
 	import SourceConfigForm from './SourceConfigForm.svelte';
 
@@ -14,7 +14,6 @@
 	let open = startOpen;
 
 	$: sourcePlugin = availableSourcePlugins?.[source.type];
-
 </script>
 
 <div class="contents text-xs odd:bg-gray-200">
