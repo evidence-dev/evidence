@@ -22,6 +22,7 @@
 				"duckdb",
 				"ddb"
 			]
-		]
+		],
+		"icon": "Duckdb"
 	}
 }

@@ -97,7 +97,6 @@ module.exports.getRunner = async (opts, directory) => {
 	};
 };
 
-
 /** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
 module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })

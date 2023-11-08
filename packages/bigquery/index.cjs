@@ -252,7 +252,7 @@ module.exports.options = {
 		type: 'string',
 		secret: true,
 		required: true,
-		references: "$.keyfile.project_id",
+		references: '$.keyfile.project_id',
 		forceReference: false
 	},
 	authenticator: {

@@ -20,21 +20,6 @@
 	let validationLoading = false;
 	let validationOkay = false;
 
-	function wipeValidationState() {
-		if (!validationLoading) {
-			validationError = '';
-			validationLoading = false;
-			validationOkay = false;
-		}
-	}
-	function wipeConfigurationState() {
-		if (!configurationLoading) {
-			configurationError = '';
-			configurationLoading = false;
-			configurationOkay = false;
-		}
-	}
-
 	const callback = ({ action }) => {
 		switch (action.search) {
 			case '?/updateSource':
@@ -57,7 +42,6 @@
 
 				configurationLoading = false;
 				configurationOkay = false;
-				console.log(result);
 				return;
 			}
 
@@ -138,6 +122,4 @@
 			Confirm Changes
 		</button>
 	</div>
-
-	<pre class="text-xs">{JSON.stringify(source, null, 2)}</pre>
 </form>

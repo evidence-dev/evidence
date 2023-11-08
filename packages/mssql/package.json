@@ -20,6 +20,7 @@
 	"evidence": {
 		"databases": [
 			"mssql"
-		]
+		],
+		"icon": "Microsoftsqlserver"
 	}
 }

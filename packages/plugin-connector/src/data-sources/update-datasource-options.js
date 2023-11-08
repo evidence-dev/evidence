@@ -103,10 +103,9 @@ type: ${newOptions.type}`
  * @param {Omit<PluginDatabases, "factory">} plugins
  */
 export async function updateDatasourceOptions(newOptions, plugins) {
-
 	/** @param {*} o */
 	const denull = (o) =>
-		Object.fromEntries(Object.entries(o).filter(([k, v]) => v !== null && v !== undefined));
+		Object.fromEntries(Object.entries(o).filter(([, v]) => v !== null && v !== undefined));
 
 	// First; we need to divy this up into secret, and non secret values
 	const usedPlugin = plugins[newOptions.type];
@@ -126,7 +125,6 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 		.readFile(connYamlPath)
 		.then((r) => r.toString())
 		.then((r) => yaml.parse(r));
-
 
 	const mergedConnYaml = merge(
 		{ ...connYamlContent, options: undefined },

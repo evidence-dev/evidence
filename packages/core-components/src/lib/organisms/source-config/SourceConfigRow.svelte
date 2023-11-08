@@ -2,6 +2,8 @@
 	import { slide } from 'svelte/transition';
 
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import * as simpleIcons from "@steeze-ui/simple-icons";
+	
 	import { Database, Pencil } from '@steeze-ui/tabler-icons';
 	import SourceConfigForm from './SourceConfigForm.svelte';
 
@@ -12,16 +14,12 @@
 	let open = startOpen;
 
 	$: sourcePlugin = availableSourcePlugins?.[source.type];
+
 </script>
 
 <div class="contents text-xs odd:bg-gray-200">
-	{#if sourcePlugin.package.package.evidence.iconUrl}
-		<img
-			src={sourcePlugin.package.package.evidence.iconUrl}
-			class="w-4"
-			alt={sourcePlugin.package.package.name}
-		/>
-		<!-- TODO: can we actually do this in a safe way? -->
+	{#if simpleIcons[sourcePlugin.package.package.evidence.icon]}
+		<Icon src={simpleIcons[sourcePlugin.package.package.evidence.icon]} class="w-4 h-4" />
 	{:else}
 		<Icon src={Database} class="w-4 h-4" />
 	{/if}

@@ -71,8 +71,6 @@
 		most_recent_children = spec?.children?.[field_value] ?? {};
 	}
 
-	$: console.log({ rootOptions });
-
 	$: refVal = spec.references ? JSONPath.query(rootOptions, spec.references) : null;
 	$: if (refVal?.length) field_value = refVal[0];
 
@@ -101,22 +99,27 @@
 					console.warn(e);
 				}
 				break;
-			default:
+			default: {
 				// Try to detect a json or yaml file
 				// TODO: Do we need a field to disable this behavior?
 				const text = await file.text();
 				try {
 					options[field_value_key] = JSON.parse(text);
 					break;
-				} catch {}
+				} catch {
+					/* ignore */
+				}
 
 				try {
 					options[field_value_key] = yaml.parse(text);
 					break;
-				} catch {}
+				} catch {
+					/* ignore */
+				}
 
 				options[field_value_key] = await file.text();
 				break;
+			}
 		}
 	}
 
