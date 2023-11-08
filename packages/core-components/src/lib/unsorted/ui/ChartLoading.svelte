@@ -5,7 +5,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 
-	export let height = '291px';
+	export let height = '231px';
 </script>
 
 <div role="status" class="animate-pulse" in:fade|local>
