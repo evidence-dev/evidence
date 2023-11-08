@@ -14,6 +14,7 @@
 	$: setContext(configKey, config);
 
 	import ECharts from './ECharts.svelte';
+	import ChartLoading from '../ui/ChartLoading.svelte';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getDistinctCount from '@evidence-dev/component-utilities/getDistinctCount';
@@ -1006,9 +1007,7 @@
 {#if !error}
 	{#if !browser}
 		<slot />
-		<div class="bg-gray-100 h-20 w-full">
-			<p class="text-3xl">I'm loading!!</p>
-		</div>
+		<ChartLoading/>
 	{:else}
 		<slot />
 		<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} />
