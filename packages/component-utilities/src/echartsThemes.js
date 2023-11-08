@@ -12,8 +12,8 @@ const light_legendPageTextColor = uiColours.grey500;
 const light_tooltipBorderColor = uiColours.grey400;
 const light_tooltipBackgroundColor = 'white';
 const light_tooltipTextColor = uiColours.grey900;
-const light_titleColor = uiColours.grey700;
-const light_subtitleColor = uiColours.grey600;
+const light_titleColor = uiColours.grey800;
+const light_subtitleColor = uiColours.grey700;
 
 // Dark Mode Theme
 const dark_axisBaselineColor = uiColours.grey500;
