@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
 import { basename, dirname, resolve } from 'path';
-import { readFile } from 'fs/promises';
+import { readFile, rm, cp } from 'fs/promises';
 
 /**
  * Extracts source, query, and source_path from a path
@@ -34,9 +34,11 @@ if (process.env.NODE_ENV === 'development') {
 		// go in ../.. (root) vs. . (aka .evidence/template)
 		const error = await updateDatasourceOutputs(`../../static/data`, '/data', {
 			sources: new Set([datasource.name]),
-			queries: datasource ? null : new Set([query]),
+			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
 			only_changed: false
 		}).catch((e) => e);
+		await rm('./.evidence-queries', { recursive: true, force: true });
+		await cp('../../static/data', './static/data', { recursive: true });
 
 		if (error) {
 			console.error(`Error occured while reloading source: ${error}`);
@@ -48,10 +50,20 @@ if (process.env.NODE_ENV === 'development') {
 	});
 }
 
+const subscribed_servers = new Map();
+
 /** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */
 
 /** @type {import("vite").Plugin["configureServer"]} */
 const configureServer = (server) => {
+	// handle server restarts
+	if (subscribed_servers.has(server)) return;
+	subscribed_servers.forEach((handlers) => {
+		build_watcher.off('change', handlers.change_handler);
+		build_watcher.off('done', handlers.done_handler);
+	});
+	subscribed_servers.clear();
+
 	/** @type {Handler} */
 	const handler = (path, manifest, error, status) => {
 		const { source, query } = getSourceAndQuery(path);
@@ -70,6 +82,8 @@ const configureServer = (server) => {
 
 	build_watcher.on('change', change_handler);
 	build_watcher.on('done', done_handler);
+
+	subscribed_servers.set(server, { change_handler, done_handler });
 };
 
 /** @type {() => import("vite").Plugin} */

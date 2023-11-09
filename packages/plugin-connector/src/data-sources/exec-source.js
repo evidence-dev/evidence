@@ -51,8 +51,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 				});
 			} else result = _r;
 		} catch (e) {
-			if (e instanceof z.ZodError)
-				console.log(/**@type {Error & { format: () => any}}*/ (e).format());
+			if (e instanceof z.ZodError) console.log(e.format());
 			else console.log(e);
 			result = null;
 		}
@@ -69,21 +68,25 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 
+		// /Users/someone/sources/needful_things
 		const queryDirectory = path.dirname(query.filepath);
+		// /Users/someone/sources
 		const sourcesPath = path.dirname(source.sourceDirectory);
+		// /needful_things/test
 		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
-
-		// remove potentially old files
-		await fs.rm(path.join(outDir, querySubdir), { recursive: true }).catch(() => {});
-
-		const outputSubdir = queryDirectory.replace(sourcesPath, '');
-
+		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef
+		const outputSubdir = path.join(querySubdir, String(query.hash));
+		// static/data/needful_things/test/9236c2f5bc961dd74ddeead2928327ef
+		const fullOutputSubdir = path.join(outDir, outputSubdir);
+		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef/test.parquet
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;
+
+		await fs.mkdir(fullOutputSubdir, { recursive: true });
+
 		console.log(` || Writing ${filename} results to disk`);
 		const beforeFile = performance.now();
-		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 
 		const rows = /** @type {any[] | Generator<any[]>} */ (result.rows);
 
@@ -104,6 +107,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			outputFilename,
 			batchSize
 		);
+
 		if (!writtenRows) {
 			console.log(
 				` <| Finished ${filename}. No rows returned, did not create parquet file (took ${(
@@ -113,10 +117,11 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 		outputFilenames.add(outputFilename);
-		await fs.writeFile(
-			path.join(outDir, outputSubdir, query.name + '.schema.json'),
-			JSON.stringify(result.columnTypes)
-		);
+
+		const schemaPath = path.join(outDir, outputSubdir, query.name + '.schema.json');
+		await fs.mkdir(path.dirname(schemaPath), { recursive: true });
+		await fs.writeFile(schemaPath, JSON.stringify(result.columnTypes));
+
 		console.log(
 			` || Wrote ${filename} results (took ${(performance.now() - beforeFile).toFixed(2)}ms)`
 		);
