@@ -15,7 +15,7 @@ const populateTemplate = function () {
 
 	fs.ensureDirSync('./.evidence/template/');
 
-// empty the template directory, except any local settings, or telemetry profile that already exist.
+	// empty the template directory, except any local settings, or telemetry profile that already exist.
 	fs.readdirSync('./.evidence/template/').forEach((file) => {
 		if (file != 'evidence.settings.json' && file != '.profile.json')
 			fs.removeSync(path.join('./.evidence/template/', file));

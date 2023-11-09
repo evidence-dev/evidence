@@ -139,16 +139,12 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 
 	await initDB();
 
+	const outputFilepath = path.join('.', 'static', 'data', outputFilename);
 	const parquetFiles = tmpFilenames
 		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
 		.join(',');
 	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
-	const copy = `COPY (${select}) TO '${path.join(
- 		'.',
- 		'static',
- 		'data',
- 		outputFilename
- 	)}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
+	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
 	await query(copy);
 

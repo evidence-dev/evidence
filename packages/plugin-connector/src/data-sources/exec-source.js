@@ -116,9 +116,9 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		}
 		outputFilenames.add(outputFilename);
 		await fs.writeFile(
- 			path.join(outDir, outputSubdir, query.name + '.schema.json'),
- 			JSON.stringify(result.columnTypes)
- 		);
+			path.join(outDir, outputSubdir, query.name + '.schema.json'),
+			JSON.stringify(result.columnTypes)
+		);
 		console.log(
 			` || Wrote ${filename} results (took ${(performance.now() - beforeFile).toFixed(2)}ms)`
 		);
