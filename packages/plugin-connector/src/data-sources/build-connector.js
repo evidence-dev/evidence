@@ -6,7 +6,7 @@ import { DatabaseConnectorSchema } from './schemas/query-runner.schema';
  * Builds a database connector with the given package main and support types.
  *
  * @param {string} packageMain - The main file of the package to import.
- * @param {string[]} supports - An array of support types.
+ * @param {(string | string[])[]} supports - An array of support types.
  * @param {string} packageName - Name of the connector package; used for error outputs
  * @return {Promise<DatabaseConnector>} A promise that resolves to the built database connector.
  */

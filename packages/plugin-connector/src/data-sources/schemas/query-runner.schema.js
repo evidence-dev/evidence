@@ -138,8 +138,9 @@ export const DatabaseConnectorFactorySchema = z
  * @property {boolean} [secret]
  * @property {string} [description]
  * @property {boolean} [virtual]
+ * @property {boolean} [nest]
  * @property {string | number | boolean | undefined} [default]
- * @property {Record<string, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
+ * @property {Record<string | number | symbol, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
  */
 
 const primative = z.union([z.string(), z.number(), z.boolean()]);

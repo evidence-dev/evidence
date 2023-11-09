@@ -1092,7 +1092,7 @@ importers:
         version: 3.3.3
       vite:
         specifier: 4.3.9
-        version: 4.3.9
+        version: 4.3.9(@types/node@20.8.7)
 
   sites/test-env:
     dependencies:
@@ -7969,7 +7969,7 @@ packages:
       sirv: 2.0.3
       svelte: 3.55.0
       undici: 5.22.1
-      vite: 4.3.9
+      vite: 4.3.9(@types/node@20.8.7)
     transitivePeerDependencies:
       - supports-color
 
@@ -8017,7 +8017,7 @@ packages:
       '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@3.55.0)(vite@4.3.9)
       debug: 4.3.4
       svelte: 3.55.0
-      vite: 4.3.9
+      vite: 4.3.9(@types/node@20.8.7)
     transitivePeerDependencies:
       - supports-color
 
@@ -8035,7 +8035,7 @@ packages:
       magic-string: 0.30.5
       svelte: 3.55.0
       svelte-hmr: 0.15.3(svelte@3.55.0)
-      vite: 4.3.9
+      vite: 4.3.9(@types/node@20.8.7)
       vitefu: 0.2.5(vite@4.3.9)
     transitivePeerDependencies:
       - supports-color
@@ -21611,37 +21611,6 @@ packages:
       - terser
     dev: true
 
-  /vite@4.3.9:
-    resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      esbuild: 0.17.19
-      postcss: 8.4.31
-      rollup: 3.29.4
-    optionalDependencies:
-      fsevents: 2.3.3
-
   /vite@4.3.9(@types/node@20.8.7):
     resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -21673,7 +21642,6 @@ packages:
       rollup: 3.29.4
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
 
   /vitefu@0.2.5(vite@4.3.9):
     resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
@@ -21683,7 +21651,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.3.9
+      vite: 4.3.9(@types/node@20.8.7)
 
   /vitest@0.34.6:
     resolution: {integrity: sha512-+5CALsOvbNKnS+ZHMXtuUC7nL8/7F1F2DnHGjSsszX8zCjWSSviphCb/NuS9Nzf4Q03KyyDRBAXhF/8lffME4Q==}

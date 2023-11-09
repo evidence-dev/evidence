@@ -2,6 +2,9 @@ export const postgres = {
 	package: {
 		package: {
 			package: {
+				name: "@mock/postgres",
+				svelte: "",
+				main: "",
 				evidence: {
 					components: false,
 					databases: ['pg', 'postgres'],
@@ -58,7 +61,7 @@ export const postgres = {
 				description: 'Should SSL be used',
 				nest: true,
 				children: {
-					[true]: {
+					true: {
 						sslmode: {
 							title: 'SSL Mode',
 							type: 'select',
@@ -71,8 +74,7 @@ export const postgres = {
 								{ value: 'verify-full', label: 'Verify Full' }
 							]
 						}
-					},
-					[false]: {}
+					}
 				}
 			},
 			schema: {
@@ -81,7 +83,9 @@ export const postgres = {
 				secret: false,
 				description: 'Default schema'
 			}
-		}
+		},
+		factory: () => Promise.resolve(() => Promise.resolve({ columnTypes: [], expectedRowCount: 0,})),
+		testConnection: () => Promise.resolve(true)
 	},
 	opts: {
 		name: 'new-source',
@@ -97,7 +101,7 @@ export const postgres = {
 				sslmode: 'require'
 			}
 		}
-	}
+	},
 };
 
 export const duckdb = {

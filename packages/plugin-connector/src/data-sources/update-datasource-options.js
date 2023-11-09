@@ -4,12 +4,19 @@ import merge from 'lodash.merge';
 import fs from 'fs/promises';
 import { getSources, getSourcesDir } from './get-sources';
 
+/**
+ * @typedef {Record<string, string | number | boolean | *>} OptsObject
+ */
+
 export const sepSecrets = (
-	/** @type {*} */ opts,
-	/** @type {Record<string, DatasourceOptionsSpec>} */ spec
+	/** @type {OptsObject} */ opts,
+	/** @type {DatasourceOptionsSpec} */ spec
 ) => {
+	/** @type {*} */
 	let secretOut = {};
+	/** @type {*} */
 	let varOut = {};
+
 	if (typeof opts !== 'object' || !opts) {
 		console.warn(`Error processing options`);
 		return { secret: {}, _var: {} };
@@ -17,14 +24,20 @@ export const sepSecrets = (
 	for (const [key, value] of Object.entries(spec)) {
 		if (value.virtual) continue;
 		const metakey = `_${key}`;
+		/** @type {string | number | boolean | symbol } */
 		const valuekey = value.children && value.nest ? metakey : key;
 		if (value.children) {
-			const targetSpec = value.children[opts[valuekey]];
+			/** @type {string | number | boolean | object} */
+			const optsValueKey = opts[valuekey]
+			if (typeof optsValueKey === "object") { /* TODO: Something is wrong? */ continue }
+			const targetSpec = value.children[optsValueKey.toString()];
 			if (targetSpec) {
 				// The current value for this field has children
 				if (value.nest) {
+					const optKey = opts[key]
+					if (typeof optKey !== "object") { /* TODO: Something is wrong? */ continue }
 					// Recurse, looking at the nested options object
-					const { secret, _var } = sepSecrets(opts[key], targetSpec);
+					const { secret, _var } = sepSecrets(optKey, targetSpec);
 					varOut[key] = _var;
 					secretOut[key] = secret;
 				} else {
