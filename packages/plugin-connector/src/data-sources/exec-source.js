@@ -82,11 +82,9 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;
-
-		await fs.mkdir(fullOutputSubdir, { recursive: true });
-
 		console.log(` || Writing ${filename} results to disk`);
 		const beforeFile = performance.now();
+		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 
 		const rows = /** @type {any[] | Generator<any[]>} */ (result.rows);
 
@@ -117,11 +115,10 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 		outputFilenames.add(outputFilename);
-
-		const schemaPath = path.join(outDir, outputSubdir, query.name + '.schema.json');
-		await fs.mkdir(path.dirname(schemaPath), { recursive: true });
-		await fs.writeFile(schemaPath, JSON.stringify(result.columnTypes));
-
+		await fs.writeFile(
+ 			path.join(outDir, outputSubdir, query.name + '.schema.json'),
+ 			JSON.stringify(result.columnTypes)
+ 		);
 		console.log(
 			` || Wrote ${filename} results (took ${(performance.now() - beforeFile).toFixed(2)}ms)`
 		);

@@ -1,4 +1,4 @@
-import { browser, building, dev } from '$app/environment';
+import { browser, building } from '$app/environment';
 import {
 	tableFromIPC,
 	initDB,
@@ -9,7 +9,7 @@ import {
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 
-const loadDB = async () => {
+const initDb = async () => {
 	let renderedFiles = {};
 
 	if (!browser) {
@@ -36,7 +36,7 @@ const loadDB = async () => {
 	await profile(updateSearchPath, Object.keys(renderedFiles));
 };
 
-const database_initialization = profile(loadDB);
+const database_initialization = profile(initDb);
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async ({
@@ -44,8 +44,6 @@ export const load = async ({
 	data: { customFormattingSettings, routeHash, isUserPage, evidencemeta }
 }) => {
 	if (!browser) await database_initialization;
-	// account for potential changes in manifest (source query hmr)
-	if (!browser && dev) await loadDB();
 
 	const data = {};
 
