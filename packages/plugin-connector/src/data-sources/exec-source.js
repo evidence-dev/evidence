@@ -76,8 +76,6 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
 		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef
 		const outputSubdir = path.join(querySubdir, String(query.hash));
-		// static/data/needful_things/test/9236c2f5bc961dd74ddeead2928327ef
-		const fullOutputSubdir = path.join(outDir, outputSubdir);
 		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef/test.parquet
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
