@@ -104,7 +104,7 @@ export async function getDatasourceOptions() {
  */
 export async function updateDatasourceOutputs(
 	outDir,
-	prefix,
+	prefix = '',
 	filters = { sources: null, queries: null, only_changed: false }
 ) {
 	const datasourceDir = await getSourcesDir();
@@ -150,12 +150,8 @@ export async function updateDatasourceOutputs(
 	const outputFiles = {};
 	for (const source of filteredDatasources) {
 		outputFiles[source.name] = [];
-		const newFiles = await execSource(source, plugins, outDir);
-		if (prefix) {
-			outputFiles[source.name].push(...newFiles.map((nf) => `${prefix}${nf}`));
-		} else {
-			outputFiles[source.name].push(...newFiles);
-		}
+		const newFiles = await execSource(source, plugins, outDir, prefix);
+		outputFiles[source.name].push(...newFiles.map((nf) => `${prefix}${nf}`));
 	}
 
 	await updateManifest(outputFiles, outDir, datasources);
