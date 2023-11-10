@@ -833,7 +833,7 @@
 			
 			// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
 			// Small bars are allowed on normal bar chart (e.g., time series bar chart)
-			maxBars = 8s;
+			maxBars = 8;
 			heightMultiplier = 1;
 			if (swapXY) {
 				barCount = xDistinct.length;
