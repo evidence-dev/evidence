@@ -831,9 +831,9 @@
 				legendTop + legendHeight + topAxisTitleSize * hasTopAxisTitle + chartAreaPaddingTop;
 			chartBottom = hasBottomAxisTitle * bottomAxisTitleSize + chartAreaPaddingBottom;
 			
-						// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
+			// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
 			// Small bars are allowed on normal bar chart (e.g., time series bar chart)
-			maxBars = 6;
+			maxBars = 8s;
 			heightMultiplier = 1;
 			if (swapXY) {
 				barCount = xDistinct.length;
