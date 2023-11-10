@@ -98,7 +98,7 @@ export async function getDatasourceOptions() {
 }
 
 /**
- * @param {string} outDir
+ * @param {string} outDir The path to .evidence/template
  * @param {string} [prefix]
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
  */
@@ -154,5 +154,5 @@ export async function updateDatasourceOutputs(
 		outputFiles[source.name].push(...newFiles.map((nf) => `${prefix}${nf}`));
 	}
 
-	await updateManifest(outputFiles, outDir, datasources);
+	await updateManifest(outputFiles, path.join(outDir, 'static', prefix), datasources);
 }

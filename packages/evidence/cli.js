@@ -212,7 +212,7 @@ prog
 	.action(async (opts) => {
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
-		updateDatasourceOutputs(`./static/data`, '/data', {
+		updateDatasourceOutputs('./.evidence/template', '/data', {
 			sources: sources ? new Set(sources) : sources,
 			queries: queries ? new Set(queries) : queries,
 			only_changed: opts.changed

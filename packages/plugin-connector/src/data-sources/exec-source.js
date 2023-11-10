@@ -8,10 +8,11 @@ import { z } from 'zod';
 /**
  * @param {DatasourceSpec} source
  * @param {PluginDatabases} supportedDbs
- * @param {string} outDir
+ * @param {string} outputDirectory Path to .evidence/template
+ * @param {string} outputPrefix The prefix to use for the output directory - generally `data`
  * @returns {Promise<string[]>} Returns a list of generated parquet files
  */
-export const execSource = async (source, supportedDbs, outDir) => {
+export const execSource = async (source, supportedDbs, outputDirectory, outputPrefix) => {
 	if (!(source.type in supportedDbs)) {
 		const errMsg = chalk.red(
 			`[!] ${chalk.bold(`"${source.type}"`)} does not have an adapter installed, ${
@@ -76,8 +77,11 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
 		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef
 		const outputSubdir = path.join(querySubdir, String(query.hash));
-		// static/data/needful_things/test/9236c2f5bc961dd74ddeead2928327ef
-		const fullOutputSubdir = path.join(outDir, outputSubdir);
+		// ./.evidence/template/static/data or similar
+		const templateStaticDirectory = path.join(outputDirectory, 'static', outputPrefix);
+		// ./.evidence/template/static/data/needful_things/test/9236c2f5bc961dd74ddeead2928327ef
+		// or similar
+		const fullOutputSubdir = path.join(templateStaticDirectory, outputSubdir);
 		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef/test.parquet
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
@@ -104,6 +108,8 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const writtenRows = await buildMultipartParquet(
 			result.columnTypes,
 			rows,
+			outputDirectory,
+			outputPrefix,
 			outputFilename,
 			batchSize
 		);
@@ -118,7 +124,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		}
 		outputFilenames.add(outputFilename);
 
-		const schemaPath = path.join(outDir, outputSubdir, query.name + '.schema.json');
+		const schemaPath = path.join(fullOutputSubdir, `${query.name}.schema.json`);
 		await fs.mkdir(path.dirname(schemaPath), { recursive: true });
 		await fs.writeFile(schemaPath, JSON.stringify(result.columnTypes));
 

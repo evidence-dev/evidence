@@ -46,7 +46,7 @@ program
 		const datasources = await getSources(datasourceDir);
 		const plugins = await getDatasourcePlugins();
 		for (const source of datasources) {
-			await execSource(source, plugins, source.sourceDirectory);
+			await execSource(source, plugins, source.sourceDirectory, '/data');
 		}
 	});
 

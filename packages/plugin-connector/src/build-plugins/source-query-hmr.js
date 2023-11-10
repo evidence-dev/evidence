@@ -31,20 +31,19 @@ if (process.env.NODE_ENV === 'development') {
 
 		build_watcher.emit('change', path);
 
-		// go in ../.. (root) vs. . (aka .evidence/template)
-		const error = await updateDatasourceOutputs(`../../static/data`, '/data', {
+		// go in . (aka .evidence/template)
+		const error = await updateDatasourceOutputs('.', '/data', {
 			sources: new Set([datasource.name]),
 			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
 			only_changed: false
 		}).catch((e) => e);
 		await rm('./.evidence-queries', { recursive: true, force: true });
-		await cp('../../static/data', './static/data', { recursive: true });
 
 		if (error) {
 			console.error(`Error occured while reloading source: ${error}`);
 			build_watcher.emit('done', path, {}, error);
 		} else {
-			const manifest = await readFile('../../static/data/manifest.json', 'utf-8');
+			const manifest = await readFile('./static/data/manifest.json', 'utf-8');
 			build_watcher.emit('done', path, manifest, null);
 		}
 	});

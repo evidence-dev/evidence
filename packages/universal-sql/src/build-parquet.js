@@ -44,13 +44,22 @@ function convertArrayToVector(type, rawValues) {
  * @template T
  * @param {{name: string, evidenceType: string}[]} columns
  * @param {Generator<T[] | Promise<T[]> | T[] | Promise<T[]>} data
+ * @param {string} outputDirectory - Path to the .evidence/template directory (or other output directory)
+ * @param {string} outputPrefix - The prefix to use for the output directory - generally `data`
  * @param {string} outputFilename
  * @param {number} [batchSize]
  * @returns {Promise<number>} Number of rows
  */
-export async function buildMultipartParquet(columns, data, outputFilename, batchSize = 1000000) {
+export async function buildMultipartParquet(
+	columns,
+	data,
+	outputDirectory,
+	outputPrefix,
+	outputFilename,
+	batchSize = 1000000
+) {
 	let batchNum = 0;
-	const outputPrefix = outputFilename.split('.parquet')[0];
+	const outputSubpath = outputFilename.split('.parquet')[0];
 	let tmpFilenames = [];
 	let rowCount = 0;
 
@@ -78,12 +87,10 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 
 		console.debug(` || Writing batch ${batchNum} with ${results.length} rows.`);
 		const tempFilename = path.join(
-			'.',
-			'.evidence',
-			'template',
+			outputDirectory,
 			'.evidence-queries',
 			'intermediate-parquet',
-			outputPrefix + `.${batchNum}.parquet`
+			`${outputSubpath}.${batchNum}.parquet`
 		);
 		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
 		await fs.writeFile(tempFilename, parquetBuffer);
@@ -137,7 +144,7 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 
 	await initDB();
 
-	const outputFilepath = path.join('.', 'static', 'data', outputFilename);
+	const outputFilepath = path.join(outputDirectory, 'static', outputPrefix, outputFilename);
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
 	const parquetFiles = tmpFilenames
