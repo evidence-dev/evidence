@@ -27,7 +27,7 @@ export const execSource = async (source, supportedDbs, outputDirectory, outputPr
 	// Can we somehow guess based on the number of columns?
 	// e.g. 1-10 columns -> 1m, 11+ -> 100k?
 
-	const batchSize = 1000 * 1000; // 1m
+	const batchSize = 100 * 1000; // 1m
 	const db = supportedDbs[source.type];
 	const runner = await db.factory(source.options, source.sourceDirectory);
 
@@ -111,6 +111,7 @@ export const execSource = async (source, supportedDbs, outputDirectory, outputPr
 			outputDirectory,
 			outputPrefix,
 			outputFilename,
+			result.expectedRowCount,
 			batchSize
 		);
 
@@ -133,7 +134,7 @@ export const execSource = async (source, supportedDbs, outputDirectory, outputPr
 		);
 
 		console.log(
-			` <| Finished ${filename} Returned ${writtenRows} rows. (took ${(
+			` <| Finished ${filename} Returned ${writtenRows.toLocaleString()} rows. (took ${(
 				performance.now() - beforeQuery
 			).toFixed(2)}ms)\n`
 		);

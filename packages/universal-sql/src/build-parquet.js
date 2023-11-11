@@ -14,6 +14,7 @@ import path from 'path';
 import { initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
+import { SingleBar, Presets } from 'cli-progress';
 
 /**
  * @param {string} type
@@ -47,6 +48,7 @@ function convertArrayToVector(type, rawValues) {
  * @param {string} outputDirectory - Path to the .evidence/template directory (or other output directory)
  * @param {string} outputPrefix - The prefix to use for the output directory - generally `data`
  * @param {string} outputFilename
+ * @param {number} [expectedRowCount]
  * @param {number} [batchSize]
  * @returns {Promise<number>} Number of rows
  */
@@ -56,12 +58,16 @@ export async function buildMultipartParquet(
 	outputDirectory,
 	outputPrefix,
 	outputFilename,
+	expectedRowCount,
 	batchSize = 1000000
 ) {
 	let batchNum = 0;
 	const outputSubpath = outputFilename.split('.parquet')[0];
 	let tmpFilenames = [];
 	let rowCount = 0;
+
+	const progressBar = new SingleBar({}, Presets.shades_classic);
+	if (expectedRowCount !== undefined) progressBar.start(expectedRowCount, 0);
 
 	const flush = async (results) => {
 		// Convert JS Objects -> Arrow
@@ -82,10 +88,8 @@ export async function buildMultipartParquet(
 		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
 		// Converts the arrow buffer to a parquet buffer
 		// This can be slow; it includes the compression step
-		console.debug(` || Compressing batch ${batchNum}`);
 		const parquetBuffer = writeParquet(IPC, writerProperties);
 
-		console.debug(` || Writing batch ${batchNum} with ${results.length} rows.`);
 		const tempFilename = path.join(
 			outputDirectory,
 			'.evidence-queries',
@@ -95,10 +99,10 @@ export async function buildMultipartParquet(
 		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
 		await fs.writeFile(tempFilename, parquetBuffer);
 
-		console.debug(` || Batch ${batchNum} written.`);
 		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
 		batchNum++;
+		if (expectedRowCount !== undefined) progressBar.update(rowCount);
 	};
 
 	if (typeof data === 'function') data = data();
@@ -139,6 +143,8 @@ export async function buildMultipartParquet(
 		// Ensure nothing is left over
 		if (currentBatch.length) await flush(currentBatch);
 	}
+
+	if (expectedRowCount !== undefined) progressBar.stop();
 
 	if (!tmpFilenames.length) return 0;
 

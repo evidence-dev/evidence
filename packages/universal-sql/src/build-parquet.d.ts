@@ -15,5 +15,6 @@ export function buildMultipartParquet<T extends Record<string, any>>(
 	outputDirectory: string,
 	outputPrefix: string,
 	outputFilename: string,
+	expectedRowCount?: number,
 	batchSize?: number
 ): Promise<string | false>;
