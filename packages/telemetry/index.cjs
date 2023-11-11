@@ -39,6 +39,7 @@ const logEvent = async (eventName, dev, settings) => {
 			  'yes';
 		let repo;
 		let database;
+		let demoDb;
 
 		if (settings) {
 			if (settings.gitRepo) {
@@ -47,6 +48,10 @@ const logEvent = async (eventName, dev, settings) => {
 
 			if (settings.database) {
 				database = settings.database;
+			}
+
+			if (settings.credentials.filename) {
+				demoDb = md5(settings.credentials.filename) === md5('needful_things.duckdb');
 			}
 		}
 
@@ -65,7 +70,8 @@ const logEvent = async (eventName, dev, settings) => {
 					operatingSystem: process.platform, // logs operating system name
 					nodeVersion: process.version, // logs active version of NodeJS
 					arch: process.arch,
-					directoryHash: directoryHash
+					directoryHash: directoryHash,
+					demoDb: demoDb
 				}
 			});
 		}
