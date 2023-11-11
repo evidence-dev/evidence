@@ -56,6 +56,7 @@ const logEvent = async (eventName, dev, settings) => {
 		}
 
 		let directoryHash = md5(process.env.HOME);
+		let codespaces = process.env.CODESPACES === 'true'
 
 		if (usageStats === 'yes') {
 			projectProfile = await getProfile();
@@ -71,7 +72,8 @@ const logEvent = async (eventName, dev, settings) => {
 					nodeVersion: process.version, // logs active version of NodeJS
 					arch: process.arch,
 					directoryHash: directoryHash,
-					demoDb: demoDb
+					demoDb: demoDb,
+					codespaces: codespaces
 				}
 			});
 		}
