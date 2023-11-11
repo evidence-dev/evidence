@@ -47,9 +47,7 @@
 >
 	{#if !printing}
 		{#if !browser}
-
-		<ChartLoading {height}/>
-
+			<ChartLoading {height} />
 		{:else}
 			<div
 				class="chart"
