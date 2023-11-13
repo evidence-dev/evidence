@@ -43,29 +43,47 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				but we need to ensure that if the query changes, it re-executes. When constructing the QueryStore below,
 				we hinge on the change to pass intiailData (or not).
 		*/
+		$: _${id}_query_text = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`
+
 		// Initial Query
 		let _${id}_initial_query
-		$: if(!_${id}_initial_query) _${id}_initial_query = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`
-		onMount(() => _${id}_initial_query = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`)
+		$: if(!_${id}_initial_query) _${id}_initial_query = _${id}_query_text
+		onMount(() => _${id}_initial_query = _${id}_query_text)
 
 		// Current Query
-		$: _${id}_current_query = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`
+		$: _${id}_current_query = _${id}_query_text
 		
 		// Query has changed
 		$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false
-		
-		// Actual Query Execution
-		$: _${id} = new QueryStore(
-			\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
-			queryFunc,
-			\`${id}\`,
-			{ 
-				initialData: _${id}_changed 
-					// Query has changed, do not provide intiial data
-					? undefined 
-					// Query has not changed, provide initial data
-					: data.${id} ?? profile(__db.query, \`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
-		);
+
+		let _${id}
+		const _${id}_reactivity_manager = () => {
+			const update = () => {
+				const q = new QueryStore(
+					_${id}_query_text,
+					queryFunc,
+					\`${id}\`,
+					{ 
+						initialData: _${id}_changed 
+							// Query has changed, do not provide intiial data
+							? undefined 
+							// Query has not changed, provide initial data
+							: data.${id} ?? profile(__db.query, _${id}_query_text, '${id}') }
+				);
+
+				if (_${id}) {
+					// It is already there
+					q.fetch().then(() => _${id} = q)
+				} else { _${id} = q }
+			}
+
+			update()
+
+			return debounce(update, 500)
+		}
+
+		$: _${id}_debounced_updater = _${id}_reactivity_manager()
+		$: _${id}_query_text, _${id}_debounced_updater()
 
 		/** @type {QueryStore} */
 		let ${id};
