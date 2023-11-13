@@ -16,6 +16,7 @@
 	"type": "module",
 	"dependencies": {
 		"@tidyjs/tidy": "2.4.4",
+		"@uwdata/mosaic-sql": "^0.3.2",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
 		"echarts": "5.4.2",

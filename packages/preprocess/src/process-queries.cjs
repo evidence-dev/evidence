@@ -120,8 +120,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			import { profile } from '@evidence-dev/component-utilities/profile';
 			import debounce from 'debounce';
 			import { QueryStore } from '@evidence-dev/query-store';
-			
+			import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
+
 			const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
+
+			setQueryFunction(queryFunc)
 
 			${prerendered_query_stores.join('\n')}
 			${reactive_query_stores.join('\n')}
@@ -139,7 +142,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
