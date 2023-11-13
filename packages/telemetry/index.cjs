@@ -56,7 +56,7 @@ const logEvent = async (eventName, dev, settings) => {
 		}
 
 		let directoryHash = md5(process.env.HOME);
-		let codespaces = process.env.CODESPACES === 'true'
+		let codespaces = process.env.CODESPACES === 'true';
 
 		if (usageStats === 'yes') {
 			projectProfile = await getProfile();
