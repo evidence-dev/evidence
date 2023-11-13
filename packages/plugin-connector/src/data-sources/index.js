@@ -130,11 +130,7 @@ export async function updateDatasourceOutputs(
 			});
 			return { ...source, queries };
 		})
-		.filter(
-			(source) =>
-				source.queries.length > 0 ||
-				console.log(`No queries left for source ${source.name} after filtration`)
-		);
+		.filter((source) => source.queries.length > 0);
 
 	for (const source of filteredDatasources) {
 		sourceHashes[source.name] = sourceHashes[source.name] ?? {};
