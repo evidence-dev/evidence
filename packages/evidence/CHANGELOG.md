@@ -1,5 +1,18 @@
 # @evidence-dev/evidence
 
+## 23.0.3
+
+### Patch Changes
+
+- 4243f3da: fix hard refresh on first project boot
+- Updated dependencies [17e2b444]
+- Updated dependencies [8ed2af44]
+- Updated dependencies [75ac7240]
+- Updated dependencies [c4d59109]
+  - @evidence-dev/preprocess@3.2.1
+  - @evidence-dev/component-utilities@1.2.1
+  - @evidence-dev/core-components@2.1.3
+
 ## 23.0.2
 
 ### Patch Changes

@@ -32,6 +32,7 @@ Evidence supports:
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
 - [Databricks](#databricks)
+- [Cube](#cube)
 - [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
@@ -192,6 +193,14 @@ Databricks is a cloud-based data lake. Evidence supports connecting to Databrick
 To connect to MotherDuck, you will need a [service token](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
 
 In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`, and select `No extension` from the dropdown.
+
+#### Cube
+
+Cube offers semantic layer for your data. You can connect using the [Cube SQL API](https://cube.dev/docs/product/apis-integrations/sql-api). 
+
+Cube's API is PostgreSQL compatible, so you can use the Evidence PostgreSQL connector to connect to Cube.
+
+You can find the credentials to connect to Cube on the BI Integrations page under the SQL API Connection tab (you may need to enable the SQL API first).
 
 ### CSV and Parquet files
 

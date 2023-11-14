@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 3.2.1
+
+### Patch Changes
+
+- 17e2b444: fix unnamed query logic
+
 ## 3.2.0
 
 ### Minor Changes
