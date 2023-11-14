@@ -39,7 +39,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		});
 
 		const reactive_query_stores = reactive_ids.map((id) => {
-			const query = duckdbQueries[id].replaceAll('`', '\\`');
 			/*
 				"What the heck is happening here":
 					_${id}_initial_query:
@@ -109,15 +108,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						} else {
 							_${id} = query_store;
 						}
-					}
+					};
 		
-					update()
+					update();
 		
-					return debounce(update, 500)
+					return debounce(update, 500);
 				}
 		
-				$: _${id}_debounced_updater = _${id}_reactivity_manager()
-				$: _${id}_query_text, _${id}_debounced_updater()
+				$: _${id}_debounced_updater = _${id}_reactivity_manager();
+				$: _${id}_query_text, _${id}_debounced_updater();
 			`;
 		});
 
@@ -140,7 +139,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		}
 		`;
 
-		const all_query_stores = valid_ids.map((id) => `$: ${id} = $_${id};`).join('\n');
+		const all_query_stores = valid_ids.map((id) => `$: ${id} = $_${id};`);
 
 		queryDeclarations += `
 			import { browser, dev } from "$app/environment";
@@ -156,7 +155,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			${prerendered_query_stores.join('\n')}
 			${reactive_query_stores.join('\n')}
 			${input_query_stores}
-			${all_query_stores}
+			${all_query_stores.join('\n')}
 		`;
 	}
 
