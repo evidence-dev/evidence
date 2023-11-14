@@ -72,8 +72,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				);
 
 				if (_${id}) {
-					// It is already there
-					q.fetch().then(() => _${id} = q)
+					// Query has already been created
+					// Fetch the data and then replace
+					const r = q.fetch()
+					if (r instanceof Promise) {
+						r.then(() => _${id} = q)
+					} else {
+						_${id} = q
+					}
 				} else { _${id} = q }
 			}
 
