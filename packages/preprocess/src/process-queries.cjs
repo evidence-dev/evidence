@@ -67,30 +67,57 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					we hinge on the change to pass intiailData (or not).
 			*/
 			return `
+				$: _${id}_query_text = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
+
 				// Initial Query
 				let _${id}_initial_query;
-				$: if(!_${id}_initial_query) _${id}_initial_query = \`${query}\`;
-				onMount(() => _${id}_initial_query = \`${query}\`);
+				$: if(!_${id}_initial_query) _${id}_initial_query = _${id}_query_text;
+				onMount(() => _${id}_initial_query = _${id}_query_text);
 		
 				// Current Query
-				$: _${id}_current_query = \`${query}\`;
+				$: _${id}_current_query = _${id}_query_text;
 				
 				// Query has changed
 				$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false;
 				
 				// Actual Query Execution
-				$: _${id} = new QueryStore(
-					\`${query}\`,
-					queryFunc,
-					'${id}',
-					{
-						initialData: _${id}_changed 
-							// Query has changed, do not provide intiial data
-							? undefined 
-							// Query has not changed, provide initial data
-							: data.${id} ?? queryFunc(\`${query}\`, '${id}')
+				let _${id};
+				const _${id}_reactivity_manager = () => {
+					const update = () => {
+						const query_store = new QueryStore(
+							_${id}_query_text,
+							queryFunc,
+							'${id}',
+							{ 
+								initialData: _${id}_changed 
+									// Query has changed, do not provide intiial data
+									? undefined 
+									// Query has not changed, provide initial data
+									: data.${id} ?? profile(__db.query, _${id}_query_text, '${id}')
+							}
+						);
+		
+						if (_${id}) {
+							// Query has already been created
+							// Fetch the data and then replace
+							const fetch_maybepromise = query_store.fetch();
+							if (fetch_maybepromise instanceof Promise) {
+								fetch_maybepromise.then(() => (_${id} = query_store));
+							} else {
+								_${id} = query_store;
+							}
+						} else {
+							_${id} = query_store;
+						}
 					}
-				);
+		
+					update()
+		
+					return debounce(update, 500)
+				}
+		
+				$: _${id}_debounced_updater = _${id}_reactivity_manager()
+				$: _${id}_query_text, _${id}_debounced_updater()
 			`;
 		});
 
