@@ -6,7 +6,6 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { buildInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
-	import { QueryStore } from '@evidence-dev/query-store';
 	import DropdownOption from './DropdownOption.svelte';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -25,9 +24,6 @@
 		hasBeenSet: false,
 		setSelectedValue: (selected) => ($inputs[name] = selected)
 	});
-
-	/** @type {QueryStore} */
-	let data;
 
 	/////
 	// Query-Related Things
