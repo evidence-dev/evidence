@@ -143,7 +143,7 @@ export const DatabaseConnectorFactorySchema = z
  * @property {Record<string | number | symbol, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
  */
 
-const primative = z.union([z.string(), z.number(), z.boolean()]);
+const primitive = z.union([z.string(), z.number(), z.boolean()]);
 
 /** @type {z.ZodRecord<z.ZodType<string>, z.ZodType<IDatasourceOptionSpecSchema>>} */
 export const DatasourceOptionSpecSchema = z.record(
@@ -169,11 +169,11 @@ export const DatasourceOptionSpecSchema = z.record(
 		children: z.lazy(() => z.record(z.string(), DatasourceOptionSpecSchema)).optional(),
 		required: z.boolean().default(false),
 		options: z
-			.union([z.string(), z.object({ value: primative, label: z.string() })])
+			.union([z.string(), z.object({ value: primitive, label: z.string() })])
 			.array()
 			.optional(),
 		nest: z.boolean().optional(),
-		default: primative.optional()
+		default: primitive.optional()
 	})
 );
 

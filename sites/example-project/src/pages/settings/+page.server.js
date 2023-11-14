@@ -32,7 +32,7 @@ export const load = async () => {
 /** @type {import("@sveltejs/kit").Actions} */
 export const actions = {
 	updateSource: async (e) => {
-		const formData = Object.fromEntries(await e.request.formData().then((r) => r.entries()));
+		const formData = Object.fromEntries(await e.request.formData());
 		const source = formData.source ? JSON.parse(formData.source) : null;
 
 		if (!source) {
@@ -65,13 +65,14 @@ export const actions = {
 		}
 	},
 	testSource: async (e) => {
-		const formData = Object.fromEntries(await e.request.formData().then((r) => r.entries()));
-		const source = formData.source ? JSON.parse(formData.source) : null;
-
-		if (!source) {
+		const formData = Object.fromEntries(await e.request.formData());
+		if (!formData?.source) {
 			return fail(400, { message: "Missing required field 'source'" });
 		}
 
+		const source = JSON.parse(formData.source);
+
+		
 		const { getDatasourcePlugins, DatasourceSpecFileSchema, DatasourceSpecSchema } = await import(
 			'@evidence-dev/plugin-connector'
 		);

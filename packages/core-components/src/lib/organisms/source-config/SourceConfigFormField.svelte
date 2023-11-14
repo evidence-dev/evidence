@@ -16,63 +16,68 @@
 	const metakey = `_${key}`;
 
 	/** @type {string} */
-	let field_value_key;
+	let fieldValueKey;
 	/** @type {object} */
-	let child_value_target;
+	let childValueTarget;
 	// Identify the proper places to find and set values
 	if (spec.children) {
 		if (spec.nest) {
-			field_value_key = metakey;
-			child_value_target = options[key] ?? {};
+			fieldValueKey = metakey;
+			childValueTarget = options[key] ?? {};
 		} else {
-			field_value_key = key;
-			child_value_target = options;
+			fieldValueKey = key;
+			childValueTarget = options;
 		}
 	} else {
-		field_value_key = key;
+		fieldValueKey = key;
 		// This isn't used in this case.
-		child_value_target = {};
+		childValueTarget = {};
 	}
 
 	// Actually lookup the value
-	let field_value = options[field_value_key];
-	let most_recent_children = {};
+	let fieldValue = options[fieldValueKey];
+	/**
+	 * Keep track of the most recent child values
+	 * This is needed to make sure we clean them up properly when a new
+	 * set of children is needed
+	 */
+	let mostRecentChildren = {};
 
 	// If there are no children, we should clean this up.
-	$: if (spec?.children && !Object.keys(spec.children[field_value] ?? {}).length) {
+	$: if (spec?.children && !Object.keys(spec.children[fieldValue] ?? {}).length) {
 		// Relocate out of the metakey, if needed
-		options[key] = field_value;
+		options[key] = fieldValue;
 		// Remove the metakey, if needed
 		delete options[metakey];
 		// We need to track what it previously was, and then remove any of thhose keys from the child value target that we care about.
-		if (typeof child_value_target === 'object')
-			for (const k of Object.keys(most_recent_children)) delete child_value_target[k];
+		if (typeof childValueTarget === 'object')
+			for (const k of Object.keys(mostRecentChildren)) delete childValueTarget[k];
 		else
-			console.warn(`child_value_target was unexpectedly not an object ${child_value_target}`, {
+			console.warn(`child_value_target was unexpectedly not an object ${childValueTarget}`, {
 				key,
 				options,
 				spec
 			});
-		most_recent_children = spec?.children?.[field_value] ?? {};
-	} else if (spec?.children?.[field_value]) {
+		mostRecentChildren = spec?.children?.[fieldValue] ?? {};
+	} else if (spec?.children?.[fieldValue]) {
 		if (spec.nest) {
 			// Switch to using the metafield so children can live on the main key
-			field_value_key = metakey;
+			fieldValueKey = metakey;
 			if (typeof options[key] !== 'object') options[key] = {};
-			child_value_target = options[key];
+			childValueTarget = options[key];
 		} else {
-			field_value_key = key;
-			child_value_target = options;
+			fieldValueKey = key;
+			childValueTarget = options;
 		}
 
-		options[field_value_key] = field_value;
+		options[fieldValueKey] = fieldValue;
 
 		options = options;
-		most_recent_children = spec?.children?.[field_value] ?? {};
+		mostRecentChildren = spec?.children?.[fieldValue] ?? {};
 	}
 
 	$: refVal = spec.references ? JSONPath.query(rootOptions, spec.references) : null;
-	$: if (refVal?.length) field_value = refVal[0];
+	$: if (refVal?.length) fieldValue = refVal[0];
 
 	async function handleFile(e) {
 		const { files } = e.target;
@@ -83,7 +88,7 @@
 		switch (spec.fileFormat) {
 			case 'json':
 				try {
-					options[field_value_key] = await file.text().then((r) => JSON.parse(r));
+					options[fieldValueKey] = await file.text().then((r) => JSON.parse(r));
 				} catch (e) {
 					// TODO: Handle this more effectively
 					// TODO: Field-level error handling
@@ -92,7 +97,7 @@
 				break;
 			case 'yaml':
 				try {
-					options[field_value_key] = await file.text().then((r) => yaml.parse(r));
+					options[fieldValueKey] = await file.text().then((r) => yaml.parse(r));
 				} catch (e) {
 					// TODO: Handle this more effectively
 					// TODO: Field-level error handling
@@ -104,27 +109,27 @@
 				// TODO: Do we need a field to disable this behavior?
 				const text = await file.text();
 				try {
-					options[field_value_key] = JSON.parse(text);
+					options[fieldValueKey] = JSON.parse(text);
 					break;
 				} catch {
 					/* ignore */
 				}
 
 				try {
-					options[field_value_key] = yaml.parse(text);
+					options[fieldValueKey] = yaml.parse(text);
 					break;
 				} catch {
 					/* ignore */
 				}
 
-				options[field_value_key] = await file.text();
+				options[fieldValueKey] = await file.text();
 				break;
 			}
 		}
 	}
 
 	// Flush values back up
-	$: options[field_value_key] = field_value;
+	$: options[fieldValueKey] = fieldValue;
 
 	$: fieldDisabled = disabled || spec.forceReference || (spec.reference && refVal !== null);
 </script>
@@ -141,14 +146,14 @@
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="password"
-					bind:value={field_value}
+					bind:value={fieldValue}
 				/>
 			{:else}
 				<input
 					disabled={fieldDisabled}
 					required={spec.required}
 					type="text"
-					bind:value={field_value}
+					bind:value={fieldValue}
 				/>
 			{/if}
 		{:else if spec.type === 'boolean'}
@@ -156,17 +161,17 @@
 				disabled={fieldDisabled}
 				required={spec.required}
 				type="checkbox"
-				bind:checked={field_value}
+				bind:checked={fieldValue}
 			/>
 		{:else if spec.type === 'number'}
 			<input
 				disabled={fieldDisabled}
 				required={spec.required}
 				type="number"
-				bind:value={field_value}
+				bind:value={fieldValue}
 			/>
 		{:else if spec.type === 'select'}
-			<select disabled={fieldDisabled} bind:value={field_value}>
+			<select disabled={fieldDisabled} bind:value={fieldValue}>
 				<option disabled={spec.required} value={undefined} />
 				{#each spec.options as option}
 					{#if typeof option === 'string'}
@@ -186,14 +191,14 @@
 		</p>
 	{/if}
 
-	{#if Object.keys(spec?.children?.[field_value] ?? {}).length}
+	{#if Object.keys(spec?.children?.[fieldValue] ?? {}).length}
 		<section class="ml-4 flex flex-col gap-2">
 			<SourceConfigFormSection
 				{rootOptions}
 				{reveal}
 				disabled={fieldDisabled}
-				bind:options={child_value_target}
-				optionSpec={spec.children[field_value]}
+				bind:options={childValueTarget}
+				optionSpec={spec.children[fieldValue]}
 			/>
 		</section>
 	{/if}

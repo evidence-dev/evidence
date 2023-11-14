@@ -14,7 +14,7 @@
 </script>
 
 <div class="col-start-4 w-full flex justify-end items-end flex-col my-4" transition:slide>
-	<form class="grid grid-cols-2 gap-4 items-center" on:submit|preventDefault={() => {}}>
+	<form class="grid grid-cols-2 gap-4 items-center" on:submit|preventDefault={submit}>
 		<p class="w-full text-center col-span-2 font-bold">New Source:</p>
 
 		<label for="sourceType" class="text-right"> Database Type </label>
@@ -45,9 +45,8 @@
 		/>
 
 		<button
-			class="col-start-2 flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
-			on:click={submit}
-			type="button">Confirm</button
-		>
+			class="col-start-2 flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition">
+			Confirm
+		</button>
 	</form>
 </div>

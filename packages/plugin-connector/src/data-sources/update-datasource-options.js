@@ -28,14 +28,18 @@ export const sepSecrets = (
 		const valuekey = value.children && value.nest ? metakey : key;
 		if (value.children) {
 			/** @type {string | number | boolean | object} */
-			const optsValueKey = opts[valuekey]
-			if (typeof optsValueKey === "object") { /* TODO: Something is wrong? */ continue }
+			const optsValueKey = opts[valuekey];
+			if (typeof optsValueKey === 'object') {
+				/* TODO: Something is wrong? */ continue;
+			}
 			const targetSpec = value.children[optsValueKey.toString()];
 			if (targetSpec) {
 				// The current value for this field has children
 				if (value.nest) {
-					const optKey = opts[key]
-					if (typeof optKey !== "object") { /* TODO: Something is wrong? */ continue }
+					const optKey = opts[key];
+					if (typeof optKey !== 'object') {
+						/* TODO: Something is wrong? */ continue;
+					}
 					// Recurse, looking at the nested options object
 					const { secret, _var } = sepSecrets(optKey, targetSpec);
 					varOut[key] = _var;
@@ -135,8 +139,7 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 	const { optsYamlPath, connYamlPath } = await bootstrapSourceDirectory(newOptions, sourceDir);
 
 	const connYamlContent = await fs
-		.readFile(connYamlPath)
-		.then((r) => r.toString())
+		.readFile(connYamlPath, { encoding: "utf8" })
 		.then((r) => yaml.parse(r));
 
 	const mergedConnYaml = merge(
