@@ -12,7 +12,9 @@ Evidence is a Node.js application; it requires Node.js and npm to run.
 
 Check your versions with `node -v` and `npm -v`
 
-<a class="external" href="https://nodejs.org/en/download">Download Node.js + NPM</a>
+**Note:** if you are installing NodeJS for the first time, make sure to download the **LTS version** (LTS = long-term support)
+
+<a class="external" href="https://nodejs.org/en/download">Download Node.js + NPM (LTS version)</a>
 
 ## Updating
 

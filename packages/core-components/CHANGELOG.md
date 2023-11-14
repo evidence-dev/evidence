@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 2.1.3
+
+### Patch Changes
+
+- 75ac7240: Add LastRefreshed component
+- c4d59109: Fix legend issue with numeric series names
+- Updated dependencies [8ed2af44]
+  - @evidence-dev/component-utilities@1.2.1
+
 ## 2.1.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 1.2.1
+
+### Patch Changes
+
+- 8ed2af44: Explicitly set font family for chart theme
+
 ## 1.2.0
 
 ### Minor Changes
