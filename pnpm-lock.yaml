@@ -435,7 +435,7 @@ importers:
   packages/evidence:
     dependencies:
       '@evidence-dev/plugin-connector':
-        specifier: workspace:2.0.0-usql.18
+        specifier: workspace:2.0.0-usql.19
         version: link:../plugin-connector
       '@evidence-dev/preprocess':
         specifier: workspace:4.0.0-usql.13
@@ -952,7 +952,7 @@ importers:
         specifier: workspace:1.0.0-usql.4
         version: link:../../packages/duckdb
       '@evidence-dev/plugin-connector':
-        specifier: workspace:2.0.0-usql.18
+        specifier: workspace:2.0.0-usql.19
         version: link:../../packages/plugin-connector
       '@evidence-dev/query-store':
         specifier: workspace:^2.0.0-usql.1
@@ -1073,7 +1073,7 @@ importers:
         specifier: workspace:1.0.0-usql.4
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:20.0.0-usql.28
+        specifier: workspace:20.0.0-usql.29
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
         specifier: workspace:2.0.0-usql.2
