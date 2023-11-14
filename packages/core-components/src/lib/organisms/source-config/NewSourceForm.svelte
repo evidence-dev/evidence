@@ -45,7 +45,8 @@
 		/>
 
 		<button
-			class="col-start-2 flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition">
+			class="col-start-2 flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
+		>
 			Confirm
 		</button>
 	</form>

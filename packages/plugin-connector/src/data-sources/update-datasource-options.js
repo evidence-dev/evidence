@@ -139,7 +139,7 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 	const { optsYamlPath, connYamlPath } = await bootstrapSourceDirectory(newOptions, sourceDir);
 
 	const connYamlContent = await fs
-		.readFile(connYamlPath, { encoding: "utf8" })
+		.readFile(connYamlPath, { encoding: 'utf8' })
 		.then((r) => yaml.parse(r));
 
 	const mergedConnYaml = merge(
