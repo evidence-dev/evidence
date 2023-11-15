@@ -1,4 +1,4 @@
-SELECT * FROM orders WHERE category = 'Mysterious Apparel';
+SELECT * FROM orders;
 
 -- Mysterious Apparel
 -- Odd Equipment

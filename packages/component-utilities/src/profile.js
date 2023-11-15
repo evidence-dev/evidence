@@ -1,3 +1,9 @@
+/**
+ * @template T
+ * @param {T} f
+ * @param  {Parameters<T>} args
+ * @returns {ReturnType<T>}
+ */
 export function profile(f, ...args) {
 	const before = performance.now();
 	const complete = () => {

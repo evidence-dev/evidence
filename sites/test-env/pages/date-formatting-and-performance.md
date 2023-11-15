@@ -3,10 +3,7 @@
 ### This shoudn't take forever
 
 ```whole_lotta_dates
-SELECT
-	*
-FROM range('1990-01-01'::DATE, '4747-11-29'::DATE, interval '1' day)
-
+SELECT * FROM range('1990-01-01'::DATE, '4747-11-29'::DATE, interval '1' day)
 ```
 
 <DataTable data={whole_lotta_dates} />

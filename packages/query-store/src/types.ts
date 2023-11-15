@@ -5,7 +5,7 @@ export type Subscriber<T> = (value: T) => unknown;
 
 export type MaybePromise<T> = Promise<T> | T;
 
-export type Runner = (query: string) => MaybePromise<QueryResult[]>;
+export type Runner = (query: string, query_name: string) => MaybePromise<QueryResult[]>;
 
 export type AggFunction = (query: Query, ...args: any[]) => Query;
 

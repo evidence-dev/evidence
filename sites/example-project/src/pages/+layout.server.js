@@ -8,11 +8,17 @@ export const trailingSlash = 'always';
 const system_routes = ['/settings', '/explore'];
 
 /** @satisfies {import("./$types").LayoutServerLoad} */
-export async function load({ route }) {
+export async function load({ route, params }) {
 	const isUserPage =
 		route.id && system_routes.every((system_route) => !route.id.startsWith(system_route));
 
 	const routeHash = md5(route.id);
+	const paramsHash = md5(
+		Object.entries(params)
+			.sort()
+			.map(([key, value]) => `${key}\x1F${value}`)
+			.join('\x1E')
+	);
 
 	if (isUserPage) {
 		// todo: remove this
@@ -24,6 +30,7 @@ export async function load({ route }) {
 
 	return {
 		routeHash,
+		paramsHash,
 		customFormattingSettings,
 		isUserPage,
 		evidencemeta: getQueries(routeHash)

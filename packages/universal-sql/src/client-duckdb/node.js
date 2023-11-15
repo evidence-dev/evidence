@@ -7,7 +7,7 @@ import {
 } from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
 import { createRequire } from 'module';
 import { dirname, resolve } from 'path';
-import { cache_for_hash } from '../cache-duckdb.js';
+import { cache_for_hash, get_arrow_if_sql_already_run } from '../cache-duckdb.js';
 import { withTimeout } from './both.js';
 
 const require = createRequire(import.meta.url);
@@ -99,17 +99,28 @@ export async function setParquetURLs(urls) {
  * Queries the database with the given SQL statement.
  *
  * @param {string} sql
- * @param {{ route_hash: string, query_name: string, prerendering: boolean }} [cache_options]
- * @returns {import('apache-arrow').Table | null}
+ * @param {Parameters<typeof cache_for_hash>[2]} [cache_options]
+ * @returns {Record<string, unknown>[]}
  */
 export function query(sql, cache_options) {
-	const res = connection.query(sql);
+	let result;
 
-	if (cache_options) {
-		cache_for_hash(sql, res, cache_options);
+	// only cache during build, because
+	// parquet can/will eventually change during dev
+	if (cache_options?.prerendering) {
+		result = get_arrow_if_sql_already_run(sql);
 	}
 
-	return arrowTableToJSON(res);
+	// if cache missed, fallback to querying
+	if (!result) {
+		result = connection.query(sql);
+	}
+
+	if (cache_options) {
+		cache_for_hash(sql, result, cache_options);
+	}
+
+	return arrowTableToJSON(result);
 }
 
 export { arrowTableToJSON };
