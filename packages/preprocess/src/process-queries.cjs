@@ -34,7 +34,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			*/
 			return `
 				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { initialData: data.${id} });
+				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, initialData: data.${id} });
 			`;
 		});
 
