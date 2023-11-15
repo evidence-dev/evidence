@@ -19,9 +19,14 @@ const populateTemplate = function () {
 	// - local settings
 	// - telemetry profile
 	// - static folder (mainly to preserve the data directory)
+	const keepers = new Set([
+		'evidence.settings.json',
+		'.profile.json',
+		'static',
+		'.evidence-queries'
+	]);
 	fs.readdirSync('./.evidence/template/').forEach((file) => {
-		if (file != 'evidence.settings.json' && file != '.profile.json' && file != 'static')
-			fs.removeSync(path.join('./.evidence/template/', file));
+		if (!keepers.has(file)) fs.removeSync(path.join('./.evidence/template/', file));
 	});
 
 	fs.copySync(path.join(__dirname, '/template'), './.evidence/template/');
