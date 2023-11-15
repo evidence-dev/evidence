@@ -3,121 +3,172 @@ const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
+// prettier obliterates the formatting of queryDeclarations
+// prettier-ignore
 const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQueries = {}) {
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
 
 	if (Object.keys(duckdbQueries).length > 0) {
-		const valid_ids = Object.keys(duckdbQueries).filter((queryId) =>
-			queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$')
-		);
+		const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
+		const valid_ids = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query));
 
-		const queryStores = valid_ids.map(
-			(id) => `
+		// prerendered queries: stuff without ${}
+		// reactive queries: stuff with ${}
+		const IS_REACTIVE_QUERY = /\${.*?}/s;
+		const reactive_ids = valid_ids.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id]));
+		const prerendered_ids = valid_ids.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id]));
 
+		// input queries: reactive with ${inputs...} in it
+		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
+		const input_ids = reactive_ids.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id]));
+
+		const prerendered_query_stores = prerendered_ids.map((id) => {
+			/*
+			    _query_string${id} is just a static string (no interpolation), so everything is constant
+			    we might want to be reactive to the data prop - a forced _${id}.fetch() might be good
+			    ala $: data, _${id}.fetch();
+				that would happen when stuff is invalidated (in dev mode) like when source
+				parquet changes (e.g. source refresh experience PR)
+			*/
+			return `
+				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
+				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { initialData: data.${id} });
+			`;
+		});
+
+		const reactive_query_stores = reactive_ids.map((id) => {
+			/*
+				"What the heck is happening here":
+					_${id}_initial_query:
+						Copy of the query as it is written in the source markdown file
+						It is interpolated with the initial values of any variables _at mount time_
+						and does not change after that
+
+						This variable _must_ be declared; then assigned "reactively" to make sure it can reference the user's variables,
+						as it pushes the reactive assignment to the bottom of the file (after the user's scripts have run)
+						
+						We use the if to make sure it is only reactive once, and still acts as a "constant"
+
+
+					_${id}_current_query:
+						Copy of the query with the variables reactively interpolated - this is what will
+						actually be executed against the database
+
+						
+					_${id}_changed:
+						Helper variable to check if current is same as initial
+
+					
+					We care about all of this because we want to provide the initialData from SSR when the query is unchanged,
+					but we need to ensure that if the query changes, it re-executes. When constructing the QueryStore below,
+					we hinge on the change to pass intiailData (or not).
+			*/
+			return `
+				$: _${id}_query_text = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
+
+				// Initial Query
+				let _${id}_initial_query;
+				$: if(!_${id}_initial_query) _${id}_initial_query = _${id}_query_text;
+				onMount(() => _${id}_initial_query = _${id}_query_text);
 		
-		/*
-			"What the heck is happening here":
-				_${id}_initial_query:
-					Copy of the query as it is written in the source markdown file
-					It is interpolated with the initial values of any variables _at mount time_
-					and does not change after that
-
-					This variable _must_ be declared; then assigned "reactively" to make sure it can reference the user's variables,
-					as it pushes the reactive assignment to the bottom of the file (after the user's scripts have run)
-					
-					We use the if to make sure it is only reactive once, and still acts as a "constant"
-
-
-				_${id}_current_query:
-					Copy of the query with the variables reactively interpolated - this is what will
-					actually be executed against the database
-
-					
-				_${id}_changed:
-					Helper variable to check if current is same as initial
-
+				// Current Query
+				$: _${id}_current_query = _${id}_query_text;
 				
-				We care about all of this because we want to provide the initialData from SSR when the query is unchanged,
-				but we need to ensure that if the query changes, it re-executes. When constructing the QueryStore below,
-				we hinge on the change to pass intiailData (or not).
-		*/
-		$: _${id}_query_text = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`
-
-		// Initial Query
-		let _${id}_initial_query
-		$: if(!_${id}_initial_query) _${id}_initial_query = _${id}_query_text
-		onMount(() => _${id}_initial_query = _${id}_query_text)
-
-		// Current Query
-		$: _${id}_current_query = _${id}_query_text
+				// Query has changed
+				$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false;
+				
+				// Actual Query Execution
+				let _${id};
+				const _${id}_reactivity_manager = () => {
+					const update = () => {
+						const query_store = new QueryStore(
+							_${id}_query_text,
+							queryFunc,
+							'${id}',
+							{ 
+								initialData: _${id}_changed 
+									// Query has changed, do not provide intiial data
+									? undefined 
+									// Query has not changed, provide initial data
+									: data.${id} ?? profile(__db.query, _${id}_query_text, '${id}')
+							}
+						);
 		
-		// Query has changed
-		$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false
+						if (_${id}) {
+							// Query has already been created
+							// Fetch the data and then replace
+							const fetch_maybepromise = query_store.fetch();
+							if (fetch_maybepromise instanceof Promise) {
+								fetch_maybepromise.then(() => (_${id} = query_store));
+							} else {
+								_${id} = query_store;
+							}
+						} else {
+							_${id} = query_store;
+						}
+					};
+		
+					update();
+		
+					return debounce(update, 500);
+				}
+		
+				$: _${id}_debounced_updater = _${id}_reactivity_manager();
+				$: _${id}_query_text, _${id}_debounced_updater();
+			`;
+		});
 
-		let _${id}
-		const _${id}_reactivity_manager = () => {
-			const update = () => {
-				const q = new QueryStore(
-					_${id}_query_text,
-					queryFunc,
-					\`${id}\`,
-					{ 
-						initialData: _${id}_changed 
-							// Query has changed, do not provide intiial data
-							? undefined 
-							// Query has not changed, provide initial data
-							: data.${id} ?? profile(__db.query, _${id}_query_text, '${id}') }
-				);
-
-				if (_${id}) {
-					// Query has already been created
-					// Fetch the data and then replace
-					const r = q.fetch()
-					if (r instanceof Promise) {
-						r.then(() => _${id} = q)
-					} else {
-						_${id} = q
-					}
-				} else { _${id} = q }
-			}
-
-			update()
-
-			return debounce(update, 500)
+		/* 
+			reactivity doesn't happen on the server, so we need to manually subscribe to the inputs store
+			and update the queries when the inputs change
+		*/
+		const input_query_stores = `
+		if (!browser) {
+			onDestroy(inputs_store.subscribe((inputs) => {
+				${input_ids.map((id) => `
+					${id} = get(new QueryStore(
+						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
+						queryFunc,
+						'${id}',
+						{ initialData: queryFunc(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
+					));
+				`).join('\n')}
+			}));
 		}
+		`;
 
-		$: _${id}_debounced_updater = _${id}_reactivity_manager()
-		$: _${id}_query_text, _${id}_debounced_updater()
-
-		/** @type {QueryStore} */
-		let ${id};
-		$: ${id} = $_${id};
-		`
-		);
+		const all_query_stores = valid_ids.map((id) => `$: ${id} = $_${id};`);
 
 		queryDeclarations += `
-		import {browser} from "$app/environment";
-		import {profile} from '@evidence-dev/component-utilities/profile';
-		import debounce from 'debounce';
-		import {QueryStore} from '@evidence-dev/query-store';
-		
-		const queryFunc = q => profile(__db.query, q);	
-		
-		${queryStores.join('\n')}	
+			import { browser, dev } from "$app/environment";
+			import { profile } from '@evidence-dev/component-utilities/profile';
+			import debounce from 'debounce';
+			import { QueryStore } from '@evidence-dev/query-store';
+			import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
+
+			const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
+
+			setQueryFunction(queryFunc)
+
+			${prerendered_query_stores.join('\n')}
+			${reactive_query_stores.join('\n')}
+			${input_query_stores}
+			${all_query_stores.join('\n')}
 		`;
 	}
 
 	let defaultProps = `
         import { page } from '$app/stores';
         import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
-        import { setContext, getContext, beforeUpdate, onMount } from 'svelte';
+        import { setContext, getContext, beforeUpdate, onDestroy, onMount } from 'svelte';
+		import { writable, get } from 'svelte/store';
         
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
@@ -126,7 +177,17 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         $routeHash = '${routeH}';
 
-        $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
+		${/* 
+			do not switch to $: inputs = $inputs_store
+			reactive statements do not rerun during SSR 
+		*/''}
+		let inputs_store = writable({});
+		setContext(INPUTS_CONTEXT_KEY, inputs_store);
+
+		let inputs = {};
+		onDestroy(inputs_store.subscribe((value) => inputs = value));
+
+        $: pageHasQueries.set(Object.keys(data).length > 0);
 
         setContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, {
             getCustomFormats: () => {
@@ -135,7 +196,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         });
 
         ${queryDeclarations}
-        `;
+    `;
+
 	return defaultProps;
 };
 

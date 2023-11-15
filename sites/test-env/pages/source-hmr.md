@@ -1,5 +1,5 @@
 ```orders
-SELECT * FROM information_schema.tables
+SELECT * FROM orders
 ```
 
 <DataTable data={orders} />
