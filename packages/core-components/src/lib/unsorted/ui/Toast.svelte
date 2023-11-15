@@ -7,11 +7,7 @@
 </script>
 
 <div
-	class="print:hidden rounded py-1 px-3 my-4 mx-0 shadow-md text-xs font-mono flex justify-between transition-all duration-300 border"
-	class:error={status === 'error'}
-	class:warning={status === 'warning'}
-	class:success={status === 'success'}
-	class:info={status === 'info'}
+	class="print:hidden rounded py-1 px-3 my-4 mx-0 shadow-md text-xs font-mono flex justify-between transition-all duration-300 border {status ?? ""}"
 	in:scale
 	out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
 >
