@@ -166,11 +166,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		} else this.#query = query;
 		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1]);
 
-		const self = this;
 		this.#proxied = new Proxy<QueryStore & QueryResult[]>(
-			this.#values as unknown as QueryStore & QueryResult[],
+			this as unknown as QueryStore & QueryResult[],
 			{
-				get: (_, _prop) => {
+				get: (self, _prop) => {
 					// Intercept numeric indices. This implies we're trying to access rows (data) in the store.
 					// If the data has not been loaded, initiate the async #update method to fetch the data.
 					let prop: string | symbol | number = _prop;
@@ -222,9 +221,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					}
 					// @ts-expect-error Typescript gets mad about accessing non-numeric keys of an array dynamically (e.g. pop, push)
 					return self.#values[prop];
-				},
-				getPrototypeOf: () => {
-					return QueryStore.prototype;
 				}
 			}
 		);
