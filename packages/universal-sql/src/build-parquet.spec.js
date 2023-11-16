@@ -38,7 +38,13 @@ describe('buildMultipartParquet', () => {
 			yield [];
 			return [];
 		}
-		const r = await buildMultipartParquet(mockCols, emptyGenerator(), 'out.parquet');
+		const r = await buildMultipartParquet(
+			mockCols,
+			emptyGenerator(),
+			'./.evidence/template',
+			'',
+			'out.parquet'
+		);
 		expect(r).toBe(0);
 	});
 
@@ -54,15 +60,21 @@ describe('buildMultipartParquet', () => {
 			yield [{ x: 'world' }];
 		}
 
-		const r = await buildMultipartParquet(mockCols, gen(), 'out.parquet');
+		const r = await buildMultipartParquet(
+			mockCols,
+			gen(),
+			'./.evidence/template',
+			'/data',
+			'out.parquet'
+		);
 		expect(r).toBe(2);
-		const stat = await fs.stat('static/data/out.parquet');
+		const stat = await fs.stat('./.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
+			adaptFilePath('./.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 	});
 
@@ -78,20 +90,28 @@ describe('buildMultipartParquet', () => {
 			yield [{ x: 'world' }];
 		}
 
-		const r = await buildMultipartParquet(mockCols, gen(), 'out.parquet', 1);
+		const r = await buildMultipartParquet(
+			mockCols,
+			gen(),
+			'./.evidence/template',
+			'/data',
+			'out.parquet',
+			2,
+			1
+		);
 		expect(r).toBe(2);
-		const stat = await fs.stat('static/data/out.parquet');
+		const stat = await fs.stat('./.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledTimes(2);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			1,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
+			adaptFilePath('./.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet')
+			adaptFilePath('./.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet')
 		);
 	});
 
@@ -101,16 +121,18 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			[{ x: 'hello' }, { x: 'hello' }],
+			'./.evidence/template',
+			'/data',
 			'out.parquet'
 		);
 		expect(r).toBe(2);
-		const stat = await fs.stat('static/data/out.parquet');
+		const stat = await fs.stat('./.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
+			adaptFilePath('./.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 	});
 
@@ -121,9 +143,17 @@ describe('buildMultipartParquet', () => {
 			for (let i = 0; i < 1000; i++) yield [{ x: i }];
 		}
 
-		const r = await buildMultipartParquet(mockCols, gen(), 'out.parquet', 1);
+		const r = await buildMultipartParquet(
+			mockCols,
+			gen(),
+			'./.evidence/template',
+			'/data',
+			'out.parquet',
+			1000,
+			1
+		);
 		expect(r).toBe(1000);
-		const stat = await fs.stat('static/data/out.parquet');
+		const stat = await fs.stat('./.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
