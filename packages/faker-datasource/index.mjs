@@ -222,5 +222,5 @@ export const getRunner = (options, directory) => {
 	return generateTable(directory);
 };
 
-export const testConnection = () => Promise.resolve(true)
-export const options = {}
+export const testConnection = () => Promise.resolve(true);
+export const options = {};
