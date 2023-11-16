@@ -221,3 +221,6 @@ export const getRunner = (options, directory) => {
 	console.warn('You are using the faker-datasource, this is not recommended for production use.');
 	return generateTable(directory);
 };
+
+export const testConnection = () => Promise.resolve(true)
+export const options = {}
