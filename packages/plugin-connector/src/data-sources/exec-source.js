@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { performance } from 'perf_hooks';
 import { z } from 'zod';
+import { cleanZodErrors } from '../lib/clean-zod-errors';
 
 /**
  * @param {DatasourceSpec} source
@@ -52,7 +53,7 @@ export const execSource = async (source, supportedDbs, outputDirectory, outputPr
 				});
 			} else result = _r;
 		} catch (e) {
-			if (e instanceof z.ZodError) console.log(e.format());
+			if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
 			else console.log(e);
 			result = null;
 		}
@@ -114,7 +115,6 @@ export const execSource = async (source, supportedDbs, outputDirectory, outputPr
 			result.expectedRowCount,
 			batchSize
 		);
-
 		if (!writtenRows) {
 			console.log(
 				` <| Finished ${filename}. No rows returned, did not create parquet file (took ${(

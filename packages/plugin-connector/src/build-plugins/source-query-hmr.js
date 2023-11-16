@@ -49,9 +49,9 @@ if (process.env.NODE_ENV === 'development') {
 	});
 }
 
-const subscribed_servers = new Map();
-
 /** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */
+
+const subscribed_servers = new Map();
 
 /** @type {import("vite").Plugin["configureServer"]} */
 const configureServer = (server) => {

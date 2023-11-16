@@ -9,6 +9,8 @@ import sade from 'sade';
 import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
 
 const populateTemplate = function () {
+	clearQueryCache();
+
 	// Create the template project in .evidence/template
 	const __filename = fileURLToPath(import.meta.url);
 	const __dirname = path.dirname(__filename);
@@ -190,7 +192,6 @@ prog
 	.describe('build production outputs')
 	.action((args) => {
 		populateTemplate();
-		clearQueryCache();
 		buildHelper('npx vite build', args);
 	});
 
@@ -199,7 +200,6 @@ prog
 	.describe('build production outputs and fails on error')
 	.action((args) => {
 		populateTemplate();
-		clearQueryCache();
 		strictMode();
 		buildHelper('npx vite build', args);
 	});

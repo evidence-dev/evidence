@@ -16,6 +16,7 @@ describe('QueryStore', () => {
 			if (q.startsWith('--len')) return Promise.resolve([{ length: 5 }]);
 			return Promise.resolve([{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }, { x: 5 }]);
 		});
+		vi.stubGlobal('window', {});
 	});
 
 	it('should be defined', () => {
@@ -129,6 +130,125 @@ describe('QueryStore', () => {
 				// 5. Child Length
 
 				expect(mockSubscription).toBeCalledTimes(5);
+
+				expect(childStore.length).toBe(5);
+			});
+		});
+	});
+});
+
+describe('QueryStore SSR', () => {
+	const mockSyncExec = vi.fn();
+	const mockSubscription = vi.fn();
+
+	beforeEach(() => {
+		vi.resetAllMocks();
+		mockSyncExec.mockImplementation((q: string) => {
+			if (q.startsWith('--col-metadata')) return [{ column_name: 'x', column_type: 'INTEGER' }];
+			if (q.startsWith('--len')) return [{ length: 5 }];
+			return [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }, { x: 5 }];
+		});
+		vi.stubGlobal('window', undefined);
+	});
+
+	it('should be defined', () => {
+		expect(QueryStore).toBeDefined();
+	});
+
+	it('should be subscribeable', () => {
+		const store = new QueryStore('SELECT 1', mockSyncExec);
+		store.subscribe(mockSubscription);
+
+		expect(mockSubscription).toHaveBeenCalledOnce();
+	});
+
+	it('should execute a query when accessing the .length property', () => {
+		const store = new QueryStore(
+			'SELECT 1',
+			(...args) => (console.log(args), mockSyncExec(...args))
+		);
+		store.subscribe(mockSubscription);
+
+		expect(store.proxy.length).toBe(5);
+
+		// 1. Initial Subscription
+		expect(mockSubscription).toHaveBeenCalledTimes(1);
+		// 1. SSR'd data
+		// 2. Column Metadata
+		// 3. Length
+		expect(mockSyncExec).toHaveBeenCalledTimes(3);
+
+		// Data was touched
+		// This query should have fired
+		expect(store.loaded).toBe(true);
+		expect(store.loading).toBe(false);
+
+		// Length should have finished loading
+		expect(store.lengthLoaded).toBe(true);
+		expect(store.lengthLoading).toBe(false);
+	});
+
+	it('should ensure that 2 queries with the same derivation are distinct', () => {
+		const store1 = new QueryStore('SELECT 1;', mockSyncExec, undefined, { disableCache: false });
+		const store2 = new QueryStore('SELECT 2;', mockSyncExec, undefined, { disableCache: false });
+
+		const limitedStore1 = store1.limit(0);
+		const limitedStore2 = store2.limit(0);
+
+		expect(limitedStore1.text).not.toEqual(limitedStore2.text);
+	});
+
+	it('should slice properly', () => {
+		const store = new QueryStore('SELECT 2;', mockSyncExec, undefined, { disableCache: false })
+			.proxy;
+
+		store.fetch();
+
+		const sliced = store.slice();
+
+		console.error(sliced.length, store.length);
+		expect(sliced.length).toEqual(store.length);
+
+		expect(sliced[0]).toEqual(store.proxy[0]);
+	});
+
+	describe('Derived Stores', () => {
+		describe.each<{ func: keyof QueryStore; args: unknown[] }>([
+			{ func: 'where', args: [] },
+			{ func: 'agg', args: [{}] },
+			{ func: 'limit', args: [5] },
+			{ func: 'orderBy', args: [{}] },
+			{ func: 'offset', args: [] }
+		])('$func', (opts) => {
+			it(`should have the property ${opts.func}()`, () => {
+				const store = new QueryStore('SELECT 1;', mockSyncExec, undefined, { disableCache: true });
+				expect(opts.func in store).toBe(true);
+				expect(typeof store[opts.func]).toBe('function');
+			});
+
+			it(`should return a new store when using .${opts.func}`, () => {
+				const store = new QueryStore('SELECT 1;', mockSyncExec, undefined, { disableCache: true });
+
+				const targetFunc = store[opts.func];
+				expect(targetFunc).toBeTypeOf('function');
+
+				const childStore = (targetFunc as CallableFunction)(...opts.args);
+
+				// store !== childStore
+				expect(store).not.toEqual(childStore);
+				// childStore is a proxy
+				expect(util.types.isProxy(childStore)).toBe(true);
+			});
+			it('should subscribe to derived stores', () => {
+				const store = new QueryStore('SELECT 1;', mockSyncExec, undefined, { disableCache: true });
+				const targetFunc = store[opts.func];
+				expect(targetFunc).toBeTypeOf('function');
+
+				const childStore = (targetFunc as CallableFunction)(opts.args);
+				store.subscribe(mockSubscription);
+
+				// 1.
+				expect(mockSubscription).toBeCalledTimes(1);
 
 				expect(childStore.length).toBe(5);
 			});

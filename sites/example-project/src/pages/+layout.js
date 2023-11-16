@@ -33,38 +33,67 @@ const loadDB = async () => {
 
 const database_initialization = profile(loadDB);
 
+/** @type {(...params: Parameters<import("./$types").LayoutLoad>) => Promise<App.PageData["data"]>} */
+async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch }) {
+	// get every query that's run in the component
+	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
+	if (!res.ok) return {};
+
+	const sql_cache_with_hashed_query_strings = await res.json();
+
+	const resolved_entries = await Promise.all(
+		Object.entries(sql_cache_with_hashed_query_strings).map(async ([query_name, query_hash]) => {
+			const res = await fetch(`/api/prerendered_queries/${query_hash}.arrow`);
+			if (!res.ok) return null;
+
+			const table = await tableFromIPC(res);
+			return [query_name, arrowTableToJSON(table)];
+		})
+	);
+
+	return Object.fromEntries(resolved_entries.filter(Boolean));
+}
+
 /** @satisfies {import("./$types").LayoutLoad} */
-export const load = async ({
-	fetch,
-	data: { customFormattingSettings, routeHash, isUserPage, evidencemeta }
-}) => {
+export const load = async (event) => {
+	const {
+		data: { customFormattingSettings, routeHash, paramsHash, isUserPage, evidencemeta }
+	} = event;
+
 	if (!browser) await database_initialization;
 	// account for potential changes in manifest (source query hmr)
 	if (!browser && dev) await initDB();
 
-	const data = {};
+	/** @type {App.PageData["data"]} */
+	let data = {};
 
 	// let SSR saturate the cache first
 	if (browser && isUserPage) {
-		await Promise.all(
-			evidencemeta.queries?.map(async ({ id }) => {
-				const res = await fetch(`/api/${routeHash}/${id}.arrow`);
-				if (res.ok) {
-					const table = await tableFromIPC(res);
-					data[id] = arrowTableToJSON(table);
-				}
-			}) ?? []
-		);
+		data = await getPrerenderedQueries(event);
 	}
 
-	return {
+	return /** @type {App.PageData} */ ({
 		__db: {
-			query(sql, query_name) {
+			query(sql, { query_name, callback = (x) => x }) {
 				if (browser) {
-					return database_initialization.then(() => query(sql));
+					return (async () => {
+						await database_initialization;
+						const result = await query(sql);
+						return callback(result);
+					})();
 				}
 
-				return query(sql, { route_hash: routeHash, query_name, prerendering: building });
+				return callback(
+					query(sql, {
+						route_hash: routeHash,
+						additional_hash: paramsHash,
+						query_name,
+						prerendering: building
+					})
+				);
+			},
+			async load() {
+				return database_initialization;
 			},
 			async updateParquetURLs(manifest) {
 				// todo: maybe diff with old?
@@ -76,5 +105,5 @@ export const load = async ({
 		customFormattingSettings,
 		isUserPage,
 		evidencemeta
-	};
+	});
 };

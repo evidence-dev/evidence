@@ -2,7 +2,7 @@
  * Caches DuckDB queries that have been
  * @param {string} sql_string SQL string executed
  * @param {import("apache-arrow").Table} data result of the query
- * @param {{ route_hash: string, query_name: string, prerendering: boolean }} cache_options
+ * @param {{ route_hash: string, additional_hash: string, query_name: string, prerendering: boolean }} cache_options
  * @returns {void}
  */
 export function cache_for_hash(
@@ -12,9 +12,21 @@ export function cache_for_hash(
 ): void;
 
 /**
- * Gets the cached arrow response for a given route hash and query name
+ * Gets the cached arrow response for a given route hash, additional hash, and query name
  * @param {string} route_hash
+ * @param {string} additional_hash
  * @param {string} query_name
  * @returns {Buffer}
  */
-export function get_cache_for_hash(route_hash: string, query_name: string): Buffer;
+export function get_cache_for_hash(
+	route_hash: string,
+	additional_hash: string,
+	query_name: string
+): Buffer;
+
+/**
+ * Gets all the queries that run on a given page
+ * @param {string} route_hash
+ * @returns {string}
+ */
+export function get_all_page_queries(route_hash: string): string;

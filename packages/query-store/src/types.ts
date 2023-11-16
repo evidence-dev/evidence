@@ -5,7 +5,7 @@ export type Subscriber<T> = (value: T) => unknown;
 
 export type MaybePromise<T> = Promise<T> | T;
 
-export type Runner = (query: string) => MaybePromise<QueryResult[]>;
+export type Runner = (query: string, query_name: string) => MaybePromise<QueryResult[]>;
 
 export type AggFunction = (query: Query, ...args: any[]) => Query;
 
@@ -19,6 +19,14 @@ export type QueryStoreOpts = {
 	initialDataDirty?: boolean;
 	/** Optional hook to enable custom error reporting behavior, can be used for toasts, alerts, etc. */
 	errorNotifier?: (error: Error) => unknown;
+	/** Optional hook to enable custom query score behavior, can be used for toasts, alerts, etc. */
+	scoreNotifier?: (info: ScoreInformation) => void;
+};
+
+export type ScoreInformation = {
+	id: string;
+	query: string;
+	score: number;
 };
 
 export type QueryStoreValue = QueryStore & QueryResult[];

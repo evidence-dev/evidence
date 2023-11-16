@@ -34,6 +34,10 @@
 			"browser": "./src/client-duckdb/browser.js",
 			"node": "./src/client-duckdb/node.js",
 			"types": "./src/client-duckdb/browser.d.ts"
+		},
+		"./calculate-score": {
+			"default": "./src/calculateScore.js",
+			"types": "./src/calculateScore.d.ts"
 		}
 	},
 	"devDependencies": {
