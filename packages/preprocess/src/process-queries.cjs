@@ -116,7 +116,12 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					return debounce(update, 500);
 				}
 		
-				$: _${id}_debounced_updater = _${id}_reactivity_manager();
+				let _${id}_debounced_updater;
+				// make sure svelte knows debounced updater is dependent on query text
+				$: if (typeof _${id}_debounced_updater === 'undefined') {
+                    _${id}_query_text;
+                    _${id}_debounced_updater = _${id}_reactivity_manager();
+                };
 				$: _${id}_query_text, _${id}_debounced_updater();
 			`;
 		});
