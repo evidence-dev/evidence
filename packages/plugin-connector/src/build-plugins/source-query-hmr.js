@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
 import { basename, dirname, resolve } from 'path';
-import { readFile, rm, cp } from 'fs/promises';
+import { readFile, rm } from 'fs/promises';
 
 /**
  * Extracts source, query, and source_path from a path
