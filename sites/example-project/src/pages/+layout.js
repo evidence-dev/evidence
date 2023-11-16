@@ -77,7 +77,7 @@ export const load = async (event) => {
 
 	return /** @type {App.PageData} */ ({
 		__db: {
-			query(sql, { query_name, callback = (x) => x }) {
+			query(sql, { query_name, callback = (x) => x } = {}) {
 				if (browser) {
 					return (async () => {
 						await database_initialization;
