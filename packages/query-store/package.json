@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/query-store",
-	"version": "2.0.0-usql.1",
+	"version": "2.0.0-usql.2",
 	"description": "",
 	"main": "dist/index.js",
 	"source": "./src/index.ts",
@@ -20,7 +20,7 @@
 		"vitest": "^0.34.1"
 	},
 	"dependencies": {
-		"@evidence-dev/universal-sql": "workspace:",
+		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.11",
 		"@sqltools/formatter": "^1.2.5",
 		"@uwdata/mosaic-sql": "^0.3.2"
 	},

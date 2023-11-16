@@ -22,12 +22,12 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "2.0.0-usql.13",
+	"version": "2.0.0-usql.14",
 	"evidence": {
 		"components": true
 	},
 	"dependencies": {
-		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.9",
+		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.10",
 		"@evidence-dev/query-store": "workspace:^",
 		"@evidence-dev/tailwind": "workspace:1.0.0-usql.2",
 		"@rgossiaux/svelte-headlessui": "^2.0.0",

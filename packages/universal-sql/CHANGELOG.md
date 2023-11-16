@@ -1,5 +1,15 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.11
+
+### Minor Changes
+
+- 52d81ce2: fix parameterized page prerendering
+
+### Patch Changes
+
+- 130950d7: add client/build time guardrails
+
 ## 2.0.0-usql.10
 
 ### Patch Changes

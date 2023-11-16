@@ -1,5 +1,21 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.14
+
+### Minor Changes
+
+- 1097e5a9: add client ddb-backed dropdown component
+
+### Patch Changes
+
+- 130950d7: revamp toast notifications
+- Updated dependencies [9bd1cd29]
+- Updated dependencies [130950d7]
+- Updated dependencies [1097e5a9]
+- Updated dependencies [130950d7]
+  - @evidence-dev/query-store@2.0.0-usql.2
+  - @evidence-dev/component-utilities@2.0.0-usql.10
+
 ## 2.0.0-usql.13
 
 ### Patch Changes

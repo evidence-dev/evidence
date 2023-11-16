@@ -1,5 +1,16 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.14
+
+### Minor Changes
+
+- 1097e5a9: add client ddb-backed dropdown component
+
+### Patch Changes
+
+- 3fb2ead5: Debouncing has been applied to querystores; in theory, changing queries will now retain their state as well
+- 130950d7: add client/build time guardrails
+
 ## 4.0.0-usql.13
 
 ### Patch Changes

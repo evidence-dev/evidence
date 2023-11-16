@@ -1,5 +1,15 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.10
+
+### Minor Changes
+
+- 1097e5a9: add client ddb-backed dropdown component
+
+### Patch Changes
+
+- 130950d7: revamp toast notifications
+
 ## 2.0.0-usql.9
 
 ### Patch Changes
