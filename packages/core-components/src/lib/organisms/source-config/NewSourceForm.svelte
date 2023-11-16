@@ -28,7 +28,11 @@
 				<optgroup label={name}>
 					{#each supports as db}
 						{#if Array.isArray(db)}
-							<option value={db[0]}>{db[0]}</option>
+							{#if db.length}
+								<option value={db[0]}>{db[0]}</option>
+							{:else}
+								<!-- This is a misconfiguratino of the datasource package -->
+							{/if}
 						{:else}
 							<option value={db}>{db}</option>
 						{/if}

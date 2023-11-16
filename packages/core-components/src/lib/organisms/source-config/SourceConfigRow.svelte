@@ -26,6 +26,7 @@
 	<p title={sourcePlugin?.package.package.name}>{source.type}</p>
 
 	<div class="flex justify-end">
+		<!-- This doesn't work, not sure why. Nice to have but not required 
 		{#if source.sourceDirectory}
 			<button
 				class="flex gap-2 mr-1 text-blue-600 border text-xs px-2 py-1 border-blue-600 font-bold rounded hover:text-blue-700 hover:border-blue-700 transition h-min"
@@ -33,6 +34,7 @@
 				<a href="vscode://{source.sourceDirectory}"> Show in VS Code </a>
 			</button>
 		{/if}
+		-->
 		<button
 			on:click={() => (open = !open)}
 			class="flex bg-blue-600 gap-2 mx-1 border border-blue-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-blue-700 hover:border-blue-800 transition"
