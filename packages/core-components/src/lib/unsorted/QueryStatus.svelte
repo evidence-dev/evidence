@@ -3,12 +3,11 @@
 </script>
 
 <script>
-	import QueryToast from './ui/QueryToast.svelte';
+	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
 
-	let statuses = [];
 	if (browser && import.meta.hot) {
 		import.meta.hot.on('evidence:build-status', async (data) => {
 			if (data.status === 'done') {
@@ -20,25 +19,39 @@
 				await invalidateAll();
 			}
 
-			statuses.push(data);
-			statuses = statuses;
+			const { status, id } = data;
+
+			const style =
+				status === 'running'
+					? 'info'
+					: status === 'error'
+					? 'error'
+					: status === 'done'
+					? 'success'
+					: '';
+
+			const message =
+				status === 'running'
+					? 'Rebuilding'
+					: status === 'error'
+					? 'Error while rebuilding'
+					: status === 'done'
+					? 'Rebuilt'
+					: '';
+
+			// if the connection.yaml was rebuilt, the id will be something like
+			// needful_things.connection (the .yaml is stripped off)
+			const title = id.endsWith('.connection') ? id.split('.')[0] : id;
+
+			const unique_id = Math.random();
+			const status_as_toast = {
+				title,
+				message,
+				status: style,
+				id: unique_id
+			};
+
+			toasts.add(status_as_toast, 5000);
 		});
 	}
 </script>
-
-<div class="container">
-	{#each statuses as status}
-		<QueryToast {status} />
-	{/each}
-</div>
-
-<style>
-	div.container {
-		z-index: 1;
-		position: fixed;
-		right: 0;
-		bottom: 0;
-		margin: 1.5em 2.5em;
-		width: 20em;
-	}
-</style>

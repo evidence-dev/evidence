@@ -180,6 +180,9 @@ importers:
       '@tidyjs/tidy':
         specifier: 2.4.4
         version: 2.4.4
+      '@uwdata/mosaic-sql':
+        specifier: ^0.3.2
+        version: 0.3.4
       debounce:
         specifier: ^1.2.1
         version: 1.2.1

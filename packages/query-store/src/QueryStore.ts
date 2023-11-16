@@ -13,6 +13,8 @@ import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
 import { mutations } from './mutations/index.js';
+// @ts-expect-error can't figure out how to resolve this
+import { columnsToScore } from '@evidence-dev/universal-sql/calculate-score';
 
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
@@ -108,6 +110,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return this.#length ?? 0;
 	}
 
+	#score?: number;
+	get score(): number {
+		return this.#score ?? 0;
+	}
+
 	/**
 	 * Svelte bases iteration on the `length` property; so that has to exist before it will try to pass a number
 	 * However, we don't want to load everything if `length` is accessed - only the data itself.
@@ -164,8 +171,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		if (typeof query === 'string') {
 			this.#query.from({ __userQuery: sql`(${query})` }).select('*');
 		} else this.#query = query;
-		// @ts-expect-error Passing undocumented parameter
-		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1] ?? this.id);
+		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1]);
 
 		this.#proxied = new Proxy<QueryStore & QueryResult[]>(
 			this as unknown as QueryStore & QueryResult[],
@@ -228,6 +234,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		// TODO: Should this really be automatic?
 		this.#fetchMetadata();
 		this.#handleInitialData();
+		// prerender
+		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
 	}
 
 	#handleInitialData = () => {
@@ -246,6 +254,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#lengthLoading = false;
 					this.#dataLoaded = !initialDataDirty;
 					this.#lengthLoaded = !initialDataDirty;
+					this.#calculateScore();
+					this.#warnHighScore();
 					this.publish();
 					if (initialDataDirty || !this.#values.length) this.#fetchData();
 				});
@@ -256,6 +266,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#lengthLoading = false;
 				this.#dataLoaded = !initialDataDirty;
 				this.#lengthLoaded = !initialDataDirty;
+				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 				if (initialDataDirty || !this.#values.length) this.#fetchData();
 			}
@@ -285,7 +297,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#dataLoaded = true;
 				return this.#fetchLength();
 			},
-			() => this.#exec(queryWithComment),
+			() => this.#exec(queryWithComment, this.id),
 			this.#setError
 		);
 	};
@@ -303,6 +315,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		if (!this.#values.length && this.#dataLoaded) {
 			this.#length = this.#values.length;
 			this.#lengthLoaded = true;
+			this.#calculateScore();
+			this.#warnHighScore();
 			this.publish();
 			return;
 		}
@@ -324,9 +338,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#lengthLoaded = true;
 				this.#lengthLoading = false;
 
+				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 			},
-			() => this.#exec(queryWithComment),
+			() => this.#exec(queryWithComment, `${this.id}_length`),
 			this.#setError
 		);
 	};
@@ -347,11 +363,25 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
 				this.#metaLoading = false;
 				this.#metaLoaded = true;
+				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 			},
-			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`),
+			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`, `${this.id}_metadata`),
 			this.#setError
 		);
+	};
+
+	#calculateScore = () => {
+		const column_score = columnsToScore(this.#columns);
+		this.#score = column_score * this.length;
+	};
+
+	#warnHighScore = () => {
+		if (!this.opts.scoreNotifier) return;
+		if (this.score < 10 * 1024 * 1024) return;
+
+		this.opts.scoreNotifier({ id: this.id, query: this.#query.toString(), score: this.score });
 	};
 
 	/////////

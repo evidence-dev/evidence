@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { performance } from 'perf_hooks';
 import { z } from 'zod';
+import { cleanZodErrors } from '../lib/clean-zod-errors';
 
 /**
  * @param {DatasourceSpec} source
@@ -61,8 +62,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 				});
 			} else result = _r;
 		} catch (e) {
-			if (e instanceof z.ZodError)
-				console.log(/**@type {Error & { format: () => any}}*/ (e).format());
+			if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
 			else console.log(e);
 			result = null;
 		}
@@ -79,15 +79,15 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 
+		// /Users/someone/sources/needful_things
 		const queryDirectory = path.dirname(query.filepath);
+		// /Users/someone/sources
 		const sourcesPath = path.dirname(source.sourceDirectory);
+		// /needful_things/test
 		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
-
-		// remove potentially old files
-		await fs.rm(path.join(outDir, querySubdir), { recursive: true }).catch(() => {});
-
-		const outputSubdir = queryDirectory.replace(sourcesPath, '');
-
+		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef
+		const outputSubdir = path.join(querySubdir, String(query.hash));
+		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef/test.parquet
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;
@@ -114,6 +114,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			outputFilename,
 			batchSize
 		);
+
 		if (!writtenRows) {
 			console.log(
 				` <| Finished ${filename}. No rows returned, did not create parquet file (took ${(
