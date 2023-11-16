@@ -34,7 +34,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			*/
 			return `
 				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { initialData: data.${id} });
+				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, initialData: data.${id} });
 			`;
 		});
 
@@ -87,7 +87,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							_${id}_query_text,
 							queryFunc,
 							'${id}',
-							{ 
+							{
+								scoreNotifier,
 								initialData: _${id}_changed 
 									// Query has changed, do not provide intiial data
 									? undefined 
@@ -142,26 +143,36 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const all_query_stores = valid_ids.map((id) => `$: ${id} = $_${id};`);
 
 		queryDeclarations += `
-			import { browser, dev } from "$app/environment";
-			import { profile } from '@evidence-dev/component-utilities/profile';
-			import debounce from 'debounce';
-			import { QueryStore } from '@evidence-dev/query-store';
-			import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
+		import { browser, dev } from "$app/environment";
+		import { profile } from '@evidence-dev/component-utilities/profile';
+		import debounce from 'debounce';
+		import { QueryStore } from '@evidence-dev/query-store';
+		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
-			const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
+		const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
+		setQueryFunction(queryFunc);
 
-			setQueryFunction(queryFunc)
-
-			${prerendered_query_stores.join('\n')}
-			${reactive_query_stores.join('\n')}
-			${input_query_stores}
-			${all_query_stores.join('\n')}
+		const scoreNotifier = !dev? () => {} : (info) => {
+			toasts.add({
+				id: Math.random(),
+				title: info.id,
+				message: \`Results estimated to use \${
+					Intl.NumberFormat().format(info.score / (1024 * 1024))
+				}mb of memory, performance may be impacted\`,
+				status: 'warning'
+			}, 5000);
+		};
+		
+		${prerendered_query_stores.join('\n')}
+		${reactive_query_stores.join('\n')}
+		${input_query_stores}
+		${all_query_stores.join('\n')}
 		`;
 	}
 
 	let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
+        import { pageHasQueries, routeHash, toasts } from '@evidence-dev/component-utilities/stores';
         import { setContext, getContext, beforeUpdate, onDestroy, onMount } from 'svelte';
 		import { writable, get } from 'svelte/store';
         

@@ -13,6 +13,8 @@ import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
 import { mutations } from './mutations/index.js';
+// @ts-expect-error can't figure out how to resolve this
+import { columnsToScore } from '@evidence-dev/universal-sql/calculate-score';
 
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
@@ -106,6 +108,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#length?: number;
 	get length(): number {
 		return this.#length ?? 0;
+	}
+
+	#score?: number;
+	get score(): number {
+		return this.#score ?? 0;
 	}
 
 	/**
@@ -247,6 +254,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#lengthLoading = false;
 					this.#dataLoaded = !initialDataDirty;
 					this.#lengthLoaded = !initialDataDirty;
+					this.#calculateScore();
+					this.#warnHighScore();
 					this.publish();
 					if (initialDataDirty || !this.#values.length) this.#fetchData();
 				});
@@ -257,6 +266,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#lengthLoading = false;
 				this.#dataLoaded = !initialDataDirty;
 				this.#lengthLoaded = !initialDataDirty;
+				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 				if (initialDataDirty || !this.#values.length) this.#fetchData();
 			}
@@ -304,6 +315,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		if (!this.#values.length && this.#dataLoaded) {
 			this.#length = this.#values.length;
 			this.#lengthLoaded = true;
+			this.#calculateScore();
+			this.#warnHighScore();
 			this.publish();
 			return;
 		}
@@ -325,6 +338,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#lengthLoaded = true;
 				this.#lengthLoading = false;
 
+				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 			},
 			() => this.#exec(queryWithComment, `${this.id}_length`),
@@ -348,11 +363,25 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
 				this.#metaLoading = false;
 				this.#metaLoaded = true;
+				this.#calculateScore();
+				this.#warnHighScore();
 				this.publish();
 			},
 			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`, `${this.id}_metadata`),
 			this.#setError
 		);
+	};
+
+	#calculateScore = () => {
+		const column_score = columnsToScore(this.#columns);
+		this.#score = column_score * this.length;
+	};
+
+	#warnHighScore = () => {
+		if (!this.opts.scoreNotifier) return;
+		if (this.score < 10 * 1024 * 1024) return;
+
+		this.opts.scoreNotifier({ id: this.id, query: this.#query.toString(), score: this.score });
 	};
 
 	/////////

@@ -19,6 +19,14 @@ export type QueryStoreOpts = {
 	initialDataDirty?: boolean;
 	/** Optional hook to enable custom error reporting behavior, can be used for toasts, alerts, etc. */
 	errorNotifier?: (error: Error) => unknown;
+	/** Optional hook to enable custom query score behavior, can be used for toasts, alerts, etc. */
+	scoreNotifier?: (info: ScoreInformation) => void;
+};
+
+export type ScoreInformation = {
+	id: string;
+	query: string;
+	score: number;
 };
 
 export type QueryStoreValue = QueryStore & QueryResult[];

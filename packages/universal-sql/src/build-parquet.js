@@ -14,6 +14,8 @@ import path from 'path';
 import { initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
+import { columnsToScore } from './calculateScore.js';
+import chalk from 'chalk';
 
 /**
  * @param {string} type
@@ -137,18 +139,51 @@ export async function buildMultipartParquet(columns, data, outputFilename, batch
 
 	await initDB();
 
+	const outputFilepath = path.join('.', 'static', 'data', outputFilename);
 	const parquetFiles = tmpFilenames
 		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
 		.join(',');
 	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
-	const copy = `COPY (${select}) TO '${path.join(
-		'.',
-		'static',
-		'data',
-		outputFilename
-	)}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
+	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
 	await query(copy);
+
+	const { size } = await fs.stat(outputFilepath);
+	if (size > 100 * 1024 * 1024) {
+		console.warn(
+			chalk.yellow(
+				` || WARNING: ${outputFilename} has a disk size of ${Intl.NumberFormat().format(
+					size / (1024 * 1024)
+				)}mb.`
+			)
+		);
+	}
+
+	const score =
+		rowCount *
+		columnsToScore(
+			columns.map(({ name, evidenceType }) => ({
+				name,
+				type:
+					evidenceType === 'number'
+						? 'DOUBLE'
+						: evidenceType === 'boolean'
+						? 'BOOLEAN'
+						: evidenceType === 'date'
+						? 'TIMESTAMP'
+						: 'VARCHAR'
+			}))
+		);
+
+	if (score > 100 * 1024 * 1024) {
+		console.warn(
+			chalk.yellow(
+				` || WARNING: ${outputFilename} is estimated to be ${Intl.NumberFormat().format(
+					score / (1024 * 1024)
+				)}mb uncompressed. This may cause client-side performance issues.`
+			)
+		);
+	}
 
 	for (const tmpFile of tmpFilenames) {
 		await fs.rm(tmpFile);
