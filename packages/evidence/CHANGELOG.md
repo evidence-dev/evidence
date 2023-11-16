@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.31
+
+### Patch Changes
+
+- cb307da8: fix: 2nd param for query is optional
+
 ## 20.0.0-usql.30
 
 ### Minor Changes
