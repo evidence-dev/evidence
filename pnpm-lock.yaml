@@ -1076,7 +1076,7 @@ importers:
         specifier: workspace:1.0.0-usql.4
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:20.0.0-usql.30
+        specifier: workspace:20.0.0-usql.31
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
         specifier: workspace:2.0.0-usql.2
