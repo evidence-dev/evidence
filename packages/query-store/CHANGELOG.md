@@ -1,5 +1,15 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.2
+
+### Patch Changes
+
+- 9bd1cd29: remove old workaround with a merged fix
+- 130950d7: add client/build time guardrails
+- Updated dependencies [130950d7]
+- Updated dependencies [52d81ce2]
+  - @evidence-dev/universal-sql@2.0.0-usql.11
+
 ## 2.0.0-usql.1
 
 ### Patch Changes

@@ -18,9 +18,9 @@ options:
         env: MY_SNOWFLAKE_CREDS
 # Connector Type
 type: sqlite
-# EVIDENCE_SOURCE_[source-name]_[option-name]
-# EVIDENCE_SOURCE_SALES_PATH: /data/sales.db
-# EVIDENCE_SOURCE_SALES_PATH: https://s3.acme.co/data/sales.db`
+# EVIDENCE_SOURCE__[source-name]__[option-name]
+# EVIDENCE_SOURCE__SALES__PATH: /data/sales.db
+# EVIDENCE_SOURCE__SALES__PATH: https://s3.acme.co/data/sales.db`
 				}
 			}
 		});

@@ -34,7 +34,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			*/
 			return `
 				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, initialData: data.${id} });
+				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, initialData: data.${id} ?? profile(__db.query, _query_string_${id}, '${id}') });
 			`;
 		});
 
@@ -116,7 +116,12 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					return debounce(update, 500);
 				}
 		
-				$: _${id}_debounced_updater = _${id}_reactivity_manager();
+				let _${id}_debounced_updater;
+				// make sure svelte knows debounced updater is dependent on query text
+				$: if (typeof _${id}_debounced_updater === 'undefined') {
+                    _${id}_query_text;
+                    _${id}_debounced_updater = _${id}_reactivity_manager();
+                };
 				$: _${id}_query_text, _${id}_debounced_updater();
 			`;
 		});

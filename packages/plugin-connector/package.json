@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "2.0.0-usql.19",
+	"version": "2.0.0-usql.20",
 	"description": "",
 	"type": "module",
 	"bin": "./dist/debugger/cli.js",
@@ -17,7 +17,7 @@
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
-		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.10",
+		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.11",
 		"@types/estree": "^1.0.1",
 		"@types/lodash.merge": "^4.6.8",
 		"chalk": "^5.2.0",
