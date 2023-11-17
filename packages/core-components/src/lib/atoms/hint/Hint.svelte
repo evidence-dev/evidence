@@ -1,14 +1,14 @@
 <script context="module">
-    export const evidenceInclude = true
+	export const evidenceInclude = true;
 </script>
 
 <script>
 	import { fade } from 'svelte/transition';
-    import {Icon} from '@steeze-ui/svelte-icon';
-    import {InfoCircle} from '@steeze-ui/tabler-icons';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { InfoCircle } from '@steeze-ui/tabler-icons';
 
-    /** @type {import("@steeze-ui/svelte-icon").IconSource} */
-    export let icon = InfoCircle
+	/** @type {import("@steeze-ui/svelte-icon").IconSource} */
+	export let icon = InfoCircle;
 
 	let visible = false;
 
@@ -23,7 +23,7 @@
 	on:mouseleave={hideMessage}
 	class="additional-info-icon"
 >
-    <Icon src={icon} class="w-5 h-5"/>
+	<Icon src={icon} class="w-5 h-5" />
 
 	{#if visible}
 		<span transition:fade class="info-msg">

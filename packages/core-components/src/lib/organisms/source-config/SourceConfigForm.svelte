@@ -82,32 +82,43 @@
 		{:else if configurationOkay}
 			<p class="text-green-500 font-bold text-xs">Configuration Updated</p>
 		{/if}
-		
+
 		<h4 class="text-xs uppercase text-gray-600 font-bold">Source Info</h4>
 		<label class="flex justify-between">
 			Source Name
-			<input bind:value={source.name} class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm" pattern="^(\w)+$" />
-			<!-- TODO: Regular expression to ensure that this doesn't allow invalid values. -->
+			<input
+				bind:value={source.name}
+				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
+				pattern="^(\w)+$"
+			/>
 		</label>
 		<label class="flex justify-between">
 			Source Type
-			<input disabled value={source.type} class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm" pattern="^(\w)+$" />
-			<!-- TODO: Regular expression to ensure that this doesn't allow invalid values. -->
+			<input
+				disabled
+				value={source.type}
+				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
+				pattern="^(\w)+$"
+			/>
 		</label>
 		<label class="flex justify-between">
 			Reveal Secret Values
-			<input type="checkbox" bind:checked={reveal} class="rounded border border-gray-300 p-1 ml-auto w-5 text-gray-950 align-middle text-sm" />
+			<input
+				type="checkbox"
+				bind:checked={reveal}
+				class="rounded border border-gray-300 p-1 ml-auto w-5 text-gray-950 align-middle text-sm"
+			/>
 		</label>
 		{#if Object.keys(source.options).length}
-		<hr />
-		<h4 class="text-xs uppercase text-gray-600 font-bold">Source Options</h4>
-		<SourceConfigFormSection
-			{reveal}
-			disabled={configurationLoading || validationLoading}
-			rootOptions={source.options}
-			bind:options={source.options}
-			optionSpec={sourcePlugin.options}
-		/>
+			<hr />
+			<h4 class="text-xs uppercase text-gray-600 font-bold">Source Options</h4>
+			<SourceConfigFormSection
+				{reveal}
+				disabled={configurationLoading || validationLoading}
+				rootOptions={source.options}
+				bind:options={source.options}
+				optionSpec={sourcePlugin.options}
+			/>
 		{/if}
 	</section>
 	<input type="hidden" value={JSON.stringify(source)} name="source" />

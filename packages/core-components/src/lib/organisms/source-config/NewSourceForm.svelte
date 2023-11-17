@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
 	export let availablePackages;
-	export let ghost = false
+	export let ghost = false;
 	let newSourceType = '';
 	let newSourceName = '';
 
@@ -14,7 +14,9 @@
 	}
 </script>
 
-<div class="col-span-4 w-full flex justify-end items-end flex-col py-4 px-4 rounded" transition:slide
+<div
+	class="col-span-4 w-full flex justify-end items-end flex-col py-4 px-4 rounded"
+	transition:slide
 	class:bg-gray-100={!ghost}
 >
 	<form class="flex flex-col w-full gap-4" on:submit|preventDefault={submit}>

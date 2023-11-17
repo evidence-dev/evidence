@@ -1,1 +1,1 @@
-export {default as Hint} from './Hint.svelte'
+export { default as Hint } from './Hint.svelte';

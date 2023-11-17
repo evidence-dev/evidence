@@ -93,6 +93,7 @@
 				} catch (e) {
 					// TODO: Handle this more effectively
 					// TODO: Field-level error handling
+					error = 'Failed to parse YAML file';
 					console.warn(e);
 				}
 				break;
@@ -102,6 +103,7 @@
 				} catch (e) {
 					// TODO: Handle this more effectively
 					// TODO: Field-level error handling
+					error = 'Failed to parse JSON file';
 					console.warn(e);
 				}
 				break;
@@ -129,6 +131,8 @@
 		}
 	}
 
+	let error = '';
+
 	// Flush values back up
 	$: options[fieldValueKey] = fieldValue;
 
@@ -136,14 +140,17 @@
 </script>
 
 <div class="w-full">
-	<label class="flex justify-between w-full">
-		<p class="mr-2 inline-block">
-			{title}
-			{#if spec.required}<sup class="text-red-500">*</sup>{/if}
-			{#if spec.description}
-				<Hint>{spec.description}</Hint>
-			{/if}
-		</p>
+	<label class="flex justify-between w-full h-11 items-start">
+		<div class="mr-2 inline-flex flex-col gap-1">
+			<p class="">
+				{title}
+				{#if spec.required}<sup class="text-red-500">*</sup>{/if}
+				{#if spec.description}
+					<Hint>{spec.description}</Hint>
+				{/if}
+			</p>
+			<p class="text-red-500 text-xs font-bold">{error}</p>
+		</div>
 		{#if spec.type === 'string'}
 			{#if spec.secret && !reveal}
 				<input
@@ -190,7 +197,6 @@
 			<input disabled={fieldDisabled} type="file" on:change={handleFile} />
 		{/if}
 	</label>
-
 	{#if Object.keys(spec?.children?.[fieldValue] ?? {}).length}
 		<section class="ml-4 flex flex-col gap-2 mt-2">
 			<SourceConfigFormSection
@@ -204,9 +210,9 @@
 	{/if}
 </div>
 
-
 <style>
-	input, select {
+	input,
+	select {
 		@apply rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm;
 	}
 </style>
