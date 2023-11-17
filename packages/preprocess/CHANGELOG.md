@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.15
+
+### Patch Changes
+
+- b3bdd91a: fix regression around debouncing queries
+
 ## 4.0.0-usql.14
 
 ### Minor Changes
