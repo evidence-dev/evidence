@@ -3,6 +3,7 @@
 	import { JSONPath } from '@astronautlabs/jsonpath';
 
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
+	import Hint from '../../atoms/hint/Hint.svelte';
 
 	export let spec;
 	export let key;
@@ -134,11 +135,14 @@
 	$: fieldDisabled = disabled || spec.forceReference || (spec.reference && refVal !== null);
 </script>
 
-<div>
-	<label>
+<div class="w-full">
+	<label class="flex justify-between w-full">
 		<p class="mr-2 inline-block">
 			{title}
 			{#if spec.required}<sup class="text-red-500">*</sup>{/if}
+			{#if spec.description}
+				<Hint>{spec.description}</Hint>
+			{/if}
 		</p>
 		{#if spec.type === 'string'}
 			{#if spec.secret && !reveal}
@@ -158,6 +162,7 @@
 			{/if}
 		{:else if spec.type === 'boolean'}
 			<input
+				class="!w-5"
 				disabled={fieldDisabled}
 				required={spec.required}
 				type="checkbox"
@@ -185,14 +190,9 @@
 			<input disabled={fieldDisabled} type="file" on:change={handleFile} />
 		{/if}
 	</label>
-	{#if spec.description}
-		<p class="text-sm italic">
-			{spec.description}
-		</p>
-	{/if}
 
 	{#if Object.keys(spec?.children?.[fieldValue] ?? {}).length}
-		<section class="ml-4 flex flex-col gap-2">
+		<section class="ml-4 flex flex-col gap-2 mt-2">
 			<SourceConfigFormSection
 				{rootOptions}
 				{reveal}
@@ -203,3 +203,10 @@
 		</section>
 	{/if}
 </div>
+
+
+<style>
+	input, select {
+		@apply rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm;
+	}
+</style>

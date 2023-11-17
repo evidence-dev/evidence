@@ -13,40 +13,44 @@
 	}
 </script>
 
-<div class="col-start-4 w-full flex justify-end items-end flex-col my-4" transition:slide>
-	<form class="grid grid-cols-2 gap-4 items-center" on:submit|preventDefault={submit}>
-		<p class="w-full text-center col-span-2 font-bold">New Source:</p>
+<div class="col-span-4 w-full flex justify-end items-end flex-col bg-gray-100 py-4 px-4 rounded" transition:slide>
+	<form class="flex flex-col w-full gap-4" on:submit|preventDefault={submit}>
+		<h3 class="text-sm uppercase gray-600 font-bold text-left">Add new source</h3>
 
-		<label for="sourceType" class="text-right"> Database Type </label>
-		<select
-			bind:value={newSourceType}
-			name="sourceType"
-			class="px-2 py-1 border border-gray-500 rounded"
-		>
-			{#each Object.entries(availablePackages) as [name, value]}
-				{@const supports = value.package.package.evidence.databases}
-				<optgroup label={name}>
-					{#each supports as db}
-						{#if Array.isArray(db)}
-							{#if db.length}
-								<option value={db[0]}>{db[0]}</option>
+		<label for="sourceType" class="flex justify-between w-full">
+			Database Type
+			<select
+				bind:value={newSourceType}
+				name="sourceType"
+				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
+			>
+				{#each Object.entries(availablePackages) as [name, value]}
+					{@const supports = value.package.package.evidence.databases}
+					<optgroup label={name}>
+						{#each supports as db}
+							{#if Array.isArray(db)}
+								{#if db.length}
+									<option value={db[0]}>{db[0]}</option>
+								{:else}
+									<!-- This is a misconfiguratino of the datasource package -->
+								{/if}
 							{:else}
-								<!-- This is a misconfiguratino of the datasource package -->
+								<option value={db}>{db}</option>
 							{/if}
-						{:else}
-							<option value={db}>{db}</option>
-						{/if}
-					{/each}
-				</optgroup>
-			{/each}
-		</select>
+						{/each}
+					</optgroup>
+				{/each}
+			</select>
+		</label>
 
-		<label for="sourceName" class="text-right"> Source name </label>
-		<input
-			name="sourceName"
-			class="px-2 py-1 border border-gray-500 rounded"
-			bind:value={newSourceName}
-		/>
+		<label for="sourceName" class="flex justify-between w-full">
+			Source name
+			<input
+				name="sourceName"
+				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
+				bind:value={newSourceName}
+			/>
+		</label>
 
 		<button
 			class="col-start-2 flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"

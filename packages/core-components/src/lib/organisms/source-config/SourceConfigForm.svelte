@@ -73,7 +73,7 @@
 	use:enhance={callback}
 	action="?/updateSource"
 	method="POST"
-	class="w-full bg-gray-100 px-4 py-2"
+	class="w-full bg-gray-100 px-4 py-2 rounded"
 >
 	<h3 class="text-sm uppercase gray-600 font-bold">Configure {source.name}</h3>
 	<section class="flex flex-col gap-2">
@@ -82,14 +82,14 @@
 		{:else if configurationOkay}
 			<p class="text-green-500 font-bold text-xs">Configuration Updated</p>
 		{/if}
-		<label>
+		<label class="flex justify-between">
 			Source Name
-			<input bind:value={source.name} />
+			<input bind:value={source.name} class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm" />
 			<!-- TODO: Regular expression to ensure that this doesn't allow invalid values. -->
 		</label>
-		<label>
+		<label class="flex justify-between">
 			Reveal Secrets
-			<input type="checkbox" bind:checked={reveal} />
+			<input type="checkbox" bind:checked={reveal} class="rounded border border-gray-300 p-1 ml-auto w-5 text-gray-950 align-middle text-sm" />
 		</label>
 		<hr />
 		<SourceConfigFormSection
@@ -101,7 +101,7 @@
 		/>
 	</section>
 	<input type="hidden" value={JSON.stringify(source)} name="source" />
-	<div class="flex gap-2 justify-end items-center">
+	<div class="flex gap-2 justify-end items-center mt-4">
 		{#if validationError}
 			<p class="text-red-500 font-bold text-xs">{validationError}</p>
 		{:else if validationOkay}
