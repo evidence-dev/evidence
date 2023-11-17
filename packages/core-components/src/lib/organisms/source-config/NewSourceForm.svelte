@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
 	export let availablePackages;
+	export let ghost = false
 	let newSourceType = '';
 	let newSourceName = '';
 
@@ -13,13 +14,16 @@
 	}
 </script>
 
-<div class="col-span-4 w-full flex justify-end items-end flex-col bg-gray-100 py-4 px-4 rounded" transition:slide>
+<div class="col-span-4 w-full flex justify-end items-end flex-col py-4 px-4 rounded" transition:slide
+	class:bg-gray-100={!ghost}
+>
 	<form class="flex flex-col w-full gap-4" on:submit|preventDefault={submit}>
 		<h3 class="text-sm uppercase gray-600 font-bold text-left">Add new source</h3>
 
 		<label for="sourceType" class="flex justify-between w-full">
 			Database Type
 			<select
+				required
 				bind:value={newSourceType}
 				name="sourceType"
 				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
@@ -46,6 +50,8 @@
 		<label for="sourceName" class="flex justify-between w-full">
 			Source name
 			<input
+				required
+				pattern="^(\w)+$"
 				name="sourceName"
 				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
 				bind:value={newSourceName}
@@ -53,7 +59,7 @@
 		</label>
 
 		<button
-			class="col-start-2 flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
+			class="ml-auto flex bg-green-600 gap-2 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
 		>
 			Confirm
 		</button>

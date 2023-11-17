@@ -32,8 +32,6 @@
 		showNewSource = false;
 	}
 
-	// TODO: Look at the current database picker in main wrt Database type
-
 	let duplicatePackageNames = [];
 	$: if (sources.length) {
 		const allNames = sources.reduce(
@@ -96,18 +94,12 @@
 				</div>
 
 				{#if showNewSource}
-					<!-- TODO: Maybe this should be a modal? -->
 					<NewSourceForm {availablePackages} on:newSource={addNewSource} />
 				{/if}
 			{:else}
 				<!-- There are no sources; we should show a hero to make it more clear to the user -->
-				<section class="py-8 col-span-4">
-					<!-- TODO: Make this less ugly -->
-					<button
-						class="text-lg font-bold block text-white rounded px-4 py-2 mx-auto bg-blue-500 hover:bg-blue-700 transition"
-						>Configure your first datasource</button
-					>
-					<NewSourceForm {availablePackages} on:newSource={addNewSource} />
+				<section class="col-span-4">
+					<NewSourceForm ghost {availablePackages} on:newSource={addNewSource} />
 				</section>
 			{/if}
 		</div>
