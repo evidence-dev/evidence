@@ -441,7 +441,7 @@ importers:
         specifier: workspace:2.0.0-usql.20
         version: link:../plugin-connector
       '@evidence-dev/preprocess':
-        specifier: workspace:4.0.0-usql.14
+        specifier: workspace:4.0.0-usql.15
         version: link:../preprocess
       '@evidence-dev/query-store':
         specifier: workspace:2.0.0-usql.2
@@ -895,7 +895,7 @@ importers:
         version: 2.4.3(@docusaurus/types@2.4.3)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(typescript@4.9.5)
       '@docusaurus/preset-classic':
         specifier: ^2.1.0
-        version: 2.4.3(@algolia/client-search@4.15.0)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.10.0)(typescript@4.9.5)
+        version: 2.4.3(@algolia/client-search@4.15.0)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.11.0)(typescript@4.9.5)
       '@docusaurus/theme-classic':
         specifier: ^2.1.0
         version: 2.4.3(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(typescript@4.9.5)
@@ -1076,7 +1076,7 @@ importers:
         specifier: workspace:1.0.0-usql.4
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:20.0.0-usql.31
+        specifier: workspace:20.0.0-usql.32
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
         specifier: workspace:2.0.0-usql.2
@@ -1092,7 +1092,7 @@ importers:
     devDependencies:
       '@playwright/test':
         specifier: ^1.30.0
-        version: 1.39.0
+        version: 1.40.0
       dotenv:
         specifier: ^16.0.1
         version: 16.3.1
@@ -1103,10 +1103,10 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
 
-  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.10.0):
+  /@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.11.0):
     resolution: {integrity: sha512-009HdfugtGCdC4JdXUbVJClA0q0zh24yyePn+KUGk3rP7j8FEe/m5Yo/z65gn6nP/cM39PxpzqKrL7A6fP6PPw==}
     dependencies:
-      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.10.0)
+      '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.11.0)
       '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -1114,13 +1114,13 @@ packages:
       - search-insights
     dev: false
 
-  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.10.0):
+  /@algolia/autocomplete-plugin-algolia-insights@1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.11.0):
     resolution: {integrity: sha512-a/yTUkcO/Vyy+JffmAnTWbr4/90cLzw+CC3bRbhnULr/EM0fGNvM13oQQ14f2moLMcVDyAx/leczLlAOovhSZg==}
     peerDependencies:
       search-insights: '>= 1 < 3'
     dependencies:
       '@algolia/autocomplete-shared': 1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)
-      search-insights: 2.10.0
+      search-insights: 2.11.0
     transitivePeerDependencies:
       - '@algolia/client-search'
       - algoliasearch
@@ -3115,7 +3115,7 @@ packages:
     resolution: {integrity: sha512-SPiDHaWKQZpwR2siD0KQUwlStvIAnEyK6tAE2h2Wuoq8ue9skzhlyVQ1ddzOxX6khULnAALDiR/isSF3bnuciA==}
     dev: false
 
-  /@docsearch/react@3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.10.0):
+  /@docsearch/react@3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.11.0):
     resolution: {integrity: sha512-9Ahcrs5z2jq/DcAvYtvlqEBHImbm4YJI8M9y0x6Tqg598P40HTEkX7hsMcIuThI+hTFxRGZ9hll0Wygm2yEjng==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -3132,13 +3132,13 @@ packages:
       search-insights:
         optional: true
     dependencies:
-      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.10.0)
+      '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)(search-insights@2.11.0)
       '@algolia/autocomplete-preset-algolia': 1.9.3(@algolia/client-search@4.15.0)(algoliasearch@4.20.0)
       '@docsearch/css': 3.5.2
       algoliasearch: 4.20.0
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
-      search-insights: 2.10.0
+      search-insights: 2.11.0
     transitivePeerDependencies:
       - '@algolia/client-search'
     dev: false
@@ -3604,7 +3604,7 @@ packages:
       - webpack-cli
     dev: false
 
-  /@docusaurus/preset-classic@2.4.3(@algolia/client-search@4.15.0)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.10.0)(typescript@4.9.5):
+  /@docusaurus/preset-classic@2.4.3(@algolia/client-search@4.15.0)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.11.0)(typescript@4.9.5):
     resolution: {integrity: sha512-tRyMliepY11Ym6hB1rAFSNGwQDpmszvWYJvlK1E+md4SW8i6ylNHtpZjaYFff9Mdk3i/Pg8ItQq9P0daOJAvQw==}
     engines: {node: '>=16.14'}
     peerDependencies:
@@ -3622,7 +3622,7 @@ packages:
       '@docusaurus/plugin-sitemap': 2.4.3(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(typescript@4.9.5)
       '@docusaurus/theme-classic': 2.4.3(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(typescript@4.9.5)
       '@docusaurus/theme-common': 2.4.3(@docusaurus/types@2.4.3)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(typescript@4.9.5)
-      '@docusaurus/theme-search-algolia': 2.4.3(@algolia/client-search@4.15.0)(@docusaurus/types@2.4.3)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.10.0)(typescript@4.9.5)
+      '@docusaurus/theme-search-algolia': 2.4.3(@algolia/client-search@4.15.0)(@docusaurus/types@2.4.3)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.11.0)(typescript@4.9.5)
       '@docusaurus/types': 2.4.3(react-dom@17.0.2)(react@17.0.2)
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
@@ -3754,14 +3754,14 @@ packages:
       - webpack-cli
     dev: false
 
-  /@docusaurus/theme-search-algolia@2.4.3(@algolia/client-search@4.15.0)(@docusaurus/types@2.4.3)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.10.0)(typescript@4.9.5):
+  /@docusaurus/theme-search-algolia@2.4.3(@algolia/client-search@4.15.0)(@docusaurus/types@2.4.3)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.11.0)(typescript@4.9.5):
     resolution: {integrity: sha512-jziq4f6YVUB5hZOB85ELATwnxBz/RmSLD3ksGQOLDPKVzat4pmI8tddNWtriPpxR04BNT+ZfpPUMFkNFetSW1Q==}
     engines: {node: '>=16.14'}
     peerDependencies:
       react: ^16.8.4 || ^17.0.0
       react-dom: ^16.8.4 || ^17.0.0
     dependencies:
-      '@docsearch/react': 3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.10.0)
+      '@docsearch/react': 3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.11.0)
       '@docusaurus/core': 2.4.3(@docusaurus/types@2.4.3)(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(typescript@4.9.5)
       '@docusaurus/logger': 2.4.3
       '@docusaurus/plugin-content-docs': 2.4.3(eslint@8.53.0)(react-dom@17.0.2)(react@17.0.2)(typescript@4.9.5)
@@ -6332,12 +6332,12 @@ packages:
     dev: true
     optional: true
 
-  /@playwright/test@1.39.0:
-    resolution: {integrity: sha512-3u1iFqgzl7zr004bGPYiN/5EZpRUSFddQBra8Rqll5N0/vfpqlP9I9EXqAoGacuAbX6c9Ulg/Cjqglp5VkK6UQ==}
+  /@playwright/test@1.40.0:
+    resolution: {integrity: sha512-PdW+kn4eV99iP5gxWNSDQCbhMaDVej+RXL5xr6t04nbKLCBwYtA046t7ofoczHOm8u6c+45hpDKQVZqtqwkeQg==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright: 1.39.0
+      playwright: 1.40.0
     dev: true
 
   /@polka/url@1.0.0-next.23:
@@ -7631,7 +7631,7 @@ packages:
     resolution: {integrity: sha512-yQ3S/IOT08Y7XTnlc3SPkrJKZ6Xld6liAlHn+ddjge4oZa0hUqwYLb+piXUhFMfL6Ij65cj4hu3vMbw89azIhg==}
     dependencies:
       '@storybook/csf-tools': 7.5.3
-      unplugin: 1.5.0
+      unplugin: 1.5.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -9797,7 +9797,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.22.1
-      caniuse-lite: 1.0.30001562
+      caniuse-lite: 1.0.30001563
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -10231,8 +10231,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001562
-      electron-to-chromium: 1.4.586
+      caniuse-lite: 1.0.30001563
+      electron-to-chromium: 1.4.587
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
 
@@ -10429,13 +10429,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.22.1
-      caniuse-lite: 1.0.30001562
+      caniuse-lite: 1.0.30001563
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
 
-  /caniuse-lite@1.0.30001562:
-    resolution: {integrity: sha512-kfte3Hym//51EdX4239i+Rmp20EsLIYGdPkERegTgU19hQWCRhsRFGKHTliUlsry53tv17K7n077Kqa0WJU4ng==}
+  /caniuse-lite@1.0.30001563:
+    resolution: {integrity: sha512-na2WUmOxnwIZtwnFI2CZ/3er0wdNzU7hN+cPYz/z2ajHThnkWjNBOpEPP4n+4r2WPM847JaMotaJE3bnfzjyKw==}
 
   /ccount@1.1.0:
     resolution: {integrity: sha512-vlNK021QdI7PNeiUh/lKkC/mNHHfV0m/Ad5JoI0TYtlBnJAslM/JIkm/tGC88bkLIwO6OQ5uV6ztS6kVAtCDlg==}
@@ -11861,8 +11861,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.586:
-    resolution: {integrity: sha512-qMa+E6yf1fNQbg3G66pHLXeJUP5CCCzNat1VPczOZOqgI2w4u+8y9sQnswMdGs5m4C1rOePq37EVBr/nsPQY7w==}
+  /electron-to-chromium@1.4.587:
+    resolution: {integrity: sha512-RyJX0q/zOkAoefZhB9XHghGeATVP0Q3mwA253XD/zj2OeXc+JZB9pCaEv6R578JUYaWM9PRhye0kXvd/V1cQ3Q==}
 
   /emittery@0.10.2:
     resolution: {integrity: sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==}
@@ -17381,18 +17381,18 @@ packages:
       find-up: 3.0.0
     dev: false
 
-  /playwright-core@1.39.0:
-    resolution: {integrity: sha512-+k4pdZgs1qiM+OUkSjx96YiKsXsmb59evFoqv8SKO067qBA+Z2s/dCzJij/ZhdQcs2zlTAgRKfeiiLm8PQ2qvw==}
+  /playwright-core@1.40.0:
+    resolution: {integrity: sha512-fvKewVJpGeca8t0ipM56jkVSU6Eo0RmFvQ/MaCQNDYm+sdvKkMBBWTE1FdeMqIdumRaXXjZChWHvIzCGM/tA/Q==}
     engines: {node: '>=16'}
     hasBin: true
     dev: true
 
-  /playwright@1.39.0:
-    resolution: {integrity: sha512-naE5QT11uC/Oiq0BwZ50gDmy8c8WLPRTEWuSSFVG2egBka/1qMoSqYQcROMT9zLwJ86oPofcTH2jBY/5wWOgIw==}
+  /playwright@1.40.0:
+    resolution: {integrity: sha512-gyHAgQjiDf1m34Xpwzaqb76KgfzYrhK7iih+2IzcOCoZWr/8ZqmdBw+t0RU85ZmfJMgtgAiNtBQ/KS2325INXw==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright-core: 1.39.0
+      playwright-core: 1.40.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -19202,8 +19202,8 @@ packages:
       ajv-keywords: 5.1.0(ajv@8.12.0)
     dev: false
 
-  /search-insights@2.10.0:
-    resolution: {integrity: sha512-pQGrOE56QuTRmq4NzliRZe9rv914hBMBjOviuDliDHoIhmBGoyZRlFsPd4RprGGNC4PKdD2Jz54YN4Cmkb44mA==}
+  /search-insights@2.11.0:
+    resolution: {integrity: sha512-Uin2J8Bpm3xaZi9Y8QibSys6uJOFZ+REMrf42v20AA3FUDUrshKkMEP6liJbMAHCm71wO6ls4mwAf7a3gFVxLw==}
     dev: false
 
   /section-matter@1.0.0:
@@ -21218,13 +21218,13 @@ packages:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
 
-  /unplugin@1.5.0:
-    resolution: {integrity: sha512-9ZdRwbh/4gcm1JTOkp9lAkIDrtOyOxgHmY7cjuwI8L/2RTikMcVG25GsZwNAgRuap3iDw2jeq7eoqtAsz5rW3A==}
+  /unplugin@1.5.1:
+    resolution: {integrity: sha512-0QkvG13z6RD+1L1FoibQqnvTwVBXvS4XSPwAyinVgoOCl2jAgwzdUKmEj05o4Lt8xwQI85Hb6mSyYkcAGwZPew==}
     dependencies:
       acorn: 8.11.2
       chokidar: 3.5.3
       webpack-sources: 3.2.3
-      webpack-virtual-modules: 0.5.0
+      webpack-virtual-modules: 0.6.0
     dev: true
 
   /unquote@1.1.1:
@@ -21890,8 +21890,8 @@ packages:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
     engines: {node: '>=10.13.0'}
 
-  /webpack-virtual-modules@0.5.0:
-    resolution: {integrity: sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==}
+  /webpack-virtual-modules@0.6.0:
+    resolution: {integrity: sha512-KnaMTE6EItz/f2q4Gwg5/rmeKVi79OR58NoYnwDJqCk9ywMtTGbBnBcfoBtN4QbYu0lWXvyMoH2Owxuhe4qI6Q==}
     dev: true
 
   /webpack@5.89.0(webpack-cli@4.10.0):

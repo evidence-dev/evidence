@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.16
+
+### Patch Changes
+
+- Fix regression
+
 ## 4.0.0-usql.15
 
 ### Patch Changes
