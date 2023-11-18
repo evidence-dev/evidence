@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import yaml from 'yaml';
 import chalk from 'chalk';
+import merge from 'lodash.merge';
 import {
 	DatasourceSpecFileSchema,
 	DatasourceCacheSchema,
@@ -89,9 +90,9 @@ export const getSources = async (sourcesDir) => {
 					`Unexpected error determining datasource name, please add an explicit name in connection.yaml (${sourceDir})`
 				);
 			// Load Options from connection.options.yaml
-			connParams.options = { ...connParams.options, ...(await loadConnectionOptions(sourceDir)) };
+			connParams.options = merge(connParams.options, await loadConnectionOptions(sourceDir));
 			// Load Options from Environment
-			connParams.options = { ...connParams.options, ...loadSourceOptions(connParams.name) };
+			connParams.options = merge(connParams.options, loadSourceOptions(connParams.name));
 
 			const queries = await getQueries(sourceDir, contents);
 			return {
@@ -270,7 +271,6 @@ async function getQueries(sourceDir, contents) {
 
 					const fullPath = path.join(sourceDir, s);
 					if (await isDir(fullPath)) {
-						// TODO: Recurse
 						const recursed = await loadDirRecursive(fullPath);
 						return recursed.map((r) => path.relative(sourceDir, r));
 					} else {

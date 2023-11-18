@@ -229,9 +229,9 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		}
 	} catch (err) {
 		if (err.message) {
-			throw err.message.replace(/\n|\r/g, ' ');
+			throw new Error(err.message.replace(/\n|\r/g, ' '));
 		} else {
-			throw err.replace(/\n|\r/g, ' ');
+			throw new Error(err.replace(/\n|\r/g, ' '));
 		}
 	}
 };
@@ -257,4 +257,81 @@ module.exports.getRunner = async (opts) => {
 		if (!queryPath.endsWith('.sql')) return null;
 		return runQuery(queryContent, opts, batchSize);
 	};
+};
+
+/** @type {import('@evidence-dev/db-commons').ConnectionTester<PostgresOptions>} */
+module.exports.testConnection = async (opts) => {
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+};
+
+module.exports.options = {
+	host: {
+		title: 'Host',
+		type: 'string',
+		secret: false,
+		description: 'Database hostname to connect to',
+		default: 'localhost',
+		required: true
+	},
+	port: {
+		title: 'Port',
+		type: 'number',
+		secret: false,
+		description: 'Database port to connect to',
+		default: 5432,
+		required: true
+	},
+	database: {
+		title: 'Database',
+		type: 'string',
+		secret: false,
+		description: 'Database to connect to',
+		default: 'postgres',
+		required: true
+	},
+	user: {
+		title: 'Username',
+		type: 'string',
+		secret: true,
+		description: 'User to connect as',
+		required: true
+	},
+	password: {
+		title: 'Password',
+		type: 'string',
+		secret: true,
+		description: 'Password',
+		required: true
+	},
+	ssl: {
+		title: 'Enable SSL',
+		type: 'boolean',
+		secret: false,
+		description: 'Should SSL be used',
+		nest: true,
+		children: {
+			[true]: {
+				sslmode: {
+					title: 'SSL Mode',
+					type: 'select',
+					secret: false,
+					options: [
+						'allow',
+						'prefer',
+						'require',
+						{ value: 'verify-ca', label: 'Verify CA' },
+						{ value: 'verify-full', label: 'Verify Full' }
+					]
+				}
+			}
+		}
+	},
+	schema: {
+		title: 'Schema',
+		type: 'string',
+		secret: false,
+		description: 'Default schema'
+	}
 };

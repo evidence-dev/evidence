@@ -1,0 +1,5 @@
+# This file was automatically generated
+name: bigquery
+type: bigquery
+options:
+  authenticator: service-account

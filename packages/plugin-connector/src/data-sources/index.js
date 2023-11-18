@@ -10,6 +10,9 @@ import { execSource } from './exec-source';
 import fs from 'fs/promises';
 import path from 'path';
 
+export { getDatasourcePlugins } from './get-datasource-plugins';
+export { updateDatasourceOptions } from './update-datasource-options';
+export { DatasourceSpecFileSchema, DatasourceSpecSchema } from './schemas/datasource-spec.schema';
 /**
  *
  * @param {Record<string, string[]>} outputFiles
@@ -91,6 +94,7 @@ export async function getDatasourceOptions() {
 	const datasourceDir = await getSourcesDir();
 	if (!datasourceDir) throw new Error('missing sources directory');
 	const sources = await getSources(datasourceDir);
+
 	return sources.map((s) => ({
 		...s,
 		environmentVariables: generateSourceEnvironmentVariables(s.name, s.options)

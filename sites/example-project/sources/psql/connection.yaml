@@ -1,0 +1,8 @@
+# This file was automatically generated
+name: psql
+type: postgres
+options:
+  host: localhost
+  port: 5432
+  database: postgres
+  schema: a

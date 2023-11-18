@@ -20,8 +20,10 @@
 	"type": "module",
 	"evidence": {
 		"databases": [
-			"bigquery",
-			"bq"
+			[
+				"bigquery",
+				"bq"
+			]
 		]
 	}
 }

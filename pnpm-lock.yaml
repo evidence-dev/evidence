@@ -205,14 +205,17 @@ importers:
 
   packages/core-components:
     dependencies:
+      '@astronautlabs/jsonpath':
+        specifier: ^1.1.2
+        version: 1.1.2
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.10
+        specifier: 'workspace:'
         version: link:../component-utilities
       '@evidence-dev/query-store':
-        specifier: workspace:^
+        specifier: 'workspace:'
         version: link:../query-store
       '@evidence-dev/tailwind':
-        specifier: workspace:1.0.0-usql.2
+        specifier: 'workspace:'
         version: link:../tailwind
       '@rgossiaux/svelte-headlessui':
         specifier: ^2.0.0
@@ -247,7 +250,13 @@ importers:
       tua-body-scroll-lock:
         specifier: ^1.4.0
         version: 1.4.0
+      yaml:
+        specifier: ^2.3.4
+        version: 2.3.4
     devDependencies:
+      '@evidence-dev/plugin-connector':
+        specifier: 'workspace:'
+        version: link:../plugin-connector
       '@storybook/addon-essentials':
         specifier: ^7.0.9
         version: 7.5.3(react-dom@17.0.2)(react@17.0.2)
@@ -441,7 +450,7 @@ importers:
         specifier: workspace:2.0.0-usql.20
         version: link:../plugin-connector
       '@evidence-dev/preprocess':
-        specifier: workspace:4.0.0-usql.15
+        specifier: workspace:4.0.0-usql.16
         version: link:../preprocess
       '@evidence-dev/query-store':
         specifier: workspace:2.0.0-usql.2
@@ -621,12 +630,18 @@ importers:
       '@types/estree':
         specifier: ^1.0.1
         version: 1.0.5
+      '@types/lodash.merge':
+        specifier: ^4.6.8
+        version: 4.6.9
       chalk:
         specifier: ^5.2.0
         version: 5.3.0
       chokidar:
         specifier: ^3.5.3
         version: 3.5.3
+      lodash.merge:
+        specifier: ^4.6.2
+        version: 4.6.2
       svelte:
         specifier: 3.55.0
         version: 3.55.0
@@ -945,26 +960,47 @@ importers:
 
   sites/example-project:
     dependencies:
+      '@evidence-dev/bigquery':
+        specifier: 'workspace:'
+        version: link:../../packages/bigquery
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.10
+        specifier: 'workspace:'
         version: link:../../packages/component-utilities
       '@evidence-dev/core-components':
-        specifier: workspace:2.0.0-usql.14
+        specifier: 'workspace:'
         version: link:../../packages/core-components
+      '@evidence-dev/csv':
+        specifier: 'workspace:'
+        version: link:../../packages/csv
       '@evidence-dev/duckdb':
-        specifier: workspace:1.0.0-usql.4
+        specifier: 'workspace:'
         version: link:../../packages/duckdb
+      '@evidence-dev/mssql':
+        specifier: 'workspace:'
+        version: link:../../packages/mssql
+      '@evidence-dev/mysql':
+        specifier: 'workspace:'
+        version: link:../../packages/mysql
       '@evidence-dev/plugin-connector':
-        specifier: workspace:2.0.0-usql.20
+        specifier: 'workspace:'
         version: link:../../packages/plugin-connector
+      '@evidence-dev/postgres':
+        specifier: 'workspace:'
+        version: link:../../packages/postgres
       '@evidence-dev/query-store':
-        specifier: workspace:^2.0.0-usql.2
+        specifier: 'workspace:'
         version: link:../../packages/query-store
+      '@evidence-dev/snowflake':
+        specifier: 'workspace:'
+        version: link:../../packages/snowflake
+      '@evidence-dev/sqlite':
+        specifier: 'workspace:'
+        version: link:../../packages/sqlite
       '@evidence-dev/telemetry':
         specifier: 1.0.5
         version: link:../../packages/telemetry
       '@evidence-dev/universal-sql':
-        specifier: workspace:2.0.0-usql.11
+        specifier: 'workspace:'
         version: link:../../packages/universal-sql
       '@fontsource/spectral':
         specifier: ^5.0.3
@@ -1076,7 +1112,7 @@ importers:
         specifier: workspace:1.0.0-usql.4
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:20.0.0-usql.32
+        specifier: workspace:20.0.0-usql.33
         version: link:../../packages/evidence
       '@evidence-dev/faker-datasource':
         specifier: workspace:2.0.0-usql.2
@@ -1286,6 +1322,12 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
+
+  /@astronautlabs/jsonpath@1.1.2:
+    resolution: {integrity: sha512-FqL/muoreH7iltYC1EB5Tvox5E8NSOOPGkgns4G+qxRKl6k5dxEVljUjB5NcKESzkqwnUqWjSZkL61XGYOuV+A==}
+    dependencies:
+      static-eval: 2.0.2
+    dev: false
 
   /@aw-web-design/x-default-browser@1.4.126:
     resolution: {integrity: sha512-Xk1sIhyNC/esHGGVjL/niHLowM0csl/kFO5uawBy4IrWwy0o1G8LGt3jP6nmWGz+USxeeqbihAmp/oVZju6wug==}
@@ -8706,6 +8748,12 @@ packages:
       '@types/lodash': 4.14.201
     dev: false
 
+  /@types/lodash.merge@4.6.9:
+    resolution: {integrity: sha512-23sHDPmzd59kUgWyKGiOMO2Qb9YtqRO/x4IhkgNUiPQ1+5MUVqi6bCZeq9nBJ17msjIMbEIO5u+XW4Kz6aGUhQ==}
+    dependencies:
+      '@types/lodash': 4.14.201
+    dev: false
+
   /@types/lodash@4.14.201:
     resolution: {integrity: sha512-y9euML0cim1JrykNxADLfaG0FgD1g/yTHwUs/Jg9ZIU7WKj2/4IW9Lbb1WZbvck78W/lfGXFfe+u2EGfIJXdLQ==}
 
@@ -10232,7 +10280,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001563
-      electron-to-chromium: 1.4.587
+      electron-to-chromium: 1.4.588
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
 
@@ -11861,8 +11909,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.587:
-    resolution: {integrity: sha512-RyJX0q/zOkAoefZhB9XHghGeATVP0Q3mwA253XD/zj2OeXc+JZB9pCaEv6R578JUYaWM9PRhye0kXvd/V1cQ3Q==}
+  /electron-to-chromium@1.4.588:
+    resolution: {integrity: sha512-soytjxwbgcCu7nh5Pf4S2/4wa6UIu+A3p03U2yVr53qGxi1/VTR3ENI+p50v+UxqqZAfl48j3z55ud7VHIOr9w==}
 
   /emittery@0.10.2:
     resolution: {integrity: sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==}
@@ -12157,6 +12205,19 @@ packages:
   /escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  /escodegen@1.14.3:
+    resolution: {integrity: sha512-qFcX0XJkdg+PB3xjZZG/wKSuT1PnQWx57+TVSjIMmILd2yC/6ByYElPwJnslDsuWuSAp4AwJGumarAAmJch5Kw==}
+    engines: {node: '>=4.0'}
+    hasBin: true
+    dependencies:
+      esprima: 4.0.1
+      estraverse: 4.3.0
+      esutils: 2.0.3
+      optionator: 0.8.3
+    optionalDependencies:
+      source-map: 0.6.1
+    dev: false
 
   /eslint-compat-utils@0.1.2(eslint@8.53.0):
     resolution: {integrity: sha512-Jia4JDldWnFNIru1Ehx1H5s9/yxiRHY/TimCuUc0jNexew3cF1gI6CYZil1ociakfWO3rRqFjl1mskBblB3RYg==}
@@ -15388,6 +15449,14 @@ packages:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
     engines: {node: '>=6'}
 
+  /levn@0.3.0:
+    resolution: {integrity: sha512-0OO4y2iOHix2W6ujICbKIaEQXvFQHue65vUG3pb5EUomzPI90z9hsA1VsO/dbIIpC53J8gxM9Q4Oho0jrCM/yA==}
+    engines: {node: '>= 0.8.0'}
+    dependencies:
+      prelude-ls: 1.1.2
+      type-check: 0.3.2
+    dev: false
+
   /levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
@@ -16812,6 +16881,18 @@ packages:
     hasBin: true
     dev: false
 
+  /optionator@0.8.3:
+    resolution: {integrity: sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA==}
+    engines: {node: '>= 0.8.0'}
+    dependencies:
+      deep-is: 0.1.4
+      fast-levenshtein: 2.0.6
+      levn: 0.3.0
+      prelude-ls: 1.1.2
+      type-check: 0.3.2
+      word-wrap: 1.2.5
+    dev: false
+
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -17996,6 +18077,11 @@ packages:
       path-exists: 4.0.0
       which-pm: 2.0.0
     dev: true
+
+  /prelude-ls@1.1.2:
+    resolution: {integrity: sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==}
+    engines: {node: '>= 0.8.0'}
+    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -19782,6 +19868,12 @@ packages:
   /state-toggle@1.0.3:
     resolution: {integrity: sha512-d/5Z4/2iiCnHw6Xzghyhb+GcmF89bxwgXG60wjIiZaxnymbyOmI8Hk4VqHXiVVp6u2ysaskFfXg3ekCj4WNftQ==}
 
+  /static-eval@2.0.2:
+    resolution: {integrity: sha512-N/D219Hcr2bPjLxPiV+TQE++Tsmrady7TqAJugLy7Xk1EumfDWS/f5dtBbkRCGE7wKKXuYockQoj8Rm2/pVKyg==}
+    dependencies:
+      escodegen: 1.14.3
+    dev: false
+
   /statuses@1.5.0:
     resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
     engines: {node: '>= 0.6'}
@@ -20872,6 +20964,13 @@ packages:
   /tunnel@0.0.6:
     resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
+    dev: false
+
+  /type-check@0.3.2:
+    resolution: {integrity: sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==}
+    engines: {node: '>= 0.8.0'}
+    dependencies:
+      prelude-ls: 1.1.2
     dev: false
 
   /type-check@0.4.0:
@@ -22082,6 +22181,11 @@ packages:
       stack-trace: 0.0.10
       triple-beam: 1.4.1
       winston-transport: 4.6.0
+    dev: false
+
+  /word-wrap@1.2.5:
+    resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /wordwrap@1.0.0:

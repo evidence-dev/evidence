@@ -1,8 +1,8 @@
 <script>
 	/** @type {import("./$types").PageLoadData} */
 	export let data;
-	let { settings, customFormattingSettings, datasourceSettings } = data;
-	$: ({ settings, customFormattingSettings, datasourceSettings } = data);
+	let { settings, customFormattingSettings, datasourceSettings, plugins } = data;
+	$: ({ settings, customFormattingSettings, datasourceSettings, plugins } = data);
 
 	import { dev } from '$app/environment';
 
@@ -10,13 +10,14 @@
 		VersionControlPanel,
 		DeploySettingsPanel,
 		FormattingSettingsPanel,
-		TelemetrySettingsPanel
+		TelemetrySettingsPanel,
+		SourceConfig
 	} from '@evidence-dev/core-components';
 </script>
 
 {#if dev}
-	<!-- eslint-disable no-undef -->
 	<VersionControlPanel {settings} />
+	<SourceConfig availableSourcePlugins={plugins} sources={datasourceSettings} />
 	<DeploySettingsPanel {settings} {datasourceSettings} />
 	<FormattingSettingsPanel {settings} {customFormattingSettings} />
 	<TelemetrySettingsPanel {settings} />

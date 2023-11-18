@@ -15,3 +15,13 @@ module.exports.getRunner = () => {
 		return runQuery(`SELECT * FROM '${queryPath}'`, { filename: ':memory:' }, batchSize);
 	};
 };
+
+/** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
+module.exports.testConnection = async (opts) => {
+	const r = await runQuery('SELECT 1;', { ...opts, filename: ':memory:' })
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? 'File not found' }));
+	return r;
+};
+
+module.exports.options = {};

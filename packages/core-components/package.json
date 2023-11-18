@@ -27,9 +27,10 @@
 		"components": true
 	},
 	"dependencies": {
-		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.10",
-		"@evidence-dev/query-store": "workspace:^",
-		"@evidence-dev/tailwind": "workspace:1.0.0-usql.2",
+		"@astronautlabs/jsonpath": "^1.1.2",
+		"@evidence-dev/component-utilities": "workspace:",
+		"@evidence-dev/query-store": "workspace:",
+		"@evidence-dev/tailwind": "workspace:",
 		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/svelte-icon": "^1.4.1",
@@ -40,9 +41,11 @@
 		"prismjs": "1.29.0",
 		"ssf": "0.11.2",
 		"svelte-tiny-linked-charts": "1.1.5",
-		"tua-body-scroll-lock": "^1.4.0"
+		"tua-body-scroll-lock": "^1.4.0",
+		"yaml": "^2.3.4"
 	},
 	"devDependencies": {
+		"@evidence-dev/plugin-connector": "workspace:",
 		"@storybook/addon-essentials": "^7.0.9",
 		"@storybook/addon-interactions": "^7.0.9",
 		"@storybook/addon-links": "^7.0.9",

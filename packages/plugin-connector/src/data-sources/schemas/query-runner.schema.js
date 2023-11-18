@@ -118,6 +118,11 @@ export const QueryRunnerSchema = z
 	)
 	.returns(z.promise(QueryResultSchema.or(z.null())).or(QueryResultSchema));
 
+export const ConnectionTesterSchema = z
+	.function()
+	.args(z.any({ description: 'Connection Options' }))
+	.returns(z.promise(z.union([z.literal(true), z.object({ reason: z.string() })])));
+
 export const DatabaseConnectorFactorySchema = z
 	.function()
 	.args(
@@ -126,7 +131,55 @@ export const DatabaseConnectorFactorySchema = z
 	)
 	.returns(z.promise(QueryRunnerSchema));
 
+/**
+ * @typedef {Object} IDatasourceOptionSpecSchema
+ * @property {string} title
+ * @property {'string' | 'number' | 'boolean' | 'select' | 'file'} type
+ * @property {boolean} [secret]
+ * @property {string} [description]
+ * @property {boolean} [virtual]
+ * @property {boolean} [nest]
+ * @property {string | number | boolean | undefined} [default]
+ * @property {Record<string | number | symbol, Record<string, IDatasourceOptionSpecSchema>> | undefined} [children]
+ */
+
+const primitive = z.union([z.string(), z.number(), z.boolean()]);
+
+/** @type {z.ZodRecord<z.ZodType<string>, z.ZodType<IDatasourceOptionSpecSchema>>} */
+export const DatasourceOptionSpecSchema = z.record(
+	z.string(),
+	z.object({
+		title: z.string(),
+		type: z.enum(['string', 'number', 'boolean', 'select', 'file']),
+		secret: z.boolean().default(false),
+		/**
+		 * Indicates that the field should not actually be persisted. Should be combined with `references`
+		 */
+		virtual: z.boolean().default(false),
+		/**
+		 * Indicates that the field should get its value from another field if it is available
+		 */
+		references: z.string().optional(),
+		/**
+		 * Indicates that the field can only get its value from the references
+		 */
+		forceReference: z.boolean().default(false),
+		fileFormat: z.enum(['json', 'yaml']).optional(),
+		description: z.string().optional(),
+		children: z.lazy(() => z.record(z.string(), DatasourceOptionSpecSchema)).optional(),
+		required: z.boolean().default(false),
+		options: z
+			.union([z.string(), z.object({ value: primitive, label: z.string() })])
+			.array()
+			.optional(),
+		nest: z.boolean().optional(),
+		default: primitive.optional()
+	})
+);
+
 export const DatabaseConnectorSchema = z.object({
 	getRunner: DatabaseConnectorFactorySchema,
-	supports: z.array(z.string())
+	supports: z.array(z.union([z.string(), z.array(z.string())])),
+	options: DatasourceOptionSpecSchema,
+	testConnection: ConnectionTesterSchema
 });

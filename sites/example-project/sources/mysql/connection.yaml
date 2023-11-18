@@ -1,0 +1,9 @@
+# This file was automatically generated
+name: mysql
+type: mysql
+options:
+  host: a
+  database: b
+  user: d
+  ssl: wacky
+  socketPath: wnoky

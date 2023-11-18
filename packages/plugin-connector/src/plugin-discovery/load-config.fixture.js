@@ -41,13 +41,14 @@ components:
     "@evidence-dev/core-components": {}
     # Configurations
     @evidence-dev/core-components-d3:
+        aliases:
+            # the core-components-d3's BarChart will be usable as D3BarChart in the project
+            D3BarChart: BarChart
+            AliasedText: Text
         # Override other LineCharts with own LineChart
         overrides:
             - LineChart
             - AliasedText
-        aliases:
-            D3BarChart: BarChart
-            AliasedText: Text
 `;
 export const validConfigParsed = {
 	components: {
