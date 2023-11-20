@@ -13,6 +13,9 @@ const config = {
 	server: {
 		fs: {
 			strict: process.env.NODE_ENV !== 'development'
+		},
+		hmr: {
+			overlay: false
 		}
 	},
 	build: {
