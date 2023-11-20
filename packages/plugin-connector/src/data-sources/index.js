@@ -111,7 +111,7 @@ export async function updateDatasourceOutputs(
 	if (!datasourceDir) throw new Error('missing sources directory');
 	const datasources = await getSources(datasourceDir);
 	const plugins = await getDatasourcePlugins();
-	const sourceHashes = await getPastSourceHashes();
+	const sourceHashes = await getPastSourceHashes(outDir);
 
 	const filteredDatasources = datasources
 		.filter((source) => !filters.sources || filters.sources.has(source.name))
@@ -139,7 +139,7 @@ export async function updateDatasourceOutputs(
 		}
 	}
 
-	await saveSourceHashes(sourceHashes);
+	await saveSourceHashes(outDir, sourceHashes);
 
 	// TODO: Run in parallel?
 	/** @type {Record<string, string[]>} */

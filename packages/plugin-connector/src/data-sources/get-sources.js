@@ -145,16 +145,17 @@ export async function getCurrentManifest(outDir) {
 	);
 }
 
-const hash_location = './.evidence/template/.evidence-queries/sources/hashes.json';
+const hash_location = '/.evidence-queries/sources/hashes.json';
 
 /**
  * Gets the hashes of all source files, at the time of their last execution.
+ * @param {string} baseDir The path to .evidence/template
  * @returns {Promise<import("zod").infer<typeof DatasourceCacheSchema>>}
  */
-export async function getPastSourceHashes() {
+export async function getPastSourceHashes(baseDir) {
 	return validateFile(
 		DatasourceCacheSchema,
-		hash_location,
+		path.join(baseDir, hash_location),
 		{},
 		'[!] Unable to parse source query hashes, ignoring'
 	);
@@ -162,11 +163,13 @@ export async function getPastSourceHashes() {
 
 /**
  * Saves the supplied source hashes
+ * @param {string} baseDir The path to .evidence/template
  * @param {import("zod").infer<typeof DatasourceCacheSchema>} hashes
  */
-export async function saveSourceHashes(hashes) {
-	await fs.mkdir(path.dirname(hash_location), { recursive: true });
-	await fs.writeFile(hash_location, JSON.stringify(hashes));
+export async function saveSourceHashes(baseDir, hashes) {
+	const output = path.join(baseDir, hash_location);
+	await fs.mkdir(path.dirname(output), { recursive: true });
+	await fs.writeFile(output, JSON.stringify(hashes));
 }
 
 /**

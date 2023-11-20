@@ -37,7 +37,6 @@ if (process.env.NODE_ENV === 'development') {
 			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
 			only_changed: false
 		}).catch((e) => e);
-		await rm('./.evidence-queries', { recursive: true, force: true });
 
 		if (error) {
 			console.error(`Error occured while reloading source: ${error}`);
