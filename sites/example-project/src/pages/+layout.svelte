@@ -100,6 +100,8 @@
 		}
 	} else if(data.err.message.includes('Block was left open')){
 		customErrorMessage = 'Component tag was left open. Ensure that all components are closed'
+	} else if(data.err.message.includes('is not defined')){
+		customErrorMessage = data.err.message;
 	} else if(data.err.message.includes('attempted to close an element that was not open')){
 		if(data.err.frame.includes('{/each}')){
 			customErrorMessage = 'Component tag was left open inside {#each} block. Ensure that all components are closed'
