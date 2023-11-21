@@ -41,7 +41,7 @@ You can apply a filter to a query result by appending this code to the query nam
 ```
 
 :::tip
-`searchParams.get()` always returns a string, so if your query column is not a string, use an `==` equality check instead of a `===` strict equality, e.g. `filter(d => d.id == $page.url.searchParams.get('id'))`
+`$page.params.var_name` always returns a string, so if your query column is not a string, use an `==` equality check instead of a `===` strict equality, e.g. `filter(d => d.id == $page.params.var_name)`
 :::
 
 This means that the code will look in the query result `d` and include only those rows where the `customer_name` is equal to the page's parameter value.
