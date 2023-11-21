@@ -52,6 +52,7 @@ export const buildSources = async (
 	const hashes = {};
 
 	for (const source of sources) {
+		console.log(chalk.bold(`Processing ${source.name}`));
 		// For building the manifest
 		/** @type {string[]} */
 		const outputFilenames = [];
@@ -165,8 +166,10 @@ export const buildSources = async (
 					else console.log(e);
 					result = null;
 				}
+				console.log(`  Processing ${query.name}`)
 				if (result === null) {
-					console.log(`Finished ${query.name}. Returned no results!`);
+					console.log(`  Finished ${query.name}. Returned no results!`);
+					console.log()
 					continue;
 				}
 
@@ -194,9 +197,9 @@ export const buildSources = async (
  */
 const flushSource = async (source, query, result, dataPath, metaPath, batchSize) => {
 	const dataOutDir = path.join(dataPath, source.name, query.name, query.hash ?? '');
-	
-	const parquetFilename = path.join(dataOutDir, query.name + '.parquet')
-	const schemaFilename = path.join(dataOutDir, query.name + '.schema.json')
+
+	const parquetFilename = path.join(dataOutDir, query.name + '.parquet');
+	const schemaFilename = path.join(dataOutDir, query.name + '.schema.json');
 
 	const tmpDir = path.join(metaPath, 'intermediate-parquet', query.name);
 
@@ -206,32 +209,35 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize)
 
 	const rows = /** @type {any[] | Generator<any[]>} */ (result.rows);
 
-	if (result.expectedRowCount) {
-		if (result.expectedRowCount > 1000000)
-			console.warn(
-				chalk.yellow(
-					`[!] ${
-						query.name
-					} is expected to return ~${result.expectedRowCount?.toLocaleString()} rows. This may take some time!`
-				)
-			);
-		const writtenRows = await buildMultipartParquet(
-			result.columnTypes,
-			rows,
-			tmpDir,
-			dataOutDir,
-			query.name + '.parquet',
-			result.expectedRowCount,
-			batchSize
+	if ((result.expectedRowCount ?? -1) > 1000000)
+		console.warn(
+			chalk.yellow(
+				`[!] ${
+					query.name
+				} is expected to return ~${result.expectedRowCount?.toLocaleString()} rows. This may take some time!`
+			)
 		);
-		if (!writtenRows) {
-			console.warn(
-				chalk.yellow(`[!] ${query.name} did not return any rows; did not create table.`)
-			);
-			return null;
-		}
 
-		await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
+	// Spinner start
+	// Disable the console for a moment, stack up and then print everything after?
+	const writtenRows = await buildMultipartParquet(
+		result.columnTypes,
+		rows,
+		tmpDir,
+		dataOutDir,
+		query.name + '.parquet',
+		result.expectedRowCount,
+		batchSize
+	);
+	// Spinner stop?
+	if (!writtenRows) {
+		console.warn(chalk.yellow(`[!] ${query.name} did not return any rows; did not create table.`));
+		return null;
+	} else {
+		console.log(`  Finished ${query.name}; returned ${writtenRows} rows`);
 	}
+
+	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
+
 	return parquetFilename;
 };

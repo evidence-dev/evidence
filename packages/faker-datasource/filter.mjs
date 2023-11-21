@@ -25,9 +25,6 @@ export const filter = (rows, filters) => {
 		switch (filter.type) {
 			case 'unique':
 				// O(n) unique function
-				console.debug(
-					`Running unique filter with ${filter.fields.length} fields over ${rows.length} rows. This may take some time`
-				);
 				const before = performance.now();
 				const uniq = {};
 				const distinct = [];
@@ -44,7 +41,6 @@ export const filter = (rows, filters) => {
 					uniq[k] = true;
 				}
 				const after = performance.now();
-				console.debug(`Finished unique filter, took ${(after - before).toFixed(0)}ms`);
 				outputRows = distinct;
 
 				break;

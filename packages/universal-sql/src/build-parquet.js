@@ -14,7 +14,6 @@ import path from 'path';
 import { initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
-import { SingleBar, Presets } from 'cli-progress';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
 
@@ -68,9 +67,6 @@ export async function buildMultipartParquet(
 	let tmpFilenames = [];
 	let rowCount = 0;
 
-	const progressBar = new SingleBar({}, Presets.shades_classic);
-	if (expectedRowCount !== undefined) progressBar.start(expectedRowCount, 0);
-
 	const flush = async (results) => {
 		// Convert JS Objects -> Arrow
 		const vectorized = Object.fromEntries(
@@ -102,7 +98,6 @@ export async function buildMultipartParquet(
 		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
 		batchNum++;
-		if (expectedRowCount !== undefined) progressBar.update(rowCount);
 	};
 
 	if (typeof data === 'function') data = data();
@@ -143,8 +138,6 @@ export async function buildMultipartParquet(
 		// Ensure nothing is left over
 		if (currentBatch.length) await flush(currentBatch);
 	}
-
-	if (expectedRowCount !== undefined) progressBar.stop();
 
 	if (!tmpFilenames.length) return 0;
 
