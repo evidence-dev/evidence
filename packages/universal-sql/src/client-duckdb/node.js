@@ -111,6 +111,7 @@ export function query(sql, cache_options) {
 		result = get_arrow_if_sql_already_run(sql);
 	}
 
+	// TODO: This just fails, where is the process going?
 	// if cache missed, fallback to querying
 	if (!result) {
 		result = connection.query(sql);

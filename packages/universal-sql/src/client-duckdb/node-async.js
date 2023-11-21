@@ -48,5 +48,5 @@ export async function initDB() {
  * @returns {Promise<import('apache-arrow').Table | null>}
  */
 export async function query(sql) {
-	return await connection.query(sql);
+	return connection.query(sql);
 }

@@ -224,3 +224,25 @@ export const getRunner = (options, directory) => {
 
 export const testConnection = () => Promise.resolve(true);
 export const options = {};
+
+/** @type {import('../db-commons').ProcessSource<{}>} */
+const processDirectory = async function*(opts, files) {
+	console.log("==---==")
+	console.log("=faker=")
+	console.log("==---==")
+	for (const file in files) {
+		if (file.endsWith(".yaml") && file !== "connection.yaml") {
+			// Process this file
+			console.log("Found source file", file)
+		} else if (typeof file === "object") {
+			// This is a directory; recurse
+			const nested = processDirectory(opts, files[file])
+			for await (const n of nested) yield n;
+		}
+	}
+}
+
+/** @type {import('../db-commons').ProcessSource<{}>} */
+export const processSource = async function*(opts, files) {
+	for await (const n of processDirectory(opts, files)) yield n;
+}

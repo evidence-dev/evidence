@@ -4,7 +4,7 @@ import { getRootModules } from './plugin-discovery/get-root-modules';
 
 import { Command } from 'commander';
 import { loadConfig } from './plugin-discovery/load-config';
-import { execSource } from './data-sources/exec-source';
+// import { execSource } from './data-sources/exec-source';
 
 const program = new Command();
 
@@ -35,19 +35,6 @@ program
 	.action(async () => {
 		const plugins = await getDatasourcePlugins();
 		console.log(plugins);
-	});
-
-program
-	.command('exec-sources')
-	.description('Executes all sources')
-	.action(async () => {
-		const datasourceDir = await getSourcesDir();
-		if (!datasourceDir) throw new Error('missing sources directory');
-		const datasources = await getSources(datasourceDir);
-		const plugins = await getDatasourcePlugins();
-		for (const source of datasources) {
-			await execSource(source, plugins, source.sourceDirectory, '/data');
-		}
 	});
 
 program

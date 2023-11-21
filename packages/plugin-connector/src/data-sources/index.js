@@ -5,10 +5,11 @@ import {
 	saveSourceHashes,
 	getCurrentManifest
 } from './get-sources';
-import { getDatasourcePlugins } from './get-datasource-plugins';
-import { execSource } from './exec-source';
+// import { getDatasourcePlugins } from './get-datasource-plugins';
+// import { execSource } from './exec-source';
 import fs from 'fs/promises';
 import path from 'path';
+import { buildSources } from './build-sources';
 
 export { getDatasourcePlugins } from './get-datasource-plugins';
 export { updateDatasourceOptions } from './update-datasource-options';
@@ -29,25 +30,26 @@ async function updateManifest(outputFiles, outDir, datasources) {
 	}
 
 	// delete stale queries
-	for (const source of datasources) {
-		current_manifest.renderedFiles[source.name] = (
-			current_manifest.renderedFiles[source.name] ?? []
-		).filter((file) =>
-			// this is the same way we name files so it's safe
-			source.queries.find((query) => query.name === path.basename(file, '.parquet'))
-		);
-	}
+	// TODO: Bring this back
+	// for (const source of datasources) {
+	// 	current_manifest.renderedFiles[source.name] = (
+	// 		current_manifest.renderedFiles[source.name] ?? []
+	// 	).filter((file) =>
+	// 		// this is the same way we name files so it's safe
+	// 		source.queries.find((query) => query.name === path.basename(file, '.parquet'))
+	// 	);
+	// }
 
 	for (const source in outputFiles) {
 		// remove queries that have been replaced
 		const new_queries = new Set(outputFiles[source].map((file) => path.basename(file, '.parquet')));
-		current_manifest.renderedFiles[source] = current_manifest.renderedFiles[source].filter(
+		current_manifest.renderedFiles[source] = current_manifest.renderedFiles[source]?.filter(
 			(file) => !new_queries.has(path.basename(file, '.parquet'))
 		);
 
 		// update w/ new queries
 		current_manifest.renderedFiles[source] = Array.from(
-			new Set([...outputFiles[source], ...current_manifest.renderedFiles[source]])
+			new Set([...outputFiles[source], ...current_manifest.renderedFiles[source] ?? []])
 		);
 	}
 
@@ -102,57 +104,74 @@ export async function getDatasourceOptions() {
 }
 
 /**
- * @param {string} outDir The path to .evidence/template
- * @param {string} [prefix]
+ * @param {string} dataPath
+ * @param {string} metaPath
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
  */
 export async function updateDatasourceOutputs(
-	outDir,
-	prefix = '',
+	dataPath,
+	metaPath,
 	filters = { sources: null, queries: null, only_changed: false }
 ) {
-	const datasourceDir = await getSourcesDir();
-	if (!datasourceDir) throw new Error('missing sources directory');
-	const datasources = await getSources(datasourceDir);
-	const plugins = await getDatasourcePlugins();
-	const sourceHashes = await getPastSourceHashes(outDir);
+	const sourceDir = await getSourcesDir(true);
+	if (!sourceDir) throw new Error();
+	const sources = await getSources(sourceDir);
+	const manifest = await buildSources(sources, dataPath, metaPath, filters);
 
-	const filteredDatasources = datasources
-		.filter((source) => !filters.sources || filters.sources.has(source.name))
-		.map((source) => {
-			const queries = source.queries.filter((query) => {
-				if (
-					filters.queries &&
-					!filters.queries.has(query.name) &&
-					!filters.queries.has(`${source.name}.${query.name}`)
-				)
-					return false;
+	await updateManifest(manifest, dataPath, sources);
 
-				if (!filters.only_changed) return true;
-				const query_hash = sourceHashes[source.name]?.[query.name];
-				return query_hash !== query.hash;
-			});
-			return { ...source, queries };
-		})
-		.filter((source) => source.queries.length > 0);
+	// // Filter to named sources only
+	// const filteredDatasources = datasources
+	// 	.filter((source) => !filters.sources || filters.sources.has(source.name))
+	// 	.map((source) => {
+	// 		// Filter to named queries only
+	// 		const queries = source.queries.filter((query) => {
+	// 			// Query does not exist in explicit list
+	// 			if (
+	// 				filters.queries &&
+	// 				!filters.queries.has(query.name) &&
+	// 				!filters.queries.has(`${source.name}.${query.name}`)
+	// 			)
+	// 				return false;
 
-	for (const source of filteredDatasources) {
-		sourceHashes[source.name] = sourceHashes[source.name] ?? {};
-		for (const query of source.queries) {
-			sourceHashes[source.name][query.name] = query.hash;
-		}
-	}
+	// 			// We are not filtering for changed queries
+	// 			if (!filters.only_changed) return true;
 
-	await saveSourceHashes(outDir, sourceHashes);
+	// 			// Check if query has changed
+	// 			const query_hash = sourceHashes[source.name]?.[query.name];
+	// 			return query_hash !== query.hash;
+	// 		});
+	// 		return { ...source, queries };
+	// 	})
+	// 	.filter(
+	// 		(source) =>
+	// 			source.queries.length > 0 ||
+	// 			console.log(`No queries left for source ${source.name} after filtration`)
+	// 	);
 
-	// TODO: Run in parallel?
-	/** @type {Record<string, string[]>} */
-	const outputFiles = {};
-	for (const source of filteredDatasources) {
-		outputFiles[source.name] = [];
-		const newFiles = await execSource(source, plugins, outDir, prefix);
-		outputFiles[source.name].push(...newFiles.map((nf) => `${prefix}${nf}`));
-	}
+	// for (const source of filteredDatasources) {
+	// 	sourceHashes[source.name] = sourceHashes[source.name] ?? {};
+	// 	for (const query of source.queries) {
+	// 		sourceHashes[source.name][query.name] = query.hash;
+	// 	}
+	// }
 
-	await updateManifest(outputFiles, path.join(outDir, 'static', prefix), datasources);
+	// await saveSourceHashes(sourceHashes);
+
+	// // TODO: Run in parallel?
+	// /** @type {Record<string, string[]>} */
+	// const outputFiles = {};
+	// for (const source of filteredDatasources) {
+	// 	outputFiles[source.name] = [];
+	// 	const newFiles = await execSource(source, plugins, outDir);
+	// 	if (prefix) {
+	// 		outputFiles[source.name].push(
+	// 			...newFiles.map(/** @param {string} nf **/ (nf) => `${prefix}${nf}`)
+	// 		);
+	// 	} else {
+	// 		outputFiles[source.name].push(...newFiles);
+	// 	}
+	// }
+
+	// await updateManifest(outputFiles, outDir, datasources);
 }

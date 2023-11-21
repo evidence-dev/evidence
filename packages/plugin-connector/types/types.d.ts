@@ -24,6 +24,8 @@ import {
 	QueryRunnerSchema
 } from '../src/data-sources/schemas/query-runner.schema';
 
+import { ProcessSource, SourceDirectory as SD } from '@evidence-dev/db-commons';
+
 declare global {
 	type GenericPackage = z.infer<typeof GenericPackageSchema>;
 	type EvidencePackage = z.infer<typeof EvidencePackageSchema>;
@@ -39,8 +41,10 @@ declare global {
 			factory: DatabaseConnectorFactory;
 			options: DatasourceOptionsSpec;
 			testConnection: ConnectionTester;
+			processSource?: ProcessSource<any>;
 		};
 	};
+	type SourceDirectory = SD;
 
 	type ConnectionTester = z.infer<typeof ConnectionTesterSchema>;
 

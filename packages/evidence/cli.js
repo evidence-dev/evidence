@@ -224,7 +224,7 @@ prog
 			});
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
-		updateDatasourceOutputs('./.evidence/template', '/data', {
+		await updateDatasourceOutputs('./.evidence/template/static/data', './.evidence/template/.evidence-queries', {
 			sources: sources ? new Set(sources) : sources,
 			queries: queries ? new Set(queries) : queries,
 			only_changed: opts.changed

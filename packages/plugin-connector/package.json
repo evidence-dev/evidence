@@ -17,11 +17,13 @@
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
+		"@evidence-dev/db-commons": "workspace:0.2.1-usql.2",
 		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.11",
 		"@types/estree": "^1.0.1",
 		"@types/lodash.merge": "^4.6.8",
 		"chalk": "^5.2.0",
 		"chokidar": "^3.5.3",
+		"listr2": "^7.0.2",
 		"lodash.merge": "^4.6.2",
 		"svelte": "3.55.0",
 		"svelte-preprocess": "^5.0.3",

@@ -181,5 +181,13 @@ export const DatabaseConnectorSchema = z.object({
 	getRunner: DatabaseConnectorFactorySchema,
 	supports: z.array(z.union([z.string(), z.array(z.string())])),
 	options: DatasourceOptionSpecSchema,
-	testConnection: ConnectionTesterSchema
+	testConnection: ConnectionTesterSchema,
+	processSource: z
+		.function()
+		.returns(
+			z.custom((d) => d && typeof d === 'object' && Symbol.asyncIterator in d, {
+				message: 'Expected AsyncIterator result'
+			})
+		)
+		.optional()
 });
