@@ -88,10 +88,7 @@ export async function buildMultipartParquet(
 		// This can be slow; it includes the compression step
 		const parquetBuffer = writeParquet(IPC, writerProperties);
 
-		const tempFilename = path.join(
-			tmpDir,
-			`${outputSubpath}.${batchNum}.parquet`
-		);
+		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
 		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
 		await fs.writeFile(tempFilename, parquetBuffer);
 
@@ -150,7 +147,7 @@ export async function buildMultipartParquet(
 		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
 		.join(',');
 
-	await fs.mkdir(path.parse(outputFilepath).dir, { recursive: true })
+	await fs.mkdir(path.parse(outputFilepath).dir, { recursive: true });
 	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 

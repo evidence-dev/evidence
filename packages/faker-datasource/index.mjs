@@ -216,7 +216,11 @@ const generateTable = (directory) => async (content, filepath) => {
  * @param {string} directory
  */
 export const getRunner = (options, directory) => {
-	console.warn(chalk.bold.dim.yellow('  You are using the faker-datasource, this is not recommended for production use.\n'));
+	console.warn(
+		chalk.bold.dim.yellow(
+			'  You are using the faker-datasource, this is not recommended for production use.\n'
+		)
+	);
 	return generateTable(directory);
 };
 

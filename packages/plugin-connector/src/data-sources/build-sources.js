@@ -184,7 +184,6 @@ export const buildSources = async (
 							result = null;
 						}
 
-						
 						if (result === null) {
 							spinner.text = `Finished. Returned no results!`;
 							return;

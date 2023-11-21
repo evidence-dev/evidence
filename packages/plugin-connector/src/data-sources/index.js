@@ -1,10 +1,4 @@
-import {
-	getSources,
-	getSourcesDir,
-	getPastSourceHashes,
-	saveSourceHashes,
-	getCurrentManifest
-} from './get-sources';
+import { getSources, getSourcesDir, getCurrentManifest } from './get-sources';
 // import { getDatasourcePlugins } from './get-datasource-plugins';
 // import { execSource } from './exec-source';
 import fs from 'fs/promises';
@@ -44,12 +38,12 @@ async function updateManifest(outputFiles, outDir, datasources) {
 		// remove queries that have been replaced
 		const new_queries = new Set(outputFiles[source].map((file) => path.basename(file, '.parquet')));
 		current_manifest.renderedFiles[source] = current_manifest.renderedFiles[source]?.filter(
-			(file) => !new_queries.has(path.basename(file, '.parquet'))
+			(/** @type {string} */ file) => !new_queries.has(path.basename(file, '.parquet'))
 		);
 
 		// update w/ new queries
 		current_manifest.renderedFiles[source] = Array.from(
-			new Set([...outputFiles[source], ...current_manifest.renderedFiles[source] ?? []])
+			new Set([...outputFiles[source], ...(current_manifest.renderedFiles[source] ?? [])])
 		);
 	}
 

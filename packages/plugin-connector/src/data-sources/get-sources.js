@@ -27,7 +27,7 @@ export const getSourcesDir = async (create) => {
 	// Find the sources directory in the contents
 	const sourcesDir = contents.find((c) => c.name === 'sources' && c.isDirectory());
 
-	const sourceDirPath = path.join(pwd, "sources")
+	const sourceDirPath = path.join(pwd, 'sources');
 
 	// If sources directory doesn't exist, log a warning message
 	if (!sourcesDir) {
@@ -35,8 +35,8 @@ export const getSourcesDir = async (create) => {
 			console.warn(chalk.yellow('[!] No Sources Found!'));
 			return null;
 		} else {
-			await fs.mkdir(sourceDirPath, { recursive: true })
-			console.info(chalk.green(`Created new sources directory; ${sourceDirPath}`))
+			await fs.mkdir(sourceDirPath, { recursive: true });
+			console.info(chalk.green(`Created new sources directory; ${sourceDirPath}`));
 		}
 	}
 
@@ -87,8 +87,6 @@ export const getSources = async (sourcesDir) => {
 			const possibleDir = await fs.stat(sourceDir);
 			if (!possibleDir.isDirectory()) return false;
 
-			const contents = await fs.readdir(sourceDir);
-
 			const connParams = await loadConnectionConfiguration(sourceDir);
 			if (!connParams.name)
 				connParams.name = /** @type {string} */ (sourceDir.split(path.sep).pop());
@@ -105,7 +103,7 @@ export const getSources = async (sourcesDir) => {
 			// const queries = await getQueries(sourceDir, contents);
 			return {
 				...connParams,
-				sourceDirectory: sourceDir,
+				sourceDirectory: sourceDir
 				// queries: queries
 			};
 		})

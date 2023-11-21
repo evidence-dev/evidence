@@ -2,6 +2,7 @@ When building sources; using `child_process` will help avoid memory constraints 
 Switching to `child_process` would also enable the use of something like `blessed` to create a terminal layout with high level spinners on the left, and horizontally split panes for logs from each connector
 
 e.g.
+
 ```
        ┌───────────────────┬─────────────────────────────────────────┐
        │ Updating Sources  │ needful_things                          │

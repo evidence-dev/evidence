@@ -204,7 +204,7 @@ prog
 		buildHelper('npx vite build', args);
 	});
 
-	prog
+prog
 	.command('build:sources')
 	.describe('creates .parquet files from source queries')
 	.option('--changed', 'only build sources whose queries have changed')
