@@ -1,4 +1,4 @@
-import { browser, building } from '$app/environment';
+import { browser, building, dev } from '$app/environment';
 import {
 	tableFromIPC,
 	initDB,
@@ -9,18 +9,13 @@ import {
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 
-const initDb = async () => {
+const loadDB = async () => {
 	let renderedFiles = {};
 
 	if (!browser) {
 		const { readFile } = await import('fs/promises');
 		({ renderedFiles } = JSON.parse(
-			await readFile(
-				process.cwd().includes('.evidence')
-					? '../../static/data/manifest.json'
-					: './static/data/manifest.json',
-				'utf-8'
-			).catch(() => '{}')
+			await readFile('./static/data/manifest.json', 'utf-8').catch(() => '{}')
 		));
 	} else {
 		const res = await fetch('/data/manifest.json');
@@ -36,7 +31,7 @@ const initDb = async () => {
 	await profile(updateSearchPath, Object.keys(renderedFiles));
 };
 
-const database_initialization = profile(initDb);
+const database_initialization = profile(loadDB);
 
 /** @type {(...params: Parameters<import("./$types").LayoutLoad>) => Promise<App.PageData["data"]>} */
 async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch }) {
@@ -66,6 +61,8 @@ export const load = async (event) => {
 	} = event;
 
 	if (!browser) await database_initialization;
+	// account for potential changes in manifest (source query hmr)
+	if (!browser && dev) await initDB();
 
 	/** @type {App.PageData["data"]} */
 	let data = {};

@@ -12,6 +12,9 @@ export function buildParquetFromResultSet(
 export function buildMultipartParquet<T extends Record<string, any>>(
 	columns: { name: string; evidenceType: string }[],
 	data: Generator<T[]> | Promise<Generator<T[]>> | T[] | Promise<T[]>,
+	outputDirectory: string,
+	outputPrefix: string,
 	outputFilename: string,
+	expectedRowCount?: number,
 	batchSize?: number
 ): Promise<string | false>;

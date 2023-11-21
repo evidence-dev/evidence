@@ -19,6 +19,7 @@
 		"@types/node": "^20.8.4",
 		"apache-arrow": "^11.0.0",
 		"chalk": "^5.2.0",
+		"cli-progress": "^3.12.0",
 		"duckdb": "^0.8.1",
 		"lodash.chunk": "^4.2.0",
 		"parquet-wasm": "0.3.1",

@@ -67,6 +67,19 @@ fs.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
 	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
+	import { createLogger } from 'vite';
+
+	const logger = createLogger();
+	const loggerWarn = logger.warn;
+
+	logger.warn = (msg, options) => {
+		// ignore fs/promises warning, used in +layout.js behind if (!browser) check
+		if (msg.includes('Module "fs/promises" has been externalized for browser compatibility')) return;
+		// ignore eval warning, used in duckdb-wasm
+		if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
+		loggerWarn(msg, options);
+	};
+
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
      const config = 
@@ -86,9 +99,14 @@ fs.outputFileSync(
         },
 		build: {
 			rollupOptions: {
-				external: [/^@evidence-dev\\/tailwind\\/fonts\\//]
+				external: [/^@evidence-dev\\/tailwind\\/fonts\\//],
+				onwarn(warning, warn) {
+					if (warning.code === 'EVAL') return;
+					warn(warning);
+				}
 			}
-		}
+		},
+		customLogger: logger
     }
     export default config`
 );

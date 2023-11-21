@@ -31,10 +31,10 @@ if (process.env.NODE_ENV === 'development') {
 
 		build_watcher.emit('change', path);
 
-		// go in ../.. (root) vs. . (aka .evidence/template)
-		const error = await updateDatasourceOutputs(`../../static/data`, '/data', {
+		// go in . (aka .evidence/template)
+		const error = await updateDatasourceOutputs('.', '/data', {
 			sources: new Set([datasource.name]),
-			queries: datasource ? null : new Set([query]),
+			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
 			only_changed: false
 		}).catch((e) => e);
 
@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'development') {
 			console.error(`Error occured while reloading source: ${error}`);
 			build_watcher.emit('done', path, {}, error);
 		} else {
-			const manifest = await readFile('../../static/data/manifest.json', 'utf-8');
+			const manifest = await readFile('./static/data/manifest.json', 'utf-8');
 			build_watcher.emit('done', path, manifest, null);
 		}
 	});
@@ -54,6 +54,7 @@ const subscribed_servers = new Map();
 
 /** @type {import("vite").Plugin["configureServer"]} */
 const configureServer = (server) => {
+	// handle server restarts
 	if (subscribed_servers.has(server)) return;
 	subscribed_servers.forEach((handlers) => {
 		build_watcher.off('change', handlers.change_handler);

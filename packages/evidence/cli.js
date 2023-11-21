@@ -17,10 +17,18 @@ const populateTemplate = function () {
 
 	fs.ensureDirSync('./.evidence/template/');
 
-	// empty the template directory, except any local settings, or telemetry profile that already exist.
+	// empty the template directory, except:
+	// - local settings
+	// - telemetry profile
+	// - static folder (mainly to preserve the data directory)
+	const keepers = new Set([
+		'evidence.settings.json',
+		'.profile.json',
+		'static',
+		'.evidence-queries'
+	]);
 	fs.readdirSync('./.evidence/template/').forEach((file) => {
-		if (file != 'evidence.settings.json' && file != '.profile.json')
-			fs.removeSync(path.join('./.evidence/template/', file));
+		if (!keepers.has(file)) fs.removeSync(path.join('./.evidence/template/', file));
 	});
 
 	fs.copySync(path.join(__dirname, '/template'), './.evidence/template/');
@@ -216,7 +224,7 @@ prog
 			});
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
-		updateDatasourceOutputs(`./static/data`, '/data', {
+		updateDatasourceOutputs('./.evidence/template', '/data', {
 			sources: sources ? new Set(sources) : sources,
 			queries: queries ? new Set(queries) : queries,
 			only_changed: opts.changed

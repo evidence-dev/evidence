@@ -9,10 +9,11 @@ import { cleanZodErrors } from '../lib/clean-zod-errors';
 /**
  * @param {DatasourceSpec} source
  * @param {PluginDatabases} supportedDbs
- * @param {string} outDir
+ * @param {string} outputDirectory Path to .evidence/template
+ * @param {string} outputPrefix The prefix to use for the output directory - generally `data`
  * @returns {Promise<string[]>} Returns a list of generated parquet files
  */
-export const execSource = async (source, supportedDbs, outDir) => {
+export const execSource = async (source, supportedDbs, outputDirectory, outputPrefix) => {
 	if (!(source.type in supportedDbs)) {
 		const errMsg = chalk.red(
 			`[!] ${chalk.bold(`"${source.type}"`)} does not have an adapter installed, ${
@@ -27,7 +28,7 @@ export const execSource = async (source, supportedDbs, outDir) => {
 	// Can we somehow guess based on the number of columns?
 	// e.g. 1-10 columns -> 1m, 11+ -> 100k?
 
-	const batchSize = 1000 * 1000; // 1m
+	const batchSize = 100 * 1000; // 1m
 	const db = supportedDbs[source.type];
 
 	const connectionValid = await db.testConnection(source.options, source.sourceDirectory);
@@ -87,13 +88,20 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const querySubdir = path.join(queryDirectory.replace(sourcesPath, ''), query.name);
 		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef
 		const outputSubdir = path.join(querySubdir, String(query.hash));
+		// ./.evidence/template/static/data or similar
+		const templateStaticDirectory = path.join(outputDirectory, 'static', outputPrefix);
+		// ./.evidence/template/static/data/needful_things/test/9236c2f5bc961dd74ddeead2928327ef
+		// or similar
+		const fullOutputSubdir = path.join(templateStaticDirectory, outputSubdir);
 		// /needful_things/test/9236c2f5bc961dd74ddeead2928327ef/test.parquet
 		const outputFilename = new URL(
 			`file:///${path.join(outputSubdir, query.name + '.parquet').slice(1)}`
 		).pathname;
+
+		await fs.mkdir(fullOutputSubdir, { recursive: true });
+
 		console.log(` || Writing ${filename} results to disk`);
 		const beforeFile = performance.now();
-		await fs.mkdir(path.join(outDir, outputSubdir), { recursive: true });
 
 		const rows = /** @type {any[] | Generator<any[]>} */ (result.rows);
 
@@ -111,10 +119,12 @@ export const execSource = async (source, supportedDbs, outDir) => {
 		const writtenRows = await buildMultipartParquet(
 			result.columnTypes,
 			rows,
+			outputDirectory,
+			outputPrefix,
 			outputFilename,
+			result.expectedRowCount,
 			batchSize
 		);
-
 		if (!writtenRows) {
 			console.log(
 				` <| Finished ${filename}. No rows returned, did not create parquet file (took ${(
@@ -124,16 +134,17 @@ export const execSource = async (source, supportedDbs, outDir) => {
 			continue;
 		}
 		outputFilenames.add(outputFilename);
-		await fs.writeFile(
-			path.join(outDir, outputSubdir, query.name + '.schema.json'),
-			JSON.stringify(result.columnTypes)
-		);
+
+		const schemaPath = path.join(fullOutputSubdir, `${query.name}.schema.json`);
+		await fs.mkdir(path.dirname(schemaPath), { recursive: true });
+		await fs.writeFile(schemaPath, JSON.stringify(result.columnTypes));
+
 		console.log(
 			` || Wrote ${filename} results (took ${(performance.now() - beforeFile).toFixed(2)}ms)`
 		);
 
 		console.log(
-			` <| Finished ${filename} Returned ${writtenRows} rows. (took ${(
+			` <| Finished ${filename} Returned ${writtenRows.toLocaleString()} rows. (took ${(
 				performance.now() - beforeQuery
 			).toFixed(2)}ms)\n`
 		);

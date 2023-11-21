@@ -102,20 +102,20 @@ export async function getDatasourceOptions() {
 }
 
 /**
- * @param {string} outDir
+ * @param {string} outDir The path to .evidence/template
  * @param {string} [prefix]
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
  */
 export async function updateDatasourceOutputs(
 	outDir,
-	prefix,
+	prefix = '',
 	filters = { sources: null, queries: null, only_changed: false }
 ) {
 	const datasourceDir = await getSourcesDir();
 	if (!datasourceDir) throw new Error('missing sources directory');
 	const datasources = await getSources(datasourceDir);
 	const plugins = await getDatasourcePlugins();
-	const sourceHashes = await getPastSourceHashes();
+	const sourceHashes = await getPastSourceHashes(outDir);
 
 	const filteredDatasources = datasources
 		.filter((source) => !filters.sources || filters.sources.has(source.name))
@@ -134,11 +134,7 @@ export async function updateDatasourceOutputs(
 			});
 			return { ...source, queries };
 		})
-		.filter(
-			(source) =>
-				source.queries.length > 0 ||
-				console.log(`No queries left for source ${source.name} after filtration`)
-		);
+		.filter((source) => source.queries.length > 0);
 
 	for (const source of filteredDatasources) {
 		sourceHashes[source.name] = sourceHashes[source.name] ?? {};
@@ -147,20 +143,16 @@ export async function updateDatasourceOutputs(
 		}
 	}
 
-	await saveSourceHashes(sourceHashes);
+	await saveSourceHashes(outDir, sourceHashes);
 
 	// TODO: Run in parallel?
 	/** @type {Record<string, string[]>} */
 	const outputFiles = {};
 	for (const source of filteredDatasources) {
 		outputFiles[source.name] = [];
-		const newFiles = await execSource(source, plugins, outDir);
-		if (prefix) {
-			outputFiles[source.name].push(...newFiles.map((nf) => `${prefix}${nf}`));
-		} else {
-			outputFiles[source.name].push(...newFiles);
-		}
+		const newFiles = await execSource(source, plugins, outDir, prefix);
+		outputFiles[source.name].push(...newFiles.map((nf) => `${prefix}${nf}`));
 	}
 
-	await updateManifest(outputFiles, outDir, datasources);
+	await updateManifest(outputFiles, path.join(outDir, 'static', prefix), datasources);
 }
