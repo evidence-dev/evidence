@@ -16,7 +16,8 @@ export const load = async () => {
 				{
 					...v,
 					factory: undefined,
-					testConnection: undefined
+					testConnection: undefined,
+					processSource: undefined
 				}
 			])
 		);
