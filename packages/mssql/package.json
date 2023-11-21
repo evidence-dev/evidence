@@ -9,7 +9,7 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:0.2.1-usql.2",
+		"@evidence-dev/db-commons": "workspace:*",
 		"@types/mssql": "^8.1.2",
 		"mssql": "^9.1.1"
 	},

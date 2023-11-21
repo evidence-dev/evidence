@@ -17,8 +17,8 @@
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:0.2.1-usql.2",
-		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.11",
+		"@evidence-dev/db-commons": "workspace:*",
+		"@evidence-dev/universal-sql": "workspace:*",
 		"@types/estree": "^1.0.1",
 		"@types/lodash.merge": "^4.6.8",
 		"chalk": "^5.2.0",
