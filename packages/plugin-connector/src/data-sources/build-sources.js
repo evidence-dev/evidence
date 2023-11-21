@@ -121,29 +121,32 @@ export const buildSources = async (
 			for await (const table of sourceIterator) {
 				// Flush this source
 
-				await oraPromise(async (spinner) => {
-					const filename = await flushSource(
-						source,
-						{
-							name: table.name,
-							filepath: path.join(source.sourceDirectory, table.name),
-							content: table.content,
-							hash: createHash('md5').update(table.content).digest('hex')
-						},
-						table,
-						dataPath,
-						metaPath,
-						batchSize,
-						spinner
-					);
-					spinner.text = 'Complete!';
-					if (filename) outputFilenames.push(filename);
-					return;
-				}, {
-					prefixText: `  ${table.name}`,
-					spinner: "balloon",
-					discardStdin: true
-				});
+				await oraPromise(
+					async (spinner) => {
+						const filename = await flushSource(
+							source,
+							{
+								name: table.name,
+								filepath: path.join(source.sourceDirectory, table.name),
+								content: table.content,
+								hash: createHash('md5').update(table.content).digest('hex')
+							},
+							table,
+							dataPath,
+							metaPath,
+							batchSize,
+							spinner
+						);
+						spinner.text = 'Complete!';
+						if (filename) outputFilenames.push(filename);
+						return;
+					},
+					{
+						prefixText: `  ${table.name}`,
+						spinner: 'balloon',
+						discardStdin: true
+					}
+				);
 			}
 		} else {
 			// Simple Source
@@ -157,53 +160,59 @@ export const buildSources = async (
 			// TODO: Progress bar here.
 
 			for (const query of queries) {
-				hashes[source.name][query.name] = createHash('md5')
-					.update(query.content ?? '')
-					.digest('hex');
-				/** @type {QueryResult | null} */
-				let result;
-				try {
-					const _r = runner(query.content, query.filepath, batchSize);
-					if (_r instanceof Promise) {
-						result = await _r.catch((e) => {
-							if (e instanceof z.ZodError) console.log(e.format());
+				await oraPromise(
+					async (spinner) => {
+						spinner.prefixText = `  ${query.name}`;
+						spinner.text = `Processing...`;
+						hashes[source.name][query.name] = createHash('md5')
+							.update(query.content ?? '')
+							.digest('hex');
+						/** @type {QueryResult | null} */
+						let result;
+						try {
+							const _r = runner(query.content, query.filepath, batchSize);
+							if (_r instanceof Promise) {
+								result = await _r.catch((e) => {
+									if (e instanceof z.ZodError) console.log(e.format());
+									else console.log(e);
+									return null;
+								});
+							} else result = _r;
+						} catch (e) {
+							if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
 							else console.log(e);
-							return null;
-						});
-					} else result = _r;
-				} catch (e) {
-					if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
-					else console.log(e);
-					result = null;
-				}
-				await oraPromise(async (spinner) => {
-					spinner.prefixText = `  ${query.name}`;
-					spinner.text = `Processing...`;
-					if (result === null) {
-						spinner.text = `Finished. Returned no results!`;
-						return;
-					}
+							result = null;
+						}
 
-					if (result === null) {
-						return;
-					}
-					const filename = await flushSource(
-						source,
-						query,
-						result,
-						dataPath,
-						metaPath,
-						batchSize,
-						spinner
-					);
+						
+						if (result === null) {
+							spinner.text = `Finished. Returned no results!`;
+							return;
+						}
 
-					if (filename) outputFilenames.push(filename);
-					return;
-				}, {
-					prefixText: `  ${query.name}`,
-					spinner: "balloon",
-					discardStdin: true
-				});
+						if (result === null) {
+							return;
+						}
+						const filename = await flushSource(
+							source,
+							query,
+							result,
+							dataPath,
+							metaPath,
+							batchSize,
+							spinner
+						);
+
+						if (filename) outputFilenames.push(filename);
+						return;
+					},
+					{
+						prefixText: `  ${query.name}`,
+						spinner: 'balloon',
+						discardStdin: true,
+						interval: 250
+					}
+				);
 			}
 		}
 
@@ -243,7 +252,8 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 
 	if ((result.expectedRowCount ?? -1) > 1000000)
 		logOut(chalk.yellow(`Expected row count is ~${result.expectedRowCount?.toLocaleString()}`));
-	else if (result.expectedRowCount) logOut(`Expected row count is ~${result.expectedRowCount?.toLocaleString()}`);
+	else if (result.expectedRowCount)
+		logOut(`Expected row count is ~${result.expectedRowCount?.toLocaleString()}`);
 
 	// Spinner start
 	// Disable the console for a moment, stack up and then print everything after?
