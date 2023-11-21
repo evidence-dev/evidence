@@ -7,7 +7,7 @@ import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
-
+import { oraPromise } from 'ora';
 /**
  * @param {string} directory
  * @returns {Promise<SourceDirectory>}
@@ -120,20 +120,30 @@ export const buildSources = async (
 
 			for await (const table of sourceIterator) {
 				// Flush this source
-				const filename = await flushSource(
-					source,
-					{
-						name: table.name,
-						filepath: path.join(source.sourceDirectory, table.name),
-						content: table.content,
-						hash: createHash('md5').update(table.content).digest('hex')
-					},
-					table,
-					dataPath,
-					metaPath,
-					batchSize
-				);
-				if (filename) outputFilenames.push(filename);
+
+				await oraPromise(async (spinner) => {
+					const filename = await flushSource(
+						source,
+						{
+							name: table.name,
+							filepath: path.join(source.sourceDirectory, table.name),
+							content: table.content,
+							hash: createHash('md5').update(table.content).digest('hex')
+						},
+						table,
+						dataPath,
+						metaPath,
+						batchSize,
+						spinner
+					);
+					spinner.text = 'Complete!';
+					if (filename) outputFilenames.push(filename);
+					return;
+				}, {
+					prefixText: `  ${table.name}`,
+					spinner: "balloon",
+					discardStdin: true
+				});
 			}
 		} else {
 			// Simple Source
@@ -166,15 +176,34 @@ export const buildSources = async (
 					else console.log(e);
 					result = null;
 				}
-				console.log(`  Processing ${query.name}`)
-				if (result === null) {
-					console.log(`  Finished ${query.name}. Returned no results!`);
-					console.log()
-					continue;
-				}
+				await oraPromise(async (spinner) => {
+					spinner.prefixText = `  ${query.name}`;
+					spinner.text = `Processing...`;
+					if (result === null) {
+						spinner.text = `Finished. Returned no results!`;
+						return;
+					}
 
-				const filename = await flushSource(source, query, result, dataPath, metaPath, batchSize);
-				if (filename) outputFilenames.push(filename);
+					if (result === null) {
+						return;
+					}
+					const filename = await flushSource(
+						source,
+						query,
+						result,
+						dataPath,
+						metaPath,
+						batchSize,
+						spinner
+					);
+
+					if (filename) outputFilenames.push(filename);
+					return;
+				}, {
+					prefixText: `  ${query.name}`,
+					spinner: "balloon",
+					discardStdin: true
+				});
 			}
 		}
 
@@ -193,9 +222,12 @@ export const buildSources = async (
  * @param {string} dataPath
  * @param {string} metaPath
  * @param {number} batchSize
+ * @param {import("ora").Ora} [spinner]
  * @returns {Promise<null | string>}
  */
-const flushSource = async (source, query, result, dataPath, metaPath, batchSize) => {
+const flushSource = async (source, query, result, dataPath, metaPath, batchSize, spinner) => {
+	const logOut = /** @param {string} t **/ (t) => (spinner ? (spinner.text = t) : console.log(t));
+
 	const dataOutDir = path.join(dataPath, source.name, query.name, query.hash ?? '');
 
 	const parquetFilename = path.join(dataOutDir, query.name + '.parquet');
@@ -210,13 +242,8 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize)
 	const rows = /** @type {any[] | Generator<any[]>} */ (result.rows);
 
 	if ((result.expectedRowCount ?? -1) > 1000000)
-		console.warn(
-			chalk.yellow(
-				`[!] ${
-					query.name
-				} is expected to return ~${result.expectedRowCount?.toLocaleString()} rows. This may take some time!`
-			)
-		);
+		logOut(chalk.yellow(`Expected row count is ~${result.expectedRowCount?.toLocaleString()}`));
+	else if (result.expectedRowCount) logOut(`Expected row count is ~${result.expectedRowCount?.toLocaleString()}`);
 
 	// Spinner start
 	// Disable the console for a moment, stack up and then print everything after?
@@ -231,10 +258,10 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize)
 	);
 	// Spinner stop?
 	if (!writtenRows) {
-		console.warn(chalk.yellow(`[!] ${query.name} did not return any rows; did not create table.`));
+		logOut(chalk.yellow(`Finished. 0 rows, did not create table`));
 		return null;
 	} else {
-		console.log(`  Finished ${query.name}; returned ${writtenRows} rows`);
+		logOut(`Finished. ${writtenRows} rows`);
 	}
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
