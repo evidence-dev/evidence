@@ -157,7 +157,7 @@ export async function buildMultipartParquet(
 	if (size > 100 * 1024 * 1024) {
 		console.warn(
 			chalk.yellow(
-				`[!] ${outputFilename} has a disk size of ${Intl.NumberFormat().format(
+				` Estimated disk size is ${Intl.NumberFormat().format(
 					size / (1024 * 1024)
 				)}mb.`
 			)
@@ -183,7 +183,7 @@ export async function buildMultipartParquet(
 	if (score > 100 * 1024 * 1024) {
 		console.warn(
 			chalk.yellow(
-				`[!] WARNING: ${outputFilename} is estimated to be ${Intl.NumberFormat().format(
+				` WARNING: Estimated output size is ${Intl.NumberFormat().format(
 					score / (1024 * 1024)
 				)}mb uncompressed. This may cause client-side performance issues.`
 			)
