@@ -71,6 +71,8 @@
 		<span
 			>Learn more about <a
 				class="docs-link"
+				target="_blank"
+				rel="noreferrer"
 				href="https://docs.github.com/en/get-started/using-git/about-git"
 				>Setting Up Version Control &rarr;</a
 			></span

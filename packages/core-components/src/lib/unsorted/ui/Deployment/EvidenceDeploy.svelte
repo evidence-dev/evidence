@@ -12,6 +12,8 @@
 	<button type="button">
 		<a
 			class="text-white no-underline hover:no-underline"
+			target="_blank"
+			rel="noreferrer"
 			href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=product&utm_campaign=deploy_panel"
 			>Request an Invite</a
 		>
