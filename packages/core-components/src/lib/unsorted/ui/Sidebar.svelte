@@ -81,7 +81,7 @@
 						Home
 					</a>
 					{#each firstLevelFiles as file}
-						{#if file.children.length === 0}
+						{#if file.children.length === 0 && file.href}
 							<a
 								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
 								href={file.href}
@@ -144,7 +144,7 @@
 					Home
 				</a>
 				{#each firstLevelFiles as file}
-					{#if file.children.length === 0}
+					{#if file.children.length === 0 && file.href}
 						<a
 							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100"
 							href={file.href}
