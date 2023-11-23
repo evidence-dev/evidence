@@ -19,6 +19,7 @@
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
 	import InvisibleLinks from '../../atoms/InvisibleLinks.svelte';
+	import Fuse from 'fuse.js';
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -136,31 +137,23 @@
 	let searchValue = '';
 	let filteredData;
 	$: filteredData = data;
-	let thisRow;
-	let thisValue;
 	let showNoResults = false;
+	$: fuse = new Fuse(data, {
+		getFn: (row, [path]) => {
+			const summary = columnSummary.find((d) => d.id === path);
+			return summary.type === 'date' && row[summary.id] != null
+				? row[summary.id].toISOString()
+				: row[summary.id]?.toString() ?? '';
+		},
+		keys: columnSummary.map((d) => d.id)
+	});
 	$: runSearch = (searchValue) => {
 		if (searchValue !== '') {
-			filteredData = [];
-
 			// Reset pagination to first page:
 			index = 0;
 			inputPage = null;
 
-			for (let i = 0; i < data.length; i++) {
-				thisRow = data[i];
-				for (let j = 0; j < columnSummary.length; j++) {
-					if (columnSummary[j].type === 'date' && thisRow[columnSummary[j].id] != null) {
-						thisValue = thisRow[columnSummary[j].id].toISOString();
-					} else {
-						thisValue = (thisRow[columnSummary[j].id] ?? '').toString().toLowerCase();
-					}
-					if (thisValue.indexOf(searchValue.toLowerCase()) != -1 && thisValue != null) {
-						filteredData.push(thisRow);
-						break;
-					}
-				}
-			}
+			filteredData = fuse.search(searchValue).map((x) => x.item);
 			showNoResults = filteredData.length === 0;
 		} else {
 			filteredData = data;
