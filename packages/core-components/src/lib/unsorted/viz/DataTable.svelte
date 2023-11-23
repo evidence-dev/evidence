@@ -140,12 +140,12 @@
 	let showNoResults = false;
 	$: fuse = new Fuse(data, {
 		getFn: (row, [path]) => {
-			const summary = columnSummary.find((d) => d.id === path);
+			const summary = columnSummary?.find((d) => d.id === path) ?? {};
 			return summary.type === 'date' && row[summary.id] != null
 				? row[summary.id].toISOString()
 				: row[summary.id]?.toString() ?? '';
 		},
-		keys: columnSummary.map((d) => d.id)
+		keys: columnSummary?.map((d) => d.id) ?? []
 	});
 	$: runSearch = (searchValue) => {
 		if (searchValue !== '') {
