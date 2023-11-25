@@ -12,9 +12,19 @@ import debounce from 'debounce';
 
 /** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
 export default (node, option) => {
+	// https://github.com/evidence-dev/evidence/issues/1323
+	const useSvg = [
+		'iPad Simulator',
+		'iPhone Simulator',
+		'iPod Simulator',
+		'iPad',
+		'iPhone',
+		'iPod'
+	].includes(navigator.platform) && node.clientWidth * 3 * node.clientHeight * 3 > 0xFFFFFF;
+
 	registerTheme('evidence-light', evidenceThemeLight);
 
-	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
+	const chart = init(node, 'evidence-light', { renderer: useSvg ? 'svg' : 'canvas' });
 
 	chart.setOption(option);
 
