@@ -8,6 +8,10 @@ sources:
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet enim rutrum, rutrum metus in, vulputate quam. Duis posuere enim feugiat urna fringilla blandit vehicula ac dui. Nunc consequat enim vel purus vestibulum rhoncus. Nunc porta luctus odio, ac luctus urna tincidunt cursus.
 <DataTable data={orders_by_category}/>
 
+## Fuzzy Search
+
+<DataTable data={[{ thing: 'The world has many goodbyes and hellos.' }]} search=true />
+
 Nulla facilisi. Aliquam vulputate mollis aliquam. Duis dignissim elementum dictum. Curabitur ornare lorem velit, eget tempus ex suscipit eu. Sed nec nisl a lorem vulputate interdum. Pellentesque viverra vitae est sed porttitor. Etiam interdum in enim a pellentesque.
 
 <DataTable data={orders_with_comparisons} rowNumbers=true search=true rowLines=true/>

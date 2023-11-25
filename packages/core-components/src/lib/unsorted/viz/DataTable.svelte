@@ -145,7 +145,8 @@
 				? row[summary.id].toISOString()
 				: row[summary.id]?.toString() ?? '';
 		},
-		keys: columnSummary?.map((d) => d.id) ?? []
+		keys: columnSummary?.map((d) => d.id) ?? [],
+		threshold: 0.4
 	});
 	$: runSearch = (searchValue) => {
 		if (searchValue !== '') {
