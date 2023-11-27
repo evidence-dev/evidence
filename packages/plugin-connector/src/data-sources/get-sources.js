@@ -19,7 +19,9 @@ import { createHash } from 'node:crypto';
  */
 export const getSourcesDir = async (create) => {
 	// Get the absolute path to the current working directory
-	const pwd = path.resolve('./');
+	let pwd = path.resolve('./');
+
+	if (pwd.includes(".evidence")) pwd = path.resolve("../..")
 
 	// Get the contents of the current directory
 	const contents = await fs.readdir(pwd, { withFileTypes: true });

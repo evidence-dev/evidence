@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 		build_watcher.emit('change', path);
 
 		// go in . (aka .evidence/template)
-		const error = await updateDatasourceOutputs('./static', '/data', {
+		const error = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
 			sources: new Set([datasource.name]),
 			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
 			only_changed: false
