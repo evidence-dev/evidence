@@ -13,14 +13,11 @@ import debounce from 'debounce';
 /** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
 export default (node, option) => {
 	// https://github.com/evidence-dev/evidence/issues/1323
-	const useSvg = [
-		'iPad Simulator',
-		'iPhone Simulator',
-		'iPod Simulator',
-		'iPad',
-		'iPhone',
-		'iPod'
-	].includes(navigator.platform) && node.clientWidth * 3 * node.clientHeight * 3 > 0xFFFFFF;
+	const useSvg =
+		['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
+			navigator.platform
+			// ios breaks w/ canvas if the canvas is too large
+		) && node.clientWidth * 3 * node.clientHeight * 3 > 16777215;
 
 	registerTheme('evidence-light', evidenceThemeLight);
 
