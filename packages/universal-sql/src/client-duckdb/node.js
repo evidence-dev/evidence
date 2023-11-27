@@ -87,7 +87,7 @@ export async function setParquetURLs(urls) {
 		for (const url of urls[source]) {
 			const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
 			const file_name = `${source}_${table}.parquet`;
-			db.registerFileURL(file_name, `./static${url}`, DuckDBDataProtocol.NODE_FS, false);
+			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
 			connection.query(
 				`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
 			);

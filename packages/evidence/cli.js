@@ -224,9 +224,10 @@ prog
 			});
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
+		if (fs.readdirSync(process.cwd()).includes(".evidence")) process.chdir(".evidence/template")
 		await updateDatasourceOutputs(
-			'./.evidence/template/static/data',
-			'./.evidence/template/.evidence-queries',
+			'static/data',
+			'.evidence-queries',
 			{
 				sources: sources ? new Set(sources) : sources,
 				queries: queries ? new Set(queries) : queries,
