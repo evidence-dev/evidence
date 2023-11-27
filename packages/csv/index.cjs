@@ -1,7 +1,7 @@
 const runQuery = require('@evidence-dev/duckdb');
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<never>} */
-module.exports = async (queryString, _, batchSize) => {
+module.exports = async (queryString, _, batchSize = 100000) => {
 	return runQuery(queryString, { filename: ':memory:' }, batchSize);
 };
 
