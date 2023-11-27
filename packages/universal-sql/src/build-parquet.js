@@ -147,8 +147,7 @@ export async function buildMultipartParquet(
 		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
 		.join(',');
 
-	await fs.mkdir(path.parse(outputFilepath).dir, { recursive: true });
-	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
+		const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
 	await query(copy);

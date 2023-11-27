@@ -100,7 +100,7 @@ const processQueryResults = function (queryResults) {
 
 /**
  * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
- * @property {(rows: Record<string, unknown>[]) => QueryResult["columnTypes"]} mapResultsToEvidenceColumnTypes
+ * @property {(rows: Record<string, unknown>[]) => QueryResult["columnTypes"]} [mapResultsToEvidenceColumnTypes]
  * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
  */
 
@@ -114,23 +114,20 @@ const processQueryResults = function (queryResults) {
 const asyncIterableToBatchedAsyncGenerator = async function (
 	iterable,
 	batchSize,
-	{ standardizeRow, mapResultsToEvidenceColumnTypes }
+	{ 
+		// @ts-ignore
+		standardizeRow = (x) => x,
+		mapResultsToEvidenceColumnTypes = () => [] 
+	} = {}
 ) {
 	const iterator = iterable[Symbol.asyncIterator]();
 	const firstRow = await iterator.next().then((x) => x.value);
 
-	const cleanRow = standardizeRow
-		? standardizeRow
-		: /**
-		   * @param {unknown} x
-		   */
-		  (x) => x;
-
 	const rows = async function* () {
 		let batch = [];
-		batch.push(cleanRow(firstRow));
+		batch.push(standardizeRow(firstRow));
 		for await (const row of iterable) {
-			batch.push(cleanRow(row));
+			batch.push(standardizeRow(row));
 			if (batch.length >= batchSize) {
 				yield batch;
 				batch = [];
