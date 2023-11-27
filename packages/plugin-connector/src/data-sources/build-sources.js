@@ -137,7 +137,6 @@ export const buildSources = async (
 							batchSize,
 							spinner
 						);
-						spinner.text = 'Complete!';
 						if (filename) outputFilenames.push(filename);
 						return;
 					},
