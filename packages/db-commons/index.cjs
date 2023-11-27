@@ -114,10 +114,10 @@ const processQueryResults = function (queryResults) {
 const asyncIterableToBatchedAsyncGenerator = async function (
 	iterable,
 	batchSize,
-	{ 
+	{
 		// @ts-ignore
 		standardizeRow = (x) => x,
-		mapResultsToEvidenceColumnTypes = () => [] 
+		mapResultsToEvidenceColumnTypes = () => []
 	} = {}
 ) {
 	const iterator = iterable[Symbol.asyncIterator]();

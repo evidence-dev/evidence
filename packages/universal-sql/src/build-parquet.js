@@ -147,7 +147,7 @@ export async function buildMultipartParquet(
 		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
 		.join(',');
 
-		const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
+	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
 	await query(copy);
@@ -155,11 +155,7 @@ export async function buildMultipartParquet(
 	const { size } = await fs.stat(outputFilepath);
 	if (size > 100 * 1024 * 1024) {
 		console.warn(
-			chalk.yellow(
-				` Estimated disk size is ${Intl.NumberFormat().format(
-					size / (1024 * 1024)
-				)}mb.`
-			)
+			chalk.yellow(` Estimated disk size is ${Intl.NumberFormat().format(size / (1024 * 1024))}mb.`)
 		);
 	}
 

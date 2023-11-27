@@ -123,7 +123,7 @@ describe('buildMultipartParquet', () => {
 			[{ x: 'hello' }, { x: 'hello' }],
 			'./.evidence/template/.evidence-queries/intermediate-parquet',
 			'./.evidence/template/static/data',
-			'out.parquet',
+			'out.parquet'
 		);
 		expect(r).toBe(2);
 		const stat = await fs.stat('./.evidence/template/static/data/out.parquet');
