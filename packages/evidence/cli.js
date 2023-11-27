@@ -224,16 +224,12 @@ prog
 			});
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
-		if (fs.readdirSync(process.cwd()).includes(".evidence")) process.chdir(".evidence/template")
-		await updateDatasourceOutputs(
-			'static/data',
-			'.evidence-queries',
-			{
-				sources: sources ? new Set(sources) : sources,
-				queries: queries ? new Set(queries) : queries,
-				only_changed: opts.changed
-			}
-		);
+		if (fs.readdirSync(process.cwd()).includes('.evidence')) process.chdir('.evidence/template');
+		await updateDatasourceOutputs('static/data', '.evidence-queries', {
+			sources: sources ? new Set(sources) : sources,
+			queries: queries ? new Set(queries) : queries,
+			only_changed: opts.changed
+		});
 	});
 
 prog.parse(process.argv);
