@@ -1,5 +1,13 @@
 # @evidence-dev/csv
 
+## 1.0.0-usql.6
+
+### Patch Changes
+
+- Updated dependencies [cd57ba69]
+  - @evidence-dev/db-commons@0.2.1-usql.3
+  - @evidence-dev/duckdb@1.0.0-usql.5
+
 ## 1.0.0-usql.5
 
 ### Patch Changes
