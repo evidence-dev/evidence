@@ -45,7 +45,7 @@ function convertArrayToVector(type, rawValues) {
 /**
  * @template T
  * @param {{name: string, evidenceType: string}[]} columns
- * @param {Generator<T[] | Promise<T[]> | T[] | Promise<T[]>} data'
+ * @param {Generator<T[] | Promise<T[]> | T[] | Promise<T[]>} data
  * @param {string} tmpDir
  * @param {string} outDir
  * @param {string} outputFilename
