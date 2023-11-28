@@ -15,6 +15,7 @@
 	"type": "module",
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:*",
+		"@evidence-dev/connector-gsheets": "^1.0.0",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/csv": "workspace:*",
 		"@evidence-dev/duckdb": "workspace:*",
