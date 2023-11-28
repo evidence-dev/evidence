@@ -12,19 +12,11 @@ export async function getDatasourcePlugins(cfg, discoveries) {
 
 	return await pluginDiscoveries.databases.reduce(
 		/**
-		 * @typedef {Object} DatasourcePluginDiscovery
-		 * @property {EvidencePluginPackage<EvidenceDatabasePackage>} package
-		 * @property {DatabaseConnectorFactory} factory
-		 * @property {DatasourceOptionsSpec} options
-		 * @property {ConnectionTester} testConnection
-		 */
-
-		/**
 		 * Adds a plugin to a map of EvidencePluginPackages with a corresponding DatabaseConnectorFactory,
 		 * ensuring that no duplicate databases are added.
-		 * @param {Promise<Record<string, DatasourcePluginDiscovery>>} _acc - A promise representing the current state of the package map
+		 * @param {Promise<Record<string, PluginDatabases[string]>>} _acc - A promise representing the current state of the package map
 		 * @param {EvidencePluginPackage<EvidenceDatabasePackage>} v - The plugin package to be added to the map
-		 * @returns {Promise<Record<string, DatasourcePluginDiscovery>>} - A promise representing the updated package map
+		 * @returns {Promise<Record<string, PluginDatabases[string]>>} - A promise representing the updated package map
 		 */
 		async (_acc, v) => {
 			// TODO: Handle Overrides
@@ -51,7 +43,8 @@ export async function getDatasourcePlugins(cfg, discoveries) {
 					package: v,
 					factory: factory.getRunner,
 					options: factory.options,
-					testConnection: factory.testConnection
+					testConnection: factory.testConnection,
+					processSource: /** @type {*} **/ (factory.processSource) // We can't really validate AsyncIterator output
 				};
 			});
 			// Return the updated package map as a promise

@@ -25,7 +25,8 @@
 		sources.push({
 			name: newSourceName,
 			type: newSourceType,
-			package: target.package.package.name
+			package: target.package.package.name,
+			options: {}
 		});
 		lastAdded = newSourceName;
 		sources = sources;

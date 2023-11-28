@@ -14,7 +14,6 @@ import path from 'path';
 import { initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
-import { SingleBar, Presets } from 'cli-progress';
 import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
 
@@ -47,8 +46,8 @@ function convertArrayToVector(type, rawValues) {
  * @template T
  * @param {{name: string, evidenceType: string}[]} columns
  * @param {Generator<T[] | Promise<T[]> | T[] | Promise<T[]>} data
- * @param {string} outputDirectory - Path to the .evidence/template directory (or other output directory)
- * @param {string} outputPrefix - The prefix to use for the output directory - generally `data`
+ * @param {string} tmpDir
+ * @param {string} outDir
  * @param {string} outputFilename
  * @param {number} [expectedRowCount]
  * @param {number} [batchSize]
@@ -57,8 +56,8 @@ function convertArrayToVector(type, rawValues) {
 export async function buildMultipartParquet(
 	columns,
 	data,
-	outputDirectory,
-	outputPrefix,
+	tmpDir,
+	outDir,
 	outputFilename,
 	expectedRowCount,
 	batchSize = 1000000
@@ -67,9 +66,6 @@ export async function buildMultipartParquet(
 	const outputSubpath = outputFilename.split('.parquet')[0];
 	let tmpFilenames = [];
 	let rowCount = 0;
-
-	const progressBar = new SingleBar({}, Presets.shades_classic);
-	if (expectedRowCount !== undefined) progressBar.start(expectedRowCount, 0);
 
 	const flush = async (results) => {
 		// Convert JS Objects -> Arrow
@@ -92,19 +88,13 @@ export async function buildMultipartParquet(
 		// This can be slow; it includes the compression step
 		const parquetBuffer = writeParquet(IPC, writerProperties);
 
-		const tempFilename = path.join(
-			outputDirectory,
-			'.evidence-queries',
-			'intermediate-parquet',
-			`${outputSubpath}.${batchNum}.parquet`
-		);
+		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
 		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
 		await fs.writeFile(tempFilename, parquetBuffer);
 
 		tmpFilenames.push(tempFilename);
 		rowCount += results.length;
 		batchNum++;
-		if (expectedRowCount !== undefined) progressBar.update(rowCount);
 	};
 
 	if (typeof data === 'function') data = data();
@@ -146,18 +136,17 @@ export async function buildMultipartParquet(
 		if (currentBatch.length) await flush(currentBatch);
 	}
 
-	if (expectedRowCount !== undefined) progressBar.stop();
-
 	if (!tmpFilenames.length) return 0;
 
 	await initDB();
 
-	const outputFilepath = path.join(outputDirectory, 'static', outputPrefix, outputFilename);
+	const outputFilepath = path.join(outDir, outputFilename);
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
 	const parquetFiles = tmpFilenames
 		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
 		.join(',');
+
 	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
@@ -166,11 +155,7 @@ export async function buildMultipartParquet(
 	const { size } = await fs.stat(outputFilepath);
 	if (size > 100 * 1024 * 1024) {
 		console.warn(
-			chalk.yellow(
-				` || WARNING: ${outputFilename} has a disk size of ${Intl.NumberFormat().format(
-					size / (1024 * 1024)
-				)}mb.`
-			)
+			chalk.yellow(` Estimated disk size is ${Intl.NumberFormat().format(size / (1024 * 1024))}mb.`)
 		);
 	}
 
@@ -193,7 +178,7 @@ export async function buildMultipartParquet(
 	if (score > 100 * 1024 * 1024) {
 		console.warn(
 			chalk.yellow(
-				` || WARNING: ${outputFilename} is estimated to be ${Intl.NumberFormat().format(
+				` WARNING: Estimated output size is ${Intl.NumberFormat().format(
 					score / (1024 * 1024)
 				)}mb uncompressed. This may cause client-side performance issues.`
 			)

@@ -20,7 +20,7 @@
 		"vitest": "^0.34.1"
 	},
 	"dependencies": {
-		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.11",
+		"@evidence-dev/universal-sql": "workspace:*",
 		"@sqltools/formatter": "^1.2.5",
 		"@uwdata/mosaic-sql": "^0.3.2"
 	},

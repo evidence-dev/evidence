@@ -109,7 +109,7 @@
 				class="rounded border border-gray-300 p-1 ml-auto w-5 text-gray-950 align-middle text-sm"
 			/>
 		</label>
-		{#if Object.keys(source.options).length}
+		{#if Object.keys(sourcePlugin.options).length}
 			<hr />
 			<h4 class="text-xs uppercase text-gray-600 font-bold">Source Options</h4>
 			<SourceConfigFormSection

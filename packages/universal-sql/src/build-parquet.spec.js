@@ -63,8 +63,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			gen(),
-			'./.evidence/template',
-			'/data',
+			'./.evidence/template/.evidence-queries/intermediate-parquet',
+			'./.evidence/template/static/data',
 			'out.parquet'
 		);
 		expect(r).toBe(2);
@@ -93,8 +93,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			gen(),
-			'./.evidence/template',
-			'/data',
+			'./.evidence/template/.evidence-queries/intermediate-parquet',
+			'./.evidence/template/static/data',
 			'out.parquet',
 			2,
 			1
@@ -121,8 +121,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			[{ x: 'hello' }, { x: 'hello' }],
-			'./.evidence/template',
-			'/data',
+			'./.evidence/template/.evidence-queries/intermediate-parquet',
+			'./.evidence/template/static/data',
 			'out.parquet'
 		);
 		expect(r).toBe(2);
@@ -146,8 +146,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			gen(),
-			'./.evidence/template',
-			'/data',
+			'./.evidence/template/.evidence-queries/intermediate-parquet',
+			'./.evidence/template/static/data',
 			'out.parquet',
 			1000,
 			1

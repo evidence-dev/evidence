@@ -9,7 +9,7 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:^",
+		"@evidence-dev/db-commons": "workspace:*",
 		"pg": "^8.11.3",
 		"pg-cursor": "^2.10.3"
 	},

@@ -3,6 +3,7 @@ import yaml from 'yaml';
 import path from 'path';
 import { filter } from './filter.mjs';
 import fs from 'fs/promises';
+import chalk from 'chalk';
 /** @typedef {"number" | "id" | "uuid" | "animal" } ColumnType */
 
 /**
@@ -122,7 +123,6 @@ const generateTable = (directory) => async (content, filepath) => {
 	if (tableMap.has(filepath)) {
 		return tableMap.get(filepath);
 	}
-	console.log(`  |  | Generating ${filepath}`);
 
 	tableMap.set(filepath, wrappingPromise);
 	try {
@@ -182,7 +182,6 @@ const generateTable = (directory) => async (content, filepath) => {
 			}
 		}
 
-		console.log(`  | | Creating rows for ${name}`);
 		let rowCount = definition.rows;
 		if ('fuzz' in definition) {
 			if (typeof definition.fuzz !== 'number') {
@@ -195,7 +194,6 @@ const generateTable = (directory) => async (content, filepath) => {
 			rows.push(await buildRow(definition.schema, name, i));
 		}
 
-		console.log(`  | | Filtering ${name}`);
 		const filteredRows = filter(rows, definition.filters ?? []);
 
 		const output = {
@@ -218,7 +216,11 @@ const generateTable = (directory) => async (content, filepath) => {
  * @param {string} directory
  */
 export const getRunner = (options, directory) => {
-	console.warn('You are using the faker-datasource, this is not recommended for production use.');
+	console.warn(
+		chalk.bold.dim.yellow(
+			'  You are using the faker-datasource, this is not recommended for production use.\n'
+		)
+	);
 	return generateTable(directory);
 };
 

@@ -14,11 +14,14 @@ import { createHash } from 'node:crypto';
 /**
  * Returns the path to the sources directory, if it exists in the current directory.
  * If it doesn't exist, it logs a warning message and returns null.
+ * @param {boolean} [create] indicates that the directory should be created if it does not exist
  * @returns {Promise<string|null>} The path to the sources directory or null.
  */
-export const getSourcesDir = async () => {
+export const getSourcesDir = async (create) => {
 	// Get the absolute path to the current working directory
-	const pwd = path.resolve('./');
+	let pwd = path.resolve('./');
+
+	if (pwd.includes('.evidence')) pwd = path.resolve('../..');
 
 	// Get the contents of the current directory
 	const contents = await fs.readdir(pwd, { withFileTypes: true });
@@ -26,10 +29,17 @@ export const getSourcesDir = async () => {
 	// Find the sources directory in the contents
 	const sourcesDir = contents.find((c) => c.name === 'sources' && c.isDirectory());
 
+	const sourceDirPath = path.join(pwd, 'sources');
+
 	// If sources directory doesn't exist, log a warning message
 	if (!sourcesDir) {
-		console.warn(chalk.yellow('[!] No Sources Found!'));
-		return null;
+		if (!create) {
+			console.warn(chalk.yellow('[!] No Sources Found!'));
+			return null;
+		} else {
+			await fs.mkdir(sourceDirPath, { recursive: true });
+			console.info(chalk.green(`Created new sources directory; ${sourceDirPath}`));
+		}
 	}
 
 	// Return the path to the sources directory
@@ -79,8 +89,6 @@ export const getSources = async (sourcesDir) => {
 			const possibleDir = await fs.stat(sourceDir);
 			if (!possibleDir.isDirectory()) return false;
 
-			const contents = await fs.readdir(sourceDir);
-
 			const connParams = await loadConnectionConfiguration(sourceDir);
 			if (!connParams.name)
 				connParams.name = /** @type {string} */ (sourceDir.split(path.sep).pop());
@@ -94,11 +102,11 @@ export const getSources = async (sourcesDir) => {
 			// Load Options from Environment
 			connParams.options = merge(connParams.options, loadSourceOptions(connParams.name));
 
-			const queries = await getQueries(sourceDir, contents);
+			// const queries = await getQueries(sourceDir, contents);
 			return {
 				...connParams,
-				sourceDirectory: sourceDir,
-				queries: queries
+				sourceDirectory: sourceDir
+				// queries: queries
 			};
 		})
 	).then((r) => /** @type {Exclude<typeof r[number], false>[]} */ (r.filter(Boolean)));
@@ -146,7 +154,7 @@ export async function getCurrentManifest(outDir) {
 	);
 }
 
-const hash_location = '/.evidence-queries/sources/hashes.json';
+const hash_location = 'sources/hashes.json';
 
 /**
  * Gets the hashes of all source files, at the time of their last execution.
@@ -235,7 +243,7 @@ async function loadConnectionOptions(sourceDir) {
  * @return {Promise<DatasourceQuery[]>} - A promise that resolves to an array of objects
  * containing the filepath and content of each query file.
  */
-async function getQueries(sourceDir, contents) {
+export async function getQueries(sourceDir, contents) {
 	const queryFiles = await Promise.all(
 		contents
 			.filter((s) => s !== 'connection.yaml' && s !== 'connection.options.yaml')

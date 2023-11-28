@@ -15,7 +15,7 @@ export const DatasourceSpecFileSchema = z.object({
 });
 
 export const DatasourceSpecSchema = DatasourceSpecFileSchema.extend({
-	queries: z.array(DatasourceQuerySchema),
+	// queries: z.array(DatasourceQuerySchema),
 	sourceDirectory: z.string()
 });
 

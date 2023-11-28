@@ -100,7 +100,7 @@ const processQueryResults = function (queryResults) {
 
 /**
  * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
- * @property {(rows: Record<string, unknown>[]) => QueryResult} [mapResultsToEvidenceColumnTypes]
+ * @property {(rows: Record<string, unknown>[]) => QueryResult["columnTypes"]} [mapResultsToEvidenceColumnTypes]
  * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
  */
 
@@ -114,13 +114,18 @@ const processQueryResults = function (queryResults) {
 const asyncIterableToBatchedAsyncGenerator = async function (
 	iterable,
 	batchSize,
-	{ standardizeRow = (x) => x, mapResultsToEvidenceColumnTypes = () => [] } = {}
+	{
+		// @ts-ignore
+		standardizeRow = (x) => x,
+		mapResultsToEvidenceColumnTypes = () => []
+	} = {}
 ) {
 	const iterator = iterable[Symbol.asyncIterator]();
-	const first_row = standardizeRow(await iterator.next().then((x) => x.value));
+	const firstRow = await iterator.next().then((x) => x.value);
 
 	const rows = async function* () {
-		let batch = [first_row];
+		let batch = [];
+		batch.push(standardizeRow(firstRow));
 		for await (const row of iterable) {
 			batch.push(standardizeRow(row));
 			if (batch.length >= batchSize) {
@@ -133,12 +138,12 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 		}
 	};
 
-	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([first_row]) };
+	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([firstRow]) };
 };
 
 /**
  * Converts an async generator to an array
- * @param {AsyncGeneratorFunction} asyncGenerator
+ * @param {() => AsyncIterable<Array<Record<string, unknown>>>} asyncGenerator
  * @returns {Promise<Record<string, unknown>[]>}
  */
 const batchedAsyncGeneratorToArray = async (asyncGenerator) => {
@@ -149,6 +154,11 @@ const batchedAsyncGeneratorToArray = async (asyncGenerator) => {
 	return result;
 };
 
+/**
+ *
+ * @param {string} query
+ * @returns {string}
+ */
 const cleanQuery = (query) => {
 	let cleanedString = query.trim();
 	if (cleanedString.endsWith(';'))

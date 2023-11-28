@@ -19,11 +19,19 @@ const templatePaths = [
 	'tailwind.config.cjs',
 	'postcss.config.cjs'
 ];
+const ignorePaths = ['static/data'];
 
 fs.emptyDirSync('./template/');
 
 templatePaths.forEach((p) => {
 	fs.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
+});
+
+ignorePaths.forEach((p) => {
+	fs.rmSync(path.join('./template', p), {
+		force: true,
+		recursive: true
+	});
 });
 
 fs.emptyDirSync('./template/sources');

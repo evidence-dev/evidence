@@ -28,9 +28,9 @@
 	},
 	"dependencies": {
 		"@astronautlabs/jsonpath": "^1.1.2",
-		"@evidence-dev/component-utilities": "workspace:",
-		"@evidence-dev/query-store": "workspace:",
-		"@evidence-dev/tailwind": "workspace:",
+		"@evidence-dev/component-utilities": "workspace:*",
+		"@evidence-dev/query-store": "workspace:*",
+		"@evidence-dev/tailwind": "workspace:*",
 		"@rgossiaux/svelte-headlessui": "^2.0.0",
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/svelte-icon": "^1.4.1",
@@ -45,7 +45,7 @@
 		"yaml": "^2.3.4"
 	},
 	"devDependencies": {
-		"@evidence-dev/plugin-connector": "workspace:",
+		"@evidence-dev/plugin-connector": "workspace:*",
 		"@storybook/addon-essentials": "^7.0.9",
 		"@storybook/addon-interactions": "^7.0.9",
 		"@storybook/addon-links": "^7.0.9",
