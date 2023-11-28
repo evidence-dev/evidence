@@ -122,7 +122,7 @@ export const buildSources = async (
 				// Flush this source
 				const spinner = ora({
 					prefixText: `  ${table.name}`,
-					spinner: 'balloon',
+					spinner: 'triangle',
 					discardStdin: true,
 					interval: 250
 				});
@@ -165,7 +165,7 @@ export const buildSources = async (
 			for (const query of queries) {
 				const spinner = ora({
 					prefixText: `  ${query.name}`,
-					spinner: 'balloon',
+					spinner: 'triangle',
 					discardStdin: true,
 					interval: 250
 				});
