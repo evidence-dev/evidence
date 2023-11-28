@@ -89,7 +89,7 @@
 			<input
 				bind:value={source.name}
 				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
-				pattern="^(\w)+$"
+				pattern="^[\w_]+$"
 			/>
 		</label>
 		<label class="flex justify-between">
@@ -98,7 +98,6 @@
 				disabled
 				value={source.type}
 				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
-				pattern="^(\w)+$"
 			/>
 		</label>
 		<label class="flex justify-between">
