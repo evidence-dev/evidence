@@ -128,7 +128,7 @@ export const buildSources = async (
 				});
 
 				try {
-					spinner.start("Processing...")
+					spinner.start('Processing...');
 					const filename = await flushSource(
 						source,
 						{
@@ -169,7 +169,7 @@ export const buildSources = async (
 					discardStdin: true,
 					interval: 250
 				});
-				spinner.start("Processing...")
+				spinner.start('Processing...');
 				try {
 					hashes[source.name][query.name] = createHash('md5')
 						.update(query.content ?? '')
@@ -192,7 +192,7 @@ export const buildSources = async (
 					}
 
 					if (result === null) {
-						spinner.warn(`Finished. Returned no results!`)
+						spinner.warn(`Finished. Returned no results!`);
 						continue;
 					}
 
@@ -218,7 +218,6 @@ export const buildSources = async (
 				}
 			}
 		}
-		
 
 		manifest[source.name] = outputFilenames;
 	}
@@ -272,10 +271,12 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	);
 	// Spinner stop?
 	if (!writtenRows) {
-		spinner?.warn?.(chalk.yellow(`Finished. 0 rows, did not create table`)) ?? console.warn(chalk.yellow(`Finished. 0 rows, did not create table`))
+		spinner?.warn?.(chalk.yellow(`Finished. 0 rows, did not create table`)) ??
+			console.warn(chalk.yellow(`Finished. 0 rows, did not create table`));
 		return null;
 	} else {
-		spinner?.succeed(`Finished. ${writtenRows} rows`) ?? console.log(`Finished. ${writtenRows} rows`);
+		spinner?.succeed(`Finished. ${writtenRows} rows`) ??
+			console.log(`Finished. ${writtenRows} rows`);
 	}
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
