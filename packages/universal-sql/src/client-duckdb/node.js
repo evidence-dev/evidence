@@ -6,7 +6,7 @@ import {
 	NODE_RUNTIME
 } from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
 import { createRequire } from 'module';
-import { dirname, resolve } from 'path';
+import path, { dirname, resolve } from 'path';
 import { cache_for_hash, get_arrow_if_sql_already_run } from '../cache-duckdb.js';
 import { withTimeout } from './both.js';
 
@@ -85,7 +85,7 @@ export async function setParquetURLs(urls) {
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
 		for (const url of urls[source]) {
-			const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+			const table = url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
 			const file_name = `${source}_${table}.parquet`;
 			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
 			connection.query(
