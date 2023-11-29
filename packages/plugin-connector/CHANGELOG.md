@@ -1,5 +1,14 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.22
+
+### Patch Changes
+
+- da6ba2eb: Fix stdin being disabled after spinners run
+- b5592a3f: Usability Improvements
+- Updated dependencies [b5592a3f]
+  - @evidence-dev/universal-sql@2.0.0-usql.13
+
 ## 2.0.0-usql.21
 
 ### Patch Changes

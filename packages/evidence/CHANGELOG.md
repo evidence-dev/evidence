@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.35
+
+### Patch Changes
+
+- b5592a3f: Usability Improvements
+- Updated dependencies [da6ba2eb]
+- Updated dependencies [b5592a3f]
+  - @evidence-dev/plugin-connector@2.0.0-usql.22
+  - @evidence-dev/core-components@2.0.0-usql.16
+  - @evidence-dev/universal-sql@2.0.0-usql.13
+  - @evidence-dev/query-store@2.0.0-usql.4
+
 ## 20.0.0-usql.34
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.16
+
+### Patch Changes
+
+- b5592a3f: Usability Improvements
+  - @evidence-dev/query-store@2.0.0-usql.4
+
 ## 2.0.0-usql.15
 
 ### Patch Changes
