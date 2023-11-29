@@ -272,10 +272,12 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	);
 	// Spinner stop?
 	if (!writtenRows) {
-		(spinner?.warn.bind(spinner) ?? console.warn)(chalk.yellow(`Finished. 0 rows, did not create table`));
+		(spinner?.warn.bind(spinner) ?? console.warn)(
+			chalk.yellow(`Finished. 0 rows, did not create table`)
+		);
 		return null;
 	} else {
-		(spinner?.succeed.bind(spinner) ?? console.log)(`Finished. ${writtenRows} rows`)
+		(spinner?.succeed.bind(spinner) ?? console.log)(`Finished. ${writtenRows} rows`);
 	}
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
