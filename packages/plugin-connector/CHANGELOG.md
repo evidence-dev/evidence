@@ -1,5 +1,16 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.21
+
+### Patch Changes
+
+- 0ba78b67: polish working with sources
+- cd57ba69: Add new interface for datasources for fine-grained control of output
+- Updated dependencies [0ba78b67]
+- Updated dependencies [cd57ba69]
+  - @evidence-dev/universal-sql@2.0.0-usql.12
+  - @evidence-dev/db-commons@0.2.1-usql.3
+
 ## 2.0.0-usql.20
 
 ### Patch Changes

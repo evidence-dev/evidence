@@ -92,7 +92,7 @@ export async function setParquetURLs(urls) {
 
 	try {
 		for (const source in urls) {
-			await connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
+			await connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 			for (const url of urls[source]) {
 				const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
 				const file_name = `${source}_${table}.parquet`;
@@ -104,7 +104,7 @@ export async function setParquetURLs(urls) {
 				if (path.startsWith('/static')) path = path.substring(7);
 				await db.registerFileURL(file_name, path, DuckDBDataProtocol.HTTP, false);
 				await connection.query(
-					`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
+					`CREATE OR REPLACE VIEW "${source}"."${table}" AS SELECT * FROM read_parquet('${file_name}');`
 				);
 			}
 		}

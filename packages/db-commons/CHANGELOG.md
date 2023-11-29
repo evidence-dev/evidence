@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 0.2.1-usql.3
+
+### Patch Changes
+
+- cd57ba69: Add new interface for datasources for fine-grained control of output
+
 ## 0.2.1-usql.2
 
 ### Patch Changes

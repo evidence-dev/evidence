@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.34
+
+### Patch Changes
+
+- 0ba78b67: polish working with sources
+- cd57ba69: Add new interface for datasources for fine-grained control of output
+- Updated dependencies [0ba78b67]
+- Updated dependencies [cd57ba69]
+  - @evidence-dev/plugin-connector@2.0.0-usql.21
+  - @evidence-dev/universal-sql@2.0.0-usql.12
+  - @evidence-dev/core-components@2.0.0-usql.15
+  - @evidence-dev/query-store@2.0.0-usql.3
+  - @evidence-dev/db-orchestrator@3.0.0-usql.9
+
 ## 20.0.0-usql.33
 
 ### Patch Changes

@@ -83,13 +83,13 @@ export function updateSearchPath(schemas) {
  */
 export async function setParquetURLs(urls) {
 	for (const source in urls) {
-		connection.query(`CREATE SCHEMA IF NOT EXISTS ${source};`);
+		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		for (const url of urls[source]) {
 			const table = url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
 			const file_name = `${source}_${table}.parquet`;
 			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
 			connection.query(
-				`CREATE OR REPLACE VIEW ${source}.${table} AS SELECT * FROM read_parquet('${file_name}');`
+				`CREATE OR REPLACE VIEW "${source}"."${table}" AS SELECT * FROM read_parquet('${file_name}');`
 			);
 		}
 	}

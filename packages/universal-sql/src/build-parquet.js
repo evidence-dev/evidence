@@ -86,6 +86,7 @@ export async function buildMultipartParquet(
 		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
 		// Converts the arrow buffer to a parquet buffer
 		// This can be slow; it includes the compression step
+
 		const parquetBuffer = writeParquet(IPC, writerProperties);
 
 		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
