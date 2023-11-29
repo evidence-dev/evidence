@@ -46,7 +46,8 @@
 		},
 		"module": {
 			"context": "node",
-			"includeNodeModules": true
+			"includeNodeModules": true,
+			"sourceMap": false
 		}
 	},
 	"exports": {
