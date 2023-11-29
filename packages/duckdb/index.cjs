@@ -7,6 +7,7 @@ const {
 } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
+const chalk = require('chalk')
 
 const envMap = {
 	filename: [
@@ -121,7 +122,15 @@ module.exports.getRunner = async (opts, directory) => {
 module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'File not found' }));
+		.catch((e) => {
+			if (typeof e === 'string' && Boolean(e)) {
+				const indentedMessage = `\t${e.split("\n").join("\t")}`
+				console.log(chalk.red.bold(`Error with DuckDB Connector:\n${indentedMessage}`))
+				return e;
+			}
+			return e.message ?? "File not found"
+			
+		});
 	return r;
 };
 
