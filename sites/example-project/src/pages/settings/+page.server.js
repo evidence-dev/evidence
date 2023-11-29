@@ -77,7 +77,8 @@ export const actions = {
 			getDatasourcePlugins,
 			updateDatasourceOptions,
 			DatasourceSpecFileSchema,
-			DatasourceSpecSchema
+			DatasourceSpecSchema,
+			cleanZodErrors
 		} = await import('@evidence-dev/plugin-connector');
 
 		const specFile = DatasourceSpecFileSchema.safeParse(source);
@@ -102,7 +103,8 @@ export const actions = {
 				// This connector has not been saved yet.
 				specData = await updateDatasourceOptions(source, datasourcePlugins);
 			} else {
-				return fail(400, formatted);
+				console.log(cleanZodErrors(formatted))
+				return fail(400, { message: "Connection did not match required format"});
 			}
 		} else {
 			specData = fullSpec.data;
@@ -116,7 +118,7 @@ export const actions = {
 
 		const valid = await plugin.testConnection(specData.options, specData.sourceDirectory);
 		if (valid !== true) {
-			return fail(200, { reason: valid.reason });
+			return fail(200, { message: valid.reason });
 		}
 		return {
 			success: true
