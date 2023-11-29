@@ -42,6 +42,8 @@
 
 				configurationLoading = false;
 				configurationOkay = false;
+				validationLoading = false;
+				validationOkay = false;
 				return;
 			}
 

@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { fail } from '@sveltejs/kit';
+import { fail, ActionFailure } from '@sveltejs/kit';
 
 export const load = async () => {
 	if (dev) {
@@ -73,9 +73,12 @@ export const actions = {
 
 		const source = JSON.parse(formData.source);
 
-		const { getDatasourcePlugins, DatasourceSpecFileSchema, DatasourceSpecSchema } = await import(
-			'@evidence-dev/plugin-connector'
-		);
+		const {
+			getDatasourcePlugins,
+			updateDatasourceOptions,
+			DatasourceSpecFileSchema,
+			DatasourceSpecSchema
+		} = await import('@evidence-dev/plugin-connector');
 
 		const specFile = DatasourceSpecFileSchema.safeParse(source);
 
@@ -88,19 +91,30 @@ export const actions = {
 			...source
 		});
 
-		if (!fullSpec.success) {
-			return fail(400, fullSpec.error.format());
-		}
-
 		const datasourcePlugins = await getDatasourcePlugins();
 
-		const plugin = datasourcePlugins[specFile.data.type];
-
-		if (!plugin) {
-			return fail(400, { message: `Plugin for database ${specFile.data.type} not found.` });
+		/** @type {import("@evidence-dev/plugin-connector").DatasourceSpec} */
+		let specData;
+		if (!fullSpec.success) {
+			const formatted = fullSpec.error.format();
+			if (formatted.sourceDirectory?._errors[0] === 'Required') {
+				console.log(`Created ${specFile.data.name} automatically while testing the connection`);
+				// This connector has not been saved yet.
+				specData = await updateDatasourceOptions(source, datasourcePlugins);
+			} else {
+				return fail(400, formatted);
+			}
+		} else {
+			specData = fullSpec.data;
 		}
 
-		const valid = await plugin.testConnection(fullSpec.data.options, fullSpec.data.sourceDirectory);
+		const plugin = datasourcePlugins[specData.type];
+
+		if (!plugin) {
+			return fail(400, { message: `Plugin for database ${specData.type} not found.` });
+		}
+
+		const valid = await plugin.testConnection(specData.options, specData.sourceDirectory);
 		if (valid !== true) {
 			return fail(200, { reason: valid.reason });
 		}
