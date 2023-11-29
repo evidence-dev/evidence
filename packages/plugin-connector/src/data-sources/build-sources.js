@@ -150,7 +150,7 @@ export const buildSources = async (
 					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
 					else if ('message' in e) spinner.fail(e.message?.toString());
 				} finally {
-					process.stdin.resume()
+					process.stdin.resume();
 				}
 			}
 		} else {
@@ -171,7 +171,7 @@ export const buildSources = async (
 					discardStdin: true,
 					interval: 250
 				});
-				
+
 				spinner.start('Processing...');
 				try {
 					hashes[source.name][query.name] = createHash('md5')
@@ -219,7 +219,7 @@ export const buildSources = async (
 					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
 					else if ('message' in e) spinner.fail(e.message?.toString());
 				} finally {
-					process.stdin.resume()
+					process.stdin.resume();
 				}
 			}
 		}
