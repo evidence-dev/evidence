@@ -84,80 +84,82 @@
 	}
 
 	if (import.meta.hot) {
-  let hasError = false;
-  import.meta.hot.on('vite:error', (data) => {
-	console.log(data.err.frame)
-	let customErrorMessage;
-	if(data.err.message.includes('Unexpected block closing tag')){
-		if(data.err.frame.includes('{/each}')){
-			if(data.err.frame.includes('</li>')){
-				customErrorMessage = '{#each} block requires an empty line before the closing {/each} tag'
-			} else {
-				customErrorMessage = 'Component tag was left open inside {#each} block. Ensure that all components are closed'
+		let hasError = false;
+		import.meta.hot.on('vite:error', (data) => {
+			console.log(data.err.frame);
+			let customErrorMessage;
+			if (data.err.message.includes('Unexpected block closing tag')) {
+				if (data.err.frame.includes('{/each}')) {
+					if (data.err.frame.includes('</li>')) {
+						customErrorMessage =
+							'{#each} block requires an empty line before the closing {/each} tag';
+					} else {
+						customErrorMessage =
+							'Component tag was left open inside {#each} block. Ensure that all components are closed';
+					}
+				} else {
+					customErrorMessage = 'Unexpected block closing';
+				}
+			} else if (data.err.message.includes('Block was left open')) {
+				customErrorMessage = 'Component tag was left open. Ensure that all components are closed';
+			} else if (data.err.message.includes('is not defined')) {
+				customErrorMessage = data.err.message;
+			} else if (data.err.message.includes('attempted to close an element that was not open')) {
+				if (data.err.frame.includes('{/each}')) {
+					customErrorMessage =
+						'Component tag was left open inside {#each} block. Ensure that all components are closed';
+				} else {
+					customErrorMessage = 'Component tag was left open. Ensure that all components are closed';
+				}
+			} else if (data.err.message.includes('Expected >')) {
+				customErrorMessage = 'Component tag was left open. Ensure that all components are closed';
 			}
-		} else {
-			customErrorMessage = 'Unexpected block closing'
-		}
-	} else if(data.err.message.includes('Block was left open')){
-		customErrorMessage = 'Component tag was left open. Ensure that all components are closed'
-	} else if(data.err.message.includes('is not defined')){
-		customErrorMessage = data.err.message;
-	} else if(data.err.message.includes('attempted to close an element that was not open')){
-		if(data.err.frame.includes('{/each}')){
-			customErrorMessage = 'Component tag was left open inside {#each} block. Ensure that all components are closed'
-		} else {
-			customErrorMessage = 'Component tag was left open. Ensure that all components are closed'
-		}
-	} else if(data.err.message.includes('Expected >')){
-		customErrorMessage = 'Component tag was left open. Ensure that all components are closed'
+			hasError = true;
+			displayCustomError(customErrorMessage);
+			return false;
+		});
+
+		import.meta.hot.on('vite:beforeUpdate', () => {
+			// console.log('Before update, resetting error flag');
+			hasError = false;
+			setTimeout(() => {
+				if (!hasError) {
+					// console.log('No error after update, clearing error display');
+					clearCustomError();
+				}
+			}, 100);
+		});
 	}
-    hasError = true;
-    displayCustomError(customErrorMessage, data.file);
-    return false;
-  });
 
-  import.meta.hot.on('vite:beforeUpdate', () => {
-    // console.log('Before update, resetting error flag');
-    hasError = false;
-    setTimeout(() => {
-      if (!hasError) {
-        // console.log('No error after update, clearing error display');
-        clearCustomError();
-      }
-    }, 100);
-  });
-}
+	function displayCustomError(message) {
+		let errorDisplay = document.getElementById('custom-error-display');
+		if (!errorDisplay) {
+			errorDisplay = document.createElement('div');
+			errorDisplay.id = 'custom-error-display';
+			document.body.appendChild(errorDisplay);
 
-function displayCustomError(message, file) {
-  let errorDisplay = document.getElementById('custom-error-display');
-  if (!errorDisplay) {
-    errorDisplay = document.createElement('div');
-    errorDisplay.id = 'custom-error-display';
-    document.body.appendChild(errorDisplay);
+			// Apply basic styles for visibility
+			errorDisplay.style.position = 'fixed';
+			errorDisplay.style.top = '10px';
+			errorDisplay.style.left = '50%';
+			errorDisplay.style.transform = 'translateX(-50%)';
+			errorDisplay.style.background = 'var(--red-600)';
+			errorDisplay.style.color = 'white';
+			errorDisplay.style.padding = '10px';
+			errorDisplay.style.zIndex = '1000'; // Ensure it's above other elements
+		}
 
-    // Apply basic styles for visibility
-    errorDisplay.style.position = 'fixed';
-    errorDisplay.style.top = '10px';
-    errorDisplay.style.left = '50%';
-	errorDisplay.style.transform = 'translateX(-50%)';
-    errorDisplay.style.background = 'var(--red-600)';
-    errorDisplay.style.color = 'white';
-    errorDisplay.style.padding = '10px';
-    errorDisplay.style.zIndex = '1000'; // Ensure it's above other elements
-  }
+		errorDisplay.textContent = `Error: ${message}`;
+		errorDisplay.style.display = 'block'; // Ensure it's visible
+	}
 
-  errorDisplay.textContent = `Error: ${message}`;
-  errorDisplay.style.display = 'block'; // Ensure it's visible
-}
-
-function clearCustomError() {
-  let errorDisplay = document.getElementById('custom-error-display');
-  if (errorDisplay) {
-    // console.log('Clearing custom error display.');
-    errorDisplay.style.display = 'none'; // Hide the overlay
-  }
-}
-
+	function clearCustomError() {
+		let errorDisplay = document.getElementById('custom-error-display');
+		if (errorDisplay) {
+			// console.log('Clearing custom error display.');
+			errorDisplay.style.display = 'none'; // Hide the overlay
+		}
+	}
 </script>
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
