@@ -830,7 +830,7 @@
 			chartTop =
 				legendTop + legendHeight + topAxisTitleSize * hasTopAxisTitle + chartAreaPaddingTop;
 			chartBottom = hasBottomAxisTitle * bottomAxisTitleSize + chartAreaPaddingBottom;
-			
+
 			// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
 			// Small bars are allowed on normal bar chart (e.g., time series bar chart)
 			maxBars = 8;
@@ -839,13 +839,10 @@
 				barCount = xDistinct.length;
 				heightMultiplier = Math.max(1, barCount / maxBars);
 			}
-			
-			
-			chartContainerHeight = chartAreaHeight*heightMultiplier + chartTop + chartBottom;
+
+			chartContainerHeight = chartAreaHeight * heightMultiplier + chartTop + chartBottom;
 
 			topAxisTitleTop = legendTop + legendHeight + 7;
-
-
 
 			// Set final chart height:
 			height = chartContainerHeight + 'px';
