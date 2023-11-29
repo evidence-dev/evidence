@@ -123,7 +123,7 @@ export const buildSources = async (
 				const spinner = ora({
 					prefixText: `  ${table.name}`,
 					spinner: 'triangle',
-					discardStdin: true,
+					discardStdin: false,
 					interval: 250
 				});
 
@@ -149,8 +149,6 @@ export const buildSources = async (
 					if (typeof e === 'string') spinner.fail(e);
 					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
 					else if ('message' in e) spinner.fail(e.message?.toString());
-				} finally {
-					process.stdin.resume();
 				}
 			}
 		} else {
@@ -168,7 +166,7 @@ export const buildSources = async (
 				const spinner = ora({
 					prefixText: `  ${query.name}`,
 					spinner: 'triangle',
-					discardStdin: true,
+					discardStdin: false,
 					interval: 250
 				});
 
@@ -218,8 +216,6 @@ export const buildSources = async (
 					if (typeof e === 'string') spinner.fail(e);
 					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
 					else if ('message' in e) spinner.fail(e.message?.toString());
-				} finally {
-					process.stdin.resume();
 				}
 			}
 		}
@@ -276,12 +272,10 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	);
 	// Spinner stop?
 	if (!writtenRows) {
-		spinner?.warn?.(chalk.yellow(`Finished. 0 rows, did not create table`)) ??
-			console.warn(chalk.yellow(`Finished. 0 rows, did not create table`));
+		(spinner?.warn.bind(spinner) ?? console.warn)(chalk.yellow(`Finished. 0 rows, did not create table`));
 		return null;
 	} else {
-		spinner?.succeed(`Finished. ${writtenRows} rows`) ??
-			console.log(`Finished. ${writtenRows} rows`);
+		(spinner?.succeed.bind(spinner) ?? console.log)(`Finished. ${writtenRows} rows`)
 	}
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));

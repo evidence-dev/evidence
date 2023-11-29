@@ -1,6 +1,5 @@
-rows: 100000
+rows: 10000
 fuzz: 2500
-
 
 schema:
     id:
