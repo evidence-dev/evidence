@@ -103,8 +103,8 @@ export const actions = {
 				// This connector has not been saved yet.
 				specData = await updateDatasourceOptions(source, datasourcePlugins);
 			} else {
-				console.log(cleanZodErrors(formatted))
-				return fail(400, { message: "Connection did not match required format"});
+				console.log(cleanZodErrors(formatted));
+				return fail(400, { message: 'Connection did not match required format' });
 			}
 		} else {
 			specData = fullSpec.data;
