@@ -58,7 +58,7 @@
 		showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
 
 		// Status Bar & Results Toggle
-		error = queryResult[0]?.error_object?.error ?? queryResult?.error;
+		error = queryResult?.error;
 		nRecords = null;
 		nProperties = null;
 		// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
@@ -105,13 +105,7 @@
 				on:click={toggleResults}
 			>
 				{#if error}
-					<!-- TODO: Is this dead code? -->
-					{#if dev && error.message === 'Missing database credentials'}
-						{error.message}.
-						<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
-					{:else}
-						{error.message}
-					{/if}
+					{error.message}
 				{:else if nRecords > 0}
 					<ChevronToggle toggled={$showResults} color="#3488e9" />
 					{nRecords.toLocaleString()}

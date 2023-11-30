@@ -141,16 +141,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#error: Error | unknown;
 
 	#setError = (e: Error | unknown): void => {
-		if (e instanceof Error)
-			console.debug(
-				`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
-				e.message
-			);
-		else
-			console.debug(
-				`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
-				e
-			);
+		console.debug(
+			`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
+			e instanceof Error ? e?.message ?? e : e
+		);
 
 		this.#error = e;
 
