@@ -9,6 +9,10 @@ export default (node, option) => {
 	const chart = init(node, 'none', { renderer: 'svg' });
 
 	chart.setOption(option.config);
+	// Check if echartsOptions are provided and apply them
+	if(option.echartsOptions) {
+		chart.setOption(option.echartsOptions);
+	}
 
 	let resizeObserver;
 	const containerElement = document.querySelector('div.content > article');
@@ -38,6 +42,10 @@ export default (node, option) => {
 	return {
 		update(option) {
 			chart.setOption(option.config, true, true);
+			// Check if echartsOptions are provided and apply them
+			if(option.echartsOptions) {
+				chart.setOption(option.echartsOptions);
+			}
 		},
 		destroy() {
 			if (resizeObserver) {
