@@ -4,9 +4,9 @@
 select 1000 as total_sales_usd
 ```
 
-- Success: <Value data={summary}/>
+- Success: <Value data={summary} />
 
-The successful value metric is <Value data={summary}/> and shows up inline.
+The successful value metric is <Value data={summary} > and shows up inline.
 
 ## Value Errors
 
