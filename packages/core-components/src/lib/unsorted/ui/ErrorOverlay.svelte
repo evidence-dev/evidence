@@ -45,12 +45,12 @@
 
 {#if hasError}
 	<div
-		class="fixed flex flex-col z-50 h-screen w-screen bg-gray-900/80 justify-center items-center p-20 select-none"
+		class="fixed flex flex-col z-50 h-screen w-screen bg-gray-900/80 justify-center items-center py-20 px-10 sm:px-20  select-none backdrop-blur-sm"
 		transition:fade|local={{ duration: 100 }}
 	>
 		<div
 			transition:fly|local={{ y: 100, duration: 300 }}
-			class="relative min-w-full h-screen bg-gradient-to-b from-black/95 to-gray-900/90 border-t-red-600 rounded-lg border-t-8 border-red-600 shadow-xl p-8"
+			class="relative min-w-full h-screen bg-gradient-to-b from-black/95 to-gray-900/90 border-t-red-600 rounded-lg border-t-8 border-red-600 shadow-xl p-8 "
 		>
 			<h1 class="text-4xl font-bold tracking-wide text-gray-200 border-b pb-4 border-gray-800">
 				Error
