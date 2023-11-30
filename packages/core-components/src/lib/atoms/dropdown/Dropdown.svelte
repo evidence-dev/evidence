@@ -45,15 +45,28 @@
 	do not switch to binding, select bind:value invalidates its dependencies 
 	(so `data` would be invalidated) 
 -->
-<select
-	disabled={hasQuery && !$query.loaded}
-	on:change={(e) => ($inputs[name] = e.currentTarget.value)}
->
-	<slot />
+{#if hasQuery && $query.error}
+	<span class="group inline-flex items-center relative">
+		<select class="border border-red-500 text-red-500 cursor-help cursor-helpfont-sans" disabled>
+			<option>Error</option>
+		</select>
+		<span
+			class="hidden text-white font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md"
+		>
+			{$query.error}
+		</span>
+	</span>
+{:else}
+	<select
+		disabled={hasQuery && !$query.loaded}
+		on:change={(e) => ($inputs[name] = e.currentTarget.value)}
+	>
+		<slot />
 
-	{#if hasQuery}
-		{#each $query as { label, value }}
-			<DropdownOption {value} {label} />
-		{/each}
-	{/if}
-</select>
+		{#if hasQuery}
+			{#each $query as { label, value }}
+				<DropdownOption {value} {label} />
+			{/each}
+		{/if}
+	</select>
+{/if}

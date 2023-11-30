@@ -138,7 +138,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',
-						{ initialData: queryFunc(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
+						{}
 					));
 				`).join('\n')}
 			}));
