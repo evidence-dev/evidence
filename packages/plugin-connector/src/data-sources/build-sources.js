@@ -271,16 +271,6 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 		batchSize
 	);
 
-	console.log({
-		source: source.name,
-		query: query.name,
-		cols: result.columnTypes,
-		dataPath,
-		metaPath,
-		writtenRows,
-		tmpDir
-	});
-
 	// Spinner stop?
 	if (!writtenRows) {
 		(spinner?.warn.bind(spinner) ?? console.warn)(
