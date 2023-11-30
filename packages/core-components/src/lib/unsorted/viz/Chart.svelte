@@ -3,7 +3,6 @@
 </script>
 
 <script>
-	import { browser } from '$app/environment';
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { propKey, configKey, strictBuild } from './context';
@@ -14,7 +13,6 @@
 	$: setContext(configKey, config);
 
 	import ECharts from './ECharts.svelte';
-	import ChartLoading from '../ui/ChartLoading.svelte';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getDistinctCount from '@evidence-dev/component-utilities/getDistinctCount';
@@ -1006,13 +1004,8 @@
 </script>
 
 {#if !error}
-	{#if !browser}
-		<slot />
-		<ChartLoading {height} />
-	{:else}
-		<slot />
-		<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} />
-	{/if}
+	<slot />
+	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} />
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

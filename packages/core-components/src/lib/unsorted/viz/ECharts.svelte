@@ -3,10 +3,12 @@
 </script>
 
 <script>
+	import { browser } from '$app/environment';
 	import echarts from '@evidence-dev/component-utilities/echarts';
 	import echartsCanvasDownload from '@evidence-dev/component-utilities/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
+	import ChartLoading from '../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
 
@@ -45,19 +47,23 @@
 	on:mouseleave={() => (hovering = false)}
 >
 	{#if !printing}
-		<div
-			class="chart"
-			style="
-            height: {height};
-            width: {width};
-            margin-left: 0;
-            margin-top: 15px;
-            margin-bottom: 10px;
-            overflow: visible;
-            display: {copying ? 'none' : 'inherit'}
-        "
-			use:echarts={{ ...config, ...$$restProps, dispatch }}
-		/>
+		{#if !browser}
+			<ChartLoading {height} />
+		{:else}
+			<div
+				class="chart"
+				style="
+				height: {height};
+				width: {width};
+				margin-left: 0;
+				margin-top: 15px;
+				margin-bottom: 10px;
+				overflow: visible;
+				display: {copying ? 'none' : 'inherit'}
+			"
+				use:echarts={{ ...config, ...$$restProps, dispatch }}
+			/>
+		{/if}
 	{/if}
 
 	<EchartsCopyTarget {config} {height} {width} {copying} {printing} />
