@@ -58,7 +58,6 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 	});
 };
 
-
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename') ?? ':memory:';
@@ -129,9 +128,9 @@ module.exports.testConnection = async (opts, directory) => {
 		.catch((e) => {
 			if (typeof e === 'string' && Boolean(e)) {
 				const indentedMessage = `\n\t${e.split('\n').join('\n\t')}`;
-				return {reason: indentedMessage};
+				return { reason: indentedMessage };
 			}
-			return {reason: e.message ?? 'File not found'};
+			return { reason: e.message ?? 'File not found' };
 		});
 	return r;
 };
