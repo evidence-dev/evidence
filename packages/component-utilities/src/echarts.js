@@ -17,6 +17,11 @@ export default (node, option) => {
 	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
 
 	chart.setOption(option);
+	// Check if echartsOptions are provided and apply them
+	const prevOption = chart.getOption();
+	if(prevOption.echartsOptions) {
+		chart.setOption(prevOption.echartsOptions);
+	}
 
 	const dispatch = option.dispatch;
 	chart.on('click', function (params) {
@@ -78,15 +83,12 @@ export default (node, option) => {
 
 	return {
 		update(option) {
-			   // Apply the main updated options
-			   chart.setOption(option);
-
-			   // Check if echartsOptions are provided and apply them
-			   const prevOption = chart.getOption();
-			   if(prevOption.echartsOptions) {
-				 chart.setOption(prevOption.echartsOptions);
-			   }
-			 
+			chart.setOption(option);
+			// Check if echartsOptions are provided and apply them
+			const prevOption = chart.getOption();
+			if(prevOption.echartsOptions) {
+				chart.setOption(prevOption.echartsOptions);
+			}
 			updateLabelWidths();
 		},
 		destroy() {

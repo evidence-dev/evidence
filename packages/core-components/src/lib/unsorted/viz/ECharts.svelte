@@ -18,6 +18,7 @@
 
 	export let data;
 
+	export let echartsOptions = undefined;
 	export let printEchartsConfig; // helper for custom chart development
 
 	const dispatch = createEventDispatcher();
@@ -59,17 +60,11 @@
             overflow: visible;
             display: {copying ? 'none' : 'inherit'}
         "
-			use:echarts={{ ...config, ...$$restProps, dispatch }}
+			use:echarts={{ ...config, ...$$restProps, echartsOptions, dispatch }}
 		/>
-
-		{#if printEchartsConfig}
-			<CodeBlock>
-				{JSON.stringify(config, undefined, 10)}
-			</CodeBlock>
-		{/if}
 	{/if}
 
-	<EchartsCopyTarget {config} {height} {width} {copying} {printing} />
+	<EchartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
 
 	<div class="chart-footer">
 		<DownloadData
@@ -102,6 +97,12 @@
 			<DownloadData text="Download data" {data} class="download-button" display={hovering} />
 		{/if}
 	</div>
+
+	{#if printEchartsConfig && !printing}
+		<CodeBlock>
+			{JSON.stringify(config, undefined, 3)}
+		</CodeBlock>
+	{/if}
 </div>
 
 {#if downloadChart}
@@ -117,7 +118,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={config}
+		use:echartsCanvasDownload={{...config, ...$$restProps, echartsOptions}}
 	/>
 {/if}
 

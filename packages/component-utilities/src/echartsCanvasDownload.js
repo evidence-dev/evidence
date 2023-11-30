@@ -10,6 +10,11 @@ export default (node, option) => {
 	option.animation = false;
 
 	chart.setOption(option);
+	// Check if echartsOptions are provided and apply them
+	const prevOption = chart.getOption();
+	if(prevOption.echartsOptions) {
+		chart.setOption(prevOption.echartsOptions);
+	}
 
 	let src = chart.getConnectedDataURL({
 		type: 'png',
