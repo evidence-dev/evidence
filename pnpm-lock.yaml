@@ -177,6 +177,12 @@ importers:
 
   packages/component-utilities:
     dependencies:
+      '@steeze-ui/simple-icons':
+        specifier: ^1.5.0
+        version: 1.6.0
+      '@steeze-ui/tabler-icons':
+        specifier: ^2.1.0
+        version: 2.1.1
       '@tidyjs/tidy':
         specifier: 2.4.4
         version: 2.4.4
