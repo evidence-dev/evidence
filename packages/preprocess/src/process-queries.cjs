@@ -170,11 +170,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-					${id} = get(new QueryStore(
+				${id} = get(new QueryStore(
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
-						'${id}',
-						{ initialData: queryFunc(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
+						'${id}'
 					));
 				`).join('\n')}
 			}));

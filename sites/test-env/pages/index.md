@@ -27,3 +27,7 @@ SELECT * FROM ${q}
 ```break_strict
 this should break strict, because it isn't a real query.
 ```
+
+<Dropdown from={jank} value="x" label="y" />
+
+<Dropdown from="SELECT * FROM orders LIMIT 100" value="id" value_label="email" />
