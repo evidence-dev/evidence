@@ -29,10 +29,10 @@
 	// Query-Related Things
 	/////
 
-	export let value, from, value_label, order, where;
+	export let value, data, value_label, order, where;
 	/** @type {import("@evidence-dev/component-utilities/buildQuery.js").QueryProps}*/
 	$: ({ hasQuery, query } = buildInputQuery(
-		{ value, from, label: value_label, order, where },
+		{ value, data, label: value_label, order, where },
 		`Dropdown-${name}`
 	));
 </script>

@@ -20,7 +20,7 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @property {string} [value] Column to be used as value when selected
  * @property {string} [label] (optional) Column to be used as label for each value
  * @property {string | string[] | Record<string, string>} [select] (optional) any additional fields to include (e.g. not value or label)
- * @property {string | QueryStore} [from] Table or subquery to select from
+ * @property {string | QueryStore} [data] Table or subquery to select from
  * @property {string} [where] (optional) Where clause for dataset
  * @property {string} [order] (optional) Order by clause for dataset
  */
@@ -30,26 +30,26 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @param {string} id
  * @returns { { hasQuery: false } | { hasQuery: true, query: QueryStore } }
  */
-export const buildInputQuery = ({ value, label, select, from, where, order }, id) => {
-	if (!(from && (value || select))) return { hasQuery: false };
+export const buildInputQuery = ({ value, label, select, data, where, order }, id) => {
+	if (!data || !(value || select)) return { hasQuery: false };
 
 	const q = new Query().distinct();
 	if (value) q.select({ value: sql`${value}` });
 	if (label) q.select({ label: sql`${label}` });
 	if (select) q.select(select);
 
-	if (typeof from === 'string') {
-		if (from.trim().match(/^[\w]+$/)) {
+	if (typeof data === 'string') {
+		if (data.trim().match(/^[\w]+$/)) {
 			// This is a table name
-			q.from(from.trim());
+			q.from(data.trim());
 		} else {
 			// This is probably a subquery, or just broken
-			q.from(sql(from.trim()));
+			q.from(sql(data.trim()));
 		}
 	} else {
-		// from is a QueryStore
+		// data is a QueryStore
 		// use that as a subquery
-		q.with({ subQuery: from.text }).from('subQuery');
+		q.with({ subQuery: sql`${data.text}` }).from('subQuery');
 	}
 
 	if (where) {
