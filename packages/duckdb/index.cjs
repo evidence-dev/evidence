@@ -65,7 +65,7 @@ let chalk;
 const runQuery = async (queryString, database, batchSize = 100000) => {
 	if (!chalk) chalk = await import('chalk');
 
-	const filename = database ? database.filename : getEnv(envMap, 'filename');
+	const filename = database ? database.filename : getEnv(envMap, 'filename') ?? ':memory:';
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
@@ -81,6 +81,10 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			mapResultsToEvidenceColumnTypes
 		});
 		results.expectedRowCount = expected_row_count;
+		if (typeof results.expectedRowCount === 'bigint') {
+			// newer versions of ddb return a bigint
+			results.expectedRowCount = Number(results.expectedRowCount);
+		}
 
 		return results;
 	} catch (err) {

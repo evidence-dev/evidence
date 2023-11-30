@@ -8458,11 +8458,11 @@ packages:
   /@types/eslint-scope@3.7.7:
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
     dependencies:
-      '@types/eslint': 8.44.7
+      '@types/eslint': 8.44.8
       '@types/estree': 1.0.5
 
-  /@types/eslint@8.44.7:
-    resolution: {integrity: sha512-f5ORu2hcBbKei97U73mf+l9t4zTGl74IqZ0GQk4oVea/VS8tQZYkUveSYojk+frraAVYId0V2WC9O4PTNru2FQ==}
+  /@types/eslint@8.44.8:
+    resolution: {integrity: sha512-4K8GavROwhrYl2QXDXm0Rv9epkA8GBFu0EI+XrrnnuCl7u8CWBRusX7fXJfanhZTDWSAL24gDI/UqXyUM0Injw==}
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
@@ -9689,8 +9689,8 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk@2.1507.0:
-    resolution: {integrity: sha512-ISHLvQB+X3lfNce0Eg1qdxmQTkWTU7n/4ysExofoi63Jdyc70Wk5pXknhckslcw2ofXBD+gibe9oY/WyyRQ89w==}
+  /aws-sdk@2.1508.0:
+    resolution: {integrity: sha512-YiUzYqtPLIRwVkbWaA2dFSFaBLrtCUr3dE6gDJmadiH5NL2mNNZBOW+1JyFT33VOVdU8Pp8OWeNBEGCay9Psxg==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       buffer: 4.9.2
@@ -19641,7 +19641,7 @@ packages:
       agent-base: 6.0.2
       asn1.js-rfc2560: 5.0.1(asn1.js@5.4.1)
       asn1.js-rfc5280: 3.0.0
-      aws-sdk: 2.1507.0
+      aws-sdk: 2.1508.0
       axios: 0.27.2(debug@3.2.7)
       big-integer: 1.6.52
       bignumber.js: 2.4.0
