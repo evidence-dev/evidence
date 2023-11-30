@@ -1003,7 +1003,16 @@
 
 {#if !error}
 	<slot />
-	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY}	{echartsOptions} {printEchartsConfig}/>
+	<ECharts
+		config={$config}
+		{height}
+		{width}
+		{data}
+		{showAllXAxisLabels}
+		{swapXY}
+		{echartsOptions}
+		{printEchartsConfig}
+	/>
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}
