@@ -43,7 +43,7 @@ fsExtra.outputFileSync(
     {
         plugins: [sveltekit()],
         optimizeDeps: {
-            include: ['echarts-stat', 'echarts'],
+            include: ['echarts-stat', 'echarts', '@evidence-dev/core-components', '@evidence-dev/component-utilities/stores', '@evidence-dev/component-utilities/formatting', '@evidence-dev/component-utilities/globalContexts'],
             exclude: ['svelte-icons', 'svelte-tiny-linked-charts']
         },
         ssr: {

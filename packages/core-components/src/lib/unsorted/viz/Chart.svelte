@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	import { browser } from '$app/environment';
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { propKey, configKey, strictBuild } from './context';
@@ -13,6 +14,7 @@
 	$: setContext(configKey, config);
 
 	import ECharts from './ECharts.svelte';
+	import ChartLoading from '../ui/ChartLoading.svelte';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 	import getDistinctCount from '@evidence-dev/component-utilities/getDistinctCount';
@@ -831,21 +833,22 @@
 			chartTop =
 				legendTop + legendHeight + topAxisTitleSize * hasTopAxisTitle + chartAreaPaddingTop;
 			chartBottom = hasBottomAxisTitle * bottomAxisTitleSize + chartAreaPaddingBottom;
-			chartContainerHeight = chartAreaHeight + chartTop + chartBottom;
-
-			topAxisTitleTop = legendTop + legendHeight + 7;
 
 			// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
 			// Small bars are allowed on normal bar chart (e.g., time series bar chart)
-			maxBars = 6;
+			maxBars = 8;
 			heightMultiplier = 1;
 			if (swapXY) {
 				barCount = xDistinct.length;
 				heightMultiplier = Math.max(1, barCount / maxBars);
 			}
 
+			chartContainerHeight = chartAreaHeight * heightMultiplier + chartTop + chartBottom;
+
+			topAxisTitleTop = legendTop + legendHeight + 7;
+
 			// Set final chart height:
-			height = chartContainerHeight * heightMultiplier + 'px';
+			height = chartContainerHeight + 'px';
 			width = '100%';
 
 			// ---------------------------------------------------------------------------------------
@@ -1002,8 +1005,13 @@
 </script>
 
 {#if !error}
-	<slot />
-	<ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} {echartsOptions} {printEchartsConfig}/>
+	{#if !browser}
+		<slot />
+		<ChartLoading {height} />
+	{:else}
+		<slot />
+	  <ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} {echartsOptions} {printEchartsConfig}/>
+	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

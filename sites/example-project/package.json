@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "2.7.2",
+	"version": "2.7.3",
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
