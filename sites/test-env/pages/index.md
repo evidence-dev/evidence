@@ -24,6 +24,6 @@ ${queryString}
 SELECT * FROM ${q}
 ```
 
-```break-strict
+```break_strict
 this should break strict, because it isn't a real query.
 ```

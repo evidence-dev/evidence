@@ -34,7 +34,22 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			*/
 			return `
 				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, initialData: data.${id} ?? profile(__db.query, _query_string_${id}, '${id}') });
+
+				const getInitialData${id} = () => {
+					if (data.${id}) return { initialData: data.${id} }
+					try {
+						return { initialData: profile(__db.query, _query_string_${id}, '${id}') }
+					} catch (e) {
+						if (typeof process !== "undefined") {
+							// If building in strict mode; we should fail, this query broke
+							if (process.env.VITE_BUILD_STRICT) throw e;
+						}
+						return { initialError: e }
+					}
+				}
+
+
+				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, ...getInitialData${id}()  });
 			`;
 		});
 
