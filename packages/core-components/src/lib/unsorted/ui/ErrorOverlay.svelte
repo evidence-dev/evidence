@@ -39,16 +39,7 @@
 
 		import.meta.hot.on('vite:beforeUpdate', () => {
 			hasError = false;
-			setTimeout(() => {
-				if (!hasError) {
-					clearCustomError();
-				}
-			}, 100);
 		});
-	}
-
-	function clearCustomError() {
-		display = false;
 	}
 </script>
 
