@@ -1,5 +1,5 @@
 <script>
-    let queryString = `SELECT 1 as x, 2 as y`.trim(), tempQueryString = queryString + ""
+    let queryString = `SELECT * FROM information_schema.columns WHERE table_name = 'comments'`.trim(), tempQueryString = queryString + ""
 </script>
 
 This page contains a simple demo query console for the new Universal SQL engine for Evidence.
@@ -26,4 +26,12 @@ SELECT * FROM ${q}
 
 ```break_strict
 this should break strict, because it isn't a real query.
+```
+
+```real_comments
+SELECT user_id FROM social_media_example.comments
+```
+
+```fake_comments
+SELECT _id FROM not_social_media_example.comments
 ```

@@ -186,8 +186,6 @@ export async function buildMultipartParquet(
 		);
 	}
 
-	for (const tmpFile of tmpFilenames) {
-		await fs.rm(tmpFile);
-	}
+	await fs.rm(tmpDir, { recursive: true });
 	return rowCount;
 }
