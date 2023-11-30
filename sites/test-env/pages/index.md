@@ -35,3 +35,6 @@ SELECT user_id FROM social_media_example.comments
 ```fake_comments
 SELECT _id FROM not_social_media_example.comments
 ```
+<Dropdown from={jank} value="x" label="y" />
+
+<Dropdown from="SELECT * FROM orders LIMIT 100" value="id" value_label="email" />

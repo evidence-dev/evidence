@@ -4,7 +4,7 @@
 
 <script>
 	import { slide, blur } from 'svelte/transition';
-	import { browser, dev } from '$app/environment';
+	import { browser } from '$app/environment';
 	import DataTable from './QueryViewerSupport/QueryDataTable.svelte';
 	import ChevronToggle from './ChevronToggle.svelte';
 	import Prism from './QueryViewerSupport/Prismjs.svelte';
@@ -54,18 +54,21 @@
 
 	$: {
 		queries = pageQueries.filter((d) => d.id === queryID);
-		inputQuery = queries[0].inputQueryString;
-		showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
 
-		// Status Bar & Results Toggle
-		error = queryResult[0]?.error_object?.error ?? queryResult?.error;
-		nRecords = null;
-		nProperties = null;
-		// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
-		if (!error) {
-			nRecords = queryResult.length;
-			if (nRecords > 0) {
-				nProperties = Object.keys(queryResult[0]).length;
+		if (queries.length) {
+			inputQuery = queries[0].inputQueryString;
+			showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
+
+			// Status Bar & Results Toggle
+			error = queryResult?.error;
+			nRecords = null;
+			nProperties = null;
+			// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
+			if (!error) {
+				nRecords = queryResult.length;
+				if (nRecords > 0) {
+					nProperties = Object.keys(queryResult[0]).length;
+				}
 			}
 		}
 	}
@@ -105,13 +108,7 @@
 				on:click={toggleResults}
 			>
 				{#if error}
-					<!-- TODO: Is this dead code? -->
-					{#if dev && error.message === 'Missing database credentials'}
-						{error.message}.
-						<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
-					{:else}
-						{error.message}
-					{/if}
+					{error.message}
 				{:else if nRecords > 0}
 					<ChevronToggle toggled={$showResults} color="#3488e9" />
 					{nRecords.toLocaleString()}

@@ -40,9 +40,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					try {
 						return { initialData: profile(__db.query, _query_string_${id}, '${id}') }
 					} catch (e) {
-						if (typeof process !== "undefined") {
+						if (!browser) {
 							// If building in strict mode; we should fail, this query broke
-							if (process.env.VITE_BUILD_STRICT) throw e;
+							if (import.meta.env.VITE_BUILD_STRICT) throw e;
 						}
 						return { initialError: e }
 					}
@@ -114,9 +114,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							}
 							
 						} catch (e) {
-							if (typeof process !== "undefined") {
+							if (!browser) {
 								// If building in strict mode; we should fail, this query broke
-								if (process.env.VITE_BUILD_STRICT) throw e;
+								if (import.meta.env.VITE_BUILD_STRICT) throw e;
 							}
 							initialData = []
 							initialError = e
@@ -128,8 +128,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							'${id}',
 							{
 								scoreNotifier,
-								initialData: initialData,
-								initialError: initialError
+								initialData,
+								initialError
 							}
 						);
 		
@@ -170,11 +170,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-					${id} = get(new QueryStore(
+				${id} = get(new QueryStore(
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
-						'${id}',
-						{ initialData: queryFunc(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
+						'${id}'
 					));
 				`).join('\n')}
 			}));

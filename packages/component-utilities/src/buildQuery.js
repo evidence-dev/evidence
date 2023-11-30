@@ -44,12 +44,15 @@ export const buildInputQuery = ({ value, label, select, from, where, order }, id
 			q.from(from.trim());
 		} else {
 			// This is probably a subquery, or just broken
-			q.from(sql(from.trim()));
+			q.from(sql`(${from.trim()})`);
 		}
-	} else {
+	} else if (from instanceof QueryStore) {
 		// from is a QueryStore
 		// use that as a subquery
-		q.with({ subQuery: from.text }).from('subQuery');
+
+		q.from(sql`(${from.text.trim()})`);
+	} else {
+		return { hasQuery: false };
 	}
 
 	if (where) {
