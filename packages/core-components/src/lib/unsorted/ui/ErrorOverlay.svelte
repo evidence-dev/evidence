@@ -69,16 +69,16 @@
 				<a
 					href="https://docs.evidence.dev"
 					target="”_blank”"
-					class="text-gray-200 hover:text-white transition-colors duration-200">Docs</a
+					class="text-gray-300 hover:text-white transition-colors duration-200">docs</a
 				>
 				<a
 					href="https://evidencedev.slack.com/join/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q#/shared-invite/email"
 					target="”_blank”"
-					class="text-gray-200 hover:text-white transition-colors duration-200 ">Slack</a
+					class="text-gray-300 hover:text-white transition-colors duration-200 ">slack</a
 				>
 				<a
 					href="mailto:support@evidence.dev"
-					class="text-gray-200 hover:text-white transition-colors duration-200 ">Email</a
+					class="text-gray-300 hover:text-white transition-colors duration-200 ">email</a
 				>
 			</div>
 		</div>
