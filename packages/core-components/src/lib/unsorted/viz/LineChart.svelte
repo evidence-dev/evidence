@@ -78,6 +78,9 @@
 
 	export let yAxisColor = undefined;
 	export let y2AxisColor = undefined;
+
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 </script>
 
 <Chart
@@ -120,6 +123,8 @@
 	{sort}
 	{chartAreaHeight}
 	{colorPalette}
+	{echartsOptions}
+	{printEchartsConfig}
 >
 	<Line
 		{lineColor}

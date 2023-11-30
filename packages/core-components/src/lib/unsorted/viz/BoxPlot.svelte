@@ -42,6 +42,9 @@
 	export let yMax = undefined;
 	export let swapXY = false;
 
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -89,6 +92,8 @@
 	{title}
 	{subtitle}
 	chartType="Box Plot"
+	{echartsOptions}
+	{printEchartsConfig}
 >
 	<Box {boxPlotData} {color} {min} {max} />
 	<slot />

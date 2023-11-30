@@ -7,6 +7,7 @@
 	import echartsCanvasDownload from '@evidence-dev/component-utilities/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
+	import CodeBlock from '../ui/CodeBlock.svelte';
 	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
 
@@ -16,6 +17,8 @@
 	export let width = '100%';
 
 	export let data;
+
+	export let printEchartsConfig; // helper for custom chart development
 
 	const dispatch = createEventDispatcher();
 
@@ -58,6 +61,12 @@
         "
 			use:echarts={{ ...config, ...$$restProps, dispatch }}
 		/>
+
+		{#if printEchartsConfig}
+			<CodeBlock>
+				{JSON.stringify(config, undefined, 10)}
+			</CodeBlock>
+		{/if}
 	{/if}
 
 	<EchartsCopyTarget {config} {height} {width} {copying} {printing} />

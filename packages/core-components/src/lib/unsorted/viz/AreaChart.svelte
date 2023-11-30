@@ -63,6 +63,10 @@
 	export let labelColor = undefined;
 	export let labelFmt = undefined;
 	export let showAllLabels = undefined;
+
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
+
 </script>
 
 <Chart
@@ -96,6 +100,8 @@
 	{stacked100}
 	{chartAreaHeight}
 	{colorPalette}
+	{echartsOptions}
+	{printEchartsConfig}
 >
 	<Area
 		{line}

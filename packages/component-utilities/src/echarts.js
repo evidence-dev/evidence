@@ -78,7 +78,15 @@ export default (node, option) => {
 
 	return {
 		update(option) {
-			chart.setOption(option, true, true);
+			   // Apply the main updated options
+			   chart.setOption(option);
+
+			   // Check if echartsOptions are provided and apply them
+			   const prevOption = chart.getOption();
+			   if(prevOption.echartsOptions) {
+				 chart.setOption(prevOption.echartsOptions);
+			   }
+			 
 			updateLabelWidths();
 		},
 		destroy() {
