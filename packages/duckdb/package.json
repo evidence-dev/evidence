@@ -10,7 +10,6 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
-		"chalk": "^5.3.0",
 		"duckdb-async": "0.9.2"
 	},
 	"devDependencies": {

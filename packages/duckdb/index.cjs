@@ -58,13 +58,9 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 	});
 };
 
-/** @type {import("chalk")} */
-let chalk;
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
-	if (!chalk) chalk = await import('chalk');
-
 	const filename = database ? database.filename : getEnv(envMap, 'filename') ?? ':memory:';
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
@@ -132,11 +128,10 @@ module.exports.testConnection = async (opts, directory) => {
 		.then(() => true)
 		.catch((e) => {
 			if (typeof e === 'string' && Boolean(e)) {
-				const indentedMessage = `\t${e.split('\n').join('\t')}`;
-				console.log(chalk.red.bold(`Error with DuckDB Connector:\n${indentedMessage}`));
-				return e;
+				const indentedMessage = `\n\t${e.split('\n').join('\n\t')}`;
+				return {reason: indentedMessage};
 			}
-			return e.message ?? 'File not found';
+			return {reason: e.message ?? 'File not found'};
 		});
 	return r;
 };
