@@ -175,3 +175,16 @@ swapXY=true
     type=grouped
     yLog=true
 />
+
+## Very Long Bar
+
+```characters_ep_total
+SELECT * FROM './sources/characters_ep_total.csv'
+```
+
+<BarChart 
+    data={characters_ep_total} 
+    x=character_name 
+    y={['best_of_episodes','non_best_of_episodes']}
+    swapXY=true
+/>
