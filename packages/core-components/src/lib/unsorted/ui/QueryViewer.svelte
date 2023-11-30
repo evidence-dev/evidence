@@ -4,7 +4,7 @@
 
 <script>
 	import { slide, blur } from 'svelte/transition';
-	import { browser, dev } from '$app/environment';
+	import { browser } from '$app/environment';
 	import DataTable from './QueryViewerSupport/QueryDataTable.svelte';
 	import ChevronToggle from './ChevronToggle.svelte';
 	import Prism from './QueryViewerSupport/Prismjs.svelte';
