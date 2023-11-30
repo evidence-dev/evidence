@@ -63,7 +63,7 @@
 		/>
 	{/if}
 
-	<EchartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions}/>
+	<EchartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
 
 	<div class="chart-footer">
 		<DownloadData
@@ -117,7 +117,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{...config, echartsOptions}}
+		use:echartsCanvasDownload={{ ...config, echartsOptions }}
 	/>
 {/if}
 

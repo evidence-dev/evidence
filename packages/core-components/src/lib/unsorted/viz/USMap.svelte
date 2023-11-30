@@ -266,7 +266,7 @@
 </script>
 
 {#if !error}
-	<EChartsMap {config} {data} {hasLink} {echartsOptions} {printEchartsConfig}/>
+	<EChartsMap {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
 
 	{#if link}
 		<InvisibleLinks {data} {link} />

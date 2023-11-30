@@ -12,7 +12,7 @@ export default (node, option) => {
 	chart.setOption(option);
 	// Check if echartsOptions are provided and apply them
 	const prevOption = chart.getOption();
-	if(prevOption.echartsOptions) {
+	if (prevOption.echartsOptions) {
 		chart.setOption(prevOption.echartsOptions);
 	}
 

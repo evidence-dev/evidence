@@ -34,7 +34,7 @@
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
-	// ---------------------------------------------------------------------------------------	
+	// ---------------------------------------------------------------------------------------
 	// Data and columns:
 	export let data = undefined;
 	export let x = undefined;
@@ -1001,7 +1001,6 @@
 		}
 	}
 	$: data;
-
 </script>
 
 {#if !error}
@@ -1010,7 +1009,16 @@
 		<ChartLoading {height} />
 	{:else}
 		<slot />
-	  <ECharts config={$config} {height} {width} {data} {showAllXAxisLabels} {swapXY} {echartsOptions} {printEchartsConfig}/>
+		<ECharts
+			config={$config}
+			{height}
+			{width}
+			{data}
+			{showAllXAxisLabels}
+			{swapXY}
+			{echartsOptions}
+			{printEchartsConfig}
+		/>
 	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />

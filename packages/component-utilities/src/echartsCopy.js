@@ -11,7 +11,7 @@ export default (node, option) => {
 
 	chart.setOption(config);
 	// Check if echartsOptions are provided and apply them
-	if(echartsOptions) {
+	if (echartsOptions) {
 		chart.setOption(echartsOptions);
 	}
 

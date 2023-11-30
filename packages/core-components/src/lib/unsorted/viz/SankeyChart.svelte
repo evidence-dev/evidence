@@ -173,4 +173,4 @@
 	};
 </script>
 
-<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig}/>
+<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />

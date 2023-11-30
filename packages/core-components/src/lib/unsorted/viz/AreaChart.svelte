@@ -66,7 +66,6 @@
 
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
-
 </script>
 
 <Chart

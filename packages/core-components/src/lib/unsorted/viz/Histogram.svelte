@@ -34,7 +34,6 @@
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
-
 </script>
 
 <Chart

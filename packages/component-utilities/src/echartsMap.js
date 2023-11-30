@@ -10,7 +10,7 @@ export default (node, option) => {
 
 	chart.setOption(option.config);
 	// Check if echartsOptions are provided and apply them
-	if(option.echartsOptions) {
+	if (option.echartsOptions) {
 		chart.setOption(option.echartsOptions);
 	}
 
@@ -43,7 +43,7 @@ export default (node, option) => {
 		update(option) {
 			chart.setOption(option.config, true, true);
 			// Check if echartsOptions are provided and apply them
-			if(option.echartsOptions) {
+			if (option.echartsOptions) {
 				chart.setOption(option.echartsOptions);
 			}
 		},
