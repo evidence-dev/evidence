@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "2.7.3",
+	"version": "2.7.4",
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
@@ -11,7 +11,7 @@
 		"@evidence-dev/component-utilities": "workspace:^",
 		"@evidence-dev/core-components": "workspace:^",
 		"@evidence-dev/plugin-connector": "workspace:^",
-		"@evidence-dev/telemetry": "1.0.5",
+		"@evidence-dev/telemetry": "1.0.6",
 		"@sveltejs/kit": "1.22.3",
 		"@tidyjs/tidy": "2.4.4",
 		"cross-env": "^7.0.3",

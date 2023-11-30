@@ -1,5 +1,23 @@
 # @evidence-dev/evidence
 
+## 23.0.4
+
+### Patch Changes
+
+- Updated dependencies [8408cb82]
+- Updated dependencies [d1cf6dc9]
+- Updated dependencies [b4596313]
+- Updated dependencies [551b036f]
+- Updated dependencies [3462a045]
+- Updated dependencies [336dec14]
+- Updated dependencies [8ad23995]
+- Updated dependencies [0f54d725]
+- Updated dependencies [8ce5ce82]
+  - @evidence-dev/core-components@2.1.4
+  - @evidence-dev/telemetry@1.0.6
+  - @evidence-dev/component-utilities@1.2.2
+  - @evidence-dev/db-orchestrator@2.3.4
+
 ## 23.0.3
 
 ### Patch Changes
