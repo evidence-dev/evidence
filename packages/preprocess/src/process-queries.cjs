@@ -83,17 +83,38 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				let _${id};
 				const _${id}_reactivity_manager = () => {
 					const update = () => {
+						let initialData, initialError;
+
+						try {
+							if (_${id}_changed) {
+								// Query changed after page load, we have no prerendered results
+								initialData = undefined
+								initialError = undefined
+							} else if (data.${id}) {
+								// Data is coming from SSR
+								initialData = data.${id}
+							} else {
+								// We are currently prerendering
+								initialData = profile(__db.query, _${id}_query_text, '${id}')
+							}
+							
+						} catch (e) {
+							if (typeof process !== "undefined") {
+								// If building in strict mode; we should fail, this query broke
+								if (process.env.VITE_BUILD_STRICT) throw e;
+							}
+							initialData = []
+							initialError = e
+						}
+
 						const query_store = new QueryStore(
 							_${id}_query_text,
 							queryFunc,
 							'${id}',
 							{
 								scoreNotifier,
-								initialData: _${id}_changed 
-									// Query has changed, do not provide intiial data
-									? undefined 
-									// Query has not changed, provide initial data
-									: data.${id} ?? profile(__db.query, _${id}_query_text, '${id}')
+								initialData: initialData,
+								initialError: initialError
 							}
 						);
 		

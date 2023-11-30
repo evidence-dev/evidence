@@ -19,3 +19,11 @@ ${queryString}
 <DataTable data={q}/>
 
 <BigValue data={q} value=x comparison=y/>
+
+```jank
+SELECT * FROM ${q}
+```
+
+```break-strict
+this should break strict, because it isn't a real query.
+```
