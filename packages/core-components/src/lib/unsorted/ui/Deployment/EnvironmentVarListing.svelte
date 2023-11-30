@@ -57,7 +57,9 @@
 		<AccordionItem small>
 			<div slot="title" class="w-full flex justify-between items-center">
 				All Environment Variables
-				<Button on:click={copyVars} type="button" outline icon={Clipboard} size="sm">Copy All</Button>
+				<Button on:click={copyVars} type="button" outline icon={Clipboard} size="sm">
+					Copy All
+				</Button>
 			</div>
 			<div class="titles">
 				<span class="title">Key</span><span class="title">Value</span>

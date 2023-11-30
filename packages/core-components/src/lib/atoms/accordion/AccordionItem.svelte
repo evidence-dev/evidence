@@ -27,8 +27,6 @@
 		const accordionItems = Array.from(document.querySelectorAll('.accordion-item'));
 		index = accordionItems.indexOf(node);
 	});
-
-	console.log({small})
 </script>
 
 <div bind:this={node} class="accordion-item">
@@ -36,7 +34,9 @@
 		on:click={() => setActiveItem(index)}
 		class="flex justify-between items-center w-full box-border px-4 bg-white border-none cursor-pointer transition ease-in-out duration-300 hover:bg-gray-100 focus:outline-none"
 		type="button"
-		class:text-lg={!small} class:py-3={!small} class:py-1={small}
+		class:text-lg={!small}
+		class:py-3={!small}
+		class:py-1={small}
 	>
 		{#if $$slots.title}
 			<slot name="title" />
