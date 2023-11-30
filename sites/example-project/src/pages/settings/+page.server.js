@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { fail, ActionFailure } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 
 export const load = async () => {
 	if (dev) {
