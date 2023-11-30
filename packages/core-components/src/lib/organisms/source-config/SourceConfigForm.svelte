@@ -37,11 +37,14 @@
 			if (result.status >= 300) {
 				// Some system failure occurred
 				if (typeof result.data === 'string') configurationError = result.data;
-				else if ('message' in result.data) configurationError = result.data.message;
+				else if (typeof result.data === 'object' && 'message' in result.data)
+					configurationError = result.data.message;
 				else configurationError = 'Error saving datasource.';
 
 				configurationLoading = false;
 				configurationOkay = false;
+				validationLoading = false;
+				validationOkay = false;
 				return;
 			}
 
@@ -58,7 +61,7 @@
 					if (result.data?.success === true) {
 						validationError = '';
 					} else {
-						validationError = result.data?.reason;
+						validationError = result.data?.message;
 					}
 					validationLoading = false;
 					validationOkay = true;
