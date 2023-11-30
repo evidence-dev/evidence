@@ -3,18 +3,41 @@
 </script>
 
 <script>
+	import { Accordion, AccordionItem } from '$lib/atoms/accordion';
 	import VariableCopy from './VariableCopy.svelte';
+
+	import { toasts } from '@evidence-dev/component-utilities/stores';
+	import { Button } from '$lib/atoms/button';
+	import { Clipboard } from '@evidence-dev/component-utilities/icons';
+
+	/** @type {Array<{ environmentVariables: Record<string,string>}>} */
 	export let datasourceSettings;
 
 	let credentials = {};
+
+	function copyVars() {
+		const vars = datasourceSettings.reduce((a, v) => {
+			return [
+				a,
+				Object.entries(v.environmentVariables)
+					.map(([k, v]) => `${k}=${v}`)
+					.join('\n')
+			].join('\n');
+		}, '');
+		navigator.clipboard.writeText(vars);
+		toasts.add({
+			title: '',
+			status: 'success',
+			message: 'Copied environment variables to clipboard'
+		});
+	}
 </script>
 
 <p>
-	To use different data environments in production vs development, <a
-		class="docs-link"
-		href="https://docs.evidence.dev/deployment/environments"
-		>use different environment variable values.</a
-	>
+	To use different data environments in production vs development,
+	<a class="docs-link" href="https://docs.evidence.dev/deployment/environments">
+		use different environment variable values.
+	</a>
 </p>
 
 {#if credentials.authenticator === 'externalbrowser'}
@@ -30,21 +53,29 @@
 		up one of the other authentication options for a deployment.
 	</p>
 {:else}
-	<div class="titles">
-		<span class="title">Key</span><span class="title">Value</span>
-	</div>
-	{#each datasourceSettings as datasource}
-		{#each Object.entries(datasource.environmentVariables) as [key, value]}
-			<div class="environment-variable">
-				<div class="var-name">
-					<VariableCopy text={key} />
-				</div>
-				<div class="var-value">
-					<VariableCopy text={value} hideText={true} />
-				</div>
+	<Accordion>
+		<AccordionItem small>
+			<div slot="title" class="w-full flex justify-between items-center">
+				All Environment Variables
+				<Button on:click={copyVars} type="button" outline icon={Clipboard} size="sm">Copy All</Button>
 			</div>
-		{/each}
-	{/each}
+			<div class="titles">
+				<span class="title">Key</span><span class="title">Value</span>
+			</div>
+			{#each datasourceSettings as datasource}
+				{#each Object.entries(datasource.environmentVariables) as [key, value]}
+					<div class="environment-variable">
+						<div class="var-name">
+							<VariableCopy small text={key} />
+						</div>
+						<div class="var-value">
+							<VariableCopy small text={value} hideText={true} />
+						</div>
+					</div>
+				{/each}
+			{/each}
+		</AccordionItem>
+	</Accordion>
 {/if}
 
 <style>
