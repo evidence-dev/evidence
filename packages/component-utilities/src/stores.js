@@ -15,7 +15,7 @@ function createToastsObject() {
 
 	return {
 		subscribe,
-		add: (toast, timeout) => {
+		add: (toast, timeout = 2000) => {
 			update(($toasts) => ($toasts.push(toast), $toasts));
 			setTimeout(() => {
 				update(($toasts) => $toasts.filter((existing) => existing.id !== toast.id));
@@ -24,6 +24,7 @@ function createToastsObject() {
 	};
 }
 
-/** @typedef {{ id: unknown; status?: string; title: string; message: string; }} Toast */
+/** @typedef {"error" | "warning" | "success" | "info"} ToastStatus */
+/** @typedef {{ id: unknown; status?: ToastStatus; title: string; message: string; }} Toast */
 /** @type {import('svelte/store').Readable<Toast[]> & { add: (toast: Toast, timeout: number) => void }} */
 export const toasts = createToastsObject();

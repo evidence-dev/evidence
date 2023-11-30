@@ -1,7 +1,8 @@
 <script>
 	import { scale, fly } from 'svelte/transition';
 
-	export let status = '';
+	/** @type {import("@evidence-dev/component-utilities/stores).ToastStatus } */
+	export let status = 'info';
 	export let title;
 	export let message;
 </script>
@@ -12,7 +13,9 @@
 	in:scale
 	out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
 >
-	<span class="cursor-pointer font-bold pr-8 flex items-center">{title}</span>
+	{#if title}
+		<span class="cursor-pointer font-bold pr-8 flex items-center">{title}</span>
+	{/if}
 	<span class="cursor-pointer">{message}</span>
 </div>
 
