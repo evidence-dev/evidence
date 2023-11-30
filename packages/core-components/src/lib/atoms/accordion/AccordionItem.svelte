@@ -7,24 +7,21 @@
 	import { ChevronDown, ChevronUp } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 
+	/** @type {string} */
 	export let title = '';
 
-	const accordionContext = getContext('accordion');
+	/** @type {boolean} */
+	export let small = false;
+
+	const { setActiveItem, activeItem } = getContext('accordion');
 	let index;
 	let node;
-	let content;
-	let height = 0;
-	let toggled = false;
 
-	accordionContext.activeItem.subscribe((val) => {
-		toggled = val === index;
-		// calculate height after the DOM has updated
-		if (toggled) {
-			height = content.scrollHeight;
-		} else {
-			height = 0;
-		}
-	});
+	$: visible = index === $activeItem;
+	/** @type {HTMLDivElement} */
+	let contentContainer;
+
+	$: contentHeight = contentContainer?.clientHeight ?? '0';
 
 	onMount(() => {
 		const accordionItems = Array.from(document.querySelectorAll('.accordion-item'));
@@ -34,22 +31,30 @@
 
 <div bind:this={node} class="accordion-item">
 	<button
-		on:click={() => accordionContext.setActiveItem(index)}
+		on:click={() => setActiveItem(index)}
 		class="flex justify-between items-center w-full box-border px-4 bg-white border-none cursor-pointer transition ease-in-out duration-300 hover:bg-gray-100 focus:outline-none"
+		type="button"
+		class:text-lg={!small}
+		class:py-3={!small}
+		class:py-1={small}
 	>
-		<h3 class="text-lg my-3">{title}</h3>
-		{#if toggled}
+		{#if $$slots.title}
+			<slot name="title" />
+		{:else}
+			<h3>{title}</h3>
+		{/if}
+		{#if visible}
 			<Icon src={ChevronUp} class="text-gray-600 w-6 h-6" />
 		{:else}
 			<Icon src={ChevronDown} class="text-gray-600 w-6 h-6" />
 		{/if}
 	</button>
 	<div
-		bind:this={content}
 		class="text-base overflow-auto transition-all duration-300 ease-in-out"
-		style="height: {height}px"
+		style="height: {visible ? contentHeight : '0'}px"
 	>
-		<div class="p-5">
+		<!-- We can measure this even while it is hidden, because it is "behind" the overflow -->
+		<div class="p-5" bind:this={contentContainer}>
 			<slot />
 		</div>
 	</div>
