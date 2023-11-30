@@ -41,7 +41,8 @@
 	<p>
 		Click 'Show Advanced' and copy paste the following into <a
 			href="https://docs.netlify.com/configure-builds/environment-variables/"
-			>environment variables.</a
+			target="_blank"
+			rel="noreferrer">environment variables.</a
 		>
 	</p>
 
@@ -50,14 +51,17 @@
 	<h2>Optional</h2>
 	<ol>
 		<li>
-			<a href="https://docs.netlify.com/visitor-access/password-protection/"
-				>Password protect your site</a
+			<a
+				href="https://docs.netlify.com/visitor-access/password-protection/"
+				target="_blank"
+				rel="noreferrer">Password protect your site</a
 			>
 		</li>
 		<li>
 			<a
 				href="https://docs.evidence.dev/deployment/netlify#optional-schedule-updates-using-build-hooks"
-				>Schedule your site to update periodically</a
+				target="_blank"
+				rel="noreferrer">Schedule your site to update periodically</a
 			>
 		</li>
 	</ol>
