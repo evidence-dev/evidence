@@ -27,3 +27,7 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 </DataTable>
 
 {fmt(1003530000, '[>=1000000000]$#,##0.0,,,"B";$#,##0.0,,"M"')}
+
+## Fuzzy Search
+
+<DataTable data={[{ thing: 'The world has many goodbyes and hellos.' }]} search=true />

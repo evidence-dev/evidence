@@ -133,13 +133,18 @@ SQL file queries can [depend on other query files](/core-concepts/queries/#query
 
 ## Query Cache
 
-Evidence caches query results to reduce the number of queries sent to your database.
+In development mode, Evidence caches query results to reduce the number of queries sent to your database.
 
 Results from queries are cached for one hour, and identical SQL will return the cached results.
 
 The cache is cleared at the _start_ of each build, so new builds will always use fresh data (though identical queries will only run once per build).
 
-### Clearing the Cache Manually
+### Clearing the Cache
+
+#### VS Code Extension
+In the VS Code extension, you can use the `Clear Cache` command. Access the command palette using the shortcut Cmd + Shift + P (Ctrl + Shift + P on Windows).
+
+#### Clearing Manually
 
 Cached results are stored in your project in `.evidence/template/.evidence-queries`. You can clear the cache by deleting this directory.
 
