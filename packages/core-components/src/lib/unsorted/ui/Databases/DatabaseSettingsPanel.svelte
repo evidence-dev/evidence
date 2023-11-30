@@ -153,8 +153,11 @@
 			>
 		{:else}
 			<span
-				>Need help with this step? <a class="docs-link" href="https://docs.evidence.dev/community"
-					>Get in touch &rarr;</a
+				>Need help with this step? <a
+					class="docs-link"
+					target="_blank"
+					rel="noreferrer"
+					href="https://docs.evidence.dev/community">Get in touch &rarr;</a
 				></span
 			>
 		{/if}

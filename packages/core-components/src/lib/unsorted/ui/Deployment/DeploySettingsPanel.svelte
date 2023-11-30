@@ -45,8 +45,11 @@
 	</div>
 	<footer>
 		<span
-			>Learn more about <a class="docs-link" href="https://docs.evidence.dev/deployment/overview"
-				>Deploying your Project &rarr;</a
+			>Learn more about <a
+				class="docs-link"
+				target="_blank"
+				rel="noreferrer"
+				href="https://docs.evidence.dev/deployment/overview">Deploying your Project &rarr;</a
 			></span
 		>
 	</footer>

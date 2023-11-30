@@ -10,7 +10,7 @@
 	export let code = '';
 </script>
 
-<pre class="text-sm max-h-56 overflow-auto">
+<pre class="text-xs max-h-56 overflow-auto">
   <code class="language-sql">{@html Prism.highlight(code, prism_sql)}</code>
 </pre>
 

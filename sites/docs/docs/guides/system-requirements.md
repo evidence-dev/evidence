@@ -5,10 +5,10 @@ sidebar_position: 4
 
 Evidence is a Node.js application; it requires Node.js and npm to run.
 
-| Requirement | Min Version |
-| ----------- | ----------- |
-| Node.js     | 16.14       |
-| NPM         | 7           |
+| Requirement | Min Version | Max Version |
+| ----------- | ----------- | ----------- |
+| Node.js     | 16.14       | 20.10        |
+| NPM         | 7           | 10.1        |
 
 Check your versions with `node -v` and `npm -v`
 

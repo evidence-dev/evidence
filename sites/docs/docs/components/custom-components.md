@@ -6,7 +6,7 @@ title: Custom Components
 
 Custom components allow you to extend the functionality of Evidence, as well as to make your code more reusable.
 
-In Evidence, you can build your own components and use them anywhere in your project. This is made possible through Svelte, the JavaScript framework Evidence is built on. These components can include the charts used for visualization, custom components created completely from scratch, or adaptations of existing UI components such as the sidebar, menu, etc.
+In Evidence, you can build your own components and use them anywhere in your project. This is made possible through Svelte, the JavaScript framework Evidence is built on. These components can include the charts used for visualization, custom components created completely from scratch, or adaptations of existing UI components such as the header, sidebar, menu, etc.
 
 [Evidence Labs](https://labs.evidence.dev) contains several good examples of custom components.
 
@@ -71,7 +71,7 @@ select 'UK' as country, 300 as sales_usd
 <BarChart data={myData} />
 ```
 
-## Modifying an existing component: Changing the project name
+## Modifying an existing component: Changing the project logo
 Modify an existing component by copying the component's source code into the /components directory, modifying it, and importing the new component as needed in your project.
 
 In this example, we will modify the title at the upper-left of our reports to have a label of "Invoicing", rather than "Evidence".
@@ -81,33 +81,34 @@ In this example, we will modify the title at the upper-left of our reports to ha
 ```
 .
 |-- pages/
+|   |-- +layout.svelte
 |   `-- index.md
 `-- components/
-    `-- MySidebar.svelte
+    `-- MyHeader.svelte
 ```
 
-First, create the `components/` directory if this is your first custom component. Then copy the file `Sidebar.svelte` from `.evidence/template/src/components/ui` into the directory, renaming it to `MySidebar.svelte` (or any other name of your choosing).
+First, create the `components/` directory if this is your first custom component. Then copy the file `Header.svelte` from `https://github.com/evidence-dev/evidence/tree/main/packages/core-components/src/lib/unsorted/ui` into the directory, renaming it to `MyHeader.svelte` (or any other name of your choosing).
 
 ### Modifying the Component
 
 With this new version of the component now created as a copy of the original, we are going to make our modifications.
 
-After opening the `components/MySidebar.svelte` file, modify the h2 with a class of `project-title` to have inner text of "Invoicing", similar to the following:
-```html title="MySidebar.svelte"
-<div class="nav-header">
-    <a href="/" on:click={() => (open = !open)}><h2 class="project-title">Invoicing</h2></a>
-    <button class="close" on:click={() => (open = !open)}><CloseIcon height="36" width="36" /></button>
-</div>
+After opening the `components/MyHeader.svelte` file, remove the <Logo/> commponent, and replace it with text of "Invoicing", and make it bold by adding the "font-bold" class similar to the following:
+
+```html title="MyHeader.svelte"
+<a href="/" class="hidden md:block font-bold">
+	Invoicing
+</a>
 ```
 
 ### Using our new component
 
-To use our new sidebar, you must import it in place of the existing sidebar. The general approach we will follow here is described in [themes and layouts](/themes-and-layouts).
+To use our new header, you must import it in place of the existing header. The general approach we will follow here is described in [themes and layouts](/themes-and-layouts).
 
-We start by copying the file `+layout.svelte` from `.evidence/template/src/pages/` into `/pages`, the same directory where we put new report [pages](/core-concepts/pages) as we create them. After opening this newly copied file, modify the import statement for the `Sidebar` component (inside the script tag) as follows:
+We start by copying the file `+layout.svelte` from `.evidence/template/src/pages/` into `/pages`, the same directory where we put new report [pages](/core-concepts/pages) as we create them. After opening this newly copied file, delete the import statement for the `Header` component (inside the script tag) as follows, and add a new import statement to import our new component:
 
 ```js title="+layout.svelte"
-import Sidebar from "$lib/MySidebar.svelte";
+import Header from "$lib/MyHeader.svelte";
 ```
 
 `$lib` is shorthand for the `/components` directory in the root of our project. Since we didn't change the export name of our component, we only need to change the reference to the file and can leave everything else the same.

@@ -19,6 +19,7 @@
 	import DownloadData from '../ui/DownloadData.svelte';
 	import SortIcon from '../ui/SortIcon.svelte';
 	import InvisibleLinks from '../../atoms/InvisibleLinks.svelte';
+	import Fuse from 'fuse.js';
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
@@ -136,31 +137,24 @@
 	let searchValue = '';
 	let filteredData;
 	$: filteredData = data;
-	let thisRow;
-	let thisValue;
 	let showNoResults = false;
+	$: fuse = new Fuse(data, {
+		getFn: (row, [path]) => {
+			const summary = columnSummary?.find((d) => d.id === path) ?? {};
+			return summary.type === 'date' && row[summary.id] != null
+				? row[summary.id].toISOString()
+				: row[summary.id]?.toString() ?? '';
+		},
+		keys: columnSummary?.map((d) => d.id) ?? [],
+		threshold: 0.4
+	});
 	$: runSearch = (searchValue) => {
 		if (searchValue !== '') {
-			filteredData = [];
-
 			// Reset pagination to first page:
 			index = 0;
 			inputPage = null;
 
-			for (let i = 0; i < data.length; i++) {
-				thisRow = data[i];
-				for (let j = 0; j < columnSummary.length; j++) {
-					if (columnSummary[j].type === 'date' && thisRow[columnSummary[j].id] != null) {
-						thisValue = thisRow[columnSummary[j].id].toISOString();
-					} else {
-						thisValue = (thisRow[columnSummary[j].id] ?? '').toString().toLowerCase();
-					}
-					if (thisValue.indexOf(searchValue.toLowerCase()) != -1 && thisValue != null) {
-						filteredData.push(thisRow);
-						break;
-					}
-				}
-			}
+			filteredData = fuse.search(searchValue).map((x) => x.item);
 			showNoResults = filteredData.length === 0;
 		} else {
 			filteredData = data;
@@ -300,7 +294,9 @@
 	<div
 		class="table-container"
 		transition:slide|local
-		style="margin-top:{marginTop}; margin-bottom:{marginBottom}; padding-bottom: {paddingBottom}"
+		style:margin-top={marginTop}
+		style:margin-bottom={marginBottom}
+		style:padding-bottom={paddingBottom}
 		on:mouseenter={() => (hovering = true)}
 		on:mouseleave={() => (hovering = false)}
 	>
@@ -312,24 +308,16 @@
 				<thead>
 					<tr>
 						{#if rowNumbers}
-							<th
-								class="index"
-								style="
-                      width:2%;
-                      background-color: {headerColor};
-                      "
-							/>
+							<th class="index w-[2%]" style:background-color={headerColor} />
 						{/if}
 						{#if $props.columns.length > 0}
 							{#each $props.columns as column}
 								<th
 									class={safeExtractColumn(column).type}
-									style="
-                      text-align: {column.align};
-                      color: {headerFontColor};
-                      background-color: {headerColor};
-                      cursor: {sortable ? 'pointer' : 'auto'};
-                      "
+									style:text-align={column.align}
+									style:color={headerFontColor}
+									style:background-color={headerColor}
+									style:cursor={sortable ? 'pointer' : 'auto'}
 									on:click={sortable ? sort(column.id) : ''}
 								>
 									{column.title
@@ -346,11 +334,9 @@
 							{#each columnSummary.filter((d) => d.show === true) as column}
 								<th
 									class={column.type}
-									style="
-                  color: {headerFontColor};
-                  background-color: {headerColor};
-                  cursor: {sortable ? 'pointer' : 'auto'};
-                  "
+									style:color={headerFontColor}
+									style:background-color={headerColor}
+									style:cursor={sortable ? 'pointer' : 'auto'}
 									on:click={sortable ? sort(column.id) : ''}
 								>
 									<span class="col-header">
@@ -372,13 +358,7 @@
 						on:click={() => handleRowClick(row[link])}
 					>
 						{#if rowNumbers}
-							<td
-								class="index"
-								class:row-lines={rowLines}
-								style="
-                  width:2%;
-              "
-							>
+							<td class="index w-[2%]" class:row-lines={rowLines}>
 								{#if i === 0}
 									{(index + i + 1).toLocaleString()}
 								{:else}
@@ -398,17 +378,15 @@
 								<td
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines}
-									style="
-                    						text-align: {column.align};
-                      						height: {column.height};
-                      						width: {column.width};
-											white-space: {column.wrap ? 'normal' : 'nowrap'};
-											{column.contentType === 'colorscale' && is_nonzero
+									style:text-align={column.align}
+									style:height={column.height}
+									style:width={column.width}
+									style:white-space={column.wrap ? 'normal' : 'nowrap'}
+									style={column.contentType === 'colorscale' && is_nonzero
 										? ` background-color: ${column.useColor} ${
 												(row[column.id] - column_min) / (column_max - column_min)
 										  })`
 										: ''}
-                  "
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
 										<img
@@ -416,56 +394,63 @@
 											alt={column.alt
 												? row[column.alt]
 												: row[column.id].replace(/^(.*[/])/g, '').replace(/[.][^.]+$/g, '')}
-											style="
-                        margin: 0.5em auto 0.5em auto;
-                        height: {column.height};
-                        width: {column.width};
-                        "
+											class="mx-auto my-2 max-w-[unset] rounded-[unset]"
+											style:height={column.height}
+											style:width={column.width}
 										/>
 									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										{#if column.linkLabel != undefined}
-											{#if row[column.linkLabel] != undefined}
-												{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
-												<a
-													href={row[column.id]}
-													target={column.openInNewTab ? '_blank' : ''}
-													class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-													>{formatValue(
-														row[column.linkLabel],
-														column.fmt
-															? getFormatObjectFromString(column.fmt, labelSummary.format.valueType)
-															: labelSummary.format,
-														labelSummary.columnUnitSummary
-													)}</a
-												>
-											{:else if column.linkLabel in row}
-												-
-											{:else}
-												{column.linkLabel}
-											{/if}
+										<!-- if `column.linkLabel` is a column in `row`, but undefined, display - -->
+										{#if column.linkLabel != undefined && row[column.linkLabel] == undefined && column.linkLabel in row}
+											-
 										{:else}
-											{formatValue(
-												row[column.id],
-												column.fmt
-													? getFormatObjectFromString(
-															column.fmt,
-															safeExtractColumn(column).format.valueType
-													  )
-													: safeExtractColumn(column).format,
-												safeExtractColumn(column).columnUnitSummary
-											)}
+											<a
+												href={row[column.id]}
+												target={column.openInNewTab ? '_blank' : ''}
+												class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+											>
+												{#if column.linkLabel != undefined}
+													<!-- if the linklabel is a column name, display that column -->
+													{#if row[column.linkLabel] != undefined}
+														{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
+														{formatValue(
+															row[column.linkLabel],
+															column.fmt
+																? getFormatObjectFromString(
+																		column.fmt,
+																		labelSummary.format.valueType
+																  )
+																: labelSummary.format,
+															labelSummary.columnUnitSummary
+														)}
+														<!-- otherwise, consider it a label (like Details ->) and display it -->
+													{:else}
+														{column.linkLabel}
+													{/if}
+												{:else}
+													<!-- if no linkLabel is specified, display the link itself -->
+													{@const columnSummary = safeExtractColumn(column)}
+													{formatValue(
+														row[column.id],
+														column.fmt
+															? getFormatObjectFromString(
+																	column.fmt,
+																	columnSummary.format.valueType
+															  )
+															: columnSummary.format,
+														columnSummary.columnUnitSummary
+													)}
+												{/if}
+											</a>
 										{/if}
 									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
 										<div
 											class="m-0 text-xs font-medium font-ui"
-											style={`color:${
-												(row[column.id] >= 0 && !column.downIsGood) ||
-												(row[column.id] < 0 && column.downIsGood)
-													? 'var(--green-700)'
-													: 'var(--red-700)'
-											}`}
+											style="color: {(row[column.id] >= 0 && !column.downIsGood) ||
+											(row[column.id] < 0 && column.downIsGood)
+												? 'var(--green-700)'
+												: 'var(--red-700)'}"
 										>
-											<div style="text-align: {column.align ?? 'right'};">
+											<div style:text-align={column.align ?? 'right'}>
 												{#if column.showValue}
 													<span>
 														{formatValue(
@@ -548,8 +533,7 @@
 							placeholder={currentPage}
 						/>
 						/
-						<span class="page-count" style="margin-left: 4px;">{pageCount.toLocaleString()}</span
-						></span
+						<span class="page-count ml-1">{pageCount.toLocaleString()}</span></span
 					>
 					<span class="print-page-count">
 						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span
