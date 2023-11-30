@@ -1,11 +1,10 @@
 <script>
-	let display = false;
+	import { fade, fly } from 'svelte/transition';
+	let hasError = false;
 	let message;
 
 	if (import.meta.hot) {
-		let hasError = false;
 		import.meta.hot.on('vite:error', (data) => {
-			console.log(data.err.frame);
 			let customErrorMessage;
 			if (data.err.message.includes('Unexpected block closing tag')) {
 				if (data.err.frame.includes('{/each}')) {
@@ -34,7 +33,7 @@
 				customErrorMessage = 'Component tag was left open. Ensure that all components are closed';
 			}
 			hasError = true;
-			displayCustomError(customErrorMessage);
+			message = customErrorMessage || data.err.message;
 			return false;
 		});
 
@@ -48,25 +47,24 @@
 		});
 	}
 
-	function displayCustomError(message) {
-		display = true;
-
-		errorDisplay.textContent = `Error: ${message}`;
-		errorDisplay.style.display = 'block'; // Ensure it's visible
-	}
-
 	function clearCustomError() {
 		display = false;
-		let errorDisplay = document.getElementById('custom-error-display');
-		if (errorDisplay) {
-			// console.log('Clearing custom error display.');
-			errorDisplay.style.display = 'none'; // Hide the overlay
-		}
 	}
 </script>
 
-{#if display}
-	<div class=" absolute z-50 h-screen w-screen bg-black">
-		{message}
+{#if hasError}
+	<div
+		class="fixed flex flex-col z-50 h-screen w-screen bg-gray-900/80 justify-center items-center p-20 select-none"
+		transition:fade|local={{ duration: 100 }}
+	>
+		<div
+			transition:fly|local={{ y: 100, duration: 300 }}
+			class="min-w-full h-screen bg-gradient-to-b from-black/95 to-gray-900/90 border-t-red-600 rounded-lg border-t-8 border-red-600 shadow-xl p-8"
+		>
+			<h1 class="text-4xl font-bold tracking-wide text-gray-200 border-b pb-4 border-gray-800">
+				Error
+			</h1>
+			<p class="text-xl text-gray-200 mt-6 leading-relaxed select-text">{message}</p>
+		</div>
 	</div>
 {/if}
