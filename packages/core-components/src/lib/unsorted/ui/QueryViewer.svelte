@@ -54,18 +54,21 @@
 
 	$: {
 		queries = pageQueries.filter((d) => d.id === queryID);
-		inputQuery = queries[0].inputQueryString;
-		showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
 
-		// Status Bar & Results Toggle
-		error = queryResult?.error;
-		nRecords = null;
-		nProperties = null;
-		// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
-		if (!error) {
-			nRecords = queryResult.length;
-			if (nRecords > 0) {
-				nProperties = Object.keys(queryResult[0]).length;
+		if (queries.length) {
+			inputQuery = queries[0].inputQueryString;
+			showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
+
+			// Status Bar & Results Toggle
+			error = queryResult?.error;
+			nRecords = null;
+			nProperties = null;
+			// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
+			if (!error) {
+				nRecords = queryResult.length;
+				if (nRecords > 0) {
+					nProperties = Object.keys(queryResult[0]).length;
+				}
 			}
 		}
 	}
