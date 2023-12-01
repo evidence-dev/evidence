@@ -1,5 +1,19 @@
 # @evidence-dev/core-components
 
+## 2.1.4
+
+### Patch Changes
+
+- 8408cb82: Revert settings links to open in new tab
+- b4596313: reduces bar width for horizontal bar charts
+- 551b036f: Add SSR loading to all charts
+- 336dec14: Fix visual regressions in DataTable
+- 8ad23995: Prevent 500 error when creating a directory which only contains a paramaterized page
+- 0f54d725: Reduce font size in queryviewer
+- 8ce5ce82: add fuzzy searching to datatable
+- Updated dependencies [3462a045]
+  - @evidence-dev/component-utilities@1.2.2
+
 ## 2.1.3
 
 ### Patch Changes

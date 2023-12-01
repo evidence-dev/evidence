@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 1.2.2
+
+### Patch Changes
+
+- 3462a045: fix massive charts on ios
+
 ## 1.2.1
 
 ### Patch Changes
