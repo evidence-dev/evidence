@@ -32,6 +32,8 @@
 	export let fillOpacity = undefined;
 
 	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 </script>
 
 <Chart
@@ -57,6 +59,8 @@
 	hist="true"
 	{chartAreaHeight}
 	{colorPalette}
+	{echartsOptions}
+	{printEchartsConfig}
 >
 	<Hist {fillColor} {fillOpacity} />
 	<slot />

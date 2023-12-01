@@ -30,6 +30,8 @@
 	export let funnelSort = 'none';
 
 	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 
 	export let showPercent = false;
 	showPercent = showPercent === 'true' || showPercent === true;
@@ -202,4 +204,4 @@
 	};
 </script>
 
-<ECharts {config} {width} {height} />
+<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />

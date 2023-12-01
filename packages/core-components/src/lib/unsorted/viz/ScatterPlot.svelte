@@ -50,6 +50,8 @@
 	let useTooltip = true;
 
 	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 </script>
 
 <Chart
@@ -82,6 +84,8 @@
 	{sort}
 	{chartAreaHeight}
 	{colorPalette}
+	{echartsOptions}
+	{printEchartsConfig}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 	<slot />

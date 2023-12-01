@@ -8,6 +8,7 @@
 	import echartsCanvasDownload from '@evidence-dev/component-utilities/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
+	import CodeBlock from '../ui/CodeBlock.svelte';
 	import ChartLoading from '../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 
@@ -19,6 +20,9 @@
 	export let data;
 
 	export let hasLink = false;
+
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 
 	let downloadChart = false;
 	let copying = false;
@@ -60,12 +64,12 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echartsMap={{ config, hasLink }}
+				use:echartsMap={{ config, hasLink, echartsOptions }}
 			/>
 		{/if}
 	{/if}
 
-	<EchartsCopyTarget {config} {height} {width} {copying} {printing} />
+	<EchartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
 
 	<div class="chart-footer">
 		<DownloadData
@@ -98,6 +102,12 @@
 			<DownloadData text="Download data" {data} class="download-button" display={hovering} />
 		{/if}
 	</div>
+
+	{#if printEchartsConfig && !printing}
+		<CodeBlock>
+			{JSON.stringify(config, undefined, 3)}
+		</CodeBlock>
+	{/if}
 </div>
 
 {#if downloadChart}
@@ -113,7 +123,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={config}
+		use:echartsCanvasDownload={{ ...config, echartsOptions }}
 	/>
 {/if}
 
