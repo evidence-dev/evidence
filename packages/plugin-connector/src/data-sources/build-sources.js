@@ -7,7 +7,7 @@ import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
-import { oraPromise } from 'ora';
+import ora from 'ora';
 /**
  * @param {string} directory
  * @returns {Promise<SourceDirectory>}
@@ -120,32 +120,36 @@ export const buildSources = async (
 
 			for await (const table of sourceIterator) {
 				// Flush this source
+				const spinner = ora({
+					prefixText: `  ${table.name}`,
+					spinner: 'triangle',
+					discardStdin: false,
+					interval: 250
+				});
 
-				await oraPromise(
-					async (spinner) => {
-						const filename = await flushSource(
-							source,
-							{
-								name: table.name,
-								filepath: path.join(source.sourceDirectory, table.name),
-								content: table.content,
-								hash: createHash('md5').update(table.content).digest('hex')
-							},
-							table,
-							dataPath,
-							metaPath,
-							batchSize,
-							spinner
-						);
-						if (filename) outputFilenames.push(filename);
-						return;
-					},
-					{
-						prefixText: `  ${table.name}`,
-						spinner: 'balloon',
-						discardStdin: true
-					}
-				);
+				try {
+					spinner.start('Processing...');
+					const filename = await flushSource(
+						source,
+						{
+							name: table.name,
+							filepath: path.join(source.sourceDirectory, table.name),
+							content: table.content,
+							hash: createHash('md5').update(table.content).digest('hex')
+						},
+						table,
+						dataPath,
+						metaPath,
+						batchSize,
+						spinner
+					);
+					if (filename) outputFilenames.push(filename);
+					continue;
+				} catch (e) {
+					if (typeof e === 'string') spinner.fail(e);
+					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
+					else if ('message' in e) spinner.fail(e.message?.toString());
+				}
 			}
 		} else {
 			// Simple Source
@@ -159,58 +163,60 @@ export const buildSources = async (
 			// TODO: Progress bar here.
 
 			for (const query of queries) {
-				await oraPromise(
-					async (spinner) => {
-						spinner.prefixText = `  ${query.name}`;
-						spinner.text = `Processing...`;
-						hashes[source.name][query.name] = createHash('md5')
-							.update(query.content ?? '')
-							.digest('hex');
-						/** @type {QueryResult | null} */
-						let result;
-						try {
-							const _r = runner(query.content, query.filepath, batchSize);
-							if (_r instanceof Promise) {
-								result = await _r.catch((e) => {
-									if (e instanceof z.ZodError) console.log(e.format());
-									else console.log(e);
-									return null;
-								});
-							} else result = _r;
-						} catch (e) {
-							if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
-							else console.log(e);
-							result = null;
-						}
+				const spinner = ora({
+					prefixText: `  ${query.name}`,
+					spinner: 'triangle',
+					discardStdin: false,
+					interval: 250
+				});
 
-						if (result === null) {
-							spinner.text = `Finished. Returned no results!`;
-							return;
-						}
-
-						if (result === null) {
-							return;
-						}
-						const filename = await flushSource(
-							source,
-							query,
-							result,
-							dataPath,
-							metaPath,
-							batchSize,
-							spinner
-						);
-
-						if (filename) outputFilenames.push(filename);
-						return;
-					},
-					{
-						prefixText: `  ${query.name}`,
-						spinner: 'balloon',
-						discardStdin: true,
-						interval: 250
+				spinner.start('Processing...');
+				try {
+					hashes[source.name][query.name] = createHash('md5')
+						.update(query.content ?? '')
+						.digest('hex');
+					/** @type {QueryResult | null} */
+					let result;
+					try {
+						const _r = runner(query.content, query.filepath, batchSize);
+						if (_r instanceof Promise) {
+							result = await _r.catch((e) => {
+								if (e instanceof z.ZodError) console.log(e.format());
+								else console.log(e);
+								return null;
+							});
+						} else result = _r;
+					} catch (e) {
+						if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
+						else console.log(e);
+						result = null;
 					}
-				);
+
+					if (result === null) {
+						spinner.warn(`Finished. Returned no results!`);
+						continue;
+					}
+
+					if (result === null) {
+						continue;
+					}
+					const filename = await flushSource(
+						source,
+						query,
+						result,
+						dataPath,
+						metaPath,
+						batchSize,
+						spinner
+					);
+
+					if (filename) outputFilenames.push(filename);
+					continue;
+				} catch (e) {
+					if (typeof e === 'string') spinner.fail(e);
+					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
+					else if ('message' in e) spinner.fail(e.message?.toString());
+				}
 			}
 		}
 
@@ -266,10 +272,12 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	);
 	// Spinner stop?
 	if (!writtenRows) {
-		logOut(chalk.yellow(`Finished. 0 rows, did not create table`));
+		(spinner?.warn.bind(spinner) ?? console.warn)(
+			chalk.yellow(`Finished. 0 rows, did not create table`)
+		);
 		return null;
 	} else {
-		logOut(`Finished. ${writtenRows} rows`);
+		(spinner?.succeed.bind(spinner) ?? console.log)(`Finished. ${writtenRows} rows`);
 	}
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));

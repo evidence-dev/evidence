@@ -4,18 +4,20 @@
 
 <script>
 	import { slide, blur } from 'svelte/transition';
-	import { dev } from '$app/environment';
+	import { browser } from '$app/environment';
 	import DataTable from './QueryViewerSupport/QueryDataTable.svelte';
 	import ChevronToggle from './ChevronToggle.svelte';
 	import Prism from './QueryViewerSupport/Prismjs.svelte';
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
 	import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
 	import { writable } from 'svelte/store';
-	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 
 	export let queryID;
-	export let pageQueries;
+	/** @type {import("@evidence-dev/query-store").QueryStore} */
 	export let queryResult;
+
+	$: pageQueries = $page.data.evidencemeta.queries;
 
 	// Title & Query Toggle
 	// Create a copy of the showSQL variable in the local storage, for each query. Access this to determine state of each query dropdown.
@@ -44,7 +46,6 @@
 
 	let queries;
 	let inputQuery;
-	let compiledQuery;
 	let showCompilerToggle;
 	let showCompiled = true;
 	let error;
@@ -53,19 +54,21 @@
 
 	$: {
 		queries = pageQueries.filter((d) => d.id === queryID);
-		inputQuery = queries[0].inputQueryString;
-		compiledQuery = queries[0].compiledQueryString;
-		showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
 
-		// Status Bar & Results Toggle
-		error = queryResult[0]?.error_object?.error;
-		nRecords = null;
-		nProperties = null;
-		// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
-		if (!error) {
-			nRecords = queryResult.length;
-			if (nRecords > 0) {
-				nProperties = Object.keys(queryResult[0]).length;
+		if (queries.length) {
+			inputQuery = queries[0].inputQueryString;
+			showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
+
+			// Status Bar & Results Toggle
+			error = queryResult?.error;
+			nRecords = null;
+			nProperties = null;
+			// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
+			if (!error) {
+				nRecords = queryResult.length;
+				if (nRecords > 0) {
+					nProperties = Object.keys(queryResult[0]).length;
+				}
 			}
 		}
 	}
@@ -88,7 +91,7 @@
 				{#if $showSQL}
 					<div class="code-container" transition:slide|local>
 						{#if showCompiled}
-							<Prism code={compiledQuery} />
+							<Prism code={queryResult.originalText} />
 						{:else}
 							<Prism code={inputQuery} />
 						{/if}
@@ -105,17 +108,14 @@
 				on:click={toggleResults}
 			>
 				{#if error}
-					{#if dev && error.message === 'Missing database credentials'}
-						{error.message}.
-						<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
-					{:else}
-						{error.message}
-					{/if}
+					{error.message}
 				{:else if nRecords > 0}
 					<ChevronToggle toggled={$showResults} color="#3488e9" />
 					{nRecords.toLocaleString()}
 					{nRecords > 1 ? 'records' : 'record'} with {nProperties.toLocaleString()}
 					{nProperties > 1 ? 'properties' : 'property'}
+				{:else if queryResult.loading}
+					loading...
 				{:else}
 					ran successfully but no data was returned
 				{/if}

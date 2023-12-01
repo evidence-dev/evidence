@@ -27,6 +27,9 @@ To style text, use HTML.
 
 ## Props
 
+### `AccordionItem`
+
 | Name   | Description                                                             | Required | 
 |--------|-------------------------------------------------------------------------|----------|
 | title  | The title of the accordion item. This will be displayed as the header   | Yes      | 
+| small  | Makes the accordion shorter to fill less space                          | No       |

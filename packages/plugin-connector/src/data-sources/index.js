@@ -54,7 +54,7 @@ async function updateManifest(outputFiles, outDir, datasources) {
 /**
  * @param {string} sourceName - The name of the source.
  * @param {object} sourceConfig - The configuration options for the source.
- * @returns {object} - An object containing environment variables for the source.
+ * @returns {Record<string,string>} - An object containing environment variables for the source.
  */
 const generateSourceEnvironmentVariables = (sourceName, sourceConfig) => {
 	/** @type {Record<string,string>} */

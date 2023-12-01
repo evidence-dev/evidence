@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/redshift",
-	"version": "1.0.0-usql.3",
+	"version": "1.0.0-usql.4",
 	"description": "Redshift driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Archie Wood",

@@ -7,6 +7,7 @@
 	import Copy from './CopyIcon.svelte';
 	export let text = undefined;
 	export let hideText = false;
+	export let small = false;
 	let copied = false;
 
 	const toggleCopied = function () {
@@ -40,7 +41,7 @@
 		{#if copied}
 			<span in:blur>Copied</span>
 		{:else}
-			<span in:blur>
+			<span in:blur class:text-xs={small}>
 				{@html hideText
 					? '&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;'
 					: text}

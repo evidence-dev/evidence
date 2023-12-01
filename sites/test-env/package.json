@@ -1,9 +1,10 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.0-usql.33",
+	"version": "3.0.0-usql.35",
 	"private": true,
 	"scripts": {
 		"build": "evidence build:sources --changed && evidence build",
+		"build:strict": "evidence build:strict",
 		"dev": "evidence build:sources --changed && evidence dev",
 		"test": "evidence build:sources && evidence build",
 		"build:sources": "evidence build:sources"
@@ -15,6 +16,7 @@
 	"type": "module",
 	"dependencies": {
 		"@evidence-dev/component-utilities": "workspace:*",
+		"@evidence-dev/connector-gsheets": "^1.0.0",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/csv": "workspace:*",
 		"@evidence-dev/duckdb": "workspace:*",

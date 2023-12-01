@@ -3,7 +3,6 @@
 </script>
 
 <script>
-	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
 	export let settings;
 	export let datasourceSettings;
@@ -40,28 +39,11 @@
 
 	<div class="separator">Advanced Build Settings</div>
 	<p>
-		Click 'Show Advanced' and copy paste the following into <a
-			href="https://docs.netlify.com/configure-builds/environment-variables/"
-			>environment variables.</a
-		>
+		Click 'Show Advanced' add your
+		<a href="https://docs.netlify.com/configure-builds/environment-variables/">
+			environment variables.
+		</a>
 	</p>
-
-	<EnvironmentVarListing {datasourceSettings} />
-
-	<h2>Optional</h2>
-	<ol>
-		<li>
-			<a href="https://docs.netlify.com/visitor-access/password-protection/"
-				>Password protect your site</a
-			>
-		</li>
-		<li>
-			<a
-				href="https://docs.evidence.dev/deployment/netlify#optional-schedule-updates-using-build-hooks"
-				>Schedule your site to update periodically</a
-			>
-		</li>
-	</ol>
 {/if}
 
 <style>

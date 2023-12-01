@@ -1,5 +1,21 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [cd57ba69]
+  - @evidence-dev/db-commons@0.2.1-usql.3
+  - @evidence-dev/bigquery@2.0.0-usql.4
+  - @evidence-dev/csv@1.0.0-usql.6
+  - @evidence-dev/duckdb@1.0.0-usql.5
+  - @evidence-dev/mssql@1.0.0-usql.4
+  - @evidence-dev/mysql@1.0.0-usql.5
+  - @evidence-dev/postgres@1.0.0-usql.4
+  - @evidence-dev/redshift@1.0.0-usql.4
+  - @evidence-dev/snowflake@1.0.0-usql.4
+  - @evidence-dev/sqlite@2.0.0-usql.5
+
 ## 3.0.0-usql.8
 
 ### Patch Changes
