@@ -126,7 +126,7 @@ module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
 		.then(() => true)
 		.catch((e) => {
-			if (typeof e === 'string' && Boolean(e)) {
+			if (typeof e === 'string' && e !== '') {
 				const indentedMessage = `\n\t${e.split('\n').join('\n\t')}`;
 				return { reason: indentedMessage };
 			}
