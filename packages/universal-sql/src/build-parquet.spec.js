@@ -74,10 +74,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
-			{
-				recursive: true
-			}
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 	});
 
@@ -107,16 +104,15 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(1);
+		expect(fs.rm).toHaveBeenCalledTimes(2);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			1,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
-			{ recursive: true }
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
-		// expect(fs.rm).toHaveBeenNthCalledWith(
-		// 	2,
-		// 	adaptFilePath('./.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet')
-		// );
+		expect(fs.rm).toHaveBeenNthCalledWith(
+			2,
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet')
+		);
 	});
 
 	it('should accept an array as the data argument', async () => {
@@ -136,8 +132,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
-			{ recursive: true }
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
 		);
 	});
 
@@ -162,7 +157,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(1);
+		expect(fs.rm).toHaveBeenCalledTimes(1000);
 	});
 
 	// TODO: Test how it handles invalid filepath
