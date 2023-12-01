@@ -1,10 +1,17 @@
 # Dropdown Example Page
 
+## Dropdown with a query that has an error
+
+<Dropdown label="Dropdown with an Error" value="order_id" data="named_reviews" where="nps_score > 7 and their name is Bob" name="selected_order_id">
+    <DropdownOption value="All" />
+    <DropdownOption value="Top 100" />
+</Dropdown>
+
 ## Normal Usage
 
-<Dropdown label="Selected Order ID" name="selected_order_id" from=named_reviews value_label="first_name || ' ' || last_name" value=order_id where="nps_score > 7" order=first_name>
-	<DropdownOption value="All" />
-	<DropdownOption value="Top 100" />
+<Dropdown label="Selected Order ID" value_label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="selected_order_id">
+    <DropdownOption value="All" />
+    <DropdownOption value="Top 100" />
 </Dropdown>
 
 ```full_selected_order

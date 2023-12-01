@@ -173,7 +173,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				${id} = get(new QueryStore(
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
-						'${id}'
+						'${id}',
+						{}
 					));
 				`).join('\n')}
 			}));
