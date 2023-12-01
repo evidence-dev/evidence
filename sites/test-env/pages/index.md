@@ -1,5 +1,5 @@
 <script>
-    let queryString = `SELECT * FROM information_schema.columns WHERE table_name = 'comments'`.trim(), tempQueryString = queryString + ""
+    let queryString = `SELECT 5`.trim(), tempQueryString = queryString + ""
 </script>
 
 This page contains a simple demo query console for the new Universal SQL engine for Evidence.
