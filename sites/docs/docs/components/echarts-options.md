@@ -10,12 +10,11 @@ hide_table_of_contents: false
 
 ECharts settings are specified in config object. Evidence generates this config for you through the props you pass to your chart. 
 
-If you can't get your chart to look "just right" with standard options, you can use `echartsOptions` to customize your chart with any combination of eCharts config options.
+If you can't get your chart to look "just right" with standard chart , you can use `echartsOptions` to customize your chart by adding or overriding the eCharts config directly.
 
 ## ECharts Options Object
 
-The options object is passed as follows. Note the double curly braces. 
-
+The options object is passed as follows. **Note the double curly braces.**
 
 ```markdown
 <BarChart
@@ -33,29 +32,24 @@ Note that LLMs such as ChatGPT and GitHub Copilot are reasonably good at generat
 
 ## Print ECharts Config
 
-You can print the current eCharts config for a chart by adding `printEchartsConfig=true` to the chart. This will print the full config just below the chart, and it
+You can print the current eCharts config for a chart by adding `printEchartsConfig=true` to the chart. This will print the full config just below the chart. 
+
+This includes both any default Evidence config and any `echartsOptions` you have specified, and so can be useful for debugging.
 
 ```markdown
-
-## Examples
-
-### Customizing the Tooltip
-
-```markdown
-echartsOptions={{
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#6a7985'
-            }
-        }
-    },
-}}
+<BarChart
+    data={query_name}
+    x=column_x
+    y=column_y
+    echartsOptions={{exampleOption: 'exampleValue'}}
+    printEchartsConfig=true
+/>
 ```
 
-### Customizing the Legend Position
+
+## Example Configs
+
+### Customize the Legend Position
 
 
 ```markdown
@@ -119,3 +113,18 @@ echartsOptions={{
 }}
 ```
 
+### Add Axis Pointer to Tooltip
+
+```markdown
+echartsOptions={{
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#6a7985'
+            }
+        }
+    },
+}}
+```
