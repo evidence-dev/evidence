@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 0.3.0
+
+### Minor Changes
+
+- 27e6ea4b: upgrade duckdb to 0.9.2
+
 ## 0.2.1
 
 ### Patch Changes

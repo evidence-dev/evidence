@@ -857,7 +857,7 @@ importers:
         specifier: workspace:^
         version: link:../../packages/plugin-connector
       '@evidence-dev/telemetry':
-        specifier: 1.0.5
+        specifier: 1.0.6
         version: link:../../packages/telemetry
       '@sveltejs/kit':
         specifier: 1.22.3
