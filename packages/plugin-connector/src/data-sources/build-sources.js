@@ -246,7 +246,7 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	const parquetFilename = path.join(dataOutDir, query.name + '.parquet');
 	const schemaFilename = path.join(dataOutDir, query.name + '.schema.json');
 
-	const tmpDir = path.join(metaPath, 'intermediate-parquet', query.name);
+	const tmpDir = path.join(metaPath, 'intermediate-parquet', source.name, query.name);
 
 	// Make sure the directories exist
 	await fs.mkdir(dataOutDir, { recursive: true });
@@ -270,6 +270,7 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 		result.expectedRowCount,
 		batchSize
 	);
+
 	// Spinner stop?
 	if (!writtenRows) {
 		(spinner?.warn.bind(spinner) ?? console.warn)(

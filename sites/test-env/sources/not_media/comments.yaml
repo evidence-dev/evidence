@@ -1,0 +1,15 @@
+rows: 50000
+fuzz: 2500
+schema:
+    _id:
+        type: id
+    
+    _content:
+        category: lorem
+        item: sentence
+    
+    # TODO: Do we need a sanity check somehow?
+    # These could be before the post itself was created
+    _created_at:
+        category: date
+        item: recent

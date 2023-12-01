@@ -1,5 +1,5 @@
 <script>
-    let queryString = `SELECT 1 as x, 2 as y`.trim(), tempQueryString = queryString + ""
+    let queryString = `SELECT 5`.trim(), tempQueryString = queryString + ""
 </script>
 
 This page contains a simple demo query console for the new Universal SQL engine for Evidence.
@@ -17,17 +17,3 @@ ${queryString}
 ```
 
 <DataTable data={q}/>
-
-<BigValue data={q} value=x comparison=y/>
-
-```jank
-SELECT * FROM ${q}
-```
-
-```break_strict
-this should break strict, because it isn't a real query.
-```
-
-<Dropdown from={jank} value="x" label="y" />
-
-<Dropdown from="SELECT * FROM orders LIMIT 100" value="id" value_label="email" />
