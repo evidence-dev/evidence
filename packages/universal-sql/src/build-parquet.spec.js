@@ -41,8 +41,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			emptyGenerator(),
-			'./.evidence/template',
-			'',
+			adaptFilePath('./.evidence/template'),
+			adaptFilePath(''),
 			'out.parquet'
 		);
 		expect(r).toBe(0);
@@ -63,8 +63,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			gen(),
-			'.evidence/template/.evidence-queries/intermediate-parquet',
-			'.evidence/template/static/data',
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
+			adaptFilePath('.evidence/template/static/data'),
 			'out.parquet'
 		);
 		expect(r).toBe(2);
@@ -96,8 +96,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			gen(),
-			'.evidence/template/.evidence-queries/intermediate-parquet',
-			'.evidence/template/static/data',
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
+			adaptFilePath('.evidence/template/static/data'),
 			'out.parquet',
 			2,
 			1
@@ -125,8 +125,8 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			[{ x: 'hello' }, { x: 'hello' }],
-			'.evidence/template/.evidence-queries/intermediate-parquet',
-			'.evidence/template/static/data',
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
+			adaptFilePath('.evidence/template/static/data'),
 			'out.parquet'
 		);
 		expect(r).toBe(2);
@@ -151,14 +151,14 @@ describe('buildMultipartParquet', () => {
 		const r = await buildMultipartParquet(
 			mockCols,
 			gen(),
-			'./.evidence/template/.evidence-queries/intermediate-parquet',
-			'./.evidence/template/static/data',
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
+			adaptFilePath('.evidence/template/static/data'),
 			'out.parquet',
 			1000,
 			1
 		);
 		expect(r).toBe(1000);
-		const stat = await fs.stat('./.evidence/template/static/data/out.parquet');
+		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
