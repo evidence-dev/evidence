@@ -7,8 +7,32 @@ sources:
 ## Area
 
 <AreaChart
-data={orders_by_category.filter(d => d.category === "Sinister Toys")}
-x=month
+    data={orders_by_category.filter(d => d.category === "Sinister Toys")}
+    x=month
+    legend=false
+    echartsOptions={{
+        series: [
+        {
+            endLabel: {
+                show: true,
+                formatter: (params) => params.seriesName,
+                offset: [0, -5], 
+            }
+        },
+        ,
+        {
+            endLabel: {
+                show: true,
+                formatter: () => "AOV",
+                offset: [0, 70],
+            }
+        }
+        ],
+        grid: {
+            right: '50px',
+            top: '10px'
+        }
+    }}
 />
 
 ## Area with Custom Line Color

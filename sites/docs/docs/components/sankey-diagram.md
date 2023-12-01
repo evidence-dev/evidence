@@ -107,3 +107,11 @@ group by 1, 2
 <tr> <td>subtitle</td> <td>Chart subtitle. Appears just under title.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>label</td> <td>Turns label on or off. Label appears at top or right of the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false </td> <td class='tcenter'>true</td> </tr>
 </table>
+
+### Custom Echarts Options
+
+<table>
+<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
+<tr>	<td>echartsOptions</td>	<td>Custom Echarts options to override the default options. <a href='/components/echarts-options'>See detailed walkthrough</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{'{{config}}'}</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
+</table>
