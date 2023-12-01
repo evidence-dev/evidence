@@ -443,8 +443,8 @@ importers:
         specifier: workspace:*
         version: link:../db-commons
       duckdb-async:
-        specifier: 0.8.1
-        version: 0.8.1
+        specifier: 0.9.2
+        version: 0.9.2
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -11707,6 +11707,16 @@ packages:
       - encoding
       - supports-color
 
+  /duckdb-async@0.9.2:
+    resolution: {integrity: sha512-o33zBds2asp20/Mcw4ZJ1G9InD1TnOJ0U3XyIElLzim4sjlmgHc4R8NnLxdqZa/X9bjhzn364cA0XZ2fEKHPfw==}
+    dependencies:
+      duckdb: 0.9.2
+    transitivePeerDependencies:
+      - bluebird
+      - encoding
+      - supports-color
+    dev: false
+
   /duckdb@0.8.1:
     resolution: {integrity: sha512-a2SJDuvBVKy5muYFxXTANlqdNX1daF3NHzpqRdrk0Qx5n3Sh7BxL66O+WY9epaDFukiXEpz45sds5T1LaPaHog==}
     requiresBuild: true
@@ -11718,6 +11728,19 @@ packages:
       - bluebird
       - encoding
       - supports-color
+
+  /duckdb@0.9.2:
+    resolution: {integrity: sha512-POZ37Vf5cHVmk4W8z0PsdGi67VeQsr9HRrBbmivDt9AQ8C1XLESVE79facydbroNiqm7+n7fx6jqjyxyrBFYlQ==}
+    requiresBuild: true
+    dependencies:
+      '@mapbox/node-pre-gyp': 1.0.11
+      node-addon-api: 7.0.0
+      node-gyp: 9.4.1
+    transitivePeerDependencies:
+      - bluebird
+      - encoding
+      - supports-color
+    dev: false
 
   /duplexer2@0.1.4:
     resolution: {integrity: sha512-asLFVfWWtJ90ZyOUHMqk7/S2w2guQKxUI2itj3d92ADHhxUSbCMGi1f1cBcJ7xM1To+pE/Khbwo1yuNbMEPKeA==}
@@ -13997,6 +14020,7 @@ packages:
   /iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
     dependencies:
       safer-buffer: 2.1.2
 
@@ -19239,6 +19263,7 @@ packages:
 
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    requiresBuild: true
 
   /sander@0.5.1:
     resolution: {integrity: sha512-3lVqBir7WuKDHGrKRDn/1Ye3kwpXaDOMsiRP1wd6wpZW56gJhsbp5RqQpA6JG/P+pkXizygnr1dKR8vzWaVsfA==}

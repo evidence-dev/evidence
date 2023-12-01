@@ -60,7 +60,7 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
-	const filename = database ? database.filename : getEnv(envMap, 'filename');
+	const filename = database ? database.filename : getEnv(envMap, 'filename') ?? ':memory:';
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
@@ -76,6 +76,10 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			mapResultsToEvidenceColumnTypes
 		});
 		results.expectedRowCount = expected_row_count;
+		if (typeof results.expectedRowCount === 'bigint') {
+			// newer versions of ddb return a bigint
+			results.expectedRowCount = Number(results.expectedRowCount);
+		}
 
 		return results;
 	} catch (err) {
@@ -121,7 +125,13 @@ module.exports.getRunner = async (opts, directory) => {
 module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'File not found' }));
+		.catch((e) => {
+			if (typeof e === 'string' && e !== '') {
+				const indentedMessage = `\n\t${e.split('\n').join('\n\t')}`;
+				return { reason: indentedMessage };
+			}
+			return { reason: e.message ?? 'File not found' };
+		});
 	return r;
 };
 
