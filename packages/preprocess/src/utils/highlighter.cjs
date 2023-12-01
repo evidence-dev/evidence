@@ -18,7 +18,6 @@ function highlighter(code, lang, meta) {
 		return `
         {#if ${queryId} }
             <QueryViewer
-                pageQueries = {$page.data.evidencemeta.queries}
                 queryID = "${queryId ?? 'untitled'}"
                 queryResult = {${queryId ?? 'untitled'}}
             /> 
