@@ -29,6 +29,8 @@
 	export let orient = 'horizontal';
 
 	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 
 	//Data Formatting
 	let names = [];
@@ -171,4 +173,4 @@
 	};
 </script>
 
-<ECharts {config} {width} {height} />
+<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />

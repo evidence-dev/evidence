@@ -82,7 +82,8 @@
 	export let stackTotalLabel = undefined;
 	export let showAllLabels = undefined;
 
-	export let options = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 </script>
 
 <Chart
@@ -118,6 +119,8 @@
 	{chartAreaHeight}
 	{showAllXAxisLabels}
 	{colorPalette}
+	{echartsOptions}
+	{printEchartsConfig}
 >
 	<Bar
 		{type}
@@ -132,7 +135,6 @@
 		{labelFmt}
 		{stackTotalLabel}
 		{showAllLabels}
-		{options}
 	/>
 	<slot />
 </Chart>

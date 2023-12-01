@@ -90,6 +90,10 @@
 		];
 	}
 
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
+	printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+
 	export let abbreviations = false;
 	abbreviations = abbreviations === 'true' || abbreviations === true;
 
@@ -262,7 +266,7 @@
 </script>
 
 {#if !error}
-	<EChartsMap {config} {data} {hasLink} />
+	<EChartsMap {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
 
 	{#if link}
 		<InvisibleLinks {data} {link} />
