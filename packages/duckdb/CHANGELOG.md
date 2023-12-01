@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.0-usql.6
+
+### Patch Changes
+
+- 96e96568: Upgrade ddb package; return more useful error messages
+
 ## 1.0.0-usql.5
 
 ### Patch Changes

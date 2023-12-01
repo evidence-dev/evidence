@@ -1,5 +1,27 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.36
+
+### Patch Changes
+
+- c8968ea3: Settings UI now creates a connector when testing, if it doesn't already exist. It also won't lock up in more cases
+- Updated dependencies [0e3eec13]
+- Updated dependencies [fd74bd3c]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [6eb93816]
+- Updated dependencies [7c44653b]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [c8968ea3]
+- Updated dependencies [0e3eec13]
+  - @evidence-dev/core-components@2.0.0-usql.17
+  - @evidence-dev/plugin-connector@2.0.0-usql.23
+  - @evidence-dev/universal-sql@2.0.0-usql.14
+  - @evidence-dev/preprocess@4.0.0-usql.17
+  - @evidence-dev/query-store@2.0.0-usql.5
+  - @evidence-dev/component-utilities@2.0.0-usql.11
+  - @evidence-dev/db-orchestrator@3.0.0-usql.10
+
 ## 20.0.0-usql.35
 
 ### Patch Changes

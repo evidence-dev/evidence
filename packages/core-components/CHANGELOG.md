@@ -1,5 +1,30 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- 0e3eec13: Added <Button/>
+- 0e3eec13: Cleaned up <Accordion/>, added a `small` prop
+- 6eb93816: QueryViewer now respects QueryStore loading staet
+  QueryViewer now updates when query text hmr updates
+
+  QueryStore now accepts initialError when SSR query fails
+
+  SSR / QueryStore now swallow errors unless build:strict is enabled
+  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+
+- 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
+- 0e3eec13: Re-arranged environment variable UI
+- 0e3eec13: Updated Toast notifications with more types and default options
+- c8968ea3: Settings UI now creates a connector when testing, if it doesn't already exist. It also won't lock up in more cases
+- Updated dependencies [6eb93816]
+- Updated dependencies [7c44653b]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [0e3eec13]
+  - @evidence-dev/query-store@2.0.0-usql.5
+  - @evidence-dev/component-utilities@2.0.0-usql.11
+
 ## 2.0.0-usql.16
 
 ### Patch Changes

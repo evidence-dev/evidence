@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.23
+
+### Patch Changes
+
+- fd74bd3c: Prevent queries with the same name from different connectors from colliding
+- Updated dependencies [fd74bd3c]
+  - @evidence-dev/universal-sql@2.0.0-usql.14
+
 ## 2.0.0-usql.22
 
 ### Patch Changes

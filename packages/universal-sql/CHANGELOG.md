@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.14
+
+### Patch Changes
+
+- fd74bd3c: Prevent queries with the same name from different connectors from colliding
+
 ## 2.0.0-usql.13
 
 ### Patch Changes
