@@ -12,7 +12,7 @@
 	export let lower = 250;
 	export let upper = 750;
 	export let selected = 500;
-	
+
 	$: $inputs[name] = {
 		lower,
 		upper,

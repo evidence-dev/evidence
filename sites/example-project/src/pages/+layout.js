@@ -160,14 +160,17 @@ export const load = async (event) => {
 	});
 };
 
-const recursiveFillerObject = new Proxy({}, {
-	get(target, prop) {
-		if (typeof prop === 'symbol') return undefined;
-		if (prop === 'then') return undefined;
-		if (prop === 'loading') return undefined;
-		if (prop === 'error') return undefined;
-		if (prop === '_evidenceColumnTypes') return undefined;
-		if (prop === 'toString') return () => 'null';
-		return recursiveFillerObject;
+const recursiveFillerObject = new Proxy(
+	{},
+	{
+		get(target, prop) {
+			if (typeof prop === 'symbol') return undefined;
+			if (prop === 'then') return undefined;
+			if (prop === 'loading') return undefined;
+			if (prop === 'error') return undefined;
+			if (prop === '_evidenceColumnTypes') return undefined;
+			if (prop === 'toString') return () => 'null';
+			return recursiveFillerObject;
+		}
 	}
-});
+);
