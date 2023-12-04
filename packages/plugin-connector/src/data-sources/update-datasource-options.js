@@ -160,10 +160,10 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 		`# This file was automatically generated\n${yaml.stringify(denull(mergedOptsYaml))}`
 	);
 
+	const updatedSource = (await getDatasourceOptions(sourceDir)).find(
+		(r) => r.name === newOptions.name
+	);
 
-
-	const updatedSource = (await getDatasourceOptions(sourceDir)).find((r) => r.name === newOptions.name);
-	
 	if (!updatedSource) throw new Error(`Failed to locate datasource after update`);
 
 	return updatedSource;
