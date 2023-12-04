@@ -54,8 +54,8 @@ const envMap = {
 	],
 	options: [
 		{ key: 'EVIDENCE_POSTGRES_OPTIONS', deprecated: false },
-		{ key: 'POSTGRES_OPTIONS', deprecated: false },
-	],
+		{ key: 'POSTGRES_OPTIONS', deprecated: false }
+	]
 };
 
 /**
@@ -168,7 +168,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			port: database ? database.port : getEnv(envMap, 'port'),
 			ssl: database ? database.ssl : getEnv(envMap, 'ssl'),
 			connectionString: database ? database.connectionString : getEnv(envMap, 'connString'),
-			options: database ? database.options : getEnv(envMap, 'options'),
+			options: database ? database.options : getEnv(envMap, 'options')
 		};
 
 		// Override types returned by pg package. The package will return some numbers as strings
