@@ -79,7 +79,7 @@
 					</div>
 				{/if}
 
-				{#each sources as source}
+				{#each sources as source (source.name)}
 					<SourceConfigRow
 						{availableSourcePlugins}
 						{source}
