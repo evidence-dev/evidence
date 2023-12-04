@@ -288,14 +288,14 @@
 			  )
 			: data;
 
-	$: if (data?.error) error = data.error.message;
+	$: if ($data?.error) error = data.error.message ?? data.error;
 </script>
 
-{#if !data || data.loading}
+{#if (!data || data.loading) && !error}
 	<div class="w-full h-64">
 		<Skeleton />
 	</div>
-{:else if error === undefined}
+{:else if !error}
 	<slot />
 	<div
 		class="table-container"
