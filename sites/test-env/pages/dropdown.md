@@ -2,11 +2,6 @@
 
 ## Normal Usage
 
-<Dropdown label="Selected Order ID" name="selected_order_id" from=named_reviews value_label="first_name || ' ' || last_name" value=order_id where="nps_score > 7" order=first_name>
-	<DropdownOption value="All" />
-	<DropdownOption value="Top 100" />
-</Dropdown>
-
 ```full_selected_order
 select * from orders where id = '${inputs.selected_order_id}'
 ```
@@ -28,6 +23,11 @@ select * from orders
 {:else}
 <DataTable data={full_selected_order} />
 {/if}
+
+<Dropdown label="Selected Order ID" name="selected_order_id" from=named_reviews value_label="first_name || ' ' || last_name" value=order_id where="nps_score > 7" order=first_name>
+	<DropdownOption value="All" />
+	<DropdownOption value="Top 100" />
+</Dropdown>
 
 ## Dropdown without a query
 
