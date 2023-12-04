@@ -34,7 +34,20 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			*/
 			return `
 				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, initialData: data.${id} ?? profile(__db.query, _query_string_${id}, { query_name: '${id}' }) });
+				const getInitialData${id} = () => {
+					if (data.${id}) return { initialData: data.${id} }
+					try {
+						return { initialData: profile(__db.query, _query_string_${id}, { query_name: '${id}' }) }
+					} catch (e) {
+						if (!browser) {
+							// If building in strict mode; we should fail, this query broke
+							if (import.meta.env.VITE_BUILD_STRICT) throw e;
+						}
+						return { initialError: e }
+					}
+				}
+
+				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, ...getInitialData${id}()  });
 			`;
 		});
 
@@ -83,17 +96,38 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				let _${id};
 				const _${id}_reactivity_manager = () => {
 					const update = () => {
+						let initialData, initialError;
+
+						try {
+							if (_${id}_changed) {
+								// Query changed after page load, we have no prerendered results
+								initialData = undefined
+								initialError = undefined
+							} else if (data.${id}) {
+								// Data is coming from SSR
+								initialData = data.${id}
+							} else {
+								// We are currently prerendering
+								initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })
+							}
+							
+						} catch (e) {
+							if (!browser) {
+								// If building in strict mode; we should fail, this query broke
+								if (import.meta.env.VITE_BUILD_STRICT) throw e;
+							}
+							initialData = []
+							initialError = e
+						}
+
 						const query_store = new QueryStore(
 							_${id}_query_text,
 							queryFunc,
 							'${id}',
 							{
 								scoreNotifier,
-								initialData: _${id}_changed 
-									// Query has changed, do not provide intiial data
-									? undefined 
-									// Query has not changed, provide initial data
-									: data.${id} ?? profile(__db.query, _${id}_query_text, { query_name: '${id}' })
+								initialData,
+								initialError
 							}
 						);
 
@@ -134,11 +168,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-					${id} = get(new QueryStore(
+				${id} = get(new QueryStore(
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',
-						{ initialData: queryFunc(\`${duckdbQueries[id].replaceAll('`', '\\`')}\`, '${id}') }
+						{}
 					));
 				`).join('\n')}
 			}));

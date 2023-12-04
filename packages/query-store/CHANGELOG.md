@@ -1,5 +1,20 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- 6eb93816: QueryViewer now respects QueryStore loading staet
+  QueryViewer now updates when query text hmr updates
+
+  QueryStore now accepts initialError when SSR query fails
+
+  SSR / QueryStore now swallow errors unless build:strict is enabled
+  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+
+- Updated dependencies [fd74bd3c]
+  - @evidence-dev/universal-sql@2.0.0-usql.14
+
 ## 2.0.0-usql.4
 
 ### Patch Changes

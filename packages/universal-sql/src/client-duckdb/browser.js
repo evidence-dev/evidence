@@ -104,7 +104,7 @@ export async function setParquetURLs(urls) {
 				if (path.startsWith('/static')) path = path.substring(7);
 				await db.registerFileURL(file_name, path, DuckDBDataProtocol.HTTP, false);
 				await connection.query(
-					`CREATE OR REPLACE VIEW "${source}"."${table}" AS SELECT * FROM read_parquet('${file_name}');`
+					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
 				);
 			}
 		}

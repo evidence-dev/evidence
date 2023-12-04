@@ -17,6 +17,8 @@ export type QueryStoreOpts = {
 	initialData?: QueryResult[] | Promise<QueryResult[]>;
 	/** If the initial data may be outdated, or belongs to the previous store (e.g. on pagination), refetch when needed */
 	initialDataDirty?: boolean;
+	/** If there was an error when getting the initial data; this store should start in an error state */
+	initialError?: Error;
 	/** Optional hook to enable custom error reporting behavior, can be used for toasts, alerts, etc. */
 	errorNotifier?: (error: Error) => unknown;
 	/** Optional hook to enable custom query score behavior, can be used for toasts, alerts, etc. */

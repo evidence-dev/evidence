@@ -51,6 +51,10 @@ const envMap = {
 		{ key: 'POSTGRES_SCHEMA', deprecated: true },
 		{ key: 'schema', deprecated: true },
 		{ key: 'SCHEMA', deprecated: true }
+	],
+	options: [
+		{ key: 'EVIDENCE_POSTGRES_OPTIONS', deprecated: false },
+		{ key: 'POSTGRES_OPTIONS', deprecated: false }
 	]
 };
 
@@ -163,7 +167,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			password: database ? database.password : getEnv(envMap, 'password'),
 			port: database ? database.port : getEnv(envMap, 'port'),
 			ssl: database ? database.ssl : getEnv(envMap, 'ssl'),
-			connectionString: database ? database.connectionString : getEnv(envMap, 'connString')
+			connectionString: database ? database.connectionString : getEnv(envMap, 'connString'),
+			options: database ? database.options : getEnv(envMap, 'options')
 		};
 
 		// Override types returned by pg package. The package will return some numbers as strings
@@ -248,6 +253,7 @@ module.exports = runQuery;
  * @property {Object | undefined} ssl
  * @property {string} connectionString
  * @property {string} schema
+ * @property {string} options
  */
 
 /** @type {import('@evidence-dev/db-commons').GetRunner<PostgresOptions>} */
@@ -333,5 +339,11 @@ module.exports.options = {
 		type: 'string',
 		secret: false,
 		description: 'Default schema'
+	},
+	options: {
+		title: 'Options',
+		type: 'string',
+		secret: false,
+		description: 'Connection options'
 	}
 };

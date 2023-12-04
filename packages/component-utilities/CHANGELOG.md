@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.11
+
+### Patch Changes
+
+- 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
+- 0e3eec13: Updated Toast notifications with more types and default options
+- 0e3eec13: Re-export steeze-ui icons from component utilities for easier access
+
 ## 2.0.0-usql.10
 
 ### Minor Changes

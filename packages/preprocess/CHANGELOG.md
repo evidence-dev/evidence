@@ -1,5 +1,19 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.17
+
+### Patch Changes
+
+- 6eb93816: QueryViewer now respects QueryStore loading staet
+  QueryViewer now updates when query text hmr updates
+
+  QueryStore now accepts initialError when SSR query fails
+
+  SSR / QueryStore now swallow errors unless build:strict is enabled
+  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+
+- 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
+
 ## 4.0.0-usql.16
 
 ### Patch Changes

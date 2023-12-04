@@ -1,5 +1,13 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.10
+
+### Patch Changes
+
+- Updated dependencies [96e96568]
+  - @evidence-dev/duckdb@1.0.0-usql.6
+  - @evidence-dev/csv@1.0.0-usql.7
+
 ## 3.0.0-usql.9
 
 ### Patch Changes
