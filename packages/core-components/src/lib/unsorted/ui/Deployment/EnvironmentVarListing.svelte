@@ -20,7 +20,7 @@
 			return [
 				a,
 				Object.entries(v.environmentVariables)
-					.map(([k, v]) => `${k}=${v}`)
+					.map(([k, v]) => `${k}="${v.replace(/\\n/g, '\n')}"`)
 					.join('\n')
 			].join('\n');
 		}, '');

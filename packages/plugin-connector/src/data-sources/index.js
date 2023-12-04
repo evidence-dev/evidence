@@ -84,10 +84,11 @@ const generateSourceEnvironmentVariables = (sourceName, sourceConfig) => {
 
 /**
  * Helper function to load configured datasources
+ * @param {string} [datasourceDir]
  * @returns {Promise<(DatasourceSpec & { environmentVariables: object })[]>}
  */
-export async function getDatasourceOptions() {
-	const datasourceDir = await getSourcesDir();
+export async function getDatasourceOptions(datasourceDir) {
+	datasourceDir = datasourceDir ?? (await getSourcesDir()) ?? undefined;
 	if (!datasourceDir) throw new Error('missing sources directory');
 	const sources = await getSources(datasourceDir);
 
