@@ -2,7 +2,8 @@ import path from 'path';
 import yaml from 'yaml';
 import merge from 'lodash.merge';
 import fs from 'fs/promises';
-import { getSources, getSourcesDir } from './get-sources';
+import { getSourcesDir } from './get-sources';
+import { getDatasourceOptions } from '.';
 
 /**
  * @typedef {Record<string, string | number | boolean | *>} OptsObject
@@ -159,7 +160,10 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 		`# This file was automatically generated\n${yaml.stringify(denull(mergedOptsYaml))}`
 	);
 
-	const updatedSource = (await getSources(sourceDir)).find((r) => r.name === newOptions.name);
+
+
+	const updatedSource = (await getDatasourceOptions(sourceDir)).find((r) => r.name === newOptions.name);
+	
 	if (!updatedSource) throw new Error(`Failed to locate datasource after update`);
 
 	return updatedSource;
