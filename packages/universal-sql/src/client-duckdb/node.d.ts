@@ -22,7 +22,7 @@ export function query(
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {string[]} urls
+ * @param {Record<string, string[]>} urls
  * @returns {void}
  */
 export function setParquetURLs(urls: string): void;
