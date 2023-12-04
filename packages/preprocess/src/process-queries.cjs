@@ -105,7 +105,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 								initialError = undefined
 							} else if (data.${id}) {
 								// Data is coming from SSR
-								initialData = data.${id}
+								if (data.${id} instanceof Error) {
+									throw data.${id}
+								} else {
+									initialData = data.${id}
+								}
 							} else {
 								// We are currently prerendering
 								initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })

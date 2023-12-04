@@ -76,15 +76,20 @@ export const load = async (event) => {
 		dummy_pages.delete(url.pathname);
 
 		data = Object.fromEntries(
-			sql_strings.map(({ sql, query_name }) => [
-				query_name,
-				query(sql, {
-					route_hash: routeHash,
-					additional_hash: paramsHash,
-					query_name,
-					prerendering: building
-				})
-			])
+			sql_strings.map(({ sql, query_name }) => {
+				let result;
+				try {
+					result = query(sql, {
+						route_hash: routeHash,
+						additional_hash: paramsHash,
+						query_name,
+						prerendering: building
+					});
+				} catch (e) {
+					result = e;
+				}
+				return [query_name, result];
+			})
 		);
 	}
 
