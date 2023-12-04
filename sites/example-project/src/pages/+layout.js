@@ -140,9 +140,13 @@ export const load = async (event) => {
 			}
 		},
 		inputs: new Proxy(inputs, {
-			// null works in sql queries better than undefined
 			get(target, prop) {
-				return target[prop] ?? null;
+				if (typeof prop === 'symbol') return undefined;
+				if (prop === 'then') return undefined;
+				if (prop === 'loading') return undefined;
+				if (prop === 'error') return undefined;
+				if (prop === '_evidenceColumnTypes') return undefined;
+				return target[prop] ?? recursiveFillerObject;
 			},
 			set(target, prop, value) {
 				target[prop] = value;
@@ -155,3 +159,15 @@ export const load = async (event) => {
 		evidencemeta
 	});
 };
+
+const recursiveFillerObject = new Proxy({}, {
+	get(target, prop) {
+		if (typeof prop === 'symbol') return undefined;
+		if (prop === 'then') return undefined;
+		if (prop === 'loading') return undefined;
+		if (prop === 'error') return undefined;
+		if (prop === '_evidenceColumnTypes') return undefined;
+		if (prop === 'toString') return () => 'null';
+		return recursiveFillerObject;
+	}
+});

@@ -52,3 +52,9 @@ select * from orders
 </Dropdown>
 
 {inputs.queryless}
+
+## Nested inputs
+
+<CustomInput name="nested" />
+
+{inputs.nested.lower} {inputs.nested.upper} {inputs.nested.selected}
