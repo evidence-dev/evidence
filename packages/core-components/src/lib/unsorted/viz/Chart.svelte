@@ -821,7 +821,7 @@
 	$: if (data?.error) error = data.error.message;
 </script>
 
-{#if !data || data.loading}
+{#if (!data || data.loading) && !error}
 	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
 		<Skeleton />
 	</div>
