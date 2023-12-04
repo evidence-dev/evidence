@@ -15,6 +15,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@evidence-dev/query-store": "workspace:*",
 		"@steeze-ui/simple-icons": "^1.5.0",
 		"@steeze-ui/tabler-icons": "^2.1.0",
 		"@tidyjs/tidy": "2.4.4",

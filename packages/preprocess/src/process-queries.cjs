@@ -184,26 +184,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const all_query_stores = valid_ids.map((id) => `$: ${id} = $_${id};`);
 
 		queryDeclarations += `
-		import { browser, dev } from "$app/environment";
-		import { profile } from '@evidence-dev/component-utilities/profile';
-		import debounce from 'debounce';
-		import { QueryStore } from '@evidence-dev/query-store';
-		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
-
-		const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
-		setQueryFunction(queryFunc);
-
-		const scoreNotifier = !dev? () => {} : (info) => {
-			toasts.add({
-				id: Math.random(),
-				title: info.id,
-				message: \`Results estimated to use \${
-					Intl.NumberFormat().format(info.score / (1024 * 1024))
-				}mb of memory, performance may be impacted\`,
-				status: 'warning'
-			}, 5000);
-		};
-		
 		${prerendered_query_stores.join('\n')}
 		${reactive_query_stores.join('\n')}
 		${input_query_stores}
@@ -246,6 +226,27 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
                 return customFormattingSettings.customFormats || [];
             }
         });
+
+		import { browser, dev } from "$app/environment";
+		import { profile } from '@evidence-dev/component-utilities/profile';
+		import debounce from 'debounce';
+		import { QueryStore } from '@evidence-dev/query-store';
+		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
+
+		const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
+		setQueryFunction(queryFunc);
+
+		const scoreNotifier = !dev? () => {} : (info) => {
+			toasts.add({
+				id: Math.random(),
+				title: info.id,
+				message: \`Results estimated to use \${
+					Intl.NumberFormat().format(info.score / (1024 * 1024))
+				}mb of memory, performance may be impacted\`,
+				status: 'warning'
+			}, 5000);
+		};
+		
 
         ${queryDeclarations}
     `;

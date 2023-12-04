@@ -177,6 +177,9 @@ importers:
 
   packages/component-utilities:
     dependencies:
+      '@evidence-dev/query-store':
+        specifier: workspace:*
+        version: link:../query-store
       '@steeze-ui/simple-icons':
         specifier: ^1.5.0
         version: 1.6.0
@@ -4366,7 +4369,7 @@ packages:
   /@evidence-dev/connector-gsheets@1.0.0:
     resolution: {integrity: sha512-s7Oe+D8/byg9ZysGnz7QgMKkZPopY40OYdbf4JZOq4i/ZrkkqMl9LN6CbsIVvp8RkrFenSWoXyzfi4UJPIJ6Jg==}
     dependencies:
-      '@evidence-dev/duckdb': 1.0.0-usql.5
+      '@evidence-dev/duckdb': 1.0.0-usql.6
       google-auth-library: 9.4.1
       google-spreadsheet: 4.1.1(google-auth-library@9.4.1)
       tempy: 3.1.0
@@ -4384,11 +4387,11 @@ packages:
       fs-extra: 10.0.0
     dev: false
 
-  /@evidence-dev/duckdb@1.0.0-usql.5:
-    resolution: {integrity: sha512-Jw/jQWtVQcTh1NPhb60Oda+xd4F2oxoaXtu0+RTd3nWzuZPkyyNtFo7sVPsNVg1hmtFm3S1HwDei3srsmH4AXQ==}
+  /@evidence-dev/duckdb@1.0.0-usql.6:
+    resolution: {integrity: sha512-CICYOkm0AHLKLWBTIbeLWoCa10Q4gc8x97twrkIdax7ioKKTWFdQ/VXAWNeSl+UhXwpUhfIMlVYzrd1b6MdINA==}
     dependencies:
       '@evidence-dev/db-commons': 0.2.1-usql.3
-      duckdb-async: 0.8.1
+      duckdb-async: 0.9.2
     transitivePeerDependencies:
       - bluebird
       - encoding
@@ -11706,6 +11709,7 @@ packages:
       - bluebird
       - encoding
       - supports-color
+    dev: true
 
   /duckdb-async@0.9.2:
     resolution: {integrity: sha512-o33zBds2asp20/Mcw4ZJ1G9InD1TnOJ0U3XyIElLzim4sjlmgHc4R8NnLxdqZa/X9bjhzn364cA0XZ2fEKHPfw==}
