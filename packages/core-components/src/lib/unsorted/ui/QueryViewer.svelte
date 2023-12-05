@@ -4,13 +4,11 @@
 
 <script>
 	import { slide, blur } from 'svelte/transition';
-	import { browser } from '$app/environment';
 	import DataTable from './QueryViewerSupport/QueryDataTable.svelte';
 	import ChevronToggle from './ChevronToggle.svelte';
 	import Prism from './QueryViewerSupport/Prismjs.svelte';
-	import { showQueries } from '@evidence-dev/component-utilities/stores';
+	import { showQueries, localStorageStore } from '@evidence-dev/component-utilities/stores';
 	import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
-	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
 
 	export let queryID;
@@ -20,26 +18,16 @@
 	$: pageQueries = $page.data.evidencemeta.queries;
 
 	// Title & Query Toggle
-	// Create a copy of the showSQL variable in the local storage, for each query. Access this to determine state of each query dropdown.
-	let showSQL = writable(
-		browser && (localStorage.getItem('showSQL_'.concat(queryID)) === 'true' || false)
-	);
-	showSQL.subscribe((value) => browser && localStorage.setItem('showSQL_'.concat(queryID), value));
+	let showSQL = localStorageStore('showSQL_'.concat(queryID), true);
+	// Query text & Compiler Toggle
+	let showResults = localStorageStore(`showResults_${queryID}`);
 
 	const toggleSQL = function () {
 		$showSQL = !$showSQL;
 	};
 
-	// Query text & Compiler Toggle
-	let showResults = writable(
-		browser && (localStorage.getItem('showResults_'.concat(queryID)) === 'true' || false)
-	);
-	showResults.subscribe(
-		(value) => browser && localStorage.setItem('showResults_'.concat(queryID), value)
-	);
-
 	const toggleResults = function () {
-		if (!error && nRecords > 0) {
+		if (!error && $queryResult.length > 0) {
 			$showResults = !$showResults;
 		}
 	};
@@ -48,28 +36,22 @@
 	let inputQuery;
 	let showCompilerToggle;
 	let showCompiled = true;
-	let error;
-	let nRecords;
-	let nProperties;
+
+	// Enter an error state if the queryResult isn't defined
+	$: error =
+		$queryResult?.error ?? Boolean($queryResult)
+			? undefined
+			: new Error('queryResult is undefined');
+
+	$: rowCount = $queryResult?.length ?? 0;
+	$: colCount = $queryResult?.columns.length ?? 0;
 
 	$: {
-		queries = pageQueries.filter((d) => d.id === queryID);
+		queries = pageQueries.find((d) => d.id === queryID);
 
 		if (queries.length) {
 			inputQuery = queries[0].inputQueryString;
 			showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
-
-			// Status Bar & Results Toggle
-			error = queryResult?.error;
-			nRecords = null;
-			nProperties = null;
-			// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
-			if (!error) {
-				nRecords = queryResult.length;
-				if (nRecords > 0) {
-					nProperties = Object.keys(queryResult[0]).length;
-				}
-			}
 		}
 	}
 </script>
@@ -102,26 +84,28 @@
 			<button
 				type="button"
 				aria-label="view-query"
-				class={'status-bar' +
-					(error ? ' error' : ' success') +
-					($showResults ? ' open' : ' closed')}
+				class={'status-bar'}
+				class:error
+				class:success={!error}
+				class:open={showResults}
+				class:closed={!showResults}
 				on:click={toggleResults}
 			>
 				{#if error}
 					{error.message}
-				{:else if nRecords > 0}
-					<ChevronToggle toggled={$showResults} color="#3488e9" />
-					{nRecords.toLocaleString()}
-					{nRecords > 1 ? 'records' : 'record'} with {nProperties.toLocaleString()}
-					{nProperties > 1 ? 'properties' : 'property'}
-				{:else if queryResult.loading}
+				{:else if rowCount}
+					<ChevronToggle toggled={showResults} color="#3488e9" />
+					{rowCount.toLocaleString()}
+					{rowCount > 1 ? 'records' : 'record'} with {colCount.toLocaleString()}
+					{colCount > 1 ? 'properties' : 'property'}
+				{:else if $queryResult.loading}
 					loading...
 				{:else}
 					ran successfully but no data was returned
 				{/if}
 				<!-- Results -->
 			</button>
-			{#if queryResult.length > 0 && !error && $showResults}
+			{#if rowCount > 0 && !error && showResults}
 				<DataTable data={queryResult} {queryID} />
 			{/if}
 		</div>
@@ -240,15 +224,6 @@
 		color: var(--red-600);
 	}
 
-	.credentials-link {
-		color: var(--blue-500);
-		text-decoration: none;
-	}
-
-	.credentials-link:hover {
-		color: var(--blue-700);
-	}
-
 	button {
 		font-family: var(--ui-font-family-compact);
 		-webkit-font-smoothing: antialiased;
@@ -271,12 +246,6 @@
 		border-top: 1px solid var(--grey-200);
 		border-top-left-radius: 6px;
 		border-top-right-radius: 6px;
-	}
-
-	button.results {
-		padding: 0.3em 0.6em;
-		margin-top: 0px;
-		background-color: white;
 	}
 
 	.container {
