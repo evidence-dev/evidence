@@ -115,6 +115,6 @@
 
 <style lang="postcss">
 	.source-config-table {
-		grid-template-columns: 1em auto auto 1fr;
+		grid-template-columns: auto auto auto 1fr;
 	}
 </style>

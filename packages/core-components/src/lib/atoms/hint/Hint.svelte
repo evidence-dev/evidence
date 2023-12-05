@@ -23,7 +23,7 @@
 	on:mouseleave={hideMessage}
 	class="additional-info-icon"
 >
-	<Icon src={icon} class="w-5 h-5" />
+	<Icon src={icon} class="w-6 h-6" />
 
 	{#if visible}
 		<span transition:fade class="info-msg">
