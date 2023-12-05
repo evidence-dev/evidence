@@ -4,7 +4,9 @@ title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
-Evidence supports connecting to a database, or local data files.
+Evidence supports connecting to a databases, flat data files, and non-SQL data sources. 
+
+You can connect to multiple data sources in a single Evidence project.
 
 ## Connect your data
 
@@ -12,7 +14,8 @@ To connect your local development environment to a database:
 
 1. Run your evidence project with `npm run dev`
 1. Navigate to [localhost:3000/settings](http://localhost:3000/settings)
-1. Select your database and enter your credentials
+1. Select your data source, name it, and enter any credentials
+1. (If required) Open the `connections.yaml` file inside `/sources/[source_name]` and add any additional configuration options
 
 Evidence will save your credentials locally, and run a test query to confirm that it can connect.
 
@@ -31,8 +34,10 @@ Evidence supports:
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
+- [MotherDuck](#motherduck)
 - [Databricks](#databricks)
 - [Cube](#cube)
+- [Google Sheets](#google-sheets)
 - [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
@@ -184,17 +189,17 @@ DuckDB is a local file-based database. It should be stored in the root of your E
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
-### Databricks
-
-Databricks is a cloud-based data lake. Evidence supports connecting to Databricks using a [personal access token](https://docs.databricks.com/en/dev-tools/auth.html#generate-a-token).
-
 #### MotherDuck
 
 To connect to MotherDuck, you will need a [service token](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
 
 In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`, and select `No extension` from the dropdown.
 
-#### Cube
+### Databricks
+
+Databricks is a cloud-based data lake. Evidence supports connecting to Databricks using a [personal access token](https://docs.databricks.com/en/dev-tools/auth.html#generate-a-token).
+
+### Cube
 
 Cube offers semantic layer for your data. You can connect using the [Cube SQL API](https://cube.dev/docs/product/apis-integrations/sql-api). 
 
@@ -202,11 +207,42 @@ Cube's API is PostgreSQL compatible, so you can use the Evidence PostgreSQL conn
 
 You can find the credentials to connect to Cube on the BI Integrations page under the SQL API Connection tab (you may need to enable the SQL API first).
 
+### Google Sheets
+
+Adding data from Google Sheets requires a a [service account](https://cloud.google.com/iam/docs/service-accounts).
+
+To create a service account, see the [BigQuery instructions](#bigquery).
+
+1. Create a service account, and download the JSON key file
+2. Give the service account access to your Google Sheet by sharing the sheet with the service account's email address.
+4. Add the JSON key file to your Evidence project via the [Settings page](localhost:3000/settings)
+5. In the connections.yaml file, add the sheet id (which can be found in the URL of the Google Sheet, after `https://docs.google.com/spreadsheets/d/`).
+
+```yaml
+name: [your_source_name]
+type: gsheets
+options: {}
+sheets:
+   [your_workbook_name]: [your_sheet_id]
+```
+
+Query the sheet using the following syntax:
+
+```sql
+select * from [your_source_name].[your_workbook_name]_[your_tab_name]
+```
+  
+Where `[your_tab_name]` is the name of the tab in your Google Sheet, with spaces replaced by underscores.
+
+
+
 ### CSV and Parquet files
 
 In Evidence, you can query local CSV or Parquet files directly in SQL.
 
 Get started by selecting the `CSV` connector on the Settings page in your project.
+
+<!-- TODO: @archiewood to confirm with @itsmebriand how CSV files work now -->
 
 #### How to Query a CSV File
 
@@ -253,9 +289,6 @@ select * from read_csv_auto('source/myfile.csv', HEADER=TRUE);
 In addition to the `HEADER` argument, this function can also accept changes to the delimiter (`DELIM`), quotes (`QUOTE`), and more.
 
 Additional information about CSV helper functions can be found in the [DuckDB docs](https://duckdb.org/docs/data/csv).
-
-
-
 
 
 ## Troubleshooting

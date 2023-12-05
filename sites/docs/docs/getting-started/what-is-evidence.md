@@ -28,11 +28,14 @@ To get started, [install Evidence](/getting-started/install-evidence).
 
 ## How does Evidence work?
 
+<!-- TODO: @archiewood - Update this diagram -->
+
 <img src='/img/how-it-works.png' width="800px"/>
 
 Evidence renders a BI website from markdown files:
 
-1. [SQL statements](core-concepts/queries) inside markdown files run queries against your data warehouse
+1. [Data Sources](core-concepts/data-sources) can be data warehouses, flat files and non-SQL data sources
+1. [SQL statements](core-concepts/queries) inside markdown files run queries against data sources
 1. [Charts and components](core-concepts/components) are rendered using these query results
 1. [Templated pages](core-concepts/templated-pages) generate many pages from a single markdown template
 1. [Loops](core-concepts/loops) and [If / Else](core-concepts/if-else) statements allow control of what is displayed to users
