@@ -36,6 +36,9 @@
 	let sparklineData = {};
 
 	let error = undefined;
+
+	$: if (!data) error = new Error('Required prop `data` not provided');
+
 	$: if (data && !data.loading)
 		try {
 			error = undefined;

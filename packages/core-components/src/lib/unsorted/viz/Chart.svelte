@@ -194,7 +194,7 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	$: {
+	$: if (data) {
 		try {
 			error = undefined;
 			missingCols = [];
@@ -819,6 +819,7 @@
 	$: data;
 
 	$: if (data?.error) error = data.error.message;
+	$: if (!data) error = 'Required prop `data` not provided';
 </script>
 
 {#if (!data || data.loading) && !error}
