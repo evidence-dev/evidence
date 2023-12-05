@@ -4367,9 +4367,9 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
   /@evidence-dev/connector-gsheets@1.0.0:
-    resolution: {integrity: sha512-s7Oe+D8/byg9ZysGnz7QgMKkZPopY40OYdbf4JZOq4i/ZrkkqMl9LN6CbsIVvp8RkrFenSWoXyzfi4UJPIJ6Jg==, tarball: https://gitea.i.hl1.io/api/packages/brian/npm/%40evidence-dev%2Fconnector-gsheets/-/1.0.0/connector-gsheets-1.0.0.tgz}
+    resolution: {integrity: sha512-s7Oe+D8/byg9ZysGnz7QgMKkZPopY40OYdbf4JZOq4i/ZrkkqMl9LN6CbsIVvp8RkrFenSWoXyzfi4UJPIJ6Jg==}
     dependencies:
-      '@evidence-dev/duckdb': 0.0.0-pai
+      '@evidence-dev/duckdb': 1.0.0-usql.6
       google-auth-library: 9.4.1
       google-spreadsheet: 4.1.1(google-auth-library@9.4.1)
       tempy: 3.1.0
@@ -4381,16 +4381,16 @@ packages:
       - supports-color
     dev: false
 
-  /@evidence-dev/db-commons@0.0.0-pai:
-    resolution: {integrity: sha512-21etXM4dcUPOKfS2AbrWETXlRiVZ12dxzD8y+o3AOxm3ngLGf+ZQFbtJ24LJMzJbEEmF1w0YyYg25mGSUEJcIA==, tarball: https://gitea.i.hl1.io/api/packages/brian/npm/%40evidence-dev%2Fdb-commons/-/0.0.0-pai/db-commons-0.0.0-pai.tgz}
+  /@evidence-dev/db-commons@0.2.1-usql.3:
+    resolution: {integrity: sha512-W/fYARpBAuNWn2/zVSG6tw2ChugWtc2WbOXZy5EUwBLprj8j9LH7Wk6i/KbFKM7I6O5aDRxyaJmIVXxFKYLJmQ==}
     dependencies:
       fs-extra: 10.0.0
     dev: false
 
-  /@evidence-dev/duckdb@0.0.0-pai:
-    resolution: {integrity: sha512-HU2QYpLjEmO4XnjHcb2jC7l24oQ5z2QbJOJ45Bc8Es/pQ6xbztTkC35wc3UTgpgrqVxppC+hE0Wk4ByGdO/Q1Q==, tarball: https://gitea.i.hl1.io/api/packages/brian/npm/%40evidence-dev%2Fduckdb/-/0.0.0-pai/duckdb-0.0.0-pai.tgz}
+  /@evidence-dev/duckdb@1.0.0-usql.6:
+    resolution: {integrity: sha512-CICYOkm0AHLKLWBTIbeLWoCa10Q4gc8x97twrkIdax7ioKKTWFdQ/VXAWNeSl+UhXwpUhfIMlVYzrd1b6MdINA==}
     dependencies:
-      '@evidence-dev/db-commons': 0.0.0-pai
+      '@evidence-dev/db-commons': 0.2.1-usql.3
       duckdb-async: 0.9.2
     transitivePeerDependencies:
       - bluebird
