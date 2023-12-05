@@ -87,14 +87,14 @@
 				class={'status-bar'}
 				class:error
 				class:success={!error}
-				class:open={showResults}
-				class:closed={!showResults}
+				class:open={$showResults}
+				class:closed={!$showResults}
 				on:click={toggleResults}
 			>
 				{#if error}
 					{error.message}
 				{:else if rowCount}
-					<ChevronToggle toggled={showResults} color="#3488e9" />
+					<ChevronToggle toggled={$showResults} color="#3488e9" />
 					{rowCount.toLocaleString()}
 					{rowCount > 1 ? 'records' : 'record'} with {colCount.toLocaleString()}
 					{colCount > 1 ? 'properties' : 'property'}
@@ -105,7 +105,7 @@
 				{/if}
 				<!-- Results -->
 			</button>
-			{#if rowCount > 0 && !error && showResults}
+			{#if rowCount > 0 && !error && $showResults}
 				<DataTable data={queryResult} {queryID} />
 			{/if}
 		</div>
