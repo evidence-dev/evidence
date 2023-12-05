@@ -93,9 +93,11 @@ export const buildSources = async (
 			},
 			/**
 			 * @param {string} name
+			 * @returns {boolean} true if query is included in filters
 			 */
 			isFiltered: (name) =>
-				Boolean(filters?.queries?.has(name) || filters?.queries?.has(`${source.name}.${name}`)),
+				Boolean(filters?.queries?.has(name) || filters?.queries?.has(`${source.name}.${name}`)) ||
+				!filters?.queries,
 			/**
 			 * @param {string} name
 			 * @param {string} content
@@ -129,6 +131,17 @@ export const buildSources = async (
 
 				try {
 					spinner.start('Processing...');
+
+					if (!utils.isFiltered(table.name)) {
+						spinner.warn('Skipping: Filtered');
+						continue;
+					}
+
+					if (utils.isCached(table.name, table.content)) {
+						spinner.warn('Skipping: Cached');
+						continue;
+					}
+
 					const filename = await flushSource(
 						source,
 						{
@@ -170,8 +183,19 @@ export const buildSources = async (
 					interval: 250
 				});
 
-				spinner.start('Processing...');
 				try {
+					spinner.start('Processing...');
+
+					if (!utils.isFiltered(query.name)) {
+						spinner.warn('Skipping: Filtered');
+						continue;
+					}
+
+					if (utils.isCached(query.name, query.content ?? '')) {
+						spinner.warn('Skipping: Cached');
+						continue;
+					}
+
 					hashes[source.name][query.name] = createHash('md5')
 						.update(query.content ?? '')
 						.digest('hex');
