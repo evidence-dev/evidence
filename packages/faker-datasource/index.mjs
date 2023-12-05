@@ -83,7 +83,16 @@ const buildOutputTypes = (row) => {
 	return outputColumnTypes;
 };
 
-const getFakerValue = (category, item, options, targetField, colName, withBias, faker, biasedFaker) => {
+const getFakerValue = (
+	category,
+	item,
+	options,
+	targetField,
+	colName,
+	withBias,
+	faker,
+	biasedFaker
+) => {
 	const _faker = withBias ? biasedFaker : faker;
 	if (!(category in _faker))
 		throw new Error(
@@ -125,10 +134,28 @@ const buildRow = async (schema, tableName, rowNum, faker, biasedFaker) => {
 			const _faker = schema[colName].withBias ? biasedFaker : faker;
 			const fieldType = _faker.helpers.arrayElement(schema[colName].oneof);
 			const { category, item, options, targetField, withBias } = fieldType;
-			output[colName] = getFakerValue(category, item, options, targetField, colName, withBias, faker, biasedFaker);
+			output[colName] = getFakerValue(
+				category,
+				item,
+				options,
+				targetField,
+				colName,
+				withBias,
+				faker,
+				biasedFaker
+			);
 		} else {
 			const { category, item, options, targetField, withBias } = schema[colName];
-			output[colName] = getFakerValue(category, item, options, targetField, colName, withBias, faker, biasedFaker);
+			output[colName] = getFakerValue(
+				category,
+				item,
+				options,
+				targetField,
+				colName,
+				withBias,
+				faker,
+				biasedFaker
+			);
 		}
 	}
 	return output;
@@ -140,10 +167,10 @@ const tableMap = new Map();
 const relations = new Map();
 
 /**
- * 
- * @param {string} directory 
- * @param {Faker} biasedFaker 
- * @returns 
+ *
+ * @param {string} directory
+ * @param {Faker} biasedFaker
+ * @returns
  */
 const generateTable = (directory, faker, biasedFaker) => async (content, filepath) => {
 	let res, rej;
@@ -252,22 +279,23 @@ const generateTable = (directory, faker, biasedFaker) => async (content, filepat
 	}
 };
 
-
 function recursiveFlatten(obj) {
-	return Object.fromEntries(Object.entries(obj).map(([k,v]) => {
-		if (typeof v === "object") {
-			if (Array.isArray(v)) {
-				return [k, v.flat()]
-			}
-			if (v.prototype === undefined || v.prototype === null) {				
-				return [k, recursiveFlatten(v)]
+	return Object.fromEntries(
+		Object.entries(obj).map(([k, v]) => {
+			if (typeof v === 'object') {
+				if (Array.isArray(v)) {
+					return [k, v.flat()];
+				}
+				if (v.prototype === undefined || v.prototype === null) {
+					return [k, recursiveFlatten(v)];
+				} else {
+					return [k, v];
+				}
 			} else {
-				return [k,v]
+				return [k, v];
 			}
-		} else {
-			return [k,v]
-		}
-	}))
+		})
+	);
 }
 
 /**
@@ -275,13 +303,13 @@ function recursiveFlatten(obj) {
  * @param {string} directory
  */
 export const getRunner = (options, directory) => {
-	const locale = [en]
+	const locale = [en];
 
-	if (options.locale) { 
-		options.locale.title = options.locale.title ?? "Custom Locale"
-		locale.splice(0,0, recursiveFlatten(options.locale))
+	if (options.locale) {
+		options.locale.title = options.locale.title ?? 'Custom Locale';
+		locale.splice(0, 0, recursiveFlatten(options.locale));
 	}
-	
+
 	const biasedFaker = new Faker({
 		randomizer: randomBiasedNumber(Math.random(), 1),
 		locale: locale
@@ -289,9 +317,7 @@ export const getRunner = (options, directory) => {
 
 	const faker = new Faker({
 		locale: locale
-	})
-
-
+	});
 
 	console.warn(
 		chalk.bold.dim.yellow(

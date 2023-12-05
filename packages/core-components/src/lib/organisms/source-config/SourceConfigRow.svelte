@@ -3,10 +3,10 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import * as simpleIcons from '@steeze-ui/simple-icons';
-	
+
 	import { Database, ExclamationCircle, Pencil } from '@steeze-ui/tabler-icons';
 	import SourceConfigForm from './SourceConfigForm.svelte';
-	import {Hint} from "../../atoms/hint"
+	import { Hint } from '../../atoms/hint';
 
 	export let source;
 	export let availableSourcePlugins;
@@ -20,7 +20,7 @@
 <div class="contents text-xs odd:bg-gray-200">
 	{#if simpleIcons[sourcePlugin?.package.package.evidence.icon]}
 		<Icon src={simpleIcons[sourcePlugin.package.package.evidence.icon]} class="w-6 h-6" />
-	{:else if !Boolean(sourcePlugin)}
+	{:else if !sourcePlugin}
 		<Icon src={ExclamationCircle} class="w-6 h-6 text-red-500" />
 	{:else}
 		<Icon src={Database} class="w-6 h-6" />
@@ -30,11 +30,13 @@
 		<p title={sourcePlugin?.package.package.name}>
 			{source.type}
 		</p>
-		{#if !Boolean(sourcePlugin)}
+		{#if !sourcePlugin}
 			<p class="text-red-500 font-bold">
-				No connector for {source.type} is available 
+				No connector for {source.type} is available
 			</p>
-			<Hint>Make sure you have installed it, and included it in your evidence.plugins.yaml file</Hint>
+			<Hint
+				>Make sure you have installed it, and included it in your evidence.plugins.yaml file</Hint
+			>
 		{/if}
 	</div>
 	<div class="flex justify-end">
