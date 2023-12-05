@@ -590,8 +590,8 @@ importers:
   packages/faker-datasource:
     dependencies:
       '@faker-js/faker':
-        specifier: 8.0.2
-        version: 8.0.2
+        specifier: ^8.3.1
+        version: 8.3.1
       '@types/cli-progress':
         specifier: ^3.11.0
         version: 3.11.5
@@ -4403,8 +4403,8 @@ packages:
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
     dev: true
 
-  /@faker-js/faker@8.0.2:
-    resolution: {integrity: sha512-Uo3pGspElQW91PCvKSIAXoEgAUlRnH29sX2/p89kg7sP1m2PzCufHINd0FhTXQf6DYGiUlVncdSPa2F9wxed2A==}
+  /@faker-js/faker@8.3.1:
+    resolution: {integrity: sha512-FdgpFxY6V6rLZE9mmIBb9hM0xpfvQOSNOLnzolzKwsE1DH+gC7lEKV1p1IbR0lAYyvYd5a4u3qWJzowUkw1bIw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: false
 
