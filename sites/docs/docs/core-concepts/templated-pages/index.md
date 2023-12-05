@@ -14,7 +14,34 @@ In example 1 above, www.example.com/customers/acme would display information for
 
 A useful reference can be found in the [Needful Things example project](https://github.com/evidence-dev/demo/tree/main/pages/operations/pick_lists).
 
-## Declaring a templated page
+<!-- TODO @archiewood: Do we need to reference the link column? -->
+<!-- See https://github.com/evidence-dev/evidence-vscode/issues/169 -->
+
+## Quickstart: VS Code Extension
+
+1. **Create a [SQL file query](/queries#sql-file-queries) in your sources folder**. It should return:
+   - **One row per page** you want to generate
+   - **A column containing a unique name or id** for each page
+   - **Other columns containing data you want** to use in the pages
+2. **Run `Evidence: Create Templated Pages from Query`** in the the Command Palette (Ctrl/Cmd+Shift+P).
+3. **Enter the column name that contains your unique id** into the box that appears.
+
+Evidence will automatically create a templated page that changes for each unique id, and an index page containing links for each page.
+
+E.g. if your query was called `customers.sql` and contained a unique column called `customer` then the following files would be created:
+
+```code title="Example Files Created"
+pages/
+`-- customers/
+    |-- [customer].md
+    `-- index.md
+```
+
+This serves as a helpful starting point, and you will likely want to customize the code in the newly created files.
+
+## Full Guide of Concepts
+
+### Declaring a templated page
 
 A templated page is created by adding square brackets round a file name `[parameter_name].md` or folder name `[parameter_name]`.
 The following are equivalent:
@@ -24,54 +51,38 @@ The following are equivalent:
 
 The string inside the square brackets becomes a [parameter](#using-page-parameters) you can reference in the page, with the parameter value as text that replaces the parameter name in the URL.
 
-## Using page parameters
+### Using page parameters
 
 The parameter passed in the URL can be used in the page. For example, if the URL is `/customers/acme`, the parameter value is `acme`, and you access it in markdown as follows:
 
 ```js
-{$page.params.customer}
+{params.customer}
 ```
 
-Parameters can be used to filter query results (e.g. a for specific customer), to present only relevant information to the page.
+Parameters can be used in queries to filter query results (e.g. a for specific customer)
 
-You can apply a filter to a query result by appending this code to the query name. This is a standard JavaScript method for filtering data.
-
-```js title="Filter method"
-.filter(d => d.customer_name === $page.params.customer)
+````sql
+```sql customers
+select
+    sum(sales) as sales_usd 
+from orders
+where first_name = '${params.customer}'
+group by 1
 ```
+````
 
-:::tip
-`$page.params.var_name` always returns a string, so if your query column is not a string, use an `==` equality check instead of a `===` strict equality, e.g. `filter(d => d.id == $page.params.var_name)`
-:::
-
-This means that the code will look in the query result `d` and include only those rows where the `customer_name` is equal to the page's parameter value.
 
 Adding this to a `<Value/>` component:
 
 ```js
 <Value
-    data={customers.filter(d => d.customer_name === $page.params.customer)}
+    data={customers}
     column=sales_usd
 />
 ```
 
-:::tip
-If filtering lots of components, you can create a new data containing the filtered data and use that instead.
 
-```markdown
-<script>
-   let filtered_customers = customers.filter(d => d.customer_name === $page.params.customer)
-</script>
-
-<Value 
-    data={filtered_customers} 
-    column=sales_usd
-/>
-```
-
-:::
-
-## Generating templated pages
+### Generating templated pages
 
 So far, we've created the template for a set of pages, but haven't specified what specific pages to create, or to put it another way, what values we want the parameter to take.
 
@@ -79,7 +90,9 @@ For a page to be built, there must be links to it somewhere in your project.
 
 Whilst you could add markdown style links for each parameter value, it is easier to programmatically generate them. Two easy options are:
 
-### 1. With a `<DataTable/>` and the `link` prop
+
+
+#### 1. With a `<DataTable/>` and the `link` prop
 
 Create a link per row in the SQL query and pass it to the `<DataTable/>`.
 
@@ -99,7 +112,7 @@ group by 1
 />
 ````
 
-### 2. With an `{#each}` loop
+#### 2. With an `{#each}` loop
 
 ````markdown
 ```sql customers
@@ -117,7 +130,7 @@ group by 1
 {/each}
 ````
 
-## Nesting templated pages
+### Nesting templated pages
 
 Creating folders with parameters can be useful when nesting inside templated pages:
 
@@ -131,7 +144,7 @@ pages/
 
 Now `index.md` would be rendered if you navigate to www.example.com/customers/acme, and `[branch].md` would be rendered if you navigate to www.example.com/customers/acme/south.
 
-## Complete example
+## Complete Example Code
 
 See a complete example using a table to generate a templated page for each customer.
 
@@ -158,17 +171,16 @@ group by 1
 `customers/[customer].md`
 
 ````markdown
-# {$page.params.customer}
+# {params.customer}
 
 ```sql customers
 select
-    first_name,
     sum(sales) as sales_usd 
 from orders
+where first_name = '${params.customer}'
 group by 1
 ```
 
-{$page.params.customer} bought items worth 
-<Value data={customers.filter(d => d.first_name === $page.params.customer)} column=sales_usd />.
+{params.customer} bought items worth <Value data={customers} column=sales_usd />.
 ````
 
