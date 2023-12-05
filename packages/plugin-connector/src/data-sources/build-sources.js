@@ -257,8 +257,6 @@ export const buildSources = async (
 
 	const finalHashes = merge({}, existingHashes, hashes);
 
-	
-
 	await saveSourceHashes(metaPath, finalHashes);
 	await cleanParquetFiles(dataPath, finalHashes);
 	return manifest;
