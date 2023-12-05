@@ -1,13 +1,19 @@
 import chalk from 'chalk';
 import fs from 'fs/promises';
 import { getDatasourcePlugins } from './get-datasource-plugins';
-import { getPastSourceHashes, getQueries, saveSourceHashes } from './get-sources';
+import {
+	cleanParquetFiles,
+	getPastSourceHashes,
+	getQueries,
+	saveSourceHashes
+} from './get-sources';
 import path from 'path';
 import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import ora from 'ora';
+import merge from 'lodash.merge';
 /**
  * @param {string} directory
  * @returns {Promise<SourceDirectory>}
@@ -249,7 +255,12 @@ export const buildSources = async (
 		manifest[source.name] = outputFilenames;
 	}
 
-	await saveSourceHashes(metaPath, hashes);
+	const finalHashes = merge({}, existingHashes, hashes);
+
+	
+
+	await saveSourceHashes(metaPath, finalHashes);
+	await cleanParquetFiles(dataPath, finalHashes);
 	return manifest;
 };
 
