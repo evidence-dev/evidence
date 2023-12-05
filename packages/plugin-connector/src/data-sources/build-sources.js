@@ -102,7 +102,8 @@ export const buildSources = async (
 			 * @param {string} name
 			 * @param {string} content
 			 */
-			shouldRun: (name, content) => !utils.isFiltered(name) && !utils.isCached(name, content),
+			shouldRun: (name, content) =>
+				!utils.isFiltered(name) && filters?.only_changed && !utils.isCached(name, content),
 			/**
 			 * @param {string} name
 			 * @param {string} content
@@ -137,7 +138,7 @@ export const buildSources = async (
 						continue;
 					}
 
-					if (utils.isCached(table.name, table.content)) {
+					if (filters?.only_changed && utils.isCached(table.name, table.content)) {
 						spinner.warn('Skipping: Cached');
 						continue;
 					}
@@ -191,7 +192,7 @@ export const buildSources = async (
 						continue;
 					}
 
-					if (utils.isCached(query.name, query.content ?? '')) {
+					if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
 						spinner.warn('Skipping: Cached');
 						continue;
 					}
