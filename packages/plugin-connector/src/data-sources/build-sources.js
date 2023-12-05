@@ -101,9 +101,10 @@ export const buildSources = async (
 			/**
 			 * @param {string} name
 			 * @param {string} content
+			 * @returns {boolean}
 			 */
 			shouldRun: (name, content) =>
-				!utils.isFiltered(name) && filters?.only_changed && !utils.isCached(name, content),
+				!utils.isFiltered(name) && Boolean(filters?.only_changed) && !utils.isCached(name, content),
 			/**
 			 * @param {string} name
 			 * @param {string} content
