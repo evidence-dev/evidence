@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.24
+
+### Patch Changes
+
+- 5247996b: Improved behavior when copying environment variables
+- Updated dependencies [b25a95d7]
+  - @evidence-dev/universal-sql@2.0.0-usql.15
+
 ## 2.0.0-usql.23
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 1.0.0-usql.5
+
+### Patch Changes
+
+- 44d3c797: adds options parameter to postgres connection settings
+
 ## 1.0.0-usql.4
 
 ### Patch Changes

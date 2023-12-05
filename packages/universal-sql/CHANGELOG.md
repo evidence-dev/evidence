@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.15
+
+### Patch Changes
+
+- b25a95d7: Misc fixes
+
 ## 2.0.0-usql.14
 
 ### Patch Changes

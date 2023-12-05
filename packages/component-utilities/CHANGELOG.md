@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.12
+
+### Patch Changes
+
+- b25a95d7: Misc fixes
+- fe466b13: Added a localStorage backed store
+  - @evidence-dev/query-store@2.0.0-usql.6
+
 ## 2.0.0-usql.11
 
 ### Patch Changes

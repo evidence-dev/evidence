@@ -1,5 +1,21 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- 59938e50: SourceConfig handles missing plugins better
+- 5247996b: Improved behavior when copying environment variables
+- 6b7a132d: Fix chart & datatable error state
+- 77d09b54: DataTable, Chart, Value all handle missing data prop better
+- 77d09b54: BigValue handles missing data better
+- 8f5d4ba8: Fix download button
+- b1427173: QueryViewer is more reactive now; and cleaned up to leverage QueryStore more effectively
+- Updated dependencies [b25a95d7]
+- Updated dependencies [fe466b13]
+  - @evidence-dev/component-utilities@2.0.0-usql.12
+  - @evidence-dev/query-store@2.0.0-usql.6
+
 ## 2.0.0-usql.17
 
 ### Patch Changes

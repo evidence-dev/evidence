@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "2.0.0-usql.11",
+	"version": "2.0.0-usql.12",
 	"description": "",
 	"main": "index.js",
 	"exports": {

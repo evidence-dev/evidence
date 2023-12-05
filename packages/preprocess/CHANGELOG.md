@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.18
+
+### Patch Changes
+
+- b25a95d7: Misc fixes
+
 ## 4.0.0-usql.17
 
 ### Patch Changes

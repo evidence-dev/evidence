@@ -1,5 +1,12 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- Updated dependencies [b25a95d7]
+  - @evidence-dev/universal-sql@2.0.0-usql.15
+
 ## 2.0.0-usql.5
 
 ### Patch Changes

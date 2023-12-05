@@ -1,5 +1,12 @@
 # @evidence-dev/redshift
 
+## 1.0.0-usql.5
+
+### Patch Changes
+
+- Updated dependencies [44d3c797]
+  - @evidence-dev/postgres@1.0.0-usql.5
+
 ## 1.0.0-usql.4
 
 ### Patch Changes

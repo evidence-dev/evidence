@@ -1,5 +1,13 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.11
+
+### Patch Changes
+
+- Updated dependencies [44d3c797]
+  - @evidence-dev/postgres@1.0.0-usql.5
+  - @evidence-dev/redshift@1.0.0-usql.5
+
 ## 3.0.0-usql.10
 
 ### Patch Changes

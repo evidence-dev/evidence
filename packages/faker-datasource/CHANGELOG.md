@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- 544b1d5b: Many improvements to faker datasource
+
 ## 2.0.0-usql.3
 
 ### Patch Changes
