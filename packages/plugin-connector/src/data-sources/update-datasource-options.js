@@ -89,7 +89,10 @@ export async function bootstrapSourceDirectory(newOptions, sourceDir) {
 	const sourcePath = newOptions.sourceDirectory ?? path.join(sourceDir, newOptions.name);
 	const sourceDirectories = await fs.readdir(sourceDir);
 
-	if (!sourceDirectories.includes(newOptions.name)) {
+	if (
+		!sourceDirectories.includes(newOptions.name) &&
+		!sourceDirectories.includes(sourcePath.split(path.sep).pop())
+	) {
 		await fs.mkdir(sourcePath);
 	}
 
