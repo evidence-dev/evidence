@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.13
+
+### Patch Changes
+
+- 88e1a5ee: Toasts can now be dismissable
+  - @evidence-dev/query-store@2.0.0-usql.7
+
 ## 2.0.0-usql.12
 
 ### Patch Changes

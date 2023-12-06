@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.19
+
+### Patch Changes
+
+- 6bf5003a: add bypass to SSR'd inputs bug
+
 ## 4.0.0-usql.18
 
 ### Patch Changes

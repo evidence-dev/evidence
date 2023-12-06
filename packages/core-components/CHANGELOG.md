@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- b4de6d55: Hint and Button styling updates
+- 4d5735a2: UX and design updates to source configuration
+- 88e1a5ee: Toasts can now be dismissable
+- Updated dependencies [88e1a5ee]
+  - @evidence-dev/component-utilities@2.0.0-usql.13
+  - @evidence-dev/query-store@2.0.0-usql.7
+
 ## 2.0.0-usql.18
 
 ### Patch Changes

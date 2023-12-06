@@ -1,5 +1,18 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.25
+
+### Patch Changes
+
+- b7d02a29: Source Query HMR is now debounced
+- e134351d: - connection.options.yaml values are now b64 encoded
+  - children that do not have a key for all child values no longer break - e.g. when ssl is disabled for postgres, there are no children. This was breaking previously
+- 6fdfec28: Plugin connector now removes outdated cache files
+- 4d5735a2: Fix a few fs related issues
+- 4a75c077: Re-add support for --changed and --queries
+- Updated dependencies [4d5735a2]
+  - @evidence-dev/universal-sql@2.0.0-usql.16
+
 ## 2.0.0-usql.24
 
 ### Patch Changes

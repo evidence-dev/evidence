@@ -1,5 +1,28 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.38
+
+### Patch Changes
+
+- 20722eab: build:sources is now sources
+  build:sources outputs a deprecation notice to prevent immediate breakage of existing projects
+- 6bf5003a: add bypass to SSR'd inputs bug
+- Updated dependencies [b7d02a29]
+- Updated dependencies [e134351d]
+- Updated dependencies [b4de6d55]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [88e1a5ee]
+- Updated dependencies [6fdfec28]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [4a75c077]
+- Updated dependencies [6bf5003a]
+  - @evidence-dev/plugin-connector@2.0.0-usql.25
+  - @evidence-dev/core-components@2.0.0-usql.19
+  - @evidence-dev/component-utilities@2.0.0-usql.13
+  - @evidence-dev/universal-sql@2.0.0-usql.16
+  - @evidence-dev/preprocess@4.0.0-usql.19
+  - @evidence-dev/query-store@2.0.0-usql.7
+
 ## 20.0.0-usql.37
 
 ### Patch Changes
