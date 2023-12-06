@@ -61,7 +61,11 @@ const runFileWatcher = function (watchPatterns) {
 		const targetPath = (p) =>
 			path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, p));
 		const pagePath = (p) =>
-			p.endsWith('index.md') ? p.replace('index.md', '+page.md') : p.replace('.md', '/+page.md');
+			p.includes('pages')
+				? p.endsWith('index.md')
+					? p.replace('index.md', '+page.md')
+					: p.replace('.md', '/+page.md')
+				: p;
 
 		const syncFile = (file) => {
 			const source = sourcePath(file);
@@ -133,7 +137,12 @@ const watchPatterns = [
 		targetRelative: './.evidence/template/src/components/',
 		filePattern: '**'
 	}, // custom components
-	{ sourceRelative: '.', targetRelative: './.evidence/template/src/', filePattern: 'app.css' } // custom theme file
+	{ sourceRelative: '.', targetRelative: './.evidence/template/src/', filePattern: 'app.css' }, // custom theme file
+	{
+		sourceRelative: './partials',
+		targetRelative: './.evidence/template/partials',
+		filePattern: '**'
+	}
 ];
 
 const strictMode = function () {

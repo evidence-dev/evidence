@@ -12,6 +12,8 @@
 	export let size = undefined;
 	export let series = undefined;
 	export let xType = undefined;
+	export let yLog = undefined;
+	export let yLogBase = undefined;
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
@@ -49,6 +51,10 @@
 	let bubble = true;
 
 	let useTooltip = true;
+
+	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 </script>
 
 <Chart
@@ -62,6 +68,8 @@
 	{tooltipTitle}
 	{series}
 	{xType}
+	{yLog}
+	{yLogBase}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}
@@ -81,6 +89,9 @@
 	{bubble}
 	{sort}
 	{chartAreaHeight}
+	{colorPalette}
+	{echartsOptions}
+	{printEchartsConfig}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 	<slot />

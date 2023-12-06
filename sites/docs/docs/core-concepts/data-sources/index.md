@@ -26,14 +26,17 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
+- [Trino](#trino)
 - [Microsoft SQL Server](#mssql)
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
+- [Databricks](#databricks)
+- [Cube](#cube)
 - [CSV and Parquet files](#csv-and-parquet-files)
 - & More
 
-We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q) if you'd like to use Evidence with a database that isn't currently supported.
+We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://slack.evidence.dev) if you'd like to use Evidence with a database that isn't currently supported.
 
 The source code for Evidence's connectors is available [on GitHub](https://github.com/evidence-dev/evidence/tree/main/packages)
 
@@ -87,7 +90,7 @@ Now you can copy the access token and use it in your Evidence project.
 
 ### Snowflake
 
-Evidence supports connecting to Snowflake using a [Snowflake Account](https://docs.snowflake.com/en/user-guide/api-authentication), [Key-Pair Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth.html), [Browser-Based SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-browser-based-sso), or [Native SSO through Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-native-sso-okta).
+Evidence supports connecting to Snowflake using a [Snowflake Account](https://docs.snowflake.com/en/user-guide/api-authentication), [Key-Pair Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth.html), [Browser-Based SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-browser-based-sso), or [Native SSO through Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-native-sso-okta).  All Snowflake column names will be converted to lowercase in Evidence.
 
 #### Snowflake Account
 The Snowflake Account authentication method uses your Snowflake username and password to authenticate. If you don't have access to these, you will need to use one of the other authentication methods.
@@ -102,8 +105,8 @@ The Browser-Based SSO method uses a browser-based SSO flow to authenticate. To u
 The Native SSO through Okta method uses Okta to authenticate. To use this method, you will need to have an Okta account with MFA disabled connected to your Snowflake account.
 
 ### Redshift
-
 The Redshift connector uses the Postgres connector under the hood, so configuration options are similar.
+
 ### PostgreSQL
 
 #### SSL
@@ -122,6 +125,32 @@ postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootc
 ```
 
 Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
+
+### Trino
+
+#### Supported Authentication Types
+
+While Trino supports multiple [authentication types](https://trino.io/docs/current/security/authentication-types.html), the connector does currently only support the password based ones. Behind the scenes, the connector is using [Basic access authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) for communicating with Trino.
+
+#### HTTPS
+
+To connect to a Trino installation that is accessible via HTTPS, you need to set the SSL option to `true` and the port to `443`/`8443` (unless you are using a non standard port for HTTPS, in which case you should use that instead).
+
+#### Starburst Quickstart
+
+[Starburst](https://www.starburst.io/), the company behind Trino, offers a SAAS solution where they run Trino for you. Once you have signed up and created a Trino cluster, you should be able to connect Evidence with the following configuration:
+
+Host: `<YOUR_DOMAIN>-<YOUR_CLUSTER_NAME>.galaxy.starburst.io`
+
+Port: `443`
+
+User: `<YOUR_EMAIL>/accountadmin`
+
+SSL: `true`
+
+Password: The password you use to login to your Starburst account
+
+Alternatively, you can also create a service account at `https://<YOUR_DOMAIN>.galaxy.starburst.io/service-accounts` and use this to connect.
 
 ### Microsoft SQL Server {#mssql}
 
@@ -154,6 +183,24 @@ SQLite is a local file-based database. It should be stored in the root of your E
 DuckDB is a local file-based database. It should be stored in the root of your Evidence project.
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
+
+### Databricks
+
+Databricks is a cloud-based data lake. Evidence supports connecting to Databricks using a [personal access token](https://docs.databricks.com/en/dev-tools/auth.html#generate-a-token).
+
+#### MotherDuck
+
+To connect to MotherDuck, you will need a [service token](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
+
+In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`, and select `No extension` from the dropdown.
+
+#### Cube
+
+Cube offers semantic layer for your data. You can connect using the [Cube SQL API](https://cube.dev/docs/product/apis-integrations/sql-api). 
+
+Cube's API is PostgreSQL compatible, so you can use the Evidence PostgreSQL connector to connect to Cube.
+
+You can find the credentials to connect to Cube on the BI Integrations page under the SQL API Connection tab (you may need to enable the SQL API first).
 
 ### CSV and Parquet files
 
@@ -213,4 +260,4 @@ Additional information about CSV helper functions can be found in the [DuckDB do
 
 ## Troubleshooting
 
-If you need help with connecting to your data, please feel free to [send us a message in Slack](https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q).
+If you need help with connecting to your data, please feel free to [send us a message in Slack](https://slack.evidence.dev).

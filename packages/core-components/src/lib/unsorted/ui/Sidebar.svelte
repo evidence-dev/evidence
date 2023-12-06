@@ -4,6 +4,8 @@
 	export let fileTree;
 	import { fly, fade } from 'svelte/transition';
 	import { lock, unlock } from 'tua-body-scroll-lock';
+	import { afterUpdate } from 'svelte';
+	import Logo from './Logo.svelte';
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
@@ -11,17 +13,17 @@
 	export let mobileSidebarOpen = false;
 
 	// prevent scrolling of the underlying when the mobile sidebar is open
-	const toggleScrollLock = (mobileSidebarOpen) => {
+	afterUpdate(() => {
+		// afterupdate ensures that the mobileScrollable div is mounted before we lock everything else
 		if (browser) {
+			let scrollableElement = document.querySelector('#mobileScrollable');
 			if (!mobileSidebarOpen) {
-				unlock(); // unlock body scroll
+				unlock(scrollableElement); // unlock body scroll
 			} else {
-				lock(); // lock body scroll
+				lock(scrollableElement); // lock body scroll
 			}
 		}
-	};
-
-	$: toggleScrollLock(mobileSidebarOpen);
+	});
 </script>
 
 {#if mobileSidebarOpen}
@@ -37,9 +39,9 @@
 		out:fly|local={{ x: -100, duration: 200 }}
 	>
 		<div class=" pb-4 text-gray-700">
-			<div class="py-3 px-8 mb-6 flex items-start justify-between">
-				<a href="/" class="text-gray-800 font-sans text-md tracking-wide font-semibold block">
-					evidence
+			<div class="py-3 px-8 mb-3 flex items-start justify-between">
+				<a href="/" class="block mt-1">
+					<Logo />
 				</a>
 				<span
 					on:click={() => (mobileSidebarOpen = false)}
@@ -67,7 +69,10 @@
 					</button>
 				</span>
 			</div>
-			<div class="flex-grow px-8 h-[calc(100vh-8rem)] overflow-auto text-base sm:text-sm">
+			<div
+				class="flex-grow px-8 sm:pb-0 pb-4 h-[calc(100vh-8rem)] overflow-auto text-base sm:text-sm pretty-scrollbar"
+				id="mobileScrollable"
+			>
 				<div class="flex flex-col pb-6">
 					<a
 						class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
@@ -76,7 +81,7 @@
 						Home
 					</a>
 					{#each firstLevelFiles as file}
-						{#if file.children.length === 0}
+						{#if file.children.length === 0 && file.href}
 							<a
 								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
 								href={file.href}
@@ -106,14 +111,16 @@
 								</span>
 							{/if}
 							{#each file.children as file}
-								<a
-									class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
-									href={file.href}
-									class:selected={$page.url.pathname.toUpperCase() ===
-										file.href.toUpperCase() + '/'}
-								>
-									{file.label}
-								</a>
+								{#if file.href}
+									<a
+										class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
+										href={file.href}
+										class:selected={$page.url.pathname.toUpperCase() ===
+											file.href.toUpperCase() + '/'}
+									>
+										{file.label}
+									</a>
+								{/if}
 							{/each}
 						</div>
 					{/if}
@@ -131,13 +138,13 @@
 		>
 			<div class="flex flex-col pb-6">
 				<a
-					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100"
+					class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize hover:underline"
 					href="/"
 				>
 					Home
 				</a>
 				{#each firstLevelFiles as file}
-					{#if file.children.length === 0}
+					{#if file.children.length === 0 && file.href}
 						<a
 							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100"
 							href={file.href}
@@ -153,41 +160,30 @@
 					<div class="flex flex-col pb-6">
 						{#if file.href}
 							<a
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize transition-all duration-100"
+								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize hover:underline"
 								href={file.href}
 							>
 								{file.label}
 							</a>
 						{:else}
 							<span
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-all duration-100"
+								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize"
 								href={file.href}
 							>
 								{file.label}
 							</span>
 						{/if}
 						{#each file.children as file}
-							<a
-								class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate whitespace-break-spaces"
-								href={file.href}
-								class:selected={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
-							>
-								{file.label}
-							</a>
-							<!-- Inlining a number in here  -->
-							<!-- <div class="flex justify-between items-center gap-3 hover:text-gray-950 pr-3 group">
+							{#if file.href}
 								<a
-									class="text-xs tabular-nums group transition-all duration-100  inline-block group  "
+									class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate"
 									href={file.href}
 									class:selected={$page.url.pathname.toUpperCase() ===
 										file.href.toUpperCase() + '/'}
 								>
-									{(Math.random() * 100).toLocaleString('en-us', {
-										minimumFractionDigits: 1,
-										maximumFractionDigits: 1
-									})}%
+									{file.label}
 								</a>
-							</div> -->
+							{/if}
 						{/each}
 					</div>
 				{/if}
@@ -198,6 +194,10 @@
 
 <style>
 	.selected {
-		@apply font-medium text-gray-950;
+		@apply text-blue-600;
+	}
+
+	.selected:hover {
+		@apply text-blue-600;
 	}
 </style>

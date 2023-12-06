@@ -9,11 +9,12 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { colours } from '@evidence-dev/component-utilities/colours';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import {
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
+	import InvisibleLinks from '$lib/atoms/InvisibleLinks.svelte';
 
 	export let data = undefined;
 
@@ -89,6 +90,10 @@
 		];
 	}
 
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
+	printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+
 	export let abbreviations = false;
 	abbreviations = abbreviations === 'true' || abbreviations === true;
 
@@ -132,11 +137,11 @@
 				itemGap: 7,
 				textStyle: {
 					fontSize: 14,
-					color: colours.grey700
+					color: uiColours.grey700
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: colours.grey600,
+					color: uiColours.grey600,
 					overflow: 'break'
 				},
 				top: '0%'
@@ -165,12 +170,12 @@
 				padding: 6,
 				borderRadius: 4,
 				borderWidth: 1,
-				borderColor: colours.grey400,
+				borderColor: uiColours.grey400,
 				backgroundColor: 'white',
 				extraCssText:
 					'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 				textStyle: {
-					color: colours.grey900,
+					color: uiColours.grey900,
 					fontSize: 12,
 					fontWeight: 400
 				},
@@ -200,25 +205,25 @@
 					map: 'US',
 					nameProperty: nameProperty,
 					itemStyle: {
-						borderColor: colours.grey400,
-						areaColor: colours.grey100
+						borderColor: uiColours.grey400,
+						areaColor: uiColours.grey100
 					},
 					emphasis: {
 						itemStyle: {
-							areaColor: colours.grey300
+							areaColor: uiColours.grey300
 						},
 						label: {
 							show: true,
-							color: colours.grey900
+							color: uiColours.grey900
 						}
 					},
 					select: {
 						disabled: false,
 						itemStyle: {
-							areaColor: colours.grey300
+							areaColor: uiColours.grey300
 						},
 						label: {
-							color: colours.grey900
+							color: uiColours.grey900
 						}
 					},
 					data: mapData
@@ -261,14 +266,10 @@
 </script>
 
 {#if !error}
-	<EChartsMap {config} {data} {hasLink} />
+	<EChartsMap {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
 
 	{#if link}
-		{#each data as row}
-			{#if row[link] !== undefined}
-				<a href={row[link]} style="display: none;">{row[link]}</a>
-			{/if}
-		{/each}
+		<InvisibleLinks {data} {link} />
 	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />

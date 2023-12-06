@@ -249,7 +249,7 @@
 	}
 
 	.container {
-		@apply my-2;
+		@apply my-3;
 		display: flex;
 		flex-direction: column;
 	}

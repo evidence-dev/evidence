@@ -57,6 +57,12 @@
 
 - Updated dependencies [cb0fc468]
   - @evidence-dev/postgres@1.0.0-usql.0
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [c2540d2f]
+  - @evidence-dev/postgres@0.3.1
 
 ## 0.0.6
 

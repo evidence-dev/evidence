@@ -48,6 +48,12 @@
   .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
   on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
 
+## 0.3.1
+
+### Patch Changes
+
+- d92008d7: add password property to envMap
+
 ## 0.3.0
 
 ### Minor Changes

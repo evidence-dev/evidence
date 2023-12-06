@@ -14,4 +14,6 @@ group by category
 order by sales_usd0k desc
 ```
 
-<DataTable data={categories} link=category_link />
+<DataTable data={categories} rows=1>
+	<Column id=category_link contentType=link />
+</DataTable>

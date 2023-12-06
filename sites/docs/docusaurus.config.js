@@ -18,7 +18,7 @@ const config = {
 			// title: 'evidence',
 			logo: {
 				alt: 'Evidence',
-				src: 'img/evidence.svg'
+				src: 'img/wordmark-docs.svg'
 			},
 			items: [
 				{
@@ -113,7 +113,7 @@ const config = {
 					items: [
 						{
 							label: 'Slack',
-							href: 'https://join.slack.com/t/evidencedev/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q'
+							href: 'https://slack.evidence.dev'
 						},
 						{
 							label: 'Twitter',
@@ -135,7 +135,11 @@ const config = {
 		prism: {
 			darkTheme: require('prism-react-renderer/themes/palenight'),
 			additionalLanguages: ['sql']
-		}
+		},
+		metadata: [
+			{property: 'og:image', content: '/img/twitter-card-white-bg.png'},
+			{name: 'twitter:image', content: 'https://docs.evidence.dev/img/twitter-card-white-bg.png'} // twitter cannot use relative paths
+	],
 	},
 	presets: [
 		[

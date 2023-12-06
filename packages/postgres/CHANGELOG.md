@@ -47,6 +47,11 @@
 
   .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
   on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+## 0.3.1
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
 
 ## 0.3.0
 

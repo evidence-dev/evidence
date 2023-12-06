@@ -130,3 +130,61 @@ swapXY=true
     title="Title"
     subtitle="Subtitle"
 />
+
+# Value Labels
+
+## Stacked Bar with Labels
+
+<BarChart 
+    data={orders_by_category_2021} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    labels=true
+/>
+
+## Stacked Bar with Labels - Total turned off
+
+<BarChart 
+    data={orders_by_category_2021} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    labels=true
+    stackTotalLabel=false
+/>
+
+
+## Single Bar with Labels
+<BarChart 
+    data={items_all_time}
+    x=item
+    y=sales_usd0k
+    swapXY=true 
+    sort=true
+    labels=true
+/>
+
+## Bar with Log Scale
+
+<BarChart 
+    data={orders_by_category_2021} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    type=grouped
+    yLog=true
+/>
+
+## Very Long Bar
+
+```characters_ep_total
+SELECT * FROM './sources/characters_ep_total.csv'
+```
+
+<BarChart 
+    data={characters_ep_total} 
+    x=character_name 
+    y={['best_of_episodes','non_best_of_episodes']}
+    swapXY=true
+/>

@@ -27,6 +27,63 @@ hide_table_of_contents: false
 
 <img src='/img/datatable-all.png' width='500px'/>
 
+### Deltas
+
+```html
+<DataTable data="{countries}">
+	<Column id="country" />
+	<Column id="category" />
+	<Column id="value_usd" />
+    <Column id="yoy" contentType=delta fmt=pct title="Y/Y Chg"/>
+</DataTable>
+```
+
+<img src='/img/datatable-deltas.png' width='500px'/>
+
+### Conditional Formatting
+
+#### Default (`scaleColor=green`)
+```html
+<DataTable data={countries}>
+    <Column id=country />
+    <Column id=country_id align=center/>
+    <Column id=category align=center/>
+    <Column id=value_usd contentType=colorscale/>
+</DataTable>
+```
+
+<img src='/img/conditional-fmt-green.png' width='500px'/>
+
+
+#### `scaleColor=red`
+
+```html
+<DataTable data={countries}>
+    <Column id=country />
+    <Column id=country_id align=center/>
+    <Column id=category align=center/>
+    <Column id=value_usd contentType=colorscale scaleColor=red/>
+</DataTable>
+```
+
+<img src='/img/conditional-fmt-red.png' width='500px'/>
+
+#### `scaleColor=blue`
+
+```html
+<DataTable data={countries}>
+    <Column id=country />
+    <Column id=country_id align=center/>
+    <Column id=category align=center/>
+    <Column id=value_usd contentType=colorscale scaleColor=blue/>
+</DataTable>
+```
+
+<img src='/img/conditional-fmt-blue.png' width='500px'/>
+
+
+
+
 ### Including Images
 
 ```html
@@ -172,7 +229,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 ## DataTable
 
-### All Options
+### Options
 
 <table>						 
     <tr>	
@@ -261,15 +318,11 @@ By default, the link column of your table is hidden. If you would like it to be 
     </tr>
 </table>
 
-### Formatting
-
-Formatting is automatically applied based on the column names of your SQL query result. See the [formatting](/core-concepts/formatting) section for more details.
-
 ## Column
 
 Use the `Column` component to choose specific columns to display in your table, and to apply options to specific columns. If you don't supply any columns to the table, it will display all columns from your query result.
 
-### All Options
+### Options
 
 <table>
     <tr>	
@@ -318,7 +371,7 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td>contentType</td>
         <td>Lets you specify how to treat the content within a column. See below for contentType-specific options.</td>
         <td class='tcenter'>-</td>
-        <td class='tcenter'>link | image</td>
+        <td class='tcenter'>link | image | delta | colorscale</td>
         <td class='tcenter'>-</td>
     </tr>
 </table>
@@ -383,5 +436,76 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>-</td>
         <td class='tcenter'>true | false</td>
         <td class='tcenter'>false</td>
+    </tr>
+</table>
+
+
+### Deltas
+
+`contentType=delta`
+
+<table>
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>
+        <td>deltaSymbol</td>
+        <td>Whether to show the up/down delta arrow symbol</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
+    </tr>
+    <tr>
+        <td>downIsGood</td>
+        <td>If present, negative comparison values appear in green, and positive values appear in red.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>
+        <td>showValue</td>
+        <td>Whether to show the delta value. Set this to false to show only the delta arrow indicator.</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
+    </tr>
+</table>
+
+### Conditional Formatting (Color Scales)
+
+`contentType=colorscale`
+
+<table>
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>
+        <td>scaleColor</td>
+        <td>Color to use for the scale</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>green | blue | red</td>
+        <td class='tcenter'>green</td>
+    </tr>
+    <tr>
+        <td>colorMin</td>
+        <td>Set a minimum for the scale. Any values below that minimum will appear in the lowest color on the scale</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>min of column</td>
+    </tr>
+    <tr>
+        <td>colorMax</td>
+        <td>Set a maximum for the scale. Any values above that maximum will appear in the highest color on the scale</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>max of column</td>
     </tr>
 </table>

@@ -59,7 +59,7 @@ hide_table_of_contents: false
 
 ## USMap
 
-### All Options
+### Options
 
 <table>						 
     <tr>	
@@ -144,5 +144,15 @@ hide_table_of_contents: false
         <td>Format to use for values (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
         <td class='tcenter'>-</td>
+        <td class='tcenter'>-</td>
     </tr>
+</table>
+
+
+### Custom Echarts Options
+
+<table>
+<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
+<tr>	<td>echartsOptions</td>	<td>Custom Echarts options to override the default options. <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 </table>

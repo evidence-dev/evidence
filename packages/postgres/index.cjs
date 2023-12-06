@@ -7,48 +7,72 @@ const envMap = {
 	host: [
 		{ key: 'EVIDENCE_POSTGRES_HOST', deprecated: false },
 		{ key: 'POSTGRES_HOST', deprecated: false },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_HOST', deprecated: false },
+		{ key: 'REDSHIFT_HOST', deprecated: false },
 		{ key: 'host', deprecated: true },
 		{ key: 'HOST', deprecated: true }
 	],
 	port: [
 		{ key: 'EVIDENCE_POSTGRES_PORT', deprecated: false },
 		{ key: 'POSTGRES_PORT', deprecated: false },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_PORT', deprecated: false },
+		{ key: 'REDSHIFT_PORT', deprecated: false },
 		{ key: 'port', deprecated: true },
 		{ key: 'PORT', deprecated: true }
 	],
 	database: [
 		{ key: 'EVIDENCE_POSTGRES_DATABASE', deprecated: false },
 		{ key: 'POSTGRES_DATABASE', deprecated: false },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_DATABASE', deprecated: false },
+		{ key: 'REDSHIFT_DATABASE', deprecated: false },
 		{ key: 'database', deprecated: true },
 		{ key: 'DATABASE', deprecated: true }
 	],
 	user: [
 		{ key: 'EVIDENCE_POSTGRES_USER', deprecated: false },
 		{ key: 'POSTGRES_USER', deprecated: false },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_USER', deprecated: false },
+		{ key: 'REDSHIFT_USER', deprecated: false },
 		{ key: 'user', deprecated: true },
 		{ key: 'USER', deprecated: true }
 	],
 	password: [
 		{ key: 'EVIDENCE_POSTGRES_PASSWORD', deprecated: false },
 		{ key: 'POSTGRES_PASSWORD', deprecated: false },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_PASSWORD', deprecated: false },
+		{ key: 'REDSHIFT_PASSWORD', deprecated: false },
 		{ key: 'password', deprecated: true },
 		{ key: 'PASSWORD', deprecated: true }
 	],
 	ssl: [
 		{ key: 'EVIDENCE_POSTGRES_SSL', deprecated: false },
 		{ key: 'POSTGRES_SSL', deprecated: false },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_SSL', deprecated: false },
+		{ key: 'REDSHIFT_SSL', deprecated: false },
 		{ key: 'ssl', deprecated: true },
 		{ key: 'SSL', deprecated: true }
 	],
 	connString: [
 		{ key: 'EVIDENCE_POSTGRES_CONNECTIONSTRING', deprecated: false },
 		{ key: 'POSTGRES_CONNECTIONSTRING', deprecated: false },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_CONNECTIONSTRING', deprecated: false },
+		{ key: 'REDSHIFT_CONNECTIONSTRING', deprecated: false },
 		{ key: 'CONNECTIONSTRING', deprecated: true },
 		{ key: 'connectionString', deprecated: true }
 	],
 	schema: [
 		{ key: 'EVIDENCE_POSTGRES_SCHEMA', deprecated: false },
 		{ key: 'POSTGRES_SCHEMA', deprecated: true },
+		// Redshift uses this env var
+		{ key: 'EVIDENCE_REDSHIFT_SCHEMA', deprecated: false },
+		{ key: 'REDSHIFT_SCHEMA', deprecated: true },
 		{ key: 'schema', deprecated: true },
 		{ key: 'SCHEMA', deprecated: true }
 	],

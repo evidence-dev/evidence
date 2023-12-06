@@ -251,6 +251,8 @@
 	);
 	$: config.update((d) => {
 		d.series.push(...seriesConfig);
+		// Push series into legend:
+		d.legend.data.push(...seriesConfig.map((d) => d.name.toString()));
 		return d;
 	});
 
@@ -271,7 +273,7 @@
 				d.yAxis = { ...d.yAxis, ...chartOverrides.xAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.yAxis };
 			} else {
-				d.yAxis = { ...d.yAxis, ...chartOverrides.yAxis };
+				d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 			}
 			if (useTooltip) {

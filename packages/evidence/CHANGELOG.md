@@ -357,6 +357,171 @@
   - @evidence-dev/plugin-connector@2.0.0-usql.8
   - @evidence-dev/preprocess@4.0.0-usql.5
 
+## 23.0.4
+
+### Patch Changes
+
+- Updated dependencies [8408cb82]
+- Updated dependencies [d1cf6dc9]
+- Updated dependencies [b4596313]
+- Updated dependencies [551b036f]
+- Updated dependencies [3462a045]
+- Updated dependencies [336dec14]
+- Updated dependencies [8ad23995]
+- Updated dependencies [0f54d725]
+- Updated dependencies [8ce5ce82]
+  - @evidence-dev/core-components@2.1.4
+  - @evidence-dev/telemetry@1.0.6
+  - @evidence-dev/component-utilities@1.2.2
+  - @evidence-dev/db-orchestrator@2.3.4
+
+## 23.0.3
+
+### Patch Changes
+
+- 4243f3da: fix hard refresh on first project boot
+- Updated dependencies [17e2b444]
+- Updated dependencies [8ed2af44]
+- Updated dependencies [75ac7240]
+- Updated dependencies [c4d59109]
+  - @evidence-dev/preprocess@3.2.1
+  - @evidence-dev/component-utilities@1.2.1
+  - @evidence-dev/core-components@2.1.3
+
+## 23.0.2
+
+### Patch Changes
+
+- Updated dependencies [41df3c72]
+  - @evidence-dev/core-components@2.1.2
+  - @evidence-dev/db-orchestrator@2.3.3
+
+## 23.0.1
+
+### Patch Changes
+
+- Updated dependencies [9d5c11e1]
+  - @evidence-dev/core-components@2.1.1
+
+## 23.0.0
+
+### Minor Changes
+
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+
+### Patch Changes
+
+- 1752882a: Make logs more readable when executing queries
+- Updated dependencies [d09a32ce]
+- Updated dependencies [aafd7135]
+- Updated dependencies [75e419f8]
+- Updated dependencies [548d37ff]
+- Updated dependencies [5f660a8d]
+- Updated dependencies [56521bfb]
+- Updated dependencies [29ec9735]
+- Updated dependencies [410c1bc6]
+- Updated dependencies [e986ed77]
+- Updated dependencies [f8781d56]
+- Updated dependencies [1f20c79d]
+- Updated dependencies [e68a91f7]
+- Updated dependencies [9b8346f0]
+- Updated dependencies [614b9007]
+- Updated dependencies [90258dec]
+- Updated dependencies [71a77ca6]
+  - @evidence-dev/core-components@2.1.0
+  - @evidence-dev/component-utilities@1.2.0
+  - @evidence-dev/preprocess@3.2.0
+  - @evidence-dev/tailwind@1.1.0
+  - @evidence-dev/db-orchestrator@2.3.2
+
+## 22.0.1
+
+### Patch Changes
+
+- Updated dependencies [1e2fad14]
+  - @evidence-dev/core-components@2.0.4
+  - @evidence-dev/db-orchestrator@2.3.1
+
+## 22.0.0
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/db-orchestrator@2.3.0
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/component-utilities@1.1.3
+
+## 21.0.3
+
+### Patch Changes
+
+- 6891c4ba: User projects can now extend svelte.config.js
+
+## 21.0.2
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+
+## 21.0.1
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+
+## 21.0.0
+
+### Patch Changes
+
+- ca551518: Markdown pages are now more specific before being converted to sveltekit page filepaths
+- a1fa819e: bump vulnerable deps
+- ca551518: Add support for markdown partials
+- e7eb0ac2: Improved readability of 404 and 500 error pages
+- b8b5633f: Added manifest.json endpoint
+- Updated dependencies [798c0395]
+- Updated dependencies [16112191]
+- Updated dependencies [cdbd1773]
+- Updated dependencies [883c9ebb]
+- Updated dependencies [ef3ec286]
+- Updated dependencies [86b94da9]
+- Updated dependencies [b9d54140]
+- Updated dependencies [80594acd]
+- Updated dependencies [5639ac12]
+- Updated dependencies [615a2498]
+- Updated dependencies [4ff7dcac]
+- Updated dependencies [a1fa819e]
+- Updated dependencies [fc07d945]
+- Updated dependencies [86635f53]
+- Updated dependencies [a00c7c76]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [ca551518]
+- Updated dependencies [acd0be37]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@1.1.1
+  - @evidence-dev/db-orchestrator@2.2.5
+  - @evidence-dev/preprocess@3.1.2
+
+## 20.0.1
+
+### Patch Changes
+
+- Updated dependencies [9ade9c88]
+- Updated dependencies [9f568270]
+- Updated dependencies [9432c6e4]
+- Updated dependencies [be1cc666]
+  - @evidence-dev/core-components@1.2.1
+  - @evidence-dev/preprocess@3.1.1
+  - @evidence-dev/db-orchestrator@2.2.4
+
 ## 20.0.0
 
 ### Patch Changes

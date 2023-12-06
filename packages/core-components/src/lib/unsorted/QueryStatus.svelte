@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import { toasts } from '@evidence-dev/component-utilities/stores';
 	import { browser } from '$app/environment';

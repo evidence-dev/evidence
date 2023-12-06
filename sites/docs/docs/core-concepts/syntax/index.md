@@ -23,7 +23,7 @@ Markdown can be used to write expressively in text.
 ## Images 🖼️
 
 Evidence looks for images in your `static` folder, e.g. `static/my-logo.png`.
-![Company Logo](my-logo.png)
+![Company Logo](/my-logo.png)
 ```
 
 ## SQL
@@ -124,3 +124,21 @@ for name in names:
     print("Hello, " + name)
 ```
 ````
+
+## Partials
+
+Partials allow you to reuse chunks of Evidence markdown. [More on Partials](/markdown#partials).
+
+`./pages/index.md`
+```markdown
+{@partial "my-first-partial.md"}
+
+And some content specific to this page.
+```
+
+`./partials/my-first-partial.md`
+```markdown
+# This is my first partial
+
+This is some content in the partial.
+```

@@ -3,6 +3,7 @@ export { default as Area } from './Area.svelte';
 export { default as BarChart } from './BarChart.svelte';
 export { default as Bar } from './Bar.svelte';
 export { default as BigValue } from './BigValue.svelte';
+export { default as BoxPlot } from './BoxPlot.svelte';
 export { default as BubbleChart } from './BubbleChart.svelte';
 export { default as Bubble } from './Bubble.svelte';
 export { default as Chart } from './Chart.svelte';

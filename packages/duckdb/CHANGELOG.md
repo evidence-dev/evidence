@@ -37,6 +37,24 @@
 - Updated dependencies [29c149d6]
   - @evidence-dev/db-commons@0.2.1-usql.0
 
+## 0.3.0
+
+### Minor Changes
+
+- 27e6ea4b: upgrade duckdb to 0.9.2
+
+## 0.2.1
+
+### Patch Changes
+
+- 1f9a840c: upgrade duckdb to 0.9.1
+
+## 0.2.0
+
+### Minor Changes
+
+- 134b7d13: Allow connection to MotherDuck
+
 ## 0.1.1
 
 ### Patch Changes
