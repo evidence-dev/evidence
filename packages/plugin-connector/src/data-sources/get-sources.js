@@ -10,6 +10,7 @@ import {
 } from './schemas/datasource-spec.schema';
 import { cleanZodErrors } from '../lib/clean-zod-errors.js';
 import { createHash } from 'node:crypto';
+import { decodeBase64Deep } from '../lib/b64-deep';
 
 /**
  * Returns the path to the sources directory, if it exists in the current directory.
@@ -227,7 +228,7 @@ async function loadConnectionOptions(sourceDir) {
 	if (!optionsFileExists) return {};
 	const optionsFile = await fs.readFile(optionsFilePath).then((r) => r.toString());
 	try {
-		return yaml.parse(optionsFile);
+		return decodeBase64Deep(yaml.parse(optionsFile));
 	} catch (e) {
 		throw new Error(`Error parsing connection.options.yaml file; ${sourceDir}`, { cause: e });
 	}
