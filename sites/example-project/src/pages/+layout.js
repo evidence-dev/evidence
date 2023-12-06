@@ -23,7 +23,7 @@ const loadDB = async () => {
 	}
 
 	if (!renderedFiles) {
-		throw new Error('Unable to load source manifest. Do you need to run build:sources?');
+		throw new Error('Unable to load source manifest. Do you need to run sources?');
 	}
 
 	await profile(initDB);
@@ -54,18 +54,48 @@ async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch })
 	return Object.fromEntries(resolved_entries.filter(Boolean));
 }
 
+/** @type {Map<string, { inputs: Record<string, string>, sql_strings: { sql: string, query_name: string }[] }>} */
+const dummy_pages = new Map();
+
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async (event) => {
 	const {
-		data: { customFormattingSettings, routeHash, paramsHash, isUserPage, evidencemeta }
+		data: { customFormattingSettings, routeHash, paramsHash, isUserPage, evidencemeta },
+		url,
+		fetch
 	} = event;
+
+	/** @type {App.PageData["data"]} */
+	let data = {};
+	const { inputs = {}, sql_strings = [] } = dummy_pages.get(url.pathname) ?? {};
+
+	const is_dummy_page = dummy_pages.has(url.pathname);
+	if ((dev || building) && !browser && !is_dummy_page) {
+		dummy_pages.set(url.pathname, { inputs, sql_strings });
+		await fetch(url);
+		dummy_pages.delete(url.pathname);
+
+		data = Object.fromEntries(
+			sql_strings.map(({ sql, query_name }) => {
+				let result;
+				try {
+					result = query(sql, {
+						route_hash: routeHash,
+						additional_hash: paramsHash,
+						query_name,
+						prerendering: building
+					});
+				} catch (e) {
+					result = e;
+				}
+				return [query_name, result];
+			})
+		);
+	}
 
 	if (!browser) await database_initialization;
 	// account for potential changes in manifest (source query hmr)
 	if (!browser && dev) await initDB();
-
-	/** @type {App.PageData["data"]} */
-	let data = {};
 
 	// let SSR saturate the cache first
 	if (browser && isUserPage) {
@@ -81,6 +111,14 @@ export const load = async (event) => {
 						const result = await query(sql);
 						return callback(result);
 					})();
+				}
+
+				if ((dev || building) && !browser && is_dummy_page) {
+					sql_strings.push({ sql, query_name });
+					return Object.defineProperty([], '_evidenceColumnTypes', {
+						enumerable: false,
+						value: []
+					});
 				}
 
 				return callback(
@@ -101,9 +139,38 @@ export const load = async (event) => {
 				await profile(setParquetURLs, renderedFiles);
 			}
 		},
+		inputs: new Proxy(inputs, {
+			get(target, prop) {
+				if (typeof prop === 'symbol') return undefined;
+				if (prop === 'then') return undefined;
+				if (prop === 'loading') return undefined;
+				if (prop === 'error') return undefined;
+				if (prop === '_evidenceColumnTypes') return undefined;
+				return target[prop] ?? recursiveFillerObject;
+			},
+			set(target, prop, value) {
+				target[prop] = value;
+				return true;
+			}
+		}),
 		data,
 		customFormattingSettings,
 		isUserPage,
 		evidencemeta
 	});
 };
+
+const recursiveFillerObject = new Proxy(
+	{},
+	{
+		get(target, prop) {
+			if (typeof prop === 'symbol') return undefined;
+			if (prop === 'then') return undefined;
+			if (prop === 'loading') return undefined;
+			if (prop === 'error') return undefined;
+			if (prop === '_evidenceColumnTypes') return undefined;
+			if (prop === 'toString') return () => 'null';
+			return recursiveFillerObject;
+		}
+	}
+);
