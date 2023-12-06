@@ -353,70 +353,71 @@ module.exports.options = {
 		title: 'Account',
 		type: 'string',
 		secret: false,
-		description: '',
 		required: true
 	},
 	username: {
 		title: 'Username',
 		type: 'string',
 		secret: true,
-		description: '',
+		shown: true,
 		required: true
 	},
 	database: {
 		title: 'Database',
 		type: 'string',
 		secret: false,
-		description: '',
 		required: true
 	},
 	warehouse: {
 		title: 'Warehouse',
 		type: 'string',
 		secret: false,
-		description: '',
 		required: true
 	},
 	role: {
 		title: 'Role',
 		type: 'string',
 		secret: false,
-		description: '',
 		required: true
 	},
 	schema: {
 		title: 'Schema',
 		type: 'string',
 		secret: false,
-		description: '',
 		required: true
 	},
 	authenticator: {
 		title: 'Auth Method',
 		type: 'select',
 		secret: false,
-		description: '',
 		required: true,
 		options: [
+			{ label: 'Username/Password', value: 'userpass' },
 			{ label: 'JWT', value: 'snowflake_jwt' },
 			{ label: 'Browser', value: 'externalbrowser' },
 			{ label: 'Okta', value: 'okta' }
 		],
 		nest: false,
 		children: {
+			userpass: {
+				password: {
+					title: 'Password',
+					type: 'string',
+					secret: true,
+					required: true
+				}
+			},
 			snowflake_jwt: {
 				private_key: {
 					title: 'Private Key',
 					type: 'string',
 					secret: true,
-					description: '',
 					required: true
 				},
 				passphrase: {
 					title: 'Passphrase',
 					type: 'string',
 					secret: true,
-					description: '',
 					required: true
 				}
 			},
@@ -425,14 +426,12 @@ module.exports.options = {
 					title: 'Password',
 					type: 'string',
 					secret: true,
-					description: '',
 					required: true
 				},
 				okta_url: {
 					title: 'Okta URL',
 					type: 'string',
 					secret: true,
-					description: '',
 					required: true
 				}
 			}

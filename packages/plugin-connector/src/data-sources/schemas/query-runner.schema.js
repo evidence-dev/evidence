@@ -136,6 +136,7 @@ export const DatabaseConnectorFactorySchema = z
  * @property {string} title
  * @property {'string' | 'number' | 'boolean' | 'select' | 'file'} type
  * @property {boolean} [secret]
+ * @property {boolean} [shown]
  * @property {string} [description]
  * @property {boolean} [virtual]
  * @property {boolean} [nest]
@@ -152,6 +153,7 @@ export const DatasourceOptionSpecSchema = z.record(
 		title: z.string(),
 		type: z.enum(['string', 'number', 'boolean', 'select', 'file']),
 		secret: z.boolean().default(false),
+		shown: z.boolean().default(true),
 		/**
 		 * Indicates that the field should not actually be persisted. Should be combined with `references`
 		 */

@@ -7,3 +7,4 @@ databases:
     @evidence-dev/postgres: { }
     @evidence-dev/sqlite: { }
     @evidence-dev/connector-gsheets: { }
+    @evidence-dev/snowflake: { }
