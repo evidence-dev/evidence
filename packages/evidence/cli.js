@@ -225,8 +225,7 @@ prog
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
 
-		const isExampleProject = Boolean(process.env.__EXAMPLE_PROJECT)
-
+		const isExampleProject = Boolean(process.env.__EXAMPLE_PROJECT);
 
 		if (!isExampleProject) {
 			const templatePath = path.join('.evidence', 'template');
