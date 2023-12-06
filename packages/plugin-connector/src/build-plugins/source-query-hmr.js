@@ -4,7 +4,9 @@ import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
 import { basename, dirname, resolve } from 'path';
 import { readFile } from 'fs/promises';
-
+import { readFileSync } from 'fs';
+import nodePath from 'path';
+import yaml from 'yaml';
 /**
  * Extracts source, query, and source_path from a path
  * @param {string} path
@@ -12,10 +14,16 @@ import { readFile } from 'fs/promises';
  */
 function getSourceAndQuery(path) {
 	const query = basename(path).split('.')[0];
+	
 	while (basename(dirname(path)) !== 'sources') {
 		path = dirname(path);
 	}
-	const source = basename(path);
+	
+	const sourceConnection = readFileSync(nodePath.join(path, 'connection.yaml'), {
+		encoding: 'utf-8'
+	});
+
+	const source = yaml.parse(sourceConnection).name;
 	return { source, query, source_path: resolve(path) };
 }
 
