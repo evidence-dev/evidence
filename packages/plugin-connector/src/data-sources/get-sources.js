@@ -197,7 +197,9 @@ export async function cleanParquetFiles(dataDir, hashes) {
 		// Clean up sources that have been renamed or removed
 		if (!hashedSources.includes(sourceName)) {
 			await fs.rm(sourcePath, { recursive: true, force: true });
+			continue;
 		}
+
 		const queries = await fs.readdir(sourcePath);
 		const sourceHashes = hashes[sourceName];
 		for (const queryName of queries) {

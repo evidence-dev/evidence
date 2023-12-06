@@ -13,7 +13,6 @@ import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import ora from 'ora';
-import merge from 'lodash.merge';
 /**
  * @param {string} directory
  * @returns {Promise<SourceDirectory>}
@@ -54,7 +53,7 @@ export const buildSources = async (
 	/** @type {Record<string, string[]>} */
 	const manifest = {};
 
-	/** @type {Record<string, Record<string, string>>} */
+	/** @type {Record<string, Record<string, string | null>>} */
 	const hashes = {};
 
 	for (const source of sources) {
@@ -66,6 +65,7 @@ export const buildSources = async (
 
 		if (filters?.sources && !filters.sources.has(source.name)) {
 			console.log(chalk.yellow(`[!] Skipping filtered source ${source.name}`));
+			hashes[source.name] = existingHashes[source.name]; // passthrough hashes
 			continue;
 		}
 		const targetPlugin = plugins[source.type];
@@ -75,6 +75,7 @@ export const buildSources = async (
 					`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
 				)
 			);
+			hashes[source.name] = existingHashes[source.name]; // passthrough hashes, but this probably won't be useful
 			continue;
 		}
 
@@ -95,7 +96,7 @@ export const buildSources = async (
 			 */
 			isCached: (name, content) => {
 				const hash = createHash('md5').update(content).digest('hex');
-				return existingHashes[source.name][name] === hash;
+				return existingHashes[source.name]?.[name] === hash;
 			},
 			/**
 			 * @param {string} name
@@ -142,13 +143,18 @@ export const buildSources = async (
 
 					if (!utils.isFiltered(table.name)) {
 						spinner.warn('Skipping: Filtered');
+						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
 						continue;
 					}
 
 					if (filters?.only_changed && utils.isCached(table.name, table.content)) {
 						spinner.warn('Skipping: Cached');
+						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
 						continue;
 					}
+					hashes[source.name][table.name] = createHash('md5')
+						.update(table.content ?? '')
+						.digest('hex');
 
 					const filename = await flushSource(
 						source,
@@ -156,7 +162,7 @@ export const buildSources = async (
 							name: table.name,
 							filepath: path.join(source.sourceDirectory, table.name),
 							content: table.content,
-							hash: createHash('md5').update(table.content).digest('hex')
+							hash: hashes[source.name][table.name]
 						},
 						table,
 						dataPath,
@@ -196,10 +202,12 @@ export const buildSources = async (
 
 					if (!utils.isFiltered(query.name)) {
 						spinner.warn('Skipping: Filtered');
+						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
 						continue;
 					}
 
 					if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
+						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
 						spinner.warn('Skipping: Cached');
 						continue;
 					}
@@ -255,10 +263,8 @@ export const buildSources = async (
 		manifest[source.name] = outputFilenames;
 	}
 
-	const finalHashes = merge({}, existingHashes, hashes);
-
-	await saveSourceHashes(metaPath, finalHashes);
-	await cleanParquetFiles(dataPath, finalHashes);
+	await saveSourceHashes(metaPath, hashes);
+	await cleanParquetFiles(dataPath, hashes);
 	return manifest;
 };
 
