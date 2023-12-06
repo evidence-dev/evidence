@@ -1,10 +1,18 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { scale, fly } from 'svelte/transition';
 
+	export let id;
 	/** @type {import("@evidence-dev/component-utilities/stores).ToastStatus } */
 	export let status = 'info';
 	export let title;
 	export let message;
+	export let dismissable = true;
+	const dispatch = createEventDispatcher();
+
+	const dismiss = () => {
+		if (dismissable) dispatch('dismiss', { id });
+	};
 </script>
 
 <div
@@ -12,6 +20,8 @@
 		''}"
 	in:scale
 	out:fly|local={{ x: 1000, duration: 1000, delay: 0, opacity: 0.8 }}
+	on:click={dismiss}
+	on:keypress={dismiss}
 >
 	{#if title}
 		<span class="cursor-pointer font-bold pr-8 flex items-center">{title}</span>
