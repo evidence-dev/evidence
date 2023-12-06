@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import { spawn } from 'child_process';
 import * as chokidar from 'chokidar';
@@ -205,17 +206,25 @@ prog
 	});
 
 prog
-	.command('build:sources')
+	.command('sources')
+	.alias('build:sources') // We don't want to break existing projects
 	.describe('creates .parquet files from source queries')
 	.option('--changed', 'only build sources whose queries have changed')
 	.option('--sources', 'only build queries from the specified source directories')
 	.option('--queries', 'only build the specified queries')
 	.option('--debug', 'show debug output')
-	.example('npx evidence build:sources --changed')
-	.example('npx evidence build:sources --sources needful_things --queries orders,reviews')
-	.example('npx evidence build:sources --queries needful_things.orders,needful_things.reviews')
-	.example('npx evidence build:sources --sources needful_things,social_media')
+	.example('npx evidence sources --changed')
+	.example('npx evidence sources --sources needful_things --queries orders,reviews')
+	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
+	.example('npx evidence sources --sources needful_things,social_media')
 	.action(async (opts) => {
+		if (process.argv.some((arg) => arg.includes('build:sources'))) {
+			console.log(
+				chalk.bold.red(
+					'[!!] build:sources is deprecated and has been renamed to sources. Expect it to be removed in the future.\n'
+				)
+			);
+		}
 		// TODO: Need a debug flag of some sort
 		if (!opts.debug)
 			process.on('uncaughtException', (e) => {

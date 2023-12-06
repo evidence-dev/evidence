@@ -23,7 +23,7 @@ const loadDB = async () => {
 	}
 
 	if (!renderedFiles) {
-		throw new Error('Unable to load source manifest. Do you need to run build:sources?');
+		throw new Error('Unable to load source manifest. Do you need to run sources?');
 	}
 
 	await profile(initDB);
