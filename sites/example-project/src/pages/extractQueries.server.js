@@ -21,15 +21,12 @@ const updateDirectoriesandStatus = function (queries, routeHash) {
 export const getStatusAndExtractQueries = function (route) {
 	let routeHash = md5(route);
 	let fileRoute = `./src/pages/${route}/+page.md`;
-	let content = fs.readFileSync(fileRoute);
-	content = content ? content.toString() : null;
+	let content = fs.readFileSync(fileRoute, 'utf-8');
 
-	if (content) {
-		let queries = preprocessor.extractQueries(content.toString());
+	let partialInjectedContent = preprocessor.injectPartials(content);
+	let queries = preprocessor.extractQueries(partialInjectedContent);
 
-		let queryStatus = updateDirectoriesandStatus(queries, routeHash);
-		return queryStatus;
-	} else {
-		return [{}]; // a little jank
-	}
+	let queryStatus = updateDirectoriesandStatus(queries, routeHash);
+	return queryStatus;
+
 };
