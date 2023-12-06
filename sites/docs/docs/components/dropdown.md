@@ -3,7 +3,9 @@ title: Dropdown
 sidebar_position: 31
 ---
 
-Creates a dropdown menu with a list of options that can be selected. The selected option can then used in queries or in markdown.
+Creates a dropdown menu with a list of options that can be selected. The selected option can be used to filter queries or in markdown.
+
+To see how to filter a query using a dropdown, see [Filters](/core-concepts/filters).
 
 <!-- TODO: @archiewood add images -->
 
@@ -15,12 +17,6 @@ Creates a dropdown menu with a list of options that can be selected. The selecte
     name=name_of_dropdown
     value=column_name
 />
-
-```sql filtered_query
-select *
-from table
-where column_name like '${input.name_of_dropdown}'
-```
 ````
 
 ## Examples
@@ -67,6 +63,22 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
     value=column_name
     label=column_name_containg_label
 />
+````
+
+### Dropdown filtering a Query
+
+````markdown
+<Dropdown
+    data={query_name} 
+    name=name_of_dropdown
+    value=column_name
+/>
+
+```sql filtered_query
+select *
+from table
+where column_name like '${input.name_of_dropdown}'
+```
 ````
 
 ## Dropdown
