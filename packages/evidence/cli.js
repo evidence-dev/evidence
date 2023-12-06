@@ -224,11 +224,16 @@ prog
 			});
 		const sources = opts.sources?.split(',') ?? null;
 		const queries = opts.queries?.split(',') ?? null;
-		if (fs.readdirSync(process.cwd()).includes('.evidence')) {
+
+		const isExampleProject = Boolean(process.env.__EXAMPLE_PROJECT)
+
+
+		if (!isExampleProject) {
 			const templatePath = path.join('.evidence', 'template');
 			await fs.mkdir(templatePath, { recursive: true });
 			process.chdir(templatePath);
 		}
+
 		await updateDatasourceOutputs('static/data', '.evidence-queries', {
 			sources: sources ? new Set(sources) : sources,
 			queries: queries ? new Set(queries) : queries,

@@ -4,7 +4,7 @@
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
-		"build:sources": "evidence build:sources",
+		"build:sources": "__EXAMPLE_PROJECT=true evidence build:sources",
 		"preview": "vite preview --port 3000"
 	},
 	"type": "module",
