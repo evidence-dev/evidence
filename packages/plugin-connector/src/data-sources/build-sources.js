@@ -1,7 +1,12 @@
 import chalk from 'chalk';
 import fs from 'fs/promises';
 import { getDatasourcePlugins } from './get-datasource-plugins';
-import { getPastSourceHashes, getQueries, saveSourceHashes } from './get-sources';
+import {
+	cleanParquetFiles,
+	getPastSourceHashes,
+	getQueries,
+	saveSourceHashes
+} from './get-sources';
 import path from 'path';
 import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
@@ -48,7 +53,7 @@ export const buildSources = async (
 	/** @type {Record<string, string[]>} */
 	const manifest = {};
 
-	/** @type {Record<string, Record<string, string>>} */
+	/** @type {Record<string, Record<string, string | null>>} */
 	const hashes = {};
 
 	for (const source of sources) {
@@ -60,6 +65,7 @@ export const buildSources = async (
 
 		if (filters?.sources && !filters.sources.has(source.name)) {
 			console.log(chalk.yellow(`[!] Skipping filtered source ${source.name}`));
+			hashes[source.name] = existingHashes[source.name]; // passthrough hashes
 			continue;
 		}
 		const targetPlugin = plugins[source.type];
@@ -69,6 +75,7 @@ export const buildSources = async (
 					`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
 				)
 			);
+			hashes[source.name] = existingHashes[source.name]; // passthrough hashes, but this probably won't be useful
 			continue;
 		}
 
@@ -89,18 +96,22 @@ export const buildSources = async (
 			 */
 			isCached: (name, content) => {
 				const hash = createHash('md5').update(content).digest('hex');
-				return existingHashes[source.name][name] === hash;
+				return existingHashes[source.name]?.[name] === hash;
 			},
 			/**
 			 * @param {string} name
+			 * @returns {boolean} true if query is included in filters
 			 */
 			isFiltered: (name) =>
-				Boolean(filters?.queries?.has(name) || filters?.queries?.has(`${source.name}.${name}`)),
+				Boolean(filters?.queries?.has(name) || filters?.queries?.has(`${source.name}.${name}`)) ||
+				!filters?.queries,
 			/**
 			 * @param {string} name
 			 * @param {string} content
+			 * @returns {boolean}
 			 */
-			shouldRun: (name, content) => !utils.isFiltered(name) && !utils.isCached(name, content),
+			shouldRun: (name, content) =>
+				!utils.isFiltered(name) && Boolean(filters?.only_changed) && !utils.isCached(name, content),
 			/**
 			 * @param {string} name
 			 * @param {string} content
@@ -129,13 +140,29 @@ export const buildSources = async (
 
 				try {
 					spinner.start('Processing...');
+
+					if (!utils.isFiltered(table.name)) {
+						spinner.warn('Skipping: Filtered');
+						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
+						continue;
+					}
+
+					if (filters?.only_changed && utils.isCached(table.name, table.content)) {
+						spinner.warn('Skipping: Cached');
+						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
+						continue;
+					}
+					hashes[source.name][table.name] = createHash('md5')
+						.update(table.content ?? '')
+						.digest('hex');
+
 					const filename = await flushSource(
 						source,
 						{
 							name: table.name,
 							filepath: path.join(source.sourceDirectory, table.name),
 							content: table.content,
-							hash: createHash('md5').update(table.content).digest('hex')
+							hash: hashes[source.name][table.name]
 						},
 						table,
 						dataPath,
@@ -170,8 +197,21 @@ export const buildSources = async (
 					interval: 250
 				});
 
-				spinner.start('Processing...');
 				try {
+					spinner.start('Processing...');
+
+					if (!utils.isFiltered(query.name)) {
+						spinner.warn('Skipping: Filtered');
+						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
+						continue;
+					}
+
+					if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
+						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
+						spinner.warn('Skipping: Cached');
+						continue;
+					}
+
 					hashes[source.name][query.name] = createHash('md5')
 						.update(query.content ?? '')
 						.digest('hex');
@@ -224,6 +264,7 @@ export const buildSources = async (
 	}
 
 	await saveSourceHashes(metaPath, hashes);
+	await cleanParquetFiles(dataPath, hashes);
 	return manifest;
 };
 

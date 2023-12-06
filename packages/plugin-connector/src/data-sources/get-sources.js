@@ -183,6 +183,39 @@ export async function saveSourceHashes(baseDir, hashes) {
 }
 
 /**
+ * Saves the supplied source hashes
+ * @param {string} dataDir The path to .evidence/template
+ * @param {import("zod").infer<typeof DatasourceCacheSchema>} hashes
+ */
+export async function cleanParquetFiles(dataDir, hashes) {
+	const sourceDirectories = (await fs.readdir(dataDir, { withFileTypes: true }))
+		.filter((r) => r.isDirectory())
+		.map((r) => r.name);
+	const hashedSources = Object.keys(hashes);
+
+	for (const sourceName of sourceDirectories) {
+		const sourcePath = path.join(dataDir, sourceName);
+		// Clean up sources that have been renamed or removed
+		if (!hashedSources.includes(sourceName)) {
+			await fs.rm(sourcePath, { recursive: true, force: true });
+			continue;
+		}
+
+		const queries = await fs.readdir(sourcePath);
+		const sourceHashes = hashes[sourceName];
+		for (const queryName of queries) {
+			const queryPath = path.join(sourcePath, queryName);
+			const currentResults = await fs.readdir(queryPath);
+			for (const resultHash of currentResults) {
+				if (resultHash !== sourceHashes[queryName]) {
+					await fs.rm(path.join(queryPath, resultHash), { recursive: true, force: true });
+				}
+			}
+		}
+	}
+}
+
+/**
  * Reads a YAML file containing connection parameters from the given source directory,
  * parses it, and returns a validated datasource specification.
  *
