@@ -1,8 +1,14 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
+	import { Button } from '../../atoms/button';
+
+	import { DeviceFloppy } from '@evidence-dev/component-utilities/icons';
+
 	export let availablePackages;
 	export let ghost = false;
+	export let existingSources = [];
+
 	let newSourceType = '';
 	let newSourceName = '';
 
@@ -12,6 +18,8 @@
 		dispatch('newSource', { newSourceType, newSourceName });
 		newSourceName = '';
 	}
+
+	$: sourceNameDuplicate = newSourceName && existingSources.some((es) => es.name === newSourceName);
 </script>
 
 <div
@@ -48,22 +56,31 @@
 				{/each}
 			</select>
 		</label>
-
-		<label for="sourceName" class="flex justify-between w-full">
-			Source name
-			<input
-				required
-				pattern="^[\w_]+$"
-				name="sourceName"
-				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
-				bind:value={newSourceName}
-			/>
-		</label>
-
-		<button
-			class="ml-auto flex bg-green-600 gap-2 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
-		>
-			Confirm
-		</button>
+		<div>
+			<label for="sourceName" class="flex justify-between w-full">
+				Source name
+				<input
+					required
+					pattern="^[\w_]+$"
+					name="sourceName"
+					class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
+					bind:value={newSourceName}
+				/>
+			</label>
+			<div class="flex justify-end w-full">
+				{#if sourceNameDuplicate}
+					<span class="text-red-500 font-bold text-sm">A source with this name already exists</span>
+				{/if}
+			</div>
+		</div>
+		<div class="ml-auto">
+			<Button
+				disabled={sourceNameDuplicate}
+				size="md"
+				icon={DeviceFloppy}
+				variant="success"
+				type="submit">Confirm</Button
+			>
+		</div>
 	</form>
 </div>

@@ -290,20 +290,3 @@
 	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraBoldItalic.woff2') format('woff2'),
 		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-ExtraBoldItalic.woff') format('woff');
 }
-
-@font-face {
-	font-family: 'Spectral';
-	font-style: normal;
-	font-weight: 900;
-	font-display: block;
-	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Black.woff2') format('woff2'),
-		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-Black.woff') format('woff');
-}
-@font-face {
-	font-family: 'Spectral';
-	font-style: italic;
-	font-weight: 900;
-	font-display: block;
-	src: url('@evidence-dev/tailwind/fonts/Spectral/Spectral-BlackItalic.woff2') format('woff2'),
-		url('@evidence-dev/tailwind/fonts/Spectral/Spectral-BlackItalic.woff') format('woff');
-}

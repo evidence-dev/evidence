@@ -142,12 +142,14 @@
 <div class="w-full">
 	<label class="flex justify-between w-full h-11 items-start">
 		<div class="mr-2 inline-flex flex-col gap-1">
-			<p class="">
-				{title}
-				{#if spec.required}<sup class="text-red-500">*</sup>{/if}
+			<p class="flex items-center gap-1">
 				{#if spec.description}
 					<Hint>{spec.description}</Hint>
 				{/if}
+				<span>
+					{title}
+					{#if spec.required}<sup class="text-red-500">*</sup>{/if}
+				</span>
 			</p>
 			<p class="text-red-500 text-xs font-bold">{error}</p>
 		</div>

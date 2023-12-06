@@ -4,6 +4,7 @@ import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
 import { basename, dirname, resolve } from 'path';
 import { readFile } from 'fs/promises';
+import debounce from 'lodash.debounce';
 
 /**
  * Extracts source, query, and source_path from a path
@@ -23,29 +24,32 @@ const build_watcher = new EventEmitter();
 
 if (process.env.NODE_ENV === 'development') {
 	const watcher = watch('../../sources/**');
-	watcher.on('change', async (path) => {
-		const { query, source_path } = getSourceAndQuery(path);
-		const datasources = await getSources(resolve('../../sources'));
-		const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
-		if (!datasource) return;
+	watcher.on(
+		'change',
+		debounce(async (path) => {
+			const { query, source_path } = getSourceAndQuery(path);
+			const datasources = await getSources(resolve('../../sources'));
+			const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
+			if (!datasource) return;
 
-		build_watcher.emit('change', path);
+			build_watcher.emit('change', path);
 
-		// go in . (aka .evidence/template)
-		const error = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
-			sources: new Set([datasource.name]),
-			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
-			only_changed: false
-		}).catch((e) => e);
+			// go in . (aka .evidence/template)
+			const error = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
+				sources: new Set([datasource.name]),
+				queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
+				only_changed: false
+			}).catch((e) => e);
 
-		if (error) {
-			console.error(`Error occured while reloading source: ${error}`);
-			build_watcher.emit('done', path, {}, error);
-		} else {
-			const manifest = await readFile('./static/data/manifest.json', 'utf-8');
-			build_watcher.emit('done', path, manifest, null);
-		}
-	});
+			if (error) {
+				console.error(`Error occured while reloading source: ${error}`);
+				build_watcher.emit('done', path, {}, error);
+			} else {
+				const manifest = await readFile('./static/data/manifest.json', 'utf-8');
+				build_watcher.emit('done', path, manifest, null);
+			}
+		}, 250)
+	);
 }
 
 /** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */

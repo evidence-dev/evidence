@@ -2,6 +2,10 @@
 	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
+
+	import { Button } from '../../atoms/button';
+	import { DeviceFloppy, Plug } from '@evidence-dev/component-utilities/icons';
+
 	export let sourcePlugin;
 	export let source;
 
@@ -131,19 +135,24 @@
 			<p class="text-green-500 font-bold text-xs">Connection Successful!</p>
 		{/if}
 
-		<button
-			class="flex gap-2 mr-1 text-blue-600 border text-xs px-2 py-1 border-blue-600 font-bold rounded hover:text-blue-700 hover:border-blue-700 transition h-min disabled:bg-gray-100 disabled:text-blue-400 disabled:border-blue-400"
+		<Button
+			outline
+			size="md"
 			formaction="?/testSource"
 			disabled={validationLoading || configurationLoading}
+			icon={Plug}
 		>
 			{validationLoading ? 'Loading...' : 'Test Connection'}
-		</button>
+		</Button>
 
-		<button
-			class="flex gap-2 mr-1 bg-green-600 border text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition h-min disabled:bg-green-400 disabled:text-gray-100 disabled:border-transparent"
+		<Button
+			variant="success"
+			icon={DeviceFloppy}
+			size="md"
 			disabled={configurationLoading || validationLoading}
+			type="submit"
 		>
 			Confirm Changes
-		</button>
+		</Button>
 	</div>
 </form>
