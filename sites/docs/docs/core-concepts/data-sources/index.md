@@ -8,7 +8,7 @@ Evidence supports connecting to a databases, flat data files, and non-SQL data s
 
 You can connect to multiple data sources in a single Evidence project.
 
-## Connect your data
+## Connect your data sources
 
 To connect your local development environment to a database:
 
@@ -21,7 +21,31 @@ Evidence will save your credentials locally, and run a test query to confirm tha
 
 Connections to databases in production are managed via [environment variables](/cli#environment-variables)
 
-### Supported data sources
+## Configure Source Queries
+
+Evidence extracts data from all sources systems into a common storage format (called Parquet).
+
+For SQL data sources, you choose which data to extract by writing "Source Query" .sql files. These queries should be stored in the `/sources/[source_name]/` folder.
+
+**N.B: Source Queries use the data source's native SQL dialect.**
+
+```code
+.-- sources/
+   `-- my_source/
+      |-- connection.yaml
+      `-- my_source_query.sql
+```
+
+:::info[Non-SQL data sources]
+
+For non-SQL data sources, configuring what data to extract is achieved in other ways. Refer to the documentation for the specific data source for details.
+:::
+
+## Run Sources
+
+You can extract data from configured sources in Evidence using  `npm run sources`
+
+## Supported data sources
 
 Evidence supports:
 

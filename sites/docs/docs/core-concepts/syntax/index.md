@@ -28,7 +28,7 @@ Evidence looks for images in your `static` folder, e.g. `static/my-logo.png`.
 
 ## SQL
 
-Markdown code fences in Evidence run SQL queries and return data. The SQL dialect matches the database you're connecting to. [More on Queries](/core-concepts/queries).
+Markdown code fences in Evidence run inline queries and return data. These code fences run the [DuckDB SQL](https://duckdb.org/docs/sql/introduction) dialect. [More on Queries](/core-concepts/queries).
 
 ````markdown
 ```sql orders_by_month
@@ -110,6 +110,23 @@ The current page path is: {$page.route.id}
 
 <!-- Result: The current page path is: /core-concepts/syntax/ -->
 ```
+
+## Frontmatter
+
+You can use frontmatter to reference SQL queries, and set page metadata that social media sites such as Twitter and Facebook use when showing links to your site. [More on Frontmatter](/markdown#frontmatter).
+
+```markdown
+---
+title: Evidence uses Markdown
+description: Evidence uses Markdown to write expressively in text.
+og:
+  image: /my-social-image.png
+queries:
+  - orders_by_month.sql
+---
+```
+
+
 
 ## Code Fences in Other Languages
 
