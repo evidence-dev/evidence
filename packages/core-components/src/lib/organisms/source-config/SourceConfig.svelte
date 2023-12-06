@@ -2,6 +2,9 @@
 	import NewSourceForm from './NewSourceForm.svelte';
 	import SourceConfigRow from './SourceConfigRow.svelte';
 
+	import { Button } from '../../atoms/button';
+	import { FolderPlus } from '@evidence-dev/component-utilities/icons';
+
 	// TODO: figure out types here
 	export let availableSourcePlugins = {};
 
@@ -79,7 +82,7 @@
 					</div>
 				{/if}
 
-				{#each sources as source (source.name)}
+				{#each sources as source}
 					<SourceConfigRow
 						{availableSourcePlugins}
 						{source}
@@ -88,14 +91,22 @@
 				{/each}
 
 				<div class="col-start-4 flex justify-end items-center w-full">
-					<button
-						class="flex bg-green-600 gap-2 mx-1 border border-green-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-green-700 hover:border-green-800 transition"
-						on:click={() => (showNewSource = !showNewSource)}>Add new source</button
+					<Button
+						icon={FolderPlus}
+						size="md"
+						variant="success"
+						on:click={() => (showNewSource = !showNewSource)}
 					>
+						Add new source
+					</Button>
 				</div>
 
 				{#if showNewSource}
-					<NewSourceForm {availablePackages} on:newSource={addNewSource} />
+					<NewSourceForm
+						{availablePackages}
+						existingSources={sources}
+						on:newSource={addNewSource}
+					/>
 				{/if}
 			{:else}
 				<!-- There are no sources; we should show a hero to make it more clear to the user -->

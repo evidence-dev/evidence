@@ -3,6 +3,7 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import * as simpleIcons from '@steeze-ui/simple-icons';
+	import { Button } from '../../atoms/button';
 
 	import { Database, ExclamationCircle, Pencil } from '@steeze-ui/tabler-icons';
 	import SourceConfigForm from './SourceConfigForm.svelte';
@@ -49,13 +50,10 @@
 			</button>
 		{/if}
 		-->
-		<button
-			on:click={() => (open = !open)}
-			disabled={!sourcePlugin}
-			class="flex bg-blue-600 gap-2 mx-1 border border-blue-700 text-xs px-2 py-1 text-white font-bold rounded hover:bg-blue-700 hover:border-blue-800 transition"
-		>
-			<Icon src={Pencil} class="w-3" /> Edit
-		</button>
+
+		<Button size="md" icon={Pencil} disabled={!sourcePlugin} on:click={() => (open = !open)}>
+			Edit
+		</Button>
 	</div>
 </div>
 
