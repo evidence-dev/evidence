@@ -221,7 +221,12 @@ prog
 		if (process.argv.some((arg) => arg.includes('build:sources'))) {
 			console.log(
 				chalk.bold.red(
-					'[!!] build:sources is deprecated and has been renamed to sources. Expect it to be removed in the future.\n'
+					'[!!] build:sources is deprecated and has been renamed to sources. Expect it to be removed in the future.'
+				)
+			);
+			console.log(
+				chalk.bold.red(
+					'[!!] You can fix this in your package.json file ("evidence build:sources" becomes "evidence sources")\n'
 				)
 			);
 		}
