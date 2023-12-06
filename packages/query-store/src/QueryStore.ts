@@ -249,7 +249,12 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			}
 		);
 		// TODO: Should this really be automatic?
-		this.#fetchMetadata();
+		const metaResult = this.#fetchMetadata();
+		if (metaResult instanceof Promise) {
+			metaResult.catch(console.error)
+		} else {
+			console.log("Metadata fetched?")
+		}
 		this.#handleInitialData();
 		// prerender
 		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
@@ -387,11 +392,19 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				)} | Refusing to execute metadata query; store has an error state.`
 			);
 			return;
+		} else {
+			console.debug(
+				`QueryStore ${this.id.substring(
+					0,
+					6
+				)} | Executing metadata query.`
+			);
 		}
 		this.#metaLoading = true;
 
 		return handleMaybePromise(
 			(queryResult: QueryResult[]) => {
+				console.log({queryResult})
 				this.#columns = queryResult.map((row) => ({
 					name: row.column_name!.toString(),
 					type: row.column_type!.toString()
@@ -399,6 +412,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
 				this.#metaLoading = false;
 				this.#metaLoaded = true;
+				console.log(this.#columns)
 				this.#calculateScore();
 				this.#warnHighScore();
 				this.publish();

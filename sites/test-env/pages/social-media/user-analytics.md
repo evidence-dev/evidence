@@ -16,26 +16,9 @@ WITH raw as (
 SELECT userCount, userCount - LAG(userCount, -1) OVER (order by m desc) as delta, m from raw
 ```
 
-<BigValue title="Total Users" data={total_users} value="userCount" />
-<BigValue title="New Users this Month" comparisonTitle="vs Last Month" data={users_by_month} value="userCount" comparison="delta"/>
-
-There were <Value data={total_users} value="userCount"/> users this month; with <Value data={users_by_month} value="userCount"/> new ones compared to last month.
-
-<Chart data={users_by_month} x="m" title="New users & delta by month">
-    <Line  y="userCount"/>
-    <Bar  y="delta"/>
-</Chart>
-
 ```users_by_gender
 SELECT COUNT(*) userCount, gender FROM users group by 2 order by 2 asc
 ```
-
-<BarChart
-    title="Users by Gender"
-    data={users_by_gender}
-    value="userCount"
-    x="gender"
-/>
 
 ```avg_user_engagement
 WITH USER_METRICS AS (
@@ -56,6 +39,24 @@ SELECT  AVG(user_likes) as avg_likes_given,
         AVG(user_posts) as avg_posts
 FROM USER_METRICS
 ```
+
+<BigValue title="Total Users" data={total_users} value="userCount" />
+<BigValue title="New Users this Month" comparisonTitle="vs Last Month" data={users_by_month} value="userCount" comparison="delta"/>
+
+There were <Value data={total_users} value="userCount"/> users this month; with <Value data={users_by_month} value="userCount"/> new ones compared to last month.
+
+<Chart data={users_by_month} x="m" title="New users & delta by month">
+    <Line  y="userCount"/>
+    <Bar  y="delta"/>
+</Chart>
+
+
+<BarChart
+    title="Users by Gender"
+    data={users_by_gender}
+    y="userCount"
+    x="gender"
+/>
 
 <BigValue title="Average Likes Given" data={avg_user_engagement} value="avg_likes_given" />
 <BigValue title="Average Likes Received" data={avg_user_engagement} value="avg_likes_received" />

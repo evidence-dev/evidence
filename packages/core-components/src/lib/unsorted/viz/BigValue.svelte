@@ -3,6 +3,9 @@
 </script>
 
 <script>
+	import {browser} from "$app/environment"
+
+
 	import Value from './Value.svelte';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { LinkedChart } from 'svelte-tiny-linked-charts';
@@ -39,7 +42,7 @@
 
 	$: if (!data) error = new Error('Required prop `data` not provided');
 
-	$: if (data && !data.loading)
+	$: if (data && !data.loading && data.loaded)
 		try {
 			error = undefined;
 
@@ -47,7 +50,7 @@
 				throw new Error('value is required');
 			}
 
-			if (!Array.isArray(data) && !(data instanceof QueryStore)) {
+			if (!Array.isArray(data) && !(data instanceof QueryStore || data.constructor.name === `bound QueryStore`)) {
 				data = [data];
 			}
 
@@ -83,6 +86,15 @@
 			}
 		} catch (e) {
 			error = e;
+			console.warn(e.message)
+			console.debug({
+				loading: data.loading,
+				loaded: data.loaded,
+				columns: data.columns,
+				length: data.length,
+				metaLoaded: data.metaLoaded,
+				metaLoading: data.metaLoading
+			})
 			if (strictBuild) {
 				throw error;
 			}

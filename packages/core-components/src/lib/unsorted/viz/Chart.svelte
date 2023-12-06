@@ -230,7 +230,7 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	$: if (data) {
+	$: if (data && !data.loading && data.loaded) {
 		try {
 			error = undefined;
 			missingCols = [];
@@ -991,7 +991,7 @@
 			});
 		} catch (e) {
 			error = e.message;
-			console.error(e);
+			console.warn(e.message)
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;

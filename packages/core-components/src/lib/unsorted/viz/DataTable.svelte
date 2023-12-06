@@ -284,7 +284,7 @@
 			  )
 			: data;
 
-	$: if ($data?.error) error = data.error.message ?? data.error;
+	$: if (data?.error) error = data.error.message ?? data.error;
 	$: if (!data) error = 'Required property `data` not provided';
 </script>
 
