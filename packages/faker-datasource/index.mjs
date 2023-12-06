@@ -303,6 +303,7 @@ function recursiveFlatten(obj) {
  * @param {string} directory
  */
 export const getRunner = (options, directory) => {
+	tableMap.clear()
 	const locale = [en];
 
 	if (options.locale) {
