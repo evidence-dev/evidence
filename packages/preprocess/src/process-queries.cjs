@@ -48,8 +48,9 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					}
 				}
 
-
-				const _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, ...getInitialData${id}()  });
+				let _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, ...getInitialData${id}()  });
+				// rerun if data changes during dev mode, likely source HMR
+				$: if (dev) data, _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, ...getInitialData${id}() });
 			`;
 		});
 
@@ -158,7 +159,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
                     _${id}_query_text;
                     _${id}_debounced_updater = _${id}_reactivity_manager();
                 };
+				// rerun if query text changes
 				$: _${id}_query_text, _${id}_debounced_updater();
+				// rerun if data changes during dev mode, likely source HMR
+				$: if (dev) data, _${id}_debounced_updater();
 			`;
 		});
 
