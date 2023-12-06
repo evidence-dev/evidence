@@ -154,7 +154,7 @@
 			<p class="text-red-500 text-xs font-bold">{error}</p>
 		</div>
 		{#if spec.type === 'string'}
-			{#if spec.secret && !reveal}
+			{#if spec.secret && !reveal && spec.shown !== true}
 				<input
 					disabled={fieldDisabled}
 					required={spec.required}
