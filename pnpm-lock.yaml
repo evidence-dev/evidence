@@ -476,6 +476,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.7
         version: 10.4.16(postcss@8.4.32)
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
       chokidar:
         specifier: 3.5.3
         version: 3.5.3
@@ -668,7 +671,7 @@ importers:
         version: 3.55.0
       svelte-preprocess:
         specifier: ^5.0.3
-        version: 5.0.3(svelte@3.55.0)(typescript@5.3.2)
+        version: 5.0.3(@babel/core@7.23.5)(postcss-load-config@4.0.2)(postcss@8.4.32)(svelte@3.55.0)(typescript@5.3.2)
       sveltekit-autoimport:
         specifier: ^1.7.0
         version: 1.7.1(@sveltejs/kit@1.21.0)
@@ -705,7 +708,7 @@ importers:
         version: 5.2.0
       parcel:
         specifier: ^2.8.3
-        version: 2.10.3(typescript@5.3.2)
+        version: 2.10.3(postcss@8.4.32)(typescript@5.3.2)
       typescript:
         specifier: ^5.0.4
         version: 5.3.2
@@ -5426,55 +5429,6 @@ packages:
       - uncss
     dev: true
 
-  /@parcel/config-default@2.10.3(@parcel/core@2.10.3)(typescript@5.3.2):
-    resolution: {integrity: sha512-gHVw5cKZVA9h/J4E33qQLg3QG3cYMyWVruyVzF8dFy/Rar5ebXMof1f38IhR2BIavpoThbnCnxgD4SVK8xOPag==}
-    peerDependencies:
-      '@parcel/core': ^2.10.3
-    dependencies:
-      '@parcel/bundler-default': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/compressor-raw': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/core': 2.10.3
-      '@parcel/namer-default': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/optimizer-css': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/optimizer-htmlnano': 2.10.3(@parcel/core@2.10.3)(typescript@5.3.2)
-      '@parcel/optimizer-image': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/optimizer-svgo': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/optimizer-swc': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/packager-css': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/packager-html': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/packager-js': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/packager-raw': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/packager-svg': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/packager-wasm': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/reporter-dev-server': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/resolver-default': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/runtime-browser-hmr': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/runtime-js': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/runtime-react-refresh': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/runtime-service-worker': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-babel': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-css': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-html': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-image': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-js': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-json': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-postcss': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-posthtml': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-raw': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-react-refresh-wrap': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/transformer-svg': 2.10.3(@parcel/core@2.10.3)
-    transitivePeerDependencies:
-      - '@swc/helpers'
-      - cssnano
-      - postcss
-      - purgecss
-      - relateurl
-      - srcset
-      - terser
-      - typescript
-      - uncss
-    dev: true
-
   /@parcel/core@2.10.3:
     resolution: {integrity: sha512-b64FdqJi4CX6iWeLZNfmwdTrC1VLPXHMuFusf1sTZTuRBFw2oRpgJvuiqsrInaZ82o3lbLMo4a9/5LtNaZKa+Q==}
     engines: {node: '>= 12.0.0'}
@@ -5691,27 +5645,6 @@ packages:
     dependencies:
       '@parcel/plugin': 2.10.3(@parcel/core@2.10.3)
       htmlnano: 2.1.0(svgo@2.8.0)(typescript@4.9.5)
-      nullthrows: 1.1.1
-      posthtml: 0.16.6
-      svgo: 2.8.0
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - cssnano
-      - postcss
-      - purgecss
-      - relateurl
-      - srcset
-      - terser
-      - typescript
-      - uncss
-    dev: true
-
-  /@parcel/optimizer-htmlnano@2.10.3(@parcel/core@2.10.3)(typescript@5.3.2):
-    resolution: {integrity: sha512-KTIZOy19tYeG0j3JRv435A6jnTh3O1LPhsUfo6Xlea7Cz1yUUxAANl9MG8lHZKYbZCFFKbfk2I9QBycmcYxAAw==}
-    engines: {node: '>= 12.0.0', parcel: ^2.10.3}
-    dependencies:
-      '@parcel/plugin': 2.10.3(@parcel/core@2.10.3)
-      htmlnano: 2.1.0(svgo@2.8.0)(typescript@5.3.2)
       nullthrows: 1.1.1
       posthtml: 0.16.6
       svgo: 2.8.0
@@ -13922,43 +13855,6 @@ packages:
       - typescript
     dev: true
 
-  /htmlnano@2.1.0(svgo@2.8.0)(typescript@5.3.2):
-    resolution: {integrity: sha512-jVGRE0Ep9byMBKEu0Vxgl8dhXYOUk0iNQ2pjsG+BcRB0u0oDF5A9p/iBGMg/PGKYUyMD0OAGu8dVT5Lzj8S58g==}
-    peerDependencies:
-      cssnano: ^6.0.0
-      postcss: ^8.3.11
-      purgecss: ^5.0.0
-      relateurl: ^0.2.7
-      srcset: 4.0.0
-      svgo: ^3.0.2
-      terser: ^5.10.0
-      uncss: ^0.17.3
-    peerDependenciesMeta:
-      cssnano:
-        optional: true
-      postcss:
-        optional: true
-      purgecss:
-        optional: true
-      relateurl:
-        optional: true
-      srcset:
-        optional: true
-      svgo:
-        optional: true
-      terser:
-        optional: true
-      uncss:
-        optional: true
-    dependencies:
-      cosmiconfig: 8.3.6(typescript@5.3.2)
-      posthtml: 0.16.6
-      svgo: 2.8.0
-      timsort: 0.3.0
-    transitivePeerDependencies:
-      - typescript
-    dev: true
-
   /htmlparser2-svelte@4.1.0:
     resolution: {integrity: sha512-+4f4RBFz7Rj2Hp0ZbFbXC+Kzbd6S9PgjiuFtdT76VMNgKogrEZy0pG2UrPycPbrZzVEIM5lAT3lAdkSTCHLPjg==}
     dependencies:
@@ -17301,40 +17197,6 @@ packages:
       - uncss
     dev: true
 
-  /parcel@2.10.3(typescript@5.3.2):
-    resolution: {integrity: sha512-Ocx33N4ZVnotJTALhMZ0AqPIE9UN5uP6jjA+lYJ4FlEYuYYZsvOQXZQgeMa62pFj6jrOHWh7ho8uJhRdTNwVyg==}
-    engines: {node: '>= 12.0.0'}
-    hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
-    dependencies:
-      '@parcel/config-default': 2.10.3(@parcel/core@2.10.3)(typescript@5.3.2)
-      '@parcel/core': 2.10.3
-      '@parcel/diagnostic': 2.10.3
-      '@parcel/events': 2.10.3
-      '@parcel/fs': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/logger': 2.10.3
-      '@parcel/package-manager': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/reporter-cli': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/reporter-dev-server': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/reporter-tracer': 2.10.3(@parcel/core@2.10.3)
-      '@parcel/utils': 2.10.3
-      chalk: 4.1.0
-      commander: 7.2.0
-      get-port: 4.2.0
-    transitivePeerDependencies:
-      - '@swc/helpers'
-      - cssnano
-      - postcss
-      - purgecss
-      - relateurl
-      - srcset
-      - terser
-      - typescript
-      - uncss
-    dev: true
-
   /parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -20513,7 +20375,6 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.55.0
       typescript: 5.3.2
-    dev: true
 
   /svelte-preprocess@5.0.3(@babel/core@7.23.5)(svelte@3.55.0)(typescript@4.9.5):
     resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
@@ -20610,53 +20471,6 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.55.0
       typescript: 4.9.5
-
-  /svelte-preprocess@5.0.3(svelte@3.55.0)(typescript@5.3.2):
-    resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
-    engines: {node: '>= 14.10.0'}
-    requiresBuild: true
-    peerDependencies:
-      '@babel/core': ^7.10.2
-      coffeescript: ^2.5.1
-      less: ^3.11.3 || ^4.0.0
-      postcss: ^7 || ^8
-      postcss-load-config: ^2.1.0 || ^3.0.0 || ^4.0.0
-      pug: ^3.0.0
-      sass: ^1.26.8
-      stylus: ^0.55.0
-      sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
-      svelte: ^3.23.0
-      typescript: '>=3.9.5 || ^4.0.0 || ^5.0.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      coffeescript:
-        optional: true
-      less:
-        optional: true
-      postcss:
-        optional: true
-      postcss-load-config:
-        optional: true
-      pug:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@types/pug': 2.0.10
-      detect-indent: 6.1.0
-      magic-string: 0.27.0
-      sorcery: 0.11.0
-      strip-indent: 3.0.0
-      svelte: 3.55.0
-      typescript: 5.3.2
-    dev: false
 
   /svelte-preprocess@5.1.1(@babel/core@7.23.5)(postcss-load-config@4.0.2)(postcss@8.4.32)(svelte@3.55.0)(typescript@5.3.2):
     resolution: {integrity: sha512-p/Dp4hmrBW5mrCCq29lEMFpIJT2FZsRlouxEc5qpbOmXRbaFs7clLs8oKPwD3xCFyZfv1bIhvOzpQkhMEVQdMw==}

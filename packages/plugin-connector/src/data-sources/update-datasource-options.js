@@ -4,6 +4,7 @@ import merge from 'lodash.merge';
 import fs from 'fs/promises';
 import { getSourcesDir } from './get-sources';
 import { getDatasourceOptions } from '.';
+import { encodeBase64Deep } from '../lib/b64-deep';
 
 /**
  * @typedef {Record<string, string | number | boolean | *>} OptsObject
@@ -33,6 +34,9 @@ export const sepSecrets = (
 			if (typeof optsValueKey === 'object') {
 				/* TODO: Something is wrong? */ continue;
 			}
+			// We don't have any spec for this child value
+			if (optsValueKey === undefined) continue;
+
 			const targetSpec = value.children[optsValueKey.toString()];
 			if (targetSpec) {
 				// The current value for this field has children
@@ -85,14 +89,7 @@ export async function bootstrapSourceDirectory(newOptions, sourceDir) {
 	const sourcePath = newOptions.sourceDirectory ?? path.join(sourceDir, newOptions.name);
 	const sourceDirectories = await fs.readdir(sourceDir);
 
-	if (!newOptions.sourceDirectory) {
-		// We're dealing with a new package here.
-		if (sourceDirectories.includes(newOptions.name)) {
-			// We would be creating a new directory, but it already exists. We should bail
-			throw new Error(
-				`Refusing to create source ${newOptions.name}, ${sourcePath} already exists.`
-			);
-		}
+	if (!sourceDirectories.includes(newOptions.name)) {
 		await fs.mkdir(sourcePath);
 	}
 
@@ -155,9 +152,12 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 		connYamlPath,
 		`# This file was automatically generated\n${yaml.stringify(denull(mergedConnYaml))}`
 	);
+
+	const optsYamlContent = yaml.stringify(encodeBase64Deep(denull(mergedOptsYaml)));
+
 	await fs.writeFile(
 		optsYamlPath,
-		`# This file was automatically generated\n${yaml.stringify(denull(mergedOptsYaml))}`
+		`# This file was automatically generated\n# It should *not* be source controlled, as it likely contain credentials or other sensitive configuration values.\n${optsYamlContent}`
 	);
 
 	const updatedSource = (await getDatasourceOptions(sourceDir)).find(

@@ -34,11 +34,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			*/
 			return `
 				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-
 				const getInitialData${id} = () => {
 					if (data.${id}) return { initialData: data.${id} }
 					try {
-						return { initialData: profile(__db.query, _query_string_${id}, '${id}') }
+						return { initialData: profile(__db.query, _query_string_${id}, { query_name: '${id}' }) }
 					} catch (e) {
 						if (!browser) {
 							// If building in strict mode; we should fail, this query broke
@@ -108,10 +107,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 								initialError = undefined
 							} else if (data.${id}) {
 								// Data is coming from SSR
-								initialData = data.${id}
+								if (data.${id} instanceof Error) {
+									throw data.${id}
+								} else {
+									initialData = data.${id}
+								}
 							} else {
 								// We are currently prerendering
-								initialData = profile(__db.query, _${id}_query_text, '${id}')
+								initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })
 							}
 							
 						} catch (e) {
@@ -133,7 +136,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 								initialError
 							}
 						);
-		
+
 						if (_${id}) {
 							// Query has already been created
 							// Fetch the data and then replace
@@ -208,7 +211,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
-        let { data = {}, customFormattingSettings, __db } = props;
+        let { data = {}, customFormattingSettings, __db, inputs } = props;
         $: ({ data = {}, customFormattingSettings, __db } = props);
 
         $routeHash = '${routeH}';
@@ -217,10 +220,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			do not switch to $: inputs = $inputs_store
 			reactive statements do not rerun during SSR 
 		*/''}
-		let inputs_store = writable({});
+		let inputs_store = writable(inputs);
 		setContext(INPUTS_CONTEXT_KEY, inputs_store);
-
-		let inputs = {};
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
         $: pageHasQueries.set(Object.keys(data).length > 0);
