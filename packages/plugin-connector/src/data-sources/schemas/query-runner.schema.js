@@ -153,7 +153,7 @@ export const DatasourceOptionSpecSchema = z.record(
 		title: z.string(),
 		type: z.enum(['string', 'number', 'boolean', 'select', 'file']),
 		secret: z.boolean().default(false),
-		shown: z.boolean().default(true),
+		shown: z.boolean().optional(),
 		/**
 		 * Indicates that the field should not actually be persisted. Should be combined with `references`
 		 */

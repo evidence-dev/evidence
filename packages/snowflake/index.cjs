@@ -378,13 +378,13 @@ module.exports.options = {
 		title: 'Role',
 		type: 'string',
 		secret: false,
-		required: true
+		required: false
 	},
 	schema: {
 		title: 'Schema',
 		type: 'string',
 		secret: false,
-		required: true
+		required: false
 	},
 	authenticator: {
 		title: 'Auth Method',
