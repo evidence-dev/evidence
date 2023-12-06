@@ -27,6 +27,7 @@ function createToastsObject() {
 			update(($toasts) => ($toasts.push(toast), $toasts));
 			const timeoutId = setTimeout(() => {
 				removeToast(toast.id);
+				delete timeoutMap[toast.id];
 			}, timeout);
 
 			timeoutMap[toast.id] = timeoutId;
