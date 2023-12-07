@@ -177,8 +177,10 @@ const prog = sade('evidence');
 
 prog
 	.command('dev')
+	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
+		if (args.debug) process.env.VITE_EVIDENCE_DEBUG = true
 		populateTemplate();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
@@ -227,6 +229,7 @@ prog
 	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
 	.example('npx evidence sources --sources needful_things,social_media')
 	.action(async (opts) => {
+		if (opts.debug) process.env.VITE_EVIDENCE_DEBUG = true
 		if (process.argv.some((arg) => arg.includes('build:sources'))) {
 			console.log(
 				chalk.bold.red(
