@@ -3,16 +3,14 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	if (browser && import.meta.hot) {
 		import.meta.hot.on('evidence:build-status', async (data) => {
 			if (data.status === 'done') {
-				// i don't know why this is necessary
-				// possibly because static files take a bit for the dev server
-				// to realize they exist?
-				await new Promise((resolve) => setTimeout(resolve, 1000));
-				await $page.data.__db.updateParquetURLs(data.manifest);
+				await $page.data.__db.updateParquetURLs(data.manifest, true);
 
+				QueryStore.emptyCache();
 				// clear the cached data
 				for (const key in $page.data.data) {
 					delete $page.data.data[key];

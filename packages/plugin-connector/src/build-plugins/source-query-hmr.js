@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
 import { readFileSync } from 'fs';
+import fs from 'fs/promises';
 import nodePath from 'path';
 import yaml from 'yaml';
 import { basename, dirname, resolve, sep as pathSep } from 'path';
@@ -61,6 +62,7 @@ if (process.env.NODE_ENV === 'development') {
 						only_changed: false
 					});
 					await setParquetURLs(manifest);
+					await fs.rm('./.evidence-queries/cache', { recursive: true, force: true });
 
 					build_watcher.emit('done', path, JSON.stringify({ renderedFiles: manifest }), null);
 				} catch (error) {

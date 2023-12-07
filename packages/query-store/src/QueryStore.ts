@@ -432,6 +432,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	 */
 	private static cache: Map<string, QueryStore> = new Map();
 
+	static emptyCache() {
+		QueryStore.cache.clear();
+	}
+
 	/**
 	 * Array of child ids that the store is currently subscribed to.
 	 * @todo: need to clean up subscriptions if/when stores are gc'd
