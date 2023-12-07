@@ -1,11 +1,11 @@
 ```sql datum
 SELECT 	'/subfolder-no-index/1' AS id,
 		'/subfolder-no-index/10' AS id2,
-		null AS username 
+		null AS username
 UNION ALL
 SELECT 	'/subfolder-no-index/2' as id,
 		'/subfolder-no-index/20' as id2,
-		'johndoe' AS username 
+		'johndoe' AS username
 UNION ALL
 SELECT 	'/subfolder-no-index/3' as id,
  		'/subfolder-no-index/30' as id3,

@@ -50,7 +50,6 @@ There were <Value data={total_users} value="userCount"/> users this month; with 
     <Bar  y="delta"/>
 </Chart>
 
-
 <BarChart
     title="Users by Gender"
     data={users_by_gender}
