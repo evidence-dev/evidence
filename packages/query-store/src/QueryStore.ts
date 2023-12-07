@@ -250,8 +250,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		);
 
 		this.#fetchMetadata();
-
 		this.#handleInitialData();
+
 		// prerender
 		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
 	}
@@ -430,7 +430,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/**
 	 * Shared cache of existing QueryStores to reduce the number of stores initialized
 	 */
-	private static cache: Record<string, QueryStore> = {};
+	private static cache: Map<string, QueryStore> = new Map();
 
 	/**
 	 * Array of child ids that the store is currently subscribed to.
@@ -453,9 +453,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			const subscriber = this.root ?? this;
 
 			// If caching is enabled and the id exists in the cache
-			if (id in QueryStore.cache && !this.opts.disableCache) {
+			if (QueryStore.cache.has(id) && !this.opts.disableCache) {
 				// Use the cache
-				const cachedQuery = QueryStore.cache[id];
+				const cachedQuery = QueryStore.cache.get(id);
+				if (!cachedQuery) throw new Error('Error getting query from cache. This should not occur.');
 
 				if (!subscriber.#subscriptions.includes(id)) {
 					cachedQuery.subscribe(subscriber.publish);
@@ -479,7 +480,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 			subscriber.#subscriptions.push(id);
 			newStore.subscribe(subscriber.publish);
-			QueryStore.cache[id] = newStore;
+			QueryStore.cache.set(id, newStore);
 			return newStore.#proxied;
 		};
 	};
