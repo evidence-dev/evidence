@@ -2,6 +2,7 @@ import inferColumnTypes from './inferColumnTypes';
 
 export default function getColumnEvidenceType(data, column) {
 	let item;
+	debugger
 	if (data) {
 		if (data._evidenceColumnTypes) {
 			let columnTypes = data._evidenceColumnTypes;

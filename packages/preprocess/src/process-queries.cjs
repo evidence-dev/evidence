@@ -12,48 +12,19 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 	if (Object.keys(duckdbQueries).length > 0) {
 		const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
-		const valid_ids = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query));
+		const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query));
 
 		// prerendered queries: stuff without ${}
 		// reactive queries: stuff with ${}
 		const IS_REACTIVE_QUERY = /\${.*?}/s;
-		const reactive_ids = valid_ids.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id]));
-		const prerendered_ids = valid_ids.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id]));
+		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id]));
+		const prerendered_ids = validIds.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id]));
 
 		// input queries: reactive with ${inputs...} in it
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
-		const input_ids = reactive_ids.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id]));
+		const input_ids = reactiveIds.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id]));
 
-		const prerendered_query_stores = prerendered_ids.map((id) => {
-			/*
-			    _query_string${id} is just a static string (no interpolation), so everything is constant
-			    we might want to be reactive to the data prop - a forced _${id}.fetch() might be good
-			    ala $: data, _${id}.fetch();
-				that would happen when stuff is invalidated (in dev mode) like when source
-				parquet changes (e.g. source refresh experience PR)
-			*/
-			return `
-				const _query_string_${id} = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
-				const getInitialData${id} = () => {
-					if (data.${id}) return { initialData: data.${id} }
-					try {
-						return { initialData: profile(__db.query, _query_string_${id}, { query_name: '${id}' }) }
-					} catch (e) {
-						if (!browser) {
-							// If building in strict mode; we should fail, this query broke
-							if (import.meta.env.VITE_BUILD_STRICT) throw e;
-						}
-						return { initialError: e }
-					}
-				}
-
-				let _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, ...getInitialData${id}()  });
-				// rerun if data changes during dev mode, likely source HMR
-				$: if (dev) data, _${id} = new QueryStore(_query_string_${id}, queryFunc, '${id}', { scoreNotifier, ...getInitialData${id}() });
-			`;
-		});
-
-		const reactive_query_stores = reactive_ids.map((id) => {
+		const queryStoreDeclarations = validIds.map((id) => {
 			/*
 				"What the heck is happening here":
 					_${id}_initial_query:
@@ -96,8 +67,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				
 				// Actual Query Execution
 				let _${id};
+
 				const _${id}_reactivity_manager = () => {
 					const update = () => {
+						console.trace("${id}")
 						let initialData, initialError;
 
 						try {
@@ -116,7 +89,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 								// We are currently prerendering
 								initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })
 							}
-							
 						} catch (e) {
 							if (!browser) {
 								// If building in strict mode; we should fail, this query broke
@@ -188,11 +160,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		}
 		`;
 
-		const all_query_stores = valid_ids.map((id) => `$: ${id} = $_${id};`);
+		const all_query_stores = validIds.map((id) => `$: ${id} = $_${id};`);
 
 		queryDeclarations += `
-		${prerendered_query_stores.join('\n')}
-		${reactive_query_stores.join('\n')}
+		${queryStoreDeclarations.join('\n')}
 		${input_query_stores}
 		${all_query_stores.join('\n')}
 		`;

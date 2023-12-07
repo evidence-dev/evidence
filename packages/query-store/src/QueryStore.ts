@@ -77,7 +77,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	/** Has #fetchData been executed? */
 	get loaded() {
-		return this.#dataLoaded && this.#metaLoaded && this.#lengthLoaded;
+		return this.#dataLoaded // && this.#metaLoaded && this.#lengthLoaded;
 	}
 	/** Is #fetchData currently running? */
 	get loading() {
@@ -262,6 +262,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#error = initialError;
 			return;
 		}
+		console.log({initialData})
 		// Maintain loading state while we wait
 		if (initialData && !this.#values.length) {
 			this.#dataLoading = true;

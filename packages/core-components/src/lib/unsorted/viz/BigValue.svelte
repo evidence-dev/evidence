@@ -39,7 +39,7 @@
 
 	$: if (!data) error = new Error('Required prop `data` not provided');
 
-	$: if (data && data.metaLoaded)
+	$: if (data && data.dataLoaded)
 		try {
 			error = undefined;
 
@@ -87,14 +87,6 @@
 		} catch (e) {
 			error = e;
 			console.warn(e.message);
-			console.debug({
-				loading: data.loading,
-				loaded: data.loaded,
-				columns: data.columns,
-				length: data.length,
-				metaLoaded: data.metaLoaded,
-				metaLoading: data.metaLoading
-			});
 			if (strictBuild) {
 				throw error;
 			}

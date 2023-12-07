@@ -233,8 +233,10 @@
 
 	/** @type {QueryStore} */
 	let query = data instanceof QueryStore ? data : undefined;
+	$: console.log(query.id, query.loaded)
+	console.log(query.id, query.loaded)
 
-	$: if (query && query.metaLoaded) {
+	$: if (query && query.loaded) {
 		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;
@@ -1014,7 +1016,7 @@
 
 {#if error}
 	<ErrorChart {error} {chartType} />
-{:else if !query?.loaded || !Object.keys($props).length}
+{:else if !query?.loaded}
 	<!-- Query has not loaded, or the props have not gone through first computation -->
 	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
 		<Skeleton />
