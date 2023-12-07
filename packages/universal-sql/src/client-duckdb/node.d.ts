@@ -23,9 +23,10 @@ export function query(
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
  * @param {Record<string, string[]>} urls
+ * @param {boolean} [append]
  * @returns {void}
  */
-export function setParquetURLs(urls: string): void;
+export function setParquetURLs(urls: Record<string, string[]>, append?: boolean): void;
 
 /**
  * Converts an Apache Arrow table to a Javascript array.
