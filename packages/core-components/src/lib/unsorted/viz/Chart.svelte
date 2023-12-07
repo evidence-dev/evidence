@@ -230,7 +230,7 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	$: if (data && !data.loading && data.loaded) {
+	$: if (data && data.metaLoaded) {
 		try {
 			error = undefined;
 			missingCols = [];
@@ -991,7 +991,7 @@
 			});
 		} catch (e) {
 			error = e.message;
-			console.warn(e.message)
+			console.warn(e.message);
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;
@@ -1007,7 +1007,7 @@
 	$: if (!data) error = 'Required prop `data` not provided';
 </script>
 
-{#if (!data || data.loading) && !error}
+{#if !data?.loaded && !error}
 	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
 		<Skeleton />
 	</div>
