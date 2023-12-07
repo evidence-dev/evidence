@@ -7,6 +7,7 @@ import nodePath from 'path';
 import yaml from 'yaml';
 import { basename, dirname, resolve, sep as pathSep } from 'path';
 import debounce from 'lodash.debounce';
+import { setParquetURLs } from '@evidence-dev/universal-sql/client-duckdb';
 
 /**
  * Extracts source, query, and source_path from a path
@@ -38,33 +39,39 @@ if (process.env.NODE_ENV === 'development') {
 	const watcher = watch('../../sources/**');
 	watcher.on(
 		'change',
-		debounce(/** @type {(path: string) => Promise<void>} */ async (path) => {
-			const { query, source_path } = getSourceAndQuery(path);
-			const datasources = await getSources(resolve('../../sources'));
-			const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
-			if (!datasource) return;
+		debounce(
+			/** @type {(path: string) => Promise<void>} */ async (path) => {
+				const { query, source_path } = getSourceAndQuery(path);
+				const datasources = await getSources(resolve('../../sources'));
+				const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
+				if (!datasource) return;
 
-			build_watcher.emit('change', path);
+				build_watcher.emit('change', path);
 
-			const reservedFiles = ['connection.yaml', 'connection.options.yaml'];
-			const updatedFile = /** @type {string} */ (path.split(pathSep).pop());
-			const rerunWholeSource = reservedFiles.includes(updatedFile);
-			const queryFilter = rerunWholeSource ? null : new Set([query]);
+				const reservedFiles = ['connection.yaml', 'connection.options.yaml'];
+				const updatedFile = /** @type {string} */ (path.split(pathSep).pop());
+				const rerunWholeSource = reservedFiles.includes(updatedFile);
+				const queryFilter = rerunWholeSource ? null : new Set([query]);
 
-			// go in . (aka .evidence/template)
-			try {
-				const manifest = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
-					sources: new Set([datasource.name]),
-					queries: queryFilter,
-					only_changed: false
-				});
+				// go in . (aka .evidence/template)
+				try {
+					const manifest = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
+						sources: new Set([datasource.name]),
+						queries: queryFilter,
+						only_changed: false
+					});
+					await setParquetURLs(manifest);
 
-				build_watcher.emit('done', path, JSON.stringify({ renderedFiles: manifest }), null);
-			} catch (error) {
-				console.error(`Error occured while reloading source: ${error}`);
-				build_watcher.emit('done', path, {}, error);
-			}
-		}, 250)
+					build_watcher.emit('done', path, JSON.stringify({ renderedFiles: manifest }), null);
+				} catch (error) {
+					console.error(`Error occured while reloading source: ${error}`);
+
+					if (process.env.VITE_EVIDENCE_DEBUG && error instanceof Error) console.debug(error.stack);
+					build_watcher.emit('done', path, {}, error);
+				}
+			},
+			250
+		)
 	);
 }
 
