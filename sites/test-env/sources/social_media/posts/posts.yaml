@@ -5,6 +5,7 @@ schema:
         type: id
     user_id:
         type: fk
+        withBias: true
         target:
             table: users.yaml
     content:
