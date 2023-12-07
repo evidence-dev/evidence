@@ -264,56 +264,19 @@ Where `[your_tab_name]` is the name of the tab in your Google Sheet, with spaces
 
 In Evidence, you can query local CSV or Parquet files directly in SQL.
 
-Get started by selecting the `CSV` connector on the Settings page in your project.
+Get started by selecting the `CSV` connector on the Settings page in your project, naming it and then clicking "confirm changes".
 
 <!-- TODO: @archiewood to confirm with @itsmebriand how CSV files work now -->
 
+Then copy any csv files you want to query into `sources/[source_name]/`.
+
 #### How to Query a CSV File
 
-##### Inside your Evidence Project
-
-Evidence looks for CSV files stored in a `sources` folder in the root of your Evidence project. You can then query them using this syntax:
+Evidence looks for CSV files stored in a `sources/[source_name]/` folder in the root of your Evidence project. You can then query them using this syntax:
 
 ```sql
-select * from 'sources/myfile.csv'
+select * from source_name.csv_file_name
 ```
-
-##### Absolute Filepaths
-
-You can pass in an absolute filepath:
-
-```sql
-select * from 'Users/myname/Downloads/myfile.csv'
-```
-
-##### Relative Filepaths
-
-Paths are **relative to two files deep** in your Evidence project. For example, to query a CSV in the root of an Evidence project, you would use this syntax:
-
-```sql
-select * from '../../myfile.csv'
-```
-
-:::info
-The `../../` prefix is needed because Evidence creates and runs inside the hidden folder `.evidence/template/`. The `pages` and the `sources` folders are special, and are copied into this hidden folder by default.
-:::
-
-#### SQL Syntax for Querying CSVs
-
-Evidence uses DuckDB to run SQL against a CSVs. For query syntax, see the [DuckDB docs](https://duckdb.org/docs/sql/query_syntax/select).
-
-#### Parsing Headers
-
-When parsing headers in CSV files, the `read_csv_auto` helper function provided by DuckDB can be helpful.
-
-```sql
-select * from read_csv_auto('source/myfile.csv', HEADER=TRUE);
-```
-
-In addition to the `HEADER` argument, this function can also accept changes to the delimiter (`DELIM`), quotes (`QUOTE`), and more.
-
-Additional information about CSV helper functions can be found in the [DuckDB docs](https://duckdb.org/docs/data/csv).
-
 
 ## Troubleshooting
 
