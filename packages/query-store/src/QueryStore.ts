@@ -77,7 +77,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	/** Has #fetchData been executed? */
 	get loaded() {
-		return this.#dataLoaded;
+		return this.#dataLoaded && this.#metaLoaded && this.#lengthLoaded;
 	}
 	/** Is #fetchData currently running? */
 	get loading() {
