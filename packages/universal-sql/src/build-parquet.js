@@ -149,7 +149,6 @@ export async function buildMultipartParquet(
 	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
-	await emptyDbFs(outputFilepath);
 	await query(copy);
 
 	const { size } = await fs.stat(outputFilepath);
@@ -188,6 +187,6 @@ export async function buildMultipartParquet(
 	for (const tmpFile of tmpFilenames) {
 		await fs.rm(tmpFile, { force: true });
 	}
-
+	await emptyDbFs('*');
 	return rowCount;
 }
