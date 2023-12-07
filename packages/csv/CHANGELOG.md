@@ -43,6 +43,27 @@
   - @evidence-dev/db-commons@0.2.1-usql.0
   - @evidence-dev/duckdb@1.0.0-usql.2
 
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies [27e6ea4b]
+  - @evidence-dev/duckdb@0.3.0
+
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies [1f9a840c]
+  - @evidence-dev/duckdb@0.2.1
+
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies [134b7d13]
+  - @evidence-dev/duckdb@0.2.0
+
 ## 0.1.5
 
 ### Patch Changes

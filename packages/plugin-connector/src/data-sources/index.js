@@ -102,6 +102,7 @@ export async function getDatasourceOptions(datasourceDir) {
  * @param {string} dataPath
  * @param {string} metaPath
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
+ * @returns {Promise<Record<string, string[]>>}
  */
 export async function updateDatasourceOutputs(
 	dataPath,
@@ -114,4 +115,5 @@ export async function updateDatasourceOutputs(
 	const manifest = await buildSources(sources, dataPath, metaPath, filters);
 
 	await updateManifest(manifest, dataPath, sources);
+	return manifest;
 }

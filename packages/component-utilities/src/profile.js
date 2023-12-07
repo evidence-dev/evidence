@@ -1,3 +1,5 @@
+import { dev } from '$app/environment';
+
 /**
  * @template T
  * @param {T} f
@@ -5,6 +7,7 @@
  * @returns {ReturnType<T>}
  */
 export function profile(f, ...args) {
+	if (!dev) return f.call(this, ...args);
 	const before = performance.now();
 	const complete = () => {
 		const after = performance.now();

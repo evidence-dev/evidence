@@ -1,7 +1,5 @@
 <script>
-	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
-	export let datasourceSettings;
 </script>
 
 <h2>Deploying your Project</h2>
@@ -35,12 +33,6 @@
 	The following environment variables must be present in your deployment environment to enable your
 	database connection
 </p>
-
-{#if !datasourceSettings.length}
-	<p>Your project does not have a database connection.</p>
-{:else}
-	<EnvironmentVarListing {datasourceSettings} />
-{/if}
 
 <style>
 	h2 {

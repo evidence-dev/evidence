@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.0.0-usql.29",
+	"version": "3.0.0-usql.30",
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
@@ -24,12 +24,12 @@
 		"@evidence-dev/telemetry": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@fontsource/spectral": "^5.0.3",
-		"@sveltejs/kit": "1.21.0",
+		"@sveltejs/kit": "1.22.3",
 		"@tidyjs/tidy": "2.4.4",
 		"cross-env": "^7.0.3",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.2",
+		"echarts": "5.4.3",
 		"echarts-stat": "1.2.0",
 		"esm": "^3.2.25",
 		"export-to-csv": "0.2.1",

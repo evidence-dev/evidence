@@ -67,7 +67,8 @@
 			>The source code for our telemetry can be <a
 				class="docs-link"
 				href="https://github.com/evidence-dev/evidence/blob/main/packages/telemetry/index.cjs"
-				>found here &rarr;</a
+				target="_blank"
+				rel="noreferrer">found here &rarr;</a
 			></span
 		>
 	</footer>

@@ -12,10 +12,15 @@ module.exports = `
 {#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title)}
 <title>{metadata.title ?? metadata.og?.title}</title>
 <meta property="og:title" content={metadata.og?.title ?? metadata.title} />
+<meta name="twitter:title" content={metadata.og?.title ?? metadata.title} />
 {:else}
 <!-- EITHER there is no metadata, or there is no specified style -->
 <title>Evidence</title>
 {/if}
+
+<!-- default twitter cardtags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@evidence_dev" />
 
 {#if typeof metadata === "object"}
 {#if metadata.description || metadata.og?.description}
@@ -27,9 +32,14 @@ module.exports = `
     property="og:description"
     content={metadata.og?.description ?? metadata.description}
   />
+  <meta
+    name="twitter:description"
+    content={metadata.og?.description ?? metadata.description}
+  />
 {/if}
 {#if metadata.og?.image}
   <meta property="og:image" content={metadata.og?.image} />
+  <meta name="twitter:image" content={metadata.og?.image} />
 {/if}
 {/if}
 </svelte:head>

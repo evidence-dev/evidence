@@ -2,11 +2,12 @@ import { watch } from 'chokidar';
 import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
-import { basename, dirname, resolve } from 'path';
-import { readFile } from 'fs/promises';
 import { readFileSync } from 'fs';
 import nodePath from 'path';
 import yaml from 'yaml';
+import { basename, dirname, resolve, sep as pathSep } from 'path';
+import debounce from 'lodash.debounce';
+
 /**
  * Extracts source, query, and source_path from a path
  * @param {string} path
@@ -27,33 +28,44 @@ function getSourceAndQuery(path) {
 	return { source, query, source_path: resolve(path) };
 }
 
+/**
+ * This is used to wrap the existing chokidar file watcher
+ * It emits an additional `done` event that indicates source queries have finished execution
+ */
 const build_watcher = new EventEmitter();
 
 if (process.env.NODE_ENV === 'development') {
 	const watcher = watch('../../sources/**');
-	watcher.on('change', async (path) => {
-		const { query, source_path } = getSourceAndQuery(path);
-		const datasources = await getSources(resolve('../../sources'));
-		const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
-		if (!datasource) return;
+	watcher.on(
+		'change',
+		debounce(/** @type {(path: string) => Promise<void>} */ async (path) => {
+			const { query, source_path } = getSourceAndQuery(path);
+			const datasources = await getSources(resolve('../../sources'));
+			const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
+			if (!datasource) return;
 
-		build_watcher.emit('change', path);
+			build_watcher.emit('change', path);
 
-		// go in . (aka .evidence/template)
-		const error = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
-			sources: new Set([datasource.name]),
-			queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
-			only_changed: false
-		}).catch((e) => e);
+			const reservedFiles = ['connection.yaml', 'connection.options.yaml'];
+			const updatedFile = /** @type {string} */ (path.split(pathSep).pop());
+			const rerunWholeSource = reservedFiles.includes(updatedFile);
+			const queryFilter = rerunWholeSource ? null : new Set([query]);
 
-		if (error) {
-			console.error(`Error occured while reloading source: ${error}`);
-			build_watcher.emit('done', path, {}, error);
-		} else {
-			const manifest = await readFile('./static/data/manifest.json', 'utf-8');
-			build_watcher.emit('done', path, manifest, null);
-		}
-	});
+			// go in . (aka .evidence/template)
+			try {
+				const manifest = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
+					sources: new Set([datasource.name]),
+					queries: queryFilter,
+					only_changed: false
+				});
+
+				build_watcher.emit('done', path, JSON.stringify({ renderedFiles: manifest }), null);
+			} catch (error) {
+				console.error(`Error occured while reloading source: ${error}`);
+				build_watcher.emit('done', path, {}, error);
+			}
+		}, 250)
+	);
 }
 
 /** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */

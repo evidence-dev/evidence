@@ -25,7 +25,57 @@ let countries = [
     {country: 'Russia', continent: 'Europe', gdp_usd: 1776, gdp_growth_pct1: -0.04, interest_rate_pct1: 0.08, inflation_rate_pct1: 0.151, jobless_rate_pct1: 0.039, gov_budget: 0.8, debt_to_gdp: 18.2, current_account: 6.8, population: 145.55},
     {country: 'Brazil', continent: 'South America', gdp_usd: 1609, gdp_growth_pct1: 0.032, interest_rate_pct1: 0.1375, inflation_rate_pct1: 0.1007, jobless_rate_pct1: 0.091, gov_budget: -4.5, debt_to_gdp: 80.27, current_account: -1.8, population: 213.32}
 ]
+
+let generated_multiple_dates = [{ start_date: '2019-12-05', end_date: '2019-12-31' }, { start_date: '2020-07-14', end_date: '2020-08-20' }, { start_date: '2021-04-14', end_date: '2021-05-03' }]
+
+const date_range = 1638316800000 - 1546300800000;
+
+const generate_date = (third) => {
+	const start = 1546300800000 + (date_range / 3) * (third - 1);
+	const end = start + date_range / 3;
+	return new Date(start + Math.random() * (end - start));
+};
+
+const interval = setInterval(() => {
+	generated_multiple_dates = [
+		{
+			start_date: generate_date(1),
+			end_date: generate_date(1)
+		},
+		{
+			start_date: generate_date(2),
+			end_date: generate_date(2)
+		},
+		{
+			start_date: generate_date(3),
+			end_date: generate_date(3)
+		}
+	]
+}, 1000);
+
+import { onDestroy } from "svelte";
+onDestroy(() => {
+	clearInterval(interval);
+});
 </script>
+
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceLine data={generated_multiple_dates} x=start_date/>
+</LineChart>
+
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceArea data={generated_multiple_dates} xMin=start_date xMax=end_date color=grey/>
+</LineChart>
 
 ```multiple_dates
 select '2019-12-05' as start_date, '2019-12-31' as end_date
@@ -167,6 +217,7 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     tooltipTitle=country
     series=continent
 >
+	<ReferenceLine data={[{ gdp_growth_pct1: 0.101 }]} y=gdp_growth_pct1 />
     <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=grey border=true/>
 </ScatterPlot>
 

@@ -39,6 +39,7 @@ const logEvent = async (eventName, dev, settings) => {
 			  'yes';
 		let repo;
 		let database;
+		let demoDb;
 
 		if (settings) {
 			if (settings.gitRepo) {
@@ -48,7 +49,14 @@ const logEvent = async (eventName, dev, settings) => {
 			if (settings.database) {
 				database = settings.database;
 			}
+
+			if (settings.credentials.filename) {
+				demoDb = md5(settings.credentials.filename) === md5('needful_things.duckdb');
+			}
 		}
+
+		let directoryHash = md5(process.env.HOME);
+		let codespaces = process.env.CODESPACES === 'true';
 
 		if (usageStats === 'yes') {
 			projectProfile = await getProfile();
@@ -60,7 +68,12 @@ const logEvent = async (eventName, dev, settings) => {
 					devMode: dev,
 					repoHash: repo,
 					database: database, // logs database type (postgres, snowflake, etc.)
-					operatingSystem: process.platform // logs operating system name
+					operatingSystem: process.platform, // logs operating system name
+					nodeVersion: process.version, // logs active version of NodeJS
+					arch: process.arch,
+					directoryHash: directoryHash,
+					demoDb: demoDb,
+					codespaces: codespaces
 				}
 			});
 		}

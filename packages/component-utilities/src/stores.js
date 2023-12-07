@@ -8,19 +8,40 @@ export const routeHash = writable('');
 function createToastsObject() {
 	const { subscribe, update } = writable([]);
 
+	const timeoutMap = {};
+
+	const removeToast = (id) => {
+		update(($toasts) => $toasts.filter((existing) => existing.id !== id));
+	};
+
 	return {
 		subscribe,
+		/**
+		 *
+		 * @param {Toast} toast
+		 * @param {number} [timeout]
+		 */
 		add: (toast, timeout = 2000) => {
+			// Totally safe ids
+			toast.id = Math.random().toString();
 			update(($toasts) => ($toasts.push(toast), $toasts));
-			setTimeout(() => {
-				update(($toasts) => $toasts.filter((existing) => existing.id !== toast.id));
+			const timeoutId = setTimeout(() => {
+				removeToast(toast.id);
+				delete timeoutMap[toast.id];
 			}, timeout);
+
+			timeoutMap[toast.id] = timeoutId;
+		},
+		dismiss: (toastId) => {
+			removeToast(toastId);
+			clearTimeout(timeoutMap[toastId]);
+			delete timeoutMap[toastId];
 		}
 	};
 }
 
 /** @typedef {"error" | "warning" | "success" | "info"} ToastStatus */
-/** @typedef {{ id: unknown; status?: ToastStatus; title: string; message: string; }} Toast */
+/** @typedef {{ id: string; status?: ToastStatus; title: string; message: string; }} Toast */
 /** @type {import('svelte/store').Readable<Toast[]> & { add: (toast: Toast, timeout: number) => void }} */
 export const toasts = createToastsObject();
 

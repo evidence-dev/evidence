@@ -19,6 +19,15 @@
 	export let row = 0;
 	export let column = null;
 
+	// alias for column
+	export let value = null;
+	$: if (value && column) {
+		console.warn(
+			'Both "value" and "column" were supplied as props to Value. "value" will be ignored.'
+		);
+	}
+	$: column = column ?? value;
+
 	// Placeholder text when data not supplied:
 	export let placeholder = null;
 
@@ -26,7 +35,7 @@
 	export let fmt = undefined;
 	let format_object;
 
-	let value;
+	let selected_value;
 	let error;
 
 	let columnSummary;
@@ -67,14 +76,14 @@
 						}
 					}
 
-					value = data[row][column];
+					selected_value = data[row][column];
 					columnSummary = columnSummary.filter((d) => d.id === column);
 					if (fmt) {
 						format_object = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
 					} else {
 						format_object = columnSummary[0].format;
 					}
-				} else {
+				} else if (typeof data === 'undefined') {
 					throw Error(
 						'No data provided. If you referenced a query result, check that the name is correct.'
 					);
@@ -87,8 +96,6 @@
 			}
 		}
 	}
-
-	$: if (!data) error = 'Missing property `data` not provided';
 </script>
 
 {#if error}
@@ -109,7 +116,7 @@
 	>
 {:else if !error}
 	<span>
-		{formatValue(value, format_object)}
+		{formatValue(selected_value, format_object)}
 	</span>
 {/if}
 
@@ -133,7 +140,6 @@
 		padding-top: 2px;
 		padding-bottom: 1px;
 		color: white;
-		font-family: sans-serif;
 		font-size: 0.8em;
 		background-color: var(--grey-900);
 		opacity: 0.85;

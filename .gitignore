@@ -19,6 +19,8 @@ customization/
 
 **/storybook-static/**
 *.log
+
 connection.options.yaml
 **/static/data
+
 .idea

@@ -8,10 +8,8 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Page Elements: Page Menu', () => {
 	test('should be able click page menu to open, and click again to close', async ({ page }) => {
-		const pageMenuButton: Locator = await page
-			.getByRole('banner')
-			.getByRole('button', { name: 'page menu button' });
-		const exportPDFButton: Locator = await page.getByRole('button', { name: 'Export PDF' });
+		const pageMenuButton: Locator = await page.locator('#headlessui-menu-button-1');
+		const exportPDFButton: Locator = await page.getByRole('menuitem', { name: 'Print PDF' });
 
 		// click on the page menu button
 		await pageMenuButton.click();

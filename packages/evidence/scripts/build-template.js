@@ -1,18 +1,21 @@
 // Populate the template that's shipped with the package using a subset of files from the example-project
 import path from 'path';
-import fs from 'fs-extra';
-
+import fsExtra from 'fs-extra';
+import fs from 'fs';
 const templatePaths = [
 	'static/',
 	'sources/',
 	'src/app.css',
 	'src/app.html',
+	'src/hooks.client.js',
+	'src/hooks.server.js',
 	'src/global.d.ts',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
 	'src/pages/extractQueries.server.js',
 	'src/pages/+layout.server.js',
 	'src/pages/+layout.js',
+	'src/pages/+error.svelte',
 	'src/pages/settings/',
 	'src/pages/explore',
 	'src/pages/api/',
@@ -21,10 +24,10 @@ const templatePaths = [
 ];
 const ignorePaths = ['static/data'];
 
-fs.emptyDirSync('./template/');
+fsExtra.emptyDirSync('./template/');
 
 templatePaths.forEach((p) => {
-	fs.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
+	fsExtra.copySync(path.join('../../sites/example-project', p), path.join('./template', p));
 });
 
 ignorePaths.forEach((p) => {
@@ -34,44 +37,13 @@ ignorePaths.forEach((p) => {
 	});
 });
 
-fs.emptyDirSync('./template/sources');
+fsExtra.emptyDirSync('./template/sources');
 
+const configFileLocation = new URL('svelte.config.js', import.meta.url);
 // Create a clean SK config (workspace's is modified)
-fs.outputFileSync(
-	'./template/svelte.config.js',
-	`
-    import evidencePreprocess from '@evidence-dev/preprocess'
-    import preprocess from "svelte-preprocess";
-    import adapter from '@sveltejs/adapter-static';
-    import { evidencePlugins } from '@evidence-dev/plugin-connector';
-    
-    /** @type {import('@sveltejs/kit').Config} */
-    
-    const config = {
-        extensions: ['.svelte', ".md"], 
-        preprocess: [
-            ...evidencePreprocess(true),
-            evidencePlugins(),
-            preprocess({
-              postcss: true,
-            }),
-        ],
-        kit: {
-            adapter: adapter({
-                strict: false
-            }),
-            files: {
-                routes: 'src/pages',
-                lib: 'src/components'
-            }
-        }
-    };
-    
-    export default config    
-    `
-);
+fs.writeFileSync('./template/svelte.config.js', fs.readFileSync(configFileLocation));
 
-fs.outputFileSync(
+fsExtra.outputFileSync(
 	'./template/vite.config.js',
 	`import { sveltekit } from "@sveltejs/kit/vite"
 	import { evidenceVitePlugin } from "@evidence-dev/plugin-connector"
@@ -120,7 +92,7 @@ fs.outputFileSync(
 );
 
 // Create a readme
-fs.outputFileSync(
+fsExtra.outputFileSync(
 	'./template/README.md',
 	`
 # Evidence Template Project

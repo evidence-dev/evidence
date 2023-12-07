@@ -8,11 +8,13 @@
 	"dependencies": {
 		"@evidence-dev/bigquery": "workspace:*",
 		"@evidence-dev/csv": "workspace:*",
+		"@evidence-dev/databricks": "workspace:*",
 		"@evidence-dev/db-commons": "workspace:*",
 		"@evidence-dev/duckdb": "workspace:*",
 		"@evidence-dev/mssql": "workspace:*",
 		"@evidence-dev/mysql": "workspace:*",
 		"@evidence-dev/postgres": "workspace:*",
+		"@evidence-dev/trino": "workspace:*",
 		"@evidence-dev/redshift": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
 		"@evidence-dev/sqlite": "workspace:*",

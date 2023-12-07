@@ -4,7 +4,7 @@ description: Here is a detailed description of the page that is typically up to 
 og:
   title: Title for social
   description: Description for social
-  image: img_for_social.png
+  image: /icon.svg
 some_arbitrary_frontmatter: This is arbitrary, and can be anything
 ---
 
@@ -19,7 +19,7 @@ description: Here is a detailed description of the page that is typically up to 
 og:
   title: Title for social
   description: Description for social
-  image: img_for_social.png
+  image: /icon.svg
 ---
 ```
 

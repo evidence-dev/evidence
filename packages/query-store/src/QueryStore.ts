@@ -77,7 +77,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	/** Has #fetchData been executed? */
 	get loaded() {
-		return this.#dataLoaded;
+		return this.#dataLoaded && this.#metaLoaded && this.#lengthLoaded;
 	}
 	/** Is #fetchData currently running? */
 	get loading() {
@@ -248,8 +248,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				}
 			}
 		);
-		// TODO: Should this really be automatic?
+
 		this.#fetchMetadata();
+
 		this.#handleInitialData();
 		// prerender
 		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
@@ -397,10 +398,12 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					type: row.column_type!.toString()
 				}));
 				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
-				this.#metaLoading = false;
-				this.#metaLoaded = true;
-				this.#calculateScore();
-				this.#warnHighScore();
+				if (this.#columns.length > 0) {
+					this.#metaLoading = false;
+					this.#metaLoaded = true;
+					this.#calculateScore();
+					this.#warnHighScore();
+				}
 				this.publish();
 			},
 			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`, `${this.id}_metadata`),

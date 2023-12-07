@@ -63,7 +63,7 @@ _Italic_ text is wrapped in single asterisks
 ```
 ![An online image](https://i.imgur.com/xyI27iZ.gif)
 
-![An image stored in the project](my-image.png)
+![An image stored in the project's static folder](/my-image.png)
 ```
 
 #### Storing Images and Static Files
@@ -161,3 +161,27 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 | `sources`        | references SQL queries stored in the /sources directory.                                                                     |
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
+
+## Partials
+
+:::note
+Partials do not support live reload, or hot module replacement. You will need to refresh the page when you change a partial.
+:::
+
+`./pages/index.md`
+```markdown
+{@partial "my-first-partial.md"}
+
+And some content specific to this page.
+```
+
+`./partials/my-first-partial.md`
+```markdown
+# This is my first partial
+
+This is some content in the partial.
+```
+
+Evidence supports re-using chunks of Evidence markdown using Partials.
+
+Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}` (do not include the `/partial` folder in the path).

@@ -1,6 +1,6 @@
 {
 	"name": "evidence-test-environment",
-	"version": "3.0.0-usql.37",
+	"version": "3.0.0-usql.38",
 	"private": true,
 	"scripts": {
 		"build": "evidence sources --changed && evidence build",
@@ -23,6 +23,7 @@
 		"@evidence-dev/evidence": "workspace:*",
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/postgres": "workspace:*",
+		"@evidence-dev/snowflake": "workspace:*",
 		"@evidence-dev/sqlite": "workspace:*"
 	}
 }

@@ -1,5 +1,23 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.30
+
+### Patch Changes
+
+- Updated dependencies [b7d02a29]
+- Updated dependencies [e134351d]
+- Updated dependencies [b4de6d55]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [88e1a5ee]
+- Updated dependencies [6fdfec28]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [4a75c077]
+  - @evidence-dev/plugin-connector@2.0.0-usql.25
+  - @evidence-dev/core-components@2.0.0-usql.19
+  - @evidence-dev/component-utilities@2.0.0-usql.13
+  - @evidence-dev/universal-sql@2.0.0-usql.16
+  - @evidence-dev/query-store@2.0.0-usql.7
+
 ## 3.0.0-usql.29
 
 ### Patch Changes
@@ -238,6 +256,151 @@
   - @evidence-dev/plugin-connector@2.0.0-usql.9
 
 ## 3.0.0-usql.8
+
+## 2.7.4
+
+### Patch Changes
+
+- 3462a045: fix massive charts on ios
+- 8ad23995: Prevent 500 error when creating a directory which only contains a paramaterized page
+- Updated dependencies [8408cb82]
+- Updated dependencies [d1cf6dc9]
+- Updated dependencies [b4596313]
+- Updated dependencies [551b036f]
+- Updated dependencies [3462a045]
+- Updated dependencies [336dec14]
+- Updated dependencies [8ad23995]
+- Updated dependencies [0f54d725]
+- Updated dependencies [8ce5ce82]
+  - @evidence-dev/core-components@2.1.4
+  - @evidence-dev/telemetry@1.0.6
+  - @evidence-dev/component-utilities@1.2.2
+
+## 2.7.3
+
+### Patch Changes
+
+- 4c54ae21: prevent multiple hits to the data API in the terminal
+- 75ac7240: Add LastRefreshed component
+- Updated dependencies [8ed2af44]
+- Updated dependencies [75ac7240]
+- Updated dependencies [c4d59109]
+  - @evidence-dev/component-utilities@1.2.1
+  - @evidence-dev/core-components@2.1.3
+
+## 2.7.2
+
+### Patch Changes
+
+- Updated dependencies [41df3c72]
+  - @evidence-dev/core-components@2.1.2
+
+## 2.7.1
+
+### Patch Changes
+
+- Updated dependencies [9d5c11e1]
+  - @evidence-dev/core-components@2.1.1
+
+## 2.7.0
+
+### Minor Changes
+
+- 56521bfb: Add value labels to charts
+- 29ec9735: Log scale for y-axis
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+- 71a77ca6: Add secondary y-axis for line charts
+
+### Patch Changes
+
+- aafd7135: Consolidate echarts theme imports
+- 1f20c79d: Minor adjustments
+- Updated dependencies [d09a32ce]
+- Updated dependencies [aafd7135]
+- Updated dependencies [75e419f8]
+- Updated dependencies [548d37ff]
+- Updated dependencies [5f660a8d]
+- Updated dependencies [56521bfb]
+- Updated dependencies [29ec9735]
+- Updated dependencies [410c1bc6]
+- Updated dependencies [e986ed77]
+- Updated dependencies [f8781d56]
+- Updated dependencies [1f20c79d]
+- Updated dependencies [e68a91f7]
+- Updated dependencies [9b8346f0]
+- Updated dependencies [614b9007]
+- Updated dependencies [90258dec]
+- Updated dependencies [71a77ca6]
+  - @evidence-dev/core-components@2.1.0
+  - @evidence-dev/component-utilities@1.2.0
+
+## 2.6.4
+
+### Patch Changes
+
+- Updated dependencies [1e2fad14]
+  - @evidence-dev/core-components@2.0.4
+
+## 2.6.3
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/component-utilities@1.1.3
+
+## 2.6.2
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+
+## 2.6.1
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+
+## 2.6.0
+
+### Minor Changes
+
+- 883c9ebb: Adds delta content type to DataTable
+- 86b94da9: Add colour scale conditional formatting to DataTable
+
+### Patch Changes
+
+- 798c0395: adds feature to have stepped line & area chart.
+- bdd8df80: remove broken conditional check in extractQueries.server.js
+- 6a9a7ad4: Updates favicon files in browser tab.
+- Updated dependencies [798c0395]
+- Updated dependencies [16112191]
+- Updated dependencies [cdbd1773]
+- Updated dependencies [883c9ebb]
+- Updated dependencies [ef3ec286]
+- Updated dependencies [86b94da9]
+- Updated dependencies [b9d54140]
+- Updated dependencies [80594acd]
+- Updated dependencies [5639ac12]
+- Updated dependencies [4ff7dcac]
+- Updated dependencies [a1fa819e]
+- Updated dependencies [fc07d945]
+- Updated dependencies [a00c7c76]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [acd0be37]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@1.1.1
+
+## 2.5.1
 
 ### Patch Changes
 

@@ -40,7 +40,11 @@
 	<div class="separator">Advanced Build Settings</div>
 	<p>
 		Click 'Show Advanced' add your
-		<a href="https://docs.netlify.com/configure-builds/environment-variables/">
+		<a
+			href="https://docs.netlify.com/configure-builds/environment-variables/"
+			target="_blank"
+			rel="noreferrer"
+		>
 			environment variables.
 		</a>
 	</p>

@@ -29,7 +29,7 @@
 		{#if copyToClipboard}
 			<button
 				type="button"
-				class="container absolute right-0 top-0 h-8 w-8"
+				class="container absolute right-0 top-0 h-8 w-8 transition-all duration-200 ease-in-out"
 				class:copied
 				on:click={() => {
 					if (source !== undefined) {
@@ -93,7 +93,6 @@
 
 	pre button.container {
 		opacity: 0;
-		transition: all 200ms ease-in-out;
 		box-sizing: border-box;
 		background-color: var(--grey-100);
 		border-radius: 4px 4px 4px 4px;
@@ -112,14 +111,9 @@
 	}
 
 	pre:hover button.container {
+		@apply bg-gray-50 text-gray-500 border-gray-200 rounded;
 		opacity: 1;
-		transition: all 200ms ease-in-out;
-		box-sizing: border-box;
-		background-color: var(--grey-100);
-		border-radius: 4px 4px 4px 4px;
-		border: 1px solid var(--grey-300);
 		padding: 0.25em 0.35em 0.25em 0.35em;
-		color: var(--grey-300);
 		cursor: pointer;
 		user-select: none;
 		-webkit-user-select: none;
@@ -131,16 +125,10 @@
 	}
 
 	pre button.container:hover {
-		border-color: var(--grey-500);
-		background-color: var(--grey-100);
-		color: var(--grey-500);
-		transition: all 200ms ease-in-out;
+		@apply border-gray-500 text-gray-500;
 	}
 
 	pre button.container.copied {
-		border-color: var(--grey-500);
-		background-color: var(--grey-100);
-		color: var(--green-500);
-		transition: all 200ms ease-in-out;
+		@apply text-green-600 border-gray-500;
 	}
 </style>

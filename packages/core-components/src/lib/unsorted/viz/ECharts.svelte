@@ -3,10 +3,13 @@
 </script>
 
 <script>
+	import { browser } from '$app/environment';
 	import echarts from '@evidence-dev/component-utilities/echarts';
 	import echartsCanvasDownload from '@evidence-dev/component-utilities/echartsCanvasDownload';
 	import EchartsCopyTarget from './EchartsCopyTarget.svelte';
 	import DownloadData from '../ui/DownloadData.svelte';
+	import CodeBlock from '../ui/CodeBlock.svelte';
+	import ChartLoading from '../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
 
@@ -16,6 +19,9 @@
 	export let width = '100%';
 
 	export let data;
+
+	export let echartsOptions = undefined;
+	export let printEchartsConfig; // helper for custom chart development
 
 	const dispatch = createEventDispatcher();
 
@@ -45,22 +51,26 @@
 	on:mouseleave={() => (hovering = false)}
 >
 	{#if !printing}
-		<div
-			class="chart"
-			style="
-            height: {height};
-            width: {width};
-            margin-left: 0;
-            margin-top: 15px;
-            margin-bottom: 10px;
-            overflow: visible;
-            display: {copying ? 'none' : 'inherit'}
-        "
-			use:echarts={{ ...config, dispatch }}
-		/>
+		{#if !browser}
+			<ChartLoading {height} />
+		{:else}
+			<div
+				class="chart"
+				style="
+				height: {height};
+				width: {width};
+				margin-left: 0;
+				margin-top: 15px;
+				margin-bottom: 10px;
+				overflow: visible;
+				display: {copying ? 'none' : 'inherit'}
+			"
+				use:echarts={{ ...config, ...$$restProps, echartsOptions, dispatch }}
+			/>
+		{/if}
 	{/if}
 
-	<EchartsCopyTarget {config} {height} {width} {copying} {printing} />
+	<EchartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
 
 	<div class="chart-footer">
 		<DownloadData
@@ -93,6 +103,12 @@
 			<DownloadData text="Download data" {data} class="download-button" display={hovering} />
 		{/if}
 	</div>
+
+	{#if printEchartsConfig && !printing}
+		<CodeBlock>
+			{JSON.stringify(config, undefined, 3)}
+		</CodeBlock>
+	{/if}
 </div>
 
 {#if downloadChart}
@@ -108,7 +124,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={config}
+		use:echartsCanvasDownload={{ ...config, ...$$restProps, echartsOptions }}
 	/>
 {/if}
 

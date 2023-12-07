@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.13
+
+### Patch Changes
+
+- 88e1a5ee: Toasts can now be dismissable
+  - @evidence-dev/query-store@2.0.0-usql.7
+
 ## 2.0.0-usql.12
 
 ### Patch Changes
@@ -93,6 +100,50 @@
 
   .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
   on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+## 1.2.2
+
+### Patch Changes
+
+- 3462a045: fix massive charts on ios
+
+## 1.2.1
+
+### Patch Changes
+
+- 8ed2af44: Explicitly set font family for chart theme
+
+## 1.2.0
+
+### Minor Changes
+
+- 5f660a8d: Add box plot
+- 56521bfb: Add value labels to charts
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+- 71a77ca6: Add secondary y-axis for line charts
+
+### Patch Changes
+
+- aafd7135: Consolidate echarts theme imports
+
+## 1.1.3
+
+### Patch Changes
+
+- 7112f1b8: Fix y-axis labels being truncated on horizontal bar charts
+
+## 1.1.2
+
+### Patch Changes
+
+- 4944f21c: getCompletedData() fills all x values for categorical series
+- 287126fe: Ensure that numeric and date x-axis series are sorted
+
+## 1.1.1
+
+### Patch Changes
+
+- 16112191: Fixes to series completion; duplicate series labels in timestamps should no longer appear
 
 ## 1.1.0
 

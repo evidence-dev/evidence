@@ -74,7 +74,8 @@ describe('buildMultipartParquet', () => {
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
+			{ force: true }
 		);
 	});
 
@@ -107,11 +108,13 @@ describe('buildMultipartParquet', () => {
 		expect(fs.rm).toHaveBeenCalledTimes(2);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			1,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
+			{ force: true }
 		);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet')
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet'),
+			{ force: true }
 		);
 	});
 
@@ -132,7 +135,10 @@ describe('buildMultipartParquet', () => {
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledOnce();
 		expect(fs.rm).toHaveBeenCalledWith(
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet')
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
+			{
+				force: true
+			}
 		);
 	});
 

@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "2.0.0-usql.12",
+	"version": "2.0.0-usql.13",
 	"description": "",
 	"main": "index.js",
 	"exports": {
@@ -9,6 +9,10 @@
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
+	"devDependencies": {
+		"@faker-js/faker": "^8.0.2",
+		"vitest": "^0.34.1"
+	},
 	"scripts": {
 		"test": "vitest --run",
 		"test:watch": "vitest"
@@ -22,11 +26,8 @@
 		"@uwdata/mosaic-sql": "^0.3.2",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
-		"echarts": "5.4.2",
+		"echarts": "5.4.3",
 		"ssf": "^0.11.2",
 		"svelte": "3.55.0"
-	},
-	"devDependencies": {
-		"vitest": "^0.34.1"
 	}
 }

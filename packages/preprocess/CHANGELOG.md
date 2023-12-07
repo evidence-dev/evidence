@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.19
+
+### Patch Changes
+
+- 6bf5003a: add bypass to SSR'd inputs bug
+
 ## 4.0.0-usql.18
 
 ### Patch Changes
@@ -101,6 +107,27 @@
 - 64ab3074: Add USQL Context wrappers to component utilities
 
 ## 4.0.0-usql.5
+
+## 3.2.1
+
+### Patch Changes
+
+- 17e2b444: fix unnamed query logic
+
+## 3.2.0
+
+### Minor Changes
+
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+
+## 3.1.2
+
+### Patch Changes
+
+- 86635f53: Adds twitter og tags based on og provided in frontmatter
+- ca551518: Add support for markdown partials
+
+## 3.1.1
 
 ### Patch Changes
 

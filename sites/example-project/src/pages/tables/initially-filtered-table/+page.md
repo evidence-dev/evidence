@@ -56,6 +56,8 @@ select '2020-05-26' as date, 100 as value_usd, 'Zimbabwe' as country, 'A' as cat
 
 <script>
     let externalFilterValue = 'Bra';
+    let filteredData = [];
+    $: externalFilterValue, (filteredData = tableq.filter(x => x.country.includes(externalFilterValue)))
 </script>
 
 <input
@@ -65,7 +67,15 @@ select '2020-05-26' as date, 100 as value_usd, 'Zimbabwe' as country, 'A' as cat
 />
 
 <DataTable
-data={tableq.filter(x => x.country.includes(externalFilterValue))}
-link=country_url
-showLinkCol=true
-/>
+    data={filteredData}
+    search=true
+    rowShading=false
+    link=country_url
+>
+    <Column id=country title={`Country (${filteredData.length})`} />
+    <Column id=country_id align=center/>
+    <Column id=flag contentType=image height=40px  align=center />
+    <Column id=category align=center/>
+    <Column id=value_usd/>
+    <Column id=country_url contentType=link linkLabel="Details &rarr;" title="Country Details" align=right openInNewTab=true/>
+</DataTable>

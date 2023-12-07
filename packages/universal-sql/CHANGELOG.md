@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.16
+
+### Patch Changes
+
+- 4d5735a2: Fix a few fs related issues
+
 ## 2.0.0-usql.15
 
 ### Patch Changes

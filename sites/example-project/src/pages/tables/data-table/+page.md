@@ -18,10 +18,16 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 
 ### rows=40
 
-<DataTable data={orders_by_category} rows=40 rowNumbers=true/>
-
-## Including Images 
-
-<DataTable data="{orders_by_category}">
-    <Column id="flag" contentType="image" height="30px" align="center" />
+<DataTable data={orders_by_category} rows=40 rowNumbers=true>
+  <Column id=month/>
+   <Column id=category/>
+  <Column id=sales_usd0k fmt='[]' contentType=colorscale/>
+  <Column id=num_orders_num0 contentType=colorscale scaleColor=red/>
+    <Column id=aov_usd2 contentType=colorscale scaleColor=blue/>
 </DataTable>
+
+{fmt(1003530000, '[>=1000000000]$#,##0.0,,,"B";$#,##0.0,,"M"')}
+
+## Fuzzy Search
+
+<DataTable data={[{ thing: 'The world has many goodbyes and hellos.' }]} search=true />

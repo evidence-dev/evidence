@@ -1,5 +1,18 @@
 # evidence-test-environment
 
+## 3.0.0-usql.38
+
+### Patch Changes
+
+- Updated dependencies [b4de6d55]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [20722eab]
+- Updated dependencies [88e1a5ee]
+- Updated dependencies [6bf5003a]
+  - @evidence-dev/core-components@2.0.0-usql.19
+  - @evidence-dev/evidence@20.0.0-usql.38
+  - @evidence-dev/component-utilities@2.0.0-usql.13
+
 ## 3.0.0-usql.37
 
 ### Patch Changes
@@ -266,6 +279,156 @@
   - @evidence-dev/evidence@20.0.0-usql.10
 
 ## 3.0.0-usql.9
+
+## 2.1.4
+
+### Patch Changes
+
+- 8ad23995: Prevent 500 error when creating a directory which only contains a paramaterized page
+- Updated dependencies [8408cb82]
+- Updated dependencies [b4596313]
+- Updated dependencies [551b036f]
+- Updated dependencies [3462a045]
+- Updated dependencies [336dec14]
+- Updated dependencies [8ad23995]
+- Updated dependencies [0f54d725]
+- Updated dependencies [8ce5ce82]
+  - @evidence-dev/core-components@2.1.4
+  - @evidence-dev/component-utilities@1.2.2
+  - @evidence-dev/evidence@23.0.4
+
+## 2.1.3
+
+### Patch Changes
+
+- Updated dependencies [8ed2af44]
+- Updated dependencies [75ac7240]
+- Updated dependencies [c4d59109]
+- Updated dependencies [4243f3da]
+  - @evidence-dev/component-utilities@1.2.1
+  - @evidence-dev/core-components@2.1.3
+  - @evidence-dev/evidence@23.0.3
+
+## 2.1.2
+
+### Patch Changes
+
+- Updated dependencies [41df3c72]
+  - @evidence-dev/core-components@2.1.2
+  - @evidence-dev/evidence@23.0.2
+
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [9d5c11e1]
+  - @evidence-dev/core-components@2.1.1
+  - @evidence-dev/evidence@23.0.1
+
+## 2.1.0
+
+### Minor Changes
+
+- 9b8346f0: update core layout, tailwind config, align components to new layout, deprecate sticky alert
+
+### Patch Changes
+
+- Updated dependencies [d09a32ce]
+- Updated dependencies [aafd7135]
+- Updated dependencies [75e419f8]
+- Updated dependencies [548d37ff]
+- Updated dependencies [5f660a8d]
+- Updated dependencies [56521bfb]
+- Updated dependencies [29ec9735]
+- Updated dependencies [410c1bc6]
+- Updated dependencies [e986ed77]
+- Updated dependencies [f8781d56]
+- Updated dependencies [1f20c79d]
+- Updated dependencies [e68a91f7]
+- Updated dependencies [9b8346f0]
+- Updated dependencies [1752882a]
+- Updated dependencies [614b9007]
+- Updated dependencies [90258dec]
+- Updated dependencies [71a77ca6]
+  - @evidence-dev/core-components@2.1.0
+  - @evidence-dev/component-utilities@1.2.0
+  - @evidence-dev/evidence@23.0.0
+
+## 2.0.24
+
+### Patch Changes
+
+- Updated dependencies [1e2fad14]
+  - @evidence-dev/core-components@2.0.4
+  - @evidence-dev/evidence@22.0.1
+
+## 2.0.23
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+- Updated dependencies [7112f1b8]
+  - @evidence-dev/core-components@2.0.3
+  - @evidence-dev/evidence@22.0.0
+  - @evidence-dev/component-utilities@1.1.3
+
+## 2.0.22
+
+### Patch Changes
+
+- Updated dependencies [6891c4ba]
+  - @evidence-dev/evidence@21.0.3
+
+## 2.0.21
+
+### Patch Changes
+
+- Updated dependencies [5d496a7b]
+  - @evidence-dev/core-components@2.0.2
+  - @evidence-dev/evidence@21.0.2
+
+## 2.0.20
+
+### Patch Changes
+
+- Updated dependencies [4944f21c]
+- Updated dependencies [287126fe]
+- Updated dependencies [9673d6a4]
+- Updated dependencies [54060ffc]
+  - @evidence-dev/component-utilities@1.1.2
+  - @evidence-dev/core-components@2.0.1
+  - @evidence-dev/evidence@21.0.1
+
+## 2.0.19
+
+### Patch Changes
+
+- Updated dependencies [798c0395]
+- Updated dependencies [16112191]
+- Updated dependencies [cdbd1773]
+- Updated dependencies [883c9ebb]
+- Updated dependencies [ef3ec286]
+- Updated dependencies [86b94da9]
+- Updated dependencies [b9d54140]
+- Updated dependencies [80594acd]
+- Updated dependencies [ca551518]
+- Updated dependencies [5639ac12]
+- Updated dependencies [4ff7dcac]
+- Updated dependencies [a1fa819e]
+- Updated dependencies [fc07d945]
+- Updated dependencies [a00c7c76]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [ca551518]
+- Updated dependencies [acd0be37]
+- Updated dependencies [e7eb0ac2]
+- Updated dependencies [b8b5633f]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@1.1.1
+  - @evidence-dev/evidence@21.0.0
+
+## 2.0.18
 
 ### Patch Changes
 

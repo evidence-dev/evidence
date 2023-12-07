@@ -4,11 +4,13 @@ schema:
         type: id
     follower_id:
         type: fk
+        withBias: true
         target:
             table: "users.yaml"
 
     following_id:
         type: fk
+        withBias: true
         target:
             table: "users.yaml"
 
