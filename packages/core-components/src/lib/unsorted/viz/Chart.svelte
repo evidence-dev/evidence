@@ -30,7 +30,7 @@
 	import { Skeleton } from '../../atoms/skeletons';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
-	import {QueryStore} from '@evidence-dev/query-store'
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -232,10 +232,10 @@
 	let dateCols;
 
 	/** @type {QueryStore} */
-	let query = data instanceof QueryStore ? data : undefined
+	let query = data instanceof QueryStore ? data : undefined;
 
 	$: if (query && query.metaLoaded) {
-		if (data instanceof QueryStore) query = data
+		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;
 			missingCols = [];
@@ -1013,14 +1013,14 @@
 </script>
 
 {#if error}
-<ErrorChart {error} {chartType} />
+	<ErrorChart {error} {chartType} />
 {:else if !query?.loaded || !Object.keys($props).length}
-<!-- Query has not loaded, or the props have not gone through first computation -->
-<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
-	<Skeleton />
-</div>
+	<!-- Query has not loaded, or the props have not gone through first computation -->
+	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
+		<Skeleton />
+	</div>
 {:else}
-<!-- Preconditions met, render chart -->
+	<!-- Preconditions met, render chart -->
 	<slot />
 	<ECharts
 		config={$config}

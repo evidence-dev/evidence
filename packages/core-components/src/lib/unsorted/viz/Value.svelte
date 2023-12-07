@@ -83,7 +83,7 @@
 					} else {
 						format_object = columnSummary[0].format;
 					}
-				} else if (typeof data === "undefined"){
+				} else if (typeof data === 'undefined') {
 					throw Error(
 						'No data provided. If you referenced a query result, check that the name is correct.'
 					);

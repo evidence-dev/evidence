@@ -11,6 +11,7 @@ schema:
     content:
         category: lorem
         item: paragraph
+
     created_at:
         category: date
         item: recent
