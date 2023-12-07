@@ -36,12 +36,14 @@
 	let inputQuery;
 	let showCompilerToggle;
 	let showCompiled = true;
+	/** @type {undefined | Error } */
+	let error = undefined;
 
 	// Enter an error state if the queryResult isn't defined
-	$: error =
-		$queryResult?.error ?? Boolean($queryResult)
-			? undefined
-			: new Error('queryResult is undefined');
+	$: {
+		if (!$queryResult) error = new Error('queryResult is undefined');
+		else if ($queryResult.error) error = $queryResult.error;
+	}
 
 	$: rowCount = $queryResult?.length ?? 0;
 	$: colCount = $queryResult?.columns.length ?? 0;
