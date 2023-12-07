@@ -82,13 +82,25 @@ export async function updateSearchPath(schemas) {
 }
 
 /**
+ * @param {string} targetGlob
+ */
+export async function emptyDbFs(targetGlob) {
+	await db.flushFiles();
+	for (const f of await db.globFiles(targetGlob)) {
+		await db.dropFile(f.fileName);
+	}
+}
+
+/**
  * Adds a new view to the database, pointing to the provided parquet URL.
- *
  * @param {Record<string, string[]>} urls
+ * @param {boolean} [append]
  * @returns {Promise<void>}
  */
-export async function setParquetURLs(urls) {
+export async function setParquetURLs(urls, append = false) {
 	if (!db) await initDB();
+	if (!append) await emptyDbFs('*');
+	console.debug('Updating Parquet URLs');
 
 	try {
 		for (const source in urls) {
@@ -97,11 +109,18 @@ export async function setParquetURLs(urls) {
 				const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
 				const file_name = `${source}_${table}.parquet`;
 				let path = url;
+
 				if (!url.startsWith('http') && !url.startsWith('/')) {
 					// URL Needs to be absolute
 					path = `/${url}`;
 				}
+				// Sveltekit doesn't like referencing the static dir expilcitly
 				if (path.startsWith('/static')) path = path.substring(7);
+
+				if (append) {
+					await emptyDbFs(file_name);
+					await emptyDbFs(url);
+				}
 				await db.registerFileURL(file_name, path, DuckDBDataProtocol.HTTP, false);
 				await connection.query(
 					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`

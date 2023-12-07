@@ -11,7 +11,7 @@ import { Compression, writeParquet, WriterPropertiesBuilder } from 'parquet-wasm
 import fs from 'fs/promises';
 import path from 'path';
 // using node-async.js makes CLI command hang - why??
-import { initDB, query } from './client-duckdb/node.js';
+import { emptyDbFs, initDB, query } from './client-duckdb/node.js';
 import { isGeneratorObject } from 'util/types';
 import chunk from 'lodash.chunk';
 import { columnsToScore } from './calculateScore.js';
@@ -144,13 +144,12 @@ export async function buildMultipartParquet(
 	const outputFilepath = path.join(outDir, outputFilename);
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
-	const parquetFiles = tmpFilenames
-		.map((filename) => `'${filename.replaceAll('\\', '/')}'`)
-		.join(',');
+	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
 
-	const select = `SELECT * FROM read_parquet([${parquetFiles}])`;
+	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
 
+	await emptyDbFs(outputFilepath);
 	await query(copy);
 
 	const { size } = await fs.stat(outputFilepath);
@@ -189,5 +188,6 @@ export async function buildMultipartParquet(
 	for (const tmpFile of tmpFilenames) {
 		await fs.rm(tmpFile, { force: true });
 	}
+
 	return rowCount;
 }
