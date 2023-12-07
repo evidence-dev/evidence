@@ -2,6 +2,9 @@ import { watch } from 'chokidar';
 import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
+import { readFileSync } from 'fs';
+import nodePath from 'path';
+import yaml from 'yaml';
 import { basename, dirname, resolve, sep as pathSep } from 'path';
 import debounce from 'lodash.debounce';
 
@@ -12,10 +15,16 @@ import debounce from 'lodash.debounce';
  */
 function getSourceAndQuery(path) {
 	const query = basename(path).split('.')[0];
+
 	while (basename(dirname(path)) !== 'sources') {
 		path = dirname(path);
 	}
-	const source = basename(path);
+
+	const sourceConnection = readFileSync(nodePath.join(path, 'connection.yaml'), {
+		encoding: 'utf-8'
+	});
+
+	const source = yaml.parse(sourceConnection).name;
 	return { source, query, source_path: resolve(path) };
 }
 
@@ -29,7 +38,7 @@ if (process.env.NODE_ENV === 'development') {
 	const watcher = watch('../../sources/**');
 	watcher.on(
 		'change',
-		debounce(async (path) => {
+		debounce(/** @type {(path: string) => Promise<void>} */ async (path) => {
 			const { query, source_path } = getSourceAndQuery(path);
 			const datasources = await getSources(resolve('../../sources'));
 			const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
@@ -38,7 +47,7 @@ if (process.env.NODE_ENV === 'development') {
 			build_watcher.emit('change', path);
 
 			const reservedFiles = ['connection.yaml', 'connection.options.yaml'];
-			const updatedFile = path.split(pathSep).pop();
+			const updatedFile = /** @type {string} */ (path.split(pathSep).pop());
 			const rerunWholeSource = reservedFiles.includes(updatedFile);
 			const queryFilter = rerunWholeSource ? null : new Set([query]);
 

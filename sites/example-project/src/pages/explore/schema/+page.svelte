@@ -16,7 +16,7 @@
 				const columns = await db.query(
 					`SELECT * FROM information_schema.columns WHERE table_name = '${t.table_name}'`
 				);
-				return [t.table_name, { table: t, columns }];
+				return [`${t.table_schema}.${t.table_name}`, { table: t, columns }];
 			})
 		);
 		return Object.fromEntries(metadatas);

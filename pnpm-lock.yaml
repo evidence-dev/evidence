@@ -707,7 +707,7 @@ importers:
         specifier: ^1.7.0
         version: 1.7.1(@sveltejs/kit@1.22.3)
       yaml:
-        specifier: ^2.2.2
+        specifier: ^2.3.4
         version: 2.3.4
       zod:
         specifier: ^3.21.4

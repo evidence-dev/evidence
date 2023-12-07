@@ -12,6 +12,12 @@
 				// to realize they exist?
 				await new Promise((resolve) => setTimeout(resolve, 1000));
 				await $page.data.__db.updateParquetURLs(data.manifest);
+
+				// clear the cached data
+				for (const key in $page.data.data) {
+					delete $page.data.data[key];
+				}
+
 				await invalidateAll();
 			}
 
