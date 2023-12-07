@@ -2,7 +2,7 @@ import { watch } from 'chokidar';
 import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
-import { basename, dirname, resolve } from 'path';
+import { basename, dirname, resolve, sep as pathSep } from 'path';
 import { readFile } from 'fs/promises';
 import debounce from 'lodash.debounce';
 
@@ -20,6 +20,10 @@ function getSourceAndQuery(path) {
 	return { source, query, source_path: resolve(path) };
 }
 
+/**
+ * This is used to wrap the existing chokidar file watcher
+ * It emits an additional `done` event that indicates source queries have finished execution
+ */
 const build_watcher = new EventEmitter();
 
 if (process.env.NODE_ENV === 'development') {
@@ -34,19 +38,24 @@ if (process.env.NODE_ENV === 'development') {
 
 			build_watcher.emit('change', path);
 
-			// go in . (aka .evidence/template)
-			const error = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
-				sources: new Set([datasource.name]),
-				queries: source_path.endsWith('connection.yaml') ? null : new Set([query]),
-				only_changed: false
-			}).catch((e) => e);
+			const reservedFiles = ["connection.yaml", "connection.options.yaml"]
+			const updatedFile = path.split(pathSep).pop()
+			const rerunWholeSource = reservedFiles.includes(updatedFile)
+			const queryFilter = rerunWholeSource ? null : new Set([query])
 
-			if (error) {
+			// go in . (aka .evidence/template)
+			try {
+				const manifest = await updateDatasourceOutputs('./static/data', './.evidence-queries', {
+					sources: new Set([datasource.name]),
+					queries: queryFilter,
+					only_changed: false
+				});
+
+				build_watcher.emit('done', path, JSON.stringify({ renderedFiles: manifest }), null);
+			} catch (error) {
 				console.error(`Error occured while reloading source: ${error}`);
 				build_watcher.emit('done', path, {}, error);
-			} else {
-				const manifest = await readFile('./static/data/manifest.json', 'utf-8');
-				build_watcher.emit('done', path, manifest, null);
+
 			}
 		}, 250)
 	);
