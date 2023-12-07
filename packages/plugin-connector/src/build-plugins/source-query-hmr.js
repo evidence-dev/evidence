@@ -14,11 +14,11 @@ import yaml from 'yaml';
  */
 function getSourceAndQuery(path) {
 	const query = basename(path).split('.')[0];
-	
+
 	while (basename(dirname(path)) !== 'sources') {
 		path = dirname(path);
 	}
-	
+
 	const sourceConnection = readFileSync(nodePath.join(path, 'connection.yaml'), {
 		encoding: 'utf-8'
 	});
