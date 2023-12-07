@@ -50,8 +50,7 @@ export default function checkInputs(data, reqCols, optCols) {
 		// }
 
 		// const dataIsQueryStore = data instanceof QueryStore;
-		
-		
+
 		// Get list of all columns in dataset
 		if ('columns' in data && Array.isArray(data.columns)) {
 			columns = data.columns.map((c) => c.name);
