@@ -3,7 +3,6 @@ import EventEmitter from 'events';
 import { updateDatasourceOutputs } from '../data-sources/index.js';
 import { getSources } from '../data-sources/get-sources.js';
 import { basename, dirname, resolve, sep as pathSep } from 'path';
-import { readFile } from 'fs/promises';
 import debounce from 'lodash.debounce';
 
 /**
@@ -38,10 +37,10 @@ if (process.env.NODE_ENV === 'development') {
 
 			build_watcher.emit('change', path);
 
-			const reservedFiles = ["connection.yaml", "connection.options.yaml"]
-			const updatedFile = path.split(pathSep).pop()
-			const rerunWholeSource = reservedFiles.includes(updatedFile)
-			const queryFilter = rerunWholeSource ? null : new Set([query])
+			const reservedFiles = ['connection.yaml', 'connection.options.yaml'];
+			const updatedFile = path.split(pathSep).pop();
+			const rerunWholeSource = reservedFiles.includes(updatedFile);
+			const queryFilter = rerunWholeSource ? null : new Set([query]);
 
 			// go in . (aka .evidence/template)
 			try {
@@ -55,7 +54,6 @@ if (process.env.NODE_ENV === 'development') {
 			} catch (error) {
 				console.error(`Error occured while reloading source: ${error}`);
 				build_watcher.emit('done', path, {}, error);
-
 			}
 		}, 250)
 	);

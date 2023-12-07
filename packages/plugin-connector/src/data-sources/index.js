@@ -115,5 +115,5 @@ export async function updateDatasourceOutputs(
 	const manifest = await buildSources(sources, dataPath, metaPath, filters);
 
 	await updateManifest(manifest, dataPath, sources);
-	return manifest
+	return manifest;
 }

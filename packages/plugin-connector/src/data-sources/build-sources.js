@@ -176,7 +176,7 @@ export const buildSources = async (
 					if (typeof e === 'string') spinner.fail(e);
 					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
 					else if ('message' in e) spinner.fail(e.message?.toString());
-					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack)
+					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
 				}
 			}
 		} else {
@@ -257,7 +257,7 @@ export const buildSources = async (
 					if (typeof e === 'string') spinner.fail(e);
 					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
 					else if ('message' in e) spinner.fail(e.message?.toString());
-					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack)
+					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
 				}
 			}
 		}
