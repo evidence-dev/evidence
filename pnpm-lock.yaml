@@ -805,21 +805,12 @@ importers:
       '@faker-js/faker':
         specifier: ^7.6.0
         version: 7.6.0
-<<<<<<< HEAD
-      '@types/jest':
-        specifier: ^29.5.0
-        version: 29.5.11
-      jest:
-        specifier: ^28.1.3
-        version: 28.1.3
-=======
       '@types/mock-fs':
         specifier: ^4.13.1
         version: 4.13.4
       mock-fs:
         specifier: ^5.2.0
         version: 5.2.0
->>>>>>> fix/next/backmerge-regressions
       parcel:
         specifier: ^2.8.3
         version: 2.10.3(postcss@8.4.32)(typescript@5.3.3)
@@ -9632,16 +9623,6 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
 
-<<<<<<< HEAD
-  /@types/jest@29.5.11:
-    resolution: {integrity: sha512-S2mHmYIVe13vrm6q4kN6fLYYAka15ALQki/vgDC3mIukEOx8WJlv0kQPM+d4w8Gp6u0uSdKND04IlTXBv0rwnQ==}
-    dependencies:
-      expect: 29.7.0
-      pretty-format: 29.7.0
-    dev: true
-
-=======
->>>>>>> fix/next/backmerge-regressions
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -11232,11 +11213,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001566
-<<<<<<< HEAD
-      electron-to-chromium: 1.4.605
-=======
       electron-to-chromium: 1.4.607
->>>>>>> fix/next/backmerge-regressions
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.22.2)
 
@@ -12923,13 +12900,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-<<<<<<< HEAD
-  /electron-to-chromium@1.4.605:
-    resolution: {integrity: sha512-V52j+P5z6cdRqTjPR/bYNxx7ETCHIkm5VIGuyCy3CMrfSnbEpIlLnk5oHmZo7gYvDfh2TfHeanB6rawyQ23ktg==}
-=======
   /electron-to-chromium@1.4.607:
     resolution: {integrity: sha512-YUlnPwE6eYxzwBnFmawA8LiLRfm70R2aJRIUv0n03uHt/cUzzYACOogmvk8M2+hVzt/kB80KJXx7d5f5JofPvQ==}
->>>>>>> fix/next/backmerge-regressions
 
   /emittery@0.10.2:
     resolution: {integrity: sha512-aITqOwnLanpHLNXZJENbOgjUBeHocD+xsSJmNrjovKBW5HbSpW3d1pEls7GFQPUWXiwG9+0P4GtHfEqC/4M0Iw==}
@@ -21497,59 +21469,7 @@ packages:
       sorcery: 0.11.0
       strip-indent: 3.0.0
       svelte: 3.55.0
-<<<<<<< HEAD
-      typescript: 5.3.2
-
-  /svelte-preprocess@5.0.3(@babel/core@7.23.5)(svelte@3.55.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
-    engines: {node: '>= 14.10.0'}
-    requiresBuild: true
-    peerDependencies:
-      '@babel/core': ^7.10.2
-      coffeescript: ^2.5.1
-      less: ^3.11.3 || ^4.0.0
-      postcss: ^7 || ^8
-      postcss-load-config: ^2.1.0 || ^3.0.0 || ^4.0.0
-      pug: ^3.0.0
-      sass: ^1.26.8
-      stylus: ^0.55.0
-      sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
-      svelte: ^3.23.0
-      typescript: '>=3.9.5 || ^4.0.0 || ^5.0.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      coffeescript:
-        optional: true
-      less:
-        optional: true
-      postcss:
-        optional: true
-      postcss-load-config:
-        optional: true
-      pug:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@babel/core': 7.23.5
-      '@types/pug': 2.0.10
-      detect-indent: 6.1.0
-      magic-string: 0.27.0
-      sorcery: 0.11.0
-      strip-indent: 3.0.0
-      svelte: 3.55.0
-      typescript: 4.9.5
-    dev: false
-=======
       typescript: 5.3.3
->>>>>>> fix/next/backmerge-regressions
 
   /svelte-preprocess@5.0.3(postcss-load-config@4.0.2)(postcss@8.4.32)(svelte@3.55.0)(typescript@4.9.5):
     resolution: {integrity: sha512-GrHF1rusdJVbOZOwgPWtpqmaexkydznKzy5qIC2FabgpFyKN57bjMUUUqPRfbBXK5igiEWn1uO/DXsa2vJ5VHA==}
