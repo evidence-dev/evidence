@@ -14,7 +14,7 @@
 		"pg-cursor": "^2.10.3"
 	},
 	"devDependencies": {
-		"@types/pg": "^8.10.2"
+		"@types/pg": "^8.10.9"
 	},
 	"type": "module",
 	"evidence": {

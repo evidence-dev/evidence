@@ -182,7 +182,7 @@ const standardizeResult = (result) => {
 };
 
 /** @type {import('@evidence-dev/db-commons').RunQuery<PostgresOptions>} */
-const runQuery = async (queryString, database, batchSize = 100000) => {
+const runQuery = async (queryString, database, batchSize = 100000, closeBeforeResults = false) => {
 	try {
 		const credentials = {
 			user: database ? database.user : getEnv(envMap, 'user'),
@@ -226,27 +226,32 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			});
 		}
 
+		/** @type {import("pg").Connection */
 		const connection = await pool.connect();
+		const cleanedString = cleanQuery(queryString);
+
+		const lengthQuery = await connection
+			.query(`WITH root as (${cleanedString}) SELECT COUNT(*) as rows FROM root`)
+			.catch(() => undefined);
+		const rowCount = lengthQuery.rows[0].rows;
+
+		const cursor = connection.query(new Cursor(queryString));
 		try {
-			const cleanedString = cleanQuery(queryString);
-
-			const lengthQuery = await connection
-				.query(`WITH root as (${cleanedString}) SELECT COUNT(*) as rows FROM root`)
-				.catch(() => undefined);
-			const rowCount = lengthQuery.rows[0].rows;
-
-			const cursor = connection.query(new Cursor(queryString));
 
 			const firstBatch = await cursor.read(batchSize);
 
 			return {
 				rows: async function* () {
-					yield firstBatch;
-					let results;
-					while ((results = await cursor.read(batchSize)) && results.length > 0)
-						yield standardizeResult(results);
-					connection.release();
-					pool.end();
+					try {
+						yield firstBatch;
+						let results;
+						while ((results = await cursor.read(batchSize)) && results.length > 0)
+							yield standardizeResult(results);
+						return
+					} finally {
+						await connection.release();
+						await pool.end();
+					}
 				},
 				columnTypes: mapResultsToEvidenceColumnTypes(cursor._result),
 				expectedRowCount: rowCount
@@ -255,6 +260,13 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 			await connection.release();
 			await pool.end();
 			throw e;
+		} finally {
+			if (closeBeforeResults) {
+				debugger
+				await cursor.close().catch(console.warn)
+				await connection.release()
+				await pool.end()
+			}
 		}
 	} catch (err) {
 		if (err.message) {
@@ -291,7 +303,7 @@ module.exports.getRunner = async (opts) => {
 
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<PostgresOptions>} */
 module.exports.testConnection = async (opts) => {
-	return await runQuery('SELECT 1;', opts)
+	return await runQuery('SELECT 1;', opts, 1, true)
 		.then(() => true)
 		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
 };
