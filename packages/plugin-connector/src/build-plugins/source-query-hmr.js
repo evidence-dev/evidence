@@ -8,6 +8,7 @@ import nodePath from 'path';
 import yaml from 'yaml';
 import { basename, dirname, resolve, sep as pathSep } from 'path';
 import debounce from 'lodash.debounce';
+// @ts-expect-error
 import { setParquetURLs } from '@evidence-dev/universal-sql/client-duckdb';
 
 /**
