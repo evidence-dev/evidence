@@ -107,6 +107,7 @@
 - 64ab3074: Add USQL Context wrappers to component utilities
 
 ## 4.0.0-usql.5
+
 ## 3.2.1
 
 ### Patch Changes

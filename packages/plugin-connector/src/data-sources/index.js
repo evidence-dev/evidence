@@ -1,6 +1,4 @@
-import { getSources, getSourcesDir, getCurrentManifest } from './get-sources';
-// import { getDatasourcePlugins } from './get-datasource-plugins';
-// import { execSource } from './exec-source';
+import { getSources, getSourcesDir } from './get-sources';
 import fs from 'fs/promises';
 import path from 'path';
 import { buildSources } from './build-sources';
@@ -12,43 +10,13 @@ export { DatasourceSpecFileSchema, DatasourceSpecSchema } from './schemas/dataso
  *
  * @param {Record<string, string[]>} outputFiles
  * @param {string} outDir
- * @param {Awaited<ReturnType<typeof getSources>>} datasources
  */
-async function updateManifest(outputFiles, outDir, datasources) {
-	const current_manifest = await getCurrentManifest(outDir);
-
-	// delete stale datasources
-	for (const source in current_manifest.renderedFiles) {
-		if (datasources.find((ds) => ds.name === source)) continue;
-		delete current_manifest.renderedFiles[source];
-	}
-
-	// delete stale queries
-	// TODO: Bring this back
-	// for (const source of datasources) {
-	// 	current_manifest.renderedFiles[source.name] = (
-	// 		current_manifest.renderedFiles[source.name] ?? []
-	// 	).filter((file) =>
-	// 		// this is the same way we name files so it's safe
-	// 		source.queries.find((query) => query.name === path.basename(file, '.parquet'))
-	// 	);
-	// }
-
-	for (const source in outputFiles) {
-		// remove queries that have been replaced
-		const new_queries = new Set(outputFiles[source].map((file) => path.basename(file, '.parquet')));
-		current_manifest.renderedFiles[source] = current_manifest.renderedFiles[source]?.filter(
-			(/** @type {string} */ file) => !new_queries.has(path.basename(file, '.parquet'))
-		);
-
-		// update w/ new queries
-		current_manifest.renderedFiles[source] = Array.from(
-			new Set([...outputFiles[source], ...(current_manifest.renderedFiles[source] ?? [])])
-		);
-	}
-
+async function updateManifest(outputFiles, outDir) {
 	await fs.mkdir(outDir, { recursive: true });
-	await fs.writeFile(path.join(outDir, 'manifest.json'), JSON.stringify(current_manifest));
+	await fs.writeFile(
+		path.join(outDir, 'manifest.json'),
+		JSON.stringify({ renderedFiles: outputFiles })
+	);
 }
 
 /**
@@ -102,6 +70,7 @@ export async function getDatasourceOptions(datasourceDir) {
  * @param {string} dataPath
  * @param {string} metaPath
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
+ * @returns {Promise<Record<string, string[]>>}
  */
 export async function updateDatasourceOutputs(
 	dataPath,
@@ -113,5 +82,7 @@ export async function updateDatasourceOutputs(
 	const sources = await getSources(sourceDir);
 	const manifest = await buildSources(sources, dataPath, metaPath, filters);
 
-	await updateManifest(manifest, dataPath, sources);
+	console.log('Updating manifest....');
+	await updateManifest(manifest, dataPath);
+	return manifest;
 }

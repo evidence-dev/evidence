@@ -39,7 +39,7 @@
 
 	$: if (!data) error = new Error('Required prop `data` not provided');
 
-	$: if (data && !data.loading)
+	$: if (data && data.dataLoaded)
 		try {
 			error = undefined;
 
@@ -47,7 +47,10 @@
 				throw new Error('value is required');
 			}
 
-			if (!Array.isArray(data) && !(data instanceof QueryStore)) {
+			if (
+				!Array.isArray(data) &&
+				!(data instanceof QueryStore || data.constructor.name === `bound QueryStore`)
+			) {
 				data = [data];
 			}
 
@@ -83,6 +86,7 @@
 			}
 		} catch (e) {
 			error = e;
+			console.warn(e.message);
 			if (strictBuild) {
 				throw error;
 			}

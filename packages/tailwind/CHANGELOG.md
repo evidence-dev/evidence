@@ -11,6 +11,7 @@
 ### Minor Changes
 
 - f051417f: add `fonts.css` export for new fonts
+
 ## 1.1.0
 
 ### Minor Changes

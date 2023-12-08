@@ -49,13 +49,11 @@ export default function checkInputs(data, reqCols, optCols) {
 		//     throw Error(errorString);
 		// }
 
+		// const dataIsQueryStore = data instanceof QueryStore;
+
 		// Get list of all columns in dataset
-		if ('columns' in data && Array.isArray(data.columns)) {
-			columns = data.columns.map((c) => c.name);
-		} else {
-			for (const [key] of Object.entries(data[0])) {
-				columns.push(key);
-			}
+		for (const [key] of Object.entries(data[0])) {
+			columns.push(key);
 		}
 
 		// Check if provided columns are in the dataset

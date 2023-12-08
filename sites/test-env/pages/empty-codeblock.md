@@ -6,6 +6,6 @@ SELECT * FROM table
 SELECT * FROM orders
 ```
 
-```
+<!-- ```
 SELECT * FROM other_table
-```
+``` -->

@@ -15,7 +15,7 @@
 	/////
 
 	/** @type {string} */
-	export let label;
+	export let title;
 
 	/** @type {string} */
 	export let name;
@@ -29,16 +29,16 @@
 	// Query-Related Things
 	/////
 
-	export let value, data, value_label, order, where;
+	export let value, data, label, order, where;
 	/** @type {import("@evidence-dev/component-utilities/buildQuery.js").QueryProps}*/
 	$: ({ hasQuery, query } = buildInputQuery(
-		{ value, data, label: value_label, order, where },
+		{ value, data, label, order, where },
 		`Dropdown-${name}`
 	));
 </script>
 
-{#if label}
-	<span class="text-sm text-gray-500 block">{label}</span>
+{#if title}
+	<span class="text-sm text-gray-500 block">{title}</span>
 {/if}
 
 <!--

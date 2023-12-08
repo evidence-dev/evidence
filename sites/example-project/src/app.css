@@ -155,7 +155,6 @@
 		@apply mt-1 text-xs font-semibold  text-gray-800;
 	}
 
-
 	h6.markdown,
 	h6.markdown > a.markdown {
 		@apply mt-1 text-xs text-gray-950;

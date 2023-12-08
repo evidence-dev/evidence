@@ -256,6 +256,7 @@
   - @evidence-dev/plugin-connector@2.0.0-usql.9
 
 ## 3.0.0-usql.8
+
 ## 2.7.4
 
 ### Patch Changes

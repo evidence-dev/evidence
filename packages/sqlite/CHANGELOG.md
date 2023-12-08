@@ -47,6 +47,7 @@
 
   .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
   on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
 ## 1.2.1
 
 ### Patch Changes

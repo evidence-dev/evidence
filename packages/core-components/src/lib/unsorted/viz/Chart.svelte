@@ -30,12 +30,13 @@
 	import { Skeleton } from '../../atoms/skeletons';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
-	/** @type {import("@evidence-dev/query-store").QueryStore} */
+	/** @type {QueryStore} */
 	export let data = undefined;
 
 	export let x = undefined;
@@ -230,7 +231,11 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	$: if (data) {
+	/** @type {QueryStore} */
+	let query = data instanceof QueryStore ? data : undefined;
+
+	$: if (query && query.loaded) {
+		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;
 			missingCols = [];
@@ -991,7 +996,7 @@
 			});
 		} catch (e) {
 			error = e.message;
-			console.error(e);
+			console.warn(e.message);
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;
@@ -1003,15 +1008,19 @@
 	}
 	$: data;
 
-	$: if (data?.error) error = data.error.message;
+	$: if (query?.error) error = query.error.message;
 	$: if (!data) error = 'Required prop `data` not provided';
 </script>
 
-{#if (!data || data.loading) && !error}
+{#if error}
+	<ErrorChart {error} {chartType} />
+{:else if !query?.loaded}
+	<!-- Query has not loaded, or the props have not gone through first computation -->
 	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
 		<Skeleton />
 	</div>
-{:else if !error}
+{:else}
+	<!-- Preconditions met, render chart -->
 	<slot />
 	<ECharts
 		config={$config}
@@ -1023,6 +1032,4 @@
 		{echartsOptions}
 		{printEchartsConfig}
 	/>
-{:else}
-	<ErrorChart {error} {chartType} />
 {/if}
