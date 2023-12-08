@@ -1,5 +1,12 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- 26ad2d2c: Faker no longer holds an internal cache between source runes
+- aa2f3bfc: Faker now re-executes when getting a new runner
+
 ## 2.0.0-usql.4
 
 ### Patch Changes

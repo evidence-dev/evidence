@@ -1,5 +1,11 @@
 # @evidence-dev/snowflake
 
+## 1.0.0-usql.5
+
+### Patch Changes
+
+- 6505351f: Misc Fixes
+
 ## 1.0.0-usql.4
 
 ### Patch Changes

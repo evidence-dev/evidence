@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.20
+
+### Patch Changes
+
+- e49793e4: fix query results not updating in hmr
+
 ## 4.0.0-usql.19
 
 ### Patch Changes

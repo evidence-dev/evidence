@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 1.0.0-usql.6
+
+### Patch Changes
+
+- 1320795a: Prevent postgres from hanging when testing connection
+
 ## 1.0.0-usql.5
 
 ### Patch Changes

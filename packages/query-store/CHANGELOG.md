@@ -1,5 +1,15 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.8
+
+### Patch Changes
+
+- 840d1195: allow initialdata to saturate columns
+- 6064fbbf: Loaded now means meta, length, and data, not just data
+- Updated dependencies [840d1195]
+- Updated dependencies [26ad2d2c]
+  - @evidence-dev/universal-sql@2.0.0-usql.17
+
 ## 2.0.0-usql.7
 
 ### Patch Changes

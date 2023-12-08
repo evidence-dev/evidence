@@ -1,5 +1,15 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.12
+
+### Patch Changes
+
+- Updated dependencies [1320795a]
+- Updated dependencies [6505351f]
+  - @evidence-dev/postgres@1.0.0-usql.6
+  - @evidence-dev/snowflake@1.0.0-usql.5
+  - @evidence-dev/redshift@1.0.0-usql.6
+
 ## 3.0.0-usql.11
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.26
+
+### Patch Changes
+
+- 26ad2d2c: Source Query HMR now uses returned manifest instead of reloading from fs
+- 26ad2d2c: Plugin Connector will now show stack traces if a source query fails in debug mode
+- e7781efd: Get real sourcename during hmr
+- 6505351f: Misc Fixes
+- Updated dependencies [840d1195]
+- Updated dependencies [26ad2d2c]
+  - @evidence-dev/universal-sql@2.0.0-usql.17
+
 ## 2.0.0-usql.25
 
 ### Patch Changes

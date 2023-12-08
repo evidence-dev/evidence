@@ -1,5 +1,12 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- 840d1195: allow initialdata to saturate columns
+- 26ad2d2c: When rebuilding and setting parquet urls, the duckdb internal filesystem is now cleaned up to force reloads
+
 ## 2.0.0-usql.16
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # evidence-test-environment
 
+## 3.0.0-usql.39
+
+### Patch Changes
+
+- Updated dependencies [840d1195]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [1320795a]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [aa2f3bfc]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [6505351f]
+- Updated dependencies [2371c8f1]
+  - @evidence-dev/core-components@2.0.0-usql.20
+  - @evidence-dev/evidence@20.0.0-usql.39
+  - @evidence-dev/postgres@1.0.0-usql.6
+  - @evidence-dev/faker-datasource@2.0.0-usql.5
+  - @evidence-dev/component-utilities@2.0.0-usql.14
+  - @evidence-dev/snowflake@1.0.0-usql.5
+
 ## 3.0.0-usql.38
 
 ### Patch Changes

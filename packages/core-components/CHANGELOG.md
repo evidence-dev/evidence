@@ -1,5 +1,19 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.20
+
+### Patch Changes
+
+- 840d1195: allow initialdata to saturate columns
+- 26ad2d2c: Dropdown props are camelCase not snake_case
+- 6505351f: Misc Fixes
+- 2371c8f1: Chart now keeps a copy of the querystore, even if data is clobbered. Waits for props and data to become available
+- Updated dependencies [840d1195]
+- Updated dependencies [6064fbbf]
+- Updated dependencies [6505351f]
+  - @evidence-dev/query-store@2.0.0-usql.8
+  - @evidence-dev/component-utilities@2.0.0-usql.14
+
 ## 2.0.0-usql.19
 
 ### Patch Changes
