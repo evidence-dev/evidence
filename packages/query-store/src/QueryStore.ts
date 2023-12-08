@@ -13,8 +13,11 @@ import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
 import { mutations } from './mutations/index.js';
-// @ts-expect-error can't figure out how to resolve this
-import { columnsToScore } from '@evidence-dev/universal-sql/calculate-score';
+import {
+	evidenceColumnsToScore,
+	duckdbTypeToEvidenceType
+	// @ts-expect-error ts can't find the types
+} from '@evidence-dev/universal-sql/calculate-score';
 
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
@@ -64,20 +67,20 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return this.#originalQuery;
 	}
 
-	/** Name and Type information about the result columns */
+	/**
+	 * Name and Type information about the result columns
+	 * Note: results._evidenceColumnTypes takes priority
+	 */
 	#columns: ColumnMetadata[] = [];
-	get columns() {
-		return Array.from(this.#columns);
-	}
 
-	get _evidenceColumnTypes() {
+	get _evidenceColumnTypes(): ColumnMetadata[] {
 		//@ts-expect-error This implicitly is set on the return value of #exec
-		return Array.from(this.#values._evidenceColumnTypes ?? []);
+		return Array.from(this.#values._evidenceColumnTypes ?? this.#columns ?? []);
 	}
 
 	/** Has #fetchData been executed? */
 	get loaded() {
-		return this.#dataLoaded // && this.#metaLoaded && this.#lengthLoaded;
+		return this.#dataLoaded; // && this.#metaLoaded && this.#lengthLoaded;
 	}
 	/** Is #fetchData currently running? */
 	get loading() {
@@ -262,11 +265,12 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#error = initialError;
 			return;
 		}
-		console.log({initialData})
+		console.log({ initialData });
 		// Maintain loading state while we wait
 		if (initialData && !this.#values.length) {
 			this.#dataLoading = true;
 			this.#lengthLoading = true;
+			this.#metaLoading = true;
 			this.#length = 0;
 			this.publish();
 			if (initialData instanceof Promise) {
@@ -275,8 +279,16 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#length = results.length;
 					this.#dataLoading = false;
 					this.#lengthLoading = false;
+					this.#metaLoading = false;
+
 					this.#dataLoaded = !initialDataDirty;
 					this.#lengthLoaded = !initialDataDirty;
+					this.#metaLoaded = !initialDataDirty;
+
+					this.#mockResult = Object.fromEntries(
+						this._evidenceColumnTypes.map((c) => [c.name, null])
+					);
+
 					this.#calculateScore();
 					this.#warnHighScore();
 					this.publish();
@@ -287,8 +299,14 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#length = initialData.length;
 				this.#dataLoading = false;
 				this.#lengthLoading = false;
+				this.#metaLoading = false;
+
 				this.#dataLoaded = !initialDataDirty;
 				this.#lengthLoaded = !initialDataDirty;
+				this.#metaLoaded = !initialDataDirty;
+
+				this.#mockResult = Object.fromEntries(this._evidenceColumnTypes.map((c) => [c.name, null]));
+
 				this.#calculateScore();
 				this.#warnHighScore();
 				this.publish();
@@ -390,16 +408,21 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			);
 			return;
 		}
+
+		if (this.#metaLoaded) return;
 		this.#metaLoading = true;
 
 		return handleMaybePromise(
 			(queryResult: QueryResult[]) => {
-				this.#columns = queryResult.map((row) => ({
-					name: row.column_name!.toString(),
-					type: row.column_type!.toString()
+				console.log({ queryResult });
+				this.#columns = queryResult.map((c) => ({
+					name: c.column_name as string,
+					evidenceType: duckdbTypeToEvidenceType(c.column_type),
+					typeFidelity: 'precise'
 				}));
-				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
-				if (this.#columns.length > 0) {
+				this.#mockResult = Object.fromEntries(this._evidenceColumnTypes.map((c) => [c.name, null]));
+
+				if (this._evidenceColumnTypes.length > 0) {
 					this.#metaLoading = false;
 					this.#metaLoaded = true;
 					this.#calculateScore();
@@ -413,7 +436,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	};
 
 	#calculateScore = () => {
-		const column_score = columnsToScore(this.#columns);
+		const column_score = evidenceColumnsToScore(this._evidenceColumnTypes);
 		this.#score = column_score * this.length;
 	};
 

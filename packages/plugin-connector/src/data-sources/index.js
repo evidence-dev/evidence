@@ -10,7 +10,6 @@ export { DatasourceSpecFileSchema, DatasourceSpecSchema } from './schemas/dataso
  *
  * @param {Record<string, string[]>} outputFiles
  * @param {string} outDir
- * @param {Awaited<ReturnType<typeof getSources>>} datasources
  */
 async function updateManifest(outputFiles, outDir) {
 	await fs.mkdir(outDir, { recursive: true });
@@ -84,6 +83,6 @@ export async function updateDatasourceOutputs(
 	const manifest = await buildSources(sources, dataPath, metaPath, filters);
 
 	console.log('Updating manifest....');
-	await updateManifest(manifest, dataPath, sources);
+	await updateManifest(manifest, dataPath);
 	return manifest;
 }

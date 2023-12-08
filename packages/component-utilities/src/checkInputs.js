@@ -56,7 +56,6 @@ export default function checkInputs(data, reqCols, optCols) {
 			columns.push(key);
 		}
 
-
 		// Check if provided columns are in the dataset
 		let currentCol;
 		for (i = 0; i < reqCols.length; i++) {
