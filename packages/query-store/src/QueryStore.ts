@@ -265,7 +265,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#error = initialError;
 			return;
 		}
-		console.log({ initialData });
+
 		// Maintain loading state while we wait
 		if (initialData && !this.#values.length) {
 			this.#dataLoading = true;
@@ -414,7 +414,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 		return handleMaybePromise(
 			(queryResult: QueryResult[]) => {
-				console.log({ queryResult });
 				this.#columns = queryResult.map((c) => ({
 					name: c.column_name as string,
 					evidenceType: duckdbTypeToEvidenceType(c.column_type),

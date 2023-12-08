@@ -583,7 +583,7 @@ importers:
         version: 14.18.63
       '@types/vscode':
         specifier: ^1.52.0
-        version: 1.84.2
+        version: 1.85.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.1.0
         version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.45.0)(typescript@4.9.5)
@@ -856,7 +856,7 @@ importers:
         version: link:../db-commons
       '@types/snowflake-sdk':
         specifier: ^1.6.13
-        version: 1.6.18
+        version: 1.6.20
       asn1.js:
         specifier: ^5.0.0
         version: 5.4.1
@@ -9863,8 +9863,8 @@ packages:
       '@types/mime': 3.0.4
       '@types/node': 20.10.4
 
-  /@types/snowflake-sdk@1.6.18:
-    resolution: {integrity: sha512-zWJ61LED9nAZNU6PspkbG3sC4mHF47cQPyq+N7vgChkMgEhe6N72vW5ug2yrJGOziqdwpIIxLXnx8FbKE0YhDA==}
+  /@types/snowflake-sdk@1.6.20:
+    resolution: {integrity: sha512-Dr7oIXrWthlk9wVWpZgpm49BT8cFFXz43u7SkJKyiZK3WHiHQo4b+m2/p3WIpkYzZCcOZZ/t1B09XMd7+u1Wjw==}
     dependencies:
       '@types/node': 20.10.4
       generic-pool: 3.9.0
@@ -9903,8 +9903,8 @@ packages:
     resolution: {integrity: sha512-WUtIVRUZ9i5dYXefDEAI7sh9/O7jGvHg7Df/5O/gtH3Yabe5odI3UWopVR1qbPXQtvOxWu3mM4XxlYeZtMWF4g==}
     dev: true
 
-  /@types/vscode@1.84.2:
-    resolution: {integrity: sha512-LCe1FvCDMJKkPdLVGYhP0HRJ1PDop2gRVm/zFHiOKwYLBRS7vEV3uOOUId4HMV+L1IxqyS+IZXMmlSMRbZGIAw==}
+  /@types/vscode@1.85.0:
+    resolution: {integrity: sha512-CF/RBon/GXwdfmnjZj0WTUMZN5H6YITOfBCP4iEZlOtVQXuzw6t7Le7+cR+7JzdMrnlm7Mfp49Oj2TuSXIWo3g==}
     dev: true
 
   /@types/ws@8.5.10:
