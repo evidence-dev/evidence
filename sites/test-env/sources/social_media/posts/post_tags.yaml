@@ -5,10 +5,12 @@ schema:
         type: id
     post_id:
         type: fk
+        withBias: true
         target:
             table: ./posts/posts.yaml
     hashtag_id:
         type: fk
+        withBias: true
         target:
             table: ./posts/hashtags/hashtags.yaml
 

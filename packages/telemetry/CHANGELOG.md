@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 1.0.6
+
+### Patch Changes
+
+- d1cf6dc9: Addition to telemetry fields
+
 ## 1.0.5
 
 ### Patch Changes

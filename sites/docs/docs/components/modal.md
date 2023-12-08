@@ -29,7 +29,7 @@ Modals support markdown in the body, but you need to leave whitespace between th
 </Modal>
 ```
 
-## Props
+## Options
 
 | Name       | Description | Required? | Options | Default|
 | ---------- | ----------- | --------- |---------| -------|

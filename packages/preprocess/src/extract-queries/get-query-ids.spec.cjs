@@ -1,5 +1,5 @@
-jest.mock('fs');
-const fs = require('fs');
+import { vi, describe, it, expect } from 'vitest';
+vi.mock('fs', () => ({ isFile: () => true }));
 
 const { getQueryIds } = require('./extract-queries.cjs');
 const {
@@ -14,10 +14,6 @@ const {
 } = require('./get-query-ids.fixture.cjs');
 
 describe('getQueryIds', () => {
-	beforeEach(() => {
-		jest.resetAllMocks();
-		fs.statSync.mockReturnValue({ isFile: () => true });
-	});
 	it('should return empty for no queries', () => {
 		expect(getQueryIds(NO_QUERY)).toEqual([]);
 	});

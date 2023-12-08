@@ -25,7 +25,7 @@ Note that accordions _do not_ support using markdown in the body text.
 
 To style text, use HTML.
 
-## Props
+## Options
 
 ### `AccordionItem`
 

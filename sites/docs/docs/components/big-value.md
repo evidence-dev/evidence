@@ -28,7 +28,7 @@ Multiple cards will align themselves into a row.
 
 ![bigvalue](/img/bigvaluerow.png)
 
-## All Options
+## Options
 
 <table>						 
     <tr>	

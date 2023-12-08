@@ -61,7 +61,11 @@ const runFileWatcher = function (watchPatterns) {
 		const targetPath = (p) =>
 			path.join(pattern.targetRelative, path.relative(pattern.sourceRelative, p));
 		const pagePath = (p) =>
-			p.endsWith('index.md') ? p.replace('index.md', '+page.md') : p.replace('.md', '/+page.md');
+			p.includes('pages')
+				? p.endsWith('index.md')
+					? p.replace('index.md', '+page.md')
+					: p.replace('.md', '/+page.md')
+				: p;
 
 		const syncFile = (file) => {
 			const source = sourcePath(file);
@@ -133,7 +137,12 @@ const watchPatterns = [
 		targetRelative: './.evidence/template/src/components/',
 		filePattern: '**'
 	}, // custom components
-	{ sourceRelative: '.', targetRelative: './.evidence/template/src/', filePattern: 'app.css' } // custom theme file
+	{ sourceRelative: '.', targetRelative: './.evidence/template/src/', filePattern: 'app.css' }, // custom theme file
+	{
+		sourceRelative: './partials',
+		targetRelative: './.evidence/template/partials',
+		filePattern: '**'
+	}
 ];
 
 const strictMode = function () {
@@ -168,8 +177,10 @@ const prog = sade('evidence');
 
 prog
 	.command('dev')
+	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
+		if (args.debug) process.env.VITE_EVIDENCE_DEBUG = true;
 		populateTemplate();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
@@ -218,6 +229,7 @@ prog
 	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
 	.example('npx evidence sources --sources needful_things,social_media')
 	.action(async (opts) => {
+		if (opts.debug) process.env.VITE_EVIDENCE_DEBUG = true;
 		if (process.argv.some((arg) => arg.includes('build:sources'))) {
 			console.log(
 				chalk.bold.red(

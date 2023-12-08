@@ -92,9 +92,13 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 
 <LineChart data={simpler_bar} x=year y=value series=country/>
 
-## Muliple y Column Line
+## Multiple y Column Line
 
 <LineChart data={orders_by_month} x=month y={["sales_usd0k","num_orders_num0"]}/>
+
+## Multiple y Axes
+
+<LineChart data={orders_by_month} x=month y=sales_usd0k y2=num_orders_num0/>
 
 ## Multiple y Column and Series Line
 
@@ -103,3 +107,39 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ## Multi-Series Line with Custom Height
 
 <LineChart data={simpler_bar} x=year y=value series=country chartAreaHeight=380/>
+
+## Multi-Series Line with Steps
+
+<LineChart data={simpler_bar} x=year y=value series=country step=true/>
+
+## Line Chart with Labels
+
+<LineChart 
+    data={orders_by_month.filter(d => d.month <='2020-02-30')} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+    yFmt=eur0k
+    labels=true
+/>
+
+## Line with Log Scale
+
+<LineChart data={simpler_bar} x=year y=value series=country yLog=true/>
+
+## Custom Color Palette
+
+<LineChart 
+  data={simpler_bar} 
+  x=year 
+  y=value 
+  series=country
+  colorPalette={
+        [
+        '#cf0d06',
+        '#eb5752',
+        '#e88a87',
+        '#fcdad9',
+        ]
+    }
+/>

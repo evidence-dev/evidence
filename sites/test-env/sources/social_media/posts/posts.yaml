@@ -5,11 +5,13 @@ schema:
         type: id
     user_id:
         type: fk
+        withBias: true
         target:
             table: users.yaml
     content:
         category: lorem
         item: paragraph
+
     created_at:
         category: date
         item: recent

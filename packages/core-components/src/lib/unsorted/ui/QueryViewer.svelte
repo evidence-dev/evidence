@@ -36,15 +36,17 @@
 	let inputQuery;
 	let showCompilerToggle;
 	let showCompiled = true;
+	/** @type {undefined | Error } */
+	let error = undefined;
 
 	// Enter an error state if the queryResult isn't defined
-	$: error =
-		$queryResult?.error ?? Boolean($queryResult)
-			? undefined
-			: new Error('queryResult is undefined');
+	$: {
+		if (!$queryResult) error = new Error('queryResult is undefined');
+		else if ($queryResult.error) error = $queryResult.error;
+	}
 
 	$: rowCount = $queryResult?.length ?? 0;
-	$: colCount = $queryResult?.columns.length ?? 0;
+	$: colCount = $queryResult?._evidenceColumnTypes.length ?? 0;
 
 	$: {
 		queries = pageQueries.find((d) => d.id === queryID);
@@ -249,7 +251,7 @@
 	}
 
 	.container {
-		@apply my-2;
+		@apply my-3;
 		display: flex;
 		flex-direction: column;
 	}

@@ -90,6 +90,73 @@
   - @evidence-dev/snowflake@1.0.0-usql.1
   - @evidence-dev/sqlite@2.0.0-usql.2
 
+## 2.3.4
+
+### Patch Changes
+
+- Updated dependencies [27e6ea4b]
+- Updated dependencies [d1cf6dc9]
+  - @evidence-dev/duckdb@0.3.0
+  - @evidence-dev/telemetry@1.0.6
+  - @evidence-dev/csv@0.1.8
+
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [f36450f5]
+  - @evidence-dev/snowflake@0.3.3
+
+## 2.3.2
+
+### Patch Changes
+
+- Updated dependencies [1f9a840c]
+  - @evidence-dev/duckdb@0.2.1
+  - @evidence-dev/csv@0.1.7
+
+## 2.3.1
+
+### Patch Changes
+
+- Updated dependencies [518056e8]
+  - @evidence-dev/bigquery@1.3.2
+
+## 2.3.0
+
+### Minor Changes
+
+- 5b5959f9: add databricks connector
+
+### Patch Changes
+
+- c2540d2f: Add support for Trino as a data source
+- Updated dependencies [5b5959f9]
+- Updated dependencies [c2540d2f]
+  - @evidence-dev/databricks@0.1.0
+  - @evidence-dev/postgres@0.3.1
+  - @evidence-dev/trino@0.1.1
+  - @evidence-dev/redshift@0.0.7
+
+## 2.2.5
+
+### Patch Changes
+
+- 615a2498: add clearer error handling to db-orchestrator
+- Updated dependencies [a1fa819e]
+- Updated dependencies [d92008d7]
+  - @evidence-dev/snowflake@0.3.2
+  - @evidence-dev/sqlite@1.2.1
+  - @evidence-dev/mysql@0.3.1
+
+## 2.2.4
+
+### Patch Changes
+
+- Updated dependencies [134b7d13]
+  - @evidence-dev/duckdb@0.2.0
+  - @evidence-dev/csv@0.1.6
+
 ## 2.2.3
 
 ### Patch Changes

@@ -5,9 +5,11 @@ const processQueries = require('./src/process-queries.cjs');
 const addClasses = require('./src/add-classes.cjs');
 // This is includes future proofing to add support for Prism highlighting
 const processFrontmatter = require('./src/frontmatter/process-frontmatter.cjs');
+const injectPartials = require('./src/partials/inject-partials.cjs');
 
 module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 	return [
+		injectPartials,
 		processQueries(componentDevelopmentMode),
 		mdsvex.mdsvex({
 			extensions: ['.md'],
@@ -39,3 +41,4 @@ module.exports.parseFrontmatter =
 const extractQueries = require('./src/extract-queries/extract-queries.cjs');
 module.exports.extractQueries = extractQueries.extractQueries;
 module.exports.getQueryIds = extractQueries.getQueryIds;
+module.exports.injectPartials = injectPartials.injectPartials;

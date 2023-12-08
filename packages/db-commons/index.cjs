@@ -7,7 +7,8 @@ const EvidenceType = /** @type {const} */ ({
 	BOOLEAN: 'boolean',
 	NUMBER: 'number',
 	STRING: 'string',
-	DATE: 'date'
+	DATE: 'date',
+	BIGINT: 'bigint'
 });
 
 /**

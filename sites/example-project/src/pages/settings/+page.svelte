@@ -16,11 +16,13 @@
 </script>
 
 {#if dev}
-	<VersionControlPanel {settings} />
-	<SourceConfig availableSourcePlugins={plugins} sources={datasourceSettings} />
-	<DeploySettingsPanel {settings} {datasourceSettings} />
-	<FormattingSettingsPanel {settings} {customFormattingSettings} />
-	<TelemetrySettingsPanel {settings} />
+	<div class="mt-12">
+		<VersionControlPanel {settings} />
+		<SourceConfig availableSourcePlugins={plugins} sources={datasourceSettings} />
+		<DeploySettingsPanel {settings} {datasourceSettings} />
+		<FormattingSettingsPanel {settings} {customFormattingSettings} />
+		<TelemetrySettingsPanel {settings} />
+	</div>
 	<br />
 {:else}
 	<p>Settings are only available in development mode.</p>

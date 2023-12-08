@@ -8,7 +8,8 @@
 	let fileTree = {
 		label: 'Home',
 		href: '/',
-		children: {}
+		children: {},
+		isTemplated: false
 	};
 	pagePaths.forEach(function (path) {
 		path.split('/').reduce(function (r, e) {
@@ -17,12 +18,14 @@
 				return (r['href'] = href);
 			} else {
 				let label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
+				r.isTemplated = e.includes('[');
 				return (
 					r?.children[e] ||
 					(r.children[e] = {
 						label,
 						children: {},
-						href: undefined
+						href: undefined,
+						isTemplated: false
 					})
 				);
 			}
@@ -90,7 +93,7 @@
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<Header bind:mobileSidebarOpen />
 	<div
-		class="max-w-7xl print:max-w-prose mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start"
+		class="max-w-7xl print:w-[650px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start"
 	>
 		<div class="print:hidden">
 			<Sidebar {fileTree} bind:mobileSidebarOpen />
@@ -102,13 +105,7 @@
 				{/if}
 			</div>
 			{#if !$navigating}
-				<!-- <div>
-					<div class="inline-flex h-2 w-2 bg-green-600 rounded-full justify-center items-center">
-						<div class="inline-block h-2 w-2 bg-green-600/30 rounded-full animate-ping" />
-					</div>
-					<span class="px-1 text-xs text-gray-500">Updated 7 hours ago</span>
-				</div> -->
-				<article class="select-text">
+				<article class="select-text markdown">
 					<slot />
 				</article>
 			{:else}
@@ -120,3 +117,6 @@
 		</div>
 	</div>
 </div>
+{#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}
+	<QueryStatus />
+{/if}

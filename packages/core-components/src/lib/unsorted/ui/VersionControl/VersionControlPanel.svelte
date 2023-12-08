@@ -71,6 +71,8 @@
 		<span
 			>Learn more about <a
 				class="docs-link"
+				target="_blank"
+				rel="noreferrer"
 				href="https://docs.github.com/en/get-started/using-git/about-git"
 				>Setting Up Version Control &rarr;</a
 			></span
@@ -183,7 +185,6 @@
 		padding-top: 2px;
 		padding-bottom: 1px;
 		color: white;
-		font-family: sans-serif;
 		font-size: 0.8em;
 		background-color: var(--grey-900);
 		opacity: 0.85;

@@ -1,18 +1,8 @@
-<script>
-    let sticky = false
-    $: console.log(sticky)
-</script>
-
 ## Alert!
 
-<label>
-    Make the alert sticky
-    <input type="checkbox" bind:checked={sticky}>
-</label>
+<Alert >
 
-<Alert {sticky}>
-
-This is the *default* alert{#if sticky}; it is also sticky!{/if}
+This is the *default* alert
 
 </Alert>
 

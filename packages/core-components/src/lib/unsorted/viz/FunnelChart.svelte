@@ -11,7 +11,6 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { colours } from '@evidence-dev/component-utilities/colours';
 
 	export let data = undefined;
 	export let nameCol = undefined;
@@ -29,6 +28,13 @@
 	export let labelPosition = 'inside';
 	export let funnelAlign = 'center';
 	export let funnelSort = 'none';
+
+	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
+
+	export let showPercent = false;
+	showPercent = showPercent === 'true' || showPercent === true;
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -144,7 +150,13 @@
 			show: true,
 			position: labelPosition,
 			formatter: function (params) {
-				return formatValue(params.value, valueColFormat);
+				let output;
+				if (showPercent) {
+					output = `${formatValue(params.value, valueColFormat)} (${params.percent}%)`;
+				} else {
+					output = formatValue(params.value, valueColFormat);
+				}
+				return output;
 			}
 		},
 		labelLayout: { hideOverlap: true },
@@ -162,18 +174,8 @@
 					nameColFormat
 				)}</span></br><span>${name}:</span><span style='margin-left: 4px;'> ${params.value}</span>`;
 			},
-			padding: 6,
-			borderRadius: 4,
-			borderWidth: 1,
-			borderColor: colours.grey400,
-			backgroundColor: 'white',
 			extraCssText:
 				'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
-			textStyle: {
-				color: colours.grey900,
-				fontSize: 12,
-				fontWeight: 400
-			},
 			order: 'valueDesc'
 		},
 		data: data.map((d) => ({ name: d[nameCol], value: d[valueCol] }))
@@ -197,8 +199,9 @@
 			top: legendTop,
 			padding: [0, 0, 0, 0]
 		},
-		series: [seriesConfig]
+		series: [seriesConfig],
+		color: colorPalette
 	};
 </script>
 
-<ECharts {config} {width} {height} />
+<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />

@@ -50,7 +50,7 @@
 	}
 </script>
 
-<div class="results-pane py-2" transition:slide|local>
+<div class="results-pane py-1" transition:slide|local>
 	<div class="container">
 		<table in:blur>
 			<thead>
@@ -270,9 +270,7 @@
 	}
 
 	th {
-		font-weight: bold;
-		/* border-bottom: thin solid lightgray; */
-		padding: 0px 8px;
+		@apply py-0 px-2  font-medium;
 	}
 
 	td {
@@ -319,9 +317,7 @@
 	}
 
 	th.type-indicator {
-		color: var(--grey-400);
-		font-weight: normal;
-		font-style: italic;
+		@apply text-gray-400 font-normal;
 	}
 
 	tr.type-indicator {

@@ -5,6 +5,15 @@
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { Settings, _3dCubeSphere, Link, X, Menu2, Dots, Table } from '@steeze-ui/tabler-icons';
+	import Logo from './Logo.svelte';
+
+	const beforeprint = new Event('export-beforeprint');
+	const afterprint = new Event('export-afterprint');
+	function print() {
+		window.dispatchEvent(beforeprint);
+		setTimeout(() => window.print(), 0);
+		setTimeout(() => window.dispatchEvent(afterprint), 0);
+	}
 </script>
 
 <header
@@ -13,9 +22,10 @@
 	<div
 		class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center"
 	>
-		<a href="/" class="text-gray-800 font-sans text-md tracking-wide font-semibold hidden md:block">
-			evidence
+		<a href="/" class="hidden md:block">
+			<Logo />
 		</a>
+
 		<button
 			type="button"
 			class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 md:hidden transition-all duration-500"
@@ -41,17 +51,12 @@
 						<div
 							class="shrink w-44 border border-gray-300 rounded-lg bg-white px-1 py-1 text-sm leading-6 text-gray-950 shadow-xl"
 						>
-							<MenuItem
-								let:active
-								on:click={() => {
-									window.print();
-								}}
-							>
+							<MenuItem let:active on:click={print}>
 								<div
 									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
 									class:active
 								>
-									Print
+									Print PDF
 								</div>
 							</MenuItem>
 

@@ -76,17 +76,35 @@ export function updateSearchPath(schemas) {
 }
 
 /**
+ * @param {string} targetGlob
+ */
+export async function emptyDbFs(targetGlob) {
+	await db.flushFiles();
+	for (const f of db.globFiles(targetGlob)) {
+		await db.dropFile(f.fileName);
+	}
+}
+
+/**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
  * @param {Record<string, string[]>} urls
+ * @param {boolean} [append]
  * @returns {void}
  */
-export async function setParquetURLs(urls) {
+export async function setParquetURLs(urls, append = false) {
+	if (!append) await emptyDbFs('*');
+
+	console.log(`Updating Parquet URLs`);
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		for (const url of urls[source]) {
 			const table = url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
 			const file_name = `${source}_${table}.parquet`;
+			if (append) {
+				await emptyDbFs(file_name);
+				await emptyDbFs(url);
+			}
 			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
 			connection.query(
 				`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`

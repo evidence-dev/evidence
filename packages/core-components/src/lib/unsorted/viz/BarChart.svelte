@@ -5,12 +5,15 @@
 <script>
 	import Chart from './Chart.svelte';
 	import Bar from './Bar.svelte';
+	import { onMount } from 'svelte';
 
 	export let data = undefined;
 	export let x = undefined;
 	export let y = undefined;
 	export let series = undefined;
 	export let xType = undefined;
+	export let yLog = undefined;
+	export let yLogBase = undefined;
 
 	export let yFmt = undefined;
 	export let xFmt = undefined;
@@ -31,6 +34,25 @@
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let swapXY = false;
+
+	let xEvidenceType = undefined;
+
+	onMount(() => {
+		xEvidenceType = data?.[0]?._evidenceColumnTypes?.find(
+			(ect) => ect.name?.toLowerCase() === x?.toLowerCase()
+		)?.evidenceType;
+	});
+
+	$: if (!showAllXaxisLabelsManuallySet)
+		showAllXAxisLabels = xType === 'category' || xEvidenceType === 'string';
+
+	/** @type {boolean} */
+	export let showAllXAxisLabels;
+	const showAllXaxisLabelsManuallySet = typeof showAllXAxisLabels !== 'undefined';
+
+	$: if (typeof showAllXAxisLabels === 'string')
+		showAllXAxisLabels = showAllXAxisLabels?.toLowerCase() === 'true';
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -39,7 +61,7 @@
 		}
 	}
 
-	export let type = undefined; // stacked, grouped, or stacked100
+	export let type = 'stacked'; // stacked, grouped, or stacked100
 	let stacked100 = type === 'stacked100';
 
 	export let fillColor = undefined;
@@ -49,6 +71,19 @@
 	export let chartAreaHeight = undefined;
 
 	export let sort = undefined;
+
+	export let colorPalette = undefined;
+
+	export let labels = undefined;
+	export let labelSize = undefined;
+	export let labelPosition = undefined;
+	export let labelColor = undefined;
+	export let labelFmt = undefined;
+	export let stackTotalLabel = undefined;
+	export let showAllLabels = undefined;
+
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 </script>
 
 <Chart
@@ -59,6 +94,8 @@
 	{yFmt}
 	{series}
 	{xType}
+	{yLog}
+	{yLogBase}
 	{legend}
 	{xAxisTitle}
 	{yAxisTitle}
@@ -76,10 +113,28 @@
 	{title}
 	{subtitle}
 	chartType="Bar Chart"
+	stackType={type}
 	{sort}
 	{stacked100}
 	{chartAreaHeight}
+	{showAllXAxisLabels}
+	{colorPalette}
+	{echartsOptions}
+	{printEchartsConfig}
 >
-	<Bar {type} {fillColor} {fillOpacity} {outlineColor} {outlineWidth} />
+	<Bar
+		{type}
+		{fillColor}
+		{fillOpacity}
+		{outlineColor}
+		{outlineWidth}
+		{labels}
+		{labelSize}
+		{labelPosition}
+		{labelColor}
+		{labelFmt}
+		{stackTotalLabel}
+		{showAllLabels}
+	/>
 	<slot />
 </Chart>

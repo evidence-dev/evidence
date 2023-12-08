@@ -4,8 +4,6 @@
 
 <script>
 	import ECharts from './ECharts.svelte';
-
-	import { colours } from '@evidence-dev/component-utilities/colours';
 	import {
 		formatValue,
 		getFormatObjectFromString
@@ -29,6 +27,10 @@
 	export let nodeGap = 8;
 	export let nodeWidth = 20;
 	export let orient = 'horizontal';
+
+	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
 
 	//Data Formatting
 	let names = [];
@@ -132,28 +134,21 @@
 		tooltip: {
 			formatter: function (params) {
 				return params.data.name
-					? `${formatValue(params.data.name)}`
-					: `${formatValue(params.data[sourceCol])} to ${formatValue(
+					? `<span style='font-weight: 600'>${formatValue(params.data.name)}</span>: ${formatValue(
+							params.value,
+							format_object
+					  )}`
+					: `<span style='font-weight: 600'>${formatValue(params.data[sourceCol])} to ${formatValue(
 							params.data.target
-					  )}: ${formatValue(params.data.value, format_object)}`;
+					  )}</span>: ${formatValue(params.data.value, format_object)}`;
 			},
-			padding: 6,
-			borderRadius: 4,
-			borderWidth: 1,
-			borderColor: colours.grey400,
-			backgroundColor: 'white',
 			extraCssText:
 				'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
-			textStyle: {
-				color: colours.grey900,
-				fontSize: 12,
-				fontWeight: 400
-			},
 			order: 'valueDesc'
 		},
-
 		data: nameData,
-		links: links
+		links: links,
+		animationDuration: 500
 	};
 
 	$: config = {
@@ -173,8 +168,9 @@
 			top: legendTop,
 			padding: [0, 0, 0, 0]
 		},
-		series: [seriesConfig]
+		series: [seriesConfig],
+		color: colorPalette
 	};
 </script>
 
-<ECharts {config} {width} {height} />
+<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />

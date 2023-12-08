@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import { getDatasourcePlugins } from './get-datasource-plugins';
 import {
 	cleanParquetFiles,
+	getCurrentManifest,
 	getPastSourceHashes,
 	getQueries,
 	saveSourceHashes
@@ -53,11 +54,15 @@ export const buildSources = async (
 	/** @type {Record<string, string[]>} */
 	const manifest = {};
 
+	/** @type {Record<string, string[]>} */
+	const existingManifest = await getCurrentManifest(dataPath).then((r) => r.renderedFiles);
+
 	/** @type {Record<string, Record<string, string | null>>} */
 	const hashes = {};
 
 	for (const source of sources) {
 		console.log(chalk.bold(`Processing ${source.name}`));
+		const sourceManifest = existingManifest[source.name];
 		// For building the manifest
 		/** @type {string[]} */
 		const outputFilenames = [];
@@ -66,6 +71,7 @@ export const buildSources = async (
 		if (filters?.sources && !filters.sources.has(source.name)) {
 			console.log(chalk.yellow(`[!] Skipping filtered source ${source.name}`));
 			hashes[source.name] = existingHashes[source.name]; // passthrough hashes
+			manifest[source.name] = existingManifest[source.name];
 			continue;
 		}
 		const targetPlugin = plugins[source.type];
@@ -144,12 +150,28 @@ export const buildSources = async (
 					if (!utils.isFiltered(table.name)) {
 						spinner.warn('Skipping: Filtered');
 						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
+						const existingManifestUrl = sourceManifest.find(
+							(existingPath) => path.basename(existingPath, '.parquet') === table.name
+						);
+						if (existingManifestUrl) {
+							outputFilenames.push(existingManifestUrl);
+						} else {
+							spinner.warn('Skipping: Filtered (table does not exist yet)');
+						}
 						continue;
 					}
 
 					if (filters?.only_changed && utils.isCached(table.name, table.content)) {
 						spinner.warn('Skipping: Cached');
 						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
+						const existingManifestUrl = sourceManifest.find(
+							(existingPath) => path.basename(existingPath, '.parquet') === table.name
+						);
+						if (existingManifestUrl) {
+							outputFilenames.push(existingManifestUrl);
+						} else {
+							spinner.warn('Skipping: Filtered (cache may be broken)');
+						}
 						continue;
 					}
 					hashes[source.name][table.name] = createHash('md5')
@@ -171,11 +193,12 @@ export const buildSources = async (
 						spinner
 					);
 					if (filename) outputFilenames.push(filename);
-					continue;
 				} catch (e) {
-					if (typeof e === 'string') spinner.fail(e);
-					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
-					else if ('message' in e) spinner.fail(e.message?.toString());
+					let message = 'Unknown error occurred';
+					if (typeof e === 'string') message = e;
+					else if (e instanceof Error) message = e.message.toString();
+					spinner.fail(chalk.bold.red(message));
+					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
 				}
 			}
 		} else {
@@ -186,8 +209,6 @@ export const buildSources = async (
 				await fs.readdir(source.sourceDirectory)
 			);
 			const runner = await targetPlugin.factory(source.options, source.sourceDirectory);
-
-			// TODO: Progress bar here.
 
 			for (const query of queries) {
 				const spinner = ora({
@@ -203,12 +224,28 @@ export const buildSources = async (
 					if (!utils.isFiltered(query.name)) {
 						spinner.warn('Skipping: Filtered');
 						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
+						const existingManifestUrl = sourceManifest.find(
+							(existingPath) => path.basename(existingPath, '.parquet') === query.name
+						);
+						if (existingManifestUrl) {
+							outputFilenames.push(existingManifestUrl);
+						} else {
+							spinner.warn('Skipping: Filtered (table does not exist yet)');
+						}
 						continue;
 					}
 
 					if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
-						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
 						spinner.warn('Skipping: Cached');
+						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
+						const existingManifestUrl = sourceManifest.find(
+							(existingPath) => path.basename(existingPath, '.parquet') === query.name
+						);
+						if (existingManifestUrl) {
+							outputFilenames.push(existingManifestUrl);
+						} else {
+							spinner.warn('Skipping: Filtered (cache may be broken)');
+						}
 						continue;
 					}
 
@@ -253,9 +290,11 @@ export const buildSources = async (
 					if (filename) outputFilenames.push(filename);
 					continue;
 				} catch (e) {
-					if (typeof e === 'string') spinner.fail(e);
-					else if (typeof e !== 'object' || !e) spinner.fail('Unknown error occured.');
-					else if ('message' in e) spinner.fail(e.message?.toString());
+					let message = 'Unknown error occurred';
+					if (typeof e === 'string') message = e;
+					else if (e instanceof Error) message = e.message.toString();
+					spinner.fail(chalk.bold.red(message));
+					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
 				}
 			}
 		}

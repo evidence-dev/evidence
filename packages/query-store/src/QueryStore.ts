@@ -13,8 +13,11 @@ import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
 import { mutations } from './mutations/index.js';
-// @ts-expect-error can't figure out how to resolve this
-import { columnsToScore } from '@evidence-dev/universal-sql/calculate-score';
+import {
+	evidenceColumnsToScore,
+	duckdbTypeToEvidenceType
+	// @ts-expect-error ts can't find the types
+} from '@evidence-dev/universal-sql/calculate-score';
 
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
@@ -64,20 +67,20 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return this.#originalQuery;
 	}
 
-	/** Name and Type information about the result columns */
+	/**
+	 * Name and Type information about the result columns
+	 * Note: results._evidenceColumnTypes takes priority
+	 */
 	#columns: ColumnMetadata[] = [];
-	get columns() {
-		return Array.from(this.#columns);
-	}
 
-	get _evidenceColumnTypes() {
+	get _evidenceColumnTypes(): ColumnMetadata[] {
 		//@ts-expect-error This implicitly is set on the return value of #exec
-		return Array.from(this.#values._evidenceColumnTypes ?? []);
+		return Array.from(this.#values._evidenceColumnTypes ?? this.#columns ?? []);
 	}
 
 	/** Has #fetchData been executed? */
 	get loaded() {
-		return this.#dataLoaded;
+		return this.#dataLoaded; // && this.#metaLoaded && this.#lengthLoaded;
 	}
 	/** Is #fetchData currently running? */
 	get loading() {
@@ -248,9 +251,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				}
 			}
 		);
-		// TODO: Should this really be automatic?
+
 		this.#fetchMetadata();
 		this.#handleInitialData();
+
 		// prerender
 		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
 	}
@@ -261,10 +265,12 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#error = initialError;
 			return;
 		}
+
 		// Maintain loading state while we wait
 		if (initialData && !this.#values.length) {
 			this.#dataLoading = true;
 			this.#lengthLoading = true;
+			this.#metaLoading = true;
 			this.#length = 0;
 			this.publish();
 			if (initialData instanceof Promise) {
@@ -273,8 +279,16 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#length = results.length;
 					this.#dataLoading = false;
 					this.#lengthLoading = false;
+					this.#metaLoading = false;
+
 					this.#dataLoaded = !initialDataDirty;
 					this.#lengthLoaded = !initialDataDirty;
+					this.#metaLoaded = !initialDataDirty;
+
+					this.#mockResult = Object.fromEntries(
+						this._evidenceColumnTypes.map((c) => [c.name, null])
+					);
+
 					this.#calculateScore();
 					this.#warnHighScore();
 					this.publish();
@@ -285,8 +299,14 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#length = initialData.length;
 				this.#dataLoading = false;
 				this.#lengthLoading = false;
+				this.#metaLoading = false;
+
 				this.#dataLoaded = !initialDataDirty;
 				this.#lengthLoaded = !initialDataDirty;
+				this.#metaLoaded = !initialDataDirty;
+
+				this.#mockResult = Object.fromEntries(this._evidenceColumnTypes.map((c) => [c.name, null]));
+
 				this.#calculateScore();
 				this.#warnHighScore();
 				this.publish();
@@ -388,19 +408,25 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			);
 			return;
 		}
+
+		if (this.#metaLoaded) return;
 		this.#metaLoading = true;
 
 		return handleMaybePromise(
 			(queryResult: QueryResult[]) => {
-				this.#columns = queryResult.map((row) => ({
-					name: row.column_name!.toString(),
-					type: row.column_type!.toString()
+				this.#columns = queryResult.map((c) => ({
+					name: c.column_name as string,
+					evidenceType: duckdbTypeToEvidenceType(c.column_type),
+					typeFidelity: 'precise'
 				}));
-				this.#mockResult = Object.fromEntries(this.#columns.map((c) => [c.name, null]));
-				this.#metaLoading = false;
-				this.#metaLoaded = true;
-				this.#calculateScore();
-				this.#warnHighScore();
+				this.#mockResult = Object.fromEntries(this._evidenceColumnTypes.map((c) => [c.name, null]));
+
+				if (this._evidenceColumnTypes.length > 0) {
+					this.#metaLoading = false;
+					this.#metaLoaded = true;
+					this.#calculateScore();
+					this.#warnHighScore();
+				}
 				this.publish();
 			},
 			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`, `${this.id}_metadata`),
@@ -409,7 +435,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	};
 
 	#calculateScore = () => {
-		const column_score = columnsToScore(this.#columns);
+		const column_score = evidenceColumnsToScore(this._evidenceColumnTypes);
 		this.#score = column_score * this.length;
 	};
 
@@ -427,7 +453,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/**
 	 * Shared cache of existing QueryStores to reduce the number of stores initialized
 	 */
-	private static cache: Record<string, QueryStore> = {};
+	private static cache: Map<string, QueryStore> = new Map();
+
+	static emptyCache() {
+		QueryStore.cache.clear();
+	}
 
 	/**
 	 * Array of child ids that the store is currently subscribed to.
@@ -450,9 +480,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			const subscriber = this.root ?? this;
 
 			// If caching is enabled and the id exists in the cache
-			if (id in QueryStore.cache && !this.opts.disableCache) {
+			if (QueryStore.cache.has(id) && !this.opts.disableCache) {
 				// Use the cache
-				const cachedQuery = QueryStore.cache[id];
+				const cachedQuery = QueryStore.cache.get(id);
+				if (!cachedQuery) throw new Error('Error getting query from cache. This should not occur.');
 
 				if (!subscriber.#subscriptions.includes(id)) {
 					cachedQuery.subscribe(subscriber.publish);
@@ -476,7 +507,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 			subscriber.#subscriptions.push(id);
 			newStore.subscribe(subscriber.publish);
-			QueryStore.cache[id] = newStore;
+			QueryStore.cache.set(id, newStore);
 			return newStore.#proxied;
 		};
 	};
