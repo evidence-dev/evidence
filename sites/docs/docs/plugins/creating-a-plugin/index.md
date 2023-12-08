@@ -1,6 +1,8 @@
-# Creating a Plugin
+# Developing Plugins 
 
-You can create your own plugins to add components to Evidence. Plugins are Svelte libraries.
+Evidence includes a plugin system which can be used to add components and data sources to your project. 
+
+# Creating a component plugin 
 
 ## Starting from a Template
 
@@ -35,6 +37,29 @@ components:
     - ComponentTwo
 ```
 
-## Using your Plugin
+# Creating a Data Source Plugin 
 
-See [installing plugins](/plugins/using-plugins#installing-plugins)
+The [Evidence postgres source plugin](https://github.com/evidence-dev/evidence/tree/main/packages/postgres) is a good reference for a source plugin. 
+
+Data source plugins are npm packages which export the following: 
+
+1. `options` object which enumerates the credentials required to establish a connection to the data source. These will be used to construct the connection UI for users who are using the plugin
+1. `runQuery` function which executes queries and returns an array of results 
+1. `getRunner` function which can iterate over files in a sources directory (e.g. `.sql` files) and return the required query string for the 
+1. `testConnection` function which executes a test query
+
+In order to indicate to the Evidence plugin system that the package contains a data source (and what it should be called in the UI), add the following to the `package.json`: 
+
+```
+	"evidence": {
+		"databases": [
+			[
+                db-alias-1,
+                db-alias-2, 
+                etc.  
+			],
+		],
+		"icon": "Postgresql"
+	}
+
+```
