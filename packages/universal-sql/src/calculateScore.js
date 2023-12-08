@@ -52,19 +52,33 @@ function isDecimalType(column_type) {
  * @returns {number}
  */
 function columnTypeToScore(column_type) {
-	const NUMBER = 12; // 8 bytes in a double + 4 bytes heap overhead?
-	const BOOLEAN = 4; // booleans are stored as 4 byte integers
-	const STRING = 2 * 15; // assume 15 character string
-	const DATE = 48; // dates use 48 bytes
-	const UNKNOWN = 0;
+	switch (column_type) {
+		case 'number':
+			return 12; // 8 bytes in a double + 4 bytes heap overhead?
+		case 'boolean':
+			return 4; // booleans are stored as 4 byte integers
+		case 'string':
+			return 2 * 15; // assume 15 character string
+		case 'date':
+			return 48; // dates use 48 bytes
+		default:
+			return 0;
+	}
+}
 
+/**
+ *
+ * @param {string} column_type
+ * @returns {'number' | 'boolean' | 'string' | 'date'}
+ */
+export function duckdbTypeToEvidenceType(column_type) {
 	// objects aren't handled well
-	if (isObjectType(column_type)) return UNKNOWN;
-	if (isDecimalType(column_type)) return NUMBER;
+	if (isObjectType(column_type)) return 'string';
+	if (isDecimalType(column_type)) return 'number';
 
 	switch (column_type) {
 		case 'BOOLEAN':
-			return BOOLEAN;
+			return 'boolean';
 		case 'BIGINT':
 		case 'DOUBLE':
 		case 'FLOAT':
@@ -76,17 +90,17 @@ function columnTypeToScore(column_type) {
 		case 'USMALLINT':
 		case 'UTINYINT':
 		case 'HUGEINT':
-			return NUMBER;
+			return 'number';
 		case 'UUID':
 		case 'VARCHAR':
-			return STRING;
+			return 'string';
 		case 'DATE':
 		case 'TIMESTAMP':
 		case 'TIMESTAMP_S':
 		case 'TIMESTAMP_MS':
 		case 'TIMESTAMP_NS':
 		case 'TIMESTAMP WITH TIME ZONE':
-			return DATE;
+			return 'date';
 
 		// the badlands
 		// we should probably convert these in the client library too
@@ -95,12 +109,26 @@ function columnTypeToScore(column_type) {
 		case 'TIME WITH TIME ZONE': // return 'bigint';
 		case 'BLOB':
 		case 'BIT': // return 'Uint8Array';
-			return UNKNOWN;
+			return 'string';
 		default:
 			// column_type should be `never`
 			console.error(`Column type ${column_type} is not supported`);
-			return UNKNOWN;
+			return 'string';
 	}
+}
+
+/**
+ * @param {{ name: string; evidenceType: string }[]} columns
+ * @returns {number}
+ */
+export function evidenceColumnsToScore(columns) {
+	let score = columns.length * 4; // some overhead for each column
+
+	for (const { type } of columns) {
+		score += columnTypeToScore(type);
+	}
+
+	return score;
 }
 
 /**
@@ -111,7 +139,7 @@ export function columnsToScore(columns) {
 	let score = columns.length * 4; // some overhead for each column
 
 	for (const { type } of columns) {
-		score += columnTypeToScore(type);
+		score += columnTypeToScore(duckdbTypeToEvidenceType(type));
 	}
 
 	return score;

@@ -233,8 +233,6 @@
 
 	/** @type {QueryStore} */
 	let query = data instanceof QueryStore ? data : undefined;
-	$: console.log(query.id, query.loaded);
-	console.log(query.id, query.loaded);
 
 	$: if (query && query.loaded) {
 		if (data instanceof QueryStore) query = data;

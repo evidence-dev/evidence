@@ -10,7 +10,7 @@ export type Runner = (query: string, query_name: string) => MaybePromise<QueryRe
 export type AggFunction = (query: Query, ...args: any[]) => Query;
 
 export type QueryResult = Record<string, number | string | Date | boolean | null>;
-export type ColumnMetadata = { name: string; type: string };
+export type ColumnMetadata = { name: string; evidenceType: string };
 export type QueryStoreOpts = {
 	disableCache?: boolean;
 	/** If the query has already been run, provide an initial dataset to prevent flicker */

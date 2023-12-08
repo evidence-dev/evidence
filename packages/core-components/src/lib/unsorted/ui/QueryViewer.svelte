@@ -46,7 +46,7 @@
 	}
 
 	$: rowCount = $queryResult?.length ?? 0;
-	$: colCount = $queryResult?.columns.length ?? 0;
+	$: colCount = $queryResult?._evidenceColumnTypes.length ?? 0;
 
 	$: {
 		queries = pageQueries.find((d) => d.id === queryID);
