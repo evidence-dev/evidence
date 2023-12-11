@@ -118,15 +118,30 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 	{
 		// @ts-ignore
 		standardizeRow = (x) => x,
-		mapResultsToEvidenceColumnTypes = () => []
+		mapResultsToEvidenceColumnTypes
 	} = {}
 ) {
-	const iterator = iterable[Symbol.asyncIterator]();
-	const firstRow = await iterator.next().then((x) => x.value);
+	const preread_rows = [];
+
+	let columnTypes;
+	if (mapResultsToEvidenceColumnTypes) {
+		const iterator = iterable[Symbol.asyncIterator]();
+		const firstRow = await iterator.next().then((x) => x.value);
+		const column_names = Object.keys(firstRow);
+		preread_rows.push(standardizeRow(firstRow));
+
+		let null_columns = column_names.filter((column) => firstRow[column] == null);
+		while (null_columns.length > 0) {
+			const next = await iterator.next().then((x) => x.value);
+			preread_rows.push(standardizeRow(next));
+			null_columns = null_columns.filter((column) => next[column] == null);
+		}
+		columnTypes = mapResultsToEvidenceColumnTypes(preread_rows);
+	}
 
 	const rows = async function* () {
 		let batch = [];
-		batch.push(standardizeRow(firstRow));
+		batch.push(...preread_rows);
 		for await (const row of iterable) {
 			batch.push(standardizeRow(row));
 			if (batch.length >= batchSize) {
@@ -139,7 +154,7 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 		}
 	};
 
-	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([firstRow]) };
+	return { rows, columnTypes };
 };
 
 /**
