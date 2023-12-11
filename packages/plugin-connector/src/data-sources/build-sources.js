@@ -259,13 +259,15 @@ export const buildSources = async (
 						if (_r instanceof Promise) {
 							result = await _r.catch((e) => {
 								if (e instanceof z.ZodError) console.log(e.format());
-								else console.log(e);
+								else { throw e }
 								return null;
 							});
 						} else result = _r;
 					} catch (e) {
 						if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
-						else console.log(e);
+						else {
+							throw e
+						}
 						result = null;
 					}
 
@@ -288,7 +290,6 @@ export const buildSources = async (
 					);
 
 					if (filename) outputFilenames.push(filename);
-					continue;
 				} catch (e) {
 					let message = 'Unknown error occurred';
 					if (typeof e === 'string') message = e;
