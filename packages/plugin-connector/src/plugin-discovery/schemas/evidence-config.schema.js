@@ -19,7 +19,7 @@ export const EvidenceDatasourceConfigSchema = z.object({
 export const EvidenceConfigSchema = z
 	.object({
 		components: z.record(z.string(), EvidenceComponentConfigSchema),
-		databases: z
+		datasources: z
 			.record(z.string({ description: 'Plugin Package Name' }), EvidenceDatasourceConfigSchema)
 			.default({})
 	})

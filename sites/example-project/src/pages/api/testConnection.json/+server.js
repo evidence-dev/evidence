@@ -6,6 +6,6 @@ import { json } from '@sveltejs/kit';
 
 export async function POST() {
 	let result = await testConnection(dev);
-	let status = result === 'Database Connected' ? 200 : 500;
+	let status = result === 'Datasource Connected' ? 200 : 500;
 	return json(result, { status });
 }

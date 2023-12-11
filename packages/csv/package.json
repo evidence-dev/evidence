@@ -17,7 +17,7 @@
 	},
 	"type": "module",
 	"evidence": {
-		"databases": [
+		"datasources": [
 			"csv"
 		]
 	}

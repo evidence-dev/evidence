@@ -17,8 +17,8 @@ import {
 } from '../src/data-sources/schemas/datasource-spec.schema';
 import {
 	ConnectionTesterSchema,
-	DatabaseConnectorFactorySchema,
-	DatabaseConnectorSchema,
+	DatasourceConnectorFactorySchema,
+	DatasourceConnectorSchema,
 	DatasourceOptionSpecSchema,
 	QueryResultSchema,
 	QueryRunnerSchema
@@ -30,15 +30,15 @@ declare global {
 	type GenericPackage = z.infer<typeof GenericPackageSchema>;
 	type EvidencePackage = z.infer<typeof EvidencePackageSchema>;
 
-	type EvidenceDatabasePackage = EvidencePackage & {
-		evidence: { databases: NonNullable<EvidencePackage['evidence']['databases']> };
+	type EvidenceDatasourcePackage = EvidencePackage & {
+		evidence: { datasources: NonNullable<EvidencePackage['evidence']['datasources']> };
 		main: string;
 	};
 
-	type PluginDatabases = {
-		[database: string]: {
-			package: EvidencePluginPackage<EvidenceDatabasePackage>;
-			factory: DatabaseConnectorFactory;
+	type PluginDatasources = {
+		[datasource: string]: {
+			package: EvidencePluginPackage<EvidenceDatasourcePackage>;
+			factory: DatasourceConnectorFactory;
 			options: DatasourceOptionsSpec;
 			testConnection: ConnectionTester;
 			processSource?: ProcessSource<any>;
@@ -60,7 +60,7 @@ declare global {
 
 	type PackageDiscoveryResult = {
 		components: EvidencePluginPackage<ValidPackage>[];
-		databases: EvidencePluginPackage<EvidenceDatabasePackage>[];
+		datasources: EvidencePluginPackage<EvidenceDatasourcePackage>[];
 	};
 
 	type DatasourceQuery = z.infer<typeof DatasourceQuerySchema>;
@@ -73,9 +73,9 @@ declare global {
 
 	type DatasourceOptionsSpec = z.infer<typeof DatasourceOptionSpecSchema>;
 
-	type DatabaseConnector = z.infer<typeof DatabaseConnectorSchema>;
+	type DatasourceConnector = z.infer<typeof DatasourceConnectorSchema>;
 
-	type DatabaseConnectorFactory = z.infer<typeof DatabaseConnectorFactorySchema>;
+	type DatasourceConnectorFactory = z.infer<typeof DatasourceConnectorFactorySchema>;
 
 	type QueryRunner = z.infer<typeof QueryRunnerSchema>;
 

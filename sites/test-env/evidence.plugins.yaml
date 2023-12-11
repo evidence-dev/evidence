@@ -1,6 +1,6 @@
 components:
     @evidence-dev/core-components: { }
-databases:
+datasources:
     @evidence-dev/duckdb: { }
     @evidence-dev/faker-datasource: { }
     @evidence-dev/csv: { }
