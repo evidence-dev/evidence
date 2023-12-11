@@ -160,7 +160,7 @@ export async function updateDatasourceOptions(newOptions, plugins) {
 
 	await fs.writeFile(
 		optsYamlPath,
-		`# This file was automatically generated\n# It should *not* be source controlled, as it likely contain credentials or other sensitive configuration values.\n${optsYamlContent}`
+		`# This file was automatically generated\n# It should *not* be source controlled, as it likely contain credentials or other sensitive configuration values.\n# Values in this file are base64 encoded; https://it-tools.tech/base64-string-converter has an excellent encoder / decoder tool.\n# Base64 is NOT encryption, and should not be treated as secure\n${optsYamlContent}`
 	);
 
 	const updatedSource = (await getDatasourceOptions(sourceDir)).find(
