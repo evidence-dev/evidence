@@ -98,9 +98,9 @@ const flattenArguments = function (args) {
 		const result = [];
 		const keys = Object.keys(args);
 		keys.forEach((key) => {
-			if (key !== '_') {
+			if (key !== '_' && args[key] !== undefined) {
 				result.push(`--${key}`);
-				if (args[key]) {
+				if (args[key] && args[key] !== true) {
 					result.push(args[key]);
 				}
 			}
@@ -180,7 +180,11 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
-		if (args.debug) process.env.VITE_EVIDENCE_DEBUG = true;
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
+
 		populateTemplate();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
