@@ -91,7 +91,7 @@ export const getSources = async (sourcesDir) => {
 			if (!possibleDir.isDirectory()) return false;
 
 			const connParams = await loadConnectionConfiguration(sourceDir);
-			if (!connParams) return false
+			if (!connParams) return false;
 			if (!connParams.name)
 				connParams.name = /** @type {string} */ (sourceDir.split(path.sep).pop());
 
@@ -228,11 +228,12 @@ async function loadConnectionConfiguration(sourceDir) {
 		.catch(
 			/** @returns {false} */
 			(e) => {
-				console.warn(chalk.yellow(`[!] ${sourceDir} is not a valid source; skipping`))
-			console.warn(e.message)
-			return false
-		});
-	if (connParamsRaw === false) return false
+				console.warn(chalk.yellow(`[!] ${sourceDir} is not a valid source; skipping`));
+				console.warn(e.message);
+				return false;
+			}
+		);
+	if (connParamsRaw === false) return false;
 
 	let connParamsUnchecked;
 	try {
