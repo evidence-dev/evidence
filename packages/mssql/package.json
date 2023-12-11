@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/mssql",
-	"version": "1.0.0-usql.4",
+	"version": "1.0.0-usql.5",
 	"description": "Microsoft Server SQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",

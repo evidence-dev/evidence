@@ -1,5 +1,13 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.10
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.19
+
 ## 2.0.0-usql.9
 
 ### Patch Changes

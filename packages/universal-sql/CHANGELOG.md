@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 2.0.0-usql.18
 
 ### Patch Changes

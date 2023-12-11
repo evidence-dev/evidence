@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/query-store",
-	"version": "2.0.0-usql.9",
+	"version": "2.0.0-usql.10",
 	"description": "",
 	"main": "dist/index.js",
 	"source": "./src/index.ts",

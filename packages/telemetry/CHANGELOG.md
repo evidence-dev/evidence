@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 1.0.7-usql.0
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 1.0.6
 
 ### Patch Changes

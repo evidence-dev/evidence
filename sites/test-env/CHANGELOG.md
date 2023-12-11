@@ -1,5 +1,21 @@
 # evidence-test-environment
 
+## 3.0.0-usql.41
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.16
+  - @evidence-dev/core-components@2.0.0-usql.22
+  - @evidence-dev/csv@1.0.0-usql.8
+  - @evidence-dev/duckdb@1.0.0-usql.7
+  - @evidence-dev/evidence@20.0.0-usql.41
+  - @evidence-dev/faker-datasource@2.0.0-usql.6
+  - @evidence-dev/postgres@1.0.0-usql.7
+  - @evidence-dev/snowflake@1.0.0-usql.6
+  - @evidence-dev/sqlite@2.0.0-usql.6
+
 ## 3.0.0-usql.40
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @evidence-dev/mssql
 
+## 1.0.0-usql.5
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/db-commons@0.2.1-usql.4
+
 ## 1.0.0-usql.4
 
 ### Patch Changes

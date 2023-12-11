@@ -1,6 +1,6 @@
 {
 	"name": "evidence-docs",
-	"version": "2.0.4-usql.0",
+	"version": "2.0.4-usql.1",
 	"private": true,
 	"scripts": {
 		"docusaurus": "docusaurus",

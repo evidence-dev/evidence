@@ -1,5 +1,14 @@
 # @evidence-dev/redshift
 
+## 1.0.0-usql.7
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/db-commons@0.2.1-usql.4
+  - @evidence-dev/postgres@1.0.0-usql.7
+
 ## 1.0.0-usql.6
 
 ### Patch Changes

@@ -1,5 +1,26 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.33
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/bigquery@2.0.0-usql.5
+  - @evidence-dev/component-utilities@2.0.0-usql.16
+  - @evidence-dev/core-components@2.0.0-usql.22
+  - @evidence-dev/csv@1.0.0-usql.8
+  - @evidence-dev/duckdb@1.0.0-usql.7
+  - @evidence-dev/mssql@1.0.0-usql.5
+  - @evidence-dev/mysql@1.0.0-usql.6
+  - @evidence-dev/plugin-connector@2.0.0-usql.28
+  - @evidence-dev/postgres@1.0.0-usql.7
+  - @evidence-dev/query-store@2.0.0-usql.10
+  - @evidence-dev/snowflake@1.0.0-usql.6
+  - @evidence-dev/sqlite@2.0.0-usql.6
+  - @evidence-dev/telemetry@1.0.7-usql.0
+  - @evidence-dev/universal-sql@2.0.0-usql.19
+
 ## 3.0.0-usql.32
 
 ### Patch Changes

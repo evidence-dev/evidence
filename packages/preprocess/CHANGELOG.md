@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.21
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 4.0.0-usql.20
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.41
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.16
+  - @evidence-dev/core-components@2.0.0-usql.22
+  - @evidence-dev/db-orchestrator@3.0.0-usql.13
+  - @evidence-dev/plugin-connector@2.0.0-usql.28
+  - @evidence-dev/preprocess@4.0.0-usql.21
+  - @evidence-dev/query-store@2.0.0-usql.10
+  - @evidence-dev/tailwind@1.0.0-usql.3
+  - @evidence-dev/telemetry@1.0.7-usql.0
+  - @evidence-dev/universal-sql@2.0.0-usql.19
+
 ## 20.0.0-usql.40
 
 ### Patch Changes
