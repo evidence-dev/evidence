@@ -118,7 +118,7 @@ type: ${newOptions.type}`
 
 /**
  * @param {Partial<DatasourceSpec> & { type: string, name: string, initialName?: string }} newOptions
- * @param {Omit<PluginDatabases, "factory">} plugins
+ * @param {Omit<PluginDatasources, "factory">} plugins
  * @returns {Promise<DatasourceSpec>}
  */
 export async function updateDatasourceOptions(newOptions, plugins) {

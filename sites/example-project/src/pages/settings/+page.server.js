@@ -113,7 +113,7 @@ export const actions = {
 		const plugin = datasourcePlugins[specData.type];
 
 		if (!plugin) {
-			return fail(400, { message: `Plugin for database ${specData.type} not found.` });
+			return fail(400, { message: `Plugin for datasource "${specData.type}" not found.` });
 		}
 
 		const valid = await plugin.testConnection(specData.options, specData.sourceDirectory);

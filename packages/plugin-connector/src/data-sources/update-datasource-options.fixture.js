@@ -7,7 +7,7 @@ export const postgres = {
 				main: '',
 				evidence: {
 					components: false,
-					databases: ['pg', 'postgres'],
+					datasources: ['pg', 'postgres'],
 					exports: { '.': '' },
 					name: '@fake-psql',
 					main: 'index.cjs'
@@ -108,7 +108,7 @@ export const duckdb = {
 	package: {
 		package: {
 			package: {
-				evidence: { components: false, databases: ['ddb', 'duckdb'] },
+				evidence: { components: false, datasources: ['ddb', 'duckdb'] },
 				exports: { '.': '' },
 				name: '@fake-duckdb',
 				main: 'index.cjs'
