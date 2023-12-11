@@ -7,7 +7,7 @@ import { dev } from '$app/environment';
  * @returns {ReturnType<T>}
  */
 export function profile(f, ...args) {
-	if (!dev && !import.meta.env.VITE_EVIDENCE_DEBUG) return f.call(this, ...args);
+	if (!dev || !import.meta.env.VITE_EVIDENCE_DEBUG) return f.call(this, ...args);
 	const before = performance.now();
 	const complete = () => {
 		const after = performance.now();
