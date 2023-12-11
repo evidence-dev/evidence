@@ -84,13 +84,14 @@ export const loadSourceOptions = (sourceName) => {
 export const getSources = async (sourcesDir) => {
 	const sourcesDirectories = await fs.readdir(sourcesDir);
 	/** @type {DatasourceSpec[]} */
-	const datasourceSpecs = await Promise.all(
+	return await Promise.all(
 		sourcesDirectories.map(async (dirName) => {
 			const sourceDir = path.join(sourcesDir, dirName);
 			const possibleDir = await fs.stat(sourceDir);
 			if (!possibleDir.isDirectory()) return false;
 
 			const connParams = await loadConnectionConfiguration(sourceDir);
+			if (!connParams) return false
 			if (!connParams.name)
 				connParams.name = /** @type {string} */ (sourceDir.split(path.sep).pop());
 
@@ -111,8 +112,6 @@ export const getSources = async (sourcesDir) => {
 			};
 		})
 	).then((r) => /** @type {Exclude<typeof r[number], false>[]} */ (r.filter(Boolean)));
-
-	return datasourceSpecs;
 };
 
 /**
@@ -220,12 +219,20 @@ export async function cleanParquetFiles(dataDir, hashes) {
  * parses it, and returns a validated datasource specification.
  *
  * @param {string} sourceDir - The directory containing the connection.yaml file.
- * @return {Promise<DatasourceSpecFile>} A Promise that resolves to a validated datasource specification.
+ * @return {Promise<DatasourceSpecFile | false>} A Promise that resolves to a validated datasource specification, or false if the directory is not a source.
  */
 async function loadConnectionConfiguration(sourceDir) {
 	const connParamsRaw = await fs
 		.readFile(path.join(sourceDir, 'connection.yaml'))
-		.then((r) => r.toString());
+		.then((r) => r.toString())
+		.catch(
+			/** @returns {false} */
+			(e) => {
+				console.warn(chalk.yellow(`[!] ${sourceDir} is not a valid source; skipping`))
+			console.warn(e.message)
+			return false
+		});
+	if (connParamsRaw === false) return false
 
 	let connParamsUnchecked;
 	try {
