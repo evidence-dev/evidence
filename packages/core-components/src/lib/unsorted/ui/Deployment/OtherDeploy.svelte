@@ -14,7 +14,6 @@
 
 <div class="separator">Building Your Project</div>
 
-
 <div class="setting-row">
 	<span class="setting">Build command</span>
 	<div class="setting-value"><VariableCopy text={'npm run sources && npm run build'} /></div>
