@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- 377abb4a: Rename databases -> datasources
+
 ## 2.0.0-usql.17
 
 ### Patch Changes

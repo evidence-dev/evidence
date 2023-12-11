@@ -1,5 +1,14 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.27
+
+### Patch Changes
+
+- 377abb4a: Rename databases -> datasources
+- 78a8be8b: connection.options.yaml auto-generated header is more descriptive now
+- Updated dependencies [377abb4a]
+  - @evidence-dev/universal-sql@2.0.0-usql.18
+
 ## 2.0.0-usql.26
 
 ### Patch Changes
