@@ -70,7 +70,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 				const _${id}_reactivity_manager = () => {
 					const update = () => {
-						console.trace("${id}")
 						let initialData, initialError;
 
 						try {
