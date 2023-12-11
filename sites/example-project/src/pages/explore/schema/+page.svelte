@@ -14,7 +14,7 @@
 		const metadatas = await Promise.all(
 			tables.map(async (t) => {
 				const columns = await db.query(
-					`SELECT * FROM information_schema.columns WHERE table_name = '${t.table_name}'`
+					`SELECT * FROM information_schema.columns WHERE table_name = '${t.table_name}' AND schema_name = '${t.table_schema}'`
 				);
 				return [`${t.table_schema}.${t.table_name}`, { table: t, columns }];
 			})
