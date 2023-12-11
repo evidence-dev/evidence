@@ -1177,7 +1177,7 @@ importers:
         version: link:../../packages/component-utilities
       '@evidence-dev/connector-gsheets':
         specifier: ^1.0.0
-        version: 1.0.0
+        version: 1.1.0
       '@evidence-dev/core-components':
         specifier: workspace:*
         version: link:../../packages/core-components
@@ -1823,7 +1823,7 @@ packages:
       '@aws-sdk/util-arn-parser': 3.465.0
       '@smithy/node-config-provider': 2.1.8
       '@smithy/protocol-http': 3.0.11
-      '@smithy/signature-v4': 2.0.17
+      '@smithy/signature-v4': 2.0.18
       '@smithy/smithy-client': 2.1.18
       '@smithy/types': 2.7.0
       '@smithy/util-config-provider': 2.0.0
@@ -1847,7 +1847,7 @@ packages:
       '@aws-sdk/types': 3.468.0
       '@smithy/property-provider': 2.0.16
       '@smithy/protocol-http': 3.0.11
-      '@smithy/signature-v4': 2.0.17
+      '@smithy/signature-v4': 2.0.18
       '@smithy/types': 2.7.0
       '@smithy/util-middleware': 2.0.8
       tslib: 2.6.2
@@ -1891,7 +1891,7 @@ packages:
       '@aws-sdk/middleware-sdk-s3': 3.470.0
       '@aws-sdk/types': 3.468.0
       '@smithy/protocol-http': 3.0.11
-      '@smithy/signature-v4': 2.0.17
+      '@smithy/signature-v4': 2.0.18
       '@smithy/types': 2.7.0
       tslib: 2.6.2
     dev: false
@@ -5033,10 +5033,10 @@ packages:
     resolution: {integrity: sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  /@evidence-dev/connector-gsheets@1.0.0:
-    resolution: {integrity: sha512-s7Oe+D8/byg9ZysGnz7QgMKkZPopY40OYdbf4JZOq4i/ZrkkqMl9LN6CbsIVvp8RkrFenSWoXyzfi4UJPIJ6Jg==}
+  /@evidence-dev/connector-gsheets@1.1.0:
+    resolution: {integrity: sha512-x6qpEOrDChBg7Mp0qOd86Q/qhSaSEOniQiB3yg688Gdxt8s1ZIDQQ4TRVt6z28RdGkO6CO7mu5P7R/jzRlHyBw==}
     dependencies:
-      '@evidence-dev/duckdb': 1.0.0-usql.6
+      '@evidence-dev/duckdb': 1.0.0-usql.7
       google-auth-library: 9.4.1
       google-spreadsheet: 4.1.1(google-auth-library@9.4.1)
       tempy: 3.1.0
@@ -5048,16 +5048,16 @@ packages:
       - supports-color
     dev: false
 
-  /@evidence-dev/db-commons@0.2.1-usql.3:
-    resolution: {integrity: sha512-W/fYARpBAuNWn2/zVSG6tw2ChugWtc2WbOXZy5EUwBLprj8j9LH7Wk6i/KbFKM7I6O5aDRxyaJmIVXxFKYLJmQ==}
+  /@evidence-dev/db-commons@0.2.1-usql.4:
+    resolution: {integrity: sha512-7Z6d9q7K+fpwuhHmj0JO59aYk6xgD5BBjp7fd4G3aiX6/y/Eg07n44YgwbUwkbiYpe4i0VxC8udr/VWWcOX1jg==}
     dependencies:
       fs-extra: 10.0.0
     dev: false
 
-  /@evidence-dev/duckdb@1.0.0-usql.6:
-    resolution: {integrity: sha512-CICYOkm0AHLKLWBTIbeLWoCa10Q4gc8x97twrkIdax7ioKKTWFdQ/VXAWNeSl+UhXwpUhfIMlVYzrd1b6MdINA==}
+  /@evidence-dev/duckdb@1.0.0-usql.7:
+    resolution: {integrity: sha512-J/pW8veMy48uIAnlUGzUVw+EJ/KuG6dAxuQkkgm20DOsjN/QMR8kAXsDwG96vgrBb/r7OKn37fAtRwKTOm+ONw==}
     dependencies:
-      '@evidence-dev/db-commons': 0.2.1-usql.3
+      '@evidence-dev/db-commons': 0.2.1-usql.4
       duckdb-async: 0.9.2
     transitivePeerDependencies:
       - bluebird
@@ -7908,8 +7908,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@smithy/signature-v4@2.0.17:
-    resolution: {integrity: sha512-ru5IUbHUAYgJ5ZqZaBi6PEsMjFT/do0Eu21Qt7b07NuRuPlwAMhlqNRDy/KE9QAF20ygehb+xe9ebmyZ26/BSA==}
+  /@smithy/signature-v4@2.0.18:
+    resolution: {integrity: sha512-SJRAj9jT/l9ocm8D0GojMbnA1sp7I4JeStOQ4lEXI8A5eHE73vbjlzlqIFB7cLvIgau0oUl4cGVpF9IGCrvjlw==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@smithy/eventstream-codec': 2.0.15
