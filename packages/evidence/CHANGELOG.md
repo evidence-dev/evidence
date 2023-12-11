@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.42
+
+### Patch Changes
+
+- Fix schema explorer
+
 ## 20.0.0-usql.41
 
 ### Patch Changes
