@@ -237,7 +237,6 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 
 		const cursor = connection.query(new Cursor(queryString));
 		try {
-
 			const firstBatch = await cursor.read(batchSize);
 
 			return {
@@ -247,7 +246,7 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 						let results;
 						while ((results = await cursor.read(batchSize)) && results.length > 0)
 							yield standardizeResult(results);
-						return
+						return;
 					} finally {
 						await connection.release();
 						await pool.end();
@@ -262,9 +261,9 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 			throw e;
 		} finally {
 			if (closeBeforeResults) {
-				await cursor.close().catch(console.warn)
-				await connection.release()
-				await pool.end()
+				await cursor.close().catch(console.warn);
+				await connection.release();
+				await pool.end();
 			}
 		}
 	} catch (err) {
