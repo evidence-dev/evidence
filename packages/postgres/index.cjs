@@ -262,7 +262,6 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 			throw e;
 		} finally {
 			if (closeBeforeResults) {
-				debugger
 				await cursor.close().catch(console.warn)
 				await connection.release()
 				await pool.end()
