@@ -17,7 +17,7 @@
 		"yaml": "^2.3.1"
 	},
 	"evidence": {
-		"databases": [
+		"datasources": [
 			"faker"
 		]
 	}

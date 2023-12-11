@@ -7,7 +7,7 @@
 	export let error;
 	export let chartType;
 
-	const DevMissingCredentialsError = 'SQL Error: Missing database connection.';
+	const DevMissingCredentialsError = 'SQL Error: Missing datasource connection.';
 	const ProdMissingCredentialsError =
 		'SQL Error: Missing database connection; set the EVIDENCE_DATABASE environment variable.';
 </script>

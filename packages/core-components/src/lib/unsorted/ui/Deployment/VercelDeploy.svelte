@@ -5,7 +5,7 @@
 </script>
 
 {#if !datasourceSettings.length}
-	<p>You'll need to connect to a database before deploying to Vercel.</p>
+	<p>You'll need to connect to at least one datasource before deploying to Vercel.</p>
 {:else if !settings.gitRepo}
 	<p>You'll need to set up a git repo before deploying to Vercel.</p>
 {:else}
@@ -25,7 +25,7 @@
 
 	<div class="setting-row">
 		<span class="setting">Build Command</span>
-		<div class="setting-value"><VariableCopy text={'npm run build'} /></div>
+		<div class="setting-value"><VariableCopy text={'npm run sources && npm run build'} /></div>
 	</div>
 
 	<div class="setting-row">

@@ -31,7 +31,7 @@
 		<h3 class="text-sm uppercase gray-600 font-bold text-left">Add new source</h3>
 
 		<label for="sourceType" class="flex justify-between w-full">
-			Database Type
+			Datasource Type
 			<select
 				required
 				bind:value={newSourceType}
@@ -39,7 +39,7 @@
 				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
 			>
 				{#each Object.entries(availablePackages) as [name, value]}
-					{@const supports = value.package.package.evidence.databases}
+					{@const supports = value.package.package.evidence.datasources}
 					<optgroup label={name}>
 						{#each supports as db}
 							{#if Array.isArray(db)}
