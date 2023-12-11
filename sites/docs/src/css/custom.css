@@ -67,7 +67,7 @@
 }
 
 .navbar__item {
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 	font-weight: 600;
 }
 
@@ -80,6 +80,16 @@
 	height: 1.2em;
 	padding-left: 0.9em;
 }
+
+@media screen and (max-width: 350px) {
+	.navbar-logo {
+		display: flex;
+		float: right;
+		text-align: right;
+	}
+}
+
+
 /* ------- */
 /* Sidebar */
 /* ------- */

@@ -62,7 +62,8 @@ Evidence supports:
 - [Databricks](#databricks)
 - [Cube](#cube)
 - [Google Sheets](#google-sheets)
-- [CSV and Parquet files](#csv-and-parquet-files)
+- [CSV](#csv-and-parquet-files)
+- [Parquet](#csv-and-parquet-files)
 - & More
 
 We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://slack.evidence.dev) if you'd like to use Evidence with a database that isn't currently supported.
@@ -264,18 +265,24 @@ Where `[your_tab_name]` is the name of the tab in your Google Sheet, with spaces
 
 In Evidence, you can query local CSV or Parquet files directly in SQL.
 
-Get started by selecting the `CSV` connector on the Settings page in your project, naming it and then clicking "confirm changes".
+Get started by selecting the `CSV` connector on the Settings page in your project, naming it and then clicking "confirm changes". 
 
-<!-- TODO: @archiewood to confirm with @itsmebriand how CSV files work now -->
+Then copy any CSV or Parquet files you want to query into `sources/[your_csv_source_name]/`.
 
-Then copy any csv files you want to query into `sources/[source_name]/`.
+The section below applies to both CSV and Parquet files.
 
 #### How to Query a CSV File
 
-Evidence looks for CSV files stored in a `sources/[source_name]/` folder in the root of your Evidence project. You can then query them using this syntax:
+Evidence looks for CSV files stored in a `sources/[your_csv_source_name]/` folder in the root of your Evidence project. You can query them using this syntax:
 
 ```sql
-select * from source_name.csv_file_name
+select * from your_csv_source_name.csv_file_name
+```
+
+You can also use DuckDB's built-in csv reading functions if you need more control over the behaviour of the file read:
+
+```sql
+select * from read_csv_auto('sources/your_csv_source_name/csv_file_name')
 ```
 
 ## Troubleshooting

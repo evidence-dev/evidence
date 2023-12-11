@@ -95,7 +95,7 @@ where column_name like '${input.name_of_dropdown}'
     </tr>
         <tr>	
         <td>name</td>	
-        <td>Name of the dropdown, so the selected value can be referenced elsewhere</td>	
+        <td>Name of the dropdown, used to reference the selected value elsewhere</td>	
         <td class='tcenter'>Yes</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>-</td>
@@ -115,15 +115,15 @@ where column_name like '${input.name_of_dropdown}'
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
-        <td>value_label</td>	
-        <td>Column name from the query containing labels to display</td>	
+        <td>label</td>	
+        <td>Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)</td>	
         <td class='tcenter'>No</td>	
         <td class='tcenter'>column name</td>	
         <td class='tcenter'>Uses the column in value</td>
     </tr>
     <tr>	
-        <td>label</td>	
-        <td>Label to display above the dropdown</td>	
+        <td>title</td>	
+        <td>Title to display above the dropdown</td>	
         <td class='tcenter'>No</td>	
         <td class='tcenter'>string</td>	
         <td class='tcenter'>-</td>
@@ -133,11 +133,11 @@ where column_name like '${input.name_of_dropdown}'
         <td>Column to sort options by</td>
         <td class='tcenter'>No</td>
         <td class='tcenter'>column name</td>
-        <td class='tcenter'>-</td>
+        <td class='tcenter'>Uses the same order as the query in `data`</td>
     </tr>
     <tr>	
         <td>where</td>
-        <td>SQL where fragment to filter options by</td>
+        <td>SQL where fragment to filter options by (e.g., where sales > 40000)</td>
         <td class='tcenter'>No</td>
         <td class='tcenter'>SQL where clause</td>
         <td class='tcenter'>-</td>

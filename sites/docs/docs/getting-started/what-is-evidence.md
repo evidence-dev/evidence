@@ -8,21 +8,23 @@ breadcrumbs: false
 image: /img/how-it-works.png
 ---
 
-Evidence is an open source, code-based alternative to drag-and-drop business intelligence tools.
+Evidence is an open source framework for building data products with SQL - things like reports, decision-support tools, and customer-facing/embedded reporting. It's a code-driven alternative to drag-and-drop BI tools.
 
 ## Motivation
 
-Our goal is to enable data analysts to deliver reliable, clear, and valuable reporting products driven by live data.
+We think it's still too difficult to build high quality data products. Businesses are stuck with outdated BI software that delivers slow and clunky outputs, and analysts are stuck in a manual drag-and-drop workflow that's hard to maintain.
 
-We believe that the best way to achieve that goal is to equip analysts with a higher leverage workflow than dragging-and-dropping charts and filters onto a dashboard.
+Our mission is to give you the tools to deliver production-quality data products that look and feel more like the [New York Times' data journalism](https://www.nytimes.com/interactive/2021/us/covid-cases.html) than a drag-and-drop dashboard.
+
+To do this, we've created a code-driven workflow that combines the best of modern web frameworks with the best of BI tools. 
 
 Evidence provides:
 
-- **Code-driven workflows:** Use your IDE, version control, and CI/CD tools
-- **First-class text support:** Add context, explanation and insight to your reports using markdown
-- **Control structures:** Use loops, conditionals, and parameterized pages to generate content from data
+- **Code-driven workflow:** Use your IDE, version control, and CI/CD tools
+- **First-class text support:** Add context, explanation and insight to your reports
+- **Programmatic features:** Use loops, conditionals, and templated pages to generate content from data
 - **Performance:** Evidence projects build into fast and reliable web application
-- **Lightweight setup:** Install locally and start building reports immediately
+- **Lightweight setup:** Install locally and start building reports in just a few minutes
 
 To get started, [install Evidence](/getting-started/install-evidence).
 
