@@ -228,6 +228,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	    }
 		
 
+		$: params = $page.params
+
         ${queryDeclarations}
     `;
 
