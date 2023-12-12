@@ -61,12 +61,12 @@
 	onMount(() => {
 		if (!browser) return;
 		if (!import.meta.hot) return;
-		import.meta.hot.on('evidence:build-status', handleStatusEvent);
+		import.meta.hot.on?.('evidence:build-status', handleStatusEvent);
 	});
 
 	onDestroy(() => {
 		if (!browser) return;
 		if (!import.meta.hot) return;
-		import.meta.hot.off('evidence:build-status', handleStatusEvent);
+		import.meta.hot.off?.('evidence:build-status', handleStatusEvent);
 	});
 </script>
