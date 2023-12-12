@@ -259,14 +259,16 @@ export const buildSources = async (
 						if (_r instanceof Promise) {
 							result = await _r.catch((e) => {
 								if (e instanceof z.ZodError) console.log(e.format());
-								else { throw e }
+								else {
+									throw e;
+								}
 								return null;
 							});
 						} else result = _r;
 					} catch (e) {
 						if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
 						else {
-							throw e
+							throw e;
 						}
 						result = null;
 					}
