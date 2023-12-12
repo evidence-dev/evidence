@@ -16,13 +16,13 @@ Business Intelligence as Code: Generate reports using SQL and markdown
 
 # How It Works
 
-Evidence is an open source, code-based alternative to drag-and-drop business intelligence tools.
+Evidence is an open-source, code-based alternative to drag-and-drop business intelligence tools.
 
 ![how-it-works](sites/docs/static/img/how-it-works.png)
 
-Evidence renders a website from markdown files:
+Evidence generates a website from markdown files:
 
-- **SQL statements** inside markdown files run queries against your data warehouse
+- **SQL statements** inside markdown files run queries against your data sources
 - **Charts and components** are rendered using these query results
 - **Templated pages** generate many pages from a single markdown template
 - **Loops** and **If / Else** statements allow control of what is displayed to users
