@@ -90,7 +90,7 @@ export default (node, option) => {
 
 	return {
 		update(option) {
-			chart.setOption(option);
+			chart.setOption(option, true);
 			// Check if echartsOptions are provided and apply them
 			const prevOption = chart.getOption();
 			if (prevOption.echartsOptions) {
