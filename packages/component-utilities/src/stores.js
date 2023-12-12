@@ -98,4 +98,4 @@ export const localStorageStore = (key, init) => {
 };
 
 // Persist ShowQueries user choice
-export const showQueries = localStorageStore('showQueries', dev);
+export const showQueries = localStorageStore('showQueries', dev && browser);
