@@ -1,3 +1,4 @@
+const { exhaustStream } = require('@evidence-dev/db-commons');
 const runQuery = require('@evidence-dev/duckdb');
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<never>} */
@@ -19,6 +20,7 @@ module.exports.getRunner = () => {
 /** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
 module.exports.testConnection = async (opts) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: ':memory:' })
+		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => ({ reason: e.message ?? 'File not found' }));
 	return r;

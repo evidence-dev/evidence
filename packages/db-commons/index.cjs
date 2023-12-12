@@ -184,6 +184,18 @@ const cleanQuery = (query) => {
 	return cleanedString;
 };
 
+/**
+ * @param {QueryResult} stream
+ * @returns {Promise<void>}
+ */
+const exhaustStream = async ({ rows }) => {
+	try {
+		for await (const _ of rows()) {
+			// exhaust the stream
+		}
+	} catch {}
+}
+
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
@@ -191,5 +203,6 @@ exports.inferColumnTypes = inferColumnTypes;
 exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenerator;
 exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
 exports.cleanQuery = cleanQuery;
+exports.exhaustStream = exhaustStream;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

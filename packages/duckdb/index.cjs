@@ -3,7 +3,8 @@ const {
 	EvidenceType,
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator,
-	cleanQuery
+	cleanQuery,
+	exhaustStream
 } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
@@ -168,6 +169,7 @@ module.exports.getRunner = async (opts, directory) => {
 /** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
 module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
+		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => {
 			if (typeof e === 'string' && e !== '') {
