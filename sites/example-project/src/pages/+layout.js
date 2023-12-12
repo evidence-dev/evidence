@@ -146,6 +146,7 @@ export const load = async (event) => {
 				if (prop === 'loading') return undefined;
 				if (prop === 'error') return undefined;
 				if (prop === '_evidenceColumnTypes') return undefined;
+				if (prop === '__isQueryStore') return false;
 				return target[prop] ?? recursiveFillerObject;
 			},
 			set(target, prop, value) {
