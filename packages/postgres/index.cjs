@@ -1,6 +1,12 @@
 const pg = require('pg');
 const { Pool } = pg;
-const { EvidenceType, getEnv, TypeFidelity, cleanQuery, exhaustStream } = require('@evidence-dev/db-commons');
+const {
+	EvidenceType,
+	getEnv,
+	TypeFidelity,
+	cleanQuery,
+	exhaustStream
+} = require('@evidence-dev/db-commons');
 const Cursor = require('pg-cursor');
 
 const envMap = {

@@ -194,7 +194,7 @@ const exhaustStream = async ({ rows }) => {
 			// exhaust the stream
 		}
 	} catch {}
-}
+};
 
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
