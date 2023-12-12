@@ -93,6 +93,7 @@ export const localStorageStore = (key, init) => {
 		update: (cb) => {
 			const updatedStore = cb(getStoreVal(store));
 			set(updatedStore);
+			flush(updatedStore);
 		}
 	};
 };
