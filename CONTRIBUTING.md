@@ -46,26 +46,42 @@ If your problem relates to sensitive or private information, please don't post a
 
 ## Contribute Code
 
-### Testing Changes Manually
+### Getting Started
 
 Follow these steps to test your changes, once you've started the example project (per steps below),
-you should be able to open the `Evidence Development Workspace` on `localhost:3000`.
-Any subsequent changes you make will be reflected on the website.
+you should be able to open the `Evidence Development Workspace` on `localhost:3000`. Any subsequent changes you make will be reflected on the website.
 
-1. In the project root folder, run `pnpm install` (install pnpm if you don't have it `npm i -g pnpm`)
-1. Run `pnpm run dev:core-components`
-1. **In another terminal**, run `pnpm run dev:example-project`
+Open a terminal and make sure `pnpm` is installed with:
+```bash
+npm i -g pnpm
+```
+
+
+In the project root folder, run:
+```bash
+pnpm install
+```
+In the project root folder, run:
+```bash
+pnpm run dev:core-components
+```
+
+**In another terminal**, run:
+
+```bash
+pnpm run dev:example-project
+```
 
 #### Cannot find package Error
 
 If you get: `Error [ERR_MODULE_NOT_FOUND]: Cannot find package [...]`. You might need to clean the `caches`
 
-Simply run at the `root` of the project
+At the `root` of the project, run:
 
 ```bash
 rm -rf ./**/.parcel-cache node_modules ./**/dist
 ```
-And reinstall with
+And reinstall with:
 
 ```bash
 pnpm i
@@ -74,7 +90,12 @@ pnpm i
 ### Running the Test Suite locally.
 
 The automated test suite should run upon PR creation via Github actions.
-You can also run the tests locally via `pnpm test`. Note that for the DB tests, enviroment variables need to be test. Under each DB package, you can add a `.env` file with the credentials needed for each DB type. Take a look at the `index.cjs` file for the variables required for each DB driver.
+You can also run the tests locally via `pnpm test`. 
+
+**Note that for the DB tests, enviroment variables are needed for the test to run.** 
+
+Under each DB package, you can add a `.env` file with the credentials needed for each DB type. Take a look at the `index.cjs` file for the variables required for each DB driver.
+
 
 ### Pull Requests
 
@@ -106,4 +127,4 @@ Changesets ensure that package versions are updated correctly before releasing o
 
 ## Join Our Team
 
-If you're passionate about what we're building at Evidence and want to join our team, reach out to us at support@evidence.dev.
+If you're passionate about what we're building at Evidence and want to join our team, reach out to us at <support@evidence.dev>.
