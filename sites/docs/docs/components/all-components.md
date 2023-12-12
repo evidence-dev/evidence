@@ -659,7 +659,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
     <a href="/components/dropdown">
 
-<!-- ![Accordion](/img/dropdown.png) -->
+![Accordion](/img/dropdown.png)
 
 </a>
 </div>

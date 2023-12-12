@@ -7,9 +7,7 @@ Creates a dropdown menu with a list of options that can be selected. The selecte
 
 To see how to filter a query using a dropdown, see [Filters](/core-concepts/filters).
 
-<!-- TODO: @archiewood add images -->
-
-<img src="/img/dropdown.png" alt="dropdown" width="600"/>
+<img src="/img/dropdown.png" alt="dropdown" width="400"/>
 
 ````markdown
 <Dropdown
@@ -23,6 +21,8 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 ### Dropdown using Options from a Query
 
+<img src="/img/dropdown.png" alt="dropdown" width="400"/>
+
 ````markdown
 <Dropdown
     data={query_name} 
@@ -32,6 +32,8 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 ````
 
 ### Dropdown with a Default Value
+
+<img src="/img/dropdown-default.png" alt="dropdown" width="400"/>
 
 ````markdown
 <Dropdown
@@ -47,6 +49,8 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 
 ### Dropdown with Hardcoded Options
 
+<img src="/img/dropdown-hardcoded.png" alt="dropdown" width="400"/>
+
 ````markdown
 <Dropdown name=name_of_dropdown>
     <DropdownOption label="Option 1" value="1" />
@@ -55,6 +59,9 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 ````
 
 ### Dropdown using Alternative Labels
+
+<img src="/img/dropdown-label.png" alt="dropdown" width="400"/>
+
 
 ````markdown
 <Dropdown
@@ -95,7 +102,7 @@ where column_name like '${input.name_of_dropdown}'
     </tr>
         <tr>	
         <td>name</td>	
-        <td>Name of the dropdown, used to reference the selected value elsewhere</td>	
+        <td>Name of the dropdown, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
         <td class='tcenter'>Yes</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>-</td>
