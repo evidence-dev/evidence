@@ -1,18 +1,27 @@
 # Needful Things
 
-<br>
-
-```sql categories
-select 
-    category 
-from needful_things.orders
-group by category
-```
-
 <Dropdown 
     data={categories}
     value=category
     title="Select a Category"
+    name=category
+/>
+
+
+<br>
+
+```sql categories
+select 
+    category,
+    upper(left(category, 3)) as abbrev
+from needful_things.orders
+group by category
+```
+
+
+<Dropdown 
+    data={categories}
+    value=category
     name=category
 />
 
@@ -49,7 +58,7 @@ order by sales desc
     title="Select a Category"
     name=category2
 >
-    <DropdownOption value="%" label="All" />
+    <DropdownOption value="%" label="All Categories" />
 </Dropdown>
 
 ```sql items2
@@ -61,3 +70,20 @@ where category like '${inputs.category2}'
 group by item
 order by sales desc
 ```
+
+<Dropdown 
+    data={categories}
+    value=category
+    name=category3
+    label=abbrev
+    title="Select a Category Abbreviation"
+/>
+
+<Dropdown 
+    name=category4
+    title="Select a Custom Option"
+>
+    <DropdownOption value="1" label="Option One" />
+    <DropdownOption value="2" label="Option Two" />
+    <DropdownOption value="3" label="Option Three" />
+</Dropdown>
