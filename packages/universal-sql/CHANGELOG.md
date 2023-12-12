@@ -1,5 +1,12 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.20
+
+### Patch Changes
+
+- cb74406a: fix version mismatch and windows error
+- d1ab5e62: Bump ddb version
+
 ## 2.0.0-usql.19
 
 ### Patch Changes

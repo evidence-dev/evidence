@@ -1,5 +1,15 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.29
+
+### Patch Changes
+
+- e23691d0: Handle errors during source query execution
+- dbc69a59: Handle directories without connection.yaml more elegantly
+- Updated dependencies [cb74406a]
+- Updated dependencies [d1ab5e62]
+  - @evidence-dev/universal-sql@2.0.0-usql.20
+
 ## 2.0.0-usql.28
 
 ### Patch Changes

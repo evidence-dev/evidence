@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- 982a17c6: Properly mute profiled functions when not in debug mode
+  - @evidence-dev/query-store@2.0.0-usql.11
+
 ## 2.0.0-usql.16
 
 ### Patch Changes
