@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.23
+
+### Patch Changes
+
+- 17a2d5ee: Expose `params` var instead of `$page.params`
+
 ## 4.0.0-usql.22
 
 ### Patch Changes

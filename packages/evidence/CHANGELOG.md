@@ -1,5 +1,20 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.46
+
+### Patch Changes
+
+- 0a60b724: Remove reduntant QueryStatus notifications
+- Updated dependencies [4ac6a688]
+- Updated dependencies [91034294]
+- Updated dependencies [0a60b724]
+- Updated dependencies [aea3be1a]
+- Updated dependencies [bbcd070e]
+- Updated dependencies [17a2d5ee]
+  - @evidence-dev/component-utilities@2.0.0-usql.19
+  - @evidence-dev/core-components@2.0.0-usql.25
+  - @evidence-dev/preprocess@4.0.0-usql.23
+
 ## 20.0.0-usql.45
 
 ### Patch Changes

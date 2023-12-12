@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.25
+
+### Patch Changes
+
+- 91034294: More QueryViewer tweaks
+- 0a60b724: Remove reduntant QueryStatus notifications
+- aea3be1a: Source HMR toasts are now persistent until dismissed
+- bbcd070e: Better error feedback for source names
+- Updated dependencies [4ac6a688]
+  - @evidence-dev/component-utilities@2.0.0-usql.19
+
 ## 2.0.0-usql.24
 
 ### Patch Changes

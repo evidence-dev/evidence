@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- 4ac6a688: Add support for toasts without a timeout
+
 ## 2.0.0-usql.18
 
 ### Patch Changes
