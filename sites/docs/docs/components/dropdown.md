@@ -7,7 +7,7 @@ Creates a dropdown menu with a list of options that can be selected. The selecte
 
 To see how to filter a query using a dropdown, see [Filters](/core-concepts/filters).
 
-<img src="/img/dropdown.png" alt="dropdown" width="400"/>
+<img src="/img/dropdown-title.png" alt="dropdown" width="400"/>
 
 ````markdown
 <Dropdown
@@ -21,7 +21,7 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 ### Dropdown using Options from a Query
 
-<img src="/img/dropdown.png" alt="dropdown" width="400"/>
+<img src="/img/dropdown-notitle.png" alt="dropdown using a query" width="400"/>
 
 ````markdown
 <Dropdown
@@ -31,15 +31,29 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 />
 ````
 
-### Dropdown with a Default Value
+### With a Title
 
-<img src="/img/dropdown-default.png" alt="dropdown" width="400"/>
+<img src="/img/dropdown-title.png" alt="dropdown with title" width="400"/>
 
 ````markdown
 <Dropdown
     data={query_name} 
     name=name_of_dropdown
     value=column_name
+    title="Select a Category"
+/>
+````
+
+### With a Default Value
+
+<img src="/img/dropdown-default.png" alt="dropdown with a default" width="400"/>
+
+````markdown
+<Dropdown
+    data={query_name} 
+    name=name_of_dropdown
+    value=column_name
+    title="Select a Category"
 >
     <DropdownOption label="All Categories" value="%" />
 </Dropdown>
@@ -47,20 +61,22 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${input.name_of_dropdown}'` to return all values.
 
-### Dropdown with Hardcoded Options
 
-<img src="/img/dropdown-hardcoded.png" alt="dropdown" width="400"/>
+### With Hardcoded Options
+
+<img src="/img/dropdown-custom-options.png" alt="dropdown with hardcoded values" width="400"/>
 
 ````markdown
 <Dropdown name=name_of_dropdown>
-    <DropdownOption label="Option 1" value="1" />
-    <DropdownOption label="Option 2" value="2" />
+    <DropdownOption label="Option One" value="1" />
+    <DropdownOption label="Option Two" value="2" />
+    <DropdownOption label="Option Three" value="3" />
 </Dropdown>
 ````
 
-### Dropdown using Alternative Labels
+### Alternative Labels
 
-<img src="/img/dropdown-label.png" alt="dropdown" width="400"/>
+<img src="/img/dropdown-alternative-label.png" alt="dropdown with alternative labels" width="400"/>
 
 
 ````markdown
@@ -72,7 +88,7 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 />
 ````
 
-### Dropdown filtering a Query
+### Filtering a Query
 
 ````markdown
 <Dropdown
