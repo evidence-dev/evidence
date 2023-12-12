@@ -88,7 +88,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	/** Has #fetchData been executed? */
 	get loaded() {
-		return this.#dataLoaded; // && this.#metaLoaded && this.#lengthLoaded;
+		return this.#dataLoaded && this.#metaLoaded && this.#lengthLoaded;
 	}
 	/** Is #fetchData currently running? */
 	get loading() {
@@ -260,8 +260,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			}
 		);
 
-		this.#fetchMetadata();
-		this.#handleInitialData();
+		handleMaybePromise(
+			(alreadyFetchedMeta) => {
+				if (!alreadyFetchedMeta) this.#fetchMetadata();
+			},
+			() => this.#handleInitialData(),
+			this.#setError
+		);
 
 		// prerender
 		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
@@ -271,7 +276,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		const { initialData, initialDataDirty, initialError } = this.opts;
 		if (initialError) {
 			this.#error = initialError;
-			return;
+			return false;
 		}
 
 		// Maintain loading state while we wait
@@ -281,10 +286,18 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#metaLoading = true;
 			this.#length = 0;
 			this.publish();
-			if (initialData instanceof Promise) {
-				initialData.then((results) => {
+			return handleMaybePromise(
+				(results) => {
+					if (!results.length) {
+						// if initial data is 0 length; then we should ignore it and go ahead with a fetch
+						this.#fetchData();
+						return false;
+					}
 					this.#values = results;
 					this.#length = results.length;
+					// @ts-expect-error
+					this.#columns = this.#values._evidenceColumnTypes;
+
 					this.#dataLoading = false;
 					this.#lengthLoading = false;
 					this.#metaLoading = false;
@@ -301,25 +314,14 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#warnHighScore();
 					this.publish();
 					if (initialDataDirty || !this.#values.length) this.#fetchData();
-				});
-			} else {
-				this.#values = initialData;
-				this.#length = initialData.length;
-				this.#dataLoading = false;
-				this.#lengthLoading = false;
-				this.#metaLoading = false;
-
-				this.#dataLoaded = !initialDataDirty;
-				this.#lengthLoaded = !initialDataDirty;
-				this.#metaLoaded = !initialDataDirty;
-
-				this.#mockResult = Object.fromEntries(this._evidenceColumnTypes.map((c) => [c.name, null]));
-
-				this.#calculateScore();
-				this.#warnHighScore();
-				this.publish();
-				if (initialDataDirty || !this.#values.length) this.#fetchData();
-			}
+					return true;
+				},
+				() => initialData,
+				(e) => {
+					this.#setError(e);
+					return false;
+				}
+			);
 		}
 	};
 

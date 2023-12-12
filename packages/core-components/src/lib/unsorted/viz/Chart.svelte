@@ -232,9 +232,9 @@
 	let dateCols;
 
 	/** @type {QueryStore} */
-	let query = data instanceof QueryStore ? data : undefined;
+	let query = data instanceof QueryStore || data.__isQueryStore ? data : undefined;
 
-	$: if ((query && query.loaded) || !query) {
+	$: if ((query.__isQueryStore && query.loaded) || Array.isArray(data)) {
 		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;
