@@ -85,9 +85,7 @@
 </script>
 
 <!-- QueryStatus doesn't actually create any UI, just supplies toasts to ToastWrapper -->
-{#if dev}
-	<QueryStatus />
-{/if}
+
 <ToastWrapper />
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
