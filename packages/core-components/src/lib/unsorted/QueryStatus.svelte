@@ -48,10 +48,11 @@
 				title,
 				message,
 				status: style,
-				id: unique_id
+				id: unique_id,
+				dismissable: true
 			};
 
-			toasts.add(status_as_toast, 5000);
+			toasts.add(status_as_toast, 0);
 		});
 	}
 </script>
