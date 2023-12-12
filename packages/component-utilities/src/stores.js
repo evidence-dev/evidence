@@ -25,17 +25,20 @@ function createToastsObject() {
 			// Totally safe ids
 			toast.id = Math.random().toString();
 			update(($toasts) => ($toasts.push(toast), $toasts));
-			const timeoutId = setTimeout(() => {
-				removeToast(toast.id);
-				delete timeoutMap[toast.id];
-			}, timeout);
-
-			timeoutMap[toast.id] = timeoutId;
+			if (timeout) {
+				const timeoutId = setTimeout(() => {
+					removeToast(toast.id);
+					delete timeoutMap[toast.id];
+				}, timeout);
+				timeoutMap[toast.id] = timeoutId;
+			}
 		},
 		dismiss: (toastId) => {
 			removeToast(toastId);
-			clearTimeout(timeoutMap[toastId]);
-			delete timeoutMap[toastId];
+			if (timeoutMap[toastId]) {
+				clearTimeout(timeoutMap[toastId]);
+				delete timeoutMap[toastId];
+			}
 		}
 	};
 }
