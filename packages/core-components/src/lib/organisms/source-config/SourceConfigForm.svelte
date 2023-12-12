@@ -1,13 +1,15 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
-	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
+	import { DeviceFloppy, Plug } from '@evidence-dev/component-utilities/icons';
 
 	import { Button } from '../../atoms/button';
-	import { DeviceFloppy, Plug } from '@evidence-dev/component-utilities/icons';
+	import SourceNameField, { validateName } from './atoms/SourceNameField.svelte';
+	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
 
 	export let sourcePlugin;
 	export let source;
+	export let sources;
 
 	const dispatch = createEventDispatcher();
 
@@ -24,7 +26,20 @@
 	let validationLoading = false;
 	let validationOkay = false;
 
-	const callback = ({ action }) => {
+	let nameError = '';
+
+	const callback = ({ action, cancel }) => {
+		configurationLoading = false;
+		validationLoading = false;
+		nameError = validateName(
+			source.name,
+			sources.filter((s) => s !== source)
+		);
+		if (nameError) {
+			cancel();
+			return;
+		}
+
 		switch (action.search) {
 			case '?/updateSource':
 				configurationLoading = true;
@@ -91,14 +106,15 @@
 		{/if}
 
 		<h4 class="text-xs uppercase text-gray-600 font-bold">Source Info</h4>
-		<label class="flex justify-between">
+		<SourceNameField bind:sourceName={source.name} bind:nameError />
+		<!-- <label class="flex justify-between">
 			Source Name
 			<input
 				bind:value={source.name}
 				class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
 				pattern="^[\w_]+$"
 			/>
-		</label>
+		</label> -->
 		<label class="flex justify-between">
 			Source Type
 			<input

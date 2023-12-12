@@ -86,6 +86,7 @@
 					<SourceConfigRow
 						{availableSourcePlugins}
 						{source}
+						{sources}
 						startOpen={lastAdded === source.name}
 					/>
 				{/each}

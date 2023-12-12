@@ -4,6 +4,7 @@
 	import { Button } from '../../atoms/button';
 
 	import { DeviceFloppy } from '@evidence-dev/component-utilities/icons';
+	import SourceNameField, { validateName } from './atoms/SourceNameField.svelte';
 
 	export let availablePackages;
 	export let ghost = false;
@@ -14,12 +15,15 @@
 
 	const dispatch = createEventDispatcher();
 
+	let nameError = '';
+
 	function submit() {
+		nameError = validateName(newSourceName, existingSources);
+		if (nameError) return;
+
 		dispatch('newSource', { newSourceType, newSourceName });
 		newSourceName = '';
 	}
-
-	$: sourceNameDuplicate = newSourceName && existingSources.some((es) => es.name === newSourceName);
 </script>
 
 <div
@@ -57,30 +61,10 @@
 			</select>
 		</label>
 		<div>
-			<label for="sourceName" class="flex justify-between w-full">
-				Source name
-				<input
-					required
-					pattern="^[\w_]+$"
-					name="sourceName"
-					class="rounded border border-gray-300 p-1 ml-auto w-2/3 text-gray-950 align-middle text-sm"
-					bind:value={newSourceName}
-				/>
-			</label>
-			<div class="flex justify-end w-full">
-				{#if sourceNameDuplicate}
-					<span class="text-red-500 font-bold text-sm">A source with this name already exists</span>
-				{/if}
-			</div>
+			<SourceNameField bind:sourceName={newSourceName} bind:nameError />
 		</div>
 		<div class="ml-auto">
-			<Button
-				disabled={sourceNameDuplicate}
-				size="md"
-				icon={DeviceFloppy}
-				variant="success"
-				type="submit">Confirm</Button
-			>
+			<Button size="md" icon={DeviceFloppy} variant="success" type="submit">Confirm</Button>
 		</div>
 	</form>
 </div>
