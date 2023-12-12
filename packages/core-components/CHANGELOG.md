@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.26
+
+### Patch Changes
+
+- 64921385: QueryStatus now checks that on/off are functions on import.meta.hot
+
 ## 2.0.0-usql.25
 
 ### Patch Changes
