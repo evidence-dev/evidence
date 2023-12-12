@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.28
+
+### Patch Changes
+
+- 7a5225be: QueryStore more aggresively loads metadata; and ignore 0-length initial data
+- Updated dependencies [5d280997]
+- Updated dependencies [7a5225be]
+  - @evidence-dev/component-utilities@2.0.0-usql.21
+  - @evidence-dev/query-store@2.0.0-usql.14
+
 ## 2.0.0-usql.27
 
 ### Patch Changes

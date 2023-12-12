@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.14
+
+### Patch Changes
+
+- 7a5225be: QueryStore more aggresively loads metadata; and ignore 0-length initial data
+
 ## 2.0.0-usql.13
 
 ### Patch Changes

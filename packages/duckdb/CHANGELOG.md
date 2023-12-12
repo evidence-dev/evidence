@@ -1,5 +1,13 @@
 # @evidence-dev/duckdb
 
+## 1.0.0-usql.9
+
+### Patch Changes
+
+- 781d2677: exhaust testconnection streams, improve type inference, add trino/databricks adapters
+- Updated dependencies [781d2677]
+  - @evidence-dev/db-commons@0.2.1-usql.5
+
 ## 1.0.0-usql.8
 
 ### Patch Changes

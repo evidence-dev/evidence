@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.21
+
+### Patch Changes
+
+- 5d280997: LocalStorageStores now flush values on update properly
+- Updated dependencies [7a5225be]
+  - @evidence-dev/query-store@2.0.0-usql.14
+
 ## 2.0.0-usql.20
 
 ### Patch Changes

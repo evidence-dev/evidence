@@ -1,5 +1,13 @@
 # @evidence-dev/redshift
 
+## 1.0.0-usql.8
+
+### Patch Changes
+
+- Updated dependencies [781d2677]
+  - @evidence-dev/db-commons@0.2.1-usql.5
+  - @evidence-dev/postgres@1.0.0-usql.8
+
 ## 1.0.0-usql.7
 
 ### Patch Changes

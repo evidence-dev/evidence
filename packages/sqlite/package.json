@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sqlite",
-	"version": "2.0.0-usql.6",
+	"version": "2.0.0-usql.7",
 	"description": "SQLite driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Edgar Ramírez-Mondragón",

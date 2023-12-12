@@ -1,5 +1,21 @@
 # evidence-test-environment
 
+## 3.0.0-usql.49
+
+### Patch Changes
+
+- Updated dependencies [5d280997]
+- Updated dependencies [781d2677]
+- Updated dependencies [7a5225be]
+  - @evidence-dev/component-utilities@2.0.0-usql.21
+  - @evidence-dev/csv@1.0.0-usql.10
+  - @evidence-dev/duckdb@1.0.0-usql.9
+  - @evidence-dev/postgres@1.0.0-usql.8
+  - @evidence-dev/snowflake@1.0.0-usql.7
+  - @evidence-dev/sqlite@2.0.0-usql.7
+  - @evidence-dev/core-components@2.0.0-usql.28
+  - @evidence-dev/evidence@20.0.0-usql.49
+
 ## 3.0.0-usql.48
 
 ### Patch Changes
