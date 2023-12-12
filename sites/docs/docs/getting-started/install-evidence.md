@@ -33,6 +33,7 @@ import TabItem from '@theme/TabItem';
 npx degit evidence-dev/template my-project
 cd my-project
 npm install
+npm run sources
 npm run dev
 ```
 
@@ -44,6 +45,7 @@ npm run dev
 cd path/to/your/dbt/project
 npx degit evidence-dev/template reports
 npm --prefix ./reports install
+npm --prefix ./reports run sources
 npm --prefix ./reports run dev
 ```
 
