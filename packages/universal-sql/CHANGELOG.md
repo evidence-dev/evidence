@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.21
+
+### Patch Changes
+
+- 2aaef5fb: Convoluted javascript things to fix convoluted javascript things
+
 ## 2.0.0-usql.20
 
 ### Patch Changes

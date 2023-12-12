@@ -5036,7 +5036,7 @@ packages:
   /@evidence-dev/connector-gsheets@1.1.0:
     resolution: {integrity: sha512-x6qpEOrDChBg7Mp0qOd86Q/qhSaSEOniQiB3yg688Gdxt8s1ZIDQQ4TRVt6z28RdGkO6CO7mu5P7R/jzRlHyBw==}
     dependencies:
-      '@evidence-dev/duckdb': 1.0.0-usql.7
+      '@evidence-dev/duckdb': 1.0.0-usql.8
       google-auth-library: 9.4.1
       google-spreadsheet: 4.1.1(google-auth-library@9.4.1)
       tempy: 3.1.0
@@ -5054,8 +5054,8 @@ packages:
       fs-extra: 10.0.0
     dev: false
 
-  /@evidence-dev/duckdb@1.0.0-usql.7:
-    resolution: {integrity: sha512-J/pW8veMy48uIAnlUGzUVw+EJ/KuG6dAxuQkkgm20DOsjN/QMR8kAXsDwG96vgrBb/r7OKn37fAtRwKTOm+ONw==}
+  /@evidence-dev/duckdb@1.0.0-usql.8:
+    resolution: {integrity: sha512-sTLt2Sq3mVxXzvqD/sdmTrGsvZdbr71isYwZOg+Zvqhr5f0Y6SP0PTDi4c1otGrHbUn1+7MV9NYvYS+iERo62Q==}
     dependencies:
       '@evidence-dev/db-commons': 0.2.1-usql.4
       duckdb-async: 0.9.2

@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.12
+
 ## 2.0.0-usql.17
 
 ### Patch Changes

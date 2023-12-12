@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.44
+
+### Patch Changes
+
+- Updated dependencies [2aaef5fb]
+  - @evidence-dev/universal-sql@2.0.0-usql.21
+  - @evidence-dev/plugin-connector@2.0.0-usql.30
+  - @evidence-dev/query-store@2.0.0-usql.12
+  - @evidence-dev/core-components@2.0.0-usql.24
+  - @evidence-dev/component-utilities@2.0.0-usql.18
+
 ## 20.0.0-usql.43
 
 ### Patch Changes
