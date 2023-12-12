@@ -238,7 +238,6 @@
 
 	$: if ((query && query.loaded) || !initializedWithQueryStore) {
 		if (data instanceof QueryStore) query = data;
-		console.log(data.columns, query?.columns);
 		try {
 			error = undefined;
 			missingCols = [];
