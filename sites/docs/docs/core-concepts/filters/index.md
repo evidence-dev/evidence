@@ -49,6 +49,10 @@ group by 1
 
 ![Filtering a Query](/img/filters-default.png)
 
+The `%` character can be used as a wildcard in SQL. It will return all items when the user selects "All Items" from this dropdown.
+
+Note also the use of the `like` operator in the `where` clause.
+
 ````markdown
 ```sql items
 select 
