@@ -32,6 +32,7 @@
 		"svelte-preprocess": "^5.0.3",
 		"sveltekit-autoimport": "^1.7.0",
 		"yaml": "^2.3.4",
+		"vite": "4.3.9",
 		"zod": "^3.21.4"
 	},
 	"devDependencies": {

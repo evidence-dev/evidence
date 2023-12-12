@@ -231,12 +231,12 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	const initializedWithQueryStore = data instanceof QueryStore;
+	
 
 	/** @type {QueryStore} */
 	let query = data instanceof QueryStore ? data : undefined;
 
-	$: if ((query && query.loaded) || !initializedWithQueryStore) {
+	$: if ((query && query.loaded) || !query) {
 		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;

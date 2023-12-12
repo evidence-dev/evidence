@@ -34,6 +34,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Query Execution Function */
 	readonly #exec: Runner;
 
+
+	/** Duck Type */
+	readonly __isQueryStore = true
+
 	/**
 	 * A Proxy wrapper around the QueryStore instance.
 	 * It is used to intercept access to numeric indices and the 'length' property.
@@ -74,6 +78,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#columns: ColumnMetadata[] = [];
 
 	get _evidenceColumnTypes(): ColumnMetadata[] {
+		//@ts-expect-error This implicitly is set on the return value of #exec
+		return Array.from(this.#values._evidenceColumnTypes ?? this.#columns ?? []);
+	}
+
+	get columns(): ColumnMetadata[] {
 		//@ts-expect-error This implicitly is set on the return value of #exec
 		return Array.from(this.#values._evidenceColumnTypes ?? this.#columns ?? []);
 	}

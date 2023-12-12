@@ -49,7 +49,7 @@
 
 			if (
 				!Array.isArray(data) &&
-				!(data instanceof QueryStore || data.constructor.name === `bound QueryStore`)
+				!(data instanceof QueryStore || data.__isQueryStore) // is reference equal or has ducktype
 			) {
 				data = [data];
 			}

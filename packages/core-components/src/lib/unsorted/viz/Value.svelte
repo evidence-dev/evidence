@@ -48,7 +48,10 @@
 						throw Error(`Received: data=${data}, expected: data={${data}}`);
 					}
 
-					if (!Array.isArray(data) && !(data instanceof QueryStore)) {
+					if (
+						!Array.isArray(data) &&
+						!(data instanceof QueryStore || data.__isQueryStore) // is reference equal or has ducktype
+					) {
 						// Accept bare objects
 						data = [data];
 					}
