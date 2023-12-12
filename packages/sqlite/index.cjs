@@ -6,7 +6,8 @@ const {
 	inferColumnTypes,
 	getEnv,
 	asyncIterableToBatchedAsyncGenerator,
-	cleanQuery
+	cleanQuery,
+	exhaustStream
 } = require('@evidence-dev/db-commons');
 
 // https://gist.github.com/rmela/a3bed669ad6194fb2d9670789541b0c7
@@ -100,6 +101,7 @@ module.exports.getRunner = async (opts, directory) => {
 /** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
 module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
+		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => ({ reason: e.message ?? 'File not found' }));
 	return r;

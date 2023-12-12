@@ -3,7 +3,8 @@ const {
 	EvidenceType,
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator,
-	cleanQuery
+	cleanQuery,
+	exhaustStream
 } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
@@ -11,9 +12,7 @@ const path = require('path');
 const envMap = {
 	filename: [
 		{ key: 'EVIDENCE_DUCKDB_FILENAME', deprecated: false },
-		{ key: 'DUCKDB_FILENAME', deprecated: false },
-		{ key: 'filename', deprecated: true },
-		{ key: 'FILENAME', deprecated: true }
+		{ key: 'DUCKDB_FILENAME', deprecated: false }
 	]
 };
 
@@ -58,6 +57,42 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 	});
 };
 
+/**
+ *
+ * @param {{ column_name: string; column_type: string; }[]} describe
+ * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
+ */
+function duckdbDescribeToEvidenceType(describe) {
+	return describe.map((column) => {
+		let type;
+		switch (column.column_type) {
+			case 'BOOLEAN':
+				type = EvidenceType.BOOLEAN;
+				break;
+			case 'DATE':
+			case 'TIMESTAMP':
+			case 'TIMESTAMP WITH TIME ZONE':
+				type = EvidenceType.DATE;
+				break;
+			case 'DECIMAL':
+			case 'DOUBLE':
+			case 'FLOAT':
+			case 'INTEGER':
+			case 'UINTEGER':
+			case 'SMALLINT':
+			case 'USMALLINT':
+			case 'TINYINT':
+			case 'UTINYINT':
+				type = EvidenceType.NUMBER;
+				break;
+			default:
+				type = EvidenceType.STRING;
+				break;
+		}
+		return { name: column.column_name, evidenceType: type, typeFidelity: TypeFidelity.PRECISE };
+	});
+}
+
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
 	const filename = database ? database.filename : getEnv(envMap, 'filename') ?? ':memory:';
@@ -72,9 +107,19 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		const expected_count = await db.all(count_query).catch(() => null);
 		const expected_row_count = expected_count?.[0]['count_star()'];
 
+		const column_query = `DESCRIBE ${cleanQuery(queryString)}`;
+		const column_types = await db
+			.all(column_query)
+			.then(duckdbDescribeToEvidenceType)
+			.catch(() => null);
+
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
-			mapResultsToEvidenceColumnTypes
+			mapResultsToEvidenceColumnTypes:
+				column_types == null ? mapResultsToEvidenceColumnTypes : undefined
 		});
+		if (column_types != null) {
+			results.columnTypes = column_types;
+		}
 		results.expectedRowCount = expected_row_count;
 		if (typeof results.expectedRowCount === 'bigint') {
 			// newer versions of ddb return a bigint
@@ -120,6 +165,7 @@ module.exports.getRunner = async (opts, directory) => {
 /** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
 module.exports.testConnection = async (opts, directory) => {
 	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
+		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => {
 			if (typeof e === 'string' && e !== '') {

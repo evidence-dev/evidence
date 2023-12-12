@@ -11,7 +11,8 @@ const {
 	EvidenceType,
 	TypeFidelity,
 	getEnv,
-	asyncIterableToBatchedAsyncGenerator
+	asyncIterableToBatchedAsyncGenerator,
+	exhaustStream
 } = require('@evidence-dev/db-commons');
 
 const envMap = {
@@ -244,6 +245,7 @@ module.exports.getRunner = async (opts) => {
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<BigQueryOptions>} */
 module.exports.testConnection = async (opts) => {
 	return await runQuery('SELECT 1;', opts)
+		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
 };

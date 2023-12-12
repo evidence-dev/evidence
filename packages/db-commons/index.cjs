@@ -118,15 +118,32 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 	{
 		// @ts-ignore
 		standardizeRow = (x) => x,
-		mapResultsToEvidenceColumnTypes = () => []
+		mapResultsToEvidenceColumnTypes
 	} = {}
 ) {
-	const iterator = iterable[Symbol.asyncIterator]();
-	const firstRow = await iterator.next().then((x) => x.value);
+	/** @type {Record<string, unknown>[]} */
+	const preread_rows = [];
+
+	/** @type {QueryResult["columnTypes"]} */
+	let columnTypes = [];
+	if (mapResultsToEvidenceColumnTypes) {
+		const iterator = iterable[Symbol.asyncIterator]();
+		const firstRow = await iterator.next().then((x) => x.value);
+		const column_names = Object.keys(firstRow);
+		preread_rows.push(standardizeRow(firstRow));
+
+		let null_columns = column_names.filter((column) => firstRow[column] == null);
+		while (null_columns.length > 0) {
+			const next = await iterator.next().then((x) => x.value);
+			preread_rows.push(standardizeRow(next));
+			null_columns = null_columns.filter((column) => next[column] == null);
+		}
+		columnTypes = mapResultsToEvidenceColumnTypes(preread_rows);
+	}
 
 	const rows = async function* () {
 		let batch = [];
-		batch.push(standardizeRow(firstRow));
+		batch.push(...preread_rows);
 		for await (const row of iterable) {
 			batch.push(standardizeRow(row));
 			if (batch.length >= batchSize) {
@@ -139,7 +156,7 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 		}
 	};
 
-	return { rows, columnTypes: mapResultsToEvidenceColumnTypes([firstRow]) };
+	return { rows, columnTypes };
 };
 
 /**
@@ -167,6 +184,18 @@ const cleanQuery = (query) => {
 	return cleanedString;
 };
 
+/**
+ * @param {QueryResult} stream
+ * @returns {Promise<void>}
+ */
+const exhaustStream = async ({ rows }) => {
+	try {
+		for await (const _ of rows()) {
+			// exhaust the stream
+		}
+	} catch {}
+};
+
 exports.EvidenceType = EvidenceType;
 exports.TypeFidelity = TypeFidelity;
 exports.processQueryResults = processQueryResults;
@@ -174,5 +203,6 @@ exports.inferColumnTypes = inferColumnTypes;
 exports.asyncIterableToBatchedAsyncGenerator = asyncIterableToBatchedAsyncGenerator;
 exports.batchedAsyncGeneratorToArray = batchedAsyncGeneratorToArray;
 exports.cleanQuery = cleanQuery;
+exports.exhaustStream = exhaustStream;
 
 exports.getEnv = require('./src/getEnv.cjs').getEnv;

@@ -2,7 +2,8 @@ const {
 	getEnv,
 	EvidenceType,
 	TypeFidelity,
-	asyncIterableToBatchedAsyncGenerator
+	asyncIterableToBatchedAsyncGenerator,
+	exhaustStream
 } = require('@evidence-dev/db-commons');
 const snowflake = require('snowflake-sdk');
 const crypto = require('crypto');
@@ -344,6 +345,7 @@ module.exports.getRunner = async (opts) => {
 
 module.exports.testConnection = async (opts) => {
 	return await runQuery('SELECT 1;', opts)
+		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
 };

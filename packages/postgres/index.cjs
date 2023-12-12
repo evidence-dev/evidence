@@ -1,6 +1,12 @@
 const pg = require('pg');
 const { Pool } = pg;
-const { EvidenceType, getEnv, TypeFidelity, cleanQuery } = require('@evidence-dev/db-commons');
+const {
+	EvidenceType,
+	getEnv,
+	TypeFidelity,
+	cleanQuery,
+	exhaustStream
+} = require('@evidence-dev/db-commons');
 const Cursor = require('pg-cursor');
 
 const envMap = {
@@ -302,6 +308,7 @@ module.exports.getRunner = async (opts) => {
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<PostgresOptions>} */
 module.exports.testConnection = async (opts) => {
 	return await runQuery('SELECT 1;', opts, 1, true)
+		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
 };

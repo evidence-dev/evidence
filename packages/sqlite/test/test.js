@@ -7,14 +7,14 @@ import 'dotenv/config';
 test('query runs', async () => {
 	try {
 		const { rows: row_generator, columnTypes } = await runQuery(
-			"select 100 as number_col, DATE('now') as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, false as bool_col",
+			"select null as number_col, null as date_col, null as timestamp_col, null as string_col, null as bool_col union all select 100 as number_col, DATE('now') as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, false as bool_col",
 			{ filename: ':memory:' }
 		);
 		const rows = await batchedAsyncGeneratorToArray(row_generator);
 		assert.instance(rows, Array);
 		assert.instance(columnTypes, Array);
-		assert.type(rows[0], 'object');
-		assert.equal(rows[0].number_col, 100);
+		assert.type(rows[1], 'object');
+		assert.equal(rows[1].number_col, 100);
 
 		let actualColumnTypes = columnTypes.map((columnType) => columnType.evidenceType);
 		let actualColumnNames = columnTypes.map((columnType) => columnType.name);
