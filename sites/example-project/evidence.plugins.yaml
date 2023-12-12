@@ -3,7 +3,7 @@ components:
   # If you aren't sure that you want to edit it
   # you probably don't want to edit it.
   "@evidence-dev/core-components": {}
-databases:
+datasources:
   "@evidence-dev/bigquery": {}
   "@evidence-dev/csv": {}
   "@evidence-dev/duckdb": {}

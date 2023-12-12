@@ -123,7 +123,7 @@ export const ConnectionTesterSchema = z
 	.args(z.any({ description: 'Connection Options' }))
 	.returns(z.promise(z.union([z.literal(true), z.object({ reason: z.string() })])));
 
-export const DatabaseConnectorFactorySchema = z
+export const DatasourceConnectorFactorySchema = z
 	.function()
 	.args(
 		z.any({ description: 'Connection Options' }),
@@ -179,8 +179,8 @@ export const DatasourceOptionSpecSchema = z.record(
 	})
 );
 
-export const DatabaseConnectorSchema = z.object({
-	getRunner: DatabaseConnectorFactorySchema,
+export const DatasourceConnectorSchema = z.object({
+	getRunner: DatasourceConnectorFactorySchema,
 	supports: z.array(z.union([z.string(), z.array(z.string())])),
 	options: DatasourceOptionSpecSchema,
 	testConnection: ConnectionTesterSchema,

@@ -1,5 +1,11 @@
 # ui-tests
 
+## 1.2.1-usql.0
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 1.2.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/universal-sql",
-	"version": "2.0.0-usql.17",
+	"version": "2.0.0-usql.21",
 	"description": "",
 	"keywords": [],
 	"author": "",
@@ -14,13 +14,13 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@duckdb/duckdb-wasm": "^1.27.0",
+		"@duckdb/duckdb-wasm": "1.27.0",
 		"@types/lodash.chunk": "^4.2.7",
 		"@types/node": "^20.8.4",
-		"apache-arrow": "^11.0.0",
+		"apache-arrow": "11.0.0",
 		"chalk": "^5.2.0",
 		"cli-progress": "^3.12.0",
-		"duckdb": "^0.8.1",
+		"duckdb": "^0.9.2",
 		"lodash.chunk": "^4.2.0",
 		"parquet-wasm": "0.3.1",
 		"web-worker": "^1.2.0"

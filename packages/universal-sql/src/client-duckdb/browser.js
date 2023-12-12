@@ -106,7 +106,7 @@ export async function setParquetURLs(urls, append = false) {
 		for (const source in urls) {
 			await connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 			for (const url of urls[source]) {
-				const table = url.split('/').at(-1).slice(0, -'.parquet'.length);
+				const table = url.split(/\\|\//).at(-1).slice(0, -'.parquet'.length);
 				const file_name = `${source}_${table}.parquet`;
 				let path = url;
 

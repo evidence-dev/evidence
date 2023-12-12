@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 0.2.1-usql.4
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 0.2.1-usql.3
 
 ### Patch Changes

@@ -128,11 +128,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 
 		return results;
 	} catch (err) {
-		if (err.message) {
-			throw err.message;
-		} else {
-			throw err;
-		}
+		throw err;
 	}
 };
 

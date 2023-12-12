@@ -1,5 +1,108 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.48
+
+### Patch Changes
+
+- Updated dependencies [71f0d481]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [583cea9e]
+- Updated dependencies [e70a6a3e]
+  - @evidence-dev/component-utilities@2.0.0-usql.20
+  - @evidence-dev/core-components@2.0.0-usql.27
+  - @evidence-dev/query-store@2.0.0-usql.13
+
+## 20.0.0-usql.47
+
+### Patch Changes
+
+- Updated dependencies [64921385]
+  - @evidence-dev/core-components@2.0.0-usql.26
+
+## 20.0.0-usql.46
+
+### Patch Changes
+
+- 0a60b724: Remove reduntant QueryStatus notifications
+- Updated dependencies [4ac6a688]
+- Updated dependencies [91034294]
+- Updated dependencies [0a60b724]
+- Updated dependencies [aea3be1a]
+- Updated dependencies [bbcd070e]
+- Updated dependencies [17a2d5ee]
+  - @evidence-dev/component-utilities@2.0.0-usql.19
+  - @evidence-dev/core-components@2.0.0-usql.25
+  - @evidence-dev/preprocess@4.0.0-usql.23
+
+## 20.0.0-usql.45
+
+### Patch Changes
+
+- Updated dependencies [90e152cb]
+  - @evidence-dev/preprocess@4.0.0-usql.22
+
+## 20.0.0-usql.44
+
+### Patch Changes
+
+- Updated dependencies [2aaef5fb]
+  - @evidence-dev/universal-sql@2.0.0-usql.21
+  - @evidence-dev/plugin-connector@2.0.0-usql.30
+  - @evidence-dev/query-store@2.0.0-usql.12
+  - @evidence-dev/core-components@2.0.0-usql.24
+  - @evidence-dev/component-utilities@2.0.0-usql.18
+
+## 20.0.0-usql.43
+
+### Patch Changes
+
+- Updated dependencies [e23691d0]
+- Updated dependencies [cb74406a]
+- Updated dependencies [982a17c6]
+- Updated dependencies [dbc69a59]
+- Updated dependencies [d1ab5e62]
+  - @evidence-dev/plugin-connector@2.0.0-usql.29
+  - @evidence-dev/universal-sql@2.0.0-usql.20
+  - @evidence-dev/component-utilities@2.0.0-usql.17
+  - @evidence-dev/db-orchestrator@3.0.0-usql.14
+  - @evidence-dev/core-components@2.0.0-usql.23
+  - @evidence-dev/query-store@2.0.0-usql.11
+
+## 20.0.0-usql.42
+
+### Patch Changes
+
+- Fix schema explorer
+
+## 20.0.0-usql.41
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.16
+  - @evidence-dev/core-components@2.0.0-usql.22
+  - @evidence-dev/db-orchestrator@3.0.0-usql.13
+  - @evidence-dev/plugin-connector@2.0.0-usql.28
+  - @evidence-dev/preprocess@4.0.0-usql.21
+  - @evidence-dev/query-store@2.0.0-usql.10
+  - @evidence-dev/tailwind@1.0.0-usql.3
+  - @evidence-dev/telemetry@1.0.7-usql.0
+  - @evidence-dev/universal-sql@2.0.0-usql.19
+
+## 20.0.0-usql.40
+
+### Patch Changes
+
+- 78a8be8b: Schema Explorer now pulls columns by table AND schema, not just table
+- Updated dependencies [377abb4a]
+- Updated dependencies [78a8be8b]
+  - @evidence-dev/plugin-connector@2.0.0-usql.27
+  - @evidence-dev/universal-sql@2.0.0-usql.18
+  - @evidence-dev/core-components@2.0.0-usql.21
+  - @evidence-dev/query-store@2.0.0-usql.9
+  - @evidence-dev/component-utilities@2.0.0-usql.15
+
 ## 20.0.0-usql.39
 
 ### Patch Changes

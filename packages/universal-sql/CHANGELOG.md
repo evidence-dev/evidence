@@ -1,5 +1,30 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.21
+
+### Patch Changes
+
+- 2aaef5fb: Convoluted javascript things to fix convoluted javascript things
+
+## 2.0.0-usql.20
+
+### Patch Changes
+
+- cb74406a: fix version mismatch and windows error
+- d1ab5e62: Bump ddb version
+
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- 377abb4a: Rename databases -> datasources
+
 ## 2.0.0-usql.17
 
 ### Patch Changes

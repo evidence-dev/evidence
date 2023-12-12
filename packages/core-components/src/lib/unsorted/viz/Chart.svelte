@@ -234,7 +234,7 @@
 	/** @type {QueryStore} */
 	let query = data instanceof QueryStore ? data : undefined;
 
-	$: if (query && query.loaded) {
+	$: if ((query && query.loaded) || !query) {
 		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;
@@ -1008,13 +1008,13 @@
 	}
 	$: data;
 
-	$: if (query?.error) error = query.error.message;
+	$: if (query?.error) error = query.error.message ?? error; // Don't overwrite existing error with a possibly empty or null error
 	$: if (!data) error = 'Required prop `data` not provided';
 </script>
 
 {#if error}
 	<ErrorChart {error} {chartType} />
-{:else if !query?.loaded}
+{:else if query && !query.loaded}
 	<!-- Query has not loaded, or the props have not gone through first computation -->
 	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
 		<Skeleton />

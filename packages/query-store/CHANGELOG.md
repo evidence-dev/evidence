@@ -1,5 +1,41 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.13
+
+### Patch Changes
+
+- 583cea9e: Properly retrieve column types from QueryStores
+
+## 2.0.0-usql.12
+
+### Patch Changes
+
+- Updated dependencies [2aaef5fb]
+  - @evidence-dev/universal-sql@2.0.0-usql.21
+
+## 2.0.0-usql.11
+
+### Patch Changes
+
+- Updated dependencies [cb74406a]
+- Updated dependencies [d1ab5e62]
+  - @evidence-dev/universal-sql@2.0.0-usql.20
+
+## 2.0.0-usql.10
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/universal-sql@2.0.0-usql.19
+
+## 2.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [377abb4a]
+  - @evidence-dev/universal-sql@2.0.0-usql.18
+
 ## 2.0.0-usql.8
 
 ### Patch Changes

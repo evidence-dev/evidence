@@ -37,17 +37,17 @@ export const resolveEvidencePackages = async (rootDir) => {
 		Object.keys(configContent.components).map(validatePlugin(rootDir))
 	).then((pack) => /** @type {Exclude<typeof pack[number], false>[]} */ (pack.filter(Boolean)));
 
-	/** @type {EvidencePluginPackage<EvidenceDatabasePackage>[]} */
-	const databasePackages = await Promise.all(
-		Object.keys(configContent.databases).map(validatePlugin(rootDir))
+	/** @type {EvidencePluginPackage<EvidenceDatasourcePackage>[]} */
+	const datasourcePackages = await Promise.all(
+		Object.keys(configContent.datasources).map(validatePlugin(rootDir))
 	).then(
 		(pack) =>
-			/** @type {EvidencePluginPackage<EvidenceDatabasePackage>[]} */
-			(pack.filter((p) => p && Boolean(p.package.evidence?.databases)))
+			/** @type {EvidencePluginPackage<EvidenceDatasourcePackage>[]} */
+			(pack.filter((p) => p && Boolean(p.package.evidence?.datasources)))
 	);
 
 	return {
 		components: componentPackages,
-		databases: databasePackages
+		datasources: datasourcePackages
 	};
 };

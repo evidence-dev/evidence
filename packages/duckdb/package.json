@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/duckdb",
-	"version": "1.0.0-usql.6",
+	"version": "1.0.0-usql.8",
 	"description": "DuckDB driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Josh Wills",
@@ -17,7 +17,7 @@
 	},
 	"type": "module",
 	"evidence": {
-		"databases": [
+		"datasources": [
 			[
 				"duckdb",
 				"ddb"

@@ -10,6 +10,7 @@
 	import { Hint } from '../../atoms/hint';
 
 	export let source;
+	export let sources;
 	export let availableSourcePlugins;
 	export let startOpen = false;
 
@@ -59,6 +60,11 @@
 
 {#if open}
 	<div class="col-span-4" transition:slide>
-		<SourceConfigForm {source} {sourcePlugin} on:sourceUpdated={(e) => (source = e.detail)} />
+		<SourceConfigForm
+			{sources}
+			{source}
+			{sourcePlugin}
+			on:sourceUpdated={(e) => (source = e.detail)}
+		/>
 	</div>
 {/if}

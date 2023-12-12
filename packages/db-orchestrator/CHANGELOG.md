@@ -1,5 +1,33 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.14
+
+### Patch Changes
+
+- Updated dependencies [e23691d0]
+  - @evidence-dev/duckdb@1.0.0-usql.8
+  - @evidence-dev/csv@1.0.0-usql.9
+
+## 3.0.0-usql.13
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/bigquery@2.0.0-usql.5
+  - @evidence-dev/csv@1.0.0-usql.8
+  - @evidence-dev/databricks@0.1.1-usql.0
+  - @evidence-dev/db-commons@0.2.1-usql.4
+  - @evidence-dev/duckdb@1.0.0-usql.7
+  - @evidence-dev/mssql@1.0.0-usql.5
+  - @evidence-dev/mysql@1.0.0-usql.6
+  - @evidence-dev/postgres@1.0.0-usql.7
+  - @evidence-dev/redshift@1.0.0-usql.7
+  - @evidence-dev/snowflake@1.0.0-usql.6
+  - @evidence-dev/sqlite@2.0.0-usql.6
+  - @evidence-dev/telemetry@1.0.7-usql.0
+  - @evidence-dev/trino@0.1.2-usql.0
+
 ## 3.0.0-usql.12
 
 ### Patch Changes

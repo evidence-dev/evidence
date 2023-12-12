@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 2.0.0-usql.5
 
 ### Patch Changes

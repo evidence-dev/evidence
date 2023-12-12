@@ -2,7 +2,16 @@ import { createHash } from 'node:crypto';
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
 import { createRequire } from 'module';
 import { dirname } from 'path';
-const require = createRequire(import.meta.url);
+
+/*
+	apache-arrow is a cjs module, so we need to require it
+	apache-arrow also uses a lot of `instanceof`, which is very fragile in javascript
+	By requiring apache-arrow relative to duckdb-wasm, we can be sure that we are sharing
+	the same references with duckdb, thus making instanceof work again.
+*/
+const require1 = createRequire(import.meta.url);
+const require = createRequire(require1.resolve('@duckdb/duckdb-wasm'));
+
 const { tableToIPC, tableFromIPC } = require('apache-arrow');
 // blocking duckdb-wasm uses cjs and need to have same Table declaration for instanceof
 

@@ -1,5 +1,48 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.20
+
+### Patch Changes
+
+- 71f0d481: Change default value for showing QueryViewers to include browser
+- ef4155ee: echarts now replaces options rather than merging
+- 583cea9e: Properly retrieve column types from QueryStores
+- Updated dependencies [583cea9e]
+  - @evidence-dev/query-store@2.0.0-usql.13
+
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- 4ac6a688: Add support for toasts without a timeout
+
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.12
+
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- 982a17c6: Properly mute profiled functions when not in debug mode
+  - @evidence-dev/query-store@2.0.0-usql.11
+
+## 2.0.0-usql.16
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/query-store@2.0.0-usql.10
+
+## 2.0.0-usql.15
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.9
+
 ## 2.0.0-usql.14
 
 ### Patch Changes

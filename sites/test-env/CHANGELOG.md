@@ -1,5 +1,96 @@
 # evidence-test-environment
 
+## 3.0.0-usql.48
+
+### Patch Changes
+
+- Updated dependencies [71f0d481]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [583cea9e]
+- Updated dependencies [e70a6a3e]
+  - @evidence-dev/component-utilities@2.0.0-usql.20
+  - @evidence-dev/core-components@2.0.0-usql.27
+  - @evidence-dev/evidence@20.0.0-usql.48
+
+## 3.0.0-usql.47
+
+### Patch Changes
+
+- Updated dependencies [64921385]
+  - @evidence-dev/core-components@2.0.0-usql.26
+  - @evidence-dev/evidence@20.0.0-usql.47
+
+## 3.0.0-usql.46
+
+### Patch Changes
+
+- Updated dependencies [4ac6a688]
+- Updated dependencies [91034294]
+- Updated dependencies [0a60b724]
+- Updated dependencies [aea3be1a]
+- Updated dependencies [bbcd070e]
+  - @evidence-dev/component-utilities@2.0.0-usql.19
+  - @evidence-dev/core-components@2.0.0-usql.25
+  - @evidence-dev/evidence@20.0.0-usql.46
+
+## 3.0.0-usql.45
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.45
+
+## 3.0.0-usql.44
+
+### Patch Changes
+
+- @evidence-dev/evidence@20.0.0-usql.44
+- @evidence-dev/core-components@2.0.0-usql.24
+- @evidence-dev/component-utilities@2.0.0-usql.18
+
+## 3.0.0-usql.43
+
+### Patch Changes
+
+- Updated dependencies [e23691d0]
+- Updated dependencies [982a17c6]
+  - @evidence-dev/duckdb@1.0.0-usql.8
+  - @evidence-dev/component-utilities@2.0.0-usql.17
+  - @evidence-dev/csv@1.0.0-usql.9
+  - @evidence-dev/core-components@2.0.0-usql.23
+  - @evidence-dev/evidence@20.0.0-usql.43
+
+## 3.0.0-usql.42
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/evidence@20.0.0-usql.42
+
+## 3.0.0-usql.41
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.16
+  - @evidence-dev/core-components@2.0.0-usql.22
+  - @evidence-dev/csv@1.0.0-usql.8
+  - @evidence-dev/duckdb@1.0.0-usql.7
+  - @evidence-dev/evidence@20.0.0-usql.41
+  - @evidence-dev/faker-datasource@2.0.0-usql.6
+  - @evidence-dev/postgres@1.0.0-usql.7
+  - @evidence-dev/snowflake@1.0.0-usql.6
+  - @evidence-dev/sqlite@2.0.0-usql.6
+
+## 3.0.0-usql.40
+
+### Patch Changes
+
+- Updated dependencies [78a8be8b]
+  - @evidence-dev/evidence@20.0.0-usql.40
+  - @evidence-dev/core-components@2.0.0-usql.21
+  - @evidence-dev/component-utilities@2.0.0-usql.15
+
 ## 3.0.0-usql.39
 
 ### Patch Changes

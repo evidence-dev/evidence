@@ -1,5 +1,11 @@
 # @evidence-dev/tailwind
 
+## 1.0.0-usql.3
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 1.0.0-usql.2
 
 ### Patch Changes

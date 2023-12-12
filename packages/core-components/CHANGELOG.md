@@ -1,5 +1,66 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.27
+
+### Patch Changes
+
+- 583cea9e: Properly retrieve column types from QueryStores
+- e70a6a3e: Allow chart to render non-querystore values
+- Updated dependencies [71f0d481]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [583cea9e]
+  - @evidence-dev/component-utilities@2.0.0-usql.20
+  - @evidence-dev/query-store@2.0.0-usql.13
+
+## 2.0.0-usql.26
+
+### Patch Changes
+
+- 64921385: QueryStatus now checks that on/off are functions on import.meta.hot
+
+## 2.0.0-usql.25
+
+### Patch Changes
+
+- 91034294: More QueryViewer tweaks
+- 0a60b724: Remove reduntant QueryStatus notifications
+- aea3be1a: Source HMR toasts are now persistent until dismissed
+- bbcd070e: Better error feedback for source names
+- Updated dependencies [4ac6a688]
+  - @evidence-dev/component-utilities@2.0.0-usql.19
+
+## 2.0.0-usql.24
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.12
+- @evidence-dev/component-utilities@2.0.0-usql.18
+
+## 2.0.0-usql.23
+
+### Patch Changes
+
+- Updated dependencies [982a17c6]
+  - @evidence-dev/component-utilities@2.0.0-usql.17
+  - @evidence-dev/query-store@2.0.0-usql.11
+
+## 2.0.0-usql.22
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.16
+  - @evidence-dev/query-store@2.0.0-usql.10
+  - @evidence-dev/tailwind@1.0.0-usql.3
+
+## 2.0.0-usql.21
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.9
+- @evidence-dev/component-utilities@2.0.0-usql.15
+
 ## 2.0.0-usql.20
 
 ### Patch Changes

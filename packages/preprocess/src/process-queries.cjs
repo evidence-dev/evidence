@@ -73,7 +73,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						let initialData, initialError;
 
 						try {
-							if (_${id}_changed) {
+							if (_${id}_changed || __has_hmr_run) {
 								// Query changed after page load, we have no prerendered results
 								initialData = undefined
 								initialError = undefined
@@ -221,7 +221,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				status: 'warning'
 			}, 5000);
 		};
+
+		let __has_hmr_run = false
+	    if (import.meta?.hot) {
+	        import.meta.hot.on("vite:afterUpdate", () => __has_hmr_run = true)
+	    }
 		
+
+		$: params = $page.params
 
         ${queryDeclarations}
     `;

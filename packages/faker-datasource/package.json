@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/faker-datasource",
-	"version": "2.0.0-usql.5",
+	"version": "2.0.0-usql.6",
 	"description": "",
 	"main": "index.mjs",
 	"scripts": {
@@ -17,7 +17,7 @@
 		"yaml": "^2.3.1"
 	},
 	"evidence": {
-		"databases": [
+		"datasources": [
 			"faker"
 		]
 	}

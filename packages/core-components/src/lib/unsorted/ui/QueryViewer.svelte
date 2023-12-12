@@ -32,7 +32,6 @@
 		}
 	};
 
-	let queries;
 	let inputQuery;
 	let showCompilerToggle;
 	let showCompiled = true;
@@ -49,11 +48,11 @@
 	$: colCount = $queryResult?._evidenceColumnTypes.length ?? 0;
 
 	$: {
-		queries = pageQueries.find((d) => d.id === queryID);
+		let query = pageQueries?.find((d) => d.id === queryID);
 
-		if (queries.length) {
-			inputQuery = queries[0].inputQueryString;
-			showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
+		if (query) {
+			inputQuery = query.inputQueryString;
+			showCompilerToggle = query.compiled && query.compileError === undefined;
 		}
 	}
 </script>
