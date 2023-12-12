@@ -121,9 +121,11 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 		mapResultsToEvidenceColumnTypes
 	} = {}
 ) {
+	/** @type {Record<string, unknown>[]} */
 	const preread_rows = [];
 
-	let columnTypes;
+	/** @type {QueryResult["columnTypes"]} */
+	let columnTypes = [];
 	if (mapResultsToEvidenceColumnTypes) {
 		const iterator = iterable[Symbol.asyncIterator]();
 		const firstRow = await iterator.next().then((x) => x.value);

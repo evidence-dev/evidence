@@ -57,8 +57,8 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 };
 
 /**
- * 
- * @param {{ column_name: string; column_type: string; }[]} describe 
+ *
+ * @param {{ column_name: string; column_type: string; }[]} describe
  * @returns {import('@evidence-dev/db-commons').ColumnDefinition[]}
  */
 function duckdbDescribeToEvidenceType(describe) {
@@ -107,10 +107,14 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		const expected_row_count = expected_count?.[0]['count_star()'];
 
 		const column_query = `DESCRIBE ${cleanQuery(queryString)}`;
-		const column_types = await db.all(column_query).then(duckdbDescribeToEvidenceType).catch(() => null);
+		const column_types = await db
+			.all(column_query)
+			.then(duckdbDescribeToEvidenceType)
+			.catch(() => null);
 
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
-			mapResultsToEvidenceColumnTypes: column_types == null ? mapResultsToEvidenceColumnTypes : undefined
+			mapResultsToEvidenceColumnTypes:
+				column_types == null ? mapResultsToEvidenceColumnTypes : undefined
 		});
 		if (column_types != null) {
 			results.columnTypes = column_types;

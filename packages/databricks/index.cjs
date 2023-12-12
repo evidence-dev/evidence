@@ -112,46 +112,53 @@ const runQuery = async (queryString, database = {}) => {
 
 module.exports = runQuery;
 
-/*
-Options from deleted form
-let opts = [
-		{
-			id: 'token',
-			label: 'Personal Access Token',
-			type: 'password',
-			optional: false,
-			override: false,
-			placeholder: 'dapi12345678901234567890123456789012',
-			value: credentials.token ?? ''
-		},
-		{
-			id: 'host',
-			label: 'Server Hostname',
-			type: 'text',
-			optional: false,
-			override: false,
-			placeholder: 'dbc-a1b2345c-d6e7.cloud.databricks.com',
-			value: credentials.host ?? ''
-		},
-		{
-			id: 'path',
-			label: 'HTTP Path',
-			type: 'text',
-			optional: false,
-			override: false,
-			placeholder:
-				'sql/protocolv1/o/1234567890123456/1234-567890-abcdefgh or /sql/1.0/endpoints/a1b234c5678901d2',
-			value: credentials.path ?? ''
-		},
-		{
-			id: 'port',
-			label: 'Port',
-			type: 'text',
-			optional: true,
-			override: false,
-			placeholder: '443',
-			value: credentials.port ?? '443'
-		}
-	];
+/**
+ * @typedef {Object} DatabricksOptions
+ * @property {string} host
+ * @property {number} port
+ * @property {string} path
+ * @property {string} token
+ */
 
-*/
+/** @type {import('@evidence-dev/db-commons').GetRunner<DatabricksOptions>} */
+module.exports.getRunner = async (opts) => {
+	return async (queryContent, queryPath, batchSize) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts, batchSize);
+	};
+};
+
+/** @type {import('@evidence-dev/db-commons').ConnectionTester<DatabricksOptions>} */
+module.exports.testConnection = async (opts) => {
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+};
+
+module.exports.options = {
+	token: {
+		title: 'Personal Access Token',
+		type: 'text',
+		required: true,
+		secret: true
+	},
+	host: {
+		title: 'Server Hostname',
+		type: 'string',
+		required: true,
+		secret: false
+	},
+	path: {
+		title: 'HTTP Path',
+		type: 'string',
+		required: true,
+		secret: false
+	},
+	port: {
+		title: 'Port',
+		type: 'number',
+		required: false,
+		secret: false
+	}
+};
