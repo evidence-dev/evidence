@@ -52,16 +52,19 @@ Follow these steps to test your changes, once you've started the example project
 you should be able to open the `Evidence Development Workspace` on `localhost:3000`. Any subsequent changes you make will be reflected on the website.
 
 Open a terminal and make sure `pnpm` is installed with:
+
 ```bash
 npm i -g pnpm
 ```
 
-
 In the project root folder, run:
+
 ```bash
 pnpm install
 ```
+
 In the project root folder, run:
+
 ```bash
 pnpm run dev:core-components
 ```
@@ -81,6 +84,7 @@ At the `root` of the project, run:
 ```bash
 rm -rf ./**/.parcel-cache node_modules ./**/dist
 ```
+
 And reinstall with:
 
 ```bash
@@ -90,12 +94,11 @@ pnpm i
 ### Running the Test Suite locally.
 
 The automated test suite should run upon PR creation via Github actions.
-You can also run the tests locally via `pnpm test`. 
+You can also run the tests locally via `pnpm test`.
 
-**Note that for the DB tests, enviroment variables are needed for the test to run.** 
+**Note that for the DB tests, enviroment variables are needed for the test to run.**
 
 Under each DB package, you can add a `.env` file with the credentials needed for each DB type. Take a look at the `index.cjs` file for the variables required for each DB driver.
-
 
 ### Pull Requests
 
