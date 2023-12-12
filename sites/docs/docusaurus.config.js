@@ -36,7 +36,7 @@ const config = {
 				},
 				{
 					type: 'dropdown',
-					label: 'v24+',
+					label: 'v24+ (USQL)',
 					position: 'right',
 					items: [
 					  {

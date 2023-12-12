@@ -146,8 +146,6 @@ group by 1
 ```
 ````
 
-<!-- TODO: @archiewood confirm syntax -->
-
 There are two types of parameters you can use in queries:
 - **Input parameters** from components: `'${input.parameter_name}'`
 - **URL parameters** from [templated pages](/core-concepts/templated-pages): `'${param.parameter_name}'`

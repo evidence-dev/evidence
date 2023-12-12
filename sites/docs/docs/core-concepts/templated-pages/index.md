@@ -14,8 +14,6 @@ In example 1 above, www.example.com/customers/acme would display information for
 
 A useful reference can be found in the [Needful Things example project](https://github.com/evidence-dev/demo/tree/main/pages/operations/pick_lists).
 
-<!-- TODO @archiewood: Do we need to reference the link column? -->
-<!-- See https://github.com/evidence-dev/evidence-vscode/issues/169 -->
 
 ## Quickstart: VS Code Extension
 
