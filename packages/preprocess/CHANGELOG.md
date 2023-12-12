@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.22
+
+### Patch Changes
+
+- 90e152cb: inline query HMR now works
+
 ## 4.0.0-usql.21
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.45
+
+### Patch Changes
+
+- Updated dependencies [90e152cb]
+  - @evidence-dev/preprocess@4.0.0-usql.22
+
 ## 20.0.0-usql.44
 
 ### Patch Changes
