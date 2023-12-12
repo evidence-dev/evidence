@@ -933,7 +933,7 @@ importers:
   packages/universal-sql:
     dependencies:
       '@duckdb/duckdb-wasm':
-        specifier: ^1.27.0
+        specifier: 1.27.0
         version: 1.27.0
       '@types/lodash.chunk':
         specifier: ^4.2.7
@@ -942,7 +942,7 @@ importers:
         specifier: ^20.8.4
         version: 20.10.4
       apache-arrow:
-        specifier: ^11.0.0
+        specifier: 11.0.0
         version: 11.0.0
       chalk:
         specifier: ^5.2.0
