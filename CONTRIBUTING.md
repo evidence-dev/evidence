@@ -56,6 +56,21 @@ Any subsequent changes you make will be reflected on the website.
 1. Run `pnpm run dev:core-components`
 1. **In another terminal**, run `pnpm run dev:example-project`
 
+#### Cannot find package Error
+
+If you get: `Error [ERR_MODULE_NOT_FOUND]: Cannot find package [...]`. You might need to clean the `caches`
+
+Simply run at the `root` of the project
+
+```bash
+rm -rf ./**/.parcel-cache node_modules ./**/dist
+```
+And reinstall with
+
+```bash
+pnpm i
+```
+
 ### Running the Test Suite locally.
 
 The automated test suite should run upon PR creation via Github actions.
