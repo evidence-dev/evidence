@@ -231,8 +231,6 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	
-
 	/** @type {QueryStore} */
 	let query = data instanceof QueryStore ? data : undefined;
 

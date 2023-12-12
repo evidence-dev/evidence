@@ -34,9 +34,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Query Execution Function */
 	readonly #exec: Runner;
 
-
 	/** Duck Type */
-	readonly __isQueryStore = true
+	readonly __isQueryStore = true;
 
 	/**
 	 * A Proxy wrapper around the QueryStore instance.

@@ -1,4 +1,4 @@
-import {QueryStore} from '@evidence-dev/query-store';
+import { QueryStore } from '@evidence-dev/query-store';
 
 export default function checkInputs(data, reqCols, optCols) {
 	// reqCols is an array of columns to check in the dataset
@@ -56,7 +56,7 @@ export default function checkInputs(data, reqCols, optCols) {
 		// Get list of all columns in dataset
 		if (data.__isQueryStore || data instanceof QueryStore) {
 			for (const col of data.columns) {
-				columns.push(col.name)
+				columns.push(col.name);
 			}
 		} else {
 			for (const key of Object.keys(data[0])) {

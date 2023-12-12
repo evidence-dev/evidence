@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.13
+
+### Patch Changes
+
+- 583cea9e: Properly retrieve column types from QueryStores
+
 ## 2.0.0-usql.12
 
 ### Patch Changes

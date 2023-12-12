@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "20.0.0-usql.47",
+	"version": "20.0.0-usql.48",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [

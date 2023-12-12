@@ -1,5 +1,17 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.27
+
+### Patch Changes
+
+- 583cea9e: Properly retrieve column types from QueryStores
+- e70a6a3e: Allow chart to render non-querystore values
+- Updated dependencies [71f0d481]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [583cea9e]
+  - @evidence-dev/component-utilities@2.0.0-usql.20
+  - @evidence-dev/query-store@2.0.0-usql.13
+
 ## 2.0.0-usql.26
 
 ### Patch Changes
