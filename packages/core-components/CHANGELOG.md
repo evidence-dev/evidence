@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.29
+
+### Patch Changes
+
+- 75fa47a3: styling for dropdown
+
 ## 2.0.0-usql.28
 
 ### Patch Changes
