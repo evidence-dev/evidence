@@ -84,10 +84,10 @@ In Evidence, most code fences execute SQL queries and display the results in a t
 ````markdown
 This code fence will execute a SQL query and display the results:
 
-```sql widget_orders
+```sql orders
 SELECT *
-FROM orders
-WHERE category = 'widget'
+FROM needful_things.orders
+WHERE category = 'Sinister Toys'
 ```
 ````
 

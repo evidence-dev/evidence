@@ -153,7 +153,7 @@ select
     category,
     '/parameterized-pages/' || category as category_link,
     sum(sales) as sales_usd0
-from orders
+from needful_things.orders
 group by 1
 ```
 

@@ -38,7 +38,7 @@ select
     date_trunc('month', order_datetime) as order_month,
     count(*) as number_of_orders,
     sum(sales) as sales_usd
-from orders
+from needful_things.orders
 group by 1, order by 1 desc
 ```
 ````

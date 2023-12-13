@@ -8,7 +8,7 @@ title: Netlify
 All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your project. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
 
 ```sql
-SELECT * FROM my_table 
+SELECT * FROM source_name.my_table 
 WHERE LOWER(my_column) = LOWER('${params.my_param}')
 ```
 :::

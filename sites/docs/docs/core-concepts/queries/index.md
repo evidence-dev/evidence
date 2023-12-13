@@ -10,11 +10,13 @@ description: Markdown code fences run SQL queries.
 
 Evidence runs markdown code fences as SQL queries. These queries use the [DuckDB dialect](https://duckdb.org/docs/sql/introduction).
 
+If you have a data source called `needful_things`, you run a query against it like this:
+
 ````markdown
 ```sql sales_by_category
 select 
   category, sum(sales) as sales
-from orders
+from needful_things.orders
 group by 1
 ```
 ````
@@ -44,7 +46,7 @@ For example, if you want to reference a query named `sales_by_item`, you would w
 select
     item,
     sum(sales) as sales
-from production.daily_sales
+from needful_things.orders
 group by 1
 ```
 
@@ -64,7 +66,7 @@ from (
     select
         item,
         sum(sales) as sales
-    from production.daily_sales
+    from needful_things.orders
     group by 1
 )
 ```
@@ -141,7 +143,7 @@ Queries can accept parameters, which might be from an input component such as a 
 select
     date_trunc('month', date) as month,
     sum(sales) as sales
-from orders
+from needful_things.orders
 where category = '${inputs.category}'
 group by 1
 ```
