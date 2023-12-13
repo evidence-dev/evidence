@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.16
+
+### Patch Changes
+
+- 16a17086: Fix issue with initial data
+
 ## 2.0.0-usql.15
 
 ### Patch Changes
