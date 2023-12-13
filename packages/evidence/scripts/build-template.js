@@ -66,7 +66,7 @@ fsExtra.outputFileSync(
     {
         plugins: [sveltekit(), evidenceVitePlugin()],
         optimizeDeps: {
-            include: ['echarts-stat', 'echarts', '@evidence-dev/core-components', '@evidence-dev/component-utilities/stores', '@evidence-dev/component-utilities/formatting', '@evidence-dev/component-utilities/globalContexts', '@evidence-dev/component-utilities/buildQuery'],
+            include: ['echarts-stat', 'echarts', '@evidence-dev/core-components', '@evidence-dev/component-utilities/stores', '@evidence-dev/component-utilities/formatting', '@evidence-dev/component-utilities/globalContexts', '@evidence-dev/component-utilities/buildQuery', '@evidence-dev/component-utilities/profile'],
             exclude: ['svelte-icons', 'svelte-tiny-linked-charts', '@evidence-dev/universal-sql']
         },
         ssr: {
