@@ -230,8 +230,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	        import.meta.hot.on("vite:afterUpdate", () => __has_hmr_run = true)
 	    }
 		
-
-		$: params = $page.params
+		let params = $page.params;
+		$: params = $page.params;
 
         ${queryDeclarations}
     `;
