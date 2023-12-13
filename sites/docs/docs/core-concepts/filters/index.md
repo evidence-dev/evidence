@@ -66,7 +66,7 @@ group by 1
     data={items}
     value=item
 >
-    <DropdownOption value="%" label="All Items"/>
+    <DropdownOption value="%" valueLabel="All Items"/>
 </Dropdown>
 
 ```sql orders_by_month

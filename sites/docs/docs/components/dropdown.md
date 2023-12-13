@@ -55,7 +55,7 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
     value=column_name
     title="Select a Category"
 >
-    <DropdownOption label="All Categories" value="%" />
+    <DropdownOption valueLabel="All Categories" value="%" />
 </Dropdown>
 ````
 
@@ -68,9 +68,9 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 
 ````markdown
 <Dropdown name=name_of_dropdown>
-    <DropdownOption label="Option One" value="1" />
-    <DropdownOption label="Option Two" value="2" />
-    <DropdownOption label="Option Three" value="3" />
+    <DropdownOption valueLabel="Option One" value="1" />
+    <DropdownOption valueLabel="Option Two" value="2" />
+    <DropdownOption valueLabel="Option Three" value="3" />
 </Dropdown>
 ````
 
@@ -191,7 +191,7 @@ The DropdownOption component can be used to manually add options to a dropdown. 
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
-        <td>label</td>
+        <td>valueLabel</td>
         <td>Label to display for the option in the dropdown</td>
         <td class='tcenter'>Yes</td>
         <td class='tcenter'>string</td>
