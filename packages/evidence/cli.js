@@ -190,8 +190,8 @@ prog
 			{ throwIfNoEntry: false }
 		);
 		if (!manifestExists) {
-			console.error(
-				chalk.red(
+			console.warn(
+				chalk.yellow(
 					`
 ${chalk.bold('[!] Unable to load source manifest')}
 	This likely means you have no source data, and need to generate it.
@@ -202,7 +202,6 @@ ${chalk.bold('[!] Unable to load source manifest')}
 		`.trim()
 				)
 			);
-			process.exit(0);
 		}
 
 		populateTemplate();
@@ -283,7 +282,22 @@ prog
 			process.chdir(templatePath);
 		}
 
-		await updateDatasourceOutputs('static/data', '.evidence-queries', {
+		const dataDir = path.join('static', 'data');
+		const metaDir = path.join('.evidence-queries');
+
+		if (opts.debug) {
+			console.log('Building sources in', {
+				dataDir,
+				metaDir,
+				cwd: process.cwd(),
+				resolved: {
+					dataDir: path.resolve(dataDir),
+					metaDir: path.resolve(metaDir)
+				}
+			});
+		}
+
+		await updateDatasourceOutputs(path.join('static', 'data'), '.evidence-queries', {
 			sources: sources ? new Set(sources) : sources,
 			queries: queries ? new Set(queries) : queries,
 			only_changed: opts.changed

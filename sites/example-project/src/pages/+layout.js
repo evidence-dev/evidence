@@ -8,6 +8,7 @@ import {
 	arrowTableToJSON
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
+import { toasts } from '@evidence-dev/component-utilities/stores';
 
 const loadDB = async () => {
 	let renderedFiles = {};
@@ -23,7 +24,13 @@ const loadDB = async () => {
 	}
 
 	if (!renderedFiles) {
-		throw new Error('Unable to load source manifest. Do you need to run sources?');
+		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
+		toasts.add({
+			id: 'MissingManifest',
+			status: 'warning',
+			title: 'Missing Manifest',
+			message: 'Without a manifest file, no data is available'
+		});
 	}
 
 	await profile(initDB);
