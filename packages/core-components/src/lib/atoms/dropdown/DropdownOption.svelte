@@ -6,7 +6,7 @@
 	import { getContext } from 'svelte';
 
 	export let value;
-	export let label = value;
+	export let valueLabel = value;
 
 	// makes sure the first DropdownOption is the selected one
 	const ctx = getContext('dropdown_context');
@@ -16,4 +16,4 @@
 	}
 </script>
 
-<option {value}>{label}</option>
+<option {value}>{valueLabel}</option>

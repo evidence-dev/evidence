@@ -107,11 +107,14 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 								initialError
 							}
 						);
+						
+						if (initialData) _${id} = query_store
+						const fetch_maybepromise = query_store.fetch();
 
 						if (_${id}) {
 							// Query has already been created
 							// Fetch the data and then replace
-							const fetch_maybepromise = query_store.fetch();
+							
 							if (fetch_maybepromise instanceof Promise) {
 								fetch_maybepromise.then(() => (_${id} = query_store));
 							} else {

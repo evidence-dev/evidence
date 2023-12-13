@@ -5,10 +5,28 @@ import { limit, offset } from './pagination.js';
 import { where } from './where.js';
 
 export const mutations = {
-	agg: agg,
-	groupBy: group,
-	orderBy: order,
-	where: where,
-	limit: limit,
-	offset: offset
+	agg: {
+		fn: agg,
+		currentAsInitial: false
+	},
+	groupBy: {
+		fn: group,
+		currentAsInitial: false
+	},
+	orderBy: {
+		fn: order,
+		currentAsInitial: true
+	},
+	where: {
+		fn: where,
+		currentAsInitial: true
+	},
+	limit: {
+		fn: limit,
+		currentAsInitial: true
+	},
+	offset: {
+		fn: offset,
+		currentAsInitial: true
+	}
 } as const;

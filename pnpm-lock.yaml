@@ -960,8 +960,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       parquet-wasm:
-        specifier: 0.3.1
-        version: 0.3.1
+        specifier: 0.5.0
+        version: 0.5.0
       web-worker:
         specifier: ^1.2.0
         version: 1.2.0
@@ -18286,8 +18286,8 @@ packages:
     dependencies:
       callsites: 3.1.0
 
-  /parquet-wasm@0.3.1:
-    resolution: {integrity: sha512-8OMYwh7N+IcQBeKTuDgpvJR7xh/YKPgnQcs29CQW0Q4ziwroRu7N6tQmmsjiCaQ/W7enBNppquj6VAe2fA1yYQ==}
+  /parquet-wasm@0.5.0:
+    resolution: {integrity: sha512-XN3EW+3xf915QgpxCvfCdVYsxDLXz+BckKLDlMo41cbipSYD8x+F/3lGcrWtxdY6uJgAmtb+SX3tS+9PPsplQA==}
     dev: false
 
   /parse-entities@2.0.0:

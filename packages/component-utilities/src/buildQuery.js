@@ -30,12 +30,16 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @param {string} id
  * @returns { { hasQuery: false } | { hasQuery: true, query: QueryStore } }
  */
-export const buildInputQuery = ({ value, label, select, data, where, order }, id) => {
+export const buildInputQuery = ({ value, label, select, data, where, order }, id, initialData) => {
 	if (!data || !(value || select)) return { hasQuery: false };
 
 	const q = new Query().distinct();
 	if (value) q.select({ value: sql`${value}` });
-	if (label) q.select({ label: sql`${label}` });
+	if (label) {
+		q.select({ label: sql`${label}` });
+	} else {
+		q.select({ label: sql`${value}` });
+	}
 	if (select) q.select(select);
 
 	if (typeof data === 'string') {
@@ -46,7 +50,7 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 			// This is probably a subquery, or just broken
 			q.from(sql(data.trim()));
 		}
-	} else if (data instanceof QueryStore) {
+	} else if (data instanceof QueryStore || data.__isQueryStore) {
 		// data is a QueryStore
 		// use that as a subquery
 		q.from(sql`(${data.text})`);
@@ -62,7 +66,7 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 		q.orderby(order);
 	}
 
-	const newQuery = buildQuery(q.toString(), id);
+	const newQuery = buildQuery(q.toString(), id, initialData);
 	// Don't make the component author bother with this, just provide the data
 	newQuery.fetch();
 	return {
@@ -75,9 +79,10 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
  *
  * @param {string} queryString
  * @param {string} id
+ * @param {any[]} initialData
  *
  * @returns {QueryStore}
  */
-export const buildQuery = (queryString, id) => {
-	return new QueryStore(queryString, queryFunction, id);
+export const buildQuery = (queryString, id, initialData) => {
+	return new QueryStore(queryString, queryFunction, id, { initialData });
 };

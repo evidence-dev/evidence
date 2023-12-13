@@ -41,7 +41,7 @@ select * from orders
 <Dropdown title=Queryless name=queryless>
 	<DropdownOption value="Option number one" />
 	<DropdownOption value="Option number two" />
-	<DropdownOption label="Option number three" value="I'm different!" />
+	<DropdownOption valueLabel="Option number three" value="I'm different!" />
 </Dropdown>
 
 {inputs.queryless}
