@@ -55,7 +55,7 @@ value=category
 title="Select a Category"
 name=category2
 >
-    <DropdownOption value="%" label="All Categories" />
+    <DropdownOption value="%" valueLabel="All Categories" />
 </Dropdown>
 
 ```sql items2
@@ -80,7 +80,7 @@ order by sales desc
 name=category4
 title="Select a Custom Option"
 >
-    <DropdownOption value="1" label="Option One" />
-    <DropdownOption value="2" label="Option Two" />
-    <DropdownOption value="3" label="Option Three" />
+    <DropdownOption value="1" valueLabel="Option One" />
+    <DropdownOption value="2" valueLabel="Option Two" />
+    <DropdownOption value="3" valueLabel="Option Three" />
 </Dropdown>

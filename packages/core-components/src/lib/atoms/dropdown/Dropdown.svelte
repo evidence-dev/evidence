@@ -70,7 +70,7 @@
 
 			{#if hasQuery}
 				{#each $query as { label, value }}
-					<DropdownOption {value} {label} />
+					<DropdownOption {value} valueLabel={label} />
 				{/each}
 			{/if}
 		</select>
