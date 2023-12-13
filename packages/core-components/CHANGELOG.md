@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.35
+
+### Patch Changes
+
+- df9737fc: Style source config docs link
+- df9737fc: Adjust loading state condition again
+
 ## 2.0.0-usql.34
 
 ### Patch Changes
