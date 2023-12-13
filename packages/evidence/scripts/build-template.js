@@ -66,7 +66,15 @@ fsExtra.outputFileSync(
     {
         plugins: [sveltekit(), evidenceVitePlugin()],
         optimizeDeps: {
-            include: ['echarts-stat', 'echarts', '@evidence-dev/core-components', '@evidence-dev/component-utilities/stores', '@evidence-dev/component-utilities/formatting', '@evidence-dev/component-utilities/globalContexts', '@evidence-dev/component-utilities/buildQuery', '@evidence-dev/component-utilities/profile'],
+            include: ['echarts-stat', 'echarts', 
+				// We need these to prevent HMR from doing a full page reload
+				'@evidence-dev/core-components',
+				'@evidence-dev/component-utilities/stores',
+				'@evidence-dev/component-utilities/formatting',
+				'@evidence-dev/component-utilities/globalContexts',
+				'@evidence-dev/component-utilities/buildQuery',
+				'@evidence-dev/component-utilities/profile'
+			],
             exclude: ['svelte-icons', 'svelte-tiny-linked-charts', '@evidence-dev/universal-sql']
         },
         ssr: {

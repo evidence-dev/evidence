@@ -233,9 +233,13 @@
 
 	/** @type {QueryStore} */
 	let query = data instanceof QueryStore || data.__isQueryStore ? data : undefined;
+	$: if (
+		(query?.__isQueryStore && query?.loaded) ||
+		(data?.__isQueryStore && data?.loaded) ||
+		Array.isArray(data)
+	) {
+		if ((query && query?.id === data?.id) || !data?.id) data = query;
 
-	$: if ((query?.__isQueryStore && query?.loaded) || Array.isArray(data)) {
-		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;
 			missingCols = [];
