@@ -63,7 +63,7 @@ Parameters can be used in queries to filter query results (e.g. a for specific c
 ```sql customers
 select
     sum(sales) as sales_usd 
-from orders
+from needful_things.orders
 where first_name = '${params.customer}'
 group by 1
 ```
@@ -100,7 +100,7 @@ select
     customer_name,
     '/customers/' || customer_name as customer_link,
     sum(sales) as sales_usd
-from orders
+from needful_things.orders
 group by 1
 ```
 
@@ -117,7 +117,7 @@ group by 1
 select
     customer_name,
     sum(sales) as sales_usd
-from orders
+from needful_things.orders
 group by 1
 ```
 
@@ -156,7 +156,7 @@ select
     first_name,
     '/customers/' || first_name as customer_link,
     sum(sales) as sales_usd 
-from orders
+from needful_things.orders
 group by 1
 ```
 
@@ -174,7 +174,7 @@ group by 1
 ```sql customers
 select
     sum(sales) as sales_usd 
-from orders
+from needful_things.orders
 where first_name = '${params.customer}'
 group by 1
 ```

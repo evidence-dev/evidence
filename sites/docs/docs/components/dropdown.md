@@ -99,7 +99,7 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 
 ```sql filtered_query
 select *
-from table
+from source_name.table
 where column_name like '${inputs.name_of_dropdown}'
 ```
 ````

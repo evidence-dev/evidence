@@ -38,7 +38,9 @@ For SQL data sources, choose which data to extract by adding .sql files to the `
       `-- my_source_query.sql
 ```
 
-:::info[Non-SQL data sources]
+Each of these .sql files will create a table that can be queried in Evidence as `[my_source].[my_source_query]`.
+
+:::info["Non-SQL data sources"]
 
 For non-SQL data sources, configuring the data extracted is achieved in other ways. Refer to the documentation for the specific data source for details.
 :::
