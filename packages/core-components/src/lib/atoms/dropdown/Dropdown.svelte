@@ -6,6 +6,7 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { buildInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
+	import { page } from '$app/stores';
 	import DropdownOption from './DropdownOption.svelte';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -33,7 +34,8 @@
 	/** @type {import("@evidence-dev/component-utilities/buildQuery.js").QueryProps}*/
 	$: ({ hasQuery, query } = buildInputQuery(
 		{ value, data, label, order, where },
-		`Dropdown-${name}`
+		`Dropdown-${name}`,
+		$page.data.data[`Dropdown-${name}`]
 	));
 </script>
 

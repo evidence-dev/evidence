@@ -960,8 +960,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       parquet-wasm:
-        specifier: 0.3.1
-        version: 0.3.1
+        specifier: 0.5.0
+        version: 0.5.0
       web-worker:
         specifier: ^1.2.0
         version: 1.2.0
@@ -5040,7 +5040,7 @@ packages:
   /@evidence-dev/connector-gsheets@1.1.0:
     resolution: {integrity: sha512-x6qpEOrDChBg7Mp0qOd86Q/qhSaSEOniQiB3yg688Gdxt8s1ZIDQQ4TRVt6z28RdGkO6CO7mu5P7R/jzRlHyBw==}
     dependencies:
-      '@evidence-dev/duckdb': 1.0.0-usql.8
+      '@evidence-dev/duckdb': 1.0.0-usql.9
       google-auth-library: 9.4.1
       google-spreadsheet: 4.1.1(google-auth-library@9.4.1)
       tempy: 3.1.0
@@ -5052,16 +5052,16 @@ packages:
       - supports-color
     dev: false
 
-  /@evidence-dev/db-commons@0.2.1-usql.4:
-    resolution: {integrity: sha512-7Z6d9q7K+fpwuhHmj0JO59aYk6xgD5BBjp7fd4G3aiX6/y/Eg07n44YgwbUwkbiYpe4i0VxC8udr/VWWcOX1jg==}
+  /@evidence-dev/db-commons@0.2.1-usql.5:
+    resolution: {integrity: sha512-UD6KEGMoEHrdeBeDkozAFmqe4f4m7SE2MzX2dHdgTzcktaXM1yy0Jw8rbQSbB4S0CKfpQj+RY1zDi8n1f4daBg==}
     dependencies:
       fs-extra: 10.0.0
     dev: false
 
-  /@evidence-dev/duckdb@1.0.0-usql.8:
-    resolution: {integrity: sha512-sTLt2Sq3mVxXzvqD/sdmTrGsvZdbr71isYwZOg+Zvqhr5f0Y6SP0PTDi4c1otGrHbUn1+7MV9NYvYS+iERo62Q==}
+  /@evidence-dev/duckdb@1.0.0-usql.9:
+    resolution: {integrity: sha512-kuxt5zf+3iAYAKOag5YJWTuGCuzKBCT1y0GcWjrTvr0pypY0/LTwzIOkwOePIxWuWEIw+6/fj/hwg22suSjgVA==}
     dependencies:
-      '@evidence-dev/db-commons': 0.2.1-usql.4
+      '@evidence-dev/db-commons': 0.2.1-usql.5
       duckdb-async: 0.9.2
     transitivePeerDependencies:
       - bluebird
@@ -18286,8 +18286,8 @@ packages:
     dependencies:
       callsites: 3.1.0
 
-  /parquet-wasm@0.3.1:
-    resolution: {integrity: sha512-8OMYwh7N+IcQBeKTuDgpvJR7xh/YKPgnQcs29CQW0Q4ziwroRu7N6tQmmsjiCaQ/W7enBNppquj6VAe2fA1yYQ==}
+  /parquet-wasm@0.5.0:
+    resolution: {integrity: sha512-XN3EW+3xf915QgpxCvfCdVYsxDLXz+BckKLDlMo41cbipSYD8x+F/3lGcrWtxdY6uJgAmtb+SX3tS+9PPsplQA==}
     dev: false
 
   /parse-entities@2.0.0:
