@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- Force version bump
+
 ## 2.0.0-usql.16
 
 ### Patch Changes
