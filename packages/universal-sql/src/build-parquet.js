@@ -7,7 +7,12 @@ import {
 	Bool,
 	TimestampMillisecond
 } from 'apache-arrow';
-import { Compression, writeParquet, WriterPropertiesBuilder, Table } from 'parquet-wasm/node/arrow1.js';
+import {
+	Compression,
+	writeParquet,
+	WriterPropertiesBuilder,
+	Table
+} from 'parquet-wasm/node/arrow1.js';
 import fs from 'fs/promises';
 import path from 'path';
 // using node-async.js makes CLI command hang - why??
