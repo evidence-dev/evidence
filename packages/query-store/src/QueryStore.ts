@@ -328,9 +328,12 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Force the QueryStore to fetch data */
 	fetch = () => this.#fetchData();
 
+	/** Keep a copy of the promise so we can wait for loading in multiple places */
+	#dataFetchPromise: MaybePromise<unknown | void>;
+
 	#fetchData = () => {
 		if (this.#dataLoading || this.#dataLoaded) {
-			return;
+			return this.#dataFetchPromise;
 		}
 		if (this.#error) {
 			console.debug(
@@ -339,14 +342,14 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					6
 				)} | Refusing to execute data query; store has an error state.`
 			);
-			return;
+			return this.#dataFetchPromise;
 		}
 		this.#dataLoading = true;
 		this.publish();
 
 		const queryWithComment = `--data\n${this.#query.toString()}`;
 
-		return handleMaybePromise<QueryResult[], unknown>(
+		this.#dataFetchPromise = handleMaybePromise<QueryResult[], unknown>(
 			(result) => {
 				this.#values = result;
 				this.#dataLoading = false;
@@ -356,6 +359,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			() => this.#exec(queryWithComment, this.id),
 			this.#setError
 		);
+
+		return this.#dataFetchPromise;
 	};
 
 	#fetchLength = () => {
