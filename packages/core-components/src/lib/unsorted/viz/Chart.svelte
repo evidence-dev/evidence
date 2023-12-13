@@ -238,10 +238,10 @@
 		(data?.__isQueryStore && data?.loaded) ||
 		Array.isArray(data)
 	) {
-		if (data.__isQueryStore && (query && query.text !== data.text) || !query) {
-			query = data
+		if ((data.__isQueryStore && query && query.text !== data.text) || !query) {
+			query = data;
 		}
-		
+
 		try {
 			error = undefined;
 			missingCols = [];
@@ -1016,14 +1016,18 @@
 
 	$: if (query?.error) error = query.error.message ?? error; // Don't overwrite existing error with a possibly empty or null error
 	if (query?.error) error = query.error.message ?? error; // Don't overwrite existing error with a possibly empty or null error
-	
+
 	$: if (!data) error = 'Required prop `data` not provided';
 	if (!data) error = 'Required prop `data` not provided';
 </script>
 
 {#if query.loaded && !data.length && !query.error}
 	<!-- Query loaded successfuly, and just doesn't have any results. There is probably an "error", but it is just because there are no results -->
-	<div class="w-full flex justify-center items-center rounded bg-gray-100 ml-0 mt-4 mb-3 overflow-visible text-xl" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
+	<div
+		class="w-full flex justify-center items-center rounded bg-gray-100 ml-0 mt-4 mb-3 overflow-visible text-xl"
+		class:h-64={!height}
+		style={width ? `width: ${width}px` : ''}
+	>
 		No Results
 	</div>
 {:else if error}
