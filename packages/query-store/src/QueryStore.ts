@@ -313,7 +313,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					this.#calculateScore();
 					this.#warnHighScore();
 					this.publish();
-					if (initialDataDirty || !this.#values.length) this.#fetchData();
+					if (initialDataDirty) {
+						this.#fetchData();
+						return false;
+					}
 					return true;
 				},
 				() => initialData,
@@ -322,6 +325,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 					return false;
 				}
 			);
+		} else {
+			return false;
 		}
 	};
 
@@ -421,6 +426,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 		if (this.#metaLoaded) return;
 		this.#metaLoading = true;
+		this.publish();
 
 		return handleMaybePromise(
 			(queryResult: QueryResult[]) => {
@@ -490,7 +496,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			const subscriber = this.root ?? this;
 
 			// If caching is enabled and the id exists in the cache
-			if (QueryStore.cache.has(id) && !this.opts.disableCache) {
+			if (!this.opts.disableCache && QueryStore.cache.has(id)) {
 				// Use the cache
 				const cachedQuery = QueryStore.cache.get(id);
 				if (!cachedQuery) throw new Error('Error getting query from cache. This should not occur.');
@@ -522,10 +528,18 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		};
 	};
 
-	where = this.#withStoreCache('where', mutations.where as AggFunction);
-	groupBy = this.#withStoreCache('groupBy', mutations.groupBy as AggFunction);
-	agg = this.#withStoreCache('agg', mutations.agg as AggFunction);
-	orderBy = this.#withStoreCache('orderBy', mutations.orderBy as AggFunction, true);
-	limit = this.#withStoreCache('limit', (q, l) => q.limit(l), true);
-	offset = this.#withStoreCache('offset', (q, l) => q.offset(l), true);
+	where = this.#withStoreCache('where', mutations.where.fn, mutations.where.currentAsInitial);
+	groupBy = this.#withStoreCache(
+		'groupBy',
+		mutations.groupBy.fn,
+		mutations.groupBy.currentAsInitial
+	);
+	agg = this.#withStoreCache('agg', mutations.agg.fn, mutations.agg.currentAsInitial);
+	orderBy = this.#withStoreCache(
+		'orderBy',
+		mutations.orderBy.fn,
+		mutations.orderBy.currentAsInitial
+	);
+	limit = this.#withStoreCache('limit', mutations.limit.fn, mutations.limit.currentAsInitial);
+	offset = this.#withStoreCache('offset', mutations.offset.fn, mutations.offset.currentAsInitial);
 }
