@@ -185,6 +185,26 @@ prog
 			delete args.debug;
 		}
 
+		const manifestExists = fs.lstatSync(
+			path.join('.evidence', 'template', 'static', 'data', 'manifest.json'),
+			{ throwIfNoEntry: false }
+		);
+		if (!manifestExists) {
+			console.error(
+				chalk.red(
+					`
+${chalk.bold('[!] Unable to load source manifest')}
+	This likely means you have no source data, and need to generate it.
+	Running ${chalk.bold('npm run sources')} will generate the needed data. See ${chalk.bold(
+						'npm run sources --help'
+					)} for more usage information
+	Documentation: https://docs.evidence.dev/core-concepts/data-sources/
+		`.trim()
+				)
+			);
+			process.exit(0);
+		}
+
 		populateTemplate();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);

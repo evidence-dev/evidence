@@ -62,7 +62,7 @@ export const buildSources = async (
 
 	for (const source of sources) {
 		console.log(chalk.bold(`Processing ${source.name}`));
-		const sourceManifest = existingManifest[source.name];
+		const sourceManifest = existingManifest[source.name] ?? [];
 		// For building the manifest
 		/** @type {string[]} */
 		const outputFilenames = [];
