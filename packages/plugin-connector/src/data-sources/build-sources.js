@@ -48,6 +48,21 @@ export const buildSources = async (
 	filters,
 	batchSize = 1000 * 1000
 ) => {
+	await fs.stat(dataPath).catch(async (e) => {
+		if (e.message.startsWith('ENOENT')) {
+			await fs.mkdir(dataPath, { recursive: true });
+			if (process.env.VITE_EVIDENCE_DEBUG)
+				console.log('Created data path at ', path.resolve(dataPath));
+		} else throw e;
+	});
+	await fs.stat(metaPath).catch(async (e) => {
+		if (e.message.startsWith('ENOENT')) {
+			await fs.mkdir(metaPath, { recursive: true });
+			if (process.env.VITE_EVIDENCE_DEBUG)
+				console.log('Created meta path at ', path.resolve(metaPath));
+		} else throw e;
+	});
+
 	const plugins = await getDatasourcePlugins();
 	const existingHashes = await getPastSourceHashes(metaPath);
 
