@@ -1,5 +1,12 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.25
+
+### Patch Changes
+
+- f304fc1e: Address flickering on client side nav
+- fe489a67: fix params is undefined error
+
 ## 4.0.0-usql.24
 
 ### Patch Changes

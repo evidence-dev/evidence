@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.31
+
+### Patch Changes
+
+- f304fc1e: Address flickering on client side nav
+
 ## 2.0.0-usql.30
 
 ### Patch Changes
