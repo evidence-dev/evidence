@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.33
+
+### Patch Changes
+
+- 1ed3fe07: Handle missing manifest more effectively
+
 ## 2.0.0-usql.32
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.52
+
+### Patch Changes
+
+- 3d28ff33: Site no longer dies completely when manifest does not exist; allowing settings setup
+- 3d28ff33: Added system path debug logs to sources
+- 1ed3fe07: Handle missing manifest more effectively
+- Updated dependencies [1ed3fe07]
+  - @evidence-dev/plugin-connector@2.0.0-usql.33
+  - @evidence-dev/core-components@2.0.0-usql.30
+
 ## 20.0.0-usql.51
 
 ### Patch Changes
