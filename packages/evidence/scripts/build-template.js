@@ -68,7 +68,7 @@ fsExtra.outputFileSync(
         optimizeDeps: {
             include: ['echarts-stat', 'echarts', 
 				// We need these to prevent HMR from doing a full page reload
-				'@evidence-dev/component-utilities/core-components',
+				'@evidence-dev/core-components',
 				'@evidence-dev/component-utilities/stores',
 				'@evidence-dev/component-utilities/formatting',
 				'@evidence-dev/component-utilities/globalContexts',
