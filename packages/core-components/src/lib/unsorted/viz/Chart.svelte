@@ -1021,13 +1021,13 @@
 	if (!data) error = 'Required prop `data` not provided';
 </script>
 
-{#if error}
-	<ErrorChart {error} {chartType} />
-{:else if query && !query.loaded}
+{#if query && !query.loaded && !query.error}
 	<!-- Query has not loaded, or the props have not gone through first computation -->
-	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''}>
+	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''} style:height>
 		<Skeleton />
 	</div>
+{:else if error}
+	<ErrorChart {error} {chartType} />
 {:else}
 	<!-- Preconditions met, render chart -->
 	<slot />

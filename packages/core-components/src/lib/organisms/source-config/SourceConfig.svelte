@@ -121,7 +121,13 @@
 	</div>
 	<div class="p-4 rounded-b w-full bg-gray-100 text-sm">
 		<!-- TODO: Update this when we have docs -->
-		Learn more about <a href="https://docs.evidence.dev/">Configuring Data Sources &rarr;</a>
+		Learn more about
+		<a
+			class="text-blue-600 no-underline"
+			href="https://docs.evidence.dev/core-concepts/data-sources/"
+		>
+			Configuring Data Sources &rarr;
+		</a>
 	</div>
 </section>
 
