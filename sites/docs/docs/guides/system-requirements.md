@@ -1,6 +1,6 @@
 ---
 title: System Requirements
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 Evidence is a Node.js application; it requires Node.js and npm to run.
