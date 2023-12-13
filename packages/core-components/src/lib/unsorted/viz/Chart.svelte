@@ -234,7 +234,7 @@
 	/** @type {QueryStore} */
 	let query = data instanceof QueryStore || data.__isQueryStore ? data : undefined;
 
-	$: if ((query.__isQueryStore && query.loaded) || Array.isArray(data)) {
+	$: if ((query?.__isQueryStore && query?.loaded) || Array.isArray(data)) {
 		if (data instanceof QueryStore) query = data;
 		try {
 			error = undefined;
