@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.34
+
+### Patch Changes
+
+- 60619a90: Create static/data and .evidence-queries if for some reason they don't exist
+
 ## 2.0.0-usql.33
 
 ### Patch Changes
