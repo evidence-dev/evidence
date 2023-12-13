@@ -1021,16 +1021,7 @@
 	if (!data) error = 'Required prop `data` not provided';
 </script>
 
-{#if query.loaded && !data.length && !query.error}
-	<!-- Query loaded successfuly, and just doesn't have any results. There is probably an "error", but it is just because there are no results -->
-	<div
-		class="w-full flex justify-center items-center rounded bg-gray-100 ml-0 mt-4 mb-3 overflow-visible text-xl"
-		class:h-64={!height}
-		style={width ? `width: ${width}px` : ''}
-	>
-		No Results
-	</div>
-{:else if error}
+{#if error}
 	<ErrorChart {error} {chartType} />
 {:else if query && !query.loaded}
 	<!-- Query has not loaded, or the props have not gone through first computation -->

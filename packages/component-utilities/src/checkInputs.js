@@ -5,7 +5,7 @@ export default function checkInputs(data, reqCols, optCols) {
 	let columns = [];
 
 	// Check if dataset was provided
-	if (data == undefined) {
+	if (data === undefined) {
 		throw Error('No dataset provided');
 	} else if (typeof data !== 'object') {
 		throw Error(
@@ -16,7 +16,7 @@ export default function checkInputs(data, reqCols, optCols) {
 				data.replace('data.', '') +
 				'}'
 		);
-	} else if (data[0] == undefined) {
+	} else if (data[0] === undefined || data.length === 0) {
 		throw Error(
 			'Dataset is empty: query ran successfully, but no data was returned from the database'
 		);
