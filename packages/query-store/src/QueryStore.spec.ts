@@ -107,67 +107,64 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 				{ func: 'limit', args: [5] },
 				{ func: 'orderBy', args: [{}] },
 				{ func: 'offset', args: [] }
-			])(
-				'$func',
-				(opts: { func: keyof typeof mutations; args: any[] }) => {
-					it(`should have the property ${opts.func}()`, () => {
-						const store = new QueryStore('SELECT 1;', mockExec, undefined, { disableCache: true });
-						expect(opts.func in store).toBe(true);
-						expect(typeof store[opts.func]).toBe('function');
-					});
+			])('$func', (opts: { func: keyof typeof mutations; args: any[] }) => {
+				it(`should have the property ${opts.func}()`, () => {
+					const store = new QueryStore('SELECT 1;', mockExec, undefined, { disableCache: true });
+					expect(opts.func in store).toBe(true);
+					expect(typeof store[opts.func]).toBe('function');
+				});
 
-					it(`should return a new store when using .${opts.func}`, () => {
-						const store = new QueryStore('SELECT 1;', mockExec, undefined, { disableCache: true });
+				it(`should return a new store when using .${opts.func}`, () => {
+					const store = new QueryStore('SELECT 1;', mockExec, undefined, { disableCache: true });
 
-						const targetFunc = store[opts.func];
-						expect(targetFunc).toBeTypeOf('function');
+					const targetFunc = store[opts.func];
+					expect(targetFunc).toBeTypeOf('function');
 
-						if (typeof targetFunc !== 'function') return; // test would fail at this point anyways
-						const childStore = (targetFunc as CallableFunction)(...opts.args);
+					if (typeof targetFunc !== 'function') return; // test would fail at this point anyways
+					const childStore = (targetFunc as CallableFunction)(...opts.args);
 
-						// store !== childStore
-						expect(store).not.toEqual(childStore);
-						// childStore is a proxy
-						expect(util.types.isProxy(childStore)).toBe(true);
-					});
-					it('should subscribe to derived stores', async () => {
-						const store = new QueryStore('SELECT 1;', mockExec, 'parent', { disableCache: true });
-						const targetFunc = store[opts.func];
-						expect(targetFunc).toBeTypeOf('function');
-						if (typeof targetFunc !== 'function') return; // test would fail at this point anyways
-						store.subscribe(mockSubscription);
+					// store !== childStore
+					expect(store).not.toEqual(childStore);
+					// childStore is a proxy
+					expect(util.types.isProxy(childStore)).toBe(true);
+				});
+				it('should subscribe to derived stores', async () => {
+					const store = new QueryStore('SELECT 1;', mockExec, 'parent', { disableCache: true });
+					const targetFunc = store[opts.func];
+					expect(targetFunc).toBeTypeOf('function');
+					if (typeof targetFunc !== 'function') return; // test would fail at this point anyways
+					store.subscribe(mockSubscription);
 
-						const mutation = mutations[opts.func];
-						await store.fetch();
+					const mutation = mutations[opts.func];
+					await store.fetch();
 
-						const childStore = (targetFunc as CallableFunction)(opts.args);
-						// childStore.subscribe(mockSubscription);
-						await childStore.fetch();
+					const childStore = (targetFunc as CallableFunction)(opts.args);
+					// childStore.subscribe(mockSubscription);
+					await childStore.fetch();
 
-						while (!childStore.value().loaded) await new Promise((r) => setTimeout(r, 0));
+					while (!childStore.value().loaded) await new Promise((r) => setTimeout(r, 0));
 
-						// Parent meta,length,data
-						// Child meta,length,data
-						expect(mockExec).toBeCalledTimes(6);
+					// Parent meta,length,data
+					// Child meta,length,data
+					expect(mockExec).toBeCalledTimes(6);
 
-						// 1. Parent Initial Load
-						// 2. Parent Metadata
-						// 3. Child Initial Load
-						// 4. Child Metadata
-						// 5. Child Length
-						if (ssr) {
-							if (mutation.currentAsInitial) expect(mockSubscription).toBeCalledTimes(5);
-							else expect(mockSubscription).toBeCalledTimes(8);
-						} else {
-							if (mutation.currentAsInitial) expect(mockSubscription).toBeCalledTimes(9);
-							else expect(mockSubscription).toBeCalledTimes(10);
-						}
+					// 1. Parent Initial Load
+					// 2. Parent Metadata
+					// 3. Child Initial Load
+					// 4. Child Metadata
+					// 5. Child Length
+					if (ssr) {
+						if (mutation.currentAsInitial) expect(mockSubscription).toBeCalledTimes(5);
+						else expect(mockSubscription).toBeCalledTimes(8);
+					} else {
+						if (mutation.currentAsInitial) expect(mockSubscription).toBeCalledTimes(9);
+						else expect(mockSubscription).toBeCalledTimes(10);
+					}
 
-						expect(childStore.length).toBe(5);
-						expect(childStore.loaded).toBe(true);
-					});
-				}
-			);
+					expect(childStore.length).toBe(5);
+					expect(childStore.loaded).toBe(true);
+				});
+			});
 		});
 	}
 );
