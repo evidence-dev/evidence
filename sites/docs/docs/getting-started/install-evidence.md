@@ -75,3 +75,7 @@ Create Evidence Codespace
 ## System Requirements
 
 See [system requirements page](/guides/system-requirements).
+
+## Updating Evidence
+
+See [updating your project](/guides/updating-your-project).

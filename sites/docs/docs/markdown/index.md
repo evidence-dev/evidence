@@ -158,7 +158,7 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 | `og.title`       | changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa) |
 | `og.description` | changes the body of the embed                                                                                                |
 | `og.image`       | will appear in the embed if specified, but it is not required.                                                               |
-| `sources`        | references SQL queries stored in the /sources directory.                                                                     |
+| `queries`        | references SQL queries stored in the /queries directory.                                                                     |
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
 

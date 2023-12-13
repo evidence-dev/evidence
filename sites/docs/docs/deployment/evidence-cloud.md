@@ -14,7 +14,7 @@ It's the easiest way to host an Evidence project, without having to worry about 
 
 - **Easy to set up:** Deploy in 5 minutes without configuring any infrastructure.
 - **Secure:** Manage access for users in your team.
-- **Organizational domain:** Host your project at `<organisation>.evidence.app`.
+- **Organizational domain:** Host your project at `[organisation].evidence.app`.
 - **Scheduled refreshes:** Daily (or more frequent) data updates to your project.
 - **Re-build on push:** Merge to your target branch to rebuild your project.
 
@@ -87,7 +87,7 @@ Setting up Evidence Cloud takes less than 5 minutes.
 </details>
 
 <details>
-    <summary>How do I get onto a Team or Enterprise plan?</summary>
+    <summary>How do I get onto a Team or Embedded plan?</summary>
     <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, or reach out on Evidence Cloud chat.</p>
 </details>
 

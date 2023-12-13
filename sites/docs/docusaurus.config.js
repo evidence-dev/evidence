@@ -18,7 +18,8 @@ const config = {
 			// title: 'evidence',
 			logo: {
 				alt: 'Evidence',
-				src: 'img/wordmark-docs.svg'
+				// src: 'img/wordmark-docs.svg'
+				src: 'img/wordmark-black.svg'
 			},
 			items: [
 				{
@@ -34,12 +35,23 @@ const config = {
 					label: 'Community'
 				},
 				{
+					type: 'dropdown',
+					label: 'v24+ (USQL)',
+					position: 'right',
+					items: [
+					  {
+						label: 'Legacy Docs',
+						href: 'https://evidence-docs-git-fix-tests-evidence-dev.vercel.app/',
+					  },
+					]
+				  },
+				{
 					href: 'https://github.com/evidence-dev/evidence',
 					//label: 'Github',
 					position: 'right',
 					className: 'header-github-link',
 					'aria-label': 'GitHub repository'
-				}
+				},
 			]
 		},
 		algolia: {

@@ -3,7 +3,9 @@ title: Syntax
 description: Extended markdown with additional functionality.
 ---
 
-_Evidence flavored Markdown_ extends markdown with additional functionality.
+Evidence reports are written in **Evidence-flavored Markdown** - an extension of markdown that includes SQL queries, data viz components, and programmatic features.
+
+If you're not familiar with markdown, it's a simple text-based syntax - you've used markdown if you've written comments in Github or typed a message in Slack.
 
 ## Markdown
 
@@ -28,7 +30,7 @@ Evidence looks for images in your `static` folder, e.g. `static/my-logo.png`.
 
 ## SQL
 
-Markdown code fences in Evidence run SQL queries and return data. The SQL dialect matches the database you're connecting to. [More on Queries](/core-concepts/queries).
+Code fences in Evidence markdown files run inline queries and return data. These code fences run the [DuckDB SQL](https://duckdb.org/docs/sql/introduction) dialect. [More on Queries](/core-concepts/queries).
 
 ````markdown
 ```sql orders_by_month
@@ -55,23 +57,6 @@ Evidence has a built in [component library](/components/all-components) to creat
 
 ![Line Chart](/img/syntax-line-chart.png)
 
-## Expressions
-
-Curly braces execute JavaScript expressions.
-
-```markdown
-2 + 2 = {2 + 2}
-
-<!-- Result: 2 + 2 = 4 -->
-
-There are {orders.length} months of data.
-
-<!-- Result: There are 36 months of data. -->
-
-There were {orders_by_month[0].number_of_orders} orders last month.
-
-<!-- Result: There were 3634 orders last month. -->
-```
 
 ## Loops
 
@@ -110,6 +95,40 @@ The current page path is: {$page.route.id}
 
 <!-- Result: The current page path is: /core-concepts/syntax/ -->
 ```
+
+## Frontmatter
+
+You can use frontmatter to reference SQL queries, and set page metadata that social media sites such as Twitter and Facebook use when showing links to your site. [More on Frontmatter](/markdown#frontmatter).
+
+```markdown
+---
+title: Evidence uses Markdown
+description: Evidence uses Markdown to write expressively in text.
+og:
+  image: /my-social-image.png
+queries:
+  - orders_by_month.sql
+---
+```
+
+## Expressions
+
+Curly braces execute JavaScript expressions.
+
+```markdown
+2 + 2 = {2 + 2}
+
+<!-- Result: 2 + 2 = 4 -->
+
+There are {orders.length} months of data.
+
+<!-- Result: There are 36 months of data. -->
+
+There were {orders_by_month[0].number_of_orders} orders last month.
+
+<!-- Result: There were 3634 orders last month. -->
+```
+
 
 ## Code Fences in Other Languages
 

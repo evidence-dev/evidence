@@ -6,9 +6,9 @@ title: SQL Queries
 description: Markdown code fences run SQL queries.
 ---
 
-## Writing Queries
+## Inline Queries
 
-Evidence runs markdown code fences as SQL queries.
+Evidence runs markdown code fences as SQL queries. These queries use the [DuckDB dialect](https://duckdb.org/docs/sql/introduction).
 
 ````markdown
 ```sql sales_by_country
@@ -20,7 +20,7 @@ group by 1
 
 When you open a page in dev mode, Evidence runs all of the queries on the page. You can see the progress of these queries printed in the console. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries.
 
-You can include SQL queries in your page using a markdown code fence (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
+You include SQL queries in your page using a markdown code fence (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
 
 ### Using Query Results
 
@@ -89,7 +89,7 @@ Evidence also has support for queries outside the markdown, which is especially 
 
 ### Basic Usage
 
-To use sql file queries, you need to place them in the `sources` directory, and then reference them in your [frontmatter](/markdown/#frontmatter).
+To use sql file queries, you need to place them in the `queries` directory, and then reference them in your [frontmatter](/markdown/#frontmatter).
 
 An example setup could be:
 
@@ -98,30 +98,30 @@ my-evidence-project/
   pages/
     my_page.md
   sources/
-    my_query.sql
+    my_file_query.sql
     some_category/
-        my_category_query.sql
+        my_category_file_query.sql
 ```
 
 These queries can then be used on `my_page.md` with the following [frontmatter](/markdown/#frontmatter)
 
 ```yaml
 ---
-sources:
-  - q4_data: my_query.sql
-  - q4_sales_reps: some_category/my_category_query.sql
+queries:
+  - q4_data: my_file_query.sql
+  - q4_sales_reps: some_category/my_category_file_query.sql
 ---
 ```
 
 In your evidence file, you can now reference `q4_data` and `q4_sales_reps` the same way you would use any other query.
 
-Optionally, you can omit the query name, and the filename will be used instead; these queries will be available at `my_query` and `some_category_my_category_query` (note that `/` became `_`).
+Optionally, you can omit the query name, and the filename will be used instead; these queries will be available at `my_file_query` and `some_category_my_category_file_query` (note that `/` became `_`).
 
 ```yaml
 ---
-sources:
-  - my_query.sql
-  - some_category/my_category_query.sql
+queries:
+  - my_file_query.sql
+  - some_category/my_category_file_query.sql
 ---
 ```
 
@@ -129,7 +129,27 @@ sources:
 
 #### File Query Chaining
 
-SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_query` depends on `some_category_my_category_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.
+SQL file queries can [depend on other query files](/core-concepts/queries/#query-chaining), but they will all need to be referenced in the files you use them in. For example, if `my_file_query` depends on `some_category_my_category_file_query`, then you will have to have them both in your [frontmatter](/markdown/#frontmatter), as shown above.
+
+## Query Parameters
+
+Queries can accept parameters, which might be from an input component such as a [Dropdown](/components/dropdown), or from a URL parameter on a [template page](/core-concepts/templated-pages).
+
+````markdown
+```sql sales_by_month
+select
+    date_trunc('month', date) as month,
+    sum(sales) as sales
+from orders
+where category = '${input.category}'
+group by 1
+```
+````
+
+There are two types of parameters you can use in queries:
+- **Input parameters** from components: `'${input.parameter_name}'`
+- **URL parameters** from [templated pages](/core-concepts/templated-pages): `'${param.parameter_name}'`
+
 
 ## Query Cache
 
