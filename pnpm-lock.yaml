@@ -1495,14 +1495,14 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@aws-sdk/client-s3@3.472.0:
-    resolution: {integrity: sha512-Gth+HNhCIjEE6YoeC59ypGqaJ+cZuznuLJ2t3PL+9BQ/2pWXaxhZ5QXFxaJidtzdyebOAgY87/7g3D6PHnWQDg==}
+  /@aws-sdk/client-s3@3.473.0:
+    resolution: {integrity: sha512-JmQdYFJnlBOv+IKlgkTWLNr58FBBgW5dpRzwsraAp/sy6QcPEFKzf48iOvB9ekvLafpHah+7AaFJ3VptLLBoJw==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha1-browser': 3.0.0
       '@aws-crypto/sha256-browser': 3.0.0
       '@aws-crypto/sha256-js': 3.0.0
-      '@aws-sdk/client-sts': 3.470.0
+      '@aws-sdk/client-sts': 3.473.0
       '@aws-sdk/core': 3.468.0
       '@aws-sdk/credential-provider-node': 3.470.0
       '@aws-sdk/middleware-bucket-endpoint': 3.470.0
@@ -1604,8 +1604,8 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/client-sts@3.470.0:
-    resolution: {integrity: sha512-TP3A4t8FoFEQinm6axxduTUnlMMLpmLi4Sf00JTI2CszxLUFh/JyUhYQ5gSOoXgPFmfwVXUNKCtmR3jdP0ZGPw==}
+  /@aws-sdk/client-sts@3.473.0:
+    resolution: {integrity: sha512-ttRZs+sW96cpuoVdys4KZ81yXq4c6xyhGOZIRUpi/YiwB1gnNvCEo5CDFL7PSdW/bjI2ovyUgu8EArq+7KlLwA==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 3.0.0
@@ -20733,7 +20733,7 @@ packages:
   /snowflake-sdk@1.9.0(asn1.js@5.4.1):
     resolution: {integrity: sha512-RtFRV2KC+ebQk/kOUg8WV42LnAu9puoan2wMXykgrAj1u4sGP/GgQyQhsAfLGwXWzn+J9JAwij07h3+6HYBmFw==}
     dependencies:
-      '@aws-sdk/client-s3': 3.472.0
+      '@aws-sdk/client-s3': 3.473.0
       '@azure/storage-blob': 12.17.0
       '@google-cloud/storage': 6.12.0
       '@techteamer/ocsp': 1.0.0
