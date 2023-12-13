@@ -290,6 +290,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				(results) => {
 					if (!results.length) {
 						// if initial data is 0 length; then we should ignore it and go ahead with a fetch
+						this.#lengthLoading = false;
+						this.#dataLoading = false;
+						this.#metaLoading = false;
+						// Don't publish these changes! They should be internal only
+
 						this.#fetchData();
 						return false;
 					}
