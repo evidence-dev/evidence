@@ -7,7 +7,7 @@ import {
 	Bool,
 	TimestampMillisecond
 } from 'apache-arrow';
-import { Compression, writeParquet, WriterPropertiesBuilder } from 'parquet-wasm/node/arrow1.js';
+import { Compression, writeParquet, WriterPropertiesBuilder, Table } from 'parquet-wasm/node/arrow1.js';
 import fs from 'fs/promises';
 import path from 'path';
 // using node-async.js makes CLI command hang - why??
@@ -79,6 +79,9 @@ export async function buildMultipartParquet(
 			])
 		);
 		const table = tableFromArrays(vectorized);
+		for (const field of table.schema.fields) {
+			field.nullable = true;
+		}
 
 		// Converts the arrow table to a buffer
 		const IPC = tableToIPC(table, 'stream');
@@ -87,7 +90,7 @@ export async function buildMultipartParquet(
 		// Converts the arrow buffer to a parquet buffer
 		// This can be slow; it includes the compression step
 
-		const parquetBuffer = writeParquet(IPC, writerProperties);
+		const parquetBuffer = writeParquet(Table.fromIPCStream(IPC), writerProperties);
 
 		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
 		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
