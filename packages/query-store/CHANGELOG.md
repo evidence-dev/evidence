@@ -1,5 +1,14 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.15
+
+### Patch Changes
+
+- 4c6eae53: Minor updates to intitaldata behavior
+- ba0d6f50: When fetching data for the 2nd time, the result promise from the first instance is returned, instead of undefined
+- Updated dependencies [9132146b]
+  - @evidence-dev/universal-sql@2.0.0-usql.22
+
 ## 2.0.0-usql.14
 
 ### Patch Changes

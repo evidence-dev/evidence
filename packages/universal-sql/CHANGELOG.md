@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.22
+
+### Patch Changes
+
+- 9132146b: fix vite hard refreshes, fix dropdown flickering on ssr, fix null columns
+
 ## 2.0.0-usql.21
 
 ### Patch Changes

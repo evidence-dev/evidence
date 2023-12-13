@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.24
+
+### Patch Changes
+
+- 4e288bc6: Big improvement to SSR
+
 ## 4.0.0-usql.23
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.51
+
+### Patch Changes
+
+- 9132146b: fix vite hard refreshes, fix dropdown flickering on ssr, fix null columns
+- Updated dependencies [9132146b]
+- Updated dependencies [4e288bc6]
+- Updated dependencies [4c6eae53]
+- Updated dependencies [ba0d6f50]
+  - @evidence-dev/component-utilities@2.0.0-usql.22
+  - @evidence-dev/core-components@2.0.0-usql.30
+  - @evidence-dev/universal-sql@2.0.0-usql.22
+  - @evidence-dev/preprocess@4.0.0-usql.24
+  - @evidence-dev/query-store@2.0.0-usql.15
+  - @evidence-dev/plugin-connector@2.0.0-usql.32
+
 ## 20.0.0-usql.50
 
 ### Patch Changes

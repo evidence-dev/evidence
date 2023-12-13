@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.30
+
+### Patch Changes
+
+- 9132146b: fix vite hard refreshes, fix dropdown flickering on ssr, fix null columns
+- Updated dependencies [9132146b]
+- Updated dependencies [4c6eae53]
+- Updated dependencies [ba0d6f50]
+  - @evidence-dev/component-utilities@2.0.0-usql.22
+  - @evidence-dev/query-store@2.0.0-usql.15
+
 ## 2.0.0-usql.29
 
 ### Patch Changes
