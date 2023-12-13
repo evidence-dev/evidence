@@ -281,12 +281,6 @@ Evidence looks for CSV files stored in a `sources/[your_csv_source_name]/` folde
 select * from your_csv_source_name.csv_file_name
 ```
 
-You can also use DuckDB's built-in csv reading functions if you need more control over the behaviour of the file read:
-
-```sql
-select * from read_csv_auto('sources/your_csv_source_name/csv_file_name')
-```
-
 ## Troubleshooting
 
 If you need help with connecting to your data, please feel free to [send us a message in Slack](https://slack.evidence.dev).
