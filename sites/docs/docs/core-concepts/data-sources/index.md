@@ -8,14 +8,6 @@ Evidence supports connecting to a databases, flat data files, and non-SQL data s
 
 You can connect to multiple data sources in a single Evidence project.
 
-## Source queries vs Evidence queries
-
-Evidence creates a common data layer that all sources are extracted into. This is incredibly powerful, as it allows you to query data from multiple sources in a single query. For example, join data from your data warehouse with data from a Google Sheet.
-
-This means there are two stages of queries in Evidence:
-- **Source queries** are written in the native SQL dialect of the data source. They **query data from the source**, creating tables in Evidence's data layer.
-- **Evidence queries** are written in one common SQL dialect ([DuckDB](https://duckdb.org/docs/sql/introduction)). They query data **from the common data layer** for use in markdown and components.
-
 ## Connect your data sources
 
 To connect your local development environment to a database:
@@ -24,6 +16,8 @@ To connect your local development environment to a database:
 1. Navigate to [localhost:3000/settings](http://localhost:3000/settings)
 1. Select your data source, name it, and enter required credentials
 1. (If required) Open the `connections.yaml` file inside `/sources/[source_name]` and add any additional configuration options
+1. (If required) Add [source queries](#configure-source-queries) 
+1. Rerun sources with `npm run sources`
 
 Evidence will save your credentials locally, and run a test query to confirm that it can connect.
 
@@ -33,9 +27,9 @@ Connections to databases in production are managed via [environment variables](/
 
 Evidence extracts data from all sources systems into a common storage format (called Parquet).
 
-For SQL data sources, you choose which data to extract by writing "Source Query" .sql files. These queries should be stored in the `/sources/[source_name]/` folder.
+For SQL data sources, choose which data to extract by adding .sql files to the `/sources/[source_name]/` folder.
 
-**N.B: Source Queries use the data source's native SQL dialect.**
+**N.B: These queries use the data source's native SQL dialect.**
 
 ```code
 .-- sources/

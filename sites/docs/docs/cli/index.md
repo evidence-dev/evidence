@@ -10,7 +10,7 @@ hide_table_of_contents: false
 | CLI Command                                     | VS Code Command                   | Description                                            |
 | ----------------------                          | ---------------                   | ------------------------------------------------------ |
 | `npx degit evidence-dev/template my-project`    | Evidence: New Evidence Project    | Create a new project from the template.                |
-| `npm run sources`                               | Evidence: Run Sources             | Run source queries and extract data.                   |
+| `npm run sources`                               | Evidence: Run Sources             | Extract data from sources.                             |
 | `npm run dev`                                   | Evidence: Start Server            | Start the development server in the current directory. |
 | `npm run build`                                 | Evidence: Build                   | Build the project for production.                      |
 | `npm run build:strict`                          | Evidence: Built Strict            | Build, but fails on query or component errors. [Components receiving empty data will fail.](/deployment/overview#buildstrict) |
