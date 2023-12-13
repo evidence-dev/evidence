@@ -59,7 +59,7 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 </Dropdown>
 ````
 
-Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${input.name_of_dropdown}'` to return all values.
+Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_dropdown}'` to return all values.
 
 
 ### With Hardcoded Options
@@ -100,7 +100,7 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 ```sql filtered_query
 select *
 from table
-where column_name like '${input.name_of_dropdown}'
+where column_name like '${inputs.name_of_dropdown}'
 ```
 ````
 

@@ -11,9 +11,10 @@ description: Markdown code fences run SQL queries.
 Evidence runs markdown code fences as SQL queries. These queries use the [DuckDB dialect](https://duckdb.org/docs/sql/introduction).
 
 ````markdown
-```sql sales_by_country
-select country, sum(sales) as sales
-from international_transactions
+```sql sales_by_category
+select 
+  category, sum(sales) as sales
+from orders
 group by 1
 ```
 ````
@@ -26,22 +27,22 @@ You include SQL queries in your page using a markdown code fence (starting and e
 
 Reference a query in a component using `data={query_name}`
 
-For example, if your query name was `sales_by_country`:
+For example, if your query name was `sales_by_category`:
 
 ```markdown
-<LineChart data={sales_by_country}/>
+<LineChart data={sales_by_category}/>
 ```
 
 ## Query Chaining
 
 Reference other queries by writing the query name inside `${ }`.
 
-For example, if you want to reference a query named `sales_by_region`, you would write `${sales_by_region}` into your SQL query, you would write:
+For example, if you want to reference a query named `sales_by_item`, you would write `${sales_by_item}` into your SQL query, you would write:
 
 ````sql
-```sql sales_by_region
+```sql sales_by_item
 select
-    region,
+    item,
     sum(sales) as sales
 from production.daily_sales
 group by 1
@@ -50,7 +51,7 @@ group by 1
 ```sql average_sales
 select
     avg(sales) as average_sales
-from ${sales_by_region}
+from ${sales_by_item}
 ```
 ````
 
@@ -61,7 +62,7 @@ select
     avg(sales) as average_sales
 from (
     select
-        region,
+        item,
         sum(sales) as sales
     from production.daily_sales
     group by 1
@@ -77,7 +78,7 @@ You can choose whether you want to see the compiled or written SQL inside the qu
 
 The order that queries appear on the page doesn't matter to the SQL compiler. You can reference queries that appear before or after the query that you are authoring.
 
-Some SQL dialects require sub-queries to be aliased, including Postgres and MySQL. E.g. `from ${sales_by_region} as sales_by_region`.
+Some SQL dialects require sub-queries to be aliased, including Postgres and MySQL. E.g. `from ${sales_by_item} as sales_by_item`.
 
 The SQL compiler detects circular and missing references. If a query includes either a circular reference or a missing reference, Evidence will display an error that looks like a syntax error in a normal SQL query. Queries with compiler errors are not sent to your database.
 
@@ -141,14 +142,14 @@ select
     date_trunc('month', date) as month,
     sum(sales) as sales
 from orders
-where category = '${input.category}'
+where category = '${inputs.category}'
 group by 1
 ```
 ````
 
 There are two types of parameters you can use in queries:
-- **Input parameters** from components: `'${input.parameter_name}'`
-- **URL parameters** from [templated pages](/core-concepts/templated-pages): `'${param.parameter_name}'`
+- **Input parameters** from components: `'${inputs.parameter_name}'`
+- **URL parameters** from [templated pages](/core-concepts/templated-pages): `'${params.parameter_name}'`
 
 
 ## Query Cache
