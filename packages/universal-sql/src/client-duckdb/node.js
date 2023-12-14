@@ -3,7 +3,8 @@ import {
 	ConsoleLogger,
 	createDuckDB,
 	DuckDBDataProtocol,
-	NODE_RUNTIME
+	NODE_RUNTIME,
+	VoidLogger
 } from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
 import { createRequire } from 'module';
 import path, { dirname, resolve } from 'path';
@@ -52,7 +53,7 @@ export async function initDB() {
 				mainWorker: resolve(DUCKDB_DIST, './duckdb-node-eh.worker.cjs')
 			}
 		};
-		const logger = new ConsoleLogger();
+		const logger = process.env.VITE_EVIDENCE_DEBUG ? new ConsoleLogger() : new VoidLogger();
 
 		// and synchronous database
 		db = await createDuckDB(DUCKDB_BUNDLES, logger, NODE_RUNTIME);

@@ -3,7 +3,8 @@ import {
 	AsyncDuckDB,
 	ConsoleLogger,
 	DuckDBDataProtocol,
-	getPlatformFeatures
+	getPlatformFeatures,
+	VoidLogger
 } from '@duckdb/duckdb-wasm';
 
 export { tableFromIPC } from 'apache-arrow';
@@ -48,7 +49,7 @@ export async function initDB() {
 						.default
 			  };
 
-		const logger = new ConsoleLogger();
+		const logger = import.meta.env.VITE_EVIDENCE_DEBUG ? new ConsoleLogger() : new VoidLogger();
 		const worker = new DUCKDB_CONFIG.mainWorker();
 
 		// and asynchronous database
