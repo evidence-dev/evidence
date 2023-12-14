@@ -53,7 +53,6 @@ const interval = setInterval(() => {
 	]
 }, 1000);
 
-import { onDestroy } from "svelte";
 onDestroy(() => {
 	clearInterval(interval);
 });
