@@ -238,8 +238,9 @@
 		(data?.__isQueryStore && data?.loaded) ||
 		Array.isArray(data)
 	) {
-		if ((data.__isQueryStore && query && query.text !== data.text) || !query) {
-			query = data;
+		if (data.__isQueryStore) {
+			if (!query) query = data
+			else if (query.text !== data.text) query = data
 		}
 
 		try {

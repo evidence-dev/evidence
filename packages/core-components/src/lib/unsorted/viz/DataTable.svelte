@@ -30,7 +30,7 @@
 	setContext(propKey, props);
 
 	// Data, pagination, and row index numbers
-	/** @type {import("@evidence-dev/query-store").QueryStore }*/
+	/** @type {import("@evidence-dev/query-store").QueryStore | any[] }*/
 	export let data;
 
 	export let rows = 10; // number of rows to show
@@ -100,7 +100,14 @@
 
 	let columnSummary;
 
-	$: try {
+	let query = data.__isQueryStore ? data : undefined
+
+	$: if (
+			(query?.__isQueryStore && query?.loaded) ||
+			(data?.__isQueryStore && data?.loaded) ||
+			Array.isArray(data)
+		)
+		try {
 		error = undefined;
 		// CHECK INPUTS
 		checkInputs(data);
@@ -124,7 +131,7 @@
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
 		}
 	} catch (e) {
-		console.error(e);
+		console.warn(e.message);
 		error = e.message;
 		if (strictBuild) {
 			throw error;
@@ -288,7 +295,7 @@
 	$: if (!data) error = 'Required property `data` not provided';
 </script>
 
-{#if (!data || data.loading) && !error}
+{#if query && !query.loaded && !query.error}
 	<div class="w-full h-64">
 		<Skeleton />
 	</div>
