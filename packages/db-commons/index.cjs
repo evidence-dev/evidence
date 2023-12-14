@@ -99,21 +99,6 @@ const processQueryResults = function (queryResults) {
 	return { rows, columnTypes };
 };
 
-/**
- * Converts BigInt values to Numbers in an object.
- * @param {Record<string, unknown>} obj - The input object with potential BigInt values.
- * @returns {Record<string, unknown>} - The object with BigInt values converted to Numbers.
- */
-function convertBigIntsToNumbers(obj) {
-	for (const key in obj) {
-		if (Object.prototype.hasOwnProperty.call(obj, key)) {
-			if (typeof obj[key] === 'bigint') {
-				obj[key] = Number(obj[key]);
-			}
-		}
-	}
-	return obj;
-}
 
 /**
  * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
@@ -133,7 +118,7 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 	batchSize,
 	{
 		// @ts-ignore
-		standardizeRow = (x) => convertBigIntsToNumbers(x),
+		standardizeRow = (x) => x,
 		mapResultsToEvidenceColumnTypes
 	} = {}
 ) {
