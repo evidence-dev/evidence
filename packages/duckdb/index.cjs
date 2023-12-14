@@ -66,8 +66,8 @@ function duckdbDescribeToEvidenceType(describe) {
 	return describe.map((column) => {
 		let type;
 		if (/DECIMAL/i.test(column.column_type)) {
-            type = EvidenceType.NUMBER;
-        } else {
+			type = EvidenceType.NUMBER;
+		} else {
 			switch (column.column_type) {
 				case 'BOOLEAN':
 					type = EvidenceType.BOOLEAN;

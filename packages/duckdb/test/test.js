@@ -35,7 +35,6 @@ import 'dotenv/config';
 // BLOB
 // BIT
 
-
 let expectedColumnTypes, expectedColumnNames, expectedTypePrecision;
 let actualColumnTypes, actualColumnNames, actualTypePrecisions;
 
@@ -78,7 +77,7 @@ test('query runs', async () => {
 		assert.instance(rows, Array);
 		assert.instance(columnTypes, Array);
 		assert.type(rows[0], 'object');
-        // Ensure each column has the expected type, name, and type precision
+		// Ensure each column has the expected type, name, and type precision
 		assert.equal(columnTypes.length, 29); // Adjust based on the number of columns
 
 		actualColumnTypes = columnTypes.map((columnType) => columnType.evidenceType);
@@ -86,37 +85,67 @@ test('query runs', async () => {
 		actualTypePrecisions = columnTypes.map((columnType) => columnType.typeFidelity);
 
 		expectedColumnTypes = [
-			'boolean',   // boolean_col
-			'number',    // tinyint_col
-			'number',    // smallint_col
-			'number',    // int_col
-			'number',    // bigint_col
-			'number',    // hugeint_col
-			'number',    // utinyint_col
-			'number',    // usmallint_col
-			'number',    // uint_col
-			'number',    // ubigint_col
-			'date',      // date_col
-			'string',    // time_col
-			'date',      // timestamp_col
-			'date',      // timestamp_s_col
-			'date',      // timestamp_ms_col
-			'date',      // timestamp_ns_col
-			'string',    // time_with_tz_col
-			'date',      // timestamp_with_tz_col
-			'number',    // float_col
-			'number',    // double_col
-			'number',    // decimal_4_1_col
-			'number',    // decimal_9_4_col
-			'number',    // decimal_18_6_col
-			'number',    // decimal_38_10_col
-			'string',    // uuid_col
-			'string',    // interval_col
-			'string',    // varchar_col
-			'string',    // blob_col
-			'string'     // bit_col
+			'boolean', // boolean_col
+			'number', // tinyint_col
+			'number', // smallint_col
+			'number', // int_col
+			'number', // bigint_col
+			'number', // hugeint_col
+			'number', // utinyint_col
+			'number', // usmallint_col
+			'number', // uint_col
+			'number', // ubigint_col
+			'date', // date_col
+			'string', // time_col
+			'date', // timestamp_col
+			'date', // timestamp_s_col
+			'date', // timestamp_ms_col
+			'date', // timestamp_ns_col
+			'string', // time_with_tz_col
+			'date', // timestamp_with_tz_col
+			'number', // float_col
+			'number', // double_col
+			'number', // decimal_4_1_col
+			'number', // decimal_9_4_col
+			'number', // decimal_18_6_col
+			'number', // decimal_38_10_col
+			'string', // uuid_col
+			'string', // interval_col
+			'string', // varchar_col
+			'string', // blob_col
+			'string' // bit_col
 		];
-		expectedColumnNames = ['boolean_col', 'tinyint_col', 'smallint_col', 'int_col', 'bigint_col', 'hugeint_col', 'utinyint_col', 'usmallint_col', 'uint_col', 'ubigint_col', 'date_col', 'time_col', 'timestamp_col', 'timestamp_s_col', 'timestamp_ms_col', 'timestamp_ns_col', 'time_with_tz_col', 'timestamp_with_tz_col', 'float_col', 'double_col', 'decimal_4_1_col', 'decimal_9_4_col', 'decimal_18_6_col', 'decimal_38_10_col', 'uuid_col', 'interval_col', 'varchar_col', 'blob_col', 'bit_col'];
+		expectedColumnNames = [
+			'boolean_col',
+			'tinyint_col',
+			'smallint_col',
+			'int_col',
+			'bigint_col',
+			'hugeint_col',
+			'utinyint_col',
+			'usmallint_col',
+			'uint_col',
+			'ubigint_col',
+			'date_col',
+			'time_col',
+			'timestamp_col',
+			'timestamp_s_col',
+			'timestamp_ms_col',
+			'timestamp_ns_col',
+			'time_with_tz_col',
+			'timestamp_with_tz_col',
+			'float_col',
+			'double_col',
+			'decimal_4_1_col',
+			'decimal_9_4_col',
+			'decimal_18_6_col',
+			'decimal_38_10_col',
+			'uuid_col',
+			'interval_col',
+			'varchar_col',
+			'blob_col',
+			'bit_col'
+		];
 		expectedTypePrecision = Array(29).fill(TypeFidelity.PRECISE);
 
 		assert.equal(
@@ -136,20 +165,20 @@ test('query runs', async () => {
 		);
 	} catch (e) {
 		console.error('Error:', e.message);
-	
+
 		// Print information about failed assertions
 		console.log('Expected Column Types:', expectedColumnTypes);
 		console.log('Actual Column Types:', actualColumnTypes);
-	
+
 		console.log('Expected Column Names:', expectedColumnNames);
 		console.log('Actual Column Names:', actualColumnNames);
-	
+
 		console.log('Expected Type Precision:', expectedTypePrecision);
 		console.log('Actual Type Precision:', actualTypePrecisions);
-		
+
 		// Re-throw the error to stop the test
 		throw e;
-	}	
+	}
 });
 
 test('query batches results properly', async () => {
