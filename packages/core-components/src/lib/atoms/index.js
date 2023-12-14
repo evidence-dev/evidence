@@ -4,3 +4,4 @@ export * from './skeletons';
 export * from './dropdown';
 export * from './button';
 export { default as CopyButton } from './copy-button/CopyButton.svelte';
+export * from "./query-load";
