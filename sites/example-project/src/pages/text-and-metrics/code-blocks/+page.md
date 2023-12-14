@@ -14,7 +14,7 @@ select
     category,
     sum(sales) as sales_usd0k,
     count(sales) as num_orders_num0
-from orders
+from needful_things.orders
 group by month, category
 order by month, sales_usd0k desc
 ```
@@ -24,7 +24,7 @@ order by month, sales_usd0k desc
 ```
 
 ```sql reviews
-select * from reviews
+select * from needful_things.reviews
 ```
 
 ```sql

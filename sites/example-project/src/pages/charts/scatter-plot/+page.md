@@ -1,5 +1,5 @@
 ---
-sources:
+queries:
  - negative_values.sql
  - orders_by_category.sql
 ---
