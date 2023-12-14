@@ -13,6 +13,7 @@
 
 <!-- Pass all the props through-->
 <QueryLoad {data}>
+    <p slot="skeleton">Loading...</p>
 	<Value {...spreadProps} data={data ? Array.from(data) : null}>
 		<slot/>
 	</Value>
