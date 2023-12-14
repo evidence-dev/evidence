@@ -12,7 +12,6 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	import { strictBuild } from '../context';
-	import { QueryStore } from '@evidence-dev/query-store';
 
 	// Passing in value from dataset:
 	export let data = null;
@@ -43,15 +42,12 @@
 		try {
 			error = undefined;
 			if (!placeholder) {
-				if (data && !data.loading) {
+				if (data) {
 					if (typeof data == 'string') {
 						throw Error(`Received: data=${data}, expected: data={${data}}`);
 					}
 
-					if (
-						!Array.isArray(data) &&
-						!(data instanceof QueryStore || data.__isQueryStore) // is reference equal or has ducktype
-					) {
+					if (!Array.isArray(data)) {
 						// Accept bare objects
 						data = [data];
 					}
@@ -86,7 +82,7 @@
 					} else {
 						format_object = columnSummary[0].format;
 					}
-				} else if (typeof data === 'undefined') {
+				} else {
 					throw Error(
 						'No data provided. If you referenced a query result, check that the name is correct.'
 					);
@@ -101,7 +97,15 @@
 	}
 </script>
 
-{#if error}
+{#if placeholder}
+	<span class="placeholder"
+		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
+	>
+{:else if !error}
+	<span>
+		{formatValue(selected_value, format_object)}
+	</span>
+{:else}
 	<span
 		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-200 py-[1px] bg-red-50 rounded"
 	>
@@ -110,16 +114,6 @@
 			class="hidden text-white font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] max-w-[400px] rounded-md"
 			>{error}</span
 		>
-	</span>
-{:else if data.loading}
-	<span class="placeholder">Loading...</span>
-{:else if placeholder}
-	<span class="placeholder"
-		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
-	>
-{:else if !error}
-	<span>
-		{formatValue(selected_value, format_object)}
 	</span>
 {/if}
 
