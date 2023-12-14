@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.20
+
+### Patch Changes
+
+- Build before publishing this time
+
 ## 2.0.0-usql.19
 
 ### Patch Changes
