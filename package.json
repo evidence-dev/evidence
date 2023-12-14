@@ -69,6 +69,7 @@
 		"build:tailwind": "pnpm --filter ./packages/tailwind build",
 		"build:query-store": "pnpm --filter ./packages/query-store build",
 		"dev:example-project": "pnpm --filter ./sites/example-project dev",
+		"sources:example-project": "pnpm --filter ./sites/example-project sources",
 		"dev:core-components": "pnpm --filter ./packages/core-components package:watch",
 		"test:component-utilities:watch": "pnpm --filter ./packages/component-utilities test:watch"
 	},

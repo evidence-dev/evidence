@@ -1,5 +1,5 @@
+# This file was automatically generated
 name: needful_things
 options:
-    filename: ./needful_things.duckdb
-
+  filename: ./needful_things.duckdb
 type: duckdb
