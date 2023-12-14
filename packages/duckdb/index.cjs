@@ -17,6 +17,20 @@ const envMap = {
 };
 
 /**
+ * Converts BigInt values to Numbers in an object.
+ * @param {Record<string, unknown>} obj - The input object with potential BigInt values.
+ * @returns {Record<string, unknown>} - The object with BigInt values converted to Numbers.
+ */
+function standardizeRow(obj) {
+	for (const key in obj) {
+		if (typeof obj[key] === 'bigint') {
+			obj[key] = Number(obj[key]);
+		}
+	}
+	return obj;
+}
+
+/**
  *
  * @param {unknown} data
  * @returns {EvidenceType | undefined}
@@ -65,29 +79,45 @@ const mapResultsToEvidenceColumnTypes = function (rows) {
 function duckdbDescribeToEvidenceType(describe) {
 	return describe.map((column) => {
 		let type;
-		switch (column.column_type) {
-			case 'BOOLEAN':
-				type = EvidenceType.BOOLEAN;
-				break;
-			case 'DATE':
-			case 'TIMESTAMP':
-			case 'TIMESTAMP WITH TIME ZONE':
-				type = EvidenceType.DATE;
-				break;
-			case 'DECIMAL':
-			case 'DOUBLE':
-			case 'FLOAT':
-			case 'INTEGER':
-			case 'UINTEGER':
-			case 'SMALLINT':
-			case 'USMALLINT':
-			case 'TINYINT':
-			case 'UTINYINT':
-				type = EvidenceType.NUMBER;
-				break;
-			default:
-				type = EvidenceType.STRING;
-				break;
+		if (/DECIMAL/i.test(column.column_type)) {
+			type = EvidenceType.NUMBER;
+		} else {
+			switch (column.column_type) {
+				case 'BOOLEAN':
+					type = EvidenceType.BOOLEAN;
+					break;
+				case 'DATE':
+				case 'TIMESTAMP':
+				case 'TIMESTAMP WITH TIME ZONE':
+				case 'TIMESTAMP_S':
+				case 'TIMESTAMP_MS':
+				case 'TIMESTAMP_NS':
+					type = EvidenceType.DATE;
+					break;
+				case 'DOUBLE':
+				case 'FLOAT':
+				case 'TINYINT':
+				case 'UTINYINT':
+				case 'SMALLINT':
+				case 'USMALLINT':
+				case 'INTEGER':
+				case 'UINTEGER':
+				case 'UBIGINT':
+				case 'HUGEINT':
+					type = EvidenceType.NUMBER;
+					break;
+				case 'BIGINT':
+					type = EvidenceType.NUMBER;
+					break;
+				case 'DECIMAL':
+				case 'TIME':
+				case 'TIME WITH TIME ZONE':
+					type = EvidenceType.STRING;
+					break;
+				default:
+					type = EvidenceType.STRING;
+					break;
+			}
 		}
 		return { name: column.column_name, evidenceType: type, typeFidelity: TypeFidelity.PRECISE };
 	});
@@ -115,7 +145,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 			mapResultsToEvidenceColumnTypes:
-				column_types == null ? mapResultsToEvidenceColumnTypes : undefined
+				column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
+			standardizeRow
 		});
 		if (column_types != null) {
 			results.columnTypes = column_types;
