@@ -99,7 +99,6 @@ fsExtra.outputFileSync(
 		},
 		customLogger: logger
     }
-	console.log(config)
     export default config`
 );
 
