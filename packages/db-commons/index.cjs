@@ -99,7 +99,6 @@ const processQueryResults = function (queryResults) {
 	return { rows, columnTypes };
 };
 
-
 /**
  * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
  * @property {(rows: Record<string, unknown>[]) => QueryResult["columnTypes"]} [mapResultsToEvidenceColumnTypes]
