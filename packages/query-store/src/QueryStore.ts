@@ -179,7 +179,33 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return undefined;
 	}
 
-	constructor(
+	static create(
+		query: string | Query,
+		exec: Runner,
+		id?: string,
+		opts: QueryStoreOpts = { disableCache: false },
+		root?: QueryStore
+	): QueryStore {
+		const hash = buildId(query);
+		if (!id) {
+			id = hash;
+		}
+		console.log({ id, hash, query });
+		if (!opts.disableCache) {
+			const cached = QueryStore.cache.get(hash);
+
+			if (cached) {
+				console.debug('Using cached QueryStore', id, hash);
+				return cached;
+			} else console.debug('Created new QueryStore', id, hash);
+		}
+
+		const v = new QueryStore(query, exec, id, opts, root);
+		QueryStore.cache.set(hash, v);
+		return v;
+	}
+
+	private constructor(
 		query: string | Query,
 		exec: Runner,
 		id?: string,

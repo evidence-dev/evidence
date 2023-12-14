@@ -33,14 +33,14 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 		});
 
 		it('should be subscribeable', () => {
-			const store = new QueryStore('SELECT 1', mockExec);
+			const store = QueryStore.create('SELECT 1', mockExec);
 			store.subscribe(mockSubscription);
 
 			expect(mockSubscription).toHaveBeenCalledOnce();
 		});
 
 		it('should execute a query when accessing the .length property', async () => {
-			const store = new QueryStore('SELECT 1', mockExec);
+			const store = QueryStore.create('SELECT 1', mockExec);
 			store.subscribe(mockSubscription);
 
 			// Accessing the property should be enough
@@ -79,8 +79,8 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 		});
 
 		it('should ensure that 2 queries with the same derivation are distinct', () => {
-			const store1 = new QueryStore('SELECT 1;', mockExec, undefined, { disableCache: false });
-			const store2 = new QueryStore('SELECT 2;', mockExec, undefined, { disableCache: false });
+			const store1 = QueryStore.create('SELECT 1;', mockExec, undefined, { disableCache: false });
+			const store2 = QueryStore.create('SELECT 2;', mockExec, undefined, { disableCache: false });
 
 			const limitedStore1 = store1.limit(0);
 			const limitedStore2 = store2.limit(0);
@@ -89,7 +89,7 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 		});
 
 		it('should slice properly', async () => {
-			const store = new QueryStore('SELECT 2;', mockExec, undefined, { disableCache: false }).proxy;
+			const store = QueryStore.create('SELECT 2;', mockExec, undefined, { disableCache: false }).proxy;
 
 			await store.fetch();
 
@@ -109,13 +109,13 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 				{ func: 'offset', args: [] }
 			])('$func', (opts: { func: keyof typeof mutations; args: any[] }) => {
 				it(`should have the property ${opts.func}()`, () => {
-					const store = new QueryStore('SELECT 1;', mockExec, undefined, { disableCache: true });
+					const store = QueryStore.create('SELECT 1;', mockExec, undefined, { disableCache: true });
 					expect(opts.func in store).toBe(true);
 					expect(typeof store[opts.func]).toBe('function');
 				});
 
 				it(`should return a new store when using .${opts.func}`, () => {
-					const store = new QueryStore('SELECT 1;', mockExec, undefined, { disableCache: true });
+					const store = QueryStore.create('SELECT 1;', mockExec, undefined, { disableCache: true });
 
 					const targetFunc = store[opts.func];
 					expect(targetFunc).toBeTypeOf('function');
@@ -129,7 +129,7 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 					expect(util.types.isProxy(childStore)).toBe(true);
 				});
 				it('should subscribe to derived stores', async () => {
-					const store = new QueryStore('SELECT 1;', mockExec, 'parent', { disableCache: true });
+					const store = QueryStore.create('SELECT 1;', mockExec, 'parent', { disableCache: true });
 					const targetFunc = store[opts.func];
 					expect(targetFunc).toBeTypeOf('function');
 					if (typeof targetFunc !== 'function') return; // test would fail at this point anyways

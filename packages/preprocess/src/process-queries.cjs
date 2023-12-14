@@ -97,7 +97,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							initialError = e
 						}
 
-						const query_store = new QueryStore(
+						const query_store = QueryStore.create(
 							_${id}_query_text,
 							queryFunc,
 							'${id}',
@@ -154,7 +154,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-				${id} = get(new QueryStore(
+				${id} = get(QueryStore.create(
 						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',

@@ -84,5 +84,5 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
  * @returns {QueryStore}
  */
 export const buildQuery = (queryString, id, initialData) => {
-	return new QueryStore(queryString, queryFunction, id, { initialData });
+	return QueryStore.create(queryString, queryFunction, id, { initialData });
 };
