@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.39
+
+### Patch Changes
+
+- 3708374d: Wait for props to be created before leaving loading state
+
 ## 2.0.0-usql.38
 
 ### Patch Changes

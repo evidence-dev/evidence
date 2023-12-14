@@ -125,7 +125,7 @@ x="w"
 </label>
 
 {#if currentTag}
-<BigValue data={total_posts} value="postCount" title="Posts with #{currentTag?.tag}"/>
-<BigValue data={unique_post_authors} value="authorCount" title="Unique authors posting about #{currentTag?.tag}"/>
-<BigValue data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{currentTag?.tag}"/>
+    <BigValue data={total_posts} value="postCount" title="Posts with #{currentTag?.tag}"/>
+    <BigValue data={unique_post_authors} value="authorCount" title="Unique authors posting about #{currentTag?.tag}"/>
+    <BigValue data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{currentTag?.tag}"/>
 {/if}
