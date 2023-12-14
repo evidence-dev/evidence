@@ -27,18 +27,14 @@
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
-	import { Skeleton } from '../../atoms/skeletons';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
-	import { QueryStore } from '@evidence-dev/query-store';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
-	/** @type {QueryStore} */
 	export let data = undefined;
-
 	export let x = undefined;
 	export let y = undefined;
 	export let y2 = undefined;
@@ -231,18 +227,7 @@
 	let columnSummaryArray;
 	let dateCols;
 
-	/** @type {QueryStore} */
-	let query = data instanceof QueryStore || data.__isQueryStore ? data : undefined;
-	$: if (
-		(query?.__isQueryStore && query?.loaded) ||
-		(data?.__isQueryStore && data?.loaded) ||
-		Array.isArray(data)
-	) {
-		if (data.__isQueryStore) {
-			if (!query) query = data;
-			else if (query.text !== data.text) query = data;
-		}
-
+	$: {
 		try {
 			error = undefined;
 			missingCols = [];
@@ -1003,11 +988,10 @@
 			});
 		} catch (e) {
 			error = e.message;
-			if (!e.message.startsWith('Dataset is empty:')) {
-				console.warn(e.message);
-				if (strictBuild) {
-					throw error;
-				}
+			console.error(e);
+			// if the build is in production fail instead of sending the error to the chart
+			if (strictBuild) {
+				throw error;
 			}
 			props.update((d) => {
 				return { ...d, error };
@@ -1015,27 +999,9 @@
 		}
 	}
 	$: data;
-
-	$: if (query?.error) error = query.error.message ?? error; // Don't overwrite existing error with a possibly empty or null error
-	if (query?.error) error = query.error.message ?? error; // Don't overwrite existing error with a possibly empty or null error
-
-	$: if (!data) error = 'Required prop `data` not provided';
-	if (!data) error = 'Required prop `data` not provided';
 </script>
 
-<!--
-	If the query exists, has loaded, and does not have an error
-	AND the props store has a value (this is important because we don't want to start rendering <Bar/> or similar before there are props)
--->
-{#if query && !query.loaded && !query.error && !Object.keys($props).length}
-	<!-- Query has not loaded, or the props have not gone through first computation -->
-	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''} style:height>
-		<Skeleton />
-	</div>
-{:else if error}
-	<ErrorChart {error} {chartType} />
-{:else}
-	<!-- Preconditions met, render chart -->
+{#if !error}
 	<slot />
 	<ECharts
 		config={$config}
@@ -1047,4 +1013,6 @@
 		{echartsOptions}
 		{printEchartsConfig}
 	/>
+{:else}
+	<ErrorChart {error} {chartType} />
 {/if}
