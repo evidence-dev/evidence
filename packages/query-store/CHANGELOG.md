@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- e2162851: Clean up logs
+
 ## 2.0.0-usql.18
 
 ### Patch Changes
