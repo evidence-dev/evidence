@@ -16,10 +16,10 @@
 	import ErrorChart from '../core/ErrorChart.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import DownloadData from '../ui/DownloadData.svelte';
-	import SortIcon from '../ui/SortIcon.svelte';
-	import { Skeleton } from '../../atoms/skeletons';
-	import InvisibleLinks from '../../atoms/InvisibleLinks.svelte';
+	import DownloadData from '../../ui/DownloadData.svelte';
+	import SortIcon from '../../ui/SortIcon.svelte';
+	import { Skeleton } from '../../../atoms/skeletons';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import Fuse from 'fuse.js';
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';

@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import ECharts from '../viz/ECharts.svelte';
+	import ECharts from '../core/ECharts.svelte';
 
 	import { chartColours } from '@evidence-dev/component-utilities/colours';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';

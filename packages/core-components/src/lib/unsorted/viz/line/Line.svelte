@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	console.log("Line is real")
 	import { getContext, beforeUpdate } from 'svelte';
 	import { propKey, configKey } from '../context';
 	let props = getContext(propKey);
