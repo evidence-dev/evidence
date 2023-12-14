@@ -179,7 +179,7 @@ swapXY=true
 ## Very Long Bar
 
 ```characters_ep_total
-SELECT * FROM './sources/characters_ep_total.csv'
+SELECT * FROM csv.characters_ep_total
 ```
 
 <BarChart 
