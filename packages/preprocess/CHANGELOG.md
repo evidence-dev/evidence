@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.26
+
+### Patch Changes
+
+- 391282e5: QueryStore now uses a factory pattern to enforce caching
+
 ## 4.0.0-usql.25
 
 ### Patch Changes

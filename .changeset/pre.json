@@ -32,9 +32,11 @@
     "@evidence-dev/trino": "0.1.1"
   },
   "changesets": [
+    "angry-berries-chew",
     "angry-flies-poke",
     "beige-dodos-exist",
     "blue-dots-happen",
+    "blue-kings-bow",
     "breezy-hounds-crash",
     "brown-carrots-live",
     "calm-bikes-invite",

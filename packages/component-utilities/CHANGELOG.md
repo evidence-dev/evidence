@@ -1,5 +1,13 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.25
+
+### Patch Changes
+
+- 391282e5: QueryStore now uses a factory pattern to enforce caching
+- Updated dependencies [391282e5]
+  - @evidence-dev/query-store@2.0.0-usql.18
+
 ## 2.0.0-usql.24
 
 ### Patch Changes

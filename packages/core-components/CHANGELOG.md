@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.36
+
+### Patch Changes
+
+- 689d9e2e: Improve DataTable & Chart loading states
+- Updated dependencies [391282e5]
+  - @evidence-dev/component-utilities@2.0.0-usql.25
+  - @evidence-dev/query-store@2.0.0-usql.18
+
 ## 2.0.0-usql.35
 
 ### Patch Changes
