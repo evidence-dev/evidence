@@ -190,16 +190,6 @@
 			},
 			zlevel: 0
 		};
-
-		config.update((d) => {
-			const existingIndex = d.series.findIndex((e) => e.id === identifier);
-			if (existingIndex > -1) {
-				d.series[existingIndex] = baseConfig;
-			} else {
-				d.series.push(baseConfig);
-			}
-			return d;
-		});
 	}
 
 	$: chartOverrides = {
@@ -228,6 +218,17 @@
 				return d;
 			});
 		}
+
+		config.update((d) => {
+			const existingIndex = d.series.findIndex((e) => e.id === identifier);
+			if (existingIndex > -1) {
+				d.series[existingIndex] = baseConfig;
+			} else {
+				d.series.push(baseConfig);
+			}
+			return d;
+		});
+		console.log($config);
 	});
 </script>
 

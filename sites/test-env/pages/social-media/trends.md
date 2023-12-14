@@ -105,7 +105,12 @@ xAxisTitle="Date"
 series="tag"
 handleMissing="connect"
 x="w"
-/>
+>
+
+<ReferenceArea xMin='2023-12-1' xMax='2023-12-5' label='Ref Area' color=red />
+<ReferenceLine x='2023-12-10' label='Ref Lin' color=red />
+
+</LineChart>
 
 ### Tags that appear in both:
 
