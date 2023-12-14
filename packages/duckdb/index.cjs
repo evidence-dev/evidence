@@ -70,19 +70,27 @@ function duckdbDescribeToEvidenceType(describe) {
 				type = EvidenceType.BOOLEAN;
 				break;
 			case 'DATE':
-			case 'TIMESTAMP':
-			case 'TIMESTAMP WITH TIME ZONE':
+            case 'TIMESTAMP':
+            case 'TIMESTAMP WITH TIME ZONE':
+            case 'TIMESTAMP_S':
+            case 'TIMESTAMP_MS':
+            case 'TIMESTAMP_NS':
+            case 'TIME':
+            case 'TIME WITH TIME ZONE':
 				type = EvidenceType.DATE;
 				break;
 			case 'DECIMAL':
 			case 'DOUBLE':
 			case 'FLOAT':
-			case 'INTEGER':
-			case 'UINTEGER':
-			case 'SMALLINT':
-			case 'USMALLINT':
 			case 'TINYINT':
 			case 'UTINYINT':
+			case 'SMALLINT':
+			case 'USMALLINT':
+			case 'INTEGER':
+			case 'UINTEGER':
+			case 'BIGINT':
+			case 'UBIGINT':
+			case 'HUGEINT':
 				type = EvidenceType.NUMBER;
 				break;
 			default:
