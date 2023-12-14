@@ -1022,7 +1022,11 @@
 	if (!data) error = 'Required prop `data` not provided';
 </script>
 
-{#if query && !query.loaded && !query.error}
+<!--
+	If the query exists, has loaded, and does not have an error
+	AND the props store has a value (this is important because we don't want to start rendering <Bar/> or similar before there are props)
+-->
+{#if query && !query.loaded && !query.error && !Object.keys($props).length}
 	<!-- Query has not loaded, or the props have not gone through first computation -->
 	<div class="w-full" class:h-64={!height} style={width ? `width: ${width}px` : ''} style:height>
 		<Skeleton />
