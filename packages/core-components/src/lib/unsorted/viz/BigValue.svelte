@@ -86,9 +86,11 @@
 			}
 		} catch (e) {
 			error = e;
-			console.warn(e.message);
-			if (strictBuild) {
-				throw error;
+			if (!e.message.startsWith('Dataset is empty:')) {
+				console.warn(e.message);
+				if (strictBuild) {
+					throw error;
+				}
 			}
 		}
 
