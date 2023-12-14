@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.36
+
+### Patch Changes
+
+- af4a8a1e: Explicit mappings for all DuckDB types
+
 ## 2.0.0-usql.35
 
 ### Patch Changes

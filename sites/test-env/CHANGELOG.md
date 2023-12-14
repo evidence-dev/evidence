@@ -1,5 +1,15 @@
 # evidence-test-environment
 
+## 3.0.0-usql.64
+
+### Patch Changes
+
+- Updated dependencies [af4a8a1e]
+  - @evidence-dev/duckdb@1.0.0-usql.10
+  - @evidence-dev/csv@1.0.0-usql.11
+  - @evidence-dev/core-components@2.0.0-usql.40
+  - @evidence-dev/evidence@20.0.0-usql.64
+
 ## 3.0.0-usql.63
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.0-usql.10
+
+### Patch Changes
+
+- af4a8a1e: Explicit mappings for all DuckDB types
+
 ## 1.0.0-usql.9
 
 ### Patch Changes
