@@ -89,7 +89,7 @@ test('query runs', async () => {
 			'number', // tinyint_col
 			'number', // smallint_col
 			'number', // int_col
-			'bigint', // bigint_col
+			'number', // bigint_col
 			'number', // hugeint_col
 			'number', // utinyint_col
 			'number', // usmallint_col

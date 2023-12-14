@@ -93,7 +93,7 @@ function duckdbDescribeToEvidenceType(describe) {
 					type = EvidenceType.NUMBER;
 					break;
 				case 'BIGINT':
-					type = EvidenceType.BIGINT;
+					type = EvidenceType.NUMBER;
 					break;
 				case 'DECIMAL':
 				case 'TIME':
