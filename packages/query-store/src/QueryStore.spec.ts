@@ -26,6 +26,7 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 				}
 			});
 			vi.stubGlobal('window', {});
+			QueryStore.emptyCache();
 		});
 
 		it('should be defined', () => {
@@ -89,7 +90,9 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 		});
 
 		it('should slice properly', async () => {
-			const store = QueryStore.create('SELECT 2;', mockExec, undefined, { disableCache: false }).proxy;
+			const store = QueryStore.create('SELECT 2;', mockExec, undefined, {
+				disableCache: false
+			}).proxy;
 
 			await store.fetch();
 
@@ -139,7 +142,6 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 					await store.fetch();
 
 					const childStore = (targetFunc as CallableFunction)(opts.args);
-					// childStore.subscribe(mockSubscription);
 					await childStore.fetch();
 
 					while (!childStore.value().loaded) await new Promise((r) => setTimeout(r, 0));

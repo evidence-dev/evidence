@@ -100,43 +100,44 @@
 
 	let columnSummary;
 
-	let query = data.__isQueryStore ? data : undefined
+	let query = data.__isQueryStore ? data : undefined;
 
 	$: if (
-			(query?.__isQueryStore && query?.loaded) ||
-			(data?.__isQueryStore && data?.loaded) ||
-			Array.isArray(data)
-		)
+		(query?.__isQueryStore && query?.loaded) ||
+		(data?.__isQueryStore && data?.loaded) ||
+		Array.isArray(data)
+	)
 		try {
-		error = undefined;
-		// CHECK INPUTS
-		checkInputs(data);
+			error = undefined;
+			// CHECK INPUTS
+			checkInputs(data);
 
-		// GET COLUMN SUMMARY
-		columnSummary = getColumnSummary(data, 'array');
+			// GET COLUMN SUMMARY
+			columnSummary = getColumnSummary(data, 'array');
 
-		// PROCESS DATES
-		// Filter for columns with type of "date"
-		let dateCols = columnSummary.filter((d) => d.type === 'date');
-		dateCols = dateCols.map((d) => d.id);
+			// PROCESS DATES
+			// Filter for columns with type of "date"
+			let dateCols = columnSummary.filter((d) => d.type === 'date');
+			dateCols = dateCols.map((d) => d.id);
 
-		if (dateCols.length > 0) {
-			for (let i = 0; i < dateCols.length; i++) {
-				data = convertColumnToDate(data, dateCols[i]);
+			if (dateCols.length > 0) {
+				for (let i = 0; i < dateCols.length; i++) {
+					data = convertColumnToDate(data, dateCols[i]);
+				}
+			}
+
+			// Hide link column if columns have not been explicitly selected:
+			for (let i = 0; i < columnSummary.length; i++) {
+				columnSummary[i].show =
+					showLinkCol === false && columnSummary[i].id === link ? false : true;
+			}
+		} catch (e) {
+			console.warn(e.message);
+			error = e.message;
+			if (strictBuild) {
+				throw error;
 			}
 		}
-
-		// Hide link column if columns have not been explicitly selected:
-		for (let i = 0; i < columnSummary.length; i++) {
-			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
-		}
-	} catch (e) {
-		console.warn(e.message);
-		error = e.message;
-		if (strictBuild) {
-			throw error;
-		}
-	}
 
 	let index = 0;
 

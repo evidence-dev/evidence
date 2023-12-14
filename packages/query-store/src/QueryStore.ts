@@ -190,14 +190,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		if (!id) {
 			id = hash;
 		}
-		console.log({ id, hash, query });
 		if (!opts.disableCache) {
 			const cached = QueryStore.cache.get(hash);
-
-			if (cached) {
-				console.debug('Using cached QueryStore', id, hash);
-				return cached;
-			} else console.debug('Created new QueryStore', id, hash);
+			if (cached) return cached;
 		}
 
 		const v = new QueryStore(query, exec, id, opts, root);
@@ -525,21 +520,21 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			// Build a unique ID for the target child store
 			const newQuery = aggFunc(this.#query.clone(), ...args);
 
-			const id = buildId(newQuery.toString());
+			const hash = buildId(newQuery.toString());
 
 			// If there is a root; subscription operations will function against that
 			// If there isn't; then this is a root
 			const subscriber = this.root ?? this;
 
 			// If caching is enabled and the id exists in the cache
-			if (!this.opts.disableCache && QueryStore.cache.has(id)) {
+			if (!this.opts.disableCache && QueryStore.cache.has(hash)) {
 				// Use the cache
-				const cachedQuery = QueryStore.cache.get(id);
+				const cachedQuery = QueryStore.cache.get(hash);
 				if (!cachedQuery) throw new Error('Error getting query from cache. This should not occur.');
 
-				if (!subscriber.#subscriptions.includes(id)) {
+				if (!subscriber.#subscriptions.includes(hash)) {
 					cachedQuery.subscribe(subscriber.publish);
-					subscriber.#subscriptions.push(id);
+					subscriber.#subscriptions.push(hash);
 				}
 
 				return cachedQuery.#proxied;
@@ -548,7 +543,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			const newStore = new QueryStore(
 				newQuery,
 				this.#exec,
-				id,
+				hash,
 				{
 					...this.opts,
 					initialData: passCurrentAsInitial ? this.#values : undefined,
@@ -557,9 +552,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.root ?? this
 			);
 
-			subscriber.#subscriptions.push(id);
+			subscriber.#subscriptions.push(hash);
 			newStore.subscribe(subscriber.publish);
-			QueryStore.cache.set(id, newStore);
+			QueryStore.cache.set(hash, newStore);
 			return newStore.#proxied;
 		};
 	};
