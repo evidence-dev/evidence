@@ -1,5 +1,12 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.35
+
+### Patch Changes
+
+- Updated dependencies [9603c4e7]
+  - @evidence-dev/universal-sql@2.0.0-usql.23
+
 ## 2.0.0-usql.34
 
 ### Patch Changes

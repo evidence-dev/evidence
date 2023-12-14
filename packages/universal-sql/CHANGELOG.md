@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.23
+
+### Patch Changes
+
+- 9603c4e7: Silence DuckDB unless in debug mode
+
 ## 2.0.0-usql.22
 
 ### Patch Changes
