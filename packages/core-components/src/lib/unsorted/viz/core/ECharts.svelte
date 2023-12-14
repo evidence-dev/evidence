@@ -7,9 +7,9 @@
 	import echarts from '@evidence-dev/component-utilities/echarts';
 	import echartsCanvasDownload from '@evidence-dev/component-utilities/echartsCanvasDownload';
 	import EChartsCopyTarget from './EChartsCopyTarget.svelte';
-	import DownloadData from '../ui/DownloadData.svelte';
-	import CodeBlock from '../ui/CodeBlock.svelte';
-	import ChartLoading from '../ui/ChartLoading.svelte';
+	import DownloadData from '../../ui/DownloadData.svelte';
+	import CodeBlock from '../../ui/CodeBlock.svelte';
+	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 	import { createEventDispatcher } from 'svelte';
 
