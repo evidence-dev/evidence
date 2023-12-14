@@ -1,7 +1,7 @@
 ---
 title: SQL File Queries
 
-sources:
+queries:
   - test_query.sql
   - test_query_nested: nested/test_query.sql
   - DEP_query.sql
@@ -72,7 +72,7 @@ It is possible to escape the default name for your queries by using some simple 
 
 ```yaml
 ---
-sources:
+queries:
   - default_query_name.sql # This will be referenced as default_query_name
   - alias: default_query_name.sql # This will be referenced as alias
 #      ^ This is the key

@@ -1,5 +1,5 @@
 ---
-sources:
+queries:
   - orders_by_item: orders_by_item.sql
 ---
 

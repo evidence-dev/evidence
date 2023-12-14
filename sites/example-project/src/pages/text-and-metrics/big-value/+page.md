@@ -1,6 +1,6 @@
 ---
 title: Big Value
-sources:
+queries:
   - orders_with_comparisons: orders_with_comparisons.sql
 ---
 

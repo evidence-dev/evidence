@@ -1,6 +1,6 @@
 ---
 title: Line Chart
-sources:
+queries:
   - orders_by_month: orders_by_month.sql
   - orders_by_category: orders_by_category.sql
 ---
