@@ -88,10 +88,12 @@ function duckdbDescribeToEvidenceType(describe) {
 				case 'USMALLINT':
 				case 'INTEGER':
 				case 'UINTEGER':
-				case 'BIGINT':
 				case 'UBIGINT':
 				case 'HUGEINT':
 					type = EvidenceType.NUMBER;
+					break;
+				case 'BIGINT':
+					type = EvidenceType.BIGINT;
 					break;
 				case 'DECIMAL':
 				case 'TIME':
