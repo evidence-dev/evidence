@@ -1,5 +1,18 @@
 # evidence-test-environment
 
+## 3.0.0-usql.65
+
+### Patch Changes
+
+- Updated dependencies [1235f278]
+- Updated dependencies [d7477a44]
+- Updated dependencies [15248699]
+- Updated dependencies [1c478a62]
+- Updated dependencies [071da2b5]
+  - @evidence-dev/core-components@2.0.0-usql.41
+  - @evidence-dev/evidence@20.0.0-usql.65
+  - @evidence-dev/component-utilities@2.0.0-usql.29
+
 ## 3.0.0-usql.64
 
 ### Patch Changes

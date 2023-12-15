@@ -1,5 +1,17 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.41
+
+### Patch Changes
+
+- 1235f278: Wrap most viz components in a QueryLoad to externalize interaction with QueryStore loading state
+  Update Table of Contents when a header value changes
+- d7477a44: Silence Empty Dataset error in console
+- 15248699: fix for hugeints
+- 1c478a62: ReferenceArea now re-adds itself to the series when needed
+  - @evidence-dev/query-store@2.0.0-usql.22
+  - @evidence-dev/component-utilities@2.0.0-usql.29
+
 ## 2.0.0-usql.40
 
 ### Patch Changes

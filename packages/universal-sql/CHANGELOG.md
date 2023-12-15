@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.24
+
+### Patch Changes
+
+- 15248699: fix for hugeints
+
 ## 2.0.0-usql.23
 
 ### Patch Changes
