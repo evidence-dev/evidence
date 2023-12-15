@@ -137,7 +137,10 @@
 	$: fuse = new Fuse(data, {
 		getFn: (row, [path]) => {
 			const summary = columnSummary?.find((d) => d.id === path) ?? {};
-			return summary.type === 'date' && row[summary.id] != null
+			return summary.type === 'date' &&
+				row[summary.id] != null &&
+				row[summary.id] instanceof Date &&
+				!isNaN(row[summary.id].getTime())
 				? row[summary.id].toISOString()
 				: row[summary.id]?.toString() ?? '';
 		},
