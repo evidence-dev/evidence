@@ -33,11 +33,12 @@ select
     n_days / 365 as approx_years
 from ${working_reference}
 ```
+<!-- broken in usql if you remove query name
 
 ```sql missing_reference
 select
     count(*) as n_days
-from ${}
+from ${x}
 ```
 
 ```sql incorrect_reference
@@ -57,11 +58,13 @@ select * from ${circular_reference_1}
 ```sql missing_close_bracket
 select
     n_days / 365 as approx_years
-from ${working_reference
+from ${working_reference}
 ```
+
 
 ```sql missing_opening_bracket
 select
     n_days / 365 as approx_years
-from working_reference}
-```
+from {working_reference}
+``` 
+-->
