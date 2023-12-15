@@ -98,7 +98,7 @@ if (process.env.NODE_ENV === 'development') {
 	);
 }
 
-/** @typedef {(path: string, manifest: object, error: Error | null, message: string, variant: import("evidence-dev/component-utilities/stores").ToastStatus ) => void} Handler */
+/** @typedef {(path: string, manifest: object, error: Error | null, message: string, variant: string ) => void} Handler */
 
 const subscribed_servers = new Map();
 
@@ -117,7 +117,7 @@ const configureServer = (server) => {
 
 		const isSpecial = query.endsWith('connection') || query.endsWith('connection.options');
 		const title = isSpecial ? source : `${source}.${query}`;
-		/** @type {import("@evidence-dev/component-utilities/stores").Toast} */
+		/** @type {*} */
 		const toast = {
 			status: variant,
 			message,
