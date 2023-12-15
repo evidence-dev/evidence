@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.42
+
+### Patch Changes
+
+- d1265559: Ensure QueryViewer SQL not open by default
+- be6cd88a: Wrap maps, tweak how data is passed
+- 9da3812e: - QueryStatus only notifies once now
+  - Source HMR uses a path-specific queue to prevent queuing a file twice, and prevent running more than one source command at a time
+
 ## 2.0.0-usql.41
 
 ### Patch Changes

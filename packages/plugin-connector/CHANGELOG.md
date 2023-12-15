@@ -1,5 +1,12 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.38
+
+### Patch Changes
+
+- 9da3812e: - QueryStatus only notifies once now
+  - Source HMR uses a path-specific queue to prevent queuing a file twice, and prevent running more than one source command at a time
+
 ## 2.0.0-usql.37
 
 ### Patch Changes

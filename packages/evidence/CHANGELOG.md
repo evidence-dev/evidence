@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.66
+
+### Patch Changes
+
+- Updated dependencies [d1265559]
+- Updated dependencies [be6cd88a]
+- Updated dependencies [9da3812e]
+  - @evidence-dev/core-components@2.0.0-usql.42
+  - @evidence-dev/plugin-connector@2.0.0-usql.38
+
 ## 20.0.0-usql.65
 
 ### Patch Changes
