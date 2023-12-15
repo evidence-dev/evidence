@@ -53,6 +53,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			*/
 			return `
 				$: _${id}_query_text = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
+				$: _${id}_has_unresolved = __checkForUnsetInputs\`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
 
 				// Initial Query
 				let _${id}_initial_query;
@@ -104,7 +105,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							{
 								scoreNotifier,
 								initialData,
-								initialError
+								initialError,
+								noResolve: _${id}_has_unresolved
 							}
 						);
 						
@@ -235,6 +237,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		
 		let params = $page.params;
 		$: params = $page.params;
+
+		function __checkForUnsetInputs(strings, ...args) {
+			if (args.some(a => a.__unset)) {
+				return true
+			} else {
+				return false
+			}
+		}
+		
 
         ${queryDeclarations}
     `;

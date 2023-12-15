@@ -1,4 +1,5 @@
-rows: 100
+rows: 10
+
 schema:
     id:
         type: id
@@ -7,14 +8,30 @@ schema:
     # Category / Item fields? 1 picked at random
     tag:
         oneof:
-          - category: company
-            item: buzzAdjective
-          - category: company
-            item: buzzNoun
-          - category: company
-            item: catchPhraseAdjective
-          - category: company
-            item: catchPhraseNoun            
+          - category: helpers
+            item: fake
+            options: 
+              - "#{{company.buzzAdjective}}"
+          - category: helpers
+            item: fake
+            options: 
+              - "#{{company.buzzNoun}}"
+          - category: helpers
+            item: fake
+            options: 
+              - "#{{company.catchPhraseAdjective}}"
+          - category: helpers
+            item: fake
+            options: 
+              - "#{{company.catchPhraseNoun}}"
+          - category: helpers
+            item: fake
+            options: 
+              - "#{{person.jobDescriptor}}{{company.catchPhraseNoun}}"
+          - category: helpers
+            item: fake
+            options: 
+              - "#{{hacker.ingverb}}{{hacker.noun}}"
             
 filters:
     - type: unique

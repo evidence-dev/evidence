@@ -2,8 +2,6 @@
     let currentTag;
 </script>
 
-# Not Twitter Trending Hashtags
-
 ```most_posted_tags
 WITH EVERYTHING AS (
     SELECT
@@ -58,7 +56,7 @@ SELECT DISTINCT tag, hashtag_id FROM ( SELECT * FROM A UNION SELECT * FROM B )
 ```total_posts
 SELECT COUNT(*) as postCount FROM posts p
     INNER JOIN post_tags pt on p.id = pt.post_id
-WHERE p.created_at > CURRENT_DATE - INTERVAL '5 WEEK' AND pt.hashtag_id = ${currentTag?.hashtag_id ?? -1}
+WHERE p.created_at > CURRENT_DATE - INTERVAL '5 WEEK' AND pt.hashtag_id = ${inputs.selected_tag ?? -1}
 GROUP BY pt.hashtag_id
 ```
 
@@ -67,7 +65,7 @@ SELECT COUNT(DISTINCT u.ID) as authorCount
 FROM users u
     INNER JOIN posts p ON p.user_id = u.id
     INNER JOIN post_tags pt ON pt.post_id = p.id
-WHERE pt.hashtag_id = ${currentTag?.hashtag_id ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '5 WEEK'
+WHERE pt.hashtag_id = ${inputs.selected_tag ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '5 WEEK'
 GROUP BY pt.hashtag_id
 ```
 
@@ -77,15 +75,52 @@ FROM users u
     INNER JOIN likes l ON l.user_id = u.id
     INNER JOIN post_tags pt ON pt.post_id = l.post_id
     INNER JOIN posts p ON pt.post_id = p.id
-WHERE pt.hashtag_id = ${currentTag?.hashtag_id ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '5 WEEK'
+WHERE pt.hashtag_id = ${inputs.selected_tag ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '5 WEEK'
 GROUP BY pt.hashtag_id
 ```
+
+# Not Twitter Trending Hashtags
+
+<Dropdown data={liked_and_posted_tags} value="hashtag_id" label="tag" name=selected_tag />
+
+
+These values all flicker because they are dependent on an input
+
+{#if inputs.selected_tag}
+<div class="grid grid-cols-3">
+    <BigValue data={total_posts} value="postCount" title="Posts with #{inputs.selected_tag}"/>
+    <BigValue data={unique_post_authors} value="authorCount" title="Unique authors posting about #{inputs.selected_tag}"/>
+    <BigValue data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{inputs.selected_tag}"/>
+</div>
+<div class="grid grid-cols-3">
+    <Value data={total_posts} value="postCount" title="Posts with #{inputs.selected_tag}"/>
+    <Value data={unique_post_authors} value="authorCount" title="Unique authors posting about #{inputs.selected_tag}"/>
+    <Value data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{inputs.selected_tag}"/>
+</div>
+{/if}
+
+---
+
+These shouldn't flicker
+
+<BigValue data={most_liked_tags} value="tag" title="Most liked tag"/>
+<BigValue data={most_posted_tags} value="tag" title="Most posted tag"/>
 
 ## Most popular hashtags over the last month
 
 ### Based on occurance in posts
 
 <LineChart
+data={most_posted_tags}
+y="post_count"
+yAxisTitle="Tagged Posts"
+xAxisTitle="Date"
+series="tag"
+handleMissing="connect"
+x="w"
+/>
+
+<BarChart
 data={most_posted_tags}
 y="post_count"
 yAxisTitle="Tagged Posts"
@@ -120,17 +155,12 @@ x="w"
     {/each}
 </ul>
 
-<label>
+<!-- <label>
     Inspect a tag
     <select bind:value={currentTag} class="bg-gray-100 block">
         {#each liked_and_posted_tags as h}
             <option value={h}>{h.tag}</option>
         {/each}
     </select>
-</label>
+</label> -->
 
-{#if currentTag}
-    <BigValue data={total_posts} value="postCount" title="Posts with #{currentTag?.tag}"/>
-    <BigValue data={unique_post_authors} value="authorCount" title="Unique authors posting about #{currentTag?.tag}"/>
-    <BigValue data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{currentTag?.tag}"/>
-{/if}

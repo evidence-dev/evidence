@@ -172,6 +172,7 @@ const recursiveFillerObject = new Proxy(
 	{},
 	{
 		get(target, prop) {
+			if (prop === '__unset') return true;
 			if (typeof prop === 'symbol') return undefined;
 			if (prop === 'then') return undefined;
 			if (prop === 'loading') return undefined;

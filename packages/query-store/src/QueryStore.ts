@@ -36,6 +36,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	/** Duck Type */
 	readonly __isQueryStore = true;
+	static isQueryStore(q: unknown): q is QueryStore {
+		if (typeof q === 'object' && q && '__isQueryStore' in q && q.__isQueryStore === true)
+			return true;
+		return false;
+	}
 
 	/**
 	 * A Proxy wrapper around the QueryStore instance.
@@ -148,6 +153,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#mockResult: QueryResult = {};
 
 	readonly id: string;
+	readonly hash: string;
 
 	#error: Error | unknown;
 
@@ -194,7 +200,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			const cached = QueryStore.cache.get(hash);
 			if (cached) return cached;
 		}
-
 		const v = new QueryStore(query, exec, id, opts, root);
 		QueryStore.cache.set(hash, v);
 		return v;
@@ -210,7 +215,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		super();
 		Object.freeze(opts);
 		// Ensure an ID Exists
-		this.id = id ?? buildId(query);
+		this.hash = buildId(query);
+		this.id = id ?? this.hash;
 
 		// TODO: Strip any trailing ; from queries
 		// This is hard because of comments
@@ -281,16 +287,26 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			}
 		);
 
-		handleMaybePromise(
-			(alreadyFetchedMeta) => {
-				if (!alreadyFetchedMeta) this.#fetchMetadata();
-			},
-			() => this.#handleInitialData(),
-			this.#setError
-		);
+		if (opts.noResolve) {
+			this.#dataLoading = true;
+			this.#metaLoading = true;
+			this.#lengthLoading = true;
+			this.#dataLoaded = false;
+			this.#metaLoaded = false;
+			this.#lengthLoaded = false;
+			this.publish();
+		} else {
+			handleMaybePromise(
+				(alreadyFetchedMeta) => {
+					if (!alreadyFetchedMeta) this.#fetchMetadata();
+				},
+				() => this.#handleInitialData(),
+				this.#setError
+			);
 
-		// prerender
-		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
+			// prerender
+			if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
+		}
 	}
 
 	#handleInitialData = () => {
