@@ -1003,10 +1003,11 @@
 			});
 		} catch (e) {
 			error = e.message;
-			console.warn(e.message);
-			// if the build is in production fail instead of sending the error to the chart
-			if (strictBuild) {
-				throw error;
+			if (!e.message.startsWith('Dataset is empty:')) {
+				console.warn(e.message);
+				if (strictBuild) {
+					throw error;
+				}
 			}
 			props.update((d) => {
 				return { ...d, error };

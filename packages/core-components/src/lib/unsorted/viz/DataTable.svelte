@@ -132,10 +132,12 @@
 					showLinkCol === false && columnSummary[i].id === link ? false : true;
 			}
 		} catch (e) {
-			console.warn(e.message);
 			error = e.message;
-			if (strictBuild) {
-				throw error;
+			if (!e.message.startsWith('Dataset is empty:')) {
+				console.warn(e.message);
+				if (strictBuild) {
+					throw error;
+				}
 			}
 		}
 
