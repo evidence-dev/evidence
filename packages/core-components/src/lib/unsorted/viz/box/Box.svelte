@@ -79,7 +79,6 @@
 		tooltip: {
 			show: true,
 			formatter: function (params) {
-				console.log(params);
 				let output;
 				output =
 					`<span style="font-weight: 600;">${params[0].name}</span><br/>` +

@@ -8,13 +8,16 @@
 	export let data;
 
 	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
-	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
+	$: spreadProps = {
+		...Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined)),
+		data: data?.__isQueryStore ? Array.from(data) : data
+	};
 </script>
 
 <!-- Pass all the props through-->
 <QueryLoad {data}>
 	<p slot="skeleton">Loading...</p>
-	<Value {...spreadProps} data={data ? Array.from(data) : null}>
+	<Value {...spreadProps}>
 		<slot />
 	</Value>
 </QueryLoad>
