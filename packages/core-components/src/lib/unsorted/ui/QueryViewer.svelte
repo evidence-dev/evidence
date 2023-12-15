@@ -18,7 +18,7 @@
 	$: pageQueries = $page.data.evidencemeta.queries;
 
 	// Title & Query Toggle
-	let showSQL = localStorageStore('showSQL_'.concat(queryID), true);
+	let showSQL = localStorageStore('showSQL_'.concat(queryID), false);
 	// Query text & Compiler Toggle
 	let showResults = localStorageStore(`showResults_${queryID}`);
 
