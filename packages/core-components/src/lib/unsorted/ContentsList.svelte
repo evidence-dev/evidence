@@ -17,7 +17,9 @@
 			updateLinks();
 		});
 
-		observer.observe(document.body, { subtree: true, characterData: true, childList: true });
+		headers.forEach((header) => {
+			observer.observe(header, { subtree: true, characterData: true, childList: true });
+		});
 
 		return observer;
 	}
