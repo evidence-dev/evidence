@@ -3,12 +3,13 @@
 </script>
 
 <script>
-	import {QueryLoad} from "../../../atoms/query-load"
-	import BigValue from "./_BigValue.svelte"
-	export let data
+	import { QueryLoad } from '../../../atoms/query-load';
+	import InnerBigValue from './_BigValue.svelte';
+	import Value from './Value.svelte';
+	export let data;
 
 	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
-	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([k,v]) => v !== undefined))
+	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
 </script>
 
 <!-- Pass all the props through-->
@@ -20,13 +21,13 @@
 			min-width: ${$$props.minWidth};
 			max-width: ${$$props.maxWidth};
 		`}
-		slot=skeleton
+		slot="skeleton"
 	>
-		<p class="text-sm text-gray-700">{$$props.title}</p>
+		<p class="text-sm text-gray-700">{$$props.title ?? ' '}</p>
 		<Value {data} column={$$props.value} fmt={$$props.fmt} />
 	</div>
 
-	<BigValue {...spreadProps} data={data ? Array.from(data) : null}>
-		<slot/>
-	</BigValue>
+	<InnerBigValue {...spreadProps} data={data ? Array.from(data) : null}>
+		<slot />
+	</InnerBigValue>
 </QueryLoad>

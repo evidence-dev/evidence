@@ -2,31 +2,6 @@
     let currentTag;
 </script>
 
-
-# Not Twitter Trending Hashtags
-
-<Dropdown data={liked_and_posted_tags} value="hashtag_id" label="tag" name=selected_tag />
-
-
-These values all flicker because they are dependent on an input
-
-{#if inputs.selected_tag}
-    <BigValue data={total_posts} value="postCount" title="Posts with #{inputs.selected_tag}"/>
-    <BigValue data={unique_post_authors} value="authorCount" title="Unique authors posting about #{inputs.selected_tag}"/>
-    <BigValue data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{inputs.selected_tag}"/>
-    <Value data={total_posts} value="postCount" title="Posts with #{inputs.selected_tag}"/>
-    <Value data={unique_post_authors} value="authorCount" title="Unique authors posting about #{inputs.selected_tag}"/>
-    <Value data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{inputs.selected_tag}"/>
-{/if}
-
----
-
-These shouldn't flicker
-
-<BigValue data={most_liked_tags} value="tag" title="Most liked tag"/>
-<BigValue data={most_posted_tags} value="tag" title="Most posted tag"/>
-<BigValue data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{inputs.selected_tag}"/>
-
 ```most_posted_tags
 WITH EVERYTHING AS (
     SELECT
@@ -103,6 +78,33 @@ FROM users u
 WHERE pt.hashtag_id = ${inputs.selected_tag ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '5 WEEK'
 GROUP BY pt.hashtag_id
 ```
+
+# Not Twitter Trending Hashtags
+
+<Dropdown data={liked_and_posted_tags} value="hashtag_id" label="tag" name=selected_tag />
+
+
+These values all flicker because they are dependent on an input
+
+{#if inputs.selected_tag}
+<div class="grid grid-cols-3">
+    <BigValue data={total_posts} value="postCount" title="Posts with #{inputs.selected_tag}"/>
+    <BigValue data={unique_post_authors} value="authorCount" title="Unique authors posting about #{inputs.selected_tag}"/>
+    <BigValue data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{inputs.selected_tag}"/>
+</div>
+<div class="grid grid-cols-3">
+    <Value data={total_posts} value="postCount" title="Posts with #{inputs.selected_tag}"/>
+    <Value data={unique_post_authors} value="authorCount" title="Unique authors posting about #{inputs.selected_tag}"/>
+    <Value data={unique_post_likers} value="authorCount" title="Unique users liking posts about #{inputs.selected_tag}"/>
+</div>
+{/if}
+
+---
+
+These shouldn't flicker
+
+<BigValue data={most_liked_tags} value="tag" title="Most liked tag"/>
+<BigValue data={most_posted_tags} value="tag" title="Most posted tag"/>
 
 ## Most popular hashtags over the last month
 

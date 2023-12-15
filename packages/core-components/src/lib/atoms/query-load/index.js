@@ -1,1 +1,1 @@
-export {default as QueryLoad} from "./QueryLoad.svelte"
+export { default as QueryLoad } from './QueryLoad.svelte';

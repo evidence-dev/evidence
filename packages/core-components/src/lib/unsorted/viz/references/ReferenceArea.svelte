@@ -228,7 +228,6 @@
 			}
 			return d;
 		});
-		console.log($config);
 	});
 </script>
 

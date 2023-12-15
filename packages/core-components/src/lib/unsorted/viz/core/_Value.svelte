@@ -1,7 +1,3 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import {
