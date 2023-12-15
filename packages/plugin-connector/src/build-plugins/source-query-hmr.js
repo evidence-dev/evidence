@@ -7,9 +7,9 @@ import fs from 'fs/promises';
 import nodePath from 'path';
 import yaml from 'yaml';
 import { basename, dirname, resolve, sep as pathSep } from 'path';
-import debounce from 'lodash.debounce';
 // @ts-expect-error
 import { setParquetURLs } from '@evidence-dev/universal-sql/client-duckdb';
+import { ProcessingQueue } from '../lib/processing-queue.js';
 
 /**
  * Extracts source, query, and source_path from a path
@@ -38,17 +38,29 @@ function getSourceAndQuery(path) {
 const build_watcher = new EventEmitter();
 
 if (process.env.NODE_ENV === 'development') {
+	const queue = ProcessingQueue();
+
 	const watcher = watch('../../sources/**');
+	const queuedPaths = new Set();
 	watcher.on(
 		'change',
-		debounce(
-			/** @type {(path: string) => Promise<void>} */ async (path) => {
-				const { query, source_path } = getSourceAndQuery(path);
+		/** @type {(path: string) => Promise<void>} */ async (path) => {
+			const { query, source, source_path } = getSourceAndQuery(path);
+			const isSpecial = query.endsWith('connection') || query.endsWith('connection.options');
+			const title = isSpecial ? source : `${source}.${query}`;
+
+			if (queuedPaths.has(title)) return;
+			queuedPaths.add(title);
+
+			build_watcher.emit('update', path, {}, null, 'Queued to update', 'info');
+
+			queue.add(async () => {
 				const datasources = await getSources(resolve('../../sources'));
 				const datasource = datasources.find((ds) => ds.sourceDirectory === source_path);
 				if (!datasource) return;
 
-				build_watcher.emit('change', path);
+				// build_watcher.emit('change', path);
+				build_watcher.emit('update', path, {}, null, 'Updating', 'info');
 
 				const reservedFiles = ['connection.yaml', 'connection.options.yaml'];
 				const updatedFile = /** @type {string} */ (path.split(pathSep).pop());
@@ -65,20 +77,28 @@ if (process.env.NODE_ENV === 'development') {
 					await setParquetURLs(manifest);
 					await fs.rm('./.evidence-queries/cache', { recursive: true, force: true });
 
-					build_watcher.emit('done', path, JSON.stringify({ renderedFiles: manifest }), null);
+					build_watcher.emit(
+						'update',
+						path,
+						JSON.stringify({ renderedFiles: manifest }),
+						null,
+						'Complete!',
+						'success'
+					);
 				} catch (error) {
 					console.error(`Error occured while reloading source: ${error}`);
 
 					if (process.env.VITE_EVIDENCE_DEBUG && error instanceof Error) console.debug(error.stack);
-					build_watcher.emit('done', path, {}, error);
+					build_watcher.emit('update', path, {}, error, 'Failed!', 'error');
+				} finally {
+					queuedPaths.delete(title);
 				}
-			},
-			250
-		)
+			});
+		}
 	);
 }
 
-/** @typedef {(path: string, manifest: object, error: Error | null, status: string) => void} Handler */
+/** @typedef {(path: string, manifest: object, error: Error | null, message: string, variant: import("evidence-dev/component-utilities/stores").ToastStatus ) => void} Handler */
 
 const subscribed_servers = new Map();
 
@@ -87,31 +107,33 @@ const configureServer = (server) => {
 	// handle server restarts
 	if (subscribed_servers.has(server)) return;
 	subscribed_servers.forEach((handlers) => {
-		build_watcher.off('change', handlers.change_handler);
-		build_watcher.off('done', handlers.done_handler);
+		build_watcher.off('update', handlers.handler);
 	});
 	subscribed_servers.clear();
 
 	/** @type {Handler} */
-	const handler = (path, manifest, error, status) => {
+	const handler = (path, manifest, error, message, variant) => {
 		const { source, query } = getSourceAndQuery(path);
+
+		const isSpecial = query.endsWith('connection') || query.endsWith('connection.options');
+		const title = isSpecial ? source : `${source}.${query}`;
+		/** @type {import("@evidence-dev/component-utilities/stores").Toast} */
+		const toast = {
+			status: variant,
+			message,
+			title: title
+		};
 
 		server.ws.send('evidence:build-status', {
 			id: `${source}.${query}`,
-			status: error ? 'error' : status,
-			manifest
+			manifest,
+			toast
 		});
 	};
 
-	/** @type {Handler} */
-	const change_handler = (path) => handler(path, {}, null, 'running');
-	/** @type {Handler} */
-	const done_handler = (path, manifest, error) => handler(path, manifest, error, 'done');
+	build_watcher.on('update', handler);
 
-	build_watcher.on('change', change_handler);
-	build_watcher.on('done', done_handler);
-
-	subscribed_servers.set(server, { change_handler, done_handler });
+	subscribed_servers.set(server, { handler });
 };
 
 /** @type {() => import("vite").Plugin} */
