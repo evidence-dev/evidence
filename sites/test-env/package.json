@@ -3,9 +3,9 @@
 	"version": "3.0.0-usql.68",
 	"private": true,
 	"scripts": {
-		"build": "evidence sources --changed && evidence build",
+		"build": "evidence build",
 		"build:strict": "evidence build:strict",
-		"dev": "evidence sources --changed && evidence dev",
+		"dev": "evidence dev",
 		"test": "evidence sources && evidence build",
 		"sources": "evidence sources"
 	},

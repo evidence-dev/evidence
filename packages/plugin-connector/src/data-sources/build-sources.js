@@ -85,8 +85,8 @@ export const buildSources = async (
 
 		if (filters?.sources && !filters.sources.has(source.name)) {
 			console.log(chalk.yellow(`[!] Skipping filtered source ${source.name}`));
-			hashes[source.name] = existingHashes[source.name]; // passthrough hashes
-			manifest[source.name] = existingManifest[source.name];
+			hashes[source.name] = existingHashes[source.name] ?? {}; // passthrough hashes
+			manifest[source.name] = existingManifest[source.name] ?? [];
 			continue;
 		}
 		const targetPlugin = plugins[source.type];
