@@ -1,5 +1,13 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.23
+
+### Patch Changes
+
+- 043a302a: Make sure that .at behaves as expected
+- Updated dependencies [e173ca9d]
+  - @evidence-dev/universal-sql@2.0.0-usql.25
+
 ## 2.0.0-usql.22
 
 ### Patch Changes

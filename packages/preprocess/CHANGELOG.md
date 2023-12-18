@@ -1,5 +1,12 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.28
+
+### Patch Changes
+
+- 1dcb5afe: Escape undefined when looking for unset inputs
+- 7a05f941: Clear QueryStore cache on HMR
+
 ## 4.0.0-usql.27
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.68
+
+### Patch Changes
+
+- 30304782: - Fix DuckDB vomiting when there is no manifest
+  - Prevent stack traces from appearing in devmode when debug is not enabled
+- Updated dependencies [1dcb5afe]
+- Updated dependencies [e173ca9d]
+- Updated dependencies [043a302a]
+- Updated dependencies [7a05f941]
+  - @evidence-dev/preprocess@4.0.0-usql.28
+  - @evidence-dev/universal-sql@2.0.0-usql.25
+  - @evidence-dev/core-components@2.0.0-usql.44
+  - @evidence-dev/query-store@2.0.0-usql.23
+  - @evidence-dev/plugin-connector@2.0.0-usql.39
+  - @evidence-dev/component-utilities@2.0.0-usql.31
+
 ## 20.0.0-usql.67
 
 ### Patch Changes

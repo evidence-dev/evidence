@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.0-usql.25
+
+### Patch Changes
+
+- e173ca9d: Mute parquet url messages unless debug mode
+
 ## 2.0.0-usql.24
 
 ### Patch Changes

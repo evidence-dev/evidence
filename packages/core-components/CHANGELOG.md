@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.44
+
+### Patch Changes
+
+- 043a302a: Make sure that .at behaves as expected
+- Updated dependencies [043a302a]
+  - @evidence-dev/query-store@2.0.0-usql.23
+  - @evidence-dev/component-utilities@2.0.0-usql.31
+
 ## 2.0.0-usql.43
 
 ### Patch Changes
