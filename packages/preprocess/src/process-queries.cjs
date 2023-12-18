@@ -242,7 +242,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		let __has_hmr_run = false
 	    if (import.meta?.hot) {
-	        import.meta.hot.on("vite:afterUpdate", () => __has_hmr_run = true)
+	        import.meta.hot.on("vite:afterUpdate", () => {
+				__has_hmr_run = true
+				QueryStore.emptyCache() // All bets are off
+			})
 	    }
 		
 		let params = $page.params;
