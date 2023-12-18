@@ -265,7 +265,7 @@ prog
 				)
 			);
 		}
-		// TODO: Need a debug flag of some sort
+
 		if (!opts.debug)
 			process.on('uncaughtException', (e) => {
 				console.error(e.message);

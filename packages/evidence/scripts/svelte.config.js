@@ -5,6 +5,13 @@ import { evidencePlugins } from '@evidence-dev/plugin-connector';
 import fs from 'fs';
 import path from 'path';
 
+if (!process.env.VITE_EVIDENCE_DEBUG)
+	process.on('uncaughtException', (e) => {
+		console.error('Evidence Project ran into a fatal error:');
+		console.error(`\t${e.message.split('\n').join('\n\t')}`);
+		process.exit(1);
+	});
+
 /**
  * @param {Object} a
  * @param {Object} b

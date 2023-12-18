@@ -22,20 +22,23 @@ const loadDB = async () => {
 		const res = await fetch('/data/manifest.json');
 		if (res.ok) ({ renderedFiles } = await res.json());
 	}
-
-	if (!renderedFiles) {
-		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
-		toasts.add({
-			id: 'MissingManifest',
-			status: 'warning',
-			title: 'Missing Manifest',
-			message: 'Without a manifest file, no data is available'
-		});
-	}
-
 	await profile(initDB);
-	await profile(setParquetURLs, renderedFiles);
-	await profile(updateSearchPath, Object.keys(renderedFiles));
+
+	if (Object.keys(renderedFiles ?? {}).length === 0) {
+		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
+		toasts.add(
+			{
+				id: 'MissingManifest',
+				status: 'warning',
+				title: 'Missing Manifest',
+				message: 'Without a manifest file, no data is available'
+			},
+			10000
+		);
+	} else {
+		await profile(setParquetURLs, renderedFiles);
+		await profile(updateSearchPath, Object.keys(renderedFiles));
+	}
 };
 
 const database_initialization = profile(loadDB);
