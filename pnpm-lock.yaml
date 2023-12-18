@@ -717,7 +717,7 @@ importers:
         version: 3.22.4
     devDependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.30
+        specifier: workspace:2.0.0-usql.31
         version: link:../component-utilities
       '@parcel/core':
         specifier: ^2.8.3
