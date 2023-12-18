@@ -103,7 +103,7 @@ export async function emptyDbFs(targetGlob) {
 export async function setParquetURLs(urls, append = false) {
 	if (!append) await emptyDbFs('*');
 
-	console.log(`Updating Parquet URLs`);
+	if (process.env.VITE_EVIDENCE_DEBUG) console.log(`Updating Parquet URLs`);
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		for (const url of urls[source]) {
