@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.27
+
+### Patch Changes
+
+- 20d2a785: Handle template literal errors in preprocess
+
 ## 4.0.0-usql.26
 
 ### Patch Changes

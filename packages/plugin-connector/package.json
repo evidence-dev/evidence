@@ -36,7 +36,7 @@
 		"zod": "^3.21.4"
 	},
 	"devDependencies": {
-		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.29",
+		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.30",
 		"@parcel/core": "^2.8.3",
 		"@parcel/packager-ts": "^2.8.3",
 		"@parcel/transformer-inline-string": "^2.8.3",

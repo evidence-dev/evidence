@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.30
+
+### Patch Changes
+
+- 489a6069: Make echarts animation time forced to be 500ms
+
 ## 2.0.0-usql.29
 
 ### Patch Changes
