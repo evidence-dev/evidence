@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.40
+
+### Patch Changes
+
+- 2d85508a: Handle sources that haven't been generated more effectively
+
 ## 2.0.0-usql.39
 
 ### Patch Changes
