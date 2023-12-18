@@ -252,7 +252,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		$: params = $page.params;
 
 		function __checkForUnsetInputs(strings, ...args) {
-			if (args.some(a => a.__unset)) {
+			if (args.some(a => a?.__unset)) {
 				return true
 			} else {
 				return false

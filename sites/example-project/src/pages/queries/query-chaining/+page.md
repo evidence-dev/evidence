@@ -34,6 +34,11 @@ select
 from ${working_reference}
 ```
 
+
+```sql reference_query_result
+SELECT ${working_reference[0].n_months} as months
+```
+
 ## Chains with errors
 
 ```sql missing_reference
