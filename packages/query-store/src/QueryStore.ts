@@ -252,6 +252,27 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 						if (!self.#values[prop]) return self.#mockResult;
 						return self.#values[prop];
 					}
+					if (prop === 'at') {
+						// at is a special case, because it should behave like Store[number]
+						if (!self.#dataLoaded) {
+							try {
+								const r = self.#fetchData();
+								if (r instanceof Promise)
+									r.catch((e) => {
+										throw new Error('Failed to update query store', { cause: e });
+									});
+							} catch (e) {
+								throw new Error('Failed to update query store', { cause: e });
+							}
+						}
+						return (i: number) => {
+							if (this.#dataLoaded) {
+								return this.#values.at(i);
+							} else {
+								return this.#values.at(i) ?? this.#mockResult; // We are still mocking
+							}
+						};
+					}
 
 					// Intercept 'length' property. This implies we're trying to get the total number of rows (data) in the store.
 					// If the length has not been correctly updated, initiate the async #updateLength method to calculate it.

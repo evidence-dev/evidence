@@ -30,7 +30,7 @@
 		<Value {data} column={$$props.value} fmt={$$props.fmt} />
 	</div>
 
-	<InnerBigValue {...spreadProps} data={data ? Array.from(data) : null}>
+	<InnerBigValue {...spreadProps}>
 		<slot />
 	</InnerBigValue>
 </QueryLoad>
