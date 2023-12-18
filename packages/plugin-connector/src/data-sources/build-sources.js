@@ -143,7 +143,6 @@ export const buildSources = async (
 
 		if (targetPlugin.processSource) {
 			// Advanced Source
-			// TODO: Progress bar here. (or spinner)
 			const sourceIterator = targetPlugin.processSource(
 				source.options,
 				await buildSourceDirectory(source.sourceDirectory),
