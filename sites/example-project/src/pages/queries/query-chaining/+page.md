@@ -34,16 +34,12 @@ select
 from ${working_reference}
 ```
 
+## Chains with errors
+
 ```sql missing_reference
 select
     count(*) as n_days
 from ${}
-```
-
-```sql incorrect_reference
-select
-    count(*) as n_days
-from ${doesnt_exist}
 ```
 
 ```sql circular_reference_1

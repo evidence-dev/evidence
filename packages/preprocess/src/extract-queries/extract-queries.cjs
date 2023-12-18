@@ -5,7 +5,7 @@ const fs = require('fs');
 const getPrismLangs = require('../utils/get-prism-langs.cjs');
 const { parseFrontmatter } = require('../frontmatter/parse-frontmatter.cjs');
 const chalk = require('chalk');
-/** @typedef {{id: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
+/** @typedef {{id: string, compileError: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
 
 const warnedExternalQueries = {};
 
@@ -13,7 +13,7 @@ const warnedExternalQueries = {};
  *
  * @param {string} externalQuery
  * @param {string} id
- * @returns Query
+ * @returns {Query}
  */
 const readFileToQuery = (externalQuery, id) => {
 	try {
@@ -151,6 +151,24 @@ const extractQueries = (content) => {
 
 	for (let i = 0; i <= maxIterations; i++) {
 		queries.forEach((query) => {
+			const startTemplateInterpolation = /[^\\](\$\{)/g;
+			const validTemplateInterpolation = /[^\\]\$\{((?:.|\s)+?)\}/g;
+
+			/*
+				This is a somewhat naive way of looking for invalid template strings
+				It currently tests for ${} and ${ cases, but is unable to detect } cases
+			*/
+			const hasTemplates = startTemplateInterpolation.exec(query.inputQueryString);
+			const hasValidTemplates = validTemplateInterpolation.exec(query.inputQueryString);
+			if (hasTemplates?.length !== hasValidTemplates?.length) {
+				if (query.inputQueryString.includes('${}')) {
+					query.compileError = 'Query contains an empty template literal (${})';
+				} else {
+					query.compileError = 'Query contains invalid template literal (unmatched ${ and }';
+				}
+				return;
+			}
+
 			const references = query.compiledQueryString.match(/\${.*?\}/gi);
 			if (references && references.some((d) => !interpolated_variables.has(d))) {
 				references.forEach((reference) => {
