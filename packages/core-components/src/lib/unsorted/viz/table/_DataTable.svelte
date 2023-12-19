@@ -33,7 +33,7 @@
 	$: data, rows, (paginated = data.length > rows);
 
 	export let rowNumbers = false;
-	rowNumbers = rowNumbers === 'true' || rowNumbers === true;
+	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
 	let hovering = false;
 
@@ -43,13 +43,13 @@
 
 	// Table features
 	export let search = false;
-	search = search === 'true' || search === true;
+	$: search = search === 'true' || search === true;
 
 	export let sortable = true;
-	sortable = sortable === 'true' || sortable === true;
+	$: sortable = sortable === 'true' || sortable === true;
 
 	export let downloadable = true;
-	downloadable = downloadable === 'true' || downloadable === true;
+	$: downloadable = downloadable === 'true' || downloadable === true;
 
 	// Row Links:
 	export let link = undefined;
@@ -61,7 +61,7 @@
 	}
 
 	export let showLinkCol = false; // hides link column when columns have not been explicitly selected
-	showLinkCol = showLinkCol === 'true' || showLinkCol === true;
+	$: showLinkCol = showLinkCol === 'true' || showLinkCol === true;
 
 	let error = undefined;
 
@@ -76,16 +76,16 @@
 	// STYLING
 	// ---------------------------------------------------------------------------------------
 	export let rowShading = false;
-	rowShading = rowShading === 'true' || rowShading === true;
+	$: rowShading = rowShading === 'true' || rowShading === true;
 
 	export let rowLines = true;
-	rowLines = rowLines === 'true' || rowLines === true;
+	$: rowLines = rowLines === 'true' || rowLines === true;
 
 	export let headerColor;
 	export let headerFontColor = 'var(--grey-900)';
 
 	export let formatColumnTitles = true;
-	formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
+	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP

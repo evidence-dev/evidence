@@ -41,7 +41,7 @@
 	export let showAllXAxisLabels = false;
 
 	export let printEchartsConfig = false; // helper for custom chart development
-	printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
 	// This should be reworked to fit better with svelte's reactivity.
 
@@ -79,31 +79,33 @@
 	export let xType = undefined; // category or value
 	export let xAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
 	export let xBaseline = true;
-	xBaseline = xBaseline === 'true' || xBaseline === true;
+	$: xBaseline = xBaseline === 'true' || xBaseline === true;
 	export let xTickMarks = false;
-	xTickMarks = xTickMarks === 'true' || xTickMarks === true;
+	$: xTickMarks = xTickMarks === 'true' || xTickMarks === true;
 	export let xGridlines = false;
-	xGridlines = xGridlines === 'true' || xGridlines === true;
+	$: xGridlines = xGridlines === 'true' || xGridlines === true;
 	export let xAxisLabels = true;
-	xAxisLabels = xAxisLabels === 'true' || xAxisLabels === true;
+	$: xAxisLabels = xAxisLabels === 'true' || xAxisLabels === true;
 	export let sort = true; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
-	sort = sort === 'true' || sort === true;
+	$: sort = sort === 'true' || sort === true;
 	export let xFmt = undefined;
 
 	// Y axis:
 	export let yLog = false;
-	yLog = yLog === 'true' || yLog === true;
+	$: yLog = yLog === 'true' || yLog === true;
 	export let yType = yLog === true ? 'log' : 'value'; // value or log
 	export let yLogBase = 10;
 	export let yAxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
 	export let yBaseline = false;
-	yBaseline = yBaseline === 'true' || yBaseline === true;
+	$: yBaseline = yBaseline === 'true' || yBaseline === true;
+
 	export let yTickMarks = false;
-	yTickMarks = yTickMarks === 'true' || yTickMarks === true;
+	$: yTickMarks = yTickMarks === 'true' || yTickMarks === true;
 	export let yGridlines = true;
-	yGridlines = yGridlines === 'true' || yGridlines === true;
+	$: yGridlines = yGridlines === 'true' || yGridlines === true;
 	export let yAxisLabels = true;
-	yAxisLabels = yAxisLabels === 'true' || yAxisLabels === true;
+	$: yAxisLabels = yAxisLabels === 'true' || yAxisLabels === true;
+
 	export let yMin = undefined;
 	export let yMax = undefined;
 	export let yFmt = undefined;
@@ -112,13 +114,13 @@
 	// Y2 axis:
 	export let y2AxisTitle = 'false'; // Default false. If true, use formatTitle(x). Or you can supply a custom string
 	export let y2Baseline = false;
-	y2Baseline = y2Baseline === 'true' || y2Baseline === true;
+	$: y2Baseline = y2Baseline === 'true' || y2Baseline === true;
 	export let y2TickMarks = false;
-	y2TickMarks = y2TickMarks === 'true' || y2TickMarks === true;
+	$: y2TickMarks = y2TickMarks === 'true' || y2TickMarks === true;
 	export let y2Gridlines = true;
-	y2Gridlines = y2Gridlines === 'true' || y2Gridlines === true;
+	$: y2Gridlines = y2Gridlines === 'true' || y2Gridlines === true;
 	export let y2AxisLabels = true;
-	y2AxisLabels = y2AxisLabels === 'true' || y2AxisLabels === true;
+	$: y2AxisLabels = y2AxisLabels === 'true' || y2AxisLabels === true;
 	export let y2Min = undefined;
 	export let y2Max = undefined;
 	export let y2Fmt = undefined;

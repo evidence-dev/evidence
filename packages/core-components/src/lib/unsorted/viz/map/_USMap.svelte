@@ -92,10 +92,10 @@
 
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
-	printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
 	export let abbreviations = false;
-	abbreviations = abbreviations === 'true' || abbreviations === true;
+	$: abbreviations = abbreviations === 'true' || abbreviations === true;
 
 	let nameProperty = abbreviations ? 'abbrev' : 'name';
 

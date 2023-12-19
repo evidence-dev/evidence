@@ -21,7 +21,7 @@
 	export let title = undefined;
 	export let subtitle = undefined;
 	export let legend = true;
-	legend = legend === 'true' || legend === true;
+	$: legend = legend === 'true' || legend === true;
 
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
@@ -34,7 +34,7 @@
 	export let printEchartsConfig = false;
 
 	export let showPercent = false;
-	showPercent = showPercent === 'true' || showPercent === true;
+	$: showPercent = showPercent === 'true' || showPercent === true;
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration

@@ -38,7 +38,7 @@
 	export let markerSize = 8;
 
 	export let labels = false;
-	labels = labels === 'true' || labels === true;
+	$: labels = labels === 'true' || labels === true;
 	export let labelSize = 11;
 	export let labelPosition = 'top';
 	export let labelColor = undefined;

@@ -34,7 +34,7 @@
 	export let outlineWidth = undefined;
 
 	export let labels = false;
-	labels = labels === 'true' || labels === true;
+	$: labels = labels === 'true' || labels === true;
 	export let labelSize = 11;
 	export let labelPosition = undefined;
 	export let labelColor = undefined;
@@ -44,7 +44,7 @@
 		labelFormat = getFormatObjectFromString(labelFmt);
 	}
 	export let stackTotalLabel = true;
-	stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
+	$: stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
 	export let showAllLabels = false;
 
 	let barMaxWidth = 60;

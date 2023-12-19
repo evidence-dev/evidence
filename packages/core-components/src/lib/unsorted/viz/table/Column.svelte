@@ -38,7 +38,7 @@
 		align = 'center';
 	}
 	export let wrap = false;
-	wrap = wrap === 'true' || wrap === true;
+	$: wrap = wrap === 'true' || wrap === true;
 
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
@@ -50,7 +50,7 @@
 
 	// Links:
 	export let openInNewTab = false;
-	openInNewTab = openInNewTab === 'true' || openInNewTab === true;
+	$: openInNewTab = openInNewTab === 'true' || openInNewTab === true;
 
 	export let linkLabel = undefined;
 
@@ -72,12 +72,12 @@
 
 	// Delta:
 	export let downIsGood = false;
-	downIsGood = downIsGood === 'true' || downIsGood === true;
+	$: downIsGood = downIsGood === 'true' || downIsGood === true;
 	export let showValue = true;
-	showValue = showValue === 'true' || showValue === true;
+	$: showValue = showValue === 'true' || showValue === true;
 
 	export let deltaSymbol = true;
-	deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+	$: deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
 
 	$: options = {
 		id: id,
