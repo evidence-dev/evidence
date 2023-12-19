@@ -26,6 +26,7 @@ export const filter = (rows, filters) => {
 			case 'unique':
 				// O(n) unique function
 				const before = performance.now();
+				/** @type {Record<string, boolean>} */
 				const uniq = {};
 				const distinct = [];
 				/**
@@ -50,16 +51,25 @@ export const filter = (rows, filters) => {
 					// Then get the number of distinct values
 					// If the number of distinct values is equal to
 					//     the number of filter fields; they are all different
-					const distinctValues = filter.fields.reduce((acc, filterField) => {
-						if (!acc.includes(row[filterField])) {
-							acc.push(row[filterField]);
-						}
-						return acc;
-					}, []); //.length === filter.fields.length
+					const distinctValues = filter.fields.reduce(
+						/**
+						 * @param {string[]} acc
+						 * @param {string} filterField
+						 * @returns {string[]}
+						 */
+						(acc, filterField) => {
+							if (!acc.includes(row[filterField])) {
+								acc.push(row[filterField]);
+							}
+							return acc;
+						},
+						[]
+					); //.length === filter.fields.length
 					return distinctValues.length === filter.fields.length;
 				});
 				break;
 			default:
+				// @ts-expect-error
 				console.warn(`Unknown filter type ${filter.type}`);
 				break;
 		}
