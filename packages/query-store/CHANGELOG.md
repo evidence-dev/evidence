@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.0-usql.24
+
+### Patch Changes
+
+- f38b8920: Hide debug logs behind flag
+
 ## 2.0.0-usql.23
 
 ### Patch Changes
