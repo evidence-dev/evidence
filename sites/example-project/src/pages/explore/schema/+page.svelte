@@ -1,6 +1,7 @@
 <script>
 	import { browser } from '$app/environment';
-
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Abc, Calendar, _123 } from '@steeze-ui/tabler-icons';
 	export let data;
 	let { __db: db } = data;
 
@@ -33,36 +34,39 @@
 {:then metadata}
 	<section>
 		<div>
-			<h2 class="text-base font-normal font-mono mt-0">Tables</h2>
+			<h2 class="text-base font-normal font-mono my-2">Tables</h2>
 			<ul class="list-none m-0 p-0 flex flex-col gap-1">
 				{#each Object.entries(metadata) as [name, meta] (name)}
 					<li class="font-mono m-0 text-sm">
 						<button
-							class="bg-gray-100 px-2 py-1"
-							class:bg-gray-200={selectedTable === meta}
-							on:click={() => (selectedTable = meta)}
+							class="bg-gray-200 px-2 py-1"
+							class:bg-gray-300={selectedTable === meta}
+							on:click={() => {
+								selectedTable = selectedTable === meta ? '' : meta;
+							}}
 						>
 							{name}
 						</button>
 					</li>
-				{/each}
-			</ul>
-		</div>
-		<div>
-			<h2 class="text-base font-normal font-mono mt-0">Columns</h2>
-			<ul class="text-sm flex flex-wrap gap-2">
-				{#each selectedTable.columns ?? [] as col}
-					<dl class="p-2">
-						<dt class="font-semibold">{col.column_name}</dt>
-						<dd class="px-2">
-							<dl class="px-4">
-								<dt class="font-semibold">Data Type</dt>
-								<dd class="px-2">{col.data_type}</dd>
-								<dt class="font-semibold">Nullable</dt>
-								<dd class="px-2">{col.is_nullable}</dd>
-							</dl>
-						</dd>
-					</dl>
+					{#if selectedTable === meta}
+						<ul 
+							class="list-none m-0 flex flex-col gap-1"
+						>
+							{#each meta.columns as column (column.column_name)}
+								<li class="font-mono m-0 text-sm bg-gray-100 px-2 py-1 flex">
+									{column.column_name} ({column.data_type})
+									// Icons  
+									{#if column.data_type === 'INT' || column.data_type === 'BIGINT' || column.data_type === 'SMALLINT' || column.data_type === 'TINYINT' || column.data_type === 'DOUBLE'}
+										<Icon src={_123} class="text-gray-600 w-6 h-6" />
+									{:else if column.data_type === 'DATE' || column.data_type === 'DATETIME' || column.data_type === 'TIMESTAMP'}
+										<Icon src={Calendar} class="text-gray-600 w-6 h-6" />
+									{:else}
+										<Icon src={Abc} class="text-gray-600 w-6 h-6" />
+									{/if}
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				{/each}
 			</ul>
 		</div>
@@ -72,11 +76,3 @@
 
 	<pre class="px-4 py-2 bg-red-800 text-white">{e.message}</pre>
 {/await}
-
-<style lang="postcss">
-	section {
-		@apply grid gap-8;
-
-		grid-template-columns: auto 1fr;
-	}
-</style>

@@ -24,6 +24,9 @@
 		"@evidence-dev/telemetry": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@fontsource/spectral": "^5.0.3",
+		"@steeze-ui/simple-icons": "^1.5.0",
+		"@steeze-ui/svelte-icon": "^1.4.1",
+		"@steeze-ui/tabler-icons": "^2.1.0",
 		"@sveltejs/kit": "1.22.3",
 		"@tidyjs/tidy": "2.4.4",
 		"cross-env": "^7.0.3",
@@ -42,6 +45,7 @@
 		"svelte": "3.55.0",
 		"svelte-icons": "2.1.0",
 		"svelte-tiny-linked-charts": "1.1.5",
+		
 		"typescript": "4.9.5",
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2"
