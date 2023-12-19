@@ -31,8 +31,6 @@
 				delete $page.data.data[key];
 			}
 
-			console.log({ p: $page.data });
-
 			await invalidateAll();
 		}
 	};

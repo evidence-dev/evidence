@@ -122,7 +122,6 @@
 
 		let mapData = JSON.parse(JSON.stringify(data));
 		for (let i = 0; i < data.length; i++) {
-			console.log(i, mapData[i], data, mapData);
 			mapData[i].name = data[i][state];
 			mapData[i].value = data[i][value];
 			if (link) {

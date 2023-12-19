@@ -8,7 +8,6 @@
 		data.fetch(); // Somebody wants this to load. Without this the query builder features don't work
 		unsub();
 		unsub = data.subscribe((v) => {
-			console.log({ v });
 			_data = v;
 		});
 	}
