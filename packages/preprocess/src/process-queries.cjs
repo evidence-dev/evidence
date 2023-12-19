@@ -166,7 +166,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
 				${id} = get(QueryStore.create(
-						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
+						\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',
 						{}
