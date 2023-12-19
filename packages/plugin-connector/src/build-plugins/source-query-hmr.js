@@ -83,7 +83,8 @@ if (process.env.NODE_ENV === 'development') {
 						JSON.stringify({ renderedFiles: manifest }),
 						null,
 						'Complete!',
-						'success'
+						'success',
+						true
 					);
 				} catch (error) {
 					console.error(`Error occured while reloading source: ${error}`);
@@ -112,7 +113,7 @@ const configureServer = (server) => {
 	subscribed_servers.clear();
 
 	/** @type {Handler} */
-	const handler = (path, manifest, error, message, variant) => {
+	const handler = (path, manifest, error, message, variant, done = false) => {
 		const { source, query } = getSourceAndQuery(path);
 
 		const isSpecial = query.endsWith('connection') || query.endsWith('connection.options');
@@ -127,7 +128,8 @@ const configureServer = (server) => {
 		server.ws.send('evidence:build-status', {
 			id: `${source}.${query}`,
 			manifest,
-			toast
+			toast,
+			done
 		});
 	};
 
