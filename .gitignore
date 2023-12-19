@@ -24,3 +24,4 @@ connection.options.yaml
 **/static/data
 
 .idea
+packages/core-components/.evidence-queries

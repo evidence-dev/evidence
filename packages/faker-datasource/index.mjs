@@ -4,27 +4,37 @@ import path from 'path';
 import { filter } from './filter.mjs';
 import fs from 'fs/promises';
 import chalk from 'chalk';
+import seedrandom from 'seedrandom';
 
 function sigmoid(x) {
 	return 1 / (1 + Math.exp(-x));
 }
 
-/** @type {(mean: number, standardDeviation: number) => import("@faker-js/faker).Randomizer}*/
-const randomBiasedNumber = (mean, standardDeviation) => ({
-	next: () => {
-		// const randomValue = Math.random()
+/** @type {(mean: number, standardDeviation: number) => import("@faker-js/faker").Randomizer} */
+const randomBiasedNumber = (mean, standardDeviation) => {
+	let rng = seedrandom(); // Create a new random number generator instance
 
-		// return Math.abs(randomValue * standardDeviation + mean);
-		const u = 1 - Math.random(); // Converting [0,1) to (0,1]
-		const v = 1 - Math.random();
+	/**
+	 * @param {number} s
+	 * @returns void
+	 */
+	const seed = (s) => {
+		rng = seedrandom(s, { global: false });
+	};
+
+	const next = () => {
+		const u = 1 - rng(); // Converting [0,1) to (0,1]
+		const v = 1 - rng();
 		const randomValue = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
 
 		const scaledValue = randomValue * standardDeviation + mean;
 		const boundedValue = sigmoid(scaledValue); // Scale to [0, 1] using sigmoid function
 
 		return boundedValue;
-	}
-});
+	};
+
+	return { seed, next };
+};
 
 /** @typedef {"number" | "id" | "uuid" | "animal" } ColumnType */
 
@@ -299,7 +309,7 @@ function recursiveFlatten(obj) {
 }
 
 /**
- * @param {{locale?: import("@faker-js/faker").LocaleDefinition}} options
+ * @param {{locale?: import("@faker-js/faker").LocaleDefinition, seed?: string}} options
  * @param {string} directory
  */
 export const getRunner = (options, directory) => {
@@ -311,14 +321,26 @@ export const getRunner = (options, directory) => {
 		locale.splice(0, 0, recursiveFlatten(options.locale));
 	}
 
+	let seed = 0;
+
+	if (typeof options.seed === 'string')
+		for (let i = 0; i < options.seed.length; i++) seed += options.seed.charCodeAt(i);
+	else if (typeof options.seed === 'number') seed = options.seed;
+	else seed = undefined;
+
 	const biasedFaker = new Faker({
 		randomizer: randomBiasedNumber(Math.random(), 1),
-		locale: locale
+		locale: locale,
+		seed: seed
 	});
 
 	const faker = new Faker({
-		locale: locale
+		locale: locale,
+		seed: seed
 	});
+
+	faker.seed(seed);
+	biasedFaker.seed(seed);
 
 	console.warn(
 		chalk.bold.dim.yellow(
@@ -329,4 +351,10 @@ export const getRunner = (options, directory) => {
 };
 
 export const testConnection = () => Promise.resolve(true);
-export const options = {};
+export const options = {
+	seed: {
+		title: 'Seed',
+		required: false,
+		type: 'string'
+	}
+};
