@@ -269,9 +269,15 @@ importers:
         specifier: ^2.3.4
         version: 2.3.4
     devDependencies:
+      '@evidence-dev/faker-datasource':
+        specifier: workspace:2.0.0-usql.6
+        version: link:../faker-datasource
       '@evidence-dev/plugin-connector':
         specifier: workspace:*
         version: link:../plugin-connector
+      '@evidence-dev/universal-sql':
+        specifier: workspace:2.0.0-usql.25
+        version: link:../universal-sql
       '@storybook/addon-essentials':
         specifier: ^7.4.0
         version: 7.6.5(react-dom@17.0.2)(react@17.0.2)
@@ -623,12 +629,18 @@ importers:
       '@types/cli-progress':
         specifier: ^3.11.0
         version: 3.11.5
+      '@types/seedrandom':
+        specifier: ^3.0.8
+        version: 3.0.8
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
       cli-progress:
         specifier: ^3.12.0
         version: 3.12.0
+      seedrandom:
+        specifier: ^3.0.5
+        version: 3.0.5
       yaml:
         specifier: ^2.3.1
         version: 2.3.4
@@ -9860,6 +9872,10 @@ packages:
 
   /@types/scheduler@0.16.8:
     resolution: {integrity: sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A==}
+
+  /@types/seedrandom@3.0.8:
+    resolution: {integrity: sha512-TY1eezMU2zH2ozQoAFAQFOPpvP15g+ZgSfTZt31AUUH/Rxtnz3H+A/Sv1Snw2/amp//omibc+AEkTaA8KUeOLQ==}
+    dev: false
 
   /@types/semver@6.2.7:
     resolution: {integrity: sha512-blctEWbzUFzQx799RZjzzIdBJOXmE37YYEyDtKkx5Dg+V7o/zyyAxLPiI98A2jdTtDgxZleMdfV+7p8WbRJ1OQ==}
@@ -20460,6 +20476,10 @@ packages:
     dependencies:
       extend-shallow: 2.0.1
       kind-of: 6.0.3
+    dev: false
+
+  /seedrandom@3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
     dev: false
 
   /select-hose@2.0.0:
