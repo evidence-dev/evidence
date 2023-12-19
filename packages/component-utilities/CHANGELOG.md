@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.0.0-usql.32
+
+### Patch Changes
+
+- Updated dependencies [f38b8920]
+  - @evidence-dev/query-store@2.0.0-usql.24
+
 ## 2.0.0-usql.31
 
 ### Patch Changes

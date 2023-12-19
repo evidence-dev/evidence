@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- 14269dbc: Add seed option for reproducable results
+
 ## 2.0.0-usql.6
 
 ### Patch Changes

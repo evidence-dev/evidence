@@ -242,7 +242,7 @@ const generateTable =
 			}
 
 			if ('literal' in r.data) {
-				rows.push(r.data.literal.map((r, rIdx) => ({ id: rIdx, ...r })));
+				rows.push(r.data.literal.map((/** @type {Object} */ r, /** @type {number} */ rIdx) => ({ id: rIdx, ...r })));
 			} else {
 				let rowCount = r.data.rows;
 				if (r.data.fuzz) rowCount += faker.number.int({ min: -1 * r.data.fuzz, max: r.data.fuzz });

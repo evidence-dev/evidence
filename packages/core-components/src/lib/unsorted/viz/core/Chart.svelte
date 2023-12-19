@@ -9,14 +9,13 @@
 
 	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
 	$: spreadProps = {
-		...Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined)),
-		data: data?.__isQueryStore ? Array.from(data) : data
+		...Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined))
 	};
 </script>
 
 <!-- Pass all the props through-->
-<QueryLoad {data}>
-	<Chart {...spreadProps} data={Array.from(data)}>
+<QueryLoad {data} let:loaded>
+	<Chart {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}>
 		<slot />
 	</Chart>
 </QueryLoad>

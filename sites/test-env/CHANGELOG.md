@@ -1,5 +1,19 @@
 # evidence-test-environment
 
+## 3.0.0-usql.71
+
+### Patch Changes
+
+- Updated dependencies [dd11468b]
+- Updated dependencies [d79a3014]
+- Updated dependencies [14269dbc]
+- Updated dependencies [f5b06ca4]
+- Updated dependencies [2d2f774e]
+  - @evidence-dev/evidence@20.0.0-usql.71
+  - @evidence-dev/core-components@2.0.0-usql.46
+  - @evidence-dev/faker-datasource@2.0.0-usql.7
+  - @evidence-dev/component-utilities@2.0.0-usql.32
+
 ## 3.0.0-usql.70
 
 ### Patch Changes

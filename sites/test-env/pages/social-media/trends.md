@@ -13,7 +13,7 @@ WITH EVERYTHING AS (
         INNER JOIN post_tags pt on h.id = pt.hashtag_id
         INNER JOIN posts p on pt.post_id = p.id
 
-    WHERE w > (CURRENT_DATE - INTERVAL '5 WEEK')
+    WHERE w > (CURRENT_DATE - INTERVAL '${inputs.time_range}')
     GROUP BY DATE_TRUNC('day', p.created_at), h.tag, h.id
     ORDER BY 2, 1 desc
 )
@@ -34,7 +34,7 @@ WITH EVERYTHING AS (
             INNER JOIN posts p on l.post_id = p.id
             INNER JOIN post_tags pt ON p.id = pt.post_id
             INNER JOIN hashtags h ON pt.hashtag_id = h.id
-        WHERE p.created_at > (CURRENT_DATE - INTERVAL '5 WEEKS')
+        WHERE p.created_at > (CURRENT_DATE - INTERVAL '${inputs.time_range}S')
         GROUP BY h.tag, date_trunc('day', p.created_at), h.id
         ORDER BY 1 DESC
 )
@@ -56,7 +56,7 @@ SELECT DISTINCT tag, hashtag_id FROM ( SELECT * FROM A UNION SELECT * FROM B )
 ```total_posts
 SELECT COUNT(*) as postCount FROM posts p
     INNER JOIN post_tags pt on p.id = pt.post_id
-WHERE p.created_at > CURRENT_DATE - INTERVAL '5 WEEK' AND pt.hashtag_id = ${inputs.selected_tag ?? -1}
+WHERE p.created_at > CURRENT_DATE - INTERVAL '${inputs.time_range}' AND pt.hashtag_id = ${inputs.selected_tag ?? -1}
 GROUP BY pt.hashtag_id
 ```
 
@@ -65,7 +65,7 @@ SELECT COUNT(DISTINCT u.ID) as authorCount
 FROM users u
     INNER JOIN posts p ON p.user_id = u.id
     INNER JOIN post_tags pt ON pt.post_id = p.id
-WHERE pt.hashtag_id = ${inputs.selected_tag ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '5 WEEK'
+WHERE pt.hashtag_id = ${inputs.selected_tag ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '${inputs.time_range}'
 GROUP BY pt.hashtag_id
 ```
 
@@ -75,7 +75,7 @@ FROM users u
     INNER JOIN likes l ON l.user_id = u.id
     INNER JOIN post_tags pt ON pt.post_id = l.post_id
     INNER JOIN posts p ON pt.post_id = p.id
-WHERE pt.hashtag_id = ${inputs.selected_tag ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '5 WEEK'
+WHERE pt.hashtag_id = ${inputs.selected_tag ?? -1} AND p.created_at > CURRENT_DATE - INTERVAL '${inputs.time_range}'
 GROUP BY pt.hashtag_id
 ```
 
@@ -106,7 +106,15 @@ These shouldn't flicker
 <BigValue data={most_liked_tags} value="tag" title="Most liked tag"/>
 <BigValue data={most_posted_tags} value="tag" title="Most posted tag"/>
 
-## Most popular hashtags over the last month
+<br/>
+
+<Dropdown name="time_range" title="Time Range">
+    <DropdownOption value="5 WEEK" valueLabel="Month" />
+    <DropdownOption value="13 WEEK" valueLabel="Quarter" />
+    <DropdownOption value="1 YEAR" valueLabel="Year" />
+</Dropdown>
+
+## Most popular hashtags over the last {inputs.time_range}
 
 ### Based on occurance in posts
 

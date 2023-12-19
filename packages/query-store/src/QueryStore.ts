@@ -42,6 +42,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		return false;
 	}
 
+	private static readonly debug = Boolean(
+		typeof window === 'undefined'
+			? process.env.VITE_EVIDENCE_DEBUG
+			: // @ts-expect-error
+			  import.meta?.env?.VITE_EVIDENCE_DEBUG
+	);
+
 	/**
 	 * A Proxy wrapper around the QueryStore instance.
 	 * It is used to intercept access to numeric indices and the 'length' property.
@@ -158,10 +165,11 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#error: Error | unknown;
 
 	#setError = (e: Error | unknown): void => {
-		console.debug(
-			`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
-			e instanceof Error ? e?.message ?? e : e
-		);
+		if (QueryStore.debug)
+			console.debug(
+				`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
+				e instanceof Error ? e?.message ?? e : e
+			);
 
 		this.#error = e;
 
@@ -404,12 +412,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			return this.#dataFetchPromise;
 		}
 		if (this.#error) {
-			console.debug(
-				`QueryStore ${this.id.substring(
-					0,
-					6
-				)} | Refusing to execute data query; store has an error state.`
-			);
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute data query; store has an error state.`
+				);
 			return this.#dataFetchPromise;
 		}
 		this.#dataLoading = true;
@@ -436,12 +445,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			return;
 		}
 		if (this.#error) {
-			console.debug(
-				`QueryStore ${this.id.substring(
-					0,
-					6
-				)} | Refusing to execute length query; store has an error state.`
-			);
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute length query; store has an error state.`
+				);
 			return;
 		}
 
@@ -483,12 +493,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	#fetchMetadata = () => {
 		if (this.#error) {
-			console.debug(
-				`QueryStore ${this.id.substring(
-					0,
-					6
-				)} | Refusing to execute metadata query; store has an error state.`
-			);
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute metadata query; store has an error state.`
+				);
 			return;
 		}
 

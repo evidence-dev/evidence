@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.46
+
+### Patch Changes
+
+- d79a3014: Clean up console logs
+- f5b06ca4: Changes to QueryLoad to make sure children get the published value
+- 2d2f774e: Style dropdowns as inline blocks
+- Updated dependencies [f38b8920]
+  - @evidence-dev/query-store@2.0.0-usql.24
+  - @evidence-dev/component-utilities@2.0.0-usql.32
+
 ## 2.0.0-usql.45
 
 ### Patch Changes

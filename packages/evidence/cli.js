@@ -224,16 +224,26 @@ ${chalk.bold('[!] Unable to load source manifest')}
 
 prog
 	.command('build')
+	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs')
 	.action((args) => {
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
 		populateTemplate();
 		buildHelper('npx vite build', args);
 	});
 
 prog
 	.command('build:strict')
+	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs and fails on error')
 	.action((args) => {
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
 		populateTemplate();
 		strictMode();
 		buildHelper('npx vite build', args);
