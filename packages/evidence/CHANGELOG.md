@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.70
+
+### Patch Changes
+
+- 0940b996: remove dummy page sql string collection
+- Updated dependencies [741885bf]
+- Updated dependencies [bb8451c2]
+- Updated dependencies [7d298d28]
+  - @evidence-dev/core-components@2.0.0-usql.45
+  - @evidence-dev/plugin-connector@2.0.0-usql.41
+  - @evidence-dev/preprocess@4.0.0-usql.29
+
 ## 20.0.0-usql.69
 
 ### Patch Changes

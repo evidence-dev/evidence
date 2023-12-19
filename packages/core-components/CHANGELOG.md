@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 2.0.0-usql.45
+
+### Patch Changes
+
+- 741885bf: Fix Source Query HMR
+- 7d298d28: Makes most "truthy" props reactive.
+  Due to the wrapping, it seems that the type gets caught as a string somewhere along the line (likely becase the query finishes running)
+  This causes it to revert to truthy.
+
 ## 2.0.0-usql.44
 
 ### Patch Changes

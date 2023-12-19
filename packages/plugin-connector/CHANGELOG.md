@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.41
+
+### Patch Changes
+
+- 741885bf: Fix Source Query HMR
+
 ## 2.0.0-usql.40
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.0-usql.29
+
+### Patch Changes
+
+- bb8451c2: Fix error from conversion
+
 ## 4.0.0-usql.28
 
 ### Patch Changes
