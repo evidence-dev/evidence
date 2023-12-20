@@ -48,9 +48,9 @@
 		"yaml": "^2.3.4"
 	},
 	"devDependencies": {
-		"@evidence-dev/faker-datasource": "workspace:2.0.0-usql.6",
+		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/plugin-connector": "workspace:*",
-		"@evidence-dev/universal-sql": "workspace:2.0.0-usql.25",
+		"@evidence-dev/universal-sql": "workspace:*",
 		"@storybook/addon-essentials": "^7.6.6",
 		"@storybook/addon-interactions": "^7.6.6",
 		"@storybook/addon-links": "^7.6.6",
