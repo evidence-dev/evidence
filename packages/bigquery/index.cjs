@@ -126,7 +126,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		const [, , response] = await job.getQueryResults({
 			autoPaginate: false,
 			wrapIntegers: false,
-			maxResults: 0
+			maxResults: 0,
+			timeoutMs: 3_600_000
 		});
 		result.columnTypes = mapResultsToEvidenceColumnTypes(response);
 		result.expectedRowCount = response.totalRows && Number(response.totalRows);

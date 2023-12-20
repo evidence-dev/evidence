@@ -1,5 +1,13 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.17
+
+### Patch Changes
+
+- Updated dependencies [a20cd1e0]
+  - @evidence-dev/databricks@0.1.1-usql.2
+  - @evidence-dev/trino@0.1.2-usql.2
+
 ## 3.0.0-usql.16
 
 ### Patch Changes

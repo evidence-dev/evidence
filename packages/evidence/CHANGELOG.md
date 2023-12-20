@@ -1,5 +1,15 @@
 # @evidence-dev/evidence
 
+## 20.0.0-usql.72
+
+### Patch Changes
+
+- 5bda8d53: Remove faulty error handling
+- Updated dependencies [a20cd1e0]
+  - @evidence-dev/plugin-connector@2.0.0-usql.42
+  - @evidence-dev/db-orchestrator@3.0.0-usql.17
+  - @evidence-dev/core-components@2.0.0-usql.46
+
 ## 20.0.0-usql.71
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.42
+
+### Patch Changes
+
+- a20cd1e0: Fix workspace project version references
+
 ## 2.0.0-usql.41
 
 ### Patch Changes

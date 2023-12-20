@@ -116,8 +116,13 @@ export async function getPluginComponents(cfg, discoveries) {
 			const component = path.basename(component_file, '.svelte');
 			if (componentMap[component]) {
 				console.warn(
-					chalk.yellow(
-						`[!] The components folder and ${componentMap[component].package} both provide ${component}. The component from the components folder will be used. To use the component from ${componentMap[component].package}, specify an alias (https://docs.evidence.dev/plugins/using-plugins/#component-aliases) or explicitly import the component.`
+					chalk.yellow([
+						`${chalk.bold(
+							`[!] The components folder and ${componentMap[component].package} both provide ${component}`
+						)}.`,
+						'The component from the components folder will be used.',
+								`To use the component from ${componentMap[component].package}, specify an alias (https://docs.evidence.dev/plugins/using-plugins/#component-aliases) or explicitly import the component.`
+					].join('\n\t')
 					)
 				);
 				delete componentMap[component];

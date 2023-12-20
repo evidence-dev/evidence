@@ -1,5 +1,11 @@
 # @evidence-dev/databricks
 
+## 0.1.1-usql.2
+
+### Patch Changes
+
+- a20cd1e0: Fix workspace project version references
+
 ## 0.1.1-usql.1
 
 ### Patch Changes
