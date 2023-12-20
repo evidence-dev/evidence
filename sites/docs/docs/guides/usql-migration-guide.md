@@ -15,6 +15,9 @@ This is a big release and contains several breaking changes. This guide will hel
 - Existing data source connections will need to be reconfigured
 - Queries to your data source will need to be moved to the new `sources` directory (details below)
 - Queries in markdown files and in the `queries` directory are now written in DuckDB SQL
+- Deprecated syntax:
+    - `{data.my_query}`. Use `{my_query}` instead
+    - Declaring variables from queries in `<script>` tags using `let my_var = ` or `var my_var = `. Use `$: my_var` instead
 
 ## How Universal SQL Works
 - Universal SQL introduces a new data loading step (called `run sources`) - you write queries against multiple data sources, and Evidence will combine them all into Parquet files within a DuckDB WebAssembly instance - so you can query across them using SQL
