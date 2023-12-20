@@ -254,6 +254,13 @@ If your project includes external packages installed via npm, you will need to r
 npm install <package-name>
 ```
 
+## Common Syntax Change Examples
+
+- In DuckDB, double quotes are used to reference columns. If you have double quotes in your queries for strings, you will need to change to single quotes
+- `date_trunc` - in DuckDB, the date part is the first argument to the function and is passed as a string, whereas in some other dialects it is the second argument and is passed as a keyword
+- `safe_divide` - in DuckDB you can use `number / nullif(other_number, 0) as divided_number` rather than `safe_divide(number, other_number)`
+- You may need to change how you cast columns to other types. In DuckDB, you can use the `::type` syntax like so: `select order_time::date as order_date`
+
 ## Resources
 
 - [DuckDB SQL Syntax Reference](https://duckdb.org/docs/sql/statements/select)
