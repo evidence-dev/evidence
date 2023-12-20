@@ -1,8 +1,18 @@
-import { describe, it, expect } from 'vitest';
-import { filesystem } from './inject-partials.fixture.js';
+import mockfs from 'mock-fs';
+import { afterEach, beforeEach, describe, it, expect } from 'vitest';
 import { injectPartials } from './inject-partials.cjs';
 
+export const filesystem = {
+	partials: {
+		'basic.md': 'partial'
+	}
+};
+
 describe('injectPartials', () => {
+	beforeEach(() => {
+		mockfs(filesystem);
+	});
+	afterEach(() => mockfs.restore());
 	it('should return original string when there is no pattern', () => {
 		const original = 'sample text';
 		expect(injectPartials(original)).toBe(original);
