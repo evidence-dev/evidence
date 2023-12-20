@@ -1,5 +1,34 @@
 # @evidence-dev/duckdb
 
+## 1.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- e23691d0: Handle errors during source query execution
+- af4a8a1e: Explicit mappings for all DuckDB types
+- bf4a112a: Update package.json to use new datasource field
+- c4822852: Support for streaming results
+- 781d2677: exhaust testconnection streams, improve type inference, add trino/databricks adapters
+- 96e96568: Upgrade ddb package; return more useful error messages
+- 20127231: Bump all versions so version pinning works
+- 29c149d6: added stricter types to db adapters
+- Updated dependencies [bf4a112a]
+- Updated dependencies [cd57ba69]
+- Updated dependencies [c4822852]
+- Updated dependencies [781d2677]
+- Updated dependencies [20127231]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/db-commons@0.2.1
+
 ## 1.0.0-usql.10
 
 ### Patch Changes

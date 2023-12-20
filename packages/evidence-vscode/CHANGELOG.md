@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.10
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+
 ## 0.0.10-usql.0
 
 ### Patch Changes
