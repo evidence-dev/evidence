@@ -394,7 +394,7 @@ importers:
         specifier: ^1.5.0
         version: 1.6.1
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../db-commons
     devDependencies:
       dotenv:
@@ -723,7 +723,7 @@ importers:
         version: 3.22.4
     devDependencies:
       '@evidence-dev/component-utilities':
-        specifier: workspace:2.0.0-usql.31
+        specifier: workspace:*
         version: link:../component-utilities
       '@parcel/core':
         specifier: ^2.8.3
@@ -936,7 +936,7 @@ importers:
   packages/trino:
     dependencies:
       '@evidence-dev/db-commons':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../db-commons
       presto-client:
         specifier: ^0.13.0
