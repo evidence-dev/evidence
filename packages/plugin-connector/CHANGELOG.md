@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.0-usql.43
+
+### Patch Changes
+
+- 6fbde887: Modify duplicate component message
+
 ## 2.0.0-usql.42
 
 ### Patch Changes

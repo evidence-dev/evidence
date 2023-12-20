@@ -1,5 +1,15 @@
 # @evidence-dev/components
 
+## 3.0.0-usql.63
+
+### Patch Changes
+
+- Updated dependencies [9ff614d2]
+- Updated dependencies [6fbde887]
+  - @evidence-dev/bigquery@2.0.0-usql.7
+  - @evidence-dev/plugin-connector@2.0.0-usql.43
+  - @evidence-dev/core-components@2.0.0-usql.46
+
 ## 3.0.0-usql.62
 
 ### Patch Changes

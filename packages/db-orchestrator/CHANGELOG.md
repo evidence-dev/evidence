@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.0-usql.18
+
+### Patch Changes
+
+- Updated dependencies [9ff614d2]
+  - @evidence-dev/bigquery@2.0.0-usql.7
+
 ## 3.0.0-usql.17
 
 ### Patch Changes

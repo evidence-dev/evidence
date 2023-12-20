@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- 9ff614d2: fix bigquery types timing out for large queries
+
 ## 2.0.0-usql.6
 
 ### Patch Changes
