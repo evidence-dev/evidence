@@ -14,10 +14,16 @@ import { findInterval, vectorSeq } from './helpers/getCompletedData.helpers.js';
  * @return {Record<string, unknown>[]} An array containing the filled data objects.
  */
 export default function getCompletedData(_data, x, y, series, nullsZero = false, fillX = false) {
-	const data = _data.map((d) => Object.assign({}, d));
+	let xIsDate = false;
+	const data = _data.map((d) =>
+		Object.assign({}, d, {
+			[x]: d[x] instanceof Date ? ((xIsDate = true), d[x].toISOString()) : d[x]
+		})
+	);
 	const groups = Array.from(data).reduce((a, v) => {
 		if (v[x] instanceof Date) {
-			v[x] = v[x].toLocaleString();
+			v[x] = v[x].toISOString();
+			xIsDate = true;
 		}
 		if (series) {
 			if (!a[v[series] ?? 'null']) a[v[series] ?? 'null'] = [];
@@ -39,18 +45,7 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 
 	switch (typeof exampleX) {
 		case 'object':
-			// If x is not a date; this shouldn't be hit, abort!
-			if (!(exampleX instanceof Date)) {
-				throw new Error('Unexpected object property, expected string, date, or number');
-			}
-			// Map dates to numeric values
-			xDistinct = getDistinctValues(
-				data.map((d) => ({ [x]: d[x].getTime() })),
-				x
-			);
-
-			// We don't fillX here because date numbers are very large, so a small interval would create a _massive_ array
-			break;
+			throw new Error('Unexpected object property, expected string, date, or number');
 		case 'number':
 			// Numbers are the most straightforward
 			xDistinct = getDistinctValues(data, x);
@@ -91,5 +86,6 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 
 		output.push(tidy(value, ...tidyFuncs));
 	}
+	if (xIsDate) return output.flat().map((r) => ({ ...r, [x]: new Date(r[x]) }));
 	return output.flat();
 }

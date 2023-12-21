@@ -63,7 +63,7 @@ const testSuite = (opts) => {
 		const result = getCompletedData(data, keys.x, keys.y, keys.series, true, true);
 
 		for (const row of data.filter((r) => r[keys.y] === null)) {
-			const targetX = opts.xType === 'date' ? row[keys.x].toLocaleString() : row[keys.x];
+			const targetX = row[keys.x];
 
 			const target = result.find(
 				(r) => r[keys.series] === row[keys.series] && r[keys.x].toString() === targetX.toString()
@@ -103,6 +103,9 @@ const testSuite = (opts) => {
 					switch (opts.xType) {
 						case 'number':
 							expect(typeof row[keys.x]).toEqual('number');
+							break;
+						case 'date':
+							expect(row[keys.x]).toBeInstanceOf(Date);
 							break;
 						default:
 							expect(typeof row[keys.x]).toEqual('string');
@@ -177,11 +180,7 @@ const testSuite = (opts) => {
 		const { x, y } = keys;
 		const result = getCompletedData(data, x, y, undefined, false, false);
 
-		if (opts.xType === 'date')
-			expect(Array.from(data).map((r) => ({ ...r, [x]: r[x].toLocaleString() }))).toEqual(
-				expect.arrayContaining(result)
-			);
-		else expect(Array.from(data)).toEqual(expect.arrayContaining(result));
+		expect(Array.from(data)).toEqual(expect.arrayContaining(result));
 	});
 
 	it('fills missing x-axis values with null if fillX is set and not nullsZero', () => {
@@ -193,9 +192,7 @@ const testSuite = (opts) => {
 			for (const row of result.filter((r) => r[series] === seriesName)) {
 				const inputRow = data.find((d) => d[series] === row[series] && d[x] === row[x]);
 				if (inputRow) {
-					if (opts.xType === 'date') expect(row[y]).toEqual(inputRow[y].toLocaleString());
-					// This row already existed
-					else expect(row[y]).toEqual(inputRow[y]);
+					expect(row[y]).toEqual(inputRow[y]);
 				} else {
 					// This row was inserted
 					expect(row[y]).toBe(null);
