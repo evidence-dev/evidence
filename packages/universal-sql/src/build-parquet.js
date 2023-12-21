@@ -79,7 +79,7 @@ export async function buildMultipartParquet(
 				c.name,
 				convertArrayToVector(
 					c.evidenceType,
-					results.map((i) => i[c.name])
+					results.map((i) => i[c.name] ?? null)
 				)
 			])
 		);
