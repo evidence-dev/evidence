@@ -54,13 +54,9 @@ const logEvent = async (eventName, dev, settings, databaseEngine, sourceName) =>
 
 
 		if (settings) {
-			console.log('MD5ing settings values', {settings}); //TODO: evidence-1344 remove after
 			if (settings.gitRepo) {
 				repo = md5(settings.gitRepo);
 			}
-
-			//TODO figure out the actual DB
-			console.log('MD5ing database values', {database: settings.database}); //TODO: evidence-1344 remove after
 
 			if (databaseEngine) {
 				database = databaseEngine;
@@ -68,9 +64,6 @@ const logEvent = async (eventName, dev, settings, databaseEngine, sourceName) =>
 				//legacy - remove this post migration
 				database = settings.database;
 			}
-
-			//TODO maybe if there are no sources.
-			console.log('MD5ing database values', {credentialsFileName: settings.credentials?.filename}); //TODO: evidence-1344 remove after
 
 			if (settings.credentials?.filename) {
 				demoDb = md5(settings.credentials.filename) === md5('needful_things.duckdb');
@@ -87,8 +80,6 @@ const logEvent = async (eventName, dev, settings, databaseEngine, sourceName) =>
 				codespaces = (CODESPACES === 'true');
 			}
 		}
-
-		console.log('Computed homeDir and codespaces settings', {homeDirectory, codespaces}); //TODO: evidence-1344 remove after
 
 		if (usageStats === 'yes') {
 			const projectProfile = await getProfile();
@@ -110,7 +101,6 @@ const logEvent = async (eventName, dev, settings, databaseEngine, sourceName) =>
 					postUSQL: true,
 				}
 			}
-			console.log('analytics.track', {payload});
 			analytics.track(payload);
 		} else {
 			console.log('Not sending telemetry as usage stats disabled'); //TODO: evidence-1344 remove after
