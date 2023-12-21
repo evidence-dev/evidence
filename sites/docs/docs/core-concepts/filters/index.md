@@ -4,9 +4,7 @@ title: Filters
 
 Filters dynamically change what data is returned by a query. Filters take the input that a user provides via a component, and use it to change the query.
 
-The below example uses the prebuilt Evidence `<Dropdown/>` component, but you can also use [any HTML input](https://www.w3schools.com/html/html_form_input_types.asp).
-
-For more detail on how to use filters, see 
+The below example uses the Evidence [`<Dropdown/>`](/components/dropdown) component. 
 
 ## Examples
 
@@ -15,7 +13,7 @@ For more detail on how to use filters, see
 ![Filtering a Query](/img/filters-queries.png)
 
 ````markdown
-```sql items
+```sql unique_items
 select 
     item
 from needful_things.orders
@@ -23,8 +21,8 @@ group by 1
 ```
 
 <Dropdown
-    name=item
-    data={items}
+    name=selected_item
+    data={unique_items}
     value=item
 />
 
@@ -33,7 +31,7 @@ select
     date_trunc('month', order_date) as month,
     sum(sales) as sales_usd
 from needful_things.orders
-where item = '${inputs.item}'
+where item = '${inputs.selected_item}'
 group by 1
 ```
 
@@ -62,8 +60,8 @@ group by 1
 ```
 
 <Dropdown
-    name=item
-    data={items}
+    name=selected_item
+    data={unique_items}
     value=item
 >
     <DropdownOption value="%" valueLabel="All Items"/>
@@ -74,7 +72,7 @@ select
     date_trunc('month', order_date) as month,
     sum(sales) as sales_usd
 from needful_things.orders
-where item like '${inputs.item}'
+where item like '${inputs.selected_item}'
 group by 1
 ```
 
