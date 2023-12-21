@@ -6,3 +6,4 @@ evidence.settings.json
 dev
 .profile.json
 .evidence-queries
+static/data

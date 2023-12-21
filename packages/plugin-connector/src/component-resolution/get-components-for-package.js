@@ -22,7 +22,7 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 	// This doesn't have the required metadata
 	if (!validEvidencePackage) return providedComponents;
 
-	// This is a database connector, not a component lib
+	// This is a datasource connector, not a component lib
 	if (validEvidencePackage.evidence && !validEvidencePackage.evidence.components) {
 		console.warn(
 			chalk.yellow(

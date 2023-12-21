@@ -37,7 +37,7 @@ The command `npm run build:strict` is a much less permissive build command. Use 
 This command will fail if:
 
 - **Any SQL query fails.** A successful query returning no rows is _not_ a failure
-- **Any component renders an error state.** A component passed a valid query returning no rows _will_ fail - you avoid this with a, [{#if} statement](/core-concepts/if-else) if needed.
+- **Any component renders an error state.** A component passed a valid query returning no rows _will_ fail - you can avoid this with an [{#if} statement](/core-concepts/if-else) if needed.
 
 ## Storing Credentials
 
@@ -47,7 +47,7 @@ To find the environment variables that you'll need to set for your project:
 
 1. Run your project in development mode
 1. Visit the [settings page](https://localhost:3000/settings)
-1. Open the deployment panel, and select 'self-host'
+1. Open the deployment panel, and select your deployment target
 
 :::info
 For details on how to use different data for different environments, see [Environments](/deployment/environments).

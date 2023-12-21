@@ -111,3 +111,54 @@ const runQuery = async (queryString, database = {}) => {
 };
 
 module.exports = runQuery;
+
+/**
+ * @typedef {Object} DatabricksOptions
+ * @property {string} host
+ * @property {number} port
+ * @property {string} path
+ * @property {string} token
+ */
+
+/** @type {import('@evidence-dev/db-commons').GetRunner<DatabricksOptions>} */
+module.exports.getRunner = async (opts) => {
+	return async (queryContent, queryPath, batchSize) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts, batchSize);
+	};
+};
+
+/** @type {import('@evidence-dev/db-commons').ConnectionTester<DatabricksOptions>} */
+module.exports.testConnection = async (opts) => {
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+};
+
+module.exports.options = {
+	token: {
+		title: 'Personal Access Token',
+		type: 'text',
+		required: true,
+		secret: true
+	},
+	host: {
+		title: 'Server Hostname',
+		type: 'string',
+		required: true,
+		secret: false
+	},
+	path: {
+		title: 'HTTP Path',
+		type: 'string',
+		required: true,
+		secret: false
+	},
+	port: {
+		title: 'Port',
+		type: 'number',
+		required: false,
+		secret: false
+	}
+};

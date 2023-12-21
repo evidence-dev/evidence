@@ -7,7 +7,7 @@ const getEnv = (envMap, ...keyPath) => {
 
 	let location = envMap;
 	while (keyPathParts.length) {
-		location = location[keyPathParts.shift()];
+		location = location[/** @type {string} */ (keyPathParts.shift())];
 		if (Array.isArray(location) && keyPathParts.length) {
 			// We're too soon
 			throw new Error(`Could not find ${keyPath} in env map!`);

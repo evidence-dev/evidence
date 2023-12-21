@@ -1,6 +1,6 @@
 ---
 title: Data Table
-sources:
+queries:
   - orders_by_category: orders_by_category.sql
   - orders_with_comparisons: orders_with_comparisons.sql
 ---

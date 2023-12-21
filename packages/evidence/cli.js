@@ -1,23 +1,35 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import { spawn } from 'child_process';
 import * as chokidar from 'chokidar';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
+import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
 
 const populateTemplate = function () {
+	clearQueryCache();
+
 	// Create the template project in .evidence/template
 	const __filename = fileURLToPath(import.meta.url);
 	const __dirname = path.dirname(__filename);
 
 	fs.ensureDirSync('./.evidence/template/');
 
-	// empty the template directory, except any local settings, or telemetry profile that already exist.
+	// empty the template directory, except:
+	// - local settings
+	// - telemetry profile
+	// - static folder (mainly to preserve the data directory)
+	const keepers = new Set([
+		'evidence.settings.json',
+		'.profile.json',
+		'static',
+		'.evidence-queries'
+	]);
 	fs.readdirSync('./.evidence/template/').forEach((file) => {
-		if (file != 'evidence.settings.json' && file != '.profile.json')
-			fs.removeSync(path.join('./.evidence/template/', file));
+		if (!keepers.has(file)) fs.removeSync(path.join('./.evidence/template/', file));
 	});
 
 	fs.copySync(path.join(__dirname, '/template'), './.evidence/template/');
@@ -30,6 +42,8 @@ const clearQueryCache = function () {
 
 const runFileWatcher = function (watchPatterns) {
 	const ignoredFiles = [
+		'./pages/explore/**',
+		'./pages/explore.+(*)',
 		'./pages/settings/**',
 		'./pages/settings.+(*)',
 		'./pages/api/**',
@@ -84,9 +98,9 @@ const flattenArguments = function (args) {
 		const result = [];
 		const keys = Object.keys(args);
 		keys.forEach((key) => {
-			if (key !== '_') {
+			if (key !== '_' && args[key] !== undefined) {
 				result.push(`--${key}`);
-				if (args[key]) {
+				if (args[key] && args[key] !== true) {
 					result.push(args[key]);
 				}
 			}
@@ -113,6 +127,11 @@ const watchPatterns = [
 		targetRelative: './.evidence/template/sources/',
 		filePattern: '**'
 	}, // source files (eg csv files)
+	{
+		sourceRelative: './queries',
+		targetRelative: './.evidence/template/queries',
+		filePattern: '**'
+	},
 	{
 		sourceRelative: './components/',
 		targetRelative: './.evidence/template/src/components/',
@@ -158,8 +177,33 @@ const prog = sade('evidence');
 
 prog
 	.command('dev')
+	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
+
+		const manifestExists = fs.lstatSync(
+			path.join('.evidence', 'template', 'static', 'data', 'manifest.json'),
+			{ throwIfNoEntry: false }
+		);
+		if (!manifestExists) {
+			console.warn(
+				chalk.yellow(
+					`
+${chalk.bold('[!] Unable to load source manifest')}
+	This likely means you have no source data, and need to generate it.
+	Running ${chalk.bold('npm run sources')} will generate the needed data. See ${chalk.bold(
+						'npm run sources --help'
+					)} for more usage information
+	Documentation: https://docs.evidence.dev/core-concepts/data-sources/
+		`.trim()
+				)
+			);
+		}
+
 		populateTemplate();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
@@ -180,21 +224,94 @@ prog
 
 prog
 	.command('build')
+	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs')
 	.action((args) => {
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
 		populateTemplate();
-		clearQueryCache();
 		buildHelper('npx vite build', args);
 	});
 
 prog
 	.command('build:strict')
+	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs and fails on error')
 	.action((args) => {
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
 		populateTemplate();
-		clearQueryCache();
 		strictMode();
 		buildHelper('npx vite build', args);
+	});
+
+prog
+	.command('sources')
+	.alias('build:sources') // We don't want to break existing projects
+	.describe('creates .parquet files from source queries')
+	.option('--changed', 'only build sources whose queries have changed')
+	.option('--sources', 'only build queries from the specified source directories')
+	.option('--queries', 'only build the specified queries')
+	.option('--debug', 'show debug output')
+	.example('npx evidence sources --changed')
+	.example('npx evidence sources --sources needful_things --queries orders,reviews')
+	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
+	.example('npx evidence sources --sources needful_things,social_media')
+	.action(async (opts) => {
+		if (opts.debug) process.env.VITE_EVIDENCE_DEBUG = true;
+		if (process.argv.some((arg) => arg.includes('build:sources'))) {
+			console.log(
+				chalk.bold.red(
+					'[!!] build:sources is deprecated and has been renamed to sources. Expect it to be removed in the future.'
+				)
+			);
+			console.log(
+				chalk.bold.red(
+					'[!!] You can fix this in your package.json file ("evidence build:sources" becomes "evidence sources")\n'
+				)
+			);
+		}
+
+		if (!opts.debug)
+			process.on('uncaughtException', (e) => {
+				console.error(e.message);
+				process.exit(1);
+			});
+		const sources = opts.sources?.split(',') ?? null;
+		const queries = opts.queries?.split(',') ?? null;
+
+		const isExampleProject = Boolean(process.env.__EXAMPLE_PROJECT);
+
+		if (!isExampleProject) {
+			const templatePath = path.join('.evidence', 'template');
+			await fs.mkdir(templatePath, { recursive: true });
+			process.chdir(templatePath);
+		}
+
+		const dataDir = path.join('static', 'data');
+		const metaDir = path.join('.evidence-queries');
+
+		if (opts.debug) {
+			console.log('Building sources in', {
+				dataDir,
+				metaDir,
+				cwd: process.cwd(),
+				resolved: {
+					dataDir: path.resolve(dataDir),
+					metaDir: path.resolve(metaDir)
+				}
+			});
+		}
+
+		await updateDatasourceOutputs(path.join('static', 'data'), '.evidence-queries', {
+			sources: sources ? new Set(sources) : sources,
+			queries: queries ? new Set(queries) : queries,
+			only_changed: opts.changed
+		});
 	});
 
 prog.parse(process.argv);

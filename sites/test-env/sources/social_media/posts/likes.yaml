@@ -1,0 +1,20 @@
+rows: 6000
+fuzz: 100
+schema:
+    id:
+        type: id
+    user_id:
+        type: fk
+        withBias: true
+        target:
+            table: users.yaml
+    post_id:
+        type: fk
+        withBias: true
+        target:
+            table: ./posts/posts.yaml
+filters:
+    - type: unique
+      fields:
+          - user_id
+          - post_id

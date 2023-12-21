@@ -38,10 +38,10 @@
 						</li>
 						<li>Whether your project is running in development or build mode</li>
 						<li>
-							Whether your query returned from the cache, from your database, or returned an error
+							Whether your query returned from the cache, from your datasource, or returned an error
 						</li>
 						<li>
-							The type of Evidence database connector you are using (postgres, snowflake, etc.)
+							The type of Evidence datasource connectors you are using (postgres, snowflake, etc.)
 						</li>
 						<li>The operating system your project is running on (windows, mac, etc.)</li>
 					</ol>

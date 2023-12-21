@@ -1,6 +1,6 @@
 import { discoverEvidencePlugins } from '../plugin-discovery';
 import { getComponentsForPackage } from './get-components-for-package';
-import { loadConfig } from '../plugin-discovery/resolve-evidence-config';
+import { loadConfig } from '../plugin-discovery/load-config';
 import { getRootModules } from '../plugin-discovery/get-root-modules';
 import chalk from 'chalk';
 import { findSvelteComponents } from './loaders/file-loader';
@@ -117,7 +117,13 @@ export async function getPluginComponents(cfg, discoveries) {
 			if (componentMap[component]) {
 				console.warn(
 					chalk.yellow(
-						`[!] The components folder and ${componentMap[component].package} both provide ${component}. The component from the components folder will be used. To use the component from ${componentMap[component].package}, specify an alias (https://docs.evidence.dev/plugins/using-plugins/#component-aliases) or explicitly import the component.`
+						[
+							`${chalk.bold(
+								`[!] The components folder and ${componentMap[component].package} both provide ${component}`
+							)}.`,
+							'The component from the components folder will be used.',
+							`To use the component from ${componentMap[component].package}, specify an alias (https://docs.evidence.dev/plugins/using-plugins/#component-aliases) or explicitly import the component.`
+						].join('\n\t')
 					)
 				);
 				delete componentMap[component];

@@ -12,7 +12,8 @@ export function cleanZodErrors(obj) {
 		}
 		if (key === '_errors') {
 			if (obj['_errors'].length) {
-				obj['errors'] = obj['_errors'];
+				// De-duplicate
+				obj['errors'] = Array.from(new Set(obj['_errors']));
 			}
 			delete obj['_errors'];
 		}

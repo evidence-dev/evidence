@@ -24,7 +24,7 @@
 			useKeysAsHeaders: true
 		};
 
-		const data_copy = JSON.parse(JSON.stringify(data));
+		const data_copy = JSON.parse(JSON.stringify(Array.from(data)));
 
 		const csvExporter = new ExportToCsv(options);
 
