@@ -1,8 +1,8 @@
 const secure = require('@lukeed/uuid/secure');
 const md5 = require('blueimp-md5');
-const Analytics = require('analytics-node');
 const { readJSONSync, writeJSONSync, pathExistsSync } = require('fs-extra');
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
+const Analytics = require('analytics-node');
 
 const initializeProfile = async () => {
 	const projectProfile = {
@@ -12,7 +12,10 @@ const initializeProfile = async () => {
 		}
 	};
 	writeJSONSync('./.profile.json', projectProfile);
-	Analytics.identify(projectProfile);
+
+	const analytics = new Analytics(wK);
+	analytics.identify(projectProfile);
+
 	return projectProfile;
 };
 
@@ -30,7 +33,15 @@ const getProfile = async () => {
 	}
 };
 
-const logEvent = async (eventName, dev, settings) => {
+/**
+ *  TODO issue-1344 consider splitting this up into a separate handlers (not all events are db events)
+ * @param {string} eventName 
+ * @param {boolean} dev 
+ * @param {any} settings 
+ * @param {string} databaseEngine 
+ */
+const logEvent = async (eventName, dev, settings, databaseEngine, sourceName) => {
+	console.log('logEvent', {eventName, dev, settings}); //TODO: evidence-1344 remove after
 	try {
 		let usageStats = settings
 			? settings.send_anonymous_usage_stats ?? 'yes'
@@ -41,43 +52,71 @@ const logEvent = async (eventName, dev, settings) => {
 		let database;
 		let demoDb;
 
+
 		if (settings) {
+			console.log('MD5ing settings values', {settings}); //TODO: evidence-1344 remove after
 			if (settings.gitRepo) {
 				repo = md5(settings.gitRepo);
 			}
 
-			if (settings.database) {
+			//TODO figure out the actual DB
+			console.log('MD5ing database values', {database: settings.database}); //TODO: evidence-1344 remove after
+
+			if (databaseEngine) {
+				database = databaseEngine;
+			} else if (settings.database) {
+				//legacy - remove this post migration
 				database = settings.database;
 			}
 
-			if (settings.credentials.filename) {
+			//TODO maybe if there are no sources.
+			console.log('MD5ing database values', {credentialsFileName: settings.credentials?.filename}); //TODO: evidence-1344 remove after
+
+			if (settings.credentials?.filename) {
 				demoDb = md5(settings.credentials.filename) === md5('needful_things.duckdb');
 			}
 		}
 
-		let directoryHash = md5(process.env.HOME);
-		let codespaces = process.env.CODESPACES === 'true';
+		let homeDirectory = undefined;
+		let codespaces = false;
+
+		if (process.env) {
+			const { HOME, CODESPACES } = process.env;
+			homeDirectory = HOME;
+			if(CODESPACES) {
+				codespaces = (CODESPACES === 'true');
+			}
+		}
+
+		console.log('Computed homeDir and codespaces settings', {homeDirectory, codespaces}); //TODO: evidence-1344 remove after
 
 		if (usageStats === 'yes') {
-			projectProfile = await getProfile();
+			const projectProfile = await getProfile();
 			var analytics = new Analytics(wK);
-			analytics.track({
+			const payload = {
 				anonymousId: projectProfile.anonymousId,
 				event: eventName,
 				properties: {
 					devMode: dev,
 					repoHash: repo,
 					database: database, // logs database type (postgres, snowflake, etc.)
+					sourceNameHash: sourceName ? md5(sourceName) : undefined, //logs the hashed name of the source this is associated with (e.g md5('pet-store')))
 					operatingSystem: process.platform, // logs operating system name
 					nodeVersion: process.version, // logs active version of NodeJS
 					arch: process.arch,
-					directoryHash: directoryHash,
+					directoryHash: homeDirectory? md5(homeDirectory) : undefined,
 					demoDb: demoDb,
-					codespaces: codespaces
+					codespaces: codespaces,
+					postUSQL: true,
 				}
-			});
+			}
+			console.log('analytics.track', {payload});
+			analytics.track(payload);
+		} else {
+			console.log('Not sending telemetry as usage stats disabled'); //TODO: evidence-1344 remove after
 		}
 	} catch {
+		console.error('Error logging event', {eventName});//TODO: evidence-1344 remove after
 		// do nothing
 	}
 };
