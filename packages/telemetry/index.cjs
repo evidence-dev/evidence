@@ -34,13 +34,14 @@ const getProfile = async () => {
 };
 
 /**
- *  TODO issue-1344 consider splitting this up into a separate handlers (not all events are db events)
+ * TODO issue-1344 consider splitting this up into a separate handlers instead of taking all possible params (e.g separate handler for DB events)
  * @param {string} eventName 
  * @param {boolean} dev 
  * @param {any} settings 
- * @param {string} databaseEngine 
+ * @param {string | undefined} databaseEngine
+ * @param {string | undefined} sourceName
  */
-const logEvent = async (eventName, dev, settings, databaseEngine, sourceName) => {
+const logEvent = async (eventName, dev, settings, databaseEngine = undefined, sourceName = undefined) => {
 	console.log('logEvent', {eventName, dev, settings}); //TODO: evidence-1344 remove after
 	try {
 		let usageStats = settings
