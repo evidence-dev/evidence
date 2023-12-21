@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.1
+
+### Patch Changes
+
+- Correct a dependency on db-commons
+
 ## 1.0.0
 
 ### Major Changes

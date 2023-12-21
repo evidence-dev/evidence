@@ -1,5 +1,14 @@
 # evidence-test-environment
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/duckdb@1.0.1
+  - @evidence-dev/csv@1.0.1
+  - @evidence-dev/evidence@24.0.1
+
 ## 3.0.0
 
 ### Major Changes
