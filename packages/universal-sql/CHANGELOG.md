@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.1
+
+### Patch Changes
+
+- 913f5919: Handle null / undefined values when columns are omitted from result sets
+
 ## 2.0.0
 
 ### Major Changes
