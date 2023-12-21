@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 1.0.1
+
+### Patch Changes
+
+- Fix incorrectly published version
+
 ## 1.0.0
 
 ### Patch Changes

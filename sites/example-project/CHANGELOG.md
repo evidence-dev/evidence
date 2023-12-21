@@ -1,5 +1,20 @@
 # @evidence-dev/components
 
+## 3.0.2
+
+### Patch Changes
+
+- @evidence-dev/bigquery@2.0.1
+- @evidence-dev/csv@1.0.2
+- @evidence-dev/duckdb@1.0.2
+- @evidence-dev/mssql@1.0.1
+- @evidence-dev/mysql@1.0.1
+- @evidence-dev/plugin-connector@2.0.1
+- @evidence-dev/postgres@1.0.1
+- @evidence-dev/snowflake@1.0.1
+- @evidence-dev/sqlite@2.0.1
+- @evidence-dev/core-components@3.0.0
+
 ## 3.0.1
 
 ### Patch Changes

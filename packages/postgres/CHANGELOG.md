@@ -1,5 +1,12 @@
 # @evidence-dev/postgres
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/db-commons@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
