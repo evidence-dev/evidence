@@ -35,11 +35,11 @@
 	<section>
 		<div>
 			<h2 class="text-base font-normal font-mono my-2">Tables</h2>
-			<ul class="list-none m-0 p-0 flex flex-col gap-1">
+			<ul class="list-none m-0 p-0 flex flex-col gap-2">
 				{#each Object.entries(metadata) as [name, meta] (name)}
-					<li class="font-mono m-0 text-sm">
+					<li class="font-mono m-0 text-sm font-bold">
 						<button
-							class="bg-gray-200 px-2 py-1"
+							class="bg-gray-200 px-2 py-1 rounded"
 							class:bg-gray-300={selectedTable === meta}
 							on:click={() => {
 								selectedTable = selectedTable === meta ? '' : meta;
@@ -50,19 +50,19 @@
 					</li>
 					{#if selectedTable === meta}
 						<ul 
-							class="list-none m-0 flex flex-col gap-1"
+							class="list-none m-0 flex flex-col gap-2"
 						>
 							{#each meta.columns as column (column.column_name)}
-								<li class="font-mono m-0 text-sm bg-gray-100 px-2 py-1 flex">
-									{column.column_name} ({column.data_type})
-									// Icons  
+								<li class="font-mono text-sm bg-gray-100 px-2 py-1 mx-2 rounded flex flex-row" >
+									<!-- Icons   -->
 									{#if column.data_type === 'INT' || column.data_type === 'BIGINT' || column.data_type === 'SMALLINT' || column.data_type === 'TINYINT' || column.data_type === 'DOUBLE'}
-										<Icon src={_123} class="text-gray-600 w-6 h-6" />
+										<Icon src={_123} class="text-gray-600 w-5 h-5" />
 									{:else if column.data_type === 'DATE' || column.data_type === 'DATETIME' || column.data_type === 'TIMESTAMP'}
-										<Icon src={Calendar} class="text-gray-600 w-6 h-6" />
+										<Icon src={Calendar} class="text-gray-600 w-5 h-5" />
 									{:else}
-										<Icon src={Abc} class="text-gray-600 w-6 h-6" />
+										<Icon src={Abc} class="text-gray-600 w-5 h-5" />
 									{/if}
+									<div class="pl-2 lowercase"><b>{column.column_name}</b>&nbsp; {column.data_type}</div>
 								</li>
 							{/each}
 						</ul>
