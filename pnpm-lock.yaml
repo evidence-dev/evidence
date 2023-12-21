@@ -207,9 +207,6 @@ importers:
       svelte:
         specifier: 3.55.0
         version: 3.55.0
-      zod:
-        specifier: ^3.21.4
-        version: 3.22.4
     devDependencies:
       '@faker-js/faker':
         specifier: ^8.0.2
@@ -376,7 +373,7 @@ importers:
         version: 4.3.9(@types/node@20.10.5)
       vitest:
         specifier: ^0.34.1
-        version: 0.34.6(@vitest/ui@1.1.0)
+        version: 0.34.6
 
   packages/csv:
     dependencies:
@@ -760,7 +757,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^0.34.1
-        version: 0.34.6(@vitest/ui@1.1.0)
+        version: 0.34.6
 
   packages/postgres:
     dependencies:
@@ -834,7 +831,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^0.34.2
-        version: 0.34.6(@vitest/ui@1.1.0)
+        version: 0.34.6
 
   packages/query-store:
     dependencies:
@@ -853,7 +850,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^0.34.1
-        version: 0.34.6(@vitest/ui@1.1.0)
+        version: 0.34.6
 
   packages/redshift:
     dependencies:
@@ -986,7 +983,7 @@ importers:
         version: 5.2.0
       vitest:
         specifier: ^0.34.1
-        version: 0.34.6(@vitest/ui@1.1.0)
+        version: 0.34.6
 
   sites/docs:
     dependencies:
@@ -10154,31 +10151,8 @@ packages:
       tinyspy: 2.2.0
     dev: true
 
-  /@vitest/ui@1.1.0(vitest@0.34.6):
-    resolution: {integrity: sha512-7yU1QRFBplz0xJqcgt+agcbrNFdBmLo8UUppdKkFmYx+Ih0+yMYQOyr7kOB+YoggJY/p5ZzXxdbiOz7NBX2y+w==}
-    peerDependencies:
-      vitest: ^1.0.0
-    dependencies:
-      '@vitest/utils': 1.1.0
-      fast-glob: 3.3.2
-      fflate: 0.8.1
-      flatted: 3.2.9
-      pathe: 1.1.1
-      picocolors: 1.0.0
-      sirv: 2.0.4
-      vitest: 0.34.6(@vitest/ui@1.1.0)
-    dev: true
-
   /@vitest/utils@0.34.6:
     resolution: {integrity: sha512-IG5aDD8S6zlvloDsnzHw0Ut5xczlF+kv2BOTo+iXfPr54Yhi5qbVOgGB1hZaVq4iJ4C/MZ2J0y15IlsV/ZcI0A==}
-    dependencies:
-      diff-sequences: 29.6.3
-      loupe: 2.3.7
-      pretty-format: 29.7.0
-    dev: true
-
-  /@vitest/utils@1.1.0:
-    resolution: {integrity: sha512-z+s510fKmYz4Y41XhNs3vcuFTFhcij2YF7F8VQfMEYAAUfqQh0Zfg7+w9xdgFGhPf3tX3TicAe+8BDITk6ampQ==}
     dependencies:
       diff-sequences: 29.6.3
       loupe: 2.3.7
@@ -12124,7 +12098,7 @@ packages:
       postcss: 8.4.32
       postcss-modules-extract-imports: 3.0.0(postcss@8.4.32)
       postcss-modules-local-by-default: 4.0.3(postcss@8.4.32)
-      postcss-modules-scope: 3.0.0(postcss@8.4.32)
+      postcss-modules-scope: 3.1.0(postcss@8.4.32)
       postcss-modules-values: 4.0.0(postcss@8.4.32)
       postcss-value-parser: 4.2.0
       semver: 7.5.4
@@ -13574,7 +13548,7 @@ packages:
       human-signals: 4.3.1
       is-stream: 3.0.0
       merge-stream: 2.0.0
-      npm-run-path: 5.1.0
+      npm-run-path: 5.2.0
       onetime: 6.0.0
       signal-exit: 3.0.7
       strip-final-newline: 3.0.0
@@ -13815,10 +13789,6 @@ packages:
 
   /fetch-retry@5.0.6:
     resolution: {integrity: sha512-3yurQZ2hD9VISAhJJP9bpYFNQrHHBXE2JxxjY5aLEcDi46RmAzJE2OC9FAde0yis5ElW0jTTzs0zfg/Cca4XqQ==}
-    dev: true
-
-  /fflate@0.8.1:
-    resolution: {integrity: sha512-/exOvEuc+/iaUm105QIiOt4LpBdMTWsXxqR0HDF35vx3fmaKzw7354gTilCh5rkzEt8WYyG//ku3h3nRmd7CHQ==}
     dev: true
 
   /file-entry-cache@6.0.1:
@@ -17832,8 +17802,8 @@ packages:
     dependencies:
       path-key: 3.1.1
 
-  /npm-run-path@5.1.0:
-    resolution: {integrity: sha512-sJOdmRGrY2sjNTRMbSvluQqg+8X7ZK61yvzBEIDhz4f8z1TZFYABsqjjCBd/0PUNE9M6QDgHJXQkGUEm7Q+l9Q==}
+  /npm-run-path@5.2.0:
+    resolution: {integrity: sha512-W4/tgAXFqFA0iL7fk0+uQ3g7wkL8xJmx3XdK0VGb4cHW//eZTtKGvFBBoRKVTpY7n6ze4NL9ly7rgXcHufqXKg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       path-key: 4.0.0
@@ -18844,8 +18814,8 @@ packages:
       postcss-value-parser: 4.2.0
     dev: false
 
-  /postcss-modules-scope@3.0.0(postcss@8.4.32):
-    resolution: {integrity: sha512-hncihwFA2yPath8oZ15PZqvWGkWf+XUfQgUGamS4LqoP1anQLOsOJw0vr7J7IwLpoY9fatA2qiGUGmuZL0Iqlg==}
+  /postcss-modules-scope@3.1.0(postcss@8.4.32):
+    resolution: {integrity: sha512-SaIbK8XW+MZbd0xHPf7kdfA/3eOt7vxJ72IRecn3EzuZVLr1r0orzf0MX/pN8m+NMDoo6X/SQd8oeKqGZd8PXg==}
     engines: {node: ^10 || ^12 || >= 14}
     peerDependencies:
       postcss: ^8.1.0
@@ -22825,71 +22795,6 @@ packages:
       '@vitest/runner': 0.34.6
       '@vitest/snapshot': 0.34.6
       '@vitest/spy': 0.34.6
-      '@vitest/utils': 0.34.6
-      acorn: 8.11.2
-      acorn-walk: 8.3.1
-      cac: 6.7.14
-      chai: 4.3.10
-      debug: 4.3.4
-      local-pkg: 0.4.3
-      magic-string: 0.30.5
-      pathe: 1.1.1
-      picocolors: 1.0.0
-      std-env: 3.6.0
-      strip-literal: 1.3.0
-      tinybench: 2.5.1
-      tinypool: 0.7.0
-      vite: 4.3.9(@types/node@20.10.5)
-      vite-node: 0.34.6(@types/node@20.10.5)
-      why-is-node-running: 2.2.2
-    transitivePeerDependencies:
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
-
-  /vitest@0.34.6(@vitest/ui@1.1.0):
-    resolution: {integrity: sha512-+5CALsOvbNKnS+ZHMXtuUC7nL8/7F1F2DnHGjSsszX8zCjWSSviphCb/NuS9Nzf4Q03KyyDRBAXhF/8lffME4Q==}
-    engines: {node: '>=v14.18.0'}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@vitest/browser': '*'
-      '@vitest/ui': '*'
-      happy-dom: '*'
-      jsdom: '*'
-      playwright: '*'
-      safaridriver: '*'
-      webdriverio: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-      playwright:
-        optional: true
-      safaridriver:
-        optional: true
-      webdriverio:
-        optional: true
-    dependencies:
-      '@types/chai': 4.3.11
-      '@types/chai-subset': 1.3.5
-      '@types/node': 20.10.5
-      '@vitest/expect': 0.34.6
-      '@vitest/runner': 0.34.6
-      '@vitest/snapshot': 0.34.6
-      '@vitest/spy': 0.34.6
-      '@vitest/ui': 1.1.0(vitest@0.34.6)
       '@vitest/utils': 0.34.6
       acorn: 8.11.2
       acorn-walk: 8.3.1
