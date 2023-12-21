@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 3.0.1
+
+### Patch Changes
+
+- Fix DataTable rows being treated as a string
+
 ## 3.0.0
 
 ### Major Changes

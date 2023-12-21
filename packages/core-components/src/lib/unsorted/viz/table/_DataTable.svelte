@@ -27,7 +27,7 @@
 	// Data, pagination, and row index numbers
 	export let data;
 	export let rows = 10; // number of rows to show
-	rows = Number.parseInt(rows);
+	$: rows = Number.parseInt(rows);
 
 	let paginated;
 	$: data, rows, (paginated = data.length > rows);
