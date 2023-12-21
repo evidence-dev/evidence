@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.0.1
+
+### Patch Changes
+
+- 913f5919: getCompletedData handles dates properly now
+  - @evidence-dev/query-store@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
