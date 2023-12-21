@@ -5,22 +5,15 @@ title: Install Evidence
 description: The easiest way to get started with Evidence is to use the VSCode Extension.
 ---
 
-The easiest way to get started with Evidence is to use the VSCode Extension.
+:::warning
+If you are starting a new project, we highly recommend installing the [latest version of Evidence](https://docs.evidence.dev/getting-started/install-evidence).
+:::
 
 ## VSCode Extension
 
-1. Install Evidence from the VSCode Marketplace
-2. Open the Command Palette (`Ctrl/Cmd + Shift + P`) and enter `Evidence: New Evidence Project`
-3. Click `Start Evidence` in the bottom status bar
+Installing the legacy version of Evidence using VSCode is unsupported.
 
-
-The template project running in your browser contains a tutorial on how to use Evidence.
-
-<a class="external" href="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">
-Install VSCode Extension
-</a>
-
-## Other Options
+## Install Options
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -30,7 +23,7 @@ import TabItem from '@theme/TabItem';
 <TabItem value="standalone" label="Command Line" default>
 
 ```shell
-npx degit evidence-dev/template my-project
+npx degit evidence-dev/template#legacy my-project
 cd my-project
 npm install
 npm run dev
@@ -42,7 +35,7 @@ npm run dev
 
 ```shell
 cd path/to/your/dbt/project
-npx degit evidence-dev/template reports
+npx degit evidence-dev/template#legacy reports
 npm --prefix ./reports install
 npm --prefix ./reports run dev
 ```
