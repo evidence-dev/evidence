@@ -1,8 +1,7 @@
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
 import { readJSONSync } from 'fs-extra';
-readJSONSync;
-import logEvent from '@evidence-dev/telemetry';
+import { logEvent } from '@evidence-dev/telemetry';
 
 export const load = async () => {
 	if (dev) {
