@@ -120,7 +120,6 @@ discede?
     state=name
     value=population
     colorScale=red
-    abbreviations=false
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
