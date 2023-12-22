@@ -673,6 +673,9 @@ importers:
       '@evidence-dev/db-commons':
         specifier: workspace:*
         version: link:../db-commons
+      '@evidence-dev/telemetry':
+        specifier: workspace:*
+        version: link:../telemetry
       '@evidence-dev/universal-sql':
         specifier: workspace:*
         version: link:../universal-sql
@@ -932,6 +935,16 @@ importers:
       fs-extra:
         specifier: 10.0.0
         version: 10.0.0
+    devDependencies:
+      '@types/analytics-node':
+        specifier: 3.1.14
+        version: 3.1.14
+      '@types/blueimp-md5':
+        specifier: ^2.18.2
+        version: 2.18.2
+      '@types/fs-extra':
+        specifier: 11.0.4
+        version: 11.0.4
 
   packages/trino:
     dependencies:
@@ -5058,7 +5071,7 @@ packages:
   /@evidence-dev/connector-gsheets@1.1.0:
     resolution: {integrity: sha512-x6qpEOrDChBg7Mp0qOd86Q/qhSaSEOniQiB3yg688Gdxt8s1ZIDQQ4TRVt6z28RdGkO6CO7mu5P7R/jzRlHyBw==}
     dependencies:
-      '@evidence-dev/duckdb': 1.0.0-usql.10
+      '@evidence-dev/duckdb': 1.0.1
       google-auth-library: 9.4.1
       google-spreadsheet: 4.1.1(google-auth-library@9.4.1)
       tempy: 3.1.0
@@ -5070,16 +5083,16 @@ packages:
       - supports-color
     dev: false
 
-  /@evidence-dev/db-commons@0.2.1-usql.5:
-    resolution: {integrity: sha512-UD6KEGMoEHrdeBeDkozAFmqe4f4m7SE2MzX2dHdgTzcktaXM1yy0Jw8rbQSbB4S0CKfpQj+RY1zDi8n1f4daBg==}
+  /@evidence-dev/db-commons@1.0.0:
+    resolution: {integrity: sha512-1hhNSKEFsotZWihDuGLtvHkmqaUL3JCBC/ViiytORdQPn5ieoqKDPKefJWr/06JeXLwiyKio9QfAo5P4vwY7aA==}
     dependencies:
       fs-extra: 10.0.0
     dev: false
 
-  /@evidence-dev/duckdb@1.0.0-usql.10:
-    resolution: {integrity: sha512-3L8nAFcxQljzveMz+DhbzTyarmAcjc0fXXOHQcXhjvx8rNr9j3UCoj2Q65FdRfDvFg1lWmnY93oxwMpUzJqnWw==}
+  /@evidence-dev/duckdb@1.0.1:
+    resolution: {integrity: sha512-Rc2Y2ybEN1CcIxOlZbOPkgZmT4vUXPGp8A8LnBI+KqGBkbdhpbFJiU/G9mwpfaH9Cq7EBlpPRGRktQ3ssE9fsw==}
     dependencies:
-      '@evidence-dev/db-commons': 0.2.1-usql.5
+      '@evidence-dev/db-commons': 1.0.0
       duckdb-async: 0.9.2
     transitivePeerDependencies:
       - bluebird
@@ -9462,6 +9475,10 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
 
+  /@types/analytics-node@3.1.14:
+    resolution: {integrity: sha512-m7+SReJIPwwS0eqnJ+5WwdR4U5aU0WhVUYuQ/n177iPpyXObPy/wP7HU7mohyNeRqxGsTO8mIUYC3MRGkyxhwQ==}
+    dev: true
+
   /@types/aria-query@5.0.4:
     resolution: {integrity: sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==}
     dev: true
@@ -9493,6 +9510,10 @@ packages:
     resolution: {integrity: sha512-mSM/iKUk5fDDrEV/e83qY+Cr3I1+Q3qqTuEn++HAWYjEa1+NxZr6CNrcJGf2ZTnq4HoFGC3zaTPZTobCzCFukA==}
     dependencies:
       '@babel/types': 7.23.6
+    dev: true
+
+  /@types/blueimp-md5@2.18.2:
+    resolution: {integrity: sha512-dJ9yRry9Olt5GAWlgCtE5dK9d/Dfhn/V7hna86eEO2Pn76+E8Y0S0n61iEUEGhWXXgtKtHxtZLVNwL8X+vLHzg==}
     dev: true
 
   /@types/body-parser@1.19.5:
@@ -9610,6 +9631,13 @@ packages:
   /@types/flatbuffers@1.10.3:
     resolution: {integrity: sha512-kwJQsAROanCiMXSLjcTLmYVBIJ9Qyuqs92SaDIcj2EII2KnDgZbiU7it1Z/JfZd1gmxw/lAahMysQ6ZM+j3Ryw==}
 
+  /@types/fs-extra@11.0.4:
+    resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
+    dependencies:
+      '@types/jsonfile': 6.1.4
+      '@types/node': 20.10.5
+    dev: true
+
   /@types/glob@7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
@@ -9671,6 +9699,12 @@ packages:
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  /@types/jsonfile@6.1.4:
+    resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
+    dependencies:
+      '@types/node': 20.10.5
+    dev: true
 
   /@types/katex@0.11.1:
     resolution: {integrity: sha512-DUlIj2nk0YnJdlWgsFuVKcX27MLW0KbKmGVoUHmFr+74FYYNUDAaj9ZqTADvsbE8rfxuVmSFc7KczYn5Y09ozg==}

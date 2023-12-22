@@ -38,11 +38,12 @@ const getProfile = async () => {
  * @param {string} eventName 
  * @param {boolean} dev 
  * @param {any} settings 
- * @param {string | undefined} databaseEngine
- * @param {string | undefined} sourceName
+ * @param {string | undefined} [databaseName]
+ * @param {string | undefined} [sourceName]
+ * @param {string | undefined} [queryName]
  */
-const logEvent = async (eventName, dev, settings, databaseEngine = undefined, sourceName = undefined) => {
-	console.log('logEvent', {eventName, dev, settings}); //TODO: evidence-1344 remove after
+const logEvent = async (eventName, dev, settings, databaseName = undefined, sourceName = undefined, queryName = undefined) => {
+	console.log('logEvent', {eventName, dev, settings, databaseName, sourceName, queryName}); //TODO: evidence-1344 remove after
 	try {
 		let usageStats = settings
 			? settings.send_anonymous_usage_stats ?? 'yes'
@@ -59,8 +60,8 @@ const logEvent = async (eventName, dev, settings, databaseEngine = undefined, so
 				repo = md5(settings.gitRepo);
 			}
 
-			if (databaseEngine) {
-				database = databaseEngine;
+			if (databaseName) {
+				database = databaseName;
 			} else if (settings.database) {
 				//legacy - remove this post migration
 				database = settings.database;
@@ -85,6 +86,7 @@ const logEvent = async (eventName, dev, settings, databaseEngine = undefined, so
 		if (usageStats === 'yes') {
 			const projectProfile = await getProfile();
 			var analytics = new Analytics(wK);
+
 			const payload = {
 				anonymousId: projectProfile.anonymousId,
 				event: eventName,
@@ -93,6 +95,7 @@ const logEvent = async (eventName, dev, settings, databaseEngine = undefined, so
 					repoHash: repo,
 					database: database, // logs database type (postgres, snowflake, etc.)
 					sourceNameHash: sourceName ? md5(sourceName) : undefined, //logs the hashed name of the source this is associated with (e.g md5('pet-store')))
+					queryNameHash: queryName ? md5(queryName) : undefined, //logs the hashed name of the query this is associated with (e.g md5('pet-store')))
 					operatingSystem: process.platform, // logs operating system name
 					nodeVersion: process.version, // logs active version of NodeJS
 					arch: process.arch,
@@ -102,6 +105,8 @@ const logEvent = async (eventName, dev, settings, databaseEngine = undefined, so
 					postUSQL: true,
 				}
 			}
+			console.log('analytics.track', {payload}); //TODO: evidence-1344 remove after
+
 			analytics.track(payload);
 		} else {
 			console.log('Not sending telemetry as usage stats disabled'); //TODO: evidence-1344 remove after

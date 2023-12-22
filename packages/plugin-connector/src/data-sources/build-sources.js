@@ -13,7 +13,10 @@ import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
+import { logEvent } from '@evidence-dev/telemetry';
+import { readFileSync, existsSync } from 'fs';
 import ora from 'ora';
+
 /**
  * @param {string} directory
  * @returns {Promise<SourceDirectory>}
@@ -48,6 +51,7 @@ export const buildSources = async (
 	filters,
 	batchSize = 1000 * 1000
 ) => {
+	console.log(chalk.bold(`building sources`)); //TODO evidence-1344 this does get hit when you change telemetry to on/off
 	await fs.stat(dataPath).catch(async (e) => {
 		if (e.message.startsWith('ENOENT')) {
 			await fs.mkdir(dataPath, { recursive: true });
@@ -75,6 +79,11 @@ export const buildSources = async (
 	/** @type {Record<string, Record<string, string | null>>} */
 	const hashes = {};
 
+	/** @type {boolean} */
+	const dev = (process.env?.NODE_ENV === 'development');
+	/** @type {any} */
+	const settings = loadSettings();
+
 	for (const source of sources) {
 		console.log(chalk.bold(`Processing ${source.name}`));
 		const sourceManifest = existingManifest[source.name] ?? [];
@@ -96,7 +105,8 @@ export const buildSources = async (
 					`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
 				)
 			);
-			hashes[source.name] = existingHashes[source.name]; // passthrough hashes, but this probably won't be useful
+			logEvent('source-connector-not-found', dev, settings, source.type, source.name)
+			hashes[source.name] = existingHashes[source.name];
 			continue;
 		}
 
@@ -105,10 +115,14 @@ export const buildSources = async (
 			source.sourceDirectory
 		);
 		if (connectionValid !== true) {
+			logEvent('db-connection-error', dev, settings, source.type, source.name)
 			throw new Error(
 				chalk.red(`[!] ${chalk.bold(source.name)} failed to connect; ${connectionValid.reason}`)
 			);
 		}
+		logEvent('db-connection-success', dev, settings, source.type, source.name)
+
+		//TODO evidence-1344 should we log the connection result here?
 
 		const utils = {
 			/**
@@ -278,8 +292,12 @@ export const buildSources = async (
 								}
 								return null;
 							});
-						} else result = _r;
+						} else {
+							logEvent('db-query', dev, settings, source.type, source.name, query.name);
+							result = _r;
+						}
 					} catch (e) {
+						logEvent('db-error', dev, settings, source.type, source.name, query.name);
 						if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
 						else {
 							throw e;
@@ -382,3 +400,16 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 
 	return parquetFilename;
 };
+
+//TODO manage this from a central location that deals with project resources
+function loadSettings() {
+	let settings = {};
+	try {
+		if (existsSync('evidence.settings.json')) {
+			settings = JSON.parse(readFileSync('evidence.settings.json', 'utf8'));
+		}	
+	} catch (e) {
+		console.error('Error reading evidence.settings.json', e);
+	}
+	return settings;
+}
