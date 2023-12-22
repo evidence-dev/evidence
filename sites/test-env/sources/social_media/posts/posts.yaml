@@ -1,4 +1,4 @@
-rows: 25000
+rows: 250000
 fuzz: 2500
 schema:
     id:
@@ -15,5 +15,6 @@ schema:
     created_at:
         category: date
         item: recent
+        withBias: true
         options:
             days: 365 # Past Year

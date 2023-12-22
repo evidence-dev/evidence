@@ -36,6 +36,18 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	/** Duck Type */
 	readonly __isQueryStore = true;
+	static isQueryStore(q: unknown): q is QueryStore {
+		if (typeof q === 'object' && q && '__isQueryStore' in q && q.__isQueryStore === true)
+			return true;
+		return false;
+	}
+
+	private static readonly debug = Boolean(
+		typeof window === 'undefined'
+			? process.env.VITE_EVIDENCE_DEBUG
+			: // @ts-expect-error
+			  import.meta?.env?.VITE_EVIDENCE_DEBUG
+	);
 
 	/**
 	 * A Proxy wrapper around the QueryStore instance.
@@ -148,14 +160,16 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	#mockResult: QueryResult = {};
 
 	readonly id: string;
+	readonly hash: string;
 
 	#error: Error | unknown;
 
 	#setError = (e: Error | unknown): void => {
-		console.debug(
-			`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
-			e instanceof Error ? e?.message ?? e : e
-		);
+		if (QueryStore.debug)
+			console.debug(
+				`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
+				e instanceof Error ? e?.message ?? e : e
+			);
 
 		this.#error = e;
 
@@ -194,7 +208,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			const cached = QueryStore.cache.get(hash);
 			if (cached) return cached;
 		}
-
 		const v = new QueryStore(query, exec, id, opts, root);
 		QueryStore.cache.set(hash, v);
 		return v;
@@ -210,7 +223,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		super();
 		Object.freeze(opts);
 		// Ensure an ID Exists
-		this.id = id ?? buildId(query);
+		this.hash = buildId(query);
+		this.id = id ?? this.hash;
 
 		// TODO: Strip any trailing ; from queries
 		// This is hard because of comments
@@ -245,6 +259,27 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 						if (!self.#values[prop]) return self.#mockResult;
 						return self.#values[prop];
+					}
+					if (prop === 'at') {
+						// at is a special case, because it should behave like Store[number]
+						if (!self.#dataLoaded) {
+							try {
+								const r = self.#fetchData();
+								if (r instanceof Promise)
+									r.catch((e) => {
+										throw new Error('Failed to update query store', { cause: e });
+									});
+							} catch (e) {
+								throw new Error('Failed to update query store', { cause: e });
+							}
+						}
+						return (i: number) => {
+							if (this.#dataLoaded) {
+								return this.#values.at(i);
+							} else {
+								return this.#values.at(i) ?? this.#mockResult; // We are still mocking
+							}
+						};
 					}
 
 					// Intercept 'length' property. This implies we're trying to get the total number of rows (data) in the store.
@@ -281,16 +316,26 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			}
 		);
 
-		handleMaybePromise(
-			(alreadyFetchedMeta) => {
-				if (!alreadyFetchedMeta) this.#fetchMetadata();
-			},
-			() => this.#handleInitialData(),
-			this.#setError
-		);
+		if (opts.noResolve) {
+			this.#dataLoading = true;
+			this.#metaLoading = true;
+			this.#lengthLoading = true;
+			this.#dataLoaded = false;
+			this.#metaLoaded = false;
+			this.#lengthLoaded = false;
+			this.publish();
+		} else {
+			handleMaybePromise(
+				(alreadyFetchedMeta) => {
+					if (!alreadyFetchedMeta) this.#fetchMetadata();
+				},
+				() => this.#handleInitialData(),
+				this.#setError
+			);
 
-		// prerender
-		if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
+			// prerender
+			if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
+		}
 	}
 
 	#handleInitialData = () => {
@@ -367,12 +412,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			return this.#dataFetchPromise;
 		}
 		if (this.#error) {
-			console.debug(
-				`QueryStore ${this.id.substring(
-					0,
-					6
-				)} | Refusing to execute data query; store has an error state.`
-			);
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute data query; store has an error state.`
+				);
 			return this.#dataFetchPromise;
 		}
 		this.#dataLoading = true;
@@ -399,12 +445,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			return;
 		}
 		if (this.#error) {
-			console.debug(
-				`QueryStore ${this.id.substring(
-					0,
-					6
-				)} | Refusing to execute length query; store has an error state.`
-			);
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute length query; store has an error state.`
+				);
 			return;
 		}
 
@@ -446,12 +493,13 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 	#fetchMetadata = () => {
 		if (this.#error) {
-			console.debug(
-				`QueryStore ${this.id.substring(
-					0,
-					6
-				)} | Refusing to execute metadata query; store has an error state.`
-			);
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute metadata query; store has an error state.`
+				);
 			return;
 		}
 

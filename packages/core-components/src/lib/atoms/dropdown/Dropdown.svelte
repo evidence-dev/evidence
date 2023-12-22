@@ -39,7 +39,7 @@
 	));
 </script>
 
-<div class="mt-2 mb-4 mx-1">
+<div class="mt-2 mb-4 mx-1 inline-block">
 	{#if title}
 		<span class="text-sm text-gray-500 block">{title}</span>
 	{/if}

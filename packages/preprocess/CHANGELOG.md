@@ -1,5 +1,87 @@
 # @evidence-dev/preprocess
 
+## 4.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+- e1facffd: Add QueryStore concept
+
+  - Loads data as it is requested, rather than all at page-load / build
+  - Uses duckdb to get data length / column data
+  - Ties metadata, mutation queries, and data together to make component development easier
+  - Provides information regarding loading (and query errors in the future)
+
+### Minor Changes
+
+- 1097e5a9: add client ddb-backed dropdown component
+- f62bd26e: prerenders clientside duckdb queries in their initial state to allow for some form of prerendering
+
+### Patch Changes
+
+- 391282e5: QueryStore now uses a factory pattern to enforce caching
+- f304fc1e: Address flickering on client side nav
+- b25a95d7: Misc fixes
+- 4293e084: Clean up console logs
+- b3bdd91a: fix regression around debouncing queries
+- 5e54e13e: Fix regression
+- e6b67b66: Fix build issue
+- e1174aa1: added profile function to note load and query times
+- 6eb93816: QueryViewer now respects QueryStore loading staet
+  QueryViewer now updates when query text hmr updates
+
+  QueryStore now accepts initialError when SSR query fails
+
+  SSR / QueryStore now swallow errors unless build:strict is enabled
+  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+
+- 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
+- 1dcb5afe: Escape undefined when looking for unset inputs
+- 9b1ac9b7: removed evidencemeta on the data object
+- e49793e4: fix query results not updating in hmr
+- bf4a112a: Update package.json to use new datasource field
+- 4e288bc6: Big improvement to SSR
+- bb8451c2: Fix error from conversion
+- 64ab3074: Add USQL Context wrappers to component utilities
+- 17a2d5ee: Expose `params` var instead of `$page.params`
+- 9e7ba37d: Remove usql context; proper approach is to use page store now. Context is not reactive; and would require a store which is the behavior already present in \$app/stores.page
+- efa96920: External SQL files now live in queries rather than sources
+- cad09993: improve source refresh experience
+- fe489a67: fix params is undefined error
+- 3fb2ead5: Debouncing has been applied to querystores; in theory, changing queries will now retain their state as well
+- 6bf5003a: add bypass to SSR'd inputs bug
+- 130950d7: add client/build time guardrails
+- 90e152cb: inline query HMR now works
+- 7a05f941: Clear QueryStore cache on HMR
+- 20127231: Bump all versions so version pinning works
+- e9a63c71: Add loading states to DataTable and Chart
+- 20d2a785: Handle template literal errors in preprocess
+
+## 4.0.0-usql.29
+
+### Patch Changes
+
+- bb8451c2: Fix error from conversion
+
+## 4.0.0-usql.28
+
+### Patch Changes
+
+- 1dcb5afe: Escape undefined when looking for unset inputs
+- 7a05f941: Clear QueryStore cache on HMR
+
+## 4.0.0-usql.27
+
+### Patch Changes
+
+- 20d2a785: Handle template literal errors in preprocess
+
 ## 4.0.0-usql.26
 
 ### Patch Changes

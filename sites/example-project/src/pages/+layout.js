@@ -22,20 +22,23 @@ const loadDB = async () => {
 		const res = await fetch('/data/manifest.json');
 		if (res.ok) ({ renderedFiles } = await res.json());
 	}
-
-	if (!renderedFiles) {
-		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
-		toasts.add({
-			id: 'MissingManifest',
-			status: 'warning',
-			title: 'Missing Manifest',
-			message: 'Without a manifest file, no data is available'
-		});
-	}
-
 	await profile(initDB);
-	await profile(setParquetURLs, renderedFiles);
-	await profile(updateSearchPath, Object.keys(renderedFiles));
+
+	if (Object.keys(renderedFiles ?? {}).length === 0) {
+		console.warn(`Unable to load manifest, do you need to generate sources?`.trim());
+		toasts.add(
+			{
+				id: 'MissingManifest',
+				status: 'warning',
+				title: 'Missing Manifest',
+				message: 'Without a manifest file, no data is available'
+			},
+			10000
+		);
+	} else {
+		await profile(setParquetURLs, renderedFiles);
+		await profile(updateSearchPath, Object.keys(renderedFiles));
+	}
 };
 
 const database_initialization = profile(loadDB);
@@ -61,7 +64,7 @@ async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch })
 	return Object.fromEntries(resolved_entries.filter(Boolean));
 }
 
-/** @type {Map<string, { inputs: Record<string, string>, sql_strings: { sql: string, query_name: string }[] }>} */
+/** @type {Map<string, { inputs: Record<string, string> }>} */
 const dummy_pages = new Map();
 
 /** @satisfies {import("./$types").LayoutLoad} */
@@ -74,30 +77,13 @@ export const load = async (event) => {
 
 	/** @type {App.PageData["data"]} */
 	let data = {};
-	const { inputs = {}, sql_strings = [] } = dummy_pages.get(url.pathname) ?? {};
+	const { inputs = {} } = dummy_pages.get(url.pathname) ?? {};
 
 	const is_dummy_page = dummy_pages.has(url.pathname);
 	if ((dev || building) && !browser && !is_dummy_page) {
-		dummy_pages.set(url.pathname, { inputs, sql_strings });
+		dummy_pages.set(url.pathname, { inputs });
 		await fetch(url);
 		dummy_pages.delete(url.pathname);
-
-		data = Object.fromEntries(
-			sql_strings.map(({ sql, query_name }) => {
-				let result;
-				try {
-					result = query(sql, {
-						route_hash: routeHash,
-						additional_hash: paramsHash,
-						query_name,
-						prerendering: building
-					});
-				} catch (e) {
-					result = e;
-				}
-				return [query_name, result];
-			})
-		);
 	}
 
 	if (!browser) await database_initialization;
@@ -118,14 +104,6 @@ export const load = async (event) => {
 						const result = await query(sql);
 						return callback(result);
 					})();
-				}
-
-				if ((dev || building) && !browser && is_dummy_page) {
-					sql_strings.push({ sql, query_name });
-					return Object.defineProperty([], '_evidenceColumnTypes', {
-						enumerable: false,
-						value: []
-					});
 				}
 
 				return callback(
@@ -172,6 +150,7 @@ const recursiveFillerObject = new Proxy(
 	{},
 	{
 		get(target, prop) {
+			if (prop === '__unset') return true;
 			if (typeof prop === 'symbol') return undefined;
 			if (prop === 'then') return undefined;
 			if (prop === 'loading') return undefined;

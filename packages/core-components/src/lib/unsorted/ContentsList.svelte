@@ -1,12 +1,36 @@
 <script>
-	import { onMount } from 'svelte';
-	let headers;
-	onMount(() => {
-		headers = document.querySelectorAll('h1.markdown, h2.markdown');
-		// Add ID tags to all the headers in the article
+	import { onMount, onDestroy } from 'svelte';
+
+	let headers = [];
+	let observer;
+
+	function updateLinks() {
+		headers = Array.from(document.querySelectorAll('h1.markdown, h2.markdown'));
 		headers.forEach((header, i) => {
-			header.id = encodeURIComponent(header.innerText + i);
+			// Headers may contain values that change in response to user input, so we create our anchors as just the position on the page.
+			header.id = encodeURIComponent(i + 1);
 		});
+	}
+
+	function observeDocumentChanges() {
+		observer = new MutationObserver(() => {
+			updateLinks();
+		});
+
+		headers.forEach((header) => {
+			observer.observe(header, { subtree: true, characterData: true, childList: true });
+		});
+
+		return observer;
+	}
+
+	onMount(() => {
+		updateLinks();
+		observer = observeDocumentChanges();
+	});
+
+	onDestroy(() => {
+		observer?.disconnect();
 	});
 </script>
 
@@ -16,7 +40,7 @@
 	</span>
 	{#each headers as header, i}
 		<a
-			href={'#' + encodeURIComponent(header.innerText + i)}
+			href={'#' + encodeURIComponent(i + 1)}
 			class={header.nodeName.toLowerCase()}
 			class:first={i === 0}
 		>

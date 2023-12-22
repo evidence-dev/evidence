@@ -1,5 +1,165 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [913f5919]
+  - @evidence-dev/universal-sql@2.0.1
+
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/db-commons@1.0.1
+
+## 2.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Minor Changes
+
+- e6f550f3: Improve data source return type validation to be more performance and stringent
+- cfb0f248: Respect component plugin's tailwind configuration
+
+### Patch Changes
+
+- 26ad2d2c: Source Query HMR now uses returned manifest instead of reloading from fs
+- 5be92c14: don't fully overwrite manifest.json on filtered builds
+- e23691d0: Handle errors during source query execution
+- b7d02a29: Source Query HMR is now debounced
+- 5247996b: Improved behavior when copying environment variables
+- fd74bd3c: Prevent queries with the same name from different connectors from colliding
+- da6ba2eb: Fix stdin being disabled after spinners run
+- 26ad2d2c: Plugin Connector will now show stack traces if a source query fails in debug mode
+- a192deb2: Increase batch size from 100k to 1m
+- 377abb4a: Rename databases -> datasources
+- e134351d: - connection.options.yaml values are now b64 encoded
+  - children that do not have a key for all child values no longer break - e.g. when ssl is disabled for postgres, there are no children. This was breaking previously
+- af4a8a1e: Explicit mappings for all DuckDB types
+- 239a18d7: Actually ensure that zod schemas don't iterate entire QueryResult.
+- 0ba78b67: polish working with sources
+- b5592a3f: Usability Improvements
+- bf4a112a: Update package.json to use new datasource field
+- e7781efd: Get real sourcename during hmr
+- cff22ece: Only read files on demand, prevents attempted loading of very large db files
+- 7c8a9f9d: Tweak source building to increase max possible result set
+- 741885bf: Fix Source Query HMR
+- 2d85508a: Handle sources that haven't been generated more effectively
+- 5828c375: Enviroment variables use \__ instead of _ to delimit option properties
+- 1ed3fe07: Handle missing manifest more effectively
+- cd57ba69: Add new interface for datasources for fine-grained control of output
+- 9da3812e: - QueryStatus only notifies once now
+  - Source HMR uses a path-specific queue to prevent queuing a file twice, and prevent running more than one source command at a time
+- c4822852: Support for streaming results
+- 8ffbb361: skip massive files and non-directories in sources
+- 6fdfec28: Plugin connector now removes outdated cache files
+- 4d5735a2: Fix a few fs related issues
+- ca1f90b3: Improved Logging
+- 6fbde887: Modify duplicate component message
+- afbb50fc: Added support for sources having subdirectories for better organization
+- cad09993: improve source refresh experience
+- 60619a90: Create static/data and .evidence-queries if for some reason they don't exist
+- 4a75c077: Re-add support for --changed and --queries
+- a20cd1e0: Fix workspace project version references
+- ef2a9106: Sources are now segmented into schemas to prevent source name conflicts
+- 6505351f: Misc Fixes
+- 4b6262d8: added `build:sources` filtration options to cli
+- e6091323: chore: remove postinstall script
+- dbc69a59: Handle directories without connection.yaml more elegantly
+- 20127231: Bump all versions so version pinning works
+- 78a8be8b: connection.options.yaml auto-generated header is more descriptive now
+- 64d1405b: Loading state is now respected by Value and BigValue
+- df7a8c5a: Ignore source files larger than 100Mb
+- Updated dependencies [aa34d0b3]
+- Updated dependencies [840d1195]
+- Updated dependencies [b25a95d7]
+- Updated dependencies [fd74bd3c]
+- Updated dependencies [377abb4a]
+- Updated dependencies [9132146b]
+- Updated dependencies [0ba78b67]
+- Updated dependencies [2aaef5fb]
+- Updated dependencies [9603c4e7]
+- Updated dependencies [cb74406a]
+- Updated dependencies [b5592a3f]
+- Updated dependencies [cb0fc468]
+- Updated dependencies [bf4a112a]
+- Updated dependencies [69126c94]
+- Updated dependencies [5928e45d]
+- Updated dependencies [ca7337ba]
+- Updated dependencies [cd57ba69]
+- Updated dependencies [c4822852]
+- Updated dependencies [52e114cc]
+- Updated dependencies [e173ca9d]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [781d2677]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [ca4c3b00]
+- Updated dependencies [15248699]
+- Updated dependencies [ef2a9106]
+- Updated dependencies [130950d7]
+- Updated dependencies [f62bd26e]
+- Updated dependencies [52d81ce2]
+- Updated dependencies [d1ab5e62]
+- Updated dependencies [20127231]
+- Updated dependencies [9b1ac9b7]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/universal-sql@2.0.0
+  - @evidence-dev/db-commons@0.2.1
+
+## 2.0.0-usql.43
+
+### Patch Changes
+
+- 6fbde887: Modify duplicate component message
+
+## 2.0.0-usql.42
+
+### Patch Changes
+
+- a20cd1e0: Fix workspace project version references
+
+## 2.0.0-usql.41
+
+### Patch Changes
+
+- 741885bf: Fix Source Query HMR
+
+## 2.0.0-usql.40
+
+### Patch Changes
+
+- 2d85508a: Handle sources that haven't been generated more effectively
+
+## 2.0.0-usql.39
+
+### Patch Changes
+
+- Updated dependencies [e173ca9d]
+  - @evidence-dev/universal-sql@2.0.0-usql.25
+
+## 2.0.0-usql.38
+
+### Patch Changes
+
+- 9da3812e: - QueryStatus only notifies once now
+  - Source HMR uses a path-specific queue to prevent queuing a file twice, and prevent running more than one source command at a time
+
+## 2.0.0-usql.37
+
+### Patch Changes
+
+- Updated dependencies [15248699]
+  - @evidence-dev/universal-sql@2.0.0-usql.24
+
 ## 2.0.0-usql.36
 
 ### Patch Changes

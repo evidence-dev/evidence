@@ -21,6 +21,7 @@ schema:
     gender:
         category: helpers
         item: arrayElement
+        withBias: true
         options:
             # This is not intended to be an exhaustive or accurate list;
             # and it uses arrayElement instead of people.gender
@@ -31,5 +32,4 @@ schema:
             - Female
             - Female
             - Female
-            - Transgender
             - Other

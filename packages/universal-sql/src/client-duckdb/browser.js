@@ -101,7 +101,7 @@ export async function emptyDbFs(targetGlob) {
 export async function setParquetURLs(urls, append = false) {
 	if (!db) await initDB();
 	if (!append) await emptyDbFs('*');
-	console.debug('Updating Parquet URLs');
+	if (import.meta.env.VITE_EVIDENCE_DEBUG) console.debug('Updating Parquet URLs');
 
 	try {
 		for (const source in urls) {

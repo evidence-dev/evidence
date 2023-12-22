@@ -34,16 +34,17 @@ select
 from ${working_reference}
 ```
 
+
+```sql reference_query_result
+SELECT ${working_reference[0].n_months} as months
+```
+
+## Chains with errors
+
 ```sql missing_reference
 select
     count(*) as n_days
 from ${}
-```
-
-```sql incorrect_reference
-select
-    count(*) as n_days
-from ${doesnt_exist}
 ```
 
 ```sql circular_reference_1

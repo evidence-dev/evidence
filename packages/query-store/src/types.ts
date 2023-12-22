@@ -23,6 +23,8 @@ export type QueryStoreOpts = {
 	errorNotifier?: (error: Error) => unknown;
 	/** Optional hook to enable custom query score behavior, can be used for toasts, alerts, etc. */
 	scoreNotifier?: (info: ScoreInformation) => void;
+	/** If true, the store will never leave a loading state */
+	noResolve?: boolean;
 };
 
 export type ScoreInformation = {

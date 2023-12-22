@@ -58,7 +58,14 @@ export async function initDB() {
 		// and synchronous database
 		db = await createDuckDB(DUCKDB_BUNDLES, logger, NODE_RUNTIME);
 		await db.instantiate();
-		db.open({ query: { castBigIntToDouble: true, castTimestampToDate: true } });
+		db.open({
+			query: {
+				castBigIntToDouble: true,
+				castTimestampToDate: true,
+				castDecimalToDouble: true,
+				castDurationToTime64: true
+			}
+		});
 		connection = db.connect();
 		resolveInit();
 	} catch (e) {
@@ -96,7 +103,7 @@ export async function emptyDbFs(targetGlob) {
 export async function setParquetURLs(urls, append = false) {
 	if (!append) await emptyDbFs('*');
 
-	console.log(`Updating Parquet URLs`);
+	if (process.env.VITE_EVIDENCE_DEBUG) console.log(`Updating Parquet URLs`);
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		for (const url of urls[source]) {

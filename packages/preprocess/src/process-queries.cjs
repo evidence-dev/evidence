@@ -5,6 +5,13 @@ const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
 // prettier obliterates the formatting of queryDeclarations
 // prettier-ignore
+/**
+ *
+ * @param {string} filename
+ * @param {boolean} componentDevelopmentMode
+ * @param {Record<string, import('./extract-queries/extract-queries.cjs').Query>} duckdbQueries
+ * @returns
+ */
 const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQueries = {}) {
 	const routeH = getRouteHash(filename);
 
@@ -12,17 +19,19 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 	if (Object.keys(duckdbQueries).length > 0) {
 		const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
-		const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query));
+		const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError);
 
 		// prerendered queries: stuff without ${}
 		// reactive queries: stuff with ${}
 		const IS_REACTIVE_QUERY = /\${.*?}/s;
-		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id]));
-		const prerendered_ids = validIds.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id]));
+		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
+		const prerendered_ids = validIds.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
 
 		// input queries: reactive with ${inputs...} in it
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
-		const input_ids = reactiveIds.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id]));
+		const input_ids = reactiveIds.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id].compiledQueryString));
+
+		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = QueryStore.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, "${q.id}", { initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
 
 		const queryStoreDeclarations = validIds.map((id) => {
 			/*
@@ -52,7 +61,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					we hinge on the change to pass intiailData (or not).
 			*/
 			return `
-				$: _${id}_query_text = \`${duckdbQueries[id].replaceAll('`', '\\`')}\`;
+				$: _${id}_query_text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+				$: _${id}_has_unresolved = __checkForUnsetInputs\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 
 				// Initial Query
 				let _${id}_initial_query;
@@ -104,7 +114,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							{
 								scoreNotifier,
 								initialData,
-								initialError
+								initialError,
+								noResolve: _${id}_has_unresolved
 							}
 						);
 						
@@ -155,7 +166,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
 				${id} = get(QueryStore.create(
-						\`${duckdbQueries[id].replaceAll('`', '\\`')}\`,
+						\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',
 						{}
@@ -168,6 +179,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const all_query_stores = validIds.map((id) => `$: ${id} = $_${id};`);
 
 		queryDeclarations += `
+		${errQueries.join("\n")}
 		${queryStoreDeclarations.join('\n')}
 		${input_query_stores}
 		${all_query_stores.join('\n')}
@@ -230,11 +242,23 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		let __has_hmr_run = false
 	    if (import.meta?.hot) {
-	        import.meta.hot.on("vite:afterUpdate", () => __has_hmr_run = true)
+	        import.meta.hot.on("vite:afterUpdate", () => {
+				__has_hmr_run = true
+				QueryStore.emptyCache() // All bets are off
+			})
 	    }
 		
 		let params = $page.params;
 		$: params = $page.params;
+
+		function __checkForUnsetInputs(strings, ...args) {
+			if (args.some(a => a?.__unset)) {
+				return true
+			} else {
+				return false
+			}
+		}
+		
 
         ${queryDeclarations}
     `;
@@ -246,13 +270,16 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
 const processQueries = (componentDevelopmentMode) => {
+	/**
+	 * @type {Record<string, Record<string, import("./extract-queries/extract-queries.cjs").Query>>}
+	 */
 	const dynamicQueries = {};
 	return {
 		markup({ content, filename }) {
 			if (filename.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
 				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
-					acc[q.id] = q.compiledQueryString;
+					acc[q.id] = q;
 					return acc;
 				}, {});
 
