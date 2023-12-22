@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.3
+
+### Patch Changes
+
+- c09bd981: Telemetry parity with USQL
+- Updated dependencies [c09bd981]
+  - @evidence-dev/telemetry@2.0.1
+
 ## 2.0.2
 
 ### Patch Changes
