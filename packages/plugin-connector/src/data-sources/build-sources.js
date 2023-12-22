@@ -51,7 +51,6 @@ export const buildSources = async (
 	filters,
 	batchSize = 1000 * 1000
 ) => {
-	console.log(chalk.bold(`building sources`)); //TODO evidence-1344 this does get hit when you change telemetry to on/off
 	await fs.stat(dataPath).catch(async (e) => {
 		if (e.message.startsWith('ENOENT')) {
 			await fs.mkdir(dataPath, { recursive: true });
@@ -120,9 +119,8 @@ export const buildSources = async (
 				chalk.red(`[!] ${chalk.bold(source.name)} failed to connect; ${connectionValid.reason}`)
 			);
 		}
+		//TODO evidence-1344 and db-connection-error didn't have an equivalent for event in legacy
 		logEvent('db-connection-success', dev, settings, source.type, source.name);
-
-		//TODO evidence-1344 should we log the connection result here?
 
 		const utils = {
 			/**

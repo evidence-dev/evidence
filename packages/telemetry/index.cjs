@@ -50,7 +50,6 @@ const logEvent = async (
 	sourceName = undefined,
 	queryName = undefined
 ) => {
-	console.log('logEvent', { eventName, dev, settings, databaseName, sourceName, queryName }); //TODO: evidence-1344 remove after
 	try {
 		let usageStats = settings
 			? settings.send_anonymous_usage_stats ?? 'yes'
@@ -111,8 +110,6 @@ const logEvent = async (
 					postUSQL: true
 				}
 			};
-			console.log('analytics.track', { payload }); //TODO: evidence-1344 remove after
-
 			analytics.track(payload);
 		}
 	} catch {
