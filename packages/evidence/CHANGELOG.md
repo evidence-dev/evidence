@@ -1,5 +1,39 @@
 # @evidence-dev/evidence
 
+## 24.0.5
+
+### Patch Changes
+
+- Updated dependencies [913f5919]
+- Updated dependencies [913f5919]
+  - @evidence-dev/universal-sql@2.0.1
+  - @evidence-dev/component-utilities@2.0.1
+  - @evidence-dev/plugin-connector@2.0.2
+  - @evidence-dev/query-store@2.0.1
+  - @evidence-dev/core-components@3.0.3
+
+## 24.0.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@3.0.2
+
+## 24.0.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@3.0.1
+
+## 24.0.2
+
+### Patch Changes
+
+- @evidence-dev/db-orchestrator@3.0.2
+- @evidence-dev/plugin-connector@2.0.1
+- @evidence-dev/core-components@3.0.0
+
 ## 24.0.1
 
 ### Patch Changes
