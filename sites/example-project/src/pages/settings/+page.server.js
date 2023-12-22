@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
 import { fail } from '@sveltejs/kit';
+import { logQueryEvent } from '@evidence-dev/telemetry';
 
 export const load = async () => {
 	if (dev) {
@@ -110,18 +111,28 @@ export const actions = {
 			specData = fullSpec.data;
 		}
 
-		const plugin = datasourcePlugins[specData.type];
+		const databaseType = specData.type;
+		const sourceName = specData.name;
 
-		if (!plugin) {
-			return fail(400, { message: `Plugin for datasource "${specData.type}" not found.` });
-		}
+		const plugin = datasourcePlugins[databaseType];
 
 		const valid = await plugin.testConnection(specData.options, specData.sourceDirectory);
-		if (valid !== true) {
-			return fail(200, { message: valid.reason });
+		if (!plugin) {
+			logQueryEvent('db-plugin-unvailable', databaseType, undefined, dev);
+			return fail(400, { message: `Plugin for datasource "${databaseType}" not found.` });
 		}
-		return {
-			success: true
-		};
+
+		plugin.name = specData.name;
+
+		if (valid !== true) {
+			logQueryEvent('db-connection-error', databaseType, sourceName, dev);
+			return fail(200, { message: valid.reason });
+		} else {
+			logQueryEvent('db-connection-success', databaseType, sourceName, dev);
+
+			return {
+				success: true
+			};
+		}
 	}
 };

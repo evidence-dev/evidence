@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import gitRemoteOriginUrl from 'git-remote-origin-url'; // get the git repo
 import { dev } from '$app/environment';
-import logEvent from '@evidence-dev/telemetry';
+import { logEvent } from '@evidence-dev/telemetry';
 import { json } from '@sveltejs/kit';
 
 function getLocalGitRepo() {
