@@ -1,7 +1,0 @@
-# This file was automatically generated
-name: postgres
-type: postgres
-options:
-  host: sbx-pg-test-db.cubqngs1ya3h.us-east-1.rds.amazonaws.com
-  port: 5432
-  database: udesh_sbx_test_db
