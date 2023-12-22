@@ -121,7 +121,7 @@ const logEvent = async (
 					postUSQL: true
 				}
 			};
-			console.debug('analytics.track', { payload });
+			analytics.track(payload);
 		}
 	} catch {
 		// do nothing
