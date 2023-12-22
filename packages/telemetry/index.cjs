@@ -4,7 +4,6 @@ const { readJSONSync, writeJSONSync, pathExistsSync } = require('fs-extra');
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
 const Analytics = require('analytics-node');
 
-
 /**
  * @typedef {'usageStatsDisabled' | 'db-plugin-unvailable' | 'db-connection-error' | 'db-connection-success' | 'source-connector-not-found' | 'db-error' | 'db-query'} TelemetryEventName
  */
@@ -144,5 +143,6 @@ function loadSettings() {
 }
 
 module.exports = {
-	logEvent, logQueryEvent,
+	logEvent,
+	logQueryEvent
 };
