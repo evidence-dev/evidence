@@ -13,8 +13,7 @@ import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
-import { logEvent } from '@evidence-dev/telemetry';
-import { readFileSync, existsSync } from 'fs';
+import { logQueryEvent } from '@evidence-dev/telemetry';
 import ora from 'ora';
 
 /**
@@ -78,11 +77,6 @@ export const buildSources = async (
 	/** @type {Record<string, Record<string, string | null>>} */
 	const hashes = {};
 
-	/** @type {boolean} */
-	const dev = process.env?.NODE_ENV === 'development';
-	/** @type {any} */
-	const settings = loadSettings();
-
 	for (const source of sources) {
 		console.log(chalk.bold(`Processing ${source.name}`));
 		const sourceManifest = existingManifest[source.name] ?? [];
@@ -104,7 +98,7 @@ export const buildSources = async (
 					`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
 				)
 			);
-			logEvent('source-connector-not-found', dev, settings, source.type, source.name);
+			logQueryEvent('source-connector-not-found', source.type, source.name);
 			hashes[source.name] = existingHashes[source.name];
 			continue;
 		}
@@ -114,13 +108,13 @@ export const buildSources = async (
 			source.sourceDirectory
 		);
 		if (connectionValid !== true) {
-			logEvent('db-connection-error', dev, settings, source.type, source.name);
+			logQueryEvent('db-connection-error', source.type, source.name);
 			throw new Error(
 				chalk.red(`[!] ${chalk.bold(source.name)} failed to connect; ${connectionValid.reason}`)
 			);
 		}
 		//TODO evidence-1344 and db-connection-error didn't have an equivalent for event in legacy
-		logEvent('db-connection-success', dev, settings, source.type, source.name);
+		logQueryEvent('db-connection-success', source.type, source.name);
 
 		const utils = {
 			/**
@@ -285,7 +279,7 @@ export const buildSources = async (
 						if (_r instanceof Promise) {
 							result = await _r.catch((e) => {
 								if (e instanceof z.ZodError) {
-									logEvent('db-error', dev, settings, source.type, source.name, query.name);
+									logQueryEvent('db-error', source.type, source.name, query.name);
 									console.log(e.format());
 								} else {
 									throw e;
@@ -293,14 +287,14 @@ export const buildSources = async (
 								return null;
 							});
 							if (result) {
-								logEvent('db-query', dev, settings, source.type, source.name, query.name);
+								logQueryEvent('db-query', source.type, source.name, query.name);
 							}
 						} else {
 							result = _r;
-							logEvent('db-query', dev, settings, source.type, source.name, query.name);
+							logQueryEvent('db-query', source.type, source.name, query.name);
 						}
 					} catch (e) {
-						logEvent('db-error', dev, settings, source.type, source.name, query.name);
+						logQueryEvent('db-error', source.type, source.name, query.name);
 						if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
 						else {
 							throw e;
@@ -403,16 +397,3 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 
 	return parquetFilename;
 };
-
-//TODO manage this from a central location that deals with project resources
-function loadSettings() {
-	let settings = {};
-	try {
-		if (existsSync('evidence.settings.json')) {
-			settings = JSON.parse(readFileSync('evidence.settings.json', 'utf8'));
-		}
-	} catch (e) {
-		console.error('Error reading evidence.settings.json', e);
-	}
-	return settings;
-}

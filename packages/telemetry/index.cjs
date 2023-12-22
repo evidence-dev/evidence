@@ -91,7 +91,6 @@ const logEvent = async (
 		if (usageStats === 'yes') {
 			const projectProfile = await getProfile();
 			var analytics = new Analytics(wK);
-
 			const payload = {
 				anonymousId: projectProfile.anonymousId,
 				event: eventName,
@@ -117,6 +116,28 @@ const logEvent = async (
 	}
 };
 
+/**
+ * Logs an event emiited from source queries
+ * @param {string} eventName
+ * @param {string | undefined} [databaseName]
+ * @param {string | undefined} [sourceName]
+ * @param {string | undefined} [queryName]
+ */
+const logQueryEvent = async (eventName, databaseName, sourceName, queryName) => {
+	//TODO there is no concept of dev mode when running npm run sources
+	await logEvent(eventName, false, loadSettings(), databaseName, sourceName, queryName);
+};
+
+function loadSettings() {
+	let settings = {};
+	try {
+		settings = readJSONSync('evidence.settings.json');
+	} catch (e) {
+		console.error('Error reading evidence.settings.json', e);
+	}
+	return settings;
+}
+
 module.exports = {
-	logEvent
+	logEvent, logQueryEvent
 };
