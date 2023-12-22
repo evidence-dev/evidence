@@ -35,15 +35,22 @@ const getProfile = async () => {
 
 /**
  * TODO issue-1344 consider splitting this up into a separate handlers instead of taking all possible params (e.g separate handler for DB events)
- * @param {string} eventName 
- * @param {boolean} dev 
- * @param {any} settings 
+ * @param {string} eventName
+ * @param {boolean} dev
+ * @param {any} settings
  * @param {string | undefined} [databaseName]
  * @param {string | undefined} [sourceName]
  * @param {string | undefined} [queryName]
  */
-const logEvent = async (eventName, dev, settings, databaseName = undefined, sourceName = undefined, queryName = undefined) => {
-	console.log('logEvent', {eventName, dev, settings, databaseName, sourceName, queryName}); //TODO: evidence-1344 remove after
+const logEvent = async (
+	eventName,
+	dev,
+	settings,
+	databaseName = undefined,
+	sourceName = undefined,
+	queryName = undefined
+) => {
+	console.log('logEvent', { eventName, dev, settings, databaseName, sourceName, queryName }); //TODO: evidence-1344 remove after
 	try {
 		let usageStats = settings
 			? settings.send_anonymous_usage_stats ?? 'yes'
@@ -53,7 +60,6 @@ const logEvent = async (eventName, dev, settings, databaseName = undefined, sour
 		let repo;
 		let database;
 		let demoDb;
-
 
 		if (settings) {
 			if (settings.gitRepo) {
@@ -78,8 +84,8 @@ const logEvent = async (eventName, dev, settings, databaseName = undefined, sour
 		if (process.env) {
 			const { HOME, CODESPACES } = process.env;
 			homeDirectory = HOME;
-			if(CODESPACES) {
-				codespaces = (CODESPACES === 'true');
+			if (CODESPACES) {
+				codespaces = CODESPACES === 'true';
 			}
 		}
 
@@ -99,20 +105,20 @@ const logEvent = async (eventName, dev, settings, databaseName = undefined, sour
 					operatingSystem: process.platform, // logs operating system name
 					nodeVersion: process.version, // logs active version of NodeJS
 					arch: process.arch,
-					directoryHash: homeDirectory? md5(homeDirectory) : undefined,
+					directoryHash: homeDirectory ? md5(homeDirectory) : undefined,
 					demoDb: demoDb,
 					codespaces: codespaces,
-					postUSQL: true,
+					postUSQL: true
 				}
-			}
-			console.log('analytics.track', {payload}); //TODO: evidence-1344 remove after
+			};
+			console.log('analytics.track', { payload }); //TODO: evidence-1344 remove after
 
 			analytics.track(payload);
 		} else {
 			console.log('Not sending telemetry as usage stats disabled'); //TODO: evidence-1344 remove after
 		}
 	} catch {
-		console.error('Error logging event', {eventName});//TODO: evidence-1344 remove after
+		console.error('Error logging event', { eventName }); //TODO: evidence-1344 remove after
 		// do nothing
 	}
 };

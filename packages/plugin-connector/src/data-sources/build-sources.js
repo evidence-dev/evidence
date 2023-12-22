@@ -80,7 +80,7 @@ export const buildSources = async (
 	const hashes = {};
 
 	/** @type {boolean} */
-	const dev = (process.env?.NODE_ENV === 'development');
+	const dev = process.env?.NODE_ENV === 'development';
 	/** @type {any} */
 	const settings = loadSettings();
 
@@ -105,7 +105,7 @@ export const buildSources = async (
 					`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
 				)
 			);
-			logEvent('source-connector-not-found', dev, settings, source.type, source.name)
+			logEvent('source-connector-not-found', dev, settings, source.type, source.name);
 			hashes[source.name] = existingHashes[source.name];
 			continue;
 		}
@@ -115,12 +115,12 @@ export const buildSources = async (
 			source.sourceDirectory
 		);
 		if (connectionValid !== true) {
-			logEvent('db-connection-error', dev, settings, source.type, source.name)
+			logEvent('db-connection-error', dev, settings, source.type, source.name);
 			throw new Error(
 				chalk.red(`[!] ${chalk.bold(source.name)} failed to connect; ${connectionValid.reason}`)
 			);
 		}
-		logEvent('db-connection-success', dev, settings, source.type, source.name)
+		logEvent('db-connection-success', dev, settings, source.type, source.name);
 
 		//TODO evidence-1344 should we log the connection result here?
 
@@ -407,7 +407,7 @@ function loadSettings() {
 	try {
 		if (existsSync('evidence.settings.json')) {
 			settings = JSON.parse(readFileSync('evidence.settings.json', 'utf8'));
-		}	
+		}
 	} catch (e) {
 		console.error('Error reading evidence.settings.json', e);
 	}
