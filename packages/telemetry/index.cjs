@@ -114,13 +114,12 @@ const logEvent = async (
 			console.log('analytics.track', { payload }); //TODO: evidence-1344 remove after
 
 			analytics.track(payload);
-		} else {
-			console.log('Not sending telemetry as usage stats disabled'); //TODO: evidence-1344 remove after
 		}
 	} catch {
-		console.error('Error logging event', { eventName }); //TODO: evidence-1344 remove after
 		// do nothing
 	}
 };
 
-module.exports = logEvent;
+module.exports = {
+	logEvent
+};

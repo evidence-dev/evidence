@@ -1,5 +1,4 @@
 /**
- * @type {function(string, string, string, string=, string=): Promise<void>}
+ * typedefs for telemetry
  */
-import logEvent = require('./index.cjs');
-export { logEvent };
+export * from './index.cjs';

@@ -286,15 +286,20 @@ export const buildSources = async (
 						const _r = runner(query.content, query.filepath, batchSize);
 						if (_r instanceof Promise) {
 							result = await _r.catch((e) => {
-								if (e instanceof z.ZodError) console.log(e.format());
-								else {
+								if (e instanceof z.ZodError) {
+									logEvent('db-error', dev, settings, source.type, source.name, query.name);
+									console.log(e.format());
+								} else {
 									throw e;
 								}
 								return null;
 							});
+							if (result) {
+								logEvent('db-query', dev, settings, source.type, source.name, query.name);
+							}
 						} else {
-							logEvent('db-query', dev, settings, source.type, source.name, query.name);
 							result = _r;
+							logEvent('db-query', dev, settings, source.type, source.name, query.name);
 						}
 					} catch (e) {
 						logEvent('db-error', dev, settings, source.type, source.name, query.name);
