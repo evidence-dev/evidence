@@ -127,9 +127,13 @@ const logEvent = async (
  * @param {string | undefined} [sourceName]
  * @param {string | undefined} [queryName]
  */
-const logQueryEvent = async (eventName, databaseName, sourceName, queryName) => {
+const logQueryEvent = async (eventName, databaseName, sourceName, queryName, dev = false) => {
 	//TODO there is no concept of dev mode when running npm run sources
-	await logEvent(eventName, false, loadSettings(), databaseName, sourceName, queryName);
+	try {
+		await logEvent(eventName, dev, loadSettings(), databaseName, sourceName, queryName);
+	} catch (e) {
+		//do nothing
+	}
 };
 
 function loadSettings() {
