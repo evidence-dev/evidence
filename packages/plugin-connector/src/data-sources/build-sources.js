@@ -14,6 +14,7 @@ import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import { logQueryEvent } from '@evidence-dev/telemetry';
+
 import ora from 'ora';
 
 /**

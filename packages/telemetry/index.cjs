@@ -4,6 +4,11 @@ const { readJSONSync, writeJSONSync, pathExistsSync } = require('fs-extra');
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
 const Analytics = require('analytics-node');
 
+
+/**
+ * @typedef {'usageStatsDisabled' | 'db-plugin-unvailable' | 'db-connection-error' | 'db-connection-success' | 'source-connector-not-found' | 'db-error' | 'db-query'} TelemetryEventName
+ */
+
 const initializeProfile = async () => {
 	const projectProfile = {
 		anonymousId: secure.v4(),
@@ -35,7 +40,7 @@ const getProfile = async () => {
 
 /**
  * TODO issue-1344 consider splitting this up into a separate handlers instead of taking all possible params (e.g separate handler for DB events)
- * @param {string} eventName
+ * @param {TelemetryEventName} eventName
  * @param {boolean} dev
  * @param {any} settings
  * @param {string | undefined} [databaseName]
@@ -118,7 +123,7 @@ const logEvent = async (
 
 /**
  * Logs an event emiited from source queries
- * @param {string} eventName
+ * @param {TelemetryEventName} eventName
  * @param {string | undefined} [databaseName]
  * @param {string | undefined} [sourceName]
  * @param {string | undefined} [queryName]
@@ -139,5 +144,5 @@ function loadSettings() {
 }
 
 module.exports = {
-	logEvent, logQueryEvent
+	logEvent, logQueryEvent,
 };
