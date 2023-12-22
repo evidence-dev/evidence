@@ -193,6 +193,7 @@ export const buildSources = async (
 						} else {
 							spinner.warn('Skipping: Filtered (cache may be broken)');
 						}
+						logQueryEvent('cache-query', source.type, source.name);
 						continue;
 					}
 					hashes[source.name][table.name] = createHash('md5')
@@ -258,6 +259,7 @@ export const buildSources = async (
 
 					if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
 						spinner.warn('Skipping: Cached');
+						logQueryEvent('cache-query', source.type, source.name, query.name);
 						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
 						const existingManifestUrl = sourceManifest.find(
 							(existingPath) => path.basename(existingPath, '.parquet') === query.name

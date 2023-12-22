@@ -5,7 +5,15 @@ const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
 const Analytics = require('analytics-node');
 
 /**
- * @typedef {'usageStatsDisabled' | 'db-plugin-unvailable' | 'db-connection-error' | 'db-connection-success' | 'source-connector-not-found' | 'db-error' | 'db-query'} TelemetryEventName
+ * @typedef {'usageStatsDisabled' |
+ * 			 'db-plugin-unvailable' |
+ * 			 'db-connection-error' |
+ * 			 'db-connection-success' |
+ * 			 'source-connector-not-found' |
+ * 			 'db-error' |
+ * 			 'db-query'|
+ * 			 'cache-query'
+ * 			} TelemetryEventName
  */
 
 const initializeProfile = async () => {
@@ -113,7 +121,7 @@ const logEvent = async (
 					postUSQL: true
 				}
 			};
-			analytics.track(payload);
+			console.debug('analytics.track', { payload });
 		}
 	} catch {
 		// do nothing
