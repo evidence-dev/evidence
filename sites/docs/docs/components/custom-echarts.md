@@ -30,13 +30,13 @@ ECharts requires the data object to have a specific format. For example in the t
 
 ````
 ```sql sales_by_country
-select "Canada" as country, 100 as sales
+select 'Canada' as country, 100 as sales
 union all
-select "US" as country, 250 as sales
+select 'US' as country, 250 as sales
 union all
-select "UK" as country, 130 as sales
+select 'UK' as country, 130 as sales
 union all
-select "Australia" as country, 95 as sales
+select 'Australia' as country, 95 as sales
 ```
 
 ```sql test_data
@@ -66,7 +66,7 @@ from ${sales_by_country}
           },
           roam: false,
           nodeClick: false,
-          data: test_data,
+          data: data.test_data,
           breadcrumb: {
             show: false
           }
@@ -88,13 +88,13 @@ ECharts requires the data object to have a specific format. For example in the f
 
 ````
 ```sql funnel_stages
-select "Emailed" as stage, 129 as count
+select 'Emailed' as stage, 129 as count
 union all
-select "Meeting" as stage, 86 as count
+select 'Meeting' as stage, 86 as count
 union all
-select "Proposal" as stage, 65 as count
+select 'Proposal' as stage, 65 as count
 union all
-select "Signed" as stage, 44 as count
+select 'Signed' as stage, 44 as count
 ```
 
 ```sql funnel_data
@@ -110,7 +110,7 @@ from ${funnel_stages}
             series: [
                 {
                 type: 'funnel',
-                data: funnel_data,
+                data: data.funnel_data,
                 }
             ]
         }
@@ -128,13 +128,13 @@ ECharts requires the data object to have a specific format. For example in the p
 
 ````
 ```sql pie_query
-select "Apple" as pie, 60 as count
+select 'Apple' as pie, 60 as count
 union all
-select "Blueberry" as pie, 70 as count
+select 'Blueberry' as pie, 70 as count
 union all
-select "Cherry" as pie, 40 as count
+select 'Cherry' as pie, 40 as count
 union all
-select "Pecan" as pie, 35 as count
+select 'Pecan' as pie, 35 as count
 ```
 
 ```sql pie_data
@@ -150,7 +150,7 @@ from ${pie_query}
         series: [
         {
           type: 'pie',
-          data: pie_data,
+          data: data.pie_data,
         }
       ]
       }
@@ -168,13 +168,13 @@ ECharts requires the data object to have a specific format. For example in the d
 
 ````
 ```sql donut_query
-select "Glazed" as donut, 213 as count
+select 'Glazed' as donut, 213 as count
 union all
-select "Cruller" as donut, 442 as count
+select 'Cruller' as donut, 442 as count
 union all
-select "Jelly-filled" as donut, 321 as count
+select 'Jelly-filled' as donut, 321 as count
 union all
-select "Cream-filled" as donut, 350 as count
+select 'Cream-filled' as donut, 350 as count
 ```
 
 ```sql donut_data
@@ -191,7 +191,7 @@ from ${donut_query}
         {
           type: 'pie',
           radius: ['40%', '70%'],
-          data: donut_data,
+          data: data.donut_data,
         }
       ]
       }
