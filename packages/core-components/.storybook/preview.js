@@ -1,5 +1,5 @@
 import '../src/app.postcss';
-
+import WithUSQL from '../src/lib/storybook-helpers/WithUSQL.svelte';
 /** @type { import('@storybook/svelte').Preview } */
 const preview = {
 	parameters: {
@@ -15,7 +15,8 @@ const preview = {
 		data: { table: { disable: true } },
 		evidenceInclude: { table: { disable: true } },
 		series: { table: { disable: true } }
-	}
+	},
+	decorators: [() => WithUSQL]
 };
 
 export default preview;
