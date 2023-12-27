@@ -185,9 +185,14 @@ module.exports.getRunner = async (opts, directory) => {
 	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
+		// Determine filename based on string
+		const filename =
+			opts.filename.startsWith('md:?motherduck_token=') || opts.filename == ':memory:'
+				? opts.filename
+				: path.join(directory, opts.filename);
 		return runQuery(
 			queryContent,
-			{ ...opts, filename: path.join(directory, opts.filename) },
+			{ ...opts, filename: filename },
 			batchSize
 		);
 	};
@@ -195,7 +200,15 @@ module.exports.getRunner = async (opts, directory) => {
 
 /** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
 module.exports.testConnection = async (opts, directory) => {
-	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
+	// Determine filename based on string
+	const filename =
+		opts.filename.startsWith('md:?motherduck_token=') || opts.filename == ':memory:'
+			? opts.filename
+			: path.join(directory, opts.filename);
+	
+	const r = await runQuery('SELECT 1;', {
+		...opts,
+		filename: filename})
 		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => {
