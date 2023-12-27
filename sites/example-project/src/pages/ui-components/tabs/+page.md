@@ -71,6 +71,7 @@ Open a terminal and run:
 ```shell
 npx degit evidence-dev/template my-project
 cd my-project
+npm run sources
 npm install
 npm run dev
 ```
@@ -84,6 +85,7 @@ If you already have a dbt project, you can install Evidence alongside it.
 cd path/to/your/dbt/project
 npx degit evidence-dev/template reports
 npm --prefix ./reports install
+npm --prefix ./reports run sources
 npm --prefix ./reports run dev
 ```
 
