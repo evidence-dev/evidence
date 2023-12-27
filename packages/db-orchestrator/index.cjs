@@ -11,37 +11,6 @@ const getQueries = function (routeHash) {
 	return { queries };
 };
 
-const testConnection = async function (dev) {
-	let query = {
-		id: 'Connection Test',
-		compiledQueryString: 'select 100 as num'
-	};
-	let result;
-	const settings = readJSONSync('./evidence.settings.json', { throws: false });
-
-	const { default: runQuery } = await import('@evidence-dev/' + settings.database);
-
-	try {
-		process.stdout.write(chalk.grey('  ' + query.id + ' running...'));
-		await runQuery(query.compiledQueryString, settings.credentials);
-		readline.cursorTo(process.stdout, 0);
-		process.stdout.write(chalk.greenBright('✓ ' + query.id) + chalk.grey(' from database \n'));
-		result = 'Database Connected';
-		logEvent('db-connection-success', dev, settings);
-	} catch (err) {
-		readline.cursorTo(process.stdout, 0);
-		process.stdout.write(chalk.red('✗ ' + query.id) + ' ' + chalk.grey(err) + ' \n');
-		result = err;
-		logEvent('db-connection-error', dev, settings);
-		// if build is strict and database connection fails, stop the build
-		if (strictBuild) {
-			throw err;
-		}
-	}
-	return result;
-};
-
 module.exports = {
-	getQueries,
-	testConnection
+	getQueries
 };

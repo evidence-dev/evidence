@@ -41,7 +41,7 @@ const config = {
 					items: [
 					  {
 						label: 'Legacy Docs',
-						href: 'https://evidence-docs-git-fix-tests-evidence-dev.vercel.app/',
+						href: 'https://legacy.docs.evidence.dev/',
 					  },
 					]
 				  },

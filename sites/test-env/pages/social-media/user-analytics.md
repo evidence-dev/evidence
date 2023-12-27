@@ -16,6 +16,12 @@ WITH raw as (
 SELECT userCount, userCount - LAG(userCount, -1) OVER (order by m desc) as delta, m from raw
 ```
 
+```users
+SELECT * FROM users
+```
+
+<DataTable data={users} rows=6 />
+
 ```users_by_gender
 SELECT COUNT(*) userCount, gender FROM users group by 2 order by 2 asc
 ```

@@ -1,5 +1,99 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.3
+
+### Patch Changes
+
+- c09bd981: Telemetry parity with USQL
+- Updated dependencies [c09bd981]
+  - @evidence-dev/telemetry@2.0.1
+
+## 3.0.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/db-commons@1.0.1
+  - @evidence-dev/bigquery@2.0.1
+  - @evidence-dev/csv@1.0.2
+  - @evidence-dev/databricks@1.0.1
+  - @evidence-dev/duckdb@1.0.2
+  - @evidence-dev/mssql@1.0.1
+  - @evidence-dev/mysql@1.0.1
+  - @evidence-dev/postgres@1.0.1
+  - @evidence-dev/redshift@1.0.1
+  - @evidence-dev/snowflake@1.0.1
+  - @evidence-dev/sqlite@2.0.1
+  - @evidence-dev/trino@1.0.1
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/duckdb@1.0.1
+  - @evidence-dev/csv@1.0.1
+
+## 3.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Minor Changes
+
+- f62bd26e: prerenders clientside duckdb queries in their initial state to allow for some form of prerendering
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [9ff614d2]
+- Updated dependencies [e23691d0]
+- Updated dependencies [1fbf70d9]
+- Updated dependencies [af4a8a1e]
+- Updated dependencies [44d3c797]
+- Updated dependencies [1320795a]
+- Updated dependencies [cb0fc468]
+- Updated dependencies [bf4a112a]
+- Updated dependencies [bdf8e08a]
+- Updated dependencies [3b49d3b6]
+- Updated dependencies [cd57ba69]
+- Updated dependencies [c4822852]
+- Updated dependencies [08b1907f]
+- Updated dependencies [781d2677]
+- Updated dependencies [a20cd1e0]
+- Updated dependencies [96e96568]
+- Updated dependencies [6505351f]
+- Updated dependencies [20127231]
+- Updated dependencies [cff22ece]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/bigquery@2.0.0
+  - @evidence-dev/duckdb@1.0.0
+  - @evidence-dev/mysql@1.0.0
+  - @evidence-dev/postgres@1.0.0
+  - @evidence-dev/csv@1.0.0
+  - @evidence-dev/mssql@1.0.0
+  - @evidence-dev/redshift@1.0.0
+  - @evidence-dev/snowflake@1.0.0
+  - @evidence-dev/sqlite@2.0.0
+  - @evidence-dev/databricks@0.1.1
+  - @evidence-dev/db-commons@0.2.1
+  - @evidence-dev/telemetry@1.0.7
+  - @evidence-dev/trino@0.1.2
+
+## 3.0.0-usql.18
+
+### Patch Changes
+
+- Updated dependencies [9ff614d2]
+  - @evidence-dev/bigquery@2.0.0-usql.7
+
 ## 3.0.0-usql.17
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @evidence-dev/databricks
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/db-commons@1.0.1
+
+## 1.0.0
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+- 781d2677: exhaust testconnection streams, improve type inference, add trino/databricks adapters
+- a20cd1e0: Fix workspace project version references
+- Updated dependencies [bf4a112a]
+- Updated dependencies [cd57ba69]
+- Updated dependencies [c4822852]
+- Updated dependencies [781d2677]
+- Updated dependencies [20127231]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/db-commons@0.2.1
+
 ## 0.1.1-usql.2
 
 ### Patch Changes

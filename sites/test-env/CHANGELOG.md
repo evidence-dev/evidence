@@ -1,5 +1,221 @@
 # evidence-test-environment
 
+## 3.0.6
+
+### Patch Changes
+
+- @evidence-dev/evidence@24.0.6
+- @evidence-dev/core-components@3.0.3
+
+## 3.0.5
+
+### Patch Changes
+
+- Updated dependencies [913f5919]
+  - @evidence-dev/component-utilities@2.0.1
+  - @evidence-dev/evidence@24.0.5
+  - @evidence-dev/core-components@3.0.3
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@3.0.2
+  - @evidence-dev/evidence@24.0.4
+
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@3.0.1
+  - @evidence-dev/evidence@24.0.3
+
+## 3.0.2
+
+### Patch Changes
+
+- @evidence-dev/csv@1.0.2
+- @evidence-dev/duckdb@1.0.2
+- @evidence-dev/postgres@1.0.1
+- @evidence-dev/snowflake@1.0.1
+- @evidence-dev/sqlite@2.0.1
+- @evidence-dev/evidence@24.0.2
+- @evidence-dev/core-components@3.0.0
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/duckdb@1.0.1
+  - @evidence-dev/csv@1.0.1
+  - @evidence-dev/evidence@24.0.1
+
+## 3.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [689d9e2e]
+- Updated dependencies [4ac6a688]
+- Updated dependencies [5d280997]
+- Updated dependencies [391282e5]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [59938e50]
+- Updated dependencies [f304fc1e]
+- Updated dependencies [e23691d0]
+- Updated dependencies [840d1195]
+- Updated dependencies [b25a95d7]
+- Updated dependencies [4293e084]
+- Updated dependencies [5247996b]
+- Updated dependencies [6b7a132d]
+- Updated dependencies [dd11468b]
+- Updated dependencies [77d09b54]
+- Updated dependencies [91034294]
+- Updated dependencies [71f0d481]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [2588049c]
+- Updated dependencies [af4a8a1e]
+- Updated dependencies [3d28ff33]
+- Updated dependencies [9132146b]
+- Updated dependencies [c9892e20]
+- Updated dependencies [fca7a313]
+- Updated dependencies [0940b996]
+- Updated dependencies [20aad351]
+- Updated dependencies [d79a3014]
+- Updated dependencies [7c4249c0]
+- Updated dependencies [0ba78b67]
+- Updated dependencies [e1174aa1]
+- Updated dependencies [6eb93816]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [1235f278]
+- Updated dependencies [7c44653b]
+- Updated dependencies [b5592a3f]
+- Updated dependencies [130950d7]
+- Updated dependencies [b6683ba0]
+- Updated dependencies [b4de6d55]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [14269dbc]
+- Updated dependencies [d1265559]
+- Updated dependencies [cfb0f248]
+- Updated dependencies [44d3c797]
+- Updated dependencies [9b1ac9b7]
+- Updated dependencies [0a60b724]
+- Updated dependencies [20722eab]
+- Updated dependencies [1320795a]
+- Updated dependencies [cb0fc468]
+- Updated dependencies [73cfef71]
+- Updated dependencies [77d09b54]
+- Updated dependencies [87aaf1c3]
+- Updated dependencies [be6cd88a]
+- Updated dependencies [bf4a112a]
+- Updated dependencies [17a82581]
+- Updated dependencies [ef3a66dc]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [e1facffd]
+- Updated dependencies [3708374d]
+- Updated dependencies [df9737fc]
+- Updated dependencies [489a6069]
+- Updated dependencies [741885bf]
+- Updated dependencies [88e1a5ee]
+- Updated dependencies [3d28ff33]
+- Updated dependencies [d7477a44]
+- Updated dependencies [ca7337ba]
+- Updated dependencies [aea3be1a]
+- Updated dependencies [1ed3fe07]
+- Updated dependencies [3b49d3b6]
+- Updated dependencies [8f5d4ba8]
+- Updated dependencies [cd57ba69]
+- Updated dependencies [9da3812e]
+- Updated dependencies [bbcd070e]
+- Updated dependencies [64ab3074]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [c4822852]
+- Updated dependencies [cb307da8]
+- Updated dependencies [f5b06ca4]
+- Updated dependencies [078fca3b]
+- Updated dependencies [52e114cc]
+- Updated dependencies [9e7ba37d]
+- Updated dependencies [1097e5a9]
+- Updated dependencies [efa96920]
+- Updated dependencies [08b1907f]
+- Updated dependencies [fe466b13]
+- Updated dependencies [5be92c14]
+- Updated dependencies [ca1f90b3]
+- Updated dependencies [781d2677]
+- Updated dependencies [cad09993]
+- Updated dependencies [aa2f3bfc]
+- Updated dependencies [30304782]
+- Updated dependencies [5bda8d53]
+- Updated dependencies [78a8be8b]
+- Updated dependencies [982a17c6]
+- Updated dependencies [583cea9e]
+- Updated dependencies [16a17086]
+- Updated dependencies [15248699]
+- Updated dependencies [e70a6a3e]
+- Updated dependencies [96e96568]
+- Updated dependencies [ef2a9106]
+- Updated dependencies [6bf5003a]
+- Updated dependencies [4053c976]
+- Updated dependencies [043a302a]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [1c478a62]
+- Updated dependencies [df9737fc]
+- Updated dependencies [7d298d28]
+- Updated dependencies [f62bd26e]
+- Updated dependencies [75fa47a3]
+- Updated dependencies [52d81ce2]
+- Updated dependencies [64921385]
+- Updated dependencies [6505351f]
+- Updated dependencies [4b6262d8]
+- Updated dependencies [c29d827d]
+- Updated dependencies [b1427173]
+- Updated dependencies [2d2f774e]
+- Updated dependencies [544b1d5b]
+- Updated dependencies [20127231]
+- Updated dependencies [e9a63c71]
+- Updated dependencies [64d1405b]
+- Updated dependencies [9b1ac9b7]
+- Updated dependencies [cff22ece]
+- Updated dependencies [071da2b5]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [7a5225be]
+- Updated dependencies [c8968ea3]
+- Updated dependencies [120d22e9]
+- Updated dependencies [e8b897e0]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [2371c8f1]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@2.0.0
+  - @evidence-dev/duckdb@1.0.0
+  - @evidence-dev/evidence@20.0.0
+  - @evidence-dev/faker-datasource@2.0.0
+  - @evidence-dev/postgres@1.0.0
+  - @evidence-dev/csv@1.0.0
+  - @evidence-dev/snowflake@1.0.0
+  - @evidence-dev/sqlite@2.0.0
+
+## 3.0.0-usql.73
+
+### Patch Changes
+
+- @evidence-dev/core-components@2.0.0-usql.46
+- @evidence-dev/evidence@20.0.0-usql.73
+
 ## 3.0.0-usql.72
 
 ### Patch Changes
