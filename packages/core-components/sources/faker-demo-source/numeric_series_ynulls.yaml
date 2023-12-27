@@ -1,0 +1,16 @@
+rows: 100
+fuzz: 0
+series:
+  type: numeric
+  columns:
+    x:
+      type: number
+    y:
+      category: number
+      item: int
+      options:
+        - min: 0
+          max: 1000
+      nulls: true
+    series:
+      count: 4

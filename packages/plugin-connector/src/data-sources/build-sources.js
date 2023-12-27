@@ -13,7 +13,10 @@ import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
 import { buildMultipartParquet } from '@evidence-dev/universal-sql';
+import { logQueryEvent } from '@evidence-dev/telemetry';
+
 import ora from 'ora';
+
 /**
  * @param {string} directory
  * @returns {Promise<SourceDirectory>}
@@ -96,7 +99,8 @@ export const buildSources = async (
 					`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
 				)
 			);
-			hashes[source.name] = existingHashes[source.name]; // passthrough hashes, but this probably won't be useful
+			logQueryEvent('source-connector-not-found', source.type, source.name);
+			hashes[source.name] = existingHashes[source.name];
 			continue;
 		}
 
@@ -105,10 +109,13 @@ export const buildSources = async (
 			source.sourceDirectory
 		);
 		if (connectionValid !== true) {
+			logQueryEvent('db-connection-error', source.type, source.name);
 			throw new Error(
 				chalk.red(`[!] ${chalk.bold(source.name)} failed to connect; ${connectionValid.reason}`)
 			);
 		}
+		//TODO evidence-1344 and db-connection-error didn't have an equivalent for event in legacy
+		logQueryEvent('db-connection-success', source.type, source.name);
 
 		const utils = {
 			/**
@@ -186,6 +193,7 @@ export const buildSources = async (
 						} else {
 							spinner.warn('Skipping: Filtered (cache may be broken)');
 						}
+						logQueryEvent('cache-query', source.type, source.name);
 						continue;
 					}
 					hashes[source.name][table.name] = createHash('md5')
@@ -251,6 +259,7 @@ export const buildSources = async (
 
 					if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
 						spinner.warn('Skipping: Cached');
+						logQueryEvent('cache-query', source.type, source.name, query.name);
 						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
 						const existingManifestUrl = sourceManifest.find(
 							(existingPath) => path.basename(existingPath, '.parquet') === query.name
@@ -272,14 +281,23 @@ export const buildSources = async (
 						const _r = runner(query.content, query.filepath, batchSize);
 						if (_r instanceof Promise) {
 							result = await _r.catch((e) => {
-								if (e instanceof z.ZodError) console.log(e.format());
-								else {
+								if (e instanceof z.ZodError) {
+									logQueryEvent('db-error', source.type, source.name, query.name);
+									console.log(e.format());
+								} else {
 									throw e;
 								}
 								return null;
 							});
-						} else result = _r;
+							if (result) {
+								logQueryEvent('db-query', source.type, source.name, query.name);
+							}
+						} else {
+							result = _r;
+							logQueryEvent('db-query', source.type, source.name, query.name);
+						}
 					} catch (e) {
+						logQueryEvent('db-error', source.type, source.name, query.name);
 						if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
 						else {
 							throw e;

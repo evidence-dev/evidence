@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 2.0.1
+
+### Patch Changes
+
+- c09bd981: Telemetry parity with USQL
+
 ## 2.0.0
 
 ### Patch Changes

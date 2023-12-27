@@ -15,6 +15,7 @@ The following sections explain what is changing in Evidence with Universal SQL. 
 ## Do I need to migrate my project?
 - If your `@evidence-dev/evidence` package version is < v24 then it has not yet been migrated, and we encourage you to do so as soon as is practical
 - `v23` will continue to be supported for now (sunset date TBC) and will receive critical bugfixes during this period
+- If you're unsure what you need to do, or if you need help, [reach out to us on Slack](https://slack.evidence.dev) in the `#migration` channel
 
 ## Breaking Changes
 - Existing data source connections will need to be reconfigured
@@ -75,6 +76,7 @@ We recommend creating a backup of your project before starting the migration.
 - (If necessary) Update deprecated syntax
 - (If necessary) Reinstall any custom plugins 
 - (If necessary) Reinstall any custom external dependencies (non-evidence libraries) 
+- (If necessary) Update `.gitignore` to include `**/connection.options.yaml` - only needed if you do not start from a fresh Universal SQL template
 
 ## Migration Steps
 
@@ -107,7 +109,7 @@ This migration command covers most situations, but there may be edge cases where
     - Click to test your connection
     - Click to confirm the changes
 9. Navigate back to the home page in your browser and refresh the page
-10. The page should now be working. The migration command covers most situations, but not all - you may need to fix a few remaining issues. If you still see errors, they may be related to query chaining or SQL syntax. See the Special Situations section below for information which may help. If you need assistance tracking down the issues, please [reach out on Slack](https://slack.evidence.dev)
+10. The page should now be working. The migration command covers most situations, but not all - you may need to fix a few remaining issues. If you still see errors, they may be related to query chaining or SQL syntax. See the Special Situations section below for information which may help. If you need assistance tracking down the issues, please [reach out on Slack](https://slack.evidence.dev) in the `#migration` channel
 
 
 ### Completing the Migration Steps Manually
@@ -173,7 +175,7 @@ The easiest way to migrate your project is to create a project using the latest 
     - Click to test your connection
     - Click to confirm the changes
 12. Navigate back to the home page in your browser and refresh the page
-13. The page should now be working. If you still see errors, they may be related to query chaining or SQL syntax. See the Special Situations section below for information which may help. If you need assistance tracking down the issues, please [reach out on Slack](https://slack.evidence.dev)
+13. The page should now be working. If you still see errors, they may be related to query chaining or SQL syntax. See the Special Situations section below for information which may help. If you need assistance tracking down the issues, please [reach out on Slack](https://slack.evidence.dev) in the `#migration` channel
 
 ## Deployment Changes
 
@@ -263,6 +265,7 @@ npm install <package-name>
 
 ## Resources
 
+- [#migration Slack channel](https://slack.evidence.dev)
 - [DuckDB SQL Syntax Reference](https://duckdb.org/docs/sql/statements/select)
 - [Netlify: Modify Environment Variables](https://docs.netlify.com/environment-variables/get-started/#modify-and-delete-environment-variables)
 - [Netlify: Set your Build Command](https://docs.netlify.com/configure-builds/overview/#set-the-build-command)

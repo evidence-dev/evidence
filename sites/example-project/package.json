@@ -1,10 +1,10 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.0.5",
+	"version": "3.0.6",
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
-		"sources": "__EXAMPLE_PROJECT=true evidence sources",
+		"sources": "cross-env __EXAMPLE_PROJECT=true evidence sources",
 		"preview": "vite preview --port 3000"
 	},
 	"type": "module",
