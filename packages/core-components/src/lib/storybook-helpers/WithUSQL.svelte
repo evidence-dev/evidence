@@ -15,6 +15,7 @@
 		// Test Query
 		const r = await query('SELECT * FROM information_schema.tables');
 		if (r.length === 0) throw new Error('Failed to run test query');
+		console.log('Universal SQL has been initialized successfully');
 	})();
 </script>
 

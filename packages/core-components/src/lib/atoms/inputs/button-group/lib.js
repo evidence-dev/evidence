@@ -1,5 +1,5 @@
 import { getContext, setContext } from 'svelte';
-/** 
+/**
  * @typedef {Object} ButtonGroupItem
  * @property {string} label
  * @property {string | boolean | number | Date} value
@@ -17,4 +17,4 @@ export const getButtonGroupContext = () => getContext(CONTEXT_KEY);
  * @param {import("svelte/store").Readable<ButtonGroupItem>} value
  * @returns {void}
  */
-export const setButtonGroupContext = (update, value) => setContext(CONTEXT_KEY, {update, value});
+export const setButtonGroupContext = (update, value) => setContext(CONTEXT_KEY, { update, value });

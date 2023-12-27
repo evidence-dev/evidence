@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'fs/promises';
 import path from 'path';
-import { buildSeriesSource } from './series/buildSeriesSource.mjs';
+import { generateDemoSources } from './source-generator.mjs';
 
 async function main() {
 	if (process.argv[2] === 'build-series-source') {
@@ -16,7 +16,7 @@ async function main() {
 		if (sourcesDir.includes(sourceName)) await fs.rm(sourcePath, { force: true, recursive: true });
 		await fs.mkdir(sourcePath);
 
-		buildSeriesSource(sourcePath, path.join(process.cwd(), 'src', 'lib'));
+		generateDemoSources(sourcePath, path.join(process.cwd(), 'src', 'lib'));
 	}
 }
 
