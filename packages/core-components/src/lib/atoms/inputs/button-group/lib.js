@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 /**
  * @typedef {Object} ButtonGroupItem
- * @property {string} label
+ * @property {string} valueLabel
  * @property {string | boolean | number | Date} value
  */
 

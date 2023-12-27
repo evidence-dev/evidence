@@ -47,7 +47,7 @@
 				{$query.error}
 			{:else}
 				{#each $query as { label, value }}
-					<ButtonGroupItem {label} {value} />
+					<ButtonGroupItem {label} valueLabel={value} />
 				{/each}
 			{/if}
 		{/if}

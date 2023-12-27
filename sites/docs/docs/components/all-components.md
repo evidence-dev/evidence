@@ -657,7 +657,7 @@ hide_table_of_contents: false
         <div class="lbl">Dropdown</div>
     </div>
     <div class="item-body-centered">
-    <a href="/components/dropdown">
+    <a href="/components/inputs/dropdown">
 
 ![Accordion](/img/dropdown.png)
 

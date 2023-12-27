@@ -1,7 +1,7 @@
 <script>
 	import { getButtonGroupContext } from './lib';
 	/** @type {string} */
-	export let label;
+	export let valueLabel;
 	/** @type {string | boolean | number | Date} */
 	export let value;
 
@@ -17,7 +17,7 @@
 		? 'z-10 border-gray-200 bg-gray-100 text-blue-700'
 		: 'z-0 bg-white text-gray-900 border-gray-200'}
                                 "
-	on:click={() => update({ label, value })}
+	on:click={() => update({ valueLabel, value })}
 >
-	{label}
+	{valueLabel}
 </button>
