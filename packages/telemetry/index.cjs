@@ -149,7 +149,7 @@ function loadSettings() {
 	try {
 		settings = readJSONSync('evidence.settings.json');
 	} catch (e) {
-		console.error('Error reading evidence.settings.json', e);
+		//do nothing
 	}
 	return settings;
 }
