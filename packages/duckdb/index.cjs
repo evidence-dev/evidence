@@ -190,11 +190,7 @@ module.exports.getRunner = async (opts, directory) => {
 			opts.filename.startsWith('md:?motherduck_token=') || opts.filename == ':memory:'
 				? opts.filename
 				: path.join(directory, opts.filename);
-		return runQuery(
-			queryContent,
-			{ ...opts, filename: filename },
-			batchSize
-		);
+		return runQuery(queryContent, { ...opts, filename: filename }, batchSize);
 	};
 };
 
@@ -205,10 +201,11 @@ module.exports.testConnection = async (opts, directory) => {
 		opts.filename.startsWith('md:?motherduck_token=') || opts.filename == ':memory:'
 			? opts.filename
 			: path.join(directory, opts.filename);
-	
+
 	const r = await runQuery('SELECT 1;', {
 		...opts,
-		filename: filename})
+		filename: filename
+	})
 		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => {
