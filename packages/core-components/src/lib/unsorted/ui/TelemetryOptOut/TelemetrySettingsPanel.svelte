@@ -31,7 +31,7 @@
 					<p>Each time you run a query, we get the following pieces of information:</p>
 					<ol class="list-decimal px-8">
 						<li>
-							A random identifier that is stored in <code>.evidence/template/.profile.json</code>
+							A random identifier that is stored in <code>.evidence/customization/.profile.json</code>
 						</li>
 						<li>
 							An anonymized identifier based on the git repository you're using for the project
