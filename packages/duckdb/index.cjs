@@ -137,9 +137,10 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		}
 	} else {
 		// Check the filenames from environment variables
-		filename = getEnv(envMap, 'filename') 
-		// Default to in-memory db
-		?? ':memory:';
+		filename =
+			getEnv(envMap, 'filename') ??
+			// Default to in-memory db
+			':memory:';
 	}
 
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
