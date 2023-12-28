@@ -1,5 +1,5 @@
 ---
-'@evidence-dev/duckdb': major
+'@evidence-dev/duckdb': patch
 ---
 
 Allow MotherDuck and in-memory DuckDB connections
