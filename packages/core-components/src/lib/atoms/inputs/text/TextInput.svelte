@@ -22,7 +22,7 @@
 
 	$: {
 		let sqlString = value;
-		if (unsafe) sqlString = sqlString.replaceAll("'", "''");
+		if (!unsafe) sqlString = sqlString.replaceAll("'", "''");
 		$inputs[name] = {
 			toString() {
 				return sqlString;
