@@ -5,7 +5,6 @@
 <script>
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { getContext } from 'svelte';
-	import debounce from 'lodash.debounce';
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
 	/////
@@ -18,23 +17,22 @@
 	/** @type {string} */
 	export let name;
 
-	/**
-	 * @param {string} v
-	 */
-	const updateValue = debounce((v) => {
+	/** @type {boolean} */
+	export let unsafe = false;
+
+	$: {
+		let sqlString = value;
+		if (unsafe) sqlString = sqlString.replaceAll("'", "''");
 		$inputs[name] = {
 			toString() {
-				return v;
+				return sqlString;
 			},
-			sql: `'${v}'`,
-			search: (col) => `damerau_levenshtein(${col}, '${v}')`
+			sql: `'${sqlString}'`,
+			search: (col) => `damerau_levenshtein(${col}, '${sqlString}')`
 		};
-	}, 100);
+	}
 
-	let tempValue = '';
-	updateValue(tempValue);
-
-	$: updateValue(tempValue);
+	let value = '';
 </script>
 
 <div class="mt-2 mb-4 mx-1 inline-block">
@@ -42,7 +40,7 @@
 		<span class="text-sm text-gray-500 block">{title}</span>
 	{/if}
 	<input
-		bind:value={tempValue}
+		bind:value
 		class="border border-gray-300 bg-white rounded-lg p-1 mt-2 px-2 pr-5 flex flex-row items-center max-w-fit bg-transparent cursor-text bg-right bg-no-repeat"
 	/>
 </div>

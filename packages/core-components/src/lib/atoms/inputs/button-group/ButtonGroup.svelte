@@ -1,5 +1,9 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
-	import { setButtonGroupContext } from './lib';
+	import { presets, setButtonGroupContext } from './lib';
 	import { derived, writable } from 'svelte/store';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { getContext } from 'svelte';
@@ -11,11 +15,14 @@
 	/** @type {string} */
 	export let title;
 
+	/** @type {keyof typeof presets | undefined} */
+	export let preset = undefined;
+
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
 	let currentValue = null;
 	const valueStore = writable(null);
-	$: valueStore.update(() => currentValue);
+	$: $valueStore = currentValue;
 	$: $inputs[name] = currentValue?.value ?? null;
 
 	setButtonGroupContext(
@@ -41,14 +48,24 @@
 		<span class="text-gray-500 block">{title}</span>
 	{/if}
 	<div class="inline-flex" role="group">
-		<slot />
-		{#if hasQuery}
-			{#if $query.error}
-				{$query.error}
-			{:else}
-				{#each $query as { label, value }}
-					<ButtonGroupItem {label} valueLabel={value} />
+		{#if preset}
+			{#if presets[preset]}
+				{#each presets[preset] as { value, valueLabel }}
+					<ButtonGroupItem {value} {valueLabel} />
 				{/each}
+			{:else}
+				<span class="text-red-500 font-bold text-sm">{preset} is not a valid preset</span>
+			{/if}
+		{:else}
+			<slot />
+			{#if hasQuery}
+				{#if $query.error}
+					{$query.error}
+				{:else}
+					{#each $query as { label, value }}
+						<ButtonGroupItem {value} valueLabel={label} />
+					{/each}
+				{/if}
 			{/if}
 		{/if}
 	</div>

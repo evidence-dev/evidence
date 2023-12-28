@@ -18,3 +18,14 @@ export const getButtonGroupContext = () => getContext(CONTEXT_KEY);
  * @returns {void}
  */
 export const setButtonGroupContext = (update, value) => setContext(CONTEXT_KEY, { update, value });
+
+/**
+ * @type {Record<string, ButtonGroupItem[]>}
+ */
+export const presets = {
+	dates: [
+		{ valueLabel: 'Week', value: '7 days' },
+		{ valueLabel: 'Month', value: '1 month' },
+		{ valueLabel: 'Year', value: '1 year' }
+	]
+};

@@ -1,3 +1,7 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
 	import { getButtonGroupContext } from './lib';
 	/** @type {string} */
