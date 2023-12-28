@@ -19,6 +19,7 @@
 
 	/** @type {boolean} */
 	export let unsafe = false;
+	$: unsafe = unsafe === true || unsafe === 'true';
 
 	$: {
 		let sqlString = value;
