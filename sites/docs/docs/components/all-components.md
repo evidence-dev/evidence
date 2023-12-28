@@ -650,7 +650,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Dropdown](Dropdown)
+### [Dropdown](inputs/dropdown)
 
  <div class="gallery-item-grid">
     <div class="item-header">
