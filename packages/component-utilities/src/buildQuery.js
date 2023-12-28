@@ -1,12 +1,14 @@
 import { setContext, getContext } from 'svelte';
 import { Query, sql } from '@uwdata/mosaic-sql';
 import { QueryStore } from '@evidence-dev/query-store';
+import { query } from '@evidence-dev/universal-sql/client-duckdb';
 
 const QUERY_CONTEXT_KEY = '___usql_query';
-/** @type {(x: string) => QueryStore} */
-let queryFunction = () => {
-	throw new Error('Query Function has not yet been set. Use setQueryFunction first.');
-};
+/**
+ * Defaults to the query function from universal sql
+ * @type {(x: string) => QueryStore}
+ */
+let queryFunction = query;
 
 export const setQueryFunction = (queryFn) => {
 	setContext(QUERY_CONTEXT_KEY, queryFn);

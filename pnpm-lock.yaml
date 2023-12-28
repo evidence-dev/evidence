@@ -241,6 +241,9 @@ importers:
       '@steeze-ui/tabler-icons':
         specifier: ^2.1.0
         version: 2.1.1
+      '@types/lodash.debounce':
+        specifier: ^4.0.9
+        version: 4.0.9
       echarts:
         specifier: 5.4.3
         version: 5.4.3
@@ -253,6 +256,9 @@ importers:
       fuse.js:
         specifier: ^7.0.0
         version: 7.0.0
+      lodash.debounce:
+        specifier: ^4.0.8
+        version: 4.0.8
       prismjs:
         specifier: 1.29.0
         version: 1.29.0
@@ -632,6 +638,9 @@ importers:
       '@types/lodash.clonedeep':
         specifier: ^4.5.9
         version: 4.5.9
+      '@types/lodash.merge':
+        specifier: ^4.6.8
+        version: 4.6.9
       '@types/seedrandom':
         specifier: ^3.0.8
         version: 3.0.8
@@ -644,6 +653,9 @@ importers:
       lodash.clonedeep:
         specifier: ^4.5.0
         version: 4.5.0
+      lodash.merge:
+        specifier: ^4.6.2
+        version: 4.6.2
       seedrandom:
         specifier: ^3.0.5
         version: 3.0.5
