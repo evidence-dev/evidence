@@ -110,6 +110,13 @@ where column_name like '${inputs.name_of_button_group}'
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
+        <td>preset</td>	
+        <td>Preset values to use</td>	
+        <td class='tcenter'>No</td>	
+        <td class='tcenter'>"dates"</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
         <td>data</td>	
         <td>Query name, wrapped in curly braces</td>	
         <td class='tcenter'>No</td>	
