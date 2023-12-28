@@ -5,7 +5,11 @@ import { filter } from './filter.mjs';
 import fs from 'fs/promises';
 import chalk from 'chalk';
 import seedrandom from 'seedrandom';
+import { FakerTableSchema } from './schemas/index.mjs';
+import { cleanZodErrors } from './lib.mjs';
+import { genNumericSeries } from './series/numeric.series.mjs';
 
+/** @param {number} x */
 function sigmoid(x) {
 	return 1 / (1 + Math.exp(-x));
 }
@@ -19,7 +23,7 @@ const randomBiasedNumber = (mean, standardDeviation) => {
 	 * @returns void
 	 */
 	const seed = (s) => {
-		rng = seedrandom(s, { global: false });
+		rng = seedrandom(s.toString(), { global: false });
 	};
 
 	const next = () => {
@@ -74,34 +78,42 @@ const getColumnType = (t) => {
 				};
 			}
 			console.log(t, JSON.stringify(t));
-			throw new Error('could not infer type of ', t);
+			throw new Error('could not infer type');
 	}
 };
 
 /**
- * @param {Record<string, unknown>} row
+ * @param {Record<string, unknown>[]} data
  */
-const buildOutputTypes = (row) => {
+const buildOutputTypes = (data) => {
 	/** @type {OutputColumnType[]} */
 	const outputColumnTypes = [];
-	for (const colName in row) {
-		outputColumnTypes.push({
-			name: colName,
-			...getColumnType(row[colName])
-		});
+	for (const colName in data[0]) {
+		let found = false;
+		for (let i = 0; i < data.length; i++) {
+			if (data[i][colName] !== null) {
+				outputColumnTypes.push({
+					name: colName,
+					...getColumnType(data[i][colName])
+				});
+				found = true;
+				break;
+			}
+		}
+		if (!found) throw new Error(`Could not infer type for ${colName}`);
 	}
 	return outputColumnTypes;
 };
 
 const getFakerValue = (
-	category,
-	item,
-	options,
-	targetField,
-	colName,
-	withBias,
-	faker,
-	biasedFaker
+	/** @type {string} */ category,
+	/** @type {string} */ item,
+	/** @type {any} */ options,
+	/** @type {string | number | symbol | undefined} */ targetField,
+	/** @type {string} */ colName,
+	/** @type {any} */ withBias,
+	/** @type {any} */ faker,
+	/** @type {any} */ biasedFaker
 ) => {
 	const _faker = withBias ? biasedFaker : faker;
 	if (!(category in _faker))
@@ -117,32 +129,42 @@ const getFakerValue = (
 	return value;
 };
 
-const buildRow = async (schema, tableName, rowNum, faker, biasedFaker) => {
+const buildRow = async (
+	/** @type {Record<string, import("zod").infer<typeof import("./schemas/faker.schema.mjs").ColumnSchema>>}*/ schema,
+	/** @type {number} */ rowNum,
+	/** @type {Faker} */ faker,
+	/** @type {Faker} */ biasedFaker
+) => {
+	/** @type {Record<string, string | number | boolean | Date>} */
 	const output = {};
 	for (const colName in schema) {
-		if (schema[colName].type === 'id') {
-			output[colName] = rowNum;
-		} else if (schema[colName].type === 'fk') {
-			const targetTablePath = schema[colName].target?.tablePath;
-			if (!targetTablePath) {
-				throw new Error(
-					`Failed to get table path for ${colName}. This is a bug in faker-datasource`
-				);
-			}
+		const col = schema[colName];
+		if ('type' in col) {
+			switch (col.type) {
+				case 'fk':
+					const targetTablePath = col.target?.tablePath;
+					if (!targetTablePath) {
+						throw new Error(
+							`Failed to get table path for ${colName}. This is a bug in faker-datasource`
+						);
+					}
 
-			const _faker = schema[colName].withBias ? biasedFaker : faker;
-			const targetTable = await tableMap.get(targetTablePath);
-			const targetRow = _faker.helpers.arrayElement(targetTable.rows);
-			const targetField = schema[colName].target?.field ?? 'id';
-			if (!(targetField in targetRow)) {
-				throw new Error(
-					`Target (${schema[colName].target?.table}) does not contain field ${targetField}`
-				);
+					const _faker = col.withBias ? biasedFaker : faker;
+					const targetTable = await tableMap.get(targetTablePath);
+					if (!targetTable) throw new Error(`ReferenceError: ${targetTable} does not exist`);
+					const targetRow = _faker.helpers.arrayElement(targetTable.rows);
+					const targetField = col.target?.field ?? 'id';
+					if (!(targetField in targetRow)) {
+						throw new Error(`Target (${col.target?.table}) does not contain field ${targetField}`);
+					}
+					output[colName] = targetRow[targetField];
+				case 'id':
+					output[colName] = rowNum;
+					break;
 			}
-			output[colName] = targetRow[targetField];
-		} else if ('oneof' in schema[colName]) {
-			const _faker = schema[colName].withBias ? biasedFaker : faker;
-			const fieldType = _faker.helpers.arrayElement(schema[colName].oneof);
+		} else if ('oneof' in col) {
+			const _faker = col.withBias ? biasedFaker : faker;
+			const fieldType = _faker.helpers.arrayElement(col.oneof);
 			const { category, item, options, targetField, withBias } = fieldType;
 			output[colName] = getFakerValue(
 				category,
@@ -155,7 +177,7 @@ const buildRow = async (schema, tableName, rowNum, faker, biasedFaker) => {
 				biasedFaker
 			);
 		} else {
-			const { category, item, options, targetField, withBias } = schema[colName];
+			const { category, item, options, targetField, withBias } = col;
 			output[colName] = getFakerValue(
 				category,
 				item,
@@ -179,116 +201,134 @@ const relations = new Map();
 /**
  *
  * @param {string} directory
+ * @param {Faker} faker
  * @param {Faker} biasedFaker
  * @returns
  */
-const generateTable = (directory, faker, biasedFaker) => async (content, filepath) => {
-	let res, rej;
-	const wrappingPromise = new Promise((resolve, reject) => {
-		res = resolve;
-		rej = reject;
-	});
+const generateTable =
+	(directory, faker, biasedFaker) =>
+	/**
+	 * @param {string} content
+	 * @param {string} filepath
+	 */
+	async (content, filepath) => {
+		if (!filepath.endsWith('yaml')) return null;
+		/** @type {(v: any) => void} */
+		let res = () => {},
+			/** @type {(v: any) => void} */
+			rej = () => {};
+		const wrappingPromise = new Promise((resolve, reject) => {
+			res = resolve;
+			rej = reject;
+		});
 
-	if (tableMap.has(filepath)) {
-		return tableMap.get(filepath);
-	}
-
-	tableMap.set(filepath, wrappingPromise);
-	try {
-		const definition = yaml.parse(content);
-
-		const name = filepath.split(path.sep).pop().split('.').shift();
-		const rows = [];
-
-		if ('literal' in definition) {
-			if (!Array.isArray(definition.literal))
-				throw new Error(
-					`${filepath
-						.split(path.sep)
-						.pop()} is trying to be a literal table, but does not have an array!`
-				);
-			rows.push(...definition.literal.map((row, rowIdx) => ({ id: rowIdx, ...row })));
-		} else {
-			if (!('rows' in definition))
-				throw new Error(
-					`${filepath.split(path.sep).pop()} is missing required required field "rows"`
-				);
-			if (!(typeof definition.rows === 'number'))
-				throw new Error(`${filepath.split(path.sep).pop()} "rows" must be a number`);
-			if (!('schema' in definition))
-				throw new Error(
-					`${filepath.split(path.sep).pop()} is missing required required field "schema"`
-				);
-			if (!(typeof definition.schema === 'object'))
-				throw new Error(`${filepath.split(path.sep).pop()} "schema" must be an object`);
-
-			const foreignKeys = Object.values(definition.schema).filter((col) => col.type === 'fk');
-			const foreignKeyTargets = foreignKeys
-				.map((col) => {
-					// TODO: Notify about this better; maybe wrap fk and fkt into reduce of entries?
-					if (!('target' in col)) {
-						console.warn(`Foreign Key ${col} is missing a target file!`);
-						return false;
-					}
-					if (typeof col.target !== 'object') {
-						console.warn(`Foreignt Key ${col} has a malformed target; must be object`);
-						return false;
-					}
-					if (!('table' in col.target)) {
-						console.warn(`Foreign Key ${col} is missing a target table!`);
-						return false;
-					}
-					col.target.tablePath = path.join(directory, col.target.table);
-					return col.target.tablePath;
-				})
-				.reduce((acc, v) => (v && !acc.includes(v) ? [...acc, v] : acc), []);
-
-			relations.set(filepath, foreignKeyTargets);
-
-			for (const fkt of foreignKeyTargets) {
-				// Check for a circular reference
-				if (relations.has(fkt) && relations.get(fkt).includes(filepath)) {
-					throw new Error(
-						`Circular dependency found in foreign keys; ${filepath} -> ${fkt} -> ${filepath}`
-					);
-				}
-				// Ensure that all dependency tables are generated
-				if (!tableMap.has(fkt)) {
-					const content = await fs.readFile(fkt).then((r) => r.toString());
-					await generateTable(directory, faker, biasedFaker)(content, fkt);
-				}
-			}
-
-			let rowCount = definition.rows;
-			if ('fuzz' in definition) {
-				if (typeof definition.fuzz !== 'number') {
-					console.warn('Row fuzz was detected but is not a number, skipping');
-				} else {
-					rowCount += faker.number.int({ min: -1 * definition.fuzz, max: definition.fuzz });
-				}
-			}
-			for (let i = 0; i < rowCount; i++) {
-				rows.push(await buildRow(definition.schema, name, i, faker, biasedFaker));
-			}
+		if (tableMap.has(filepath)) {
+			return tableMap.get(filepath);
 		}
 
-		const filteredRows = filter(rows, definition.filters ?? []);
+		tableMap.set(filepath, wrappingPromise);
+		try {
+			const definition = yaml.parse(content);
 
-		const output = {
-			rows: filteredRows,
-			columnTypes: buildOutputTypes(rows[0]),
-			expectedRowCount: filteredRows.length
-		};
+			/** @type {*[]} */
+			const rows = [];
 
-		res(output);
+			const r = FakerTableSchema.safeParse(definition);
 
-		return output;
-	} catch (e) {
-		rej(e);
-		throw e;
-	}
-};
+			if (!r.success) {
+				console.error(`${filepath.split(path.sep).pop()} is invalid`);
+				console.error(yaml.stringify(cleanZodErrors(r.error.format())));
+				return null;
+			}
 
+			if ('literal' in r.data) {
+				rows.push(
+					r.data.literal.map((/** @type {Object} */ r, /** @type {number} */ rIdx) => ({
+						id: rIdx,
+						...r
+					}))
+				);
+			} else {
+				let rowCount = r.data.rows;
+				if (r.data.fuzz) rowCount += faker.number.int({ min: -1 * r.data.fuzz, max: r.data.fuzz });
+
+				if ('series' in r.data) {
+					// Series
+					switch (r.data.series.type) {
+						case 'categorical':
+							break;
+						case 'numeric':
+							rows.push(...genNumericSeries(r.data.series, rowCount, faker, biasedFaker));
+					}
+				} else {
+					// Schema
+
+					// Handle foreign keys
+					const foreignKeys = Object.values(definition.schema).filter((col) => col.type === 'fk');
+					const foreignKeyTargets = foreignKeys
+						.map((col) => {
+							// TODO: Notify about this better; maybe wrap fk and fkt into reduce of entries?
+							if (!('target' in col)) {
+								console.warn(`Foreign Key ${col} is missing a target file!`);
+								return false;
+							}
+							if (typeof col.target !== 'object') {
+								console.warn(`Foreignt Key ${col} has a malformed target; must be object`);
+								return false;
+							}
+							if (!('table' in col.target)) {
+								console.warn(`Foreign Key ${col} is missing a target table!`);
+								return false;
+							}
+							col.target.tablePath = path.join(directory, col.target.table);
+							return col.target.tablePath;
+						})
+						.reduce((acc, v) => (v && !acc.includes(v) ? [...acc, v] : acc), []);
+
+					relations.set(filepath, foreignKeyTargets);
+
+					for (const fkt of foreignKeyTargets) {
+						// Check for a circular reference
+						const relation = relations.get(fkt);
+						if (relation && relation.includes(filepath)) {
+							throw new Error(
+								`Circular dependency found in foreign keys; ${filepath} -> ${fkt} -> ${filepath}`
+							);
+						}
+						// Ensure that all dependency tables are generated
+						if (!tableMap.has(fkt)) {
+							const content = await fs.readFile(fkt).then((r) => r.toString());
+							await generateTable(directory, faker, biasedFaker)(content, fkt);
+						}
+					}
+
+					for (let i = 0; i < rowCount; i++) {
+						rows.push(await buildRow(definition.schema, i, faker, biasedFaker));
+					}
+				}
+			}
+
+			const filteredRows = filter(rows, definition.filters ?? []);
+
+			const output = {
+				rows: filteredRows,
+				columnTypes: buildOutputTypes(rows),
+				expectedRowCount: filteredRows.length
+			};
+
+			res(output);
+
+			return output;
+		} catch (e) {
+			rej(e);
+			throw e;
+		}
+	};
+
+/**
+ * @param {{ [s: string]: any; } | ArrayLike<any>} obj
+ * @returns {any | ArrayLike<any>}
+ */
 function recursiveFlatten(obj) {
 	return Object.fromEntries(
 		Object.entries(obj).map(([k, v]) => {
@@ -321,6 +361,7 @@ export const getRunner = (options, directory) => {
 		locale.splice(0, 0, recursiveFlatten(options.locale));
 	}
 
+	/** @type {number | undefined} */
 	let seed = 0;
 
 	if (typeof options.seed === 'string')
@@ -330,13 +371,11 @@ export const getRunner = (options, directory) => {
 
 	const biasedFaker = new Faker({
 		randomizer: randomBiasedNumber(Math.random(), 1),
-		locale: locale,
-		seed: seed
+		locale: locale
 	});
 
 	const faker = new Faker({
-		locale: locale,
-		seed: seed
+		locale: locale
 	});
 
 	faker.seed(seed);
