@@ -1,6 +1,6 @@
 const secure = require('@lukeed/uuid/secure');
 const md5 = require('blueimp-md5');
-const { readJSONSync, writeJSONSync, pathExistsSync, moveSync } = require('fs-extra');
+const { readJSONSync, writeJSONSync, pathExistsSync, copySync } = require('fs-extra');
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
 const Analytics = require('analytics-node');
 
@@ -163,7 +163,7 @@ function loadSettings() {
  */
 function maybeMigrateProfile() {
 	if (pathExistsSync(LEGACY_PROFILES_PATH)) {
-		moveSync(LEGACY_PROFILES_PATH, PROFILES_PATH);
+		copySync(LEGACY_PROFILES_PATH, PROFILES_PATH);
 		return true;
 	} else {
 		return false;
