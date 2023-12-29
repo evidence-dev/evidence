@@ -45,7 +45,7 @@
 
 <div class="inline-flex flex-col mt-2 mb-4 mx-1">
 	{#if title}
-		<span class="text-gray-500 block">{title}</span>
+		<span class="text-gray-500 block mb-1">{title}</span>
 	{/if}
 	<div class="inline-flex" role="group">
 		{#if preset}
