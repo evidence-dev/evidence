@@ -650,25 +650,6 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Dropdown](inputs/dropdown)
-
- <div class="gallery-item-grid">
-    <div class="item-header">
-        <div class="lbl">Dropdown</div>
-    </div>
-    <div class="item-body-centered">
-    <a href="/components/inputs/dropdown">
-
-![Accordion](/img/dropdown.png)
-
-</a>
-</div>
-</div>
-
-</div>
-
-<div class="gallery-container-grid">
-
 ### [Modal](modal)
 
  <div class="gallery-item-grid">
@@ -699,6 +680,67 @@ hide_table_of_contents: false
     <a href="/components/tabs">
 
 ![Tabs](/img/tabs.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+## Input Components
+
+<div class="gallery-container-grid">
+
+### [Button Group](button-group)
+
+<div class="gallery-item-grid">
+<div class="item-header">
+<div class="lbl">Button Group</div>
+</div>
+<div class="item-body-centered">
+<a href="/components/button-group">
+
+![Button Group](/img/dropdown.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+
+
+<div class="gallery-container-grid">
+
+### [Dropdown](dropdown)
+
+<div class="gallery-item-grid">
+<div class="item-header">
+<div class="lbl">Dropdown</div>
+</div>
+<div class="item-body-centered">
+<a href="/components/dropdown">
+
+![Dropdown](/img/dropdown.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+<div class="gallery-container-grid">
+
+### [TextInput](text-input)
+
+<div class="gallery-item-grid">
+<div class="item-header">
+<div class="lbl">TextInput</div>
+</div>
+<div class="item-body-centered">
+<a href="/components/text-input">
+
+![TextInput](/img/dropdown.png)
 
 </a>
 </div>
