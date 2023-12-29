@@ -740,7 +740,7 @@ hide_table_of_contents: false
 <div class="item-body-centered">
 <a href="/components/text-input">
 
-![TextInput](/img/dropdown.png)
+![TextInput](/img/text-input.png)
 
 </a>
 </div>
