@@ -16,10 +16,10 @@
 		if (ctx.defaultValue) {
 			// Override selected value if default value set
 			ctx.setSelectedValue(ctx.defaultValue);
-			selected = (value === ctx.defaultValue);
+			selected = value === ctx.defaultValue;
 		}
 		ctx.hasBeenSet = true;
 	}
 </script>
 
-<option selected={selected}>{valueLabel}</option>
+<option {selected}>{valueLabel}</option>

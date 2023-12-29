@@ -18,7 +18,7 @@
 	export let name;
 
 	/** @type {string} */
-	export let placeholder = "Type to search";
+	export let placeholder = 'Type to search';
 
 	/** @type {string} */
 	export let defaultValue = '';
@@ -49,6 +49,6 @@
 	<input
 		bind:value
 		class="border border-gray-300 bg-white rounded-lg p-1 mt-2 px-2 pr-5 flex flex-row items-center max-w-fit bg-transparent cursor-text bg-right bg-no-repeat"
-		placeholder={placeholder}
+		{placeholder}
 	/>
 </div>
