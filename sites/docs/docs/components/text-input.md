@@ -18,6 +18,53 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 
 ## Examples
 
+## Basic Text Input
+
+<img src="/img/text-input-basic.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+/>
+````
+
+## With Title
+
+<img src="/img/text-input.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+    title="Search"
+/>
+````
+
+## With Placeholder
+
+<img src="/img/text-input-placeholder.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+    title="Freetext Search"
+    placeholder="Start typing"
+/>
+````
+
+## With Default Text Prefilled
+
+<img src="/img/text-input-default.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+    title="Default Selected"
+    defaultValue="Sporting"
+/>
+````
+
+
+
 
 ## Fuzzy Finding (Searching)
 
