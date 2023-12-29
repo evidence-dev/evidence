@@ -700,7 +700,7 @@ hide_table_of_contents: false
 <div class="item-body-centered">
 <a href="/components/button-group">
 
-![Button Group](/img/dropdown.png)
+![Button Group](/img/button-group-title.png)
 
 </a>
 </div>

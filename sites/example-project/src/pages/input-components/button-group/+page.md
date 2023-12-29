@@ -11,6 +11,17 @@ queries:
 
 {inputs.category_name}
 
+## With Title
+
+<ButtonGroup 
+    data={categories} 
+    name=category_name 
+    value=category
+    title="Select a Category"
+/>
+
+{inputs.category_name}
+
 ## Hardcoded Options
 
 <ButtonGroup name=option_name>
@@ -21,11 +32,11 @@ queries:
 
 {inputs.option_name}
 
-## Both From a Query and Hardcoded Options
 
-<ButtonGroup data={categories} name=category_name_with_extras value=category>
+## With a Default Value
+
+<ButtonGroup data={categories} name=category_name_with_extras value=category title="Select a Category">
     <ButtonGroupItem valueLabel="All Categories" value="%" />
-    <ButtonGroupItem valueLabel="Other" value="Other" />
 </ButtonGroup>
 
 {inputs.category_name_with_extras}
@@ -45,3 +56,21 @@ queries:
 </ButtonGroup>
 
 {inputs.default_value_input}
+
+## Using Alternative Labels
+
+```sql category_lookup
+select 
+    category, 
+    upper(left(category,3)) as abbrev 
+from ${categories}
+```
+
+<ButtonGroup 
+    data={category_lookup} 
+    name=alternative_labels 
+    value=category
+    label=abbrev 
+/>
+
+{inputs.alternative_labels}

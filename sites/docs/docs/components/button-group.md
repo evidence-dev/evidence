@@ -5,7 +5,10 @@ sidebar_position: 40
 
 Creates a group of single-select buttons for quick filtering
 
-To see how to filter a query using a dropdown, see [Filters](/core-concepts/filters).
+To see how to filter a query using a Button Group, see [Filters](/core-concepts/filters).
+
+<img src="/img/button-group-title.png" alt="Button Group" width="550px"/>
+
 
 ````markdown
 <ButtonGroup
@@ -19,6 +22,8 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 ### Button Group using Options from a Query
 
+<img src="/img/button-group-query-selected.png" alt="Button Group" width="550px"/>
+
 ````markdown
 <ButtonGroup
     data={query_name} 
@@ -28,6 +33,8 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 ````
 
 ### With a Title
+
+<img src="/img/button-group-title.png" alt="Button Group With Title" width="550px"/>
 
 ````markdown
 <ButtonGroup
@@ -39,6 +46,8 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 ````
 
 ### With a Default Value
+
+<img src="/img/button-group-default.png" alt="Button Group With Default Value" width="675px"/>
 
 ````markdown
 <ButtonGroup
@@ -56,6 +65,9 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 
 ### With Hardcoded Options
 
+<img src="/img/button-group-hardcoded.png" alt="Button Group Hardcoded" width="300px"/>
+
+
 ````markdown
 <ButtonGroup name=name_of_button_group>
     <ButtonGroupItem valueLabel="Option One" value="1" />
@@ -65,6 +77,8 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 ````
 
 ### Alternative Labels
+
+<img src="/img/button-group-alt-labels.png" alt="Button Group Alternative Labels" width="200px"/>
 
 ````markdown
 <ButtonGroup
@@ -113,55 +127,53 @@ where column_name like '${inputs.name_of_button_group}'
     <tr>	
         <td>preset</td>	
         <td>Preset values to use</td>	
-        <td class='tcenter'>No</td>	
+        <td class='tcenter'>-</td>	
         <td class='tcenter'>"dates"</td>	
         <td class='tcenter'>-</td>	
     </tr>
     <tr>	
         <td>data</td>	
         <td>Query name, wrapped in curly braces</td>	
-        <td class='tcenter'>No</td>	
+        <td class='tcenter'>-</td>	
         <td class='tcenter'>query name</td>	
         <td class='tcenter'>-</td>	
     </tr>
     <tr>	
         <td>value</td>	
         <td>Column name from the query containing values to pick from</td>	
-        <td class='tcenter'>No</td>	
+        <td class='tcenter'>-</td>	
         <td class='tcenter'>column name</td>	
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
         <td>label</td>	
         <td>Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)</td>	
-        <td class='tcenter'>No</td>	
+        <td class='tcenter'>-</td>	
         <td class='tcenter'>column name</td>	
         <td class='tcenter'>Uses the column in value</td>
     </tr>
     <tr>	
         <td>title</td>	
         <td>Title to display above the button group</td>	
-        <td class='tcenter'>No</td>	
+        <td class='tcenter'>-</td>	
         <td class='tcenter'>string</td>	
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
         <td>order</td>
         <td>Column to sort options by</td>
-        <td class='tcenter'>No</td>
+        <td class='tcenter'>-</td>
         <td class='tcenter'>column name</td>
         <td class='tcenter'>Uses the same order as the query in `data`</td>
     </tr>
     <tr>	
         <td>where</td>
         <td>SQL where fragment to filter options by (e.g., where sales > 40000)</td>
-        <td class='tcenter'>No</td>
+        <td class='tcenter'>-</td>
         <td class='tcenter'>SQL where clause</td>
         <td class='tcenter'>-</td>
     </tr>
 </table>
-
-<!-- TODO: @archiewood confirm prop name for value_label-->
 
 ## ButtonGroupItem
 
@@ -187,7 +199,7 @@ The ButtonGroupItem component can be used to manually add options to a button gr
     <tr>	
         <td>valueLabel</td>
         <td>Label to display for the option in the dropdown</td>
-        <td class='tcenter'>Yes</td>
+        <td class='tcenter'>-</td>
         <td class='tcenter'>string</td>
         <td class='tcenter'>Uses value</td>
     </tr>
