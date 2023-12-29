@@ -21,7 +21,11 @@
 	/** @type {string} */
 	export let name;
 
+	/** @type {string} */
+	export let defaultValue = null;
+
 	setContext('dropdown_context', {
+		defaultValue: defaultValue,
 		hasBeenSet: false,
 		setSelectedValue: (selected) => ($inputs[name] = selected)
 	});
