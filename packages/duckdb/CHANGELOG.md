@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.3
+
+### Patch Changes
+
+- deb2ab6b: Allow MotherDuck and in-memory DuckDB connections
+
 ## 1.0.2
 
 ### Patch Changes

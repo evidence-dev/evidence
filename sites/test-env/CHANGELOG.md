@@ -1,5 +1,20 @@
 # evidence-test-environment
 
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [deb2ab6b]
+- Updated dependencies [00145c4c]
+- Updated dependencies [03b3b626]
+- Updated dependencies [7b2b8a00]
+  - @evidence-dev/duckdb@1.0.3
+  - @evidence-dev/core-components@3.0.4
+  - @evidence-dev/component-utilities@2.0.2
+  - @evidence-dev/faker-datasource@2.0.1
+  - @evidence-dev/evidence@24.0.7
+  - @evidence-dev/csv@1.0.3
+
 ## 3.0.6
 
 ### Patch Changes

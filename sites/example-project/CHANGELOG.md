@@ -1,5 +1,21 @@
 # @evidence-dev/components
 
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+- Updated dependencies [deb2ab6b]
+- Updated dependencies [00145c4c]
+- Updated dependencies [03b3b626]
+- Updated dependencies [7b2b8a00]
+  - @evidence-dev/telemetry@2.0.2
+  - @evidence-dev/duckdb@1.0.3
+  - @evidence-dev/core-components@3.0.4
+  - @evidence-dev/component-utilities@2.0.2
+  - @evidence-dev/plugin-connector@2.0.4
+  - @evidence-dev/csv@1.0.3
+
 ## 3.0.6
 
 ### Patch Changes
