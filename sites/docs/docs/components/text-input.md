@@ -1,16 +1,69 @@
 ---
 title: Text Input
+sidebar_position: 40
 ---
 
 Creates a text input that can be used to filter or search
 
 To see how to filter a query using a text input, see [Filters](/core-concepts/filters).
 
+<img src="/img/text-input.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+    title="Search"
+/>
+````
+
+## Examples
+
+## Basic Text Input
+
+<img src="/img/text-input-basic.png" alt="TextInput" width="300px"/>
+
 ````markdown
 <TextInput
     name=name_of_input
 />
 ````
+
+## With Title
+
+<img src="/img/text-input.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+    title="Search"
+/>
+````
+
+## With Placeholder
+
+<img src="/img/text-input-placeholder.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+    title="Freetext Search"
+    placeholder="Start typing"
+/>
+````
+
+## With Default Text Prefilled
+
+<img src="/img/text-input-default.png" alt="TextInput" width="300px"/>
+
+````markdown
+<TextInput
+    name=name_of_input
+    title="Default Selected"
+    defaultValue="Sporting"
+/>
+````
+
+
 
 
 ## Fuzzy Finding (Searching)
@@ -50,11 +103,25 @@ LIMIT 10 -- Optionally limit to only show the 10 closest results
         <th>Options</th>	
         <th>Default</th>	
     </tr>
-        <tr>	
+    <tr>	
         <td>name</td>	
         <td>Name of the text input, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
         <td class='tcenter'>Yes</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>title</td>	
+        <td>Title displayed above the text input</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>placeholder</td>	
+        <td>Alternative placeholder text displayed in the text input</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>Type to search</td>
     </tr>
 </table>

@@ -1,37 +1,44 @@
 ---
-title: Button Group
+title: Dropdown
+sidebar_position: 40
 ---
 
-Creates a group of single-select buttons for quick filtering
+Creates a dropdown menu with a list of options that can be selected. The selected option can be used to filter queries or in markdown.
 
 To see how to filter a query using a dropdown, see [Filters](/core-concepts/filters).
 
+<img src="/img/dropdown-title.png" alt="dropdown" width="300"/>
+
 ````markdown
-<ButtonGroup
+<Dropdown
     data={query_name} 
-    name=name_of_button_group
+    name=name_of_dropdown
     value=column_name
 />
 ````
 
 ## Examples
 
-### Button Group using Options from a Query
+### Dropdown using Options from a Query
+
+<img src="/img/dropdown-notitle.png" alt="dropdown using a query" width="300"/>
 
 ````markdown
-<ButtonGroup
+<Dropdown
     data={query_name} 
-    name=name_of_button_group
+    name=name_of_dropdown
     value=column_name
 />
 ````
 
 ### With a Title
 
+<img src="/img/dropdown-title.png" alt="dropdown with title" width="300"/>
+
 ````markdown
-<ButtonGroup
+<Dropdown
     data={query_name} 
-    name=name_of_button_group
+    name=name_of_dropdown
     value=column_name
     title="Select a Category"
 />
@@ -39,36 +46,43 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 ### With a Default Value
 
+<img src="/img/dropdown-default.png" alt="dropdown with a default" width="300"/>
+
 ````markdown
-<ButtonGroup
+<Dropdown
     data={query_name} 
-    name=name_of_button_group
+    name=name_of_dropdown
     value=column_name
     title="Select a Category"
 >
-    <ButtonGroupItem valueLabel="All Categories" value="%" />
-</ButtonGroup>
+    <DropdownOption valueLabel="All Categories" value="%" />
+</Dropdown>
 ````
 
-Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_button_group}'` to return all values.
+Note that "%" is a wildcard character in SQL that can be used with `where column_name like '${inputs.name_of_dropdown}'` to return all values.
 
 
 ### With Hardcoded Options
 
+<img src="/img/dropdown-custom-options.png" alt="dropdown with hardcoded values" width="240"/>
+
 ````markdown
-<ButtonGroup name=name_of_button_group>
-    <ButtonGroupItem valueLabel="Option One" value="1" />
-    <ButtonGroupItem valueLabel="Option Two" value="2" />
-    <ButtonGroupItem valueLabel="Option Three" value="3" />
-</ButtonGroup>
+<Dropdown name=name_of_dropdown>
+    <DropdownOption valueLabel="Option One" value="1" />
+    <DropdownOption valueLabel="Option Two" value="2" />
+    <DropdownOption valueLabel="Option Three" value="3" />
+</Dropdown>
 ````
 
 ### Alternative Labels
 
+<img src="/img/dropdown-alternative-label.png" alt="dropdown with alternative labels" width="300"/>
+
+
 ````markdown
-<ButtonGroup
+<Dropdown
     data={query_name} 
-    name=name_of_button_group
+    name=name_of_dropdown
     value=column_name
     label=column_name_containg_label
 />
@@ -77,20 +91,20 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 ### Filtering a Query
 
 ````markdown
-<ButtonGroup
+<Dropdown
     data={query_name} 
-    name=name_of_button_group
+    name=name_of_dropdown
     value=column_name
 />
 
 ```sql filtered_query
 select *
 from source_name.table
-where column_name like '${inputs.name_of_button_group}'
+where column_name like '${inputs.name_of_dropdown}'
 ```
 ````
 
-## ButtonGroup
+## Dropdown
 
 ### Options
 
@@ -104,17 +118,10 @@ where column_name like '${inputs.name_of_button_group}'
     </tr>
         <tr>	
         <td>name</td>	
-        <td>Name of the button group, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
+        <td>Name of the dropdown, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
         <td class='tcenter'>Yes</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>preset</td>	
-        <td>Preset values to use</td>	
-        <td class='tcenter'>No</td>	
-        <td class='tcenter'>"dates"</td>	
-        <td class='tcenter'>-</td>	
     </tr>
     <tr>	
         <td>data</td>	
@@ -131,6 +138,13 @@ where column_name like '${inputs.name_of_button_group}'
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
+        <td>defaultValue</td>
+        <td>Value to use when the dropdown is first loaded. Must be one of the options in the dropdown.</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>First value in dropdown</td>
+    </tr>
+    <tr>	
         <td>label</td>	
         <td>Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)</td>	
         <td class='tcenter'>No</td>	
@@ -139,7 +153,7 @@ where column_name like '${inputs.name_of_button_group}'
     </tr>
     <tr>	
         <td>title</td>	
-        <td>Title to display above the button group</td>	
+        <td>Title to display above the dropdown</td>	
         <td class='tcenter'>No</td>	
         <td class='tcenter'>string</td>	
         <td class='tcenter'>-</td>
@@ -160,11 +174,9 @@ where column_name like '${inputs.name_of_button_group}'
     </tr>
 </table>
 
-<!-- TODO: @archiewood confirm prop name for value_label-->
+## DropdownOption
 
-## ButtonGroupItem
-
-The ButtonGroupItem component can be used to manually add options to a button group. This is useful if you want to add a default option, or if you want to add options that are not in a query.
+The DropdownOption component can be used to manually add options to a dropdown. This is useful to add a default option, or to add options that are not in a query.
 
 ### Options
 
