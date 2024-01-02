@@ -22,4 +22,4 @@
 	}
 </script>
 
-<option value={value} {selected}>{valueLabel}</option>
+<option {value} {selected}>{valueLabel}</option>
