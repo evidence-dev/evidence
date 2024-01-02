@@ -138,6 +138,13 @@ where column_name like '${inputs.name_of_dropdown}'
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
+        <td>defaultValue</td>
+        <td>Value to use when the dropdown is first loaded. Must be one of the options in the dropdown.</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>First value in dropdown</td>
+    </tr>
+    <tr>	
         <td>label</td>	
         <td>Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)</td>	
         <td class='tcenter'>No</td>	
@@ -167,11 +174,9 @@ where column_name like '${inputs.name_of_dropdown}'
     </tr>
 </table>
 
-<!-- TODO: @archiewood confirm prop name for value_label-->
-
 ## DropdownOption
 
-The DropdownOption component can be used to manually add options to a dropdown. This is useful if you want to add a default option, or if you want to add options that are not in a query.
+The DropdownOption component can be used to manually add options to a dropdown. This is useful to add a default option, or to add options that are not in a query.
 
 ### Options
 
