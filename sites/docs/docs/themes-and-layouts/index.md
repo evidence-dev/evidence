@@ -43,7 +43,7 @@ Default styles
 
 <img src="https://images.unsplash.com/photo-1533282960533-51328aa49826" alt="Cityscape" class="w-1/2 mx-auto mb-3" />
 
-Rounded corners, grayscale, fixed height
+Rounded corners, grayscale, fixed width
 
 <img src="https://images.unsplash.com/photo-1533282960533-51328aa49826" alt="Cityscape" class="rounded-xl grayscale w-64" />
 ```
