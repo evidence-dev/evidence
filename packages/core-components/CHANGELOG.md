@@ -1,5 +1,15 @@
 # @evidence-dev/core-components
 
+## 3.0.4
+
+### Patch Changes
+
+- 00145c4c: Add default prop to Dropdown, Add default and placeholder prop to TextInput
+- 03b3b626: Added TextInput and ButtonGroup (+ DateAgg) input components
+- 7b2b8a00: Add USQL to core components; augment faker datasource to generate better and consistent data
+- Updated dependencies [03b3b626]
+  - @evidence-dev/component-utilities@2.0.2
+
 ## 3.0.3
 
 ### Patch Changes

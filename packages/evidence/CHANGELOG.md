@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 24.0.7
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+- Updated dependencies [00145c4c]
+- Updated dependencies [03b3b626]
+- Updated dependencies [7b2b8a00]
+  - @evidence-dev/telemetry@2.0.2
+  - @evidence-dev/core-components@3.0.4
+  - @evidence-dev/component-utilities@2.0.2
+  - @evidence-dev/db-orchestrator@3.0.4
+  - @evidence-dev/plugin-connector@2.0.4
+
 ## 24.0.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.0.2
+
+### Patch Changes
+
+- 03b3b626: Added TextInput and ButtonGroup (+ DateAgg) input components
+
 ## 2.0.1
 
 ### Patch Changes
