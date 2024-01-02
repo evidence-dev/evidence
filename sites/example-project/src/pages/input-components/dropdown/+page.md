@@ -16,9 +16,17 @@ select 2021 as year
 
 <Dropdown data={categories} name=category value=category/>
 
-<Dropdown data={years} name=year value=year/>
+<Dropdown data={years} name=year value=year order=year/>
 
 {inputs.category} {inputs.year}
+
+```sql orders
+select category, order_datetime, sales from orders
+where category = '${inputs.category}'
+and date_part('year', order_datetime) = '${inputs.year}'
+```
+
+<DataTable data={orders} />
 
 ## Hardcoded
 
@@ -41,7 +49,12 @@ select 2021 as year
 {inputs.default_option}
 
 
-<Dropdown name=default_category data={categories} value=category defaultValue="Cursed Sporting Goods"/>
+<Dropdown 
+    name=default_category 
+    data={categories} 
+    value=category 
+    defaultValue="Cursed Sporting Goods"
+/>
 
 {inputs.default_category}
 
@@ -56,12 +69,5 @@ select 2021 as year
 
 {inputs.default_not_an_option}
 
-<!-- TODO: Fix this which breaks when you pass input into a query
 
-```sql orders
-select * from orders
-where category = '${inputs.category}'
-and date_part('year', order_datetime) = '${inputs.year}'
-```
 
--->
