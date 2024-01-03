@@ -1,7 +1,7 @@
 <script>
 	import { browser } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Abc, Calendar, _123 } from '@steeze-ui/tabler-icons';
+	import { Abc, Calendar, _123, CircleHalf2 } from '@steeze-ui/tabler-icons';
 	export let data;
 	let { __db: db } = data;
 
@@ -59,6 +59,8 @@
 										<Icon src={_123} class="text-gray-600 w-5 h-5" />
 									{:else if column.data_type === 'DATE' || column.data_type === 'DATETIME' || column.data_type === 'TIMESTAMP'}
 										<Icon src={Calendar} class="text-gray-600 w-5 h-5" />
+									{:else if column.data_type === 'BOOLEAN'}
+										<Icon src={CircleHalf2} class="text-gray-600 w-5 h-5" />
 									{:else}
 										<Icon src={Abc} class="text-gray-600 w-5 h-5" />
 									{/if}
