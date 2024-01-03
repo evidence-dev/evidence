@@ -1,5 +1,63 @@
 # @evidence-dev/csv
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [deb2ab6b]
+  - @evidence-dev/duckdb@1.0.3
+
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/db-commons@1.0.1
+  - @evidence-dev/duckdb@1.0.2
+
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/duckdb@1.0.1
+
+## 1.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Minor Changes
+
+- 3b49d3b6: Update csv adapter to function as db plugin
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+- c4822852: Support for streaming results
+- 08b1907f: Ensure ":memory:" is passed as db to duckdb connector
+- 781d2677: exhaust testconnection streams, improve type inference, add trino/databricks adapters
+- 20127231: Bump all versions so version pinning works
+- 29c149d6: added stricter types to db adapters
+- Updated dependencies [e23691d0]
+- Updated dependencies [af4a8a1e]
+- Updated dependencies [cb0fc468]
+- Updated dependencies [bf4a112a]
+- Updated dependencies [cd57ba69]
+- Updated dependencies [c4822852]
+- Updated dependencies [781d2677]
+- Updated dependencies [96e96568]
+- Updated dependencies [20127231]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/duckdb@1.0.0
+  - @evidence-dev/db-commons@0.2.1
+
 ## 1.0.0-usql.11
 
 ### Patch Changes

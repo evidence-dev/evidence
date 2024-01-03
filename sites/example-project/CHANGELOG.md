@@ -1,5 +1,281 @@
 # @evidence-dev/components
 
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+- Updated dependencies [deb2ab6b]
+- Updated dependencies [00145c4c]
+- Updated dependencies [03b3b626]
+- Updated dependencies [7b2b8a00]
+  - @evidence-dev/telemetry@2.0.2
+  - @evidence-dev/duckdb@1.0.3
+  - @evidence-dev/core-components@3.0.4
+  - @evidence-dev/component-utilities@2.0.2
+  - @evidence-dev/plugin-connector@2.0.4
+  - @evidence-dev/csv@1.0.3
+
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies [c09bd981]
+  - @evidence-dev/plugin-connector@2.0.3
+  - @evidence-dev/telemetry@2.0.1
+  - @evidence-dev/core-components@3.0.3
+
+## 3.0.5
+
+### Patch Changes
+
+- Updated dependencies [913f5919]
+- Updated dependencies [913f5919]
+  - @evidence-dev/universal-sql@2.0.1
+  - @evidence-dev/component-utilities@2.0.1
+  - @evidence-dev/plugin-connector@2.0.2
+  - @evidence-dev/query-store@2.0.1
+  - @evidence-dev/core-components@3.0.3
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@3.0.2
+
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@3.0.1
+
+## 3.0.2
+
+### Patch Changes
+
+- @evidence-dev/bigquery@2.0.1
+- @evidence-dev/csv@1.0.2
+- @evidence-dev/duckdb@1.0.2
+- @evidence-dev/mssql@1.0.1
+- @evidence-dev/mysql@1.0.1
+- @evidence-dev/plugin-connector@2.0.1
+- @evidence-dev/postgres@1.0.1
+- @evidence-dev/snowflake@1.0.1
+- @evidence-dev/sqlite@2.0.1
+- @evidence-dev/core-components@3.0.0
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/duckdb@1.0.1
+  - @evidence-dev/csv@1.0.1
+
+## 3.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [689d9e2e]
+- Updated dependencies [4ac6a688]
+- Updated dependencies [5d280997]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [391282e5]
+- Updated dependencies [5be92c14]
+- Updated dependencies [9ff614d2]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [59938e50]
+- Updated dependencies [aa34d0b3]
+- Updated dependencies [f304fc1e]
+- Updated dependencies [e23691d0]
+- Updated dependencies [e6f550f3]
+- Updated dependencies [b7d02a29]
+- Updated dependencies [840d1195]
+- Updated dependencies [b25a95d7]
+- Updated dependencies [6064fbbf]
+- Updated dependencies [5247996b]
+- Updated dependencies [fd74bd3c]
+- Updated dependencies [6b7a132d]
+- Updated dependencies [da6ba2eb]
+- Updated dependencies [77d09b54]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [91034294]
+- Updated dependencies [71f0d481]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [1fbf70d9]
+- Updated dependencies [a192deb2]
+- Updated dependencies [377abb4a]
+- Updated dependencies [e134351d]
+- Updated dependencies [af4a8a1e]
+- Updated dependencies [9132146b]
+- Updated dependencies [239a18d7]
+- Updated dependencies [d79a3014]
+- Updated dependencies [7c4249c0]
+- Updated dependencies [0ba78b67]
+- Updated dependencies [e1174aa1]
+- Updated dependencies [6eb93816]
+- Updated dependencies [2aaef5fb]
+- Updated dependencies [1235f278]
+- Updated dependencies [9603c4e7]
+- Updated dependencies [cb74406a]
+- Updated dependencies [7c44653b]
+- Updated dependencies [b5592a3f]
+- Updated dependencies [9bd1cd29]
+- Updated dependencies [130950d7]
+- Updated dependencies [b6683ba0]
+- Updated dependencies [b4de6d55]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [d1265559]
+- Updated dependencies [cfb0f248]
+- Updated dependencies [44d3c797]
+- Updated dependencies [120d22e9]
+- Updated dependencies [0a60b724]
+- Updated dependencies [1320795a]
+- Updated dependencies [cb0fc468]
+- Updated dependencies [77d09b54]
+- Updated dependencies [be6cd88a]
+- Updated dependencies [bf4a112a]
+- Updated dependencies [17a82581]
+- Updated dependencies [e7781efd]
+- Updated dependencies [cff22ece]
+- Updated dependencies [7c8a9f9d]
+- Updated dependencies [ef3a66dc]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [e1facffd]
+- Updated dependencies [3708374d]
+- Updated dependencies [69126c94]
+- Updated dependencies [f38b8920]
+- Updated dependencies [df9737fc]
+- Updated dependencies [489a6069]
+- Updated dependencies [741885bf]
+- Updated dependencies [88e1a5ee]
+- Updated dependencies [e2162851]
+- Updated dependencies [d7477a44]
+- Updated dependencies [5928e45d]
+- Updated dependencies [2d85508a]
+- Updated dependencies [ca7337ba]
+- Updated dependencies [5828c375]
+- Updated dependencies [aea3be1a]
+- Updated dependencies [1ed3fe07]
+- Updated dependencies [bdf8e08a]
+- Updated dependencies [3b49d3b6]
+- Updated dependencies [8f5d4ba8]
+- Updated dependencies [cd57ba69]
+- Updated dependencies [9da3812e]
+- Updated dependencies [bbcd070e]
+- Updated dependencies [64ab3074]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [c4822852]
+- Updated dependencies [8ffbb361]
+- Updated dependencies [f5b06ca4]
+- Updated dependencies [078fca3b]
+- Updated dependencies [52e114cc]
+- Updated dependencies [9e7ba37d]
+- Updated dependencies [6fdfec28]
+- Updated dependencies [e173ca9d]
+- Updated dependencies [1097e5a9]
+- Updated dependencies [08b1907f]
+- Updated dependencies [fe466b13]
+- Updated dependencies [4d5735a2]
+- Updated dependencies [ca1f90b3]
+- Updated dependencies [f764cba4]
+- Updated dependencies [6fbde887]
+- Updated dependencies [afbb50fc]
+- Updated dependencies [781d2677]
+- Updated dependencies [cad09993]
+- Updated dependencies [60619a90]
+- Updated dependencies [4a75c077]
+- Updated dependencies [a20cd1e0]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [ca4c3b00]
+- Updated dependencies [982a17c6]
+- Updated dependencies [583cea9e]
+- Updated dependencies [16a17086]
+- Updated dependencies [15248699]
+- Updated dependencies [e70a6a3e]
+- Updated dependencies [96e96568]
+- Updated dependencies [ef2a9106]
+- Updated dependencies [130950d7]
+- Updated dependencies [4053c976]
+- Updated dependencies [043a302a]
+- Updated dependencies [26ad2d2c]
+- Updated dependencies [1c478a62]
+- Updated dependencies [df9737fc]
+- Updated dependencies [7d298d28]
+- Updated dependencies [f62bd26e]
+- Updated dependencies [75fa47a3]
+- Updated dependencies [52d81ce2]
+- Updated dependencies [64921385]
+- Updated dependencies [6505351f]
+- Updated dependencies [4b6262d8]
+- Updated dependencies [b1427173]
+- Updated dependencies [e6091323]
+- Updated dependencies [16a17086]
+- Updated dependencies [2d2f774e]
+- Updated dependencies [dbc69a59]
+- Updated dependencies [d1ab5e62]
+- Updated dependencies [4c6eae53]
+- Updated dependencies [20127231]
+- Updated dependencies [78a8be8b]
+- Updated dependencies [e9a63c71]
+- Updated dependencies [64d1405b]
+- Updated dependencies [9b1ac9b7]
+- Updated dependencies [cff22ece]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [df7a8c5a]
+- Updated dependencies [7a5225be]
+- Updated dependencies [c8968ea3]
+- Updated dependencies [120d22e9]
+- Updated dependencies [ba0d6f50]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [2371c8f1]
+- Updated dependencies [29c149d6]
+  - @evidence-dev/core-components@2.0.0
+  - @evidence-dev/component-utilities@2.0.0
+  - @evidence-dev/plugin-connector@2.0.0
+  - @evidence-dev/query-store@2.0.0
+  - @evidence-dev/bigquery@2.0.0
+  - @evidence-dev/universal-sql@2.0.0
+  - @evidence-dev/duckdb@1.0.0
+  - @evidence-dev/mysql@1.0.0
+  - @evidence-dev/postgres@1.0.0
+  - @evidence-dev/csv@1.0.0
+  - @evidence-dev/mssql@1.0.0
+  - @evidence-dev/snowflake@1.0.0
+  - @evidence-dev/sqlite@2.0.0
+  - @evidence-dev/telemetry@1.0.7
+
+## 3.0.0-usql.63
+
+### Patch Changes
+
+- Updated dependencies [9ff614d2]
+- Updated dependencies [6fbde887]
+  - @evidence-dev/bigquery@2.0.0-usql.7
+  - @evidence-dev/plugin-connector@2.0.0-usql.43
+  - @evidence-dev/core-components@2.0.0-usql.46
+
+## 3.0.0-usql.62
+
+### Patch Changes
+
+- Updated dependencies [a20cd1e0]
+  - @evidence-dev/plugin-connector@2.0.0-usql.42
+  - @evidence-dev/core-components@2.0.0-usql.46
+
 ## 3.0.0-usql.61
 
 ### Patch Changes

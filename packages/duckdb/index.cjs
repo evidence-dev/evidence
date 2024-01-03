@@ -125,7 +125,24 @@ function duckdbDescribeToEvidenceType(describe) {
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
-	const filename = database ? database.filename : getEnv(envMap, 'filename') ?? ':memory:';
+	let filename;
+
+	if (database && database.filename) {
+		if (database.filename.startsWith('md:?motherduck_token=') || database.filename === ':memory:') {
+			// MotherDuck or in-memory database
+			filename = database.filename;
+		} else {
+			// Local database stored in source directory
+			filename = path.join(database.directory, database.filename);
+		}
+	} else {
+		// Check the filenames from environment variables
+		filename =
+			getEnv(envMap, 'filename') ??
+			// Default to in-memory db
+			':memory:';
+	}
+
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
 
 	try {
@@ -185,17 +202,16 @@ module.exports.getRunner = async (opts, directory) => {
 	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-sql files
 		if (!queryPath.endsWith('.sql')) return null;
-		return runQuery(
-			queryContent,
-			{ ...opts, filename: path.join(directory, opts.filename) },
-			batchSize
-		);
+		return runQuery(queryContent, { ...opts, directory: directory }, batchSize);
 	};
 };
 
 /** @type {import("@evidence-dev/db-commons").ConnectionTester<DuckDBOptions>} */
 module.exports.testConnection = async (opts, directory) => {
-	const r = await runQuery('SELECT 1;', { ...opts, filename: path.join(directory, opts.filename) })
+	const r = await runQuery('SELECT 1;', {
+		...opts,
+		directory: directory
+	})
 		.then(exhaustStream)
 		.then(() => true)
 		.catch((e) => {

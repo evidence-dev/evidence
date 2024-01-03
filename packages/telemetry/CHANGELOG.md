@@ -1,5 +1,23 @@
 # @evidence-dev/telemetry
 
+## 2.0.2
+
+### Patch Changes
+
+- 92f4ad61: Remove unnecessary file missing message that appears during build sources due to telemetry"
+
+## 2.0.1
+
+### Patch Changes
+
+- c09bd981: Telemetry parity with USQL
+
+## 2.0.0
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+
 ## 1.0.7-usql.0
 
 ### Patch Changes

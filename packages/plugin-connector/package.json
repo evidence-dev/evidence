@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/plugin-connector",
-	"version": "2.0.0-usql.41",
+	"version": "2.0.4",
 	"description": "",
 	"type": "module",
 	"bin": "./dist/debugger/cli.js",
@@ -19,6 +19,7 @@
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
+		"@evidence-dev/telemetry": "workspace:*",
 		"@types/estree": "^1.0.1",
 		"@types/lodash.debounce": "^4.0.9",
 		"@types/lodash.merge": "^4.6.8",
@@ -36,7 +37,7 @@
 		"zod": "^3.21.4"
 	},
 	"devDependencies": {
-		"@evidence-dev/component-utilities": "workspace:2.0.0-usql.32",
+		"@evidence-dev/component-utilities": "workspace:*",
 		"@parcel/core": "^2.8.3",
 		"@parcel/packager-ts": "^2.8.3",
 		"@parcel/transformer-inline-string": "^2.8.3",

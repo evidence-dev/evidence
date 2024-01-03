@@ -1,0 +1,30 @@
+rows: 1000
+schema:
+  id:
+    type: id
+  user_name:
+    category: internet
+    item: userName
+  full_name:
+    category: person
+    item: fullName
+  email:
+    category: internet
+    item: email
+  created_at:
+    category: date
+    item: recent
+    options:
+      - days: 365
+  gender:
+    category: helpers
+    item: arrayElement
+    withBias: true
+    options:
+      - Male
+      - Male
+      - Male
+      - Female
+      - Female
+      - Female
+      - Other

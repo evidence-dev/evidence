@@ -1,5 +1,87 @@
 # @evidence-dev/component-utilities
 
+## 2.0.2
+
+### Patch Changes
+
+- 03b3b626: Added TextInput and ButtonGroup (+ DateAgg) input components
+
+## 2.0.1
+
+### Patch Changes
+
+- 913f5919: getCompletedData handles dates properly now
+  - @evidence-dev/query-store@2.0.1
+
+## 2.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Minor Changes
+
+- 1097e5a9: add client ddb-backed dropdown component
+
+### Patch Changes
+
+- 4ac6a688: Add support for toasts without a timeout
+- 5d280997: LocalStorageStores now flush values on update properly
+- 391282e5: QueryStore now uses a factory pattern to enforce caching
+- b25a95d7: Misc fixes
+- 71f0d481: Change default value for showing QueryViewers to include browser
+- 9132146b: fix vite hard refreshes, fix dropdown flickering on ssr, fix null columns
+- 7c4249c0: fix falsy dates in `convertColumnToDate`
+- e1174aa1: added profile function to note load and query times
+- 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
+- 130950d7: revamp toast notifications
+- bf4a112a: Update package.json to use new datasource field
+- 17a82581: standardize date objects in `standardizeDateString`
+- ef4155ee: echarts now replaces options rather than merging
+- 489a6069: Make echarts animation time forced to be 500ms
+- 88e1a5ee: Toasts can now be dismissable
+- 64ab3074: Add USQL Context wrappers to component utilities
+- 078fca3b: Error handling via QueryStores is more effective now
+- 52e114cc: move date standardization
+- 9e7ba37d: Remove usql context; proper approach is to use page store now. Context is not reactive; and would require a store which is the behavior already present in \$app/stores.page
+- fe466b13: Added a localStorage backed store
+- ca1f90b3: Improved Logging
+- 982a17c6: Properly mute profiled functions when not in debug mode
+- 583cea9e: Properly retrieve column types from QueryStores
+- 4053c976: Fix custom formatting sometimes breaking when undefined
+- 6505351f: Misc Fixes
+- 20127231: Bump all versions so version pinning works
+- e9a63c71: Add loading states to DataTable and Chart
+- 64d1405b: Loading state is now respected by Value and BigValue
+- 0e3eec13: Updated Toast notifications with more types and default options
+- 0e3eec13: Re-export steeze-ui icons from component utilities for easier access
+- Updated dependencies [391282e5]
+- Updated dependencies [840d1195]
+- Updated dependencies [6064fbbf]
+- Updated dependencies [6eb93816]
+- Updated dependencies [9bd1cd29]
+- Updated dependencies [120d22e9]
+- Updated dependencies [bf4a112a]
+- Updated dependencies [e1facffd]
+- Updated dependencies [f38b8920]
+- Updated dependencies [e2162851]
+- Updated dependencies [078fca3b]
+- Updated dependencies [f764cba4]
+- Updated dependencies [583cea9e]
+- Updated dependencies [130950d7]
+- Updated dependencies [043a302a]
+- Updated dependencies [16a17086]
+- Updated dependencies [4c6eae53]
+- Updated dependencies [64d1405b]
+- Updated dependencies [7a5225be]
+- Updated dependencies [ba0d6f50]
+  - @evidence-dev/query-store@2.0.0
+
 ## 2.0.0-usql.32
 
 ### Patch Changes
