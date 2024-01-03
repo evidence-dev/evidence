@@ -139,7 +139,7 @@ module.exports.testConnection = async (opts) => {
 module.exports.options = {
 	token: {
 		title: 'Personal Access Token',
-		type: 'text',
+		type: 'string',
 		required: true,
 		secret: true
 	},
