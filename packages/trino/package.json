@@ -12,5 +12,10 @@
 		"@evidence-dev/db-commons": "workspace:*",
 		"presto-client": "^0.13.0"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"datasources": [
+			"trino"
+		]
+	}
 }
