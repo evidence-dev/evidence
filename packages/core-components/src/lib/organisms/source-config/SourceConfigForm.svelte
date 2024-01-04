@@ -71,7 +71,6 @@
 				case '?/updateSource':
 					// TODO: Where would configurationError come from?
 					Object.assign(source, result?.data?.updatedSource);
-					source = source;
 					configurationLoading = false;
 					configurationOkay = true;
 					dispatch('sourceUpdated', source);

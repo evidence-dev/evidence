@@ -32,7 +32,6 @@
 			options: {}
 		});
 		lastAdded = newSourceName;
-		sources = sources;
 		showNewSource = false;
 	}
 
