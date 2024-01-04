@@ -1101,6 +1101,9 @@ importers:
       '@evidence-dev/csv':
         specifier: workspace:*
         version: link:../../packages/csv
+      '@evidence-dev/databricks':
+        specifier: workspace:*
+        version: link:../../packages/databricks
       '@evidence-dev/duckdb':
         specifier: workspace:*
         version: link:../../packages/duckdb
@@ -1128,6 +1131,9 @@ importers:
       '@evidence-dev/telemetry':
         specifier: workspace:*
         version: link:../../packages/telemetry
+      '@evidence-dev/trino':
+        specifier: workspace:*
+        version: link:../../packages/trino
       '@evidence-dev/universal-sql':
         specifier: workspace:*
         version: link:../../packages/universal-sql
