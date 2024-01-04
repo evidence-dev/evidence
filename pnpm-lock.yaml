@@ -1134,6 +1134,15 @@ importers:
       '@fontsource/spectral':
         specifier: ^5.0.3
         version: 5.0.8
+      '@steeze-ui/simple-icons':
+        specifier: ^1.5.0
+        version: 1.5.0(svelte@3.55.0)
+      '@steeze-ui/svelte-icon':
+        specifier: ^1.4.1
+        version: 1.5.0(svelte@3.55.0)
+      '@steeze-ui/tabler-icons':
+        specifier: ^2.1.0
+        version: 2.1.1
       '@sveltejs/kit':
         specifier: 1.22.3
         version: 1.22.3(svelte@3.55.0)(vite@4.3.9)
@@ -8125,6 +8134,14 @@ packages:
 
   /@sqltools/formatter@1.2.5:
     resolution: {integrity: sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==}
+    dev: false
+
+  /@steeze-ui/simple-icons@1.5.0(svelte@3.55.0):
+    resolution: {integrity: sha512-B/lxdcopBPsd4QnbuFuR1/20jHX03e/Kelv88IdCN4rpX8pVshBVJmnhj4ASWmitpkbVjlih4Tx6yBQ4l+djHA==}
+    peerDependencies:
+      svelte: ^3.54.0
+    dependencies:
+      svelte: 3.55.0
     dev: false
 
   /@steeze-ui/simple-icons@1.6.0:
