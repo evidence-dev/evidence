@@ -20,8 +20,6 @@
 					`SELECT * FROM information_schema.columns WHERE table_name = '${t.table_name}' AND table_schema = '${t.table_schema}'`
 				);
 
-				const sourceName = `${t.table_schema}.${t.table_name}`;
-
 				if (!metadatas[t.table_schema]) {
 					metadatas[t.table_schema] = {};
 				}
