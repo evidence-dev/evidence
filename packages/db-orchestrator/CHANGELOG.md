@@ -1,5 +1,15 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+- Updated dependencies [deb2ab6b]
+  - @evidence-dev/telemetry@2.0.2
+  - @evidence-dev/duckdb@1.0.3
+  - @evidence-dev/csv@1.0.3
+
 ## 3.0.3
 
 ### Patch Changes

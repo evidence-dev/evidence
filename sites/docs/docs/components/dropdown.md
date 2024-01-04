@@ -1,13 +1,13 @@
 ---
 title: Dropdown
-sidebar_position: 31
+sidebar_position: 40
 ---
 
 Creates a dropdown menu with a list of options that can be selected. The selected option can be used to filter queries or in markdown.
 
 To see how to filter a query using a dropdown, see [Filters](/core-concepts/filters).
 
-<img src="/img/dropdown-title.png" alt="dropdown" width="400"/>
+<img src="/img/dropdown-title.png" alt="dropdown" width="300"/>
 
 ````markdown
 <Dropdown
@@ -21,7 +21,7 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 ### Dropdown using Options from a Query
 
-<img src="/img/dropdown-notitle.png" alt="dropdown using a query" width="400"/>
+<img src="/img/dropdown-notitle.png" alt="dropdown using a query" width="300"/>
 
 ````markdown
 <Dropdown
@@ -33,7 +33,7 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 ### With a Title
 
-<img src="/img/dropdown-title.png" alt="dropdown with title" width="400"/>
+<img src="/img/dropdown-title.png" alt="dropdown with title" width="300"/>
 
 ````markdown
 <Dropdown
@@ -46,7 +46,7 @@ To see how to filter a query using a dropdown, see [Filters](/core-concepts/filt
 
 ### With a Default Value
 
-<img src="/img/dropdown-default.png" alt="dropdown with a default" width="400"/>
+<img src="/img/dropdown-default.png" alt="dropdown with a default" width="300"/>
 
 ````markdown
 <Dropdown
@@ -64,7 +64,7 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 
 ### With Hardcoded Options
 
-<img src="/img/dropdown-custom-options.png" alt="dropdown with hardcoded values" width="400"/>
+<img src="/img/dropdown-custom-options.png" alt="dropdown with hardcoded values" width="240"/>
 
 ````markdown
 <Dropdown name=name_of_dropdown>
@@ -76,7 +76,7 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 
 ### Alternative Labels
 
-<img src="/img/dropdown-alternative-label.png" alt="dropdown with alternative labels" width="400"/>
+<img src="/img/dropdown-alternative-label.png" alt="dropdown with alternative labels" width="300"/>
 
 
 ````markdown
@@ -138,6 +138,13 @@ where column_name like '${inputs.name_of_dropdown}'
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
+        <td>defaultValue</td>
+        <td>Value to use when the dropdown is first loaded. Must be one of the options in the dropdown.</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>First value in dropdown</td>
+    </tr>
+    <tr>	
         <td>label</td>	
         <td>Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)</td>	
         <td class='tcenter'>No</td>	
@@ -167,11 +174,9 @@ where column_name like '${inputs.name_of_dropdown}'
     </tr>
 </table>
 
-<!-- TODO: @archiewood confirm prop name for value_label-->
-
 ## DropdownOption
 
-The DropdownOption component can be used to manually add options to a dropdown. This is useful if you want to add a default option, or if you want to add options that are not in a query.
+The DropdownOption component can be used to manually add options to a dropdown. This is useful to add a default option, or to add options that are not in a query.
 
 ### Options
 

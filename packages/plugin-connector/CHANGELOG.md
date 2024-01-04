@@ -1,5 +1,12 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+  - @evidence-dev/telemetry@2.0.2
+
 ## 2.0.3
 
 ### Patch Changes
