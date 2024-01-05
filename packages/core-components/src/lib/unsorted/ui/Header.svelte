@@ -4,8 +4,9 @@
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Settings, _3dCubeSphere, Link, X, Menu2, Dots, Table } from '@steeze-ui/tabler-icons';
+	import { Settings, _3dCubeSphere, Link, X, Menu2, Dots, Table, Code, CodeOff, Printer} from '@steeze-ui/tabler-icons';
 	import Logo from './Logo.svelte';
+	import { bind } from 'svelte/internal';
 
 	const beforeprint = new Event('export-beforeprint');
 	const afterprint = new Event('export-afterprint');
@@ -42,7 +43,20 @@
 			{/if}
 		</button>
 		<div class="flex gap-6 text-sm items-center">
-			<div class="relative">
+			<div class="relative flex flex-row">
+				<!-- Hide SQL Button -->
+				<Menu class="outline-none flex mx-2">
+					<label class="relative inline-flex items-center cursor-pointer" title="{$showQueries ? 'Hide ' : 'Show '}Queries">
+						<input type="checkbox" checked={$showQueries} class="sr-only peer" on:change={() => {showQueries.update((val) => !val);}}/>
+						<div 
+							class="flex flex-row-reverse items-center place-items-end w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full  
+							after:content-[''] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600">
+							<!-- <Icon src={CodeOff} class="absolute top-[3px] left-1 h-3.5 w-3.5 text-white block peer peer-checked:hidden" /> -->
+							<Icon src={Code} class="h-3.5 w-3.5 text-gray-700 mr-1" /> 
+						</div>
+					</label>
+				</Menu>
+
 				<Menu class="outline-none">
 					<MenuButton class="outline-none rounded-md focus:bg-gray-50 hover:bg-gray-100 px-1 py-1">
 						<Icon src={Dots} class="w-6 h-6" />
@@ -56,7 +70,10 @@
 									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
 									class:active
 								>
-									Print PDF
+									<div class="flex items-center justify-between">
+										<span>Print PDF</span>
+										<Icon src={Printer} class="text-gray-300 h-4 w-4" />
+									</div>
 								</div>
 							</MenuItem>
 
@@ -70,9 +87,30 @@
 									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
 									class:active
 								>
-									{$showQueries ? 'Hide ' : 'Show '} Queries
+									<div class="flex items-center justify-between">
+										<span> {$showQueries ? 'Hide ' : 'Show '} Queries </span>
+										{#if $showQueries}
+											<Icon src={CodeOff} class="text-gray-300 h-4 w-4" />
+										{:else}
+											<Icon src={Code} class="text-gray-300 h-4 w-4" />
+										{/if}
+									</div>
 								</div>
 							</MenuItem>
+							<MenuItem let:active>
+								<a
+									href="/explore/schema"
+									target="_self"
+									class:active
+									class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
+								>
+									<div class="flex items-center justify-between">
+										<span> Schema Explorer </span>
+										<Icon src={Table} class="text-gray-300 h-4 w-4" />
+									</div>
+								</a>
+							</MenuItem>
+
 							{#if dev}
 								<hr class="my-1" />
 								<MenuItem let:active>
@@ -97,20 +135,6 @@
 										<div class="flex items-center justify-between">
 											<span> Deploy </span>
 											<Icon src={_3dCubeSphere} class="text-gray-300 h-4 w-4" />
-										</div>
-									</a>
-								</MenuItem>
-								<!-- TODO: Hide this when built -->
-								<MenuItem let:active>
-									<a
-										href="/explore/schema"
-										target="_self"
-										class:active
-										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
-									>
-										<div class="flex items-center justify-between">
-											<span> Schema Explorer </span>
-											<Icon src={Table} class="text-gray-300 h-4 w-4" />
 										</div>
 									</a>
 								</MenuItem>
