@@ -48,11 +48,12 @@
 				<Menu class="outline-none flex mx-2">
 					<label class="relative inline-flex items-center cursor-pointer" title="{$showQueries ? 'Hide ' : 'Show '}Queries">
 						<input type="checkbox" checked={$showQueries} class="sr-only peer" on:change={() => {showQueries.update((val) => !val);}}/>
+						<div class="mx-1 font-mono text-gray-400 peer peer-checked:text-blue-600 pt-[1px]">SQL</div>
 						<div 
 							class="flex flex-row-reverse items-center place-items-end w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full  
 							after:content-[''] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-600">
 							<!-- <Icon src={CodeOff} class="absolute top-[3px] left-1 h-3.5 w-3.5 text-white block peer peer-checked:hidden" /> -->
-							<Icon src={Code} class="h-3.5 w-3.5 text-gray-700 mr-1" /> 
+							<Icon src={Code} class="h-0 w-3.5 text-gray-700 mr-1" /> 
 						</div>
 					</label>
 				</Menu>
