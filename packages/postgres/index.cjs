@@ -368,6 +368,7 @@ module.exports.options = {
 						'allow',
 						'prefer',
 						'require',
+						'no-verify',
 						{ value: 'verify-ca', label: 'Verify CA' },
 						{ value: 'verify-full', label: 'Verify Full' }
 					]
