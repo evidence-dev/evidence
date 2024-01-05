@@ -73,7 +73,6 @@
 
 		options[fieldValueKey] = fieldValue;
 
-		options = options;
 		mostRecentChildren = spec?.children?.[fieldValue] ?? {};
 	}
 
