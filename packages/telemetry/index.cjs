@@ -1,8 +1,11 @@
 const secure = require('@lukeed/uuid/secure');
 const md5 = require('blueimp-md5');
-const { readJSONSync, writeJSONSync, pathExistsSync } = require('fs-extra');
+const { readJSONSync, writeJSONSync, pathExistsSync, copySync } = require('fs-extra');
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
 const Analytics = require('analytics-node');
+
+const PROFILES_PATH = '../customization/.profile.json';
+const LEGACY_PROFILES_PATH = './.profile.json';
 
 /**
  * @typedef {'usageStatsDisabled' |
@@ -15,7 +18,6 @@ const Analytics = require('analytics-node');
  * 			 'cache-query'
  * 			} TelemetryEventName
  */
-
 const initializeProfile = async () => {
 	const projectProfile = {
 		anonymousId: secure.v4(),
@@ -23,7 +25,7 @@ const initializeProfile = async () => {
 			projectCreated: new Date()
 		}
 	};
-	writeJSONSync('./.profile.json', projectProfile);
+	writeJSONSync(PROFILES_PATH, projectProfile);
 
 	const analytics = new Analytics(wK);
 	analytics.identify(projectProfile);
@@ -32,11 +34,12 @@ const initializeProfile = async () => {
 };
 
 const getProfile = async () => {
-	if (!pathExistsSync('./.profile.json')) {
+	if (!pathExistsSync(PROFILES_PATH) && !maybeMigrateProfile()) {
 		const profile = await initializeProfile();
 		return profile;
 	} else {
-		let profile = readJSONSync('./.profile.json');
+		let profile = readJSONSync(PROFILES_PATH);
+
 		if (profile.anonymousId === 'b958769d-6b88-43f3-978a-b970a146ffd2') {
 			// This anon ID was incorrectly committed to the template project, replace with a fresh ID going forward
 			profile = await initializeProfile();
@@ -152,6 +155,19 @@ function loadSettings() {
 		//do nothing
 	}
 	return settings;
+}
+
+/**
+ * Checks for existance of legacy profile and then moves it to the new location
+ * @returns {boolean} true if profile was migrated
+ */
+function maybeMigrateProfile() {
+	if (pathExistsSync(LEGACY_PROFILES_PATH)) {
+		copySync(LEGACY_PROFILES_PATH, PROFILES_PATH);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 module.exports = {
