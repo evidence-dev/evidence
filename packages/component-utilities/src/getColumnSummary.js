@@ -1,58 +1,51 @@
 import getColumnEvidenceType from './getColumnEvidenceType.js';
-import { getColumnExtentsLegacy, getColumnUnitSummary } from './getColumnExtents.js';
-import { lookupColumnFormat } from './formatting';
+import { getColumnUnitSummary } from './getColumnExtents.js';
+import { lookupColumnFormat } from './formatting.js';
 import formatTitle from './formatTitle.js';
 
+/**
+ * @typedef {Object} ColumnSummary
+ * @property {string} title
+ * @property {string} type
+ * @property {Object} evidenceColumnType
+ * @property {ReturnType<typeof lookupColumnFormat>} format
+ * @property {ReturnType<typeof getColumnUnitSummary>} columnUnitSummary
+ */
+
+/**
+ * @function
+ * @template T
+ * @param {Record<string, unknown>[]} data
+ * @param {T} returnType
+ * @returns {T extends 'object' ? Record<string, ColumnSummary> : (ColumnSummary & { id: string })[]}
+ */
 export default function getColumnSummary(data, returnType = 'object') {
-	var colName;
-	var colType;
-	var evidenceColumnType;
-	var colFormat;
-	let columnUnitSummary;
-	let columnSummary = [];
+	/** @type {Record<string, ColumnSummary>} */
+	const columnSummary = {};
 
-	var colExtentsLegacy;
+	for (const colName of Object.keys(data[0])) {
+		const evidenceColumnType = getColumnEvidenceType(data, colName);
+		const type = evidenceColumnType.evidenceType;
+		const columnUnitSummary =
+			evidenceColumnType.evidenceType === 'number'
+				? getColumnUnitSummary(data, colName)
+				: {
+						maxDecimals: 0,
+						unitType: evidenceColumnType.evidenceType
+				  };
+		const format = lookupColumnFormat(colName, evidenceColumnType, columnUnitSummary);
 
-	if (returnType === 'object') {
-		for (const [key] of Object.entries(data[0])) {
-			colName = key;
-			evidenceColumnType = getColumnEvidenceType(data, colName);
-			colType = evidenceColumnType.evidenceType;
-			columnUnitSummary = getColumnUnitSummary(data, colName);
-			colFormat = lookupColumnFormat(key, evidenceColumnType, columnUnitSummary);
-			colExtentsLegacy = getColumnExtentsLegacy(data, colName);
+		columnSummary[colName] = {
+			title: formatTitle(colName, format),
+			type,
+			evidenceColumnType,
+			format,
+			columnUnitSummary
+		};
+	}
 
-			let thisCol = {
-				[colName]: {
-					title: formatTitle(colName, colFormat),
-					type: colType,
-					evidenceColumnType: evidenceColumnType,
-					format: colFormat,
-					columnUnitSummary: columnUnitSummary,
-					extentsLegacy: colExtentsLegacy
-				}
-			};
-			columnSummary = { ...columnSummary, ...thisCol };
-		}
-	} else {
-		for (const [key] of Object.entries(data[0])) {
-			colName = key;
-			evidenceColumnType = getColumnEvidenceType(data, colName);
-			colType = evidenceColumnType.evidenceType;
-			columnUnitSummary = getColumnUnitSummary(data, colName);
-			colFormat = lookupColumnFormat(key, evidenceColumnType, columnUnitSummary);
-			colExtentsLegacy = getColumnExtentsLegacy(data, colName);
-
-			columnSummary.push({
-				id: colName,
-				title: formatTitle(colName, colFormat),
-				type: colType,
-				evidenceColumnType: evidenceColumnType,
-				format: colFormat,
-				columnUnitSummary: columnUnitSummary,
-				extentsLegacy: colExtentsLegacy
-			});
-		}
+	if (returnType !== 'object') {
+		return Object.entries(columnSummary).map(([key, value]) => ({ id: key, ...value }));
 	}
 
 	return columnSummary;

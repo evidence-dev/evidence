@@ -1,5 +1,5 @@
 ---
-sources:
+queries:
   - orders_by_item: orders_by_item.sql
 ---
 
@@ -12,7 +12,7 @@ The most recent monthly sales of {$page.params.item}s was {fmt(orders_by_item.fi
 <LineChart data={orders_by_item.filter(d => d.item?.toLowerCase() === $page.params.item?.toLowerCase())} x=month y=sales_usd0k/>
 
 ```sql orders
-select * from orders
+select * from needful_things.orders
 ```
 
 {orders.length}

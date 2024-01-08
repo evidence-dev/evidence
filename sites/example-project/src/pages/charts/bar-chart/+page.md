@@ -1,6 +1,6 @@
 ---
 title: Bar Chart
-sources:
+queries:
   - orders_by_category: orders_by_category.sql
   - orders_by_category_2021: orders_by_category_2021.sql
   - orders_by_item: orders_by_item.sql
@@ -174,4 +174,17 @@ swapXY=true
     series=category
     type=grouped
     yLog=true
+/>
+
+## Very Long Bar
+
+```characters_ep_total
+SELECT * FROM csv.characters_ep_total
+```
+
+<BarChart 
+    data={characters_ep_total} 
+    x=character_name 
+    y={['best_of_episodes','non_best_of_episodes']}
+    swapXY=true
 />

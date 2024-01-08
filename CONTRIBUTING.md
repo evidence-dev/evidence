@@ -54,6 +54,7 @@ Any subsequent changes you make will be reflected on the website.
 
 1. In the project root folder, run `pnpm install` (install pnpm if you don't have it `npm i -g pnpm`)
 1. Run `pnpm run dev:core-components`
+1. **In another terminal**, run `cd sites/example-project && npm run sources`
 1. **In another terminal**, run `pnpm run dev:example-project`
 
 ### Running the Test Suite locally.

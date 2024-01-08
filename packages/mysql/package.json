@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/mysql",
-	"version": "0.3.1",
+	"version": "1.0.1",
 	"description": "MySQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -9,11 +9,17 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:^",
+		"@evidence-dev/db-commons": "workspace:*",
 		"mysql2": "^2.3.2"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"datasources": [
+			"mysql"
+		],
+		"icon": "Mysql"
+	}
 }

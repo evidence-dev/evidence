@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ChevronRight } from '@steeze-ui/heroicons';
+	import { ChevronRight } from '@steeze-ui/tabler-icons';
 	export let fileTree;
 
 	$: pathArray = $page.url.pathname.split('/').slice(1);
@@ -56,7 +56,7 @@
 </script>
 
 <div class="flex items-start mt-8 sm:mt-12 whitespace-nowrap overflow-auto">
-	<div class="inline-flex items-center text-sm capitalize gap-1 text-gray-500 mb-2 sm:mb-4 ">
+	<div class="inline-flex items-center text-sm capitalize gap-1 text-gray-500 mb-2 sm:mb-4">
 		{#each crumbs as crumb, i}
 			{#if i > 0}
 				<Icon src={ChevronRight} size="12px" theme="solid" />

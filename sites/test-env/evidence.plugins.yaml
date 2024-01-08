@@ -1,2 +1,10 @@
 components:
-  @evidence-dev/core-components: {}
+    @evidence-dev/core-components: { }
+datasources:
+    @evidence-dev/duckdb: { }
+    @evidence-dev/faker-datasource: { }
+    @evidence-dev/csv: { }
+    @evidence-dev/postgres: { }
+    @evidence-dev/sqlite: { }
+    @evidence-dev/connector-gsheets: { }
+    @evidence-dev/snowflake: { }

@@ -1,9 +1,11 @@
+import { QueryStore } from '@evidence-dev/query-store';
+
 export default function checkInputs(data, reqCols, optCols) {
 	// reqCols is an array of columns to check in the dataset
 	let columns = [];
 
 	// Check if dataset was provided
-	if (data == undefined) {
+	if (data === undefined) {
 		throw Error('No dataset provided');
 	} else if (typeof data !== 'object') {
 		throw Error(
@@ -14,7 +16,7 @@ export default function checkInputs(data, reqCols, optCols) {
 				data.replace('data.', '') +
 				'}'
 		);
-	} else if (data[0] == undefined) {
+	} else if (data[0] === undefined || data.length === 0) {
 		throw Error(
 			'Dataset is empty: query ran successfully, but no data was returned from the database'
 		);
@@ -49,9 +51,17 @@ export default function checkInputs(data, reqCols, optCols) {
 		//     throw Error(errorString);
 		// }
 
+		// const dataIsQueryStore = data instanceof QueryStore;
+
 		// Get list of all columns in dataset
-		for (const [key] of Object.entries(data[0])) {
-			columns.push(key);
+		if (data.__isQueryStore || data instanceof QueryStore) {
+			for (const col of data.columns) {
+				columns.push(col.name);
+			}
+		} else {
+			for (const key of Object.keys(data[0])) {
+				columns.push(key);
+			}
 		}
 
 		// Check if provided columns are in the dataset

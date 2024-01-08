@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/csv",
-	"version": "0.1.7",
+	"version": "1.0.3",
 	"description": "CSV driver for Evidence projects, based on DuckDB driver",
 	"main": "index.cjs",
 	"author": "Sean Hughes",
@@ -9,11 +9,16 @@
 		"test": "uvu test test.js"
 	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:^",
-		"@evidence-dev/duckdb": "workspace:^"
+		"@evidence-dev/db-commons": "workspace:*",
+		"@evidence-dev/duckdb": "workspace:*"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"datasources": [
+			"csv"
+		]
+	}
 }

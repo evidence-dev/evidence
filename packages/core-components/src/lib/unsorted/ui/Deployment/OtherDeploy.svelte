@@ -1,7 +1,5 @@
 <script>
-	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
-	export let settings;
 </script>
 
 <h2>Deploying your Project</h2>
@@ -10,11 +8,7 @@
 <ol>
 	<li>
 		Running <code>npm run build</code> will build a static site in the <code>/build</code> directory
-		using the credentials in the database connections panel, which you can host in a variety of environments
-	</li>
-	<li>
-		You can share your database credentials with your production environment by setting the
-		environment variables listed below
+		using the credentials in the datasource connections panel, which you can host in a variety of environments
 	</li>
 </ol>
 
@@ -22,7 +16,7 @@
 
 <div class="setting-row">
 	<span class="setting">Build command</span>
-	<div class="setting-value"><VariableCopy text={'npm run build'} /></div>
+	<div class="setting-value"><VariableCopy text={'npm run sources && npm run build'} /></div>
 </div>
 
 <div class="setting-row">
@@ -30,19 +24,7 @@
 	<div class="setting-value"><VariableCopy text={'build/'} /></div>
 </div>
 
-<div class="separator">Environment Variables</div>
-<p>
-	The following environment variables must be present in your deployment environment to enable your
-	database connection
-</p>
-
-{#if !settings.credentials}
-	<p>Your project does not have a database connection.</p>
-{:else}
-	<EnvironmentVarListing {settings} />
-{/if}
-
-<style>
+<style lang="postcss">
 	h2 {
 		@apply font-semibold text-lg pt-3 pb-2;
 	}

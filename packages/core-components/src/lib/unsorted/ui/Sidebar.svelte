@@ -81,7 +81,7 @@
 						Home
 					</a>
 					{#each firstLevelFiles as file}
-						{#if file.children.length === 0}
+						{#if file.children.length === 0 && file.href}
 							<a
 								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
 								href={file.href}
@@ -144,7 +144,7 @@
 					Home
 				</a>
 				{#each firstLevelFiles as file}
-					{#if file.children.length === 0}
+					{#if file.children.length === 0 && file.href}
 						<a
 							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100"
 							href={file.href}
@@ -160,7 +160,7 @@
 					<div class="flex flex-col pb-6">
 						{#if file.href}
 							<a
-								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize hover:underline "
+								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize hover:underline"
 								href={file.href}
 							>
 								{file.label}

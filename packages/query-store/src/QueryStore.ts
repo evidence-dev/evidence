@@ -1,0 +1,624 @@
+import { AbstractStore } from './abstract.store.js';
+import type {
+	AggFunction,
+	ColumnMetadata,
+	MaybePromise,
+	QueryResult,
+	QueryStoreOpts,
+	QueryStoreValue,
+	Runner
+} from './types.js';
+
+import { Query, sql, count } from '@uwdata/mosaic-sql';
+import { buildId } from './utils/buildId.js';
+import { handleMaybePromise } from './utils/handleMaybePromise.js';
+import { mutations } from './mutations/index.js';
+import {
+	evidenceColumnsToScore,
+	duckdbTypeToEvidenceType
+	// @ts-expect-error ts can't find the types
+} from '@evidence-dev/universal-sql/calculate-score';
+
+export class QueryStore extends AbstractStore<QueryStoreValue> {
+	/** Indicate that QueryStore is readable like an array */
+	[index: number]: QueryResult;
+
+	/** Internal Query Builder */
+	readonly #query = new Query();
+
+	/** Currently Held Values */
+	#values: QueryResult[] = [];
+
+	value = () => this.#proxied;
+
+	/** Query Execution Function */
+	readonly #exec: Runner;
+
+	/** Duck Type */
+	readonly __isQueryStore = true;
+	static isQueryStore(q: unknown): q is QueryStore {
+		if (typeof q === 'object' && q && '__isQueryStore' in q && q.__isQueryStore === true)
+			return true;
+		return false;
+	}
+
+	private static readonly debug = Boolean(
+		typeof window === 'undefined'
+			? process.env.VITE_EVIDENCE_DEBUG
+			: // @ts-expect-error
+			  import.meta?.env?.VITE_EVIDENCE_DEBUG
+	);
+
+	/**
+	 * A Proxy wrapper around the QueryStore instance.
+	 * It is used to intercept access to numeric indices and the 'length' property.
+	 * This Proxy is responsible for triggering data fetching.
+	 * When any numeric index or the 'length' property is accessed, the Proxy command triggers
+	 * either the #update() or the #updateLength() function to asynchronously load or update data.
+	 * Hence, only through this Proxy (i.e., #proxied), can the data fetching and length update
+	 * process be triggered. Accessing the QueryStore directly does not trigger these functionalities,
+	 * and hence is not recommended for normal use.
+	 */
+	readonly #proxied: QueryStoreValue;
+	get proxy() {
+		return this.#proxied;
+	}
+
+	/** Text of the query represented by this store */
+	get text() {
+		// TODO: This needs a formatter
+		return this.#query.toString();
+	}
+
+	#originalQuery: string | QueryStore | Query;
+
+	get originalText() {
+		if (this.#originalQuery instanceof Query) {
+			return this.#originalQuery.toString();
+		}
+		if (this.#originalQuery instanceof QueryStore) {
+			return this.#originalQuery.text;
+		}
+		return this.#originalQuery;
+	}
+
+	/**
+	 * Name and Type information about the result columns
+	 * Note: results._evidenceColumnTypes takes priority
+	 */
+	#columns: ColumnMetadata[] = [];
+
+	get _evidenceColumnTypes(): ColumnMetadata[] {
+		//@ts-expect-error This implicitly is set on the return value of #exec
+		return Array.from(this.#values._evidenceColumnTypes ?? this.#columns ?? []);
+	}
+
+	get columns(): ColumnMetadata[] {
+		//@ts-expect-error This implicitly is set on the return value of #exec
+		return Array.from(this.#values._evidenceColumnTypes ?? this.#columns ?? []);
+	}
+
+	/** Has #fetchData been executed? */
+	get loaded() {
+		return this.#dataLoaded && this.#metaLoaded && this.#lengthLoaded;
+	}
+	/** Is #fetchData currently running? */
+	get loading() {
+		return this.#lengthLoading || this.#dataLoading || this.#metaLoading;
+	}
+
+	/** Has #fetchLength been executed? */
+	#lengthLoaded = false;
+	get lengthLoaded() {
+		return this.#lengthLoaded;
+	}
+	/** Is #fetchLength currently running? */
+	#lengthLoading = false;
+	get lengthLoading() {
+		return this.#lengthLoading;
+	}
+
+	/** Has #fetchData been executed? */
+	#dataLoaded = false;
+	get dataLoaded() {
+		return this.#dataLoaded;
+	}
+	/** Is #fetchData currently running? */
+	#dataLoading = false;
+	get dataLoading() {
+		return this.#dataLoading;
+	}
+
+	/** Has #fetchMetadata been executed? */
+	#metaLoaded = false;
+	get metaLoaded() {
+		return this.#metaLoaded;
+	}
+	/** Is #fetchMetadataq currently running? */
+	#metaLoading = false;
+	get metaLoading() {
+		return this.#metaLoading;
+	}
+
+	#length?: number;
+	get length(): number {
+		return this.#length ?? 0;
+	}
+
+	#score?: number;
+	get score(): number {
+		return this.#score ?? 0;
+	}
+
+	/**
+	 * Svelte bases iteration on the `length` property; so that has to exist before it will try to pass a number
+	 * However, we don't want to load everything if `length` is accessed - only the data itself.
+	 * Therefore, there is a tick when the array is full of undefined, because we are still fetching.
+	 * In that time period, we return this empty object so we don't get `cannot access x of undefined` errors.
+	 * This may break in instances where the user may have nested arrays / dicts
+	 */
+	#mockResult: QueryResult = {};
+
+	readonly id: string;
+	readonly hash: string;
+
+	#error: Error | unknown;
+
+	#setError = (e: Error | unknown): void => {
+		if (QueryStore.debug)
+			console.debug(
+				`QueryStore ${this.id.substring(0, 6)} | QueryStore encountered a non-fatal error`,
+				e instanceof Error ? e?.message ?? e : e
+			);
+
+		this.#error = e;
+
+		if (e) {
+			// This needs some testing; might cause a race, but we want to prevent the query from loading anything at this point.
+			this.#length = 0;
+			this.#lengthLoaded = false;
+			this.#lengthLoading = false;
+		}
+
+		if (this.opts.errorNotifier) this.opts.errorNotifier(this.error!);
+
+		this.publish();
+	};
+
+	get error() {
+		if (this.#error !== undefined) {
+			if (this.#error instanceof Error) return this.#error;
+			return new Error('Query encountered an error', { cause: this.#error });
+		}
+		return undefined;
+	}
+
+	static create(
+		query: string | Query,
+		exec: Runner,
+		id?: string,
+		opts: QueryStoreOpts = { disableCache: false },
+		root?: QueryStore
+	): QueryStore {
+		const hash = buildId(query);
+		if (!id) {
+			id = hash;
+		}
+		if (!opts.disableCache) {
+			const cached = QueryStore.cache.get(hash);
+			if (cached) return cached;
+		}
+		const v = new QueryStore(query, exec, id, opts, root);
+		QueryStore.cache.set(hash, v);
+		return v;
+	}
+
+	private constructor(
+		query: string | Query,
+		exec: Runner,
+		id?: string,
+		private readonly opts: QueryStoreOpts = { disableCache: false },
+		private readonly root?: QueryStore
+	) {
+		super();
+		Object.freeze(opts);
+		// Ensure an ID Exists
+		this.hash = buildId(query);
+		this.id = id ?? this.hash;
+
+		// TODO: Strip any trailing ; from queries
+		// This is hard because of comments
+		// We might want to just error out if the querystring contains a ; for simplicity
+
+		this.#originalQuery = query;
+		if (typeof query === 'string') {
+			this.#query.from({ __userQuery: sql`(${query})` }).select('*');
+		} else this.#query = query;
+		this.#exec = (...args: Parameters<Runner>) => exec(args[0], args[1]);
+
+		this.#proxied = new Proxy<QueryStore & QueryResult[]>(
+			this as unknown as QueryStore & QueryResult[],
+			{
+				get: (self, _prop) => {
+					// Intercept numeric indices. This implies we're trying to access rows (data) in the store.
+					// If the data has not been loaded, initiate the async #update method to fetch the data.
+					let prop: string | symbol | number = _prop;
+					if (typeof prop === 'string' && /^[\d.]+$/.exec(prop)) prop = parseInt(prop);
+					if (typeof prop === 'number') {
+						if (!self.#dataLoaded) {
+							try {
+								const r = self.#fetchData();
+								if (r instanceof Promise)
+									r.catch((e) => {
+										throw new Error('Failed to update query store', { cause: e });
+									});
+							} catch (e) {
+								throw new Error('Failed to update query store', { cause: e });
+							}
+						}
+
+						if (!self.#values[prop]) return self.#mockResult;
+						return self.#values[prop];
+					}
+					if (prop === 'at') {
+						// at is a special case, because it should behave like Store[number]
+						if (!self.#dataLoaded) {
+							try {
+								const r = self.#fetchData();
+								if (r instanceof Promise)
+									r.catch((e) => {
+										throw new Error('Failed to update query store', { cause: e });
+									});
+							} catch (e) {
+								throw new Error('Failed to update query store', { cause: e });
+							}
+						}
+						return (i: number) => {
+							if (this.#dataLoaded) {
+								return this.#values.at(i);
+							} else {
+								return this.#values.at(i) ?? this.#mockResult; // We are still mocking
+							}
+						};
+					}
+
+					// Intercept 'length' property. This implies we're trying to get the total number of rows (data) in the store.
+					// If the length has not been correctly updated, initiate the async #updateLength method to calculate it.
+					else if (prop === 'length' && !self.#lengthLoaded) {
+						try {
+							const r = self.#fetchLength();
+							if (r instanceof Promise)
+								r.catch((e) => {
+									throw new Error('Failed to update query store length', { cause: e });
+								});
+						} catch (e) {
+							throw new Error('Failed to update query store length', { cause: e });
+						}
+					}
+
+					if (prop in self) {
+						// @ts-expect-error Typescript gets mad about this for some reason
+						if (typeof self[prop] === 'function') return self[prop].bind(self);
+						// @ts-expect-error Typescript gets mad about this for some reason
+						return self[prop];
+					}
+
+					// TODO: Should we handle things that mutate the data like pop, push, etc
+
+					// @ts-expect-error Typescript gets mad about accessing non-numeric keys of an array dynamically (e.g. pop, push)
+					if (typeof self.#values[prop] === 'function') {
+						// @ts-expect-error Typescript gets mad about accessing non-numeric keys of an array dynamically (e.g. pop, push)
+						return self.#values[prop].bind(self.#values);
+					}
+					// @ts-expect-error Typescript gets mad about accessing non-numeric keys of an array dynamically (e.g. pop, push)
+					return self.#values[prop];
+				}
+			}
+		);
+
+		if (opts.noResolve) {
+			this.#dataLoading = true;
+			this.#metaLoading = true;
+			this.#lengthLoading = true;
+			this.#dataLoaded = false;
+			this.#metaLoaded = false;
+			this.#lengthLoaded = false;
+			this.publish();
+		} else {
+			handleMaybePromise(
+				(alreadyFetchedMeta) => {
+					if (!alreadyFetchedMeta) this.#fetchMetadata();
+				},
+				() => this.#handleInitialData(),
+				this.#setError
+			);
+
+			// prerender
+			if (typeof window === 'undefined' && !this.loaded) this.#fetchData();
+		}
+	}
+
+	#handleInitialData = () => {
+		const { initialData, initialDataDirty, initialError } = this.opts;
+		if (initialError) {
+			this.#error = initialError;
+			return false;
+		}
+
+		// Maintain loading state while we wait
+		if (initialData && !this.#values.length) {
+			this.#dataLoading = true;
+			this.#lengthLoading = true;
+			this.#metaLoading = true;
+			this.#length = 0;
+			this.publish();
+			return handleMaybePromise(
+				(results) => {
+					if (!results.length) {
+						// if initial data is 0 length; then we should ignore it and go ahead with a fetch
+						this.#lengthLoading = false;
+						this.#dataLoading = false;
+						this.#metaLoading = false;
+						// Don't publish these changes! They should be internal only
+
+						this.#fetchData();
+						return false;
+					}
+					this.#values = results;
+					this.#length = results.length;
+					// @ts-expect-error
+					this.#columns = this.#values._evidenceColumnTypes;
+
+					this.#dataLoading = false;
+					this.#lengthLoading = false;
+					this.#metaLoading = false;
+
+					this.#dataLoaded = !initialDataDirty;
+					this.#lengthLoaded = !initialDataDirty;
+					this.#metaLoaded = !initialDataDirty;
+
+					this.#mockResult = Object.fromEntries(
+						this._evidenceColumnTypes.map((c) => [c.name, null])
+					);
+
+					this.#calculateScore();
+					this.#warnHighScore();
+					this.publish();
+					if (initialDataDirty) {
+						this.#fetchData();
+						return false;
+					}
+					return true;
+				},
+				() => initialData,
+				(e) => {
+					this.#setError(e);
+					return false;
+				}
+			);
+		} else {
+			return false;
+		}
+	};
+
+	/** Force the QueryStore to fetch data */
+	fetch = () => this.#fetchData();
+
+	/** Keep a copy of the promise so we can wait for loading in multiple places */
+	#dataFetchPromise: MaybePromise<unknown | void>;
+
+	#fetchData = () => {
+		if (this.#dataLoading || this.#dataLoaded) {
+			return this.#dataFetchPromise;
+		}
+		if (this.#error) {
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute data query; store has an error state.`
+				);
+			return this.#dataFetchPromise;
+		}
+		this.#dataLoading = true;
+		this.publish();
+
+		const queryWithComment = `--data\n${this.#query.toString()}`;
+
+		this.#dataFetchPromise = handleMaybePromise<QueryResult[], unknown>(
+			(result) => {
+				this.#values = result;
+				this.#dataLoading = false;
+				this.#dataLoaded = true;
+				return this.#fetchLength();
+			},
+			() => this.#exec(queryWithComment, this.id),
+			this.#setError
+		);
+
+		return this.#dataFetchPromise;
+	};
+
+	#fetchLength = () => {
+		if (this.#lengthLoading || this.#lengthLoaded) {
+			return;
+		}
+		if (this.#error) {
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute length query; store has an error state.`
+				);
+			return;
+		}
+
+		// No need to run the length query if we already have the values available
+		if (!this.#values.length && this.#dataLoaded) {
+			this.#length = this.#values.length;
+			this.#lengthLoaded = true;
+			this.#calculateScore();
+			this.#warnHighScore();
+			this.publish();
+			return;
+		}
+
+		this.#lengthLoading = true;
+		this.publish();
+
+		const countQuery = new Query()
+			.with({ original: this.#query })
+			.select({ length: count('*') })
+			.from('original');
+		const queryWithComment = `--len\n${countQuery}`;
+
+		return handleMaybePromise<QueryResult[], unknown>(
+			(result) => {
+				const [row] = result;
+
+				this.#length = row.length as number;
+				this.#lengthLoaded = true;
+				this.#lengthLoading = false;
+
+				this.#calculateScore();
+				this.#warnHighScore();
+				this.publish();
+			},
+			() => this.#exec(queryWithComment, `${this.id}_length`),
+			this.#setError
+		);
+	};
+
+	#fetchMetadata = () => {
+		if (this.#error) {
+			if (QueryStore.debug)
+				console.debug(
+					`QueryStore ${this.id.substring(
+						0,
+						6
+					)} | Refusing to execute metadata query; store has an error state.`
+				);
+			return;
+		}
+
+		if (this.#metaLoaded) return;
+		this.#metaLoading = true;
+		this.publish();
+
+		return handleMaybePromise(
+			(queryResult: QueryResult[]) => {
+				this.#columns = queryResult.map((c) => ({
+					name: c.column_name as string,
+					evidenceType: duckdbTypeToEvidenceType(c.column_type),
+					typeFidelity: 'precise'
+				}));
+				this.#mockResult = Object.fromEntries(this._evidenceColumnTypes.map((c) => [c.name, null]));
+
+				if (this._evidenceColumnTypes.length > 0) {
+					this.#metaLoading = false;
+					this.#metaLoaded = true;
+					this.#calculateScore();
+					this.#warnHighScore();
+				}
+				this.publish();
+			},
+			() => this.#exec(`--col-metadata\nDESCRIBE ${this.#query.toString()}`, `${this.id}_metadata`),
+			this.#setError
+		);
+	};
+
+	#calculateScore = () => {
+		const column_score = evidenceColumnsToScore(this._evidenceColumnTypes);
+		this.#score = column_score * this.length;
+	};
+
+	#warnHighScore = () => {
+		if (!this.opts.scoreNotifier) return;
+		if (this.score < 10 * 1024 * 1024) return;
+
+		this.opts.scoreNotifier({ id: this.id, query: this.#query.toString(), score: this.score });
+	};
+
+	/////////
+	// Builder Methods
+	/////////
+
+	/**
+	 * Shared cache of existing QueryStores to reduce the number of stores initialized
+	 */
+	private static cache: Map<string, QueryStore> = new Map();
+
+	static emptyCache() {
+		QueryStore.cache.clear();
+	}
+
+	/**
+	 * Array of child ids that the store is currently subscribed to.
+	 * @todo: need to clean up subscriptions if/when stores are gc'd
+	 */
+	#subscriptions: string[] = [];
+
+	/**
+	 * Wraps an derivation function with memoization provided by {@link QueryStore.cache}
+	 */
+	#withStoreCache = (aggKey: string, aggFunc: AggFunction, passCurrentAsInitial = false) => {
+		return (...args: unknown[]) => {
+			// Build a unique ID for the target child store
+			const newQuery = aggFunc(this.#query.clone(), ...args);
+
+			const hash = buildId(newQuery.toString());
+
+			// If there is a root; subscription operations will function against that
+			// If there isn't; then this is a root
+			const subscriber = this.root ?? this;
+
+			// If caching is enabled and the id exists in the cache
+			if (!this.opts.disableCache && QueryStore.cache.has(hash)) {
+				// Use the cache
+				const cachedQuery = QueryStore.cache.get(hash);
+				if (!cachedQuery) throw new Error('Error getting query from cache. This should not occur.');
+
+				if (!subscriber.#subscriptions.includes(hash)) {
+					cachedQuery.subscribe(subscriber.publish);
+					subscriber.#subscriptions.push(hash);
+				}
+
+				return cachedQuery.#proxied;
+			}
+			// Construct a new store, subscribe and cache it
+			const newStore = new QueryStore(
+				newQuery,
+				this.#exec,
+				hash,
+				{
+					...this.opts,
+					initialData: passCurrentAsInitial ? this.#values : undefined,
+					initialDataDirty: true
+				},
+				this.root ?? this
+			);
+
+			subscriber.#subscriptions.push(hash);
+			newStore.subscribe(subscriber.publish);
+			QueryStore.cache.set(hash, newStore);
+			return newStore.#proxied;
+		};
+	};
+
+	where = this.#withStoreCache('where', mutations.where.fn, mutations.where.currentAsInitial);
+	groupBy = this.#withStoreCache(
+		'groupBy',
+		mutations.groupBy.fn,
+		mutations.groupBy.currentAsInitial
+	);
+	agg = this.#withStoreCache('agg', mutations.agg.fn, mutations.agg.currentAsInitial);
+	orderBy = this.#withStoreCache(
+		'orderBy',
+		mutations.orderBy.fn,
+		mutations.orderBy.currentAsInitial
+	);
+	limit = this.#withStoreCache('limit', mutations.limit.fn, mutations.limit.currentAsInitial);
+	offset = this.#withStoreCache('offset', mutations.offset.fn, mutations.offset.currentAsInitial);
+}
