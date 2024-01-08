@@ -92,7 +92,7 @@ This migration command covers most situations, but there may be edge cases where
 3. Open the command palette (`Cmd`/`Ctrl` + `Shift` + `P`)
 4. Type `Evidence: Migrate Project to USQL` and select that command
 5. Follow the prompts in VS Code. You will be asked to provide a name for your data source. This will appear as a folder within the `sources` directory in your project (e.g., you could use `needful_things` if using the Evidence demo database)
-6. When the command has finished running, you will have a migrated project
+6. The command should run quickly - no more than a few minutes. If it's taking longer, try cancelling and starting again or [reach out on Slack in the #migration channel for assistance](https://slack.evidence.dev). When the command has finished running, you will have a migrated project. 
 7. Click `Start Evidence` to run the server, or use the commands below:
     ```shell
     npm install
@@ -178,6 +178,17 @@ The easiest way to migrate your project is to create a project using the latest 
 13. The page should now be working. If you still see errors, they may be related to query chaining or SQL syntax. See the Special Situations section below for information which may help. If you need assistance tracking down the issues, please [reach out on Slack](https://slack.evidence.dev) in the `#migration` channel
 
 ## Deployment Changes
+
+### Evidence Cloud
+1. Copy environment variables for your project from your local dev environment (Settings page > Deployment)
+    ![env vars](/img/settings-vars.png)
+
+2. Update the environment variables for your Evidence Cloud project by pasting the environment variables from Step 1
+    ![cloud vars](/img/cloud-settings-edit.png)
+
+3. Notify us that you are changing your project to USQL by sending an email to support@evidence.dev or [messaging us on Slack](https://slack.evidence.dev)
+4. Click to redeploy your project
+
 
 ### Self-Hosting
 You will need to update 2 things in your deployment setup to complete the migration to USQL:
