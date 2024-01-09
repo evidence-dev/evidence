@@ -48,13 +48,16 @@
 		"svelte-tiny-linked-charts": "1.1.5",
 		"tua-body-scroll-lock": "^1.4.0",
 		"yaml": "2.3.4",
-		"@internationalized/date": "3.5.1",
-		"bits-ui": "0.11.8",
-		"clsx": "2.0.0",
-		"radix-icons-svelte": "1.2.1",
-		"tailwind-merge": "2.2.0",
-		"tailwind-variants": "0.1.19",
-		"zod": "3.22.4"
+		"@internationalized/date": "^3.5.1",
+		"bits-ui": "^0.11.8",
+		"clsx": "^2.0.0",
+		"cmdk-sv": "^0.0.12",
+		"formsnap": "^0.4.2",
+		"radix-icons-svelte": "^1.2.1",
+		"sveltekit-superforms": "^1.13.1",
+		"tailwind-merge": "^2.2.0",
+		"tailwind-variants": "^0.1.19",
+		"zod": "^3.22.4"
 	},
 	"devDependencies": {
 		"@evidence-dev/faker-datasource": "workspace:*",
