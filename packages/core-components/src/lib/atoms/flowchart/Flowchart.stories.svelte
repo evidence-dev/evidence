@@ -7,7 +7,8 @@
 
 <Story name="Basic Usage">
 	This uses the slot, because the chart source does not contain invalid svelte characters
-	<Flowchart>flowchart TD Start --> Stop</Flowchart>
+	<Flowchart>flowchart TD 
+        Start --> Stop</Flowchart>
 </Story>
 <Story name="Advanced Usage">
 	This uses the `chart` prop, because the chart source contains invalid svelte characters
