@@ -10,41 +10,9 @@ const { OAuth2Client } = require('google-auth-library');
 const {
 	EvidenceType,
 	TypeFidelity,
-	getEnv,
 	asyncIterableToBatchedAsyncGenerator,
 	exhaustStream
 } = require('@evidence-dev/db-commons');
-
-const envMap = {
-	authenticator: [
-		{ key: 'EVIDENCE_BIGQUERY_AUTHENTICATOR', deprecated: false },
-		{ key: 'BIGQUERY_AUTHENTICATOR', deprecated: false }
-	],
-	projectId: [
-		{ key: 'EVIDENCE_BIGQUERY_PROJECT_ID', deprecated: false },
-		{ key: 'BIGQUERY_PROJECT_ID', deprecated: false },
-		{ key: 'project_id', deprecated: true },
-		{ key: 'PROJECT_ID', deprecated: true }
-	],
-	token: [
-		{ key: 'EVIDENCE_BIGQUERY_TOKEN', deprecated: false },
-		{ key: 'BIGQUERY_TOKEN', deprecated: false }
-	],
-	credentials: {
-		clientEmail: [
-			{ key: 'EVIDENCE_BIGQUERY_CLIENT_EMAIL', deprecated: false },
-			{ key: 'BIGQUERY_CLIENT_EMAIL', deprecated: false },
-			{ key: 'client_email', deprecated: true },
-			{ key: 'CLIENT_EMAIL', deprecated: true }
-		],
-		privateKey: [
-			{ key: 'EVIDENCE_BIGQUERY_PRIVATE_KEY', deprecated: false },
-			{ key: 'BIGQUERY_PRIVATE_KEY', deprecated: false },
-			{ key: 'private_key', deprecated: true },
-			{ key: 'PRIVATE_KEY', deprecated: true }
-		]
-	}
-};
 
 /**
  * Standardizes a row from a BigQuery query
@@ -79,42 +47,44 @@ const standardizeRow = (row) => {
  * @returns {import("@google-cloud/bigquery").BigQueryOptions}
  */
 const getCredentials = (database = {}) => {
-	const authentication_method =
-		database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'service-account';
+	const authentication_method = database.authenticator ?? 'service-account';
 
 	if (authentication_method === 'gcloud-cli') {
 		return {
-			projectId: database.project_id ?? getEnv(envMap, 'projectId')
+			projectId: database.project_id
 		};
 	} else if (authentication_method === 'oauth') {
-		const access_token = database.token ?? getEnv(envMap, 'token');
+		const access_token = database.token;
 		const oauth = new OAuth2Client();
 		oauth.setCredentials({ access_token });
 
 		return {
 			authClient: oauth,
-			projectId: database.project_id ?? getEnv(envMap, 'projectId')
+			projectId: database.project_id
 		};
 	} else {
 		/* service-account */
 		return {
-			projectId: database.project_id ?? getEnv(envMap, 'projectId'),
+			projectId: database.project_id,
 			credentials: {
-				client_email: database.client_email ?? getEnv(envMap, 'credentials', 'clientEmail'),
-				private_key: (database.private_key ?? getEnv(envMap, 'credentials', 'privateKey'))
-					?.replace(/\\n/g, '\n')
-					.trim()
+				client_email: database.client_email,
+				private_key: database.private_key?.replace(/\\n/g, '\n').trim()
 			}
 		};
 	}
 };
 
+/**
+ *
+ * @param {BigQueryOptions} db
+ * @returns {BigQuery}
+ */
+const getConnection = (db) => new BigQuery({ ...credentials, maxRetries: 10 });
+
 /** @type {import("@evidence-dev/db-commons").RunQuery<BigQueryOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
-		const credentials = getCredentials(database);
-
-		const connection = new BigQuery({ ...credentials, maxRetries: 10 });
+		const connection = getConnection(database);
 
 		const [job] = await connection.createQueryJob({ query: queryString });
 		/** @type {import("node:stream").Transform} */
@@ -245,10 +215,18 @@ module.exports.getRunner = async (opts) => {
 };
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<BigQueryOptions>} */
 module.exports.testConnection = async (opts) => {
-	return await runQuery('SELECT 1;', opts)
-		.then(exhaustStream)
+	const conn = getConnection(opts);
+	return await conn
+		.query('SELECT 1;')
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+		.catch((e) => {
+			if (e instanceof Error) return { reason: e.message };
+			try {
+				return { reason: JSON.stringify(e) };
+			} catch {
+				return { reason: 'Unknown Connection Error' };
+			}
+		});
 };
 
 module.exports.options = {
