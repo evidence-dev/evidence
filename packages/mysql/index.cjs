@@ -1,5 +1,4 @@
 const {
-	getEnv,
 	EvidenceType,
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator,
@@ -8,51 +7,6 @@ const {
 } = require('@evidence-dev/db-commons');
 const mysql = require('mysql2');
 const mysqlTypes = mysql.Types;
-
-const envMap = {
-	host: [
-		{ key: 'EVIDENCE_MYSQL_HOST', deprecated: false },
-		{ key: 'MYSQL_HOST', deprecated: false },
-		{ key: 'host', deprecated: true },
-		{ key: 'HOST', deprecated: true }
-	],
-	port: [
-		{ key: 'EVIDENCE_MYSQL_PORT', deprecated: false },
-		{ key: 'MYSQL_PORT', deprecated: false },
-		{ key: 'port', deprecated: true },
-		{ key: 'PORT', deprecated: true }
-	],
-	database: [
-		{ key: 'EVIDENCE_MYSQL_DATABASE', deprecated: false },
-		{ key: 'MYSQL_DATABASE', deprecated: false },
-		{ key: 'database', deprecated: true },
-		{ key: 'DATABASE', deprecated: true }
-	],
-	user: [
-		{ key: 'EVIDENCE_MYSQL_USER', deprecated: false },
-		{ key: 'MYSQL_USER', deprecated: false },
-		{ key: 'user', deprecated: true },
-		{ key: 'USER', deprecated: true }
-	],
-	password: [
-		{ key: 'EVIDENCE_MYSQL_PASSWORD', deprecated: false },
-		{ key: 'MYSQL_PASSWORD', deprecated: false },
-		{ key: 'password', deprecated: true },
-		{ key: 'PASSWORD', deprecated: true }
-	],
-	socketPath: [
-		{ key: 'EVIDENCE_MYSQL_SOCKETPATH', deprecated: false },
-		{ key: 'MYSQL_SOCKETPATH', deprecated: false },
-		{ key: 'socket_path', deprecated: true },
-		{ key: 'SOCKETPATH', deprecated: true }
-	],
-	ssl: [
-		{ key: 'EVIDENCE_MYSQL_SSL', deprecated: false },
-		{ key: 'MYSQL_SSL', deprecated: false },
-		{ key: 'ssl', deprecated: true },
-		{ key: 'SSL', deprecated: true }
-	]
-};
 
 /**
  *
@@ -144,16 +98,16 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	try {
 		/** @type {import("mysql2").PoolOptions} */
 		const credentials = {
-			user: database ? database.user : getEnv(envMap, 'user'),
-			host: database ? database.host : getEnv(envMap, 'host'),
-			database: database ? database.database : getEnv(envMap, 'database'),
-			password: database ? database.password : getEnv(envMap, 'password'),
-			port: database ? database.port : getEnv(envMap, 'port'),
-			socketPath: database ? database.socketPath : getEnv(envMap, 'socketPath'),
+			user: database.user,
+			host: database.host,
+			database: database.database,
+			password: database.password,
+			port: database.port,
+			socketPath: database.socketPath,
 			decimalNumbers: true
 		};
 
-		const ssl_opt = database ? database.ssl : getEnv(envMap, 'ssl');
+		const ssl_opt = database.ssl;
 
 		if (ssl_opt === 'true') {
 			credentials.ssl = {};
@@ -182,7 +136,10 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		const query = connection.query(queryString).stream();
 
 		const fields = await new Promise((res) => query.on('fields', res));
-		const result = await asyncIterableToBatchedAsyncGenerator(query, batchSize, { standardizeRow });
+		const result = await asyncIterableToBatchedAsyncGenerator(query, batchSize, {
+			standardizeRow,
+			closeConnection: () => connection.destroy()
+		});
 		result.columnTypes = mapResultsToEvidenceColumnTypes(fields);
 		result.expectedRowCount = expected_row_count;
 
