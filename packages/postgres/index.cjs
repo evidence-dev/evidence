@@ -2,91 +2,11 @@ const pg = require('pg');
 const { Pool } = pg;
 const {
 	EvidenceType,
-	getEnv,
 	TypeFidelity,
 	cleanQuery,
 	exhaustStream
 } = require('@evidence-dev/db-commons');
 const Cursor = require('pg-cursor');
-
-const envMap = {
-	host: [
-		{ key: 'EVIDENCE_POSTGRES_HOST', deprecated: false },
-		{ key: 'POSTGRES_HOST', deprecated: false },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_HOST', deprecated: false },
-		{ key: 'REDSHIFT_HOST', deprecated: false },
-		{ key: 'host', deprecated: true },
-		{ key: 'HOST', deprecated: true }
-	],
-	port: [
-		{ key: 'EVIDENCE_POSTGRES_PORT', deprecated: false },
-		{ key: 'POSTGRES_PORT', deprecated: false },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_PORT', deprecated: false },
-		{ key: 'REDSHIFT_PORT', deprecated: false },
-		{ key: 'port', deprecated: true },
-		{ key: 'PORT', deprecated: true }
-	],
-	database: [
-		{ key: 'EVIDENCE_POSTGRES_DATABASE', deprecated: false },
-		{ key: 'POSTGRES_DATABASE', deprecated: false },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_DATABASE', deprecated: false },
-		{ key: 'REDSHIFT_DATABASE', deprecated: false },
-		{ key: 'database', deprecated: true },
-		{ key: 'DATABASE', deprecated: true }
-	],
-	user: [
-		{ key: 'EVIDENCE_POSTGRES_USER', deprecated: false },
-		{ key: 'POSTGRES_USER', deprecated: false },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_USER', deprecated: false },
-		{ key: 'REDSHIFT_USER', deprecated: false },
-		{ key: 'user', deprecated: true },
-		{ key: 'USER', deprecated: true }
-	],
-	password: [
-		{ key: 'EVIDENCE_POSTGRES_PASSWORD', deprecated: false },
-		{ key: 'POSTGRES_PASSWORD', deprecated: false },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_PASSWORD', deprecated: false },
-		{ key: 'REDSHIFT_PASSWORD', deprecated: false },
-		{ key: 'password', deprecated: true },
-		{ key: 'PASSWORD', deprecated: true }
-	],
-	ssl: [
-		{ key: 'EVIDENCE_POSTGRES_SSL', deprecated: false },
-		{ key: 'POSTGRES_SSL', deprecated: false },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_SSL', deprecated: false },
-		{ key: 'REDSHIFT_SSL', deprecated: false },
-		{ key: 'ssl', deprecated: true },
-		{ key: 'SSL', deprecated: true }
-	],
-	connString: [
-		{ key: 'EVIDENCE_POSTGRES_CONNECTIONSTRING', deprecated: false },
-		{ key: 'POSTGRES_CONNECTIONSTRING', deprecated: false },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_CONNECTIONSTRING', deprecated: false },
-		{ key: 'REDSHIFT_CONNECTIONSTRING', deprecated: false },
-		{ key: 'CONNECTIONSTRING', deprecated: true },
-		{ key: 'connectionString', deprecated: true }
-	],
-	schema: [
-		{ key: 'EVIDENCE_POSTGRES_SCHEMA', deprecated: false },
-		{ key: 'POSTGRES_SCHEMA', deprecated: true },
-		// Redshift uses this env var
-		{ key: 'EVIDENCE_REDSHIFT_SCHEMA', deprecated: false },
-		{ key: 'REDSHIFT_SCHEMA', deprecated: true },
-		{ key: 'schema', deprecated: true },
-		{ key: 'SCHEMA', deprecated: true }
-	],
-	options: [
-		{ key: 'EVIDENCE_POSTGRES_OPTIONS', deprecated: false },
-		{ key: 'POSTGRES_OPTIONS', deprecated: false }
-	]
-};
 
 /**
  * Some types that are not defined in the PG library
@@ -191,14 +111,14 @@ const standardizeResult = (result) => {
 const runQuery = async (queryString, database, batchSize = 100000, closeBeforeResults = false) => {
 	try {
 		const credentials = {
-			user: database ? database.user : getEnv(envMap, 'user'),
-			host: database ? database.host : getEnv(envMap, 'host'),
-			database: database ? database.database : getEnv(envMap, 'database'),
-			password: database ? database.password : getEnv(envMap, 'password'),
-			port: database ? database.port : getEnv(envMap, 'port'),
-			ssl: database ? database.ssl : getEnv(envMap, 'ssl'),
-			connectionString: database ? database.connectionString : getEnv(envMap, 'connString'),
-			options: database ? database.options : getEnv(envMap, 'options')
+			user: database.user,
+			host: database.host,
+			database: database.database,
+			password: database.password,
+			port: database.port,
+			ssl: database.ssl,
+			connectionString: database.connectionString,
+			options: database.options
 		};
 
 		// Override types returned by pg package. The package will return some numbers as strings
@@ -225,7 +145,7 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 		var pool = new Pool(credentials);
 
 		// Set schema if specified. Can't be done using the connection string / credentials. See issue: https://github.com/brianc/node-postgres/issues/1123#issuecomment-501510375 & solution: https://node-postgres.com/apis/pool#events
-		const schema = database ? database.schema : getEnv(envMap, 'schema');
+		const schema = database.schema;
 		if (schema) {
 			pool.on('connect', (client) => {
 				client.query(`SET search_path TO ${schema}`);
@@ -371,6 +291,14 @@ module.exports.options = {
 						{ value: 'verify-ca', label: 'Verify CA' },
 						{ value: 'verify-full', label: 'Verify Full' }
 					]
+				},
+				rejectUnauthorized: {
+					title: 'Reject Unauthorized',
+					type: 'boolean',
+					default: true,
+					secret: false,
+					description:
+						'When false, certificates with untrusted authorities will be accepted. Do not enable this unless you have to!'
 				}
 			}
 		}
