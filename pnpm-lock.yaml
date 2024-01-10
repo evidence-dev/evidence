@@ -230,7 +230,7 @@ importers:
         specifier: workspace:*
         version: link:../tailwind
       '@internationalized/date':
-        specifier: 3.5.1
+        specifier: ^3.5.1
         version: 3.5.1
       '@rgossiaux/svelte-headlessui':
         specifier: ^2.0.0
@@ -248,11 +248,14 @@ importers:
         specifier: ^4.0.9
         version: 4.0.9
       bits-ui:
-        specifier: 0.11.8
+        specifier: ^0.11.8
         version: 0.11.8(svelte@3.59.2)
       clsx:
-        specifier: 2.0.0
+        specifier: ^2.0.0
         version: 2.0.0
+      cmdk-sv:
+        specifier: ^0.0.12
+        version: 0.0.12(svelte@3.59.2)
       echarts:
         specifier: 5.4.3
         version: 5.4.3
@@ -262,6 +265,9 @@ importers:
       export-to-csv:
         specifier: 0.2.1
         version: 0.2.1
+      formsnap:
+        specifier: ^0.4.2
+        version: 0.4.2(svelte@3.59.2)(sveltekit-superforms@1.13.1)(zod@3.22.4)
       fuse.js:
         specifier: ^7.0.0
         version: 7.0.0
@@ -272,7 +278,7 @@ importers:
         specifier: 1.29.0
         version: 1.29.0
       radix-icons-svelte:
-        specifier: 1.2.1
+        specifier: ^1.2.1
         version: 1.2.1
       ssf:
         specifier: 0.11.2
@@ -280,11 +286,14 @@ importers:
       svelte-tiny-linked-charts:
         specifier: 1.1.5
         version: 1.1.5
+      sveltekit-superforms:
+        specifier: ^1.13.1
+        version: 1.13.1(@sveltejs/kit@1.22.3)(svelte@3.59.2)(zod@3.22.4)
       tailwind-merge:
-        specifier: 2.2.0
+        specifier: ^2.2.0
         version: 2.2.0
       tailwind-variants:
-        specifier: 0.1.19
+        specifier: ^0.1.19
         version: 0.1.19(tailwindcss@3.3.1)
       tua-body-scroll-lock:
         specifier: ^1.4.0
@@ -293,7 +302,7 @@ importers:
         specifier: 2.3.4
         version: 2.3.4
       zod:
-        specifier: 3.22.4
+        specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
       '@evidence-dev/faker-datasource':
@@ -5934,6 +5943,20 @@ packages:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
     dev: false
 
+  /@melt-ui/svelte@0.61.2(svelte@3.59.2):
+    resolution: {integrity: sha512-BHkD9G31zQBToA4euDRBgTQRvWxT9scufOVCXgDO6HKTvyxFspbWT2bgiSFqAK4BbAGDn9Ao36Q8F9O71KN4OQ==}
+    peerDependencies:
+      svelte: '>=3 <5'
+    dependencies:
+      '@floating-ui/core': 1.5.3
+      '@floating-ui/dom': 1.5.4
+      '@internationalized/date': 3.5.1
+      dequal: 2.0.3
+      focus-trap: 7.5.4
+      nanoid: 4.0.2
+      svelte: 3.59.2
+    dev: false
+
   /@melt-ui/svelte@0.65.2(svelte@3.59.2):
     resolution: {integrity: sha512-BpsSl9Bjp1++8U3+LaDOFUoX/PFQ9N7QWFhlFdUEZduhrbVyU70v9A459SKrQ+esFSjvh1AvqJYkMAUJXJlAmQ==}
     peerDependencies:
@@ -9414,7 +9437,6 @@ packages:
       vite: 4.3.9
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@sveltejs/package@1.0.1(svelte@3.56.0)(typescript@4.9.5):
     resolution: {integrity: sha512-iYoDz4AEJQUfdKUfBcwtYEGYkf4NMByQL3Sl2ESnu+IXsLNsHvhH0zUDhAmUmAgcrH8fVjiR7FuJeyh+7EQtiw==}
@@ -9477,7 +9499,6 @@ packages:
       vite: 4.3.9
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@sveltejs/vite-plugin-svelte@2.0.3(svelte@3.56.0)(vite@4.3.9):
     resolution: {integrity: sha512-o+cguBFdwIGtRbNkYOyqTM7KvRUffxh5bfK4oJsWKG2obu+v/cbpT03tJrGl58C7tRXo/aEC0/axN5FVHBj0nA==}
@@ -9535,7 +9556,6 @@ packages:
       vitefu: 0.2.5(vite@4.3.9)
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@svgr/babel-plugin-add-jsx-attribute@5.4.0:
     resolution: {integrity: sha512-ZFf2gs/8/6B8PnSofI0inYXr2SDNTDScPXhN7k5EqD4aZ3gi6u+rbmZHVB8IM3wDyx8ntKACZbtXSm7oZGRqVg==}
@@ -11705,6 +11725,16 @@ packages:
       svelte: 3.59.2
     dev: false
 
+  /bits-ui@0.9.9(svelte@3.59.2):
+    resolution: {integrity: sha512-LkdkyTtpXdkjBzPZJVJgpcre4fut6DONoprMfadHFo82HNUhph+02CxDjYEcZcThb5z4YjSxMlCYvQPZm+YtfQ==}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      '@melt-ui/svelte': 0.61.2(svelte@3.59.2)
+      nanoid: 5.0.4
+      svelte: 3.59.2
+    dev: false
+
   /bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
     dependencies:
@@ -12385,6 +12415,16 @@ packages:
   /clsx@2.0.0:
     resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
     engines: {node: '>=6'}
+    dev: false
+
+  /cmdk-sv@0.0.12(svelte@3.59.2):
+    resolution: {integrity: sha512-d+eILSOb2W+/3U/j7xGTgGRrZkFB/z4Xlvj0ADrWhf34y9YLzJon3JCGP2hMil5IrVm0P/+IFIeCF5l3//kcjA==}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      bits-ui: 0.9.9(svelte@3.59.2)
+      nanoid: 5.0.4
+      svelte: 3.59.2
     dev: false
 
   /co@4.6.0:
@@ -14727,6 +14767,18 @@ packages:
     engines: {node: '>=12.20.0'}
     dependencies:
       fetch-blob: 3.2.0
+    dev: false
+
+  /formsnap@0.4.2(svelte@3.59.2)(sveltekit-superforms@1.13.1)(zod@3.22.4):
+    resolution: {integrity: sha512-iUhGDUcjUW9tCOYLZ1rbNR1wkjtEbrXDxhUnl7+zPKjP5K8ikDfhZWH1cquKdUcHJoSE7M/Rruvg0fNQMjSNtA==}
+    peerDependencies:
+      svelte: ^4.0.0
+      sveltekit-superforms: ^1.7.1
+      zod: ^3.22.2
+    dependencies:
+      svelte: 3.59.2
+      sveltekit-superforms: 1.13.1(@sveltejs/kit@1.22.3)(svelte@3.59.2)(zod@3.22.4)
+      zod: 3.22.4
     dev: false
 
   /forwarded@0.2.0:
@@ -22300,7 +22352,6 @@ packages:
       svelte: ^3.19.0 || ^4.0.0
     dependencies:
       svelte: 3.59.2
-    dev: true
 
   /svelte-icons@2.1.0:
     resolution: {integrity: sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==}
@@ -22672,6 +22723,18 @@ packages:
       estree-walker: 2.0.2
       magic-string: 0.26.7
       svelte: 3.56.0
+    dev: false
+
+  /sveltekit-superforms@1.13.1(@sveltejs/kit@1.22.3)(svelte@3.59.2)(zod@3.22.4):
+    resolution: {integrity: sha512-aWHAV6t6+7g37IGFNLRtbRIoqfC3a56Hf4/tTUNFZfwO2mOQGfeMb49WWBLdZZTrFRPGngfNRUxQzeoO3GspnQ==}
+    peerDependencies:
+      '@sveltejs/kit': 1.x || 2.x
+      svelte: 3.x || 4.x
+      zod: 3.x
+    dependencies:
+      '@sveltejs/kit': 1.22.3(svelte@3.59.2)(vite@4.3.9)
+      svelte: 3.59.2
+      zod: 3.22.4
     dev: false
 
   /svg-parser@2.0.4:
