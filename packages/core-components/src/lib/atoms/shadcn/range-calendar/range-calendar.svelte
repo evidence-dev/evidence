@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { RangeCalendar as RangeCalendarPrimitive } from "bits-ui";
-	import * as RangeCalendar from ".";
-	import { cn } from "$lib/utils";
+	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
+	import * as RangeCalendar from '.';
+	import { cn } from '$lib/utils';
 
 	type $$Props = RangeCalendarPrimitive.Props;
 	type $$Events = RangeCalendarPrimitive.Events;
 
-	export let value: $$Props["value"] = undefined;
-	export let placeholder: $$Props["placeholder"] = undefined;
-	export let weekdayFormat: $$Props["weekdayFormat"] = "short";
-	export let startValue: $$Props["startValue"] = undefined;
+	export let value: $$Props['value'] = undefined;
+	export let placeholder: $$Props['placeholder'] = undefined;
+	export let weekdayFormat: $$Props['weekdayFormat'] = 'short';
+	export let startValue: $$Props['startValue'] = undefined;
 
-	let className: $$Props["class"] = undefined;
+	let className: $$Props['class'] = undefined;
 	export { className as class };
 </script>
 
@@ -20,7 +20,7 @@
 	bind:placeholder
 	bind:startValue
 	{weekdayFormat}
-	class={cn("p-3", className)}
+	class={cn('p-3', className)}
 	{...$$restProps}
 	on:keydown
 	let:months
@@ -48,10 +48,7 @@
 						<RangeCalendar.GridRow class="w-full mt-2">
 							{#each weekDates as date}
 								<RangeCalendar.Cell {date}>
-									<RangeCalendar.Day
-										{date}
-										month={month.value}
-									/>
+									<RangeCalendar.Day {date} month={month.value} />
 								</RangeCalendar.Cell>
 							{/each}
 						</RangeCalendar.GridRow>
