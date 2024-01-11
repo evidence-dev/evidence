@@ -79,7 +79,7 @@ const getCredentials = (database = {}) => {
  * @param {BigQueryOptions} db
  * @returns {BigQuery}
  */
-const getConnection = (db) => new BigQuery({ ...credentials, maxRetries: 10 });
+const getConnection = (credentials) => new BigQuery({ ...credentials, maxRetries: 10 });
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<BigQueryOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
