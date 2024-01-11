@@ -4,8 +4,6 @@ hide_table_of_contents: false
 title: 'Component Plugins'
 ---
 
-# Component Plugins 
-
 Evidence includes a plugin system which can be used to add components and data sources to your project. 
 
 All Evidence projects include the Evidence `core-components` plugin by default. `core-components` has everything you need to build most use cases. 
