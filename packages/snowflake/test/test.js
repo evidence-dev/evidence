@@ -7,7 +7,12 @@ import 'dotenv/config';
 test('query runs', async () => {
 	try {
 		const { rows: row_generator, columnTypes } = await runQuery(
-			"select 100 as number_col, current_date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col"
+			"select 100 as number_col, current_date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col",
+			{
+				user: process.env.SNOWFLAKE_USERNAME,
+				password: process.env.SNOWFLAKE_PASSWORD,
+				account: process.env.SNOWFLAKE_ACCOUNT
+			}
 		);
 		const rows = await batchedAsyncGeneratorToArray(row_generator);
 		assert.instance(rows, Array);
@@ -49,7 +54,11 @@ test('query batches results properly', async () => {
 	try {
 		const { rows, expectedRowCount } = await runQuery(
 			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
-			undefined,
+			{
+				user: process.env.SNOWFLAKE_USERNAME,
+				password: process.env.SNOWFLAKE_PASSWORD,
+				account: process.env.SNOWFLAKE_ACCOUNT
+			},
 			2
 		);
 

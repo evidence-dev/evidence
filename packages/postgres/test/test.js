@@ -6,7 +6,14 @@ import { batchedAsyncGeneratorToArray, TypeFidelity } from '@evidence-dev/db-com
 test('query runs', async () => {
 	try {
 		const { rows: row_generator, columnTypes } = await runQuery(
-			"select 100 as number_col, now()::date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col"
+			"select 100 as number_col, now()::date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col",
+			{
+				host: process.env.POSTGRES_HOST,
+				database: process.env.POSTGRES_DATABASE,
+				user: process.env.POSTGRES_USER,
+				port: process.env.POSTGRES_PORT,
+				ssl: process.env.POSTGRES_SSL
+			}
 		);
 		const rows = await batchedAsyncGeneratorToArray(row_generator);
 		assert.instance(rows, Array);
@@ -46,7 +53,13 @@ test('query batches results properly', async () => {
 	try {
 		const { rows, expectedRowCount } = await runQuery(
 			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
-			undefined,
+			{
+				host: process.env.POSTGRES_HOST,
+				database: process.env.POSTGRES_DATABASE,
+				user: process.env.POSTGRES_USER,
+				port: process.env.POSTGRES_PORT,
+				ssl: process.env.POSTGRES_SSL
+			},
 			2
 		);
 
