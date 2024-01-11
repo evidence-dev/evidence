@@ -87,6 +87,10 @@ We have created a VSCode extension command to assist with migration. This will a
 ### Using the VS Code Migration Command
 This migration command covers most situations, but there may be edge cases where you will need to make adjustments or fix query syntax.
 
+:::info Troubleshooting
+Issues and errors in the migration command can be related to npm or NodeJS versions - if in doubt, update to the latest LTS versions (see [system requirements](/guides/system-requirements))
+:::
+
 1. Ensure you have the Evidence VS Code extension version `1.4.1` or higher installed
 2. Open the Evidence project you want to migrate. If your project is within a monorepo, for this migration open only the Evidence project folder as the "workspace" in VS Code - otherwise the migration command will not be able to run
 3. Open the command palette (`Cmd`/`Ctrl` + `Shift` + `P`)
@@ -186,8 +190,7 @@ The easiest way to migrate your project is to create a project using the latest 
 2. Update the environment variables for your Evidence Cloud project by pasting the environment variables from Step 1
     ![cloud vars](/img/cloud-settings-edit.png)
 
-3. Notify us that you are changing your project to USQL by sending an email to support@evidence.dev or [messaging us on Slack](https://slack.evidence.dev)
-4. Click to redeploy your project
+3. Click to redeploy your project
 
 
 ### Self-Hosting
