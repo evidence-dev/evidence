@@ -1,25 +1,5 @@
-const { getEnv } = require('@evidence-dev/db-commons');
 const { DBSQLClient, thrift } = require('@databricks/sql');
 const TTypeId = thrift.TCLIService_types.TTypeId;
-
-const envMap = {
-	host: [
-		{ key: 'EVIDENCE_DATABRICKS_HOST', deprecated: false },
-		{ key: 'DATABRICKS_HOST', deprecated: false }
-	],
-	port: [
-		{ key: 'EVIDENCE_DATABRICKS_PORT', deprecated: false },
-		{ key: 'DATABRICKS_PORT', deprecated: false }
-	],
-	path: [
-		{ key: 'EVIDENCE_DATABRICKS_PATH', deprecated: false },
-		{ key: 'DATABRICKS_PATH', deprecated: false }
-	],
-	token: [
-		{ key: 'EVIDENCE_DATABRICKS_TOKEN', deprecated: false },
-		{ key: 'DATABRICKS_TOKEN', deprecated: false }
-	]
-};
 
 function nativeTypeToEvidenceType(data) {
 	switch (data) {
@@ -79,10 +59,10 @@ const runQuery = async (queryString, database = {}) => {
 	const credentials = {
 		authType: 'access-token',
 		clientId: 'Evidence',
-		host: database.host ?? getEnv(envMap, 'host'),
-		port: Number(database.port ?? getEnv(envMap, 'port') ?? 443),
-		path: database.path ?? getEnv(envMap, 'path'),
-		token: database.token ?? getEnv(envMap, 'token')
+		host: database.host,
+		port: Number(database.port),
+		path: database.path,
+		token: database.token
 	};
 
 	try {
