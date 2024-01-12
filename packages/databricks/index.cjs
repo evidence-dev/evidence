@@ -113,7 +113,7 @@ module.exports.getRunner = async (opts) => {
 module.exports.testConnection = async (opts) => {
 	return await runQuery('SELECT 1;', opts)
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
 };
 
 module.exports.options = {
