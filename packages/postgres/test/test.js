@@ -9,6 +9,7 @@ test('query runs', async () => {
 			"select 100 as number_col, now()::date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col",
 			{
 				host: process.env.POSTGRES_HOST,
+				password: process.env.POSTGRES_PASSWORD,
 				database: process.env.POSTGRES_DATABASE,
 				user: process.env.POSTGRES_USER,
 				port: process.env.POSTGRES_PORT,
@@ -55,6 +56,7 @@ test('query batches results properly', async () => {
 			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
 			{
 				host: process.env.POSTGRES_HOST,
+				password: process.env.POSTGRES_PASSWORD,
 				database: process.env.POSTGRES_DATABASE,
 				user: process.env.POSTGRES_USER,
 				port: process.env.POSTGRES_PORT,
