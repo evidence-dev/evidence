@@ -47,8 +47,8 @@ const creds = {
 	port: process.env.TRINO_PORT,
 	catalog: process.env.TRINO_CATALOG,
 	schema: process.env.TRINO_SCHEMA,
-	engine: process.env.TRINO_ENGINE,
-}
+	engine: process.env.TRINO_ENGINE
+};
 
 test('query runs', async () => {
 	const result = await runQuery(query, creds);

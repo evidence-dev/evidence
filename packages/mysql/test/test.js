@@ -8,7 +8,15 @@ test('query runs', async () => {
 	if (process.env.MYSQL_DATABASE) {
 		try {
 			const { rows: row_generator, columnTypes } = await runQuery(
-				"select 100 as number_col, CURDATE() as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, false as bool_col"
+				"select 100 as number_col, CURDATE() as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, false as bool_col",
+				{
+					user: process.env.MYSQL_USER,
+					host: process.env.MYSQL_HOST,
+					database: process.env.MYSQL_DATABASE,
+					password: process.env.MYSQL_PASSWORD,
+					port: process.env.MYSQL_PORT,
+					ssk: process.env.MYSQL_SSL
+				}
 			);
 			const rows = await batchedAsyncGeneratorToArray(row_generator);
 			assert.instance(rows, Array);
@@ -59,7 +67,14 @@ test('query batches results properly and predicts rows', async () => {
 		try {
 			const { rows, expectedRowCount } = await runQuery(
 				'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
-				undefined,
+				{
+					user: process.env.MYSQL_USER,
+					host: process.env.MYSQL_HOST,
+					database: process.env.MYSQL_DATABASE,
+					password: process.env.MYSQL_PASSWORD,
+					port: process.env.MYSQL_PORT,
+					ssk: process.env.MYSQL_SSL
+				},
 				2
 			);
 
