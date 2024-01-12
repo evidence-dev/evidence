@@ -5,6 +5,7 @@ import { TypeFidelity, batchedAsyncGeneratorToArray } from '@evidence-dev/db-com
 import 'dotenv/config';
 
 test('query runs', async () => {
+	console.log(Object.keys(process.env))
 	try {
 		const { rows: row_generator, columnTypes } = await runQuery(
 			"select 100 as number_col, current_date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col",
