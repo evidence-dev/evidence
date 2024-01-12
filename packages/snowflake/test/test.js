@@ -10,7 +10,7 @@ test('query runs', async () => {
 		const { rows: row_generator, columnTypes } = await runQuery(
 			"select 100 as number_col, current_date  as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, true as bool_col",
 			{
-				user: process.env.SNOWFLAKE_USERNAME,
+				username: process.env.SNOWFLAKE_USERNAME,
 				password: process.env.SNOWFLAKE_PASSWORD,
 				account: process.env.SNOWFLAKE_ACCOUNT
 			}
@@ -56,7 +56,7 @@ test('query batches results properly', async () => {
 		const { rows, expectedRowCount } = await runQuery(
 			'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
 			{
-				user: process.env.SNOWFLAKE_USERNAME,
+				username: process.env.SNOWFLAKE_USERNAME,
 				password: process.env.SNOWFLAKE_PASSWORD,
 				account: process.env.SNOWFLAKE_ACCOUNT
 			},
