@@ -1,7 +1,7 @@
 <script>
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
-	import { propKey, configKey, strictBuild } from '../context';
+	import { propKey, configKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	let props = writable({});
 	let config = writable({});
 

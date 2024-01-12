@@ -7,7 +7,7 @@
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
-	import { strictBuild } from '../context';
+	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
 	// Passing in value from dataset:
 	export let data = null;
