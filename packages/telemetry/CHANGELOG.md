@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 2.0.3
+
+### Patch Changes
+
+- 97e7123d: Upgraded telemetry profile
+
 ## 2.0.2
 
 ### Patch Changes

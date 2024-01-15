@@ -1,5 +1,15 @@
 # @evidence-dev/trino
 
+## 1.0.2
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- 99b915f2: Annotate databricks and trino as evidence source plugins
+- c9793670: - Removed legacy environment variables
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/db-commons@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

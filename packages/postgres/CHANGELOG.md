@@ -1,5 +1,15 @@
 # @evidence-dev/postgres
 
+## 1.0.2
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- d04554f1: - Remove legacy env vars
+  - Add rejectUnauthorized option
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/db-commons@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes
