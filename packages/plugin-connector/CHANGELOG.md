@@ -1,5 +1,15 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.5
+
+### Patch Changes
+
+- 2082578e: Added support for HMR in external query files
+- Updated dependencies [97e7123d]
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/telemetry@2.0.3
+  - @evidence-dev/db-commons@1.0.2
+
 ## 2.0.4
 
 ### Patch Changes

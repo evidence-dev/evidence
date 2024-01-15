@@ -4,7 +4,6 @@ const path = require('path');
 const stream = require('stream');
 const {
 	inferColumnTypes,
-	getEnv,
 	asyncIterableToBatchedAsyncGenerator,
 	cleanQuery,
 	exhaustStream
@@ -33,18 +32,9 @@ class DBStream extends stream.Readable {
 	}
 }
 
-const envMap = {
-	filename: [
-		{ key: 'EVIDENCE_SQLITE_FILENAME', deprecated: false },
-		{ key: 'SQLITE_FILENAME', deprecated: false },
-		{ key: 'FILENAME', deprecated: true },
-		{ key: 'filename', deprecated: true }
-	]
-};
-
 /** @type {import('@evidence-dev/db-commons').RunQuery<SQLiteOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
-	const filename = database ? database.filename : getEnv(envMap, 'filename');
+	const filename = database.filename;
 	try {
 		const opts = {
 			filename: filename,
@@ -60,7 +50,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		const stream = await DBStream.create({ opts, sql: queryString });
 
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
-			mapResultsToEvidenceColumnTypes: inferColumnTypes
+			mapResultsToEvidenceColumnTypes: inferColumnTypes,
+			closeConnection: () => db.close()
 		});
 		results.expectedRowCount = expected_row_count;
 

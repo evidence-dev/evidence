@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.2
+
+### Patch Changes
+
+- 1dd61938: Fix options passed to faker functions
+
 ## 2.0.1
 
 ### Patch Changes
