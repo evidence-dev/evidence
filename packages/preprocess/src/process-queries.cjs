@@ -25,7 +25,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		// reactive queries: stuff with ${}
 		const IS_REACTIVE_QUERY = /\${.*?}/s;
 		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
-		const prerendered_ids = validIds.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
 
 		// input queries: reactive with ${inputs...} in it
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
@@ -33,6 +32,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = QueryStore.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, "${q.id}", { initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
 
+		
 		const queryStoreDeclarations = validIds.map((id) => {
 			/*
 				"What the heck is happening here":
@@ -63,6 +63,23 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			return `
 				$: _${id}_query_text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 				$: _${id}_has_unresolved = __checkForUnsetInputs\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+
+				if (import.meta?.hot) {
+					import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
+						let errors = []
+						if (!queryId) errors.push("Malformed event: Missing queryId")
+						if (!content) errors.push("Malformed event: Missing content")
+						if (errors.length) {
+							console.warn("Failed to update query on serverside change!", errors.join("\\n"))
+							return
+						}
+
+						if (queryId === "${id}") {
+							_${id}_query_text = content
+						}
+						
+					})
+				}
 
 				// Initial Query
 				let _${id}_initial_query;
