@@ -171,7 +171,8 @@
 		},
 
 		data: nameData,
-		links: links
+		links: links,
+		animationDuration: 500
 	};
 
 	$: config = {

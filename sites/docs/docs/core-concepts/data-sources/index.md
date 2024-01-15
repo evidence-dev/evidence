@@ -4,6 +4,12 @@ title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
+:::info Recent changes to data sources in Evidence
+The most recent Evidence release (Universal SQL) contains breaking changes for data source setup.
+If you recently updated your Evidence version and are having issues setting up data sources, consult the [migration guide](/guides/usql-migration-guide)
+:::
+
+
 Evidence supports connecting to a databases, flat data files, and non-SQL data sources. 
 
 You can connect to multiple data sources in a single Evidence project.
@@ -57,6 +63,8 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
+- [Clickhouse](#postgresql)
+- [Timescale](#postgresql)
 - [Trino](#trino)
 - [Microsoft SQL Server](#mssql)
 - [MySQL](#mysql)
@@ -142,6 +150,7 @@ The Native SSO through Okta method uses Okta to authenticate. To use this method
 The Redshift connector uses the Postgres connector under the hood, so configuration options are similar.
 
 ### PostgreSQL
+Some databases can be connected by using the Postgres connector, including Clickhouse and Timescale.
 
 #### SSL
 
