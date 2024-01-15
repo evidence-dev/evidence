@@ -3,80 +3,282 @@ const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
-const createDefaultProps = function (filename, componentDevelopmentMode, fileQueryIds) {
+// prettier obliterates the formatting of queryDeclarations
+// prettier-ignore
+/**
+ *
+ * @param {string} filename
+ * @param {boolean} componentDevelopmentMode
+ * @param {Record<string, import('./extract-queries/extract-queries.cjs').Query>} duckdbQueries
+ * @returns
+ */
+const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQueries = {}) {
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
 
-	if (fileQueryIds?.length > 0) {
-		// Get query results from load function
-		queryDeclarations = `
-        let {${fileQueryIds
-					?.filter((queryId) => queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$'))
-					.map((id) => id)} } = data;
-        $: ({${fileQueryIds
-					?.filter((queryId) => queryId.match('^([a-zA-Z_$][a-zA-Z0-9d_$]*)$'))
-					.map((id) => id)} } = data);
-        `;
+	if (Object.keys(duckdbQueries).length > 0) {
+		const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
+		const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError);
+
+		// prerendered queries: stuff without ${}
+		// reactive queries: stuff with ${}
+		const IS_REACTIVE_QUERY = /\${.*?}/s;
+		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
+
+		// input queries: reactive with ${inputs...} in it
+		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
+		const input_ids = reactiveIds.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id].compiledQueryString));
+
+		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = QueryStore.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, "${q.id}", { initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
+
+		
+		const queryStoreDeclarations = validIds.map((id) => {
+			/*
+				"What the heck is happening here":
+					_${id}_initial_query:
+						Copy of the query as it is written in the source markdown file
+						It is interpolated with the initial values of any variables _at mount time_
+						and does not change after that
+
+						This variable _must_ be declared; then assigned "reactively" to make sure it can reference the user's variables,
+						as it pushes the reactive assignment to the bottom of the file (after the user's scripts have run)
+						
+						We use the if to make sure it is only reactive once, and still acts as a "constant"
+
+
+					_${id}_current_query:
+						Copy of the query with the variables reactively interpolated - this is what will
+						actually be executed against the database
+
+						
+					_${id}_changed:
+						Helper variable to check if current is same as initial
+
+					
+					We care about all of this because we want to provide the initialData from SSR when the query is unchanged,
+					but we need to ensure that if the query changes, it re-executes. When constructing the QueryStore below,
+					we hinge on the change to pass intiailData (or not).
+			*/
+			return `
+				$: _${id}_query_text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+				$: _${id}_has_unresolved = __checkForUnsetInputs\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+
+				if (import.meta?.hot) {
+					import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
+						let errors = []
+						if (!queryId) errors.push("Malformed event: Missing queryId")
+						if (!content) errors.push("Malformed event: Missing content")
+						if (errors.length) {
+							console.warn("Failed to update query on serverside change!", errors.join("\\n"))
+							return
+						}
+
+						if (queryId === "${id}") {
+							_${id}_query_text = content
+						}
+						
+					})
+				}
+
+				// Initial Query
+				let _${id}_initial_query;
+				$: if(!_${id}_initial_query) _${id}_initial_query = _${id}_query_text;
+				onMount(() => _${id}_initial_query = _${id}_query_text);
+		
+				// Current Query
+				$: _${id}_current_query = _${id}_query_text;
+				
+				// Query has changed
+				$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false;
+				
+				// Actual Query Execution
+				let _${id};
+
+				const _${id}_reactivity_manager = () => {
+					const update = () => {
+						let initialData, initialError;
+
+						try {
+							if (_${id}_changed || __has_hmr_run) {
+								// Query changed after page load, we have no prerendered results
+								initialData = undefined
+								initialError = undefined
+							} else if (data.${id}) {
+								// Data is coming from SSR
+								if (data.${id} instanceof Error) {
+									throw data.${id}
+								} else {
+									initialData = data.${id}
+								}
+							} else {
+								// We are currently prerendering
+								initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })
+							}
+						} catch (e) {
+							if (!browser) {
+								// If building in strict mode; we should fail, this query broke
+								if (import.meta.env.VITE_BUILD_STRICT) throw e;
+							}
+							initialData = []
+							initialError = e
+						}
+
+						const query_store = QueryStore.create(
+							_${id}_query_text,
+							queryFunc,
+							'${id}',
+							{
+								scoreNotifier,
+								initialData,
+								initialError,
+								noResolve: _${id}_has_unresolved
+							}
+						);
+						
+						let fetch_maybepromise = undefined
+						if (!query_store.loaded) {
+							fetch_maybepromise = query_store.fetch();
+						}
+
+
+						if (_${id}) {
+							// Query has already been created
+							// Fetch the data and then replace
+							
+							if (fetch_maybepromise instanceof Promise) {
+								fetch_maybepromise.then(() => (_${id} = query_store));
+							} else {
+								_${id} = query_store;
+							}
+						} else {
+							_${id} = query_store;
+						}
+					};
+		
+					update();
+		
+					return debounce(update, 500);
+				}
+		
+				let _${id}_debounced_updater;
+				// make sure svelte knows debounced updater is dependent on query text
+				$: if (typeof _${id}_debounced_updater === 'undefined') {
+                    _${id}_query_text;
+                    _${id}_debounced_updater = _${id}_reactivity_manager();
+                };
+				// rerun if query text changes
+				$: _${id}_query_text, _${id}_debounced_updater();
+				// rerun if data changes during dev mode, likely source HMR
+				$: if (dev) data, _${id}_debounced_updater();
+			`;
+		});
+
+		/* 
+			reactivity doesn't happen on the server, so we need to manually subscribe to the inputs store
+			and update the queries when the inputs change
+		*/
+		const input_query_stores = `
+		if (!browser) {
+			onDestroy(inputs_store.subscribe((inputs) => {
+				${input_ids.map((id) => `
+				${id} = get(QueryStore.create(
+						\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`,
+						queryFunc,
+						'${id}',
+						{}
+					));
+				`).join('\n')}
+			}));
+		}
+		`;
+
+		const all_query_stores = validIds.map((id) => `$: ${id} = $_${id};`);
+
+		queryDeclarations += `
+		${errQueries.join("\n")}
+		${queryStoreDeclarations.join('\n')}
+		${input_query_stores}
+		${all_query_stores.join('\n')}
+		`;
 	}
 
 	let defaultProps = `
         import { page } from '$app/stores';
-        import { pageHasQueries, routeHash } from '@evidence-dev/component-utilities/stores';
-        import { setContext, getContext, beforeUpdate } from 'svelte';
+        import { pageHasQueries, routeHash, toasts } from '@evidence-dev/component-utilities/stores';
+        import { setContext, getContext, beforeUpdate, onDestroy, onMount } from 'svelte';
+		import { writable, get } from 'svelte/store';
         
         // Functions
         import { fmt } from '@evidence-dev/component-utilities/formatting';
 
-		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+		import { CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';		
         
         let props;
         export { props as data }; // little hack to make the data name not overlap
-        let { data = {}, customFormattingSettings } = props;
-        $: ({ data = {}, customFormattingSettings } = props);
+        let { data = {}, customFormattingSettings, __db, inputs } = props;
+        $: ({ data = {}, customFormattingSettings, __db } = props);
 
         $routeHash = '${routeH}';
 
-        $: data, Object.keys(data).length > 0 ? pageHasQueries.set(true) : pageHasQueries.set(false);
+		${/* 
+			do not switch to $: inputs = $inputs_store
+			reactive statements do not rerun during SSR 
+		*/''}
+		let inputs_store = writable(inputs);
+		setContext(INPUTS_CONTEXT_KEY, inputs_store);
+		onDestroy(inputs_store.subscribe((value) => inputs = value));
+
+        $: pageHasQueries.set(Object.keys(data).length > 0);
 
         setContext(CUSTOM_FORMATTING_SETTINGS_CONTEXT_KEY, {
             getCustomFormats: () => {
                 return customFormattingSettings.customFormats || [];
             }
         });
-        
-        const applyEvidenceTypes = function(data) {
 
-            let includedQueries = data.evidencemeta?.queries
+		import { browser, dev } from "$app/environment";
+		import { profile } from '@evidence-dev/component-utilities/profile';
+		import debounce from 'debounce';
+		import { QueryStore } from '@evidence-dev/query-store';
+		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
-            if(includedQueries) {
-                // iterate through each query 
-                for(let i = 0; i < includedQueries.length; i++) {
-                    // for each of the query objects in data
-                    let query = data[includedQueries[i].id]
-                    let colTypes = data.evidencemeta?.queries[i].columnTypes
-                    // iterate through each row in the query
-                    for(let j = 0; j < query.length; j++) {
-                        // for each row in the query
-                        if(colTypes) {
-                            // include column types in the row object as a non enumerable property
-                            Object.defineProperty(query[j], '_evidenceColumnTypes', {
-                                enumerable: false,
-                                value: colTypes,
-                            });
-                        }
-                    }
-                }
-            }
-    
-        }
-    
-        beforeUpdate(() => {
-            applyEvidenceTypes(data)
-        })
+		const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
+		setQueryFunction(queryFunc);
+
+		const scoreNotifier = !dev? () => {} : (info) => {
+			toasts.add({
+				id: Math.random(),
+				title: info.id,
+				message: \`Results estimated to use \${
+					Intl.NumberFormat().format(info.score / (1024 * 1024))
+				}mb of memory, performance may be impacted\`,
+				status: 'warning'
+			}, 5000);
+		};
+
+		let __has_hmr_run = false
+	    if (import.meta?.hot) {
+	        import.meta.hot.on("vite:afterUpdate", () => {
+				__has_hmr_run = true
+				QueryStore.emptyCache() // All bets are off
+			})
+	    }
+		
+		let params = $page.params;
+		$: params = $page.params;
+
+		function __checkForUnsetInputs(strings, ...args) {
+			if (args.some(a => a?.__unset)) {
+				return true
+			} else {
+				return false
+			}
+		}
+		
 
         ${queryDeclarations}
-        `;
+    `;
 
 	return defaultProps;
 };
@@ -85,12 +287,18 @@ const createDefaultProps = function (filename, componentDevelopmentMode, fileQue
  * @type {(componentDevelopmentMode: boolean) => import("svelte-preprocess/dist/types").PreprocessorGroup}
  */
 const processQueries = (componentDevelopmentMode) => {
-	let queryIdsByFile = {};
+	/**
+	 * @type {Record<string, Record<string, import("./extract-queries/extract-queries.cjs").Query>>}
+	 */
+	const dynamicQueries = {};
 	return {
 		markup({ content, filename }) {
 			if (filename.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
-				queryIdsByFile[getRouteHash(filename)] = fileQueries.map((q) => q.id);
+				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
+					acc[q.id] = q;
+					return acc;
+				}, {});
 
 				const externalQueryViews =
 					'\n\n\n' +
@@ -120,9 +328,9 @@ const processQueries = (componentDevelopmentMode) => {
 		script({ content, filename, attributes }) {
 			if (filename.endsWith('.md')) {
 				if (attributes.context != 'module') {
-					let queryIds = queryIdsByFile[getRouteHash(filename)].filter((x) => x !== 'untitled');
+					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
 					return {
-						code: createDefaultProps(filename, componentDevelopmentMode, queryIds) + content
+						code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
 					};
 				}
 			}

@@ -10,6 +10,8 @@ import debounce from 'debounce';
  * } ActionParams
  */
 
+const ANIMATION_DURATION = 500;
+
 /** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
 export default (node, option) => {
 	// https://github.com/evidence-dev/evidence/issues/1323
@@ -23,11 +25,19 @@ export default (node, option) => {
 
 	const chart = init(node, 'evidence-light', { renderer: useSvg ? 'svg' : 'canvas' });
 
-	chart.setOption(option);
+	chart.setOption({
+		...option,
+		animationDuration: ANIMATION_DURATION,
+		animationDurationUpdate: ANIMATION_DURATION
+	});
 	// Check if echartsOptions are provided and apply them
 	const prevOption = chart.getOption();
 	if (prevOption.echartsOptions) {
-		chart.setOption(prevOption.echartsOptions);
+		chart.setOption({
+			...prevOption.echartsOptions,
+			animationDuration: ANIMATION_DURATION,
+			animationDurationUpdate: ANIMATION_DURATION
+		});
 	}
 
 	const dispatch = option.dispatch;
@@ -40,7 +50,7 @@ export default (node, option) => {
 	const onWindowResize = debounce(() => {
 		chart.resize({
 			animation: {
-				duration: 500
+				duration: ANIMATION_DURATION
 			}
 		});
 		updateLabelWidths();
@@ -90,7 +100,14 @@ export default (node, option) => {
 
 	return {
 		update(option) {
-			chart.setOption(option);
+			chart.setOption(
+				{
+					...option,
+					animationDuration: ANIMATION_DURATION,
+					animationDurationUpdate: ANIMATION_DURATION
+				},
+				true
+			);
 			// Check if echartsOptions are provided and apply them
 			const prevOption = chart.getOption();
 			if (prevOption.echartsOptions) {

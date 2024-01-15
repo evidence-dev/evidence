@@ -1,11 +1,11 @@
 <script>
-	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import VariableCopy from './VariableCopy.svelte';
 	export let settings;
+	export let datasourceSettings;
 </script>
 
-{#if !settings.credentials}
-	<p>You'll need to connect to a database before deploying to Vercel.</p>
+{#if !datasourceSettings.length}
+	<p>You'll need to connect to at least one datasource before deploying to Vercel.</p>
 {:else if !settings.gitRepo}
 	<p>You'll need to set up a git repo before deploying to Vercel.</p>
 {:else}
@@ -25,7 +25,7 @@
 
 	<div class="setting-row">
 		<span class="setting">Build Command</span>
-		<div class="setting-value"><VariableCopy text={'npm run build'} /></div>
+		<div class="setting-value"><VariableCopy text={'npm run sources && npm run build'} /></div>
 	</div>
 
 	<div class="setting-row">
@@ -37,27 +37,6 @@
 		<span class="setting">Install Command</span>
 		<div class="setting-value"><VariableCopy text={'npm install'} /></div>
 	</div>
-
-	<div class="separator">Environment Variables</div>
-	<p>Copy paste the following into environment variables</p>
-
-	<EnvironmentVarListing {settings} />
-
-	<h2>Optional</h2>
-	<ol>
-		<li>
-			<a href="https://vercel.com/blog/protecting-deployments" target="_blank" rel="noreferrer"
-				>Password protect your site</a
-			>
-		</li>
-		<li>
-			<a
-				href="https://docs.evidence.dev/deployment/vercel#optional-schedule-updates-using-deploy-hooks"
-				target="_blank"
-				rel="noreferrer">Schedule your site to update periodically</a
-			>
-		</li>
-	</ol>
 {/if}
 
 <style>

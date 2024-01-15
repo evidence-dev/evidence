@@ -4,69 +4,55 @@
 
 <script>
 	import { slide, blur } from 'svelte/transition';
-	import { dev } from '$app/environment';
 	import DataTable from './QueryViewerSupport/QueryDataTable.svelte';
 	import ChevronToggle from './ChevronToggle.svelte';
 	import Prism from './QueryViewerSupport/Prismjs.svelte';
-	import { showQueries } from '@evidence-dev/component-utilities/stores';
+	import { showQueries, localStorageStore } from '@evidence-dev/component-utilities/stores';
 	import CompilerToggle from './QueryViewerSupport/CompilerToggle.svelte';
-	import { writable } from 'svelte/store';
-	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 
 	export let queryID;
-	export let pageQueries;
+	/** @type {import("@evidence-dev/query-store").QueryStore} */
 	export let queryResult;
 
+	$: pageQueries = $page.data.evidencemeta.queries;
+
 	// Title & Query Toggle
-	// Create a copy of the showSQL variable in the local storage, for each query. Access this to determine state of each query dropdown.
-	let showSQL = writable(
-		browser && (localStorage.getItem('showSQL_'.concat(queryID)) === 'true' || false)
-	);
-	showSQL.subscribe((value) => browser && localStorage.setItem('showSQL_'.concat(queryID), value));
+	let showSQL = localStorageStore('showSQL_'.concat(queryID), false);
+	// Query text & Compiler Toggle
+	let showResults = localStorageStore(`showResults_${queryID}`);
 
 	const toggleSQL = function () {
 		$showSQL = !$showSQL;
 	};
 
-	// Query text & Compiler Toggle
-	let showResults = writable(
-		browser && (localStorage.getItem('showResults_'.concat(queryID)) === 'true' || false)
-	);
-	showResults.subscribe(
-		(value) => browser && localStorage.setItem('showResults_'.concat(queryID), value)
-	);
-
 	const toggleResults = function () {
-		if (!error && nRecords > 0) {
+		if (!error && $queryResult.length > 0) {
 			$showResults = !$showResults;
 		}
 	};
 
-	let queries;
 	let inputQuery;
-	let compiledQuery;
 	let showCompilerToggle;
 	let showCompiled = true;
-	let error;
-	let nRecords;
-	let nProperties;
+	/** @type {undefined | Error } */
+	let error = undefined;
+
+	// Enter an error state if the queryResult isn't defined
+	$: {
+		if (!$queryResult) error = new Error('queryResult is undefined');
+		else if ($queryResult.error) error = $queryResult.error;
+	}
+
+	$: rowCount = $queryResult?.length ?? 0;
+	$: colCount = $queryResult?._evidenceColumnTypes.length ?? 0;
 
 	$: {
-		queries = pageQueries.filter((d) => d.id === queryID);
-		inputQuery = queries[0].inputQueryString;
-		compiledQuery = queries[0].compiledQueryString;
-		showCompilerToggle = queries[0].compiled && queries[0].compileError === undefined;
+		let query = pageQueries?.find((d) => d.id === queryID);
 
-		// Status Bar & Results Toggle
-		error = queryResult[0]?.error_object?.error;
-		nRecords = null;
-		nProperties = null;
-		// Create a copy of the showResults variable in the local storage, for each query. Access this to determine state of each query dropdown.
-		if (!error) {
-			nRecords = queryResult.length;
-			if (nRecords > 0) {
-				nProperties = Object.keys(queryResult[0]).length;
-			}
+		if (query) {
+			inputQuery = query.inputQueryString;
+			showCompilerToggle = query.compiled && query.compileError === undefined;
 		}
 	}
 </script>
@@ -88,7 +74,7 @@
 				{#if $showSQL}
 					<div class="code-container" transition:slide|local>
 						{#if showCompiled}
-							<Prism code={compiledQuery} />
+							<Prism code={queryResult.originalText} />
 						{:else}
 							<Prism code={inputQuery} />
 						{/if}
@@ -99,31 +85,28 @@
 			<button
 				type="button"
 				aria-label="view-query"
-				class={'status-bar' +
-					(error ? ' error' : ' success') +
-					($showResults ? ' open' : ' closed')}
+				class={'status-bar'}
+				class:error
+				class:success={!error}
+				class:open={$showResults}
+				class:closed={!$showResults}
 				on:click={toggleResults}
 			>
 				{#if error}
 					{error.message}
-					{#if dev && error.message === 'Missing database connection.'}
-						<a class="credentials-link" href="/settings"> Add credentials &rarr;</a>
-					{:else if !dev && error.message === 'Missing database connection; set the EVIDENCE_DATABASE environment variable.'}
-						<a class="credentials-link" href="https://docs.evidence.dev/cli/#environment-variables"
-							>View environment variables &rarr;</a
-						>
-					{/if}
-				{:else if nRecords > 0}
+				{:else if rowCount}
 					<ChevronToggle toggled={$showResults} color="#3488e9" />
-					{nRecords.toLocaleString()}
-					{nRecords > 1 ? 'records' : 'record'} with {nProperties.toLocaleString()}
-					{nProperties > 1 ? 'properties' : 'property'}
+					{rowCount.toLocaleString()}
+					{rowCount > 1 ? 'records' : 'record'} with {colCount.toLocaleString()}
+					{colCount > 1 ? 'properties' : 'property'}
+				{:else if $queryResult.loading}
+					loading...
 				{:else}
 					ran successfully but no data was returned
 				{/if}
 				<!-- Results -->
 			</button>
-			{#if queryResult.length > 0 && !error && $showResults}
+			{#if rowCount > 0 && !error && $showResults}
 				<DataTable data={queryResult} {queryID} />
 			{/if}
 		</div>
@@ -242,15 +225,6 @@
 		color: var(--red-600);
 	}
 
-	.credentials-link {
-		color: var(--blue-500);
-		text-decoration: none;
-	}
-
-	.credentials-link:hover {
-		color: var(--blue-700);
-	}
-
 	button {
 		font-family: var(--ui-font-family-compact);
 		-webkit-font-smoothing: antialiased;
@@ -273,12 +247,6 @@
 		border-top: 1px solid var(--grey-200);
 		border-top-left-radius: 6px;
 		border-top-right-radius: 6px;
-	}
-
-	button.results {
-		padding: 0.3em 0.6em;
-		margin-top: 0px;
-		background-color: white;
 	}
 
 	.container {

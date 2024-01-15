@@ -5,10 +5,11 @@ title: Netlify
 ---
 
 :::caution
-All URLs on Netlify are converted to lowercase. This can cause issues if you're using `$page.params` to filter data in your project. It's recommended to use `.toLowerCase()` to convert all URLs to lowercase before filtering data, like this:
+All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your project. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
 
-```js
-data.filter((item) => item.name.toLowerCase() === $page.params.name.toLowerCase())
+```sql
+SELECT * FROM source_name.my_table 
+WHERE LOWER(my_column) = LOWER('${params.my_param}')
 ```
 :::
 
@@ -17,7 +18,7 @@ Netlify lets you host a public version of your project for free, or you can crea
 ## Deploy to Netlify
 
 1. Run your project in development mode
-1. Visit the [settings page](https://localhost:3000/settings)
+1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select 'netlify', then follow the provided instructions
 
 ## Optional: Set a site-wide password for your project (Requires Paid Plan)

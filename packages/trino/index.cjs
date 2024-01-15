@@ -157,3 +157,85 @@ const mapTrinoTypeToEvidenceType = (type) => {
 };
 
 module.exports = runQuery;
+
+/**
+ * @typedef {Object} TrinoOptions
+ * @property {string} host
+ * @property {'true' | 'false'} ssl
+ * @property {string} port
+ * @property {string} user
+ * @property {string} password
+ * @property {string} catalog
+ * @property {string} schema
+ * @property {string} engine
+ */
+
+/** @type {import('@evidence-dev/db-commons').GetRunner<DatabricksOptions>} */
+module.exports.getRunner = async (opts) => {
+	return async (queryContent, queryPath, batchSize) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts, batchSize);
+	};
+};
+
+/** @type {import('@evidence-dev/db-commons').ConnectionTester<DatabricksOptions>} */
+module.exports.testConnection = async (opts) => {
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+};
+
+module.exports.options = {
+	host: {
+		title: 'Host',
+		type: 'string',
+		secret: false,
+		default: 'localhost',
+		required: true
+	},
+	ssl: {
+		title: 'Enable SSL',
+		type: 'boolean',
+		secret: false,
+		description: 'Whether or not to use SSL. Must be set to true for HTTPS.'
+	},
+	port: {
+		title: 'Port',
+		type: 'number',
+		secret: false,
+		default: 443,
+		required: true
+	},
+	user: {
+		title: 'Username',
+		type: 'string',
+		secret: false,
+		required: true
+	},
+	password: {
+		title: 'Password',
+		type: 'string',
+		secret: true,
+		required: true
+	},
+	catalog: {
+		title: 'Catalog',
+		type: 'string',
+		required: false,
+		secret: false
+	},
+	schema: {
+		title: 'Schema',
+		type: 'string',
+		secret: false,
+		required: false
+	},
+	engine: {
+		title: 'Engine',
+		type: 'string',
+		secret: false,
+		required: false,
+		description: 'The engine to use. Options are "trino" and "presto". Default is "trino".'
+	}
+};

@@ -1,6 +1,6 @@
 ---
 title: Bar Chart
-sources:
+queries:
   - orders_by_category: orders_by_category.sql
   - orders_by_category_2021: orders_by_category_2021.sql
   - orders_by_item: orders_by_item.sql
@@ -179,7 +179,7 @@ swapXY=true
 ## Very Long Bar
 
 ```characters_ep_total
-SELECT * FROM './sources/characters_ep_total.csv'
+SELECT * FROM csv.characters_ep_total
 ```
 
 <BarChart 

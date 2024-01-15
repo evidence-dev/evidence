@@ -49,7 +49,7 @@ select
     channel as source,
     'all_traffic' as target,
     count(user_id) as count
-from web_events
+from events.web_events
 group by 1,2
 
 union all
@@ -58,11 +58,11 @@ select
     'all_traffic' as source,
     page_route as target,
     count(user_id) as count
-from web_events
+from events.web_events
 group by 1, 2
 ‍```
 
-<SankeyChart
+<SankeyDiagram
     data={traffic_data}
     title="Sankey"
     subtitle="A simple sankey chart"

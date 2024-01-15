@@ -1,5 +1,573 @@
 # @evidence-dev/core-components
 
+## 3.0.4
+
+### Patch Changes
+
+- 00145c4c: Add default prop to Dropdown, Add default and placeholder prop to TextInput
+- 03b3b626: Added TextInput and ButtonGroup (+ DateAgg) input components
+- 7b2b8a00: Add USQL to core components; augment faker datasource to generate better and consistent data
+- Updated dependencies [03b3b626]
+  - @evidence-dev/component-utilities@2.0.2
+
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies [913f5919]
+  - @evidence-dev/component-utilities@2.0.1
+  - @evidence-dev/query-store@2.0.1
+
+## 3.0.2
+
+### Patch Changes
+
+-
+
+## 3.0.1
+
+### Patch Changes
+
+- Fix DataTable rows being treated as a string
+
+## 3.0.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Minor Changes
+
+- 1097e5a9: add client ddb-backed dropdown component
+
+### Patch Changes
+
+- 689d9e2e: Improve DataTable & Chart loading states
+- 0e3eec13: Added <Button/>
+- 59938e50: SourceConfig handles missing plugins better
+- f304fc1e: Address flickering on client side nav
+- 840d1195: allow initialdata to saturate columns
+- 5247996b: Improved behavior when copying environment variables
+- 6b7a132d: Fix chart & datatable error state
+- 77d09b54: DataTable, Chart, Value all handle missing data prop better
+- 91034294: More QueryViewer tweaks
+- 0e3eec13: Cleaned up <Accordion/>, added a `small` prop
+- 9132146b: fix vite hard refreshes, fix dropdown flickering on ssr, fix null columns
+- d79a3014: Clean up console logs
+- 6eb93816: QueryViewer now respects QueryStore loading staet
+  QueryViewer now updates when query text hmr updates
+
+  QueryStore now accepts initialError when SSR query fails
+
+  SSR / QueryStore now swallow errors unless build:strict is enabled
+  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+
+- 1235f278: Wrap most viz components in a QueryLoad to externalize interaction with QueryStore loading state
+  Update Table of Contents when a header value changes
+- 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
+- b5592a3f: Usability Improvements
+- 130950d7: revamp toast notifications
+- b6683ba0: Deploy screen now shows environment variables for USQL
+- b4de6d55: Hint and Button styling updates
+- 4d5735a2: UX and design updates to source configuration
+- d1265559: Ensure QueryViewer SQL not open by default
+- 0a60b724: Remove reduntant QueryStatus notifications
+- 77d09b54: BigValue handles missing data better
+- be6cd88a: Wrap maps, tweak how data is passed
+- bf4a112a: Update package.json to use new datasource field
+- ef3a66dc: Adjust icon usage, dependencies
+- 3708374d: Wait for props to be created before leaving loading state
+- df9737fc: Style source config docs link
+- 741885bf: Fix Source Query HMR
+- 88e1a5ee: Toasts can now be dismissable
+- d7477a44: Silence Empty Dataset error in console
+- aea3be1a: Source HMR toasts are now persistent until dismissed
+- 8f5d4ba8: Fix download button
+- 9da3812e: - QueryStatus only notifies once now
+  - Source HMR uses a path-specific queue to prevent queuing a file twice, and prevent running more than one source command at a time
+- bbcd070e: Better error feedback for source names
+- 0e3eec13: Re-arranged environment variable UI
+- f5b06ca4: Changes to QueryLoad to make sure children get the published value
+- 078fca3b: Error handling via QueryStores is more effective now
+- cad09993: improve source refresh experience
+- 583cea9e: Properly retrieve column types from QueryStores
+- 16a17086: Handle empty datasets and changing datasets more effectively
+- 15248699: fix for hugeints
+- e70a6a3e: Allow chart to render non-querystore values
+- 043a302a: Make sure that .at behaves as expected
+- 26ad2d2c: Dropdown props are camelCase not snake_case
+- 1c478a62: ReferenceArea now re-adds itself to the series when needed
+- df9737fc: Adjust loading state condition again
+- 7d298d28: Makes most "truthy" props reactive.
+  Due to the wrapping, it seems that the type gets caught as a string somewhere along the line (likely becase the query finishes running)
+  This causes it to revert to truthy.
+- 75fa47a3: styling for dropdown
+- 64921385: QueryStatus now checks that on/off are functions on import.meta.hot
+- 6505351f: Misc Fixes
+- b1427173: QueryViewer is more reactive now; and cleaned up to leverage QueryStore more effectively
+- 2d2f774e: Style dropdowns as inline blocks
+- 20127231: Bump all versions so version pinning works
+- e9a63c71: Add loading states to DataTable and Chart
+- 64d1405b: Loading state is now respected by Value and BigValue
+- 0e3eec13: Updated Toast notifications with more types and default options
+- 7a5225be: QueryStore more aggresively loads metadata; and ignore 0-length initial data
+- c8968ea3: Settings UI now creates a connector when testing, if it doesn't already exist. It also won't lock up in more cases
+- 120d22e9: Update docs link for sources
+- 2371c8f1: Chart now keeps a copy of the querystore, even if data is clobbered. Waits for props and data to become available
+- Updated dependencies [4ac6a688]
+- Updated dependencies [5d280997]
+- Updated dependencies [391282e5]
+- Updated dependencies [840d1195]
+- Updated dependencies [b25a95d7]
+- Updated dependencies [6064fbbf]
+- Updated dependencies [71f0d481]
+- Updated dependencies [9132146b]
+- Updated dependencies [7c4249c0]
+- Updated dependencies [e1174aa1]
+- Updated dependencies [6eb93816]
+- Updated dependencies [7c44653b]
+- Updated dependencies [9bd1cd29]
+- Updated dependencies [130950d7]
+- Updated dependencies [120d22e9]
+- Updated dependencies [cb0fc468]
+- Updated dependencies [bf4a112a]
+- Updated dependencies [17a82581]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [e1facffd]
+- Updated dependencies [f38b8920]
+- Updated dependencies [489a6069]
+- Updated dependencies [88e1a5ee]
+- Updated dependencies [e2162851]
+- Updated dependencies [64ab3074]
+- Updated dependencies [078fca3b]
+- Updated dependencies [52e114cc]
+- Updated dependencies [9e7ba37d]
+- Updated dependencies [1097e5a9]
+- Updated dependencies [fe466b13]
+- Updated dependencies [ca1f90b3]
+- Updated dependencies [f764cba4]
+- Updated dependencies [982a17c6]
+- Updated dependencies [583cea9e]
+- Updated dependencies [130950d7]
+- Updated dependencies [4053c976]
+- Updated dependencies [043a302a]
+- Updated dependencies [f051417f]
+- Updated dependencies [6505351f]
+- Updated dependencies [16a17086]
+- Updated dependencies [4c6eae53]
+- Updated dependencies [20127231]
+- Updated dependencies [e9a63c71]
+- Updated dependencies [64d1405b]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [7a5225be]
+- Updated dependencies [ba0d6f50]
+- Updated dependencies [0e3eec13]
+  - @evidence-dev/component-utilities@2.0.0
+  - @evidence-dev/query-store@2.0.0
+  - @evidence-dev/tailwind@1.0.0
+
+## 2.0.0-usql.46
+
+### Patch Changes
+
+- d79a3014: Clean up console logs
+- f5b06ca4: Changes to QueryLoad to make sure children get the published value
+- 2d2f774e: Style dropdowns as inline blocks
+- Updated dependencies [f38b8920]
+  - @evidence-dev/query-store@2.0.0-usql.24
+  - @evidence-dev/component-utilities@2.0.0-usql.32
+
+## 2.0.0-usql.45
+
+### Patch Changes
+
+- 741885bf: Fix Source Query HMR
+- 7d298d28: Makes most "truthy" props reactive.
+  Due to the wrapping, it seems that the type gets caught as a string somewhere along the line (likely becase the query finishes running)
+  This causes it to revert to truthy.
+
+## 2.0.0-usql.44
+
+### Patch Changes
+
+- 043a302a: Make sure that .at behaves as expected
+- Updated dependencies [043a302a]
+  - @evidence-dev/query-store@2.0.0-usql.23
+  - @evidence-dev/component-utilities@2.0.0-usql.31
+
+## 2.0.0-usql.43
+
+### Patch Changes
+
+- Updated dependencies [489a6069]
+  - @evidence-dev/component-utilities@2.0.0-usql.30
+
+## 2.0.0-usql.42
+
+### Patch Changes
+
+- d1265559: Ensure QueryViewer SQL not open by default
+- be6cd88a: Wrap maps, tweak how data is passed
+- 9da3812e: - QueryStatus only notifies once now
+  - Source HMR uses a path-specific queue to prevent queuing a file twice, and prevent running more than one source command at a time
+
+## 2.0.0-usql.41
+
+### Patch Changes
+
+- 1235f278: Wrap most viz components in a QueryLoad to externalize interaction with QueryStore loading state
+  Update Table of Contents when a header value changes
+- d7477a44: Silence Empty Dataset error in console
+- 15248699: fix for hugeints
+- 1c478a62: ReferenceArea now re-adds itself to the series when needed
+  - @evidence-dev/query-store@2.0.0-usql.22
+  - @evidence-dev/component-utilities@2.0.0-usql.29
+
+## 2.0.0-usql.40
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.21
+- @evidence-dev/component-utilities@2.0.0-usql.28
+
+## 2.0.0-usql.39
+
+### Patch Changes
+
+- 3708374d: Wait for props to be created before leaving loading state
+
+## 2.0.0-usql.38
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/query-store@2.0.0-usql.20
+  - @evidence-dev/component-utilities@2.0.0-usql.27
+
+## 2.0.0-usql.37
+
+### Patch Changes
+
+- Updated dependencies [e2162851]
+  - @evidence-dev/query-store@2.0.0-usql.19
+  - @evidence-dev/component-utilities@2.0.0-usql.26
+
+## 2.0.0-usql.36
+
+### Patch Changes
+
+- 689d9e2e: Improve DataTable & Chart loading states
+- Updated dependencies [391282e5]
+  - @evidence-dev/component-utilities@2.0.0-usql.25
+  - @evidence-dev/query-store@2.0.0-usql.18
+
+## 2.0.0-usql.35
+
+### Patch Changes
+
+- df9737fc: Style source config docs link
+- df9737fc: Adjust loading state condition again
+
+## 2.0.0-usql.34
+
+### Patch Changes
+
+- Update docs link for sources
+
+## 2.0.0-usql.33
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/query-store@2.0.0-usql.17
+  - @evidence-dev/component-utilities@2.0.0-usql.24
+
+## 2.0.0-usql.32
+
+### Patch Changes
+
+- 16a17086: Handle empty datasets and changing datasets more effectively
+- Updated dependencies [16a17086]
+  - @evidence-dev/query-store@2.0.0-usql.16
+  - @evidence-dev/component-utilities@2.0.0-usql.23
+
+## 2.0.0-usql.31
+
+### Patch Changes
+
+- f304fc1e: Address flickering on client side nav
+
+## 2.0.0-usql.30
+
+### Patch Changes
+
+- 9132146b: fix vite hard refreshes, fix dropdown flickering on ssr, fix null columns
+- Updated dependencies [9132146b]
+- Updated dependencies [4c6eae53]
+- Updated dependencies [ba0d6f50]
+  - @evidence-dev/component-utilities@2.0.0-usql.22
+  - @evidence-dev/query-store@2.0.0-usql.15
+
+## 2.0.0-usql.29
+
+### Patch Changes
+
+- 75fa47a3: styling for dropdown
+
+## 2.0.0-usql.28
+
+### Patch Changes
+
+- 7a5225be: QueryStore more aggresively loads metadata; and ignore 0-length initial data
+- Updated dependencies [5d280997]
+- Updated dependencies [7a5225be]
+  - @evidence-dev/component-utilities@2.0.0-usql.21
+  - @evidence-dev/query-store@2.0.0-usql.14
+
+## 2.0.0-usql.27
+
+### Patch Changes
+
+- 583cea9e: Properly retrieve column types from QueryStores
+- e70a6a3e: Allow chart to render non-querystore values
+- Updated dependencies [71f0d481]
+- Updated dependencies [ef4155ee]
+- Updated dependencies [583cea9e]
+  - @evidence-dev/component-utilities@2.0.0-usql.20
+  - @evidence-dev/query-store@2.0.0-usql.13
+
+## 2.0.0-usql.26
+
+### Patch Changes
+
+- 64921385: QueryStatus now checks that on/off are functions on import.meta.hot
+
+## 2.0.0-usql.25
+
+### Patch Changes
+
+- 91034294: More QueryViewer tweaks
+- 0a60b724: Remove reduntant QueryStatus notifications
+- aea3be1a: Source HMR toasts are now persistent until dismissed
+- bbcd070e: Better error feedback for source names
+- Updated dependencies [4ac6a688]
+  - @evidence-dev/component-utilities@2.0.0-usql.19
+
+## 2.0.0-usql.24
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.12
+- @evidence-dev/component-utilities@2.0.0-usql.18
+
+## 2.0.0-usql.23
+
+### Patch Changes
+
+- Updated dependencies [982a17c6]
+  - @evidence-dev/component-utilities@2.0.0-usql.17
+  - @evidence-dev/query-store@2.0.0-usql.11
+
+## 2.0.0-usql.22
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.16
+  - @evidence-dev/query-store@2.0.0-usql.10
+  - @evidence-dev/tailwind@1.0.0-usql.3
+
+## 2.0.0-usql.21
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.9
+- @evidence-dev/component-utilities@2.0.0-usql.15
+
+## 2.0.0-usql.20
+
+### Patch Changes
+
+- 840d1195: allow initialdata to saturate columns
+- 26ad2d2c: Dropdown props are camelCase not snake_case
+- 6505351f: Misc Fixes
+- 2371c8f1: Chart now keeps a copy of the querystore, even if data is clobbered. Waits for props and data to become available
+- Updated dependencies [840d1195]
+- Updated dependencies [6064fbbf]
+- Updated dependencies [6505351f]
+  - @evidence-dev/query-store@2.0.0-usql.8
+  - @evidence-dev/component-utilities@2.0.0-usql.14
+
+## 2.0.0-usql.19
+
+### Patch Changes
+
+- b4de6d55: Hint and Button styling updates
+- 4d5735a2: UX and design updates to source configuration
+- 88e1a5ee: Toasts can now be dismissable
+- Updated dependencies [88e1a5ee]
+  - @evidence-dev/component-utilities@2.0.0-usql.13
+  - @evidence-dev/query-store@2.0.0-usql.7
+
+## 2.0.0-usql.18
+
+### Patch Changes
+
+- 59938e50: SourceConfig handles missing plugins better
+- 5247996b: Improved behavior when copying environment variables
+- 6b7a132d: Fix chart & datatable error state
+- 77d09b54: DataTable, Chart, Value all handle missing data prop better
+- 77d09b54: BigValue handles missing data better
+- 8f5d4ba8: Fix download button
+- b1427173: QueryViewer is more reactive now; and cleaned up to leverage QueryStore more effectively
+- Updated dependencies [b25a95d7]
+- Updated dependencies [fe466b13]
+  - @evidence-dev/component-utilities@2.0.0-usql.12
+  - @evidence-dev/query-store@2.0.0-usql.6
+
+## 2.0.0-usql.17
+
+### Patch Changes
+
+- 0e3eec13: Added <Button/>
+- 0e3eec13: Cleaned up <Accordion/>, added a `small` prop
+- 6eb93816: QueryViewer now respects QueryStore loading staet
+  QueryViewer now updates when query text hmr updates
+
+  QueryStore now accepts initialError when SSR query fails
+
+  SSR / QueryStore now swallow errors unless build:strict is enabled
+  (e.g. the error propogates to the UI where the user can more easily find it in dev mode / regular builds)
+
+- 7c44653b: add error state to dropdowns, fix .clone() error, rename from prop to data
+- 0e3eec13: Re-arranged environment variable UI
+- 0e3eec13: Updated Toast notifications with more types and default options
+- c8968ea3: Settings UI now creates a connector when testing, if it doesn't already exist. It also won't lock up in more cases
+- Updated dependencies [6eb93816]
+- Updated dependencies [7c44653b]
+- Updated dependencies [0e3eec13]
+- Updated dependencies [0e3eec13]
+  - @evidence-dev/query-store@2.0.0-usql.5
+  - @evidence-dev/component-utilities@2.0.0-usql.11
+
+## 2.0.0-usql.16
+
+### Patch Changes
+
+- b5592a3f: Usability Improvements
+  - @evidence-dev/query-store@2.0.0-usql.4
+
+## 2.0.0-usql.15
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.0-usql.3
+
+## 2.0.0-usql.14
+
+### Minor Changes
+
+- 1097e5a9: add client ddb-backed dropdown component
+
+### Patch Changes
+
+- 130950d7: revamp toast notifications
+- Updated dependencies [9bd1cd29]
+- Updated dependencies [130950d7]
+- Updated dependencies [1097e5a9]
+- Updated dependencies [130950d7]
+  - @evidence-dev/query-store@2.0.0-usql.2
+  - @evidence-dev/component-utilities@2.0.0-usql.10
+
+## 2.0.0-usql.13
+
+### Patch Changes
+
+- b6683ba0: Deploy screen now shows environment variables for USQL
+- cad09993: improve source refresh experience
+- 64d1405b: Loading state is now respected by Value and BigValue
+- Updated dependencies [64d1405b]
+  - @evidence-dev/component-utilities@2.0.0-usql.9
+  - @evidence-dev/query-store@2.0.0-usql.1
+
+## 2.0.0-usql.12
+
+### Patch Changes
+
+- 078fca3b: Error handling via QueryStores is more effective now
+- e9a63c71: Add loading states to DataTable and Chart
+- Updated dependencies [e1facffd]
+- Updated dependencies [078fca3b]
+- Updated dependencies [e9a63c71]
+  - @evidence-dev/query-store@2.0.0-usql.0
+  - @evidence-dev/component-utilities@2.0.0-usql.8
+
+## 2.0.0-usql.11
+
+### Patch Changes
+
+- Updated dependencies [52e114cc]
+- Updated dependencies [ca1f90b3]
+  - @evidence-dev/component-utilities@2.0.0-usql.7
+
+## 2.0.0-usql.10
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+- Updated dependencies [7c4249c0]
+- Updated dependencies [20127231]
+  - @evidence-dev/component-utilities@2.0.0-usql.6
+  - @evidence-dev/tailwind@1.0.0-usql.2
+
+## 2.0.0-usql.9
+
+### Patch Changes
+
+- Updated dependencies [17a82581]
+  - @evidence-dev/component-utilities@2.0.0-usql.5
+
+## 2.0.0-usql.8
+
+### Patch Changes
+
+- Adjust icon usage, dependencies
+
+## 2.0.0-usql.7
+
+### Patch Changes
+
+- Updated dependencies [f051417f]
+  - @evidence-dev/tailwind@1.0.0-usql.1
+
+## 2.0.0-usql.6
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/component-utilities@2.0.0-usql.4
+
+## 2.0.0-usql.5
+
+### Patch Changes
+
+- Updated dependencies [64ab3074]
+  - @evidence-dev/component-utilities@2.0.0-usql.3
+
+## 2.0.0-usql.4
+
+### Patch Changes
+
+- 9ade9c88: Add Definitions component
+- 9432c6e4: limit `getFormatObjectFromString` in Value.svelte
+- be1cc666: force NaN, null, and undefined to the top of ascending sort order and vice versa
+
 ## 2.1.4
 
 ### Patch Changes
@@ -144,6 +712,43 @@
 ### Patch Changes
 
 - 75560a31: Consolidate tailwind presets into tailwind package
+
+## 2.0.0-usql.3
+
+### Patch Changes
+
+- Updated dependencies [e1174aa1]
+  - @evidence-dev/component-utilities@2.0.0-usql.2
+
+## 2.0.0-usql.2
+
+### Minor Changes
+
+- 78f2fab2: Adds modal, accordion and link button UI components
+
+## 2.0.0-usql.1
+
+### Patch Changes
+
+- Updated dependencies [4053c976]
+  - @evidence-dev/component-utilities@2.0.0-usql.1
+
+## 2.0.0-usql.0
+
+### Major Changes
+
+- cb0fc468: This update includes major changes to the way Evidence interacts with data.
+  Instead of running queries against the production database, and including it
+  with the project as pre-rendered, static JSON data; those queries are now stored as .parquet files.
+
+  .parquet enables the use of DuckDB on the client, allowing for much greater levels of interactivity
+  on pages, and interoperability between different data sources (e.g. joins across postgres & mysql).
+
+### Patch Changes
+
+- 75560a31: Consolidate tailwind presets into tailwind package
+- Updated dependencies [cb0fc468]
+  - @evidence-dev/component-utilities@2.0.0-usql.0
 
 ## 1.1.0
 
