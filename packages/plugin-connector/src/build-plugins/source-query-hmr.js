@@ -141,7 +141,7 @@ const configureServer = (server) => {
 /** @type {() => import("vite").Plugin} */
 export const sourceQueryHMR = () => {
 	return {
-		name: 'Evidence Vite Plugin for Source Query HMR',
+		name: 'evidence:source-query-hmr',
 		configureServer
 	};
 };
