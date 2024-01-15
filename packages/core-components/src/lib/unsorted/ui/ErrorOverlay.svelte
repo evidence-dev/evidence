@@ -45,12 +45,12 @@
 
 {#if hasError}
 	<div
-		class="fixed flex flex-col z-50 h-screen w-screen bg-gray-900/80 justify-center items-center py-20 px-10 sm:px-20  select-none backdrop-blur-sm"
+		class="fixed flex flex-col z-50 h-screen w-screen bg-gray-900/80 justify-center items-center py-20 px-10 sm:px-20 select-none backdrop-blur-sm"
 		transition:fade|local={{ duration: 100 }}
 	>
 		<div
 			transition:fly|local={{ y: 100, duration: 300 }}
-			class="relative min-w-full h-screen bg-gradient-to-b from-black/95 to-gray-900/90 border-t-red-600 rounded-lg border-t-8 border-red-600 shadow-xl p-8 "
+			class="relative min-w-full h-screen bg-gradient-to-b from-black/95 to-gray-900/90 border-t-red-600 rounded-lg border-t-8 border-red-600 shadow-xl p-8"
 		>
 			<h1 class="text-4xl font-bold tracking-wide text-gray-200 border-b pb-4 border-gray-800">
 				Error
@@ -65,11 +65,11 @@
 				<a
 					href="https://evidencedev.slack.com/join/shared_invite/zt-uda6wp6a-hP6Qyz0LUOddwpXW5qG03Q#/shared-invite/email"
 					target="”_blank”"
-					class="text-gray-300 hover:text-white transition-colors duration-200 ">slack</a
+					class="text-gray-300 hover:text-white transition-colors duration-200">slack</a
 				>
 				<a
 					href="mailto:support@evidence.dev"
-					class="text-gray-300 hover:text-white transition-colors duration-200 ">email</a
+					class="text-gray-300 hover:text-white transition-colors duration-200">email</a
 				>
 			</div>
 		</div>
