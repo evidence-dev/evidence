@@ -30,6 +30,8 @@
 	export let yBaseline = undefined;
 	export let xTickMarks = undefined;
 	export let yTickMarks = undefined;
+	export let xMin = undefined;
+	export let xMax = undefined;
 	export let yMin = undefined;
 	export let yMax = undefined;
 
@@ -76,6 +78,8 @@
 	{yBaseline}
 	{xTickMarks}
 	{yTickMarks}
+	{xMin}
+	{xMax}
 	{yMin}
 	{yMax}
 	{title}
