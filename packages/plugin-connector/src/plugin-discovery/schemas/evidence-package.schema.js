@@ -6,7 +6,9 @@ const PackageExportSchema = z.union([
 		{ exports: z.object({ '.': z.string() }) },
 		{ description: 'Use the exports field of the package.json' }
 	),
-	z.object({ svelte: z.string() }, { description: 'Use the svelte field of the package.json' })
+	z
+		.object({ svelte: z.string() }, { description: 'Use the svelte field of the package.json' })
+		.optional()
 ]);
 
 const BasePackageSchema = z.object({
@@ -20,7 +22,8 @@ export const EvidencePackageSchema = z.intersection(
 	BasePackageSchema.extend({
 		evidence: z.object({
 			components: z.boolean().optional(),
-			databases: z.array(z.string()).optional()
+			datasources: z.array(z.union([z.string(), z.array(z.string())])).optional(),
+			icon: z.string().optional()
 		})
 	}),
 	PackageExportSchema

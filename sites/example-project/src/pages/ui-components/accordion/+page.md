@@ -27,3 +27,15 @@ Markdown does not work in accordions currently
   
   </AccordionItem>
 </Accordion>
+
+
+Small Accordions
+
+<Accordion>
+  <AccordionItem small title="Small Item">
+    I'm small
+  </AccordionItem>
+  <AccordionItem title="Regular Item">
+    I'm not small
+  </AccordionItem>
+</Accordion>

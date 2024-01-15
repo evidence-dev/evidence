@@ -1,5 +1,17 @@
 # ui-tests
 
+## 1.2.1
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+
+## 1.2.1-usql.0
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
 ## 1.2.0
 
 ### Minor Changes

@@ -1,11 +1,11 @@
-import { tidy, complete, mutate } from '@tidyjs/tidy';
+import { tidy, complete } from '@tidyjs/tidy';
 import getDistinctValues from './getDistinctValues';
 import { findInterval, vectorSeq } from './helpers/getCompletedData.helpers.js';
 
 /**
  * This function fills missing data points in the given data array for a specific series.
  *
- * @param {Record<string, unknown>[]} data - The data as an array of objects.
+ * @param {Record<string, unknown>[]} _data - The data as an array of objects.
  * @param {string} x - The property used as x-axis.
  * @param {string} y - The property used as y-axis.
  * @param {string} series - The specific series in the data to be filled.
@@ -13,11 +13,21 @@ import { findInterval, vectorSeq } from './helpers/getCompletedData.helpers.js';
  * @param {boolean} [fillX=false] - A flag indicating whether the x-axis values should be filled (based on the found interval distance).
  * @return {Record<string, unknown>[]} An array containing the filled data objects.
  */
-export default function getCompletedData(data, x, y, series, nullsZero = false, fillX = false) {
+export default function getCompletedData(_data, x, y, series, nullsZero = false, fillX = false) {
+	let xIsDate = false;
+	const data = _data.map((d) =>
+		Object.assign({}, d, {
+			[x]: d[x] instanceof Date ? ((xIsDate = true), d[x].toISOString()) : d[x]
+		})
+	);
 	const groups = Array.from(data).reduce((a, v) => {
+		if (v[x] instanceof Date) {
+			v[x] = v[x].toISOString();
+			xIsDate = true;
+		}
 		if (series) {
-			if (!a[v[series]]) a[v[series]] = [];
-			a[v[series]].push(v);
+			if (!a[v[series] ?? 'null']) a[v[series] ?? 'null'] = [];
+			a[v[series] ?? 'null'].push(v);
 		} else {
 			if (!a.default) a.default = [];
 			a.default.push(v);
@@ -29,25 +39,13 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 	// e.g. can include series and x values to ensure that all series have all x values
 	const expandKeys = {};
 
-	const xIsDate = data[0]?.[x] instanceof Date;
-
 	/** @type {Array<number | string>} */
 	let xDistinct;
 	const exampleX = data[0]?.[x];
 
 	switch (typeof exampleX) {
 		case 'object':
-			// If x is not a date; this shouldn't be hit, abort!
-			if (!(exampleX instanceof Date)) {
-				throw new Error('Unexpected object property, expected string, date, or number');
-			}
-			// Map dates to numeric values
-			xDistinct = getDistinctValues(
-				data.map((d) => ({ [x]: d[x].getTime() })),
-				x
-			);
-			// We don't fillX here because date numbers are very large, so a small interval would create a _massive_ array
-			break;
+			throw new Error('Unexpected object property, expected string, date, or number');
 		case 'number':
 			// Numbers are the most straightforward
 			xDistinct = getDistinctValues(data, x);
@@ -85,16 +83,9 @@ export default function getCompletedData(data, x, y, series, nullsZero = false, 
 		} else {
 			tidyFuncs.push(complete(expandKeys, nullySpec));
 		}
-		if (xIsDate) {
-			// Ensure that x is actually a date
-			tidyFuncs.push(
-				mutate({
-					[x]: (val) => new Date(val[x])
-				})
-			);
-		}
 
 		output.push(tidy(value, ...tidyFuncs));
 	}
+	if (xIsDate) return output.flat().map((r) => ({ ...r, [x]: new Date(r[x]) }));
 	return output.flat();
 }

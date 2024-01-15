@@ -73,7 +73,8 @@
 		Header,
 		TableOfContents,
 		QueryStatus,
-		ErrorOverlay
+		ErrorOverlay,
+		ToastWrapper
 	} from '@evidence-dev/core-components';
 
 	const prefetchStrategy = dev ? 'tap' : 'hover';
@@ -84,6 +85,10 @@
 		mobileSidebarOpen = false;
 	}
 </script>
+
+<!-- QueryStatus doesn't actually create any UI, just supplies toasts to ToastWrapper -->
+
+<ToastWrapper />
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<ErrorOverlay />

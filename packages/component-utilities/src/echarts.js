@@ -10,13 +10,35 @@ import debounce from 'debounce';
  * } ActionParams
  */
 
+const ANIMATION_DURATION = 500;
+
 /** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
 export default (node, option) => {
+	// https://github.com/evidence-dev/evidence/issues/1323
+	const useSvg =
+		['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
+			navigator.platform
+			// ios breaks w/ canvas if the canvas is too large
+		) && node.clientWidth * 3 * node.clientHeight * 3 > 16777215;
+
 	registerTheme('evidence-light', evidenceThemeLight);
 
-	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
+	const chart = init(node, 'evidence-light', { renderer: useSvg ? 'svg' : 'canvas' });
 
-	chart.setOption(option);
+	chart.setOption({
+		...option,
+		animationDuration: ANIMATION_DURATION,
+		animationDurationUpdate: ANIMATION_DURATION
+	});
+	// Check if echartsOptions are provided and apply them
+	const prevOption = chart.getOption();
+	if (prevOption.echartsOptions) {
+		chart.setOption({
+			...prevOption.echartsOptions,
+			animationDuration: ANIMATION_DURATION,
+			animationDurationUpdate: ANIMATION_DURATION
+		});
+	}
 
 	const dispatch = option.dispatch;
 	chart.on('click', function (params) {
@@ -28,7 +50,7 @@ export default (node, option) => {
 	const onWindowResize = debounce(() => {
 		chart.resize({
 			animation: {
-				duration: 500
+				duration: ANIMATION_DURATION
 			}
 		});
 		updateLabelWidths();
@@ -78,7 +100,19 @@ export default (node, option) => {
 
 	return {
 		update(option) {
-			chart.setOption(option, true, true);
+			chart.setOption(
+				{
+					...option,
+					animationDuration: ANIMATION_DURATION,
+					animationDurationUpdate: ANIMATION_DURATION
+				},
+				true
+			);
+			// Check if echartsOptions are provided and apply them
+			const prevOption = chart.getOption();
+			if (prevOption.echartsOptions) {
+				chart.setOption(prevOption.echartsOptions);
+			}
 			updateLabelWidths();
 		},
 		destroy() {

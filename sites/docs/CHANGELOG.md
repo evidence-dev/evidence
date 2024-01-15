@@ -1,5 +1,24 @@
 # evidence-docs
 
+## 2.0.4
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+- 20127231: Bump all versions so version pinning works
+
+## 2.0.4-usql.1
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
+## 2.0.4-usql.0
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+
 ## 2.1.0
 
 ### Minor Changes

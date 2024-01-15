@@ -1,10 +1,10 @@
 /** @type {import("@sveltejs/kit").Config} */
 export default {
 	preprocess: [],
-	extensions: [],
-	kit: {
-		files: {}
+	compilerOptions: {
+		dev: true
 	},
+	kit: {},
 	vite: {
 		server: {
 			watch: {

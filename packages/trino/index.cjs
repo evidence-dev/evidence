@@ -1,58 +1,21 @@
 const trino = require('presto-client');
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
-
-const envMap = {
-	host: [
-		{ key: 'EVIDENCE_TRINO_HOST', deprecated: false },
-		{ key: 'TRINO_HOST', deprecated: false }
-	],
-	ssl: [
-		{ key: 'EVIDENCE_TRINO_SSL', deprecated: false },
-		{ key: 'TRINO_SSL', deprecated: false }
-	],
-	port: [
-		{ key: 'EVIDENCE_TRINO_PORT', deprecated: false },
-		{ key: 'TRINO_PORT', deprecated: false }
-	],
-	user: [
-		{ key: 'EVIDENCE_TRINO_USER', deprecated: false },
-		{ key: 'TRINO_USER', deprecated: false }
-	],
-	password: [
-		{ key: 'EVIDENCE_TRINO_PASSWORD', deprecated: false },
-		{ key: 'TRINO_PASSWORD', deprecated: false }
-	],
-	catalog: [
-		{ key: 'EVIDENCE_TRINO_CATALOG', deprecated: false },
-		{ key: 'TRINO_CATALOG', deprecated: true }
-	],
-	schema: [
-		{ key: 'EVIDENCE_TRINO_SCHEMA', deprecated: false },
-		{ key: 'TRINO_SCHEMA', deprecated: true }
-	],
-	engine: [
-		{ key: 'EVIDENCE_TRINO_ENGINE', deprecated: false },
-		{ key: 'TRINO_ENGINE', deprecated: true }
-	]
-};
+const { EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 
 const runQuery = async (queryString, database) => {
 	try {
-		const ssl = database ? database.ssl : getEnv(envMap, 'ssl');
+		const ssl = database.ssl;
 
-		const engine = database ? database.engine : getEnv(envMap, 'engine');
+		const engine = database.engine;
 
 		const client = new trino.Client({
-			host: database ? database.host : getEnv(envMap, 'host'),
+			host: database.host,
 			ssl: ssl === 'true' ? {} : undefined,
-			port: database ? database.port : getEnv(envMap, 'port'),
-			user: database ? database.user : getEnv(envMap, 'user'),
+			port: database.port,
+			user: database.user,
 			source: 'evidence',
-			basic_auth: database
-				? auth(database.user, database.password)
-				: auth(getEnv(envMap, 'user'), getEnv(envMap, 'password')),
-			catalog: database ? database.catalog : getEnv(envMap, 'catalog'),
-			schema: database ? database.schema : getEnv(envMap, 'schema'),
+			basic_auth: auth(database.user, database.password),
+			catalog: database.catalog,
+			schema: database.schema,
 			engine: engine ? engine : 'trino'
 		});
 
@@ -157,3 +120,85 @@ const mapTrinoTypeToEvidenceType = (type) => {
 };
 
 module.exports = runQuery;
+
+/**
+ * @typedef {Object} TrinoOptions
+ * @property {string} host
+ * @property {'true' | 'false'} ssl
+ * @property {string} port
+ * @property {string} user
+ * @property {string} password
+ * @property {string} catalog
+ * @property {string} schema
+ * @property {string} engine
+ */
+
+/** @type {import('@evidence-dev/db-commons').GetRunner<DatabricksOptions>} */
+module.exports.getRunner = async (opts) => {
+	return async (queryContent, queryPath, batchSize) => {
+		// Filter out non-sql files
+		if (!queryPath.endsWith('.sql')) return null;
+		return runQuery(queryContent, opts, batchSize);
+	};
+};
+
+/** @type {import('@evidence-dev/db-commons').ConnectionTester<DatabricksOptions>} */
+module.exports.testConnection = async (opts) => {
+	return await runQuery('SELECT 1;', opts)
+		.then(() => true)
+		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
+};
+
+module.exports.options = {
+	host: {
+		title: 'Host',
+		type: 'string',
+		secret: false,
+		default: 'localhost',
+		required: true
+	},
+	ssl: {
+		title: 'Enable SSL',
+		type: 'boolean',
+		secret: false,
+		description: 'Whether or not to use SSL. Must be set to true for HTTPS.'
+	},
+	port: {
+		title: 'Port',
+		type: 'number',
+		secret: false,
+		default: 443,
+		required: true
+	},
+	user: {
+		title: 'Username',
+		type: 'string',
+		secret: false,
+		required: true
+	},
+	password: {
+		title: 'Password',
+		type: 'string',
+		secret: true,
+		required: true
+	},
+	catalog: {
+		title: 'Catalog',
+		type: 'string',
+		required: false,
+		secret: false
+	},
+	schema: {
+		title: 'Schema',
+		type: 'string',
+		secret: false,
+		required: false
+	},
+	engine: {
+		title: 'Engine',
+		type: 'string',
+		secret: false,
+		required: false,
+		description: 'The engine to use. Options are "trino" and "presto". Default is "trino".'
+	}
+};

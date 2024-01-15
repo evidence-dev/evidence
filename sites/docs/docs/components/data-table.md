@@ -85,6 +85,9 @@ hide_table_of_contents: false
 
 
 ### Including Images
+You can include images by indicating either an absolute path e.g. `https://www.example.com/images/image.png` or a relative path e.g. `/images/image.png`. For relative paths, see [storing static files in a static folder](/markdown/#storing-images-and-static-files). 
+
+In this example, `flag` is either an absolute path or a relative path to the image.
 
 ```html
 <DataTable data="{countries}">
@@ -153,7 +156,7 @@ select
     category,
     '/parameterized-pages/' || category as category_link,
     sum(sales) as sales_usd0
-from orders
+from needful_things.orders
 group by 1
 ```
 

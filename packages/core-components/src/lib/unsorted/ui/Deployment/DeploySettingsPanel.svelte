@@ -4,10 +4,12 @@
 
 <script>
 	export let settings;
+	export let datasourceSettings;
 	import EvidenceDeploy from './EvidenceDeploy.svelte';
 	import NetlifyDeploy from './NetlifyDeploy.svelte';
 	import VercelDeploy from './VercelDeploy.svelte';
 	import OtherDeploy from './OtherDeploy.svelte';
+	import EnvironmentVarListing from './EnvironmentVarListing.svelte';
 	import { slide } from 'svelte/transition';
 
 	let deploymentOptions = [
@@ -28,8 +30,13 @@
 				Evidence projects can be deployed to a variety of cloud environments. The easiest way to
 				deploy your project is with <b>Evidence Cloud</b>.
 			</p>
+			<h3>Environment Variables</h3>
+			<div>
+				<EnvironmentVarListing {datasourceSettings} />
+			</div>
+
 			<h3>Deployment Environment</h3>
-			<select bind:value={selectedDeployment}>
+			<select bind:value={selectedDeployment} class="mb-2">
 				{#each deploymentOptions as option}
 					<option value={option}>
 						{option.name}
@@ -39,14 +46,17 @@
 		</div>
 		{#if selectedDeployment.formComponent}
 			<div class="panel" transition:slide|local>
-				<svelte:component this={selectedDeployment.formComponent} {settings} />
+				<svelte:component this={selectedDeployment.formComponent} {settings} {datasourceSettings} />
 			</div>
 		{/if}
 	</div>
 	<footer>
 		<span
-			>Learn more about <a class="docs-link" href="https://docs.evidence.dev/deployment/overview"
-				>Deploying your Project &rarr;</a
+			>Learn more about <a
+				class="docs-link"
+				target="_blank"
+				rel="noreferrer"
+				href="https://docs.evidence.dev/deployment/overview">Deploying your Project &rarr;</a
 			></span
 		>
 	</footer>
@@ -54,7 +64,7 @@
 
 <style>
 	h3 {
-		@apply uppercase text-sm leading-loose py-3;
+		@apply uppercase text-sm leading-loose mt-6 mb-1;
 	}
 
 	h2 {
