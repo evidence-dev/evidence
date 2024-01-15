@@ -1,19 +1,34 @@
 const { exhaustStream } = require('@evidence-dev/db-commons');
 const runQuery = require('@evidence-dev/duckdb');
 
-/** @type {import("@evidence-dev/db-commons").RunQuery<never>} */
+/**
+ * @typedef {Object} DuckDBOptions
+ * @property {string} options
+ */
+
+/** @type {import("@evidence-dev/db-commons").RunQuery<DuckDBOptions>} */
 module.exports = async (queryString, _, batchSize = 100000) => {
 	return runQuery(queryString, { filename: ':memory:' }, batchSize);
 };
 
-/** @type {import("@evidence-dev/db-commons").GetRunner<never>} */
-module.exports.getRunner = () => {
+/** @type {import("@evidence-dev/db-commons").GetRunner<DuckDBOptions>} */
+module.exports.getRunner = ({ options }) => {
 	return async (queryContent, queryPath, batchSize) => {
 		// Filter out non-csv files
 		if (!queryPath.endsWith('.csv')) return null;
 		// Use DuckDBs auto CSV loading
 		// https://duckdb.org/docs/data/csv/overview.html
-		return runQuery(`SELECT * FROM '${queryPath}'`, { filename: ':memory:' }, batchSize);
+		const quotedQueryPath = `'${queryPath}'`;
+		const optionsArray = options?.split(',') ?? [];
+		if (!options?.toLowerCase().includes('auto_detect')) {
+			optionsArray.push('auto_detect = true');
+		}
+
+		return runQuery(
+			`SELECT * FROM read_csv(${[quotedQueryPath, ...optionsArray].join(', ')})`,
+			{ filename: ':memory:' },
+			batchSize
+		);
 	};
 };
 
@@ -26,4 +41,16 @@ module.exports.testConnection = async (opts) => {
 	return r;
 };
 
-module.exports.options = {};
+module.exports.options = {
+	options: {
+		title: 'Options',
+		description:
+			"String passed directly to duckdb's CSV import. See https://duckdb.org/docs/data/csv/overview.html for available configuration",
+		type: 'string',
+		secret: false,
+		shown: true,
+		virtual: false,
+		nest: false,
+		default: ''
+	}
+};
