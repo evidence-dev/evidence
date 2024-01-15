@@ -51,7 +51,6 @@ If your problem relates to sensitive or private information, please don't post a
 Follow these steps to test your changes, once you've started the example project (per steps below),
 you should be able to open the `Evidence Development Workspace` on `localhost:3000`. Any subsequent changes you make will be reflected on the website.
 
-
 Open a terminal and make sure `pnpm` is installed with:
 
 ```bash
@@ -91,7 +90,6 @@ And reinstall with:
 ```bash
 pnpm i
 ```
-
 
 ### Running the Test Suite locally.
 
