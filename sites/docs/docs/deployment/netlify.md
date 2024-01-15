@@ -18,7 +18,7 @@ Netlify lets you host a public version of your project for free, or you can crea
 ## Deploy to Netlify
 
 1. Run your project in development mode
-1. Visit the [settings page](https://localhost:3000/settings)
+1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select 'netlify', then follow the provided instructions
 
 ## Optional: Set a site-wide password for your project (Requires Paid Plan)

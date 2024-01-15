@@ -13,7 +13,7 @@ Vercel lets you host a public version of your project for free, or you can creat
 ## Deploy to Vercel
 
 1. Run your project in development mode
-1. Visit the [settings page](https://localhost:3000/settings)
+1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select 'Vercel', then follow the provided instructions
 
 ## Optional: Set a site-wide password for your project (Requires Paid Plan)
