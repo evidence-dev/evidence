@@ -19,7 +19,12 @@ test('query runs', async () => {
 			TIME '12:34:56' as time_col,
 			TIMESTAMP '2021-01-01 12:34:56' as timestamp_col,
 			DATETIME '2021-01-01 12:34:56' as datetime_col
-			`
+			`,
+		{
+			project_id: process.env.BIGQUERY_PROJECT_ID,
+			client_email: process.env.BIGQUERY_CLIENT_EMAIL,
+			private_key: process.env.BIGQUERY_PRIVATE_KEY
+		}
 	);
 	const rows = await batchedAsyncGeneratorToArray(row_generator);
 
@@ -104,7 +109,12 @@ test('query runs', async () => {
 
 test('numeric types are retrieved correctly', async () => {
 	const { rows: row_generator, columnTypes } = await runQuery(
-		'select CAST(1.23456789 AS NUMERIC) as numeric_number, CAST(1.23456789 AS FLOAT64) as float64_number, CAST(1.23456789 AS DECIMAL) as decimal_number, CAST(1.23456789 AS STRING) as string_number'
+		'select CAST(1.23456789 AS NUMERIC) as numeric_number, CAST(1.23456789 AS FLOAT64) as float64_number, CAST(1.23456789 AS DECIMAL) as decimal_number, CAST(1.23456789 AS STRING) as string_number',
+		{
+			project_id: process.env.BIGQUERY_PROJECT_ID,
+			client_email: process.env.BIGQUERY_CLIENT_EMAIL,
+			private_key: process.env.BIGQUERY_PRIVATE_KEY
+		}
 	);
 	const rows = await batchedAsyncGeneratorToArray(row_generator);
 	let actualColumnTypes = columnTypes.map((columnType) => columnType.evidenceType);
@@ -138,7 +148,11 @@ test('numeric types are retrieved correctly', async () => {
 test('query batches results properly', async () => {
 	const { rows, expectedRowCount } = await runQuery(
 		'select 1 union all select 2 union all select 3 union all select 4 union all select 5',
-		undefined,
+		{
+			project_id: process.env.BIGQUERY_PROJECT_ID,
+			client_email: process.env.BIGQUERY_CLIENT_EMAIL,
+			private_key: process.env.BIGQUERY_PRIVATE_KEY
+		},
 		2
 	);
 
