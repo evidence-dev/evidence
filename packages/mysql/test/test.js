@@ -73,7 +73,7 @@ test('query batches results properly and predicts rows', async () => {
 					database: process.env.MYSQL_DATABASE,
 					password: process.env.MYSQL_PASSWORD,
 					port: process.env.MYSQL_PORT,
-					ssk: process.env.MYSQL_SSL
+					ssl: process.env.MYSQL_SSL
 				},
 				2
 			);
