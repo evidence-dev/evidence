@@ -8,7 +8,8 @@ let results;
 test('query runs', async () => {
 	if (process.env.DATABRICKS_TOKEN || process.env.EVIDENCE_DATABRICKS_TOKEN) {
 		try {
-			results = await runQuery(`
+			results = await runQuery(
+				`
 				SELECT
 					cast(100 AS BIGINT) as bigint_col,
 					cast('true' AS BINARY) as binary_col,
@@ -25,7 +26,14 @@ test('query runs', async () => {
 					cast('1908-03-15 00:00:00' AS TIMESTAMP) as timestamp_col,
 					cast('1908-03-15 00:00:00' AS TIMESTAMP_NTZ) as timestamp_ntz_col,
 					cast(2 AS TINYINT) as tinyint_col
-			`);
+			`,
+				{
+					host: process.env.DATABRICKS_HOST,
+					port: process.env.DATABRICKS_PORT,
+					path: process.env.DATABRICKS_PATH,
+					token: process.env.DATABRICKS_TOKEN
+				}
+			);
 			assert.instance(results.rows, Array);
 			assert.instance(results.columnTypes, Array);
 			assert.type(results.rows[0], 'object');
