@@ -1,6 +1,6 @@
 ---
 title: Templated Pages
-sources:
+queries:
   - orders_by_category: orders_by_category.sql
 ---
 

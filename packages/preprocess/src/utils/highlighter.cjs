@@ -16,15 +16,16 @@ function highlighter(code, lang, meta) {
 	if ((lang?.toLowerCase() === 'sql' && meta) || !getPrismLangs().has(lang?.toLowerCase() ?? '')) {
 		const queryId = lang?.toLowerCase() === 'sql' && meta ? meta : lang;
 		return `
-        {#if ${queryId == null} || data.${queryId} }
-            <QueryViewer pageQueries = {data.evidencemeta.queries} queryID = "${
-							queryId ?? 'untitled'
-						}" queryResult = {data.${queryId ?? 'untitled'}}/> 
+        {#if ${queryId} }
+            <QueryViewer
+                queryID = "${queryId ?? 'untitled'}"
+                queryResult = {${queryId ?? 'untitled'}}
+            /> 
         {/if}
         `;
 	}
 	// Ensure that "real" code blocks are rendered not run as queries
-	return `<CodeBlock source="${code}" copyToClipboard=true></CodeBlock>`;
+	return `<CodeBlock source="${code}" copyToClipboard=true />`;
 }
 
 module.exports = { highlighter };

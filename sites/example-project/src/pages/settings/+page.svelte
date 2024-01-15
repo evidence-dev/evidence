@@ -1,25 +1,25 @@
 <script>
+	/** @type {import("./$types").PageLoadData} */
 	export let data;
-	let { settings, customFormattingSettings, gitIgnore } = data;
-	$: ({ settings, customFormattingSettings, gitIgnore } = data);
+	let { settings, customFormattingSettings, datasourceSettings, plugins } = data;
+	$: ({ settings, customFormattingSettings, datasourceSettings, plugins } = data);
 
 	import { dev } from '$app/environment';
 
 	import {
-		DatabaseSettingsPanel,
 		VersionControlPanel,
 		DeploySettingsPanel,
 		FormattingSettingsPanel,
-		TelemetrySettingsPanel
+		TelemetrySettingsPanel,
+		SourceConfig
 	} from '@evidence-dev/core-components';
 </script>
 
 {#if dev}
-	<!-- eslint-disable no-undef -->
 	<div class="mt-12">
-		<DatabaseSettingsPanel {settings} {gitIgnore} />
 		<VersionControlPanel {settings} />
-		<DeploySettingsPanel {settings} />
+		<SourceConfig availableSourcePlugins={plugins} sources={datasourceSettings} />
+		<DeploySettingsPanel {settings} {datasourceSettings} />
 		<FormattingSettingsPanel {settings} {customFormattingSettings} />
 		<TelemetrySettingsPanel {settings} />
 	</div>

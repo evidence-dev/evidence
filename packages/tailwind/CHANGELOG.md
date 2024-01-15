@@ -1,5 +1,34 @@
 # @evidence-dev/tailwind
 
+## 2.0.0
+
+### Minor Changes
+
+- f051417f: add `fonts.css` export for new fonts
+
+### Patch Changes
+
+- bf4a112a: Update package.json to use new datasource field
+- 20127231: Bump all versions so version pinning works
+
+## 1.0.0-usql.3
+
+### Patch Changes
+
+- Update package.json to use new datasource field
+
+## 1.0.0-usql.2
+
+### Patch Changes
+
+- 20127231: Bump all versions so version pinning works
+
+## 1.0.0-usql.1
+
+### Minor Changes
+
+- f051417f: add `fonts.css` export for new fonts
+
 ## 1.1.0
 
 ### Minor Changes

@@ -12,6 +12,10 @@ The easiest way to get started with Evidence is to use the VSCode Extension.
 1. Install Evidence from the VSCode Marketplace
 2. Open the Command Palette (`Ctrl/Cmd + Shift + P`) and enter `Evidence: New Evidence Project`
 3. Click `Start Evidence` in the bottom status bar
+   - This will install required dependencies and start the Evidence server
+   - You should see a browser window open automatically with your app preview
+   - On Windows, this step can take a couple of minutes the first time
+4. Make changes to a markdown file and **save the file** to see the updates in your browser window
 
 
 The template project running in your browser contains a tutorial on how to use Evidence.
@@ -19,6 +23,10 @@ The template project running in your browser contains a tutorial on how to use E
 <a class="external" href="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">
 Install VSCode Extension
 </a>
+
+<br/><br/>
+
+If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
 
 ## Other Options
 
@@ -33,6 +41,7 @@ import TabItem from '@theme/TabItem';
 npx degit evidence-dev/template my-project
 cd my-project
 npm install
+npm run sources
 npm run dev
 ```
 
@@ -44,6 +53,7 @@ npm run dev
 cd path/to/your/dbt/project
 npx degit evidence-dev/template reports
 npm --prefix ./reports install
+npm --prefix ./reports run sources
 npm --prefix ./reports run dev
 ```
 
@@ -73,3 +83,7 @@ Create Evidence Codespace
 ## System Requirements
 
 See [system requirements page](/guides/system-requirements).
+
+## Updating Evidence
+
+See [updating your project](/guides/updating-your-project).

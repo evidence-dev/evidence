@@ -31,17 +31,19 @@
 					<p>Each time you run a query, we get the following pieces of information:</p>
 					<ol class="list-decimal px-8">
 						<li>
-							A random identifier that is stored in <code>.evidence/template/.profile.json</code>
+							A random identifier that is stored in <code
+								>.evidence/customization/.profile.json</code
+							>
 						</li>
 						<li>
 							An anonymized identifier based on the git repository you're using for the project
 						</li>
 						<li>Whether your project is running in development or build mode</li>
 						<li>
-							Whether your query returned from the cache, from your database, or returned an error
+							Whether your query returned from the cache, from your datasource, or returned an error
 						</li>
 						<li>
-							The type of Evidence database connector you are using (postgres, snowflake, etc.)
+							The type of Evidence datasource connectors you are using (postgres, snowflake, etc.)
 						</li>
 						<li>The operating system your project is running on (windows, mac, etc.)</li>
 					</ol>

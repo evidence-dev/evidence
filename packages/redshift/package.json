@@ -1,16 +1,18 @@
 {
 	"name": "@evidence-dev/redshift",
-	"version": "0.0.7",
+	"version": "1.0.1",
 	"description": "Redshift driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Archie Wood",
 	"license": "MIT",
-	"scripts": {
-		"test": "uvu test test.js"
-	},
 	"dependencies": {
-		"@evidence-dev/db-commons": "workspace:^",
-		"@evidence-dev/postgres": "workspace:^"
+		"@evidence-dev/db-commons": "workspace:*",
+		"@evidence-dev/postgres": "workspace:*"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"datasources": [
+			"redshift"
+		]
+	}
 }

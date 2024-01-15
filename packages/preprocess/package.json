@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/preprocess",
-	"version": "3.2.1",
+	"version": "4.0.0",
 	"description": "Markdown preprocessor for evidence.dev projects",
 	"author": "evidence.dev",
 	"license": "MIT",
@@ -12,7 +12,8 @@
 		"test:watch": "vitest",
 		"build": "parcel build",
 		"watch": "parcel watch",
-		"dev": "parcel watch"
+		"dev": "parcel watch",
+		"prepublish": "parcel build"
 	},
 	"dependencies": {
 		"blueimp-md5": "^2.19.0",
@@ -48,7 +49,8 @@
 		},
 		"module": {
 			"context": "node",
-			"includeNodeModules": true
+			"includeNodeModules": true,
+			"sourceMap": false
 		}
 	},
 	"exports": {

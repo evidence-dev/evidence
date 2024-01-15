@@ -1,5 +1,5 @@
 ---
-sources:
+queries:
  - negative_values.sql
  - orders_by_category.sql
 ---
@@ -202,4 +202,18 @@ yLog=true
     x=date
     y=daily_change
     yLog=true
+/>
+
+## Scatter with axes min and max
+
+<ScatterPlot
+data={countries}
+x=gdp_usd
+y=debt_to_gdp
+tooltipTitle=country
+series=continent
+xMin=1000
+xMax=20000
+yMin=50
+yMax=200
 />

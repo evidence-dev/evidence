@@ -35,6 +35,13 @@
 	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
 		background-color: theme('colors.gray.200');
 	}
+
+	/* remove user agent styles for select */
+	select {
+		appearance: none;
+		-moz-appearance: none;
+		-webkit-appearance: none;
+	}
 }
 
 @layer components {

@@ -520,7 +520,7 @@ In the below example, we return a value from a calculation. In this situtation w
 select
     date_part('year', order_datetime) AS year,
     sum(sales) AS total_sales
-from orders
+from needful_things.orders
 group by year
 order by year desc
 ```

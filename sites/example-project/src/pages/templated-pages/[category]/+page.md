@@ -1,5 +1,5 @@
 ---
-sources:
+queries:
   - orders_by_category: orders_by_category.sql
   - item_by_category: item_by_category.sql
 ---
