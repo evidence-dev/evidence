@@ -1,4 +1,4 @@
-# Sankey Diagram
+# Sankey Diagram Page
 
 ```sql simple_sankey
 select 'products' as source, 'profits' as target, 100 as amount
@@ -10,7 +10,13 @@ union all
 select 'services' as source, 'expenses' as target, 25 as amount
 ```
 
+## Diagram
+
 <SankeyDiagram data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount />
+
+## Chart
+
+<SankeyChart data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount />
 
 ## Aniles orantem Saeculaque pars a aetas nostrum
 
@@ -47,7 +53,13 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 
 ```
 
+## Diagram
+
 <SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count />
+
+## Chart 
+
+<SankeyChart data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count />
 
 ```sql apple_income_statement
 select 'iphone' as source, 'product revenue' as target, 51 as amount_usd
@@ -71,6 +83,8 @@ union all
 select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
 ```
 
+## Diagram 
+
 <SankeyDiagram 
     data={apple_income_statement} 
     title="Apple Income Statement" 
@@ -82,6 +96,28 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
 />
 
 <SankeyDiagram 
+    data={apple_income_statement} 
+    title="Apple Income Statement" 
+    subtitle="USD Billions" 
+    sourceCol=source 
+    targetCol=target 
+    valueCol=amount_usd 
+    orient="vertical"
+/>
+
+## Chart 
+
+<SankeyChart 
+    data={apple_income_statement} 
+    title="Apple Income Statement" 
+    subtitle="USD Billions" 
+    sourceCol=source 
+    targetCol=target 
+    valueCol=amount_usd 
+    sort=true
+/>
+
+<SankeyChart 
     data={apple_income_statement} 
     title="Apple Income Statement" 
     subtitle="USD Billions" 
@@ -106,3 +142,83 @@ Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
 2. Ego sanguine iphis Tartara crudeles et et
 3. Peritura auro tulit harenis sucos
 4. Per turbata caput
+
+<script>
+
+let sankeyData = [
+      {
+        source: 'source',
+        target: 'google',
+        count: 3
+      },
+      {
+        source: 'source',
+        target: 'direct',
+        count: 1
+      },
+      {
+        source: 'source',
+        target: 'facebook',
+        count: 1
+      },
+      {
+        source: 'source',
+        target: 'bing',
+        count: 1
+      },
+      {
+        source: 'page_url',
+        target: '/',
+        count: 2
+      },
+      {
+        source: 'page_url',
+        target: '/docs',
+        count: 3
+      }
+    ]
+</script>
+
+## Chart 
+
+<SankeyChart data={sankeyData} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
+<SankeyChart data={sankeyData} title="Sankey" subtitle="A simple sankey chart" orient="vertical" valueCol=count />
+
+## Diagram 
+
+<SankeyDiagram data={sankeyData} title="Sankey" subtitle="A simple sankey Diagram" sourceCol=source targetCol=target valueCol=count />
+<SankeyDiagram data={sankeyData} title="Sankey" subtitle="A simple sankey Diagram" orient="vertical" valueCol=count />
+
+```sql traffic_data
+select 'google' as source, 'all_traffic' as target, 100 as count
+union all
+select 'direct' as source, 'all_traffic' as target, 50 as count
+union all
+select 'facebook' as source, 'all_traffic' as target, 25 as count
+union all
+select 'bing' as source, 'all_traffic' as target, 25 as count
+union all
+select 'tiktok' as source, 'all_traffic' as target, 25 as count
+union all
+select 'twitter' as source, 'all_traffic' as target, 25 as count
+union all
+select 'linkedin' as source, 'all_traffic' as target, 25 as count
+union all
+select 'pinterest' as source, 'all_traffic' as target, 25 as count
+union all
+select 'all_traffic' as source, '/' as target, 50 as count
+union all
+select 'all_traffic' as source, '/docs' as target, 150 as count
+union all
+select 'all_traffic' as source, '/blog' as target, 25 as count
+union all
+select 'all_traffic' as source, '/about' as target, 75 as count
+```
+
+## Chart 
+
+<SankeyChart data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
+
+## Diagram 
+
+<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
