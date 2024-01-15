@@ -1,5 +1,4 @@
 const {
-	getEnv,
 	EvidenceType,
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator,
@@ -8,13 +7,6 @@ const {
 } = require('@evidence-dev/db-commons');
 const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
 const path = require('path');
-
-const envMap = {
-	filename: [
-		{ key: 'EVIDENCE_DUCKDB_FILENAME', deprecated: false },
-		{ key: 'DUCKDB_FILENAME', deprecated: false }
-	]
-};
 
 /**
  * Converts BigInt values to Numbers in an object.
@@ -137,10 +129,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		}
 	} else {
 		// Check the filenames from environment variables
-		filename =
-			getEnv(envMap, 'filename') ??
-			// Default to in-memory db
-			':memory:';
+		filename = ':memory:';
 	}
 
 	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
@@ -163,7 +152,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
 			mapResultsToEvidenceColumnTypes:
 				column_types == null ? mapResultsToEvidenceColumnTypes : undefined,
-			standardizeRow
+			standardizeRow,
+			closeConnection: () => db.close()
 		});
 		if (column_types != null) {
 			results.columnTypes = column_types;

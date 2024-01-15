@@ -8,7 +8,16 @@ test('query runs', async () => {
 	if (process.env.MSSQL_DATABASE) {
 		try {
 			const { rows: row_generator, columnTypes } = await runQuery(
-				"select 100 as number_col, GETDATE() as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, CAST(0 AS BIT) as bool_col"
+				"select 100 as number_col, GETDATE() as date_col, current_timestamp as timestamp_col, 'Evidence' as string_col, CAST(0 AS BIT) as bool_col",
+				{
+					user: process.env.MSSQL_USER,
+					host: process.env.MSSQL_HOST,
+					database: process.env.MSSQL_DATABASE,
+					password: process.env.MSSQL_PASSWORD,
+					port: process.env.MSSQL_PORT,
+					trust_server_certificate: process.env.MSSQL_TRUST_SERVER_CERTIFICATE,
+					encrypt: process.env.MSSQL_ENCRYPT
+				}
 			);
 			const rows = await batchedAsyncGeneratorToArray(row_generator);
 			assert.instance(rows, Array);
@@ -60,7 +69,15 @@ test('query batches results properly', async () => {
 		try {
 			const { rows, expectedRowCount } = await runQuery(
 				'select 1 as one union all select 2 as two union all select 3 as three union all select 4 as four union all select 5 as five',
-				undefined,
+				{
+					user: process.env.MSSQL_USER,
+					host: process.env.MSSQL_HOST,
+					database: process.env.MSSQL_DATABASE,
+					password: process.env.MSSQL_PASSWORD,
+					port: process.env.MSSQL_PORT,
+					trust_server_certificate: process.env.MSSQL_TRUST_SERVER_CERTIFICATE,
+					encrypt: process.env.MSSQL_ENCRYPT
+				},
 				2
 			);
 
