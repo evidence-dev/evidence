@@ -6,9 +6,17 @@
 	import ECharts from '../core/ECharts.svelte';
 
 	import { chartColours } from '@evidence-dev/component-utilities/colours';
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+
+	export let echartsOptions = undefined;
+	export let printEchartsConfig = false;
+
+	export let valueFmt = undefined;
+	$: format_object = valueFmt ? getFormatObjectFromString(valueFmt) : undefined;
+
+	export let colorPalette = undefined;
 
 	export let data = undefined;
 	export let sourceCol = 'source';
@@ -31,11 +39,14 @@
 	// Data Formatting
 	let names = [];
 	let links;
+
+	let combinedPalette = [...(colorPalette ?? []), ...chartColours];
+	
 	data.map((link) => names.push(link[sourceCol], link[targetCol]));
 	const nameData = [...new Set(names)].map((node, index) => ({
 		name: node,
 		itemStyle: {
-			color: chartColours[index % chartColours.length]
+			color: combinedPalette[index % combinedPalette.length]
 		}
 	}));
 	$: links = data.map((link) => {
@@ -159,17 +170,18 @@
 		tooltip: {
 			formatter: function (params) {
 				return params.data.name
-					? `<b>${formatTitle(params.data.name)}</b>`
-					: `<b>${formatTitle(params.data[sourceCol], sourceFormat)}</b> → <b>${formatTitle(
-							params.data.target,
-							targetFormat
-					  )}</b><br>${formatValue(params.data.value, valueFormat)}`;
+					? `<span style='font-weight: 600'>${formatValue(params.data.name)}</span>: ${formatValue(
+							params.value,
+							format_object
+					  )}`
+					: `<span style='font-weight: 600'>${formatValue(params.data[sourceCol])} to ${formatValue(
+							params.data.target
+					  )}</span>: ${formatValue(params.data.value, format_object)}`;
 			},
 			extraCssText:
 				'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
 			order: 'valueDesc'
 		},
-
 		data: nameData,
 		links: links,
 		animationDuration: 500
@@ -196,4 +208,4 @@
 	};
 </script>
 
-<ECharts {config} {width} {height} />
+<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />

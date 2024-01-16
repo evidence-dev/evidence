@@ -12,11 +12,11 @@ select 'services' as source, 'expenses' as target, 25 as amount
 
 ## Diagram
 
-<SankeyDiagram data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount />
+<SankeyDiagram data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount valueFmt = 'usd' colorPalette = {['red']} />
 
 ## Chart
 
-<SankeyChart data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount />
+<SankeyChart data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount colorPalette = {['red', 'yellow', 'green']}/>
 
 ## Aniles orantem Saeculaque pars a aetas nostrum
 
@@ -222,3 +222,21 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 ## Diagram 
 
 <SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
+
+# Echarts Options String 
+
+## Chart 
+
+<SankeyChart data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count echartsOptions={{
+        title: {
+            text: "Custom Echarts Option"
+        }
+    }}/>
+
+## Diagram 
+
+<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count printEchartsConfig={true} echartsOptions={{
+        title: {
+            text: "Custom Echarts Option"
+        }
+    }}/>
