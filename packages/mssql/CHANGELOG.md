@@ -1,5 +1,11 @@
 # @evidence-dev/mssql
 
+## 1.0.3
+
+### Patch Changes
+
+- 722a4e00: Rename host -> server
+
 ## 1.0.2
 
 ### Patch Changes
