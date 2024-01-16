@@ -10,8 +10,7 @@ const { OAuth2Client } = require('google-auth-library');
 const {
 	EvidenceType,
 	TypeFidelity,
-	asyncIterableToBatchedAsyncGenerator,
-	exhaustStream
+	asyncIterableToBatchedAsyncGenerator
 } = require('@evidence-dev/db-commons');
 
 /**
@@ -79,7 +78,8 @@ const getCredentials = (database = {}) => {
  * @param {BigQueryOptions} db
  * @returns {BigQuery}
  */
-const getConnection = (credentials) => new BigQuery({ ...credentials, maxRetries: 10 });
+const getConnection = (credentials) =>
+	new BigQuery({ ...getCredentials(credentials), maxRetries: 10 });
 
 /** @type {import("@evidence-dev/db-commons").RunQuery<BigQueryOptions>} */
 const runQuery = async (queryString, database, batchSize = 100000) => {
