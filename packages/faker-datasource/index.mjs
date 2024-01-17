@@ -157,7 +157,9 @@ const buildRow = async (
 					if (!(targetField in targetRow)) {
 						throw new Error(`Target (${col.target?.table}) does not contain field ${targetField}`);
 					}
+					
 					output[colName] = targetRow[targetField];
+					break;
 				case 'id':
 					output[colName] = rowNum;
 					break;
