@@ -9,7 +9,7 @@ const runQuery = async (queryString, database) => {
 
 		const client = new trino.Client({
 			host: database.host,
-			ssl: (ssl === 'true' || ssl === true) ? {} : undefined,
+			ssl: ssl === 'true' || ssl === true ? {} : undefined,
 			port: database.port,
 			user: database.user,
 			source: 'evidence',
