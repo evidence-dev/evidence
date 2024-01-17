@@ -62,7 +62,7 @@ from events.web_events
 group by 1, 2
 ‍```
 
-<SankeyChart
+<SankeyDiagram
     data={traffic_data}
     title="Sankey"
     subtitle="A simple sankey chart"

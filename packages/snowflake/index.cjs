@@ -1,5 +1,4 @@
 const {
-	getEnv,
 	EvidenceType,
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator,
@@ -7,63 +6,6 @@ const {
 } = require('@evidence-dev/db-commons');
 const snowflake = require('snowflake-sdk');
 const crypto = require('crypto');
-
-const envMap = {
-	authenticator: [
-		{ key: 'EVIDENCE_SNOWFLAKE_AUTHENTICATOR', deprecated: false },
-		{ key: 'SNOWFLAKE_AUTHENTICATOR', deprecated: false }
-	],
-	account: [
-		{ key: 'EVIDENCE_SNOWFLAKE_ACCOUNT', deprecated: false },
-		{ key: 'SNOWFLAKE_ACCOUNT', deprecated: false },
-		{ key: 'ACCOUNT', deprecated: true },
-		{ key: 'account', deprecated: true }
-	],
-	username: [
-		{ key: 'EVIDENCE_SNOWFLAKE_USERNAME', deprecated: false },
-		{ key: 'SNOWFLAKE_USERNAME', deprecated: false },
-		{ key: 'USERNAME', deprecated: true },
-		{ key: 'username', deprecated: true }
-	],
-	password: [
-		{ key: 'EVIDENCE_SNOWFLAKE_PASSWORD', deprecated: false },
-		{ key: 'SNOWFLAKE_PASSWORD', deprecated: false },
-		{ key: 'PASSWORD', deprecated: true },
-		{ key: 'password', deprecated: true }
-	],
-	database: [
-		{ key: 'EVIDENCE_SNOWFLAKE_DATABASE', deprecated: false },
-		{ key: 'SNOWFLAKE_DATABASE', deprecated: false },
-		{ key: 'DATABASE', deprecated: true },
-		{ key: 'database', deprecated: true }
-	],
-	warehouse: [
-		{ key: 'EVIDENCE_SNOWFLAKE_WAREHOUSE', deprecated: false },
-		{ key: 'SNOWFLAKE_WAREHOUSE', deprecated: false },
-		{ key: 'WAREHOUSE', deprecated: true },
-		{ key: 'warehouse', deprecated: true }
-	],
-	role: [
-		{ key: 'EVIDENCE_SNOWFLAKE_ROLE', deprecated: false },
-		{ key: 'SNOWFLAKE_ROLE', deprecated: false }
-	],
-	schema: [
-		{ key: 'EVIDENCE_SNOWFLAKE_SCHEMA', deprecated: false },
-		{ key: 'SNOWFLAKE_SCHEMA', deprecated: false }
-	],
-	privateKey: [
-		{ key: 'EVIDENCE_SNOWFLAKE_PRIVATE_KEY', deprecated: false },
-		{ key: 'SNOWFLAKE_PRIVATE_KEY', deprecated: false }
-	],
-	passphrase: [
-		{ key: 'EVIDENCE_SNOWFLAKE_PASSPHRASE', deprecated: false },
-		{ key: 'SNOWFLAKE_PASSPHRASE', deprecated: false }
-	],
-	okta_url: [
-		{ key: 'EVIDENCE_SNOWFLAKE_OKTA_URL', deprecated: false },
-		{ key: 'SNOWFLAKE_OKTA_URL', deprecated: false }
-	]
-};
 
 /**
  *
@@ -203,17 +145,17 @@ const standardizeRow = (row) => {
  * @returns {snowflake.ConnectionOptions}
  */
 const getCredentials = (database = {}) => {
-	const authenticator = database.authenticator ?? getEnv(envMap, 'authenticator') ?? 'snowflake';
-	const account = database.account ?? getEnv(envMap, 'account');
-	const username = database.username ?? getEnv(envMap, 'username');
-	const default_database = database.database ?? getEnv(envMap, 'database');
-	const warehouse = database.warehouse ?? getEnv(envMap, 'warehouse');
-	const role = database.role ?? getEnv(envMap, 'role');
-	const schema = database.schema ?? getEnv(envMap, 'schema');
+	const authenticator = database.authenticator ?? 'snowflake';
+	const account = database.account;
+	const username = database.username;
+	const default_database = database.database;
+	const warehouse = database.warehouse;
+	const role = database.role;
+	const schema = database.schema;
 
 	if (authenticator === 'snowflake_jwt') {
-		const private_key = database.private_key ?? getEnv(envMap, 'privateKey');
-		const passphrase = database.passphrase ?? getEnv(envMap, 'passphrase');
+		const private_key = database.private_key;
+		const passphrase = database.passphrase;
 
 		const private_key_object = crypto.createPrivateKey({
 			key: private_key,
@@ -248,18 +190,18 @@ const getCredentials = (database = {}) => {
 	} else if (authenticator === 'okta') {
 		return {
 			username,
-			password: database.password ?? getEnv(envMap, 'password'),
+			password: database.password,
 			account,
 			database: default_database,
 			warehouse,
 			role,
 			schema,
-			authenticator: database.okta_url ?? getEnv(envMap, 'okta_url')
+			authenticator: database.okta_url
 		};
 	} else {
 		return {
 			username,
-			password: database.password ?? getEnv(envMap, 'password'),
+			password: database.password,
 			account,
 			database: default_database,
 			warehouse,
@@ -284,7 +226,8 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		);
 
 		const result = await asyncIterableToBatchedAsyncGenerator(execution.rows, batchSize, {
-			standardizeRow
+			standardizeRow,
+			closeConnection: () => connection.destroy()
 		});
 		result.columnTypes = mapResultsToEvidenceColumnTypes(execution);
 		result.expectedRowCount = execution.totalRows;
@@ -347,7 +290,7 @@ module.exports.testConnection = async (opts) => {
 	return await runQuery('SELECT 1;', opts)
 		.then(exhaustStream)
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
 };
 
 module.exports.options = {
