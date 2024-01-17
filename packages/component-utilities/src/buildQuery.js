@@ -60,6 +60,7 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
  * @param {QueryProps} opts
  * @param {string} id
  * @returns { { hasQuery: false } | { hasQuery: true, query: QueryStore } }
+ * @deprecated Prefer buildReactiveInputQuery
  */
 export const buildInputQuery = ({ value, label, select, data, where, order }, id, initialData) => {
 	if (!data || !(value || select)) return { hasQuery: false };
