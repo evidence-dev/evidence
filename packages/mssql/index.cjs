@@ -90,7 +90,7 @@ const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 		const encrypt = database.encrypt ?? 'true';
 		const credentials = {
 			user: database.user,
-			server: database.host,
+			server: database.server,
 			database: database.database,
 			password: database.password,
 			port: parseInt(database.port ?? 1433),
@@ -159,7 +159,7 @@ module.exports.testConnection = async (opts) => {
 	return await runQuery('SELECT 1;', opts)
 		.then(exhaustStream)
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
 };
 
 module.exports.options = {

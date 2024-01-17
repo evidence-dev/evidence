@@ -1,5 +1,19 @@
 # @evidence-dev/csv
 
+## 1.0.4
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- f33b58c5: - Added options option to let users specify read_csv options
+  - Updated function to explicitly use read_csv, rather than the csv filename directly
+  - Defaulted read_csv to auto_detect unless otherwise specified
+- Updated dependencies [0e0a4392]
+- Updated dependencies [2a663d79]
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/duckdb@1.0.4
+  - @evidence-dev/db-commons@1.0.2
+
 ## 1.0.3
 
 ### Patch Changes
