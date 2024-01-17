@@ -1,5 +1,5 @@
-rows: 250000
-fuzz: 2500
+rows: 250
+
 schema:
     id:
         type: id
@@ -16,5 +16,3 @@ schema:
         category: date
         item: recent
         withBias: true
-        options:
-            days: 365 # Past Year

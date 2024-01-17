@@ -2,6 +2,7 @@ import { setContext, getContext } from 'svelte';
 import { Query, sql } from '@uwdata/mosaic-sql';
 import { QueryStore } from '@evidence-dev/query-store';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
+import { derived, writable } from 'svelte/store';
 
 const QUERY_CONTEXT_KEY = '___usql_query';
 /**
@@ -26,6 +27,34 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @property {string} [where] (optional) Where clause for dataset
  * @property {string} [order] (optional) Order by clause for dataset
  */
+
+/**
+ * @param {QueryProps} queryProps
+ * @param {string} id
+ * @param {Array<Record<string,unknown>>} initialData
+ * @example export let value, data, label, order, where;
+ *  $: queryProps = {value, data, label, order, where}
+ *	const {results, update} = buildReactiveInputQuery(queryProps, `id`, $page.data.data[`id`])
+ *	$: update({value, data, label, order, where})
+ *	$: ({hasQuery, query} = $results)
+ */
+export const buildReactiveInputQuery = (queryProps, id, initialData) => {
+	const internal = writable(buildInputQuery(queryProps, id, initialData));
+
+	internal.subscribe(console.log);
+	return {
+		results: derived(internal, (v) => v),
+		update: async (queryProps) => {
+			const { hasQuery, query } = buildInputQuery(queryProps, id);
+			if (!hasQuery) {
+				internal.set({ hasQuery: false });
+			} else {
+				await query.fetch();
+				internal.set({ hasQuery, query });
+			}
+		}
+	};
+};
 
 /**
  * @param {QueryProps} opts
