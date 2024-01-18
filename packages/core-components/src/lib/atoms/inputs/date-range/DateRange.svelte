@@ -3,145 +3,70 @@
 </script>
 
 <script lang="ts">
-	import { Calendar as CalendarIcon } from 'radix-icons-svelte';
-	import type { DateRange } from 'bits-ui';
-	import {
-		CalendarDate,
-		DateFormatter,
-		getLocalTimeZone,
-		today,
-		startOfMonth,
-		endOfMonth,
-		startOfWeek,
-		startOfYear,
-		type DateValue
-	} from '@internationalized/date';
-	import { cn } from '$lib/utils';
-	import { Button } from '$lib/atoms/shadcn/button';
-	import { RangeCalendar } from '$lib/atoms/shadcn/range-calendar';
-	import * as Select from '$lib/atoms/shadcn/select';
-	import * as Popover from '$lib/atoms/shadcn/popover';
+	import type { Writable } from 'svelte/store';
 
-	const dfMedium = new DateFormatter('en-US', {
-		dateStyle: 'medium'
-	});
+	import DateRange from './_DateRange.svelte';
+	import { getContext } from 'svelte';
+	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import type { QueryStore } from '@evidence-dev/query-store';
+	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { getLocalTimeZone } from '@internationalized/date';
 
-	const dfShort = new DateFormatter('en-US', {
-		dateStyle: 'short'
-	});
+	const inputs: Writable<object> = getContext(INPUTS_CONTEXT_KEY);
 
-	let selectedDateRange: DateRange | undefined = {
-		start: today(getLocalTimeZone()),
-		end: today(getLocalTimeZone())
-	};
+	export let name: string;
+	export let title: string | undefined;
 
-	let startValue: DateValue | undefined = selectedDateRange.start;
+	// Static API
+	export let start: string | Date | undefined;
+	export let end: string | Date | undefined;
 
-	type Preset = {
-		label: string;
-		range: DateRange;
-	};
+	// Universal SQL API
+	export let data: QueryStore | string | undefined;
+	export let dates: string | undefined;
 
-	const presets: Array<Preset> = [
-		{
-			label: 'Last 7 Days',
-			range: {
-				start: today(getLocalTimeZone()).subtract({ days: 7 }),
-				end: today(getLocalTimeZone())
-			}
-		},
-		{
-			label: 'Last 12 Months',
-			range: {
-				start: startOfMonth(today(getLocalTimeZone()).subtract({ months: 12 })),
-				end: endOfMonth(today(getLocalTimeZone()).subtract({ months: 1 }))
-			}
-		}
-	];
+	let query;
+	$: if (data && dates) {
+		const source = typeof data === 'string' ? data : `(${data.text})`;
+		query = buildQuery(
+			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
+			`DateRange-${name}`,
+			$query
+		);
+	}
 
-	let selectedPreset: Preset | undefined = undefined;
+	let selectedDateRange;
+	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
+		$inputs[name] = {
+			start: (selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)).toISOString(),
+			end: (
+				selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date('12-31-3030')
+			).toISOString()
+		};
+	}
 </script>
 
-<div class="flex">
-	<Popover.Root openFocus>
-		<Popover.Trigger asChild let:builder>
-			<Button
-				variant="outline"
-				size="sm"
-				class={cn(
-					'flex justify-start rounded-r-none border-r-0 text-left font-normal',
-					!selectedDateRange && 'text-gray-400'
-				)}
-				builders={[builder]}
-			>
-				<CalendarIcon class="mr-2 h-4 w-4" />
-				<span class="hidden sm:inline">
-					{#if selectedDateRange && selectedDateRange.start}
-						{#if selectedDateRange.end}
-							{dfMedium.format(selectedDateRange.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
-								selectedDateRange.end.toDate(getLocalTimeZone())
-							)}
-						{:else}
-							{dfMedium.format(selectedDateRange.start.toDate(getLocalTimeZone()))}
-						{/if}
-					{:else if startValue}
-						{dfMedium.format(startValue.toDate(getLocalTimeZone()))}
-					{:else}
-						Date Range
-					{/if}
-				</span>
-				<span class="sm:hidden">
-					{#if selectedDateRange && selectedDateRange.start}
-						{#if selectedDateRange.end}
-							{dfShort.format(selectedDateRange.start.toDate(getLocalTimeZone()))} - {dfShort.format(
-								selectedDateRange.end.toDate(getLocalTimeZone())
-							)}
-						{:else}
-							{dfShort.format(selectedDateRange.start.toDate(getLocalTimeZone()))}
-						{/if}
-					{:else if startValue}
-						{dfShort.format(startValue.toDate(getLocalTimeZone()))}
-					{:else}
-						Date Range
-					{/if}
-				</span>
-			</Button>
-		</Popover.Trigger>
-		<Popover.Content class="w-auto select-none p-0" align="start">
-			<RangeCalendar
-				bind:value={selectedDateRange}
-				placeholder={startValue}
-				initialFocus
-				numberOfMonths={1}
-				onValueChange={() => {
-					selectedPreset = undefined;
-				}}
-			/>
-		</Popover.Content>
-	</Popover.Root>
+<div class="mt-2 mb-4 mx-1 inline-block">
+	{#if title}
+		<span class="text-sm text-gray-500 block">{title}</span>
+	{/if}
 
-	<Select.Root
-		onSelectedChange={(v) => {
-			if (!v) return;
-			selectedDateRange = presets.filter((presets) => presets.label == v.label)[0].range;
-			selectedPreset = v;
-		}}
-		bind:selected={selectedPreset}
-	>
-		<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium" sameWidth>
-			{#if selectedPreset}
-				{selectedPreset.label}
-			{:else}
-				<span class="hidden sm:inline"> Select a Range </span>
-				<span class="sm:hidden"> Range </span>
-			{/if}
-		</Select.Trigger>
-		<Select.Content>
-			{#each presets as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-		</Select.Content>
-	</Select.Root>
+	{#if $query?.error}
+		<span
+			class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-200 py-[1px] bg-red-50 rounded"
+		>
+			<span class="inline font-sans font-medium text-xs text-red-600">error</span>
+			<span
+				class="hidden text-white font-sans group-hover:inline absolute -top-1 left-[105%] text-sm z-10 px-2 py-1 bg-gray-800/80 leading-relaxed min-w-[150px] w-max max-w-[400px] rounded-md"
+			>
+				{$query.error}
+			</span>
+		</span>
+	{:else}
+		<DateRange
+			bind:selectedDateRange
+			start={start ?? $query?.[0].start}
+			end={end ?? $query?.[0].end}
+		/>
+	{/if}
 </div>
