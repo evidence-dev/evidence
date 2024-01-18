@@ -1,5 +1,22 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [168f1c9e]
+  - @evidence-dev/mssql@1.0.4
+  - @evidence-dev/trino@1.0.3
+
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies [e023deb0]
+- Updated dependencies [722a4e00]
+  - @evidence-dev/bigquery@2.0.3
+  - @evidence-dev/mssql@1.0.3
+
 ## 3.0.5
 
 ### Patch Changes

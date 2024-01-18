@@ -90,13 +90,14 @@ const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 		const encrypt = database.encrypt ?? 'true';
 		const credentials = {
 			user: database.user,
-			server: database.host,
+			server: database.server,
 			database: database.database,
 			password: database.password,
 			port: parseInt(database.port ?? 1433),
 			options: {
-				trustServerCertificate: trust_server_certificate === 'true',
-				encrypt: encrypt === 'true'
+				trustServerCertificate:
+					trust_server_certificate === 'true' || trust_server_certificate === true,
+				encrypt: encrypt === 'true' || encrypt === true
 			}
 		};
 
@@ -156,10 +157,10 @@ module.exports.getRunner = async (opts) => {
 
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<MsSQLOptions>} */
 module.exports.testConnection = async (opts) => {
-	return await runQuery('SELECT 1;', opts)
+	return await runQuery('SELECT 1 AS TEST;', opts) //
 		.then(exhaustStream)
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
 };
 
 module.exports.options = {

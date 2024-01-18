@@ -1,5 +1,11 @@
 # @evidence-dev/bigquery
 
+## 2.0.3
+
+### Patch Changes
+
+- e023deb0: Make sure credentials are properly transformed
+
 ## 2.0.2
 
 ### Patch Changes
