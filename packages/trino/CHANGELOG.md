@@ -1,5 +1,11 @@
 # @evidence-dev/trino
 
+## 1.0.3
+
+### Patch Changes
+
+- 168f1c9e: Fix boolean config options for MSSQL and Trino
+
 ## 1.0.2
 
 ### Patch Changes
