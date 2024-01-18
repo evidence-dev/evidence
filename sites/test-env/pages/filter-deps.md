@@ -7,12 +7,6 @@ GROUP BY ALL
 ORDER BY userId, tagId
 ```
 
-```debug_1
-SELECT * FROM ${user_tags} WHERE userId = ${inputs.user}
-
-```
-
-
 <Dropdown   data={user_tags} 
             value="userId" label="user_name" 
             title="User" name="user" 

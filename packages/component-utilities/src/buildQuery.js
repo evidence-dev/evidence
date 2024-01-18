@@ -41,7 +41,6 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
 export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 	const internal = writable(buildInputQuery(queryProps, id, initialData));
 
-	internal.subscribe(console.log);
 	return {
 		results: derived(internal, (v) => v),
 		update: async (queryProps) => {
