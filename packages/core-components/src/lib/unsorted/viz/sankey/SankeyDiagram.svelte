@@ -6,7 +6,10 @@
 	import ECharts from '../core/ECharts.svelte';
 
 	import { chartColours } from '@evidence-dev/component-utilities/colours';
-	import { formatValue, getFormatObjectFromString } from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 
@@ -41,7 +44,7 @@
 	let links;
 
 	let combinedPalette = [...(colorPalette ?? []), ...chartColours];
-	
+
 	data.map((link) => names.push(link[sourceCol], link[targetCol]));
 	const nameData = [...new Set(names)].map((node, index) => ({
 		name: node,
