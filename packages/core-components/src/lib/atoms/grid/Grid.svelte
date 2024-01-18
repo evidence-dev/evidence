@@ -1,3 +1,7 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
 <script>
 	/** @type {1|2|3|4|5|6}*/
 	export let cols = 2;
