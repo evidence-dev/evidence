@@ -1,5 +1,19 @@
 # @evidence-dev/components
 
+## 3.1.0
+
+### Minor Changes
+
+- 1ef5544d: Improve printing for Map viz
+
+### Patch Changes
+
+- Updated dependencies [168f1c9e]
+- Updated dependencies [1ef5544d]
+  - @evidence-dev/mssql@1.0.4
+  - @evidence-dev/trino@1.0.3
+  - @evidence-dev/core-components@3.1.0
+
 ## 3.0.9
 
 ### Patch Changes
