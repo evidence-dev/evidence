@@ -35,8 +35,8 @@
 	/////
 
 	// Set Default Value
-	$inputs[name] = defaultValue
-	
+	$inputs[name] = defaultValue;
+
 	export let value, data, label, order, where;
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
