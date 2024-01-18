@@ -16,6 +16,7 @@ export { default as Portal } from './Portal.svelte';
 export { default as QueryViewer } from './QueryViewer.svelte';
 export { default as Sidebar } from './Sidebar.svelte';
 export { default as SortIcon } from './SortIcon.svelte';
+export { default as ErrorOverlay } from './ErrorOverlay.svelte';
 
 export * from './Deployment';
 export * from './Formatting';
