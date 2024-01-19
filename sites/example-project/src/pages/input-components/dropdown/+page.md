@@ -18,12 +18,12 @@ select 2021 as year
 
 <Dropdown data={years} name=year value=year order=year/>
 
-{inputs.category} {inputs.year}
+{inputs.category.value} {inputs.year.value}
 
 ```sql orders
 select category, order_datetime, sales from orders
-where category = '${inputs.category}'
-and date_part('year', order_datetime) = '${inputs.year}'
+where category = '${inputs.category.value}'
+and date_part('year', order_datetime) = '${inputs.year.value}'
 ```
 
 <DataTable data={orders} />
@@ -36,7 +36,7 @@ and date_part('year', order_datetime) = '${inputs.year}'
     <DropdownOption value=3 valueLabel="Option 3" />
 </Dropdown>
 
-{inputs.hardcoded_option}
+{inputs.hardcoded_option.value}
 
 ## Default Values
 
@@ -46,7 +46,7 @@ and date_part('year', order_datetime) = '${inputs.year}'
     <DropdownOption value=3 valueLabel="Option 3" />
 </Dropdown>
 
-{inputs.default_option}
+{inputs.default_option.value}
 
 
 <Dropdown 
@@ -56,7 +56,7 @@ and date_part('year', order_datetime) = '${inputs.year}'
     defaultValue="Cursed Sporting Goods"
 />
 
-{inputs.default_category}
+{inputs.default_category.value}
 
 
 <Dropdown 
@@ -67,7 +67,7 @@ and date_part('year', order_datetime) = '${inputs.year}'
     defaultValue="Not an option"
 />
 
-{inputs.default_not_an_option}
+{inputs.default_not_an_option.value}
 
 
 
