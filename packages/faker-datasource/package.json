@@ -9,7 +9,6 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\""
 	},
-	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
@@ -33,5 +32,6 @@
 		"datasources": [
 			"faker"
 		]
-	}
+	},
+	"keywords": ["evidence", "evidence-datasource", "mock-data"]
 }
