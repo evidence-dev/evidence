@@ -4,22 +4,23 @@
 
 <script>
 	import { getContext } from 'svelte';
+	import { Item } from '$lib/atoms/shadcn/select/index.js';
+	import { isInvisible } from './Invisible.svelte';
 
 	export let value;
 	export let valueLabel = value;
-	let selected = false;
 
-	// The first DropdownOption is the selected by default
 	const ctx = getContext('dropdown_context');
-	if (!ctx.hasBeenSet) {
-		ctx.setSelectedValue(value);
-		if (ctx.defaultValue) {
-			// Override selected value if default value is overridden
-			ctx.setSelectedValue(ctx.defaultValue);
-			selected = value === ctx.defaultValue;
-		}
+
+	// The first DropdownOption is the selected by default, but defaultValue overrides it
+	if (!ctx.hasBeenSet || value === ctx.defaultValue) {
+		ctx.setSelectedValue({ value, label: valueLabel });
 		ctx.hasBeenSet = true;
 	}
+
+	const invisible = isInvisible();
 </script>
 
-<option {value} {selected}>{valueLabel}</option>
+{#if !invisible}
+	<Item {value}>{valueLabel}</Item>
+{/if}

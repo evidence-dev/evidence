@@ -8,6 +8,8 @@
 	import { getContext, setContext } from 'svelte';
 	import { page } from '$app/stores';
 	import DropdownOption from './DropdownOption.svelte';
+	import { Select, Content, Group, Trigger, Value } from '$lib/atoms/shadcn/select/index.js';
+	import Invisible from './Invisible.svelte';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
@@ -22,12 +24,12 @@
 	export let name;
 
 	/** @type {string} */
-	export let defaultValue = null;
+	export let defaultValue = undefined;
 
 	setContext('dropdown_context', {
-		defaultValue: defaultValue,
+		defaultValue,
 		hasBeenSet: false,
-		setSelectedValue: (selected) => ($inputs[name] = selected)
+		setSelectedValue: (selected) => (($inputs[name] = selected), console.log({ selected }))
 	});
 
 	/////
@@ -64,13 +66,8 @@
 			</span>
 		</span>
 	{:else}
-		<select
-			disabled={hasQuery && !$query.loaded}
-			on:change={(e) => ($inputs[name] = e.currentTarget.value)}
-			class="border border-gray-300 bg-white rounded-lg p-1 mt-2 px-2 pr-5 flex flex-row items-center max-w-fit bg-transparent cursor-pointer bg-right bg-no-repeat"
-			style="background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' class=\'icon icon-tabler icon-tabler-chevron-down\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' stroke-width=\'2\' stroke=\'currentColor\' fill=\'none\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath stroke=\'none\' d=\'M0 0h24v24H0z\' fill=\'none\'/%3E%3Cpath d=\'M6 9l6 6l6 -6\' /%3E%3C/svg%3E');"
-			value={$inputs[name] || defaultValue}
-		>
+		<!-- execute the otherwise lazily rendered elements for SSR -->
+		<Invisible>
 			<slot />
 
 			{#if hasQuery}
@@ -78,6 +75,23 @@
 					<DropdownOption {value} valueLabel={label} />
 				{/each}
 			{/if}
-		</select>
+		</Invisible>
+
+		<Select {defaultValue} bind:selected={$inputs[name]}>
+			<Trigger class="w-[180px]">
+				<Value />
+			</Trigger>
+			<Content class="overflow-y-auto max-h-[10rem]">
+				<Group>
+					<slot />
+
+					{#if hasQuery}
+						{#each $query as { label, value }}
+							<DropdownOption {value} valueLabel={label} />
+						{/each}
+					{/if}
+				</Group>
+			</Content>
+		</Select>
 	{/if}
 </div>
