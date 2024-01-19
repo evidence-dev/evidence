@@ -5,6 +5,7 @@
 <script>
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { getContext } from 'svelte';
+	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
 	/////
@@ -16,6 +17,9 @@
 
 	/** @type {string} */
 	export let name;
+
+	/** @type {boolean} */
+	export let hideDuringPrint = true;
 
 	/** @type {string} */
 	export let placeholder = 'Type to search';
@@ -42,13 +46,15 @@
 	let value = defaultValue;
 </script>
 
-<div class="mt-2 mb-4 mx-1 inline-block">
-	{#if title}
-		<span class="text-sm text-gray-500 block">{title}</span>
-	{/if}
-	<input
-		bind:value
-		class="border border-gray-300 bg-white rounded-lg p-1 mt-2 px-2 pr-5 flex flex-row items-center max-w-fit bg-transparent cursor-text bg-right bg-no-repeat"
-		{placeholder}
-	/>
-</div>
+<HiddenInPrint enabled={hideDuringPrint}>
+	<div class="mt-2 mb-4 mx-1 inline-block">
+		{#if title}
+			<span class="text-sm text-gray-500 block">{title}</span>
+		{/if}
+		<input
+			bind:value
+			class="border border-gray-300 bg-white rounded-lg p-1 mt-2 px-2 pr-5 flex flex-row items-center max-w-fit bg-transparent cursor-text bg-right bg-no-repeat"
+			{placeholder}
+		/>
+	</div>
+</HiddenInPrint>
