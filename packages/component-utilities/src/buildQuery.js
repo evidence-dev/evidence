@@ -49,9 +49,9 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 				internal.set({ hasQuery: false });
 			} else {
 				internal.update(async (currentQuery) => {
-					if (query.hash !== currentQuery) await query.fetch()
+					if (query.hash !== currentQuery) await query.fetch();
 					internal.set({ hasQuery, query });
-				})
+				});
 			}
 		}
 	};
