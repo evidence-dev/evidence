@@ -22,5 +22,9 @@
 		],
 		"icon": "Mysql"
 	},
-	"keywords": ["evidence", "evidence-datasource", "mysql"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"mysql"
+	]
 }

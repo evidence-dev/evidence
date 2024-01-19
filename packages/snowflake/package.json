@@ -26,5 +26,9 @@
 			"snowflake"
 		]
 	},
-	"keywords": ["evidence", "evidence-datasource", "snowflake"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"snowflake"
+	]
 }

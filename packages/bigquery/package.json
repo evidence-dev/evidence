@@ -26,5 +26,9 @@
 			]
 		]
 	},
-	"keywords": ["evidence", "evidence-datasource", "bigquery"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"bigquery"
+	]
 }

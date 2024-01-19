@@ -23,5 +23,9 @@
 		],
 		"icon": "Sqlite"
 	},
-	"keywords": ["evidence", "evidence-datasource", "sqlite"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"sqlite"
+	]
 }

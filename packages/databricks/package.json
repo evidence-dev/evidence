@@ -21,5 +21,9 @@
 			"databricks"
 		]
 	},
-	"keywords": ["evidence", "evidence-datasource", "databricks"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"databricks"
+	]
 }

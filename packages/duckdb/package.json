@@ -25,5 +25,9 @@
 		],
 		"icon": "Duckdb"
 	},
-	"keywords": ["evidence", "evidence-datasource", "duckdb"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"duckdb"
+	]
 }

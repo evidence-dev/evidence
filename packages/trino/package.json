@@ -18,5 +18,9 @@
 			"trino"
 		]
 	},
-	"keywords": ["evidence", "evidence-datasource", "trino"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"trino"
+	]
 }

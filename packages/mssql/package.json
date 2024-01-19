@@ -23,5 +23,9 @@
 		],
 		"icon": "Microsoftsqlserver"
 	},
-	"keywords": ["evidence", "evidence-datasource", "mssql"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"mssql"
+	]
 }

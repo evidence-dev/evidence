@@ -33,5 +33,9 @@
 			"faker"
 		]
 	},
-	"keywords": ["evidence", "evidence-datasource", "mock-data"]
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"mock-data"
+	]
 }
