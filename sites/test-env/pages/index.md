@@ -18,3 +18,4 @@ ${queryString}
 
 <DataTable data={q}/>
 
+<SqlConsole />
