@@ -42,8 +42,8 @@ const clearQueryCache = function () {
 
 const runFileWatcher = function (watchPatterns) {
 	const ignoredFiles = [
-		'./pages/explore/**',
-		'./pages/explore.+(*)',
+		'./pages/explore/schema/**',
+		'./pages/explore/schema.+(*)',
 		'./pages/settings/**',
 		'./pages/settings.+(*)',
 		'./pages/api/**',

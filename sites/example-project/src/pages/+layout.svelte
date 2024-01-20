@@ -75,6 +75,8 @@
 		QueryStatus,
 		ToastWrapper
 	} from '@evidence-dev/core-components';
+	import { setContext } from 'svelte';
+	import { beforeNavigate } from '$app/navigation';
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
 	let mobileSidebarOpen = false;
@@ -82,6 +84,13 @@
 	$: if ($navigating) {
 		mobileSidebarOpen = false;
 	}
+
+	beforeNavigate(() => (fullWidth = false));
+	let fullWidth = false;
+	setContext(
+		'__EVIDENCE_LAYOUT_UPDATE_SIZE',
+		(/** @type {"fullWidth" | "reset"} */ size) => (fullWidth = size === 'fullWidth')
+	);
 </script>
 
 <!-- QueryStatus doesn't actually create any UI, just supplies toasts to ToastWrapper -->
@@ -89,9 +98,12 @@
 <ToastWrapper />
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
-	<Header bind:mobileSidebarOpen />
+	<Header bind:mobileSidebarOpen {fullWidth} />
 	<div
-		class="max-w-7xl print:w-[650px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start"
+		class:max-w-7xl={!fullWidth}
+		class:max-w-full={fullWidth}
+		class:w-full={fullWidth}
+		class="print:w-[650px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start h-screen"
 	>
 		<div class="print:hidden">
 			<Sidebar {fileTree} bind:mobileSidebarOpen />
@@ -103,7 +115,7 @@
 				{/if}
 			</div>
 			{#if !$navigating}
-				<article class="select-text markdown">
+				<article class="select-text markdown h-full">
 					<slot />
 				</article>
 			{:else}

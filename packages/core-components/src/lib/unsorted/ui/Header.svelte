@@ -4,7 +4,16 @@
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Settings, _3dCubeSphere, Link, X, Menu2, Dots, Table } from '@steeze-ui/tabler-icons';
+	import {
+		Settings,
+		_3dCubeSphere,
+		Link,
+		X,
+		Menu2,
+		Dots,
+		Table,
+		Terminal2
+	} from '@steeze-ui/tabler-icons';
 	import Logo from './Logo.svelte';
 
 	const beforeprint = new Event('export-beforeprint');
@@ -14,13 +23,18 @@
 		setTimeout(() => window.print(), 0);
 		setTimeout(() => window.dispatchEvent(afterprint), 0);
 	}
+
+	export let fullWidth = false;
 </script>
 
 <header
 	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden"
 >
 	<div
-		class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center"
+		class:max-w-7xl={!fullWidth}
+		class:max-w-full={fullWidth}
+		class:w-full={fullWidth}
+		class="mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center"
 	>
 		<a href="/" class="hidden md:block">
 			<Logo />
@@ -73,8 +87,8 @@
 									{$showQueries ? 'Hide ' : 'Show '} Queries
 								</div>
 							</MenuItem>
+							<hr class="my-1" />
 							{#if dev}
-								<hr class="my-1" />
 								<MenuItem let:active>
 									<a
 										href="/settings"
@@ -114,6 +128,19 @@
 										</div>
 									</a>
 								</MenuItem>
+								<MenuItem let:active>
+									<a
+										href="/explore/ad-hoc"
+										target="_self"
+										class:active
+										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
+									>
+										<div class="flex items-center justify-between">
+											<span> Ad-Hoc Reports </span>
+											<Icon src={Terminal2} class="text-gray-300 h-4 w-4" />
+										</div>
+									</a>
+								</MenuItem>
 
 								<MenuItem let:active>
 									<a
@@ -126,6 +153,21 @@
 										<div class="flex items-center justify-between">
 											<span> Documentation </span>
 											<Icon src={Link} class="text-gray-300 h-4 w-4" />
+										</div>
+									</a>
+								</MenuItem>
+							{:else}
+								<!-- TODO: Should this be toggleable as a setting somewhere?-->
+								<MenuItem let:active>
+									<a
+										href="/explore/ad-hoc"
+										target="_self"
+										class:active
+										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
+									>
+										<div class="flex items-center justify-between">
+											<span> Ad-Hoc Reports </span>
+											<Icon src={Terminal2} class="text-gray-300 h-4 w-4" />
 										</div>
 									</a>
 								</MenuItem>

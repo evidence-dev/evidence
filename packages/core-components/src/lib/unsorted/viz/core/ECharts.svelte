@@ -46,7 +46,7 @@
 />
 
 <div
-	class="chart-container"
+	class="chart-container flex flex-col"
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
 >
