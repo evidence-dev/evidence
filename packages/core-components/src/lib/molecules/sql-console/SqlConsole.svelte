@@ -16,26 +16,18 @@
 	import { Eye, EyeOff, PlayerPlay } from '@evidence-dev/component-utilities/icons';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 
-	/** @type {string} */
-	export let initialQuery = "SELECT 'Hello World!' as friendly_greeting";
 	/** @type {boolean} */
 	export let hideErrors = false;
-
-	/** @type {HTMLElement | undefined} */
-	let editor;
-
-	// Save w/ this regex? /```(?:query_name|sql query_name)((?:[\n]|.)+)```/g
+	/** @type {string} */
+	export let initialQuery = '';
+	/** @type {boolean} */
+	export let showResults = true;
+	/** @type {boolean} */
+	export let disabled = false;
 
 	/** @type {string} */
-	export let currentQuery =
-		initialQuery ??
-		`
-SELECT  category,
-        AVG(CAST(r.nps_score AS DECIMAL)) avg_nps
-FROM needful_things.orders o
-    INNER JOIN needful_things.reviews r ON o.id = r.order_id
-GROUP BY o.category
-`.trim();
+	let currentQuery = initialQuery;
+
 	/** @type {string} */
 	let editorQuery = currentQuery;
 
@@ -48,21 +40,25 @@ GROUP BY o.category
 	/** @type {QueryStore} */
 	export let data = buildQuery(currentQuery);
 
-	$: {
+	$: if (currentQuery) {
 		data = buildQuery(currentQuery);
 		data.fetch();
 	}
 
+	/** @type {HTMLElement | undefined} */
+	let editor;
 	/** @type {SqlConsoleArgs | undefined} */
 	let consoleArgs;
 
+	$: if (consoleArgs) consoleArgs.disabled = disabled;
 	onMount(
 		/** @returns {Promise<never>} */
 		async () => {
-			data.fetch(); // we actually don't really care about this
+			if (data) data.fetch(); // we actually don't really care about this
 
 			consoleArgs = {
 				initialState: initialQuery,
+				disabled: disabled,
 				schema: await buildAutoCompletes(),
 				onChange: (v) => {
 					if (!v.docChanged) return;
@@ -79,12 +75,6 @@ GROUP BY o.category
 			return null;
 		}
 	);
-
-	/** @type {boolean} */
-	export let showResults = true;
-
-	/** @type {boolean} */
-	export let showControls = true;
 </script>
 
 <section
@@ -98,7 +88,7 @@ GROUP BY o.category
 		class="w-full relative rounded border border-gray-300 min-h-[8rem]"
 		use:sqlConsole={consoleArgs}
 	>
-		{#if showControls}
+		{#if !disabled}
 			<div class="absolute bottom-2 right-2 z-10 flex gap-2">
 				<Button
 					size="sm"
@@ -126,7 +116,7 @@ GROUP BY o.category
 		{/if}
 	</div>
 
-	{#if $data.error && !hideErrors}
+	{#if $data.error && !hideErrors && Boolean(currentQuery)}
 		<pre class="text-red-500 text-xs font-mono">{$data.error}</pre>
 	{/if}
 
