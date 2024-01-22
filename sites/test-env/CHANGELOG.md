@@ -1,5 +1,19 @@
 # evidence-test-environment
 
+## 3.0.10
+
+### Patch Changes
+
+- Updated dependencies [1ef5544d]
+  - @evidence-dev/core-components@3.1.0
+  - @evidence-dev/evidence@25.0.0
+
+## 3.0.9
+
+### Patch Changes
+
+- @evidence-dev/evidence@24.0.9
+
 ## 3.0.8
 
 ### Patch Changes

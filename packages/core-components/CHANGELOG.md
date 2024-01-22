@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 3.1.0
+
+### Minor Changes
+
+- 1ef5544d: Improve printing for Map viz
+
 ## 3.0.5
 
 ### Patch Changes
