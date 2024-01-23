@@ -1,6 +1,12 @@
 const evidenceTailwind = require('@evidence-dev/tailwind').config;
 const { loadConfig } = require('@evidence-dev/plugin-connector/load-config');
 
+const fs = require('fs');
+let presets = [evidenceTailwind];
+if (fs.statSync('../../tailwind.config.cjs', { throwIfNoEntry: false })) {
+	presets.push(require('../../tailwind.config.cjs'));
+}
+
 /** @type {import("tailwindcss").Config} */
 const config = {
 	content: {
@@ -25,7 +31,7 @@ const config = {
 		extend: {}
 	},
 
-	presets: [evidenceTailwind],
+	presets: presets,
 
 	plugins: []
 };
