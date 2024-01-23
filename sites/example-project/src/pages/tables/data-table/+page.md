@@ -31,3 +31,11 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 ## Fuzzy Search
 
 <DataTable data={[{ thing: 'The world has many goodbyes and hellos.' }]} search=true />
+
+## Freeze First Column
+
+<DataTable data={orders_by_category} freezeColumn=true/>
+
+With row numbers (row numbers slide away when scrolled):
+
+<DataTable data={orders_by_category} freezeColumn=true rowNumbers=true/>

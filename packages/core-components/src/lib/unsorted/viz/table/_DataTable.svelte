@@ -87,6 +87,9 @@
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
+	export let freezeColumn = false;
+	$: freezeColumn = freezeColumn === 'true' || freezeColumn === true;
+
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
 	// ---------------------------------------------------------------------------------------
@@ -307,15 +310,24 @@
 				<thead>
 					<tr>
 						{#if rowNumbers}
-							<th class="index w-[2%]" style:background-color={headerColor} />
+							<th
+								class="index w-[2%]"
+								style:background-color={headerColor}
+								class:sticky={freezeColumn}
+								class:left-0={freezeColumn}
+								class:bg-white={freezeColumn}
+							/>
 						{/if}
 						{#if $props.columns.length > 0}
-							{#each $props.columns as column}
+							{#each $props.columns as column, i}
 								<th
 									class={safeExtractColumn(column).type}
 									style:text-align={column.align}
 									style:color={headerFontColor}
 									style:background-color={headerColor}
+									class:sticky={freezeColumn && i == 0}
+									class:left-0={freezeColumn && i == 0}
+									class:bg-white={freezeColumn && i == 0}
 									style:cursor={sortable ? 'pointer' : 'auto'}
 									on:click={sortable ? sort(column.id) : ''}
 								>
@@ -330,12 +342,15 @@
 								</th>
 							{/each}
 						{:else}
-							{#each columnSummary.filter((d) => d.show === true) as column}
+							{#each columnSummary.filter((d) => d.show === true) as column, i}
 								<th
 									class={column.type}
 									style:color={headerFontColor}
 									style:background-color={headerColor}
 									style:cursor={sortable ? 'pointer' : 'auto'}
+									class:sticky={freezeColumn && i == 0}
+									class:left-0={freezeColumn && i == 0}
+									class:bg-white={freezeColumn && i == 0}
 									on:click={sortable ? sort(column.id) : ''}
 								>
 									<span class="col-header">
@@ -357,7 +372,13 @@
 						on:click={() => handleRowClick(row[link])}
 					>
 						{#if rowNumbers}
-							<td class="index w-[2%]" class:row-lines={rowLines}>
+							<td
+								class="index w-[2%]"
+								class:row-lines={rowLines}
+								class:sticky={freezeColumn}
+								class:left-0={freezeColumn}
+								class:bg-white={freezeColumn}
+							>
 								{#if i === 0}
 									{(index + i + 1).toLocaleString()}
 								{:else}
@@ -367,7 +388,7 @@
 						{/if}
 
 						{#if $props.columns.length > 0}
-							{#each $props.columns as column}
+							{#each $props.columns as column, j}
 								{@const column_min =
 									column.colorMin ?? safeExtractColumn(column).columnUnitSummary.min}
 								{@const column_max =
@@ -381,6 +402,9 @@
 									style:height={column.height}
 									style:width={column.width}
 									style:white-space={column.wrap ? 'normal' : 'nowrap'}
+									class:sticky={freezeColumn && j == 0}
+									class:left-0={freezeColumn && j == 0}
+									class:bg-white={freezeColumn && j == 0}
 									style={column.contentType === 'colorscale' && is_nonzero
 										? ` background-color: ${column.useColor} ${
 												(row[column.id] - column_min) / (column_max - column_min)
@@ -486,8 +510,13 @@
 								</td>
 							{/each}
 						{:else}
-							{#each columnSummary.filter((d) => d.show === true) as column}
-								<td class={column.type} class:row-lines={rowLines}
+							{#each columnSummary.filter((d) => d.show === true) as column, j}
+								<td
+									class={column.type}
+									class:row-lines={rowLines}
+									class:sticky={freezeColumn && j == 0}
+									class:left-0={freezeColumn && j == 0}
+									class:bg-white={freezeColumn && j == 0}
 									>{formatValue(row[column.id], column.format, column.columnUnitSummary)}</td
 								>
 							{/each}
@@ -635,6 +664,11 @@
 		padding: 2px 8px;
 		white-space: nowrap;
 		overflow: hidden;
+	}
+
+	th:first-child,
+	td:first-child {
+		padding-left: 4px;
 	}
 
 	th {
