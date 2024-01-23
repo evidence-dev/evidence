@@ -85,8 +85,10 @@
 							<a
 								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
 								href={file.href}
-								class:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
-							class:hover:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+								class:text-blue-600={$page.url.pathname.toUpperCase() ===
+									file.href.toUpperCase() + '/'}
+								class:hover:text-blue-600={$page.url.pathname.toUpperCase() ===
+									file.href.toUpperCase() + '/'}
 							>
 								{file.label}
 							</a>
@@ -116,8 +118,10 @@
 									<a
 										class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
 										href={file.href}
-										class:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
-							class:hover:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+										class:text-blue-600={$page.url.pathname.toUpperCase() ===
+											file.href.toUpperCase() + '/'}
+										class:hover:text-blue-600={$page.url.pathname.toUpperCase() ===
+											file.href.toUpperCase() + '/'}
 									>
 										{file.label}
 									</a>
@@ -149,8 +153,10 @@
 						<a
 							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100"
 							href={file.href}
-							class:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
-							class:hover:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+							class:text-blue-600={$page.url.pathname.toUpperCase() ===
+								file.href.toUpperCase() + '/'}
+							class:hover:text-blue-600={$page.url.pathname.toUpperCase() ===
+								file.href.toUpperCase() + '/'}
 						>
 							{file.label}
 						</a>
@@ -180,8 +186,10 @@
 								<a
 									class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate"
 									href={file.href}
-									class:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
-							class:hover:text-blue-600={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+									class:text-blue-600={$page.url.pathname.toUpperCase() ===
+										file.href.toUpperCase() + '/'}
+									class:hover:text-blue-600={$page.url.pathname.toUpperCase() ===
+										file.href.toUpperCase() + '/'}
 								>
 									{file.label}
 								</a>
