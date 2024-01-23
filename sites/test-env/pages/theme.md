@@ -31,5 +31,8 @@
     <div class="bg-keppel-900 w-full aspect-square flex flex-col justify-end pb-4 items-center">
         <span class="text-keppel-50"> Keppel 900 </span>
     </div>
+    <div class="bg-keppel-950 w-full aspect-square flex flex-col justify-end pb-4 items-center">
+        <span class="text-keppel-50"> Keppel 950 </span>
+    </div>
 
 </Grid>

@@ -2,10 +2,22 @@ const evidenceTailwind = require('@evidence-dev/tailwind').config;
 const { loadConfig } = require('@evidence-dev/plugin-connector/load-config');
 
 const fs = require('fs');
+const path = require('path');
 let presets = [evidenceTailwind];
-if (fs.statSync('../../tailwind.config.cjs', { throwIfNoEntry: false })) {
-	presets.push(require('../../tailwind.config.cjs'));
-}
+
+const altConfigFilenames = ["tailwind.config.js", "tailwind.config.cjs", "tailwind.config.mjs"]
+const altConfigFilepaths = altConfigFilenames.map(filename => path.join("..","..",filename))
+// Use find so that we can stop iteration
+altConfigFilepaths.find((file) => {
+	if (fs.statSync(file, { throwIfNoEntry: false })) {
+		presets.push(require(file));
+		return true
+	}
+	return false;
+})
+
+console.log(presets)
+
 
 /** @type {import("tailwindcss").Config} */
 const config = {
