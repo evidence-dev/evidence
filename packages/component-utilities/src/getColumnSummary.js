@@ -34,26 +34,6 @@ export default function getColumnSummary(data, returnType = 'object') {
 						unitType: evidenceColumnType.evidenceType
 				  };
 		const format = lookupColumnFormat(colName, evidenceColumnType, columnUnitSummary);
-		const sum = 
-			evidenceColumnType.evidenceType === 'number'
-				? data.reduce((acc, row) => acc + (row[colName] ?? 0), 0)
-				: null;
-		const mean = 
-			evidenceColumnType.evidenceType === 'number'
-				? sum / data.length
-				: null;
-		const median =
-			evidenceColumnType.evidenceType === 'number'
-				? data.map(row => row[colName]).sort((a, b) => a - b)[Math.floor(data.length / 2)]
-				: null;
-		const min = 
-			evidenceColumnType.evidenceType === 'number'
-				? data.reduce((acc, row) => Math.min(acc, row[colName] ?? Infinity), Infinity)
-				: null;
-		const max =
-			evidenceColumnType.evidenceType === 'number'
-				? data.reduce((acc, row) => Math.max(acc, row[colName] ?? -Infinity), -Infinity)
-				: null;
 
 
 		columnSummary[colName] = {
@@ -61,12 +41,7 @@ export default function getColumnSummary(data, returnType = 'object') {
 			type,
 			evidenceColumnType,
 			format,
-			columnUnitSummary,
-			sum,
-			mean,
-			median,
-			min,
-			max
+			columnUnitSummary
 		};
 	}
 

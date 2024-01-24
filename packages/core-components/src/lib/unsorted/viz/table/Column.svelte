@@ -59,6 +59,7 @@
 
 	// Totals:
 	export let totalAgg = undefined;
+	export let totalFmt = undefined;
 
 	// Color Scale:
 	export let colorMax = undefined;
@@ -95,6 +96,7 @@
 		linkLabel: linkLabel,
 		fmt: fmt,
 		totalAgg: totalAgg,
+		totalFmt: totalFmt,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
 		showValue: showValue,

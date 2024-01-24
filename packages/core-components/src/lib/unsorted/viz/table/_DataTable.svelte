@@ -19,6 +19,7 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import { format } from 'ssf';
 
 	// Set up props store
 	let props = writable({});
@@ -359,7 +360,7 @@
 						on:click={() => handleRowClick(row[link])}
 					>
 						{#if rowNumbers}
-							<td class="index w-[2%]" class:row-lines={rowLines}>
+							<td class="index w-[2%]" class:row-lines={rowLines && i !== displayedData.length - 1}>
 								{#if i === 0}
 									{(index + i + 1).toLocaleString()}
 								{:else}
@@ -378,7 +379,7 @@
 									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 								<td
 									class={safeExtractColumn(column).type}
-									class:row-lines={rowLines}
+									class:row-lines={rowLines && i !== displayedData.length - 1}
 									style:text-align={column.align}
 									style:height={column.height}
 									style:width={column.width}
@@ -516,18 +517,14 @@
 								style:width={column.width}
 								style:white-space={column.wrap ? 'normal' : 'nowrap'}
 							>
-							{#if column.totalAgg}
-								{#if ['sum', 'mean', 'median', 'min', 'max'].includes(column.totalAgg)}
-									{formatValue(
-										columnSummary[column.totalAgg], 
-										column.fmt ?? columnSummary.format, 
-										columnSummary.columnUnitSummary)}
+								{#if typeof column.totalAgg === 'undefined'}
+									{formatValue(columnSummary.columnUnitSummary.sum, columnSummary.format, columnSummary.columnUnitSummary)}
+								{:else if ['sum', 'mean', 'median', 'min', 'max', 'count', 'countDistinct'].includes(column.totalAgg)}
+									{formatValue(columnSummary.columnUnitSummary[column.totalAgg], columnSummary.format, columnSummary.columnUnitSummary)}
 								{:else}
 									{column.totalAgg}
 								{/if}
-							{:else}
-								{formatValue(columnSummary.sum, columnSummary.format, columnSummary.columnUnitSummary)}
-							{/if}
+									
 						</td>
 					{/each}
 				</tr>
