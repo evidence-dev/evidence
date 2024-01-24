@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 let presets = [evidenceTailwind];
 
-const altConfigFilenames = ['tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs'];
+const altConfigFilenames = ['tailwind.config.js', 'tailwind.config.cjs'];
 const altConfigFilepaths = altConfigFilenames.map((filename) => path.join('..', '..', filename));
 // Use find so that we can stop iteration
 altConfigFilepaths.find((file) => {
