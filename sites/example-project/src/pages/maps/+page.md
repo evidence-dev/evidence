@@ -109,6 +109,8 @@ discede?
     abbreviations=true
     title="US Sales Data"
     subtitle="Texas leading in sales"
+    legend=true
+    fmt=usd
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
@@ -120,6 +122,8 @@ discede?
     state=name
     value=population
     colorScale=red
+    legend=true
+    filter=false
 />
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore

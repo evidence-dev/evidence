@@ -14,9 +14,11 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
-	import InvisibleLinks from '$lib/atoms/InvisibleLinks.svelte';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 
 	export let data = undefined;
+
+	export let height = undefined;
 
 	export let state = undefined;
 	export let value = undefined;
@@ -28,6 +30,12 @@
 	export let subtitle = undefined;
 
 	export let fmt = undefined;
+
+	export let filter = true;
+	$: filter = filter === 'true' || filter === true;
+
+	export let legend = false;
+	$: legend = legend === 'true' || legend === true;
 
 	export let link = undefined;
 	let hasLink = link !== undefined;
@@ -137,11 +145,11 @@
 				itemGap: 7,
 				textStyle: {
 					fontSize: 14,
-					color: uiColours.grey700
+					color: uiColours.grey800
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: uiColours.grey600,
+					color: uiColours.grey700,
 					overflow: 'break'
 				},
 				top: '0%'
@@ -163,7 +171,7 @@
 						<span id="tooltip" style='font-weight: 600;'>${params.name}</span>
 						<br/>
 						<span>${formatTitle(value, format_object)}: </span>
-							<span style='float:right; margin-left: 10px;'>${formatValue(params.value, format_object)}</span>`;
+							<span style='float:right; margin-left: 10px;'>${formatValue(Number.isNaN(params.value) ? 0 : params.value, format_object)}</span>`;
 
 					return tooltipOutput;
 				},
@@ -184,15 +192,29 @@
 
 			visualMap: {
 				top: 'middle',
+				type: 'continuous',
 				min: minValue,
 				max: maxValue,
-				itemWidth: 15,
-				show: false,
+				itemWidth: 10,
+				// itemHeight: 300,
+				show: legend,
+				handleSize: '130%',
+				orient: 'horizontal',
+				top: (title ? 20 : 0) + (subtitle ? 15 : 0),
+				handleStyle: {
+					borderColor: uiColours.grey200
+				},
 				inRange: {
 					color: colorArray
 				},
-				text: ['High', 'Low'],
-				calculable: false,
+				outOfRange: {
+					color: uiColours.grey100
+				},
+				calculable: filter,
+				text: filter ? undefined : [formatValue(maxValue, format_object), formatValue(minValue, format_object)],
+				formatter: function(value){
+					return formatValue(value, format_object)
+				},
 				inverse: false
 			},
 			series: [
@@ -210,7 +232,7 @@
 					},
 					emphasis: {
 						itemStyle: {
-							areaColor: uiColours.grey300
+							areaColor: uiColours.grey200
 						},
 						label: {
 							show: true,
@@ -220,7 +242,7 @@
 					select: {
 						disabled: false,
 						itemStyle: {
-							areaColor: uiColours.grey300
+							areaColor: uiColours.grey200
 						},
 						label: {
 							color: uiColours.grey900
@@ -237,7 +259,7 @@
 					option: {
 						series: [
 							{
-								top: title ? (subtitle ? 48 : 32) : 25,
+								top: title ? (subtitle ? 48 : 32) : 25, 
 								zoom: title ? (subtitle ? 0.9 : 1.1) : 1.1
 							}
 						]
@@ -247,7 +269,7 @@
 					option: {
 						series: [
 							{
-								top: title ? (subtitle ? 53 : 45) : 35,
+								top: (title ? (subtitle ? 53 : 45) : 35) + (legend ? (filter ? 40 : 15): 0),
 								zoom: title ? (subtitle ? 1.1 : 1.1) : 1.1
 							}
 						]
@@ -266,7 +288,7 @@
 </script>
 
 {#if !error}
-	<EChartsMap {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
+	<EChartsMap {height} {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
 
 	{#if link}
 		<InvisibleLinks {data} {link} />

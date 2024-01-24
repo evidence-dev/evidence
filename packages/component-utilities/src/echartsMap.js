@@ -2,7 +2,30 @@ import { init, registerMap } from 'echarts';
 import usStateMap from './usStateMap.json';
 
 export default (node, option) => {
-	registerMap('US', usStateMap);
+	registerMap('US', usStateMap, {
+		Alaska: {
+		  left: -128,
+		  top: 25,
+		  width: 12,
+		  height: 7
+		},
+		AK: {
+			left: -128,
+			top: 25,
+			width: 12,
+			height: 7
+		  },
+		Hawaii: {
+		  left: -114,
+		  top: 26,
+		  width: 5
+		},
+		HI: {
+		  left: -114,
+		  top: 26,
+		  width: 5
+		}
+	  });
 
 	let hasLink = option.hasLink;
 
