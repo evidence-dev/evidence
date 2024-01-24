@@ -51,6 +51,8 @@
 	export let downloadable = true;
 	$: downloadable = downloadable === 'true' || downloadable === true;
 
+	export let totalRow = false;
+
 	// Row Links:
 	export let link = undefined;
 
@@ -487,13 +489,63 @@
 							{/each}
 						{:else}
 							{#each columnSummary.filter((d) => d.show === true) as column}
-								<td class={column.type} class:row-lines={rowLines}
-									>{formatValue(row[column.id], column.format, column.columnUnitSummary)}</td
+								<!-- Check if last row in table-->
+								<td
+  									class={column.type}
+  									class:row-lines={rowLines && i !== displayedData.length - 1}
 								>
+  									{formatValue(row[column.id], column.format, column.columnUnitSummary)}
+								</td>
 							{/each}
 						{/if}
 					</tr>
 				{/each}
+				<!-- Totals row -->
+				{#if totalRow}
+				<tr class="font-semibold border-t border-gray-600">
+					{#if rowNumbers}
+						<td class="index w-[2%]" />
+					{/if}
+					{#if $props.columns.length > 0}
+						{#each $props.columns as column}
+						{@const columnSummary = safeExtractColumn(column)}
+							<td
+								class={safeExtractColumn(column).type}
+								style:text-align={column.align}
+								style:height={column.height}
+								style:width={column.width}
+								style:white-space={column.wrap ? 'normal' : 'nowrap'}
+							>
+							{#if column.totalAgg}
+								{#if ['sum', 'mean', 'median', 'min', 'max'].includes(column.totalAgg)}
+									{formatValue(
+										columnSummary[column.totalAgg], 
+										column.fmt ?? columnSummary.format, 
+										columnSummary.columnUnitSummary)}
+								{:else}
+									{column.totalAgg}
+								{/if}
+							{:else}
+								{formatValue(columnSummary.sum, columnSummary.format, columnSummary.columnUnitSummary)}
+							{/if}
+							</td>
+						{/each}
+					{:else}
+						{#each columnSummary.filter((d) => d.show === true) as column}
+							<td 
+								class={column.type}
+								style:text-align={column.align}
+								style:height={column.height}
+								style:width={column.width}
+								style:white-space={column.wrap ? 'normal' : 'nowrap'}
+							>
+								{formatValue(column.sum, column.format, column.columnUnitSummary)}
+							</td>
+						{/each}
+						
+					{/if}
+				</tr>	
+				{/if}
 			</table>
 		</div>
 

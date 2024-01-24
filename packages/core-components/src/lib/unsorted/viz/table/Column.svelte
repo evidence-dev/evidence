@@ -57,6 +57,9 @@
 	// Formatting:
 	export let fmt = undefined;
 
+	// Totals:
+	export let totalAgg = undefined;
+
 	// Color Scale:
 	export let colorMax = undefined;
 	export let colorMin = undefined;
@@ -91,6 +94,7 @@
 		openInNewTab: openInNewTab,
 		linkLabel: linkLabel,
 		fmt: fmt,
+		totalAgg: totalAgg,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
 		showValue: showValue,
