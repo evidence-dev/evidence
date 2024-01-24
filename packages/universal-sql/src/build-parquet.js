@@ -51,7 +51,7 @@ function convertArrayToVector(column, rawValues) {
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-					type +
+					column.evidenceType +
 					'\n This is likely an error in a datasource connector.'
 			);
 	}
