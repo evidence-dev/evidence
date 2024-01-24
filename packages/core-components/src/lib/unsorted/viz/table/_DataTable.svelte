@@ -506,8 +506,8 @@
 					{#if rowNumbers}
 						<td class="index w-[2%]" />
 					{/if}
-					{#if $props.columns.length > 0}
-						{#each $props.columns as column}
+				
+					{#each $props.columns.length > 0 ? $props.columns : columnSummary.filter((d) => d.show === true) as column}
 						{@const columnSummary = safeExtractColumn(column)}
 							<td
 								class={safeExtractColumn(column).type}
@@ -528,23 +528,10 @@
 							{:else}
 								{formatValue(columnSummary.sum, columnSummary.format, columnSummary.columnUnitSummary)}
 							{/if}
-							</td>
-						{/each}
-					{:else}
-						{#each columnSummary.filter((d) => d.show === true) as column}
-							<td 
-								class={column.type}
-								style:text-align={column.align}
-								style:height={column.height}
-								style:width={column.width}
-								style:white-space={column.wrap ? 'normal' : 'nowrap'}
-							>
-								{formatValue(column.sum, column.format, column.columnUnitSummary)}
-							</td>
-						{/each}
-						
-					{/if}
-				</tr>	
+						</td>
+					{/each}
+				</tr>
+					
 				{/if}
 			</table>
 		</div>

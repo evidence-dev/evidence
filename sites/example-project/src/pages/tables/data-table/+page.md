@@ -18,12 +18,12 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 
 ### rows=40
 
-<DataTable data={orders_by_category} rows=40 rowNumbers=true totalRow=true>
+<DataTable data={orders_by_category} rowNumbers=true totalRow=true>
   <Column id=month totalAgg="All Months"/>
-   <Column id=category totalAgg="All Categories"/>
+  <Column id=category totalAgg="All Categories"/>
   <Column id=sales_usd0k contentType=colorscale totalAgg=mean/>
   <Column id=num_orders_num0 contentType=colorscale scaleColor=red totalAgg=mean/>
-    <Column id=aov_usd2 contentType=colorscale scaleColor=blue totalAgg={orders_by_category[0].aov_usd2}/>
+  <Column id=aov_usd2 contentType=colorscale scaleColor=blue totalAgg={orders_by_category[0].aov_usd2}/>
 </DataTable>
 
 {fmt(1003530000, '[>=1000000000]$#,##0.0,,,"B";$#,##0.0,,"M"')}
