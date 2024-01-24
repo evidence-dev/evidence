@@ -16,7 +16,6 @@ altConfigFilepaths.find((file) => {
 	return false;
 });
 
-console.log(presets);
 
 /** @type {import("tailwindcss").Config} */
 const config = {
