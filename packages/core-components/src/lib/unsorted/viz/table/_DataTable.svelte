@@ -510,6 +510,7 @@
 				
 					{#each $props.columns.length > 0 ? $props.columns : columnSummary.filter((d) => d.show === true) as column}
 						{@const columnSummary = safeExtractColumn(column)}
+						{@const format = column.totalFmt ? getFormatObjectFromString(column.totalFmt) : columnSummary.format}
 							<td
 								class={safeExtractColumn(column).type}
 								style:text-align={column.align}
@@ -517,14 +518,14 @@
 								style:width={column.width}
 								style:white-space={column.wrap ? 'normal' : 'nowrap'}
 							>
-								{#if typeof column.totalAgg === 'undefined'}
-									{formatValue(columnSummary.columnUnitSummary.sum, columnSummary.format, columnSummary.columnUnitSummary)}
-								{:else if ['sum', 'mean', 'median', 'min', 'max', 'count', 'countDistinct'].includes(column.totalAgg)}
-									{formatValue(columnSummary.columnUnitSummary[column.totalAgg], columnSummary.format, columnSummary.columnUnitSummary)}
-								{:else}
-									{column.totalAgg}
+								{#if typeof column.totalAgg === 'undefined'} <!-- if totalAgg not specified -->
+									{formatValue(columnSummary.columnUnitSummary.sum, format, columnSummary.columnUnitSummary)}
+								{:else if ['sum', 'mean', 'median', 'min', 'max', 'count', 'countDistinct'].includes(column.totalAgg)} <!-- using a predefined aggregation -->
+									{formatValue(columnSummary.columnUnitSummary[column.totalAgg], format, columnSummary.columnUnitSummary)}
+								{:else} <!-- passing in anything else -->
+									{column.totalFmt ? formatValue(column.totalAgg,format, columnSummary.columnUnitSummary) : column.totalAgg}
 								{/if}
-									
+
 						</td>
 					{/each}
 				</tr>

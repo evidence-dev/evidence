@@ -45,16 +45,16 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 select 
   sum(sales_usd0k), 
   sum(num_orders_num0),
-  sum(sales_usd0k) / sum(num_orders_num0)
+  sum(sales_usd0k) / sum(num_orders_num0) as aov_usd2
 from ${orders_by_category}
 ```
 
 
 <DataTable data={orders_by_category} totalRow=true rowNumbers=true rows=5>
-  <Column id=month totalAgg="Hello World"/>
+  <Column id=month totalAgg="All Months"/>
   <Column id=category totalAgg="All Categories"/>
-  <Column id=sales_usd0k contentType=colorscale totalAgg=mean totalFmt='$###.0,,"M"'/>
-  <Column id=num_orders_num0 contentType=colorscale scaleColor=red totalAgg=sum/>
-  <Column id=aov_usd2 contentType=colorscale scaleColor=blue totalAgg={orders_all[0].aov_usd2}/>
+  <Column id=sales_usd0k contentType=colorscale totalAgg=sum totalFmt='$000.0,,"M"'/>
+  <Column id=num_orders_num0 contentType=colorscale scaleColor=red totalAgg=sum totalFmt='num0k'/>
+  <Column id=aov_usd2 contentType=colorscale scaleColor=blue totalAgg="{orders_all[0].aov_usd2}" totalFmt="usd2"/>
 </DataTable>
 
