@@ -40,6 +40,58 @@ hide_table_of_contents: false
 
 <img src='/img/datatable-deltas.png' width='500px'/>
 
+### Total Row
+
+```html
+<DataTable data={countries} totalRow=true rows=5/>
+```
+
+<img src='/img/datatable-totalrow.png' width='650px'/>
+
+#### Default Aggregation Functions
+
+```html
+<DataTable data={countries} totalRow=true rows=5>
+  <Column id=country/>
+  <Column id=gdp_usd totalAgg=sum/>
+  <Column id=gdp_growth totalAgg=mean fmt='pct2'/>
+  <Column id=population totalAgg=sum fmt='#,##0"M"'/>
+</DataTable>
+```
+
+<img src='/img/datatable-totalrow-agg-functions.png' width='650px'/>
+
+#### Custom Aggregations Values
+
+```html
+<DataTable data={countries} totalRow=true rows=5>
+  <Column id=country totalAgg="Just the USA"/>
+  <Column id=gdp_usd totalAgg={countries[0].gdp_usd} totalFmt=usd/>
+</DataTable>
+```
+
+<img src='/img/datatable-totalrow-agg-custom.png' width='650px'/>
+
+#### Custom Total Formats
+
+```html
+<DataTable data={countries} totalRow=true rows=5>
+  <Column id=country totalAgg="All Countries"/>
+  <Column id=continent totalAgg=countDistinct totalFmt='# "Unique continents"'/>
+  <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"'/>
+  <Column id=gdp_growth totalAgg=mean fmt='pct2' totalFmt='pct1'/>
+  <Column id=interest_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
+  <Column id=inflation_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
+  <Column id=jobless_rate totalAgg=mean fmt='pct0'/>
+  <Column id=gov_budget totalAgg=mean fmt='0.0"%"'/>
+  <Column id=debt_to_gdp totalAgg=mean fmt='0"%"'/>
+  <Column id=current_account totalAgg=mean fmt='0.0"%"'/>
+  <Column id=population totalAgg=sum fmt='#,##0"M"'/>
+</DataTable>
+```
+
+<img src='/img/datatable-totalrow-fmt.png' width='650px'/>
+
 ### Conditional Formatting
 
 #### Default (`scaleColor=green`)
