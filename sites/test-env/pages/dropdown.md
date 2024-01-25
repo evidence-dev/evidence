@@ -2,7 +2,8 @@
 
 ## Dropdown with a query that has an error
 
-<Dropdown title="Dropdown with an Error" value="order_id" data="named_reviews" where="nps_score > 7 and their name is Bob" name="selected_order_id">
+
+<Dropdown title="Dropdown with an Error" value="order_id" data="named_reviews" where="nps_score > 7 and their name is Bob" name="broken_dropdown">
     <DropdownOption value="All" />
     <DropdownOption value="Top 100" />
 </Dropdown>
