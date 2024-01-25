@@ -54,7 +54,7 @@
 					<ButtonGroupItem {value} {valueLabel} />
 				{/each}
 			{:else}
-				<span class="text-red-500 font-bold text-sm">{preset} is not a valid preset</span>
+				<span class="text-error-500 font-bold text-sm">{preset} is not a valid preset</span>
 			{/if}
 		{:else}
 			<slot />

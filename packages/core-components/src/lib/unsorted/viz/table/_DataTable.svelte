@@ -405,7 +405,7 @@
 											<a
 												href={row[column.id]}
 												target={column.openInNewTab ? '_blank' : ''}
-												class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
+												class="text-primary-600 hover:text-primary-700 transition-colors duration-200"
 											>
 												{#if column.linkLabel != undefined}
 													<!-- if the linklabel is a column name, display that column -->
@@ -446,8 +446,8 @@
 											class="m-0 text-xs font-medium font-ui"
 											style="color: {(row[column.id] >= 0 && !column.downIsGood) ||
 											(row[column.id] < 0 && column.downIsGood)
-												? 'var(--green-700)'
-												: 'var(--red-700)'}"
+												? 'var(--success-700)'
+												: 'var(--error-700)'}"
 										>
 											<div style:text-align={column.align ?? 'right'}>
 												{#if column.showValue}
@@ -725,7 +725,7 @@
 	}
 
 	.page-changer.hovering {
-		color: var(--blue-600);
+		color: var(--primary-600);
 		transition: color 200ms;
 	}
 
@@ -779,7 +779,7 @@
 	}
 
 	.page-input.error {
-		border: 1px solid var(--red-600);
+		border: 1px solid var(--error-600);
 	}
 
 	.page-input::placeholder {
@@ -787,7 +787,7 @@
 	}
 
 	button:enabled > .page-icon:hover {
-		color: var(--blue-800);
+		color: var(--primary-800);
 	}
 
 	*:focus {
@@ -821,7 +821,7 @@
 	}
 
 	.row-link:hover {
-		@apply bg-blue-50;
+		@apply bg-primary-50;
 	}
 
 	.noresults {

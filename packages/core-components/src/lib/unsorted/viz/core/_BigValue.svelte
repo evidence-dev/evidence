@@ -60,8 +60,8 @@
 			positive = data[0][comparison] >= 0;
 			comparisonColor =
 				(positive && !downIsGood) || (!positive && downIsGood)
-					? 'var(--green-700)'
-					: 'var(--red-700)';
+					? 'var(--success-700)'
+					: 'var(--error-700)';
 		}
 		// populate sparklineData from data where timeseries is the key and value is the value
 		if (data && sparkline && value) {

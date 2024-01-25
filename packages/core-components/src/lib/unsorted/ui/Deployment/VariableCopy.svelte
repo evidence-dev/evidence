@@ -50,7 +50,7 @@
 	</span>
 	<div class="w-4 h-4">
 		{#if copied}
-			<Copy class="bx--snippet__icon" color="var(--green-900)" />
+			<Copy class="bx--snippet__icon" color="var(--success-900)" />
 		{:else}
 			<Copy class="bx--snippet__icon" />
 		{/if}
@@ -82,22 +82,22 @@
 	}
 
 	button.container:hover {
-		border-color: var(--blue-500);
-		background-color: var(--blue-100);
-		color: var(--blue-800);
+		border-color: var(--primary-500);
+		background-color: var(--primary-100);
+		color: var(--primary-800);
 		transition: all 400ms;
 	}
 
 	button.container:active {
-		border-color: var(--green-500);
-		background-color: var(--green-100);
-		color: var(--green-800);
+		border-color: var(--success-500);
+		background-color: var(--success-100);
+		color: var(--success-800);
 	}
 
 	button.container.copied {
-		border-color: var(--green-500);
-		background-color: var(--green-100);
-		color: var(--green-900);
+		border-color: var(--success-500);
+		background-color: var(--success-100);
+		color: var(--success-900);
 	}
 
 	span.var-value {

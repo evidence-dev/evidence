@@ -116,13 +116,13 @@
 	}
 
 	.a {
-		stroke: var(--blue-500);
-		fill: var(--blue-500);
+		stroke: var(--primary-500);
+		fill: var(--primary-500);
 	}
 
 	.b {
-		stroke: var(--green-500);
-		fill: var(--green-500);
+		stroke: var(--success-500);
+		fill: var(--success-500);
 	}
 
 	.c {
@@ -137,11 +137,11 @@
 	}
 
 	.label-a {
-		fill: var(--blue-800);
+		fill: var(--primary-800);
 	}
 
 	.label-b {
-		fill: var(--green-800);
+		fill: var(--success-800);
 	}
 
 	.label-c {

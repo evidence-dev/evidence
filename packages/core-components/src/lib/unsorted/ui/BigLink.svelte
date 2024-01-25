@@ -29,12 +29,12 @@
 
 	a {
 		text-decoration: none;
-		color: var(--blue-600);
+		color: var(--primary-600);
 	}
 
 	a:hover {
 		text-decoration: none;
-		color: var(--blue-700);
+		color: var(--primary-700);
 	}
 
 	div:hover {

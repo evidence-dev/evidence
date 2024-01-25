@@ -51,7 +51,7 @@
 
 <style>
 	.deleteIcon {
-		color: var(--red-600);
+		color: var(--error-600);
 		width: 16px;
 		cursor: pointer;
 	}
@@ -64,7 +64,7 @@
 	}
 
 	.deleteIcon:hover {
-		color: var(--red-700);
+		color: var(--error-700);
 	}
 
 	table {

@@ -213,26 +213,26 @@
 		padding-top: 0.5em;
 	}
 	.error {
-		color: var(--red-600);
+		color: var(--error-600);
 	}
 
 	#submitCustomFormatButton {
-		background-color: var(--blue-600);
+		background-color: var(--primary-600);
 		color: white;
 		font-weight: bold;
 		border-radius: 4px;
-		border: 1px solid var(--blue-700);
+		border: 1px solid var(--primary-700);
 		padding: 0.4em 1.1em;
 		transition-property: background, color;
 		transition-duration: 350ms;
 	}
 
 	#submitCustomFormatButton:active {
-		background-color: var(--blue-800);
+		background-color: var(--primary-800);
 		color: white;
 		font-weight: bold;
 		border-radius: 4px;
-		border: 1px solid var(--blue-900);
+		border: 1px solid var(--primary-900);
 		padding: 0.4em 1.1em;
 		transition-property: background, color;
 		transition-duration: 350ms;

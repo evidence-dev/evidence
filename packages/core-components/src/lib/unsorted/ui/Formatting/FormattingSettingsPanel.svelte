@@ -132,7 +132,7 @@ from table`;
 	}
 
 	/* .format-tag {
-    background-color: var(--blue-100);
+    background-color: var(--primary-100);
     border-radius: 4px;
     padding: 2px 4px 2px 4px;
   } */
@@ -149,12 +149,12 @@ from table`;
 	}
 
 	.docs-link {
-		color: var(--blue-600);
+		color: var(--primary-600);
 		text-decoration: none;
 	}
 
 	.docs-link:hover {
-		color: var(--blue-800);
+		color: var(--primary-800);
 	}
 
 	h2 {

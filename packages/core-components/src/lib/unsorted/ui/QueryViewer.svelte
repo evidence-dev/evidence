@@ -217,12 +217,12 @@
 	}
 
 	.status-bar.success {
-		color: var(--blue-500);
+		color: var(--primary-500);
 		cursor: pointer;
 	}
 
 	.status-bar.error {
-		color: var(--red-600);
+		color: var(--error-600);
 	}
 
 	button {

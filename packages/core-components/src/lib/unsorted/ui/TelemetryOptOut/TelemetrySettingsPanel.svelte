@@ -120,12 +120,12 @@
 	}
 
 	.docs-link {
-		color: var(--blue-600);
+		color: var(--primary-600);
 		text-decoration: none;
 	}
 
 	.docs-link:hover {
-		color: var(--blue-800);
+		color: var(--primary-800);
 	}
 
 	.switch {
@@ -172,7 +172,7 @@
 	}
 
 	input:checked + .slider {
-		background-color: var(--green-500);
+		background-color: var(--success-500);
 	}
 
 	input:checked + .slider:before {

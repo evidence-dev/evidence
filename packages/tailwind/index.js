@@ -1,3 +1,6 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultColors = require('tailwindcss/colors');
+
 export const colors = {
 	color: {
 		1: '#923d59',
@@ -20,10 +23,13 @@ export const colors = {
 		18: '#495867',
 		19: '#bfdbf7',
 		20: '#bc4749'
-	}
+	},
+	primary: defaultColors.blue,
+	success: defaultColors.green,
+	warning: defaultColors.yellow,
+	error: defaultColors.red,
+	info: defaultColors.blue, // TODO: Should this be the same as primary?
 };
-
-const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 export const config = {

@@ -99,9 +99,9 @@
 	<h3 class="text-sm uppercase gray-600 font-bold">Configure {source.name}</h3>
 	<section class="flex flex-col gap-2">
 		{#if configurationError}
-			<p class="text-red-500 font-bold text-xs">{configurationError}</p>
+			<p class="text-error-500 font-bold text-xs">{configurationError}</p>
 		{:else if configurationOkay}
-			<p class="text-green-500 font-bold text-xs">Configuration Updated</p>
+			<p class="text-success-500 font-bold text-xs">Configuration Updated</p>
 		{/if}
 
 		<h4 class="text-xs uppercase text-gray-600 font-bold">Source Info</h4>
@@ -145,9 +145,9 @@
 	<input type="hidden" value={JSON.stringify(source)} name="source" />
 	<div class="flex gap-2 justify-end items-center mt-4">
 		{#if validationError}
-			<p class="text-red-500 font-bold text-xs">{validationError}</p>
+			<p class="text-error-500 font-bold text-xs">{validationError}</p>
 		{:else if validationOkay}
-			<p class="text-green-500 font-bold text-xs">Connection Successful!</p>
+			<p class="text-success-500 font-bold text-xs">Connection Successful!</p>
 		{/if}
 
 		<Button

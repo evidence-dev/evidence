@@ -30,10 +30,10 @@
 	/>
 	<div class="block ml-auto pr-4 py-4">
 		<button
-			class="block ml-auto bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors px-4 py-2 text-sm text-white rounded-xl select-none"
+			class="block ml-auto bg-success-600 hover:bg-success-700 active:bg-success-800 transition-colors px-4 py-2 text-sm text-white rounded-xl select-none"
 			on:click|preventDefault={() => run()}
 			disabled={loading}
-			class:!bg-green-900={loading}
+			class:!bg-success-900={loading}
 		>
 			Run Query
 		</button>

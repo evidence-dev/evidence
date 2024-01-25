@@ -37,7 +37,7 @@
 					}
 				}}>
 					{#if copied}
-					<Success color="var(--green-500)" />
+					<Success color="var(--success-500)" />
 				{:else}
 					<Copy />
 				{/if}
@@ -129,6 +129,6 @@
 	}
 
 	pre button.container.copied {
-		@apply text-green-600 border-gray-500;
+		@apply text-success-600 border-gray-500;
 	}
 </style>

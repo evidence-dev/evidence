@@ -19,11 +19,11 @@
 			<div class="git-item">
 				{#if settings.localGitRepo}
 					<span class="gitcheck-icon">
-						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-green-700" />
+						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-success-700" />
 					</span>
 				{:else}
 					<span class="gitx-icon">
-						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-red-700" />
+						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-error-700" />
 					</span>
 				{/if}
 				<span class="item-label">Local Git Repo</span>
@@ -44,11 +44,11 @@
 			<div class="git-item">
 				{#if settings.gitRepo}
 					<span class="gitcheck-icon">
-						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-green-700" />
+						<Icon src={CircleCheck} theme="filled" class="h-6 w-6  text-success-700" />
 					</span>
 				{:else}
 					<span class="gitx-icon">
-						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-red-700" />
+						<Icon src={CircleX} theme="filled" class="h-6 w-6  text-error-700" />
 					</span>
 				{/if}
 				<span class="item-label">Git Repo Published</span>
@@ -121,22 +121,22 @@
 	}
 
 	.docs-link {
-		color: var(--blue-600);
+		color: var(--primary-600);
 		text-decoration: none;
 	}
 
 	.docs-link:hover {
-		color: var(--blue-800);
+		color: var(--primary-800);
 	}
 
 	.gitcheck-icon {
-		color: var(--green-700);
+		color: var(--success-700);
 		float: right;
 		margin-right: 5px;
 	}
 
 	.gitx-icon {
-		color: var(--red-700);
+		color: var(--error-700);
 		float: right;
 		margin-right: 5px;
 	}

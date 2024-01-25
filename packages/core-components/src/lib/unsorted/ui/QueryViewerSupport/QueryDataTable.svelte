@@ -171,7 +171,7 @@
 		width: 75%;
 		height: 10px;
 		margin: 0 0;
-		background: var(--blue-100);
+		background: var(--primary-100);
 		outline: none;
 		opacity: 0.7;
 		-webkit-transition: 0.2s;
@@ -190,7 +190,7 @@
 		appearance: none;
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
+		background: var(--primary-500);
 		cursor: pointer;
 		border-radius: 10px;
 	}
@@ -198,14 +198,14 @@
 	.slider::-moz-range-thumb {
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
+		background: var(--primary-500);
 		cursor: pointer;
 	}
 
 	.slider::-moz-range-thumb {
 		width: 10px;
 		height: 10px;
-		background: var(--blue-500);
+		background: var(--primary-500);
 		cursor: pointer;
 	}
 

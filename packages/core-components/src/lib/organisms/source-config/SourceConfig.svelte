@@ -70,7 +70,7 @@
 
 				{#if duplicatePackageNames.length}
 					<div class="col-span-4">
-						<p class="text-red-500 text-bold text-sm">
+						<p class="text-error-500 text-bold text-sm">
 							Duplicate Packages found; this could lead to unexpected behavior
 						</p>
 						<ul>
@@ -122,7 +122,7 @@
 		<!-- TODO: Update this when we have docs -->
 		Learn more about
 		<a
-			class="text-blue-600 no-underline"
+			class="text-primary-600 no-underline"
 			href="https://docs.evidence.dev/core-concepts/data-sources/"
 		>
 			Configuring Data Sources &rarr;

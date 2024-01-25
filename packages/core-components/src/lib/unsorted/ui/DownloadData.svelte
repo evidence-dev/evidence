@@ -82,12 +82,12 @@
 	}
 
 	button:hover {
-		color: var(--blue-600);
+		color: var(--primary-600);
 		transition: color 200ms;
 	}
 
 	button:hover :global(svg) {
-		stroke: var(--blue-600);
+		stroke: var(--primary-600);
 		transition: stroke 200ms;
 	}
 

@@ -34,6 +34,6 @@
 </label>
 <div class="flex justify-end w-full">
 	{#if nameError}
-		<span class="text-red-500 font-bold text-sm">{nameError}</span>
+		<span class="text-error-500 font-bold text-sm">{nameError}</span>
 	{/if}
 </div>

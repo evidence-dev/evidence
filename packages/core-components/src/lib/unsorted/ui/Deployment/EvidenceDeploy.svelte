@@ -36,11 +36,11 @@
 		text-decoration: none;
 		font-size: 14px;
 		cursor: pointer;
-		background-color: var(--blue-600);
+		background-color: var(--primary-600);
 		color: white;
 		font-weight: bold;
 		border-radius: 4px;
-		border: 1px solid var(--blue-700);
+		border: 1px solid var(--primary-700);
 		padding: 0.4em 1.1em;
 		transition-property: background, color;
 		transition-duration: 350ms;

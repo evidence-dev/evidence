@@ -58,8 +58,8 @@
 	}
 
 	button.on {
-		color: var(--blue-700);
-		background-color: var(--blue-100);
-		border: 1px solid var(--blue-200);
+		color: var(--primary-700);
+		background-color: var(--primary-100);
+		border: 1px solid var(--primary-200);
 	}
 </style>

@@ -22,16 +22,16 @@
 		@apply p-2 mb-4 rounded text-gray-800 bg-gray-50 top-14;
 
 		&.info {
-			@apply text-blue-800 bg-blue-50;
+			@apply text-primary-800 bg-primary-50;
 		}
 		&.danger {
-			@apply text-red-800 bg-red-50;
+			@apply text-error-800 bg-error-50;
 		}
 		&.success {
-			@apply text-green-800 bg-green-50;
+			@apply text-success-800 bg-success-50;
 		}
 		&.warning {
-			@apply text-yellow-800 bg-yellow-50;
+			@apply text-warning-800 bg-warning-50;
 		}
 
 		& :global(p) {

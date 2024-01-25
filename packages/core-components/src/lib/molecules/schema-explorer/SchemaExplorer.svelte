@@ -44,8 +44,8 @@
 				{#each Object.entries(metadata) as [source, meta] (source)}
 					<li class="font-mono m-0 text-sm text-white">
 						<button
-							class="bg-gray-500 px-2 py-1 rounded font-bold flex w-full hover:bg-blue-500"
-							class:bg-blue-500={selectedSource === source}
+							class="bg-gray-500 px-2 py-1 rounded font-bold flex w-full hover:bg-primary-500"
+							class:bg-primary-500={selectedSource === source}
 							on:click={() => {
 								selectedSource = selectedSource === source ? '' : source;
 								selectedTable = ''; // Reset selectedTable when source is clicked
@@ -60,8 +60,8 @@
 							{#each Object.entries(meta) as [name, tableMeta] (name)}
 								<li class="font-mono m-0 text-sm font-bold ml-3">
 									<button
-										class="bg-gray-200 px-2 py-1 rounded flex w-full hover:bg-blue-200"
-										class:bg-blue-200={selectedTable === tableMeta}
+										class="bg-gray-200 px-2 py-1 rounded flex w-full hover:bg-primary-200"
+										class:bg-primary-200={selectedTable === tableMeta}
 										on:click={() => {
 											selectedTable = selectedTable === tableMeta ? '' : tableMeta;
 										}}
@@ -74,7 +74,7 @@
 									<ul class="list-none m-0 flex flex-col gap-1">
 										{#each tableMeta.columns as column (column.column_name)}
 											<li class="font-mono text-sm ml-6 rounded flex flex-row">
-												<div class="flex px-2 py-1 rounded w-full hover:bg-blue-50">
+												<div class="flex px-2 py-1 rounded w-full hover:bg-primary-50">
 													{#if column.data_type === 'INT' || column.data_type === 'BIGINT' || column.data_type === 'SMALLINT' || column.data_type === 'TINYINT' || column.data_type === 'DOUBLE'}
 														<Icon src={_123} class="text-gray-700 w-5 h-5" />
 													{:else if column.data_type === 'DATE' || column.data_type === 'DATETIME' || column.data_type === 'TIMESTAMP'}
@@ -102,5 +102,5 @@
 {:catch e}
 	An error was encountered while loading project schema.
 
-	<pre class="px-4 py-2 bg-red-800 text-white">{e.message}</pre>
+	<pre class="px-4 py-2 bg-error-800 text-white">{e.message}</pre>
 {/await}

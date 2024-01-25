@@ -133,11 +133,11 @@
 	}
 
 	.docs-link {
-		color: var(--blue-600);
+		color: var(--primary-600);
 		text-decoration: none;
 	}
 
 	.docs-link:hover {
-		color: var(--blue-800);
+		color: var(--primary-800);
 	}
 </style>

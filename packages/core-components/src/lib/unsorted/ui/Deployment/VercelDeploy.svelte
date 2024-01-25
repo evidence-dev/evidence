@@ -49,12 +49,12 @@
 	}
 
 	a {
-		color: var(--blue-600);
+		color: var(--primary-600);
 		text-decoration: none;
 	}
 
 	a:hover {
-		color: var(--blue-800);
+		color: var(--primary-800);
 		text-decoration: none;
 	}
 

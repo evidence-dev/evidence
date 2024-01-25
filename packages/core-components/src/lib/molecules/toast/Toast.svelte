@@ -31,15 +31,15 @@
 
 <style lang="postcss">
 	.error {
-		@apply border-red-200 bg-red-50 text-red-800;
+		@apply border-error-200 bg-error-50 text-error-800;
 	}
 
 	.warning {
-		@apply border-yellow-200 bg-yellow-50 text-yellow-800;
+		@apply border-warning-200 bg-warning-50 text-warning-800;
 	}
 
 	.success {
-		@apply border-green-200 bg-green-50 text-green-800;
+		@apply border-success-200 bg-success-50 text-success-800;
 	}
 
 	.info {
