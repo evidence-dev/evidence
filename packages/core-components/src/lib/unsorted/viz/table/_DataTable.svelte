@@ -386,10 +386,15 @@
 									style:height={column.height}
 									style:width={column.width}
 									style:white-space={column.wrap ? 'normal' : 'nowrap'}
-									style:background-color={(column.contentType === 'colorscale' && is_nonzero)
-										? `${column.useColor} ${
-												(row[column.id] - column_min) / (column_max - column_min)
-										  })` // closing bracket needed to close unclosed color string from Column component
+									style:background-color={column.contentType === 'colorscale' && is_nonzero
+										? (column.customColor
+											? `color-mix(in srgb, ${column.customColor} ${
+													((row[column.id] - column_min) / (column_max - column_min))*100
+											  }%, transparent)`
+											: `${column.useColor} ${
+													(row[column.id] - column_min) / (column_max - column_min)
+											  })`
+											  ) // closing bracket needed to close unclosed color string from Column component
 										: ''}
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
@@ -581,13 +586,13 @@
 	{#if generateMarkdown}
 		{#if queryID}
 			<CodeBlock>
-			{`<DataTable data={${queryID}}>`}
-				<br/>
-			{#each Object.keys(data[0]) as column}
-				{`	<Column id=${column}/>`}
-				<br/>
-			{/each}
-			{`</DataTable>`}
+				{`<DataTable data={${queryID}}>`}
+				<br />
+				{#each Object.keys(data[0]) as column}
+					{`	<Column id=${column}/>`}
+					<br />
+				{/each}
+				{`</DataTable>`}
 			</CodeBlock>
 		{/if}
 	{/if}
@@ -718,8 +723,8 @@
 		font-family: var(--ui-font-family);
 		color: var(--grey-500);
 		-webkit-user-select: none;
-		   -moz-user-select: none;
-		        user-select: none;
+		-moz-user-select: none;
+		user-select: none;
 		text-align: right;
 		margin-top: 0.5em;
 		margin-bottom: 1.8em;
@@ -755,8 +760,8 @@
 		cursor: auto;
 		color: var(--grey-300);
 		-webkit-user-select: none;
-		   -moz-user-select: none;
-		        user-select: none;
+		-moz-user-select: none;
+		user-select: none;
 		transition: color 200ms;
 	}
 
@@ -796,7 +801,7 @@
 	.page-input[type='number'] {
 		-moz-appearance: textfield;
 		-webkit-appearance: textfield;
-		        appearance: textfield;
+		appearance: textfield;
 	}
 
 	.page-input.hovering {
@@ -858,7 +863,7 @@
 	.row-link:hover {
 		--tw-bg-opacity: 1;
 		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
-}
+	}
 
 	.noresults {
 		display: none;
@@ -897,12 +902,12 @@
 	@media print {
 		.avoidbreaks {
 			-moz-column-break-inside: avoid;
-			     break-inside: avoid;
+			break-inside: avoid;
 		}
 
 		.pagination {
 			-moz-column-break-inside: avoid;
-			     break-inside: avoid;
+			break-inside: avoid;
 		}
 
 		.page-changer {
@@ -916,4 +921,5 @@
 		.print-page-count {
 			display: inline;
 		}
-	}</style>
+	}
+</style>
