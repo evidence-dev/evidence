@@ -722,7 +722,9 @@
 						},
 						color: y2
 							? yAxisColor === 'true'
-								? chartColours[0]
+								? colorPalette
+									? colorPalette[0]
+									: chartColours[0]
 								: yAxisColor !== 'false'
 								? yAxisColor
 								: undefined
@@ -736,7 +738,9 @@
 						padding: [0, 5, 0, 0],
 						color: y2
 							? yAxisColor === 'true'
-								? chartColours[0]
+								? colorPalette
+									? colorPalette[0]
+									: chartColours[0]
 								: yAxisColor !== 'false'
 								? yAxisColor
 								: undefined
@@ -772,7 +776,9 @@
 						},
 						color:
 							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
+								? colorPalette
+									? colorPalette[ySeriesCount]
+									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
 								? y2AxisColor
 								: undefined
@@ -785,7 +791,9 @@
 						padding: [0, 0, 0, 5],
 						color:
 							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
+								? colorPalette
+									? colorPalette[ySeriesCount]
+									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
 								? y2AxisColor
 								: undefined
