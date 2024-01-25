@@ -309,6 +309,13 @@ By default, the link column of your table is hidden. If you would like it to be 
         <td class='tcenter'>10</td>
     </tr>
     <tr>	
+        <td>totalRow</td>	
+        <td>Show a total row at the bottom of the table, defaults to sum of all numeric columns</td>
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
         <td>rowNumbers</td>	
         <td>Turns on or off row index numbers</td>	
         <td class='tcenter'>-</td>	
@@ -411,6 +418,20 @@ Use the `Column` component to choose specific columns to display in your table, 
     <tr>	
         <td>fmt</td>
         <td>Format the values in the column (<a href='/core-concepts/formatting'>see available formats</a>)</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>Excel-style format | built-in format | custom format</td>
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>totalAgg</td>
+        <td>Specify an aggregation function to use for the total row. Accepts predefined functions, custom strings or values</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>sum | mean | median | min | max | count | countDistinct | custom string or value</td>
+        <td class='tcenter'>sum</td>
+    </tr>
+    <tr>	
+        <td>totalFmt</td>
+        <td>Specify an override format to use in the total row (<a href='/core-concepts/formatting'>see available formats</a>). Custom strings or values are unformatted by default.</td>
         <td class='tcenter'>-</td>
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>
         <td class='tcenter'>-</td>
