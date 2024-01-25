@@ -509,8 +509,11 @@
 
 						{#each $props.columns.length > 0 ? $props.columns : columnSummary.filter((d) => d.show === true) as column}
 							{@const columnSummary = safeExtractColumn(column)}
-							{@const format = column.totalFmt
+							{@const format = 
+								column.totalFmt
 								? getFormatObjectFromString(column.totalFmt)
+								: column.fmt 
+								? getFormatObjectFromString(column.fmt) 
 								: columnSummary.format}
 							<td
 								class={safeExtractColumn(column).type}

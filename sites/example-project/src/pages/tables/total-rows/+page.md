@@ -1,11 +1,10 @@
 ---
-title: Data Table
+title: Total Rows
 queries:
   - orders_by_category: orders_by_category.sql
   - orders_with_comparisons: orders_with_comparisons.sql
 ---
 
-# Total Rows
 
 ## No Aggregation Specified
 
@@ -192,3 +191,36 @@ from ${orders_by_category}
   <Column id=num_orders_change_pct0 totalAgg=median/>
   <Column id=aov_change_pct0 totalAgg=median/>
 </DataTable>
+
+## Formats from Column
+
+```sql no_tags
+select 
+    month,
+    category,
+    sales_usd0k as sales,
+    num_orders_num0 as num_orders,
+    aov_usd2 as aov
+from ${orders_with_comparisons}
+```
+
+<DataTable data={no_tags} totalRow=true rowNumbers=true>
+  <Column id=month totalAgg=countDistinct />
+  <Column id=category totalAgg=countDistinct/>
+  <Column id=sales totalAgg=sum fmt='usd0'/>
+  <Column id=num_orders totalAgg=sum/>
+  <Column id=aov totalAgg=sum fmt='usd1'/>
+</DataTable>
+
+## Formats from fmt are overridden by totalFmt
+
+
+<DataTable data={no_tags} totalRow=true>
+    <Column id=month totalAgg=countDistinct />
+    <Column id=category totalAgg=countDistinct/>
+    <Column id=sales totalAgg=sum fmt=usd0 totalFmt='#'/>
+    <Column id=num_orders totalAgg=sum fmt='#.0' totalFmt='num0k'/>
+    <Column id=aov totalAgg=sum fmt='usd1' totalFmt='usd2'/>
+</DataTable>
+
+
