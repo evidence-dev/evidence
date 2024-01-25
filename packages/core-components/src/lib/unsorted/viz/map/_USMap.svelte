@@ -18,8 +18,6 @@
 
 	export let data = undefined;
 
-	export let height = undefined;
-
 	export let state = undefined;
 	export let value = undefined;
 
@@ -45,10 +43,42 @@
 
 	let config;
 
+	let extraHeight = 0;
+	let topPosition;
+
+	$: {
+		extraHeight = 20;
+		topPosition = 30;
+		if (title) {
+			extraHeight += 20;
+			topPosition += 15;
+		}
+
+		if (subtitle) {
+			extraHeight += 15;
+			topPosition += 20;
+		}
+
+		if (legend) {
+			if (filter) {
+				extraHeight += 35;
+				topPosition += 35;
+			} else {
+				extraHeight += 20;
+				topPosition += 20;
+			}
+		}
+	}
+
 	// color palettes
+
+	export let colorPalette = undefined; // custom color palette
+
 	export let colorScale = 'blue';
 	let colorArray;
-	$: if (colorScale === 'green') {
+	$: if (colorPalette) {
+		colorArray = [...colorPalette];
+	} else if (colorScale === 'green') {
 		colorArray = [
 			'#f7fcfd',
 			'#e5f5f9',
@@ -171,7 +201,10 @@
 						<span id="tooltip" style='font-weight: 600;'>${params.name}</span>
 						<br/>
 						<span>${formatTitle(value, format_object)}: </span>
-							<span style='float:right; margin-left: 10px;'>${formatValue(Number.isNaN(params.value) ? 0 : params.value, format_object)}</span>`;
+							<span style='float:right; margin-left: 10px;'>${formatValue(
+								Number.isNaN(params.value) ? 0 : params.value,
+								format_object
+							)}</span>`;
 
 					return tooltipOutput;
 				},
@@ -191,16 +224,15 @@
 			},
 
 			visualMap: {
-				top: 'middle',
 				type: 'continuous',
 				min: minValue,
 				max: maxValue,
 				itemWidth: 10,
-				// itemHeight: 300,
 				show: legend,
+				left: 'center',
 				handleSize: '130%',
 				orient: 'horizontal',
-				top: (title ? 20 : 0) + (subtitle ? 15 : 0),
+				top: (title ? 25 : 0) + (subtitle ? 20 : 0),
 				handleStyle: {
 					borderColor: uiColours.grey200
 				},
@@ -211,9 +243,11 @@
 					color: uiColours.grey100
 				},
 				calculable: filter,
-				text: filter ? undefined : [formatValue(maxValue, format_object), formatValue(minValue, format_object)],
-				formatter: function(value){
-					return formatValue(value, format_object)
+				text: filter
+					? undefined
+					: [formatValue(maxValue, format_object), formatValue(minValue, format_object)],
+				formatter: function (value) {
+					return formatValue(value, format_object);
 				},
 				inverse: false
 			},
@@ -222,7 +256,8 @@
 					name: formatTitle(value, columnSummary[value].format),
 					type: 'map',
 					zoom: 1.1,
-					top: 45,
+					top: topPosition,
+					left: '8%',
 					roam: false,
 					map: 'US',
 					nameProperty: nameProperty,
@@ -250,31 +285,6 @@
 					},
 					data: mapData
 				}
-			],
-			media: [
-				{
-					query: {
-						maxWidth: 500
-					},
-					option: {
-						series: [
-							{
-								top: title ? (subtitle ? 48 : 32) : 25, 
-								zoom: title ? (subtitle ? 0.9 : 1.1) : 1.1
-							}
-						]
-					}
-				},
-				{
-					option: {
-						series: [
-							{
-								top: (title ? (subtitle ? 53 : 45) : 35) + (legend ? (filter ? 40 : 15): 0),
-								zoom: title ? (subtitle ? 1.1 : 1.1) : 1.1
-							}
-						]
-					}
-				}
 			]
 		};
 	} catch (e) {
@@ -288,7 +298,7 @@
 </script>
 
 {#if !error}
-	<EChartsMap {height} {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
+	<EChartsMap {extraHeight} {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
 
 	{#if link}
 		<InvisibleLinks {data} {link} />

@@ -129,3 +129,14 @@ discede?
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
+
+## Custom Color Palette
+
+<USMap
+    data={demoData}
+    state=name
+    value=population
+    colorPalette={['green','beige','orange']}
+    legend=true
+    filter=false
+/>
