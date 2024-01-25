@@ -47,10 +47,10 @@ describe('getColumnUnitSummary', () => {
 	});
 	it('should only return count and countDistinct when the data is not numeric, and other values should be undefined', () => {
 		const data = [
-			{ column1: 'foo', column2: 'bar', bool: true},
-			{ column1: 'dar', column2: 'blah', bool: false},
-			{ column1: 'blah', column2: 'blah', bool: true},
-			{ column1: 'blah', column2: 'blah', bool: false}
+			{ column1: 'foo', column2: 'bar', bool: true },
+			{ column1: 'dar', column2: 'blah', bool: false },
+			{ column1: 'blah', column2: 'blah', bool: true },
+			{ column1: 'blah', column2: 'blah', bool: false }
 		];
 		const summary = getColumnUnitSummary(data, 'column2', false);
 		expect(summary).toStrictEqual({

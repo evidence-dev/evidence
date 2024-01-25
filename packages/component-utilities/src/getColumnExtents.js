@@ -10,9 +10,17 @@ import { tidy, summarize, min, max, median, mean, n, nDistinct, sum } from '@tid
 export function getColumnUnitSummary(data, columnName, isNumeric = true) {
 	const seriesExtents = tidy(
 		data,
-		isNumeric ?
-			summarize({ count: n(columnName), countDistinct: nDistinct(columnName), min: min(columnName), max: max(columnName), median: median(columnName), mean: mean(columnName), sum: sum(columnName) }) :
-			summarize({ count: n(columnName), countDistinct: nDistinct(columnName) })
+		isNumeric
+			? summarize({
+					count: n(columnName),
+					countDistinct: nDistinct(columnName),
+					min: min(columnName),
+					max: max(columnName),
+					median: median(columnName),
+					mean: mean(columnName),
+					sum: sum(columnName)
+			  })
+			: summarize({ count: n(columnName), countDistinct: nDistinct(columnName) })
 	)[0];
 
 	// TODO try to use summarize spec in tidy
