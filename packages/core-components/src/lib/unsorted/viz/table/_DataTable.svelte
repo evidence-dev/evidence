@@ -19,6 +19,7 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import CodeBlock from '../../ui/CodeBlock.svelte';
 
 	// Set up props store
 	let props = writable({});
@@ -26,6 +27,7 @@
 
 	// Data, pagination, and row index numbers
 	export let data;
+	export let queryID = undefined;
 	export let rows = 10; // number of rows to show
 	$: rows = Number.parseInt(rows);
 
@@ -40,6 +42,9 @@
 	let marginTop = '1.5em';
 	let marginBottom = '1em';
 	let paddingBottom = '0em';
+
+	export let generateMarkdown = false;
+	$: generateMarkdown = generateMarkdown === 'true' || generateMarkdown === true;
 
 	// Table features
 	export let search = false;
@@ -572,6 +577,20 @@
 
 		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 	</div>
+
+	{#if generateMarkdown}
+		{#if queryID}
+			<CodeBlock>
+			{`<DataTable data={${queryID}}>`}
+				<br/>
+			{#each Object.keys(data[0]) as column}
+				{`	<Column id=${column}/>`}
+				<br/>
+			{/each}
+			{`</DataTable>`}
+			</CodeBlock>
+		{/if}
+	{/if}
 {:else}
 	<ErrorChart {error} chartType="Data Table" />
 {/if}
