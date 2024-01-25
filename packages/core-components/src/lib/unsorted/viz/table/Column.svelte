@@ -70,7 +70,7 @@
 
 	let useColor = colorList[scaleColor];
 	let customColor = undefined;
-	if(useColor == undefined){
+	if (useColor == undefined) {
 		customColor = scaleColor;
 	}
 

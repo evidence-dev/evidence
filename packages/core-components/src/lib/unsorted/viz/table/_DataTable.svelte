@@ -389,15 +389,15 @@
 									style:width={column.width}
 									style:white-space={column.wrap ? 'normal' : 'nowrap'}
 									style:background-color={column.contentType === 'colorscale' && is_nonzero
-										? (column.customColor
+										? column.customColor
 											? `color-mix(in srgb, ${column.customColor} ${
-													((row[column.id] - column_min) / (column_max - column_min))*100
+													((row[column.id] - column_min) / (column_max - column_min)) * 100
 											  }%, transparent)`
 											: `${column.useColor} ${
 													(row[column.id] - column_min) / (column_max - column_min)
 											  })`
-											  ) // closing bracket needed to close unclosed color string from Column component
-										: ''}
+										: // closing bracket needed to close unclosed color string from Column component
+										  ''}
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
 										<img
@@ -926,4 +926,5 @@
 		.print-page-count {
 			display: inline;
 		}
-	}</style>
+	}
+</style>
