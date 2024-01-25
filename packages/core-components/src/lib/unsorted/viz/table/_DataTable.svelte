@@ -92,6 +92,8 @@
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
 
+	export let backgroundColor = 'white';
+
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
 	// ---------------------------------------------------------------------------------------
@@ -307,7 +309,7 @@
 		{#if search}
 			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
 		{/if}
-		<div class="container">
+		<div class="container" style:background-color={backgroundColor}>
 			<table>
 				<thead>
 					<tr>
@@ -612,7 +614,6 @@
 		/* border-bottom: 1px solid var(--grey-200);    */
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
-		background-color: white;
 	}
 
 	:root {
@@ -921,5 +922,4 @@
 		.print-page-count {
 			display: inline;
 		}
-	}
-</style>
+	}</style>
