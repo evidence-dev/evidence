@@ -662,6 +662,10 @@
 		overflow: hidden;
 	}
 
+	th:first-child,
+	td:first-child {
+		padding-left: 4px;
+	}
 	th {
 		border-bottom: 1px solid var(--grey-600);
 	}
