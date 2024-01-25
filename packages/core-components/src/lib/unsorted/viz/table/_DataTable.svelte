@@ -19,7 +19,6 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { format } from 'ssf';
 
 	// Set up props store
 	let props = writable({});
