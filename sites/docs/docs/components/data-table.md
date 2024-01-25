@@ -277,6 +277,13 @@ By default, the link column of your table is hidden. If you would like it to be 
         <td class='tcenter'>true | false</td>	
         <td class='tcenter'>false</td>
     </tr>
+    <tr>    
+        <td>backgroundColor</td>
+        <td>Background color of the table</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>Hex color code | css color name</td>
+        <td class='tcenter'>-</td>
+    </tr>
     <tr>	
         <td>sortable</td>	
         <td>Enable sort for each column - click the column title to sort</td>	
@@ -317,6 +324,13 @@ By default, the link column of your table is hidden. If you would like it to be 
         <td>Whether to show the column supplied to the <code>link</code> prop</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
+        <td>generateMarkdown</td>
+        <td>Whether to generate markdown for the passed query. If true, markdown for the DataTable including each <code><Column></code> contained within the query will be generated and displayed below the table.</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
         <td class='tcenter'>false</td>
     </tr>
 </table>
@@ -494,7 +508,7 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td>scaleColor</td>
         <td>Color to use for the scale</td>
         <td class='tcenter'>-</td>
-        <td class='tcenter'>green | blue | red</td>
+        <td class='tcenter'>green | blue | red | Hex color code | css color name</td>
         <td class='tcenter'>green</td>
     </tr>
     <tr>
