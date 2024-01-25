@@ -84,7 +84,7 @@
 	export let rowLines = true;
 	$: rowLines = rowLines === 'true' || rowLines === true;
 
-	export let headerColor;
+	export let headerColor = undefined;
 	export let headerFontColor = 'var(--grey-900)';
 
 	export let formatColumnTitles = true;
@@ -511,6 +511,7 @@
 					{#each $props.columns.length > 0 ? $props.columns : columnSummary.filter((d) => d.show === true) as column}
 						{@const columnSummary = safeExtractColumn(column)}
 						{@const format = column.totalFmt ? getFormatObjectFromString(column.totalFmt) : columnSummary.format}
+							
 							<td
 								class={safeExtractColumn(column).type}
 								style:text-align={column.align}
@@ -518,10 +519,13 @@
 								style:width={column.width}
 								style:white-space={column.wrap ? 'normal' : 'nowrap'}
 							>
+							<!-- {JSON.stringify(columnSummary.columnUnitSummary)} -->
 								{#if typeof column.totalAgg === 'undefined'} <!-- if totalAgg not specified -->
 									{formatValue(columnSummary.columnUnitSummary.sum, format, columnSummary.columnUnitSummary)}
-								{:else if ['sum', 'mean', 'median', 'min', 'max', 'count', 'countDistinct'].includes(column.totalAgg)} <!-- using a predefined aggregation -->
+								{:else if ['sum', 'mean', 'median', 'min', 'max'].includes(column.totalAgg)} <!-- using a predefined aggregation -->
 									{formatValue(columnSummary.columnUnitSummary[column.totalAgg], format, columnSummary.columnUnitSummary)}
+								{:else if ['count', 'countDistinct'].includes(column.totalAgg)} <!-- using a predefined aggregation -->
+									{column.totalFmt ? formatValue(columnSummary.columnUnitSummary[column.totalAgg], format, columnSummary.columnUnitSummary) : columnSummary.columnUnitSummary[column.totalAgg]}
 								{:else} <!-- passing in anything else -->
 									{column.totalFmt ? formatValue(column.totalAgg,format, columnSummary.columnUnitSummary) : column.totalAgg}
 								{/if}

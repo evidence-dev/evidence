@@ -4,15 +4,18 @@ import { tidy, summarize, min, max, median, mean, n, nDistinct, sum } from '@tid
  *
  * @param {Record<string, unknown>[]} data
  * @param {string} columnName
+ * @param {boolean} [isNumeric]
  * @returns {{ min?: number, max?: number, median?: number, mean?: number, count?: number, countDistinct?: number, sum?: number, maxDecimals: number, unitType: string }}
  */
-export function getColumnUnitSummary(data, columnName) {
+export function getColumnUnitSummary(data, columnName, isNumeric = true) {
 	const seriesExtents = tidy(
 		data,
-		summarize({ min: min(columnName), max: max(columnName), median: median(columnName), mean: mean(columnName), count: n(columnName), countDistinct: nDistinct(columnName), sum: sum(columnName) })
+		isNumeric ?
+			summarize({ count: n(columnName), countDistinct: nDistinct(columnName), min: min(columnName), max: max(columnName), median: median(columnName), mean: mean(columnName), sum: sum(columnName) }) :
+			summarize({ count: n(columnName), countDistinct: nDistinct(columnName) })
 	)[0];
 
-	//TODO try to use summerize spec in tidy
+	// TODO try to use summarize spec in tidy
 	const { maxDecimals, unitType } = summarizeUnits(data.map((row) => row[columnName]));
 
 	return {

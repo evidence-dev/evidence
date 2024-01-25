@@ -26,13 +26,15 @@ export default function getColumnSummary(data, returnType = 'object') {
 	for (const colName of Object.keys(data[0])) {
 		const evidenceColumnType = getColumnEvidenceType(data, colName);
 		const type = evidenceColumnType.evidenceType;
-		const columnUnitSummary =
-			evidenceColumnType.evidenceType === 'number'
-				? getColumnUnitSummary(data, colName)
-				: {
-						maxDecimals: 0,
-						unitType: evidenceColumnType.evidenceType
-				  };
+		let columnUnitSummary = 
+			evidenceColumnType.evidenceType === 'number' 
+				? getColumnUnitSummary(data, colName, true) 
+				: getColumnUnitSummary(data, colName, false);
+
+		if (evidenceColumnType.evidenceType !== 'number') {
+			columnUnitSummary.maxDecimals = 0;
+			columnUnitSummary.unitType = evidenceColumnType.evidenceType;
+		}
 		const format = lookupColumnFormat(colName, evidenceColumnType, columnUnitSummary);
 
 
