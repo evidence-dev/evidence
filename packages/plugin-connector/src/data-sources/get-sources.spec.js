@@ -76,9 +76,15 @@ describe('loadSourceOptions', () => {
 	it('should properly load an environment variable for a nested option', () => {
 		vi.stubEnv('EVIDENCE_SOURCE__TEST__nested__value', 'Hello!');
 		const result = loadSourceOptions('test');
-		console.warn(result);
 		expect('nested' in result).toBeTruthy();
 		expect('value' in result['nested']).toBeTruthy();
 		expect(result['nested']['value']).toEqual('Hello!');
 	});
+
+	it('should retain casing for nested options', () => {
+		vi.stubEnv("EVIDENCE_SOURCE__source__ssl__rejectUnauthorized", "true")
+		const result = loadSourceOptions('source')
+		expect('ssl' in result).toBeTruthy()
+		expect('rejectUnauthorized' in result.ssl).toBeTruthy()
+	})
 });
