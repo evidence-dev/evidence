@@ -20,5 +20,10 @@
 		"datasources": [
 			"databricks"
 		]
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"databricks"
+	]
 }
