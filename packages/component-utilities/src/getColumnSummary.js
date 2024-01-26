@@ -2,6 +2,7 @@ import { getColumnUnitSummary } from './getColumnExtents.js';
 import { lookupColumnFormat } from './formatting.js';
 import formatTitle from './formatTitle.js';
 import inferColumnTypes from './inferColumnTypes.js';
+import { EvidenceType, TypeFidelity } from './inferColumnTypes.js';
 
 /**
  * @typedef {Object} ColumnSummary

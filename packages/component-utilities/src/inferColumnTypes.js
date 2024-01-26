@@ -2,7 +2,7 @@
 
 import { QueryStore } from '@evidence-dev/query-store';
 
-var EvidenceType;
+export var EvidenceType;
 (function (EvidenceType) {
 	EvidenceType['BOOLEAN'] = 'boolean';
 	EvidenceType['NUMBER'] = 'number';
@@ -10,7 +10,7 @@ var EvidenceType;
 	EvidenceType['DATE'] = 'date';
 })(EvidenceType || (EvidenceType = {}));
 
-var TypeFidelity;
+export var TypeFidelity;
 (function (TypeFidelity) {
 	TypeFidelity['INFERRED'] = 'inferred';
 	TypeFidelity['PRECISE'] = 'precise';
