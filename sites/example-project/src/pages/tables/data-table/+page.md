@@ -18,7 +18,7 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 
 ### rows=40
 
-<DataTable data={orders_by_category} rowNumbers=true>
+<DataTable data={orders_by_category} rows=40 rowNumbers=true>
   <Column id=month />
   <Column id=category />
   <Column id=sales_usd0k contentType=colorscale />
