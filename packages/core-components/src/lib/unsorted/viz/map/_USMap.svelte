@@ -29,7 +29,7 @@
 
 	export let fmt = undefined;
 
-	export let filter = true;
+	export let filter = false;
 	$: filter = filter === 'true' || filter === true;
 
 	export let legend = false;
