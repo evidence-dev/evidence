@@ -29,5 +29,10 @@
 			"redshift"
 		],
 		"icon": "Postgresql"
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"postgres"
+	]
 }
