@@ -26,7 +26,9 @@ export default function getColumnSummary(data, returnType = 'object') {
 	const types = inferColumnTypes(data);
 
 	for (const colName of Object.keys(data[0])) {
-		const evidenceColumnType = types.find((item) => item.name?.toLowerCase() === colName?.toLowerCase()) ?? {
+		const evidenceColumnType = types.find(
+			(item) => item.name?.toLowerCase() === colName?.toLowerCase()
+		) ?? {
 			name: colName,
 			evidenceType: EvidenceType.STRING,
 			typeFidelity: TypeFidelity.INFERRED
@@ -36,9 +38,9 @@ export default function getColumnSummary(data, returnType = 'object') {
 			evidenceColumnType.evidenceType === 'number'
 				? getColumnUnitSummary(data, colName)
 				: {
-					maxDecimals: 0,
-					unitType: evidenceColumnType.evidenceType
-				};
+						maxDecimals: 0,
+						unitType: evidenceColumnType.evidenceType
+				  };
 		const format = lookupColumnFormat(colName, evidenceColumnType, columnUnitSummary);
 
 		columnSummary[colName] = {
