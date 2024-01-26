@@ -24,5 +24,10 @@
 			]
 		],
 		"icon": "Duckdb"
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"duckdb"
+	]
 }

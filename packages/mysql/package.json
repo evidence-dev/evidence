@@ -21,5 +21,10 @@
 			"mysql"
 		],
 		"icon": "Mysql"
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"mysql"
+	]
 }
