@@ -430,7 +430,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/mixed-type-charts">
 
-![composable-name-override](/img/exg-composable-name-override-nt.svg)
+![bar-line](/img/bar-line.png)
 
 </a>
 </div>
