@@ -12,6 +12,11 @@
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import { page } from '$app/stores';
+
+	function dateToYYYYMMDD(date: Date) {
+		return date.toISOString().split('T')[0];
+	}
 
 	const inputs: Writable<object> = getContext(INPUTS_CONTEXT_KEY);
 
@@ -33,17 +38,36 @@
 		query = buildQuery(
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
 			`DateRange-${name}`,
-			$query
+			$page.data.data[`DateRange-${name}`]
 		);
 	}
+
+	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
+	$: startString =
+		typeof start === 'string' && YYYYMMDD.test(start)
+			? start
+			: start instanceof Date
+			? dateToYYYYMMDD(start)
+			: $query?.[0].start instanceof Date
+			? dateToYYYYMMDD($query?.[0].start)
+			: dateToYYYYMMDD(new Date(0));
+	$: endString =
+		typeof end === 'string' && YYYYMMDD.test(end)
+			? end
+			: end instanceof Date
+			? dateToYYYYMMDD(end)
+			: $query?.[0].end instanceof Date
+			? dateToYYYYMMDD($query?.[0].end)
+			: dateToYYYYMMDD(new Date());
+
+	// reactive statements don't run in SSR so we just suck in everything
+	$: $inputs[name] = { start, end };
 
 	let selectedDateRange;
 	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
 		$inputs[name] = {
-			start: (selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)).toISOString(),
-			end: (
-				selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date('12-31-3030')
-			).toISOString()
+			start: dateToYYYYMMDD(selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
+			end: dateToYYYYMMDD(selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date())
 		};
 	}
 </script>
@@ -66,11 +90,7 @@
 				</span>
 			</span>
 		{:else}
-			<DateRange
-				bind:selectedDateRange
-				start={start ?? $query?.[0].start}
-				end={end ?? $query?.[0].end}
-			/>
+			<DateRange bind:selectedDateRange start={startString} end={endString} />
 		{/if}
 	</div>
 </HiddenInPrint>

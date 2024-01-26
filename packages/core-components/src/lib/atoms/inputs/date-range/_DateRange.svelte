@@ -5,17 +5,19 @@
 		CalendarDate,
 		DateFormatter,
 		getLocalTimeZone,
-		today,
 		startOfMonth,
-		endOfMonth,
-		type DateValue,
-		fromDate
+		endOfMonth
 	} from '@internationalized/date';
 	import { cn } from '$lib/utils.js';
 	import { Button } from '$lib/atoms/shadcn/button/index.js';
 	import { RangeCalendar } from '$lib/atoms/shadcn/range-calendar/index.js';
 	import * as Select from '$lib/atoms/shadcn/select/index.js';
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
+
+	function YYYYMMDDToCalendar(yyyymmdd: string) {
+		const pieces = yyyymmdd.split('-');
+		return new CalendarDate(Number(pieces[0]), Number(pieces[1]), Number(pieces[2]));
+	}
 
 	const dfMedium = new DateFormatter('en-US', {
 		dateStyle: 'medium'
@@ -26,48 +28,20 @@
 	});
 
 	export let selectedDateRange: DateRange | undefined;
-	export let start: string | Date | undefined;
-	export let end: string | Date | undefined;
+	export let start: string;
+	export let end: string;
 
-	const current_day = today(getLocalTimeZone());
+	$: calendarStart = YYYYMMDDToCalendar(start);
+	$: calendarEnd = YYYYMMDDToCalendar(end);
 
-	selectedDateRange = {
-		start: current_day,
-		end: current_day
-	};
-
-	let calendarStart: DateValue | undefined;
-	$: if (start instanceof Date) {
-		calendarStart = fromDate(start, 'Etc/UTC');
-	} else if (typeof start === 'string') {
-		const pieces = start.split('-');
-		if (pieces.length !== 3) break $;
-		calendarStart = new CalendarDate(Number(pieces[0]), Number(pieces[1]), Number(pieces[2]));
-	}
-
-	let calendarEnd: DateValue | undefined;
-	$: if (end instanceof Date) {
-		calendarEnd = fromDate(end, 'Etc/UTC');
-	} else if (typeof end === 'string') {
-		const pieces = end.split('-');
-		if (pieces.length !== 3) break $;
-		calendarEnd = new CalendarDate(Number(pieces[0]), Number(pieces[1]), Number(pieces[2]));
-	}
-
-	$: if (
-		selectedDateRange.end?.toDate(getLocalTimeZone()) > calendarEnd?.toDate(getLocalTimeZone())
-	) {
-		selectedDateRange.end = calendarEnd;
-	}
-
-	$: if (
-		selectedDateRange.start?.toDate(getLocalTimeZone()) < calendarStart?.toDate(getLocalTimeZone())
-	) {
-		selectedDateRange.start = calendarStart;
-	} else if (
-		selectedDateRange.start?.toDate(getLocalTimeZone()) > calendarEnd?.toDate(getLocalTimeZone())
-	) {
-		selectedDateRange.start = calendarEnd;
+	// run once when selectedDateRange is defined
+	let once = true;
+	$: if (!selectedDateRange || once) {
+		once = !selectedDateRange;
+		selectedDateRange = {
+			start: calendarStart,
+			end: calendarEnd
+		};
 	}
 
 	type Preset = {
@@ -75,22 +49,22 @@
 		range: DateRange;
 	};
 
-	const presets: Array<Preset> = [
+	$: presets = [
 		{
 			label: 'Last 7 Days',
 			range: {
-				start: current_day.subtract({ days: 7 }),
-				end: current_day
+				start: calendarEnd.subtract({ days: 7 }),
+				end: calendarEnd
 			}
 		},
 		{
 			label: 'Last 12 Months',
 			range: {
-				start: startOfMonth(current_day.subtract({ months: 12 })),
-				end: endOfMonth(current_day.subtract({ months: 1 }))
+				start: startOfMonth(calendarEnd.subtract({ months: 12 })),
+				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
 			}
 		}
-	];
+	] as Preset[];
 
 	let selectedPreset: Preset | undefined = undefined;
 	let placeholder;
