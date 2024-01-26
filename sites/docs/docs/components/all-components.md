@@ -514,7 +514,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/us-map">
 
-![map](/img/map-blue.png)
+![map](/img/map-blue2.png)
 
 </a>
 </div>
