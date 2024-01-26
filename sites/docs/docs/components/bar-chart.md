@@ -186,7 +186,7 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 
 ### Secondary y Axis
 
-<img src="/img/multi-y-axes.png"  width='700px'/>
+<img src="/img/bar-y2.png"  width='700px'/>
 
 ```markdown
 <BarChart 

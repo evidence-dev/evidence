@@ -57,7 +57,7 @@
 		y2LabelFormat = getFormatObjectFromString(y2LabelFmt);
 	}
 
-	export let y2SeriesType = undefined;
+	export let y2SeriesType = 'bar';
 
 	export let stackTotalLabel = true;
 	$: stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
