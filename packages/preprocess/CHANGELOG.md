@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.1
+
+### Patch Changes
+
+- 2082578e: Added support for HMR in external query files
+
 ## 4.0.0
 
 ### Major Changes

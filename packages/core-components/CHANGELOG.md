@@ -1,5 +1,19 @@
 # @evidence-dev/core-components
 
+## 3.1.0
+
+### Minor Changes
+
+- 1ef5544d: Improve printing for Map viz
+
+## 3.0.5
+
+### Patch Changes
+
+- 5a9edf0c: Sankey Diagram and Sankey Chart yield the same component
+- 1027087a: Add xMin and xMax to ScatterPlot
+- e3a88847: Schema explorer UI refresh, move into core-components
+
 ## 3.0.4
 
 ### Patch Changes

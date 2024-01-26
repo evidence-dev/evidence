@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/mysql",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "MySQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -21,5 +21,10 @@
 			"mysql"
 		],
 		"icon": "Mysql"
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"mysql"
+	]
 }

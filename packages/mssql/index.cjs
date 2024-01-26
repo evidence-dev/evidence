@@ -1,5 +1,4 @@
 const {
-	getEnv,
 	EvidenceType,
 	TypeFidelity,
 	asyncIterableToBatchedAsyncGenerator,
@@ -7,51 +6,6 @@ const {
 	exhaustStream
 } = require('@evidence-dev/db-commons');
 const mssql = require('mssql');
-
-const envMap = {
-	user: [
-		{ key: 'EVIDENCE_MSSQL_USER', deprecated: false },
-		{ key: 'MSSQL_USER', deprecated: false },
-		{ key: 'user', deprecated: true },
-		{ key: 'USER', deprecated: true }
-	],
-	host: [
-		{ key: 'EVIDENCE_MSSQL_HOST', deprecated: false },
-		{ key: 'MSSQL_HOST', deprecated: false },
-		{ key: 'host', deprecated: true },
-		{ key: 'HOST', deprecated: true }
-	],
-	database: [
-		{ key: 'EVIDENCE_MSSQL_DATABASE', deprecated: false },
-		{ key: 'MSSQL_DATABASE', deprecated: false },
-		{ key: 'database', deprecated: true },
-		{ key: 'DATABASE', deprecated: true }
-	],
-	password: [
-		{ key: 'EVIDENCE_MSSQL_PASSWORD', deprecated: false },
-		{ key: 'MSSQL_PASSWORD', deprecated: false },
-		{ key: 'password', deprecated: true },
-		{ key: 'PASSWORD', deprecated: true }
-	],
-	port: [
-		{ key: 'EVIDENCE_MSSQL_PORT', deprecated: false },
-		{ key: 'MSSQL_PORT', deprecated: false },
-		{ key: 'port', deprecated: true },
-		{ key: 'PORT', deprecated: true }
-	],
-	trustServerCertificate: [
-		{ key: 'EVIDENCE_MSSQL_TRUST_SERVER_CERTIFICATE', deprecated: false },
-		{ key: 'MSSQL_TRUST_SERVER_CERTIFICATE', deprecated: false },
-		{ key: 'trust_server_certificate', deprecated: true },
-		{ key: 'TRUST_SERVER_CERTIFICATE', deprecated: true }
-	],
-	encrypt: [
-		{ key: 'EVIDENCE_MSSQL_ENCRYPT', deprecated: false },
-		{ key: 'MSSQL_ENCRYPT', deprecated: false },
-		{ key: 'encrypt', deprecated: true },
-		{ key: 'ENCRYPT', deprecated: true }
-	]
-};
 
 /**
  *
@@ -132,18 +86,18 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 /** @type {import("@evidence-dev/db-commons").RunQuery<MsSQLOptions>} */
 const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 	try {
-		const trust_server_certificate =
-			database.trust_server_certificate ?? getEnv(envMap, 'trustServerCertificate') ?? 'false';
-		const encrypt = database.encrypt ?? getEnv(envMap, 'encrypt') ?? 'true';
+		const trust_server_certificate = database.trust_server_certificate ?? 'false';
+		const encrypt = database.encrypt ?? 'true';
 		const credentials = {
-			user: database.user ?? getEnv(envMap, 'user'),
-			server: database.host ?? getEnv(envMap, 'host'),
-			database: database.database ?? getEnv(envMap, 'database'),
-			password: database.password ?? getEnv(envMap, 'password'),
-			port: parseInt(database.port ?? getEnv(envMap, 'port') ?? 1433),
+			user: database.user,
+			server: database.server,
+			database: database.database,
+			password: database.password,
+			port: parseInt(database.port ?? 1433),
 			options: {
-				trustServerCertificate: trust_server_certificate === 'true',
-				encrypt: encrypt === 'true'
+				trustServerCertificate:
+					trust_server_certificate === 'true' || trust_server_certificate === true,
+				encrypt: encrypt === 'true' || encrypt === true
 			}
 		};
 
@@ -163,7 +117,9 @@ const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 		const columns = await new Promise((res) => request.once('recordset', res));
 
 		const stream = request.toReadableStream();
-		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize);
+		const results = await asyncIterableToBatchedAsyncGenerator(stream, batchSize, {
+			closeConnection: () => pool.close()
+		});
 		results.columnTypes = mapResultsToEvidenceColumnTypes(columns);
 		results.expectedRowCount = expected_row_count;
 
@@ -201,10 +157,10 @@ module.exports.getRunner = async (opts) => {
 
 /** @type {import('@evidence-dev/db-commons').ConnectionTester<MsSQLOptions>} */
 module.exports.testConnection = async (opts) => {
-	return await runQuery('SELECT 1;', opts)
+	return await runQuery('SELECT 1 AS TEST;', opts) //
 		.then(exhaustStream)
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
 };
 
 module.exports.options = {

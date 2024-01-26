@@ -1,5 +1,65 @@
 # @evidence-dev/components
 
+## 3.1.0
+
+### Minor Changes
+
+- 1ef5544d: Improve printing for Map viz
+
+### Patch Changes
+
+- Updated dependencies [168f1c9e]
+- Updated dependencies [1ef5544d]
+  - @evidence-dev/mssql@1.0.4
+  - @evidence-dev/trino@1.0.3
+  - @evidence-dev/core-components@3.1.0
+
+## 3.0.9
+
+### Patch Changes
+
+- Updated dependencies [e023deb0]
+- Updated dependencies [722a4e00]
+  - @evidence-dev/bigquery@2.0.3
+  - @evidence-dev/mssql@1.0.3
+
+## 3.0.8
+
+### Patch Changes
+
+- 1027087a: Add xMin and xMax to ScatterPlot
+- e3a88847: Schema explorer UI refresh, move into core-components
+- Updated dependencies [5a9edf0c]
+- Updated dependencies [0e0a4392]
+- Updated dependencies [d04554f1]
+- Updated dependencies [2a663d79]
+- Updated dependencies [1027087a]
+- Updated dependencies [e3a88847]
+- Updated dependencies [97e7123d]
+- Updated dependencies [f33b58c5]
+- Updated dependencies [3295b672]
+- Updated dependencies [2082578e]
+- Updated dependencies [38cc19db]
+- Updated dependencies [b3b7d588]
+- Updated dependencies [99b915f2]
+- Updated dependencies [d4fc618e]
+- Updated dependencies [c9793670]
+- Updated dependencies [7e401d4d]
+- Updated dependencies [c4f44007]
+  - @evidence-dev/core-components@3.0.5
+  - @evidence-dev/bigquery@2.0.2
+  - @evidence-dev/csv@1.0.4
+  - @evidence-dev/databricks@1.0.2
+  - @evidence-dev/duckdb@1.0.4
+  - @evidence-dev/mssql@1.0.2
+  - @evidence-dev/mysql@1.0.2
+  - @evidence-dev/postgres@1.0.2
+  - @evidence-dev/snowflake@1.0.2
+  - @evidence-dev/sqlite@2.0.2
+  - @evidence-dev/trino@1.0.2
+  - @evidence-dev/telemetry@2.0.3
+  - @evidence-dev/plugin-connector@2.0.5
+
 ## 3.0.7
 
 ### Patch Changes
