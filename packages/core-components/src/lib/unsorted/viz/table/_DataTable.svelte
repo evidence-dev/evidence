@@ -501,7 +501,7 @@
 					</tr>
 				{/each}
 				<!-- Totals row -->
-				{#if totalRow}
+				{#if totalRow && searchValue === ''}
 					<tr class="font-semibold border-t border-gray-600">
 						{#if rowNumbers}
 							<td class="index w-[2%]" />

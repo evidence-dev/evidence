@@ -8,10 +8,10 @@ queries:
 
 ## No Aggregation Specified
 
-<DataTable data={orders_by_category} totalRow=true rowNumbers=true rows=5/>
+<DataTable data={orders_by_category} totalRow=true rowNumbers=true rows=5 search/>
 
 
-<DataTable data={orders_with_comparisons} totalRow=true rowNumbers=true rows=5/>
+<DataTable data={orders_with_comparisons} totalRow=true rowNumbers=true rows=5 search/>
 
 ## Aggregation Specified
 
