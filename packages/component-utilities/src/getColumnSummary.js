@@ -1,7 +1,7 @@
-import getColumnEvidenceType from './getColumnEvidenceType.js';
 import { getColumnUnitSummary } from './getColumnExtents.js';
 import { lookupColumnFormat } from './formatting.js';
 import formatTitle from './formatTitle.js';
+import inferColumnTypes from './inferColumnTypes.js';
 
 /**
  * @typedef {Object} ColumnSummary
@@ -23,16 +23,22 @@ export default function getColumnSummary(data, returnType = 'object') {
 	/** @type {Record<string, ColumnSummary>} */
 	const columnSummary = {};
 
+	const types = inferColumnTypes(data);
+
 	for (const colName of Object.keys(data[0])) {
-		const evidenceColumnType = getColumnEvidenceType(data, colName);
+		const evidenceColumnType = types.find((item) => item.name?.toLowerCase() === colName?.toLowerCase()) ?? {
+			name: colName,
+			evidenceType: EvidenceType.STRING,
+			typeFidelity: TypeFidelity.INFERRED
+		};
 		const type = evidenceColumnType.evidenceType;
 		const columnUnitSummary =
 			evidenceColumnType.evidenceType === 'number'
 				? getColumnUnitSummary(data, colName)
 				: {
-						maxDecimals: 0,
-						unitType: evidenceColumnType.evidenceType
-				  };
+					maxDecimals: 0,
+					unitType: evidenceColumnType.evidenceType
+				};
 		const format = lookupColumnFormat(colName, evidenceColumnType, columnUnitSummary);
 
 		columnSummary[colName] = {
