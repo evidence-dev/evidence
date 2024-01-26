@@ -25,15 +25,29 @@ export const subSourceVariables = (queryString) => {
 			})
 	);
 	let output = queryString;
-	const regex = RegExp(/\$\{(.+?)\}/, 'g');
+	// This regex is prefixed with a negative lookbehind to disqualify $${var} patterns
+	const regex = RegExp(/(?<!\$)\$\{(.+?)\}/, 'g');
+
 	let match;
 	while ((match = regex.exec(queryString)) !== null) {
-		if (match[1] in validVars) output = output.replace(match[0], validVars[match[1]]);
-		else
+		const fullMatch = match[0]; // e.g. ${variable}
+		const varName = match[1]; // e.g. variable
+		const start = match.index;
+		const end = match[0].length + start;
+
+		if (varName in validVars && validVars[varName]) {
+			const value = validVars[varName];
+			if (!value) throw new Error('Value somehow became undefined');
+			const before = output.substring(0, start);
+			const after = output.substring(end);
+			output = `${before}${value}${after}`;
+		} else
 			console.warn(
-				`Missed substition for ${match[0]}, do you need to set EVIDENCE_VAR__${match[1]}?`
+				`Missed substition for ${fullMatch}, do you need to set EVIDENCE_VAR__${varName}?`
 			);
 	}
 
-	return queryString;
+	output = output.replaceAll('$${', '${');
+
+	return output;
 };
