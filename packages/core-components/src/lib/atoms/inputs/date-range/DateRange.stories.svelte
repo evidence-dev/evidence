@@ -1,8 +1,6 @@
 <script>
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
 	import DateRange from './DateRange.svelte';
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
 </script>
 
 <Meta
