@@ -17,5 +17,10 @@
 		"datasources": [
 			"trino"
 		]
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"trino"
+	]
 }
