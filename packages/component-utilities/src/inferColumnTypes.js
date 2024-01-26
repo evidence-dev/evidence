@@ -21,26 +21,6 @@ export const inferValueType = function (columnValue) {
 		return EvidenceType.NUMBER;
 	} else if (typeof columnValue === 'boolean') {
 		return EvidenceType.BOOLEAN;
-	} else if (typeof columnValue === 'string') {
-		let result = EvidenceType.STRING;
-		if (columnValue && columnValue.includes('-')) {
-			let testDateStr = columnValue;
-			if (!columnValue.includes(':')) {
-				testDateStr = columnValue + 'T00:00';
-			}
-			try {
-				let testDate = new Date(testDateStr);
-				if (testDate.toLocaleString().length > 0) {
-					let numCheck = Number.parseInt(testDate.toLocaleString().substring(0, 1));
-					if (numCheck != null && !isNaN(numCheck)) {
-						result = EvidenceType.DATE;
-					}
-				}
-			} catch (err) {
-				//ignore
-			}
-		}
-		return result;
 	} else if (columnValue instanceof Date) {
 		return EvidenceType.DATE;
 	} else {
