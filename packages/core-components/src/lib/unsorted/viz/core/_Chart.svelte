@@ -402,6 +402,13 @@
 				);
 			}
 
+			// Throw error if attempting to plot secondary y-axis on horizontal chart:
+			if (swapXY && y2) {
+				throw Error(
+					'Horizontal charts do not support a secondary y-axis. You can either set swapXY=false or remove the y2 prop from your chart.'
+				);
+			}
+
 			// Override xType if axes are swapped - only category enabled on horizontal axis
 			if (swapXY) {
 				xType = 'category';
