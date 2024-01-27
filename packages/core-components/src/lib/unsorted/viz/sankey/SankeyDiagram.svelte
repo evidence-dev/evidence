@@ -4,6 +4,7 @@
 
 <script>
 	import ECharts from '../core/ECharts.svelte';
+	import { strictBuild } from '../context';
 
 	import { chartColours } from '@evidence-dev/component-utilities/colours';
 	import {
@@ -12,6 +13,8 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import ErrorChart from '../core/ErrorChart.svelte';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
@@ -45,20 +48,10 @@
 
 	let combinedPalette = [...(colorPalette ?? []), ...chartColours];
 
-	data.map((link) => names.push(link[sourceCol], link[targetCol]));
-	const nameData = [...new Set(names)].map((node, index) => ({
-		name: node,
-		itemStyle: {
-			color: combinedPalette[index % combinedPalette.length]
-		}
-	}));
-	$: links = data.map((link) => {
-		return {
-			source: link[sourceCol],
-			target: link[targetCol],
-			value: link[valueCol]
-		};
-	});
+	// error handling
+	let error;
+
+
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -93,6 +86,33 @@
 	let targetFormat;
 	let valueFormat;
 
+	let config;
+
+	// ---------------------------------------------------------------------------------------
+	// Check Inputs
+	// ---------------------------------------------------------------------------------------
+	$: try{
+		// if (!value) {
+		// 	throw new Error('value is required');
+		// }
+
+		checkInputs(data, [sourceCol, targetCol, valueCol]);
+
+
+		data.map((link) => names.push(link[sourceCol], link[targetCol]));
+		const nameData = [...new Set(names)].map((node, index) => ({
+			name: node,
+			itemStyle: {
+				color: combinedPalette[index % combinedPalette.length]
+			}
+		}));
+		links = data.map((link) => {
+			return {
+				source: link[sourceCol],
+				target: link[targetCol],
+				value: link[valueCol]
+			};
+		});
 	// ---------------------------------------------------------------------------------------
 	// Set up chart area
 	// ---------------------------------------------------------------------------------------
@@ -143,7 +163,7 @@
 	// ---------------------------------------------------------------------------------------
 
 	let seriesConfig;
-	$: seriesConfig = {
+	seriesConfig = {
 		type: 'sankey',
 		layout: 'none',
 		layoutIterations: sort === 'true' ? 1 : 0, // Preserve data order in layout
@@ -190,7 +210,7 @@
 		animationDuration: 500
 	};
 
-	$: config = {
+	config = {
 		title: {
 			text: title,
 			subtext: subtitle,
@@ -209,6 +229,18 @@
 		},
 		series: [seriesConfig]
 	};
+} catch(e) {
+	error = e.message;
+	console.error('Error in SankeyDiagram: ' + e.message);
+	// if the build is in production fail instead of sending the error to the chart
+	if (strictBuild) {
+		throw error;
+	}
+}
 </script>
 
-<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />
+{#if error}
+	<ErrorChart chartType="Sankey Diagram" {error}/>
+{:else}
+	<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />
+{/if}
