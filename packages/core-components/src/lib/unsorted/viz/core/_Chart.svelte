@@ -24,6 +24,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import isEmptyDataSet from '@evidence-dev/component-utilities/isEmptyDataSet';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
 
 	// ---------------------------------------------------------------------------------------
@@ -222,6 +223,9 @@
 	let i;
 
 	let error;
+	let isEmpty;
+	
+	export let emptySet = 'error'; // error | warn | pass
 
 	// Date String Handling:
 	let columnSummaryArray;
@@ -238,758 +242,761 @@
 			uColName = [];
 
 			checkInputs(data); // check that dataset exists
+			isEmpty = isEmptyDataSet(data, emptySet);
 
-			// ---------------------------------------------------------------------------------------
-			// Get column information
-			// ---------------------------------------------------------------------------------------
-			// Get column summary:
-			columnSummary = getColumnSummary(data);
+			if(!isEmpty){
+				// ---------------------------------------------------------------------------------------
+				// Get column information
+				// ---------------------------------------------------------------------------------------
+				// Get column summary:
+				columnSummary = getColumnSummary(data);
 
-			// Get column names:
-			columnNames = Object.keys(columnSummary);
+				// Get column names:
+				columnNames = Object.keys(columnSummary);
 
-			// ---------------------------------------------------------------------------------------
-			// Make assumptions to complete required props
-			// ---------------------------------------------------------------------------------------
-			// If no x column was supplied, assume first column in dataset is x
-			if (!xSet) {
-				x = columnNames[0];
-			}
+				// ---------------------------------------------------------------------------------------
+				// Make assumptions to complete required props
+				// ---------------------------------------------------------------------------------------
+				// If no x column was supplied, assume first column in dataset is x
+				if (!xSet) {
+					x = columnNames[0];
+				}
 
-			// If no y column(s) supplied, assume all number columns other than x are the y columns:
-			if (!ySet) {
-				uColNames = columnNames.filter(function (col) {
-					return ![x, series, size].includes(col);
+				// If no y column(s) supplied, assume all number columns other than x are the y columns:
+				if (!ySet) {
+					uColNames = columnNames.filter(function (col) {
+						return ![x, series, size].includes(col);
+					});
+
+					for (let i = 0; i < uColNames.length; i++) {
+						uColName = uColNames[i];
+						uColType = columnSummary[uColName].type;
+						if (uColType === 'number') {
+							unusedColumns.push(uColName);
+						}
+					}
+
+					y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
+				}
+				// Establish required columns based on chart type:
+				if (bubble) {
+					reqCols = {
+						x: x,
+						y: y,
+						size: size
+					};
+				} else if (hist) {
+					reqCols = {
+						x: x
+					};
+				} else if (boxplot) {
+					reqCols = {};
+				} else {
+					reqCols = {
+						x: x,
+						y: y
+					};
+				}
+
+				// Check which columns were not supplied to the chart:
+				for (let property in reqCols) {
+					if (reqCols[property] == null) {
+						missingCols.push(property);
+					}
+				}
+
+				if (missingCols.length === 1) {
+					throw Error(new Intl.ListFormat().format(missingCols) + ' is required');
+				} else if (missingCols.length > 1) {
+					throw Error(new Intl.ListFormat().format(missingCols) + ' are required');
+				}
+
+				// Fix for stacked100 overwriting y variable. Bandaid fix - not a long-term solution:
+				if (stacked100 === true && y.includes('_pct') && originalRun === false) {
+					if (typeof y === 'object') {
+						for (let i = 0; i < y.length; i++) {
+							y[i] = y[i].replace('_pct', '');
+						}
+						originalRun = false;
+					} else {
+						y = y.replace('_pct', '');
+						originalRun = false;
+					}
+				}
+
+				// Check the inputs supplied to the chart:
+				if (x) {
+					inputCols.push(x);
+				}
+				if (y) {
+					if (typeof y === 'object') {
+						for (i = 0; i < y.length; i++) {
+							inputCols.push(y[i]);
+						}
+					} else {
+						inputCols.push(y);
+					}
+				}
+				if (y2) {
+					if (typeof y2 === 'object') {
+						for (i = 0; i < y2.length; i++) {
+							inputCols.push(y2[i]);
+						}
+					} else {
+						inputCols.push(y2);
+					}
+				}
+				if (size) {
+					inputCols.push(size);
+				}
+				if (series) {
+					optCols.push(series);
+				}
+				if (tooltipTitle) {
+					optCols.push(tooltipTitle);
+				}
+
+				checkInputs(data, inputCols, optCols);
+
+				// ---------------------------------------------------------------------------------------
+				// Aggregate Data if Required
+				// ---------------------------------------------------------------------------------------
+
+				if (stacked100 === true) {
+					data = getStackPercentages(data, x, y);
+
+					if (typeof y === 'object') {
+						for (let i = 0; i < y.length; i++) {
+							y[i] = y[i] + '_pct';
+						}
+						originalRun = false;
+					} else {
+						y = y + '_pct';
+						originalRun = false;
+					}
+
+					// Re-run column summary for new columns (not ideal):
+					columnSummary = getColumnSummary(data);
+				}
+
+				// ---------------------------------------------------------------------------------------
+				// Define x axis type
+				// ---------------------------------------------------------------------------------------
+				xDataType = columnSummary[x].type;
+
+				// Get xDataType into ECharts default types:
+				switch (xDataType) {
+					case 'number':
+						xDataType = 'value';
+						break;
+					case 'string':
+						xDataType = 'category';
+						break;
+					case 'date':
+						xDataType = 'time';
+						break;
+					default:
+						break;
+				}
+
+				xType = xType === 'category' ? 'category' : xDataType;
+
+				// Throw error if attempting to plot value or time on horizontal x-axis:
+				if (swapXY && xType !== 'category') {
+					throw Error(
+						'Horizontal charts do not support a value or time-based x-axis. You can either change your SQL query to output string values or set swapXY=false.'
+					);
+				}
+
+				// Override xType if axes are swapped - only category enabled on horizontal axis
+				if (swapXY) {
+					xType = 'category';
+				}
+
+				// Check for x mismatch:
+				xMismatch = xDataType === 'value' && xType === 'category';
+
+				// ---------------------------------------------------------------------------------------
+				// Sort data based on xType
+				// ---------------------------------------------------------------------------------------
+				data = sort
+					? xDataType === 'category'
+						? getSortedData(data, y, false)
+						: getSortedData(data, x, true)
+					: data;
+
+				// Always sort time axes by x - this prevents the lines from being drawn out of order
+				if (xDataType === 'time') {
+					data = getSortedData(data, x, true);
+				}
+
+				// ---------------------------------------------------------------------------------------
+				// Standardize date columns
+				// ---------------------------------------------------------------------------------------
+
+				columnSummaryArray = getColumnSummary(data, 'array');
+				dateCols = columnSummaryArray.filter((d) => d.type === 'date');
+				dateCols = dateCols.map((d) => d.id);
+
+				if (dateCols.length > 0) {
+					for (let i = 0; i < dateCols.length; i++) {
+						data = standardizeDateColumn(data, dateCols[i]);
+					}
+				}
+
+				// ---------------------------------------------------------------------------------------
+				// Get format codes for axes
+				// ---------------------------------------------------------------------------------------
+				if (xFmt) {
+					xFormat = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
+				} else {
+					xFormat = columnSummary[x].format;
+				}
+
+				if (!y) {
+					yFormat = 'str';
+				} else {
+					if (yFmt) {
+						if (typeof y === 'object') {
+							yFormat = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
+						} else {
+							yFormat = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
+						}
+					} else {
+						if (typeof y === 'object') {
+							yFormat = columnSummary[y[0]].format;
+						} else {
+							yFormat = columnSummary[y].format;
+						}
+					}
+				}
+
+				if (y2) {
+					if (y2Fmt) {
+						if (typeof y2 === 'object') {
+							y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2[0]].format.valueType);
+						} else {
+							y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2].format.valueType);
+						}
+					} else {
+						if (typeof y2 === 'object') {
+							y2Format = columnSummary[y2[0]].format;
+						} else {
+							y2Format = columnSummary[y2].format;
+						}
+					}
+				}
+
+				if (size) {
+					if (sizeFmt) {
+						sizeFormat = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
+					} else {
+						sizeFormat = columnSummary[size].format;
+					}
+				}
+
+				xUnitSummary = columnSummary[x].columnUnitSummary;
+
+				if (y) {
+					if (typeof y === 'object') {
+						yUnitSummary = columnSummary[y[0]].columnUnitSummary;
+					} else {
+						yUnitSummary = columnSummary[y].columnUnitSummary;
+					}
+				}
+
+				if (y2) {
+					if (typeof y2 === 'object') {
+						y2UnitSummary = columnSummary[y2[0]].columnUnitSummary;
+					} else {
+						y2UnitSummary = columnSummary[y2].columnUnitSummary;
+					}
+				}
+
+				xAxisTitle =
+					xAxisTitle === 'true' ? formatTitle(x, xFormat) : xAxisTitle === 'false' ? '' : xAxisTitle;
+				yAxisTitle =
+					yAxisTitle === 'true'
+						? typeof y === 'object'
+							? ''
+							: formatTitle(y, yFormat)
+						: yAxisTitle === 'false'
+						? ''
+						: yAxisTitle;
+				y2AxisTitle =
+					y2AxisTitle === 'true'
+						? typeof y2 === 'object'
+							? ''
+							: formatTitle(y2, y2Format)
+						: y2AxisTitle === 'false'
+						? ''
+						: y2AxisTitle;
+
+				// ---------------------------------------------------------------------------------------
+				// Get total series count
+				// ---------------------------------------------------------------------------------------
+				let yCount = typeof y === 'object' ? y.length : 1;
+				let seriesCount = series ? getDistinctCount(data, series) : 1;
+				let ySeriesCount = yCount * seriesCount;
+
+				// y2Count may need to be adjusted to also factor in the series column. For now, we really
+				// only need to know that it's multi-series, so > 1 is sufficient
+				let y2Count = typeof y2 === 'object' ? y2.length : y2 ? 1 : 0;
+				let totalSeriesCount = ySeriesCount + y2Count;
+
+				// ---------------------------------------------------------------------------------------
+				// Set legend flag
+				// ---------------------------------------------------------------------------------------
+				if (legend !== undefined) {
+					legend = legend === 'true' || legend === true;
+				}
+
+				legend = legend ?? totalSeriesCount > 1;
+
+				// ---------------------------------------------------------------------------------------
+				// Handle errors for log axes (cannot be used with stacked charts)
+				// ---------------------------------------------------------------------------------------
+
+				if (stacked100 === true && yLog === true) {
+					throw Error('Log axis cannot be used in a 100% stacked chart');
+				} else if (stackType === 'stacked' && totalSeriesCount > 1 && yLog === true) {
+					throw Error('Log axis cannot be used in a stacked chart');
+				}
+
+				let minYValue;
+				if (typeof y === 'object') {
+					minYValue = columnSummary[y[0]].columnUnitSummary.min;
+					for (let i = 0; i < y.length; i++) {
+						if (columnSummary[y[i]].columnUnitSummary.min < minYValue) {
+							minYValue = columnSummary[y[i]].columnUnitSummary.min;
+						}
+					}
+				} else if (y) {
+					minYValue = columnSummary[y].columnUnitSummary.min;
+				}
+
+				if (yLog === true && minYValue <= 0 && minYValue !== null) {
+					throw Error('Log axis cannot display values less than or equal to zero');
+				}
+
+				// ---------------------------------------------------------------------------------------
+				// Add props to store to let child components access them
+				// ---------------------------------------------------------------------------------------
+				props.update((d) => {
+					return {
+						...d,
+						data,
+						x,
+						y,
+						y2,
+						series,
+						swapXY,
+						sort,
+						xType,
+						xFormat,
+						yFormat,
+						y2Format,
+						sizeFormat,
+						xMismatch,
+						size,
+						yMin,
+						y2Min,
+						columnSummary,
+						xAxisTitle,
+						yAxisTitle,
+						y2AxisTitle,
+						tooltipTitle,
+						chartAreaHeight,
+						chartType,
+						yCount,
+						y2Count
+					};
 				});
 
-				for (let i = 0; i < uColNames.length; i++) {
-					uColName = uColNames[i];
-					uColType = columnSummary[uColName].type;
-					if (uColType === 'number') {
-						unusedColumns.push(uColName);
-					}
-				}
+				// ---------------------------------------------------------------------------------------
+				// Axis Configuration
+				// ---------------------------------------------------------------------------------------
+				xDistinct = getDistinctValues(data, x);
+				let secondaryAxis;
 
-				y = unusedColumns.length > 1 ? unusedColumns : unusedColumns[0];
-			}
-			// Establish required columns based on chart type:
-			if (bubble) {
-				reqCols = {
-					x: x,
-					y: y,
-					size: size
-				};
-			} else if (hist) {
-				reqCols = {
-					x: x
-				};
-			} else if (boxplot) {
-				reqCols = {};
-			} else {
-				reqCols = {
-					x: x,
-					y: y
-				};
-			}
-
-			// Check which columns were not supplied to the chart:
-			for (let property in reqCols) {
-				if (reqCols[property] == null) {
-					missingCols.push(property);
-				}
-			}
-
-			if (missingCols.length === 1) {
-				throw Error(new Intl.ListFormat().format(missingCols) + ' is required');
-			} else if (missingCols.length > 1) {
-				throw Error(new Intl.ListFormat().format(missingCols) + ' are required');
-			}
-
-			// Fix for stacked100 overwriting y variable. Bandaid fix - not a long-term solution:
-			if (stacked100 === true && y.includes('_pct') && originalRun === false) {
-				if (typeof y === 'object') {
-					for (let i = 0; i < y.length; i++) {
-						y[i] = y[i].replace('_pct', '');
-					}
-					originalRun = false;
-				} else {
-					y = y.replace('_pct', '');
-					originalRun = false;
-				}
-			}
-
-			// Check the inputs supplied to the chart:
-			if (x) {
-				inputCols.push(x);
-			}
-			if (y) {
-				if (typeof y === 'object') {
-					for (i = 0; i < y.length; i++) {
-						inputCols.push(y[i]);
-					}
-				} else {
-					inputCols.push(y);
-				}
-			}
-			if (y2) {
-				if (typeof y2 === 'object') {
-					for (i = 0; i < y2.length; i++) {
-						inputCols.push(y2[i]);
-					}
-				} else {
-					inputCols.push(y2);
-				}
-			}
-			if (size) {
-				inputCols.push(size);
-			}
-			if (series) {
-				optCols.push(series);
-			}
-			if (tooltipTitle) {
-				optCols.push(tooltipTitle);
-			}
-
-			checkInputs(data, inputCols, optCols);
-
-			// ---------------------------------------------------------------------------------------
-			// Aggregate Data if Required
-			// ---------------------------------------------------------------------------------------
-
-			if (stacked100 === true) {
-				data = getStackPercentages(data, x, y);
-
-				if (typeof y === 'object') {
-					for (let i = 0; i < y.length; i++) {
-						y[i] = y[i] + '_pct';
-					}
-					originalRun = false;
-				} else {
-					y = y + '_pct';
-					originalRun = false;
-				}
-
-				// Re-run column summary for new columns (not ideal):
-				columnSummary = getColumnSummary(data);
-			}
-
-			// ---------------------------------------------------------------------------------------
-			// Define x axis type
-			// ---------------------------------------------------------------------------------------
-			xDataType = columnSummary[x].type;
-
-			// Get xDataType into ECharts default types:
-			switch (xDataType) {
-				case 'number':
-					xDataType = 'value';
-					break;
-				case 'string':
-					xDataType = 'category';
-					break;
-				case 'date':
-					xDataType = 'time';
-					break;
-				default:
-					break;
-			}
-
-			xType = xType === 'category' ? 'category' : xDataType;
-
-			// Throw error if attempting to plot value or time on horizontal x-axis:
-			if (swapXY && xType !== 'category') {
-				throw Error(
-					'Horizontal charts do not support a value or time-based x-axis. You can either change your SQL query to output string values or set swapXY=false.'
-				);
-			}
-
-			// Override xType if axes are swapped - only category enabled on horizontal axis
-			if (swapXY) {
-				xType = 'category';
-			}
-
-			// Check for x mismatch:
-			xMismatch = xDataType === 'value' && xType === 'category';
-
-			// ---------------------------------------------------------------------------------------
-			// Sort data based on xType
-			// ---------------------------------------------------------------------------------------
-			data = sort
-				? xDataType === 'category'
-					? getSortedData(data, y, false)
-					: getSortedData(data, x, true)
-				: data;
-
-			// Always sort time axes by x - this prevents the lines from being drawn out of order
-			if (xDataType === 'time') {
-				data = getSortedData(data, x, true);
-			}
-
-			// ---------------------------------------------------------------------------------------
-			// Standardize date columns
-			// ---------------------------------------------------------------------------------------
-
-			columnSummaryArray = getColumnSummary(data, 'array');
-			dateCols = columnSummaryArray.filter((d) => d.type === 'date');
-			dateCols = dateCols.map((d) => d.id);
-
-			if (dateCols.length > 0) {
-				for (let i = 0; i < dateCols.length; i++) {
-					data = standardizeDateColumn(data, dateCols[i]);
-				}
-			}
-
-			// ---------------------------------------------------------------------------------------
-			// Get format codes for axes
-			// ---------------------------------------------------------------------------------------
-			if (xFmt) {
-				xFormat = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
-			} else {
-				xFormat = columnSummary[x].format;
-			}
-
-			if (!y) {
-				yFormat = 'str';
-			} else {
-				if (yFmt) {
-					if (typeof y === 'object') {
-						yFormat = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
-					} else {
-						yFormat = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
-					}
-				} else {
-					if (typeof y === 'object') {
-						yFormat = columnSummary[y[0]].format;
-					} else {
-						yFormat = columnSummary[y].format;
-					}
-				}
-			}
-
-			if (y2) {
-				if (y2Fmt) {
-					if (typeof y2 === 'object') {
-						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2[0]].format.valueType);
-					} else {
-						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2].format.valueType);
-					}
-				} else {
-					if (typeof y2 === 'object') {
-						y2Format = columnSummary[y2[0]].format;
-					} else {
-						y2Format = columnSummary[y2].format;
-					}
-				}
-			}
-
-			if (size) {
-				if (sizeFmt) {
-					sizeFormat = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
-				} else {
-					sizeFormat = columnSummary[size].format;
-				}
-			}
-
-			xUnitSummary = columnSummary[x].columnUnitSummary;
-
-			if (y) {
-				if (typeof y === 'object') {
-					yUnitSummary = columnSummary[y[0]].columnUnitSummary;
-				} else {
-					yUnitSummary = columnSummary[y].columnUnitSummary;
-				}
-			}
-
-			if (y2) {
-				if (typeof y2 === 'object') {
-					y2UnitSummary = columnSummary[y2[0]].columnUnitSummary;
-				} else {
-					y2UnitSummary = columnSummary[y2].columnUnitSummary;
-				}
-			}
-
-			xAxisTitle =
-				xAxisTitle === 'true' ? formatTitle(x, xFormat) : xAxisTitle === 'false' ? '' : xAxisTitle;
-			yAxisTitle =
-				yAxisTitle === 'true'
-					? typeof y === 'object'
-						? ''
-						: formatTitle(y, yFormat)
-					: yAxisTitle === 'false'
-					? ''
-					: yAxisTitle;
-			y2AxisTitle =
-				y2AxisTitle === 'true'
-					? typeof y2 === 'object'
-						? ''
-						: formatTitle(y2, y2Format)
-					: y2AxisTitle === 'false'
-					? ''
-					: y2AxisTitle;
-
-			// ---------------------------------------------------------------------------------------
-			// Get total series count
-			// ---------------------------------------------------------------------------------------
-			let yCount = typeof y === 'object' ? y.length : 1;
-			let seriesCount = series ? getDistinctCount(data, series) : 1;
-			let ySeriesCount = yCount * seriesCount;
-
-			// y2Count may need to be adjusted to also factor in the series column. For now, we really
-			// only need to know that it's multi-series, so > 1 is sufficient
-			let y2Count = typeof y2 === 'object' ? y2.length : y2 ? 1 : 0;
-			let totalSeriesCount = ySeriesCount + y2Count;
-
-			// ---------------------------------------------------------------------------------------
-			// Set legend flag
-			// ---------------------------------------------------------------------------------------
-			if (legend !== undefined) {
-				legend = legend === 'true' || legend === true;
-			}
-
-			legend = legend ?? totalSeriesCount > 1;
-
-			// ---------------------------------------------------------------------------------------
-			// Handle errors for log axes (cannot be used with stacked charts)
-			// ---------------------------------------------------------------------------------------
-
-			if (stacked100 === true && yLog === true) {
-				throw Error('Log axis cannot be used in a 100% stacked chart');
-			} else if (stackType === 'stacked' && totalSeriesCount > 1 && yLog === true) {
-				throw Error('Log axis cannot be used in a stacked chart');
-			}
-
-			let minYValue;
-			if (typeof y === 'object') {
-				minYValue = columnSummary[y[0]].columnUnitSummary.min;
-				for (let i = 0; i < y.length; i++) {
-					if (columnSummary[y[i]].columnUnitSummary.min < minYValue) {
-						minYValue = columnSummary[y[i]].columnUnitSummary.min;
-					}
-				}
-			} else if (y) {
-				minYValue = columnSummary[y].columnUnitSummary.min;
-			}
-
-			if (yLog === true && minYValue <= 0 && minYValue !== null) {
-				throw Error('Log axis cannot display values less than or equal to zero');
-			}
-
-			// ---------------------------------------------------------------------------------------
-			// Add props to store to let child components access them
-			// ---------------------------------------------------------------------------------------
-			props.update((d) => {
-				return {
-					...d,
-					data,
-					x,
-					y,
-					y2,
-					series,
-					swapXY,
-					sort,
-					xType,
-					xFormat,
-					yFormat,
-					y2Format,
-					sizeFormat,
-					xMismatch,
-					size,
-					yMin,
-					y2Min,
-					columnSummary,
-					xAxisTitle,
-					yAxisTitle,
-					y2AxisTitle,
-					tooltipTitle,
-					chartAreaHeight,
-					chartType,
-					yCount,
-					y2Count
-				};
-			});
-
-			// ---------------------------------------------------------------------------------------
-			// Axis Configuration
-			// ---------------------------------------------------------------------------------------
-			xDistinct = getDistinctValues(data, x);
-			let secondaryAxis;
-
-			if (swapXY) {
-				horizAxisConfig = {
-					type: yType,
-					logBase: yLogBase,
-					position: 'top',
-					axisLabel: {
-						show: yAxisLabels,
-						hideOverlap: true,
-						showMaxLabel: true,
-						formatter: function (value) {
-							return formatAxisValue(value, yFormat, yUnitSummary);
+				if (swapXY) {
+					horizAxisConfig = {
+						type: yType,
+						logBase: yLogBase,
+						position: 'top',
+						axisLabel: {
+							show: yAxisLabels,
+							hideOverlap: true,
+							showMaxLabel: true,
+							formatter: function (value) {
+								return formatAxisValue(value, yFormat, yUnitSummary);
+							},
+							margin: 4
 						},
-						margin: 4
-					},
-					min: yMin,
-					max: yMax,
-					splitLine: {
-						show: yGridlines
-					},
-					axisLine: {
-						show: yBaseline,
-						onZero: false
-					},
-					axisTick: {
-						show: yTickMarks
-					},
-					boundaryGap: false,
-					z: 2
-				};
-			} else {
-				horizAxisConfig = {
-					type: xType,
-					min: xMin,
-					max: xMax,
-					splitLine: {
-						show: xGridlines
-					},
-					axisLine: {
-						show: xBaseline
-					},
-					axisTick: {
-						show: xTickMarks
-					},
-					axisLabel: {
-						show: xAxisLabels,
-						hideOverlap: true,
-						showMaxLabel: xType === 'category' || xType === 'value', // max label for ECharts' time axis is a stub - default for that is false
-						formatter:
-							xType === 'time' || xType === 'category'
-								? false
-								: function (value) {
-										return formatAxisValue(value, xFormat, xUnitSummary);
-								  },
-						margin: 6
-					},
-					scale: true,
-					z: 2
-				};
-			}
-
-			if (swapXY) {
-				verticalAxisConfig = {
-					type: xType,
-					inverse: 'true',
-					splitLine: {
-						show: xGridlines
-					},
-					axisLine: {
-						show: xBaseline
-					},
-					axisTick: {
-						show: xTickMarks
-					},
-					axisLabel: {
-						show: xAxisLabels,
-						hideOverlap: true
-						// formatter:
-						//     function(value){
-						//         return formatAxisValue(value, xFormat, xUnitSummary)
-						//     },
-					},
-					scale: true,
-					min: xMin,
-					max: xMax,
-					z: 2
-				};
-			} else {
-				verticalAxisConfig = {
-					type: yType,
-					logBase: yLogBase,
-					splitLine: {
-						show: yGridlines
-					},
-					axisLine: {
-						show: yBaseline,
-						onZero: false
-					},
-					axisTick: {
-						show: yTickMarks
-					},
-					axisLabel: {
-						show: yAxisLabels,
-						hideOverlap: true,
-						margin: 4,
-						formatter: function (value) {
-							return formatAxisValue(value, yFormat, yUnitSummary);
+						min: yMin,
+						max: yMax,
+						splitLine: {
+							show: yGridlines
 						},
-						color: y2
-							? yAxisColor === 'true'
-								? chartColours[0]
-								: yAxisColor !== 'false'
-								? yAxisColor
-								: undefined
-							: undefined
-					},
-					name: yAxisTitle,
-					nameLocation: 'end',
-					nameTextStyle: {
-						align: 'left',
-						verticalAlign: 'top',
-						padding: [0, 5, 0, 0],
-						color: y2
-							? yAxisColor === 'true'
-								? chartColours[0]
-								: yAxisColor !== 'false'
-								? yAxisColor
-								: undefined
-							: undefined
-					},
-					nameGap: 6,
-					min: yMin,
-					max: yMax,
-					boundaryGap: ['0%', '1%'],
-					z: 2
-				};
-
-				secondaryAxis = {
-					type: 'value',
-					show: false,
-					alignTicks: true,
-					splitLine: {
-						show: y2Gridlines
-					},
-					axisLine: {
-						show: y2Baseline,
-						onZero: false
-					},
-					axisTick: {
-						show: y2TickMarks
-					},
-					axisLabel: {
-						show: y2AxisLabels,
-						hideOverlap: true,
-						margin: 4,
-						formatter: function (value) {
-							return formatAxisValue(value, y2Format, y2UnitSummary);
+						axisLine: {
+							show: yBaseline,
+							onZero: false
 						},
-						color:
-							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
-								: y2AxisColor !== 'false'
-								? y2AxisColor
+						axisTick: {
+							show: yTickMarks
+						},
+						boundaryGap: false,
+						z: 2
+					};
+				} else {
+					horizAxisConfig = {
+						type: xType,
+						min: xMin,
+						max: xMax,
+						splitLine: {
+							show: xGridlines
+						},
+						axisLine: {
+							show: xBaseline
+						},
+						axisTick: {
+							show: xTickMarks
+						},
+						axisLabel: {
+							show: xAxisLabels,
+							hideOverlap: true,
+							showMaxLabel: xType === 'category' || xType === 'value', // max label for ECharts' time axis is a stub - default for that is false
+							formatter:
+								xType === 'time' || xType === 'category'
+									? false
+									: function (value) {
+											return formatAxisValue(value, xFormat, xUnitSummary);
+									},
+							margin: 6
+						},
+						scale: true,
+						z: 2
+					};
+				}
+
+				if (swapXY) {
+					verticalAxisConfig = {
+						type: xType,
+						inverse: 'true',
+						splitLine: {
+							show: xGridlines
+						},
+						axisLine: {
+							show: xBaseline
+						},
+						axisTick: {
+							show: xTickMarks
+						},
+						axisLabel: {
+							show: xAxisLabels,
+							hideOverlap: true
+							// formatter:
+							//     function(value){
+							//         return formatAxisValue(value, xFormat, xUnitSummary)
+							//     },
+						},
+						scale: true,
+						min: xMin,
+						max: xMax,
+						z: 2
+					};
+				} else {
+					verticalAxisConfig = {
+						type: yType,
+						logBase: yLogBase,
+						splitLine: {
+							show: yGridlines
+						},
+						axisLine: {
+							show: yBaseline,
+							onZero: false
+						},
+						axisTick: {
+							show: yTickMarks
+						},
+						axisLabel: {
+							show: yAxisLabels,
+							hideOverlap: true,
+							margin: 4,
+							formatter: function (value) {
+								return formatAxisValue(value, yFormat, yUnitSummary);
+							},
+							color: y2
+								? yAxisColor === 'true'
+									? chartColours[0]
+									: yAxisColor !== 'false'
+									? yAxisColor
+									: undefined
 								: undefined
-					},
-					name: y2AxisTitle,
-					nameLocation: 'end',
-					nameTextStyle: {
-						align: 'right',
-						verticalAlign: 'top',
-						padding: [0, 0, 0, 5],
-						color:
-							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
-								: y2AxisColor !== 'false'
-								? y2AxisColor
+						},
+						name: yAxisTitle,
+						nameLocation: 'end',
+						nameTextStyle: {
+							align: 'left',
+							verticalAlign: 'top',
+							padding: [0, 5, 0, 0],
+							color: y2
+								? yAxisColor === 'true'
+									? chartColours[0]
+									: yAxisColor !== 'false'
+									? yAxisColor
+									: undefined
 								: undefined
+						},
+						nameGap: 6,
+						min: yMin,
+						max: yMax,
+						boundaryGap: ['0%', '1%'],
+						z: 2
+					};
+
+					secondaryAxis = {
+						type: 'value',
+						show: false,
+						alignTicks: true,
+						splitLine: {
+							show: y2Gridlines
+						},
+						axisLine: {
+							show: y2Baseline,
+							onZero: false
+						},
+						axisTick: {
+							show: y2TickMarks
+						},
+						axisLabel: {
+							show: y2AxisLabels,
+							hideOverlap: true,
+							margin: 4,
+							formatter: function (value) {
+								return formatAxisValue(value, y2Format, y2UnitSummary);
+							},
+							color:
+								y2AxisColor === 'true'
+									? chartColours[ySeriesCount]
+									: y2AxisColor !== 'false'
+									? y2AxisColor
+									: undefined
+						},
+						name: y2AxisTitle,
+						nameLocation: 'end',
+						nameTextStyle: {
+							align: 'right',
+							verticalAlign: 'top',
+							padding: [0, 0, 0, 5],
+							color:
+								y2AxisColor === 'true'
+									? chartColours[ySeriesCount]
+									: y2AxisColor !== 'false'
+									? y2AxisColor
+									: undefined
+						},
+						nameGap: 6,
+						min: y2Min,
+						max: y2Max,
+						boundaryGap: ['0%', '1%'],
+						z: 2
+					};
+
+					verticalAxisConfig = [verticalAxisConfig, secondaryAxis];
+				}
+
+				// ---------------------------------------------------------------------------------------
+				// Set up chart area
+				// ---------------------------------------------------------------------------------------
+
+				hasTitle = title ? true : false;
+				hasSubtitle = subtitle ? true : false;
+				hasLegend = legend * (series !== null || (typeof y === 'object' && y.length > 1));
+				hasTopAxisTitle = yAxisTitle !== '' && swapXY;
+				hasBottomAxisTitle = xAxisTitle !== '' && !swapXY;
+
+				titleFontSize = 15;
+				subtitleFontSize = 13;
+				titleBoxPadding = 6 * hasSubtitle;
+
+				titleBoxHeight =
+					hasTitle * titleFontSize +
+					hasSubtitle * subtitleFontSize +
+					titleBoxPadding * Math.max(hasTitle, hasSubtitle);
+
+				chartAreaPaddingTop = 10;
+				chartAreaPaddingBottom = 8;
+
+				bottomAxisTitleSize = 14;
+				topAxisTitleSize = 14 + 0; // font size + padding top
+
+				legendHeight = 15;
+				legendHeight = legendHeight * hasLegend;
+
+				legendPaddingTop = 7;
+				legendPaddingTop = legendPaddingTop * Math.max(hasTitle, hasSubtitle);
+
+				legendTop = titleBoxHeight + legendPaddingTop;
+				chartTop =
+					legendTop + legendHeight + topAxisTitleSize * hasTopAxisTitle + chartAreaPaddingTop;
+				chartBottom = hasBottomAxisTitle * bottomAxisTitleSize + chartAreaPaddingBottom;
+
+				// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
+				// Small bars are allowed on normal bar chart (e.g., time series bar chart)
+				maxBars = 8;
+				heightMultiplier = 1;
+				if (swapXY) {
+					barCount = xDistinct.length;
+					heightMultiplier = Math.max(1, barCount / maxBars);
+				}
+
+				chartContainerHeight = chartAreaHeight * heightMultiplier + chartTop + chartBottom;
+
+				topAxisTitleTop = legendTop + legendHeight + 7;
+
+				// Set final chart height:
+				height = chartContainerHeight + 'px';
+				width = '100%';
+
+				// ---------------------------------------------------------------------------------------
+				// Set up horizontal axis title (custom graphic)
+				// ---------------------------------------------------------------------------------------
+				horizAxisTitle = swapXY ? yAxisTitle : xAxisTitle;
+				if (horizAxisTitle !== '') {
+					horizAxisTitle = horizAxisTitle + ' →'; // u2192 is js escaped version of &rarr;
+				}
+
+				horizAxisTitleConfig = {
+					id: 'horiz-axis-title',
+					type: 'text',
+					style: {
+						text: horizAxisTitle,
+						textAlign: 'right',
+						fill: uiColours.grey500
 					},
-					nameGap: 6,
-					min: y2Min,
-					max: y2Max,
-					boundaryGap: ['0%', '1%'],
-					z: 2
+					cursor: 'auto',
+					// Positioning (if swapXY, top right; otherwise bottom right)
+					right: swapXY ? '2%' : '3%',
+					top: swapXY ? topAxisTitleTop : null,
+					bottom: swapXY ? null : '2%'
 				};
 
-				verticalAxisConfig = [verticalAxisConfig, secondaryAxis];
-			}
+				// ---------------------------------------------------------------------------------------
+				// Build chart config and update config store so child components can access it
+				// ---------------------------------------------------------------------------------------
 
-			// ---------------------------------------------------------------------------------------
-			// Set up chart area
-			// ---------------------------------------------------------------------------------------
-
-			hasTitle = title ? true : false;
-			hasSubtitle = subtitle ? true : false;
-			hasLegend = legend * (series !== null || (typeof y === 'object' && y.length > 1));
-			hasTopAxisTitle = yAxisTitle !== '' && swapXY;
-			hasBottomAxisTitle = xAxisTitle !== '' && !swapXY;
-
-			titleFontSize = 15;
-			subtitleFontSize = 13;
-			titleBoxPadding = 6 * hasSubtitle;
-
-			titleBoxHeight =
-				hasTitle * titleFontSize +
-				hasSubtitle * subtitleFontSize +
-				titleBoxPadding * Math.max(hasTitle, hasSubtitle);
-
-			chartAreaPaddingTop = 10;
-			chartAreaPaddingBottom = 8;
-
-			bottomAxisTitleSize = 14;
-			topAxisTitleSize = 14 + 0; // font size + padding top
-
-			legendHeight = 15;
-			legendHeight = legendHeight * hasLegend;
-
-			legendPaddingTop = 7;
-			legendPaddingTop = legendPaddingTop * Math.max(hasTitle, hasSubtitle);
-
-			legendTop = titleBoxHeight + legendPaddingTop;
-			chartTop =
-				legendTop + legendHeight + topAxisTitleSize * hasTopAxisTitle + chartAreaPaddingTop;
-			chartBottom = hasBottomAxisTitle * bottomAxisTitleSize + chartAreaPaddingBottom;
-
-			// Adjustment to avoid small bars on horizontal bar chart (extend chart height to accomodate)
-			// Small bars are allowed on normal bar chart (e.g., time series bar chart)
-			maxBars = 8;
-			heightMultiplier = 1;
-			if (swapXY) {
-				barCount = xDistinct.length;
-				heightMultiplier = Math.max(1, barCount / maxBars);
-			}
-
-			chartContainerHeight = chartAreaHeight * heightMultiplier + chartTop + chartBottom;
-
-			topAxisTitleTop = legendTop + legendHeight + 7;
-
-			// Set final chart height:
-			height = chartContainerHeight + 'px';
-			width = '100%';
-
-			// ---------------------------------------------------------------------------------------
-			// Set up horizontal axis title (custom graphic)
-			// ---------------------------------------------------------------------------------------
-			horizAxisTitle = swapXY ? yAxisTitle : xAxisTitle;
-			if (horizAxisTitle !== '') {
-				horizAxisTitle = horizAxisTitle + ' →'; // u2192 is js escaped version of &rarr;
-			}
-
-			horizAxisTitleConfig = {
-				id: 'horiz-axis-title',
-				type: 'text',
-				style: {
-					text: horizAxisTitle,
-					textAlign: 'right',
-					fill: uiColours.grey500
-				},
-				cursor: 'auto',
-				// Positioning (if swapXY, top right; otherwise bottom right)
-				right: swapXY ? '2%' : '3%',
-				top: swapXY ? topAxisTitleTop : null,
-				bottom: swapXY ? null : '2%'
-			};
-
-			// ---------------------------------------------------------------------------------------
-			// Build chart config and update config store so child components can access it
-			// ---------------------------------------------------------------------------------------
-
-			chartConfig = {
-				title: {
-					text: title,
-					subtext: subtitle,
-					subtextStyle: {
-						width: width
-					}
-				},
-				tooltip: {
-					trigger: 'axis',
-					// formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
-					formatter: function (params) {
-						let output;
-						let xVal;
-						let yVal;
-						let yCol;
-						if (totalSeriesCount > 1) {
-							// If multi-series, add series name as title of tooltip
-							xVal = params[0].value[swapXY ? 1 : 0];
-							output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(
-								xVal,
-								xFormat
-							)}</span>`;
-							for (let i = params.length - 1; i >= 0; i--) {
-								if (params[i].seriesName !== 'stackTotal') {
-									yVal = params[i].value[swapXY ? 0 : 1];
-									output =
-										output +
-										`<br> ${params[i].marker} ${
-											params[i].seriesName
-										} <span style='float:right; margin-left: 10px;'>${formatValue(
-											yVal,
-											// Not sure if this will work. Need to check with multi series on both axes
-											// Check if echarts does the order in the same way - y first, then y2
-											getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
-												? yFormat
-												: y2Format
-										)}</span>`;
-								}
-							}
-						} else if (xType === 'value') {
-							// If single-series and a numerical x-axis, include x column as a normal column rather than title (so as not to show a number as the title)
-							xVal = params[0].value[swapXY ? 1 : 0];
-							yVal = params[0].value[swapXY ? 0 : 1];
-							yCol = params[0].seriesName;
-							output = `<span id="tooltip" style='font-weight: 600;'>${formatTitle(
-								x,
-								xFormat
-							)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(
-								xVal,
-								xFormat
-							)}</span><br/><span style='font-weight: 600;'>${formatTitle(
-								yCol,
-								yFormat
-							)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(
-								yVal,
-								yFormat
-							)}</span>`;
-						} else {
-							// If single series and categorical or date x-axis, use x value as title of tooltip
-							xVal = params[0].value[swapXY ? 1 : 0];
-							yVal = params[0].value[swapXY ? 0 : 1];
-							yCol = params[0].seriesName;
-							output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(
-								xVal,
-								xFormat
-							)}</span><br/><span>${formatTitle(
-								yCol,
-								yFormat
-							)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(
-								yVal,
-								yFormat
-							)}</span>`;
+				chartConfig = {
+					title: {
+						text: title,
+						subtext: subtitle,
+						subtextStyle: {
+							width: width
 						}
-						return output;
 					},
-					confine: true,
-					axisPointer: {
-						// Use axis to trigger tooltip
-						type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+					tooltip: {
+						trigger: 'axis',
+						// formatter function is overridden in ScatterPlot, BubbleChart, and Histogram
+						formatter: function (params) {
+							let output;
+							let xVal;
+							let yVal;
+							let yCol;
+							if (totalSeriesCount > 1) {
+								// If multi-series, add series name as title of tooltip
+								xVal = params[0].value[swapXY ? 1 : 0];
+								output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(
+									xVal,
+									xFormat
+								)}</span>`;
+								for (let i = params.length - 1; i >= 0; i--) {
+									if (params[i].seriesName !== 'stackTotal') {
+										yVal = params[i].value[swapXY ? 0 : 1];
+										output =
+											output +
+											`<br> ${params[i].marker} ${
+												params[i].seriesName
+											} <span style='float:right; margin-left: 10px;'>${formatValue(
+												yVal,
+												// Not sure if this will work. Need to check with multi series on both axes
+												// Check if echarts does the order in the same way - y first, then y2
+												getYAxisIndex(params[i].componentIndex, yCount, y2Count) === 0
+													? yFormat
+													: y2Format
+											)}</span>`;
+									}
+								}
+							} else if (xType === 'value') {
+								// If single-series and a numerical x-axis, include x column as a normal column rather than title (so as not to show a number as the title)
+								xVal = params[0].value[swapXY ? 1 : 0];
+								yVal = params[0].value[swapXY ? 0 : 1];
+								yCol = params[0].seriesName;
+								output = `<span id="tooltip" style='font-weight: 600;'>${formatTitle(
+									x,
+									xFormat
+								)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(
+									xVal,
+									xFormat
+								)}</span><br/><span style='font-weight: 600;'>${formatTitle(
+									yCol,
+									yFormat
+								)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(
+									yVal,
+									yFormat
+								)}</span>`;
+							} else {
+								// If single series and categorical or date x-axis, use x value as title of tooltip
+								xVal = params[0].value[swapXY ? 1 : 0];
+								yVal = params[0].value[swapXY ? 0 : 1];
+								yCol = params[0].seriesName;
+								output = `<span id="tooltip" style='font-weight: 600;'>${formatValue(
+									xVal,
+									xFormat
+								)}</span><br/><span>${formatTitle(
+									yCol,
+									yFormat
+								)}: </span><span style='float:right; margin-left: 10px;'>${formatValue(
+									yVal,
+									yFormat
+								)}</span>`;
+							}
+							return output;
+						},
+						confine: true,
+						axisPointer: {
+							// Use axis to trigger tooltip
+							type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+						},
+						extraCssText:
+							'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
+						order: 'valueDesc'
 					},
-					extraCssText:
-						'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
-					order: 'valueDesc'
-				},
-				legend: {
-					show: legend,
-					type: 'scroll',
-					top: legendTop,
-					padding: [0, 0, 0, 0],
-					data: []
-				},
-				grid: {
-					left: '0.5%',
-					right: swapXY ? '4%' : '3%',
-					bottom: chartBottom,
-					top: chartTop,
-					containLabel: true
-				},
-				xAxis: horizAxisConfig,
-				yAxis: verticalAxisConfig,
-				series: [],
-				animation: true,
-				graphic: horizAxisTitleConfig,
-				color: colorPalette
-			};
+					legend: {
+						show: legend,
+						type: 'scroll',
+						top: legendTop,
+						padding: [0, 0, 0, 0],
+						data: []
+					},
+					grid: {
+						left: '0.5%',
+						right: swapXY ? '4%' : '3%',
+						bottom: chartBottom,
+						top: chartTop,
+						containLabel: true
+					},
+					xAxis: horizAxisConfig,
+					yAxis: verticalAxisConfig,
+					series: [],
+					animation: true,
+					graphic: horizAxisTitleConfig,
+					color: colorPalette
+				};
 
-			config.update(() => {
-				return chartConfig;
-			});
+				config.update(() => {
+					return chartConfig;
+				});
+			}
 		} catch (e) {
 			error = e.message;
 			console.error(e);
@@ -1005,7 +1012,7 @@
 	$: data;
 </script>
 
-{#if !error}
+{#if !error && !isEmpty}
 	<slot />
 	<ECharts
 		config={$config}
@@ -1017,6 +1024,8 @@
 		{echartsOptions}
 		{printEchartsConfig}
 	/>
+{:else if !error && isEmpty}
+	<div class="my-5">{chartType}: No Data</div>
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}

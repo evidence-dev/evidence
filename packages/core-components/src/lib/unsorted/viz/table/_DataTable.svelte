@@ -12,6 +12,7 @@
 	import ErrorChart from '../core/ErrorChart.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import isEmptyDataSet from '@evidence-dev/component-utilities/isEmptyDataSet';
 	import DownloadData from '../../ui/DownloadData.svelte';
 	import SortIcon from '../../ui/SortIcon.svelte';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
@@ -65,6 +66,8 @@
 
 	let error = undefined;
 
+	export let emptySet = 'error'; // error | warn | pass
+
 	// ---------------------------------------------------------------------------------------
 	// Add props to store to let child components access them
 	// ---------------------------------------------------------------------------------------
@@ -93,28 +96,34 @@
 
 	let columnSummary;
 
+	let isEmpty;
+
 	$: try {
 		error = undefined;
 		// CHECK INPUTS
 		checkInputs(data);
+		isEmpty = isEmptyDataSet(data, emptySet);
 
-		// GET COLUMN SUMMARY
-		columnSummary = getColumnSummary(data, 'array');
+		if(!isEmpty){
 
-		// PROCESS DATES
-		// Filter for columns with type of "date"
-		let dateCols = columnSummary.filter((d) => d.type === 'date');
-		dateCols = dateCols.map((d) => d.id);
+			// GET COLUMN SUMMARY
+			columnSummary = getColumnSummary(data, 'array');
 
-		if (dateCols.length > 0) {
-			for (let i = 0; i < dateCols.length; i++) {
-				data = convertColumnToDate(data, dateCols[i]);
+			// PROCESS DATES
+			// Filter for columns with type of "date"
+			let dateCols = columnSummary.filter((d) => d.type === 'date');
+			dateCols = dateCols.map((d) => d.id);
+
+			if (dateCols.length > 0) {
+				for (let i = 0; i < dateCols.length; i++) {
+					data = convertColumnToDate(data, dateCols[i]);
+				}
 			}
-		}
 
-		// Hide link column if columns have not been explicitly selected:
-		for (let i = 0; i < columnSummary.length; i++) {
-			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
+			// Hide link column if columns have not been explicitly selected:
+			for (let i = 0; i < columnSummary.length; i++) {
+				columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
+			}
 		}
 	} catch (e) {
 		error = e.message;
@@ -280,7 +289,7 @@
 			: data;
 </script>
 
-{#if error === undefined}
+{#if error === undefined && !isEmpty}
 	<slot />
 
 	{#if link}
@@ -572,7 +581,9 @@
 
 		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 	</div>
-{:else}
+{:else if error === undefined && isEmpty}
+	<div class="my-5"> DataTable: No Data </div>
+{:else}	
 	<ErrorChart {error} chartType="Data Table" />
 {/if}
 
@@ -686,6 +697,7 @@
 	.index {
 		color: var(--grey-300);
 		text-align: left;
+		max-width: -moz-min-content;
 		max-width: min-content;
 	}
 
@@ -697,7 +709,9 @@
 		height: 2em;
 		font-family: var(--ui-font-family);
 		color: var(--grey-500);
-		user-select: none;
+		-webkit-user-select: none;
+		   -moz-user-select: none;
+		        user-select: none;
 		text-align: right;
 		margin-top: 0.5em;
 		margin-bottom: 1.8em;
@@ -732,7 +746,9 @@
 	.page-changer:disabled {
 		cursor: auto;
 		color: var(--grey-300);
-		user-select: none;
+		-webkit-user-select: none;
+		   -moz-user-select: none;
+		        user-select: none;
 		transition: color 200ms;
 	}
 
@@ -771,7 +787,8 @@
 	/* Firefox */
 	.page-input[type='number'] {
 		-moz-appearance: textfield;
-		appearance: textfield;
+		-webkit-appearance: textfield;
+		        appearance: textfield;
 	}
 
 	.page-input.hovering {
@@ -780,6 +797,10 @@
 
 	.page-input.error {
 		border: 1px solid var(--red-600);
+	}
+
+	.page-input::-moz-placeholder {
+		color: var(--grey-500);
 	}
 
 	.page-input::placeholder {
@@ -792,6 +813,12 @@
 
 	*:focus {
 		outline: none;
+	}
+
+	::-moz-placeholder {
+		/* Chrome, Firefox, Opera, Safari 10.1+ */
+		color: var(--grey-400);
+		opacity: 1; /* Firefox */
 	}
 
 	::placeholder {
@@ -821,8 +848,9 @@
 	}
 
 	.row-link:hover {
-		@apply bg-blue-50;
-	}
+		--tw-bg-opacity: 1;
+		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
+}
 
 	.noresults {
 		display: none;
@@ -860,11 +888,13 @@
 
 	@media print {
 		.avoidbreaks {
-			break-inside: avoid;
+			-moz-column-break-inside: avoid;
+			     break-inside: avoid;
 		}
 
 		.pagination {
-			break-inside: avoid;
+			-moz-column-break-inside: avoid;
+			     break-inside: avoid;
 		}
 
 		.page-changer {
@@ -878,5 +908,4 @@
 		.print-page-count {
 			display: inline;
 		}
-	}
-</style>
+	}</style>

@@ -6,6 +6,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import isEmptyDataSet from '@evidence-dev/component-utilities/isEmptyDataSet';
 
 	import { strictBuild } from '../context';
 
@@ -32,6 +33,9 @@
 
 	let selected_value;
 	let error;
+	let isEmpty;
+
+	export let emptySet = 'error'; // error | warn | pass
 
 	let columnSummary;
 	$: {
@@ -52,32 +56,40 @@
 						throw Error('row must be a number (row=' + row + ')');
 					}
 
-					try {
-						Object.keys(data[row])[0];
-					} catch (e) {
-						throw Error('Row ' + row + ' does not exist in the dataset');
-					}
+					isEmpty = isEmptyDataSet(data, emptySet);
+					if(!isEmpty){
 
-					column = column ?? Object.keys(data[row])[0];
-
-					checkInputs(data, [column]);
-
-					columnSummary = getColumnSummary(data, 'array');
-					let dateCols = columnSummary.filter((d) => d.type === 'date');
-					dateCols = dateCols.map((d) => d.id);
-					if (dateCols.length > 0) {
-						for (let i = 0; i < dateCols.length; i++) {
-							data = convertColumnToDate(data, dateCols[i]);
+						try {
+							Object.keys(data[row])[0];
+						} catch (e) {
+							if(row === 0){
+								throw Error('Dataset is empty: query ran successfully, but no data was returned')
+							} else {
+								throw Error('Row ' + row + ' does not exist in the dataset');
+							}
 						}
-					}
 
-					selected_value = data[row][column];
-					columnSummary = columnSummary.filter((d) => d.id === column);
-					if (fmt) {
-						format_object = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
-					} else {
-						format_object = columnSummary[0].format;
-					}
+						column = column ?? Object.keys(data[row])[0];
+
+						checkInputs(data, [column]);
+
+						columnSummary = getColumnSummary(data, 'array');
+						let dateCols = columnSummary.filter((d) => d.type === 'date');
+						dateCols = dateCols.map((d) => d.id);
+						if (dateCols.length > 0) {
+							for (let i = 0; i < dateCols.length; i++) {
+								data = convertColumnToDate(data, dateCols[i]);
+							}
+						}
+
+						selected_value = data[row][column];
+						columnSummary = columnSummary.filter((d) => d.id === column);
+						if (fmt) {
+							format_object = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+						} else {
+							format_object = columnSummary[0].format;
+						}
+				}
 				} else {
 					throw Error(
 						'No data provided. If you referenced a query result, check that the name is correct.'
@@ -97,10 +109,12 @@
 	<span class="placeholder"
 		>[{placeholder}]<span class="error-msg">Placeholder: no data currently referenced.</span></span
 	>
-{:else if !error}
+{:else if !error && !isEmpty}
 	<span>
 		{formatValue(selected_value, format_object)}
 	</span>
+{:else if !error && isEmpty}
+	<span class="py-5"> Value: No Data </span>
 {:else}
 	<span
 		class="group inline-flex items-center relative cursor-help cursor-helpfont-sans px-1 border border-red-200 py-[1px] bg-red-50 rounded"

@@ -17,9 +17,7 @@ export default function checkInputs(data, reqCols, optCols) {
 				'}'
 		);
 	} else if (data[0] === undefined || data.length === 0) {
-		throw Error(
-			'Dataset is empty: query ran successfully, but no data was returned from the database'
-		);
+		return;
 	}
 
 	// Check if data warehouse returned an error
@@ -27,7 +25,9 @@ export default function checkInputs(data, reqCols, optCols) {
 		throw Error('SQL Error: ' + data[0]?.error_object?.error?.message);
 	}
 
+	
 	if (reqCols != undefined) {
+		
 		if (!(reqCols instanceof Array)) {
 			throw Error('reqCols must be passed in as an array');
 		}
@@ -82,6 +82,7 @@ export default function checkInputs(data, reqCols, optCols) {
 			}
 		}
 	}
+
 	// IDEAS:
 	// Trigger a function call when error is caught - that function somehow sends us to the Error chart component
 	// rather than letting the rest of the current component file continue running?

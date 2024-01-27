@@ -4,6 +4,7 @@
 	import { LinkedChart } from 'svelte-tiny-linked-charts';
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import isEmptyDataSet from '@evidence-dev/component-utilities/isEmptyDataSet';
 	import ErrorChart from './ErrorChart.svelte';
 	import { strictBuild } from '../context';
 	export let data;
@@ -30,6 +31,10 @@
 	let sparklineData = {};
 
 	let error = undefined;
+	let isEmpty;
+	
+	export let emptySet = 'error'; // error | warn | pass
+
 	$: try {
 		error = undefined;
 
@@ -42,33 +47,37 @@
 		}
 
 		checkInputs(data, [value]);
+		isEmpty = isEmptyDataSet(data, emptySet);
 
-		let columnSummary = getColumnSummary(data, 'array');
+		if(!isEmpty){
 
-		// Fall back titles
-		let valueColumnSummary = columnSummary.find((d) => d.id === value);
-		title = title ?? (valueColumnSummary ? valueColumnSummary.title : null);
+			let columnSummary = getColumnSummary(data, 'array');
 
-		if (comparison) {
-			checkInputs(data, [comparison]);
-			let comparisonColumnSummary = columnSummary.find((d) => d.id === comparison);
-			comparisonTitle =
-				comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null);
-		}
+			// Fall back titles
+			let valueColumnSummary = columnSummary.find((d) => d.id === value);
+			title = title ?? (valueColumnSummary ? valueColumnSummary.title : null);
 
-		if (data && comparison) {
-			positive = data[0][comparison] >= 0;
-			comparisonColor =
-				(positive && !downIsGood) || (!positive && downIsGood)
-					? 'var(--green-700)'
-					: 'var(--red-700)';
-		}
-		// populate sparklineData from data where timeseries is the key and value is the value
-		if (data && sparkline && value) {
-			// allow to load the LinkedChart
-			let sortedData = getSortedData(data, sparkline, true);
-			for (let i = 0; i < sortedData.length; i++) {
-				sparklineData[sortedData[i][sparkline]] = sortedData[i][value];
+			if (comparison) {
+				checkInputs(data, [comparison]);
+				let comparisonColumnSummary = columnSummary.find((d) => d.id === comparison);
+				comparisonTitle =
+					comparisonTitle ?? (comparisonColumnSummary ? comparisonColumnSummary.title : null);
+			}
+
+			if (data && comparison) {
+				positive = data[0][comparison] >= 0;
+				comparisonColor =
+					(positive && !downIsGood) || (!positive && downIsGood)
+						? 'var(--green-700)'
+						: 'var(--red-700)';
+			}
+			// populate sparklineData from data where timeseries is the key and value is the value
+			if (data && sparkline && value) {
+				// allow to load the LinkedChart
+				let sortedData = getSortedData(data, sparkline, true);
+				for (let i = 0; i < sortedData.length; i++) {
+					sparklineData[sortedData[i][sparkline]] = sortedData[i][value];
+				}
 			}
 		}
 	} catch (e) {
@@ -102,6 +111,8 @@
 >
 	{#if error}
 		<ErrorChart chartType="Big Value" error={error.message} />
+	{:else if isEmpty}
+		<div class="my-5">Big Value: No Data</div>
 	{:else}
 		<p class="text-sm text-gray-700">{title}</p>
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">

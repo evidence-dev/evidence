@@ -54,9 +54,12 @@
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
+
+	export let emptySet = 'error'; // error | warn | pass
 </script>
 
 <Chart
+	{emptySet}
 	{data}
 	{x}
 	{y}
