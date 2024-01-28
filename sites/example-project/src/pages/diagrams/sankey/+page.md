@@ -1,16 +1,16 @@
 # Sankey Diagram Page
 
 ```sql simple_sankey
-select 'products' as source, 'profits' as target, 100 as amount
+select 'products' as source, 'profits' as target, 100 as amount, 0.67 as percent
 union all
-select 'products' as source, 'expenses' as target, 50 as amount
+select 'products' as source, 'expenses' as target, 50 as amount, 0.33 as percent
 union all
-select 'services' as source, 'profits' as target, 25 as amount
+select 'services' as source, 'profits' as target, 25 as amount, 0.50 as percent
 union all
-select 'services' as source, 'expenses' as target, 25 as amount
+select 'services' as source, 'expenses' as target, 25 as amount, 0.50 as percent
 ```
 
-<SankeyDiagram data={simple_sankey} linkColor=gradient title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount valueFmt = 'usd'/>
+<SankeyDiagram data={simple_sankey} linkLabels=percent linkColor=source title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount valueFmt = 'usd' percentCol=percent/>
 
 
 ## Aniles orantem Saeculaque pars a aetas nostrum
@@ -49,19 +49,7 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 ```
 
 <SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count 
-echartsOptions={{
-  series: {
-    edgeLabel: {
-      show: true,
-      color: 'black',
-      textBorderColor: 'white',
-      textBorderWidth: 1
-    },
-    labelLayout: {
-            hideOverlap: true
-    }
-  }
-}}/>
+linkLabels=true/>
 
 ```sql apple_income_statement
 select 'iphone' as source, 'product revenue' as target, 51 as amount_usd

@@ -20,7 +20,10 @@
 	export let printEchartsConfig = false;
 
 	export let valueFmt = undefined;
-	$: format_object = valueFmt ? getFormatObjectFromString(valueFmt) : undefined;
+	$: value_format_object = valueFmt ? getFormatObjectFromString(valueFmt) : undefined;
+
+	export let percentFmt = undefined;
+	$: percent_format_object = percentFmt ? getFormatObjectFromString(percentFmt) : getFormatObjectFromString('pct') ;
 
 	export let colorPalette = undefined;
 
@@ -28,14 +31,14 @@
 	export let sourceCol = 'source';
 	export let targetCol = 'target';
 	export let valueCol = 'value';
+	export let percentCol = undefined;
 
 	export let title = undefined;
 	export let subtitle = undefined;
 	export let nodeLabels = true;
 	$: nodeLabels = nodeLabels === 'true' || nodeLabels === true;
 
-	export let linkLabels = false;
-	$: linkLabels = linkLabels === 'true' || linkLabels === true;
+	export let linkLabels = undefined; // value | percent | full | undefined (default)
 
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
@@ -100,10 +103,13 @@
 		// 	throw new Error('value is required');
 		// }
 
-		checkInputs(data, [sourceCol, targetCol, valueCol]);
+		checkInputs(data, [sourceCol, targetCol, valueCol], [percentCol]);
 
 
-		data.map((link) => names.push(link[sourceCol], link[targetCol]));
+		data.map((link) => {
+			names.push(link[sourceCol], link[targetCol])
+		});
+
 		const nameData = [...new Set(names)].map((node, index) => ({
 			name: node,
 			itemStyle: {
@@ -114,7 +120,8 @@
 			return {
 				source: link[sourceCol],
 				target: link[targetCol],
-				value: link[valueCol]
+				value: link[valueCol],
+				percent: link[percentCol]
 			};
 		});
 	// ---------------------------------------------------------------------------------------
@@ -169,7 +176,7 @@
 	seriesConfig = {
 		type: 'sankey',
 		layout: 'none',
-		layoutIterations: sort === 'true' ? 1 : 0, // Preserve data order in layout
+		layoutIterations: sort === 'true' ? 32 : 0, // Preserve data order in layout
 		left: '10%',
 		top: orient === 'vertical' ? 80 : 60,
 		bottom: orient === 'vertical' ? 0 : 10,
@@ -189,6 +196,26 @@
 				return `${formatTitle(params.data.name)}`;
 			}
 		},
+		edgeLabel: {
+			show: ['value', 'percent', 'full'].includes(linkLabels),
+			color: 'black',
+			textBorderColor: 'white',
+			textBorderWidth: 2,
+			formatter: function (params) {
+				let output;
+				if(linkLabels === 'value'){
+					output = `${formatValue(params.data.value, value_format_object)}` 
+				} else if(linkLabels === 'percent'){
+					output = percentCol ? `${formatValue(params.data.percent, percent_format_object )}` : ''
+				} else {
+					output = `${formatValue(params.data.value, value_format_object)}` + (percentCol ? ` (${formatValue(params.data.percent, percent_format_object )})` : '')
+				}
+				return output;
+			}
+		},
+		labelLayout: {
+			hideOverlap: true
+		},
 		itemStyle: {
 			borderColor: outlineColor,
 			borderWidth: outlineWidth
@@ -201,11 +228,11 @@
 				return params.data.name
 					? `<span style='font-weight: 600'>${formatValue(params.data.name)}</span>: ${formatValue(
 							params.value,
-							format_object
+							value_format_object
 					  )}`
 					: `<span style='font-weight: 600'>${formatValue(params.data[sourceCol])} to ${formatValue(
 							params.data.target
-					  )}</span>: ${formatValue(params.data.value, format_object)}`;
+					  )}</span>: ${formatValue(params.data.value, value_format_object)}`;
 			},
 			extraCssText:
 				'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',
