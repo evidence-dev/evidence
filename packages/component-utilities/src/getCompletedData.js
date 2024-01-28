@@ -41,11 +41,25 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 
 	/** @type {Array<number | string>} */
 	let xDistinct;
-	const exampleX = data[0]?.[x];
+	function findFirstNonNull(data, x) {
+		for (let item of data) {
+			if (item && item[x] !== null && item[x] !== undefined) {
+				return item[x];
+			}
+		}
+		return null; // Return null if all values are null or undefined
+	}
+	const exampleX = findFirstNonNull(data, x);
 
 	switch (typeof exampleX) {
 		case 'object':
-			throw new Error('Unexpected object property, expected string, date, or number');
+			if (exampleX === null) {
+				throw new Error(
+					`Column '${x}' is entirely null. Column must contain at least one non-null value.`
+				);
+			} else {
+				throw new Error('Unexpected object property, expected string, date, or number');
+			}
 		case 'number':
 			// Numbers are the most straightforward
 			xDistinct = getDistinctValues(data, x);
