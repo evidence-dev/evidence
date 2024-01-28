@@ -39,7 +39,7 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 The syntax for multi-level sankey diagrams is the same, but the 
 underlying query must represent all the levels using the same 
 `sourceCol` and `targetCol`, so it is necessary to `union`
- each level together.  `sourceCal` nodes on the next level will be linked to `targetCol` nodes in the previous level with the same name.  
+ each level together.  `sourceCol` nodes on the next level will be linked to `targetCol` nodes in the previous level with the same name.  
 
 For example, here is the source for the visuals above.
 
@@ -97,6 +97,7 @@ group by 1, 2
 <tr> <td>outlineColor</td> <td>Border color. Only accepts a single color.</td> <td class='tcenter'>-</td> <td class='tcenter'>CSS name | hexademical | RGB | HSL</td> <td class='tcenter'>transparent</td> </tr>
 <tr> <td>outlineWidth</td> <td>Border Width. It should be a natural number.</td> <td class='tcenter'>-</td> <td class='tcenter'>number</td> <td class='tcenter'>1</td> </tr>
 <tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
+<tr>	<td>linkColor</td>	<td>Color to use for the links between nodes in the diagram</td>	<td class='tcenter'>-</td>	<td class='tcenter'>grey | source | target | gradient </td>	<td class='tcenter'>grey</td>	</tr>
 </table>
 
 ### Chart
@@ -105,7 +106,8 @@ group by 1, 2
 <tr> <th class='tleft'>Name</th> <th class='tleft'>Description</th> <th>Required?</th> <th>Options</th> <th>Default</th> </tr>
 <tr> <td>title</td> <td>Chart title. Appears at top left of chart.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>subtitle</td> <td>Chart subtitle. Appears just under title.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>label</td> <td>Turns label on or off. Label appears at top or right of the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false </td> <td class='tcenter'>true</td> </tr>
+<tr> <td>nodeLabels</td> <td>Turns node labels on or off</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false </td> <td class='tcenter'>true</td> </tr>
+<tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
 </table>
 
 ### Custom Echarts Options

@@ -32,7 +32,11 @@
 	export let title = undefined;
 	export let subtitle = undefined;
 	export let legend = false;
-	export let label = true;
+	export let nodeLabels = true;
+	$: nodeLabels = nodeLabels === 'true' || nodeLabels === true;
+
+	export let linkLabels = false;
+	$: linkLabels = linkLabels === 'true' || linkLabels === true;
 
 	export let outlineColor = undefined;
 	export let outlineWidth = undefined;
@@ -59,7 +63,8 @@
 	// ---------------------------------------------------------------------------------------
 
 	// Chart Area sizing:
-	let chartAreaHeight;
+	export let chartAreaHeight = '300';
+	chartAreaHeight = Number(chartAreaHeight);
 	let hasTitle;
 	let hasSubtitle;
 	let hasLegend;
@@ -118,7 +123,14 @@
 	// ---------------------------------------------------------------------------------------
 	// Set up chart area
 	// ---------------------------------------------------------------------------------------
-	chartAreaHeight = 300; // standard height for chart area across all charts
+
+	// check if chartAreaHeight is a positive number - if not, throw error (otherwise get blank space)
+	if (isNaN(chartAreaHeight)) {
+		throw Error("chartAreaHeight must be a number")
+	} else if(chartAreaHeight < 0){
+		throw Error("chartAreaHeight must be a positive number")
+	}
+	
 	hasTitle = title ? true : false;
 	hasSubtitle = subtitle ? true : false;
 	hasLegend = legend;
@@ -181,7 +193,7 @@
 			focus: 'adjacency'
 		},
 		label: {
-			show: label,
+			show: nodeLabels,
 			position: orient === 'vertical' ? 'top' : 'right',
 			fontSize: orient === 'vertical' ? 10.5 : 12,
 			formatter: function (params) {

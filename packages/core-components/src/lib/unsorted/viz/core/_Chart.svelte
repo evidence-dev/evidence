@@ -144,11 +144,7 @@
 	export let chartAreaHeight;
 	chartAreaHeight = Number(chartAreaHeight);
 
-	// What other chartAreaHeight values would be considered invalid?
-	if (isNaN(chartAreaHeight) || chartAreaHeight < 0) {
-		chartAreaHeight = 180;
-	}
-
+	
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -797,6 +793,13 @@
 			// ---------------------------------------------------------------------------------------
 			// Set up chart area
 			// ---------------------------------------------------------------------------------------
+
+			// check if chartAreaHeight is a positive number - if not, throw error (otherwise get blank space)
+			if (isNaN(chartAreaHeight)) {
+				throw Error("chartAreaHeight must be a number")
+			} else if(chartAreaHeight < 0){
+				throw Error("chartAreaHeight must be a positive number")
+			}
 
 			hasTitle = title ? true : false;
 			hasSubtitle = subtitle ? true : false;
