@@ -35,8 +35,7 @@
 
 	export let title = undefined;
 	export let subtitle = undefined;
-	export let nodeLabels = true;
-	$: nodeLabels = nodeLabels === 'true' || nodeLabels === true;
+	export let nodeLabels = 'name'; // name (default) | value | full
 
 	export let linkLabels = undefined; // value | percent | full | undefined (default)
 
@@ -189,11 +188,19 @@
 			focus: 'adjacency'
 		},
 		label: {
-			show: nodeLabels,
+			show: ['name', 'value', 'full'].includes(nodeLabels),
 			position: orient === 'vertical' ? 'top' : 'right',
 			fontSize: orient === 'vertical' ? 10.5 : 12,
 			formatter: function (params) {
-				return `${formatTitle(params.data.name)}`;
+				let output;
+				if(nodeLabels === 'name'){
+					output = `${formatTitle(params.data.name)}`
+				} else if (nodeLabels === 'value'){
+					output = `${formatValue(params.value, value_format_object)}` 
+				} else {
+					output = `${formatTitle(params.data.name)} (${formatValue(params.value, value_format_object)})` 
+				}
+				return output;
 			}
 		},
 		edgeLabel: {
