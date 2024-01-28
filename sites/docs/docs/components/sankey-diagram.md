@@ -34,6 +34,221 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 />
 ```
 
+# Echarts Options String 
+
+```html
+<SankeyDiagram 
+    data={traffic_data} 
+    title="Sankey" 
+    subtitle="A simple sankey chart" 
+    sourceCol=source 
+    targetCol=target 
+    valueCol=count 
+    echartsOptions={{
+        title: {
+            text: "Custom Echarts Option",
+            textStyle: {
+              color: '#476fff'
+            }
+        }
+    }}
+/>
+
+```
+
+![sankey](/img/sankey-echarts-options.png)
+
+# Node Depth Override
+
+```html
+<SankeyDiagram 
+    data={apple_income_statement} 
+    title="Apple Income Statement" 
+    subtitle="USD Billions" 
+    sourceCol=source 
+    targetCol=target 
+    valueCol=amount_usd 
+    depthOverride={{'services revenue': 1}}
+    nodeAlign=left
+/>
+```
+
+![sankey](/img/exg-sankey-vertical.svg)
+
+# Labels
+
+## Node Labels
+
+### `nodeLabels=name` (default)
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=name
+/>
+```
+
+![sankey](/img/exg-sankey-vertical.svg)
+
+### `nodeLabels=value`
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=value
+/>
+```
+
+![sankey](/img/exg-sankey-vertical.svg)
+
+### `nodeLabels=full`
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=full
+  valueFmt=usd
+/>
+```
+
+![sankey](/img/exg-sankey-vertical.svg)
+
+## Link Labels
+
+### `linkLabels=full` (default)
+Requires `percentCol` to show percentage beside value
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=full
+/>
+```
+
+![sankey](/img/sankey_linklabel_full.svg)
+
+### `linkLabels=value`
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=value
+/>
+```
+
+![sankey](/img/sankey_linklabel_value.svg)
+
+### `linkLabels=percent`
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=percent
+/>
+```
+
+![sankey](/img/sankey_linklabel_percent.svg)
+
+# Node Colors
+
+## Custom Color Palette
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=grey
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+```
+
+![sankey](/img/sankey_color_palette.svg)
+
+# Link Colors
+
+## `linkColor=grey` (default)
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=grey
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+```
+
+![sankey](/img/sankey_color_palette.svg)
+
+## `linkColor=source` 
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=source
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+```
+
+![sankey](/img/sankey_color_source.svg)
+
+## `linkColor=target` 
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=target
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+```
+
+![sankey](/img/sankey_color_target.svg)
+
+## `linkColor=gradient` 
+```html
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=gradient
+  colorPalette={['#6e0e08', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+```
+
+![sankey](/img/sankey_color_gradient.svg)
+
 ## Multi-level
 
 The syntax for multi-level sankey diagrams is the same, but the 
@@ -83,7 +298,7 @@ group by 1, 2
 <tr> <td>targetCol</td> <td>Column to use for the target of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>valueCol</td> <td>Column to use for the value of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>percentCol</td> <td>Column to use for the percent labels of the diagram</td> <td class='tcenter'>-</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>depthOverride</td> <td>Manual adjustment to location of each node</td> <td class='tcenter'>-</td> <td class='tcenter'>object containing node name and depth level (0 is first level)<br/>{{'services revenue': 2}}</td> <td class='tcenter'>-</td> </tr>
+<tr> <td>depthOverride</td> <td>Manual adjustment to location of each node</td> <td class='tcenter'>-</td> <td class='tcenter'>object containing node name and depth level (0 is first level)<br/>{`{{'services revenue': 2}}`}</td> <td class='tcenter'>-</td> </tr>
 </table>
 
 ### Formatting & Styling

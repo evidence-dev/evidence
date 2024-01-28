@@ -186,9 +186,14 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 
 # Echarts Options String 
 
-<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count printEchartsConfig={true} echartsOptions={{
+<SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count printEchartsConfig={true} 
+linkColor=gradient
+echartsOptions={{
         title: {
-            text: "Custom Echarts Option"
+            text: "Custom Echarts Option",
+            textStyle: {
+              color: '#476fff'
+            }
         }
     }}/>
 
