@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sqlite",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "SQLite driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "Edgar Ramírez-Mondragón",
@@ -22,5 +22,10 @@
 			"sqlite"
 		],
 		"icon": "Sqlite"
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"sqlite"
+	]
 }

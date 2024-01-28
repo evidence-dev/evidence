@@ -1,5 +1,14 @@
 # @evidence-dev/duckdb
 
+## 1.0.4
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- 2a663d79: Remove legacy configuration option; use new closeConnection callback
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/db-commons@1.0.2
+
 ## 1.0.3
 
 ### Patch Changes

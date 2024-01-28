@@ -103,6 +103,7 @@ const processQueryResults = function (queryResults) {
  * @typedef {Object} AsyncIterableToBatchedAsyncGeneratorOptions
  * @property {(rows: Record<string, unknown>[]) => QueryResult["columnTypes"]} [mapResultsToEvidenceColumnTypes]
  * @property {(row: unknown) => Record<string, unknown>} [standardizeRow]
+ * @property {() => void | Promise<void>} [closeConnection]
  */
 
 /**
@@ -118,7 +119,8 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 	{
 		// @ts-ignore
 		standardizeRow = (x) => x,
-		mapResultsToEvidenceColumnTypes
+		mapResultsToEvidenceColumnTypes,
+		closeConnection = () => {}
 	} = {}
 ) {
 	/** @type {Record<string, unknown>[]} */
@@ -151,9 +153,12 @@ const asyncIterableToBatchedAsyncGenerator = async function (
 				batch = [];
 			}
 		}
+		// No more batches, safe to close connection now
+		await closeConnection();
 		if (batch.length > 0) {
 			yield batch;
 		}
+		// Clean up
 	};
 
 	return { rows, columnTypes };

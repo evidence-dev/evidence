@@ -1,5 +1,42 @@
 # evidence-test-environment
 
+## 3.0.10
+
+### Patch Changes
+
+- Updated dependencies [1ef5544d]
+  - @evidence-dev/core-components@3.1.0
+  - @evidence-dev/evidence@25.0.0
+
+## 3.0.9
+
+### Patch Changes
+
+- @evidence-dev/evidence@24.0.9
+
+## 3.0.8
+
+### Patch Changes
+
+- Updated dependencies [5a9edf0c]
+- Updated dependencies [0e0a4392]
+- Updated dependencies [d04554f1]
+- Updated dependencies [2a663d79]
+- Updated dependencies [1027087a]
+- Updated dependencies [e3a88847]
+- Updated dependencies [f33b58c5]
+- Updated dependencies [38cc19db]
+- Updated dependencies [7e401d4d]
+- Updated dependencies [1dd61938]
+  - @evidence-dev/core-components@3.0.5
+  - @evidence-dev/csv@1.0.4
+  - @evidence-dev/duckdb@1.0.4
+  - @evidence-dev/postgres@1.0.2
+  - @evidence-dev/snowflake@1.0.2
+  - @evidence-dev/sqlite@2.0.2
+  - @evidence-dev/faker-datasource@2.0.2
+  - @evidence-dev/evidence@24.0.8
+
 ## 3.0.7
 
 ### Patch Changes

@@ -23,12 +23,12 @@ import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
 
 /**
- * @param {string} type
+ * @param {{name: string, evidenceType: string}} column
  * @param {any[]} rawValues
  * @returns {import("apache-arrow").Vector}
  */
-function convertArrayToVector(type, rawValues) {
-	switch (type) {
+function convertArrayToVector(column, rawValues) {
+	switch (column.evidenceType) {
 		case 'number':
 			return vectorFromArray(rawValues, new Float64());
 		case 'string':
@@ -37,11 +37,21 @@ function convertArrayToVector(type, rawValues) {
 			// TODO: What gives with timezones
 			return vectorFromArray(rawValues, new TimestampMillisecond());
 		case 'boolean':
+			if (!rawValues.some((v) => v !== null)) {
+				// All null bool columns error out, so we have to do this
+				// https://github.com/evidence-dev/evidence/issues/1504
+				console.warn(
+					chalk.yellow(
+						`\nWarning: Column "${column.name}" (type Bool) contains only null values so it has been cast to Float64`
+					)
+				);
+				return vectorFromArray(rawValues, new Float64());
+			}
 			return vectorFromArray(rawValues, new Bool());
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-					type +
+					column.evidenceType +
 					'\n This is likely an error in a datasource connector.'
 			);
 	}
@@ -78,7 +88,7 @@ export async function buildMultipartParquet(
 			columns.map((c) => [
 				c.name,
 				convertArrayToVector(
-					c.evidenceType,
+					c,
 					results.map((i) => i[c.name] ?? null)
 				)
 			])

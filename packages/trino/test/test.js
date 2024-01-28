@@ -38,8 +38,20 @@ bing_tile_at(40.7492, 73.9675, 1) AS bing_tile_col,
 1 AS "whitespace col"
 `;
 
+/** @type {import("../index.cjs").TrinoOptions} */
+const creds = {
+	host: process.env.TRINO_HOST,
+	user: process.env.TRINO_USER,
+	password: process.env.TRINO_PASSWORD,
+	ssl: process.env.TRINO_SSL,
+	port: process.env.TRINO_PORT,
+	catalog: process.env.TRINO_CATALOG,
+	schema: process.env.TRINO_SCHEMA,
+	engine: process.env.TRINO_ENGINE
+};
+
 test('query runs', async () => {
-	const result = await runQuery(query);
+	const result = await runQuery(query, creds);
 
 	assert.instance(result.rows, Array);
 	assert.instance(result.columnTypes, Array);

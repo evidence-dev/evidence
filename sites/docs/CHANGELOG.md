@@ -1,5 +1,12 @@
 # evidence-docs
 
+## 2.0.5
+
+### Patch Changes
+
+- 1027087a: Add xMin and xMax to ScatterPlot
+- bfd7278b: Explain how to add static images to the Data Table component
+
 ## 2.0.4
 
 ### Patch Changes

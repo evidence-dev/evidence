@@ -89,6 +89,8 @@
 	export let sort = true; // sorts x values in case x is out of order in dataset (e.g., would create line chart that is out of order)
 	$: sort = sort === 'true' || sort === true;
 	export let xFmt = undefined;
+	export let xMin = undefined;
+	export let xMax = undefined;
 
 	// Y axis:
 	export let yLog = false;
@@ -638,6 +640,8 @@
 			} else {
 				horizAxisConfig = {
 					type: xType,
+					min: xMin,
+					max: xMax,
 					splitLine: {
 						show: xGridlines
 					},
@@ -686,6 +690,8 @@
 						//     },
 					},
 					scale: true,
+					min: xMin,
+					max: xMax,
 					z: 2
 				};
 			} else {
