@@ -12,7 +12,8 @@ select 'services' as source, 'expenses' as target, 25 as amount
 
 ## Diagram
 
-<SankeyDiagram data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount valueFmt = 'usd' colorPalette = {['red']} />
+<SankeyDiagram data={simple_sankey} linkColor=gradient title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount valueFmt = 'usd'
+/>
 
 ## Chart
 
@@ -55,7 +56,20 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 
 ## Diagram
 
-<SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count />
+<SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count 
+echartsOptions={{
+  series: {
+    edgeLabel: {
+      show: true,
+      color: 'black',
+      textBorderColor: 'white',
+      textBorderWidth: 1
+    },
+    labelLayout: {
+            hideOverlap: true
+    }
+  }
+}}/>
 
 ## Chart 
 
@@ -92,7 +106,6 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
     sourceCol=source 
     targetCol=target 
     valueCol=amount_usd 
-    sort=true
 />
 
 <SankeyDiagram 
@@ -114,7 +127,7 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
     sourceCol=source 
     targetCol=target 
     valueCol=amount_usd 
-    sort=true
+    sort=false
 />
 
 <SankeyChart 

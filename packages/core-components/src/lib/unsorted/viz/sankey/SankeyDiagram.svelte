@@ -42,6 +42,8 @@
 	export let orient = 'horizontal';
 	export let sort = false;
 
+	export let linkColor = 'grey'; // grey (default), source, target, gradient
+
 	// Data Formatting
 	let names = [];
 	let links;
@@ -189,6 +191,9 @@
 		itemStyle: {
 			borderColor: outlineColor,
 			borderWidth: outlineWidth
+		},
+		lineStyle: {
+			color: linkColor
 		},
 		tooltip: {
 			formatter: function (params) {
