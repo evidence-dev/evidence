@@ -56,7 +56,7 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 
 ```
 
-![sankey](/img/sankey-echarts-options.png)
+![sankey](/img/sankey_echarts_options.png)
 
 # Node Depth Override
 
@@ -73,7 +73,7 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 />
 ```
 
-![sankey](/img/exg-sankey-vertical.svg)
+![sankey](/img/sankey_depth_override.png)
 
 # Labels
 
@@ -91,7 +91,7 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 />
 ```
 
-![sankey](/img/exg-sankey-vertical.svg)
+![sankey](/img/sankey_nodelabel_name.png)
 
 ### `nodeLabels=value`
 ```html
@@ -105,7 +105,9 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 />
 ```
 
-![sankey](/img/exg-sankey-vertical.svg)
+The value labels can be formatted using the `valueFmt` option.
+
+![sankey](/img/sankey_nodelabel_value.png)
 
 ### `nodeLabels=full`
 ```html
@@ -120,7 +122,7 @@ To display a flow with multiple levels, like these examples, see [Mutli-level](#
 />
 ```
 
-![sankey](/img/exg-sankey-vertical.svg)
+![sankey](/img/sankey_nodelabel_full.png)
 
 ## Link Labels
 
@@ -138,7 +140,7 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_linklabel_full.svg)
+![sankey](/img/sankey_linklabel_full.png)
 
 ### `linkLabels=value`
 ```html
@@ -153,7 +155,7 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_linklabel_value.svg)
+![sankey](/img/sankey_linklabel_value.png)
 
 ### `linkLabels=percent`
 ```html
@@ -168,9 +170,8 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_linklabel_percent.svg)
+![sankey](/img/sankey_linklabel_percent.png)
 
-# Node Colors
 
 ## Custom Color Palette
 ```html
@@ -185,11 +186,11 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_palette.svg)
+![sankey](/img/sankey_color_palette.png)
 
-# Link Colors
+## Link Colors
 
-## `linkColor=grey` (default)
+### `linkColor=grey` (default)
 ```html
 <SankeyDiagram 
   data={simple_sankey} 
@@ -202,9 +203,9 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_palette.svg)
+![sankey](/img/sankey_color_palette.png)
 
-## `linkColor=source` 
+### `linkColor=source` 
 ```html
 <SankeyDiagram 
   data={simple_sankey} 
@@ -217,9 +218,9 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_source.svg)
+![sankey](/img/sankey_color_source.png)
 
-## `linkColor=target` 
+### `linkColor=target` 
 ```html
 <SankeyDiagram 
   data={simple_sankey} 
@@ -232,9 +233,9 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_target.svg)
+![sankey](/img/sankey_color_target.png)
 
-## `linkColor=gradient` 
+### `linkColor=gradient` 
 ```html
 <SankeyDiagram 
   data={simple_sankey} 
@@ -247,7 +248,7 @@ Requires `percentCol` to show percentage beside value
 />
 ```
 
-![sankey](/img/sankey_color_gradient.svg)
+![sankey](/img/sankey_color_gradient.png)
 
 ## Multi-level
 
