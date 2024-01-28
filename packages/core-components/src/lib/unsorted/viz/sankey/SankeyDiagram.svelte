@@ -297,5 +297,5 @@
 {#if error}
 	<ErrorChart chartType="Sankey Diagram" {error} />
 {:else}
-	<ECharts {config} {width} {height} {echartsOptions} {printEchartsConfig} />
+	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} />
 {/if}
