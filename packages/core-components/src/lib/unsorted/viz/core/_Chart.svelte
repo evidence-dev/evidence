@@ -144,7 +144,6 @@
 	export let chartAreaHeight;
 	chartAreaHeight = Number(chartAreaHeight);
 
-	
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -796,9 +795,9 @@
 
 			// check if chartAreaHeight is a positive number - if not, throw error (otherwise get blank space)
 			if (isNaN(chartAreaHeight)) {
-				throw Error("chartAreaHeight must be a number")
-			} else if(chartAreaHeight < 0){
-				throw Error("chartAreaHeight must be a positive number")
+				throw Error('chartAreaHeight must be a number');
+			} else if (chartAreaHeight < 0) {
+				throw Error('chartAreaHeight must be a positive number');
 			}
 
 			hasTitle = title ? true : false;

@@ -45,11 +45,18 @@ union all
 select 'all_traffic' as source, '/blog' as target, 25 as count
 union all
 select 'all_traffic' as source, '/about' as target, 75 as count
-
 ```
 
-<SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count 
-linkLabels=full nodeLabels=full valueFmt=eur/>
+<SankeyDiagram 
+  data={traffic_data} 
+  subtitle="A simple sankey diagram" 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=count 
+  linkLabels=full 
+  nodeLabels=full 
+  valueFmt=eur
+/>
 
 ```sql apple_income_statement
 select 'iphone' as source, 'product revenue' as target, 51 as amount_usd
@@ -82,10 +89,12 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
     valueCol=amount_usd 
 />
 
+Domino cuncta dicenda. Serpente paludem et nubes Cithaeron alios mihi non.
+
 <SankeyDiagram 
     data={apple_income_statement} 
-    title="Apple Income Statement" 
-    subtitle="USD Billions" 
+    title="Apple Income Statement"
+    subtitle="USD billions"
     sourceCol=source 
     targetCol=target 
     valueCol=amount_usd 
@@ -184,7 +193,7 @@ select 'all_traffic' as source, '/about' as target, 75 as count
     }}/>
 
 
-## Node Depth Override
+# Node Depth Override
 
 <SankeyDiagram 
     data={apple_income_statement} 
@@ -195,4 +204,135 @@ select 'all_traffic' as source, '/about' as target, 75 as count
     valueCol=amount_usd 
     depthOverride={{'services revenue': 1}}
     nodeAlign=left
+/>
+
+# Labels
+
+## Node Labels
+
+### `nodeLabels=name` (default)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=name
+/>
+
+### `nodeLabels=value`
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=value
+/>
+
+### `nodeLabels=full`
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  nodeLabels=full
+  valueFmt=usd
+/>
+
+## Link Labels
+
+### `linkLabels=full` (default)
+Requires `percentCol` to show percentage beside value
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=full
+/>
+
+### `linkLabels=value`
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=value
+/>
+
+### `linkLabels=percent`
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  valueFmt=usd
+  linkLabels=percent
+/>
+
+# Node Colors
+
+## Custom Color Palette
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=grey
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+
+
+# Link Colors
+
+## `linkColor=grey` (default)
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=grey
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+
+## `linkColor=source` 
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=source
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+
+## `linkColor=target` 
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=target
+  colorPalette={['#ad4940', '#3d8cc4', '#1b5218', '#ebb154']}
+/>
+
+## `linkColor=gradient` 
+<SankeyDiagram 
+  data={simple_sankey} 
+  sourceCol=source 
+  targetCol=target 
+  valueCol=amount 
+  percentCol=percent 
+  linkColor=gradient
+  colorPalette={['#6e0e08', '#3d8cc4', '#1b5218', '#ebb154']}
 />

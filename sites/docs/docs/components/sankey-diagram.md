@@ -82,7 +82,8 @@ group by 1, 2
 <tr> <td>sourceCol</td> <td>Column to use for the source of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>targetCol</td> <td>Column to use for the target of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>valueCol</td> <td>Column to use for the value of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>depthOverride</td> <td>Manual adjustment to location of each node</td> <td class='tcenter'>Yes</td> <td class='tcenter'>object containing node name and depth level (0 is first level)<br/>{{'services revenue': 2}}</td> <td class='tcenter'>-</td> </tr>
+<tr> <td>percentCol</td> <td>Column to use for the percent labels of the diagram</td> <td class='tcenter'>-</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
+<tr> <td>depthOverride</td> <td>Manual adjustment to location of each node</td> <td class='tcenter'>-</td> <td class='tcenter'>object containing node name and depth level (0 is first level)<br/>{{'services revenue': 2}}</td> <td class='tcenter'>-</td> </tr>
 </table>
 
 ### Formatting & Styling
@@ -107,7 +108,8 @@ group by 1, 2
 <tr> <th class='tleft'>Name</th> <th class='tleft'>Description</th> <th>Required?</th> <th>Options</th> <th>Default</th> </tr>
 <tr> <td>title</td> <td>Chart title. Appears at top left of chart.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>subtitle</td> <td>Chart subtitle. Appears just under title.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>nodeLabels</td> <td>Turns node labels on or off</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false </td> <td class='tcenter'>true</td> </tr>
+<tr> <td>nodeLabels</td> <td>Adds labels to the nodes of the diagram</td> <td class='tcenter'>-</td> <td class='tcenter'> name | value | full </td> <td class='tcenter'>name</td> </tr>
+<tr> <td>linkLabels</td> <td>Adds labels to the links between nodes</td> <td class='tcenter'>-</td> <td class='tcenter'> full | value | percent </td> <td class='tcenter'>full (requires percentCol)</td> </tr>
 <tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
 </table>
 
