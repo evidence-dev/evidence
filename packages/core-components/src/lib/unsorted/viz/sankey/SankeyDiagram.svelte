@@ -45,6 +45,8 @@
 	export let orient = 'horizontal';
 	export let sort = false;
 
+	export let depthOverride; // object like: {'node name': 1, 'node name 2': 2} where number is depth level (0-based)
+
 	export let linkColor = 'grey'; // grey (default), source, target, gradient
 
 	// Data Formatting
@@ -213,6 +215,20 @@
 		links: links,
 		animationDuration: 500
 	};
+
+	function overrideNodeDepth(data, newObj) {
+		// Iterate through each element in the data array
+		data.forEach(item => {
+			// Check if the item's name is a key in newObj
+			if (newObj.hasOwnProperty(item.name)) {
+				// Add the 'depth' property with the value from newObj
+				item.depth = newObj[item.name];
+			}
+		});
+	}
+	if(depthOverride){
+		overrideNodeDepth(seriesConfig.data, depthOverride)		
+	}
 
 	config = {
 		title: {

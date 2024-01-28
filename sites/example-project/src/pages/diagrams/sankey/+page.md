@@ -10,14 +10,8 @@ union all
 select 'services' as source, 'expenses' as target, 25 as amount
 ```
 
-## Diagram
+<SankeyDiagram data={simple_sankey} linkColor=gradient title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount valueFmt = 'usd'/>
 
-<SankeyDiagram data={simple_sankey} linkColor=gradient title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount valueFmt = 'usd'
-/>
-
-## Chart
-
-<SankeyChart data={simple_sankey} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=amount colorPalette = {['red', 'yellow', 'green']}/>
 
 ## Aniles orantem Saeculaque pars a aetas nostrum
 
@@ -54,8 +48,6 @@ select 'all_traffic' as source, '/about' as target, 75 as count
 
 ```
 
-## Diagram
-
 <SankeyDiagram data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count 
 echartsOptions={{
   series: {
@@ -70,10 +62,6 @@ echartsOptions={{
     }
   }
 }}/>
-
-## Chart 
-
-<SankeyChart data={traffic_data} title="Sankey Diagram" subtitle="A simple sankey diagram" sourceCol=source targetCol=target valueCol=count />
 
 ```sql apple_income_statement
 select 'iphone' as source, 'product revenue' as target, 51 as amount_usd
@@ -97,8 +85,6 @@ union all
 select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
 ```
 
-## Diagram 
-
 <SankeyDiagram 
     data={apple_income_statement} 
     title="Apple Income Statement" 
@@ -109,28 +95,6 @@ select 'revenue' as source, 'cost of revenue' as target, 55 as amount_usd
 />
 
 <SankeyDiagram 
-    data={apple_income_statement} 
-    title="Apple Income Statement" 
-    subtitle="USD Billions" 
-    sourceCol=source 
-    targetCol=target 
-    valueCol=amount_usd 
-    orient="vertical"
-/>
-
-## Chart 
-
-<SankeyChart 
-    data={apple_income_statement} 
-    title="Apple Income Statement" 
-    subtitle="USD Billions" 
-    sourceCol=source 
-    targetCol=target 
-    valueCol=amount_usd 
-    sort=false
-/>
-
-<SankeyChart 
     data={apple_income_statement} 
     title="Apple Income Statement" 
     subtitle="USD Billions" 
@@ -192,13 +156,6 @@ let sankeyData = [
     ]
 </script>
 
-## Chart 
-
-<SankeyChart data={sankeyData} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
-<SankeyChart data={sankeyData} title="Sankey" subtitle="A simple sankey chart" orient="vertical" valueCol=count />
-
-## Diagram 
-
 <SankeyDiagram data={sankeyData} title="Sankey" subtitle="A simple sankey Diagram" sourceCol=source targetCol=target valueCol=count />
 <SankeyDiagram data={sankeyData} title="Sankey" subtitle="A simple sankey Diagram" orient="vertical" valueCol=count />
 
@@ -228,28 +185,26 @@ union all
 select 'all_traffic' as source, '/about' as target, 75 as count
 ```
 
-## Chart 
-
-<SankeyChart data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
-
-## Diagram 
-
 <SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count />
 
 # Echarts Options String 
-
-## Chart 
-
-<SankeyChart data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count echartsOptions={{
-        title: {
-            text: "Custom Echarts Option"
-        }
-    }}/>
-
-## Diagram 
 
 <SankeyDiagram data={traffic_data} title="Sankey" subtitle="A simple sankey chart" sourceCol=source targetCol=target valueCol=count printEchartsConfig={true} echartsOptions={{
         title: {
             text: "Custom Echarts Option"
         }
     }}/>
+
+
+## Node Depth Override
+
+<SankeyDiagram 
+    data={apple_income_statement} 
+    title="Apple Income Statement" 
+    subtitle="USD Billions" 
+    sourceCol=source 
+    targetCol=target 
+    valueCol=amount_usd 
+    depthOverride={{'services revenue': 1}}
+    nodeAlign=left
+/>

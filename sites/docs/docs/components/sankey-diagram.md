@@ -82,6 +82,7 @@ group by 1, 2
 <tr> <td>sourceCol</td> <td>Column to use for the source of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>targetCol</td> <td>Column to use for the target of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
 <tr> <td>valueCol</td> <td>Column to use for the value of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
+<tr> <td>depthOverride</td> <td>Manual adjustment to location of each node</td> <td class='tcenter'>Yes</td> <td class='tcenter'>object containing node name and depth level (0 is first level)<br/>{{'services revenue': 2}}</td> <td class='tcenter'>-</td> </tr>
 </table>
 
 ### Formatting & Styling
