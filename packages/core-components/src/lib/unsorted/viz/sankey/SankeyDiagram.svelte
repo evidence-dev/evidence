@@ -31,7 +31,6 @@
 
 	export let title = undefined;
 	export let subtitle = undefined;
-	export let legend = false;
 	export let nodeLabels = true;
 	$: nodeLabels = nodeLabels === 'true' || nodeLabels === true;
 
@@ -67,16 +66,12 @@
 	chartAreaHeight = Number(chartAreaHeight);
 	let hasTitle;
 	let hasSubtitle;
-	let hasLegend;
 	let titleFontSize;
 	let subtitleFontSize;
 	let titleBoxPadding;
 	let titleBoxHeight;
 	let chartAreaPaddingTop;
 	let chartAreaPaddingBottom;
-	let legendHeight;
-	let legendPaddingTop;
-	let legendTop;
 	let chartTop;
 	let chartBottom;
 	let chartContainerHeight;
@@ -133,7 +128,6 @@
 	
 	hasTitle = title ? true : false;
 	hasSubtitle = subtitle ? true : false;
-	hasLegend = legend;
 
 	titleFontSize = 15;
 	subtitleFontSize = 13;
@@ -145,14 +139,7 @@
 	chartAreaPaddingTop = 10;
 	chartAreaPaddingBottom = 8;
 
-	legendHeight = 15;
-	legendHeight = legendHeight * hasLegend;
-
-	legendPaddingTop = 7;
-	legendPaddingTop = legendPaddingTop * Math.max(hasTitle, hasSubtitle);
-
-	legendTop = titleBoxHeight + legendPaddingTop;
-	chartTop = legendTop + legendHeight + chartAreaPaddingTop;
+	chartTop = chartAreaPaddingTop;
 	chartBottom = chartAreaPaddingBottom;
 	chartContainerHeight = chartAreaHeight + chartTop + chartBottom;
 
@@ -237,12 +224,6 @@
 		},
 		tooltip: {
 			trigger: 'item'
-		},
-		legend: {
-			show: legend,
-			type: 'scroll',
-			top: legendTop,
-			padding: [0, 0, 0, 0]
 		},
 		series: [seriesConfig]
 	};
