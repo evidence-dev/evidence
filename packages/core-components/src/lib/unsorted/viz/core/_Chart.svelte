@@ -992,7 +992,7 @@
 			});
 		} catch (e) {
 			error = e.message;
-			console.error(e);
+			console.error('\x1b[31m%s\x1b[0m', `Error in ${chartType}: ${e.message}`);
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;
