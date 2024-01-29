@@ -56,6 +56,8 @@
 	export let downloadable = true;
 	$: downloadable = downloadable === 'true' || downloadable === true;
 
+	export let totalRow = false;
+
 	// Row Links:
 	export let link = undefined;
 
@@ -86,7 +88,7 @@
 	export let rowLines = true;
 	$: rowLines = rowLines === 'true' || rowLines === true;
 
-	export let headerColor;
+	export let headerColor = undefined;
 	export let headerFontColor = 'var(--grey-900)';
 
 	export let formatColumnTitles = true;
@@ -364,7 +366,7 @@
 						on:click={() => handleRowClick(row[link])}
 					>
 						{#if rowNumbers}
-							<td class="index w-[2%]" class:row-lines={rowLines}>
+							<td class="index w-[2%]" class:row-lines={rowLines && i !== displayedData.length - 1}>
 								{#if i === 0}
 									{(index + i + 1).toLocaleString()}
 								{:else}
@@ -383,7 +385,7 @@
 									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 								<td
 									class={safeExtractColumn(column).type}
-									class:row-lines={rowLines}
+									class:row-lines={rowLines && i !== displayedData.length - 1}
 									style:text-align={column.align}
 									style:height={column.height}
 									style:width={column.width}
@@ -499,13 +501,71 @@
 							{/each}
 						{:else}
 							{#each columnSummary.filter((d) => d.show === true) as column}
-								<td class={column.type} class:row-lines={rowLines}
-									>{formatValue(row[column.id], column.format, column.columnUnitSummary)}</td
+								<!-- Check if last row in table-->
+								<td
+									class={column.type}
+									class:row-lines={rowLines && i !== displayedData.length - 1}
 								>
+									{formatValue(row[column.id], column.format, column.columnUnitSummary)}
+								</td>
 							{/each}
 						{/if}
 					</tr>
 				{/each}
+				<!-- Totals row -->
+				{#if totalRow && searchValue === ''}
+					<tr class="font-semibold border-t border-gray-600">
+						{#if rowNumbers}
+							<td class="index w-[2%]" />
+						{/if}
+
+						{#each $props.columns.length > 0 ? $props.columns : columnSummary.filter((d) => d.show === true) as column}
+							{@const columnSummary = safeExtractColumn(column)}
+							{@const format = column.totalFmt
+								? getFormatObjectFromString(column.totalFmt)
+								: column.fmt
+								? getFormatObjectFromString(column.fmt)
+								: columnSummary.format}
+							<td
+								class={safeExtractColumn(column).type}
+								style:text-align={column.align}
+								style:height={column.height}
+								style:width={column.width}
+								style:white-space={column.wrap ? 'normal' : 'nowrap'}
+							>
+								{#if typeof column.totalAgg === 'undefined'}
+									<!-- if totalAgg not specified -->
+									{formatValue(
+										columnSummary.columnUnitSummary.sum,
+										format,
+										columnSummary.columnUnitSummary
+									)}
+								{:else if ['sum', 'mean', 'median', 'min', 'max'].includes(column.totalAgg)}
+									<!-- using a predefined aggregation -->
+									{formatValue(
+										columnSummary.columnUnitSummary[column.totalAgg],
+										format,
+										columnSummary.columnUnitSummary
+									)}
+								{:else if ['count', 'countDistinct'].includes(column.totalAgg)}
+									<!-- using a predefined aggregation -->
+									{column.totalFmt
+										? formatValue(
+												columnSummary.columnUnitSummary[column.totalAgg],
+												format,
+												columnSummary.columnUnitSummary
+										  )
+										: columnSummary.columnUnitSummary[column.totalAgg]}
+								{:else}
+									<!-- passing in anything else -->
+									{column.totalFmt
+										? formatValue(column.totalAgg, format, columnSummary.columnUnitSummary)
+										: column.totalAgg}
+								{/if}
+							</td>
+						{/each}
+					</tr>
+				{/if}
 			</table>
 		</div>
 
