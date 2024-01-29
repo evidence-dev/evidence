@@ -25,5 +25,10 @@
 				"bq"
 			]
 		]
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"bigquery"
+	]
 }
