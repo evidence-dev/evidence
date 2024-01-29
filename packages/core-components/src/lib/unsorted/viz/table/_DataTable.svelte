@@ -19,6 +19,7 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import CodeBlock from '../../ui/CodeBlock.svelte';
 
 	// Set up props store
 	let props = writable({});
@@ -26,6 +27,7 @@
 
 	// Data, pagination, and row index numbers
 	export let data;
+	export let queryID = undefined;
 	export let rows = 10; // number of rows to show
 	$: rows = Number.parseInt(rows);
 
@@ -41,6 +43,9 @@
 	let marginBottom = '1em';
 	let paddingBottom = '0em';
 
+	export let generateMarkdown = false;
+	$: generateMarkdown = generateMarkdown === 'true' || generateMarkdown === true;
+
 	// Table features
 	export let search = false;
 	$: search = search === 'true' || search === true;
@@ -50,6 +55,8 @@
 
 	export let downloadable = true;
 	$: downloadable = downloadable === 'true' || downloadable === true;
+
+	export let totalRow = false;
 
 	// Row Links:
 	export let link = undefined;
@@ -81,11 +88,13 @@
 	export let rowLines = true;
 	$: rowLines = rowLines === 'true' || rowLines === true;
 
-	export let headerColor;
+	export let headerColor = undefined;
 	export let headerFontColor = 'var(--grey-900)';
 
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
+
+	export let backgroundColor = 'white';
 
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
@@ -302,7 +311,7 @@
 		{#if search}
 			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
 		{/if}
-		<div class="container">
+		<div class="container" style:background-color={backgroundColor}>
 			<table>
 				<thead>
 					<tr>
@@ -357,7 +366,7 @@
 						on:click={() => handleRowClick(row[link])}
 					>
 						{#if rowNumbers}
-							<td class="index w-[2%]" class:row-lines={rowLines}>
+							<td class="index w-[2%]" class:row-lines={rowLines && i !== displayedData.length - 1}>
 								{#if i === 0}
 									{(index + i + 1).toLocaleString()}
 								{:else}
@@ -376,16 +385,21 @@
 									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 								<td
 									class={safeExtractColumn(column).type}
-									class:row-lines={rowLines}
+									class:row-lines={rowLines && i !== displayedData.length - 1}
 									style:text-align={column.align}
 									style:height={column.height}
 									style:width={column.width}
 									style:white-space={column.wrap ? 'normal' : 'nowrap'}
-									style={column.contentType === 'colorscale' && is_nonzero
-										? ` background-color: ${column.useColor} ${
-												(row[column.id] - column_min) / (column_max - column_min)
-										  })`
-										: ''}
+									style:background-color={column.contentType === 'colorscale' && is_nonzero
+										? column.customColor
+											? `color-mix(in srgb, ${column.customColor} ${
+													((row[column.id] - column_min) / (column_max - column_min)) * 100
+											  }%, transparent)`
+											: `${column.useColor} ${
+													(row[column.id] - column_min) / (column_max - column_min)
+											  })`
+										: // closing bracket needed to close unclosed color string from Column component
+										  ''}
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
 										<img
@@ -487,13 +501,71 @@
 							{/each}
 						{:else}
 							{#each columnSummary.filter((d) => d.show === true) as column}
-								<td class={column.type} class:row-lines={rowLines}
-									>{formatValue(row[column.id], column.format, column.columnUnitSummary)}</td
+								<!-- Check if last row in table-->
+								<td
+									class={column.type}
+									class:row-lines={rowLines && i !== displayedData.length - 1}
 								>
+									{formatValue(row[column.id], column.format, column.columnUnitSummary)}
+								</td>
 							{/each}
 						{/if}
 					</tr>
 				{/each}
+				<!-- Totals row -->
+				{#if totalRow && searchValue === ''}
+					<tr class="font-semibold border-t border-gray-600">
+						{#if rowNumbers}
+							<td class="index w-[2%]" />
+						{/if}
+
+						{#each $props.columns.length > 0 ? $props.columns : columnSummary.filter((d) => d.show === true) as column}
+							{@const columnSummary = safeExtractColumn(column)}
+							{@const format = column.totalFmt
+								? getFormatObjectFromString(column.totalFmt)
+								: column.fmt
+								? getFormatObjectFromString(column.fmt)
+								: columnSummary.format}
+							<td
+								class={safeExtractColumn(column).type}
+								style:text-align={column.align}
+								style:height={column.height}
+								style:width={column.width}
+								style:white-space={column.wrap ? 'normal' : 'nowrap'}
+							>
+								{#if typeof column.totalAgg === 'undefined'}
+									<!-- if totalAgg not specified -->
+									{formatValue(
+										columnSummary.columnUnitSummary.sum,
+										format,
+										columnSummary.columnUnitSummary
+									)}
+								{:else if ['sum', 'mean', 'median', 'min', 'max'].includes(column.totalAgg)}
+									<!-- using a predefined aggregation -->
+									{formatValue(
+										columnSummary.columnUnitSummary[column.totalAgg],
+										format,
+										columnSummary.columnUnitSummary
+									)}
+								{:else if ['count', 'countDistinct'].includes(column.totalAgg)}
+									<!-- using a predefined aggregation -->
+									{column.totalFmt
+										? formatValue(
+												columnSummary.columnUnitSummary[column.totalAgg],
+												format,
+												columnSummary.columnUnitSummary
+										  )
+										: columnSummary.columnUnitSummary[column.totalAgg]}
+								{:else}
+									<!-- passing in anything else -->
+									{column.totalFmt
+										? formatValue(column.totalAgg, format, columnSummary.columnUnitSummary)
+										: column.totalAgg}
+								{/if}
+							</td>
+						{/each}
+					</tr>
+				{/if}
 			</table>
 		</div>
 
@@ -572,6 +644,20 @@
 
 		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 	</div>
+
+	{#if generateMarkdown}
+		{#if queryID}
+			<CodeBlock>
+				{`<DataTable data={${queryID}}>`}
+				<br />
+				{#each Object.keys(data[0]) as column}
+					{`	<Column id=${column}/>`}
+					<br />
+				{/each}
+				{`</DataTable>`}
+			</CodeBlock>
+		{/if}
+	{/if}
 {:else}
 	<ErrorChart {error} chartType="Data Table" />
 {/if}
@@ -588,7 +674,6 @@
 		/* border-bottom: 1px solid var(--grey-200);    */
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
-		background-color: white;
 	}
 
 	:root {
@@ -637,6 +722,10 @@
 		overflow: hidden;
 	}
 
+	th:first-child,
+	td:first-child {
+		padding-left: 4px;
+	}
 	th {
 		border-bottom: 1px solid var(--grey-600);
 	}
@@ -686,6 +775,7 @@
 	.index {
 		color: var(--grey-300);
 		text-align: left;
+		max-width: -moz-min-content;
 		max-width: min-content;
 	}
 
@@ -697,6 +787,8 @@
 		height: 2em;
 		font-family: var(--ui-font-family);
 		color: var(--grey-500);
+		-webkit-user-select: none;
+		-moz-user-select: none;
 		user-select: none;
 		text-align: right;
 		margin-top: 0.5em;
@@ -732,6 +824,8 @@
 	.page-changer:disabled {
 		cursor: auto;
 		color: var(--grey-300);
+		-webkit-user-select: none;
+		-moz-user-select: none;
 		user-select: none;
 		transition: color 200ms;
 	}
@@ -771,6 +865,7 @@
 	/* Firefox */
 	.page-input[type='number'] {
 		-moz-appearance: textfield;
+		-webkit-appearance: textfield;
 		appearance: textfield;
 	}
 
@@ -780,6 +875,10 @@
 
 	.page-input.error {
 		border: 1px solid var(--red-600);
+	}
+
+	.page-input::-moz-placeholder {
+		color: var(--grey-500);
 	}
 
 	.page-input::placeholder {
@@ -792,6 +891,12 @@
 
 	*:focus {
 		outline: none;
+	}
+
+	::-moz-placeholder {
+		/* Chrome, Firefox, Opera, Safari 10.1+ */
+		color: var(--grey-400);
+		opacity: 1; /* Firefox */
 	}
 
 	::placeholder {
@@ -821,7 +926,8 @@
 	}
 
 	.row-link:hover {
-		@apply bg-blue-50;
+		--tw-bg-opacity: 1;
+		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
 	}
 
 	.noresults {
@@ -860,10 +966,12 @@
 
 	@media print {
 		.avoidbreaks {
+			-moz-column-break-inside: avoid;
 			break-inside: avoid;
 		}
 
 		.pagination {
+			-moz-column-break-inside: avoid;
 			break-inside: avoid;
 		}
 
