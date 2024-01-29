@@ -402,6 +402,13 @@
 				);
 			}
 
+			// Throw error if attempting to plot secondary y-axis on horizontal chart:
+			if (swapXY && y2) {
+				throw Error(
+					'Horizontal charts do not support a secondary y-axis. You can either set swapXY=false or remove the y2 prop from your chart.'
+				);
+			}
+
 			// Override xType if axes are swapped - only category enabled on horizontal axis
 			if (swapXY) {
 				xType = 'category';
@@ -722,7 +729,9 @@
 						},
 						color: y2
 							? yAxisColor === 'true'
-								? chartColours[0]
+								? colorPalette
+									? colorPalette[0]
+									: chartColours[0]
 								: yAxisColor !== 'false'
 								? yAxisColor
 								: undefined
@@ -736,7 +745,9 @@
 						padding: [0, 5, 0, 0],
 						color: y2
 							? yAxisColor === 'true'
-								? chartColours[0]
+								? colorPalette
+									? colorPalette[0]
+									: chartColours[0]
 								: yAxisColor !== 'false'
 								? yAxisColor
 								: undefined
@@ -772,7 +783,9 @@
 						},
 						color:
 							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
+								? colorPalette
+									? colorPalette[ySeriesCount]
+									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
 								? y2AxisColor
 								: undefined
@@ -785,7 +798,9 @@
 						padding: [0, 0, 0, 5],
 						color:
 							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
+								? colorPalette
+									? colorPalette[ySeriesCount]
+									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
 								? y2AxisColor
 								: undefined
