@@ -73,6 +73,10 @@
 	};
 
 	let useColor = colorList[scaleColor];
+	let customColor = undefined;
+	if (useColor == undefined) {
+		customColor = scaleColor;
+	}
 
 	// Delta:
 	export let downIsGood = false;
@@ -102,7 +106,8 @@
 		showValue: showValue,
 		colorMax: colorMax,
 		colorMin: colorMin,
-		useColor: useColor
+		useColor: useColor,
+		customColor: customColor
 	};
 
 	/**

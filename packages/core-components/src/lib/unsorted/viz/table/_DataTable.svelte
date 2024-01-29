@@ -19,6 +19,7 @@
 
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
+	import CodeBlock from '../../ui/CodeBlock.svelte';
 
 	// Set up props store
 	let props = writable({});
@@ -26,6 +27,7 @@
 
 	// Data, pagination, and row index numbers
 	export let data;
+	export let queryID = undefined;
 	export let rows = 10; // number of rows to show
 	$: rows = Number.parseInt(rows);
 
@@ -40,6 +42,9 @@
 	let marginTop = '1.5em';
 	let marginBottom = '1em';
 	let paddingBottom = '0em';
+
+	export let generateMarkdown = false;
+	$: generateMarkdown = generateMarkdown === 'true' || generateMarkdown === true;
 
 	// Table features
 	export let search = false;
@@ -88,6 +93,8 @@
 
 	export let formatColumnTitles = true;
 	$: formatColumnTitles = formatColumnTitles === 'true' || formatColumnTitles === true;
+
+	export let backgroundColor = 'white';
 
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
@@ -304,7 +311,7 @@
 		{#if search}
 			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
 		{/if}
-		<div class="container">
+		<div class="container" style:background-color={backgroundColor}>
 			<table>
 				<thead>
 					<tr>
@@ -383,11 +390,16 @@
 									style:height={column.height}
 									style:width={column.width}
 									style:white-space={column.wrap ? 'normal' : 'nowrap'}
-									style={column.contentType === 'colorscale' && is_nonzero
-										? ` background-color: ${column.useColor} ${
-												(row[column.id] - column_min) / (column_max - column_min)
-										  })`
-										: ''}
+									style:background-color={column.contentType === 'colorscale' && is_nonzero
+										? column.customColor
+											? `color-mix(in srgb, ${column.customColor} ${
+													((row[column.id] - column_min) / (column_max - column_min)) * 100
+											  }%, transparent)`
+											: `${column.useColor} ${
+													(row[column.id] - column_min) / (column_max - column_min)
+											  })`
+										: // closing bracket needed to close unclosed color string from Column component
+										  ''}
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
 										<img
@@ -632,6 +644,20 @@
 
 		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 	</div>
+
+	{#if generateMarkdown}
+		{#if queryID}
+			<CodeBlock>
+				{`<DataTable data={${queryID}}>`}
+				<br />
+				{#each Object.keys(data[0]) as column}
+					{`	<Column id=${column}/>`}
+					<br />
+				{/each}
+				{`</DataTable>`}
+			</CodeBlock>
+		{/if}
+	{/if}
 {:else}
 	<ErrorChart {error} chartType="Data Table" />
 {/if}
@@ -648,7 +674,6 @@
 		/* border-bottom: 1px solid var(--grey-200);    */
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
-		background-color: white;
 	}
 
 	:root {
@@ -697,6 +722,10 @@
 		overflow: hidden;
 	}
 
+	th:first-child,
+	td:first-child {
+		padding-left: 4px;
+	}
 	th {
 		border-bottom: 1px solid var(--grey-600);
 	}
@@ -746,6 +775,7 @@
 	.index {
 		color: var(--grey-300);
 		text-align: left;
+		max-width: -moz-min-content;
 		max-width: min-content;
 	}
 
@@ -757,6 +787,8 @@
 		height: 2em;
 		font-family: var(--ui-font-family);
 		color: var(--grey-500);
+		-webkit-user-select: none;
+		-moz-user-select: none;
 		user-select: none;
 		text-align: right;
 		margin-top: 0.5em;
@@ -792,6 +824,8 @@
 	.page-changer:disabled {
 		cursor: auto;
 		color: var(--grey-300);
+		-webkit-user-select: none;
+		-moz-user-select: none;
 		user-select: none;
 		transition: color 200ms;
 	}
@@ -831,6 +865,7 @@
 	/* Firefox */
 	.page-input[type='number'] {
 		-moz-appearance: textfield;
+		-webkit-appearance: textfield;
 		appearance: textfield;
 	}
 
@@ -840,6 +875,10 @@
 
 	.page-input.error {
 		border: 1px solid var(--red-600);
+	}
+
+	.page-input::-moz-placeholder {
+		color: var(--grey-500);
 	}
 
 	.page-input::placeholder {
@@ -852,6 +891,12 @@
 
 	*:focus {
 		outline: none;
+	}
+
+	::-moz-placeholder {
+		/* Chrome, Firefox, Opera, Safari 10.1+ */
+		color: var(--grey-400);
+		opacity: 1; /* Firefox */
 	}
 
 	::placeholder {
@@ -881,7 +926,8 @@
 	}
 
 	.row-link:hover {
-		@apply bg-blue-50;
+		--tw-bg-opacity: 1;
+		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
 	}
 
 	.noresults {
@@ -920,10 +966,12 @@
 
 	@media print {
 		.avoidbreaks {
+			-moz-column-break-inside: avoid;
 			break-inside: avoid;
 		}
 
 		.pagination {
+			-moz-column-break-inside: avoid;
 			break-inside: avoid;
 		}
 
