@@ -10,10 +10,10 @@ hide_table_of_contents: false
 ### Selecting Specific Columns
 
 ```html
-<DataTable data="{query_name}" search="true">
-	<Column id="date" />
-	<Column id="country" title="Country Name" />
-	<Column id="value_usd" />
+<DataTable data={query_name} search=true>
+	<Column id=date />
+	<Column id=country title="Country Name" />
+	<Column id=value_usd />
 </DataTable>
 ```
 
@@ -30,11 +30,11 @@ hide_table_of_contents: false
 ### Deltas
 
 ```html
-<DataTable data="{countries}">
-	<Column id="country" />
-	<Column id="category" />
-	<Column id="value_usd" />
-    <Column id="yoy" contentType=delta fmt=pct title="Y/Y Chg"/>
+<DataTable data={countries}>
+	<Column id=country />
+	<Column id=category />
+	<Column id=value_usd />
+    <Column id=yoy contentType=delta fmt=pct title="Y/Y Chg"/>
 </DataTable>
 ```
 
@@ -81,6 +81,19 @@ hide_table_of_contents: false
 
 <img src='/img/conditional-fmt-blue.png' width='500px'/>
 
+#### Custom Colors
+
+```html
+<DataTable data={orders_by_category} rowNumbers=true>
+  <Column id=month/>
+  <Column id=category/>
+  <Column id=sales_usd0k contentType=colorscale scaleColor=#a85ab8 align=center/>
+  <Column id=num_orders_num0 contentType=colorscale scaleColor=#e3af05 align=center/>
+  <Column id=aov_usd2 contentType=colorscale scaleColor=#c43957 align=center/>
+</DataTable>
+```
+
+<img src='/img/table-custom-colors.png' width='600px'/>
 
 
 
@@ -90,12 +103,12 @@ You can include images by indicating either an absolute path e.g. `https://www.e
 In this example, `flag` is either an absolute path or a relative path to the image.
 
 ```html
-<DataTable data="{countries}">
-	<Column id="flag" contentType="image" height="30px" align="center" />
-	<Column id="country" />
-	<Column id="country_id" align="center" />
-	<Column id="category" />
-	<Column id="value_usd" />
+<DataTable data={countries}>
+	<Column id=flag contentType=image height=30px align=center />
+	<Column id=country />
+	<Column id=country_id align=center />
+	<Column id=category />
+	<Column id=value_usd />
 </DataTable>
 ```
 
@@ -106,11 +119,11 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 #### Link Column with Unique Labels
 
 ```html
-<DataTable data="{countries}">
-	<Column id="country_url" contentType="link" linkLabel="country" />
-	<Column id="country_id" align="center" />
-	<Column id="category" />
-	<Column id="value_usd" />
+<DataTable data={countries}>
+	<Column id=country_url contentType=link linkLabel=country />
+	<Column id=country_id align=center />
+	<Column id=category />
+	<Column id=value_usd />
 </DataTable>
 ```
 
@@ -119,12 +132,12 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 #### Link Column with Consistent String Label
 
 ```html
-<DataTable data="{countries}">
-	<Column id="country" />
-	<Column id="country_id" align="center" />
-	<Column id="category" />
-	<Column id="value_usd" />
-	<Column id="country_url" contentType="link" linkLabel="Details &rarr;" />
+<DataTable data={countries}>
+	<Column id=country />
+	<Column id=country_id align=center />
+	<Column id=category />
+	<Column id=value_usd />
+	<Column id=country_url contentType=link linkLabel="Details &rarr;" />
 </DataTable>
 ```
 
@@ -137,11 +150,11 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 This example includes a column `country_url` which contains a country name as a search term in Google (e.g., `https://google.ca/search?q=canada`)
 
 ```html
-<DataTable data="{countries}" search="true" link="country_url">
-	<Column id="country" />
-	<Column id="country_id" align="center" />
-	<Column id="category" />
-	<Column id="value_usd" />
+<DataTable data={countries} search=true link=country_url>
+	<Column id=country />
+	<Column id=country_id align=center />
+	<Column id=category />
+	<Column id=value_usd />
 </DataTable>
 ```
 
@@ -163,7 +176,7 @@ group by 1
 You can then use the `link` property of the DataTable to use your link column as a row link (`category_link` in this example):
 
 ```html
-<DataTable data="{orders}" link="category_link" />
+<DataTable data={orders} link=category_link />
 ```
 
 By default, the link column of your table is hidden. If you would like it to be displayed in the table, you can use `showLinkCol=true`.
@@ -175,7 +188,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 #### Row Shading + Row Lines
 
 ```html
-<DataTable data="{countries}" rowShading="true" />
+<DataTable data={countries} rowShading=true />
 ```
 
 <img src='/img/datatable-rowshading.png' width='500px'/>
@@ -183,7 +196,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 #### Row Shading + No Row Lines
 
 ```html
-<DataTable data="{countries}" rowShading="true" rowLines="false" />
+<DataTable data={countries} rowShading=true rowLines=false />
 ```
 
 <img src='/img/datatable-rowshading-nolines.png' width='500px'/>
@@ -191,7 +204,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 #### No Lines or Shading
 
 ```html
-<DataTable data="{countries}" rowLines="false" />
+<DataTable data={countries} rowLines=false />
 ```
 
 <img src='/img/datatable-nolines.png' width='500px'/>
@@ -199,11 +212,11 @@ By default, the link column of your table is hidden. If you would like it to be 
 ### Column Alignment
 
 ```html
-<DataTable data="{query_name}">
-	<Column id="country" align="right" />
-	<Column id="country_id" align="center" />
-	<Column id="category" align="left" />
-	<Column id="value_usd" align="left" />
+<DataTable data={query_name}>
+	<Column id=country align=right />
+	<Column id=country_id align=center />
+	<Column id=category align=left />
+	<Column id=value_usd align=left />
 </DataTable>
 ```
 
@@ -212,11 +225,11 @@ By default, the link column of your table is hidden. If you would like it to be 
 ### Custom Column Titles
 
 ```html
-<DataTable data="{query_name}">
-	<Column id="country" title="Country Name" />
-	<Column id="country_id" align="center" title="ID" />
-	<Column id="category" align="center" title="Product Category" />
-	<Column id="value_usd" title="Sales in 2022" />
+<DataTable data={query_name}>
+	<Column id=country title="Country Name" />
+	<Column id=country_id align=center title="ID" />
+	<Column id=category align=center title="Product Category" />
+	<Column id=value_usd title="Sales in 2022" />
 </DataTable>
 ```
 
@@ -225,7 +238,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 ### Raw Column Names
 
 ```html
-<DataTable data="{query_name}" formatColumnTitles="false" />
+<DataTable data={query_name} formatColumnTitles=false />
 ```
 
 <img src='/img/datatable-raw-colnames.png' width='500px'/>
@@ -277,6 +290,13 @@ By default, the link column of your table is hidden. If you would like it to be 
         <td class='tcenter'>true | false</td>	
         <td class='tcenter'>false</td>
     </tr>
+    <tr>    
+        <td>backgroundColor</td>
+        <td>Background color of the table</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>Hex color code | css color name</td>
+        <td class='tcenter'>-</td>
+    </tr>
     <tr>	
         <td>sortable</td>	
         <td>Enable sort for each column - click the column title to sort</td>	
@@ -317,6 +337,13 @@ By default, the link column of your table is hidden. If you would like it to be 
         <td>Whether to show the column supplied to the <code>link</code> prop</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
+        <td>generateMarkdown</td>
+        <td>Helper for writing DataTable syntax with many columns. When set to true, markdown for the DataTable including each <code>Column</code> contained within the query will be generated and displayed below the table. </td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
         <td class='tcenter'>false</td>
     </tr>
 </table>
@@ -494,7 +521,7 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td>scaleColor</td>
         <td>Color to use for the scale</td>
         <td class='tcenter'>-</td>
-        <td class='tcenter'>green | blue | red</td>
+        <td class='tcenter'>green | blue | red | Hex color code | css color name</td>
         <td class='tcenter'>green</td>
     </tr>
     <tr>
