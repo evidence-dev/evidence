@@ -36,24 +36,11 @@
 </Story>
 
 <Story
-	name="Huge Numbers"
-	let:args
-	args={{
-		data: fakerSeries.airlines.flights.store,
-		metric: 'count(*)*10000000000',
-		fmt: 'number',
-		others: false
-	}}
->
-	<DimensionGrid {...args} />
-</Story>
-
-<Story
 	name="With Others"
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
-		metric: 'count(*)',
+		metric: 'sum(fare)',
 		fmt: 'number',
 		others: true
 	}}
@@ -66,7 +53,7 @@
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
-		metric: 'count(*)',
+		metric: 'sum(fare)',
 		fmt: 'number',
 		others: false,
 		grandTotal: true
@@ -80,7 +67,7 @@
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
-		metric: 'count(*)',
+		metric: 'sum(fare)',
 		fmt: 'number',
 		others: true,
 		grandTotal: true
@@ -94,10 +81,49 @@
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
-		metric: 'count(*)',
-		fmt: 'number',
+		metric: 'sum(fare)',
+		fmt: 'usd',
 		others: true,
 		limit: 20
+	}}
+>
+	<DimensionGrid {...args} />
+</Story>
+
+<Story
+	name="Error: Invalid Metric"
+	let:args
+	args={{
+		data: fakerSeries.airlines.flights.store,
+		metric: 'sum(fare)/0',
+		fmt: 'number',
+		others: false
+	}}
+>
+	<DimensionGrid {...args} />
+</Story>
+
+<Story
+	name="Error: Missing Data"
+	let:args
+	args={{
+		data: fakerSeries.airlines.flights.store,
+		metric: 'sum(fare)/0',
+		fmt: 'number',
+		others: false
+	}}
+>
+	<DimensionGrid {...args} />
+</Story>
+
+<Story
+	name="Error: No String Columns"
+	let:args
+	args={{
+		data: fakerSeries.airlines.flights.store,
+		metric: 'sum(fare)/0',
+		fmt: 'number',
+		others: false
 	}}
 >
 	<DimensionGrid {...args} />
