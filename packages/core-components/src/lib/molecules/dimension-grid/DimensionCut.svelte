@@ -30,12 +30,12 @@
 
 {#if $cut.loaded && $allOthers.loaded && totalRow.loaded}
 	<div class="w-full sm:w-64 text-sm">
-		<div class="capitalize mb-1">
+		<div class="capitalize mb-1 text-base">
 			{formatTitle(dimension.name)}
 		</div>
 		{#each $cut as row, i}
-			<div class="flex justify-between relative px-1 font-light hover:bg-gray-50 group">
-				<span class="text-gray-900 z-10">
+			<div class="flex justify-between relative px-1 hover:bg-gray-50 group">
+				<span class="text-gray-900 z-10 truncate">
 					{row.dimension}
 				</span>
 				<span class="text-gray-700 tabular-nums z-10">
@@ -50,7 +50,7 @@
 		{#if others}
 			{#each $allOthers as row, i}
 				{#if row.n_records > 0}
-					<div class="flex justify-between relative px-1 font-light hover:bg-gray-50 group">
+					<div class="flex justify-between relative px-1 hover:bg-gray-50 group">
 						<span class="text-gray-900 z-10 lowercase">
 							{row.n_records} other {formatTitle(dimension.name)}s
 						</span>
@@ -67,7 +67,7 @@
 		{/if}
 		{#if grandTotal}
 			{#each $totalRow as row, i}
-				<div class="flex justify-between relative px-1 font-normal hover:bg-gray-50 group">
+				<div class="flex justify-between relative px-1 font-medium hover:bg-gray-50 group">
 					<span class="text-gray-900 z-10 capitalize"> Total </span>
 					<span class="text-gray-700 tabular-nums z-10">
 						{format(row.metric, fmt)}
