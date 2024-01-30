@@ -314,4 +314,28 @@ prog
 		});
 	});
 
+prog
+	.command('preview')
+	.describe('preview the production build')
+	.action((args) => {
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
+
+		const flatArgs = flattenArguments(args);
+
+		// Run svelte kit dev in the hidden directory
+		const child = spawn('npx vite preview --outDir build --port 3000', flatArgs, {
+			shell: true,
+			detached: false,
+			stdio: 'inherit'
+		});
+
+		child.on('exit', function () {
+			child.kill();
+			watchers.forEach((watcher) => watcher.close());
+		});
+	});
+
 prog.parse(process.argv);
