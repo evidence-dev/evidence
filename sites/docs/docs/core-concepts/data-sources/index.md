@@ -61,9 +61,9 @@ In dev mode, if you have large sources which take a while to run, it can be help
 
 - If your dev server is running, any changes you make to source queries will only re-run the queries which have changed
 - Run a modified sources command to specify the source you want to run:
-   - `npm run sources --changed` run only the sources with changed queries
-   - `npm run sources --sources my_source` run `my_source` only
-   - `npm run sources --sources my_source --queries query_one,query_two` run `my_source.query_one` and `my_source.query_two` only
+   - `npm run sources -- --changed` run only the sources with changed queries
+   - `npm run sources -- --sources my_source` run `my_source` only
+   - `npm run sources -- --sources my_source --queries query_one,query_two` run `my_source.query_one` and `my_source.query_two` only
 
 
 ## Supported data sources
