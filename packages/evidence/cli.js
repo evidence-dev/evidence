@@ -322,7 +322,14 @@ prog
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
 		}
-
+		const buildExists = fs.lstatSync(path.join('build'), {
+			throwIfNoEntry: false
+		});
+		if (!buildExists) {
+			console.error(chalk.bold.red('[!] No build directory found'));
+			console.error(chalk.red(`Run ${chalk.bgRed('npm run build')} to create a build`));
+			process.exit(1);
+		}
 		const flatArgs = flattenArguments(args);
 
 		// Run svelte kit dev in the hidden directory
