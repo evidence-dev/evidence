@@ -15,11 +15,7 @@
 
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
-	<DataTable
-		{...spreadProps}
-		data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}
-		{queryID}
-	>
+	<DataTable {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</DataTable>
 </QueryLoad>

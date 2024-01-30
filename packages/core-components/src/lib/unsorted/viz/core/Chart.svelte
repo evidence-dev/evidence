@@ -17,11 +17,7 @@
 
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
-	<Chart
-		{...spreadProps}
-		data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}
-		{queryID}
-	>
+	<Chart {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Chart>
 </QueryLoad>

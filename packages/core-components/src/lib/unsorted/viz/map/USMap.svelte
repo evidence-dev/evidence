@@ -15,11 +15,7 @@
 
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
-	<USMap
-		{...spreadProps}
-		data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}
-		{queryID}
-	>
+	<USMap {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</USMap>
 </QueryLoad>
