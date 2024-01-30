@@ -334,7 +334,6 @@ prog
 
 		child.on('exit', function () {
 			child.kill();
-			watchers.forEach((watcher) => watcher.close());
 		});
 	});
 
