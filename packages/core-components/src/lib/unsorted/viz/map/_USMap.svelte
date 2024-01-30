@@ -299,8 +299,15 @@
 </script>
 
 {#if !error}
-
-	<EChartsMap {extraHeight} {config} {data} {queryID} {hasLink} {echartsOptions} {printEchartsConfig} />
+	<EChartsMap
+		{extraHeight}
+		{config}
+		{data}
+		{queryID}
+		{hasLink}
+		{echartsOptions}
+		{printEchartsConfig}
+	/>
 
 	{#if link}
 		<InvisibleLinks {data} {link} />

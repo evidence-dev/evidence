@@ -19,7 +19,7 @@
 	export let queryID = undefined;
 	export let height = '350px';
 
-  export let width = '100%';
+	export let width = '100%';
 
 	export let data;
 
