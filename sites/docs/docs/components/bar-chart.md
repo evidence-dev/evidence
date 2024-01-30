@@ -224,7 +224,7 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 <tr>	<td>y2</td>	<td>Column(s) to include on a secondary y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>y2SeriesType</td>	<td>Chart type to apply to the series on the y2 axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>bar | line | scatter</td>	<td class='tcenter'>bar</td>	</tr>
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default sort is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false </td>	</tr>
+<tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default sort is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true </td>	</tr>
 <tr>	<td>type</td>	<td>Grouping method to use for multi-series charts</td>	<td class='tcenter'>-</td>	<td class='tcenter'>stacked | grouped | stacked100</td>	<td class='tcenter'>stacked</td>	</tr>
 <tr>	<td>stackName</td>	<td>Name for an individual stack. If separate Bar components are used with different stackNames, the chart will show multiple stacks</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
 </table>
