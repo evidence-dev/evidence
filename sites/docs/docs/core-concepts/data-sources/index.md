@@ -55,6 +55,17 @@ For non-SQL data sources, configuring the data extracted is achieved in other wa
 
 You can extract data from configured sources in Evidence using  `npm run sources`
 
+### Working with Large Sources
+
+In dev mode, if you have large sources which take a while to run, it can be helpful to only run the sources which have changed. There are a few ways to accomplish this:
+
+- If your dev server is running, any changes you make to source queries will only re-run the queries which have changed
+- Run a modified sources command to specify the source you want to run:
+   - `npm run sources --changed` run only the sources with changed queries
+   - `npm run sources --sources my_source` run `my_source` only
+   - `npm run sources --sources my_source --queries query_one,query_two` run `my_source.query_one` and `my_source.query_two` only
+
+
 ## Supported data sources
 
 Evidence supports:
