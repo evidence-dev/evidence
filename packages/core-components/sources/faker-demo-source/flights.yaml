@@ -1,0 +1,15 @@
+rows: 100000
+schema:
+  id:
+    type: id
+  seat:
+    category: airline
+    item: seat
+  genre: 
+    category: music
+    item: genre 
+  departure_date:
+    category: date
+    item: recent
+    options:
+      - days: 365
