@@ -11,6 +11,8 @@
 	$: spreadProps = {
 		...Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined))
 	};
+
+	let queryID = data?.id;
 </script>
 
 <!-- Pass all the props through-->
@@ -18,7 +20,7 @@
 	<Chart
 		{...spreadProps}
 		data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}
-		queryID={data.id}
+		{queryID}
 	>
 		<slot />
 	</Chart>
