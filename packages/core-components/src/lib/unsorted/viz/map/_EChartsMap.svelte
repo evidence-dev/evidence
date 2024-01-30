@@ -12,12 +12,14 @@
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 
+	export let extraHeight = 0;
+
 	export let config = undefined;
 
 	export let queryID = undefined;
+	export let height = '350px';
 
-	export let height = '310px';
-	export let width = '100%';
+  export let width = '100%';
 
 	export let data;
 
@@ -58,15 +60,12 @@
 			<div
 				class="chart"
 				style="
-				height: {height};
 				width: {width};
 				margin-left: 0;
-				margin-top: 15px;
-				margin-bottom: 10px;
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echartsMap={{ config, hasLink, echartsOptions }}
+				use:echartsMap={{ config, hasLink, echartsOptions, extraHeight }}
 			/>
 		{/if}
 	{/if}
@@ -125,7 +124,7 @@
 		style="
         display: none;
         visibility: visible;
-        height: {height};
+        height: {666 * 0.5 + extraHeight}px;
         width: 666px;
         margin-left: 0;
         margin-top: 15px;
@@ -139,6 +138,7 @@
 <style>
 	@media print {
 		.chart {
+			-moz-column-break-inside: avoid;
 			break-inside: avoid;
 		}
 
@@ -168,7 +168,6 @@
 	.chart {
 		-moz-user-select: none;
 		-webkit-user-select: none;
-		-ms-user-select: none;
 		-o-user-select: none;
 		user-select: none;
 	}
@@ -180,5 +179,9 @@
 		margin: 3px 12px;
 		font-size: 12px;
 		height: 9px;
+	}
+
+	.chart-container {
+		margin-bottom: 25px;
 	}
 </style>

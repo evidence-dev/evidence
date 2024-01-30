@@ -19,11 +19,11 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 ### rows=40
 
 <DataTable data={orders_by_category} rows=40 rowNumbers=true>
-  <Column id=month/>
-   <Column id=category/>
-  <Column id=sales_usd0k fmt='[]' contentType=colorscale scaleColor=#a85ab8 align=center/>
-  <Column id=num_orders_num0 contentType=colorscale scaleColor=#e3af05 align=center/>
-  <Column id=aov_usd2 contentType=colorscale scaleColor=#c43957 align=center/>
+  <Column id=month />
+  <Column id=category />
+  <Column id=sales_usd0k contentType=colorscale />
+  <Column id=num_orders_num0 contentType=colorscale scaleColor=red />
+  <Column id=aov_usd2 contentType=colorscale scaleColor=blue />
 </DataTable>
 
 
