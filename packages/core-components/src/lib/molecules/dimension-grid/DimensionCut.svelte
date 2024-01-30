@@ -1,21 +1,19 @@
 <script>
+	import DimensionRow from './DimensionRow.svelte';
+
 	import { getContext } from 'svelte';
-	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { fmt as format } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import { flip } from 'svelte/animate';
+	import { cn } from '$lib/utils';
+	import { Check } from 'radix-icons-svelte';
+
 	export let dimension;
-	export let metric;
-	export let limit;
 	export let data;
 	export let fmt;
-	export let whereClause;
 
-	export let others;
-	export let grandTotal;
-
+	// Selected Value
 	let selectedDimensions = getContext('selected-dimensions');
-
 	let selectedValue;
 
 	$: if (selectedValue) {
@@ -29,83 +27,37 @@
 			return v.filter((d) => d.dimension !== dimension.name);
 		});
 	}
+	const updateSelected = (row) => {
+		selectedValue === row.dimensionValue
+			? (selectedValue = undefined)
+			: (selectedValue = row.dimensionValue);
+	};
 
-	let cut;
-	let allOthers;
-	let totalRow;
-
-	$: cut = buildQuery(
-		`select ${dimension.name} as dimension, ${metric} as metric, ${metric} filter(${whereClause}) as filteredMetric, metric/sum(metric) over() as percentOfMaxMetric from (${$data.originalText}) group by 1 order by 3 desc, 2 desc limit ${limit}`,
-		'cut'
-	);
-
-	$: allOthers = buildQuery(
-		`select count(distinct ${dimension.name}) as n_records, ${metric} as metric from (${$data.originalText}) where ${dimension.name} not in (select dimension from (${$cut.originalText}))`
-	);
-
-	$: totalRow = buildQuery(
-		`select count(distinct ${dimension.name}) as n_records, ${metric} as metric from (${$data.originalText})`
-	);
-
-	$: cut?.fetch();
-	$: allOthers?.fetch();
-	$: totalRow?.fetch();
+	$: filteredData = data.filter((d) => d.dimensionName === dimension.name);
 </script>
 
-<!-- {$data.originalText} -->
-
-<div class="w-full sm:w-64 text-sm sm:flex-1">
-	<div class="capitalize pb-1 px-1 text-medium border-b">
-		{formatTitle(dimension.name)}
+<div class="w-full sm:w-60 text-sm antialiased">
+	<div class="capitalize ml-4 text-medium border-b flex justify-between items-baseline">
+		<span>
+			{formatTitle(dimension.name)}
+		</span>
+		<span class="text-xs"> Avg. Sales </span>
 	</div>
-	{#each $cut as row, i (row.dimension)}
+	{#each filteredData as row (row.dimensionValue)}
 		<div
-			class="flex justify-between relative px-1 hover:bg-gray-50 group cursor-pointer"
-			on:click={() => {
-				selectedValue === row.dimension
-					? (selectedValue = undefined)
-					: (selectedValue = row.dimension);
-			}}
-			animate:flip={{ duration: 200 }}
+			class={cn('flex transition duration-100 group cursor-pointer')}
+			on:click={updateSelected(row)}
+			on:keydown={updateSelected(row)}
+			animate:flip={{ duration: 100 }}
 		>
-			<span class="text-gray-900 z-10 truncate">
-				{row.dimension}
-			</span>
-			<span class="text-gray-700 tabular-nums z-10">
-				{format(row.filteredMetric, fmt)}
-			</span>
 			<div
-				class="absolute inset-0 bg-blue-100/50 z-0 group-hover:bg-blue-200/50 transition duration-200"
-				style={'width:' + Math.max(row.percentOfMaxMetric * 100, 0) + '%'}
-			/>
+				class={cn('w-4 text-transparent transition duration-100 flex items-center', {
+					'text-gray-600': selectedValue === row.dimensionValue
+				})}
+			>
+				<Check class="h-4 w-4 z-10 " />
+			</div>
+			<DimensionRow {row} />
 		</div>
 	{/each}
-	{#if others}
-		{#each $allOthers as row, i}
-			{#if row.n_records > 0}
-				<div class="flex justify-between relative px-1 hover:bg-gray-50 group">
-					<span class="text-gray-900 z-10 lowercase">
-						{row.n_records} others
-					</span>
-					<span class="text-gray-700 tabular-nums z-10">
-						{format(row.metric, fmt)}
-					</span>
-					<div
-						class="absolute inset-0 z-0 bg-blue-100/50 group-hover:bg-blue-200/50 transition duration-200"
-						style={'width:' + Math.max(row.percentOfMaxMetric * 100, 0) + '%'}
-					/>
-				</div>
-			{/if}
-		{/each}
-	{/if}
-	{#if grandTotal}
-		{#each $totalRow as row, i}
-			<div class="flex justify-between relative px-1 font-medium hover:bg-gray-50 group">
-				<span class="text-gray-900 z-10 capitalize"> Total </span>
-				<span class="text-gray-700 tabular-nums z-10">
-					{format(row.metric, fmt)}
-				</span>
-			</div>
-		{/each}
-	{/if}
 </div>

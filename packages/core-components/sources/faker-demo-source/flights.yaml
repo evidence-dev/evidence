@@ -1,13 +1,34 @@
-rows: 100000
+rows: 250000
 schema:
   id:
     type: id
+  plane:
+    category: airline
+    item: airplane 
+    targetField: name
+  airline:
+    category: airline
+    item: airline 
+    targetField: name
+  fare: 
+    category: number
+    item: float 
+    withBias: true 
+    options:
+      - max: 25000
+      - min: 74
+      - fractionDigits: 2
+  departure_airport: 
+    category: airline
+    item: airport 
+    targetField: name 
+  arrival_airport: 
+    category: airline
+    item: airport 
+    targetField: name 
   seat:
     category: airline
     item: seat
-  genre: 
-    category: music
-    item: genre 
   departure_date:
     category: date
     item: recent
