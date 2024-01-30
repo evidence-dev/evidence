@@ -23,7 +23,13 @@ export default (node, option) => {
 		excludeComponents: ['toolbox']
 	});
 
-	download(src, 'evidence-chart.png');
+	const date = new Date();
+	const localISOTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+		.toISOString()
+		.slice(0, 19)
+		.replaceAll(':', '-');
+
+	download(src, (option.queryID ?? 'evidence-chart') + `_${localISOTime}.png`);
 
 	chart.dispose();
 

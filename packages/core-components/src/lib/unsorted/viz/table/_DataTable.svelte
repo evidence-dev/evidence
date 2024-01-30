@@ -571,13 +571,13 @@
 					>
 				</div>
 				{#if downloadable}
-					<DownloadData class="download-button" data={tableData} display={hovering} />
+					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
 			</div>
 		{:else}
 			<div class="table-footer">
 				{#if downloadable}
-					<DownloadData class="download-button" data={tableData} display={hovering} />
+					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
 			</div>
 		{/if}
