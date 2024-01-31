@@ -11,6 +11,12 @@
 	export let text = 'Download';
 	export let display;
 
+	const date = new Date();
+	const localISOTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+		.toISOString()
+		.slice(0, 19)
+		.replaceAll(':', '-');
+
 	export let downloadData = (data) => {
 		const options = {
 			fieldSeparator: ',',
@@ -18,7 +24,7 @@
 			decimalSeparator: '.',
 			showLabels: true,
 			showTitle: false,
-			filename: queryID ?? 'evidence_download',
+			filename: (queryID ?? 'evidence_download') + ` ${localISOTime}`,
 			useTextFile: false,
 			useBom: true,
 			useKeysAsHeaders: true
@@ -76,7 +82,6 @@
 		transition: color 200ms;
 		-moz-user-select: none;
 		-webkit-user-select: none;
-		-ms-user-select: none;
 		-o-user-select: none;
 		user-select: none;
 	}

@@ -57,6 +57,8 @@
 	if (y2LabelFmt) {
 		y2LabelFormat = getFormatObjectFromString(y2LabelFmt);
 	}
+
+	export let y2SeriesType = undefined;
 	export let showAllLabels = false;
 
 	export let handleMissing = 'gap';
@@ -214,6 +216,11 @@
 				d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
 				if (y2) {
 					d.yAxis[1] = { ...d.yAxis[1], show: true };
+					if (['line', 'bar', 'scatter'].includes(y2SeriesType)) {
+						for (let i = 0; i < y2Count; i++) {
+							d.series[yCount + i].type = y2SeriesType;
+						}
+					}
 				}
 			}
 

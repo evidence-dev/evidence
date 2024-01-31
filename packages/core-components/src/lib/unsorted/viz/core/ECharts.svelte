@@ -15,6 +15,9 @@
 
 	export let config = undefined;
 
+	export let queryID = undefined;
+	export let evidenceChartTitle = undefined;
+
 	export let height = '291px';
 	export let width = '100%';
 
@@ -83,6 +86,7 @@
 				}, 0);
 			}}
 			display={hovering}
+			{queryID}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +104,13 @@
 			>
 		</DownloadData>
 		{#if data}
-			<DownloadData text="Download data" {data} class="download-button" display={hovering} />
+			<DownloadData
+				text="Download data"
+				{data}
+				{queryID}
+				class="download-button"
+				display={hovering}
+			/>
 		{/if}
 	</div>
 
@@ -124,7 +134,13 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, ...$$restProps, echartsOptions }}
+		use:echartsCanvasDownload={{
+			...config,
+			...$$restProps,
+			echartsOptions,
+			queryID,
+			evidenceChartTitle
+		}}
 	/>
 {/if}
 
