@@ -2,7 +2,6 @@
 	import DimensionRow from './DimensionRow.svelte';
 
 	import { getContext } from 'svelte';
-	import { fmt as format } from '@evidence-dev/component-utilities/formatting';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import { flip } from 'svelte/animate';
 	import { cn } from '$lib/utils';
@@ -17,7 +16,6 @@
 	export let metric;
 	export let metricLabel;
 	export let limit;
-	export let fmt;
 
 	// Selected Value
 	let selectedDimensions = getContext('selected-dimensions');

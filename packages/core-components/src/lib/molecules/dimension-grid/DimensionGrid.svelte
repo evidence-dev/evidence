@@ -4,7 +4,7 @@
 
 <script>
 	// import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	// import { getContext, setContext } from 'svelte';
+	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import DimensionCut from './DimensionCut.svelte';
 
