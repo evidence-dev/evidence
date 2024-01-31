@@ -14,7 +14,8 @@
 	/** @type {import('@evidence-dev/query-store').QueryStore} */
 	export let data;
 	export let metric = 'count(*)';
-	export let fmt = '#,###.00';
+	export let metricLabel = undefined;
+	export let fmt;
 	export let limit = 10;
 	export let others = true;
 	export let grandTotal = false;
@@ -32,6 +33,6 @@
 
 <div class="flex flex-wrap select-none">
 	{#each dimensions as dimension}
-		<DimensionCut data={$data} {dimension} {fmt} {metric} {limit} />
+		<DimensionCut data={$data} {dimension} {metric} {limit} {metricLabel} />
 	{/each}
 </div>

@@ -28,7 +28,6 @@
 	args={{
 		data: fakerSeries.airlines.flights.store,
 		metric: 'count(*)',
-		fmt: 'number',
 		others: false
 	}}
 >
@@ -36,12 +35,11 @@
 </Story>
 
 <Story
-	name="With Others"
+	name="With custom metric"
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
-		metric: 'sum(fare)',
-		fmt: 'number',
+		metric: 'sum(fare) + 308',
 		others: true
 	}}
 >
@@ -54,7 +52,6 @@
 	args={{
 		data: fakerSeries.airlines.flights.store,
 		metric: 'sum(fare)',
-		fmt: 'number',
 		others: false,
 		grandTotal: true
 	}}
@@ -68,7 +65,6 @@
 	args={{
 		data: fakerSeries.airlines.flights.store,
 		metric: 'sum(fare)',
-		fmt: 'number',
 		others: true,
 		grandTotal: true
 	}}
@@ -82,7 +78,6 @@
 	args={{
 		data: fakerSeries.airlines.flights.store,
 		metric: 'sum(fare)',
-		fmt: 'usd',
 		others: true,
 		limit: 20
 	}}
@@ -95,8 +90,31 @@
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
+		metric: 'specialsum(fare)',
+		others: false
+	}}
+>
+	<DimensionGrid {...args} />
+</Story>
+
+<Story
+	name="Error: Null Metric"
+	let:args
+	args={{
+		data: fakerSeries.airlines.flights.store,
 		metric: 'sum(fare)/0',
-		fmt: 'number',
+		others: false
+	}}
+>
+	<DimensionGrid {...args} />
+</Story>
+
+<Story
+	name="Error: String Metric"
+	let:args
+	args={{
+		data: fakerSeries.airlines.flights.store,
+		metric: '"whoops!"',
 		others: false
 	}}
 >
@@ -107,7 +125,6 @@
 	name="Error: Missing Data"
 	let:args
 	args={{
-		data: fakerSeries.airlines.flights.store,
 		metric: 'sum(fare)/0',
 		fmt: 'number',
 		others: false
