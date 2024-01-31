@@ -144,7 +144,6 @@
 	export let stacked100 = false;
 
 	export let chartAreaHeight;
-	chartAreaHeight = Number(chartAreaHeight);
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -814,11 +813,17 @@
 			// Set up chart area
 			// ---------------------------------------------------------------------------------------
 
-			// check if chartAreaHeight is a positive number - if not, throw error (otherwise get blank space)
-			if (isNaN(chartAreaHeight)) {
-				throw Error('chartAreaHeight must be a number');
-			} else if (chartAreaHeight < 0) {
-				throw Error('chartAreaHeight must be a positive number');
+			if (chartAreaHeight) {
+				// if chartAreaHeight was user-supplied
+				chartAreaHeight = Number(chartAreaHeight);
+				if (isNaN(chartAreaHeight)) {
+					// input must be a number
+					throw Error('chartAreaHeight must be a number');
+				} else if (chartAreaHeight <= 0) {
+					throw Error('chartAreaHeight must be a positive number');
+				}
+			} else {
+				chartAreaHeight = 180;
 			}
 
 			hasTitle = title ? true : false;
