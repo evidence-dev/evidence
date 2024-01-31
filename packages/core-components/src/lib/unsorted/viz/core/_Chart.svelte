@@ -31,6 +31,7 @@
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
 	export let data = undefined;
+	export let queryID = undefined;
 	export let x = undefined;
 	export let y = undefined;
 	export let y2 = undefined;
@@ -1034,6 +1035,8 @@
 		{height}
 		{width}
 		{data}
+		{queryID}
+		evidenceChartTitle={title}
 		{showAllXAxisLabels}
 		{swapXY}
 		{echartsOptions}

@@ -17,6 +17,7 @@
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 
 	export let data = undefined;
+	export let queryID = undefined;
 
 	export let state = undefined;
 	export let value = undefined;
@@ -298,7 +299,15 @@
 </script>
 
 {#if !error}
-	<EChartsMap {extraHeight} {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
+	<EChartsMap
+		{extraHeight}
+		{config}
+		{data}
+		{queryID}
+		{hasLink}
+		{echartsOptions}
+		{printEchartsConfig}
+	/>
 
 	{#if link}
 		<InvisibleLinks {data} {link} />
