@@ -9,10 +9,13 @@
 	import { Check } from 'radix-icons-svelte';
 	import { getDimensionCutQuery } from './dimensionGridQuery.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
+	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 
 	export let dimension;
 	export let data;
 	export let metric;
+	export let metricLabel;
 	export let limit;
 	export let fmt;
 
@@ -37,6 +40,7 @@
 			: (selectedValue = row.dimensionValue);
 	};
 
+	// Dimension Cut Query
 	$: dimensionCutQuery = getDimensionCutQuery(
 		data,
 		dimension,
@@ -60,6 +64,9 @@
 			results = updatedResults;
 		}
 	}
+
+	// Format
+	$: columnSummary = getColumnSummary($results, 'array')?.filter((d) => d.id === 'metric');
 </script>
 
 {#if $results.error && $results.loaded}
@@ -69,10 +76,12 @@
 {:else}
 	<div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-2 pb-4">
 		<div class="capitalize border-b flex justify-between items-baseline ml-4">
-			<span>
+			<span class="truncate">
 				{formatTitle(dimension.name)}
 			</span>
-			<span> Avg. Sales </span>
+			<span class="truncate">
+				{metricLabel ?? ''}
+			</span>
 		</div>
 		{#each $results as row (row.dimensionValue)}
 			<div
@@ -88,7 +97,17 @@
 				>
 					<Check class="h-4 w-4 z-10 " />
 				</div>
-				<DimensionRow {row} {selectedValue} />
+
+				<span />
+				<DimensionRow
+					{row}
+					{selectedValue}
+					value={formatValue(
+						row.metric,
+						columnSummary[0].format,
+						columnSummary[0].columnUnitSummary
+					)}
+				/>
 			</div>
 		{/each}
 	</div>
