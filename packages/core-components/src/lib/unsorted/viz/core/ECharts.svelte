@@ -134,7 +134,13 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, ...$$restProps, echartsOptions, queryID, evidenceChartTitle }}
+		use:echartsCanvasDownload={{
+			...config,
+			...$$restProps,
+			echartsOptions,
+			queryID,
+			evidenceChartTitle
+		}}
 	/>
 {/if}
 

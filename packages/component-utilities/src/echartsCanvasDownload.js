@@ -29,7 +29,10 @@ export default (node, option) => {
 		.slice(0, 19)
 		.replaceAll(':', '-');
 
-	download(src, (option.evidenceChartTitle ?? option.queryID ?? 'evidence-chart') + `_${localISOTime}.png`);
+	download(
+		src,
+		(option.evidenceChartTitle ?? option.queryID ?? 'evidence-chart') + `_${localISOTime}.png`
+	);
 
 	chart.dispose();
 
