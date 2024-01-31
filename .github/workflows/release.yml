@@ -55,7 +55,7 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      # - run: pnpm build
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
@@ -69,16 +69,16 @@ jobs:
 
         # Additional steps for deploying to Vercel
       - name: Install Vercel CLI
-        if: steps.changesets.outputs.published == false
+        if: steps.release.outputs.published == false
         run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
-        if: steps.changesets.outputs.published == false
+        if: steps.release.outputs.published == false
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --cwd sites/docs
       - name: Build Project Artifacts
-        if: steps.changesets.outputs.published == false
+        if: steps.release.outputs.published == false
         run: vercel build --prod --cwd sites/docs
       - name: Deploy Project Artifacts to Vercel
-        if: steps.changesets.outputs.published == false
+        if: steps.release.outputs.published == false
         run: vercel deploy --prebuilt --prod --cwd sites/docs --token=${{ secrets.VERCEL_TOKEN }}
   trigger-e2e-smoke-tests:
     runs-on: ubuntu-latest
