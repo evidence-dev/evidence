@@ -77,7 +77,6 @@
 
 	// Chart Area sizing:
 	export let chartAreaHeight = '300';
-	chartAreaHeight = Number(chartAreaHeight);
 	let hasTitle;
 	let hasSubtitle;
 	let titleFontSize;
@@ -134,10 +133,17 @@
 		// ---------------------------------------------------------------------------------------
 
 		// check if chartAreaHeight is a positive number - if not, throw error (otherwise get blank space)
-		if (isNaN(chartAreaHeight)) {
-			throw Error('chartAreaHeight must be a number');
-		} else if (chartAreaHeight < 0) {
-			throw Error('chartAreaHeight must be a positive number');
+		if (chartAreaHeight) {
+			// if chartAreaHeight was user-supplied
+			chartAreaHeight = Number(chartAreaHeight);
+			if (isNaN(chartAreaHeight)) {
+				// input must be a number
+				throw Error('chartAreaHeight must be a number');
+			} else if (chartAreaHeight <= 0) {
+				throw Error('chartAreaHeight must be a positive number');
+			}
+		} else {
+			chartAreaHeight = 300;
 		}
 
 		hasTitle = title ? true : false;
