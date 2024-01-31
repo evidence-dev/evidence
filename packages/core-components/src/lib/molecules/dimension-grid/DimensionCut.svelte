@@ -5,7 +5,6 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import { flip } from 'svelte/animate';
 	import { cn } from '$lib/utils';
-	import { Check } from 'radix-icons-svelte';
 	import { getDimensionCutQuery } from './dimensionGridQuery.js';
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
@@ -72,8 +71,8 @@
 		{$results.error}
 	</div>
 {:else}
-	<div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-2 pb-4">
-		<div class="capitalize border-b flex justify-between items-baseline ml-4">
+	<div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-4 pb-4">
+		<div class="capitalize border-b flex justify-between items-baseline">
 			<span class="truncate">
 				{formatTitle(dimension.name)}
 			</span>
@@ -88,15 +87,6 @@
 				on:keydown={updateSelected(row)}
 				animate:flip={{ duration: 100 }}
 			>
-				<div
-					class={cn('w-4 text-transparent transition duration-100 flex items-center ', {
-						'text-gray-600': selectedValue === row.dimensionValue
-					})}
-				>
-					<Check class="h-4 w-4 z-10 " />
-				</div>
-
-				<span />
 				<DimensionRow
 					{row}
 					{selectedValue}

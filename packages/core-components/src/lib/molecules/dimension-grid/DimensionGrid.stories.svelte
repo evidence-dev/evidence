@@ -12,7 +12,7 @@
 </script>
 
 <Meta
-	title="Atoms/inputs/DimensionGrid"
+	title="Charts/DimensionGrid"
 	component={DimensionGrid}
 	argTypes={{}}
 	args={{ title: 'Dimension Grid', name: 'dimensiongrid' }}
@@ -35,7 +35,7 @@
 </Story>
 
 <Story
-	name="With custom metric"
+	name="With Custom metric"
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
@@ -125,8 +125,6 @@
 	name="Error: Missing Data"
 	let:args
 	args={{
-		metric: 'sum(fare)/0',
-		fmt: 'number',
 		others: false
 	}}
 >
@@ -139,7 +137,6 @@
 	args={{
 		data: fakerSeries.airlines.flights.store,
 		metric: 'sum(fare)/0',
-		fmt: 'number',
 		others: false
 	}}
 >
