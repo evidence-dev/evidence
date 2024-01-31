@@ -68,7 +68,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Deploy docs to Vercel
-        // only run this if we are doing a release, commented out to test
+        # only run this if we are doing a release, commented out to test
         # if: steps.changesets.outputs.published == 'false'
         uses: actions/checkout@v2
         with:
