@@ -70,6 +70,7 @@ jobs:
       - name: Deploy docs to Vercel
         # only run this if we are doing a release, commented out to test
         if: steps.changesets.outputs.published == false
+        uses: changesets/action@v1
         steps:
           # Additional steps for deploying to Vercel
         - name: Install Vercel CLI
