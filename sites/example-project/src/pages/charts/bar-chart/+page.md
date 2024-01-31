@@ -1,6 +1,7 @@
 ---
 title: Bar Chart
 queries:
+  - orders_by_month: orders_by_month.sql
   - orders_by_category: orders_by_category.sql
   - orders_by_category_2021: orders_by_category_2021.sql
   - orders_by_item: orders_by_item.sql
@@ -141,6 +142,14 @@ swapXY=true
     title="Title"
     subtitle="Subtitle"
 />
+
+## Multiple y Axes
+
+<BarChart data={orders_by_month} x=month y=sales_usd0k y2=num_orders_num0 y2SeriesType=bar y2Fmt=eur />
+
+## Multiple y Axes with Line
+
+<BarChart data={orders_by_month} x=month y=sales_usd0k y2=num_orders_num0 y2SeriesType=line y2Labels=true colorPalette={['rgb(110,117,176,0.8)','rgb(37,91,161)']} labels=true/>
 
 # Value Labels
 
