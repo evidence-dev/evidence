@@ -13,6 +13,7 @@
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
+	import getYAxisIndex from '@evidence-dev/component-utilities/getYAxisIndex';
 
 	import {
 		formatValue,
@@ -21,6 +22,8 @@
 
 	export let y = undefined;
 	const ySet = y ? true : false; // Hack, see chart.svelte
+	export let y2 = undefined;
+	const y2Set = y2 ? true : false; // Hack, see chart.svelte
 	export let series = undefined;
 	const seriesSet = series ? true : false; // Hack, see chart.svelte
 	export let options = undefined;
@@ -43,6 +46,19 @@
 	if (labelFmt) {
 		labelFormat = getFormatObjectFromString(labelFmt);
 	}
+	export let yLabelFmt = undefined;
+	let yLabelFormat;
+	if (yLabelFmt) {
+		yLabelFormat = getFormatObjectFromString(yLabelFmt);
+	}
+	export let y2LabelFmt = undefined;
+	let y2LabelFormat;
+	if (y2LabelFmt) {
+		y2LabelFormat = getFormatObjectFromString(y2LabelFmt);
+	}
+
+	export let y2SeriesType = 'bar';
+
 	export let stackTotalLabel = true;
 	$: stackTotalLabel = stackTotalLabel === 'true' || stackTotalLabel === true;
 	export let showAllLabels = false;
@@ -53,7 +69,11 @@
 	$: data = $props.data;
 	$: x = $props.x;
 	$: y = ySet ? y : $props.y;
+	$: y2 = y2Set ? y2 : $props.y2;
 	$: yFormat = $props.yFormat;
+	$: y2Format = $props.y2Format;
+	$: yCount = $props.yCount;
+	$: y2Count = $props.y2Count;
 	$: swapXY = $props.swapXY;
 	$: xType = $props.xType;
 	$: xMismatch = $props.xMismatch;
@@ -138,13 +158,23 @@
 		stack: stackName,
 		label: {
 			show: labels,
+			// formatter: function (params) {
+			// 	let output;
+			// 	output =
+			// 		params.value[swapXY ? 0 : 1] === 0
+			// 			? ''
+			// 			: formatValue(params.value[swapXY ? 0 : 1], labelFormat ?? yFormat);
+			// 	return output;
+			// },
 			formatter: function (params) {
-				let output;
-				output =
-					params.value[swapXY ? 0 : 1] === 0
-						? ''
-						: formatValue(params.value[swapXY ? 0 : 1], labelFormat ?? yFormat);
-				return output;
+				return params.value[swapXY ? 0 : 1] === 0
+					? ''
+					: formatValue(
+							params.value[swapXY ? 0 : 1],
+							[yLabelFormat ?? labelFormat ?? yFormat, y2LabelFormat ?? labelFormat ?? y2Format][
+								getYAxisIndex(params.componentIndex, yCount, y2Count)
+							]
+					  );
 			},
 			position: labelPosition,
 			fontSize: labelSize,
@@ -174,7 +204,10 @@
 		baseConfig,
 		name,
 		xMismatch,
-		columnSummary
+		columnSummary,
+		undefined,
+		undefined,
+		y2
 	);
 
 	$: config.update((d) => {
@@ -262,6 +295,15 @@
 				} else {
 					d.yAxis[0] = { ...d.yAxis[0], ...chartOverrides.yAxis };
 					d.xAxis = { ...d.xAxis, ...chartOverrides.xAxis };
+					if (y2) {
+						d.yAxis[1] = { ...d.yAxis[1], show: true };
+						if (['line', 'bar', 'scatter'].includes(y2SeriesType)) {
+							for (let i = 0; i < y2Count; i++) {
+								d.series[yCount + i].type = y2SeriesType;
+								d.series[yCount + i].stack = undefined;
+							}
+						}
+					}
 				}
 				return d;
 			});

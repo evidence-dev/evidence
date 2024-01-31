@@ -35,6 +35,7 @@
 		position: relative;
 		margin: 25px 3px 10px 3px;
 		box-sizing: content-box;
+		background-color: white;
 	}
 
 	.search-icon {
