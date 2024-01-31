@@ -16,6 +16,7 @@
 	export let config = undefined;
 
 	export let queryID = undefined;
+	export let evidenceChartTitle = undefined;
 
 	export let height = '291px';
 	export let width = '100%';
@@ -133,7 +134,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, ...$$restProps, echartsOptions, queryID }}
+		use:echartsCanvasDownload={{ ...config, ...$$restProps, echartsOptions, queryID, evidenceChartTitle }}
 	/>
 {/if}
 

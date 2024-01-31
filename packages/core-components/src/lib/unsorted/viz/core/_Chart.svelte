@@ -1029,6 +1029,7 @@
 		{width}
 		{data}
 		{queryID}
+		evidenceChartTitle={title}
 		{showAllXAxisLabels}
 		{swapXY}
 		{echartsOptions}
