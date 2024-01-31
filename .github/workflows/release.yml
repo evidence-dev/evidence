@@ -33,7 +33,7 @@ jobs:
   release:
     # prevents this action from running on forks
     if: github.repository == 'evidence-dev/evidence'
-    ## needs: prerelease # wait on pre-release before starting, to ensure @next is updated
+    needs: prerelease # wait on pre-release before starting, to ensure @next is updated
     name: Release
     runs-on: ubuntu-latest
     outputs:
@@ -55,32 +55,31 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      # - run: pnpm build
+      - run: pnpm build
 
-      # - name: Create Release Pull Request or Publish to npm
-      #   id: changesets
-      #   uses: changesets/action@v1
-      #   with:
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-      #     publish: pnpm release
-      #   env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          publish: pnpm release
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # - name: Deploy docs to Vercel
+      - name: Deploy docs to Vercel
         # only run this if we are doing a release, commented out to test
-        # if: steps.changesets.outputs.published == 'false'
-      #  uses: actions/checkout@v2
-      #  with:
+        if: steps.changesets.outputs.published == false
+        steps:
           # Additional steps for deploying to Vercel
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --cwd sites/docs
-      - name: Build Project Artifacts
-        run: vercel build --prod --cwd sites/docs
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --cwd sites/docs --token=${{ secrets.VERCEL_TOKEN }}
+        - name: Install Vercel CLI
+          run: npm install --global vercel@latest
+        - name: Pull Vercel Environment Information
+          run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --cwd sites/docs
+        - name: Build Project Artifacts
+          run: vercel build --prod --cwd sites/docs
+        - name: Deploy Project Artifacts to Vercel
+          run: vercel deploy --prebuilt --prod --cwd sites/docs --token=${{ secrets.VERCEL_TOKEN }}
   trigger-e2e-smoke-tests:
     runs-on: ubuntu-latest
     needs: release
