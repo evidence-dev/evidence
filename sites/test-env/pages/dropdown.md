@@ -41,6 +41,18 @@ select * from orders
     <DropdownOption value="Top 100" />
 </Dropdown>
 
+## Multi Dropdown
+
+```selected_orders
+select * from orders where list_contains(${inputs.multiple_selected_order_ids.value}, id)
+```
+
+<Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" />
+
+Orders of {inputs.multiple_selected_order_ids.label}
+
+<DataTable data={selected_orders} />
+
 ## Dropdown without a query
 
 <Dropdown title=Queryless name=queryless>
