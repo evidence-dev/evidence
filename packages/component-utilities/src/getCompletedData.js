@@ -19,7 +19,7 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 		Object.assign({}, d, {
 			[x]: d[x] instanceof Date ? ((xIsDate = true), d[x].toISOString()) : d[x]
 		})
-	);
+	).filter(d => d[x] !== undefined && d[x] !== null);
 	const groups = Array.from(data).reduce((a, v) => {
 		if (v[x] instanceof Date) {
 			v[x] = v[x].toISOString();
@@ -41,16 +41,9 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 
 	/** @type {Array<number | string>} */
 	let xDistinct;
-	function findFirstNonNull(data, x) {
-		for (let item of data) {
-			if (item && item[x] !== null && item[x] !== undefined) {
-				return item[x];
-			}
-		}
-		return null; // Return null if all values are null or undefined
-	}
-	const exampleX = findFirstNonNull(data, x);
 
+	const exampleX = data.find(item => item && item[x] !== null && item[x] !== undefined)?.[x] ?? null;
+	// const exampleX = data[0]?.[x];
 	switch (typeof exampleX) {
 		case 'object':
 			if (exampleX === null) {
