@@ -82,9 +82,9 @@ describe('loadSourceOptions', () => {
 	});
 
 	it('should retain casing for nested options', () => {
-		vi.stubEnv("EVIDENCE_SOURCE__source__ssl__rejectUnauthorized", "true")
-		const result = loadSourceOptions('source')
-		expect('ssl' in result).toBeTruthy()
-		expect('rejectUnauthorized' in result.ssl).toBeTruthy()
-	})
+		vi.stubEnv('EVIDENCE_SOURCE__source__ssl__rejectUnauthorized', 'true');
+		const result = loadSourceOptions('source');
+		expect('ssl' in result).toBeTruthy();
+		expect('rejectUnauthorized' in result.ssl).toBeTruthy();
+	});
 });
