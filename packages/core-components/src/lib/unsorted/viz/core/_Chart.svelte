@@ -145,12 +145,6 @@
 	export let stacked100 = false;
 
 	export let chartAreaHeight;
-	chartAreaHeight = Number(chartAreaHeight);
-
-	// What other chartAreaHeight values would be considered invalid?
-	if (isNaN(chartAreaHeight) || chartAreaHeight < 0) {
-		chartAreaHeight = 180;
-	}
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -819,6 +813,19 @@
 			// ---------------------------------------------------------------------------------------
 			// Set up chart area
 			// ---------------------------------------------------------------------------------------
+
+			if (chartAreaHeight) {
+				// if chartAreaHeight was user-supplied
+				chartAreaHeight = Number(chartAreaHeight);
+				if (isNaN(chartAreaHeight)) {
+					// input must be a number
+					throw Error('chartAreaHeight must be a number');
+				} else if (chartAreaHeight <= 0) {
+					throw Error('chartAreaHeight must be a positive number');
+				}
+			} else {
+				chartAreaHeight = 180;
+			}
 
 			hasTitle = title ? true : false;
 			hasSubtitle = subtitle ? true : false;

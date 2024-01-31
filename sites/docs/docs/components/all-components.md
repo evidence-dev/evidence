@@ -357,7 +357,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/sankey-diagram">
 
-![map](/img/exg-sankey.svg)
+![map](/img/sankey_example.png)
 
 </a>
 </div>
