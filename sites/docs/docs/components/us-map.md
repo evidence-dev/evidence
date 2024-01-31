@@ -7,55 +7,103 @@ hide_table_of_contents: false
 
 ## Examples
 
-### Full State Names
-
-```html
-<USMap data="{map_data}" state="state_name" value="sales_usd" />
-```
-
-<img src='/img/map-fullname.png' width='400px'/>
-
-### State Abbreviations
-
-```html
-<USMap data="{map_data}" state="state_abbrev" value="sales_usd" abbreviations="true" />
-```
-
-<img src='/img/map-abbrev.png' width='400px'/>
-
 ### Color Scales
 
 #### `colorScale=blue`
 
-<img src='/img/map-blue.png' width='400px'/>
+<img src='/img/map-blue2.png' width='500px'/>
 
 #### `colorScale=green`
 
-<img src='/img/map-green.png' width='400px'/>
+<img src='/img/map-green2.png' width='500px'/>
 
 #### `colorScale=red`
 
-<img src='/img/map-red.png' width='400px'/>
+<img src='/img/map-red2.png' width='500px'/>
 
 #### `colorScale=bluegreen`
 
-<img src='/img/map-bluegreen.png' width='400px'/>
+<img src='/img/map-bluegreen2.png' width='500px'/>
+
+### Custom Color Scale
+
+```html
+<USMap
+    data={state_pop}
+    state=name
+    value=population
+    colorPalette={['maroon','white','#1c0d80']}
+    legend=true
+/>
+```
+
+<img src='/img/usmap-custom-color2.png' width='500px'/>
+
+### Legend
+
+#### Default
+
+```html
+<USMap
+    data={state_pop}
+    state=name
+    value=population
+    legend=true
+/>
+```
+
+<img src='/img/map-default-legend.png' width='500px'/>
+
+
+
+#### With Filter
+
+```html
+<USMap
+    data={state_pop}
+    state=name
+    value=population
+    colorPalette={['maroon','white','#1c0d80']}
+    legend=true
+    filter=true
+/>
+```
+
+<img src='/img/map-filter-legend.gif' width='500px'/>
+
 
 ### Links
 
 ```html
 <USMap
-	data="{state_current}"
-	state="state"
-	value="value"
-	abbreviations="true"
-	link="state_link"
+	data={state_current}
+	state=state
+	value=value
+	abbreviations=true
+	link=state_link
 	title="Sales by State"
 	subtitle="{most_recent_month[0].month}"
 />
 ```
 
 <img src='/img/map-links.gif' width='500px'/>
+
+### Full State Names
+
+```html
+<USMap data={map_data} state=state_name value=sales_usd />
+```
+
+<img src='/img/map-fullname.png' width='500px'/>
+
+### State Abbreviations
+
+```html
+<USMap data={map_data} state=state_abbrev value=sales_usd abbreviations=true />
+```
+
+<img src='/img/map-abbrev.png' width='500px'/>
+
 
 ## USMap
 
@@ -83,6 +131,13 @@ hide_table_of_contents: false
         <td class='tcenter'>column name</td>	
         <td class='tcenter'>-</td>
     </tr>
+        <tr>	
+        <td>abbreviations</td>	
+        <td>If true, map will look for two letter abbreviations rather than full names</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>false | true</td>	
+        <td class='tcenter'>false</td>
+    </tr>
     <tr>	
         <td>value</td>	
         <td>Column to be used as the value determining the colour of each state</td>	
@@ -91,18 +146,18 @@ hide_table_of_contents: false
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
-        <td>abbreviations</td>	
-        <td>If true, map will look for two letter abbreviations rather than full names</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>false | true</td>	
-        <td class='tcenter'>false</td>
-    </tr>
-    <tr>	
         <td>colorScale</td>	
-        <td>Colour scale to be used</td>	
+        <td>Colour scale to be used. To use a custom color palette, see the `colorPalette` prop</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>blue | green | red | bluegreen</td>	
         <td class='tcenter'>blue</td>
+    </tr>
+        <tr>	
+        <td>colorPalette</td>	
+        <td>Custom color palette to use for setting state colors. Overrides `colorScale`</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>array of color codes (can be CSS, hex, RGB, HSL)</td>	
+        <td class='tcenter'>-</td>
     </tr>
     <tr>	
         <td>min</td>	
@@ -142,9 +197,23 @@ hide_table_of_contents: false
     <tr>	
         <td>fmt</td>	
         <td>Format to use for values (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
+        <td class='tcenter'>-</td>
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
         <td class='tcenter'>-</td>
+    </tr>
+        <tr>	
+        <td>legend</td>	
+        <td>Whether to show a legend at the top of the map</td>	
         <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>
+    </tr>
+        <tr>	
+        <td>filter</td>	
+        <td>Whether to include filter controls on the legend. Can only be used when legend = true</td>	
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>
     </tr>
 </table>
 

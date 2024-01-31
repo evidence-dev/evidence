@@ -15,6 +15,8 @@
 	export let yLog = undefined;
 	export let yLogBase = undefined;
 
+	export let y2SeriesType = undefined;
+
 	export let yFmt = undefined;
 	export let xFmt = undefined;
 	export let y2Fmt = undefined;
@@ -145,6 +147,7 @@
 		{yLabelFmt}
 		{y2LabelFmt}
 		{showAllLabels}
+		{y2SeriesType}
 	/>
 	<slot />
 </Chart>
