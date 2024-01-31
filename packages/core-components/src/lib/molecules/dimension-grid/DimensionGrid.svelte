@@ -4,9 +4,6 @@
 
 <script>
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-
-	import { getMainQuery } from './dimensionGridQuery.js';
-
 	import { getContext, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import DimensionCut from './DimensionCut.svelte';
@@ -23,35 +20,9 @@
 	export let grandTotal = false;
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
-
 	let dimensions = data?.columns?.filter((col) => col.evidenceType === 'string');
 	let selectedDimensions = writable([]);
 	setContext('selected-dimensions', selectedDimensions);
-
-	$: mainQuery = getMainQuery(
-		$data,
-		dimensions,
-		metric,
-		$selectedDimensions,
-		limit,
-		grandTotal,
-		others
-	);
-
-	let results = buildQuery(mainQuery);
-
-	results.fetch();
-
-	$: {
-		const updatedResults = buildQuery(mainQuery);
-		if (!updatedResults.loaded) {
-			updatedResults.fetch().then(() => {
-				results = updatedResults;
-			});
-		} else {
-			results = updatedResults;
-		}
-	}
 </script>
 
 <!-- <pre>
@@ -59,8 +30,8 @@
 </pre>
 {[...$results]} -->
 
-<div class="flex flex-wrap gap-6 select-none">
+<div class="flex flex-wrap select-none">
 	{#each dimensions as dimension}
-		<DimensionCut data={$results} {dimension} {fmt} />
+		<DimensionCut data={$data} {dimension} {fmt} {metric} {limit} />
 	{/each}
 </div>

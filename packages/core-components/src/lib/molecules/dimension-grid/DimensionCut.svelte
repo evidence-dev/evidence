@@ -7,9 +7,13 @@
 	import { flip } from 'svelte/animate';
 	import { cn } from '$lib/utils';
 	import { Check } from 'radix-icons-svelte';
+	import { getDimensionCutQuery } from './dimensionGridQuery.js';
+	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 
 	export let dimension;
 	export let data;
+	export let metric;
+	export let limit;
 	export let fmt;
 
 	// Selected Value
@@ -33,31 +37,59 @@
 			: (selectedValue = row.dimensionValue);
 	};
 
-	$: filteredData = data.filter((d) => d.dimensionName === dimension.name);
+	$: dimensionCutQuery = getDimensionCutQuery(
+		data,
+		dimension,
+		metric,
+		limit,
+		$selectedDimensions,
+		selectedValue
+	);
+
+	let results = buildQuery(dimensionCutQuery, `dimension-cut-${dimension.name}`);
+
+	results.fetch();
+
+	$: {
+		const updatedResults = buildQuery(dimensionCutQuery);
+		if (!updatedResults.loaded) {
+			updatedResults.fetch().then(() => {
+				results = updatedResults;
+			});
+		} else {
+			results = updatedResults;
+		}
+	}
 </script>
 
-<div class="w-full sm:w-60 text-sm antialiased">
-	<div class="capitalize ml-4 text-medium border-b flex justify-between items-baseline">
-		<span>
-			{formatTitle(dimension.name)}
-		</span>
-		<span class="text-xs"> Avg. Sales </span>
+{#if $results.error && $results.loaded}
+	<div class="text-red-500">
+		{$results.error}
 	</div>
-	{#each filteredData as row (row.dimensionValue)}
-		<div
-			class={cn('flex transition duration-100 group cursor-pointer')}
-			on:click={updateSelected(row)}
-			on:keydown={updateSelected(row)}
-			animate:flip={{ duration: 100 }}
-		>
-			<div
-				class={cn('w-4 text-transparent transition duration-100 flex items-center', {
-					'text-gray-600': selectedValue === row.dimensionValue
-				})}
-			>
-				<Check class="h-4 w-4 z-10 " />
-			</div>
-			<DimensionRow {row} />
+{:else}
+	<div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-2 pb-4">
+		<div class="capitalize border-b flex justify-between items-baseline ml-4">
+			<span>
+				{formatTitle(dimension.name)}
+			</span>
+			<span> Avg. Sales </span>
 		</div>
-	{/each}
-</div>
+		{#each $results as row (row.dimensionValue)}
+			<div
+				class={cn('flex transition duration-100 group cursor-pointer')}
+				on:click={updateSelected(row)}
+				on:keydown={updateSelected(row)}
+				animate:flip={{ duration: 100 }}
+			>
+				<div
+					class={cn('w-4 text-transparent transition duration-100 flex items-center ', {
+						'text-gray-600': selectedValue === row.dimensionValue
+					})}
+				>
+					<Check class="h-4 w-4 z-10 " />
+				</div>
+				<DimensionRow {row} {selectedValue} />
+			</div>
+		{/each}
+	</div>
+{/if}

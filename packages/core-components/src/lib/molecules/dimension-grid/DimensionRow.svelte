@@ -12,5 +12,5 @@
 	<span class="truncate text-gray-900">
 		{row.dimensionValue}
 	</span>
-	<span class="tabular-nums">{row.filteredMetric}</span>
+	<span class="tabular-nums">{row.metric}</span>
 </div>
