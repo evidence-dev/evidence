@@ -20,5 +20,10 @@
 		"datasources": [
 			"csv"
 		]
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"csv"
+	]
 }

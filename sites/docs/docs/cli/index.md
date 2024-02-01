@@ -14,6 +14,7 @@ hide_table_of_contents: false
 | `npm run dev`                                   | Evidence: Start Server            | Start the development server in the current directory. |
 | `npm run build`                                 | Evidence: Build                   | Build the project for production.                      |
 | `npm run build:strict`                          | Evidence: Built Strict            | Build, but fails on query or component errors. [Components receiving empty data will fail.](/deployment/overview#buildstrict) |
+| `npm run preview`                               | N/A                               | Preview the built site.                                |
 | `Ctrl / Cmd` + `C`                              | Evidence: Stop Server             | Stop the dev server (when running).                    |
 | `r`                                             | N/A                               | Restart the dev server (when running).                 |
 
@@ -35,7 +36,7 @@ Some of the most common are:
 | `dev`     | `--host [host]`             | Specify hostname (`string`)                  | `--host 0.0.0.0` can be helpful in containers             |
 | `dev`     | `--port <port>`             | Specify port (`number`)                      | Automatically increment if default `3000` is in use       |
 
-Evidence's `dev` server runs on Vite, and so supports [Vite's options](https://vitejs.dev/guide/cli.html#options).
+Evidence's `dev`, `build` and `preview` commands run using Vite, and so support [Vite's options](https://vitejs.dev/guide/cli.html#options).
 
 ## Environment Variables
 

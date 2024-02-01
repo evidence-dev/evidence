@@ -16,6 +16,7 @@ import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 
 import ora from 'ora';
+import { subSourceVariables } from './sub-source-vars';
 
 /**
  * @param {string} directory
@@ -29,7 +30,15 @@ const buildSourceDirectory = async (directory) => {
 		if (f.isDirectory()) {
 			output[f.name] = await buildSourceDirectory(path.join(directory, f.name));
 		} else {
-			output[f.name] = () => fs.readFile(path.join(directory, f.name), { encoding: 'utf-8' });
+			/**
+			 * @param {boolean} [disableInterpolation = false]
+			 * @returns {Promise<string>}
+			 */
+			output[f.name] = async (disableInterpolation) => {
+				const content = await fs.readFile(path.join(directory, f.name), { encoding: 'utf-8' });
+				if (disableInterpolation) return content;
+				else return subSourceVariables(content);
+			};
 		}
 	}
 
@@ -278,7 +287,10 @@ export const buildSources = async (
 					/** @type {QueryResult | null} */
 					let result;
 					try {
-						const _r = runner(query.content, query.filepath, batchSize);
+						const interpolatedContent = query.content
+							? subSourceVariables(query.content)
+							: query.content;
+						const _r = runner(interpolatedContent, query.filepath, batchSize);
 						if (_r instanceof Promise) {
 							result = await _r.catch((e) => {
 								if (e instanceof z.ZodError) {
