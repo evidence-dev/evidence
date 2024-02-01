@@ -1015,7 +1015,8 @@
 			});
 		} catch (e) {
 			error = e.message;
-			console.error(e);
+			const setTextRed = '\x1b[31m%s\x1b[0m';
+			console.error(setTextRed, `Error in ${chartType}: ${e.message}`);
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;
