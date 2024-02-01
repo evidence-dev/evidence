@@ -66,7 +66,9 @@
 					editorQuery = v.state.doc.toString();
 				},
 				onSubmit: () => {
-					currentQuery = editorQuery;
+					currentQuery = editorQuery.trim();
+					if (currentQuery.endsWith(';'))
+						currentQuery = currentQuery.substring(0, currentQuery.length - 1);
 					showResults = true;
 					return true;
 				}
@@ -83,7 +85,7 @@
 >
 	<div
 		bind:this={editor}
-		class="w-full relative rounded border border-gray-300 min-h-[8rem]"
+		class="w-full relative rounded border border-gray-300 min-h-[8rem] cursor-text"
 		use:sqlConsole={consoleArgs}
 	>
 		{#if !disabled}

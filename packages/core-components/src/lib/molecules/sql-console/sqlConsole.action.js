@@ -165,8 +165,12 @@ export const sqlConsole = (
 ) => {
 	/** @type {EditorView} */
 	let view;
+
+	/** @type {() => void} */
+	let removeClickListener;
 	function bootstrap(/** @type {SqlConsoleArgs} */ { initialState, schema, onChange, onSubmit }) {
 		if (view) view.destroy();
+		if (removeClickListener) removeClickListener();
 		view = new EditorView({
 			doc: initialState,
 			extensions: [
@@ -253,10 +257,12 @@ export const sqlConsole = (
 			],
 			parent: el
 		});
-		el.addEventListener('click', (e) => {
+		const clickListener = (e) => {
 			e.stopImmediatePropagation();
 			view.focus();
-		});
+		};
+		el.addEventListener('click', clickListener);
+		removeClickListener = () => el.removeEventListener('click', clickListener);
 	}
 	if (args) bootstrap(args);
 	return {
