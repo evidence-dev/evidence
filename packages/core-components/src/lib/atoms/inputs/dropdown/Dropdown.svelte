@@ -72,8 +72,8 @@
 		>
 			<slot />
 
-			{#each $query ?? [] as row (row.value)}
-				<DropdownOption value={row.value} valueLabel={row.label} />
+			{#each $query ?? [] as { value, label } (value)}
+				<DropdownOption {value} valueLabel={label} />
 			{/each}
 		</select>
 	{/if}
