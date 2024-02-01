@@ -118,7 +118,7 @@
 										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
 									>
 										<div class="flex items-center justify-between">
-											<span> Schema Explorer </span>
+											<span> Schema Viewer </span>
 											<Icon src={Table} class="text-gray-300 h-4 w-4" />
 										</div>
 									</a>

@@ -71,8 +71,6 @@
 					return true;
 				}
 			};
-
-			return null;
 		}
 	);
 </script>
@@ -80,7 +78,7 @@
 <section
 	class="px-4 py-2 bg-white flex flex-col gap-2 min-h-[8rem]"
 	on:click={() => editor?.focus()}
-	on:keypress={(e) => e.key === 'enter' && editor?.focus()}
+	on:keydown={(e) => e.key === 'Enter' && editor?.focus()}
 	aria-roledescription="Code Editor"
 >
 	<div
