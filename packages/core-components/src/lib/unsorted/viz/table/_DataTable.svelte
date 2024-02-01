@@ -2,7 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { slide } from 'svelte/transition';
-	import { propKey, strictBuild } from '../context';
+	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import {
