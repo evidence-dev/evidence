@@ -4,7 +4,7 @@
 
 <script>
 	import { getContext } from 'svelte';
-	import { propKey, strictBuild } from '../context';
+	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
 	let props = getContext(propKey);
 

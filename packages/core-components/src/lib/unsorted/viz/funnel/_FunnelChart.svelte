@@ -4,7 +4,7 @@
 
 <script>
 	import ECharts from '../core/ECharts.svelte';
-	import { strictBuild } from '../context';
+	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import {
 		formatValue,
