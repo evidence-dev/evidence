@@ -4,6 +4,11 @@ title: Mixed-Type Charts
 hide_table_of_contents: false
 ---
 
+:::info
+The easiest way to create mixed-type charts is setting up [a secondary y-axis in <code>LineChart</code>](/components/line-chart#secondary-axis-with-bar) or a [secondary axis in <code>BarChart</code>](/components/bar-chart#secondary-axis-with-line)
+:::
+
+
 You can combine multiple chart types inside a single `<Chart>` tag to create mixed-type charts.
 
 ## Examples
