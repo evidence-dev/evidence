@@ -16,3 +16,5 @@ schema:
         category: date
         item: recent
         withBias: true
+        options:
+            - days: 365 # Past Year

@@ -15,11 +15,13 @@ import { findInterval, vectorSeq } from './helpers/getCompletedData.helpers.js';
  */
 export default function getCompletedData(_data, x, y, series, nullsZero = false, fillX = false) {
 	let xIsDate = false;
-	const data = _data.map((d) =>
-		Object.assign({}, d, {
-			[x]: d[x] instanceof Date ? ((xIsDate = true), d[x].toISOString()) : d[x]
-		})
-	);
+	const data = _data
+		.map((d) =>
+			Object.assign({}, d, {
+				[x]: d[x] instanceof Date ? ((xIsDate = true), d[x].toISOString()) : d[x]
+			})
+		)
+		.filter((d) => d[x] !== undefined && d[x] !== null);
 	const groups = Array.from(data).reduce((a, v) => {
 		if (v[x] instanceof Date) {
 			v[x] = v[x].toISOString();
@@ -41,11 +43,19 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 
 	/** @type {Array<number | string>} */
 	let xDistinct;
-	const exampleX = data[0]?.[x];
 
+	const exampleX =
+		data.find((item) => item && item[x] !== null && item[x] !== undefined)?.[x] ?? null;
+	// const exampleX = data[0]?.[x];
 	switch (typeof exampleX) {
 		case 'object':
-			throw new Error('Unexpected object property, expected string, date, or number');
+			if (exampleX === null) {
+				throw new Error(
+					`Column '${x}' is entirely null. Column must contain at least one non-null value.`
+				);
+			} else {
+				throw new Error('Unexpected object property, expected string, date, or number');
+			}
 		case 'number':
 			// Numbers are the most straightforward
 			xDistinct = getDistinctValues(data, x);
