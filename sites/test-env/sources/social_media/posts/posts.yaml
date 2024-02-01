@@ -17,4 +17,4 @@ schema:
         item: recent
         withBias: true
         options:
-            days: 365 # Past Year
+            - days: 365 # Past Year

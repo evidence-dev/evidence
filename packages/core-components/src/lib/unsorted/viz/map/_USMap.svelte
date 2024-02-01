@@ -5,7 +5,7 @@
 <script>
 	import EChartsMap from './EChartsMap.svelte';
 	import ErrorChart from '../core/ErrorChart.svelte';
-	import { strictBuild } from '../context';
+	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
