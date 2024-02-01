@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 1.0.3
+
+### Patch Changes
+
+- 31381835: Add support for EVIDENCE_VAR\_\_ interpolation in source queries
+
 ## 1.0.2
 
 ### Patch Changes
