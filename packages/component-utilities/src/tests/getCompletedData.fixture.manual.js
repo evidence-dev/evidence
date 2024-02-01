@@ -63,7 +63,6 @@ export const MissingYCase = {
 	}
 };
 
-
 export const NullFirstRowCase = {
 	data: [
 		// take out SF 2018 and NY 2016

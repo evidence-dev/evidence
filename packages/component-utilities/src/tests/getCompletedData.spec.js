@@ -365,17 +365,17 @@ testSuite({
 // 	);
 // });
 
-
-describe("(Manual) First row has null X", () => {
+describe('(Manual) First row has null X', () => {
 	testSuite({
 		...NullFirstRowCase
 	});
- })
+});
 
-
-describe("(Manual) All rows have null X", () => {
-	const { data, keys, stringify } = FullNullCase;
-	it("should throw", () => {
-		expect(() => getCompletedData(data, keys.x, keys.y, keys.series, false, false)).toThrowError(`Column '${keys.x}' is entirely null`);
-	})
-})
+describe('(Manual) All rows have null X', () => {
+	const { data, keys } = FullNullCase;
+	it('should throw', () => {
+		expect(() => getCompletedData(data, keys.x, keys.y, keys.series, false, false)).toThrowError(
+			`Column '${keys.x}' is entirely null`
+		);
+	});
+});
