@@ -4,7 +4,7 @@
 
 <script>
 	import { getContext, beforeUpdate } from 'svelte';
-	import { propKey, configKey } from '../context';
+	import { propKey, configKey } from '@evidence-dev/component-utilities/chartContext';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from '../core/ErrorChart.svelte';
 	let props = getContext(propKey);

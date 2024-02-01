@@ -1,7 +1,7 @@
 <script>
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
-	import { propKey, configKey, strictBuild } from '../context';
+	import { propKey, configKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	let props = writable({});
 	let config = writable({});
 
@@ -31,6 +31,7 @@
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
 	export let data = undefined;
+	export let queryID = undefined;
 	export let x = undefined;
 	export let y = undefined;
 	export let y2 = undefined;
@@ -144,12 +145,6 @@
 	export let stacked100 = false;
 
 	export let chartAreaHeight;
-	chartAreaHeight = Number(chartAreaHeight);
-
-	// What other chartAreaHeight values would be considered invalid?
-	if (isNaN(chartAreaHeight) || chartAreaHeight < 0) {
-		chartAreaHeight = 180;
-	}
 
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
@@ -399,6 +394,13 @@
 			if (swapXY && xType !== 'category') {
 				throw Error(
 					'Horizontal charts do not support a value or time-based x-axis. You can either change your SQL query to output string values or set swapXY=false.'
+				);
+			}
+
+			// Throw error if attempting to plot secondary y-axis on horizontal chart:
+			if (swapXY && y2) {
+				throw Error(
+					'Horizontal charts do not support a secondary y-axis. You can either set swapXY=false or remove the y2 prop from your chart.'
 				);
 			}
 
@@ -722,7 +724,9 @@
 						},
 						color: y2
 							? yAxisColor === 'true'
-								? chartColours[0]
+								? colorPalette
+									? colorPalette[0]
+									: chartColours[0]
 								: yAxisColor !== 'false'
 								? yAxisColor
 								: undefined
@@ -736,7 +740,9 @@
 						padding: [0, 5, 0, 0],
 						color: y2
 							? yAxisColor === 'true'
-								? chartColours[0]
+								? colorPalette
+									? colorPalette[0]
+									: chartColours[0]
 								: yAxisColor !== 'false'
 								? yAxisColor
 								: undefined
@@ -772,7 +778,9 @@
 						},
 						color:
 							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
+								? colorPalette
+									? colorPalette[ySeriesCount]
+									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
 								? y2AxisColor
 								: undefined
@@ -785,7 +793,9 @@
 						padding: [0, 0, 0, 5],
 						color:
 							y2AxisColor === 'true'
-								? chartColours[ySeriesCount]
+								? colorPalette
+									? colorPalette[ySeriesCount]
+									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
 								? y2AxisColor
 								: undefined
@@ -803,6 +813,19 @@
 			// ---------------------------------------------------------------------------------------
 			// Set up chart area
 			// ---------------------------------------------------------------------------------------
+
+			if (chartAreaHeight) {
+				// if chartAreaHeight was user-supplied
+				chartAreaHeight = Number(chartAreaHeight);
+				if (isNaN(chartAreaHeight)) {
+					// input must be a number
+					throw Error('chartAreaHeight must be a number');
+				} else if (chartAreaHeight <= 0) {
+					throw Error('chartAreaHeight must be a positive number');
+				}
+			} else {
+				chartAreaHeight = 180;
+			}
 
 			hasTitle = title ? true : false;
 			hasSubtitle = subtitle ? true : false;
@@ -1012,6 +1035,8 @@
 		{height}
 		{width}
 		{data}
+		{queryID}
+		evidenceChartTitle={title}
 		{showAllXAxisLabels}
 		{swapXY}
 		{echartsOptions}
