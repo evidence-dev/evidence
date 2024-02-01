@@ -83,19 +83,6 @@ const testSuite = (opts) => {
 		`Returns the correct x value type (xType = ${opts.xType}, fillX = $fillX, nullsZero = $nullsZero)`,
 		({ fillX, nullsZero }) => {
 			// Verify precondition
-			// if (stringify) expect(typeof data[0][keys.x]).toEqual('string');
-			// else
-			// 	switch (opts.xType) {
-			// 		case 'number':
-			// 			expect(typeof data[0][keys.x]).toEqual('number');
-			// 			break;
-			// 		case 'date':
-			// 			expect(data[0][keys.x]).toBeInstanceOf(Date);
-			// 			break;
-			// 		default:
-			// 			expect(typeof data[0][keys.x]).toEqual('string');
-			// 			break;
-			// 	}
 			const result = getCompletedData(data, keys.x, keys.y, keys.series, fillX, nullsZero);
 			for (const row of result) {
 				if (stringify) expect(typeof row[keys.x]).toEqual('string');
