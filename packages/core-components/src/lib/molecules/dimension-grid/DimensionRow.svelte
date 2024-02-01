@@ -26,11 +26,17 @@
 	/>
 
 	<span
-		class={cn('truncate text-gray-900 transition duration-100', {
-			'font-medium': selectedValue === row.dimensionValue
-		})}
+		class={cn(
+			'truncate text-gray-900 transition duration-100',
+			{
+				'font-medium': selectedValue === row.dimensionValue
+			},
+			{
+				'text-gray-800': row.dimensionValue === null
+			}
+		)}
 	>
-		{row.dimensionValue}
+		{row.dimensionValue ?? 'Missing'}
 	</span>
 	<span class="tabular-nums">{value}</span>
 </div>

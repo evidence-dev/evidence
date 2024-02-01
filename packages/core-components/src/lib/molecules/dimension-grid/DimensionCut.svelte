@@ -20,7 +20,7 @@
 	let selectedDimensions = getContext('selected-dimensions');
 	let selectedValue;
 
-	$: if (selectedValue) {
+	$: if (selectedValue !== undefined) {
 		selectedDimensions.update((v) => {
 			let newV = v.filter((d) => d.dimension !== dimension.name);
 			newV.push({ dimension: dimension.name, value: selectedValue });
@@ -66,6 +66,11 @@
 	$: columnSummary = getColumnSummary($results, 'array')?.filter((d) => d.id === 'metric');
 </script>
 
+<pre>
+<!-- {$results.originalText} -->
+<!-- {selectedValue} -->
+<!-- {JSON.stringify($selectedDimensions)} -->
+</pre>
 {#if $results.error && $results.loaded}
 	<div class="text-red-500">
 		{$results.error}

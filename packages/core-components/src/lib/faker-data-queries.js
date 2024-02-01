@@ -3,8 +3,11 @@ import { query } from '@evidence-dev/universal-sql/client-duckdb';
 export const fakerSeries = {
 	airlines: {
 		flights: {
-			text: 'SELECT * FROM series_demo_source.flights',
-			store: new QueryStore('SELECT * FROM series_demo_source.flights', query)
+			text: "SELECT *, case when fare > 5000 then 'big fare' else NULL end as nullable_string_column FROM series_demo_source.flights",
+			store: new QueryStore(
+				"SELECT *, case when fare > 5000 then 'big fare' else NULL end as nullable_string_column FROM series_demo_source.flights",
+				query
+			)
 		}
 	},
 	social_media: {

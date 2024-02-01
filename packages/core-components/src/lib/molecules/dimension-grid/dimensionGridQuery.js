@@ -11,7 +11,11 @@ const getWhereClause = function (selectedDimensions, excludeDimension) {
 	if (selectedDimensions?.length > 0) {
 		whereClause = selectedDimensions
 			.map((d) => {
-				return `${d.dimension} = '${d.value.replaceAll("'", "''")}'`;
+				if (d.value === null) {
+					return `${d.dimension} is null`;
+				} else {
+					return `${d.dimension} = '${d.value.replaceAll("'", "''")}'`;
+				}
 			})
 			.join(' and ');
 	}

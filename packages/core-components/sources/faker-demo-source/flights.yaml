@@ -13,10 +13,9 @@ schema:
   fare: 
     category: number
     item: float 
-    withBias: true 
     options:
-      - max: 25000
-      - min: 74
+      - max: 10000
+      - min: 2
       - fractionDigits: 2
   departure_airport: 
     category: airline
