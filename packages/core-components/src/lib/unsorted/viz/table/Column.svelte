@@ -4,7 +4,7 @@
 
 <script>
 	import { getContext } from 'svelte';
-	import { propKey, strictBuild } from '../context';
+	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
 	let props = getContext(propKey);
 
@@ -57,6 +57,10 @@
 	// Formatting:
 	export let fmt = undefined;
 
+	// Totals:
+	export let totalAgg = undefined;
+	export let totalFmt = undefined;
+
 	// Color Scale:
 	export let colorMax = undefined;
 	export let colorMin = undefined;
@@ -69,6 +73,10 @@
 	};
 
 	let useColor = colorList[scaleColor];
+	let customColor = undefined;
+	if (useColor == undefined) {
+		customColor = scaleColor;
+	}
 
 	// Delta:
 	export let downIsGood = false;
@@ -91,12 +99,15 @@
 		openInNewTab: openInNewTab,
 		linkLabel: linkLabel,
 		fmt: fmt,
+		totalAgg: totalAgg,
+		totalFmt: totalFmt,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
 		showValue: showValue,
 		colorMax: colorMax,
 		colorMin: colorMin,
-		useColor: useColor
+		useColor: useColor,
+		customColor: customColor
 	};
 
 	/**
