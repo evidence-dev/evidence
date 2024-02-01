@@ -5,7 +5,7 @@
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from './ErrorChart.svelte';
-	import { strictBuild } from '../context';
+	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	export let data;
 	export let value = null;
 	export let comparison = null;
