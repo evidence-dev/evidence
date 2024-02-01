@@ -125,6 +125,15 @@
 		for (let i = 0; i < columnSummary.length; i++) {
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
 		}
+
+		for (const column of $props.columns) {
+			const summary = safeExtractColumn(column);
+			if (summary.format === undefined && column.fmt !== undefined) {
+				throw new Error(
+					`Column "${column.id}" unable to be formatted. Please cast the results to dates or numbers.`
+				);
+			}
+		}
 	} catch (e) {
 		error = e.message;
 		if (strictBuild) {
@@ -430,7 +439,7 @@
 															column.fmt
 																? getFormatObjectFromString(
 																		column.fmt,
-																		labelSummary.format.valueType
+																		labelSummary.format?.valueType
 																  )
 																: labelSummary.format,
 															labelSummary.columnUnitSummary
@@ -447,7 +456,7 @@
 														column.fmt
 															? getFormatObjectFromString(
 																	column.fmt,
-																	columnSummary.format.valueType
+																	columnSummary.format?.valueType
 															  )
 															: columnSummary.format,
 														columnSummary.columnUnitSummary
@@ -471,7 +480,7 @@
 															column.fmt
 																? getFormatObjectFromString(
 																		column.fmt,
-																		safeExtractColumn(column).format.valueType
+																		safeExtractColumn(column).format?.valueType
 																  )
 																: safeExtractColumn(column).format,
 															safeExtractColumn(column).columnUnitSummary
@@ -491,7 +500,7 @@
 											column.fmt
 												? getFormatObjectFromString(
 														column.fmt,
-														safeExtractColumn(column).format.valueType
+														safeExtractColumn(column).format?.valueType
 												  )
 												: safeExtractColumn(column).format,
 											safeExtractColumn(column).columnUnitSummary
