@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.3
+
+### Patch Changes
+
+- 2bcbf0ed: Add keywords to improve searchability for datasources
+
 ## 2.0.2
 
 ### Patch Changes

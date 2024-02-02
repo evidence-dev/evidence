@@ -1,5 +1,19 @@
 # @evidence-dev/component-utilities
 
+## 2.1.0
+
+### Minor Changes
+
+- c25fc1ac: Upgraded USMap component
+
+### Patch Changes
+
+- f7903b86: Update downloaded filenames
+- cd9c80b2: Moved chart helper contexts from core-components to component utilites so they are accessible to 3rd party plugins
+- fa0faf8c: Fix treatment of nulls in getCompletedData helper function
+- a6de89de: Adds option to include total rows in DataTables
+  - @evidence-dev/query-store@2.0.2
+
 ## 2.0.2
 
 ### Patch Changes
