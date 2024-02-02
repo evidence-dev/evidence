@@ -1,5 +1,33 @@
 # @evidence-dev/core-components
 
+## 3.2.0
+
+### Minor Changes
+
+- ca1e46cf: Support multi axis charts for lines and bars
+- c25fc1ac: Upgraded USMap component
+
+### Patch Changes
+
+- 3e3b3940: Add Grid component
+- f7903b86: Update downloaded filenames
+- cd9c80b2: Moved chart helper contexts from core-components to component utilites so they are accessible to 3rd party plugins
+- 3427433c: Output less verbose errors for charts
+- a6de89de: Adds option to include total rows in DataTables
+- 2181ed9c: Fixes and upgrades for DataTable
+- 9978899e: Fix query viewer data table column order
+- f45a3a91: Add error handling for funnel charts
+- 6d3021e2: add eCharts options to sankeyDiagram
+- 39390112: Fix chartAreaHeight issue
+- f501513a: infer types based on JS type instead of reading `_evidenceColumnTypes`
+- Updated dependencies [f7903b86]
+- Updated dependencies [cd9c80b2]
+- Updated dependencies [fa0faf8c]
+- Updated dependencies [a6de89de]
+- Updated dependencies [c25fc1ac]
+  - @evidence-dev/component-utilities@2.1.0
+  - @evidence-dev/query-store@2.0.2
+
 ## 3.1.0
 
 ### Minor Changes
