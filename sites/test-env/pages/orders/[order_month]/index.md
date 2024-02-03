@@ -1,5 +1,5 @@
 ```items
-SELECT DISTINCT(item) FROM orders WHERE order_month = DATE_TRUNC('month', '${$page.params.order_month}'::DATE)
+SELECT DISTINCT(item) FROM orders WHERE order_month::DATE = DATE_TRUNC('month', '${$page.params.order_month}'::DATE)
 ```
 
 <ul>
