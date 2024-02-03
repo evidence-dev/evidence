@@ -1,5 +1,15 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.6
+
+### Patch Changes
+
+- 31381835: Add support for EVIDENCE_VAR\_\_ interpolation in source queries
+- Updated dependencies [31381835]
+- Updated dependencies [e4e7d822]
+  - @evidence-dev/db-commons@1.0.3
+  - @evidence-dev/universal-sql@2.0.2
+
 ## 2.0.5
 
 ### Patch Changes

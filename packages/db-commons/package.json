@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/db-commons",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Shared modules for Evidence Datasource Drivers ",
 	"main": "index.cjs",
 	"author": "evidence.dev",
