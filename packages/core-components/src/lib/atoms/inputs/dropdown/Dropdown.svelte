@@ -97,6 +97,17 @@
 	));
 </script>
 
+<!-- execute the otherwise lazily rendered elements for SSR -->
+<Invisible>
+	<slot />
+
+	{#if hasQuery}
+		{#each $items as item}
+			<DropdownOption value={item.value} valueLabel={item.label} />
+		{/each}
+	{/if}
+</Invisible>
+
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 mx-1 inline-block">
 		{#if hasQuery && $query.error}
@@ -111,17 +122,6 @@
 				</span>
 			</span>
 		{:else}
-			<!-- execute the otherwise lazily rendered elements for SSR -->
-			<Invisible>
-				<slot />
-
-				{#if hasQuery}
-					{#each $query as { label, value }}
-						<DropdownOption {value} valueLabel={label} />
-					{/each}
-				{/if}
-			</Invisible>
-
 			<Popover.Root bind:open>
 				<Popover.Trigger asChild let:builder>
 					<Button
