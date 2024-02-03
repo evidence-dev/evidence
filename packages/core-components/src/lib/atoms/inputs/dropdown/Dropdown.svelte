@@ -3,8 +3,9 @@
 </script>
 
 <script>
+	import VirtualList from './Virtual.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { buildInputQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { buildInputQuery, buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
@@ -61,10 +62,13 @@
 		};
 	}
 
+	let open = false;
+
 	/** @param currentValue {Option} */
 	function handleSelect(currentValue) {
 		if (!multiple) {
 			$selectedValues = [currentValue];
+			open = false;
 		} else {
 			if (
 				$selectedValues.find(
@@ -82,7 +86,7 @@
 		selectedValuesToInput();
 	}
 
-	let open = false;
+	let search = '';
 
 	/////
 	// Query-Related Things
@@ -95,6 +99,16 @@
 		`Dropdown-${name}`,
 		$page.data.data[`Dropdown-${name}`]
 	));
+
+	$: items = search
+		? buildQuery(
+				`SELECT
+			    	*,
+			    	jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
+				FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
+				`Dropdown-${name}-searched-${search}`
+		  )
+		: $query;
 </script>
 
 <!-- execute the otherwise lazily rendered elements for SSR -->
@@ -157,17 +171,19 @@
 					</Button>
 				</Popover.Trigger>
 				<Popover.Content class="w-[200px] p-0" align="start" side="bottom">
-					<Command.Root>
-						<Command.Input placeholder={title} />
+					<Command.Root shouldFilter={false}>
+						<Command.Input placeholder={title} bind:value={search} />
 						<Command.List>
 							<Command.Empty>No results found.</Command.Empty>
 							<Command.Group>
 								<slot />
 
 								{#if hasQuery}
-									{#each $query as { label, value }}
-										<DropdownOption {value} valueLabel={label} />
-									{/each}
+									{#await $items.fetch() then _}
+										<VirtualList height="160px" items={$items} let:item>
+											<DropdownOption value={item.value} valueLabel={item.label} />
+										</VirtualList>
+									{/await}
 								{/if}
 							</Command.Group>
 							{#if $selectedValues.length > 0 && multiple}
@@ -176,6 +192,7 @@
 									class="justify-center text-center"
 									onSelect={() => {
 										$selectedValues = [];
+										selectedValuesToInput();
 									}}
 								>
 									Clear selection
