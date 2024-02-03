@@ -53,12 +53,22 @@
 	const selectedValues = writable([]);
 	setContext('dropdown_selected_values', selectedValues);
 
+	function jsToDuckDB(value) {
+		if (value == null) return 'null';
+		if (typeof value === 'string') return `'${value.replaceAll("'", "''")}'`;
+		if (typeof value === 'number' || typeof value === 'bigint' || typeof value === 'boolean')
+			return String(value);
+		if (value instanceof Date) return `'${value.toISOString()}'::TIMESTAMP_MS`;
+		if (Array.isArray(value)) return `[${value.map((x) => jsToDuckDB(x)).join(',')}]`;
+		return JSON.stringify(value);
+	}
+
 	function selectedValuesToInput() {
 		$inputs[name] = {
 			label: $selectedValues.map((x) => x.label).join(', '),
 			value: multiple
-				? `[${$selectedValues.map((v) => v.value).join(',')}]`
-				: String($selectedValues[0].value)
+				? `[${$selectedValues.map((v) => jsToDuckDB(v.value)).join(',')}]`
+				: jsToDuckDB($selectedValues[0].value)
 		};
 	}
 
@@ -106,7 +116,8 @@
 			    	*,
 			    	jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
 				FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
-				`Dropdown-${name}-searched-${search}`
+				`Dropdown-${name}-searched-${search}`,
+				$page.data.data[`Dropdown-${name}-searched-${search}`]
 		  )
 		: $query;
 </script>
