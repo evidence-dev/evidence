@@ -6,6 +6,7 @@ export { default as BigValue } from './core/BigValue.svelte';
 export { default as BoxPlot } from './box/BoxPlot.svelte';
 export { default as BubbleChart } from './bubble/BubbleChart.svelte';
 export { default as Bubble } from './bubble/Bubble.svelte';
+export { default as CalendarHeatmap } from './heatmap/CalendarHeatmap.svelte';
 export { default as Chart } from './core/Chart.svelte';
 export { default as Column } from './table/Column.svelte';
 export { default as DataTable } from './table/DataTable.svelte';

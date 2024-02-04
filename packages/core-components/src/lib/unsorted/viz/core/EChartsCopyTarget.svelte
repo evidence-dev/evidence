@@ -28,16 +28,6 @@
 		use:eChartsCopy={{ config, ratio: 2, echartsOptions }}
 	/>
 {:else if printing}
-	<!-- special printing config for the visual map -->
-	{#if $$props.config.visualMap !== undefined}
-		<div
-			class="chart"
-			style="
-			height: {height};
-			width: {width};"
-			use:eChartsCopy={{ config, ratio: 4, echartsOptions }}
-		/>
-	{:else}
 		<div
 			class="chart"
 			style="
@@ -51,5 +41,4 @@
 	"
 			use:eChartsCopy={{ config, ratio: 4, echartsOptions }}
 		/>
-	{/if}
 {/if}
