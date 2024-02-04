@@ -15,7 +15,11 @@
 
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
-	<CalendarHeatmap {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
+	<CalendarHeatmap
+		{...spreadProps}
+		data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}
+		{queryID}
+	>
 		<slot />
 	</CalendarHeatmap>
 </QueryLoad>

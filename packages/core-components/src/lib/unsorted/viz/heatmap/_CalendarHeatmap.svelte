@@ -17,8 +17,8 @@
 
 	export let data;
 	export let queryID;
-    export let date;
-    export let value;
+	export let date;
+	export let value;
 	export let valueFmt;
 
 	export let yearLabel = true;
@@ -36,7 +36,7 @@
 	export let subtitle = undefined;
 	let hasTitle = title !== undefined;
 	let hasSubtitle = subtitle !== undefined;
-	
+
 	export let legend = true;
 	$: legend = legend === 'true' || legend === true;
 
@@ -50,9 +50,12 @@
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
 	function mapColumnsToArray(arrayOfObjects, col1, col2) {
-		return arrayOfObjects.map((obj) => [new Date(obj[col1]).toISOString().split('T')[0], obj[col2]]);
+		return arrayOfObjects.map((obj) => [
+			new Date(obj[col1]).toISOString().split('T')[0],
+			obj[col2]
+		]);
 	}
-	
+
 	let arrayOfArrays;
 	let valueFormat;
 	let value_format_object;
@@ -64,34 +67,34 @@
 	let maxValue;
 
 	let config;
-    let baseSeriesConfig;
-    let baseCalendarConfig;
-    let calendarConfig = [];
-    let seriesConfig = [];
+	let baseSeriesConfig;
+	let baseCalendarConfig;
+	let calendarConfig = [];
+	let seriesConfig = [];
 
 	let mobileCalendarConfig;
 
 	export let min = undefined;
 	export let max = undefined;
 
-$: try {
-	checkInputs(data, [date, value]);
+	$: try {
+		checkInputs(data, [date, value]);
 
-    const updatedData = data.map(obj => ({
-        ...obj,
-        year: new Date(obj[date]).getFullYear()
-    }));
+		const updatedData = data.map((obj) => ({
+			...obj,
+			year: new Date(obj[date]).getFullYear()
+		}));
 
-    const distinctYears = [...new Set(updatedData.map(obj => obj.year))];
+		const distinctYears = [...new Set(updatedData.map((obj) => obj.year))];
 
-    const yearCount = distinctYears.length;
+		const yearCount = distinctYears.length;
 
-	 arrayOfArrays = mapColumnsToArray(data, date, value);
+		arrayOfArrays = mapColumnsToArray(data, date, value);
 
-	 minValue = min ?? Math.min(...data.map((d) => d[value]));
-	 maxValue = max ?? Math.max(...data.map((d) => d[value]));
+		minValue = min ?? Math.min(...data.map((d) => d[value]));
+		maxValue = max ?? Math.max(...data.map((d) => d[value]));
 
-	 		// ---------------------------------------------------------------------------------------
+		// ---------------------------------------------------------------------------------------
 		// Get column information
 		// ---------------------------------------------------------------------------------------
 		// Get column summary:
@@ -102,89 +105,98 @@ $: try {
 		// Set column formats
 		value_format_object = valueFmt ? getFormatObjectFromString(valueFmt) : valueFormat;
 
-	 // ---------------------------------------------------------------------------------------
+		// ---------------------------------------------------------------------------------------
 		// Set chart container height
 		// ---------------------------------------------------------------------------------------
 
 		if (chartAreaHeight) {
-				// if chartAreaHeight was user-supplied
-				chartAreaHeight = Number(chartAreaHeight);
-				if (isNaN(chartAreaHeight)) {
-					// input must be a number
-					throw Error('chartAreaHeight must be a number');
-				} else if (chartAreaHeight <= 0) {
-					throw Error('chartAreaHeight must be a positive number');
-				}
+			// if chartAreaHeight was user-supplied
+			chartAreaHeight = Number(chartAreaHeight);
+			if (isNaN(chartAreaHeight)) {
+				// input must be a number
+				throw Error('chartAreaHeight must be a number');
+			} else if (chartAreaHeight <= 0) {
+				throw Error('chartAreaHeight must be a positive number');
 			}
+		}
 
 		gridHeight = chartAreaHeight ?? Math.max(100, distinctYears.length * 135); // height to add for each row (each item on y axis)
-		height = `${0 + (legend * 35) + (hasTitle * 18) + (hasSubtitle * 18) + gridHeight}px`; // chart container height
+		height = `${0 + legend * 35 + hasTitle * 18 + hasSubtitle * 18 + gridHeight}px`; // chart container height
 
-    baseSeriesConfig = {
-					type: 'heatmap',
-                    coordinateSystem: 'calendar',
-					data: arrayOfArrays,
-					emphasis: {
-						itemStyle: {
-							shadowBlur: 2,
-							shadowColor: 'rgba(0, 0, 0, 0.5)'
-						}
-					}
+		baseSeriesConfig = {
+			type: 'heatmap',
+			coordinateSystem: 'calendar',
+			data: arrayOfArrays,
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 2,
+					shadowColor: 'rgba(0, 0, 0, 0.5)'
 				}
+			}
+		};
 
-        baseCalendarConfig = {
-                left: yearLabel ? 40 : 20,
-                right: 5,
-                cellSize: ['auto', 13],
-                itemStyle: {
-					borderWidth: 0.5,
-					borderColor: uiColours.grey300
-                },
-				splitLine: {
-					show: true,
-					lineStyle: {
-						color: uiColours.grey600
-					}
-				},
-				monthLabel: {show: monthLabel, color: uiColours.grey700},
-				dayLabel: {show: dayLabel, color: uiColours.grey700},
-                yearLabel: { show: yearLabel, color: uiColours.grey300 , fontSize: 16, fontWeight: 600, margin: 25}
-            }
-                for(let i = 0; i<yearCount; i++){
-					if(i === 0){
-						seriesConfig = []
-						calendarConfig = []
-					}
+		baseCalendarConfig = {
+			left: yearLabel ? 40 : 20,
+			right: 5,
+			cellSize: ['auto', 13],
+			itemStyle: {
+				borderWidth: 0.5,
+				borderColor: uiColours.grey300
+			},
+			splitLine: {
+				show: true,
+				lineStyle: {
+					color: uiColours.grey600
+				}
+			},
+			monthLabel: { show: monthLabel, color: uiColours.grey700 },
+			dayLabel: { show: dayLabel, color: uiColours.grey700 },
+			yearLabel: {
+				show: yearLabel,
+				color: uiColours.grey300,
+				fontSize: 16,
+				fontWeight: 600,
+				margin: 25
+			}
+		};
+		for (let i = 0; i < yearCount; i++) {
+			if (i === 0) {
+				seriesConfig = [];
+				calendarConfig = [];
+			}
 
-					// Create series config
-                    const seriesData = mapColumnsToArray(updatedData.filter(d => d.year === distinctYears[i]),date, value)
-                    const thisSeriesConfig = {...baseSeriesConfig};
-                    thisSeriesConfig.data = seriesData;
-					thisSeriesConfig.calendarIndex = i;
+			// Create series config
+			const seriesData = mapColumnsToArray(
+				updatedData.filter((d) => d.year === distinctYears[i]),
+				date,
+				value
+			);
+			const thisSeriesConfig = { ...baseSeriesConfig };
+			thisSeriesConfig.data = seriesData;
+			thisSeriesConfig.calendarIndex = i;
 
-                    // Create calendar config
-                    const thisCalendarConfig = {...baseCalendarConfig};
-                    let minDate = seriesData[0][0];
-                    let maxDate = seriesData[0][0];
+			// Create calendar config
+			const thisCalendarConfig = { ...baseCalendarConfig };
+			let minDate = seriesData[0][0];
+			let maxDate = seriesData[0][0];
 
-                    // Loop through the array to find min and max dates
-                    seriesData.forEach(item => {
-						const currentDate = item[0];
-						if (currentDate < minDate) {
-							minDate = currentDate;
-						}
-						if (currentDate > maxDate) {
-							maxDate = currentDate;
-						}
-                    });
+			// Loop through the array to find min and max dates
+			seriesData.forEach((item) => {
+				const currentDate = item[0];
+				if (currentDate < minDate) {
+					minDate = currentDate;
+				}
+				if (currentDate > maxDate) {
+					maxDate = currentDate;
+				}
+			});
 
-					const days = Math.round((new Date(maxDate) - new Date(minDate)) / (1000 * 60 * 60 * 24)) + 1;
-					thisCalendarConfig.range = distinctYears[i];
-					thisCalendarConfig.top = (hasTitle * 20) + (hasSubtitle * 20) + 25 + (i * 135);
+			thisCalendarConfig.range = distinctYears[i];
+			thisCalendarConfig.top = hasTitle * 20 + hasSubtitle * 20 + 25 + i * 135;
 
-					seriesConfig.push(thisSeriesConfig)
-                    calendarConfig.push(thisCalendarConfig)
-                }
+			seriesConfig.push(thisSeriesConfig);
+			calendarConfig.push(thisCalendarConfig);
+		}
 
 		config = {
 			title: {
@@ -193,7 +205,7 @@ $: try {
 			},
 			animation: false,
 			grid: {
-				height: gridHeight,
+				height: gridHeight
 			},
 			tooltip: {
 				trigger: 'item',
@@ -230,7 +242,7 @@ $: try {
 				},
 				order: 'valueDesc'
 			},
-            calendar: calendarConfig,
+			calendar: calendarConfig,
 			visualMap: {
 				show: legend,
 				itemWidth: 10,
@@ -242,27 +254,31 @@ $: try {
 				bottom: 10,
 				handleStyle: {
 					borderColor: uiColours.grey200
-				},				
+				},
 				inRange: {
-					color: colorPalette ?? ['rgb(254,234,159)','rgb(218,66,41)']
+					color: colorPalette ?? ['rgb(254,234,159)', 'rgb(218,66,41)']
 				},
 				text: filter
 					? undefined
-					: [formatValue(maxValue, value_format_object), formatValue(minValue, value_format_object)],
-					formatter: function (value) {
+					: [
+							formatValue(maxValue, value_format_object),
+							formatValue(minValue, value_format_object)
+					  ],
+				formatter: function (value) {
 					return formatValue(value, value_format_object);
-				},
+				}
 			},
 			series: seriesConfig,
-			media: [{
-				query: {maxWidth: 400},
-				option: {
-					calendar: []
+			media: [
+				{
+					query: { maxWidth: 400 },
+					option: {
+						calendar: []
+					}
 				}
-			}
 			]
-		}
-		
+		};
+
 		mobileCalendarConfig = {
 			left: yearLabel ? 40 : 20,
 			right: 5,
@@ -278,54 +294,43 @@ $: try {
 				}
 			},
 			monthLabel: {
-				show: monthLabel, 
+				show: monthLabel,
 				color: uiColours.grey700,
 				fontSize: 10,
-				formatter: function(param){
-					return param.nameMap.substring(0,1)
+				formatter: function (param) {
+					return param.nameMap.substring(0, 1);
 				}
 			},
 			dayLabel: {
-				show: dayLabel, 
+				show: dayLabel,
 				color: uiColours.grey700,
 				fontSize: 10,
 				margin: 7
 			},
 			yearLabel: {
-				show: yearLabel, 
-				color: uiColours.grey300, 
-				fontSize: 16, 
-				fontWeight: 600, 
+				show: yearLabel,
+				color: uiColours.grey300,
+				fontWeight: 600,
 				margin: 25,
 				fontSize: 14
 			}
+		};
+
+		for (let i = 0; i < config.calendar.length; i++) {
+			config.media[0].option.calendar.push(mobileCalendarConfig);
 		}
-
-		for(let i=0;i<config.calendar.length; i++){
-			const thisCalendarConfig = mobileCalendarConfig;
-			config.media[0].option.calendar.push(mobileCalendarConfig)
+	} catch (e) {
+		error = e.message;
+		console.error('Error in Calendar Heatmap: ' + error);
+		// if the build is in production fail instead of sending the error to the chart
+		if (strictBuild) {
+			throw error;
 		}
-
-
-} catch (e) {
-	error = e.message;
-	console.error('Error in Calendar Heatmap: ' + error);
-	// if the build is in production fail instead of sending the error to the chart
-	if (strictBuild) {
-		throw error;
 	}
-}
-	
 </script>
 
 {#if error}
 	<ErrorChart chartType="Calendar Heatmap" {error} />
 {:else}
-	<ECharts
-		{height}
-		{data}
-		{queryID}
-		{config}
-		{printEchartsConfig}
-	/>
+	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} />
 {/if}

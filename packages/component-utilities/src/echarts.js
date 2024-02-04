@@ -118,7 +118,7 @@ export default (node, option) => {
 				animation: {
 					duration: ANIMATION_DURATION
 				}
-			})
+			});
 		},
 		destroy() {
 			if (resizeObserver) {
