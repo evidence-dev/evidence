@@ -92,44 +92,52 @@
 								{(index + i + 1).toLocaleString()}
 							{/if}
 						</td>
-						{#each Object.values(row) as cell, j}
-							{#if cell == null}
+						{#each columnSummary as column, j}
+							{#if row[column.id] == null}
 								<td class="null {columnSummary[j].type}" style="width:{columnWidths}%">
 									{'Ø'}
 								</td>
 							{:else if columnSummary[j].type === 'number'}
 								<td class="number" style="width:{columnWidths}%;">
-									{formatValue(cell, columnSummary[j].format, columnSummary[j].columnUnitSummary)}
+									{formatValue(
+										row[column.id],
+										columnSummary[j].format,
+										columnSummary[j].columnUnitSummary
+									)}
 								</td>
 							{:else if columnSummary[j].type === 'date'}
 								<td
 									class="string"
 									style="width:{columnWidths}%"
 									title={formatValue(
-										cell,
+										row[column.id],
 										columnSummary[j].format,
 										columnSummary[j].columnUnitSummary
 									)}
 								>
 									<div>
-										{formatValue(cell, columnSummary[j].format, columnSummary[j].columnUnitSummary)}
+										{formatValue(
+											row[column.id],
+											columnSummary[j].format,
+											columnSummary[j].columnUnitSummary
+										)}
 									</div>
 								</td>
 							{:else if columnSummary[j].type === 'string'}
-								<td class="string" style="width:{columnWidths}%" title={cell}>
+								<td class="string" style="width:{columnWidths}%" title={row[column.id]}>
 									<div>
-										{cell || 'Ø'}
+										{row[column.id] || 'Ø'}
 									</div>
 								</td>
 							{:else if columnSummary[j].type === 'boolean'}
-								<td class="boolean" style="width:{columnWidths}%" title={cell}>
+								<td class="boolean" style="width:{columnWidths}%" title={row[column.id]}>
 									<div>
-										{cell ?? 'Ø'}
+										{row[column.id] ?? 'Ø'}
 									</div>
 								</td>
 							{:else}
 								<td class="other" style="width:{columnWidths}%">
-									{cell || 'Ø'}
+									{row[column.id] || 'Ø'}
 								</td>
 							{/if}
 						{/each}
