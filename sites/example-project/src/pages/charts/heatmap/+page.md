@@ -1,5 +1,10 @@
 # Heatmap
 
+```all
+select * from orders
+limit 5
+```
+
 ```orders
 select category, dayname(order_datetime) as day, dayofweek(order_datetime) as day_num, count(*) as order_count from orders
 group by all
@@ -13,6 +18,7 @@ select concat(category,'_x') as category, day, day_num, order_count from ${order
 union all
 select concat(category,'_w') as category, day, day_num, order_count from ${orders}
 ```
+
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 
@@ -70,8 +76,40 @@ select 'Wed' as day, 'DEF' as category, 190 as value
 <Heatmap data={test_data} x=day y=category value=value colorPalette={['rgb(254,234,159)','rgb(218,66,41)']}/>
 
         
-
-
-
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+```item_channel
+select item, channel, count(1) as orders from orders
+group by all
+```
+
+<Heatmap data={item_channel} x=channel y=item value=orders/>
+
+```item_month
+select item, monthname(order_datetime) as month, count(1) as orders from orders
+group by all
+```
+
+<Heatmap data={item_month} x=month y=item value=orders valueLabels=true borders=false colorPalette={['white', 'purple']}/>
+
+
+```item_state
+select item, state, count(1) as orders from orders
+group by all
+order by state desc, item asc
+```
+
+<Heatmap 
+    data={item_state} 
+    x=item 
+    y=state 
+    value=orders 
+    xLabelRotation=-45
+    colorPalette={['white', 'maroon']} 
+    title="Item Sales"
+    subtitle="By State"
+    rightPadding=40
+    cellHeight=25
+/>

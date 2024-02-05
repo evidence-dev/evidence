@@ -30,6 +30,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     value=orders
     title="Calendar Heatmap"
     subtitle="Daily Orders"
+    yearLabel=false
 />
 
 ```oneyear

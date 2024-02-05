@@ -40,16 +40,16 @@
 
 	let hasTitle = title !== undefined;
 	let hasSubtitle = subtitle !== undefined;
-
+	
 	export let borders = true;
 	$: borders = borders === 'true' || borders === true;
-
+	
 	export let legend = true;
 	$: legend = legend === 'true' || legend === true;
 
 	export let filter = false;
 	$: filter = filter === 'true' || filter === true;
-
+	
 	export let colorPalette = undefined;
 
 	export let min = undefined;
@@ -62,6 +62,10 @@
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+
+	export let leftPadding = 0; // user option to avoid label cutoffs
+	export let rightPadding = 0; // user option to avoid label cutoffs
+	export let cellHeight = 30;
 
 	$: height = undefined;
 	$: gridHeight = undefined;
@@ -79,7 +83,7 @@
 	function mapColumnsToArray(arrayOfObjects, col1, col2, col3) {
 		return arrayOfObjects.map((obj) => [obj[col1], obj[col2], obj[col3]]);
 	}
-
+	
 	let xDistinct;
 	let yDistinct;
 	let arrayOfArrays;
@@ -94,16 +98,16 @@
 
 	let config;
 
-	$: try {
-		checkInputs(data, [x, y, value]);
+$: try {
+	checkInputs(data, [x, y, value]);
 
-		minValue = min ?? Math.min(...data.map((d) => d[value]));
-		maxValue = max ?? Math.max(...data.map((d) => d[value]));
+	minValue = min ?? Math.min(...data.map((d) => d[value]));
+	maxValue = max ?? Math.max(...data.map((d) => d[value]));
 
-		xDistinct = getDistinctValues(data, x);
-		yDistinct = getDistinctValues(data, y);
+	xDistinct = getDistinctValues(data, x);
+	 yDistinct = getDistinctValues(data, y);
 
-		arrayOfArrays = mapColumnsToArray(data, x, y, value);
+	 arrayOfArrays = mapColumnsToArray(data, x, y, value);
 
 		// ---------------------------------------------------------------------------------------
 		// Get column information
@@ -116,32 +120,39 @@
 		// Set column formats
 		value_format_object = valueFmt ? getFormatObjectFromString(valueFmt) : valueFormat;
 
+
+
 		// ---------------------------------------------------------------------------------------
 		// Set chart container height
 		// ---------------------------------------------------------------------------------------
 
 		if (chartAreaHeight) {
-			// if chartAreaHeight was user-supplied
-			chartAreaHeight = Number(chartAreaHeight);
-			if (isNaN(chartAreaHeight)) {
-				// input must be a number
-				throw Error('chartAreaHeight must be a number');
-			} else if (chartAreaHeight <= 0) {
-				throw Error('chartAreaHeight must be a positive number');
+				// if chartAreaHeight was user-supplied
+				chartAreaHeight = Number(chartAreaHeight);
+				if (isNaN(chartAreaHeight)) {
+					// input must be a number
+					throw Error('chartAreaHeight must be a number');
+				} else if (chartAreaHeight <= 0) {
+					throw Error('chartAreaHeight must be a positive number');
+				}
 			}
-		}
 
-		gridHeight = chartAreaHeight ?? Math.max(100, yDistinct.length * 30); // height to add for each row (each item on y axis)
-		height = `${20 + legend * 35 + hasTitle * 18 + hasSubtitle * 18 + gridHeight}px`; // chart container height
+		gridHeight = chartAreaHeight ?? Math.max(100, yDistinct.length * cellHeight); // height to add for each row (each item on y axis)
+		height = `${20 + (legend * 35) + (hasTitle * 18) + (hasSubtitle * 18) + gridHeight}px`; // chart container height
 		config = {
 			title: {
 				text: title,
 				subtext: subtitle
 			},
 			animation: false,
+			tooltip: {
+				position: 'top'
+			},
 			grid: {
 				height: gridHeight,
-				top: hasTitle * 20 + hasSubtitle * 20 + 8
+				top: (hasTitle * 20) + (hasSubtitle * 20) + 8, 
+				left: leftPadding,
+				right: rightPadding
 			},
 			xAxis: {
 				type: 'category',
@@ -221,17 +232,14 @@
 					borderColor: uiColours.grey200
 				},
 				inRange: {
-					color: colorPalette ?? ['rgb(254,234,159)', 'rgb(218,66,41)']
+					color: colorPalette ?? ['rgb(254,234,159)','rgb(218,66,41)']
 				},
 				text: filter
 					? undefined
-					: [
-							formatValue(maxValue, value_format_object),
-							formatValue(minValue, value_format_object)
-					  ],
-				formatter: function (value) {
+					: [formatValue(maxValue, value_format_object), formatValue(minValue, value_format_object)],
+					formatter: function (value) {
 					return formatValue(value, value_format_object);
-				}
+				},
 			},
 			series: [
 				{
@@ -239,8 +247,8 @@
 					data: arrayOfArrays,
 					label: {
 						show: valueLabels,
-						formatter: function (params) {
-							return formatValue(params.value[2], value_format_object);
+						formatter: function(params){
+							return formatValue(params.value[2], value_format_object)
 						}
 					},
 					labelLayout: {
@@ -252,39 +260,37 @@
 					}
 				}
 			],
-			media: [
-				{
-					query: { maxWidth: 400 },
-					option: {
-						series: {
-							label: {
-								show: mobileValueLabels
-							}
-						}
+			media: [{
+				query: {maxWidth: 400},
+				option: {series: {
+					label: {
+						show: mobileValueLabels
 					}
-				},
-				{
-					query: { minWidth: 400 },
-					option: {
-						series: {
-							label: {
-								show: valueLabels
-							}
-						}
+				}}
+			},
+			{
+				query: {minWidth: 400},
+				option: {series: {
+					label: {
+						show: valueLabels
 					}
-				}
+				}}
+			}
 			]
-		};
-	} catch (e) {
-		error = e.message;
-		console.error('Error in Heatmap: ' + e.message);
-		// if the build is in production fail instead of sending the error to the chart
-		if (strictBuild) {
-			throw error;
 		}
-	}
 
-	$: data, height, config;
+
+} catch (e) {
+	error = e.message;
+	console.error('Error in Heatmap: ' + e.message);
+	// if the build is in production fail instead of sending the error to the chart
+	if (strictBuild) {
+		throw error;
+	}
+}
+	
+$: data, height, config;
+
 </script>
 
 {#if error}

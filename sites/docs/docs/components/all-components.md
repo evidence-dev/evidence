@@ -376,6 +376,34 @@ hide_table_of_contents: false
 </div>
 </div>
 
+### [Heatmap](heatmap)
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Basic Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/heatmap#basic-heatmap">
+
+![map](/img/heatmap-basic.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Customized Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/heatmap#rotated-labels">
+
+![map](/img/heatmap-item-state.png)
+
+</a>
+</div>
+</div>
+
 ### [Histogram](histogram)
 
 <div  class="gallery-item-grid">
