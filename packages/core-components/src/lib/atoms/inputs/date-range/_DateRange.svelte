@@ -37,7 +37,9 @@
 	// run once when selectedDateRange is defined
 	let once = true;
 	$: if (!selectedDateRange || once) {
-		once = !selectedDateRange;
+		if (selectedDateRange) {
+			once = false;
+		}
 		selectedDateRange = {
 			start: calendarStart,
 			end: calendarEnd

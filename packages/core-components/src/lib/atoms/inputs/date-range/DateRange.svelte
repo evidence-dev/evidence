@@ -60,8 +60,7 @@
 			? dateToYYYYMMDD($query?.[0].end)
 			: dateToYYYYMMDD(new Date());
 
-	// reactive statements don't run in SSR so we just suck in everything
-	$: $inputs[name] = { start, end };
+	$: $inputs[name] = { start: startString, end: endString };
 
 	let selectedDateRange;
 	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
