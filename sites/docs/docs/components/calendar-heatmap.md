@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 17
 title: Calendar Heatmap
 hide_table_of_contents: false
 ---

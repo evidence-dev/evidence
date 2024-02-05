@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 16
 title: Heatmap
 hide_table_of_contents: false
 ---
