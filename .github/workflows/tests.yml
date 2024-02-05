@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
         isNext:
-          - ${{ github.ref == 'refs/head/next' }}
+          - ${{ github.base_ref == 'refs/head/next' }}
         exclude:
           - isNext: true
             node-version: 18
