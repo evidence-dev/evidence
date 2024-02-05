@@ -64,11 +64,12 @@
 	}
 
 	function selectedValuesToInput() {
+		const values = $selectedValues.map((x) => x.value);
+		values.toString = () => (multiple ? jsToDuckDB(values) : jsToDuckDB(values[0]));
+
 		$inputs[name] = {
 			label: $selectedValues.map((x) => x.label).join(', '),
-			value: multiple
-				? `[${$selectedValues.map((v) => jsToDuckDB(v.value)).join(',')}]`
-				: jsToDuckDB($selectedValues[0].value)
+			value: values
 		};
 	}
 

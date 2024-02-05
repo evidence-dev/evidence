@@ -7402,7 +7402,7 @@ packages:
       '@parcel/diagnostic': 2.9.3
       '@parcel/logger': 2.9.3
       '@parcel/profiler': 2.9.3
-      '@parcel/types': 2.9.3(@parcel/core@2.11.0)
+      '@parcel/types': 2.9.3(@parcel/core@2.8.3)
       '@parcel/utils': 2.9.3
       nullthrows: 1.1.1
     dev: true
@@ -7417,7 +7417,7 @@ packages:
       '@parcel/diagnostic': 2.9.3
       '@parcel/logger': 2.9.3
       '@parcel/profiler': 2.9.3
-      '@parcel/types': 2.9.3(@parcel/core@2.11.0)
+      '@parcel/types': 2.9.3(@parcel/core@2.8.3)
       '@parcel/utils': 2.9.3
       nullthrows: 1.1.1
     dev: true
