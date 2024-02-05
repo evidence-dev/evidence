@@ -68,3 +68,14 @@ Orders of {inputs.multiple_selected_order_ids.label}
 <CustomInput name="nested" />
 
 {inputs.nested.lower} {inputs.nested.upper} {inputs.nested.selected}
+
+## Small Demo
+
+<Dropdown multiple title="Item" name="item" value="item" data="orders" />
+<DateRange name="range" dates="order_datetime" data="orders" />
+
+```selected_items
+SELECT * FROM orders WHERE list_contains(${inputs.item.value}, item) AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}'
+```
+
+<DataTable data={selected_items} />
