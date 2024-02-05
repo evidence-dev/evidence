@@ -64,8 +64,15 @@
 	}
 
 	function selectedValuesToInput() {
-		const values = $selectedValues.map((x) => x.value);
-		values.toString = () => (multiple ? jsToDuckDB(values) : jsToDuckDB(values[0]));
+		let values;
+		if (multiple) {
+			values = $selectedValues.map((x) => x.value);
+			values.toString = () => jsToDuckDB(values);
+		} else {
+			values = $selectedValues[0]?.value ?? null;
+			// the default `toString` method for Dates aren't good for duckdb
+			if (values instanceof Date) values.toString = () => jsToDuckDB(values);
+		}
 
 		$inputs[name] = {
 			label: $selectedValues.map((x) => x.label).join(', '),
