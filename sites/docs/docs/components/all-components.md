@@ -404,6 +404,35 @@ hide_table_of_contents: false
 </div>
 </div>
 
+
+### [Calendar Heatmap](heatmap)
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Calendar Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/calendar-heatmap#custom-color-palette">
+
+![map](/img/calendar-heatmap-customcolor.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Multi-year Calendar Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/calendar-heatmap#multi-year-calendar-heatmap">
+
+![map](/img/calendar-heatmap-multiyear.png)
+
+</a>
+</div>
+</div>
+
 ### [Histogram](histogram)
 
 <div  class="gallery-item-grid">
