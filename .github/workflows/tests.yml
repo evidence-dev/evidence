@@ -13,18 +13,18 @@ jobs:
     strategy:
       fail-fast: false
 
-      isNext:
-        - ${{ github.ref == 'refs/head/next' }}
 
       matrix:
         node-version: [18, 20]
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
-      exclude:
-        - isNext: true
-          node-version: 18
-        - isNext: true
-          os: macOS-latest
+        isNext:
+          - ${{ github.ref == 'refs/head/next' }}
+        exclude:
+          - isNext: true
+            node-version: 18
+          - isNext: true
+            os: macOS-latest
 
     steps:
       - run: git config --global core.autocrlf false
