@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.2
+
+### Patch Changes
+
+- e4e7d822: fix fully null boolean column with float64 conversion
+
 ## 2.0.1
 
 ### Patch Changes

@@ -51,6 +51,7 @@
 		"build:dev-workspace": "run-s build:example-project",
 		"build:production": "VITE_BUILD_STRICT=true pnpm --filter ./sites/example-project build",
 		"build:docs": "pnpm --filter ./sites/docs build",
+		"build:test-env": "pnpm --filter ./sites/test-env build",
 		"serve:docs": "pnpm --filter ./sites/docs serve",
 		"release": "run-s package:core-components build:tailwind build:evidence build:plugin-connector && pnpm changeset publish",
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
@@ -69,8 +70,11 @@
 		"build:tailwind": "pnpm --filter ./packages/tailwind build",
 		"build:query-store": "pnpm --filter ./packages/query-store build",
 		"dev:example-project": "pnpm --filter ./sites/example-project dev",
-		"sources:example-project": "pnpm --filter ./sites/example-project sources",
+		"dev:test-env": "pnpm --filter ./sites/test-env dev",
 		"dev:core-components": "pnpm --filter ./packages/core-components package:watch",
+		"sources:example-project": "pnpm --filter ./sites/example-project sources",
+		"sources:test-env": "pnpm --filter ./sites/test-env sources",
+		"preview:test-env": "pnpm --filter ./sites/test-env preview",
 		"test:component-utilities:watch": "pnpm --filter ./packages/component-utilities test:watch"
 	},
 	"pnpm": {

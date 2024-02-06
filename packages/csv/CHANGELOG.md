@@ -1,5 +1,15 @@
 # @evidence-dev/csv
 
+## 1.0.5
+
+### Patch Changes
+
+- 2bcbf0ed: Add keywords to improve searchability for datasources
+- Updated dependencies [31381835]
+- Updated dependencies [2bcbf0ed]
+  - @evidence-dev/db-commons@1.0.3
+  - @evidence-dev/duckdb@1.0.5
+
 ## 1.0.4
 
 ### Patch Changes

@@ -11,11 +11,13 @@
 	$: spreadProps = {
 		...Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined))
 	};
+
+	let queryID = data?.id;
 </script>
 
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
-	<Chart {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}>
+	<Chart {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Chart>
 </QueryLoad>

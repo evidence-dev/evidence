@@ -1,5 +1,13 @@
 # @evidence-dev/mssql
 
+## 1.0.5
+
+### Patch Changes
+
+- 2bcbf0ed: Add keywords to improve searchability for datasources
+- Updated dependencies [31381835]
+  - @evidence-dev/db-commons@1.0.3
+
 ## 1.0.4
 
 ### Patch Changes
