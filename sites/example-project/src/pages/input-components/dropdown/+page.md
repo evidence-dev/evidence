@@ -71,3 +71,19 @@ and date_part('year', order_datetime) = '${inputs.year.value}'
 
 
 
+## Multi Select
+
+<Dropdown name=multi_select data={categories} value=category multiple title=Categories/>
+
+## A huge amount of options
+
+```sql purchases
+select "Vendor" as vendor from purchases group by all
+```
+
+<Dropdown name=vendor data={purchases} value=vendor multiple title=Vendors/>
+
+### Selected values
+
+{inputs.vendor.label}
+
