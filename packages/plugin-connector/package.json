@@ -43,7 +43,7 @@
 		"@parcel/transformer-inline-string": "^2.8.3",
 		"@parcel/transformer-typescript-types": "^2.8.3",
 		"@types/mock-fs": "^4.13.1",
-		"@types/node": "20.8.4",
+		"@types/node": "20.8.5",
 		"commander": "^11.0.0",
 		"mock-fs": "^5.2.0",
 		"parcel": "^2.8.3",
