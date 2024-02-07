@@ -1,5 +1,12 @@
 # @evidence-dev/csv
 
+## 1.0.6-features-a.0
+
+### Patch Changes
+
+- Updated dependencies [ddf584d4]
+  - @evidence-dev/duckdb@1.0.6-features-a.0
+
 ## 1.0.5
 
 ### Patch Changes

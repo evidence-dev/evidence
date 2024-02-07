@@ -1,0 +1,41 @@
+{
+  "mode": "pre",
+  "tag": "features-a",
+  "initialVersions": {
+    "@evidence-dev/bigquery": "2.0.4",
+    "@evidence-dev/component-utilities": "2.1.0",
+    "@evidence-dev/core-components": "3.2.0",
+    "@evidence-dev/csv": "1.0.5",
+    "@evidence-dev/databricks": "1.0.3",
+    "@evidence-dev/db-commons": "1.0.3",
+    "@evidence-dev/db-orchestrator": "3.0.8",
+    "@evidence-dev/duckdb": "1.0.5",
+    "@evidence-dev/evidence": "26.0.0",
+    "@evidence-dev/faker-datasource": "2.0.3",
+    "@evidence-dev/mssql": "1.0.5",
+    "@evidence-dev/mysql": "1.0.3",
+    "@evidence-dev/plugin-connector": "2.0.6",
+    "@evidence-dev/postgres": "1.0.3",
+    "@evidence-dev/preprocess": "4.0.1",
+    "@evidence-dev/query-store": "2.0.2",
+    "@evidence-dev/redshift": "1.0.3",
+    "@evidence-dev/snowflake": "1.0.3",
+    "@evidence-dev/sqlite": "2.0.3",
+    "@evidence-dev/tailwind": "2.0.0",
+    "@evidence-dev/telemetry": "2.0.3",
+    "@evidence-dev/trino": "1.0.4",
+    "@evidence-dev/universal-sql": "2.0.2",
+    "evidence-docs": "2.0.5",
+    "@evidence-dev/components": "3.2.0",
+    "evidence-test-environment": "3.0.11",
+    "ui-tests": "1.2.1"
+  },
+  "changesets": [
+    "beige-hairs-pretend",
+    "eighty-clocks-think",
+    "gentle-pianos-compare",
+    "hungry-suits-swim",
+    "tidy-pears-impress",
+    "wicked-pugs-type"
+  ]
+}

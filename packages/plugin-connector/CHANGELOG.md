@@ -1,5 +1,20 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.7-features-a.0
+
+### Patch Changes
+
+- c3a616d8: Improves input components, including adding a Date Range, and support for multi-select.
+
+  BREAKING: this changes the way you access the value of the input components.
+
+  - Previously: '\${inputs.input_name.}'
+  - Now: '${inputs.input_name.label}', '${inputs.input_name.value}', '${inputs.input_name.start}', '${inputs.input_name.end}' etc
+
+- Updated dependencies [c3a616d8]
+- Updated dependencies [f4ccf03c]
+  - @evidence-dev/universal-sql@2.0.3-features-a.0
+
 ## 2.0.6
 
 ### Patch Changes

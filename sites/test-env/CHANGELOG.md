@@ -1,5 +1,28 @@
 # evidence-test-environment
 
+## 3.0.12-features-a.0
+
+### Patch Changes
+
+- c3a616d8: Improves input components, including adding a Date Range, and support for multi-select.
+
+  BREAKING: this changes the way you access the value of the input components.
+
+  - Previously: '\${inputs.input_name.}'
+  - Now: '${inputs.input_name.label}', '${inputs.input_name.value}', '${inputs.input_name.start}', '${inputs.input_name.end}' etc
+
+- Updated dependencies [9176c2cc]
+- Updated dependencies [ddf584d4]
+- Updated dependencies [3e1da500]
+- Updated dependencies [c3a616d8]
+- Updated dependencies [5e9b27db]
+  - @evidence-dev/component-utilities@2.1.1-features-a.0
+  - @evidence-dev/core-components@4.0.0-features-a.0
+  - @evidence-dev/duckdb@1.0.6-features-a.0
+  - @evidence-dev/evidence@27.0.0-features-a.0
+  - @evidence-dev/faker-datasource@2.0.4-features-a.0
+  - @evidence-dev/csv@1.0.6-features-a.0
+
 ## 3.0.11
 
 ### Patch Changes
