@@ -124,4 +124,11 @@ LIMIT 10 -- Optionally limit to only show the 10 closest results
         <td class='tcenter'>-</td>
         <td class='tcenter'>Type to search</td>
     </tr>
+    <tr>	
+        <td>hideDuringPrint</td>
+        <td>Hide the component when the report is printed</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
+    </tr>
 </table>
