@@ -49,9 +49,9 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="inline-flex flex-col mt-2 mb-4 mx-1">
 		{#if title}
-			<span class="text-gray-500 block mb-1">{title}</span>
+			<span class="text-gray-900 text-sm block mb-1">{title}</span>
 		{/if}
-		<div class="inline-flex" role="group">
+		<div class="inline-flex rounded-md shadow-sm" role="group">
 			{#if preset}
 				{#if presets[preset]}
 					{#each presets[preset] as { value, valueLabel }}
