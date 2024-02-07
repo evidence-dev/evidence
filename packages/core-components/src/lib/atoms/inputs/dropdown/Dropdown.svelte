@@ -5,7 +5,10 @@
 <script>
 	import VirtualList from './Virtual.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { buildInputQuery, buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import {
+		buildReactiveInputQuery,
+		buildQuery
+	} from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
@@ -112,11 +115,14 @@
 
 	export let value, data, label, order, where;
 	/** @type {import("@evidence-dev/component-utilities/buildQuery.js").QueryProps}*/
-	$: ({ hasQuery, query } = buildInputQuery(
+	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`Dropdown-${name}`,
 		$page.data.data[`Dropdown-${name}`]
-	));
+	);
+	$: update({ value, data, label, order, where });
+	$: ({ hasQuery, query } = $results);
+
 	$: if (hasQuery && defaultValue) {
 		if (browser) {
 			(async () => {
