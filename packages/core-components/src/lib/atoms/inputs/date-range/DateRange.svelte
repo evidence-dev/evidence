@@ -74,7 +74,7 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 mx-1 inline-block">
 		{#if title}
-			<span class="text-sm text-gray-500 block">{title}</span>
+			<span class="text-sm text-gray-500 block mb-1">{title}</span>
 		{/if}
 
 		{#if $query?.error}
