@@ -47,7 +47,7 @@ select * from orders
 select * from orders where list_contains(${inputs.multiple_selected_order_ids.value}, id)
 ```
 
-<Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" />
+<Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" defaultValue={2772} />
 
 Orders of {inputs.multiple_selected_order_ids.label}
 
