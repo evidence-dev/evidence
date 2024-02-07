@@ -6,10 +6,15 @@ module.exports = {
 		'prettier',
 		'plugin:storybook/recommended'
 	],
+	parser: '@typescript-eslint/parser',
+	plugins: ['@typescript-eslint'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2020,
 		extraFileExtensions: ['.svelte']
+	},
+	rules: {
+		'no-unused-vars': ['warn', { varsIgnorePattern: '^\\$\\$(Props|Events|Slots)$' }]
 	},
 	env: {
 		browser: true,
@@ -18,7 +23,11 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: '*.svelte',
+			files: ['*.svelte'],
+			parser: 'svelte-eslint-parser',
+			parserOptions: {
+				parser: '@typescript-eslint/parser'
+			},
 			rules: {
 				'svelte/no-at-html-tags': 'off'
 			}
