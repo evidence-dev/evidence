@@ -65,6 +65,13 @@
 				start: startOfMonth(calendarEnd.subtract({ months: 12 })),
 				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
 			}
+		},
+		{
+			label: 'All Time',
+			range: {
+				start: calendarStart,
+				end: calendarEnd
+			}
 		}
 	] as Preset[];
 
