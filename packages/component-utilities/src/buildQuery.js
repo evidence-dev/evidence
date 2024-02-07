@@ -2,6 +2,7 @@ import { setContext, getContext } from 'svelte';
 import { Query, sql } from '@uwdata/mosaic-sql';
 import { QueryStore } from '@evidence-dev/query-store';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
+import { derived, writable } from 'svelte/store';
 
 const QUERY_CONTEXT_KEY = '___usql_query';
 /**
@@ -28,9 +29,39 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  */
 
 /**
+ * @param {QueryProps} queryProps
+ * @param {string} id
+ * @param {Array<Record<string,unknown>>} initialData
+ * @example export let value, data, label, order, where;
+ *  $: queryProps = {value, data, label, order, where}
+ *	const {results, update} = buildReactiveInputQuery(queryProps, `id`, $page.data.data[`id`])
+ *	$: update({value, data, label, order, where})
+ *	$: ({hasQuery, query} = $results)
+ */
+export const buildReactiveInputQuery = (queryProps, id, initialData) => {
+	const internal = writable(buildInputQuery(queryProps, id, initialData));
+
+	return {
+		results: derived(internal, (v) => v),
+		update: async (queryProps) => {
+			const { hasQuery, query } = buildInputQuery(queryProps, id);
+			if (!hasQuery) {
+				internal.set({ hasQuery: false });
+			} else {
+				internal.update(async (currentQuery) => {
+					if (query.hash !== currentQuery) await query.fetch();
+					return { hasQuery, query };
+				});
+			}
+		}
+	};
+};
+
+/**
  * @param {QueryProps} opts
  * @param {string} id
  * @returns { { hasQuery: false } | { hasQuery: true, query: QueryStore } }
+ * @deprecated Prefer buildReactiveInputQuery
  */
 export const buildInputQuery = ({ value, label, select, data, where, order }, id, initialData) => {
 	if (!data || !(value || select)) return { hasQuery: false };
