@@ -8,8 +8,8 @@
 	import DateRange from './_DateRange.svelte';
 	import { getContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import type { QueryStore } from '@evidence-dev/query-store';
-	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import { QueryStore } from '@evidence-dev/query-store';
+	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
@@ -32,13 +32,20 @@
 	export let data: QueryStore | string | undefined;
 	export let dates: string | undefined;
 
+	const exec = getQueryFunction();
 	let query;
 	$: if (data && dates) {
 		const source = typeof data === 'string' ? data : `(${data.text})`;
-		query = buildQuery(
+		debugger;
+		query = QueryStore.create(
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
+			exec,
 			`DateRange-${name}`,
-			$page.data.data[`DateRange-${name}`]
+			{
+				initialData: $page.data.data[`DateRange-${name}`],
+				disableCache: true,
+				noResolve: false
+			}
 		);
 	}
 
