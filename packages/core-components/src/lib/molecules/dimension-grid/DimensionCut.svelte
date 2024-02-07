@@ -9,6 +9,7 @@
 	import { buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import QueryLoad from '../../atoms/query-load/QueryLoad.svelte';
 
 	export let dimension;
 	export let data;
@@ -38,6 +39,15 @@
 	};
 
 	// Dimension Cut Query
+	let dimensionCutQuery = getDimensionCutQuery(
+		data,
+		dimension,
+		metric,
+		limit,
+		$selectedDimensions,
+		selectedValue
+	);
+
 	$: dimensionCutQuery = getDimensionCutQuery(
 		data,
 		dimension,
@@ -66,26 +76,25 @@
 	$: columnSummary = getColumnSummary($results, 'array')?.filter((d) => d.id === 'metric');
 </script>
 
-<pre>
-<!-- {$results.originalText} -->
-<!-- {selectedValue} -->
-<!-- {JSON.stringify($selectedDimensions)} -->
-</pre>
-{#if $results.error && $results.loaded}
-	<div class="text-red-500">
-		{$results.error}
+<!-- {dimensionCutQuery} -->
+
+<div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-4 pb-4">
+	<div class="capitalize border-b flex justify-between items-baseline">
+		<span class="truncate">
+			{formatTitle(dimension.name)}
+		</span>
+		<span class="truncate">
+			{metricLabel ?? ''}
+		</span>
 	</div>
-{:else}
-	<div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-4 pb-4">
-		<div class="capitalize border-b flex justify-between items-baseline">
-			<span class="truncate">
-				{formatTitle(dimension.name)}
-			</span>
-			<span class="truncate">
-				{metricLabel ?? ''}
-			</span>
-		</div>
-		{#each $results as row (row.dimensionValue)}
+	<QueryLoad data={results} let:loaded>
+		<p
+			slot="error"
+			class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
+		>
+			{$results.error}
+		</p>
+		{#each loaded as row (row.dimensionValue)}
 			<div
 				class={cn('flex transition duration-100 group cursor-pointer')}
 				on:click={updateSelected(row)}
@@ -103,5 +112,5 @@
 				/>
 			</div>
 		{/each}
-	</div>
-{/if}
+	</QueryLoad>
+</div>

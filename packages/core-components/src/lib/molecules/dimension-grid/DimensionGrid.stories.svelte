@@ -47,45 +47,6 @@
 </Story>
 
 <Story
-	name="With Grand Total"
-	let:args
-	args={{
-		data: fakerSeries.airlines.flights.store,
-		metric: 'sum(fare)',
-		others: false,
-		grandTotal: true
-	}}
->
-	<DimensionGrid {...args} />
-</Story>
-
-<Story
-	name="With Others, Grand Total"
-	let:args
-	args={{
-		data: fakerSeries.airlines.flights.store,
-		metric: 'sum(fare)',
-		others: true,
-		grandTotal: true
-	}}
->
-	<DimensionGrid {...args} />
-</Story>
-
-<Story
-	name="With Others, Complete List"
-	let:args
-	args={{
-		data: fakerSeries.airlines.flights.store,
-		metric: 'sum(fare)',
-		others: true,
-		limit: 20
-	}}
->
-	<DimensionGrid {...args} />
-</Story>
-
-<Story
 	name="Error: Invalid Metric"
 	let:args
 	args={{
