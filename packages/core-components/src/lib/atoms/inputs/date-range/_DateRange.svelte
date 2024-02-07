@@ -121,12 +121,13 @@
 		</Popover.Trigger>
 		<Popover.Content class="w-auto select-none p-0" align="start">
 			<RangeCalendar
-				bind:value={selectedDateRange}
+				{selectedDateRange}
 				bind:placeholder
 				initialFocus
 				numberOfMonths={1}
-				onValueChange={() => {
+				onValueChange={(value) => {
 					selectedPreset = undefined;
+					selectedDateRange = value;
 				}}
 				minValue={calendarStart}
 				maxValue={calendarEnd}
