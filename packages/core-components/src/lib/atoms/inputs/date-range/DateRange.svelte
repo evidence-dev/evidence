@@ -36,7 +36,6 @@
 	let query;
 	$: if (data && dates) {
 		const source = typeof data === 'string' ? data : `(${data.text})`;
-		debugger;
 		query = QueryStore.create(
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
 			exec,
