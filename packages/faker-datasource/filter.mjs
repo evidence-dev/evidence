@@ -1,8 +1,7 @@
-import { performance } from 'perf_hooks';
 /**
  * @typedef {Object} NotEqualsFilter
  * @property {"ne"} type
- s * @property {string[]} fields
+ * @property {string[]} fields
  */
 
 /**
@@ -25,7 +24,6 @@ export const filter = (rows, filters) => {
 		switch (filter.type) {
 			case 'unique':
 				// O(n) unique function
-				const before = performance.now();
 				/** @type {Record<string, boolean>} */
 				const uniq = {};
 				const distinct = [];
@@ -41,7 +39,7 @@ export const filter = (rows, filters) => {
 					distinct.push(row);
 					uniq[k] = true;
 				}
-				const after = performance.now();
+
 				outputRows = distinct;
 
 				break;
