@@ -1,5 +1,14 @@
 # evidence-test-environment
 
+## 3.0.12-features-a.1
+
+### Patch Changes
+
+- Updated dependencies [4115c5a5]
+  - @evidence-dev/component-utilities@2.1.1-features-a.1
+  - @evidence-dev/core-components@4.0.0-features-a.1
+  - @evidence-dev/evidence@27.0.0-features-a.1
+
 ## 3.0.12-features-a.0
 
 ### Patch Changes
