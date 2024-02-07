@@ -6,7 +6,10 @@
 	import VirtualList from './Virtual.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 
-	import { buildReactiveInputQuery, buildQuery } from '@evidence-dev/component-utilities/buildQuery';
+	import {
+		buildReactiveInputQuery,
+		buildQuery
+	} from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
