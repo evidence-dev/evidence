@@ -6,8 +6,6 @@
 	export let height = '100%';
 	export let itemHeight = undefined;
 
-	let foo;
-
 	// read-only, but visible to consumers via bind:start
 	export let start = 0;
 	export let end = 0;
