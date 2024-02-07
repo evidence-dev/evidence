@@ -20,9 +20,9 @@ jobs:
         isMain:
           - ${{ github.base_ref == 'main' }}
         exclude:
-          - isNext: false
+          - isMain: false
             node-version: 18
-          - isNext: false
+          - isMain: false
             os: macOS-latest
 
     steps:
