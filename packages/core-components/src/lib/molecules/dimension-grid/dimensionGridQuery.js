@@ -3,7 +3,7 @@
 // optionally includes an "Others" row and a "Grand Total" row, each which respect the whereClause
 
 // Where clause that optionally excludes any reference to the excluded dimension
-const getWhereClause = function (selectedDimensions, excludeDimension) {
+export const getWhereClause = function (selectedDimensions, excludeDimension) {
 	let whereClause = 'true';
 	if (excludeDimension) {
 		selectedDimensions = selectedDimensions?.filter((d) => d.dimension !== excludeDimension);

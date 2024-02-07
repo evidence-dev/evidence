@@ -28,10 +28,15 @@
 	args={{
 		data: fakerSeries.airlines.flights.store,
 		metric: 'count(*)',
-		others: false
+		others: false,
+		name: 'dimensiongrid'
 	}}
 >
 	<DimensionGrid {...args} />
+	<dl>
+		<dt class="font-bold">$inputStore.dimensiongrid</dt>
+		<dd class="ml-4">{$inputStore.dimensiongrid}</dd>
+	</dl>
 </Story>
 
 <Story
