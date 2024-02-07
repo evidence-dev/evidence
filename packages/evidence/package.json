@@ -35,7 +35,7 @@
 		"@evidence-dev/db-orchestrator": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "1.22.3",
-		"svelte": "3.56.0",
+		"svelte": "3.59.2",
 		"vite": "4.3.9"
 	},
 	"dependencies": {
@@ -62,7 +62,7 @@
 		"git-remote-origin-url": "4.0.0",
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
-		"svelte": "3.56.0",
+		"svelte": "3.59.2",
 		"svelte-preprocess": "5.0.3",
 		"svelte-tiny-linked-charts": "1.1.5",
 		"svelte2tsx": "0.6.0",

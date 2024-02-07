@@ -9,6 +9,8 @@ queries:
 
 <ButtonGroup data={categories} name=category_name value=category />
 
+<Dropdown data={categories} name=category value=category/>
+
 {inputs.category_name}
 
 ## With Title

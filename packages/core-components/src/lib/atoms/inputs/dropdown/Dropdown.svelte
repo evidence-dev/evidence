@@ -138,10 +138,8 @@
 <Invisible>
 	<slot />
 
-	{#if hasQuery}
-		{#each $items as item}
-			<DropdownOption value={item.value} valueLabel={item.label} />
-		{/each}
+	{#if hasQuery && $items.length > 0 && $items.loaded}
+		<DropdownOption value={$items[0].value} valueLabel={$items[0].label} />
 	{/if}
 </Invisible>
 
