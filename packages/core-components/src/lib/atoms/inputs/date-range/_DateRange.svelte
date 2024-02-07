@@ -34,17 +34,12 @@
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
 
-	// run once when selectedDateRange is defined
-	let once = true;
-	$: if (!selectedDateRange || once) {
-		if (selectedDateRange) {
-			once = false;
-		}
-		selectedDateRange = {
-			start: calendarStart,
-			end: calendarEnd
-		};
-	}
+	$: selectedDateRange ??= {
+		start: calendarStart,
+		end: calendarEnd
+	};
+	$: selectedDateRange.start = calendarStart;
+	$: selectedDateRange.end = calendarEnd;
 
 	type Preset = {
 		label: string;
