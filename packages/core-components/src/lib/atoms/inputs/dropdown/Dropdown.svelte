@@ -5,11 +5,7 @@
 <script>
 	import VirtualList from './Virtual.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-
-	import {
-		buildReactiveInputQuery,
-		buildQuery
-	} from '@evidence-dev/component-utilities/buildQuery';
+	import { buildInputQuery, buildQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
@@ -22,6 +18,7 @@
 	import Badge from '$lib/atoms/shadcn/badge/badge.svelte';
 	import Invisible from './Invisible.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import { browser } from '$app/environment';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
@@ -48,8 +45,7 @@
 	export let defaultValue = undefined;
 
 	setContext('dropdown_context', {
-		defaultValue,
-		hasBeenSet: false,
+		hasBeenSet: defaultValue !== undefined,
 		handleSelect,
 		multiple
 	});
@@ -114,17 +110,26 @@
 	// Query-Related Things
 	/////
 
-	// Set Default Value
-	$inputs[name] = defaultValue;
-
 	export let value, data, label, order, where;
-	const { results, update } = buildReactiveInputQuery(
+	/** @type {import("@evidence-dev/component-utilities/buildQuery.js").QueryProps}*/
+	$: ({ hasQuery, query } = buildInputQuery(
 		{ value, data, label, order, where },
 		`Dropdown-${name}`,
 		$page.data.data[`Dropdown-${name}`]
-	);
-	$: update({ value, data, label, order, where });
-	$: ({ hasQuery, query } = $results);
+	));
+	$: if (hasQuery && defaultValue) {
+		if (browser) {
+			(async () => {
+				await $query.fetch();
+				$selectedValues = $query.filter((x) => x.value == defaultValue);
+				selectedValuesToInput();
+			})();
+		} else {
+			$selectedValues = $query.filter((x) => x.value == defaultValue);
+			selectedValuesToInput();
+		}
+	}
+
 	$: items = search
 		? buildQuery(
 				`SELECT

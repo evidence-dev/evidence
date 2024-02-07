@@ -17,7 +17,7 @@
 	const ctx = getContext('dropdown_context');
 
 	// The first DropdownOption is the selected by default, but defaultValue overrides it
-	if (!ctx.hasBeenSet || value === ctx.defaultValue) {
+	if (!ctx.hasBeenSet) {
 		ctx.handleSelect({ value, label: valueLabel });
 		ctx.hasBeenSet = true;
 	}
