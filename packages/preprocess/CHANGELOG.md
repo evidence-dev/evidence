@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.2-features-a.1
+
+### Patch Changes
+
+- e71cf76a: fix various bugs in daterange, workarounds in preprocess
+
 ## 4.0.2-features-a.0
 
 ### Patch Changes

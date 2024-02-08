@@ -1,5 +1,13 @@
 # @evidence-dev/evidence
 
+## 27.0.0-features-a.2
+
+### Patch Changes
+
+- Updated dependencies [e71cf76a]
+  - @evidence-dev/core-components@4.0.0-features-a.2
+  - @evidence-dev/preprocess@4.0.2-features-a.1
+
 ## 27.0.0-features-a.1
 
 ### Patch Changes

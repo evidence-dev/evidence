@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.0.0-features-a.2
+
+### Patch Changes
+
+- e71cf76a: fix various bugs in daterange, workarounds in preprocess
+
 ## 4.0.0-features-a.1
 
 ### Patch Changes
