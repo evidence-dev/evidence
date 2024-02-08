@@ -1,5 +1,5 @@
-rows: 250000
-fuzz: 2500
+rows: 250
+
 schema:
     id:
         type: id

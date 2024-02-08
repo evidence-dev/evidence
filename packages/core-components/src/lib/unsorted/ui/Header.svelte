@@ -4,7 +4,16 @@
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { Settings, _3dCubeSphere, Link, X, Menu2, Dots, Table } from '@steeze-ui/tabler-icons';
+	import {
+		Settings,
+		_3dCubeSphere,
+		Link,
+		X,
+		Menu2,
+		Dots,
+		Table,
+		Prompt
+	} from '@steeze-ui/tabler-icons';
 	import Logo from './Logo.svelte';
 
 	const beforeprint = new Event('export-beforeprint');
@@ -100,7 +109,7 @@
 										</div>
 									</a>
 								</MenuItem>
-								<!-- TODO: Hide this when built -->
+
 								<MenuItem let:active>
 									<a
 										href="/explore/schema"
@@ -109,8 +118,22 @@
 										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
 									>
 										<div class="flex items-center justify-between">
-											<span> Schema Explorer </span>
+											<span> Schema Viewer </span>
 											<Icon src={Table} class="text-gray-300 h-4 w-4" />
+										</div>
+									</a>
+								</MenuItem>
+								<!-- TODO: Show this when built? -->
+								<MenuItem let:active>
+									<a
+										href="/explore/console"
+										target="_self"
+										class:active
+										class="w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem]"
+									>
+										<div class="flex items-center justify-between">
+											<span> SQL Console </span>
+											<Icon src={Prompt} class="text-gray-300 h-4 w-4" />
 										</div>
 									</a>
 								</MenuItem>

@@ -120,7 +120,7 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	let filename;
 
 	if (database && database.filename) {
-		if (database.filename.startsWith('md:?motherduck_token=') || database.filename === ':memory:') {
+		if (database.filename.startsWith('md:') || database.filename === ':memory:') {
 			// MotherDuck or in-memory database
 			filename = database.filename;
 		} else {
