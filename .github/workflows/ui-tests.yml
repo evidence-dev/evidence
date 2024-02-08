@@ -1,7 +1,7 @@
 name: UI-Tests
 on:
   pull_request:
-    branches: [main]
+    branches: [main, next]
 
 jobs:
   wait_for_preview:
