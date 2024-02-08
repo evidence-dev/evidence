@@ -91,7 +91,7 @@
 				)}
 				builders={[builder]}
 			>
-				<CalendarIcon class="mr-2 h-4 w-4" />
+				<!-- <CalendarIcon class="mr-2 h-4 w-4" /> -->
 				<span class="hidden sm:inline">
 					{#if selectedDateRange && selectedDateRange.start}
 						{#if selectedDateRange.end}
