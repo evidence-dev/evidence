@@ -71,7 +71,8 @@
 	] as Preset[];
 
 	let selectedPreset: Preset | undefined = undefined;
-	let placeholder;
+	// TODO: this is super weird, definitely cleaner sln
+	$: placeholder = calendarEnd;
 </script>
 
 <div class="flex">
