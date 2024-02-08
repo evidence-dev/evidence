@@ -34,12 +34,11 @@
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
 
-	$: selectedDateRange ??= {
-		start: calendarStart,
-		end: calendarEnd
-	};
-	$: selectedDateRange.start = calendarStart;
-	$: selectedDateRange.end = calendarEnd;
+	function updateDateRange(start, end) {
+		selectedDateRange = { start, end };
+	}
+
+	$: updateDateRange(calendarStart, calendarEnd);
 
 	type Preset = {
 		label: string;
@@ -70,9 +69,13 @@
 		}
 	] as Preset[];
 
+	function setPlaceholderDefault(d) {
+		placeholder ??= d;
+	}
+
 	let selectedPreset: Preset | undefined = undefined;
-	// TODO: this is super weird, definitely cleaner sln
-	$: placeholder = calendarEnd;
+	let placeholder;
+	$: setPlaceholderDefault(calendarEnd);
 </script>
 
 <div class="flex">
@@ -122,7 +125,7 @@
 		</Popover.Trigger>
 		<Popover.Content class="w-auto select-none p-0" align="start">
 			<RangeCalendar
-				{selectedDateRange}
+				bind:selectedDateRange
 				bind:placeholder
 				initialFocus
 				numberOfMonths={1}
