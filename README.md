@@ -14,7 +14,7 @@ Business Intelligence as Code: Generate reports using SQL and markdown
 
 </div>
 
-# How It Works
+# How It Works?
 
 Evidence is an open-source, code-based alternative to drag-and-drop business intelligence tools.
 
