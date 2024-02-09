@@ -45,3 +45,5 @@ You can set environment variables to configure Evidence in production. Most of t
 The format of environment variables for database credentials is `EVIDENCE_SOURCE__[SOURCE_NAME]__[VARIABLE_NAME]`.
 
 You can copy all your current environment variable values from the settings page at [localhost:3000/settings](http://localhost:3000/settings).
+
+N.B. Environment variables are **case sensitive**, so you should preserve the case specified in the settings page.
