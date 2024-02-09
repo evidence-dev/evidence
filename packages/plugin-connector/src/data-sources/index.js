@@ -8,7 +8,7 @@ export { updateDatasourceOptions } from './update-datasource-options';
 export { DatasourceSpecFileSchema, DatasourceSpecSchema } from './schemas/datasource-spec.schema';
 /**
  *
- * @param {Record<string, string[]>} outputFiles
+ * @param {DatasourceManifest["renderedFiles"]} outputFiles
  * @param {string} outDir
  */
 async function updateManifest(outputFiles, outDir) {
@@ -70,7 +70,7 @@ export async function getDatasourceOptions(datasourceDir) {
  * @param {string} dataPath
  * @param {string} metaPath
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
- * @returns {Promise<Record<string, string[]>>}
+ * @returns {Promise<DatasourceManifest["renderedFiles"]>}
  */
 export async function updateDatasourceOutputs(
 	dataPath,

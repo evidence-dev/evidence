@@ -10,6 +10,7 @@ import {
 } from '../src/plugin-discovery/schemas/evidence-config.schema.js';
 
 import {
+	DatasourceManifestSchema,
 	DatasourceQueryResultSchema,
 	DatasourceQuerySchema,
 	DatasourceSpecFileSchema,
@@ -76,6 +77,8 @@ declare global {
 	type DatasourceConnector = z.infer<typeof DatasourceConnectorSchema>;
 
 	type DatasourceConnectorFactory = z.infer<typeof DatasourceConnectorFactorySchema>;
+
+	type DatasourceManifest = z.infer<typeof DatasourceManifestSchema>;
 
 	type QueryRunner = z.infer<typeof QueryRunnerSchema>;
 

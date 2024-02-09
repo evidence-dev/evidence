@@ -96,7 +96,7 @@ export async function emptyDbFs(targetGlob) {
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {Record<string, string[]>} urls
+ * @param {Record<string, (string | { partitions: string[], name: string })[]>} urls
  * @param {boolean} [append]
  * @returns {void}
  */
@@ -107,16 +107,38 @@ export async function setParquetURLs(urls, append = false) {
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		for (const url of urls[source]) {
-			const table = url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
-			const file_name = `${source}_${table}.parquet`;
-			if (append) {
-				await emptyDbFs(file_name);
-				await emptyDbFs(url);
+			const isPartition = typeof url === 'object';
+			const table = isPartition
+				? url.name
+				: url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
+			if (isPartition) {
+				for (const file of url.partitions) {
+					if (append) {
+						await emptyDbFs(file);
+					}
+					console.log({ file });
+					db.registerFileURL(file, file, DuckDBDataProtocol.NODE_FS, false);
+				}
+				connection.query(
+					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (
+						SELECT * FROM read_parquet([${url.partitions
+							.map((p) => `'${p}'`)
+							.join(', ')}], hive_partitioning = 1)
+					);`
+				);
+			} else {
+				const file_name = `${source}_${table}.parquet`;
+
+				if (append) {
+					await emptyDbFs(file_name);
+					await emptyDbFs(url);
+				}
+				console.log({ file_name, url });
+				db.registerFileURL(url, url, DuckDBDataProtocol.NODE_FS, false);
+				connection.query(
+					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${url}'));`
+				);
 			}
-			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
-			connection.query(
-				`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
-			);
 		}
 	}
 }
