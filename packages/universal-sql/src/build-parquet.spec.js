@@ -43,9 +43,9 @@ describe('buildMultipartParquet', () => {
 			emptyGenerator(),
 			adaptFilePath('./.evidence/template'),
 			adaptFilePath(''),
-			'out.parquet'
+			'out'
 		);
-		expect(r).toBe(0);
+		expect(r).toEqual({ writtenRows: 0, filenames: [] });
 	});
 
 	it('should write one temporary file when given fewer than one batch of rows', async () => {
@@ -65,9 +65,9 @@ describe('buildMultipartParquet', () => {
 			gen(),
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
-			'out.parquet'
+			'out'
 		);
-		expect(r).toBe(2);
+		expect(r).toEqual({ writtenRows: 2, filenames: ['out.parquet'] });
 		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
@@ -96,11 +96,11 @@ describe('buildMultipartParquet', () => {
 			gen(),
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
-			'out.parquet',
+			'out',
 			2,
 			1
 		);
-		expect(r).toBe(2);
+		expect(r).toEqual({ writtenRows: 2, filenames: ['out.parquet'] });
 		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
@@ -126,9 +126,9 @@ describe('buildMultipartParquet', () => {
 			[{ x: 'hello' }, { x: 'hello' }],
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
-			'out.parquet'
+			'out'
 		);
-		expect(r).toBe(2);
+		expect(r).toEqual({ writtenRows: 2, filenames: ['out.parquet'] });
 		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
@@ -154,11 +154,11 @@ describe('buildMultipartParquet', () => {
 			gen(),
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
-			'out.parquet',
+			'out',
 			1000,
 			1
 		);
-		expect(r).toBe(1000);
+		expect(r).toEqual({ writtenRows: 1000, filenames: ['out.parquet'] });
 		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data

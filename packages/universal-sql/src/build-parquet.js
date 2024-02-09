@@ -157,7 +157,7 @@ export async function buildMultipartParquet(
 		if (currentBatch.length) await flush(currentBatch);
 	}
 
-	if (!tmpFilenames.length) return 0;
+	if (!tmpFilenames.length) return { writtenRows: 0, filenames: [] };
 
 	await initDB();
 
