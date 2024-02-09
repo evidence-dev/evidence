@@ -1,7 +1,13 @@
-# Creating a Data Source Plugin
+---
+title: Creating a Data Source Plugin
+sidebar_position: 2
+---
 
-The [Evidence postgres source plugin](https://github.com/evidence-dev/evidence/tree/main/packages/postgres) is a good
-reference for a source plugin.
+To see a working example of a data source plugin, the [Evidence postgres source plugin](https://github.com/evidence-dev/evidence/tree/main/packages/postgres) is a good
+reference.
+
+## Get started
+To get started, go to [the data source template repo](https://github.com/evidence-dev/datasource-template) and click to "Use This Template". Then, follow the directions in the `README` in that repo.
 
 ## Options Specification
 
@@ -65,11 +71,5 @@ This would produce
 { ssl: false } | { ssl: true, sslmode: string }
 ```
 
-
-
-
-
-## Simple Interface (Arrays)
-
-## Advanced Interface (Generator Functions)
-
+## Promoting Your Plugin
+If you are building a plugin for other Evidence users, [let us know in Slack](https://slack.evidence.dev) and we can share it with the community.
