@@ -106,6 +106,12 @@ export async function setParquetURLs(urls, append = false) {
 	if (process.env.VITE_EVIDENCE_DEBUG) console.log(`Updating Parquet URLs`);
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
+		/**
+		 * 
+		 * @param {string} s 
+		 * @returns {string}
+		 */
+		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.delimiter)
 		for (const url of urls[source]) {
 			const isPartition = typeof url === 'object';
 			const table = isPartition
@@ -113,11 +119,11 @@ export async function setParquetURLs(urls, append = false) {
 				: url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
 			if (isPartition) {
 				for (const file of url.partitions) {
+					const platformPath = adaptForPlatform(file)
 					if (append) {
-						await emptyDbFs(file);
+						await emptyDbFs(platformPath);
 					}
-					console.log({ file });
-					db.registerFileURL(file, file, DuckDBDataProtocol.NODE_FS, false);
+					db.registerFileURL(platformPath, platformPath, DuckDBDataProtocol.NODE_FS, false);
 				}
 				connection.query(
 					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (
@@ -127,13 +133,11 @@ export async function setParquetURLs(urls, append = false) {
 					);`
 				);
 			} else {
-				const file_name = `${source}_${table}.parquet`;
-
+				const platformPath = adaptForPlatform(url)
 				if (append) {
-					await emptyDbFs(file_name);
-					await emptyDbFs(url);
+					await emptyDbFs(platformPath);
 				}
-				db.registerFileURL(url, url, DuckDBDataProtocol.NODE_FS, false);
+				db.registerFileURL(platformPath, platformPath, DuckDBDataProtocol.NODE_FS, false);
 				connection.query(
 					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${url}'));`
 				);
