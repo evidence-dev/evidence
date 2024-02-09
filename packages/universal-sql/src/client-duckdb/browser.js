@@ -52,9 +52,11 @@ export async function initDB() {
 		const logger = import.meta.env.VITE_EVIDENCE_DEBUG ? new ConsoleLogger() : new VoidLogger();
 		const worker = new DUCKDB_CONFIG.mainWorker();
 
-		// and asynchronous database
-		db = new AsyncDuckDB(logger, worker);
-		await db.instantiate(DUCKDB_CONFIG.mainModule);
+		// use an intermediate variable to prevent db from being a not-ready database
+		const _db = new AsyncDuckDB(logger, worker);
+		await _db.instantiate(DUCKDB_CONFIG.mainModule);
+		db = _db;
+
 		await db.open({
 			query: {
 				castBigIntToDouble: true,
