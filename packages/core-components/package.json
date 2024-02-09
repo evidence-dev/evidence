@@ -62,7 +62,7 @@
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/plugin-connector": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
-		"@storybook/addon-essentials": "^7.6.6",
+		"@storybook/addon-essentials": "^7.6.12",
 		"@storybook/addon-interactions": "^7.6.6",
 		"@storybook/addon-links": "^7.6.6",
 		"@storybook/addon-svelte-csf": "^4.0.13",
