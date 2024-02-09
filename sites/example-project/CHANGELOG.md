@@ -1,5 +1,29 @@
 # @evidence-dev/components
 
+## 3.3.0
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- Updated dependencies [9176c2cc]
+- Updated dependencies [ddf584d4]
+- Updated dependencies [3e1da500]
+- Updated dependencies [5d5cb2de]
+- Updated dependencies [0f42e927]
+- Updated dependencies [cbc7e8a4]
+- Updated dependencies [f4ccf03c]
+  - @evidence-dev/component-utilities@2.2.0
+  - @evidence-dev/core-components@3.3.0
+  - @evidence-dev/duckdb@1.0.6
+  - @evidence-dev/mysql@1.1.0
+  - @evidence-dev/universal-sql@2.0.3
+  - @evidence-dev/plugin-connector@2.0.7
+  - @evidence-dev/csv@1.0.6
+  - @evidence-dev/query-store@2.0.3
+
 ## 3.2.0
 
 ### Minor Changes

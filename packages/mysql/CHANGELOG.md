@@ -1,5 +1,11 @@
 # @evidence-dev/mysql
 
+## 1.1.0
+
+### Minor Changes
+
+- 5d5cb2de: Upate mysql2 to next major version
+
 ## 1.0.3
 
 ### Patch Changes
