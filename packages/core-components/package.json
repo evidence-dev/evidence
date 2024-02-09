@@ -68,7 +68,7 @@
 		"@storybook/addon-svelte-csf": "^4.0.13",
 		"@storybook/blocks": "^7.6.6",
 		"@storybook/svelte": "^7.6.6",
-		"@storybook/sveltekit": "^7.6.6",
+		"@storybook/sveltekit": "^7.6.13",
 		"@storybook/testing-library": "^0.2.2",
 		"@storybook/theming": "^7.6.6",
 		"@sveltejs/adapter-auto": "^2.0.0",
