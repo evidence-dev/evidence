@@ -107,11 +107,11 @@ export async function setParquetURLs(urls, append = false) {
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		/**
-		 * 
-		 * @param {string} s 
+		 *
+		 * @param {string} s
 		 * @returns {string}
 		 */
-		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.delimiter)
+		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.delimiter);
 		for (const url of urls[source]) {
 			const isPartition = typeof url === 'object';
 			const table = isPartition
@@ -119,7 +119,7 @@ export async function setParquetURLs(urls, append = false) {
 				: url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
 			if (isPartition) {
 				for (const file of url.partitions) {
-					const platformPath = adaptForPlatform(file)
+					const platformPath = adaptForPlatform(file);
 					if (append) {
 						await emptyDbFs(platformPath);
 					}
@@ -133,7 +133,7 @@ export async function setParquetURLs(urls, append = false) {
 					);`
 				);
 			} else {
-				const platformPath = adaptForPlatform(url)
+				const platformPath = adaptForPlatform(url);
 				if (append) {
 					await emptyDbFs(platformPath);
 				}
