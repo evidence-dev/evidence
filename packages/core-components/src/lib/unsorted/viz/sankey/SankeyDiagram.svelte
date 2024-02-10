@@ -17,6 +17,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	export let echartsOptions = undefined;
+	export let seriesEchartsOptions = undefined;
 	export let printEchartsConfig = false;
 
 	export let valueFmt = undefined;
@@ -304,5 +305,5 @@
 {#if error}
 	<ErrorChart chartType="Sankey Diagram" {error} />
 {:else}
-	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig}  {renderer}/>
+	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} {renderer} {seriesEchartsOptions} />
 {/if}

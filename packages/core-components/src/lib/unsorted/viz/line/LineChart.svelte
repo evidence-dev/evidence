@@ -82,6 +82,7 @@
 	export let y2AxisColor = undefined;
 
 	export let echartsOptions = undefined;
+	export let seriesEchartsOptions = undefined;
 	export let printEchartsConfig = false;
 
 	export let renderer = undefined;
@@ -128,6 +129,7 @@
 	{chartAreaHeight}
 	{colorPalette}
 	{echartsOptions}
+	{seriesEchartsOptions}
 	{printEchartsConfig}
 	{renderer}
 >

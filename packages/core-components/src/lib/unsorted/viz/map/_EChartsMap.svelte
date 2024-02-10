@@ -26,6 +26,7 @@
 	export let hasLink = false;
 
 	export let echartsOptions = undefined;
+	export let seriesEchartsOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 
@@ -66,12 +67,12 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echartsMap={{ config, hasLink, echartsOptions, extraHeight, renderer }}
+				use:echartsMap={{ config, hasLink, echartsOptions, seriesEchartsOptions, extraHeight, renderer }}
 			/>
 		{/if}
 	{/if}
 
-	<EChartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
+	<EChartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} {seriesEchartsOptions} />
 
 	<div class="chart-footer">
 		<DownloadData
@@ -132,7 +133,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, echartsOptions, queryID }}
+		use:echartsCanvasDownload={{ ...config, echartsOptions, seriesEchartsOptions, queryID }}
 	/>
 {/if}
 

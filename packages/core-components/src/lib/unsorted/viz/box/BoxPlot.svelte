@@ -43,6 +43,7 @@
 	export let swapXY = false;
 
 	export let echartsOptions = undefined;
+	export let seriesEchartsOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 
@@ -94,6 +95,7 @@
 	{subtitle}
 	chartType="Box Plot"
 	{echartsOptions}
+	{seriesEchartsOptions}
 	{printEchartsConfig}
 	{renderer}
 >

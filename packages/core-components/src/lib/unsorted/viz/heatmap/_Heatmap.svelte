@@ -60,6 +60,7 @@
 	export let xLabelRotation = undefined; // degress to rotate x axis labels
 
 	export let echartsOptions = undefined;
+	export let seriesEchartsOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
@@ -304,6 +305,7 @@
 		{config}
 		{height}
 		{echartsOptions}
+		{seriesEchartsOptions}
 		{printEchartsConfig}
 		evidenceChartTitle={title}
 		{renderer}

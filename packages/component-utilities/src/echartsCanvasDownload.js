@@ -16,6 +16,25 @@ export default (node, option) => {
 		chart.setOption(prevOption.echartsOptions);
 	}
 
+	let tempSeries = [];
+	if (prevOption.seriesEchartsOptions) {
+		const reference_index = prevOption.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
+			if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+			  acc.push(reference_index);
+			}
+			return acc;
+		  }, []);
+
+	  	for(let i=0; i < prevOption.series.length; i++){
+			if(reference_index.includes(i)){
+				tempSeries.push({})
+			} else {
+				tempSeries.push({...prevOption.seriesEchartsOptions})
+			}
+		}
+		chart.setOption({series: tempSeries})
+	}
+
 	let src = chart.getConnectedDataURL({
 		type: 'png',
 		pixelRatio: 3,

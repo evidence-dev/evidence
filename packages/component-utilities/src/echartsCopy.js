@@ -4,7 +4,7 @@ import { evidenceThemeLight } from './echartsThemes';
 export default (node, option) => {
 	registerTheme('evidence-light', evidenceThemeLight);
 
-	const { config, ratio, echartsOptions } = option;
+	const { config, ratio, echartsOptions, seriesEchartsOptions } = option;
 
 	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
 	config.animation = false; // disable animation
@@ -13,6 +13,26 @@ export default (node, option) => {
 	// Check if echartsOptions are provided and apply them
 	if (echartsOptions) {
 		chart.setOption(echartsOptions);
+	}
+
+	let tempSeries = [];
+	let prevOption = chart.getOption();
+	if (seriesEchartsOptions) {
+		const reference_index = prevOption.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
+			if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+			  acc.push(reference_index);
+			}
+			return acc;
+		  }, []);
+
+	  	for(let i=0; i < prevOption.series.length; i++){
+			if(reference_index.includes(i)){
+				tempSeries.push({})
+			} else {
+				tempSeries.push({...seriesEchartsOptions})
+			}
+		}
+		chart.setOption({series: tempSeries})
 	}
 
 	let src = chart.getConnectedDataURL({

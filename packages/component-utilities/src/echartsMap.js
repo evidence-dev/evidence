@@ -48,6 +48,25 @@ export default (node, option) => {
 		chart.setOption(option.echartsOptions);
 	}
 
+	let tempSeries = [];
+	if (option.seriesEchartsOptions) {
+		const reference_index = option.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
+			if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+			  acc.push(reference_index);
+			}
+			return acc;
+		  }, []);
+
+	  	for(let i=0; i < option.series.length; i++){
+			if(reference_index.includes(i)){
+				tempSeries.push({})
+			} else {
+				tempSeries.push({...option.seriesEchartsOptions})
+			}
+		}
+		chart.setOption({series: tempSeries})
+	}
+
 	let resizeObserver;
 	const containerElement = document.querySelector('div.content > article');
 	const resizeChart = () => {

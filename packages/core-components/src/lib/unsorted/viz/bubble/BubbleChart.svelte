@@ -54,6 +54,7 @@
 
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
+	export let seriesEchartsOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 </script>
@@ -92,6 +93,7 @@
 	{chartAreaHeight}
 	{colorPalette}
 	{echartsOptions}
+	{seriesEchartsOptions}
 	{printEchartsConfig}
 	{renderer}
 >

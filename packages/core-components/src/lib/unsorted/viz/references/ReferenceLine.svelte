@@ -153,6 +153,7 @@
 	$: if (!error) {
 		baseConfig = {
 			id: identifier,
+			evidenceSeriesType: 'reference_line',
 			type: 'line',
 			markLine: {
 				data: configData,

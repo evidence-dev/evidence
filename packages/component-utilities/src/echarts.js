@@ -40,6 +40,25 @@ export default (node, option) => {
 		});
 	}
 
+	let tempSeries = [];
+	if (prevOption.seriesEchartsOptions) {
+		const reference_index = prevOption.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
+			if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+			  acc.push(reference_index);
+			}
+			return acc;
+		  }, []);
+
+	  	for(let i=0; i < prevOption.series.length; i++){
+			if(reference_index.includes(i)){
+				tempSeries.push({})
+			} else {
+				tempSeries.push({...prevOption.seriesEchartsOptions})
+			}
+		}
+		chart.setOption({series: tempSeries})
+	}
+	
 	const dispatch = option.dispatch;
 	chart.on('click', function (params) {
 		dispatch('click', params);
@@ -113,6 +132,25 @@ export default (node, option) => {
 			if (prevOption.echartsOptions) {
 				chart.setOption(prevOption.echartsOptions);
 			}
+			if (prevOption.seriesEchartsOptions) {
+				tempSeries = [];
+				const reference_index = prevOption.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
+					if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+					acc.push(reference_index);
+					}
+					return acc;
+				}, []);
+
+				for(let i=0; i < prevOption.series.length; i++){
+					if(reference_index.includes(i)){
+						tempSeries.push({})
+					} else {
+						tempSeries.push({...prevOption.seriesEchartsOptions})
+					}
+				}
+				chart.setOption({series: tempSeries})
+			};
+
 			updateLabelWidths();
 			chart.resize({
 				animation: {
