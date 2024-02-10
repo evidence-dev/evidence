@@ -1,14 +1,14 @@
 ---
 sidebar_position: 2
 hide_table_of_contents: false
-title: 'Source Plugins'
+title: 'Data Source Plugins'
 ---
-
-# Source Plugins 
 
 Evidence includes a plugin system which can be used to add components and data sources to your project. 
 
 Source plugins enable you to add new data source types to your project. Once you have installed and registered a source plugin, you will be able to configure any associated connection settings in the settings UI.  
+
+To use a plugin, you need to **install** and **register** it in your project.
 
 ## Installing Source Plugins 
 
@@ -25,7 +25,6 @@ components:
     @evidence-dev/core-components: {}
 databases: 
     @cool-new-db/evidence-source-plugin
-
 ```
 
 ## Configuring Source Plugins 
