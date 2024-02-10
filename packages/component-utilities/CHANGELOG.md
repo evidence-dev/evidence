@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.2.1
+
+### Patch Changes
+
+- 6a61ea17: - buildReactiveInputQuery was accidentally setting the value of it's store to a Promise, which was not the intent. This ensures that the value is always the proper interface.
+
 ## 2.2.0
 
 ### Minor Changes
