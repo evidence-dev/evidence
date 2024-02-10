@@ -50,18 +50,19 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 				internal.set({ hasQuery: false });
 			} else {
 				if (query.hash !== currentQuery) {
-					const fetched = query.fetch()
-					if (fetched instanceof Promise) fetched.then(() => {
-						currentQuery = query
-						internal.set({ hasQuery, query });
-					})
+					const fetched = query.fetch();
+					if (fetched instanceof Promise)
+						fetched.then(() => {
+							currentQuery = query;
+							internal.set({ hasQuery, query });
+						});
 				} else {
-					currentQuery = query
+					currentQuery = query;
 					internal.set({ hasQuery, query });
 				}
 			}
 		}
-	}
+	};
 };
 
 /**
