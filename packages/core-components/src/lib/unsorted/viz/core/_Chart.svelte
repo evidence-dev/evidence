@@ -146,6 +146,8 @@
 
 	export let chartAreaHeight;
 
+	export let renderer = undefined; // can be canvas (default) or SVG
+
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -1042,6 +1044,7 @@
 		{swapXY}
 		{echartsOptions}
 		{printEchartsConfig}
+		{renderer}
 	/>
 {:else}
 	<ErrorChart {error} {chartType} />

@@ -32,7 +32,7 @@ export default (node, option) => {
 	let extraHeight = option.extraHeight;
 
 	const chart = init(node, 'none', {
-		renderer: 'canvas',
+		renderer: option.renderer ?? 'canvas',
 		height: `${node.clientWidth * 0.5 + extraHeight}`
 	});
 

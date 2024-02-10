@@ -34,6 +34,7 @@
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
+	export let renderer = undefined;
 
 	export let showPercent = false;
 	$: showPercent = showPercent === 'true' || showPercent === true;
@@ -229,7 +230,7 @@
 
 {#if !error}
 	<slot />
-	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} />
+	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} {renderer}/>
 {:else}
 	<ErrorChart {error} chartType="Funnel Chart" />
 {/if}

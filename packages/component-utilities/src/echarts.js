@@ -23,7 +23,7 @@ export default (node, option) => {
 
 	registerTheme('evidence-light', evidenceThemeLight);
 
-	const chart = init(node, 'evidence-light', { renderer: useSvg ? 'svg' : 'canvas' });
+	const chart = init(node, 'evidence-light', { renderer: useSvg ? 'svg' : (option.renderer ?? 'canvas')});
 
 	chart.setOption({
 		...option,

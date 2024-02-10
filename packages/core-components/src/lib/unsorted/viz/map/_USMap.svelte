@@ -132,6 +132,7 @@
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	export let renderer = undefined;
 
 	export let abbreviations = false;
 	$: abbreviations = abbreviations === 'true' || abbreviations === true;
@@ -307,6 +308,7 @@
 		{hasLink}
 		{echartsOptions}
 		{printEchartsConfig}
+		{renderer}
 	/>
 
 	{#if link}

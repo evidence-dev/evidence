@@ -27,6 +27,7 @@
 
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
+	export let renderer = undefined;
 
 	let downloadChart = false;
 	let copying = false;
@@ -65,7 +66,7 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echartsMap={{ config, hasLink, echartsOptions, extraHeight }}
+				use:echartsMap={{ config, hasLink, echartsOptions, extraHeight, renderer }}
 			/>
 		{/if}
 	{/if}

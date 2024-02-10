@@ -83,6 +83,8 @@
 
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
+
+	export let renderer = undefined;
 </script>
 
 <Chart
@@ -127,6 +129,7 @@
 	{colorPalette}
 	{echartsOptions}
 	{printEchartsConfig}
+	{renderer}
 >
 	<Line
 		{lineColor}

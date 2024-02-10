@@ -49,6 +49,8 @@
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
+	export let renderer = undefined;
+
 	function mapColumnsToArray(arrayOfObjects, col1, col2) {
 		return arrayOfObjects.map((obj) => [
 			new Date(obj[col1]).toISOString().split('T')[0],
@@ -332,5 +334,5 @@
 {#if error}
 	<ErrorChart chartType="Calendar Heatmap" {error} />
 {:else}
-	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} />
+	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} {renderer}/>
 {/if}

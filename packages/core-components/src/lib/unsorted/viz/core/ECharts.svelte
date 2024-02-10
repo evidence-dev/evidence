@@ -23,6 +23,8 @@
 
 	export let data;
 
+	export let renderer = undefined;
+
 	export let echartsOptions = undefined;
 	export let printEchartsConfig; // helper for custom chart development
 
@@ -68,7 +70,7 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echarts={{ ...config, ...$$restProps, echartsOptions, dispatch }}
+				use:echarts={{ ...config, ...$$restProps, echartsOptions, dispatch, renderer }}
 			/>
 		{/if}
 	{/if}

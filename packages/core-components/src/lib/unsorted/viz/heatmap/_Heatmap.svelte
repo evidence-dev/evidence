@@ -67,6 +67,8 @@
 	export let rightPadding = 0; // user option to avoid label cutoffs
 	export let cellHeight = 30;
 
+	export let renderer = undefined;
+
 	$: height = undefined;
 	$: gridHeight = undefined;
 
@@ -304,5 +306,6 @@
 		{echartsOptions}
 		{printEchartsConfig}
 		evidenceChartTitle={title}
+		{renderer}
 	/>
 {/if}
