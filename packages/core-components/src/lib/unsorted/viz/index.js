@@ -12,6 +12,7 @@ export { default as DataTable } from './table/DataTable.svelte';
 export { default as EChartsCopyTarget } from './core/EChartsCopyTarget.svelte';
 export { default as EChartsMap } from './map/EChartsMap.svelte';
 export { default as ECharts } from './core/ECharts.svelte';
+export { default as EChartsSSR } from './core/EChartsSSR.svelte';
 export { default as ErrorChart } from './core/ErrorChart.svelte';
 export { default as FunnelChart } from './funnel/FunnelChart.svelte';
 export { default as Histogram } from './histogram/Histogram.svelte';

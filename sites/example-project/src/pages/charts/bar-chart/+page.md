@@ -16,11 +16,6 @@ data={orders_by_category}
 x=category
 y=sales_usd0k
 xAxisTitle=Category
-echartsOptions={{
-    textStyle: {
-        fontFamily: "Inter"
-    }
-}}
 >
 
     <ReferenceLine y=34234 label="Sales Target" hideValue=false/>
@@ -35,11 +30,6 @@ echartsOptions={{
     y=sales_usd0k 
     series=category
     labels=true
-    echartsOptions={{
-    textStyle: {
-        fontFamily: "Inter"
-    }
-}}
 />
 
 ### Stacked Bar with Negative Values
