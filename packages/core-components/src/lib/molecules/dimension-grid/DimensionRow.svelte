@@ -5,7 +5,7 @@
 	export let selectedValue;
 </script>
 
-<div class={cn('flex-1 relative truncate flex gap-8 justify-between py-0.5')}>
+<div class={cn('flex-1 relative truncate flex gap-8 justify-between py-0.5 text-xs')}>
 	<!-- Bar -->
 	<div
 		class={cn(

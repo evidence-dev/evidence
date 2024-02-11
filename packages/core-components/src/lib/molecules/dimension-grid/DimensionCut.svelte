@@ -74,16 +74,21 @@
 
 	// Format
 	$: columnSummary = getColumnSummary($results, 'array')?.filter((d) => d.id === 'metric');
+
+	// container height
+	// there can never be more than limit + 1 records.
+	// We don't want height to move down when we filter to fewer records
+	let heightPx = 20 * (Number(limit) + 1);
 </script>
 
 <!-- {dimensionCutQuery} -->
 
 <div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-4 pb-4">
 	<div class="capitalize border-b flex justify-between items-baseline">
-		<span class="truncate">
+		<span class="truncate font-medium w-2/3">
 			{formatTitle(dimension.name)}
 		</span>
-		<span class="truncate">
+		<span class="truncate w-1/3">
 			{metricLabel ?? ''}
 		</span>
 	</div>
@@ -94,23 +99,29 @@
 		>
 			{$results.error}
 		</p>
-		{#each loaded as row (row.dimensionValue)}
-			<div
-				class={cn('flex transition duration-100 group cursor-pointer')}
-				on:click={updateSelected(row)}
-				on:keydown={updateSelected(row)}
-				animate:flip={{ duration: 100 }}
-			>
-				<DimensionRow
-					{row}
-					{selectedValue}
-					value={formatValue(
-						row.metric,
-						columnSummary[0].format,
-						columnSummary[0].columnUnitSummary
-					)}
-				/>
+		{#if loaded.length > 0}
+			<div class={`h-[${heightPx}px]`}>
+				{#each loaded as row (row.dimensionValue)}
+					<div
+						class={cn('flex transition duration-100 group cursor-pointer')}
+						on:click={updateSelected(row)}
+						on:keydown={updateSelected(row)}
+						animate:flip={{ duration: 100 }}
+					>
+						<DimensionRow
+							{row}
+							{selectedValue}
+							value={formatValue(
+								row.metric,
+								columnSummary[0].format,
+								columnSummary[0].columnUnitSummary
+							)}
+						/>
+					</div>
+				{/each}
 			</div>
-		{/each}
+		{:else}
+			<p class="text-xs text-gray-500 p-2 my-2 w-full border border-dashed rounded">No Records</p>
+		{/if}
 	</QueryLoad>
 </div>

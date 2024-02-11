@@ -15,8 +15,8 @@ schema:
     item: float 
     options:
       - max: 10000
-      - min: 2
-      - fractionDigits: 2
+        min: 75
+        fractionDigits: 21
   departure_airport: 
     category: airline
     item: airport 
