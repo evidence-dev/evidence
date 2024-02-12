@@ -4,13 +4,13 @@ hide_table_of_contents: false
 title: 'Component Plugins'
 ---
 
-# Component Plugins 
-
 Evidence includes a plugin system which can be used to add components and data sources to your project. 
 
 All Evidence projects include the Evidence `core-components` plugin by default. `core-components` has everything you need to build most use cases. 
 
 Component plugins are Svelte component packages which include one or more additional components which you can use in your project. Once you have installed and registered a component plugin, the included components will be available to use in your markdown files. 
+
+To use a plugin, you need to **install** and **register** it in your project.
 
 ## Installing Component Plugins 
 
@@ -31,9 +31,9 @@ components:
 
 ### Component Aliases
 
-If a plugin provides a component that you want to reference with another name, you an `aliases` when registering the component. 
+If a plugin provides a component that you want to reference with another name, you can set up `aliases` when registering the component. 
 
-In this example, the `@acme/charting` plugin provides some component `LongNameForAChart`, it will be 
+In this example, the `@acme/charting` plugin provides some component `LongNameForAChart`. After setting up `aliases`, it will be 
 made available in the Evidence project as `AcmeChart`
 
 ```yaml
@@ -45,9 +45,9 @@ components:
 
 ### Component Overrides
 
-Component plugins have the ability to override components from other plugins (e.g. you want to replace the builtin `LineChart` with ),
+Component plugins have the ability to override components from other plugins (e.g. you want to replace the built-in `LineChart` with a chart from a plugin).
 
-Overrides can be specified as an array:
+Overrides are specified in an `overrides` list. In the example below, Evidence's built-in `LineChart` will be overridden by the `LineChart` component from the `@acme/charting` plugin:
 ```yaml
 components:
     @evidence-dev/core-components: {}
@@ -68,9 +68,9 @@ components:
             - LineChart # Override LineChart with the now renamed CustomLineChart
 ```
 
-### (Advanced) Using generic svelte component libraries
+### (Advanced) Using generic Svelte component libraries
 
-If you want to use a svelte component library that is _not_ an Evidence component plugin, you can use the `provides` field to 
+If you want to use a Svelte component library that is _not_ an Evidence component plugin, you can use the `provides` field to 
 manually document the components that the library provides.
 
 ```yaml

@@ -392,6 +392,7 @@
 									column.colorMax ?? safeExtractColumn(column).columnUnitSummary.max}
 								{@const is_nonzero =
 									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
+								{@const percentage = (row[column.id] - column_min) / (column_max - column_min)}
 								<td
 									class={safeExtractColumn(column).type}
 									class:row-lines={rowLines && i !== displayedData.length - 1}
@@ -402,11 +403,9 @@
 									style:background-color={column.contentType === 'colorscale' && is_nonzero
 										? column.customColor
 											? `color-mix(in srgb, ${column.customColor} ${
-													((row[column.id] - column_min) / (column_max - column_min)) * 100
+													Math.max(0, Math.min(1, percentage)) * 100
 											  }%, transparent)`
-											: `${column.useColor} ${
-													(row[column.id] - column_min) / (column_max - column_min)
-											  })`
+											: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
 										: // closing bracket needed to close unclosed color string from Column component
 										  ''}
 								>

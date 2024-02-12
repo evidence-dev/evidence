@@ -51,7 +51,7 @@ const buildSourceDirectory = async (directory) => {
  * @param {string} metaPath
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
  * @param {number} [batchSize]
- * @returns {Promise<Record<string, string[]>>}
+ * @returns {Promise<DatasourceManifest["renderedFiles"]>}
  */
 export const buildSources = async (
 	sources,
@@ -78,10 +78,10 @@ export const buildSources = async (
 	const plugins = await getDatasourcePlugins();
 	const existingHashes = await getPastSourceHashes(metaPath);
 
-	/** @type {Record<string, string[]>} */
+	/** @type {DatasourceManifest["renderedFiles"]} */
 	const manifest = {};
 
-	/** @type {Record<string, string[]>} */
+	/** @type {DatasourceManifest["renderedFiles"]} */
 	const existingManifest = await getCurrentManifest(dataPath).then((r) => r.renderedFiles);
 
 	/** @type {Record<string, Record<string, string | null>>} */
@@ -91,7 +91,7 @@ export const buildSources = async (
 		console.log(chalk.bold(`Processing ${source.name}`));
 		const sourceManifest = existingManifest[source.name] ?? [];
 		// For building the manifest
-		/** @type {string[]} */
+		/** @type {DatasourceManifest["renderedFiles"][string]} */
 		const outputFilenames = [];
 		hashes[source.name] = {};
 
@@ -180,8 +180,10 @@ export const buildSources = async (
 					if (!utils.isFiltered(table.name)) {
 						spinner.warn('Skipping: Filtered');
 						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === table.name
+						const existingManifestUrl = sourceManifest.find((existingPath) =>
+							typeof existingPath === 'string'
+								? path.basename(existingPath, '.parquet') === table.name
+								: existingPath.name === table.name
 						);
 						if (existingManifestUrl) {
 							outputFilenames.push(existingManifestUrl);
@@ -194,8 +196,10 @@ export const buildSources = async (
 					if (filters?.only_changed && utils.isCached(table.name, table.content)) {
 						spinner.warn('Skipping: Cached');
 						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === table.name
+						const existingManifestUrl = sourceManifest.find((existingPath) =>
+							typeof existingPath === 'string'
+								? path.basename(existingPath, '.parquet') === table.name
+								: existingPath.name === table.name
 						);
 						if (existingManifestUrl) {
 							outputFilenames.push(existingManifestUrl);
@@ -209,7 +213,7 @@ export const buildSources = async (
 						.update(table.content ?? '')
 						.digest('hex');
 
-					const filename = await flushSource(
+					const filenames = await flushSource(
 						source,
 						{
 							name: table.name,
@@ -223,7 +227,14 @@ export const buildSources = async (
 						batchSize,
 						spinner
 					);
-					if (filename) outputFilenames.push(filename);
+					if (filenames && filenames?.length > 1) {
+						outputFilenames.push({
+							partitions: filenames,
+							name: table.name
+						});
+					} else if (filenames) {
+						outputFilenames.push(...filenames);
+					}
 				} catch (e) {
 					let message = 'Unknown error occurred';
 					if (typeof e === 'string') message = e;
@@ -255,8 +266,10 @@ export const buildSources = async (
 					if (!utils.isFiltered(query.name)) {
 						spinner.warn('Skipping: Filtered');
 						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === query.name
+						const existingManifestUrl = sourceManifest.find((existingPath) =>
+							typeof existingPath === 'string'
+								? path.basename(existingPath, '.parquet') === query.name
+								: existingPath.name === query.name
 						);
 						if (existingManifestUrl) {
 							outputFilenames.push(existingManifestUrl);
@@ -270,8 +283,10 @@ export const buildSources = async (
 						spinner.warn('Skipping: Cached');
 						logQueryEvent('cache-query', source.type, source.name, query.name);
 						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === query.name
+						const existingManifestUrl = sourceManifest.find((existingPath) =>
+							typeof existingPath === 'string'
+								? path.basename(existingPath, '.parquet') === query.name
+								: existingPath.name === query.name
 						);
 						if (existingManifestUrl) {
 							outputFilenames.push(existingManifestUrl);
@@ -325,7 +340,7 @@ export const buildSources = async (
 					if (result === null) {
 						continue;
 					}
-					const filename = await flushSource(
+					const filenames = await flushSource(
 						source,
 						query,
 						result,
@@ -335,7 +350,14 @@ export const buildSources = async (
 						spinner
 					);
 
-					if (filename) outputFilenames.push(filename);
+					if (filenames && filenames?.length > 1) {
+						outputFilenames.push({
+							partitions: filenames,
+							name: query.name
+						});
+					} else if (filenames) {
+						outputFilenames.push(...filenames);
+					}
 				} catch (e) {
 					let message = 'Unknown error occurred';
 					if (typeof e === 'string') message = e;
@@ -363,7 +385,7 @@ export const buildSources = async (
  * @param {string} metaPath
  * @param {number} batchSize
  * @param {import("ora").Ora} [spinner]
- * @returns {Promise<null | string>}
+ * @returns {Promise<null | string[]>}
  */
 const flushSource = async (source, query, result, dataPath, metaPath, batchSize, spinner) => {
 	const logOut = /** @param {string} t **/ (t) => (spinner ? (spinner.text = t) : console.log(t));
@@ -386,16 +408,23 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	else if (result.expectedRowCount)
 		logOut(`Expected row count is ~${result.expectedRowCount?.toLocaleString()}`);
 
+	/** @type {string[]} */
+	let partitionKeys = [];
+	if (source.partitions && query.name in source.partitions) {
+		partitionKeys = source.partitions[query.name];
+	}
+
 	// Spinner start
 	// Disable the console for a moment, stack up and then print everything after?
-	const writtenRows = await buildMultipartParquet(
+	const { writtenRows, filenames } = await buildMultipartParquet(
 		result.columnTypes,
 		rows,
 		tmpDir,
 		dataOutDir,
-		query.name + '.parquet',
+		query.name,
 		result.expectedRowCount,
-		batchSize
+		batchSize,
+		partitionKeys
 	);
 
 	// Spinner stop?
@@ -409,6 +438,9 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	}
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
-
-	return parquetFilename;
+	if (filenames.length > 1) {
+		return filenames;
+	} else {
+		return [parquetFilename];
+	}
 };

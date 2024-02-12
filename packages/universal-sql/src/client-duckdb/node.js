@@ -96,7 +96,7 @@ export async function emptyDbFs(targetGlob) {
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {Record<string, string[]>} urls
+ * @param {Record<string, (string | { partitions: string[], name: string })[]>} urls
  * @param {boolean} [append]
  * @returns {void}
  */
@@ -106,17 +106,42 @@ export async function setParquetURLs(urls, append = false) {
 	if (process.env.VITE_EVIDENCE_DEBUG) console.log(`Updating Parquet URLs`);
 	for (const source in urls) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
+		/**
+		 *
+		 * @param {string} s
+		 * @returns {string}
+		 */
+		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.delimiter);
 		for (const url of urls[source]) {
-			const table = url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
-			const file_name = `${source}_${table}.parquet`;
-			if (append) {
-				await emptyDbFs(file_name);
-				await emptyDbFs(url);
+			const isPartition = typeof url === 'object';
+			const table = isPartition
+				? url.name
+				: url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
+			if (isPartition) {
+				for (const file of url.partitions) {
+					const platformPath = adaptForPlatform(file);
+					if (append) {
+						await emptyDbFs(platformPath);
+					}
+					db.registerFileURL(platformPath, platformPath, DuckDBDataProtocol.NODE_FS, false);
+				}
+				connection.query(
+					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (
+						SELECT * FROM read_parquet([${url.partitions
+							.map((p) => `'${p}'`)
+							.join(', ')}], hive_partitioning = 1)
+					);`
+				);
+			} else {
+				const platformPath = adaptForPlatform(url);
+				if (append) {
+					await emptyDbFs(platformPath);
+				}
+				db.registerFileURL(platformPath, platformPath, DuckDBDataProtocol.NODE_FS, false);
+				connection.query(
+					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${url}'));`
+				);
 			}
-			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
-			connection.query(
-				`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
-			);
 		}
 	}
 }

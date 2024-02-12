@@ -63,22 +63,24 @@ function convertArrayToVector(column, rawValues) {
  * @param {Generator<T[] | Promise<T[]> | T[] | Promise<T[]>} data
  * @param {string} tmpDir
  * @param {string} outDir
- * @param {string} outputFilename
+ * @param {string} queryName
  * @param {number} [expectedRowCount]
  * @param {number} [batchSize]
- * @returns {Promise<number>} Number of rows
+ * @param {string[]} [partitionKeys]
+ * @returns {Promise<{writtenRows: number, filenames: string[]}>} Number of rows
  */
 export async function buildMultipartParquet(
 	columns,
 	data,
 	tmpDir,
 	outDir,
-	outputFilename,
+	queryName,
 	expectedRowCount,
-	batchSize = 1000000
+	batchSize = 1000000,
+	partitionKeys = []
 ) {
 	let batchNum = 0;
-	const outputSubpath = outputFilename.split('.parquet')[0];
+	const outputSubpath = queryName.split('.parquet')[0];
 	let tmpFilenames = [];
 	let rowCount = 0;
 
@@ -155,17 +157,24 @@ export async function buildMultipartParquet(
 		if (currentBatch.length) await flush(currentBatch);
 	}
 
-	if (!tmpFilenames.length) return 0;
+	if (!tmpFilenames.length) return { writtenRows: 0, filenames: [] };
 
 	await initDB();
 
-	const outputFilepath = path.join(outDir, outputFilename);
+	const outputFilepath = path.join(
+		outDir,
+		partitionKeys.length ? queryName : `${queryName}.parquet`
+	);
+	await fs.rm(path.dirname(outputFilepath), { recursive: true, force: true });
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
 	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
 
 	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
-	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD');`;
+	const partitionString = partitionKeys?.length
+		? `, PARTITION_BY (${partitionKeys.join(', ')}), OVERWRITE_OR_IGNORE 1`
+		: '';
+	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD' ${partitionString});`;
 
 	await query(copy);
 
@@ -206,5 +215,14 @@ export async function buildMultipartParquet(
 		await fs.rm(tmpFile, { force: true });
 	}
 	await emptyDbFs('*');
-	return rowCount;
+	if (partitionString) {
+		const allfiles = await fs.readdir(outputFilepath, { withFileTypes: true, recursive: true });
+		const parquets = allfiles
+			.filter((f) => f.name.endsWith('.parquet') && f.isFile())
+			.map((f) => path.join(f.path, f.name));
+		console.log({ parquets });
+		return { writtenRows: rowCount, filenames: parquets };
+	} else {
+		return { writtenRows: rowCount, filenames: [queryName + '.parquet'] };
+	}
 }

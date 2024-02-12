@@ -96,7 +96,7 @@ export async function emptyDbFs(targetGlob) {
 
 /**
  * Adds a new view to the database, pointing to the provided parquet URL.
- * @param {Record<string, string[]>} urls
+ * @param {Record<string, (string | { partitions: string[], name: string })[]>} urls
  * @param {boolean} [append]
  * @returns {Promise<void>}
  */
@@ -105,29 +105,57 @@ export async function setParquetURLs(urls, append = false) {
 	if (!append) await emptyDbFs('*');
 	if (import.meta.env.VITE_EVIDENCE_DEBUG) console.debug('Updating Parquet URLs');
 
+	/**
+	 * @param {string} p
+	 * @returns {string}
+	 */
+	const cleanPath = (p) => {
+		if (!p.startsWith('http') && !p.startsWith('/')) {
+			// URL Needs to be absolute
+			p = `/${p}`;
+		}
+		// Sveltekit doesn't like referencing the static dir expilcitly
+		if (p.startsWith('/static')) p = p.substring(7);
+		return p;
+	};
+
 	try {
 		for (const source in urls) {
 			await connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 			for (const url of urls[source]) {
-				const table = url.split(/\\|\//).at(-1).slice(0, -'.parquet'.length);
-				const file_name = `${source}_${table}.parquet`;
-				let path = url;
+				const isPartition = typeof url === 'object';
 
-				if (!url.startsWith('http') && !url.startsWith('/')) {
-					// URL Needs to be absolute
-					path = `/${url}`;
-				}
-				// Sveltekit doesn't like referencing the static dir expilcitly
-				if (path.startsWith('/static')) path = path.substring(7);
+				const table = isPartition
+					? url.name
+					: url.split(/\\|\//).at(-1).slice(0, -'.parquet'.length);
+				if (isPartition) {
+					for (const file of url.partitions) {
+						const clean = cleanPath(file);
+						if (append) {
+							await emptyDbFs(clean);
+						}
+						db.registerFileURL(clean, clean, DuckDBDataProtocol.HTTP, false);
+					}
+					connection.query(
+						`CREATE OR REPLACE VIEW "${source}"."${table}" AS (
+							SELECT * FROM read_parquet([${url.partitions
+								.map((p) => `'${cleanPath(p)}'`)
+								.join(', ')}], hive_partitioning = 1)
+						);`
+					);
+				} else {
+					const file_name = `${source}_${table}.parquet`;
+					const path = cleanPath(url);
 
-				if (append) {
-					await emptyDbFs(file_name);
-					await emptyDbFs(url);
+					if (append) {
+						await emptyDbFs(file_name);
+						await emptyDbFs(url);
+					}
+					await db.registerFileURL(file_name, path, DuckDBDataProtocol.HTTP, false);
+					await connection.query(
+						`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
+					);
 				}
-				await db.registerFileURL(file_name, path, DuckDBDataProtocol.HTTP, false);
-				await connection.query(
-					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
-				);
 			}
 		}
 		resolveTables();
