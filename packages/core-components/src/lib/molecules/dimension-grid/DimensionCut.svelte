@@ -83,9 +83,9 @@
 
 <!-- {dimensionCutQuery} -->
 
-<div class="w-full sm:w-1/3 text-sm antialiased text-gray-700 pr-4 pb-4">
+<div class=" w-52 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
 	<div class="capitalize border-b flex justify-between items-baseline">
-		<span class="truncate font-medium w-2/3">
+		<span class="truncate w-2/3">
 			{formatTitle(dimension.name)}
 		</span>
 		<span class="truncate w-1/3">
@@ -99,7 +99,7 @@
 		>
 			{$results.error}
 		</p>
-		{#if loaded.length > 0}
+		{#if loaded?.length > 0}
 			<div class={`h-[${heightPx}px]`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div

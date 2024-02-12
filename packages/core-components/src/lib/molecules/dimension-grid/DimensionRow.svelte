@@ -11,7 +11,7 @@
 		class={cn(
 			'group-hover:bg-blue-100 absolute inset-y-0 left-0 z-[-10] transition duration-100 w-full',
 			{
-				'bg-gray-50': selectedValue === row.dimensionValue
+				'bg-gray-100': selectedValue === row.dimensionValue
 			}
 		)}
 	/>

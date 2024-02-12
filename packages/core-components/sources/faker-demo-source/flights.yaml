@@ -33,3 +33,6 @@ schema:
     item: recent
     options:
       - days: 365
+  regulator: 
+    category: location 
+    item: country 

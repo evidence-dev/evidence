@@ -48,7 +48,7 @@
 		{data.error}
 	</p>
 {:else}
-	<div class="flex flex-wrap select-none">
+	<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
 		{#each dimensions as dimension}
 			<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} />
 		{/each}
