@@ -114,6 +114,11 @@ export default (node, option) => {
 				chart.setOption(prevOption.echartsOptions);
 			}
 			updateLabelWidths();
+			chart.resize({
+				animation: {
+					duration: ANIMATION_DURATION
+				}
+			});
 		},
 		destroy() {
 			if (resizeObserver) {

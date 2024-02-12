@@ -46,7 +46,7 @@ const database_initialization = profile(loadDB);
 /** @type {(...params: Parameters<import("./$types").LayoutLoad>) => Promise<App.PageData["data"]>} */
 async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch }) {
 	// get every query that's run in the component
-	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
+	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`).catch(() => ({ ok: false }));
 	if (!res.ok) return {};
 
 	const sql_cache_with_hashed_query_strings = await res.json();

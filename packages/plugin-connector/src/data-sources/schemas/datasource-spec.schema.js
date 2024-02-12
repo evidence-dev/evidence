@@ -11,7 +11,8 @@ export const DatasourceQuerySchema = z.object({
 export const DatasourceSpecFileSchema = z.object({
 	type: z.string(),
 	name: z.string().refine((s) => s?.toString().match(/^[a-zA-Z0-9_-]+$/)?.length),
-	options: z.any()
+	options: z.any(),
+	partitions: z.record(z.string(), z.array(z.string())).optional()
 });
 
 export const DatasourceSpecSchema = DatasourceSpecFileSchema.extend({
@@ -28,5 +29,14 @@ export const DatasourceQueryResultSchema = z.object({
 export const DatasourceCacheSchema = z.record(z.record(z.string().or(z.null())));
 
 export const DatasourceManifestSchema = z.object({
-	renderedFiles: z.record(z.array(z.string()))
+	renderedFiles: z.record(
+		z.array(
+			z.string().or(
+				z.object({
+					partitions: z.array(z.string()),
+					name: z.string()
+				})
+			)
+		)
+	)
 });
