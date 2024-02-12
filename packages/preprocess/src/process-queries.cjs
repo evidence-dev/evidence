@@ -132,7 +132,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 								scoreNotifier,
 								initialData,
 								initialError,
-								noResolve: _${id}_has_unresolved
+								noResolve: false,
+								disableCache: true
 							}
 						);
 						
@@ -186,7 +187,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`,
 						queryFunc,
 						'${id}',
-						{}
+						{
+							noResolve: false,
+							disableCache: true
+						}
 					));
 				`).join('\n')}
 			}));

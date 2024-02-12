@@ -1,5 +1,24 @@
 # @evidence-dev/component-utilities
 
+## 2.1.1-features-a.1
+
+### Patch Changes
+
+- 4115c5a5: - buildReactiveInputQuery was accidentally setting the value of it's store to a Promise, which was not the intent. This ensures that the value is always the proper interface.
+
+## 2.1.1-features-a.0
+
+### Patch Changes
+
+- 9176c2cc: Added buildReactiveInputQuery for ensuring input query values are reactive
+- c3a616d8: Improves input components, including adding a Date Range, and support for multi-select.
+
+  BREAKING: this changes the way you access the value of the input components.
+
+  - Previously: '\${inputs.input_name.}'
+  - Now: '${inputs.input_name.label}', '${inputs.input_name.value}', '${inputs.input_name.start}', '${inputs.input_name.end}' etc
+  - @evidence-dev/query-store@2.0.3-features-a.0
+
 ## 2.1.0
 
 ### Minor Changes

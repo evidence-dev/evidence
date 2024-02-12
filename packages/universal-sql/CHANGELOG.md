@@ -1,5 +1,18 @@
 # @evidence-dev/universal-sql
 
+## 2.0.3-features-a.0
+
+### Patch Changes
+
+- c3a616d8: Improves input components, including adding a Date Range, and support for multi-select.
+
+  BREAKING: this changes the way you access the value of the input components.
+
+  - Previously: '\${inputs.input_name.}'
+  - Now: '${inputs.input_name.label}', '${inputs.input_name.value}', '${inputs.input_name.start}', '${inputs.input_name.end}' etc
+
+- f4ccf03c: Add missing type
+
 ## 2.0.2
 
 ### Patch Changes

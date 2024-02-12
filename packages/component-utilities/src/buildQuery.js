@@ -41,6 +41,7 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
 export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 	const internal = writable(buildInputQuery(queryProps, id, initialData));
 
+	let currentQuery;
 	return {
 		results: derived(internal, (v) => v),
 		update: async (queryProps) => {
@@ -48,10 +49,17 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 			if (!hasQuery) {
 				internal.set({ hasQuery: false });
 			} else {
-				internal.update(async (currentQuery) => {
-					if (query.hash !== currentQuery) await query.fetch();
-					return { hasQuery, query };
-				});
+				if (query.hash !== currentQuery) {
+					const fetched = query.fetch();
+					if (fetched instanceof Promise)
+						fetched.then(() => {
+							currentQuery = query;
+							internal.set({ hasQuery, query });
+						});
+				} else {
+					currentQuery = query;
+					internal.set({ hasQuery, query });
+				}
 			}
 		}
 	};

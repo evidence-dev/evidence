@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.6-features-a.0
+
+### Patch Changes
+
+- ddf584d4: Allow motherduck connections to specify the database
+
 ## 1.0.5
 
 ### Patch Changes

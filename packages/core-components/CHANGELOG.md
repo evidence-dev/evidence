@@ -1,5 +1,32 @@
 # @evidence-dev/core-components
 
+## 4.0.0-features-a.1
+
+### Patch Changes
+
+- Updated dependencies [4115c5a5]
+  - @evidence-dev/component-utilities@2.1.1-features-a.1
+
+## 4.0.0-features-a.0
+
+### Major Changes
+
+- c3a616d8: Improves input components, including adding a Date Range, and support for multi-select.
+
+  BREAKING: this changes the way you access the value of the input components.
+
+  - Previously: '\${inputs.input_name.}'
+  - Now: '${inputs.input_name.label}', '${inputs.input_name.value}', '${inputs.input_name.start}', '${inputs.input_name.end}' etc
+
+### Patch Changes
+
+- 9176c2cc: Added buildReactiveInputQuery for ensuring input query values are reactive
+- 3e1da500: feat: add sqlconsole component
+- Updated dependencies [9176c2cc]
+- Updated dependencies [c3a616d8]
+  - @evidence-dev/component-utilities@2.1.1-features-a.0
+  - @evidence-dev/query-store@2.0.3-features-a.0
+
 ## 3.2.0
 
 ### Minor Changes

@@ -203,6 +203,13 @@ The ButtonGroupItem component can be used to manually add options to a button gr
         <td class='tcenter'>string</td>
         <td class='tcenter'>Uses value</td>
     </tr>
+    <tr>	
+        <td>hideDuringPrint</td>
+        <td>Hide the component when the report is printed</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
+    </tr>
 </table>
 
 

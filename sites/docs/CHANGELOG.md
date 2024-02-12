@@ -1,5 +1,16 @@
 # evidence-docs
 
+## 2.0.6-features-a.0
+
+### Patch Changes
+
+- c3a616d8: Improves input components, including adding a Date Range, and support for multi-select.
+
+  BREAKING: this changes the way you access the value of the input components.
+
+  - Previously: '\${inputs.input_name.}'
+  - Now: '${inputs.input_name.label}', '${inputs.input_name.value}', '${inputs.input_name.start}', '${inputs.input_name.end}' etc
+
 ## 2.0.5
 
 ### Patch Changes

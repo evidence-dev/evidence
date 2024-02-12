@@ -1,5 +1,37 @@
 # @evidence-dev/evidence
 
+## 27.0.0-features-a.1
+
+### Patch Changes
+
+- Updated dependencies [4115c5a5]
+  - @evidence-dev/component-utilities@2.1.1-features-a.1
+  - @evidence-dev/core-components@4.0.0-features-a.1
+  - @evidence-dev/plugin-connector@2.0.7-features-a.0
+
+## 27.0.0-features-a.0
+
+### Patch Changes
+
+- c3a616d8: Improves input components, including adding a Date Range, and support for multi-select.
+
+  BREAKING: this changes the way you access the value of the input components.
+
+  - Previously: '\${inputs.input_name.}'
+  - Now: '${inputs.input_name.label}', '${inputs.input_name.value}', '${inputs.input_name.start}', '${inputs.input_name.end}' etc
+
+- Updated dependencies [9176c2cc]
+- Updated dependencies [3e1da500]
+- Updated dependencies [c3a616d8]
+- Updated dependencies [f4ccf03c]
+  - @evidence-dev/component-utilities@2.1.1-features-a.0
+  - @evidence-dev/core-components@4.0.0-features-a.0
+  - @evidence-dev/plugin-connector@2.0.7-features-a.0
+  - @evidence-dev/preprocess@4.0.2-features-a.0
+  - @evidence-dev/universal-sql@2.0.3-features-a.0
+  - @evidence-dev/db-orchestrator@3.0.9-features-a.0
+  - @evidence-dev/query-store@2.0.3-features-a.0
+
 ## 26.0.0
 
 ### Patch Changes
