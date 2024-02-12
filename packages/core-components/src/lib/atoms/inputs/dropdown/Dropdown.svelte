@@ -22,6 +22,8 @@
 	import Invisible from './Invisible.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { browser } from '$app/environment';
+	import debounce from 'lodash.debounce';
+	import { QueryStore } from '@evidence-dev/query-store';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
@@ -137,19 +139,27 @@
 	}
 
 	const exec = getQueryFunction();
-	$: items =
-		search && hasQuery
-			? QueryStore.create(
-					`
-					SELECT
-						*,
-						jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
-					FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
-					exec,
-					`Dropdown-${name}-searched-${search}`,
-					{ initialData: $items ?? $query, initialDataDirty: true }
-			  )
-			: $query;
+	function updateItems(search) {
+		items =
+			search && hasQuery
+				? QueryStore.create(
+						`
+						SELECT
+							*,
+							jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
+						FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
+						exec,
+						`Dropdown-${name}-searched-${search}`,
+						{ initialData: $items ?? $query, initialDataDirty: true }
+				  )
+				: $query;
+	}
+
+	let items;
+	$: items ??= $query;
+
+	const debouncedUpdateItems = debounce(updateItems, 250);
+	$: debouncedUpdateItems(search);
 </script>
 
 <!-- execute the otherwise lazily rendered elements for SSR -->
