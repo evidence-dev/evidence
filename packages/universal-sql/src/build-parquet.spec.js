@@ -163,7 +163,7 @@ describe('buildMultipartParquet', () => {
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(1000);
+		expect(fs.rm).toHaveBeenCalledTimes(1001);
 	});
 
 	// TODO: Test how it handles invalid filepath
