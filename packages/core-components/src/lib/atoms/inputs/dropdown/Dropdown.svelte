@@ -7,7 +7,7 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import {
 		buildReactiveInputQuery,
-		buildQuery
+		getQueryFunction
 	} from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -136,16 +136,20 @@
 		}
 	}
 
-	$: items = search
-		? buildQuery(
-				`SELECT
-			    	*,
-			    	jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
-				FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
-				`Dropdown-${name}-searched-${search}`,
-				$page.data.data[`Dropdown-${name}-searched-${search}`]
-		  )
-		: $query;
+	const exec = getQueryFunction();
+	$: items =
+		search && hasQuery
+			? QueryStore.create(
+					`
+					SELECT
+						*,
+						jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
+					FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
+					exec,
+					`Dropdown-${name}-searched-${search}`,
+					{ initialData: $items ?? $query, initialDataDirty: true }
+			  )
+			: $query;
 </script>
 
 <!-- execute the otherwise lazily rendered elements for SSR -->
@@ -214,11 +218,9 @@
 								<slot />
 
 								{#if hasQuery}
-									{#await $items.fetch() then}
-										<VirtualList height="160px" items={$items} let:item>
-											<DropdownOption value={item.value} valueLabel={item.label} />
-										</VirtualList>
-									{/await}
+									<VirtualList height="160px" items={$items} let:item>
+										<DropdownOption value={item.value} valueLabel={item.label} />
+									</VirtualList>
 								{/if}
 							</Command.Group>
 							{#if $selectedValues.length > 0 && multiple}
