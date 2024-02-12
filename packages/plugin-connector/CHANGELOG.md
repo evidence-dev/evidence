@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.7-features-a.1
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+- Updated dependencies [1cb5334d]
+  - @evidence-dev/universal-sql@2.0.3-features-a.1
+
 ## 2.0.7-features-a.0
 
 ### Patch Changes

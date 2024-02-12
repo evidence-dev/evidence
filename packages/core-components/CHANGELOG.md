@@ -1,5 +1,20 @@
 # @evidence-dev/core-components
 
+## 4.0.0-features-a.3
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+- cbc7e8a4: Fix custom color conditional formatting bug
+- Updated dependencies [0f42e927]
+- Updated dependencies [1cb5334d]
+  - @evidence-dev/component-utilities@2.2.0-features-a.2
+  - @evidence-dev/query-store@2.0.3-features-a.1
+
 ## 4.0.0-features-a.2
 
 ### Patch Changes

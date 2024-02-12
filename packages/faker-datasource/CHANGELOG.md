@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.4-features-a.1
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+
 ## 2.0.4-features-a.0
 
 ### Patch Changes

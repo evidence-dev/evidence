@@ -1,5 +1,15 @@
 # @evidence-dev/mysql
 
+## 1.1.0-features-a.0
+
+### Minor Changes
+
+- 5d5cb2de: Upate mysql2 to next major version
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+
 ## 1.0.3
 
 ### Patch Changes

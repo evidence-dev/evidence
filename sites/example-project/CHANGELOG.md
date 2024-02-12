@@ -1,5 +1,25 @@
 # @evidence-dev/components
 
+## 3.3.0-features-a.3
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+- Updated dependencies [5d5cb2de]
+- Updated dependencies [0f42e927]
+- Updated dependencies [1cb5334d]
+- Updated dependencies [cbc7e8a4]
+  - @evidence-dev/mysql@1.1.0-features-a.0
+  - @evidence-dev/component-utilities@2.2.0-features-a.2
+  - @evidence-dev/core-components@4.0.0-features-a.3
+  - @evidence-dev/plugin-connector@2.0.7-features-a.1
+  - @evidence-dev/universal-sql@2.0.3-features-a.1
+  - @evidence-dev/query-store@2.0.3-features-a.1
+
 ## 3.2.1-features-a.2
 
 ### Patch Changes

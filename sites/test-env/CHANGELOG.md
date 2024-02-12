@@ -1,5 +1,18 @@
 # evidence-test-environment
 
+## 3.0.12-features-a.3
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+- Updated dependencies [0f42e927]
+- Updated dependencies [1cb5334d]
+- Updated dependencies [cbc7e8a4]
+  - @evidence-dev/component-utilities@2.2.0-features-a.2
+  - @evidence-dev/core-components@4.0.0-features-a.3
+  - @evidence-dev/faker-datasource@2.0.4-features-a.1
+  - @evidence-dev/evidence@27.0.0-features-a.3
+
 ## 3.0.12-features-a.2
 
 ### Patch Changes

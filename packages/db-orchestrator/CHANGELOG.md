@@ -1,5 +1,13 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.9-features-a.1
+
+### Patch Changes
+
+- Updated dependencies [5d5cb2de]
+- Updated dependencies [1cb5334d]
+  - @evidence-dev/mysql@1.1.0-features-a.0
+
 ## 3.0.9-features-a.0
 
 ### Patch Changes

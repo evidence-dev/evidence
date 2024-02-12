@@ -1,5 +1,16 @@
 # @evidence-dev/component-utilities
 
+## 2.2.0-features-a.2
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+  - @evidence-dev/query-store@2.0.3-features-a.1
+
 ## 2.1.1-features-a.1
 
 ### Patch Changes

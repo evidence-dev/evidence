@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 2.0.6-features-a.1
+
+### Patch Changes
+
+- 1cb5334d: Add support for partitioned data
+
 ## 2.0.6-features-a.0
 
 ### Patch Changes

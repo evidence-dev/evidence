@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 27.0.0-features-a.3
+
+### Patch Changes
+
+- Updated dependencies [0f42e927]
+- Updated dependencies [1cb5334d]
+- Updated dependencies [cbc7e8a4]
+  - @evidence-dev/component-utilities@2.2.0-features-a.2
+  - @evidence-dev/core-components@4.0.0-features-a.3
+  - @evidence-dev/plugin-connector@2.0.7-features-a.1
+  - @evidence-dev/universal-sql@2.0.3-features-a.1
+  - @evidence-dev/db-orchestrator@3.0.9-features-a.1
+  - @evidence-dev/query-store@2.0.3-features-a.1
+
 ## 27.0.0-features-a.2
 
 ### Patch Changes
