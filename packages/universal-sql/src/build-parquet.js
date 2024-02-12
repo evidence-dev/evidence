@@ -165,6 +165,7 @@ export async function buildMultipartParquet(
 		outDir,
 		partitionKeys.length ? queryName : `${queryName}.parquet`
 	);
+	await fs.rm(path.dirname(outputFilepath), { recursive: true });
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
 
 	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
