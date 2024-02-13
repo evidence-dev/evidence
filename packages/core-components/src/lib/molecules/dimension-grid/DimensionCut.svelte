@@ -78,12 +78,12 @@
 	// container height
 	// there can never be more than limit + 1 records.
 	// We don't want height to move down when we filter to fewer records
-	let heightPx = 20 * (Number(limit) + 1);
+	let heightRem = 1.2 * (Number(limit) + 1);
 </script>
 
 <!-- {dimensionCutQuery} -->
 
-<div class=" w-52 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
+<div class=" w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
 	<div class="capitalize border-b flex justify-between items-baseline">
 		<span class="truncate w-2/3">
 			{formatTitle(dimension.name)}
@@ -100,7 +100,7 @@
 			{$results.error}
 		</p>
 		{#if loaded?.length > 0}
-			<div class={`h-[${heightPx}px]`}>
+			<div style={`height:${heightRem}rem`}>
 				{#each loaded as row (row.dimensionValue)}
 					<div
 						class={cn('flex transition duration-100 group cursor-pointer')}
