@@ -86,7 +86,7 @@ where ${inputs.selected_dimensions}
     </tr>
         <tr>	
         <td>limit</td>	
-        <td>Number of </td>
+        <td>Maximum number of rows to include in each table</td>
         <td class='tcenter'>No</td>
         <td class='tcenter'>-</td>
         <td class='tcenter'>10</td>
