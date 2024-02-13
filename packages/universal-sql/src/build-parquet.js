@@ -103,7 +103,7 @@ export async function buildMultipartParquet(
 		// Converts the arrow table to a buffer
 		const IPC = tableToIPC(table, 'stream');
 
-		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.ZSTD).build();
+		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.UNCOMPRESSED).build();
 		// Converts the arrow buffer to a parquet buffer
 		// This can be slow; it includes the compression step
 
@@ -175,7 +175,7 @@ export async function buildMultipartParquet(
 		? `, PARTITION_BY (${partitionKeys.join(', ')}), OVERWRITE_OR_IGNORE 1`
 		: '';
 	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD' ${partitionString});`;
-
+	await query(`PRAGMA temp_directory='./${tmpDir}'`);
 	await query(copy);
 
 	const { size } = await fs.stat(outputFilepath);

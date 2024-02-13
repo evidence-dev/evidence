@@ -116,6 +116,7 @@ export async function setParquetURLs(urls, append = false) {
 		}
 		// Sveltekit doesn't like referencing the static dir expilcitly
 		if (p.startsWith('/static')) p = p.substring(7);
+		p = p.replaceAll("'", "''")
 		return p;
 	};
 
