@@ -128,7 +128,7 @@ export async function setParquetURLs(urls, append = false) {
 				connection.query(
 					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (
 						SELECT * FROM read_parquet([${url.partitions
-							.map((p) => `'${p.replace(/'/g, "''")}'`)
+							.map((p) => `'${p.replaceAll("'", "''")}'`)
 							.join(', ')}], hive_partitioning = 1)
 					);`
 				);
