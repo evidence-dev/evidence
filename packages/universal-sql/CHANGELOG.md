@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.3-features-a.2
+
+### Patch Changes
+
+- 62030402: Small perf tweaks
+
 ## 2.0.3-features-a.1
 
 ### Patch Changes

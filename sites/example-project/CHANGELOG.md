@@ -1,5 +1,16 @@
 # @evidence-dev/components
 
+## 3.3.0-features-a.4
+
+### Patch Changes
+
+- Updated dependencies [62030402]
+  - @evidence-dev/universal-sql@2.0.3-features-a.2
+  - @evidence-dev/core-components@4.0.0-features-a.4
+  - @evidence-dev/plugin-connector@2.0.7-features-a.2
+  - @evidence-dev/query-store@2.0.3-features-a.2
+  - @evidence-dev/component-utilities@2.2.0-features-a.3
+
 ## 3.3.0-features-a.3
 
 ### Minor Changes

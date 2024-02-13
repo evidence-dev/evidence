@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 4.0.0-features-a.4
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.3-features-a.2
+- @evidence-dev/component-utilities@2.2.0-features-a.3
+
 ## 4.0.0-features-a.3
 
 ### Minor Changes
