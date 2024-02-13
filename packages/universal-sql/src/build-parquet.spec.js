@@ -107,11 +107,10 @@ describe('buildMultipartParquet', () => {
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledTimes(3);
-		expect(fs.rm).toHaveBeenNthCalledWith(
-			1,
-			adaptFilePath('.evidence/template/static/data'),
-			{ recursive: true, force: true }
-		);
+		expect(fs.rm).toHaveBeenNthCalledWith(1, adaptFilePath('.evidence/template/static/data'), {
+			recursive: true,
+			force: true
+		});
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
