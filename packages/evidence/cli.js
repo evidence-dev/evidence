@@ -314,4 +314,34 @@ prog
 		});
 	});
 
+prog
+	.command('preview')
+	.describe('preview the production build')
+	.action((args) => {
+		if (args.debug) {
+			process.env.VITE_EVIDENCE_DEBUG = true;
+			delete args.debug;
+		}
+		const buildExists = fs.lstatSync(path.join('build'), {
+			throwIfNoEntry: false
+		});
+		if (!buildExists) {
+			console.error(chalk.bold.red('[!] No build directory found'));
+			console.error(chalk.red(`Run ${chalk.bgRed('npm run build')} to create a build`));
+			process.exit(1);
+		}
+		const flatArgs = flattenArguments(args);
+
+		// Run svelte kit dev in the hidden directory
+		const child = spawn('npx vite preview --outDir build --port 3000', flatArgs, {
+			shell: true,
+			detached: false,
+			stdio: 'inherit'
+		});
+
+		child.on('exit', function () {
+			child.kill();
+		});
+	});
+
 prog.parse(process.argv);

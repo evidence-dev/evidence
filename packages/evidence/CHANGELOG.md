@@ -1,5 +1,34 @@
 # @evidence-dev/evidence
 
+## 26.0.0
+
+### Patch Changes
+
+- 05f2155e: Enabled dependabot to create automatic PRs
+- 415653a7: Adds a preview command to allow previews of built outputs
+- Updated dependencies [3e3b3940]
+- Updated dependencies [f7903b86]
+- Updated dependencies [cd9c80b2]
+- Updated dependencies [3427433c]
+- Updated dependencies [31381835]
+- Updated dependencies [fa0faf8c]
+- Updated dependencies [a6de89de]
+- Updated dependencies [2181ed9c]
+- Updated dependencies [ca1e46cf]
+- Updated dependencies [9978899e]
+- Updated dependencies [f45a3a91]
+- Updated dependencies [6d3021e2]
+- Updated dependencies [c25fc1ac]
+- Updated dependencies [39390112]
+- Updated dependencies [f501513a]
+- Updated dependencies [e4e7d822]
+  - @evidence-dev/core-components@3.2.0
+  - @evidence-dev/component-utilities@2.1.0
+  - @evidence-dev/plugin-connector@2.0.6
+  - @evidence-dev/universal-sql@2.0.2
+  - @evidence-dev/db-orchestrator@3.0.8
+  - @evidence-dev/query-store@2.0.2
+
 ## 25.0.0
 
 ### Patch Changes

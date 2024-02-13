@@ -1,7 +1,7 @@
 <script>
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
-	import { propKey, configKey, strictBuild } from '../context';
+	import { propKey, configKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	let props = writable({});
 	let config = writable({});
 
@@ -31,6 +31,7 @@
 	// ---------------------------------------------------------------------------------------
 	// Data and columns:
 	export let data = undefined;
+	export let queryID = undefined;
 	export let x = undefined;
 	export let y = undefined;
 	export let y2 = undefined;
@@ -1014,7 +1015,8 @@
 			});
 		} catch (e) {
 			error = e.message;
-			console.error(e);
+			const setTextRed = '\x1b[31m%s\x1b[0m';
+			console.error(setTextRed, `Error in ${chartType}: ${e.message}`);
 			// if the build is in production fail instead of sending the error to the chart
 			if (strictBuild) {
 				throw error;
@@ -1034,6 +1036,8 @@
 		{height}
 		{width}
 		{data}
+		{queryID}
+		evidenceChartTitle={title}
 		{showAllXAxisLabels}
 		{swapXY}
 		{echartsOptions}

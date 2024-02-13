@@ -2,7 +2,7 @@
 	import { writable } from 'svelte/store';
 	import { setContext } from 'svelte';
 	import { slide } from 'svelte/transition';
-	import { propKey, strictBuild } from '../context';
+	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
 	import {
@@ -124,6 +124,15 @@
 		// Hide link column if columns have not been explicitly selected:
 		for (let i = 0; i < columnSummary.length; i++) {
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
+		}
+
+		for (const column of $props.columns) {
+			const summary = safeExtractColumn(column);
+			if (summary.format === undefined && column.fmt !== undefined) {
+				throw new Error(
+					`Column "${column.id}" unable to be formatted. Please cast the results to dates or numbers.`
+				);
+			}
 		}
 	} catch (e) {
 		error = e.message;
@@ -430,7 +439,7 @@
 															column.fmt
 																? getFormatObjectFromString(
 																		column.fmt,
-																		labelSummary.format.valueType
+																		labelSummary.format?.valueType
 																  )
 																: labelSummary.format,
 															labelSummary.columnUnitSummary
@@ -447,7 +456,7 @@
 														column.fmt
 															? getFormatObjectFromString(
 																	column.fmt,
-																	columnSummary.format.valueType
+																	columnSummary.format?.valueType
 															  )
 															: columnSummary.format,
 														columnSummary.columnUnitSummary
@@ -471,7 +480,7 @@
 															column.fmt
 																? getFormatObjectFromString(
 																		column.fmt,
-																		safeExtractColumn(column).format.valueType
+																		safeExtractColumn(column).format?.valueType
 																  )
 																: safeExtractColumn(column).format,
 															safeExtractColumn(column).columnUnitSummary
@@ -491,7 +500,7 @@
 											column.fmt
 												? getFormatObjectFromString(
 														column.fmt,
-														safeExtractColumn(column).format.valueType
+														safeExtractColumn(column).format?.valueType
 												  )
 												: safeExtractColumn(column).format,
 											safeExtractColumn(column).columnUnitSummary
@@ -631,13 +640,13 @@
 					>
 				</div>
 				{#if downloadable}
-					<DownloadData class="download-button" data={tableData} display={hovering} />
+					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
 			</div>
 		{:else}
 			<div class="table-footer">
 				{#if downloadable}
-					<DownloadData class="download-button" data={tableData} display={hovering} />
+					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
 			</div>
 		{/if}
