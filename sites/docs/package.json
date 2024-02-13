@@ -33,7 +33,7 @@
 	},
 	"devDependencies": {
 		"typescript": "4.9.5",
-		"webpack": "^5.76.1"
+		"webpack": "^5.90.1"
 	},
 	"browserslist": {
 		"production": [
