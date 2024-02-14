@@ -339,7 +339,13 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	const logOut = /** @param {string} t **/ (t) => (spinner ? (spinner.text = t) : console.log(t));
 
 	// use `Date.now()` to ensure data is updated
-	const dataOutDir = path.join(dataPath, source.name, query.name, Date.now().toString());
+	const dataOutDir = path.join(
+		dataPath,
+		source.name,
+		query.name,
+		query.hash ?? '',
+		Date.now().toString()
+	);
 
 	const parquetFilename = path.join(dataOutDir, query.name + '.parquet');
 	const schemaFilename = path.join(dataOutDir, query.name + '.schema.json');

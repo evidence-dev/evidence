@@ -208,6 +208,17 @@ export async function cleanParquetFiles(dataDir, hashes) {
 			for (const resultHash of currentResults) {
 				if (resultHash !== sourceHashes[queryName]) {
 					await fs.rm(path.join(queryPath, resultHash), { recursive: true, force: true });
+				} else {
+					const timestamps = await fs.readdir(path.join(queryPath, resultHash));
+					const latest = timestamps.sort().reverse()[0];
+					for (const timestamp of timestamps) {
+						if (timestamp !== latest) {
+							await fs.rm(path.join(queryPath, resultHash, timestamp), {
+								recursive: true,
+								force: true
+							});
+						}
+					}
 				}
 			}
 		}
