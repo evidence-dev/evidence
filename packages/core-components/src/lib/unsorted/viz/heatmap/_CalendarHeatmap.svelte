@@ -47,7 +47,7 @@
 	let gridHeight;
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
-	export let seriesEchartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
@@ -336,5 +336,5 @@
 {#if error}
 	<ErrorChart chartType="Calendar Heatmap" {error} />
 {:else}
-	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} {renderer} {echartsOptions} {seriesEchartsOptions}/>
+	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} {renderer} {echartsOptions} {seriesOptions}/>
 {/if}

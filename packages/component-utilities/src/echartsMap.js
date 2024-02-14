@@ -49,7 +49,7 @@ export default (node, option) => {
 	}
 
 	let tempSeries = [];
-	if (option.seriesEchartsOptions) {
+	if (option.seriesOptions) {
 		const reference_index = option.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
 			if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
 			  acc.push(reference_index);
@@ -61,7 +61,7 @@ export default (node, option) => {
 			if(reference_index.includes(i)){
 				tempSeries.push({})
 			} else {
-				tempSeries.push({...option.seriesEchartsOptions})
+				tempSeries.push({...option.seriesOptions})
 			}
 		}
 		chart.setOption({series: tempSeries})

@@ -11,7 +11,8 @@
 	export let copying = false;
 	export let printing = false;
 	export let echartsOptions = undefined;
-	export let seriesEchartsOptions = undefined;
+	export let seriesOptions = undefined;
+	export let seriesColors = undefined;
 </script>
 
 {#if copying}
@@ -26,7 +27,7 @@
           overflow: visible;
           break-inside: avoid;
       "
-		use:eChartsCopy={{ config, ratio: 2, echartsOptions, seriesEchartsOptions }}
+		use:eChartsCopy={{ config, ratio: 2, echartsOptions, seriesOptions, seriesColors }}
 	/>
 {:else if printing}
 	<div
@@ -40,6 +41,6 @@
 		overflow: visible;
 		break-inside: avoid;
 	"
-		use:eChartsCopy={{ config, ratio: 4, echartsOptions, seriesEchartsOptions }}
+		use:eChartsCopy={{ config, ratio: 4, echartsOptions, seriesOptions, seriesColors }}
 	/>
 {/if}

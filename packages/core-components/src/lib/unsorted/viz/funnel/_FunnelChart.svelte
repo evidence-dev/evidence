@@ -33,7 +33,7 @@
 
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
-	export let seriesEchartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 
@@ -231,7 +231,7 @@
 
 {#if !error}
 	<slot />
-	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} {renderer} 	{seriesEchartsOptions}/>
+	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} {renderer} 	{seriesOptions}/>
 {:else}
 	<ErrorChart {error} chartType="Funnel Chart" />
 {/if}

@@ -156,7 +156,8 @@
 		},
 		lineStyle: {
 			width: parseInt(lineWidth),
-			type: lineType
+			type: lineType,
+			opacity: lineOpacity
 		},
 		itemStyle: {
 			color: lineColor,
@@ -167,7 +168,7 @@
 		symbolSize: labels && !markers ? 0 : markerSize,
 		step: step ? stepPosition : false
 	};
-
+	
 	$: seriesConfig = getSeriesConfig(
 		data,
 		x,

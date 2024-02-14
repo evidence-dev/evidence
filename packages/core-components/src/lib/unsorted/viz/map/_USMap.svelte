@@ -130,7 +130,7 @@
 	}
 
 	export let echartsOptions = undefined;
-	export let seriesEchartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 	export let renderer = undefined;
@@ -308,7 +308,7 @@
 		{queryID}
 		{hasLink}
 		{echartsOptions}
-		{seriesEchartsOptions}
+		{seriesOptions}
 		{printEchartsConfig}
 		{renderer}
 	/>

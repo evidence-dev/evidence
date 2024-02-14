@@ -43,9 +43,11 @@
 	export let swapXY = false;
 
 	export let echartsOptions = undefined;
-	export let seriesEchartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
+
+	export let seriesColors = undefined;
 
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
@@ -95,9 +97,10 @@
 	{subtitle}
 	chartType="Box Plot"
 	{echartsOptions}
-	{seriesEchartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
 	{renderer}
+	{seriesColors}
 >
 	<Box {boxPlotData} {color} {min} {max} />
 	<slot />

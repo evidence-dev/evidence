@@ -100,9 +100,11 @@
 	export let y2AxisColor = undefined;
 
 	export let echartsOptions = undefined;
-	export let seriesEchartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
+
+	export let seriesColors = undefined;
 </script>
 
 <Chart
@@ -150,9 +152,10 @@
 	{showAllXAxisLabels}
 	{colorPalette}
 	{echartsOptions}
-	{seriesEchartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
 	{renderer}
+	{seriesColors}
 >
 	<Bar
 		{type}
