@@ -73,7 +73,7 @@ where ${inputs.selected_dimensions}
     <tr>	
         <td>name</td>	
         <td>Name of the dimension grid, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
-        <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>No</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>-</td>
     </tr>
