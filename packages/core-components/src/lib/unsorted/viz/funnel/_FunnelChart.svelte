@@ -231,7 +231,16 @@
 
 {#if !error}
 	<slot />
-	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} {renderer} 	{seriesOptions}/>
+	<ECharts
+		{data}
+		{config}
+		{width}
+		{height}
+		{echartsOptions}
+		{printEchartsConfig}
+		{renderer}
+		{seriesOptions}
+	/>
 {:else}
 	<ErrorChart {error} chartType="Funnel Chart" />
 {/if}

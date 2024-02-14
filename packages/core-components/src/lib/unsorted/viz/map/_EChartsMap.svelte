@@ -72,7 +72,15 @@
 		{/if}
 	{/if}
 
-	<EChartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} {seriesOptions} />
+	<EChartsCopyTarget
+		{config}
+		{height}
+		{width}
+		{copying}
+		{printing}
+		{echartsOptions}
+		{seriesOptions}
+	/>
 
 	<div class="chart-footer">
 		<DownloadData

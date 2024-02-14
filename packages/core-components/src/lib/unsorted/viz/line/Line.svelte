@@ -168,7 +168,7 @@
 		symbolSize: labels && !markers ? 0 : markerSize,
 		step: step ? stepPosition : false
 	};
-	
+
 	$: seriesConfig = getSeriesConfig(
 		data,
 		x,

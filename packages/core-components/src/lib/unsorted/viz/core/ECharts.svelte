@@ -72,12 +72,29 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echarts={{ config, ...$$restProps, echartsOptions, seriesOptions, dispatch, renderer, seriesColors }}
+				use:echarts={{
+					config,
+					...$$restProps,
+					echartsOptions,
+					seriesOptions,
+					dispatch,
+					renderer,
+					seriesColors
+				}}
 			/>
 		{/if}
 	{/if}
 
-	<EChartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} {seriesOptions} {seriesColors}/>
+	<EChartsCopyTarget
+		{config}
+		{height}
+		{width}
+		{copying}
+		{printing}
+		{echartsOptions}
+		{seriesOptions}
+		{seriesColors}
+	/>
 
 	<div class="chart-footer">
 		<DownloadData

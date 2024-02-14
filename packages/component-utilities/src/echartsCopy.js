@@ -14,62 +14,63 @@ export default (node, option) => {
 	if (echartsOptions) {
 		chart.setOption(echartsOptions);
 	}
-		
+
 	// Series Color override
-	const applySeriesColors = () => {		
-		if(seriesColors){
+	const applySeriesColors = () => {
+		if (seriesColors) {
 			/** @type {import("echarts").EChartsOption} */
 			const prevOption = chart.getOption();
 			if (!prevOption) return;
-			const newOption = {...prevOption};
+			const newOption = { ...prevOption };
 			for (const seriesName of Object.keys(seriesColors)) {
-				const matchingSeriesIndex = prevOption.series.findIndex(
-				(s) => s.name === seriesName
-				);
+				const matchingSeriesIndex = prevOption.series.findIndex((s) => s.name === seriesName);
 				if (matchingSeriesIndex !== -1) {
-				newOption.series[matchingSeriesIndex] = {
-					...newOption.series[matchingSeriesIndex],
-					itemStyle: {
-					...newOption.series[matchingSeriesIndex].itemStyle,
-					color: seriesColors[seriesName],
-					},
-				};
+					newOption.series[matchingSeriesIndex] = {
+						...newOption.series[matchingSeriesIndex],
+						itemStyle: {
+							...newOption.series[matchingSeriesIndex].itemStyle,
+							color: seriesColors[seriesName]
+						}
+					};
 				}
 			}
-			chart.setOption(newOption)
+			chart.setOption(newOption);
 		}
-	}
-	
+	};
+
 	// Check if echartsOptions are provided and apply them
 	const applyEchartsOptions = () => {
 		if (echartsOptions) {
 			chart.setOption({
 				...echartsOptions
 			});
-		}	
-	}
+		}
+	};
 
 	// seriesOptions - loop through series and apply same changes to each
 	const applySeriesOptions = () => {
 		let tempSeries = [];
 		if (seriesOptions) {
-			const reference_index = config.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
-				if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
-				acc.push(reference_index);
-				}
-				return acc;
-			}, []);
+			const reference_index = config.series.reduce(
+				(acc, { evidenceSeriesType }, reference_index) => {
+					if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+						acc.push(reference_index);
+					}
+					return acc;
+				},
+				[]
+			);
 
-			for(let i=0; i < config.series.length; i++){
-				if(reference_index.includes(i)){
-					tempSeries.push({})
+			for (let i = 0; i < config.series.length; i++) {
+				if (reference_index.includes(i)) {
+					tempSeries.push({});
 				} else {
-					tempSeries.push({...seriesOptions})
+					tempSeries.push({ ...seriesOptions });
 				}
 			}
-			chart.setOption({series: tempSeries})
+			chart.setOption({ series: tempSeries });
 		}
-	}
+	};
 
 	applyEchartsOptions();
 	applySeriesColors();

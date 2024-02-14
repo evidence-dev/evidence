@@ -336,5 +336,14 @@
 {#if error}
 	<ErrorChart chartType="Calendar Heatmap" {error} />
 {:else}
-	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} {renderer} {echartsOptions} {seriesOptions}/>
+	<ECharts
+		{height}
+		{data}
+		{queryID}
+		{config}
+		{printEchartsConfig}
+		{renderer}
+		{echartsOptions}
+		{seriesOptions}
+	/>
 {/if}

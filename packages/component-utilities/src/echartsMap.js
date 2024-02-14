@@ -50,21 +50,21 @@ export default (node, option) => {
 
 	let tempSeries = [];
 	if (option.seriesOptions) {
-		const reference_index = option.series.reduce((acc, {evidenceSeriesType}, reference_index) => {
+		const reference_index = option.series.reduce((acc, { evidenceSeriesType }, reference_index) => {
 			if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
-			  acc.push(reference_index);
+				acc.push(reference_index);
 			}
 			return acc;
-		  }, []);
+		}, []);
 
-	  	for(let i=0; i < option.series.length; i++){
-			if(reference_index.includes(i)){
-				tempSeries.push({})
+		for (let i = 0; i < option.series.length; i++) {
+			if (reference_index.includes(i)) {
+				tempSeries.push({});
 			} else {
-				tempSeries.push({...option.seriesOptions})
+				tempSeries.push({ ...option.seriesOptions });
 			}
 		}
-		chart.setOption({series: tempSeries})
+		chart.setOption({ series: tempSeries });
 	}
 
 	let resizeObserver;
