@@ -52,12 +52,7 @@ const buildSourceDirectory = async (directory) => {
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
  * @returns {Promise<DatasourceManifest["renderedFiles"]>}
  */
-export const buildSources = async (
-	sources,
-	dataPath,
-	metaPath,
-	filters,
-) => {
+export const buildSources = async (sources, dataPath, metaPath, filters) => {
 	await fs.stat(dataPath).catch(async (e) => {
 		if (e.message.startsWith('ENOENT')) {
 			await fs.mkdir(dataPath, { recursive: true });
@@ -86,7 +81,15 @@ export const buildSources = async (
 	const hashes = {};
 
 	for (const source of sources) {
-		console.log(chalk.bold(`Processing ${source.name} ${process.env.VITE_EVIDENCE_DEBUG ? `(cursor size: ${source.cursorRows}, parquet size: ${source.parquetRows})` : ""}`));
+		console.log(
+			chalk.bold(
+				`Processing ${source.name} ${
+					process.env.VITE_EVIDENCE_DEBUG
+						? `(cursor size: ${source.cursorRows}, parquet size: ${source.parquetRows})`
+						: ''
+				}`
+			)
+		);
 		const sourceManifest = existingManifest[source.name] ?? [];
 		// For building the manifest
 		/** @type {DatasourceManifest["renderedFiles"][string]} */
@@ -130,6 +133,10 @@ export const buildSources = async (
 			 * @param {string} content
 			 */
 			isCached: (name, content) => {
+				if (!content) {
+					console.warn(chalk.yellow(`[!] Cannot cache ${name}`));
+					return false;
+				}
 				const hash = createHash('md5').update(content).digest('hex');
 				return existingHashes[source.name]?.[name] === hash;
 			},
@@ -208,9 +215,9 @@ export const buildSources = async (
 						logQueryEvent('cache-query', source.type, source.name);
 						continue;
 					}
-					hashes[source.name][table.name] = createHash('md5')
-						.update(table.content ?? '')
-						.digest('hex');
+					hashes[source.name][table.name] = table.content
+						? createHash('md5').update(table.content).digest('hex')
+						: '';
 
 					const filenames = await flushSource(
 						source,
@@ -290,9 +297,9 @@ export const buildSources = async (
 						continue;
 					}
 
-					hashes[source.name][query.name] = createHash('md5')
-						.update(query.content ?? '')
-						.digest('hex');
+					hashes[source.name][query.name] = query.content
+						? createHash('md5').update(query.content).digest('hex')
+						: '';
 					/** @type {QueryResult | null} */
 					let result;
 					try {
@@ -334,14 +341,7 @@ export const buildSources = async (
 					if (result === null) {
 						continue;
 					}
-					const filenames = await flushSource(
-						source,
-						query,
-						result,
-						dataPath,
-						metaPath,
-						spinner
-					);
+					const filenames = await flushSource(source, query, result, dataPath, metaPath, spinner);
 
 					if (filenames) {
 						outputFilenames.push(filenames);
@@ -427,5 +427,5 @@ const flushSource = async (source, query, result, dataPath, metaPath, spinner) =
 		name: query.name,
 		partitions: filenames,
 		useHive: Boolean(partitionKeys.length)
-	}
+	};
 };

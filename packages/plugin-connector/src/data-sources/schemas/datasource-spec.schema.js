@@ -13,8 +13,8 @@ export const DatasourceSpecFileSchema = z.object({
 	name: z.string().refine((s) => s?.toString().match(/^[a-zA-Z0-9_-]+$/)?.length),
 	options: z.any(),
 	partitions: z.record(z.string(), z.array(z.string())).optional(),
-	cursorRows: z.number().default(1_000_000),
-	parquetRows: z.number().default(1_000_000)
+	cursorRows: z.number().default(1000000),
+	parquetRows: z.number().default(1000000)
 });
 
 export const DatasourceSpecSchema = DatasourceSpecFileSchema.extend({

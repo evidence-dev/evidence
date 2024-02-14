@@ -203,6 +203,8 @@ export async function cleanParquetFiles(dataDir, hashes) {
 		const queries = await fs.readdir(sourcePath);
 		const sourceHashes = hashes[sourceName];
 		for (const queryName of queries) {
+			console.log(sourceHashes, sourceHashes[sourceName]);
+			if (!sourceHashes[queryName]) continue;
 			const queryPath = path.join(sourcePath, queryName);
 			const currentResults = await fs.readdir(queryPath);
 			for (const resultHash of currentResults) {

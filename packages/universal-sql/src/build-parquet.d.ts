@@ -17,4 +17,4 @@ export function buildMultipartParquet<T extends Record<string, any>>(
 	outputFilename: string,
 	parquetRows: number,
 	partitionKeys?: string[]
-): Promise<{writtenRows: number, filenames: string[]}>;
+): Promise<{ writtenRows: number; filenames: string[] }>;

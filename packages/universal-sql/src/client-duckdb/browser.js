@@ -39,15 +39,15 @@ export async function initDB() {
 
 		const DUCKDB_CONFIG = useEh
 			? {
-				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default,
-				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker'))
-					.default
-			}
+					mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url')).default,
+					mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?worker'))
+						.default
+			  }
 			: {
-				mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default,
-				mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
-					.default
-			};
+					mainModule: (await import('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url')).default,
+					mainWorker: (await import('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?worker'))
+						.default
+			  };
 
 		const logger = import.meta.env.VITE_EVIDENCE_DEBUG ? new ConsoleLogger() : new VoidLogger();
 		const worker = new DUCKDB_CONFIG.mainWorker();
@@ -133,8 +133,8 @@ export async function setParquetURLs(tablse, append = false) {
 				connection.query(
 					`CREATE OR REPLACE VIEW "${source}"."${table.name}" AS (
 						SELECT * FROM read_parquet([${table.partitions
-						.map((p) => `'${cleanPath(p.replaceAll("'", "''"))}'`)
-						.join(', ')}], hive_partitioning = ${table.useHive ? "1" : "0"})
+							.map((p) => `'${cleanPath(p.replaceAll("'", "''"))}'`)
+							.join(', ')}], hive_partitioning = ${table.useHive ? '1' : '0'})
 					);`
 				);
 			}
