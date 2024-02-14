@@ -3,3 +3,9 @@ type: faker
 
 
 options: {}
+
+parquetRows: 1000000
+cursorRows: 1000000
+partitions:
+  users: []
+  #  - gender

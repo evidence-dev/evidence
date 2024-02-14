@@ -16,10 +16,8 @@ import {
 import fs from 'fs/promises';
 import path from 'path';
 // using node-async.js makes CLI command hang - why??
-import { emptyDbFs, initDB, query } from './client-duckdb/node.js';
-import { isGeneratorObject } from 'util/types';
+import { emptyDbFs, initDB, query, setParquetURLs } from './client-duckdb/node.js';
 import chunk from 'lodash.chunk';
-import { columnsToScore } from './calculateScore.js';
 import chalk from 'chalk';
 
 /**
@@ -51,8 +49,8 @@ function convertArrayToVector(column, rawValues) {
 		default:
 			throw new Error(
 				'Unrecognized EvidenceType: ' +
-					column.evidenceType +
-					'\n This is likely an error in a datasource connector.'
+				column.evidenceType +
+				'\n This is likely an error in a datasource connector.'
 			);
 	}
 }
@@ -64,10 +62,9 @@ function convertArrayToVector(column, rawValues) {
  * @param {string} tmpDir
  * @param {string} outDir
  * @param {string} queryName
- * @param {number} [expectedRowCount]
- * @param {number} [batchSize]
+ * @param {number} parquetRows
  * @param {string[]} [partitionKeys]
- * @returns {Promise<{writtenRows: number, filenames: string[]}>} Number of rows
+ * @returns {Promise<{writtenRows: number, filenames: string[]}>}
  */
 export async function buildMultipartParquet(
 	columns,
@@ -75,23 +72,24 @@ export async function buildMultipartParquet(
 	tmpDir,
 	outDir,
 	queryName,
-	expectedRowCount,
-	batchSize = 1000000,
+	parquetRows,
 	partitionKeys = []
 ) {
-	let batchNum = 0;
-	const outputSubpath = queryName.split('.parquet')[0];
-	let tmpFilenames = [];
-	let rowCount = 0;
-
-	const flush = async (results) => {
+	let parquetIdx = 0;
+	const tempFiles = [];
+	let writtenRows = 0;
+	
+	/**
+	 * @param {Record<string,unknown>[]} resultSet
+	 */
+	const writeTmpParquetFile = async (resultSet) => {
 		// Convert JS Objects -> Arrow
 		const vectorized = Object.fromEntries(
 			columns.map((c) => [
 				c.name,
 				convertArrayToVector(
 					c,
-					results.map((i) => i[c.name] ?? null)
+					resultSet.map((i) => i[c.name] ?? null)
 				)
 			])
 		);
@@ -103,126 +101,95 @@ export async function buildMultipartParquet(
 		// Converts the arrow table to a buffer
 		const IPC = tableToIPC(table, 'stream');
 
-		const writerProperties = new WriterPropertiesBuilder().setCompression(Compression.UNCOMPRESSED).build();
+		// If we have partitionKeys, these files are not final, if we do not, then these files are final
+		const compression = partitionKeys.length ? Compression.UNCOMPRESSED : Compression.GZIP
+
+		const writerProperties = new WriterPropertiesBuilder().setCompression(compression).build();
 		// Converts the arrow buffer to a parquet buffer
 		// This can be slow; it includes the compression step
 
 		const parquetBuffer = writeParquet(Table.fromIPCStream(IPC), writerProperties);
 
-		const tempFilename = path.join(tmpDir, `${outputSubpath}.${batchNum}.parquet`);
-		await fs.mkdir(path.dirname(tempFilename), { recursive: true });
-		await fs.writeFile(tempFilename, parquetBuffer);
+		const filename = path.join(tmpDir, `${queryName}.${parquetIdx}.parquet`);
+		await fs.mkdir(path.dirname(filename), { recursive: true });
+		await fs.writeFile(filename, parquetBuffer);
 
-		tmpFilenames.push(tempFilename);
-		rowCount += results.length;
-		batchNum++;
-	};
+		tempFiles.push(filename);
+		writtenRows += resultSet.length;
+		parquetIdx++;
+	}
 
+	// Unwrap data into a guarunteed iterator
 	if (typeof data === 'function') data = data();
 	if (data instanceof Promise) data = await data;
-	// Data is an array, but not a nested one
-	// We expect a set of result sets;
-	if (Array.isArray(data) && !Array.isArray(data[0])) data = [data];
+	if (Array.isArray(data) && !Array.isArray(data[0])) data = [data]; // data is a single row
+	
+	let currentBatch = []
+	for await (const result of data) {
+		currentBatch = currentBatch.concat(result)
+		if (currentBatch.length >= parquetRows) { // we have at least one parquet amount
 
-	// Handle generators
-	if (isGeneratorObject(data)) {
-		let currentBatch = [];
-		for await (const results of data) {
-			currentBatch = currentBatch.concat(results);
-
-			if (currentBatch.length >= batchSize) {
-				await flush(currentBatch);
-				currentBatch = [];
+			for (const c of chunk(currentBatch, parquetRows)) {
+				await writeTmpParquetFile(c)
 			}
+			currentBatch = []
 		}
-		if (currentBatch.length) await flush(currentBatch);
-	} else {
-		let currentBatch = [];
-		for (const results of data) {
-			// If the array is longer than the batch size; it gets chunked
-			for (const batch of chunk(results, batchSize)) {
-				// Iterate through the split up chunks
-				// Batch them and flush when needed
-
-				currentBatch = currentBatch.concat(batch);
-
-				if (currentBatch.length >= batchSize) {
-					// Time to flush
-					await flush(currentBatch);
-					currentBatch = [];
-				}
-			}
+	}
+	// Write any remaining rows
+	if (currentBatch.length) {
+		for (const c of chunk(currentBatch, parquetRows)) {
+			await writeTmpParquetFile(c)
 		}
-		// Ensure nothing is left over
-		if (currentBatch.length) await flush(currentBatch);
 	}
 
-	if (!tmpFilenames.length) return { writtenRows: 0, filenames: [] };
+	if (!tempFiles.length) return { writtenRows: 0, filenames: [] }; // wrote no files
 
-	await initDB();
+	const outputFilepath = path.join(outDir, queryName)
 
-	const outputFilepath = path.join(
-		outDir,
-		partitionKeys.length ? queryName : `${queryName}.parquet`
-	);
+	// clean and rebuild the output directory
 	await fs.rm(path.dirname(outputFilepath), { recursive: true, force: true });
 	await fs.mkdir(path.dirname(outputFilepath), { recursive: true });
+	
+	const parquetFiles = tempFiles.map((filename) => `${filename.replaceAll('\\', '/')}`);
 
-	const parquetFiles = tmpFilenames.map((filename) => `'${filename.replaceAll('\\', '/')}'`);
+	if (partitionKeys.length) {
+		await initDB();
+		const chunked = chunk(
+			tempFiles,
+			5
+		)
 
-	const select = `SELECT * FROM read_parquet([${parquetFiles.join(',')}])`;
-	const partitionString = partitionKeys?.length
-		? `, PARTITION_BY (${partitionKeys.join(', ')}), OVERWRITE_OR_IGNORE 1`
-		: '';
-	const copy = `COPY (${select}) TO '${outputFilepath}' (FORMAT 'PARQUET', CODEC 'ZSTD' ${partitionString});`;
-	await query(`PRAGMA temp_directory='./${tmpDir}'`);
-	await query(copy);
+		let i = 0
+		for(const c of chunked) {
+			// we have hive partitioning, go ahead and transform filenames
+			const ddbTmpDir = path.join(tmpDir, 'ddb')
+					
+			const partitionString = partitionKeys?.length
+				? `, PARTITION_BY (${partitionKeys.join(', ')}), OVERWRITE_OR_IGNORE 1`
+				: '';
+			const copy = `COPY (SELECT * FROM read_parquet([${c.map(f => `'${f}'`).join(',')}])) TO '${path.resolve(outDir, i.toString())}' (FORMAT 'PARQUET', CODEC 'ZSTD' ${partitionString});`;
+			const tmpDirPragma = `PRAGMA temp_directory='./${ddbTmpDir}'`
+			i++;
+			await fs.mkdir(ddbTmpDir, { recursive: true })
 
-	const { size } = await fs.stat(outputFilepath);
-	if (size > 100 * 1024 * 1024) {
-		console.warn(
-			chalk.yellow(` Estimated disk size is ${Intl.NumberFormat().format(size / (1024 * 1024))}mb.`)
-		);
-	}
-
-	const score =
-		rowCount *
-		columnsToScore(
-			columns.map(({ name, evidenceType }) => ({
-				name,
-				type:
-					evidenceType === 'number'
-						? 'DOUBLE'
-						: evidenceType === 'boolean'
-						? 'BOOLEAN'
-						: evidenceType === 'date'
-						? 'TIMESTAMP'
-						: 'VARCHAR'
-			}))
-		);
-
-	if (score > 100 * 1024 * 1024) {
-		console.warn(
-			chalk.yellow(
-				` WARNING: Estimated output size is ${Intl.NumberFormat().format(
-					score / (1024 * 1024)
-				)}mb uncompressed. This may cause client-side performance issues.`
-			)
-		);
-	}
-
-	for (const tmpFile of tmpFilenames) {
-		await fs.rm(tmpFile, { force: true });
-	}
-	await emptyDbFs('*');
-	if (partitionString) {
-		const allfiles = await fs.readdir(outputFilepath, { withFileTypes: true, recursive: true });
-		const parquets = allfiles
-			.filter((f) => f.name.endsWith('.parquet') && f.isFile())
-			.map((f) => path.join(f.path, f.name));
-		console.log({ parquets });
-		return { writtenRows: rowCount, filenames: parquets };
+			await query(tmpDirPragma);
+			await query(copy);
+		}
 	} else {
-		return { writtenRows: rowCount, filenames: [queryName + '.parquet'] };
+		// no hive partitioning, just copy over the files
+		for (const tmp of parquetFiles) {
+			const tmpName = path.parse(tmp).base
+			await fs.rename(path.resolve(tmp), path.join(outDir, tmpName))
+		}
 	}
+
+	if (!process.env.VITE_EVIDENCE_DEBUG) await fs.rm(tmpDir, { force: true, recursive: true });
+
+	const allfiles = await fs.readdir(outDir, { withFileTypes: true, recursive: true });
+	const parquets = allfiles
+		.filter((f) => f.name.endsWith('.parquet') && f.isFile())
+		.map((f) => path.join(f.path, f.name));
+	
+	if (process.env.VITE_EVIDENCE_DEBUG) console.log({ parquets, outDir, resolved: parquets.map(p => path.resolve(p)) });
+	return { writtenRows, filenames: parquets };
 }

@@ -34,5 +34,6 @@ export type ProcessSource<T extends Record<string, unknown>> = (
 		isFiltered: (name: string) => boolean;
 		shouldRun: (name: string, content: string) => boolean;
 		addToCache: (name: string, content: string) => void;
-	}
+	},
+	batchSize: number
 ) => AsyncIterable<QueryResult & { name: string; content: string }>;

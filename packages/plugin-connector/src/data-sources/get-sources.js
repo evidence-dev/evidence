@@ -345,7 +345,7 @@ export async function getQueries(sourceDir, contents) {
 			const { size } = await fs.stat(filepath);
 			let content, hash;
 			if (size > 100 * 1024 * 1024) {
-				console.warn(`${filename} is over 100MB, skipping`);
+				console.warn(`${filename} is over 100MB, will not be hashed!`);
 				content = null;
 				hash = null;
 			} else {

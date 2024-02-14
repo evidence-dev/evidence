@@ -29,7 +29,7 @@ export function query(
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {Record<string, string[]>} urls
+ * @param {Record<string, ({ partitions: string[], name: string, useHive: boolean })[]>} tables
  * @param {boolean} [append]
  * @returns {void}
  */

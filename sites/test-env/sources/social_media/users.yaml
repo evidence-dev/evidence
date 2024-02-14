@@ -1,4 +1,4 @@
-rows: 10000
+rows: 100000
 fuzz: 2500
 
 schema:
@@ -23,13 +23,13 @@ schema:
         item: arrayElement
         withBias: true
         options:
-            # This is not intended to be an exhaustive or accurate list;
-            # and it uses arrayElement instead of people.gender
-            # to create a weighted list for the purpose of demonstration only
-            - Male
-            - Male
-            - Male
-            - Female
-            - Female
-            - Female
-            - Other
+            - # This is not intended to be an exhaustive or accurate list;
+              # and it uses arrayElement instead of people.gender
+              # to create a weighted list for the purpose of demonstration only
+              - Male
+              - Male
+              - Male
+              - Female
+              - Female
+              - Female
+              - Other

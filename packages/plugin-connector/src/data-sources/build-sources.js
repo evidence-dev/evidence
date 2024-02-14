@@ -50,7 +50,6 @@ const buildSourceDirectory = async (directory) => {
  * @param {string} dataPath
  * @param {string} metaPath
  * @param {{ sources: Set<string> | null, queries: Set<string> | null, only_changed: boolean }} [filters] `sources` or `queries` being null means no filter
- * @param {number} [batchSize]
  * @returns {Promise<DatasourceManifest["renderedFiles"]>}
  */
 export const buildSources = async (
@@ -58,7 +57,6 @@ export const buildSources = async (
 	dataPath,
 	metaPath,
 	filters,
-	batchSize = 1000 * 1000
 ) => {
 	await fs.stat(dataPath).catch(async (e) => {
 		if (e.message.startsWith('ENOENT')) {
@@ -88,7 +86,7 @@ export const buildSources = async (
 	const hashes = {};
 
 	for (const source of sources) {
-		console.log(chalk.bold(`Processing ${source.name}`));
+		console.log(chalk.bold(`Processing ${source.name} ${process.env.VITE_EVIDENCE_DEBUG ? `(cursor size: ${source.cursorRows}, parquet size: ${source.parquetRows})` : ""}`));
 		const sourceManifest = existingManifest[source.name] ?? [];
 		// For building the manifest
 		/** @type {DatasourceManifest["renderedFiles"][string]} */
@@ -162,7 +160,8 @@ export const buildSources = async (
 			const sourceIterator = targetPlugin.processSource(
 				source.options,
 				await buildSourceDirectory(source.sourceDirectory),
-				utils
+				utils,
+				source.cursorRows
 			);
 
 			for await (const table of sourceIterator) {
@@ -224,16 +223,11 @@ export const buildSources = async (
 						table,
 						dataPath,
 						metaPath,
-						batchSize,
 						spinner
 					);
-					if (filenames && filenames?.length > 1) {
-						outputFilenames.push({
-							partitions: filenames,
-							name: table.name
-						});
-					} else if (filenames) {
-						outputFilenames.push(...filenames);
+
+					if (filenames) {
+						outputFilenames.push(filenames);
 					}
 				} catch (e) {
 					let message = 'Unknown error occurred';
@@ -305,7 +299,7 @@ export const buildSources = async (
 						const interpolatedContent = query.content
 							? subSourceVariables(query.content)
 							: query.content;
-						const _r = runner(interpolatedContent, query.filepath, batchSize);
+						const _r = runner(interpolatedContent, query.filepath, source.cursorRows);
 						if (_r instanceof Promise) {
 							result = await _r.catch((e) => {
 								if (e instanceof z.ZodError) {
@@ -346,17 +340,11 @@ export const buildSources = async (
 						result,
 						dataPath,
 						metaPath,
-						batchSize,
 						spinner
 					);
 
-					if (filenames && filenames?.length > 1) {
-						outputFilenames.push({
-							partitions: filenames,
-							name: query.name
-						});
-					} else if (filenames) {
-						outputFilenames.push(...filenames);
+					if (filenames) {
+						outputFilenames.push(filenames);
 					}
 				} catch (e) {
 					let message = 'Unknown error occurred';
@@ -383,16 +371,14 @@ export const buildSources = async (
  * @param {QueryResult} result
  * @param {string} dataPath
  * @param {string} metaPath
- * @param {number} batchSize
  * @param {import("ora").Ora} [spinner]
- * @returns {Promise<null | string[]>}
+ * @returns {Promise<DatasourceManifest["renderedFiles"][string][number] | null>}
  */
-const flushSource = async (source, query, result, dataPath, metaPath, batchSize, spinner) => {
+const flushSource = async (source, query, result, dataPath, metaPath, spinner) => {
 	const logOut = /** @param {string} t **/ (t) => (spinner ? (spinner.text = t) : console.log(t));
 
 	const dataOutDir = path.join(dataPath, source.name, query.name, query.hash ?? '');
 
-	const parquetFilename = path.join(dataOutDir, query.name + '.parquet');
 	const schemaFilename = path.join(dataOutDir, query.name + '.schema.json');
 
 	const tmpDir = path.join(metaPath, 'intermediate-parquet', source.name, query.name);
@@ -422,8 +408,7 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 		tmpDir,
 		dataOutDir,
 		query.name,
-		result.expectedRowCount,
-		batchSize,
+		source.parquetRows,
 		partitionKeys
 	);
 
@@ -438,9 +423,9 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 	}
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
-	if (filenames.length > 1) {
-		return filenames;
-	} else {
-		return [parquetFilename];
+	return {
+		name: query.name,
+		partitions: filenames,
+		useHive: Boolean(partitionKeys.length)
 	}
 };

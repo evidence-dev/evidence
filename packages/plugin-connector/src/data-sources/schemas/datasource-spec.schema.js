@@ -12,7 +12,9 @@ export const DatasourceSpecFileSchema = z.object({
 	type: z.string(),
 	name: z.string().refine((s) => s?.toString().match(/^[a-zA-Z0-9_-]+$/)?.length),
 	options: z.any(),
-	partitions: z.record(z.string(), z.array(z.string())).optional()
+	partitions: z.record(z.string(), z.array(z.string())).optional(),
+	cursorRows: z.number().default(1_000_000),
+	parquetRows: z.number().default(1_000_000)
 });
 
 export const DatasourceSpecSchema = DatasourceSpecFileSchema.extend({
@@ -31,12 +33,11 @@ export const DatasourceCacheSchema = z.record(z.record(z.string().or(z.null())))
 export const DatasourceManifestSchema = z.object({
 	renderedFiles: z.record(
 		z.array(
-			z.string().or(
-				z.object({
-					partitions: z.array(z.string()),
-					name: z.string()
-				})
-			)
+			z.object({
+				partitions: z.array(z.string()),
+				name: z.string(),
+				useHive: z.boolean().default(false)
+			})
 		)
 	)
 });
