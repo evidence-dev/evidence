@@ -96,15 +96,15 @@ export async function emptyDbFs(targetGlob) {
 /**
  * Adds a new view to the database, pointing to the provided parquet URLs.
  *
- * @param {Record<string, (string | { partitions: string[], name: string })[]>} urls
+ * @param {Record<string, ({ partitions: string[], name: string, useHive: boolean })[]>} tables
  * @param {boolean} [append]
  * @returns {void}
  */
-export async function setParquetURLs(urls, append = false) {
+export async function setParquetURLs(tables, append = false) {
 	if (!append) await emptyDbFs('*');
 
 	if (process.env.VITE_EVIDENCE_DEBUG) console.log(`Updating Parquet URLs`);
-	for (const source in urls) {
+	for (const source in tables) {
 		connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
 		/**
 		 *
@@ -112,36 +112,21 @@ export async function setParquetURLs(urls, append = false) {
 		 * @returns {string}
 		 */
 		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.delimiter);
-		for (const url of urls[source]) {
-			const isPartition = typeof url === 'object';
-			const table = isPartition
-				? url.name
-				: url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
-			if (isPartition) {
-				for (const file of url.partitions) {
-					const platformPath = adaptForPlatform(file);
-					if (append) {
-						await emptyDbFs(platformPath);
-					}
-					db.registerFileURL(platformPath, platformPath, DuckDBDataProtocol.NODE_FS, false);
-				}
-				connection.query(
-					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (
-						SELECT * FROM read_parquet([${url.partitions
-							.map((p) => `'${p.replaceAll("'", "''")}'`)
-							.join(', ')}], hive_partitioning = 1)
-					);`
-				);
-			} else {
-				const platformPath = adaptForPlatform(url);
+		for (const table of tables[source]) {
+			for (const file of table.partitions) {
+				const platformPath = adaptForPlatform(file);
 				if (append) {
 					await emptyDbFs(platformPath);
 				}
 				db.registerFileURL(platformPath, platformPath, DuckDBDataProtocol.NODE_FS, false);
-				connection.query(
-					`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${url}'));`
-				);
 			}
+			connection.query(
+				`CREATE OR REPLACE VIEW "${source}"."${table.name}" AS (
+					SELECT * FROM read_parquet([${table.partitions
+						.map((p) => `'${p.replaceAll("'", "''")}'`)
+						.join(', ')}], hive_partitioning = ${table.useHive ? '1' : '0'})
+				);`
+			);
 		}
 	}
 }

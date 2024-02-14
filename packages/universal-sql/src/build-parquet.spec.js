@@ -65,18 +65,22 @@ describe('buildMultipartParquet', () => {
 			gen(),
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
-			'out'
+			'out',
+			2
 		);
-		expect(r).toEqual({ writtenRows: 2, filenames: ['out.parquet'] });
-		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
+		expect(r).toEqual({
+			writtenRows: 2,
+			filenames: ['.evidence/template/static/data/out.0.parquet']
+		});
+		const stat = await fs.stat('.evidence/template/static/data/out.0.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledTimes(2);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
-			{ force: true }
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
+			{ force: true, recursive: true }
 		);
 	});
 
@@ -101,25 +105,23 @@ describe('buildMultipartParquet', () => {
 			2,
 			1
 		);
-		expect(r).toEqual({ writtenRows: 2, filenames: ['out.parquet'] });
-		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
+		expect(r).toEqual({
+			writtenRows: 2,
+			filenames: ['.evidence/template/static/data/out.0.parquet']
+		});
+		const stat = await fs.stat('.evidence/template/static/data/out.0.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(3);
+		expect(fs.rm).toHaveBeenCalledTimes(2);
 		expect(fs.rm).toHaveBeenNthCalledWith(1, adaptFilePath('.evidence/template/static/data'), {
 			recursive: true,
 			force: true
 		});
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
-			{ force: true }
-		);
-		expect(fs.rm).toHaveBeenNthCalledWith(
-			3,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.1.parquet'),
-			{ force: true }
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
+			{ force: true, recursive: true }
 		);
 	});
 
@@ -131,19 +133,24 @@ describe('buildMultipartParquet', () => {
 			[{ x: 'hello' }, { x: 'hello' }],
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
-			'out'
+			'out',
+			20
 		);
-		expect(r).toEqual({ writtenRows: 2, filenames: ['out.parquet'] });
-		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
+		expect(r).toEqual({
+			writtenRows: 2,
+			filenames: ['.evidence/template/static/data/out.0.parquet']
+		});
+		const stat = await fs.stat('.evidence/template/static/data/out.0.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
 		expect(fs.rm).toHaveBeenCalledTimes(2);
 		expect(fs.rm).toHaveBeenNthCalledWith(
 			2,
-			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet/out.0.parquet'),
+			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			{
-				force: true
+				force: true,
+				recursive: true
 			}
 		);
 	});
@@ -164,12 +171,15 @@ describe('buildMultipartParquet', () => {
 			1000,
 			1
 		);
-		expect(r).toEqual({ writtenRows: 1000, filenames: ['out.parquet'] });
-		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
+		expect(r).toEqual({
+			writtenRows: 1000,
+			filenames: ['.evidence/template/static/data/out.0.parquet']
+		});
+		const stat = await fs.stat('.evidence/template/static/data/out.0.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(1001);
+		expect(fs.rm).toHaveBeenCalledTimes(2);
 	});
 
 	// TODO: Test how it handles invalid filepath

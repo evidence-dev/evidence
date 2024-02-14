@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Calendar as CalendarIcon } from 'radix-icons-svelte';
 	import type { DateRange } from 'bits-ui';
 	import {
 		CalendarDate,

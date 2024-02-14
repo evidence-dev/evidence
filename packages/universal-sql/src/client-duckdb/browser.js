@@ -96,11 +96,11 @@ export async function emptyDbFs(targetGlob) {
 
 /**
  * Adds a new view to the database, pointing to the provided parquet URL.
- * @param {Record<string, (string | { partitions: string[], name: string })[]>} urls
+ * @param {Record<string, ({ partitions: string[], name: string, useHive: boolean })[]>} tablse
  * @param {boolean} [append]
  * @returns {Promise<void>}
  */
-export async function setParquetURLs(urls, append = false) {
+export async function setParquetURLs(tablse, append = false) {
 	if (!db) await initDB();
 	if (!append) await emptyDbFs('*');
 	if (import.meta.env.VITE_EVIDENCE_DEBUG) console.debug('Updating Parquet URLs');
@@ -120,42 +120,23 @@ export async function setParquetURLs(urls, append = false) {
 	};
 
 	try {
-		for (const source in urls) {
+		for (const source in tablse) {
 			await connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
-			for (const url of urls[source]) {
-				const isPartition = typeof url === 'object';
-
-				const table = isPartition
-					? url.name
-					: url.split(/\\|\//).at(-1).slice(0, -'.parquet'.length);
-				if (isPartition) {
-					for (const file of url.partitions) {
-						const clean = cleanPath(file);
-						if (append) {
-							await emptyDbFs(clean);
-						}
-						db.registerFileURL(clean, clean, DuckDBDataProtocol.HTTP, false);
-					}
-					connection.query(
-						`CREATE OR REPLACE VIEW "${source}"."${table}" AS (
-							SELECT * FROM read_parquet([${url.partitions
-								.map((p) => `'${cleanPath(p).replaceAll("'", "''")}'`)
-								.join(', ')}], hive_partitioning = 1)
-						);`
-					);
-				} else {
-					const file_name = `${source}_${table}.parquet`;
-					const path = cleanPath(url);
-
+			for (const table of tablse[source]) {
+				for (const file of table.partitions) {
+					const clean = cleanPath(file);
 					if (append) {
-						await emptyDbFs(file_name);
-						await emptyDbFs(url);
+						await emptyDbFs(clean);
 					}
-					await db.registerFileURL(file_name, path, DuckDBDataProtocol.HTTP, false);
-					await connection.query(
-						`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
-					);
+					db.registerFileURL(clean, clean, DuckDBDataProtocol.HTTP, false);
 				}
+				connection.query(
+					`CREATE OR REPLACE VIEW "${source}"."${table.name}" AS (
+						SELECT * FROM read_parquet([${table.partitions
+							.map((p) => `'${cleanPath(p.replaceAll("'", "''"))}'`)
+							.join(', ')}], hive_partitioning = ${table.useHive ? '1' : '0'})
+					);`
+				);
 			}
 		}
 		resolveTables();

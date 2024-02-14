@@ -203,6 +203,8 @@ export async function cleanParquetFiles(dataDir, hashes) {
 		const queries = await fs.readdir(sourcePath);
 		const sourceHashes = hashes[sourceName];
 		for (const queryName of queries) {
+			console.log(sourceHashes, sourceHashes[sourceName]);
+			if (!sourceHashes[queryName]) continue;
 			const queryPath = path.join(sourcePath, queryName);
 			const currentResults = await fs.readdir(queryPath);
 			for (const resultHash of currentResults) {
@@ -345,7 +347,7 @@ export async function getQueries(sourceDir, contents) {
 			const { size } = await fs.stat(filepath);
 			let content, hash;
 			if (size > 100 * 1024 * 1024) {
-				console.warn(`${filename} is over 100MB, skipping`);
+				console.warn(`${filename} is over 100MB, will not be hashed!`);
 				content = null;
 				hash = null;
 			} else {
