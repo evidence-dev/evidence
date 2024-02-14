@@ -14,6 +14,7 @@ export { default as EChartsMap } from './EChartsMap.svelte';
 export { default as ECharts } from './ECharts.svelte';
 export { default as ErrorChart } from './ErrorChart.svelte';
 export { default as FunnelChart } from './FunnelChart.svelte';
+export { default as Heatmap } from './Heatmap.svelte';
 export { default as Histogram } from './Histogram.svelte';
 export { default as Hist } from './Hist.svelte';
 export { default as LineChart } from './LineChart.svelte';
