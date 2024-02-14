@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.0.0-features-a.6
+
+### Patch Changes
+
+- Dropdown tweaks
+
 ## 4.0.0-features-a.5
 
 ### Patch Changes

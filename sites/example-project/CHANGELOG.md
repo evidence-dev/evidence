@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 3.3.0-features-a.7
+
+### Patch Changes
+
+- Updated dependencies
+  - @evidence-dev/core-components@4.0.0-features-a.6
+
 ## 3.3.0-features-a.6
 
 ### Patch Changes
