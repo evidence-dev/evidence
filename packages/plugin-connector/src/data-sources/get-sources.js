@@ -111,7 +111,7 @@ export const getSources = async (sourcesDir) => {
 				// queries: queries
 			};
 		})
-	).then((r) => /** @type {Exclude<typeof r[number], false>[]} */(r.filter(Boolean)));
+	).then((r) => /** @type {Exclude<typeof r[number], false>[]} */ (r.filter(Boolean)));
 };
 
 /**
@@ -212,7 +212,7 @@ export async function cleanParquetFiles(dataDir, hashes) {
 			}
 
 			if (!sourceHashes[queryName]) continue;
-			const queryHashPath = path.join(queryPath, /** @type {string} */(sourceHashes[queryName]));
+			const queryHashPath = path.join(queryPath, /** @type {string} */ (sourceHashes[queryName]));
 			const timestamps = await fs.readdir(queryHashPath);
 			const latest = Math.max(...timestamps.map((x) => Number(x))).toString();
 			for (const timestamp of timestamps) {
