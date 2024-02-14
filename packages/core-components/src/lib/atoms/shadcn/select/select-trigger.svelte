@@ -19,6 +19,6 @@
 >
 	<slot />
 	<div>
-		<CaretSort class="h-4 w-4 opacity-50" />
+		<CaretSort class="h-4 w-4" />
 	</div>
 </SelectPrimitive.Trigger>
