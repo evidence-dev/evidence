@@ -16,7 +16,7 @@ select 2021 as year
 
 <Dropdown data={categories} name=category value=category/>
 
-<Dropdown data={years} name=year value=year order=year/>
+<Dropdown data={years} name=year value=year order=year title="Order Year"/>
 
 {inputs.category.value} {inputs.year.value}
 
@@ -63,7 +63,7 @@ and date_part('year', order_datetime) = '${inputs.year.value}'
     name=default_not_an_option 
     data={categories} 
     value=category 
-    title="Default not present in"
+    title="Default not present in query"
     defaultValue="Not an option"
 />
 
