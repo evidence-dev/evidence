@@ -194,28 +194,37 @@
 						size="sm"
 						class="min-w-5 h-8 border"
 					>
-						{$selectedValues.length > 0 && !multiple ? $selectedValues[0].label : title}
-						<CaretSort class="ml-2 h-4 w-4" />
-						{#if $selectedValues.length > 0}
-							{#if multiple}
+						{#if title && !multiple}
+							{title}
+							{#if $selectedValues.length > 0}
 								<Separator orientation="vertical" class="mx-2 h-4" />
-								<Badge variant="secondary" class="rounded-sm px-1 font-normal sm:hidden">
-									{$selectedValues.length}
-								</Badge>
-								<div class="hidden space-x-1 sm:flex">
-									{#if $selectedValues.length > 3}
-										<Badge variant="secondary" class="rounded-sm px-1 font-normal">
-											{$selectedValues.length} Selected
-										</Badge>
-									{:else}
-										{#each $selectedValues as option}
-											<Badge variant="secondary" class="rounded-sm px-1 font-normal"
-												>{option.label}</Badge
-											>
-										{/each}
-									{/if}
-								</div>
+								{$selectedValues[0].label}
 							{/if}
+						{:else if $selectedValues.length > 0 && !multiple}
+							{$selectedValues[0].label}
+						{:else}
+							{title}
+						{/if}
+						<!-- {$selectedValues.length > 0 && !multiple ? $selectedValues[0].label : title} -->
+						<CaretSort class="ml-2 h-4 w-4" />
+						{#if $selectedValues.length > 0 && multiple}
+							<Separator orientation="vertical" class="mx-2 h-4" />
+							<Badge variant="secondary" class="rounded-sm px-1 font-normal sm:hidden">
+								{$selectedValues.length}
+							</Badge>
+							<div class="hidden space-x-1 sm:flex">
+								{#if $selectedValues.length > 3}
+									<Badge variant="secondary" class="rounded-sm px-1 font-normal">
+										{$selectedValues.length} Selected
+									</Badge>
+								{:else}
+									{#each $selectedValues as option}
+										<Badge variant="secondary" class="rounded-sm px-1 font-normal"
+											>{option.label}</Badge
+										>
+									{/each}
+								{/if}
+							</div>
 						{/if}
 					</Button>
 				</Popover.Trigger>
