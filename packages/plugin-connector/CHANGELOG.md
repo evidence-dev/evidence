@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.7-features-a.4
+
+### Patch Changes
+
+- 756be102: Remove console.log
+
 ## 2.0.7-features-a.3
 
 ### Patch Changes

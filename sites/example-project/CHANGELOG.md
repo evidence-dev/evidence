@@ -1,5 +1,13 @@
 # @evidence-dev/components
 
+## 3.3.0-features-a.6
+
+### Patch Changes
+
+- Updated dependencies [756be102]
+  - @evidence-dev/plugin-connector@2.0.7-features-a.4
+  - @evidence-dev/core-components@4.0.0-features-a.5
+
 ## 3.3.0-features-a.5
 
 ### Patch Changes
