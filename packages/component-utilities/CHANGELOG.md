@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 2.2.0-features-a.4
+
+### Patch Changes
+
+- @evidence-dev/query-store@2.0.3-features-a.3
+
 ## 2.2.0-features-a.3
 
 ### Patch Changes

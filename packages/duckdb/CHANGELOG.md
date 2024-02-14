@@ -1,5 +1,12 @@
 # @evidence-dev/duckdb
 
+## 1.0.6-features-a.1
+
+### Patch Changes
+
+- Updated dependencies [17f7bb20]
+  - @evidence-dev/db-commons@1.0.4-features-a.0
+
 ## 1.0.6-features-a.0
 
 ### Patch Changes

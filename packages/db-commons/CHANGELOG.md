@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 1.0.4-features-a.0
+
+### Patch Changes
+
+- 17f7bb20: Add better configuration for parquet row size, also batch partitioned data to avoid OOM issues on very large datasets
+
 ## 1.0.3
 
 ### Patch Changes

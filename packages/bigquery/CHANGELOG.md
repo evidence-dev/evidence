@@ -1,5 +1,12 @@
 # @evidence-dev/bigquery
 
+## 2.0.5-features-a.0
+
+### Patch Changes
+
+- Updated dependencies [17f7bb20]
+  - @evidence-dev/db-commons@1.0.4-features-a.0
+
 ## 2.0.4
 
 ### Patch Changes

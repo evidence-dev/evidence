@@ -3575,7 +3575,7 @@ packages:
       babel-plugin-polyfill-corejs2: 0.4.8(@babel/core@7.23.9)
       babel-plugin-polyfill-corejs3: 0.9.0(@babel/core@7.23.9)
       babel-plugin-polyfill-regenerator: 0.5.5(@babel/core@7.23.9)
-      core-js-compat: 3.35.1
+      core-js-compat: 3.36.0
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -3651,7 +3651,7 @@ packages:
     resolution: {integrity: sha512-oeOFTrYWdWXCvXGB5orvMTJ6gCZ9I6FBjR+M38iKNXCsPxr4xT0RTdg5uz1H7QP8pp74IzPtwritEr+JscqHXQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      core-js-pure: 3.35.1
+      core-js-pure: 3.36.0
       regenerator-runtime: 0.14.1
     dev: false
 
@@ -4093,7 +4093,7 @@ packages:
       combine-promises: 1.2.0
       commander: 5.1.0
       copy-webpack-plugin: 11.0.0(webpack@5.90.1)
-      core-js: 3.35.1
+      core-js: 3.36.0
       css-loader: 6.10.0(webpack@5.90.1)
       css-minimizer-webpack-plugin: 4.2.2(clean-css@5.3.3)(webpack@5.90.1)
       cssnano: 5.1.15(postcss@8.4.35)
@@ -11160,7 +11160,7 @@ packages:
     dependencies:
       '@babel/core': 7.23.9
       '@babel/helper-define-polyfill-provider': 0.5.0(@babel/core@7.23.9)
-      core-js-compat: 3.35.1
+      core-js-compat: 3.36.0
     transitivePeerDependencies:
       - supports-color
 
@@ -11785,8 +11785,8 @@ packages:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
     engines: {node: '>=8'}
 
-  /citty@0.1.5:
-    resolution: {integrity: sha512-AS7n5NSc0OQVMV9v6wt3ByujNIrne0/cTjiC2MYqhvao57VNfiuVksTSr2p17nVOhEr2KtqiAkGwHcgMC/qUuQ==}
+  /citty@0.1.6:
+    resolution: {integrity: sha512-tskPPKEs8D2KPafUypv2gxwJP8h/OaJmC82QQGGDQcHvXX43xF2VDACcJVmZ0EuSxkpO9Kc4MlrA3q0+FG58AQ==}
     dependencies:
       consola: 3.2.3
     dev: true
@@ -12195,18 +12195,18 @@ packages:
       webpack: 5.90.1
     dev: false
 
-  /core-js-compat@3.35.1:
-    resolution: {integrity: sha512-sftHa5qUJY3rs9Zht1WEnmkvXputCyDBczPnr7QDgL8n3qrF3CMXY4VPSYtOLLiOUJcah2WNXREd48iOl6mQIw==}
+  /core-js-compat@3.36.0:
+    resolution: {integrity: sha512-iV9Pd/PsgjNWBXeq8XRtWVSgz2tKAfhfvBs7qxYty+RlRd+OCksaWmOnc4JKrTc1cToXL1N0s3l/vwlxPtdElw==}
     dependencies:
       browserslist: 4.22.3
 
-  /core-js-pure@3.35.1:
-    resolution: {integrity: sha512-zcIdi/CL3MWbBJYo5YCeVAAx+Sy9yJE9I3/u9LkFABwbeaPhTMRWraM8mYFp9jW5Z50hOy7FVzCc8dCrpZqtIQ==}
+  /core-js-pure@3.36.0:
+    resolution: {integrity: sha512-cN28qmhRNgbMZZMc/RFu5w8pK9VJzpb2rJVR/lHuZJKwmXnoWOpXmMkxqBB514igkp1Hu8WGROsiOAzUcKdHOQ==}
     requiresBuild: true
     dev: false
 
-  /core-js@3.35.1:
-    resolution: {integrity: sha512-IgdsbxNyMskrTFxa9lWHyMwAJU5gXOPP+1yO+K59d50VLVAIDAbs7gIv705KzALModfK3ZrSZTPNpC0PQgIZuw==}
+  /core-js@3.36.0:
+    resolution: {integrity: sha512-mt7+TUBbTFg5+GngsAxeKBTl5/VS0guFeJacYge9OmHb+m058UwwIm41SE9T4Den7ClatV57B6TYTuJ0CX1MAw==}
     requiresBuild: true
     dev: false
 
@@ -14557,7 +14557,7 @@ packages:
     resolution: {integrity: sha512-4VG22mopWtIeHwogGSy1FViXVo0YT+m6BrqZfz0JJFwbSsePsCdOzdLIIli5BtMp7Xe8f/o2OmBpQX2NBOC24g==}
     hasBin: true
     dependencies:
-      citty: 0.1.5
+      citty: 0.1.6
       consola: 3.2.3
       defu: 6.1.4
       node-fetch-native: 1.6.2
@@ -18016,7 +18016,7 @@ packages:
     engines: {node: ^14.16.0 || >=16.10.0}
     hasBin: true
     dependencies:
-      citty: 0.1.5
+      citty: 0.1.6
       execa: 8.0.1
       pathe: 1.1.2
       ufo: 1.4.0

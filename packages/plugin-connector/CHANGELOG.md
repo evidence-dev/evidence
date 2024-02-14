@@ -1,5 +1,15 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.7-features-a.3
+
+### Patch Changes
+
+- 17f7bb20: Add better configuration for parquet row size, also batch partitioned data to avoid OOM issues on very large datasets
+- Updated dependencies [2d4780f0]
+- Updated dependencies [17f7bb20]
+  - @evidence-dev/universal-sql@2.0.3-features-a.3
+  - @evidence-dev/db-commons@1.0.4-features-a.0
+
 ## 2.0.7-features-a.2
 
 ### Patch Changes

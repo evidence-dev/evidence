@@ -1,5 +1,19 @@
 # @evidence-dev/evidence
 
+## 27.0.0-features-a.5
+
+### Patch Changes
+
+- 2d4780f0: fix dropdown flashing while searching, debounce dropdown, fix hive partitioning with quotation marks
+- Updated dependencies [2d4780f0]
+- Updated dependencies [17f7bb20]
+  - @evidence-dev/core-components@4.0.0-features-a.5
+  - @evidence-dev/universal-sql@2.0.3-features-a.3
+  - @evidence-dev/plugin-connector@2.0.7-features-a.3
+  - @evidence-dev/query-store@2.0.3-features-a.3
+  - @evidence-dev/db-orchestrator@3.0.9-features-a.2
+  - @evidence-dev/component-utilities@2.2.0-features-a.4
+
 ## 27.0.0-features-a.4
 
 ### Patch Changes

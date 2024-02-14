@@ -1,5 +1,13 @@
 # @evidence-dev/query-store
 
+## 2.0.3-features-a.3
+
+### Patch Changes
+
+- Updated dependencies [2d4780f0]
+- Updated dependencies [17f7bb20]
+  - @evidence-dev/universal-sql@2.0.3-features-a.3
+
 ## 2.0.3-features-a.2
 
 ### Patch Changes

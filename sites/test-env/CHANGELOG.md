@@ -1,5 +1,19 @@
 # evidence-test-environment
 
+## 3.0.12-features-a.5
+
+### Patch Changes
+
+- Updated dependencies [2d4780f0]
+  - @evidence-dev/core-components@4.0.0-features-a.5
+  - @evidence-dev/evidence@27.0.0-features-a.5
+  - @evidence-dev/csv@1.0.6-features-a.1
+  - @evidence-dev/duckdb@1.0.6-features-a.1
+  - @evidence-dev/postgres@1.0.4-features-a.0
+  - @evidence-dev/snowflake@1.0.4-features-a.0
+  - @evidence-dev/sqlite@2.0.4-features-a.0
+  - @evidence-dev/component-utilities@2.2.0-features-a.4
+
 ## 3.0.12-features-a.4
 
 ### Patch Changes

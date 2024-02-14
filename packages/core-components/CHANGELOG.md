@@ -1,5 +1,13 @@
 # @evidence-dev/core-components
 
+## 4.0.0-features-a.5
+
+### Patch Changes
+
+- 2d4780f0: fix dropdown flashing while searching, debounce dropdown, fix hive partitioning with quotation marks
+  - @evidence-dev/query-store@2.0.3-features-a.3
+  - @evidence-dev/component-utilities@2.2.0-features-a.4
+
 ## 4.0.0-features-a.4
 
 ### Patch Changes

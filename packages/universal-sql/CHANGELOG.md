@@ -1,5 +1,12 @@
 # @evidence-dev/universal-sql
 
+## 2.0.3-features-a.3
+
+### Patch Changes
+
+- 2d4780f0: fix dropdown flashing while searching, debounce dropdown, fix hive partitioning with quotation marks
+- 17f7bb20: Add better configuration for parquet row size, also batch partitioned data to avoid OOM issues on very large datasets
+
 ## 2.0.3-features-a.2
 
 ### Patch Changes

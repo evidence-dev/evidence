@@ -1,5 +1,27 @@
 # @evidence-dev/components
 
+## 3.3.0-features-a.5
+
+### Patch Changes
+
+- Updated dependencies [2d4780f0]
+- Updated dependencies [17f7bb20]
+  - @evidence-dev/core-components@4.0.0-features-a.5
+  - @evidence-dev/universal-sql@2.0.3-features-a.3
+  - @evidence-dev/plugin-connector@2.0.7-features-a.3
+  - @evidence-dev/query-store@2.0.3-features-a.3
+  - @evidence-dev/bigquery@2.0.5-features-a.0
+  - @evidence-dev/csv@1.0.6-features-a.1
+  - @evidence-dev/databricks@1.0.4-features-a.0
+  - @evidence-dev/duckdb@1.0.6-features-a.1
+  - @evidence-dev/mssql@1.0.6-features-a.0
+  - @evidence-dev/mysql@1.1.0-features-a.1
+  - @evidence-dev/postgres@1.0.4-features-a.0
+  - @evidence-dev/snowflake@1.0.4-features-a.0
+  - @evidence-dev/sqlite@2.0.4-features-a.0
+  - @evidence-dev/trino@1.0.5-features-a.0
+  - @evidence-dev/component-utilities@2.2.0-features-a.4
+
 ## 3.3.0-features-a.4
 
 ### Patch Changes
