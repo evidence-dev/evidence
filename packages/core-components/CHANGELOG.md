@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 4.0.0-features-a.7
+
+### Patch Changes
+
+- d6add696: Styling fixes in dropdowns
+- 6b4e94a2: fix dependent dropdowns
+
 ## 4.0.0-features-a.6
 
 ### Patch Changes
