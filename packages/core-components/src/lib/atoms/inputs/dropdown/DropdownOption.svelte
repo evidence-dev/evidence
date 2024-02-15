@@ -42,13 +42,15 @@
 				<Check className={cn('h-4 w-4')} />
 			</div>
 		{:else}
-			<Check
-				class={cn(
-					'mr-2 h-4 w-4',
-					!$selectedValues.find((x) => x.value === value && x.label === valueLabel) &&
-						'text-transparent'
-				)}
-			/>
+			<div class="mr-2 flex h-4 w-4 items-center justify-center">
+				<Check
+					class={cn(
+						'h-4 w-4',
+						!$selectedValues.find((x) => x.value === value && x.label === valueLabel) &&
+							'text-transparent'
+					)}
+				/>
+			</div>
 		{/if}
 		<span>
 			{valueLabel}

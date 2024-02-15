@@ -81,7 +81,9 @@ and date_part('year', order_datetime) = '${inputs.year.value}'
 select "Vendor" as vendor from purchases group by all
 ```
 
-<Dropdown name=vendor data={purchases} value=vendor multiple title=Vendors/>
+<Dropdown name=vendor data={purchases} value=vendor multiple title="Multi Vendors"/>
+
+<Dropdown name=vendor data={purchases} value=vendor title="Single Vendor"/>
 
 ### Selected values
 
