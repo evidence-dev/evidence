@@ -49,11 +49,12 @@
 	/** @type {string} */
 	export let defaultValue = undefined;
 
-	setContext('dropdown_context', {
+	const ctx = {
 		hasBeenSet: defaultValue !== undefined,
 		handleSelect,
 		multiple
-	});
+	};
+	setContext('dropdown_context', ctx);
 
 	const selectedValues = writable([]);
 	setContext('dropdown_selected_values', selectedValues);
@@ -125,19 +126,6 @@
 	$: update({ value, data, label, order, where });
 	$: ({ hasQuery, query } = $results);
 
-	$: if (hasQuery && defaultValue) {
-		if (browser) {
-			(async () => {
-				await $query.fetch();
-				$selectedValues = $query.filter((x) => x.value == defaultValue);
-				selectedValuesToInput();
-			})();
-		} else {
-			$selectedValues = $query.filter((x) => x.value == defaultValue);
-			selectedValuesToInput();
-		}
-	}
-
 	const exec = getQueryFunction();
 	function updateItems(search) {
 		items =
@@ -155,21 +143,42 @@
 				: $query;
 	}
 
+	function useNewQuery(query) {
+		items = query;
+
+		if (hasQuery && defaultValue) {
+			ctx.hasBeenSet = true;
+			if (browser) {
+				(async () => {
+					await query.fetch();
+					$selectedValues = query.filter((x) => x.value == defaultValue);
+					selectedValuesToInput();
+				})();
+			} else {
+				$selectedValues = query.filter((x) => x.value == defaultValue);
+				selectedValuesToInput();
+			}
+		} else {
+			ctx.hasBeenSet = false;
+		}
+	}
+
 	let items;
-	$: items ??= $query;
+	$: useNewQuery($query);
 
 	const debouncedUpdateItems = debounce(updateItems, 250);
 	$: debouncedUpdateItems(search);
 </script>
 
-<!-- execute the otherwise lazily rendered elements for SSR -->
-<Invisible>
-	<slot />
+{#key query}
+	<Invisible>
+		<slot />
 
-	{#if hasQuery && $items.length > 0 && $items.loaded}
-		<DropdownOption value={$items[0].value} valueLabel={$items[0].label} />
-	{/if}
-</Invisible>
+		{#if hasQuery && $items.length > 0 && $items.loaded}
+			<DropdownOption value={$items[0].value} valueLabel={$items[0].label} />
+		{/if}
+	</Invisible>
+{/key}
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 mx-1 inline-block">
