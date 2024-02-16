@@ -91,7 +91,6 @@ export default (node, option) => {
 	};
 
 	// Initial options set:
-	const initTime = new Date();
 	chart.setOption({
 		...option.config,
 		animationDuration: ANIMATION_DURATION,
@@ -185,9 +184,7 @@ export default (node, option) => {
 
 	return {
 		update(option) {
-			if (new Date() - initTime >= 500) {
-				updateChart(option);
-			}
+			updateChart(option);
 		},
 		destroy() {
 			if (resizeObserver) {
