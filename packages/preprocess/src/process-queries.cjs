@@ -175,10 +175,26 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
                     _${id}_query_text;
                     _${id}_debounced_updater = _${id}_reactivity_manager();
                 };
-				// rerun if query text changes
-				$: _${id}_query_text, _${id}_debounced_updater();
-				// rerun if data changes during dev mode, likely source HMR
-				$: if (dev) data, _${id}_debounced_updater();
+				
+				// rerun if query text changes, prevent initial run to stop unnecessary update
+				let _${id}_debounced_once = false;
+				$: if (_${id}_debounced_once) {
+					_${id}_query_text;
+					_${id}_debounced_updater();
+				} else {
+					_${id}_debounced_once = true;
+				}
+
+				// rerun if data changes during dev mode, likely source HMR, prevent initial for same reason as above
+				let _${id}_hmr_once = false;
+				$: if (dev) {
+					if (_${id}_hmr_once) {
+						data;
+						_${id}_debounced_updater();
+					} else {
+						_${id}_hmr_once = true;
+					}
+				}
 			`;
 		});
 
