@@ -161,7 +161,7 @@ export default (node, option) => {
 		window.addEventListener('resize', onWindowResize);
 	}
 
-	const updateChart = debounce((option) => {
+	const updateChart = (option) => {
 		chart.setOption(
 			{
 				...option.config,
@@ -179,7 +179,7 @@ export default (node, option) => {
 			}
 		});
 		updateLabelWidths();
-	}, 100);
+	};
 
 	onWindowResize();
 
