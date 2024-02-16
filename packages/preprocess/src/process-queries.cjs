@@ -158,7 +158,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		
 					update();
 		
-					return debounce(update, 500);
+					const debounced = debounce(update, 500);
+		
+					return () => {
+						if (_mounted) {
+							debounced();
+						} else {
+							update();
+						}
+					}
 				}
 		
 				let _${id}_debounced_updater;
@@ -276,6 +284,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}
 		}
 		
+		let _mounted = false;
+		onMount(() => (_mounted = true));
 
         ${queryDeclarations}
     `;
