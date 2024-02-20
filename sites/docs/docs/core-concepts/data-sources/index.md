@@ -230,11 +230,11 @@ SSL options are:
 
 ### SQLite
 
-SQLite is a local file-based database. It should be stored in the root of your Evidence project.
+SQLite is a local file-based database. The SQLite file should be stored in the directory `sources/[your_source_name]/`.
 
 ### DuckDB
 
-DuckDB is a local file-based database. It should be stored in the root of your Evidence project.
+DuckDB is a local file-based database. If using a persistent database, it should be stored in the directory `sources/[your_source_name]/`.
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
