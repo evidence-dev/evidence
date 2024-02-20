@@ -80,6 +80,7 @@ export async function updateDatasourceOutputs(
 	const sourceDir = await getSourcesDir(true);
 	if (!sourceDir) throw new Error();
 	const sources = await getSources(sourceDir);
+
 	const manifest = await buildSources(sources, dataPath, metaPath, filters);
 
 	await updateManifest(manifest, dataPath);

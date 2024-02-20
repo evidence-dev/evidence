@@ -1,6 +1,12 @@
 import { QueryStore } from '@evidence-dev/query-store';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
 export const fakerSeries = {
+	airlines: {
+		flights: {
+			text: 'SELECT * FROM series_demo_source.flights',
+			store: new QueryStore('SELECT * FROM series_demo_source.flights', query)
+		}
+	},
 	social_media: {
 		comments: {
 			text: 'SELECT * FROM series_demo_source.comments',

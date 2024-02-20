@@ -66,6 +66,12 @@ pnpm install
 In the project root folder, run:
 
 ```bash
+pnpm run sources:example-project
+```
+
+In the project root folder, run:
+
+```bash
 pnpm run dev:core-components
 ```
 

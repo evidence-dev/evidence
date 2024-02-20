@@ -1,5 +1,28 @@
 # @evidence-dev/core-components
 
+## 3.3.1
+
+### Patch Changes
+
+- Updated dependencies [6a61ea17]
+  - @evidence-dev/component-utilities@2.2.1
+
+## 3.3.0
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- 9176c2cc: Added buildReactiveInputQuery for ensuring input query values are reactive
+- 3e1da500: feat: add sqlconsole component
+- cbc7e8a4: Fix custom color conditional formatting bug
+- Updated dependencies [9176c2cc]
+- Updated dependencies [0f42e927]
+  - @evidence-dev/component-utilities@2.2.0
+  - @evidence-dev/query-store@2.0.3
+
 ## 3.2.0
 
 ### Minor Changes

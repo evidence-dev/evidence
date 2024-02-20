@@ -1,5 +1,11 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.4
+
+### Patch Changes
+
+- 5e9b27db: Faker datasource minor fixes
+
 ## 2.0.3
 
 ### Patch Changes

@@ -3,11 +3,13 @@ fuzz: 1000
 schema:
     id:
         type: id
+    
     post_id:
         type: fk
         withBias: true
         target:
             table: ./posts/posts.yaml
+    
     hashtag_id:
         type: fk
         withBias: true
