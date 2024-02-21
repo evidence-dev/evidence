@@ -357,7 +357,7 @@ importers:
         specifier: 1.22.3
         version: 1.22.3(svelte@3.55.0)(vite@4.3.9)
       '@sveltejs/package':
-        specifier: ^2.0.0
+        specifier: ^2.2.6
         version: 2.2.6(svelte@3.55.0)(typescript@5.3.3)
       autoprefixer:
         specifier: ^10.4.14
@@ -1204,8 +1204,8 @@ importers:
         version: 4.1.2
     devDependencies:
       '@sveltejs/package':
-        specifier: 1.0.1
-        version: 1.0.1(svelte@3.55.0)(typescript@4.9.5)
+        specifier: 2.2.6
+        version: 2.2.6(svelte@3.55.0)(typescript@4.9.5)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^2.0.3
         version: 2.5.3(svelte@3.55.0)(vite@4.3.9)
@@ -9086,18 +9086,19 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@sveltejs/package@1.0.1(svelte@3.55.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-iYoDz4AEJQUfdKUfBcwtYEGYkf4NMByQL3Sl2ESnu+IXsLNsHvhH0zUDhAmUmAgcrH8fVjiR7FuJeyh+7EQtiw==}
+  /@sveltejs/package@2.2.6(svelte@3.55.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-rhKL/96M7LCvFI2xN94qsqHtEWr/ypcMGiii3s6dRW7ADt3tiDm8UfExjRR8v5jW3Femz0+VJ0TNevxI4Q9Quw==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     peerDependencies:
-      svelte: ^3.44.0
+      svelte: ^3.44.0 || ^4.0.0 || ^5.0.0-next.1
     dependencies:
       chokidar: 3.5.3
       kleur: 4.1.5
       sade: 1.8.1
+      semver: 7.6.0
       svelte: 3.55.0
-      svelte2tsx: 0.5.23(svelte@3.55.0)(typescript@4.9.5)
+      svelte2tsx: 0.7.1(svelte@3.55.0)(typescript@4.9.5)
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -18126,9 +18127,6 @@ packages:
     resolution: {integrity: sha512-H/RI1/DmuOkL8RuG/EpNPvtzrbF+7jA/R56ydEEm+lqFbYktKB4COR7JXdHkZXRgbSJyimrFB8d0r9+SaRnj0Q==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.11.0(@parcel/core@2.11.0)(postcss@8.4.35)(typescript@5.3.3)
       '@parcel/core': 2.11.0
@@ -20781,9 +20779,6 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
@@ -21404,18 +21399,6 @@ packages:
   /svelte-tiny-linked-charts@1.1.5:
     resolution: {integrity: sha512-27AlRKnz82GfswxoLkNjFtn1+C10bkpZb4kRH7d3qQVbgLLgNJY2ICSuWa+49Qh6jDFn6e/+qx3wWIz8kMmMkA==}
 
-  /svelte2tsx@0.5.23(svelte@3.55.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-jYFnugTQRFmUpvLXPQrKzVYcW5ErT+0QCxg027Zx9BuvYefMZFuoBSTDYe7viPEFGrPPiLgT2m7f5n9khE7f7Q==}
-    peerDependencies:
-      svelte: ^3.24
-      typescript: ^4.1.2
-    dependencies:
-      dedent-js: 1.0.1
-      pascal-case: 3.1.2
-      svelte: 3.55.0
-      typescript: 4.9.5
-    dev: true
-
   /svelte2tsx@0.6.0(svelte@3.55.0)(typescript@4.9.5):
     resolution: {integrity: sha512-TrxfQkO7CKi8Pu2eC/FyteDCdk3OOeQV5u6z7OjYAsOhsd0ClzAKqxJdvp6xxNQLrbFzf/XvCi9Fy8MQ1MleFA==}
     peerDependencies:
@@ -21426,6 +21409,18 @@ packages:
       pascal-case: 3.1.2
       svelte: 3.55.0
       typescript: 4.9.5
+
+  /svelte2tsx@0.7.1(svelte@3.55.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-0lKa6LrqJxRan0bDmBd/uFsVzYSXnoFUDaczaH0znke/XI79oy1JjFaF51J9EsOvpn8lXPlrUc3n/MA/ORNxBg==}
+    peerDependencies:
+      svelte: ^3.55 || ^4.0.0-next.0 || ^4.0 || ^5.0.0-next.0
+      typescript: ^4.9.4 || ^5.0.0
+    dependencies:
+      dedent-js: 1.0.1
+      pascal-case: 3.1.2
+      svelte: 3.55.0
+      typescript: 4.9.5
+    dev: true
 
   /svelte2tsx@0.7.1(svelte@3.55.0)(typescript@5.3.3):
     resolution: {integrity: sha512-0lKa6LrqJxRan0bDmBd/uFsVzYSXnoFUDaczaH0znke/XI79oy1JjFaF51J9EsOvpn8lXPlrUc3n/MA/ORNxBg==}
