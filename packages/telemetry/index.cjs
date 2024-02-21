@@ -15,8 +15,13 @@ const LEGACY_PROFILES_PATH = './.profile.json';
  * 			 'source-connector-not-found' |
  * 			 'db-error' |
  * 			 'db-query'|
- * 			 'cache-query'
- * 			} TelemetryEventName
+ * 			 'cache-query' |
+ * 			 'dev-server-start' |
+ * 			 'build-start' |
+ * 			 'build-strict-start' |
+ * 			 'build-sources-start' |
+ * 			 'preview-server-start'
+ * 	} TelemetryEventName
  */
 const initializeProfile = async () => {
 	const projectProfile = {
