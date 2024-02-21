@@ -91,7 +91,6 @@ export default (node, option) => {
 	};
 
 	// Initial options set:
-	const initTime = new Date();
 	chart.setOption({
 		...option.config,
 		animationDuration: ANIMATION_DURATION,
@@ -161,7 +160,7 @@ export default (node, option) => {
 		window.addEventListener('resize', onWindowResize);
 	}
 
-	const updateChart = debounce((option) => {
+	const updateChart = (option) => {
 		chart.setOption(
 			{
 				...option.config,
@@ -179,15 +178,13 @@ export default (node, option) => {
 			}
 		});
 		updateLabelWidths();
-	}, 100);
+	};
 
 	onWindowResize();
 
 	return {
 		update(option) {
-			if (new Date() - initTime >= 500) {
-				updateChart(option);
-			}
+			updateChart(option);
 		},
 		destroy() {
 			if (resizeObserver) {
