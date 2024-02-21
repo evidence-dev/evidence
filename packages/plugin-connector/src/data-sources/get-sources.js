@@ -214,7 +214,10 @@ export async function cleanParquetFiles(dataDir, hashes) {
 			if (!sourceHashes[queryName]) continue;
 			const queryHashPath = path.join(queryPath, /** @type {string} */ (sourceHashes[queryName]));
 			const timestamps = await fs.readdir(queryHashPath);
-			const latest = Math.max(...timestamps.map((x) => Number(x))).toString();
+			const numbers = timestamps.map((x) => Number(x)).filter((x) => !isNaN(x));
+
+			if (!numbers.length) continue;
+			const latest = Math.max(...numbers).toString();
 			for (const timestamp of timestamps) {
 				if (timestamp !== latest) {
 					await fs.rm(path.join(queryHashPath, timestamp), {
