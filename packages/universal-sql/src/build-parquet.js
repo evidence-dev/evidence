@@ -102,7 +102,7 @@ export async function buildMultipartParquet(
 		const IPC = tableToIPC(table, 'stream');
 
 		// If we have partitionKeys, these files are not final, if we do not, then these files are final
-		const compression = partitionKeys.length ? Compression.UNCOMPRESSED : Compression.GZIP;
+		const compression = partitionKeys.length ? Compression.UNCOMPRESSED : Compression.ZSTD;
 
 		const writerProperties = new WriterPropertiesBuilder().setCompression(compression).build();
 		// Converts the arrow buffer to a parquet buffer
