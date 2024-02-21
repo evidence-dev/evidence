@@ -2,7 +2,7 @@
 
 ```obd
 select order_datetime::date as date, count(1) as orders
-from orders
+from needful_things.orders
 where order_datetime <'2021-04-01'
 and order_datetime > '2019-08-01'
 group by all
