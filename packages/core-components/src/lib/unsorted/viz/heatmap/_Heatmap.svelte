@@ -104,6 +104,24 @@
 	$: try {
 		checkInputs(data, [x, y, value]);
 
+		if (min) {
+			// if min was user-supplied
+			min = Number(min);
+			if (isNaN(min)) {
+				// input must be a number
+				throw Error('min must be a number');
+			}
+		}
+
+		if (max) {
+			// if max was user-supplied
+			max = Number(max);
+			if (isNaN(max)) {
+				// input must be a number
+				throw Error('max must be a number');
+			}
+		}
+
 		minValue = min ?? Math.min(...data.map((d) => d[value]));
 		maxValue = max ?? Math.max(...data.map((d) => d[value]));
 

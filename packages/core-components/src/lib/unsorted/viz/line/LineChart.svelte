@@ -46,9 +46,11 @@
 
 	export let yMin = undefined;
 	export let yMax = undefined;
+	export let yScale = undefined;
 
 	export let y2Min = undefined;
 	export let y2Max = undefined;
+	export let y2Scale = undefined;
 
 	export let lineColor = undefined;
 	export let lineType = undefined;
@@ -122,8 +124,10 @@
 	{y2AxisColor}
 	{yMin}
 	{yMax}
+	{yScale}
 	{y2Min}
 	{y2Max}
+	{y2Scale}
 	{title}
 	{subtitle}
 	chartType="Line Chart"

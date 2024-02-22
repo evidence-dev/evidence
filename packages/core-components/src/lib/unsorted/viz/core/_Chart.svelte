@@ -111,6 +111,8 @@
 
 	export let yMin = undefined;
 	export let yMax = undefined;
+	export let yScale = false;
+	$: yScale = yScale === 'true' || yScale === true;
 	export let yFmt = undefined;
 	export let yAxisColor = 'true';
 
@@ -126,6 +128,8 @@
 	$: y2AxisLabels = y2AxisLabels === 'true' || y2AxisLabels === true;
 	export let y2Min = undefined;
 	export let y2Max = undefined;
+	export let y2Scale = false;
+	$: y2Scale = y2Scale === 'true' || y2Scale === true;
 	export let y2Fmt = undefined;
 	export let y2AxisColor = 'true';
 
@@ -635,6 +639,7 @@
 					},
 					min: yMin,
 					max: yMax,
+					scale: yScale,
 					splitLine: {
 						show: yGridlines
 					},
@@ -755,6 +760,7 @@
 					nameGap: 6,
 					min: yMin,
 					max: yMax,
+					scale: yScale,
 					boundaryGap: ['0%', '1%'],
 					z: 2
 				};
@@ -807,6 +813,7 @@
 					nameGap: 6,
 					min: y2Min,
 					max: y2Max,
+					scale: y2Scale,
 					boundaryGap: ['0%', '1%'],
 					z: 2
 				};
