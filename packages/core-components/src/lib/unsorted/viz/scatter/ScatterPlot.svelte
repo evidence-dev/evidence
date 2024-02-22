@@ -53,7 +53,10 @@
 
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+	export let renderer = undefined;
+	export let seriesColors = undefined;
 </script>
 
 <Chart
@@ -89,7 +92,10 @@
 	{chartAreaHeight}
 	{colorPalette}
 	{echartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
+	{renderer}
+	{seriesColors}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 	<slot />

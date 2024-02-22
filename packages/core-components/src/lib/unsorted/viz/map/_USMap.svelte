@@ -130,8 +130,10 @@
 	}
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	export let renderer = undefined;
 
 	export let abbreviations = false;
 	$: abbreviations = abbreviations === 'true' || abbreviations === true;
@@ -328,7 +330,9 @@
 		{queryID}
 		{hasLink}
 		{echartsOptions}
+		{seriesOptions}
 		{printEchartsConfig}
+		{renderer}
 	/>
 
 	{#if link}

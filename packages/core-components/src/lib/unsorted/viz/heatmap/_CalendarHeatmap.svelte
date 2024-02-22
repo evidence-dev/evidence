@@ -46,8 +46,12 @@
 	let height = '400px';
 	let gridHeight;
 	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+
+	export let renderer = undefined;
 
 	function mapColumnsToArray(arrayOfObjects, col1, col2) {
 		return arrayOfObjects.map((obj) => [
@@ -350,5 +354,14 @@
 {#if error}
 	<ErrorChart chartType="Calendar Heatmap" {error} />
 {:else}
-	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} />
+	<ECharts
+		{height}
+		{data}
+		{queryID}
+		{config}
+		{printEchartsConfig}
+		{renderer}
+		{echartsOptions}
+		{seriesOptions}
+	/>
 {/if}

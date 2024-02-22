@@ -60,12 +60,15 @@
 	export let xLabelRotation = undefined; // degress to rotate x axis labels
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
 	export let leftPadding = 0; // user option to avoid label cutoffs
 	export let rightPadding = 0; // user option to avoid label cutoffs
 	export let cellHeight = 30;
+
+	export let renderer = undefined;
 
 	$: height = undefined;
 	$: gridHeight = undefined;
@@ -320,7 +323,9 @@
 		{config}
 		{height}
 		{echartsOptions}
+		{seriesOptions}
 		{printEchartsConfig}
 		evidenceChartTitle={title}
+		{renderer}
 	/>
 {/if}

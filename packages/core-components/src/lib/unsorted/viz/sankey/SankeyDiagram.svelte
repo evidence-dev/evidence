@@ -17,6 +17,7 @@
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 
 	export let valueFmt = undefined;
@@ -50,6 +51,7 @@
 	export let depthOverride; // object like: {'node name': 1, 'node name 2': 2} where number is depth level (0-based)
 
 	export let linkColor = 'grey'; // grey (default), source, target, gradient
+	export let renderer = undefined;
 
 	// Data Formatting
 	let names = [];
@@ -303,5 +305,14 @@
 {#if error}
 	<ErrorChart chartType="Sankey Diagram" {error} />
 {:else}
-	<ECharts {data} {config} {width} {height} {echartsOptions} {printEchartsConfig} />
+	<ECharts
+		{data}
+		{config}
+		{width}
+		{height}
+		{echartsOptions}
+		{printEchartsConfig}
+		{renderer}
+		{seriesOptions}
+	/>
 {/if}
