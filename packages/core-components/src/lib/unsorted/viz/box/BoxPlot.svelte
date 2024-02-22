@@ -49,6 +49,9 @@
 
 	export let seriesColors = undefined;
 
+	export let emptySet = undefined;
+	export let emptyMessage = undefined;
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -99,6 +102,8 @@
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
+	{emptySet}
+	{emptyMessage}
 	{renderer}
 	{seriesColors}
 >

@@ -35,6 +35,10 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+
+	export let emptySet = undefined;
+	export let emptyMessage = undefined;
+
 	export let renderer = undefined;
 </script>
 
@@ -64,6 +68,8 @@
 	{echartsOptions}
 	{seriesOptions}
 	{printEchartsConfig}
+	{emptySet}
+	{emptyMessage}
 	{renderer}
 >
 	<Hist {fillColor} {fillOpacity} />

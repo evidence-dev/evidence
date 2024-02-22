@@ -6,7 +6,7 @@ export default function checkInputs(data, reqCols, optCols) {
 
 	// Check if dataset was provided
 	if (data === undefined) {
-		throw Error('No dataset provided');
+		throw Error('No data provided');
 	} else if (typeof data !== 'object') {
 		throw Error(
 			"'" +

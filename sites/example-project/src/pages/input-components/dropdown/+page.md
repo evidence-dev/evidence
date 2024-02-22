@@ -1,7 +1,7 @@
 # Dropdown
 
 ```sql categories
-select category from orders group by all
+select category from needful_things.orders group by all
 ```
 
 ```sql years
