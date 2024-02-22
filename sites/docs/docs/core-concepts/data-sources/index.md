@@ -53,7 +53,7 @@ For non-SQL data sources, configuring the data extracted is achieved in other wa
 
 ## Run Sources
 
-You can extract data from configured sources in Evidence using  `npm run sources`
+You can extract data from configured sources in Evidence using  `npm run sources`. Sources will also rerun automatically if you have the dev server running and you make changes to your source queries or source configuration.
 
 ### Working with Large Sources
 
