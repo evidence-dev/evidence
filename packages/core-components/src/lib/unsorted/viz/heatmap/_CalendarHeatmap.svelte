@@ -19,7 +19,7 @@
 	export let queryID;
 	export let date;
 	export let value;
-	export let valueFmt;
+	export let valueFmt = undefined;
 
 	export let yearLabel = true;
 	$: yearLabel = yearLabel === 'true' || yearLabel === true;
@@ -46,8 +46,12 @@
 	let height = '400px';
 	let gridHeight;
 	export let colorPalette = undefined;
+	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+
+	export let renderer = undefined;
 
 	function mapColumnsToArray(arrayOfObjects, col1, col2) {
 		return arrayOfObjects.map((obj) => [
@@ -90,6 +94,24 @@
 		const yearCount = distinctYears.length;
 
 		arrayOfArrays = mapColumnsToArray(data, date, value);
+
+		if (min) {
+			// if min was user-supplied
+			min = Number(min);
+			if (isNaN(min)) {
+				// input must be a number
+				throw Error('min must be a number');
+			}
+		}
+
+		if (max) {
+			// if max was user-supplied
+			max = Number(max);
+			if (isNaN(max)) {
+				// input must be a number
+				throw Error('max must be a number');
+			}
+		}
 
 		minValue = min ?? Math.min(...data.map((d) => d[value]));
 		maxValue = max ?? Math.max(...data.map((d) => d[value]));
@@ -332,5 +354,14 @@
 {#if error}
 	<ErrorChart chartType="Calendar Heatmap" {error} />
 {:else}
-	<ECharts {height} {data} {queryID} {config} {printEchartsConfig} />
+	<ECharts
+		{height}
+		{data}
+		{queryID}
+		{config}
+		{printEchartsConfig}
+		{renderer}
+		{echartsOptions}
+		{seriesOptions}
+	/>
 {/if}

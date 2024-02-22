@@ -54,7 +54,14 @@
 
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+
+	export let emptySet = undefined;
+	export let emptyMessage = undefined;
+
+	export let renderer = undefined;
+	export let seriesColors = undefined;
 </script>
 
 <Chart
@@ -91,7 +98,12 @@
 	{chartAreaHeight}
 	{colorPalette}
 	{echartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
+	{emptySet}
+	{emptyMessage}
+	{renderer}
+	{seriesColors}
 >
 	<Bubble {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {scaleTo} {useTooltip} />
 	<slot />

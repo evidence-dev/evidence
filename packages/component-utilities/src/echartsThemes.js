@@ -83,12 +83,6 @@ export const evidenceThemeLight = {
 		symbol: 'circle',
 		smooth: false
 	},
-	bar: {
-		itemStyle: {
-			barBorderWidth: 1,
-			barBorderColor: '#cccccc'
-		}
-	},
 	pie: {
 		itemStyle: {
 			borderWidth: 0,

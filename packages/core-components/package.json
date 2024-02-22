@@ -45,6 +45,7 @@
 		"@steeze-ui/svelte-icon": "^1.4.1",
 		"@steeze-ui/tabler-icons": "^2.1.0",
 		"@types/lodash.debounce": "^4.0.9",
+		"clsx": "^2.0.0",
 		"codemirror": "^6.0.1",
 		"echarts": "5.4.3",
 		"echarts-stat": "1.2.0",
@@ -54,6 +55,7 @@
 		"prismjs": "1.29.0",
 		"ssf": "0.11.2",
 		"svelte-tiny-linked-charts": "1.1.5",
+		"tailwind-merge": "^2.2.0",
 		"thememirror": "^2.0.1",
 		"tua-body-scroll-lock": "^1.4.0",
 		"yaml": "^2.3.4"

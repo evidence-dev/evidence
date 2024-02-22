@@ -1,12 +1,7 @@
 # Heatmap
 
-```all
-select * from orders
-limit 5
-```
-
 ```orders
-select category, dayname(order_datetime) as day, dayofweek(order_datetime) as day_num, count(*) as order_count from orders
+select category, dayname(order_datetime) as day, dayofweek(order_datetime) as day_num, count(*) as order_count from needful_things.orders
 group by all
 order by category, day_num  
 ```
@@ -81,14 +76,14 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
 
 ```item_channel
-select item, channel, count(1) as orders from orders
+select item, channel, count(1) as orders from needful_things.orders
 group by all
 ```
 
 <Heatmap data={item_channel} x=channel y=item value=orders/>
 
 ```item_month
-select item, monthname(order_datetime) as month, count(1) as orders from orders
+select item, monthname(order_datetime) as month, count(1) as orders from needful_things.orders
 group by all
 ```
 
@@ -96,7 +91,7 @@ group by all
 
 
 ```item_state
-select item, state, count(1) as orders from orders
+select item, state, count(1) as orders from needful_things.orders
 group by all
 order by state desc, item asc
 ```

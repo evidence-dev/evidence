@@ -166,6 +166,7 @@
 	$: if (!error) {
 		baseConfig = {
 			id: identifier,
+			evidenceSeriesType: 'reference_area',
 			type: chartType === 'Bar Chart' ? 'bar' : 'line',
 			stack: 'stack1',
 			markArea: {
