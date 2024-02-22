@@ -1,5 +1,9 @@
+/**
+ * @param {unknown} data 
+ * @returns {boolean}
+ */
 export default function isEmptyDataset(data) {
-	if (data === undefined || data[0] === undefined || data.length === 0) {
+	if (!data || !data[0] || !data.length) {
 		return true;
 	} else {
 		return false;
