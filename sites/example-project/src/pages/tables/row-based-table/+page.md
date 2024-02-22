@@ -5,16 +5,16 @@ queries:
 ---
 
 
-```sql last_3_months
+```sql last_5_months
 select * 
 from orders_by_month
-order by month desc
-limit 3
+order by month
+limit 5
 ```
 
 
 ```markdown
-<DataTable data={last_3_months} rows=all columnTitles=month columnTitlesFmt="mmm yy">
+<DataTable data={last_5_months} rows=all columnTitles=month columnTitlesFmt="mmm yy">
     <Row id=sales_usd0k/>
     <Row id=num_orders_num0 />
     <Row id=aov_usd2 description="Average Order Value"/>
@@ -22,10 +22,15 @@ limit 3
 ``` 
 
 
-<DataTable data={last_3_months} rows=all columnTitles=month columnTitlesFmt="mmm yy">
+<DataTable data={last_5_months} rows=all columnTitles=month columnTitlesFmt="mmm yy" comparisonType=pct>
     <Row id=sales_usd0k scaleColor=blue/>
     <Row id=num_orders_num0 />
     <Row id=aov_usd2 description="Average Order Value"/>
 </DataTable>
 
 
+<DataTable data={last_5_months} rows=all columnTitles=month columnTitlesFmt="mmm yy" comparisonType=delta>
+    <Row id=sales_usd0k scaleColor=blue/>
+    <Row id=num_orders_num0 />
+    <Row id=aov_usd2 description="Average Order Value"/>
+</DataTable>

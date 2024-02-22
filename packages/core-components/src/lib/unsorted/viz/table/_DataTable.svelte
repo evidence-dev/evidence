@@ -78,7 +78,7 @@
 
 	export let columnTitles = undefined;
 	export let columnTitlesFmt = undefined;
-
+	export let comparisonType = undefined;
 
 
 	// ---------------------------------------------------------------------------------------
@@ -403,7 +403,17 @@
 										Value {i}
 									{/if}
 								</th>
-							{/each}
+								{/each}
+								{#if comparisonType}
+								<th
+									class="number capitalize"
+									style:color={headerFontColor}
+									style:background-color={headerColor}
+									style:cursor={sortable ? 'pointer' : 'auto'}
+								>
+									{comparisonType} Change
+								</th>
+								{/if}
 						{:else}
 							{#each columnSummary.filter((d) => d.show === true) as column}
 								<th
@@ -447,6 +457,29 @@
 								)}
 							</td>
 						{/each}
+						{#if comparisonType==="pct"}
+							<td
+								class="number"
+							>
+								{displayedData.at(0)[row.id] !== undefined && displayedData.at(-1)[row.id] !== undefined
+									? formatValue(
+											((displayedData.at(-1)[row.id] - displayedData.at(0)[row.id]) / displayedData.at(0)[row.id]),
+											getFormatObjectFromString('pct1'),
+									  )
+									: '-'}
+							</td>
+						{:else if comparisonType==="delta"}
+							<td
+								class="number"
+							>
+								{displayedData.at(0)[row.id] !== undefined && displayedData.at(-1)[row.id] !== undefined
+									? formatValue(
+											(displayedData.at(-1)[row.id] - displayedData.at(0)[row.id]),
+											safeExtractColumn(row).format,
+									  )
+									: '-'}
+							</td>
+						{/if}
 					</tr>
 				{/each}
 				{:else}
