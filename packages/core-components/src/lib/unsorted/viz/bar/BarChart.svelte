@@ -101,6 +101,9 @@
 
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
+
+	export let emptySet = undefined;
+	export let emptyMessage = undefined;
 </script>
 
 <Chart
@@ -149,6 +152,8 @@
 	{colorPalette}
 	{echartsOptions}
 	{printEchartsConfig}
+	{emptySet}
+	{emptyMessage}
 >
 	<Bar
 		{type}

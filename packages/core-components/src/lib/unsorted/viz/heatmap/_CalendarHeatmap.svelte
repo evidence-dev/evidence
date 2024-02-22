@@ -19,7 +19,7 @@
 	export let queryID;
 	export let date;
 	export let value;
-	export let valueFmt;
+	export let valueFmt = undefined;
 
 	export let yearLabel = true;
 	$: yearLabel = yearLabel === 'true' || yearLabel === true;

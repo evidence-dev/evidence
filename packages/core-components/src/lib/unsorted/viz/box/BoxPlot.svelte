@@ -45,6 +45,9 @@
 	export let echartsOptions = undefined;
 	export let printEchartsConfig = false;
 
+	export let emptySet = undefined;
+	export let emptyMessage = undefined;
+
 	$: {
 		if (swapXY === 'true' || swapXY === true) {
 			swapXY = true;
@@ -94,6 +97,8 @@
 	chartType="Box Plot"
 	{echartsOptions}
 	{printEchartsConfig}
+	{emptySet}
+	{emptyMessage}
 >
 	<Box {boxPlotData} {color} {min} {max} />
 	<slot />
