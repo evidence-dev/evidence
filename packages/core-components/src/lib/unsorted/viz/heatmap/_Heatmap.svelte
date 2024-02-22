@@ -60,12 +60,15 @@
 	export let xLabelRotation = undefined; // degress to rotate x axis labels
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
 	export let leftPadding = 0; // user option to avoid label cutoffs
 	export let rightPadding = 0; // user option to avoid label cutoffs
 	export let cellHeight = 30;
+
+	export let renderer = undefined;
 
 	$: height = undefined;
 	$: gridHeight = undefined;
@@ -100,6 +103,24 @@
 
 	$: try {
 		checkInputs(data, [x, y, value]);
+
+		if (min) {
+			// if min was user-supplied
+			min = Number(min);
+			if (isNaN(min)) {
+				// input must be a number
+				throw Error('min must be a number');
+			}
+		}
+
+		if (max) {
+			// if max was user-supplied
+			max = Number(max);
+			if (isNaN(max)) {
+				// input must be a number
+				throw Error('max must be a number');
+			}
+		}
 
 		minValue = min ?? Math.min(...data.map((d) => d[value]));
 		maxValue = max ?? Math.max(...data.map((d) => d[value]));
@@ -302,7 +323,9 @@
 		{config}
 		{height}
 		{echartsOptions}
+		{seriesOptions}
 		{printEchartsConfig}
 		evidenceChartTitle={title}
+		{renderer}
 	/>
 {/if}

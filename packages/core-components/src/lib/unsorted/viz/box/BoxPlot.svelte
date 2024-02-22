@@ -43,7 +43,11 @@
 	export let swapXY = false;
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+	export let renderer = undefined;
+
+	export let seriesColors = undefined;
 
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
@@ -96,9 +100,12 @@
 	{subtitle}
 	chartType="Box Plot"
 	{echartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
 	{emptySet}
 	{emptyMessage}
+	{renderer}
+	{seriesColors}
 >
 	<Box {boxPlotData} {color} {min} {max} />
 	<slot />

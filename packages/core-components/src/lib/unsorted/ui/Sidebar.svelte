@@ -82,10 +82,13 @@
 					</a>
 					{#each firstLevelFiles as file}
 						{#if file.children.length === 0 && file.href}
+							{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							<a
-								class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
+								class="group inline-block py-1 capitalize transition-colors duration-100"
 								href={file.href}
-								class:selected={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+								class:text-blue-600={active}
+								class:hover:text-gray-950={active}
+								class:hover:text-blue-600={active}
 							>
 								{file.label}
 							</a>
@@ -112,11 +115,14 @@
 							{/if}
 							{#each file.children as file}
 								{#if file.href}
+									{@const active =
+										$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 									<a
-										class="hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100"
+										class="group inline-block py-1 capitalize transition-colors duration-100"
 										href={file.href}
-										class:selected={$page.url.pathname.toUpperCase() ===
-											file.href.toUpperCase() + '/'}
+										class:text-blue-600={active}
+										class:hover:text-gray-950={!active}
+										class:hover:text-blue-600={active}
 									>
 										{file.label}
 									</a>
@@ -145,10 +151,13 @@
 				</a>
 				{#each firstLevelFiles as file}
 					{#if file.children.length === 0 && file.href}
+						{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 						<a
-							class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100"
+							class="group inline-block py-1 capitalize transition-all duration-100"
 							href={file.href}
-							class:selected={$page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
+							class:text-blue-600={active}
+							class:hover:text-gray-950={!active}
+							class:hover:text-blue-600={active}
 						>
 							{file.label}
 						</a>
@@ -175,11 +184,13 @@
 						{/if}
 						{#each file.children as file}
 							{#if file.href}
+								{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 								<a
-									class="hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate"
 									href={file.href}
-									class:selected={$page.url.pathname.toUpperCase() ===
-										file.href.toUpperCase() + '/'}
+									class:text-blue-600={active}
+									class:hover:text-blue-600={active}
+									class:hover:text-gray-950={!active}
+									class="group inline-block py-1 capitalize transition-all duration-100 truncate"
 								>
 									{file.label}
 								</a>
@@ -191,13 +202,3 @@
 		</div>
 	{/if}
 </aside>
-
-<style>
-	.selected {
-		@apply text-blue-600;
-	}
-
-	.selected:hover {
-		@apply text-blue-600;
-	}
-</style>

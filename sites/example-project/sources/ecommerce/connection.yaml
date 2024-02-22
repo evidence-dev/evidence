@@ -1,0 +1,5 @@
+# This file was automatically generated
+name: ecommerce
+type: duckdb
+options: 
+  filename: ecommerce.duckdb

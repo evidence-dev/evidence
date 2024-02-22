@@ -1,6 +1,21 @@
 const evidenceTailwind = require('@evidence-dev/tailwind').config;
 const { loadConfig } = require('@evidence-dev/plugin-connector/load-config');
 
+const fs = require('fs');
+const path = require('path');
+let presets = [evidenceTailwind];
+
+const altConfigFilenames = ['tailwind.config.js', 'tailwind.config.cjs'];
+const altConfigFilepaths = altConfigFilenames.map((filename) => path.join('..', '..', filename));
+// Use find so that we can stop iteration
+altConfigFilepaths.find((file) => {
+	if (fs.statSync(file, { throwIfNoEntry: false })) {
+		presets.push(require(file));
+		return true;
+	}
+	return false;
+});
+
 /** @type {import("tailwindcss").Config} */
 const config = {
 	content: {
@@ -25,7 +40,7 @@ const config = {
 		extend: {}
 	},
 
-	presets: [evidenceTailwind],
+	presets: presets,
 
 	plugins: []
 };

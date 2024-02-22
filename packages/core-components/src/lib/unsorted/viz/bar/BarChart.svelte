@@ -42,8 +42,10 @@
 	export let y2TickMarks = undefined;
 	export let yMin = undefined;
 	export let yMax = undefined;
+	export let yScale = undefined;
 	export let y2Min = undefined;
 	export let y2Max = undefined;
+	export let y2Scale = undefined;
 	export let swapXY = false;
 
 	let xEvidenceType = undefined;
@@ -100,10 +102,14 @@
 	export let y2AxisColor = undefined;
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
+
+  export let renderer = undefined;
+	export let seriesColors = undefined;
 </script>
 
 <Chart
@@ -138,8 +144,10 @@
 	{y2AxisColor}
 	{yMin}
 	{yMax}
+	{yScale}
 	{y2Min}
 	{y2Max}
+	{y2Scale}
 	{swapXY}
 	{title}
 	{subtitle}
@@ -151,9 +159,12 @@
 	{showAllXAxisLabels}
 	{colorPalette}
 	{echartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
 	{emptySet}
 	{emptyMessage}
+	{renderer}
+	{seriesColors}
 >
 	<Bar
 		{type}

@@ -32,6 +32,7 @@
 	export let yTickMarks = undefined;
 	export let yMin = undefined;
 	export let yMax = undefined;
+	export let yScale = undefined;
 
 	export let line = undefined;
 	export let fillColor = undefined;
@@ -65,10 +66,15 @@
 	export let showAllLabels = undefined;
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
+
+  export let renderer = undefined;
+	export let seriesColors = undefined;
+
 </script>
 
 <Chart
@@ -94,6 +100,7 @@
 	{yTickMarks}
 	{yMin}
 	{yMax}
+	{yScale}
 	{title}
 	{subtitle}
 	{chartType}
@@ -103,9 +110,12 @@
 	{chartAreaHeight}
 	{colorPalette}
 	{echartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
 	{emptySet}
 	{emptyMessage}
+	{renderer}
+	{seriesColors}
 >
 	<Area
 		{line}
