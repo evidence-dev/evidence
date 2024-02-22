@@ -1,5 +1,5 @@
 /**
- * @param {unknown} data 
+ * @param {unknown} data
  * @returns {boolean}
  */
 export default function isEmptyDataset(data) {
