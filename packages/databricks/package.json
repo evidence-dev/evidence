@@ -15,9 +15,6 @@
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"overrides": {
-		"node-gyp": "^10.0.0"
-	},
 	"type": "module",
 	"evidence": {
 		"datasources": [
