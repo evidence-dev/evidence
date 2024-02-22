@@ -39,7 +39,7 @@
 	export let emptySet = undefined;
 	export let emptyMessage = undefined;
 
-  export let renderer = undefined;
+	export let renderer = undefined;
 </script>
 
 <Chart
