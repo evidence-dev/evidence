@@ -17,14 +17,10 @@
 	class="grid grid-rows-auto box-content grid-cols-1 justify-center bg-red-50 text-grey-700 font-ui font-normal rounded border border-red-200 min-h-[150px] py-5 px-8 my-5 print:break-inside-avoid"
 >
 	<div class="m-auto w-full">
-		<div 
-			class="font-bold text-center text-lg"
-		>
+		<div class="font-bold text-center text-lg">
 			{chartType}
 		</div>
-		<div
-			class="text-center [word-wrap:break-work] text-xs"
-		>
+		<div class="text-center [word-wrap:break-work] text-xs">
 			{error}
 			{#if dev && error === DevMissingCredentialsError}
 				<br /><a class="credentials-link" href="/settings"> Add&nbsp;credentials&nbsp;&rarr;</a>

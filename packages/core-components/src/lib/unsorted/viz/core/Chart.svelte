@@ -11,10 +11,10 @@
 	/** @type {import("@evidence-dev/query-store).QueryStore | unknown}*/
 	export let data;
 
-	const initialHash = typeof data === "object" && "__isQueryStore" in data ? data.hash : undefined;
+	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
 
 	let isInitial = data?.hash === initialHash;
-	$:  isInitial = data?.hash === initialHash;
+	$: isInitial = data?.hash === initialHash;
 
 	/** @type {"pass" | "warn" | "error"}*/
 	export let emptySet = undefined;
@@ -32,8 +32,14 @@
 
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
-	<EmptyChart slot="empty" {emptyMessage} {emptySet} chartType={spreadProps.chartType} {isInitial}/>
-	<ErrorChart slot="error" chartType={spreadProps.chartType} error={loaded.error.message}/>
+	<EmptyChart
+		slot="empty"
+		{emptyMessage}
+		{emptySet}
+		chartType={spreadProps.chartType}
+		{isInitial}
+	/>
+	<ErrorChart slot="error" chartType={spreadProps.chartType} error={loaded.error.message} />
 	<Chart {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Chart>

@@ -11,10 +11,10 @@
 
 	export let data;
 
-	const initialHash = typeof data === "object" && "__isQueryStore" in data ? data.hash : undefined;
+	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
 
 	let isInitial = data?.hash === initialHash;
-	$:  isInitial = data?.hash === initialHash;
+	$: isInitial = data?.hash === initialHash;
 
 	/** @type {"pass" | "warn" | "error"}*/
 	export let emptySet = undefined;
@@ -22,7 +22,7 @@
 	/** @type {string}*/
 	export let emptyMessage = undefined;
 
-	let chartType = "Big Value"
+	let chartType = 'Big Value';
 
 	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
 	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
@@ -38,7 +38,7 @@
 				max-width: ${$$props.maxWidth};
 		`}
 	>
-		<BigValueError error={loaded.error.message}/>
+		<BigValueError error={loaded.error.message} />
 	</div>
 	<div
 		slot="empty"
@@ -48,7 +48,7 @@
 				max-width: ${$$props.maxWidth};
 		`}
 	>
-		<EmptyChart {emptyMessage} {emptySet} {chartType} {isInitial}/>
+		<EmptyChart {emptyMessage} {emptySet} {chartType} {isInitial} />
 	</div>
 	<!-- this is copy pasted straight from bigvalue, which isn't great -->
 	<div

@@ -104,7 +104,7 @@
 		{formatValue(selected_value, format_object)}
 	</span>
 {:else}
-	<ValueError {error}/>
+	<ValueError {error} />
 {/if}
 
 <style>

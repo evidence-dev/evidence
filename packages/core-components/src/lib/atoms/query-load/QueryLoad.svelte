@@ -24,28 +24,28 @@
 	<!-- data prop was not provided. Component to handle this prop-related error -->
 	<slot loaded={data} />
 {:else if !data?.__isQueryStore}
-<!-- data prop was provided, but it is not a query store -->
+	<!-- data prop was provided, but it is not a query store -->
 	{#if !data?.__isQueryStore && isEmptyDataset(data) && $$slots.empty}
-	    <!-- handle case where data is not a query store but is also empty -->
-		<slot name="empty"/>
+		<!-- handle case where data is not a query store but is also empty -->
+		<slot name="empty" />
 	{:else}
 		<!-- Not a query store, nothing to be done -->
 		<slot loaded={data} />
 	{/if}
 {:else if !_data || (!_data?.loaded && !_data.error)}
-<!-- Data is loading -->
+	<!-- Data is loading -->
 	<slot name="skeleton">
 		<div class="w-full h-64">
 			<Skeleton />
 		</div>
 	</slot>
 {:else if _data.error && $$slots.error}
-<!-- loading data returned an error -->
+	<!-- loading data returned an error -->
 	<slot name="error" />
-{:else if isEmptyDataset(_data) &&!_data.error && $$slots.empty}
-<!-- data loaded successfully, but the dataset is empty-->
-	<slot name="empty"/>
+{:else if isEmptyDataset(_data) && !_data.error && $$slots.empty}
+	<!-- data loaded successfully, but the dataset is empty-->
+	<slot name="empty" />
 {:else}
-<!-- data loaded successfully -->
+	<!-- data loaded successfully -->
 	<slot loaded={_data} />
 {/if}
