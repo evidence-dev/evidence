@@ -9,6 +9,7 @@ export { default as Bubble } from './bubble/Bubble.svelte';
 export { default as CalendarHeatmap } from './heatmap/CalendarHeatmap.svelte';
 export { default as Chart } from './core/Chart.svelte';
 export { default as Column } from './table/Column.svelte';
+export { default as Row } from './table/Row.svelte';
 export { default as DataTable } from './table/DataTable.svelte';
 export { default as EChartsCopyTarget } from './core/EChartsCopyTarget.svelte';
 export { default as EChartsMap } from './map/EChartsMap.svelte';

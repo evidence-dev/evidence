@@ -73,10 +73,19 @@
 	let error = undefined;
 
 	// ---------------------------------------------------------------------------------------
+	// Row-Based Table Features
+	// ---------------------------------------------------------------------------------------
+
+	export let columnTitles = undefined;
+	export let columnTitlesFmt = undefined;
+
+
+
+	// ---------------------------------------------------------------------------------------
 	// Add props to store to let child components access them
 	// ---------------------------------------------------------------------------------------
 	props.update((d) => {
-		return { ...d, data, columns: [] };
+		return { ...d, data, columns: [], metricRows: []};
 	});
 
 	// ---------------------------------------------------------------------------------------
@@ -134,6 +143,16 @@
 				);
 			}
 		}
+
+		for (const column of $props.metricRows) {
+			const summary = safeExtractColumn(column);
+			if (summary.format === undefined && column.fmt !== undefined) {
+				throw new Error(
+					`Row "${column.id}" unable to be formatted. Please cast the results to dates or numbers.`
+				);
+			}
+		}
+
 	} catch (e) {
 		error = e.message;
 		if (strictBuild) {
@@ -295,6 +314,11 @@
 					data,
 					$props.columns.map((d) => d.id)
 			  )
+			: $props.metricRows.length > 0
+			? dataSubset(
+					data,
+					$props.metricRows.map((d) => d.id)
+			  )
 			: data;
 </script>
 
@@ -347,6 +371,39 @@
 									{/if}
 								</th>
 							{/each}
+						{:else if $props.metricRows.length > 0}
+								<th
+									class="string"
+									style:color={headerFontColor}
+									style:background-color={headerColor}
+									style:cursor={sortable ? 'pointer' : 'auto'}
+								>
+									Column
+								</th>
+								
+								{#if $props.metricRows.filter((d) => d.description).length > 0}
+									<th
+										class="string"
+										style:color={headerFontColor}
+										style:background-color={headerColor}
+										style:cursor={sortable ? 'pointer' : 'auto'}
+									>
+										Description
+									</th>
+								{/if}
+								{#each displayedData as row, i}	
+								<th>
+									{#if columnTitles}
+										{#if columnTitlesFmt}
+											{formatValue(row[columnTitles],getFormatObjectFromString(columnTitlesFmt))}
+										{:else}
+											{row[columnTitles]}
+										{/if}
+									{:else}
+										Value {i}
+									{/if}
+								</th>
+							{/each}
 						{:else}
 							{#each columnSummary.filter((d) => d.show === true) as column}
 								<th
@@ -367,7 +424,32 @@
 						{/if}
 					</tr>
 				</thead>
-
+				{#if $props.metricRows.length > 0}
+				{#each $props.metricRows as row}
+					<tr>
+						<td>
+							<b>{safeExtractColumn(row).title}</b>
+						</td>
+						{#if $props.metricRows.filter((d) => d.description).length > 0}
+								<td>
+									{#if row.description}
+										{row.description}
+									{/if}
+								</td>
+						{/if}
+						{#each displayedData as dataRow, i}
+							<td 
+								class="{safeExtractColumn(row).type}"
+							>
+								{formatValue(
+									dataRow[row.id],
+									row.fmt ? getFormatObjectFromString(row.fmt) : safeExtractColumn(row).format,
+								)}
+							</td>
+						{/each}
+					</tr>
+				{/each}
+				{:else}
 				{#each displayedData as row, i}
 					<tr
 						class:shaded-row={rowShading && i % 2 === 0}
@@ -573,6 +655,7 @@
 							</td>
 						{/each}
 					</tr>
+				{/if}
 				{/if}
 			</table>
 		</div>
