@@ -2,14 +2,14 @@
 	import { fade, fly } from 'svelte/transition';
 	import {
 		handleClosingTagErrors,
-        handleUnexpectedBlockClosingTagErrors,
-        handleOpenTagErrors,
-        handleExpectedCharacterErrors,
+		handleUnexpectedBlockClosingTagErrors,
+		handleOpenTagErrors,
+		handleExpectedCharacterErrors,
 		handlePropErrors,
 		handleUnexpectedEnd,
 		handleUnexpectedTokens,
 		handleExpectedWhitespace
-	} from '@evidence-dev/component-utilities/hmrErrorHandling'
+	} from '@evidence-dev/component-utilities/hmrErrorHandling';
 	let hasError = false;
 	let message;
 
@@ -28,9 +28,9 @@
 				handleExpectedWhitespace
 			];
 
-		let customErrorMessage = errorHandlers.reduce((acc, handler) => {
-			return acc || handler(err);
-		}, null);
+			let customErrorMessage = errorHandlers.reduce((acc, handler) => {
+				return acc || handler(err);
+			}, null);
 
 			hasError = true;
 			message = customErrorMessage || err.message;
