@@ -1,5 +1,26 @@
 # @evidence-dev/evidence
 
+## 28.0.0
+
+### Patch Changes
+
+- e79974f3: add telemetry to cli
+- Updated dependencies [bc3b2807]
+- Updated dependencies [eb21097b]
+- Updated dependencies [5ea44a86]
+- Updated dependencies [168f657a]
+- Updated dependencies [e09c5716]
+- Updated dependencies [6ec752a7]
+- Updated dependencies [4352150c]
+- Updated dependencies [b864b3cd]
+- Updated dependencies [e79974f3]
+- Updated dependencies [b4ffed1e]
+  - @evidence-dev/core-components@3.4.0
+  - @evidence-dev/component-utilities@2.3.0
+  - @evidence-dev/telemetry@2.0.4
+  - @evidence-dev/plugin-connector@2.0.8
+  - @evidence-dev/db-orchestrator@3.0.10
+
 ## 27.0.1
 
 ### Patch Changes

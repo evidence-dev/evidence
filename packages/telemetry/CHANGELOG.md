@@ -1,5 +1,11 @@
 # @evidence-dev/telemetry
 
+## 2.0.4
+
+### Patch Changes
+
+- e79974f3: add telemetry to cli
+
 ## 2.0.3
 
 ### Patch Changes
