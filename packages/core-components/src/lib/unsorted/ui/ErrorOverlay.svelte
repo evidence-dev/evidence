@@ -1,39 +1,39 @@
 <script>
 	import { fade, fly } from 'svelte/transition';
+	import {
+		handleClosingTagErrors,
+        handleUnexpectedBlockClosingTagErrors,
+        handleOpenTagErrors,
+        handleExpectedCharacterErrors,
+		handlePropErrors,
+		handleUnexpectedEnd,
+		handleUnexpectedTokens,
+		handleExpectedWhitespace
+	} from '@evidence-dev/component-utilities/hmrErrorHandling'
 	let hasError = false;
 	let message;
 
 	if (import.meta.hot) {
 		import.meta.hot.on('vite:error', (data) => {
-			let customErrorMessage;
-			if (data.err.message.includes('Unexpected block closing tag')) {
-				if (data.err.frame.includes('{/each}')) {
-					if (data.err.frame.includes('</li>')) {
-						customErrorMessage =
-							'{#each} block requires an empty line before the closing {/each} tag';
-					} else {
-						customErrorMessage =
-							'Component tag was left open inside {#each} block. Ensure that all components are closed';
-					}
-				} else {
-					customErrorMessage = 'Unexpected block closing';
-				}
-			} else if (data.err.message.includes('Block was left open')) {
-				customErrorMessage = 'Component tag was left open. Ensure that all components are closed';
-			} else if (data.err.message.includes('is not defined')) {
-				customErrorMessage = data.err.message;
-			} else if (data.err.message.includes('attempted to close an element that was not open')) {
-				if (data.err.frame.includes('{/each}')) {
-					customErrorMessage =
-						'Component tag was left open inside {#each} block. Ensure that all components are closed';
-				} else {
-					customErrorMessage = 'Component tag was left open. Ensure that all components are closed';
-				}
-			} else if (data.err.message.includes('Expected >')) {
-				customErrorMessage = 'Component tag was left open. Ensure that all components are closed';
-			}
+			const err = data.err;
+
+			const errorHandlers = [
+				handleClosingTagErrors,
+				handleUnexpectedBlockClosingTagErrors,
+				handleOpenTagErrors,
+				handleExpectedCharacterErrors,
+				handlePropErrors,
+				handleUnexpectedEnd,
+				handleUnexpectedTokens,
+				handleExpectedWhitespace
+			];
+
+		let customErrorMessage = errorHandlers.reduce((acc, handler) => {
+			return acc || handler(err);
+		}, null);
+
 			hasError = true;
-			message = customErrorMessage || data.err.message;
+			message = customErrorMessage || err.message;
 			return false;
 		});
 
