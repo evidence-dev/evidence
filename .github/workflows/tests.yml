@@ -1,7 +1,7 @@
 name: Tests
 
 on:
-  pull_request_target:
+  pull_request:
 
 jobs:
   Tests-sources:
@@ -29,8 +29,7 @@ jobs:
       - run: git config --global core.autocrlf false
 
       # TODO: Should we instead pin the versions we are using for our os?
-      - if: matrix.os === macOS-latest
-        run: pip install setuptools
+      - run: pip install setuptools
 
       - uses: actions/checkout@v3
         with:
