@@ -1,5 +1,11 @@
 # evidence-docs
 
+## 2.0.6
+
+### Patch Changes
+
+- 4352150c: Add dimension grid
+
 ## 2.0.5
 
 ### Patch Changes
