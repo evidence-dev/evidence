@@ -130,8 +130,10 @@
 	}
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	export let renderer = undefined;
 
 	export let abbreviations = false;
 	$: abbreviations = abbreviations === 'true' || abbreviations === true;
@@ -140,6 +142,10 @@
 
 	let columnSummary;
 	let format_object;
+	let minValue;
+	let maxValue;
+	let mapData;
+
 	$: try {
 		error = undefined;
 		if (!state) {
@@ -149,8 +155,26 @@
 		}
 		checkInputs(data, [state, value]);
 
-		let minValue = min ?? Math.min(...data.map((d) => d[value]));
-		let maxValue = max ?? Math.max(...data.map((d) => d[value]));
+		if (min) {
+			// if min was user-supplied
+			min = Number(min);
+			if (isNaN(min)) {
+				// input must be a number
+				throw Error('min must be a number');
+			}
+		}
+
+		if (max) {
+			// if max was user-supplied
+			max = Number(max);
+			if (isNaN(max)) {
+				// input must be a number
+				throw Error('max must be a number');
+			}
+		}
+
+		minValue = min ?? Math.min(...data.map((d) => d[value]));
+		maxValue = max ?? Math.max(...data.map((d) => d[value]));
 
 		columnSummary = getColumnSummary(data);
 
@@ -159,7 +183,7 @@
 			format_object = getFormatObjectFromString(fmt, columnSummary[value].format);
 		}
 
-		let mapData = JSON.parse(JSON.stringify(data));
+		mapData = JSON.parse(JSON.stringify(data));
 		for (let i = 0; i < data.length; i++) {
 			mapData[i].name = data[i][state];
 			mapData[i].value = data[i][value];
@@ -306,7 +330,9 @@
 		{queryID}
 		{hasLink}
 		{echartsOptions}
+		{seriesOptions}
 		{printEchartsConfig}
+		{renderer}
 	/>
 
 	{#if link}

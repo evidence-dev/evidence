@@ -23,8 +23,12 @@
 
 	export let data;
 
+	export let renderer = undefined;
+
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig; // helper for custom chart development
+	export let seriesColors = undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -68,12 +72,29 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echarts={{ ...config, ...$$restProps, echartsOptions, dispatch }}
+				use:echarts={{
+					config,
+					...$$restProps,
+					echartsOptions,
+					seriesOptions,
+					dispatch,
+					renderer,
+					seriesColors
+				}}
 			/>
 		{/if}
 	{/if}
 
-	<EChartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
+	<EChartsCopyTarget
+		{config}
+		{height}
+		{width}
+		{copying}
+		{printing}
+		{echartsOptions}
+		{seriesOptions}
+		{seriesColors}
+	/>
 
 	<div class="chart-footer">
 		<DownloadData
@@ -115,7 +136,7 @@
 	</div>
 
 	{#if printEchartsConfig && !printing}
-		<CodeBlock>
+		<CodeBlock source={JSON.stringify(config, undefined, 3)} copyToClipboard={true}>
 			{JSON.stringify(config, undefined, 3)}
 		</CodeBlock>
 	{/if}
@@ -135,9 +156,11 @@
         overflow: visible;
     "
 		use:echartsCanvasDownload={{
-			...config,
+			config,
 			...$$restProps,
 			echartsOptions,
+			seriesOptions,
+			seriesColors,
 			queryID,
 			evidenceChartTitle
 		}}

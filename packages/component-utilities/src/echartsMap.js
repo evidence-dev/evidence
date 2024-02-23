@@ -32,7 +32,7 @@ export default (node, option) => {
 	let extraHeight = option.extraHeight;
 
 	const chart = init(node, 'none', {
-		renderer: 'canvas',
+		renderer: option.renderer ?? 'canvas',
 		height: `${node.clientWidth * 0.5 + extraHeight}`
 	});
 
@@ -46,6 +46,25 @@ export default (node, option) => {
 	// Check if echartsOptions are provided and apply them
 	if (option.echartsOptions) {
 		chart.setOption(option.echartsOptions);
+	}
+
+	let tempSeries = [];
+	if (option.seriesOptions) {
+		const reference_index = option.series.reduce((acc, { evidenceSeriesType }, reference_index) => {
+			if (evidenceSeriesType === 'reference_line' || evidenceSeriesType === 'reference_area') {
+				acc.push(reference_index);
+			}
+			return acc;
+		}, []);
+
+		for (let i = 0; i < option.series.length; i++) {
+			if (reference_index.includes(i)) {
+				tempSeries.push({});
+			} else {
+				tempSeries.push({ ...option.seriesOptions });
+			}
+		}
+		chart.setOption({ series: tempSeries });
 	}
 
 	let resizeObserver;

@@ -156,7 +156,8 @@
 		},
 		lineStyle: {
 			width: parseInt(lineWidth),
-			type: lineType
+			type: lineType,
+			opacity: lineOpacity
 		},
 		itemStyle: {
 			color: lineColor,

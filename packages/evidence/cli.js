@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
+import { logQueryEvent } from '@evidence-dev/telemetry';
 
 const populateTemplate = function () {
 	clearQueryCache();
@@ -208,6 +209,7 @@ ${chalk.bold('[!] Unable to load source manifest')}
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
 
+		logQueryEvent('dev-server-start');
 		// Run svelte kit dev in the hidden directory
 		const child = spawn('npx vite dev --port 3000', flatArgs, {
 			shell: true,
@@ -232,6 +234,8 @@ prog
 			delete args.debug;
 		}
 		populateTemplate();
+
+		logQueryEvent('build-start');
 		buildHelper('npx vite build', args);
 	});
 
@@ -246,6 +250,8 @@ prog
 		}
 		populateTemplate();
 		strictMode();
+
+		logQueryEvent('build-strict-start');
 		buildHelper('npx vite build', args);
 	});
 
@@ -307,6 +313,7 @@ prog
 			});
 		}
 
+		logQueryEvent('build-sources-start');
 		await updateDatasourceOutputs(path.join('static', 'data'), '.evidence-queries', {
 			sources: sources ? new Set(sources) : sources,
 			queries: queries ? new Set(queries) : queries,
@@ -332,6 +339,7 @@ prog
 		}
 		const flatArgs = flattenArguments(args);
 
+		logQueryEvent('preview-server-start');
 		// Run svelte kit dev in the hidden directory
 		const child = spawn('npx vite preview --outDir build --port 3000', flatArgs, {
 			shell: true,

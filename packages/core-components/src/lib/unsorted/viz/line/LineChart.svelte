@@ -46,9 +46,11 @@
 
 	export let yMin = undefined;
 	export let yMax = undefined;
+	export let yScale = undefined;
 
 	export let y2Min = undefined;
 	export let y2Max = undefined;
+	export let y2Scale = undefined;
 
 	export let lineColor = undefined;
 	export let lineType = undefined;
@@ -82,7 +84,14 @@
 	export let y2AxisColor = undefined;
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+
+	export let emptySet = undefined;
+	export let emptyMessage = undefined;
+
+	export let renderer = undefined;
+	export let seriesColors = undefined;
 </script>
 
 <Chart
@@ -117,8 +126,10 @@
 	{y2AxisColor}
 	{yMin}
 	{yMax}
+	{yScale}
 	{y2Min}
 	{y2Max}
+	{y2Scale}
 	{title}
 	{subtitle}
 	chartType="Line Chart"
@@ -126,7 +137,12 @@
 	{chartAreaHeight}
 	{colorPalette}
 	{echartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
+	{emptySet}
+	{emptyMessage}
+	{renderer}
+	{seriesColors}
 >
 	<Line
 		{lineColor}

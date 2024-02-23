@@ -158,6 +158,8 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
 <tr>	<td>handleMissing</td>	<td>Treatment of missing values in the dataset</td>	<td class='tcenter'>-</td>	<td class='tcenter'>gap | connect | zero</td>	<td class='tcenter'>gap</td>	</tr>
+<tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
+<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
 </table>
 
 ### Formatting & Styling
@@ -216,8 +218,10 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>y2TickMarks</td>	<td>Turns on/off tick marks for each of the y2-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yScale</td>	<td>Whether to scale the y-axis to fit your data. <code>yMin</code> and <code>yMax</code> take precedence over <code>yScale</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>y2Min</td>	<td>Starting value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>y2Max</td>	<td>Maximum value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>y2Scale</td>	<td>Whether to scale the y-axis to fit your data. <code>y2Min</code> and <code>y2Max</code> take precedence over <code>y2Scale</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yAxisColor</td>	<td>Turns on/off color on the y-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
 <tr>	<td>y2AxisColor</td>	<td>Turns on/off color on the y2-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
 </table>

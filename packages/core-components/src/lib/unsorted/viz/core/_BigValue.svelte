@@ -4,7 +4,7 @@
 	import { LinkedChart } from 'svelte-tiny-linked-charts';
 	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
-	import ErrorChart from './ErrorChart.svelte';
+	import BigValueError from './BigValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	export let data;
 	export let value = null;
@@ -32,6 +32,9 @@
 	let error = undefined;
 	$: try {
 		error = undefined;
+
+		// check if dataset exists
+		checkInputs(data);
 
 		if (!value) {
 			throw new Error('value is required');
@@ -73,6 +76,8 @@
 		}
 	} catch (e) {
 		error = e;
+		const setTextRed = '\x1b[31m%s\x1b[0m';
+		console.error(setTextRed, `Error in Big Value: ${error.message}`);
 		if (strictBuild) {
 			throw error;
 		}
@@ -101,7 +106,7 @@
     `}
 >
 	{#if error}
-		<ErrorChart chartType="Big Value" error={error.message} />
+		<BigValueError chartType="Big Value" error={error.message} />
 	{:else}
 		<p class="text-sm text-gray-700">{title}</p>
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">
