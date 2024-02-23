@@ -8,10 +8,10 @@ export function handleClosingTagErrors(err) {
 			return 'Component was left open. Ensure all components are closed, either with a self-closing tag ending in `/>` or with a closing tag like `</DataTable>`';
 		} else if (err.message.includes('</p>')) {
 			if (err.frame.includes('>/></p>')) {
-				return 'Blank line found before end of self-closing tag. Blank line should be removed.';
-			} else if (err.frame.includes('{/each}</p>')) {
+				return 'Blank line found before end of self-closing component tag. Blank line should be removed.';
+			} else if (err.frame.includes('{/each}</p>') || err.frame.includes('{/each}<')) {
 				return '{#each} block requires an empty line before the closing {/each} tag';
-			} else if (err.frame.includes('{/if}</p>')) {
+			} else if (err.frame.includes('{/if}</p>') || err.frame.includes('{/if}<')) {
 				return '{#if} block requires an empty line before the closing {/if} tag';
 			} else {
 				return 'Component was left open. Ensure all components are closed, either with a self-closing tag ending in `/>` or with a closing tag like `</DataTable>`';
@@ -25,9 +25,9 @@ export function handleClosingTagErrors(err) {
 
 export function handleUnexpectedBlockClosingTagErrors(err) {
 	if (err.message.includes('Unexpected block closing tag')) {
-		if (err.frame.includes('{/each}</li>')) {
+		if (err.frame.includes('{/each}<')) { // previously '{/each}</li>'
 			return '{#each} block requires an empty line before the closing {/each} tag';
-		} else if (err.frame.includes('{/if}</li>')) {
+		} else if (err.frame.includes('{/if}<')) { // previously '{/if}</li>'
 			return '{#if} block requires an empty line before the closing {/if} tag';
 		} else {
 			return 'Component was left open. Ensure all components are closed, either with a self-closing tag ending in `/>` or with a closing tag like `</DataTable>`';
