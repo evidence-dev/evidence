@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk';
+import getPort from 'get-port';
+import ora from 'ora';
 import fs from 'fs-extra';
 import { spawn } from 'child_process';
 import * as chokidar from 'chokidar';
@@ -8,6 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
+import { startProxyServer, checkAppReady } from './proxyServer.js'; // Adjusted for clarity
 
 const populateTemplate = function () {
 	clearQueryCache();
@@ -37,7 +40,7 @@ const populateTemplate = function () {
 
 const clearQueryCache = function () {
 	fs.removeSync('.evidence/template/.evidence-queries/cache');
-	console.log('Cleared query cache');
+	console.log(chalk.blue('\nCleared query cache'));
 };
 
 const runFileWatcher = function (watchPatterns) {
@@ -179,7 +182,16 @@ prog
 	.command('dev')
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
-	.action((args) => {
+	.action(async (args) => {
+
+		// Start spinner
+		const spinner = ora(chalk.green('Starting Evidence development server')).start();
+
+		// Use get-port to find an available port starting from 3000
+		const port = await getPort({ port: [3000, 3001, 3002, 3003, 3004, 3005] });
+
+		startProxyServer(port + 1, port);
+
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -204,22 +216,28 @@ ${chalk.bold('[!] Unable to load source manifest')}
 			);
 		}
 
-		populateTemplate();
+		// populateTemplate();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
 
-		// Run svelte kit dev in the hidden directory
-		const child = spawn('npx vite dev --port 3000', flatArgs, {
+		// Start the SvelteKit dev server using the Vite CLI
+		const child = spawn(`npx vite dev --port ${port.toString()}`, flatArgs, {
 			shell: true,
 			detached: false,
 			cwd: '.evidence/template',
 			stdio: 'inherit'
 		});
 
+		checkAppReady();
+
 		child.on('exit', function () {
 			child.kill();
 			watchers.forEach((watcher) => watcher.close());
 		});
+
+		// Stop spinner
+		setTimeout(() => spinner.succeed(chalk.green('Evidence development server is ready')), 100);
+
 	});
 
 prog

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .load-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* This makes the container fill the viewport height */
+        }
+        .loading {
+            font-family: sans-serif;
+            font-size: 20pt;
+            text-align: center;
+            margin-top: 20px; /* Adjusts space between loader and text */
+        }
+        .loader {
+            text-align: center;
+            width: 45px;
+            height: 45px; /* Updated to maintain the aspect ratio */
+            --c: no-repeat linear-gradient(#000 0 0);
+            background: 
+                var(--c) 0    0, 
+                var(--c) 50%  50%, 
+                var(--c) 100% 100%;
+            animation: 
+                l17 1s infinite alternate;
+        }
+        @keyframes l17 {
+            0%, 10%  {background-size:20% 100%}
+            50%  {background-size:20% 20%}
+            90%, 100% {background-size:100% 20%}
+        }
+
+             /* Simple fade-out animation */
+             @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Apply the animation to the body */
+        body.fade-out {
+            animation: fadeOut 1s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="load-container">
+        <div id="loading" class="loader"></div>
+        <div class="loading">
+            Evidence is loading
+        </div>
+    </div>
+    <script>
+        let appReady = false; // Flag to indicate app readiness
+
+        const svelteKitAppPort = {{PORT}}; // The server will replace {{PORT}} with the actual port
+
+        function checkAppReady() {
+            if (appReady) {
+                return; // Stop polling if the app is already marked as ready
+            }
+
+            fetch(`http://localhost:${svelteKitAppPort}`, { mode: 'no-cors' }) // Checking the main app
+                .then(() => {
+                      // Start the fade-out animation
+                      document.body.classList.add('fade-out');
+                      setTimeout(() => {
+                    appReady = true;
+                    window.location.href = `http://localhost:${svelteKitAppPort}`; // Redirect to the main app
+                }, 1000); // Match the duration of the animation
+                })
+                .catch((err) => {
+                    // console.log('App not ready yet, retrying...');
+                    setTimeout(checkAppReady, 1000); 
+                });
+        }
+
+        checkAppReady(); // Start checking if the app is ready on page load
+    </script>
+</body>
+</html>

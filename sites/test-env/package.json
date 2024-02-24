@@ -23,6 +23,8 @@
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/postgres": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
-		"@evidence-dev/sqlite": "workspace:*"
+		"@evidence-dev/sqlite": "workspace:*",
+		"http-proxy": "^1.18.1",
+		"open": "^9.1.0"
 	}
 }

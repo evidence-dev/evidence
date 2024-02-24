@@ -20,6 +20,8 @@
 		"blueimp-md5": "2.19.0",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
+		"duckdb": "0.8.1",
+		"duckdb-async": "0.8.1",
 		"echarts": "5.4.3",
 		"echarts-stat": "1.2.0",
 		"eslint": "8.45.0",
@@ -43,9 +45,7 @@
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "4.3.9",
-		"duckdb": "0.8.1",
-		"duckdb-async": "0.8.1"
+		"vite": "4.3.9"
 	},
 	"scripts": {
 		"build:dev-workspace": "run-s build:example-project",
@@ -83,5 +83,13 @@
 			"jsonwebtoken@<9.0.0": ">=9.0.0",
 			"nth-check@<2.0.1": ">=2.0.1"
 		}
+	},
+	"dependencies": {
+		"express": "^4.18.2",
+		"get-port": "^7.0.0",
+		"http-proxy": "^1.18.1",
+		"node-fetch": "^3.3.1",
+		"open": "^9.1.0",
+		"ora": "^7.0.1"
 	}
 }
