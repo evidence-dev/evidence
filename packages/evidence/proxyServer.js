@@ -54,7 +54,7 @@ export function checkAppReady(appPort, callback) {
   fetch(`http://localhost:${appPort}`)
     .then(response => {
       if (response.ok) {
-        console.log('SvelteKit app is ready.');
+        // console.log('SvelteKit app is ready.');
         appIsReady = true; // Mark the app as ready to stop further polling
         callback(appPort); // Execute the callback to signal readiness
         return true;

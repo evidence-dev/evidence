@@ -185,7 +185,11 @@ prog
 	.action(async (args) => {
 
 		// Start spinner
-		const spinner = ora(chalk.green('Starting Evidence development server')).start();
+		const spinner = ora({
+			text: chalk.cyan('Starting Evidence development server\n'),
+			spinner: 'circleHalves',
+			color: 'cyan'
+		}).start();
 
 		// Use get-port to find an available port starting from 3000
 		const port = await getPort({ port: [3000, 3001, 3002, 3003, 3004, 3005] });
@@ -225,18 +229,29 @@ ${chalk.bold('[!] Unable to load source manifest')}
 			shell: true,
 			detached: false,
 			cwd: '.evidence/template',
-			stdio: 'inherit'
+			stdio: 'pipe'
 		});
 
-		checkAppReady();
+		checkAppReady(port, () => {
+			spinner.succeed(chalk.green('Evidence server started\n'));
+			const link = `http://localhost:${port}`;
+			// const runningSpinner = ora({
+			// 	text: chalk.cyan(`Evidence development server is running\n`),
+			// 	spinner: 'dots',
+			// 	color: 'cyan'
+			// }).start();
+			console.log(
+				chalk.cyan.bold('● Evidence development server is running'),
+				chalk.green('\n➜ '),
+				chalk.grey(`http://localhost:${port}`)
+			)
+		});
+
 
 		child.on('exit', function () {
 			child.kill();
 			watchers.forEach((watcher) => watcher.close());
 		});
-
-		// Stop spinner
-		setTimeout(() => spinner.succeed(chalk.green('Evidence development server is ready')), 100);
 
 	});
 
