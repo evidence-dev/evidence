@@ -9,13 +9,35 @@ let pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', '')
 
 export const prerender = true;
 
+// Convert children objects into arrays of objects
+function convertChildrenToArray(node) {
+	if (node.children) {
+		node.children = Object.keys(node.children).map(function (key) {
+			return node.children[key];
+		});
+		node.children.forEach(function (child) {
+			convertChildrenToArray(child);
+		});
+	}
+}
+
+// Recursively delete nodes and children nodes that don't have a label
+function deleteEmptyNodes(node) {
+	if (node.children) {
+		Object.keys(node.children).forEach(function (key) {
+			deleteEmptyNodes(node.children[key]);
+			if (!node.children[key].label && !node.children[key].href) {
+				delete node.children[key];
+			}
+		});
+	}
+}
+
 /**
  * @type {import("@sveltejs/kit").RequestHandler}
  */
 export async function GET() {
 	try {
-		// Create a tree structure from the array of paths
-
 		let fileTree = {
 			label: 'Home',
 			href: '/',
@@ -57,33 +79,7 @@ export async function GET() {
 				}
 			}, fileTree);
 		});
-
-		// Recursively delete nodes and children nodes that don't have a label
-		function deleteEmptyNodes(node) {
-			if (node.children) {
-				Object.keys(node.children).forEach(function (key) {
-					deleteEmptyNodes(node.children[key]);
-					if (!node.children[key].label && !node.children[key].href) {
-						delete node.children[key];
-					}
-				});
-			}
-		}
-
 		deleteEmptyNodes(fileTree);
-
-		// Convert children objects into arrays of objects
-		function convertChildrenToArray(node) {
-			if (node.children) {
-				node.children = Object.keys(node.children).map(function (key) {
-					return node.children[key];
-				});
-				node.children.forEach(function (child) {
-					convertChildrenToArray(child);
-				});
-			}
-		}
-
 		convertChildrenToArray(fileTree);
 		return new Response(JSON.stringify(fileTree));
 	} catch {
