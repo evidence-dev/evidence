@@ -116,6 +116,11 @@
 								class:hover:text-blue-600={active}
 							>
 								{file.frontMatter?.title ?? file.label}
+								{#if file.frontMatter?.sidebar_badge}
+									<Badge>
+										{file.frontMatter.sidebar_badge}
+									</Badge>
+								{/if}
 							</a>
 						{/if}
 					{/each}
@@ -129,6 +134,11 @@
 									href={file.href}
 								>
 									{file.frontMatter?.title ?? file.label}
+									{#if file.frontMatter?.sidebar_badge}
+										<Badge>
+											{file.frontMatter.sidebar_badge}
+										</Badge>
+									{/if}
 								</a>
 							{:else}
 								<span
@@ -136,6 +146,11 @@
 									href={file.href}
 								>
 									{file.frontMatter?.title ?? file.label}
+									{#if file.frontMatter?.sidebar_badge}
+										<Badge>
+											{file.frontMatter.sidebar_badge}
+										</Badge>
+									{/if}
 								</span>
 							{/if}
 							{#each file.children as file}
@@ -150,6 +165,11 @@
 										class:hover:text-blue-600={active}
 									>
 										{file.frontMatter?.title ?? file.label}
+										{#if file.frontMatter?.sidebar_badge}
+											<Badge>
+												{file.frontMatter.sidebar_badge}
+											</Badge>
+										{/if}
 									</a>
 								{/if}
 							{/each}
