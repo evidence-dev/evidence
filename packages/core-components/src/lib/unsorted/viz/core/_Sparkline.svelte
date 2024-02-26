@@ -67,6 +67,18 @@
 	let staticSVGSSR;
 	let error;
 
+	// Initialize chart for interactive mode
+	function initializeChart() {
+		if (interactive && chartContainer && !chartInstance) {
+			chartInstance = init(chartContainer, null, { renderer: 'svg', width, height });
+			chartInstance.setOption(config);
+			if (connect) {
+				chartInstance.group = 'connected-sparkline';
+				echartsConnect('connected-sparkline');
+			}
+		}
+	}
+
 	$: try {
 		// ---------------------------------------------------------------------------------------
 		// Get column information
@@ -179,10 +191,10 @@
 				},
 				axisLine: {
 					show: true,
-               lineStyle: {
-                  width: 0.75,
-                  color: uiColours.grey500
-               }
+					lineStyle: {
+						width: 0.75,
+						color: uiColours.grey500
+					}
 				},
 				axisTick: {
 					show: false
@@ -251,7 +263,6 @@
 					triggerLineEvent: true,
 					label: {
 						show: false,
-						fontSize: 11,
 						position: 'top',
 						padding: 0,
 						fontSize: 9
@@ -304,18 +315,6 @@
 			}
 		};
 
-		// Initialize chart for interactive mode
-		function initializeChart() {
-			if (interactive && chartContainer && !chartInstance) {
-				chartInstance = init(chartContainer, null, { renderer: 'svg', width, height });
-				chartInstance.setOption(config);
-				if (connect) {
-					chartInstance.group = 'connected-sparkline';
-					echartsConnect('connected-sparkline');
-				}
-			}
-		}
-
 		if (!browser) {
 			// SSR-specific initialization
 			const tempChart = init(null, 'evidence-light', {
@@ -356,7 +355,7 @@
 			}
 		});
 	} catch (e) {
-      error = e;
+		error = e;
 		const setTextRed = '\x1b[31m%s\x1b[0m';
 		console.error(setTextRed, `Error in Sparkline: ${error.message}`);
 		if (strictBuild) {
@@ -364,7 +363,7 @@
 		}
 	}
 
-   $: data, config;
+	$: data, config;
 </script>
 
 {#if error}

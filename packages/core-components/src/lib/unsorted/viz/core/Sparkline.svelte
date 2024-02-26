@@ -22,7 +22,7 @@
 	/** @type {string}*/
 	export let emptyMessage = undefined;
 
-   let chartType = 'Sparkline';
+	let chartType = 'Sparkline';
 
 	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
 	$: spreadProps = {

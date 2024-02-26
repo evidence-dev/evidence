@@ -79,7 +79,6 @@
 			throw error;
 		}
 	}
-
 </script>
 
 <div
@@ -97,12 +96,12 @@
 			<Value {data} column={value} {fmt} />
 			{#if sparkline}
 				<Sparkline
-					height=15
-					data={data}
+					height="15"
+					{data}
 					dateCol={sparkline}
 					valueCol={value}
 					type={sparklineType}
-					interactive=true
+					interactive="true"
 					color={sparklineColor}
 					valueFmt={fmt ?? sparklineValueFmt}
 					dateFmt={sparklineDateFmt}
@@ -120,12 +119,3 @@
 		{/if}
 	{/if}
 </div>
-
-<style>
-	/* 
-        TODO: Identify if this can be moved to app.css, or scoped to this component.
-        Leaky global styles are problematic
-     */
-	div[data-viz='BigValue'] :global(svg) {
-		height: 16px;
-	}</style>
