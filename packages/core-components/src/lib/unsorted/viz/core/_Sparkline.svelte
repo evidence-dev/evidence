@@ -33,7 +33,7 @@
 	export let config = {};
 	export let width = 50; // Default width for the sparkline, adjust as needed
 	export let height = 15; // Default height for the sparkline, adjust as needed
-	export let interactive = false; // Prop to control interactivity
+	export let interactive = true; // Prop to control interactivity
 	$: interactive = interactive === 'true' || interactive === true;
 
 	let chartContainer;
