@@ -9,6 +9,9 @@
 	export let data;
 	export let value = null;
 	export let comparison = null;
+	export let comparisonDelta = true;
+	$: comparisonDelta = comparisonDelta === 'true' || comparisonDelta === true;
+
 	export let sparkline = null;
 
 	// Formatting:
@@ -133,11 +136,18 @@
 			{/if}
 		</div>
 		{#if comparison}
-			<p class="text-xs font-sans" style={`color:${comparisonColor}`}>
-				<span class="font-[system-ui]"> {@html positive ? '&#9650;' : '&#9660;'} </span>
-				<Value {data} column={comparison} fmt={comparisonFmt} />
-				<span>{comparisonTitle}</span>
-			</p>
+			{#if comparisonDelta}
+				<p class="text-xs font-sans" style={`color:${comparisonColor}`}>
+					<span class="font-[system-ui]"> {@html positive ? '&#9650;' : '&#9660;'} </span>
+					<Value {data} column={comparison} fmt={comparisonFmt} />
+					<span>{comparisonTitle}</span>
+				</p>
+			{:else}
+				<p class="text-xs font-sans text-gray-500 pt-[0.5px]">
+					<Value {data} column={comparison} fmt={comparisonFmt} />
+					<span>{comparisonTitle}</span>
+				</p>
+			{/if}
 		{/if}
 	{/if}
 </div>
