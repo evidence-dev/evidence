@@ -71,6 +71,9 @@ importers:
       blueimp-md5:
         specifier: 2.19.0
         version: 2.19.0
+      chroma-js:
+        specifier: ^2.4.2
+        version: 2.4.2
       debounce:
         specifier: ^1.2.1
         version: 1.2.1
@@ -134,9 +137,6 @@ importers:
       svelte-preprocess:
         specifier: 5.0.3
         version: 5.0.3(postcss-load-config@4.0.2)(postcss@8.4.35)(svelte@3.55.0)(typescript@4.9.5)
-      svelte-tiny-linked-charts:
-        specifier: 1.1.5
-        version: 1.1.5
       svelte2tsx:
         specifier: 0.6.0
         version: 0.6.0(svelte@3.55.0)(typescript@4.9.5)
@@ -295,9 +295,6 @@ importers:
       ssf:
         specifier: 0.11.2
         version: 0.11.2
-      svelte-tiny-linked-charts:
-        specifier: 1.1.5
-        version: 1.1.5
       tailwind-merge:
         specifier: ^2.2.0
         version: 2.2.1
@@ -576,9 +573,6 @@ importers:
       svelte-preprocess:
         specifier: 5.0.3
         version: 5.0.3(postcss-load-config@4.0.2)(postcss@8.4.35)(svelte@3.55.0)(typescript@4.9.5)
-      svelte-tiny-linked-charts:
-        specifier: 1.1.5
-        version: 1.1.5
       svelte2tsx:
         specifier: 0.6.0
         version: 0.6.0(svelte@3.55.0)(typescript@4.9.5)
@@ -1187,9 +1181,6 @@ importers:
       svelte-icons:
         specifier: 2.1.0
         version: 2.1.0
-      svelte-tiny-linked-charts:
-        specifier: 1.1.5
-        version: 1.1.5
       typescript:
         specifier: 4.9.5
         version: 4.9.5
@@ -11572,6 +11563,10 @@ packages:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
 
+  /chroma-js@2.4.2:
+    resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
+    dev: false
+
   /chromatic@6.24.1:
     resolution: {integrity: sha512-XbpdWWHvFpEHtcq1Km71UcuQ07effB+8q8L47E1Y7HJmJ4ZCoKCuPd8liNrbnvwEAxqfBZvTcONYU/3BPz2i5w==}
     hasBin: true
@@ -21416,9 +21411,6 @@ packages:
       svelte: 3.55.0
       typescript: 5.3.3
     dev: true
-
-  /svelte-tiny-linked-charts@1.1.5:
-    resolution: {integrity: sha512-27AlRKnz82GfswxoLkNjFtn1+C10bkpZb4kRH7d3qQVbgLLgNJY2ICSuWa+49Qh6jDFn6e/+qx3wWIz8kMmMkA==}
 
   /svelte2tsx@0.5.23(svelte@3.55.0)(typescript@4.9.5):
     resolution: {integrity: sha512-jYFnugTQRFmUpvLXPQrKzVYcW5ErT+0QCxg027Zx9BuvYefMZFuoBSTDYe7viPEFGrPPiLgT2m7f5n9khE7f7Q==}

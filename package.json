@@ -18,8 +18,11 @@
 		"@sveltejs/kit": "1.22.3",
 		"@tidyjs/tidy": "2.4.4",
 		"blueimp-md5": "2.19.0",
+		"chroma-js": "^2.4.2",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
+		"duckdb": "0.8.1",
+		"duckdb-async": "0.8.1",
 		"echarts": "5.4.3",
 		"echarts-stat": "1.2.0",
 		"eslint": "8.45.0",
@@ -37,15 +40,12 @@
 		"svelte": "3.55.0",
 		"svelte-icons": "2.1.0",
 		"svelte-preprocess": "5.0.3",
-		"svelte-tiny-linked-charts": "1.1.5",
 		"svelte2tsx": "0.6.0",
 		"typescript": "4.9.5",
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2",
 		"uvu": "0.5.2",
-		"vite": "4.3.9",
-		"duckdb": "0.8.1",
-		"duckdb-async": "0.8.1"
+		"vite": "4.3.9"
 	},
 	"scripts": {
 		"build:dev-workspace": "run-s build:example-project",
