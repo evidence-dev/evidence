@@ -8,7 +8,6 @@
 	import { sqlConsole, buildAutoCompletes } from './sqlConsole.action.js';
 
 	import { onMount } from 'svelte';
-	import { slide } from 'svelte/transition';
 
 	import { Button } from '../../atoms/button';
 	import DataTable from '../../unsorted/viz/table/DataTable.svelte';
@@ -122,7 +121,7 @@
 
 	<!-- Result View -->
 	{#if showResults}
-		<div transition:slide>
+		<div>
 			<DataTable data={$data} />
 		</div>
 	{/if}
