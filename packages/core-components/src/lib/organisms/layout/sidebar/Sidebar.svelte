@@ -10,6 +10,7 @@
 	export let fileTree;
 	export let title;
 	export let logo;
+	export let builtWithEvidence;
 
 	// sort children arrays by sidebar_position
 	function sortChildrenBySidebarPosition(node) {
@@ -271,6 +272,16 @@
 					</div>
 				{/if}
 			{/each}
+		</div>
+	{/if}
+	{#if builtWithEvidence}
+		<div class="fixed bottom-0 text-xs py-2">
+			<a
+				href="https://www.evidence.dev"
+				class="bg-gradient-to-r inline-block text-gray-950 antialiased font-medium"
+			>
+				Built with Evidence</a
+			>
 		</div>
 	{/if}
 </aside>

@@ -15,6 +15,7 @@
 	export let neverShowQueries = false;
 	export let fullWidth = false;
 	export let hideSidebar = false;
+	export let builtWithEvidence = false;
 
 	// Social links
 	export let githubRepo;
@@ -53,7 +54,7 @@
 	>
 		{#if !hideSidebar}
 			<div class="print:hidden">
-				<Sidebar {fileTree} bind:mobileSidebarOpen {title} {logo} />
+				<Sidebar {fileTree} bind:mobileSidebarOpen {title} {logo} {builtWithEvidence} />
 			</div>
 		{/if}
 		<main
