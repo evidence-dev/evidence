@@ -5,8 +5,11 @@
 	import { lock, unlock } from 'tua-body-scroll-lock';
 	import { afterUpdate } from 'svelte';
 	import Badge from '$lib/organisms/layout/sidebar/Badge.svelte';
-	import Logo from './Logo.svelte';
+	import Logo from '../Logo.svelte';
+
 	export let fileTree;
+	export let title;
+	export let logo;
 
 	// sort children arrays by sidebar_position
 	function sortChildrenBySidebarPosition(node) {
@@ -65,8 +68,12 @@
 	>
 		<div class=" pb-4 text-gray-700">
 			<div class="py-3 px-8 mb-3 flex items-start justify-between">
-				<a href="/" class="block mt-1">
-					<Logo />
+				<a href="/" class="block mt-1 text-sm font-bold text-gray-800">
+					{#if title}
+						{title}
+					{:else}
+						<Logo {logo} />
+					{/if}
 				</a>
 				<span
 					on:click={() => (mobileSidebarOpen = false)}

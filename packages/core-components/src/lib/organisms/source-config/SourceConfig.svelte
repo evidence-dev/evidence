@@ -118,7 +118,7 @@
 
 		<div />
 	</div>
-	<div class="p-4 rounded-b w-full bg-gray-100 text-sm">
+	<div class="p-4 rounded-b w-full bg-gray-100 text-sm border-b border-r border-l">
 		<!-- TODO: Update this when we have docs -->
 		Learn more about
 		<a

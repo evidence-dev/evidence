@@ -1,5 +1,4 @@
 <script>
-	export let mobileSidebarOpen;
 	import { showQueries } from '@evidence-dev/component-utilities/stores';
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import { dev } from '$app/environment';
@@ -14,7 +13,13 @@
 		Table,
 		Prompt
 	} from '@steeze-ui/tabler-icons';
-	import Logo from './Logo.svelte';
+	import Logo from '../Logo.svelte';
+
+	export let mobileSidebarOpen;
+	export let title;
+	export let logo;
+	export let neverShowQueries;
+	export let fullWidth;
 
 	const beforeprint = new Event('export-beforeprint');
 	const afterprint = new Event('export-afterprint');
@@ -29,10 +34,15 @@
 	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden"
 >
 	<div
-		class="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center"
+		class={(fullWidth ? 'max-w-full ' : 'max-w-7xl ') +
+			'mx-auto px-6 sm:px-8 md:px-12 flex flex-1 justify-self-start justify-between items-center'}
 	>
-		<a href="/" class="hidden md:block">
-			<Logo />
+		<a href="/" class="hidden md:block text-sm font-bold text-gray-800">
+			{#if title}
+				{title}
+			{:else}
+				<Logo {logo} />
+			{/if}
 		</a>
 
 		<button
@@ -69,19 +79,21 @@
 								</div>
 							</MenuItem>
 
-							<MenuItem
-								let:active
-								on:click={() => {
-									showQueries.update((val) => !val);
-								}}
-							>
-								<div
-									class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
-									class:active
+							{#if dev || !neverShowQueries}
+								<MenuItem
+									let:active
+									on:click={() => {
+										showQueries.update((val) => !val);
+									}}
 								>
-									{$showQueries ? 'Hide ' : 'Show '} Queries
-								</div>
-							</MenuItem>
+									<div
+										class="w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer"
+										class:active
+									>
+										{$showQueries ? 'Hide ' : 'Show '} Queries
+									</div>
+								</MenuItem>
+							{/if}
 							{#if dev}
 								<hr class="my-1" />
 								<MenuItem let:active>
