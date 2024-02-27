@@ -17,6 +17,7 @@ comparison=sales_change_pct0
 comparisonTitle="vs. Last Month"
 sparklineType=area
 connectGroup=bigvalues
+comparisonDelta=false
 />
 
 <BigValue data = {owc} 
@@ -42,7 +43,6 @@ sparklineDateFmt=mmm
 sparklineYScale=true
 connectGroup=bigvalues
 /> 
-
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
