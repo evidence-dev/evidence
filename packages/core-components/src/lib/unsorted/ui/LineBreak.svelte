@@ -2,4 +2,11 @@
 	export const evidenceInclude = true;
 </script>
 
-<br />
+<script>
+	export let lines = 1;
+	let items = Array.from({ length: lines });
+</script>
+
+{#each items as _}
+	<br />
+{/each}
