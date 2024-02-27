@@ -7,6 +7,6 @@
 	let items = Array.from({ length: lines });
 </script>
 
-{#each items as _}
-	<br />
+{#each items as _ignore}
+	<br {_ignore} />
 {/each}
