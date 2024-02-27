@@ -52,7 +52,7 @@
 	// Initialize chart for interactive mode
 	function initializeChart() {
 		if (interactive && chartContainer && !chartInstance) {
-			chartInstance = init(chartContainer, null, { renderer: 'svg', width, height });
+			chartInstance = init(chartContainer, 'evidence-light', { renderer: 'svg', width, height });
 			chartInstance.setOption(config);
 			if (connectGroup) {
 				chartInstance.group = connectGroup;
@@ -315,7 +315,7 @@
 				const offscreenContainer = document.createElement('div');
 				offscreenContainer.style.width = width + 'px';
 				offscreenContainer.style.height = height + 'px';
-				const tempChart = init(offscreenContainer, null, { renderer: 'svg', height, width });
+				const tempChart = init(offscreenContainer, 'evidence-light', { renderer: 'svg', height, width });
 				tempChart.setOption(config);
 				staticSVG = tempChart.renderToSVGString();
 				tempChart.dispose();
