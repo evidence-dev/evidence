@@ -2,7 +2,7 @@
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
 	import { onMount, onDestroy } from 'svelte';
 	import chroma from 'chroma-js';
-	import { init, connect as echartsConnect } from 'echarts';
+	import { init, connect } from 'echarts';
 	import {
 		formatValue,
 		getFormatObjectFromString
@@ -44,8 +44,7 @@
 
 	let seriesType = type === 'area' ? 'line' : type;
 
-	export let connect = false; // connects to all other connected sparklines (shared tooltip behaviour)
-	$: connect = connect === 'true' || connect === true;
+	export let connectGroup = undefined; // connects to all other connected sparklines with the same group name (shared tooltip behaviour)
 
 	let staticSVGSSR;
 	let error;
@@ -55,9 +54,9 @@
 		if (interactive && chartContainer && !chartInstance) {
 			chartInstance = init(chartContainer, null, { renderer: 'svg', width, height });
 			chartInstance.setOption(config);
-			if (connect) {
-				chartInstance.group = 'connected-sparkline';
-				echartsConnect('connected-sparkline');
+			if (connectGroup) {
+				chartInstance.group = connectGroup;
+				connect(connectGroup);
 			}
 		}
 	}
@@ -350,17 +349,11 @@
 {#if error}
 	<ValueError {error} />
 {:else if !browser}
-	<div
-		class="inline-block align-baseline"
-		style="width: {width}px; height: {height}px;"
-	>
+	<div class="inline-block align-baseline" style="width: {width}px; height: {height}px;">
 		{@html staticSVGSSR}
 	</div>
 {:else if !interactive}
-	<div
-		class="inline-block align-baseline"
-		style="width: {width}px; height: {height}px;"
-	>
+	<div class="inline-block align-baseline" style="width: {width}px; height: {height}px;">
 		{@html staticSVG}
 	</div>
 {:else}

@@ -15,8 +15,7 @@
 	export let sparklineDateFmt = undefined;
 	export let sparklineYScale = false;
 	$: sparklineYScale = sparklineYScale === 'true' || sparklineYScale === true;
-	export let sparklineConnect = false;
-	$: sparklineConnect = sparklineConnect === 'true' || sparklineConnect === true;
+	export let sparklineConnectGroup = undefined;
 
 	// Formatting:
 	export let fmt = undefined;
@@ -106,7 +105,7 @@
 					valueFmt={fmt ?? sparklineValueFmt}
 					dateFmt={sparklineDateFmt}
 					yScale={sparklineYScale}
-					connect={sparklineConnect}
+					connectGroup={sparklineConnectGroup}
 				/>
 			{/if}
 		</div>

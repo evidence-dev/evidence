@@ -36,9 +36,9 @@ select 190 as sales, '2020-05-01'::date as date
 - Sales in the last year: <Sparkline data={sp} dateCol=date valueCol=sales type=bar interactive=true yScale=false valueFmt=eur dateFmt=mmm color=darkgreen/> and some text after
 
 ### Connected Sparklines
-<Sparkline data={sp} dateCol=date valueCol=sales type=bar    interactive=true yScale=false valueFmt=eur dateFmt=mmm connect=true/>
-<Sparkline data={sp} dateCol=date valueCol=sales type=area color=maroon interactive=true yScale=false valueFmt=eur dateFmt=mmm connect=true/>
-<Sparkline data={sp} dateCol=date valueCol=sales type=line color=purple interactive=true yScale=false valueFmt=eur dateFmt=mmm connect=true/>
+<Sparkline data={sp} dateCol=date valueCol=sales type=bar    interactive=true yScale=false valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
+<Sparkline data={sp} dateCol=date valueCol=sales type=area color=maroon interactive=true yScale=false valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
+<Sparkline data={sp} dateCol=date valueCol=sales type=line color=purple interactive=true yScale=false valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
 
 ### With Negative Values
 <Sparkline data={sp2} dateCol=date valueCol=sales type=bar    interactive=true yScale=false valueFmt=eur dateFmt=mmm/>
