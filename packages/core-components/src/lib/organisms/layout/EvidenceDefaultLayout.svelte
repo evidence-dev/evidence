@@ -17,6 +17,8 @@
 	export let hideSidebar = false;
 	export let builtWithEvidence = false;
 
+	export let algolia;
+
 	// Social links
 	export let githubRepo;
 	export let xProfile;
@@ -47,6 +49,7 @@
 		{githubRepo}
 		{slackCommunity}
 		{xProfile}
+		{algolia}
 	/>
 	<div
 		class={(fullWidth ? 'max-w-full ' : 'max-w-7xl ') +
