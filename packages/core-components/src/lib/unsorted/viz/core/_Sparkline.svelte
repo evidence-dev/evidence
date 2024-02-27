@@ -13,23 +13,6 @@
 	import ValueError from './ValueError.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 
-	// TO DO
-	// 1. Make tooltip gap height dynamic = DONE
-	// 2. Fix up sizing to get it right = DONE
-	// 3. Alignment of sparkline with BigValue - looks shifted down a bit = DONE
-	// 4. Error handling = DONE
-	// 5. BigValue sparkline value and date fmts = DONE
-	// 6. Optional connection across sparkline instances = DONE
-	// 7. Add SSR = DONE
-	// 8. Multiple connection groups? = DEFERRING
-	// 9. Overlapping labels when connected charts = DEFERRING
-	// 10. Some shifting in tooltip labels on mouse move (only when connecteed or not?) = DEFERRING
-	// 11. DOCS - Update BigValue page with sparkline props + images; create page for Sparkline + add to all components list
-	// 12. Remove tiny-linked-charts = DONE
-	// 13. Tree shake echarts imports = DONE
-	// 14. Remove echarts disposal logs = DONE
-	// 15. Check negative value behaviour = DONE
-
 	export let config = {};
 	export let width = 50; // Default width for the sparkline, adjust as needed
 	export let height = 15; // Default height for the sparkline, adjust as needed
@@ -181,8 +164,6 @@
 				bottom: 0,
 				top: 0,
 				containLabel: true
-				//   borderColor: 'red',
-				//   borderWidth: 1
 			},
 			xAxis: {
 				type: 'time',
@@ -370,14 +351,14 @@
 	<ValueError {error} />
 {:else if !browser}
 	<div
-		class="inline-block align-baseline border-blue-600 border-0"
+		class="inline-block align-baseline"
 		style="width: {width}px; height: {height}px;"
 	>
 		{@html staticSVGSSR}
 	</div>
 {:else if !interactive}
 	<div
-		class="inline-block align-baseline border-blue-600 border-0"
+		class="inline-block align-baseline"
 		style="width: {width}px; height: {height}px;"
 	>
 		{@html staticSVG}
@@ -385,7 +366,7 @@
 {:else}
 	<div
 		bind:this={chartContainer}
-		class="z-50 inline-block align-baseline overflow-visible border-blue-400 border-0"
+		class="inline-block align-baseline overflow-visible"
 		style="width: {width}px; height: {height}px;"
 	/>
 {/if}
