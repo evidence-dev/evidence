@@ -16,7 +16,7 @@ sparkline=month
 comparison=sales_change_pct0
 comparisonTitle="vs. Last Month"
 sparklineType=area
-sparklineConnect=true
+connectGroup=bigvalues
 />
 
 <BigValue data = {owc} 
@@ -28,7 +28,7 @@ comparison=num_orders_change_pct0
 comparisonTitle="vs. Last Month"
 sparklineColor=maroon
 sparklineDateFmt=shortdate
-sparklineConnect=true
+connectGroup=bigvalues
 />
 
 <BigValue data = {owc} 
@@ -40,7 +40,7 @@ comparisonTitle="vs. Last Month"
 sparklineColor=navy
 sparklineDateFmt=mmm
 sparklineYScale=true
-sparklineConnect=true
+connectGroup=bigvalues
 /> 
 
 
