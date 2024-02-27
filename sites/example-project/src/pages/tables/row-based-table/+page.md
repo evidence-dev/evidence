@@ -8,29 +8,33 @@ queries:
 ```sql last_5_months
 select * 
 from orders_by_month
-order by month
-limit 5
+order by month desc
+limit 2
+```
+
+```sql yearly_sales
+select 
+    date_part('year', order_datetime) +  as year,
+    sum(sales) as sales,
+    count(*) as num_orders,
+    sum(sales) / count(*) as aov
+from orders
+where order_datetime < '2021-01-01'
+group by 1
+order by 1
 ```
 
 
-```markdown
-<DataTable data={last_5_months} rows=all columnTitles=month columnTitlesFmt="mmm yy">
-    <Row id=sales_usd0k/>
-    <Row id=num_orders_num0 />
-    <Row id=aov_usd2 description="Average Order Value"/>
+<DataTable data={yearly_sales} rows=all columnTitles=year comparisonType=pct>
+    <Row id=sales title="Total Revenue" description="Sales, Net of Returns ($)" fmt=usd2m/>
+    <Row id=aov title="AOV" description="Average Order Value ($)" fmt=usd2 deltaThreshold=0.005/>
+    <Row id=num_orders title="Orders" description="Number of Orders" fmt=num0/>
 </DataTable>
-``` 
 
-
-<DataTable data={last_5_months} rows=all columnTitles=month columnTitlesFmt="mmm yy" comparisonType=pct>
-    <Row id=sales_usd0k scaleColor=blue/>
-    <Row id=num_orders_num0 />
-    <Row id=aov_usd2 description="Average Order Value"/>
+<DataTable data={yearly_sales} rows=all columnTitles=year comparisonType=delta>
+    <Row id=sales title="Total Revenue" description="Sales, Net of Returns ($)" fmt=usd2m/>
+    <Row id=aov title="AOV" description="Average Order Value ($)" fmt=usd2/>
+    <Row id=num_orders title="Orders" description="Number of Orders" fmt=num0/>
 </DataTable>
 
 
-<DataTable data={last_5_months} rows=all columnTitles=month columnTitlesFmt="mmm yy" comparisonType=delta>
-    <Row id=sales_usd0k scaleColor=blue/>
-    <Row id=num_orders_num0 />
-    <Row id=aov_usd2 description="Average Order Value"/>
-</DataTable>

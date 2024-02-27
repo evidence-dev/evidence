@@ -378,7 +378,7 @@
 									style:background-color={headerColor}
 									style:cursor={sortable ? 'pointer' : 'auto'}
 								>
-									Column
+									Metric
 								</th>
 								
 								{#if $props.metricRows.filter((d) => d.description).length > 0}
@@ -392,17 +392,17 @@
 									</th>
 								{/if}
 								{#each displayedData as row, i}	
-								<th>
-									{#if columnTitles}
-										{#if columnTitlesFmt}
-											{formatValue(row[columnTitles],getFormatObjectFromString(columnTitlesFmt))}
+									<th class="number">
+										{#if columnTitles}
+											{#if columnTitlesFmt}
+												{formatValue(row[columnTitles],getFormatObjectFromString(columnTitlesFmt))}
+											{:else}
+												{row[columnTitles]}
+											{/if}
 										{:else}
-											{row[columnTitles]}
+											Value {i}
 										{/if}
-									{:else}
-										Value {i}
-									{/if}
-								</th>
+									</th>
 								{/each}
 								{#if comparisonType}
 								<th
@@ -411,7 +411,7 @@
 									style:background-color={headerColor}
 									style:cursor={sortable ? 'pointer' : 'auto'}
 								>
-									{comparisonType} Change
+									{comparisonType == "pct" ? "% Change" : "Delta"}
 								</th>
 								{/if}
 						{:else}
@@ -436,9 +436,12 @@
 				</thead>
 				{#if $props.metricRows.length > 0}
 				{#each $props.metricRows as row}
+					{@const delta=displayedData.at(-1)[row.id] - displayedData.at(0)[row.id]}
+					{@const pct = delta / displayedData.at(0)[row.id]}
+					{@const absPct=Math.abs(pct)}
 					<tr>
 						<td>
-							<b>{safeExtractColumn(row).title}</b>
+							<b>{row.title ?? safeExtractColumn(row).title}</b>
 						</td>
 						{#if $props.metricRows.filter((d) => d.description).length > 0}
 								<td>
@@ -457,29 +460,31 @@
 								)}
 							</td>
 						{/each}
+						<td
+							class="number"
+							style="color: {absPct < row.deltaThreshold ? 'var(--grey-400)' : (delta >= 0 && !row.downIsGood) || (delta < 0 && row.downIsGood) ? 'var(--green-700)' : 'var(--red-700)'}"
+						>
 						{#if comparisonType==="pct"}
-							<td
-								class="number"
-							>
-								{displayedData.at(0)[row.id] !== undefined && displayedData.at(-1)[row.id] !== undefined
+							{delta !== undefined
 									? formatValue(
-											((displayedData.at(-1)[row.id] - displayedData.at(0)[row.id]) / displayedData.at(0)[row.id]),
+											(delta / displayedData.at(0)[row.id]),
 											getFormatObjectFromString('pct1'),
 									  )
 									: '-'}
-							</td>
 						{:else if comparisonType==="delta"}
-							<td
-								class="number"
-							>
-								{displayedData.at(0)[row.id] !== undefined && displayedData.at(-1)[row.id] !== undefined
-									? formatValue(
-											(displayedData.at(-1)[row.id] - displayedData.at(0)[row.id]),
-											safeExtractColumn(row).format,
-									  )
+							{displayedData.at(0)[row.id] !== undefined && displayedData.at(-1)[row.id] !== undefined
+								? formatValue(
+										delta,
+										safeExtractColumn(row).format 
+									)
 									: '-'}
-							</td>
 						{/if}
+						{#if row.deltaSymbol}
+							<span class="font-[system-ui]">
+								{@html absPct < row.deltaThreshold ? '&#8212;' : delta >= 0 ? '&#9650;' : '&#9660;'}
+							</span>
+						{/if}
+						</td>
 					</tr>
 				{/each}
 				{:else}

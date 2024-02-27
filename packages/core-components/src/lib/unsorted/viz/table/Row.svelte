@@ -11,6 +11,10 @@
 	let error;
 
 	export let id;
+	export let title = undefined;
+	export let downIsGood = false;
+	export let deltaSymbol = true;
+	export let deltaThreshold = 0;
 
 	// Simple check of column name in dataset. Should be replaced with robust error handling in the future:
 	$: checkColumnName();
@@ -63,9 +67,13 @@
 
 	$: options = {
 		id: id,
+		title: title,
 		description: description,
 		columnTitles: columnTitles,
 		fmt: fmt,
+		downIsGood: downIsGood,
+		deltaSymbol: deltaSymbol,
+		deltaThreshold: deltaThreshold,
 		colorMax: colorMax,
 		colorMin: colorMin,
 		useColor: useColor,
