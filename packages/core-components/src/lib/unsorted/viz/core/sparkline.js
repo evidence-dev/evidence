@@ -125,13 +125,9 @@ export function getSparklineConfig(
 			}
 		},
 		legend: {
-			show: false,
-			type: 'scroll',
-			top: 0,
-			padding: [0, 0, 0, 0]
+			show: false
 		},
 		grid: {
-			// show: true,
 			left: 0,
 			right: 0,
 			bottom: 0,
@@ -253,19 +249,6 @@ export function getSparklineConfig(
 				yAxisIndex: 0
 			}
 		],
-		animation: false,
-		graphic: {
-			id: 'horiz-axis-title',
-			type: 'text',
-			style: {
-				text: '',
-				textAlign: 'right',
-				fill: 'hsla(212, 10%, 53%, 1)'
-			},
-			cursor: 'auto',
-			right: '3%',
-			top: null,
-			bottom: '2%'
-		}
+		animation: false
 	};
 }
