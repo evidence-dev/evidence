@@ -4,33 +4,38 @@
 
 <script>
 	import mermaid from 'mermaid';
-	export let chart;
+	import { onMount } from 'svelte';
+	/** @type {string} */
+
+	export let chart = undefined;
+	
 	/** @type {HTMLDivElement} */
 	let wrapEl;
+	
 	/** @type {HTMLDivElement} */
 	let container;
 
-	// TODO: How to make ID work?
-	let id = '';
+	/** @type {string} */
+	let chartSpec
 
 	/**
-	 *
-	 * @param {string} content
+	 * 
+	 * @param {string} c
 	 */
-	async function updateChart(content) {
-		id = btoa(content).replaceAll('=', '');
-
-		if (!content) {
-			if (container) container.innerHTML = '';
-			return;
-		}
-
-		const renderedChart = await mermaid.render('hi', content.trim());
-		container.innerHTML = renderedChart.svg;
-		renderedChart.bindFunctions?.(container);
+	async function updateChart(c) {
+		if (!container) return
+		container.innerHTML = c;
+		await mermaid.run({
+			nodes: [container]
+		});
 	}
 
-	$: updateChart(wrapEl?.textContent ?? chart);
+	$: chartSpec = wrapEl?.textContent ?? chart;
+	$: updateChart(chartSpec);
+	onMount(() => {
+		// This breaks when using the slot method
+		if(chart) updateChart(chartSpec)
+	})
 </script>
 
 {#if $$slots.default}
@@ -39,4 +44,6 @@
 	</div>
 {/if}
 
-<div bind:this={container} id="container-{id}" />
+<div bind:this={container}>
+	{chartSpec}
+</div>
