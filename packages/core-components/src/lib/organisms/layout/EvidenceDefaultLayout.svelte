@@ -10,18 +10,27 @@
 	import { ToastWrapper } from '../../molecules/toast';
 
 	export let data;
+
+	// Layout options
+	/** @type {string} */
 	export let title = undefined;
+	/** @type {string} */
 	export let logo = undefined;
+	/** @type {boolean} */
 	export let neverShowQueries = false;
+	/** @type {boolean} */
 	export let fullWidth = false;
+	/** @type {boolean} */
 	export let hideSidebar = false;
+	/** @type {boolean} */
 	export let builtWithEvidence = false;
-
+	/** @type {{appId: string, apiKey: string, indexName: string}} */
 	export let algolia;
-
-	// Social links
+	/** @type {string} */
 	export let githubRepo;
+	/** @type {string} */
 	export let xProfile;
+	/** @type {string} */
 	export let slackCommunity;
 
 	const prefetchStrategy = dev ? 'tap' : 'hover';
