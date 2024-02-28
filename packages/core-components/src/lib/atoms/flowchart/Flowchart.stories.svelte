@@ -43,3 +43,10 @@ class Zebra{
     `}
 	/>
 </Story>
+
+<Story name="Multiple Charts">
+    <Flowchart>flowchart TD 
+        Start --> Stop</Flowchart>
+    <Flowchart>flowchart TD 
+        Stop --> Start</Flowchart>
+</Story>
