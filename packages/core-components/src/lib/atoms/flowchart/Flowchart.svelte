@@ -8,22 +8,22 @@
 	/** @type {string} */
 
 	export let chart = undefined;
-	
+
 	/** @type {HTMLDivElement} */
 	let wrapEl;
-	
+
 	/** @type {HTMLDivElement} */
 	let container;
 
 	/** @type {string} */
-	let chartSpec
+	let chartSpec;
 
 	/**
-	 * 
+	 *
 	 * @param {string} c
 	 */
 	async function updateChart(c) {
-		if (!container) return
+		if (!container) return;
 		container.innerHTML = c;
 		await mermaid.run({
 			nodes: [container]
@@ -34,8 +34,8 @@
 	$: updateChart(chartSpec);
 	onMount(() => {
 		// This breaks when using the slot method
-		if(chart) updateChart(chartSpec)
-	})
+		if (chart) updateChart(chartSpec);
+	});
 </script>
 
 {#if $$slots.default}
