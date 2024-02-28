@@ -23,6 +23,8 @@ export type QueryStoreOpts = {
 	errorNotifier?: (error: Error) => unknown;
 	/** Optional hook to enable custom query score behavior, can be used for toasts, alerts, etc. */
 	scoreNotifier?: (info: ScoreInformation) => void;
+	/** Optional hook to enable custom toast notifications for long-running queries */
+	longQueryNotifier?: (info: LongQueryInformation) => void;
 	/** If true, the store will never leave a loading state */
 	noResolve?: boolean;
 };
@@ -31,6 +33,11 @@ export type ScoreInformation = {
 	id: string;
 	query: string;
 	score: number;
+};
+
+export type LongQueryInformation = {
+	id: string;
+	query: string;
 };
 
 export type QueryStoreValue = QueryStore & QueryResult[];

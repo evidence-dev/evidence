@@ -130,6 +130,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							'${id}',
 							{
 								scoreNotifier,
+								longQueryNotifier,
 								initialData,
 								initialError,
 								noResolve: false,
@@ -265,6 +266,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				status: 'warning'
 			}, 5000);
 		};
+
+		const longQueryNotifier = (info) => {
+			toasts.add({
+				id: Math.random(),
+				title: info.id,
+				message: \`Query \${info.id} is loading...\`,
+				status: 'info'
+			}, 3000);
+		}
 
 		let __has_hmr_run = false
 	    if (import.meta?.hot) {
