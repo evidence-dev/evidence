@@ -1,5 +1,13 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.8
+
+### Patch Changes
+
+- b4ffed1e: use `Date.now()` instead of `query.hash` for parquet filepath
+- Updated dependencies [e79974f3]
+  - @evidence-dev/telemetry@2.0.4
+
 ## 2.0.7
 
 ### Patch Changes
