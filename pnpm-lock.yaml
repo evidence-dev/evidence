@@ -245,7 +245,7 @@ importers:
         specifier: ^6.23.0
         version: 6.23.0
       '@docsearch/css':
-        specifier: '3'
+        specifier: ^3.5.2
         version: 3.5.2
       '@docsearch/js':
         specifier: ^3.5.2
