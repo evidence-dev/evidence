@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Add print control components
+fix sqlconsole bug that crashed on navigation

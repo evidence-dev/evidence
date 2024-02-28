@@ -1,5 +1,16 @@
 # @evidence-dev/component-utilities
 
+## 2.3.0
+
+### Minor Changes
+
+- e09c5716: Add empty state to components
+
+### Patch Changes
+
+- 6ec752a7: Fix custom formatting retrieval for custom components
+- b864b3cd: Add additional echarts override options to charting library
+
 ## 2.2.1
 
 ### Patch Changes
