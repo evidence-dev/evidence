@@ -11,22 +11,38 @@ hide_table_of_contents: false
 
 ```markdown
 <BigValue 
-    data={query_name} 
-    value='new_activations' 
-    comparison='monthly_growth' 
-    sparkline='date'
-    comparisonTitle="Month over Month"
-    maxWidth='10em'
+  data={orders_with_comparisons} 
+  value=sales_usd0k
+  sparkline=month
+  comparison=sales_change_pct0
+  comparisonTitle="vs. Last Month"
 />
 ```
 
-![bigvalue](/img/bigvalueexample.png)
+![bigvalue](/img/bigvalue-default.png)
 
 ## Multiple cards
 
 Multiple cards will align themselves into a row.
 
-![bigvalue](/img/bigvaluerow.png)
+![bigvalue](/img/bigvalue-multiple.png)
+
+
+## Non-Delta Comparisons
+
+```html
+<BigValue 
+  data={orders_with_comparisons}
+  value=sales_usd0k
+  title="Category Sales"
+  comparison=sales_change_pct0
+  comparisonTitle="of Total"
+  comparisonDelta=false
+/>
+```
+
+![bigvalue](/img/bigvalue-non-delta.png)
+
 
 ## Options
 
@@ -81,6 +97,13 @@ Multiple cards will align themselves into a row.
         <td class='tcenter'>Title of the comparison column.</td>
     </tr>
     <tr>	
+        <td>comparisonDelta</td>	
+        <td>Whether to display delta symbol and color</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>true</td>
+    </tr>
+    <tr>	
         <td>downIsGood</td>	
         <td>If present, negative comparison values appear in green, and positive values appear in red.</td>	
         <td class='tcenter'>-</td>	
@@ -115,4 +138,6 @@ Multiple cards will align themselves into a row.
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
         <td class='tcenter'>-</td>
     </tr>
+        <tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
+<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
 </table>

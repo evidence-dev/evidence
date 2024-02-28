@@ -1,5 +1,42 @@
 # @evidence-dev/component-utilities
 
+## 2.2.1
+
+### Patch Changes
+
+- 6a61ea17: - buildReactiveInputQuery was accidentally setting the value of it's store to a Promise, which was not the intent. This ensures that the value is always the proper interface.
+
+## 2.2.0
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- 9176c2cc: Added buildReactiveInputQuery for ensuring input query values are reactive
+  - @evidence-dev/query-store@2.0.3
+
+## 2.1.0
+
+### Minor Changes
+
+- c25fc1ac: Upgraded USMap component
+
+### Patch Changes
+
+- f7903b86: Update downloaded filenames
+- cd9c80b2: Moved chart helper contexts from core-components to component utilites so they are accessible to 3rd party plugins
+- fa0faf8c: Fix treatment of nulls in getCompletedData helper function
+- a6de89de: Adds option to include total rows in DataTables
+  - @evidence-dev/query-store@2.0.2
+
+## 2.0.2
+
+### Patch Changes
+
+- 03b3b626: Added TextInput and ButtonGroup (+ DateAgg) input components
+
 ## 2.0.1
 
 ### Patch Changes

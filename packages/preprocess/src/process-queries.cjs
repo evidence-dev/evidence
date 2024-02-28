@@ -25,7 +25,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		// reactive queries: stuff with ${}
 		const IS_REACTIVE_QUERY = /\${.*?}/s;
 		const reactiveIds = validIds.filter((id) => IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
-		const prerendered_ids = validIds.filter((id) => !IS_REACTIVE_QUERY.test(duckdbQueries[id].compiledQueryString));
 
 		// input queries: reactive with ${inputs...} in it
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
@@ -33,6 +32,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = QueryStore.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, "${q.id}", { initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
 
+		
 		const queryStoreDeclarations = validIds.map((id) => {
 			/*
 				"What the heck is happening here":
@@ -63,6 +63,23 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			return `
 				$: _${id}_query_text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 				$: _${id}_has_unresolved = __checkForUnsetInputs\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+
+				if (import.meta?.hot) {
+					import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
+						let errors = []
+						if (!queryId) errors.push("Malformed event: Missing queryId")
+						if (!content) errors.push("Malformed event: Missing content")
+						if (errors.length) {
+							console.warn("Failed to update query on serverside change!", errors.join("\\n"))
+							return
+						}
+
+						if (queryId === "${id}") {
+							_${id}_query_text = content
+						}
+						
+					})
+				}
 
 				// Initial Query
 				let _${id}_initial_query;
@@ -141,7 +158,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		
 					update();
 		
-					return debounce(update, 500);
+					const debounced = debounce(update, 500);
+		
+					return () => {
+						if (_mounted) {
+							debounced();
+						} else {
+							update();
+						}
+					}
 				}
 		
 				let _${id}_debounced_updater;
@@ -150,10 +175,26 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
                     _${id}_query_text;
                     _${id}_debounced_updater = _${id}_reactivity_manager();
                 };
-				// rerun if query text changes
-				$: _${id}_query_text, _${id}_debounced_updater();
-				// rerun if data changes during dev mode, likely source HMR
-				$: if (dev) data, _${id}_debounced_updater();
+				
+				// rerun if query text changes, prevent initial run to stop unnecessary update
+				let _${id}_debounced_once = false;
+				$: if (_${id}_debounced_once) {
+					_${id}_query_text;
+					_${id}_debounced_updater();
+				} else {
+					_${id}_debounced_once = true;
+				}
+
+				// rerun if data changes during dev mode, likely source HMR, prevent initial for same reason as above
+				let _${id}_hmr_once = false;
+				$: if (dev) {
+					if (_${id}_hmr_once) {
+						data;
+						_${id}_debounced_updater();
+					} else {
+						_${id}_hmr_once = true;
+					}
+				}
 			`;
 		});
 
@@ -259,6 +300,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}
 		}
 		
+		let _mounted = false;
+		onMount(() => (_mounted = true));
 
         ${queryDeclarations}
     `;

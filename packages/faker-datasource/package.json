@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/faker-datasource",
-	"version": "2.0.0",
+	"version": "2.0.4",
 	"description": "",
 	"main": "index.mjs",
 	"bin": {
@@ -9,7 +9,6 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\""
 	},
-	"keywords": [],
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
@@ -33,5 +32,10 @@
 		"datasources": [
 			"faker"
 		]
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"mock-data"
+	]
 }

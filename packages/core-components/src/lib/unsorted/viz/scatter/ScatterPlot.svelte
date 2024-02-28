@@ -30,6 +30,8 @@
 	export let yBaseline = undefined;
 	export let xTickMarks = undefined;
 	export let yTickMarks = undefined;
+	export let xMin = undefined;
+	export let xMax = undefined;
 	export let yMin = undefined;
 	export let yMax = undefined;
 
@@ -51,7 +53,14 @@
 
 	export let colorPalette = undefined;
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+
+	export let emptySet = undefined;
+	export let emptyMessage = undefined;
+
+	export let renderer = undefined;
+	export let seriesColors = undefined;
 </script>
 
 <Chart
@@ -76,6 +85,8 @@
 	{yBaseline}
 	{xTickMarks}
 	{yTickMarks}
+	{xMin}
+	{xMax}
 	{yMin}
 	{yMax}
 	{title}
@@ -85,7 +96,12 @@
 	{chartAreaHeight}
 	{colorPalette}
 	{echartsOptions}
+	{seriesOptions}
 	{printEchartsConfig}
+	{emptySet}
+	{emptyMessage}
+	{renderer}
+	{seriesColors}
 >
 	<Scatter {shape} {fillColor} {opacity} {outlineColor} {outlineWidth} {pointSize} {useTooltip} />
 	<slot />

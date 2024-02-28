@@ -1,58 +1,21 @@
 const trino = require('presto-client');
-const { getEnv, EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
-
-const envMap = {
-	host: [
-		{ key: 'EVIDENCE_TRINO_HOST', deprecated: false },
-		{ key: 'TRINO_HOST', deprecated: false }
-	],
-	ssl: [
-		{ key: 'EVIDENCE_TRINO_SSL', deprecated: false },
-		{ key: 'TRINO_SSL', deprecated: false }
-	],
-	port: [
-		{ key: 'EVIDENCE_TRINO_PORT', deprecated: false },
-		{ key: 'TRINO_PORT', deprecated: false }
-	],
-	user: [
-		{ key: 'EVIDENCE_TRINO_USER', deprecated: false },
-		{ key: 'TRINO_USER', deprecated: false }
-	],
-	password: [
-		{ key: 'EVIDENCE_TRINO_PASSWORD', deprecated: false },
-		{ key: 'TRINO_PASSWORD', deprecated: false }
-	],
-	catalog: [
-		{ key: 'EVIDENCE_TRINO_CATALOG', deprecated: false },
-		{ key: 'TRINO_CATALOG', deprecated: true }
-	],
-	schema: [
-		{ key: 'EVIDENCE_TRINO_SCHEMA', deprecated: false },
-		{ key: 'TRINO_SCHEMA', deprecated: true }
-	],
-	engine: [
-		{ key: 'EVIDENCE_TRINO_ENGINE', deprecated: false },
-		{ key: 'TRINO_ENGINE', deprecated: true }
-	]
-};
+const { EvidenceType, TypeFidelity } = require('@evidence-dev/db-commons');
 
 const runQuery = async (queryString, database) => {
 	try {
-		const ssl = database ? database.ssl : getEnv(envMap, 'ssl');
+		const ssl = database.ssl;
 
-		const engine = database ? database.engine : getEnv(envMap, 'engine');
+		const engine = database.engine;
 
 		const client = new trino.Client({
-			host: database ? database.host : getEnv(envMap, 'host'),
-			ssl: ssl === 'true' ? {} : undefined,
-			port: database ? database.port : getEnv(envMap, 'port'),
-			user: database ? database.user : getEnv(envMap, 'user'),
+			host: database.host,
+			ssl: ssl === 'true' || ssl === true ? {} : undefined,
+			port: database.port,
+			user: database.user,
 			source: 'evidence',
-			basic_auth: database
-				? auth(database.user, database.password)
-				: auth(getEnv(envMap, 'user'), getEnv(envMap, 'password')),
-			catalog: database ? database.catalog : getEnv(envMap, 'catalog'),
-			schema: database ? database.schema : getEnv(envMap, 'schema'),
+			basic_auth: auth(database.user, database.password),
+			catalog: database.catalog,
+			schema: database.schema,
 			engine: engine ? engine : 'trino'
 		});
 
@@ -183,7 +146,7 @@ module.exports.getRunner = async (opts) => {
 module.exports.testConnection = async (opts) => {
 	return await runQuery('SELECT 1;', opts)
 		.then(() => true)
-		.catch((e) => ({ reason: e.message ?? 'Invalid Credentials' }));
+		.catch((e) => ({ reason: e.message ?? (e.toString() || 'Invalid Credentials') }));
 };
 
 module.exports.options = {

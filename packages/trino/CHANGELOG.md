@@ -1,5 +1,29 @@
 # @evidence-dev/trino
 
+## 1.0.4
+
+### Patch Changes
+
+- 2bcbf0ed: Add keywords to improve searchability for datasources
+- Updated dependencies [31381835]
+  - @evidence-dev/db-commons@1.0.3
+
+## 1.0.3
+
+### Patch Changes
+
+- 168f1c9e: Fix boolean config options for MSSQL and Trino
+
+## 1.0.2
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- 99b915f2: Annotate databricks and trino as evidence source plugins
+- c9793670: - Removed legacy environment variables
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/db-commons@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

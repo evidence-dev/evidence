@@ -1,5 +1,80 @@
 # @evidence-dev/core-components
 
+## 3.3.1
+
+### Patch Changes
+
+- Updated dependencies [6a61ea17]
+  - @evidence-dev/component-utilities@2.2.1
+
+## 3.3.0
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- 9176c2cc: Added buildReactiveInputQuery for ensuring input query values are reactive
+- 3e1da500: feat: add sqlconsole component
+- cbc7e8a4: Fix custom color conditional formatting bug
+- Updated dependencies [9176c2cc]
+- Updated dependencies [0f42e927]
+  - @evidence-dev/component-utilities@2.2.0
+  - @evidence-dev/query-store@2.0.3
+
+## 3.2.0
+
+### Minor Changes
+
+- ca1e46cf: Support multi axis charts for lines and bars
+- c25fc1ac: Upgraded USMap component
+
+### Patch Changes
+
+- 3e3b3940: Add Grid component
+- f7903b86: Update downloaded filenames
+- cd9c80b2: Moved chart helper contexts from core-components to component utilites so they are accessible to 3rd party plugins
+- 3427433c: Output less verbose errors for charts
+- a6de89de: Adds option to include total rows in DataTables
+- 2181ed9c: Fixes and upgrades for DataTable
+- 9978899e: Fix query viewer data table column order
+- f45a3a91: Add error handling for funnel charts
+- 6d3021e2: add eCharts options to sankeyDiagram
+- 39390112: Fix chartAreaHeight issue
+- f501513a: infer types based on JS type instead of reading `_evidenceColumnTypes`
+- Updated dependencies [f7903b86]
+- Updated dependencies [cd9c80b2]
+- Updated dependencies [fa0faf8c]
+- Updated dependencies [a6de89de]
+- Updated dependencies [c25fc1ac]
+  - @evidence-dev/component-utilities@2.1.0
+  - @evidence-dev/query-store@2.0.2
+
+## 3.1.0
+
+### Minor Changes
+
+- 1ef5544d: Improve printing for Map viz
+
+## 3.0.5
+
+### Patch Changes
+
+- 5a9edf0c: Sankey Diagram and Sankey Chart yield the same component
+- 1027087a: Add xMin and xMax to ScatterPlot
+- e3a88847: Schema explorer UI refresh, move into core-components
+
+## 3.0.4
+
+### Patch Changes
+
+- 00145c4c: Add default prop to Dropdown, Add default and placeholder prop to TextInput
+- 03b3b626: Added TextInput and ButtonGroup (+ DateAgg) input components
+- 7b2b8a00: Add USQL to core components; augment faker datasource to generate better and consistent data
+- Updated dependencies [03b3b626]
+  - @evidence-dev/component-utilities@2.0.2
+
 ## 3.0.3
 
 ### Patch Changes

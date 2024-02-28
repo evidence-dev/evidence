@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/databricks",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"description": "Databricks driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -15,5 +15,15 @@
 	"devDependencies": {
 		"dotenv": "^16.0.1"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"datasources": [
+			"databricks"
+		]
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"databricks"
+	]
 }

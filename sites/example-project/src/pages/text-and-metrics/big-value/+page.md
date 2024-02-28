@@ -5,19 +5,31 @@ queries:
 ---
 
 <BigValue 
-data = {orders_with_comparisons} 
-value=sales_usd0k
-comparison=sales_change_pct0
-comparisonTitle="vs. Last Month"
+  data = {orders_with_comparisons} 
+  value=sales_usd0k
+  sparkline=month
+  comparison=sales_change_pct0
+  comparisonTitle="vs. Last Month"
 />
 
-<BigValue data = {orders_with_comparisons} 
-value=aov_usd2
-title="AOV ($)"
-sparkline=month
-comparison=aov_change_pct0
-comparisonTitle="vs. Last Month"
+<BigValue 
+  data = {orders_with_comparisons} 
+  value=aov_usd2
+  title="AOV ($)"
+  sparkline=month
+  comparison=aov_change_pct0
+  comparisonTitle="vs. Last Month"
 />
+
+<BigValue 
+  data = {orders_with_comparisons} 
+  value=sales_usd0k
+  title="Category Sales"
+  comparison=sales_change_pct0
+  comparisonTitle="of Total"
+  comparisonDelta=false
+/>
+
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida

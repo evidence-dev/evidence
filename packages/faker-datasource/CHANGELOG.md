@@ -1,5 +1,30 @@
 # @evidence-dev/faker-datasource
 
+## 2.0.4
+
+### Patch Changes
+
+- 5e9b27db: Faker datasource minor fixes
+
+## 2.0.3
+
+### Patch Changes
+
+- 2bcbf0ed: Add keywords to improve searchability for datasources
+
+## 2.0.2
+
+### Patch Changes
+
+- 1dd61938: Fix options passed to faker functions
+
+## 2.0.1
+
+### Patch Changes
+
+- 03b3b626: Added TextInput and ButtonGroup (+ DateAgg) input components
+- 7b2b8a00: Add USQL to core components; augment faker datasource to generate better and consistent data
+
 ## 2.0.0
 
 ### Major Changes

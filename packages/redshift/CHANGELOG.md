@@ -1,5 +1,25 @@
 # @evidence-dev/redshift
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [31381835]
+- Updated dependencies [2bcbf0ed]
+  - @evidence-dev/db-commons@1.0.3
+  - @evidence-dev/postgres@1.0.3
+
+## 1.0.2
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- Updated dependencies [0e0a4392]
+- Updated dependencies [d04554f1]
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/postgres@1.0.2
+  - @evidence-dev/db-commons@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

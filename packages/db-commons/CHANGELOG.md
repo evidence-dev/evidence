@@ -1,5 +1,17 @@
 # @evidence-dev/db-commons
 
+## 1.0.3
+
+### Patch Changes
+
+- 31381835: Add support for EVIDENCE_VAR\_\_ interpolation in source queries
+
+## 1.0.2
+
+### Patch Changes
+
+- fc7fe470: Add support for closeConnection callback when async generator has completed
+
 ## 1.0.1
 
 ### Patch Changes

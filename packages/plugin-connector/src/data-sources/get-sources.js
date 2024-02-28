@@ -210,6 +210,22 @@ export async function cleanParquetFiles(dataDir, hashes) {
 					await fs.rm(path.join(queryPath, resultHash), { recursive: true, force: true });
 				}
 			}
+
+			if (!sourceHashes[queryName]) continue;
+			const queryHashPath = path.join(queryPath, /** @type {string} */ (sourceHashes[queryName]));
+			const timestamps = await fs.readdir(queryHashPath);
+			const numbers = timestamps.map((x) => Number(x)).filter((x) => !isNaN(x));
+
+			if (!numbers.length) continue;
+			const latest = Math.max(...numbers).toString();
+			for (const timestamp of timestamps) {
+				if (timestamp !== latest) {
+					await fs.rm(path.join(queryHashPath, timestamp), {
+						recursive: true,
+						force: true
+					});
+				}
+			}
 		}
 	}
 }

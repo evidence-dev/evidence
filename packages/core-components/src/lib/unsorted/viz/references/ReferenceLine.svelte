@@ -4,7 +4,7 @@
 
 <script>
 	import { getContext } from 'svelte';
-	import { propKey, configKey } from '../context';
+	import { propKey, configKey } from '@evidence-dev/component-utilities/chartContext';
 	import { formatValue } from '@evidence-dev/component-utilities/formatting';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from '../core/ErrorChart.svelte';
@@ -153,6 +153,7 @@
 	$: if (!error) {
 		baseConfig = {
 			id: identifier,
+			evidenceSeriesType: 'reference_line',
 			type: 'line',
 			markLine: {
 				data: configData,

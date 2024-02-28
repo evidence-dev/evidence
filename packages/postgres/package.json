@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/postgres",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"description": "PostgreSQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -29,5 +29,10 @@
 			"redshift"
 		],
 		"icon": "Postgresql"
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"postgres"
+	]
 }

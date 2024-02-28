@@ -1,5 +1,93 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.9
+
+### Patch Changes
+
+- Updated dependencies [ddf584d4]
+- Updated dependencies [5d5cb2de]
+  - @evidence-dev/duckdb@1.0.6
+  - @evidence-dev/mysql@1.1.0
+  - @evidence-dev/csv@1.0.6
+
+## 3.0.8
+
+### Patch Changes
+
+- Updated dependencies [31381835]
+- Updated dependencies [2bcbf0ed]
+  - @evidence-dev/db-commons@1.0.3
+  - @evidence-dev/bigquery@2.0.4
+  - @evidence-dev/csv@1.0.5
+  - @evidence-dev/databricks@1.0.3
+  - @evidence-dev/duckdb@1.0.5
+  - @evidence-dev/mssql@1.0.5
+  - @evidence-dev/mysql@1.0.3
+  - @evidence-dev/postgres@1.0.3
+  - @evidence-dev/snowflake@1.0.3
+  - @evidence-dev/sqlite@2.0.3
+  - @evidence-dev/trino@1.0.4
+  - @evidence-dev/redshift@1.0.3
+
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [168f1c9e]
+  - @evidence-dev/mssql@1.0.4
+  - @evidence-dev/trino@1.0.3
+
+## 3.0.6
+
+### Patch Changes
+
+- Updated dependencies [e023deb0]
+- Updated dependencies [722a4e00]
+  - @evidence-dev/bigquery@2.0.3
+  - @evidence-dev/mssql@1.0.3
+
+## 3.0.5
+
+### Patch Changes
+
+- Updated dependencies [0e0a4392]
+- Updated dependencies [d04554f1]
+- Updated dependencies [2a663d79]
+- Updated dependencies [97e7123d]
+- Updated dependencies [f33b58c5]
+- Updated dependencies [3295b672]
+- Updated dependencies [38cc19db]
+- Updated dependencies [fc7fe470]
+- Updated dependencies [b3b7d588]
+- Updated dependencies [99b915f2]
+- Updated dependencies [d4fc618e]
+- Updated dependencies [c9793670]
+- Updated dependencies [7e401d4d]
+- Updated dependencies [c4f44007]
+  - @evidence-dev/bigquery@2.0.2
+  - @evidence-dev/csv@1.0.4
+  - @evidence-dev/databricks@1.0.2
+  - @evidence-dev/duckdb@1.0.4
+  - @evidence-dev/mssql@1.0.2
+  - @evidence-dev/mysql@1.0.2
+  - @evidence-dev/postgres@1.0.2
+  - @evidence-dev/redshift@1.0.2
+  - @evidence-dev/snowflake@1.0.2
+  - @evidence-dev/sqlite@2.0.2
+  - @evidence-dev/trino@1.0.2
+  - @evidence-dev/telemetry@2.0.3
+  - @evidence-dev/db-commons@1.0.2
+
+## 3.0.4
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+- Updated dependencies [deb2ab6b]
+  - @evidence-dev/telemetry@2.0.2
+  - @evidence-dev/duckdb@1.0.3
+  - @evidence-dev/csv@1.0.3
+
 ## 3.0.3
 
 ### Patch Changes

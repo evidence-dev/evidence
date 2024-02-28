@@ -17,7 +17,7 @@ schema:
         category: date
         item: recent
         options:
-            days: 365 # Past Year
+            - days: 365 # Past Year
     gender:
         category: helpers
         item: arrayElement

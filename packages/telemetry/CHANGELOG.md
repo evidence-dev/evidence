@@ -1,5 +1,17 @@
 # @evidence-dev/telemetry
 
+## 2.0.3
+
+### Patch Changes
+
+- 97e7123d: Upgraded telemetry profile
+
+## 2.0.2
+
+### Patch Changes
+
+- 92f4ad61: Remove unnecessary file missing message that appears during build sources due to telemetry"
+
 ## 2.0.1
 
 ### Patch Changes

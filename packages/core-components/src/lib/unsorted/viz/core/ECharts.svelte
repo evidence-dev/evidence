@@ -15,13 +15,20 @@
 
 	export let config = undefined;
 
+	export let queryID = undefined;
+	export let evidenceChartTitle = undefined;
+
 	export let height = '291px';
 	export let width = '100%';
 
 	export let data;
 
+	export let renderer = undefined;
+
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig; // helper for custom chart development
+	export let seriesColors = undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -65,12 +72,29 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echarts={{ ...config, ...$$restProps, echartsOptions, dispatch }}
+				use:echarts={{
+					config,
+					...$$restProps,
+					echartsOptions,
+					seriesOptions,
+					dispatch,
+					renderer,
+					seriesColors
+				}}
 			/>
 		{/if}
 	{/if}
 
-	<EChartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
+	<EChartsCopyTarget
+		{config}
+		{height}
+		{width}
+		{copying}
+		{printing}
+		{echartsOptions}
+		{seriesOptions}
+		{seriesColors}
+	/>
 
 	<div class="chart-footer">
 		<DownloadData
@@ -83,6 +107,7 @@
 				}, 0);
 			}}
 			display={hovering}
+			{queryID}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -100,12 +125,18 @@
 			>
 		</DownloadData>
 		{#if data}
-			<DownloadData text="Download data" {data} class="download-button" display={hovering} />
+			<DownloadData
+				text="Download data"
+				{data}
+				{queryID}
+				class="download-button"
+				display={hovering}
+			/>
 		{/if}
 	</div>
 
 	{#if printEchartsConfig && !printing}
-		<CodeBlock>
+		<CodeBlock source={JSON.stringify(config, undefined, 3)} copyToClipboard={true}>
 			{JSON.stringify(config, undefined, 3)}
 		</CodeBlock>
 	{/if}
@@ -124,7 +155,15 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, ...$$restProps, echartsOptions }}
+		use:echartsCanvasDownload={{
+			config,
+			...$$restProps,
+			echartsOptions,
+			seriesOptions,
+			seriesColors,
+			queryID,
+			evidenceChartTitle
+		}}
 	/>
 {/if}
 

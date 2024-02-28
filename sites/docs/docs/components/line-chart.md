@@ -91,6 +91,20 @@ Evidence will automatically pick the first column as `x` and use all other numer
 />
 ```
 
+### Secondary Axis with Bar
+
+<img src="/img/line-bar.png"  width='700px'/>
+
+```markdown
+<LineChart 
+    data={orders_by_month} 
+    x=month 
+    y=sales_usd0k 
+    y2=num_orders_num0
+    y2SeriesType=bar
+/>
+```
+
 ### Value Labels
 
 <img src="/img/line-labels.png"  width='700px'/>
@@ -140,18 +154,21 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>x</td>	<td>Column to use for the x-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>First column</td>	</tr>
 <tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>Any non-assigned numeric columns</td>	</tr>
 <tr>	<td>y2</td>	<td>Column(s) to include on a secondary y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>y2SeriesType</td>	<td>Chart type to apply to the series on the y2 axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>line | bar | scatter</td>	<td class='tcenter'>line</td>	</tr>
 <tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
+<tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
 <tr>	<td>handleMissing</td>	<td>Treatment of missing values in the dataset</td>	<td class='tcenter'>-</td>	<td class='tcenter'>gap | connect | zero</td>	<td class='tcenter'>gap</td>	</tr>
+<tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
+<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
 </table>
 
 ### Formatting & Styling
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>xFmt</td>	<td>Format to use for x column (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | buil-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yFmt</td>	<td>Format to use for y column(s) (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | buil-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2Fmt</td>	<td>Format to use for y2 column(s) (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | buil-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>xFmt</td>	<td>Format to use for x column (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yFmt</td>	<td>Format to use for y column(s) (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>y2Fmt</td>	<td>Format to use for y2 column(s) (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>step</td>	<td>Specifies whether the chart is displayed as a step line.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>stepPosition</td>	<td>Configures the position of turn points for a step line chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>'start' | 'middle' | 'end'</td>	<td class='tcenter'>'end'</td>	</tr>
 <tr>	<td>lineColor</td>	<td>Color to override default series color. Only accepts a single color.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
@@ -172,9 +189,9 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>labelSize</td>	<td>Font size of value labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>11</td>	</tr>
 <tr>	<td>labelPosition</td>	<td>Where label will appear on your series</td>	<td class='tcenter'>-</td>	<td class='tcenter'>above | middle | below</td>	<td class='tcenter'>above</td>	</tr>
 <tr>	<td>labelColor</td>	<td>Font color of value labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>Automatic based on color contrast of background</td>	</tr>
-<tr>	<td>labelFmt</td>	<td>Format to use for value labels (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | buil-in format name | custom format name</td>	<td class='tcenter'>same as y column</td>	</tr>
-<tr>	<td>yLabelFmt</td>	<td>Format to use for value labels for series on the y axis. Overrides any other formats (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | buil-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2LabelFmt</td>	<td>Format to use for value labels for series on the y2 axis. Overrides any other formats (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | buil-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>labelFmt</td>	<td>Format to use for value labels (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>same as y column</td>	</tr>
+<tr>	<td>yLabelFmt</td>	<td>Format to use for value labels for series on the y axis. Overrides any other formats (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>y2LabelFmt</td>	<td>Format to use for value labels for series on the y2 axis. Overrides any other formats (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>showAllLabels</td>	<td>Allow all labels to appear on chart, including overlapping labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 </table>
 
@@ -201,8 +218,10 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>y2TickMarks</td>	<td>Turns on/off tick marks for each of the y2-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>yScale</td>	<td>Whether to scale the y-axis to fit your data. <code>yMin</code> and <code>yMax</code> take precedence over <code>yScale</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>y2Min</td>	<td>Starting value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>y2Max</td>	<td>Maximum value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>y2Scale</td>	<td>Whether to scale the y-axis to fit your data. <code>y2Min</code> and <code>y2Max</code> take precedence over <code>y2Scale</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>yAxisColor</td>	<td>Turns on/off color on the y-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
 <tr>	<td>y2AxisColor</td>	<td>Turns on/off color on the y2-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
 </table>

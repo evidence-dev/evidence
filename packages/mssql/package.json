@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/mssql",
-	"version": "1.0.1",
+	"version": "1.0.5",
 	"description": "Microsoft Server SQL driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -22,5 +22,10 @@
 			"mssql"
 		],
 		"icon": "Microsoftsqlserver"
-	}
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"mssql"
+	]
 }

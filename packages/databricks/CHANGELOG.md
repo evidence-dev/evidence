@@ -1,5 +1,23 @@
 # @evidence-dev/databricks
 
+## 1.0.3
+
+### Patch Changes
+
+- 2bcbf0ed: Add keywords to improve searchability for datasources
+- Updated dependencies [31381835]
+  - @evidence-dev/db-commons@1.0.3
+
+## 1.0.2
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- b3b7d588: fix: databricks
+- 99b915f2: Annotate databricks and trino as evidence source plugins
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/db-commons@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

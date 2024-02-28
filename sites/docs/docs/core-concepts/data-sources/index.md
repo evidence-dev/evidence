@@ -4,6 +4,12 @@ title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
+:::info Recent changes to data sources in Evidence
+The most recent Evidence release (Universal SQL) contains breaking changes for data source setup.
+If you recently updated your Evidence version and are having issues setting up data sources, consult the [migration guide](/guides/usql-migration-guide)
+:::
+
+
 Evidence supports connecting to a databases, flat data files, and non-SQL data sources. 
 
 You can connect to multiple data sources in a single Evidence project.
@@ -47,7 +53,18 @@ For non-SQL data sources, configuring the data extracted is achieved in other wa
 
 ## Run Sources
 
-You can extract data from configured sources in Evidence using  `npm run sources`
+You can extract data from configured sources in Evidence using  `npm run sources`. Sources will also rerun automatically if you have the dev server running and you make changes to your source queries or source configuration.
+
+### Working with Large Sources
+
+In dev mode, if you have large sources which take a while to run, it can be helpful to only run the sources which have changed. There are a few ways to accomplish this:
+
+- If your dev server is running, any changes you make to source queries will only re-run the queries which have changed
+- Run a modified sources command to specify the source you want to run:
+   - `npm run sources -- --changed` run only the sources with changed queries
+   - `npm run sources -- --sources my_source` run `my_source` only
+   - `npm run sources -- --sources my_source --queries query_one,query_two` run `my_source.query_one` and `my_source.query_two` only
+
 
 ## Supported data sources
 
@@ -57,6 +74,8 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
+- [Clickhouse](#postgresql)
+- [Timescale](#postgresql)
 - [Trino](#trino)
 - [Microsoft SQL Server](#mssql)
 - [MySQL](#mysql)
@@ -142,6 +161,7 @@ The Native SSO through Okta method uses Okta to authenticate. To use this method
 The Redshift connector uses the Postgres connector under the hood, so configuration options are similar.
 
 ### PostgreSQL
+Some databases can be connected by using the Postgres connector, including Clickhouse and Timescale.
 
 #### SSL
 
@@ -210,11 +230,11 @@ SSL options are:
 
 ### SQLite
 
-SQLite is a local file-based database. It should be stored in the root of your Evidence project.
+SQLite is a local file-based database. The SQLite file should be stored in the directory `sources/[your_source_name]/`.
 
 ### DuckDB
 
-DuckDB is a local file-based database. It should be stored in the root of your Evidence project.
+DuckDB is a local file-based database. If using a persistent database, it should be stored in the directory `sources/[your_source_name]/`.
 
 See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information.
 
@@ -265,13 +285,13 @@ Where `[your_tab_name]` is the name of the tab in your Google Sheet, with spaces
 
 
 
-### CSV and Parquet files
+### CSV files
 
-In Evidence, you can query local CSV or Parquet files directly in SQL.
+In Evidence, you can query local CSV files directly in SQL.
 
 Get started by selecting the `CSV` connector on the Settings page in your project, naming it and then clicking "confirm changes". 
 
-Then copy any CSV or Parquet files you want to query into `sources/[your_csv_source_name]/`.
+Then copy any CSV files you want to query into `sources/[your_csv_source_name]/`. Your source names and csv files can only contain letters, numbers and underscores eg `/my_source/my_csv_2024.csv`
 
 The section below applies to both CSV and Parquet files.
 
@@ -282,6 +302,19 @@ Evidence looks for CSV files stored in a `sources/[your_csv_source_name]/` folde
 ```sql
 select * from your_csv_source_name.csv_file_name
 ```
+
+#### Source Options
+
+You can add [DuckDB source options](https://duckdb.org/docs/data/csv/overview.html) that are passed in as arguments to the `read_csv()` function. 
+
+Ensure there are no spaces in your source options you pass, and to use double quotes when passing strings
+
+Option String | Outcome
+--|--
+header=false | Reads the first line as the first row of data
+delim="\|" | Use "\|" characters as delimiters when reading the csv
+header=false,delim="\|" | Use both of these options
+
 
 ## Troubleshooting
 

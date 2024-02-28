@@ -1,5 +1,34 @@
 # @evidence-dev/duckdb
 
+## 1.0.6
+
+### Patch Changes
+
+- ddf584d4: Allow motherduck connections to specify the database
+
+## 1.0.5
+
+### Patch Changes
+
+- 2bcbf0ed: Add keywords to improve searchability for datasources
+- Updated dependencies [31381835]
+  - @evidence-dev/db-commons@1.0.3
+
+## 1.0.4
+
+### Patch Changes
+
+- 0e0a4392: Add skeleton README files for adapters
+- 2a663d79: Remove legacy configuration option; use new closeConnection callback
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/db-commons@1.0.2
+
+## 1.0.3
+
+### Patch Changes
+
+- deb2ab6b: Allow MotherDuck and in-memory DuckDB connections
+
 ## 1.0.2
 
 ### Patch Changes

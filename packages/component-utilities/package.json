@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/component-utilities",
-	"version": "2.0.1",
+	"version": "2.2.1",
 	"description": "",
 	"main": "index.js",
 	"exports": {
@@ -21,6 +21,7 @@
 	"dependencies": {
 		"@evidence-dev/query-store": "workspace:*",
 		"@steeze-ui/simple-icons": "^1.5.0",
+		"@steeze-ui/svelte-icon": "^1.4.1",
 		"@steeze-ui/tabler-icons": "^2.1.0",
 		"@tidyjs/tidy": "2.4.4",
 		"@uwdata/mosaic-sql": "^0.3.2",

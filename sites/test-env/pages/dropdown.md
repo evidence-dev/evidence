@@ -2,7 +2,8 @@
 
 ## Dropdown with a query that has an error
 
-<Dropdown title="Dropdown with an Error" value="order_id" data="named_reviews" where="nps_score > 7 and their name is Bob" name="selected_order_id">
+
+<Dropdown title="Dropdown with an Error" value="order_id" data="named_reviews" where="nps_score > 7 and their name is Bob" name="broken_dropdown">
     <DropdownOption value="All" />
     <DropdownOption value="Top 100" />
 </Dropdown>
@@ -24,11 +25,11 @@ select * from orders
 <BigValue data={inputs} value=selected_order_id />
 
 {#if inputs.selected_order_id === 'All'}
-<DataTable data={orders} />
+    <DataTable data={orders} />
 {:else if inputs.selected_order_id === 'Top 100'}
-<DataTable data={top_100_orders} />
+    <DataTable data={top_100_orders} />
 {:else}
-<DataTable data={full_selected_order} />
+    <DataTable data={full_selected_order} />
 {/if}
 
 <Dropdown title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="selected_order_id">

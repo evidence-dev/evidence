@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/trino",
-	"version": "1.0.1",
+	"version": "1.0.4",
 	"description": "Trino driver for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -12,5 +12,15 @@
 		"@evidence-dev/db-commons": "workspace:*",
 		"presto-client": "^0.13.0"
 	},
-	"type": "module"
+	"type": "module",
+	"evidence": {
+		"datasources": [
+			"trino"
+		]
+	},
+	"keywords": [
+		"evidence",
+		"evidence-datasource",
+		"trino"
+	]
 }

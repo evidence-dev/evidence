@@ -5,7 +5,7 @@
 <script>
 	import EChartsMap from './EChartsMap.svelte';
 	import ErrorChart from '../core/ErrorChart.svelte';
-	import { strictBuild } from '../context';
+	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
@@ -14,9 +14,10 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
-	import InvisibleLinks from '$lib/atoms/InvisibleLinks.svelte';
+	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 
 	export let data = undefined;
+	export let queryID = undefined;
 
 	export let state = undefined;
 	export let value = undefined;
@@ -29,6 +30,12 @@
 
 	export let fmt = undefined;
 
+	export let filter = false;
+	$: filter = filter === 'true' || filter === true;
+
+	export let legend = false;
+	$: legend = legend === 'true' || legend === true;
+
 	export let link = undefined;
 	let hasLink = link !== undefined;
 
@@ -37,10 +44,42 @@
 
 	let config;
 
+	let extraHeight = 0;
+	let topPosition;
+
+	$: {
+		extraHeight = 20;
+		topPosition = 30;
+		if (title) {
+			extraHeight += 20;
+			topPosition += 15;
+		}
+
+		if (subtitle) {
+			extraHeight += 15;
+			topPosition += 20;
+		}
+
+		if (legend) {
+			if (filter) {
+				extraHeight += 35;
+				topPosition += 35;
+			} else {
+				extraHeight += 20;
+				topPosition += 20;
+			}
+		}
+	}
+
 	// color palettes
+
+	export let colorPalette = undefined; // custom color palette
+
 	export let colorScale = 'blue';
 	let colorArray;
-	$: if (colorScale === 'green') {
+	$: if (colorPalette) {
+		colorArray = [...colorPalette];
+	} else if (colorScale === 'green') {
 		colorArray = [
 			'#f7fcfd',
 			'#e5f5f9',
@@ -91,8 +130,10 @@
 	}
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
+	export let renderer = undefined;
 
 	export let abbreviations = false;
 	$: abbreviations = abbreviations === 'true' || abbreviations === true;
@@ -101,6 +142,10 @@
 
 	let columnSummary;
 	let format_object;
+	let minValue;
+	let maxValue;
+	let mapData;
+
 	$: try {
 		error = undefined;
 		if (!state) {
@@ -110,8 +155,26 @@
 		}
 		checkInputs(data, [state, value]);
 
-		let minValue = min ?? Math.min(...data.map((d) => d[value]));
-		let maxValue = max ?? Math.max(...data.map((d) => d[value]));
+		if (min) {
+			// if min was user-supplied
+			min = Number(min);
+			if (isNaN(min)) {
+				// input must be a number
+				throw Error('min must be a number');
+			}
+		}
+
+		if (max) {
+			// if max was user-supplied
+			max = Number(max);
+			if (isNaN(max)) {
+				// input must be a number
+				throw Error('max must be a number');
+			}
+		}
+
+		minValue = min ?? Math.min(...data.map((d) => d[value]));
+		maxValue = max ?? Math.max(...data.map((d) => d[value]));
 
 		columnSummary = getColumnSummary(data);
 
@@ -120,7 +183,7 @@
 			format_object = getFormatObjectFromString(fmt, columnSummary[value].format);
 		}
 
-		let mapData = JSON.parse(JSON.stringify(data));
+		mapData = JSON.parse(JSON.stringify(data));
 		for (let i = 0; i < data.length; i++) {
 			mapData[i].name = data[i][state];
 			mapData[i].value = data[i][value];
@@ -137,11 +200,11 @@
 				itemGap: 7,
 				textStyle: {
 					fontSize: 14,
-					color: uiColours.grey700
+					color: uiColours.grey800
 				},
 				subtextStyle: {
 					fontSize: 13,
-					color: uiColours.grey600,
+					color: uiColours.grey700,
 					overflow: 'break'
 				},
 				top: '0%'
@@ -163,7 +226,10 @@
 						<span id="tooltip" style='font-weight: 600;'>${params.name}</span>
 						<br/>
 						<span>${formatTitle(value, format_object)}: </span>
-							<span style='float:right; margin-left: 10px;'>${formatValue(params.value, format_object)}</span>`;
+							<span style='float:right; margin-left: 10px;'>${formatValue(
+								Number.isNaN(params.value) ? 0 : params.value,
+								format_object
+							)}</span>`;
 
 					return tooltipOutput;
 				},
@@ -183,16 +249,31 @@
 			},
 
 			visualMap: {
-				top: 'middle',
+				type: 'continuous',
 				min: minValue,
 				max: maxValue,
-				itemWidth: 15,
-				show: false,
+				itemWidth: 10,
+				show: legend,
+				left: 'center',
+				handleSize: '130%',
+				orient: 'horizontal',
+				top: (title ? 25 : 0) + (subtitle ? 20 : 0),
+				handleStyle: {
+					borderColor: uiColours.grey200
+				},
 				inRange: {
 					color: colorArray
 				},
-				text: ['High', 'Low'],
-				calculable: false,
+				outOfRange: {
+					color: uiColours.grey100
+				},
+				calculable: filter,
+				text: filter
+					? undefined
+					: [formatValue(maxValue, format_object), formatValue(minValue, format_object)],
+				formatter: function (value) {
+					return formatValue(value, format_object);
+				},
 				inverse: false
 			},
 			series: [
@@ -200,7 +281,8 @@
 					name: formatTitle(value, columnSummary[value].format),
 					type: 'map',
 					zoom: 1.1,
-					top: 45,
+					top: topPosition,
+					left: '8%',
 					roam: false,
 					map: 'US',
 					nameProperty: nameProperty,
@@ -210,7 +292,7 @@
 					},
 					emphasis: {
 						itemStyle: {
-							areaColor: uiColours.grey300
+							areaColor: uiColours.grey200
 						},
 						label: {
 							show: true,
@@ -220,38 +302,13 @@
 					select: {
 						disabled: false,
 						itemStyle: {
-							areaColor: uiColours.grey300
+							areaColor: uiColours.grey200
 						},
 						label: {
 							color: uiColours.grey900
 						}
 					},
 					data: mapData
-				}
-			],
-			media: [
-				{
-					query: {
-						maxWidth: 500
-					},
-					option: {
-						series: [
-							{
-								top: title ? (subtitle ? 48 : 32) : 25,
-								zoom: title ? (subtitle ? 0.9 : 1.1) : 1.1
-							}
-						]
-					}
-				},
-				{
-					option: {
-						series: [
-							{
-								top: title ? (subtitle ? 53 : 45) : 35,
-								zoom: title ? (subtitle ? 1.1 : 1.1) : 1.1
-							}
-						]
-					}
 				}
 			]
 		};
@@ -266,7 +323,17 @@
 </script>
 
 {#if !error}
-	<EChartsMap {config} {data} {hasLink} {echartsOptions} {printEchartsConfig} />
+	<EChartsMap
+		{extraHeight}
+		{config}
+		{data}
+		{queryID}
+		{hasLink}
+		{echartsOptions}
+		{seriesOptions}
+		{printEchartsConfig}
+		{renderer}
+	/>
 
 	{#if link}
 		<InvisibleLinks {data} {link} />

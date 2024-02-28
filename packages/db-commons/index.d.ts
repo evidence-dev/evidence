@@ -18,7 +18,10 @@ export type ConnectionTester<T extends Record<string, unknown>> = (
 	directory: string
 ) => Promise<boolean>;
 
-type FileContent = () => Promise<string>;
+/**
+ * @param {boolean} [disableInterpolation = false] Disables the automatic injection of Evidence Source Variables
+ */
+type FileContent = (disableInterpolation?: boolean) => Promise<string>;
 export interface SourceDirectory {
 	[filename: string]: SourceDirectory | FileContent;
 }

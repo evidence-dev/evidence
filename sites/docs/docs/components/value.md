@@ -63,36 +63,44 @@ Evidence supports a variety of formats - see [value formatting](/core-concepts/f
         <th class='tleft'>Name</th>	
         <th class='tleft'>Description</th>	
         <th>Required?</th>
+        <th>Options</th>
         <th>Default</th>	
     </tr>
     <tr>	
         <td>data</td>	
         <td>Query name, wrapped in curly braces</td>	
         <td class='tcenter'>Yes</td>	
+        <td class='tcenter'>query name</td>	
         <td class='tcenter'>-</td>	
     </tr>
     <tr>	
         <td>column</td>	
         <td>Column to pull values from</td>	
         <td class='tcenter'>-</td>	
+        <td class='tcenter'>column name</td>	
         <td class='tcenter'>First column</td>
     </tr>
     <tr>	
         <td>row</td>	
         <td>Row number to display. 0 is the first row.</td>	
-        <td class='tcenter'>-</td>	
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>number</td>		
         <td class='tcenter'>0</td>
     </tr>
     <tr>	
         <td>placeholder</td>	
         <td>Text to display in place of an error</td>	
         <td class='tcenter'>-</td>	
+        <td class='tcenter'>string</td>	
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
         <td>fmt</td>	
         <td>Format to use for the value (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
+        <td class='tcenter'>-</td>
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
         <td class='tcenter'>-</td>
     </tr>
+    <tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
+<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
 </table>

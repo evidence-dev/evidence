@@ -1,5 +1,39 @@
 # @evidence-dev/plugin-connector
 
+## 2.0.7
+
+### Patch Changes
+
+- Updated dependencies [f4ccf03c]
+  - @evidence-dev/universal-sql@2.0.3
+
+## 2.0.6
+
+### Patch Changes
+
+- 31381835: Add support for EVIDENCE_VAR\_\_ interpolation in source queries
+- Updated dependencies [31381835]
+- Updated dependencies [e4e7d822]
+  - @evidence-dev/db-commons@1.0.3
+  - @evidence-dev/universal-sql@2.0.2
+
+## 2.0.5
+
+### Patch Changes
+
+- 2082578e: Added support for HMR in external query files
+- Updated dependencies [97e7123d]
+- Updated dependencies [fc7fe470]
+  - @evidence-dev/telemetry@2.0.3
+  - @evidence-dev/db-commons@1.0.2
+
+## 2.0.4
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+  - @evidence-dev/telemetry@2.0.2
+
 ## 2.0.3
 
 ### Patch Changes

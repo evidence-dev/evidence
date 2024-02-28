@@ -357,7 +357,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/sankey-diagram">
 
-![map](/img/exg-sankey.svg)
+![map](/img/sankey_example.png)
 
 </a>
 </div>
@@ -371,6 +371,63 @@ hide_table_of_contents: false
 <a href="/components/sankey-diagram#vertical">
 
 ![map](/img/exg-sankey-vertical.svg)
+
+</a>
+</div>
+</div>
+
+### [Heatmap](heatmap)
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Basic Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/heatmap#basic-heatmap">
+
+![map](/img/heatmap-basic.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Customized Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/heatmap#rotated-labels">
+
+![map](/img/heatmap-item-state.png)
+
+</a>
+</div>
+</div>
+
+
+### [Calendar Heatmap](heatmap)
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Calendar Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/calendar-heatmap#custom-color-palette">
+
+![map](/img/calendar-heatmap-customcolor.png)
+
+</a>
+</div>
+</div>
+
+<div  class="gallery-item-grid">
+    <div class="item-header">
+        <div class="lbl">Multi-year Calendar Heatmap</div>
+    </div>
+    <div class="item-body-centered">
+<a href="/components/calendar-heatmap#multi-year-calendar-heatmap">
+
+![map](/img/calendar-heatmap-multiyear.png)
 
 </a>
 </div>
@@ -430,7 +487,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/mixed-type-charts">
 
-![composable-name-override](/img/exg-composable-name-override-nt.svg)
+![bar-line](/img/bar-line.png)
 
 </a>
 </div>
@@ -514,7 +571,7 @@ hide_table_of_contents: false
     <div class="item-body-centered">
 <a href="/components/us-map">
 
-![map](/img/map-blue.png)
+![map](/img/map-blue2.png)
 
 </a>
 </div>
@@ -650,25 +707,6 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Dropdown](inputs/dropdown)
-
- <div class="gallery-item-grid">
-    <div class="item-header">
-        <div class="lbl">Dropdown</div>
-    </div>
-    <div class="item-body-centered">
-    <a href="/components/inputs/dropdown">
-
-![Accordion](/img/dropdown.png)
-
-</a>
-</div>
-</div>
-
-</div>
-
-<div class="gallery-container-grid">
-
 ### [Modal](modal)
 
  <div class="gallery-item-grid">
@@ -699,6 +737,67 @@ hide_table_of_contents: false
     <a href="/components/tabs">
 
 ![Tabs](/img/tabs.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+## Input Components
+
+<div class="gallery-container-grid">
+
+### [Button Group](button-group)
+
+<div class="gallery-item-grid">
+<div class="item-header">
+<div class="lbl">Button Group</div>
+</div>
+<div class="item-body-centered">
+<a href="/components/button-group">
+
+![Button Group](/img/button-group-title.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+
+
+<div class="gallery-container-grid">
+
+### [Dropdown](dropdown)
+
+<div class="gallery-item-grid">
+<div class="item-header">
+<div class="lbl">Dropdown</div>
+</div>
+<div class="item-body-centered">
+<a href="/components/dropdown">
+
+![Dropdown](/img/dropdown.png)
+
+</a>
+</div>
+</div>
+
+</div>
+
+<div class="gallery-container-grid">
+
+### [TextInput](text-input)
+
+<div class="gallery-item-grid">
+<div class="item-header">
+<div class="lbl">TextInput</div>
+</div>
+<div class="item-body-centered">
+<a href="/components/text-input">
+
+![TextInput](/img/text-input.png)
 
 </a>
 </div>

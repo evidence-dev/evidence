@@ -12,9 +12,13 @@
 	import ChartLoading from '../../ui/ChartLoading.svelte';
 	import { flush } from 'svelte/internal';
 
+	export let extraHeight = 0;
+
 	export let config = undefined;
 
-	export let height = '310px';
+	export let queryID = undefined;
+	export let height = '350px';
+
 	export let width = '100%';
 
 	export let data;
@@ -22,7 +26,9 @@
 	export let hasLink = false;
 
 	export let echartsOptions = undefined;
+	export let seriesOptions = undefined;
 	export let printEchartsConfig = false;
+	export let renderer = undefined;
 
 	let downloadChart = false;
 	let copying = false;
@@ -56,20 +62,25 @@
 			<div
 				class="chart"
 				style="
-				height: {height};
 				width: {width};
 				margin-left: 0;
-				margin-top: 15px;
-				margin-bottom: 10px;
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echartsMap={{ config, hasLink, echartsOptions }}
+				use:echartsMap={{ config, hasLink, echartsOptions, seriesOptions, extraHeight, renderer }}
 			/>
 		{/if}
 	{/if}
 
-	<EChartsCopyTarget {config} {height} {width} {copying} {printing} {echartsOptions} />
+	<EChartsCopyTarget
+		{config}
+		{height}
+		{width}
+		{copying}
+		{printing}
+		{echartsOptions}
+		{seriesOptions}
+	/>
 
 	<div class="chart-footer">
 		<DownloadData
@@ -82,6 +93,7 @@
 				}, 0);
 			}}
 			display={hovering}
+			{queryID}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +111,13 @@
 			>
 		</DownloadData>
 		{#if data}
-			<DownloadData text="Download data" {data} class="download-button" display={hovering} />
+			<DownloadData
+				text="Download data"
+				{data}
+				{queryID}
+				class="download-button"
+				display={hovering}
+			/>
 		{/if}
 	</div>
 
@@ -116,20 +134,21 @@
 		style="
         display: none;
         visibility: visible;
-        height: {height};
+        height: {666 * 0.5 + extraHeight}px;
         width: 666px;
         margin-left: 0;
         margin-top: 15px;
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, echartsOptions }}
+		use:echartsCanvasDownload={{ ...config, echartsOptions, seriesOptions, queryID }}
 	/>
 {/if}
 
 <style>
 	@media print {
 		.chart {
+			-moz-column-break-inside: avoid;
 			break-inside: avoid;
 		}
 
@@ -159,7 +178,6 @@
 	.chart {
 		-moz-user-select: none;
 		-webkit-user-select: none;
-		-ms-user-select: none;
 		-o-user-select: none;
 		user-select: none;
 	}
@@ -171,5 +189,9 @@
 		margin: 3px 12px;
 		font-size: 12px;
 		height: 9px;
+	}
+
+	.chart-container {
+		margin-bottom: 25px;
 	}
 </style>

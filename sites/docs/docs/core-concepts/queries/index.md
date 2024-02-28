@@ -21,7 +21,7 @@ group by 1
 ```
 ````
 
-When you open a page in dev mode, Evidence runs all of the queries on the page. You can see the progress of these queries printed in the console. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries.
+When you open a page in dev mode, Evidence runs all of the queries on the page. In dev mode, Evidence monitors the contents of your SQL blocks, and reloads the page as necessary to reflect any changes you've made to your queries.
 
 You include SQL queries in your page using a markdown code fence (starting and ending with 3 backticks). Evidence requires a query name to be supplied directly after the first 3 backticks.
 
@@ -100,7 +100,7 @@ An example setup could be:
 my-evidence-project/
   pages/
     my_page.md
-  sources/
+  queries/
     my_file_query.sql
     some_category/
         my_category_file_query.sql
@@ -136,7 +136,7 @@ SQL file queries can [depend on other query files](/core-concepts/queries/#query
 
 ## Query Parameters
 
-Queries can accept parameters, which might be from an input component such as a [Dropdown](/components/inputs/dropdown), or from a URL parameter on a [template page](/core-concepts/templated-pages).
+Queries can accept parameters, which might be from an input component such as a [Dropdown](/components/dropdown), or from a URL parameter on a [template page](/core-concepts/templated-pages).
 
 ````markdown
 ```sql sales_by_month
@@ -152,25 +152,3 @@ group by 1
 There are two types of parameters you can use in queries:
 - **Input parameters** from components: `'${inputs.parameter_name}'`
 - **URL parameters** from [templated pages](/core-concepts/templated-pages): `'${params.parameter_name}'`
-
-
-## Query Cache
-
-In development mode, Evidence caches query results to reduce the number of queries sent to your database.
-
-Results from queries are cached for one hour, and identical SQL will return the cached results.
-
-The cache is cleared at the _start_ of each build, so new builds will always use fresh data (though identical queries will only run once per build).
-
-### Clearing the Cache
-
-#### VS Code Extension
-In the VS Code extension, you can use the `Clear Cache` command. Access the command palette using the shortcut Cmd + Shift + P (Ctrl + Shift + P on Windows).
-
-#### Clearing Manually
-
-Cached results are stored in your project in `.evidence/template/.evidence-queries`. You can clear the cache by deleting this directory.
-
-```shell
-rm -rf .evidence/template/.evidence-queries
-```

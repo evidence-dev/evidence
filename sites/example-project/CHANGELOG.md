@@ -1,5 +1,158 @@
 # @evidence-dev/components
 
+## 3.3.1
+
+### Patch Changes
+
+- Updated dependencies [6a61ea17]
+  - @evidence-dev/component-utilities@2.2.1
+  - @evidence-dev/core-components@3.3.1
+  - @evidence-dev/plugin-connector@2.0.7
+
+## 3.3.0
+
+### Minor Changes
+
+- 0f42e927: Add Heatmap and CalendarHeatmap components
+
+### Patch Changes
+
+- Updated dependencies [9176c2cc]
+- Updated dependencies [ddf584d4]
+- Updated dependencies [3e1da500]
+- Updated dependencies [5d5cb2de]
+- Updated dependencies [0f42e927]
+- Updated dependencies [cbc7e8a4]
+- Updated dependencies [f4ccf03c]
+  - @evidence-dev/component-utilities@2.2.0
+  - @evidence-dev/core-components@3.3.0
+  - @evidence-dev/duckdb@1.0.6
+  - @evidence-dev/mysql@1.1.0
+  - @evidence-dev/universal-sql@2.0.3
+  - @evidence-dev/plugin-connector@2.0.7
+  - @evidence-dev/csv@1.0.6
+  - @evidence-dev/query-store@2.0.3
+
+## 3.2.0
+
+### Minor Changes
+
+- ca1e46cf: Support multi axis charts for lines and bars
+- c25fc1ac: Upgraded USMap component
+
+### Patch Changes
+
+- a6de89de: Adds option to include total rows in DataTables
+- 2181ed9c: Fixes and upgrades for DataTable
+- Updated dependencies [3e3b3940]
+- Updated dependencies [f7903b86]
+- Updated dependencies [cd9c80b2]
+- Updated dependencies [3427433c]
+- Updated dependencies [31381835]
+- Updated dependencies [fa0faf8c]
+- Updated dependencies [a6de89de]
+- Updated dependencies [2bcbf0ed]
+- Updated dependencies [2181ed9c]
+- Updated dependencies [ca1e46cf]
+- Updated dependencies [9978899e]
+- Updated dependencies [f45a3a91]
+- Updated dependencies [6d3021e2]
+- Updated dependencies [c25fc1ac]
+- Updated dependencies [39390112]
+- Updated dependencies [f501513a]
+- Updated dependencies [e4e7d822]
+  - @evidence-dev/core-components@3.2.0
+  - @evidence-dev/component-utilities@2.1.0
+  - @evidence-dev/plugin-connector@2.0.6
+  - @evidence-dev/bigquery@2.0.4
+  - @evidence-dev/csv@1.0.5
+  - @evidence-dev/databricks@1.0.3
+  - @evidence-dev/duckdb@1.0.5
+  - @evidence-dev/mssql@1.0.5
+  - @evidence-dev/mysql@1.0.3
+  - @evidence-dev/postgres@1.0.3
+  - @evidence-dev/snowflake@1.0.3
+  - @evidence-dev/sqlite@2.0.3
+  - @evidence-dev/trino@1.0.4
+  - @evidence-dev/universal-sql@2.0.2
+  - @evidence-dev/query-store@2.0.2
+
+## 3.1.0
+
+### Minor Changes
+
+- 1ef5544d: Improve printing for Map viz
+
+### Patch Changes
+
+- Updated dependencies [168f1c9e]
+- Updated dependencies [1ef5544d]
+  - @evidence-dev/mssql@1.0.4
+  - @evidence-dev/trino@1.0.3
+  - @evidence-dev/core-components@3.1.0
+
+## 3.0.9
+
+### Patch Changes
+
+- Updated dependencies [e023deb0]
+- Updated dependencies [722a4e00]
+  - @evidence-dev/bigquery@2.0.3
+  - @evidence-dev/mssql@1.0.3
+
+## 3.0.8
+
+### Patch Changes
+
+- 1027087a: Add xMin and xMax to ScatterPlot
+- e3a88847: Schema explorer UI refresh, move into core-components
+- Updated dependencies [5a9edf0c]
+- Updated dependencies [0e0a4392]
+- Updated dependencies [d04554f1]
+- Updated dependencies [2a663d79]
+- Updated dependencies [1027087a]
+- Updated dependencies [e3a88847]
+- Updated dependencies [97e7123d]
+- Updated dependencies [f33b58c5]
+- Updated dependencies [3295b672]
+- Updated dependencies [2082578e]
+- Updated dependencies [38cc19db]
+- Updated dependencies [b3b7d588]
+- Updated dependencies [99b915f2]
+- Updated dependencies [d4fc618e]
+- Updated dependencies [c9793670]
+- Updated dependencies [7e401d4d]
+- Updated dependencies [c4f44007]
+  - @evidence-dev/core-components@3.0.5
+  - @evidence-dev/bigquery@2.0.2
+  - @evidence-dev/csv@1.0.4
+  - @evidence-dev/databricks@1.0.2
+  - @evidence-dev/duckdb@1.0.4
+  - @evidence-dev/mssql@1.0.2
+  - @evidence-dev/mysql@1.0.2
+  - @evidence-dev/postgres@1.0.2
+  - @evidence-dev/snowflake@1.0.2
+  - @evidence-dev/sqlite@2.0.2
+  - @evidence-dev/trino@1.0.2
+  - @evidence-dev/telemetry@2.0.3
+  - @evidence-dev/plugin-connector@2.0.5
+
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [92f4ad61]
+- Updated dependencies [deb2ab6b]
+- Updated dependencies [00145c4c]
+- Updated dependencies [03b3b626]
+- Updated dependencies [7b2b8a00]
+  - @evidence-dev/telemetry@2.0.2
+  - @evidence-dev/duckdb@1.0.3
+  - @evidence-dev/core-components@3.0.4
+  - @evidence-dev/component-utilities@2.0.2
+  - @evidence-dev/plugin-connector@2.0.4
+  - @evidence-dev/csv@1.0.3
+
 ## 3.0.6
 
 ### Patch Changes

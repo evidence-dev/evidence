@@ -1,5 +1,114 @@
 # evidence-test-environment
 
+## 3.0.13
+
+### Patch Changes
+
+- Updated dependencies [6a61ea17]
+  - @evidence-dev/component-utilities@2.2.1
+  - @evidence-dev/core-components@3.3.1
+  - @evidence-dev/evidence@27.0.1
+
+## 3.0.12
+
+### Patch Changes
+
+- Updated dependencies [9176c2cc]
+- Updated dependencies [ddf584d4]
+- Updated dependencies [3e1da500]
+- Updated dependencies [0f42e927]
+- Updated dependencies [cbc7e8a4]
+- Updated dependencies [5e9b27db]
+  - @evidence-dev/component-utilities@2.2.0
+  - @evidence-dev/core-components@3.3.0
+  - @evidence-dev/duckdb@1.0.6
+  - @evidence-dev/faker-datasource@2.0.4
+  - @evidence-dev/evidence@27.0.0
+  - @evidence-dev/csv@1.0.6
+
+## 3.0.11
+
+### Patch Changes
+
+- Updated dependencies [3e3b3940]
+- Updated dependencies [f7903b86]
+- Updated dependencies [cd9c80b2]
+- Updated dependencies [3427433c]
+- Updated dependencies [fa0faf8c]
+- Updated dependencies [a6de89de]
+- Updated dependencies [2bcbf0ed]
+- Updated dependencies [05f2155e]
+- Updated dependencies [2181ed9c]
+- Updated dependencies [ca1e46cf]
+- Updated dependencies [9978899e]
+- Updated dependencies [f45a3a91]
+- Updated dependencies [415653a7]
+- Updated dependencies [6d3021e2]
+- Updated dependencies [c25fc1ac]
+- Updated dependencies [39390112]
+- Updated dependencies [f501513a]
+  - @evidence-dev/core-components@3.2.0
+  - @evidence-dev/component-utilities@2.1.0
+  - @evidence-dev/csv@1.0.5
+  - @evidence-dev/duckdb@1.0.5
+  - @evidence-dev/faker-datasource@2.0.3
+  - @evidence-dev/postgres@1.0.3
+  - @evidence-dev/snowflake@1.0.3
+  - @evidence-dev/sqlite@2.0.3
+  - @evidence-dev/evidence@26.0.0
+
+## 3.0.10
+
+### Patch Changes
+
+- Updated dependencies [1ef5544d]
+  - @evidence-dev/core-components@3.1.0
+  - @evidence-dev/evidence@25.0.0
+
+## 3.0.9
+
+### Patch Changes
+
+- @evidence-dev/evidence@24.0.9
+
+## 3.0.8
+
+### Patch Changes
+
+- Updated dependencies [5a9edf0c]
+- Updated dependencies [0e0a4392]
+- Updated dependencies [d04554f1]
+- Updated dependencies [2a663d79]
+- Updated dependencies [1027087a]
+- Updated dependencies [e3a88847]
+- Updated dependencies [f33b58c5]
+- Updated dependencies [38cc19db]
+- Updated dependencies [7e401d4d]
+- Updated dependencies [1dd61938]
+  - @evidence-dev/core-components@3.0.5
+  - @evidence-dev/csv@1.0.4
+  - @evidence-dev/duckdb@1.0.4
+  - @evidence-dev/postgres@1.0.2
+  - @evidence-dev/snowflake@1.0.2
+  - @evidence-dev/sqlite@2.0.2
+  - @evidence-dev/faker-datasource@2.0.2
+  - @evidence-dev/evidence@24.0.8
+
+## 3.0.7
+
+### Patch Changes
+
+- Updated dependencies [deb2ab6b]
+- Updated dependencies [00145c4c]
+- Updated dependencies [03b3b626]
+- Updated dependencies [7b2b8a00]
+  - @evidence-dev/duckdb@1.0.3
+  - @evidence-dev/core-components@3.0.4
+  - @evidence-dev/component-utilities@2.0.2
+  - @evidence-dev/faker-datasource@2.0.1
+  - @evidence-dev/evidence@24.0.7
+  - @evidence-dev/csv@1.0.3
+
 ## 3.0.6
 
 ### Patch Changes

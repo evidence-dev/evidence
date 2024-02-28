@@ -17,4 +17,3 @@ ${queryString}
 ```
 
 <DataTable data={q}/>
-

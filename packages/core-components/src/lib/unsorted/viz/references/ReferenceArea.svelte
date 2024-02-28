@@ -4,7 +4,7 @@
 
 <script>
 	import { getContext, beforeUpdate } from 'svelte';
-	import { propKey, configKey } from '../context';
+	import { propKey, configKey } from '@evidence-dev/component-utilities/chartContext';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import ErrorChart from '../core/ErrorChart.svelte';
 	let props = getContext(propKey);
@@ -166,6 +166,7 @@
 	$: if (!error) {
 		baseConfig = {
 			id: identifier,
+			evidenceSeriesType: 'reference_area',
 			type: chartType === 'Bar Chart' ? 'bar' : 'line',
 			stack: 'stack1',
 			markArea: {

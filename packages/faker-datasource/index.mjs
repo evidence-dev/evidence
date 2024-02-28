@@ -124,7 +124,7 @@ const getFakerValue = (
 		throw new Error(
 			`(${colName}) ${category}.${item} does not exist; please see https://fakerjs.dev/api/`
 		);
-	const value = _faker[category][item](options);
+	const value = _faker[category][item](...(options ?? []));
 	if (targetField) return value[targetField];
 	return value;
 };
@@ -157,7 +157,9 @@ const buildRow = async (
 					if (!(targetField in targetRow)) {
 						throw new Error(`Target (${col.target?.table}) does not contain field ${targetField}`);
 					}
+
 					output[colName] = targetRow[targetField];
+					break;
 				case 'id':
 					output[colName] = rowNum;
 					break;
