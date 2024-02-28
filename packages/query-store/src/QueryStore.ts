@@ -404,6 +404,19 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Force the QueryStore to fetch data */
 	fetch = () => this.#fetchData();
 
+	/** 
+	 * Fetch data in the background,
+	 * likely meaning `initialData` was provided
+	 */
+	backgroundFetch = async () => {
+		await new Promise((resolve) => setTimeout(resolve, 0));
+		handleMaybePromise(
+			() => {},
+			() => this.#exec(`--data\n${this.#query.toString()}`, this.id),
+			() => {}
+		);
+	}
+
 	/** Keep a copy of the promise so we can wait for loading in multiple places */
 	#dataFetchPromise: MaybePromise<unknown | void>;
 
