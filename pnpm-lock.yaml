@@ -244,6 +244,12 @@ importers:
       '@codemirror/view':
         specifier: ^6.23.0
         version: 6.23.0
+      '@docsearch/css':
+        specifier: ^3.5.2
+        version: 3.5.2
+      '@docsearch/js':
+        specifier: ^3.5.2
+        version: 3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.1)(react@17.0.1)(search-insights@2.13.0)
       '@evidence-dev/component-utilities':
         specifier: workspace:*
         version: link:../component-utilities
@@ -3996,6 +4002,19 @@ packages:
 
   /@docsearch/css@3.5.2:
     resolution: {integrity: sha512-SPiDHaWKQZpwR2siD0KQUwlStvIAnEyK6tAE2h2Wuoq8ue9skzhlyVQ1ddzOxX6khULnAALDiR/isSF3bnuciA==}
+    dev: false
+
+  /@docsearch/js@3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.1)(react@17.0.1)(search-insights@2.13.0):
+    resolution: {integrity: sha512-p1YFTCDflk8ieHgFJYfmyHBki1D61+U9idwrLh+GQQMrBSP3DLGKpy0XUJtPjAOPltcVbqsTjiPFfH7JImjUNg==}
+    dependencies:
+      '@docsearch/react': 3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.1)(react@17.0.1)(search-insights@2.13.0)
+      preact: 10.19.6
+    transitivePeerDependencies:
+      - '@algolia/client-search'
+      - '@types/react'
+      - react
+      - react-dom
+      - search-insights
     dev: false
 
   /@docsearch/react@3.5.2(@algolia/client-search@4.15.0)(react-dom@17.0.1)(react@17.0.1)(search-insights@2.13.0):
@@ -20037,6 +20056,10 @@ packages:
       posthtml-parser: 0.11.0
       posthtml-render: 3.0.0
     dev: true
+
+  /preact@10.19.6:
+    resolution: {integrity: sha512-gympg+T2Z1fG1unB8NH29yHJwnEaCH37Z32diPDku316OTnRPeMbiRV9kTrfZpocXjdfnWuFUl/Mj4BHaf6gnw==}
+    dev: false
 
   /preferred-pm@3.1.3:
     resolution: {integrity: sha512-MkXsENfftWSRpzCzImcp4FRsCc3y1opwB73CfCNWyzMqArju2CrlMHlqB7VexKiPEOjGMbttv1r9fSCn5S610w==}

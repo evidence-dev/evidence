@@ -10,16 +10,27 @@
 	import { ToastWrapper } from '../../molecules/toast';
 
 	export let data;
-	export let title = undefined;
-	export let logo = undefined;
-	export let neverShowQueries = false;
-	export let fullWidth = false;
-	export let hideSidebar = false;
-	export let builtWithEvidence = false;
 
-	// Social links
+	// Layout options
+	/** @type {string} */
+	export let title = undefined;
+	/** @type {string} */
+	export let logo = undefined;
+	/** @type {boolean} */
+	export let neverShowQueries = false;
+	/** @type {boolean} */
+	export let fullWidth = false;
+	/** @type {boolean} */
+	export let hideSidebar = false;
+	/** @type {boolean} */
+	export let builtWithEvidence = false;
+	/** @type {{appId: string, apiKey: string, indexName: string}} */
+	export let algolia;
+	/** @type {string} */
 	export let githubRepo;
+	/** @type {string} */
 	export let xProfile;
+	/** @type {string} */
 	export let slackCommunity;
 
 	const prefetchStrategy = dev ? 'tap' : 'hover';
@@ -47,6 +58,7 @@
 		{githubRepo}
 		{slackCommunity}
 		{xProfile}
+		{algolia}
 	/>
 	<div
 		class={(fullWidth ? 'max-w-full ' : 'max-w-7xl ') +
