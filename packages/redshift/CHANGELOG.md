@@ -1,5 +1,12 @@
 # @evidence-dev/redshift
 
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [32a38858]
+  - @evidence-dev/postgres@1.0.4
+
 ## 1.0.3
 
 ### Patch Changes

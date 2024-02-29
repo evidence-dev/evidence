@@ -1,5 +1,22 @@
 # evidence-test-environment
 
+## 3.0.15
+
+### Patch Changes
+
+- Updated dependencies [6c37b473]
+- Updated dependencies [37cbbc43]
+- Updated dependencies [1e665bf2]
+- Updated dependencies [858ea06f]
+- Updated dependencies [5c492a00]
+- Updated dependencies [32a38858]
+- Updated dependencies [0c1a7ccb]
+  - @evidence-dev/core-components@3.4.1
+  - @evidence-dev/evidence@28.0.1
+  - @evidence-dev/postgres@1.0.4
+  - @evidence-dev/duckdb@1.0.7
+  - @evidence-dev/csv@1.0.7
+
 ## 3.0.14
 
 ### Patch Changes

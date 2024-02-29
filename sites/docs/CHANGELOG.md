@@ -1,5 +1,12 @@
 # evidence-docs
 
+## 2.0.7
+
+### Patch Changes
+
+- 6c37b473: Add weightedMean total agg to DataTable
+- 5c492a00: Add non-delta comparisons to BigValue
+
 ## 2.0.6
 
 ### Patch Changes

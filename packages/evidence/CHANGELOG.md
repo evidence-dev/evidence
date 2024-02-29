@@ -1,5 +1,18 @@
 # @evidence-dev/evidence
 
+## 28.0.1
+
+### Patch Changes
+
+- 1e665bf2: Replace sparkline component
+- Updated dependencies [6c37b473]
+- Updated dependencies [37cbbc43]
+- Updated dependencies [1e665bf2]
+- Updated dependencies [858ea06f]
+- Updated dependencies [5c492a00]
+  - @evidence-dev/core-components@3.4.1
+  - @evidence-dev/db-orchestrator@3.0.11
+
 ## 28.0.0
 
 ### Patch Changes
