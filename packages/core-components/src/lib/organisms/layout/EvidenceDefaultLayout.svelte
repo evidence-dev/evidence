@@ -1,13 +1,12 @@
 <script>
 	import { navigating, page } from '$app/stores';
 	import { dev } from '$app/environment';
-	import LoadingSkeleton from './misc/LoadingSkeleton.svelte';
-	import Sidebar from './sidebar/Sidebar.svelte';
-	import BreadCrumbs from './breadcrumbs/BreadCrumbs.svelte';
-	import Header from './header/Header.svelte';
-	import TableOfContents from './tableofcontents/TableOfContents.svelte';
-	import QueryStatus from './misc/QueryStatus.svelte';
+	import { LoadingSkeleton, QueryStatus } from './misc';
+	import { Sidebar } from './sidebar';
+	import { Header } from './header';
 	import { ToastWrapper } from '../../molecules/toast';
+	import BreadCrumbs from './BreadCrumbs.svelte';
+	import TableOfContents from './tableofcontents/TableOfContents.svelte';
 
 	export let data;
 
