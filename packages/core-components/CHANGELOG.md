@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 3.4.2
+
+### Patch Changes
+
+- 403f492c: Add dependency for chroma
+- f3efd049: Fix for sparkline in bigvalue error message
+
 ## 3.4.1
 
 ### Patch Changes
