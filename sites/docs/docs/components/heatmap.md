@@ -16,6 +16,58 @@ hide_table_of_contents: false
 />
 ```
 
+## Data Structure
+
+Heatmap requires your data to contain 2 categorical columns (1 for the x-axis and 1 for the y-axis) and 1 numeric column.
+
+#### Example
+| region | product | sales |
+|--------|---------|-------|
+| West   | A       | 120   |
+| West   | B       | 200   |
+| West   | C       | 150   |
+| East   | A       | 110   |
+| East   | B       | 315   |
+| East   | C       | 450   |
+
+### Unpivoting your Data
+If you have data spread across columns, you can use the `UNPIVOT` feature in your SQL query to prepare the data for the heatmap.
+
+#### Example
+If you have a query result called `region_sales`:
+
+| region | a   | b   | c   |
+|--------|-----|-----|-----|
+| West   | 120 | 200 | 150 |
+| East   | 110 | 315 | 450 |
+
+You can use `UNPIVOT` like so:
+
+```sql
+UNPIVOT ${region_sales}
+on COLUMNS(* EXCLUDE(region))
+INTO
+    NAME product
+    VALUE sales
+```
+
+Which will return this table, which can be passed into the Heatmap:
+
+| region | product | sales |
+|--------|---------|-------|
+| West   | A       | 120   |
+| West   | B       | 200   |
+| West   | C       | 150   |
+| East   | A       | 110   |
+| East   | B       | 315   |
+| East   | C       | 450   |
+
+
+:::info Note on Date Columns
+Heatmap currently only works with string columns. If you would like to use a date column, cast it to a string in your SQL query before passing it into the Heatmap
+:::
+
+
 ## Examples
 
 ### Basic Heatmap
@@ -77,8 +129,8 @@ hide_table_of_contents: false
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x</td>	<td>Categorical column to use for the x-axis</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y</td>	<td>Categorical column to use for the y-axis</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>x</td>	<td>Categorical column to use for the x-axis. If you want to use dates, cast them to strings in your query first</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>y</td>	<td>Categorical column to use for the y-axis. If you want to use dates, cast them to strings in your query first</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>value</td>	<td>Numeric column to use for the y-axis</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>min</td>	<td>Minimum number for the heatmap's color scale</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>min of value column</td>	</tr>
 <tr>	<td>max</td>	<td>Maximum number for the heatmap's color scale</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>max of value column</td>	</tr>
