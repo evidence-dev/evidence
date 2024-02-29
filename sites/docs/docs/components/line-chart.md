@@ -179,6 +179,7 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>markerShape</td>	<td>Shape to use if markers=true</td>	<td class='tcenter'>-</td>	<td class='tcenter'>circle | emptyCircle | rect | triangle | diamond</td>	<td class='tcenter'>circle</td>	</tr>
 <tr>	<td>markerSize</td>	<td>Size of each shape (in pixels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>8</td>	</tr>
 <tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
+<tr>	<td>seriesColors</td>	<td>Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal.<br/>Note the double curly braces required in the syntax</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object with series names and assigned colors<br/><code>seriesColors={`{{'Canada': 'red', 'US': 'blue'}}`}</code></td>	<td class='tcenter'>colors applied by order of series in data</td>	</tr>
 </table>
 
 ### Value Labels
@@ -234,6 +235,7 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>subtitle</td>	<td>Chart subtitle. Appears just under title.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>legend</td>	<td>Turns legend on or off. Legend appears at top center of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true for multiple series</td>	</tr>
 <tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
+<tr>	<td>renderer</td>	<td>Which chart renderer type (canvas or SVG) to use. See ECharts' documentation on renderers: https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/</td>	<td class='tcenter'>-</td>	<td class='tcenter'>canvas | svg</td>	<td class='tcenter'>canvas</td>	</tr>
 </table>
 
 ### Custom Echarts Options
@@ -241,6 +243,7 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <table>
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
 <tr>	<td>echartsOptions</td>	<td>Custom Echarts options to override the default options. <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>seriesOptions</td>	<td>Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using <code>echartsOptions</code> <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleSeriesOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 </table>
 
