@@ -5,8 +5,8 @@
 <script>
 	import mermaid from 'mermaid';
 	import { onMount } from 'svelte';
+	
 	/** @type {string} */
-
 	export let chart = undefined;
 
 	/** @type {HTMLDivElement} */
@@ -19,7 +19,6 @@
 	let chartSpec;
 
 	/**
-	 *
 	 * @param {string} c
 	 */
 	async function updateChart(c) {
