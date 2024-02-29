@@ -296,6 +296,20 @@
 					$props.columns.map((d) => d.id)
 			  )
 			: data;
+
+	const weightedMean = (data, valueCol, weightCol) => {
+		let totalWeightedValue = 0;
+		let totalWeight = 0;
+
+		data.forEach((item) => {
+			const value = Number(item[valueCol]);
+			const weight = Number(item[weightCol] || 1); // Default to 1 if weightCol is not specified or missing in the item
+			totalWeightedValue += value * weight;
+			totalWeight += weight;
+		});
+
+		return totalWeight > 0 ? totalWeightedValue / totalWeight : 0;
+	};
 </script>
 
 {#if error === undefined}
@@ -564,6 +578,12 @@
 												columnSummary.columnUnitSummary
 										  )
 										: columnSummary.columnUnitSummary[column.totalAgg]}
+								{:else if column.totalAgg === 'weightedMean'}
+									{formatValue(
+										weightedMean(data, column.id, column.weightCol),
+										format,
+										columnSummary.columnUnitSummary
+									)}
 								{:else}
 									<!-- passing in anything else -->
 									{column.totalFmt
