@@ -1,10 +1,9 @@
 <script>
 	import Value from './Value.svelte';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
-	import { LinkedChart } from 'svelte-tiny-linked-charts';
-	import getSortedData from '@evidence-dev/component-utilities/getSortedData';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import BigValueError from './BigValueError.svelte';
+	import Sparkline from './Sparkline.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	export let data;
 	export let value = null;
@@ -13,6 +12,13 @@
 	$: comparisonDelta = comparisonDelta === 'true' || comparisonDelta === true;
 
 	export let sparkline = null;
+	export let sparklineType = 'line'; // line, area, or bar
+	export let sparklineColor = undefined;
+	export let sparklineValueFmt = undefined;
+	export let sparklineDateFmt = undefined;
+	export let sparklineYScale = false;
+	$: sparklineYScale = sparklineYScale === 'true' || sparklineYScale === true;
+	export let connectGroup = undefined;
 
 	// Formatting:
 	export let fmt = undefined;
@@ -29,8 +35,6 @@
 
 	let positive = true;
 	let comparisonColor = 'var(--grey-700)';
-
-	let sparklineData = {};
 
 	let error = undefined;
 	$: try {
@@ -69,14 +73,6 @@
 					? 'var(--green-700)'
 					: 'var(--red-700)';
 		}
-		// populate sparklineData from data where timeseries is the key and value is the value
-		if (data && sparkline && value) {
-			// allow to load the LinkedChart
-			let sortedData = getSortedData(data, sparkline, true);
-			for (let i = 0; i < sortedData.length; i++) {
-				sparklineData[sortedData[i][sparkline]] = sortedData[i][value];
-			}
-		}
 	} catch (e) {
 		error = e;
 		const setTextRed = '\x1b[31m%s\x1b[0m';
@@ -84,20 +80,6 @@
 		if (strictBuild) {
 			throw error;
 		}
-	}
-
-	/**
-	 * Hack to let time to LinkedChart to be loaded
-	 */
-	function isLinkedChartReady() {
-		try {
-			if (LinkedChart) {
-				return true;
-			}
-		} catch (e) {
-			return false;
-		}
-		return false;
 	}
 </script>
 
@@ -115,24 +97,19 @@
 		<div class="relative text-xl font-medium text-gray-700 my-0.5">
 			<Value {data} column={value} {fmt} />
 			{#if sparkline}
-				{#if isLinkedChartReady()}
-					<div data-viz="BigValue" class="inline-block">
-						<svelte:component
-							this={LinkedChart}
-							data={sparklineData}
-							type="line"
-							grow={true}
-							barMinWidth="1"
-							gap="0"
-							fill="var(--grey-400)"
-							align="left"
-							hover={false}
-							linked="id"
-							width="75"
-							tabindex={-1}
-						/>
-					</div>
-				{/if}
+				<Sparkline
+					height="15"
+					{data}
+					dateCol={sparkline}
+					valueCol={value}
+					type={sparklineType}
+					interactive="true"
+					color={sparklineColor}
+					valueFmt={fmt ?? sparklineValueFmt}
+					dateFmt={sparklineDateFmt}
+					yScale={sparklineYScale}
+					{connectGroup}
+				/>
 			{/if}
 		</div>
 		{#if comparison}
@@ -151,13 +128,3 @@
 		{/if}
 	{/if}
 </div>
-
-<style>
-	/* 
-        TODO: Identify if this can be moved to app.css, or scoped to this component.
-        Leaky global styles are problematic
-     */
-	div[data-viz='BigValue'] :global(svg) {
-		height: 16px;
-	}
-</style>
