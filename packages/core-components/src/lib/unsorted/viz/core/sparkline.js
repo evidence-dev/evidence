@@ -108,7 +108,9 @@ export function getSparklineConfig(
 					dataPoint.value[1],
 					value_format_object
 				)}</div>`;
-				const transparentGap = `<div style="background-color: transparent; height: ${height - 1.5}px;"></div>`; // Adjust height for the gap size
+				const transparentGap = `<div style="background-color: transparent; height: ${
+					height - 1.5
+				}px;"></div>`; // Adjust height for the gap size
 				const datePart = `<div style="text-align: center; height: 1em; background-color: transparent; border-radius: 1px; padding: 0px 2px;">${formatValue(
 					dataPoint.axisValueLabel,
 					date_format_object
