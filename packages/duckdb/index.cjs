@@ -135,7 +135,10 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 	const mode = filename !== ':memory:' ? 'READ_ONLY' : 'READ_WRITE';
 
 	try {
-		const db = await Database.create(filename, { 'access_mode': mode, 'custom_user_agent' : 'evidence-dev' });
+		const db = await Database.create(filename, {
+			access_mode: mode,
+			custom_user_agent: 'evidence-dev'
+		});
 		const conn = await db.connect();
 		const stream = conn.stream(queryString);
 
