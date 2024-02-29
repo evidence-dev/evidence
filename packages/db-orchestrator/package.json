@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/db-orchestrator",
-	"version": "3.0.9",
+	"version": "3.0.10",
 	"description": "DB orchestration for Evidence projects",
 	"main": "index.cjs",
 	"author": "evidence.dev",
@@ -21,7 +21,7 @@
 		"@evidence-dev/telemetry": "workspace:*",
 		"blueimp-md5": "2.18.0",
 		"chalk": "4.1.0",
-		"fs-extra": "9.1.0"
+		"fs-extra": "11.2.0"
 	},
 	"type": "module"
 }

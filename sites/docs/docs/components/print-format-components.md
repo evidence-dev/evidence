@@ -15,6 +15,9 @@ This can be helpful when working with many input components (filters, dropdowns,
 Text on original line <LineBreak/> Text on new line
 ```
 
+### Options
+`lines` - number of line breaks to insert (default = 1)
+
 ## PageBreak
 On print, inserts a page break - pushing the next content onto the start of a new page.
 
