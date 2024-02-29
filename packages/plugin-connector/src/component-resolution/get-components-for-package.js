@@ -70,6 +70,9 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 			fileComponents.forEach((c) => providedComponents.add(c));
 		}
 	}
+	console.log(`Loaded components from ${packagePath}`, {
+		config, rootDir, packagePath, providedComponents
+	})
 
 	return providedComponents;
 };
