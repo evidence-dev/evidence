@@ -5,16 +5,23 @@ description: Connect a data source in order to run queries.
 ---
 
 :::info Recent changes to data sources in Evidence
-The most recent Evidence release (Universal SQL) contains breaking changes for data source setup.
+A recent Evidence release (Universal SQL, v24+) contains breaking changes for data source setup.
 If you recently updated your Evidence version and are having issues setting up data sources, consult the [migration guide](/guides/usql-migration-guide)
 :::
 
+## Overview of Data Sources
 
-Evidence supports connecting to a databases, flat data files, and non-SQL data sources. 
+Evidence extracts all data sources into a common storage format (called Parquet) to enable querying across multiple data sources using SQL.
 
-You can connect to multiple data sources in a single Evidence project.
+- To query against your data sources, you first need to extract the data into Parquet, using `npm run sources`
+- Supported sources including SQL databases, flat data files (CSV etc), and non-SQL data sources (e.g. APIs)
 
-## Connect your data sources
+![Universal SQL Data Source Architecture](/img/usql-architecture.png)
+
+More information about the architecture design can be found in [this article](https://evidence.dev/blog/why-we-built-usql).
+
+
+## Connect your Data Sources 
 
 To connect your local development environment to a database:
 
@@ -29,9 +36,7 @@ Evidence will save your credentials locally, and run a test query to confirm tha
 
 Connections to databases in production are managed via [environment variables](/cli#environment-variables)
 
-## Configure source queries
-
-Evidence extracts data from all sources systems into a common storage format (called Parquet).
+## Configure Source Queries
 
 For SQL data sources, choose which data to extract by adding .sql files to the `/sources/[source_name]/` folder.
 
@@ -46,7 +51,7 @@ For SQL data sources, choose which data to extract by adding .sql files to the `
 
 Each of these .sql files will create a table that can be queried in Evidence as `[my_source].[my_source_query]`.
 
-:::info["Non-SQL data sources"]
+:::info Non-SQL data sources
 
 For non-SQL data sources, configuring the data extracted is achieved in other ways. Refer to the documentation for the specific data source for details.
 :::
