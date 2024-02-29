@@ -83,7 +83,8 @@ export function getSparklineConfig(
 	yScale,
 	value_format_object,
 	date_format_object,
-	height
+	height,
+	tooltipBackgroundColor
 ) {
 	return {
 		title: {
@@ -96,18 +97,18 @@ export function getSparklineConfig(
 			position: function (point, params, dom, rect, size) {
 				// Calculate horizontal center and a fixed vertical offset
 				const horizontalCenter = size.viewSize[0] / 2 - size.contentSize[0] / 2;
-				const verticalOffset = -13.5; // Adjust this value to position the tooltip above the chart
+				const verticalOffset = -11; // Adjust this value to position the tooltip above the chart
 				return [horizontalCenter, verticalOffset];
 			},
 			formatter: function (params) {
 				// Assuming params[0] is your primary data point
 				const dataPoint = params[0];
 				// Customize these HTML blocks as needed
-				const valuePart = `<div style="text-align: center; background-color: transparent; border-radius: 1px; padding: 0px 2px; height: 12px;">${formatValue(
+				const valuePart = `<div style="text-align: center; background-color: ${tooltipBackgroundColor}; border-radius: 1px; padding: 0px 2px; height: 12px;">${formatValue(
 					dataPoint.value[1],
 					value_format_object
 				)}</div>`;
-				const transparentGap = `<div style="height: ${height + 1.5}px;"></div>`; // Adjust height for the gap size
+				const transparentGap = `<div style="background-color: transparent; height: ${height - 1.5}px;"></div>`; // Adjust height for the gap size
 				const datePart = `<div style="text-align: center; height: 1em; background-color: transparent; border-radius: 1px; padding: 0px 2px;">${formatValue(
 					dataPoint.axisValueLabel,
 					date_format_object
@@ -121,7 +122,7 @@ export function getSparklineConfig(
 			extraCssText: 'box-shadow: none; padding-bottom: 0;', // Optional: Add some shadow for depth
 			padding: 0,
 			textStyle: {
-				fontSize: 10
+				fontSize: 9
 			}
 		},
 		legend: {

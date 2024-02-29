@@ -40,6 +40,8 @@
 	let staticSVGSSR;
 	let error;
 
+	let tooltipBackgroundColor = 'white';
+
 	// Initialize chart for interactive mode
 	function initializeChart() {
 		if (interactive && chartContainer && !chartInstance) {
@@ -112,7 +114,8 @@
 			yScale,
 			value_format_object,
 			date_format_object,
-			height
+			height,
+			tooltipBackgroundColor
 		);
 
 		if (!browser) {

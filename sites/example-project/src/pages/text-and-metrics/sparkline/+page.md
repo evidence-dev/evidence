@@ -33,7 +33,7 @@ select 190 as sales, '2020-05-01'::date as date
 <Sparkline data={sp} dateCol=date valueCol=sales type=line interactive=true yScale=false valueFmt=eur dateFmt=mmm/>
 
 ### Inline Sparkline
-- Sales in the last year: <Sparkline data={sp} dateCol=date valueCol=sales type=bar interactive=true yScale=false valueFmt=eur dateFmt=mmm color=darkgreen/> and some text after
+verba et celer purpura utraque parvas, indicat quaeritis adhaesi negate. Exsangue sibique Minos Echidnaeae miseranda infelix nunc dapes iunctisque praetereunt abluere moenia ferunt aere innuba.Sales in the last year: <Sparkline data={sp} dateCol=date valueCol=sales type=bar interactive=true yScale=false valueFmt=eur dateFmt=mmm color=darkgreen/> and some text after. verba et celer purpura utraque parvas, indicat quaeritis adhaesi negate. Exsangue sibique Minos Echidnaeae miseranda infelix nunc dapes iunctisque praetereunt abluere moenia ferunt aere innuba.
 
 ### Connected Sparklines
 <Sparkline data={sp} dateCol=date valueCol=sales type=bar    interactive=true yScale=false valueFmt=eur dateFmt=mmm connectGroup=mysparkline/>
