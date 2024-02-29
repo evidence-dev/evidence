@@ -66,8 +66,8 @@ importers:
         specifier: 1.22.3
         version: 1.22.3(svelte@3.55.0)(vite@4.3.9)
       '@tidyjs/tidy':
-        specifier: 2.4.4
-        version: 2.4.4
+        specifier: 2.5.2
+        version: 2.5.2
       blueimp-md5:
         specifier: 2.19.0
         version: 2.19.0
@@ -190,8 +190,8 @@ importers:
         specifier: ^2.1.0
         version: 2.1.1
       '@tidyjs/tidy':
-        specifier: 2.4.4
-        version: 2.4.4
+        specifier: 2.5.2
+        version: 2.5.2
       '@uwdata/mosaic-sql':
         specifier: ^0.3.2
         version: 0.3.5
@@ -1140,8 +1140,8 @@ importers:
         specifier: 1.22.3
         version: 1.22.3(svelte@3.55.0)(vite@4.3.9)
       '@tidyjs/tidy':
-        specifier: 2.4.4
-        version: 2.4.4
+        specifier: 2.5.2
+        version: 2.5.2
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -9585,8 +9585,8 @@ packages:
       '@testing-library/dom': 9.3.4
     dev: true
 
-  /@tidyjs/tidy@2.4.4:
-    resolution: {integrity: sha512-FGsIoajwkn/5DQCAgry5Vi8yh5vHkqm2k9hz1QmqpC5jY8HA/DI4Kt+x9RDc1tfWDOFq3AdqiD/y6YODN5Ii2Q==}
+  /@tidyjs/tidy@2.5.2:
+    resolution: {integrity: sha512-jIpF2tM3gUFbo+kRxcfi/mLYg6sFvj7S9cI9hCt6EsalMXT0vTWo4lybv9OLRfSAE77iXvAyXPKpnJ/h4rotDQ==}
     dependencies:
       d3-array: 2.12.1
       ts-toolbelt: 8.4.0
