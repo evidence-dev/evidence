@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import mermaid from 'mermaid';
+	// import mermaid from 'mermaid';
 	import { onMount } from 'svelte';
 
 	/** @type {string} */
@@ -24,9 +24,9 @@
 	async function updateChart(c) {
 		if (!container) return;
 		container.innerHTML = c;
-		await mermaid.run({
-			nodes: [container]
-		});
+		// await mermaid.run({
+		// 	nodes: [container]
+		// });
 	}
 
 	$: chartSpec = wrapEl?.textContent ?? chart;
