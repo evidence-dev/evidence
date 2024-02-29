@@ -25,6 +25,7 @@
 		const mermaid = await import("mermaid").then(r => r.default)
 		if (!container) return;
 		container.innerHTML = c;
+		console.log("Running Mermaid!")
 		await mermaid.run({
 			nodes: [container]
 		});
