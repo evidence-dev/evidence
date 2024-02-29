@@ -1,5 +1,14 @@
 # @evidence-dev/components
 
+## 3.3.4
+
+### Patch Changes
+
+- 403f492c: Add dependency for chroma
+- Updated dependencies [403f492c]
+- Updated dependencies [f3efd049]
+  - @evidence-dev/core-components@3.4.2
+
 ## 3.3.3
 
 ### Patch Changes
