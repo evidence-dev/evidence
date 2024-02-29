@@ -5,14 +5,15 @@ const config = {
 	plugins: [sveltekit()],
 	optimizeDeps: {
 		include: ['echarts-stat', 'echarts'],
-		exclude: ['svelte-icons']
+		exclude: ['svelte-icons', 'mermaid']
 	},
 	ssr: {
 		external: [
 			'@evidence-dev/db-orchestrator',
 			'@evidence-dev/telemetry',
 			'blueimp-md5',
-			'@evidence-dev/plugin-connector'
+			'@evidence-dev/plugin-connector',
+			'mermaid'
 		]
 	},
 	server: {
