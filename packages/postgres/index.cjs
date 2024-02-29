@@ -195,6 +195,8 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 	} catch (err) {
 		if (err.message) {
 			throw new Error(err.message.replace(/\n|\r/g, ' '));
+		} else if (typeof err === 'object') {
+			throw new Error(JSON.stringify(err).replace(/\n|\r/g, ' '));
 		} else {
 			throw new Error(err.replace(/\n|\r/g, ' '));
 		}
