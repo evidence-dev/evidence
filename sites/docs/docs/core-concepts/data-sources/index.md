@@ -74,7 +74,6 @@ Evidence supports:
 - [Snowflake](#snowflake)
 - [Redshift](#redshift)
 - [PostgreSQL](#postgresql)
-- [Clickhouse](#postgresql)
 - [Timescale](#postgresql)
 - [Trino](#trino)
 - [Microsoft SQL Server](#mssql)
@@ -161,7 +160,7 @@ The Native SSO through Okta method uses Okta to authenticate. To use this method
 The Redshift connector uses the Postgres connector under the hood, so configuration options are similar.
 
 ### PostgreSQL
-Some databases can be connected by using the Postgres connector, including Clickhouse and Timescale.
+Some databases can be connected by using the Postgres connector, including Timescale.
 
 #### SSL
 
