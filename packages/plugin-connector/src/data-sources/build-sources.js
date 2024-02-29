@@ -1,3 +1,4 @@
+import * as tracing from '../lib/trace.js';
 import chalk from 'chalk';
 import fs from 'fs/promises';
 import { getDatasourcePlugins } from './get-datasource-plugins';
@@ -12,11 +13,13 @@ import path from 'path';
 import { createHash } from 'crypto';
 import { cleanZodErrors } from '../lib/clean-zod-errors';
 import { z } from 'zod';
-import { buildMultipartParquet } from '@evidence-dev/universal-sql';
+import { buildMultipartParquet as _buildMultipartParquet } from '@evidence-dev/universal-sql';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 
 import ora from 'ora';
 import { subSourceVariables } from './sub-source-vars';
+
+const buildMultipartParquet = tracing.annotate("Write Parquet", _buildMultipartParquet)
 
 /**
  * @param {string} directory
@@ -88,265 +91,298 @@ export const buildSources = async (
 	const hashes = {};
 
 	for (const source of sources) {
-		console.log(chalk.bold(`Processing ${source.name}`));
-		const sourceManifest = existingManifest[source.name] ?? [];
-		// For building the manifest
-		/** @type {string[]} */
-		const outputFilenames = [];
-		hashes[source.name] = {};
+		await tracing.trace(`Build ${source.name}`, async (span) => {
+			const event = span ? span.addEvent.bind(span) : () => { }
 
-		if (filters?.sources && !filters.sources.has(source.name)) {
-			console.log(chalk.yellow(`[!] Skipping filtered source ${source.name}`));
-			hashes[source.name] = existingHashes[source.name] ?? {}; // passthrough hashes
-			manifest[source.name] = existingManifest[source.name] ?? [];
-			continue;
-		}
-		const targetPlugin = plugins[source.type];
-		if (!targetPlugin) {
-			console.log(
-				chalk.yellow(
-					`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
-				)
-			);
-			logQueryEvent('source-connector-not-found', source.type, source.name);
-			hashes[source.name] = existingHashes[source.name];
-			continue;
-		}
+			console.log(chalk.bold(`Processing ${source.name}`));
+			const sourceManifest = existingManifest[source.name] ?? [];
+			// For building the manifest
+			/** @type {string[]} */
+			const outputFilenames = [];
+			hashes[source.name] = {};
 
-		const connectionValid = await targetPlugin.testConnection(
-			source.options,
-			source.sourceDirectory
-		);
-		if (connectionValid !== true) {
-			logQueryEvent('db-connection-error', source.type, source.name);
-			throw new Error(
-				chalk.red(`[!] ${chalk.bold(source.name)} failed to connect; ${connectionValid.reason}`)
-			);
-		}
-		//TODO evidence-1344 and db-connection-error didn't have an equivalent for event in legacy
-		logQueryEvent('db-connection-success', source.type, source.name);
-
-		const utils = {
-			/**
-			 * @param {string} name
-			 * @param {string} content
-			 */
-			isCached: (name, content) => {
-				const hash = createHash('md5').update(content).digest('hex');
-				return existingHashes[source.name]?.[name] === hash;
-			},
-			/**
-			 * @param {string} name
-			 * @returns {boolean} true if query is included in filters
-			 */
-			isFiltered: (name) =>
-				Boolean(filters?.queries?.has(name) || filters?.queries?.has(`${source.name}.${name}`)) ||
-				!filters?.queries,
-			/**
-			 * @param {string} name
-			 * @param {string} content
-			 * @returns {boolean}
-			 */
-			shouldRun: (name, content) =>
-				!utils.isFiltered(name) && Boolean(filters?.only_changed) && !utils.isCached(name, content),
-			/**
-			 * @param {string} name
-			 * @param {string} content
-			 */
-			addToCache: (name, content) =>
-				(hashes[source.name][name] = createHash('md5').update(content).digest('hex'))
-		};
-
-		if (targetPlugin.processSource) {
-			// Advanced Source
-			const sourceIterator = targetPlugin.processSource(
-				source.options,
-				await buildSourceDirectory(source.sourceDirectory),
-				utils
-			);
-
-			for await (const table of sourceIterator) {
-				// Flush this source
-				const spinner = ora({
-					prefixText: `  ${table.name}`,
-					spinner: 'triangle',
-					discardStdin: false,
-					interval: 250
-				});
-
-				try {
-					spinner.start('Processing...');
-
-					if (!utils.isFiltered(table.name)) {
-						spinner.warn('Skipping: Filtered');
-						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === table.name
-						);
-						if (existingManifestUrl) {
-							outputFilenames.push(existingManifestUrl);
-						} else {
-							spinner.warn('Skipping: Filtered (table does not exist yet)');
-						}
-						continue;
-					}
-
-					if (filters?.only_changed && utils.isCached(table.name, table.content)) {
-						spinner.warn('Skipping: Cached');
-						hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === table.name
-						);
-						if (existingManifestUrl) {
-							outputFilenames.push(existingManifestUrl);
-						} else {
-							spinner.warn('Skipping: Filtered (cache may be broken)');
-						}
-						logQueryEvent('cache-query', source.type, source.name);
-						continue;
-					}
-					hashes[source.name][table.name] = createHash('md5')
-						.update(table.content ?? '')
-						.digest('hex');
-
-					const filename = await flushSource(
-						source,
-						{
-							name: table.name,
-							filepath: path.join(source.sourceDirectory, table.name),
-							content: table.content,
-							hash: hashes[source.name][table.name]
-						},
-						table,
-						dataPath,
-						metaPath,
-						batchSize,
-						spinner
-					);
-					if (filename) outputFilenames.push(filename);
-				} catch (e) {
-					let message = 'Unknown error occurred';
-					if (typeof e === 'string') message = e;
-					else if (e instanceof Error) message = e.message.toString();
-					spinner.fail(chalk.bold.red(message));
-					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
-				}
+			if (filters?.sources && !filters.sources.has(source.name)) {
+				console.log(chalk.yellow(`[!] Skipping filtered source ${source.name}`));
+				hashes[source.name] = existingHashes[source.name] ?? {}; // passthrough hashes
+				manifest[source.name] = existingManifest[source.name] ?? [];
+				event("Filtered")
+				return;
 			}
-		} else {
-			// Simple Source
-			// Load and iterate through query files
-			const queries = await getQueries(
-				source.sourceDirectory,
-				await fs.readdir(source.sourceDirectory)
+			const targetPlugin = plugins[source.type];
+			if (!targetPlugin) {
+				console.log(
+					chalk.yellow(
+						`[!] Unable to process source ${source.name}; no source connector found for ${source.type}`
+					)
+				);
+				logQueryEvent('source-connector-not-found', source.type, source.name);
+				hashes[source.name] = existingHashes[source.name];
+				event("No Connector")
+				return;
+			}
+
+			const connectionValid = await targetPlugin.testConnection(
+				source.options,
+				source.sourceDirectory
 			);
-			const runner = await targetPlugin.factory(source.options, source.sourceDirectory);
+			if (connectionValid !== true) {
+				logQueryEvent('db-connection-error', source.type, source.name);
+				event("Connection Failed")
+				throw new Error(
+					chalk.red(`[!] ${chalk.bold(source.name)} failed to connect; ${connectionValid.reason}`)
+				);
+			}
+			//TODO evidence-1344 and db-connection-error didn't have an equivalent for event in legacy
+			logQueryEvent('db-connection-success', source.type, source.name);
+			event("Connected")
 
-			for (const query of queries) {
-				const spinner = ora({
-					prefixText: `  ${query.name}`,
-					spinner: 'triangle',
-					discardStdin: false,
-					interval: 250
-				});
+			const utils = {
+				/**
+				 * @param {string} name
+				 * @param {string} content
+				 */
+				isCached: (name, content) => {
+					const hash = createHash('md5').update(content).digest('hex');
+					return existingHashes[source.name]?.[name] === hash;
+				},
+				/**
+				 * @param {string} name
+				 * @returns {boolean} true if query is included in filters
+				 */
+				isFiltered: (name) =>
+					Boolean(filters?.queries?.has(name) || filters?.queries?.has(`${source.name}.${name}`)) ||
+					!filters?.queries,
+				/**
+				 * @param {string} name
+				 * @param {string} content
+				 * @returns {boolean}
+				 */
+				shouldRun: (name, content) =>
+					!utils.isFiltered(name) && Boolean(filters?.only_changed) && !utils.isCached(name, content),
+				/**
+				 * @param {string} name
+				 * @param {string} content
+				 */
+				addToCache: (name, content) =>
+					(hashes[source.name][name] = createHash('md5').update(content).digest('hex'))
+			};
 
-				try {
-					spinner.start('Processing...');
+			if (targetPlugin.processSource) {
+				// Advanced Source
+				const sourceIterator = targetPlugin.processSource(
+					source.options,
+					await buildSourceDirectory(source.sourceDirectory),
+					utils
+				);
 
-					if (!utils.isFiltered(query.name)) {
-						spinner.warn('Skipping: Filtered');
-						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === query.name
-						);
-						if (existingManifestUrl) {
-							outputFilenames.push(existingManifestUrl);
-						} else {
-							spinner.warn('Skipping: Filtered (table does not exist yet)');
-						}
-						continue;
-					}
 
-					if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
-						spinner.warn('Skipping: Cached');
-						logQueryEvent('cache-query', source.type, source.name, query.name);
-						hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
-						const existingManifestUrl = sourceManifest.find(
-							(existingPath) => path.basename(existingPath, '.parquet') === query.name
-						);
-						if (existingManifestUrl) {
-							outputFilenames.push(existingManifestUrl);
-						} else {
-							spinner.warn('Skipping: Filtered (cache may be broken)');
-						}
-						continue;
-					}
+				for await (const table of sourceIterator) {
+					await tracing.trace(table.name, async (span) => {
+						const event = span ? span.addEvent.bind(span) : () => { }
 
-					hashes[source.name][query.name] = createHash('md5')
-						.update(query.content ?? '')
-						.digest('hex');
-					/** @type {QueryResult | null} */
-					let result;
-					try {
-						const interpolatedContent = query.content
-							? subSourceVariables(query.content)
-							: query.content;
-						const _r = runner(interpolatedContent, query.filepath, batchSize);
-						if (_r instanceof Promise) {
-							result = await _r.catch((e) => {
-								if (e instanceof z.ZodError) {
-									logQueryEvent('db-error', source.type, source.name, query.name);
-									console.log(e.format());
+						// Flush this source
+						const spinner = ora({
+							prefixText: `  ${table.name}`,
+							spinner: 'triangle',
+							discardStdin: false,
+							interval: 250
+						});
+
+						try {
+							spinner.start('Processing...');
+
+							if (!utils.isFiltered(table.name)) {
+								spinner.warn('Skipping: Filtered');
+								hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
+								const existingManifestUrl = sourceManifest.find(
+									(existingPath) => path.basename(existingPath, '.parquet') === table.name
+								);
+								if (existingManifestUrl) {
+									outputFilenames.push(existingManifestUrl);
 								} else {
+									spinner.warn('Skipping: Filtered (table does not exist yet)');
+								}
+								event("Filtered")
+								return
+							}
+
+							if (filters?.only_changed && utils.isCached(table.name, table.content)) {
+								spinner.warn('Skipping: Cached');
+								hashes[source.name][table.name] = existingHashes[source.name]?.[table.name]; // passthrough hashes
+								const existingManifestUrl = sourceManifest.find(
+									(existingPath) => path.basename(existingPath, '.parquet') === table.name
+								);
+								if (existingManifestUrl) {
+									outputFilenames.push(existingManifestUrl);
+								} else {
+									spinner.warn('Skipping: Filtered (cache may be broken)');
+								}
+								logQueryEvent('cache-query', source.type, source.name);
+								event("Cached")
+								return;
+							}
+							hashes[source.name][table.name] = createHash('md5')
+								.update(table.content ?? '')
+								.digest('hex');
+
+							const filename = await flushSource(
+								source,
+								{
+									name: table.name,
+									filepath: path.join(source.sourceDirectory, table.name),
+									content: table.content,
+									hash: hashes[source.name][table.name]
+								},
+								table,
+								dataPath,
+								metaPath,
+								batchSize,
+								spinner
+							);
+							if (filename) outputFilenames.push(filename);
+						} catch (e) {
+							let message = 'Unknown error occurred';
+							if (typeof e === 'string') message = e;
+							else if (e instanceof Error) message = e.message.toString();
+							spinner.fail(chalk.bold.red(message));
+							if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
+							event(`Failed ${message}`)
+						}
+					})
+				}
+			} else {
+				// Simple Source
+				// Load and iterate through query files
+				const queries = await getQueries(
+					source.sourceDirectory,
+					await fs.readdir(source.sourceDirectory)
+				);
+				const runner = await targetPlugin.factory(source.options, source.sourceDirectory);
+
+				for (const query of queries) {
+					await tracing.trace(query.name, async (span) => {
+						const event = span ? span.addEvent.bind(span) : () => { }
+
+						const spinner = ora({
+							prefixText: `  ${query.name}`,
+							spinner: 'triangle',
+							discardStdin: false,
+							interval: 250
+						});
+
+						try {
+							spinner.start('Processing...');
+
+							if (!utils.isFiltered(query.name)) {
+								spinner.warn('Skipping: Filtered');
+								hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
+								const existingManifestUrl = sourceManifest.find(
+									(existingPath) => path.basename(existingPath, '.parquet') === query.name
+								);
+								if (existingManifestUrl) {
+									outputFilenames.push(existingManifestUrl);
+								} else {
+									spinner.warn('Skipping: Filtered (table does not exist yet)');
+								}
+								event("Filtered")
+								return;
+							}
+
+							if (filters?.only_changed && utils.isCached(query.name, query.content ?? '')) {
+								spinner.warn('Skipping: Cached');
+								logQueryEvent('cache-query', source.type, source.name, query.name);
+								hashes[source.name][query.name] = existingHashes[source.name]?.[query.name]; // passthrough hashes
+								const existingManifestUrl = sourceManifest.find(
+									(existingPath) => path.basename(existingPath, '.parquet') === query.name
+								);
+								if (existingManifestUrl) {
+									outputFilenames.push(existingManifestUrl);
+								} else {
+									spinner.warn('Skipping: Filtered (cache may be broken)');
+								}
+								event("Cached")
+								return;
+							}
+
+							hashes[source.name][query.name] = createHash('md5')
+								.update(query.content ?? '')
+								.digest('hex');
+							/** @type {QueryResult | null} */
+							let result;
+							try {
+								const interpolatedContent = query.content
+									? subSourceVariables(query.content)
+									: query.content;
+								const _r = tracing.trace("Exec Query", () => runner(interpolatedContent, query.filepath, batchSize));
+								if (_r instanceof Promise) {
+									result = await _r.catch((e) => {
+										if (e instanceof z.ZodError) {
+											logQueryEvent('db-error', source.type, source.name, query.name);
+											console.log(e.format());
+										} else {
+											throw e;
+										}
+										return null;
+									});
+									if (result) {
+										logQueryEvent('db-query', source.type, source.name, query.name);
+									}
+								} else {
+									result = _r;
+									logQueryEvent('db-query', source.type, source.name, query.name);
+								}
+							} catch (e) {
+								logQueryEvent('db-error', source.type, source.name, query.name);
+								if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
+								else {
 									throw e;
 								}
-								return null;
-							});
-							if (result) {
-								logQueryEvent('db-query', source.type, source.name, query.name);
+								result = null;
 							}
-						} else {
-							result = _r;
-							logQueryEvent('db-query', source.type, source.name, query.name);
+
+							if (result === null) {
+								spinner.warn(`Finished. Returned no results!`);
+								event("Empty")
+								return
+							}
+
+							if (result === null) {
+								event("Returned nul")
+								return
+							}
+							
+
+							const r = await flushSource(
+								source,
+								query,
+								result,
+								dataPath,
+								metaPath,
+								batchSize,
+								spinner
+							);
+							if (!r) return
+							const {parquetFilename: filename, writtenRows} = r 
+							if (span) {
+								console.log("Attribute set")
+								span.setAttribute("rows", writtenRows)
+							}
+
+							if (filename) outputFilenames.push(filename);
+						} catch (e) {
+							let message = 'Unknown error occurred';
+							if (typeof e === 'string') message = e;
+							else if (e instanceof Error) message = e.message.toString();
+							spinner.fail(chalk.bold.red(message));
+							if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
+							event(`Error: ${message}`)
 						}
-					} catch (e) {
-						logQueryEvent('db-error', source.type, source.name, query.name);
-						if (e instanceof z.ZodError) console.log(cleanZodErrors(e.format()));
-						else {
-							throw e;
-						}
-						result = null;
-					}
-
-					if (result === null) {
-						spinner.warn(`Finished. Returned no results!`);
-						continue;
-					}
-
-					if (result === null) {
-						continue;
-					}
-					const filename = await flushSource(
-						source,
-						query,
-						result,
-						dataPath,
-						metaPath,
-						batchSize,
-						spinner
-					);
-
-					if (filename) outputFilenames.push(filename);
-				} catch (e) {
-					let message = 'Unknown error occurred';
-					if (typeof e === 'string') message = e;
-					else if (e instanceof Error) message = e.message.toString();
-					spinner.fail(chalk.bold.red(message));
-					if (process.env.VITE_EVIDENCE_DEBUG && e instanceof Error) console.log(e.stack);
+					})
 				}
 			}
-		}
 
-		manifest[source.name] = outputFilenames;
+			manifest[source.name] = outputFilenames;
+		})
 	}
 
 	await saveSourceHashes(metaPath, hashes);
@@ -363,7 +399,7 @@ export const buildSources = async (
  * @param {string} metaPath
  * @param {number} batchSize
  * @param {import("ora").Ora} [spinner]
- * @returns {Promise<null | string>}
+ * @returns {Promise<null | {parquetFilename: string, writtenRows: number}>}
  */
 const flushSource = async (source, query, result, dataPath, metaPath, batchSize, spinner) => {
 	const logOut = /** @param {string} t **/ (t) => (spinner ? (spinner.text = t) : console.log(t));
@@ -417,5 +453,5 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
 
-	return parquetFilename;
+	return {parquetFilename, writtenRows};
 };

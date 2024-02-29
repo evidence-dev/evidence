@@ -18,8 +18,8 @@
 	"license": "MIT",
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
-		"@evidence-dev/universal-sql": "workspace:*",
 		"@evidence-dev/telemetry": "workspace:*",
+		"@evidence-dev/universal-sql": "workspace:*",
 		"@types/estree": "^1.0.1",
 		"@types/lodash.debounce": "^4.0.9",
 		"@types/lodash.merge": "^4.6.8",
@@ -49,6 +49,14 @@
 		"parcel": "^2.8.3",
 		"typescript": "^5.0.4",
 		"vitest": "^0.34.1"
+	},
+	"peerDependencies": {
+		"@evidence-dev/apm": "workspace:*"
+	},
+	"peerDependenciesMeta": {
+		"@evidence-dev/apm": {
+			"optional": true
+		}
 	},
 	"targets": {
 		"types": false,

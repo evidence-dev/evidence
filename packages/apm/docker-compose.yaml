@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  # jaeger:
+  #   image: jaegertracing/all-in-one:1.54
+  #   environment:
+  #     COLLECTOR_OTLP_ENABLED: true
+  #     JAEGER_REPORTER_LOG_SPANS: true
+  #   ports:
+  #     - 6831:6831/udp
+  #     - 6832:6832/udp
+  #     - 5778:5778
+  #     - 16686:16686
+  #     - 4317:4317
+  #     - 4318:4318
+  #     - 14250:14250
+  #     - 14268:14268
+  #     - 14269:14269
+  #     - 9411:9411
+
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./cfg/tempo.yaml:/etc/tempo.yaml
+    ports:
+      - "3200:3200"   # tempo
+      - "9095:9095" # tempo grpc
+      - "4317:4317"  # otlp grpc
+      - "4318:4318"  # otlp http
+
+  # k6-tracing:
+  #   image: ghcr.io/grafana/xk6-client-tracing:latest
+  #   environment:
+  #     - ENDPOINT=tempo:4317
+  #   restart: always
+  #   depends_on:
+  #     - tempo
+
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   command:
+  #     - --config.file=/etc/prometheus.yaml
+  #     - --web.enable-remote-write-receiver
+  #     - --enable-feature=exemplar-storage
+  #   volumes:
+  #     - ./cfg/prometheus.yaml:/etc/prometheus.yaml
+  #   ports:
+  #     - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:10.2.2
+    volumes:
+      - ./cfg/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor traceQLStreaming metricsSummary
+    ports:
+      - "3000:3000"
