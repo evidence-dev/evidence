@@ -25,9 +25,9 @@
 	async function updateChart(c) {
 		if (!container) return;
 		container.innerHTML = c;
-		// await mermaid.run({
-		// 	nodes: [container]
-		// });
+		await mermaid.run({
+			nodes: [container]
+		});
 	}
 
 	$: chartSpec = wrapEl?.textContent ?? chart;
