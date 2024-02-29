@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Removed @apply from Header.svelte
+Add error handling for dates in heatmap

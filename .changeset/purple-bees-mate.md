@@ -1,7 +1,7 @@
 ---
 '@evidence-dev/core-components': patch
-'evidence-docs': patch
+'@evidence-dev/evidence': patch
 '@evidence-dev/components': patch
 ---
 
-Add dimension grid
+Replace sparkline component

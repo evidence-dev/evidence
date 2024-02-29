@@ -192,6 +192,26 @@ from ${orders_by_category}
   <Column id=aov_change_pct0 totalAgg=median/>
 </DataTable>
 
+### Weighted Mean
+Weighted mean requires passsing a `weightCol`.
+
+If no `weightCol` is specified, the result will be identical to the result from `totalAgg=mean`
+
+<DataTable data={orders_with_comparisons} totalRow=true>
+  <Column id=month totalAgg="Weighted Mean"/>
+  <Column id=category totalAgg=""/>
+  <Column id=sales_usd0k totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=num_orders_num0 totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=aov_usd2 totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=prev_sales_usd0k totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=prev_num_orders_num0 totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=prev_aov_usd2 totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=sales_change_pct0 totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=num_orders_change_pct0 totalAgg=weightedMean weightCol=sales_usd0k/>
+  <Column id=aov_change_pct0 totalAgg=weightedMean weightCol=sales_usd0k/>
+</DataTable>
+
+
 ## Formats from Column
 
 ```sql no_tags
@@ -203,6 +223,18 @@ select
     aov_usd2 as aov
 from ${orders_with_comparisons}
 ```
+
+```country_example
+select * from ${countries}
+limit 5
+```
+
+<DataTable data={country_example} totalRow=true rows=5>
+  <Column id=country/>
+  <Column id=gdp_usd totalAgg=sum/>
+  <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct2'/>
+  <Column id=population totalAgg=mean fmt='#,##0"M"'/>
+</DataTable>
 
 <DataTable data={no_tags} totalRow=true rowNumbers=true>
   <Column id=month totalAgg=countDistinct />

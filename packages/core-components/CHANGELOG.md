@@ -1,5 +1,25 @@
 # @evidence-dev/core-components
 
+## 3.4.0
+
+### Minor Changes
+
+- e09c5716: Add empty state to components
+
+### Patch Changes
+
+- bc3b2807: Fix min and max input issue in maps and heatmaps
+- eb21097b: Add yScale prop to adjust yMin automatically
+- 5ea44a86: Removed @apply from Header.svelte
+- 168f657a: Add print control components
+- 6ec752a7: Fix custom formatting retrieval for custom components
+- 4352150c: Add dimension grid
+- b864b3cd: Add additional echarts override options to charting library
+- Updated dependencies [e09c5716]
+- Updated dependencies [6ec752a7]
+- Updated dependencies [b864b3cd]
+  - @evidence-dev/component-utilities@2.3.0
+
 ## 3.3.1
 
 ### Patch Changes

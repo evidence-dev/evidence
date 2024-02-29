@@ -135,6 +135,14 @@
 		// ---------------------------------------------------------------------------------------
 		// Get column summary:
 		columnSummary = getColumnSummary(data);
+
+		// Check that x and y columns are strings
+		if (columnSummary[x].type === 'date' || columnSummary[y].type === 'date') {
+			throw Error(
+				'Heatmap can only accept string or numeric columns for x and y. If you would like to show dates, cast them to strings in your SQL query before using in the Heatmap.'
+			);
+		}
+
 		// Get formats:
 		valueFormat = columnSummary[value].format;
 
