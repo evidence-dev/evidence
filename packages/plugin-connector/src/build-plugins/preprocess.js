@@ -1,11 +1,18 @@
 import { getPluginComponents } from '../component-resolution/get-plugin-components';
 import autoImport from 'sveltekit-autoimport';
 
+
+/** @type {ReturnType<typeof getPluginComponents>} */
+let componentPlugins
+
 /**
  * @type {() => import("svelte/types/compiler/preprocess").PreprocessorGroup}
  */
 export const evidencePlugins = () => {
-	const componentPlugins = getPluginComponents();
+	if (!componentPlugins){
+		console.log("\n\nExecuting EvidencePlugins", process.pid, "\n\n")
+		componentPlugins = getPluginComponents();
+	}
 
 	const packages = componentPlugins
 		.then((components) => {
