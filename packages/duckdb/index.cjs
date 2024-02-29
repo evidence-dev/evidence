@@ -5,7 +5,7 @@ const {
 	cleanQuery,
 	exhaustStream
 } = require('@evidence-dev/db-commons');
-const { Database, OPEN_READONLY, OPEN_READWRITE } = require('duckdb-async');
+const { Database } = require('duckdb-async');
 const path = require('path');
 
 /**
@@ -132,10 +132,13 @@ const runQuery = async (queryString, database, batchSize = 100000) => {
 		filename = ':memory:';
 	}
 
-	const mode = filename !== ':memory:' ? OPEN_READONLY : OPEN_READWRITE;
+	const mode = filename !== ':memory:' ? 'READ_ONLY' : 'READ_WRITE';
 
 	try {
-		const db = await Database.create(filename, mode);
+		const db = await Database.create(filename, {
+			access_mode: mode,
+			custom_user_agent: 'evidence-dev'
+		});
 		const conn = await db.connect();
 		const stream = conn.stream(queryString);
 
