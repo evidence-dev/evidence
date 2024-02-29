@@ -141,3 +141,57 @@ Multiple cards will align themselves into a row.
         <tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
 <tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
 </table>
+
+### Sparkline Options
+
+<table>						 
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>	
+        <td>sparklineType</td>	
+        <td>Chart type for sparkline</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>line | area | bar</td>	
+        <td class='tcenter'>line</td>	
+    </tr>
+    <tr>	
+        <td>sparklineValueFmt</td>	
+        <td>Formatting for tooltip values</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>format code</td>	
+        <td class='tcenter'>same as fmt if supplied</td>	
+    </tr>
+    <tr>	
+        <td>sparklineDateFmt</td>	
+        <td>Formatting for tooltip dates</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>format code</td>	
+        <td class='tcenter'>YYYY-MM-DD</td>	
+    </tr>
+    <tr>	
+        <td>sparklineColor</td>	
+        <td>Color of visualization</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>sparklineYScale</td>	
+        <td>Whether to truncate the y-axis of the chart to enhance visibility</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>	
+    </tr>
+    <tr>	
+        <td>connectGroup</td>	
+        <td>Group name to connect this sparkline to other charts for synchronized tooltip hovering. Charts with the same <code>connectGroup</code> name will become connected</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>string</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+</table>

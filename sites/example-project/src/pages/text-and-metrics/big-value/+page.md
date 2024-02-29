@@ -4,32 +4,45 @@ queries:
   - orders_with_comparisons: orders_with_comparisons.sql
 ---
 
-<BigValue 
-  data = {orders_with_comparisons} 
-  value=sales_usd0k
-  sparkline=month
-  comparison=sales_change_pct0
-  comparisonTitle="vs. Last Month"
-/>
+```owc
+select * from ${orders_with_comparisons}
+where category = 'Odd Equipment'
+```
 
 <BigValue 
-  data = {orders_with_comparisons} 
-  value=aov_usd2
-  title="AOV ($)"
-  sparkline=month
-  comparison=aov_change_pct0
-  comparisonTitle="vs. Last Month"
+data = {owc} 
+value=sales_usd0k
+sparkline=month
+comparison=sales_change_pct0
+comparisonTitle="vs. Last Month"
+sparklineType=area
+connectGroup=bigvalues
+comparisonDelta=false
 />
 
-<BigValue 
-  data = {orders_with_comparisons} 
-  value=sales_usd0k
-  title="Category Sales"
-  comparison=sales_change_pct0
-  comparisonTitle="of Total"
-  comparisonDelta=false
+<BigValue data = {owc} 
+value=num_orders_num0
+title="Orders"
+sparkline=month
+sparklineType=bar
+comparison=num_orders_change_pct0
+comparisonTitle="vs. Last Month"
+sparklineColor=maroon
+sparklineDateFmt=shortdate
+connectGroup=bigvalues
 />
 
+<BigValue data = {owc} 
+value=aov_usd2
+title="AOV ($)"
+sparkline=month
+comparison=aov_change_pct0
+comparisonTitle="vs. Last Month"
+sparklineColor=navy
+sparklineDateFmt=mmm
+sparklineYScale=true
+connectGroup=bigvalues
+/> 
 
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
