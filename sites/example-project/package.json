@@ -31,6 +31,7 @@
 		"@steeze-ui/tabler-icons": "^2.1.0",
 		"@sveltejs/kit": "1.22.3",
 		"@tidyjs/tidy": "2.5.2",
+		"chroma-js": "^2.4.2",
 		"cross-env": "^7.0.3",
 		"debounce": "^1.2.1",
 		"downloadjs": "1.4.7",
