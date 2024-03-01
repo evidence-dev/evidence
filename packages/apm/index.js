@@ -54,7 +54,7 @@ function annotate(
 }
 
 /**
- * @template {(span: import("@opentelemetry/api").Span) => any} T
+ * @template {(span?: import("@opentelemetry/api").Span) => any} T
  * @param {string} title
  * @param {T} work
  * @returns {ReturnType<T>}

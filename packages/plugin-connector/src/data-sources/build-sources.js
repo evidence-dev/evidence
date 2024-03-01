@@ -239,7 +239,7 @@ export const buildSources = async (
 								batchSize,
 								spinner
 							);
-							if (filename) outputFilenames.push(filename);
+							if (filename) outputFilenames.push(filename.parquetFilename);
 						} catch (e) {
 							let message = 'Unknown error occurred';
 							if (typeof e === 'string') message = e;
@@ -453,5 +453,5 @@ const flushSource = async (source, query, result, dataPath, metaPath, batchSize,
 
 	await fs.writeFile(schemaFilename, JSON.stringify(result.columnTypes));
 
-	return {parquetFilename, writtenRows};
+	return {parquetFilename, writtenRows: Number(writtenRows)};
 };
