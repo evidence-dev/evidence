@@ -10,7 +10,7 @@ const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
 const otlpExporter = new OTLPTraceExporter({
-    url: 'http://localhost:4318/v1/traces', // TODO: Make configurable
+    url: 'https://evidencebriantempo.share.zrok.io/v1/traces', // TODO: Make configurable
 });
 
 const provider = new BasicTracerProvider({

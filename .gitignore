@@ -26,3 +26,4 @@ connection.options.yaml
 .idea
 packages/core-components/.evidence-queries
 packages/core-components/.profile.json
+packages/apm/zrok
