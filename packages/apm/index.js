@@ -31,45 +31,56 @@ const tracer = opentelemetry.trace.getTracer("EvidenceTracer")
 
 const ParentSpan = Symbol("ParentSpan")
 
-
+/**
+ * @typedef {(...args: any[]) => any} SomeFunc
+ */
 
 /**
- * @template {(...args: any[]) => any} T
- * @param {string | ((...args: Parameters<T>) => string)} title
+ * @template {SomeFunc} F
+ * @template T
+ * @typedef {T | ((...args: Parameters<F>) => T)} MaybeFunc
+ */
+
+/**
+ * @template {SomeFunc} T
+ * @param {MaybeFunc<T, string>} title
  * @param {T} fn
+ * @param {MaybeFunc<T, Record<string,any>>} [attrs]
+ * @param {APMSpan} [rootTrace]
  * @returns {T}
  */
 function annotate(
-    title, fn
+    title, fn, attrs, rootTrace
 ) {
     /**
      * @param {Parameters<T>} args
      * @returns {ReturnType<T>}
     */
     const wrap = (...args) => trace(
-        typeof title === "string" ? title : title(...args),
-        () => fn(...args))
+        typeof title === "function" ? title(...args) : title,
+        () => fn(...args),
+        typeof attrs === "function" ? attrs(...args) : attrs,
+        rootTrace
+    )
     // @ts-expect-error
     return wrap
 }
 
 /**
- * @template {(span?: import("@opentelemetry/api").Span) => any} T
+ * @template {(span?: APMSpan) => any} T
  * @param {string} title
  * @param {T} work
+ * @param {Record<string,any>} [attrs]
+ * @param {APMSpan} [rootTrace]
  * @returns {ReturnType<T>}
  */
 function trace(
     title,
-    work
+    work,
+    attrs,
+    rootTrace
 ) {
-    const activeContext = opentelemetry.context.active()
-    // Prefer the "real" active span
-
-    const parentSpan = /** @type {import("@opentelemetry/api").Span} */ (opentelemetry.trace.getActiveSpan() ?? activeContext.getValue(ParentSpan))
-
-    const ctx = opentelemetry.trace.setSpan(activeContext, parentSpan);
-    const span = tracer.startSpan(title, undefined, ctx)
+    const [span, activeContext] = start(title, attrs, rootTrace)
 
     try {
         const result = contextManager.with(activeContext.setValue(ParentSpan, span), () => work(span))
@@ -77,27 +88,71 @@ function trace(
             return (
                 /** @type {ReturnType<T>} */
                 (result.then((v) => {
-                    span.end();
+                    stop(span)
                     return v
                 }).catch((e) => {
-                    span.recordException(e)
-                    span.end()
+                    stop(span, 2)
                     throw e
                 })))
         } else {
-            span.end();
+            stop(span)
             return result;
         }
     } catch (e) {
-        if (e instanceof Error)
-            span.recordException(e)
-        else
-            span.recordException(new Error("Unknown Error", { cause: e }))
-        span.end()
+        stop(span, e)
         throw e
     }
 }
 
+const t = Symbol("x")
+/**
+ * @param {string} title
+ * @param {Record<string,any>} [attrs]
+ * @param {APMSpan} [rootTrace]
+ * @returns {[APMSpan, APMContext]}
+ */
+function start(title, attrs, rootTrace) {
+    const activeContext = opentelemetry.context.active()
+    // Prefer the "real" active span
+
+    const parentSpan = /** @type {APMSpan} */ (opentelemetry.trace.getActiveSpan() ?? activeContext.getValue(ParentSpan))
+    let ctx
+    if (rootTrace && rootTrace !== parentSpan) {
+        
+        // console.log("\n\n---\n\n")
+        const traceCtx = opentelemetry.trace.setSpan(activeContext, rootTrace);
+        // console.log(rootTrace)
+        // console.log(traceCtx)
+        traceCtx.setValue(t, title)
+        ctx = traceCtx
+        // ctx = opentelemetry.trace.setSpan(traceCtx, parentSpan);
+        // console.log(ctx)
+        // console.log(ctx.getValue(t))
+        // console.log("\n\n---\n\n")
+    } else {
+        ctx = opentelemetry.trace.setSpan(activeContext, parentSpan);
+    }
+
+    const span = tracer.startSpan(title, undefined, ctx)
+    if (attrs) span.setAttributes(attrs)
+
+    return [span, activeContext]
+}
+
+/**
+ * @param {APMSpan} span
+ * @param {unknown} [error]
+ * @param {import("@opentelemetry/api").TimeInput} [realStoptime]
+ * @returns {void}
+ */
+function stop(span, error, realStoptime) {
+    if (error instanceof Error)
+            span.recordException(error)
+        else if (error)
+            span.recordException(new Error(error?.toString() ?? "Unknown Error" , { cause: error }))
+        
+    span.end(realStoptime);
+}
 
 process.addListener('beforeExit', async () => {
     // Clean up; this might not actually be needed
@@ -109,5 +164,10 @@ process.addListener('beforeExit', async () => {
 
 module.exports = {
     annotate,
-    trace
+    trace,
+    start,
+    stop
 }
+
+/** @typedef {import("@opentelemetry/api").Span} APMSpan */
+/** @typedef {import("@opentelemetry/api").Context} APMContext */
