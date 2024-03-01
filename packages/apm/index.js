@@ -34,7 +34,7 @@ const ParentSpan = Symbol("ParentSpan")
 
 
 /**
- * @template {CallableFunction} T
+ * @template {(...args: any[]) => any} T
  * @param {string | ((...args: Parameters<T>) => string)} title
  * @param {T} fn
  * @returns {T}
@@ -49,6 +49,7 @@ function annotate(
     const wrap = (...args) => trace(
         typeof title === "string" ? title : title(...args),
         () => fn(...args))
+    // @ts-expect-error
     return wrap
 }
 
@@ -64,28 +65,34 @@ function trace(
 ) {
     const activeContext = opentelemetry.context.active()
     // Prefer the "real" active span
-    const parentSpan = opentelemetry.trace.getActiveSpan() ?? activeContext.getValue(ParentSpan)
+
+    const parentSpan = /** @type {import("@opentelemetry/api").Span} */ (opentelemetry.trace.getActiveSpan() ?? activeContext.getValue(ParentSpan))
 
     const ctx = opentelemetry.trace.setSpan(activeContext, parentSpan);
     const span = tracer.startSpan(title, undefined, ctx)
-    
+
     try {
         const result = contextManager.with(activeContext.setValue(ParentSpan, span), () => work(span))
         if (result instanceof Promise) {
-            return result.then((v) => {
-                span.end();
-                return v
-            }).catch((e) => {
-                span.recordException(e)
-                span.end()
-                throw e
-            })
+            return (
+                /** @type {ReturnType<T>} */
+                (result.then((v) => {
+                    span.end();
+                    return v
+                }).catch((e) => {
+                    span.recordException(e)
+                    span.end()
+                    throw e
+                })))
         } else {
             span.end();
             return result;
         }
     } catch (e) {
-        span.recordException(e)
+        if (e instanceof Error)
+            span.recordException(e)
+        else
+            span.recordException(new Error("Unknown Error", { cause: e }))
         span.end()
         throw e
     }
