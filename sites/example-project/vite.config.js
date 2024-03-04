@@ -4,7 +4,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 const config = {
 	plugins: [sveltekit()],
 	optimizeDeps: {
-		include: ['echarts-stat', 'echarts', 'mermaid'],
+		include: ['echarts-stat', 'echarts'],
 		exclude: ['svelte-icons']
 	},
 	ssr: {
@@ -22,7 +22,7 @@ const config = {
 	},
 	build: {
 		rollupOptions: {
-			external: [/^@evidence-dev\/tailwind\/fonts\//]
+			external: [/^@evidence-dev\/tailwind\/fonts\//, 'mermaid']
 		}
 	}
 };
