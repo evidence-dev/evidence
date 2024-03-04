@@ -70,7 +70,7 @@ describe('buildMultipartParquet', () => {
 		);
 		expect(r).toEqual({
 			writtenRows: 2,
-			filenames: ['.evidence/template/static/data/out.0.parquet']
+			filenames: ['.evidence/template/static/data/out.0.parquet'].map(adaptFilePath)
 		});
 		const stat = await fs.stat('.evidence/template/static/data/out.0.parquet');
 		expect(stat.isFile()).toBeTruthy();
@@ -107,7 +107,7 @@ describe('buildMultipartParquet', () => {
 		);
 		expect(r).toEqual({
 			writtenRows: 2,
-			filenames: ['.evidence/template/static/data/out.0.parquet']
+			filenames: ['.evidence/template/static/data/out.0.parquet'].map(adaptFilePath)
 		});
 		const stat = await fs.stat('.evidence/template/static/data/out.0.parquet');
 		expect(stat.isFile()).toBeTruthy();
@@ -173,7 +173,7 @@ describe('buildMultipartParquet', () => {
 		);
 		expect(r).toEqual({
 			writtenRows: 1000,
-			filenames: ['.evidence/template/static/data/out.0.parquet']
+			filenames: ['.evidence/template/static/data/out.0.parquet'].map(adaptFilePath)
 		});
 		const stat = await fs.stat('.evidence/template/static/data/out.0.parquet');
 		expect(stat.isFile()).toBeTruthy();
