@@ -393,7 +393,7 @@ importers:
         specifier: ^0.1.9
         version: 0.1.16
       react:
-        specifier: ^17.0.1
+        specifier: ^17.0.2
         version: 17.0.2
       react-dom:
         specifier: ^17.0.1

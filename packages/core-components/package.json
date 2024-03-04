@@ -88,7 +88,7 @@
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"publint": "^0.1.9",
-		"react": "^17.0.1",
+		"react": "^17.0.2",
 		"react-dom": "^17.0.1",
 		"storybook": "^7.6.6",
 		"svelte": "^3.54.0",
