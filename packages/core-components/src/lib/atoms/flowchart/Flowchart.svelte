@@ -4,7 +4,7 @@
 
 <script>
 	import { onMount } from 'svelte';
-	import mermaid from 'mermaid'
+	import mermaid from 'mermaid';
 
 	/** @type {string} */
 	export let chart = undefined;
