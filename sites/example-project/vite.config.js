@@ -5,7 +5,7 @@ const config = {
 	plugins: [sveltekit()],
 	optimizeDeps: {
 		include: ['echarts-stat', 'echarts'],
-		exclude: ['svelte-icons']
+		exclude: ['svelte-icons', 'mermaid']
 	},
 	ssr: {
 		external: [
