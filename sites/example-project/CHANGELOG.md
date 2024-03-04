@@ -1,5 +1,33 @@
 # @evidence-dev/components
 
+## 3.3.4
+
+### Patch Changes
+
+- 403f492c: Add dependency for chroma
+- Updated dependencies [403f492c]
+- Updated dependencies [f3efd049]
+  - @evidence-dev/core-components@3.4.2
+
+## 3.3.3
+
+### Patch Changes
+
+- 6c37b473: Add weightedMean total agg to DataTable
+- 1e665bf2: Replace sparkline component
+- 5c492a00: Add non-delta comparisons to BigValue
+- Updated dependencies [6c37b473]
+- Updated dependencies [37cbbc43]
+- Updated dependencies [1e665bf2]
+- Updated dependencies [858ea06f]
+- Updated dependencies [5c492a00]
+- Updated dependencies [32a38858]
+- Updated dependencies [0c1a7ccb]
+  - @evidence-dev/core-components@3.4.1
+  - @evidence-dev/postgres@1.0.4
+  - @evidence-dev/duckdb@1.0.7
+  - @evidence-dev/csv@1.0.7
+
 ## 3.3.2
 
 ### Patch Changes

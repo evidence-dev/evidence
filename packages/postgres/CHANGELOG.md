@@ -1,5 +1,11 @@
 # @evidence-dev/postgres
 
+## 1.0.4
+
+### Patch Changes
+
+- 32a38858: More informative pg errors
+
 ## 1.0.3
 
 ### Patch Changes

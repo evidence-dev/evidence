@@ -1,5 +1,22 @@
 # @evidence-dev/core-components
 
+## 3.4.2
+
+### Patch Changes
+
+- 403f492c: Add dependency for chroma
+- f3efd049: Fix for sparkline in bigvalue error message
+
+## 3.4.1
+
+### Patch Changes
+
+- 6c37b473: Add weightedMean total agg to DataTable
+- 37cbbc43: fix sqlconsole bug that crashed on navigation
+- 1e665bf2: Replace sparkline component
+- 858ea06f: Add error handling for dates in heatmap
+- 5c492a00: Add non-delta comparisons to BigValue
+
 ## 3.4.0
 
 ### Minor Changes
