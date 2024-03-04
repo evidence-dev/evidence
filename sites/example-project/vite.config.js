@@ -22,7 +22,7 @@ const config = {
 	},
 	build: {
 		rollupOptions: {
-			external: [/^@evidence-dev\/tailwind\/fonts\//, 'mermaid']
+			external: [/^@evidence-dev\/tailwind\/fonts\//]
 		}
 	}
 };
