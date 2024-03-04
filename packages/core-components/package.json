@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "3.4.0",
+	"version": "3.4.2",
 	"evidence": {
 		"components": true
 	},
@@ -46,6 +46,7 @@
 		"@steeze-ui/tabler-icons": "^2.1.0",
 		"@types/lodash.debounce": "^4.0.9",
 		"@types/mermaid": "^9.2.0",
+		"chroma-js": "^2.4.2",
 		"clsx": "^2.0.0",
 		"codemirror": "^6.0.1",
 		"echarts": "5.4.3",

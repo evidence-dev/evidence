@@ -271,6 +271,9 @@ importers:
       '@types/mermaid':
         specifier: ^9.2.0
         version: 9.2.0
+      chroma-js:
+        specifier: ^2.4.2
+        version: 2.4.2
       clsx:
         specifier: ^2.0.0
         version: 2.1.0
@@ -1142,6 +1145,9 @@ importers:
       '@tidyjs/tidy':
         specifier: 2.5.2
         version: 2.5.2
+      chroma-js:
+        specifier: ^2.4.2
+        version: 2.4.2
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -11605,7 +11611,6 @@ packages:
 
   /chroma-js@2.4.2:
     resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
-    dev: true
 
   /chromatic@6.24.1:
     resolution: {integrity: sha512-XbpdWWHvFpEHtcq1Km71UcuQ07effB+8q8L47E1Y7HJmJ4ZCoKCuPd8liNrbnvwEAxqfBZvTcONYU/3BPz2i5w==}
