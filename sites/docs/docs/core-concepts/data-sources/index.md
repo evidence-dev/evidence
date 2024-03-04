@@ -220,6 +220,18 @@ The `trustServerCertificate` option indicates whether the channel will be encryp
 
 The `encrypt` option indicates whether SQL Server uses SSL encryption for all data sent between the client and server if the server has a certificate installed. Necessary for Azure databases.
 
+#### Authentication Type
+
+On top of the extra options, an authentication property can be added, see documentation for [`mssql`](https://www.npmjs.com/package/mssql). 
+
+For example, to use Azure Active Directory authentication, you can pass this 
+
+```js
+authentication: {
+  type: "azure-active-directory-default"
+}
+```
+
 ### MySQL
 
 #### SSL
