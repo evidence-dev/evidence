@@ -222,7 +222,7 @@ The `encrypt` option indicates whether SQL Server uses SSL encryption for all da
 
 #### Authentication Type
 
-On top of the extra options, an authentication property can be added, see documentation for [`mssql`](https://www.npmjs.com/package/mssql). 
+On top of the extra options, an authentication property can be added, see documentation for [`mssql`](https://www.npmjs.com/package/mssql). Passing this object will override `user`, `password`, `domain` settings.
 
 For example, to use Azure Active Directory authentication, you can pass this 
 
