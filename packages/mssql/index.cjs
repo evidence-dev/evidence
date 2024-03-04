@@ -94,7 +94,7 @@ const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 			database: database.database,
 			password: database.password,
 			port: parseInt(database.port ?? 1433),
-			authentication: database.authentication,
+			authentication: { type: database.authenticationType },
 			options: {
 				trustServerCertificate:
 					trust_server_certificate === 'true' || trust_server_certificate === true,
@@ -181,13 +181,19 @@ module.exports.options = {
 		title: 'Username',
 		secret: false,
 		type: 'string',
-		required: true
+		required: false
 	},
 	password: {
 		title: 'Password',
 		secret: true,
 		type: 'string',
-		required: true
+		required: false
+	},
+	authenticationType: {
+		title: 'Authentication type',
+		secret: false,
+		type: 'string',
+		required: false
 	},
 	port: {
 		title: 'Port',
