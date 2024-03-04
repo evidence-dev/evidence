@@ -94,6 +94,7 @@ const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 			database: database.database,
 			password: database.password,
 			port: parseInt(database.port ?? 1433),
+			authentication: database.authentication,
 			options: {
 				trustServerCertificate:
 					trust_server_certificate === 'true' || trust_server_certificate === true,
