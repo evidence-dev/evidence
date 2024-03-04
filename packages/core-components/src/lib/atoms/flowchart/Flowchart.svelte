@@ -3,9 +3,8 @@
 </script>
 
 <script>
-	
 	import { onMount } from 'svelte';
-	
+
 	/** @type {string} */
 	export let chart = undefined;
 
@@ -22,7 +21,7 @@
 	 * @param {string} c
 	 */
 	async function updateChart(c) {
-		const mermaid = await import("mermaid");
+		const mermaid = await import('mermaid');
 		if (!container) return;
 		container.innerHTML = c;
 		await mermaid.run({
