@@ -246,7 +246,9 @@ See the [DuckDB docs](https://duckdb.org/docs/guides/index) for more information
 
 To connect to MotherDuck, you will need a [service token](https://motherduck.com/docs/authenticating-to-motherduck/#authentication-using-a-service-token).
 
-In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`, and select `No extension` from the dropdown.
+In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`.
+
+You can also specify a database: `md:my_database?motherduck_token=[YOUR_SERVICE_TOKEN]`.
 
 ### Databricks
 
