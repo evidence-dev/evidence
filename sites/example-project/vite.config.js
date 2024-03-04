@@ -12,7 +12,8 @@ const config = {
 			'@evidence-dev/db-orchestrator',
 			'@evidence-dev/telemetry',
 			'blueimp-md5',
-			'@evidence-dev/plugin-connector'
+			'@evidence-dev/plugin-connector',
+			'mermaid'
 		]
 	},
 	server: {
