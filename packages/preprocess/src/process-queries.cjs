@@ -3,6 +3,8 @@ const { extractQueries } = require('./extract-queries/extract-queries.cjs');
 const { highlighter } = require('./utils/highlighter.cjs');
 const { containsFrontmatter } = require('./frontmatter/frontmatter.regex.cjs');
 
+const tracing = require("./utils/trace.js")
+
 // prettier obliterates the formatting of queryDeclarations
 // prettier-ignore
 /**
@@ -16,7 +18,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 	const routeH = getRouteHash(filename);
 
 	let queryDeclarations = '';
-
+	
 	if (Object.keys(duckdbQueries).length > 0) {
 		const IS_VALID_QUERY = /^([a-zA-Z_$][a-zA-Z0-9d_$]*)$/;
 		const validIds = Object.keys(duckdbQueries).filter((query) => IS_VALID_QUERY.test(query) && !duckdbQueries[query].compileError);
@@ -32,7 +34,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = QueryStore.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, "${q.id}", { initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
 
-		
+
 		const queryStoreDeclarations = validIds.map((id) => {
 			/*
 				"What the heck is happening here":
@@ -305,7 +307,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
         ${queryDeclarations}
     `;
-
 	return defaultProps;
 };
 
@@ -319,45 +320,52 @@ const processQueries = (componentDevelopmentMode) => {
 	const dynamicQueries = {};
 	return {
 		markup({ content, filename }) {
-			if (filename.endsWith('.md')) {
-				let fileQueries = extractQueries(content);
-				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
-					acc[q.id] = q;
-					return acc;
-				}, {});
+			return tracing.trace("processQueries.markup", () => {
+				if (filename.endsWith('.md')) {
+					let fileQueries
+					tracing.trace("extractQueries", () => {
+						fileQueries = extractQueries(content);
+					});
+					dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
+						acc[q.id] = q;
+						return acc;
+					}, {});
 
-				const externalQueryViews =
-					'\n\n\n' +
-					fileQueries
-						.filter((q) => !q.inline)
-						.map((q) => {
-							return highlighter(q.compiledQueryString, q.id.toLowerCase());
-						})
-						.join('\n');
+					const externalQueryViews =
+						'\n\n\n' +
+						fileQueries
+							.filter((q) => !q.inline)
+							.map((q) => {
+								return highlighter(q.compiledQueryString, q.id.toLowerCase());
+							})
+							.join('\n');
 
-				// Page contains frontmatter
-				const frontmatter = containsFrontmatter(content);
-				if (frontmatter) {
-					const contentWithoutFrontmatter = content.substring(frontmatter.length + 6);
-					const output =
-						`---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter;
+					// Page contains frontmatter
+					const frontmatter = containsFrontmatter(content);
+					if (frontmatter) {
+						const contentWithoutFrontmatter = content.substring(frontmatter.length + 6);
+						const output =
+							`---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter;
+						return {
+							code: output
+						};
+					}
+					
 					return {
-						code: output
+						code: externalQueryViews + content
 					};
 				}
-
-				return {
-					code: externalQueryViews + content
-				};
-			}
+			}, undefined, tracing.fileTraces.get(filename, true))
 		},
 		script({ content, filename, attributes }) {
 			if (filename.endsWith('.md')) {
 				if (attributes.context != 'module') {
-					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
-					return {
-						code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
-					};
+					return tracing.trace("processQueries.script", () => {
+						const duckdbQueries = dynamicQueries[getRouteHash(filename)];
+						return {
+							code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
+						};
+					}, {filename, attributes}, tracing.fileTraces.get(filename, true))
 				}
 			}
 		}

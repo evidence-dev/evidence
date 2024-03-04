@@ -7,8 +7,29 @@ const addClasses = require('./src/add-classes.cjs');
 const processFrontmatter = require('./src/frontmatter/process-frontmatter.cjs');
 const injectPartials = require('./src/partials/inject-partials.cjs');
 
+const tracing = require("./src/utils/trace");
+const debounce = require('lodash.debounce');
+
+let traceIdx = 0
 module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
-	return [
+	let [root] = tracing.start("Preprocessing", { "runIdx": traceIdx++ })
+	let realStopTime = new Date()
+	const stop = debounce(() => {
+		tracing.stop(root, undefined)
+		root = tracing.start("Preprocessing", { "runIdx": traceIdx++ })[0]
+		tracing.fileTraces.reset()
+	}, 3000)
+
+	const processors = [
+		/** @type {import("svelte-preprocess/dist/types").PreprocessorGroup} */
+		{
+			markup: ({ filename }) => {
+				if (!filename) return
+				if (tracing.fileTraces.has(filename)) return
+				const [trace] = tracing.start(`ProcessFile`, {filename}, root)
+				tracing.fileTraces.set(filename, trace)
+			}
+		},
 		injectPartials,
 		processQueries(componentDevelopmentMode),
 		mdsvex.mdsvex({
@@ -33,8 +54,22 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 		}),
 		// Add both script tags to all markdown files, if they are missing
 		addScriptTags,
-		processFrontmatter()
+		processFrontmatter(),
+		{
+			script: ({ filename }) => {
+				if (!filename) return
+
+				if (!tracing.fileTraces.has(filename)) {
+					return
+				}
+				tracing.stop(tracing.fileTraces.get(filename))
+				realStopTime = new Date()
+				stop()
+			}
+		},
 	];
+
+	return processors
 };
 module.exports.parseFrontmatter =
 	require('./src/frontmatter/parse-frontmatter.cjs').parseFrontmatter;

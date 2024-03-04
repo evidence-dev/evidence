@@ -16,10 +16,12 @@
 		"prepublish": "parcel build"
 	},
 	"dependencies": {
+		"@types/lodash.debounce": "^4.0.9",
 		"blueimp-md5": "^2.19.0",
 		"chalk": "4.1.0",
 		"fs-extra": "^11.2.0",
 		"hast-util-select": "^5.0.5",
+		"lodash.debounce": "^4.0.8",
 		"mdsvex": "^0.10.6",
 		"prismjs": "^1.29.0",
 		"remark-parse": "8.0.2",
@@ -36,6 +38,14 @@
 		"parcel": "^2.8.3",
 		"typescript": "^5.1.6",
 		"vitest": "^0.34.2"
+	},
+	"peerDependencies": {
+		"@evidence-dev/apm": "workspace:*"
+	},
+	"peerDependenciesMeta": {
+		"@evidence-dev/apm": {
+			"optional": true
+		}
 	},
 	"main": "dist/index.cjs",
 	"module": "dist/index.mjs",

@@ -1116,9 +1116,6 @@ importers:
 
   sites/example-project:
     dependencies:
-      '@evidence-dev/apm':
-        specifier: workspace:*
-        version: link:../../packages/apm
       '@evidence-dev/bigquery':
         specifier: workspace:*
         version: link:../../packages/bigquery

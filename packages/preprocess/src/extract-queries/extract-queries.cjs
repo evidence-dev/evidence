@@ -5,6 +5,8 @@ const fs = require('fs');
 const getPrismLangs = require('../utils/get-prism-langs.cjs');
 const { parseFrontmatter } = require('../frontmatter/parse-frontmatter.cjs');
 const chalk = require('chalk');
+const tracing = require("../utils/trace.js");
+
 /** @typedef {{id: string, compileError: string, compiledQueryString: string, inputQueryString: string, compiled: boolean, inline: boolean}} Query */
 
 const warnedExternalQueries = {};
@@ -44,7 +46,7 @@ const ignoreIndentedCode = function () {
  * @param {string} filename File name
  * @returns {Query[]}
  */
-const extractExternalQueries = (content, filename) => {
+const extractExternalQueries = tracing.annotate("extractExternalQueries", (content, filename) => {
 	const frontmatter = parseFrontmatter(content);
 	if (!frontmatter) return [];
 	if (!frontmatter.queries) return [];
@@ -98,13 +100,13 @@ const extractExternalQueries = (content, filename) => {
 			}
 		})
 		.filter(Boolean); // filter out queries that returned false;
-};
+});
 
 /**
  * @param {string} content Raw File Content
  * @returns {Query[]}
  */
-const extractInlineQueries = (content) => {
+const extractInlineQueries = tracing.annotate("extractInlineQueries", (content) => {
 	let queries = [];
 	let tree = unified().use(remarkParse).use(ignoreIndentedCode).parse(content);
 	const prismLangs = getPrismLangs();
@@ -129,7 +131,7 @@ const extractInlineQueries = (content) => {
 		}
 	});
 	return queries;
-};
+});
 
 const strictBuild = process.env.VITE_BUILD_STRICT === 'true';
 const circularRefErrorMsg = 'Compiler error: circular reference';
@@ -138,7 +140,7 @@ const circularRefErrorMsg = 'Compiler error: circular reference';
  * @param {string} filename
  * @returns {Query[]}
  */
-const extractQueries = (content) => {
+const extractQueries = tracing.annotate("extractQueries", (content) => {
 	const queries = [];
 
 	queries.push(...extractExternalQueries(content));
@@ -206,7 +208,7 @@ const extractQueries = (content) => {
 	}
 
 	return queries;
-};
+});
 
 /**
  *

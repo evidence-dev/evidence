@@ -1,0 +1,11 @@
+queryname,rowcount,querytime_ms,parquettime_ms
+two_million_total_rows,10,29730,110.98
+two_million_total_rows,100000,21300,9340
+two_million_total_rows,1000000,19980,55950
+two_million_total_rows,1949319,826.78,104000
+large_query,10,26880,189.9
+large_query,100000,30250,3600
+large_query,1000000,43480,40590
+large_query,2000000,52920,123000
+large_query,4000000,934.49,246000
+large_query,20000000,243000,1965000

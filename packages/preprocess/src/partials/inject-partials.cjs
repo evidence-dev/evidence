@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const tracing = require("../utils/trace")
 
 /**
  * @param {string} originalString
@@ -19,12 +20,21 @@ function injectPartials(originalString) {
 	return originalString;
 }
 
+/**
+ * @type {import("svelte-preprocess/dist/types").PreprocessorGroup}
+ */
 module.exports = {
 	markup: ({ content, filename }) => {
 		if (typeof filename === 'undefined') return;
 		if (!filename.endsWith('+page.md')) return;
+		console.assert(tracing.fileTraces.has(filename), "Missing file!")
 		return {
-			code: injectPartials(content)
+			code: tracing.trace(
+				"injectPartials",
+				() => injectPartials(content),
+				undefined,
+				tracing.fileTraces.get(filename)
+			)
 		};
 	},
 	injectPartials
