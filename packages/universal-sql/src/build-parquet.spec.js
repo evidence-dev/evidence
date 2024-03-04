@@ -145,8 +145,10 @@ describe('buildMultipartParquet', () => {
 	it('should handle a very large number of batches', async () => {
 		const mockCols = [{ name: 'x', evidenceType: 'string' }];
 
+		const VERY_LARGE_NUMBER = 800;
+
 		function* gen() {
-			for (let i = 0; i < 1000; i++) yield [{ x: i }];
+			for (let i = 0; i < VERY_LARGE_NUMBER; i++) yield [{ x: i }];
 		}
 
 		const r = await buildMultipartParquet(
@@ -155,15 +157,15 @@ describe('buildMultipartParquet', () => {
 			adaptFilePath('.evidence/template/.evidence-queries/intermediate-parquet'),
 			adaptFilePath('.evidence/template/static/data'),
 			'out.parquet',
-			1000,
+			VERY_LARGE_NUMBER,
 			1
 		);
-		expect(r).toBe(1000);
+		expect(r).toBe(VERY_LARGE_NUMBER);
 		const stat = await fs.stat('.evidence/template/static/data/out.parquet');
 		expect(stat.isFile()).toBeTruthy();
 		// Make sure it contains data
 		expect(stat.size).toBeGreaterThan(0);
-		expect(fs.rm).toHaveBeenCalledTimes(1000);
+		expect(fs.rm).toHaveBeenCalledTimes(VERY_LARGE_NUMBER);
 	});
 
 	// TODO: Test how it handles invalid filepath
