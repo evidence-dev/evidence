@@ -17,9 +17,7 @@ const config = {
 			postcss: true
 		})
 	], // Modify preprocess to allow for loading of $lib instead of package version of components library
-	onwarn: (warning) => {
-		errorHandler(warning);
-	},
+	onwarn: errorHandler
 	kit: {
 		adapter: adapter({
 			strict: false
