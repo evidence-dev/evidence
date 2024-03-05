@@ -1,6 +1,7 @@
 <script>
 	import { Select as SelectPrimitive } from 'bits-ui';
-	import { CaretSort } from 'radix-icons-svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CaretSort } from '@steeze-ui/radix-icons';
 	import { cn } from '$lib/utils';
 
 	/** @type {string | undefined | null} */
@@ -18,6 +19,6 @@
 >
 	<slot />
 	<div>
-		<CaretSort class="h-4 w-4" />
+		<Icon src={CaretSort} class="h-4 w-4" />
 	</div>
 </SelectPrimitive.Trigger>

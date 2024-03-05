@@ -8,7 +8,8 @@
 
 	import { getContext } from 'svelte';
 	import * as Command from '$lib/atoms/shadcn/command';
-	import { Check } from 'radix-icons-svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Check } from '@steeze-ui/radix-icons';
 	import { cn } from '$lib/utils.js';
 
 	export let value;
@@ -39,11 +40,12 @@
 						: 'opacity-50 [&_svg]:invisible'
 				)}
 			>
-				<Check className={cn('h-4 w-4')} />
+				<Icon src={Check} className={cn('h-4 w-4')} />
 			</div>
 		{:else}
 			<div class="mr-2 flex h-4 w-4 items-center justify-center">
-				<Check
+				<Icon
+					src={Check}
 					class={cn(
 						'h-4 w-4',
 						!$selectedValues.find((x) => x.value === value && x.label === valueLabel) &&

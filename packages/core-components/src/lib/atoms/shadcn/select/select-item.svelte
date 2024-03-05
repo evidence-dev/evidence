@@ -1,7 +1,8 @@
 <script>
 	import { cn } from '$lib/utils';
 	import { Select as SelectPrimitive } from 'bits-ui';
-	import { Check } from 'radix-icons-svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Check } from '@steeze-ui/radix-icons';
 
 	/** @type {string | undefined | null} */
 	let className = undefined;
@@ -30,7 +31,7 @@
 >
 	<span class="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
 		<SelectPrimitive.ItemIndicator>
-			<Check class="h-4 w-4" />
+			<Icon src={Check} class="h-4 w-4" />
 		</SelectPrimitive.ItemIndicator>
 	</span>
 	<slot />

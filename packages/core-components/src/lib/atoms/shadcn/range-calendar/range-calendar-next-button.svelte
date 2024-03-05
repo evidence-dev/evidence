@@ -1,6 +1,7 @@
 <script>
 	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
-	import { ChevronRight } from 'radix-icons-svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ChevronRight } from '@steeze-ui/radix-icons';
 	import { buttonVariants } from '$lib/atoms/shadcn/button';
 	import { cn } from '$lib/utils';
 
@@ -21,6 +22,6 @@
 	let:builder
 >
 	<slot {builder}>
-		<ChevronRight class="h-4 w-4" />
+		<Icon src={ChevronRight} class="h-4 w-4" />
 	</slot>
 </RangeCalendarPrimitive.NextButton>

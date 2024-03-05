@@ -2,7 +2,8 @@
 	import { Dialog as DialogPrimitive } from 'bits-ui';
 	import * as Dialog from '.';
 	import { cn, flyAndScale } from '$lib/utils';
-	import { Cross2 } from 'radix-icons-svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { Cross2 } from '@steeze-ui/radix-icons';
 
 	/** @type {string | undefined | null} */
 	let className = undefined;
@@ -33,7 +34,7 @@
 		<DialogPrimitive.Close
 			class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-100 data-[state=open]:text-gray-500"
 		>
-			<Cross2 class="h-4 w-4" />
+			<Icon src="Cross2" class="h-4 w-4" />
 			<span class="sr-only">Close</span>
 		</DialogPrimitive.Close>
 	</DialogPrimitive.Content>

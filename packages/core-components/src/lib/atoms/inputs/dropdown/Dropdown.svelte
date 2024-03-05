@@ -14,7 +14,8 @@
 	import { page } from '$app/stores';
 	import DropdownOption from './DropdownOption.svelte';
 	import * as Command from '$lib/atoms/shadcn/command';
-	import { CaretSort } from 'radix-icons-svelte';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { CaretSort } from '@steeze-ui/radix-icons';
 	import * as Popover from '$lib/atoms/shadcn/popover';
 	import { Button } from '$lib/atoms/shadcn/button';
 	import Separator from '$lib/atoms/shadcn/separator/separator.svelte';
@@ -215,7 +216,7 @@
 							{title}
 						{/if}
 						<!-- {$selectedValues.length > 0 && !multiple ? $selectedValues[0].label : title} -->
-						<CaretSort class="ml-2 h-4 w-4" />
+						<Icon src={CaretSort} class="ml-2 h-4 w-4" />
 						{#if $selectedValues.length > 0 && multiple}
 							<Separator orientation="vertical" class="mx-2 h-4" />
 							<Badge variant="secondary" class="rounded-sm px-1 font-normal sm:hidden">
