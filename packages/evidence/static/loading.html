@@ -1,155 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-        .load-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* This makes the container fill the viewport height */
-        }
-        .loading {
-            font-family: sans-serif;
-            font-size: 20pt;
-            text-align: center;
-            margin-top: 30px; /* Adjusts space between loader and text */
-        }
-        .loader {
-            text-align: center;
-            width: 45px;
-            height: 45px; /* Updated to maintain the aspect ratio */
-            --c: no-repeat linear-gradient(#000 0 0);
-            background: 
-                var(--c) 0    0, 
-                var(--c) 50%  50%, 
-                var(--c) 100% 100%;
-            animation: 
-                l17 1s infinite alternate;
-        }
-        @keyframes l17 {
-            0%, 10%  {background-size:20% 100%}
-            50%  {background-size:20% 20%}
-            90%, 100% {background-size:100% 20%}
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Loading...</title>
+		<style>
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
+			.load-container {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				height: 100vh; /* This makes the container fill the viewport height */
+			}
+			.loading {
+				font-family: sans-serif;
+				font-size: 20pt;
+				text-align: center;
+				margin-top: 30px; /* Adjusts space between loader and text */
+			}
+			.loader {
+				text-align: center;
+				width: 45px;
+				height: 45px; /* Updated to maintain the aspect ratio */
+				--c: no-repeat linear-gradient(#000 0 0);
+				background: var(--c) 0 0, var(--c) 50% 50%, var(--c) 100% 100%;
+				animation: l17 1s infinite alternate;
+			}
+			@keyframes l17 {
+				0%,
+				10% {
+					background-size: 20% 100%;
+				}
+				50% {
+					background-size: 20% 20%;
+				}
+				90%,
+				100% {
+					background-size: 100% 20%;
+				}
+			}
 
-             /* Simple fade-out animation */
-             @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
+			/* Simple fade-out animation */
+			@keyframes fadeOut {
+				from {
+					opacity: 1;
+				}
+				to {
+					opacity: 0;
+				}
+			}
 
-        /* Apply the animation to the body */
-        body.fade-out {
-            animation: fadeOut 1s ease forwards;
-        }
+			/* Apply the animation to the body */
+			body.fade-out {
+				animation: fadeOut 1s ease forwards;
+			}
 
-        .secondary-text {
-            font-size: 12pt;
-            margin-top: 10px;
-        }
+			.secondary-text {
+				font-size: 12pt;
+				margin-top: 10px;
+			}
 
-        .additional-text {
-            display: none;
-            font-size: 12pt;
-            color: grey;
-            margin-top: 10px;
-        }
+			.additional-text {
+				display: none;
+				font-size: 12pt;
+				color: grey;
+				margin-top: 10px;
+			}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+				}
 
-            to {
-                opacity: 1;
-            }
-        }
+				to {
+					opacity: 1;
+				}
+			}
 
-        .fade-in {
-            animation: fadeIn 2s ease-out;
-        }
+			.fade-in {
+				animation: fadeIn 2s ease-out;
+			}
 
-        .footer {
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-            text-align: center;
-            padding: 20px;
-            font-family: sans-serif;
-            font-size: 10pt;
-        }
+			.footer {
+				width: 100%;
+				position: absolute;
+				bottom: 0;
+				text-align: center;
+				padding: 20px;
+				font-family: sans-serif;
+				font-size: 10pt;
+			}
 
-        .footer a {
-            color: #007bff;
-            /* A standard link color */
-            text-decoration: none;
-            /* Optional: Removes underline from links */
-        }
+			.footer a {
+				color: #007bff;
+				/* A standard link color */
+				text-decoration: none;
+				/* Optional: Removes underline from links */
+			}
 
-        .footer a:hover {
-            text-decoration: underline;
-            /* Optional: Adds underline on hover */
-        }
-    </style>
-</head>
-<body>
-    <div class="load-container">
-        <div id="loading" class="loader"></div>
-        <div class="loading">
-            Evidence is starting
-        </div>
-        <div class="loading secondary-text">
-            Loading development workspace
-        </div>
-        <div id="additionalText" class="loading additional-text">
-            This can take up to 2 minutes
-        </div>
-    </div>
-    <div class="footer">
-        For help, <a href="https://slack.evidence.dev" target="_blank">reach out on Slack</a>
-    </div>
-    <script>
-        let appReady = false; // Flag to indicate app readiness
+			.footer a:hover {
+				text-decoration: underline;
+				/* Optional: Adds underline on hover */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="load-container">
+			<div id="loading" class="loader"></div>
+			<div class="loading">Evidence is starting</div>
+			<div class="loading secondary-text">Loading development workspace</div>
+			<div id="additionalText" class="loading additional-text">This can take up to 2 minutes</div>
+		</div>
+		<div class="footer">
+			For help, <a href="https://slack.evidence.dev" target="_blank">reach out on Slack</a>
+		</div>
+		<script>
+			let appReady = false; // Flag to indicate app readiness
 
-        const svelteKitAppPort = {{PORT}}; // The server will replace {{PORT}} with the actual port
+			const svelteKitAppPort = {{PORT}}; // The server will replace {{PORT}} with the actual port
 
-        function checkAppReady() {
-            if (appReady) {
-                return; // Stop polling if the app is already marked as ready
-            }
+			function checkAppReady() {
+			    if (appReady) {
+			        return; // Stop polling if the app is already marked as ready
+			    }
 
-            fetch(`http://localhost:${svelteKitAppPort}`, { mode: 'no-cors' }) // Checking the main app
-                .then(() => {
-                      // Start the fade-out animation
-                      document.body.classList.add('fade-out');
-                      setTimeout(() => {
-                    appReady = true;
-                    window.location.href = `http://localhost:${svelteKitAppPort}`; // Redirect to the main app
-                }, 1000); // Match the duration of the animation
-                })
-                .catch((err) => {
-                    // console.log('App not ready yet, retrying...');
-                    setTimeout(checkAppReady, 1000); 
-                });
-        }
+			    fetch(`http://localhost:${svelteKitAppPort}`, { mode: 'no-cors' }) // Checking the main app
+			        .then(() => {
+			              // Start the fade-out animation
+			              document.body.classList.add('fade-out');
+			              setTimeout(() => {
+			            appReady = true;
+			            window.location.href = `http://localhost:${svelteKitAppPort}`; // Redirect to the main app
+			        }, 1000); // Match the duration of the animation
+			        })
+			        .catch((err) => {
+			            // console.log('App not ready yet, retrying...');
+			            setTimeout(checkAppReady, 1000);
+			        });
+			}
 
-        // Display the additional message after 30 seconds with fade-in effect
-        setTimeout(() => {
-            const additionalText = document.getElementById('additionalText');
-            additionalText.style.display = 'block';
-            additionalText.classList.add('fade-in'); // Apply the fade-in animation
-        }, 30000); // 30000 milliseconds = 30 seconds
+			// Display the additional message after 30 seconds with fade-in effect
+			setTimeout(() => {
+			    const additionalText = document.getElementById('additionalText');
+			    additionalText.style.display = 'block';
+			    additionalText.classList.add('fade-in'); // Apply the fade-in animation
+			}, 30000); // 30000 milliseconds = 30 seconds
 
-        checkAppReady(); // Start checking if the app is ready on page load
-    </script>
-</body>
+			checkAppReady(); // Start checking if the app is ready on page load
+		</script>
+	</body>
 </html>
