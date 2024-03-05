@@ -94,7 +94,11 @@ export function handleUnexpectedTokens(err) {
 	if (err.message.includes('Unexpected token')) {
 		if (err.frame.includes('{if')) {
 			return 'Unexpected {if - did you mean {#if or {/if ?';
+		} else if(err.frame.includes('{}')){
+			return 'Found empty curly braces {} - ensure all curly braces contain code'
 		}
+	} else if(err.message.includes('Expected if, each or await')){
+		return 'Expected if or each after {#'
 	}
 	return null; // No match found
 }
