@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="576" height="234" style="user-select: none; position: absolute; left: 0px; top: 0px;">
+<g>
+<rect width="576" height="234" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0">
+</rect>
+</g>
+<g>
+<text xml:space="preserve" fill="#6E7079" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,558.72,217.32)" dominant-baseline="central" text-anchor="end" x="0" y="6" style="font: 12px sans-serif;">Income Per Capita →</text>
+<path d="M 43.5831 194.5 L 558.72 194.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 43.5831 171.5 L 558.72 171.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 43.5831 147.5 L 558.72 147.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 43.5831 124.5 L 558.72 124.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 43.5831 101.5 L 558.72 101.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 43.5831 78.5 L 558.72 78.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 43.5831 55.5 L 558.72 55.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 43.5831 32.5 L 558.72 32.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 0 0 L 73.0391 0 L 73.0391 12 L 0 12 L 0 0 Z" fill="white" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,43.5831,26)">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,43.5831,26)" dominant-baseline="central" text-anchor="start" x="0" y="6" style="font: 12px sans-serif;">Median Rent</text>
+<path d="M 43.5831 194.5 L 558.72 194.5" fill="none" stroke="hsla(212, 10%, 53%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="round" stroke-miterlimit="10">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,194)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$200</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,170.8571)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$400</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,147.7143)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$600</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,124.5714)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$800</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,101.4286)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$1,000</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,78.2857)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$1,200</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,55.1429)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$1,400</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,39.5831,32)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">$1,600</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,43.5831,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">$10k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,146.6105,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">$20k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,249.6379,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">$30k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,352.6653,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">$40k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,455.6926,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">$50k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,558.72,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">$60k</text>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,67.0631,174.2129)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,289.6331,51.2086)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,212.4038,136.3743)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,293.136,91.5929)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,192.7462,156.6243)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,274.8075,119.48)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,258.7352,135.7957)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,260.8473,133.8286)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,201.3799,153.7314)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,291.2712,136.9529)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,178.7653,150.7229)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,243.7447,139.9614)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,245.6301,145.2843)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,201.3283,136.49)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,232.3602,143.8957)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,216.4528,151.07)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,481.4495,54.2171)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,244.7441,119.5957)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,236.9037,140.0771)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,243.6623,117.86)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,323.3643,88.0057)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,292.8682,118.5543)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,258.5497,144.4743)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,358.5069,83.9557)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,229.9081,117.05)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,251.3481,112.6529)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,270.2227,136.2586)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,243.8477,144.4743)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,315.0087,86.9643)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,207.2421,138.6886)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,247.9688,104.3214)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,213.2898,145.4)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,250.0294,144.59)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,251.1421,143.5486)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,352.2531,79.0957)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,289.6846,108.95)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,269.7282,108.95)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,334.5015,106.8671)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,213.5577,151.7643)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,245.1047,136.3743)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,373.5695,105.71)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,371.4265,91.7086)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,259.0649,141.1186)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,296.1135,120.8686)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,228.0949,140.1929)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,254.6656,136.9529)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,246.2174,126.6543)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,321.4995,91.3614)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,326.3108,100.85)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,313.0615,117.7443)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,277.5686,131.1671)">
+</path>
+<path d="M 1 0 A 1 1 0 1 1 1 -0.0001" fill="hsla(207, 65%, 39%, 1)" fill-opacity="0.7" stroke="none" transform="matrix(5,0,0,5,301.6255,64.4)">
+</path>
+<path d="M 0 0 L 77.7998 0 L 77.7998 14 L 0 14 L 0 0 Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<text xml:space="preserve" fill="hsla(210, 14%, 37%, 1)" fill-opacity="1" stroke="none" dominant-baseline="central" text-anchor="start" x="0" y="7" style="font: bold 14px sans-serif;">Scatter Plot</text>
+</g>
+</svg>

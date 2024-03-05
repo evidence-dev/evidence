@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="576" height="1554" style="user-select: none; position: absolute; left: 0px; top: 0px;">
+<g>
+<rect width="576" height="1554" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0">
+</rect>
+</g>
+<g>
+<text xml:space="preserve" fill="#6E7079" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,564.48,7)" dominant-baseline="central" text-anchor="end" x="0" y="6" style="font: 12px sans-serif;">Calls Received →</text>
+<path d="M 240.5 40 L 240.5 1546" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 318.5 40 L 318.5 1546" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 396.5 40 L 396.5 1546" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 474.5 40 L 474.5 1546" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 553.5 40 L 553.5 1546" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 240.5 40 L 240.5 1546" fill="none" stroke="hsla(212, 10%, 53%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="round" stroke-miterlimit="10">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,57.1136)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Traffic Signal - Maintenance</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,91.3409)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Traffic Signal - Dig Tess Request</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,125.5682)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Sign - Traffic Sign Maintenance</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,159.7955)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Parking Machine Issue</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,194.0227)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Shared Micromobility</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,228.25)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Parking Violation Enforcement</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,262.4773)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Lane/Road Closure Notification</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,296.7045)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Sign - New</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,330.9318)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Concerns in the ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,365.1591)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Sign - Traffic Sign Emergency</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,399.3864)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Dockless Mobility</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,433.6136)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Traffic Signal - New/Change</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,467.8409)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Road Markings/Striping - Maintenance</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,502.0682)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Sign - Street Name</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,536.2955)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">View Obstruction at Intersection</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,570.5227)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Traffic Engineering - General</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,604.75)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Bicycle Issues</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,638.9773)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Sign - Parking Sign Maintenance</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,673.2045)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">School Zone Flasher - Timing/Maintenance</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,707.4318)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Construction Items in ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,741.6591)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Traffic Calming</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,775.8864)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Construction items in ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,810.1136)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Road Markings/Striping - New</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,844.3409)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">ATD - Shared Micromobility</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,878.5682)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Construction Items- ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,912.7955)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Sidewalk/Curb Ramp/Route - NEW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,947.0227)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Speed Management</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,981.25)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Speed Limit - Changes/Signs</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1015.4773)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Sign - School Zone Sign Maintenance</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1049.7045)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Construction/Permitting- ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1083.9318)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Parking Ticket Complaint</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1118.1591)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">ATD - Booting Complaint</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1152.3864)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">School Issues - Crossing Guards</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1186.6136)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Residential Parking Permit Enforcement</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1220.8409)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Vendor Permit - ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1255.0682)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Parking Permit- ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1289.2955)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Emergency Road Closure Report</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1323.5227)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Filming Permit - ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1357.75)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Newspaper Rack- ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1391.9773)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Valet Permit - ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1426.2045)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">ATD - Pay-by-Phone App</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1460.4318)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Traffic Engineering - Jurisdiction Issue</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1494.6591)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Utility Coordination - ROW</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,231.882,1528.8864)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">Emergency Vehicle Preemption Device</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,239.882,36)" dominant-baseline="central" text-anchor="middle" x="0" y="-6" style="font: 12px sans-serif;">0k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,318.1515,36)" dominant-baseline="central" text-anchor="middle" x="0" y="-6" style="font: 12px sans-serif;">20k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,396.421,36)" dominant-baseline="central" text-anchor="middle" x="0" y="-6" style="font: 12px sans-serif;">40k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,474.6905,36)" dominant-baseline="central" text-anchor="middle" x="0" y="-6" style="font: 12px sans-serif;">60k</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,552.96,36)" dominant-baseline="central" text-anchor="middle" x="0" y="-6" style="font: 12px sans-serif;">80k</text>
+<path d="M 239.882 45.3052 L 544.8708 45.3052 L 544.8708 68.922 L 239.882 68.922 L 239.882 45.3052 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 79.5325 L 292.1425 79.5325 L 292.1425 103.1493 L 239.882 103.1493 L 239.882 79.5325 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 113.7598 L 289.2739 113.7598 L 289.2739 137.3766 L 239.882 137.3766 L 239.882 113.7598 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 147.987 L 283.8655 147.987 L 283.8655 171.6039 L 239.882 171.6039 L 239.882 147.987 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 182.2143 L 283.7442 182.2143 L 283.7442 205.8311 L 239.882 205.8311 L 239.882 182.2143 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 216.4416 L 282.9419 216.4416 L 282.9419 240.0584 L 239.882 240.0584 L 239.882 216.4416 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 250.6689 L 280.8521 250.6689 L 280.8521 274.2857 L 239.882 274.2857 L 239.882 250.6689 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 284.8961 L 279.4159 284.8961 L 279.4159 308.513 L 239.882 308.513 L 239.882 284.8961 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 319.1234 L 268.4621 319.1234 L 268.4621 342.7402 L 239.882 342.7402 L 239.882 319.1234 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 353.3507 L 268.3486 353.3507 L 268.3486 376.9675 L 239.882 376.9675 L 239.882 353.3507 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 387.578 L 265.1395 387.578 L 265.1395 411.1948 L 239.882 411.1948 L 239.882 387.578 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 421.8052 L 262.404 421.8052 L 262.404 445.422 L 239.882 445.422 L 239.882 421.8052 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 456.0325 L 256.0837 456.0325 L 256.0837 479.6493 L 239.882 479.6493 L 239.882 456.0325 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 490.2598 L 255.9624 490.2598 L 255.9624 513.8766 L 239.882 513.8766 L 239.882 490.2598 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 524.487 L 255.7746 524.487 L 255.7746 548.1039 L 239.882 548.1039 L 239.882 524.487 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 558.7143 L 255.1445 558.7143 L 255.1445 582.3311 L 239.882 582.3311 L 239.882 558.7143 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 592.9416 L 253.2973 592.9416 L 253.2973 616.5584 L 239.882 616.5584 L 239.882 592.9416 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 627.1689 L 252.4364 627.1689 L 252.4364 650.7857 L 239.882 650.7857 L 239.882 627.1689 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 661.3961 L 252.0685 661.3961 L 252.0685 685.013 L 239.882 685.013 L 239.882 661.3961 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 695.6234 L 250.8279 695.6234 L 250.8279 719.2402 L 239.882 719.2402 L 239.882 695.6234 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 729.8507 L 250.374 729.8507 L 250.374 753.4675 L 239.882 753.4675 L 239.882 729.8507 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 764.078 L 248.9221 764.078 L 248.9221 787.6948 L 239.882 787.6948 L 239.882 764.078 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 798.3052 L 248.656 798.3052 L 248.656 821.922 L 239.882 821.922 L 239.882 798.3052 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 832.5325 L 247.7989 832.5325 L 247.7989 856.1493 L 239.882 856.1493 L 239.882 832.5325 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 866.7598 L 243.6076 866.7598 L 243.6076 890.3766 L 239.882 890.3766 L 239.882 866.7598 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 900.987 L 243.2006 900.987 L 243.2006 924.6039 L 239.882 924.6039 L 239.882 900.987 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 935.2143 L 242.7897 935.2143 L 242.7897 958.8311 L 239.882 958.8311 L 239.882 935.2143 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 969.4416 L 242.4922 969.4416 L 242.4922 993.0584 L 239.882 993.0584 L 239.882 969.4416 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1003.6689 L 242.1205 1003.6689 L 242.1205 1027.2857 L 239.882 1027.2857 L 239.882 1003.6689 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1037.8961 L 241.5647 1037.8961 L 241.5647 1061.513 L 239.882 1061.513 L 239.882 1037.8961 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1072.1234 L 241.4747 1072.1234 L 241.4747 1095.7402 L 239.882 1095.7402 L 239.882 1072.1234 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1106.3507 L 241.0247 1106.3507 L 241.0247 1129.9675 L 239.882 1129.9675 L 239.882 1106.3507 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1140.578 L 240.5746 1140.578 L 240.5746 1164.1948 L 239.882 1164.1948 L 239.882 1140.578 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1174.8052 L 240.5042 1174.8052 L 240.5042 1198.422 L 239.882 1198.422 L 239.882 1174.8052 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1209.0325 L 240.4024 1209.0325 L 240.4024 1232.6493 L 239.882 1232.6493 L 239.882 1209.0325 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1243.2598 L 240.3085 1243.2598 L 240.3085 1266.8766 L 239.882 1266.8766 L 239.882 1243.2598 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1277.487 L 240.152 1277.487 L 240.152 1301.1039 L 239.882 1301.1039 L 239.882 1277.487 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1311.7143 L 240.0228 1311.7143 L 240.0228 1335.3311 L 239.882 1335.3311 L 239.882 1311.7143 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1345.9416 L 239.9994 1345.9416 L 239.9994 1369.5584 L 239.882 1369.5584 L 239.882 1345.9416 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1380.1689 L 239.9954 1380.1689 L 239.9954 1403.7857 L 239.882 1403.7857 L 239.882 1380.1689 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1414.3961 L 239.9641 1414.3961 L 239.9641 1438.013 L 239.882 1438.013 L 239.882 1414.3961 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1448.6234 L 239.925 1448.6234 L 239.925 1472.2402 L 239.882 1472.2402 L 239.882 1448.6234 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1482.8507 L 239.9093 1482.8507 L 239.9093 1506.4675 L 239.882 1506.4675 L 239.882 1482.8507 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 239.882 1517.078 L 239.8898 1517.078 L 239.8898 1540.6948 L 239.882 1540.6948 L 239.882 1517.078 Z" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none">
+</path>
+<path d="M 0 0 L 0 0 L 0 0 L 0 0 L 0 0 Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+</g>
+</svg>

@@ -1,0 +1,25 @@
+{
+	"name": "@evidence-dev/evidence-docs",
+	"version": "2.0.6",
+	"private": true,
+	"scripts": {
+		"build": "evidence build",
+		"build:strict": "evidence build:strict",
+		"dev": "evidence dev",
+		"test": "evidence sources && evidence build",
+		"sources": "evidence sources",
+		"preview": "evidence preview"
+	},
+	"engines": {
+		"npm": ">=7.0.0",
+		"node": ">=14.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@evidence-dev/evidence": "workspace:*",
+		"@evidence-dev/component-utilities": "workspace:*",
+		"@evidence-dev/core-components": "workspace:*",
+		"@evidence-dev/faker-datasource": "workspace:*",
+		"@evidence-dev/duckdb": "workspace:*"
+	}
+}

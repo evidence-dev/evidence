@@ -1,5 +1,5 @@
 .DocSearch-Button {
-	@apply bg-white hover:bg-gray-50 transition-colors duration-200 hover:text-gray-800 rounded-md flex gap-16 cursor-pointer py-1 pl-2 pr-1 shadow-sm sm:text-xs text-gray-600 border font-sans font-medium  items-center;
+	@apply bg-white hover:bg-gray-50 transition-colors duration-200 hover:text-gray-800 rounded-md flex gap-16 cursor-pointer py-1 pl-2 pr-1 shadow-sm text-base sm:text-xs text-gray-500 sm:text-gray-600 border font-sans sm:font-medium  items-center;
 }
 .DocSearch-Search-Icon {
 	display: none;

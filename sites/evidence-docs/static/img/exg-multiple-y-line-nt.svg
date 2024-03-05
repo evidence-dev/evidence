@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="576" height="213" style="user-select: none; position: absolute; left: 0px; top: 0px;">
+<g>
+<rect width="576" height="213" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0">
+</rect>
+</g>
+<g>
+<defs>
+<clipPath id="zr7477-clip-0">
+<path d="M 25 24 L 559 24 L 559 188 L 25 188 L 25 24 Z" fill="#000" fill-opacity="1" stroke="none">
+</path>
+</clipPath>
+<clipPath id="zr7477-clip-1">
+<path d="M 25 24 L 559 24 L 559 188 L 25 188 L 25 24 Z" fill="#000" fill-opacity="1" stroke="none">
+</path>
+</clipPath>
+</defs>
+<path d="M 26.9015 187.5 L 558.72 187.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 26.9015 154.5 L 558.72 154.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 26.9015 122.5 L 558.72 122.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 26.9015 90.5 L 558.72 90.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 26.9015 57.5 L 558.72 57.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 26.9015 25.5 L 558.72 25.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 26.9015 187.5 L 558.72 187.5" fill="none" stroke="hsla(212, 10%, 53%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="round" stroke-miterlimit="10">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,22.9015,187)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">0</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,22.9015,154.6)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">100</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,22.9015,122.2)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">200</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,22.9015,89.8)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">300</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,22.9015,57.4)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">400</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,22.9015,25)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">500</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,76.539,193)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">2009</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,155.1441,193)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">2011</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,233.8569,193)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">2013</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,312.462,193)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">2015</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,391.1748,193)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">2017</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,469.7799,193)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">2019</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,548.4927,193)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">2021</text>
+<g clip-path="url(#zr7477-clip-0)">
+<path d="M 37.1288 186.028 L 76.539 187 L 115.8416 187 L 155.1441 174.364 L 194.4467 52.54 L 233.8569 76.84 L 273.1595 98.224 L 312.462 135.808 L 351.7646 187 L 391.1748 187 L 430.4774 187 L 469.7799 187 L 509.0825 187 L 548.4927 187" fill="none" stroke="rgb(35,106,164)" stroke-width="2" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10">
+</path>
+</g>
+<g clip-path="url(#zr7477-clip-1)">
+<path d="M 37.1288 187 L 76.539 187 L 115.8416 187 L 155.1441 187 L 194.4467 187 L 233.8569 186.352 L 273.1595 187 L 312.462 96.604 L 351.7646 186.676 L 391.1748 187 L 430.4774 178.252 L 469.7799 181.168 L 509.0825 164.644 L 548.4927 187" fill="none" stroke="rgb(69,161,191)" stroke-width="2" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10">
+</path>
+</g>
+<path d="M 0 0 L 201.0762 0 L 201.0762 14 L 0 14 L 0 0 Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10" transform="matrix(1,0,0,1,187.4619,0)">
+</path>
+<path d="M 19.5 7 A 7 7 0 1 1 19.5 6.9993" fill="hsla(207, 65%, 39%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,181.9619,0)">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,181.9619,0)" dominant-baseline="central" text-anchor="start" x="23" y="7" style="font: 12px sans-serif;">Voluntary Recalls</text>
+<path d="M 19.5 7 A 7 7 0 1 1 19.5 6.9993" fill="hsla(195, 49%, 51%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,302.1807,0)">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,302.1807,0)" dominant-baseline="central" text-anchor="start" x="23" y="7" style="font: 12px sans-serif;">Fda Recalls</text>
+<path d="M 0 0 L 0 0 L 0 0 L 0 0 L 0 0 Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+</g>
+</svg>

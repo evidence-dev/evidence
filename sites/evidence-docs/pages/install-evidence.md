@@ -1,0 +1,85 @@
+---
+sidebar_position: 2
+hide_table_of_contents: false
+title: Install Evidence
+description: The easiest way to get started with Evidence is to use the VSCode Extension.
+---
+
+The easiest way to get started with Evidence is to use the VSCode Extension.
+
+## VSCode Extension
+
+1. Install Evidence from the VSCode Marketplace
+2. Open the Command Palette (`Ctrl/Cmd + Shift + P`) and enter `Evidence: New Evidence Project`
+3. Click `Start Evidence` in the bottom status bar
+   - This will install required dependencies and start the Evidence server
+   - You should see a browser window open automatically with your app preview
+   - On Windows, this step can take a couple of minutes the first time
+4. Make changes to a markdown file and **save the file** to see the updates in your browser window
+
+The template project running in your browser contains a tutorial on how to use Evidence.
+
+<a class="external" href="https://marketplace.visualstudio.com/items?itemName=Evidence.evidence-vscode">
+Install VSCode Extension
+</a>
+
+<br/><br/>
+
+If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
+
+## Other Options
+
+<Tabs>
+
+<Tab value="standalone" label="Command Line" default>
+
+```shell
+npx degit evidence-dev/template my-project
+cd my-project
+npm install
+npm run sources
+npm run dev
+```
+
+</Tab>
+
+<Tab value="dbt" label="With dbt">
+
+```shell
+cd path/to/your/dbt/project
+npx degit evidence-dev/template reports
+npm --prefix ./reports install
+npm --prefix ./reports run sources
+npm --prefix ./reports run dev
+```
+
+<p class="standard-margin">You can install Evidence inside your dbt project, inside a folder called <code>reports</code>, to create a <a href="https://github.com/archiewood/analytics_monorepo">monorepo</a>.</p>
+<p class="standard-margin">This allows changes across your modelling layer (in <code>/models</code>) and your reporting layer (in <code>reports</code>) in the same commits.</p>
+<p class="standard-margin">This currently needs to be done from the terminal, rather than from the dbt Cloud UI.</p>
+
+</Tab>
+
+<Tab value="codespaces" label="Codespaces">
+
+<a class="external" href="https://github.com/codespaces/new?machine=standardLinux32gb&repo=399252557&ref=main&geo=UsEast">
+Create Evidence Codespace
+</a>
+<br/><br/>
+
+**Note:** Codespaces is much faster on the Desktop app. After the Codespace has booted, select the hamburger menu &rarr; Open in VS Code Desktop.
+
+</Tab>
+
+<Tab value="docker" label="Docker">
+<p class="standard-margin">Evidence provides a development Docker image.</p>
+<p class="standard-margin">See our <a href="https://github.com/evidence-dev/docker-devenv">Docker Development Environment repository</a> for instructions.</p>
+</Tab>
+</Tabs>
+
+## System Requirements
+
+See [system requirements page](/guides/system-requirements).
+
+## Updating Evidence
+
+See [updating your project](/guides/updating-your-project).

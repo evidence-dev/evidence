@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="576" height="363" style="position: absolute; left: 0; top: 0; user-select: none;">
+  <rect width="576" height="363" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0"></rect>
+  <g transform="translate(0,-30)">
+    <path d="M0 20C0 75.75 23.4964 75.75 23.4964 131.5L139.2297 131.5C139.2297 75.75 115.7333 75.75 115.7333 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M123.7333 20C123.7333 75.75 139.2297 75.75 139.2297 131.5L197.0964 131.5C197.0964 75.75 181.6 75.75 181.6 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M189.6 20C189.6 75.75 197.0964 75.75 197.0964 131.5L226.0297 131.5C226.0297 75.75 218.5333 75.75 218.5333 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M226.5333 20C226.5333 75.75 226.0297 75.75 226.0297 131.5L254.963 131.5C254.963 75.75 255.4667 75.75 255.4667 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M263.4667 20C263.4667 75.75 254.963 75.75 254.963 131.5L283.8964 131.5C283.8964 75.75 292.4 75.75 292.4 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M300.4 20C300.4 75.75 283.8964 75.75 283.8964 131.5L312.8297 131.5C312.8297 75.75 329.3333 75.75 329.3333 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M337.3333 20C337.3333 75.75 312.8297 75.75 312.8297 131.5L341.763 131.5C341.763 75.75 366.2667 75.75 366.2667 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M374.2667 20C374.2667 75.75 341.763 75.75 341.763 131.5L370.6964 131.5C370.6964 75.75 403.2 75.75 403.2 20Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M283.8964 151.5C283.8964 207.25 308.4 207.25 308.4 263L366.2667 263C366.2667 207.25 341.763 207.25 341.763 151.5Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M23.4964 151.5C23.4964 207.25 32 207.25 32 263L205.6 263C205.6 207.25 197.0964 207.25 197.0964 151.5Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M341.763 151.5C341.763 207.25 374.2667 207.25 374.2667 263L403.2 263C403.2 207.25 370.6964 207.25 370.6964 151.5Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M197.0964 151.5C197.0964 207.25 213.6 207.25 213.6 263L300.4 263C300.4 207.25 283.8964 207.25 283.8964 151.5Z" transform="translate(57.6 80)" fill="#314656" fill-opacity="0.2"></path>
+    <path d="M0 0l115.7333 0l0 20l-115.7333 0Z" transform="translate(57.6 80)" fill="hsla(207, 65%, 39%, 1)"></path>
+    <path d="M23.4964 131.5l347.2 0l0 20l-347.2 0Z" transform="translate(57.6 80)" fill="hsla(195, 49%, 51%, 1)"></path>
+    <path d="M123.7333 0l57.8667 0l0 20l-57.8667 0Z" transform="translate(57.6 80)" fill="hsla(207, 69%, 79%, 1)"></path>
+    <path d="M189.6 0l28.9333 0l0 20l-28.9333 0Z" transform="translate(57.6 80)" fill="hsla(202, 28%, 65%, 1)"></path>
+    <path d="M226.5333 0l28.9333 0l0 20l-28.9333 0Z" transform="translate(57.6 80)" fill="hsla(179, 37%, 65%, 1)"></path>
+    <path d="M263.4667 0l28.9333 0l0 20l-28.9333 0Z" transform="translate(57.6 80)" fill="hsla(40, 30%, 75%, 1)"></path>
+    <path d="M300.4 0l28.9333 0l0 20l-28.9333 0Z" transform="translate(57.6 80)" fill="hsla(38, 89%, 62%, 1)"></path>
+    <path d="M337.3333 0l28.9333 0l0 20l-28.9333 0Z" transform="translate(57.6 80)" fill="hsla(342, 40%, 40%, 1)"></path>
+    <path d="M374.2667 0l28.9333 0l0 20l-28.9333 0Z" transform="translate(57.6 80)" fill="hsla(207, 86%, 70%, 1)"></path>
+    <path d="M308.4 263l57.8667 0l0 20l-57.8667 0Z" transform="translate(57.6 80)" fill="hsla(160, 40%, 46%, 1)"></path>
+    <path d="M32 263l173.6 0l0 20l-173.6 0Z" transform="translate(57.6 80)" fill="hsla(207, 65%, 39%, 1)"></path>
+    <path d="M374.2667 263l28.9333 0l0 20l-28.9333 0Z" transform="translate(57.6 80)" fill="hsla(195, 49%, 51%, 1)"></path>
+    <path d="M213.6 263l86.8 0l0 20l-86.8 0Z" transform="translate(57.6 80)" fill="hsla(207, 69%, 79%, 1)"></path>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(115.4667 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      google
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(254.6964 206.5)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      all_traffic
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(210.2667 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      direct
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(261.6667 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      facebook
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(298.6 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      bing
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(335.5333 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      linkedin
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(372.4667 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      twitter
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(409.4 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      tiktok
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(446.3333 75)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      pinterest
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(394.9333 338)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      /
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(176.4 338)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      /docs
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(446.3333 338)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      /blog
+    </text>
+    <text
+      dominant-baseline="central"
+      text-anchor="middle"
+      style="font-size: 10.5px; font-family: sans-serif;"
+      y="-5.25"
+      transform="translate(314.6 338)"
+      fill="#333"
+      stroke="rgb(255,255,255)"
+      stroke-width="2"
+      paint-order="stroke"
+      stroke-miterlimit="2"
+    >
+      /about
+    </text>
+    <path d="M0 0l145.228 0l0 34l-145.228 0Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
+  </g>
+</svg>

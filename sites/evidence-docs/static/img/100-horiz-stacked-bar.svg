@@ -1,0 +1,61 @@
+<svg width="576" height="249" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 576 249">
+<rect width="576" height="249" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0"></rect>
+<path d="M37.5 41L37.5 241" fill="none" stroke="hsla(215, 15%, 91%, 1)"></path>
+<path d="M140.5 41L140.5 241" fill="none" stroke="hsla(215, 15%, 91%, 1)"></path>
+<path d="M243.5 41L243.5 241" fill="none" stroke="hsla(215, 15%, 91%, 1)"></path>
+<path d="M347.5 41L347.5 241" fill="none" stroke="hsla(215, 15%, 91%, 1)"></path>
+<path d="M450.5 41L450.5 241" fill="none" stroke="hsla(215, 15%, 91%, 1)"></path>
+<path d="M553.5 41L553.5 241" fill="none" stroke="hsla(215, 15%, 91%, 1)"></path>
+<path d="M37.5 41L37.5 241" fill="none" stroke="hsla(212, 10%, 53%, 1)" stroke-linecap="round"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(29.5753 55.2857)" fill="hsla(212, 10%, 53%, 1)">1996</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(29.5753 83.8571)" fill="hsla(212, 10%, 53%, 1)">1995</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(29.5753 112.4286)" fill="hsla(212, 10%, 53%, 1)">1994</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(29.5753 141)" fill="hsla(212, 10%, 53%, 1)">1993</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(29.5753 169.5714)" fill="hsla(212, 10%, 53%, 1)">1992</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(29.5753 198.1429)" fill="hsla(212, 10%, 53%, 1)">1991</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(29.5753 226.7143)" fill="hsla(212, 10%, 53%, 1)">1990</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="-6" transform="translate(37.5753 37)" fill="hsla(212, 10%, 53%, 1)">0%</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="-6" transform="translate(140.6523 37)" fill="hsla(212, 10%, 53%, 1)">20%</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="-6" transform="translate(243.7292 37)" fill="hsla(212, 10%, 53%, 1)">40%</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="-6" transform="translate(346.8061 37)" fill="hsla(212, 10%, 53%, 1)">60%</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="-6" transform="translate(449.8831 37)" fill="hsla(212, 10%, 53%, 1)">80%</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="-6" transform="translate(552.96 37)" fill="hsla(212, 10%, 53%, 1)">100%</text>
+<path d="M37.5753 45.4286l135.5633 0l0 19.7143l-135.5633 0Z" fill="hsla(207, 65%, 39%, 1)"></path>
+<path d="M37.5753 74l149.9566 0l0 19.7143l-149.9566 0Z" fill="hsla(207, 65%, 39%, 1)"></path>
+<path d="M37.5753 102.5714l150.9713 0l0 19.7143l-150.9713 0Z" fill="hsla(207, 65%, 39%, 1)"></path>
+<path d="M37.5753 131.1429l152.5688 0l0 19.7143l-152.5688 0Z" fill="hsla(207, 65%, 39%, 1)"></path>
+<path d="M37.5753 159.7143l173.009 0l0 19.7143l-173.009 0Z" fill="hsla(207, 65%, 39%, 1)"></path>
+<path d="M37.5753 188.2857l189.2784 0l0 19.7143l-189.2784 0Z" fill="hsla(207, 65%, 39%, 1)"></path>
+<path d="M37.5753 216.8571l161.0577 0l0 19.7143l-161.0577 0Z" fill="hsla(207, 65%, 39%, 1)"></path>
+<path d="M173.1386 45.4286l152.6613 0l0 19.7143l-152.6613 0Z" fill="rgb(69,161,191)"></path>
+<path d="M187.5319 74l131.03 0l0 19.7143l-131.03 0Z" fill="rgb(69,161,191)"></path>
+<path d="M188.5466 102.5714l112.7946 0l0 19.7143l-112.7946 0Z" fill="rgb(69,161,191)"></path>
+<path d="M190.1441 131.1429l130.2416 0l0 19.7143l-130.2416 0Z" fill="rgb(69,161,191)"></path>
+<path d="M210.5843 159.7143l145.6918 0l0 19.7143l-145.6918 0Z" fill="rgb(69,161,191)"></path>
+<path d="M226.8538 188.2857l107.1818 0l0 19.7143l-107.1818 0Z" fill="rgb(69,161,191)"></path>
+<path d="M198.633 216.8571l110.0561 0l0 19.7143l-110.0561 0Z" fill="rgb(69,161,191)"></path>
+<path d="M325.7999 45.4286l103.8097 0l0 19.7143l-103.8097 0Z" fill="hsla(207, 69%, 79%, 1)"></path>
+<path d="M318.5619 74l120.8388 0l0 19.7143l-120.8388 0Z" fill="hsla(207, 69%, 79%, 1)"></path>
+<path d="M301.3412 102.5714l138.8242 0l0 19.7143l-138.8242 0Z" fill="hsla(207, 69%, 79%, 1)"></path>
+<path d="M320.3857 131.1429l135.8234 0l0 19.7143l-135.8234 0Z" fill="hsla(207, 69%, 79%, 1)"></path>
+<path d="M356.2761 159.7143l123.838 0l0 19.7143l-123.838 0Z" fill="hsla(207, 69%, 79%, 1)"></path>
+<path d="M334.0355 188.2857l143.6692 0l0 19.7143l-143.6692 0Z" fill="hsla(207, 69%, 79%, 1)"></path>
+<path d="M308.6891 216.8571l163.742 0l0 19.7143l-163.742 0Z" fill="hsla(207, 69%, 79%, 1)"></path>
+<path d="M429.6096 45.4286l123.3504 0l0 19.7143l-123.3504 0Z" fill="hsla(202, 28%, 65%, 1)"></path>
+<path d="M439.4007 74l113.5593 0l0 19.7143l-113.5593 0Z" fill="hsla(202, 28%, 65%, 1)"></path>
+<path d="M440.1654 102.5714l112.7946 0l0 19.7143l-112.7946 0Z" fill="hsla(202, 28%, 65%, 1)"></path>
+<path d="M456.2091 131.1429l96.7509 0l0 19.7143l-96.7509 0Z" fill="hsla(202, 28%, 65%, 1)"></path>
+<path d="M480.1141 159.7143l72.8459 0l0 19.7143l-72.8459 0Z" fill="hsla(202, 28%, 65%, 1)"></path>
+<path d="M477.7047 188.2857l75.2553 0l0 19.7143l-75.2553 0Z" fill="hsla(202, 28%, 65%, 1)"></path>
+<path d="M472.4311 216.8571l80.5289 0l0 19.7143l-80.5289 0Z" fill="hsla(202, 28%, 65%, 1)"></path>
+<path d="M0 0l240.748 0l0 14l-240.748 0Z" transform="translate(167.626 0)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
+<path d="M19.5 7A7 7 0 1 1 19.5 6.9993" transform="translate(162.126 0)" fill="hsla(207, 65%, 39%, 1)"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" x="23" y="7" transform="translate(162.126 0)" fill="hsla(212, 10%, 53%, 1)">North</text>
+<path d="M19.5 7A7 7 0 1 1 19.5 6.9993" transform="translate(218.9697 0)" fill="hsla(195, 49%, 51%, 1)"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" x="23" y="7" transform="translate(218.9697 0)" fill="hsla(212, 10%, 53%, 1)">Southwest</text>
+<path d="M19.5 7A7 7 0 1 1 19.5 6.9993" transform="translate(302.5029 0)" fill="hsla(207, 69%, 79%, 1)"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" x="23" y="7" transform="translate(302.5029 0)" fill="hsla(212, 10%, 53%, 1)">East</text>
+<path d="M19.5 7A7 7 0 1 1 19.5 6.9993" transform="translate(354.0146 0)" fill="hsla(202, 28%, 65%, 1)"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:12px;font-family:sans-serif;" x="23" y="7" transform="translate(354.0146 0)" fill="hsla(212, 10%, 53%, 1)">South</text>
+<path d="M0 0l0 0l0 0l0 0Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0"></path>
+</svg>

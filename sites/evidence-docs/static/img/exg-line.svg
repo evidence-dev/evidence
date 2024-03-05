@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" width="576" height="220" style="user-select: none; position: absolute; left: 0px; top: 0px;">
+<g>
+<rect width="576" height="220" x="0" y="0" id="0" fill="rgb(255,255,255)" fill-opacity="0">
+</rect>
+</g>
+<g>
+<defs>
+<clipPath id="zr2323-clip-0">
+<path d="M 35 31 L 559 31 L 559 195 L 35 195 L 35 31 Z" fill="#000" fill-opacity="1" stroke="none">
+</path>
+</clipPath>
+</defs>
+<path d="M 36.9093 194.5 L 558.72 194.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 161.5 L 558.72 161.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 129.5 L 558.72 129.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 97.5 L 558.72 97.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 64.5 L 558.72 64.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 36.9093 32.5 L 558.72 32.5" fill="none" stroke="hsla(215, 15%, 91%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<path d="M 0 0 L 144.8633 0 L 144.8633 12 L 0 12 L 0 0 Z" fill="white" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,36.9093,26)">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,36.9093,26)" dominant-baseline="central" text-anchor="start" x="0" y="6" style="font: 12px sans-serif;">calls to Austin 311 per day</text>
+<path d="M 36.9093 194.5 L 558.72 194.5" fill="none" stroke="hsla(212, 10%, 53%, 1)" stroke-width="1" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="round" stroke-miterlimit="10">
+</path>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,194)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">0</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,161.6)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">200</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,129.2)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">400</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,96.8)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">600</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,64.4)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">800</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,32.9093,32)" dominant-baseline="central" text-anchor="end" x="0" y="0" style="font: 12px sans-serif;">1,000</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,104.1897,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Apr</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,205.2114,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">May</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,309.6005,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Jun</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,410.6222,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Jul</text>
+<text xml:space="preserve" fill="hsla(212, 10%, 53%, 1)" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,515.0113,200)" dominant-baseline="central" text-anchor="middle" x="0" y="6" style="font: 12px sans-serif;">Aug</text>
+<g clip-path="url(#zr2323-clip-0)">
+<path d="M 46.9441 84.812 L 50.3115 63.428 L 53.6789 44.474 L 57.0463 52.088 L 60.4137 55.976 L 63.7811 118.508 L 67.1485 136.976 L 70.5158 95.018 L 73.8832 76.712 L 77.2506 94.208 L 80.618 85.622 L 83.9854 85.622 L 87.3528 116.24 L 90.7202 132.44 L 94.0876 93.074 L 97.455 87.242 L 100.8223 102.47 L 104.1897 102.632 L 107.5571 112.838 L 110.9245 137.138 L 114.2919 154.472 L 117.6593 95.342 L 121.0267 109.436 L 124.3941 89.348 L 127.7615 99.23 L 131.1289 90.644 L 134.4962 114.782 L 137.8636 131.144 L 141.231 89.186 L 144.5984 96.476 L 147.9658 81.896 L 151.3332 97.124 L 154.7006 89.348 L 158.068 118.994 L 161.4354 138.272 L 164.8027 94.046 L 168.1702 100.85 L 171.5375 92.102 L 174.9049 99.068 L 178.2723 81.248 L 181.6397 130.172 L 185.0071 143.132 L 188.3745 100.202 L 191.7419 101.012 L 195.1093 99.554 L 198.4767 95.018 L 201.844 95.504 L 205.2114 99.392 L 208.5788 127.58 L 211.9462 78.17 L 215.3136 93.074 L 218.681 87.89 L 222.0484 92.588 L 225.4158 86.432 L 228.7832 129.2 L 232.1505 152.204 L 235.5179 89.186 L 238.8853 99.068 L 242.2527 105.872 L 245.6201 101.498 L 248.9875 89.996 L 252.3549 122.72 L 255.7223 142.808 L 259.0897 97.286 L 262.4571 95.99 L 265.8244 94.37 L 269.1918 88.7 L 272.5592 82.868 L 275.9266 122.396 L 279.294 152.366 L 282.6614 97.124 L 286.0288 80.276 L 289.3962 81.896 L 292.7635 90.644 L 296.131 74.768 L 299.4984 52.25 L 302.8657 111.704 L 306.2331 112.028 L 309.6005 58.73 L 312.9679 77.522 L 316.3353 77.684 L 319.7027 67.64 L 323.0701 120.29 L 326.4375 133.412 L 329.8048 78.656 L 333.1722 78.008 L 336.5396 80.6 L 339.907 81.896 L 343.2744 87.728 L 346.6418 124.988 L 350.0092 133.574 L 353.3766 83.354 L 356.744 85.784 L 360.1114 75.092 L 363.4788 88.376 L 366.8461 99.878 L 370.2135 128.552 L 373.5809 146.534 L 376.9483 91.454 L 380.3157 89.834 L 383.6831 98.096 L 387.0505 103.928 L 390.4179 97.61 L 393.7852 126.608 L 397.1526 139.568 L 400.52 89.834 L 403.8874 60.026 L 407.2548 90.806 L 410.6222 91.94 L 413.9896 102.47 L 417.357 132.926 L 420.7244 151.718 L 424.0918 121.1 L 427.4591 81.086 L 430.8265 91.616 L 434.1939 82.544 L 437.5613 103.928 L 440.9287 111.056 L 444.2961 145.238 L 447.6635 96.638 L 451.0309 88.7 L 454.3983 77.846 L 457.7657 97.934 L 461.1331 96.476 L 464.5004 137.948 L 467.8678 149.936 L 471.2352 91.778 L 474.6026 84.488 L 477.97 88.862 L 481.3374 84.812 L 484.7048 86.756 L 488.0722 138.272 L 491.4395 138.92 L 494.8069 94.37 L 498.1743 91.13 L 501.5417 91.778 L 504.9091 100.364 L 508.2765 103.604 L 511.6439 134.222 L 515.0113 151.556 L 518.3787 92.102 L 521.746 83.678 L 525.1135 96.638 L 528.4808 91.778 L 531.8482 90.32 L 535.2156 134.87 L 538.583 140.864 L 541.9504 92.426 L 545.3178 98.42 L 548.6852 95.504" fill="none" stroke="hsla(207, 65%, 39%, 1)" stroke-width="2" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-linejoin="round" stroke-miterlimit="10">
+</path>
+</g>
+<path d="M 0 0 L 28.7793 0 L 28.7793 14 L 0 14 L 0 0 Z" fill="rgb(0,0,0)" fill-opacity="0" stroke="#ccc" stroke-width="0" paint-order="fill" stroke-opacity="1" stroke-dasharray="none" stroke-linecap="butt" stroke-miterlimit="10">
+</path>
+<text xml:space="preserve" fill="hsla(210, 14%, 37%, 1)" fill-opacity="1" stroke="none" dominant-baseline="central" text-anchor="start" x="0" y="7" style="font: bold 14px sans-serif;">Line</text>
+</g>
+</svg>
