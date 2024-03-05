@@ -184,7 +184,6 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action(async (args) => {
-
 		// Start spinner
 		const spinner = ora({
 			text: chalk.cyan('Evidence is starting\n'),
@@ -198,10 +197,11 @@ prog
 			spinner.stop();
 
 			// Start a new spinner or modify the existing one as per your requirements
-			spinner.text = chalk.cyan('Evidence is starting - this can take up to 2 minutes the first time.');
+			spinner.text = chalk.cyan(
+				'Evidence is starting - this can take up to 2 minutes the first time.'
+			);
 			spinner.start();
 		}, 30000); // 30 seconds
-
 
 		// Use get-port to find an available port starting from 3000
 		const port = await getPort({ port: [3000, 3001, 3002, 3003, 3004, 3005] });
@@ -248,12 +248,11 @@ ${chalk.bold('[!] Unable to load source manifest')}
 		checkAppReady(port, () => {
 			clearTimeout(timeoutId);
 			spinner.succeed(chalk.green('Evidence server started\n'));
-			const link = `http://localhost:${port}`;
 			console.log(
 				chalk.cyan.bold('● Evidence is running'),
 				chalk.green('\n➜ '),
 				chalk.grey(`http://localhost:${port}`)
-			)
+			);
 		});
 
 		child.on('exit', function () {
