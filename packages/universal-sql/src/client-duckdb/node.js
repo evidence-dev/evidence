@@ -113,12 +113,12 @@ export async function setParquetURLs(tables, append = false) {
 		 */
 		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.sep);
 		for (const table of tables[source]) {
+			table.partitions = table.partitions.map(adaptForPlatform);
 			for (const file of table.partitions) {
-				const platformPath = adaptForPlatform(file);
 				if (append) {
-					await emptyDbFs(platformPath);
+					await emptyDbFs(file);
 				}
-				db.registerFileURL(platformPath, platformPath, DuckDBDataProtocol.NODE_FS, false);
+				db.registerFileURL(file, file, DuckDBDataProtocol.NODE_FS, false);
 			}
 			connection.query(
 				`CREATE OR REPLACE VIEW "${source}"."${table.name}" AS (
