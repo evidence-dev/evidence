@@ -7,12 +7,12 @@ import {
 	VoidLogger
 } from '@duckdb/duckdb-wasm/dist/duckdb-node-blocking';
 import { createRequire } from 'module';
-import path, { dirname, resolve } from 'path';
+import path from 'path';
 import { cache_for_hash, get_arrow_if_sql_already_run } from '../cache-duckdb.js';
 import { withTimeout } from './both.js';
 
 const require = createRequire(import.meta.url);
-const DUCKDB_DIST = dirname(require.resolve('@duckdb/duckdb-wasm'));
+const DUCKDB_DIST = path.dirname(require.resolve('@duckdb/duckdb-wasm'));
 
 export { tableFromIPC } from 'apache-arrow';
 
@@ -45,12 +45,12 @@ export async function initDB() {
 	try {
 		const DUCKDB_BUNDLES = {
 			mvp: {
-				mainModule: resolve(DUCKDB_DIST, './duckdb-mvp.wasm'),
-				mainWorker: resolve(DUCKDB_DIST, './duckdb-node-mvp.worker.cjs')
+				mainModule: path.resolve(DUCKDB_DIST, './duckdb-mvp.wasm'),
+				mainWorker: path.resolve(DUCKDB_DIST, './duckdb-node-mvp.worker.cjs')
 			},
 			eh: {
-				mainModule: resolve(DUCKDB_DIST, './duckdb-eh.wasm'),
-				mainWorker: resolve(DUCKDB_DIST, './duckdb-node-eh.worker.cjs')
+				mainModule: path.resolve(DUCKDB_DIST, './duckdb-eh.wasm'),
+				mainWorker: path.resolve(DUCKDB_DIST, './duckdb-node-eh.worker.cjs')
 			}
 		};
 		const logger = process.env.VITE_EVIDENCE_DEBUG ? new ConsoleLogger() : new VoidLogger();
@@ -111,7 +111,7 @@ export async function setParquetURLs(tables, append = false) {
 		 * @param {string} s
 		 * @returns {string}
 		 */
-		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.delimiter);
+		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.sep);
 		for (const table of tables[source]) {
 			for (const file of table.partitions) {
 				const platformPath = adaptForPlatform(file);
