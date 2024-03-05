@@ -1,12 +1,11 @@
-<script lang="ts">
+<script>
 	import { Select as SelectPrimitive } from 'bits-ui';
 	import { CaretSort } from 'radix-icons-svelte';
 	import { cn } from '$lib/utils';
 
-	type $$Props = SelectPrimitive.TriggerProps;
-	type $$Events = SelectPrimitive.TriggerEvents;
+	/** @type {string | undefined | null} */
+	let className = undefined;
 
-	let className: $$Props['class'] = undefined;
 	export { className as class };
 </script>
 

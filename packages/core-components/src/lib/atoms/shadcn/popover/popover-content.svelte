@@ -1,14 +1,22 @@
-<script lang="ts">
+<script>
 	import { Popover as PopoverPrimitive } from 'bits-ui';
 	import { cn, flyAndScale } from '$lib/utils';
 
-	type $$Props = PopoverPrimitive.ContentProps;
+	/** @type {string | undefined | null} */
+	let className = undefined;
 
-	let className: $$Props['class'] = undefined;
-	export let transition: $$Props['transition'] = flyAndScale;
-	export let transitionConfig: $$Props['transitionConfig'] = undefined;
-	export let align: $$Props['align'] = 'center';
-	export let sideOffset: $$Props['sideOffset'] = 4;
+	/** @type {any} */
+	export let transition = flyAndScale;
+
+	/** @type {Object | undefined} */
+	export let transitionConfig = undefined;
+
+	/** @type {string} */
+	export let align = 'center';
+
+	/** @type {number} */
+	export let sideOffset = 4;
+
 	export { className as class };
 </script>
 

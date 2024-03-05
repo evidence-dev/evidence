@@ -1,15 +1,17 @@
-<script lang="ts">
+<script>
 	import { cn } from '$lib/utils';
 	import { Select as SelectPrimitive } from 'bits-ui';
 	import { Check } from 'radix-icons-svelte';
 
-	type $$Props = SelectPrimitive.ItemProps;
-	type $$Events = Required<SelectPrimitive.ItemEvents>;
+	/** @type {string | undefined | null} */
+	let className = undefined;
+	/** @type {any} */
+	export let value;
+	/** @type {string | undefined | null} */
+	export let label = undefined;
+	/** @type {boolean | undefined} */
+	export let disabled = undefined;
 
-	let className: $$Props['class'] = undefined;
-	export let value: $$Props['value'];
-	export let label: $$Props['label'] = undefined;
-	export let disabled: $$Props['disabled'] = undefined;
 	export { className as class };
 </script>
 

@@ -1,13 +1,12 @@
-<script lang="ts">
+<script>
 	import Command from './command.svelte';
 	import * as Dialog from '../dialog';
-	import type { Dialog as DialogPrimitive } from 'bits-ui';
-	import type { Command as CommandPrimitive } from 'cmdk-sv';
 
-	type $$Props = DialogPrimitive.Props & CommandPrimitive.CommandProps;
+	/** @type {boolean} */
+	export let open = false;
 
-	export let open: $$Props['open'] = false;
-	export let value: $$Props['value'] = undefined;
+	/** @type {any} */
+	export let value = undefined;
 </script>
 
 <Dialog.Root bind:open {...$$restProps}>

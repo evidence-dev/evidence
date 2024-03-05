@@ -2,9 +2,7 @@
 	export const evidenceInclude = true;
 </script>
 
-<script lang="ts">
-	import type { Writable } from 'svelte/store';
-
+<script>
 	import DateRange from './_DateRange.svelte';
 	import { getContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
@@ -14,23 +12,28 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
 
-	function dateToYYYYMMDD(date: Date) {
+	function dateToYYYYMMDD(date) {
 		return date.toISOString().split('T')[0];
 	}
 
-	const inputs: Writable<object> = getContext(INPUTS_CONTEXT_KEY);
+	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
-	export let name: string;
-	export let title: string | undefined;
+	/** @type {string} */
+	export let name;
+	/** @type {string | undefined} */
+	export let title;
+	/** @type {boolean} */
 	export let hideDuringPrint = true;
 
-	// Static API
-	export let start: string | Date | undefined;
-	export let end: string | Date | undefined;
+	/** @type {string | Date | undefined} */
+	export let start;
+	/** @type {string | Date | undefined} */
+	export let end;
 
-	// Universal SQL API
-	export let data: QueryStore | string | undefined;
-	export let dates: string | undefined;
+	/** @type {QueryStore | string | undefined} */
+	export let data;
+	/** @type {string | undefined} */
+	export let dates;
 
 	const exec = getQueryFunction();
 	let query;

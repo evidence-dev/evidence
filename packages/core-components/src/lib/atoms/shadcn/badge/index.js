@@ -1,4 +1,4 @@
-import { tv, type VariantProps } from 'tailwind-variants';
+import { tv } from 'tailwind-variants';
 
 export { default as Badge } from './badge.svelte';
 export const badgeVariants = tv({
@@ -16,4 +16,6 @@ export const badgeVariants = tv({
 	}
 });
 
-export type Variant = VariantProps<typeof badgeVariants>['variant'];
+/**
+ * @typedef {'default' | 'secondary' | 'destructive' | 'outline'} Variant
+ */
