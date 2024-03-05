@@ -1,13 +1,12 @@
-<script lang="ts">
+<script>
 	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
 	import { ChevronRight } from 'radix-icons-svelte';
 	import { buttonVariants } from '$lib/atoms/shadcn/button';
 	import { cn } from '$lib/utils';
 
-	type $$Props = RangeCalendarPrimitive.NextButtonProps;
-	type $$Events = RangeCalendarPrimitive.NextButtonEvents;
+	/** @type {string | undefined | null} */
+	let className = undefined;
 
-	let className: $$Props['class'] = undefined;
 	export { className as class };
 </script>
 

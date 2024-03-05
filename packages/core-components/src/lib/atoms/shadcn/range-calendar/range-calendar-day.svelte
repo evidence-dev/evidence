@@ -1,14 +1,17 @@
-<script lang="ts">
+<script>
 	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
 	import { buttonVariants } from '$lib/atoms/shadcn/button';
 	import { cn } from '$lib/utils';
 
-	type $$Props = RangeCalendarPrimitive.DayProps;
-	type $$Events = RangeCalendarPrimitive.DayEvents;
+	/** @type {any} */
+	export let date = undefined;
 
-	export let date: $$Props['date'];
-	export let month: $$Props['month'];
-	let className: $$Props['class'] = undefined;
+	/** @type {any} */
+	export let month = undefined;
+
+	/** @type {string | undefined | null} */
+	let className = undefined;
+
 	export { className as class };
 </script>
 

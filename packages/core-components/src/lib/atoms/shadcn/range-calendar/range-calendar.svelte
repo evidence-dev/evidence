@@ -1,18 +1,21 @@
-<script lang="ts">
+<script>
 	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
 	import * as RangeCalendar from './index.js';
 	import { cn } from '$lib/utils.js';
 
-	type $$Props = RangeCalendarPrimitive.Props;
-	type $$Events = RangeCalendarPrimitive.Events;
+	/** @type {any | undefined} */
+	let value = undefined;
+	/** @type {any | undefined} */
+	let placeholder = undefined;
+	/** @type {'short' | 'long' | undefined} */
+	let weekdayFormat = 'short';
+	/** @type {any | undefined} */
+	let startValue = undefined;
 
-	export let value: $$Props['value'] = undefined;
-	export let placeholder: $$Props['placeholder'] = undefined;
-	export let weekdayFormat: $$Props['weekdayFormat'] = 'short';
-	export let startValue: $$Props['startValue'] = undefined;
+	/** @type {string | undefined | null} */
+	let className = undefined;
 
-	let className: $$Props['class'] = undefined;
-	export { className as class };
+	export { className as class, value, placeholder, weekdayFormat, startValue };
 </script>
 
 <RangeCalendarPrimitive.Root

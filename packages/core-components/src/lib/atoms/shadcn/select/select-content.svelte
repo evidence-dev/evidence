@@ -1,16 +1,20 @@
-<script lang="ts">
+<script>
 	import { Select as SelectPrimitive } from 'bits-ui';
 	import { cn, flyAndScale } from '$lib/utils';
 	import { scale } from 'svelte/transition';
 
-	type $$Props = SelectPrimitive.ContentProps;
-
-	let className: $$Props['class'] = undefined;
-	export let sideOffset: $$Props['sideOffset'] = 4;
-	export let inTransition: $$Props['inTransition'] = flyAndScale;
-	export let inTransitionConfig: $$Props['inTransitionConfig'] = undefined;
-	export let outTransition: $$Props['outTransition'] = scale;
-	export let outTransitionConfig: $$Props['outTransitionConfig'] = {
+	/** @type {string | undefined | null} */
+	let className = undefined;
+	/** @type {number} */
+	export let sideOffset = 4;
+	/** @type {function} */
+	export let inTransition = flyAndScale;
+	/** @type {object | undefined} */
+	export let inTransitionConfig = undefined;
+	/** @type {function} */
+	export let outTransition = scale;
+	/** @type {object} */
+	export let outTransitionConfig = {
 		start: 0.95,
 		opacity: 0,
 		duration: 50

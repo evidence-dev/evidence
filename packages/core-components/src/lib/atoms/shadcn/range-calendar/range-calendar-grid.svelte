@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
 	import { RangeCalendar as RangeCalendarPrimitive } from 'bits-ui';
 	import { cn } from '$lib/utils';
 
-	type $$Props = RangeCalendarPrimitive.GridProps;
+	/** @type {string | undefined | null} */
+	let className = undefined;
 
-	let className: $$Props['class'] = undefined;
 	export { className as class };
 </script>
 
