@@ -5,7 +5,7 @@ import { evidencePlugins } from '@evidence-dev/plugin-connector';
 /** @type {import('@sveltejs/kit').Config} */
 
 function errorHandler(warning) {
-	throw new Error(warning.message);
+	throw new Error(warning.message, { cause: warning );
 }
 
 const config = {
