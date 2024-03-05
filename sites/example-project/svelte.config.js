@@ -5,7 +5,7 @@ import { evidencePlugins } from '@evidence-dev/plugin-connector';
 /** @type {import('@sveltejs/kit').Config} */
 
 function errorHandler(warning) {
-	throw new Error(warning.message, { cause: warning );
+	throw new Error(warning.message, { cause: warning });
 }
 
 const config = {
@@ -17,7 +17,7 @@ const config = {
 			postcss: true
 		})
 	], // Modify preprocess to allow for loading of $lib instead of package version of components library
-	onwarn: errorHandler
+	onwarn: errorHandler,
 	kit: {
 		adapter: adapter({
 			strict: false

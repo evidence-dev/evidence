@@ -28,7 +28,7 @@
 				handleExpectedWhitespace
 			];
 
-			let customErrorMessage = errorHandlers.reduce((acc, handler) => {
+			const customErrorMessage = errorHandlers.reduce((acc, handler) => {
 				return acc || handler(err);
 			}, null);
 
