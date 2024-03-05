@@ -93,7 +93,7 @@ group by all
 ```item_state
 select item, state, count(1) as orders from needful_things.orders
 group by all
-order by state desc, item asc
+order by state asc, item asc
 ```
 
 <Heatmap 

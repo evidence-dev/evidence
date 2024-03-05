@@ -8,4 +8,3 @@ select
 
 ```
 
-{console.log(dates)}

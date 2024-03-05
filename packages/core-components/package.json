@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "3.4.0",
+	"version": "3.4.2",
 	"evidence": {
 		"components": true
 	},
@@ -47,6 +47,8 @@
 		"@steeze-ui/tabler-icons": "^2.1.0",
 		"@types/lodash.debounce": "^4.0.9",
 		"bits-ui": "^0.11.8",
+		"@types/mermaid": "^9.2.0",
+		"chroma-js": "^2.4.2",
 		"clsx": "^2.0.0",
 		"cmdk-sv": "^0.0.12",
 		"codemirror": "^6.0.1",
@@ -55,6 +57,7 @@
 		"export-to-csv": "0.2.1",
 		"fuse.js": "^7.0.0",
 		"lodash.debounce": "^4.0.8",
+		"mermaid": "^10.6.1",
 		"prismjs": "1.29.0",
 		"radix-icons-svelte": "^1.2.1",
 		"ssf": "0.11.2",
