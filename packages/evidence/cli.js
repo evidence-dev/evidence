@@ -41,7 +41,7 @@ const populateTemplate = function () {
 
 const clearQueryCache = function () {
 	fs.removeSync('.evidence/template/.evidence-queries/cache');
-	console.log(chalk.blue('\nCleared query cache'));
+	console.log(chalk.blue('Cleared query cache\n'));
 };
 
 const runFileWatcher = function (watchPatterns) {
@@ -191,22 +191,18 @@ prog
 			color: 'cyan'
 		}).start();
 
-		// Set a timeout to change the spinner after 1 minute
+		// Set a timeout to change the spinner message after 30 seconds
 		const timeoutId = setTimeout(() => {
-			// Stop the current spinner
-			spinner.stop();
-
-			// Start a new spinner or modify the existing one as per your requirements
-			spinner.text = chalk.cyan(
-				'Evidence is starting - this can take up to 2 minutes the first time.'
-			);
-			spinner.start();
+			spinner.text = chalk.cyan('Evidence is starting - this can take up to 2 minutes');
 		}, 30000); // 30 seconds
 
-		// Use get-port to find an available port starting from 3000
+		// Use get-port to find an available port starting from 3000. After 3005, choose a random available port
 		const port = await getPort({ port: [3000, 3001, 3002, 3003, 3004, 3005] });
 
-		startProxyServer(port + 1, port);
+		// Set proxy port to 1 greater than port if available, otherwise random
+		const proxyPort = await getPort({ port: port + 1 });
+
+		startProxyServer(proxyPort, port);
 
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
@@ -232,7 +228,9 @@ ${chalk.bold('[!] Unable to load source manifest')}
 			);
 		}
 
+		spinner.stop();
 		populateTemplate();
+		spinner.start();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
 
