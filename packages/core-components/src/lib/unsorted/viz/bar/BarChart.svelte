@@ -110,6 +110,8 @@
 
 	export let renderer = undefined;
 	export let seriesColors = undefined;
+	export let seriesSort = undefined;
+	export let seriesSortOrder = undefined;
 </script>
 
 <Chart
@@ -165,6 +167,8 @@
 	{emptyMessage}
 	{renderer}
 	{seriesColors}
+	{seriesSort}
+	{seriesSortOrder}
 >
 	<Bar
 		{type}

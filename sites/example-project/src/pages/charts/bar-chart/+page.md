@@ -42,6 +42,70 @@ echartsOptions={{
 }}
 />
 
+
+```sql missing_values
+select 50 as sales, '1. Manufacturing' as category, 'Monday' as day, 1 as day_num 
+union all
+select 100, '1. Manufacturing', 'Tuesday', 2 as day_num 
+union all
+select 150, '1. Manufacturing', 'Wednesday', 3 as day_num 
+union all
+select 200, '1. Manufacturing', 'Thursday', 4 as day_num 
+union all
+select 200, '1. Manufacturing', 'Friday', 5 as day_num 
+union all
+select 300, '1. Manufacturing', 'Saturday', 6 as day_num 
+union all
+select 10, '2. Retail', 'Monday', 1 as day_num 
+union all
+select 20, '2. Retail', 'Tuesday', 2 as day_num 
+union all
+select 31, '2. Retail', 'Wednesday', 3 as day_num 
+union all
+select 41, '2. Retail', 'Thursday', 4 as day_num 
+union all
+select 60, '2. Retail', 'Saturday', 6 as day_num 
+union all
+select 70, '2. Retail', 'Sunday', 7 as day_num  
+union all
+select 320, '3. Healthcare', 'Wednesday', 3 as day_num 
+union all
+select 420, '3. Healthcare', 'Thursday', 4 as day_num 
+union all
+select 520, '3. Healthcare', 'Friday', 5 as day_num 
+union all
+select 620, '3. Healthcare', 'Saturday', 6 as day_num 
+union all
+select 720, '3. Healthcare', 'Sunday', 7 as day_num 
+order by day_num
+```
+
+<BarChart 
+    data={missing_values} 
+    x=day 
+    y=sales 
+    series=category
+    sort=false
+    seriesSort=category
+    --seriesSortOrder=desc
+/>
+
+
+
+## Stacked Bar with Custom Series Sort
+
+<BarChart 
+    data={orders_by_category_2021} 
+    x=month 
+    y=sales_usd0k 
+    series=category
+    labels=true
+    seriesSort=sales_usd0k
+    seriesSortOrder=desc
+/>
+
+
+
 ### Stacked Bar with Negative Values
 
 <BarChart 
