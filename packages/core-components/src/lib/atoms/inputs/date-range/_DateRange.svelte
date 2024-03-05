@@ -1,5 +1,4 @@
-<script lang="ts">
-	import type { DateRange } from 'bits-ui';
+<script>
 	import {
 		CalendarDate,
 		DateFormatter,
@@ -13,7 +12,7 @@
 	import * as Select from '$lib/atoms/shadcn/select/index.js';
 	import * as Popover from '$lib/atoms/shadcn/popover/index.js';
 
-	function YYYYMMDDToCalendar(yyyymmdd: string) {
+	function YYYYMMDDToCalendar(yyyymmdd) {
 		const pieces = yyyymmdd.split('-');
 		return new CalendarDate(Number(pieces[0]), Number(pieces[1]), Number(pieces[2]));
 	}
@@ -26,9 +25,12 @@
 		dateStyle: 'short'
 	});
 
-	export let selectedDateRange: DateRange | undefined;
-	export let start: string;
-	export let end: string;
+	/** @type {import('bits-ui').DateRange | undefined} */
+	export let selectedDateRange;
+	/** @type {string} */
+	export let start;
+	/** @type {string} */
+	export let end;
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
@@ -39,11 +41,7 @@
 
 	$: updateDateRange(calendarStart, calendarEnd);
 
-	type Preset = {
-		label: string;
-		range: DateRange;
-	};
-
+	/** @type {{label: string, range: import('bits-ui').DateRange}[]} */
 	$: presets = [
 		{
 			label: 'Last 7 Days',
@@ -66,13 +64,13 @@
 				end: calendarEnd
 			}
 		}
-	] as Preset[];
+	];
 
 	function setPlaceholderDefault(d) {
 		placeholder ??= d;
 	}
 
-	let selectedPreset: Preset | undefined = undefined;
+	let selectedPreset;
 	let placeholder;
 	$: setPlaceholderDefault(calendarEnd);
 </script>
