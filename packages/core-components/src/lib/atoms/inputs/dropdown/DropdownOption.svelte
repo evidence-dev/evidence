@@ -40,7 +40,7 @@
 						: 'opacity-50 [&_svg]:invisible'
 				)}
 			>
-				<Icon src={Check} className={cn('h-4 w-4')} />
+				<Icon src={Check} class={cn('h-4 w-4')} />
 			</div>
 		{:else}
 			<div class="mr-2 flex h-4 w-4 items-center justify-center">
@@ -54,7 +54,7 @@
 				/>
 			</div>
 		{/if}
-		<span>
+		<span class=" line-clamp-4">
 			{valueLabel}
 		</span>
 	</Command.Item>
