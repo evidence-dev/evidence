@@ -5,7 +5,7 @@ const config = {
 	plugins: [sveltekit()],
 	optimizeDeps: {
 		include: ['echarts-stat', 'echarts'],
-		exclude: ['svelte-icons', 'mermaid']
+		exclude: ['svelte-icons']
 	},
 	ssr: {
 		external: [
@@ -13,7 +13,6 @@ const config = {
 			'@evidence-dev/telemetry',
 			'blueimp-md5',
 			'@evidence-dev/plugin-connector',
-			'mermaid'
 		]
 	},
 	server: {
