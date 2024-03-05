@@ -1,15 +1,20 @@
-<script lang="ts">
+<script>
 	import { Button as ButtonPrimitive } from 'bits-ui';
 	import { cn } from '$lib/utils';
-	import { buttonVariants, type Props, type Events } from '.';
+	import { buttonVariants } from '.';
 
-	type $$Props = Props;
-	type $$Events = Events;
+	/** @type {string | undefined | null} */
+	let className = undefined;
 
-	let className: $$Props['class'] = undefined;
-	export let variant: $$Props['variant'] = 'default';
-	export let size: $$Props['size'] = 'default';
-	export let builders: $$Props['builders'] = [];
+	/** @type {import('./index.js').Variant} */
+	export let variant = 'default';
+
+	/** @type {import('./index.js').Size} */
+	export let size = 'default';
+
+	/** @type {Array<*>} */
+	export let builders = [];
+
 	export { className as class };
 </script>
 

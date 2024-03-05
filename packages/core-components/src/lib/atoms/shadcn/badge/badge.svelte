@@ -1,10 +1,16 @@
-<script lang="ts">
+<script>
 	import { cn } from '$lib/utils';
-	import { badgeVariants, type Variant } from '.';
+	import { badgeVariants } from '.';
 
-	let className: string | undefined | null = undefined;
-	export let href: string | undefined = undefined;
-	export let variant: Variant = 'default';
+	/** @type {string | undefined | null} */
+	let className = undefined;
+
+	/** @type {string | undefined} */
+	export let href = undefined;
+
+	/** @type {import('./index.js').Variant} */
+	export let variant = 'default';
+
 	export { className as class };
 </script>
 
