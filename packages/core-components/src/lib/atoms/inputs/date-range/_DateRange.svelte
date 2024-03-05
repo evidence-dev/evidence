@@ -67,7 +67,7 @@
 	];
 
 	function setPlaceholderDefault(d) {
-		placeholder ??= d;
+		placeholder = d;
 	}
 
 	let selectedPreset;
