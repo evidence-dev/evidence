@@ -87,5 +87,13 @@
 			"jsonwebtoken@<9.0.0": ">=9.0.0",
 			"nth-check@<2.0.1": ">=2.0.1"
 		}
+	},
+	"dependencies": {
+		"express": "^4.18.3",
+		"get-port": "^7.0.0",
+		"http-proxy": "^1.18.1",
+		"node-fetch": "^3.3.1",
+		"open": "^9.1.0",
+		"ora": "^7.0.1"
 	}
 }
