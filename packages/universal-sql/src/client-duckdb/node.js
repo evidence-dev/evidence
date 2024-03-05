@@ -123,7 +123,7 @@ export async function setParquetURLs(tables, append = false) {
 			connection.query(
 				`CREATE OR REPLACE VIEW "${source}"."${table.name}" AS (
 					SELECT * FROM read_parquet([${table.partitions
-						.map((p) => `'${p.replaceAll("'", "''")}'`)
+						.map((p) => `'${p.replaceAll("'", "''").replaceAll('\\', '\\\\')}'`)
 						.join(', ')}], hive_partitioning = ${table.useHive ? '1' : '0'})
 				);`
 			);
