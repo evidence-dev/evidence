@@ -96,11 +96,11 @@ export async function emptyDbFs(targetGlob) {
 
 /**
  * Adds a new view to the database, pointing to the provided parquet URL.
- * @param {Record<string, ({ partitions: string[], name: string, useHive: boolean })[]>} tablse
+ * @param {Record<string, ({ partitions: string[], name: string, useHive: boolean })[]>} tables
  * @param {boolean} [append]
  * @returns {Promise<void>}
  */
-export async function setParquetURLs(tablse, append = false) {
+export async function setParquetURLs(tables, append = false) {
 	if (!db) await initDB();
 	if (!append) await emptyDbFs('*');
 	if (import.meta.env.VITE_EVIDENCE_DEBUG) console.debug('Updating Parquet URLs');
@@ -120,9 +120,9 @@ export async function setParquetURLs(tablse, append = false) {
 	};
 
 	try {
-		for (const source in tablse) {
+		for (const source in tables) {
 			await connection.query(`CREATE SCHEMA IF NOT EXISTS "${source}";`);
-			for (const table of tablse[source]) {
+			for (const table of tables[source]) {
 				for (const file of table.partitions) {
 					const clean = cleanPath(file);
 					if (append) {
