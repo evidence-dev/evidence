@@ -104,9 +104,8 @@
 					(v) => v.value !== currentValue.value || v.label !== currentValue.label
 				);
 			} else {
-				$selectedValues.push(currentValue);
+				$selectedValues = [...$selectedValues, currentValue];
 			}
-			$selectedValues = $selectedValues;
 		}
 		selectedValuesToInput();
 	}
