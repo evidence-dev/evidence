@@ -12,6 +12,6 @@ module.exports = {
 		node: true
 	},
 	rules: {
-		"no-self-assign": "off"
+		'no-self-assign': 'off'
 	}
 };
