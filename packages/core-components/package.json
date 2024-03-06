@@ -85,7 +85,7 @@
 		"@storybook/theming": "^7.6.6",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "1.22.3",
-		"@sveltejs/package": "^2.0.0",
+		"@sveltejs/package": "^2.2.7",
 		"autoprefixer": "^10.4.14",
 		"chromatic": "^6.17.4",
 		"eslint": "8.45.0",
