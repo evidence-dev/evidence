@@ -10,22 +10,22 @@ ORDER BY userId, tagId
 <Dropdown   data={user_tags} 
             value="userId" label="user_name" 
             title="User" name="user" 
-            where="tagId = {inputs.tag} OR {inputs.tag} < 0">
+            where="tagId = {inputs.tag.value} OR {inputs.tag.value} < 0">
     <DropdownOption value={-1} valueLabel="All Users" />
 </Dropdown>
 
 <Dropdown   data={user_tags} 
             value="tagId" label="tag"
             title="Tag" name="tag"
-            where="userId = {inputs.user} OR {inputs.user} < 0">
+            where="userId = {inputs.user.value} OR {inputs.user.value} < 0">
     <DropdownOption value={-1} valueLabel="All Hashtags" />
 </Dropdown>
 
 ```posts
 SELECT p.* FROM posts p
-WHERE p.user_id = ${inputs.user}
-  AND ${inputs.tag} IN (SELECT pt.hashtag_id FROM post_tags pt where pt.post_id = p.id)
-  AND ${inputs.user} >= 0 AND ${inputs.tag} >= 0
+WHERE p.user_id = ${inputs.user.value}
+  AND ${inputs.tag.vaule} IN (SELECT pt.hashtag_id FROM post_tags pt where pt.post_id = p.id)
+  AND ${inputs.user.value} >= 0 AND ${inputs.tag.value} >= 0
 ```
 
 <DataTable data={posts}/>

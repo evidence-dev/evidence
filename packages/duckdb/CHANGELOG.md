@@ -1,5 +1,11 @@
 # @evidence-dev/duckdb
 
+## 1.0.7
+
+### Patch Changes
+
+- 0c1a7ccb: Upgrade DuckDB to 0.10.0, add custom user agent
+
 ## 1.0.6
 
 ### Patch Changes

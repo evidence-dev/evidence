@@ -73,6 +73,13 @@
 					? 'var(--green-700)'
 					: 'var(--red-700)';
 		}
+
+		if (sparkline) {
+			checkInputs(data, [sparkline]);
+			if (columnSummary.find((d) => d.id === sparkline)?.type !== 'date') {
+				throw Error('sparkline must be a date column');
+			}
+		}
 	} catch (e) {
 		error = e;
 		const setTextRed = '\x1b[31m%s\x1b[0m';

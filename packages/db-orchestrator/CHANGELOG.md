@@ -1,5 +1,16 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.11
+
+### Patch Changes
+
+- Updated dependencies [32a38858]
+- Updated dependencies [0c1a7ccb]
+  - @evidence-dev/postgres@1.0.4
+  - @evidence-dev/duckdb@1.0.7
+  - @evidence-dev/redshift@1.0.4
+  - @evidence-dev/csv@1.0.7
+
 ## 3.0.10
 
 ### Patch Changes
