@@ -113,17 +113,18 @@ export async function setParquetURLs(tables, append = false) {
 		 */
 		const adaptForPlatform = (s) => s.split(/[\\/]/g).join(path.sep);
 		for (const table of tables[source]) {
-			table.partitions = table.partitions.map(adaptForPlatform);
 			for (const file of table.partitions) {
+				const name = file.replaceAll(path.sep, '_');
+				const url = adaptForPlatform(file);
 				if (append) {
-					await emptyDbFs(file);
+					await emptyDbFs(name);
 				}
-				db.registerFileURL(file, file, DuckDBDataProtocol.NODE_FS, false);
+				db.registerFileURL(name, url, DuckDBDataProtocol.NODE_FS, false);
 			}
 			connection.query(
 				`CREATE OR REPLACE VIEW "${source}"."${table.name}" AS (
 					SELECT * FROM read_parquet([${table.partitions
-						.map((p) => `'${p.replaceAll("'", "''").replaceAll('\\', '\\\\')}'`)
+						.map((p) => `'${p.replaceAll("'", "''")}'`)
 						.join(', ')}], hive_partitioning = ${table.useHive ? '1' : '0'})
 				);`
 			);
