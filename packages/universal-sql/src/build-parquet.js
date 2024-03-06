@@ -166,7 +166,7 @@ export async function buildMultipartParquet(
 				? `, PARTITION_BY (${partitionKeys.join(', ')}), OVERWRITE_OR_IGNORE 1`
 				: '';
 			const copy = `COPY (SELECT * FROM read_parquet([${c
-				.map((f) => `'${f}'`)
+				.map((f) => `'${f.replaceAll('\\', '/')}'`)
 				.join(',')}])) TO '${path.resolve(
 				outDir,
 				i.toString()
