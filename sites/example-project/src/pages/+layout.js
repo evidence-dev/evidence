@@ -70,7 +70,14 @@ const dummy_pages = new Map();
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async (event) => {
 	const {
-		data: { customFormattingSettings, routeHash, paramsHash, isUserPage, evidencemeta },
+		data: {
+			customFormattingSettings,
+			routeHash,
+			paramsHash,
+			isUserPage,
+			evidencemeta,
+			pagesManifest
+		},
 		url,
 		fetch
 	} = event;
@@ -142,7 +149,8 @@ export const load = async (event) => {
 		data,
 		customFormattingSettings,
 		isUserPage,
-		evidencemeta
+		evidencemeta,
+		pagesManifest
 	});
 };
 

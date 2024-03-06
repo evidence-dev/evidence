@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<EvidenceDefaultLayout {data}>
+<EvidenceDefaultLayout {data} title="Evidence Test Environment">
 	<slot slot="content" />
 </EvidenceDefaultLayout>

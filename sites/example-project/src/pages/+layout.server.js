@@ -1,6 +1,7 @@
 import { getQueries } from '@evidence-dev/db-orchestrator';
 import md5 from 'blueimp-md5';
-import { GET } from './api/customFormattingSettings.json/+server.js';
+import { GET as getSettings } from './api/customFormattingSettings.json/+server.js';
+import { GET as getPagesManifest } from './api/pagesManifest.json/+server.js';
 import { getStatusAndExtractQueries } from './extractQueries.server.js';
 export const prerender = true;
 export const trailingSlash = 'always';
@@ -25,14 +26,18 @@ export async function load({ route, params }) {
 		await getStatusAndExtractQueries(route.id);
 	}
 
-	const customFormattingSettingsRes = await GET();
+	const customFormattingSettingsRes = await getSettings();
 	const { customFormattingSettings } = await customFormattingSettingsRes.json();
+
+	const pagesManifestRes = await getPagesManifest();
+	const pagesManifest = await pagesManifestRes.json();
 
 	return {
 		routeHash,
 		paramsHash,
 		customFormattingSettings,
 		isUserPage,
-		evidencemeta: getQueries(routeHash)
+		evidencemeta: getQueries(routeHash),
+		pagesManifest
 	};
 }
