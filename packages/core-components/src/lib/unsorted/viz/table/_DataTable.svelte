@@ -5,10 +5,6 @@
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
-	import {
-		formatValue,
-		getFormatObjectFromString
-	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from '../core/ErrorChart.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
@@ -41,12 +37,11 @@
 	export let groupsOpen = false; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
 	export let groupBackgroundColor = undefined;
-	
+
 	let groupToggleStates = {};
 
 	let paginated;
 	$: data, rows, (paginated = data.length > rows && !groupBy);
-
 
 	function handleToggle({ detail }) {
 		const { groupName } = detail;
@@ -118,24 +113,12 @@
 
 	let columnSummary;
 
-	let columnList = [];
-
-
-	function reorderColumns(columns, groupBy) {
-		let groupByColumns = Array.isArray(groupBy) ? groupBy : [groupBy];
-		let otherColumns = columns.filter(col => !groupByColumns.includes(col));
-
-		return [...groupByColumns, ...otherColumns];
-	}
-
-	let orderedColumns = [];
-
-	let priorityColumns = [groupBy]
+	let priorityColumns = [groupBy];
 
 	// Function to get the final column order
 	const getFinalColumnOrder = (obj, priorityColumns) => {
 		const allColumns = Object.keys(obj);
-		const restColumns = allColumns.filter(key => !priorityColumns.includes(key));
+		const restColumns = allColumns.filter((key) => !priorityColumns.includes(key));
 		return [...priorityColumns, ...restColumns];
 	};
 
@@ -144,15 +127,15 @@
 
 	// Function to reorder the objects based on a given column order
 	const reorderObjects = (array, columnOrder) => {
-	return array.map(obj => {
-		const orderedObj = {};
-		columnOrder.forEach(key => {
-		if (obj.hasOwnProperty(key)) {
-			orderedObj[key] = obj[key];
-		}
+		return array.map((obj) => {
+			const orderedObj = {};
+			columnOrder.forEach((key) => {
+				if (Object.hasOwn(obj, key)) {
+					orderedObj[key] = obj[key];
+				}
+			});
+			return orderedObj;
 		});
-		return orderedObj;
-	});
 	};
 
 	// Assuming finalColumnOrder and originalArray have been defined previously
@@ -169,14 +152,6 @@
 
 		// GET COLUMN SUMMARY
 		columnSummary = getColumnSummary(data, 'array');
-
-		// Get ordered column list to use in loops
-		if($props.columns.length > 0){
-			columnList = $props.columns.map(d => d.id);
-		} else {
-			columnList = Object.keys(data[0]);
-		}
-		orderedColumns = reorderColumns(columnList, groupBy);
 
 		// PROCESS DATES
 		// Filter for columns with type of "date"
@@ -222,35 +197,34 @@
 	let showNoResults = false;
 	let fuse;
 
-  // Function to initialize or update Fuse instance
-  function updateFuse() {
-    fuse = new Fuse(data, {
-      getFn: (row, [path]) => {
-        const summary = columnSummary?.find((d) => d.id === path) ?? {};
-        return summary.type === 'date' &&
-          row[summary.id] != null &&
-          row[summary.id] instanceof Date &&
-          !isNaN(row[summary.id].getTime())
-          ? row[summary.id].toISOString()
-          : row[summary.id]?.toString() ?? '';
-      },
-      keys: columnSummary?.map((d) => d.id) ?? [],
-      threshold: 0.4
-    });
-  }
+	// Function to initialize or update Fuse instance
+	function updateFuse() {
+		fuse = new Fuse(data, {
+			getFn: (row, [path]) => {
+				const summary = columnSummary?.find((d) => d.id === path) ?? {};
+				return summary.type === 'date' &&
+					row[summary.id] != null &&
+					row[summary.id] instanceof Date &&
+					!isNaN(row[summary.id].getTime())
+					? row[summary.id].toISOString()
+					: row[summary.id]?.toString() ?? '';
+			},
+			keys: columnSummary?.map((d) => d.id) ?? [],
+			threshold: 0.4
+		});
+	}
 
-  // Initially set up Fuse with the current data
-  updateFuse();
+	// Initially set up Fuse with the current data
+	updateFuse();
 
-  // Reactively update Fuse when `data` or `columnSummary` changes
-  $: {
-    updateFuse();
-    // Optionally, you can run the search again here if `searchValue` is not empty
-    if (searchValue !== '') {
-      runSearch(searchValue);
-    }
-  }
-
+	// Reactively update Fuse when `data` or `columnSummary` changes
+	$: {
+		updateFuse();
+		// Optionally, you can run the search again here if `searchValue` is not empty
+		if (searchValue !== '') {
+			runSearch(searchValue);
+		}
+	}
 
 	// $: fuse = new Fuse(data, {
 	// 	getFn: (row, [path]) => {
@@ -312,12 +286,12 @@
 				: 0;
 		data.sort(sort);
 		filteredData = filteredData.sort(sort);
-		
-		if(groupBy){
+
+		if (groupBy) {
 			// sort within grouped data
 			Object.keys(groupedData).forEach((groupName) => {
-				groupedData[groupName] = groupedData[groupName].sort(sort)
-			})
+				groupedData[groupName] = groupedData[groupName].sort(sort);
+			});
 		}
 	};
 
@@ -388,9 +362,8 @@
 
 	let groupedData = {};
 	let groupRowData = {};
-	
-	$: {
 
+	$: {
 		groupedData = data.reduce((acc, row) => {
 			const groupName = row[groupBy];
 			if (!acc[groupName]) {
@@ -399,7 +372,7 @@
 			acc[groupName].push(row);
 			return acc;
 		}, {});
-		
+
 		// After groupedData is populated, calculate aggregations for groupRowData
 		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
 			acc[groupName] = {}; // Initialize groupRow object for this group
@@ -407,61 +380,67 @@
 			// Get a list of columns to aggregate from $props.columns
 			const columnsToAggregate = $props.columns.length > 0 ? $props.columns : columnSummary;
 
-			columnsToAggregate.forEach(columnDef => {
+			columnsToAggregate.forEach((columnDef) => {
 				const column = columnDef.id;
 				const colType = columnSummary.find((d) => d.id === column).type;
 				const totalAgg = columnDef.totalAgg;
 				const weightCol = columnDef.weightCol;
 				const rows = groupedData[groupName];
-				if(colType !== 'number' && ['sum','min','max','mean','weightedMean','median', undefined].includes(totalAgg)){
+				if (
+					colType !== 'number' &&
+					['sum', 'min', 'max', 'mean', 'weightedMean', 'median', undefined].includes(totalAgg)
+				) {
 					// If attempting to use a numeric agg on a non-numeric column, return dash
-					acc[groupName][column] = "-";
-				} else if ((totalAgg === 'sum' || totalAgg === undefined)) {
+					acc[groupName][column] = '-';
+				} else if (totalAgg === 'sum' || totalAgg === undefined) {
 					// Calculate sum
 					acc[groupName][column] = rows.reduce((sum, row) => sum + (row[column] || 0), 0);
 				} else if (totalAgg === 'min') {
 					// Calculate min
-					acc[groupName][column] = Math.min(...rows.map(row => row[column]).filter(val => val !== undefined));
+					acc[groupName][column] = Math.min(
+						...rows.map((row) => row[column]).filter((val) => val !== undefined)
+					);
 				} else if (totalAgg === 'max') {
 					// Calculate min
-					acc[groupName][column] = Math.max(...rows.map(row => row[column]).filter(val => val !== undefined));
+					acc[groupName][column] = Math.max(
+						...rows.map((row) => row[column]).filter((val) => val !== undefined)
+					);
 				} else if (totalAgg === 'mean') {
 					// Calculate min
-					acc[groupName][column] = rows.reduce((sum, row) => sum + (row[column] || 0), 0) / rows.length;
+					acc[groupName][column] =
+						rows.reduce((sum, row) => sum + (row[column] || 0), 0) / rows.length;
 				} else if (totalAgg === 'count') {
 					// Calculate min
 					acc[groupName][column] = rows.length;
 				} else if (totalAgg === 'countDistinct') {
 					// Calculate countDistinct
-					acc[groupName][column] = new Set(rows.map(row => row[column])).size;
+					acc[groupName][column] = new Set(rows.map((row) => row[column])).size;
 				} else if (totalAgg === 'weightedMean') {
 					// Calculate weightedMean
-					acc[groupName][column] = weightedMean(rows, column, weightCol)
+					acc[groupName][column] = weightedMean(rows, column, weightCol);
 				} else if (totalAgg === 'median') {
 					// Calculate median
-					acc[groupName][column] = median(rows, column)
+					acc[groupName][column] = median(rows, column);
 				} else {
-					acc[groupName][column] = totalAgg
-				}  			
+					acc[groupName][column] = totalAgg;
+				}
 			});
 
 			return acc;
 		}, {});
 
-		  // Update groupToggleStates only for new groups
-		  const existingGroups = Object.keys(groupToggleStates);
-			Object.keys(groupedData).forEach(groupName => {
+		// Update groupToggleStates only for new groups
+		const existingGroups = Object.keys(groupToggleStates);
+		Object.keys(groupedData).forEach((groupName) => {
 			if (!existingGroups.includes(groupName)) {
 				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
 			}
 			// Existing states are untouched
-			});
+		});
 	}
-
 </script>
 
 {#if error === undefined}
-	{@const userCols = $props.columns}
 	<slot />
 
 	{#if link}
@@ -533,18 +512,18 @@
 				</thead>
 
 				{#if groupBy && groupedData && searchValue === ''}
-						{#each Object.entries(groupedData) as [groupName, rows]}
-							<GroupRow
-								groupName={groupName}
-								currentGroup={groupRowData[groupName]}
-								toggled={groupToggleStates[groupName]}
-								on:toggle={handleToggle}
-								{columnSummary}
-								backgroundColor={groupBackgroundColor}
-								{rowNumbers}
-							/>
-							{#if groupToggleStates[groupName]}
-								<TableRow 
+					{#each Object.entries(groupedData) as [groupName, rows]}
+						<GroupRow
+							{groupName}
+							currentGroup={groupRowData[groupName]}
+							toggled={groupToggleStates[groupName]}
+							on:toggle={handleToggle}
+							{columnSummary}
+							backgroundColor={groupBackgroundColor}
+							{rowNumbers}
+						/>
+						{#if groupToggleStates[groupName]}
+							<TableRow
 								displayedData={rows}
 								{rowShading}
 								{link}
@@ -553,28 +532,23 @@
 								{index}
 								{columnSummary}
 								grouped={true}
-								/>
-							{/if}
-						{/each}
+							/>
+						{/if}
+					{/each}
 				{:else}
-					<TableRow 
-					{displayedData}
-					{rowShading}
-					{link}
-					{rowNumbers}
-					{rowLines}
-					{index}
-					{columnSummary}
+					<TableRow
+						{displayedData}
+						{rowShading}
+						{link}
+						{rowNumbers}
+						{rowLines}
+						{index}
+						{columnSummary}
 					/>
 				{/if}
 
 				{#if totalRow && searchValue === ''}
-					<TotalsRow
-						{data}
-						{rowNumbers}
-						{columnSummary}
-						backgroundColor={totalBackgroundColor}
-					/>
+					<TotalsRow {data} {rowNumbers} {columnSummary} backgroundColor={totalBackgroundColor} />
 				{/if}
 			</table>
 		</div>
@@ -725,15 +699,13 @@
 		font-variant-numeric: tabular-nums;
 	}
 
-	th,
-	td {
+	th {
 		padding: 2px 8px;
 		white-space: nowrap;
 		overflow: hidden;
 	}
 
-	th:first-child,
-	td:first-child {
+	th:first-child {
 		padding-left: 4px;
 	}
 	th {
@@ -996,4 +968,5 @@
 		.print-page-count {
 			display: inline;
 		}
-	}</style>
+	}
+</style>
