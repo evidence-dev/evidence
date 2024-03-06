@@ -19,7 +19,7 @@
 		"@docusaurus/preset-classic": "^2.1.0",
 		"@docusaurus/theme-classic": "^2.1.0",
 		"@docusaurus/theme-common": "^2.1.0",
-		"@mdx-js/react": "^1.6.21",
+		"@mdx-js/react": "^3.0.1",
 		"@svgr/webpack": "^5.5.0",
 		"clsx": "^1.1.1",
 		"file-loader": "^6.2.0",
