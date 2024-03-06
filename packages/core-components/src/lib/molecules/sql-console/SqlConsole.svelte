@@ -6,7 +6,7 @@
 	/** @typedef {import("@evidence-dev/query-store").QueryStore} QueryStore */
 	/** @typedef {import("./sqlConsole.action.js").SqlConsoleArgs} SqlConsoleArgs */
 	import { sqlConsole, buildAutoCompletes } from './sqlConsole.action.js';
-
+	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 
 	import { Button } from '../../atoms/button';
@@ -121,7 +121,7 @@
 
 	<!-- Result View -->
 	{#if showResults}
-		<div>
+		<div transition:slide|local>
 			<DataTable data={$data} />
 		</div>
 	{/if}
