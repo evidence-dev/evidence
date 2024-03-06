@@ -12,7 +12,7 @@
 		"@evidence-dev/tailwind": "link:packages/tailwind",
 		"@evidence-dev/telemetry": "link:packages/telemetry",
 		"@evidence-dev/universal-sql": "link:packages/universal-sql",
-		"@parcel/packager-ts": "2.9.3",
+		"@parcel/packager-ts": "2.12.0",
 		"@parcel/transformer-typescript-types": "2.9.3",
 		"@sveltejs/adapter-static": "2.0.2",
 		"@sveltejs/kit": "1.22.3",
