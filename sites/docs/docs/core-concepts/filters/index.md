@@ -31,7 +31,7 @@ select
     date_trunc('month', order_date) as month,
     sum(sales) as sales_usd
 from needful_things.orders
-where item = '${inputs.selected_item}'
+where item = '${inputs.selected_item.value}'
 group by 1
 ```
 
@@ -72,7 +72,7 @@ select
     date_trunc('month', order_date) as month,
     sum(sales) as sales_usd
 from needful_things.orders
-where item like '${inputs.selected_item}'
+where item like '${inputs.selected_item.value}'
 group by 1
 ```
 

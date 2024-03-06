@@ -131,7 +131,7 @@ where column_name like '${inputs.name_of_dropdown}'
     </tr>
         <tr>	
         <td>name</td>	
-        <td>Name of the dropdown, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
+        <td>Name of the dropdown, used to reference the selected value elsewhere as {'{'}inputs.name.value{'}'}</td>	
         <td class='tcenter'>Yes</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>-</td>
