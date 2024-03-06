@@ -59,7 +59,7 @@
 </div>
 
 {#if open}
-	<div class="col-span-4" transition:slide>
+	<div class="col-span-4" transition:slide|local>
 		<SourceConfigForm
 			{sources}
 			{source}
