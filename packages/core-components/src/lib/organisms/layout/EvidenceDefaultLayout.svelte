@@ -7,6 +7,7 @@
 	import { ToastWrapper } from '../../molecules/toast';
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import TableOfContents from './tableofcontents/TableOfContents.svelte';
+	import ErrorOverlay from './ErrorOverlay.svelte';
 
 	export let data;
 
@@ -48,6 +49,7 @@
 <ToastWrapper />
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
+	<ErrorOverlay />
 	<Header
 		bind:mobileSidebarOpen
 		{title}

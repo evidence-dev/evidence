@@ -52,7 +52,7 @@
 			transition:fly|local={{ y: 100, duration: 300 }}
 			class="relative min-w-full h-screen bg-gradient-to-b from-black/95 to-gray-900/90 border-t-red-600 rounded-lg border-t-8 border-red-600 shadow-xl p-8"
 		>
-			<h1 class="text-4xl font-bold tracking-wide text-gray-200 border-b pb-4 border-gray-800">
+			<h1 class="text-2xl font-bold tracking-wide text-gray-200 border-b pb-4 border-gray-800">
 				Error
 			</h1>
 			<p class="text-xl text-gray-200 mt-6 leading-relaxed select-text">{message}</p>
