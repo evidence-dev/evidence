@@ -118,17 +118,17 @@ export const actions = {
 
 		const valid = await plugin.testConnection(specData.options, specData.sourceDirectory);
 		if (!plugin) {
-			logQueryEvent('db-plugin-unvailable', databaseType, undefined, dev);
+			logQueryEvent('db-plugin-unvailable', databaseType, undefined, undefined, dev);
 			return fail(400, { message: `Plugin for datasource "${databaseType}" not found.` });
 		}
 
 		plugin.name = specData.name;
 
 		if (valid !== true) {
-			logQueryEvent('db-connection-error', databaseType, sourceName, dev);
+			logQueryEvent('db-connection-error', databaseType, sourceName, undefined, dev);
 			return fail(200, { message: valid.reason });
 		} else {
-			logQueryEvent('db-connection-success', databaseType, sourceName, dev);
+			logQueryEvent('db-connection-success', databaseType, sourceName, undefined, dev);
 
 			return {
 				success: true

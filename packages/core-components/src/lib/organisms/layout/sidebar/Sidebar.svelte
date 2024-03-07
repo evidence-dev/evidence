@@ -1,11 +1,40 @@
 <script>
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	export let fileTree;
 	import { fly, fade } from 'svelte/transition';
 	import { lock, unlock } from 'tua-body-scroll-lock';
 	import { afterUpdate } from 'svelte';
-	import Logo from './Logo.svelte';
+	import Badge from '$lib/organisms/layout/sidebar/Badge.svelte';
+	import Logo from '../Logo.svelte';
+
+	export let fileTree;
+	export let title;
+	export let logo;
+	export let builtWithEvidence;
+
+	// sort children arrays by sidebar_position
+	function sortChildrenBySidebarPosition(node) {
+		if (node.children) {
+			node.children = node.children.sort((a, b) => {
+				if (a.frontMatter?.sidebar_position && b.frontMatter?.sidebar_position) {
+					return (
+						a.frontMatter.sidebar_position - b.frontMatter.sidebar_position ||
+						a.label.localeCompare(b.label)
+					);
+				} else if (a.frontMatter?.sidebar_position) {
+					return -1;
+				} else if (b.frontMatter?.sidebar_position) {
+					return 1;
+				} else {
+					return a.label.localeCompare(b.label);
+				}
+			});
+			node.children.forEach(sortChildrenBySidebarPosition);
+		}
+		return node;
+	}
+
+	fileTree = sortChildrenBySidebarPosition(fileTree);
 
 	// children of the index page
 	let firstLevelFiles = fileTree?.children;
@@ -40,8 +69,12 @@
 	>
 		<div class=" pb-4 text-gray-700">
 			<div class="py-3 px-8 mb-3 flex items-start justify-between">
-				<a href="/" class="block mt-1">
-					<Logo />
+				<a href="/" class="block mt-1 text-sm font-bold text-gray-800">
+					{#if title}
+						{title}
+					{:else}
+						<Logo {logo} />
+					{/if}
 				</a>
 				<span
 					on:click={() => (mobileSidebarOpen = false)}
@@ -81,7 +114,7 @@
 						Home
 					</a>
 					{#each firstLevelFiles as file}
-						{#if file.children.length === 0 && file.href}
+						{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 							<a
 								class="group inline-block py-1 capitalize transition-colors duration-100"
@@ -90,7 +123,12 @@
 								class:hover:text-gray-950={active}
 								class:hover:text-blue-600={active}
 							>
-								{file.label}
+								{file.frontMatter?.title ?? file.label}
+								{#if file.frontMatter?.sidebar_badge}
+									<Badge>
+										{file.frontMatter.sidebar_badge}
+									</Badge>
+								{/if}
 							</a>
 						{/if}
 					{/each}
@@ -98,19 +136,29 @@
 				{#each firstLevelFiles as file}
 					{#if file.children.length > 0}
 						<div class="flex flex-col pb-6">
-							{#if file.href}
+							{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 								<a
 									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 									href={file.href}
 								>
-									{file.label}
+									{file.frontMatter?.title ?? file.label}
+									{#if file.frontMatter?.sidebar_badge}
+										<Badge>
+											{file.frontMatter.sidebar_badge}
+										</Badge>
+									{/if}
 								</a>
 							{:else}
 								<span
 									class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize transition-colors duration-100"
 									href={file.href}
 								>
-									{file.label}
+									{file.frontMatter?.title ?? file.label}
+									{#if file.frontMatter?.sidebar_badge}
+										<Badge>
+											{file.frontMatter.sidebar_badge}
+										</Badge>
+									{/if}
 								</span>
 							{/if}
 							{#each file.children as file}
@@ -124,7 +172,12 @@
 										class:hover:text-gray-950={!active}
 										class:hover:text-blue-600={active}
 									>
-										{file.label}
+										{file.frontMatter?.title ?? file.label}
+										{#if file.frontMatter?.sidebar_badge}
+											<Badge>
+												{file.frontMatter.sidebar_badge}
+											</Badge>
+										{/if}
 									</a>
 								{/if}
 							{/each}
@@ -150,7 +203,7 @@
 					Home
 				</a>
 				{#each firstLevelFiles as file}
-					{#if file.children.length === 0 && file.href}
+					{#if file.children.length === 0 && file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 						{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 						<a
 							class="group inline-block py-1 capitalize transition-all duration-100"
@@ -159,7 +212,12 @@
 							class:hover:text-gray-950={!active}
 							class:hover:text-blue-600={active}
 						>
-							{file.label}
+							{file.frontMatter?.title ?? file.label}
+							{#if file.frontMatter?.sidebar_badge}
+								<Badge>
+									{file.frontMatter.sidebar_badge}
+								</Badge>
+							{/if}
 						</a>
 					{/if}
 				{/each}
@@ -167,38 +225,63 @@
 			{#each firstLevelFiles as file}
 				{#if file.children.length > 0}
 					<div class="flex flex-col pb-6">
-						{#if file.href}
+						{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 							<a
 								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group block capitalize hover:underline"
 								href={file.href}
 							>
-								{file.label}
+								{file.frontMatter?.title ?? file.label}
+								{#if file.frontMatter?.sidebar_badge}
+									<Badge>
+										{file.frontMatter.sidebar_badge}
+									</Badge>
+								{/if}
 							</a>
 						{:else}
 							<span
 								class="sticky top-0 bg-white shadow shadow-white text-gray-950 font-semibold pb-1 mb-1 group inline-block capitalize"
 								href={file.href}
 							>
-								{file.label}
+								{file.frontMatter?.title ?? file.label}
+								{#if file.frontMatter?.sidebar_badge}
+									<Badge>
+										{file.frontMatter.sidebar_badge}
+									</Badge>
+								{/if}
 							</span>
 						{/if}
 						{#each file.children as file}
-							{#if file.href}
+							{#if file.href && (file.frontMatter?.sidebar_link !== false || file.frontMatter?.sidebar_link === undefined)}
 								{@const active = $page.url.pathname.toUpperCase() === file.href.toUpperCase() + '/'}
 								<a
 									href={file.href}
 									class:text-blue-600={active}
 									class:hover:text-blue-600={active}
 									class:hover:text-gray-950={!active}
-									class="group inline-block py-1 capitalize transition-all duration-100 truncate"
+									class="group inline-block py-1 capitalize transition-all duration-100"
 								>
-									{file.label}
+									{file.frontMatter?.title ?? file.label}
+									{#if file.frontMatter?.sidebar_badge}
+										<Badge>
+											{file.frontMatter.sidebar_badge}
+										</Badge>
+									{/if}
 								</a>
 							{/if}
 						{/each}
 					</div>
 				{/if}
 			{/each}
+		</div>
+	{/if}
+	{#if builtWithEvidence}
+		<div class="fixed bottom-0 text-xs py-2">
+			<a
+				href="https://www.evidence.dev"
+				class="bg-gradient-to-r inline-block text-gray-950 antialiased font-medium"
+			>
+				Built with Evidence</a
+			>
 		</div>
 	{/if}
 </aside>

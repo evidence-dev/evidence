@@ -152,19 +152,36 @@
 	let filteredData;
 	$: filteredData = data;
 	let showNoResults = false;
-	$: fuse = new Fuse(data, {
-		getFn: (row, [path]) => {
-			const summary = columnSummary?.find((d) => d.id === path) ?? {};
-			return summary.type === 'date' &&
-				row[summary.id] != null &&
-				row[summary.id] instanceof Date &&
-				!isNaN(row[summary.id].getTime())
-				? row[summary.id].toISOString()
-				: row[summary.id]?.toString() ?? '';
-		},
-		keys: columnSummary?.map((d) => d.id) ?? [],
-		threshold: 0.4
-	});
+	let fuse;
+
+	// Function to initialize or update Fuse instance
+	function updateFuse() {
+		fuse = new Fuse(data, {
+			getFn: (row, [path]) => {
+				const summary = columnSummary?.find((d) => d.id === path) ?? {};
+				return summary.type === 'date' &&
+					row[summary.id] != null &&
+					row[summary.id] instanceof Date &&
+					!isNaN(row[summary.id].getTime())
+					? row[summary.id].toISOString()
+					: row[summary.id]?.toString() ?? '';
+			},
+			keys: columnSummary?.map((d) => d.id) ?? [],
+			threshold: 0.4
+		});
+	}
+
+	// Initially set up Fuse with the current data
+	updateFuse();
+
+	// Reactively update Fuse when `data` or `columnSummary` changes
+	$: {
+		updateFuse();
+		if (searchValue !== '') {
+			runSearch(searchValue);
+		}
+	}
+
 	$: runSearch = (searchValue) => {
 		if (searchValue !== '') {
 			// Reset pagination to first page:

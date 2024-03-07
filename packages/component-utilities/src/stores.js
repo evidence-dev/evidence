@@ -8,7 +8,7 @@ export const routeHash = writable('');
 function createToastsObject() {
 	const { subscribe, update } = writable([]);
 
-	const timeoutMap = {};
+	const timeoutMap = new Map();
 
 	const removeToast = (id) => {
 		update(($toasts) => $toasts.filter((existing) => existing.id !== id));
@@ -23,21 +23,21 @@ function createToastsObject() {
 		 */
 		add: (toast, timeout = 2000) => {
 			// Totally safe ids
-			toast.id = Math.random().toString();
+			toast.id = toast.id ?? Math.random().toString();
 			update(($toasts) => ($toasts.push(toast), $toasts));
 			if (timeout) {
 				const timeoutId = setTimeout(() => {
 					removeToast(toast.id);
-					delete timeoutMap[toast.id];
+					timeoutMap.delete(toast.id);
 				}, timeout);
-				timeoutMap[toast.id] = timeoutId;
+				timeoutMap.set(toast.id, timeoutId);
 			}
 		},
 		dismiss: (toastId) => {
 			removeToast(toastId);
-			if (timeoutMap[toastId]) {
-				clearTimeout(timeoutMap[toastId]);
-				delete timeoutMap[toastId];
+			if (timeoutMap.has(toastId)) {
+				clearTimeout(timeoutMap.get(toastId));
+				timeoutMap.delete[toastId];
 			}
 		}
 	};

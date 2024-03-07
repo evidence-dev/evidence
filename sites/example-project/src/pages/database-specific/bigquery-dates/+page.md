@@ -8,7 +8,6 @@ select
     CAST('11:21:24' AS TIME) as time
 ```
 
-{console.log(dates)}
 
 ```sql fff
 select '11:10' as time, 100 as value

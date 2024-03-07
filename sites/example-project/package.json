@@ -3,7 +3,7 @@
 	"version": "3.3.4",
 	"scripts": {
 		"dev": "vite dev --port 3000",
-		"build": "vite build",
+		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
 		"sources": "cross-env __EXAMPLE_PROJECT=true evidence sources",
 		"preview": "vite preview --port 3000"
 	},
@@ -45,14 +45,14 @@
 		"prismjs": "1.29.0",
 		"remark-parse": "8.0.2",
 		"ssf": "^0.11.2",
-		"svelte": "3.55.0",
+		"svelte": "3.59.2",
 		"svelte-icons": "2.1.0",
 		"typescript": "4.9.5",
 		"unified": "9.1.0",
 		"unist-util-visit": "4.1.2"
 	},
 	"devDependencies": {
-		"@sveltejs/package": "1.0.1",
+		"@sveltejs/package": "2.2.7",
 		"@sveltejs/vite-plugin-svelte": "^2.0.3",
 		"@types/esm": "^3.2.0",
 		"autoprefixer": "^10.4.7",

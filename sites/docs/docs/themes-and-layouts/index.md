@@ -4,7 +4,40 @@ hide_table_of_contents: false
 title: Customizing Styles & Themes
 ---
 
-Evidence supports customizing the look and feel of your project using CSS, as well as by overwriting default code files. We plan to make this easier in the future.
+Evidence supports customizing the look and feel of your project using CSS, and by overwriting or modifying the default layout.
+
+## Custom Layout 
+
+To customize your, add a `+layout.svelte` file to the root of your pages directory. You can customize the `EvidenceDefaultLayout` with the options below, or replace the contents of the file with an entirely new layout. 
+
+```html
+<script>
+	import '@evidence-dev/tailwind/fonts.css';
+	import '../app.css';
+	import { EvidenceDefaultLayout } from '@evidence-dev/core-components';
+	export let data;
+</script>
+
+<EvidenceDefaultLayout {data}>
+	<slot slot="content" />
+</EvidenceDefaultLayout>
+
+```
+
+The `EvidenceDefaultLayout` component accepts the following properties for common customizations.
+
+| Name      | Description                                         | Possible Values          | Required | Default |
+| --------- | --------------------------------------------------- | ------------------------ | -------- | ------- |
+| `title`    | Project title that will replace the Evidence Logo | Any string              | no       | -       |
+| `logo` | Link to an image which will replace the Evidence logo. This will override any project title. If the image is in your project's static directory, the link should be relative.                         | /logo.png | no       | -   |
+| `neverShowQueries`    | Removes the option to show queries when the project is deployed. Has no effect in development. | {true} or {false}              | no       | {false}       |
+| `fullWidth`    | Sets the width of the project to full | {true} or {false}              | no       | {false}       |
+| `hideSidebar`    | Hides the sidebar navigation | {true} or {false}              | no       | {false}       |
+| `builtWithEvidence`    | Display a subtle link to the Evidence website at the bottom of the sidebar.          | {true} or {false}    | no       | {false}       | {false} |
+| `algolia`    | Object containing Algolia docsearch credentials              |  {{appId: 'xxx', apiKey: 'xxx', indexName: 'xxx'}}       | no       | - |
+| `githubRepo`    | Linke to a Github Repo which will appear in the header using the Github Logo              |  'https://github.com/evidence-dev/evidence'       | no       | - |
+| `xProfile`    | Linke to an X (Twitter) profile which will appear in the header using the X Logo              |  'https://twitter.com/evidence_dev'       | no       | - |
+| `slackCommunity`    | Linke to a slack community which will appear in the header using the slack Logo              |  'evidencedev.slack.com'       | no       | - |
 
 ## Custom Styles
 
@@ -14,13 +47,15 @@ To style with Tailwind you add *classes* to HTML elements. You can use any HTML 
 
 For more information on using Tailwind, see the [Tailwind documentation](https://tailwindcss.com/docs).
 
-N.B. Tailwind removes styling from HTML elements by default, so should add your own styles to `<h1/>`, `<a/>` etc.
+N.B. Tailwind removes styling from HTML elements by default, so should add your own styles to `<h1/>`, `<a/>` etc. 
+
+### Using the Evidence Default Styles in Custom HTML
+
+Adding the `markdown` class to an element will style it the same as Evidence markdown, e.g.  `<h1 class='markdown'/>`. 
 
 ### Examples
 
 #### Customize Fonts
-
-![Tailwind fonts](/img/tailwind.png)
 
 ```markdown
 This is the default text style, which is used when you write text in a markdown file.
@@ -29,25 +64,6 @@ This is the default text style, which is used when you write text in a markdown 
 
 <p class="font-mono text-blue-500 mt-3">This is blue text using a monospace font, and a custom top margin.</p>
 ```
-
-#### Edit Image Appearance
-
-<img src="/img/tailwind-img.png" alt="Tailwind image" width="700px" />
-
-```markdown
-Default styles
-
-![Cityscape](https://images.unsplash.com/photo-1533282960533-51328aa49826)
-
-50% width, centered
-
-<img src="https://images.unsplash.com/photo-1533282960533-51328aa49826" alt="Cityscape" class="w-1/2 mx-auto mb-3" />
-
-Rounded corners, grayscale, fixed width
-
-<img src="https://images.unsplash.com/photo-1533282960533-51328aa49826" alt="Cityscape" class="rounded-xl grayscale w-64" />
-```
-
 
 ## Base Styles
 
@@ -135,5 +151,3 @@ This can be done within each chart individually, or by using a script tag to cre
     colorPalette={myColors}
 />
 ```
-
-At this time there isn't a way to globally set a custom color palette, but this will be included in future theme improvements.

@@ -30,12 +30,12 @@ select
     item,
     sum(sales) as sales,
 from needful_things.orders
-where category = '${inputs.category}'
+where category = '${inputs.category.value}'
 group by item
 order by sales desc
 ```
 
-# Sales by Item, {inputs.category}
+# Sales by Item, {inputs.category.label}
 
 <DataTable data={items}>
     <Column id=item />
@@ -63,7 +63,7 @@ select
     item,
     sum(sales) as sales,
 from needful_things.orders
-where category like '${inputs.category2}'
+where category like '${inputs.category2.value}'
 group by item
 order by sales desc
 ```

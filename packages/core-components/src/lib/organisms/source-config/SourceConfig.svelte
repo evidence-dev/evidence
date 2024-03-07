@@ -54,7 +54,7 @@
 </script>
 
 <section class="w-full mt-8">
-	<div class="p-3 rounded-t w-full border-gray-200 border">
+	<div class="p-3 rounded-t w-full border-gray-200 border-t border-l border-r">
 		<h2 class="font-semibold text-lg mb-2">Data Sources</h2>
 
 		<div
@@ -118,7 +118,7 @@
 
 		<div />
 	</div>
-	<div class="p-4 rounded-b w-full bg-gray-100 text-sm">
+	<div class="p-4 rounded-b w-full bg-gray-100 text-sm border-[1px] border-gray-200">
 		<!-- TODO: Update this when we have docs -->
 		Learn more about
 		<a

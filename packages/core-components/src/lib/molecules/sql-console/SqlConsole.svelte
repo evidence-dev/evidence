@@ -6,7 +6,7 @@
 	/** @typedef {import("@evidence-dev/query-store").QueryStore} QueryStore */
 	/** @typedef {import("./sqlConsole.action.js").SqlConsoleArgs} SqlConsoleArgs */
 	import { sqlConsole, buildAutoCompletes } from './sqlConsole.action.js';
-
+	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 
 	import { Button } from '../../atoms/button';
@@ -18,7 +18,7 @@
 	/** @type {boolean} */
 	export let hideErrors = false;
 	/** @type {string} */
-	export let initialQuery = '';
+	export let initialQuery = "select 'ABC' as category, 123 as num, 26400000 as sales_usd";
 	/** @type {boolean} */
 	export let showResults = true;
 	/** @type {boolean} */
@@ -76,8 +76,9 @@
 	);
 </script>
 
+<h1 class="markdown">SQL Console</h1>
 <section
-	class="px-4 py-2 bg-white flex flex-col gap-2 min-h-[8rem]"
+	class="px-0 py-2 bg-white flex flex-col gap-2 min-h-[8rem]"
 	on:click={() => editor?.focus()}
 	on:keydown={(e) => e.key === 'Enter' && editor?.focus()}
 	aria-roledescription="Code Editor"
@@ -121,7 +122,7 @@
 
 	<!-- Result View -->
 	{#if showResults}
-		<div>
+		<div transition:slide|local>
 			<DataTable data={$data} />
 		</div>
 	{/if}
