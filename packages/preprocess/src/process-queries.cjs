@@ -141,6 +141,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							fetch_maybepromise = query_store.fetch();
 						}
 
+						// if we have initial data, execute the query anyways in the background, ignoring results
+						// this helps fetch some parquet which can speed up future queries
+						if (initialData) {
+							query_store.backgroundFetch();
+						}
 
 						if (_${id}) {
 							// Query has already been created
@@ -280,6 +285,24 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				status: 'warning'
 			}, 5000);
 		};
+
+		const activeQueries = QueryStore.activeQueries;
+
+		let loadingQueriesToast = 0;
+		$: if ($activeQueries.size > 0) {
+			clearTimeout(loadingQueriesToast);
+			loadingQueriesToast = setTimeout(() => {
+				toasts.add({
+					id: 'LoadingToast',
+					title: '',
+					message: 'Loading...',
+					status: 'info'
+				}, 2 ** 31 - 1);
+			}, 1000);
+		} else {
+			clearTimeout(loadingQueriesToast);
+			toasts.dismiss('LoadingToast');
+		}
 
 		let __has_hmr_run = false
 	    if (import.meta?.hot) {
