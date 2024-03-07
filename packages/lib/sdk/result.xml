@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="69" failures="0" errors="0" time="0.832">
+    <testsuite name="src/plugins/datasources/Datasources.spec.js" timestamp="2024-01-15T16:58:56.835Z" hostname="brian-work" tests="6" failures="0" errors="0" skipped="0" time="0.007">
+        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; should be a class" time="0.002">
+        </testcase>
+        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; should throw if an invalid package is given" time="0.001">
+        </testcase>
+        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; should add a datasource" time="0">
+        </testcase>
+        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; should add a datasource" time="0.001">
+        </testcase>
+        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; overrides &gt; should always return the override package" time="0.001">
+            <system-out>
+Ignoring source type &quot;ddb&quot; from test-package-2, already overriden by test-package
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/plugins/datasources/Datasources.spec.js" name="Datasources &gt; overrides &gt; should throw if a source is overriden twice" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/plugins/datasources/loadSourceConfig.spec.js" timestamp="2024-01-15T16:58:56.841Z" hostname="brian-work" tests="13" failures="0" errors="0" skipped="0" time="0.065">
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnectionEnvironment &gt; should load nothing when no variables are given" time="0.003">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnectionEnvironment &gt; should load nothing when no properly formatted variables are given" time="0.001">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnectionEnvironment &gt; should load vars when properly formatted variables are given" time="0.001">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnectionEnvironment &gt; should load vars when properly formatted variables are given (with nesting)" time="0">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadSourceOptions &gt; should return an empty object when given a directory w/o an options.yaml" time="0.011">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadSourceOptions &gt; should return an object when given a directory w/o an options.yaml" time="0.01">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadSourceOptions &gt; should throw if an invalid base64 error occurs" time="0.004">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadSourceOptions &gt; should return b64 decoded options" time="0.003">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnection &gt; should return false when given a directory that does not exist" time="0.004">
+            <system-err>
+[33m[!] fake-dir is not a valid source (no connection.yaml); skipping[39m
+ENOENT: no such file or directory, open &apos;fake-dir/connection.yaml&apos;
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnection &gt; should throw an error when given a directory with an invalid connection.yaml" time="0.01">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnection &gt; should throw an error when given a directory with a malformed connection.yaml" time="0.009">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnection &gt; should load a valid configuration" time="0.003">
+        </testcase>
+        <testcase classname="src/plugins/datasources/loadSourceConfig.spec.js" name="loadConnection &gt; should include options from a valid configuration" time="0.005">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/plugins/schemas/plugin-config.schema.spec.js" timestamp="2024-01-15T16:58:56.854Z" hostname="brian-work" tests="4" failures="0" errors="0" skipped="0" time="0.007">
+        <testcase classname="src/plugins/schemas/plugin-config.schema.spec.js" name="PluginConfigSchema &gt; should pass on an empty object configuration" time="0.003">
+        </testcase>
+        <testcase classname="src/plugins/schemas/plugin-config.schema.spec.js" name="PluginConfigSchema &gt; should pass when only a layout is provided" time="0.001">
+        </testcase>
+        <testcase classname="src/plugins/schemas/plugin-config.schema.spec.js" name="PluginConfigSchema &gt; should pass when only components are provided" time="0.001">
+        </testcase>
+        <testcase classname="src/plugins/schemas/plugin-config.schema.spec.js" name="PluginConfigSchema &gt; should pass when only sources are provided" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/plugins/schemas/plugin-package.schema.spec.js" timestamp="2024-01-15T16:58:56.859Z" hostname="brian-work" tests="2" failures="0" errors="0" skipped="0" time="0.019">
+        <testcase classname="src/plugins/schemas/plugin-package.schema.spec.js" name="PluginPackageSchema &gt; should fail when an invalid icon is given" time="0.017">
+        </testcase>
+        <testcase classname="src/plugins/schemas/plugin-package.schema.spec.js" name="PluginPackageSchema &gt; should pass when a valid icon is given" time="0.001">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" timestamp="2024-01-15T16:58:56.860Z" hostname="brian-work" tests="29" failures="0" errors="0" skipped="0" time="0.117">
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Should ignore files that are not prefixed with +" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;h1&apos; with &apos;# %copy&apos;" time="0.009">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;h2&apos; with &apos;## %copy&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;h3&apos; with &apos;### %copy&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;h4&apos; with &apos;#### %copy&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;h5&apos; with &apos;##### %copy&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;h6&apos; with &apos;###### %copy&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;italics as &lt;p&gt;&lt;em&gt;&apos; with &apos;_%copy_&apos;" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;italics as &lt;p&gt;&lt;em&gt;&apos; with &apos;*%copy*&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;inline italics&apos; with &apos;%copy _%copy_ %copy&apos;" time="0.005">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;inline italics&apos; with &apos;%copy *%copy* %copy&apos;" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;bold as &lt;p&gt;&lt;strong&gt;&apos; with &apos;__%copy__&apos;" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;bold as &lt;p&gt;&lt;strong&gt;&apos; with &apos;**%copy**&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;blockquote&apos; with &apos;&gt; %copy&apos;" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;links&apos; with &apos;[%copy](%link)&apos;" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;images&apos; with &apos;![%copy](%link)&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;paragraphs&apos; with &apos;%copy&apos;" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;ul&apos; with &apos;- %copy&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;ol&apos; with &apos;1. %copy&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;hr&apos; with &apos;---&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Basic Elements &gt; Creates &apos;hr&apos; with &apos;***&apos;" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Svelte &gt; html &gt; Should leave Svelte Components untouched" time="0">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Svelte &gt; html &gt; Should leave {#if} untouched (html)" time="0">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Svelte &gt; html &gt; Should not break with on: directives" time="0">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Svelte &gt; markdown &gt; Should leave Svelte Components untouched" time="0.005">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Svelte &gt; markdown &gt; Should leave {#if} untouched" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Query Conversion &gt; Should convert queries to html" time="0.068">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Tables &gt; Should handle them properly" time="0.001">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/convertToHtml/convertToHtml.spec.js" name="convertToHtml &gt; Frontmatter &gt; Should not include frontmatter in output HTML" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/build-dev/svelte/processors/extractQueries/extractQueries.spec.js" timestamp="2024-01-15T16:58:56.877Z" hostname="brian-work" tests="4" failures="0" errors="0" skipped="0" time="0.075">
+        <testcase classname="src/build-dev/svelte/processors/extractQueries/extractQueries.spec.js" name="extractQueries &gt; Should extract a single query" time="0.056">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/extractQueries/extractQueries.spec.js" name="extractQueries &gt; Should infer sql lang when query name is present" time="0.006">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/extractQueries/extractQueries.spec.js" name="extractQueries &gt; Should extract multiple queries" time="0.007">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/extractQueries/extractQueries.spec.js" name="extractQueries &gt; Should ignore code blocks without a query name" time="0.005">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/build-dev/svelte/processors/highlight/highlight.spec.js" timestamp="2024-01-15T16:58:56.879Z" hostname="brian-work" tests="4" failures="0" errors="0" skipped="0" time="0.096">
+        <testcase classname="src/build-dev/svelte/processors/highlight/highlight.spec.js" name="highlight &gt; Should highlight javascript" time="0.069">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/highlight/highlight.spec.js" name="highlight &gt; Should highlight SQL" time="0.015">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/highlight/highlight.spec.js" name="highlight &gt; Should not add a pre to a code block already wrapped in pre" time="0.006">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/highlight/highlight.spec.js" name="highlight &gt; Should not highlight code blocks without a language" time="0.004">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/build-dev/svelte/processors/obfuscateCode/obfuscateCode.spec.js" timestamp="2024-01-15T16:58:56.881Z" hostname="brian-work" tests="2" failures="0" errors="0" skipped="0" time="0.066">
+        <testcase classname="src/build-dev/svelte/processors/obfuscateCode/obfuscateCode.spec.js" name="obfusctateCode &gt; Should b64 encode basic javascript" time="0.059">
+        </testcase>
+        <testcase classname="src/build-dev/svelte/processors/obfuscateCode/obfuscateCode.spec.js" name="obfusctateCode &gt; Should b64 encode basic SQL" time="0.006">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/build-dev/vite/virtuals/__tests/proxyStack.spec.js" timestamp="2024-01-15T16:58:56.882Z" hostname="brian-work" tests="5" failures="0" errors="0" skipped="0" time="0.007">
+        <testcase classname="src/build-dev/vite/virtuals/__tests/proxyStack.spec.js" name="ProxyStack &gt; Should return a bare object when nothing has been added" time="0.003">
+        </testcase>
+        <testcase classname="src/build-dev/vite/virtuals/__tests/proxyStack.spec.js" name="ProxyStack &gt; Should return a matching object when one object has been added" time="0.002">
+        </testcase>
+        <testcase classname="src/build-dev/vite/virtuals/__tests/proxyStack.spec.js" name="ProxyStack &gt; Should return the most recent value for a prop" time="0">
+        </testcase>
+        <testcase classname="src/build-dev/vite/virtuals/__tests/proxyStack.spec.js" name="ProxyStack &gt; Should return the most recent value for a prop, unless it has been deleted" time="0">
+        </testcase>
+        <testcase classname="src/build-dev/vite/virtuals/__tests/proxyStack.spec.js" name="ProxyStack &gt; Should JSON.stringify properly" time="0.001">
+        </testcase>
+    </testsuite>
+</testsuites>

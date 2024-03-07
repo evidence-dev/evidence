@@ -1,0 +1,1 @@
+{"version":3,"file":"ssrHook.svelte.d.ts","sourceRoot":"","sources":["../../../../src/build-dev/vite/virtuals/ssrHook.svelte.js"],"names":[],"mappings":"AAUO,wCAHI,MAAM;IAAC,MAAM,MAAM,CAAC;IAAC,WAAW,EAAE,MAAM,CAAA;CAAC,CAAC,WAChC;IAAC,IAAI,EAAE,MAAM,CAAC;IAAC,IAAI,EAAC,OAAO,CAAA;CAAC,KAAK,QAAQ,MAAM,CAAC,CAmDnE"}
