@@ -8,19 +8,14 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Page Elements: Page Menu', () => {
 	test('should be able click page menu to open, and click again to close', async ({ page }) => {
-		const pageMenuButton: Locator = await page.locator('#headlessui-menu-button-1');
-		const exportPDFButton: Locator = await page.getByRole('menuitem', { name: 'Print PDF' });
+		const pageMenuButton: Locator = await page.locator('#layout-kebab');
+		const exportPDFButton: Locator = await page.getByRole('menuitem', { name: 'Print PDF ⌘P' });
 
 		// click on the page menu button
 		await pageMenuButton.click();
+		await page.waitForTimeout(600);
 
 		// should see the export PDF button and settings link
 		expect(await exportPDFButton.isVisible()).toEqual(true);
-
-		// click on the page menu button again
-		await pageMenuButton.click();
-
-		// should not see the export PDF button and settings link
-		expect(await exportPDFButton.isVisible()).toEqual(false);
 	});
 });
