@@ -24,7 +24,7 @@ ORDER BY userId, tagId
 ```posts
 SELECT p.* FROM posts p
 WHERE p.user_id = ${inputs.user.value}
-  AND ${inputs.tag.vaule} IN (SELECT pt.hashtag_id FROM post_tags pt where pt.post_id = p.id)
+  AND ${inputs.tag.value} IN (SELECT pt.hashtag_id FROM post_tags pt where pt.post_id = p.id)
   AND ${inputs.user.value} >= 0 AND ${inputs.tag.value} >= 0
 ```
 
