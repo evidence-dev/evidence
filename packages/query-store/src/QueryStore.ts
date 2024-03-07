@@ -9,6 +9,7 @@ import type {
 	Runner
 } from './types.js';
 
+import { writable } from 'svelte/store';
 import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
@@ -22,6 +23,14 @@ import {
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
 	[index: number]: QueryResult;
+
+	static activeQueries = writable(new Set<string>());
+	static addActiveQuery(id: string) {
+		QueryStore.activeQueries.update((queries) => queries.add(id));
+	}
+	static removeActiveQuery(id: string) {
+		QueryStore.activeQueries.update((queries) => (queries.delete(id), queries));
+	}
 
 	/** Internal Query Builder */
 	readonly #query = new Query();
@@ -439,15 +448,20 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 		const queryWithComment = `--data\n${this.#query.toString()}`;
 
+		QueryStore.addActiveQuery(this.id);
 		this.#dataFetchPromise = handleMaybePromise<QueryResult[], unknown>(
 			(result) => {
 				this.#values = result;
 				this.#dataLoading = false;
 				this.#dataLoaded = true;
+				QueryStore.removeActiveQuery(this.id);
 				return this.#fetchLength();
 			},
 			() => this.#exec(queryWithComment, this.id),
-			this.#setError
+			(err) => {
+				this.#setError(err);
+				QueryStore.removeActiveQuery(this.id);
+			}
 		);
 
 		return this.#dataFetchPromise;

@@ -286,6 +286,24 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}, 5000);
 		};
 
+		const activeQueries = QueryStore.activeQueries;
+
+		let loadingQueriesToast = 0;
+		$: if ($activeQueries.size > 0) {
+			clearTimeout(loadingQueriesToast);
+			loadingQueriesToast = setTimeout(() => {
+				toasts.add({
+					id: 'LoadingToast',
+					title: '',
+					message: 'Loading...',
+					status: 'info'
+				}, 2 ** 31 - 1);
+			}, 1000);
+		} else {
+			clearTimeout(loadingQueriesToast);
+			toasts.dismiss('LoadingToast');
+		}
+
 		let __has_hmr_run = false
 	    if (import.meta?.hot) {
 	        import.meta.hot.on("vite:afterUpdate", () => {
