@@ -9,6 +9,12 @@ import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
 import { logQueryEvent } from '@evidence-dev/telemetry';
+import { loadEnv } from 'vite';
+
+const loadEnvFile = () => {
+	const envFile = loadEnv('', '.', ['EVIDENCE_']);
+	Object.assign(process.env, envFile);
+};
 
 const populateTemplate = function () {
 	clearQueryCache();
@@ -225,6 +231,24 @@ ${chalk.bold('[!] Unable to load source manifest')}
 	});
 
 prog
+	.command('env-debug')
+	.option('--include-values', 'Includes Environment Variable Values, this will show secrets!')
+	.describe('Prints out Evidence variables from the environment and .env file')
+	.action((args) => {
+		const { 'include-values': includeValues } = args;
+		loadEnvFile();
+		const evidenceVars = Object.fromEntries(
+			Object.entries(process.env).filter(([k]) => k.startsWith('EVIDENCE_'))
+		);
+		if (includeValues) {
+			console.table(evidenceVars);
+		} else {
+			console.table(Object.keys(evidenceVars));
+		}
+		// console.log(process.env)
+	});
+
+prog
 	.command('build')
 	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs')
@@ -233,6 +257,7 @@ prog
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
 		}
+		loadEnvFile();
 		populateTemplate();
 
 		logQueryEvent('build-start');
@@ -248,6 +273,7 @@ prog
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
 		}
+		loadEnvFile();
 		populateTemplate();
 		strictMode();
 
@@ -282,6 +308,7 @@ prog
 			);
 		}
 
+		loadEnvFile();
 		if (!opts.debug)
 			process.on('uncaughtException', (e) => {
 				console.error(e.message);
@@ -329,6 +356,7 @@ prog
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
 		}
+		loadEnvFile();
 		const buildExists = fs.lstatSync(path.join('build'), {
 			throwIfNoEntry: false
 		});
