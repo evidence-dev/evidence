@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Loading...</title>
+		<style>
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
+			.load-container {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				height: 100vh; /* This makes the container fill the viewport height */
+			}
+			.loading {
+				font-family: sans-serif;
+				font-size: 20pt;
+				color: #171717;
+				text-align: center;
+				font-weight: 500;
+				margin-top: 30px; /* Adjusts space between loader and text */
+			}
+			.loader {
+				text-align: center;
+				width: 45px;
+				height: 45px; /* Updated to maintain the aspect ratio */
+				--c: no-repeat linear-gradient(#000 0 0);
+				background: var(--c) 0 0, var(--c) 50% 50%, var(--c) 100% 100%;
+				animation: l17 1s infinite alternate;
+			}
+			@keyframes l17 {
+				0%,
+				10% {
+					background-size: 20% 100%;
+				}
+				50% {
+					background-size: 20% 20%;
+				}
+				90%,
+				100% {
+					background-size: 100% 20%;
+				}
+			}
+
+			/* Simple fade-out animation */
+			@keyframes fadeOut {
+				from {
+					opacity: 1;
+				}
+				to {
+					opacity: 0;
+				}
+			}
+
+			/* Apply the animation to the body */
+			body.fade-out {
+				animation: fadeOut 1s ease forwards;
+			}
+
+			.secondary-text {
+				font-size: 12pt;
+				margin-top: 10px;
+			}
+
+			.additional-text {
+				display: none;
+				font-size: 12pt;
+				color: #3b3b3b;
+				margin-top: 10px;
+			}
+
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+				}
+
+				to {
+					opacity: 1;
+				}
+			}
+
+			.fade-in {
+				animation: fadeIn 2s ease-out;
+			}
+
+			.footer {
+				width: 100%;
+				position: absolute;
+				bottom: 0;
+				text-align: center;
+				padding: 20px;
+				font-family: sans-serif;
+				font-size: 10pt;
+			}
+
+			.footer a {
+				color: #007bff;
+				/* A standard link color */
+				text-decoration: none;
+				/* Optional: Removes underline from links */
+			}
+
+			.footer a:hover {
+				text-decoration: underline;
+				/* Optional: Adds underline on hover */
+			}
+
+			@keyframes draw {
+				from {
+					stroke-dashoffset: 0%;
+				}
+				to {
+					stroke-dashoffset: 240%;
+				}
+			}
+
+			.draw-path {
+				stroke: #2b2b2b;
+				stroke-width: 15; /* Adjust as needed */
+				fill: none;
+				stroke-dasharray: 120%;
+				stroke-dashoffset: 100%;
+				animation: draw 2s linear forwards infinite;
+			}
+
+			@keyframes draw2 {
+				from {
+					stroke-dashoffset: 20%;
+				}
+				to {
+					stroke-dashoffset: 260%;
+				}
+			}
+
+			.draw-path2 {
+				stroke: #2b2b2b;
+				stroke-width: 15; /* Adjust as needed */
+				fill: none;
+				stroke-dasharray: 120%;
+				stroke-dashoffset: 100%;
+				animation: draw2 2s linear forwards infinite;
+			}
+
+			@keyframes draw3 {
+				from {
+					stroke-dashoffset: 0%;
+				}
+				to {
+					stroke-dashoffset: 200%;
+				}
+			}
+			.draw-path3 {
+				stroke: #2b2b2b;
+				stroke-width: 15; /* Adjust as needed */
+				fill: none;
+				stroke-dasharray: 100%;
+				stroke-dashoffset: 100%;
+				animation: draw3 2s linear forwards infinite;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="load-container">
+			<svg width="100" height="100" viewBox="-8 -8 588 588" xmlns="http://www.w3.org/2000/svg">
+				<path
+					d="M7.19462e-05 74.3583C109.309 74.3583 195.795 86.2578 286.834 37.825C377.872 -10.6077 466.416 1.29174 573.667 1.29175L573.667 126.549C466.416 126.549 377.373 114.91 286.834 163.082C196.294 211.254 109.309 199.615 6.11417e-05 199.615L7.19462e-05 74.3583Z"
+					class="draw-path"
+				/>
+				<path
+					d="M573.669 499.31C464.36 499.31 377.874 487.411 286.835 535.843C195.797 584.276 107.252 572.377 0.0014801 572.377V447.12C107.252 447.12 196.295 458.758 286.835 410.586C377.375 362.415 464.36 374.053 573.669 374.053V499.31Z"
+					class="draw-path2"
+				/>
+				<path
+					d="M452.896 186.499C395.028 187.686 341.581 194.947 286.835 224.074C211.396 264.212 136.995 262.826 52.2355 261.247C35.2696 260.931 17.8887 260.608 0.0014801 260.608V385.865C18.1032 385.865 35.6721 386.204 52.81 386.534C137.212 388.162 211.162 389.589 286.835 349.331C341.838 320.07 395.18 312.831 452.896 311.685V186.499Z"
+					class="draw-path3"
+				/>
+			</svg>
+
+			<div class="loading">Evidence is starting</div>
+			<div class="loading secondary-text">Loading development workspace</div>
+			<div id="additionalText" class="loading additional-text">This can take up to 2 minutes</div>
+		</div>
+		<div class="footer">
+			For help, <a href="https://slack.evidence.dev" target="_blank">reach out on Slack</a>
+		</div>
+		<script>
+			let appReady = false; // Flag to indicate app readiness
+
+			const svelteKitAppPort = {{PORT}}; // The server will replace {{PORT}} with the actual port
+
+			function checkAppReady() {
+			    if (appReady) {
+			        return; // Stop polling if the app is already marked as ready
+			    }
+
+			    fetch(`http://localhost:${svelteKitAppPort}`, { mode: 'no-cors' }) // Checking the main app
+			        .then(() => {
+			              // Start the fade-out animation
+			              document.body.classList.add('fade-out');
+			              setTimeout(() => {
+			            appReady = true;
+			            window.location.href = `http://localhost:${svelteKitAppPort}`; // Redirect to the main app
+			        }, 1000); // Match the duration of the animation
+			        })
+			        .catch((err) => {
+			            // console.log('App not ready yet, retrying...');
+			            setTimeout(checkAppReady, 1000);
+			        });
+			}
+
+			// Display the additional message after 30 seconds with fade-in effect
+			setTimeout(() => {
+			    const additionalText = document.getElementById('additionalText');
+			    additionalText.style.display = 'block';
+			    additionalText.classList.add('fade-in'); // Apply the fade-in animation
+			}, 30000); // 30000 milliseconds = 30 seconds
+
+			checkAppReady(); // Start checking if the app is ready on page load
+		</script>
+	</body>
+</html>

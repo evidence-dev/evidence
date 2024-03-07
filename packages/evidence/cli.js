@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk';
+import getPort from 'get-port';
+import ora from 'ora';
 import fs from 'fs-extra';
 import { spawn } from 'child_process';
 import * as chokidar from 'chokidar';
@@ -9,6 +11,7 @@ import { fileURLToPath } from 'url';
 import sade from 'sade';
 import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
 import { logQueryEvent } from '@evidence-dev/telemetry';
+import { startProxyServer, checkAppReady } from './proxyServer.js'; // Adjusted for clarity
 
 const populateTemplate = function () {
 	clearQueryCache();
@@ -38,7 +41,7 @@ const populateTemplate = function () {
 
 const clearQueryCache = function () {
 	fs.removeSync('.evidence/template/.evidence-queries/cache');
-	console.log('Cleared query cache');
+	console.log(chalk.blue('Cleared query cache\n'));
 };
 
 const runFileWatcher = function (watchPatterns) {
@@ -180,7 +183,27 @@ prog
 	.command('dev')
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
-	.action((args) => {
+	.action(async (args) => {
+		// Start spinner
+		const spinner = ora({
+			text: chalk.cyan('Evidence is starting\n'),
+			spinner: 'circleHalves',
+			color: 'cyan'
+		}).start();
+
+		// Set a timeout to change the spinner message after 30 seconds
+		const timeoutId = setTimeout(() => {
+			spinner.text = chalk.cyan('Evidence is starting - this can take up to 2 minutes');
+		}, 30000); // 30 seconds
+
+		// Use get-port to find an available port starting from 3000. After 3005, choose a random available port
+		const port = await getPort({ port: [3000, 3001, 3002, 3003, 3004, 3005] });
+
+		// Set proxy port to 1 greater than port if available, otherwise random
+		const proxyPort = await getPort({ port: port + 1 });
+
+		startProxyServer(proxyPort, port);
+
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -205,17 +228,29 @@ ${chalk.bold('[!] Unable to load source manifest')}
 			);
 		}
 
+		spinner.stop();
 		populateTemplate();
+		spinner.start();
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
 
 		logQueryEvent('dev-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
-		const child = spawn('npx vite dev --port 3000', flatArgs, {
+		const child = spawn(`npx vite dev --port ${port.toString()}`, flatArgs, {
 			shell: true,
 			detached: false,
 			cwd: '.evidence/template',
-			stdio: 'inherit'
+			stdio: 'pipe'
+		});
+
+		checkAppReady(port, () => {
+			clearTimeout(timeoutId);
+			spinner.succeed(chalk.green('Evidence server started\n'));
+			console.log(
+				chalk.cyan.bold('● Evidence is running'),
+				chalk.green('\n➜ '),
+				chalk.grey(`http://localhost:${port}`)
+			);
 		});
 
 		child.on('exit', function () {
