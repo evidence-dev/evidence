@@ -1,0 +1,3 @@
+SELECT * FROM orders
+UNION ALL
+SELECT * FROM orders
