@@ -86,7 +86,10 @@ fsExtra.outputFileSync(
         server: {
             fs: {
                 strict: strictFs // allow template to get dependencies outside the .evidence folder
-            }
+            },
+			hmr: {
+				overlay: false
+			}
         },
 		build: {
 			rollupOptions: {
