@@ -245,7 +245,6 @@ prog
 		} else {
 			console.table(Object.keys(evidenceVars));
 		}
-		// console.log(process.env)
 	});
 
 prog
