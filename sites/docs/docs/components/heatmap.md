@@ -142,6 +142,8 @@ Heatmap currently only works with string columns. If you would like to use a dat
 
 <table>						 
 <tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
+<tr>	<td>nullsZero</td>	<td>Whether to treats nulls or missing values as zero</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
+<tr>	<td>zeroDisplay</td>	<td>String to display in place of zeros</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>—</td>	</tr>
 <tr>	<td>colorPalette</td>	<td>Array of colors to form the gradient for the heatmap. Remember to wrap your array in curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color codes - e.g., <code>{`colorPalette={['navy', 'white', '#c9c9c9']}`}</code></td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>valueFmt</td>	<td>Format to use for value column (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
 <tr>	<td>cellHeight</td>	<td>Number representing the height of cells in the heatmap</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>30</td>	</tr>
@@ -159,7 +161,10 @@ Heatmap currently only works with string columns. If you would like to use a dat
 <tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 <tr>	<td>xLabelRotation</td>	<td>Degrees to rotate the labels on the x-axis. Can be negative number to reverse direction. <code>45</code> and <code>-45</code> are common options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
 <tr>	<td>xAxisPosition</td>	<td>Position of x-axis and labels. Can be top or bottom. top recommended for longer charts</td>	<td class='tcenter'>-</td>	<td class='tcenter'>top | bottom</td>	<td class='tcenter'>top</td>	</tr>
-
+<tr>	<td>xSort</td>	<td>Column to sort x values by</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>xSortOrder</td>	<td>Sets direction of sort</td>	<td class='tcenter'>-</td>	<td class='tcenter'>asc | desc</td>	<td class='tcenter'>asc</td>	</tr>
+<tr>	<td>ySort</td>	<td>Column to sort y values by</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
+<tr>	<td>ySortOrder</td>	<td>Sets direction of sort</td>	<td class='tcenter'>-</td>	<td class='tcenter'>asc | desc</td>	<td class='tcenter'>asc</td>	</tr>
 </table>
 
 ### Chart
