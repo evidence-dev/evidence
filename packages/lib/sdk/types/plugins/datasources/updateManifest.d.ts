@@ -1,2 +1,0 @@
-export function updateManifest(updatedManifest: import('./types.js').Manifest, dataDir: string, filters: import('./types.js').SourceFilters): Promise<void>;
-//# sourceMappingURL=updateManifest.d.ts.map

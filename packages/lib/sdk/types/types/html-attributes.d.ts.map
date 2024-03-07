@@ -1,1 +1,0 @@
-{"version":3,"file":"html-attributes.d.ts","sourceRoot":"","sources":["../../src/types/html-attributes.ts"],"names":[],"mappings":"AAAA,OAAO,CAAC,MAAM,CAAC;IACd,UAAU,UAAU,CAAC;QAEpB,UAAU,kBAAkB;YAC3B,yBAAyB,CAAC,EAAE,MAAM,CAAC;YACnC,wBAAwB,CAAC,EAAE,MAAM,CAAC;SAClC;QAED,UAAU,cAAc,CAAC,CAAC;YACzB,qBAAqB,CAAC,EAAE,MAAM,CAAC;SAC/B;KACD;CACD"}
