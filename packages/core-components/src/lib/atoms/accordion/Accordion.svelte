@@ -3,20 +3,11 @@
 </script>
 
 <script>
-	import { setContext } from 'svelte';
-	import { writable } from 'svelte/store';
+	import * as BaseAccordion from '../shadcn/accordion';
 
-	const activeItem = writable(-1);
-
-	function setActiveItem(index) {
-		activeItem.update((current) => (current === index ? -1 : index));
-	}
-
-	setContext('accordion', { setActiveItem, activeItem });
+	export let single = false;
 </script>
 
-<div class="my-6 divide-y border border-neutral-200 rounded">
-	<div class="overflow-hidden divide-y rounded">
-		<slot />
-	</div>
-</div>
+<BaseAccordion.Root class="mb-6 w-full" multiple={!single}>
+	<slot />
+</BaseAccordion.Root>
