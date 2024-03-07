@@ -1,5 +1,29 @@
 # Heatmap
 
+```missing
+select 'A' as cat, 'Mon' as day_name, 1 as day_num, 100 as sales union all
+select 'A' as cat, 'Thu' as day_name, 4 as day_num, 200 as sales union all
+select 'A' as cat, 'Sat' as day_name, 6 as day_num, 400 as sales union all
+select 'A' as cat, 'Tue' as day_name, 2 as day_num, 300 as sales union all
+select 'A' as cat, 'Wed' as day_name, 3 as day_num, 200 as sales union all
+select 'A' as cat, 'Fri' as day_name, 5 as day_num, 500 as sales union all
+select 'B' as cat, 'Mon' as day_name, 1 as day_num, 700 as sales union all
+select 'B' as cat, 'Thu' as day_name, 4 as day_num, 200 as sales union all
+select 'B' as cat, 'Sat' as day_name, 6 as day_num, 400 as sales union all
+select 'B' as cat, 'Tue' as day_name, 2 as day_num, 100 as sales union all
+select 'B' as cat, 'Wed' as day_name, 3 as day_num, 700 as sales union all
+select 'B' as cat, 'Fri' as day_name, 5 as day_num, 400 as sales union all
+select 'B' as cat, 'Sun' as day_name, 0 as day_num, 300 as sales
+```
+
+<Heatmap
+    data={missing}
+    x=day_name
+    y=cat
+    value=sales
+    xSort=day_num
+/>
+
 ```orders
 select category, dayname(order_datetime) as day, dayofweek(order_datetime) as day_num, count(*) as order_count from needful_things.orders
 group by all
@@ -107,4 +131,5 @@ order by state asc, item asc
     subtitle="By State"
     rightPadding=40
     cellHeight=25
+    nullsZero=false
 />
