@@ -4,6 +4,12 @@ import fs from 'fs/promises';
 import path from 'path';
 import { dataDirectory } from './virtuals/node/projectPaths.js';
 
+/**
+ * Creates an express application that handles Evidence-specific functionality
+ * e.g. Fetching parquet files, 
+ * 
+ * @returns {import("vite").Connect.HandleFunction}
+ */
 export const getSidecarApp = () => {
 	const app = express();
 
@@ -21,12 +27,8 @@ export const getSidecarApp = () => {
 			)
 			.end();
 	});
-
 	app.get('/_evidence/prerendered-queries/:query_hash.arrow', (req, res) => {
 		return res.send('Arrow file here!').end();
-	});
-	app.get('/_evidence/customFormattingSettings.json', (req, res) => {
-		return res.send(JSON.stringify({})).end();
 	});
 	app.get('/_evidence/query/:schema/:filename.parquet', async (req, res) => {
 		// TODO: Check if the file really exists
