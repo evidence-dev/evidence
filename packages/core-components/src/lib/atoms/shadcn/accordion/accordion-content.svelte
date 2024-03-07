@@ -5,23 +5,12 @@
 
 	/** @type {string | undefined | null} */
 	let className = undefined;
-	/** @type {any} */
-	export let transition = slide;
-	/** @type {Object} */
-	export let transitionConfig = {
-		duration: 200
-	};
 
 	export { className as class };
 </script>
 
-<AccordionPrimitive.Content
-	class={cn('overflow-hidden text-sm', className)}
-	{transition}
-	{transitionConfig}
-	{...$$restProps}
->
-	<div class="pb-4 pt-0">
+<AccordionPrimitive.Content class={cn('overflow-hidden text-sm', className)} {...$$restProps}>
+	<div class="pb-4 pt-0" transition:slide|local={{ duration: 200 }}>
 		<slot />
 	</div>
 </AccordionPrimitive.Content>
