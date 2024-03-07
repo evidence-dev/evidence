@@ -65,7 +65,7 @@
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
 	export let leftPadding = 0; // user option to avoid label cutoffs
-	export let rightPadding = 0; // user option to avoid label cutoffs
+	export let rightPadding = 2; // user option to avoid label cutoffs
 	export let cellHeight = 30;
 
 	export let renderer = undefined;
@@ -84,7 +84,8 @@
 	}
 
 	function mapColumnsToArray(arrayOfObjects, col1, col2, col3) {
-		return arrayOfObjects.map((obj) => [obj[col1], obj[col2], obj[col3]]);
+		// x and y must be converted to strings, otherwise echarts will interpret them as index positions
+		return arrayOfObjects.map((obj) => [`${obj[col1]}`, `${obj[col2]}`, obj[col3]]);
 	}
 
 	let xDistinct;
@@ -167,6 +168,9 @@
 		gridHeight = chartAreaHeight ?? Math.max(100, yDistinct.length * cellHeight); // height to add for each row (each item on y axis)
 		height = `${20 + legend * 35 + hasTitle * 18 + hasSubtitle * 18 + gridHeight}px`; // chart container height
 		config = {
+			textStyle: {
+				fontFamily: 'sans-serif'
+			},
 			title: {
 				text: title,
 				subtext: subtitle
@@ -197,6 +201,7 @@
 			},
 			yAxis: {
 				type: 'category',
+				inverse: true,
 				data: yDistinct,
 				splitArea: {
 					show: true

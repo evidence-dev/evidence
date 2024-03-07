@@ -234,7 +234,7 @@ ${chalk.bold('[!] Unable to load source manifest')}
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
 
-		logQueryEvent('dev-server-start');
+		logQueryEvent('dev-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
 		const child = spawn(`npx vite dev --port ${port.toString()}`, flatArgs, {
 			shell: true,
@@ -374,7 +374,7 @@ prog
 		}
 		const flatArgs = flattenArguments(args);
 
-		logQueryEvent('preview-server-start');
+		logQueryEvent('preview-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
 		const child = spawn('npx vite preview --outDir build --port 3000', flatArgs, {
 			shell: true,
