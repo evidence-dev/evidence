@@ -23,7 +23,7 @@ function createToastsObject() {
 		 */
 		add: (toast, timeout = 2000) => {
 			// Totally safe ids
-			toast.id ??= Math.random().toString();
+			toast.id = toast.id ?? Math.random().toString();
 			update(($toasts) => ($toasts.push(toast), $toasts));
 			if (timeout) {
 				const timeoutId = setTimeout(() => {
