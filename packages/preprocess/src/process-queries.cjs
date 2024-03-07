@@ -141,6 +141,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							fetch_maybepromise = query_store.fetch();
 						}
 
+						// if we have initial data, execute the query anyways in the background, ignoring results
+						// this helps fetch some parquet which can speed up future queries
+						if (initialData) {
+							query_store.backgroundFetch();
+						}
 
 						if (_${id}) {
 							// Query has already been created
