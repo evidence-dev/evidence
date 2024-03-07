@@ -26,16 +26,16 @@
 		// "moduleDetection": "auto",                        /* Control what method is used to detect module-format JS files. */
 
 		/* Modules */
-		"module": "commonjs" /* Specify what module code is generated. */,
+		"module": "esnext" /* Specify what module code is generated. */,
 		// "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-		// "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+		"moduleResolution": "Node",                     /* Specify how TypeScript looks up a file from a given module specifier. */
 		// "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
 		// "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
 		// "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
-		"typeRoots": [
-			"types",
-			"node_modules/@types"
-		] /* Specify multiple folders that act like './node_modules/@types'. */,
+		// "typeRoots": [
+		// 	"types",
+		// 	"node_modules/@types"
+		// ] /* Specify multiple folders that act like './node_modules/@types'. */,
 		// "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
 		// "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
 		// "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
@@ -108,6 +108,6 @@
 
 		/* Completeness */
 		// "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-		"skipLibCheck": false /* Skip type checking all .d.ts files. */
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	}
 }
