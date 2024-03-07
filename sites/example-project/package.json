@@ -18,6 +18,7 @@
 		"@evidence-dev/mssql": "workspace:*",
 		"@evidence-dev/mysql": "workspace:*",
 		"@evidence-dev/plugin-connector": "workspace:*",
+		"@evidence-dev/preprocess": "workspace:*",
 		"@evidence-dev/postgres": "workspace:*",
 		"@evidence-dev/query-store": "workspace:*",
 		"@evidence-dev/snowflake": "workspace:*",
