@@ -1,0 +1,1 @@
+{"version":3,"file":"sharedPromise.d.ts","sourceRoot":"","sources":["../../src/lib/sharedPromise.js"],"names":[],"mappings":"AAgBO,8EAHU,IAAI,2CA0DpB;;aApEa,QAAQ,WAAW,CAAC;iBAChB,WAAW,KAAK,OAAO;gBACvB,KAAK,KAAK,OAAO;WACrB,MAAM,GAAG,SAAS,GAAG,UAAU,GAAG,UAAU;WAC5C,WAAW,GAAG,IAAI;WAClB,MAAM,IAAI"}
