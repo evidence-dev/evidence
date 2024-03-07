@@ -1,7 +1,7 @@
 <script>
 	import { dev } from '$app/environment';
 	import { Icon } from '@steeze-ui/svelte-icon';
-	import { _3dCubeSphere, X, Menu2 } from '@steeze-ui/tabler-icons';
+	import { X, Menu2 } from '@steeze-ui/tabler-icons';
 	import { Github as GithubLogo, Slack as SlackLogo } from '@steeze-ui/simple-icons';
 	import Logo from '../Logo.svelte';
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';

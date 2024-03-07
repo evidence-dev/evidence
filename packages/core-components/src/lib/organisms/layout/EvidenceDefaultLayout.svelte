@@ -8,7 +8,6 @@
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import TableOfContents from './tableofcontents/TableOfContents.svelte';
 	import ErrorOverlay from './ErrorOverlay.svelte';
-	import KebabMenu from './header/KebabMenu.svelte';
 
 	export let data;
 
