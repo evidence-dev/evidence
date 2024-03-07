@@ -1,1 +1,0 @@
-{"version":3,"file":"loadComponentPlugins.d.ts","sourceRoot":"","sources":["../../../src/plugins/components/loadComponentPlugins.js"],"names":[],"mappings":"AAiBO,wCAFM,QAAQ,aAAa,EAAE,CAAC,CAgCpC;+BA1Ca,OAAO,qCAAqC,EAAE,gBAAgB;;UAG9D,MAAM;aACN,gBAAgB,GAAG;QAAC,GAAG,EAAE,MAAM,CAAA;KAAC;aAChC,YAAY,OAAO,oCAAoC,EAAE,YAAY,CAAC,YAAY,CAAC,CAAC,CAAC,MAAM,CAAC"}
