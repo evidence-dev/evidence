@@ -21,7 +21,7 @@ sidebar_position: 30
 
 ## Options
 
-### `AccordionItem`
+### `Accordion`
 
 | Name   | Description                                                             | Required | 
 |--------|-------------------------------------------------------------------------|----------|
