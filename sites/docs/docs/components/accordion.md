@@ -19,17 +19,17 @@ sidebar_position: 30
 </Accordion>
 ```
 
-## Styling
-
-Note that accordions _do not_ support using markdown in the body text. 
-
-To style text, use HTML.
-
 ## Options
+
+### `Accordion`
+
+| Name   | Description                                                             | Required | 
+|--------|-------------------------------------------------------------------------|----------|
+| single  | When true, only a single accordian item can be open at once.           | No      | 
+
 
 ### `AccordionItem`
 
 | Name   | Description                                                             | Required | 
 |--------|-------------------------------------------------------------------------|----------|
 | title  | The title of the accordion item. This will be displayed as the header   | Yes      | 
-| small  | Makes the accordion shorter to fill less space                          | No       |
