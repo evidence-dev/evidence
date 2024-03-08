@@ -51,7 +51,7 @@
 				<Icon class="w-5 h-5" src={Menu2} />
 			{/if}
 		</button>
-		<div class="flex gap-2 text-sm items-center pr-6">
+		<div class="flex gap-2 text-sm items-center">
 			{#if algolia}
 				<AlgoliaDocSearch {algolia} />
 			{/if}
