@@ -27,7 +27,9 @@
 	},
 	"files": [
 		"template",
-		"cli.js"
+		"cli.js",
+		"proxyServer.js",
+		"static"
 	],
 	"devDependencies": {
 		"@evidence-dev/component-utilities": "workspace:*",
