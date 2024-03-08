@@ -70,7 +70,9 @@ export const installPluginPrompt = async (installOnly, installType, skipCancel) 
 				message += source.name.padEnd(maxNameLength);
 				message += chalk.dim(` (${source.version})`);
 
-				message += ` | (${source.evidence.datasources.map((s) => (Array.isArray(s) ? s[0] : s)).join(', ')})`;
+				message += ` | (${source.evidence.datasources
+					.map((s) => (Array.isArray(s) ? s[0] : s))
+					.join(', ')})`;
 
 				return {
 					label: message,
@@ -90,7 +92,9 @@ export const installPluginPrompt = async (installOnly, installType, skipCancel) 
 
 			if (!selectedSource.name.startsWith('@evidence-dev')) {
 				const unsafe = await prompt.confirm({
-					message: `${chalk.yellow.bold(`${selectedSource.name}`)} is a 3rd party plugin, and was not created by Evidence. Are you sure you would like to install it?`,
+					message: `${chalk.yellow.bold(
+						`${selectedSource.name}`
+					)} is a 3rd party plugin, and was not created by Evidence. Are you sure you would like to install it?`,
 					initialValue: false
 				});
 				if (prompt.isCancel(unsafe) || !unsafe) {

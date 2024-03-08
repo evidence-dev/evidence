@@ -24,35 +24,35 @@ importers:
         specifier: 1.28.0
         version: 1.28.0
       '@evidence-dev/component-utilities':
-        specifier: link:packages/component-utilities
-        version: link:packages/component-utilities
+        specifier: link:packages/ui/component-utilities
+        version: link:packages/ui/component-utilities
       '@evidence-dev/core-components':
-        specifier: link:packages/core-components
-        version: link:packages/core-components
+        specifier: link:packages/ui/core-components
+        version: link:packages/ui/core-components
       '@evidence-dev/db-orchestrator':
-        specifier: link:packages/db-orchestrator
-        version: link:packages/db-orchestrator
+        specifier: link:packages/datasources/db-orchestrator
+        version: link:packages/datasources/db-orchestrator
       '@evidence-dev/evidence':
         specifier: link:packages/evidence
         version: link:packages/evidence
       '@evidence-dev/plugin-connector':
-        specifier: link:packages/plugin-connector
-        version: link:packages/plugin-connector
+        specifier: link:packages/lib/plugin-connector
+        version: link:packages/lib/plugin-connector
       '@evidence-dev/preprocess':
-        specifier: link:packages/preprocess
-        version: link:packages/preprocess
+        specifier: link:packages/lib/preprocess
+        version: link:packages/lib/preprocess
       '@evidence-dev/query-store':
-        specifier: link:packages/query-store
-        version: link:packages/query-store
+        specifier: link:packages/lib/query-store
+        version: link:packages/lib/query-store
       '@evidence-dev/tailwind':
-        specifier: link:packages/tailwind
-        version: link:packages/tailwind
+        specifier: link:packages/ui/tailwind
+        version: link:packages/ui/tailwind
       '@evidence-dev/telemetry':
-        specifier: link:packages/telemetry
-        version: link:packages/telemetry
+        specifier: link:packages/lib/telemetry
+        version: link:packages/lib/telemetry
       '@evidence-dev/universal-sql':
-        specifier: link:packages/universal-sql
-        version: link:packages/universal-sql
+        specifier: link:packages/lib/universal-sql
+        version: link:packages/lib/universal-sql
       '@parcel/packager-ts':
         specifier: 2.12.0
         version: 2.12.0(@parcel/core@2.12.0)
@@ -810,7 +810,7 @@ importers:
         specifier: ^3.1.2
         version: 3.2.2(prettier@3.2.5)(svelte@4.2.12)
       prettier-plugin-tailwindcss:
-        specifier: ^0.5.11
+        specifier: ^0.5.12
         version: 0.5.12(prettier-plugin-svelte@3.2.2)(prettier@3.2.5)
       recast:
         specifier: ^0.23.4

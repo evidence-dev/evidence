@@ -50,7 +50,9 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 			// TODO: How forgiving do we want to be here?
 			// TODO: If we want to be really fancy; we could batch these, and do an NPM lookup at the end to say "these packages provide those datasources"
 			throw new EvidenceError(
-				`Could not find matching datasource plugin for ${chalk.bold(source.name)} (source: ${chalk.bold(source.type)})`
+				`Could not find matching datasource plugin for ${chalk.bold(
+					source.name
+				)} (source: ${chalk.bold(source.type)})`
 			);
 		}
 		const [, mod] = plugin;

@@ -60,16 +60,22 @@ export const add = {
 			const result = await installPluginPrompt(true, 'datasource', true);
 			if (result) {
 				prompt.log.info(
-					`Plugin installed! Run ${chalk.bold('npm i')} to install it and ${chalk.bold('npx evidence-sdk connections edit')} to set up a connection.`
+					`Plugin installed! Run ${chalk.bold('npm i')} to install it and ${chalk.bold(
+						'npx evidence-sdk connections edit'
+					)} to set up a connection.`
 				);
 			} else {
 				prompt.log.warn(
-					`You did not install any plugins; install one manually, or use ${chalk.bold('npx evidence-sdk plugins install')} for an interactive helper.`
+					`You did not install any plugins; install one manually, or use ${chalk.bold(
+						'npx evidence-sdk plugins install'
+					)} for an interactive helper.`
 				);
 			}
 		} else {
 			prompt.log.warn(
-				`You did not install any plugins; install one manually, or use ${chalk.bold('npx evidence-sdk plugins install')} for an interactive helper.`
+				`You did not install any plugins; install one manually, or use ${chalk.bold(
+					'npx evidence-sdk plugins install'
+				)} for an interactive helper.`
 			);
 		}
 

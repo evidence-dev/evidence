@@ -330,8 +330,7 @@ export class Query {
 				this.#error = e;
 				this.#sharedColumnsPromise.reject(e);
 
-				if (isPromise)
-					return this.#sharedColumnsPromise.promise; // rejected promise
+				if (isPromise) return this.#sharedColumnsPromise.promise; // rejected promise
 				else throw e;
 			}
 		);
@@ -417,8 +416,8 @@ export class Query {
 						prop in this
 							? this // Prop exists on Query
 							: this.#data && prop in this.#data
-								? this.#data // Prop exists on Array
-								: null; // Prop exists on neither
+							? this.#data // Prop exists on Array
+							: null; // Prop exists on neither
 					if (target === null)
 						if (typeof prop !== 'number') return undefined;
 						else {

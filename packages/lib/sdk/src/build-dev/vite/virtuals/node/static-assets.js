@@ -35,7 +35,9 @@ export const getManifest = (dest = 'node') => {
 								// TODO: Debug log?
 								return queryPath;
 							} else {
-								return `${queryPath.startsWith('/') ? '.' : './'}${filename[1]}${filename[2]}/${filename[2]}.parquet`;
+								return `${queryPath.startsWith('/') ? '.' : './'}${filename[1]}${filename[2]}/${
+									filename[2]
+								}.parquet`;
 							}
 						})
 					];

@@ -26,3 +26,6 @@ yarn.lock
 **/sites/example-project/src/pages/**/+page.md
 **/sites/test-env/pages/**/*
 **/static/data/*
+
+**/node_modules
+**/**/node_modules
