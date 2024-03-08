@@ -46,7 +46,11 @@ export const transformQueries = {
 			r = r.replace(replaceTarget, '');
 			r =
 				r +
-				`\n<svelte:head> <meta evidence-query-presence={btoa(__evidence_query_text_${el.getAttribute('evidence-query-name')})} evidence-query-content={__evidence_query_text_${el.getAttribute('evidence-query-name')}}> </svelte:head>`;
+				`\n<svelte:head> <meta evidence-query-presence={btoa(__evidence_query_text_${el.getAttribute(
+					'evidence-query-name'
+				)})} evidence-query-content={__evidence_query_text_${el.getAttribute(
+					'evidence-query-name'
+				)}}> </svelte:head>`;
 		}
 
 		return { code: r };

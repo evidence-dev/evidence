@@ -6,8 +6,8 @@ import { dataDirectory } from './virtuals/node/projectPaths.js';
 
 /**
  * Creates an express application that handles Evidence-specific functionality
- * e.g. Fetching parquet files, 
- * 
+ * e.g. Fetching parquet files,
+ *
  * @returns {import("vite").Connect.HandleFunction}
  */
 export const getSidecarApp = () => {

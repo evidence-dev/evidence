@@ -41,7 +41,9 @@ export class Datasources {
 		pack.evidence.datasources.flat().forEach((sourceName) => {
 			if (this.#overrides[sourceName] && this.#overrides[sourceName] !== pack.name) {
 				console.debug(
-					`Ignoring source type "${sourceName}" from ${pack.name}, already overriden by ${this.#overrides[sourceName]}`
+					`Ignoring source type "${sourceName}" from ${pack.name}, already overriden by ${
+						this.#overrides[sourceName]
+					}`
 				);
 			}
 			this.#bySource[sourceName] = [pack, source];
