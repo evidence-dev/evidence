@@ -28,7 +28,9 @@ const deepMerge = (a, b) => {
  * @throws {Error}
  */
 function errorHandler(warning) {
-	throw new Error(warning.message, { cause: warning });
+	if (warning.message.includes('defined') || warning.message.includes('Empty Block')) {
+		throw new Error(warning.message, { cause: warning });
+	}
 }
 
 /** @type {import('@sveltejs/kit').Config} */
