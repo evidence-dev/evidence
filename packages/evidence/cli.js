@@ -189,7 +189,7 @@ prog
 	.describe('launch the local evidence development environment')
 	.action((args) => {
 		console.log(
-			chalk.cyan('Starting Evidence development workspace - this can take 1-2 minutes\n')
+			chalk.cyan('Starting Evidence development workspace - this can take up to 90 seconds\n')
 		);
 
 		if (args.debug) {
