@@ -1,5 +1,13 @@
 # ui-tests
 
+## 1.2.2
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+
 ## 1.2.1
 
 ### Patch Changes
