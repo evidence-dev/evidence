@@ -1,5 +1,29 @@
 # @evidence-dev/core-components
 
+## 3.5.0
+
+### Minor Changes
+
+- 57c81240: Add clearer dev mode errors
+
+### Patch Changes
+
+- 023cd946: Fix table search when sorting
+- 15a6eeab: Replace accordian with shadcn implementation, support inlined markdown
+- 31903452: Fix heatmap y axis
+- 33e46d1c: Add FlowChart component
+- 2d0c00b9: Removes headless-ui dependency, replaces kebab menu with shadcn implementation
+- 7e550a1d: Refactor the default layout into a single component, add a set of layout options
+- 0042519f: Fix bug caused by navigating away from settings page
+- 152b7224: Add x and y sort to Heatmap
+- 72f9833a: Add date range, multi-select, search in dropdown
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [152b7224]
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [57c81240]
+  - @evidence-dev/component-utilities@2.4.0
+  - @evidence-dev/query-store@2.0.4
+
 ## 3.4.2
 
 ### Patch Changes
