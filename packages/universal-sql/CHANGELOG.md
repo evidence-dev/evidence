@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.0.4
+
+### Patch Changes
+
+- 57f71211: bump duckdb-wasm and arrow
+
 ## 2.0.3
 
 ### Patch Changes

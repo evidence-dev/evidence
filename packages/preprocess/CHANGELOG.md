@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.0.2
+
+### Patch Changes
+
+- 1ff76fdf: add activeQueries and backgroundFetch to querystore
+
 ## 4.0.1
 
 ### Patch Changes

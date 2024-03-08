@@ -1,5 +1,18 @@
 # @evidence-dev/component-utilities
 
+## 2.4.0
+
+### Minor Changes
+
+- 57c81240: Add clearer dev mode errors
+
+### Patch Changes
+
+- 1ff76fdf: modify toasts store
+- 152b7224: Add x and y sort to Heatmap
+- Updated dependencies [1ff76fdf]
+  - @evidence-dev/query-store@2.0.4
+
 ## 2.3.0
 
 ### Minor Changes
