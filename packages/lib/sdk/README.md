@@ -1,4 +1,4 @@
-<img src="./.github/images/wordmark.svg" alt="evidence-logo" width="100%" />
+<img src="../../../sites/docs/static/img/wordmark.svg" alt="evidence-logo" width="100%" />
 
 <div align="center">
 
