@@ -20,6 +20,8 @@
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
+	import EnterFullScreen from './EnterFullScreen.svelte';
+	import Fullscreen from '$lib/atoms/fullscreen/Fullscreen.svelte';
 
 	// Set up props store
 	let props = writable({});
@@ -57,6 +59,8 @@
 	$: downloadable = downloadable === 'true' || downloadable === true;
 
 	export let totalRow = false;
+
+	export let isFullPage = false;
 
 	// Row Links:
 	export let link = undefined;
@@ -327,7 +331,28 @@
 
 		return totalWeight > 0 ? totalWeightedValue / totalWeight : 0;
 	};
+
+	let fullscreen = false;
+	/** @type {number} */
+	let innerHeight;
 </script>
+
+<svelte:window bind:innerHeight />
+
+{#if !isFullPage}
+	<Fullscreen bind:open={fullscreen}>
+		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23 -->
+		{@const ROW_HEIGHT = 23}
+		{@const Y_AXIS_PADDING = 45 + 234}
+		<div class="pl-8 pt-4">
+			<svelte:self
+				{...$$props}
+				rows={1 + Math.round((innerHeight - Y_AXIS_PADDING) / ROW_HEIGHT)}
+				isFullPage
+			/>
+		</div>
+	</Fullscreen>
+{/if}
 
 {#if error === undefined}
 	<slot />
@@ -616,7 +641,7 @@
 
 		{#if paginated && pageCount > 1}
 			<div class="pagination">
-				<div class="page-labels">
+				<div class="page-labels mr-auto">
 					<button
 						aria-label="first-page"
 						class="page-changer"
@@ -678,11 +703,17 @@
 				{#if downloadable}
 					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
 				{/if}
+				{#if !isFullPage}
+					<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
+				{/if}
 			</div>
 		{:else}
 			<div class="table-footer">
 				{#if downloadable}
 					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
+				{/if}
+				{#if !isFullPage}
+					<EnterFullScreen on:click={() => (fullscreen = true)} display={hovering} />
 				{/if}
 			</div>
 		{/if}
@@ -828,7 +859,7 @@
 		font-size: 12px;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-end;
 		height: 2em;
 		font-family: var(--ui-font-family);
 		color: var(--grey-500);
