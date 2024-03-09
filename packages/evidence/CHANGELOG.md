@@ -1,5 +1,11 @@
 # @evidence-dev/evidence
 
+## 29.0.2
+
+### Patch Changes
+
+- 07ec253a: Bump svelte dep
+
 ## 29.0.1
 
 ### Patch Changes
