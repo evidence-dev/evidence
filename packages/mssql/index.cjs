@@ -194,10 +194,7 @@ module.exports.options = {
 		secret: false,
 		type: 'string',
 		required: false,
-		options: [
-			'default',
-			'azure-active-directory-default'
-		]
+		options: ['default', 'azure-active-directory-default']
 		// other unsupported authentication types: tediousjs.github.io/tedious/api-connection.html
 	},
 	port: {
