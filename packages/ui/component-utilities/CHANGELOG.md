@@ -1,5 +1,17 @@
 # @evidence-dev/component-utilities
 
+## 2.4.1
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/query-store@2.0.5
+
 ## 2.4.0
 
 ### Minor Changes

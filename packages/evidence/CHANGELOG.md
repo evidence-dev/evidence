@@ -1,5 +1,28 @@
 # @evidence-dev/evidence
 
+## 29.0.2
+
+### Patch Changes
+
+- 07ec253a: Bump svelte dep
+
+## 29.0.1
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/component-utilities@2.4.1
+  - @evidence-dev/core-components@3.5.1
+  - @evidence-dev/plugin-connector@2.0.10
+  - @evidence-dev/preprocess@4.0.3
+  - @evidence-dev/query-store@2.0.5
+  - @evidence-dev/universal-sql@2.0.5
+
 ## 29.0.0
 
 ### Patch Changes
