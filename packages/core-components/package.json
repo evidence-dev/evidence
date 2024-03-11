@@ -89,7 +89,7 @@
 		"chromatic": "^6.17.4",
 		"eslint": "8.45.0",
 		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-storybook": "^0.6.15",
+		"eslint-plugin-storybook": "^0.8.0",
 		"eslint-plugin-svelte": "^2.26.0",
 		"postcss": "^8.4.23",
 		"postcss-load-config": "^4.0.1",
