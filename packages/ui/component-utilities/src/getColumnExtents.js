@@ -19,7 +19,7 @@ export function getColumnUnitSummary(data, columnName, isNumeric = true) {
 					median: median(columnName),
 					mean: mean(columnName),
 					sum: sum(columnName)
-			  })
+				})
 			: summarize({ count: n(columnName), countDistinct: nDistinct(columnName) })
 	)[0];
 

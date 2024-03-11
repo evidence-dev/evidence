@@ -55,7 +55,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		typeof window === 'undefined'
 			? process.env.VITE_EVIDENCE_DEBUG
 			: // @ts-expect-error
-			  import.meta?.env?.VITE_EVIDENCE_DEBUG
+				import.meta?.env?.VITE_EVIDENCE_DEBUG
 	);
 
 	/**

@@ -169,14 +169,14 @@
 								? `${formatValue(
 										y ? params.data.yAxis : x ? params.data.xAxis : params.value,
 										y ? yFormat : x ? xFormat : 'string'
-								  )}`
+									)}`
 								: '';
 						} else {
 							result = !hideValue
 								? `${params.name} (${formatValue(
 										y ? params.data.yAxis : x ? params.data.xAxis : params.value,
 										y ? yFormat : x ? xFormat : 'string'
-								  )})`
+									)})`
 								: `${params.name}`;
 						}
 						return result;

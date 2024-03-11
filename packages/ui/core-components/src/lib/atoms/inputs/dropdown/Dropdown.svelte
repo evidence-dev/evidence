@@ -143,7 +143,7 @@
 						exec,
 						`Dropdown-${name}-searched-${search}`,
 						{ initialData: $items ?? $query, initialDataDirty: true }
-				  )
+					)
 				: $query;
 	}
 

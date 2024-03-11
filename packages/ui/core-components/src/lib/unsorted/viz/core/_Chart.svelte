@@ -525,16 +525,16 @@
 						? ''
 						: formatTitle(y, yFormat)
 					: yAxisTitle === 'false'
-					? ''
-					: yAxisTitle;
+						? ''
+						: yAxisTitle;
 			y2AxisTitle =
 				y2AxisTitle === 'true'
 					? typeof y2 === 'object'
 						? ''
 						: formatTitle(y2, y2Format)
 					: y2AxisTitle === 'false'
-					? ''
-					: y2AxisTitle;
+						? ''
+						: y2AxisTitle;
 
 			// ---------------------------------------------------------------------------------------
 			// Get total series count
@@ -676,7 +676,7 @@
 								? false
 								: function (value) {
 										return formatAxisValue(value, xFormat, xUnitSummary);
-								  },
+									},
 						margin: 6
 					},
 					scale: true,
@@ -737,8 +737,8 @@
 									? colorPalette[0]
 									: chartColours[0]
 								: yAxisColor !== 'false'
-								? yAxisColor
-								: undefined
+									? yAxisColor
+									: undefined
 							: undefined
 					},
 					name: yAxisTitle,
@@ -753,8 +753,8 @@
 									? colorPalette[0]
 									: chartColours[0]
 								: yAxisColor !== 'false'
-								? yAxisColor
-								: undefined
+									? yAxisColor
+									: undefined
 							: undefined
 					},
 					nameGap: 6,
@@ -792,8 +792,8 @@
 									? colorPalette[ySeriesCount]
 									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
-								? y2AxisColor
-								: undefined
+									? y2AxisColor
+									: undefined
 					},
 					name: y2AxisTitle,
 					nameLocation: 'end',
@@ -807,8 +807,8 @@
 									? colorPalette[ySeriesCount]
 									: chartColours[ySeriesCount]
 								: y2AxisColor !== 'false'
-								? y2AxisColor
-								: undefined
+									? y2AxisColor
+									: undefined
 					},
 					nameGap: 6,
 					min: y2Min,

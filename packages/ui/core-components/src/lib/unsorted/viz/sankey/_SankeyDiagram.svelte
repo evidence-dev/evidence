@@ -256,13 +256,13 @@
 					return params.data.name
 						? `<span style='font-weight: 600'>${formatValue(
 								params.data.name
-						  )}</span><br/> ${formatValue(params.value, value_format_object)}`
+							)}</span><br/> ${formatValue(params.value, value_format_object)}`
 						: `<span style='font-weight: 600'>${formatValue(
 								params.data[sourceCol]
-						  )} &rarr; ${formatValue(params.data.target)}</span><br/> ${formatValue(
+							)} &rarr; ${formatValue(params.data.target)}</span><br/> ${formatValue(
 								params.data.value,
 								value_format_object
-						  )}`;
+							)}`;
 				},
 				extraCssText:
 					'box-shadow: 0 3px 6px rgba(0,0,0,.15); box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 1;',

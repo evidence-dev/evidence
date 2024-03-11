@@ -285,7 +285,7 @@
 					: [
 							formatValue(maxValue, value_format_object),
 							formatValue(minValue, value_format_object)
-					  ],
+						],
 				formatter: function (value) {
 					return formatValue(value, value_format_object);
 				}

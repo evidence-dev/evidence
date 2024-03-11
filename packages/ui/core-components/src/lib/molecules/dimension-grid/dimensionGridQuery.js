@@ -58,7 +58,7 @@ export const getDimensionCutQuery = function (
 					selectedValue
 						? `${dimension.name} = '${selectedValue?.replaceAll("'", "''")}' and ${
 								dimension.name
-						  } not in (select dimensionValue from topN)`
+							} not in (select dimensionValue from topN)`
 						: 'false'
 				}  
         group by 1,2 

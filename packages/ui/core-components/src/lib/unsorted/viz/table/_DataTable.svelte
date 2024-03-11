@@ -221,9 +221,9 @@
 			(forceTopOfAscending(a[column]) && !forceTopOfAscending(b[column])) || a[column] < b[column]
 				? -1 * sortModifier
 				: (forceTopOfAscending(b[column]) && !forceTopOfAscending(a[column])) ||
-				  a[column] > b[column]
-				? 1 * sortModifier
-				: 0;
+					  a[column] > b[column]
+					? 1 * sortModifier
+					: 0;
 
 		data.sort(sort);
 		filteredData = filteredData.sort(sort);
@@ -308,7 +308,7 @@
 			? dataSubset(
 					data,
 					$props.columns.map((d) => d.id)
-			  )
+				)
 			: data;
 
 	const weightedMean = (data, valueCol, weightCol) => {
@@ -368,8 +368,8 @@
 									{column.title
 										? column.title
 										: formatColumnTitles
-										? safeExtractColumn(column).title
-										: safeExtractColumn(column).id}
+											? safeExtractColumn(column).title
+											: safeExtractColumn(column).id}
 									{#if sortBy.col === column.id}
 										<SortIcon ascending={sortBy.ascending} />
 									{/if}
@@ -432,10 +432,10 @@
 										? column.customColor
 											? `color-mix(in srgb, ${column.customColor} ${
 													Math.max(0, Math.min(1, percentage)) * 100
-											  }%, transparent)`
+												}%, transparent)`
 											: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
 										: // closing bracket needed to close unclosed color string from Column component
-										  ''}
+											''}
 								>
 									{#if column.contentType === 'image' && row[column.id] !== undefined}
 										<img
@@ -467,7 +467,7 @@
 																? getFormatObjectFromString(
 																		column.fmt,
 																		labelSummary.format?.valueType
-																  )
+																	)
 																: labelSummary.format,
 															labelSummary.columnUnitSummary
 														)}
@@ -484,7 +484,7 @@
 															? getFormatObjectFromString(
 																	column.fmt,
 																	columnSummary.format?.valueType
-															  )
+																)
 															: columnSummary.format,
 														columnSummary.columnUnitSummary
 													)}
@@ -508,7 +508,7 @@
 																? getFormatObjectFromString(
 																		column.fmt,
 																		safeExtractColumn(column).format?.valueType
-																  )
+																	)
 																: safeExtractColumn(column).format,
 															safeExtractColumn(column).columnUnitSummary
 														)}
@@ -528,7 +528,7 @@
 												? getFormatObjectFromString(
 														column.fmt,
 														safeExtractColumn(column).format?.valueType
-												  )
+													)
 												: safeExtractColumn(column).format,
 											safeExtractColumn(column).columnUnitSummary
 										)}
@@ -560,8 +560,8 @@
 							{@const format = column.totalFmt
 								? getFormatObjectFromString(column.totalFmt)
 								: column.fmt
-								? getFormatObjectFromString(column.fmt)
-								: columnSummary.format}
+									? getFormatObjectFromString(column.fmt)
+									: columnSummary.format}
 							<td
 								class={safeExtractColumn(column).type}
 								style:text-align={column.align}
@@ -590,7 +590,7 @@
 												columnSummary.columnUnitSummary[column.totalAgg],
 												format,
 												columnSummary.columnUnitSummary
-										  )
+											)
 										: columnSummary.columnUnitSummary[column.totalAgg]}
 								{:else if column.totalAgg === 'weightedMean'}
 									{formatValue(

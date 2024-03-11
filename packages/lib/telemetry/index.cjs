@@ -74,8 +74,8 @@ const logEvent = async (
 		let usageStats = settings
 			? settings.send_anonymous_usage_stats ?? 'yes'
 			: process.env['SEND_ANONYMOUS_USAGE_STATS'] ??
-			  process.env['send_anonymous_usage_stats'] ??
-			  'yes';
+				process.env['send_anonymous_usage_stats'] ??
+				'yes';
 		let repo;
 		let database;
 		let demoDb;
