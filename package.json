@@ -67,21 +67,21 @@
 		"docs": "pnpm --filter ./sites/docs start",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"package:core-components": "pnpm --filter ./packages/core-components package",
+		"package:core-components": "pnpm --filter ./packages/ui/core-components package",
 		"package:evidence": "pnpm --filter ./packages/evidence package",
 		"build:evidence": "pnpm --filter ./packages/evidence build",
-		"build:preprocess": "pnpm --filter ./packages/preprocess build",
-		"build:plugin-connector": "pnpm --filter ./packages/plugin-connector build",
+		"build:preprocess": "pnpm --filter ./packages/lib/preprocess build",
+		"build:plugin-connector": "pnpm --filter ./packages/lib/plugin-connector build",
 		"build:example-project": "pnpm --filter ./sites/example-project build",
-		"build:tailwind": "pnpm --filter ./packages/tailwind build",
-		"build:query-store": "pnpm --filter ./packages/query-store build",
+		"build:tailwind": "pnpm --filter ./packages/ui/tailwind build",
+		"build:query-store": "pnpm --filter ./packages/lib/query-store build",
 		"dev:example-project": "pnpm --filter ./sites/example-project dev",
 		"dev:test-env": "pnpm --filter ./sites/test-env dev",
-		"dev:core-components": "pnpm --filter ./packages/core-components package:watch",
+		"dev:core-components": "pnpm --filter ./packages/ui/core-components package:watch",
 		"sources:example-project": "pnpm --filter ./sites/example-project sources",
 		"sources:test-env": "pnpm --filter ./sites/test-env sources",
 		"preview:test-env": "pnpm --filter ./sites/test-env preview",
-		"test:component-utilities:watch": "pnpm --filter ./packages/component-utilities test:watch"
+		"test:component-utilities:watch": "pnpm --filter ./packages/ui/component-utilities test:watch"
 	},
 	"pnpm": {
 		"overrides": {
