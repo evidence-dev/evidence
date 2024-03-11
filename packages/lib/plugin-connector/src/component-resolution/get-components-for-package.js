@@ -62,8 +62,8 @@ export const getComponentsForPackage = async (rootDir, packagePath, config) => {
 				'main' in validEvidencePackage
 					? path.resolve(packagePath, validEvidencePackage.main)
 					: 'svelte' in validEvidencePackage
-					? path.resolve(packagePath, validEvidencePackage.svelte)
-					: path.resolve(packagePath, validEvidencePackage.exports['.'])
+						? path.resolve(packagePath, validEvidencePackage.svelte)
+						: path.resolve(packagePath, validEvidencePackage.exports['.'])
 			).dir;
 
 			const fileComponents = await fileLoader(mainFilePath);

@@ -20,16 +20,16 @@ export default function generateBoxPlotData(
 			min
 				? data[i][min]
 				: confidenceInterval
-				? data[i][midpoint] - data[i][confidenceInterval]
-				: data[i][minInterval],
+					? data[i][midpoint] - data[i][confidenceInterval]
+					: data[i][minInterval],
 			confidenceInterval ? data[i][midpoint] - data[i][confidenceInterval] : data[i][minInterval],
 			data[i][midpoint],
 			confidenceInterval ? data[i][midpoint] + data[i][confidenceInterval] : data[i][maxInterval],
 			max
 				? data[i][max]
 				: confidenceInterval
-				? data[i][midpoint] + data[i][confidenceInterval]
-				: data[i][maxInterval]
+					? data[i][midpoint] + data[i][confidenceInterval]
+					: data[i][maxInterval]
 		]);
 
 		boxData.names.push(data[i][name]);

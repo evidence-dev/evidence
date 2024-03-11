@@ -185,10 +185,10 @@ export async function buildMultipartParquet(
 					evidenceType === 'number'
 						? 'DOUBLE'
 						: evidenceType === 'boolean'
-						? 'BOOLEAN'
-						: evidenceType === 'date'
-						? 'TIMESTAMP'
-						: 'VARCHAR'
+							? 'BOOLEAN'
+							: evidenceType === 'date'
+								? 'TIMESTAMP'
+								: 'VARCHAR'
 			}))
 		);
 

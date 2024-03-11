@@ -86,7 +86,7 @@
 						? `Maximum: <span style='float:right; margin-left: 15px;'>${formatValue(
 								params[0].data[5],
 								yFormat
-						  )}</span><br/>`
+							)}</span><br/>`
 						: '') +
 					`Interval Top: <span style='float:right; margin-left: 15px;'>${formatValue(
 						params[0].data[4],
@@ -104,7 +104,7 @@
 						? `Minimum: <span style='float:right; margin-left: 15px;'>${formatValue(
 								params[0].data[1],
 								yFormat
-						  )}</span><br/>`
+							)}</span><br/>`
 						: '');
 
 				return output;

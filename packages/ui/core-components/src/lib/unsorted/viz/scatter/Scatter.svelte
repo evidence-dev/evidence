@@ -92,22 +92,22 @@
                             ${formatTitle(
 															series
 														)}: <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.seriesName
-							)}</span><br/>
+															params.seriesName
+														)}</span><br/>
                             ${formatTitle(
 															x,
 															xFormat
 														)}: <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.value[0],
-								xFormat
-							)}</span><br/>
+															params.value[0],
+															xFormat
+														)}</span><br/>
                             ${formatTitle(
 															typeof y === 'object' ? params.seriesName : y,
 															yFormat
 														)}: <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.value[1],
-								yFormat
-							)}</span>`;
+															params.value[1],
+															yFormat
+														)}</span>`;
 						} else {
 							tooltipOutput = `<span id="tooltip" style='font-weight:600'>${formatValue(
 								params.seriesName
@@ -116,16 +116,16 @@
 															x,
 															xFormat
 														)}: <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.value[0],
-								xFormat
-							)}</span><br/>
+															params.value[0],
+															xFormat
+														)}</span><br/>
                             ${formatTitle(
 															typeof y === 'object' ? params.seriesName : y,
 															yFormat
 														)}: <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.value[1],
-								yFormat
-							)}</span>`;
+															params.value[1],
+															yFormat
+														)}</span>`;
 						}
 					} else {
 						if (tooltipTitle) {
@@ -137,16 +137,16 @@
 															x,
 															xFormat
 														)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.value[0],
-								xFormat
-							)}</span><br/>
+															params.value[0],
+															xFormat
+														)}</span><br/>
                             <span style='font-weight: 400;'>${formatTitle(
 															y,
 															yFormat
 														)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.value[1],
-								yFormat
-							)}</span>`;
+															params.value[1],
+															yFormat
+														)}</span>`;
 						} else {
 							tooltipOutput = `<span id="tooltip" style='font-weight: 600;'>${formatTitle(
 								x,
@@ -159,9 +159,9 @@
 															y,
 															yFormat
 														)}:</span> <span style='float:right; margin-left: 15px;'>${formatValue(
-								params.value[1],
-								yFormat
-							)}</span>`;
+															params.value[1],
+															yFormat
+														)}</span>`;
 						}
 					}
 					return tooltipOutput;

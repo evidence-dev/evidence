@@ -174,7 +174,7 @@
 							[yLabelFormat ?? labelFormat ?? yFormat, y2LabelFormat ?? labelFormat ?? y2Format][
 								getYAxisIndex(params.componentIndex, yCount, y2Count)
 							]
-					  );
+						);
 			},
 			position: labelPosition,
 			fontSize: labelSize,
