@@ -67,9 +67,8 @@
 		if (typeof value === 'number' || typeof value === 'bigint' || typeof value === 'boolean')
 			return String(value);
 		if (value instanceof Date) return `'${value.toISOString()}'::TIMESTAMP_MS`;
-		if (Array.isArray(value)) 
-		return value.length === 0 ? `('')` :
-		`(${value.map((x) => jsToDuckDB(x)).join(',')})`;
+		if (Array.isArray(value))
+			return value.length === 0 ? `('')` : `(${value.map((x) => jsToDuckDB(x)).join(',')})`;
 		return JSON.stringify(value);
 	}
 
