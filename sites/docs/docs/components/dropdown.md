@@ -99,6 +99,12 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
     value=column_name
     multiple=true
 />
+
+```sql filtered_query
+select *
+from source_name.table
+where column_name in ${inputs.name_of_dropdown.value}
+```
 ````
 
 ### Filtering a Query
@@ -113,7 +119,7 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 ```sql filtered_query
 select *
 from source_name.table
-where column_name like '${inputs.name_of_dropdown}'
+where column_name like '${inputs.name_of_dropdown.value}'
 ```
 ````
 
