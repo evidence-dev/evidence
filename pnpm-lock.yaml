@@ -372,8 +372,8 @@ importers:
         specifier: ^7.6.6
         version: 7.6.6
       '@storybook/addon-links':
-        specifier: ^7.6.6
-        version: 7.6.6(react@17.0.1)
+        specifier: ^8.0.0
+        version: 8.0.0(react@17.0.1)
       '@storybook/addon-svelte-csf':
         specifier: ^4.0.13
         version: 4.0.13(@storybook/svelte@7.6.6)(@storybook/theming@7.6.6)(@sveltejs/vite-plugin-svelte@2.5.3)(svelte@3.59.2)(vite@4.3.9)
@@ -9018,8 +9018,8 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/addon-links@7.6.6(react@17.0.1):
-    resolution: {integrity: sha512-NEcqOz6zZ1dJnCcVmYdaQTAMAGIb8NFAZGnr9DU0q+t4B1fTaWUgqLtBM5V6YqIrXGSC/oKLpjWUkS5UpswlHA==}
+  /@storybook/addon-links@8.0.0(react@17.0.1):
+    resolution: {integrity: sha512-UjB68EJwSvRsD326KJAzYkuzhCdJmkliiitaqSJ7GUdgGgTkKC7cqH8QmRC0SK5qRi0lN59ARIKPiP5wjsEeOw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     peerDependenciesMeta:
@@ -11531,7 +11531,7 @@ packages:
       esbuild: '>=0.10.0'
     dependencies:
       esbuild: 0.18.20
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /@yarnpkg/fslib@2.10.3:
@@ -11893,7 +11893,7 @@ packages:
     resolution: {integrity: sha512-xcLxITLe2HYa1cnYnwCjkOO1PqUHQpozB8x9AR0OgWN2woOBi5kSDVxKfd0b7sb1hw5qFeJhXm9H1nu3xSfLeQ==}
     engines: {node: '>=10'}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /aria-query@5.1.3:
@@ -12020,7 +12020,7 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /async-limiter@1.0.1:
@@ -20158,9 +20158,6 @@ packages:
     resolution: {integrity: sha512-5rMBpbNE72g6jZvkdR5gS2nyhwIXaJy8i65osOqs/+5b7zgf3eMKgjSsDrv6bhz3gzifsba6MBJiZdBckl+vnA==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.8.3(@parcel/core@2.8.3)(postcss@8.4.35)(typescript@5.2.2)
       '@parcel/core': 2.8.3
@@ -21682,7 +21679,7 @@ packages:
     dependencies:
       react: 17.0.1
       react-style-singleton: 2.2.1(react@17.0.1)
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /react-remove-scroll@2.5.5(react@17.0.1):
@@ -21698,7 +21695,7 @@ packages:
       react: 17.0.1
       react-remove-scroll-bar: 2.3.5(react@17.0.1)
       react-style-singleton: 2.2.1(react@17.0.1)
-      tslib: 2.4.1
+      tslib: 2.6.2
       use-callback-ref: 1.3.1(react@17.0.1)
       use-sidecar: 1.1.2(react@17.0.1)
     dev: true
@@ -21759,7 +21756,7 @@ packages:
       get-nonce: 1.0.1
       invariant: 2.2.4
       react: 17.0.1
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /react-textarea-autosize@8.5.3(react@17.0.1):
@@ -21874,7 +21871,7 @@ packages:
       esprima: 4.0.1
       source-map: 0.6.1
       tiny-invariant: 1.3.3
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /rechoir@0.6.2:
@@ -22913,9 +22910,6 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
@@ -24578,7 +24572,7 @@ packages:
         optional: true
     dependencies:
       react: 17.0.1
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /use-composed-ref@1.3.0(react@17.0.1):
@@ -24637,7 +24631,7 @@ packages:
     dependencies:
       detect-node-es: 1.1.0
       react: 17.0.1
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /util-deprecate@1.0.2:

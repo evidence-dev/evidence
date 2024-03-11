@@ -75,7 +75,7 @@
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@storybook/addon-essentials": "^7.6.12",
 		"@storybook/addon-interactions": "^7.6.6",
-		"@storybook/addon-links": "^7.6.6",
+		"@storybook/addon-links": "^8.0.0",
 		"@storybook/addon-svelte-csf": "^4.0.13",
 		"@storybook/blocks": "^7.6.6",
 		"@storybook/svelte": "^7.6.6",
