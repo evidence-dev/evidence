@@ -73,7 +73,16 @@ and date_part('year', order_datetime) = '${inputs.year.value}'
 
 ## Multi Select
 
-<Dropdown name=multi_select data={categories} value=category multiple title=Categories/>
+<Dropdown 
+    name=multi_select 
+    data={categories} 
+    value=category multiple 
+/>
+
+```sql orders_multi
+select * from needful_things.orders
+where category in ${inputs.multi_select.value}
+```
 
 ## A huge amount of options
 
