@@ -241,7 +241,7 @@ export const getSpecAtPath = (options, optionPath) => {
 	const out = x[OptionGetSpec]
 		? x[OptionGetSpec][
 				finalKey
-		  ] /* Option is a parent, so we need to look at the parent's spec @ this value */
+			] /* Option is a parent, so we need to look at the parent's spec @ this value */
 		: x[finalKey]; /* Option is not a parent, so we can look at it's spec directly */
 
 	return out;
