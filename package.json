@@ -81,7 +81,7 @@
 		"sources:example-project": "pnpm --filter ./sites/example-project sources",
 		"sources:test-env": "pnpm --filter ./sites/test-env sources",
 		"preview:test-env": "pnpm --filter ./sites/test-env preview",
-		"test:component-utilities:watch": "pnpm --filter ./packages/ui/component-utilities test:watch"
+		"test:component-utilities:watch": "pnpm --filter ./packages/lib/component-utilities test:watch"
 	},
 	"pnpm": {
 		"overrides": {
