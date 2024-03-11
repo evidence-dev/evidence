@@ -25,6 +25,7 @@
 	import { browser } from '$app/environment';
 	import debounce from 'lodash.debounce';
 	import { QueryStore } from '@evidence-dev/query-store';
+	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
@@ -214,7 +215,7 @@
 						{:else if $selectedValues.length > 0 && !multiple}
 							{$selectedValues[0].label}
 						{:else}
-							{title}
+							{title ?? formatTitle(name)}
 						{/if}
 						<!-- {$selectedValues.length > 0 && !multiple ? $selectedValues[0].label : title} -->
 						<Icon src={CaretSort} class="ml-2 h-4 w-4" />
