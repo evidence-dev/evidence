@@ -67,8 +67,7 @@
 		if (typeof value === 'number' || typeof value === 'bigint' || typeof value === 'boolean')
 			return String(value);
 		if (value instanceof Date) return `'${value.toISOString()}'::TIMESTAMP_MS`;
-		if (Array.isArray(value))
-			return value.length === 0 ? `('')` : `(${value.map((x) => jsToDuckDB(x)).join(',')})`;
+		if (Array.isArray(value)) return `[${value.map((x) => jsToDuckDB(x)).join(', ')}]`;
 		return JSON.stringify(value);
 	}
 
@@ -76,7 +75,10 @@
 		let values;
 		if (multiple) {
 			values = $selectedValues.map((x) => x.value);
-			values.toString = () => jsToDuckDB(values);
+			values.toString = () =>
+				values.length === 0
+					? `(select null where 0)`
+					: `(${values.map((x) => jsToDuckDB(x)).join(', ')})`;
 		} else {
 			values = $selectedValues[0]?.value ?? null;
 			// the default `toString` method for Dates aren't good for duckdb
