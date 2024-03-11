@@ -29,3 +29,4 @@ yarn.lock
 
 **/node_modules
 **/**/node_modules
+packages/lib/sdk/types
