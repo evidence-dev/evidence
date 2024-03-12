@@ -13,5 +13,25 @@ const transformError = (e) => {
 	}
 };
 
-/** @type {import("@sveltejs/kit").HandleClientError } */
-export const handleError = (e) => transformError(e.error);
+/** @type {import('@sveltejs/kit').Handle} */
+export async function handle({ event, resolve }) {
+	const { url, request, locals } = event;
+
+	// check for Referer header to know where the user is navigating from
+	const referer = request.headers.get('Referer');
+	if (referer) {
+		const urlReferer = new URL(referer);
+		if (urlReferer.origin === url.origin) {
+			locals.internalReferer = urlReferer;
+		}
+	}
+
+	console.log(locals.internalReferer);
+
+	await resolve(event, {
+		transformPageChunk: ({ html }) => html.replace('%splash-skip%', Boolean(locals.internalReferer))
+	});
+
+	const response = await resolve(event);
+	return response;
+}
