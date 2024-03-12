@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { QueryLoad } from '../../../atoms/query-load';
+	import { QueryLoad } from '$lib';
 	import Value from './_Value.svelte';
 	import EmptyChart from './EmptyChart.svelte';
 

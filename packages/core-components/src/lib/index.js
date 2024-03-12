@@ -5,6 +5,7 @@ export { default as Alert } from './atoms/alert/Alert.svelte';
 export { default as Button } from './atoms/button/Button.svelte';
 export { default as Flowchart } from './atoms/flowchart/Flowchart.svelte';
 export { default as Grid } from './atoms/grid/Grid.svelte';
+export { default as Hint } from './atoms/hint/Hint.svelte';
 export { default as TextInput } from './atoms/inputs/text/TextInput.svelte';
 export { default as Dropdown } from './atoms/inputs/dropdown/Dropdown.svelte';
 export { default as DropdownOption } from './atoms/inputs/dropdown/DropdownOption.svelte';

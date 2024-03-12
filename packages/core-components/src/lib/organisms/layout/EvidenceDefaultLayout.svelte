@@ -4,7 +4,7 @@
 	import { LoadingSkeleton, QueryStatus } from './misc';
 	import { Sidebar } from './sidebar';
 	import { Header } from './header';
-	import { ToastWrapper } from '../../molecules/toast';
+	import { ToastWrapper } from '$lib';
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import TableOfContents from './tableofcontents/TableOfContents.svelte';
 	import ErrorOverlay from './ErrorOverlay.svelte';

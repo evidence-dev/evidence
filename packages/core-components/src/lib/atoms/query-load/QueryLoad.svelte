@@ -1,6 +1,6 @@
 <script>
 	import { onDestroy } from 'svelte';
-	import { Skeleton } from '../skeletons';
+	import { Skeleton } from '$lib';
 	import isEmptyDataset from '@evidence-dev/component-utilities/isEmptyDataset';
 
 	/** @type {import("@evidence-dev/query-store).QueryStore | unknown}*/

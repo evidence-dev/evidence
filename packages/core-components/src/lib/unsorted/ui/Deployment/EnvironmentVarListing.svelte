@@ -1,13 +1,9 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
-	import { Accordion, AccordionItem } from '$lib/atoms/accordion';
+	import { Accordion, AccordionItem } from '$lib';
 	import VariableCopy from './VariableCopy.svelte';
 
 	import { toasts } from '@evidence-dev/component-utilities/stores';
-	import { Button } from '$lib/atoms/button';
+	import { Button } from '$lib';
 	import { Clipboard } from '@evidence-dev/component-utilities/icons';
 
 	/** @type {Array<{ environmentVariables: Record<string,string>}>} */

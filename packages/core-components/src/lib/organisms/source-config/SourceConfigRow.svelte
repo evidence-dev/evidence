@@ -3,11 +3,10 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import * as simpleIcons from '@steeze-ui/simple-icons';
-	import { Button } from '../../atoms/button';
+	import { Button, Hint } from '$lib';
 
 	import { Database, ExclamationCircle, Pencil } from '@steeze-ui/tabler-icons';
 	import SourceConfigForm from './SourceConfigForm.svelte';
-	import { Hint } from '../../atoms/hint';
 
 	export let source;
 	export let sources;

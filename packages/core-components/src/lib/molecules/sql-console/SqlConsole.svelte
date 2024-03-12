@@ -9,7 +9,7 @@
 	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
 
-	import { Button } from '../../atoms/button';
+	import { Button } from '$lib';
 	import DataTable from '../../unsorted/viz/table/DataTable.svelte';
 
 	import { Eye, EyeOff, PlayerPlay } from '@evidence-dev/component-utilities/icons';

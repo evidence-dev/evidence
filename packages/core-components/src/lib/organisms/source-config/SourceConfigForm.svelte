@@ -3,7 +3,7 @@
 	import { enhance } from '$app/forms';
 	import { DeviceFloppy, Plug } from '@evidence-dev/component-utilities/icons';
 
-	import { Button } from '../../atoms/button';
+	import { Button } from '$lib';
 	import SourceNameField, { validateName } from './atoms/SourceNameField.svelte';
 	import SourceConfigFormSection from './SourceConfigFormSection.svelte';
 

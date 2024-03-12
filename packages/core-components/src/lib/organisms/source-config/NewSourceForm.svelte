@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { slide } from 'svelte/transition';
-	import { Button } from '../../atoms/button';
+	import { Button } from '$lib';
 
 	import { DeviceFloppy } from '@evidence-dev/component-utilities/icons';
 	import SourceNameField, { validateName } from './atoms/SourceNameField.svelte';

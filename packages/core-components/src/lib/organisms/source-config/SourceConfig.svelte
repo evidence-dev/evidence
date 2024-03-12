@@ -2,7 +2,7 @@
 	import NewSourceForm from './NewSourceForm.svelte';
 	import SourceConfigRow from './SourceConfigRow.svelte';
 
-	import { Button } from '../../atoms/button';
+	import { Button } from '$lib';
 	import { FolderPlus } from '@evidence-dev/component-utilities/icons';
 
 	// TODO: figure out types here
