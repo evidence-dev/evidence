@@ -54,13 +54,13 @@
 	</p>
 {:else}
 	<Accordion>
-		<AccordionItem small>
-			<div slot="title" class="w-full flex justify-between items-center">
-				All Environment Variables
+		<AccordionItem title="All Environment Variables">
+			<div class="w-full flex justify-end items-center my-1 mb-2">
 				<Button on:click={copyVars} type="button" outline icon={Clipboard} size="sm">
 					Copy All
 				</Button>
 			</div>
+
 			<div class="titles">
 				<span class="title">Key</span><span class="title">Value</span>
 			</div>
@@ -68,10 +68,10 @@
 				{#each Object.entries(datasource.environmentVariables) as [key, value]}
 					<div class="environment-variable">
 						<div class="var-name">
-							<VariableCopy small text={key} />
+							<VariableCopy text={key} />
 						</div>
 						<div class="var-value">
-							<VariableCopy small text={value} hideText={true} />
+							<VariableCopy text={value} hideText={true} />
 						</div>
 					</div>
 				{/each}
