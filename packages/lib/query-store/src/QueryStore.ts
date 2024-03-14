@@ -325,7 +325,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			}
 		);
 
-		if (opts.noResolve) {
+		if (opts.noResolve && !opts.initialData) {
 			this.#dataLoading = true;
 			this.#metaLoading = true;
 			this.#lengthLoading = true;
