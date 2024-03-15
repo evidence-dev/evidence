@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 3.5.2
+
+### Patch Changes
+
+- b50ec639: Adjusts multi-dropdowns to return ARRAY rather than LIST types
+- 9a9ace8f: fix features/a regressions involving initialData and Dropdowns
+- dcbc0580: Maxwidth option to layout, bug fixes
+- Updated dependencies [9a9ace8f]
+  - @evidence-dev/query-store@2.0.6
+  - @evidence-dev/component-utilities@2.4.2
+
 ## 3.5.1
 
 ### Patch Changes
