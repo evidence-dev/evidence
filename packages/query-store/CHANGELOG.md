@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.0.6
+
+### Patch Changes
+
+- 9a9ace8f: fix features/a regressions involving initialData and Dropdowns
+
 ## 2.0.5
 
 ### Patch Changes
