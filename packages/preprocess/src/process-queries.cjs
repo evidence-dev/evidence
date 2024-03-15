@@ -344,6 +344,7 @@ const processQueries = (componentDevelopmentMode) => {
 		markup({ content, filename }) {
 			if (filename.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
+
 				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
 					acc[q.id] = q;
 					return acc;
@@ -362,6 +363,7 @@ const processQueries = (componentDevelopmentMode) => {
 				const frontmatter = containsFrontmatter(content);
 				if (frontmatter) {
 					const contentWithoutFrontmatter = content.substring(frontmatter.length + 6);
+
 					const output =
 						`---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter;
 					return {
@@ -376,8 +378,9 @@ const processQueries = (componentDevelopmentMode) => {
 		},
 		script({ content, filename, attributes }) {
 			if (filename.endsWith('.md')) {
-				if (attributes.context != 'module') {
+				if (attributes.context !== 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
+
 					return {
 						code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
 					};
