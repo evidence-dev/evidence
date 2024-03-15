@@ -32,7 +32,7 @@
 		"url-loader": "^4.1.1"
 	},
 	"devDependencies": {
-		"typescript": "4.9.5",
+		"typescript": "5.4.2",
 		"webpack": "^5.76.1"
 	},
 	"browserslist": {

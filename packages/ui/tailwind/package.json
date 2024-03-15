@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"parcel": "^2.8.3",
-		"typescript": "^5.0.4"
+		"typescript": "5.4.2"
 	},
 	"dependencies": {
 		"tailwindcss": "^3.3.1"

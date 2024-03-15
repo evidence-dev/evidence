@@ -16,8 +16,7 @@
 	"author": "The Evidence Engineering Team",
 	"license": "MIT",
 	"devDependencies": {
-		"svelte": "3.55.0",
-		"typescript": "^5.2.2",
+		"typescript": "5.4.2",
 		"vitest": "^0.34.1"
 	},
 	"dependencies": {
