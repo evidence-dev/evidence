@@ -9,7 +9,6 @@
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
-	import SortIcon from '../../ui/SortIcon.svelte';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import Fuse from 'fuse.js';
 
@@ -17,7 +16,9 @@
 	import CodeBlock from '../../ui/CodeBlock.svelte';
 	import { safeExtractColumn, weightedMean, median } from './datatable.js';
 	import TableRow from './TableRow.svelte';
-	import TotalsRow from './TotalsRow.svelte';
+	import TotalRow from './TotalRow.svelte';
+	import SubtotalRow from './SubtotalRow.svelte';
+	import TableHeader from './TableHeader.svelte';
 	import GroupRow from './GroupRow.svelte';
 	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 
@@ -34,19 +35,28 @@
 	export let groupBy;
 	export let summarizeGroups = true;
 	$: summarizeGroups = summarizeGroups === 'true' || summarizeGroups === true;
-	export let groupsOpen = false; // starting toggle for groups - open or closed
+	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
 	export let groupBackgroundColor = undefined;
+	export let groupNamePosition = 'middle' // middle (default) | top | bottom
 
+	export let groupType = 'accordion'; // accordion | side
+
+	export let subtotals = false;
+	$: subtotals = subtotals === 'true' || subtotals === true;
+
+	export let subtotalBackgroundColor = undefined;
+	export let subtotalFontColor = undefined;
+	
 	let groupToggleStates = {};
-
-	let paginated;
-	$: data, rows, (paginated = data.length > rows && !groupBy);
-
+	
 	function handleToggle({ detail }) {
 		const { groupName } = detail;
 		groupToggleStates[groupName] = !groupToggleStates[groupName];
 	}
+
+	let paginated;
+	$: paginated = data.length > rows && !groupBy;
 
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
@@ -74,6 +84,7 @@
 	$: totalRow = totalRow === 'true' || totalRow === true;
 
 	export let totalBackgroundColor = undefined;
+	export let totalFontColor = undefined;
 
 	// Row Links:
 	export let link = undefined;
@@ -125,25 +136,9 @@
 	// Determine the final column order based on the first object and priority columns
 	const finalColumnOrder = getFinalColumnOrder(data[0], priorityColumns);
 
-	// Function to reorder the objects based on a given column order
-	const reorderObjects = (array, columnOrder) => {
-		return array.map((obj) => {
-			const orderedObj = {};
-			columnOrder.forEach((key) => {
-				if (Object.hasOwn(obj, key)) {
-					orderedObj[key] = obj[key];
-				}
-			});
-			return orderedObj;
-		});
-	};
-
-	// Assuming finalColumnOrder and originalArray have been defined previously
-	// Reorder the original array based on the final column order
-	const reorderedArray = reorderObjects(data, finalColumnOrder);
-
-	// Update the original array reference if necessary
-	data = reorderedArray;
+	props.update((d) => {
+		return { ...d, finalColumnOrder };
+	});
 
 	$: try {
 		error = undefined;
@@ -220,25 +215,11 @@
 	// Reactively update Fuse when `data` or `columnSummary` changes
 	$: {
 		updateFuse();
-		// Optionally, you can run the search again here if `searchValue` is not empty
 		if (searchValue !== '') {
 			runSearch(searchValue);
 		}
 	}
 
-	// $: fuse = new Fuse(data, {
-	// 	getFn: (row, [path]) => {
-	// 		const summary = columnSummary?.find((d) => d.id === path) ?? {};
-	// 		return summary.type === 'date' &&
-	// 			row[summary.id] != null &&
-	// 			row[summary.id] instanceof Date &&
-	// 			!isNaN(row[summary.id].getTime())
-	// 			? row[summary.id].toISOString()
-	// 			: row[summary.id]?.toString() ?? '';
-	// 	},
-	// 	keys: columnSummary?.map((d) => d.id) ?? [],
-	// 	threshold: 0.4
-	// });
 	$: runSearch = (searchValue) => {
 		if (searchValue !== '') {
 			// Reset pagination to first page:
@@ -294,6 +275,32 @@
 			});
 		}
 	};
+
+	let sortedGroupNames;
+	$: if (groupBy && sortBy.col) {
+		// Sorting groups based on aggregated values or group names
+		sortedGroupNames = Object.entries(groupRowData)
+		.sort((a, b) => {
+			const valA = a[1][sortBy.col], valB = b[1][sortBy.col];
+			// Use the existing sort logic but apply it to groupRowData's values
+			if ((valA === undefined || valA === null || isNaN(valA)) && (valB !== undefined && valB !== null && !isNaN(valB))) {
+			return -1 * (sortBy.ascending ? 1 : -1);
+			}
+			if ((valB === undefined || valB === null || isNaN(valB)) && (valA !== undefined && valA !== null && !isNaN(valA))) {
+			return 1 * (sortBy.ascending ? 1 : -1);
+			}
+			if (valA < valB) {
+			return -1 * (sortBy.ascending ? 1 : -1);
+			} else if (valA > valB) {
+			return 1 * (sortBy.ascending ? 1 : -1);
+			}
+			return 0;
+		})
+		.map(entry => entry[0]); // Extract sorted group names
+	} else {
+    // Default to alphabetical order of group names or another criterion when not sorting by a specific column
+    sortedGroupNames = Object.keys(groupedData).sort();
+  }
 
 	// Reset sort condition when data object is changed
 	$: data, (sortBy = { col: null, ascending: null });
@@ -361,7 +368,7 @@
 	// ---------------------------------------------------------------------------------------
 
 	let groupedData = {};
-	let groupRowData = {};
+	let groupRowData = [];
 
 	$: {
 		groupedData = data.reduce((acc, row) => {
@@ -442,7 +449,7 @@
 
 {#if error === undefined}
 	<slot />
-
+	
 	{#if link}
 		<InvisibleLinks {data} {link} />
 	{/if}
@@ -465,66 +472,52 @@
 
 		<div class="container" style:background-color={backgroundColor}>
 			<table>
-				<thead>
-					<tr>
-						{#if rowNumbers}
-							<th class="index w-[2%]" style:background-color={headerColor} />
-						{/if}
-						{#if $props.columns.length > 0}
-							{#each $props.columns as column}
-								<th
-									class={safeExtractColumn(column, columnSummary).type}
-									style:text-align={column.align}
-									style:color={headerFontColor}
-									style:background-color={headerColor}
-									style:cursor={sortable ? 'pointer' : 'auto'}
-									on:click={sortable ? sort(column.id) : ''}
-								>
-									{column.title
-										? column.title
-										: formatColumnTitles
-										? safeExtractColumn(column, columnSummary).title
-										: safeExtractColumn(column, columnSummary).id}
-									{#if sortBy.col === column.id}
-										<SortIcon ascending={sortBy.ascending} />
-									{/if}
-								</th>
-							{/each}
-						{:else}
-							{#each columnSummary.filter((d) => d.show === true) as column}
-								<th
-									class={column.type}
-									style:color={headerFontColor}
-									style:background-color={headerColor}
-									style:cursor={sortable ? 'pointer' : 'auto'}
-									on:click={sortable ? sort(column.id) : ''}
-								>
-									<span class="col-header">
-										{formatColumnTitles ? column.title : column.id}
-									</span>
-									{#if sortBy.col === column.id}
-										<SortIcon ascending={sortBy.ascending} />
-									{/if}
-								</th>
-							{/each}
-						{/if}
-					</tr>
-				</thead>
+				<TableHeader
+					{rowNumbers}
+					{groupType}
+					{headerColor}
+					{headerFontColor}
+					{finalColumnOrder}
+					{columnSummary}
+					{sortable}
+					{sort}
+					{formatColumnTitles}
+					{sortBy}
+				/>
 
 				{#if groupBy && groupedData && searchValue === ''}
-					{#each Object.entries(groupedData) as [groupName, rows]}
-						<GroupRow
-							{groupName}
-							currentGroup={groupRowData[groupName]}
-							toggled={groupToggleStates[groupName]}
-							on:toggle={handleToggle}
-							{columnSummary}
-							backgroundColor={groupBackgroundColor}
-							{rowNumbers}
-						/>
-						{#if groupToggleStates[groupName]}
+					{#each sortedGroupNames as groupName}
+						{#if groupType === 'accordion'}
+							<GroupRow
+								{groupName}
+								currentGroupData={groupedData[groupName]}
+								toggled={groupToggleStates[groupName]}
+								on:toggle={handleToggle}
+								{columnSummary}
+								backgroundColor={groupBackgroundColor}
+								{rowNumbers}
+								{subtotals}
+							/>
+							{#if groupToggleStates[groupName]}
+								<TableRow
+									displayedData={groupedData[groupName]}
+									{groupType}
+									{rowShading}
+									{link}
+									{rowNumbers}
+									{rowLines}
+									{index}
+									{columnSummary}
+									grouped={true}
+									groupColumn={groupBy}
+								/>
+							{/if}
+						{:else if groupType === 'side'}
 							<TableRow
-								displayedData={rows}
+								groupColumn={groupBy}
+								{groupType}
+								rowSpan={groupedData[groupName].length}
+								displayedData={groupedData[groupName]}
 								{rowShading}
 								{link}
 								{rowNumbers}
@@ -532,7 +525,20 @@
 								{index}
 								{columnSummary}
 								grouped={true}
-							/>
+								{groupNamePosition}
+							/>						
+							{#if subtotals}
+								<SubtotalRow
+									{groupName}
+									currentGroupData={groupedData[groupName]}
+									{columnSummary}
+									backgroundColor={subtotalBackgroundColor}
+									fontColor={subtotalFontColor}
+									{rowNumbers}
+									{groupType}
+									{groupBy}
+								/>							
+							{/if}			
 						{/if}
 					{/each}
 				{:else}
@@ -548,7 +554,7 @@
 				{/if}
 
 				{#if totalRow && searchValue === ''}
-					<TotalsRow {data} {rowNumbers} {columnSummary} backgroundColor={totalBackgroundColor} />
+					<TotalRow {data} {rowNumbers} {columnSummary} backgroundColor={totalBackgroundColor} fontColor={totalFontColor} {groupType} />
 				{/if}
 			</table>
 		</div>
@@ -699,53 +705,7 @@
 		font-variant-numeric: tabular-nums;
 	}
 
-	th {
-		padding: 2px 8px;
-		white-space: nowrap;
-		overflow: hidden;
-	}
-
-	th:first-child {
-		padding-left: 4px;
-	}
-	th {
-		border-bottom: 1px solid var(--grey-600);
-	}
-
-	.row-lines {
-		border-bottom: thin solid var(--grey-200);
-	}
-
-	.shaded-row {
-		background-color: var(--grey-100);
-	}
-
-	.string {
-		text-align: left;
-	}
-
-	.date {
-		text-align: left;
-	}
-
-	.number {
-		text-align: right;
-	}
-
-	.boolean {
-		text-align: left;
-	}
-
-	.sort-icon {
-		width: 12px;
-		height: 12px;
-		vertical-align: middle;
-	}
-
-	.icon-container {
-		display: inline-flex;
-		align-items: center;
-	}
+	
 
 	.page-changer {
 		padding: 0;
@@ -754,12 +714,6 @@
 		width: 1.1em;
 	}
 
-	.index {
-		color: var(--grey-300);
-		text-align: left;
-		max-width: -moz-min-content;
-		max-width: min-content;
-	}
 
 	.pagination {
 		font-size: 12px;
@@ -783,11 +737,6 @@
 		justify-content: flex-start;
 		align-items: center;
 		gap: 3px;
-	}
-
-	.selected {
-		background: var(--grey-200);
-		border-radius: 4px;
 	}
 
 	.page-changer {
@@ -897,21 +846,6 @@
 		color: var(--grey-400);
 	}
 
-	th.type-indicator {
-		color: var(--grey-400);
-		font-weight: normal;
-		font-style: italic;
-	}
-
-	.row-link {
-		cursor: pointer;
-	}
-
-	.row-link:hover {
-		--tw-bg-opacity: 1;
-		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
-	}
-
 	.noresults {
 		display: none;
 		color: var(--grey-400);
@@ -968,5 +902,4 @@
 		.print-page-count {
 			display: inline;
 		}
-	}
-</style>
+	}</style>

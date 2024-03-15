@@ -62,6 +62,9 @@
 	export let totalFmt = undefined;
 	export let weightCol = undefined; // column to use as the weights for weighted average
 
+	// Subtotals:
+	export let subtotalFmt = undefined;
+
 	// Color Scale:
 	export let colorMax = undefined;
 	export let colorMin = undefined;
@@ -102,6 +105,7 @@
 		fmt: fmt,
 		totalAgg: totalAgg,
 		totalFmt: totalFmt,
+		subtotalFmt: subtotalFmt,
 		weightCol: weightCol,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
