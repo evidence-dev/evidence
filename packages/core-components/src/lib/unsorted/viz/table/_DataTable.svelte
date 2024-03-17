@@ -14,7 +14,7 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
-	import { safeExtractColumn, weightedMean, median } from './datatable.js';
+	import { safeExtractColumn, aggregateColumn } from './datatable.js';
 	import TableRow from './TableRow.svelte';
 	import TotalRow from './TotalRow.svelte';
 	import SubtotalRow from './SubtotalRow.svelte';
@@ -32,20 +32,27 @@
 	export let rows = 10; // number of rows to show
 	$: rows = Number.parseInt(rows);
 
+	export let rowNumbers = false;
+	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
+
 	export let groupBy;
 	export let summarizeGroups = true;
 	$: summarizeGroups = summarizeGroups === 'true' || summarizeGroups === true;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
-	export let groupBackgroundColor = undefined;
+	export let groupRowColor = undefined;
 	export let groupNamePosition = 'middle' // middle (default) | top | bottom
 
 	export let groupType = 'accordion'; // accordion | side
 
+	if(groupType === 'side'){
+		rowNumbers = false; // turn off row numbers
+	}
+
 	export let subtotals = false;
 	$: subtotals = subtotals === 'true' || subtotals === true;
 
-	export let subtotalBackgroundColor = undefined;
+	export let subtotalRowColor = undefined;
 	export let subtotalFontColor = undefined;
 	
 	let groupToggleStates = {};
@@ -57,9 +64,6 @@
 
 	let paginated;
 	$: paginated = data.length > rows && !groupBy;
-
-	export let rowNumbers = false;
-	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
 	let hovering = false;
 
@@ -83,7 +87,7 @@
 	export let totalRow = false;
 	$: totalRow = totalRow === 'true' || totalRow === true;
 
-	export let totalBackgroundColor = undefined;
+	export let totalRowColor = undefined;
 	export let totalFontColor = undefined;
 
 	// Row Links:
@@ -393,44 +397,7 @@
 				const totalAgg = columnDef.totalAgg;
 				const weightCol = columnDef.weightCol;
 				const rows = groupedData[groupName];
-				if (
-					colType !== 'number' &&
-					['sum', 'min', 'max', 'mean', 'weightedMean', 'median', undefined].includes(totalAgg)
-				) {
-					// If attempting to use a numeric agg on a non-numeric column, return dash
-					acc[groupName][column] = '-';
-				} else if (totalAgg === 'sum' || totalAgg === undefined) {
-					// Calculate sum
-					acc[groupName][column] = rows.reduce((sum, row) => sum + (row[column] || 0), 0);
-				} else if (totalAgg === 'min') {
-					// Calculate min
-					acc[groupName][column] = Math.min(
-						...rows.map((row) => row[column]).filter((val) => val !== undefined)
-					);
-				} else if (totalAgg === 'max') {
-					// Calculate min
-					acc[groupName][column] = Math.max(
-						...rows.map((row) => row[column]).filter((val) => val !== undefined)
-					);
-				} else if (totalAgg === 'mean') {
-					// Calculate min
-					acc[groupName][column] =
-						rows.reduce((sum, row) => sum + (row[column] || 0), 0) / rows.length;
-				} else if (totalAgg === 'count') {
-					// Calculate min
-					acc[groupName][column] = rows.length;
-				} else if (totalAgg === 'countDistinct') {
-					// Calculate countDistinct
-					acc[groupName][column] = new Set(rows.map((row) => row[column])).size;
-				} else if (totalAgg === 'weightedMean') {
-					// Calculate weightedMean
-					acc[groupName][column] = weightedMean(rows, column, weightCol);
-				} else if (totalAgg === 'median') {
-					// Calculate median
-					acc[groupName][column] = median(rows, column);
-				} else {
-					acc[groupName][column] = totalAgg;
-				}
+				acc[groupName][column] = aggregateColumn(rows, column, totalAgg, colType, weightCol);
 			});
 
 			return acc;
@@ -494,7 +461,7 @@
 								toggled={groupToggleStates[groupName]}
 								on:toggle={handleToggle}
 								{columnSummary}
-								backgroundColor={groupBackgroundColor}
+								rowColor={groupRowColor}
 								{rowNumbers}
 								{subtotals}
 							/>
@@ -532,7 +499,7 @@
 									{groupName}
 									currentGroupData={groupedData[groupName]}
 									{columnSummary}
-									backgroundColor={subtotalBackgroundColor}
+									rowColor={subtotalRowColor}
 									fontColor={subtotalFontColor}
 									{rowNumbers}
 									{groupType}
@@ -554,7 +521,7 @@
 				{/if}
 
 				{#if totalRow && searchValue === ''}
-					<TotalRow {data} {rowNumbers} {columnSummary} backgroundColor={totalBackgroundColor} fontColor={totalFontColor} {groupType} />
+					<TotalRow {data} {rowNumbers} {columnSummary} rowColor={totalRowColor} fontColor={totalFontColor} {groupType} />
 				{/if}
 			</table>
 		</div>
@@ -705,15 +672,12 @@
 		font-variant-numeric: tabular-nums;
 	}
 
-	
-
 	.page-changer {
 		padding: 0;
 		color: var(--grey-400);
 		height: 1.1em;
 		width: 1.1em;
 	}
-
 
 	.pagination {
 		font-size: 12px;

@@ -10,16 +10,17 @@ union all
 select 'US' as country, 'B' as product, 2030 as sales, 1220 as margin, 0.066 as growth
 ```
 
+here is a delta in text: <Delta value=150000 fmt=usd0k/> and text continuing <Value data={simple} column=sales fmt=usd/> <Delta data={simple} column=sales fmt=usd/>
 
-<DataTable data={simple} totalRow=true summarizeGroups=true search=true groupsOpen=true groupBy=product rowNumbers=false > 
- 	<Column id=country totalAgg="Total"/> 
+<DataTable data={simple} totalRow=true search=true groupsOpen=true groupBy=country groupType=side subtotals=true rowNumbers=true rowShading=false > 
+ 	<Column id=country totalAgg=500/> 
 	<Column id=product/> 
-	<Column id=sales fmt=usd/> 
-	<Column id=margin fmt=eur totalAgg=median weightCol=sales/> 
-	<Column id=growth fmt=pct contentType=delta totalAgg=weightedMean weightCol=sales/>
+	<Column id=sales fmt=usd totalAgg=800 contentType=colorscale /> 
+	<Column id=margin fmt=eur totalAgg=median weightCol=sales contentType=delta downIsGood=true/> 
+	<Column id=growth fmt=pct contentType=delta downIsGood=false totalAgg=weightedMean weightCol=sales neutralMax=0.06 neutralMin=-0.06/>
  </DataTable>
 
- <DataTable data={simple} groupBy=product totalRow=true summarizeGroups=true rowNumbers=true/> 
+ <!-- <DataTable data={simple} groupBy=product totalRow=true summarizeGroups=true rowNumbers=true/>  -->
 
 
 
@@ -28,4 +29,4 @@ select category, item, count(1) as orders, sum(sales) as sales from needful_thin
 group by all
 ```
 
-<DataTable data={orders} groupBy=category rows=3/>
+<!-- <DataTable data={orders} groupBy=category rows=3/> -->

@@ -3,34 +3,38 @@
 </script>
 
 <script>
-	import { formatValue } from '@evidence-dev/component-utilities/formatting';
+	import { QueryLoad } from '../../../atoms/query-load/index.js';
+	import Delta from './_Delta.svelte';
+	import EmptyChart from '../core/EmptyChart.svelte';
 
-	export let value = undefined; // row[column.id]
-	export let downIsGood = false; // column.downIsGood
-	export let format;
-	// export let fmt = 'num'; // column.fmt
-	// export let columnFormat; // safeExtractColumn(column, columnSummary).format
-	// export let columnValueType = typeof value; // safeExtractColumn(column, columnSummary).format?.valueType
-	export let columnUnitSummary;
-	export let showValue = true; // column.showValue
-	export let deltaSymbol = true; // column.deltaSymbol
-	export let align = 'right'; // column.align
+	export let data;
+
+	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
+
+	let isInitial = data?.hash === initialHash;
+	$: isInitial = data?.hash === initialHash;
+
+	/** @type {"pass" | "warn" | "error"}*/
+	export let emptySet = undefined;
+
+	/** @type {string}*/
+	export let emptyMessage = undefined;
+
+	let chartType = 'Delta';
+
+	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
+	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
 </script>
 
-<span
-	class="m-0 text-xs font-medium font-ui inline-block"
-	style="color: {(value >= 0 && !downIsGood) || (value < 0 && downIsGood)
-		? 'var(--green-700)'
-		: 'var(--red-700)'}"
->
-	<span style:text-align={align ?? 'right'}>
-		{#if showValue}
-			<span>
-				{formatValue(value, format, columnUnitSummary)}
-			</span>
-			{#if deltaSymbol}
-				<span class="font-[system-ui]">{@html value >= 0 ? '&#9650;' : '&#9660;'}</span>
-			{/if}
+<!-- Pass all the props through-->
+<QueryLoad {data} let:loaded>
+	<span slot="empty">
+		{#if !spreadProps.placeholder}
+			<EmptyChart {emptyMessage} {emptySet} {chartType} {isInitial} />
 		{/if}
 	</span>
-</span>
+	<p slot="skeleton" class="text-gray-500">Loading...</p>
+	<Delta {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}>
+		<slot />
+	</Delta>
+</QueryLoad>

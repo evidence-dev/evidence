@@ -4,6 +4,8 @@
 		formatValue,
 		getFormatObjectFromString
 	} from '@evidence-dev/component-utilities/formatting';
+	import TableCell from './TableCell.svelte';
+	import Delta from './Delta.svelte';
 	import { getContext } from 'svelte';
 	import { propKey } from '@evidence-dev/component-utilities/chartContext';
 	const props = getContext(propKey);
@@ -11,15 +13,14 @@
 	export let data;
 	export let rowNumbers;
 	export let columnSummary;
-	export let backgroundColor = undefined;
+	export let rowColor = undefined;
 	export let fontColor = undefined;
 	export let groupType;
 </script>
 
-<!-- Totals row -->
-<tr class="font-semibold border-t border-gray-600" style:background-color={backgroundColor} style:color={fontColor}>
+<tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
 	{#if rowNumbers && groupType !== 'side'}
-		<td class="index w-[2%]" />
+		<TableCell class="index w-[2%]" topBorder='border-t border-gray-600'/>
 	{/if}
 
 	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) : columnSummary.filter((d) => d.show === true).sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column}
@@ -29,86 +30,42 @@
 			: column.fmt
 			? getFormatObjectFromString(column.fmt)
 			: colColumnSummary.format}
-		<td
-			class="{colColumnSummary.type} font-semibold border-t border-gray-600"
-			style:text-align={column.align}
-			style:height={column.height}
-			style:width={column.width}
-			style:white-space={column.wrap ? 'normal' : 'nowrap'}
+		{@const totalAgg = column.totalAgg ?? 'sum'}
+		<TableCell
+			dataType={colColumnSummary.type}
+			align={column.align}
+			height={column.height}
+			width={column.width}
+			wrap={column.wrap}
+			topBorder='border-t border-gray-600'
 		>
-			{#if typeof column.totalAgg === 'undefined'}
-				<!-- if totalAgg not specified -->
-				{formatValue(
-					colColumnSummary.columnUnitSummary.sum,
-					format,
-					colColumnSummary.columnUnitSummary
-				)}
-			{:else if ['sum', 'mean', 'median', 'min', 'max'].includes(column.totalAgg)}
-				<!-- using a predefined aggregation -->
-				{formatValue(
-					colColumnSummary.columnUnitSummary[column.totalAgg],
-					format,
-					colColumnSummary.columnUnitSummary
-				)}
-			{:else if ['count', 'countDistinct'].includes(column.totalAgg)}
-				<!-- using a predefined aggregation -->
-				{column.totalFmt
-					? formatValue(
-							colColumnSummary.columnUnitSummary[column.totalAgg],
-							format,
-							colColumnSummary.columnUnitSummary
-					  )
-					: colColumnSummary.columnUnitSummary[column.totalAgg]}
-			{:else if column.totalAgg === 'weightedMean'}
-				{formatValue(
-					weightedMean(data, column.id, column.weightCol),
-					format,
-					colColumnSummary.columnUnitSummary
-				)}
+			{#if ['sum', 'mean', 'weightedMean', 'median', 'min', 'max','count','countDistinct'].includes(totalAgg)}
+				{#if column.contentType === 'delta'}
+				<Delta
+						value={totalAgg === 'weightedMean' ? weightedMean(data, column.id, column.weightCol) : colColumnSummary.columnUnitSummary[totalAgg]}
+						downIsGood={column.downIsGood}
+						format_object={format}
+						columnUnitSummary={colColumnSummary.columnUnitSummary}
+						showValue={column.showValue}
+						deltaSymbol={column.deltaSymbol}
+						align={column.align}
+						fontClass="font-semibold text-[9.25pt]"
+						neutralMin={column.neutralMin}
+						neutralMax={column.neutralMax}
+					/>
+				{:else}
+					{formatValue(
+						totalAgg === 'weightedMean' ? weightedMean(data, column.id, column.weightCol) : colColumnSummary.columnUnitSummary[totalAgg],
+						format,
+						colColumnSummary.columnUnitSummary
+					)}
+				{/if}
 			{:else}
 				<!-- passing in anything else -->
 				{column.totalFmt
-					? formatValue(column.totalAgg, format, colColumnSummary.columnUnitSummary)
-					: column.totalAgg}
+					? formatValue(totalAgg, format, colColumnSummary.columnUnitSummary)
+					: totalAgg}
 			{/if}
-		</td>
+		</TableCell>
 	{/each}
 </tr>
-
-<style>
-	td {
-		padding: 2px 8px;
-		white-space: nowrap;
-		overflow: hidden;
-	}
-
-	td:first-child {
-		padding-left: 4px;
-	}
-
-	.string {
-		text-align: left;
-	}
-
-	.date {
-		text-align: left;
-	}
-
-	.number {
-		text-align: right;
-	}
-
-	.boolean {
-		text-align: left;
-	}
-
-	.index {
-		color: var(--grey-300);
-		text-align: left;
-		max-width: -moz-min-content;
-		max-width: min-content;
-	}
-
-	*:focus {
-		outline: none;
-	}</style>

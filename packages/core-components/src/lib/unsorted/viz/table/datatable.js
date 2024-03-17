@@ -78,9 +78,8 @@ export function aggregateColumn(data, columnName, aggType, columnType, weightCol
     ) {
         return '-'; // Return dash if attempting numeric aggregation on a non-numeric column
     }
-
-    const columnValues = data.map(row => row[columnName]).filter(val => val !== undefined && !isNaN(val));
-
+    const columnValues = data.map(row => row[columnName]).filter(val => val !== undefined);
+    
     switch (aggType) {
         case 'sum':
             return columnValues.reduce((sum, val) => sum + Number(val), 0);
@@ -108,6 +107,6 @@ export function aggregateColumn(data, columnName, aggType, columnType, weightCol
             const mid = Math.floor(sortedValues.length / 2);
             return sortedValues.length % 2 !== 0 ? sortedValues[mid] : (sortedValues[mid - 1] + sortedValues[mid]) / 2;
         default:
-            return `Unsupported aggregation type: ${aggType}`;
+            return `${aggType}`;
     }
 }

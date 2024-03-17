@@ -6,7 +6,6 @@
 	const props = getContext(propKey);
 
     export let rowNumbers;
-    export let groupType;
     export let headerColor;
     export let headerFontColor;
     export let finalColumnOrder;
@@ -19,14 +18,14 @@
 </script>
 
 <thead>
-    <tr>
-        {#if rowNumbers && groupType !== 'side'}
-            <th class="index w-[2%]" style:background-color={headerColor} />
+    <tr class="border-b border-gray-600">
+        {#if rowNumbers}
+            <th class="index w-[2%] px-[8px] py-[2px]" style:background-color={headerColor} />
         {/if}
         {#if $props.columns.length > 0}
             {#each $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
                 <th
-                    class={safeExtractColumn(column, columnSummary).type}
+                    class="{safeExtractColumn(column, columnSummary).type} px-[8px] py-[2px]"
                     style:text-align={column.align}
                     style:color={headerFontColor}
                     style:background-color={headerColor}
@@ -65,17 +64,14 @@
 </thead>
 
 <style>
+
     th {
-		padding: 2px 8px;
 		white-space: nowrap;
 		overflow: hidden;
 	}
 
 	th:first-child {
 		padding-left: 4px;
-	}
-	th {
-		border-bottom: 1px solid var(--grey-600);
 	}
 
     .index {
@@ -99,5 +95,4 @@
 
 	.boolean {
 		text-align: left;
-	}
-</style>
+	}</style>

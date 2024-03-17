@@ -87,9 +87,10 @@
 	$: downIsGood = downIsGood === 'true' || downIsGood === true;
 	export let showValue = true;
 	$: showValue = showValue === 'true' || showValue === true;
-
 	export let deltaSymbol = true;
 	$: deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+	export let neutralMin = 0;
+	export let neutralMax = 0;
 
 	$: options = {
 		id: id,
@@ -109,6 +110,8 @@
 		weightCol: weightCol,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
+		neutralMin: neutralMin,
+		neutralMax: neutralMax,
 		showValue: showValue,
 		colorMax: colorMax,
 		colorMin: colorMin,

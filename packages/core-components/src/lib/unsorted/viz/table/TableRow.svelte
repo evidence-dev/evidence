@@ -7,6 +7,7 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import { getContext } from 'svelte';
 	import { propKey } from '@evidence-dev/component-utilities/chartContext';
+	import TableCell from './TableCell.svelte';
 	const props = getContext(propKey);
 
 	export let displayedData;
@@ -27,23 +28,25 @@
 			window.location = url;
 		}
 	}
+
 </script>
 
 {#each displayedData as row, i}
 	<tr
-		class:shaded-row={rowShading && i % 2 === 0}
+		class:shaded-row={rowShading && i % 2 === 1}
 		class:row-link={link != undefined}
 		on:click={() => handleRowClick(row[link])}
-		class:row-lines={rowLines && ((i !== displayedData.length - 1) || groupType === 'side')}
+		class:row-lines={rowLines}
 	>
 		{#if rowNumbers && groupType !== 'side'}
-			<td class="index w-[2%]" class:row-lines={rowLines && i !== displayedData.length - 1}>
+			<TableCell 
+				class="index w-[2%]" >
 				{#if i === 0}
 					{(index + i + 1).toLocaleString()}
 				{:else}
 					{(index + i + 1).toLocaleString()}
 				{/if}
-			</td>
+			</TableCell>
 		{/if}
 
 		{#if $props.columns.length > 0}
@@ -57,24 +60,24 @@
 				{@const column_format = column.fmt
 					? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
 					: useCol.format}
-				<td
+				<TableCell
 					class={useCol.type}
-					style:vertical-align={groupType === 'side' ? groupNamePosition : undefined}
-					rowspan={(groupType === 'side' && groupColumn === useCol.id && i === 0) ? rowSpan : 1}
-					style:display={(groupType === 'side' && groupColumn === useCol.id && i !== 0) || (groupType === 'top' && groupColumn === useCol.id) ? 'none' : '' }
-					style:padding-left={(k === 0 && grouped && groupType === 'accordion' && !rowNumbers) ? '24px' : undefined}
-					style:text-align={column.align}
-					style:height={column.height}
-					style:width={column.width}
-					style:white-space={column.wrap ? 'normal' : 'nowrap'}
-					style:background-color={column.contentType === 'colorscale' && is_nonzero
+					verticalAlign={groupType === 'side' ? groupNamePosition : undefined}
+					rowSpan={(groupType === 'side' && groupColumn === useCol.id && i === 0) ? rowSpan : 1}
+					show={!((groupType === 'side' && groupColumn === useCol.id && i !== 0) || (groupType === 'top' && groupColumn === useCol.id))}
+					align={column.align}
+					paddingLeft={(k === 0 && grouped && groupType === 'accordion' && !rowNumbers) ? '24px' : undefined}
+					height={column.height}
+					width={column.width}
+					wrap={column.wrap}
+					cellColor={column.contentType === 'colorscale' && is_nonzero
 						? column.customColor
 							? `color-mix(in srgb, ${column.customColor} ${
 									Math.max(0, Math.min(1, percentage)) * 100
-							  }%, transparent)`
+							}%, transparent)`
 							: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
 						: // closing bracket needed to close unclosed color string from Column component
-						  ''}
+						''}
 				>
 					{#if column.contentType === 'image' && row[column.id] !== undefined}
 						<img
@@ -129,14 +132,16 @@
 						{/if}
 					{:else if column.contentType === 'delta' && row[column.id] !== undefined}
 						<Delta
-							data={row}
 							value={row[column.id]}
 							downIsGood={column.downIsGood}
-							format={column_format}
+							format_object={column_format}
 							columnUnitSummary={useCol.columnUnitSummary}
 							showValue={column.showValue}
 							deltaSymbol={column.deltaSymbol}
 							align={column.align}
+							fontClass="text-[9.25pt]"
+							neutralMin={column.neutralMin}
+							neutralMax={column.neutralMax}
 						/>
 					{:else}
 						{formatValue(
@@ -147,64 +152,32 @@
 							useCol.columnUnitSummary
 						)}
 					{/if}
-				</td>
+				</TableCell>
 			{/each}
 		{:else}
 			{#each columnSummary.filter((d) => d.show === true).sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column, j}
 				<!-- Check if last row in table-->
-				<td
+				<TableCell
 					class={column.type}
 					rowspan={(groupType === 'side' && groupColumn === column.id && i === 0) ? rowSpan : 1}
-					style:display={(groupType === 'side' && groupColumn === column.id && i !== 0) || (groupType === 'top' && groupColumn === column.id) ? 'none' : '' }
-					style:padding-left={(j === 0 && grouped && groupType === 'accordion' && !rowNumbers) ? '24px' : undefined}
+					show={!((groupType === 'side' && groupColumn === column.id && i !== 0) || (groupType === 'top' && groupColumn === column.id))}
+					paddingLeft={(j === 0 && grouped && groupType === 'accordion' && !rowNumbers) ? '24px' : undefined}
 				>
 					{formatValue(row[column.id], column.format, column.columnUnitSummary)}
-				</td>
+				</TableCell>
 			{/each}
 		{/if}
 	</tr>
 {/each}
 
 <style>
-	td {
-		padding: 2px 8px;
-		white-space: nowrap;
-		overflow: hidden;
-	}
-
-	td:first-child {
-		padding-left: 4px;
-	}
 
 	.row-lines {
 		border-bottom: thin solid var(--grey-200);
 	}
 
 	.shaded-row {
-		background-color: var(--grey-100);
-	}
-
-	.string {
-		text-align: left;
-	}
-
-	.date {
-		text-align: left;
-	}
-
-	.number {
-		text-align: right;
-	}
-
-	.boolean {
-		text-align: left;
-	}
-
-	.index {
-		color: var(--grey-300);
-		text-align: left;
-		max-width: -moz-min-content;
-		max-width: min-content;
+		background-color: var(--grey-50);
 	}
 
 	*:focus {
