@@ -43,12 +43,12 @@
 
 	let colorOptions = {
 		positive: {
-			color:  downIsGood ? 'var(--red-700)' : 'var(--green-700)',
+			color: downIsGood ? 'var(--red-700)' : 'var(--green-700)',
 			chipColor: downIsGood ? 'var(--red-100)' : 'var(--green-100)',
 			chipBorder: downIsGood ? 'var(--red-300)' : 'var(--green-300)'
 		},
 		negative: {
-			color:  downIsGood ? 'var(--green-700)' : 'var(--red-700)',
+			color: downIsGood ? 'var(--green-700)' : 'var(--red-700)',
 			chipColor: downIsGood ? 'var(--green-100)' : 'var(--red-100)',
 			chipBorder: downIsGood ? 'var(--green-300)' : 'var(--red-300)'
 		},
@@ -56,8 +56,8 @@
 			color: 'var(--grey-500)',
 			chipColor: 'var(--grey-100)',
 			chipBorder: 'var(--grey-300)'
-		},
-	}
+		}
+	};
 
 	let error;
 	let selected_value;
@@ -115,7 +115,12 @@
 					'No data or value provided. If you referenced a query result, check that the name is correct.'
 				);
 			}
-			valueStatus = selected_value > neutralMax ? 'positive' : selected_value < neutralMin ? 'negative' : 'neutral';
+			valueStatus =
+				selected_value > neutralMax
+					? 'positive'
+					: selected_value < neutralMin
+					? 'negative'
+					: 'neutral';
 		} catch (e) {
 			error = e.message;
 			const setTextRed = '\x1b[31m%s\x1b[0m';
@@ -129,10 +134,11 @@
 
 {#if !error}
 	<span
-		class="m-0 {fontClass} font-ui inline-block rounded-md px-1"
+		class="m-0 {fontClass} font-ui inline-block rounded-md"
 		style:background-color={chip ? colorOptions[valueStatus].chipColor : undefined}
 		style:border={chip ? `1px solid ${colorOptions[valueStatus].chipBorder}` : undefined}
 		style:color={colorOptions[valueStatus].color}
+		class:px-1={chip}
 	>
 		<span style:text-align={align ?? 'right'}>
 			{#if symbolPosition === 'right'}

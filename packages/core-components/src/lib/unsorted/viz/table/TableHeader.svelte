@@ -95,4 +95,5 @@
 
 	.boolean {
 		text-align: left;
-	}</style>
+	}
+</style>

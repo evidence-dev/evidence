@@ -106,4 +106,5 @@
 		.chevron {
 			display: none;
 		}
-	}</style>
+	}
+</style>

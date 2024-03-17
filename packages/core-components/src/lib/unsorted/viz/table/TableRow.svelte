@@ -201,4 +201,5 @@
 	.row-link:hover {
 		--tw-bg-opacity: 1;
 		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
-	}</style>
+	}
+</style>
