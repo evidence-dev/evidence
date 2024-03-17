@@ -14,9 +14,6 @@
 
 	export let topBorder;
 	export let paddingLeft;
-	export let padding;
-
-	// left padding for first column of accordion group
 </script>
 
 <td
@@ -33,7 +30,6 @@
 	style:background-color={cellColor}
 	style:color={fontColor}
 	style:padding-left={paddingLeft}
-	style:padding
 >
 	<slot />
 </td>

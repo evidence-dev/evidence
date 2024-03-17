@@ -49,7 +49,7 @@
 			: column_format}
 		{@const useFormat = format?.valueType === 'date' ? '' : format}
 		{#if j === 0}
-			<TableCell class="font-medium p-1" colSpan={rowNumbers ? 2 : 1} padding="3px">
+			<TableCell class="font-medium py-[3px]" colSpan={rowNumbers ? 2 : 1}>
 				<div class="items-center gap-2 align-top">
 					<span class="inline-flex print-hidden chevron"><TableGroupIcon {toggled} /></span>
 					{groupName}
