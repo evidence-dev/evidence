@@ -10,9 +10,7 @@ union all
 select 'US' as country, 'B' as product, 2030 as sales, 1220 as margin, 0.066 as growth
 ```
 
-here is a delta in text: <Delta value=150000 fmt=usd0k/> and text continuing <Value data={simple} column=sales fmt=usd/> <Delta data={simple} column=sales fmt=usd/>
-
-<DataTable data={simple} totalRow=true search=true groupsOpen=true groupBy=country groupType=side subtotals=true rowNumbers=true rowShading=false > 
+<DataTable data={simple} totalRow=true search=true groupsOpen=true groupBy=country groupType=accordion subtotals=true rowNumbers=true rowShading=false > 
  	<Column id=country totalAgg=500/> 
 	<Column id=product/> 
 	<Column id=sales fmt=usd totalAgg=800 contentType=colorscale /> 

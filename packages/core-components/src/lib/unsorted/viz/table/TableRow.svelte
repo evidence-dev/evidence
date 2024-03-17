@@ -21,14 +21,13 @@
 	export let groupType;
 	export let groupColumn;
 	export let rowSpan;
-	export let groupNamePosition='middle'; // middle (default) | top | bottom
+	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 
 	function handleRowClick(url) {
 		if (link) {
 			window.location = url;
 		}
 	}
-
 </script>
 
 {#each displayedData as row, i}
@@ -39,8 +38,7 @@
 		class:row-lines={rowLines}
 	>
 		{#if rowNumbers && groupType !== 'side'}
-			<TableCell 
-				class="index w-[2%]" >
+			<TableCell class="index w-[2%]">
 				{#if i === 0}
 					{(index + i + 1).toLocaleString()}
 				{:else}
@@ -63,10 +61,15 @@
 				<TableCell
 					class={useCol.type}
 					verticalAlign={groupType === 'side' ? groupNamePosition : undefined}
-					rowSpan={(groupType === 'side' && groupColumn === useCol.id && i === 0) ? rowSpan : 1}
-					show={!((groupType === 'side' && groupColumn === useCol.id && i !== 0) || (groupType === 'top' && groupColumn === useCol.id))}
+					rowSpan={groupType === 'side' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
+					show={!(
+						(groupType === 'side' && groupColumn === useCol.id && i !== 0) ||
+						(groupType === 'top' && groupColumn === useCol.id)
+					)}
 					align={column.align}
-					paddingLeft={(k === 0 && grouped && groupType === 'accordion' && !rowNumbers) ? '24px' : undefined}
+					paddingLeft={k === 0 && grouped && groupType === 'accordion' && !rowNumbers
+						? '24px'
+						: undefined}
 					height={column.height}
 					width={column.width}
 					wrap={column.wrap}
@@ -74,10 +77,10 @@
 						? column.customColor
 							? `color-mix(in srgb, ${column.customColor} ${
 									Math.max(0, Math.min(1, percentage)) * 100
-							}%, transparent)`
+							  }%, transparent)`
 							: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
 						: // closing bracket needed to close unclosed color string from Column component
-						''}
+						  ''}
 				>
 					{#if column.contentType === 'image' && row[column.id] !== undefined}
 						<img
@@ -142,6 +145,7 @@
 							fontClass="text-[9.25pt]"
 							neutralMin={column.neutralMin}
 							neutralMax={column.neutralMax}
+							chip={column.chip}
 						/>
 					{:else}
 						{formatValue(
@@ -155,13 +159,20 @@
 				</TableCell>
 			{/each}
 		{:else}
-			{#each columnSummary.filter((d) => d.show === true).sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column, j}
+			{#each columnSummary
+				.filter((d) => d.show === true)
+				.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column, j}
 				<!-- Check if last row in table-->
 				<TableCell
 					class={column.type}
-					rowspan={(groupType === 'side' && groupColumn === column.id && i === 0) ? rowSpan : 1}
-					show={!((groupType === 'side' && groupColumn === column.id && i !== 0) || (groupType === 'top' && groupColumn === column.id))}
-					paddingLeft={(j === 0 && grouped && groupType === 'accordion' && !rowNumbers) ? '24px' : undefined}
+					rowspan={groupType === 'side' && groupColumn === column.id && i === 0 ? rowSpan : 1}
+					show={!(
+						(groupType === 'side' && groupColumn === column.id && i !== 0) ||
+						(groupType === 'top' && groupColumn === column.id)
+					)}
+					paddingLeft={j === 0 && grouped && groupType === 'accordion' && !rowNumbers
+						? '24px'
+						: undefined}
 				>
 					{formatValue(row[column.id], column.format, column.columnUnitSummary)}
 				</TableCell>
@@ -171,7 +182,6 @@
 {/each}
 
 <style>
-
 	.row-lines {
 		border-bottom: thin solid var(--grey-200);
 	}

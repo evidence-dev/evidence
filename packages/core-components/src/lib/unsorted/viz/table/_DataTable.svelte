@@ -41,11 +41,11 @@
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
 	export let groupRowColor = undefined;
-	export let groupNamePosition = 'middle' // middle (default) | top | bottom
+	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 
 	export let groupType = 'accordion'; // accordion | side
 
-	if(groupType === 'side'){
+	if (groupType === 'side') {
 		rowNumbers = false; // turn off row numbers
 	}
 
@@ -54,9 +54,9 @@
 
 	export let subtotalRowColor = undefined;
 	export let subtotalFontColor = undefined;
-	
+
 	let groupToggleStates = {};
-	
+
 	function handleToggle({ detail }) {
 		const { groupName } = detail;
 		groupToggleStates[groupName] = !groupToggleStates[groupName];
@@ -284,27 +284,38 @@
 	$: if (groupBy && sortBy.col) {
 		// Sorting groups based on aggregated values or group names
 		sortedGroupNames = Object.entries(groupRowData)
-		.sort((a, b) => {
-			const valA = a[1][sortBy.col], valB = b[1][sortBy.col];
-			// Use the existing sort logic but apply it to groupRowData's values
-			if ((valA === undefined || valA === null || isNaN(valA)) && (valB !== undefined && valB !== null && !isNaN(valB))) {
-			return -1 * (sortBy.ascending ? 1 : -1);
-			}
-			if ((valB === undefined || valB === null || isNaN(valB)) && (valA !== undefined && valA !== null && !isNaN(valA))) {
-			return 1 * (sortBy.ascending ? 1 : -1);
-			}
-			if (valA < valB) {
-			return -1 * (sortBy.ascending ? 1 : -1);
-			} else if (valA > valB) {
-			return 1 * (sortBy.ascending ? 1 : -1);
-			}
-			return 0;
-		})
-		.map(entry => entry[0]); // Extract sorted group names
+			.sort((a, b) => {
+				const valA = a[1][sortBy.col],
+					valB = b[1][sortBy.col];
+				// Use the existing sort logic but apply it to groupRowData's values
+				if (
+					(valA === undefined || valA === null || isNaN(valA)) &&
+					valB !== undefined &&
+					valB !== null &&
+					!isNaN(valB)
+				) {
+					return -1 * (sortBy.ascending ? 1 : -1);
+				}
+				if (
+					(valB === undefined || valB === null || isNaN(valB)) &&
+					valA !== undefined &&
+					valA !== null &&
+					!isNaN(valA)
+				) {
+					return 1 * (sortBy.ascending ? 1 : -1);
+				}
+				if (valA < valB) {
+					return -1 * (sortBy.ascending ? 1 : -1);
+				} else if (valA > valB) {
+					return 1 * (sortBy.ascending ? 1 : -1);
+				}
+				return 0;
+			})
+			.map((entry) => entry[0]); // Extract sorted group names
 	} else {
-    // Default to alphabetical order of group names or another criterion when not sorting by a specific column
-    sortedGroupNames = Object.keys(groupedData).sort();
-  }
+		// Default to alphabetical order of group names or another criterion when not sorting by a specific column
+		sortedGroupNames = Object.keys(groupedData).sort();
+	}
 
 	// Reset sort condition when data object is changed
 	$: data, (sortBy = { col: null, ascending: null });
@@ -416,7 +427,7 @@
 
 {#if error === undefined}
 	<slot />
-	
+
 	{#if link}
 		<InvisibleLinks {data} {link} />
 	{/if}
@@ -493,7 +504,7 @@
 								{columnSummary}
 								grouped={true}
 								{groupNamePosition}
-							/>						
+							/>
 							{#if subtotals}
 								<SubtotalRow
 									{groupName}
@@ -504,8 +515,8 @@
 									{rowNumbers}
 									{groupType}
 									{groupBy}
-								/>							
-							{/if}			
+								/>
+							{/if}
 						{/if}
 					{/each}
 				{:else}
@@ -521,7 +532,14 @@
 				{/if}
 
 				{#if totalRow && searchValue === ''}
-					<TotalRow {data} {rowNumbers} {columnSummary} rowColor={totalRowColor} fontColor={totalFontColor} {groupType} />
+					<TotalRow
+						{data}
+						{rowNumbers}
+						{columnSummary}
+						rowColor={totalRowColor}
+						fontColor={totalFontColor}
+						{groupType}
+					/>
 				{/if}
 			</table>
 		</div>
@@ -845,11 +863,6 @@
 	}
 
 	@media print {
-		.avoidbreaks {
-			-moz-column-break-inside: avoid;
-			break-inside: avoid;
-		}
-
 		.pagination {
 			-moz-column-break-inside: avoid;
 			break-inside: avoid;
@@ -866,4 +879,5 @@
 		.print-page-count {
 			display: inline;
 		}
-	}</style>
+	}
+</style>

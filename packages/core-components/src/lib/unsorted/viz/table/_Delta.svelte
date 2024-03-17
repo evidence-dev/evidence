@@ -3,7 +3,10 @@
 </script>
 
 <script>
-	import { formatValue, getFormatObjectFromString} from '@evidence-dev/component-utilities/formatting';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import ValueError from '../core/ValueError.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
@@ -15,38 +18,52 @@
 
 	export let value = undefined;
 
-	export let downIsGood = false; 
+	export let chip = false;
+	$: chip = chip === 'true' || chip === true;
+
+	export let downIsGood = false;
 	$: downIsGood = downIsGood === 'true' || downIsGood === true;
 
 	export let fmt = undefined;
 	export let format_object = undefined;
 	export let columnUnitSummary = undefined;
-	export let showValue = true; 
+	export let showValue = true;
 	$: showValue = showValue === 'true' || showValue === true;
 
-	export let deltaSymbol = true;
-	$: deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+	export let showSymbol = true;
+	$: showSymbol = showSymbol === 'true' || showSymbol === true;
 
-	export let align = 'right'; 
-	export let fontClass = 'text-base';
+	export let symbolPosition = 'right';
 
-	export let neutralMin = 0
-	export let neutralMax = 0
+	export let align = 'right';
+	export let fontClass = chip ? 'text-sm' : 'text-base';
 
-	let positiveColor = downIsGood ? 'var(--red-700)' : 'var(--green-700)';
-	let negativeColor = downIsGood ? 'var(--green-700)' : 'var(--red-700)';
-	let neutralColor = 'var(--grey-500)';
+	export let neutralMin = 0;
+	export let neutralMax = 0;
 
-	$: valueStatus = value > neutralMax ? 'positive'
-		: value < neutralMin ? 'negative'
-		: 'neutral';
-
-	$: value;
+	let colorOptions = {
+		positive: {
+			color:  downIsGood ? 'var(--red-700)' : 'var(--green-700)',
+			chipColor: downIsGood ? 'var(--red-100)' : 'var(--green-100)',
+			chipBorder: downIsGood ? 'var(--red-300)' : 'var(--green-300)'
+		},
+		negative: {
+			color:  downIsGood ? 'var(--green-700)' : 'var(--red-700)',
+			chipColor: downIsGood ? 'var(--green-100)' : 'var(--red-100)',
+			chipBorder: downIsGood ? 'var(--green-300)' : 'var(--red-300)'
+		},
+		neutral: {
+			color: 'var(--grey-500)',
+			chipColor: 'var(--grey-100)',
+			chipBorder: 'var(--grey-300)'
+		},
+	}
 
 	let error;
 	let selected_value;
 	let columnSummary;
 	let selected_format;
+	let valueStatus;
 
 	$: {
 		try {
@@ -76,7 +93,7 @@
 				checkInputs(data, [column]);
 
 				columnSummary = getColumnSummary(data, 'array');
-			
+
 				selected_value = data[row][column];
 				columnSummary = columnSummary.filter((d) => d.id === column);
 				if (fmt) {
@@ -84,18 +101,21 @@
 				} else {
 					selected_format = columnSummary[0].format;
 				}
-			} else if(value) {
-				if(isNaN(value)){
+			} else if (value) {
+				if (isNaN(value)) {
 					throw Error('value must be a number (value=' + value + ')');
 				} else {
 					selected_value = value;
-					selected_format = fmt ? getFormatObjectFromString(fmt, 'number') : format_object ?? undefined;
+					selected_format = fmt
+						? getFormatObjectFromString(fmt, 'number')
+						: format_object ?? undefined;
 				}
 			} else {
 				throw Error(
 					'No data or value provided. If you referenced a query result, check that the name is correct.'
 				);
 			}
+			valueStatus = selected_value > neutralMax ? 'positive' : selected_value < neutralMin ? 'negative' : 'neutral';
 		} catch (e) {
 			error = e.message;
 			const setTextRed = '\x1b[31m%s\x1b[0m';
@@ -105,25 +125,49 @@
 			}
 		}
 	}
-
 </script>
 
 {#if !error}
 	<span
-		class="m-0 {fontClass} font-ui inline-block"
-		style="color: {valueStatus === 'positive' ? positiveColor : valueStatus === 'negative' ? negativeColor : neutralColor}"
+		class="m-0 {fontClass} font-ui inline-block rounded-md px-1"
+		style:background-color={chip ? colorOptions[valueStatus].chipColor : undefined}
+		style:border={chip ? `1px solid ${colorOptions[valueStatus].chipBorder}` : undefined}
+		style:color={colorOptions[valueStatus].color}
 	>
 		<span style:text-align={align ?? 'right'}>
-			{#if showValue}
-				<span>
-					{formatValue(selected_value, selected_format, columnUnitSummary)}
-				</span>
-				{#if deltaSymbol}
-					<span class="font-[system-ui]">{@html valueStatus === 'positive' ? '&#9650;' : valueStatus === 'negative' ? '&#9660;' : '–&thinsp;'}</span>
+			{#if symbolPosition === 'right'}
+				{#if showValue}
+					<span>
+						{formatValue(selected_value, selected_format, columnUnitSummary)}
+					</span>
+				{/if}
+				{#if showSymbol}
+					<span class="font-[system-ui]"
+						>{@html valueStatus === 'positive'
+							? '&#9650;'
+							: valueStatus === 'negative'
+							? '&#9660;'
+							: '–&thinsp;'}</span
+					>
+				{/if}
+			{:else}
+				{#if showSymbol}
+					<span class="font-[system-ui]"
+						>{@html valueStatus === 'positive'
+							? '&#9650;'
+							: valueStatus === 'negative'
+							? '&#9660;'
+							: '–'}</span
+					>
+				{/if}
+				{#if showValue}
+					<span>
+						{formatValue(selected_value, selected_format, columnUnitSummary)}
+					</span>
 				{/if}
 			{/if}
 		</span>
 	</span>
 {:else}
-	<ValueError {error}/>
+	<ValueError {error} />
 {/if}

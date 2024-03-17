@@ -55,7 +55,7 @@ export function median(data, column) {
  * This function supports various aggregation types like sum, min, max, mean, count, countDistinct,
  * weightedMean, and median. It defaults to sum for numeric columns if the aggregation type is not specified.
  * For non-numeric columns attempting numeric aggregation, it returns '-'.
- * 
+ *
  * @param {Object[]} data - Array of objects representing the dataset.
  * @param {string} columnName - The name of the column to aggregate.
  * @param {string} [aggType] - The type of aggregation to perform. Defaults to 'sum' for numeric columns if not specified.
@@ -64,49 +64,55 @@ export function median(data, column) {
  * @returns {number|string} The result of the aggregation operation, or '-' for invalid numeric operations on non-numeric columns.
  */
 export function aggregateColumn(data, columnName, aggType, columnType, weightColumnName = null) {
-    // Default to 'sum' if aggType is not provided and columnType is 'number'
-    if (!aggType && columnType === 'number') {
-        aggType = 'sum';
-    }
+	// Default to 'sum' if aggType is not provided and columnType is 'number'
+	if (!aggType && columnType === 'number') {
+		aggType = 'sum';
+	}
 
-    if (!data || !data.length) return null; // Return null if data is empty
+	if (!data || !data.length) return null; // Return null if data is empty
 
-    // Check column type compatibility
-    if (
-        columnType !== 'number' &&
-        ['sum', 'min', 'max', 'mean', 'weightedMean', 'median', undefined].includes(aggType)
-    ) {
-        return '-'; // Return dash if attempting numeric aggregation on a non-numeric column
-    }
-    const columnValues = data.map(row => row[columnName]).filter(val => val !== undefined);
-    
-    switch (aggType) {
-        case 'sum':
-            return columnValues.reduce((sum, val) => sum + Number(val), 0);
-        case 'min':
-            return Math.min(...columnValues);
-        case 'max':
-            return Math.max(...columnValues);
-        case 'mean':
-            return columnValues.length ? columnValues.reduce((sum, val) => sum + Number(val), 0) / columnValues.length : '-';
-        case 'count':
-            return data.length;
-        case 'countDistinct':
-            return new Set(columnValues).size;
-        case 'weightedMean':
-            if (!weightColumnName) return 'Weight column name required for weightedMean';
-            let totalWeight = 0;
-            let weightedSum = data.reduce((sum, row) => {
-                const weight = row[weightColumnName] || 0;
-                totalWeight += weight;
-                return sum + ((Number(row[columnName]) || 0) * weight);
-            }, 0);
-            return totalWeight > 0 ? weightedSum / totalWeight : null;
-        case 'median':
-            const sortedValues = columnValues.sort((a, b) => a - b);
-            const mid = Math.floor(sortedValues.length / 2);
-            return sortedValues.length % 2 !== 0 ? sortedValues[mid] : (sortedValues[mid - 1] + sortedValues[mid]) / 2;
-        default:
-            return `${aggType}`;
-    }
+	// Check column type compatibility
+	if (
+		columnType !== 'number' &&
+		['sum', 'min', 'max', 'mean', 'weightedMean', 'median', undefined].includes(aggType)
+	) {
+		return '-'; // Return dash if attempting numeric aggregation on a non-numeric column
+	}
+	const columnValues = data.map((row) => row[columnName]).filter((val) => val !== undefined);
+
+	switch (aggType) {
+		case 'sum':
+			return columnValues.reduce((sum, val) => sum + Number(val), 0);
+		case 'min':
+			return Math.min(...columnValues);
+		case 'max':
+			return Math.max(...columnValues);
+		case 'mean':
+			return columnValues.length
+				? columnValues.reduce((sum, val) => sum + Number(val), 0) / columnValues.length
+				: '-';
+		case 'count':
+			return data.length;
+		case 'countDistinct':
+			return new Set(columnValues).size;
+		case 'weightedMean': {
+			if (!weightColumnName) return 'Weight column name required for weightedMean';
+			let totalWeight = 0;
+			let weightedSum = data.reduce((sum, row) => {
+				const weight = row[weightColumnName] || 0;
+				totalWeight += weight;
+				return sum + (Number(row[columnName]) || 0) * weight;
+			}, 0);
+			return totalWeight > 0 ? weightedSum / totalWeight : null;
+		}
+		case 'median': {
+			const sortedValues = columnValues.sort((a, b) => a - b);
+			const mid = Math.floor(sortedValues.length / 2);
+			return sortedValues.length % 2 !== 0
+				? sortedValues[mid]
+				: (sortedValues[mid - 1] + sortedValues[mid]) / 2;
+		}
+		default:
+			return `${aggType}`;
+	}
 }

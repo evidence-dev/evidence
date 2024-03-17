@@ -27,4 +27,5 @@
 
 	[aria-expanded='true'] svg {
 		transform: rotate(0.25turn);
-	}</style>
+	}
+</style>

@@ -91,6 +91,8 @@
 	$: deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
 	export let neutralMin = 0;
 	export let neutralMax = 0;
+	export let chip = false;
+	$: chip = chip === 'true' || chip === true;
 
 	$: options = {
 		id: id,
@@ -110,6 +112,7 @@
 		weightCol: weightCol,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
+		chip: chip,
 		neutralMin: neutralMin,
 		neutralMax: neutralMax,
 		showValue: showValue,
