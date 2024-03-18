@@ -26,7 +26,7 @@
 		"zod": "^3.21.4"
 	},
 	"devDependencies": {
-		"typescript": "4.9.5"
+		"typescript": "5.4.2"
 	},
 	"evidence": {
 		"datasources": [

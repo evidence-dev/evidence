@@ -83,7 +83,7 @@
 
 <!-- {dimensionCutQuery} -->
 
-<div class=" w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
+<div class="w-60 flex-shrink-0 sm:w-1/4 text-sm antialiased text-gray-700 pr-4 pb-4 overflow-clip">
 	<div class="capitalize border-b flex justify-between items-baseline">
 		<span class="truncate w-2/3">
 			{formatTitle(dimension.name)}
@@ -107,6 +107,8 @@
 						on:click={updateSelected(row)}
 						on:keydown={updateSelected(row)}
 						animate:flip={{ duration: 100 }}
+						role="button"
+						tabindex="-1"
 					>
 						<DimensionRow
 							{row}
