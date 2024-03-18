@@ -879,4 +879,5 @@
 		.print-page-count {
 			display: inline;
 		}
-	}</style>
+	}
+</style>
