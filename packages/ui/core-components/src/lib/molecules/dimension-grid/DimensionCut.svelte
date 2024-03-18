@@ -88,7 +88,7 @@
 		<span class="truncate w-2/3">
 			{formatTitle(dimension.name)}
 		</span>
-		<span class="truncate w-1/3">
+		<span class="truncate w-1/3 text-right">
 			{metricLabel ?? ''}
 		</span>
 	</div>

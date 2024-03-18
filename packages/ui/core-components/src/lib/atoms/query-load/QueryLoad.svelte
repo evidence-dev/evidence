@@ -25,7 +25,7 @@
 	<slot loaded={data} />
 {:else if !data?.__isQueryStore}
 	<!-- data prop was provided, but it is not a query store -->
-	{#if !data?.__isQueryStore && isEmptyDataset(data) && $$slots.empty}
+	{#if (Array.isArray(data) || !data) && isEmptyDataset(data) && $$slots.empty}
 		<!-- handle case where data is not a query store but is also empty -->
 		<slot name="empty" />
 	{:else}
