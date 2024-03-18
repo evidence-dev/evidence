@@ -64,7 +64,7 @@
 		{:else}
 			<div
 				class="chart"
-				sdivtyle="
+				style="
 				height: {height};
 				width: {width};
 				margin-left: 0;
