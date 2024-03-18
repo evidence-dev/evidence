@@ -7,3 +7,4 @@ export * from './query-load';
 export * from './inputs';
 export * from './flowchart';
 export * from './grid';
+export * from './tabs';

@@ -1,5 +1,12 @@
+<script context="module">
+	export const meta = {
+		title: 'charts/DimensionGrid',
+		component: DimensionGrid
+	};
+</script>
+
 <script>
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
+	import { Template, Story } from '@storybook/addon-svelte-csf';
 	import DimensionGrid from './DimensionGrid.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { setContext } from 'svelte';
@@ -12,8 +19,6 @@
 	const inputStore = writable({});
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
-
-<Meta title="Charts/DimensionGrid" component={DimensionGrid} argTypes={{}} />
 
 <Template let:args>
 	<DimensionGrid {...args} />

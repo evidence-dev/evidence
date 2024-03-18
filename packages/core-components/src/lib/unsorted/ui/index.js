@@ -18,6 +18,5 @@ export { default as SortIcon } from './SortIcon.svelte';
 export * from './Deployment';
 export * from './Formatting';
 export * from './QueryViewerSupport';
-export * from './Tabs';
 export * from './TelemetryOptOut';
 export * from './VersionControl';
