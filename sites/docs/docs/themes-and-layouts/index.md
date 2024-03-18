@@ -28,9 +28,10 @@ The `EvidenceDefaultLayout` component accepts the following properties for commo
 
 | Name      | Description                                         | Possible Values          | Required | Default |
 | --------- | --------------------------------------------------- | ------------------------ | -------- | ------- |
-| `title`    | Project title that will replace the Evidence Logo | Any string              | no       | -       |
-| `logo` | Link to an image which will replace the Evidence logo. This will override any project title. If the image is in your project's static directory, the link should be relative.                         | /logo.png | no       | -   |
+| `title`    | Project title that will replace the Evidence Logo. | Any string              | no       | -       |
+| `logo` | Link to an image which will replace the Evidence logo. This will also override any project title in the header. If the image is in your project's static directory, the link should be relative to the static directory.                         | /logo.png | no       | -   |
 | `neverShowQueries`    | Removes the option to show queries when the project is deployed. Has no effect in development. | {true} or {false}              | no       | {false}       |
+| `maxWidth`    | Sets the width of the project in pixels. The default layout is about 1,280 px wide.    | Any number         | no       | -       |
 | `fullWidth`    | Sets the width of the project to full | {true} or {false}              | no       | {false}       |
 | `hideSidebar`    | Hides the sidebar navigation | {true} or {false}              | no       | {false}       |
 | `builtWithEvidence`    | Display a subtle link to the Evidence website at the bottom of the sidebar.          | {true} or {false}    | no       | {false}       | {false} |
