@@ -173,7 +173,7 @@ Partials do not support live reload, or hot module replacement. You will need to
 
 `./pages/index.md`
 ```markdown
-{@partial "my-first-partial.md"}
+&#123@partial "my-first-partial.md"&#125
 
 And some content specific to this page.
 ```
@@ -187,4 +187,4 @@ This is some content in the partial.
 
 Evidence supports re-using chunks of Evidence markdown using Partials.
 
-Partials are placed in the `./partials` folder, and can be referenced in your project with `{@partial "path/to/partial.md"}` (do not include the `/partial` folder in the path).
+Partials are placed in the `./partials` folder, and can be referenced in your project with `&#123@partial "path/to/partial.md"&#125` (do not include the `/partial` folder in the path).
