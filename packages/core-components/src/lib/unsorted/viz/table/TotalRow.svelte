@@ -19,7 +19,7 @@
 </script>
 
 <tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
-	{#if rowNumbers && groupType !== 'side'}
+	{#if rowNumbers && groupType !== 'section'}
 		<TableCell class="index w-[2%]" topBorder="border-t border-gray-600" />
 	{/if}
 

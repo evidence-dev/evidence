@@ -75,7 +75,7 @@
 						useCol.columnUnitSummary
 					)}
 				{/if}
-			{:else if groupType === 'side'}
+			{:else if groupType === 'section'}
 				{groupName}
 			{/if}
 		</TableCell>

@@ -43,9 +43,9 @@
 	export let groupRowColor = undefined;
 	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 
-	export let groupType = 'accordion'; // accordion | side
+	export let groupType = 'accordion'; // accordion | section
 
-	if (groupType === 'side') {
+	if (groupType === 'section') {
 		rowNumbers = false; // turn off row numbers
 	}
 
@@ -490,7 +490,7 @@
 									groupColumn={groupBy}
 								/>
 							{/if}
-						{:else if groupType === 'side'}
+						{:else if groupType === 'section'}
 							<TableRow
 								groupColumn={groupBy}
 								{groupType}
@@ -879,5 +879,4 @@
 		.print-page-count {
 			display: inline;
 		}
-	}
-</style>
+	}</style>

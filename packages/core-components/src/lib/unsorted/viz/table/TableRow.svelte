@@ -37,7 +37,7 @@
 		on:click={() => handleRowClick(row[link])}
 		class:row-lines={rowLines}
 	>
-		{#if rowNumbers && groupType !== 'side'}
+		{#if rowNumbers && groupType !== 'section'}
 			<TableCell class="index w-[2%]">
 				{#if i === 0}
 					{(index + i + 1).toLocaleString()}
@@ -60,10 +60,10 @@
 					: useCol.format}
 				<TableCell
 					class={useCol.type}
-					verticalAlign={groupType === 'side' ? groupNamePosition : undefined}
-					rowSpan={groupType === 'side' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
+					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
+					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
 					show={!(
-						(groupType === 'side' && groupColumn === useCol.id && i !== 0) ||
+						(groupType === 'section' && groupColumn === useCol.id && i !== 0) ||
 						(groupType === 'top' && groupColumn === useCol.id)
 					)}
 					align={column.align}
@@ -165,9 +165,9 @@
 				<!-- Check if last row in table-->
 				<TableCell
 					class={column.type}
-					rowspan={groupType === 'side' && groupColumn === column.id && i === 0 ? rowSpan : 1}
+					rowspan={groupType === 'section' && groupColumn === column.id && i === 0 ? rowSpan : 1}
 					show={!(
-						(groupType === 'side' && groupColumn === column.id && i !== 0) ||
+						(groupType === 'section' && groupColumn === column.id && i !== 0) ||
 						(groupType === 'top' && groupColumn === column.id)
 					)}
 					paddingLeft={j === 0 && grouped && groupType === 'accordion' && !rowNumbers

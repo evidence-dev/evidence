@@ -1,7 +1,7 @@
 # Table Accordion
 
 ```simple
-select 'Canada' as country, 'A' as product, 200 as sales, 80 as margin, 0.058 as growth
+select 'Canada' as country, 'A' as product, 2000 as sales, 80 as margin, 0.058 as growth
 union all
 select 'Canada' as country, 'B' as product, 200 as sales, 120 as margin, 0.082 as growth
 union all
@@ -10,7 +10,7 @@ union all
 select 'US' as country, 'B' as product, 2030 as sales, 1220 as margin, 0.066 as growth
 ```
 
-<DataTable data={simple} totalRow=true search=true groupsOpen=true groupBy=country groupType=accordion subtotals=true rowNumbers=true rowShading=false > 
+<DataTable data={simple} totalRow=true search=true groupsOpen=true groupBy=country groupType=accordion subtotals=true rowNumbers=false rowShading=false > 
  	<Column id=country totalAgg=500/> 
 	<Column id=product/> 
 	<Column id=sales fmt=usd totalAgg=800 contentType=colorscale /> 
@@ -20,7 +20,7 @@ select 'US' as country, 'B' as product, 2030 as sales, 1220 as margin, 0.066 as 
 
  <!-- <DataTable data={simple} groupBy=product totalRow=true summarizeGroups=true rowNumbers=true/>  -->
 
-
+<Value data={simple} column=sales fmt=id/>
 
 ```orders
 select category, item, count(1) as orders, sum(sales) as sales from needful_things.orders
