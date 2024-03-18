@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 hide_table_of_contents: false
-title: Customizing Styles & Themes
+title: Themes and Layouts
 ---
 
 Evidence supports customizing the look and feel of your project using CSS, and by overwriting or modifying the default layout.

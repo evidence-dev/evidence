@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<EvidenceDefaultLayout {data}>
+<EvidenceDefaultLayout {data} builtWithEvidence slackCommunity="https://slack.evidence.dev">
 	<slot slot="content" />
 </EvidenceDefaultLayout>

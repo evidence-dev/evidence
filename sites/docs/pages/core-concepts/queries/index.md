@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 hide_title: false
 hide_table_of_contents: false
 title: SQL Queries

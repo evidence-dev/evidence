@@ -1,6 +1,7 @@
 ---
 title: Syntax
 description: Extended markdown with additional functionality.
+sidebar_position: -1
 ---
 
 Evidence reports are written in **Evidence-flavored Markdown** - an extension of markdown that includes SQL queries, data viz components, and programmatic features.

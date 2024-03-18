@@ -1,6 +1,6 @@
 ---
 title: If / Else
-sidebar_position: 1
+sidebar_position: 7
 description: Control what is displayed using data with conditional logic.
 ---
 

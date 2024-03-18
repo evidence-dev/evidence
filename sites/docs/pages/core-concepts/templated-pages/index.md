@@ -1,6 +1,7 @@
 ---
 title: Templated Pages
 description: Use a single file as a template for many pages with different data.
+sidebar_position: 9
 ---
 
 Templated pages allow you to use a single markdown file as a template for many pages with different data. For example:

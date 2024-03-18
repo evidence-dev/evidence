@@ -1,6 +1,6 @@
 ---
 title: Markdown Reference
-sidebar_position: 1
+sidebar_position: 8
 ---
 
 Evidence supports most markdown syntax. Below are some of the most common markdown features. For more details, check out [Markdown Guide](https://www.markdownguide.org/cheat-sheet/).

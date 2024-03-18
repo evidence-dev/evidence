@@ -1,5 +1,5 @@
 ---
-sidebar_position: 0
+sidebar_position: -1
 title: All Components
 hide_title: false
 hide_table_of_contents: false

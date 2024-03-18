@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
-title: Component Overview
+sidebar_position: 4
+title: Components 
 description: Components are used to display charts and other visual elements
 ---
 

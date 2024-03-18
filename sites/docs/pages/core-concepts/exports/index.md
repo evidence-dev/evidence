@@ -1,6 +1,7 @@
 ---
 title: Exports
 description: Export data to PDF, CSV, images and using copy-paste.
+sidebar_position: 11
 ---
 
 Evidence supports exporting data and reports to PDF, images, CSVs and using copy-paste.
