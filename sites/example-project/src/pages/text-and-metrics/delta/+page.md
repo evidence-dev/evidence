@@ -32,6 +32,15 @@ select 190 as sales, '2020-05-01'::date as date
 ### Neutral
 <Delta value=0.366 neutralMax=0.4 fmt=pct1 chip=true/> 
 
+
+## Symbol Position
+
+### `symbolPosition=left`
+<Delta value=0.366 fmt=pct1 symbolPosition=left/>  
+<LineBreak lines=2/> 
+<Delta value=-0.366 fmt=pct1 chip=true symbolPosition=left/> 
+
+
 <LineBreak lines=2/>
 
 Verba et celer purpura utraque parvas, indicat quaeritis adhaesi negate. Exsangue sibique Minos Echidnaeae miseranda infelix nunc dapes iunctisque praetereunt abluere moenia ferunt aere innuba.Sales in the last year: <Delta data={sp} column=sales fmt=usd/> <Delta data={sp} column=sales fmt=usd chip=true/> and some text after. verba et celer purpura utraque parvas, indicat quaeritis adhaesi negate. Exsangue sibique Minos Echidnaeae <Delta data={sp} column=sales fmt=usd chip=true downIsGood=true/> miseranda infelix nunc dapes iunctisque praetereunt abluere moenia ferunt aere innuba.
