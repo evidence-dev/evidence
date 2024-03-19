@@ -40,9 +40,6 @@
 	$: try {
 		error = undefined;
 
-		// check if dataset exists
-		checkInputs(data);
-
 		if (!value) {
 			throw new Error('value is required');
 		}
@@ -72,6 +69,13 @@
 				(positive && !downIsGood) || (!positive && downIsGood)
 					? 'var(--green-700)'
 					: 'var(--red-700)';
+		}
+
+		if (sparkline) {
+			checkInputs(data, [sparkline]);
+			if (columnSummary.find((d) => d.id === sparkline)?.type !== 'date') {
+				throw Error('sparkline must be a date column');
+			}
 		}
 	} catch (e) {
 		error = e;

@@ -1,5 +1,88 @@
 # @evidence-dev/components
 
+## 3.4.2
+
+### Patch Changes
+
+- Updated dependencies [b50ec639]
+- Updated dependencies [9a9ace8f]
+- Updated dependencies [dcbc0580]
+  - @evidence-dev/core-components@3.5.2
+  - @evidence-dev/query-store@2.0.6
+  - @evidence-dev/component-utilities@2.4.2
+  - @evidence-dev/plugin-connector@2.0.10
+
+## 3.4.1
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/component-utilities@2.4.1
+  - @evidence-dev/core-components@3.5.1
+  - @evidence-dev/plugin-connector@2.0.10
+  - @evidence-dev/query-store@2.0.5
+  - @evidence-dev/universal-sql@2.0.5
+
+## 3.4.0
+
+### Minor Changes
+
+- 57c81240: Add clearer dev mode errors
+
+### Patch Changes
+
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [023cd946]
+- Updated dependencies [15a6eeab]
+- Updated dependencies [31903452]
+- Updated dependencies [33e46d1c]
+- Updated dependencies [2d0c00b9]
+- Updated dependencies [7e550a1d]
+- Updated dependencies [0042519f]
+- Updated dependencies [152b7224]
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [72f9833a]
+- Updated dependencies [57f71211]
+- Updated dependencies [57c81240]
+  - @evidence-dev/component-utilities@2.4.0
+  - @evidence-dev/core-components@3.5.0
+  - @evidence-dev/query-store@2.0.4
+  - @evidence-dev/universal-sql@2.0.4
+  - @evidence-dev/plugin-connector@2.0.9
+
+## 3.3.4
+
+### Patch Changes
+
+- 403f492c: Add dependency for chroma
+- Updated dependencies [403f492c]
+- Updated dependencies [f3efd049]
+  - @evidence-dev/core-components@3.4.2
+
+## 3.3.3
+
+### Patch Changes
+
+- 6c37b473: Add weightedMean total agg to DataTable
+- 1e665bf2: Replace sparkline component
+- 5c492a00: Add non-delta comparisons to BigValue
+- Updated dependencies [6c37b473]
+- Updated dependencies [37cbbc43]
+- Updated dependencies [1e665bf2]
+- Updated dependencies [858ea06f]
+- Updated dependencies [5c492a00]
+- Updated dependencies [32a38858]
+- Updated dependencies [0c1a7ccb]
+  - @evidence-dev/core-components@3.4.1
+  - @evidence-dev/postgres@1.0.4
+  - @evidence-dev/duckdb@1.0.7
+  - @evidence-dev/csv@1.0.7
+
 ## 3.3.2
 
 ### Patch Changes

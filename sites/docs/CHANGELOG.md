@@ -1,5 +1,20 @@
 # evidence-docs
 
+## 2.0.8
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+
+## 2.0.7
+
+### Patch Changes
+
+- 6c37b473: Add weightedMean total agg to DataTable
+- 5c492a00: Add non-delta comparisons to BigValue
+
 ## 2.0.6
 
 ### Patch Changes

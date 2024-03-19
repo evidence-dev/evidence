@@ -16,7 +16,7 @@
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;
 
-	/** @type {"pass" | "warn" | "error"}*/
+	/** @type {'pass' | 'warn' | 'error'}*/
 	export let emptySet = undefined;
 
 	/** @type {string}*/
@@ -31,6 +31,7 @@
 <!-- Pass all the props through-->
 <QueryLoad {data} let:loaded>
 	<div
+		let:loaded
 		slot="error"
 		class="inline-block font-sans pt-2 pb-3 pr-3 pl-0 mr-3 items-center align-top"
 		style={`

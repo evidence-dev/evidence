@@ -22,6 +22,17 @@ const deepMerge = (a, b) => {
 	return a;
 };
 
+/**
+ * Handles errors generated in the Svelte Vite plugin. Temporary approach until this plugin allows errors to be passed through to the browser
+ * @param {{ message: string }} warning - The warning object from the Svelte Vite plugin.
+ * @throws {Error}
+ */
+function errorHandler(warning) {
+	if (warning.message.includes('defined') || warning.message.includes('Empty Block')) {
+		throw new Error(warning.message, { cause: warning });
+	}
+}
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	extensions: ['.svelte', '.md'],
@@ -32,6 +43,7 @@ const config = {
 			postcss: true
 		})
 	],
+	onwarn: errorHandler,
 	kit: {
 		adapter: adapter({
 			strict: false

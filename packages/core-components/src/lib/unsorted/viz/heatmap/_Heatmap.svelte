@@ -14,11 +14,18 @@
 	} from '@evidence-dev/component-utilities/formatting';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { uiColours } from '@evidence-dev/component-utilities/colours';
+	import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
+	import getSortedDistinctValues from '@evidence-dev/component-utilities/getSortedDistinctValues';
+	import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 
 	export let data;
 	export let queryID;
 	export let x;
 	export let y;
+	export let xSort = undefined;
+	export let xSortOrder = 'asc';
+	export let ySort = undefined;
+	export let ySortOrder = 'asc';
 	export let value;
 	export let valueFmt;
 	export let valueLabels = true;
@@ -65,28 +72,21 @@
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 
 	export let leftPadding = 0; // user option to avoid label cutoffs
-	export let rightPadding = 0; // user option to avoid label cutoffs
+	export let rightPadding = 2; // user option to avoid label cutoffs
 	export let cellHeight = 30;
 
 	export let renderer = undefined;
 
+	export let nullsZero = true; // if nulls or missing records should display as zero or missing values (blank grey squares)
+	export let zeroDisplay = '—'; // what to display in place of zeros
+
 	$: height = undefined;
 	$: gridHeight = undefined;
 
-	function getDistinctValues(data, column) {
-		let distinctValues = [];
-		const distinctValueSet = new Set();
-		data.forEach((d) => {
-			distinctValueSet.add(d[column]);
-		});
-		distinctValues = [...distinctValueSet];
-		return distinctValues;
-	}
-
 	function mapColumnsToArray(arrayOfObjects, col1, col2, col3) {
-		return arrayOfObjects.map((obj) => [obj[col1], obj[col2], obj[col3]]);
+		// x and y must be converted to strings, otherwise echarts will interpret them as index positions
+		return arrayOfObjects.map((obj) => [`${obj[col1]}`, `${obj[col2]}`, obj[col3]]);
 	}
-
 	let xDistinct;
 	let yDistinct;
 	let arrayOfArrays;
@@ -103,6 +103,8 @@
 
 	$: try {
 		checkInputs(data, [x, y, value]);
+
+		data = getCompletedData(data, x, value, y, nullsZero); // works slightly differently than regular chart - requires y column to be treated as series for this function
 
 		if (min) {
 			// if min was user-supplied
@@ -125,8 +127,12 @@
 		minValue = min ?? Math.min(...data.map((d) => d[value]));
 		maxValue = max ?? Math.max(...data.map((d) => d[value]));
 
-		xDistinct = getDistinctValues(data, x);
-		yDistinct = getDistinctValues(data, y);
+		xDistinct = xSort
+			? getSortedDistinctValues(data, x, xSort, xSortOrder)
+			: getDistinctValues(data, x);
+		yDistinct = ySort
+			? getSortedDistinctValues(data, y, ySort, ySortOrder)
+			: getDistinctValues(data, y);
 
 		arrayOfArrays = mapColumnsToArray(data, x, y, value);
 
@@ -135,6 +141,14 @@
 		// ---------------------------------------------------------------------------------------
 		// Get column summary:
 		columnSummary = getColumnSummary(data);
+
+		// Check that x and y columns are strings
+		if (columnSummary[x].type === 'date' || columnSummary[y].type === 'date') {
+			throw Error(
+				'Heatmap can only accept string or numeric columns for x and y. If you would like to show dates, cast them to strings in your SQL query before using in the Heatmap.'
+			);
+		}
+
 		// Get formats:
 		valueFormat = columnSummary[value].format;
 
@@ -159,6 +173,9 @@
 		gridHeight = chartAreaHeight ?? Math.max(100, yDistinct.length * cellHeight); // height to add for each row (each item on y axis)
 		height = `${20 + legend * 35 + hasTitle * 18 + hasSubtitle * 18 + gridHeight}px`; // chart container height
 		config = {
+			textStyle: {
+				fontFamily: 'sans-serif'
+			},
 			title: {
 				text: title,
 				subtext: subtitle
@@ -189,6 +206,7 @@
 			},
 			yAxis: {
 				type: 'category',
+				inverse: true,
 				data: yDistinct,
 				splitArea: {
 					show: true
@@ -214,10 +232,14 @@
 					<span id="tooltip" style='font-weight: 600;'>${params.name}</span>
 						<br/>
 						<span>${formatTitle(value, value_format_object)}: </span>
-							<span style='float:right; margin-left: 10px;'>${formatValue(
-								Number.isNaN(params.value[2]) ? 0 : params.value[2],
-								value_format_object
-							)}</span>`;
+							<span style='float:right; margin-left: 10px;'>${
+								params.value[2] === 0
+									? zeroDisplay
+									: formatValue(
+											Number.isNaN(params.value[2]) ? 0 : params.value[2],
+											value_format_object
+									  )
+							}</span>`;
 
 					return tooltipOutput;
 				},
@@ -267,7 +289,9 @@
 					label: {
 						show: valueLabels,
 						formatter: function (params) {
-							return formatValue(params.value[2], value_format_object);
+							return params.value[2] === 0
+								? zeroDisplay
+								: formatValue(params.value[2], value_format_object);
 						}
 					},
 					labelLayout: {

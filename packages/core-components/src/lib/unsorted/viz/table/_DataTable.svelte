@@ -434,6 +434,7 @@
 	{/each}
 
 	<div
+		role="none"
 		class="table-container"
 		transition:slide|local
 		style:margin-top={marginTop}
@@ -551,20 +552,22 @@
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(0)}
-						><div class="page-icon flex items-center">
-							<Icon src={ChevronsLeft} />
-						</div></button
 					>
+						<div class="page-icon flex items-center">
+							<Icon src={ChevronsLeft} />
+						</div>
+					</button>
 					<button
 						aria-label="previous-page"
 						class="page-changer"
 						class:hovering
 						disabled={currentPage === 1}
 						on:click={() => goToPage(currentPage - 2)}
-						><div class="page-icon h-[0.83em] flex items-center">
-							<Icon src={ChevronLeft} class="h-[0.83em]" />
-						</div></button
 					>
+						<div class="page-icon h-[0.83em] flex items-center">
+							<Icon src={ChevronLeft} class="h-[0.83em]" />
+						</div>
+					</button>
 					<span class="page-count"
 						>Page <input
 							class="page-input"
@@ -588,20 +591,22 @@
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(currentPage)}
-						><div class="page-icon h-[0.83em] flex items-center">
-							<Icon src={ChevronRight} class="h-[0.83em]" />
-						</div></button
 					>
+						<div class="page-icon h-[0.83em] flex items-center">
+							<Icon src={ChevronRight} class="h-[0.83em]" />
+						</div>
+					</button>
 					<button
 						aria-label="last-page"
 						class="page-changer"
 						class:hovering
 						disabled={currentPage === pageCount}
 						on:click={() => goToPage(pageCount - 1)}
-						><div class="page-icon flex items-center">
-							<Icon src={ChevronsRight} />
-						</div></button
 					>
+						<div class="page-icon flex items-center">
+							<Icon src={ChevronsRight} />
+						</div>
+					</button>
 				</div>
 				{#if downloadable}
 					<DownloadData class="download-button" data={tableData} {queryID} display={hovering} />
@@ -661,21 +666,26 @@
 		height: var(--scrollbar-size);
 		width: var(--scrollbar-size);
 	}
+
 	.container::-webkit-scrollbar-track {
 		background-color: var(--scrollbar-track-color);
 	}
+
 	.container::-webkit-scrollbar-thumb {
 		background-color: var(--scrollbar-color);
 		border-radius: 7px;
 		background-clip: padding-box;
 	}
+
 	.container::-webkit-scrollbar-thumb:hover {
 		background-color: var(--scrollbar-active-color);
 	}
+
 	.container::-webkit-scrollbar-thumb:vertical {
 		min-height: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
+
 	.container::-webkit-scrollbar-thumb:horizontal {
 		min-width: var(--scrollbar-minlength);
 		border: 3px solid transparent;
@@ -846,6 +856,7 @@
 			height: 1.2em;
 			width: 1.2em;
 		}
+
 		.page-icon {
 			height: 1.2em;
 			width: 1.2em;

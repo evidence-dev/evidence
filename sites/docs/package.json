@@ -1,6 +1,6 @@
 {
 	"name": "evidence-docs",
-	"version": "2.0.6",
+	"version": "2.0.8",
 	"private": true,
 	"scripts": {
 		"docusaurus": "docusaurus",
@@ -32,7 +32,7 @@
 		"url-loader": "^4.1.1"
 	},
 	"devDependencies": {
-		"typescript": "4.9.5",
+		"typescript": "5.4.2",
 		"webpack": "^5.76.1"
 	},
 	"browserslist": {

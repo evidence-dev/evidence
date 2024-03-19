@@ -9,6 +9,7 @@ import type {
 	Runner
 } from './types.js';
 
+import { writable } from 'svelte/store';
 import { Query, sql, count } from '@uwdata/mosaic-sql';
 import { buildId } from './utils/buildId.js';
 import { handleMaybePromise } from './utils/handleMaybePromise.js';
@@ -22,6 +23,14 @@ import {
 export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Indicate that QueryStore is readable like an array */
 	[index: number]: QueryResult;
+
+	static activeQueries = writable(new Set<string>());
+	static addActiveQuery(id: string) {
+		QueryStore.activeQueries.update((queries) => queries.add(id));
+	}
+	static removeActiveQuery(id: string) {
+		QueryStore.activeQueries.update((queries) => (queries.delete(id), queries));
+	}
 
 	/** Internal Query Builder */
 	readonly #query = new Query();
@@ -316,7 +325,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			}
 		);
 
-		if (opts.noResolve) {
+		if (opts.noResolve && !opts.initialData) {
 			this.#dataLoading = true;
 			this.#metaLoading = true;
 			this.#lengthLoading = true;
@@ -404,6 +413,19 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/** Force the QueryStore to fetch data */
 	fetch = () => this.#fetchData();
 
+	/**
+	 * Fetch data in the background,
+	 * likely meaning `initialData` was provided
+	 */
+	backgroundFetch = async () => {
+		await new Promise((resolve) => setTimeout(resolve, 0));
+		handleMaybePromise(
+			() => {},
+			() => this.#exec(`--data\n${this.#query.toString()}`, this.id),
+			() => {}
+		);
+	};
+
 	/** Keep a copy of the promise so we can wait for loading in multiple places */
 	#dataFetchPromise: MaybePromise<unknown | void>;
 
@@ -426,15 +448,20 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 		const queryWithComment = `--data\n${this.#query.toString()}`;
 
+		QueryStore.addActiveQuery(this.id);
 		this.#dataFetchPromise = handleMaybePromise<QueryResult[], unknown>(
 			(result) => {
 				this.#values = result;
 				this.#dataLoading = false;
 				this.#dataLoaded = true;
+				QueryStore.removeActiveQuery(this.id);
 				return this.#fetchLength();
 			},
 			() => this.#exec(queryWithComment, this.id),
-			this.#setError
+			(err) => {
+				this.#setError(err);
+				QueryStore.removeActiveQuery(this.id);
+			}
 		);
 
 		return this.#dataFetchPromise;

@@ -16,7 +16,7 @@
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;
 
-	/** @type {"pass" | "warn" | "error"}*/
+	/** @type {'pass' | 'warn' | 'error'}*/
 	export let emptySet = undefined;
 
 	/** @type {string}*/
@@ -41,7 +41,7 @@
 		chartType={spreadProps.chartType}
 		{isInitial}
 	/>
-	<ErrorChart slot="error" {chartType} error={loaded.error.message} />
+	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
 	<Sparkline {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Sparkline>

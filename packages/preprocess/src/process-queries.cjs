@@ -141,6 +141,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							fetch_maybepromise = query_store.fetch();
 						}
 
+						// if we have initial data, execute the query anyways in the background, ignoring results
+						// this helps fetch some parquet which can speed up future queries
+						if (initialData) {
+							query_store.backgroundFetch();
+						}
 
 						if (_${id}) {
 							// Query has already been created
@@ -281,6 +286,24 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}, 5000);
 		};
 
+		const activeQueries = QueryStore.activeQueries;
+
+		let loadingQueriesToast = 0;
+		$: if ($activeQueries.size > 0) {
+			clearTimeout(loadingQueriesToast);
+			loadingQueriesToast = setTimeout(() => {
+				toasts.add({
+					id: 'LoadingToast',
+					title: '',
+					message: 'Loading...',
+					status: 'info'
+				}, 2 ** 31 - 1);
+			}, 1000);
+		} else {
+			clearTimeout(loadingQueriesToast);
+			toasts.dismiss('LoadingToast');
+		}
+
 		let __has_hmr_run = false
 	    if (import.meta?.hot) {
 	        import.meta.hot.on("vite:afterUpdate", () => {
@@ -321,6 +344,7 @@ const processQueries = (componentDevelopmentMode) => {
 		markup({ content, filename }) {
 			if (filename.endsWith('.md')) {
 				let fileQueries = extractQueries(content);
+
 				dynamicQueries[getRouteHash(filename)] = fileQueries.reduce((acc, q) => {
 					acc[q.id] = q;
 					return acc;
@@ -339,6 +363,7 @@ const processQueries = (componentDevelopmentMode) => {
 				const frontmatter = containsFrontmatter(content);
 				if (frontmatter) {
 					const contentWithoutFrontmatter = content.substring(frontmatter.length + 6);
+
 					const output =
 						`---\n${frontmatter}\n---` + externalQueryViews + contentWithoutFrontmatter;
 					return {
@@ -353,8 +378,9 @@ const processQueries = (componentDevelopmentMode) => {
 		},
 		script({ content, filename, attributes }) {
 			if (filename.endsWith('.md')) {
-				if (attributes.context != 'module') {
+				if (attributes.context !== 'module') {
 					const duckdbQueries = dynamicQueries[getRouteHash(filename)];
+
 					return {
 						code: createDefaultProps(filename, componentDevelopmentMode, duckdbQueries) + content
 					};

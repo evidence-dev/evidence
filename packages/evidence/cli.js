@@ -10,6 +10,13 @@ import sade from 'sade';
 import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 
+import { loadEnv } from 'vite';
+
+const loadEnvFile = () => {
+	const envFile = loadEnv('', '.', ['EVIDENCE_']);
+	Object.assign(process.env, envFile);
+};
+
 const populateTemplate = function () {
 	clearQueryCache();
 
@@ -38,7 +45,7 @@ const populateTemplate = function () {
 
 const clearQueryCache = function () {
 	fs.removeSync('.evidence/template/.evidence-queries/cache');
-	console.log('Cleared query cache');
+	console.log('Cleared query cache\n');
 };
 
 const runFileWatcher = function (watchPatterns) {
@@ -181,6 +188,10 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
+		console.log(
+			chalk.cyan('Starting Evidence development workspace - this can take up to 90 seconds\n')
+		);
+
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
@@ -206,12 +217,13 @@ ${chalk.bold('[!] Unable to load source manifest')}
 		}
 
 		populateTemplate();
+
 		const watchers = runFileWatcher(watchPatterns);
 		const flatArgs = flattenArguments(args);
 
-		logQueryEvent('dev-server-start');
+		logQueryEvent('dev-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
-		const child = spawn('npx vite dev --port 3000', flatArgs, {
+		const child = spawn(`npx vite dev --port 3000`, flatArgs, {
 			shell: true,
 			detached: false,
 			cwd: '.evidence/template',
@@ -225,6 +237,23 @@ ${chalk.bold('[!] Unable to load source manifest')}
 	});
 
 prog
+	.command('env-debug')
+	.option('--include-values', 'Includes Environment Variable Values, this will show secrets!')
+	.describe('Prints out Evidence variables from the environment and .env file')
+	.action((args) => {
+		const { 'include-values': includeValues } = args;
+		loadEnvFile();
+		const evidenceVars = Object.fromEntries(
+			Object.entries(process.env).filter(([k]) => k.startsWith('EVIDENCE_'))
+		);
+		if (includeValues) {
+			console.table(evidenceVars);
+		} else {
+			console.table(Object.keys(evidenceVars));
+		}
+	});
+
+prog
 	.command('build')
 	.option('--debug', 'Enables verbose console logs')
 	.describe('build production outputs')
@@ -233,6 +262,7 @@ prog
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
 		}
+		loadEnvFile();
 		populateTemplate();
 
 		logQueryEvent('build-start');
@@ -248,6 +278,7 @@ prog
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
 		}
+		loadEnvFile();
 		populateTemplate();
 		strictMode();
 
@@ -282,6 +313,7 @@ prog
 			);
 		}
 
+		loadEnvFile();
 		if (!opts.debug)
 			process.on('uncaughtException', (e) => {
 				console.error(e.message);
@@ -329,6 +361,7 @@ prog
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
 		}
+		loadEnvFile();
 		const buildExists = fs.lstatSync(path.join('build'), {
 			throwIfNoEntry: false
 		});
@@ -339,7 +372,7 @@ prog
 		}
 		const flatArgs = flattenArguments(args);
 
-		logQueryEvent('preview-server-start');
+		logQueryEvent('preview-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
 		const child = spawn('npx vite preview --outDir build --port 3000', flatArgs, {
 			shell: true,

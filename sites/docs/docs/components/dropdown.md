@@ -88,6 +88,25 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 />
 ````
 
+### Multi-Select
+
+<img src="/img/dropdown-multi-select.png" alt="multi-select dropdown" width="500"/>
+
+````markdown
+<Dropdown
+    data={query_name} 
+    name=name_of_dropdown
+    value=column_name
+    multiple=true
+/>
+
+```sql filtered_query
+select *
+from source_name.table
+where column_name in ${inputs.name_of_dropdown.value}
+```
+````
+
 ### Filtering a Query
 
 ````markdown
@@ -100,7 +119,7 @@ Note that "%" is a wildcard character in SQL that can be used with `where column
 ```sql filtered_query
 select *
 from source_name.table
-where column_name like '${inputs.name_of_dropdown}'
+where column_name like '${inputs.name_of_dropdown.value}'
 ```
 ````
 
@@ -118,7 +137,7 @@ where column_name like '${inputs.name_of_dropdown}'
     </tr>
         <tr>	
         <td>name</td>	
-        <td>Name of the dropdown, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
+        <td>Name of the dropdown, used to reference the selected value elsewhere as {'{'}inputs.name.value{'}'}</td>	
         <td class='tcenter'>Yes</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>-</td>
@@ -143,6 +162,13 @@ where column_name like '${inputs.name_of_dropdown}'
         <td class='tcenter'>No</td>
         <td class='tcenter'>-</td>
         <td class='tcenter'>First value in dropdown</td>
+    </tr>
+    <tr>    
+        <td>multiple</td>
+        <td>Enables multi-select which returns a list</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>boolean</td>
+        <td class='tcenter'>false</td>
     </tr>
     <tr>	
         <td>label</td>	

@@ -49,6 +49,17 @@
 	let:args
 	args={{
 		data: fakerSeries.airlines.flights.store,
+		metricLabel: 'Flights'
+	}}
+>
+	<DimensionGrid {...args} />
+</Story>
+
+<Story
+	name="Labelled Metric with Long Label"
+	let:args
+	args={{
+		data: fakerSeries.airlines.flights.store,
 		metricLabel: 'A very long metric label that I cooked up for this purpose'
 	}}
 >
