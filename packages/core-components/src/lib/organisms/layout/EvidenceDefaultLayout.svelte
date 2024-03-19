@@ -80,7 +80,7 @@
 				{/if}
 			</div>
 			{#if !$navigating}
-				<article class="select-text markdown">
+				<article id="evidence-main-article" class="select-text markdown">
 					<slot name="content" />
 				</article>
 			{:else}
