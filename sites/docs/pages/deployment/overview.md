@@ -37,7 +37,7 @@ The command `npm run build:strict` is a much less permissive build command. Use 
 This command will fail if:
 
 - **Any SQL query fails.** A successful query returning no rows is _not_ a failure
-- **Any component renders an error state.** A component passed a valid query returning no rows _will_ fail - you can avoid this with an [{#if} statement](/core-concepts/if-else) if needed.
+- **Any component renders an error state.** A component passed a valid query returning no rows _will_ fail - you can avoid this with an [`&#123;#if&#125;` statement](/core-concepts/if-else) if needed.
 
 ## Storing Credentials
 

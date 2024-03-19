@@ -35,7 +35,7 @@ import TabItem from '@theme/TabItem';
 
 <Tabs>
 
-<TabItem value="standalone" label="Command Line" default>
+<Tab value="standalone" label="Command Line" default>
 
 ```shell
 npx degit evidence-dev/template my-project
@@ -45,9 +45,9 @@ npm run sources
 npm run dev
 ```
 
-</TabItem>
+</Tab>
 
-<TabItem value="dbt" label="With dbt">
+<Tab value="dbt" label="With dbt">
 
 ```shell
 cd path/to/your/dbt/project
@@ -61,9 +61,9 @@ npm --prefix ./reports run dev
 <p class="standard-margin">This allows changes across your modelling layer (in <code>/models</code>) and your reporting layer (in <code>reports</code>) in the same commits.</p>
 <p class="standard-margin">This currently needs to be done from the terminal, rather than from the dbt Cloud UI.</p>
 
-</TabItem>
+</Tab>
 
-<TabItem value="codespaces" label="Codespaces">
+<Tab value="codespaces" label="Codespaces">
 
 <a class="external" href="https://github.com/codespaces/new?machine=standardLinux32gb&repo=399252557&ref=main&geo=UsEast">
 Create Evidence Codespace
@@ -72,12 +72,12 @@ Create Evidence Codespace
 
 **Note:** Codespaces is much faster on the Desktop app. After the Codespace has booted, select the hamburger menu &rarr; Open in VS Code Desktop.
 
-</TabItem>
+</Tab>
 
-<TabItem value="docker" label="Docker">
+<Tab value="docker" label="Docker">
 <p class="standard-margin">Evidence provides a development Docker image.</p>
 <p class="standard-margin">See our <a href="https://github.com/evidence-dev/docker-devenv">Docker Development Environment repository</a> for instructions.</p>
-</TabItem>
+</Tab>
 </Tabs>
 
 ## System Requirements

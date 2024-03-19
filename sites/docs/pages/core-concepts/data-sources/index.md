@@ -98,11 +98,7 @@ We're adding new connectors regularly. [Create a GitHub issue](https://github.co
 The source code for Evidence's connectors is available [on GitHub](https://github.com/evidence-dev/evidence/tree/main/packages)
 
 
-## Data source specific info
-
-All databases can be connected via the UI settings page as described above. Where relevant, additional information is provided below.
-
-### BigQuery
+## BigQuery
 
 Evidence supports connecting to Google BigQuery by using the gcloud CLI, a [service account](https://cloud.google.com/iam/docs/service-accounts) and a JSON key, or an OAuth access token.
 
@@ -145,7 +141,7 @@ gcloud auth application-default print-access-token
 Now you can copy the access token and use it in your Evidence project.
 
 
-### Snowflake
+## Snowflake
 
 Evidence supports connecting to Snowflake using a [Snowflake Account](https://docs.snowflake.com/en/user-guide/api-authentication), [Key-Pair Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth.html), [Browser-Based SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-browser-based-sso), or [Native SSO through Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use#label-native-sso-okta).  All Snowflake column names will be converted to lowercase in Evidence.
 
@@ -161,10 +157,10 @@ The Browser-Based SSO method uses a browser-based SSO flow to authenticate. To u
 #### Native SSO through Okta
 The Native SSO through Okta method uses Okta to authenticate. To use this method, you will need to have an Okta account with MFA disabled connected to your Snowflake account.
 
-### Redshift
+## Redshift
 The Redshift connector uses the Postgres connector under the hood, so configuration options are similar.
 
-### PostgreSQL
+## PostgreSQL
 Some databases can be connected by using the Postgres connector, including Timescale.
 
 #### SSL
@@ -184,7 +180,7 @@ postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootc
 
 Replace the various `{properties}` as needed, and replace `/path/to/file/ca-certificate.crt` with the path and filename of your certificate.
 
-### Trino
+## Trino
 
 #### Supported Authentication Types
 
@@ -210,7 +206,7 @@ Password: The password you use to login to your Starburst account
 
 Alternatively, you can also create a service account at `https://<YOUR_DOMAIN>.galaxy.starburst.io/service-accounts` and use this to connect.
 
-### Microsoft SQL Server {#mssql}
+## Microsoft SQL Server
 
 #### Trust Server Certificate
 
@@ -220,7 +216,7 @@ The `trustServerCertificate` option indicates whether the channel will be encryp
 
 The `encrypt` option indicates whether SQL Server uses SSL encryption for all data sent between the client and server if the server has a certificate installed. Necessary for Azure databases.
 
-### MySQL
+## MySQL
 
 #### SSL
 
@@ -232,11 +228,11 @@ SSL options are:
 - A credentials object
 
 
-### SQLite
+## SQLite
 
 SQLite is a local file-based database. The SQLite file should be stored in the directory `sources/[your_source_name]/`.
 
-### DuckDB
+## DuckDB
 
 DuckDB is a local file-based database. If using a persistent database, it should be stored in the directory `sources/[your_source_name]/`.
 
@@ -250,11 +246,11 @@ In the `filename` field, enter `md:?motherduck_token=[YOUR_SERVICE_TOKEN]`.
 
 You can also specify a database: `md:my_database?motherduck_token=[YOUR_SERVICE_TOKEN]`.
 
-### Databricks
+## Databricks
 
 Databricks is a cloud-based data lake. Evidence supports connecting to Databricks using a [personal access token](https://docs.databricks.com/en/dev-tools/auth.html#generate-a-token).
 
-### Cube
+## Cube
 
 Cube offers semantic layer for your data. You can connect using the [Cube SQL API](https://cube.dev/docs/product/apis-integrations/sql-api). 
 
@@ -262,7 +258,7 @@ Cube's API is PostgreSQL compatible, so you can use the Evidence PostgreSQL conn
 
 You can find the credentials to connect to Cube on the BI Integrations page under the SQL API Connection tab (you may need to enable the SQL API first).
 
-### Google Sheets
+## Google Sheets
 
 Adding data from Google Sheets requires a a [service account](https://cloud.google.com/iam/docs/service-accounts).
 
@@ -291,7 +287,7 @@ Where `[your_tab_name]` is the name of the tab in your Google Sheet, with spaces
 
 
 
-### CSV files
+## CSV files
 
 In Evidence, you can query local CSV files directly in SQL.
 

@@ -107,7 +107,7 @@ To use our new header, you must import it in place of the existing header. The g
 
 We start by copying the file `+layout.svelte` from `.evidence/template/src/pages/` into `/pages`, the same directory where we put new report [pages](/core-concepts/pages) as we create them. After opening this newly copied file, delete the import statement for the `Header` component (inside the script tag) as follows, and add a new import statement to import our new component:
 
-```js title="+layout.svelte"
+```javascript title="+layout.svelte"
 import Header from "$lib/MyHeader.svelte";
 ```
 
@@ -142,7 +142,7 @@ To use these in your project, you must import them explicitly in the script tag 
 
 #### checkInputs `checkInputs(data, reqCols, optCols)`
 Accepts a dataset and list of columns, and returns an error if the dataset is empty, required columns are missing, or referenced columns do not exist in the data
-```js
+```javascript
 import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 ```
 - `data`: the query result you need to check
@@ -153,7 +153,7 @@ import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 
 #### ErrorChart `<ErrorChart error={error} chartType="My Chart"/>`
 A component used to display an error state on the page
-```js
+```javascript
 import { ErrorChart } from '@evidence-dev/core-components';
 ```
 - `error`: the error message to display
@@ -166,7 +166,7 @@ import { ErrorChart } from '@evidence-dev/core-components';
 
 #### getDistinctValues `getDistinctValues(data, column)`
 Returns an array of distinct values from a specified column in a dataset
-```js
+```javascript
 import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValues';
 ```
 - `data`: query result to pull the values from
@@ -177,7 +177,7 @@ import getDistinctValues from '@evidence-dev/component-utilities/getDistinctValu
 
 #### getDistinctCount `getDistinctCount(data, column)`
 Returns the count of distinct values in a column
-```js
+```javascript
 import getDistinctCount from '@evidence-dev/component-utilities/getDistinctCount';
 ```
 - `data`: query result to pull the values from
@@ -188,7 +188,7 @@ import getDistinctCount from '@evidence-dev/component-utilities/getDistinctCount
 
 #### getSortedData `getSortedData(data, col, isAsc)`
 Returns the original dataset, sorted by the specific column and direction
-```js
+```javascript
 import getSortedData from '@evidence-dev/component-utilities/getSortedData';
 ```
 - `data`: query result to pull the values from
@@ -200,7 +200,7 @@ import getSortedData from '@evidence-dev/component-utilities/getSortedData';
 
 #### getColumnSummary `getColumnSummary(data, returnType = "object")`
 Returns an object with information about each column (title, min, max, format, etc.)
-```js
+```javascript
 import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 ```
 - `data`: query result to summarize
@@ -211,7 +211,7 @@ import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary
 
 #### getCompletedData `getCompletedData(data, x, y, series, nullsZero = false, fillX = false)`
 Returns the original dataset with rows filled in as needed to complete a continuous number series
-```js
+```javascript
 import getCompletedData from '@evidence-dev/component-utilities/getCompletedData';
 ```
 - `data`: query result which requires completed data
@@ -228,7 +228,7 @@ import getCompletedData from '@evidence-dev/component-utilities/getCompletedData
 
 #### formatValue `formatValue(value, columnFormat = undefined, columnUnitSummary = undefined)`
 Returns a formatted value
-```js
+```javascript
 import { formatValue } from '@evidence-dev/component-utilities/formatting';
 ```
 - `value`: value to format
@@ -240,7 +240,7 @@ import { formatValue } from '@evidence-dev/component-utilities/formatting';
 
 #### fmt `fmt(value, format)`
 Simpler version of the `formatValue` function which does not require a format object
-```js
+```javascript
 import { fmt } from '@evidence-dev/component-utilities/formatting';
 ```
 - `value`: value to be formatted
@@ -251,7 +251,7 @@ import { fmt } from '@evidence-dev/component-utilities/formatting';
 
 #### formatTitle `formatTitle(column, columnFormat)`
 Returns a formatted column title (with proper letter casing)
-```js
+```javascript
 import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 ```
 - `column`: name of column to be formatted

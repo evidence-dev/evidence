@@ -54,7 +54,7 @@ The string inside the square brackets becomes a [parameter](#using-page-paramete
 
 The parameter passed in the URL can be used in the page. For example, if the URL is `/customers/acme`, the parameter value is `acme`, and you access it in markdown as follows:
 
-```js
+```javascript
 {params.customer}
 ```
 
@@ -73,7 +73,7 @@ group by 1
 
 Adding this to a `<Value/>` component:
 
-```js
+```javascript
 <Value
     data={customers}
     column=sales_usd

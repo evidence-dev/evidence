@@ -12,7 +12,7 @@ Conditionals are useful for managing information overload, and ensuring that you
 
 Conditionals allow you to show a section of your document if a condition is met. You can optionally include `{:else}` and `{:else if}` blocks inside of your `{#if}...{/if}` blocks.
 
-```js
+```javascript
 {#if condition}
 
 Display some content.
@@ -32,7 +32,7 @@ Something completely different.
 
 Hide a table if it is empty.
 
-```js
+```javascript
 {#if query_name.length !== 0}
 
 <DataTable data={query_name}>
@@ -44,7 +44,7 @@ Hide a table if it is empty.
 
 Imagine creating reports to encourage sales leaders "up-sell" low margin customers, but only when there were enough low-margin customers to do that work in-bulk. This could be done using a conditional.
 
-```js
+```javascript
 {#if low_margin_customers.length > 15}
 
 The following customers are generating low margins.

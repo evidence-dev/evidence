@@ -75,7 +75,7 @@ Create repeating elements by looping through data. [More on Loops](/core-concept
 
 Control what is displayed using data through if and else statements. [More on If / Else](/core-concepts/if-else).
 
-```js
+```javascript
 {#if orders_by_month[0].sales_usd > orders_by_month[1].sales_usd}
 
 Sales are up month-over-month.
