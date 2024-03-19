@@ -1,6 +1,7 @@
 ---
 title: Dropdown
 sidebar_position: 40
+sidebar_badge: Updated
 ---
 
 Creates a dropdown menu with a list of options that can be selected. The selected option can be used to filter queries or in markdown.

@@ -1,6 +1,7 @@
 ---
 title: Date Range
 sidebar_position: 40
+sidebar_badge: Updated
 ---
 
 Creates a date picker that can be used to filter a query. The picker expands to show a calendar when clicked, and the user can pick a start and end date.

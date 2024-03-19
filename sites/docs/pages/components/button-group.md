@@ -1,6 +1,7 @@
 ---
 title: Button Group
 sidebar_position: 40
+sidebar_badge: Updated
 ---
 
 Creates a group of single-select buttons for quick filtering

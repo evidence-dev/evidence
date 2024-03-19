@@ -2,6 +2,7 @@
 sidebar_position: 10
 title: Dimension Grid
 hide_table_of_contents: false
+sidebar_badge: New
 ---
 
 Dimension grid produces an interactive grid of one dimension tables, one for each string column in the source table. The dimension grid can can also be used as an input. 
