@@ -4,25 +4,42 @@
 	let headers = [];
 	let observer;
 
+	function slugify(text){
+		return text.toString().toLowerCase()
+			.replace(/\s+/g, '-')           // Replace spaces with -
+			.replace(/\./g, '-')			// Replace periods with -
+			.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+			.replace(/\-\-+/g, '-')         // Replace multiple - with single -
+			.replace(/^-+/, '')             // Trim - from start of text
+			.replace(/-+$/, '');            // Trim - from end of text
+	}
+
 	function updateLinks() {
-		headers = Array.from(document.querySelectorAll('h1.markdown, h2.markdown'));
-		headers.forEach((header, i) => {
-			// Headers may contain values that change in response to user input, so we create our anchors as just the position on the page.
-			header.id = encodeURIComponent(i + 1);
+		headers = Array.from(document.querySelectorAll('h1.markdown, h2.markdown, h3.markdown'));
+		headers.forEach((header) => {
+			// Headers may contain values that change in response to user input, so we create our anchors as the initial value of the header.
+			// We lowercase the innerText and replace spaces with hyphens to match the default slugify behavior in markdown.
+			header.id = slugify(header.innerText);
 		});
 	}
 
 	function observeDocumentChanges() {
-		observer = new MutationObserver(() => {
-			updateLinks();
-		});
+    // Need to observe entire article because headers may be added or removed by inputs
+	const articleContent = document.querySelector('article');
 
-		headers.forEach((header) => {
-			observer.observe(header, { subtree: true, characterData: true, childList: true });
-		});
+    if (!articleContent) {
+        console.error('Element with tag "article" not found');
+        return;
+    }
 
-		return observer;
-	}
+    observer = new MutationObserver(() => {
+        updateLinks();
+    });
+
+    observer.observe(articleContent, { childList: true, subtree: true });
+
+    return observer;
+}
 
 	onMount(() => {
 		updateLinks();
@@ -38,11 +55,10 @@
 	<span class="block text-xs sticky top-0 mb-2 text-gray-950 bg-white shadow-white font-medium">
 		On this page
 	</span>
-	{#each headers as header, i}
+	{#each headers as header}
 		<a
-			href={'#' + encodeURIComponent(i + 1)}
+			href={'#' + header.id}
 			class={header.nodeName.toLowerCase()}
-			class:first={i === 0}
 		>
 			{header.innerText}
 		</a>
@@ -60,6 +76,10 @@
 
 	a:hover {
 		@apply underline;
+	}
+
+	a.h3 {
+		@apply pl-3 text-gray-500;
 	}
 
 	a.h2 {
