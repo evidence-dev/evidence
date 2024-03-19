@@ -1109,8 +1109,8 @@ importers:
         specifier: 2.5.4
         version: 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.1.6)
       '@sveltejs/package':
-        specifier: ^2.2.7
-        version: 2.2.7(svelte@4.2.12)(typescript@5.4.2)
+        specifier: ^2.3.0
+        version: 2.3.0(svelte@4.2.12)(typescript@5.4.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: 3.0.2
         version: 3.0.2(svelte@4.2.12)(vite@5.1.6)
@@ -1382,8 +1382,8 @@ importers:
         version: 4.1.2
     devDependencies:
       '@sveltejs/package':
-        specifier: 2.2.7
-        version: 2.2.7(svelte@4.2.12)(typescript@5.4.2)
+        specifier: 2.3.0
+        version: 2.3.0(svelte@4.2.12)(typescript@5.4.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: 3.0.2
         version: 3.0.2(svelte@4.2.12)(vite@5.1.6)
@@ -9024,8 +9024,8 @@ packages:
       tiny-glob: 0.2.9
       vite: 5.1.6(@types/node@20.11.28)
 
-  /@sveltejs/package@2.2.7(svelte@4.2.12)(typescript@5.4.2):
-    resolution: {integrity: sha512-/vvmrQO2mMvROdM/iGRHtRn+ValnK9xzB50pqRcX0IvoeVoTq7uhYf+KifrZTluBA+km6AX/WXRXajrgrgbmvw==}
+  /@sveltejs/package@2.3.0(svelte@4.2.12)(typescript@5.4.2):
+    resolution: {integrity: sha512-wmtwEfi3gQnmtotAjygRHR6cmLfpblQl1dU764f3N2I5DPe34llFs44bHOYcuk91Bp2sSq6bWUmNwxGlYCchOA==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     peerDependencies:
