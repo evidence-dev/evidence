@@ -28,7 +28,9 @@ hide_table_of_contents: false
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
-
+```markdown
+<Delta data={sales} column=growth fmt=pct1 neutralMin=-0.4 neutralMax=0.4 />
+```
 <img src="/img/delta-neut.png" width="130"/>
 
 ### Chips
@@ -47,7 +49,9 @@ hide_table_of_contents: false
 
 #### Neutral*
 *Values are not defined as neutral until you define a range using the `neutralMin` and `neutralMax` props
-
+```markdown
+<Delta data={sales} column=growth fmt=pct1 chip=true neutralMin=-0.4 neutralMax=0.4 />
+```
 <img src="/img/delta-chip-neut.png" width="130"/>
 
 ### Symbol Position
