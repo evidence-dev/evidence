@@ -108,8 +108,9 @@ export default (node, option) => {
 	});
 
 	// Resize logic:
-	let resizeObserver;
-	const containerElement = document.querySelector('div.content > article');
+	const containerElement = document.getElementById('evidence-main-article');
+	// watching parent element is necessary for charts within `Fullscreen` components
+	const parentElement = node.parentElement;
 	const onWindowResize = debounce(() => {
 		chart.resize({
 			animation: {
@@ -118,6 +119,13 @@ export default (node, option) => {
 		});
 		updateLabelWidths();
 	}, 100);
+	if (window.ResizeObserver && containerElement) {
+		resizeObserver = new ResizeObserver(onWindowResize);
+		resizeObserver.observe(containerElement);
+		resizeObserver.observe(parentElement);
+	} else {
+		window.addEventListener('resize', onWindowResize);
+	}
 
 	// Label width setting:
 	const updateLabelWidths = () => {
@@ -153,13 +161,6 @@ export default (node, option) => {
 		}
 	};
 
-	if (window.ResizeObserver && containerElement) {
-		resizeObserver = new ResizeObserver(onWindowResize);
-		resizeObserver.observe(containerElement);
-	} else {
-		window.addEventListener('resize', onWindowResize);
-	}
-
 	const updateChart = (option) => {
 		chart.setOption(
 			{
@@ -189,6 +190,7 @@ export default (node, option) => {
 		destroy() {
 			if (resizeObserver) {
 				resizeObserver.unobserve(containerElement);
+				resizeObserver.unobserve(parentElement);
 			} else {
 				window.removeEventListener('resize', onWindowResize);
 			}
