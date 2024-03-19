@@ -4,7 +4,7 @@
 
 <script>
 	import { presets, setButtonGroupContext } from './lib.js';
-	import { derived, writable } from 'svelte/store';
+	import { writable, readonly } from 'svelte/store';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { getContext } from 'svelte';
 	import { buildInputQuery } from '@evidence-dev/component-utilities/buildQuery';
@@ -23,15 +23,13 @@
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
-	let currentValue = null;
 	const valueStore = writable(null);
-	$: $valueStore = currentValue;
-	$: $inputs[name] = currentValue?.value ?? null;
 
-	setButtonGroupContext(
-		(v) => (currentValue = v),
-		derived([valueStore], ([$v]) => $v)
-	);
+	setButtonGroupContext((v) => {
+		$valueStore = v;
+		// the assignment to $inputs is necessary to trigger the change on SSR
+		$inputs[name] = v?.value ?? null;
+	}, readonly(valueStore));
 
 	/////
 	// Query-Related Things
