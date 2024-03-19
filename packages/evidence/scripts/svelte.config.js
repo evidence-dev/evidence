@@ -51,6 +51,9 @@ const config = {
 		files: {
 			routes: 'src/pages',
 			lib: 'src/components'
+		},
+		prerender: {
+			handleMissingId: 'ignore' // header ids are created dynamically at runtime so are not available during prerendering
 		}
 	}
 };
