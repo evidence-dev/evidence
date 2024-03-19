@@ -52,5 +52,7 @@
 	<button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
 		><Icon class="w-6 h-6" src={X} /></button
 	>
-	<slot />
+	<div class="py-2 px-6">
+		<slot />
+	</div>
 </dialog>
