@@ -36,9 +36,9 @@ When writing a plugin from scratch, this is the preferred method.
 #### Steps
 1. Add the following to each component in your plugin to "flag" the component as something that should be imported as part of the plugin (at the top of the component's `.svelte` file)
     ```html title="ComponentOne.svelte"
-    <script context="module">
+    &lt;script context="module"&gt;
         export const evidenceInclude = true;
-    </script>
+    &lt;/script&gt;
     ```
 2. Add an `index.js` file to the `src/lib` directory
 3. Add one line to `index.js` per component in your plugin. This will export the components, making them available in Evidence:
