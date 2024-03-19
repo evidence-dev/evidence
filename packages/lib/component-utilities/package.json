@@ -1,0 +1,34 @@
+{
+	"name": "@evidence-dev/component-utilities",
+	"version": "2.4.2",
+	"description": "",
+	"main": "index.js",
+	"exports": {
+		"./*": "./src/*.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"@faker-js/faker": "^8.0.2",
+		"vitest": "^0.34.1"
+	},
+	"scripts": {
+		"test": "vitest --run",
+		"test:watch": "vitest"
+	},
+	"type": "module",
+	"dependencies": {
+		"@evidence-dev/query-store": "workspace:*",
+		"@steeze-ui/simple-icons": "^1.7.1",
+		"@steeze-ui/svelte-icon": "1.5.0",
+		"@steeze-ui/tabler-icons": "2.1.1",
+		"@tidyjs/tidy": "2.5.2",
+		"@uwdata/mosaic-sql": "^0.3.2",
+		"debounce": "^1.2.1",
+		"downloadjs": "1.4.7",
+		"echarts": "5.4.3",
+		"ssf": "^0.11.2",
+		"svelte": "4.2.12"
+	}
+}
