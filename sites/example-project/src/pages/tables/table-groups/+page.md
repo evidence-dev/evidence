@@ -10,10 +10,24 @@ limit 25
 `groupType=accordion`
 
 ### With Subtotals
-<DataTable data={orders} groupBy=state subtotals=true/>
+<DataTable data={orders} groupBy=state subtotals=true> 
+ 	<Column id=state/> 
+	<Column id=category totalAgg=""/> 
+	<Column id=item totalAgg=""/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd/> 
+	<Column id=growth fmt=pct1/> 
+ </DataTable>
 
 ### Without Subtotals
-<DataTable data={orders} groupBy=state subtotals=false/>
+<DataTable data={orders} groupBy=state>
+ 	<Column id=state/> 
+	<Column id=category totalAgg=""/> 
+	<Column id=item totalAgg=""/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd/> 
+	<Column id=growth fmt=pct1/> 
+ </DataTable>
 
 ### With Totals
 <DataTable data={orders} groupBy=state subtotals=true totalRow=true/>
@@ -21,8 +35,8 @@ limit 25
 ### Groups Closed by Default
 <DataTable data={orders} groupBy=state subtotals=true totalRow=true groupsOpen=false> 
  	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
-	<Column id=category totalAgg=countDistinct totalFmt='0 "categories"'/> 
-	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=category totalAgg=countDistinct totalFmt='[=1]0 "category";0 "categories"'/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='[=1]0 "item";0 "items"'/> 
 	<Column id=orders contentType=colorscale/> 
 	<Column id=sales fmt=usd0k/> 
 	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
@@ -42,7 +56,14 @@ limit 25
 `groupType=section`
 
 ### With Subtotals
-<DataTable data={orders} groupBy=state subtotals=true groupType=section/>
+<DataTable data={orders} groupBy=state subtotals=true groupType=section>
+ 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
+	<Column id=category totalAgg=Total/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd1k/> 
+	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
+</DataTable>
 
 ### Without Subtotals
 <DataTable data={orders} groupBy=state subtotals=false groupType=section/>
@@ -52,7 +73,7 @@ limit 25
 
 ### With Configured Columns
 <DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
- 	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
+ 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
 	<Column id=category totalAgg=Total/> 
 	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
 	<Column id=orders contentType=colorscale/> 

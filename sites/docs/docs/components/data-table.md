@@ -295,6 +295,108 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 <img src='/img/datatable-raw-colnames.png' width='500px'/>
 
+### Groups - Accordion
+
+#### Without subtotals
+
+```html
+<DataTable data={orders} groupBy=state>
+ 	<Column id=state/> 
+	<Column id=category totalAgg=""/> 
+	<Column id=item totalAgg=""/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd/> 
+	<Column id=growth fmt=pct1/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-nosub.png' width='500px'/>
+
+#### With Subtotals
+
+```html
+<DataTable data={orders} groupBy=state subtotals=true> 
+ 	<Column id=state/> 
+	<Column id=category totalAgg=""/> 
+	<Column id=item totalAgg=""/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd/> 
+	<Column id=growth fmt=pct1/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-sub.png' width='500px'/>
+
+#### Closed by Default
+
+```html
+<DataTable data={orders} groupBy=state subtotals=true totalRow=true groupsOpen=false> 
+ 	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
+	<Column id=category totalAgg=countDistinct totalFmt='[=1]0 "category";0 "categories"'/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='[=1]0 "item";0 "items"'/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd0k/> 
+	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-closed.png' width='500px'/>
+
+#### With Configured Columns
+
+```html
+<DataTable data={orders} groupBy=category subtotals=true totalRow=true> 
+ 	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
+	<Column id=category totalAgg=Total/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=orders contentType=colorscale/> 
+	<Column id=sales fmt=usd0k/> 
+	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-configured.png' width='500px'/>
+
+### Groups - Section
+
+#### Without subtotals
+
+```html
+<DataTable data={orders} groupBy=state groupType=section/>
+```
+
+<img src='/img/tbl-section-nosub.png' width='500px'/>
+
+#### With Subtotals
+
+```html
+<DataTable data={orders} groupBy=state subtotals=true groupType=section>
+ 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
+	<Column id=category totalAgg=Total/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd1k/> 
+	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
+</DataTable>
+```
+
+<img src='/img/tbl-section-sub.png' width='500px'/>
+
+#### With Configured Columns
+
+```html
+<DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
+ 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
+	<Column id=category totalAgg=Total/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=orders contentType=colorscale/> 
+	<Column id=sales fmt=usd1k/> 
+	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
+</DataTable>
+```
+
+<img src='/img/tbl-section-configured.png' width='500px'/>
+
 ## DataTable
 
 ### Options
@@ -326,6 +428,20 @@ By default, the link column of your table is hidden. If you would like it to be 
         <td>Show a total row at the bottom of the table, defaults to sum of all numeric columns</td>
         <td class='tcenter'>-</td>	
         <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
+        <td>totalRowColor</td>	
+        <td>Background color of the total row</td>
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>Hex color code | css color name</td>
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
+        <td>totalFontColor</td>	
+        <td>Font color of the total row</td>
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>Hex color code | css color name</td>
         <td class='tcenter'>false</td>
     </tr>
     <tr>	
@@ -407,6 +523,75 @@ By default, the link column of your table is hidden. If you would like it to be 
     </tr>
     <tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
 <tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
+</table>
+
+### Groups
+Groups allow you to create sections within your table, increasing the density of the content you're displaying. Groups are currently limited to 1 level, but will be expanded in future versions.
+
+<table>						 
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>
+    <tr>	
+        <td>groupBy</td>	
+        <td>Column to use to create groups. Note that groups are currently limited to a single group column.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>groupType</td>	
+        <td>How the groups are shown in the table. Can be accordion (expand/collapse) or section (group column values are merged across rows)</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>accordion | section</td>	
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>subtotals</td>	
+        <td>Whether to show aggregated totals for the groups</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>	
+    </tr>
+    <tr>	
+        <td>groupsOpen</td>	
+        <td>[groupType=accordion] Whether to show the accordions as open on page load</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>true</td>	
+    </tr>
+    <tr>	
+        <td>accordionRowColor</td>	
+        <td>[groupType=accordion] Background color for the accordion row</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>Hex color code | css color name</td>
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>subtotalRowColor</td>	
+        <td>[groupType=section] Background color for the subtotal row</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>Hex color code | css color name</td>
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>subtotalFontColor</td>	
+        <td>[groupType=section] Font color for the subtotal row</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>Hex color code | css color name</td>
+        <td class='tcenter'>-</td>	
+    </tr>
+    <tr>	
+        <td>groupNamePosition</td>	
+        <td>[groupType=section] Where the group label will appear in its cell</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>top | middle | bottom</td>
+        <td class='tcenter'>middle</td>	
+    </tr>
 </table>
 
 ## Column
@@ -584,6 +769,27 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>-</td>
         <td class='tcenter'>true | false</td>
         <td class='tcenter'>true</td>
+    </tr>
+    <tr>
+        <td>neutralMin</td>
+        <td>Start of the range for "neutral" values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values.</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>0</td>
+    </tr>
+    <tr>
+        <td>neutralMax</td>
+        <td>End of the range for "neutral" values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values.</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>0</td>
+    </tr>
+    <tr>
+        <td>chip</td>
+        <td>Whether to display the delta as a "chip", with a background color and border.</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
     </tr>
 </table>
 
