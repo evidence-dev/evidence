@@ -558,6 +558,13 @@ Groups allow you to create sections within your table, increasing the density of
         <td class='tcenter'>false</td>	
     </tr>
     <tr>	
+        <td>subtotalFmt</td>
+        <td>Specify an override format to use in the subtotal row (<a href='/core-concepts/formatting'>see available formats</a>). Custom strings or values are unformatted by default.</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>Excel-style format | built-in format | custom format</td>
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
         <td>groupsOpen</td>	
         <td>[groupType=accordion] Whether to show the accordions as open on page load</td>	
         <td class='tcenter'>-</td>	
