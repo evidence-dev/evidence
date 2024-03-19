@@ -174,7 +174,7 @@
 	$: debouncedUpdateItems(search);
 </script>
 
-{#key query}
+{#key $items}
 	<Invisible>
 		<slot />
 

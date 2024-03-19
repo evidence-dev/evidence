@@ -1,5 +1,17 @@
 # @evidence-dev/components
 
+## 3.4.2
+
+### Patch Changes
+
+- Updated dependencies [b50ec639]
+- Updated dependencies [9a9ace8f]
+- Updated dependencies [dcbc0580]
+  - @evidence-dev/core-components@3.5.2
+  - @evidence-dev/query-store@2.0.6
+  - @evidence-dev/component-utilities@2.4.2
+  - @evidence-dev/plugin-connector@2.0.10
+
 ## 3.4.1
 
 ### Patch Changes

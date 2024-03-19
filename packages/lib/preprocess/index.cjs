@@ -10,6 +10,7 @@ const injectPartials = require('./src/partials/inject-partials.cjs');
 module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 	return [
 		injectPartials,
+		addScriptTags,
 		processQueries(componentDevelopmentMode),
 		mdsvex.mdsvex({
 			extensions: ['.md'],
@@ -31,8 +32,8 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 				]
 			]
 		}),
+
 		// Add both script tags to all markdown files, if they are missing
-		addScriptTags,
 		processFrontmatter()
 	];
 };

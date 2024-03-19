@@ -61,6 +61,8 @@
 		transition:fade|local={{ duration: 100 }}
 		on:click={() => (mobileSidebarOpen = false)}
 		on:keypress={() => (mobileSidebarOpen = false)}
+		role="button"
+		tabindex="-1"
 	/>
 	<div
 		class="bg-white border-r border-gray-300 shadow-lg fixed inset-0 z-50 flex sm:w-72 h-screen w-screen flex-col overflow-hidden select-none"
@@ -73,6 +75,8 @@
 					<Logo {logo} {title} />
 				</a>
 				<span
+					role="button"
+					tabindex="-1"
 					on:click={() => (mobileSidebarOpen = false)}
 					on:keypress={() => (mobileSidebarOpen = false)}
 				>

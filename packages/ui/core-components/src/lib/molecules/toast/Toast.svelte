@@ -16,6 +16,7 @@
 </script>
 
 <div
+	role="none"
 	class="print:hidden rounded py-1 px-3 my-4 mx-0 shadow-md text-xs font-mono flex justify-between transition-all duration-300 border {status ??
 		''}"
 	in:scale

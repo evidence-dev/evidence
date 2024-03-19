@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.4.2
+
+### Patch Changes
+
+- Updated dependencies [9a9ace8f]
+  - @evidence-dev/query-store@2.0.6
+
 ## 2.4.1
 
 ### Patch Changes
