@@ -119,6 +119,8 @@ export default (node, option) => {
 		});
 		updateLabelWidths();
 	}, 100);
+
+	let resizeObserver;
 	if (window.ResizeObserver && containerElement) {
 		resizeObserver = new ResizeObserver(onWindowResize);
 		resizeObserver.observe(containerElement);
