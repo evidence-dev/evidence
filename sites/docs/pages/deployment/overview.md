@@ -10,7 +10,7 @@ You can host your Evidence project using Evidence Cloud, cloud services like Net
 
 ## Evidence Cloud
 
-The easiest way to deploy Evidence is on [Evidence Cloud](evidence-cloud). Evidence Cloud is currently in private beta.
+The easiest way to deploy Evidence is on [Evidence Cloud](../evidence-cloud). Evidence Cloud is currently in private beta.
 
 ## Build Process
 

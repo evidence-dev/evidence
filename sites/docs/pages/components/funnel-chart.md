@@ -18,7 +18,7 @@ hide_table_of_contents: false
 
 ### Ascending
 
-<img src="/img//funnel-asc.png" width="700"/>
+<img src="/img/funnel-asc.png" width="700"/>
 
 ```markdown
 <FunnelChart 
@@ -31,7 +31,7 @@ hide_table_of_contents: false
 
 ### Alignment
 
-<img src="/img//funnel-align.png" width="700"/>
+<img src="/img/funnel-align.png" width="700"/>
 
 ```markdown
 <FunnelChart 

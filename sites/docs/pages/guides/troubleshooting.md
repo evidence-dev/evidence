@@ -4,7 +4,7 @@ sidebar_position: 2
 ---
 
 :::tip Running into Problems?
-Join the [Evidence Community](/community) to get help with issues and discuss feature ideas.
+Join the [Evidence Community](https://slack.evidence.dev) to get help with issues and discuss feature ideas.
 
 You can also check out the list of [open issues in our GitHub Repo](https://github.com/evidence-dev/evidence/issues)
 

@@ -9,7 +9,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Value](value)
+### [Value](../value)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -24,7 +24,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Big Value](big-value)
+### [Big Value](../big-value)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -39,7 +39,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Data Table](data-table)
+### [Data Table](../data-table)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -60,7 +60,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Line](line-chart)
+### [Line](../line-chart)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -103,7 +103,7 @@ hide_table_of_contents: false
 </div> 
 </div>
 
-### [Area](area-chart)
+### [Area](../area-chart)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -144,7 +144,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Bar](bar-chart)
+### [Bar](../bar-chart)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -264,7 +264,7 @@ hide_table_of_contents: false
 </div>
 
 
-### [Scatter](scatter-plot)
+### [Scatter](../scatter-plot)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -292,7 +292,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Bubble](bubble-chart)
+### [Bubble](../bubble-chart)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -320,7 +320,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Funnel](funnel-chart)
+### [Funnel](../funnel-chart)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -348,7 +348,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Sankey](sankey-diagram)
+### [Sankey](../sankey-diagram)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -376,7 +376,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Heatmap](heatmap)
+### [Heatmap](../heatmap)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -405,7 +405,7 @@ hide_table_of_contents: false
 </div>
 
 
-### [Calendar Heatmap](heatmap)
+### [Calendar Heatmap](../heatmap)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -433,7 +433,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Histogram](histogram)
+### [Histogram](../histogram)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -449,7 +449,7 @@ hide_table_of_contents: false
 </div>
 
 
-### [Box Plot](box-plot)
+### [Box Plot](../box-plot)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -478,7 +478,7 @@ hide_table_of_contents: false
 </div>
 
 
-### [Mixed Type Charts](mixed-type-charts)
+### [Mixed Type Charts](../mixed-type-charts)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -494,7 +494,7 @@ hide_table_of_contents: false
 </div>
 
 
-### [Annotations](annotations)
+### [Annotations](../annotations)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -562,7 +562,7 @@ hide_table_of_contents: false
 </div>
 
 
-### [Maps](us-map)
+### [Maps](../us-map)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -577,7 +577,7 @@ hide_table_of_contents: false
 </div>
 </div>
 
-### [Custom ECharts](custom-echarts)
+### [Custom ECharts](../custom-echarts)
 
 <div  class="gallery-item-grid">
     <div class="item-header">
@@ -650,7 +650,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Accordion](accordion)
+### [Accordion](../accordion)
 
  <div class="gallery-item-grid">
     <div class="item-header">
@@ -669,7 +669,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Alert](alert)
+### [Alert](../alert)
 
  <div class="gallery-item-grid">
     <div class="item-header">
@@ -688,7 +688,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Details](details)
+### [Details](../details)
 
  <div class="gallery-item-grid">
     <div class="item-header">
@@ -707,7 +707,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Modal](modal)
+### [Modal](../modal)
 
  <div class="gallery-item-grid">
     <div class="item-header">
@@ -727,7 +727,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Tabs](tabs)
+### [Tabs](../tabs)
 
  <div class="gallery-item-grid">
     <div class="item-header">
@@ -748,7 +748,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Button Group](button-group)
+### [Button Group](../button-group)
 
 <div class="gallery-item-grid">
 <div class="item-header">
@@ -769,7 +769,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [Dropdown](dropdown)
+### [Dropdown](../dropdown)
 
 <div class="gallery-item-grid">
 <div class="item-header">
@@ -788,7 +788,7 @@ hide_table_of_contents: false
 
 <div class="gallery-container-grid">
 
-### [TextInput](text-input)
+### [TextInput](../text-input)
 
 <div class="gallery-item-grid">
 <div class="item-header">
