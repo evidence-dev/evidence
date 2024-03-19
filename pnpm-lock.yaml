@@ -1082,8 +1082,8 @@ importers:
         specifier: ^8.0.0
         version: 8.0.1(vitest@0.34.6)
       '@storybook/addon-links':
-        specifier: ^8.0.0
-        version: 8.0.1(react@17.0.2)
+        specifier: ^8.0.2
+        version: 8.0.2(react@17.0.2)
       '@storybook/addon-svelte-csf':
         specifier: ^4.1.2
         version: 4.1.2(@storybook/svelte@8.0.1)(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.1.6)
@@ -8292,8 +8292,8 @@ packages:
       - vitest
     dev: true
 
-  /@storybook/addon-links@8.0.1(react@17.0.2):
-    resolution: {integrity: sha512-cYAPSr/mO++ZZWcNigfTEDPYshozT0hYpHJ7S5DIhUTZCpv92IDudN0HjYmEQnz4+OdsGaQ6GnITI2Fr8IOfQA==}
+  /@storybook/addon-links@8.0.2(react@17.0.2):
+    resolution: {integrity: sha512-Y22kCHRQIEE8yhTbWLTR2VMa9KJdMDRpWyYCIMzmTlCWAk1vyMZXC2ERruKIpM7AKKtTMEmNc2qHAmOieHfr3A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     peerDependenciesMeta:
