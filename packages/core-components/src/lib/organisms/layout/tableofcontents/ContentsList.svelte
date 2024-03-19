@@ -4,45 +4,49 @@
 	let headers = [];
 	let observer;
 
-	function slugify(text){
-		return text.toString().toLowerCase()
-			.replace(/[\s\.]+/g, '-')       // Replace spaces and periods with -
-			.replace(/[^-\w]+/g, '')        // Remove all non-word chars except -
-			.replace(/^-+|-+$/g, '');       // Trim - from start and end of text
+	function slugify(text) {
+		return text
+			.toString()
+			.toLowerCase()
+			.replace(/[\s\.]+/g, '-') // Replace spaces and periods with -
+			.replace(/[^-\w]+/g, '') // Remove all non-word chars except -
+			.replace(/^-+|-+$/g, ''); // Trim - from start and end of text
 	}
 
 	function updateLinks() {
-		headers = Array.from(document.querySelector('article').querySelectorAll('h1.markdown, h2.markdown, h3.markdown'));
+		headers = Array.from(
+			document.querySelector('article').querySelectorAll('h1.markdown, h2.markdown, h3.markdown')
+		);
 		let headerCounts = {};
 
 		headers.forEach((header) => {
-        let slug = slugify(header.innerText);
+			let slug = slugify(header.innerText);
 
-        let count = headerCounts[slug] || 0; // Get current count or default to 0 if not encountered before
+			let count = headerCounts[slug] || 0; // Get current count or default to 0 if not encountered before
 
-        // If count is more than 0, append count to id
-        header.id = count > 0 ? `${slug}-${count}` : slug;
-        headerCounts[slug] = count + 1;
-    });
+			// If count is more than 0, append count to id
+			header.id = count > 0 ? `${slug}-${count}` : slug;
+			headerCounts[slug] = count + 1;
+		});
 	}
 
 	function observeDocumentChanges() {
-    // Need to observe entire article because headers may be added or removed by inputs
-	const articleContent = document.querySelector('article');
+		// Need to observe entire article because headers may be added or removed by inputs
+		const articleContent = document.querySelector('article');
 
-    if (!articleContent) {
-        console.error('Element with tag "article" not found');
-        return;
-    }
+		if (!articleContent) {
+			console.error('Element with tag "article" not found');
+			return;
+		}
 
-    observer = new MutationObserver(() => {
-        updateLinks();
-    });
+		observer = new MutationObserver(() => {
+			updateLinks();
+		});
 
-    observer.observe(articleContent, { childList: true, subtree: true });
+		observer.observe(articleContent, { childList: true, subtree: true });
 
-    return observer;
-}
+		return observer;
+	}
 
 	onMount(() => {
 		updateLinks();
@@ -59,10 +63,7 @@
 		On this page
 	</span>
 	{#each headers as header}
-		<a
-			href={'#' + header.id}
-			class={header.nodeName.toLowerCase()}
-		>
+		<a href={'#' + header.id} class={header.nodeName.toLowerCase()}>
 			{header.innerText}
 		</a>
 	{/each}
