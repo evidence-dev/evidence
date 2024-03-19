@@ -6,21 +6,24 @@
 
 	function slugify(text){
 		return text.toString().toLowerCase()
-			.replace(/\s+/g, '-')           // Replace spaces with -
-			.replace(/\./g, '-')			// Replace periods with -
-			.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-			.replace(/\-\-+/g, '-')         // Replace multiple - with single -
-			.replace(/^-+/, '')             // Trim - from start of text
-			.replace(/-+$/, '');            // Trim - from end of text
+			.replace(/[\s\.]+/g, '-')       // Replace spaces and periods with -
+			.replace(/[^-\w]+/g, '')        // Remove all non-word chars except -
+			.replace(/^-+|-+$/g, '');       // Trim - from start and end of text
 	}
 
 	function updateLinks() {
-		headers = Array.from(document.querySelectorAll('h1.markdown, h2.markdown, h3.markdown'));
+		headers = Array.from(document.querySelector('article').querySelectorAll('h1.markdown, h2.markdown, h3.markdown'));
+		let headerCounts = {};
+
 		headers.forEach((header) => {
-			// Headers may contain values that change in response to user input, so we create our anchors as the initial value of the header.
-			// We lowercase the innerText and replace spaces with hyphens to match the default slugify behavior in markdown.
-			header.id = slugify(header.innerText);
-		});
+        let slug = slugify(header.innerText);
+
+        let count = headerCounts[slug] || 0; // Get current count or default to 0 if not encountered before
+
+        // If count is more than 0, append count to id
+        header.id = count > 0 ? `${slug}-${count}` : slug;
+        headerCounts[slug] = count + 1;
+    });
 	}
 
 	function observeDocumentChanges() {
