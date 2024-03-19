@@ -28,7 +28,7 @@ ECharts requires the data object to have a specific format. For example in the t
 
 ![custom-treemap](/img/custom-treemap.png)
 
-````
+````markdown
 ```sql sales_by_country
 select 'Canada' as country, 100 as sales
 union all
@@ -86,7 +86,7 @@ ECharts requires the data object to have a specific format. For example in the f
 
 ![custom-funnel](/img/custom-funnel.png)
 
-````
+````markdown
 ```sql funnel_stages
 select 'Emailed' as stage, 129 as count
 union all
@@ -126,7 +126,7 @@ ECharts requires the data object to have a specific format. For example in the p
 
 ![custom-pie](/img/custom-pie.png)
 
-````
+````markdown
 ```sql pie_query
 select 'Apple' as pie, 60 as count
 union all
@@ -166,7 +166,7 @@ ECharts requires the data object to have a specific format. For example in the d
 
 ![custom-donut](/img/custom-donut.png)
 
-````
+````markdown
 ```sql donut_query
 select 'Glazed' as donut, 213 as count
 union all
@@ -205,8 +205,8 @@ from ${donut_query}
 
 ![custom-chart](/img/exg-custom-echarts-anscombe.svg)
 
-```
-<script>
+```javascript
+&lt;script&gt;
 const dataAll = [
   [
     [10.0, 8.04],
@@ -356,7 +356,7 @@ let options = {
     }
   ]
 };
-</script>
+&lt;/script&gt;
 
 <ECharts config={options}/>
 ```

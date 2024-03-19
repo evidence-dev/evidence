@@ -32,4 +32,4 @@ sidebar_position: 31
 | Name  | Description                                                                                           | Required | Default |
 | ----- | ----------------------------------------------------------------------------------------------------- | -------- | ------- |
 | label | Label for the tab                                                                                     | Yes      | -       |
-| id    | Unique Id for this tab. Should only be needed if 2 tabs have the same label, which isn't recommended. | No       | {label} |
+| id    | Unique Id for this tab. Should only be needed if 2 tabs have the same label, which isn't recommended. | No       | label |

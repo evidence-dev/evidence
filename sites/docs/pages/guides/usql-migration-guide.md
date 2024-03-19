@@ -13,7 +13,7 @@ This is a big release and contains several breaking changes. This guide will hel
 The following sections explain what is changing in Evidence with Universal SQL. To jump straight to the migration steps, [click here](#migration-steps).
 
 ## Do I need to migrate my project?
-- If your `@evidence-dev/evidence` package version is < v24 then it has not yet been migrated, and we encourage you to do so as soon as is practical
+- If your `@evidence-dev/evidence` package version is `&lt; v24` then it has not yet been migrated, and we encourage you to do so as soon as is practical
 - `v23` will continue to be supported for now (sunset date TBC) and will receive critical bugfixes during this period
 - If you're unsure what you need to do, or if you need help, [reach out to us on Slack](https://slack.evidence.dev) in the `#migration` channel
 
@@ -218,18 +218,18 @@ For example:
 
 #### Before - Using `let`
 ```html
-<script>
+&lt;script&gt;
     let filtered_data = my_query.filter(d => d.column === $page.params.my_variable);
-</script>
+&lt;/script&gt;
 
 <LineChart data={filtered_data}/>
 ```
 
 #### After - Using `$:`
 ```html
-<script>
+&lt;script&gt;
     $: filtered_data = my_query.filter(d => d.column === $page.params.my_variable);
-</script>
+&lt;/script&gt;
 
 <LineChart data={filtered_data}/>
 ```

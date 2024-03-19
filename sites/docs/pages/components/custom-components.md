@@ -58,10 +58,10 @@ select 'UK' as country, 300 as sales_usd
 ```html title="Hello.svelte"
 <!-- To allow the component to accept data, you need to use the 'export let' syntax
      If you need any Evidence components inside your custom component, you must import them explicitly -->
-<script>
+&lt;script&gt;
 	export let myData;
 	import { BarChart } from '@evidence-dev/core-components';
-</script>
+&lt;/script&gt;
 
 <p>
 	Here is a BarChart in a Component, with some accompanying text. Components stored in the
@@ -93,7 +93,7 @@ First, create the `components/` directory if this is your first custom component
 
 With this new version of the component now created as a copy of the original, we are going to make our modifications.
 
-After opening the `components/MyHeader.svelte` file, remove the <Logo/> commponent, and replace it with text of "Invoicing", and make it bold by adding the "font-bold" class similar to the following:
+After opening the `components/MyHeader.svelte` file, remove the `<Logo/>` commponent, and replace it with text of "Invoicing", and make it bold by adding the "font-bold" class similar to the following:
 
 ```html title="MyHeader.svelte"
 <a href="/" class="hidden md:block font-bold">
