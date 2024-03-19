@@ -62,13 +62,10 @@
 					class={useCol.type}
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
 					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
-					show={!(
-						(groupType === 'section' && groupColumn === useCol.id && i !== 0) ||
-						(groupType === 'top' && groupColumn === useCol.id)
-					)}
+					show={!(groupType === 'section' && groupColumn === useCol.id && i !== 0)}
 					align={column.align}
 					paddingLeft={k === 0 && grouped && groupType === 'accordion' && !rowNumbers
-						? '24px'
+						? '28px'
 						: undefined}
 					height={column.height}
 					width={column.width}
@@ -165,13 +162,10 @@
 				<!-- Check if last row in table-->
 				<TableCell
 					class={column.type}
-					rowspan={groupType === 'section' && groupColumn === column.id && i === 0 ? rowSpan : 1}
-					show={!(
-						(groupType === 'section' && groupColumn === column.id && i !== 0) ||
-						(groupType === 'top' && groupColumn === column.id)
-					)}
+					rowSpan={groupType === 'section' && groupColumn === column.id && i === 0 ? rowSpan : 1}
+					show={!(groupType === 'section' && groupColumn === column.id && i !== 0)}
 					paddingLeft={j === 0 && grouped && groupType === 'accordion' && !rowNumbers
-						? '24px'
+						? '28px'
 						: undefined}
 				>
 					{formatValue(row[column.id], column.format, column.columnUnitSummary)}

@@ -36,14 +36,11 @@
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
 	export let groupBy;
-	export let summarizeGroups = true;
-	$: summarizeGroups = summarizeGroups === 'true' || summarizeGroups === true;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
-	export let groupRowColor = undefined;
-	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
-
 	export let groupType = 'accordion'; // accordion | section
+	export let accordionRowColor = undefined;
+	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 
 	if (groupType === 'section') {
 		rowNumbers = false; // turn off row numbers
@@ -146,6 +143,7 @@
 
 	$: try {
 		error = undefined;
+
 		// CHECK INPUTS
 		checkInputs(data);
 
@@ -472,7 +470,7 @@
 								toggled={groupToggleStates[groupName]}
 								on:toggle={handleToggle}
 								{columnSummary}
-								rowColor={groupRowColor}
+								rowColor={accordionRowColor}
 								{rowNumbers}
 								{subtotals}
 							/>
