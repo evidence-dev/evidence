@@ -10,7 +10,7 @@ If you're not familiar with markdown, it's a simple text-based syntax - you've u
 
 ## Markdown
 
-Evidence supports almost all Markdown syntax. See [Markdown Reference](/markdown).
+Evidence supports almost all Markdown syntax. See [Markdown Reference](/reference/markdown).
 
 ```markdown
 ---
@@ -99,7 +99,7 @@ The current page path is: {$page.route.id}
 
 ## Frontmatter
 
-You can use frontmatter to reference SQL queries, and set page metadata that social media sites such as Twitter and Facebook use when showing links to your site. [More on Frontmatter](/markdown#frontmatter).
+You can use frontmatter to reference SQL queries, and set page metadata that social media sites such as Twitter and Facebook use when showing links to your site. [More on Frontmatter](/reference/markdown#frontmatter).
 
 ```markdown
 ---
@@ -147,7 +147,7 @@ for name in names:
 
 ## Partials
 
-Partials allow you to reuse chunks of Evidence markdown. [More on Partials](/markdown#partials).
+Partials allow you to reuse chunks of Evidence markdown. [More on Partials](/reference/markdown#partials).
 
 `./pages/index.md`
 ```markdown

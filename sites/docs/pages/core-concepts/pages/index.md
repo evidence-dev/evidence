@@ -29,4 +29,4 @@ This allows you to organize your pages in a way that makes sense for your users,
 
 ## Frontmatter
 
-You can include page metadata, such as a title, using [frontmatter](/markdown#frontmatter).
+You can include page metadata, such as a title, using [frontmatter](/reference/markdown#frontmatter).

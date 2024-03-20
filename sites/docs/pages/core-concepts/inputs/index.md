@@ -1,5 +1,5 @@
 ---
-title: Filters
+title: Inputs
 sidebar_position: 8
 ---
 
