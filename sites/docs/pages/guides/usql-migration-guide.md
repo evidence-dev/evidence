@@ -23,7 +23,7 @@ The following sections explain what is changing in Evidence with Universal SQL. 
 - Queries in markdown files and in the `queries` directory are now written in DuckDB SQL
 - Deprecated syntax:
     - `{data.my_query}`. Use `{my_query}` instead
-    - Declaring variables from queries in `<script>` tags using `let my_var = ` or `var my_var = `. Use `$: my_var` instead
+    - Declaring variables from queries in `&lt;script&gt;` tags using `let my_var = ` or `var my_var = `. Use `$: my_var` instead
 
 ## How Universal SQL Works
 - Universal SQL introduces a new data loading step (called `run sources`) - you write queries against multiple data sources, and Evidence will combine them all into the same format so you can query across them using SQL
@@ -285,3 +285,4 @@ npm install <package-name>
 - [Netlify: Set your Build Command](https://docs.netlify.com/configure-builds/overview/#set-the-build-command)
 - [Vercel: Environment Variables](https://vercel.com/docs/projects/environment-variables)
 - [Vercel: Build Configurations](https://vercel.com/docs/deployments/configure-a-build)
+
