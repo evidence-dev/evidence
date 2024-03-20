@@ -22,7 +22,7 @@ There are three typical ways that data teams separate their data environments:
 
 ## Setting up Evidence to use different environments
 
-You can configure both your dev and prod environments using [environment variables](/cli#environment-variables). Using `.env` files is not currently supported.
+You can configure both your dev and prod environments using [environment variables](/reference/cli#environment-variables). Using `.env` files is not currently supported.
 
 ### Dev environment
 

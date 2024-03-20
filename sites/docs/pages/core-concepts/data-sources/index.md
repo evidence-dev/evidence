@@ -34,7 +34,7 @@ To connect your local development environment to a database:
 
 Evidence will save your credentials locally, and run a test query to confirm that it can connect.
 
-Connections to databases in production are managed via [environment variables](/cli#environment-variables)
+Connections to databases in production are managed via [environment variables](/reference/cli#environment-variables)
 
 ## Configure Source Queries
 

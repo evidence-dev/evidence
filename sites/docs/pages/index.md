@@ -42,7 +42,7 @@ Evidence renders a BI website from markdown files:
 
 ## Pre-requisites
 
-To use Evidence you need to know SQL. A knowledge of [basic markdown syntax](/markdown) is also helpful.
+To use Evidence you need to know SQL. A knowledge of [basic markdown syntax](/reference/markdown) is also helpful.
 
 ## Getting help
 
