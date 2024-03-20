@@ -47,7 +47,7 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="mt-2 mb-4 mx-1 inline-block">
+	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
 		{#if title}
 			<span class="text-gray-900 text-sm block mb-1">{title}</span>
 		{/if}
