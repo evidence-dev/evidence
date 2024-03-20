@@ -26,7 +26,7 @@ Evidence provides:
 - **High performance:** Evidence projects build into fast and reliable web application
 - **Lightweight setup:** Install locally and start building reports in just a few minutes
 
-To get started, [install Evidence](/getting-started/install-evidence).
+To get started, [install Evidence](/install-evidence).
 
 ## How does Evidence work?
 
