@@ -1197,13 +1197,13 @@ importers:
   sites/docs:
     dependencies:
       '@evidence-dev/core-components':
-        specifier: workspace:*
+        specifier: 3.5.2
         version: link:../../packages/ui/core-components
       '@evidence-dev/duckdb':
-        specifier: workspace:*
+        specifier: 1.0.7
         version: link:../../packages/datasources/duckdb
       '@evidence-dev/evidence':
-        specifier: workspace:*
+        specifier: 29.0.3
         version: link:../../packages/evidence
 
   sites/example-project:
@@ -16171,6 +16171,9 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)(postcss@8.4.36)(typescript@5.4.2)
       '@parcel/core': 2.12.0
@@ -17780,6 +17783,9 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
+    peerDependenciesMeta:
+      node-gyp:
+        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0

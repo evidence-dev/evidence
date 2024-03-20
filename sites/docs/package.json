@@ -15,9 +15,9 @@
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/core-components": "workspace:*",
-    "@evidence-dev/duckdb": "workspace:*",
-    "@evidence-dev/evidence": "workspace:*"
+    "@evidence-dev/core-components": "3.5.2",
+    "@evidence-dev/duckdb": "1.0.7",
+    "@evidence-dev/evidence": "29.0.3"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",
