@@ -103,7 +103,7 @@ After opening the `components/MyHeader.svelte` file, remove the `<Logo/>` commpo
 
 ### Using our new component
 
-To use our new header, you must import it in place of the existing header. The general approach we will follow here is described in [themes and layouts](/themes-and-layouts).
+To use our new header, you must import it in place of the existing header. The general approach we will follow here is described in [themes and layouts](/core-concepts/themes-and-layouts).
 
 We start by copying the file `+layout.svelte` from `.evidence/template/src/pages/` into `/pages`, the same directory where we put new report [pages](/core-concepts/pages) as we create them. After opening this newly copied file, delete the import statement for the `Header` component (inside the script tag) as follows, and add a new import statement to import our new component:
 
