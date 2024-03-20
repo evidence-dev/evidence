@@ -1069,42 +1069,15 @@ importers:
 
   sites/docs:
     dependencies:
-      '@evidence-dev/bigquery':
-        specifier: workspace:*
-        version: link:../../packages/bigquery
       '@evidence-dev/core-components':
         specifier: workspace:*
         version: link:../../packages/core-components
-      '@evidence-dev/csv':
-        specifier: workspace:*
-        version: link:../../packages/csv
-      '@evidence-dev/databricks':
-        specifier: workspace:*
-        version: link:../../packages/databricks
       '@evidence-dev/duckdb':
         specifier: workspace:*
         version: link:../../packages/duckdb
       '@evidence-dev/evidence':
         specifier: workspace:*
         version: link:../../packages/evidence
-      '@evidence-dev/mssql':
-        specifier: workspace:*
-        version: link:../../packages/mssql
-      '@evidence-dev/mysql':
-        specifier: workspace:*
-        version: link:../../packages/mysql
-      '@evidence-dev/postgres':
-        specifier: workspace:*
-        version: link:../../packages/postgres
-      '@evidence-dev/snowflake':
-        specifier: workspace:*
-        version: link:../../packages/snowflake
-      '@evidence-dev/sqlite':
-        specifier: workspace:*
-        version: link:../../packages/sqlite
-      '@evidence-dev/trino':
-        specifier: workspace:*
-        version: link:../../packages/trino
 
   sites/example-project:
     dependencies:
