@@ -31,7 +31,7 @@ export default function getColumnSummary(data, returnType = 'object') {
 			(item) => item.name?.toLowerCase() === colName?.toLowerCase()
 		) ?? {
 			name: colName,
-			evidenceType: EvidenceType.STRING,
+			evidenceType: EvidenceType.NUMBER,
 			typeFidelity: TypeFidelity.INFERRED
 		};
 		const type = evidenceColumnType.evidenceType;
