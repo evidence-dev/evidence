@@ -32,6 +32,8 @@
 	export let xProfile;
 	/** @type {string} */
 	export let slackCommunity;
+	/** @type {string}*/
+	export let maxWidth = undefined;
 
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
@@ -56,14 +58,17 @@
 		{logo}
 		{neverShowQueries}
 		{fullWidth}
+		{maxWidth}
+		{hideSidebar}
 		{githubRepo}
 		{slackCommunity}
 		{xProfile}
 		{algolia}
 	/>
 	<div
-		class={(fullWidth ? 'max-w-full ' : 'max-w-7xl ') +
+		class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
 			'print:w-[650px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
+		style="max-width:{maxWidth}px;"
 	>
 		{#if !hideSidebar}
 			<div class="print:hidden">

@@ -7,7 +7,7 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { InfoCircle } from '@steeze-ui/tabler-icons';
 
-	/** @type {import("@steeze-ui/svelte-icon").IconSource} */
+	/** @type {import('@steeze-ui/svelte-icon').IconSource} */
 	export let icon = InfoCircle;
 
 	let visible = false;
@@ -22,6 +22,7 @@
 	on:mouseenter={showMessage}
 	on:mouseleave={hideMessage}
 	class="additional-info-icon"
+	role="tooltip"
 >
 	<Icon src={icon} class="w-5 h-5" />
 
@@ -32,7 +33,7 @@
 	{/if}
 </span>
 
-<style scoped>
+<style scoped lang="postcss">
 	span.additional-info-icon {
 		width: 18px;
 		color: var(--grey-600);

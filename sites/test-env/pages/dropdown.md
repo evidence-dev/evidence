@@ -44,7 +44,7 @@ select * from orders
 ## Multi Dropdown
 
 ```selected_orders
-select * from orders where list_contains(${inputs.multiple_selected_order_ids.value}, id)
+select * from orders where id in ${inputs.multiple_selected_order_ids.value}
 ```
 
 <Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" defaultValue={2772} />
@@ -75,7 +75,7 @@ Orders of {inputs.multiple_selected_order_ids.label}
 <DateRange name="range" dates="order_datetime" data="orders" />
 
 ```selected_items
-SELECT * FROM orders WHERE list_contains(${inputs.item.value}, item) AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}'
+SELECT * FROM orders WHERE item in ${inputs.item.value} AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}'
 ```
 
 <DataTable data={selected_items} />

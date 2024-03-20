@@ -1,5 +1,71 @@
 # @evidence-dev/evidence
 
+## 29.0.3
+
+### Patch Changes
+
+- dcbc0580: Maxwidth option to layout, bug fixes
+- Updated dependencies [b50ec639]
+- Updated dependencies [9a9ace8f]
+- Updated dependencies [dcbc0580]
+  - @evidence-dev/core-components@3.5.2
+  - @evidence-dev/query-store@2.0.6
+  - @evidence-dev/component-utilities@2.4.2
+  - @evidence-dev/plugin-connector@2.0.10
+
+## 29.0.2
+
+### Patch Changes
+
+- 07ec253a: Bump svelte dep
+
+## 29.0.1
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/component-utilities@2.4.1
+  - @evidence-dev/core-components@3.5.1
+  - @evidence-dev/plugin-connector@2.0.10
+  - @evidence-dev/preprocess@4.0.3
+  - @evidence-dev/query-store@2.0.5
+  - @evidence-dev/universal-sql@2.0.5
+
+## 29.0.0
+
+### Patch Changes
+
+- 28a971e6: Add server start feedback in console and browser
+- 7e550a1d: Refactor the default layout into a single component, add a set of layout options
+- bdad802b: Add dev mode flag to telemetry
+- 4713bd3a: - Load environment variables from .env files (prefixed with EVIDENCE\_ only)
+  - Add env-debug command to show which environment variables Evidence is currently aware of
+- 64871070: Adjust Svelte and Vite configs
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [023cd946]
+- Updated dependencies [15a6eeab]
+- Updated dependencies [31903452]
+- Updated dependencies [33e46d1c]
+- Updated dependencies [2d0c00b9]
+- Updated dependencies [7e550a1d]
+- Updated dependencies [0042519f]
+- Updated dependencies [152b7224]
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [72f9833a]
+- Updated dependencies [57f71211]
+- Updated dependencies [57c81240]
+  - @evidence-dev/component-utilities@2.4.0
+  - @evidence-dev/core-components@3.5.0
+  - @evidence-dev/preprocess@4.0.2
+  - @evidence-dev/query-store@2.0.4
+  - @evidence-dev/universal-sql@2.0.4
+  - @evidence-dev/plugin-connector@2.0.9
+
 ## 28.0.2
 
 ### Patch Changes

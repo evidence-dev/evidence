@@ -61,6 +61,8 @@
 		transition:fade|local={{ duration: 100 }}
 		on:click={() => (mobileSidebarOpen = false)}
 		on:keypress={() => (mobileSidebarOpen = false)}
+		role="button"
+		tabindex="-1"
 	/>
 	<div
 		class="bg-white border-r border-gray-300 shadow-lg fixed inset-0 z-50 flex sm:w-72 h-screen w-screen flex-col overflow-hidden select-none"
@@ -70,13 +72,11 @@
 		<div class=" pb-4 text-gray-700">
 			<div class="py-3 px-8 mb-3 flex items-start justify-between">
 				<a href="/" class="block mt-1 text-sm font-bold text-gray-800">
-					{#if title}
-						{title}
-					{:else}
-						<Logo {logo} />
-					{/if}
+					<Logo {logo} {title} />
 				</a>
 				<span
+					role="button"
+					tabindex="-1"
 					on:click={() => (mobileSidebarOpen = false)}
 					on:keypress={() => (mobileSidebarOpen = false)}
 				>

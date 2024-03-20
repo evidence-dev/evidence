@@ -1,5 +1,37 @@
 # @evidence-dev/component-utilities
 
+## 2.4.2
+
+### Patch Changes
+
+- Updated dependencies [9a9ace8f]
+  - @evidence-dev/query-store@2.0.6
+
+## 2.4.1
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/query-store@2.0.5
+
+## 2.4.0
+
+### Minor Changes
+
+- 57c81240: Add clearer dev mode errors
+
+### Patch Changes
+
+- 1ff76fdf: modify toasts store
+- 152b7224: Add x and y sort to Heatmap
+- Updated dependencies [1ff76fdf]
+  - @evidence-dev/query-store@2.0.4
+
 ## 2.3.0
 
 ### Minor Changes

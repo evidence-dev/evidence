@@ -1,5 +1,53 @@
 # @evidence-dev/core-components
 
+## 3.5.2
+
+### Patch Changes
+
+- b50ec639: Adjusts multi-dropdowns to return ARRAY rather than LIST types
+- 9a9ace8f: fix features/a regressions involving initialData and Dropdowns
+- dcbc0580: Maxwidth option to layout, bug fixes
+- Updated dependencies [9a9ace8f]
+  - @evidence-dev/query-store@2.0.6
+  - @evidence-dev/component-utilities@2.4.2
+
+## 3.5.1
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/component-utilities@2.4.1
+  - @evidence-dev/query-store@2.0.5
+
+## 3.5.0
+
+### Minor Changes
+
+- 57c81240: Add clearer dev mode errors
+
+### Patch Changes
+
+- 023cd946: Fix table search when sorting
+- 15a6eeab: Replace accordian with shadcn implementation, support inlined markdown
+- 31903452: Fix heatmap y axis
+- 33e46d1c: Add FlowChart component
+- 2d0c00b9: Removes headless-ui dependency, replaces kebab menu with shadcn implementation
+- 7e550a1d: Refactor the default layout into a single component, add a set of layout options
+- 0042519f: Fix bug caused by navigating away from settings page
+- 152b7224: Add x and y sort to Heatmap
+- 72f9833a: Add date range, multi-select, search in dropdown
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [152b7224]
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [57c81240]
+  - @evidence-dev/component-utilities@2.4.0
+  - @evidence-dev/query-store@2.0.4
+
 ## 3.4.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/query-store",
-	"version": "2.0.3",
+	"version": "2.0.6",
 	"description": "",
 	"main": "dist/index.js",
 	"source": "./src/index.ts",
@@ -16,7 +16,7 @@
 	"author": "The Evidence Engineering Team",
 	"license": "MIT",
 	"devDependencies": {
-		"typescript": "^5.2.2",
+		"typescript": "5.4.2",
 		"vitest": "^0.34.1"
 	},
 	"dependencies": {

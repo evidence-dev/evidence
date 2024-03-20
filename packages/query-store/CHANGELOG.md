@@ -1,5 +1,31 @@
 # @evidence-dev/query-store
 
+## 2.0.6
+
+### Patch Changes
+
+- 9a9ace8f: fix features/a regressions involving initialData and Dropdowns
+
+## 2.0.5
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/universal-sql@2.0.5
+
+## 2.0.4
+
+### Patch Changes
+
+- 1ff76fdf: add activeQueries and backgroundFetch to querystore
+- Updated dependencies [57f71211]
+  - @evidence-dev/universal-sql@2.0.4
+
 ## 2.0.3
 
 ### Patch Changes

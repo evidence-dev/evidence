@@ -1,5 +1,60 @@
 # evidence-test-environment
 
+## 3.0.20
+
+### Patch Changes
+
+- Updated dependencies [b50ec639]
+- Updated dependencies [9a9ace8f]
+- Updated dependencies [dcbc0580]
+  - @evidence-dev/core-components@3.5.2
+  - @evidence-dev/evidence@29.0.3
+  - @evidence-dev/component-utilities@2.4.2
+
+## 3.0.19
+
+### Patch Changes
+
+- Updated dependencies [07ec253a]
+  - @evidence-dev/evidence@29.0.2
+
+## 3.0.18
+
+### Patch Changes
+
+- 5a1e46a5: Fix for svelte vite errors
+- 008cf432: Roll back proxy server
+- 69b9ed32: Fix file imports for evidence package
+- Updated dependencies [5a1e46a5]
+- Updated dependencies [008cf432]
+- Updated dependencies [69b9ed32]
+  - @evidence-dev/component-utilities@2.4.1
+  - @evidence-dev/core-components@3.5.1
+  - @evidence-dev/evidence@29.0.1
+
+## 3.0.17
+
+### Patch Changes
+
+- Updated dependencies [28a971e6]
+- Updated dependencies [1ff76fdf]
+- Updated dependencies [023cd946]
+- Updated dependencies [15a6eeab]
+- Updated dependencies [31903452]
+- Updated dependencies [33e46d1c]
+- Updated dependencies [2d0c00b9]
+- Updated dependencies [7e550a1d]
+- Updated dependencies [0042519f]
+- Updated dependencies [152b7224]
+- Updated dependencies [bdad802b]
+- Updated dependencies [4713bd3a]
+- Updated dependencies [72f9833a]
+- Updated dependencies [64871070]
+- Updated dependencies [57c81240]
+  - @evidence-dev/evidence@29.0.0
+  - @evidence-dev/component-utilities@2.4.0
+  - @evidence-dev/core-components@3.5.0
+
 ## 3.0.16
 
 ### Patch Changes

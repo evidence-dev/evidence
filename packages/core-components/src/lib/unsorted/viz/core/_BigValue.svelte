@@ -40,9 +40,6 @@
 	$: try {
 		error = undefined;
 
-		// check if dataset exists
-		checkInputs(data);
-
 		if (!value) {
 			throw new Error('value is required');
 		}

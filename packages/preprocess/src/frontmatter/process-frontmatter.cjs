@@ -17,9 +17,8 @@ module.exports = () => {
 			};
 		},
 		script: ({ content, filename, attributes }) => {
-			if (typeof filename === 'undefined') return;
+			if (!filename?.endsWith('+page.md')) return;
 			if (attributes.context !== 'module') return;
-			if (!filename.endsWith('+page.md')) return;
 
 			if (!content.includes('export const metadata =')) {
 				// There is no frontmatter, and we want to make sure that it as at least defined.

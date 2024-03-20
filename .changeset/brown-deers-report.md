@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Fix heatmap y axis
+Right align metric labels in dimension grid

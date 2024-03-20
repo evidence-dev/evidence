@@ -28,8 +28,5 @@ export const queryDirectoryHmr = {
 				});
 			}
 		);
-	},
-	watchChange(f, opts) {
-		console.log({ f, opts });
 	}
 };

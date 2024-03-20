@@ -54,16 +54,8 @@ export async function GET() {
 					let absolutePath = path.join(process.cwd(), 'src', 'pages', pagePath);
 					let pageContent = fs.readFileSync(absolutePath, 'utf-8');
 					let frontMatter = preprocess.parseFrontmatter(pageContent);
-					let queries = preprocess.extractQueries(
-						preprocess.injectPartials(pageContent),
-						absolutePath
-					);
-					return (
-						(r['href'] = href),
-						(r['frontMatter'] = frontMatter),
-						(r['queries'] = queries),
-						(r['content'] = pageContent)
-					);
+
+					return (r['href'] = href), (r['frontMatter'] = frontMatter);
 				} else {
 					let label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
 					r.isTemplated = e.includes('[');
