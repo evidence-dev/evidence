@@ -6,7 +6,7 @@ sidebar_badge: Updated
 
 Creates a group of single-select buttons for quick filtering
 
-To see how to filter a query using a Button Group, see [Filters](/core-concepts/filters).
+To see how to filter a query using a Button Group, see [Inputs](/core-concepts/inputs).
 
 <img src="/img/button-group-title.png" alt="Button Group" width="550px"/>
 

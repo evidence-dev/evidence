@@ -5,7 +5,7 @@ sidebar_position: 40
 
 Creates a text input that can be used to filter or search
 
-To see how to filter a query using a text input, see [Filters](/core-concepts/filters).
+To see how to filter a query using a text input, see [Inputs](/core-concepts/inputs).
 
 <img src="/img/text-input.png" alt="TextInput" width="300px"/>
 

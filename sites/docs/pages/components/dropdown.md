@@ -6,7 +6,7 @@ sidebar_badge: Updated
 
 Creates a dropdown menu with a list of options that can be selected. The selected option can be used to filter queries or in markdown.
 
-To see how to filter a query using a dropdown, see [Filters](/core-concepts/filters).
+To see how to filter a query using a dropdown, see [Inputs](/core-concepts/inputs).
 
 <img src="/img/dropdown-title.png" alt="dropdown" width="300"/>
 

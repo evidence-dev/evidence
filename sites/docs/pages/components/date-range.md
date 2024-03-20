@@ -6,7 +6,7 @@ sidebar_badge: Updated
 
 Creates a date picker that can be used to filter a query. The picker expands to show a calendar when clicked, and the user can pick a start and end date.
 
-To see how to filter a query using an input component, see [Filters](/core-concepts/filters).
+To see how to filter a query using an input component, see [Inputs](/core-concepts/inputs).
 
 <img src="/img/date-range.png" alt="date-range" width="400"/>
 
