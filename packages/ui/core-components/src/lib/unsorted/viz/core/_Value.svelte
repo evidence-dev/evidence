@@ -63,12 +63,13 @@
 					checkInputs(data, [column]);
 
 					columnSummary = getColumnSummary(data, 'array');
-					let dateCols = columnSummary.filter((d) => d.type === 'date');
-					dateCols = dateCols.map((d) => d.id);
-					if (dateCols.length > 0) {
-						for (let i = 0; i < dateCols.length; i++) {
-							data = convertColumnToDate(data, dateCols[i]);
-						}
+
+					const dateCols = columnSummary
+						.filter((d) => d.type === 'date' && !(data[0]?.[d.id] instanceof Date))
+						.map((d) => d.id);
+
+					for (let i = 0; i < dateCols.length; i++) {
+						data = convertColumnToDate(data, dateCols[i]);
 					}
 
 					selected_value = data[row][column];
