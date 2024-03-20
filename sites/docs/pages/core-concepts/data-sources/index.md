@@ -260,6 +260,8 @@ You can find the credentials to connect to Cube on the BI Integrations page unde
 
 ### Google Sheets
 
+The Google Sheets data source is a plugin, you first need to [install the plugin](https://github.com/evidence-dev/datasources/tree/main/gsheets#adding-the-adapter-to-evidence).
+
 Adding data from Google Sheets requires a a [service account](https://cloud.google.com/iam/docs/service-accounts).
 
 To create a service account, see the [BigQuery instructions](#bigquery).
