@@ -15,18 +15,9 @@
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/bigquery": "workspace:*",
     "@evidence-dev/core-components": "workspace:*",
-    "@evidence-dev/csv": "workspace:*",
-    "@evidence-dev/databricks": "workspace:*",
     "@evidence-dev/duckdb": "workspace:*",
-    "@evidence-dev/evidence": "workspace:*",
-    "@evidence-dev/mssql": "workspace:*",
-    "@evidence-dev/mysql": "workspace:*",
-    "@evidence-dev/postgres": "workspace:*",
-    "@evidence-dev/snowflake": "workspace:*",
-    "@evidence-dev/sqlite": "workspace:*",
-    "@evidence-dev/trino": "workspace:*"
+    "@evidence-dev/evidence": "workspace:*"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",
