@@ -8,7 +8,7 @@
 		return text
 			.toString()
 			.toLowerCase()
-			.replace(/[\s\.]+/g, '-') // Replace spaces and periods with -
+			.replace(/[\s.]+/g, '-') // Replace spaces and periods with -
 			.replace(/[^-\w]+/g, '') // Remove all non-word chars except -
 			.replace(/^-+|-+$/g, ''); // Trim - from start and end of text
 	}
