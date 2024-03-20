@@ -81,6 +81,7 @@
 		"dev:core-components": "pnpm --filter ./packages/core-components package:watch",
 		"sources:example-project": "pnpm --filter ./sites/example-project sources",
 		"sources:test-env": "pnpm --filter ./sites/test-env sources",
+		"sources:docs": "pnpm --filter ./sites/docs sources",
 		"preview:test-env": "pnpm --filter ./sites/test-env preview",
 		"test:component-utilities:watch": "pnpm --filter ./packages/component-utilities test:watch"
 	},
