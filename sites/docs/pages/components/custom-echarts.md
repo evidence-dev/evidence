@@ -16,7 +16,7 @@ The downside of this approach is that `<ECharts>` requires data to be included i
 
 ## How to Build the Configuration
 
-To create a JavaScript object in an Evidence markdown page, you need to add a `<script>` tag. Any objects or variables you create in that script tag are then accessible by the rest of your page using curly braces. For example, if you create a variable named `myVar`, you can show the contents of that variable in your markdown using `{myVar}`.
+To create a JavaScript object in an Evidence markdown page, you need to add a `&lt;script&gt;` tag. Any objects or variables you create in that script tag are then accessible by the rest of your page using curly braces. For example, if you create a variable named `myVar`, you can show the contents of that variable in your markdown using `{myVar}`.
 
 ## Examples
 
