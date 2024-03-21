@@ -56,7 +56,7 @@ To see how to filter a query using a Button Group, see [Filters](/core-concepts/
     value=column_name
     title="Select a Category"
 >
-    <ButtonGroupItem valueLabel="All Categories" value="%" />
+    <ButtonGroupItem valueLabel="All Categories" value="%" default />
 </ButtonGroup>
 ````
 
