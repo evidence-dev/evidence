@@ -22,6 +22,7 @@
 	import CodeBlock from '../../ui/CodeBlock.svelte';
 	import EnterFullScreen from './EnterFullScreen.svelte';
 	import Fullscreen from '$lib/atoms/fullscreen/Fullscreen.svelte';
+	import { browser } from '$app/environment';
 
 	// Set up props store
 	let props = writable({});
@@ -116,13 +117,12 @@
 
 		// PROCESS DATES
 		// Filter for columns with type of "date"
-		let dateCols = columnSummary.filter((d) => d.type === 'date');
-		dateCols = dateCols.map((d) => d.id);
+		const dateCols = columnSummary
+			.filter((d) => d.type === 'date' && !(data[0]?.[d.id] instanceof Date))
+			.map((d) => d.id);
 
-		if (dateCols.length > 0) {
-			for (let i = 0; i < dateCols.length; i++) {
-				data = convertColumnToDate(data, dateCols[i]);
-			}
+		for (let i = 0; i < dateCols.length; i++) {
+			data = convertColumnToDate(data, dateCols[i]);
 		}
 
 		// Hide link column if columns have not been explicitly selected:
@@ -175,11 +175,8 @@
 		});
 	}
 
-	// Initially set up Fuse with the current data
-	updateFuse();
-
 	// Reactively update Fuse when `data` or `columnSummary` changes
-	$: {
+	$: if (browser) {
 		updateFuse();
 		if (searchValue !== '') {
 			runSearch(searchValue);
