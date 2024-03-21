@@ -21,7 +21,13 @@
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
 	import EnterFullScreen from './EnterFullScreen.svelte';
+<<<<<<< HEAD
 	import Fullscreen from '$lib/atoms/fullscreen/Fullscreen.svelte';
+=======
+	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
+	import { browser } from '$app/environment';
+	import Column from './Column.svelte';
+>>>>>>> 09f4cb4f (add support for Column and adjust overflow class)
 
 	// Set up props store
 	let props = writable({});
@@ -345,7 +351,11 @@
 				{...$$props}
 				rows={1 + Math.round((innerHeight - Y_AXIS_PADDING) / ROW_HEIGHT)}
 				isFullPage
-			/>
+			>
+				{#each $props.columns as column}
+					<Column {...column} />
+				{/each}
+			</svelte:self>
 		</div>
 	</Fullscreen>
 {/if}

@@ -108,6 +108,7 @@
 		showValue: showValue,
 		colorMax: colorMax,
 		colorMin: colorMin,
+		scaleColor: scaleColor,
 		useColor: useColor,
 		customColor: customColor
 	};
