@@ -223,6 +223,10 @@
 
 	.status-bar.error {
 		color: var(--red-600);
+		-webkit-user-select: all;
+		-moz-user-select: all;
+		user-select: all;
+		cursor: auto;
 	}
 
 	button {
