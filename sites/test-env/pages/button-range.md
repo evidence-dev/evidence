@@ -1,7 +1,6 @@
----
-queries:
-- categories.sql
----
+```categories
+select category from needful_things.orders group by category
+```
 
 # Button Group
 

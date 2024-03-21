@@ -332,6 +332,8 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			this.#dataLoaded = false;
 			this.#metaLoaded = false;
 			this.#lengthLoaded = false;
+			// unresolvable promise
+			this.#dataFetchPromise = new Promise(() => {});
 			this.publish();
 		} else {
 			handleMaybePromise(
