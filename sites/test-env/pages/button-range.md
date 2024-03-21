@@ -35,7 +35,7 @@ select category from needful_things.orders group by category
 ## With a Default Value
 
 <ButtonGroup data={categories} name=category_name_with_extras value=category title="Select a Category">
-    <ButtonGroupItem valueLabel="All Categories" value="%" />
+    <ButtonGroupItem valueLabel="All Categories" value="%" default/>
 </ButtonGroup>
 
 {inputs.category_name_with_extras}
@@ -48,8 +48,8 @@ select category from needful_things.orders group by category
 
 ## Setting a Default Value `defaultValue=1`
 
-<ButtonGroup name=default_value_input defaultValue=1>
-    <ButtonGroupItem valueLabel="Option One" value=1 />
+<ButtonGroup name=default_value_input>
+    <ButtonGroupItem valueLabel="Option One" value=1 default/>
     <ButtonGroupItem valueLabel="Option Two" value=2 />
     <ButtonGroupItem valueLabel="Option Three" value=3 />
 </ButtonGroup>

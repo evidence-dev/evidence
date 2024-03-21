@@ -7,28 +7,26 @@ queries:
 
 ## From a Query
 
-<ButtonGroup data={categories} name=category_name value=category />
+<ButtonGroup data={categories} name=first_category_name value=category />
 
-<Dropdown data={categories} name=category value=category/>
-
-{inputs.category_name}
+{inputs.first_category_name}
 
 ## With Title
 
 <ButtonGroup 
     data={categories} 
-    name=category_name 
+    name=second_category_name 
     value=category
     title="Select a Category"
 />
 
-{inputs.category_name}
+{inputs.second_category_name}
 
 ## Hardcoded Options
 
 <ButtonGroup name=option_name>
     <ButtonGroupItem valueLabel="Option One" value="1" />
-    <ButtonGroupItem valueLabel="Option Two" value="2" />
+    <ButtonGroupItem valueLabel="Option Two" value="2" default />
     <ButtonGroupItem valueLabel="Option Three" value="3" />
 </ButtonGroup>  
 
@@ -38,7 +36,7 @@ queries:
 ## With a Default Value
 
 <ButtonGroup data={categories} name=category_name_with_extras value=category title="Select a Category">
-    <ButtonGroupItem valueLabel="All Categories" value="%" />
+    <ButtonGroupItem valueLabel="All Categories" value="%" default/>
 </ButtonGroup>
 
 {inputs.category_name_with_extras}
@@ -51,8 +49,8 @@ queries:
 
 ## Setting a Default Value `defaultValue=1`
 
-<ButtonGroup name=default_value_input defaultValue=1>
-    <ButtonGroupItem valueLabel="Option One" value=1 />
+<ButtonGroup name=default_value_input>
+    <ButtonGroupItem valueLabel="Option One" value=1 default/>
     <ButtonGroupItem valueLabel="Option Two" value=2 />
     <ButtonGroupItem valueLabel="Option Three" value=3 />
 </ButtonGroup>
