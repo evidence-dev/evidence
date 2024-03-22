@@ -1,5 +1,11 @@
 # @evidence-dev/tailwind
 
+## 2.1.0
+
+### Minor Changes
+
+- ca3e593b: - Updated major dependencies (Svelte, SvelteKit, Vite) to improve memory usage when building
+
 ## 2.0.0
 
 ### Minor Changes
