@@ -760,7 +760,7 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       '@evidence-dev/universal-sql':
-        specifier: ^2.0.3
+        specifier: workspace:*
         version: link:../universal-sql
       '@steeze-ui/simple-icons':
         specifier: ^1.7.1
