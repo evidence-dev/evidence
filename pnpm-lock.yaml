@@ -382,8 +382,8 @@ importers:
         specifier: workspace:*
         version: link:../../lib/db-commons
       presto-client:
-        specifier: ^0.13.0
-        version: 0.13.0
+        specifier: ^1.1.0
+        version: 1.1.0
 
   packages/evidence:
     dependencies:
@@ -20265,8 +20265,12 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  /presto-client@0.13.0:
-    resolution: {integrity: sha512-EL+oiqnMnGF8iPzAOiuZi5Ja7D2zIQkYZ9iJy+Ddwjapw3SZ6AzP71gN4KhqbM/9WLCFW8WxexqbWc//4L5kpg==}
+  /presto-client@1.1.0:
+    resolution: {integrity: sha512-DOWEKp0eHP/x6Fupk5673vZND7OUxFtV9VUO9HMvf4DFzoWKTLMRAJ3o5/7Mgs5z9w5BEUKU88IZaume6LMelw==}
+    dependencies:
+      follow-redirects: 1.15.6(debug@3.2.7)
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /prettier-plugin-svelte@2.10.1(prettier@2.8.8)(svelte@4.2.12):
