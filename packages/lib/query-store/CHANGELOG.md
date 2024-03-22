@@ -1,5 +1,17 @@
 # @evidence-dev/query-store
 
+## 2.1.0
+
+### Minor Changes
+
+- ca3e593b: - Updated major dependencies (Svelte, SvelteKit, Vite) to improve memory usage when building
+
+### Patch Changes
+
+- e3cf9809: use unresolvable promise is `noResolve` is true
+- Updated dependencies [ca3e593b]
+  - @evidence-dev/universal-sql@2.1.0
+
 ## 2.0.6
 
 ### Patch Changes

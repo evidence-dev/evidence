@@ -1,5 +1,29 @@
 # @evidence-dev/core-components
 
+## 3.6.0
+
+### Minor Changes
+
+- 5b12c2a9: add `Fullscreen` component and use it in `DataTable`
+- 6b475bf6: adds `default` prop to `ButtonGroupItem`s allowing for a default selected item
+- ca3e593b: - Updated major dependencies (Svelte, SvelteKit, Vite) to improve memory usage when building
+
+### Patch Changes
+
+- a9cf5c1a: Right align metric labels in dimension grid
+- cb669665: Adjust default margin on input components
+- 029c9f32: fix single row `Value` and `BigValue` regressions
+- 76be235f: remove `Fuse` from running on the server and `convertColumnToDate` from running on date columns
+- 705a1a9f: Make query error messages copyable
+- 67b14c20: Remove right margin on header
+- Updated dependencies [f9fe4d89]
+- Updated dependencies [ca3e593b]
+- Updated dependencies [089a08e4]
+- Updated dependencies [e3cf9809]
+  - @evidence-dev/component-utilities@2.5.0
+  - @evidence-dev/query-store@2.1.0
+  - @evidence-dev/tailwind@2.1.0
+
 ## 3.5.2
 
 ### Patch Changes
