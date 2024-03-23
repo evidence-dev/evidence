@@ -1,5 +1,16 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.0
+
+### Minor Changes
+
+- ca3e593b: - Updated major dependencies (Svelte, SvelteKit, Vite) to improve memory usage when building
+
+### Patch Changes
+
+- Updated dependencies [ca3e593b]
+  - @evidence-dev/universal-sql@2.1.0
+
 ## 2.0.10
 
 ### Patch Changes

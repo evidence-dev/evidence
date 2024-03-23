@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.1.0
+
+### Minor Changes
+
+- ca3e593b: - Updated major dependencies (Svelte, SvelteKit, Vite) to improve memory usage when building
+
 ## 4.0.3
 
 ### Patch Changes

@@ -183,7 +183,7 @@ export const findImplicitAutoFormat = (columnName, evidenceTypeDescriptor, colum
 	if (matched) {
 		return matched.format;
 	} else {
-		if (columnUnitSummary?.unitType === 'number' && columnUnitSummary?.median !== undefined) {
+		if (columnUnitSummary?.unitType === 'number') {
 			return generateImplicitNumberFormat(columnUnitSummary);
 		}
 	}
