@@ -1,12 +1,20 @@
 # @evidence-dev/sdk
 
+## 1.0.0
+
+### Patch Changes
+
+- 21b95fc8: Update USQL version to workspace
+- Updated dependencies [ca3e593b]
+  - @evidence-dev/universal-sql@2.1.0
+
 ## 0.0.1
 
 ### Patch Changes
 
 - 6338875: Adjusted types and tsconfig
 - 02752bd: Implement evidence-sdk connections edit
-- b55d8e2: Add $evidence/build with BUILD_ID and BUILD_DATE exports
+- b55d8e2: Add \$evidence/build with BUILD_ID and BUILD_DATE exports
 - 76c9332: Ensure directory recursion works properly for wrapped simple connectors
 - ab01260: Enter edit mode for freshly created sources
 - eda12cb: - Add file watcher for static assets
@@ -26,13 +34,13 @@
     - This still needs improvements, .evidence vs \_evidence, headless vs regular projects, adapter-node vs adapter-static all can cause problems.
   - Added a slide deck example layout + project
 - 4bdbb48: Update log output for add command
-- 956686c: Create $evidence/config virtual export for accessing the current project's configuration
+- 956686c: Create \$evidence/config virtual export for accessing the current project's configuration
 - 94bad8b: Initial Preview version
 - 20fc555: Implemented Build command for evidence projects
 - 6b69c23: Lost track
 - 74d88ad: Remove expect error directive
 - 41da2c3: Allow datasource connectors to return a table with url instead of rows to point to remote parquet file
-- 76c9332: Remove unused $evidence/queries/\* types
+- 76c9332: Remove unused \$evidence/queries/\* types
 - 76c9332: Ensure that caching and filtering rules are respected when evaluating queries
 - 76c9332: Handle uncaught exceptions / unhandled promise rejections
 - 1dfaf71: Added a plugin installation command
@@ -48,9 +56,9 @@
 
 ### Patch Changes
 
-- b55d8e2: Add $evidence/build with BUILD_ID and BUILD_DATE exports
+- b55d8e2: Add \$evidence/build with BUILD_ID and BUILD_DATE exports
 - d036482: Internalized @evidence-dev/query-store
-- 956686c: Create $evidence/config virtual export for accessing the current project's configuration
+- 956686c: Create \$evidence/config virtual export for accessing the current project's configuration
 - 20fc555: Implemented Build command for evidence projects
 - 41da2c3: Allow datasource connectors to return a table with url instead of rows to point to remote parquet file
 
@@ -92,7 +100,7 @@
   - Try to handle paths better
     - This still needs improvements, .evidence vs \_evidence, headless vs regular projects, adapter-node vs adapter-static all can cause problems.
   - Added a slide deck example layout + project
-- 76c9332: Remove unused $evidence/queries/\* types
+- 76c9332: Remove unused \$evidence/queries/\* types
 - 76c9332: Ensure that caching and filtering rules are respected when evaluating queries
 - 76c9332: Handle uncaught exceptions / unhandled promise rejections
 - 76c9332: Remove filter field from layout plugin specification, needs re-evaluation and more planning
