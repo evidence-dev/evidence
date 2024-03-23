@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "0.0.1",
+	"version": "1.0.1",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js",
@@ -46,7 +46,7 @@
 	"dependencies": {
 		"@brianmd/citty": "^0.0.1",
 		"@clack/prompts": "^0.7.0",
-		"@evidence-dev/universal-sql": "^2.0.3",
+		"@evidence-dev/universal-sql": "workspace:*",
 		"@steeze-ui/simple-icons": "^1.7.1",
 		"@steeze-ui/tabler-icons": "^2.1.1",
 		"@types/estree": "^1.0.5",
@@ -85,11 +85,11 @@
 	"devDependencies": {
 		"@changesets/cli": "^2.27.1",
 		"memfs": "^4.6.0",
-		"svelte": "^4.2.8",
+		"svelte": "^4.2.12",
 		"typescript": "^5.3.3"
 	},
 	"peerDependencies": {
-		"@evidence-dev/universal-sql": "^2.0.1",
+		"@evidence-dev/universal-sql": "workspace:*",
 		"nanoid": "^5.0.4",
 		"perfect-debounce": "^1.0.0"
 	}

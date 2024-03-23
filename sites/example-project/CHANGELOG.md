@@ -1,5 +1,35 @@
 # @evidence-dev/components
 
+## 3.4.4
+
+### Patch Changes
+
+- Updated dependencies [73421976]
+  - @evidence-dev/core-components@3.6.1
+
+## 3.4.3
+
+### Patch Changes
+
+- Updated dependencies [a9cf5c1a]
+- Updated dependencies [cb669665]
+- Updated dependencies [5b12c2a9]
+- Updated dependencies [f9fe4d89]
+- Updated dependencies [6b475bf6]
+- Updated dependencies [ca3e593b]
+- Updated dependencies [029c9f32]
+- Updated dependencies [76be235f]
+- Updated dependencies [705a1a9f]
+- Updated dependencies [089a08e4]
+- Updated dependencies [e3cf9809]
+- Updated dependencies [67b14c20]
+  - @evidence-dev/core-components@3.6.0
+  - @evidence-dev/component-utilities@2.5.0
+  - @evidence-dev/plugin-connector@2.1.0
+  - @evidence-dev/preprocess@4.1.0
+  - @evidence-dev/query-store@2.1.0
+  - @evidence-dev/universal-sql@2.1.0
+
 ## 3.4.2
 
 ### Patch Changes

@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "3.5.2",
+	"version": "3.6.1",
 	"evidence": {
 		"components": true
 	},
@@ -124,7 +124,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^3.54.0"
+		"svelte": "^4.2.12"
 	},
 	"readme": "ERROR: No README data found!",
 	"_id": "@evidence-dev/core-components@0.0.1"

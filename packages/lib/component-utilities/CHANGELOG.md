@@ -1,5 +1,19 @@
 # @evidence-dev/component-utilities
 
+## 2.5.0
+
+### Minor Changes
+
+- ca3e593b: - Updated major dependencies (Svelte, SvelteKit, Vite) to improve memory usage when building
+
+### Patch Changes
+
+- f9fe4d89: fix regression to resize behavior in echarts
+- 089a08e4: fixes null columns erroring when formatting
+- Updated dependencies [ca3e593b]
+- Updated dependencies [e3cf9809]
+  - @evidence-dev/query-store@2.1.0
+
 ## 2.4.2
 
 ### Patch Changes
