@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 3.6.1
+
+### Patch Changes
+
+- 73421976: upgrade svelte deps
+
 ## 3.6.0
 
 ### Minor Changes

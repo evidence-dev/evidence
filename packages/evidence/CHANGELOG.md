@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 30.0.1
+
+### Patch Changes
+
+- Updated dependencies [73421976]
+  - @evidence-dev/core-components@3.6.1
+
 ## 30.0.0
 
 ### Minor Changes
