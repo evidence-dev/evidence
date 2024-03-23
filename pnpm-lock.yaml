@@ -1330,7 +1330,7 @@ importers:
         specifier: ^4.6.0
         version: 4.8.0
       svelte:
-        specifier: ^4.2.8
+        specifier: ^4.2.12
         version: 4.2.12
       typescript:
         specifier: 5.4.2
