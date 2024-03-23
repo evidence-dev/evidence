@@ -6,7 +6,6 @@
 		"build": "evidence build",
 		"build:strict": "evidence build:strict",
 		"dev": "evidence dev",
-		"test": "evidence sources && cross-env NODE_OPTIONS=--max-old-space-size=8192 evidence build",
 		"sources": "evidence sources",
 		"preview": "evidence preview"
 	},
