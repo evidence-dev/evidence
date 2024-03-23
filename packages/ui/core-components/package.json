@@ -124,7 +124,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^3.54.0"
+		"svelte": "^4.2.12"
 	},
 	"readme": "ERROR: No README data found!",
 	"_id": "@evidence-dev/core-components@0.0.1"
