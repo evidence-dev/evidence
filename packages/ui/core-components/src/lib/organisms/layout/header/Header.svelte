@@ -7,20 +7,20 @@
 	import AlgoliaDocSearch from './AlgoliaDocSearch.svelte';
 	import KebabMenu from './KebabMenu.svelte';
 
-	export let mobileSidebarOpen;
-	export let title;
-	export let logo;
-	export let neverShowQueries;
-	export let fullWidth;
-	export let maxWidth;
-	export let hideSidebar;
+	export let mobileSidebarOpen = undefined;
+	export let title = undefined;
+	export let logo = undefined;
+	export let neverShowQueries = undefined;
+	export let fullWidth = undefined;
+	export let maxWidth = undefined;
+	export let hideSidebar = undefined;
 
-	export let algolia;
+	export let algolia = undefined;
 
 	// Social links
-	export let githubRepo;
-	export let xProfile;
-	export let slackCommunity;
+	export let githubRepo = undefined;
+	export let xProfile = undefined;
+	export let slackCommunity = undefined;
 </script>
 
 <header
@@ -110,6 +110,7 @@
 
 <style>
 	.active {
-		@apply bg-gray-100;
+		--tw-bg-opacity: 1;
+		background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 	}
 </style>
