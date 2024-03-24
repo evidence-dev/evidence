@@ -64,7 +64,7 @@
 		},
 		labelLayout: { hideOverlap: true },
 		emphasis: {
-			focus: 'series'
+			focus: 'item'
 		},
 		symbol: shape,
 		symbolSize: pointSize,
