@@ -25,13 +25,7 @@ export async function handle({ event, resolve }) {
 			locals.internalReferer = urlReferer;
 		}
 	}
-
-	console.log(locals.internalReferer);
-
-	await resolve(event, {
-		transformPageChunk: ({ html }) => html.replace('%splash-skip%', Boolean(locals.internalReferer))
-	});
-
+	
 	const response = await resolve(event);
 	return response;
 }
