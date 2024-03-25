@@ -40,6 +40,8 @@
 	export let emptyMessage = undefined;
 
 	export let renderer = undefined;
+
+	export let connectGroup = undefined;
 </script>
 
 <Chart
@@ -71,6 +73,7 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{connectGroup}
 >
 	<Hist {fillColor} {fillOpacity} />
 	<slot />
