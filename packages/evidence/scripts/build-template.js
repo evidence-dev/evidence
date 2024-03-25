@@ -75,8 +75,10 @@ fsExtra.outputFileSync(
 					'@evidence-dev/component-utilities/globalContexts',
 					'@evidence-dev/component-utilities/buildQuery',
 					'@evidence-dev/component-utilities/profile',
-					'debounce', '@evidence-dev/query-store', 
-					'@duckdb/duckdb-wasm', 'apache-arrow'
+					'debounce', 
+					'@evidence-dev/query-store',
+					'@duckdb/duckdb-wasm',
+					'apache-arrow'
 				])
 				
 			],
