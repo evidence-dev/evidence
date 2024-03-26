@@ -3,7 +3,7 @@
  * @template [Returns=void]
  * @param {(v: T, isPromise: boolean) => import("./types.js").MaybePromise<Returns>} handler
  * @param {import("./types.js").MaybePromise<T>} value
- * @param {(e: Error, isPromise: boolean) => Returns} [onError]
+ * @param {(e: Error, isPromise: boolean) => import("./types.js").MaybePromise<Returns>} [onError]
  */
 export const resolveMaybePromise = (handler, value, onError) => {
 	try {

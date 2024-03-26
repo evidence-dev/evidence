@@ -4,7 +4,7 @@ import { Query as QueryBuilder, sql, sql as taggedSql } from '@uwdata/mosaic-sql
 import { EvidenceError } from '../lib/EvidenceError.js';
 import { sharedPromise } from '../lib/sharedPromise.js';
 import { resolveMaybePromise } from './utils.js';
-
+import chunk from 'lodash.chunk';
 /**
  * @typedef {import("./types.js").QueryResultRow} QueryResultRow
  */
@@ -132,8 +132,8 @@ export class Query {
 	 * @param {Error | undefined} v
 	 */
 	set #error(v) {
-		console.log(v);
 		if (!v) return;
+		console.error(`${this.id} | Error in Query!`, v?.message);
 		this.#emit('error', v);
 		this.#__error = v;
 	}
@@ -185,34 +185,45 @@ export class Query {
 
 		this.#debug('Beginning Data Fetch');
 
-		const queryWithComment =
-			`---- Data ${this.#id} ${this.#hash}
-        ${this.#query.toString()}
+		const dataQuery =
+			`
+---- Data ${this.#id} ${this.#hash}
+${this.#query.toString()}
         `.trim() + '\n';
+
+		this.#debugStyled('\n' + dataQuery, 'font-family: monospace;');
 
 		// gotta love jsdoc sometimes
 		const typedRunner = /** @type {import('./types.js').Runner<RowType>} */ (this.#executeQuery);
-
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
-				this.#data.push(...result);
+				for (const c of chunk(result, 10000)) this.#data.push(...c);
+
+				// @ts-expect-error
+				if (result._evidenceColumnTypes)
+					// @ts-expect-error
+					this.#data._evidenceColumnTypes = result._evidenceColumnTypes;
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
-					return this.#sharedDataPromise;
+					return this.#sharedDataPromise.promise;
 				} else {
 					return this;
 				}
 			},
-			typedRunner(queryWithComment, `${this.#id}_columns`),
+			typedRunner(dataQuery, `${this.#id}_data`),
 			(e, isPromise) => {
+				console.trace('I am in the process of erroring!', e);
 				this.#error = e;
 				this.#sharedDataPromise.reject(e);
-				if (isPromise) return this.#sharedDataPromise;
-				else throw e;
+				if (isPromise) {
+					return this.#sharedDataPromise.promise;
+				} else {
+					return this;
+				}
 			}
 		);
-		return /** @type {MaybePromise<Query<RowType>>} */ (resolved);
+		return resolved;
 	};
 	fetch = this.#fetchData;
 
@@ -246,14 +257,16 @@ export class Query {
 
 		const lengthQuery =
 			`
-        ---- Length ${this.#id} (${this.#hash})
-        SELECT COUNT(*) as rowCount FROM (${this.text})
+---- Length ${this.#id} (${this.#hash})
+SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
         `.trim() + '\n';
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
 			/** @type {import('./types.js').Runner<{rowCount: number}>} */
 			(this.#executeQuery);
+
+		this.#debugStyled('\n' + lengthQuery, 'font-family: monospace;');
 
 		const resolved = resolveMaybePromise(
 			/** @returns {MaybePromise<Query<RowType>>} */
@@ -266,13 +279,17 @@ export class Query {
 					return this;
 				}
 			},
-			typedRunner(lengthQuery, `${this.#id}_columns`),
+			typedRunner(lengthQuery, `${this.#id}_length`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
+				console.trace('I am in the process of erroring!', e);
 				this.#error = e;
 				this.#sharedLengthPromise.reject(e);
-				if (isPromise) return this.#sharedLengthPromise.promise;
-				else throw e;
+				if (isPromise) {
+					return this.#sharedLengthPromise.promise;
+				} else {
+					return this;
+				}
 			}
 		);
 		return /** @type {MaybePromise<Query<RowType>>} */ (resolved);
@@ -298,9 +315,11 @@ export class Query {
 
 		const metaQuery =
 			`
-        ---- Columns ${this.#id} (${this.#hash})
-        DESCRIBE ${this.#query.toString()}
+---- Columns ${this.#id} (${this.#hash})
+DESCRIBE ${this.#query.toString()}
         `.trim() + '\n';
+
+		this.#debugStyled('\n' + metaQuery, 'font-family: monospace;');
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
@@ -327,12 +346,15 @@ export class Query {
 			typedRunner(metaQuery, `${this.#id}_columns`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
+				console.trace('I am in the process of erroring!', e);
 				this.#error = e;
 				this.#sharedColumnsPromise.reject(e);
 
-				if (isPromise)
-					return this.#sharedColumnsPromise.promise; // rejected promise
-				else throw e;
+				if (isPromise) {
+					return this.#sharedColumnsPromise.promise;
+				} else {
+					return this;
+				}
 			}
 		);
 		return /** @type {MaybePromise<Query<RowType>>} */ (resolved);
@@ -452,6 +474,7 @@ export class Query {
 	 * @returns {QueryValue<RowType>}
 	 */
 	static create = (query, executeQuery, optsOrId, maybeOpts) => {
+		const queryHash = hashQuery(query);
 		/** @type {import('./types.js').QueryOpts<RowType>} */
 		let opts;
 		if (typeof optsOrId === 'string') {
@@ -462,9 +485,11 @@ export class Query {
 		} else if (optsOrId) {
 			opts = optsOrId;
 		} else {
-			throw new Error();
+			opts = {
+				id: queryHash
+			};
 		}
-		const queryHash = hashQuery(query);
+
 		if (Query.#cache.has(queryHash) && !opts.disableCache) {
 			if (isDebug()) console.log(`Using cached query ${opts.id ?? ''}`);
 			return Query.#cache.get(queryHash);
@@ -483,6 +508,11 @@ export class Query {
 	#debug = isDebug()
 		? (/** @type {Parameters<typeof console.debug>} */ ...args) =>
 				console.debug(`${(performance.now() / 1000).toFixed(3)} | ${this.id}`, ...args)
+		: () => {};
+
+	#debugStyled = isDebug()
+		? (/** @type {string} */ text, /** @type {string} */ style) =>
+				console.debug(`%c${(performance.now() / 1000).toFixed(3)} | ${this.id} ${text}`, style)
 		: () => {};
 
 	static #constructing = false;
@@ -565,7 +595,7 @@ export class Query {
 		if (initialData) {
 			this.#debug('Created with initial data');
 			this.#hasInitialData = true;
-			this.#data.push(...initialData);
+			this.#data.concat(initialData);
 			this.#sharedDataPromise.resolve(this);
 		}
 		if (knownColumns) {
