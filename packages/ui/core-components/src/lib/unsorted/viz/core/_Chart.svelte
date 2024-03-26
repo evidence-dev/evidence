@@ -452,7 +452,7 @@
 			// Get format codes for axes
 			// ---------------------------------------------------------------------------------------
 			if (xFmt) {
-				xFormat = getFormatObjectFromString(xFmt, columnSummary[x].format.valueType);
+				xFormat = getFormatObjectFromString(xFmt, columnSummary[x].format?.valueType);
 			} else {
 				xFormat = columnSummary[x].format;
 			}
@@ -462,9 +462,9 @@
 			} else {
 				if (yFmt) {
 					if (typeof y === 'object') {
-						yFormat = getFormatObjectFromString(yFmt, columnSummary[y[0]].format.valueType);
+						yFormat = getFormatObjectFromString(yFmt, columnSummary[y[0]].format?.valueType);
 					} else {
-						yFormat = getFormatObjectFromString(yFmt, columnSummary[y].format.valueType);
+						yFormat = getFormatObjectFromString(yFmt, columnSummary[y].format?.valueType);
 					}
 				} else {
 					if (typeof y === 'object') {
@@ -478,9 +478,9 @@
 			if (y2) {
 				if (y2Fmt) {
 					if (typeof y2 === 'object') {
-						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2[0]].format.valueType);
+						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2[0]].format?.valueType);
 					} else {
-						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2].format.valueType);
+						y2Format = getFormatObjectFromString(y2Fmt, columnSummary[y2].format?.valueType);
 					}
 				} else {
 					if (typeof y2 === 'object') {
@@ -493,7 +493,7 @@
 
 			if (size) {
 				if (sizeFmt) {
-					sizeFormat = getFormatObjectFromString(sizeFmt, columnSummary[size].format.valueType);
+					sizeFormat = getFormatObjectFromString(sizeFmt, columnSummary[size].format?.valueType);
 				} else {
 					sizeFormat = columnSummary[size].format;
 				}
