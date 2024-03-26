@@ -1,5 +1,5 @@
 <script>
-	/** @type {import("@evidence-dev/sdk/query-store").Query[]} */
+	/** @type {import("@evidence-dev/sdk/usql").Query[]} */
 	export let queries = [];
 </script>
 
