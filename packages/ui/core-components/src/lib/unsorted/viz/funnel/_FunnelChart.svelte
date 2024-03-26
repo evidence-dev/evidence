@@ -89,7 +89,7 @@
 		if (valueFmt) {
 			valueColFormat = getFormatObjectFromString(
 				valueFmt,
-				columnSummary[valueCol].format.valueType
+				columnSummary[valueCol].format?.valueType
 			);
 		} else {
 			valueColFormat = columnSummary[valueCol].format;
