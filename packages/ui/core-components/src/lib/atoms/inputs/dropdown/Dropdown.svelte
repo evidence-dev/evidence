@@ -258,17 +258,29 @@
 									</VirtualList>
 								{/if}
 							</Command.Group>
-							{#if $selectedValues.length > 0 && multiple}
+							{#if multiple}
 								<Command.Separator />
 								<Command.Item
 									class="justify-center text-center"
 									onSelect={() => {
-										$selectedValues = [];
+										$selectedValues = $items.map((x) => ({ label: x.label, value: x.value }));
 										selectedValuesToInput();
 									}}
 								>
-									Clear selection
+									Select all
 								</Command.Item>
+								{#if $selectedValues.length > 0}
+									<Command.Separator />
+									<Command.Item
+										class="justify-center text-center"
+										onSelect={() => {
+											$selectedValues = [];
+											selectedValuesToInput();
+										}}
+									>
+										Clear selection
+									</Command.Item>
+								{/if}
 							{/if}
 						</Command.List>
 					</Command.Root>
