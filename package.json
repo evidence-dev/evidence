@@ -60,8 +60,8 @@
 		"release:next": "VERSION=$(git rev-parse --short HEAD) && pnpm -r exec npm pkg set version=0.0.0-\"$VERSION\" && pnpm install --frozen-lockfile && pnpm -r publish --tag next --no-git-checks",
 		"test": "pnpm -r test",
 		"test:ui": "pnpm -r test:ui",
-		"postinstall": "run-s build:plugin-connector build:preprocess build:tailwind build:query-store package:core-components build:evidence",
-		"docs": "pnpm --filter ./sites/docs start",
+		"postinstall": "run-s build:plugin-connector build:preprocess build:tailwind build:query-store package:core-components build:evidence && pnpm install --ignore-scripts",
+		"docs": "pnpm --filter ./sites/docs run dev",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"package:core-components": "pnpm --filter ./packages/ui/core-components package",
@@ -77,6 +77,7 @@
 		"dev:core-components": "pnpm --filter ./packages/ui/core-components package:watch",
 		"sources:example-project": "pnpm --filter ./sites/example-project sources",
 		"sources:test-env": "pnpm --filter ./sites/test-env sources",
+		"sources:docs": "pnpm --filter ./sites/docs sources",
 		"preview:test-env": "pnpm --filter ./sites/test-env preview",
 		"test:component-utilities:watch": "pnpm --filter ./packages/lib/component-utilities test:watch"
 	},
