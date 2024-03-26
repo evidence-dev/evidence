@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js",
@@ -85,7 +85,7 @@
 	"devDependencies": {
 		"@changesets/cli": "^2.27.1",
 		"memfs": "^4.6.0",
-		"svelte": "^4.2.8",
+		"svelte": "^4.2.12",
 		"typescript": "^5.3.3"
 	},
 	"peerDependencies": {

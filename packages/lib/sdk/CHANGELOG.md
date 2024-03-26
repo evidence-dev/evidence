@@ -1,5 +1,11 @@
 # @evidence-dev/sdk
 
+## 1.0.1
+
+### Patch Changes
+
+- 73421976: upgrade svelte deps
+
 ## 1.0.0
 
 ### Patch Changes
