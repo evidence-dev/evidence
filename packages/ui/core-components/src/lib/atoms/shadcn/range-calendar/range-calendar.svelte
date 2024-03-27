@@ -4,6 +4,8 @@
 	import * as Select from '../select/index.js';
 	import { cn } from '$lib/utils.js';
 	import { DateFormatter, getLocalTimeZone } from '@internationalized/date';
+	// required to dodge the styling on the shadcn version
+	import { Select as SelectPrimitive } from 'bits-ui';
 
 	/** @typedef {import("@internationalized/date").DateValue} DateValue */
 	/** @typedef {import("@internationalized/date").CalendarDate} CalendarDate */
@@ -92,7 +94,7 @@
 >
 	<RangeCalendar.Header>
 		<RangeCalendar.PrevButton />
-		<RangeCalendar.Heading class="flex w-full items-center justify-between gap-2 mx-2">
+		<RangeCalendar.Heading class="flex items-center justify-between gap-1">
 			<Select.Root
 				selected={defaultMonth}
 				items={monthOptions}
@@ -102,10 +104,13 @@
 					placeholder = placeholder.set({ month: v.value });
 				}}
 			>
-				<Select.Trigger aria-label="Select month" class="w-[60%]">
+				<SelectPrimitive.Trigger
+					aria-label="Select month"
+					class="flex items-center justify-between text-sm"
+				>
 					<Select.Value placeholder="Select month" />
-				</Select.Trigger>
-				<Select.Content class="max-h-[200px] overflow-y-auto">
+				</SelectPrimitive.Trigger>
+				<Select.Content class="max-h-[200px] overflow-y-auto !w-[118px]">
 					{#each monthOptions as { value, label }}
 						<Select.Item {value} {label}>
 							{label}
@@ -122,10 +127,13 @@
 					placeholder = placeholder.set({ year: v.value });
 				}}
 			>
-				<Select.Trigger aria-label="Select year" class="w-[40%]">
+				<SelectPrimitive.Trigger
+					aria-label="Select year"
+					class="flex items-center justify-between text-sm"
+				>
 					<Select.Value placeholder="Select year" />
-				</Select.Trigger>
-				<Select.Content class="max-h-[200px] overflow-y-auto">
+				</SelectPrimitive.Trigger>
+				<Select.Content class="max-h-[200px] overflow-y-auto !w-[79px]">
 					{#each yearOptions as { value, label }}
 						<Select.Item {value} {label}>
 							{label}
@@ -138,12 +146,11 @@
 	</RangeCalendar.Header>
 	<RangeCalendar.Months>
 		{#each months as month}
-			{@const col_width = 'w-9'}
 			<RangeCalendar.Grid class="mx-auto w-fit">
 				<RangeCalendar.GridHead>
 					<RangeCalendar.GridRow class="flex">
 						{#each weekdays as weekday}
-							<RangeCalendar.HeadCell class={col_width}>
+							<RangeCalendar.HeadCell>
 								{weekday.slice(0, 2)}
 							</RangeCalendar.HeadCell>
 						{/each}
@@ -154,7 +161,7 @@
 						<RangeCalendar.GridRow class="w-full mt-2">
 							{#each weekDates as date}
 								<RangeCalendar.Cell {date}>
-									<RangeCalendar.Day {date} month={month.value} class={col_width} />
+									<RangeCalendar.Day {date} month={month.value} />
 								</RangeCalendar.Cell>
 							{/each}
 						</RangeCalendar.GridRow>
