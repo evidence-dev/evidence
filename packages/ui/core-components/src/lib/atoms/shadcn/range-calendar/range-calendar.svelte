@@ -53,17 +53,11 @@
 	})).filter(({ value }) => !(minValue?.year > value || value > maxValue?.year));
 
 	$: defaultYear = placeholder
-		? {
-				value: placeholder.year,
-				label: String(placeholder.year)
-			}
+		? { value: placeholder.year, label: String(placeholder.year) }
 		: undefined;
 
 	$: defaultMonth = placeholder
-		? {
-				value: placeholder.month,
-				label: monthFmt.format(placeholder.toDate(getLocalTimeZone()))
-			}
+		? { value: placeholder.month, label: monthFmt.format(placeholder.toDate(getLocalTimeZone())) }
 		: undefined;
 
 	export {
