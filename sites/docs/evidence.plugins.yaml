@@ -29,13 +29,5 @@ components:
 datasources:
   # You can add additional datasources here by adding npm packages. 
   # Make to also add them to `package.json`.
-  "@evidence-dev/bigquery": { }
   "@evidence-dev/csv": { }
-  "@evidence-dev/databricks": { }
   "@evidence-dev/duckdb": { }
-  "@evidence-dev/mssql": { }
-  "@evidence-dev/mysql": { }
-  "@evidence-dev/postgres": { }
-  "@evidence-dev/snowflake": { }
-  "@evidence-dev/sqlite": { }
-  "@evidence-dev/trino": { }

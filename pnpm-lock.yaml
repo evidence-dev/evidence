@@ -1199,42 +1199,21 @@ importers:
 
   sites/docs:
     dependencies:
-      '@evidence-dev/bigquery':
-        specifier: ^2.0.4
-        version: link:../../packages/datasources/bigquery
+      '@evidence-dev/component-utilities':
+        specifier: workspace:*
+        version: link:../../packages/lib/component-utilities
       '@evidence-dev/core-components':
-        specifier: ^3.6.1
+        specifier: workspace:*
         version: link:../../packages/ui/core-components
       '@evidence-dev/csv':
-        specifier: ^1.0.7
+        specifier: workspace:*
         version: link:../../packages/datasources/csv
-      '@evidence-dev/databricks':
-        specifier: ^1.0.3
-        version: link:../../packages/datasources/databricks
       '@evidence-dev/duckdb':
-        specifier: ^1.0.7
+        specifier: workspace:*
         version: link:../../packages/datasources/duckdb
       '@evidence-dev/evidence':
-        specifier: ^30.0.1
+        specifier: workspace:*
         version: link:../../packages/evidence
-      '@evidence-dev/mssql':
-        specifier: ^1.0.5
-        version: link:../../packages/datasources/mssql
-      '@evidence-dev/mysql':
-        specifier: ^1.1.0
-        version: link:../../packages/datasources/mysql
-      '@evidence-dev/postgres':
-        specifier: ^1.0.4
-        version: link:../../packages/datasources/postgres
-      '@evidence-dev/snowflake':
-        specifier: ^1.0.3
-        version: link:../../packages/datasources/snowflake
-      '@evidence-dev/sqlite':
-        specifier: ^2.0.3
-        version: link:../../packages/datasources/sqlite
-      '@evidence-dev/trino':
-        specifier: ^1.0.4
-        version: link:../../packages/datasources/trino
 
   sites/example-project:
     dependencies:
