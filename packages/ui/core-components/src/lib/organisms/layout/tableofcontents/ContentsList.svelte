@@ -5,11 +5,7 @@
 	let observer;
 
 	function updateLinks() {
-		headers = Array.from(document.querySelectorAll('h1.markdown, h2.markdown'));
-		headers.forEach((header, i) => {
-			// Headers may contain values that change in response to user input, so we create our anchors as just the position on the page.
-			header.id = encodeURIComponent(i + 1);
-		});
+		headers = Array.from(document.querySelectorAll('h1.markdown, h2.markdown, h3.markdown'));
 	}
 
 	function observeDocumentChanges() {
@@ -38,11 +34,10 @@
 	<span class="block text-xs sticky top-0 mb-2 text-gray-950 bg-white shadow-white font-medium">
 		On this page
 	</span>
-	{#each headers as header, i}
+	{#each headers as header}
 		<a
-			href={'#' + encodeURIComponent(i + 1)}
+			href={'#' + header.id}
 			class={header.nodeName.toLowerCase()}
-			class:first={i === 0}
 		>
 			{header.innerText}
 		</a>
@@ -54,16 +49,16 @@
 		@apply block text-gray-600 text-xs transition-all duration-200 py-1;
 	}
 
-	/* a.h1.first {
-		@apply mt-0;
-	} */
-
 	a:hover {
 		@apply underline;
 	}
 
 	a.h2 {
 		@apply pl-0 text-gray-500;
+	}
+
+	a.h3 {
+		@apply pl-4 text-gray-500;
 	}
 
 	a.h1 {
