@@ -71,7 +71,7 @@ Orders of {inputs.multiple_selected_order_ids.label}
 
 ## Small Demo
 
-<Dropdown multiple title="Item" name="item" value="item" data="orders" />
+<Dropdown multiple title="Item" name="item" value="item" data="orders" noDefault />
 <DateRange name="range" dates="order_datetime" data="orders" />
 
 ```selected_items
