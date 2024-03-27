@@ -1,7 +1,7 @@
 <script>
 	import { browser } from '$app/environment';
 	if (browser) {
-		const splash = document.querySelector('#splash');
+		const splash = document.querySelector('#__evidence_project_splash');
 		splash?.remove();
 	}
 
