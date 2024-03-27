@@ -135,7 +135,7 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       prettier:
-        specifier: ^3.1.0
+        specifier: ^3.2.5
         version: 3.2.5
       prettier-plugin-svelte:
         specifier: ^3.1.2
@@ -760,7 +760,7 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       '@evidence-dev/universal-sql':
-        specifier: ^2.0.3
+        specifier: workspace:*
         version: link:../universal-sql
       '@steeze-ui/simple-icons':
         specifier: ^1.7.1
@@ -872,7 +872,7 @@ importers:
         specifier: ^4.6.0
         version: 4.8.0
       svelte:
-        specifier: ^4.2.8
+        specifier: ^4.2.12
         version: 4.2.12
       typescript:
         specifier: ^5.3.3
@@ -1142,8 +1142,8 @@ importers:
         specifier: ^2.8.0
         version: 2.8.8
       prettier-plugin-svelte:
-        specifier: ^2.8.1
-        version: 2.10.1(prettier@2.8.8)(svelte@4.2.12)
+        specifier: ^3.1.2
+        version: 3.2.2(prettier@2.8.8)(svelte@4.2.12)
       publint:
         specifier: ^0.1.9
         version: 0.1.16
@@ -19332,6 +19332,9 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)(postcss@8.4.38)(typescript@5.4.2)
       '@parcel/core': 2.12.0
@@ -20288,11 +20291,11 @@ packages:
     resolution: {integrity: sha512-EL+oiqnMnGF8iPzAOiuZi5Ja7D2zIQkYZ9iJy+Ddwjapw3SZ6AzP71gN4KhqbM/9WLCFW8WxexqbWc//4L5kpg==}
     dev: false
 
-  /prettier-plugin-svelte@2.10.1(prettier@2.8.8)(svelte@4.2.12):
-    resolution: {integrity: sha512-Wlq7Z5v2ueCubWo0TZzKc9XHcm7TDxqcuzRuGd0gcENfzfT4JZ9yDlCbEgxWgiPmLHkBjfOtpAWkcT28MCDpUQ==}
+  /prettier-plugin-svelte@3.2.2(prettier@2.8.8)(svelte@4.2.12):
+    resolution: {integrity: sha512-ZzzE/wMuf48/1+Lf2Ffko0uDa6pyCfgHV6+uAhtg2U0AAXGrhCSW88vEJNAkAxW5qyrFY1y1zZ4J8TgHrjW++Q==}
     peerDependencies:
-      prettier: ^1.16.4 || ^2.0.0
-      svelte: ^3.2.0 || ^4.0.0-next.0
+      prettier: ^3.0.0
+      svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
     dependencies:
       prettier: 2.8.8
       svelte: 4.2.12
@@ -21965,6 +21968,9 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
+    peerDependenciesMeta:
+      node-gyp:
+        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0

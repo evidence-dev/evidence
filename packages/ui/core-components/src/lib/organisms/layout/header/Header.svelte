@@ -55,7 +55,7 @@
 				{/if}
 			</button>
 		{/if}
-		<div class="flex gap-2 text-sm items-center pr-6">
+		<div class="flex gap-2 text-sm items-center">
 			{#if algolia}
 				<AlgoliaDocSearch {algolia} />
 			{/if}

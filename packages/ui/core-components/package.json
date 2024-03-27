@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "3.5.2",
+	"version": "3.6.1",
 	"evidence": {
 		"components": true
 	},
@@ -95,7 +95,7 @@
 		"postcss": "^8.4.23",
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.0",
-		"prettier-plugin-svelte": "^2.8.1",
+		"prettier-plugin-svelte": "^3.1.2",
 		"publint": "^0.1.9",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
@@ -124,7 +124,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^3.54.0"
+		"svelte": "^4.2.12"
 	},
 	"readme": "ERROR: No README data found!",
 	"_id": "@evidence-dev/core-components@0.0.1"

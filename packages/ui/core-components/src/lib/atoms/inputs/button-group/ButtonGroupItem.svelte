@@ -10,6 +10,14 @@
 	export let value;
 
 	const { update, value: currentValue } = getButtonGroupContext();
+
+	/** @type {boolean} */
+	let _default = false;
+	export { _default as default };
+
+	if (_default) {
+		update({ valueLabel, value });
+	}
 </script>
 
 <button

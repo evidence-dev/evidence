@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-Adjust default margin on input components
+Fix errors caused by formatting null values
