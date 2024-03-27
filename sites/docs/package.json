@@ -15,18 +15,11 @@
   },
   "type": "module",
   "dependencies": {
-    "@evidence-dev/bigquery": "^2.0.4",
-    "@evidence-dev/core-components": "^3.6.1",
-    "@evidence-dev/csv": "^1.0.7",
-    "@evidence-dev/databricks": "^1.0.3",
-    "@evidence-dev/duckdb": "^1.0.7",
-    "@evidence-dev/evidence": "^30.0.1",
-    "@evidence-dev/mssql": "^1.0.5",
-    "@evidence-dev/mysql": "^1.1.0",
-    "@evidence-dev/postgres": "^1.0.4",
-    "@evidence-dev/snowflake": "^1.0.3",
-    "@evidence-dev/sqlite": "^2.0.3",
-    "@evidence-dev/trino": "^1.0.4"
+		"@evidence-dev/component-utilities": "workspace:*",
+		"@evidence-dev/core-components": "workspace:*",
+		"@evidence-dev/csv": "workspace:*",
+		"@evidence-dev/duckdb": "workspace:*",
+		"@evidence-dev/evidence": "workspace:*"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",
