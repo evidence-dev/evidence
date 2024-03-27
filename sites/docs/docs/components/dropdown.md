@@ -163,6 +163,13 @@ where column_name like '${inputs.name_of_dropdown.value}'
         <td class='tcenter'>-</td>
         <td class='tcenter'>First value in dropdown</td>
     </tr>
+	<tr>
+        <td>noDefault</td>
+        <td>Stops any default from being selected. Overrides any set `defaultValue`.</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
     <tr>    
         <td>multiple</td>
         <td>Enables multi-select which returns a list</td>
@@ -197,6 +204,13 @@ where column_name like '${inputs.name_of_dropdown.value}'
         <td class='tcenter'>No</td>
         <td class='tcenter'>SQL where clause</td>
         <td class='tcenter'>-</td>
+    </tr>
+	<tr>	
+        <td>hideDuringPrint</td>
+        <td>Hide the component when the report is printed</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
     </tr>
 </table>
 
