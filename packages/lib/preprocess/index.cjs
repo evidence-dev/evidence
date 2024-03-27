@@ -1,4 +1,5 @@
 const mdsvex = require('mdsvex');
+const rehypeSlug = require('rehype-slug');
 const { highlighter } = require('./src/utils/highlighter.cjs');
 const addScriptTags = require('./src/add-script-tags.cjs');
 const processQueries = require('./src/process-queries.cjs');
@@ -24,12 +25,8 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 				highlighter
 			},
 			rehypePlugins: [
-				[
-					addClasses,
-					{
-						'*': 'markdown'
-					}
-				]
+				[addClasses,{'*': 'markdown'}],
+				rehypeSlug
 			]
 		}),
 
