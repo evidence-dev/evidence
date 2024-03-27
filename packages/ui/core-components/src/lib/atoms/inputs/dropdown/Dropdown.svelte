@@ -51,6 +51,15 @@
 	/** @type {string} */
 	export let defaultValue = undefined;
 
+	/** @type {boolean} */
+	export let noDefault = false;
+	noDefault = noDefault === true || noDefault === 'true';
+
+	if (noDefault) {
+		// `Symbol()` so it isn't == to anything else
+		defaultValue = Symbol();
+	}
+
 	const ctx = {
 		hasBeenSet: defaultValue !== undefined,
 		handleSelect,
@@ -153,7 +162,7 @@
 	function useNewQuery(query) {
 		items = query;
 
-		if (hasQuery && defaultValue) {
+		if (hasQuery && defaultValue !== undefined) {
 			ctx.hasBeenSet = true;
 			if (browser) {
 				(async () => {
