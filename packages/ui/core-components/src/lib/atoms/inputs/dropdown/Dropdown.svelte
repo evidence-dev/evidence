@@ -266,18 +266,17 @@
 								>
 									Select all
 								</Command.Item>
-								{#if $selectedValues.length > 0}
-									<Command.Separator />
-									<Command.Item
-										class="justify-center text-center"
-										onSelect={() => {
-											$selectedValues = [];
-											selectedValuesToInput();
-										}}
-									>
-										Clear selection
-									</Command.Item>
-								{/if}
+								<Command.Separator />
+								<Command.Item
+									disabled={$selectedValues.length === 0}
+									class="justify-center text-center"
+									onSelect={() => {
+										$selectedValues = [];
+										selectedValuesToInput();
+									}}
+								>
+									Clear selection
+								</Command.Item>
 							{/if}
 						</Command.List>
 					</Command.Root>
