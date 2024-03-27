@@ -39,6 +39,19 @@
 
 	Current Value: {$inputStore[args.name]}
 </Story>
+
+<Story name="Large Number of Entries " let:args>
+	<div class="mb-8">
+		<ButtonGroup {...args}>
+			{#each Array.from({ length: 20 }, (_, i) => i) as item}
+				<ButtonGroupItem valueLabel={`Option ${item}`} value={item} />
+			{/each}
+		</ButtonGroup>
+	</div>
+
+	Current Value: {$inputStore[args.name]}
+</Story>
+
 <Story
 	name="Query-Based Entries - Text"
 	let:args
