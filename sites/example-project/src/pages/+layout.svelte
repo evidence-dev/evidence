@@ -1,8 +1,8 @@
 <script>
-	import {browser} from '$app/environment'
+	import { browser } from '$app/environment';
 	if (browser) {
-		const splash = document.querySelector('#splash')
-		splash?.remove()
+		const splash = document.querySelector('#splash');
+		splash?.remove();
 	}
 
 	import '@evidence-dev/tailwind/fonts.css';
