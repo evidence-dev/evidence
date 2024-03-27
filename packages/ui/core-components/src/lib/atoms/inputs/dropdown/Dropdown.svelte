@@ -48,20 +48,26 @@
 
 	export let hideDuringPrint = true;
 
-	/** @type {string} */
-	export let defaultValue = undefined;
+	/** @type {string | string[]} */
+	export let defaultValue = [];
+	const _defaultValue = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
 
 	/** @type {boolean} */
 	export let noDefault = false;
 	noDefault = noDefault === true || noDefault === 'true';
 
 	if (noDefault) {
-		// `Symbol()` so it isn't == to anything else
-		defaultValue = Symbol();
+		_defaultValue.length = 0;
 	}
 
+	const defaultStatus = noDefault
+		? 'no_default'
+		: _defaultValue.length > 0
+			? 'manual_default'
+			: 'auto_default';
+
 	const ctx = {
-		hasBeenSet: defaultValue !== undefined,
+		hasBeenSet: defaultStatus !== 'auto_default',
 		handleSelect,
 		multiple
 	};
@@ -162,16 +168,16 @@
 	function useNewQuery(query) {
 		items = query;
 
-		if (hasQuery && defaultValue !== undefined) {
+		if (hasQuery && defaultStatus !== 'auto_default') {
 			ctx.hasBeenSet = true;
 			if (browser) {
 				(async () => {
 					await query.fetch();
-					$selectedValues = query.filter((x) => x.value == defaultValue);
+					$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
 					selectedValuesToInput();
 				})();
 			} else {
-				$selectedValues = query.filter((x) => x.value == defaultValue);
+				$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
 				selectedValuesToInput();
 			}
 		} else {
