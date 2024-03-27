@@ -60,7 +60,7 @@
 		_defaultValue.length = 0;
 	}
 
-	const hasDefault = noDefault || _defaultValue.length >= 0;
+	const hasDefault = noDefault || _defaultValue.length > 0;
 
 	const ctx = {
 		hasBeenSet: hasDefault,
