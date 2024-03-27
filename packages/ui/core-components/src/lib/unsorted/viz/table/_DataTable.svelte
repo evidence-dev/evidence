@@ -341,7 +341,7 @@
 
 <svelte:window bind:innerHeight />
 
-{#if !isFullPage}
+{#if !isFullPage && innerHeight !== undefined}
 	<Fullscreen bind:open={fullscreen}>
 		<!-- header and last row are 22.5+22.5 = 45px, middle rows are 23 -->
 		{@const ROW_HEIGHT = 23}
