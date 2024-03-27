@@ -60,14 +60,10 @@
 		_defaultValue.length = 0;
 	}
 
-	const defaultStatus = noDefault
-		? 'no_default'
-		: _defaultValue.length > 0
-			? 'manual_default'
-			: 'auto_default';
+	const hasDefault = noDefault || _defaultValue.length >= 0;
 
 	const ctx = {
-		hasBeenSet: defaultStatus !== 'auto_default',
+		hasBeenSet: hasDefault,
 		handleSelect,
 		multiple
 	};
@@ -168,7 +164,7 @@
 	function useNewQuery(query) {
 		items = query;
 
-		if (hasQuery && defaultStatus !== 'auto_default') {
+		if (hasQuery && hasDefault) {
 			ctx.hasBeenSet = true;
 			if (browser) {
 				(async () => {
