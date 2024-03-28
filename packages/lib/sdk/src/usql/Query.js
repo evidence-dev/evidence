@@ -37,6 +37,13 @@ import chunk from 'lodash.chunk';
  */
 
 /**
+ * @typedef {Object} QueryGlobalEvents
+ * @property {undefined} inFlightQueryStart
+ * @property {undefined} inFlightQueryEnd
+ */
+/** @typedef {import ("./types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
+
+/**
  * @typedef {import('./types.js').EventEmitter<QueryEvents>} QueryEventEmitter
  */
 
@@ -162,6 +169,62 @@ export class Query {
 	/// </ State Primatives /> ///
 	//////////////////////////////
 
+	//////////////////////////
+	/// < Global Loading > ///
+	//////////////////////////
+
+	/** @type {Set<Query>} */
+	static #inFlightQueries = new Set();
+
+	static get QueriesInFlight() {
+		return Query.#inFlightQueries.size > 0;
+	}
+
+	/**
+	 * @param {Query<any>} q
+	 */
+	static #markInFlight = (q) => {
+		if (this.#inFlightQueries.size === 0) {
+			// We are starting
+			this.#globalEmit('inFlightQueryStart', undefined);
+		}
+		Query.#inFlightQueries.add(q);
+		q.#sharedDataPromise.promise.finally(() => {
+			Query.#inFlightQueries.delete(q);
+			if (this.#inFlightQueries.size === 0) {
+				// We are done
+				this.#globalEmit('inFlightQueryEnd', undefined);
+			}
+			// Remove
+		});
+	};
+
+	/** @type {import("./types.js").EventMap<QueryGlobalEvents>} */
+	static #globalHandlerMap = {
+		inFlightQueryStart: new Set(),
+		inFlightQueryEnd: new Set()
+	};
+	/**
+	 * @template {keyof QueryGlobalEvents} Event
+	 * @param {Event} event
+	 * @param {QueryGlobalEvents[Event]} value
+	 */
+	static #globalEmit = (event, value) => {
+		Query.#globalHandlerMap[event].forEach((fn) => fn(value, event));
+	};
+
+	/** @type {QueryGlobalEventEmitter["addEventListener"]} */
+	static addEventListener(event, handler) {
+		this.#globalHandlerMap[event].add(handler);
+	}
+	/** @type {QueryGlobalEventEmitter["removeEventListener"]} */
+	static removeEventListener(event, handler) {
+		this.#globalHandlerMap[event].delete(handler);
+	}
+	/////////////////////////////
+	/// </ Global Loading />  ///
+	/////////////////////////////
+
 	////////////////////
 	/// < Fetching > ///
 	////////////////////
@@ -183,8 +246,6 @@ export class Query {
 			return this.#sharedDataPromise.promise;
 		this.#sharedDataPromise.start();
 
-		this.#debug('Beginning Data Fetch');
-
 		const dataQuery =
 			`
 ---- Data ${this.#id} ${this.#hash}
@@ -195,9 +256,16 @@ ${this.#query.toString()}
 
 		// gotta love jsdoc sometimes
 		const typedRunner = /** @type {import('./types.js').Runner<RowType>} */ (this.#executeQuery);
+		Query.#markInFlight(this);
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
-				for (const c of chunk(result, 10000)) this.#data.push(...c);
+				// Large datasets can cause a stack overflow when using .push
+				// However, we don't want to re-assign #data, so doing it this way
+				// Might be a little bit slower, but it prevents that overflow
+				for (const c of chunk(result, 10000)) {
+					this.#debug(`Processing result chunk of ${c.length} rows`);
+					this.#data.push(...c);
+				}
 
 				// @ts-expect-error
 				if (result._evidenceColumnTypes)
@@ -213,7 +281,6 @@ ${this.#query.toString()}
 			},
 			typedRunner(dataQuery, `${this.#id}_data`),
 			(e, isPromise) => {
-				console.trace('I am in the process of erroring!', e);
 				this.#error = e;
 				this.#sharedDataPromise.reject(e);
 				if (isPromise) {
@@ -225,7 +292,30 @@ ${this.#query.toString()}
 		);
 		return resolved;
 	};
-	fetch = this.#fetchData;
+	fetch = async () => {
+		return Promise.allSettled([
+			this.#sharedColumnsPromise.promise,
+			this.#sharedDataPromise.promise,
+			this.#sharedLengthPromise.promise
+		]).then(() => this.value);
+	};
+	/**
+	 * Executes the query without actually updating the state
+	 * This is helpful for ensuring that the related parquet files
+	 * are available, even when SSR is used to initially hydrate the
+	 * query / page
+	 */
+	backgroundFetch = () => {
+		this.#debug(`Executed backgroundFetch`);
+		resolveMaybePromise(
+			() => {},
+			async () => {
+				await new Promise((resolve) => setTimeout(resolve, 0));
+				return this.#executeQuery(`--data\n${this.#query.toString()}`, this.id);
+			},
+			() => {}
+		);
+	};
 
 	/** @type {ChainableSharedPromise<RowType>} */
 	#sharedLengthPromise = sharedPromise(() =>
@@ -240,6 +330,7 @@ ${this.#query.toString()}
 			this.#sharedDataPromise.state === 'resolved' &&
 			this.#sharedLengthPromise.state === 'init'
 		) {
+			this.#debug('Inferred length from already-resolved data promise', this.#data);
 			this.#length = this.#data.length;
 			// Done
 			this.#sharedLengthPromise.resolve(this);
@@ -282,7 +373,6 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 			typedRunner(lengthQuery, `${this.#id}_length`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
-				console.trace('I am in the process of erroring!', e);
 				this.#error = e;
 				this.#sharedLengthPromise.reject(e);
 				if (isPromise) {
@@ -346,7 +436,6 @@ DESCRIBE ${this.#query.toString()}
 			typedRunner(metaQuery, `${this.#id}_columns`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
-				console.trace('I am in the process of erroring!', e);
 				this.#error = e;
 				this.#sharedColumnsPromise.reject(e);
 
@@ -467,6 +556,10 @@ DESCRIBE ${this.#query.toString()}
 	/////////////////////
 
 	static #cache = new Map();
+
+	static emptyCache = () => {
+		this.#cache.clear();
+	};
 
 	/**
 	 * @template {QueryResultRow} [RowType=QueryResultRow]
@@ -595,8 +688,15 @@ DESCRIBE ${this.#query.toString()}
 		if (initialData) {
 			this.#debug('Created with initial data');
 			this.#hasInitialData = true;
-			this.#data.concat(initialData);
+			// Large datasets can cause a stack overflow when using .push
+			// However, we don't want to re-assign #data, so doing it this way
+			// Might be a little bit slower, but it prevents that overflow
+			for (const c of chunk(initialData, 10000)) {
+				this.#debug(`Processing initial data chunk of ${c.length} rows`);
+				this.#data.push(...c);
+			}
 			this.#sharedDataPromise.resolve(this);
+			this.#fetchLength();
 		}
 		if (knownColumns) {
 			if (!Array.isArray(knownColumns))
@@ -646,7 +746,17 @@ DESCRIBE ${this.#query.toString()}
 	 */
 	publish = (/** @type {string} */ source) => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
-		this.#debug(`Publishing triggered by ${source}`);
+		this.#debug(`Publishing triggered by ${source}`, {
+			length: this.#length,
+			lengthLoaded: this.lengthLoaded,
+			lengthLoading: this.lengthLoading,
+			columns: this.#columns,
+			columnsLoaded: this.columnsLoaded,
+			columnsLoading: this.columnsLoading,
+			data: this.#data,
+			dataLoaded: this.dataLoaded,
+			dataLoading: this.dataLoading
+		});
 		this.#subscribers.forEach((fn) => fn(this.#value));
 	};
 	//////////////////////////////////////
@@ -669,15 +779,13 @@ DESCRIBE ${this.#query.toString()}
 	 * @param {QueryEvents[Event]} value
 	 */
 	#emit = (event, value) => {
-		this.#handlerMap[event].forEach((fn) => {
-			fn(value);
-		});
+		this.#handlerMap[event].forEach((fn) => fn(value, event));
 	};
 
 	/**
 	 * @template {keyof QueryEvents} Event
 	 * @param {Event} event
-	 * @param {(v: QueryEvents[Event]) => void} handler
+	 * @param {import('./types.js').EventHandler<QueryEvents, Event>} handler
 	 */
 	on = (event, handler) => {
 		this.#handlerMap[event].add(handler);
@@ -685,7 +793,7 @@ DESCRIBE ${this.#query.toString()}
 	/**
 	 * @template {keyof QueryEvents} Event
 	 * @param {Event} event
-	 * @param {(v: QueryEvents[Event]) => void} handler
+	 * @param {import('./types.js').EventHandler<QueryEvents, Event>} handler
 	 */
 	off = (event, handler) => {
 		this.#handlerMap[event].delete(handler);

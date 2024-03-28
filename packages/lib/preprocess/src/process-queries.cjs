@@ -30,7 +30,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		const IS_INPUT_QUERY = /\${\s*inputs\s*\..*?}/s;
 		const input_ids = reactiveIds.filter((id) => IS_INPUT_QUERY.test(duckdbQueries[id].compiledQueryString));
 
-		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = QueryStore.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, "${q.id}", { initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
+		const errQueries = Object.values(duckdbQueries).filter(q => q.compileError).map(q => `const ${q.id} = Query.create(\`${q.compiledQueryString.replaceAll("$", "\\$")}\`, undefined, { id: "${q.id}", initialError: new Error(\`${q.compileError.replaceAll("$", "\\$")}\`)})`)
 
 		
 		const queryStoreDeclarations = validIds.map((id) => {
@@ -124,11 +124,11 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 							initialError = e
 						}
 
-						const query_store = QueryStore.create(
+						const query_store = Query.create(
 							_${id}_query_text,
 							queryFunc,
-							'${id}',
 							{
+								id: '${id}',
 								scoreNotifier,
 								initialData,
 								initialError,
@@ -211,11 +211,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-				${id} = get(QueryStore.create(
+				${id} = get(Query.create(
 						\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`,
 						queryFunc,
-						'${id}',
-						{}
+						{id: '${id}',}
 					));
 				`).join('\n')}
 			}));
@@ -269,7 +268,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
 		import debounce from 'debounce';
-		import { QueryStore } from '@evidence-dev/query-store';
+		import { Query } from '@evidence-dev/sdk/usql';
 		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
 		const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
@@ -286,29 +285,34 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}, 5000);
 		};
 
-		const activeQueries = QueryStore.activeQueries;
-
-		let loadingQueriesToast = 0;
-		$: if ($activeQueries.size > 0) {
-			clearTimeout(loadingQueriesToast);
-			loadingQueriesToast = setTimeout(() => {
-				toasts.add({
-					id: 'LoadingToast',
-					title: '',
-					message: 'Loading...',
-					status: 'info'
-				}, 2 ** 31 - 1);
-			}, 1000);
-		} else {
-			clearTimeout(loadingQueriesToast);
-			toasts.dismiss('LoadingToast');
+		const onInflightQueriesStart = () => {
+			toasts.add({
+				id: 'LoadingToast',
+				title: '',
+				message: 'Loading...',
+				status: 'info'
+			}, 0); // timeout of 0 means forever
 		}
+		const onInflightQueriesEnd = () => {
+			toasts.dismiss('LoadingToast')
+		}
+		onMount(() => {
+			Query.addEventListener('inFlightQueryStart', onInflightQueriesStart)
+			Query.addEventListener('inFlightQueryEnd', onInflightQueriesEnd)
+			if (Query.QueriesLoading) {
+				onInflightQueriesStart()
+			}
+			return () => {
+				Query.removeEventListener('inFlightQueryStart', onInflightQueriesStart)
+				Query.removeEventListener('inFlightQueryEnd', onInflightQueriesEnd)
+			}
+		})
 
 		let __has_hmr_run = false
 	    if (import.meta?.hot) {
 	        import.meta.hot.on("vite:afterUpdate", () => {
 				__has_hmr_run = true
-				QueryStore.emptyCache() // All bets are off
+				Query.emptyCache() // All bets are off
 			})
 	    }
 		

@@ -54,6 +54,7 @@
 		"@evidence-dev/component-utilities": "workspace:*",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/db-orchestrator": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/query-store": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "2.5.4",

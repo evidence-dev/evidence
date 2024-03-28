@@ -23,9 +23,13 @@ export const getWhereClause = function (selectedDimensions, excludeDimension) {
 };
 
 export const getDimensionCutQuery = function (
+	/** @type {import("@evidence-dev/sdk/usql").Query} */
 	data,
+	/** @type {import("@evidence-dev/sdk/usql").DescribeResultRow} */
 	dimension,
+	/** @type {string} */
 	metric,
+	/** @type {number} */
 	limit,
 	selectedDimensions,
 	selectedValue
@@ -33,31 +37,31 @@ export const getDimensionCutQuery = function (
 	let query = `
     with topN as (
         select 
-            '${dimension.name}' as dimensionName, 
-            ${dimension.name} as dimensionValue, 
+            '${dimension.column_name}' as dimensionName, 
+            ${dimension.column_name} as dimensionValue, 
             'mainList' as case, 
             ${metric} 
-                -- filter(${getWhereClause(selectedDimensions, dimension.name)}) 
+                -- filter(${getWhereClause(selectedDimensions, dimension.column_name)}) 
                 as metric
         from (${data.originalText}) 
-        where ${getWhereClause(selectedDimensions, dimension.name)}
+        where ${getWhereClause(selectedDimensions, dimension.column_name)}
         group by 1,2 
         order by 4 desc 
         limit ${limit}
     ), 
     selectedRow as (
         select 
-            '${dimension.name}' as dimensionName, 
-            ${dimension.name} as dimensionValue, 
+            '${dimension.column_name}' as dimensionName, 
+            ${dimension.column_name} as dimensionValue, 
             'selectedValue' as case, 
             ${metric} as metric
         from (${data.originalText}) 
         where 
-        ${getWhereClause(selectedDimensions, dimension.name)} and 
+        ${getWhereClause(selectedDimensions, dimension.column_name)} and 
         ${
 					selectedValue
-						? `${dimension.name} = '${selectedValue?.replaceAll("'", "''")}' and ${
-								dimension.name
+						? `${dimension.column_name} = '${selectedValue?.replaceAll("'", "''")}' and ${
+								dimension.column_name
 							} not in (select dimensionValue from topN)`
 						: 'false'
 				}  

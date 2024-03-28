@@ -4,21 +4,23 @@ import type { Query as QueryBuilder } from '@uwdata/mosaic-sql';
 import type { DescribeResultRow } from '../types/duckdb-wellknown.d.ts';
 import type { QueryValue } from './Query.js';
 
+export type EventHandler<
+	Events extends Record<string, any> = {},
+	Event extends keyof Events = keyof Events
+> = (value: Events[Event], event: Event) => void;
+
 export type EventEmitter<Events extends Record<string, any> = {}> = {
-	addEventListener<Event extends keyof Events>(
-		event: Event,
-		handler: (value: Events[Event]) => void
-	): void;
+	addEventListener<Event extends keyof Events>(event: Event, handler: EventHandler<Events>): void;
 	removeEventListener<Event extends keyof Events>(
 		event: Event,
-		handler: (value: Events[Event]) => void
+		handler: EventHandler<Events>
 	): void;
-	on<Event extends keyof Events>(event: Event, handler: (value: Events[Event]) => void): void;
-	off<Event extends keyof Events>(event: Event, handler: (value: Events[Event]) => void): void;
+	on<Event extends keyof Events>(event: Event, handler: EventHandler<Events>): void;
+	off<Event extends keyof Events>(event: Event, handler: EventHandler<Events>): void;
 };
 
 export type EventMap<Events extends Record<string, any>> = {
-	[Event in keyof Events]: Set<(v: Events[Event]) => void>;
+	[Event in keyof Events]: Set<EventHandler<Events, Event>>;
 };
 
 export type QueryResultRow = Record<string, number | string | Date | boolean | null>;
