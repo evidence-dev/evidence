@@ -187,11 +187,18 @@ where column_name like '${inputs.name_of_dropdown.value}'
         <td class='tcenter'>true | false</td>
         <td class='tcenter'>false</td>
     </tr>
+	<tr>
+        <td>disableSelectAll</td>
+        <td>Removes the `Select all` button. Recommended for large datasets.</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
     <tr>    
         <td>multiple</td>
         <td>Enables multi-select which returns a list</td>
         <td class='tcenter'>No</td>
-        <td class='tcenter'>boolean</td>
+        <td class='tcenter'>true | false</td>
         <td class='tcenter'>false</td>
     </tr>
     <tr>	
