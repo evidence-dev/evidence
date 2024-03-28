@@ -68,3 +68,9 @@ jobs:
           SQLITE_FILENAME: ':memory:'
 
           DUCKDB_FILENAME: ':memory:'
+
+      - name: Test the CLI via test-env for merges to main
+        if: ${{ github.base_ref == 'main' }}
+        run: |
+          pnpm run sources:test-env && pnpm run build:test-env
+  

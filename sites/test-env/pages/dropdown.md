@@ -18,7 +18,7 @@ select * from orders limit 100
 ```
 
 ```orders
-select * from orders
+select * from orders limit 1000
 ```
 
 
@@ -75,7 +75,7 @@ Orders of {inputs.multiple_selected_order_ids.label}
 <DateRange name="range" dates="order_datetime" data="orders" />
 
 ```selected_items
-SELECT * FROM orders WHERE item in ${inputs.item.value} AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}'
+SELECT * FROM orders WHERE item in ${inputs.item.value} AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}' limit 100
 ```
 
 <DataTable data={selected_items} />
