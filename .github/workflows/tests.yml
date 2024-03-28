@@ -73,4 +73,3 @@ jobs:
         if: ${{ github.base_ref == 'main' }}
         run: |
           pnpm run sources:test-env && pnpm run build:test-env
-  
