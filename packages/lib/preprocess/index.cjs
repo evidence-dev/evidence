@@ -26,14 +26,20 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 				highlighter
 			},
 			rehypePlugins: [
-				[addClasses, {
+				[
+					addClasses,
+					{
 						'*': 'markdown'
-					}],
+					}
+				],
 				[rehypeSlug],
-				[rehypeAutolinkHeadings, {
-					behavior: 'wrap',
-					properties: {}
-				  }],
+				[
+					rehypeAutolinkHeadings,
+					{
+						behavior: 'wrap',
+						properties: {}
+					}
+				]
 			]
 		}),
 
