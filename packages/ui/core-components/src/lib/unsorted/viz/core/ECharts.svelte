@@ -30,6 +30,8 @@
 	export let printEchartsConfig; // helper for custom chart development
 	export let seriesColors = undefined;
 
+	export let connectGroup = undefined;
+
 	const dispatch = createEventDispatcher();
 
 	let downloadChart = false;
@@ -80,6 +82,7 @@
 					seriesOptions,
 					dispatch,
 					renderer,
+					connectGroup,
 					seriesColors
 				}}
 			/>
@@ -172,6 +175,7 @@
 <style>
 	@media print {
 		.chart {
+			-moz-column-break-inside: avoid;
 			break-inside: avoid;
 		}
 
