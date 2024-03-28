@@ -3,11 +3,11 @@
 </script>
 
 <script>
-    import { setContext } from 'svelte';
-	
+	import { setContext } from 'svelte';
+
 	/** @type {1|2|3|4|5|6}*/
 	export let cols = 2;
-	
+
 	/** @type {"none"|"sm"|"md"|"lg"}*/
 	export let gapSize = 'md';
 
@@ -37,11 +37,10 @@
 	// Create a simple unique identifier based on a timestamp and a random suffix
 	let gridId = `grid-${Date.now()}-${Math.round(Math.random() * 1000)}`;
 
-	let gapWidth = gapWidths[gapSize]
+	let gapWidth = gapWidths[gapSize];
 
 	// Setting grid context - used by charts during print to set appropriate width:
 	setContext('gridConfig', { gridId, cols, gapWidth });
-
 </script>
 
 <div class="grid {colClasses[cols]} {gapClasses[gapSize]}">
