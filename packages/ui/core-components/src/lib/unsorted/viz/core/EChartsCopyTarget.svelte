@@ -34,7 +34,7 @@
 		class="chart"
 		style="
 		height: {height};
-		width: 590px;
+		width: {width};
 		margin-left: 0;
 		margin-top: 15px;
 		margin-bottom: 10px;

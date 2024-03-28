@@ -11,7 +11,7 @@ queries:
 
 ## Bar
 
-<Grid cols=2 gapSize=lg>
+<Grid cols=2>
 <BarChart
 data={orders_by_category}
 x=category
