@@ -34,11 +34,21 @@ The `EvidenceDefaultLayout` component accepts the following properties for commo
 | `maxWidth`    | Sets the width of the project in pixels. The default layout is about 1,280 px wide.    | Any number         | no       | -       |
 | `fullWidth`    | Sets the width of the project to full | {true} or {false}              | no       | {false}       |
 | `hideSidebar`    | Hides the sidebar navigation | {true} or {false}              | no       | {false}       |
+| `hideHeader`    | Hides the page header | {true} or {false}              | no       | {false}       |
+| `hideBreadcrumbs`    | Hides the breadcrumbs which appear at the top of the page | {true} or {false}              | no       | {false}       |
+| `hideTOC`    | Hides the table of contents (on-page links at top right of page) | {true} or {false}              | no       | {false}       |
 | `builtWithEvidence`    | Display a subtle link to the Evidence website at the bottom of the sidebar.          | {true} or {false}    | no       | {false}       | {false} |
 | `algolia`    | Object containing Algolia docsearch credentials              |  {{appId: 'xxx', apiKey: 'xxx', indexName: 'xxx'}}       | no       | - |
 | `githubRepo`    | Linke to a Github Repo which will appear in the header using the Github Logo              |  'https://github.com/evidence-dev/evidence'       | no       | - |
 | `xProfile`    | Linke to an X (Twitter) profile which will appear in the header using the X Logo              |  'https://twitter.com/evidence_dev'       | no       | - |
 | `slackCommunity`    | Linke to a slack community which will appear in the header using the slack Logo              |  'evidencedev.slack.com'       | no       | - |
+
+**Example custom option:**
+```html
+<EvidenceDefaultLayout {data} hideSidebar={true}>
+	<slot slot="content" />
+</EvidenceDefaultLayout>
+```
 
 ## Custom Styles
 
@@ -100,6 +110,7 @@ By default, Evidence includes a number of features on every page, which can be r
 
 - Sidebar
 - Header
+- Breadcrumbs
 - Table of Contents
 
 You can also add your own elements to the default page layout.
