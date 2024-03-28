@@ -23,7 +23,6 @@
 		md: 'gap-4',
 		lg: 'gap-8'
 	});
-
 </script>
 
 <div class="grid {colClasses[cols]} {gapClasses[gapSize]}">
