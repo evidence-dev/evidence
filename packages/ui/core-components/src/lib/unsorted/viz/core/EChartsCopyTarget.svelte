@@ -17,24 +17,22 @@
 
 	// Grid Context:
 	let inGrid = false;
-    let gridCols;
-	let gridId;
+	let gridCols;
 	let gapWidth;
 
-    // Attempt to get the grid context
-    const gridConfig = getContext('gridConfig');
+	// Attempt to get the grid context
+	const gridConfig = getContext('gridConfig');
 
-    if (gridConfig) {
-        inGrid = true;
-        ({ gridId, cols: gridCols, gapWidth } = gridConfig);
-    }
+	if (gridConfig) {
+		inGrid = true;
+		({ cols: gridCols, gapWidth } = gridConfig);
+	}
 
 	$: portraitCols = Math.min(Number(gridCols), 2);
-	$: portraitWidth = `${(650 / portraitCols) - (Number(gapWidth) * (portraitCols - 1))}px`;
+	$: portraitWidth = `${650 / portraitCols - Number(gapWidth) * (portraitCols - 1)}px`;
 	$: landscapeCols = Math.min(Number(gridCols), 3);
-	$: landscapeWidth = `${(650 / landscapeCols) - (Number(gapWidth) * (landscapeCols - 1))}px`;
+	$: landscapeWidth = `${650 / landscapeCols - Number(gapWidth) * (landscapeCols - 1)}px`;
 </script>
-
 
 {#if copying}
 	<div
