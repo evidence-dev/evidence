@@ -4,14 +4,16 @@ hide_table_of_contents: false
 title: Netlify
 ---
 
-:::caution
+<Alert status=warning>
+
 All URLs on Netlify are converted to lowercase. This can cause issues if you're using `{params.my_param}` to filter data in your project. It's recommended to use lowercase any time you're using a URL parameter to filter data, like this:
 
 ```sql
 SELECT * FROM source_name.my_table 
 WHERE LOWER(my_column) = LOWER('${params.my_param}')
 ```
-:::
+
+</Alert>
 
 Netlify lets you host a public version of your project for free, or you can create and host a password-protected version with Netlify's $15/month plan.
 

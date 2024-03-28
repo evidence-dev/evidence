@@ -65,9 +65,14 @@ Queries in your markdown files will use DuckDB SQL syntax and will also run in t
 Optional folders for `components`, `static`, and `partials` still work as they did before.
 
 ## Overview of Changes you will need to make
-:::info Recommendations
+
+<Alert status=info>
+
+**Recommendations**
+
 We recommend creating a backup of your project before starting the migration.
-:::
+
+</Alert>
 
 - Use new template project scaffold
 - Migrate queries to new project folder structure
@@ -80,16 +85,24 @@ We recommend creating a backup of your project before starting the migration.
 
 ## Migration Steps
 
-:::info VS Code Migration Command
+<Alert status=info>
+
+**VS Code Migration Command**
+
 We have created a VSCode extension command to assist with migration. This will aid significantly with the migration process. Steps for VS Code are shown here. If you prefer to complete the steps manually, see the next section below.
-:::
+
+</Alert>
 
 ### Using the VS Code Migration Command
 This migration command covers most situations, but there may be edge cases where you will need to make adjustments or fix query syntax.
 
-:::info Troubleshooting
+<Alert status=info>
+
+**Troubleshooting**
+
 Issues and errors in the migration command can be related to npm or NodeJS versions - if in doubt, update to the latest LTS versions (see [system requirements](/guides/system-requirements))
-:::
+
+</Alert>
 
 1. Ensure you have the Evidence VS Code extension version `1.4.1` or higher installed
 2. Open the Evidence project you want to migrate. If your project is within a monorepo, for this migration open only the Evidence project folder as the "workspace" in VS Code - otherwise the migration command will not be able to run

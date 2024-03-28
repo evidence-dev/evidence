@@ -3,9 +3,11 @@ sidebar_position: 98
 title: ECharts Options
 ---
 
-:::warning 
+<Alert status=warning>
+
 `echartsOptions` allow you to customize your chart with any combination of eCharts config options. Many config combinations can result in "broken" looking charts. Proceed with caution, and test your charts, particularly at different screen widths.
-:::
+
+</Alert>
 
 ECharts settings are specified in config object. Evidence generates this config for you through the props you pass to your chart. 
 

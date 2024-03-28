@@ -62,9 +62,13 @@ Which will return this table, which can be passed into the Heatmap:
 | East   | C       | 450   |
 
 
-:::info Note on Date Columns
+<Alert status=info>
+
+**Note on Date Columns**
+
 Heatmap currently only works with string columns. If you would like to use a date column, cast it to a string in your SQL query before passing it into the Heatmap
-:::
+
+</Alert>
 
 
 ## Examples

@@ -13,11 +13,15 @@ Below is a **short guide** on building a simple component in Evidence.
 
 For a fuller guide, Svelte offers a really great interactive tutorial that you can complete in your browser in about an hour: [Svelte Tutorial](https://svelte.dev/tutorial/basics)
 
-:::tip Built a great component?
+<Alert status=info>
+
+**Built a great component?**
+
 Let us know in our [Slack community](https://slack.evidence.dev)!
 
 We'd love to see what you've built, and may add generally applicable components to Evidence Labs, or the Evidence component library!
-:::
+
+</Alert>
 
 ## Example custom component
 

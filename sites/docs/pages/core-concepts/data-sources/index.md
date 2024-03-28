@@ -4,10 +4,15 @@ title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
-:::info Recent changes to data sources in Evidence
+<Alert status=info>
+
+**Recent changes to data sources in Evidence**
+
 A recent Evidence release (Universal SQL, v24+) contains breaking changes for data source setup.
+
 If you recently updated your Evidence version and are having issues setting up data sources, consult the [migration guide](/guides/usql-migration-guide)
-:::
+
+</Alert>
 
 ## Overview of Data Sources
 
@@ -51,10 +56,13 @@ For SQL data sources, choose which data to extract by adding .sql files to the `
 
 Each of these .sql files will create a table that can be queried in Evidence as `[my_source].[my_source_query]`.
 
-:::info Non-SQL data sources
+<Alert status=info>
+
+**Non-SQL data sources**
 
 For non-SQL data sources, configuring the data extracted is achieved in other ways. Refer to the documentation for the specific data source for details.
-:::
+
+</Alert>
 
 ## Run Sources
 
