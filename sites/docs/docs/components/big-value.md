@@ -69,46 +69,11 @@ Multiple cards will align themselves into a row.
         <td class='tcenter'>-</td>
     </tr>
     <tr>	
-        <td>comparison</td>	
-        <td>Column to pull the comparison value from.</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>column name</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>sparkline</td>	
-        <td>Column to pull the date from to create the sparkline.</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>column name</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
         <td>title</td>	
         <td>Title of the card.</td>	
         <td class='tcenter'>-</td>	
         <td class='tcenter'>string</td>	
         <td class='tcenter'>Title of the value column.</td>
-    </tr>
-    <tr>	
-        <td>comparisonTitle</td>	
-        <td>Text to the right of the comparison.</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>string</td>	
-        <td class='tcenter'>Title of the comparison column.</td>
-    </tr>
-    <tr>	
-        <td>comparisonDelta</td>	
-        <td>Whether to display delta symbol and color</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>true | false</td>	
-        <td class='tcenter'>true</td>
-    </tr>
-    <tr>	
-        <td>downIsGood</td>	
-        <td>If present, negative comparison values appear in green, and positive values appear in red.</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>true | false</td>
-        <td class='tcenter'>false</td>
     </tr>
     <tr>	
         <td>minWidth</td>	
@@ -131,6 +96,62 @@ Multiple cards will align themselves into a row.
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
         <td class='tcenter'>-</td>
     </tr>
+        <tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
+<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
+</table>
+
+### Comparison Options
+
+<table>		
+    <tr>	
+        <th class='tleft'>Name</th>	
+        <th class='tleft'>Description</th>	
+        <th>Required?</th>	
+        <th>Options</th>	
+        <th>Default</th>	
+    </tr>				 
+    <tr>	
+        <td>comparison</td>	
+        <td>Column to pull the comparison value from.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>
+       <tr>	
+        <td>comparisonTitle</td>	
+        <td>Text to the right of the comparison.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>string</td>	
+        <td class='tcenter'>Title of the comparison column.</td>
+    </tr>
+    <tr>	
+        <td>comparisonDelta</td>	
+        <td>Whether to display delta symbol and color</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>true</td>
+    </tr>
+    <tr>	
+        <td>downIsGood</td>	
+        <td>If present, negative comparison values appear in green, and positive values appear in red.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
+        <td>neutralMin</td>	
+        <td>Sets the bottom of the range for 'neutral' values - neutral values appear in grey rather than red or green</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>0</td>
+    </tr>
+    <tr>	
+        <td>neutralMax</td>	
+        <td>Sets the top of the range for 'neutral' values - neutral values appear in grey rather than red or green</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>0</td>
+    </tr>
     <tr>	
         <td>comparisonFmt</td>	
         <td>Sets format for the comparison (<a href='/core-concepts/formatting'>see available formats</a>)</td>	
@@ -138,13 +159,11 @@ Multiple cards will align themselves into a row.
         <td class='tcenter'>Excel-style format | built-in format | custom format</td>	
         <td class='tcenter'>-</td>
     </tr>
-        <tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
-<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
 </table>
 
 ### Sparkline Options
 
-<table>						 
+<table>				 
     <tr>	
         <th class='tleft'>Name</th>	
         <th class='tleft'>Description</th>	
@@ -152,6 +171,13 @@ Multiple cards will align themselves into a row.
         <th>Options</th>	
         <th>Default</th>	
     </tr>
+    <tr>	
+        <td>sparkline</td>	
+        <td>Column to pull the date from to create the sparkline.</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>column name</td>	
+        <td class='tcenter'>-</td>
+    </tr>	
     <tr>	
         <td>sparklineType</td>	
         <td>Chart type for sparkline</td>	
