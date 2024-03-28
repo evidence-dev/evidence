@@ -82,6 +82,8 @@ components:
       - CodeSnippet
 ```
 
-:::info
-The components provided _must_ be named exports, e.g. `import {ComponentName} from 'package';`, _not_ `import ComponentName from 'package/ComponentName.svelte;`.
-:::
+<Alert status=warning>
+
+The components provided **must** be named exports, e.g. `import {ComponentName} from 'package';`, _not_ `import ComponentName from 'package/ComponentName.svelte;`.
+
+</Alert>

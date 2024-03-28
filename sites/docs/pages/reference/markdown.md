@@ -136,9 +136,11 @@ To display data in a table, use a [Data Table](/components/data-table) instead.
 
 ## Frontmatter
 
-:::note
+<Alert status=warning>
+
 Frontmatter does not support Javascript statements at this time; and things may behave unexpectedly if wrapped in `{}`
-:::
+
+</Alert>
 
 To attach metadata (e.g. a title) to your page, you can use Frontmatter. Note that frontmatter _must_ appear as the first thing in your page; no content can come before it, or it won't be loaded properly.
 
@@ -170,9 +172,11 @@ Anything outside of these values won't do anything on their own, but they will b
 
 ## Partials
 
-:::note
+<Alert status=warning>
+
 Partials do not support live reload, or hot module replacement. You will need to refresh the page when you change a partial.
-:::
+
+</Alert>
 
 `./pages/index.md`
 ```markdown

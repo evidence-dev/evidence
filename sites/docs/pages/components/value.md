@@ -15,9 +15,13 @@ By default, `Value` will display the value from the first row of the first colum
 
 Optionally supply a `column` and/or a `row` argument to display other values from `data`. 
 
-:::info Row index
+<Alert status=info>
+
+**Row Index**
+
 `row` is zero-indexed, so `row=0` displays the first row.
-:::
+
+</Alert>
 
 ```markdown
 <!-- Show the **7th row** from column_name -->

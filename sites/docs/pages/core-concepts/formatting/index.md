@@ -29,9 +29,13 @@ Within charts, you can format individual columns using `xFmt` and `yFmt` (and `s
 
 In the example above, `xFmt` is passing in an Excel-style code to format the dates and `yFmt` is referencing a built-in format ([see the full list](#built-in-formats) of supported tags below, or [create your own](#custom-formats)).
 
-:::info Date formatting
+<Alert status=info>
+
+**Date formatting**
+
 Formatting does not apply to the date axis of a chart. For example, if you set `xFmt` to `m/d/yy`, you will only see that formatting reflected in your chart tooltips and annotations. This is to ensure that the chart axis labels have the correct spacing.
-:::
+
+</Alert>
 
 
 #### Reusable Formats
@@ -47,9 +51,13 @@ If you need to format values outside of components, [the format function](#forma
 ### Excel Format Codes
 Evidence supports [Excel style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68), which can be passed directly to a component prop, the [format function](#format-function), or saved as a [custom format code](#custom-formats) that you want to reuse.
 
-:::info Including strings inside formats
+<Alert status=info>
+
+**Including strings inside formats**
+
 To include a string inside an Excel-style format code, you need to use double-quotes to surround the string, and single-quotes to surround the format code. For example, in a chart you might use `yFmt = '#,##0.00 "mpg"'`
-:::
+
+</Alert>
 
 ### Built-in Formats
 Evidence supports a variety of date/time, number, percentage, and currency formats. You can find the full list of formats below.

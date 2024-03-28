@@ -4,9 +4,14 @@ hide_table_of_contents: false
 title: Vercel
 ---
 
-:::caution
-Note that because of missing dependencies, Vercel cannot be used with DuckDB. Consider [Evidence Cloud](/deployment/evidence-cloud) or [Netlify](/deployment/netlify) as an alternative if you are using DuckDB. 
-:::
+
+<Alert status=danger>
+
+**Missing DuckDB Dependencies**
+
+Note that because of missing dependencies, Vercel cannot be used with DuckDB sources. Consider [Evidence Cloud](/deployment/evidence-cloud) or [Netlify](/deployment/netlify) as an alternative if you are using DuckDB. 
+
+</Alert>
 
 Vercel lets you host a public version of your project for free, or you can create and host a password-protected version with Vercel's $150/month pro plan. [Netlify](/deployment/netlify) offers the same option for $15/month.
 

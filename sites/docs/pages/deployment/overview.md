@@ -52,6 +52,8 @@ To find the environment variables that you'll need to set for your project:
 1. Visit the [settings page](http://localhost:3000/settings)
 1. Open the deployment panel, and select your deployment target
 
-:::info
+<Alert status=info>
+
 For details on how to use different data for different environments, see [Environments](/deployment/environments).
-:::
+
+</Alert>
