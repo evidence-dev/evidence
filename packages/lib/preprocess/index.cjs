@@ -6,7 +6,8 @@ const addClasses = require('./src/add-classes.cjs');
 // This is includes future proofing to add support for Prism highlighting
 const processFrontmatter = require('./src/frontmatter/process-frontmatter.cjs');
 const injectPartials = require('./src/partials/inject-partials.cjs');
-const remarkSlug = require('remark-slug');
+const rehypeSlug = require('rehype-slug');
+const rehypeAutolinkHeadings = require('rehype-autolink-headings');
 
 module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 	return [
@@ -24,14 +25,15 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 			highlight: {
 				highlighter
 			},
-			remarkPlugins: [remarkSlug],
 			rehypePlugins: [
-				[
-					addClasses,
-					{
+				[addClasses, {
 						'*': 'markdown'
-					}
-				]
+					}],
+				[rehypeSlug],
+				[rehypeAutolinkHeadings, {
+					behavior: 'wrap',
+					properties: {}
+				  }],
 			]
 		}),
 
