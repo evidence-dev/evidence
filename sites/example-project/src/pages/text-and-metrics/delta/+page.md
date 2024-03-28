@@ -13,7 +13,7 @@ select 190 as sales, '2020-05-01'::date as date
 ```
 
 ### Positive
-<Delta value=0.366 fmt=pct1/> 
+<Delta value=0.366 fmt=pct1 text="vs. prior year"/> 
 
 ### Negative
 <Delta value=-0.366 fmt=pct1/> 
@@ -36,9 +36,9 @@ select 190 as sales, '2020-05-01'::date as date
 ## Symbol Position
 
 ### `symbolPosition=left`
-<Delta value=0.366 fmt=pct1 symbolPosition=left/>  
+<Delta value=0.366 fmt=pct1 symbolPosition=left  text="vs. prior year"/>  
 <LineBreak lines=2/> 
-<Delta value=-0.366 fmt=pct1 chip=true symbolPosition=left/> 
+<Delta value=-0.366 fmt=pct1 chip=true symbolPosition=left  text="vs. prior year"s/> 
 
 
 <LineBreak lines=2/>

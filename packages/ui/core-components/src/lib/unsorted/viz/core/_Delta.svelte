@@ -18,6 +18,8 @@
 
 	export let value = undefined;
 
+	export let text = undefined; // text appearing after the delta (e.g., vs. prev month)
+
 	export let chip = false;
 	$: chip = chip === 'true' || chip === true;
 
@@ -171,6 +173,11 @@
 						{formatValue(selected_value, selected_format, columnUnitSummary)}
 					</span>
 				{/if}
+			{/if}
+			{#if text}
+				<span>
+					{text}
+				</span>
 			{/if}
 		</span>
 	</span>
