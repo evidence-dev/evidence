@@ -37,6 +37,8 @@
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 
+	export let connectGroup = undefined;
+
 	export let showPercent = false;
 	$: showPercent = showPercent === 'true' || showPercent === true;
 
@@ -89,7 +91,7 @@
 		if (valueFmt) {
 			valueColFormat = getFormatObjectFromString(
 				valueFmt,
-				columnSummary[valueCol].format.valueType
+				columnSummary[valueCol].format?.valueType
 			);
 		} else {
 			valueColFormat = columnSummary[valueCol].format;
@@ -239,6 +241,7 @@
 		{echartsOptions}
 		{printEchartsConfig}
 		{renderer}
+		{connectGroup}
 		{seriesOptions}
 	/>
 {:else}

@@ -41,7 +41,6 @@ export default (node, option) => {
 				...option.echartsOptions
 			});
 		}
-		console.log(chart.getOption());
 	};
 
 	// seriesOptions - loop through series and apply same changes to each

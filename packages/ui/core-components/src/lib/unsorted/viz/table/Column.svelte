@@ -62,6 +62,9 @@
 	export let totalFmt = undefined;
 	export let weightCol = undefined; // column to use as the weights for weighted average
 
+	// Subtotals:
+	export let subtotalFmt = undefined;
+
 	// Color Scale:
 	export let colorMax = undefined;
 	export let colorMin = undefined;
@@ -84,9 +87,12 @@
 	$: downIsGood = downIsGood === 'true' || downIsGood === true;
 	export let showValue = true;
 	$: showValue = showValue === 'true' || showValue === true;
-
 	export let deltaSymbol = true;
 	$: deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+	export let neutralMin = 0;
+	export let neutralMax = 0;
+	export let chip = false;
+	$: chip = chip === 'true' || chip === true;
 
 	$: options = {
 		id: id,
@@ -102,9 +108,13 @@
 		fmt: fmt,
 		totalAgg: totalAgg,
 		totalFmt: totalFmt,
+		subtotalFmt: subtotalFmt,
 		weightCol: weightCol,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
+		chip: chip,
+		neutralMin: neutralMin,
+		neutralMax: neutralMax,
 		showValue: showValue,
 		colorMax: colorMax,
 		colorMin: colorMin,

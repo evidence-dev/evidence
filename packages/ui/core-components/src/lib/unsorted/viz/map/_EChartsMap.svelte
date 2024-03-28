@@ -30,6 +30,8 @@
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 
+	export let connectGroup = undefined;
+
 	let downloadChart = false;
 	let copying = false;
 	let printing = false;
@@ -68,7 +70,15 @@
 				overflow: visible;
 				display: {copying ? 'none' : 'inherit'}
 			"
-				use:echartsMap={{ config, hasLink, echartsOptions, seriesOptions, extraHeight, renderer }}
+				use:echartsMap={{
+					config,
+					hasLink,
+					echartsOptions,
+					seriesOptions,
+					extraHeight,
+					renderer,
+					connectGroup
+				}}
 			/>
 		{/if}
 	{/if}
@@ -143,7 +153,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, echartsOptions, seriesOptions, queryID }}
+		use:echartsCanvasDownload={{ config, ...$$restProps, echartsOptions, seriesOptions, queryID }}
 	/>
 {/if}
 

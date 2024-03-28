@@ -92,6 +92,8 @@
 
 	export let renderer = undefined;
 	export let seriesColors = undefined;
+
+	export let connectGroup = undefined;
 </script>
 
 <Chart
@@ -142,6 +144,7 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{connectGroup}
 	{seriesColors}
 >
 	<Line
