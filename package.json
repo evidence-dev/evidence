@@ -8,7 +8,7 @@
 		"@evidence-dev/evidence": "link:packages/evidence",
 		"@evidence-dev/plugin-connector": "link:packages/lib/plugin-connector",
 		"@evidence-dev/preprocess": "link:packages/lib/preprocess",
-		"@evidence-dev/query-store": "link:packages/lib/query-store",
+		"@evidence-dev/sdk": "link:packages/lib/sdk",
 		"@evidence-dev/tailwind": "link:packages/ui/tailwind",
 		"@evidence-dev/telemetry": "link:packages/lib/telemetry",
 		"@evidence-dev/universal-sql": "link:packages/lib/universal-sql",

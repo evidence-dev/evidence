@@ -1,16 +1,8 @@
-<script context="module">
-	export const evidenceInclude = true;
-</script>
-
 <script>
-	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { QueryLoad } from '../../atoms/query-load/index.js';
+	import DimensionGrid from './_DimensionGrid.svelte';
 
-	import { setContext, getContext } from 'svelte';
-	import { writable } from 'svelte/store';
-	import DimensionCut from './DimensionCut.svelte';
-	import { getWhereClause } from './dimensionGridQuery.js';
-
-	/** @type {import('@evidence-dev/query-store').QueryStore} */
+	/** @type {import('@evidence-dev/sdk/usql').Query} */
 	export let data;
 	/** @type {string} */
 	export let metric = 'count(*)';
@@ -20,37 +12,14 @@
 	export let limit = 10;
 	/** @type {string} */
 	export let name;
-
-	let dimensions = data?.columns?.filter((col) => col.evidenceType === 'string');
-	let selectedDimensions = writable([]);
-	setContext('selected-dimensions', selectedDimensions);
-
-	const inputs = getContext(INPUTS_CONTEXT_KEY);
-	$: $inputs[name] = getWhereClause($selectedDimensions);
 </script>
 
-{#if data === undefined}
-	<p
-		class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-	>
-		`data` is required
-	</p>
-{:else if typeof data === 'string'}
-	<p
-		class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-	>
-		`data` must reference a query. Received: data={data}. Try data={'{'}{data}{'}'}.
-	</p>
-{:else if data?.error}
-	<p
-		class="my-2 font-mono text-red-600 text-xs bg-red-50 border-red-200 p-4 overflow-auto rounded border"
-	>
-		{data.error}
-	</p>
-{:else}
-	<div class="flex flex-nowrap overflow-auto sm:flex-wrap select-none">
-		{#each dimensions as dimension}
-			<DimensionCut {data} {dimension} {metric} {limit} {metricLabel} />
-		{/each}
-	</div>
-{/if}
+<QueryLoad {data} let:loaded>
+	<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} />
+	<svelte:fragment let:loaded slot="error">
+		<DimensionGrid data={loaded} {metric} {metricLabel} {limit} {name} />
+	</svelte:fragment>
+	<svelte:fragment slot="skeleton">
+		<!-- No loading state -->
+	</svelte:fragment>
+</QueryLoad>

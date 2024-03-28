@@ -1,5 +1,6 @@
 export const enableDebug = () => (process.env.EVIDENCE_DEBUG = 'true');
 export const isDebug = () => {
+	return true;
 	if (typeof process !== 'undefined')
 		return Boolean(process.env.EVIDENCE_DEBUG || process.env.NODE_ENV === 'test');
 	// @ts-expect-error

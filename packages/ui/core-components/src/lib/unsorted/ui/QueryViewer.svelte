@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 
 	export let queryID;
-	/** @type {import("@evidence-dev/query-store").QueryStore} */
+	/** @type {import("@evidence-dev/sdk/usql").Query} */
 	export let queryResult;
 
 	$: pageQueries = $page.data.evidencemeta.queries;
@@ -45,7 +45,7 @@
 	}
 
 	$: rowCount = $queryResult?.length ?? 0;
-	$: colCount = $queryResult?._evidenceColumnTypes.length ?? 0;
+	$: colCount = $queryResult.columns.length ?? $queryResult?._evidenceColumnTypes.length ?? 0;
 
 	$: {
 		let query = pageQueries?.find((d) => d.id === queryID);

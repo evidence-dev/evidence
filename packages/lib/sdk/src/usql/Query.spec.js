@@ -18,6 +18,7 @@ const mockRunner = vi.fn((q) => {
 });
 
 let testQueryIndex = 0;
+let testIdx = 0;
 
 /**
  *
@@ -26,13 +27,80 @@ let testQueryIndex = 0;
  * @returns
  */
 const getMockQuery = (s, opts) => {
-	return Query.create(s, mockRunner, { id: `q-${testQueryIndex++}`, disableCache: true, ...opts });
+	return Query.create(s, mockRunner, {
+		id: `q-${testQueryIndex++}-${testIdx}`,
+		disableCache: true,
+		...opts
+	});
 };
 
 describe('Query', () => {
 	beforeEach(() => {
 		vi.restoreAllMocks();
 		testQueryIndex = 0;
+		testIdx++;
+		console.log(`Beginning ${testIdx}`);
+	});
+
+	describe('Data Volume', () => {
+		it('should process result sets of 10k rows in <250ms', async () => {
+			const rows = Array(10 * 1000)
+				.fill(null)
+				.map(() => ({
+					str: 'Hi',
+					num: Math.random(),
+					bool: Math.random() > 0.5
+				}));
+			/** @type {import('../types/duckdb-wellknown').DescribeResultRow[]} */
+			const columns = [
+				{ column_name: 'str', column_type: 'VARCHAR' },
+				{ column_name: 'num', column_type: 'INT' },
+				{ column_name: 'bool', column_type: 'BOOL' }
+			];
+			const length = [{ rowCount: 10 * 1000 }];
+
+			expectedColumns = columns;
+			expectedLength = length;
+			expectedData = rows;
+
+			const query = getMockQuery('');
+
+			const before = performance.now();
+			await query.fetch();
+			const after = performance.now();
+
+			expect(query.length).toBe(10 * 1000);
+			expect(after - before).toBeLessThan(250);
+		});
+		it('should process result sets of 100k rows in <250ms', async () => {
+			const rows = Array(1000 * 1000)
+				.fill(null)
+				.map(() => ({
+					str: 'Hi',
+					num: Math.random(),
+					bool: Math.random() > 0.5
+				}));
+			/** @type {import('../types/duckdb-wellknown').DescribeResultRow[]} */
+			const columns = [
+				{ column_name: 'str', column_type: 'VARCHAR' },
+				{ column_name: 'num', column_type: 'INT' },
+				{ column_name: 'bool', column_type: 'BOOL' }
+			];
+			const length = [{ rowCount: 1000 * 1000 }];
+
+			expectedColumns = columns;
+			expectedLength = length;
+			expectedData = rows;
+
+			const before = performance.now();
+			const query = getMockQuery('');
+			await query.fetch();
+			const after = performance.now();
+
+			console.log(`Took ${(after - before).toFixed(2)}`);
+			expect(query.length).toBe(1000 * 1000);
+			expect(after - before).toBeLessThan(250);
+		});
 	});
 
 	describe('Legacy Compatibility', () => {
@@ -136,6 +204,89 @@ describe('Query', () => {
 				q.value[trigger];
 				expect(q.dataLoading).toBe(true);
 			});
+		});
+	});
+
+	describe('Global Loading State', () => {
+		it('should report that no queries are loading when no queries have been created', () => {
+			expect(Query.QueriesInFlight).toBe(false);
+		});
+		it('should report that no queries are loading when queries have been created, but not loaded', () => {
+			const q = getMockQuery('SELECT 1');
+			const q2 = getMockQuery('SELECT 2');
+			expect(Query.QueriesInFlight).toBe(false);
+			expect(q.loading).toBe(false);
+			expect(q2.loading).toBe(false);
+		});
+		it('should report that some queries are loading when one query is currently fetching', async () => {
+			const onQueryStart = vi.fn();
+			const onQueryEnd = vi.fn();
+			Query.addEventListener('inFlightQueryStart', onQueryStart);
+			Query.addEventListener('inFlightQueryEnd', onQueryEnd);
+
+			const mockDataPromise = sharedPromise();
+			expectedData = mockDataPromise.promise;
+			const q = getMockQuery('SELECT 5');
+			q.fetch();
+			expect(Query.QueriesInFlight).toBe(true);
+			expect(q.dataLoading).toBe(true);
+			expect(onQueryStart).toHaveBeenCalledOnce();
+			expect(onQueryEnd).not.toHaveBeenCalled();
+			mockDataPromise.resolve([]);
+			await tick();
+			expect(Query.QueriesInFlight).toBe(false);
+			expect(q.dataLoading).toBe(false);
+			expect(onQueryStart).toHaveBeenCalledOnce();
+			expect(onQueryEnd).toHaveBeenCalledOnce();
+
+			Query.removeEventListener('inFlightQueryStart', onQueryStart);
+			Query.removeEventListener('inFlightQueryEnd', onQueryEnd);
+		});
+		it('should report that some queries are loading when multiple queries are currently fetching', async () => {
+			const onQueryStart = vi.fn();
+			const onQueryEnd = vi.fn();
+			Query.addEventListener('inFlightQueryStart', onQueryStart);
+			Query.addEventListener('inFlightQueryEnd', onQueryEnd);
+
+			const mockDataPromise = sharedPromise();
+			const mockDataPromise2 = sharedPromise();
+			const q = getMockQuery('SELECT 5');
+			const q2 = getMockQuery('SELECT 5');
+			expectedData = mockDataPromise.promise;
+			q.fetch();
+			// q1 is in flight
+			expect(Query.QueriesInFlight).toBe(true);
+			expect(q.dataLoading).toBe(true);
+			expect(q2.dataLoading).toBe(false);
+			expect(onQueryStart).toHaveBeenCalledOnce();
+			expect(onQueryEnd).not.toHaveBeenCalled();
+
+			expectedData = mockDataPromise2.promise;
+			q2.fetch();
+			// q1 and q2 are in flight
+			expect(Query.QueriesInFlight).toBe(true);
+			expect(q.dataLoading).toBe(true);
+			expect(q2.dataLoading).toBe(true);
+			expect(onQueryStart).toHaveBeenCalledOnce();
+			expect(onQueryEnd).not.toHaveBeenCalled();
+
+			mockDataPromise.resolve([]);
+			await tick();
+			// q1 resolved, q2 in flight
+			expect(Query.QueriesInFlight).toBe(true);
+			expect(q.dataLoading).toBe(false);
+			expect(q2.dataLoading).toBe(true);
+			mockDataPromise2.resolve([]);
+			expect(onQueryStart).toHaveBeenCalledOnce();
+			expect(onQueryEnd).not.toHaveBeenCalled();
+
+			await tick();
+			// q1 resolved, q2 resolved
+			expect(Query.QueriesInFlight).toBe(false);
+			expect(q.dataLoading).toBe(false);
+			expect(q2.dataLoading).toBe(false);
+			expect(onQueryStart).toHaveBeenCalledOnce();
+			expect(onQueryEnd).toHaveBeenCalledOnce();
 		});
 	});
 
@@ -316,7 +467,7 @@ describe('Query', () => {
 			const sub = vi.fn().mockImplementation(console.log);
 			q.on('dataReady', sub);
 			await q.fetch();
-			expect(sub).toHaveBeenCalled();
+			expect(sub).toHaveBeenCalledWith(undefined, 'dataReady');
 		});
 		it('should respect .off', async () => {
 			const q = getMockQuery('');

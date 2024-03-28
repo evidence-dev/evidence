@@ -40,7 +40,6 @@
 		"@docsearch/css": "^3.5.2",
 		"@docsearch/js": "^3.5.2",
 		"@evidence-dev/component-utilities": "workspace:*",
-		"@evidence-dev/query-store": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@internationalized/date": "^3.5.1",
 		"@steeze-ui/radix-icons": "^1.1.2",
@@ -72,6 +71,7 @@
 	"devDependencies": {
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/plugin-connector": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@storybook/addon-essentials": "^8.0.0",
 		"@storybook/addon-interactions": "^8.0.0",

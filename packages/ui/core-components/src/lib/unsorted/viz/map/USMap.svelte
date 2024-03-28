@@ -7,10 +7,11 @@
 	import USMap from './_USMap.svelte';
 	import EmptyChart from '../core/EmptyChart.svelte';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
 
 	export let data;
 
-	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;
@@ -33,7 +34,7 @@
 <QueryLoad {data} let:loaded>
 	<EmptyChart slot="empty" {emptyMessage} {emptySet} {chartType} {isInitial} />
 	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
-	<USMap {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
+	<USMap {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</USMap>
 </QueryLoad>

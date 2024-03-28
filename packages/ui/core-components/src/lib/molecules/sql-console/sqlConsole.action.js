@@ -61,7 +61,6 @@ ON  tables.table_name = columns.table_name
 	if (columnsData.error) throw columnsData.error;
 	/** @type {SQLConfig['schema']} */
 	const columns = columnsData
-		.value()
 		.reduce((/** @type {Record<string, Completion[]>} */ a, /** @type { SchemaRow } */ row) => {
 			if (!(row.qualifiedTable in a)) a[row.qualifiedTable] = [];
 
@@ -84,7 +83,7 @@ ON  tables.table_name = columns.table_name
 	await tablesData.fetch();
 	if (tablesData.error) throw tablesData.error;
 	/** @type {SQLConfig['tables']} */
-	const tables = tablesData.value().map((/** @type { SchemaRow } */ row) => {
+	const tables = tablesData.map((/** @type { SchemaRow } */ row) => {
 		/** @type {SQLConfig['tables'][number]} */
 		const completion = {
 			label: row.qualifiedTable,
@@ -117,7 +116,7 @@ ON  tables.table_name = columns.table_name
 
 	const schemas = Object.values(
 		tablesData
-			.value()
+			
 			.reduce((/** @type {Record<string, Completion>} */ a, /** @type { SchemaRow } */ row) => {
 				if (!a[row.label]) {
 					/** @type {Completion} */
