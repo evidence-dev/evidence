@@ -58,7 +58,11 @@ To style with Tailwind you add *classes* to HTML elements. You can use any HTML 
 
 For more information on using Tailwind, see the [Tailwind documentation](https://tailwindcss.com/docs).
 
-N.B. Tailwind removes styling from HTML elements by default, so should add your own styles to `<h1/>`, `<a/>` etc. 
+<Alert status="info">
+
+Tailwind removes styling from HTML elements by default, so should add your own styles to `<h1/>`, `<a/>` etc. 
+
+</Alert>
 
 ### Using the Evidence Default Styles in Custom HTML
 
