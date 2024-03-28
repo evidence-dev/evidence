@@ -153,7 +153,7 @@
         margin-bottom: 15px;
         overflow: visible;
     "
-		use:echartsCanvasDownload={{ ...config, echartsOptions, seriesOptions, queryID }}
+		use:echartsCanvasDownload={{ config, ...$$restProps, echartsOptions, seriesOptions, queryID }}
 	/>
 {/if}
 
