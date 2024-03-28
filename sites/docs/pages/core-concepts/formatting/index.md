@@ -5,9 +5,9 @@ description: 'Number and date formatting options in Evidence'
 ---
 
 The easiest way to format numbers and dates in Evidence is through component props. You can pass in any of the following:
-- Excel-style format codes
-- Evidence's [built-in formats](#built-in-formats)
-- [Custom formats](#custom-formats)
+- [Excel-style format codes](#excel-format-codes) (e.g., `fmt='$#,##0.0'`)
+- Evidence's [built-in formats](#built-in-formats) (e.g., `fmt=usd2k`)
+- [Custom defined formats](#custom-formats)
 
 For example, you can use the `fmt` prop to format values inside a Value component:
 
@@ -46,25 +46,25 @@ You can also create your own [custom formats](#custom-formats), which are format
 #### Formatting Directly in Markdown
 If you need to format values outside of components, [the format function](#format-function) can be used directly. For example, when using [expressions](/core-concepts/syntax#expressions) it is not possible to use component props or format tags.
 
-## Supported Formats
-
-### Excel Format Codes
-Evidence supports [Excel style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68), which can be passed directly to a component prop, the [format function](#format-function), or saved as a [custom format code](#custom-formats) that you want to reuse.
+## Excel Format Codes
+Evidence supports [Excel-style custom format codes](https://support.microsoft.com/en-us/office/number-format-codes-5026bbd6-04bc-48cd-bf33-80f18b4eae68), which can be passed directly to a component prop, the [format function](#format-function), or saved as a [custom format code](#custom-formats) that you want to reuse.
 
 <Alert status=info>
 
-**Including strings inside formats**
+**Strings inside formats codes**
 
-To include a string inside an Excel-style format code, you need to use double-quotes to surround the string, and single-quotes to surround the format code. For example, in a chart you might use `yFmt = '#,##0.00 "mpg"'`
+Some Excel format codes include strings: use double-quotes for the string, and single-quotes to surround the whole format code. 
+
+E.g., `fmt = '#,##0.00 "mpg"'`
 
 </Alert>
 
-### Built-in Formats
+## Built-in Formats
 Evidence supports a variety of date/time, number, percentage, and currency formats. You can find the full list of formats below.
 
 <!-- These are pasted in from the settings menu HTML, with edits -->
 
-#### Auto-Formatting
+### Auto-Formatting
 
 Wherever you see `auto` listed beside a format, that means Evidence will automatically format your value based on the context it is in.
 
@@ -72,104 +72,45 @@ For example, Evidence automatically formats large numbers into shortened version
 
 You can choose to handle these numbers differently by choosing a specific format code. For example, if Evidence is formatting a column as millions, but you want to see all numbers in thousands, you could use the `num0k` format, which will show all numbers in the column in thousands with 0 decimal places.
 
-#### Dates
+### Dates
 
-<table class="wide">
-<thead >
-    <th class="align_left narrow_column">Format Name</th>
-    <th class="align_left wide_column">Format Code</th>
-    <th class="align_left wide_column">Example Input</th>
-    <th class="tright wide_column">Example Output</th>
-</thead>
 
-<tr >
-    <td >ddd</td> 
-    <td >ddd</td> 
-    <td >2022-01-09 12:45</td> 
-    <td class="tright">Sun</td>
-</tr>
-<tr >
-    <td >dddd</td>
-    <td >dddd</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">Sunday</td>
-</tr>
-<tr >
-    <td >mmm</td>
-    <td >mmm</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">Jan</td>
-</tr>
-<tr >
-    <td >mmmm</td>
-    <td >mmmm</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">January</td>
-</tr>
-<tr >
-    <td >yyyy</td>
-    <td >yyyy</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">2022</td>
-</tr>
-<tr >
-    <td >shortdate</td>
-    <td >mmm d/yy</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">Jan 9/22</td>
-</tr>
-<tr >
-    <td >longdate</td>
-    <td >mmmm d, yyyy</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">January 9, 2022</td>
-</tr>
-<tr >
-    <td >fulldate</td>
-    <td >dddd mmmm d, yyyy</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">Sunday January 9, 2022</td>
-</tr>
-<tr >
-    <td >mdy</td>
-    <td >m/d/y</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">1/9/22</td>
-</tr>
-<tr >
-    <td >dmy</td>
-    <td >d/m/y</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">9/1/22</td>
-</tr>
-<tr >
-    <td >hms</td>
-    <td >H:MM:SS AM/PM</td>
-    <td >2022-01-09 12:45</td>
-    <td class="tright">11:45:03 AM</td>
-</tr>
-</table >
+| Format Name | Format Code | Example Input | Example Output |
+| :-- | :-- | --: | --: |
+| ddd | ddd | 2022-01-09 12:45 | Sun |
+| dddd | dddd | 2022-01-09 12:45 | Sunday |
+| mmm | mmm | 2022-01-09 12:45 | Jan |
+| mmmm | mmmm | 2022-01-09 12:45 | January |
+| yyyy | yyyy | 2022-01-09 12:45 | 2022 |
+| shortdate | mmm d/yy | 2022-01-09 12:45 | Jan 9/22 |
+| longdate | mmmm d, yyyy | 2022-01-09 12:45 | January 9, 2022 |
+| fulldate | dddd mmmm d, yyyy | 2022-01-09 12:45 | Sunday January 9, 2022 |
+| mdy | m/d/y | 2022-01-09 12:45 | 1/9/22 |
+| dmy | d/m/y | 2022-01-09 12:45 | 9/1/22 |
+| hms | H:MM:SS AM/PM | 2022-01-09 12:45 | 11:45:03 AM |
 
-#### Currencies
+
+
+### Currencies
 
 Supported currencies:
 
-<table>
-  <thead><th>Code</th><th>Currency</th></thead>
-  <tr><td>USD</td><td>United States Dollar</td></tr>
-  <tr><td>AUD</td><td>Australian Dollar</td></tr>
-  <tr><td>BRL</td><td>Brazilian Real</td></tr>
-  <tr><td>CAD</td><td>Canadian Dollar</td></tr>
-  <tr><td>CNY</td><td>Renminbi</td></tr>
-  <tr><td>EUR</td><td>Euro</td></tr>
-  <tr><td>GBP</td><td>Pound Sterling</td></tr>
-  <tr><td>JPY</td><td>Japanese Yen</td></tr>
-  <tr><td>INR</td><td>Indian Rupee</td></tr>
-  <tr><td>KRW</td><td>South Korean won</td></tr>
-  <tr><td>NGN</td><td>Nigerian Naira</td></tr>
-  <tr><td>RUB</td><td>Russian Ruble</td></tr>
-  <tr><td>SEK</td><td>Swedish Krona</td></tr>
-</table>
+
+| Code | Currency |
+| :-- | :-- |
+| usd | United States Dollar |
+| aud | Australian Dollar |
+| brl | Brazilian Real |
+| cad | Canadian Dollar |
+| cny | Renminbi |
+| eur | Euro |
+| gbp | Pound Sterling |
+| jpy | Japanese Yen |
+| inr | Indian Rupee |
+| krw | South Korean Won |
+| ngn | Nigerian Naira |
+| rub | Russian Ruble |
+| sek | Swedish Krona |
 
 In order to use currency tags, use the currency code, optionally appended with:
 
@@ -178,279 +119,65 @@ In order to use currency tags, use the currency code, optionally appended with:
 
 For example, the available tags for USD are:
 
-<table>
-<thead>
-    <th class="align_left narrow_column">Format Name</th> 
-    <th class="align_left wide_column">Format Code</th> 
-    <th class="align_left wide_column">Example Input</th> 
-    <th class="tright wide_column">Example Output</th>
-</thead> 
-<tr>
-    <td>usd</td> 
-    <td>auto</td> 
-    <td class="tright">412.17</td> 
-    <td class="tright">$412</td> 
-</tr>
-<tr>
-    <td>usd0</td> 
-    <td>$#,##0</td> 
-    <td class="tright">7043.123</td> 
-    <td class="tright">$7,043</td> 
-</tr>
-<tr>
-    <td>usd1</td> 
-    <td>$#,##0.0</td> 
-    <td class="tright">7043.123</td> 
-    <td class="tright">$7,043.1</td> 
-</tr>
-<tr>
-    <td>usd2</td> 
-    <td>$#,##0.00</td> 
-    <td class="tright">7043.123</td> 
-    <td class="tright">$7,043.12</td> 
-</tr>
-<tr>
-    <td>usd0k</td> 
-    <td>$#,##0,"k"</td> 
-    <td class="tright">64301.12</td> 
-    <td class="tright">$64k</td> 
-</tr>
-<tr>
-    <td>usd1k</td> 
-    <td>$#,##0.0,"k"</td> 
-    <td class="tright">64301.12</td> 
-    <td class="tright">$64.3k</td> 
-</tr>
-<tr>
-    <td>usd2k</td> 
-    <td>$#,##0.00,"k"</td> 
-    <td class="tright">64301.12</td> 
-    <td class="tright">$64.30k</td> 
-</tr>
-<tr>
-    <td>usd0m</td> 
-    <td>$#,##0,,"M"</td> 
-    <td class="tright">4564301.12</td> 
-    <td class="tright">$5M</td> 
-</tr>
-<tr>
-    <td>usd1m</td> 
-    <td>$#,##0.0,,"M"</td> 
-    <td class="tright">4564301.12</td> 
-    <td class="tright">$4.6M</td> 
-</tr>
-<tr>
-    <td>usd2m</td> 
-    <td>$#,##0.00,,"M"</td> 
-    <td class="tright">4564301.12</td> 
-    <td class="tright">$4.56M</td> 
-</tr>
-<tr>
-    <td>usd0b</td> 
-    <td>$#,##0,,,"B"</td> 
-    <td class="tright">9784564301.12</td> 
-    <td class="tright">$10B</td> 
-</tr>
-<tr>
-    <td>usd1b</td> 
-    <td>$#,##0.0,,,"B"</td> 
-    <td class="tright">9784564301.12</td> 
-    <td class="tright">$9.8B</td> 
-</tr>
-<tr>
-    <td>usd2b</td> 
-    <td>$#,##0.00,,,"B"</td> 
-    <td class="tright">9784564301.12</td> 
-    <td class="tright">$9.78B</td>
 
-</tr>
-
-</table>
-
-#### Numbers
-
-<table>
-<thead>
-    <th class="align_left narrow_column">Format Name</th> 
-    <th class="align_left wide_column">Format Code</th> 
-    <th class="align_left wide_column">Example Input</th> 
-    <th class="tright wide_column">Example Output</th>
-</thead> 
-<tr>
-    <td>num0</td> 
-    <td>#,##0</td> 
-    <td class="tright">11.23168</td> 
-    <td class="tright">11</td> 
-</tr>
-<tr>
-    <td>num1</td> 
-    <td>#,##0.0</td> 
-    <td class="tright">11.23168</td> 
-    <td class="tright">11.2</td> 
-</tr>
-<tr>
-    <td>num2</td> 
-    <td>#,##0.00</td> 
-    <td class="tright">11.23168</td> 
-    <td class="tright">11.23</td> 
-</tr>
-<tr>
-    <td>num3</td> 
-    <td>#,##0.000</td> 
-    <td class="tright">11.23168</td> 
-    <td class="tright">11.232</td> 
-</tr>
-<tr>
-    <td>num4</td> 
-    <td>#,##0.0000</td> 
-    <td class="tright">11.23168</td> 
-    <td class="tright">11.2317</td> 
-</tr>
-<tr>
-    <td>num0k</td> 
-    <td>#,##0,"k"</td> 
-    <td class="tright">64201</td> 
-    <td class="tright">64k</td> 
-</tr>
-<tr>
-    <td>num1k</td> 
-    <td>#,##0.0,"k"</td> 
-    <td class="tright">64201</td> 
-    <td class="tright">64.2k</td> 
-</tr>
-<tr>
-    <td>num2k</td> 
-    <td>#,##0.00,"k"</td> 
-    <td class="tright">64201</td> 
-    <td class="tright">64.20k</td> 
-</tr>
-<tr>
-    <td>num0m</td> 
-    <td>#,##0,,"M"</td> 
-    <td class="tright">42539483</td> 
-    <td class="tright">43M</td> 
-</tr>
-<tr>
-    <td>num1m</td> 
-    <td>#,##0.0,,"M"</td> 
-    <td class="tright">42539483</td> 
-    <td class="tright">42.5M</td> 
-</tr>
-<tr>
-    <td>num2m</td> 
-    <td>#,##0.00,,"M"</td> 
-    <td class="tright">42539483</td> 
-    <td class="tright">42.54M</td> 
-</tr>
-<tr>
-    <td>num0b</td> 
-    <td>#,##0,,,"B"</td> 
-    <td class="tright">1384937584</td> 
-    <td class="tright">1B</td> 
-</tr>
-<tr>
-    <td>num1b</td> 
-    <td>#,##0.0,,,"B"</td> 
-    <td class="tright">1384937584</td> 
-    <td class="tright">1.4B</td> 
-</tr>
-<tr>
-    <td>num2b</td> 
-    <td>#,##0.00,,,"B"</td> 
-    <td class="tright">1384937584</td> 
-    <td class="tright">1.38B</td> 
-</tr>
-<tr>
-    <td>id</td> 
-    <td>0</td> 
-    <td class="tright">921594675</td> 
-    <td class="tright">921594675</td> 
-</tr>
-<tr>
-    <td>fract</td> 
-    <td># ?/?</td> 
-    <td class="tright">0.25</td> 
-    <td class="tright"> 1/4</td> 
-</tr>
-<tr>
-    <td>mult</td> 
-    <td>#,##0.0"x"</td> 
-    <td class="tright">5.32</td> 
-    <td class="tright">5.3x</td> 
-</tr>
-<tr>
-    <td>mult0</td> 
-    <td>#,##0"x"</td> 
-    <td class="tright">5.32</td> 
-    <td class="tright">5x</td> 
-</tr>
-<tr>
-    <td>mult1</td> 
-    <td>#,##0.0"x"</td> 
-    <td class="tright">5.32</td> 
-    <td class="tright">5.3x</td> 
-</tr>
-<tr>
-    <td>mult2</td> 
-    <td>#,##0.00"x"</td> 
-    <td class="tright">5.32</td> 
-    <td class="tright">5.32x</td> 
-</tr>
-<tr>
-    <td>sci</td> 
-    <td>0.00E+0</td> 
-    <td class="tright">16546.1561</td> 
-    <td class="tright">1.65E+4</td>
-
-</tr>
-
-</table>
-
-#### Percentages
-
-<table>
-<thead>
-    <th class="align_left narrow_column">Format Name</th> 
-    <th class="align_left wide_column">Format Code</th> 
-    <th class="align_left wide_column">Example Input</th> 
-    <th class="tright wide_column">Example Output</th>
-</thead> 
-<tr>
-    <td>pct</td> 
-    <td>auto</td> 
-    <td class="tright">0.731</td> 
-    <td class="tright">73.1%</td> 
-</tr>
-<tr>
-    <td>pct0</td> 
-    <td>#,##0%</td> 
-    <td class="tright">0.731</td> 
-    <td class="tright">73%</td> 
-</tr>
-<tr>
-    <td>pct1</td> 
-    <td>#,##0.0%</td> 
-    <td class="tright">0.731</td> 
-    <td class="tright">73.1%</td> 
-</tr>
-<tr>
-    <td>pct2</td> 
-    <td>#,##0.00%</td> 
-    <td class="tright">0.731</td> 
-    <td class="tright">73.10%</td> 
-</tr>
-<tr>
-    <td>pct3</td> 
-    <td>#,##0.000%</td> 
-    <td class="tright">0.731</td> 
-    <td class="tright">73.100%</td>
-
-</tr>
-
-</table>
+| Format Name | Format Code | Example Input | Example Output |
+| :-- | :-- | --: | --: |
+| usd | auto | 412.17 | $412 |
+| usd0 | $#,##0 | 7043.123 | $7,043 |
+| usd1 | $#,##0.0 | 7043.123 | $7,043.1 |
+| usd2 | $#,##0.00 | 7043.123 | $7,043.12 |
+| usd0k | $#,##0,"k" | 64301.12 | $64k |
+| usd1k | $#,##0.0,"k" | 64301.12 | $64.3k |
+| usd2k | $#,##0.00,"k" | 64301.12 | $64.30k |
+| usd0m | $#,##0,,"M" | 4564301.12 | $5M |
+| usd1m | $#,##0.0,,"M" | 4564301.12 | $4.6M |
+| usd2m | $#,##0.00,,"M" | 4564301.12 | $4.56M |
+| usd0b | $#,##0,,,"B" | 9784564301.12 | $10B |
+| usd1b | $#,##0.0,,,"B" | 9784564301.12 | $9.8B |
+| usd2b | $#,##0.00,,,"B" | 9784564301.12 | $9.78B |
 
 
-### Custom Formats
+
+### Numbers
+
+| Format Name | Format Code | Example Input | Example Output |
+| :-- | :-- | --: | --: |
+| num0 | #,##0 | 11.23168 | 11 |
+| num1 | #,##0.0 | 11.23168 | 11.2 |
+| num2 | #,##0.00 | 11.23168 | 11.23 |
+| num3 | #,##0.000 | 11.23168 | 11.232 |
+| num4 | #,##0.0000 | 11.23168 | 11.2317 |
+| num0k | #,##0,"k" | 64201 | 64k |
+| num1k | #,##0.0,"k" | 64201 | 64.2k |
+| num2k | #,##0.00,"k" | 64201 | 64.20k |
+| num0m | #,##0,,"M" | 42539483 | 43M |
+| num1m | #,##0.0,,"M" | 42539483 | 42.5M |
+| num2m | #,##0.00,,"M" | 42539483 | 42.54M |
+| num0b | #,##0,,,"B" | 1384937584 | 1B |
+| num1b | #,##0.0,,,"B" | 1384937584 | 1.4B |
+| num2b | #,##0.00,,,"B" | 1384937584 | 1.38B |
+| id | 0 | 921594675 | 921594675 |
+| fract | # ?/? | 0.25 | 1/4 |
+| mult | #,##0.0"x" | 5.32 | 5.3x |
+| mult0 | #,##0"x" | 5.32 | 5x |
+| mult1 | #,##0.0"x" | 5.32 | 5.3x |
+| mult2 | #,##0.00"x" | 5.32 | 5.32x |
+| sci | 0.00E+0 | 16546.1561 | 1.65E+4 |
+
+
+### Percentages
+
+| Format Name | Format Code | Example Input | Example Output |
+| :-- | :-- | --: | --: |
+| pct | auto | 0.731 | 73.1% |
+| pct0 | #,##0% | 0.731 | 73% |
+| pct1 | #,##0.0% | 0.731 | 73.1% |
+| pct2 | #,##0.00% | 0.731 | 73.10% |
+| pct3 | #,##0.000% | 0.731 | 73.100% |
+
+
+
+## Custom Formats
 
 Custom formats can be added in the Value Formatting Section of the Evidence Settings. 
 
@@ -477,28 +204,14 @@ When creating a table, Evidence formats column titles based on the name of the c
 
 #### Examples
 
-<table>
-<tr>
-<th>Column Name</th>
-<th>Formatted Title</th>
-</tr>
-<tr>
-<td>sales_usd</td>
-<td>Sales ($)</td>
-</tr>
-<tr>
-<td>customer_id</td>
-<td>Customer ID</td>
-</tr>
-<tr>
-<td>growth_pct</td>
-<td>Growth</td>
-</tr>
-<tr>
-<td>customer_number_num2k</td>
-<td>Customer Number</td>
-</tr>
-</table>
+
+| Column Name | Formatted Title |
+| :-- | :-- |
+| sales_usd | Sales ($) |
+| customer_id | Customer ID |
+| growth_pct | Growth |
+| customer_number_num2k | Customer Number |
+
 
 
 ## Format Function
