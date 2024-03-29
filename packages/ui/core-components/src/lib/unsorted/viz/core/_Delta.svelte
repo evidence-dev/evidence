@@ -165,7 +165,7 @@
 							? '&#9650;'
 							: valueStatus === 'negative'
 								? '&#9660;'
-								: '–'}</span
+								: '—'}</span
 					>
 				{/if}
 				{#if showValue}
