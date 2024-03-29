@@ -168,7 +168,7 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 			return {
 				rows: async function* () {
 					try {
-						yield firstBatch;
+						yield standardizeResult(firstBatch);
 						let results;
 						while ((results = await cursor.read(batchSize)) && results.length > 0)
 							yield standardizeResult(results);
