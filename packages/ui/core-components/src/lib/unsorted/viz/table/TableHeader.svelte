@@ -71,7 +71,7 @@
 	}
 
 	th:first-child {
-		padding-left: 4px;
+		padding-left: 3px;
 	}
 
 	.index {
