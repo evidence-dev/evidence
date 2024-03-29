@@ -19,6 +19,7 @@
 	export let rowNumbers;
 	export let rowColor = undefined;
 	export let subtotals = true;
+	export let finalColumnOrder = undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -35,9 +36,9 @@
 	on:keypress={(e) => e.key === 'Enter' && toggleGroup()}
 	style:background-color={rowColor}
 >
-	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) : columnSummary
+	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
 				.filter((d) => d.show === true)
-				.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column, j}
+				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, j}
 		{@const useCol = safeExtractColumn(column, columnSummary)}
 		{@const column_format = column.fmt
 			? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
@@ -49,7 +50,7 @@
 				: column_format}
 		{@const useFormat = format?.valueType === 'date' ? '' : format}
 		{#if j === 0}
-			<TableCell class="font-medium py-[3px]" colSpan={rowNumbers ? 2 : 1}>
+			<TableCell class="font-medium py-[3px]" colSpan={rowNumbers ? 2 : 1} paddingLeft="1px">
 				<div class="items-center gap-2 align-top">
 					<span class="inline-flex print-hidden chevron"><TableGroupIcon {toggled} /></span>
 					{groupName}
@@ -71,7 +72,7 @@
 							format_object={useFormat}
 							columnUnitSummary={useCol.columnUnitSummary}
 							showValue={column.showValue}
-							deltaSymbol={column.deltaSymbol}
+							showSymbol={column.deltaSymbol}
 							align={column.align}
 							fontClass="font-medium text-[9.25pt]"
 							neutralMin={column.neutralMin}
