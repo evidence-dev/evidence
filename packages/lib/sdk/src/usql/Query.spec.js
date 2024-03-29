@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Query } from './Query';
-import { sharedPromise, sharedPromise } from '../lib/sharedPromise';
+import { sharedPromise } from '../lib/sharedPromise';
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
@@ -132,7 +132,7 @@ describe('Query', () => {
 
 		describe('Reactive Variant', () => {
 			it('should return a resolved query promise (w/o artificial delay)', async () => {
-				const { initialValue, updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
+				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
 				const q = reactiveQuery('SELECT 5');
 
 				expect(q).toBeInstanceOf(Promise);
