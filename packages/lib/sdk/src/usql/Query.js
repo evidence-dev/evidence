@@ -5,6 +5,7 @@ import { EvidenceError } from '../lib/EvidenceError.js';
 import { sharedPromise } from '../lib/sharedPromise.js';
 import { resolveMaybePromise } from './utils.js';
 import chunk from 'lodash.chunk';
+
 /**
  * @typedef {import("./types.js").QueryResultRow} QueryResultRow
  */
@@ -293,11 +294,9 @@ ${this.#query.toString()}
 		return resolved;
 	};
 	fetch = async () => {
-		return Promise.allSettled([
-			this.#sharedColumnsPromise.promise,
-			this.#sharedDataPromise.promise,
-			this.#sharedLengthPromise.promise
-		]).then(() => this.value);
+		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength]).then(
+			() => this.value
+		);
 	};
 	/**
 	 * Executes the query without actually updating the state
@@ -561,10 +560,58 @@ DESCRIBE ${this.#query.toString()}
 		this.#cache.clear();
 	};
 
+	/*
+		TODO: Write an update function?
+		Update will accept the same parameters as create (?)
+		It will return a promise race to load for 250ms and return the new store (or whenver the new store is loaded)
+		This will let the reactivity live outside of the Component
+	*/
+
+	/**
+	 * @param {import('./types.js').Runner} executeQuery
+	 * @param {string | import("@uwdata/mosaic-sql").Query} initialQuery
+	 * @param {import('./types.js').QueryOpts} [defaultOpts={}]
+	 * @param {number} [loadDelay=250]
+	 * @returns {{ initialValue: QueryValue, updater: <T extends QueryResultRow>(query: string, opts: import('./types.js').QueryOpts<T>) => Promise<QueryValue<T>>}}
+	 */
+	static reactive = (executeQuery, initialQuery, defaultOpts = {}, loadDelay = 250) => {
+		/** @type {import('./types.js').CreateQuery<any>} */
+		const createFn = Query.create;
+
+		/** @type {QueryValue<any>} */
+		let oldQuery = createFn(initialQuery, executeQuery, { ...defaultOpts });
+
+		/**
+		 * @template {QueryResultRow} [RowType=QueryResultRow]
+		 * @param {string | import("@uwdata/mosaic-sql").Query} query
+		 * @param {import('./types.js').QueryOpts<RowType>} [opts={}]
+		 * @returns {Promise<QueryValue<RowType>>}
+		 */
+		const updater = async (query, opts) => {
+			/** @type {QueryValue<RowType>} */
+			const newQuery = createFn(query, executeQuery, {
+				...defaultOpts,
+				...opts
+			});
+
+			if (oldQuery?.hash === newQuery.hash) return newQuery.fetch();
+
+			return Promise.race([newQuery.fetch(), new Promise((r) => setTimeout(r, loadDelay))]).then(
+				() => {
+					oldQuery = newQuery;
+					return newQuery;
+				}
+			);
+		};
+		return {
+			updater,
+			initialValue: oldQuery
+		};
+	};
+
 	/**
 	 * @template {QueryResultRow} [RowType=QueryResultRow]
 	 * @type {import("./types.js").CreateQuery<RowType>}
-	 * @returns {QueryValue<RowType>}
 	 */
 	static create = (query, executeQuery, optsOrId, maybeOpts) => {
 		const queryHash = hashQuery(query);

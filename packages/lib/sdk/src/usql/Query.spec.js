@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Query } from './Query';
-import { sharedPromise } from '../lib/sharedPromise';
+import { sharedPromise, sharedPromise } from '../lib/sharedPromise';
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
@@ -12,9 +12,15 @@ let expectedColumns = [];
 let expectedData = [];
 
 const mockRunner = vi.fn((q) => {
-	if (q.startsWith('---- Length')) return expectedLength;
-	if (q.startsWith('---- Columns')) return expectedColumns;
-	if (q.startsWith('---- Data')) return expectedData;
+	if (q.startsWith('---- Length')) {
+		return expectedLength;
+	}
+	if (q.startsWith('---- Columns')) {
+		return expectedColumns;
+	}
+	if (q.startsWith('---- Data')) {
+		return expectedData;
+	}
 });
 
 let testQueryIndex = 0;
@@ -40,10 +46,12 @@ describe('Query', () => {
 		testQueryIndex = 0;
 		testIdx++;
 		console.log(`Beginning ${testIdx}`);
+		Query.emptyCache();
 	});
 
 	describe('Data Volume', () => {
 		it('should process result sets of 10k rows in <250ms', async () => {
+			console.log('xx');
 			const rows = Array(10 * 1000)
 				.fill(null)
 				.map(() => ({
@@ -63,7 +71,7 @@ describe('Query', () => {
 			expectedLength = length;
 			expectedData = rows;
 
-			const query = getMockQuery('');
+			const query = getMockQuery('SELECT 5');
 
 			const before = performance.now();
 			await query.fetch();
@@ -120,6 +128,62 @@ describe('Query', () => {
 		});
 		it('should throw when query string is not a string or QueryBuilder', () => {
 			expect(() => getMockQuery(null)).toThrowError('Refusing to create Query');
+		});
+
+		describe('Reactive Variant', () => {
+			it('should return a resolved query promise (w/o artificial delay)', async () => {
+				const { initialValue, updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
+				const q = reactiveQuery('SELECT 5');
+
+				expect(q).toBeInstanceOf(Promise);
+
+				const $q = await q;
+				expect(Query.isQuery($q)).toBe(true);
+			});
+			it('should return distinct query values when called multiple times', async () => {
+				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
+				const q = await reactiveQuery('SELECT 5');
+				const q2 = await reactiveQuery('SELECT 6');
+
+				expect(Query.isQuery(q)).toBe(true);
+				expect(Query.isQuery(q2)).toBe(true);
+
+				// Not equal
+				expect(q === q2).toBe(false);
+				expect(q.hash).not.toEqual(q2.hash);
+			});
+			it('should return the same query values when called multiple times with the same query', async () => {
+				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
+				const q = await reactiveQuery('SELECT 5');
+				const q2 = await reactiveQuery('SELECT 5');
+
+				expect(Query.isQuery(q)).toBe(true);
+				expect(Query.isQuery(q2)).toBe(true);
+
+				// Not equal
+				expect(q).toBe(q2);
+				expect(q.hash).toEqual(q2.hash);
+			});
+			it('should return a still loading query only if the threshold is passed', async () => {
+				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
+				expectedData = [{ x: 1 }];
+				const loadDelay = 100;
+				const initialQuery = await reactiveQuery('SELECT 5', loadDelay);
+
+				expect(initialQuery[0].x).toBe(1);
+
+				const dataPromise = sharedPromise();
+				expectedData = dataPromise.promise;
+				const before = performance.now();
+				const secondQuery = await reactiveQuery('SELECT 10');
+				const after = performance.now();
+				expect(after - before).toBeGreaterThanOrEqual(loadDelay);
+				expect(secondQuery.loading).toBe(true);
+				dataPromise.resolve([{ x: 2 }]);
+				await tick();
+				expect(secondQuery.loading).toBe(false);
+				expect(secondQuery[0].x).toBe(2);
+			});
 		});
 	});
 
@@ -464,14 +528,14 @@ describe('Query', () => {
 	describe('EventEmitter interface', () => {
 		it('should emit dataReady when done fetching data', async () => {
 			const q = getMockQuery('');
-			const sub = vi.fn().mockImplementation(console.log);
+			const sub = vi.fn();
 			q.on('dataReady', sub);
 			await q.fetch();
 			expect(sub).toHaveBeenCalledWith(undefined, 'dataReady');
 		});
 		it('should respect .off', async () => {
 			const q = getMockQuery('');
-			const sub = vi.fn().mockImplementation(console.log);
+			const sub = vi.fn();
 			q.on('dataReady', sub);
 			q.off('dataReady', sub);
 			await q.fetch();
