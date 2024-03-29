@@ -163,7 +163,8 @@ export default (node, option) => {
 		}
 	};
 
-	const updateChart = (option) => {
+	const updateChart = (newOption) => {
+		option = newOption;
 		chart.setOption(
 			{
 				...option.config,
