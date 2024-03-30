@@ -146,9 +146,7 @@
 			{#if symbolPosition === 'right'}
 				{#if showValue}
 					{#if selected_value === null}
-						<span class="font-[system-ui]">
-							–
-						</span>
+						<span class="font-[system-ui]"> – </span>
 					{:else}
 						<span>
 							{formatValue(selected_value, selected_format, columnUnitSummary)}
@@ -176,11 +174,9 @@
 				{/if}
 				{#if showValue}
 					{#if selected_value === null}
-						<span class="font-[system-ui]">
-							–
-						</span>
+						<span class="font-[system-ui]"> – </span>
 					{:else}
-						<span> 
+						<span>
 							{formatValue(selected_value, selected_format, columnUnitSummary)}
 						</span>
 					{/if}
