@@ -116,3 +116,18 @@ export function aggregateColumn(data, columnName, aggType, columnType, weightCol
 			return `${aggType}`;
 	}
 }
+
+/**
+ * Generates the final column order for a DataTable based on group column(s) and the columns
+ * supplied by the user. Group columns are placed first, followed either by the order specified in
+ * Column components or the original order of the data
+ *
+ * @param {Array<string>} columns - An array of column names that represents all columns to be shown in the table
+ * @param {Array<string>} priorityColumns - An array of column names that should be shown first (group column(s))
+ * @returns {Array<string>} A new array of column names sorted such that priority columns
+ *                          come first, followed by the rest of the columns in their original order.
+ */
+export function getFinalColumnOrder(columns, priorityColumns) {
+	const restColumns = columns.filter((key) => !priorityColumns.includes(key));
+	return [...priorityColumns, ...restColumns];
+}

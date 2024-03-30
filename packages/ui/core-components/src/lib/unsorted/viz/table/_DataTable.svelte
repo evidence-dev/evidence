@@ -14,7 +14,7 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
-	import { safeExtractColumn, aggregateColumn } from './datatable.js';
+	import { safeExtractColumn, aggregateColumn, getFinalColumnOrder } from './datatable.js';
 	import TableRow from './TableRow.svelte';
 	import TotalRow from './TotalRow.svelte';
 	import SubtotalRow from './SubtotalRow.svelte';
@@ -39,7 +39,7 @@
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
 
-	export let groupBy;
+	export let groupBy = undefined;
 	export let groupsOpen = true; // starting toggle for groups - open or closed
 	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
 	export let groupType = 'accordion'; // accordion | section
@@ -133,18 +133,8 @@
 
 	let priorityColumns = [groupBy];
 
-	// Function to get the final column order
-	const getFinalColumnOrder = (obj, priorityColumns) => {
-		const allColumns = Object.keys(obj);
-		const restColumns = allColumns.filter((key) => !priorityColumns.includes(key));
-		return [...priorityColumns, ...restColumns];
-	};
-
-	// Determine the final column order based on the first object and priority columns
-	const finalColumnOrder = getFinalColumnOrder(data[0], priorityColumns);
-
 	props.update((d) => {
-		return { ...d, finalColumnOrder };
+		return { ...d, priorityColumns };
 	});
 
 	$: try {
@@ -478,10 +468,12 @@
 			<table>
 				<TableHeader
 					{rowNumbers}
-					{groupType}
 					{headerColor}
 					{headerFontColor}
-					{finalColumnOrder}
+					finalColumnOrder={getFinalColumnOrder(
+						$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+						$props.priorityColumns
+					)}
 					{columnSummary}
 					{sortable}
 					{sort}
@@ -501,6 +493,12 @@
 								rowColor={accordionRowColor}
 								{rowNumbers}
 								{subtotals}
+								finalColumnOrder={getFinalColumnOrder(
+									$props.columns.length > 0
+										? $props.columns.map((d) => d.id)
+										: Object.keys(data[0]),
+									$props.priorityColumns
+								)}
 							/>
 							{#if groupToggleStates[groupName]}
 								<TableRow
@@ -514,6 +512,12 @@
 									{columnSummary}
 									grouped={true}
 									groupColumn={groupBy}
+									finalColumnOrder={getFinalColumnOrder(
+										$props.columns.length > 0
+											? $props.columns.map((d) => d.id)
+											: Object.keys(data[0]),
+										$props.priorityColumns
+									)}
 								/>
 							{/if}
 						{:else if groupType === 'section'}
@@ -530,6 +534,12 @@
 								{columnSummary}
 								grouped={true}
 								{groupNamePosition}
+								finalColumnOrder={getFinalColumnOrder(
+									$props.columns.length > 0
+										? $props.columns.map((d) => d.id)
+										: Object.keys(data[0]),
+									$props.priorityColumns
+								)}
 							/>
 							{#if subtotals}
 								<SubtotalRow
@@ -538,9 +548,14 @@
 									{columnSummary}
 									rowColor={subtotalRowColor}
 									fontColor={subtotalFontColor}
-									{rowNumbers}
 									{groupType}
 									{groupBy}
+									finalColumnOrder={getFinalColumnOrder(
+										$props.columns.length > 0
+											? $props.columns.map((d) => d.id)
+											: Object.keys(data[0]),
+										$props.priorityColumns
+									)}
 								/>
 							{/if}
 						{/if}
@@ -554,6 +569,10 @@
 						{rowLines}
 						{index}
 						{columnSummary}
+						finalColumnOrder={getFinalColumnOrder(
+							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+							$props.priorityColumns
+						)}
 					/>
 				{/if}
 
@@ -565,6 +584,10 @@
 						rowColor={totalRowColor}
 						fontColor={totalFontColor}
 						{groupType}
+						finalColumnOrder={getFinalColumnOrder(
+							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+							$props.priorityColumns
+						)}
 					/>
 				{/if}
 			</table>
@@ -676,7 +699,7 @@
 <style>
 	.table-container {
 		font-size: 9.5pt;
-		width: 97%;
+		width: 98%;
 	}
 
 	.container {
