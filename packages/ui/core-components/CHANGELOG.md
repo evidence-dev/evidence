@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 3.7.1
+
+### Patch Changes
+
+- 8b636a62: Adjust delta neutral symbol
+- 24cec2ec: Fix column order issue in DataTable when Column used
+
 ## 3.7.0
 
 ### Minor Changes
