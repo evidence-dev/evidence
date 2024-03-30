@@ -44,6 +44,20 @@ sparklineYScale=true
 connectGroup=bigvalues
 /> 
 
+<BigValue data = {owc} 
+value=aov_usd2
+title="AOV ($)"
+sparkline=month
+comparison=aov_change_pct0
+comparisonTitle="vs. Last Month"
+sparklineColor=navy
+sparklineDateFmt=mmm
+sparklineYScale=true
+connectGroup=bigvalues
+neutralMin=-0.07
+neutralMax=0.07
+/> 
+
 Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
 pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
 discede?
