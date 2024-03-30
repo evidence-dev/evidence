@@ -10,12 +10,13 @@
 	import { propKey } from '@evidence-dev/component-utilities/chartContext';
 	const props = getContext(propKey);
 
-	export let data;
-	export let rowNumbers;
-	export let columnSummary;
+	export let data = undefined;
+	export let rowNumbers = undefined;
+	export let columnSummary = undefined;
 	export let rowColor = undefined;
 	export let fontColor = undefined;
-	export let groupType;
+	export let groupType = undefined;
+	export let finalColumnOrder = undefined;
 </script>
 
 <tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
@@ -23,9 +24,9 @@
 		<TableCell class="index w-[2%]" topBorder="border-t border-gray-600" />
 	{/if}
 
-	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) : columnSummary
+	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
 				.filter((d) => d.show === true)
-				.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column}
+				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 		{@const colColumnSummary = safeExtractColumn(column, columnSummary)}
 		{@const format = column.totalFmt
 			? getFormatObjectFromString(column.totalFmt)
@@ -51,7 +52,7 @@
 						format_object={format}
 						columnUnitSummary={colColumnSummary.columnUnitSummary}
 						showValue={column.showValue}
-						deltaSymbol={column.deltaSymbol}
+						showSymbol={column.deltaSymbol}
 						align={column.align}
 						fontClass="font-semibold text-[9.25pt]"
 						neutralMin={column.neutralMin}

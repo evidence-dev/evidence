@@ -35,6 +35,7 @@ queries:
     }}
 />
 
+
 ## Area with Custom Line Color
 
 <AreaChart
@@ -42,6 +43,8 @@ data={orders_by_category.filter(d => d.category === "Sinister Toys")}
 x=month
 lineColor=red
 />
+
+<DataTable data={orders_by_category}/>
 
 ## Area with Step Line
 
