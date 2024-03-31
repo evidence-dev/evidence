@@ -1,5 +1,13 @@
 # @evidence-dev/components
 
+## 3.4.6
+
+### Patch Changes
+
+- Updated dependencies [8b636a62]
+- Updated dependencies [24cec2ec]
+  - @evidence-dev/core-components@3.7.1
+
 ## 3.4.5
 
 ### Patch Changes
