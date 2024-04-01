@@ -47,7 +47,7 @@ select * from orders
 select * from orders where id in ${inputs.multiple_selected_order_ids.value}
 ```
 
-<Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" defaultValue={[2772, 271]} />
+<Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" defaultValue={[2772, 271]} disableSelectAll />
 
 Orders of {inputs.multiple_selected_order_ids.label}
 
