@@ -962,13 +962,13 @@ importers:
         version: 1.1.2
       '@codemirror/autocomplete':
         specifier: ^6.12.0
-        version: 6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.0)(@lezer/common@1.2.1)
+        version: 6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.1)(@lezer/common@1.2.1)
       '@codemirror/commands':
         specifier: ^6.3.3
         version: 6.3.3
       '@codemirror/lang-sql':
         specifier: ^6.5.5
-        version: 6.6.2(@codemirror/view@6.26.0)
+        version: 6.6.2(@codemirror/view@6.26.1)
       '@codemirror/language':
         specifier: ^6.10.0
         version: 6.10.1
@@ -980,7 +980,7 @@ importers:
         version: 6.5.6
       '@codemirror/view':
         specifier: ^6.23.0
-        version: 6.26.0
+        version: 6.26.1
       '@docsearch/css':
         specifier: ^3.5.2
         version: 3.6.0
@@ -1061,10 +1061,10 @@ importers:
         version: 0.1.20(tailwindcss@3.4.3)
       thememirror:
         specifier: ^2.0.1
-        version: 2.0.1(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.0)
+        version: 2.0.1(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.1)
       tua-body-scroll-lock:
         specifier: ^1.4.0
-        version: 1.4.1
+        version: 1.5.0
       yaml:
         specifier: ^2.3.4
         version: 2.4.1
@@ -1794,7 +1794,7 @@ packages:
       '@aws-sdk/util-user-agent-node': 3.535.0
       '@aws-sdk/xml-builder': 3.535.0
       '@smithy/config-resolver': 2.2.0
-      '@smithy/core': 1.4.0
+      '@smithy/core': 1.4.1
       '@smithy/eventstream-serde-browser': 2.2.0
       '@smithy/eventstream-serde-config-resolver': 2.2.0
       '@smithy/eventstream-serde-node': 2.2.0
@@ -1806,7 +1806,7 @@ packages:
       '@smithy/md5-js': 2.2.0
       '@smithy/middleware-content-length': 2.2.0
       '@smithy/middleware-endpoint': 2.5.0
-      '@smithy/middleware-retry': 2.2.0
+      '@smithy/middleware-retry': 2.3.0
       '@smithy/middleware-serde': 2.3.0
       '@smithy/middleware-stack': 2.2.0
       '@smithy/node-config-provider': 2.3.0
@@ -1851,13 +1851,13 @@ packages:
       '@aws-sdk/util-user-agent-browser': 3.535.0
       '@aws-sdk/util-user-agent-node': 3.535.0
       '@smithy/config-resolver': 2.2.0
-      '@smithy/core': 1.4.0
+      '@smithy/core': 1.4.1
       '@smithy/fetch-http-handler': 2.5.0
       '@smithy/hash-node': 2.2.0
       '@smithy/invalid-dependency': 2.2.0
       '@smithy/middleware-content-length': 2.2.0
       '@smithy/middleware-endpoint': 2.5.0
-      '@smithy/middleware-retry': 2.2.0
+      '@smithy/middleware-retry': 2.3.0
       '@smithy/middleware-serde': 2.3.0
       '@smithy/middleware-stack': 2.2.0
       '@smithy/node-config-provider': 2.3.0
@@ -1897,13 +1897,13 @@ packages:
       '@aws-sdk/util-user-agent-browser': 3.535.0
       '@aws-sdk/util-user-agent-node': 3.535.0
       '@smithy/config-resolver': 2.2.0
-      '@smithy/core': 1.4.0
+      '@smithy/core': 1.4.1
       '@smithy/fetch-http-handler': 2.5.0
       '@smithy/hash-node': 2.2.0
       '@smithy/invalid-dependency': 2.2.0
       '@smithy/middleware-content-length': 2.2.0
       '@smithy/middleware-endpoint': 2.5.0
-      '@smithy/middleware-retry': 2.2.0
+      '@smithy/middleware-retry': 2.3.0
       '@smithy/middleware-serde': 2.3.0
       '@smithy/middleware-stack': 2.2.0
       '@smithy/node-config-provider': 2.3.0
@@ -1946,13 +1946,13 @@ packages:
       '@aws-sdk/util-user-agent-browser': 3.535.0
       '@aws-sdk/util-user-agent-node': 3.535.0
       '@smithy/config-resolver': 2.2.0
-      '@smithy/core': 1.4.0
+      '@smithy/core': 1.4.1
       '@smithy/fetch-http-handler': 2.5.0
       '@smithy/hash-node': 2.2.0
       '@smithy/invalid-dependency': 2.2.0
       '@smithy/middleware-content-length': 2.2.0
       '@smithy/middleware-endpoint': 2.5.0
-      '@smithy/middleware-retry': 2.2.0
+      '@smithy/middleware-retry': 2.3.0
       '@smithy/middleware-serde': 2.3.0
       '@smithy/middleware-stack': 2.2.0
       '@smithy/node-config-provider': 2.3.0
@@ -1979,7 +1979,7 @@ packages:
     resolution: {integrity: sha512-+Yusa9HziuaEDta1UaLEtMAtmgvxdxhPn7jgfRY6PplqAqgsfa5FR83sxy5qr2q7xjQTwHtV4MjQVuOjG9JsLw==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@smithy/core': 1.4.0
+      '@smithy/core': 1.4.1
       '@smithy/protocol-http': 3.3.0
       '@smithy/signature-v4': 2.2.0
       '@smithy/smithy-client': 2.5.0
@@ -4294,7 +4294,7 @@ packages:
     bundledDependencies:
       - is-unicode-supported
 
-  /@codemirror/autocomplete@6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.0)(@lezer/common@1.2.1):
+  /@codemirror/autocomplete@6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.1)(@lezer/common@1.2.1):
     resolution: {integrity: sha512-G2Zm0mXznxz97JhaaOdoEG2cVupn4JjPaS4AcNvZzhOsnnG9YVN68VzfoUw6dYTsIxT6a/cmoFEN47KAWhXaOg==}
     peerDependencies:
       '@codemirror/language': ^6.0.0
@@ -4304,7 +4304,7 @@ packages:
     dependencies:
       '@codemirror/language': 6.10.1
       '@codemirror/state': 6.4.1
-      '@codemirror/view': 6.26.0
+      '@codemirror/view': 6.26.1
       '@lezer/common': 1.2.1
     dev: false
 
@@ -4313,14 +4313,14 @@ packages:
     dependencies:
       '@codemirror/language': 6.10.1
       '@codemirror/state': 6.4.1
-      '@codemirror/view': 6.26.0
+      '@codemirror/view': 6.26.1
       '@lezer/common': 1.2.1
     dev: false
 
-  /@codemirror/lang-sql@6.6.2(@codemirror/view@6.26.0):
+  /@codemirror/lang-sql@6.6.2(@codemirror/view@6.26.1):
     resolution: {integrity: sha512-ZVt7AHflRDFVwxSq7nnj1pko9yR6wKFDtc6Ln7zUs8RX34v5sgVxy3d2lQfORhMPVblEJLaugn+sjwRmAFWNIg==}
     dependencies:
-      '@codemirror/autocomplete': 6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.0)(@lezer/common@1.2.1)
+      '@codemirror/autocomplete': 6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.1)(@lezer/common@1.2.1)
       '@codemirror/language': 6.10.1
       '@codemirror/state': 6.4.1
       '@lezer/common': 1.2.1
@@ -4334,7 +4334,7 @@ packages:
     resolution: {integrity: sha512-5GrXzrhq6k+gL5fjkAwt90nYDmjlzTIJV8THnxNFtNKWotMIlzzN+CpqxqwXOECnUdOndmSeWntVrVcv5axWRQ==}
     dependencies:
       '@codemirror/state': 6.4.1
-      '@codemirror/view': 6.26.0
+      '@codemirror/view': 6.26.1
       '@lezer/common': 1.2.1
       '@lezer/highlight': 1.2.0
       '@lezer/lr': 1.4.0
@@ -4345,7 +4345,7 @@ packages:
     resolution: {integrity: sha512-+5YyicIaaAZKU8K43IQi8TBy6mF6giGeWAH7N96Z5LC30Wm5JMjqxOYIE9mxwMG1NbhT2mA3l9hA4uuKUM3E5g==}
     dependencies:
       '@codemirror/state': 6.4.1
-      '@codemirror/view': 6.26.0
+      '@codemirror/view': 6.26.1
       crelt: 1.0.6
     dev: false
 
@@ -4353,7 +4353,7 @@ packages:
     resolution: {integrity: sha512-rpMgcsh7o0GuCDUXKPvww+muLA1pDJaFrpq/CCHtpQJYz8xopu4D1hPcKRoDD0YlF8gZaqTNIRa4VRBWyhyy7Q==}
     dependencies:
       '@codemirror/state': 6.4.1
-      '@codemirror/view': 6.26.0
+      '@codemirror/view': 6.26.1
       crelt: 1.0.6
     dev: false
 
@@ -4361,8 +4361,8 @@ packages:
     resolution: {integrity: sha512-QkEyUiLhsJoZkbumGZlswmAhA7CBU02Wrz7zvH4SrcifbsqwlXShVXg65f3v/ts57W3dqyamEriMhij1Z3Zz4A==}
     dev: false
 
-  /@codemirror/view@6.26.0:
-    resolution: {integrity: sha512-nSSmzONpqsNzshPOxiKhK203R6BvABepugAe34QfQDbNDslyjkqBuKgrK5ZBvqNXpfxz5iLrlGTmEfhbQyH46A==}
+  /@codemirror/view@6.26.1:
+    resolution: {integrity: sha512-wLw0t3R9AwOSQThdZ5Onw8QQtem5asE7+bPlnzc57eubPqiuJKIzwjMZ+C42vQett+iva+J8VgFV4RYWDBh5FA==}
     dependencies:
       '@codemirror/state': 6.4.1
       style-mod: 4.1.2
@@ -7963,12 +7963,12 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@smithy/core@1.4.0:
-    resolution: {integrity: sha512-uu9ZDI95Uij4qk+L6kyFjdk11zqBkcJ3Lv0sc6jZrqHvLyr0+oeekD3CnqMafBn/5PRI6uv6ulW3kNLRBUHeVw==}
+  /@smithy/core@1.4.1:
+    resolution: {integrity: sha512-jCnbEQHvTOUQXxXOS110FIMc83dCXUlrqiG/q0QzUSYhglDj9bJVPFjXmxc6qUfARe0mEb8h9LeVoh7FUYHuUg==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@smithy/middleware-endpoint': 2.5.0
-      '@smithy/middleware-retry': 2.2.0
+      '@smithy/middleware-retry': 2.3.0
       '@smithy/middleware-serde': 2.3.0
       '@smithy/protocol-http': 3.3.0
       '@smithy/smithy-client': 2.5.0
@@ -8114,8 +8114,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@smithy/middleware-retry@2.2.0:
-    resolution: {integrity: sha512-PsjDOLpbevgn37yJbawmfVoanru40qVA8UEf2+YA1lvOefmhuhL6ZbKtGsLAWDRnE1OlAmedsbA/htH6iSZjNA==}
+  /@smithy/middleware-retry@2.3.0:
+    resolution: {integrity: sha512-5H7kD0My2RkZryvYIWA4C9w6t/pdJfbgEdq+fcZhbnZsqHm/4vYFVjDsOzb5pC7PEpksuijoM9fGbM6eN4rLSg==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@smithy/node-config-provider': 2.3.0
@@ -8126,7 +8126,7 @@ packages:
       '@smithy/util-middleware': 2.2.0
       '@smithy/util-retry': 2.2.0
       tslib: 2.6.2
-      uuid: 8.3.2
+      uuid: 9.0.1
     dev: false
 
   /@smithy/middleware-serde@2.3.0:
@@ -8900,7 +8900,7 @@ packages:
     resolution: {integrity: sha512-R6VjQl+I9k4oc3OfOHOFzz5T20WROHOZ5/zkkFKM/1YUa6QNpMcuStOtr/qcAx+QizmQqmxgJwTFapFBP5yWjg==}
     dependencies:
       '@storybook/csf-tools': 8.0.5
-      unplugin: 1.10.0
+      unplugin: 1.10.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -10468,7 +10468,7 @@ packages:
       magicast: 0.3.3
       picocolors: 1.0.0
       std-env: 3.7.0
-      strip-literal: 2.0.0
+      strip-literal: 2.1.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
       vitest: 1.4.0(@types/node@20.11.28)(jsdom@23.2.0)
@@ -11590,7 +11590,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001600
-      electron-to-chromium: 1.4.719
+      electron-to-chromium: 1.4.721
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
 
@@ -12075,13 +12075,13 @@ packages:
   /codemirror@6.0.1(@lezer/common@1.2.1):
     resolution: {integrity: sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==}
     dependencies:
-      '@codemirror/autocomplete': 6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.0)(@lezer/common@1.2.1)
+      '@codemirror/autocomplete': 6.15.0(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.1)(@lezer/common@1.2.1)
       '@codemirror/commands': 6.3.3
       '@codemirror/language': 6.10.1
       '@codemirror/lint': 6.5.0
       '@codemirror/search': 6.5.6
       '@codemirror/state': 6.4.1
-      '@codemirror/view': 6.26.0
+      '@codemirror/view': 6.26.1
     transitivePeerDependencies:
       - '@lezer/common'
     dev: false
@@ -13614,8 +13614,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.719:
-    resolution: {integrity: sha512-FbWy2Q2YgdFzkFUW/W5jBjE9dj+804+98E4Pup78JBPnbdb3pv6IneY2JCPKdeKLh3AOKHQeYf+KwLr7mxGh6Q==}
+  /electron-to-chromium@1.4.721:
+    resolution: {integrity: sha512-k1x2r6foI8iJOp+1qTxbbrrWMsOiHkzGBYwYigaq+apO1FSqtn44KTo3Sy69qt7CRr7149zTcsDvH7MUKsOuIQ==}
 
   /elkjs@0.9.2:
     resolution: {integrity: sha512-2Y/RaA1pdgSHpY0YG4TYuYCD2wh97CRvu22eLG3Kz0pgQ/6KbIFTxsTnDc4MH/6hFlg2L/9qXrDMG0nMjP63iw==}
@@ -15172,7 +15172,7 @@ packages:
     dependencies:
       foreground-child: 3.1.1
       jackspeak: 2.3.6
-      minimatch: 9.0.3
+      minimatch: 9.0.4
       minipass: 7.0.4
       path-scurry: 1.10.2
 
@@ -17137,8 +17137,8 @@ packages:
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  /js-tokens@8.0.3:
-    resolution: {integrity: sha512-UfJMcSJc+SEXEl9lH/VLHSZbThQyLpw1vLO1Lb+j4RWDvG3N2f7yj3PVQA3cmkTBNldJ9eFnM+xEXxHIXrYiJw==}
+  /js-tokens@9.0.0:
+    resolution: {integrity: sha512-WriZw1luRMlmV3LGJaR6QOJjWwgLUTf89OwT2lUOyjX2dJGBwgmIkbcz+7WFZjrZM635JOIR517++e/67CP9dQ==}
     dev: false
 
   /js-yaml@3.14.1:
@@ -18418,6 +18418,13 @@ packages:
 
   /minimatch@9.0.3:
     resolution: {integrity: sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==}
+    engines: {node: '>=16 || 14 >=14.17'}
+    dependencies:
+      brace-expansion: 2.0.1
+    dev: false
+
+  /minimatch@9.0.4:
+    resolution: {integrity: sha512-KqWh+VchfxcMNRAJjj2tnsSJdNbHsVgnkBhTNrW7AjVo6OvLtxw8zfT9oLw1JSohlFzJ8jCoTgaoXvJ+kHt6fw==}
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
       brace-expansion: 2.0.1
@@ -22281,10 +22288,10 @@ packages:
       acorn: 8.11.3
     dev: true
 
-  /strip-literal@2.0.0:
-    resolution: {integrity: sha512-f9vHgsCWBq2ugHAkGMiiYY+AYG0D/cbloKKg0nhaaaSNsujdGIpVXCNsrJpCKr5M0f4aI31mr13UjY6GAuXCKA==}
+  /strip-literal@2.1.0:
+    resolution: {integrity: sha512-Op+UycaUt/8FbN/Z2TWPBLge3jWrP3xj10f3fnYxf052bKuS3EKs1ZQcVGjnEMdsNVAM+plXRdmjrZ/KgG3Skw==}
     dependencies:
-      js-tokens: 8.0.3
+      js-tokens: 9.0.0
     dev: false
 
   /strnum@1.0.5:
@@ -22804,7 +22811,7 @@ packages:
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
-  /thememirror@2.0.1(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.0):
+  /thememirror@2.0.1(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.1):
     resolution: {integrity: sha512-d5i6FVvWWPkwrm4cHLI3t9AT1OrkAt7Ig8dtdYSofgF7C/eiyNuq6zQzSTusWTde3jpW9WLvA9J/fzNKMUsd0w==}
     peerDependencies:
       '@codemirror/language': ^6.0.0
@@ -22813,7 +22820,7 @@ packages:
     dependencies:
       '@codemirror/language': 6.10.1
       '@codemirror/state': 6.4.1
-      '@codemirror/view': 6.26.0
+      '@codemirror/view': 6.26.1
     dev: false
 
   /thenify-all@1.6.0:
@@ -23037,8 +23044,8 @@ packages:
       yargs: 17.7.2
     dev: true
 
-  /tua-body-scroll-lock@1.4.1:
-    resolution: {integrity: sha512-3W8+asPBR/U+jDfVrnoir6TpNjLDTCPeQwNq+j6UERs6+3KeIZlmnsXQeEyM5YkriplH1lJ7R5sKcj5Ji6tF6w==}
+  /tua-body-scroll-lock@1.5.0:
+    resolution: {integrity: sha512-+DjX4NIjqhqkEpTdMlln12UBC90aTqIqZvrjnpUc2kUpO6nrAYy6ho5z1jL12wjeeRJftlZDARlZlwiVlVjvTQ==}
     dev: false
 
   /tunnel@0.0.6:
@@ -23400,8 +23407,8 @@ packages:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
 
-  /unplugin@1.10.0:
-    resolution: {integrity: sha512-CuZtvvO8ua2Wl+9q2jEaqH6m3DoQ38N7pvBYQbbaeNlWGvK2l6GHiKi29aIHDPoSxdUzQ7Unevf1/ugil5X6Pg==}
+  /unplugin@1.10.1:
+    resolution: {integrity: sha512-d6Mhq8RJeGA8UfKCu54Um4lFA0eSaRa3XxdAJg8tIdxbu1ubW0hBCZUL7yI2uGyYCRndvbK8FLHzqy2XKfeMsg==}
     engines: {node: '>=14.0.0'}
     dependencies:
       acorn: 8.11.3
@@ -23810,7 +23817,7 @@ packages:
       pathe: 1.1.2
       picocolors: 1.0.0
       std-env: 3.7.0
-      strip-literal: 2.0.0
+      strip-literal: 2.1.0
       tinybench: 2.6.0
       tinypool: 0.8.3
       vite: 5.1.6(@types/node@20.11.28)
