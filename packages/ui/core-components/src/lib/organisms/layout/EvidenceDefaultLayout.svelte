@@ -8,6 +8,13 @@
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import TableOfContents from './tableofcontents/TableOfContents.svelte';
 	import ErrorOverlay from './ErrorOverlay.svelte';
+	import { browser } from '$app/environment';
+
+	// Remove splash screen from app.html
+	if (browser) {
+		const splash = document.querySelector('#__evidence_project_splash');
+		splash?.remove();
+	}
 
 	export let data;
 
