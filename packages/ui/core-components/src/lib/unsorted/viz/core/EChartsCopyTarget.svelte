@@ -29,9 +29,9 @@
 	}
 
 	$: portraitCols = Math.min(Number(gridCols), 2);
-	$: portraitWidth = `${650 / portraitCols - Number(gapWidth) * (portraitCols - 1)}px`;
+	$: portraitWidth = `${(650 - (Number(gapWidth) * (portraitCols - 1))) / portraitCols}px`;
 	$: landscapeCols = Math.min(Number(gridCols), 3);
-	$: landscapeWidth = `${650 / landscapeCols - Number(gapWidth) * (landscapeCols - 1)}px`;
+	$: landscapeWidth = `${(650 - (Number(gapWidth) * (landscapeCols - 1))) / landscapeCols}px`;
 </script>
 
 {#if copying}
