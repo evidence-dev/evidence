@@ -28,10 +28,12 @@
 		({ cols: gridCols, gapWidth } = gridConfig);
 	}
 
+	// Browsers have different widths, so we need to set print width at the smallest level we expect to see across browsers to
+	// avoid overlap. This is 650px for portrait and 841px for landscape (assuming an 8.5x11 page)
 	$: portraitCols = Math.min(Number(gridCols), 2);
-	$: portraitWidth = `${(650 - (Number(gapWidth) * (portraitCols - 1))) / portraitCols}px`;
+	$: portraitWidth = `${(650 - Number(gapWidth) * (portraitCols - 1)) / portraitCols}px`;
 	$: landscapeCols = Math.min(Number(gridCols), 3);
-	$: landscapeWidth = `${(650 - (Number(gapWidth) * (landscapeCols - 1))) / landscapeCols}px`;
+	$: landscapeWidth = `${(841 - Number(gapWidth) * (landscapeCols - 1)) / landscapeCols}px`;
 </script>
 
 {#if copying}
@@ -78,10 +80,24 @@
 		/>
 	{:else}
 		<div
-			class="chart"
+			class="chart md:hidden"
 			style="
 			height: {height};
 			width: 650px;
+			margin-left: 0;
+			margin-top: 15px;
+			margin-bottom: 10px;
+			overflow: visible;
+			break-inside: avoid;
+		"
+			use:eChartsCopy={{ config, ratio: 4, echartsOptions, seriesOptions, seriesColors }}
+		/>
+
+		<div
+			class="chart hidden md:block"
+			style="
+			height: {height};
+			width: 841px;
 			margin-left: 0;
 			margin-top: 15px;
 			margin-bottom: 10px;
