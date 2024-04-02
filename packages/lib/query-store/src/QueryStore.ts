@@ -219,6 +219,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				return cached.store;
 			}
 		}
+		QueryStore.cacheBust(64 * 1024 * 1024)
 		const v = new QueryStore(query, exec, id, opts, root);
 		QueryStore.cache.set(hash, {
 			insertTime: new Date().getTime(),
@@ -654,6 +655,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 			subscriber.#subscriptions.push(hash);
 			newStore.subscribe(subscriber.publish);
+			QueryStore.cacheBust(64 * 1024 * 1024)
 			QueryStore.cache.set(hash, {
 				store: newStore,
 				insertTime: new Date().getTime()
