@@ -91,6 +91,8 @@
 		{printing}
 		{echartsOptions}
 		{seriesOptions}
+		isMap
+		{extraHeight}
 	/>
 
 	<div class="chart-footer">

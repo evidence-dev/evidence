@@ -14,6 +14,8 @@
 	export let echartsOptions = undefined;
 	export let seriesOptions = undefined;
 	export let seriesColors = undefined;
+	export let isMap = false;
+	export let extraHeight = undefined;
 
 	// Grid Context:
 	let inGrid = false;
@@ -31,9 +33,9 @@
 	// Browsers have different widths, so we need to set print width at the smallest level we expect to see across browsers to
 	// avoid overlap. This is 650px for portrait and 841px for landscape (assuming an 8.5x11 page)
 	$: portraitCols = Math.min(Number(gridCols), 2);
-	$: portraitWidth = `${(650 - Number(gapWidth) * (portraitCols - 1)) / portraitCols}px`;
+	$: portraitWidth = (650 - Number(gapWidth) * (portraitCols - 1)) / portraitCols;
 	$: landscapeCols = Math.min(Number(gridCols), 3);
-	$: landscapeWidth = `${(841 - Number(gapWidth) * (landscapeCols - 1)) / landscapeCols}px`;
+	$: landscapeWidth = (841 - Number(gapWidth) * (landscapeCols - 1)) / landscapeCols;
 </script>
 
 {#if copying}
@@ -56,27 +58,45 @@
 			class="chart md:hidden"
 			style="
 			height: {height};
-			width: {portraitWidth};
+			width: {portraitWidth}px;
 			margin-left: 0;
 			margin-top: 15px;
 			margin-bottom: 10px;
 			overflow: visible;
 			break-inside: avoid;
 		"
-			use:eChartsCopy={{ config, ratio: 4, echartsOptions, seriesOptions, seriesColors }}
+			use:eChartsCopy={{
+				config,
+				ratio: 4,
+				echartsOptions,
+				seriesOptions,
+				seriesColors,
+				isMap,
+				extraHeight,
+				width: portraitWidth
+			}}
 		/>
 		<div
 			class="chart hidden md:block"
 			style="
 			height: {height};
-			width: {landscapeWidth};
+			width: {landscapeWidth}px;
 			margin-left: 0;
 			margin-top: 15px;
 			margin-bottom: 10px;
 			overflow: visible;
 			break-inside: avoid;
 		"
-			use:eChartsCopy={{ config, ratio: 4, echartsOptions, seriesOptions, seriesColors }}
+			use:eChartsCopy={{
+				config,
+				ratio: 4,
+				echartsOptions,
+				seriesOptions,
+				seriesColors,
+				isMap,
+				extraHeight,
+				width: landscapeWidth
+			}}
 		/>
 	{:else}
 		<div
@@ -90,7 +110,16 @@
 			overflow: visible;
 			break-inside: avoid;
 		"
-			use:eChartsCopy={{ config, ratio: 4, echartsOptions, seriesOptions, seriesColors }}
+			use:eChartsCopy={{
+				config,
+				ratio: 4,
+				echartsOptions,
+				seriesOptions,
+				seriesColors,
+				isMap,
+				extraHeight,
+				width: 650
+			}}
 		/>
 
 		<div
@@ -104,7 +133,16 @@
 			overflow: visible;
 			break-inside: avoid;
 		"
-			use:eChartsCopy={{ config, ratio: 4, echartsOptions, seriesOptions, seriesColors }}
+			use:eChartsCopy={{
+				config,
+				ratio: 4,
+				echartsOptions,
+				seriesOptions,
+				seriesColors,
+				isMap,
+				extraHeight,
+				width: 841
+			}}
 		/>
 	{/if}
 {/if}
