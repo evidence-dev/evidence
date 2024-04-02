@@ -170,3 +170,88 @@ describe.each<{ ssr: boolean }>([{ ssr: false }, { ssr: true }])(
 		});
 	}
 );
+
+describe('Cache Busting', () => {
+	const mockExec = vi.fn();
+	const mockSubscription = vi.fn();
+
+	beforeEach(() => {
+		vi.resetAllMocks();
+		mockExec.mockImplementation((q: string) => {
+			if (q.startsWith('--col-metadata'))
+				return Promise.resolve([{ column_name: 'x', column_type: 'INTEGER' }]);
+			if (q.startsWith('--len')) return Promise.resolve([{ length: 5 }]);
+			return Promise.resolve([{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }, { x: 5 }]);
+		});
+		vi.stubGlobal('window', {});
+		QueryStore.emptyCache();
+	});
+
+	it('not touch the cache when below the threshold', async () => {
+		const store1 = QueryStore.create('SELECT 1;', mockExec, undefined, { disableCache: false });
+		QueryStore.cacheBust();
+		const store11 = QueryStore.create('SELECT 1;', mockExec, undefined, {
+			disableCache: false
+		});
+
+		const store2 = QueryStore.create('SELECT 2;', mockExec, undefined, { disableCache: false });
+
+		const limitedStore1 = store1.limit(0);
+		await limitedStore1.fetch();
+		const limitedStore2 = store2.limit(0);
+		await limitedStore2.fetch();
+		QueryStore.cacheBust(100);
+		const limitedStore11 = store11.limit(0);
+		await limitedStore11.fetch();
+
+		expect(limitedStore1.text).not.toEqual(limitedStore2.text);
+		expect(limitedStore11).toBe(limitedStore1);
+		expect(limitedStore11 === limitedStore1).toBe(true);
+	});
+	it('should empty the cache when a threshold of 0 is used', async () => {
+		const store1 = QueryStore.create('SELECT 1;', mockExec, undefined, { disableCache: false });
+		await store1.fetch();
+		QueryStore.cacheBust(0);
+		const store11 = QueryStore.create('SELECT 1;', mockExec, undefined, {
+			disableCache: false
+		});
+		await store11.fetch();
+
+		const store2 = QueryStore.create('SELECT 2;', mockExec, undefined, { disableCache: false });
+		await store2.fetch();
+
+		const limitedStore1 = store1.limit(0);
+		await limitedStore1.fetch();
+		QueryStore.cacheBust(0);
+		const limitedStore11 = store11.limit(0);
+		await limitedStore11.fetch();
+		const limitedStore2 = store2.limit(0);
+		await limitedStore2.fetch();
+
+		expect(limitedStore1.text).not.toEqual(limitedStore2.text);
+		expect(limitedStore11).not.toEqual(limitedStore1);
+	});
+	it('should remove from the oldest cached first', async () => {
+		QueryStore.emptyCache();
+
+		const store1 = QueryStore.create('SELECT 1;', mockExec, undefined, { disableCache: false });
+		await store1.fetch();
+		const store2 = QueryStore.create('SELECT 2;', mockExec, undefined, { disableCache: false });
+		await store2.fetch();
+		QueryStore.cacheBust(0);
+		const store3 = QueryStore.create('SELECT 1;', mockExec, undefined, { disableCache: false });
+		await store3.fetch();
+
+		const limitedStore1 = store1.limit(0);
+		const limitedStore2 = store2.limit(0);
+		await limitedStore1.fetch();
+		await limitedStore2.fetch();
+		QueryStore.cacheBust(0);
+
+		const limitedstore3 = store3.limit(0);
+		await limitedstore3.fetch();
+
+		expect(limitedStore1.text).not.toEqual(limitedStore2.text);
+		expect(limitedStore1 === limitedstore3).toEqual(false);
+	});
+});

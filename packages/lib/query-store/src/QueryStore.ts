@@ -215,10 +215,15 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 		}
 		if (!opts.disableCache) {
 			const cached = QueryStore.cache.get(hash);
-			if (cached) return cached;
+			if (cached) {
+				return cached.store;
+			}
 		}
 		const v = new QueryStore(query, exec, id, opts, root);
-		QueryStore.cache.set(hash, v);
+		QueryStore.cache.set(hash, {
+			insertTime: new Date().getTime(),
+			store: v
+		});
 		return v;
 	}
 
@@ -577,7 +582,25 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	/**
 	 * Shared cache of existing QueryStores to reduce the number of stores initialized
 	 */
-	private static cache: Map<string, QueryStore> = new Map();
+	private static cache: Map<string, { insertTime: number; store: QueryStore }> = new Map();
+	static cacheBust(threshold: number = 1000) {
+		const allQueries = Array.from(this.cache.entries());
+
+		const totalScore = allQueries.reduce((a, b) => a + b[1].store.score, 0);
+		if (totalScore > threshold) {
+			let currentScore = totalScore;
+			// commence busting
+			const orderedQueries = allQueries.sort((a, b) => a[1].insertTime - b[1].insertTime);
+			for (const q of orderedQueries) {
+				const [key, { store, insertTime }] = q;
+				this.cache.delete(key);
+				currentScore -= store.score;
+				if (currentScore <= threshold) break;
+			}
+		}
+	}
+
+	private static addToCache(q: QueryStore) {}
 
 	static emptyCache() {
 		QueryStore.cache.clear();
@@ -606,7 +629,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 			// If caching is enabled and the id exists in the cache
 			if (!this.opts.disableCache && QueryStore.cache.has(hash)) {
 				// Use the cache
-				const cachedQuery = QueryStore.cache.get(hash);
+				const cachedQuery = QueryStore.cache.get(hash)?.store;
 				if (!cachedQuery) throw new Error('Error getting query from cache. This should not occur.');
 
 				if (!subscriber.#subscriptions.includes(hash)) {
@@ -631,7 +654,10 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 			subscriber.#subscriptions.push(hash);
 			newStore.subscribe(subscriber.publish);
-			QueryStore.cache.set(hash, newStore);
+			QueryStore.cache.set(hash, {
+				store: newStore,
+				insertTime: new Date().getTime()
+			});
 			return newStore.#proxied;
 		};
 	};
