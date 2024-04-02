@@ -44,6 +44,9 @@ xAxisTitle=Category
 />
 </Grid>
 
+Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
+pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
+discede?
 Some text
 
 <BarChart
@@ -53,7 +56,9 @@ y=sales_usd0k
 xAxisTitle=Category
 />
 
-
+Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
+pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
+discede?
 <Grid cols=2 gapSize=lg>
 <BarChart
 data={orders_by_category}
@@ -69,3 +74,6 @@ xAxisTitle=Category
 />
   </Grid>
 
+Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
+pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
+discede?
