@@ -88,7 +88,8 @@
 							? 'white'
 							: uiColours.grey999
 						: ''}
-					borderBottom={rowLines &&
+					borderBottom={i !== displayedData.length - 1 &&
+					rowLines &&
 					column.contentType === 'colorscale' &&
 					is_nonzero &&
 					column.colorPalette
