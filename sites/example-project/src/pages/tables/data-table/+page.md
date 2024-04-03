@@ -33,3 +33,15 @@ Aliquam massa elit, egestas eget risus nec, rhoncus vehicula ante. Cras placerat
 
 <DataTable data={[{ thing: 'The world has many goodbyes and hellos.' }]} search=true />
 
+```summary
+select category, sum(sales_usd0k) as sales, sum(num_orders_num0) as orders, sales/orders as aov
+from ${orders_by_category}
+group by all
+```
+
+<DataTable data={summary}> 
+ 	<Column id=category/> 
+	<Column id=sales fmt=usd0k contentType=colorscale scaleColor={['#304a8a','#e8efff']}/> 
+	<Column id=orders/> 
+	<Column id=aov fmt=usd2 contentType=colorscale scaleColor={['#b52626','#FFFFFF','#2e9939']}/> 
+ </DataTable>
