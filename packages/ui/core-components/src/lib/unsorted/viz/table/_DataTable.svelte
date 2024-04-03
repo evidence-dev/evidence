@@ -117,6 +117,9 @@
 	export let rowLines = true;
 	$: rowLines = rowLines === 'true' || rowLines === true;
 
+	export let wrapTitles = false;
+	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
+
 	export let headerColor = undefined;
 	export let headerFontColor = 'var(--grey-900)';
 
@@ -479,6 +482,7 @@
 					{sort}
 					{formatColumnTitles}
 					{sortBy}
+					{wrapTitles}
 				/>
 
 				{#if groupBy && groupedData && searchValue === ''}

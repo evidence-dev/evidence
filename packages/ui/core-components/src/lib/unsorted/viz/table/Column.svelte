@@ -40,6 +40,9 @@
 	export let wrap = false;
 	$: wrap = wrap === 'true' || wrap === true;
 
+	export let wrapTitle = false;
+	$: wrapTitle = wrapTitle === 'true' || wrapTitle === true;
+
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
 
@@ -99,6 +102,7 @@
 		title: title,
 		align: align,
 		wrap: wrap,
+		wrapTitle: wrapTitle,
 		contentType: contentType,
 		height: height,
 		width: width,

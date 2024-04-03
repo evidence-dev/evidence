@@ -5,15 +5,16 @@
 	import { propKey } from '@evidence-dev/component-utilities/chartContext';
 	const props = getContext(propKey);
 
-	export let rowNumbers;
-	export let headerColor;
-	export let headerFontColor;
-	export let finalColumnOrder;
-	export let columnSummary;
-	export let sortable;
-	export let sort;
-	export let formatColumnTitles;
-	export let sortBy;
+	export let rowNumbers = undefined;
+	export let headerColor = undefined;
+	export let headerFontColor = undefined;
+	export let finalColumnOrder = undefined;
+	export let columnSummary = undefined;
+	export let sortable = undefined;
+	export let sort = undefined;
+	export let formatColumnTitles = undefined;
+	export let sortBy = undefined;
+	export let wrapTitles = undefined;
 </script>
 
 <thead>
@@ -29,7 +30,9 @@
 					style:color={headerFontColor}
 					style:background-color={headerColor}
 					style:cursor={sortable ? 'pointer' : 'auto'}
+					style:white-space={column.wrapTitle || wrapTitles ? 'normal' : 'nowrap'}
 					on:click={sortable ? sort(column.id) : ''}
+					style:vertical-align="bottom"
 				>
 					{column.title
 						? column.title
@@ -50,6 +53,8 @@
 					style:color={headerFontColor}
 					style:background-color={headerColor}
 					style:cursor={sortable ? 'pointer' : 'auto'}
+					style:white-space={wrapTitles ? 'normal' : 'nowrap'}
+					style:vertical-align="bottom"
 					on:click={sortable ? sort(column.id) : ''}
 				>
 					<span class="col-header">
