@@ -14,6 +14,7 @@
 
 	export let topBorder = undefined;
 	export let paddingLeft = undefined;
+	export let borderBottom = undefined;
 </script>
 
 <td
@@ -30,6 +31,7 @@
 	style:background-color={cellColor}
 	style:color={fontColor}
 	style:padding-left={paddingLeft}
+	style:border-bottom={borderBottom}
 >
 	<slot />
 </td>
