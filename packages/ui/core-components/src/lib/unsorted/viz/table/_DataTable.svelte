@@ -5,21 +5,22 @@
 	import { propKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	import getColumnSummary from '@evidence-dev/component-utilities/getColumnSummary';
 	import { convertColumnToDate } from '@evidence-dev/component-utilities/dateParsing';
-	import {
-		formatValue,
-		getFormatObjectFromString
-	} from '@evidence-dev/component-utilities/formatting';
 	import ErrorChart from '../core/ErrorChart.svelte';
 	import SearchBar from '../core/SearchBar.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import DownloadData from '../../ui/DownloadData.svelte';
-	import SortIcon from '../../ui/SortIcon.svelte';
 	import InvisibleLinks from '../../../atoms/InvisibleLinks.svelte';
 	import Fuse from 'fuse.js';
 
-	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
+	import { safeExtractColumn, aggregateColumn, getFinalColumnOrder } from './datatable.js';
+	import TableRow from './TableRow.svelte';
+	import TotalRow from './TotalRow.svelte';
+	import SubtotalRow from './SubtotalRow.svelte';
+	import TableHeader from './TableHeader.svelte';
+	import GroupRow from './GroupRow.svelte';
+	import { ChevronsLeft, ChevronsRight, ChevronLeft, ChevronRight } from '@steeze-ui/tabler-icons';
 	import EnterFullScreen from './EnterFullScreen.svelte';
 	import Fullscreen from '../../../atoms/fullscreen/Fullscreen.svelte';
 	import { browser } from '$app/environment';
@@ -35,11 +36,35 @@
 	export let rows = 10; // number of rows to show
 	$: rows = Number.parseInt(rows);
 
-	let paginated;
-	$: data, rows, (paginated = data.length > rows);
-
 	export let rowNumbers = false;
 	$: rowNumbers = rowNumbers === 'true' || rowNumbers === true;
+
+	export let groupBy = undefined;
+	export let groupsOpen = true; // starting toggle for groups - open or closed
+	$: groupsOpen = groupsOpen === 'true' || groupsOpen === true;
+	export let groupType = 'accordion'; // accordion | section
+	export let accordionRowColor = undefined;
+	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
+
+	if (groupType === 'section') {
+		rowNumbers = false; // turn off row numbers
+	}
+
+	export let subtotals = false;
+	$: subtotals = subtotals === 'true' || subtotals === true;
+
+	export let subtotalRowColor = undefined;
+	export let subtotalFontColor = undefined;
+
+	let groupToggleStates = {};
+
+	function handleToggle({ detail }) {
+		const { groupName } = detail;
+		groupToggleStates[groupName] = !groupToggleStates[groupName];
+	}
+
+	let paginated;
+	$: paginated = data.length > rows && !groupBy;
 
 	let hovering = false;
 
@@ -61,17 +86,15 @@
 	$: downloadable = downloadable === 'true' || downloadable === true;
 
 	export let totalRow = false;
+	$: totalRow = totalRow === 'true' || totalRow === true;
+
+	export let totalRowColor = undefined;
+	export let totalFontColor = undefined;
 
 	export let isFullPage = false;
 
 	// Row Links:
 	export let link = undefined;
-
-	function handleRowClick(url) {
-		if (link) {
-			window.location = url;
-		}
-	}
 
 	export let showLinkCol = false; // hides link column when columns have not been explicitly selected
 	$: showLinkCol = showLinkCol === 'true' || showLinkCol === true;
@@ -108,8 +131,15 @@
 
 	let columnSummary;
 
+	let priorityColumns = [groupBy];
+
+	props.update((d) => {
+		return { ...d, priorityColumns };
+	});
+
 	$: try {
 		error = undefined;
+
 		// CHECK INPUTS
 		checkInputs(data);
 
@@ -132,7 +162,7 @@
 		}
 
 		for (const column of $props.columns) {
-			const summary = safeExtractColumn(column);
+			const summary = safeExtractColumn(column, columnSummary);
 			if (summary.format === undefined && column.fmt !== undefined) {
 				throw new Error(
 					`Column "${column.id}" unable to be formatted. Please cast the results to dates or numbers.`
@@ -229,10 +259,53 @@
 					  a[column] > b[column]
 					? 1 * sortModifier
 					: 0;
-
 		data.sort(sort);
 		filteredData = filteredData.sort(sort);
+
+		if (groupBy) {
+			// sort within grouped data
+			Object.keys(groupedData).forEach((groupName) => {
+				groupedData[groupName] = groupedData[groupName].sort(sort);
+			});
+		}
 	};
+
+	let sortedGroupNames;
+	$: if (groupBy && sortBy.col) {
+		// Sorting groups based on aggregated values or group names
+		sortedGroupNames = Object.entries(groupRowData)
+			.sort((a, b) => {
+				const valA = a[1][sortBy.col],
+					valB = b[1][sortBy.col];
+				// Use the existing sort logic but apply it to groupRowData's values
+				if (
+					(valA === undefined || valA === null || isNaN(valA)) &&
+					valB !== undefined &&
+					valB !== null &&
+					!isNaN(valB)
+				) {
+					return -1 * (sortBy.ascending ? 1 : -1);
+				}
+				if (
+					(valB === undefined || valB === null || isNaN(valB)) &&
+					valA !== undefined &&
+					valA !== null &&
+					!isNaN(valA)
+				) {
+					return 1 * (sortBy.ascending ? 1 : -1);
+				}
+				if (valA < valB) {
+					return -1 * (sortBy.ascending ? 1 : -1);
+				} else if (valA > valB) {
+					return 1 * (sortBy.ascending ? 1 : -1);
+				}
+				return 0;
+			})
+			.map((entry) => entry[0]); // Extract sorted group names
+	} else {
+		// Default to alphabetical order of group names or another criterion when not sorting by a specific column
+		sortedGroupNames = Object.keys(groupedData).sort();
+	}
 
 	// Reset sort condition when data object is changed
 	$: data, (sortBy = { col: null, ascending: null });
@@ -286,27 +359,6 @@
 		});
 	}
 
-	/**
-	 * Will find the matching column in columnSummary or throw an error if not found
-	 * @param column
-	 */
-	function safeExtractColumn(column) {
-		const foundCols = columnSummary.filter((d) => d.id === column.id);
-		if (foundCols === undefined || foundCols.length !== 1) {
-			error =
-				column.id === undefined
-					? new Error(`please add an "id" property to all the <Column ... />`)
-					: new Error(`column with id: "${column.id}" not found`);
-			if (strictBuild) {
-				throw error;
-			}
-			console.warn(error.message);
-			return '';
-		}
-
-		return foundCols[0];
-	}
-
 	let tableData;
 	$: tableData =
 		$props.columns.length > 0
@@ -316,19 +368,51 @@
 				)
 			: data;
 
-	const weightedMean = (data, valueCol, weightCol) => {
-		let totalWeightedValue = 0;
-		let totalWeight = 0;
+	// ---------------------------------------------------------------------------------------
+	// GROUPED DATA
+	// ---------------------------------------------------------------------------------------
 
-		data.forEach((item) => {
-			const value = Number(item[valueCol]);
-			const weight = Number(item[weightCol] || 1); // Default to 1 if weightCol is not specified or missing in the item
-			totalWeightedValue += value * weight;
-			totalWeight += weight;
+	let groupedData = {};
+	let groupRowData = [];
+
+	$: {
+		groupedData = data.reduce((acc, row) => {
+			const groupName = row[groupBy];
+			if (!acc[groupName]) {
+				acc[groupName] = [];
+			}
+			acc[groupName].push(row);
+			return acc;
+		}, {});
+
+		// After groupedData is populated, calculate aggregations for groupRowData
+		groupRowData = Object.keys(groupedData).reduce((acc, groupName) => {
+			acc[groupName] = {}; // Initialize groupRow object for this group
+
+			// Get a list of columns to aggregate from $props.columns
+			const columnsToAggregate = $props.columns.length > 0 ? $props.columns : columnSummary;
+
+			columnsToAggregate.forEach((columnDef) => {
+				const column = columnDef.id;
+				const colType = columnSummary.find((d) => d.id === column).type;
+				const totalAgg = columnDef.totalAgg;
+				const weightCol = columnDef.weightCol;
+				const rows = groupedData[groupName];
+				acc[groupName][column] = aggregateColumn(rows, column, totalAgg, colType, weightCol);
+			});
+
+			return acc;
+		}, {});
+
+		// Update groupToggleStates only for new groups
+		const existingGroups = Object.keys(groupToggleStates);
+		Object.keys(groupedData).forEach((groupName) => {
+			if (!existingGroups.includes(groupName)) {
+				groupToggleStates[groupName] = groupsOpen; // Only add new groups with the default state
+			}
+			// Existing states are untouched
 		});
-
-		return totalWeight > 0 ? totalWeightedValue / totalWeight : 0;
-	};
+	}
 
 	let fullscreen = false;
 	/** @type {number} */
@@ -379,265 +463,132 @@
 		{#if search}
 			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
 		{/if}
+
 		<div class="container" style:background-color={backgroundColor}>
 			<table>
-				<thead>
-					<tr>
-						{#if rowNumbers}
-							<th class="index w-[2%]" style:background-color={headerColor} />
-						{/if}
-						{#if $props.columns.length > 0}
-							{#each $props.columns as column}
-								<th
-									class={safeExtractColumn(column).type}
-									style:text-align={column.align}
-									style:color={headerFontColor}
-									style:background-color={headerColor}
-									style:cursor={sortable ? 'pointer' : 'auto'}
-									on:click={sortable ? sort(column.id) : ''}
-								>
-									{column.title
-										? column.title
-										: formatColumnTitles
-											? safeExtractColumn(column).title
-											: safeExtractColumn(column).id}
-									{#if sortBy.col === column.id}
-										<SortIcon ascending={sortBy.ascending} />
-									{/if}
-								</th>
-							{/each}
-						{:else}
-							{#each columnSummary.filter((d) => d.show === true) as column}
-								<th
-									class={column.type}
-									style:color={headerFontColor}
-									style:background-color={headerColor}
-									style:cursor={sortable ? 'pointer' : 'auto'}
-									on:click={sortable ? sort(column.id) : ''}
-								>
-									<span class="col-header">
-										{formatColumnTitles ? column.title : column.id}
-									</span>
-									{#if sortBy.col === column.id}
-										<SortIcon ascending={sortBy.ascending} />
-									{/if}
-								</th>
-							{/each}
-						{/if}
-					</tr>
-				</thead>
+				<TableHeader
+					{rowNumbers}
+					{headerColor}
+					{headerFontColor}
+					finalColumnOrder={getFinalColumnOrder(
+						$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+						$props.priorityColumns
+					)}
+					{columnSummary}
+					{sortable}
+					{sort}
+					{formatColumnTitles}
+					{sortBy}
+				/>
 
-				{#each displayedData as row, i}
-					<tr
-						class:shaded-row={rowShading && i % 2 === 0}
-						class:row-link={link != undefined}
-						on:click={() => handleRowClick(row[link])}
-					>
-						{#if rowNumbers}
-							<td class="index w-[2%]" class:row-lines={rowLines && i !== displayedData.length - 1}>
-								{#if i === 0}
-									{(index + i + 1).toLocaleString()}
-								{:else}
-									{(index + i + 1).toLocaleString()}
-								{/if}
-							</td>
+				{#if groupBy && groupedData && searchValue === ''}
+					{#each sortedGroupNames as groupName}
+						{#if groupType === 'accordion'}
+							<GroupRow
+								{groupName}
+								currentGroupData={groupedData[groupName]}
+								toggled={groupToggleStates[groupName]}
+								on:toggle={handleToggle}
+								{columnSummary}
+								rowColor={accordionRowColor}
+								{rowNumbers}
+								{subtotals}
+								finalColumnOrder={getFinalColumnOrder(
+									$props.columns.length > 0
+										? $props.columns.map((d) => d.id)
+										: Object.keys(data[0]),
+									$props.priorityColumns
+								)}
+							/>
+							{#if groupToggleStates[groupName]}
+								<TableRow
+									displayedData={groupedData[groupName]}
+									{groupType}
+									{rowShading}
+									{link}
+									{rowNumbers}
+									{rowLines}
+									{index}
+									{columnSummary}
+									grouped={true}
+									groupColumn={groupBy}
+									finalColumnOrder={getFinalColumnOrder(
+										$props.columns.length > 0
+											? $props.columns.map((d) => d.id)
+											: Object.keys(data[0]),
+										$props.priorityColumns
+									)}
+								/>
+							{/if}
+						{:else if groupType === 'section'}
+							<TableRow
+								groupColumn={groupBy}
+								{groupType}
+								rowSpan={groupedData[groupName].length}
+								displayedData={groupedData[groupName]}
+								{rowShading}
+								{link}
+								{rowNumbers}
+								{rowLines}
+								{index}
+								{columnSummary}
+								grouped={true}
+								{groupNamePosition}
+								finalColumnOrder={getFinalColumnOrder(
+									$props.columns.length > 0
+										? $props.columns.map((d) => d.id)
+										: Object.keys(data[0]),
+									$props.priorityColumns
+								)}
+							/>
+							{#if subtotals}
+								<SubtotalRow
+									{groupName}
+									currentGroupData={groupedData[groupName]}
+									{columnSummary}
+									rowColor={subtotalRowColor}
+									fontColor={subtotalFontColor}
+									{groupType}
+									{groupBy}
+									finalColumnOrder={getFinalColumnOrder(
+										$props.columns.length > 0
+											? $props.columns.map((d) => d.id)
+											: Object.keys(data[0]),
+										$props.priorityColumns
+									)}
+								/>
+							{/if}
 						{/if}
+					{/each}
+				{:else}
+					<TableRow
+						{displayedData}
+						{rowShading}
+						{link}
+						{rowNumbers}
+						{rowLines}
+						{index}
+						{columnSummary}
+						finalColumnOrder={getFinalColumnOrder(
+							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+							$props.priorityColumns
+						)}
+					/>
+				{/if}
 
-						{#if $props.columns.length > 0}
-							{#each $props.columns as column}
-								{@const column_min =
-									column.colorMin ?? safeExtractColumn(column).columnUnitSummary.min}
-								{@const column_max =
-									column.colorMax ?? safeExtractColumn(column).columnUnitSummary.max}
-								{@const is_nonzero =
-									column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
-								{@const percentage = (row[column.id] - column_min) / (column_max - column_min)}
-								<td
-									class={safeExtractColumn(column).type}
-									class:row-lines={rowLines && i !== displayedData.length - 1}
-									style:text-align={column.align}
-									style:height={column.height}
-									style:width={column.width}
-									style:white-space={column.wrap ? 'normal' : 'nowrap'}
-									style:background-color={column.contentType === 'colorscale' && is_nonzero
-										? column.customColor
-											? `color-mix(in srgb, ${column.customColor} ${
-													Math.max(0, Math.min(1, percentage)) * 100
-												}%, transparent)`
-											: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
-										: // closing bracket needed to close unclosed color string from Column component
-											''}
-								>
-									{#if column.contentType === 'image' && row[column.id] !== undefined}
-										<img
-											src={row[column.id]}
-											alt={column.alt
-												? row[column.alt]
-												: row[column.id].replace(/^(.*[/])/g, '').replace(/[.][^.]+$/g, '')}
-											class="mx-auto my-2 max-w-[unset] rounded-[unset]"
-											style:height={column.height}
-											style:width={column.width}
-										/>
-									{:else if column.contentType === 'link' && row[column.id] !== undefined}
-										<!-- if `column.linkLabel` is a column in `row`, but undefined, display - -->
-										{#if column.linkLabel != undefined && row[column.linkLabel] == undefined && column.linkLabel in row}
-											-
-										{:else}
-											<a
-												href={row[column.id]}
-												target={column.openInNewTab ? '_blank' : ''}
-												class="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-											>
-												{#if column.linkLabel != undefined}
-													<!-- if the linklabel is a column name, display that column -->
-													{#if row[column.linkLabel] != undefined}
-														{@const labelSummary = safeExtractColumn({ id: column.linkLabel })}
-														{formatValue(
-															row[column.linkLabel],
-															column.fmt
-																? getFormatObjectFromString(
-																		column.fmt,
-																		labelSummary.format?.valueType
-																	)
-																: labelSummary.format,
-															labelSummary.columnUnitSummary
-														)}
-														<!-- otherwise, consider it a label (like Details ->) and display it -->
-													{:else}
-														{column.linkLabel}
-													{/if}
-												{:else}
-													<!-- if no linkLabel is specified, display the link itself -->
-													{@const columnSummary = safeExtractColumn(column)}
-													{formatValue(
-														row[column.id],
-														column.fmt
-															? getFormatObjectFromString(
-																	column.fmt,
-																	columnSummary.format?.valueType
-																)
-															: columnSummary.format,
-														columnSummary.columnUnitSummary
-													)}
-												{/if}
-											</a>
-										{/if}
-									{:else if column.contentType === 'delta' && row[column.id] !== undefined}
-										<div
-											class="m-0 text-xs font-medium font-ui"
-											style="color: {(row[column.id] >= 0 && !column.downIsGood) ||
-											(row[column.id] < 0 && column.downIsGood)
-												? 'var(--green-700)'
-												: 'var(--red-700)'}"
-										>
-											<div style:text-align={column.align ?? 'right'}>
-												{#if column.showValue}
-													<span>
-														{formatValue(
-															row[column.id],
-															column.fmt
-																? getFormatObjectFromString(
-																		column.fmt,
-																		safeExtractColumn(column).format?.valueType
-																	)
-																: safeExtractColumn(column).format,
-															safeExtractColumn(column).columnUnitSummary
-														)}
-													</span>
-													{#if column.deltaSymbol}
-														<span class="font-[system-ui]"
-															>{@html row[column.id] >= 0 ? '&#9650;' : '&#9660;'}</span
-														>
-													{/if}
-												{/if}
-											</div>
-										</div>
-									{:else}
-										{formatValue(
-											row[column.id],
-											column.fmt
-												? getFormatObjectFromString(
-														column.fmt,
-														safeExtractColumn(column).format?.valueType
-													)
-												: safeExtractColumn(column).format,
-											safeExtractColumn(column).columnUnitSummary
-										)}
-									{/if}
-								</td>
-							{/each}
-						{:else}
-							{#each columnSummary.filter((d) => d.show === true) as column}
-								<!-- Check if last row in table-->
-								<td
-									class={column.type}
-									class:row-lines={rowLines && i !== displayedData.length - 1}
-								>
-									{formatValue(row[column.id], column.format, column.columnUnitSummary)}
-								</td>
-							{/each}
-						{/if}
-					</tr>
-				{/each}
-				<!-- Totals row -->
 				{#if totalRow && searchValue === ''}
-					<tr class="font-semibold border-t border-gray-600">
-						{#if rowNumbers}
-							<td class="index w-[2%]" />
-						{/if}
-
-						{#each $props.columns.length > 0 ? $props.columns : columnSummary.filter((d) => d.show === true) as column}
-							{@const columnSummary = safeExtractColumn(column)}
-							{@const format = column.totalFmt
-								? getFormatObjectFromString(column.totalFmt)
-								: column.fmt
-									? getFormatObjectFromString(column.fmt)
-									: columnSummary.format}
-							<td
-								class={safeExtractColumn(column).type}
-								style:text-align={column.align}
-								style:height={column.height}
-								style:width={column.width}
-								style:white-space={column.wrap ? 'normal' : 'nowrap'}
-							>
-								{#if typeof column.totalAgg === 'undefined'}
-									<!-- if totalAgg not specified -->
-									{formatValue(
-										columnSummary.columnUnitSummary.sum,
-										format,
-										columnSummary.columnUnitSummary
-									)}
-								{:else if ['sum', 'mean', 'median', 'min', 'max'].includes(column.totalAgg)}
-									<!-- using a predefined aggregation -->
-									{formatValue(
-										columnSummary.columnUnitSummary[column.totalAgg],
-										format,
-										columnSummary.columnUnitSummary
-									)}
-								{:else if ['count', 'countDistinct'].includes(column.totalAgg)}
-									<!-- using a predefined aggregation -->
-									{column.totalFmt
-										? formatValue(
-												columnSummary.columnUnitSummary[column.totalAgg],
-												format,
-												columnSummary.columnUnitSummary
-											)
-										: columnSummary.columnUnitSummary[column.totalAgg]}
-								{:else if column.totalAgg === 'weightedMean'}
-									{formatValue(
-										weightedMean(data, column.id, column.weightCol),
-										format,
-										columnSummary.columnUnitSummary
-									)}
-								{:else}
-									<!-- passing in anything else -->
-									{column.totalFmt
-										? formatValue(column.totalAgg, format, columnSummary.columnUnitSummary)
-										: column.totalAgg}
-								{/if}
-							</td>
-						{/each}
-					</tr>
+					<TotalRow
+						{data}
+						{rowNumbers}
+						{columnSummary}
+						rowColor={totalRowColor}
+						fontColor={totalFontColor}
+						{groupType}
+						finalColumnOrder={getFinalColumnOrder(
+							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
+							$props.priorityColumns
+						)}
+					/>
 				{/if}
 			</table>
 		</div>
@@ -748,7 +699,7 @@
 <style>
 	.table-container {
 		font-size: 9.5pt;
-		width: 97%;
+		width: 98%;
 	}
 
 	.container {
@@ -803,69 +754,11 @@
 		font-variant-numeric: tabular-nums;
 	}
 
-	th,
-	td {
-		padding: 2px 8px;
-		white-space: nowrap;
-		overflow: hidden;
-	}
-
-	th:first-child,
-	td:first-child {
-		padding-left: 4px;
-	}
-
-	th {
-		border-bottom: 1px solid var(--grey-600);
-	}
-
-	.row-lines {
-		border-bottom: thin solid var(--grey-200);
-	}
-
-	.shaded-row {
-		background-color: var(--grey-100);
-	}
-
-	.string {
-		text-align: left;
-	}
-
-	.date {
-		text-align: left;
-	}
-
-	.number {
-		text-align: right;
-	}
-
-	.boolean {
-		text-align: left;
-	}
-
-	.sort-icon {
-		width: 12px;
-		height: 12px;
-		vertical-align: middle;
-	}
-
-	.icon-container {
-		display: inline-flex;
-		align-items: center;
-	}
-
 	.page-changer {
 		padding: 0;
 		color: var(--grey-400);
 		height: 1.1em;
 		width: 1.1em;
-	}
-
-	.index {
-		color: var(--grey-300);
-		text-align: left;
-		max-width: -moz-min-content;
-		max-width: min-content;
 	}
 
 	.pagination {
@@ -890,11 +783,6 @@
 		justify-content: flex-start;
 		align-items: center;
 		gap: 3px;
-	}
-
-	.selected {
-		background: var(--grey-200);
-		border-radius: 4px;
 	}
 
 	.page-changer {
@@ -1004,21 +892,6 @@
 		color: var(--grey-400);
 	}
 
-	th.type-indicator {
-		color: var(--grey-400);
-		font-weight: normal;
-		font-style: italic;
-	}
-
-	.row-link {
-		cursor: pointer;
-	}
-
-	.row-link:hover {
-		--tw-bg-opacity: 1;
-		background-color: rgb(239 246 255 / var(--tw-bg-opacity));
-	}
-
 	.noresults {
 		display: none;
 		color: var(--grey-400);
@@ -1055,11 +928,6 @@
 	}
 
 	@media print {
-		.avoidbreaks {
-			-moz-column-break-inside: avoid;
-			break-inside: avoid;
-		}
-
 		.pagination {
 			-moz-column-break-inside: avoid;
 			break-inside: avoid;

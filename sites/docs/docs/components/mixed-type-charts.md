@@ -90,6 +90,13 @@ This structure also gives you control over the individual series on your chart. 
 <tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
 <tr>	<td>seriesColors</td>	<td>Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal.<br/>Note the double curly braces required in the syntax</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object with series names and assigned colors<br/><code>seriesColors={`{{'Canada': 'red', 'US': 'blue'}}`}</code></td>	<td class='tcenter'>colors applied by order of series in data</td>	</tr>
 <tr>	<td>renderer</td>	<td>Which chart renderer type (canvas or SVG) to use. See ECharts' documentation on renderers: https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/</td>	<td class='tcenter'>-</td>	<td class='tcenter'>canvas | svg</td>	<td class='tcenter'>canvas</td>	</tr>
+<tr>	
+    <td>connectGroup</td>	
+    <td>Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same <code>connectGroup</code> name will become connected</td>	
+    <td class='tcenter'>-</td>	
+    <td class='tcenter'>string</td>	
+    <td class='tcenter'>-</td>	
+</tr>
 </table>
 
 ### Line `<Line/>`

@@ -154,6 +154,8 @@
 
 	export let renderer = undefined; // can be canvas (default) or SVG
 
+	export let connectGroup = undefined; // string represent name of group for connected charts. Charts with same connectGroup will have connected interactions
+
 	// ---------------------------------------------------------------------------------------
 	// Variable Declaration
 	// ---------------------------------------------------------------------------------------
@@ -1055,6 +1057,7 @@
 		{seriesOptions}
 		{printEchartsConfig}
 		{renderer}
+		{connectGroup}
 		{seriesColors}
 	/>
 {:else}

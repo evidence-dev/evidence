@@ -4,6 +4,7 @@ SELECT DISTINCT(order_month) FROM orders
 
 ```items
 SELECT * FROM orders WHERE category = '${params.category}' AND order_month BETWEEN '${inputs.range.start}'::DATE AND '${inputs.range.end}'::DATE - INTERVAL 7 DAY
+limit 1000
 ```
 
 ```total

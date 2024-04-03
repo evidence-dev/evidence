@@ -1,4 +1,4 @@
-import { init, registerMap } from 'echarts';
+import { init, registerMap, connect } from 'echarts';
 import usStateMap from './usStateMap.json';
 
 export default (node, option) => {
@@ -35,6 +35,12 @@ export default (node, option) => {
 		renderer: option.renderer ?? 'canvas',
 		height: `${node.clientWidth * 0.5 + extraHeight}`
 	});
+
+	// If connectGroup supplied, connect chart to other charts matching that connectGroup
+	if (option.connectGroup) {
+		chart.group = option.connectGroup;
+		connect(option.connectGroup);
+	}
 
 	if (node && node.parentNode) {
 		// node.parentNode refers to the chart's container
