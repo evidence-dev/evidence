@@ -13,7 +13,7 @@
 		"preserveValueImports": true,
 		"lib": ["esnext", "DOM", "DOM.Iterable"],
 		"module": "esnext",
-		"target": "ES2016",
+		"target": "ESNext",
 		"ignoreDeprecations": "5.0",
 		"outDir": "dist",
 		"declaration": true,
