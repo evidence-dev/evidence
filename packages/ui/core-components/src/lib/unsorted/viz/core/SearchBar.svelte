@@ -33,7 +33,7 @@
 		border-radius: 4px;
 		height: 22px;
 		position: relative;
-		margin: 25px 3px 10px 3px;
+		margin: 25px 3px 10px 0px;
 		box-sizing: content-box;
 		background-color: white;
 	}
@@ -64,14 +64,14 @@
 		color: var(--grey-600);
 		font-size: 9pt;
 
-		width: calc(100% - 30px);
+		width: calc(100% - 10px);
 
 		font-family: Arial;
 		line-height: normal;
 	}
 
 	input.search-bar::placeholder {
-		color: var(--grey-700);
+		color: var(--grey-500);
 	}
 
 	*:focus {
@@ -86,13 +86,13 @@
 
 		.search-bar {
 			font-size: 16px;
-			width: calc(100% - 40px);
+			width: calc(100% - 20px);
 		}
 	}
 
 	@media print {
 		.search-container {
-			visibility: hidden;
+			display: none;
 		}
 	}
 </style>
