@@ -68,7 +68,12 @@
 	// Color Scale:
 	export let colorMax = undefined;
 	export let colorMin = undefined;
+	export let colorMid = undefined;
+	export let colorBreakpoints = undefined;
 	export let scaleColor = 'green';
+
+	let useColor;
+	let customColor;
 
 	let colorList = {
 		green: 'hsla(129, 33%, 57%,',
@@ -76,10 +81,15 @@
 		blue: 'hsla(198, 56%, 56%,'
 	};
 
-	let useColor = colorList[scaleColor];
-	let customColor = undefined;
-	if (useColor == undefined) {
-		customColor = scaleColor;
+	let colorPalette;
+	if (scaleColor instanceof Array) {
+		colorPalette = scaleColor;
+	} else {
+		useColor = colorList[scaleColor];
+		customColor = undefined;
+		if (useColor == undefined) {
+			customColor = scaleColor;
+		}
 	}
 
 	// Delta:
@@ -119,8 +129,11 @@
 		colorMax: colorMax,
 		colorMin: colorMin,
 		scaleColor: scaleColor,
+		colorMid: colorMid,
+		colorBreakpoints: colorBreakpoints,
 		useColor: useColor,
-		customColor: customColor
+		customColor: customColor,
+		colorPalette: colorPalette
 	};
 
 	/**
