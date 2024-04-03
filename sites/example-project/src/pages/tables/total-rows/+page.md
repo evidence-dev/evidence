@@ -34,18 +34,18 @@ from ${orders_by_category}
 
 ### Count
 
-<DataTable data={orders_with_comparisons} totalRow=true>
-  <Column id=month totalAgg=count/>
-  <Column id=category totalAgg=count/>
-  <Column id=sales_usd0k totalAgg=count/>
-  <Column id=num_orders_num0 scaleColor=red totalAgg=count/>
-  <Column id=aov_usd2 scaleColor=blue totalAgg=count/>
-  <Column id=prev_sales_usd0k totalAgg=count/>
-  <Column id=prev_num_orders_num0 scaleColor=red totalAgg=count/>  
-  <Column id=prev_aov_usd2 scaleColor=blue totalAgg=count/>
-  <Column id=sales_change_pct0 scaleColor=green totalAgg=count/>
-  <Column id=num_orders_change_pct0 scaleColor=green totalAgg=count/>
-  <Column id=aov_change_pct0 scaleColor=green totalAgg=count/>
+<DataTable data={orders_with_comparisons} totalRow=true wrapTitles>
+  <Column id=month totalAgg=count />
+  <Column id=category totalAgg=count />
+  <Column id=sales_usd0k totalAgg=count />
+  <Column id=num_orders_num0 scaleColor=red totalAgg=count />
+  <Column id=aov_usd2 scaleColor=blue totalAgg=count />
+  <Column id=prev_sales_usd0k totalAgg=count />
+  <Column id=prev_num_orders_num0 scaleColor=red totalAgg=count />  
+  <Column id=prev_aov_usd2 scaleColor=blue totalAgg=count />
+  <Column id=sales_change_pct0 scaleColor=green totalAgg=count />
+  <Column id=num_orders_change_pct0 scaleColor=green totalAgg=count />
+  <Column id=aov_change_pct0 scaleColor=green totalAgg=count />
 </DataTable>
 
 ### Count Distinct
@@ -285,7 +285,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 
 ### Default Total Row (Sum)
 
-<DataTable data={countries} totalRow=true rows=5/>
+<DataTable data={countries} totalRow=true rows=5 wrapTitles=true />
 
 ### Default Aggregation Functions
 
@@ -305,12 +305,12 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 
 ### Custom Total Formats
 
-<DataTable data={countries} totalRow=true rows=5>
+<DataTable data={countries} totalRow=true rows=5 wrapTitles>
   <Column id=country totalAgg="All Countries"/>
   <Column id=continent totalAgg=countDistinct totalFmt='# "Unique continents"'/>
   <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"'/>
   <Column id=gdp_growth totalAgg=mean fmt='pct2' totalFmt='pct1'/>
-  <Column id=interest_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
+  <Column id=interest_rate totalAgg=mean fmt='pct2' totalFmt='pct1' wrapTitle=false/>
   <Column id=inflation_rate totalAgg=mean fmt='pct2' totalFmt='pct1'/>
   <Column id=jobless_rate totalAgg=mean fmt='pct0'/>
   <Column id=gov_budget totalAgg=mean fmt='0.0"%"'/>
