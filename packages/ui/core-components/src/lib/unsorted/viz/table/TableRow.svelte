@@ -58,7 +58,6 @@
 				{@const column_max = column.colorMax ?? useCol.columnUnitSummary.max}
 				{@const is_nonzero =
 					column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
-				{@const percentage = (row[column.id] - column_min) / (column_max - column_min)}
 				{@const column_format = column.fmt
 					? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
 					: useCol.format}
@@ -80,22 +79,20 @@
 					height={column.height}
 					width={column.width}
 					wrap={column.wrap}
-					cellColor={column.contentType === 'colorscale' && is_nonzero
-						? column.colorPalette
-							? color_scale(row[column.id]).hex()
-							: column.customColor
-								? `color-mix(in srgb, ${column.customColor} ${
-										Math.max(0, Math.min(1, percentage)) * 100
-									}%, transparent)`
-								: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
-						: // closing bracket needed to close unclosed color string from Column component
-							''}
-					fontColor={column.contentType === 'colorscale' && is_nonzero
-						? column.colorPalette
-							? chroma.contrast(color_scale(row[column.id]).hex(), uiColours.grey999) < 5
-								? uiColours.grey100
-								: uiColours.grey999
-							: ''
+					cellColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? color_scale(row[column.id]).hex()
+						: ''}
+					fontColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? chroma.contrast(color_scale(row[column.id]).hex(), uiColours.grey999) <
+							chroma.contrast(color_scale(row[column.id]).hex(), 'white') + 0.5
+							? 'white'
+							: uiColours.grey999
+						: ''}
+					borderBottom={rowLines &&
+					column.contentType === 'colorscale' &&
+					is_nonzero &&
+					column.colorPalette
+						? `1px solid ${color_scale(row[column.id]).darken(0.5)}`
 						: ''}
 				>
 					{#if column.contentType === 'image' && row[column.id] !== undefined}
