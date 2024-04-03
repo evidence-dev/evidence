@@ -614,6 +614,8 @@
 			</table>
 		</div>
 
+		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
+
 		{#if paginated && pageCount > 1}
 			<div class="pagination">
 				<div class="page-labels mr-auto">
@@ -696,8 +698,6 @@
 				{/if}
 			</div>
 		{/if}
-
-		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 	</div>
 
 	{#if generateMarkdown}
