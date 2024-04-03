@@ -18,6 +18,43 @@
 </script>
 
 <thead>
+	{#if $props.columns.length > 0}
+		{@const columnsWithGroupSpan = $props.columns.map((column, index, array) => {
+			// Determine if this column starts a new group or continues an existing one
+			let isNewGroup = index === 0 || column.colGroup !== array[index - 1].colGroup;
+			let span = 1;
+			if (column.colGroup) {
+				// Count how many contiguous columns have the same group
+				for (let i = index + 1; i < array.length && array[i].colGroup === column.colGroup; i++) {
+					span++;
+				}
+			}
+			return { ...column, isNewGroup, span: isNewGroup ? span : 0 }; // Only assign span to the first column in a group
+		})}
+		{#if columnsWithGroupSpan.length > 0}
+			<tr class="border-0" style:background-color={headerColor}>
+				{#if rowNumbers}
+					<th class="index w-[2%] px-[8px] py-[2px]" style:background-color={headerColor} />
+				{/if}
+				{#each columnsWithGroupSpan as column}
+					{#if column.colGroup && column.isNewGroup}
+						<th colspan={column.span} class="px-[2px] pt-1 align-bottom text-gray-900">
+							<!-- Group header with dynamic colspan -->
+							<div class=" border-b-[1px] border-b-gray-600 whitespace-normal pb-[2px]">
+								{column.colGroup}
+							</div>
+						</th>
+					{:else if column.colGroup}
+						<!-- Not new group, th covered by previous column span-->
+					{:else}
+						<!-- Not part of a group - empty header cell -->
+						<th></th>
+					{/if}
+				{/each}
+			</tr>
+		{/if}
+	{/if}
+
 	<tr class="border-b border-gray-600">
 		{#if rowNumbers}
 			<th class="index w-[2%] px-[8px] py-[2px]" style:background-color={headerColor} />
