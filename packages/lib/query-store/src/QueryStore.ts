@@ -219,7 +219,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				return cached.store;
 			}
 		}
-		QueryStore.cacheBust(64 * 1024 * 1024)
+		QueryStore.cacheBust(QueryStore.#CacheThreshold);
 		const v = new QueryStore(query, exec, id, opts, root);
 		QueryStore.cache.set(hash, {
 			insertTime: new Date().getTime(),
@@ -426,7 +426,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	 * likely meaning `initialData` was provided
 	 */
 	backgroundFetch = async () => {
-		await new Promise((resolve) => setTimeout(resolve, 0));
+		// Get to the very end of the event loop
+		await new Promise(r => setTimeout(r, 0))
+		// Then fetch the raw data
 		handleMaybePromise(
 			() => {},
 			() => this.#exec(`--data\n${this.#query.toString()}`, this.id),
@@ -584,7 +586,9 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	 * Shared cache of existing QueryStores to reduce the number of stores initialized
 	 */
 	private static cache: Map<string, { insertTime: number; store: QueryStore }> = new Map();
-	static cacheBust(threshold: number = 1000) {
+	static #CacheThreshold = 64 * 1024 * 1024;
+
+	static cacheBust(threshold: number = QueryStore.#CacheThreshold) {
 		const allQueries = Array.from(this.cache.entries());
 
 		const totalScore = allQueries.reduce((a, b) => a + b[1].store.score, 0);
@@ -655,7 +659,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 
 			subscriber.#subscriptions.push(hash);
 			newStore.subscribe(subscriber.publish);
-			QueryStore.cacheBust(64 * 1024 * 1024)
+			QueryStore.cacheBust(QueryStore.#CacheThreshold);
 			QueryStore.cache.set(hash, {
 				store: newStore,
 				insertTime: new Date().getTime()
