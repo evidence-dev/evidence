@@ -69,6 +69,18 @@ const dummy_pages = new Map();
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async (event) => {
+	
+	if(!event.data){ 
+		return {
+				customFormattingSettings: {},
+				pagesManifest: {
+					label: 'Home',
+					href: '/',
+					children: {},
+					isTemplated: false
+				}
+			}
+	}
 	const {
 		data: {
 			customFormattingSettings,

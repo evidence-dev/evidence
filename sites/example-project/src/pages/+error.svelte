@@ -2,6 +2,14 @@
 	import { page } from '$app/stores';
 	import { Accordion, AccordionItem, CopyButton } from '@evidence-dev/core-components';
 
+	import { browser } from '$app/environment';
+
+	// Remove splash screen from app.html
+	if (browser) {
+		const splash = document.querySelector('#__evidence_project_splash');
+		splash?.remove();
+	}
+
 	/** @param {Error | unknown} e */
 	const expand = (error) => {
 		let output = '';
