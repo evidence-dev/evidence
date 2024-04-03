@@ -97,6 +97,9 @@
 	export let chip = false;
 	$: chip = chip === 'true' || chip === true;
 
+	// Column Groups:
+	export let colGroup = undefined;
+
 	$: options = {
 		id: id,
 		title: title,
@@ -124,7 +127,8 @@
 		colorMin: colorMin,
 		scaleColor: scaleColor,
 		useColor: useColor,
-		customColor: customColor
+		customColor: customColor,
+		colGroup: colGroup
 	};
 
 	/**
