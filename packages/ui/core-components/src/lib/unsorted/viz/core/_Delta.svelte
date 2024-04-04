@@ -99,7 +99,7 @@
 				selected_value = data[row][column];
 				columnSummary = columnSummary.filter((d) => d.id === column);
 				if (fmt) {
-					selected_format = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+					selected_format = getFormatObjectFromString(fmt, columnSummary[0].format?.valueType);
 				} else {
 					selected_format = columnSummary[0].format;
 				}
