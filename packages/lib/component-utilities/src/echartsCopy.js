@@ -4,9 +4,20 @@ import { evidenceThemeLight } from './echartsThemes';
 export default (node, option) => {
 	registerTheme('evidence-light', evidenceThemeLight);
 
-	const { config, ratio, echartsOptions, seriesOptions, seriesColors } = option;
+	const { config, ratio, echartsOptions, seriesOptions, seriesColors, isMap, extraHeight, width } =
+		option;
 
-	const chart = init(node, 'evidence-light', { renderer: 'canvas' });
+	let initOpts = { renderer: 'canvas' };
+	if (isMap) {
+		initOpts.height = width * 0.5 + extraHeight;
+		if (node && node.parentNode) {
+			// node.parentNode refers to the chart's container
+			node.style.height = initOpts.height + 'px';
+			node.parentNode.style.height = initOpts.height + 'px';
+		}
+	}
+
+	const chart = init(node, 'evidence-light', initOpts);
 	config.animation = false; // disable animation
 
 	chart.setOption(config);

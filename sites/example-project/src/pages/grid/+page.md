@@ -11,7 +11,7 @@ queries:
 
 ## Bar
 
-<Grid cols=2 gapSize=lg>
+<Grid cols=3>
 <BarChart
 data={orders_by_category}
 x=category
@@ -43,3 +43,37 @@ y=sales_usd0k
 xAxisTitle=Category
 />
 </Grid>
+
+Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
+pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
+discede?
+Some text
+
+<BarChart
+data={orders_by_category}
+x=category
+y=sales_usd0k
+xAxisTitle=Category
+/>
+
+Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
+pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
+discede?
+<Grid cols=2 gapSize=lg>
+<BarChart
+data={orders_by_category}
+x=category
+y=sales_usd0k
+xAxisTitle=Category
+/>
+<BarChart
+data={orders_by_category}
+x=category
+y=sales_usd0k
+xAxisTitle=Category
+/>
+  </Grid>
+
+Lorem markdownum nivea redimitus. In rector in, flumine adimunt, cinctum, dolore
+pallada senectus dixit? Crematisregia fetus Io locus viscera redde lucida
+discede?
