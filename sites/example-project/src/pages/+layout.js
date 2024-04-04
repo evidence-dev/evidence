@@ -69,18 +69,16 @@ const dummy_pages = new Map();
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async (event) => {
-	
-	if(!event.data){ 
-		return {
-				customFormattingSettings: {},
-				pagesManifest: {
-					label: 'Home',
-					href: '/',
-					children: {},
-					isTemplated: false
-				}
-			}
+	// cover 404 pages
+	if (!event.data && dev) {
+		const [customFormattingSettings, pagesManifest] = await Promise.all([
+			event.fetch('/api/customFormattingSettings.json').then((x) => x.json()),
+			event.fetch('/api/pagesManifest.json').then((x) => x.json())
+		]);
+
+		return { customFormattingSettings, pagesManifest };
 	}
+
 	const {
 		data: {
 			customFormattingSettings,
