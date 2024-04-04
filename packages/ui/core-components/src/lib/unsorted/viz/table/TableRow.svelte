@@ -8,6 +8,9 @@
 	import { getContext } from 'svelte';
 	import { propKey } from '@evidence-dev/component-utilities/chartContext';
 	import TableCell from './TableCell.svelte';
+	import chroma from 'chroma-js';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
+
 	const props = getContext(propKey);
 
 	export let displayedData = undefined;
@@ -55,10 +58,15 @@
 				{@const column_max = column.colorMax ?? useCol.columnUnitSummary.max}
 				{@const is_nonzero =
 					column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
-				{@const percentage = (row[column.id] - column_min) / (column_max - column_min)}
 				{@const column_format = column.fmt
 					? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
 					: useCol.format}
+				{@const color_domain =
+					column.colorBreakpoints ??
+					(column.colorMid ? [column_min, column.colorMid, column_max] : [column_min, column_max])}
+				{@const color_scale = column.colorPalette
+					? chroma.scale(column.colorPalette).domain(color_domain)
+					: ''}
 				<TableCell
 					class={useCol.type}
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
@@ -71,14 +79,22 @@
 					height={column.height}
 					width={column.width}
 					wrap={column.wrap}
-					cellColor={column.contentType === 'colorscale' && is_nonzero
-						? column.customColor
-							? `color-mix(in srgb, ${column.customColor} ${
-									Math.max(0, Math.min(1, percentage)) * 100
-								}%, transparent)`
-							: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
-						: // closing bracket needed to close unclosed color string from Column component
-							''}
+					cellColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? color_scale(row[column.id]).hex()
+						: ''}
+					fontColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? chroma.contrast(color_scale(row[column.id]).hex(), uiColours.grey999) <
+							chroma.contrast(color_scale(row[column.id]).hex(), 'white') + 0.5
+							? 'white'
+							: uiColours.grey999
+						: ''}
+					borderBottom={i !== displayedData.length - 1 &&
+					rowLines &&
+					column.contentType === 'colorscale' &&
+					is_nonzero &&
+					column.colorPalette
+						? `1px solid ${color_scale(row[column.id]).darken(0.5)}`
+						: ''}
 				>
 					{#if column.contentType === 'image' && row[column.id] !== undefined}
 						<img
