@@ -40,6 +40,9 @@
 	export let wrap = false;
 	$: wrap = wrap === 'true' || wrap === true;
 
+	export let wrapTitle = false;
+	$: wrapTitle = wrapTitle === 'true' || wrapTitle === true;
+
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
 
@@ -100,11 +103,15 @@
 	export let chip = false;
 	$: chip = chip === 'true' || chip === true;
 
+	// Column Groups:
+	export let colGroup = undefined;
+
 	$: options = {
 		id: id,
 		title: title,
 		align: align,
 		wrap: wrap,
+		wrapTitle: wrapTitle,
 		contentType: contentType,
 		height: height,
 		width: width,
@@ -125,6 +132,7 @@
 		colorMax: colorMax,
 		colorMin: colorMin,
 		scaleColor: scaleColor,
+		colGroup: colGroup,
 		colorMid: colorMid,
 		colorBreakpoints: colorBreakpoints,
 		colorPalette: colorPalette

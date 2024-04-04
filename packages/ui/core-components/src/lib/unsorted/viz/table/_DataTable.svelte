@@ -117,6 +117,9 @@
 	export let rowLines = true;
 	$: rowLines = rowLines === 'true' || rowLines === true;
 
+	export let wrapTitles = false;
+	$: wrapTitles = wrapTitles === 'true' || wrapTitles === true;
+
 	export let headerColor = undefined;
 	export let headerFontColor = 'var(--grey-900)';
 
@@ -479,6 +482,7 @@
 					{sort}
 					{formatColumnTitles}
 					{sortBy}
+					{wrapTitles}
 				/>
 
 				{#if groupBy && groupedData && searchValue === ''}
@@ -593,6 +597,8 @@
 			</table>
 		</div>
 
+		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
+
 		{#if paginated && pageCount > 1}
 			<div class="pagination">
 				<div class="page-labels mr-auto">
@@ -675,8 +681,6 @@
 				{/if}
 			</div>
 		{/if}
-
-		<div class="noresults" class:shownoresults={showNoResults}>No Results</div>
 	</div>
 
 	{#if generateMarkdown}
