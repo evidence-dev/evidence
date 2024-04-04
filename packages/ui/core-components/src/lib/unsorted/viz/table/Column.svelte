@@ -75,9 +75,6 @@
 	export let colorBreakpoints = undefined;
 	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
 
-	let useColor;
-	let customColor;
-
 	let colorList = {
 		green: ['white', 'hsla(129, 33%, 57%,1)'],
 		red: ['white', 'hsla(0, 56%, 56%,1)'],
@@ -89,7 +86,6 @@
 		colorPalette = scaleColor;
 	} else {
 		colorPalette = colorList[scaleColor];
-		customColor = undefined;
 		if (colorPalette == undefined) {
 			colorPalette = ['white', scaleColor];
 		}
@@ -138,8 +134,6 @@
 		scaleColor: scaleColor,
 		colorMid: colorMid,
 		colorBreakpoints: colorBreakpoints,
-		useColor: useColor,
-		customColor: customColor,
 		colorPalette: colorPalette
 	};
 
