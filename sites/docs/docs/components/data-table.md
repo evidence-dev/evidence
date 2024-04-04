@@ -134,6 +134,7 @@ hide_table_of_contents: false
 <img src='/img/conditional-fmt-blue.png' width='500px'/>
 
 #### Custom Colors
+When you pass a custom color to `scaleColor`, Evidence will create a color palette for you, starting at white and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
 
 ```html
 <DataTable data={orders_by_category} rowNumbers=true>
@@ -147,6 +148,39 @@ hide_table_of_contents: false
 
 <img src='/img/table-custom-colors.png' width='600px'/>
 
+### Custom Color Palettes
+
+#### Diverging Scale
+
+```html
+<DataTable data={numbers}>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
+</DataTable>
+```
+
+<img src='/img/condfmt-diverging.png' width='600px'/>
+
+#### Heatmap
+```html
+<DataTable data={numbers}>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
+</DataTable>
+```
+
+<img src='/img/condfmt-heatmap.png' width='600px'/>
+
+#### Color Breakpoints
+Use `colorBreakpoints` or `colorMid`/`colorMin`/`colorMax` to control which values are assigned to which sections of the color scale
+
+```html
+<DataTable data={negatives} rows=all>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
+</DataTable>
+```
+<img src='/img/condfmt-negative.png' width='600px'/>
 
 
 ### Including Images
@@ -875,10 +909,24 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>min of column</td>
     </tr>
     <tr>
+        <td>colorMid</td>
+        <td>Set a midpoint for the scale</td>	
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>number</td>
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>
         <td>colorMax</td>
         <td>Set a maximum for the scale. Any values above that maximum will appear in the highest color on the scale</td>
         <td class='tcenter'>-</td>
         <td class='tcenter'>number</td>
         <td class='tcenter'>max of column</td>
+    </tr>
+    <tr>
+        <td>colorBreakpoints</td>
+        <td>Array of numbers to use as breakpoints for ecah color in your color scale. Should line up with the colors you provide in <code>scaleColor</code></td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>array of numbers</td>
+        <td class='tcenter'>-</td>
     </tr>
 </table>
