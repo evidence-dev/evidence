@@ -397,6 +397,33 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 <img src='/img/tbl-section-configured.png' width='500px'/>
 
+
+### Column Groups
+
+```html
+<DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor=#f2f2f2>
+  <Column id=continent totalAgg="Total" />
+  <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
+  <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
+  <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
+  <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=red colGroup="Labour Market"/>
+  <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
+</DataTable>
+```
+
+<img src='/img/colgroups.png' width='500px'/>
+
+### Wrap Titles
+
+```html
+<DataTable data={economics} wrapTitles=true /> 
+```
+
+<img src='/img/wrap-titles.png' width='700px'/>
+
+
+
+
 ## DataTable
 
 ### Options
@@ -499,6 +526,13 @@ By default, the link column of your table is hidden. If you would like it to be 
         <td class='tcenter'>-</td>	
         <td class='tcenter'>true | false</td>	
         <td class='tcenter'>true</td>
+    </tr>
+    <tr>	
+        <td>wrapTitles</td>	
+        <td>Wrap column titles</td>
+        <td class='tcenter'>-</td>	
+        <td class='tcenter'>true | false</td>	
+        <td class='tcenter'>false</td>
     </tr>
     <tr>	
         <td>link</td>	
@@ -672,10 +706,24 @@ Use the `Column` component to choose specific columns to display in your table, 
         <td class='tcenter'>false</td>
     </tr>
     <tr>	
+        <td>wrapTitle</td>
+        <td>Wrap column title</td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
+    <tr>	
         <td>contentType</td>
         <td>Lets you specify how to treat the content within a column. See below for contentType-specific options.</td>
         <td class='tcenter'>-</td>
         <td class='tcenter'>link | image | delta | colorscale</td>
+        <td class='tcenter'>-</td>
+    </tr>
+    <tr>	
+        <td>colGroup</td>
+        <td>Group name to display above a group of columns. Columns with the same group name will get a shared header above them </td>
+        <td class='tcenter'>-</td>
+        <td class='tcenter'>string</td>
         <td class='tcenter'>-</td>
     </tr>
 </table>
