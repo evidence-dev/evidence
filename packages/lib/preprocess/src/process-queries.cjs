@@ -195,6 +195,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				$: if (dev) {
 					if (_${id}_hmr_once) {
 						data;
+						__has_hmr_run;
 						_${id}_debounced_updater();
 					} else {
 						_${id}_hmr_once = true;
