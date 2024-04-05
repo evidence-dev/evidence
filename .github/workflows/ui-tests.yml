@@ -18,7 +18,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           checkName: 'Pages changed'
       - name: Wait for preview-deployment
-        uses: josephduffy/wait-for-netlify-action@v1.4
+        uses: archiewood/wait-for-netlify-action@v1
         id: waitForNetlifyPreviewDeployment
         with:
           site_name: evidence-development-workspace
