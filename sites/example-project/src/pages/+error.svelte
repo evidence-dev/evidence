@@ -6,7 +6,7 @@
 
 	// Remove splash screen from app.html
 	if (browser) {
-		const splash = document.querySelector('#__evidence_project_splash');
+		const splash = document.getElementById('__evidence_project_splash');
 		splash?.remove();
 	}
 
