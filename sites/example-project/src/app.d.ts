@@ -1,6 +1,8 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
+	const EvidenceCache: typeof import('@evidence-dev/universal-sql').PrerenderCache;
+
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
