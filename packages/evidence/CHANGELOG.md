@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 31.0.2
+
+### Patch Changes
+
+- 996f4280: Adds a loading screen when in dev mode
+- c449ac45: Fix scrollbar appearing during Windows print
+- Updated dependencies [be3085ce]
+- Updated dependencies [32af67c5]
+- Updated dependencies [94156598]
+- Updated dependencies [75f30e70]
+- Updated dependencies [3a91fdc1]
+  - @evidence-dev/core-components@3.7.2
+  - @evidence-dev/preprocess@4.1.1
+  - @evidence-dev/query-store@2.1.1
+  - @evidence-dev/component-utilities@2.5.2
+  - @evidence-dev/plugin-connector@2.1.0
+
 ## 31.0.1
 
 ### Patch Changes
