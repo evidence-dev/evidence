@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.1.1
+
+### Patch Changes
+
+- 3a91fdc1: lower memory consumption during builds
+
 ## 2.1.0
 
 ### Minor Changes
