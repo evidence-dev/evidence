@@ -164,7 +164,7 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
 | `og.description` | changes the body of the embed                                                                                                |
 | `og.image`       | will appear in the embed if specified, but it is not required.                                                               |
 | `queries`        | references SQL queries stored in the /queries directory.                                                                     |
-| `side_bar_position`        | changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar.                                                                     |
+| `sidebar_position`        | changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar.                                                                     |
 | `sidebar_link`        | when set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link.                                                                    |
 
 
