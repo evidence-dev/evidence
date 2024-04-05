@@ -1,5 +1,21 @@
 # @evidence-dev/components
 
+## 3.4.7
+
+### Patch Changes
+
+- be3085ce: Fix printing of charts in grid component
+- Updated dependencies [be3085ce]
+- Updated dependencies [32af67c5]
+- Updated dependencies [94156598]
+- Updated dependencies [75f30e70]
+- Updated dependencies [3a91fdc1]
+  - @evidence-dev/core-components@3.7.2
+  - @evidence-dev/preprocess@4.1.1
+  - @evidence-dev/query-store@2.1.1
+  - @evidence-dev/component-utilities@2.5.2
+  - @evidence-dev/plugin-connector@2.1.0
+
 ## 3.4.6
 
 ### Patch Changes

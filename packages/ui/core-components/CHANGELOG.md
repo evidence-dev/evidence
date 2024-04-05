@@ -1,5 +1,17 @@
 # @evidence-dev/core-components
 
+## 3.7.2
+
+### Patch Changes
+
+- be3085ce: Fix printing of charts in grid component
+- 32af67c5: Custom conditional color scales for DataTable
+- 94156598: Wrap column titles for DataTable
+- 75f30e70: Fix null handling with custom formatting in Delta
+- Updated dependencies [3a91fdc1]
+  - @evidence-dev/query-store@2.1.1
+  - @evidence-dev/component-utilities@2.5.2
+
 ## 3.7.1
 
 ### Patch Changes
