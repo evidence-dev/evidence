@@ -14,10 +14,7 @@ const loadDB = async () => {
 	let renderedFiles = {};
 
 	if (!browser) {
-		const { readFile } = await import('fs/promises');
-		({ renderedFiles } = JSON.parse(
-			await readFile('./static/data/manifest.json', 'utf-8').catch(() => '{}')
-		));
+		({ renderedFiles } = await import('../../static/data/manifest.json').then((x) => x.default));
 	} else {
 		const res = await fetch('/data/manifest.json');
 		if (res.ok) ({ renderedFiles } = await res.json());

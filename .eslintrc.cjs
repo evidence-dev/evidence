@@ -12,7 +12,7 @@ module.exports = {
 		node: true
 	},
 	globals: {
-		globalThis: "readonly",
-		EvidenceCache: "readonly"
+		globalThis: 'readonly',
+		EvidenceCache: 'readonly'
 	}
 };
