@@ -1,11 +1,12 @@
-import fs from 'fs-extra';
-import path from 'path';
 import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
 
 // Import pages and create an object structure corresponding to the file structure
-const pages = import.meta.glob(['/src/pages/*/**/+page.md']);
-let pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', ''));
+const pages = import.meta.glob('/src/pages/*/**/+page.md', {
+	query: '?raw',
+	import: 'default',
+	eager: true
+});
 
 export const prerender = true;
 
@@ -38,22 +39,21 @@ function deleteEmptyNodes(node) {
  */
 export async function GET() {
 	try {
-		let fileTree = {
+		const fileTree = {
 			label: 'Home',
 			href: '/',
 			children: {},
 			isTemplated: false
 		};
-		pagePaths.forEach(function (pagePath) {
-			pagePath.split('/').reduce(function (r, e) {
+		Object.entries(pages).forEach(([pagePath, contents]) => {
+			const path = pagePath.replace('/src/pages/', '');
+			path.split('/').reduce((r, e) => {
 				if (e === '+page.md') {
-					let href = pagePath.includes('[')
+					let href = path.includes('[')
 						? undefined
-						: encodeURI('/' + pagePath.replace('/+page.md', ''));
+						: encodeURI('/' + path.replace('/+page.md', ''));
 
-					let absolutePath = path.join(process.cwd(), 'src', 'pages', pagePath);
-					let pageContent = fs.readFileSync(absolutePath, 'utf-8');
-					let frontMatter = preprocess.parseFrontmatter(pageContent);
+					let frontMatter = preprocess.parseFrontmatter(contents);
 
 					return (r['href'] = href), (r['frontMatter'] = frontMatter);
 				} else {

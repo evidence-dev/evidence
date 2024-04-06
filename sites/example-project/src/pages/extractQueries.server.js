@@ -18,10 +18,11 @@ const updateDirectoriesandStatus = function (queries, routeHash) {
 	});
 };
 
-export const getStatusAndExtractQueries = function (route) {
+export const getStatusAndExtractQueries = async function (route) {
 	let routeHash = md5(route);
-	let fileRoute = `./src/pages/${route}/+page.md`;
-	let content = fs.readFileSync(fileRoute, 'utf-8');
+	let routes = import.meta.glob('./**/+page.md', { query: '?raw', import: 'default' });
+	let cleaned = `./${route}/+page.md`.split('/').filter(Boolean).join('/');
+	let content = await routes[cleaned]();
 
 	let partialInjectedContent = preprocessor.injectPartials(content);
 	let queries = preprocessor.extractQueries(partialInjectedContent);
