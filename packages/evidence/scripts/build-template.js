@@ -3,6 +3,7 @@ import path from 'path';
 import fsExtra from 'fs-extra';
 import fs from 'fs';
 const templatePaths = [
+	'package.json',
 	'static/',
 	'sources/',
 	'src/app.css',

@@ -1,6 +1,6 @@
 import preprocess from 'svelte-preprocess';
 import evidencePreprocess from '@evidence-dev/preprocess';
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 import { evidencePlugins } from '@evidence-dev/plugin-connector';
 /**
  * Handles errors generated in the Svelte Vite plugin. Temporary approach until this plugin allows errors to be passed through to the browser
@@ -26,7 +26,7 @@ const config = {
 	onwarn: errorHandler,
 	kit: {
 		adapter: adapter({
-			strict: false
+			precompress: false
 		}),
 		files: {
 			routes: 'src/pages'
