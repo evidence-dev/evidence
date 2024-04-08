@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 3.4.8
+
+### Patch Changes
+
+- Updated dependencies [fab378cb]
+  - @evidence-dev/core-components@3.7.3
+
 ## 3.4.7
 
 ### Patch Changes
