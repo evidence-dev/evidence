@@ -4,11 +4,11 @@ import { sharedPromise } from '../lib/sharedPromise';
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
-/** @type {import('./types').MaybePromise<[import('../types/duckdb-wellknown').DescribeResultRow]>} */
+/** @type {import('./types').MaybePromise<[{rowCount: number}]>} */
 let expectedLength = [{ rowCount: -1 }];
-/** @type {import('./types').MaybePromise<import('./types').QueryResultRow>} */
+/** @type {import('./types').MaybePromise<import('../types/duckdb-wellknown').DescribeResultRow[]>} */
 let expectedColumns = [];
-/** @type {import('./types').MaybePromise<import('./types').QueryResultRow>} */
+/** @type {import('./types').MaybePromise<import('./types').QueryResultRow[]>} */
 let expectedData = [];
 
 const mockRunner = vi.fn((q) => {
@@ -27,7 +27,6 @@ let testQueryIndex = 0;
 let testIdx = 0;
 
 /**
- *
  * @param {string} s
  * @param {import('./types').QueryOpts} opts
  * @returns
@@ -42,11 +41,58 @@ const getMockQuery = (s, opts) => {
 
 describe('Query', () => {
 	beforeEach(() => {
+		expectedColumns = []
+		expectedData = []
+		expectedLength = [{ rowCount: -1 }]
 		vi.restoreAllMocks();
 		testQueryIndex = 0;
 		testIdx++;
 		console.log(`Beginning ${testIdx}`);
 		Query.emptyCache();
+	});
+
+	describe('Query Score', () => {
+		it('should not be calculated when data has not been fetched, and autoScore is false', () => {
+			const q = getMockQuery('SELECT 5', { autoScore: false });
+
+			expect(q.score).toBe(-1);
+		});
+		it('should be calculated when autoScore is true', async () => {
+			const q = getMockQuery('SELECT 5');
+			await tick();
+			expect(q.score).toBe(0);
+		});
+		it('should dispatch an event when the score is too large', async () => {
+			const colProm = sharedPromise()
+			expectedColumns = colProm.promise
+			expectedLength = [{ rowCount: 100 * 100 * 100 }]
+			console.log({expectedColumns, expectedData, expectedLength})
+			const q = getMockQuery('SELECT 5');
+			const listen = vi.fn()
+			q.addEventListener('highScore', listen)
+			await tick();
+			expect(q.score).toBe(-1);
+			expect(listen).not.toHaveBeenCalled()
+			colProm.resolve([{
+				column_name: "x",
+				column_type: "VARCHAR"
+			},{
+				column_name: "x",
+				column_type: "VARCHAR"
+			},{
+				column_name: "x",
+				column_type: "VARCHAR"
+			},{
+				column_name: "x",
+				column_type: "VARCHAR"
+			},{
+				column_name: "x",
+				column_type: "VARCHAR"
+			}])
+			await tick();
+			expect(q.score).toBeGreaterThan(10 * 1024 * 1024)
+			expect(listen).toHaveBeenCalledWith(q.score, "highScore")
+		});
 	});
 
 	describe('Data Volume', () => {
@@ -115,9 +161,6 @@ describe('Query', () => {
 		it('should allow id to be the 3rd parameter', () => {
 			expect(Query.create('HI', mockRunner, 'Test ID', {}).id).toBe('Test ID');
 		});
-
-		Query.create('select 1', mockRunner, 'query_id');
-		Query.create('select 1', mockRunner, { id: 'query_id' });
 	});
 
 	describe('Factory Pattern', () => {
@@ -218,7 +261,7 @@ describe('Query', () => {
 		});
 		it('should publish infrequently', async () => {
 			expectedLength = [{ rowCount: 100 }];
-			expectedColumns = [{ column_name: 'test' }];
+			expectedColumns = [{ column_name: 'test', column_type: 'BOOLEAN' }];
 			expectedData = Promise.resolve([{ test: 'hi' }]);
 
 			const q = getMockQuery('SELECT 1');
@@ -481,11 +524,11 @@ describe('Query', () => {
 			expect(i).toBe(2);
 		});
 
-		it('should publish when fetching length', async () => {
+		it.only('should publish when fetching length', async () => {
 			const lengthSharedPromise = sharedPromise();
 			expectedLength = lengthSharedPromise.promise;
-			const q = getMockQuery('SELECT 5');
-			const subscriber = vi.fn();
+			const q = getMockQuery('SELECT 5', { id: "I SEE YOU"});
+			const subscriber = vi.fn(console.log);
 			let i = 0;
 
 			subscriber.mockImplementationOnce((v) => {

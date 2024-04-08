@@ -146,7 +146,7 @@
 							initialDataDirty: true,
 							id: `Dropdown-${name}-searched-${search}`
 						}
-				  )
+					)
 				: $query;
 	}
 

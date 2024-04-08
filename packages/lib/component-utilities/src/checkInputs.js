@@ -56,7 +56,7 @@ export default function checkInputs(data, reqCols, optCols) {
 		// Get list of all columns in dataset
 		if (Query.isQuery(data)) {
 			for (const col of data.columns) {
-				columns.push(col.column_name)
+				columns.push(col.column_name);
 			}
 		} else {
 			for (const key of Object.keys(data[0])) {

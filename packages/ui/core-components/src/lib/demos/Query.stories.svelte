@@ -1,6 +1,6 @@
 <script context="module">
 	/** @type {import("@storybook/svelte").Meta}*/
-	export const meta = { title: 'Demo/Queries'};
+	export const meta = { title: 'Demo/Queries' };
 </script>
 
 <script>

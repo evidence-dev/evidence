@@ -5,6 +5,7 @@ import { EvidenceError } from '../lib/EvidenceError.js';
 import { sharedPromise } from '../lib/sharedPromise.js';
 import { resolveMaybePromise } from './utils.js';
 import chunk from 'lodash.chunk';
+import { getQueryScore } from './queryScore.js';
 
 /**
  * @typedef {import("./types.js").QueryResultRow} QueryResultRow
@@ -16,7 +17,7 @@ import chunk from 'lodash.chunk';
  */
 
 /**
- * @template {QueryResultRow} RowType
+ * @template {QueryResultRow} [RowType=QueryResultRow]
  * @typedef  {import('../lib/sharedPromise.js').SharedPromise<Query<RowType>>} ChainableSharedPromise
  */
 
@@ -230,6 +231,45 @@ export class Query {
 	/// < Fetching > ///
 	////////////////////
 
+	static #scoreThreshold = 10 * 1024 * 1024;
+	/** @type { number } */
+	#score = -1;
+	get score() {
+		return this.#score;
+	}
+
+	#calculateScore = () => {
+		if (this.lengthLoaded && this.columnsLoaded) {
+			this.#score = getQueryScore(this.length, this.columns);
+			if (this.#score > Query.#scoreThreshold) {
+				this.#emit('highScore', this.#score);
+			}
+		} else {
+			Promise.allSettled([this.#sharedLengthPromise.promise, this.#sharedColumnsPromise.promise])
+				.then(([$lengthRaw, $columnsRaw]) => {
+					if ($lengthRaw.status === 'rejected' || $columnsRaw.status === 'rejected') {
+						// TODO: Throw here?
+						console.log('Length or columns rejected');
+						this.#score = -1;
+						return;
+					}
+
+					if (!this.#length || !this.#columns) {
+						// TODO: Throw here?
+						this.#score = -1;
+						return;
+					}					
+					this.#score = getQueryScore(this.length, this.columns);
+					if (this.#score > Query.#scoreThreshold) {
+						this.#emit('highScore', this.#score);
+					}
+				})
+				.catch((e) => {
+					console.error(`${this.id} | Failed to calculate Query score ${e}`);
+				});
+		}
+	};
+
 	/** @type {ChainableSharedPromise<RowType>} */
 	#sharedDataPromise = sharedPromise(() =>
 		this.publish(`data promise (${this.#sharedDataPromise.state})`)
@@ -263,7 +303,7 @@ ${this.#query.toString()}
 				// Large datasets can cause a stack overflow when using .push
 				// However, we don't want to re-assign #data, so doing it this way
 				// Might be a little bit slower, but it prevents that overflow
-				for (const c of chunk(result, 10000)) {
+				for (const c of chunk(result, Query.#chunkSize)) {
 					this.#debug(`Processing result chunk of ${c.length} rows`);
 					this.#data.push(...c);
 				}
@@ -554,6 +594,8 @@ DESCRIBE ${this.#query.toString()}
 	/// < Factories > ///
 	/////////////////////
 
+	static #chunkSize = 50000;
+
 	static #cache = new Map();
 
 	static emptyCache = () => {
@@ -574,7 +616,7 @@ DESCRIBE ${this.#query.toString()}
 	 * @param {number} [loadDelay=250]
 	 * @returns {{ initialValue: QueryValue, updater: <T extends QueryResultRow>(query: string, opts: import('./types.js').QueryOpts<T>) => Promise<QueryValue<T>>}}
 	 */
-	static reactive = (executeQuery, initialQuery, defaultOpts = {}, loadDelay = 250) => {
+	static reactive = (executeQuery, initialQuery, defaultOpts, loadDelay = 250) => {
 		/** @type {import('./types.js').CreateQuery<any>} */
 		const createFn = Query.create;
 
@@ -629,10 +671,15 @@ DESCRIBE ${this.#query.toString()}
 				id: queryHash
 			};
 		}
+		if (!('autoScore' in opts)) {
+			opts.autoScore = true;
+		}
 
 		if (Query.#cache.has(queryHash) && !opts.disableCache) {
 			if (isDebug()) console.log(`Using cached query ${opts.id ?? ''}`);
 			return Query.#cache.get(queryHash);
+		} else {
+			if (isDebug()) console.log(`Not caching query ${opts.id ?? ''}`);
 		}
 
 		Query.#constructing = true;
@@ -691,7 +738,6 @@ DESCRIBE ${this.#query.toString()}
 			knownColumns = undefined,
 			initialError = undefined
 		} = opts;
-
 		this.opts = opts;
 		this.#executeQuery = executeQuery;
 
@@ -738,7 +784,7 @@ DESCRIBE ${this.#query.toString()}
 			// Large datasets can cause a stack overflow when using .push
 			// However, we don't want to re-assign #data, so doing it this way
 			// Might be a little bit slower, but it prevents that overflow
-			for (const c of chunk(initialData, 10000)) {
+			for (const c of chunk(initialData, Query.#chunkSize)) {
 				this.#debug(`Processing initial data chunk of ${c.length} rows`);
 				this.#data.push(...c);
 			}
@@ -769,6 +815,10 @@ DESCRIBE ${this.#query.toString()}
 				/* Async errors are handled elsewhere */ if (!isPromise) throw e;
 			}
 		);
+		if (opts.autoScore) {
+			console.log({ opts });
+			this.#calculateScore();
+		}
 	}
 
 	////////////////////////////////////
@@ -793,17 +843,7 @@ DESCRIBE ${this.#query.toString()}
 	 */
 	publish = (/** @type {string} */ source) => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
-		this.#debug(`Publishing triggered by ${source}`, {
-			length: this.#length,
-			lengthLoaded: this.lengthLoaded,
-			lengthLoading: this.lengthLoading,
-			columns: this.#columns,
-			columnsLoaded: this.columnsLoaded,
-			columnsLoading: this.columnsLoading,
-			data: this.#data,
-			dataLoaded: this.dataLoaded,
-			dataLoading: this.dataLoading
-		});
+		this.#debug(`Publishing triggered by ${source}`);
 		this.#subscribers.forEach((fn) => fn(this.#value));
 	};
 	//////////////////////////////////////

@@ -2,7 +2,7 @@ import type { Query as QueryBuilder } from '@uwdata/mosaic-sql';
 // This file has a .ts instead of .d.ts to ensure that it is included in the built types.
 // It should not be used as anything other than a .d.ts file
 import type { DescribeResultRow } from '../types/duckdb-wellknown.d.ts';
-import type { QueryValue } from './Query.js';
+import type { ChainableSharedPromise, Query, QueryValue } from './Query.js';
 
 export type EventHandler<
 	Events extends Record<string, any> = {},
@@ -39,6 +39,7 @@ export type QueryOpts<RowType extends QueryResultRow = QueryResultRow> = {
 	initialError?: Error;
 	id?: string;
 	disableCache?: boolean;
+	autoScore?: boolean
 	/**
 	 * When true, this prevents the query from ever fetching or presenting data.
 	 **/
@@ -63,3 +64,5 @@ export interface CreateQuery<RowType extends QueryResultRow = QueryResultRow> {
 		opts?: Omit<QueryOpts<RowType>, 'id'>
 	): QueryValue<RowType>;
 }
+
+export type LengthResultRow = {rowCount: number};
