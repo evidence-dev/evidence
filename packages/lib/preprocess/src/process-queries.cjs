@@ -100,7 +100,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						let initialData, initialError;
 
 						try {
-							if (_${id}_changed || __has_hmr_run) {
+							if (_${id}_changed || import.meta.hot?.data.hmrHasRun) {
 								// Query changed after page load, we have no prerendered results
 								initialData = undefined
 								initialError = undefined
@@ -308,10 +308,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}
 		})
 
-		let __has_hmr_run = false
-	    if (import.meta?.hot) {
-	        import.meta.hot.on("vite:afterUpdate", () => {
-				__has_hmr_run = true
+		if (import.meta?.hot) {
+            if (typeof import.meta.hot.data.hmrHasRun === 'undefined') import.meta.hot.data.hmrHasRun = false
+	        import.meta.hot.on("vite:beforeUpdate", () => {
+				import.meta.hot.data.hmrHasRun = true
 				Query.emptyCache() // All bets are off
 			})
 	    }

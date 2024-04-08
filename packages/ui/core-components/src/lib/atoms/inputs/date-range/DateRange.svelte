@@ -56,18 +56,18 @@
 		typeof start === 'string' && YYYYMMDD.test(start)
 			? start
 			: start instanceof Date
-			? dateToYYYYMMDD(start)
-			: $query?.[0].start instanceof Date
-			? dateToYYYYMMDD($query?.[0].start)
-			: dateToYYYYMMDD(new Date(0));
+				? dateToYYYYMMDD(start)
+				: $query?.[0].start instanceof Date
+					? dateToYYYYMMDD($query?.[0].start)
+					: dateToYYYYMMDD(new Date(0));
 	$: endString =
 		typeof end === 'string' && YYYYMMDD.test(end)
 			? end
 			: end instanceof Date
-			? dateToYYYYMMDD(end)
-			: $query?.[0].end instanceof Date
-			? dateToYYYYMMDD($query?.[0].end)
-			: dateToYYYYMMDD(new Date());
+				? dateToYYYYMMDD(end)
+				: $query?.[0].end instanceof Date
+					? dateToYYYYMMDD($query?.[0].end)
+					: dateToYYYYMMDD(new Date());
 
 	$: $inputs[name] = { start: startString, end: endString };
 

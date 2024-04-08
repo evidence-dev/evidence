@@ -11,7 +11,7 @@
 
 	export let data;
 
-	const initialHash = typeof Query.isQuery(data) ? data.hash : undefined;
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;

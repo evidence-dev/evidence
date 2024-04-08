@@ -72,7 +72,7 @@
 			results = updatedResults;
 		}
 	}
-	
+
 	// container height
 	// there can never be more than limit + 1 records.
 	// We don't want height to move down when we filter to fewer records
