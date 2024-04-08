@@ -1109,8 +1109,8 @@ importers:
         specifier: 2.5.4
         version: 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.1.6)
       '@sveltejs/package':
-        specifier: ^2.2.7
-        version: 2.2.7(svelte@4.2.12)(typescript@5.4.2)
+        specifier: ^2.3.1
+        version: 2.3.1(svelte@4.2.12)(typescript@5.4.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: 3.0.2
         version: 3.0.2(svelte@4.2.12)(vite@5.1.6)
@@ -1382,8 +1382,8 @@ importers:
         version: 4.1.2
     devDependencies:
       '@sveltejs/package':
-        specifier: 2.2.7
-        version: 2.2.7(svelte@4.2.12)(typescript@5.4.2)
+        specifier: 2.3.1
+        version: 2.3.1(svelte@4.2.12)(typescript@5.4.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: 3.0.2
         version: 3.0.2(svelte@4.2.12)(vite@5.1.6)
@@ -9217,8 +9217,8 @@ packages:
       tiny-glob: 0.2.9
       vite: 5.1.6(@types/node@20.11.28)
 
-  /@sveltejs/package@2.2.7(svelte@4.2.12)(typescript@5.4.2):
-    resolution: {integrity: sha512-/vvmrQO2mMvROdM/iGRHtRn+ValnK9xzB50pqRcX0IvoeVoTq7uhYf+KifrZTluBA+km6AX/WXRXajrgrgbmvw==}
+  /@sveltejs/package@2.3.1(svelte@4.2.12)(typescript@5.4.2):
+    resolution: {integrity: sha512-JvR2J4ost1oCn1CSdqenYRwGX/1RX+7LN+VZ71aPnz3JAlIFaEKQd1pBxlb+OSQTfeugJO0W39gB9voAbBO5ow==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     peerDependencies:
@@ -19358,9 +19358,6 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)(postcss@8.4.37)(typescript@5.4.2)
       '@parcel/core': 2.12.0
@@ -21993,9 +21990,6 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
