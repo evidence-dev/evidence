@@ -59,6 +59,7 @@
 			max-width: ${$$props.maxWidth};
 		`}
 		slot="skeleton"
+		let:loaded
 	>
 		<p class="text-sm text-gray-700">{$$props.title ?? ' '}</p>
 		<Value column={$$props.value} fmt={$$props.fmt} data={loaded} />
