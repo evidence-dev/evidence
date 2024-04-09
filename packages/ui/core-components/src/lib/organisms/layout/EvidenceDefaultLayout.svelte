@@ -122,9 +122,9 @@
 					<slot name="content" />
 				</article>
 			{:else}
-				<LoadingSkeleton />
+				<LoadingSkeleton /> 
 			{/if}
-		</main>
+							</main>
 		{#if !hideTOC}
 			<div class="print:hidden">
 				<TableOfContents {hideHeader} />

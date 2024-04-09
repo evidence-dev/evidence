@@ -27,6 +27,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 export const config = {
+	darkMode: 'class',
 	theme: {
 		extend: {
 			colors: colors,
