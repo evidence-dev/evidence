@@ -1,6 +1,6 @@
 import evidencePreprocess from '@evidence-dev/preprocess';
 import preprocess from 'svelte-preprocess';
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-static';
 import { evidencePlugins } from '@evidence-dev/plugin-connector';
 import fs from 'fs';
 import path from 'path';

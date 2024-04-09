@@ -1,10 +1,12 @@
+import adapter from '@sveltejs/adapter-node';
+
 /** @type {import("@sveltejs/kit").Config} */
 export default {
 	preprocess: [],
 	compilerOptions: {
 		dev: true
 	},
-	kit: {},
+	kit: { adapter: adapter() },
 	vite: {
 		server: {
 			watch: {
