@@ -18,7 +18,7 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 
 ## Examples
 
-## Basic Text Input
+### Basic Text Input
 
 <img src="/img/text-input-basic.png" alt="TextInput" width="300px"/>
 
@@ -28,7 +28,7 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 />
 ````
 
-## With Title
+### With Title
 
 <img src="/img/text-input.png" alt="TextInput" width="300px"/>
 
@@ -39,7 +39,7 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 />
 ````
 
-## With Placeholder
+### With Placeholder
 
 <img src="/img/text-input-placeholder.png" alt="TextInput" width="300px"/>
 
@@ -51,7 +51,7 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 />
 ````
 
-## With Default Text Prefilled
+### With Default Text Prefilled
 
 <img src="/img/text-input-default.png" alt="TextInput" width="300px"/>
 
@@ -66,14 +66,14 @@ To see how to filter a query using a text input, see [Filters](/core-concepts/fi
 
 
 
-## Fuzzy Finding (Searching)
+### Fuzzy Finding (Searching)
 
 
 `TextInput` provides an easy-to-use shortcut for [fuzzy finding](https://duckdb.org/docs/sql/functions/char#text-similarity-functions). Note that this is different than `LIKE`, as it does not require a direct substring, and is useful in situtations where spelling may be unknown, like names.
 
 You can reference it by using the syntax `{inputs.your_input_name.search('column_name')}`, and it returns a number between 0 and 1.
 
-### Usage
+## Usage
 
 Assuming you had some TextInput `first_name_search`:
 
@@ -91,44 +91,28 @@ ORDER BY damerau_levenshtein(first_name, '{inputs.first_name_search}')
 LIMIT 10 -- Optionally limit to only show the 10 closest results
 ```
 
-## TextInput
+## Options
 
-### Options
-
-<table>						 
-    <tr>	
-        <th class='tleft'>Name</th>	
-        <th class='tleft'>Description</th>	
-        <th>Required?</th>	
-        <th>Options</th>	
-        <th>Default</th>	
-    </tr>
-    <tr>	
-        <td>name</td>	
-        <td>Name of the text input, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
-        <td class='tcenter'>Yes</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>title</td>	
-        <td>Title displayed above the text input</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>placeholder</td>	
-        <td>Alternative placeholder text displayed in the text input</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>Type to search</td>
-    </tr>
-    <tr>	
-        <td>hideDuringPrint</td>
-        <td>Hide the component when the report is printed</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>true | false</td>
-        <td class='tcenter'>true</td>
-    </tr>
-</table>
+<PropListing 
+    name="name"
+    description="Name of the text input, used to reference the selected value elsewhere as {`{inputs.name.value}`}"
+    required
+    options=string
+/>
+<PropListing 
+    name="title"
+    description="Title displayed above the text input"
+    options=string
+/>
+<PropListing 
+    name="placeholder"
+    description="Alternative placeholder text displayed in the text input"
+    options=string
+    defaultValue="Type to search"
+/>
+<PropListing 
+    name="hideDuringPrint"
+    description="Hide the component when the report is printed"
+    options={['true', 'false']}
+    defaultValue="true"
+/>

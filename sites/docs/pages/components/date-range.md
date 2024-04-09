@@ -86,65 +86,44 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
 ```
 ````
 
-## DateRange
+## Options
 
-### Options
+<PropListing 
+    name="name"
+    description="Name of the DateRange, used to reference the selected values elsewhere as {`{inputs.name.start`} or {`inputs.name.end`}"
+    required=true
+    options="string"
+/>
+<PropListing 
+    name="data"
+    description="Query name, wrapped in curly braces"
+    options="query name"
+/>
+<PropListing 
+    name="dates"
+    description="Column name from the query containing date range to span"
+    options="column name"
+/>
+<PropListing 
+    name="start"
+    description="A manually specified start date to use for the range"
+    options="string formatted YYYY-MM-DD"
+/>
+<PropListing 
+    name="end"
+    description="A manually specified end date to use for the range"
+    options="string formatted YYYY-MM-DD"
+/>
+<PropListing 
+    name="title"
+    description="Title to display in the Date Range component"
+    options="string"
+/>
+<PropListing 
+    name="hideDuringPrint"
+    description="Hide the component when the report is printed"
+    options={["true", "false"]}
+    default="true"
+/>
 
-<table>						 
-    <tr>	
-        <th class='tleft'>Name</th>	
-        <th class='tleft'>Description</th>	
-        <th>Required?</th>	
-        <th>Options</th>	
-        <th>Default</th>	
-    </tr>
-        <tr>	
-        <td>name</td>	
-        <td>Name of the range, used to reference the selected values elsewhere as {'{'}inputs.name.start{'} or {'}inputs.name.end{'}'}</td>	
-        <td class='tcenter'>Yes</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>data</td>	
-        <td>Query name, wrapped in curly braces</td>	
-        <td class='tcenter'>No</td>	
-        <td class='tcenter'>query name</td>	
-        <td class='tcenter'>-</td>	
-    </tr>
-    <tr>	
-        <td>dates</td>	
-        <td>Column name from the query containing date range to span</td>	
-        <td class='tcenter'>No</td>	
-        <td class='tcenter'>column name</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-        <tr>	
-        <td>start</td>	
-        <td>A manually specified start date to use for the range</td>
-        <td class='tcenter'>No</td>	
-        <td class='tcenter'>string formatted YYYY-MM-DD</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>end</td>	
-        <td>A manually specified end date to use for the range</td>
-        <td class='tcenter'>No</td>	
-        <td class='tcenter'>string formatted YYYY-MM-DD</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>title</td>	
-        <td>Title to display in the Date Range component</td>
-        <td class='tcenter'>No</td>	
-        <td class='tcenter'>string</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>hideDuringPrint</td>
-        <td>Hide the component when the report is printed</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>true | false</td>
-        <td class='tcenter'>true</td>
-    </tr>
-</table>
+

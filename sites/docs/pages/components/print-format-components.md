@@ -15,7 +15,13 @@ Text on original line <LineBreak/> Text on new line
 ```
 
 ### Options
-`lines` - number of line breaks to insert (default = 1)
+
+<PropListing
+    name=lines
+    description="Number of line breaks to insert"
+    options=number
+    defaultValue=1
+/>
 
 ## PageBreak
 On print, inserts a page break - pushing the next content onto the start of a new page.
@@ -74,3 +80,12 @@ The purple line chart will be hidden on print
     />
 </PrintGroup>
 ```
+
+### Options
+
+<PropListing
+    name=hidden
+    description="If true, the content within the PrintGroup will not be printed"
+    options={['true', 'false']}
+    defaultValue='false'
+/>

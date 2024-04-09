@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<EvidenceDefaultLayout {data} githubRepo=https://github.com/account/repo>
+<EvidenceDefaultLayout {data} githubRepo=https://github.com/account/repo maxWidth="1500">
 	<slot slot="content" />
 </EvidenceDefaultLayout>

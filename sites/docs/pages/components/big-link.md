@@ -14,6 +14,8 @@ sidebar_position: 1
 
 ## Options
 
-| Name   | Description                                                             | Required | 
-|--------|-------------------------------------------------------------------------|----------|
-| href  | The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`  | Yes      | 
+<PropListing
+    name="href"
+    description="The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`"
+    required=true
+/>

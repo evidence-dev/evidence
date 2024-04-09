@@ -31,9 +31,20 @@ Modals support markdown in the body, but you need to leave whitespace between th
 
 ## Options
 
-| Name       | Description | Required? | Options | Default|
-| ---------- | ----------- | --------- |---------| -------|
-| title      | The title of the modal. | No | -| -
-| buttonText | The text displayed on the button that triggers the modal. | Yes | - 
-| open       | A boolean value that determines whether the modal is closed by default. | No | true, false | false
-
+<PropListing
+    name=title
+    description="The title of the modal."
+    options=string
+/>
+<PropListing
+    name=buttonText
+    description="The text displayed on the button that triggers the modal."
+    required
+    options=string
+/>
+<PropListing
+    name=open
+    description="A boolean value that determines whether the modal is closed by default."
+    options={['true', 'false']}
+    default=false
+/>

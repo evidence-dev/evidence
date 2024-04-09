@@ -26,19 +26,73 @@ To customize your, add a `+layout.svelte` file to the root of your pages directo
 
 The `EvidenceDefaultLayout` component accepts the following properties for common customizations.
 
-| Name      | Description                                         | Possible Values          | Required | Default |
-| --------- | --------------------------------------------------- | ------------------------ | -------- | ------- |
-| `title`    | Project title that will replace the Evidence Logo. | Any string              | no       | -       |
-| `logo` | Link to an image which will replace the Evidence logo. This will also override any project title in the header. If the image is in your project's static directory, the link should be relative to the static directory.                         | /logo.png | no       | -   |
-| `neverShowQueries`    | Removes the option to show queries when the project is deployed. Has no effect in development. | {true} or {false}              | no       | {false}       |
-| `maxWidth`    | Sets the width of the project in pixels. The default layout is about 1,280 px wide.    | Any number         | no       | -       |
-| `fullWidth`    | Sets the width of the project to full | {true} or {false}              | no       | {false}       |
-| `hideSidebar`    | Hides the sidebar navigation | {true} or {false}              | no       | {false}       |
-| `builtWithEvidence`    | Display a subtle link to the Evidence website at the bottom of the sidebar.          | {true} or {false}    | no       | {false}       | {false} |
-| `algolia`    | Object containing Algolia docsearch credentials              |  {{appId: 'xxx', apiKey: 'xxx', indexName: 'xxx'}}       | no       | - |
-| `githubRepo`    | Linke to a Github Repo which will appear in the header using the Github Logo              |  'https://github.com/evidence-dev/evidence'       | no       | - |
-| `xProfile`    | Linke to an X (Twitter) profile which will appear in the header using the X Logo              |  'https://twitter.com/evidence_dev'       | no       | - |
-| `slackCommunity`    | Linke to a slack community which will appear in the header using the slack Logo              |  'evidencedev.slack.com'       | no       | - |
+<PropListing
+    name=title
+    description="Project title that will replace the Evidence Logo."
+    options="Any string"
+    defaultValue=""
+/>
+<PropListing
+    name=logo
+    description="Link to an image which will replace the Evidence logo. This will also override any project title in the header. If the image is in your project's static directory, the link should be relative to the static directory."
+    options="/logo.png"
+    defaultValue=""
+/>
+<PropListing
+    name=neverShowQueries
+    description="Removes the option to show queries when the project is deployed. Has no effect in development."
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
+    name=maxWidth
+    description="Sets the width of the project in pixels. The default layout is about 1,280 px wide."
+    options="Any number"
+    defaultValue=""
+/>
+<PropListing
+    name=fullWidth
+    description="Sets the width of the project to full"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
+    name=hideSidebar
+    description="Hides the sidebar navigation"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
+    name=builtWithEvidence
+    description="Display a subtle link to the Evidence website at the bottom of the sidebar."
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
+    name=algolia
+    description="Object containing Algolia docsearch credentials"
+    options="{`{{appId: 'xxx', apiKey: 'xxx', indexName: 'xxx'}}`}"
+    defaultValue=""
+/>
+<PropListing
+    name=githubRepo
+    description="Link to a Github Repo which will appear in the header using the Github Logo"
+    options=""
+    defaultValue='https://github.com/evidence-dev/evidence'
+/>
+<PropListing
+    name=xProfile
+    description="Link to an X (Twitter) profile which will appear in the header using the X Logo"
+    options=""
+    defaultValue='https://twitter.com/evidence_dev'
+/>
+<PropListing
+    name=slackCommunity
+    description="Link to a slack community which will appear in the header using the slack Logo"
+    options=""
+    defaultValue='https://slack.evidence.dev'
+/>
+
 
 ## Custom Styles
 

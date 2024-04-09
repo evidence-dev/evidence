@@ -147,109 +147,381 @@ Evidence will automatically pick the first column as `x` and use all other numer
 
 ### Data
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x</td>	<td>Column to use for the x-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>First column</td>	</tr>
-<tr>	<td>y</td>	<td>Column(s) to use for the y-axis of the chart</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>Any non-assigned numeric columns</td>	</tr>
-<tr>	<td>y2</td>	<td>Column(s) to include on a secondary y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name | array of column names</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2SeriesType</td>	<td>Chart type to apply to the series on the y2 axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>line | bar | scatter</td>	<td class='tcenter'>line</td>	</tr>
-<tr>	<td>series</td>	<td>Column to use as the series (groups) in a multi-series chart</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>sort</td>	<td>Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>handleMissing</td>	<td>Treatment of missing values in the dataset</td>	<td class='tcenter'>-</td>	<td class='tcenter'>gap | connect | zero</td>	<td class='tcenter'>gap</td>	</tr>
-<tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
-<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
-</table>
+<PropListing
+    name=data
+    description="Query name, wrapped in curly braces"
+    required=true
+    options="query name"
+/>
+<PropListing
+    name=x
+    description="Column to use for the x-axis of the chart"
+    required=true
+    options="column name"
+/>
+<PropListing
+    name=y
+    description="Column(s) to use for the y-axis of the chart"
+    required=true
+    options="column name | array of column names"
+/>
+<PropListing
+    name=y2
+    description="Column(s) to include on a secondary y-axis"
+    options="column name | array of column names"
+/>
+<PropListing
+    name=y2SeriesType
+    description="Chart type to apply to the series on the y2 axis"
+    options={["line", "bar", "scatter"]}
+    defaultValue="line"
+/>
+<PropListing
+    name=series
+    description="Column to use as the series (groups) in a multi-series chart"
+    options="column name"
+/>
+<PropListing
+    name=sort
+    description="Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes"
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=handleMissing
+    description="Treatment of missing values in the dataset"
+    options={["gap", "connect", "zero"]}
+    defaultValue="gap"
+/>
+<PropListing
+    name=emptySet
+    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    options={["error", "warn", "pass"]}
+    defaultValue="error"
+/>
+<PropListing
+    name=emptyMessage
+    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    options="string"
+/>
 
 ### Formatting & Styling
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>xFmt</td>	<td>Format to use for x column (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yFmt</td>	<td>Format to use for y column(s) (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2Fmt</td>	<td>Format to use for y2 column(s) (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>step</td>	<td>Specifies whether the chart is displayed as a step line.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>stepPosition</td>	<td>Configures the position of turn points for a step line chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>'start' | 'middle' | 'end'</td>	<td class='tcenter'>'end'</td>	</tr>
-<tr>	<td>lineColor</td>	<td>Color to override default series color. Only accepts a single color.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>lineOpacity</td>	<td>% of the full color that should be rendered, with remainder being transparent</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number (0 to 1)</td>	<td class='tcenter'>1</td>	</tr>
-<tr>	<td>lineType</td>	<td>Options to show breaks in a line (dashed or dotted)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>solid | dashed | dotted</td>	<td class='tcenter'>solid</td>	</tr>
-<tr>	<td>lineWidth</td>	<td>Thickness of line (in pixels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>2</td>	</tr>
-<tr>	<td>markers</td>	<td>Turn on/off markers (shapes rendered onto the points of a line)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>markerShape</td>	<td>Shape to use if markers=true</td>	<td class='tcenter'>-</td>	<td class='tcenter'>circle | emptyCircle | rect | triangle | diamond</td>	<td class='tcenter'>circle</td>	</tr>
-<tr>	<td>markerSize</td>	<td>Size of each shape (in pixels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>8</td>	</tr>
-<tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
-<tr>	<td>seriesColors</td>	<td>Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal.<br/>Note the double curly braces required in the syntax</td>	<td class='tcenter'>-</td>	<td class='tcenter'>object with series names and assigned colors<br/><code>seriesColors={`{{'Canada': 'red', 'US': 'blue'}}`}</code></td>	<td class='tcenter'>colors applied by order of series in data</td>	</tr>
-</table>
-
-### Value Labels
-
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>labels</td>	<td>Show value labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>labelSize</td>	<td>Font size of value labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>11</td>	</tr>
-<tr>	<td>labelPosition</td>	<td>Where label will appear on your series</td>	<td class='tcenter'>-</td>	<td class='tcenter'>above | middle | below</td>	<td class='tcenter'>above</td>	</tr>
-<tr>	<td>labelColor</td>	<td>Font color of value labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>Automatic based on color contrast of background</td>	</tr>
-<tr>	<td>labelFmt</td>	<td>Format to use for value labels (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>same as y column</td>	</tr>
-<tr>	<td>yLabelFmt</td>	<td>Format to use for value labels for series on the y axis. Overrides any other formats (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2LabelFmt</td>	<td>Format to use for value labels for series on the y2 axis. Overrides any other formats (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>showAllLabels</td>	<td>Allow all labels to appear on chart, including overlapping labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-</table>
+<PropListing
+    name=xFmt
+    description="Format to use for x column"
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=yFmt
+    description="Format to use for y column(s)"
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=y2Fmt
+    description="Format to use for y2 column(s)"
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=step
+    description="Specifies whether the chart is displayed as a step line"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=stepPosition
+    description="Configures the position of turn points for a step line chart"
+    options={["start", "middle", "end"]}
+    defaultValue="end"
+/>
+<PropListing
+    name=lineColor
+    description="Color to override default series color. Only accepts a single color"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=lineOpacity
+    description="% of the full color that should be rendered, with remainder being transparent"
+    options="number (0 to 1)"
+    defaultValue="1"
+/>
+<PropListing
+    name=lineType
+    description="Options to show breaks in a line (dashed or dotted)"
+    options={["solid", "dashed", "dotted"]}
+    defaultValue="solid"
+/>
+<PropListing
+    name=lineWidth
+    description="Thickness of line (in pixels)"
+    options="number"
+    defaultValue="2"
+/>
+<PropListing
+    name=markers
+    description="Turn on/off markers (shapes rendered onto the points of a line)"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=markerShape
+    description="Shape to use if markers=true"
+    options={["circle", "emptyCircle", "rect", "triangle", "diamond"]}
+    defaultValue="circle"
+/>
+<PropListing
+    name=markerSize
+    description="Size of each shape (in pixels)"
+    options="number"
+    defaultValue="8"
+/>
+<PropListing
+    name=colorPalette
+    description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
+    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+/>
+<PropListing
+    name=seriesColors
+    description="Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax `seriesColors={{"Canada": "red", "US": "blue"}}`"
+    options="object with series names and assigned colors"
+/>
+<PropListing
+    name=labels
+    description="Show value labels"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=labelSize
+    description="Font size of value labels"
+    options="number"
+    defaultValue="11"
+/>
+<PropListing
+    name=labelPosition
+    description="Where label will appear on your series"
+    options={["above", "middle", "below"]}
+    defaultValue="above"
+/>
+<PropListing
+    name=labelColor
+    description="Font color of value labels"
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=labelFmt
+    description="Format to use for value labels"
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=yLabelFmt
+    description="Format to use for value labels for series on the y axis. Overrides any other formats"
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=y2LabelFmt
+    description="Format to use for value labels for series on the y2 axis. Overrides any other formats"
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=showAllLabels
+    description="Allow all labels to appear on chart, including overlapping labels"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Axes
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>yLog</td>	<td>Whether to use a log scale for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yLogBase</td>	<td>Base to use when log scale is enabled</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>10</td>	</tr>
-<tr>	<td>xAxisTitle</td>	<td>Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | string | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yAxisTitle</td>	<td>Name to show beside y-axis. If 'true', formatted column name is used.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | string | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>y2AxisTitle</td>	<td>Name to show beside y2 axis. If 'true', formatted column name is used.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | string | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>xGridlines</td>	<td>Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yGridlines</td>	<td>Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>y2Gridlines</td>	<td>Turns on/off gridlines extending from y2-axis tick marks (horizontal lines when swapXY=false)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>xAxisLabels</td>	<td>Turns on/off value labels on the x-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>yAxisLabels</td>	<td>Turns on/off value labels on the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>y2AxisLabels</td>	<td>Turns on/off value labels on the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>xBaseline</td>	<td>Turns on/off thick axis line (line appears at y=0)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>yBaseline</td>	<td>Turns on/off thick axis line (line appears directly alongside the y-axis labels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>y2Baseline</td>	<td>Turns on/off thick axis line (line appears directly alongside the y2-axis labels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>xTickMarks</td>	<td>Turns on/off tick marks for each of the x-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>y2TickMarks</td>	<td>Turns on/off tick marks for each of the y2-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yScale</td>	<td>Whether to scale the y-axis to fit your data. <code>yMin</code> and <code>yMax</code> take precedence over <code>yScale</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>y2Min</td>	<td>Starting value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2Max</td>	<td>Maximum value for the y2-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y2Scale</td>	<td>Whether to scale the y-axis to fit your data. <code>y2Min</code> and <code>y2Max</code> take precedence over <code>y2Scale</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yAxisColor</td>	<td>Turns on/off color on the y-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
-<tr>	<td>y2AxisColor</td>	<td>Turns on/off color on the y2-axis (turned on by default when secondary y-axis is used). Can also be used to set a specific color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false <br/> color string (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>true when y2 used; false otherwise</td>	</tr>
-</table>
+<PropListing
+    name=yLog
+    description="Whether to use a log scale for the y-axis"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=yLogBase
+    description="Base to use when log scale is enabled"
+    options="number"
+    defaultValue="10"
+/>
+<PropListing
+    name=xAxisTitle
+    description="Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false"
+    options={["true", "string", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=yAxisTitle
+    description="Name to show beside y-axis. If 'true', formatted column name is used."
+    options={["true", "string", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=y2AxisTitle
+    description="Name to show beside y2 axis. If 'true', formatted column name is used."
+    options={["true", "string", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=xGridlines
+    description="Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=yGridlines
+    description="Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)"
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=y2Gridlines
+    description="Turns on/off gridlines extending from y2-axis tick marks (horizontal lines when swapXY=false)"
+    options={["true", "false"]}
+    defaultValue="true" 
+/>
+<PropListing
+    name=xAxisLabels
+    description="Turns on/off value labels on the x-axis"
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=yAxisLabels
+    description="Turns on/off value labels on the y-axis"
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=y2AxisLabels
+    description="Turns on/off value labels on the y2-axis"
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=xBaseline
+    description="Turns on/off thick axis line (line appears at y=0)"
+    options={["true", "false"]}
+    defaultValue="true"
+/>
+<PropListing
+    name=yBaseline
+    description="Turns on/off thick axis line (line appears directly alongside the y-axis labels)"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=y2Baseline
+    description="Turns on/off thick axis line (line appears directly alongside the y2-axis labels)"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=xTickMarks
+    description="Turns on/off tick marks for each of the x-axis labels"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=yTickMarks
+    description="Turns on/off tick marks for each of the y-axis labels"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=y2TickMarks
+    description="Turns on/off tick marks for each of the y2-axis labels"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=yMin
+    description="Starting value for the y-axis"
+    options="number"
+/>
+<PropListing
+    name=yMax
+    description="Maximum value for the y-axis"
+    options="number"
+/>
+<PropListing
+    name=yScale
+    description="Whether to scale the y-axis to fit your data. `yMin` and `yMax` take precedence over `yScale`"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
+<PropListing
+    name=y2Min
+    description="Starting value for the y2-axis"
+    options="number"
+/>
+<PropListing
+    name=y2Max
+    description="Maximum value for the y2-axis"
+    options="number"
+/>
+<PropListing
+    name=y2Scale
+    description="Whether to scale the y-axis to fit your data. `y2Min` and `y2Max` take precedence over `y2Scale`"
+    options={["true", "false"]}
+    defaultValue="false"
+/>
 
 ### Chart
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>title</td>	<td>Chart title. Appears at top left of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>subtitle</td>	<td>Chart subtitle. Appears just under title.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>legend</td>	<td>Turns legend on or off. Legend appears at top center of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true for multiple series</td>	</tr>
-<tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
-<tr>	<td>renderer</td>	<td>Which chart renderer type (canvas or SVG) to use. See ECharts' documentation on renderers: https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/</td>	<td class='tcenter'>-</td>	<td class='tcenter'>canvas | svg</td>	<td class='tcenter'>canvas</td>	</tr>
-</table>
+<PropListing
+    name=title
+    description="Chart title. Appears at top left of chart."
+    options="string"
+/>
+<PropListing
+    name=subtitle
+    description="Chart subtitle. Appears just under title."
+    options="string"
+/>
+<PropListing
+    name=legend
+    description="Turn legend on or off. Legend appears at top center of chart."
+    options={["true", "false"]}
+    defaultValue="true for multiple series"
+/>
+<PropListing
+    name=chartAreaHeight
+    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
+    options="number"
+    defaultValue="180"
+/>
+<PropListing
+    name=renderer
+    description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
+    options={["canvas", "svg"]}
+    defaultValue="canvas"
+/>
 
 ### Custom Echarts Options
 
-<table>
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>echartsOptions</td>	<td>Custom Echarts options to override the default options. <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>seriesOptions</td>	<td>Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using <code>echartsOptions</code> <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleSeriesOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-</table>
+<PropListing
+    name=echartsOptions
+    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    options="{`{{exampleOption:'exampleValue'}}`}"
+/>
+<PropListing
+    name=seriesOptions
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    options="{`{{exampleSeriesOption:'exampleValue'}}`}"
+/>
+<PropListing
+    name=printEchartsConfig
+    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+
 
 
 ## Annotations
 
-Line charts can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+Line charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <LineChart data="{sales_data}" x="date" y="sales">

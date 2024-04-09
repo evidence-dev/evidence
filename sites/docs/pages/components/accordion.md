@@ -21,15 +21,20 @@ sidebar_position: 1
 
 ## Options
 
-### `Accordion`
+### Accordion
 
-| Name   | Description                                                             | Required | 
-|--------|-------------------------------------------------------------------------|----------|
-| single  | When true, only a single accordian item can be open at once.           | No      | 
+  <PropListing
+      name="single"
+      description="When true, only a single accordian item can be open at once."
+      required="false"
+      options={['true', 'false']}
+  />
 
 
-### `AccordionItem`
+### AccordionItem
 
-| Name   | Description                                                             | Required | 
-|--------|-------------------------------------------------------------------------|----------|
-| title  | The title of the accordion item. This will be displayed as the header   | Yes      | 
+  <PropListing
+      name="title"
+      description="The title of the accordion item. This will be displayed as the header."
+      required="true"
+  />

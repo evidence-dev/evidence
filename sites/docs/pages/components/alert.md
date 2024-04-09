@@ -29,6 +29,10 @@ This is a dangerous alert
 
 ## Options
 
-| Name   | Description                         | Required | options                                       | Default   |
-| ------ | ----------------------------------- | -------- | --------------------------------------------- | --------- |
-| status | Changes the colors of the alert     | No       | `default` `info` `success` `warning` `danger` | `default` |
+<PropListing
+    name="status"
+    description="Changes the colors of the alert"
+    required="false"
+    options={['default', 'info', 'success', 'warning', 'danger']}
+    defaultValue="default"
+/>
