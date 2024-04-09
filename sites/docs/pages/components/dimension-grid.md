@@ -47,49 +47,33 @@ where ${inputs.selected_dimensions}
 ```
 
 
-<table>						 
-    <tr>	
-        <th class='tleft'>Name</th>	
-        <th class='tleft'>Description</th>	
-        <th>Required?</th>	
-        <th>Options</th>	
-        <th>Default</th>	
-    </tr>
-    <tr>	
-        <td>data</td>	
-        <td>Query name, wrapped in curly braces</td>	
-        <td class='tcenter'>Yes</td>	
-        <td class='tcenter'>query name</td>	
-        <td class='tcenter'>-</td>	
-    </tr>
-    <tr>	
-        <td>metric</td>	
-        <td>SQL aggregate which could be applied to `data` e.g. "sum(sales)"</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>count(*)</td>
-    </tr>
-    <tr>	
-        <td>name</td>	
-        <td>Name of the dimension grid, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
-        <td class='tcenter'>No</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>metricLabel</td>	
-        <td>Label for the metric</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>-</td>
-    </tr>
-        <tr>	
-        <td>limit</td>	
-        <td>Maximum number of rows to include in each table</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>10</td>
-    </tr>
-</table>
+## Options
 
-
+<PropListing 
+    name="data"
+    description="Query name, wrapped in curly braces"
+    required=true
+    options="string"
+/>
+<PropListing 
+    name="metric"
+    description="SQL aggregate which could be applied to `data` e.g. 'sum(sales)'"
+    options="string"
+    default="count(*)"
+/>
+<PropListing 
+    name="name"
+    description="Name of the dimension grid, used to reference the selected value elsewhere as {`{inputs.name}`}"
+    options="string"
+/>
+<PropListing 
+    name="metricLabel"
+    description="Label for the metric"
+    options="string"
+/>
+<PropListing 
+    name="limit"
+    description="Maximum number of rows to include in each table"
+    options="number"
+    default="10"
+/>

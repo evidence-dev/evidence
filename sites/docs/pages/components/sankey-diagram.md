@@ -291,49 +291,162 @@ group by 1, 2
 
 ### Data
 
-<table>
-<tr> <th class='tleft'>Name</th> <th class='tleft'>Description</th> <th>Required?</th> <th>Options</th> <th>Default</th> </tr>
-<tr> <td>data</td> <td>Query name, wrapped in curly braces</td> <td class='tcenter'>Yes</td> <td class='tcenter'>query name</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>sourceCol</td> <td>Column to use for the source of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>targetCol</td> <td>Column to use for the target of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>valueCol</td> <td>Column to use for the value of the diagram</td> <td class='tcenter'>Yes</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>percentCol</td> <td>Column to use for the percent labels of the diagram</td> <td class='tcenter'>-</td> <td class='tcenter'>column name</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>depthOverride</td> <td>Manual adjustment to location of each node</td> <td class='tcenter'>-</td> <td class='tcenter'>object containing node name and depth level (0 is first level)<br/>{`{{'services revenue': 2}}`}</td> <td class='tcenter'>-</td> </tr>
-<tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
-<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
-</table>
+<PropListing
+    name=data
+    description="Query name, wrapped in curly braces"
+    required
+    options="query name"
+/>
+<PropListing
+    name=sourceCol
+    description="Column to use for the source of the diagram"
+    required
+    options="column name"
+/>
+<PropListing
+    name=targetCol
+    description="Column to use for the target of the diagram"
+    required
+    options="column name"
+/>
+<PropListing
+    name=valueCol
+    description="Column to use for the value of the diagram"
+    required
+    options="column name"
+/>
+<PropListing
+    name=percentCol
+    description="Column to use for the percent labels of the diagram"
+    options="column name"
+/>
+<PropListing
+    name=depthOverride
+    description="Manual adjustment to location of each node {`{{'services revenue': 2}}`}"
+    options="object containing node name and depth level (0 is first level)"
+/>
+<PropListing
+    name=emptySet
+    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    options={['error', 'warn', 'pass']}
+    default="error"
+/>
+<PropListing
+    name=emptyMessage
+    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    options="string"
+    default="No records"
+/>
+<PropListing
+    name=printEchartsConfig
+    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    options={['true', 'false']}
+    default="false"
+/>
 
 ### Formatting & Styling
 
-<table>
-<tr> <th class='tleft'>Name</th> <th class='tleft'>Description</th> <th>Required?</th> <th>Options</th> <th>Default</th> </tr>
-<tr> <td>valueFmt</td> <td>Format to use for `valueCol` (<a href='/core-concepts/formatting'>see available formats</a>)</td> <td class='tcenter'>-</td> <td class='tcenter'>Excel-style format | built-in format | custom format</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>orient</td> <td>Layout direction of the nodes in the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>horizontal | vertical</td> <td class='tcenter'>horizontal</td> </tr>
-<tr> <td>sort</td> <td>Whether the nodes are sorted by size in the diagram</td> <td class='tcenter'>-</td> <td class='tcenter'>true | false</td> <td class='tcenter'>false</td> </tr>
-<tr> <td>nodeAlign</td> <td>Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment.</td> <td class='tcenter'>-</td> <td class='tcenter'>justify | left | right</td> <td class='tcenter'>justify</td> </tr>
-<tr> <td>nodeGap</td> <td>The gap between any two rectangles in each column of the the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>number</td> <td class='tcenter'>8</td> </tr>
-<tr> <td>nodeWidth</td> <td>The node width of rectangle in the diagram.</td> <td class='tcenter'>-</td> <td class='tcenter'>number</td> <td class='tcenter'>20</td> </tr>
-<tr> <td>outlineColor</td> <td>Border color. Only accepts a single color.</td> <td class='tcenter'>-</td> <td class='tcenter'>CSS name | hexademical | RGB | HSL</td> <td class='tcenter'>transparent</td> </tr>
-<tr> <td>outlineWidth</td> <td>Border Width. It should be a natural number.</td> <td class='tcenter'>-</td> <td class='tcenter'>number</td> <td class='tcenter'>1</td> </tr>
-<tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
-<tr>	<td>linkColor</td>	<td>Color to use for the links between nodes in the diagram</td>	<td class='tcenter'>-</td>	<td class='tcenter'>grey | source | target | gradient </td>	<td class='tcenter'>grey</td>	</tr>
-</table>
+<PropListing
+    name=valueFmt
+    description="Format to use for `valueCol` (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    options="Excel-style format | built-in format | custom format"
+/>
+<PropListing
+    name=orient
+    description="Layout direction of the nodes in the diagram."
+    options={['horizontal', 'vertical']}
+    default="horizontal"
+/>
+<PropListing
+    name=sort
+    description="Whether the nodes are sorted by size in the diagram"
+    options={['true', 'false']}
+    default="false"
+/>
+<PropListing
+    name=nodeAlign
+    description="Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment."
+    options={['justify', 'left', 'right']}
+    default="justify"
+/>
+<PropListing
+    name=nodeGap
+    description="The gap between any two rectangles in each column of the the diagram."
+    options="number"
+    default="8"
+/>
+<PropListing
+    name=nodeWidth
+    description="The node width of rectangle in the diagram."
+    options="number"
+    default="20"
+/>
+<PropListing
+    name=outlineColor
+    description="Border color. Only accepts a single color."
+    options="CSS name | hexademical | RGB | HSL"
+    default="transparent"
+/>
+<PropListing
+    name=outlineWidth
+    description="Border Width. It should be a natural number."
+    options="number"
+    default="1"
+/>
+<PropListing
+    name=colorPalette
+    description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
+    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    default="built-in color palette"
+/>
+<PropListing
+    name=linkColor
+    description="Color to use for the links between nodes in the diagram"
+    options={['grey', 'source', 'target', 'gradient']}
+    default="grey"
+/>
 
 ### Chart
 
-<table>
-<tr> <th class='tleft'>Name</th> <th class='tleft'>Description</th> <th>Required?</th> <th>Options</th> <th>Default</th> </tr>
-<tr> <td>title</td> <td>Chart title. Appears at top left of chart.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>subtitle</td> <td>Chart subtitle. Appears just under title.</td> <td class='tcenter'>-</td> <td class='tcenter'>string</td> <td class='tcenter'>-</td> </tr>
-<tr> <td>nodeLabels</td> <td>Adds labels to the nodes of the diagram</td> <td class='tcenter'>-</td> <td class='tcenter'> name | value | full </td> <td class='tcenter'>name</td> </tr>
-<tr> <td>linkLabels</td> <td>Adds labels to the links between nodes</td> <td class='tcenter'>-</td> <td class='tcenter'> full | value | percent </td> <td class='tcenter'>full (requires percentCol)</td> </tr>
-<tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
-</table>
+<PropListing
+    name=title
+    description="Chart title. Appears at top left of chart."
+    options="string"
+/>
+<PropListing
+    name=subtitle
+    description="Chart subtitle. Appears just under title."
+    options="string"
+/>
+<PropListing
+    name=nodeLabels
+    description="Adds labels to the nodes of the diagram"
+    options={['name', 'value', 'full']}
+    default="name"
+/>
+<PropListing
+    name=linkLabels
+    description="Adds labels to the links between nodes"
+    options={['full', 'value', 'percent']}
+    default="full (requires percentCol)"
+/>
+<PropListing
+    name=chartAreaHeight
+    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
+    options="number"
+    default="180"
+/>
 
 ### Custom Echarts Options
 
-<table>
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>echartsOptions</td>	<td>Custom Echarts options to override the default options. <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-</table>
+<PropListing
+    name=echartsOptions
+    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    options="{`{{exampleOption:'exampleValue'}}`}"
+/>
+<PropListing
+    name=printEchartsConfig
+    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    options={['true', 'false']}
+    defaultValue="false"
+/>

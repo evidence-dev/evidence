@@ -105,111 +105,73 @@ where column_name like '${inputs.name_of_button_group}'
 ```
 ````
 
-## ButtonGroup
+# ButtonGroup
 
-### Options
+## Options
 
-<table>						 
-    <tr>	
-        <th class='tleft'>Name</th>	
-        <th class='tleft'>Description</th>	
-        <th>Required?</th>	
-        <th>Options</th>	
-        <th>Default</th>	
-    </tr>
-        <tr>	
-        <td>name</td>	
-        <td>Name of the button group, used to reference the selected value elsewhere as {'{'}inputs.name{'}'}</td>	
-        <td class='tcenter'>Yes</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>preset</td>	
-        <td>Preset values to use</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>"dates"</td>	
-        <td class='tcenter'>-</td>	
-    </tr>
-    <tr>	
-        <td>data</td>	
-        <td>Query name, wrapped in curly braces</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>query name</td>	
-        <td class='tcenter'>-</td>	
-    </tr>
-    <tr>	
-        <td>value</td>	
-        <td>Column name from the query containing values to pick from</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>column name</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>label</td>	
-        <td>Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>column name</td>	
-        <td class='tcenter'>Uses the column in value</td>
-    </tr>
-    <tr>	
-        <td>title</td>	
-        <td>Title to display above the button group</td>	
-        <td class='tcenter'>-</td>	
-        <td class='tcenter'>string</td>	
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>order</td>
-        <td>Column to sort options by</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>column name</td>
-        <td class='tcenter'>Uses the same order as the query in `data`</td>
-    </tr>
-    <tr>	
-        <td>where</td>
-        <td>SQL where fragment to filter options by (e.g., where sales > 40000)</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>SQL where clause</td>
-        <td class='tcenter'>-</td>
-    </tr>
-</table>
+<PropListing 
+    name="name"
+    description="Name of the button group, used to reference the selected value elsewhere as {`{inputs.name}`}"
+    required=true
+/>
+<PropListing 
+    name="preset"
+    description="Preset values to use"
+    options="dates"
+/>
+<PropListing 
+    name="data"
+    description="Query name, wrapped in curly braces"
+    options="query name"
+/>
+<PropListing 
+    name="value"
+    description="Column name from the query containing values to pick from"
+    options="column name"
+/>
+<PropListing 
+    name="label"
+    description="Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)"
+    options="column name"
+    defaultValue="Uses the column in value"
+/>
+<PropListing 
+    name="title"
+    description="Title to display above the button group"
+    options="string"
+/>
+<PropListing 
+    name="order"
+    description="Column to sort options by"
+    options="column name"
+    defaultValue="Uses the same order as the query in `data`"
+/>
+<PropListing 
+    name="where"
+    description="SQL where fragment to filter options by (e.g., where sales > 40000)"
+    options="SQL where clause"
+/>
 
-## ButtonGroupItem
+# ButtonGroupItem
 
 The ButtonGroupItem component can be used to manually add options to a button group. This is useful if you want to add a default option, or if you want to add options that are not in a query.
 
-### Options
+## Options
 
-<table>						 
-    <tr>	
-        <th class='tleft'>Name</th>	
-        <th class='tleft'>Description</th>	
-        <th>Required?</th>	
-        <th>Options</th>	
-        <th>Default</th>	
-    </tr>
-        <tr>	
-        <td>value</td>
-        <td>Value to use when the option is selected</td>
-        <td class='tcenter'>Yes</td>
-        <td class='tcenter'>string</td>
-        <td class='tcenter'>-</td>
-    </tr>
-    <tr>	
-        <td>valueLabel</td>
-        <td>Label to display for the option in the dropdown</td>
-        <td class='tcenter'>-</td>
-        <td class='tcenter'>string</td>
-        <td class='tcenter'>Uses value</td>
-    </tr>
-    <tr>	
-        <td>hideDuringPrint</td>
-        <td>Hide the component when the report is printed</td>
-        <td class='tcenter'>No</td>
-        <td class='tcenter'>true | false</td>
-        <td class='tcenter'>true</td>
-    </tr>
-</table>
-
-
+<PropListing 
+    name="value"
+    description="Value to use when the option is selected"
+    required=true
+/>
+<PropListing 
+    name="valueLabel"
+    description="Label to display for the option in the dropdown"
+    options="string"
+    defaultValue="Uses value"
+/>
+<PropListing 
+    name="hideDuringPrint"
+    description="Hide the component when the report is printed"
+    options={["true", "false"]}
+    defaultValue=true
+/>

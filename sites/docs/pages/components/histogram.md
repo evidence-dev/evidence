@@ -30,62 +30,201 @@ sidebar_position: 1
 
 ### Data
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x</td>	<td>Column which contains the data you want to summarize</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>First column</td>	</tr>
-<tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
-<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
-</table>
+<PropListing
+    name=data
+    description="Query name, wrapped in curly braces"
+    required=true
+    options="query name"
+/>
+<PropListing
+    name=x
+    description="Column which contains the data you want to summarize"
+    required=true
+    options="column name"
+/>
+<PropListing
+    name=emptySet
+    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    required=false
+    options={['error', 'warn', 'pass']}
+    defaultValue="error"
+/>
+<PropListing
+    name=emptyMessage
+    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    required=false
+    options="string"
+    defaultValue="No records"
+/>
 
 ### Formatting & Styling
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>xFmt</td>	<td>Format to use for x column (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>fillColor</td>	<td>Color to override default series color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>fillOpacity</td>	<td>% of the full color that should be rendered, with remainder being transparent</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number (0 to 1)</td>	<td class='tcenter'>1</td>	</tr>
-<tr>	<td>colorPalette</td>	<td>Array of custom colours to use for the chart<br/>E.g., ['#cf0d06','#eb5752','#e88a87']<br/> Note that the array must be surrounded by curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color strings (CSS name | hexademical | RGB | HSL)</td>	<td class='tcenter'>built-in color palette</td>	</tr>
-</table>
+<PropListing
+    name=xFmt
+    description="Format to use for x column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    required=false
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=fillColor
+    description="Color to override default series color"
+    required=false
+    options="CSS name | hexademical | RGB | HSL"
+/>
+<PropListing
+    name=fillOpacity
+    description="% of the full color that should be rendered, with remainder being transparent"
+    required=false
+    options="number (0 to 1)"
+    defaultValue="1"
+/>
+<PropListing
+    name=colorPalette
+    description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
+    required=false
+    options="array of color strings (CSS name | hexademical | RGB | HSL)"
+    defaultValue="built-in color palette"
+/>
 
 ### Axes
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>xAxisTitle</td>	<td>Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | string | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yAxisTitle</td>	<td>Name to show beside y-axis. If 'true', formatted column name is used.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | string | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>xGridlines</td>	<td>Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yGridlines</td>	<td>Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>xAxisLabels</td>	<td>Turns on/off value labels on the x-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>yAxisLabels</td>	<td>Turns on/off value labels on the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>xBaseline</td>	<td>Turns on/off thick axis line (line appears at y=0)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>yBaseline</td>	<td>Turns on/off thick axis line (line appears directly alongside the y-axis labels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>xTickMarks</td>	<td>Turns on/off tick marks for each of the x-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for each of the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yMin</td>	<td>Starting value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yMax</td>	<td>Maximum value for the y-axis</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-</table>
+<PropListing
+    name=xAxisTitle
+    description="Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false"
+    required=false
+    options={['true', 'string', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=yAxisTitle
+    description="Name to show beside y-axis. If 'true', formatted column name is used."
+    required=false
+    options={['true', 'string', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=xGridlines
+    description="Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)"
+    required=false
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=yGridlines
+    description="Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)"
+    required=false
+    options={['true', 'false']}
+    defaultValue="true"
+/>
+<PropListing
+    name=xAxisLabels
+    description="Turns on/off value labels on the x-axis"
+    required=false
+    options={['true', 'false']}
+    defaultValue="true"
+/>
+<PropListing
+    name=yAxisLabels
+    description="Turns on/off value labels on the y-axis"
+    required=false
+    options={['true', 'false']}
+    defaultValue="true"
+/>
+<PropListing
+    name=xBaseline
+    description="Turns on/off thick axis line (line appears at y=0)"
+    required=false
+    options={['true', 'false']}
+    defaultValue="true"
+/>
+<PropListing
+    name=yBaseline
+    description="Turns on/off thick axis line (line appears directly alongside the y-axis labels)"
+    required=false
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=xTickMarks
+    description="Turns on/off tick marks for each of the x-axis labels"
+    required=false
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=yTickMarks
+    description="Turns on/off tick marks for each of the y-axis labels"
+    required=false
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=yMin
+    description="Starting value for the y-axis"
+    required=false
+    options="number"
+/>
+<PropListing
+    name=yMax
+    description="Maximum value for the y-axis"
+    required=false
+    options="number"
+/>
 
 ### Chart
 
-
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>title</td>	<td>Chart title. Appears at top left of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>subtitle</td>	<td>Chart subtitle. Appears just under title.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>legend</td>	<td>Turns legend on or off. Legend appears at top center of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true for multiple series</td>	</tr>
-<tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>180</td>	</tr>
-<tr>	<td>renderer</td>	<td>Which chart renderer type (canvas or SVG) to use. See ECharts' documentation on renderers: https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/</td>	<td class='tcenter'>-</td>	<td class='tcenter'>canvas | svg</td>	<td class='tcenter'>canvas</td>	</tr>
-</table>
+<PropListing
+    name=title
+    description="Chart title. Appears at top left of chart."
+    options="string"
+/>
+<PropListing
+    name=subtitle
+    description="Chart subtitle. Appears just under title."
+    options="string"
+/>
+<PropListing
+    name=legend
+    description="Turns legend on or off. Legend appears at top center of chart."
+    options={['true', 'false']}
+    defaultValue="true for multiple series"
+/>
+<PropListing
+    name=chartAreaHeight
+    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
+    options="number"
+    defaultValue="180"
+/>
+<PropListing
+    name=renderer
+    description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
+    options={['canvas', 'svg']}
+    defaultValue="canvas"
+/>
 
 ### Custom Echarts Options
 
-<table>
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>echartsOptions</td>	<td>Custom Echarts options to override the default options. <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>seriesOptions</td>	<td>Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using <code>echartsOptions</code> <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleSeriesOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-</table>
+<PropListing
+    name=echartsOptions
+    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    options="{`{{exampleOption:'exampleValue'}}`}"
+/>
+<PropListing
+    name=seriesOptions
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    options="{`{{exampleSeriesOption:'exampleValue'}}`}"
+/>
+<PropListing
+    name=printEchartsConfig
+    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+
+
+
+
+
 
 ### Interactivity
 
@@ -102,7 +241,7 @@ sidebar_position: 1
 
 ## Annotations
 
-Histograms can include [**annotations**](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
+Histograms can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
 ```html
 <Histogram data={sales_data} x=category>

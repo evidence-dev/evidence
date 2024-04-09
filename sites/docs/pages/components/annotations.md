@@ -11,15 +11,15 @@ Evidence currently offers 2 types of annotations, which can be defined inline or
 
 <img src="/img/annotations-example.png"  width='600px'/>
 
-## Reference Line 
+# Reference Line 
 
 Reference lines allow you to add horizontal or vertical lines to a chart to provide additional context within the visualization. These lines can be produced by providing a specific value (`y=50` or `x='2020-03-14'`) or by providing a dataset (e.g., `date`, `event_name`).
 
 When a dataset is provided, `ReferenceLine` can generate multiple lines - one for each row in the dataset. This can be helpful for plotting things like important milestones, launch dates, or experiment start dates.
 
-### Examples
+## Examples
 
-#### Y-axis Defined Inline
+### Y-axis Defined Inline
 
 <img src="/img/refline-y-basic.png"  width='600px'/>
 
@@ -29,7 +29,7 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-#### X-axis Defined Inline
+### X-axis Defined Inline
 
 <img src="/img/refline-x-basic.png"  width='600px'/>
 
@@ -39,7 +39,7 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-#### Y-axis Multiple Lines
+### Y-axis Multiple Lines
 <img src="/img/refline-y-multi.png"  width='600px'/>
 
 ```html
@@ -49,7 +49,7 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-#### X-axis from Data
+### X-axis from Data
 
 <img src="/img/refline-x-multi.png"  width='600px'/>
 
@@ -59,7 +59,7 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-#### Custom Styling
+### Custom Styling
 <img src="/img/refline-y-custom.png"  width='600px'/>
 
 ```html
@@ -68,7 +68,7 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-#### Label Positions
+### Label Positions
 <img src="/img/refline-label-positions.png"  width='600px'/>
 
 ```html
@@ -82,7 +82,7 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-#### Colours
+### Colours
 <img src="/img/refline-colors.png"  width='600px'/>
 
 ```html
@@ -96,48 +96,111 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 </LineChart>
 ```
 
-### Options
+## Options
 A reference line can be produced by defining values inline or by supplying a dataset, and the required props are different for each of those cases.
 
-#### Case 1: Defining Values Inline
+### Defining Values Inline
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>x</td>	<td>x-axis value where line will be plotted</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y</td>	<td>y-axis value where line will be plotted</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>label</td>	<td>Text to show as label for the line</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>hideValue</td>	<td>Option to remove the value from the label</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false - If no label supplied, value will become the label. If label is supplied, value will appear in parentheses after the label.</td>	</tr>
-</table>
+    <PropListing
+        name=x
+        description="x-axis value where line will be plotted"
+        required="false"
+        options="number | string | date"
+    />
+    <PropListing
+        name=y
+        description="y-axis value where line will be plotted"
+        required="false"
+        options="number"    
+    />
+    <PropListing
+        name=label
+        description="Text to show as label for the line. If no label is provided, the value will be used."
+        required="false"
+        options="string"
+    />
+
+
+- One of `x` or `y` is required to plot a line.
+- If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
+
+### Supplying a Dataset
+
+    <PropListing
+        name=data
+        description="Query name, wrapped in curly braces"
+        required=true
+        options="query name"
+    />
+    <PropListing
+        name=x
+        description="Column containing x-axis values"
+        options="column name"
+    />
+    <PropListing
+        name=y
+        description="Column containing y-axis values"
+        options="column name"
+    />
+    <PropListing
+        name=label
+        description="Column containing a label to use for each line"
+        required="false"
+        options="column name"
+    />
+    <PropListing
+        name=hideValue
+        description="Option to remove the value from the label"
+        options={["true", "false"]}
+        defaultValue=false
+    />
 
 - If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
 
-#### Case 2: Supplying a Dataset
+### Styling
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes </td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x</td>	<td>Column containing x-axis values</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y</td>	<td>Column containing y-axis values</td>	<td class='tcenter'>One of x or y is required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>label</td>	<td>Column containing a label to use for each line</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>hideValue</td>	<td>Option to remove the value from the label</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false - If no label supplied, value will become the label. If label is supplied, value will appear in parentheses after the label.</td>	</tr>
-</table>
+    <PropListing
+        name=labelPosition
+        description="Where label will appear on the line"
+        options={["aboveStart", "aboveCenter", "aboveEnd", "belowStart", "belowCenter", "belowEnd"]}
+        defaultValue="aboveEnd"
+    />
+    <PropListing
+        name=color
+        description="Color to override default line and label colors"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=lineColor
+        description="Color to override default line color. If used, takes precedence over `color`"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=labelColor
+        description="Color to override default label color. If used, takes precedence over `color`"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=lineType
+        description="Options to show breaks in a line (dashed or dotted)"
+        options={["solid", "dashed", "dotted"]}
+        defaultValue="dashed"
+    />
+    <PropListing
+        name=lineWidth
+        description="Thickness of line (in pixels)"
+        options="number"
+        defaultValue="1.3"
+    />
+    <PropListing
+        name=labelBackground
+        description="Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours."
+        options={["true", "false"]}
+        defaultValue="true"
+    />
 
-- If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
 
-#### Styling
-
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>labelPosition</td>	<td>Where label will appear on the line</td>	<td class='tcenter'>-</td>	<td class='tcenter'>aboveStart | aboveCenter | aboveEnd <br/> belowStart | belowCenter | belowEnd</td>	<td class='tcenter'>aboveEnd</td>	</tr>
-<tr>	<td>color</td>	<td>Color to override default line and label colors</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>lineColor</td>	<td>Color to override default line color. If used, takes precedence over `color`</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>labelColor</td>	<td>Color to override default label color. If used, takes precedence over `color`</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>lineType</td>	<td>Options to show breaks in a line (dashed or dotted)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>solid | dashed | dotted</td>	<td class='tcenter'>dashed</td>	</tr>
-<tr>	<td>lineWidth</td>	<td>Thickness of line (in pixels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>1.3</td>	</tr>
-<tr>	<td>labelBackground</td>	<td>Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-</table>
-
-## Reference Area
+# Reference Area
 
 Reference areas allow you to add highlighted ranges to a chart. These ranges can be:
 - Along the x-axis (e.g., recession date ranges)
@@ -148,9 +211,9 @@ Reference areas can be produced by defining the x and y-axis values inline (e.g.
 
 When a dataset is provided, `ReferenceArea` can generate multiple areas - one for each row in the dataset. 
 
-### Examples
+## Examples
 
-#### X-axis Defined Inline
+### X-axis Defined Inline
 <img src="/img/refarea-x-multi.png"  width='600px'/>
 
 ```html
@@ -160,7 +223,7 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 </LineChart>
 ```
 
-#### Y-axis Defined Inline
+### Y-axis Defined Inline
 <img src="/img/refarea-y-ranges.png"  width='600px'/>
 
 ```html
@@ -171,7 +234,7 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 </LineChart>
 ```
 
-#### X-axis from Data
+### X-axis from Data
 <img src="/img/refarea-x-multi-data.png"  width='600px'/>
 
 ```html
@@ -180,7 +243,7 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 </LineChart>
 ```
 
-#### Bar Chart
+### Bar Chart
 <img src="/img/refarea-bar.png"  width='600px'/>
 
 ```html
@@ -189,12 +252,12 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 </BarChart> 
 ```
 
-##### Continuous Axis Bar Charts
+#### Continuous Axis Bar Charts
 On a continous x-axis (dates or numbers), the reference area will start and stop at the exact point on the x-axis. This means it will appear in the middle of whichever bar is at that point. If you would prefer to see the area cover the full bar, there are 2 ways to achieve this:
 1. Add a buffer on either side of the range you want to highlight (e.g., instead of ending the area at `2020-07-01`, end it at `2020-07-15`)
 2. Change your x-axis to categorical data (using `xType=category`). If using a date axis, you may also want to retain the axis label formatting for dates - to achieve this, you can use the `xFmt` prop (e.g., `xFmt=mmm`)
 
-#### Reference Area Box
+### Reference Area Box
 <img src="/img/refarea-box.png"  width='600px'/>
 
 ```html
@@ -203,7 +266,7 @@ On a continous x-axis (dates or numbers), the reference area will start and stop
 </ScatterPlot>
 ```
 
-#### Labels
+### Labels
 <img src="/img/refarea-label-positions.png"  width='600px'/>
 
 ```html
@@ -220,10 +283,10 @@ On a continous x-axis (dates or numbers), the reference area will start and stop
 </LineChart>
 ```
 
-##### Label Overlaps
+#### Label Overlaps
 Reference areas appear behind chart gridlines, including reference area labels. If you are seeing an overlap between the gridlines and the reference area label, you can avoi this by turning gridlines off (`yGridlines=false`).
 
-#### Colours
+### Colours
 <img src="/img/refarea-colors.png"  width='600px'/>
 
 ```html
@@ -238,42 +301,114 @@ Reference areas appear behind chart gridlines, including reference area labels. 
 ```
 
 
-### Options
+## Options
 A reference area can be produced by defining values inline or by supplying a dataset, and the required props are different for each of those cases.
 
-#### Case 1: Defining Values Inline
+### Defining Values Inline
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>xMin</td>	<td>x-axis value where area should start. If left out, range will extend to the start of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>xMax</td>	<td>x-axis value where area should end. If left out, range will extend to the end of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number | string | date</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yMin</td>	<td>y-axis value where area should start. If left out, range will extend to the start of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yMax</td>	<td>y-axis value where area should end. If left out, range will extend to the end of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>number</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>label</td>	<td>Text to show as label for the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-</table>
+    <PropListing
+        name=xMin
+        description="x-axis value where area should start. If left out, range will extend to the start of the x-axis."
+        options="number | string | date"
+    />
+    <PropListing
+        name=xMax
+        description="x-axis value where area should end. If left out, range will extend to the end of the x-axis."
+        options="number | string | date"
+    />
+    <PropListing
+        name=yMin
+        description="y-axis value where area should start. If left out, range will extend to the start of the y-axis."
+        options="number"
+    />
+    <PropListing
+        name=yMax
+        description="y-axis value where area should end. If left out, range will extend to the end of the y-axis."
+        options="number"
+    />
+    <PropListing
+        name=label
+        description="Text to show as label for the area"
+        options="string"
+    />
 
-#### Case 2: Supplying a Dataset
+- At least 1 of `xMin`, `xMax`, `yMin`, or `yMax` is required to plot an area.
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>xMin</td>	<td>Column containing x-axis values for area start. If left out, range will extend to the start of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>xMax</td>	<td>Column containing x-axis values for area end. If left out, range will extend to the end of the x-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yMin</td>	<td>Column containing y-axis values for area start. If left out, range will extend to the start of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>yMax</td>	<td>Column containing y-axis values for area end. If left out, range will extend to the end of the y-axis.</td>	<td class='tcenter'>At least 1 of xMin, xMax, yMin, or yMax required</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>label</td>	<td>Column containing a label to use for each area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-</table>
+### Supplying a Dataset
 
+    <PropListing
+        name=data
+        description="Query name, wrapped in curly braces"
+        required=true
+        options="query name"
+    />
+    <PropListing
+        name=xMin
+        description="Column containing x-axis values for area start. If left out, range will extend to the start of the x-axis."
+        options="column name"
+    />
+    <PropListing
+        name=xMax
+        description="Column containing x-axis values for area end. If left out, range will extend to the end of the x-axis."
+        options="column name"
+    />
+    <PropListing
+        name=yMin
+        description="Column containing y-axis values for area start. If left out, range will extend to the start of the y-axis."
+        options="column name"
+    />
+    <PropListing
+        name=yMax
+        description="Column containing y-axis values for area end. If left out, range will extend to the end of the y-axis."
+        options="column name"
+    />
+    <PropListing
+        name=label
+        description="Column containing a label to use for each area"
+        required="false"
+        options="column name"
+    />
 
-#### Styling
+- At least 1 of `xMin`, `xMax`, `yMin`, or `yMax` is required to plot an area.
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>labelPosition</td>	<td>Where label will appear within the area</td>	<td class='tcenter'>-</td>	<td class='tcenter'>topLeft | top | topRight <br/> left | center | right <br/> bottomLeft | bottom | bottomRight</td>	<td class='tcenter'>topLeft</td>	</tr>
-<tr>	<td>color</td>	<td>Color to override default area and label colors</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>labelColor</td>	<td>Color to override default label color. If used, takes precedence over `color`</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>border</td>	<td>Whether border should be shown</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>borderColor</td>	<td>Color to override default border color</td>	<td class='tcenter'>-</td>	<td class='tcenter'>CSS name | hexademical | RGB | HSL</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>borderType</td>	<td>Options to show breaks in a line (dashed or dotted)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>solid | dashed | dotted</td>	<td class='tcenter'>dashed</td>	</tr>
-<tr>	<td>borderWidth</td>	<td>Thickness of line (in pixels)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>1</td>	</tr>
-</table>
+### Styling
+
+    <PropListing
+        name=labelPosition
+        description="Where label will appear within the area"
+        options={["topLeft", "top", "topRight", "left", "center", "right", "bottomLeft", "bottom", "bottomRight"]}
+        defaultValue="topLeft"
+    />
+    <PropListing
+        name=color
+        description="Color to override default area and label colors"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=labelColor
+        description="Color to override default label color. If used, takes precedence over `color`"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=border
+        description="Whether border should be shown"
+        options={["true", "false"]}
+        defaultValue="false"
+    />
+    <PropListing
+        name=borderColor
+        description="Color to override default border color"
+        options="CSS name | hexademical | RGB | HSL"
+    />
+    <PropListing
+        name=borderType
+        description="Options to show breaks in a line (dashed or dotted)"
+        options={["solid", "dashed", "dotted"]}
+        defaultValue="dashed"
+    />
+    <PropListing
+        name=borderWidth
+        description="Thickness of line (in pixels)"
+        options="number"
+        defaultValue="1"
+    />

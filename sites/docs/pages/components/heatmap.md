@@ -129,67 +129,219 @@ Heatmap currently only works with string columns. If you would like to use a dat
 
 ### Data
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>data</td>	<td>Query name, wrapped in curly braces</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>query name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>x</td>	<td>Categorical column to use for the x-axis. If you want to use dates, cast them to strings in your query first</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>y</td>	<td>Categorical column to use for the y-axis. If you want to use dates, cast them to strings in your query first</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>value</td>	<td>Numeric column to use for the y-axis</td>	<td class='tcenter'>Yes</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>min</td>	<td>Minimum number for the heatmap's color scale</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>min of value column</td>	</tr>
-<tr>	<td>max</td>	<td>Maximum number for the heatmap's color scale</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>max of value column</td>	</tr>
-<tr>	<td>emptySet</td>	<td>Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in <code>build:strict</code>. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>error | warn | pass</td>	<td class='tcenter'>error</td>	</tr>
-<tr>	<td>emptyMessage</td>	<td>Text to display when an empty dataset is received - only applies when <code>emptySet</code> is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>No records</td>	</tr>
-</table>
+<PropListing
+    name=data
+    description="Query name, wrapped in curly braces"
+    required=true
+    options="query name"
+/>
+<PropListing
+    name=x
+    description="Categorical column to use for the x-axis. If you want to use dates, cast them to strings in your query first"
+    required=true
+    options="column name"
+/>
+<PropListing
+    name=y
+    description="Categorical column to use for the y-axis. If you want to use dates, cast them to strings in your query first"
+    required=true
+    options="column name"
+/>
+<PropListing
+    name=value
+    description="Numeric column to use for the y-axis"
+    required=true
+    options="column name"
+/>
+<PropListing
+    name=min
+    description="Minimum number for the heatmap's color scale"
+    options="number"
+    defaultValue="min of value column"
+/>
+<PropListing
+    name=max
+    description="Maximum number for the heatmap's color scale"
+    options="number"
+    defaultValue="max of value column"
+/>
+<PropListing
+    name=emptySet
+    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    options={['error', 'warn', 'pass']}
+    defaultValue="error"
+/>
+<PropListing
+    name=emptyMessage
+    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    options="string"
+    defaultValue="No records"
+/>
 
 ### Formatting & Styling
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>nullsZero</td>	<td>Whether to treats nulls or missing values as zero</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>zeroDisplay</td>	<td>String to display in place of zeros</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>—</td>	</tr>
-<tr>	<td>colorPalette</td>	<td>Array of colors to form the gradient for the heatmap. Remember to wrap your array in curly braces.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>array of color codes - e.g., <code>{`colorPalette={['navy', 'white', '#c9c9c9']}`}</code></td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>valueFmt</td>	<td>Format to use for value column (<a href='/core-concepts/formatting'>see available formats</a>)</td>	<td class='tcenter'>-</td>	<td class='tcenter'>Excel-style format | built-in format name | custom format name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>cellHeight</td>	<td>Number representing the height of cells in the heatmap</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>30</td>	</tr>
-<tr>	<td>leftPadding</td>	<td>Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
-<tr>	<td>rightPadding</td>	<td>Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>2</td>	</tr>
-<tr>	<td>valueLabels</td>	<td>Turn on or off value labels in the heatmap cells</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>mobileValueLabels</td>	<td>Turn on or off value labels in the heatmap cells when app is viewed on a mobile device screen size</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>borders</td>	<td>Turn on or off borders around cells. Default is to show light grey border around each cell. To customize border appearance, use <code>echartsOptions</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-</table>
+<PropListing
+    name=nullsZero
+    description="Whether to treats nulls or missing values as zero"
+    options={['true', 'false']}
+    defaultValue="true"
+/>
+<PropListing
+    name=zeroDisplay
+    description="String to display in place of zeros"
+    options="string"
+/>
+<PropListing
+    name=colorPalette
+    description="Array of colors to form the gradient for the heatmap."
+    options="array of color codes - e.g., {`{['navy', 'white', '#c9c9c9']}`}"
+/>
+<PropListing
+    name=valueFmt
+    description="Format to use for value column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    options="Excel-style format | built-in format name | custom format name"
+/>
+<PropListing
+    name=cellHeight
+    description="Number representing the height of cells in the heatmap"
+    options="number"
+    defaultValue="30"
+/>
+<PropListing
+    name=leftPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+    defaultValue="0"
+/>
+<PropListing
+    name=rightPadding
+    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+    options="number"
+    defaultValue="2"
+/>
+<PropListing
+    name=valueLabels
+    description="Turn on or off value labels in the heatmap cells"
+    options={['true', 'false']}
+    defaultValue="true"
+/>
+<PropListing
+    name=mobileValueLabels
+    description="Turn on or off value labels in the heatmap cells when app is viewed on a mobile device screen size"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=borders
+    description="Turn on or off borders around cells. Default is to show light grey border around each cell. To customize border appearance, use `echartsOptions`"
+    options={['true', 'false']}
+    defaultValue="true"
+/>
 
 ### Axes
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>xTickMarks</td>	<td>Turns on/off tick marks for the x-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>yTickMarks</td>	<td>Turns on/off tick marks for the y-axis labels</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>xLabelRotation</td>	<td>Degrees to rotate the labels on the x-axis. Can be negative number to reverse direction. <code>45</code> and <code>-45</code> are common options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>0</td>	</tr>
-<tr>	<td>xAxisPosition</td>	<td>Position of x-axis and labels. Can be top or bottom. top recommended for longer charts</td>	<td class='tcenter'>-</td>	<td class='tcenter'>top | bottom</td>	<td class='tcenter'>top</td>	</tr>
-<tr>	<td>xSort</td>	<td>Column to sort x values by</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>xSortOrder</td>	<td>Sets direction of sort</td>	<td class='tcenter'>-</td>	<td class='tcenter'>asc | desc</td>	<td class='tcenter'>asc</td>	</tr>
-<tr>	<td>ySort</td>	<td>Column to sort y values by</td>	<td class='tcenter'>-</td>	<td class='tcenter'>column name</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>ySortOrder</td>	<td>Sets direction of sort</td>	<td class='tcenter'>-</td>	<td class='tcenter'>asc | desc</td>	<td class='tcenter'>asc</td>	</tr>
-</table>
+
+<PropListing
+    name=xTickMarks
+    description="Turns on/off tick marks for the x-axis labels"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=yTickMarks
+    description="Turns on/off tick marks for the y-axis labels"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=xLabelRotation
+    description="Degrees to rotate the labels on the x-axis. Can be negative number to reverse direction. `45` and `-45` are common options"
+    options="number"
+    defaultValue="0"
+/>
+<PropListing
+    name=xAxisPosition
+    description="Position of x-axis and labels. Can be top or bottom. top recommended for longer charts"
+    options={['top', 'bottom']}
+    defaultValue="top"
+/>
+<PropListing
+    name=xSort
+    description="Column to sort x values by"
+    options="column name"
+/>
+<PropListing
+    name=xSortOrder
+    description="Sets direction of sort"
+    options={['asc', 'desc']}
+    defaultValue="asc"
+/>
+<PropListing
+    name=ySort
+    description="Column to sort y values by"
+    options="column name"
+/>
+<PropListing
+    name=ySortOrder
+    description="Sets direction of sort"
+    options={['asc', 'desc']}
+    defaultValue="asc"
+/>
 
 ### Chart
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>title</td>	<td>Chart title. Appears at top left of chart.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>subtitle</td>	<td>Chart subtitle. Appears just under title.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>string</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>chartAreaHeight</td>	<td>Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>number</td>	<td class='tcenter'>auto set based on y-axis values</td>	</tr>
-<tr>	<td>legend</td>	<td>Turn on or off the legend</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>true</td>	</tr>
-<tr>	<td>filter</td>	<td>Allow draggable filtering on the legend. Must be used with <code>legend=true</code></td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-<tr>	<td>renderer</td>	<td>Which chart renderer type (canvas or SVG) to use. See ECharts' documentation on renderers: https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/</td>	<td class='tcenter'>-</td>	<td class='tcenter'>canvas | svg</td>	<td class='tcenter'>canvas</td>	</tr>
-</table>
+<PropListing
+    name=title
+    description="Chart title. Appears at top left of chart."
+    options="string"
+/>
+<PropListing
+    name=subtitle
+    description="Chart subtitle. Appears just under title."
+    options="string"
+/>
+<PropListing
+    name=chartAreaHeight
+    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
+    options="number"
+    defaultValue="auto set based on y-axis values"
+/>
+<PropListing
+    name=legend
+    description="Turn on or off the legend"
+    options={['true', 'false']}
+    defaultValue="true"
+/>
+<PropListing
+    name=filter
+    description="Allow draggable filtering on the legend. Must be used with `legend=true`"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
+    name=renderer
+    description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
+    options={['canvas', 'svg']}
+    defaultValue="canvas"
+/>
 
 ### Custom Echarts Options
 
-<table>
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	<td>echartsOptions</td>	<td>Custom Echarts options to override the default options. <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>seriesOptions</td>	<td>Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using <code>echartsOptions</code> <a href='/components/echarts-options'>See reference page</a> for available options.</td>	<td class='tcenter'>-</td>	<td class='tcenter'>{`{{exampleSeriesOption:'exampleValue'}}`}</td>	<td class='tcenter'>-</td>	</tr>
-<tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
-</table>
+<PropListing
+    name=echartsOptions
+    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    options="{`{{exampleOption:'exampleValue'}}`}"
+/>
+<PropListing
+    name=seriesOptions
+    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    options="{`{{exampleSeriesOption:'exampleValue'}}`}"
+/>
+<PropListing
+    name=printEchartsConfig
+    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
 
 ### Interactivity
 
