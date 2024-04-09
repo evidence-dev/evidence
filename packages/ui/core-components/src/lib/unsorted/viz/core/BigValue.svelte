@@ -61,7 +61,7 @@
 		slot="skeleton"
 	>
 		<p class="text-sm text-gray-700">{$$props.title ?? ' '}</p>
-		<Value column={$$props.value} fmt={$$props.fmt} data={loaded} />
+		<Value column={$$props.value} fmt={$$props.fmt} />
 	</div>
 
 	<InnerBigValue {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}>
