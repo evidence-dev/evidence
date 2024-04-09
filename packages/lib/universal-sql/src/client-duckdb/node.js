@@ -1,3 +1,5 @@
+import '../polyfill-dirname.js';
+import fs from 'fs/promises';
 import { arrowTableToJSON, getPromise } from './both.js';
 import {
 	ConsoleLogger,
@@ -108,11 +110,18 @@ export async function setParquetURLs(urls, append = false) {
 		for (const url of urls[source]) {
 			const table = url.split(path.sep).at(-1).slice(0, -'.parquet'.length);
 			const file_name = `${source}_${table}.parquet`;
+
+			const dirContent = await fs.readdir('.');
+			let target = url;
+			if (!dirContent.includes('static')) {
+				target = target.replace('static', 'client');
+			}
+
 			if (append) {
 				await emptyDbFs(file_name);
-				await emptyDbFs(url);
+				await emptyDbFs(target);
 			}
-			db.registerFileURL(file_name, url, DuckDBDataProtocol.NODE_FS, false);
+			db.registerFileURL(file_name, target, DuckDBDataProtocol.NODE_FS, false);
 			connection.query(
 				`CREATE OR REPLACE VIEW "${source}"."${table}" AS (SELECT * FROM read_parquet('${file_name}'));`
 			);
