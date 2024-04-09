@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 3.7.3
+
+### Patch Changes
+
+- fab378cb: Fix for bigvalue loaded is undefined
+
 ## 3.7.2
 
 ### Patch Changes
