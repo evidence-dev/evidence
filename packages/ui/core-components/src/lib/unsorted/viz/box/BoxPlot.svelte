@@ -47,6 +47,8 @@
 	export let printEchartsConfig = false;
 	export let renderer = undefined;
 
+	export let connectGroup = undefined;
+
 	export let seriesColors = undefined;
 
 	export let emptySet = undefined;
@@ -105,6 +107,7 @@
 	{emptySet}
 	{emptyMessage}
 	{renderer}
+	{connectGroup}
 	{seriesColors}
 >
 	<Box {boxPlotData} {color} {min} {max} />

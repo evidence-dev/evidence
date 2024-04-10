@@ -35,6 +35,13 @@
 	/** @type {string}*/
 	export let maxWidth = undefined;
 
+	/** @type {boolean} */
+	export let hideBreadcrumbs = false;
+	/** @type {boolean} */
+	export let hideHeader = false;
+	/** @type {boolean} */
+	export let hideTOC = false;
+
 	const prefetchStrategy = dev ? 'tap' : 'hover';
 
 	let mobileSidebarOpen = false;
@@ -52,19 +59,21 @@
 
 <div data-sveltekit-preload-data={prefetchStrategy} class="antialiased text-gray-900">
 	<ErrorOverlay />
-	<Header
-		bind:mobileSidebarOpen
-		{title}
-		{logo}
-		{neverShowQueries}
-		{fullWidth}
-		{maxWidth}
-		{hideSidebar}
-		{githubRepo}
-		{slackCommunity}
-		{xProfile}
-		{algolia}
-	/>
+	{#if !hideHeader}
+		<Header
+			bind:mobileSidebarOpen
+			{title}
+			{logo}
+			{neverShowQueries}
+			{fullWidth}
+			{maxWidth}
+			{hideSidebar}
+			{githubRepo}
+			{slackCommunity}
+			{xProfile}
+			{algolia}
+		/>
+	{/if}
 	<div
 		class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
 			'print:w-[650px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
@@ -72,18 +81,35 @@
 	>
 		{#if !hideSidebar}
 			<div class="print:hidden">
-				<Sidebar {fileTree} bind:mobileSidebarOpen {title} {logo} {builtWithEvidence} />
+				<Sidebar
+					{fileTree}
+					bind:mobileSidebarOpen
+					{title}
+					{logo}
+					{builtWithEvidence}
+					{hideHeader}
+				/>
 			</div>
 		{/if}
 		<main
-			class={(!hideSidebar ? 'md:px-8 ' : '') +
-				'flex-grow overflow-x-hidden print:px-0 print:md:px-0 py-8'}
+			class={(!hideSidebar ? 'md:pl-8 ' : '') +
+				(!hideTOC ? 'md:pr-8 ' : '') +
+				(!hideHeader
+					? !hideBreadcrumbs
+						? ' mt-16 sm:mt-20 '
+						: ' mt-16 sm:mt-[74px] '
+					: !hideBreadcrumbs
+						? ' mt-4 sm:mt-8 '
+						: ' mt-4 sm:mt-[26px] ') +
+				'flex-grow overflow-x-hidden print:px-0 print:mt-8'}
 		>
-			<div class="print:hidden">
-				{#if $page.route.id !== '/settings'}
-					<BreadCrumbs {fileTree} />
-				{/if}
-			</div>
+			{#if !hideBreadcrumbs}
+				<div class="print:hidden">
+					{#if $page.route.id !== '/settings'}
+						<BreadCrumbs {fileTree} />
+					{/if}
+				</div>
+			{/if}
 			{#if !$navigating}
 				<article id="evidence-main-article" class="select-text markdown">
 					<slot name="content" />
@@ -92,9 +118,11 @@
 				<LoadingSkeleton />
 			{/if}
 		</main>
-		<div class="print:hidden">
-			<TableOfContents />
-		</div>
+		{#if !hideTOC}
+			<div class="print:hidden">
+				<TableOfContents {hideHeader} />
+			</div>
+		{/if}
 	</div>
 </div>
 {#if !$navigating && dev && !$page.url.pathname.startsWith('/settings')}

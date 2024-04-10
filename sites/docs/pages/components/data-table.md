@@ -293,6 +293,108 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 <img src='/img/datatable-raw-colnames.png' width='500px'/>
 
+### Groups - Accordion
+
+#### Without subtotals
+
+```html
+<DataTable data={orders} groupBy=state>
+ 	<Column id=state/> 
+	<Column id=category totalAgg=""/> 
+	<Column id=item totalAgg=""/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd/> 
+	<Column id=growth fmt=pct1/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-nosub.png' width='500px'/>
+
+#### With Subtotals
+
+```html
+<DataTable data={orders} groupBy=state subtotals=true> 
+ 	<Column id=state/> 
+	<Column id=category totalAgg=""/> 
+	<Column id=item totalAgg=""/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd/> 
+	<Column id=growth fmt=pct1/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-sub.png' width='500px'/>
+
+#### Closed by Default
+
+```html
+<DataTable data={orders} groupBy=state subtotals=true totalRow=true groupsOpen=false> 
+ 	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
+	<Column id=category totalAgg=countDistinct totalFmt='[=1]0 "category";0 "categories"'/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='[=1]0 "item";0 "items"'/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd0k/> 
+	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-closed.png' width='500px'/>
+
+#### With Configured Columns
+
+```html
+<DataTable data={orders} groupBy=category subtotals=true totalRow=true> 
+ 	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
+	<Column id=category totalAgg=Total/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=orders contentType=colorscale/> 
+	<Column id=sales fmt=usd0k/> 
+	<Column id=growth contentType=delta fmt=pct totalAgg=weightedMean weightCol=sales/> 
+</DataTable>
+```
+
+<img src='/img/tbl-accordion-configured.png' width='500px'/>
+
+### Groups - Section
+
+#### Without subtotals
+
+```html
+<DataTable data={orders} groupBy=state groupType=section/>
+```
+
+<img src='/img/tbl-section-nosub.png' width='500px'/>
+
+#### With Subtotals
+
+```html
+<DataTable data={orders} groupBy=state subtotals=true groupType=section>
+ 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
+	<Column id=category totalAgg=Total/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=orders/> 
+	<Column id=sales fmt=usd1k/> 
+	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
+</DataTable>
+```
+
+<img src='/img/tbl-section-sub.png' width='500px'/>
+
+#### With Configured Columns
+
+```html
+<DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
+ 	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
+	<Column id=category totalAgg=Total/> 
+	<Column id=item  totalAgg=countDistinct totalFmt='0 "items"'/> 
+	<Column id=orders contentType=colorscale/> 
+	<Column id=sales fmt=usd1k/> 
+	<Column id=growth contentType=delta neutralMin=-0.02 neutralMax=0.02 fmt=pct1 totalAgg=weightedMean weightCol=sales /> 
+</DataTable>
+```
+
+<img src='/img/tbl-section-configured.png' width='500px'/>
+
 # DataTable
 
 ## Options
@@ -316,6 +418,18 @@ By default, the link column of your table is hidden. If you would like it to be 
     required=false
     options={['true', 'false']}
     defaultValue=false
+/>
+<PropListing
+    name=totalRowColor
+    description="Background color of the total row"
+    required=false
+    options="Hex color code | css color name"
+/>
+<PropListing
+    name=totalFontColor
+    description="Font color of the total row"
+    required=false
+    options="Hex color code | css color name"
 />
 <PropListing
     name=rowNumbers
@@ -408,6 +522,69 @@ By default, the link column of your table is hidden. If you would like it to be 
     options="string"
     defaultValue="No records"
 />
+
+### Groups
+Groups allow you to create sections within your table, increasing the density of the content you're displaying. Groups are currently limited to 1 level, but will be expanded in future versions.
+
+<PropListing
+    name=groupBy
+    description="Column to use to create groups. Note that groups are currently limited to a single group column."
+    required=false
+    options="column name"
+/>
+<PropListing
+    name=groupType
+    description="How the groups are shown in the table. Can be accordion (expand/collapse) or section (group column values are merged across rows)"
+    required=false
+    options={['accordion', 'section']}
+    defaultValue="accordion"
+/>
+<PropListing
+    name=subtotals
+    description="Whether to show aggregated totals for the groups"
+    required=false
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
+    name=subtotalFmt
+    description="Specify an override format to use in the subtotal row (<a href='/core-concepts/formatting'>see available formats</a>). Custom strings or values are unformatted by default."
+    required=false
+    options="Excel-style format | built-in format | custom format"
+/>
+<PropListing
+    name=groupsOpen
+    description="[groupType=accordion] Whether to show the accordions as open on page load"
+    required=false
+    options={['true', 'false']}
+    defaultValue=true
+/>
+<PropListing
+    name=accordionRowColor
+    description="[groupType=accordion] Background color for the accordion row"
+    required=false
+    options="Hex color code | css color name"
+/>
+<PropListing
+    name=subtotalRowColor
+    description="[groupType=section] Background color for the subtotal row"
+    required=false
+    options="Hex color code | css color name"
+/>
+<PropListing
+    name=subtotalFontColor
+    description="[groupType=section] Font color for the subtotal row"
+    required=false
+    options="Hex color code | css color name"
+/>
+<PropListing
+    name=groupNamePosition
+    description="[groupType=section] Where the group label will appear in its cell"
+    required=false
+    options={['top', 'middle', 'bottom']}
+    defaultValue="middle"
+/>
+
 
 # Column
 
@@ -527,6 +704,24 @@ Use the `Column` component to choose specific columns to display in your table, 
     description="Whether to show the delta value. Set this to false to show only the delta arrow indicator."
     options={['true', 'false']}
     defaultValue="true"
+/>
+<PropListing
+    name=neutralMin
+    description="Start of the range for 'neutral' values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values."
+    options="number"
+    defaultValue="0"
+/>
+<PropListing
+    name=neutralMax
+    description="End of the range for 'neutral' values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values."
+    options="number"
+    defaultValue="0"
+/>
+<PropListing
+    name=chip
+    description="Whether to display the delta as a 'chip', with a background color and border."
+    options={['true', 'false']}
+    defaultValue="false"
 />
 
 ### Conditional Formatting (Color Scales)
