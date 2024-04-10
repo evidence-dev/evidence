@@ -345,13 +345,7 @@ Heatmap currently only works with string columns. If you would like to use a dat
 
 ### Interactivity
 
-<table>						 
-<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
-<tr>	
-    <td>connectGroup</td>	
-    <td>Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same <code>connectGroup</code> name will become connected</td>	
-    <td class='tcenter'>-</td>	
-    <td class='tcenter'>string</td>	
-    <td class='tcenter'>-</td>	
-</tr>
-</table>
+<PropListing
+    name=connectGroup
+    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
+/>

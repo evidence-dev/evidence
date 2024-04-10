@@ -591,6 +591,15 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
     defaultValue=false
 />
 
+### Interactivity
+
+<PropListing
+    name=connectGroup
+    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
+/>
+
+
+
 ## Annotations
 
 Bar charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
