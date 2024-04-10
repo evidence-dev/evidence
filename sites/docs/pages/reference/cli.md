@@ -10,8 +10,8 @@ description: Commands to start, install, develop, and build Evidence projects fr
 ## Commands
 
 | CLI Command                                     | VS Code Command                   | Description                                            |
-| ----------------------                          | ---------------                   | ------------------------------------------------------ |
-| `npx degit evidence-dev/template my-project`    | Evidence: New Evidence Project    | Create a new project from the template.                |
+| :---------------------                          | :--------------                   | :----------------------------------------------------- |
+| `npx degit evidence-dev/template my-project`    | `Evidence: New Evidence Project`    | Create a new project from the template.                |
 | `npm run sources`                               | Evidence: Run Sources             | Extract data from sources.                             |
 | `npm run dev`                                   | Evidence: Start Server            | Start the development server in the current directory. |
 | `npm run build`                                 | Evidence: Build                   | Build the project for production.                      |
@@ -29,7 +29,7 @@ For example, `npm run dev -- --port 4000` will start the development server on p
 Some of the most common are:
 
 | Command   | Flag                        | Description                                  | Detail                                                    |
-| --------  | ---------------             | -------------------------------------------- | ----------------------------------------------------      |
+| :-------  | :--------------             | :------------------------------------------- | :---------------------------------------------------      |
 | `sources` | `--changed`                 | Only run sources whose queries have changed  |                                                           |
 | `sources` | `--sources [source_name]`   | Only run sources from the specified sources  | Seperate with commas `--sources source1,source2`          |
 | `sources` | `--queries [query_name]`    | Only run the specified queries               | Seperate with commas                                      |
@@ -44,7 +44,7 @@ Evidence's `dev`, `build` and `preview` commands run using Vite, and so support 
 
 You can set environment variables to configure Evidence in production. Most of these are used to set database credentials securely.
 
-The format of environment variables for database credentials is `EVIDENCE_SOURCE__[SOURCE_NAME]__[VARIABLE_NAME]`.
+The format of environment variables for database credentials is `EVIDENCE_SOURCE__[source_name]__[variable_name]`.
 
 You can copy all your current environment variable values from the settings page at [localhost:3000/settings](http://localhost:3000/settings).
 
