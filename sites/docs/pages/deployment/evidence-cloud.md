@@ -6,7 +6,7 @@ title: Evidence Cloud
 
 ## What is Evidence Cloud?
 
-Evidence Cloud is our new hosting service that allows you to securely host Evidence projects.
+Evidence Cloud is our hosting service that allows you to securely host Evidence projects.
 
 It's the easiest way to host an Evidence project, without having to worry about maintaining your own infrastructure.
 
@@ -18,11 +18,11 @@ It's the easiest way to host an Evidence project, without having to worry about 
 - **Scheduled refreshes:** Daily (or more frequent) data updates to your project.
 - **Re-build on push:** Merge to your target branch to rebuild your project.
 
-## Request Invite
+## Sign Up
 
-Evidence Cloud is currently invite-only, request one below.
+Evidence Cloud is now generally available. You can sign up below.
 
-<LinkButton url="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=docs"> Request Invite </LinkButton>
+<LinkButton url="https://evidence.app"> Sign Up </LinkButton>
 
 <br/>
 <br/>
@@ -49,28 +49,22 @@ Setting up Evidence Cloud takes less than 5 minutes.
 
 - Pushes to your target branch.
 - Clicking the `Redeploy` button in the UI.
-- You can also set up a regularly scheduled refresh.
+- You can set up a regularly scheduled refresh on some of our plans.
 
 </Details>
 
 <Details title="How frequently does Evidence Cloud refresh my data?">
-You can set up data refreshes as regularly as you need.
+You can set up data refreshes as regularly as you need on the Team and Enterprise plans.
 </Details>
 
-<Details title="How do I get more frequent data refreshes?">
-
-Email us: [archie@evidence.dev](mailto:archie@evidence.dev), or reach out on 
-Evidence Cloud chat.
-</Details>
-
-<Details title="How does authentication work for my deployed project?">
+<Details title="How does authentication work for my private project?">
 
     Each viewer account is provided with a unique login to access the project. You can manage viewers in the Evidence Cloud UI.
 </Details>
 
-<Details title="How can I create a public Evidence Cloud site?">
+<Details title="Can I create a public Evidence Cloud site?">
 
-    If you want your Evidence Cloud project URL to be accessible to anyone, deploy your site, and reach out on Evidence Cloud chat. We will verify your identity before making the site public.
+    Yes! Our Free plan allows you to create public sites.
 </Details>
 
 <Details title="How do I set up development previews?">
@@ -88,11 +82,11 @@ you to use development data before it is in your production db.
 
 <Details title="Is Evidence Cloud free?">
 
-Evidence Cloud's Free tier offers up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to a [paid plan](https://evidence.dev/cloud).
+Evidence Cloud's Free tier offers unlimited public projects. For authentication and scheduled updates, [paid plans](https://evidence.dev/cloud) are available.
 
 </Details>
 
-<Details title="How do I get onto a Team or Embedded plan?">
+<Details title="How do I get onto a Team or Enterprise plan?">
 
 Email us: [archie@evidence.dev](mailto:archie@evidence.dev), or reach out on Evidence Cloud chat. 
 </Details>
@@ -108,7 +102,7 @@ Give them access to your [Github repository](https://docs.github.com/en/organiza
 
 <Details title="Which git providers can I use with Evidence Cloud?">
 
-Currently we support GitHub by default. If your team needs another git provider, reach out on [Slack](https://slack.evidence.dev).
+We support GitHub by default. If your team needs another git provider, reach out on [Slack](https://slack.evidence.dev).
 
 </Details>
 
