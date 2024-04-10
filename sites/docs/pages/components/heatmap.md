@@ -343,3 +343,9 @@ Heatmap currently only works with string columns. If you would like to use a dat
     defaultValue="false"
 />
 
+### Interactivity
+
+<PropListing
+    name=connectGroup
+    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
+/>

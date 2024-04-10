@@ -301,6 +301,14 @@ sidebar_position: 1
     defaultValue="false"
 />
 
+### Interactivity
+
+<PropListing
+    name=connectGroup
+    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
+/>
+
+
 ## Annotations
 
 Scatter plots can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:

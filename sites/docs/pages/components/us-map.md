@@ -221,3 +221,10 @@ sidebar_position: 1
     options={['true', 'false']}
     defaultValue="false"
 />
+
+### Interactivity
+
+<PropListing
+    name=connectGroup
+    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
+/>

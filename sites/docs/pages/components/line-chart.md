@@ -517,6 +517,12 @@ Evidence will automatically pick the first column as `x` and use all other numer
     defaultValue="false"
 />
 
+### Interactivity
+
+<PropListing
+    name=connectGroup
+    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
+/>
 
 
 ## Annotations
