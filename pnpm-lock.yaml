@@ -1142,11 +1142,11 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(postcss@8.4.23)
       prettier:
-        specifier: ^2.8.0
-        version: 2.8.8
+        specifier: ^3.2.5
+        version: 3.2.5
       prettier-plugin-svelte:
         specifier: ^3.1.2
-        version: 3.1.2(prettier@2.8.8)(svelte@4.2.12)
+        version: 3.1.2(prettier@3.2.5)(svelte@4.2.12)
       publint:
         specifier: ^0.1.9
         version: 0.1.9
@@ -21035,16 +21035,6 @@ packages:
   /presto-client@0.13.0:
     resolution: {integrity: sha512-EL+oiqnMnGF8iPzAOiuZi5Ja7D2zIQkYZ9iJy+Ddwjapw3SZ6AzP71gN4KhqbM/9WLCFW8WxexqbWc//4L5kpg==}
     dev: false
-
-  /prettier-plugin-svelte@3.1.2(prettier@2.8.8)(svelte@4.2.12):
-    resolution: {integrity: sha512-7xfMZtwgAWHMT0iZc8jN4o65zgbAQ3+O32V6W7pXrqNvKnHnkoyQCGCbKeUyXKZLbYE0YhFRnamfxfkEGxm8qA==}
-    peerDependencies:
-      prettier: ^3.0.0
-      svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
-    dependencies:
-      prettier: 2.8.8
-      svelte: 4.2.12
-    dev: true
 
   /prettier-plugin-svelte@3.1.2(prettier@3.2.5)(svelte@4.2.12):
     resolution: {integrity: sha512-7xfMZtwgAWHMT0iZc8jN4o65zgbAQ3+O32V6W7pXrqNvKnHnkoyQCGCbKeUyXKZLbYE0YhFRnamfxfkEGxm8qA==}
