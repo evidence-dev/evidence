@@ -22,7 +22,10 @@ It's the easiest way to host an Evidence project, without having to worry about 
 
 Evidence Cloud is currently invite-only, request one below.
 
-<a class="waitlist" href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=docs">Request Invite</a>
+<LinkButton url="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=docs"> Request Invite </LinkButton>
+
+<br/>
+<br/>
 
 ## How do I set up Evidence Cloud
 
@@ -42,97 +45,97 @@ Setting up Evidence Cloud takes less than 5 minutes.
 ### Features
 
 
-<details>
-    <summary>What causes my data to update?</summary>
-    <ul>
-        <li>Pushes to your target branch.</li>
-        <li>Clicking the <code>Redeploy</code> button in the UI.</li>
-        <li>You can also set up a regularly scheduled refresh.</li>
-    </ul>
-</details>
+<Details title="What causes my data to update?">
 
-<details>
-    <summary>How frequently does Evidence Cloud refresh my data?</summary>
-    <p>You can set up data refreshes as regularly as you need.</p>
-</details>
+- Pushes to your target branch.
+- Clicking the `Redeploy` button in the UI.
+- You can also set up a regularly scheduled refresh.
 
-<details>
-    <summary>How do I get more frequent data refreshes?</summary>
-    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, or reach out on Evidence Cloud chat..</p>
-</details>
+</Details>
 
-<details>
-    <summary>How does authentication work for my deployed project?</summary>
-    <p>Each viewer account is provided with a unique login to access the project. You can manage viewers in the Evidence Cloud UI.</p>
-</details>
+<Details title="How frequently does Evidence Cloud refresh my data?">
+You can set up data refreshes as regularly as you need.
+</Details>
 
-<details>
-    <summary>How can I create a public Evidence Cloud site?</summary>
+<Details title="How do I get more frequent data refreshes?">
+
+Email us: [archie@evidence.dev](mailto:archie@evidence.dev), or reach out on 
+Evidence Cloud chat.
+</Details>
+
+<Details title="How does authentication work for my deployed project?">
+
+    Each viewer account is provided with a unique login to access the project. You can manage viewers in the Evidence Cloud UI.
+</Details>
+
+<Details title="How can I create a public Evidence Cloud site?">
+
     If you want your Evidence Cloud project URL to be accessible to anyone, deploy your site, and reach out on Evidence Cloud chat. We will verify your identity before making the site public.
-</details>
+</Details>
 
-<details>
-    <summary>How do I set up development previews?</summary>
-    <p>Alongside your <code>main</code> branch, set up a secondary project targeting a development branch (e.g. <code>dev</code>) whenever you merge changes into <code>dev</code>, you will get a preview. When you are ready to release changes, merge these into <code>main</code>.</p>
-    <p>You can set up different database credentials for development deployments, which allows you to use development data before it is in your production db.</p>
-</details>
+<Details title="How do I set up development previews?">
+
+Alongside your `main` branch, set up a secondary project targeting a development branch (e.g. `dev`) whenever you merge changes into `dev`, you will get a preview. When you are ready to release changes, merge these into `main`.
+
+You can set up different database credentials for development deployments, which allows 
+you to use development data before it is in your production db.
+
+</Details>
 
 
 
 ### Pricing
 
-<details>
-    <summary>Is Evidence Cloud free?</summary>
-    <p>Evidence Cloud's Free tier offers up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to a <a href="https://evidence.dev/cloud">paid plan</a>.</p>
-</details>
+<Details title="Is Evidence Cloud free?">
 
-<details>
-    <summary>How do I get onto a Team or Embedded plan?</summary>
-    <p>Email us: <a href="mailto:archie@evidence.dev">archie@evidence.dev</a>, or reach out on Evidence Cloud chat.</p>
-</details>
+Evidence Cloud's Free tier offers up to 5 viewer accounts, and up to one connected repository. Beyond this, you can upgrade to a [paid plan](https://evidence.dev/cloud).
 
+</Details>
+
+<Details title="How do I get onto a Team or Embedded plan?">
+
+Email us: [archie@evidence.dev](mailto:archie@evidence.dev), or reach out on Evidence Cloud chat. 
+</Details>
 
 
 ### Account Management
 
-<details>
-    <summary>How do I add a new developer to my Evidence project?</summary>
-    <p>Give them access to your <a href="https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository">GitHub repository</a>. All Evidence Cloud plans come with unlimited developer accounts.</p>
-</details>
+<Details title="How do I add a new developer to my Evidence project?">
 
-<details>
-    <summary>Which git providers can I use with Evidence Cloud?</summary>
-    <p>Currently we support GitHub by default. If your team needs another git provider, reach out on <a href="https://slack.evidence.dev">Slack</a>.</p>
-</details>
+Give them access to your [Github repository](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository). All Evidence Cloud plans come with unlimited developer accounts.
+
+</Details>
+
+<Details title="Which git providers can I use with Evidence Cloud?">
+
+Currently we support GitHub by default. If your team needs another git provider, reach out on [Slack](https://slack.evidence.dev).
+
+</Details>
 
 ### Troubleshooting
 
-<details>
-    <summary>I've successfully deployed the template project. How do I edit it?</summary>
-    <p>Clone the git repository to your local machine (the repo URL is shown in the cloud UI), make edits to the code and/or database settings, and merge the edits to your target branch.</p>
-</details>
+<Details title="I've successfully deployed the template project. How do I edit it?">
+
+Clone the git repository to your local machine (the repo URL is shown in the cloud UI), make edits to the code and/or database settings, and merge the edits to your target branch.
+
+</Details>
 
 
-<details>
-    <summary>How long do builds take?</summary>
-    <p>Most builds will be completed in under 2 minutes, and you can track progress in the build logs. The initial deployment may take longer as we provision your account.</p>
-</details>
+<Details title="How long do builds take?">
+
+Most builds will be completed in under 2 minutes, and you can track progress in the build logs. The initial deployment may take longer as we provision your account.
+
+</Details>
 
 
-<details>
-    <summary>Where is my credentials file?</summary>
-    <ul>
-    <li><b>If you are deploying the default template:</b> You don't need them, hit the button to use the template project default credentials.</li>
-    <li><b>If you have an existing project:</b> Your credentials file is stored in <code>.evidence/template/evidence.settings.json</code>. You may need to edit your file explorer settings (<a href="https://support.microsoft.com/en-us/windows/view-hidden-files-and-folders-in-windows-97fbc472-c603-9d90-91d0-1166d1d9f4b5">windows</a>, <a href="https://discussions.apple.com/thread/7581737">mac</a>) to show hidden folders.</li>
-    </ul>
-</details>
+<Details title="When can I expect build failures?">
 
-<details>
-    <summary>When can I expect build failures?</summary>
-    <p>Evidence will not deploy sites with errors to prevent users from seeing broken reports. Usually, this is caused by an error with your project code.  Enter <code>npm run build</code> in your editor to test if the build succeeds locally. If you are still having issues, reach out on <a href="https://slack.evidence.dev">Slack</a>.</p>
-</details>
+Evidence will not deploy sites with errors to prevent users from seeing broken reports. Usually, this is caused by an error with your project code.  Enter `npm run build` in your editor to test if the build succeeds locally. If you are still having issues, reach out on [Slack](https://slack.evidence.dev).
 
-<details>
-    <summary>How can I prevent queries or components with errors from making it to my site?</summary>
-    <p>As a default, a failed chart or query will not throw an error. To prevent failed charts or queries from building successfully, edit the build command in <code>package.json</code> to <code>"build": "evidence build:strict"</code>.</p>
-</details>
+</Details>
+
+<Details title="How can I prevent queries or components with errors from making it to my site?">
+
+As a default, a failed chart or query will not throw an error. To prevent failed charts or queries from building successfully, edit the build command in `package.json` to `"build": "evidence build:strict"`.
+
+</Details>
