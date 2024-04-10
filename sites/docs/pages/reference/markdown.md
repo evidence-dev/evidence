@@ -155,19 +155,46 @@ title: Evidence Docs
 
 You can put whatever data you would like here, and it uses a [yaml syntax](https://yaml.org/), but some properties are special:
 
-| Property         | Effect                                                                                                                       |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `title`          | changes the name of the tab, adds a header to your page, and changes the title displayed in the sidebar                                                             |
-| `hide_title`     | if true, the title will not show as a header on the page                                                                     |
-| `description`    | is used for search engines                                                                                                   |
-| `og`            | changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc                             |
-| `og.title`       | changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa) |
-| `og.description` | changes the body of the embed                                                                                                |
-| `og.image`       | will appear in the embed if specified, but it is not required.                                                               |
-| `queries`        | references SQL queries stored in the /queries directory.                                                                     |
-| `sidebar_position`        | changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar.                                                                     |
-| `sidebar_link`        | when set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link.                                                                    |
-
+<PropListing
+    name="title"
+    description="changes the name of the tab, adds a header to your page, and changes the title displayed in the sidebar"
+/>
+<PropListing
+    name="hide_title"
+    description="if true, the title will not show as a header on the page"
+/>
+<PropListing
+    name="description"
+    description="is used for search engines"
+/>
+<PropListing
+    name="og"
+    description="changes how your link shows up when shared on things like Slack, Facebook, Twitter, Discord, etc"
+/>
+<PropListing
+    name="og.title"
+    description="changes the title that appears in the embed; if this is not specified, but `title` is, then `title` is used (and vice versa)"
+/>
+<PropListing
+    name="og.description"
+    description="changes the body of the embed"
+/>
+<PropListing
+    name="og.image"
+    description="will appear in the embed if specified, but it is not required."
+/>
+<PropListing
+    name="queries"
+    description="references SQL queries stored in the /queries directory."
+/>
+<PropListing
+    name="sidebar_position"
+    description="changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar."
+/>
+<PropListing
+    name="sidebar_link"
+    description="when set to false, no link to the page appears in the sidebar. When used in index.md pages, the parent directory will still appear in the sidebar but it will not function as a link."
+/>
 
 Anything outside of these values won't do anything on their own, but they will be accessible as [variables](/core-concepts/syntax/#expressions) on the page.
 
