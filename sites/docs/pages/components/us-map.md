@@ -169,7 +169,7 @@ sidebar_position: 1
 />
 <PropListing
     name=fmt
-    description='Format to use for values (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)'
+    description="Format to use for values (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options='Excel-style format | built-in format | custom format'
 />
 <PropListing
