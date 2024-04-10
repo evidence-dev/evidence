@@ -1,5 +1,6 @@
 ---
 title: Create Data Source Plugin
+description: Walkthrough on how to create a data source plugin for Evidence
 sidebar_position: 4
 ---
 

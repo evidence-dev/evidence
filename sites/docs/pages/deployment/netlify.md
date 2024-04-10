@@ -2,6 +2,7 @@
 sidebar_position: 3
 hide_table_of_contents: false
 title: Netlify
+description: Deploy your project to Netlify, which offers free hosting for public projects and password-protected hosting for paid plans.
 ---
 
 <Alert status=warning>

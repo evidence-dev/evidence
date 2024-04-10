@@ -1,7 +1,8 @@
 ---
 sidebar_position: 2
 hide_table_of_contents: false
-title: 'Data Source Plugins'
+title: Data Source Plugins
+description: Source plugins enable you to add new data source types to your project. 
 ---
 
 Evidence includes a plugin system which can be used to add components and data sources to your project. 

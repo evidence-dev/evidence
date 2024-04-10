@@ -3,6 +3,7 @@ sidebar_position: -1
 title: All Components
 hide_title: false
 hide_table_of_contents: false
+description:  A list of all the components available in the Evidence library.
 ---
 
 ## Data Components

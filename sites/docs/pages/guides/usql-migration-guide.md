@@ -1,6 +1,7 @@
 ---
 title: Universal SQL Migration Guide
 sidebar_position: 3
+description: Migrate your < v24 Evidence project to Universal SQL (v24+)
 ---
 
 Universal SQL is Evidence's latest release, and fundamentally changes how Evidence queries data in order to bring support for three big new features:

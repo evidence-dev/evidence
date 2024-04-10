@@ -1,7 +1,8 @@
 ---
 sidebar_position: 1
 hide_table_of_contents: false
-title: 'Component Plugins'
+title: Component Plugins
+description: Evidence includes a plugin system which can be used to add components and data sources to your project.
 ---
 
 Evidence includes a plugin system which can be used to add components and data sources to your project. 

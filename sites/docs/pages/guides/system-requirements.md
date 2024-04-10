@@ -1,6 +1,7 @@
 ---
 title: System Requirements
 sidebar_position: 5
+description: Evidence requires Node.js, NPM, and Git
 ---
 
 Evidence requires Node.js 18 or 20, and NPM 7 or above.   

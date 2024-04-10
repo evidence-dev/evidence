@@ -2,6 +2,7 @@
 sidebar_position: 1
 title: CLI
 hide_title: true
+description: Commands to start, install, develop, and build Evidence projects from the command line.
 ---
 
 # CLI Reference

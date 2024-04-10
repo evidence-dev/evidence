@@ -3,6 +3,7 @@ sidebar_position: 1
 hide_table_of_contents: false
 title: Overview
 hide_title: true
+description: Evidence is a static site generator, so can be deployed to any static site host. The easiest way to deploy Evidence is on Evidence Cloud.
 ---
 
 # Deployment Overview
@@ -13,7 +14,7 @@ You can host your Evidence project using Evidence Cloud, cloud services like Net
 
 ## Evidence Cloud
 
-The easiest way to deploy Evidence is on [Evidence Cloud](/deployment/evidence-cloud). Evidence Cloud is currently in private beta.
+The easiest way to deploy Evidence is on [Evidence Cloud](/deployment/evidence-cloud). Evidence Cloud is free for public projects, and has paid plans for private projects.
 
 ## Build Process
 

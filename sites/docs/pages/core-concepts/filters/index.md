@@ -1,6 +1,7 @@
 ---
 title: Filters
 sidebar_position: 9
+description: Filters dynamically change what data is returned by a query. Filters take the input that a user provides via a component, and use it to change the query.
 ---
 
 Filters dynamically change what data is returned by a query. Filters take the input that a user provides via a component, and use it to change the query.

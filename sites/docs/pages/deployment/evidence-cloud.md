@@ -2,6 +2,7 @@
 sidebar_position: 2
 hide_table_of_contents: false
 title: Evidence Cloud
+description: Evidence Cloud is a hosting service that allows you to securely host Evidence projects. It's the easiest way to host an Evidence project, without having to worry about maintaining your own infrastructure.
 ---
 
 ## What is Evidence Cloud?

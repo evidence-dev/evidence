@@ -2,6 +2,7 @@
 title: Markdown
 hide_title: true
 sidebar_position: 1
+description: Evidence supports most markdown syntax. Below are some of the most common markdown features.
 ---
 
 # Markdown Reference
