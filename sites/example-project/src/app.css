@@ -293,13 +293,11 @@
 		print-color-adjust: exact;
 	}
 
-	h1::after,
-	h2::after,
-	h3::after {
-		content: '';
-		display: block;
-		height: 100px;
-		margin-bottom: -100px;
+	h1,
+	h2,
+	h3,
+	h4 {
+		break-after: avoid-page;
 	}
 
 	article {

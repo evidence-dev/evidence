@@ -1,5 +1,48 @@
 # @evidence-dev/core-components
 
+## 3.7.3
+
+### Patch Changes
+
+- fab378cb: Fix for bigvalue loaded is undefined
+
+## 3.7.2
+
+### Patch Changes
+
+- be3085ce: Fix printing of charts in grid component
+- 32af67c5: Custom conditional color scales for DataTable
+- 94156598: Wrap column titles for DataTable
+- 75f30e70: Fix null handling with custom formatting in Delta
+- Updated dependencies [3a91fdc1]
+  - @evidence-dev/query-store@2.1.1
+  - @evidence-dev/component-utilities@2.5.2
+
+## 3.7.1
+
+### Patch Changes
+
+- 8b636a62: Adjust delta neutral symbol
+- 24cec2ec: Fix column order issue in DataTable when Column used
+
+## 3.7.0
+
+### Minor Changes
+
+- 4f918c71: add `Select all` option to `Dropdown`s, add dropdowns to `DateRange` for easier year selection
+
+### Patch Changes
+
+- 58880cc9: Fix errors caused by formatting null values
+- d3847df4: Adjust scatter hover to focus on individual point
+- aa5708f0: Add support for connected charts
+- d97d75e6: Add table groups and standalone Delta component
+- 8efccce0: Fix map image download
+- dbf8db42: Add options to Evidence layout
+- Updated dependencies [aa5708f0]
+- Updated dependencies [8efccce0]
+  - @evidence-dev/component-utilities@2.5.1
+
 ## 3.6.1
 
 ### Patch Changes

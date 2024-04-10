@@ -63,6 +63,24 @@ The `EvidenceDefaultLayout` component accepts the following properties for commo
     defaultValue=false
 />
 <PropListing
+    name=hideHeader
+    description="Hides the page header"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
+    name=hideBreadcrumbs
+    description="Hides the breadcrumbs which appear at the top of the page"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
+    name=hideTOC
+    description="Hides the table of contents (on-page links at top right of page)"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+<PropListing
     name=builtWithEvidence
     description="Display a subtle link to the Evidence website at the bottom of the sidebar."
     options={['true', 'false']}
@@ -93,6 +111,12 @@ The `EvidenceDefaultLayout` component accepts the following properties for commo
     defaultValue='https://slack.evidence.dev'
 />
 
+**Example custom option:**
+```html
+<EvidenceDefaultLayout {data} hideSidebar={true}>
+	<slot slot="content" />
+</EvidenceDefaultLayout>
+```
 
 ## Custom Styles
 
@@ -158,6 +182,7 @@ By default, Evidence includes a number of features on every page, which can be r
 
 - Sidebar
 - Header
+- Breadcrumbs
 - Table of Contents
 
 You can also add your own elements to the default page layout.

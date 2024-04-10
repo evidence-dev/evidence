@@ -1,24 +1,25 @@
 <script>
-	export let dataType;
-	export let align;
-	export let height;
-	export let width;
-	export let wrap;
+	export let dataType = undefined;
+	export let align = undefined;
+	export let height = undefined;
+	export let width = undefined;
+	export let wrap = undefined;
 
 	export let verticalAlign = 'middle';
 	export let rowSpan = 1;
 	export let colSpan = 1;
 	export let show = true;
-	export let cellColor;
-	export let fontColor;
+	export let cellColor = undefined;
+	export let fontColor = undefined;
 
-	export let topBorder;
-	export let paddingLeft;
+	export let topBorder = undefined;
+	export let paddingLeft = undefined;
+	export let borderBottom = undefined;
 </script>
 
 <td
 	class="{$$restProps.class ||
-		''} {dataType} {topBorder} py-[2px] px-[8px] whitespace-nowrap overflow-hidden first:pl-[4px]"
+		''} {dataType} {topBorder} py-[2px] px-[8px] whitespace-nowrap overflow-hidden first:pl-[3px]"
 	style:text-align={align}
 	style:height
 	style:width
@@ -30,6 +31,7 @@
 	style:background-color={cellColor}
 	style:color={fontColor}
 	style:padding-left={paddingLeft}
+	style:border-bottom={borderBottom}
 >
 	<slot />
 </td>

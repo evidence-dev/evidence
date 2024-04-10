@@ -133,6 +133,8 @@ sidebar_position: 1
 
 #### Custom Colors
 
+When you pass a custom color to `scaleColor`, Evidence will create a color palette for you, starting at white and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
+
 ```html
 <DataTable data={orders_by_category} rowNumbers=true>
   <Column id=month/>
@@ -145,7 +147,39 @@ sidebar_position: 1
 
 <img src='/img/table-custom-colors.png' width='600px'/>
 
+### Custom Color Palettes
 
+#### Diverging Scale
+
+```html
+<DataTable data={numbers}>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
+</DataTable>
+```
+
+<img src='/img/condfmt-diverging.png' width='600px'/>
+
+#### Heatmap
+```html
+<DataTable data={numbers}>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
+</DataTable>
+```
+
+<img src='/img/condfmt-heatmap.png' width='600px'/>
+
+#### Color Breakpoints
+Use `colorBreakpoints` or `colorMid`/`colorMin`/`colorMax` to control which values are assigned to which sections of the color scale
+
+```html
+<DataTable data={negatives} rows=all>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
+</DataTable>
+```
+<img src='/img/condfmt-negative.png' width='600px'/>
 
 ### Including Images
 You can include images by indicating either an absolute path e.g. `https://www.example.com/images/image.png` or a relative path e.g. `/images/image.png`. For relative paths, see [storing static files in a static folder](/reference/markdown/#storing-images-and-static-files). 
@@ -395,6 +429,29 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 <img src='/img/tbl-section-configured.png' width='500px'/>
 
+### Column Groups
+
+```html
+<DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor=#f2f2f2>
+  <Column id=continent totalAgg="Total" />
+  <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
+  <Column id=gdp_usd totalAgg=sum fmt='$#,##0"B"' totalFmt='$#,##0.0,"T"' colGroup="GDP"/>
+  <Column id=gdp_growth totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' colGroup="GDP" contentType=delta/>
+  <Column id=jobless_rate totalAgg=weightedMean weightCol=gdp_usd fmt='pct1' contentType=colorscale scaleColor=red colGroup="Labour Market"/>
+  <Column id=population totalAgg=sum fmt='#,##0"M"' totalFmt='#,##0.0,"B"' colGroup="Labour Market"/>
+</DataTable>
+```
+
+<img src='/img/colgroups.png' width='500px'/>
+
+### Wrap Titles
+
+```html
+<DataTable data={economics} wrapTitles=true /> 
+```
+
+<img src='/img/wrap-titles.png' width='700px'/>
+
 # DataTable
 
 ## Options
@@ -486,6 +543,13 @@ By default, the link column of your table is hidden. If you would like it to be 
     required=false
     options={['true', 'false']}
     defaultValue=true
+/>
+<PropListing
+    name=wrapTitles
+    description="Wrap column titles"
+    required=false
+    options={['true', 'false']}
+    defaultValue=false
 />
 <PropListing
     name=link
@@ -638,9 +702,20 @@ Use the `Column` component to choose specific columns to display in your table, 
     defaultValue="false"
 />
 <PropListing
+    name=wrapTitle
+    description="Wrap column title"
+    options={['true', 'false']}
+    defaultValue="false"
+/>
+<PropListing
     name=contentType
     description="Lets you specify how to treat the content within a column. See below for contentType-specific options."
     options={['link', 'image', 'delta', 'colorscale']}
+/>
+<PropListing
+    name=colGroup
+    description="Group name to display above a group of columns. Columns with the same group name will get a shared header above them"
+    options="string"
 />
 
 ### Images
@@ -741,8 +816,19 @@ Use the `Column` component to choose specific columns to display in your table, 
     defaultValue="min of column"
 />
 <PropListing
+    name=colorMid
+    description="Set a midpoint for the scale"
+    options="number"
+    defaultValue="mid of column"
+/>
+<PropListing
     name=colorMax
     description="Set a maximum for the scale. Any values above that maximum will appear in the highest color on the scale"
     options="number"
     defaultValue="max of column"
+/>
+<PropListing
+    name=colorBreakpoints
+    description="Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in <code>scaleColor</code>"
+    options="array of numbers"
 />

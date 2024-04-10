@@ -8,20 +8,24 @@
 	import { getContext } from 'svelte';
 	import { propKey } from '@evidence-dev/component-utilities/chartContext';
 	import TableCell from './TableCell.svelte';
+	import chroma from 'chroma-js';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
+
 	const props = getContext(propKey);
 
-	export let displayedData;
-	export let rowShading;
-	export let link;
-	export let rowNumbers;
-	export let rowLines;
-	export let index;
-	export let columnSummary;
+	export let displayedData = undefined;
+	export let rowShading = undefined;
+	export let link = undefined;
+	export let rowNumbers = undefined;
+	export let rowLines = undefined;
+	export let index = undefined;
+	export let columnSummary = undefined;
 	export let grouped = false; // if part of a group - styling will be adjusted
-	export let groupType;
-	export let groupColumn;
-	export let rowSpan;
+	export let groupType = undefined;
+	export let groupColumn = undefined;
+	export let rowSpan = undefined;
 	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
+	export let finalColumnOrder = undefined;
 
 	function handleRowClick(url) {
 		if (link) {
@@ -48,16 +52,21 @@
 		{/if}
 
 		{#if $props.columns.length > 0}
-			{#each $props.columns.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column, k}
+			{#each $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, k}
 				{@const useCol = safeExtractColumn(column, columnSummary)}
 				{@const column_min = column.colorMin ?? useCol.columnUnitSummary.min}
 				{@const column_max = column.colorMax ?? useCol.columnUnitSummary.max}
 				{@const is_nonzero =
 					column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
-				{@const percentage = (row[column.id] - column_min) / (column_max - column_min)}
 				{@const column_format = column.fmt
 					? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
 					: useCol.format}
+				{@const color_domain =
+					column.colorBreakpoints ??
+					(column.colorMid ? [column_min, column.colorMid, column_max] : [column_min, column_max])}
+				{@const color_scale = column.colorPalette
+					? chroma.scale(column.colorPalette).domain(color_domain)
+					: ''}
 				<TableCell
 					class={useCol.type}
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
@@ -70,14 +79,22 @@
 					height={column.height}
 					width={column.width}
 					wrap={column.wrap}
-					cellColor={column.contentType === 'colorscale' && is_nonzero
-						? column.customColor
-							? `color-mix(in srgb, ${column.customColor} ${
-									Math.max(0, Math.min(1, percentage)) * 100
-								}%, transparent)`
-							: `${column.useColor} ${Math.max(0, Math.min(1, percentage))})`
-						: // closing bracket needed to close unclosed color string from Column component
-							''}
+					cellColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? color_scale(row[column.id]).hex()
+						: ''}
+					fontColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? chroma.contrast(color_scale(row[column.id]).hex(), uiColours.grey999) <
+							chroma.contrast(color_scale(row[column.id]).hex(), 'white') + 0.5
+							? 'white'
+							: uiColours.grey999
+						: ''}
+					borderBottom={i !== displayedData.length - 1 &&
+					rowLines &&
+					column.contentType === 'colorscale' &&
+					is_nonzero &&
+					column.colorPalette
+						? `1px solid ${color_scale(row[column.id]).darken(0.5)}`
+						: ''}
 				>
 					{#if column.contentType === 'image' && row[column.id] !== undefined}
 						<img
@@ -137,7 +154,7 @@
 							format_object={column_format}
 							columnUnitSummary={useCol.columnUnitSummary}
 							showValue={column.showValue}
-							deltaSymbol={column.deltaSymbol}
+							showSymbol={column.deltaSymbol}
 							align={column.align}
 							fontClass="text-[9.25pt]"
 							neutralMin={column.neutralMin}
@@ -158,7 +175,7 @@
 		{:else}
 			{#each columnSummary
 				.filter((d) => d.show === true)
-				.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column, j}
+				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, j}
 				<!-- Check if last row in table-->
 				<TableCell
 					class={column.type}

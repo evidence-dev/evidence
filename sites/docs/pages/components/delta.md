@@ -120,6 +120,11 @@ title: Delta
     defaultValue="true"
 />
 <PropListing
+    name=text
+    description="Text to display after the delta symbol and value"
+    options="string"
+/>
+<PropListing
     name=neutralMin
     description="Start of the range for 'neutral' values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values."
     options="number"

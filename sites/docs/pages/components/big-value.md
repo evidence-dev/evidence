@@ -59,20 +59,46 @@ Multiple cards will align themselves into a row.
     options="column name"
 />
 <PropListing
-    name="comparison"
-    description="Column to pull the comparison value from."
-    options="column name"
-/>
-<PropListing
-    name="sparkline"
-    description="Column to pull the date from to create the sparkline."
-    options="column name"
-/>
-<PropListing
     name="title"
     description="Title of the card."
     options="string"
     defaultValue="Title of the value column."
+/>
+<PropListing
+    name="minWidth"
+    description="Overrides min-width of component"
+    options="% or px value"
+    defaultValue="18%"
+/>
+<PropListing
+    name="maxWidth"
+    description="Adds a max-width to the component"
+    options="% or px value"
+/>
+<PropListing
+    name="fmt"
+    description="Sets format for the value (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    options="Excel-style format | built-in format | custom format"
+/>
+<PropListing
+    name="emptySet"
+    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    options={['error', 'warn', 'pass']}
+    defaultValue="error"
+/>
+<PropListing
+    name="emptyMessage"
+    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    options="string"
+    defaultValue="No records"
+/>
+
+### Comparison Options
+
+<PropListing
+    name="comparison"
+    description="Column to pull the comparison value from."
+    options="column name"
 />
 <PropListing
     name="comparisonTitle"
@@ -93,42 +119,31 @@ Multiple cards will align themselves into a row.
     defaultValue=false
 />
 <PropListing
-    name="minWidth"
-    description="Overrides min-width of component"
-    options="% or px value"
-    defaultValue="18%"
+    name="neutralMin"
+    description="Sets the bottom of the range for 'neutral' values - neutral values appear in grey rather than red or green"
+    options="number"
+    defaultValue=0
 />
 <PropListing
-    name="maxWidth"
-    description="Adds a max-width to the component"
-    options="% or px value"
-/>
-<PropListing
-    name="fmt"
-    description="Sets format for the value (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
-    options="Excel-style format | built-in format | custom format"
+    name="neutralMax"
+    description="Sets the top of the range for 'neutral' values - neutral values appear in grey rather than red or green"
+    options="number"
+    defaultValue=0
 />
 <PropListing
     name="comparisonFmt"
     description="Sets format for the comparison (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format | custom format"
 />
-<PropListing
-    name="emptySet"
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
-    options={['error', 'warn', 'pass']}
-    defaultValue="error"
-/>
-<PropListing
-    name="emptyMessage"
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
-    options="string"
-    defaultValue="No records"
-/>
 
 
 ### Sparkline
 
+<PropListing
+    name="sparkline"
+    description="Column to pull the date from to create the sparkline."
+    options="column name"
+/>
 <PropListing
     name="sparklineType"
     description="Chart type for sparkline"

@@ -7,7 +7,7 @@
 	import Delta from './_Delta.svelte';
 	import EmptyChart from '../core/EmptyChart.svelte';
 
-	export let data;
+	export let data = undefined;
 
 	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
 
@@ -34,7 +34,5 @@
 		{/if}
 	</span>
 	<p slot="skeleton" class="text-gray-500">Loading...</p>
-	<Delta {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}>
-		<slot />
-	</Delta>
+	<Delta {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} />
 </QueryLoad>

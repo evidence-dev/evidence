@@ -10,13 +10,14 @@
 	import { propKey } from '@evidence-dev/component-utilities/chartContext';
 	const props = getContext(propKey);
 
-	export let groupName;
-	export let currentGroupData;
-	export let columnSummary;
+	export let groupName = undefined;
+	export let currentGroupData = undefined;
+	export let columnSummary = undefined;
 	export let rowColor = 'var(--grey-100)';
-	export let groupBy;
-	export let groupType;
-	export let fontColor;
+	export let groupBy = undefined;
+	export let groupType = undefined;
+	export let fontColor = undefined;
+	export let finalColumnOrder = undefined;
 </script>
 
 <tr
@@ -24,9 +25,9 @@
 	style:background-color={rowColor}
 	style:color={fontColor}
 >
-	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) : columnSummary
+	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
 				.filter((d) => d.show === true)
-				.sort((a, b) => $props.finalColumnOrder.indexOf(a.id) - $props.finalColumnOrder.indexOf(b.id)) as column}
+				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 		{@const useCol = safeExtractColumn(column, columnSummary)}
 		{@const column_format = column.fmt
 			? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
@@ -55,7 +56,7 @@
 						format_object={column_format}
 						columnUnitSummary={useCol.columnUnitSummary}
 						showValue={column.showValue}
-						deltaSymbol={column.deltaSymbol}
+						showSymbol={column.deltaSymbol}
 						align={column.align}
 						fontClass="font-medium text-[9.25pt]"
 						neutralMin={column.neutralMin}

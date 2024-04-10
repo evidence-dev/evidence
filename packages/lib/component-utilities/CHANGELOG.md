@@ -1,5 +1,19 @@
 # @evidence-dev/component-utilities
 
+## 2.5.2
+
+### Patch Changes
+
+- Updated dependencies [3a91fdc1]
+  - @evidence-dev/query-store@2.1.1
+
+## 2.5.1
+
+### Patch Changes
+
+- aa5708f0: Add support for connected charts
+- 8efccce0: Fix map image download
+
 ## 2.5.0
 
 ### Minor Changes

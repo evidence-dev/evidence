@@ -420,6 +420,7 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 	 * likely meaning `initialData` was provided
 	 */
 	backgroundFetch = async () => {
+		if (typeof window === 'undefined') return;
 		await new Promise((resolve) => setTimeout(resolve, 0));
 		handleMaybePromise(
 			() => {},

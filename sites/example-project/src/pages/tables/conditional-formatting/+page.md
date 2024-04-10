@@ -1,0 +1,94 @@
+# Conditional Formatting
+
+```numbers
+ select 'A' as name, 1 as number
+ union all
+ select 'B',2
+union all
+ select 'C',3
+ union all
+ select 'D',4
+ union all
+ select 'E',5
+ union all
+ select 'F',6
+ union all
+ select 'G',7
+ union all
+ select 'H',8
+ union all
+ select 'I',9
+ union all
+ select 'J',10
+ order by number asc
+ ```
+
+```negatives
+select 'A' as name, -5 as number
+union all
+select 'B', -4 as number
+union all
+select 'C', -3 as number
+union all
+select 'D', -2 as number
+union all
+select 'E', -1 as number
+union all
+select 'F', 0 as number
+union all
+select 'G', 1 as number
+union all
+select 'H', 2 as number
+union all
+select 'I', 3 as number
+union all
+select 'J', 4 as number
+union all
+select 'K', 5 as number
+union all
+select 'L', 6 as number
+union all
+select 'M', 7 as number
+union all
+select 'N', 8 as number
+union all
+select 'O', 9 as number
+union all
+select 'P', 10 as number
+union all
+select 'Q', 11 as number
+union all
+select 'R', 12 as number
+union all
+select 'S', 13 as number
+union all
+select 'T', 14 as number
+order by number asc
+```
+
+### Diverging Scale
+
+<DataTable data={numbers}>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
+</DataTable>
+
+
+<DataTable data={negatives} rows=all>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']}
+  colorMid=0/>
+</DataTable>
+
+### Heatmap
+
+<DataTable data={numbers}>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
+</DataTable>
+
+
+<DataTable data={numbers}>
+  <Column id=name/>
+  <Column id=number contentType=colorscale scaleColor={['#fff761','#5ba84c','#171566']}/>
+</DataTable>
