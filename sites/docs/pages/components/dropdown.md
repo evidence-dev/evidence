@@ -123,6 +123,24 @@ where column_name like '${inputs.name_of_dropdown.value}'
 ```
 ````
 
+### Multiple defaultValues
+
+````markdown
+<Dropdown
+    data={query_name} 
+    name=name_of_dropdown
+    value=column_name
+    multiple=true
+	defaultValue={['value1', 'value2']}
+/>
+
+```sql filtered_query
+select *
+from source_name.table
+where column_name in '${inputs.name_of_dropdown.value}'
+```
+````
+
 # Dropdown
 
 ## Options
@@ -145,13 +163,25 @@ where column_name like '${inputs.name_of_dropdown.value}'
 <PropListing 
     name="multiple"
     description="Enables multi-select which returns a list"
-    options="boolean"
+    options={['true', 'false']}
     defaultValue="false"
 />
 <PropListing 
     name="defaultValue"
     description="Value to use when the dropdown is first loaded. Must be one of the options in the dropdown. Arrays supported for multi-select."
     options="value from dropdown | array of values e.g. {`{['Value 1', 'Value 2']}`}"
+/>
+<PropListing 
+    name="noDefault"
+    description="Stops any default from being selected. Overrides any set `defaultValue`."
+    options="boolean"
+    defaultValue="false"
+/>
+<PropListing 
+    name="disableSelectAll"
+    description="Removes the `Select all` button. Recommended for large datasets."
+    options="boolean"
+    defaultValue="false"
 />
 <PropListing 
     name="label"
@@ -175,7 +205,12 @@ where column_name like '${inputs.name_of_dropdown.value}'
     description="SQL where fragment to filter options by (e.g., where sales > 40000)"
     options="SQL where clause"
 />
-
+<PropListing 
+    name="hideDuringPrint"
+    description="Hide the component when the report is printed"
+    options={["true", "false"]}
+    defaultValue="true"
+/>
 # DropdownOption
 
 ## Options
