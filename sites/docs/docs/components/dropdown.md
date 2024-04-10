@@ -123,6 +123,23 @@ where column_name like '${inputs.name_of_dropdown.value}'
 ```
 ````
 
+### Multiple defaultValues
+
+````markdown
+<Dropdown
+    data={query_name} 
+    name=name_of_dropdown
+    value=column_name
+	defaultValue={['value1', 'value2']}
+/>
+
+```sql filtered_query
+select *
+from source_name.table
+where column_name like '${inputs.name_of_dropdown.value}'
+```
+````
+
 ## Dropdown
 
 ### Options
@@ -150,24 +167,38 @@ where column_name like '${inputs.name_of_dropdown.value}'
         <td class='tcenter'>-</td>	
     </tr>
     <tr>	
-        <td>value</td>	
+        <td>value</td>
         <td>Column name from the query containing values to pick from</td>	
         <td class='tcenter'>No</td>	
         <td class='tcenter'>column name</td>	
         <td class='tcenter'>-</td>
     </tr>
-    <tr>	
+    <tr>
         <td>defaultValue</td>
-        <td>Value to use when the dropdown is first loaded. Must be one of the options in the dropdown.</td>
+        <td>Value(s) to use when the dropdown is first loaded. Must be options in the values of the dropdown. Note: for multiple values, the array must be formatted as `defaultValue={[]}`, not `defaultValue=[]`</td>
         <td class='tcenter'>No</td>
         <td class='tcenter'>-</td>
         <td class='tcenter'>First value in dropdown</td>
+    </tr>
+	<tr>
+        <td>noDefault</td>
+        <td>Stops any default from being selected. Overrides any set `defaultValue`.</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
+    </tr>
+	<tr>
+        <td>disableSelectAll</td>
+        <td>Removes the `Select all` button. Recommended for large datasets.</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>false</td>
     </tr>
     <tr>    
         <td>multiple</td>
         <td>Enables multi-select which returns a list</td>
         <td class='tcenter'>No</td>
-        <td class='tcenter'>boolean</td>
+        <td class='tcenter'>true | false</td>
         <td class='tcenter'>false</td>
     </tr>
     <tr>	
@@ -197,6 +228,13 @@ where column_name like '${inputs.name_of_dropdown.value}'
         <td class='tcenter'>No</td>
         <td class='tcenter'>SQL where clause</td>
         <td class='tcenter'>-</td>
+    </tr>
+	<tr>	
+        <td>hideDuringPrint</td>
+        <td>Hide the component when the report is printed</td>
+        <td class='tcenter'>No</td>
+        <td class='tcenter'>true | false</td>
+        <td class='tcenter'>true</td>
     </tr>
 </table>
 
