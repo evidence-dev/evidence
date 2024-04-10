@@ -2,7 +2,7 @@
 sidebar_position: 4
 hide_table_of_contents: false
 title: Vercel
-description: Deploy a public project to Vercel for free or a password-protected project with the $150/month pro plan.
+description: Deploy a public project to Vercel for free or a password-protected project with the pro plan.
 ---
 
 
