@@ -35,7 +35,7 @@
 		On this page
 	</span>
 	{#each headers as header}
-		<a href="#{header.id}" class={header.nodeName.toLowerCase()}>
+		<a href={'#' + header.id} class={header.nodeName.toLowerCase()}>
 			{header.innerText}
 		</a>
 	{/each}
