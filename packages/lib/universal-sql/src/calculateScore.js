@@ -108,6 +108,7 @@ export function duckdbTypeToEvidenceType(column_type) {
 		case 'TIME':
 		case 'TIME WITH TIME ZONE': // return 'bigint';
 		case 'BLOB':
+		case 'JSON':
 		case 'BIT': // return 'Uint8Array';
 			return 'string';
 		default:
