@@ -1,6 +1,7 @@
 ---
 title: Chart Cheat Sheet
 sidebar_position: 3
+description: A quick reference to the elements of an Evidence Chart.
 ---
 
 ## Chart Elements

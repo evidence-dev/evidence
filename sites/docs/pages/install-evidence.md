@@ -2,7 +2,7 @@
 sidebar_position: 2
 hide_table_of_contents: false
 title: Install Evidence
-description: The easiest way to get started with Evidence is to use the VSCode Extension.
+description: Install Evidence with the VSCode Extension, from the command line, alongside dbt, or using Codespaces.
 ---
 
 The easiest way to get started with Evidence is to use the VSCode Extension.

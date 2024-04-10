@@ -1,5 +1,6 @@
 ---
 title: Create Component Plugin
+description: You can create a component plugin to publish your own custom components for use across multiple Evidence projects.
 sidebar_position: 3
 ---
 

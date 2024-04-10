@@ -1,6 +1,7 @@
 ---
 title: Troubleshooting
 sidebar_position: 2
+description: Join the Evidence Slack Community for troubleshooting and support
 ---
 
 <Alert status=warning>

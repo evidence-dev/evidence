@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 title: SQL Queries
-description: Markdown code fences run SQL queries.
+description: Markdown code fences run SQL queries, and return the results as data for components.
 ---
 
 ## Inline Queries

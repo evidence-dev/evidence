@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 title: Evidence Docs
+description: Evidence is an open source framework for building data products with SQL - things like reports, decision-support tools, and customer-facing/embedded reporting. It's a code-driven alternative to drag-and-drop BI tools.
 hide_title: true
 image: /img/how-it-works.png
 ---

@@ -1,6 +1,7 @@
 ---
 title: Updating Your Project
 sidebar_position: 3
+description: Update your project using the CLI or the VS Code extension.
 ---
 
 When new versions of Evidence are released, we post release notes in [Slack](https://slack.evidence.dev). You can also take a look at our pull requests on GitHub to see which changes are being made.
