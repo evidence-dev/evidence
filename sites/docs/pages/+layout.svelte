@@ -5,6 +5,13 @@
 	export let data;
 </script>
 
-<EvidenceDefaultLayout {data} githubRepo=https://github.com/account/repo maxWidth="1500">
+<EvidenceDefaultLayout {data} 
+	githubRepo=https://github.com/account/repo 
+	slackCommunity="https://slack.evidence.dev"
+	xProfile="https://twitter.com/evidence_dev"
+	builtWithEvidence
+	maxWidth="1500" 
+	algolia
+	>
 	<slot slot="content" />
 </EvidenceDefaultLayout>
