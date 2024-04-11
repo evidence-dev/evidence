@@ -1,6 +1,7 @@
-import { registerTheme, init, connect } from 'echarts';
+import { registerTheme, init, connect, registerLocale } from 'echarts';
 import { evidenceThemeLight } from './echartsThemes';
 import debounce from 'debounce';
+import langFR from 'echarts/lib/i18n/langFR';
 
 /**
  * @typedef {import("echarts").EChartsOption & {
@@ -22,9 +23,11 @@ export default (node, option) => {
 		) && node.clientWidth * 3 * node.clientHeight * 3 > 16777215;
 
 	registerTheme('evidence-light', evidenceThemeLight);
+	registerLocale('FR', langFR);
 
 	const chart = init(node, 'evidence-light', {
-		renderer: useSvg ? 'svg' : option.renderer ?? 'canvas'
+		renderer: useSvg ? 'svg' : option.renderer ?? 'canvas',
+		locale: 'FR'
 	});
 
 	// If connectGroup supplied, connect chart to other charts matching that connectGroup
