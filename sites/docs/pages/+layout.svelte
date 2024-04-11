@@ -6,7 +6,7 @@
 </script>
 
 <EvidenceDefaultLayout {data} 
-	githubRepo=https://github.com/account/repo 
+	githubRepo=https://github.com/evidence-dev/evidence
 	slackCommunity="https://slack.evidence.dev"
 	xProfile="https://twitter.com/evidence_dev"
 	builtWithEvidence
