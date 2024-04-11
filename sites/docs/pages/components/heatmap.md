@@ -20,14 +20,23 @@ sidebar_position: 1
 Heatmap requires your data to contain 2 categorical columns (1 for the x-axis and 1 for the y-axis) and 1 numeric column.
 
 #### Example
-| region | product | sales |
-|--------|---------|-------|
-| West   | A       | 120   |
-| West   | B       | 200   |
-| West   | C       | 150   |
-| East   | A       | 110   |
-| East   | B       | 315   |
-| East   | C       | 450   |
+
+```sql example
+SELECT 'West' as region, 'A' as product, 120 as sales
+UNION ALL
+SELECT 'West', 'B', 200
+UNION ALL
+SELECT 'West', 'C', 150
+UNION ALL
+SELECT 'East', 'A', 110
+UNION ALL
+SELECT 'East', 'B', 315
+UNION ALL
+SELECT 'East', 'C', 450
+```
+
+<DataTable data={example} />
+
 
 ### Unpivoting your Data
 If you have data spread across columns, you can use the `UNPIVOT` feature in your SQL query to prepare the data for the heatmap.
@@ -35,10 +44,13 @@ If you have data spread across columns, you can use the `UNPIVOT` feature in you
 #### Example
 If you have a query result called `region_sales`:
 
-| region | a   | b   | c   |
-|--------|-----|-----|-----|
-| West   | 120 | 200 | 150 |
-| East   | 110 | 315 | 450 |
+```sql region_sales
+SELECT 'West' as region, 120 as "A", 200 as "B", 150 as "C"
+UNION ALL
+SELECT 'East', 110, 315, 450
+```
+
+<DataTable data={region_sales} formatColumnTitles=false/>
 
 You can use `UNPIVOT` like so:
 
@@ -52,14 +64,22 @@ INTO
 
 Which will return this table, which can be passed into the Heatmap:
 
-| region | product | sales |
-|--------|---------|-------|
-| West   | A       | 120   |
-| West   | B       | 200   |
-| West   | C       | 150   |
-| East   | A       | 110   |
-| East   | B       | 315   |
-| East   | C       | 450   |
+```sql region_sales_unpivoted
+SELECT 'West' as region, 'A' as product, 120 as sales
+UNION ALL
+SELECT 'West', 'B', 200
+UNION ALL
+SELECT 'West', 'C', 150
+UNION ALL
+SELECT 'East', 'A', 110
+UNION ALL
+SELECT 'East', 'B', 315
+UNION ALL
+SELECT 'East', 'C', 450
+order by region desc, product
+```
+
+<DataTable data={region_sales_unpivoted} formatColumnTitles=false />
 
 
 <Alert status=info>
