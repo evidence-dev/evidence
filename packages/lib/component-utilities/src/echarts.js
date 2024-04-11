@@ -1,7 +1,6 @@
 import { registerTheme, init, connect, registerLocale } from 'echarts';
 import { evidenceThemeLight } from './echartsThemes';
 import debounce from 'debounce';
-import langFR from 'echarts/lib/i18n/langFR';
 
 /**
  * @typedef {import("echarts").EChartsOption & {
@@ -11,10 +10,29 @@ import langFR from 'echarts/lib/i18n/langFR';
  * } ActionParams
  */
 
+
+// Step 1: Define a mapping of language codes to module paths
+const languageMap = {
+	'FR': () => import('echarts/lib/i18n/langFR'),
+	'EN': () => import('echarts/lib/i18n/langEN'),
+	'DE': () => import('echarts/lib/i18n/langDE')
+	// Add other languages as needed
+  };
+  
+  // Step 2: Dynamic import function
+  async function importLanguage(langCode) {
+	const importFunc = languageMap[langCode];
+	if (!importFunc) {
+	  throw new Error(`Language not supported: ${langCode}`);
+	}
+	return importFunc();
+  }
+  
+
 const ANIMATION_DURATION = 500;
 
 /** @type {import("svelte/action").Action<HTMLElement, ActionParams>} */
-export default (node, option) => {
+export default async (node, option) => {
 	// https://github.com/evidence-dev/evidence/issues/1323
 	const useSvg =
 		['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
@@ -23,11 +41,15 @@ export default (node, option) => {
 		) && node.clientWidth * 3 * node.clientHeight * 3 > 16777215;
 
 	registerTheme('evidence-light', evidenceThemeLight);
-	registerLocale('FR', langFR);
+	// Hardcoded for now, but we should be getting this from user config
+	var langCode='DE';
+
+	const langModule = await importLanguage(langCode);
+	registerLocale(langCode, langModule.default);
 
 	const chart = init(node, 'evidence-light', {
 		renderer: useSvg ? 'svg' : option.renderer ?? 'canvas',
-		locale: 'FR'
+		locale: langCode
 	});
 
 	// If connectGroup supplied, connect chart to other charts matching that connectGroup
