@@ -24,7 +24,7 @@
 <section class="py-4 border-t">
         <div class="flex flex-col lg:flex-row">
             <div class="text-base font-mono flex flex-row min-w-48 items-center mr-4 pb-1">
-                <div class="text-fuscia-400 px-1 py-0 mr-4 bg-gray-50 border rounded-md">{name}</div>
+                <div class="text-fuscia-400 text-sm px-1 py-0 mr-4 bg-gray-50 border rounded-md">{name}</div>
                 {#if required === true || required === "true"}
                 <div class="text-red-500 text-sm font-normal pr-6 pt-0.5">REQUIRED</div>
                 {/if}

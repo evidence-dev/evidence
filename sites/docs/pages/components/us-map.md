@@ -3,23 +3,33 @@ title: US Map
 sidebar_position: 1
 ---
 
+<img src='/img/map-blue2.png' width='500px'/>
+
+```html
+<USMap
+    data={state_pop}
+    state=name
+    value=population
+/>
+```
+
 ## Examples
 
 ### Color Scales
 
-#### `colorScale=blue`
+`colorScale=blue`
 
 <img src='/img/map-blue2.png' width='500px'/>
 
-#### `colorScale=green`
+`colorScale=green`
 
 <img src='/img/map-green2.png' width='500px'/>
 
-#### `colorScale=red`
+`colorScale=red`
 
 <img src='/img/map-red2.png' width='500px'/>
 
-#### `colorScale=bluegreen`
+`colorScale=bluegreen`
 
 <img src='/img/map-bluegreen2.png' width='500px'/>
 

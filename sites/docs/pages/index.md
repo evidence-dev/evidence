@@ -35,7 +35,7 @@ To get started, [install Evidence](/install-evidence).
 
 Evidence renders a BI website from markdown files:
 
-1. [Data Sources](/core-concepts/data-sources) can include data warehouses, flat files and non-SQL data sources
+1. [Data sources](/core-concepts/data-sources) can include data warehouses, flat files and non-SQL data sources
 1. [SQL statements](/core-concepts/queries) inside markdown files run queries against data sources
 1. [Charts and components](/core-concepts/components) are rendered using these query results
 1. [Templated pages](/core-concepts/templated-pages) generate many pages from a single markdown template
