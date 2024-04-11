@@ -75,20 +75,27 @@ You can choose to handle these numbers differently by choosing a specific format
 ### Dates
 
 
-| Format Name | Format Code | Example Input | Example Output |
-| :-- | :-- | --: | --: |
-| ddd | ddd | 2022-01-09 12:45 | Sun |
-| dddd | dddd | 2022-01-09 12:45 | Sunday |
-| mmm | mmm | 2022-01-09 12:45 | Jan |
-| mmmm | mmmm | 2022-01-09 12:45 | January |
-| yyyy | yyyy | 2022-01-09 12:45 | 2022 |
-| shortdate | mmm d/yy | 2022-01-09 12:45 | Jan 9/22 |
-| longdate | mmmm d, yyyy | 2022-01-09 12:45 | January 9, 2022 |
-| fulldate | dddd mmmm d, yyyy | 2022-01-09 12:45 | Sunday January 9, 2022 |
-| mdy | m/d/y | 2022-01-09 12:45 | 1/9/22 |
-| dmy | d/m/y | 2022-01-09 12:45 | 9/1/22 |
-| hms | H:MM:SS AM/PM | 2022-01-09 12:45 | 11:45:03 AM |
+```sql date_formats
+select 'ddd' as format_name, 'ddd' as format_code, '2022-01-09 12:45' as example_input, 'Sun' as example_output, 0 as row_num union all
+select 'dddd', 'dddd', '2022-01-09 12:45', 'Sunday', 1 union all
+select 'mmm', 'mmm', '2022-01-09 12:45', 'Jan', 2 union all
+select 'mmmm', 'mmmm', '2022-01-09 12:45', 'January', 3 union all
+select 'yyyy', 'yyyy', '2022-01-09 12:45', '2022', 4 union all
+select 'shortdate', 'mmm d/yy', '2022-01-09 12:45', 'Jan 9/22', 5 union all
+select 'longdate', 'mmmm d, yyyy', '2022-01-09 12:45', 'January 9, 2022', 6 union all
+select 'fulldate', 'dddd mmmm d, yyyy', '2022-01-09 12:45', 'Sunday January 9, 2022', 7 union all
+select 'mdy', 'm/d/y', '2022-01-09 12:45', '1/9/22', 8 union all
+select 'dmy', 'd/m/y', '2022-01-09 12:45', '9/1/22', 9 union all
+select 'hms', 'H:MM:SS AM/PM', '2022-01-09 12:45', '11:45:03 AM', 10
+order by row_num
+```
 
+<DataTable data={date_formats} rows=all>
+    <Column id="format_name" />
+    <Column id="format_code" />
+    <Column id="example_input" />
+    <Column id="example_output" align=right/>
+</DataTable>
 
 
 ### Currencies
@@ -96,21 +103,27 @@ You can choose to handle these numbers differently by choosing a specific format
 Supported currencies:
 
 
-| Code | Currency |
-| :-- | :-- |
-| usd | United States Dollar |
-| aud | Australian Dollar |
-| brl | Brazilian Real |
-| cad | Canadian Dollar |
-| cny | Renminbi |
-| eur | Euro |
-| gbp | Pound Sterling |
-| jpy | Japanese Yen |
-| inr | Indian Rupee |
-| krw | South Korean Won |
-| ngn | Nigerian Naira |
-| rub | Russian Ruble |
-| sek | Swedish Krona |
+```sql currency_formats
+select 'usd' as code, 'United States Dollar' as currency, 0 as row_num union all
+select 'aud', 'Australian Dollar', 1 union all
+select 'brl', 'Brazilian Real', 2 union all
+select 'cad', 'Canadian Dollar', 3 union all
+select 'cny', 'Renminbi', 4 union all
+select 'eur', 'Euro', 5 union all
+select 'gbp', 'Pound Sterling', 6 union all
+select 'jpy', 'Japanese Yen', 7 union all
+select 'inr', 'Indian Rupee', 8 union all
+select 'krw', 'South Korean Won', 9 union all
+select 'ngn', 'Nigerian Naira', 10 union all
+select 'rub', 'Russian Ruble', 11 union all
+select 'sek', 'Swedish Krona', 12
+order by row_num
+```
+
+<DataTable data={currency_formats} rows=all>
+    <Column id="code" />
+    <Column id="currency" />
+</DataTable>
 
 In order to use currency tags, use the currency code, optionally appended with:
 
@@ -120,60 +133,86 @@ In order to use currency tags, use the currency code, optionally appended with:
 For example, the available tags for USD are:
 
 
-| Format Name | Format Code | Example Input | Example Output |
-| :-- | :-- | --: | --: |
-| usd | auto | 412.17 | $412 |
-| usd0 | $#,##0 | 7043.123 | $7,043 |
-| usd1 | $#,##0.0 | 7043.123 | $7,043.1 |
-| usd2 | $#,##0.00 | 7043.123 | $7,043.12 |
-| usd0k | $#,##0,"k" | 64301.12 | $64k |
-| usd1k | $#,##0.0,"k" | 64301.12 | $64.3k |
-| usd2k | $#,##0.00,"k" | 64301.12 | $64.30k |
-| usd0m | $#,##0,,"M" | 4564301.12 | $5M |
-| usd1m | $#,##0.0,,"M" | 4564301.12 | $4.6M |
-| usd2m | $#,##0.00,,"M" | 4564301.12 | $4.56M |
-| usd0b | $#,##0,,,"B" | 9784564301.12 | $10B |
-| usd1b | $#,##0.0,,,"B" | 9784564301.12 | $9.8B |
-| usd2b | $#,##0.00,,,"B" | 9784564301.12 | $9.78B |
+```sql usd_formats
+select 'usd' as format_name, 'auto' as format_code, 412.17 as example_input, '$412' as example_output, 0 as row_num union all
+select 'usd0', '$#,##0', 7043.123, '$7,043', 1 union all
+select 'usd1', '$#,##0.0', 7043.123, '$7,043.1', 2 union all
+select 'usd2', '$#,##0.00', 7043.123, '$7,043.12', 3 union all
+select 'usd0k', '$#,##0,"k"', 64301.12, '$64k', 4 union all
+select 'usd1k', '$#,##0.0,"k"', 64301.12, '$64.3k', 5 union all
+select 'usd2k', '$#,##0.00,"k"', 64301.12, '$64.30k', 6 union all
+select 'usd0m', '$#,##0,,"M"', 4564301.12, '$5M', 7 union all
+select 'usd1m', '$#,##0.0,,"M"', 4564301.12, '$4.6M', 8 union all
+select 'usd2m', '$#,##0.00,,"M"', 4564301.12, '$4.56M', 9 union all
+select 'usd0b', '$#,##0,,,"B"', 9784564301.12, '$10B', 10 union all
+select 'usd1b', '$#,##0.0,,,"B"', 9784564301.12, '$9.8B', 11 union all
+select 'usd2b', '$#,##0.00,,,"B"', 9784564301.12, '$9.78B', 12
+order by row_num
+```
+
+<DataTable data={usd_formats} rows=all>
+    <Column id="format_name" />
+    <Column id="format_code" />
+    <Column id="example_input" />
+    <Column id="example_output" align=right/>
+</DataTable>
 
 
 
 ### Numbers
 
-| Format Name | Format Code | Example Input | Example Output |
-| :-- | :-- | --: | --: |
-| num0 | #,##0 | 11.23168 | 11 |
-| num1 | #,##0.0 | 11.23168 | 11.2 |
-| num2 | #,##0.00 | 11.23168 | 11.23 |
-| num3 | #,##0.000 | 11.23168 | 11.232 |
-| num4 | #,##0.0000 | 11.23168 | 11.2317 |
-| num0k | #,##0,"k" | 64201 | 64k |
-| num1k | #,##0.0,"k" | 64201 | 64.2k |
-| num2k | #,##0.00,"k" | 64201 | 64.20k |
-| num0m | #,##0,,"M" | 42539483 | 43M |
-| num1m | #,##0.0,,"M" | 42539483 | 42.5M |
-| num2m | #,##0.00,,"M" | 42539483 | 42.54M |
-| num0b | #,##0,,,"B" | 1384937584 | 1B |
-| num1b | #,##0.0,,,"B" | 1384937584 | 1.4B |
-| num2b | #,##0.00,,,"B" | 1384937584 | 1.38B |
-| id | 0 | 921594675 | 921594675 |
-| fract | # ?/? | 0.25 | 1/4 |
-| mult | #,##0.0"x" | 5.32 | 5.3x |
-| mult0 | #,##0"x" | 5.32 | 5x |
-| mult1 | #,##0.0"x" | 5.32 | 5.3x |
-| mult2 | #,##0.00"x" | 5.32 | 5.32x |
-| sci | 0.00E+0 | 16546.1561 | 1.65E+4 |
+
+```sql number_formats
+select 'num0' as format_name, '#,##0' as format_code, '11.23168' as example_input, '11' as example_output, 0 as row_num union all
+select 'num1', '#,##0.0', '11.23168', '11.2', 1 union all
+select 'num2', '#,##0.00', '11.23168', '11.23', 2 union all
+select 'num3', '#,##0.000', '11.23168', '11.232', 3 union all
+select 'num4', '#,##0.0000', '11.23168', '11.2317', 4 union all
+select 'num0k', '#,##0,"k"', '64201', '64k', 5 union all
+select 'num1k', '#,##0.0,"k"', '64201', '64.2k', 6 union all
+select 'num2k', '#,##0.00,"k"', '64201', '64.20k', 7 union all
+select 'num0m', '#,##0,,"M"', '42539483', '43M', 8 union all
+select 'num1m', '#,##0.0,,"M"', '42539483', '42.5M', 9 union all
+select 'num2m', '#,##0.00,,"M"', '42539483', '42.54M', 10 union all
+select 'num0b', '#,##0,,,"B"', '1384937584', '1B', 11 union all
+select 'num1b', '#,##0.0,,,"B"', '1384937584', '1.4B', 12 union all
+select 'num2b', '#,##0.00,,,"B"', '1384937584', '1.38B', 13 union all
+select 'id', '0', '921594675', '921594675', 14 union all
+select 'fract', '# ?/?', '0.25', '1/4', 15 union all
+select 'mult', '#,##0.0"x"', '5.32', '5.3x', 16 union all
+select 'mult0', '#,##0"x"', '5.32', '5x', 17 union all
+select 'mult1', '#,##0.0"x"', '5.32', '5.3x', 18 union all
+select 'mult2', '#,##0.00"x"', '5.32', '5.32x', 19 union all
+select 'sci', '0.00E+0', '16546.1561', '1.65E+4', 20
+order by row_num
+```
+
+<DataTable data={number_formats} rows=all>
+    <Column id="format_name" />
+    <Column id="format_code" />
+    <Column id="example_input" />
+    <Column id="example_output" align=right/>
+</DataTable>
 
 
 ### Percentages
 
-| Format Name | Format Code | Example Input | Example Output |
-| :-- | :-- | --: | --: |
-| pct | auto | 0.731 | 73.1% |
-| pct0 | #,##0% | 0.731 | 73% |
-| pct1 | #,##0.0% | 0.731 | 73.1% |
-| pct2 | #,##0.00% | 0.731 | 73.10% |
-| pct3 | #,##0.000% | 0.731 | 73.100% |
+
+```sql percentage_formats
+select 'pct' as format_name, 'auto' as format_code, 0.731 as example_input, '73.1%' as example_output, 0 as row_num union all
+select 'pct0', '#,##0%', 0.731, '73%', 1 union all
+select 'pct1', '#,##0.0%', 0.731, '73.1%', 2 union all
+select 'pct2', '#,##0.00%', 0.731, '73.10%', 3 union all
+select 'pct3', '#,##0.000%', 0.731, '73.100%', 4
+order by row_num
+```
+
+<DataTable data={percentage_formats} rows=all>
+    <Column id="format_name" />
+    <Column id="format_code" />
+    <Column id="example_input" />
+    <Column id="example_output" align=right/>
+</DataTable>
 
 
 
@@ -205,12 +244,20 @@ When creating a table, Evidence formats column titles based on the name of the c
 #### Examples
 
 
-| Column Name | Formatted Title |
-| :-- | :-- |
-| sales_usd | Sales ($) |
-| customer_id | Customer ID |
-| growth_pct | Growth |
-| customer_number_num2k | Customer Number |
+
+```sql title_formats
+select 'sales_usd' as column_name, 'Sales ($)' as formatted_title, 0 as row_num union all
+select 'customer_id', 'Customer ID', 1 union all
+select 'growth_pct', 'Growth', 2 union all
+select 'customer_number_num2k', 'Customer Number', 3
+order by row_num
+```
+
+<DataTable data={title_formats} rows=all>
+    <Column id="column_name" />
+    <Column id="formatted_title" />
+</DataTable>
+
 
 
 
