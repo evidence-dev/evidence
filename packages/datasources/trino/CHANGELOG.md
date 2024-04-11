@@ -1,5 +1,12 @@
 # @evidence-dev/trino
 
+## 1.0.5
+
+### Patch Changes
+
+- Updated dependencies [1da26c4e]
+  - @evidence-dev/db-commons@1.0.4
+
 ## 1.0.4
 
 ### Patch Changes
