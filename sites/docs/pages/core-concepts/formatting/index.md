@@ -93,7 +93,7 @@ order by row_num
 <DataTable data={date_formats} rows=all>
     <Column id="format_name" />
     <Column id="format_code" />
-    <Column id="example_input" />
+    <Column id="example_input" align=right/>
     <Column id="example_output" align=right/>
 </DataTable>
 
@@ -135,25 +135,25 @@ For example, the available tags for USD are:
 
 ```sql usd_formats
 select 'usd' as format_name, 'auto' as format_code, 412.17 as example_input, '$412' as example_output, 0 as row_num union all
-select 'usd0', '$#,##0', 7043.123, '$7,043', 1 union all
-select 'usd1', '$#,##0.0', 7043.123, '$7,043.1', 2 union all
-select 'usd2', '$#,##0.00', 7043.123, '$7,043.12', 3 union all
-select 'usd0k', '$#,##0,"k"', 64301.12, '$64k', 4 union all
-select 'usd1k', '$#,##0.0,"k"', 64301.12, '$64.3k', 5 union all
-select 'usd2k', '$#,##0.00,"k"', 64301.12, '$64.30k', 6 union all
-select 'usd0m', '$#,##0,,"M"', 4564301.12, '$5M', 7 union all
-select 'usd1m', '$#,##0.0,,"M"', 4564301.12, '$4.6M', 8 union all
-select 'usd2m', '$#,##0.00,,"M"', 4564301.12, '$4.56M', 9 union all
-select 'usd0b', '$#,##0,,,"B"', 9784564301.12, '$10B', 10 union all
-select 'usd1b', '$#,##0.0,,,"B"', 9784564301.12, '$9.8B', 11 union all
-select 'usd2b', '$#,##0.00,,,"B"', 9784564301.12, '$9.78B', 12
+select 'usd0', '$#,##0', '7043.123', '$7,043', 1 union all
+select 'usd1', '$#,##0.0', '7043.123', '$7,043.1', 2 union all
+select 'usd2', '$#,##0.00', '7043.123', '$7,043.12', 3 union all
+select 'usd0k', '$#,##0,"k"', '64301.12', '$64k', 4 union all
+select 'usd1k', '$#,##0.0,"k"', '64301.12', '$64.3k', 5 union all
+select 'usd2k', '$#,##0.00,"k"', '64301.12', '$64.30k', 6 union all
+select 'usd0m', '$#,##0,,"M"', '4564301.12', '$5M', 7 union all
+select 'usd1m', '$#,##0.0,,"M"', '4564301.12', '$4.6M', 8 union all
+select 'usd2m', '$#,##0.00,,"M"', '4564301.12', '$4.56M', 9 union all
+select 'usd0b', '$#,##0,,,"B"', '9784564301.12', '$10B', 10 union all
+select 'usd1b', '$#,##0.0,,,"B"', '9784564301.12', '$9.8B', 11 union all
+select 'usd2b', '$#,##0.00,,,"B"', '9784564301.12', '$9.78B', 12
 order by row_num
 ```
 
 <DataTable data={usd_formats} rows=all>
     <Column id="format_name" />
     <Column id="format_code" />
-    <Column id="example_input" />
+    <Column id="example_input" align=right/>
     <Column id="example_output" align=right/>
 </DataTable>
 
@@ -190,7 +190,7 @@ order by row_num
 <DataTable data={number_formats} rows=all>
     <Column id="format_name" />
     <Column id="format_code" />
-    <Column id="example_input" />
+    <Column id="example_input" align=right/>
     <Column id="example_output" align=right/>
 </DataTable>
 
