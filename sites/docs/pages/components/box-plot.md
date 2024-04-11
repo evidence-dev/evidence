@@ -20,20 +20,34 @@ The BoxPlot component requires pre-aggregated data, with one row per box you wou
 
 **1. Explicitly define each value (e.g., `min`, `intervalBottom`, `midpoint`, `intervalTop`, `max`)**
 
-| name | intervalBottom | midpoint | intervalTop |
-| -------- | -------- | -------- | -------- |
-|    Experiment A     |    0.02     |    0.04     |    0.08     |
-|    Experiment B     |    -0.01     |    0.01    |    0.02    |
+```sql boxplot
+SELECT 'Experiment A' as name, 0.02 as intervalBottom, 0.04 as midpoint, 0.08 as intervalTop
+UNION ALL
+SELECT 'Experiment B' as name, -0.01 as intervalBottom, 0.01 as midpoint, 0.02 as intervalTop
+```
+
+<DataTable data={boxplot} formatColumnTitles=false>
+    <Column id="name" />
+    <Column id="intervalBottom" fmt=num2/>
+    <Column id="midpoint" fmt=num2/>
+    <Column id="intervalTop" fmt=num2/>
+</DataTable>
 
 This example table excludes whiskers which would be defined with `min` and `max` columns
 
 **2. Define a `midpoint` and a `confidenceInterval` - this will add the interval to the midpoint to get the max, and subtract to get the min**
 
-| name | midpoint | confidenceInterval |
-| -------- | -------- | -------- |
-|    Experiment A     |    0.04     |    0.03    |
-|    Experiment B     |    0.01     |    0.04    |
+```sql boxplot_with_confidence_interval
+SELECT 'Experiment A' as name, 0.04 as midpoint, 0.03 as confidenceInterval
+UNION ALL
+SELECT 'Experiment B' as name, 0.01 as midpoint, 0.04 as confidenceInterval
+```
 
+<DataTable data={boxplot_with_confidence_interval} formatColumnTitles=false>
+    <Column id="name" />
+    <Column id="midpoint" fmt=num2/>
+    <Column id="confidenceInterval" fmt=num2/>
+</DataTable>
 
 ## Examples
 

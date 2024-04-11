@@ -26,11 +26,17 @@ Imagine you were creating a report on the performance of your organization's cit
 
 The following table is being returned by the query `location_summary`
 
-| id  | name        | sales_usd | gross_margin_pct |
-| --- | ----------- | --------- | ---------------- |
-| 1   | New York    | 9000      | 0.60             |
-| 2   | Los Angeles | 5000      | 0.45             |
-| 3   | Toronto     | 4000      | 0.70             |
+```sql location_summary
+SELECT 1 as id, 'New York' as name, 9000 as sales_usd, 0.60 as gross_margin_pct UNION ALL
+SELECT 2, 'Los Angeles', 5000, 0.45 UNION ALL
+SELECT 3, 'Toronto', 4000, 0.70
+```
+
+<DataTable data={location_summary} formatColumnTitles=false>
+    <Column id="name" />
+    <Column id="sales_usd" fmt=num0 />
+    <Column id="gross_margin_pct" fmt=num2 />
+</DataTable>
 
 By using an `{#each}` block, we can iterate over each of the rows in `location_summary`, and reference the current row with the alias `city`. Here we'll create a header, and a paragraph for each of the three locations.
 
