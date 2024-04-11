@@ -186,7 +186,8 @@ const cleanQuery = (query) => {
 	let cleanedString = query.trim();
 	if (cleanedString.endsWith(';'))
 		cleanedString = cleanedString.substring(0, cleanedString.length - 1);
-	return cleanedString;
+	// query might end with a line comment, which has to be ended
+	return cleanedString + '\n';
 };
 
 /**
