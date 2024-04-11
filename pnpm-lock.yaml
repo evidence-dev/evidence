@@ -694,6 +694,12 @@ importers:
       prismjs:
         specifier: ^1.29.0
         version: 1.29.0
+      rehype-autolink-headings:
+        specifier: 5.1.0
+        version: 5.1.0
+      rehype-slug:
+        specifier: 4.0.1
+        version: 4.0.1
       remark-parse:
         specifier: 8.0.2
         version: 8.0.2
@@ -15492,8 +15498,16 @@ packages:
       web-namespaces: 1.1.4
     dev: false
 
+  /hast-util-has-property@1.0.4:
+    resolution: {integrity: sha512-ghHup2voGfgFoHMGnaLHOjbYFACKrRh9KFttdCzMCbFoBMJXiNi2+XTrPP8+q6cDJM/RSqlCfVWrjp1H201rZg==}
+    dev: false
+
   /hast-util-has-property@2.0.1:
     resolution: {integrity: sha512-X2+RwZIMTMKpXUzlotatPzWj8bspCymtXH3cfG3iQKV+wPF53Vgaqxi/eLqGck0wKq1kS9nvoB1wchbCPEL8sg==}
+    dev: false
+
+  /hast-util-heading-rank@1.0.1:
+    resolution: {integrity: sha512-P6Hq7RCky9syMevlrN90QWpqWDXCxwIVOfQR2rK6P4GpY4bqjKEuCzoWSRORZ7vz+VgRpLnXimh+mkwvVFjbyQ==}
     dev: false
 
   /hast-util-heading-rank@3.0.0:
@@ -15559,6 +15573,10 @@ packages:
       web-namespaces: 1.1.4
       xtend: 4.0.2
       zwitch: 1.0.5
+    dev: false
+
+  /hast-util-to-string@1.0.4:
+    resolution: {integrity: sha512-eK0MxRX47AV2eZ+Lyr18DCpQgodvaS3fAQO2+b9Two9F5HEoRPhiUMNzoXArMJfZi2yieFzUBMRl3HNJ3Jus3w==}
     dev: false
 
   /hast-util-to-string@2.0.0:
@@ -21046,6 +21064,15 @@ packages:
     dependencies:
       jsesc: 0.5.0
 
+  /rehype-autolink-headings@5.1.0:
+    resolution: {integrity: sha512-ujU4/ALnWLJQubobQaMdC0h9nkzi7HlW9SOuCxZOkkJqhc/TrQ1cigIjMFQ2Tfc/es0KiFopKvwCUGw7Gw+mFw==}
+    dependencies:
+      extend: 3.0.2
+      hast-util-has-property: 1.0.4
+      hast-util-heading-rank: 1.0.1
+      unist-util-visit: 2.0.3
+    dev: false
+
   /rehype-external-links@3.0.0:
     resolution: {integrity: sha512-yp+e5N9V3C6bwBeAC4n796kc86M4gJCdlVhiMTxIrJG5UHDMh+PJANf9heqORJbt1nrCbDwIlAZKjANIaVBbvw==}
     dependencies:
@@ -21073,6 +21100,16 @@ packages:
     dependencies:
       hast-util-from-parse5: 6.0.1
       parse5: 6.0.1
+    dev: false
+
+  /rehype-slug@4.0.1:
+    resolution: {integrity: sha512-KIlJALf9WfHFF21icwTd2yI2IP+RQRweaxH9ChVGQwRYy36+hiomG4ZSe0yQRyCt+D/vE39LbAcOI/h4O4GPhA==}
+    dependencies:
+      github-slugger: 1.5.0
+      hast-util-has-property: 1.0.4
+      hast-util-heading-rank: 1.0.1
+      hast-util-to-string: 1.0.4
+      unist-util-visit: 2.0.3
     dev: false
 
   /rehype-slug@6.0.0:
