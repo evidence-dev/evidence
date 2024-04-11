@@ -325,12 +325,18 @@ You can add [DuckDB source options](https://duckdb.org/docs/data/csv/overview.ht
 
 Ensure there are no spaces in your source options you pass, and to use double quotes when passing strings
 
-Option String | Outcome
---|--
-header=false | Reads the first line as the first row of data
-delim="\|" | Use "\|" characters as delimiters when reading the csv
-header=false,delim="\|" | Use both of these options
 
+```sql source_options
+select 'header=false' as "Option String", 'Reads the first line as the first row of data' as "Outcome", 0 as row_num UNION ALL
+select 'delim="|"', 'Use "|" characters as delimiters when reading the csv', 1 UNION ALL
+select 'header=false,delim="|"', 'Use both of these options', 2
+order by row_num
+```
+
+<DataTable data={source_options}>
+    <Column id="Option String" />
+    <Column id="Outcome" />
+</DataTable>
 
 ## Troubleshooting
 
