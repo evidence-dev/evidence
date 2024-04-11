@@ -227,6 +227,27 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 
 <img src='/img/datatable-linklabel-string.png' width='500px'/>
 
+### HTML Content
+
+````markdown
+```sql html_in_table
+select '<b>Bold</b> text' as "HTML in Table", 0 as row_number union all
+select '<i>Italic</i> text', 1 union all
+select '<a href="https://evidence.dev">Link</a>', 2 union all
+select '<img src="https://raw.githubusercontent.com/evidence-dev/media-kit/main/png/wordmark-gray-800.png" width="200px"/>', 3 union all
+select 'Inline <code class=markdown>Code</code></br> is supported', 4
+order by row_number
+```
+
+<DataTable data={html_in_table}>
+    <Column id="HTML in Table" contentType=html/>
+</DataTable>
+````
+
+<img src='/img/datatable-html.png' width='500px'/>
+
+To apply styling to most HTML tags, you should add the `class=markdown` attribute to the tag in your column. This will apply the same styling as the markdown renderer.
+
 ### Row Links
 
 #### External Links
@@ -497,7 +518,7 @@ Use the `Column` component to choose specific columns to display in your table, 
 <PropListing
     name=contentType
     description="Lets you specify how to treat the content within a column. See below for contentType-specific options."
-    options={['link', 'image', 'delta', 'colorscale']}
+    options={['link', 'image', 'delta', 'colorscale', 'html']}
 />
 
 ### Images
@@ -585,3 +606,14 @@ Use the `Column` component to choose specific columns to display in your table, 
     options="number"
     defaultValue="max of column"
 />
+<PropListing
+    name=colorBreakpoints
+    description="Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in <code>scaleColor</code>"
+    options="array of numbers"
+/>
+
+### HTML
+
+`contentType=html`
+
+To apply styling to HTML tags, you will need to add the `class=markdown` attribute **to the HTML tag in your column**. This will apply the same styling as the markdown renderer. E.g., `<code class=markdown>Code</code>`
