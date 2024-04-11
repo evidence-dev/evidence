@@ -23,7 +23,7 @@
   
 <section class="py-4 border-t">
         <div class="flex flex-col lg:flex-row">
-            <div class="text-base font-mono flex flex-row min-w-48 items-center mr-4">
+            <div class="text-base font-mono flex flex-row min-w-48 items-center mr-4 pb-1">
                 <div class="text-fuscia-400 px-1 py-0 mr-4 bg-gray-50 border rounded-md">{name}</div>
                 {#if required === true || required === "true"}
                 <div class="text-red-500 text-sm font-normal pr-6 pt-0.5">REQUIRED</div>
@@ -38,7 +38,7 @@
         <span class="text-sm text-gray-400">Options:</span>
         {#each options as option, index (option)}
         <div class="group ml-2 relative">
-            <button class="text-sm font-mono bg-blue-100 text-blue-600 px-2 py-1 mt-1 rounded-full cursor-pointer hover:bg-blue-200 transition-colors duration-100 ease-in-out" 
+            <button class="text-sm font-mono bg-blue-100 text-blue-600 px-1.5 py-0.5 mt-0.5 md:px-2 md:py-1 md:mt-1 rounded-full cursor-pointer hover:bg-blue-200 transition-colors duration-100 ease-in-out" 
                     on:click={() => copyToClipboard(`${name}=${option}`, option)}>{option}</button>
             <div class="absolute left-0 mt-2 bg-gray-100 p-2 rounded shadow-lg group-hover:block hidden">
                 <pre><span class="text-gray-950">{name}</span>=<span class="text-blue-800">{option}</span></pre>
