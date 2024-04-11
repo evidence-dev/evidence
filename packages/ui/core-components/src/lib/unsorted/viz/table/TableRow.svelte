@@ -161,6 +161,8 @@
 							neutralMax={column.neutralMax}
 							chip={column.chip}
 						/>
+					{:else if column.contentType === 'html' && row[column.id] !== undefined}
+						{@html row[column.id]}
 					{:else}
 						{formatValue(
 							row[column.id],
