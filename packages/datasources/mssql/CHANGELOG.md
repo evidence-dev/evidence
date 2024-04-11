@@ -1,5 +1,12 @@
 # @evidence-dev/mssql
 
+## 1.0.6
+
+### Patch Changes
+
+- Updated dependencies [1da26c4e]
+  - @evidence-dev/db-commons@1.0.4
+
 ## 1.0.5
 
 ### Patch Changes

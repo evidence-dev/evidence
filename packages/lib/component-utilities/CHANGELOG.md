@@ -1,5 +1,12 @@
 # @evidence-dev/component-utilities
 
+## 2.5.3
+
+### Patch Changes
+
+- 629f93a0: properly update `option` for other functions to use
+  - @evidence-dev/query-store@2.1.2
+
 ## 2.5.2
 
 ### Patch Changes

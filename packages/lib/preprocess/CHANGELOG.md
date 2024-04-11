@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 4.1.2
+
+### Patch Changes
+
+- e1e9a068: Add automatic links to headers
+
 ## 4.1.1
 
 ### Patch Changes

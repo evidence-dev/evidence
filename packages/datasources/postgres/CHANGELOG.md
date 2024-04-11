@@ -1,5 +1,14 @@
 # @evidence-dev/postgres
 
+## 1.0.5
+
+### Patch Changes
+
+- e2176af7: apply `standardizeResult` to first batch of postgres results
+- 5e0bbf31: stop blocking advanced usage of json with usql
+- Updated dependencies [1da26c4e]
+  - @evidence-dev/db-commons@1.0.4
+
 ## 1.0.4
 
 ### Patch Changes
