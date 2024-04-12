@@ -1,0 +1,7 @@
+# all 301 redirects
+/getting-started/what-is-evidence    /
+/getting-started/install-evidence    /install-evidence/
+/cli/                                /reference/cli/
+/themes-and-layouts/                 /reference/themes-and-layouts/
+/markdown/                           /reference/markdown/
+/plugins/creating-a-plugin/          /plugins/create-component-plugin/
