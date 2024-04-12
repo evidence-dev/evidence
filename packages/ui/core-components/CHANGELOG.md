@@ -1,5 +1,20 @@
 # @evidence-dev/core-components
 
+## 3.8.0
+
+### Minor Changes
+
+- 9bac016c: add `noDefault` prop to `Dropdown`, support for multi-defaultValue
+
+### Patch Changes
+
+- e1e9a068: Add automatic links to headers
+- 505f121b: Adds support for HTML contentType in DataTables
+- 5098c3ee: Fixes bold, italic, strikethrough and code span sizing issues in markdown
+- Updated dependencies [629f93a0]
+  - @evidence-dev/component-utilities@2.5.3
+  - @evidence-dev/query-store@2.1.2
+
 ## 3.7.3
 
 ### Patch Changes

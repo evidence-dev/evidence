@@ -1,5 +1,11 @@
 # @evidence-dev/db-commons
 
+## 1.0.4
+
+### Patch Changes
+
+- 1da26c4e: add more leniency for comments in queries
+
 ## 1.0.3
 
 ### Patch Changes
