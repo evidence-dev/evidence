@@ -1,21 +1,13 @@
-import { getQueries } from '@evidence-dev/db-orchestrator';
 import md5 from 'blueimp-md5';
 import { GET as getSettings } from './api/customFormattingSettings.json/+server.js';
 import { GET as getPagesManifest } from './api/pagesManifest.json/+server.js';
-import { getStatusAndExtractQueries } from './extractQueries.server.js';
-import { dev } from '$app/environment';
 
-export const prerender = true;
-export const ssr = !dev;
+export const ssr = false;
+export const prerender = false;
 export const trailingSlash = 'always';
-
-const system_routes = ['/settings', '/explore'];
 
 /** @satisfies {import("./$types").LayoutServerLoad} */
 export async function load({ route, params }) {
-	const isUserPage =
-		route.id && system_routes.every((system_route) => !route.id.startsWith(system_route));
-
 	const routeHash = md5(route.id);
 	const paramsHash = md5(
 		Object.entries(params)
@@ -24,10 +16,8 @@ export async function load({ route, params }) {
 			.join('\x1E')
 	);
 
-	if (isUserPage) {
-		// todo: remove this
-		await getStatusAndExtractQueries(route.id);
-	}
+	const evidencemetaRes = await fetch(`/api/${route.id}/evidencemeta.json`);
+	const evidencemeta = evidencemetaRes.ok ? await evidencemetaRes.json() : { queries: [] };
 
 	const customFormattingSettingsRes = await getSettings();
 	const { customFormattingSettings } = await customFormattingSettingsRes.json();
@@ -39,8 +29,7 @@ export async function load({ route, params }) {
 		routeHash,
 		paramsHash,
 		customFormattingSettings,
-		isUserPage,
-		evidencemeta: getQueries(routeHash),
+		evidencemeta,
 		pagesManifest
 	};
 }

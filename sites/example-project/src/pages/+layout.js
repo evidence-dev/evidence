@@ -64,30 +64,50 @@ async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch })
 	return Object.fromEntries(resolved_entries.filter(Boolean));
 }
 
+/** @satisfies {import("./$types").LayoutServerLoad} */
+async function missingDataJSON({ fetch, route, params }) {
+	const [{ default: md5 }, customFormattingSettings, pagesManifest, evidencemeta] =
+		await Promise.all([
+			import('blueimp-md5'),
+			fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
+			fetch('/api/pagesManifest.json').then((x) => x.json()),
+			fetch(`/api/${route.id}/evidencemeta.json`).then((x) => (x.ok ? x.json() : { queries: [] }))
+		]);
+
+	const routeHash = md5(route.id);
+	const paramsHash = md5(
+		Object.entries(params)
+			.sort()
+			.map(([key, value]) => `${key}\x1F${value}`)
+			.join('\x1E')
+	);
+
+	return {
+		routeHash,
+		paramsHash,
+		customFormattingSettings,
+		evidencemeta,
+		pagesManifest
+	};
+}
+
+const system_routes = ['/settings', '/explore'];
+
 /** @type {Map<string, { inputs: Record<string, string> }>} */
 const dummy_pages = new Map();
 
 /** @satisfies {import("./$types").LayoutLoad} */
 export const load = async (event) => {
-	// cover 404 pages
-	if (!event.data && dev) {
-		const [customFormattingSettings, pagesManifest] = await Promise.all([
-			event.fetch('/api/customFormattingSettings.json').then((x) => x.json()),
-			event.fetch('/api/pagesManifest.json').then((x) => x.json())
-		]);
+	const isUserPage =
+		event.route.id &&
+		system_routes.every((system_route) => !event.route.id.startsWith(system_route));
 
-		return { customFormattingSettings, pagesManifest };
+	if (!event.data) {
+		event.data = await missingDataJSON(event);
 	}
 
 	const {
-		data: {
-			customFormattingSettings,
-			routeHash,
-			paramsHash,
-			isUserPage,
-			evidencemeta,
-			pagesManifest
-		},
+		data: { customFormattingSettings, routeHash, paramsHash, evidencemeta, pagesManifest },
 		url,
 		fetch
 	} = event;
