@@ -3,13 +3,54 @@ title: Tabs
 sidebar_position: 1
 ---
 
-<img src="/img/tabs.png" alt="tabs" width="600"/>
 
-<hr/>
+<Tabs>
+    <Tab label="First Tab">
+        Content of the First Tab
+
+        You can use **markdown** here too!
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+
+        Here's a [link](https://www.google.com)
+    </Tab>
+</Tabs>
+
+
 
 ```markdown
 <Tabs>
     <Tab label="First Tab">
+        Content of the First Tab
+
+        You can use **markdown** here too!
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+
+        Here's a [link](https://www.google.com)
+    </Tab>
+</Tabs>
+```
+
+## Examples
+
+### Custom Color
+
+
+<Tabs color=#ff0000>
+    <Tab label="Red Tabs">
+        Content of the First Tab
+    </Tab>
+    <Tab label="Second Tab">
+        Content of the Second Tab
+    </Tab>
+</Tabs>
+
+```markdown
+<Tabs color=#ff0000>
+    <Tab label="Red Tabs">
         Content of the First Tab
     </Tab>
     <Tab label="Second Tab">
