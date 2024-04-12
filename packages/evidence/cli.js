@@ -180,7 +180,6 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
-
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
