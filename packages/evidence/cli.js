@@ -45,7 +45,6 @@ const populateTemplate = function () {
 
 const clearQueryCache = function () {
 	fs.removeSync('.evidence/template/.evidence-queries/cache');
-	console.log('Cleared query cache\n');
 };
 
 const runFileWatcher = function (watchPatterns) {
@@ -188,10 +187,6 @@ prog
 	.option('--debug', 'Enables verbose console logs')
 	.describe('launch the local evidence development environment')
 	.action((args) => {
-		console.log(
-			chalk.cyan('Starting Evidence development workspace - this can take up to 90 seconds\n')
-		);
-
 		if (args.debug) {
 			process.env.VITE_EVIDENCE_DEBUG = true;
 			delete args.debug;
