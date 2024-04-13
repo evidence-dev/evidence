@@ -17,14 +17,14 @@
 	function sortChildrenBySidebarPosition(node) {
 		if (node.children) {
 			node.children = node.children.sort((a, b) => {
-				if (a.frontMatter?.sidebar_position && b.frontMatter?.sidebar_position) {
+				if (!isNaN(a.frontMatter?.sidebar_position) && !isNaN(b.frontMatter?.sidebar_position)) {
 					return (
 						a.frontMatter.sidebar_position - b.frontMatter.sidebar_position ||
 						a.label.localeCompare(b.label)
 					);
-				} else if (a.frontMatter?.sidebar_position) {
+				} else if (!isNaN(a.frontMatter?.sidebar_position)) {
 					return -1;
-				} else if (b.frontMatter?.sidebar_position) {
+				} else if (!isNaN(b.frontMatter?.sidebar_position)) {
 					return 1;
 				} else {
 					return a.label.localeCompare(b.label);
