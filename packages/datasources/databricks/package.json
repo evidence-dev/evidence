@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@evidence-dev/db-commons": "workspace:*",
-		"@databricks/sql": "^1.5.0"
+		"@databricks/sql": "1.7.1"
 	},
 	"devDependencies": {
 		"dotenv": "^16.0.1"
