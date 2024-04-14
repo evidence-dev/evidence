@@ -11,13 +11,11 @@
 	async function copyToClipboard(text, option) {
 		try {
 			await navigator.clipboard.writeText(text);
-			console.log('Copied to clipboard: ' + text);
 			copyStatus[option] = true;
 			setTimeout(() => {
 				copyStatus[option] = false;
 			}, 2000);
 		} catch (err) {
-			console.error('Failed to copy text: ', err);
 		}
 	}
 </script>
