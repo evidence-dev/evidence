@@ -94,7 +94,7 @@
 		"eslint-plugin-svelte": "2.35.1",
 		"postcss": "^8.4.23",
 		"postcss-load-config": "^4.0.1",
-		"prettier": "^2.8.0",
+		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.1.2",
 		"publint": "^0.1.9",
 		"react": "^17.0.1",

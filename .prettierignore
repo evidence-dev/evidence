@@ -17,7 +17,6 @@ yarn.lock
 /packages/preprocess/src/process-frontmatter/handle-og.svelte
 **/template/*
 /packages/components/*
-**/sites/docs/*
 **/dist/*   
 .changeset/*
 
