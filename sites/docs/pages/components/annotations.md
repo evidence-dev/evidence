@@ -104,19 +104,19 @@ A reference line can be produced by defining values inline or by supplying a dat
     <PropListing
         name=x
         description="x-axis value where line will be plotted"
-        required="false"
+        
         options="number | string | date"
     />
     <PropListing
         name=y
         description="y-axis value where line will be plotted"
-        required="false"
+        
         options="number"    
     />
     <PropListing
         name=label
         description="Text to show as label for the line. If no label is provided, the value will be used."
-        required="false"
+        
         options="string"
     />
 
@@ -129,7 +129,7 @@ A reference line can be produced by defining values inline or by supplying a dat
     <PropListing
         name=data
         description="Query name, wrapped in curly braces"
-        required=true
+        required
         options="query name"
     />
     <PropListing
@@ -145,7 +145,7 @@ A reference line can be produced by defining values inline or by supplying a dat
     <PropListing
         name=label
         description="Column containing a label to use for each line"
-        required="false"
+        
         options="column name"
     />
     <PropListing
@@ -339,7 +339,7 @@ A reference area can be produced by defining values inline or by supplying a dat
     <PropListing
         name=data
         description="Query name, wrapped in curly braces"
-        required=true
+        required
         options="query name"
     />
     <PropListing
@@ -365,7 +365,7 @@ A reference area can be produced by defining values inline or by supplying a dat
     <PropListing
         name=label
         description="Column containing a label to use for each area"
-        required="false"
+        
         options="column name"
     />
 

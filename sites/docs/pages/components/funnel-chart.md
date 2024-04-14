@@ -62,19 +62,19 @@ sidebar_position: 1
 <PropListing
     name=data
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing
     name=nameCol
     description="Column to use for the name of the chart"
-    required=true
+    required
     options="column name"
 />
 <PropListing
     name=valueCol
     description="Column to use for the value of the chart"
-    required=true
+    required
     options="column name"
 />
 <PropListing

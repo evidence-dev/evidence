@@ -55,7 +55,7 @@ This structure also gives you control over the individual series on your chart. 
 <PropListing
     name=data
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing

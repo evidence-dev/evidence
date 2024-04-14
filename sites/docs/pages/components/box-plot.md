@@ -121,13 +121,13 @@ SELECT 'Experiment B' as name, 0.01 as midpoint, 0.04 as confidenceInterval
 <PropListing 
     name="data"
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing 
     name="name"
     description="Column to use for the names of each box in your plot"
-    required=true
+    required
     options="column name"
 />
 <PropListing 
@@ -143,7 +143,7 @@ SELECT 'Experiment B' as name, 0.01 as midpoint, 0.04 as confidenceInterval
 <PropListing 
     name="midpoint"
     description="Column containing values for midpoint of box"
-    required=true
+    required
     options="column name"
 />
 <PropListing 

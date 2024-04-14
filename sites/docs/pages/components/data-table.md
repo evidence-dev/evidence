@@ -480,130 +480,130 @@ By default, the link column of your table is hidden. If you would like it to be 
 <PropListing
     name=data
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing
     name=rows
     description="Number of rows to show in the table before paginating results. Use `rows=all` to show all rows in the table."
-    required=false
+    
     options="number | all"
     defaultValue=10
 />
 <PropListing
     name=totalRow
     description="Show a total row at the bottom of the table, defaults to sum of all numeric columns"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=totalRowColor
     description="Background color of the total row"
-    required=false
+    
     options="Hex color code | css color name"
 />
 <PropListing
     name=totalFontColor
     description="Font color of the total row"
-    required=false
+    
     options="Hex color code | css color name"
 />
 <PropListing
     name=rowNumbers
     description="Turns on or off row index numbers"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=rowLines
     description="Turns on or off borders at the bottom of each row"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=true
 />
 <PropListing
     name=rowShading
     description="Shades every second row in light grey"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=backgroundColor
     description="Background color of the table"
-    required=false
+    
     options="Hex color code | css color name"
     defaultValue="-"
 />
 <PropListing
     name=sortable
     description="Enable sort for each column - click the column title to sort"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=true
 />  
 <PropListing
     name=search
     description="Add a search bar to the top of your table"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=downloadable
     description="Enable download data button below the table on hover"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=true
 />
 <PropListing
     name=formatColumnTitles
     description="Enable auto-formatting of column titles. Turn off to show raw SQL column names"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=true
 />
 <PropListing
     name=wrapTitles
     description="Wrap column titles"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=link
     description="Makes each row of your table a clickable link. Accepts the name of a column containing the link to use for each row in your table"
-    required=false
+    
     options="column name"
     defaultValue="-"
 />
 <PropListing
     name=showLinkCol
     description="Whether to show the column supplied to the `link` prop"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=generateMarkdown
     description="Helper for writing DataTable syntax with many columns. When set to true, markdown for the DataTable including each `Column` contained within the query will be generated and displayed below the table."
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=emptySet
     description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
-    required=false
+    
     options={["error", "warn", "pass"]}
     defaultValue="error"
 />
 <PropListing
     name=emptyMessage
     description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
-    required=false
+    
     options="string"
     defaultValue="No records"
 />
@@ -614,58 +614,58 @@ Groups allow you to create sections within your table, increasing the density of
 <PropListing
     name=groupBy
     description="Column to use to create groups. Note that groups are currently limited to a single group column."
-    required=false
+    
     options="column name"
 />
 <PropListing
     name=groupType
     description="How the groups are shown in the table. Can be accordion (expand/collapse) or section (group column values are merged across rows)"
-    required=false
+    
     options={['accordion', 'section']}
     defaultValue="accordion"
 />
 <PropListing
     name=subtotals
     description="Whether to show aggregated totals for the groups"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=false
 />
 <PropListing
     name=subtotalFmt
     description="Specify an override format to use in the subtotal row (<a href='/core-concepts/formatting'>see available formats</a>). Custom strings or values are unformatted by default."
-    required=false
+    
     options="Excel-style format | built-in format | custom format"
 />
 <PropListing
     name=groupsOpen
     description="[groupType=accordion] Whether to show the accordions as open on page load"
-    required=false
+    
     options={['true', 'false']}
     defaultValue=true
 />
 <PropListing
     name=accordionRowColor
     description="[groupType=accordion] Background color for the accordion row"
-    required=false
+    
     options="Hex color code | css color name"
 />
 <PropListing
     name=subtotalRowColor
     description="[groupType=section] Background color for the subtotal row"
-    required=false
+    
     options="Hex color code | css color name"
 />
 <PropListing
     name=subtotalFontColor
     description="[groupType=section] Font color for the subtotal row"
-    required=false
+    
     options="Hex color code | css color name"
 />
 <PropListing
     name=groupNamePosition
     description="[groupType=section] Where the group label will appear in its cell"
-    required=false
+    
     options={['top', 'middle', 'bottom']}
     defaultValue="middle"
 />
@@ -680,7 +680,7 @@ Use the `Column` component to choose specific columns to display in your table, 
 <PropListing
     name=id
     description="Column id (from SQL query)"
-    required=true
+    required
     options="column name"
 />
 <PropListing

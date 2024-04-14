@@ -218,7 +218,7 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 <PropListing
     name=data
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing

@@ -150,19 +150,19 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <PropListing
     name=data
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing
     name=x
     description="Column to use for the x-axis of the chart"
-    required=true
+    required
     options="column name"
 />
 <PropListing
     name=y
     description="Column(s) to use for the y-axis of the chart"
-    required=true
+    required
     options="column name | array of column names"
 />
 <PropListing

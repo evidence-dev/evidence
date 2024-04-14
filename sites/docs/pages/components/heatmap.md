@@ -152,25 +152,25 @@ Heatmap currently only works with string columns. If you would like to use a dat
 <PropListing
     name=data
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing
     name=x
     description="Categorical column to use for the x-axis. If you want to use dates, cast them to strings in your query first"
-    required=true
+    required
     options="column name"
 />
 <PropListing
     name=y
     description="Categorical column to use for the y-axis. If you want to use dates, cast them to strings in your query first"
-    required=true
+    required
     options="column name"
 />
 <PropListing
     name=value
     description="Numeric column to use for the y-axis"
-    required=true
+    required
     options="column name"
 />
 <PropListing

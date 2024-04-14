@@ -26,7 +26,7 @@ sidebar_position: 1
   <PropListing
       name="single"
       description="When true, only a single accordian item can be open at once."
-      required="false"
+      
       options={['true', 'false']}
   />
 
@@ -36,5 +36,5 @@ sidebar_position: 1
   <PropListing
       name="title"
       description="The title of the accordion item. This will be displayed as the header."
-      required="true"
+      required
   />

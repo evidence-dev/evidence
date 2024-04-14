@@ -32,7 +32,7 @@ This is a dangerous alert
 <PropListing
     name="status"
     description="Changes the colors of the alert"
-    required="false"
+    
     options={['default', 'info', 'success', 'warning', 'danger']}
     defaultValue="default"
 />

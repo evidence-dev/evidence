@@ -52,7 +52,7 @@ where ${inputs.selected_dimensions}
 <PropListing 
     name="data"
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="string"
 />
 <PropListing 

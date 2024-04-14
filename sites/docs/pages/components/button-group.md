@@ -112,7 +112,7 @@ where column_name like '${inputs.name_of_button_group}'
 <PropListing 
     name="name"
     description="Name of the button group, used to reference the selected value elsewhere as {`{inputs.name}`}"
-    required=true
+    required
 />
 <PropListing 
     name="preset"
@@ -161,7 +161,7 @@ The ButtonGroupItem component can be used to manually add options to a button gr
 <PropListing 
     name="value"
     description="Value to use when the option is selected"
-    required=true
+    required
 />
 <PropListing 
     name="valueLabel"

@@ -91,7 +91,7 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
 <PropListing 
     name="name"
     description="Name of the DateRange, used to reference the selected values elsewhere as {`{inputs.name.start`} or {`inputs.name.end`}"
-    required=true
+    required
     options="string"
 />
 <PropListing 

@@ -3,7 +3,7 @@ title: Big Link
 sidebar_position: 1
 ---
 
-<img src="/img/big-link.png" alt="big-link" width="900"/>
+<BigLink href=''>My Big Link</BigLink>
 
 
 ```markdown
@@ -17,5 +17,5 @@ sidebar_position: 1
 <PropListing
     name="href"
     description="The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`"
-    required=true
+    required
 />

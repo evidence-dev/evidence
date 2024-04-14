@@ -72,19 +72,19 @@ sidebar_position: 1
 <PropListing 
     name="data"
     description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
 />
 <PropListing 
     name="date"
     description="Date column to use for the calendar"
-    required=true
+    required
     options="column name"
 />
 <PropListing 
     name="value"
     description="Numeric column to use for the y-axis"
-    required=true
+    required
     options="column name"
 />
 <PropListing 
