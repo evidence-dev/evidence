@@ -46,7 +46,6 @@ export async function watchDirectory(directoryPath, dirs) {
 	/**
 	 * @type {string | number | NodeJS.Timeout | undefined}
 	 */
-	let masterTimeout;
 
 	/**
 	 * @type {number}
@@ -69,39 +68,24 @@ export async function watchDirectory(directoryPath, dirs) {
 		const joinedPaths = pathArrays.map((p) => path.sep + path.join(...p));
 		const depth = getMaxDepth(joinedPaths);
 		watcher = chokidar.watch(directoryPath, { ignoreInitial: true, depth: depth + 1 });
-		/**
-		 * Resets the timeout to 15 seconds.
-		 * The timer will only start after the target directory has been
-		 * created, therefore the process will not be killed prematurely.
-		 */
+
+		// To trigger set the done state after 60 seconds of inactivity.
 		const resetTimeout = () => {
 			clearTimeout(timeout);
 			timeout = setTimeout(() => {
 				watcher && watcher.close();
 				done = true;
-			}, 10000);
+			}, 60000);
 		};
 
 		/**
-		 * Resets the master timeout to ensure the plugin's timeout mechanism functions as expected.
-		 *
-		 * Sometimes, plugins may run again, after the pages have been built.
+		 * Sometimes, plugins runs again after the pages have been built.
 		 * If this happens, the watcher may not register any changes, and the "done" state will never be true,
-		 * even after the pages have been built. This function is called as a redundancy measure to return control
-		 * and not be stuck forever.
+		 * even after the pages have been built. Hence setting up the timer before the watcher as well.
 		 */
-		const resetMasterTimeout = () => {
-			clearTimeout(masterTimeout);
-			masterTimeout = setTimeout(() => {
-				watcher && watcher.close();
-				done = true;
-			}, 65000);
-		};
-
-		resetMasterTimeout();
+		resetTimeout();
 		watcher.on('addDir', async () => {
 			resetTimeout();
-			resetMasterTimeout();
 			totalCount++;
 			console.clear(); // to clear the terminal and not fill the terminal with too many logs
 			console.log('\u001b[1m\u001b[34m Building template pages: %d+\u001b[0m', totalCount);
