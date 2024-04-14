@@ -10,7 +10,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"package": "svelte-kit sync && svelte-package && publint",
-		"package:watch": "svelte-package --watch",
+		"package:watch": "svelte-package --types=false --watch",
 		"prepare": "svelte-kit sync",
 		"prepublishOnly": "npm run package",
 		"preview": "vite preview",
