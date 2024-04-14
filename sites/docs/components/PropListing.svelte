@@ -1,4 +1,5 @@
 <script>
+	import { HoverCard } from '@evidence-dev/core-components';
 	export let name = '';
 	export let description = '';
 	export let required = false;
@@ -36,14 +37,13 @@
 				<div class="flex items-center mt-2 flex-wrap">
 					<span class="text-sm text-gray-400">Options:</span>
 					{#each options as option, index (option)}
-						<div class="group ml-2 relative">
+						<HoverCard>
 							<button
-								class="text-sm font-mono bg-blue-100 text-blue-600 px-1.5 py-0.5 mt-0.5 md:px-2 md:py-1 md:mt-1 rounded-full cursor-pointer hover:bg-blue-200 transition-colors duration-100 ease-in-out"
+								slot="trigger"
+								class="text-sm font-mono bg-blue-100 text-blue-600 px-1.5 py-0.5 mt-0.5 md:px-2 md:py-1 md:mt-1 rounded-full cursor-pointer hover:bg-blue-200 transition-colors duration-100 ease-in-out ml-2"
 								on:click={() => copyToClipboard(`${name}=${option}`, option)}>{option}</button
 							>
-							<div
-								class="absolute left-0 mt-2 bg-gray-100 p-2 rounded shadow-lg group-hover:block hidden"
-							>
+							<div slot="content">
 								<pre><span class="text-gray-950">{name}</span>=<span class="text-blue-800"
 										>{option}</span
 									></pre>
@@ -51,7 +51,7 @@
 									{copyStatus[option] ? 'Copied' : 'Click to Copy'}
 								</div>
 							</div>
-						</div>
+						</HoverCard>
 					{/each}
 				</div>
 			{:else if typeof options === 'string' && options.length > 0}
@@ -68,7 +68,7 @@
 			{/if}
 			{#if Array.isArray(type) && type.length > 0}
 				<div class="flex items-center mt-2">
-					<span class="text-sm text-gray-400">Type:</span>
+					<span class="text-sm text-gray-400 ">Type:</span>
 					{#each type as t, index (t)}
 						<span class="ml-2 text-sm bg-blue-100 rounded-full px-2 py-0.5">{t}</span>
 					{/each}
