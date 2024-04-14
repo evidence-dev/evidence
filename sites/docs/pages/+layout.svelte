@@ -1,3 +1,7 @@
+<head>
+    <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+</head>
+
 <script>
 	import '@evidence-dev/tailwind/fonts.css';
 	import '../app.css';

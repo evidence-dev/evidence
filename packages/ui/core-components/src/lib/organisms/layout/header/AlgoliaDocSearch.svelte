@@ -10,7 +10,7 @@
 	onMount(() => {
 		docsearch({
 			container: '#docsearch',
-			appid: algolia?.appId,
+			appId: algolia?.appId,
 			apiKey: algolia?.apiKey,
 			indexName: algolia?.indexName
 		});

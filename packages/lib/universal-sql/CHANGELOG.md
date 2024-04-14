@@ -1,5 +1,11 @@
 # @evidence-dev/universal-sql
 
+## 2.1.1
+
+### Patch Changes
+
+- 5e0bbf31: stop blocking advanced usage of json with usql
+
 ## 2.1.0
 
 ### Minor Changes

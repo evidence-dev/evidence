@@ -1,5 +1,25 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.12
+
+### Patch Changes
+
+- Updated dependencies [1da26c4e]
+- Updated dependencies [e2176af7]
+- Updated dependencies [5e0bbf31]
+  - @evidence-dev/db-commons@1.0.4
+  - @evidence-dev/postgres@1.0.5
+  - @evidence-dev/bigquery@2.0.5
+  - @evidence-dev/csv@1.0.8
+  - @evidence-dev/databricks@1.0.4
+  - @evidence-dev/duckdb@1.0.8
+  - @evidence-dev/mssql@1.0.6
+  - @evidence-dev/mysql@1.1.1
+  - @evidence-dev/redshift@1.0.5
+  - @evidence-dev/snowflake@1.0.4
+  - @evidence-dev/sqlite@2.0.4
+  - @evidence-dev/trino@1.0.5
+
 ## 3.0.11
 
 ### Patch Changes

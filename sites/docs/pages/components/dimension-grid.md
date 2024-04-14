@@ -33,19 +33,19 @@ Dimension grid produces an interactive grid of one dimension tables, one for eac
 
 Dimension grid produces a condition for all of the selected dimensions which is suitable for referencing directly in a `where` clause. For example `airline = 'Air Canada' and plane = '747`. Where no dimensions have been selected, DimensionGrid returns `true`. 
 
-```html
+````html
 <DimensionGrid 
     data={my_query} 
     name="selected_dimensions"
 />
-```
+
 
 ```sql filtered_query
 select *
 from source_name.table
 where ${inputs.selected_dimensions}
 ```
-
+````
 
 ## Options
 
