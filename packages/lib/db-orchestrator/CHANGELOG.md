@@ -1,5 +1,12 @@
 # @evidence-dev/db-orchestrator
 
+## 3.0.13
+
+### Patch Changes
+
+- Updated dependencies [1457a71b]
+  - @evidence-dev/databricks@1.0.5
+
 ## 3.0.12
 
 ### Patch Changes
