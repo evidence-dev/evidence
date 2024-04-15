@@ -99,11 +99,11 @@
 				selected_value = data[row][column];
 				columnSummary = columnSummary.filter((d) => d.id === column);
 				if (fmt) {
-					selected_format = getFormatObjectFromString(fmt, columnSummary[0].format.valueType);
+					selected_format = getFormatObjectFromString(fmt, columnSummary[0].format?.valueType);
 				} else {
 					selected_format = columnSummary[0].format;
 				}
-			} else if (value) {
+			} else if (value !== undefined) {
 				if (isNaN(value)) {
 					throw Error('value must be a number (value=' + value + ')');
 				} else {
@@ -145,9 +145,13 @@
 		<span style:text-align={align ?? 'right'}>
 			{#if symbolPosition === 'right'}
 				{#if showValue}
-					<span>
-						{formatValue(selected_value, selected_format, columnUnitSummary)}
-					</span>
+					{#if selected_value === null}
+						<span class="font-[system-ui]"> – </span>
+					{:else}
+						<span>
+							{formatValue(selected_value, selected_format, columnUnitSummary)}
+						</span>
+					{/if}
 				{/if}
 				{#if showSymbol}
 					<span class="font-[system-ui]"
@@ -165,13 +169,17 @@
 							? '&#9650;'
 							: valueStatus === 'negative'
 								? '&#9660;'
-								: '–'}</span
+								: '—'}</span
 					>
 				{/if}
 				{#if showValue}
-					<span>
-						{formatValue(selected_value, selected_format, columnUnitSummary)}
-					</span>
+					{#if selected_value === null}
+						<span class="font-[system-ui]"> – </span>
+					{:else}
+						<span>
+							{formatValue(selected_value, selected_format, columnUnitSummary)}
+						</span>
+					{/if}
 				{/if}
 			{/if}
 			{#if text}

@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "3.6.1",
+	"version": "3.8.0",
 	"evidence": {
 		"components": true
 	},

@@ -8,6 +8,13 @@
 	import BreadCrumbs from './BreadCrumbs.svelte';
 	import TableOfContents from './tableofcontents/TableOfContents.svelte';
 	import ErrorOverlay from './ErrorOverlay.svelte';
+	import { browser } from '$app/environment';
+
+	// Remove splash screen from app.html
+	if (browser) {
+		const splash = document.getElementById('__evidence_project_splash');
+		splash?.remove();
+	}
 
 	export let data;
 
@@ -76,7 +83,7 @@
 	{/if}
 	<div
 		class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
-			'print:w-[650px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
+			'print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
 		style="max-width:{maxWidth}px;"
 	>
 		{#if !hideSidebar}
