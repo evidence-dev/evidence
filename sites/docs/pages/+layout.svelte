@@ -14,12 +14,11 @@
 	slackCommunity="https://slack.evidence.dev"
 	xProfile="https://twitter.com/evidence_dev"
 	builtWithEvidence
-	maxWidth="1500" 
+	neverShowQueries
 	algolia={{
 		apiKey: "45d995e97069b6fbee526a93a6c84af8",
 		appId: "KHH9ANIISC",
 		indexName: "docs-evidence"
-	}}
-	>
+	}}>
 	<slot slot="content" />
 </EvidenceDefaultLayout>
