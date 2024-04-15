@@ -12,8 +12,8 @@
 	import { page } from '$app/stores';
 
 	/** @param {Date} date */
-  function dateToYYYYMMDD(date) {
-    return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+	function dateToYYYYMMDD(date) {
+		return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
 	}
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -52,28 +52,38 @@
 	}
 
 	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
-  
-  let startString;
-  $: if (typeof startString !== 'string' || !YYYYMMDD.test(startString) || startString === dateToYYYYMMDD(new Date(0))) {
-    startString = typeof start === 'string' && YYYYMMDD.test(start)
-                  ? start
-                  : start instanceof Date
-                  ? dateToYYYYMMDD(start)
-                  : $query?.[0].start instanceof Date
-                    ? dateToYYYYMMDD($query?.[0].start)
-                    : dateToYYYYMMDD(new Date(0))
-  }
 
-  let endString;
-  $: if (typeof endString !== 'string' || !YYYYMMDD.test(endString) || endString === dateToYYYYMMDD(new Date())) {
-    endString = typeof end === 'string' && YYYYMMDD.test(end)
-                ? end
-                : end instanceof Date
-                  ? dateToYYYYMMDD(end)
-                  : $query?.[0].end instanceof Date
-                    ? dateToYYYYMMDD($query?.[0].end)
-                    : dateToYYYYMMDD(new Date())
-  }
+	let startString;
+	$: if (
+		typeof startString !== 'string' ||
+		!YYYYMMDD.test(startString) ||
+		startString === dateToYYYYMMDD(new Date(0))
+	) {
+		startString =
+			typeof start === 'string' && YYYYMMDD.test(start)
+				? start
+				: start instanceof Date
+					? dateToYYYYMMDD(start)
+					: $query?.[0].start instanceof Date
+						? dateToYYYYMMDD($query?.[0].start)
+						: dateToYYYYMMDD(new Date(0));
+	}
+
+	let endString;
+	$: if (
+		typeof endString !== 'string' ||
+		!YYYYMMDD.test(endString) ||
+		endString === dateToYYYYMMDD(new Date())
+	) {
+		endString =
+			typeof end === 'string' && YYYYMMDD.test(end)
+				? end
+				: end instanceof Date
+					? dateToYYYYMMDD(end)
+					: $query?.[0].end instanceof Date
+						? dateToYYYYMMDD($query?.[0].end)
+						: dateToYYYYMMDD(new Date());
+	}
 
 	$: $inputs[name] = { start: startString, end: endString };
 
