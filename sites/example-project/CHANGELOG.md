@@ -1,5 +1,12 @@
 # @evidence-dev/components
 
+## 3.4.10
+
+### Patch Changes
+
+- Updated dependencies [1457a71b]
+  - @evidence-dev/databricks@1.0.5
+
 ## 3.4.9
 
 ### Patch Changes
