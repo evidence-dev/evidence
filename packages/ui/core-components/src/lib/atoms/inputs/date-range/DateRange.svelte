@@ -8,12 +8,12 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { QueryStore } from '@evidence-dev/query-store';
 	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
-	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
 
-	function dateToYYYYMMDD(date) {
-		return date.toISOString().split('T')[0];
+	/** @param {Date} date */
+  function dateToYYYYMMDD(date) {
+    return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
 	}
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -52,30 +52,36 @@
 	}
 
 	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
-	$: startString =
-		typeof start === 'string' && YYYYMMDD.test(start)
-			? start
-			: start instanceof Date
-				? dateToYYYYMMDD(start)
-				: $query?.[0].start instanceof Date
-					? dateToYYYYMMDD($query?.[0].start)
-					: dateToYYYYMMDD(new Date(0));
-	$: endString =
-		typeof end === 'string' && YYYYMMDD.test(end)
-			? end
-			: end instanceof Date
-				? dateToYYYYMMDD(end)
-				: $query?.[0].end instanceof Date
-					? dateToYYYYMMDD($query?.[0].end)
-					: dateToYYYYMMDD(new Date());
+  
+  let startString;
+  $: if (typeof startString !== 'string' || !YYYYMMDD.test(startString) || startString === dateToYYYYMMDD(new Date(0))) {
+    startString = typeof start === 'string' && YYYYMMDD.test(start)
+                  ? start
+                  : start instanceof Date
+                  ? dateToYYYYMMDD(start)
+                  : $query?.[0].start instanceof Date
+                    ? dateToYYYYMMDD($query?.[0].start)
+                    : dateToYYYYMMDD(new Date(0))
+  }
+
+  let endString;
+  $: if (typeof endString !== 'string' || !YYYYMMDD.test(endString) || endString === dateToYYYYMMDD(new Date())) {
+    endString = typeof end === 'string' && YYYYMMDD.test(end)
+                ? end
+                : end instanceof Date
+                  ? dateToYYYYMMDD(end)
+                  : $query?.[0].end instanceof Date
+                    ? dateToYYYYMMDD($query?.[0].end)
+                    : dateToYYYYMMDD(new Date())
+  }
 
 	$: $inputs[name] = { start: startString, end: endString };
 
 	let selectedDateRange;
 	$: if (selectedDateRange && (selectedDateRange.start || selectedDateRange.end)) {
 		$inputs[name] = {
-			start: dateToYYYYMMDD(selectedDateRange.start?.toDate(getLocalTimeZone()) ?? new Date(0)),
-			end: dateToYYYYMMDD(selectedDateRange.end?.toDate(getLocalTimeZone()) ?? new Date())
+			start: selectedDateRange.start?.toString() ?? dateToYYYYMMDD(new Date(0)),
+			end: selectedDateRange.end?.toString() ?? dateToYYYYMMDD(new Date())
 		};
 	}
 </script>
