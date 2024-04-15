@@ -1,6 +1,9 @@
 ---
 title: Annotations
 sidebar_position: 1
+queries: 
+- orders_by_month.sql
+- orders_by_category_2021.sql
 ---
 
 Annotations help you add important context directly within a chart - highlight important dates, time periods, or specific points on a chart to make it easier for your audience to pull insights from the information.
@@ -21,46 +24,71 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 
 ### Y-axis Defined Inline
 
-<img src="/img/refline-y-basic.png"  width='600px'/>
+<LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
+    <ReferenceLine y=9000 label="Target"/>
+</LineChart>
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=90000 label="Target"/>
+<LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
+    <ReferenceLine y=9000 label="Target"/>
 </LineChart>
 ```
 
 ### X-axis Defined Inline
 
-<img src="/img/refline-x-basic.png"  width='600px'/>
+<LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
+    <ReferenceLine x='2019-09-18' label="Launch" hideValue=true/>
+</LineChart>
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
+<LineChart data={orders_by_month} x=month y=sales yAxisTitle="Sales per Month" yFmt=usd0>
     <ReferenceLine x='2019-09-18' label="Launch" hideValue=true/>
 </LineChart>
 ```
 
 ### Y-axis Multiple Lines
-<img src="/img/refline-y-multi.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceLine y=9000 label="Target" labelPosition=belowEnd/>
+    <ReferenceLine y=10500 label="Forecast"/>
+</LineChart>
+
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=90000 label="Target" labelPosition=belowEnd/>
-    <ReferenceLine y=105000 label="Forecast"/>
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceLine y=9000 label="Target" labelPosition=belowEnd/>
+    <ReferenceLine y=10500 label="Forecast"/>
 </LineChart>
 ```
 
 ### X-axis from Data
-
+<!-- Remove -->
 <img src="/img/refline-x-multi.png"  width='600px'/>
 
+```sql multiple_dates
+select '2019-12-05'::date as start_date, '2020-02-05'::date as end_date, 'Campaign 1' as campaign_name union all
+select '2020-07-14'::date, '2020-09-14'::date, 'Campaign 2' union all
+select '2021-04-14'::date, '2021-06-14'::date, 'Campaign 3'
+```
+
+<!-- Bug? -->
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceLine data={multiple_dates} x=start_date/>
+</LineChart>
+
+
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
     <ReferenceLine data={multiple_dates} x=start_date/>
 </LineChart>
 ```
 
 ### Custom Styling
-<img src="/img/refline-y-custom.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceLine y=11000 color=red hideValue=true lineWidth=3 lineType=solid/>
+</LineChart>
+
 
 ```html
 <LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
@@ -69,30 +97,49 @@ When a dataset is provided, `ReferenceLine` can generate multiple lines - one fo
 ```
 
 ### Label Positions
-<img src="/img/refline-label-positions.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
+    <ReferenceLine y=4000 label=aboveStart labelPosition=aboveStart hideValue/>
+    <ReferenceLine y=4000 label=aboveCenter labelPosition=aboveCenter hideValue/>
+    <ReferenceLine y=4000 label=aboveEnd labelPosition=aboveEnd hideValue/>
+    <ReferenceLine y=4000 label=belowStart labelPosition=belowStart hideValue/>
+    <ReferenceLine y=4000 label=belowCenter labelPosition=belowCenter hideValue/>
+    <ReferenceLine y=4000 label=belowEnd labelPosition=belowEnd hideValue/>
+</LineChart>
+
+
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=40000 label=aboveStart labelPosition=aboveStart hideValue=true/>
-    <ReferenceLine y=40000 label=aboveCenter labelPosition=aboveCenter hideValue=true/>
-    <ReferenceLine y=40000 label=aboveEnd labelPosition=aboveEnd hideValue=true/>
-    <ReferenceLine y=40000 label=belowStart labelPosition=belowStart hideValue=true/>
-    <ReferenceLine y=40000 label=belowCenter labelPosition=belowCenter hideValue=true/>
-    <ReferenceLine y=40000 label=belowEnd labelPosition=belowEnd hideValue=true/>
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
+    <ReferenceLine y=4000 label=aboveStart labelPosition=aboveStart hideValue/>
+    <ReferenceLine y=4000 label=aboveCenter labelPosition=aboveCenter hideValue/>
+    <ReferenceLine y=4000 label=aboveEnd labelPosition=aboveEnd hideValue/>
+    <ReferenceLine y=4000 label=belowStart labelPosition=belowStart hideValue/>
+    <ReferenceLine y=4000 label=belowCenter labelPosition=belowCenter hideValue/>
+    <ReferenceLine y=4000 label=belowEnd labelPosition=belowEnd hideValue/>
 </LineChart>
 ```
 
 ### Colours
-<img src="/img/refline-colors.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
+    <ReferenceLine y=1500 color=red label=red/>
+    <ReferenceLine y=3500 color=yellow label=yellow/>
+    <ReferenceLine y=5500 color=green label=green/>
+    <ReferenceLine y=7500 color=blue label=blue/>
+    <ReferenceLine y=9500 color=grey label=grey/>
+    <ReferenceLine y=11500 color=#63178f label=custom/>
+</LineChart>
+
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
-    <ReferenceLine y=15000 color=red label=red/>
-    <ReferenceLine y=35000 color=yellow label=yellow/>
-    <ReferenceLine y=55000 color=green label=green/>
-    <ReferenceLine y=75000 color=blue label=blue/>
-    <ReferenceLine y=95000 color=grey label=grey/>
-    <ReferenceLine y=115000 color=#63178f label=custom/>
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0k yAxisTitle="Sales per Month">
+    <ReferenceLine y=1500 color=red label=red/>
+    <ReferenceLine y=3500 color=yellow label=yellow/>
+    <ReferenceLine y=5500 color=green label=green/>
+    <ReferenceLine y=7500 color=blue label=blue/>
+    <ReferenceLine y=9500 color=grey label=grey/>
+    <ReferenceLine y=11500 color=#63178f label=custom/>
 </LineChart>
 ```
 
@@ -214,40 +261,58 @@ When a dataset is provided, `ReferenceArea` can generate multiple areas - one fo
 ## Examples
 
 ### X-axis Defined Inline
-<img src="/img/refarea-x-multi.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow/>
+    <ReferenceArea xMin='2021-03-14' xMax='2021-08-15' label=Second/>
+</LineChart>
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k yAxisTitle="Sales per Month">
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
     <ReferenceArea xMin='2020-03-14' xMax='2020-08-15' label=First color=yellow/>
     <ReferenceArea xMin='2021-03-14' xMax='2021-08-15' label=Second/>
 </LineChart>
 ```
 
 ### Y-axis Defined Inline
-<img src="/img/refarea-y-ranges.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=num_orders yAxisTitle="Orders per Month">
+    <ReferenceArea yMin=250 color=green label="Good"/>
+    <ReferenceArea yMin=100 yMax=250 color=yellow label="Okay"/>
+    <ReferenceArea yMin=0 yMax=100 color=red label="Bad"/>
+</LineChart>
 
 ```html
-<LineChart data={orders_by_month} x=month y=num_orders_num0 yAxisTitle="Orders per Month">
-    <ReferenceArea yMin=2500 color=green label="Good"/>
-    <ReferenceArea yMin=1000 yMax=2500 color=yellow label="Okay"/>
-    <ReferenceArea yMin=0 yMax=1000 color=red label="Bad"/>
+<LineChart data={orders_by_month} x=month y=num_orders yAxisTitle="Orders per Month">
+    <ReferenceArea yMin=250 color=green label="Good"/>
+    <ReferenceArea yMin=100 yMax=250 color=yellow label="Okay"/>
+    <ReferenceArea yMin=0 yMax=100 color=red label="Bad"/>
 </LineChart>
 ```
 
 ### X-axis from Data
+<!-- remove -->
 <img src="/img/refarea-x-multi-data.png"  width='600px'/>
 
+<!-- Bug? -->
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceArea data={multiple_dates} xMin=start_date xMax=end_date label=campaign_name/>
+</LineChart>
+
 ```html
-<LineChart data={query_name} x=column_x y=column_y>
-    <ReferenceArea data={campaigns} xMin=start_date xMax=end_date label=campaign_name/>
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 yAxisTitle="Sales per Month">
+    <ReferenceArea data={multiple_dates} xMin=start_date xMax=end_date label=campaign_name/>
 </LineChart>
 ```
 
 ### Bar Chart
-<img src="/img/refarea-bar.png"  width='600px'/>
+
+<BarChart data={orders_by_category_2021} x=month y=sales yFmt=usd0 series=category>
+    <ReferenceArea xMin='2021-01-01' xMax='2021-04-01'/>
+</BarChart> 
 
 ```html
-<BarChart data={orders_by_category_2021} x=month y=sales_usd0k series=category>
+<BarChart data={orders_by_category_2021} x=month y=sales yFmt=usd0 series=category>
     <ReferenceArea xMin='2021-01-01' xMax='2021-04-01'/>
 </BarChart> 
 ```
@@ -260,6 +325,8 @@ On a continous x-axis (dates or numbers), the reference area will start and stop
 ### Reference Area Box
 <img src="/img/refarea-box.png"  width='600px'/>
 
+<!-- Need data -->
+
 ```html
 <ScatterPlot data={countries} x=gdp_usd y=gdp_growth_pct1 tooltipTitle=country series=continent>
     <ReferenceArea xMin=16000 xMax=24000 yMin=-0.03 yMax=0.055 label="Large and stagnant" color=grey border=true/>
@@ -267,10 +334,21 @@ On a continous x-axis (dates or numbers), the reference area will start and stop
 ```
 
 ### Labels
-<img src="/img/refarea-label-positions.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=left labelPosition=left/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=center labelPosition=center/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=right labelPosition=right/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomLeft labelPosition=bottomLeft/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottom labelPosition=bottom/>
+    <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=bottomRight labelPosition=bottomRight/>
+</LineChart>
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k>
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0>
     <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topLeft labelPosition=topLeft/>
     <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=top labelPosition=top/>
     <ReferenceArea xMin='2019-07-01' xMax='2021-07-31' label=topRight labelPosition=topRight/>
@@ -287,10 +365,18 @@ On a continous x-axis (dates or numbers), the reference area will start and stop
 Reference areas appear behind chart gridlines, including reference area labels. If you are seeing an overlap between the gridlines and the reference area label, you can avoi this by turning gridlines off (`yGridlines=false`).
 
 ### Colours
-<img src="/img/refarea-colors.png"  width='600px'/>
+
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 >
+    <ReferenceArea xMax='2019-04-01' label=blue color=blue/>
+    <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=red color=red/>
+    <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=yellow color=yellow/>
+    <ReferenceArea xMin='2020-07-01' xMax='2021-02-01' label=green color=green/>
+    <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=grey color=grey/>
+    <ReferenceArea xMin='2021-09-01' label=custom color=#f2dbff labelColor=#4d1070/>
+</LineChart>
 
 ```html
-<LineChart data={orders_by_month} x=month y=sales_usd0k >
+<LineChart data={orders_by_month} x=month y=sales yFmt=usd0 >
     <ReferenceArea xMax='2019-04-01' label=blue color=blue/>
     <ReferenceArea xMin='2019-04-01' xMax='2019-11-01' label=red color=red/>
     <ReferenceArea xMin='2019-11-01' xMax='2020-07-01' label=yellow color=yellow/>
