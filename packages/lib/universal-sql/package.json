@@ -15,8 +15,6 @@
 	"type": "module",
 	"dependencies": {
 		"@duckdb/duckdb-wasm": "1.28.0",
-		"@types/lodash.chunk": "^4.2.7",
-		"@types/node": "20.11.28",
 		"apache-arrow": "^13.0.0",
 		"chalk": "^5.2.0",
 		"cli-progress": "^3.12.0",
@@ -41,6 +39,8 @@
 		}
 	},
 	"devDependencies": {
+		"@types/lodash.chunk": "^4.2.7",
+		"@types/node": "20.11.28",
 		"@types/mock-fs": "^4.13.1",
 		"mock-fs": "^5.2.0",
 		"vitest": "^0.34.1"
