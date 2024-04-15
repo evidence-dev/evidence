@@ -1,15 +1,29 @@
 ---
 title: Bar Chart
 sidebar_position: 1
+queries: 
+- orders_by_month.sql
+- orders_by_category_2021.sql
+- orders_by_item_all_time.sql
+- categories_by_channel.sql
 ---
 
-![bar](/img/exg-bar-nt.svg)
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
+/>
+
 
 ```markdown
 <BarChart 
-    data={query_name} 
-    x=column_x 
-    y=column_y
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+    title="Sales by Category"
 />
 ```
 
@@ -17,115 +31,162 @@ sidebar_position: 1
 
 ### Bar
 
-![bar](/img/exg-bar-nt.svg)
+<BarChart 
+    data={orders_by_month}
+    x=month
+    y=sales
+/>
+
 
 ```markdown
 <BarChart 
-    data={value_by_region} 
-    x=region
-    y=value 
-    xAxisTitle=Region
+    data={orders_by_month}
+    x=month
+    y=sales
 />
 ```
 
 ### Horizontal Bar
 
-![bar](/img/exg-horizontal-bar-nt.svg)
+<BarChart 
+    data={orders_by_item_all_time}
+    x=item
+    y=sales 
+    swapXY=true
+    yFmt=usd0k
+/>
 
 ```markdown
 <BarChart 
-    data={value_by_region}
-    x=country 
-    y=value 
+    data={orders_by_item_all_time}
+    x=item
+    y=sales 
     swapXY=true
+    yFmt=usd0k
 />
 ```
 
 ### Stacked Bar
 
-![bar](/img/exg-stacked-bar-nt.svg)
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+/>
 
 ```markdown
 <BarChart 
-    data={annual_value_by_region} 
-    x=year 
-    y=value 
-    series=region
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
 />
 ```
 
 ### Stacked Bar with Value Labels
 
-<img src='/img/stacked-value-labels.png' width="570px"/>
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    yFmt=usd1k
+    series=category
+    labels=true
+/>
+
 
 ```markdown
 <BarChart 
-    data={annual_value_by_region} 
-    x=year 
-    y=value 
-    series=region
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    yFmt=usd1k
+    series=category
     labels=true
-    labelFmt=usd0k
 />
 ```
 
 ### 100% Stacked Bar
 
-![bar](/img/100-stacked-bar.svg)
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    yFmt=pct0
+    series=category
+    type=stacked100
+/>
 
 ```markdown
 <BarChart 
-    data={annual_value_by_region} 
-    x=year 
-    y=value 
-    series=region
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    yFmt=pct0
+    series=category
     type=stacked100
 />
 ```
 
 ### Horizontal Stacked Bar
 
-![bar](/img/exg-horizontal-stacked-bar-nt.svg)
+<BarChart 
+    data={categories_by_channel}
+    x=category
+    y=sales
+    series=channel
+    swapXY=true
+/>
 
 ```markdown
 <BarChart 
-    data={annual_value_by_region} 
-    swapXY=true 
-    x=year 
-    y=value 
-    series=region 
-    xType=category 
-    sort=false
+    data={categories_by_channel}
+    x=category
+    y=sales
+    series=channel
+    swapXY=true
 />
 ```
 
 ### Horizontal 100% Stacked Bar
 
-![bar](/img/100-horiz-stacked-bar.svg)
+<BarChart 
+    data={categories_by_channel}
+    x=category
+    y=sales
+    series=channel
+    type=stacked100
+    swapXY=true
+/>
 
 ```markdown
 <BarChart 
-    data={annual_value_by_region} 
-    swapXY=true 
-    x=year 
-    y=value 
-    series=region 
+    data={categories_by_channel}
+    x=category
+    y=sales
+    series=channel
     type=stacked100
-    xType=category 
-    sort=false
+    swapXY=true
 />
 ```
 
 ### Grouped Bar
 
-![bar](/img/exg-grouped-bar-nt.svg)
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+    type=grouped
+/>
 
 ```markdown
 <BarChart 
-    data={annual_value_by_region} 
-    x=year 
-    y=value 
-    series=region 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
     type=grouped
 />
 ```
