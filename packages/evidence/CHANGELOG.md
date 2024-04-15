@@ -1,5 +1,12 @@
 # @evidence-dev/evidence
 
+## 32.0.1
+
+### Patch Changes
+
+- 1cf4025a: cleaned up logging
+  - @evidence-dev/db-orchestrator@3.0.13
+
 ## 32.0.0
 
 ### Patch Changes
