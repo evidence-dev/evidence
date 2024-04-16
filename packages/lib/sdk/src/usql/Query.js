@@ -332,19 +332,18 @@ ${this.#query.toString()}
 	 * This is helpful for ensuring that the related parquet files
 	 * are available, even when SSR is used to initially hydrate the
 	 * query / page.
-	 * 
+	 *
 	 * Does not run on the server, only in browser
 	 */
 	backgroundFetch = () => {
 		if (typeof window === 'undefined') {
 			this.#debug('Did not execute backgroundFetch in SSR');
-			return
+			return;
 		}
 		this.#debug(`Executed backgroundFetch`);
 		resolveMaybePromise(
 			() => {},
 			async () => {
-
 				await new Promise((resolve) => setTimeout(resolve, 0));
 				return this.#executeQuery(`--data\n${this.#query.toString()}`, this.id);
 			},
