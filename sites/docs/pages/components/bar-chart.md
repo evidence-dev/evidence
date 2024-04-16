@@ -29,7 +29,7 @@ queries:
 
 ## Examples
 
-### Bar
+### Default
 
 <BarChart 
     data={orders_by_month}
@@ -46,27 +46,7 @@ queries:
 />
 ```
 
-### Horizontal Bar
-
-<BarChart 
-    data={orders_by_item_all_time}
-    x=item
-    y=sales 
-    swapXY=true
-    yFmt=usd0k
-/>
-
-```markdown
-<BarChart 
-    data={orders_by_item_all_time}
-    x=item
-    y=sales 
-    swapXY=true
-    yFmt=usd0k
-/>
-```
-
-### Stacked Bar
+### Stacked
 
 <BarChart 
     data={orders_by_category_2021}
@@ -84,30 +64,7 @@ queries:
 />
 ```
 
-### Stacked Bar with Value Labels
-
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    yFmt=usd1k
-    series=category
-    labels=true
-/>
-
-
-```markdown
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
-    y=sales
-    yFmt=usd1k
-    series=category
-    labels=true
-/>
-```
-
-### 100% Stacked Bar
+### 100% Stacked
 
 <BarChart 
     data={orders_by_category_2021}
@@ -129,7 +86,47 @@ queries:
 />
 ```
 
-### Horizontal Stacked Bar
+### Grouped
+
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+    type=grouped
+/>
+
+```markdown
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    series=category
+    type=grouped
+/>
+```
+
+### Horizontal
+
+<BarChart 
+    data={orders_by_item_all_time}
+    x=item
+    y=sales 
+    swapXY=true
+    yFmt=usd0k
+/>
+
+```markdown
+<BarChart 
+    data={orders_by_item_all_time}
+    x=item
+    y=sales 
+    swapXY=true
+    yFmt=usd0k
+/>
+```
+
+### Horizontal Stacked
 
 <BarChart 
     data={categories_by_channel}
@@ -149,7 +146,7 @@ queries:
 />
 ```
 
-### Horizontal 100% Stacked Bar
+### Horizontal 100% Stacked
 
 <BarChart 
     data={categories_by_channel}
@@ -171,82 +168,91 @@ queries:
 />
 ```
 
-### Grouped Bar
+### Horizontal Grouped
 
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
+<BarChart
+    data={categories_by_channel}
+    x=category
     y=sales
-    series=category
+    series=channel
     type=grouped
+    swapXY=true
 />
 
 ```markdown
-<BarChart 
-    data={orders_by_category_2021}
-    x=month
+<BarChart
+    data={categories_by_channel}
+    x=category
     y=sales
-    series=category
+    series=channel
     type=grouped
+    swapXY=true
 />
 ```
 
-### Horizontal Grouped Bar
+### Value Labels
 
-![bar](/img/exg-horizontal-grouped-bar-nt.svg)
+<BarChart 
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    yFmt=usd1k
+    series=category
+    labels=true
+/>
+
 
 ```markdown
 <BarChart 
-    data={annual_value_by_region} 
-    swapXY=true 
-    x=year 
-    y=value 
-    series=region 
-    type=grouped 
-    xType=category
+    data={orders_by_category_2021}
+    x=month
+    y=sales
+    yFmt=usd1k
+    series=category
+    labels=true
 />
 ```
 
 ### Custom Color Palette
 
-<img src="/img/bar-colorpalette.png"  width='700px'/>
-
-```markdown
 <BarChart 
-    data={orders_by_month} 
+    data={orders_by_category_2021}
     x=month 
     y=sales 
     series=category 
-    colorPalette={
-        [
+    colorPalette={[
         '#cf0d06',
         '#eb5752',
         '#e88a87',
         '#fcdad9',
-        ]
-    }
+        ]}
 />
-```
 
-### Long Bar Chart
-
-If you create a bar chart with many x-axis items (e.g., names of departments), Evidence will extend the height of the chart for you to avoid the bars becoming squished. See Long Bar example below.
-
-![long-bar](/img/exg-long-bar.svg)
 
 ```markdown
 <BarChart 
-    data={complaints_by_category} 
-    x=category 
-    y=complaints 
-    swapXY=true 
-    yAxisTitle="Calls Received" 
+    data={orders_by_category_2021}
+    x=month 
+    y=sales 
+    series=category 
+    colorPalette={[
+        '#cf0d06',
+        '#eb5752',
+        '#e88a87',
+        '#fcdad9',
+        ]}
 />
 ```
 
-### Secondary y Axis
+### Secondary / Duel y Axis
 
-<img src="/img/bar-y2.png"  width='700px'/>
+<BarChart 
+    data={orders_by_month} 
+    x=month 
+    y=sales
+    yFmt=usd0k
+    y2=num_orders
+/>
 
 ```markdown
 <BarChart 
@@ -257,18 +263,25 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 />
 ```
 
-### Secondary Axis with Line
+### Secondary / Duel Axis with Line
 
-<img src="/img/bar-line.png"  width='700px'/>
-
-```markdown
-<BarChart
+<BarChart 
     data={orders_by_month} 
     x=month 
-    y=sales_usd0k 
-    y2=num_orders_num0 
-    y2SeriesType=line 
-    colorPalette={['rgb(110,117,176,0.8)','rgb(37,91,161)']}
+    y=sales
+    yFmt=usd0k
+    y2=num_orders
+    y2SeriesType=line
+/>
+
+```markdown
+<BarChart 
+    data={orders_by_month} 
+    x=month 
+    y=sales
+    yFmt=usd0k
+    y2=num_orders
+    y2SeriesType=line
 />
 ```
 
@@ -663,11 +676,20 @@ If you create a bar chart with many x-axis items (e.g., names of departments), E
 
 ## Annotations
 
+```sql target_data
+select 8333 as target, '100k ARR' as name
+```
+
 Bar charts can include [annotations](/components/annotations) using the `ReferenceLine` and `ReferenceArea` components. These components are used within a chart component like so:
 
-```html
-<BarChart data={sales_data} x=date y=sales>
+<BarChart data={orders_by_month} x=month y=sales>
+  <ReferenceArea xMin='2020-03-14' xMax='2021-05-01' label='COVID-19 Lockdown'/>
   <ReferenceLine data={target_data} y=target label=name/>
-  <ReferenceArea xMin='2020-03-14' xMax='2020-05-01'/>
+</BarChart>
+
+```html
+<BarChart data={orders_by_month} x=month y=sales>
+  <ReferenceArea xMin='2020-03-14' xMax='2021-05-01' label='COVID-19 Lockdown'/>
+  <ReferenceLine data={target_data} y=target label=name/>
 </BarChart>
 ```

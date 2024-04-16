@@ -3,12 +3,14 @@ title: Big Link
 sidebar_position: 1
 ---
 
-<img src="/img/big-link.png" alt="big-link" width="900"/>
+<BigLink href='/install-evidence'>
+  To the Install Page!
+</BigLink>
 
 
 ```markdown
-<BigLink href='/other-page'>
-  My Big Link
+<BigLink href='/install-evidence'>
+  To the Install Page!
 </BigLink>
 ```
 
