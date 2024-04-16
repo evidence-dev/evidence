@@ -51,6 +51,83 @@ describe('Query', () => {
 		Query.emptyCache();
 	});
 
+	describe('Cache Busting', () => {
+		it('should not grow the cache when disableCache is set', () => {
+			getMockQuery('SELECT 5', { disableCache: true });
+			getMockQuery('SELECT 6', { disableCache: true });
+			getMockQuery('SELECT 7', { disableCache: true });
+			expect(Query.cacheSize).toBe(0);
+		});
+		it('should cache normally for a few queries', () => {
+			getMockQuery('SELECT 5', { disableCache: false });
+			getMockQuery('SELECT 6', { disableCache: false });
+			getMockQuery('SELECT 7', { disableCache: false });
+			expect(Query.cacheSize).toBe(3);
+		});
+		it('should not cache when CacheMaxScore is 0', async () => {
+			Query.CacheMaxScore = 0;
+			expectedColumns = [
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				}
+			];
+
+			getMockQuery('SELECT 5', { disableCache: false });
+			getMockQuery('SELECT 6', { disableCache: false });
+			getMockQuery('SELECT 7', { disableCache: false });
+			await tick();
+			expect(Query.cacheSize).toBe(0);
+		});
+		it('should rotate the cache when CacheMaxScore is non-zero', async () => {
+			Query.CacheMaxScore = 200;
+			expectedColumns = [
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				}
+			];
+
+			getMockQuery('SELECT 5', { disableCache: false });
+			getMockQuery('SELECT 6', { disableCache: false });
+			getMockQuery('SELECT 7', { disableCache: false });
+			await tick();
+			expect(Query.cacheSize).toBe(1);
+		});
+	});
+
 	describe('Query Score', () => {
 		it('should not be calculated when data has not been fetched, and autoScore is false', () => {
 			const q = getMockQuery('SELECT 5', { autoScore: false });

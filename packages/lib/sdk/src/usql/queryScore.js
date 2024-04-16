@@ -4,7 +4,6 @@
  * @returns {number}
  */
 export const getQueryScore = (length, columns) => {
-	console.log({ columns });
 	const scorePerRow = columns.reduce(
 		(a, v) => a + columnTypeToScore(v.column_type),
 		columns.length * 4 // include overhead for each column
