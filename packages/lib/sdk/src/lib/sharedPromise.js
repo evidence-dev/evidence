@@ -57,6 +57,7 @@ export const sharedPromise = (stateChangeHook) => {
 			if (rej) {
 				if (state === 'loading' || state === 'init') {
 					state = 'rejected';
+					p.catch(() => {}); // noop to prevent the page from dying. This does not prevent .catch from working in other places
 					rej(e);
 					stateChangeHook?.();
 				}

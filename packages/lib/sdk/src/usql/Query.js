@@ -309,7 +309,7 @@ ${this.#query.toString()}
 					return this;
 				}
 			},
-			typedRunner(dataQuery, `${this.#id}_data`),
+			() => typedRunner(dataQuery, `${this.#id}_data`),
 			(e, isPromise) => {
 				this.#error = e;
 				this.#sharedDataPromise.reject(e);
@@ -404,7 +404,7 @@ SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
 					return this;
 				}
 			},
-			typedRunner(lengthQuery, `${this.#id}_length`),
+			() => typedRunner(lengthQuery, `${this.#id}_length`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
 				this.#error = e;
@@ -467,7 +467,7 @@ DESCRIBE ${this.#query.toString()}
 					return this;
 				}
 			},
-			typedRunner(metaQuery, `${this.#id}_columns`),
+			() => typedRunner(metaQuery, `${this.#id}_columns`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
 				this.#error = e;
