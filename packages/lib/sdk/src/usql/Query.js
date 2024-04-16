@@ -846,7 +846,13 @@ DESCRIBE ${this.#query.toString()}
 					this.#error = e;
 				}
 			);
+		} else if (opts.noResolve) {
+			this.#sharedDataPromise.start();
+			this.#sharedLengthPromise.start();
+			this.#sharedColumnsPromise.start();
+			return this;
 		}
+
 		if (knownColumns) {
 			if (!Array.isArray(knownColumns))
 				throw new Error(`Expected knownColumns to be an array`, { cause: knownColumns });
