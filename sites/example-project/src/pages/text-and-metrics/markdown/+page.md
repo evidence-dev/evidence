@@ -15,6 +15,14 @@ title: Markdown
 
 ###### Heading Level 6
 
+# ~~Heading Level 1 with Strikethrough~~
+
+# Heading Level 1 with _Italics_
+
+# Heading Level 1 with **Bold**
+
+# Heading Level 1 with `code`
+
 # Link Headers
 
 # [Link h1](/)
@@ -67,7 +75,7 @@ _Italic_
 ~~Strikethrough~~  
 Text<sup>superscript</sup>  
 Text<sub>subscript</sub>  
-<u>Underline</u>
+# This is <u>Underline</u> and **Bold**
 
 ## Highlighting
 
@@ -140,7 +148,7 @@ Link to [Google](https://google.com)
 
 | Column One | Column Two | Column Three |
 | :--------: | :--------: | :----------: |
-|     A      |     B      |      C       |
+|     A `with code`      |     B      |      C       |
 |     1      |     2      |      3       |
 |     D      |     E      |      F       |
 |     4      |     5      |      6       |

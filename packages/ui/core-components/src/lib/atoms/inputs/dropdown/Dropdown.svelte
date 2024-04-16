@@ -48,11 +48,21 @@
 
 	export let hideDuringPrint = true;
 
-	/** @type {string} */
-	export let defaultValue = undefined;
+	export let disableSelectAll = false;
+
+	/** @type {string | string[]} */
+	export let defaultValue = [];
+	const _defaultValue = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
+
+	export let noDefault = false;
+	if (noDefault) {
+		_defaultValue.length = 0;
+	}
+
+	const hasDefault = noDefault || _defaultValue.length > 0;
 
 	const ctx = {
-		hasBeenSet: defaultValue !== undefined,
+		hasBeenSet: hasDefault,
 		handleSelect,
 		multiple
 	};
@@ -153,16 +163,16 @@
 	function useNewQuery(query) {
 		items = query;
 
-		if (hasQuery && defaultValue) {
+		if (hasQuery && hasDefault) {
 			ctx.hasBeenSet = true;
 			if (browser) {
 				(async () => {
 					await query.fetch();
-					$selectedValues = query.filter((x) => x.value == defaultValue);
+					$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
 					selectedValuesToInput();
 				})();
 			} else {
-				$selectedValues = query.filter((x) => x.value == defaultValue);
+				$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
 				selectedValuesToInput();
 			}
 		} else {
@@ -259,16 +269,18 @@
 								{/if}
 							</Command.Group>
 							{#if multiple}
-								<Command.Separator />
-								<Command.Item
-									class="justify-center text-center"
-									onSelect={() => {
-										$selectedValues = $items.map((x) => ({ label: x.label, value: x.value }));
-										selectedValuesToInput();
-									}}
-								>
-									Select all
-								</Command.Item>
+								{#if !disableSelectAll}
+									<Command.Separator />
+									<Command.Item
+										class="justify-center text-center"
+										onSelect={() => {
+											$selectedValues = $items.map((x) => ({ label: x.label, value: x.value }));
+											selectedValuesToInput();
+										}}
+									>
+										Select all
+									</Command.Item>
+								{/if}
 								<Command.Separator />
 								<Command.Item
 									disabled={$selectedValues.length === 0}

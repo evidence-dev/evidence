@@ -1,5 +1,30 @@
 # @evidence-dev/evidence
 
+## 32.0.0
+
+### Patch Changes
+
+- Updated dependencies [9bac016c]
+- Updated dependencies [5e0bbf31]
+- Updated dependencies [e1e9a068]
+- Updated dependencies [629f93a0]
+- Updated dependencies [505f121b]
+- Updated dependencies [5098c3ee]
+  - @evidence-dev/core-components@3.8.0
+  - @evidence-dev/universal-sql@2.1.1
+  - @evidence-dev/preprocess@4.1.2
+  - @evidence-dev/component-utilities@2.5.3
+  - @evidence-dev/db-orchestrator@3.0.12
+  - @evidence-dev/plugin-connector@2.1.1
+  - @evidence-dev/query-store@2.1.2
+
+## 31.0.3
+
+### Patch Changes
+
+- Updated dependencies [fab378cb]
+  - @evidence-dev/core-components@3.7.3
+
 ## 31.0.2
 
 ### Patch Changes

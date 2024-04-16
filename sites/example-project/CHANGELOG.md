@@ -1,5 +1,40 @@
 # @evidence-dev/components
 
+## 3.4.9
+
+### Patch Changes
+
+- Updated dependencies [e2176af7]
+- Updated dependencies [9bac016c]
+- Updated dependencies [5e0bbf31]
+- Updated dependencies [e1e9a068]
+- Updated dependencies [629f93a0]
+- Updated dependencies [505f121b]
+- Updated dependencies [5098c3ee]
+  - @evidence-dev/postgres@1.0.5
+  - @evidence-dev/core-components@3.8.0
+  - @evidence-dev/universal-sql@2.1.1
+  - @evidence-dev/preprocess@4.1.2
+  - @evidence-dev/component-utilities@2.5.3
+  - @evidence-dev/bigquery@2.0.5
+  - @evidence-dev/csv@1.0.8
+  - @evidence-dev/databricks@1.0.4
+  - @evidence-dev/duckdb@1.0.8
+  - @evidence-dev/mssql@1.0.6
+  - @evidence-dev/mysql@1.1.1
+  - @evidence-dev/snowflake@1.0.4
+  - @evidence-dev/sqlite@2.0.4
+  - @evidence-dev/trino@1.0.5
+  - @evidence-dev/plugin-connector@2.1.1
+  - @evidence-dev/query-store@2.1.2
+
+## 3.4.8
+
+### Patch Changes
+
+- Updated dependencies [fab378cb]
+  - @evidence-dev/core-components@3.7.3
+
 ## 3.4.7
 
 ### Patch Changes

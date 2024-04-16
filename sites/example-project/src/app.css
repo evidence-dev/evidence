@@ -172,7 +172,7 @@
 	}
 
 	code.markdown {
-		@apply font-mono text-gray-800 text-sm bg-gray-50 border rounded px-1 select-all py-0.5;
+		@apply font-mono text-gray-800 text-[0.875em] bg-gray-50 border rounded px-1 select-all py-0.5;
 	}
 
 	form code {
@@ -185,6 +185,18 @@
 
 	blockquote.markdown * {
 		@apply text-gray-500;
+	}
+	/* Ensure size and color are maintained for bold, italic, strikethrough */
+	strong.markdown {
+		@apply text-[1em] text-inherit;
+	}
+
+	em.markdown {
+		@apply text-[1em] text-inherit;
+	}
+
+	del.markdown {
+		@apply text-[1em] text-inherit;
 	}
 
 	table.markdown {
