@@ -1,17 +1,28 @@
 ---
 title: Box Plot
 sidebar_position: 1
+queries: 
+- sales_distribution_by_channel.sql
 ---
 
-<img src="/img/boxplot-basic.png" width="700"/>
+<BoxPlot 
+    data={sales_distribution_by_channel}
+    title="Daily Sales Distribution by Channel"
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
+/>
 
 ```markdown
 <BoxPlot 
-    data={box}
-    name=experiment
-    midpoint=value
-    confidenceInterval=confidence
-    yFmt='+0.0%;-0.0%;0'
+    data={sales_distribution_by_channel}
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
 />
 ```
 
@@ -21,9 +32,12 @@ The BoxPlot component requires pre-aggregated data, with one row per box you wou
 **1. Explicitly define each value (e.g., `min`, `intervalBottom`, `midpoint`, `intervalTop`, `max`)**
 
 ```sql boxplot
-SELECT 'Experiment A' as name, 0.02 as intervalBottom, 0.04 as midpoint, 0.08 as intervalTop
-UNION ALL
-SELECT 'Experiment B' as name, -0.01 as intervalBottom, 0.01 as midpoint, 0.02 as intervalTop
+select 
+    channel as name,
+    first_quartile as intervalBottom,
+    median as midpoint,
+    third_quartile as intervalTop
+from ${sales_distribution_by_channel}
 ```
 
 <DataTable data={boxplot} formatColumnTitles=false>
@@ -38,79 +52,116 @@ This example table excludes whiskers which would be defined with `min` and `max`
 **2. Define a `midpoint` and a `confidenceInterval` - this will add the interval to the midpoint to get the max, and subtract to get the min**
 
 ```sql boxplot_with_confidence_interval
-SELECT 'Experiment A' as name, 0.04 as midpoint, 0.03 as confidenceInterval
-UNION ALL
-SELECT 'Experiment B' as name, 0.01 as midpoint, 0.04 as confidenceInterval
+select 
+    channel as name,
+    median as midpoint,
+    20 as confidence_interval
+from ${sales_distribution_by_channel}
 ```
 
 <DataTable data={boxplot_with_confidence_interval} formatColumnTitles=false>
     <Column id="name" />
     <Column id="midpoint" fmt=num2/>
-    <Column id="confidenceInterval" fmt=num2/>
+    <Column id="confidence_interval" fmt=num2/>
 </DataTable>
 
 ## Examples
 
 ### Basic Box Plot
 
-<img src="/img/boxplot-basic.png" width="700"/>
+<BoxPlot 
+    data={sales_distribution_by_channel}
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
+/>
 
 ```markdown
 <BoxPlot 
-    data={box}
-    name=experiment
-    midpoint=value
-    confidenceInterval=confidence
-    yFmt='+0.0%;-0.0%;0'
+    data={sales_distribution_by_channel}
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
 />
 ```
 
 ### Horizontal Box Plot
 
-<img src="/img/boxplot-horiz.png" width="700"/>
+<BoxPlot 
+    data={sales_distribution_by_channel}
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
+    swapXY=true
+/>
 
 ```markdown
 <BoxPlot 
-    data={box}
-    name=experiment
-    midpoint=value
-    confidenceInterval=confidence
+    data={sales_distribution_by_channel}
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
     swapXY=true
-    yFmt='+0.0%;-0.0%;0'
 />
 ```
 
 ### Box Plot with Whiskers
 
-<img src="/img/boxplot-whiskers.png" width="700"/>
+<BoxPlot 
+    data={sales_distribution_by_channel}
+    name=channel
+    min=min
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    max=max
+    yFmt=usd0
+    yMin=0
+/>
+
 
 ```markdown
 <BoxPlot 
-    data={box}
-    name=experiment
-    midpoint=value
+    data={sales_distribution_by_channel}
+    name=channel
     min=min
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
     max=max
-    confidenceInterval=confidence
-    yFmt='+0.0%;-0.0%;0'
+    yFmt=usd0
 />
 ```
 
 ### Box Plot with Custom Colors
 
-<img src="/img/boxplot-color.png" width="700"/>
+<BoxPlot 
+    data={sales_distribution_by_channel}
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
+    color=color
+/>
 
 ```markdown
 <BoxPlot 
-    data={box}
-    name=experiment
-    midpoint=value
-    min=min
-    max=max
+    data={sales_distribution_by_channel}
+    name=channel
+    intervalBottom=first_quartile
+    midpoint=median
+    intervalTop=third_quartile
+    yFmt=usd0
     color=color
-    confidenceInterval=confidence
-    swapXY=true
-    yFmt='+0.0%;-0.0%;0'
 />
 ```
 
