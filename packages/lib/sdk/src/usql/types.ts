@@ -39,7 +39,7 @@ export type QueryOpts<RowType extends QueryResultRow = QueryResultRow> = {
 	initialError?: Error;
 	id?: string;
 	disableCache?: boolean;
-	autoScore?: boolean
+	autoScore?: boolean;
 	/**
 	 * When true, this prevents the query from ever fetching or presenting data.
 	 **/
@@ -65,4 +65,4 @@ export interface CreateQuery<RowType extends QueryResultRow = QueryResultRow> {
 	): QueryValue<RowType>;
 }
 
-export type LengthResultRow = {rowCount: number};
+export type LengthResultRow = { rowCount: number };

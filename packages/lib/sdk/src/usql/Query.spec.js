@@ -41,9 +41,9 @@ const getMockQuery = (s, opts) => {
 
 describe('Query', () => {
 	beforeEach(() => {
-		expectedColumns = []
-		expectedData = []
-		expectedLength = [{ rowCount: -1 }]
+		expectedColumns = [];
+		expectedData = [];
+		expectedLength = [{ rowCount: -1 }];
 		vi.restoreAllMocks();
 		testQueryIndex = 0;
 		testIdx++;
@@ -63,35 +63,41 @@ describe('Query', () => {
 			expect(q.score).toBe(0);
 		});
 		it('should dispatch an event when the score is too large', async () => {
-			const colProm = sharedPromise()
-			expectedColumns = colProm.promise
-			expectedLength = [{ rowCount: 100 * 100 * 100 }]
-			console.log({expectedColumns, expectedData, expectedLength})
+			const colProm = sharedPromise();
+			expectedColumns = colProm.promise;
+			expectedLength = [{ rowCount: 100 * 100 * 100 }];
+			console.log({ expectedColumns, expectedData, expectedLength });
 			const q = getMockQuery('SELECT 5');
-			const listen = vi.fn()
-			q.addEventListener('highScore', listen)
+			const listen = vi.fn();
+			q.addEventListener('highScore', listen);
 			await tick();
 			expect(q.score).toBe(-1);
-			expect(listen).not.toHaveBeenCalled()
-			colProm.resolve([{
-				column_name: "x",
-				column_type: "VARCHAR"
-			},{
-				column_name: "x",
-				column_type: "VARCHAR"
-			},{
-				column_name: "x",
-				column_type: "VARCHAR"
-			},{
-				column_name: "x",
-				column_type: "VARCHAR"
-			},{
-				column_name: "x",
-				column_type: "VARCHAR"
-			}])
+			expect(listen).not.toHaveBeenCalled();
+			colProm.resolve([
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				},
+				{
+					column_name: 'x',
+					column_type: 'VARCHAR'
+				}
+			]);
 			await tick();
-			expect(q.score).toBeGreaterThan(10 * 1024 * 1024)
-			expect(listen).toHaveBeenCalledWith(q.score, "highScore")
+			expect(q.score).toBeGreaterThan(10 * 1024 * 1024);
+			expect(listen).toHaveBeenCalledWith(q.score, 'highScore');
 		});
 	});
 
@@ -299,18 +305,22 @@ describe('Query', () => {
 
 	describe('Implicit Fetching', () => {
 		it('should fetch when a numeric property is accessed', () => {
+			const p = sharedPromise();
+			expectedData = p.promise;
 			const q = getMockQuery('SELECT 1');
 			expect(q.dataLoading).toBe(false);
 			q[0];
 			expect(q.dataLoading).toBe(true);
+			p.resolve([]);
 		});
-		it('should fetch when special properties are accessed', () => {
-			Query.ProxyFetchTriggers.forEach((trigger) => {
-				const q = getMockQuery('SELECT 1');
-				expect(q.dataLoading).toBe(false);
-				q.value[trigger];
-				expect(q.dataLoading).toBe(true);
-			});
+		it.each(Query.ProxyFetchTriggers)('should fetch when "%s" property is accessed', (trigger) => {
+			const p = sharedPromise();
+			expectedData = p.promise;
+			const q = getMockQuery('SELECT 1');
+			expect(q.dataLoading).toBe(false);
+			q.value[trigger];
+			expect(q.dataLoading).toBe(true);
+			p.resolve([]);
 		});
 	});
 
@@ -524,10 +534,10 @@ describe('Query', () => {
 			expect(i).toBe(2);
 		});
 
-		it.only('should publish when fetching length', async () => {
+		it('should publish when fetching length', async () => {
 			const lengthSharedPromise = sharedPromise();
 			expectedLength = lengthSharedPromise.promise;
-			const q = getMockQuery('SELECT 5', { id: "I SEE YOU"});
+			const q = getMockQuery('SELECT 5', { id: 'I SEE YOU' });
 			const subscriber = vi.fn(console.log);
 			let i = 0;
 
@@ -536,8 +546,9 @@ describe('Query', () => {
 				expect(v.lengthLoaded).toBe(false);
 				expect(v.lengthLoading).toBe(true);
 			});
-			q.subscribe(subscriber);
+			q.subscribe(subscriber); // first call
 			await tick();
+			expect(subscriber).toHaveBeenCalledOnce();
 
 			subscriber.mockImplementationOnce((v) => {
 				i++;
@@ -545,10 +556,10 @@ describe('Query', () => {
 				expect(v.lengthLoading).toBe(false);
 				expect(v.length).toBe(5);
 			});
-			lengthSharedPromise.resolve([{ rowCount: 5 }]);
+			expect(subscriber).toHaveBeenCalledOnce();
+			lengthSharedPromise.resolve([{ rowCount: 5 }]); // second call??
 			await tick();
-			await tick();
-			expect(subscriber).toHaveBeenCalledTimes(3); /* Length load start, length load end */
+			expect(subscriber).toHaveBeenCalledTimes(2); /* Length load start, length load end */
 			expect(i).toBe(2);
 		});
 	});
