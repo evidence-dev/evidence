@@ -154,3 +154,32 @@ Link to [Google](https://google.com)
 |     4      |     5      |      6       |
 |     G      |     H      |      I       |
 |     7      |     8      |      9       |
+
+
+## Edge Cases
+
+# Heading 1 with `inline code`
+
+## Heading 2 includes a combination of [Link](http://example.com), `inline code`
+
+### Heading 3 with `inline code`, **bold text**, and external links like [Google](http://google.com)
+
+#### Heading 4 `inline code`
+
+##### Heading 5 illustrating `code` with text
+
+###### Heading 6 `code` and [Link to a Site](https://example.com)
+
+
+| Left Aligned | Center Aligned | Right Aligned |
+| :----------- | :------------: | ------------: |
+| Row with multiple<br>lines of text | `inline code` in cell | ![Image](https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg "Image Title") |
+| Another cell | **Bold** and *italic* text | [Link](http://example.com) |
+| Third line of text that extends | Over<br>multiple<br>lines | `$pecial & ch@racters` |
+
+| **Bold Header** | *Italic Header* | `Code Header` |
+| --------------- | --------------- | ------------- |
+| Normal text | Text with `inline code` | Text with [Link](http://example.com) |
+| > Blockquote | 1. List Item<br>2. Second Item | ![Image in cell](https://example.com/tiny.jpg) |
+| Combined **bold**, *italic*, and `code` | ![Image](https://example.com/image.jpg "Title") | Nested<br>`code`<br>in lines |
+
