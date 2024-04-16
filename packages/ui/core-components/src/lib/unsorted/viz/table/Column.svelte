@@ -74,6 +74,7 @@
 	export let colorMid = undefined;
 	export let colorBreakpoints = undefined;
 	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
+	export let scaleColumn = undefined;
 
 	let colorList = {
 		green: ['white', 'hsla(129, 33%, 57%,1)'],
@@ -106,6 +107,13 @@
 	// Column Groups:
 	export let colGroup = undefined;
 
+	// Formats defined in another column:
+	export let fmtColumn = undefined;
+
+	// Neagtive value font color:
+	export let redNegatives = false;
+	$: redNegatives = redNegatives === 'true' || redNegatives === true;
+
 	$: options = {
 		id: id,
 		title: title,
@@ -119,6 +127,7 @@
 		openInNewTab: openInNewTab,
 		linkLabel: linkLabel,
 		fmt: fmt,
+		fmtColumn: fmtColumn,
 		totalAgg: totalAgg,
 		totalFmt: totalFmt,
 		subtotalFmt: subtotalFmt,
@@ -132,9 +141,12 @@
 		colorMax: colorMax,
 		colorMin: colorMin,
 		scaleColor: scaleColor,
+		scaleColumn: scaleColumn,
+		colGroup: colGroup,
 		colorMid: colorMid,
 		colorBreakpoints: colorBreakpoints,
-		colorPalette: colorPalette
+		colorPalette: colorPalette,
+		redNegatives: redNegatives
 	};
 
 	/**
