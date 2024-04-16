@@ -53,300 +53,393 @@ sidebar_position: 1
 
 <PropListing 
     name="data"
-    description="Query name, wrapped in curly braces"
     required
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing 
     name="x"
-    description="Column to use for the x-axis of the chart"
     required
     options="column name"
     defaultValue="First column"
-/>
+>
+
+Column to use for the x-axis of the chart
+
+</PropListing>
 <PropListing 
     name="y"
-    description="Column(s) to use for the y-axis of the chart"
     required
     options="column name | array of column names"
     defaultValue="Any non-assigned numeric columns"
-/>
+>
+
+Column(s) to use for the y-axis of the chart
+
+</PropListing>
 <PropListing 
     name="series"
-    description="Column to use as the series (groups) in a multi-series chart"
-    
     options="column name"
-/>
+>
+
+Column to use as the series (groups) in a multi-series chart
+
+</PropListing>
 <PropListing 
     name="size"
-    description="Column to use to scale the size of the bubbles"
     required
     options="column name"
-/>
+>
+
+Column to use to scale the size of the bubbles
+
+</PropListing>
 <PropListing 
     name="sort"
-    description="Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes"
-    
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes
+
+</PropListing>
 <PropListing 
     name="tooltipTitle"
-    description="Column to use as the title for each tooltip. Typically, this is a name to identify each point."
-    
     options="column name"
-/>
+>
+
+Column to use as the title for each tooltip. Typically, this is a name to identify each point.
+
+</PropListing>
 <PropListing 
     name="emptySet"
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
-    
     options={['error', 'warn', 'pass']}
     defaultValue='error'
-/>
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
 <PropListing 
     name="emptyMessage"
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
-    
     options="string"
     defaultValue='No records'
-/>
+>
+
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
 
 ### Formatting & Styling
 
 <PropListing 
     name="xFmt"
-    description="Format to use for x column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
-    
     options="Excel-style format | built-in format name | custom format name"
-/>
+>
+
+Format to use for x column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing 
     name="yFmt"
-    description="Format to use for y column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
-    
     options="Excel-style format | built-in format name | custom format name"
-/>
+>
+
+Format to use for y column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing 
     name="sizeFmt"
-    description="Format to use for size column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
-    
     options="Excel-style format | built-in format name | custom format name"
-/>
+>
+
+Format to use for size column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing 
     name="shape"
-    description="Options for which shape to use for bubble points"
-    
     options="circle | emptyCircle | rect | triangle | diamond"
     defaultValue='circle'
-/>
+>
+
+Options for which shape to use for bubble points
+
+</PropListing>
 <PropListing 
     name="scaleTo"
-    description="Scale the size of the bubbles by this factor (e.g., 2 will double the size)"
-    
     options="number"
     defaultValue=1
-/>
+>
+
+Scale the size of the bubbles by this factor (e.g., 2 will double the size)
+
+</PropListing>
 <PropListing 
     name="opacity"
-    description="% of the full color that should be rendered, with remainder being transparent"
-    
     options="number (0 to 1)"
     defaultValue=0.7
-/>
+>
+
+% of the full color that should be rendered, with remainder being transparent
+
+</PropListing>
 <PropListing 
     name="fillColor"
-    description="Color to override default series color. Only accepts a single color."
-    
     options="CSS name | hexademical | RGB | HSL"
-/>
+>
+
+Color to override default series color. Only accepts a single color.
+
+</PropListing>
 <PropListing 
     name="outlineWidth"
-    description="Width of line surrounding each shape"
-    
     options="number"
     defaultValue=0
-/>
+>
+
+Width of line surrounding each shape
+
+</PropListing>
 <PropListing 
     name="outlineColor"
-    description="Color to use for outline if outlineWidth > 0"
-    
     options="CSS name | hexademical | RGB | HSL"
-/>
+>
+
+Color to use for outline if outlineWidth > 0
+
+</PropListing>
 <PropListing 
     name="colorPalette"
-    description="Array of custom colours to use for the chart. E.g., ['#cf0d06','#eb5752','#e88a87'] Note that the array must be surrounded by curly braces."
-    
     options="array of color strings (CSS name | hexademical | RGB | HSL)"
     defaultValue='built-in color palette'
-/>
+>
+
+Array of custom colours to use for the chart. E.g., ['#cf0d06','#eb5752','#e88a87'] Note that the array must be surrounded by curly braces.
+
+</PropListing>
 <PropListing 
     name="seriesColors"
-    description="Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax"
-    
     options="object with series names and assigned colors"
     defaultValue='colors applied by order of series in data'
-/>
+>
+
+Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax
+
+</PropListing>
 
 ### Axes
 
 <PropListing 
     name="yLog"
-    description="Whether to use a log scale for the y-axis"
-    
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Whether to use a log scale for the y-axis
+
+</PropListing>
 <PropListing 
     name="yLogBase"
-    description="Base to use when log scale is enabled"
-    
     options="number"
     defaultValue=10
-/>
+>
+
+Base to use when log scale is enabled
+
+</PropListing>
 <PropListing 
     name="xAxisTitle"
-    description="Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false"
-    
     options="true | string | false"
     defaultValue=true
-/>
+>
+
+Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false
+
+</PropListing>
 <PropListing 
     name="yAxisTitle"
-    description="Name to show beside y-axis. If 'true', formatted column name is used."
-    
     options="true | string | false"
     defaultValue=true
-/>
+>
+
+Name to show beside y-axis. If 'true', formatted column name is used.
+
+</PropListing>
 <PropListing 
     name="xGridlines"
-    description="Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)"
-    
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)
+
+</PropListing>
 <PropListing 
     name="yGridlines"
-    description="Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)"
-    
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)
+
+</PropListing>
 <PropListing 
     name="xAxisLabels"
-    description="Turns on/off value labels on the x-axis"
-    
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Turns on/off value labels on the x-axis
+
+</PropListing>
 <PropListing 
     name="yAxisLabels"
-    description="Turns on/off value labels on the y-axis"
-    
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Turns on/off value labels on the y-axis
+
+</PropListing>
 <PropListing 
     name="xBaseline"
-    description="Turns on/off thick axis line (line appears at y=0)"
-    
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Turns on/off thick axis line (line appears at y=0)
+
+</PropListing>
 <PropListing 
     name="yBaseline"
-    description="Turns on/off thick axis line (line appears directly alongside the y-axis labels)"
-    
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Turns on/off thick axis line (line appears directly alongside the y-axis labels)
+
+</PropListing>
 <PropListing 
     name="xTickMarks"
-    description="Turns on/off tick marks for each of the x-axis labels"
-    
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Turns on/off tick marks for each of the x-axis labels
+
+</PropListing>
 <PropListing 
     name="yTickMarks"
-    description="Turns on/off tick marks for each of the y-axis labels"
-    
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Turns on/off tick marks for each of the y-axis labels
+
+</PropListing>
 <PropListing 
     name="yMin"
-    description="Starting value for the y-axis"
-    
     options="number"
-/>
+>
+
+Starting value for the y-axis
+
+</PropListing>
 <PropListing 
     name="yMax"
-    description="Maximum value for the y-axis"
-    
     options="number"
-/>
+>
+
+Maximum value for the y-axis
+
+</PropListing>
 
 ### Chart
 
 <PropListing 
     name="title"
-    description="Chart title. Appears at top left of chart."
-    
     options="string"
-/>
+>
+
+Chart title. Appears at top left of chart.
+
+</PropListing>
 <PropListing 
     name="subtitle"
-    description="Chart subtitle. Appears just under title."
-    
     options="string"
-/>
+>
+
+Chart subtitle. Appears just under title.
+
+</PropListing>
 <PropListing 
     name="legend"
-    description="Turns legend on or off. Legend appears at top center of chart."
-    
     options={['true', 'false']}
     defaultValue='true for multiple series'
-/>
+>
+
+Turns legend on or off. Legend appears at top center of chart.
+
+</PropListing>
 <PropListing 
     name="chartAreaHeight"
-    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
-    
     options="number"
     defaultValue=180
-/>
+>
+
+Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.
+
+</PropListing>
 <PropListing 
     name="renderer"
-    description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
-    
     options="canvas | svg"
     defaultValue='canvas'
-/>
+>
+
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
+
+</PropListing>
 
 ### Custom Echarts Options
 
 <PropListing 
     name="echartsOptions"
-    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
-/>
+>
+
+Custom Echarts options to override the default options. See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
 <PropListing 
     name="seriesOptions"
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
-/>
+>
+
+Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions`. See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
 <PropListing 
     name="printEchartsConfig"
-    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
 
+Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
+
+</PropListing>
 
 ### Interactivity
 
 <PropListing
     name=connectGroup
-    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
-/>
+>
+
+Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected
+
+</PropListing>
 
 
 ## Annotations

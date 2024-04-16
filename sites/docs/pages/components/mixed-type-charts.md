@@ -53,66 +53,99 @@ This structure also gives you control over the individual series on your chart. 
 ## Data
 
 <PropListing
-    name=data
-    description="Query name, wrapped in curly braces"
+    name="data"
     required
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing
-    name=x
-    description="Column to use for the x-axis of the chart"
+    name="x"
     options="column name"
-/>
+>
+
+Column to use for the x-axis of the chart
+
+</PropListing>
 <PropListing
-    name=y
-    description="Column(s) to use for the y-axis of the chart"
+    name="y"
     options="column name | array of column names"
-/>
+>
+
+Column(s) to use for the y-axis of the chart
+
+</PropListing>
 <PropListing
-    name=sort
-    description="Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes"
+    name="sort"
     options={['true', 'false']}
     defaultValue="true"
-/>
+>
+
+Whether to apply default sort to your data. Default is x ascending for number and date x-axes, and y descending for category x-axes
+
+</PropListing>
 <PropListing
-    name=series
-    description="Column to use as the series (groups) in a multi-series chart"
+    name="series"
     options="column name"
-/>
+>
+
+Column to use as the series (groups) in a multi-series chart
+
+</PropListing>
 <PropListing
-    name=xFmt
-    description="Format to use for x column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    name="xFmt"
     options="Excel-style format | built-in format name | custom format name"
-/>
+>
+
+Format to use for x column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing
-    name=yFmt
-    description="Format to use for y column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    name="yFmt"
     options="Excel-style format | built-in format name | custom format name"
-/>
+>
+
+Format to use for y column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing
-    name=yLog
-    description="Whether to use a log scale for the y-axis"
+    name="yLog"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Whether to use a log scale for the y-axis
+
+</PropListing>
 <PropListing
-    name=yLogBase
-    description="Base to use when log scale is enabled"
+    name="yLogBase"
     options="number"
     defaultValue="10"
-/>
+>
+
+Base to use when log scale is enabled
+
+</PropListing>
 <PropListing
-    name=emptySet
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in build:strict. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    name="emptySet"
     options={['error', 'warn', 'pass']}
     defaultValue="error"
-/>
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in build:strict. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
 <PropListing
-    name=emptyMessage
-    description="Text to display when an empty dataset is received - only applies when emptySet is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    name="emptyMessage"
     options="string"
     defaultValue="No records"
-/>
+>
+
+Text to display when an empty dataset is received - only applies when emptySet is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
 
 
 ## Chart

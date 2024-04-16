@@ -14,8 +14,7 @@ sidebar_position: 1
 
 ## Options
 
-<PropListing
-    name="href"
-    description="The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`"
-    required
-/>
+<PropListing name="href" required>
+
+The URL to use for the link. Can be a full external link like `https://google.com` or an internal link like `/sales/performance`
+</PropListing>

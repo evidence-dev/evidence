@@ -108,49 +108,72 @@ where column_name like '${inputs.name_of_button_group}'
 # ButtonGroup
 
 ## Options
-
 <PropListing 
     name="name"
-    description="Name of the button group, used to reference the selected value elsewhere as {`{inputs.name}`}"
     required
-/>
+>
+
+Name of the button group, used to reference the selected value elsewhere as `{inputs.name}`
+
+</PropListing>
 <PropListing 
     name="preset"
-    description="Preset values to use"
     options="dates"
-/>
+>
+
+Preset values to use
+
+</PropListing>
 <PropListing 
     name="data"
-    description="Query name, wrapped in curly braces"
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing 
     name="value"
-    description="Column name from the query containing values to pick from"
     options="column name"
-/>
+>
+
+Column name from the query containing values to pick from
+
+</PropListing>
 <PropListing 
     name="label"
-    description="Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)"
     options="column name"
     defaultValue="Uses the column in value"
-/>
+>
+
+Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)
+
+</PropListing>
 <PropListing 
     name="title"
-    description="Title to display above the button group"
     options="string"
-/>
+>
+
+Title to display above the button group
+
+</PropListing>
 <PropListing 
     name="order"
-    description="Column to sort options by"
     options="column name"
     defaultValue="Uses the same order as the query in `data`"
-/>
+>
+
+Column to sort options by
+
+</PropListing>
 <PropListing 
     name="where"
-    description="SQL where fragment to filter options by (e.g., where sales > 40000)"
     options="SQL where clause"
-/>
+>
+
+SQL where fragment to filter options by (e.g., where sales > 40000)
+
+</PropListing>
 
 # ButtonGroupItem
 
@@ -160,18 +183,28 @@ The ButtonGroupItem component can be used to manually add options to a button gr
 
 <PropListing 
     name="value"
-    description="Value to use when the option is selected"
     required
-/>
+>
+
+Value to use when the option is selected
+
+</PropListing>
 <PropListing 
     name="valueLabel"
-    description="Label to display for the option in the dropdown"
     options="string"
     defaultValue="Uses value"
-/>
+>
+
+Label to display for the option in the dropdown
+
+</PropListing>
 <PropListing 
     name="hideDuringPrint"
-    description="Hide the component when the report is printed"
     options={["true", "false"]}
     defaultValue=true
-/>
+>
+
+Hide the component when the report is printed
+
+</PropListing>
+

@@ -76,14 +76,18 @@ sidebar_position: 1
 
 # Tab
 
-## Options
-
 <PropListing
     name="label"
-    description="Label for the tab"
     required
-/>
+>
+
+Label for the tab
+
+</PropListing>
 <PropListing
     name="id"
-    description="Unique Id for this tab. Only needed if 2 tabs have the same label (not recommended)."
-/>
+>
+
+Unique Id for this tab. Only needed if 2 tabs have the same label (not recommended).
+
+</PropListing>

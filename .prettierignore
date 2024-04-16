@@ -23,6 +23,7 @@ yarn.lock
 *.yaml
 /packages/ui/storybook-static/*
 **/sites/example-project/src/pages/**/+page.md
+**/sites/docs/pages/**/*
 **/sites/test-env/pages/**/*
 **/static/data/*
 

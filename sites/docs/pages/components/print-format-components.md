@@ -84,8 +84,11 @@ The purple line chart will be hidden on print
 ### Options
 
 <PropListing
-    name=hidden
-    description="If true, the content within the PrintGroup will not be printed"
+    name="hidden"
     options={['true', 'false']}
     defaultValue='false'
-/>
+>
+
+If true, the content within the PrintGroup will not be printed
+
+</PropListing>

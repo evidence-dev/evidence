@@ -19,7 +19,7 @@
 	}
 </script>
 
-<section class="py-4 border-b text-sm flex flex-col lg:flex-row gap-4">
+<section class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4">
 	<div class="min-w-48 flex justify-between mr-4">
 		<div class="font-mono">
 			<span
@@ -29,26 +29,30 @@
 			</span>
 		</div>
 		{#if required}
-			<span class="text-red-500">Required</span>
+			<span class="text-red-500 uppercase tracking-wide">Required</span>
 		{/if}
 	</div>
 	<div>
-		<div>{@html description}</div>
+		<div id="markdown-slot"><slot /></div>
 		{#if Array.isArray(options) && options.length > 0}
-			<div class="flex items-center mt-2 flex-wrap select-none">
-				<span class="text-sm text-gray-400">Options: &nbsp;</span>
-				<div class="flex gap-1 flex-wrap">
+			<div class="mt-1 select-none flex">
+				<span class="text-sm text-gray-400 mr-2">Options:</span>
+				<div class="flex flex-wrap gap-1">
 					{#each options as option}
 						<HoverCard>
 							<button
 								slot="trigger"
-								class="bg-blue-50  rounded-full min-w-3 px-3 text-blue-700 hover:bg-blue-200 hover:text-blue-800 flex justify-center transition-colors duration-200"
+								class="bg-blue-50 rounded-full min-w-3 px-3 text-blue-700 hover:bg-blue-100 hover:text-blue-800 flex justify-center transition-colors duration-200"
 								on:click={() => copyToClipboard(`${name}=${option}`, option)}
 							>
 								{option}
 							</button>
 							<div slot="content" class="text-xs text-center min-w-28">
-								<p class="font-mono bg-gray-50 rounded-t-md border-b px-4 py-1 text-gray-700">{name}=<span class="text-blue-700">{option == 'true' ? '{true}': option == 'false' ? '{false}' : option}</span></p>
+								<p class="font-mono bg-gray-50 rounded-t-md px-4 py-1 text-gray-700">
+									{name}=<span class="text-blue-700"
+										>{option == 'true' ? '{true}' : option == 'false' ? '{false}' : option}</span
+									>
+								</p>
 								<p class="px-4 py-1 text-gray-700 font-sans">
 									{copyStatus[option] ? 'Copied' : 'Click to Copy'}
 								</p>
@@ -58,29 +62,35 @@
 				</div>
 			</div>
 		{:else if typeof options === 'string' && options.length > 0}
-			<dl class="flex items-center mt-2 relative">
+			<dl class="flex select-none mt-1">
 				<dt class="text-sm text-gray-400">Options:</dt>
 				<dd class="ml-2 text-sm">{options}</dd>
 			</dl>
 		{/if}
 		{#if defaultValue && defaultValue !== '-'}
-			<dl class="flex items-center mt-2">
+			<dl class="flex select-none mt-1">
 				<dt class="text-sm text-gray-400">Default:</dt>
 				<dd class="ml-2 text-sm">{defaultValue}</dd>
 			</dl>
 		{/if}
 		{#if Array.isArray(type) && type.length > 0}
-			<div class="flex items-center mt-2">
+			<div class="flex select-none mt-1">
 				<span class="text-sm text-gray-400">Type:</span>
 				{#each type as t, index (t)}
 					<span class="ml-2 text-sm bg-blue-100 rounded-full px-2 py-0.5">{t}</span>
 				{/each}
 			</div>
 		{:else if typeof type === 'string' && type.length > 0}
-			<dl class="flex items-center mt-2">
+			<dl class="flex select-none mt-1">
 				<dt class="text-sm text-gray-400">Type:</dt>
 				<dd class="ml-2 text-sm bg-blue-100 rounded-full px-2 py-0.5">{type}</dd>
 			</dl>
 		{/if}
 	</div>
 </section>
+
+<style>
+	#markdown-slot :global(*) {
+		@apply text-sm;
+	}
+</style>

@@ -20,9 +20,12 @@ The `Fullscren` component allows you to easily create a fullscreen modal. This i
 ## Options
 
 <PropListing 
-    name="open"
-    description="Whether or not the component is open. For most use cases, this should be a binding attached to a button or similar input."
+	name="open"
 	required
 	options={['true', 'false']}
-    defaultValue="false"
-/>
+	defaultValue="false"
+>
+
+Whether or not the component is open. For most use cases, this should be a binding attached to a button or similar input.
+
+</PropListing>

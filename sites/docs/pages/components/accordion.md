@@ -23,18 +23,20 @@ sidebar_position: 1
 
 ### Accordion
 
-  <PropListing
-      name="single"
-      description="When true, only a single accordian item can be open at once."
-      
-      options={['true', 'false']}
-  />
+<PropListing name="single" options={['true', 'false']}>
+
+When true, only a single accordian item can be open at once.
+
+</PropListing>
 
 
 ### AccordionItem
 
-  <PropListing
-      name="title"
-      description="The title of the accordion item. This will be displayed as the header."
-      required
-  />
+<PropListing
+    name="title"
+    required
+>
+
+The title of the accordion item. This will be displayed as the header.
+
+</PropListing>
