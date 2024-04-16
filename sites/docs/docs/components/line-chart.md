@@ -247,6 +247,18 @@ Evidence will automatically pick the first column as `x` and use all other numer
 <tr>	<td>printEchartsConfig</td>	<td>Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options</td>	<td class='tcenter'>-</td>	<td class='tcenter'>true | false</td>	<td class='tcenter'>false</td>	</tr>
 </table>
 
+### Interactivity
+
+<table>						 
+<tr>	<th class='tleft'>Name</th>	<th class='tleft'>Description</th>	<th>Required?</th>	<th>Options</th>	<th>Default</th>	</tr>
+<tr>	
+    <td>connectGroup</td>	
+    <td>Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same <code>connectGroup</code> name will become connected</td>	
+    <td class='tcenter'>-</td>	
+    <td class='tcenter'>string</td>	
+    <td class='tcenter'>-</td>	
+</tr>
+</table>
 
 ## Annotations
 

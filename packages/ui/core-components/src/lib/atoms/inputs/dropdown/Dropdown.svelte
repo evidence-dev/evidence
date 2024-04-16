@@ -258,9 +258,20 @@
 									</VirtualList>
 								{/if}
 							</Command.Group>
-							{#if $selectedValues.length > 0 && multiple}
+							{#if multiple}
 								<Command.Separator />
 								<Command.Item
+									class="justify-center text-center"
+									onSelect={() => {
+										$selectedValues = $items.map((x) => ({ label: x.label, value: x.value }));
+										selectedValuesToInput();
+									}}
+								>
+									Select all
+								</Command.Item>
+								<Command.Separator />
+								<Command.Item
+									disabled={$selectedValues.length === 0}
 									class="justify-center text-center"
 									onSelect={() => {
 										$selectedValues = [];

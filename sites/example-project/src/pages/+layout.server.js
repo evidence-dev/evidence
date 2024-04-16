@@ -3,7 +3,10 @@ import md5 from 'blueimp-md5';
 import { GET as getSettings } from './api/customFormattingSettings.json/+server.js';
 import { GET as getPagesManifest } from './api/pagesManifest.json/+server.js';
 import { getStatusAndExtractQueries } from './extractQueries.server.js';
+import { dev } from '$app/environment';
+
 export const prerender = true;
+export const ssr = !dev;
 export const trailingSlash = 'always';
 
 const system_routes = ['/settings', '/explore'];

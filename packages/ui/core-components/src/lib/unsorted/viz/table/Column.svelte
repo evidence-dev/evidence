@@ -40,6 +40,9 @@
 	export let wrap = false;
 	$: wrap = wrap === 'true' || wrap === true;
 
+	export let wrapTitle = false;
+	$: wrapTitle = wrapTitle === 'true' || wrapTitle === true;
+
 	// COLUMN CONTENT TYPES:
 	export let contentType = undefined;
 
@@ -62,21 +65,30 @@
 	export let totalFmt = undefined;
 	export let weightCol = undefined; // column to use as the weights for weighted average
 
+	// Subtotals:
+	export let subtotalFmt = undefined;
+
 	// Color Scale:
 	export let colorMax = undefined;
 	export let colorMin = undefined;
-	export let scaleColor = 'green';
+	export let colorMid = undefined;
+	export let colorBreakpoints = undefined;
+	export let scaleColor = 'green'; // name of predefined color palette, custom color, array of custom colors
 
 	let colorList = {
-		green: 'hsla(129, 33%, 57%,',
-		red: 'hsla(0, 56%, 56%,',
-		blue: 'hsla(198, 56%, 56%,'
+		green: ['white', 'hsla(129, 33%, 57%,1)'],
+		red: ['white', 'hsla(0, 56%, 56%,1)'],
+		blue: ['white', 'hsla(198, 56%, 56%,1)']
 	};
 
-	let useColor = colorList[scaleColor];
-	let customColor = undefined;
-	if (useColor == undefined) {
-		customColor = scaleColor;
+	let colorPalette;
+	if (scaleColor instanceof Array) {
+		colorPalette = scaleColor;
+	} else {
+		colorPalette = colorList[scaleColor];
+		if (colorPalette == undefined) {
+			colorPalette = ['white', scaleColor];
+		}
 	}
 
 	// Delta:
@@ -84,15 +96,22 @@
 	$: downIsGood = downIsGood === 'true' || downIsGood === true;
 	export let showValue = true;
 	$: showValue = showValue === 'true' || showValue === true;
-
 	export let deltaSymbol = true;
 	$: deltaSymbol = deltaSymbol === 'true' || deltaSymbol === true;
+	export let neutralMin = 0;
+	export let neutralMax = 0;
+	export let chip = false;
+	$: chip = chip === 'true' || chip === true;
+
+	// Column Groups:
+	export let colGroup = undefined;
 
 	$: options = {
 		id: id,
 		title: title,
 		align: align,
 		wrap: wrap,
+		wrapTitle: wrapTitle,
 		contentType: contentType,
 		height: height,
 		width: width,
@@ -102,15 +121,21 @@
 		fmt: fmt,
 		totalAgg: totalAgg,
 		totalFmt: totalFmt,
+		subtotalFmt: subtotalFmt,
 		weightCol: weightCol,
 		downIsGood: downIsGood,
 		deltaSymbol: deltaSymbol,
+		chip: chip,
+		neutralMin: neutralMin,
+		neutralMax: neutralMax,
 		showValue: showValue,
 		colorMax: colorMax,
 		colorMin: colorMin,
 		scaleColor: scaleColor,
-		useColor: useColor,
-		customColor: customColor
+		colGroup: colGroup,
+		colorMid: colorMid,
+		colorBreakpoints: colorBreakpoints,
+		colorPalette: colorPalette
 	};
 
 	/**

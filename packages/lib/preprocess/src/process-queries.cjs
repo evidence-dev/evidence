@@ -271,6 +271,10 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		import { Query } from '@evidence-dev/sdk/usql';
 		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
+		if (!browser) {
+			onDestroy(() => QueryStore.emptyCache());
+		}
+
 		const queryFunc = (query, query_name) => profile(__db.query, query, { query_name });
 		setQueryFunction(queryFunc);
 
