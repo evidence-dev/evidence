@@ -173,9 +173,9 @@ Link to [Google](https://google.com)
 
 | Left Aligned | Center Aligned | Right Aligned |
 | :----------- | :------------: | ------------: |
-| Row with multiple<br>lines of text | `inline code` in cell | ![Image](https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg "Image Title") |
-| Another cell | **Bold** and *italic* text | [Link](http://example.com) |
-| Third line of text that extends | Over<br>multiple<br>lines | `$pecial & ch@racters` |
+| Row with multiple<br>lines of text in the table | You should be able to use `inline code` in cell that also contains quite a lot of inline text and it should render nicely | Hello |
+| Another cell | **Bold** and *italic* text can be interchanged and dispersed throughout your tables | [Link](http://example.com) to another site on the internet |
+| Third line of text that extends | Breaking over<br>multiple lines<br>as specified by the author of the table | `$pecial & ch@racters` should work just great in a table if you put them inline in code |
 
 | **Bold Header** | *Italic Header* | `Code Header` |
 | --------------- | --------------- | ------------- |
