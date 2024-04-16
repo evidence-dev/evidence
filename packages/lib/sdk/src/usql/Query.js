@@ -299,14 +299,7 @@ ${this.#query.toString()}
 		Query.#markInFlight(this);
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
-				// Large datasets can cause a stack overflow when using .push
-				// However, we don't want to re-assign #data, so doing it this way
-				// Might be a little bit slower, but it prevents that overflow
 				this.#data = result;
-				// for (const c of chunk(result, Query.#chunkSize)) {
-				// 	this.#debug(`Processing result chunk of ${c.length} rows`);
-				// 	this.#data.push(...c);
-				// }
 
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
@@ -588,13 +581,68 @@ DESCRIBE ${this.#query.toString()}
 	/////////////////////
 	/// < Factories > ///
 	/////////////////////
-
-	static #chunkSize = 50000;
-
+	/**
+	 * This is a fairly arbitrary number that determines how much data
+	 * the Query will cache internally. The larger the number, the
+	 * larger the cache will be.
+	 *
+	 * The number is based on our Query Score calculation, see
+	 * queryScore.js for details on how this is calculated.
+	 *
+	 * @default 5 * 10 * 1024
+	 *
+	 */
+	static CacheMaxScore = 5 * 10 * 1024;
+	/**
+	 * @type {Map<string, {added: number, query: Query<any>}>}
+	 */
 	static #cache = new Map();
 
 	static emptyCache = () => {
 		this.#cache.clear();
+	};
+
+	static get cacheSize() {
+		return this.#cache.size;
+	}
+
+	/**
+	 * @param {Query<any>} q
+	 */
+	static #addToCache = (q) => {
+		this.#cache.set(q.hash, {
+			query: q,
+			added: Date.now()
+		});
+
+		if (isDebug())
+			console.debug(`Added to cache: ${q.hash}`, {
+				cacheSize: this.#cache.size,
+				cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
+			});
+	};
+
+	/**
+	 * @template {QueryResultRow} [RowType=QueryResultRow]
+	 * @param {string} hash
+	 * @returns {Query<RowType> | null}
+	 */
+	static #getFromCache = (hash) => {
+		const cachedValue = this.#cache.get(hash);
+		if (cachedValue) {
+			return cachedValue.query;
+		}
+		return null;
+	};
+
+	static #cacheCleanup = () => {
+		let sumScore = Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0);
+		while (sumScore > this.CacheMaxScore) {
+			// TODO: Is this efficient enough? Sorting once per iteration is slightly gross
+			const oldest = Array.from(this.#cache.values()).sort((a, b) => a.added - b.added)[0];
+			this.#cache.delete(oldest.query.hash);
+			sumScore -= oldest.query.score;
+		}
 	};
 
 	/*
@@ -670,16 +718,20 @@ DESCRIBE ${this.#query.toString()}
 			opts.autoScore = true;
 		}
 
-		if (Query.#cache.has(queryHash) && !opts.disableCache) {
+		if (!opts.disableCache) {
+			/** @type {Query<RowType> | null} */
+			const cached = Query.#getFromCache(queryHash);
 			if (isDebug()) console.log(`Using cached query ${opts.id ?? ''}`);
-			return Query.#cache.get(queryHash);
-		} else {
-			if (isDebug()) console.log(`Not caching query ${opts.id ?? ''}`);
-		}
+			Query.#cacheCleanup();
+			if (cached) return cached.value;
+		} else if (isDebug()) console.log(`Not caching query ${opts.id ?? ''}`);
 
 		Query.#constructing = true;
-		const output = new Query(query, executeQuery, opts).value;
-		Query.#cache.set(queryHash, output);
+		const output = new Query(query, executeQuery, opts);
+		if (!opts.disableCache) {
+			Query.#addToCache(output);
+			Query.#cacheCleanup();
+		}
 		return output.value;
 	};
 
@@ -776,10 +828,7 @@ DESCRIBE ${this.#query.toString()}
 		if (initialData) {
 			this.#debug('Created with initial data');
 			this.#hasInitialData = true;
-			// Large datasets can cause a stack overflow when using .push
-			// However, we don't want to re-assign #data, so doing it this way
-			// Might be a little bit slower, but it prevents that overflow
-			console.log('initialData', initialData);
+
 			resolveMaybePromise(
 				(d) => {
 					this.#data = d;
