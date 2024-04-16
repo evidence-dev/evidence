@@ -4,7 +4,6 @@ import { Query as QueryBuilder, sql, sql as taggedSql } from '@uwdata/mosaic-sql
 import { EvidenceError } from '../lib/EvidenceError.js';
 import { sharedPromise } from '../lib/sharedPromise.js';
 import { resolveMaybePromise } from './utils.js';
-import chunk from 'lodash.chunk';
 import { getQueryScore } from './queryScore.js';
 
 /**
@@ -258,7 +257,7 @@ export class Query {
 						// TODO: Throw here?
 						this.#score = -1;
 						return;
-					}					
+					}
 					this.#score = getQueryScore(this.length, this.columns);
 					if (this.#score > Query.#scoreThreshold) {
 						this.#emit('highScore', this.#score);
@@ -303,15 +302,12 @@ ${this.#query.toString()}
 				// Large datasets can cause a stack overflow when using .push
 				// However, we don't want to re-assign #data, so doing it this way
 				// Might be a little bit slower, but it prevents that overflow
-				for (const c of chunk(result, Query.#chunkSize)) {
-					this.#debug(`Processing result chunk of ${c.length} rows`);
-					this.#data.push(...c);
-				}
+				this.#data = result;
+				// for (const c of chunk(result, Query.#chunkSize)) {
+				// 	this.#debug(`Processing result chunk of ${c.length} rows`);
+				// 	this.#data.push(...c);
+				// }
 
-				// @ts-expect-error
-				if (result._evidenceColumnTypes)
-					// @ts-expect-error
-					this.#data._evidenceColumnTypes = result._evidenceColumnTypes;
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
@@ -536,7 +532,7 @@ DESCRIBE ${this.#query.toString()}
 	#buildProxy = () => {
 		/** @type {QueryValue<RowType>} */
 		const proxy = /** @type {QueryValue<RowType>} */ (
-			new Proxy(this.#data, {
+			new Proxy(/** @type {RowType[]} */ ([]), {
 				getPrototypeOf: () => {
 					return Object.getPrototypeOf(this.#data);
 				},
@@ -548,7 +544,6 @@ DESCRIBE ${this.#query.toString()}
 					let prop = rawProp;
 
 					if (typeof prop === 'string' && /^[\d.]+$/.exec(prop)) prop = parseInt(prop);
-
 					if (typeof prop === 'number' || Query.ProxyFetchTriggers.includes(prop.toString())) {
 						if (this.#sharedDataPromise.state === 'init') {
 							this.#debug(`Implicit query fetch triggered by ${prop.toString()}`);
@@ -784,12 +779,18 @@ DESCRIBE ${this.#query.toString()}
 			// Large datasets can cause a stack overflow when using .push
 			// However, we don't want to re-assign #data, so doing it this way
 			// Might be a little bit slower, but it prevents that overflow
-			for (const c of chunk(initialData, Query.#chunkSize)) {
-				this.#debug(`Processing initial data chunk of ${c.length} rows`);
-				this.#data.push(...c);
-			}
-			this.#sharedDataPromise.resolve(this);
-			this.#fetchLength();
+			console.log('initialData', initialData);
+			resolveMaybePromise(
+				(d) => {
+					this.#data = d;
+					this.#sharedDataPromise.resolve(this);
+					this.#fetchLength();
+				},
+				initialData,
+				(e) => {
+					this.#error = e;
+				}
+			);
 		}
 		if (knownColumns) {
 			if (!Array.isArray(knownColumns))
@@ -816,7 +817,6 @@ DESCRIBE ${this.#query.toString()}
 			}
 		);
 		if (opts.autoScore) {
-			console.log({ opts });
 			this.#calculateScore();
 		}
 	}
