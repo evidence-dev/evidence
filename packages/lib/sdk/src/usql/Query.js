@@ -643,9 +643,10 @@ DESCRIBE ${this.#query.toString()}
 
 	static #cacheCleanup = () => {
 		let sumScore = Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0);
+		const sorted = Array.from(this.#cache.values()).sort((a, b) => a.added - b.added);
 		while (sumScore > this.CacheMaxScore) {
-			// TODO: Is this efficient enough? Sorting once per iteration is slightly gross
-			const oldest = Array.from(this.#cache.values()).sort((a, b) => a.added - b.added)[0];
+			const oldest = sorted.shift();
+			if (!oldest) break;
 			this.#cache.delete(oldest.query.hash);
 			sumScore -= oldest.query.score;
 		}
@@ -670,7 +671,7 @@ DESCRIBE ${this.#query.toString()}
 		const createFn = Query.create;
 
 		/** @type {QueryValue<any>} */
-		let oldQuery = createFn(initialQuery, executeQuery, { ...defaultOpts });
+		let activeQuery = createFn(initialQuery, executeQuery, { ...defaultOpts });
 
 		/**
 		 * @template {QueryResultRow} [RowType=QueryResultRow]
@@ -685,18 +686,18 @@ DESCRIBE ${this.#query.toString()}
 				...opts
 			});
 
-			if (oldQuery?.hash === newQuery.hash) return newQuery.fetch();
+			if (activeQuery?.hash === newQuery.hash) return newQuery.fetch();
 
 			return Promise.race([newQuery.fetch(), new Promise((r) => setTimeout(r, loadDelay))]).then(
 				() => {
-					oldQuery = newQuery;
+					activeQuery = newQuery;
 					return newQuery;
 				}
 			);
 		};
 		return {
 			updater,
-			initialValue: oldQuery
+			initialValue: activeQuery
 		};
 	};
 
