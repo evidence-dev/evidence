@@ -26,6 +26,7 @@
 	export let rowSpan = undefined;
 	export let groupNamePosition = 'middle'; // middle (default) | top | bottom
 	export let finalColumnOrder = undefined;
+	export let compact = undefined;
 
 	function handleRowClick(url) {
 		if (link) {
@@ -42,7 +43,7 @@
 		class:row-lines={rowLines}
 	>
 		{#if rowNumbers && groupType !== 'section'}
-			<TableCell class="index w-[2%]">
+			<TableCell class="{'index w-[2%]'} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}">
 				{#if i === 0}
 					{(index + i + 1).toLocaleString()}
 				{:else}
@@ -68,7 +69,7 @@
 					? chroma.scale(column.colorPalette).domain(color_domain)
 					: ''}
 				<TableCell
-					class={useCol.type}
+					class="{useCol.type} {compact  ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
 					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === useCol.id && i !== 0)}
@@ -180,7 +181,7 @@
 				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, j}
 				<!-- Check if last row in table-->
 				<TableCell
-					class={column.type}
+					class="{column.type} {compact  ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 					rowSpan={groupType === 'section' && groupColumn === column.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === column.id && i !== 0)}
 					paddingLeft={j === 0 && grouped && groupType === 'accordion' && !rowNumbers

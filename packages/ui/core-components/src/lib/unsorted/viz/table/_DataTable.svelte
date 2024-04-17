@@ -128,6 +128,8 @@
 
 	export let backgroundColor = 'white';
 
+	export let compact = undefined;
+
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
 	// ---------------------------------------------------------------------------------------
@@ -478,6 +480,7 @@
 						$props.priorityColumns
 					)}
 					{columnSummary}
+					{compact}
 					{sortable}
 					{sort}
 					{formatColumnTitles}
@@ -497,6 +500,7 @@
 								rowColor={accordionRowColor}
 								{rowNumbers}
 								{subtotals}
+								{compact}
 								finalColumnOrder={getFinalColumnOrder(
 									$props.columns.length > 0
 										? $props.columns.map((d) => d.id)
@@ -512,6 +516,7 @@
 									{link}
 									{rowNumbers}
 									{rowLines}
+									{compact}
 									{index}
 									{columnSummary}
 									grouped={true}
@@ -534,6 +539,7 @@
 								{link}
 								{rowNumbers}
 								{rowLines}
+								{compact}
 								{index}
 								{columnSummary}
 								grouped={true}
@@ -554,6 +560,7 @@
 									fontColor={subtotalFontColor}
 									{groupType}
 									{groupBy}
+									{compact}
 									finalColumnOrder={getFinalColumnOrder(
 										$props.columns.length > 0
 											? $props.columns.map((d) => d.id)
@@ -571,6 +578,7 @@
 						{link}
 						{rowNumbers}
 						{rowLines}
+						{compact}
 						{index}
 						{columnSummary}
 						finalColumnOrder={getFinalColumnOrder(
@@ -588,6 +596,7 @@
 						rowColor={totalRowColor}
 						fontColor={totalFontColor}
 						{groupType}
+						{compact}
 						finalColumnOrder={getFinalColumnOrder(
 							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
 							$props.priorityColumns

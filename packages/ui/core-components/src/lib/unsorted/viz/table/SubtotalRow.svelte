@@ -18,6 +18,7 @@
 	export let groupType = undefined;
 	export let fontColor = undefined;
 	export let finalColumnOrder = undefined;
+	export let compact = undefined;
 </script>
 
 <tr
@@ -39,7 +40,7 @@
 				: column_format}
 		{@const useFormat = format?.valueType === 'date' ? '' : format}
 		<TableCell
-			class="{useCol.type} font-medium border-t-[1px] border-t-gray-300"
+			class="{useCol.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'} font-medium border-t-[1px] border-t-gray-300"
 			align={column.align}
 		>
 			{#if column.id !== groupBy}
