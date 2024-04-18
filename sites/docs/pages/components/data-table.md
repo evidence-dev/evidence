@@ -573,6 +573,13 @@ By default, the link column of your table is hidden. If you would like it to be 
     defaultValue=false
 />
 <PropListing
+    name=compact
+    description="Enable a more compact table view that allows more content vertically and horizontally"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+
+<PropListing
     name=link
     description="Makes each row of your table a clickable link. Accepts the name of a column containing the link to use for each row in your table"
     required=false
