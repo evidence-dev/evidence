@@ -1,7 +1,18 @@
 ---
 title: Calendar Heatmap
 sidebar_position: 1
+queries:
+- orders_by_day.sql
 ---
+
+<CalendarHeatmap 
+    data={orders_by_day} 
+    date=day
+    value=sales
+    title="Calendar Heatmap"
+    subtitle="Daily Sales"
+/>
+
 
 <img src="/img/calendar-heatmap-noyear.png" width="700"/>
 
