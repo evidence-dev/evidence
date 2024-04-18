@@ -60,9 +60,8 @@ ON  tables.table_name = columns.table_name
 	await columnsData.fetch();
 	if (columnsData.error) throw columnsData.error;
 	/** @type {SQLConfig['schema']} */
-	const columns = columnsData
-		.value()
-		.reduce((/** @type {Record<string, Completion[]>} */ a, /** @type { SchemaRow } */ row) => {
+	const columns = columnsData.reduce(
+		(/** @type {Record<string, Completion[]>} */ a, /** @type { SchemaRow } */ row) => {
 			if (!(row.qualifiedTable in a)) a[row.qualifiedTable] = [];
 
 			const nullStr = row.is_nullable === 'YES' ? '' : '(NOT NULL)';
@@ -74,7 +73,9 @@ ON  tables.table_name = columns.table_name
 			});
 
 			return a;
-		}, {});
+		},
+		{}
+	);
 	const tablesQuery = `
 		SELECT  concat(tables.table_schema, '.', tables.table_name) as qualifiedTable,
 			* 
@@ -84,7 +85,7 @@ ON  tables.table_name = columns.table_name
 	await tablesData.fetch();
 	if (tablesData.error) throw tablesData.error;
 	/** @type {SQLConfig['tables']} */
-	const tables = tablesData.value().map((/** @type { SchemaRow } */ row) => {
+	const tables = tablesData.map((/** @type { SchemaRow } */ row) => {
 		/** @type {SQLConfig['tables'][number]} */
 		const completion = {
 			label: row.qualifiedTable,
@@ -116,9 +117,8 @@ ON  tables.table_name = columns.table_name
 	});
 
 	const schemas = Object.values(
-		tablesData
-			.value()
-			.reduce((/** @type {Record<string, Completion>} */ a, /** @type { SchemaRow } */ row) => {
+		tablesData.reduce(
+			(/** @type {Record<string, Completion>} */ a, /** @type { SchemaRow } */ row) => {
 				if (!a[row.label]) {
 					/** @type {Completion} */
 					const schemaCompletion = {
@@ -148,7 +148,9 @@ ON  tables.table_name = columns.table_name
 				}
 
 				return a;
-			}, {})
+			},
+			{}
+		)
 	);
 
 	return {

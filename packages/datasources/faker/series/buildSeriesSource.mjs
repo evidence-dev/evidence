@@ -76,7 +76,7 @@ export const buildSeriesSource = async (sourceDir, libDir, connectionName) => {
 				q = q[seriesAlwaysExists.toString()];
 
 				q['text'] = `SELECT * FROM ${connectionName}.${tableName}`;
-				q['store'] = `new QueryStore("${q['text']}", query)`;
+				q['store'] = `Query.create("${q['text']}", query)`;
 			}
 		}
 	}

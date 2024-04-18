@@ -30,10 +30,10 @@ ${yaml.stringify(connection)}
 	await fs.writeFile(
 		path.join(libDir, 'faker-data-queries.js'),
 		`
-import {QueryStore} from "@evidence-dev/query-store";
+import { Query } from '@evidence-dev/sdk/usql';
 import {query} from "@evidence-dev/universal-sql/client-duckdb";
 export const fakerSeries = ${JSON.stringify(merge(socialMediaQueries, seriesQueries), null, 2)
-			.replaceAll(/"(new QueryStore.+)"/g, '$1')
+			.replaceAll(/"(Query.create.+)"/g, '$1')
 			.replaceAll('\\"', '"')}`
 	);
 };

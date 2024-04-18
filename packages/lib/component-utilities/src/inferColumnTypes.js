@@ -49,5 +49,5 @@ export default function inferColumnTypes(rows) {
 		});
 		return columnTypes;
 	}
-	return undefined;
+	return [];
 }

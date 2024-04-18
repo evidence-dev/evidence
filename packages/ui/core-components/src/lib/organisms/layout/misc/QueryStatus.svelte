@@ -13,7 +13,7 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
-	import { QueryStore } from '@evidence-dev/query-store';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import { onMount } from 'svelte';
 
 	/**
@@ -25,7 +25,7 @@
 		if (data.done) {
 			await $page.data.__db.updateParquetURLs(data.manifest, true);
 
-			QueryStore.emptyCache();
+			Query.emptyCache();
 			// clear the cached data
 			for (const key in $page.data.data) {
 				delete $page.data.data[key];
