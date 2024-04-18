@@ -2,10 +2,6 @@ import md5 from 'blueimp-md5';
 import { GET as getSettings } from './api/customFormattingSettings.json/+server.js';
 import { GET as getPagesManifest } from './api/pagesManifest.json/+server.js';
 
-export const ssr = false;
-export const prerender = false;
-export const trailingSlash = 'always';
-
 /** @satisfies {import("./$types").LayoutServerLoad} */
 export async function load({ route, params, fetch }) {
 	const routeHash = md5(route.id);

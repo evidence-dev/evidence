@@ -10,6 +10,10 @@ import {
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
 
+export const ssr = false;
+export const prerender = false;
+export const trailingSlash = 'always';
+
 const loadDB = async () => {
 	let renderedFiles = {};
 
@@ -128,7 +132,7 @@ export const load = async (event) => {
 	if (!browser && dev) await initDB();
 
 	// let SSR saturate the cache first
-	if (browser && isUserPage) {
+	if (browser && isUserPage && prerender) {
 		data = await getPrerenderedQueries(event);
 	}
 
