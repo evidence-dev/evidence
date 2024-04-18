@@ -40,15 +40,12 @@
 		"@docsearch/css": "^3.5.2",
 		"@docsearch/js": "^3.5.2",
 		"@evidence-dev/component-utilities": "workspace:*",
-		"@evidence-dev/query-store": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@internationalized/date": "^3.5.1",
 		"@steeze-ui/radix-icons": "^1.1.2",
 		"@steeze-ui/simple-icons": "^1.7.1",
 		"@steeze-ui/svelte-icon": "1.5.0",
 		"@steeze-ui/tabler-icons": "2.1.1",
-		"@types/lodash.debounce": "^4.0.9",
-		"@types/mermaid": "^9.2.0",
 		"bits-ui": "^0.11.8",
 		"chroma-js": "^2.4.2",
 		"clsx": "^2.0.0",
@@ -72,6 +69,7 @@
 	"devDependencies": {
 		"@evidence-dev/faker-datasource": "workspace:*",
 		"@evidence-dev/plugin-connector": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/universal-sql": "workspace:*",
 		"@storybook/addon-essentials": "^8.0.0",
 		"@storybook/addon-interactions": "^8.0.0",
@@ -107,6 +105,8 @@
 		"tslib": "^2.4.1",
 		"typescript": "5.4.2",
 		"vite": "5.1.6",
+		"@types/lodash.debounce": "^4.0.9",
+		"@types/mermaid": "^9.2.0",
 		"vitest": "^0.34.1"
 	},
 	"overrides": {
