@@ -13,7 +13,10 @@
 
 	/** @param {Date} date */
 	function dateToYYYYMMDD(date) {
-		return `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
+		const year = date.getFullYear().toString();
+		const month = (date.getMonth() + 1).toString().padStart(2, '0'); // months are 0-indexed
+		const day = date.getDate().toString().padStart(2, '0');
+		return `${year}-${month}-${day}`;
 	}
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -59,14 +62,15 @@
 		!YYYYMMDD.test(startString) ||
 		startString === dateToYYYYMMDD(new Date(0))
 	) {
-		startString =
-			typeof start === 'string' && YYYYMMDD.test(start)
-				? start
-				: start instanceof Date
-					? dateToYYYYMMDD(start)
-					: $query?.[0].start instanceof Date
-						? dateToYYYYMMDD($query?.[0].start)
-						: dateToYYYYMMDD(new Date(0));
+		if (typeof start === 'string' && YYYYMMDD.test(start)) {
+			startString = start;
+		} else if (start instanceof Date) {
+			startString = dateToYYYYMMDD(start);
+		} else if ($query?.[0].start instanceof Date) {
+			startString = dateToYYYYMMDD($query?.[0].start);
+		} else {
+			startString = startString ?? dateToYYYYMMDD(new Date(0));
+		}
 	}
 
 	let endString;
@@ -75,14 +79,15 @@
 		!YYYYMMDD.test(endString) ||
 		endString === dateToYYYYMMDD(new Date())
 	) {
-		endString =
-			typeof end === 'string' && YYYYMMDD.test(end)
-				? end
-				: end instanceof Date
-					? dateToYYYYMMDD(end)
-					: $query?.[0].end instanceof Date
-						? dateToYYYYMMDD($query?.[0].end)
-						: dateToYYYYMMDD(new Date());
+		if (typeof end === 'string' && YYYYMMDD.test(end)) {
+			endString = end;
+		} else if (end instanceof Date) {
+			endString = dateToYYYYMMDD(end);
+		} else if ($query?.[0].end instanceof Date) {
+			endString = dateToYYYYMMDD($query?.[0].end);
+		} else {
+			endString = endString ?? dateToYYYYMMDD(new Date());
+		}
 	}
 
 	$: $inputs[name] = { start: startString, end: endString };
