@@ -5,13 +5,13 @@ import {
 	sql,
 	sql as taggedSql,
 	sum as qSum,
-	avg as qAvg
+	avg as qAvg,
+	count as qCount
 } from '@uwdata/mosaic-sql';
 import { EvidenceError } from '../lib/EvidenceError.js';
 import { sharedPromise } from '../lib/sharedPromise.js';
 import { resolveMaybePromise } from './utils.js';
 import { getQueryScore } from './queryScore.js';
-import { count } from 'console';
 
 /**
  * @typedef {import("./types.js").QueryResultRow} QueryResultRow
@@ -995,7 +995,7 @@ DESCRIBE ${this.#query.toString()}
 	groupBy = (columns, withRowCount) => {
 		const query = this.#query.clone();
 		query.$select(columns);
-		if (withRowCount) query.select({ rows: count('*') });
+		if (withRowCount) query.select({ rows: qCount('*') });
 		query.$groupby(columns);
 
 		return Query.create(query, this.#executeQuery, {
@@ -1032,7 +1032,8 @@ DESCRIBE ${this.#query.toString()}
 		for (const [aggType, aggArgs] of Object.entries(cfg)) {
 			if (!Query.#checkAggFn(aggType)) throw new Error(`Unknown agg function: ${aggType}`);
 			const aggFn = Query.#aggFns[aggType];
-			for (const colSpec in Array.isArray(aggArgs) ? aggArgs : [aggArgs]) {
+			const argsArray = Array.isArray(aggArgs) ? aggArgs : [aggArgs];
+			for (const colSpec of argsArray) {
 				const alias = typeof colSpec === 'object' ? colSpec.as : `${aggType}_${colSpec}`;
 				const column = typeof colSpec === 'object' ? colSpec.col : colSpec;
 				query.select({
@@ -1040,6 +1041,7 @@ DESCRIBE ${this.#query.toString()}
 				});
 			}
 		}
+		return Query.create(query, this.#executeQuery, { knownColumns: this.#columns });
 	};
 
 	////////////////////////////////////
