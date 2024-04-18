@@ -22,7 +22,10 @@
 
 <tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
 	{#if rowNumbers && groupType !== 'section'}
-		<TableCell class="{'index w-[2%]'} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}" topBorder="border-t border-gray-600" />
+		<TableCell
+			class="{'index w-[2%]'} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+			topBorder="border-t border-gray-600"
+		/>
 	{/if}
 
 	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
@@ -36,7 +39,7 @@
 				: colColumnSummary.format}
 		{@const totalAgg = column.totalAgg ?? 'sum'}
 		<TableCell
-			class={compact ? "text-xs py-[1px] px-[4px]" : "py-[2px] px-[8px]"}
+			class={compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}
 			dataType={colColumnSummary.type}
 			align={column.align}
 			height={column.height}

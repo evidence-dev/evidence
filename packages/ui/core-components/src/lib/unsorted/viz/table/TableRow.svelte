@@ -43,7 +43,9 @@
 		class:row-lines={rowLines}
 	>
 		{#if rowNumbers && groupType !== 'section'}
-			<TableCell class="{'index w-[2%]'} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}">
+			<TableCell
+				class="{'index w-[2%]'} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+			>
 				{#if i === 0}
 					{(index + i + 1).toLocaleString()}
 				{:else}
@@ -69,7 +71,7 @@
 					? chroma.scale(column.colorPalette).domain(color_domain)
 					: ''}
 				<TableCell
-					class="{useCol.type} {compact  ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+					class="{useCol.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
 					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === useCol.id && i !== 0)}
@@ -181,7 +183,7 @@
 				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, j}
 				<!-- Check if last row in table-->
 				<TableCell
-					class="{column.type} {compact  ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+					class="{column.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 					rowSpan={groupType === 'section' && groupColumn === column.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === column.id && i !== 0)}
 					paddingLeft={j === 0 && grouped && groupType === 'accordion' && !rowNumbers
