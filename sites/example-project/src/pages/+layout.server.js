@@ -7,7 +7,7 @@ export const prerender = false;
 export const trailingSlash = 'always';
 
 /** @satisfies {import("./$types").LayoutServerLoad} */
-export async function load({ route, params }) {
+export async function load({ route, params, fetch }) {
 	const routeHash = md5(route.id);
 	const paramsHash = md5(
 		Object.entries(params)

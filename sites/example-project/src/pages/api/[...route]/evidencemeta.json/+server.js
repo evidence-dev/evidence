@@ -5,7 +5,11 @@ export const prerender = true;
 
 const routes = import.meta.glob('../../../**/+page.md', { query: '?raw', import: 'default' });
 
-export const entries = () => Object.keys(routes).map((route) => ({ route: route.slice('../../../'.length, -'/+page.md'.length) }));
+export function entries() {
+	return Object.keys(routes).map((route) => ({
+		route: route.slice('../../../'.length, -'/+page.md'.length)
+	}));
+}
 
 /** @type {import("./$types").RequestHandler} */
 export async function GET({ params: { route } }) {
