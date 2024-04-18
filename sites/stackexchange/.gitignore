@@ -1,0 +1,8 @@
+.evidence
+.svelte-kit
+build
+node_modules
+package-lock.json
+.DS_Store
+static/data
+sources/stackexchange/so-dump.duckdb
