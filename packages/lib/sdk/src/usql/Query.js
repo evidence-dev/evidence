@@ -1,10 +1,17 @@
 import { nanoid } from 'nanoid';
 import { isDebug } from '../lib/debug.js';
-import { Query as QueryBuilder, sql, sql as taggedSql } from '@uwdata/mosaic-sql';
+import {
+	Query as QueryBuilder,
+	sql,
+	sql as taggedSql,
+	sum as qSum,
+	avg as qAvg
+} from '@uwdata/mosaic-sql';
 import { EvidenceError } from '../lib/EvidenceError.js';
 import { sharedPromise } from '../lib/sharedPromise.js';
 import { resolveMaybePromise } from './utils.js';
 import { getQueryScore } from './queryScore.js';
+import { count } from 'console';
 
 /**
  * @typedef {import("./types.js").QueryResultRow} QueryResultRow
@@ -980,6 +987,60 @@ DESCRIBE ${this.#query.toString()}
 		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
 			knownColumns: this.#columns
 		});
+
+	/**
+	 * @param {string[]} columns
+	 * @param {boolean} [withRowCount=true]
+	 */
+	groupBy = (columns, withRowCount) => {
+		const query = this.#query.clone();
+		query.$select(columns);
+		if (withRowCount) query.select({ rows: count('*') });
+		query.$groupby(columns);
+
+		return Query.create(query, this.#executeQuery, {
+			knownColumns: this.#columns
+		});
+	};
+
+	/**
+	 * @typedef {Object} AggArgs
+	 * @property {import("./types.js").MaybeAliasedCol | import("./types.js").MaybeAliasedCol[]} sum
+	 * @property {import("./types.js").MaybeAliasedCol | import("./types.js").MaybeAliasedCol[]} avg
+	 */
+
+	/**
+	 * @type {Record<keyof AggArgs, CallableFunction>}
+	 */
+	static #aggFns = {
+		sum: qSum,
+		avg: qAvg
+	};
+	/**
+	 *
+	 * @param {string} aggKey
+	 * @returns {aggKey is keyof AggArgs}
+	 */
+	static #checkAggFn = (aggKey) => {
+		return aggKey in Query.#aggFns;
+	};
+	/**
+	 * @param {AggArgs} cfg
+	 */
+	agg = (cfg) => {
+		const query = this.#query.clone();
+		for (const [aggType, aggArgs] of Object.entries(cfg)) {
+			if (!Query.#checkAggFn(aggType)) throw new Error(`Unknown agg function: ${aggType}`);
+			const aggFn = Query.#aggFns[aggType];
+			for (const colSpec in Array.isArray(aggArgs) ? aggArgs : [aggArgs]) {
+				const alias = typeof colSpec === 'object' ? colSpec.as : `${aggType}_${colSpec}`;
+				const column = typeof colSpec === 'object' ? colSpec.col : colSpec;
+				query.select({
+					[alias]: aggFn(column)
+				});
+			}
+		}
+	};
 
 	////////////////////////////////////
 	/// </ QueryBuilder Interface /> ///
