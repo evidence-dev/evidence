@@ -38,6 +38,57 @@ limit 100
 	<Column id=channel/> 
 </DataTable>
 
+### Custom Column Formatting
+
+You can use the `fmt` prop to format your columns using [built-in format names or Excel format codes](/core-concepts/formatting/)
+
+```html
+<DataTable data={country_summary}>
+	<Column id=country />
+	<Column id=category />
+	<Column id=value_usd fmt=eur/>
+    <Column id=yoy title="Y/Y Growth" fmt=pct3/>
+</DataTable>
+```
+
+<DataTable data={country_summary}>
+	<Column id=country />
+	<Column id=category />
+	<Column id=value_usd fmt=eur/>
+    <Column id=yoy title="Y/Y Growth" fmt=pct3/>
+</DataTable>
+
+#### Formatting Driven by Another Column
+
+```country_summary_fmts
+select *,
+case
+    when country in ('Austria', 'Ukraine') then 'eur'
+    when country = 'Sweden' then 'sek'
+    when country = 'Vietnam' then '"₫"#,##0'
+    else 'usd' end as custom_format
+from ${country_summary}
+```
+
+This example includes a `custom_format` column, which contains a different currency format code for many of the rows.
+
+```html
+<DataTable data={country_summary_fmts}>
+	<Column id=country />
+	<Column id=category />
+	<Column id=value_usd fmtColumn=custom_format/>
+    <Column id=yoy title="Y/Y Growth" fmt=pct3/>
+</DataTable>
+```
+
+<DataTable data={country_summary_fmts}>
+	<Column id=country />
+	<Column id=category />
+	<Column id=value_usd fmtColumn=custom_format/>
+    <Column id=yoy title="Y/Y Growth" fmt=pct1/>
+</DataTable>
+
+
 ### Search
 
 ```html
@@ -363,6 +414,47 @@ Use `colorBreakpoints` or `colorMid`/`colorMin`/`colorMax` to control which valu
 <DataTable data={negatives} rows=all>
   <Column id=name/>
   <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
+</DataTable>
+
+#### Create Scale from Another Column
+
+The `number` column in this example has a color scale defined by the `scale_defining_number` column, rather than by its own values.
+
+```numbers_othercol
+ select 'A' as name, 1 as number, 2 as scale_defining_number, 'usd' as fmt
+ union all
+ select 'B',2,10,'eur'
+union all
+ select 'C',3,30,'num0'
+ union all
+ select 'D',4,20,'pct'
+ union all
+ select 'E',5,10,'usd'
+ union all
+ select 'F',6,5,'pct'
+ union all
+ select 'G',7,1,'pct'
+ union all
+ select 'H',8,44,'eur'
+ union all
+ select 'I',9,4,'#,##0.00"kg"'
+ union all
+ select 'J',10,55, 'usd'
+ order by number asc
+ ```
+
+```html
+<DataTable data={numbers_othercol}>
+  <Column id=name/>
+  <Column id=scale_defining_number fontColor={['green','red']}/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
+</DataTable>
+```
+
+<DataTable data={numbers_othercol}>
+  <Column id=name/>
+  <Column id=scale_defining_number fontColor={['green','red']}/>
+  <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']} scaleColumn=scale_defining_number fmtCol=fmt/>
 </DataTable>
 
 ### Red Negatives
@@ -845,6 +937,18 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
     required=false
     options="number | all"
     defaultValue=10
+/>
+<PropListing
+    name=headerColor
+    description="Background color of the header row"
+    required=false
+    options="Hex color code | css color name"
+/>
+<PropListing
+    name=headerFontColor
+    description="Font color of the header row"
+    required=false
+    options="Hex color code | css color name"
 />
 <PropListing
     name=totalRow

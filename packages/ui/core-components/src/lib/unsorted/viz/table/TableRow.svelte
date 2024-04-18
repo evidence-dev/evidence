@@ -70,7 +70,7 @@
 					column.colorBreakpoints ??
 					(column.colorMid ? [column_min, column.colorMid, column_max] : [column_min, column_max])}
 				{@const color_scale = column.colorPalette
-					? chroma.scale(column.colorPalette).domain(color_domain)
+					? chroma.scale(column.colorPalette).domain(color_domain).nodata('white')
 					: ''}
 				{@const cell_color =
 					column.contentType === 'colorscale' && is_nonzero && column.colorPalette
