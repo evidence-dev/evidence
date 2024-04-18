@@ -1,3 +1,5 @@
 Annotations dont accept data as inputs
 Boxplot no tooltip on hover only click
 Boxplot color interface feels weird (ie specify in SQL)
+Calendar heatmap off by one 
+No code highlighting for non-SQL blocks
