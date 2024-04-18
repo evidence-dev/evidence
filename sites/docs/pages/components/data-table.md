@@ -1161,6 +1161,11 @@ Use the `Column` component to choose specific columns to display in your table, 
     options="Excel-style format | built-in format | custom format"
 />
 <PropListing
+    name=fmtColumn
+    description="Column to use to format values in this column. This is used to achieve different value formats by row. The fmtColumn should contain strings of format codes - either Evidence built-in formats or Excel codes."
+    options="column name"
+/>
+<PropListing
     name=totalAgg
     description="Specify an aggregation function to use for the total row. Accepts predefined functions, custom strings or values"
     options={['sum', 'mean', 'weightedMean', 'median', 'min', 'max', 'count', 'countDistinct', 'custom string or value']}
@@ -1312,6 +1317,11 @@ Use the `Column` component to choose specific columns to display in your table, 
     name=colorBreakpoints
     description="Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in <code>scaleColor</code>"
     options="array of numbers"
+/>
+<PropListing
+    name=scaleColumn
+    description="Column to use to define the color scale range. Values in this column will have their cell color determined by the value in the scaleColumn"
+    options="column name"
 />
 
 ### HTML
