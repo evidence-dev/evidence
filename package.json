@@ -47,7 +47,7 @@
 		"get-port": "^7.0.0",
 		"http-proxy": "^1.18.1",
 		"node-fetch": "^3.3.1",
-		"open": "^9.1.0",
+		"open": "^10.1.0",
 		"ora": "^7.0.1"
 	},
 	"scripts": {
