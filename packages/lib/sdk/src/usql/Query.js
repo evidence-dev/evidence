@@ -735,10 +735,17 @@ DESCRIBE ${this.#query.toString()}
 		if (!opts.disableCache) {
 			/** @type {Query<RowType> | null} */
 			const cached = Query.#getFromCache(queryHash);
-			if (isDebug()) console.log(`Using cached query ${opts.id ?? ''}`);
+
 			Query.#cacheCleanup();
-			if (cached) return cached.value;
-		} else if (isDebug()) console.log(`Not caching query ${opts.id ?? ''}`);
+			if (cached) {
+				Query.#debugStatic(`Using cached query for ${opts.id ?? '[query id missing]'}`, { opts });
+				return cached.value;
+			} else {
+				Query.#debugStatic(`Cached query not found for ${opts.id ?? '[query id missing]'}`, {
+					opts
+				});
+			}
+		} else if (isDebug()) console.log(`Cache is disabled for ${opts.id ?? '[query id missing]'}`);
 
 		Query.#constructing = true;
 		const output = new Query(query, executeQuery, opts);
@@ -752,6 +759,15 @@ DESCRIBE ${this.#query.toString()}
 	///////////////////////
 	/// </ Factories /> ///
 	///////////////////////
+
+	static #debugStatic = isDebug()
+		? (/** @type {Parameters<typeof console.debug>} */ ...args) =>
+				console.debug(`${(performance.now() / 1000).toFixed(3)} | Query`, ...args)
+		: () => {};
+	static #debugStyledStatic = isDebug()
+		? (/** @type {string} */ text, /** @type {string} */ style) =>
+				console.debug(`%c${(performance.now() / 1000).toFixed(3)} | Query ${text}`, style)
+		: () => {};
 
 	#debug = isDebug()
 		? (/** @type {Parameters<typeof console.debug>} */ ...args) =>
@@ -839,7 +855,12 @@ DESCRIBE ${this.#query.toString()}
 			return;
 		}
 
-		if (initialData) {
+		if (opts.noResolve) {
+			this.#sharedDataPromise.start();
+			this.#sharedLengthPromise.start();
+			this.#sharedColumnsPromise.start();
+			return this;
+		} else if (initialData) {
 			this.#debug('Created with initial data');
 			this.#hasInitialData = true;
 
@@ -854,11 +875,6 @@ DESCRIBE ${this.#query.toString()}
 					this.#error = e;
 				}
 			);
-		} else if (opts.noResolve) {
-			this.#sharedDataPromise.start();
-			this.#sharedLengthPromise.start();
-			this.#sharedColumnsPromise.start();
-			return this;
 		}
 
 		if (knownColumns) {
