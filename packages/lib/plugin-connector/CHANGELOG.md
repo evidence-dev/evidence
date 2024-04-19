@@ -1,5 +1,14 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.2
+
+### Patch Changes
+
+- a95db3d3: Move types to devDependencies
+- Updated dependencies [7620a1af]
+- Updated dependencies [a95db3d3]
+  - @evidence-dev/universal-sql@2.1.2
+
 ## 2.1.1
 
 ### Patch Changes
