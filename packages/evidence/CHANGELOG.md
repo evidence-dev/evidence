@@ -1,5 +1,30 @@
 # @evidence-dev/evidence
 
+## 33.0.0
+
+### Major Changes
+
+- 64a54b56: Use the new Query from the SDK package
+
+### Patch Changes
+
+- Updated dependencies [2a7f0fc2]
+- Updated dependencies [a27de58e]
+- Updated dependencies [64a54b56]
+- Updated dependencies [7620a1af]
+- Updated dependencies [6f72d476]
+- Updated dependencies [d2e44015]
+- Updated dependencies [a95db3d3]
+- Updated dependencies [dc073f6e]
+- Updated dependencies [d23b166c]
+  - @evidence-dev/core-components@4.0.0
+  - @evidence-dev/component-utilities@3.0.0
+  - @evidence-dev/universal-sql@2.1.2
+  - @evidence-dev/plugin-connector@2.1.2
+  - @evidence-dev/sdk@1.1.0
+  - @evidence-dev/query-store@2.1.3
+  - @evidence-dev/db-orchestrator@3.0.14
+
 ## 32.0.1
 
 ### Patch Changes
