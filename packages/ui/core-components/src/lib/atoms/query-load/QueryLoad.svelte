@@ -34,7 +34,7 @@
 		<slot loaded={data} />
 	{/if}
 {:else if !_data || (!_data.dataLoaded && !_data.error)}
-	<slot name="skeleton">
+	<slot name="skeleton" loaded={_data}>
 		<div class="w-full h-64">
 			<Skeleton />
 		</div>
