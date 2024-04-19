@@ -1,5 +1,12 @@
 # @evidence-dev/faker-datasource
 
+## 2.1.1
+
+### Patch Changes
+
+- 2e3c3f56: Converted source generation script to output sdk compatible queries
+- a95db3d3: Move types to devDependencies
+
 ## 2.1.0
 
 ### Minor Changes

@@ -1,5 +1,25 @@
 # @evidence-dev/core-components
 
+## 4.0.0
+
+### Major Changes
+
+- 64a54b56: Use the new Query from the SDK package
+
+### Minor Changes
+
+- d2e44015: Converted QueryLoad to use only sdk Query
+
+### Patch Changes
+
+- 2a7f0fc2: support 0 as a sidebar_position
+- a27de58e: Fix css styling for markdown link headers
+- 6f72d476: Add conditional formatting based on another column, and red negative values
+- a95db3d3: Move types to devDependencies
+- Updated dependencies [64a54b56]
+- Updated dependencies [d23b166c]
+  - @evidence-dev/component-utilities@3.0.0
+
 ## 3.8.0
 
 ### Minor Changes
