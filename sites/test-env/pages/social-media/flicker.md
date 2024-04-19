@@ -13,10 +13,9 @@ FROM hashtags
 ```sql hashtag
 SELECT *
 FROM hashtags
-WHERE id = ${inputs.selected_tag}
+WHERE id = ${inputs.selected_tag.value}
 ```
 
 <BigValue data={hashtag} value="tag" />
 <DataTable data={hashtag}/>
-
 

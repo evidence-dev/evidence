@@ -484,6 +484,32 @@ describe('Query', () => {
 		});
 	});
 
+	describe('Query initial state handling', () => {
+		it('should not execute the query if provided with initial data', () => {
+			const sp = sharedPromise();
+			expectedData = sp.promise;
+			const initialData = [];
+			initialData._evidenceColumnTypes = [{ name: 'x' }];
+			const q = getMockQuery('SELECT 1', { initialData });
+
+			expect(q.dataLoaded).toBe(true);
+			sp.resolve([{ x: 1 }]);
+			expect(q.lengthLoaded).toBe(true);
+			expect(q.length).toBe(0);
+		});
+		it('should not execute the query, and ignore initial data if noResolve is set', () => {
+			const sp = sharedPromise();
+			expectedData = sp.promise;
+			const initialData = [];
+			initialData._evidenceColumnTypes = [{ name: 'x' }];
+			const q = getMockQuery('SELECT 1', { initialData, noResolve: true });
+
+			expect(q.dataLoading).toBe(true);
+			expect(q.lengthLoading).toBe(true);
+			expect(q.columnsLoading).toBe(true);
+		});
+	});
+
 	describe('Query/Array Masquarade', () => {
 		it('it should pass Array.isArray', () => {
 			const q = getMockQuery('SELECT 1');
