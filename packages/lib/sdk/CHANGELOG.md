@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.1.1
+
+### Patch Changes
+
+- cb6db1a1: Fix for Query not respecting noResolve properly
+  Skeleton slot for QueryLoad was not properly passing the "loaded" slot prop
+
 ## 1.1.0
 
 ### Minor Changes
