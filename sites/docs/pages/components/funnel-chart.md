@@ -103,6 +103,9 @@ Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty
 Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
 
 </PropListing>
+
+# Formatting & Styling
+
 <PropListing 
     name="valueFmt"
     options="Excel-style format | built-in format | custom format"

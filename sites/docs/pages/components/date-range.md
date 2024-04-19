@@ -85,6 +85,10 @@ from source_name.table
 where date_column between '${inputs.name_of_date_range.start}' and '${inputs.name_of_date_range.end}'
 ```
 ````
+
+
+ ## Options
+
 <PropListing 
     name="name"
     required

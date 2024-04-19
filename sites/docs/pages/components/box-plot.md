@@ -118,8 +118,6 @@ SELECT 'Experiment B' as name, 0.01 as midpoint, 0.04 as confidenceInterval
 
 ### Data
 
-### Data
-
 <PropListing
     name="data"
     required

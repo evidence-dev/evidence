@@ -1,3 +1,49 @@
+---
+title: Big Value
+sidebar_position: 1
+---
+
+`<BigValue />` displays a large value, and can be configured to include a comparison and a sparkline.
+
+## Example
+
+```markdown
+<BigValue 
+data={orders_with_comparisons} 
+value=sales_usd0k
+sparkline=month
+comparison=sales_change_pct0
+comparisonTitle="vs. Last Month"
+/>
+```
+
+![bigvalue](/img/bigvalue-default.png)
+
+## Multiple cards
+
+Multiple cards will align themselves into a row.
+
+![bigvalue](/img/bigvalue-multiple.png)
+
+
+## Non-Delta Comparisons
+
+```html
+<BigValue 
+data={orders_with_comparisons}
+value=sales_usd0k
+title="Category Sales"
+comparison=sales_change_pct0
+comparisonTitle="of Total"
+comparisonDelta=false
+/>
+```
+
+![bigvalue](/img/bigvalue-non-delta.png)
+
+
+## Options
+
 ### Data
 
 <PropListing
