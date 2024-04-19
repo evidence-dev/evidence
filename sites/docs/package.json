@@ -1,6 +1,6 @@
 {
   "name": "my-evidence-project",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "build": "evidence build",
     "build:strict": "evidence build:strict",
@@ -14,11 +14,11 @@
   },
   "type": "module",
   "dependencies": {
-		"@evidence-dev/component-utilities": "workspace:*",
-		"@evidence-dev/core-components": "workspace:*",
-		"@evidence-dev/csv": "workspace:*",
-		"@evidence-dev/duckdb": "workspace:*",
-		"@evidence-dev/evidence": "workspace:*"
+    "@evidence-dev/component-utilities": "workspace:*",
+    "@evidence-dev/core-components": "workspace:*",
+    "@evidence-dev/csv": "workspace:*",
+    "@evidence-dev/duckdb": "workspace:*",
+    "@evidence-dev/evidence": "workspace:*"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",
