@@ -1,13 +1,13 @@
 import { setContext, getContext } from 'svelte';
-import { Query, sql } from '@uwdata/mosaic-sql';
-import { QueryStore } from '@evidence-dev/query-store';
+import { Query as QueryBuilder, sql } from '@uwdata/mosaic-sql';
+import { Query } from '@evidence-dev/sdk/usql';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
 import { derived, writable } from 'svelte/store';
 
 const QUERY_CONTEXT_KEY = '___usql_query';
 /**
  * Defaults to the query function from universal sql
- * @type {(x: string) => QueryStore}
+ * @type {(x: string) => Query}
  */
 let queryFunction = query;
 
@@ -23,7 +23,7 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @property {string} [value] Column to be used as value when selected
  * @property {string} [label] (optional) Column to be used as label for each value
  * @property {string | string[] | Record<string, string>} [select] (optional) any additional fields to include (e.g. not value or label)
- * @property {string | QueryStore} [data] Table or subquery to select from
+ * @property {string | Query} [data] Table or subquery to select from
  * @property {string} [where] (optional) Where clause for dataset
  * @property {string} [order] (optional) Order by clause for dataset
  */
@@ -68,13 +68,13 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 /**
  * @param {QueryProps} opts
  * @param {string} id
- * @returns { { hasQuery: false } | { hasQuery: true, query: QueryStore } }
+ * @returns { { hasQuery: false } | { hasQuery: true, query: Query } }
  * @deprecated Prefer buildReactiveInputQuery
  */
 export const buildInputQuery = ({ value, label, select, data, where, order }, id, initialData) => {
 	if (!data || !(value || select)) return { hasQuery: false };
 
-	const q = new Query().distinct();
+	const q = new QueryBuilder().distinct();
 	if (value) q.select({ value: sql`${value}` });
 	if (label) {
 		q.select({ label: sql`${label}` });
@@ -91,7 +91,7 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 			// This is probably a subquery, or just broken
 			q.from(sql(data.trim()));
 		}
-	} else if (data instanceof QueryStore || data.__isQueryStore) {
+	} else if (Query.isQuery(data)) {
 		// data is a QueryStore
 		// use that as a subquery
 		q.from(sql`(${data.text})`);
@@ -122,8 +122,8 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
  * @param {string} id
  * @param {any[]} initialData
  *
- * @returns {QueryStore}
+ * @returns {Query}
  */
 export const buildQuery = (queryString, id, initialData) => {
-	return QueryStore.create(queryString, queryFunction, id, { initialData });
+	return Query.create(queryString, queryFunction, id, { initialData });
 };

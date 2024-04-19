@@ -1,6 +1,6 @@
 import { getContext } from 'svelte';
 import { ALL_QUERIES_CONTEXT_KEY, QUERIES_CONTEXT_KEY } from '$evidence/contextKeys';
-import { Query } from '@evidence-dev/sdk/query-store';
+import { Query } from '@evidence-dev/sdk/usql';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
 import { derived } from 'svelte/store';
 
@@ -25,7 +25,7 @@ const runner = (sql, id) => query(sql, { query_name: id, prerendering: true, rou
 /**
  * @param {string} name
  * @param {string} sql
- * @param {import('@evidence-dev/sdk/query-store').QueryOpts} [opts]
+ * @param {import('@evidence-dev/sdk/usql').QueryOpts} [opts]
  */
 export const runQuery = (name, sql, opts) => {
 	let initialData = undefined;
@@ -57,13 +57,13 @@ export const runQuery = (name, sql, opts) => {
 };
 
 /**
- * @returns {import("svelte/store").Readable<Record<string, import('@evidence-dev/sdk/query-store').QueryValue>>}
+ * @returns {import("svelte/store").Readable<Record<string, import('@evidence-dev/sdk/usql').QueryValue>>}
  */
 export const getQueries = () => {
 	/** @type {import("svelte/store").Readable<Record<string,string>>} */
 	const context = getContext(QUERIES_CONTEXT_KEY);
 
-	/** @type {Record<string,import('@evidence-dev/sdk/query-store').QueryValue<any>>} */
+	/** @type {Record<string,import('@evidence-dev/sdk/usql').QueryValue<any>>} */
 	const queries = {};
 	const proxy = new Proxy(queries, {
 		/**

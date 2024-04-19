@@ -19,7 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@evidence-dev/query-store": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@steeze-ui/simple-icons": "^1.7.1",
 		"@steeze-ui/svelte-icon": "1.5.0",
 		"@steeze-ui/tabler-icons": "2.1.1",
