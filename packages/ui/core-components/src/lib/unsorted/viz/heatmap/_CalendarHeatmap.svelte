@@ -88,7 +88,7 @@
 
 		const updatedData = data.map((obj) => ({
 			...obj,
-			year: new Date(obj[date]).getFullYear()
+			year: new Date(obj[date]).getUTCFullYear()
 		}));
 
 		const distinctYears = [...new Set(updatedData.map((obj) => obj.year))];
