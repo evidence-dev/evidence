@@ -20,11 +20,10 @@ select * from ${orders_by_month} where month between '${inputs.range.start}' and
   data={orders_by_month}
   dates=month  
   presetsFn={function(start, end) {
-
-    // start and end are CalendarDate objects, https://react-spectrum.adobe.com/internationalized/date/CalendarDate.html
+    // start and end are CalendarDate objects, 
+    // https://react-spectrum.adobe.com/internationalized/date/CalendarDate.html
     // these are equal input start and end props, if specified
     // if not specified, these default to min an max dates for the data
-
     return [
       { label: 'First 90 Days', range: { start, end: start.add({ days: 90 }) } },
       { label: 'First 6 Months', range: { start, end: start.add({ months: 6 }) } },
