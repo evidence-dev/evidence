@@ -27,10 +27,40 @@
 
 	/** @type {import('bits-ui').DateRange | undefined} */
 	export let selectedDateRange;
+
 	/** @type {string} */
 	export let start;
 	/** @type {string} */
 	export let end;
+
+	/**
+	 * @param {import('bits-ui').CalendarDate} start
+	 * @param {import('bits-ui').CalendarDate} end
+	 * @returns {{label: string, range: import('bits-ui').DateRange}[]}
+	 */
+	export let presetsFn = (start, end) => [
+		{
+			label: 'Last 7 Days',
+			range: {
+				start: end.subtract({ days: 7 }),
+				end: end
+			}
+		},
+		{
+			label: 'Last 12 Months',
+			range: {
+				start: startOfMonth(end.subtract({ months: 12 })),
+				end: endOfMonth(end.subtract({ months: 1 }))
+			}
+		},
+		{
+			label: 'All Time',
+			range: {
+				start,
+				end
+			}
+		}
+	];
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
@@ -42,29 +72,7 @@
 	$: updateDateRange(calendarStart, calendarEnd);
 
 	/** @type {{label: string, range: import('bits-ui').DateRange}[]} */
-	$: presets = [
-		{
-			label: 'Last 7 Days',
-			range: {
-				start: calendarEnd.subtract({ days: 7 }),
-				end: calendarEnd
-			}
-		},
-		{
-			label: 'Last 12 Months',
-			range: {
-				start: startOfMonth(calendarEnd.subtract({ months: 12 })),
-				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
-			}
-		},
-		{
-			label: 'All Time',
-			range: {
-				start: calendarStart,
-				end: calendarEnd
-			}
-		}
-	];
+	$: presets = presetsFn(calendarStart, calendarEnd);
 
 	function setPlaceholderDefault(d) {
 		placeholder = d;

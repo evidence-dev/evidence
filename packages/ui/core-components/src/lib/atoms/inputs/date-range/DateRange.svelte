@@ -35,6 +35,13 @@
 	/** @type {string | undefined} */
 	export let dates;
 
+	/**
+	 * @param {import('bits-ui').CalendarDate} start
+	 * @param {import('bits-ui').CalendarDate} end
+	 * @returns {{label: string, range: import('bits-ui').DateRange}[]}
+	 */
+	export let presetsFn;
+
 	const exec = getQueryFunction();
 	let query;
 	$: if (data && dates) {
@@ -98,7 +105,7 @@
 				</span>
 			</span>
 		{:else}
-			<DateRange bind:selectedDateRange start={startString} end={endString} />
+			<DateRange bind:selectedDateRange start={startString} end={endString} {presetsFn} />
 		{/if}
 	</div>
 </HiddenInPrint>

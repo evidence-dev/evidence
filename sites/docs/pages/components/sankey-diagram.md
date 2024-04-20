@@ -329,19 +329,19 @@ group by 1, 2
     name=emptySet
     description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
     options={['error', 'warn', 'pass']}
-    default="error"
+    defaultValue="error"
 />
 <PropListing
     name=emptyMessage
     description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
     options="string"
-    default="No records"
+    defaultValue="No records"
 />
 <PropListing
     name=printEchartsConfig
     description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
     options={['true', 'false']}
-    default="false"
+    defaultValue="false"
 />
 
 ### Formatting & Styling
@@ -355,55 +355,55 @@ group by 1, 2
     name=orient
     description="Layout direction of the nodes in the diagram."
     options={['horizontal', 'vertical']}
-    default="horizontal"
+    defaultValue="horizontal"
 />
 <PropListing
     name=sort
     description="Whether the nodes are sorted by size in the diagram"
     options={['true', 'false']}
-    default="false"
+    defaultValue="false"
 />
 <PropListing
     name=nodeAlign
     description="Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment."
     options={['justify', 'left', 'right']}
-    default="justify"
+    defaultValue="justify"
 />
 <PropListing
     name=nodeGap
     description="The gap between any two rectangles in each column of the the diagram."
     options="number"
-    default="8"
+    defaultValue="8"
 />
 <PropListing
     name=nodeWidth
     description="The node width of rectangle in the diagram."
     options="number"
-    default="20"
+    defaultValue="20"
 />
 <PropListing
     name=outlineColor
     description="Border color. Only accepts a single color."
     options="CSS name | hexademical | RGB | HSL"
-    default="transparent"
+    defaultValue="transparent"
 />
 <PropListing
     name=outlineWidth
     description="Border Width. It should be a natural number."
     options="number"
-    default="1"
+    defaultValue="1"
 />
 <PropListing
     name=colorPalette
     description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
     options="array of color strings (CSS name | hexademical | RGB | HSL)"
-    default="built-in color palette"
+    defaultValue="built-in color palette"
 />
 <PropListing
     name=linkColor
     description="Color to use for the links between nodes in the diagram"
     options={['grey', 'source', 'target', 'gradient']}
-    default="grey"
+    defaultValue="grey"
 />
 
 ### Chart
@@ -422,19 +422,19 @@ group by 1, 2
     name=nodeLabels
     description="Adds labels to the nodes of the diagram"
     options={['name', 'value', 'full']}
-    default="name"
+    defaultValue="name"
 />
 <PropListing
     name=linkLabels
     description="Adds labels to the links between nodes"
     options={['full', 'value', 'percent']}
-    default="full (requires percentCol)"
+    defaultValue="full (requires percentCol)"
 />
 <PropListing
     name=chartAreaHeight
     description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
     options="number"
-    default="180"
+    defaultValue="180"
 />
 
 ### Custom Echarts Options

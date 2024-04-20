@@ -59,7 +59,7 @@ where ${inputs.selected_dimensions}
     name="metric"
     description="SQL aggregate which could be applied to `data` e.g. 'sum(sales)'"
     options="string"
-    default="count(*)"
+    defaultValue="count(*)"
 />
 <PropListing 
     name="name"
@@ -75,5 +75,5 @@ where ${inputs.selected_dimensions}
     name="limit"
     description="Maximum number of rows to include in each table"
     options="number"
-    default="10"
+    defaultValue="10"
 />

@@ -46,5 +46,5 @@ Modals support markdown in the body, but you need to leave whitespace between th
     name=open
     description="A boolean value that determines whether the modal is closed by default."
     options={['true', 'false']}
-    default=false
+    defaultValue=false
 />

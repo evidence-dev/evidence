@@ -66,7 +66,49 @@ To see how to filter a query using an input component, see [Filters](/core-conce
     name=name_of_date_range
     data={query_name} 
     dates=column_name
-    hideDuringPrint=false
+    hideDuringPrint={false}
+/>
+````
+
+### Custom Presets
+
+<img src="/img/data-range-custom-presets.png" alt="date range with custom presets" width="400"/>
+
+````markdown
+<DateRange
+  name=name_of_date_range
+  data={query_name} 
+  dates=column_name
+  presetsFn={function(start, end) {
+
+    // start and end are CalendarDate objects, https://react-spectrum.adobe.com/internationalized/date/CalendarDate.html
+    // these are equal input start and end props, if specified
+    // if not specified, these default to min an max dates for the data
+
+    return [
+      { label: 'First 90 Days', range: { start, end: start.add({ days: 90 }) } },
+      { label: 'First 6 Months', range: { start, end: start.add({ months: 6 }) } },
+      { label: 'First 2 Years', range: { start, end: start.add({ year: 2 }) } },
+      {
+        label: 'Last 12 Months',
+        range: {
+          start: end.subtract({ months: 12 }).set({ day: 1 }),
+          end: end.subtract({ months: 1 }).set({ day: 31 })
+        }
+      },
+      { label: 'Last 90 Days', range: { start: end.subtract({ days: 90 }), end } },
+      { 
+        label: 'Last month', 
+        range: { 
+          start: end.subtract({ month: 1}).set({ day: 1 }), 
+          end: end.subtract({ month: 1}).set({ day: 31 }) 
+        } 
+      },
+      { label: 'Current month', range: { start: end.set({ day: 1 }), end } },
+      { label: 'Year to date', range: { start: end.set({ day: 1, month: 1 }), end } },
+      { label: 'All Time', range: { start, end } },
+    ]
+  }}
 />
 ````
 
@@ -122,8 +164,11 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
 <PropListing 
     name="hideDuringPrint"
     description="Hide the component when the report is printed"
-    options={["true", "false"]}
-    default="true"
+    defaultValue="true"
+    type="boolean"
 />
-
-
+<PropListing 
+    name="presetsFn"
+    description="Callback function to generate presets for the Date Range"
+    type="function"
+/>
