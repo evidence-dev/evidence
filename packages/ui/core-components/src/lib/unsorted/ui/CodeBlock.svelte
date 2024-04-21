@@ -3,8 +3,18 @@
 </script>
 
 <script>
+	import { onMount, tick } from 'svelte';
+	import Prism from 'prismjs';
+	import './prism-svelte.js';
+	import 'prismjs/components/prism-bash';
+	import 'prismjs/components/prism-sql';
+	import 'prismjs/components/prism-python';
+	import 'prismjs/components/prism-markdown';
+	// import 'prismjs/themes/prism-tomorrow.css'; // theme not taking effect at the moment
+
 	export let source;
 	export let copyToClipboard = false;
+	export let language = undefined;
 	import Copy from './Deployment/CopyIcon.svelte';
 	import Success from './Deployment/CopySuccessIcon.svelte';
 	let copied = false;
@@ -22,14 +32,28 @@
 			/* ignore errors */
 		}
 	}
+
+	onMount(() => {
+		Prism.highlightAll();
+	});
+
+	$: source,
+		tick().then(() => {
+			const codeElement = document.querySelector(`pre code.language-${language}`);
+			if (codeElement) {
+				Prism.highlightElement(codeElement, false);
+			}
+		});
 </script>
 
-<pre class="my-5 relative">
+<pre
+	class="my-5 relative"
+	style="overflow-y:hidden;border: 1px solid var(--grey-200);display:flex;align-items:flex-start;justify-content:space-between;">
 	<div class="absolute" style="height:100%;width:100%">
 		{#if copyToClipboard}
 			<button
 				type="button"
-				class="container absolute right-0 top-0 h-8 w-8 transition-all duration-200 ease-in-out"
+				class="container absolute right-0 top-0 h-7 w-7 transition-all duration-200 ease-in-out"
 				class:copied
 				on:click={() => {
 					if (source !== undefined) {
@@ -44,7 +68,7 @@
 		</button>
 		{/if}
 		</div>
-<code
+<code class="language-{language}" style="overflow:auto;position:relative;display:block;"
 		>{#if source}{source}
 		{:else}<slot />
 		{/if}
@@ -60,7 +84,13 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 	pre {
-		@apply bg-gray-50 border rounded-md flex items-start justify-between;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		border-radius: 0.3rem;
+		border-width: 1px;
+		--tw-bg-opacity: 1;
+		background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 	}
 	pre code::-webkit-scrollbar {
 		height: var(--scrollbar-size);
@@ -86,7 +116,14 @@
 		border: 3px solid transparent;
 	}
 	pre code {
-		@apply overflow-auto relative block p-3 text-gray-900 text-sm;
+		position: relative;
+		display: block;
+		overflow: auto;
+		padding: 0.7rem;
+		font-size: 0.8rem;
+		line-height: 1.25rem;
+		--tw-text-opacity: 1;
+		color: rgb(17 24 39 / var(--tw-text-opacity));
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-color) var(--scrollbar-track-color);
 	}
@@ -111,7 +148,13 @@
 	}
 
 	pre:hover button.container {
-		@apply bg-gray-50 text-gray-500 border-gray-200 rounded;
+		border-radius: 0.25rem;
+		--tw-border-opacity: 1;
+		border-color: rgb(229 231 235 / var(--tw-border-opacity));
+		--tw-bg-opacity: 1;
+		background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+		--tw-text-opacity: 1;
+		color: rgb(107 114 128 / var(--tw-text-opacity));
 		opacity: 1;
 		padding: 0.25em 0.35em 0.25em 0.35em;
 		cursor: pointer;
@@ -125,10 +168,16 @@
 	}
 
 	pre button.container:hover {
-		@apply border-gray-500 text-gray-500;
+		--tw-border-opacity: 1;
+		border-color: rgb(107 114 128 / var(--tw-border-opacity));
+		--tw-text-opacity: 1;
+		color: rgb(107 114 128 / var(--tw-text-opacity));
 	}
 
 	pre button.container.copied {
-		@apply text-green-600 border-gray-500;
+		--tw-border-opacity: 1;
+		border-color: rgb(107 114 128 / var(--tw-border-opacity));
+		--tw-text-opacity: 1;
+		color: rgb(22 163 74 / var(--tw-text-opacity));
 	}
 </style>
