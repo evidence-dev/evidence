@@ -221,7 +221,7 @@
 	}
 
 	// Reactively update Fuse when `data` or `columnSummary` changes
-	$: if (browser) {
+	$: if (browser && !error) {
 		updateFuse();
 		if (searchValue !== '') {
 			runSearch(searchValue);
@@ -389,7 +389,7 @@
 	let groupedData = {};
 	let groupRowData = [];
 
-	$: {
+	$: if (!error) {
 		groupedData = data.reduce((acc, row) => {
 			const groupName = row[groupBy];
 			if (!acc[groupName]) {
@@ -408,7 +408,7 @@
 
 			columnsToAggregate.forEach((columnDef) => {
 				const column = columnDef.id;
-				const colType = columnSummary.find((d) => d.id === column).type;
+				const colType = columnSummary.find((d) => d.id === column)?.type;
 				const totalAgg = columnDef.totalAgg;
 				const weightCol = columnDef.weightCol;
 				const rows = groupedData[groupName];
