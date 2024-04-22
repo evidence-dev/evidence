@@ -62,18 +62,18 @@
 	function convertFileTreeToFileMap(fileTree) {
 		const map = new Map();
 
-		function traverse(fileTree) {
-			if (!fileTree) {
+		function traverse(node) {
+			if (!node) {
 				return;
 			}
 
-			if (fileTree.href) {
-				const decodedHref = decodeURI(fileTree.href);
-				map.set(decodedHref, fileTree);
+			if (node.href) {
+				const decodedHref = decodeURI(node.href);
+				map.set(decodedHref, node);
 			}
 
-			if (fileTree.children) {
-				fileTree.children.forEach((child) => traverse(child));
+			if (node.children) {
+				node.children.forEach(traverse);
 			}
 		}
 

@@ -25,7 +25,8 @@
 </script>
 
 <header
-	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden"
+	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden
+  {sidebarFrontMatter === 'hide' ? 'md:pl-8' : ''}"
 >
 	<div
 		class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
