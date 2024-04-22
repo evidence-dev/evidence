@@ -177,6 +177,9 @@ Alignment of funnel.
 Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88a87']}`
 
 </PropListing>
+
+### Chart
+
 <PropListing 
     name="title"
     options="string"
@@ -211,6 +214,9 @@ Turns legend on or off. Legend appears at top center of chart.
 Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
 
 </PropListing>
+
+### Custom Echarts Options
+
 <PropListing 
     name="echartsOptions"
     options="{`{{exampleOption:'exampleValue'}}`}"
@@ -236,6 +242,9 @@ Custom Echarts options to override the default options for all series in the cha
 Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
 
 </PropListing>
+
+### Interactivity
+
 <PropListing 
     name="connectGroup"
 >
