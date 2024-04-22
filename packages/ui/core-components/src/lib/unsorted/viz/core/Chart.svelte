@@ -4,14 +4,15 @@
 
 <script>
 	import { QueryLoad } from '../../../atoms/query-load';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import Chart from './_Chart.svelte';
 	import EmptyChart from './EmptyChart.svelte';
 	import ErrorChart from './ErrorChart.svelte';
 
-	/** @type {import("@evidence-dev/query-store).QueryStore | unknown}*/
+	/** @type {import("@evidence-dev/sdk/usql).Query | unknown}*/
 	export let data;
 
-	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;
@@ -45,7 +46,7 @@
 		chartType={spreadProps.chartType}
 		error={loaded.error.message}
 	/>
-	<Chart {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
+	<Chart {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Chart>
 </QueryLoad>

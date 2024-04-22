@@ -1,5 +1,18 @@
 # @evidence-dev/sdk
 
+## 1.1.0
+
+### Minor Changes
+
+- dc073f6e: Moved /query-store export to /usql
+
+### Patch Changes
+
+- a95db3d3: Move types to devDependencies
+- Updated dependencies [7620a1af]
+- Updated dependencies [a95db3d3]
+  - @evidence-dev/universal-sql@2.1.2
+
 ## 1.0.2
 
 ### Patch Changes

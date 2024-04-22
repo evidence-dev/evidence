@@ -44,7 +44,7 @@ export function validateSize(height, width) {
 
 /**
  *
- * @param {import("@evidence-dev/query-store).QueryStore | unknown[]} data
+ * @param {import("@evidence-dev/sdk/usql).Query | unknown[]} data
  * @param {string} valueCol
  * @param {string} dateCol
  * @returns {value_format_object: object, date_format_object: object}

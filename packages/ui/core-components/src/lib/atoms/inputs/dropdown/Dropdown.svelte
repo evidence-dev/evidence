@@ -24,7 +24,7 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { browser } from '$app/environment';
 	import debounce from 'lodash.debounce';
-	import { QueryStore } from '@evidence-dev/query-store';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -144,15 +144,18 @@
 	function updateItems(search) {
 		items =
 			search && hasQuery
-				? QueryStore.create(
+				? Query.create(
 						`
 						SELECT
 							*,
 							jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
 						FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
 						exec,
-						`Dropdown-${name}-searched-${search}`,
-						{ initialData: $items ?? $query, initialDataDirty: true }
+						{
+							initialData: $items ?? $query,
+							initialDataDirty: true,
+							id: `Dropdown-${name}-searched-${search}`
+						}
 					)
 				: $query;
 	}

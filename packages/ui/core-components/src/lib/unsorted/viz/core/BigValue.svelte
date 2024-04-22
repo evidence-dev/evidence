@@ -8,10 +8,11 @@
 	import Value from './Value.svelte';
 	import EmptyChart from './EmptyChart.svelte';
 	import BigValueError from './BigValueError.svelte';
+	import { Query } from '@evidence-dev/sdk/usql';
 
 	export let data;
 
-	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;
@@ -65,7 +66,7 @@
 		<Value column={$$props.value} fmt={$$props.fmt} data={loaded} />
 	</div>
 
-	<InnerBigValue {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded}>
+	<InnerBigValue {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded}>
 		<slot />
 	</InnerBigValue>
 </QueryLoad>
