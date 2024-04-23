@@ -40,7 +40,7 @@
 	$: if (data && dates) {
 		const source = typeof data === 'string' ? data : `(${data.text})`;
 		query = QueryStore.create(
-			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
+			`SELECT min(${dates})::DATE as start, max(${dates})::DATE as end FROM ${source}`,
 			exec,
 			`DateRange-${name}`,
 			{
