@@ -457,7 +457,6 @@ export class QueryStore extends AbstractStore<QueryStoreValue> {
 				this.#values = result;
 				this.#dataLoading = false;
 				this.#dataLoaded = true;
-				this.publish();
 				QueryStore.removeActiveQuery(this.id);
 				return this.#fetchLength();
 			},
