@@ -1,0 +1,5 @@
+# This file was automatically generated
+name: stackexchange
+options:
+  filename: ./math.duckdb
+type: duckdb
