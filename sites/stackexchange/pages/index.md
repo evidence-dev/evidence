@@ -1,10 +1,12 @@
 # Info on apple.stackexchange.com
 
+<DateRange data="posts" dates="CreationDate" name="post_range" />
+
 ## Count of posts by month
 
 ```posts_by_month
 SELECT
-	time_bucket(INTERVAL '1 months', CreationDate) AS month, COUNT(*)::INTEGER AS posts
+	datetrunc('month', CreationDate) AS month, COUNT(*)::INTEGER AS posts
 FROM posts
 GROUP BY month
 ORDER BY month
@@ -16,68 +18,57 @@ ORDER BY month
 
 ```most_active_users
 SELECT
-	DisplayName, COUNT(*)::INTEGER AS posts, '/user/' || users.Id::INTEGER as url
+	DisplayName as Display_Name, COUNT(*)::INTEGER AS posts, '/user/' || users.Id::INTEGER as url
 FROM posts JOIN users
 ON posts.OwnerUserId = users.Id
-GROUP BY DisplayName, users.Id
+GROUP BY Display_Name, users.Id
 ORDER BY posts DESC
 LIMIT 100
 ```
 
-<DataTable data={most_active_users}>
-	<Column id="DisplayName" />
+<DataTable data={most_active_users} link="url">
+	<Column id="Display_Name" />
 	<Column id="posts" />
-	<Column id="url" contentType="link" />
 </DataTable>
 
 ## Most viewed posts
 
 ```most_viewed_posts
 SELECT
-	Id, Title, ViewCount, '/post/' || Id::INTEGER as url
+	Id, Title, ViewCount as View_Count
 FROM posts
-ORDER BY ViewCount DESC
+ORDER BY View_Count DESC
 LIMIT 100
 ```
 
 <DataTable data={most_viewed_posts}>
 	<Column id="Id" />
 	<Column id="Title" />
-	<Column id="ViewCount" />
-	<Column id="url" contentType="link" />
+	<Column id="View_Count" />
 </DataTable>
 
 ## Highest voted posts
 
-<Dropdown title="Select vote type" name="vote_kind" defaultValue={12}>
-	<DropdownOption valueLabel="Accepted By Originator" value={1} />
-	<DropdownOption valueLabel="Up Mod" value={2} />
-	<DropdownOption valueLabel="Down Mod" value={3} />
-	<DropdownOption valueLabel="Offensive" value={4} />
-	<DropdownOption valueLabel="Favorite" value={5} />
-	<DropdownOption valueLabel="Close" value={6} />
-	<DropdownOption valueLabel="Reopen" value={7} />
-	<DropdownOption valueLabel="Bounty Start" value={8} />
-	<DropdownOption valueLabel="Bounty Close" value={9} />
-	<DropdownOption valueLabel="Deletion" value={10} />
-	<DropdownOption valueLabel="Undeletion" value={11} />
-	<DropdownOption valueLabel="Spam" value={12} />
-	<DropdownOption valueLabel="Inform Moderator" value={13} />
+<Dropdown title="Select vote type" name="vote_kind">
+	<DropdownOption valueLabel="Upvotes" value={2} />
+	<DropdownOption valueLabel="Downvotes" value={3} />
 </Dropdown>
 
 ```posts_by_vote_kind
 SELECT
-	Title, COUNT(*)::INTEGER AS votes, '/post/' || posts.Id::INTEGER as url
+	Title, COUNT(*)::INTEGER AS votes
 FROM posts JOIN votes
 ON posts.Id = votes.PostId
-WHERE VoteTypeId = ${inputs.vote_kind.value} AND Title IS NOT NULL
+WHERE VoteTypeId = 2
+  AND Title IS NOT NULL 
 GROUP BY Title, posts.Id
+ORDER BY votes DESC
+LIMIT 100
 ```
 
-### Posts with the most {inputs.vote_kind.label} votes
+### Posts with the most {inputs.vote_kind.label.toString().toLowerCase()}
 
 <DataTable data={posts_by_vote_kind}>
 	<Column id="Title" />
 	<Column id="votes" />
-	<Column id="url" contentType="link" />
 </DataTable>

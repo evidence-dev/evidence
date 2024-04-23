@@ -2,57 +2,75 @@
 SELECT * FROM users WHERE Id = ${params.user_id}
 ```
 
-User {user_info[0].DisplayName} has had their posts viewed {user_info[0].Views} times, with {user_info[0].UpVotes} upvotes in that time.
+# User information for user {params.user_id}
 
-Their about-me section reads:
+<BigValue data={user_info} value="Views" />
+<BigValue data={user_info} value="UpVotes" />
 
-{@html user_info[0].AboutMe}
+## Post views by month
 
 ```user_activity
 SELECT
-	time_bucket(INTERVAL '1 months', CreationDate) AS month, SUM(ViewCount)::INTEGER AS views
+	datetrunc('month', CreationDate) AS month, SUM(ViewCount)::INTEGER AS views
 FROM posts
 WHERE OwnerUserId = ${params.user_id}
 GROUP BY month
+HAVING views IS NOT NULL
 ```
-
-Here is a chart of the views on their posts by month:
 
 <LineChart data={user_activity} x="month" y="views" />
 
-```user_posts
+## Monthly votes
+
+```user_votes
 SELECT
-	Id, Title, CreationDate, Score, ViewCount, '/post/' || Id::INTEGER as url
-FROM posts
-WHERE OwnerUserId = ${params.user_id}
-ORDER BY CreationDate DESC
+	datetrunc('month', votes.CreationDate) AS month, COUNT(votes.Id)::INTEGER AS votes
+FROM votes JOIN posts
+ON votes.PostId = posts.Id
+WHERE posts.OwnerUserId = ${params.user_id}
+GROUP BY month
 ```
 
-Here are their most recent posts:
+<BarChart data={user_votes} x="month" y="votes" />
+
+## Most popular posts
+
+```user_posts
+SELECT
+	Id, Title, CreationDate as Creation_Date, Score, ViewCount as View_Count
+FROM posts
+WHERE OwnerUserId = ${params.user_id}
+ORDER BY View_Count DESC
+```
 
 <DataTable data={user_posts}>
 	<Column id="Id" />
 	<Column id="Title" />
-	<Column id="CreationDate" />
+	<Column id="Creation_Date" />
 	<Column id="Score" />
-	<Column id="ViewCount" />
-	<Column id="url" contentType="link" />
+	<Column id="View_Count" />
 </DataTable>
 
-```user_comments
+## Highest voted posts
+
+<Dropdown title="Select vote type" name="vote_kind">
+	<DropdownOption valueLabel="Upvotes" value={2} />
+	<DropdownOption valueLabel="Downvotes" value={3} />
+</Dropdown>
+
+```posts_by_vote_kind
 SELECT
-	Id, CreationDate, PostId, Text, '/post/' || PostId::INTEGER as url
-FROM comments
-WHERE UserId = ${params.user_id}
-ORDER BY CreationDate DESC
+	Title, COUNT(*)::INTEGER AS votes
+FROM posts JOIN votes
+ON posts.Id = votes.PostId
+WHERE VoteTypeId = ${inputs.vote_kind.value} AND Title IS NOT NULL AND OwnerUserId = ${params.user_id}
+GROUP BY Title, posts.Id
+ORDER BY votes DESC
 ```
 
-Here are their most recent comments:
+### Posts with the most {String(inputs.vote_kind.label).toLowerCase()}
 
-<DataTable data={user_comments}>
-	<Column id="Id" />
-	<Column id="CreationDate" />
-	<Column id="PostId" />
-	<Column id="Text" />
-	<Column id="url" contentType="link" />
+<DataTable data={posts_by_vote_kind}>
+	<Column id="Title" />
+	<Column id="votes" />
 </DataTable>
