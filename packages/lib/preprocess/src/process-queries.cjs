@@ -111,7 +111,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 								} else {
 									initialData = data.${id}
 								}
-							} else {
+							} else if (!browser) {
 								// We are currently prerendering
 								initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })
 							}
