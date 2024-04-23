@@ -1,9 +1,17 @@
 import { nanoid } from 'nanoid';
 import { isDebug } from '../lib/debug.js';
-import { Query as QueryBuilder, sql, sql as taggedSql } from '@uwdata/mosaic-sql';
+import {
+	Query as QueryBuilder,
+	sql,
+	sql as taggedSql,
+	sum as qSum,
+	avg as qAvg,
+	count as qCount
+} from '@uwdata/mosaic-sql';
 import { EvidenceError } from '../lib/EvidenceError.js';
 import { sharedPromise } from '../lib/sharedPromise.js';
 import { resolveMaybePromise } from './utils.js';
+import { getQueryScore } from './queryScore.js';
 
 /**
  * @typedef {import("./types.js").QueryResultRow} QueryResultRow
@@ -15,7 +23,7 @@ import { resolveMaybePromise } from './utils.js';
  */
 
 /**
- * @template {QueryResultRow} RowType
+ * @template {QueryResultRow} [RowType=QueryResultRow]
  * @typedef  {import('../lib/sharedPromise.js').SharedPromise<Query<RowType>>} ChainableSharedPromise
  */
 
@@ -35,6 +43,13 @@ import { resolveMaybePromise } from './utils.js';
  * @property {number} highScore
  * @property {Error} error
  */
+
+/**
+ * @typedef {Object} QueryGlobalEvents
+ * @property {undefined} inFlightQueryStart
+ * @property {undefined} inFlightQueryEnd
+ */
+/** @typedef {import ("./types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
 /**
  * @typedef {import('./types.js').EventEmitter<QueryEvents>} QueryEventEmitter
@@ -132,8 +147,8 @@ export class Query {
 	 * @param {Error | undefined} v
 	 */
 	set #error(v) {
-		console.log(v);
 		if (!v) return;
+		console.error(`${this.id} | Error in Query!`, v?.message);
 		this.#emit('error', v);
 		this.#__error = v;
 	}
@@ -162,9 +177,104 @@ export class Query {
 	/// </ State Primatives /> ///
 	//////////////////////////////
 
+	//////////////////////////
+	/// < Global Loading > ///
+	//////////////////////////
+
+	/** @type {Set<Query>} */
+	static #inFlightQueries = new Set();
+
+	static get QueriesInFlight() {
+		return Query.#inFlightQueries.size > 0;
+	}
+
+	/**
+	 * @param {Query<any>} q
+	 */
+	static #markInFlight = (q) => {
+		if (this.#inFlightQueries.size === 0) {
+			// We are starting
+			this.#globalEmit('inFlightQueryStart', undefined);
+		}
+		Query.#inFlightQueries.add(q);
+		q.#sharedDataPromise.promise.finally(() => {
+			Query.#inFlightQueries.delete(q);
+			if (this.#inFlightQueries.size === 0) {
+				// We are done
+				this.#globalEmit('inFlightQueryEnd', undefined);
+			}
+			// Remove
+		});
+	};
+
+	/** @type {import("./types.js").EventMap<QueryGlobalEvents>} */
+	static #globalHandlerMap = {
+		inFlightQueryStart: new Set(),
+		inFlightQueryEnd: new Set()
+	};
+	/**
+	 * @template {keyof QueryGlobalEvents} Event
+	 * @param {Event} event
+	 * @param {QueryGlobalEvents[Event]} value
+	 */
+	static #globalEmit = (event, value) => {
+		Query.#globalHandlerMap[event].forEach((fn) => fn(value, event));
+	};
+
+	/** @type {QueryGlobalEventEmitter["addEventListener"]} */
+	static addEventListener(event, handler) {
+		this.#globalHandlerMap[event].add(handler);
+	}
+	/** @type {QueryGlobalEventEmitter["removeEventListener"]} */
+	static removeEventListener(event, handler) {
+		this.#globalHandlerMap[event].delete(handler);
+	}
+	/////////////////////////////
+	/// </ Global Loading />  ///
+	/////////////////////////////
+
 	////////////////////
 	/// < Fetching > ///
 	////////////////////
+
+	static #scoreThreshold = 10 * 1024 * 1024;
+	/** @type { number } */
+	#score = -1;
+	get score() {
+		return this.#score;
+	}
+
+	#calculateScore = () => {
+		if (this.lengthLoaded && this.columnsLoaded) {
+			this.#score = getQueryScore(this.length, this.columns);
+			if (this.#score > Query.#scoreThreshold) {
+				this.#emit('highScore', this.#score);
+			}
+		} else {
+			Promise.allSettled([this.#sharedLengthPromise.promise, this.#sharedColumnsPromise.promise])
+				.then(([$lengthRaw, $columnsRaw]) => {
+					if ($lengthRaw.status === 'rejected' || $columnsRaw.status === 'rejected') {
+						// TODO: Throw here?
+						console.log('Length or columns rejected');
+						this.#score = -1;
+						return;
+					}
+
+					if (!this.#length || !this.#columns) {
+						// TODO: Throw here?
+						this.#score = -1;
+						return;
+					}
+					this.#score = getQueryScore(this.length, this.columns);
+					if (this.#score > Query.#scoreThreshold) {
+						this.#emit('highScore', this.#score);
+					}
+				})
+				.catch((e) => {
+					console.error(`${this.id} | Failed to calculate Query score ${e}`);
+				});
+		}
+	};
 
 	/** @type {ChainableSharedPromise<RowType>} */
 	#sharedDataPromise = sharedPromise(() =>
@@ -183,38 +293,70 @@ export class Query {
 			return this.#sharedDataPromise.promise;
 		this.#sharedDataPromise.start();
 
-		this.#debug('Beginning Data Fetch');
-
-		const queryWithComment =
-			`---- Data ${this.#id} ${this.#hash}
-        ${this.#query.toString()}
+		const dataQuery =
+			`
+---- Data ${this.#id} ${this.#hash}
+${this.#query.toString()}
         `.trim() + '\n';
+
+		this.#debugStyled('\n' + dataQuery, 'font-family: monospace;');
 
 		// gotta love jsdoc sometimes
 		const typedRunner = /** @type {import('./types.js').Runner<RowType>} */ (this.#executeQuery);
-
+		Query.#markInFlight(this);
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
-				this.#data.push(...result);
+				this.#data = result;
+
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
 				if (isPromise) {
-					return this.#sharedDataPromise;
+					return this.#sharedDataPromise.promise;
 				} else {
 					return this;
 				}
 			},
-			typedRunner(queryWithComment, `${this.#id}_columns`),
+			() => typedRunner(dataQuery, `${this.#id}_data`),
 			(e, isPromise) => {
 				this.#error = e;
 				this.#sharedDataPromise.reject(e);
-				if (isPromise) return this.#sharedDataPromise;
-				else throw e;
+				if (isPromise) {
+					return this.#sharedDataPromise.promise;
+				} else {
+					return this;
+				}
 			}
 		);
-		return /** @type {MaybePromise<Query<RowType>>} */ (resolved);
+		return resolved;
 	};
-	fetch = this.#fetchData;
+	fetch = async () => {
+		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength]).then(
+			() => this.value
+		);
+	};
+	/**
+	 * Executes the query without actually updating the state
+	 * This is helpful for ensuring that the related parquet files
+	 * are available, even when SSR is used to initially hydrate the
+	 * query / page.
+	 *
+	 * Does not run on the server, only in browser
+	 */
+	backgroundFetch = () => {
+		if (typeof window === 'undefined') {
+			this.#debug('Did not execute backgroundFetch in SSR');
+			return;
+		}
+		this.#debug(`Executed backgroundFetch`);
+		resolveMaybePromise(
+			() => {},
+			async () => {
+				await new Promise((resolve) => setTimeout(resolve, 0));
+				return this.#executeQuery(`--data\n${this.#query.toString()}`, this.id);
+			},
+			() => {}
+		);
+	};
 
 	/** @type {ChainableSharedPromise<RowType>} */
 	#sharedLengthPromise = sharedPromise(() =>
@@ -229,6 +371,7 @@ export class Query {
 			this.#sharedDataPromise.state === 'resolved' &&
 			this.#sharedLengthPromise.state === 'init'
 		) {
+			this.#debug('Inferred length from already-resolved data promise', this.#data);
 			this.#length = this.#data.length;
 			// Done
 			this.#sharedLengthPromise.resolve(this);
@@ -246,14 +389,16 @@ export class Query {
 
 		const lengthQuery =
 			`
-        ---- Length ${this.#id} (${this.#hash})
-        SELECT COUNT(*) as rowCount FROM (${this.text})
+---- Length ${this.#id} (${this.#hash})
+SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
         `.trim() + '\n';
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
 			/** @type {import('./types.js').Runner<{rowCount: number}>} */
 			(this.#executeQuery);
+
+		this.#debugStyled('\n' + lengthQuery, 'font-family: monospace;');
 
 		const resolved = resolveMaybePromise(
 			/** @returns {MaybePromise<Query<RowType>>} */
@@ -266,13 +411,16 @@ export class Query {
 					return this;
 				}
 			},
-			typedRunner(lengthQuery, `${this.#id}_columns`),
+			() => typedRunner(lengthQuery, `${this.#id}_length`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
 				this.#error = e;
 				this.#sharedLengthPromise.reject(e);
-				if (isPromise) return this.#sharedLengthPromise.promise;
-				else throw e;
+				if (isPromise) {
+					return this.#sharedLengthPromise.promise;
+				} else {
+					return this;
+				}
 			}
 		);
 		return /** @type {MaybePromise<Query<RowType>>} */ (resolved);
@@ -298,9 +446,11 @@ export class Query {
 
 		const metaQuery =
 			`
-        ---- Columns ${this.#id} (${this.#hash})
-        DESCRIBE ${this.#query.toString()}
+---- Columns ${this.#id} (${this.#hash})
+DESCRIBE ${this.#query.toString()}
         `.trim() + '\n';
+
+		this.#debugStyled('\n' + metaQuery, 'font-family: monospace;');
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
@@ -324,15 +474,17 @@ export class Query {
 					return this;
 				}
 			},
-			typedRunner(metaQuery, `${this.#id}_columns`),
+			() => typedRunner(metaQuery, `${this.#id}_columns`),
 			/** @returns {MaybePromise<Query<RowType>>} */
 			(e, isPromise) => {
 				this.#error = e;
 				this.#sharedColumnsPromise.reject(e);
 
-				if (isPromise)
-					return this.#sharedColumnsPromise.promise; // rejected promise
-				else throw e;
+				if (isPromise) {
+					return this.#sharedColumnsPromise.promise;
+				} else {
+					return this;
+				}
 			}
 		);
 		return /** @type {MaybePromise<Query<RowType>>} */ (resolved);
@@ -386,7 +538,7 @@ export class Query {
 	#buildProxy = () => {
 		/** @type {QueryValue<RowType>} */
 		const proxy = /** @type {QueryValue<RowType>} */ (
-			new Proxy(this.#data, {
+			new Proxy(/** @type {RowType[]} */ ([]), {
 				getPrototypeOf: () => {
 					return Object.getPrototypeOf(this.#data);
 				},
@@ -398,7 +550,6 @@ export class Query {
 					let prop = rawProp;
 
 					if (typeof prop === 'string' && /^[\d.]+$/.exec(prop)) prop = parseInt(prop);
-
 					if (typeof prop === 'number' || Query.ProxyFetchTriggers.includes(prop.toString())) {
 						if (this.#sharedDataPromise.state === 'init') {
 							this.#debug(`Implicit query fetch triggered by ${prop.toString()}`);
@@ -443,15 +594,126 @@ export class Query {
 	/////////////////////
 	/// < Factories > ///
 	/////////////////////
-
+	/**
+	 * This is a fairly arbitrary number that determines how much data
+	 * the Query will cache internally. The larger the number, the
+	 * larger the cache will be.
+	 *
+	 * The number is based on our Query Score calculation, see
+	 * queryScore.js for details on how this is calculated.
+	 *
+	 * @default 5 * 10 * 1024
+	 *
+	 */
+	static CacheMaxScore = 5 * 10 * 1024;
+	/**
+	 * @type {Map<string, {added: number, query: Query<any>}>}
+	 */
 	static #cache = new Map();
+
+	static emptyCache = () => {
+		this.#cache.clear();
+	};
+
+	static get cacheSize() {
+		return this.#cache.size;
+	}
+
+	/**
+	 * @param {Query<any>} q
+	 */
+	static #addToCache = (q) => {
+		this.#cache.set(q.hash, {
+			query: q,
+			added: Date.now()
+		});
+
+		if (isDebug())
+			console.debug(`Added to cache: ${q.hash}`, {
+				cacheSize: this.#cache.size,
+				cacheScore: Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0)
+			});
+	};
+
+	/**
+	 * @template {QueryResultRow} [RowType=QueryResultRow]
+	 * @param {string} hash
+	 * @returns {Query<RowType> | null}
+	 */
+	static #getFromCache = (hash) => {
+		const cachedValue = this.#cache.get(hash);
+		if (cachedValue) {
+			return cachedValue.query;
+		}
+		return null;
+	};
+
+	static #cacheCleanup = () => {
+		let sumScore = Array.from(this.#cache.values()).reduce((sum, q) => sum + q.query.score, 0);
+		const sorted = Array.from(this.#cache.values()).sort((a, b) => a.added - b.added);
+		while (sumScore > this.CacheMaxScore) {
+			const oldest = sorted.shift();
+			if (!oldest) break;
+			this.#cache.delete(oldest.query.hash);
+			sumScore -= oldest.query.score;
+		}
+	};
+
+	/*
+		TODO: Write an update function?
+		Update will accept the same parameters as create (?)
+		It will return a promise race to load for 250ms and return the new store (or whenver the new store is loaded)
+		This will let the reactivity live outside of the Component
+	*/
+
+	/**
+	 * @param {import('./types.js').Runner} executeQuery
+	 * @param {string | import("@uwdata/mosaic-sql").Query} initialQuery
+	 * @param {import('./types.js').QueryOpts} [defaultOpts={}]
+	 * @param {number} [loadDelay=250]
+	 * @returns {{ initialValue: QueryValue, updater: <T extends QueryResultRow>(query: string, opts: import('./types.js').QueryOpts<T>) => Promise<QueryValue<T>>}}
+	 */
+	static reactive = (executeQuery, initialQuery, defaultOpts, loadDelay = 250) => {
+		/** @type {import('./types.js').CreateQuery<any>} */
+		const createFn = Query.create;
+
+		/** @type {QueryValue<any>} */
+		let activeQuery = createFn(initialQuery, executeQuery, { ...defaultOpts });
+
+		/**
+		 * @template {QueryResultRow} [RowType=QueryResultRow]
+		 * @param {string | import("@uwdata/mosaic-sql").Query} query
+		 * @param {import('./types.js').QueryOpts<RowType>} [opts={}]
+		 * @returns {Promise<QueryValue<RowType>>}
+		 */
+		const updater = async (query, opts) => {
+			/** @type {QueryValue<RowType>} */
+			const newQuery = createFn(query, executeQuery, {
+				...defaultOpts,
+				...opts
+			});
+
+			if (activeQuery?.hash === newQuery.hash) return newQuery.fetch();
+
+			return Promise.race([newQuery.fetch(), new Promise((r) => setTimeout(r, loadDelay))]).then(
+				() => {
+					activeQuery = newQuery;
+					return newQuery;
+				}
+			);
+		};
+		return {
+			updater,
+			initialValue: activeQuery
+		};
+	};
 
 	/**
 	 * @template {QueryResultRow} [RowType=QueryResultRow]
 	 * @type {import("./types.js").CreateQuery<RowType>}
-	 * @returns {QueryValue<RowType>}
 	 */
 	static create = (query, executeQuery, optsOrId, maybeOpts) => {
+		const queryHash = hashQuery(query);
 		/** @type {import('./types.js').QueryOpts<RowType>} */
 		let opts;
 		if (typeof optsOrId === 'string') {
@@ -462,17 +724,35 @@ export class Query {
 		} else if (optsOrId) {
 			opts = optsOrId;
 		} else {
-			throw new Error();
+			opts = {
+				id: queryHash
+			};
 		}
-		const queryHash = hashQuery(query);
-		if (Query.#cache.has(queryHash) && !opts.disableCache) {
-			if (isDebug()) console.log(`Using cached query ${opts.id ?? ''}`);
-			return Query.#cache.get(queryHash);
+		if (!('autoScore' in opts)) {
+			opts.autoScore = true;
 		}
 
+		if (!opts.disableCache) {
+			/** @type {Query<RowType> | null} */
+			const cached = Query.#getFromCache(queryHash);
+
+			Query.#cacheCleanup();
+			if (cached) {
+				Query.#debugStatic(`Using cached query for ${opts.id ?? '[query id missing]'}`, { opts });
+				return cached.value;
+			} else {
+				Query.#debugStatic(`Cached query not found for ${opts.id ?? '[query id missing]'}`, {
+					opts
+				});
+			}
+		} else if (isDebug()) console.log(`Cache is disabled for ${opts.id ?? '[query id missing]'}`);
+
 		Query.#constructing = true;
-		const output = new Query(query, executeQuery, opts).value;
-		Query.#cache.set(queryHash, output);
+		const output = new Query(query, executeQuery, opts);
+		if (!opts.disableCache) {
+			Query.#addToCache(output);
+			Query.#cacheCleanup();
+		}
 		return output.value;
 	};
 
@@ -480,9 +760,23 @@ export class Query {
 	/// </ Factories /> ///
 	///////////////////////
 
+	static #debugStatic = isDebug()
+		? (/** @type {Parameters<typeof console.debug>} */ ...args) =>
+				console.debug(`${(performance.now() / 1000).toFixed(3)} | Query`, ...args)
+		: () => {};
+	static #debugStyledStatic = isDebug()
+		? (/** @type {string} */ text, /** @type {string} */ style) =>
+				console.debug(`%c${(performance.now() / 1000).toFixed(3)} | Query ${text}`, style)
+		: () => {};
+
 	#debug = isDebug()
 		? (/** @type {Parameters<typeof console.debug>} */ ...args) =>
 				console.debug(`${(performance.now() / 1000).toFixed(3)} | ${this.id}`, ...args)
+		: () => {};
+
+	#debugStyled = isDebug()
+		? (/** @type {string} */ text, /** @type {string} */ style) =>
+				console.debug(`%c${(performance.now() / 1000).toFixed(3)} | ${this.id} ${text}`, style)
 		: () => {};
 
 	static #constructing = false;
@@ -521,7 +815,6 @@ export class Query {
 			knownColumns = undefined,
 			initialError = undefined
 		} = opts;
-
 		this.opts = opts;
 		this.#executeQuery = executeQuery;
 
@@ -562,12 +855,28 @@ export class Query {
 			return;
 		}
 
-		if (initialData) {
+		if (opts.noResolve) {
+			this.#sharedDataPromise.start();
+			this.#sharedLengthPromise.start();
+			this.#sharedColumnsPromise.start();
+			return this;
+		} else if (initialData) {
 			this.#debug('Created with initial data');
 			this.#hasInitialData = true;
-			this.#data.push(...initialData);
-			this.#sharedDataPromise.resolve(this);
+
+			resolveMaybePromise(
+				(d) => {
+					this.#data = d;
+					this.#sharedDataPromise.resolve(this);
+					this.#fetchLength();
+				},
+				initialData,
+				(e) => {
+					this.#error = e;
+				}
+			);
 		}
+
 		if (knownColumns) {
 			if (!Array.isArray(knownColumns))
 				throw new Error(`Expected knownColumns to be an array`, { cause: knownColumns });
@@ -592,6 +901,9 @@ export class Query {
 				/* Async errors are handled elsewhere */ if (!isPromise) throw e;
 			}
 		);
+		if (opts.autoScore) {
+			this.#calculateScore();
+		}
 	}
 
 	////////////////////////////////////
@@ -639,15 +951,13 @@ export class Query {
 	 * @param {QueryEvents[Event]} value
 	 */
 	#emit = (event, value) => {
-		this.#handlerMap[event].forEach((fn) => {
-			fn(value);
-		});
+		this.#handlerMap[event].forEach((fn) => fn(value, event));
 	};
 
 	/**
 	 * @template {keyof QueryEvents} Event
 	 * @param {Event} event
-	 * @param {(v: QueryEvents[Event]) => void} handler
+	 * @param {import('./types.js').EventHandler<QueryEvents, Event>} handler
 	 */
 	on = (event, handler) => {
 		this.#handlerMap[event].add(handler);
@@ -655,7 +965,7 @@ export class Query {
 	/**
 	 * @template {keyof QueryEvents} Event
 	 * @param {Event} event
-	 * @param {(v: QueryEvents[Event]) => void} handler
+	 * @param {import('./types.js').EventHandler<QueryEvents, Event>} handler
 	 */
 	off = (event, handler) => {
 		this.#handlerMap[event].delete(handler);
@@ -693,6 +1003,62 @@ export class Query {
 		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
 			knownColumns: this.#columns
 		});
+
+	/**
+	 * @param {string[]} columns
+	 * @param {boolean} [withRowCount=true]
+	 */
+	groupBy = (columns, withRowCount) => {
+		const query = this.#query.clone();
+		query.$select(columns);
+		if (withRowCount) query.select({ rows: qCount('*') });
+		query.$groupby(columns);
+
+		return Query.create(query, this.#executeQuery, {
+			knownColumns: this.#columns
+		});
+	};
+
+	/**
+	 * @typedef {Object} AggArgs
+	 * @property {import("./types.js").MaybeAliasedCol | import("./types.js").MaybeAliasedCol[]} sum
+	 * @property {import("./types.js").MaybeAliasedCol | import("./types.js").MaybeAliasedCol[]} avg
+	 */
+
+	/**
+	 * @type {Record<keyof AggArgs, CallableFunction>}
+	 */
+	static #aggFns = {
+		sum: qSum,
+		avg: qAvg
+	};
+	/**
+	 *
+	 * @param {string} aggKey
+	 * @returns {aggKey is keyof AggArgs}
+	 */
+	static #checkAggFn = (aggKey) => {
+		return aggKey in Query.#aggFns;
+	};
+	/**
+	 * @param {AggArgs} cfg
+	 */
+	agg = (cfg) => {
+		const query = this.#query.clone();
+		for (const [aggType, aggArgs] of Object.entries(cfg)) {
+			if (!Query.#checkAggFn(aggType)) throw new Error(`Unknown agg function: ${aggType}`);
+			const aggFn = Query.#aggFns[aggType];
+			const argsArray = Array.isArray(aggArgs) ? aggArgs : [aggArgs];
+			for (const colSpec of argsArray) {
+				const alias = typeof colSpec === 'object' ? colSpec.as : `${aggType}_${colSpec}`;
+				const column = typeof colSpec === 'object' ? colSpec.col : colSpec;
+				query.select({
+					[alias]: aggFn(column)
+				});
+			}
+		}
+		return Query.create(query, this.#executeQuery, { knownColumns: this.#columns });
+	};
 
 	////////////////////////////////////
 	/// </ QueryBuilder Interface /> ///

@@ -108,7 +108,7 @@ These shouldn't flicker
 
 <br/>
 
-<Dropdown name="time_range" title="Time Range">
+<Dropdown name="time_range" title="Time Range" defaultValue="5 WEEK">
     <DropdownOption value="5 WEEK" valueLabel="Month" />
     <DropdownOption value="13 WEEK" valueLabel="Quarter" />
     <DropdownOption value="1 YEAR" valueLabel="Year" />

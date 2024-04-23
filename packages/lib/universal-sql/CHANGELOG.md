@@ -1,5 +1,12 @@
 # @evidence-dev/universal-sql
 
+## 2.1.2
+
+### Patch Changes
+
+- 7620a1af: removes unused duckdb dep
+- a95db3d3: Move types to devDependencies
+
 ## 2.1.1
 
 ### Patch Changes

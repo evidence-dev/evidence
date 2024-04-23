@@ -4,14 +4,15 @@
 
 <script>
 	import { QueryLoad } from '../../../atoms/query-load/index.js';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import Sparkline from './_Sparkline.svelte';
 	import EmptyChart from './EmptyChart.svelte';
 	import ErrorChart from './ErrorChart.svelte';
 
-	/** @type {import("@evidence-dev/query-store).QueryStore | unknown}*/
+	/** @type {import("@evidence-dev/sdk/usql).Query | unknown}*/
 	export let data;
 
-	const initialHash = typeof data === 'object' && '__isQueryStore' in data ? data.hash : undefined;
+	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 
 	let isInitial = data?.hash === initialHash;
 	$: isInitial = data?.hash === initialHash;
@@ -42,7 +43,7 @@
 		{isInitial}
 	/>
 	<ErrorChart let:loaded slot="error" {chartType} error={loaded.error.message} />
-	<Sparkline {...spreadProps} data={loaded?.__isQueryStore ? Array.from(loaded) : loaded} {queryID}>
+	<Sparkline {...spreadProps} data={Query.isQuery(loaded) ? Array.from(loaded) : loaded} {queryID}>
 		<slot />
 	</Sparkline>
 </QueryLoad>

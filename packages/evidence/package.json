@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/evidence",
-	"version": "32.0.0",
+	"version": "33.0.0",
 	"description": "dependencies for evidence projects",
 	"type": "module",
 	"keywords": [
@@ -54,6 +54,7 @@
 		"@evidence-dev/component-utilities": "workspace:*",
 		"@evidence-dev/core-components": "workspace:*",
 		"@evidence-dev/db-orchestrator": "workspace:*",
+		"@evidence-dev/sdk": "workspace:*",
 		"@evidence-dev/query-store": "workspace:*",
 		"@evidence-dev/tailwind": "workspace:*",
 		"@sveltejs/kit": "2.5.4",
