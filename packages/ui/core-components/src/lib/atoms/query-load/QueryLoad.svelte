@@ -34,7 +34,7 @@
 	{/if}
 {:else if !_data || (!_data?.loaded && !_data.error)}
 	<!-- Data is loading -->
-	<slot name="skeleton">
+	<slot name="skeleton" loaded={_data}>
 		<div class="w-full h-64">
 			<Skeleton />
 		</div>
