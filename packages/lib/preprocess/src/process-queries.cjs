@@ -289,6 +289,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}, 5000);
 		};
 
+		
 		const onInflightQueriesStart = () => {
 			toasts.add({
 				id: 'LoadingToast',

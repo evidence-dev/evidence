@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { isDebug } from '../lib/debug.js';
+import { isDebug } from '../../lib/debug.js';
 import {
 	Query as QueryBuilder,
 	sql,
@@ -8,23 +8,22 @@ import {
 	avg as qAvg,
 	count as qCount
 } from '@uwdata/mosaic-sql';
-import { EvidenceError } from '../lib/EvidenceError.js';
-import { sharedPromise } from '../lib/sharedPromise.js';
-import { resolveMaybePromise } from './utils.js';
+import { sharedPromise } from '../../lib/sharedPromise.js';
+import { resolveMaybePromise } from '../utils.js';
 import { getQueryScore } from './queryScore.js';
 
 /**
- * @typedef {import("./types.js").QueryResultRow} QueryResultRow
+ * @typedef {import("../types.js").QueryResultRow} QueryResultRow
  */
 
 /**
  * @template T
- * @typedef {import('./types.js').MaybePromise<T>} MaybePromise
+ * @typedef {import('../types.js').MaybePromise<T>} MaybePromise
  */
 
 /**
  * @template {QueryResultRow} [RowType=QueryResultRow]
- * @typedef  {import('../lib/sharedPromise.js').SharedPromise<Query<RowType>>} ChainableSharedPromise
+ * @typedef  {import('../../lib/sharedPromise.js').SharedPromise<Query<RowType>>} ChainableSharedPromise
  */
 
 /**
@@ -49,10 +48,10 @@ import { getQueryScore } from './queryScore.js';
  * @property {undefined} inFlightQueryStart
  * @property {undefined} inFlightQueryEnd
  */
-/** @typedef {import ("./types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
+/** @typedef {import ("../types.js").EventEmitter<QueryGlobalEvents>} QueryGlobalEventEmitter */
 
 /**
- * @typedef {import('./types.js').EventEmitter<QueryEvents>} QueryEventEmitter
+ * @typedef {import('../types.js').EventEmitter<QueryEvents>} QueryEventEmitter
  */
 
 /**
@@ -98,7 +97,7 @@ export class Query {
 	}
 
 	/// Columns
-	/** @type {import('../types/duckdb-wellknown.js').DescribeResultRow[]} */
+	/** @type {import('../../types/duckdb-wellknown.js').DescribeResultRow[]} */
 	#columns = [];
 	/** @type {Record<keyof RowType, undefined> | undefined} */
 	#mockRow = undefined;
@@ -170,7 +169,7 @@ export class Query {
 	 * The Query text as it is being executed
 	 */
 	get text() {
-		return this.#query.toString();
+		return this.#query?.toString() ?? 'EmptyQuery';
 	}
 
 	//////////////////////////////
@@ -186,6 +185,13 @@ export class Query {
 
 	static get QueriesInFlight() {
 		return Query.#inFlightQueries.size > 0;
+	}
+
+	/**
+	 * @protected
+	 */
+	static ResetInFlightQueries() {
+		Query.#inFlightQueries = new Set();
 	}
 
 	/**
@@ -207,7 +213,7 @@ export class Query {
 		});
 	};
 
-	/** @type {import("./types.js").EventMap<QueryGlobalEvents>} */
+	/** @type {import("../types.js").EventMap<QueryGlobalEvents>} */
 	static #globalHandlerMap = {
 		inFlightQueryStart: new Set(),
 		inFlightQueryEnd: new Set()
@@ -255,7 +261,6 @@ export class Query {
 				.then(([$lengthRaw, $columnsRaw]) => {
 					if ($lengthRaw.status === 'rejected' || $columnsRaw.status === 'rejected') {
 						// TODO: Throw here?
-						console.log('Length or columns rejected');
 						this.#score = -1;
 						return;
 					}
@@ -302,7 +307,7 @@ ${this.#query.toString()}
 		this.#debugStyled('\n' + dataQuery, 'font-family: monospace;');
 
 		// gotta love jsdoc sometimes
-		const typedRunner = /** @type {import('./types.js').Runner<RowType>} */ (this.#executeQuery);
+		const typedRunner = /** @type {import('../types.js').Runner<RowType>} */ (this.#executeQuery);
 		Query.#markInFlight(this);
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
@@ -390,12 +395,12 @@ ${this.#query.toString()}
 		const lengthQuery =
 			`
 ---- Length ${this.#id} (${this.#hash})
-SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
+SELECT COUNT(*) as rowCount FROM (${this.#query.toString()})
         `.trim() + '\n';
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
-			/** @type {import('./types.js').Runner<{rowCount: number}>} */
+			/** @type {import('../types.js').Runner<{rowCount: number}>} */
 			(this.#executeQuery);
 
 		this.#debugStyled('\n' + lengthQuery, 'font-family: monospace;');
@@ -454,7 +459,7 @@ DESCRIBE ${this.#query.toString()}
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
-			/** @type {import('./types.js').Runner<import('../types/duckdb-wellknown.js').DescribeResultRow>} */
+			/** @type {import('../types.js').Runner<import('../../types/duckdb-wellknown.js').DescribeResultRow>} */
 			(this.#executeQuery);
 
 		const resolved = resolveMaybePromise(
@@ -659,6 +664,71 @@ DESCRIBE ${this.#query.toString()}
 		}
 	};
 
+	/**
+	 *
+	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
+	 * @param {import('../types.js').QueryOpts<any>} [opts]
+	 */
+	static reactive2 = (reactiveOpts, opts) => {
+		console.log('reactive1');
+		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
+
+		/** @type {import('../types.js').CreateQuery<any>} */
+		const createFn = Query.create;
+		/** @type {QueryValue<any>} */
+		let activeQuery;
+
+		let changeIdx = 0;
+		const waitFor =
+			/**
+			 * @param {string} queryText
+			 * @returns {Promise<QueryValue>}
+			 */
+			async (queryText) => {
+				console.log(`WaitFor`);
+				// if (queryText === activeQuery?.originalText) return activeQuery;
+				changeIdx += 1;
+				const targetChangeIdx = changeIdx;
+				const newQuery = createFn(queryText, execFn, opts ?? {});
+				await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), newQuery.fetch()]);
+
+				if (changeIdx !== targetChangeIdx) {
+					Query.#debugStatic(`changeIdx does not match, results are discarded`);
+					callback(activeQuery);
+					return activeQuery;
+				} else {
+					activeQuery = newQuery;
+				}
+
+				callback(newQuery);
+				return newQuery;
+			};
+
+		function removeInitialState() {
+			delete opts?.initialData;
+			delete opts?.initialError;
+		}
+
+		/**
+		 * @param {string} queryText
+		 * @returns {Promise<QueryValue<any>>}
+		 */
+		return (queryText) => {
+			if (activeQuery) return waitFor(queryText);
+
+			if (import.meta.hot?.data?.hmr) removeInitialState();
+
+			activeQuery = createFn(queryText, execFn, opts ?? {});
+
+			resolveMaybePromise(removeInitialState, activeQuery.fetch());
+
+			// We don't want to use this after the initial creation!
+
+			callback(activeQuery);
+			return Promise.resolve(activeQuery);
+		};
+	};
+
 	/*
 		TODO: Write an update function?
 		Update will accept the same parameters as create (?)
@@ -667,14 +737,14 @@ DESCRIBE ${this.#query.toString()}
 	*/
 
 	/**
-	 * @param {import('./types.js').Runner} executeQuery
+	 * @param {import('../types.js').Runner} executeQuery
 	 * @param {string | import("@uwdata/mosaic-sql").Query} initialQuery
-	 * @param {import('./types.js').QueryOpts} [defaultOpts={}]
+	 * @param {import('../types.js').QueryOpts} [defaultOpts={}]
 	 * @param {number} [loadDelay=250]
-	 * @returns {{ initialValue: QueryValue, updater: <T extends QueryResultRow>(query: string, opts: import('./types.js').QueryOpts<T>) => Promise<QueryValue<T>>}}
+	 * @returns {{ initialValue: QueryValue, updater: <T extends QueryResultRow>(query: string, opts: import('../types.js').QueryOpts<T>) => Promise<QueryValue<T>>}}
 	 */
 	static reactive = (executeQuery, initialQuery, defaultOpts, loadDelay = 250) => {
-		/** @type {import('./types.js').CreateQuery<any>} */
+		/** @type {import('../types.js').CreateQuery<any>} */
 		const createFn = Query.create;
 
 		/** @type {QueryValue<any>} */
@@ -683,7 +753,7 @@ DESCRIBE ${this.#query.toString()}
 		/**
 		 * @template {QueryResultRow} [RowType=QueryResultRow]
 		 * @param {string | import("@uwdata/mosaic-sql").Query} query
-		 * @param {import('./types.js').QueryOpts<RowType>} [opts={}]
+		 * @param {import('../types.js').QueryOpts<RowType>} [opts={}]
 		 * @returns {Promise<QueryValue<RowType>>}
 		 */
 		const updater = async (query, opts) => {
@@ -708,13 +778,30 @@ DESCRIBE ${this.#query.toString()}
 		};
 	};
 
+	static #devModeBootstrapped = false;
+	static #devModeBootstraps = () => {
+		if (!import.meta.hot || Query.#devModeBootstrapped) return;
+		Query.#devModeBootstrapped = true;
+		// We need to do some dev mode pipeing
+		import.meta.hot.data.hmr = false;
+		import.meta.hot.on('vite:beforeUpdate', () => {
+			if (import.meta.hot) import.meta.hot.data.hmr = true;
+			// TODO: Check if we can look for a change in the query before remaking it?
+			Query.emptyCache();
+		});
+	};
+
 	/**
 	 * @template {QueryResultRow} [RowType=QueryResultRow]
-	 * @type {import("./types.js").CreateQuery<RowType>}
+	 * @type {import("../types.js").CreateQuery<RowType>}
 	 */
 	static create = (query, executeQuery, optsOrId, maybeOpts) => {
+		if (import.meta.hot) {
+			Query.#devModeBootstraps();
+		}
+
 		const queryHash = hashQuery(query);
-		/** @type {import('./types.js').QueryOpts<RowType>} */
+		/** @type {import('../types.js').QueryOpts<RowType>} */
 		let opts;
 		if (typeof optsOrId === 'string') {
 			opts = {
@@ -794,18 +881,18 @@ DESCRIBE ${this.#query.toString()}
 		return this.#hash;
 	}
 
-	/** @type {import('./types.js').Runner} */
+	/** @type {import('../types.js').Runner} */
 	#executeQuery;
 
-	/** @type {import('./types.js').QueryOpts} */
+	/** @type {import('../types.js').QueryOpts} */
 	opts;
 
 	// TODO: Score (this should be done in another file)
 	// TODO: When dealing with builder functions, add a `select` or similar
 	/**
 	 * @param {QueryBuilder | string} query
-	 * @param {import('./types.js').Runner} executeQuery
-	 * @param {import("./types.js").QueryOpts<RowType>} opts
+	 * @param {import('../types.js').Runner} executeQuery
+	 * @param {import("../types.js").QueryOpts<RowType>} opts
 	 * @deprecated Use {@link Query.create} instead
 	 */
 	constructor(query, executeQuery, opts = {}) {
@@ -819,9 +906,11 @@ DESCRIBE ${this.#query.toString()}
 		this.#executeQuery = executeQuery;
 
 		if (typeof query !== 'string' && !(query instanceof QueryBuilder)) {
-			throw new EvidenceError('Refusing to create Query, no query text provided', [
-				JSON.stringify(opts)
-			]);
+			console.warn(`Query ${id} has no query text`);
+			opts.noResolve = true;
+			// throw new EvidenceError('Refusing to create Query, no query text provided', [
+			// 	JSON.stringify(opts)
+			// ]);
 		}
 
 		if (!Query.#constructing) {
@@ -830,10 +919,13 @@ DESCRIBE ${this.#query.toString()}
 			);
 		}
 		Query.#constructing = false; // make sure we reset it
+		this.#value = this.#buildProxy();
+		this.#originalText = query?.toString() ?? 'EmptyQuery';
+		this.#hash = hashQuery(this.#originalText);
+		this.#id = id ?? this.#hash;
 
-		this.#originalText = query.toString();
-		if (typeof query !== 'string') this.#query = query;
-		else {
+		if (query && typeof query !== 'string') this.#query = query;
+		else if (query) {
 			const q = new QueryBuilder()
 				.from({
 					/* 
@@ -844,11 +936,11 @@ DESCRIBE ${this.#query.toString()}
 				})
 				.select('*');
 			this.#query = q;
+		} else {
+			this.#query = new QueryBuilder();
+			this.#error = new Error(`Refusing to create Query: No Query Text provided`);
+			return;
 		}
-
-		this.#hash = hashQuery(this.#originalText);
-		this.#id = id ?? this.#hash;
-		this.#value = this.#buildProxy();
 
 		if (initialError) {
 			this.#error = initialError;
@@ -867,8 +959,13 @@ DESCRIBE ${this.#query.toString()}
 			resolveMaybePromise(
 				(d) => {
 					this.#data = d;
-					this.#sharedDataPromise.resolve(this);
-					this.#fetchLength();
+					if (opts.initialDataDirty) {
+						this.publish('dataDirty');
+						this.#fetchData();
+					} else {
+						this.#sharedDataPromise.resolve(this);
+						this.#fetchLength();
+					}
 				},
 				initialData,
 				(e) => {
@@ -909,11 +1006,11 @@ DESCRIBE ${this.#query.toString()}
 	////////////////////////////////////
 	/// < Implement Store Contract > ///
 	////////////////////////////////////
-	/** @type {Set<import('./types.js').Subscriber<QueryValue<RowType>>>} */
+	/** @type {Set<import('../types.js').Subscriber<QueryValue<RowType>>>} */
 	#subscribers = new Set();
 
 	/**
-	 * @param {import('./types.js').Subscriber<QueryValue<RowType>>} fn
+	 * @param {import('../types.js').Subscriber<QueryValue<RowType>>} fn
 	 * @returns {() => void} Unsubscribe function
 	 */
 	subscribe = (fn) => {
@@ -938,7 +1035,7 @@ DESCRIBE ${this.#query.toString()}
 	///////////////////////////////////////
 	/// < EventEmitter Implementation > ///
 	///////////////////////////////////////
-	/** @type {import('./types.js').EventMap<QueryEvents>} */
+	/** @type {import('../types.js').EventMap<QueryEvents>} */
 	#handlerMap = {
 		dataReady: new Set(),
 		error: new Set(),
@@ -957,7 +1054,7 @@ DESCRIBE ${this.#query.toString()}
 	/**
 	 * @template {keyof QueryEvents} Event
 	 * @param {Event} event
-	 * @param {import('./types.js').EventHandler<QueryEvents, Event>} handler
+	 * @param {import('../types.js').EventHandler<QueryEvents, Event>} handler
 	 */
 	on = (event, handler) => {
 		this.#handlerMap[event].add(handler);
@@ -965,7 +1062,7 @@ DESCRIBE ${this.#query.toString()}
 	/**
 	 * @template {keyof QueryEvents} Event
 	 * @param {Event} event
-	 * @param {import('./types.js').EventHandler<QueryEvents, Event>} handler
+	 * @param {import('../types.js').EventHandler<QueryEvents, Event>} handler
 	 */
 	off = (event, handler) => {
 		this.#handlerMap[event].delete(handler);
@@ -985,11 +1082,49 @@ DESCRIBE ${this.#query.toString()}
 		Query.create(this.#query.clone().where(sql`${filterStatement}`), this.#executeQuery, {
 			knownColumns: this.#columns
 		});
+
+	/**
+	 * @param {string} searchTerm
+	 * @param {string} searchCol
+	 * @param {number} searchThreshold
+	 * @returns {QueryValue<RowType & {similarity: number}>}
+	 */
+	search = (searchTerm, searchCol, searchThreshold = 0.5) => {
+		/** @type {import('../../types/duckdb-wellknown.js').DescribeResultRow[]} */
+		const colsWithSimilarity = [
+			...this.#columns,
+			{ column_name: 'similarity', column_type: 'INTEGER', nullable: 'NO' }
+		];
+
+		/** @type {import('../types.js').CreateQuery<any>} */
+		const typedCreateFn = Query.create;
+
+		/** @type {QueryValue<RowType & {similarity: number}>} */
+		const output = typedCreateFn(
+			this.#query
+				.clone()
+				.$select(
+					{
+						similarity: taggedSql`jaro_winkler_similarity(lower('${searchTerm.replaceAll("'", "''")}'), lower(${searchCol}))`
+					},
+					'*'
+				)
+				.where(taggedSql`similarity > ${searchThreshold} `)
+				.orderby(taggedSql`similarity DESC`),
+			this.#executeQuery,
+			{
+				knownColumns: colsWithSimilarity
+			}
+		);
+		return output;
+	};
+
 	/** @param {number} limit */
 	limit = (limit) =>
 		Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
 			knownColumns: this.#columns
 		});
+
 	/** @param {number} offset */
 	offset = (offset) =>
 		Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
@@ -1021,8 +1156,8 @@ DESCRIBE ${this.#query.toString()}
 
 	/**
 	 * @typedef {Object} AggArgs
-	 * @property {import("./types.js").MaybeAliasedCol | import("./types.js").MaybeAliasedCol[]} sum
-	 * @property {import("./types.js").MaybeAliasedCol | import("./types.js").MaybeAliasedCol[]} avg
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} sum
+	 * @property {import("../types.js").MaybeAliasedCol | import("../types.js").MaybeAliasedCol[]} avg
 	 */
 
 	/**

@@ -1,6 +1,6 @@
 /**
  * @param {number} length
- * @param {import('./index.js').DescribeResultRow[]} columns
+ * @param {import('../index.js').DescribeResultRow[]} columns
  * @returns {number}
  */
 export const getQueryScore = (length, columns) => {
@@ -31,7 +31,7 @@ function isDecimalType(columnType) {
 
 /**
  *
- * @param {import('../types/duckdb-wellknown.js').DuckDBColumnType} columnType
+ * @param {import('../../types/duckdb-wellknown.js').DuckDBColumnType} columnType
  * @returns {number}
  */
 function columnTypeToScore(columnType) {

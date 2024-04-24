@@ -5,10 +5,7 @@
 <script>
 	import VirtualList from './Virtual.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import {
-		buildReactiveInputQuery,
-		getQueryFunction
-	} from '@evidence-dev/component-utilities/buildQuery';
+	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
@@ -20,16 +17,17 @@
 	import { Button } from '$lib/atoms/shadcn/button';
 	import Separator from '$lib/atoms/shadcn/separator/separator.svelte';
 	import Badge from '$lib/atoms/shadcn/badge/badge.svelte';
-	import Invisible from './Invisible.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { browser } from '$app/environment';
 	import debounce from 'lodash.debounce';
-	import { Query } from '@evidence-dev/sdk/usql';
+	import { duckdbSerialize } from '@evidence-dev/sdk/usql';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
+	import Invisible from './Invisible.svelte';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
-	/** @typedef {Object} Option
+	/**
+	 * @typedef {Object} DropdownValue
 	 * @property {string} label
 	 * @property {string} value
 	 */
@@ -44,43 +42,61 @@
 	/** @type {string} */
 	export let name;
 
+	/**
+	 * When true, multiple values can be selected
+	 * @type {boolean}
+	 */
 	export let multiple = false;
 
+	/**
+	 * When true, dropdown will not be shown during print
+	 * @type {boolean}
+	 */
 	export let hideDuringPrint = true;
 
 	export let disableSelectAll = false;
 
-	/** @type {string | string[]} */
+	/**
+	 * @type {string | string[]}
+	 */
 	export let defaultValue = [];
-	const _defaultValue = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
 
 	export let noDefault = false;
-	if (noDefault) {
-		_defaultValue.length = 0;
-	}
+	const _defaultValue = noDefault
+		? []
+		: Array.isArray(defaultValue)
+			? defaultValue
+			: [defaultValue];
 
-	const hasDefault = noDefault || _defaultValue.length > 0;
+	/**
+	 * Dropdown will select the first option automatically if no default
+	 * is provided.
+	 *
+	 * This behavior is disabled using the `noDefault` prop
+	 */
+	const skipAutoDefault = noDefault || _defaultValue.length > 0;
 
 	const ctx = {
-		hasBeenSet: hasDefault,
+		hasBeenSet: skipAutoDefault,
 		handleSelect,
 		multiple
 	};
 	setContext('dropdown_context', ctx);
 
+	/**
+	 * Contains label + value pairs used in the select
+	 * @type {import("svelte/store").Writable<DropdownValue[]}>}
+	 */
 	const selectedValues = writable([]);
 	setContext('dropdown_selected_values', selectedValues);
 
-	function jsToDuckDB(value) {
-		if (value == null) return 'null';
-		if (typeof value === 'string') return `'${value.replaceAll("'", "''")}'`;
-		if (typeof value === 'number' || typeof value === 'bigint' || typeof value === 'boolean')
-			return String(value);
-		if (value instanceof Date) return `'${value.toISOString()}'::TIMESTAMP_MS`;
-		if (Array.isArray(value)) return `[${value.map((x) => jsToDuckDB(x)).join(', ')}]`;
-		return JSON.stringify(value);
-	}
-
+	/**
+	 * Transforms selected label + value pairs into the expected value on the input store
+	 *
+	 * Serializes data to duckdb compatible strings
+	 * Joins labels with ', '
+	 * Transforms values into an array if multiple
+	 */
 	function selectedValuesToInput() {
 		let values;
 		if (multiple) {
@@ -88,11 +104,11 @@
 			values.toString = () =>
 				values.length === 0
 					? `(select null where 0)`
-					: `(${values.map((x) => jsToDuckDB(x)).join(', ')})`;
+					: `(${values.map((x) => duckdbSerialize(x)).join(', ')})`;
 		} else {
 			values = $selectedValues[0]?.value ?? null;
 			// the default `toString` method for Dates aren't good for duckdb
-			if (values instanceof Date) values.toString = () => jsToDuckDB(values);
+			if (values instanceof Date) values.toString = () => duckdbSerialize(values);
 		}
 
 		$inputs[name] = {
@@ -103,7 +119,7 @@
 
 	let open = false;
 
-	/** @param currentValue {Option} */
+	/** @param currentValue {DropdownValue} */
 	function handleSelect(currentValue) {
 		if (!multiple) {
 			$selectedValues = [currentValue];
@@ -135,67 +151,68 @@
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
 		`Dropdown-${name}`,
-		$page.data.data[`Dropdown-${name}`]
+		$page?.data?.data[`Dropdown-${name}`]
 	);
 	$: update({ value, data, label, order, where });
+	/** @type {{ hasQuery: boolean, query: import("@evidence-dev/sdk/usql").QueryValue }}*/
 	$: ({ hasQuery, query } = $results);
 
-	const exec = getQueryFunction();
-	function updateItems(search) {
-		items =
-			search && hasQuery
-				? Query.create(
-						`
-						SELECT
-							*,
-							jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
-						FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
-						exec,
-						{
-							initialData: $items ?? $query,
-							initialDataDirty: true,
-							id: `Dropdown-${name}-searched-${search}`
-						}
-					)
-				: $query;
-	}
+	// Uses context under the hood
+	const updateItems = debounce(() => {
+		if (search && hasQuery) {
+			const searchQ = query.search(search, 'label');
+			searchQ.fetch().then((v) => {
+				items = v;
+			});
+		} else {
+			items = $query;
+		}
+	}, 250);
 
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+	let items;
+	// Update the items when the query changes
+	$: search, updateItems();
+
+	/**
+	 * Resets the defaults whenever parameters change
+	 * @param {import("@evidence-dev/sdk/usql").QueryValue} query
+	 */
 	function useNewQuery(query) {
 		items = query;
 
-		if (hasQuery && hasDefault) {
+		function setDefaults() {
+			$selectedValues = query.filter(
+				(x) => typeof _defaultValue.find((d) => x.value === d) !== 'undefined'
+			);
+			selectedValuesToInput();
+		}
+		if (hasQuery && skipAutoDefault) {
 			ctx.hasBeenSet = true;
+
 			if (browser) {
 				(async () => {
 					await query.fetch();
-					$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
-					selectedValuesToInput();
+					setDefaults();
 				})();
 			} else {
-				$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
-				selectedValuesToInput();
+				setDefaults();
 			}
 		} else {
 			ctx.hasBeenSet = false;
 		}
 	}
 
-	let items;
 	$: useNewQuery($query);
-
-	const debouncedUpdateItems = debounce(updateItems, 250);
-	$: debouncedUpdateItems(search);
 </script>
 
-{#key $items}
-	<Invisible>
-		<slot />
+<Invisible>
+	<slot />
 
-		{#if hasQuery && $items.length > 0 && $items.loaded}
-			<DropdownOption value={$items[0].value} valueLabel={$items[0].label} />
-		{/if}
-	</Invisible>
-{/key}
+	{#if hasQuery}
+		<DropdownOption value={$items[0]?.value} valueLabel={$items[0]?.label} />
+	{/if}
+</Invisible>
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
@@ -231,7 +248,6 @@
 						{:else}
 							{title ?? formatTitle(name)}
 						{/if}
-						<!-- {$selectedValues.length > 0 && !multiple ? $selectedValues[0].label : title} -->
 						<Icon src={CaretSort} class="ml-2 h-4 w-4" />
 						{#if $selectedValues.length > 0 && multiple}
 							<Separator orientation="vertical" class="mx-2 h-4" />
@@ -245,9 +261,9 @@
 									</Badge>
 								{:else}
 									{#each $selectedValues as option}
-										<Badge variant="secondary" class="rounded-sm px-1 font-normal"
-											>{option.label}</Badge
-										>
+										<Badge variant="secondary" class="rounded-sm px-1 font-normal">
+											{option.label}
+										</Badge>
 									{/each}
 								{/if}
 							</div>

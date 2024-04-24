@@ -16,14 +16,15 @@
 	export let valueLabel = value;
 
 	const ctx = getContext('dropdown_context');
-
-	// The first DropdownOption is the selected by default, but defaultValue overrides it
-	if (!ctx.hasBeenSet) {
-		ctx.handleSelect({ value, label: valueLabel });
-		ctx.hasBeenSet = true;
-	}
-
 	const selectedValues = getContext('dropdown_selected_values');
+
+	$: if (invisible) {
+		if (!ctx.hasBeenSet) {
+			ctx.hasBeenSet = true;
+			console.log({ value, valueLabel });
+			ctx.handleSelect({ value, label: valueLabel });
+		}
+	}
 </script>
 
 {#if !invisible}
