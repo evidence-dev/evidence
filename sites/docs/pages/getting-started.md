@@ -1,0 +1,134 @@
+---
+sidebar_position: 3
+hide_table_of_contents: false
+title: Build your first dashboard
+description: A 10 minute guide to building your first dashboard in Evidence.
+---
+<div id="objectives" class="alert svelte-17118v7">
+<strong>By the end of this 10 minute guide, you will be able to:</strong>
+<ul>
+   <li>Create and edit a page in Evidence</li>
+   <li>Write a query on demo data</li>
+   <li>Create a table</li>
+   <li>Create a chart</li>
+   <li>Connect a new CSV data source</li>
+</ul>
+</div>
+
+
+<Alert status="info">
+Casey note: I like how the Rails tutorial calls out what you'll achieve, and adds these satisfying green checkmarks. I think it makes the reader feel good and excited. Baked my own CSS for this, happy to change to your suggestions
+</Alert>
+
+## Prerequisites
+
+Please ensure that you have already installed Evidence: [Install Evidence](/docs/install-evidence).
+
+New to web development? Start with the [Basics](#basics).
+
+Familiar with running a server at `localhost`, and writing pages in Markdown? Skip to [Working with data](#working-with-data).
+
+# Basics
+## 1. Start the dev server at localhost:3000
+
+Start your development server, if isn't already running: 
+
+- VSCode: Click `Start Evidence` in the bottom status bar.
+- Command Line: Run `npm run dev` in your project directory.
+
+If you chose a different setup during [Install Evidence](/docs/install-evidence), use the command that matches your setup.
+
+Your browser should open automatically. If it doesn't, open your browser and navigate to `localhost:3000` in the address bar. You should see your Evidence project:
+
+<img src="/img/getting-started/evidence_landing.png" width="400" class="tut-img"/>
+
+
+
+<div id="objectives" class="alert svelte-17118v7">
+<strong>What's a dev server?</strong>
+<br/>
+Dev server? localhost:3000? Hot reload? If you're new to web development, these terms might be unfamiliar. Don't worry.
+<br/><br/>
+It's not required for this tutorial, but if you want to find out more about what's going on under the hood, take a look at this FAQ about local development. [TODO add link]
+</div>
+
+## 2. Add a new page
+
+Go back to VSCode (or your file editor of choice) and open the `src/pages` directory. Right-click on the `pages` directory and select `New File`. Name the file `new-page.md`, or a name of your choice.
+
+Add the following to the file and save it (`Ctrl+S` or `Cmd+S`):
+
+```markdown
+## Hello Evidence
+
+This is a new page in Evidence.
+```
+
+Head back to Evidence in your browser. You should see your new page in the sidebar. If not, refresh:
+
+<img src="/img/getting-started/new_page.png" width="400" class="tut-img"/>
+
+## 3. Make more changes
+Make some more changes to the page. You'll see them reflected "live" in the browser, immediately after saving. There is no need to restart the server. 
+
+This is called **hot reloading**, and it allows you to see your changes in real-time.
+
+Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](https://www.markdownguide.org/).
+
+You can also insert HTML directly into your page if you need more control.
+
+Here are some examples of Markdown and HTML to try:
+
+```markdown
+## Hello Evidence
+
+This is a new page in Evidence.
+
+### This is a lower level header
+This is some *italic* and **bold** text.
+
+This is a [link](https://evidence.dev).
+
+This is an image inserted using Markdown: 
+![alt text](https://evidence.dev/brand-assets/wordmark-black.png)
+
+This is an image inserted using HTML:
+<img src="https://evidence.dev/brand-assets/wordmark-black.png" alt="evidence logo" width="200"/>
+
+```
+
+And here's how it will look when rendered in the browser:
+
+<img src="/img/getting-started/markdown_html.png" width="400" class="tut-img"/>
+
+Now that you know how to create and edit pages, let's move on to working with data.
+
+# Working with data
+## 4. Write a query
+
+Lorem ipsum
+
+## 5. Create a table
+
+Quick brown fox
+
+## 6. Create a chart
+
+Neque porro quisquam est qui dolorem ipsum 
+
+## 7. Connect a new CSV data source
+
+Nullam fermentum, ex ac volutpat porta,
+
+# Next steps
+
+<Alert status="info">
+TODO: suggestions for extending the tutorial, and pathways into further documentation
+</Alert>
+
+## Help and support
+If you run into any issues, [reach out in Slack.](https://slack.evidence.dev)
+
+<Alert status="info">
+TODO / thought: Not sure how much Slack retention history you guys have, but it might be nice to have a dedicated channel for tutorial support, so users can search for their issue in case someone else has already encountered it. Or post new ones (i.e. if this tut goes out of date)
+</Alert>
