@@ -60,11 +60,11 @@ select 'China' as country, 101 as value, 1996 as year
 
 ## Examples
 
-<BarChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
+<BarChart data={simpler_bar_unordered} x=year y=value series=country type=stacked100/>
 
-<BarChart swapXY=true xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
+<BarChart swapXY=true xType=category data={simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
 
-<AreaChart data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100/>
+<AreaChart data={simpler_bar_unordered} x=year y=value series=country type=stacked100/>
 
 ## Issues
 
@@ -75,7 +75,7 @@ select 'China' as country, 101 as value, 1996 as year
 </Chart>
 
 Y-axis title gets cut off when 100% stack is used:
-<BarChart xType=category data={data.simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
+<BarChart xType=category data={simpler_bar_unordered} x=year y=value series=country type=stacked100 yAxisTitle=true/>
 
 ## Single Series Stack
 
