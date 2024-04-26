@@ -1,5 +1,13 @@
 # @evidence-dev/core-components
 
+## 4.0.1
+
+### Patch Changes
+
+- cb6db1a1: Fix for Query not respecting noResolve properly
+  Skeleton slot for QueryLoad was not properly passing the "loaded" slot prop
+  - @evidence-dev/component-utilities@3.0.1
+
 ## 4.0.0
 
 ### Major Changes

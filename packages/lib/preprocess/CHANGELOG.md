@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.0.0
+
+### Major Changes
+
+- d60fdad7: Convert preprocess to use Query from sdk
+
 ## 4.1.2
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @evidence-dev/evidence
 
+## 33.0.1
+
+### Patch Changes
+
+- Updated dependencies [d60fdad7]
+- Updated dependencies [cb6db1a1]
+  - @evidence-dev/preprocess@5.0.0
+  - @evidence-dev/sdk@1.1.1
+  - @evidence-dev/core-components@4.0.1
+  - @evidence-dev/component-utilities@3.0.1
+  - @evidence-dev/plugin-connector@2.1.2
+
 ## 33.0.0
 
 ### Major Changes
