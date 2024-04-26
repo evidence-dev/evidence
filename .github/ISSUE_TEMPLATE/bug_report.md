@@ -1,21 +1,20 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report an issue to help us improve the VSCode Extension
 title: ''
-labels: 'bug, to-review'
+labels: 'review, bug'
 assignees: ''
 ---
 
 ## Steps To Reproduce
 
-Steps we can take to reproduce the issue you're seeing. Sample data is helpful.
+Steps we can take to reproduce the issue you're seeing.
 
 ### Environment
 
+- VSCode Extension version (Check in VSCode Marketplace): 
 - Node version (`node -v`):
 - npm version (`npm -v`):
-- OS:
-- Browser:
 - Database:
 
 ## Expected Behavior
