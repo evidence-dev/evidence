@@ -1,10 +1,4 @@
-import {
-  workspace,
-  FileStat,
-  FileType,
-  Uri,
-  WorkspaceFolder
-} from 'vscode';
+import { workspace, FileStat, FileType, Uri, WorkspaceFolder } from 'vscode';
 
 import { sendCommand } from '../terminal';
 import { timeout } from '../utils/timer';
@@ -23,14 +17,12 @@ import { getPackageJsonFolder } from '../utils/jsonUtils';
  */
 const nodeModules = `node_modules`;
 
-
-
 /**
  * Evidence node modules to update to the latest version.
  */
 const evidencePackages: string[] = [
-  '@evidence-dev/evidence@latest',
-  '@evidence-dev/core-components@latest'
+	'@evidence-dev/evidence@latest',
+	'@evidence-dev/core-components@latest'
 ];
 
 /**
@@ -39,54 +31,56 @@ const evidencePackages: string[] = [
  * @see https://docs.evidence.dev/getting-started/install-evidence
  */
 export async function installDependencies() {
+	// check if we need to run command in a different directory than root of the project:
+	const workspaceFolderPath = workspace.workspaceFolders
+		? workspace.workspaceFolders[0].uri.fsPath
+		: '';
+	const packageJsonFolder = await getPackageJsonFolder();
+	const cdCommand = packageJsonFolder ? `cd ${packageJsonFolder} ; ` : '';
+	const cdBackCommand = packageJsonFolder ? `; cd ${workspaceFolderPath}` : '';
 
-  // check if we need to run command in a different directory than root of the project:
-  const workspaceFolderPath = workspace.workspaceFolders ? workspace.workspaceFolders[0].uri.fsPath : '';
-  const packageJsonFolder = await getPackageJsonFolder();
-  const cdCommand = packageJsonFolder ? `cd ${packageJsonFolder} ; ` : '';
-  const cdBackCommand = packageJsonFolder ? `; cd ${workspaceFolderPath}` : '';
+	// check supported node version prior to server start
+	const nodeVersion = await getNodeVersion();
+	if (!isSupportedNodeVersion(nodeVersion)) {
+		promptToInstallNodeJsAndRestart(nodeVersion);
+	} else {
+		if (isServerRunning()) {
+			stopServer();
+			await timeout(1000);
+		} else {
+			// update open workspace context
+			updateProjectContext();
+		}
 
-  // check supported node version prior to server start
-  const nodeVersion = await getNodeVersion();
-  if (!isSupportedNodeVersion(nodeVersion)) {
-    promptToInstallNodeJsAndRestart(nodeVersion);
- } else {   
-    if (isServerRunning()) {
-      stopServer();
-      await timeout(1000);
-    }
-    else {
-      // update open workspace context
-      updateProjectContext();
-    }
-
-    sendCommand(`${cdCommand}npm install${cdBackCommand}`);
-    await timeout(1000);
-    statusBar.showInstalling();
-    await timeout(25000);
-    statusBar.showStart();
-  }
+		sendCommand(`${cdCommand}npm install${cdBackCommand}`);
+		await timeout(1000);
+		statusBar.showInstalling();
+		await timeout(25000);
+		statusBar.showStart();
+	}
 }
 
 /**
  * Updates all Evidence app librarires to the latest versions.
  */
 export async function updateDependencies() {
-  // check if we need to run command in a different directory than root of the project:
-  const workspaceFolderPath = workspace.workspaceFolders ? workspace.workspaceFolders[0].uri.fsPath : '';
-  const packageJsonFolder = await getPackageJsonFolder();
-  const cdCommand = packageJsonFolder ? `cd ${packageJsonFolder} ; ` : '';
-  const cdBackCommand = packageJsonFolder ? `; cd ${workspaceFolderPath}` : '';
+	// check if we need to run command in a different directory than root of the project:
+	const workspaceFolderPath = workspace.workspaceFolders
+		? workspace.workspaceFolders[0].uri.fsPath
+		: '';
+	const packageJsonFolder = await getPackageJsonFolder();
+	const cdCommand = packageJsonFolder ? `cd ${packageJsonFolder} ; ` : '';
+	const cdBackCommand = packageJsonFolder ? `; cd ${workspaceFolderPath}` : '';
 
-  if (isServerRunning()) {
-    stopServer();
-    await timeout(1000);
-  }
-  sendCommand(`${cdCommand}npm install ${evidencePackages.join(' ')}${cdBackCommand}`);
-  await timeout(5000);
-  statusBar.showStart();
+	if (isServerRunning()) {
+		stopServer();
+		await timeout(1000);
+	}
+	sendCommand(`${cdCommand}npm install ${evidencePackages.join(' ')}${cdBackCommand}`);
+	await timeout(5000);
+	statusBar.showStart();
 
-  telemetryService?.sendEvent('updateDependencies');
+	telemetryService?.sendEvent('updateDependencies');
 }
 
 /**
@@ -95,12 +89,12 @@ export async function updateDependencies() {
  * @see https://docs.evidence.dev/deployment/overview#build-process
  */
 export async function buildProject() {
-  if (isServerRunning()) {
-    stopServer();
-    await timeout(1000);
-  }
-  runCommandWithDepInstall('npm run build');
-  telemetryService?.sendEvent('build');
+	if (isServerRunning()) {
+		stopServer();
+		await timeout(1000);
+	}
+	runCommandWithDepInstall('npm run build');
+	telemetryService?.sendEvent('build');
 }
 
 /**
@@ -109,12 +103,12 @@ export async function buildProject() {
  * @see https://docs.evidence.dev/deployment/overview#buildstrict
  */
 export async function buildProjectStrict() {
-  if (isServerRunning()) {
-    stopServer();
-    await timeout(1000);
-  }
-  runCommandWithDepInstall('npm run build:strict');
-  telemetryService?.sendEvent('buildStrict');
+	if (isServerRunning()) {
+		stopServer();
+		await timeout(1000);
+	}
+	runCommandWithDepInstall('npm run build:strict');
+	telemetryService?.sendEvent('buildStrict');
 }
 
 /**
@@ -126,24 +120,25 @@ export async function buildProjectStrict() {
  * @param command Terminal command to execute.
  */
 export async function runCommandWithDepInstall(command: string) {
+	// check if we need to run command in a different directory than root of the project:
+	const workspaceFolderPath = workspace.workspaceFolders
+		? workspace.workspaceFolders[0].uri.fsPath
+		: '';
+	const packageJsonFolder = await getPackageJsonFolder();
+	const cdCommand = packageJsonFolder ? `cd ${packageJsonFolder} ; ` : '';
+	const cdBackCommand = packageJsonFolder ? `; cd ${workspaceFolderPath}` : '';
 
-  // check if we need to run command in a different directory than root of the project:
-  const workspaceFolderPath = workspace.workspaceFolders ? workspace.workspaceFolders[0].uri.fsPath : '';
-  const packageJsonFolder = await getPackageJsonFolder();
-  const cdCommand = packageJsonFolder ? `cd ${packageJsonFolder} ; ` : '';
-  const cdBackCommand = packageJsonFolder ? `; cd ${workspaceFolderPath}` : '';
-
-   // check supported node version prior to server start
-   const nodeVersion = await getNodeVersion();
-   if (!isSupportedNodeVersion(nodeVersion)) {
-      promptToInstallNodeJsAndRestart(nodeVersion);
-  } else {   
-    let depCommand = "";
-    if (!(await hasDependencies())) {
-      depCommand = `npm install ; `;
-    }
-    sendCommand(cdCommand + depCommand + command + cdBackCommand);
-  }
+	// check supported node version prior to server start
+	const nodeVersion = await getNodeVersion();
+	if (!isSupportedNodeVersion(nodeVersion)) {
+		promptToInstallNodeJsAndRestart(nodeVersion);
+	} else {
+		let depCommand = '';
+		if (!(await hasDependencies())) {
+			depCommand = `npm install ; `;
+		}
+		sendCommand(cdCommand + depCommand + command + cdBackCommand);
+	}
 }
 
 /**
@@ -153,16 +148,15 @@ export async function runCommandWithDepInstall(command: string) {
  * @see https://docs.evidence.dev/getting-started/install-evidence
  */
 export async function hasDependencies(): Promise<boolean> {
-  const workspaceFolder: WorkspaceFolder | undefined = getWorkspaceFolder();
-  if (workspaceFolder) {
-    const nodeModulesUri: Uri = Uri.joinPath(workspaceFolder.uri, nodeModules);
-    try {
-      const nodeModulesStat: FileStat = await workspace.fs.stat(nodeModulesUri);
-      return (nodeModulesStat.type === FileType.Directory);
-    }
-    catch (error) {
-      return false;
-    }
-  }
-  return false;
+	const workspaceFolder: WorkspaceFolder | undefined = getWorkspaceFolder();
+	if (workspaceFolder) {
+		const nodeModulesUri: Uri = Uri.joinPath(workspaceFolder.uri, nodeModules);
+		try {
+			const nodeModulesStat: FileStat = await workspace.fs.stat(nodeModulesUri);
+			return nodeModulesStat.type === FileType.Directory;
+		} catch (error) {
+			return false;
+		}
+	}
+	return false;
 }

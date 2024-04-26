@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  commands,
-  workspace,
-  WorkspaceFolder
-} from 'vscode';
+import { commands, workspace, WorkspaceFolder } from 'vscode';
 
 import { Commands } from './commands/commands';
 import { getExtensionContext } from './extensionContext';
@@ -12,18 +8,18 @@ import { getExtensionContext } from './extensionContext';
  * VSCode and Evidence extension settings.
  */
 export const enum Settings {
-  DefaultPort = 'defaultPort',
-  AutoStart = 'autoStart',
-  TemplateProjectUrl = 'templateProjectUrl',
-  PreviewType = 'previewType',
-  SlashCommands = 'slashCommands'
+	DefaultPort = 'defaultPort',
+	AutoStart = 'autoStart',
+	TemplateProjectUrl = 'templateProjectUrl',
+	PreviewType = 'previewType',
+	SlashCommands = 'slashCommands'
 }
 
 /**
  * Evidence extension context and state keys.
  */
 export const enum Context {
-  HasEvidenceProject = 'evidence.hasProject'
+	HasEvidenceProject = 'evidence.hasProject'
 }
 
 /**
@@ -34,7 +30,7 @@ export const enum Context {
  * @returns
  */
 export function getConfig<T>(settingName: string, defaultValue?: T) {
-  return workspace.getConfiguration().get(`evidence.${settingName}`, defaultValue);
+	return workspace.getConfiguration().get(`evidence.${settingName}`, defaultValue);
 }
 
 /**
@@ -45,13 +41,13 @@ export function getConfig<T>(settingName: string, defaultValue?: T) {
  * @see https://github.com/evidence-dev/evidence-vscode/issues/67
  */
 export function updateProjectContext() {
-  // set Evidence has project context valule flag
-  // for enabledment of commands that require an open Evidence project
-  commands.executeCommand(Commands.SetContext, Context.HasEvidenceProject, true);
+	// set Evidence has project context valule flag
+	// for enabledment of commands that require an open Evidence project
+	commands.executeCommand(Commands.SetContext, Context.HasEvidenceProject, true);
 
-  // set Evidence project workspace flag to check
-  // when markdown document preview is requested
-  getExtensionContext().workspaceState.update(Context.HasEvidenceProject, true);
+	// set Evidence project workspace flag to check
+	// when markdown document preview is requested
+	getExtensionContext().workspaceState.update(Context.HasEvidenceProject, true);
 }
 
 /**
@@ -62,9 +58,9 @@ export function updateProjectContext() {
  * @returns {WorkspaceFolder | undefined} The first workspace folder.
  */
 export function getWorkspaceFolder(): WorkspaceFolder | undefined {
-  const workspaceFolders = workspace.workspaceFolders;
-  if (workspaceFolders) {
-    return workspaceFolders[0];
-  }
-  return undefined;
+	const workspaceFolders = workspace.workspaceFolders;
+	if (workspaceFolders) {
+		return workspaceFolders[0];
+	}
+	return undefined;
 }

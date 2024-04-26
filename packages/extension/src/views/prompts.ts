@@ -1,6 +1,4 @@
-import {
-  window,
-} from 'vscode';
+import { window } from 'vscode';
 
 import { commands, Uri } from 'vscode';
 
@@ -11,23 +9,29 @@ import { installDependencies } from '../commands/build';
  * Displays a dialog to install Evidence node.js dependencies.
  */
 export async function showInstallDependencies() {
-  // prompt a user to install Evidence node.js dependencies
-  window.showInformationMessage(
-    'Would you like to install Evidence dev server dependencies?', 'Yes', 'No')
-    .then((selection) => {
-      if (selection === 'Yes') {
-        installDependencies();
-      }
-    });
-
+	// prompt a user to install Evidence node.js dependencies
+	window
+		.showInformationMessage(
+			'Would you like to install Evidence dev server dependencies?',
+			'Yes',
+			'No'
+		)
+		.then((selection) => {
+			if (selection === 'Yes') {
+				installDependencies();
+			}
+		});
 }
 
 /** Displays a dialog to reload VS Code window. */
 export async function showRestartPrompt() {
-  // prompt a user to reload VS Code window
-  window.showInformationMessage(
-    'You need to manually quit and restart VSCode after installing Node.\n(On Windows a computer restart may be required.)', { modal: true }, 'Okay');
-  }
+	// prompt a user to reload VS Code window
+	window.showInformationMessage(
+		'You need to manually quit and restart VSCode after installing Node.\n(On Windows a computer restart may be required.)',
+		{ modal: true },
+		'Okay'
+	);
+}
 
 /**
  * Displays a dialog to select a folder.
@@ -35,14 +39,14 @@ export async function showRestartPrompt() {
  * @returns The selected folder Uri, or undefined.
  */
 export async function showSelectFolderDialog(): Promise<Uri[] | undefined> {
-  // show open dialog to select an empty folder for a new Evidence project
-  return await window.showOpenDialog({
-    title: 'New Evidence Project Folder',
-    canSelectFiles: false,
-    canSelectFolders: true,
-    canSelectMany: false,
-    openLabel: 'Create project in this folder'
-  });
+	// show open dialog to select an empty folder for a new Evidence project
+	return await window.showOpenDialog({
+		title: 'New Evidence Project Folder',
+		canSelectFiles: false,
+		canSelectFolders: true,
+		canSelectMany: false,
+		openLabel: 'Create project in this folder'
+	});
 }
 
 /**
@@ -53,17 +57,16 @@ export async function showSelectFolderDialog(): Promise<Uri[] | undefined> {
  * @param projectFolder Project folder to open.
  */
 export async function showOpenFolder(projectFolder: Uri) {
-  // display Open Folder notification message
-  window.showInformationMessage(
-    `Evidence project created in: ${projectFolder.fsPath}`,
-    'Open Folder'
-  ).then((selection: string | undefined) => {
-    if (selection === 'Open Folder') {
-      // open created project folder in a new VS Code window
-      // if the user selected the Open Folder option
-      commands.executeCommand(Commands.OpenFolder, projectFolder, true);
-    }
-  });
+	// display Open Folder notification message
+	window
+		.showInformationMessage(`Evidence project created in: ${projectFolder.fsPath}`, 'Open Folder')
+		.then((selection: string | undefined) => {
+			if (selection === 'Open Folder') {
+				// open created project folder in a new VS Code window
+				// if the user selected the Open Folder option
+				commands.executeCommand(Commands.OpenFolder, projectFolder, true);
+			}
+		});
 }
 
 /**
@@ -73,10 +76,10 @@ export async function showOpenFolder(projectFolder: Uri) {
  * @param projectFolder Project folder to open.
  */
 export async function openNewProjectFolder(projectFolder: Uri) {
-  // true = open in new window
-  // false = open in current window
-  // SET TO FALSE FOR TESTING ONLY - CHANGE TO TRUE BEFORE RELEASE
-  commands.executeCommand(Commands.OpenFolder, projectFolder, true);
+	// true = open in new window
+	// false = open in current window
+	// SET TO FALSE FOR TESTING ONLY - CHANGE TO TRUE BEFORE RELEASE
+	commands.executeCommand(Commands.OpenFolder, projectFolder, true);
 }
 
 /**
@@ -85,9 +88,6 @@ export async function openNewProjectFolder(projectFolder: Uri) {
  * @param templateUrl The provided template project Url.
  */
 export function showInvalidTemplateProjectUrlErrorMessage(templateUrl: string) {
-  // show invalid template project Url message
-  window.showErrorMessage(
-    `Invalid Evidence project template Url: ${templateUrl}`,
-    'OK'
-  );
+	// show invalid template project Url message
+	window.showErrorMessage(`Invalid Evidence project template Url: ${templateUrl}`, 'OK');
 }

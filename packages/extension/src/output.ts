@@ -1,7 +1,4 @@
-import {
-  window,
-  OutputChannel
-} from 'vscode';
+import { window, OutputChannel } from 'vscode';
 
 /**
  * Evidence output channel title.
@@ -21,16 +18,16 @@ let _outputChannel: OutputChannel | undefined;
  * @returns VScode Terminal instance.
  */
 export function getOutputChannel(): OutputChannel {
-  if (_outputChannel === undefined) {
-    _outputChannel = window.createOutputChannel(channelName);
-    _outputChannel.appendLine(`Evidence dev server and extension logging output:`);
-  }
-  return _outputChannel;
+	if (_outputChannel === undefined) {
+		_outputChannel = window.createOutputChannel(channelName);
+		_outputChannel.appendLine(`Evidence dev server and extension logging output:`);
+	}
+	return _outputChannel;
 }
 
 /**
  * Shows Evidence extension output channel in the Output view.
  */
 export function showOutput() {
-  getOutputChannel().show();
+	getOutputChannel().show();
 }
