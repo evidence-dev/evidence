@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/components",
-	"version": "3.4.12",
+	"version": "3.4.13",
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",

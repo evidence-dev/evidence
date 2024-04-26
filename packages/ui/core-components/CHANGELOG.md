@@ -1,5 +1,14 @@
 # @evidence-dev/core-components
 
+## 4.0.2
+
+### Patch Changes
+
+- 41a9f1b5: Reintroduce error handling to DataTable
+- 0a67d65e: fix: calendar heatmap off by 1 error
+- 63908810: Fix scrollbar appearing on last chart on page
+- 09b999d5: Update Evidence Cloud link in Settings
+
 ## 4.0.1
 
 ### Patch Changes

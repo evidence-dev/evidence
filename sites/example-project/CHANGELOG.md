@@ -1,5 +1,16 @@
 # @evidence-dev/components
 
+## 3.4.13
+
+### Patch Changes
+
+- 1efc3f8d: update deprecated data.query syntax used for stacked charts in example project
+- Updated dependencies [41a9f1b5]
+- Updated dependencies [0a67d65e]
+- Updated dependencies [63908810]
+- Updated dependencies [09b999d5]
+  - @evidence-dev/core-components@4.0.2
+
 ## 3.4.12
 
 ### Patch Changes
