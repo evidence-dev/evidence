@@ -1,431 +1,360 @@
 {
-  "SQL Query Block": {
-    "prefix": "/SQL Query Block",
-    "body": [
-      "```sql ${1:query_name}",
-      "${0:query}",
-      "```\n\n"
-    ],
-    "description": "Insert SQL query block"
-  },
-  "Chart": {
-    "prefix": "/Chart",
-    "body": [
-      "<Chart data={${1:query_name}} x=${2:column} y=${3:column}>\n\t${4:<Line/>}\n</Chart>\n\n"
-    ],
-    "description": "Insert Composable Chart"
-  },
-  "Line Chart": {
-    "prefix": "/LineChart",
-    "body": [
-      "<LineChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"
-    ],
-    "description": "Insert Line Chart"
-  },
-  "Line Chart with Annotations": {
-    "prefix": "/LineChartWithAnnotations",
-    "body": [
-      "<LineChart data={${1:query_name}} x=${2:column} y=${3:column}>\n\t<ReferenceLine y=5400000 label='Target'/>\n\t<ReferenceArea xMin='2002-03-14' xMax='2003-04-23' label='Recession'/>\n</LineChart>\n\n"
-    ],
-    "description": "Insert Line Chart With Annotations"
-  },
-  "Area Chart": {
-    "prefix": "/AreaChart",
-    "body": [
-      "<AreaChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"
-    ],
-    "description": "Insert Area Chart"
-  },
-  "Bar Chart": {
-    "prefix": "/BarChart",
-    "body": [
-      "<BarChart\n\tdata={${1:query_name}}\n\tx=${2:column_name}\n\ty=${3:column_name}\n/>\n\n"
-    ],
-    "description": "Insert Bar Chart"
-  },
-  "Box Plot": {
-    "prefix": "/BoxPlot",
-    "body": [
-      "<BoxPlot\n\tdata={${1:query_name}}\n\tname=${2:column_name}\n\tmin=${3:column_name}\n\tintervalBottom=${4:column_name}\n\tmidpoint=${5:column_name}\n\tintervalTop=${6:column_name}\n\tmax=${7:column_name}\n/>\n\n"
-    ],
-    "description": "Insert Box Plot"
-  },
-  "Scatter Plot": {
-    "prefix": "/ScatterPlot",
-    "body": [
-      "<ScatterPlot\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"
-    ],
-    "description": "Insert Scatter Plot"
-  },
-  "Bubble Chart": {
-    "prefix": "/BubbleChart",
-    "body": [
-      "<BubbleChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"
-    ],
-    "description": "Insert Bubble Chart"
-  },
-  "Histogram": {
-    "prefix": "/Histogram",
-    "body": [
-      "<Histogram data={${1:query_name}} x=${2:column}/>\n\n"
-    ],
-    "description": "Insert Histogram"
-  },
-  "Data Table": {
-    "prefix": "/DataTable",
-    "body": [
-      "<DataTable data={${1:query_name}}/>\n\n"
-    ],
-    "description": "Insert Data Table"
-  },
-  "Column": {
-    "prefix": "/Column",
-    "body": [
-      "<Column id=${1:column_name}/>"
-    ],
-    "description": "[Must be used within DataTable] Insert Column"
-  },
-  "Data Table with Columns": {
-    "prefix": "/DataTableWithColumns",
-    "body": [
-      "<DataTable data={${1:query_name}}>\n\t<Column id=${2:column_name} fmt=usd/>\n\t<Column id=${3:column_name} contentType=link align=center/>\n</DataTable>"
-    ],
-    "description": "Insert Data Table"
-  },
-  "Value": {
-    "prefix": "/Value",
-    "body": [
-      "<Value data={${1:query_name}} column=${2:column_name} fmt=${3:usd}/>"
-    ],
-    "description": "Value Component"
-  },
-  "Loop": {
-    "prefix": "/Loop",
-    "body": [
-      "{#each ${1:query_name} as row}\n\n\t- <Value data={row} column=${4:column_name}/>\n\n{/each}\n\n"
-    ],
-    "description": "Insert Each Block"
-  },
-  "If Block": {
-    "prefix": "/If Block",
-    "body": [
-      "{#if ${1:query_name.length > 10}}\n\n\t${2:There are more than 10 observations}\n\n{/if}\n\n"
-    ],
-    "description": "Insert If Block"
-  },
-  "IfElse Block": {
-    "prefix": "/IfElse Block",
-    "body": [
-      "{#if ${1:query_name.length > 1000}}\n\n\t${2:This is a high volume orders day}\n\n{:else}\n\n\t${3:This is a low volume orders day}\n\n{/if}\n\n"
-    ],
-    "description": "Insert IfElse Block"
-  },
-  "Markdown Table": {
-    "prefix": "/Markdown Table",
-    "body": [
-      "| ${1:Column 1} | ${2:Column 2} | ${3:Column 3} |\n| -------- | -------- | -------- |\n| ${4:   1    } | ${5:   2    } | ${6:   3    } |\n| ${7:   4    } | ${8:   5    } | ${9:   6    } |\n\n"
-    ],
-    "description": "Insert Markdown Table"
-  },
-  "Sankey Chart": {
-    "prefix": "/SankeyDiagram",
-    "body": [
-      "<SankeyDiagram\n\tdata={${1:query_name}}\n\tsourceCol=${2:column}\n\ttargetCol=${3:column}\n\tvalueCol=${4:column}\n/>\n\n"
-    ],
-    "description": "Insert Sankey Diagram"
-  },
-  "Funnel Chart": {
-    "prefix": "/FunnelChart",
-    "body": [
-      "<FunnelChart\n\tdata={${1:query_name}}\n\tnameCol=${2:column}\n\tvalueCol=${3:column}\n/>\n\n"
-    ],
-    "description": "Insert Funnel Chart"
-  },
-  "Alert": {
-    "prefix": "/Alert",
-    "body": [
-      "<Alert status=${1|none,info,success,warning,danger|}>\n\t${2:Alert Content}\n</Alert>\n\n"
-    ],
-    "description": "Insert Alert"
-  },
-  "Tabs": {
-    "prefix": "/Tabs",
-    "body": [
-      "<Tabs>\n\t<Tab label='${1:Tab One}'>\n\t\t${2:Tab One Content}\n\t</Tab>\n\t<Tab label='${3:Tab Two}'>\n\t\t${4:Tab Two Content}\n\t</Tab>\n</Tabs>\n\n"
-    ],
-    "description": "Insert Tabs"
-  },
-  "Big Value": {
-    "prefix": "/BigValue",
-    "body": [
-      "<BigValue\n\tdata={${1:query_name}}\n\tvalue=${2:column}\n/>\n\n"
-    ],
-    "description": "Insert Big Value"
-  },
-  "Reference Area": {
-    "prefix": "/ReferenceArea",
-    "body": [
-      "<ReferenceArea ${1|xMin,yMin|}=${3:value} ${2|xMax,yMax|}=${4:value} label=${5:Label} />"
-    ],
-    "description": "[Must be used within a chart] Insert Reference Area"
-  },
-  "Reference Line": {
-    "prefix": "/ReferenceLine",
-    "body": [
-      "<ReferenceLine ${1|x,y|}=${2:value} label=${3:Label} />"
-    ],
-    "description": "[Must be used within a chart] Insert Reference Line"
-  },
-  "US Map": {
-    "prefix": "/USMap",
-    "body": [
-      "<USMap\n\tdata={${1:query_name}}\n\tstate=${2:column}\n\tvalue=${3:column}\n\tabbreviations=${4:false}\n/>\n\n"
-    ],
-    "description": "Insert US Map"
-  },
-  "Today's Date": {
-    "prefix": "/today",
-    "body": [
-      "${CURRENT_MONTH_NAME} ${CURRENT_DATE}, ${CURRENT_YEAR}"
-    ],
-    "description": "Insert today's date"
-  },
-  "Block Quote": {
-    "prefix": "/BlockQuote",
-    "body": [
-      "> Quote Content\n>\n> -- _Author_"
-    ],
-    "description": "Insert Block Quote"
-  },
-  "Link": {
-    "prefix": "/Link",
-    "body": [
-      "[${1:label}](${2:/path/to/page})"
-    ],
-    "description": "Insert Link"
-  },
-  "Image": {
-    "prefix": "/Image",
-    "body": [
-      "![${1:image_name}](${2:my-image.png})"
-    ],
-    "description": "Insert Image"
-  },
-  "Numbered List": {
-    "prefix": "/NumberedList",
-    "body": [
-      "1. ${1:One}\n2. ${2:Two}\n3. ${3:Three}"
-    ],
-    "description": "Insert Numbered List"
-  },
-  "Bulleted List": {
-    "prefix": "/BulletedList",
-    "body": [
-      "- ${1:One}\n- ${2:Two}\n- ${3:Three}"
-    ],
-    "description": "Insert Bulleted List"
-  },
-  "Page Parameter": {
-    "prefix": "/Page Parameter",
-    "body": [
-      "{params.${TM_FILENAME_BASE/[\\[\\]]//gi}}"
-    ],
-    "description": "[For Templated Pages Only] Insert Page Parameter"
-  },
-  "Divider": {
-    "prefix": "/Divider",
-    "body": [
-      "---"
-    ],
-    "description": "Insert a Horizontal Divider"
-  },
-  "Highlight": {
-    "prefix": "/Highlight",
-    "body": [
-      "<mark>${1:text}</mark>"
-    ],
-    "description": "Highlight Text"
-  },
-  "ECharts": {
-    "prefix": "/ECharts",
-    "body": [
-      "<ECharts config={\n\t{\n\t\ttooltip: {\n\t\t\tformatter: '{b}: {c}'\n\t\t},\n\t\tseries: [\n\t\t\t{\n\t\t\t\ttype: 'funnel',\n\t\t\t\tdata: funnel_data,\n\t\t\t}\n\t\t]\n\t}\n}/>"
-    ],
-    "description": "Highlight Text"
-  },
-  "Strikethrough": {
-    "prefix": "/Strikethrough",
-    "body": [
-      "~~${1:text}~~"
-    ],
-    "description": "Add strikethrough to text"
-  },
-  "Superscript": {
-    "prefix": "/Superscript",
-    "body": [
-      "<sup>${1:text}</sup>"
-    ],
-    "description": "Add superscript text"
-  },
-  "Subscript": {
-    "prefix": "/Subscript",
-    "body": [
-      "<sub>${1:text}</sub>"
-    ],
-    "description": "Add subscript text"
-  },
-  "Filtered Query Result": {
-    "prefix": "/Filtered Query Result",
-    "body": [
-      "${1:query_name}.filter(d => d.${2:column} === '${3:value}')"
-    ],
-    "description": "Insert a filtered query result"
-  },
-  "Modal": {
-    "prefix": "/Modal",
-    "body": [
-      "<Modal title=${1:'Modal Title'} buttonText=${2:'Button Text'}>\n\t${3:Modal Content}\n</Modal>\n\n"
-    ],
-    "description": "Insert Modal"
-  },
-  "Accordion": {
-    "prefix": "/Accordion",
-    "body": [
-      "<Accordion>\n\t<AccordionItem title='${1:Item One}'>\n\t\t${2:Item One Content}\n\t</AccordionItem>\n\t<AccordionItem title='${3:Item Two}'>\n\t\t${4:Item Two Content}\n\t</AccordionItem>\n</Accordion>\n\n"
-    ],
-    "description": "Insert Accordion"
-  },
-  "LinkButton": {
-    "prefix": "/LinkButton",
-    "body": [
-      "<LinkButton url=${2:'/other-page'}>\n\t${3:Button Label}\n</LinkButton>\n\n"
-    ],
-    "description": "Insert LinkButton"
-  },
-  "BigLink": {
-    "prefix": "/BigLink",
-    "body": [
-      "<BigLink href=${1:'/other-page'}>\n\t${3:Link Label}\n</BigLink>\n\n"
-    ],
-    "description": "Insert BigLink"
-  },
-  "Details": {
-    "prefix": "/Details",
-    "body": [
-      "<Details title=${1:'More Details'}>\n\t${2:Details Content}\n</Details>\n\n"
-    ],
-    "description": "Insert Details"
-  },
-  "Code Block": {
-    "prefix": "/Code Block",
-    "body": [
-      "```${1:python}",
-      "\t${2:}",
-      "```\n\n"
-    ],
-    "description": "Insert code block"
-  },
-  "Frontmatter": {
-    "prefix": "/Frontmatter",
-    "body": [
-      "---",
-      "title: ${1:Page Title}",
-      "queries:",
-      " - ${2:myquery: myquery.sql}",
-      "---" 
-    ],
-    "description": "Insert frontmatter (should be at top of markdown page)"
-  },
-  "Dropdown": {
-    "prefix": "/Dropdown",
-    "body": "<Dropdown data={${1:query_name}} name=${2:name_of_dropdown} value=${3:column_name}/>\n\n",
-    "description": "Insert dropdown component"
-  },
-  "Dropdown with filtered query": {
-    "prefix": "/DropdownWithFilteredQuery",
-    "body": [
-      "<Dropdown data={data} name=${1:name_of_dropdown} value=${2:column_name}/>",
-      "",
-      "```sql filtered_query",
-      "select * from table where column_name = '${inputs.name_of_dropdown.value}'",
-      "```"
-    ],
-    "description": "Insert dropdown component and filtered query"
-  },
-  "Dropdown Multi-Select": {
-    "prefix": "/DropdownMultiSelect",
-    "body": "<Dropdown multiple=true data={data} name=${1:name_of_dropdown} value=${2:column_name}/>\n\n",
-    "description": "Insert dropdown with multi-select"
-  },
-  "TextInput": {
-    "prefix": "/TextInput",
-    "body": "<TextInput name=${1:name_of_input} title=${2:Search}/>\n\n",
-    "description": "Insert text input component"
-  },
-  "ButtonGroup": {
-    "prefix": "/ButtonGroup",
-    "body": "<ButtonGroup data={${1:query_name}} name=${2:name_of_input} value=${3:column_name}/>\n\n",
-    "description": "Insert button group component"
-  },
-  "Heatmap": {
-    "prefix": "/Heatmap",
-    "body": [
-      "<Heatmap\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tvalue=${3:column}\n/>\n\n"
-    ],
-    "description": "Insert Heatmap"
-  },
-  "CalendarHeatmap": {
-    "prefix": "/CalendarHeatmap",
-    "body": [
-      "<CalendarHeatmap\n\tdata={${1:query_name}}\n\tdate=${2:column}\n\tvalue=${3:column}\n/>\n\n"
-    ],
-    "description": "Insert CalendarHeatmap"
-  },
-  "Sparkline": {
-    "prefix": "/Sparkline",
-    "body": "<Sparkline data={${1:query_name}} dateCol=${2:column_name} valueCol=${3:column_name}/>\n\n",
-    "description": "Insert Sparkline"
-  },
-  "DateRange": {
-    "prefix": "/DateRange",
-    "body": "<DateRange name=${1:name_of_input} data={${2:query_name}} dates=${3:column_name}/>\n\n",
-    "description": "Insert date range input"
-  },
-  "Grid": {
-    "prefix": "/Grid",
-    "body": [
-      "<Grid cols=2>\n\t${1:Grid Content}\n</Grid>\n\n"
-    ],
-    "description": "Insert Grid"
-  },
-  "LineBreak": {
-    "prefix": "/LineBreak",
-    "body": "<LineBreak lines=1/>\n\n",
-    "description": "Insert empty line(s) on page"
-  },
-  "PageBreak": {
-    "prefix": "/PageBreak",
-    "body": "<PageBreak/>\n\n",
-    "description": "Insert page break for PDF and printing"
-  },
-  "PrintGroup": {
-    "prefix": "/PrintGroup",
-    "body": [
-      "<PrintGroup hidden=false>\n\t${1:PrintGroup Content}\n</PrintGroup>\n\n"
-    ],    
-    "description": "Insert print group to keep content together, or hide it, during printing"
-  },
-  "DimensionGrid": {
-    "prefix": "/DimensionGrid",
-    "body": "<DimensionGrid data={${1:query_name}}/>\n\n",
-    "description": "Insert dimension grid component"
-  },
-  "Delta": {
-    "prefix": "/Delta",
-    "body": [
-      "<Delta data={${1:query_name}} column=${2:column_name} fmt=${3:usd}/>"
-    ],
-    "description": "Delta Component"
-  },
+	"SQL Query Block": {
+		"prefix": "/SQL Query Block",
+		"body": ["```sql ${1:query_name}", "${0:query}", "```\n\n"],
+		"description": "Insert SQL query block"
+	},
+	"Chart": {
+		"prefix": "/Chart",
+		"body": [
+			"<Chart data={${1:query_name}} x=${2:column} y=${3:column}>\n\t${4:<Line/>}\n</Chart>\n\n"
+		],
+		"description": "Insert Composable Chart"
+	},
+	"Line Chart": {
+		"prefix": "/LineChart",
+		"body": ["<LineChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"description": "Insert Line Chart"
+	},
+	"Line Chart with Annotations": {
+		"prefix": "/LineChartWithAnnotations",
+		"body": [
+			"<LineChart data={${1:query_name}} x=${2:column} y=${3:column}>\n\t<ReferenceLine y=5400000 label='Target'/>\n\t<ReferenceArea xMin='2002-03-14' xMax='2003-04-23' label='Recession'/>\n</LineChart>\n\n"
+		],
+		"description": "Insert Line Chart With Annotations"
+	},
+	"Area Chart": {
+		"prefix": "/AreaChart",
+		"body": ["<AreaChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"description": "Insert Area Chart"
+	},
+	"Bar Chart": {
+		"prefix": "/BarChart",
+		"body": [
+			"<BarChart\n\tdata={${1:query_name}}\n\tx=${2:column_name}\n\ty=${3:column_name}\n/>\n\n"
+		],
+		"description": "Insert Bar Chart"
+	},
+	"Box Plot": {
+		"prefix": "/BoxPlot",
+		"body": [
+			"<BoxPlot\n\tdata={${1:query_name}}\n\tname=${2:column_name}\n\tmin=${3:column_name}\n\tintervalBottom=${4:column_name}\n\tmidpoint=${5:column_name}\n\tintervalTop=${6:column_name}\n\tmax=${7:column_name}\n/>\n\n"
+		],
+		"description": "Insert Box Plot"
+	},
+	"Scatter Plot": {
+		"prefix": "/ScatterPlot",
+		"body": ["<ScatterPlot\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n/>\n\n"],
+		"description": "Insert Scatter Plot"
+	},
+	"Bubble Chart": {
+		"prefix": "/BubbleChart",
+		"body": [
+			"<BubbleChart\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tsize=${4:column}\n/>\n\n"
+		],
+		"description": "Insert Bubble Chart"
+	},
+	"Histogram": {
+		"prefix": "/Histogram",
+		"body": ["<Histogram data={${1:query_name}} x=${2:column}/>\n\n"],
+		"description": "Insert Histogram"
+	},
+	"Data Table": {
+		"prefix": "/DataTable",
+		"body": ["<DataTable data={${1:query_name}}/>\n\n"],
+		"description": "Insert Data Table"
+	},
+	"Column": {
+		"prefix": "/Column",
+		"body": ["<Column id=${1:column_name}/>"],
+		"description": "[Must be used within DataTable] Insert Column"
+	},
+	"Data Table with Columns": {
+		"prefix": "/DataTableWithColumns",
+		"body": [
+			"<DataTable data={${1:query_name}}>\n\t<Column id=${2:column_name} fmt=usd/>\n\t<Column id=${3:column_name} contentType=link align=center/>\n</DataTable>"
+		],
+		"description": "Insert Data Table"
+	},
+	"Value": {
+		"prefix": "/Value",
+		"body": ["<Value data={${1:query_name}} column=${2:column_name} fmt=${3:usd}/>"],
+		"description": "Value Component"
+	},
+	"Loop": {
+		"prefix": "/Loop",
+		"body": [
+			"{#each ${1:query_name} as row}\n\n\t- <Value data={row} column=${4:column_name}/>\n\n{/each}\n\n"
+		],
+		"description": "Insert Each Block"
+	},
+	"If Block": {
+		"prefix": "/If Block",
+		"body": [
+			"{#if ${1:query_name.length > 10}}\n\n\t${2:There are more than 10 observations}\n\n{/if}\n\n"
+		],
+		"description": "Insert If Block"
+	},
+	"IfElse Block": {
+		"prefix": "/IfElse Block",
+		"body": [
+			"{#if ${1:query_name.length > 1000}}\n\n\t${2:This is a high volume orders day}\n\n{:else}\n\n\t${3:This is a low volume orders day}\n\n{/if}\n\n"
+		],
+		"description": "Insert IfElse Block"
+	},
+	"Markdown Table": {
+		"prefix": "/Markdown Table",
+		"body": [
+			"| ${1:Column 1} | ${2:Column 2} | ${3:Column 3} |\n| -------- | -------- | -------- |\n| ${4:   1    } | ${5:   2    } | ${6:   3    } |\n| ${7:   4    } | ${8:   5    } | ${9:   6    } |\n\n"
+		],
+		"description": "Insert Markdown Table"
+	},
+	"Sankey Chart": {
+		"prefix": "/SankeyDiagram",
+		"body": [
+			"<SankeyDiagram\n\tdata={${1:query_name}}\n\tsourceCol=${2:column}\n\ttargetCol=${3:column}\n\tvalueCol=${4:column}\n/>\n\n"
+		],
+		"description": "Insert Sankey Diagram"
+	},
+	"Funnel Chart": {
+		"prefix": "/FunnelChart",
+		"body": [
+			"<FunnelChart\n\tdata={${1:query_name}}\n\tnameCol=${2:column}\n\tvalueCol=${3:column}\n/>\n\n"
+		],
+		"description": "Insert Funnel Chart"
+	},
+	"Alert": {
+		"prefix": "/Alert",
+		"body": [
+			"<Alert status=${1|none,info,success,warning,danger|}>\n\t${2:Alert Content}\n</Alert>\n\n"
+		],
+		"description": "Insert Alert"
+	},
+	"Tabs": {
+		"prefix": "/Tabs",
+		"body": [
+			"<Tabs>\n\t<Tab label='${1:Tab One}'>\n\t\t${2:Tab One Content}\n\t</Tab>\n\t<Tab label='${3:Tab Two}'>\n\t\t${4:Tab Two Content}\n\t</Tab>\n</Tabs>\n\n"
+		],
+		"description": "Insert Tabs"
+	},
+	"Big Value": {
+		"prefix": "/BigValue",
+		"body": ["<BigValue\n\tdata={${1:query_name}}\n\tvalue=${2:column}\n/>\n\n"],
+		"description": "Insert Big Value"
+	},
+	"Reference Area": {
+		"prefix": "/ReferenceArea",
+		"body": [
+			"<ReferenceArea ${1|xMin,yMin|}=${3:value} ${2|xMax,yMax|}=${4:value} label=${5:Label} />"
+		],
+		"description": "[Must be used within a chart] Insert Reference Area"
+	},
+	"Reference Line": {
+		"prefix": "/ReferenceLine",
+		"body": ["<ReferenceLine ${1|x,y|}=${2:value} label=${3:Label} />"],
+		"description": "[Must be used within a chart] Insert Reference Line"
+	},
+	"US Map": {
+		"prefix": "/USMap",
+		"body": [
+			"<USMap\n\tdata={${1:query_name}}\n\tstate=${2:column}\n\tvalue=${3:column}\n\tabbreviations=${4:false}\n/>\n\n"
+		],
+		"description": "Insert US Map"
+	},
+	"Today's Date": {
+		"prefix": "/today",
+		"body": ["${CURRENT_MONTH_NAME} ${CURRENT_DATE}, ${CURRENT_YEAR}"],
+		"description": "Insert today's date"
+	},
+	"Block Quote": {
+		"prefix": "/BlockQuote",
+		"body": ["> Quote Content\n>\n> -- _Author_"],
+		"description": "Insert Block Quote"
+	},
+	"Link": {
+		"prefix": "/Link",
+		"body": ["[${1:label}](${2:/path/to/page})"],
+		"description": "Insert Link"
+	},
+	"Image": {
+		"prefix": "/Image",
+		"body": ["![${1:image_name}](${2:my-image.png})"],
+		"description": "Insert Image"
+	},
+	"Numbered List": {
+		"prefix": "/NumberedList",
+		"body": ["1. ${1:One}\n2. ${2:Two}\n3. ${3:Three}"],
+		"description": "Insert Numbered List"
+	},
+	"Bulleted List": {
+		"prefix": "/BulletedList",
+		"body": ["- ${1:One}\n- ${2:Two}\n- ${3:Three}"],
+		"description": "Insert Bulleted List"
+	},
+	"Page Parameter": {
+		"prefix": "/Page Parameter",
+		"body": ["{params.${TM_FILENAME_BASE/[\\[\\]]//gi}}"],
+		"description": "[For Templated Pages Only] Insert Page Parameter"
+	},
+	"Divider": {
+		"prefix": "/Divider",
+		"body": ["---"],
+		"description": "Insert a Horizontal Divider"
+	},
+	"Highlight": {
+		"prefix": "/Highlight",
+		"body": ["<mark>${1:text}</mark>"],
+		"description": "Highlight Text"
+	},
+	"ECharts": {
+		"prefix": "/ECharts",
+		"body": [
+			"<ECharts config={\n\t{\n\t\ttooltip: {\n\t\t\tformatter: '{b}: {c}'\n\t\t},\n\t\tseries: [\n\t\t\t{\n\t\t\t\ttype: 'funnel',\n\t\t\t\tdata: funnel_data,\n\t\t\t}\n\t\t]\n\t}\n}/>"
+		],
+		"description": "Highlight Text"
+	},
+	"Strikethrough": {
+		"prefix": "/Strikethrough",
+		"body": ["~~${1:text}~~"],
+		"description": "Add strikethrough to text"
+	},
+	"Superscript": {
+		"prefix": "/Superscript",
+		"body": ["<sup>${1:text}</sup>"],
+		"description": "Add superscript text"
+	},
+	"Subscript": {
+		"prefix": "/Subscript",
+		"body": ["<sub>${1:text}</sub>"],
+		"description": "Add subscript text"
+	},
+	"Filtered Query Result": {
+		"prefix": "/Filtered Query Result",
+		"body": ["${1:query_name}.filter(d => d.${2:column} === '${3:value}')"],
+		"description": "Insert a filtered query result"
+	},
+	"Modal": {
+		"prefix": "/Modal",
+		"body": [
+			"<Modal title=${1:'Modal Title'} buttonText=${2:'Button Text'}>\n\t${3:Modal Content}\n</Modal>\n\n"
+		],
+		"description": "Insert Modal"
+	},
+	"Accordion": {
+		"prefix": "/Accordion",
+		"body": [
+			"<Accordion>\n\t<AccordionItem title='${1:Item One}'>\n\t\t${2:Item One Content}\n\t</AccordionItem>\n\t<AccordionItem title='${3:Item Two}'>\n\t\t${4:Item Two Content}\n\t</AccordionItem>\n</Accordion>\n\n"
+		],
+		"description": "Insert Accordion"
+	},
+	"LinkButton": {
+		"prefix": "/LinkButton",
+		"body": ["<LinkButton url=${2:'/other-page'}>\n\t${3:Button Label}\n</LinkButton>\n\n"],
+		"description": "Insert LinkButton"
+	},
+	"BigLink": {
+		"prefix": "/BigLink",
+		"body": ["<BigLink href=${1:'/other-page'}>\n\t${3:Link Label}\n</BigLink>\n\n"],
+		"description": "Insert BigLink"
+	},
+	"Details": {
+		"prefix": "/Details",
+		"body": ["<Details title=${1:'More Details'}>\n\t${2:Details Content}\n</Details>\n\n"],
+		"description": "Insert Details"
+	},
+	"Code Block": {
+		"prefix": "/Code Block",
+		"body": ["```${1:python}", "\t${2:}", "```\n\n"],
+		"description": "Insert code block"
+	},
+	"Frontmatter": {
+		"prefix": "/Frontmatter",
+		"body": ["---", "title: ${1:Page Title}", "queries:", " - ${2:myquery: myquery.sql}", "---"],
+		"description": "Insert frontmatter (should be at top of markdown page)"
+	},
+	"Dropdown": {
+		"prefix": "/Dropdown",
+		"body": "<Dropdown data={${1:query_name}} name=${2:name_of_dropdown} value=${3:column_name}/>\n\n",
+		"description": "Insert dropdown component"
+	},
+	"Dropdown with filtered query": {
+		"prefix": "/DropdownWithFilteredQuery",
+		"body": [
+			"<Dropdown data={data} name=${1:name_of_dropdown} value=${2:column_name}/>",
+			"",
+			"```sql filtered_query",
+			"select * from table where column_name = '${inputs.name_of_dropdown.value}'",
+			"```"
+		],
+		"description": "Insert dropdown component and filtered query"
+	},
+	"Dropdown Multi-Select": {
+		"prefix": "/DropdownMultiSelect",
+		"body": "<Dropdown multiple=true data={data} name=${1:name_of_dropdown} value=${2:column_name}/>\n\n",
+		"description": "Insert dropdown with multi-select"
+	},
+	"TextInput": {
+		"prefix": "/TextInput",
+		"body": "<TextInput name=${1:name_of_input} title=${2:Search}/>\n\n",
+		"description": "Insert text input component"
+	},
+	"ButtonGroup": {
+		"prefix": "/ButtonGroup",
+		"body": "<ButtonGroup data={${1:query_name}} name=${2:name_of_input} value=${3:column_name}/>\n\n",
+		"description": "Insert button group component"
+	},
+	"Heatmap": {
+		"prefix": "/Heatmap",
+		"body": [
+			"<Heatmap\n\tdata={${1:query_name}}\n\tx=${2:column}\n\ty=${3:column}\n\tvalue=${3:column}\n/>\n\n"
+		],
+		"description": "Insert Heatmap"
+	},
+	"CalendarHeatmap": {
+		"prefix": "/CalendarHeatmap",
+		"body": [
+			"<CalendarHeatmap\n\tdata={${1:query_name}}\n\tdate=${2:column}\n\tvalue=${3:column}\n/>\n\n"
+		],
+		"description": "Insert CalendarHeatmap"
+	},
+	"Sparkline": {
+		"prefix": "/Sparkline",
+		"body": "<Sparkline data={${1:query_name}} dateCol=${2:column_name} valueCol=${3:column_name}/>\n\n",
+		"description": "Insert Sparkline"
+	},
+	"DateRange": {
+		"prefix": "/DateRange",
+		"body": "<DateRange name=${1:name_of_input} data={${2:query_name}} dates=${3:column_name}/>\n\n",
+		"description": "Insert date range input"
+	},
+	"Grid": {
+		"prefix": "/Grid",
+		"body": ["<Grid cols=2>\n\t${1:Grid Content}\n</Grid>\n\n"],
+		"description": "Insert Grid"
+	},
+	"LineBreak": {
+		"prefix": "/LineBreak",
+		"body": "<LineBreak lines=1/>\n\n",
+		"description": "Insert empty line(s) on page"
+	},
+	"PageBreak": {
+		"prefix": "/PageBreak",
+		"body": "<PageBreak/>\n\n",
+		"description": "Insert page break for PDF and printing"
+	},
+	"PrintGroup": {
+		"prefix": "/PrintGroup",
+		"body": ["<PrintGroup hidden=false>\n\t${1:PrintGroup Content}\n</PrintGroup>\n\n"],
+		"description": "Insert print group to keep content together, or hide it, during printing"
+	},
+	"DimensionGrid": {
+		"prefix": "/DimensionGrid",
+		"body": "<DimensionGrid data={${1:query_name}}/>\n\n",
+		"description": "Insert dimension grid component"
+	},
+	"Delta": {
+		"prefix": "/Delta",
+		"body": ["<Delta data={${1:query_name}} column=${2:column_name} fmt=${3:usd}/>"],
+		"description": "Delta Component"
+	}
 }
-

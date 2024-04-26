@@ -1,4 +1,3 @@
-
 /**
  * Sets timeout for the given number of milliseconds.
  *
@@ -6,5 +5,5 @@
  * @returns Promise that resolves after the given number of milliseconds.
  */
 export function timeout(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }
