@@ -98,7 +98,12 @@
 				</span>
 			</span>
 		{:else}
-			<DateRange bind:selectedDateRange start={startString} end={endString} />
+			<DateRange
+				bind:selectedDateRange
+				start={startString}
+				end={endString}
+				loaded={$query?.ready ?? true}
+			/>
 		{/if}
 	</div>
 </HiddenInPrint>

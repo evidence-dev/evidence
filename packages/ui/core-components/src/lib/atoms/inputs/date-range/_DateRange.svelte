@@ -31,6 +31,7 @@
 	export let start;
 	/** @type {string} */
 	export let end;
+	export let loaded = true;
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
@@ -86,10 +87,13 @@
 					!selectedDateRange && 'text-gray-400'
 				)}
 				builders={[builder]}
+				disabled={!loaded}
 			>
 				<!-- <CalendarIcon class="mr-2 h-4 w-4" /> -->
 				<span class="hidden sm:inline">
-					{#if selectedDateRange && selectedDateRange.start}
+					{#if !loaded}
+						Loading...
+					{:else if selectedDateRange && selectedDateRange.start}
 						{#if selectedDateRange.end}
 							{dfMedium.format(selectedDateRange.start.toDate(getLocalTimeZone()))} - {dfMedium.format(
 								selectedDateRange.end.toDate(getLocalTimeZone())
@@ -104,7 +108,9 @@
 					{/if}
 				</span>
 				<span class="sm:hidden">
-					{#if selectedDateRange && selectedDateRange.start}
+					{#if !loaded}
+						Loading...
+					{:else if selectedDateRange && selectedDateRange.start}
 						{#if selectedDateRange.end}
 							{dfShort.format(selectedDateRange.start.toDate(getLocalTimeZone()))} - {dfShort.format(
 								selectedDateRange.end.toDate(getLocalTimeZone())
@@ -143,6 +149,7 @@
 			selectedPreset = v;
 		}}
 		bind:selected={selectedPreset}
+		disabled={!loaded}
 	>
 		<Select.Trigger class="h-8 w-40 rounded-l-none px-3 text-xs font-medium" sameWidth>
 			{#if selectedPreset}
