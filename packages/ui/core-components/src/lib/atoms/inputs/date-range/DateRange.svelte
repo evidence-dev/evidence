@@ -49,6 +49,7 @@
 				id: `DateRange-${name}`
 			}
 		);
+		query.fetch();
 	}
 
 	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
