@@ -255,20 +255,69 @@ describe('Query', () => {
 			expect(errored.error.message.startsWith('Refusing to create Query')).toBe(true);
 		});
 
-		describe('Reactive Variant v2', () => {
+		describe('Reactive Variant', () => {
+			describe('reactivity with QueryBuilder API', () => {
+				// TODO: Try to use the factory with derived queries
+			});
+
+			describe('change indexing', () => {
+				it('should not provide outdated results', async () => {
+					/** @type {import('..').QueryValue} */
+					let value;
+					const react = Query.createReactive({
+						execFn: mockRunner,
+						callback: (v) => (value = v),
+						loadGracePeriod: 0
+					});
+
+					expectedData = [{ i: 0 }];
+					react('SELECT 1'); // initial state
+					await tick();
+					expect(value.ready).toBe(true);
+
+					const p = sharedPromise();
+					expectedData = p.promise;
+					react('SELECT 2'); // takes 5 seconds
+					await tick();
+					expect(value.ready).toBe(false);
+					expect(value[0]).toBe(undefined); // we're looking at the right query
+
+					react('SELECT 1'); // before previous finishes
+					await tick();
+					expect(value.ready).toBe(true); // Check that the data is correct
+
+					p.resolve([{ i: 1 }]); // Resolve alternate query
+
+					// Check that the data is still correct
+					await tick();
+					expect(value[0].i).toBe(0);
+
+					react('SELECT 2'); // Sanity check that this query did actually finish
+					await tick();
+					expect(value[0].i).toBe(1);
+				});
+			});
 			it('should exist', () => {
-				expect(Query.reactive2).toBeDefined();
+				expect(Query.createReactive).toBeDefined();
 			});
 			it('should return a function', () => {
-				const react = Query.reactive2({ execFn: mockRunner });
+				const react = Query.createReactive({ execFn: mockRunner });
 				expect(typeof react).toBe('function');
 			});
 			it('should produce distinct queries when called multiple times', async () => {
-				const react = Query.reactive2({ execFn: mockRunner, loadGracePeriod: 0 });
+				let values = new Set();
+				const react = Query.createReactive({
+					execFn: mockRunner,
+					loadGracePeriod: 0,
+					callback: (v) => values.add(v)
+				});
 
-				const first = await react('SELECT 5');
+				await react('SELECT 5');
 				await tick();
-				const second = await react('SELECT 3');
+				await react('SELECT 3');
+				await tick();
+				const [first, second] = values.values();
+
 				expect(Query.isQuery(first)).toBe(true);
 				expect(Query.isQuery(second)).toBe(true);
 				expect(first === second).toBe(false);
@@ -278,7 +327,7 @@ describe('Query', () => {
 				// Test initial state (sync fetch)
 				/** @type {import('..').QueryValue} */
 				let value;
-				const react = Query.reactive2({ execFn: mockRunner, callback: (v) => (value = v) });
+				const react = Query.createReactive({ execFn: mockRunner, callback: (v) => (value = v) });
 
 				const p = sharedPromise();
 				expectedData = p.promise;
@@ -296,7 +345,7 @@ describe('Query', () => {
 				// Test initial state (sync fetch)
 				/** @type {QueryValue} */
 				let innerValue;
-				const react = Query.reactive2({
+				const react = Query.createReactive({
 					execFn: mockRunner,
 					callback: (v) => {
 						innerValue = v;
@@ -316,11 +365,12 @@ describe('Query', () => {
 				const updateTracker = vi.fn();
 
 				let currentValue;
-				const react = Query.reactive2(
+				const react = Query.createReactive(
 					{
 						execFn: mockRunner,
 						callback: (v) => {
 							currentValue = v;
+							console.log(v.id, v.dataLoaded);
 							updateTracker();
 						}
 					},
@@ -331,75 +381,24 @@ describe('Query', () => {
 				react('SELECT 1');
 
 				expect(currentValue.loading).toBe(false);
-				expect(updateTracker).toHaveBeenCalledOnce();
+				expect(updateTracker).toHaveBeenCalledTimes(2);
 
 				const p = sharedPromise();
 				expectedData = p.promise;
+
 				react('SELECT 2');
+				expect(updateTracker).toHaveBeenCalledTimes(2);
 				await vi.advanceTimersByTime(249); // update shouldn't have run yet
-				expect(updateTracker).toHaveBeenCalledOnce();
+				expect(updateTracker).toHaveBeenCalledTimes(2);
 				expect(currentValue.loading).toBe(false);
 				await vi.advanceTimersByTimeAsync(2); // let the update run
-				expect(updateTracker).toHaveBeenCalledTimes(2);
+				expect(updateTracker).toHaveBeenCalledTimes(3);
 				expect(currentValue.loading).toBe(true); // value has changed
+				p.resolve([]);
+				await vi.advanceTimersToNextTimerAsync();
+				expect(updateTracker).toHaveBeenCalledTimes(4);
 				vi.clearAllTimers();
 				vi.useRealTimers();
-			});
-		});
-
-		describe('Reactive Variant v1', () => {
-			it('should return a resolved query promise (w/o artificial delay)', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				const q = reactiveQuery('SELECT 5');
-
-				expect(q).toBeInstanceOf(Promise);
-
-				const $q = await q;
-				expect(Query.isQuery($q)).toBe(true);
-			});
-			it('should return distinct query values when called multiple times', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				const q = await reactiveQuery('SELECT 5');
-				const q2 = await reactiveQuery('SELECT 6');
-
-				expect(Query.isQuery(q)).toBe(true);
-				expect(Query.isQuery(q2)).toBe(true);
-
-				// Not equal
-				expect(q === q2).toBe(false);
-				expect(q.hash).not.toEqual(q2.hash);
-			});
-			it('should return the same query values when called multiple times with the same query', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				const q = await reactiveQuery('SELECT 5');
-				const q2 = await reactiveQuery('SELECT 5');
-
-				expect(Query.isQuery(q)).toBe(true);
-				expect(Query.isQuery(q2)).toBe(true);
-
-				// Not equal
-				expect(q).toBe(q2);
-				expect(q.hash).toEqual(q2.hash);
-			});
-			it('should return a still loading query only if the threshold is passed', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				expectedData = [{ x: 1 }];
-				const loadDelay = 100;
-				const initialQuery = await reactiveQuery('SELECT 5', loadDelay);
-
-				expect(initialQuery[0].x).toBe(1);
-
-				const dataPromise = sharedPromise();
-				expectedData = dataPromise.promise;
-				const before = performance.now();
-				const secondQuery = await reactiveQuery('SELECT 10');
-				const after = performance.now();
-				expect(after - before).toBeGreaterThanOrEqual(loadDelay);
-				expect(secondQuery.loading).toBe(true);
-				dataPromise.resolve([{ x: 2 }]);
-				await tick();
-				expect(secondQuery.loading).toBe(false);
-				expect(secondQuery[0].x).toBe(2);
 			});
 		});
 	});

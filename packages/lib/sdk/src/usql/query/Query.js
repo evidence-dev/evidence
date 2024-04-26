@@ -9,7 +9,7 @@ import {
 	count as qCount
 } from '@uwdata/mosaic-sql';
 import { sharedPromise } from '../../lib/sharedPromise.js';
-import { resolveMaybePromise } from '../utils.js';
+import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
 
 /**
@@ -40,6 +40,7 @@ import { getQueryScore } from './queryScore.js';
  * @typedef {Object} QueryEvents<RowType>
  * @property {undefined} dataReady
  * @property {number} highScore
+ * @property {number} longRun
  * @property {Error} error
  */
 
@@ -291,7 +292,7 @@ export class Query {
 			return this.#sharedDataPromise.promise;
 		}
 		if (this.#error) {
-			this.#debug('Refusing to execute data query, store has an error state');
+			this.#debug('data error', 'Refusing to execute data query, store has an error state');
 			return this.#sharedDataPromise.promise;
 		}
 		if (this.#sharedDataPromise.state !== 'init' || this.opts.noResolve)
@@ -304,14 +305,21 @@ export class Query {
 ${this.#query.toString()}
         `.trim() + '\n';
 
-		this.#debugStyled('\n' + dataQuery, 'font-family: monospace;');
+		this.#debugStyled('data query text', '\n' + dataQuery, 'font-family: monospace;');
 
 		// gotta love jsdoc sometimes
 		const typedRunner = /** @type {import('../types.js').Runner<RowType>} */ (this.#executeQuery);
 		Query.#markInFlight(this);
+		const before = performance.now();
 		const resolved = resolveMaybePromise(
 			(result, isPromise) => {
 				this.#data = result;
+				const after = performance.now();
+
+				if (before - after > 5000) {
+					this.#emit('longRun', before - after);
+					this.#debug('long-running', `Query took ${before - after}ms to execute`);
+				}
 
 				this.#sharedDataPromise.resolve(this);
 				this.#emit('dataReady', undefined);
@@ -335,7 +343,7 @@ ${this.#query.toString()}
 		return resolved;
 	};
 	fetch = async () => {
-		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength]).then(
+		return Promise.allSettled([this.#fetchColumns(), this.#fetchData(), this.#fetchLength()]).then(
 			() => this.value
 		);
 	};
@@ -349,10 +357,10 @@ ${this.#query.toString()}
 	 */
 	backgroundFetch = () => {
 		if (typeof window === 'undefined') {
-			this.#debug('Did not execute backgroundFetch in SSR');
+			this.#debug('background fetch skip', 'Did not execute backgroundFetch in SSR');
 			return;
 		}
-		this.#debug(`Executed backgroundFetch`);
+		this.#debug('background fetch', `Executed backgroundFetch`);
 		resolveMaybePromise(
 			() => {},
 			async () => {
@@ -376,14 +384,22 @@ ${this.#query.toString()}
 			this.#sharedDataPromise.state === 'resolved' &&
 			this.#sharedLengthPromise.state === 'init'
 		) {
-			this.#debug('Inferred length from already-resolved data promise', this.#data);
+			this.#debug(
+				'length inferred',
+				'Inferred length from already-resolved data promise',
+				this.#data
+			);
 			this.#length = this.#data.length;
 			// Done
 			this.#sharedLengthPromise.resolve(this);
 			return this.#sharedLengthPromise.promise;
 		}
 		if (this.#error) {
-			this.#debug('Refusing to execute length query, store has an error state');
+			this.#debug(
+				'length error',
+				'Refusing to execute length query, store has an error state',
+				this.#error
+			);
 			this.#sharedLengthPromise.reject(this.#error); // Is this the right call?
 			return this.#sharedLengthPromise.value ?? this.#sharedLengthPromise.promise;
 		}
@@ -403,7 +419,7 @@ SELECT COUNT(*) as rowCount FROM (${this.#query.toString()})
 			/** @type {import('../types.js').Runner<{rowCount: number}>} */
 			(this.#executeQuery);
 
-		this.#debugStyled('\n' + lengthQuery, 'font-family: monospace;');
+		this.#debugStyled('length query text', '\n' + lengthQuery, 'font-family: monospace;');
 
 		const resolved = resolveMaybePromise(
 			/** @returns {MaybePromise<Query<RowType>>} */
@@ -438,7 +454,11 @@ SELECT COUNT(*) as rowCount FROM (${this.#query.toString()})
 	/** @returns {MaybePromise<Query<RowType>>} */
 	#fetchColumns = () => {
 		if (this.#error) {
-			this.#debug('Refusing to execute columns query, store has an error state');
+			this.#debug(
+				'cols query error',
+				'Refusing to execute columns query, store has an error state',
+				this.#error
+			);
 			// Return the value or the promise if not resolved
 			return this.#sharedColumnsPromise.value ?? this.#sharedColumnsPromise.promise;
 		}
@@ -455,7 +475,7 @@ SELECT COUNT(*) as rowCount FROM (${this.#query.toString()})
 DESCRIBE ${this.#query.toString()}
         `.trim() + '\n';
 
-		this.#debugStyled('\n' + metaQuery, 'font-family: monospace;');
+		this.#debugStyled('columns query text', '\n' + metaQuery, 'font-family: monospace;');
 
 		// gotta love jsdoc sometimes
 		const typedRunner =
@@ -557,7 +577,7 @@ DESCRIBE ${this.#query.toString()}
 					if (typeof prop === 'string' && /^[\d.]+$/.exec(prop)) prop = parseInt(prop);
 					if (typeof prop === 'number' || Query.ProxyFetchTriggers.includes(prop.toString())) {
 						if (this.#sharedDataPromise.state === 'init') {
-							this.#debug(`Implicit query fetch triggered by ${prop.toString()}`);
+							this.#debug('implicit fetch', `Implicit query fetch triggered by ${prop.toString()}`);
 							this.#fetchData(); // catches itself
 						}
 					}
@@ -669,8 +689,7 @@ DESCRIBE ${this.#query.toString()}
 	 * @param {import('../types.js').QueryReactivityOpts<any>} reactiveOpts Callback that is executed when the new query is ready
 	 * @param {import('../types.js').QueryOpts<any>} [opts]
 	 */
-	static reactive2 = (reactiveOpts, opts) => {
-		console.log('reactive1');
+	static createReactive = (reactiveOpts, opts) => {
 		const { loadGracePeriod = 250, callback = () => {}, execFn } = reactiveOpts;
 
 		/** @type {import('../types.js').CreateQuery<any>} */
@@ -679,102 +698,69 @@ DESCRIBE ${this.#query.toString()}
 		let activeQuery;
 
 		let changeIdx = 0;
+		/** @type {() => unknown} */
+		let unsub;
 		const waitFor =
 			/**
-			 * @param {string} queryText
-			 * @returns {Promise<QueryValue>}
+			 * @param {string | Query} nextQuery
+			 * @param {import('../types.js').QueryOpts<any>} [newOpts]
+			 * @returns {Promise<void>}
 			 */
-			async (queryText) => {
-				console.log(`WaitFor`);
-				// if (queryText === activeQuery?.originalText) return activeQuery;
+			async (nextQuery, newOpts) => {
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
-				const newQuery = createFn(queryText, execFn, opts ?? {});
+				Query.#debugStatic(
+					`${activeQuery.id} (${hashQuery(nextQuery)}) | Reactive Updating`,
+					nextQuery,
+					{
+						changeIdx: changeIdx,
+						targetChangeIdx,
+						hash: hashQuery(nextQuery)
+					},
+					{
+						initialOpts: opts,
+						newOpts: newOpts
+					}
+				);
+				const newQuery = Query.isQuery(nextQuery)
+					? nextQuery
+					: createFn(nextQuery, execFn, Object.assign({}, opts, newOpts));
 				await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), newQuery.fetch()]);
 
 				if (changeIdx !== targetChangeIdx) {
 					Query.#debugStatic(`changeIdx does not match, results are discarded`);
-					callback(activeQuery);
-					return activeQuery;
-				} else {
-					activeQuery = newQuery;
+					return;
 				}
-
-				callback(newQuery);
-				return newQuery;
+				unsub?.();
+				activeQuery = newQuery.value;
+				unsub = activeQuery.subscribe(callback);
 			};
 
 		function removeInitialState() {
-			delete opts?.initialData;
-			delete opts?.initialError;
+			opts = { ...opts, initialData: undefined, initialError: undefined };
 		}
 
 		/**
 		 * @param {string} queryText
-		 * @returns {Promise<QueryValue<any>>}
+		 * @param {import('../types.js').QueryOpts<any>} [newOpts]
+		 * @returns {void}
 		 */
-		return (queryText) => {
-			if (activeQuery) return waitFor(queryText);
+		return (queryText, newOpts) => {
+			if (activeQuery) {
+				waitFor(queryText, newOpts);
+				return;
+			}
 
 			if (import.meta.hot?.data?.hmr) removeInitialState();
 
-			activeQuery = createFn(queryText, execFn, opts ?? {});
+			activeQuery = createFn(queryText, execFn, Object.assign({}, opts, newOpts));
 
 			resolveMaybePromise(removeInitialState, activeQuery.fetch());
 
 			// We don't want to use this after the initial creation!
-
+			unsub = activeQuery.subscribe(callback);
 			callback(activeQuery);
-			return Promise.resolve(activeQuery);
-		};
-	};
-
-	/*
-		TODO: Write an update function?
-		Update will accept the same parameters as create (?)
-		It will return a promise race to load for 250ms and return the new store (or whenver the new store is loaded)
-		This will let the reactivity live outside of the Component
-	*/
-
-	/**
-	 * @param {import('../types.js').Runner} executeQuery
-	 * @param {string | import("@uwdata/mosaic-sql").Query} initialQuery
-	 * @param {import('../types.js').QueryOpts} [defaultOpts={}]
-	 * @param {number} [loadDelay=250]
-	 * @returns {{ initialValue: QueryValue, updater: <T extends QueryResultRow>(query: string, opts: import('../types.js').QueryOpts<T>) => Promise<QueryValue<T>>}}
-	 */
-	static reactive = (executeQuery, initialQuery, defaultOpts, loadDelay = 250) => {
-		/** @type {import('../types.js').CreateQuery<any>} */
-		const createFn = Query.create;
-
-		/** @type {QueryValue<any>} */
-		let activeQuery = createFn(initialQuery, executeQuery, { ...defaultOpts });
-
-		/**
-		 * @template {QueryResultRow} [RowType=QueryResultRow]
-		 * @param {string | import("@uwdata/mosaic-sql").Query} query
-		 * @param {import('../types.js').QueryOpts<RowType>} [opts={}]
-		 * @returns {Promise<QueryValue<RowType>>}
-		 */
-		const updater = async (query, opts) => {
-			/** @type {QueryValue<RowType>} */
-			const newQuery = createFn(query, executeQuery, {
-				...defaultOpts,
-				...opts
-			});
-
-			if (activeQuery?.hash === newQuery.hash) return newQuery.fetch();
-
-			return Promise.race([newQuery.fetch(), new Promise((r) => setTimeout(r, loadDelay))]).then(
-				() => {
-					activeQuery = newQuery;
-					return newQuery;
-				}
-			);
-		};
-		return {
-			updater,
-			initialValue: activeQuery
+			return;
 		};
 	};
 
@@ -825,14 +811,29 @@ DESCRIBE ${this.#query.toString()}
 
 			Query.#cacheCleanup();
 			if (cached) {
-				Query.#debugStatic(`Using cached query for ${opts.id ?? '[query id missing]'}`, { opts });
+				Query.#debugStatic(
+					`${opts.id ?? '[query id missing]'} (${queryHash}) | Using cached query`,
+					{ opts, hash: hashQuery(query) },
+					query,
+					cached
+				);
 				return cached.value;
 			} else {
-				Query.#debugStatic(`Cached query not found for ${opts.id ?? '[query id missing]'}`, {
-					opts
-				});
+				Query.#debugStatic(
+					`${opts.id ?? '[query id missing]'} (${queryHash}) | Cached query not found`,
+					{
+						opts,
+						hash: hashQuery(query)
+					},
+					query
+				);
 			}
-		} else if (isDebug()) console.log(`Cache is disabled for ${opts.id ?? '[query id missing]'}`);
+		} else
+			Query.#debugStatic(
+				`${opts.id ?? '[query id missing]'} (${queryHash}) | cache disabled`,
+				`Cache is disabled for ${opts.id ?? '[query id missing]'}`,
+				{ opts, query, hash: hashQuery(query) }
+			);
 
 		Query.#constructing = true;
 		const output = new Query(query, executeQuery, opts);
@@ -848,22 +849,38 @@ DESCRIBE ${this.#query.toString()}
 	///////////////////////
 
 	static #debugStatic = isDebug()
-		? (/** @type {Parameters<typeof console.debug>} */ ...args) =>
-				console.debug(`${(performance.now() / 1000).toFixed(3)} | Query`, ...args)
+		? (/** @type { string } */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
+				const groupName = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
+				console.groupCollapsed(groupName);
+				for (const arg of args) console.debug(arg);
+				console.groupEnd();
+			}
 		: () => {};
 	static #debugStyledStatic = isDebug()
-		? (/** @type {string} */ text, /** @type {string} */ style) =>
-				console.debug(`%c${(performance.now() / 1000).toFixed(3)} | Query ${text}`, style)
+		? (/** @type {string} */ label, /** @type {string} */ text, /** @type {string} */ style) => {
+				const groupName = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
+				console.groupCollapsed(groupName);
+				console.debug(`%c${text}`, style);
+				console.groupEnd();
+			}
 		: () => {};
 
 	#debug = isDebug()
-		? (/** @type {Parameters<typeof console.debug>} */ ...args) =>
-				console.debug(`${(performance.now() / 1000).toFixed(3)} | ${this.id}`, ...args)
+		? (/** @type {string} */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
+				const groupName = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
+				console.groupCollapsed(groupName);
+				for (const arg of args) console.debug(arg);
+				console.groupEnd();
+			}
 		: () => {};
 
 	#debugStyled = isDebug()
-		? (/** @type {string} */ text, /** @type {string} */ style) =>
-				console.debug(`%c${(performance.now() / 1000).toFixed(3)} | ${this.id} ${text}`, style)
+		? (/** @type {string} */ label, /** @type {string} */ text, /** @type {string} */ style) => {
+				const groupName = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
+				console.groupCollapsed(groupName);
+				console.debug(`%c${text}`, style);
+				console.groupEnd();
+			}
 		: () => {};
 
 	static #constructing = false;
@@ -872,6 +889,8 @@ DESCRIBE ${this.#query.toString()}
 	#id;
 	/** @type {string} */
 	#hash;
+	/** @type {import('../types.js').QueryOpts<RowType>} */
+	#opts;
 	/** @type {string} */
 	get id() {
 		return this.#id;
@@ -923,6 +942,7 @@ DESCRIBE ${this.#query.toString()}
 		this.#originalText = query?.toString() ?? 'EmptyQuery';
 		this.#hash = hashQuery(this.#originalText);
 		this.#id = id ?? this.#hash;
+		this.#opts = opts;
 
 		if (query && typeof query !== 'string') this.#query = query;
 		else if (query) {
@@ -953,7 +973,7 @@ DESCRIBE ${this.#query.toString()}
 			this.#sharedColumnsPromise.start();
 			return this;
 		} else if (initialData) {
-			this.#debug('Created with initial data');
+			this.#debug('initial data', 'Created with initial data', initialData);
 			this.#hasInitialData = true;
 
 			resolveMaybePromise(
@@ -1025,7 +1045,27 @@ DESCRIBE ${this.#query.toString()}
 	 */
 	publish = (/** @type {string} */ source) => {
 		if (this.#publishIdx++ > 100000) throw new Error('Query published too many times.');
-		this.#debug(`Publishing triggered by ${source}`);
+		this.#debug(
+			'publish',
+			`Publishing triggered by ${source}`,
+			{
+				data: JSON.parse(JSON.stringify(this.#data)),
+				dataLoaded: this.dataLoaded,
+				dataLoading: this.dataLoading
+			},
+			{
+				length: JSON.parse(JSON.stringify(this.#length)),
+				lengthLoaded: this.lengthLoaded,
+				lengthLoading: this.lengthLoading
+			},
+			{
+				columns: JSON.parse(JSON.stringify(this.#columns)),
+				columnsLoaded: this.columnsLoaded,
+				columnsLoading: this.columnsLoading
+			},
+			{ error: this.#error, opts: this.#opts },
+			`\n` + this.#query.toString()
+		);
 		this.#subscribers.forEach((fn) => fn(this.#value));
 	};
 	//////////////////////////////////////
@@ -1039,7 +1079,8 @@ DESCRIBE ${this.#query.toString()}
 	#handlerMap = {
 		dataReady: new Set(),
 		error: new Set(),
-		highScore: new Set()
+		highScore: new Set(),
+		longRun: new Set()
 	};
 
 	/**
@@ -1116,6 +1157,7 @@ DESCRIBE ${this.#query.toString()}
 				knownColumns: colsWithSimilarity
 			}
 		);
+		console.log(output.originalText);
 		return output;
 	};
 

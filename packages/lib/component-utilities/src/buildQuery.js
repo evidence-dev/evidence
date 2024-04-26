@@ -23,7 +23,7 @@ export const getQueryFunction = () => getContext(QUERY_CONTEXT_KEY);
  * @property {string} [value] Column to be used as value when selected
  * @property {string} [label] (optional) Column to be used as label for each value
  * @property {string | string[] | Record<string, string>} [select] (optional) any additional fields to include (e.g. not value or label)
- * @property {string | Query} [data] Table or subquery to select from
+ * @property {string | import("@evidence-dev/sdk/usql").QueryValue} [data] Table or subquery to select from
  * @property {string} [where] (optional) Where clause for dataset
  * @property {string} [order] (optional) Order by clause for dataset
  */
@@ -74,6 +74,7 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 export const buildInputQuery = ({ value, label, select, data, where, order }, id, initialData) => {
 	if (!data || !(value || select)) return { hasQuery: false };
 
+	let parentHasNoResolve = false;
 	const q = new QueryBuilder().distinct();
 	if (value) q.select({ value: sql`${value}` });
 	if (label) {
@@ -95,6 +96,7 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 		// data is a QueryStore
 		// use that as a subquery
 		q.from(sql`(${data.text})`);
+		parentHasNoResolve = data.opts.noResolve ?? false;
 	} else {
 		return { hasQuery: false };
 	}
@@ -107,7 +109,7 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
 		q.orderby(order);
 	}
 
-	const newQuery = buildQuery(q.toString(), id, initialData);
+	const newQuery = buildQuery(q.toString(), id, initialData, { noResolve: parentHasNoResolve });
 	// Don't make the component author bother with this, just provide the data
 	newQuery.fetch();
 	return {
@@ -121,9 +123,10 @@ export const buildInputQuery = ({ value, label, select, data, where, order }, id
  * @param {string} queryString
  * @param {string} id
  * @param {any[]} initialData
+ * @param {Omit<import('@evidence-dev/sdk/usql').QueryOpts, 'initialData'>} [opts]
  *
  * @returns {Query}
  */
-export const buildQuery = (queryString, id, initialData) => {
-	return Query.create(queryString, queryFunction, id, { initialData });
+export const buildQuery = (queryString, id, initialData, opts) => {
+	return Query.create(queryString, queryFunction, id, { ...opts, initialData });
 };

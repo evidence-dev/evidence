@@ -48,7 +48,7 @@
 		value="value"
 	/>
 </Story>
-<Story name="Multiple Dropdowns">
+<Story name="Using Dropdowns that interact with eachother's queries">
 	<DependentDropdowns />
 </Story>
 
@@ -60,15 +60,32 @@
 </Story>
 
 <Story name="Using non-query options w/ default">
-	<Dropdown name="test" defaultValue="All">
+	<Dropdown name="test" defaultValue="Bottom 100">
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
+		<DropdownOption value="Bottom 100" />
 	</Dropdown>
 </Story>
 
 <Story name="Using query + non-query options">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown name="test" {data} value="value" label="label">
+		<DropdownOption value="All" />
+		<DropdownOption value="Top 100" />
+	</Dropdown>
+</Story>
+
+<Story name="Using query + non-query options w/ Query Value Default">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data} value="value" label="label" defaultValue={4}>
+		<DropdownOption value="All" />
+		<DropdownOption value="Top 100" />
+	</Dropdown>
+</Story>
+
+<Story name="Using query + non-query options w/ Non Query Value Default">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown name="test" {data} value="value" label="label" defaultValue="Top 100">
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
 	</Dropdown>

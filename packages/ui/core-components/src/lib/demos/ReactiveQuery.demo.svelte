@@ -4,20 +4,12 @@
 
 	let v = 5;
 
-	// let queryText = `SELECT ${v}`;
-	// $: queryText = `SELECT ${v}`;
-
-	// let { initialValue: data, updater: queryFactory } = Query.reactive(query, queryText);
-
-	// $: queryFactory(queryText).then((v) => (data = v));
-
-	const react = Query.reactive2(
+	const reactiveQueryFactory = Query.createReactive(
 		{ callback: (v) => (reactiveQuery = v), execFn: query },
 		{ initialData: [{ initialData: 'Change the story source code and this should go away' }] }
 	);
 	let reactiveQuery;
-
-	$: react(`SELECT ${v}`);
+	$: reactiveQueryFactory(`SELECT ${v}`);
 </script>
 
 <label>
@@ -25,13 +17,6 @@
 	<input class="bg-gray-300" type="number" bind:value={v} />
 </label>
 
-<!-- <pre>
-    {$data?.originalText}
-</pre>
-
 <pre>
-    {JSON.stringify($data)}
-</pre> -->
-<pre>
-    {JSON.stringify($reactiveQuery)}
+    {JSON.stringify(reactiveQuery)}
 </pre>

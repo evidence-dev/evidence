@@ -12,7 +12,7 @@
 	import { page } from '$app/stores';
 
 	export let queryID;
-	/** @type {import("@evidence-dev/sdk/usql").Query} */
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let queryResult;
 
 	$: pageQueries = $page.data.evidencemeta.queries;
@@ -41,7 +41,7 @@
 	// Enter an error state if the queryResult isn't defined
 	$: {
 		if (!$queryResult) error = new Error('queryResult is undefined');
-		else if ($queryResult.error) error = $queryResult.error;
+		else error = $queryResult.error;
 	}
 
 	$: rowCount = $queryResult?.length ?? 0;

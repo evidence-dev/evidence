@@ -9,6 +9,7 @@ import {
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
+import { setTrackProxy } from '@evidence-dev/sdk/usql';
 
 const loadDB = async () => {
 	let renderedFiles = {};
@@ -141,21 +142,7 @@ export const load = async (event) => {
 				await profile(setParquetURLs, renderedFiles);
 			}
 		},
-		inputs: new Proxy(inputs, {
-			get(target, prop) {
-				if (typeof prop === 'symbol') return undefined;
-				if (prop === 'then') return undefined;
-				if (prop === 'loading') return undefined;
-				if (prop === 'error') return undefined;
-				if (prop === '_evidenceColumnTypes') return undefined;
-				if (prop === '__isQueryStore') return false;
-				return target[prop] ?? recursiveFillerObject;
-			},
-			set(target, prop, value) {
-				target[prop] = value;
-				return true;
-			}
-		}),
+		inputs: setTrackProxy({ label: '', value: '(SELECT NULL WHERE 0)' }),
 		data,
 		customFormattingSettings,
 		isUserPage,
@@ -163,19 +150,3 @@ export const load = async (event) => {
 		pagesManifest
 	});
 };
-
-const recursiveFillerObject = new Proxy(
-	{},
-	{
-		get(target, prop) {
-			if (prop === '__unset') return true;
-			if (typeof prop === 'symbol') return undefined;
-			if (prop === 'then') return undefined;
-			if (prop === 'loading') return undefined;
-			if (prop === 'error') return undefined;
-			if (prop === '_evidenceColumnTypes') return undefined;
-			if (prop === 'toString') return () => 'null';
-			return recursiveFillerObject;
-		}
-	}
-);

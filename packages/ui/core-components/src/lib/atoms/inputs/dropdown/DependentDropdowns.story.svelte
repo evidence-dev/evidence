@@ -2,6 +2,7 @@
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import Dropdown from './Dropdown.svelte';
+	import DropdownOption from './DropdownOption.svelte';
 	import QueryLoad from '../../query-load/QueryLoad.svelte';
 	import { getContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
@@ -9,8 +10,7 @@
 
 	const slowQuery = (...args) => {
 		if (browser) {
-			console.log('SLOW QUERY CALLED');
-			return new Promise((r) => setTimeout(r, 1000)).then(() => query(...args));
+			return new Promise((r) => setTimeout(r, 1)).then(() => query(...args));
 		}
 		return query(...args);
 	};
@@ -22,7 +22,7 @@
 		{ disableCache: true }
 	);
 
-	$: depQueryText = `
+	$: depQueryFactory(`
         SELECT users.full_name as label,
                users.id as value
             FROM posts
@@ -31,41 +31,40 @@
         INNER JOIN users ON posts.user_id = users.id
         WHERE hashtags.id = ${$inputs?.hashtag?.value ?? -1}
         GROUP BY ALL
-    `;
-	let { initialValue: depQuery, updater: depQueryUpdate } = Query.reactive(
-		slowQuery,
-		depQueryText,
-		{ disableCache: true }
-	);
-	$: {
-		depQueryUpdate(depQueryText).then((v) => (depQuery = v));
-		console.log('Bing bong');
-	}
+    `);
+	let depQuery;
+	const depQueryFactory = Query.createReactive({
+		execFn: slowQuery,
+		callback: ($v) => (depQuery = $v),
+		loadGracePeriod: 2000
+	});
 
-	$: displayQueryText = `
-        SELECT COUNT(DISTINCT posts.id) as postCount
-            FROM posts
-        WHERE posts.user_id = ${$inputs?.user?.value ?? -1}
-        GROUP BY ALL
-    `;
-	let { initialValue: displayQuery, updater: displayQueryUpdate } = Query.reactive(
-		slowQuery,
-		displayQueryText,
-		{ disableCache: true }
-	);
-	$: displayQueryUpdate(displayQueryText).then((v) => (displayQuery = v));
-
-	$: console.log(displayQuery);
+	$: displayQueryFactory(`
+        SELECT '${$inputs?.user?.value ?? -1}'
+    `);
+	let displayQuery;
+	const displayQueryFactory = Query.createReactive({
+		execFn: slowQuery,
+		callback: ($v) => (displayQuery = $v),
+		loadGracePeriod: 2000
+	});
 </script>
 
-<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
+<div class="grid grid-cols-2">
+	<div>
+		<Dropdown defaultValue={0} name="hashtag" data={baseQuery} value="value" label="label" />
 
-<pre class="text-xs">{depQuery.originalText}</pre>
-<pre class="text-red">{depQuery.error?.message}</pre>
-<QueryLoad let:loaded data={depQuery}>
-	<pre slot="skeleton" class="text-xs h-64 overflow-y-auto">Loading...</pre>
-	{loaded}
-	<pre class="text-xs h-64 overflow-y-auto">{JSON.stringify(loaded, null, 2)}</pre>
-	<Dropdown defaultValue={0} name="user" data={loaded} value="value" label="label" />
-	{displayQuery}
-</QueryLoad>
+		<QueryLoad let:loaded data={depQuery}>
+			<Dropdown name="user" data={loaded} value="value" label="label">
+				<DropdownOption value="All" />
+			</Dropdown>
+		</QueryLoad>
+	</div>
+	<div>
+		<QueryLoad let:loaded data={depQuery}>
+			<pre class="text-xs">{loaded.originalText}</pre>
+			<pre class="text-xs overflow-y-auto">{JSON.stringify(loaded, null, 2)}</pre>
+		</QueryLoad>
+		{displayQuery.text}
+	</div>
+</div>
