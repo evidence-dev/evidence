@@ -1,3 +1,3 @@
 ---
-'@evidence-dev/core-components': major
+'@evidence-dev/core-components': patch
 ---
