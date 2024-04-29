@@ -68,7 +68,12 @@ async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch })
 	return Object.fromEntries(resolved_entries.filter(Boolean));
 }
 
-/** @satisfies {import("./$types").LayoutServerLoad} */
+/**
+ * Polyfills missing `event.data` in the case of a 404 or client side routing.
+ * Possibly not much benefit over simply removing `+layout.server.js` and replacing with this entirely.
+ * 
+ * @satisfies {import("./$types").LayoutServerLoad}
+ */
 async function missingDataJSON({ fetch, route, params }) {
 	const [{ default: md5 }, customFormattingSettings, pagesManifest, evidencemeta] =
 		await Promise.all([
