@@ -1,6 +1,0 @@
-{
-	"rewrites": [
-		{ "source": "**/__data.json", "destination": "/api/dummy.json" },
-		{ "source": "**/+([!.])", "destination": "/index.html" }
-	]
-}

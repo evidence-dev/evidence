@@ -12,7 +12,6 @@ const templatePaths = [
 	'src/global.d.ts',
 	'src/pages/+page.md',
 	'src/pages/+layout.svelte',
-	'src/pages/+layout.server.js',
 	'src/pages/+layout.js',
 	'src/pages/+error.svelte',
 	'src/pages/settings/',

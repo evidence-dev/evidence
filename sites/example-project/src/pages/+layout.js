@@ -9,6 +9,7 @@ import {
 } from '@evidence-dev/universal-sql/client-duckdb';
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
+import md5 from 'blueimp-md5';
 
 export const ssr = false;
 export const prerender = false;
@@ -47,8 +48,14 @@ const loadDB = async () => {
 
 const database_initialization = profile(loadDB);
 
-/** @type {(...params: Parameters<import("./$types").LayoutLoad>) => Promise<App.PageData["data"]>} */
-async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch }) {
+/**
+ *
+ * @param {string} routeHash
+ * @param {string} paramsHash
+ * @param {typeof fetch} fetch
+ * @returns {Promise<Record<string, unknown[]>>}
+ */
+async function getPrerenderedQueries(routeHash, paramsHash, fetch) {
 	// get every query that's run in the component
 	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
 	if (!res.ok) return {};
@@ -68,20 +75,18 @@ async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch })
 	return Object.fromEntries(resolved_entries.filter(Boolean));
 }
 
-/**
- * Polyfills missing `event.data` in the case of a 404 or client side routing.
- * Possibly not much benefit over simply removing `+layout.server.js` and replacing with this entirely.
- * 
- * @satisfies {import("./$types").LayoutServerLoad}
- */
-async function missingDataJSON({ fetch, route, params }) {
-	const [{ default: md5 }, customFormattingSettings, pagesManifest, evidencemeta] =
-		await Promise.all([
-			import('blueimp-md5'),
-			fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
-			fetch('/api/pagesManifest.json').then((x) => x.json()),
-			fetch(`/api/${route.id}/evidencemeta.json`).then((x) => (x.ok ? x.json() : { queries: [] }))
-		]);
+const system_routes = ['/settings', '/explore'];
+
+/** @type {Map<string, { inputs: Record<string, string> }>} */
+const dummy_pages = new Map();
+
+/** @satisfies {import("./$types").LayoutLoad} */
+export const load = async ({ fetch, route, params, url }) => {
+	const [customFormattingSettings, pagesManifest, evidencemeta] = await Promise.all([
+		fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
+		fetch('/api/pagesManifest.json').then((x) => x.json()),
+		fetch(`/api/${route.id}/evidencemeta.json`).then((x) => (x.ok ? x.json() : { queries: [] }))
+	]);
 
 	const routeHash = md5(route.id);
 	const paramsHash = md5(
@@ -90,36 +95,8 @@ async function missingDataJSON({ fetch, route, params }) {
 			.map(([key, value]) => `${key}\x1F${value}`)
 			.join('\x1E')
 	);
-
-	return {
-		routeHash,
-		paramsHash,
-		customFormattingSettings,
-		evidencemeta,
-		pagesManifest
-	};
-}
-
-const system_routes = ['/settings', '/explore'];
-
-/** @type {Map<string, { inputs: Record<string, string> }>} */
-const dummy_pages = new Map();
-
-/** @satisfies {import("./$types").LayoutLoad} */
-export const load = async (event) => {
 	const isUserPage =
-		event.route.id &&
-		system_routes.every((system_route) => !event.route.id.startsWith(system_route));
-
-	if (!event.data) {
-		event.data = await missingDataJSON(event);
-	}
-
-	const {
-		data: { customFormattingSettings, routeHash, paramsHash, evidencemeta, pagesManifest },
-		url,
-		fetch
-	} = event;
+		route.id && system_routes.every((system_route) => !route.id.startsWith(system_route));
 
 	/** @type {App.PageData["data"]} */
 	let data = {};
@@ -138,7 +115,7 @@ export const load = async (event) => {
 
 	// let SSR saturate the cache first
 	if (browser && isUserPage && prerender) {
-		data = await getPrerenderedQueries(event);
+		data = await getPrerenderedQueries(routeHash, paramsHash, fetch);
 	}
 
 	return /** @type {App.PageData} */ ({
