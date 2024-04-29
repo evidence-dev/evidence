@@ -104,7 +104,7 @@ describe('setTrackProxy', () => {
 	it('should not break when primative serializing', () => {
 		const v = setTrackProxy();
 
-		expect(() => v.toPrimative()).not.toThrow();
+		expect(() => v.toPrimitive()).not.toThrow();
 	});
 });
 

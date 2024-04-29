@@ -170,7 +170,7 @@ export class Query {
 	 * The Query text as it is being executed
 	 */
 	get text() {
-		return this.#query?.toString() ?? 'EmptyQuery';
+		return this.#query?.toString() ?? "SELECT 'Empty Query' WHERE 0";
 	}
 
 	//////////////////////////////
@@ -184,14 +184,14 @@ export class Query {
 	/** @type {Set<Query>} */
 	static #inFlightQueries = new Set();
 
-	static get QueriesInFlight() {
+	static get queriesInFlight() {
 		return Query.#inFlightQueries.size > 0;
 	}
 
 	/**
 	 * @protected
 	 */
-	static ResetInFlightQueries() {
+	static resetInFlightQueries() {
 		Query.#inFlightQueries = new Set();
 	}
 
@@ -852,7 +852,10 @@ DESCRIBE ${this.#query.toString()}
 		? (/** @type { string } */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
 				const groupName = `${(performance.now() / 1000).toFixed(3)} | Query | ${label}`;
 				console.groupCollapsed(groupName);
-				for (const arg of args) console.debug(arg);
+				for (const arg of args) {
+					if (typeof arg === 'function') console.debug(arg());
+					else console.debug(arg);
+				}
 				console.groupEnd();
 			}
 		: () => {};
@@ -869,7 +872,10 @@ DESCRIBE ${this.#query.toString()}
 		? (/** @type {string} */ label, /** @type {Parameters<typeof console.debug>} */ ...args) => {
 				const groupName = `${(performance.now() / 1000).toFixed(3)} | ${this.id} (${this.hash}) | ${label}`;
 				console.groupCollapsed(groupName);
-				for (const arg of args) console.debug(arg);
+				for (const arg of args) {
+					if (typeof arg === 'function') console.debug(arg());
+					else console.debug(arg);
+				}
 				console.groupEnd();
 			}
 		: () => {};
@@ -939,7 +945,7 @@ DESCRIBE ${this.#query.toString()}
 		}
 		Query.#constructing = false; // make sure we reset it
 		this.#value = this.#buildProxy();
-		this.#originalText = query?.toString() ?? 'EmptyQuery';
+		this.#originalText = query?.toString() ?? "SELECT 'Empty Query' WHERE 0";
 		this.#hash = hashQuery(this.#originalText);
 		this.#id = id ?? this.#hash;
 		this.#opts = opts;
@@ -1048,22 +1054,22 @@ DESCRIBE ${this.#query.toString()}
 		this.#debug(
 			'publish',
 			`Publishing triggered by ${source}`,
-			{
+			() => ({
 				data: JSON.parse(JSON.stringify(this.#data)),
 				dataLoaded: this.dataLoaded,
 				dataLoading: this.dataLoading
-			},
-			{
+			}),
+			() => ({
 				length: JSON.parse(JSON.stringify(this.#length)),
 				lengthLoaded: this.lengthLoaded,
 				lengthLoading: this.lengthLoading
-			},
-			{
+			}),
+			() => ({
 				columns: JSON.parse(JSON.stringify(this.#columns)),
 				columnsLoaded: this.columnsLoaded,
 				columnsLoading: this.columnsLoading
-			},
-			{ error: this.#error, opts: this.#opts },
+			}),
+			() => ({ error: this.#error, opts: this.#opts }),
 			`\n` + this.#query.toString()
 		);
 		this.#subscribers.forEach((fn) => fn(this.#value));

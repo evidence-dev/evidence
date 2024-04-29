@@ -493,15 +493,15 @@ describe('Query', () => {
 
 	describe('Global Loading State', () => {
 		beforeEach(() => {
-			Query.ResetInFlightQueries();
+			Query.resetInFlightQueries();
 		});
 		it('should report that no queries are loading when no queries have been created', () => {
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 		});
 		it('should report that no queries are loading when queries have been created, but not loaded', () => {
 			const q = getMockQuery('SELECT 1');
 			const q2 = getMockQuery('SELECT 2');
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 			expect(q.loading).toBe(false);
 			expect(q2.loading).toBe(false);
 		});
@@ -515,13 +515,13 @@ describe('Query', () => {
 			expectedData = mockDataPromise.promise;
 			const q = getMockQuery('SELECT 5');
 			q.fetch();
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(true);
 			expect(onQueryStart).toHaveBeenCalledOnce();
 			expect(onQueryEnd).not.toHaveBeenCalled();
 			mockDataPromise.resolve([]);
 			await tick();
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 			expect(q.dataLoading).toBe(false);
 			expect(onQueryStart).toHaveBeenCalledOnce();
 			expect(onQueryEnd).toHaveBeenCalledOnce();
@@ -542,7 +542,7 @@ describe('Query', () => {
 			expectedData = mockDataPromise.promise;
 			q.fetch();
 			// q1 is in flight
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(true);
 			expect(q2.dataLoading).toBe(false);
 			expect(onQueryStart).toHaveBeenCalledOnce();
@@ -551,7 +551,7 @@ describe('Query', () => {
 			expectedData = mockDataPromise2.promise;
 			q2.fetch();
 			// q1 and q2 are in flight
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(true);
 			expect(q2.dataLoading).toBe(true);
 			expect(onQueryStart).toHaveBeenCalledOnce();
@@ -560,7 +560,7 @@ describe('Query', () => {
 			mockDataPromise.resolve([]);
 			await tick();
 			// q1 resolved, q2 in flight
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(false);
 			expect(q2.dataLoading).toBe(true);
 			mockDataPromise2.resolve([]);
@@ -569,7 +569,7 @@ describe('Query', () => {
 
 			await tick();
 			// q1 resolved, q2 resolved
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 			expect(q.dataLoading).toBe(false);
 			expect(q2.dataLoading).toBe(false);
 			expect(onQueryStart).toHaveBeenCalledOnce();

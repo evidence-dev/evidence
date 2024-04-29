@@ -26,7 +26,7 @@ export const setTrackProxy = (
 				case 'toJSON':
 					return () => JSON.stringify(target[prop]);
 				case 'toString':
-				case 'toPrimative':
+				case 'toPrimitive':
 				case Symbol.toPrimitive:
 					if (self[Unset]) {
 						if (ownKey && ownKey in defaultStringMap) return () => defaultStringMap[ownKey];
