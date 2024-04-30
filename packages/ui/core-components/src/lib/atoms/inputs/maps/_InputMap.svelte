@@ -26,7 +26,7 @@
 	export let height = 500; // height in pixels
 
 	const dispatch = createEventDispatcher();
-	const scale = chroma.scale(['white', 'blue']);
+	const scale = chroma.scale(['lightblue', 'darkblue']);
 
 	$: if (max === undefined) {
 		max = Math.max(...data.map((d) => d[value]));
