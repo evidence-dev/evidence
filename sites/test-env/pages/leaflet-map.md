@@ -24,3 +24,13 @@ Selected store: {inputs.store_name.store_name}
 	value="annual_sales"
     height=500
 />
+
+Selected store #2: {inputs.store_name_2.store_name}
+
+<InputMap 
+    data={coords} 
+    lat="lat"
+    long="long"
+    name="store_name_2"
+    height=500
+/>
