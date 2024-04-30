@@ -3,11 +3,11 @@
 </script>
 
 <script>
-	import QueryLoad from '../../query-load/QueryLoad.svelte.js';
+	import QueryLoad from '../../query-load/QueryLoad.svelte';
 	import { Query } from '@evidence-dev/sdk/usql';
-	import InputMap from './_InputMap.svelte.js';
-	import EmptyChart from '../../../unsorted/viz/core/EmptyChart.svelte.js'
-	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte.js';
+	import InputMap from './_InputMap.svelte';
+	import EmptyChart from '../../../unsorted/viz/core/EmptyChart.svelte';
+	import ErrorChart from '../../../unsorted/viz/core/ErrorChart.svelte';
 
 	/** @type {import("@evidence-dev/sdk/usql").Query | unknown}*/
 	export let data;
