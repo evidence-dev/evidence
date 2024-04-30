@@ -1060,6 +1060,9 @@ importers:
       '@steeze-ui/tabler-icons':
         specifier: 2.1.1
         version: 2.1.1
+      '@types/chroma-js':
+        specifier: ^2.4.4
+        version: 2.4.4
       bits-ui:
         specifier: ^0.11.8
         version: 0.11.8(svelte@4.2.12)
@@ -8820,6 +8823,10 @@ packages:
   /@types/chai@4.3.14:
     resolution: {integrity: sha512-Wj71sXE4Q4AkGdG9Tvq1u/fquNz9EdG4LIJMwVVII7ashjD/8cf8fyIfJAjRr6YcsXnSE8cOGQPq1gqeR8z+3w==}
     dev: true
+
+  /@types/chroma-js@2.4.4:
+    resolution: {integrity: sha512-/DTccpHTaKomqussrn+ciEvfW4k6NAHzNzs/sts1TCqg333qNxOhy8TNIoQCmbGG3Tl8KdEhkGAssb1n3mTXiQ==}
+    dev: false
 
   /@types/cli-progress@3.11.5:
     resolution: {integrity: sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==}
