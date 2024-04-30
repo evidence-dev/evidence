@@ -1,6 +1,7 @@
 <script>
 	import { onMount, onDestroy, createEventDispatcher, getContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import chroma from 'chroma-js';
 	import 'leaflet/dist/leaflet.css';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -25,6 +26,7 @@
 	export let height = 500; // height in pixels
 
 	const dispatch = createEventDispatcher();
+	const scale = chroma.scale(['white', 'blue']);
 
 	$: if (max === undefined) {
 		max = Math.max(...data.map((d) => d[value]));
@@ -57,7 +59,7 @@
 			const svgIcon = leaflet.divIcon({
 				html: `
 					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewbox="0 0 ${size} ${size}" width="${size}" height="${size}">
-						<circle style="rgba(45, 74, 148, ${(data[i][value] - min) / (max - min)})" fill="#1DA1F2" cx="${size / 2}" cy="${size / 2}" r="${size / 2}"/>
+						<circle fill="${scale((data[i][value] - min) / (max - min)).hex()}" cx="${size / 2}" cy="${size / 2}" r="${size / 2}"/>
 					</svg>`,
 				className: '',
 				iconSize: [size, size],
