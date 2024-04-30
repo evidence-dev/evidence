@@ -1,10 +1,5 @@
 # Leaflet Map
 
-- This map plots markers on an interactive map using latitude and longitude columns
-- A customizable tooltip is included by passing column names in an array
-- Does not support value formatting yet
-- Auto-zooms to the points plotted on the map
-
 ```coords
 select 51.51123691095239 as lat,  -0.13465819567340626 as long, 'London' as city, 'Bobs' as store_name, 44345 as annual_sales, 'SMB' as segment
 union all
@@ -17,14 +12,15 @@ union all
 select 51.51044456017838 as lat, -0.13666702083919927 as long, 'London' as city, 'Fenton Atheltic Apparel' as store_name, 63578 as annual_sales, 'SMB' as segment
 ```
 
+Selected store: {inputs.store_name.store_name}
+
 <InputMap 
     data={coords} 
-    lat=lat 
-    long=long
-    name=store_name
-	min={10000}
-	max={70000}
+    lat="lat"
+    long="long"
+    name="store_name"
+	min="10000"
+	max="70000"
 	value="annual_sales"
-    tooltipFields={['segment', 'annual_sales', 'city']}
     height=500
 />
