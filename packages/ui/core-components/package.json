@@ -55,6 +55,7 @@
 		"echarts-stat": "1.2.0",
 		"export-to-csv": "0.2.1",
 		"fuse.js": "^7.0.0",
+		"leaflet": "^1.9.4",
 		"lodash.debounce": "^4.0.8",
 		"mermaid": "^10.6.1",
 		"prismjs": "1.29.0",
@@ -84,6 +85,9 @@
 		"@sveltejs/kit": "2.5.4",
 		"@sveltejs/package": "^2.2.7",
 		"@sveltejs/vite-plugin-svelte": "3.0.2",
+		"@types/leaflet": "^1.9.12",
+		"@types/lodash.debounce": "^4.0.9",
+		"@types/mermaid": "^9.2.0",
 		"autoprefixer": "^10.4.14",
 		"chromatic": "^6.17.4",
 		"eslint": "8.45.0",
@@ -105,8 +109,6 @@
 		"tslib": "^2.4.1",
 		"typescript": "5.4.2",
 		"vite": "5.1.6",
-		"@types/lodash.debounce": "^4.0.9",
-		"@types/mermaid": "^9.2.0",
 		"vitest": "^0.34.1"
 	},
 	"overrides": {
