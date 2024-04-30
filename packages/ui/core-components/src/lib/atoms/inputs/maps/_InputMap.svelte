@@ -69,12 +69,6 @@
 				dispatch('click', data[i]);
 				$inputs[name] = data[i];
 			});
-
-			if (i > 0) {
-				/** @type {[number, number]} */
-				const prevPoint = [data[i - 1][lat], data[i - 1][long]];
-				leaflet.polyline([prevPoint, currentPoint]).addTo(map);
-			}
 		}
 
 		const bounds = leaflet.latLngBounds(latLngData);
