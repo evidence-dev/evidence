@@ -50,7 +50,7 @@
 
 		const latLngData = [];
 		for (let i = 0; i < data.length; i++) {
-			const currentPoint = [data[i][lat], data[i][long]];
+			const currentPoint = [[data[i][lat], data[i][long]]];
 			latLngData.push(currentPoint);
 
 			const svgIcon = leaflet.divIcon({
@@ -63,14 +63,14 @@
 				iconAnchor: [size, size]
 			});
 
-			const marker = leaflet.marker(currentPoint, { icon: svgIcon }).addTo(map);
+			const marker = leaflet.marker(currentPoint[0], { icon: svgIcon }).addTo(map);
 			marker.on('click', () => {
 				dispatch('click', data[i]);
 				$inputs[name] = data[i];
 			});
 
 			if (i > 0) {
-				const prevPoint = [data[i - 1][lat], data[i - 1][long]];
+				const prevPoint = [[data[i - 1][lat], data[i - 1][long]]];
 				leaflet.polyline([prevPoint, currentPoint]).addTo(map);
 			}
 		}
