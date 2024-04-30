@@ -9,14 +9,18 @@
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 
+	/** @type {HTMLElement} */
 	let mapElement;
+	/** @type {import("leaflet").Map} */
 	let map;
 
 	export let data;
 	export let lat;
 	export let long;
 	export let name;
+	/** @type {number} */
 	export let min;
+	/** @type {number} */
 	export let max;
 	export let value;
 	export let startingLat = 44.4;
@@ -50,7 +54,8 @@
 
 		const latLngData = [];
 		for (let i = 0; i < data.length; i++) {
-			const currentPoint = [[data[i][lat], data[i][long]]];
+			/** @type {[number, number]} */
+			const currentPoint = [data[i][lat], data[i][long]];
 			latLngData.push(currentPoint);
 
 			const svgIcon = leaflet.divIcon({
@@ -63,14 +68,15 @@
 				iconAnchor: [size, size]
 			});
 
-			const marker = leaflet.marker(currentPoint[0], { icon: svgIcon }).addTo(map);
+			const marker = leaflet.marker(currentPoint, { icon: svgIcon }).addTo(map);
 			marker.on('click', () => {
 				dispatch('click', data[i]);
 				$inputs[name] = data[i];
 			});
 
 			if (i > 0) {
-				const prevPoint = [[data[i - 1][lat], data[i - 1][long]]];
+				/** @type {[number, number]} */
+				const prevPoint = [data[i - 1][lat], data[i - 1][long]];
 				leaflet.polyline([prevPoint, currentPoint]).addTo(map);
 			}
 		}
