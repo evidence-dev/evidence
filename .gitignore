@@ -26,3 +26,10 @@ connection.options.yaml
 .idea
 packages/core-components/.evidence-queries
 packages/core-components/.profile.json
+
+packages/extension/node_modules
+packages/extension/out
+packages/extension/dist
+packages/extension/.vscode-test
+packages/extension/*.vsix
+packages/extension/.DS_Store
