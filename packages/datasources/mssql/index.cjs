@@ -189,7 +189,7 @@ module.exports.options = {
 		secret: false,
 		nest: false,
 		required: true,
-		default: 'sqlauth',
+		default: 'default',
 		options: [
 			{
 				value: 'default',
