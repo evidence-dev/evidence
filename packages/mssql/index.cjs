@@ -194,11 +194,11 @@ module.exports.options = {
 		options: [
 			{
 				value: 'default',
-				label: 'Password'
+				label: 'SQL Login'
 			},
 			{
 				value: 'azure-active-directory-default',
-				label: 'Entra ID'
+				label: 'DefaultAzureCredential'
 			}
 		],
 		children: {
