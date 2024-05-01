@@ -33,6 +33,12 @@
 	export let value = undefined;
 
 	/**
+	 * Function to be called when a marker is clicked
+	 * @type {(row: Record<string, unknown>) => void}
+	 */
+	export let onclick = () => {};
+
+	/**
 	 * Minimum value to be compared, defaults to the minimum value in the data
 	 * @type {number}
 	 */
@@ -94,7 +100,7 @@
 
 				const marker = leaflet.marker(currentPoint, { icon: svgIcon }).addTo(map);
 				marker.on('click', () => {
-					dispatch('click', data[i]);
+					onclick(data[i]);
 					$inputs[name] = data[i];
 				});
 				markers.push(marker);
