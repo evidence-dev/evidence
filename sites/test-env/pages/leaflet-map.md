@@ -33,4 +33,5 @@ Selected store #2: {inputs.store_name_2.store_name}
     long="long"
     name="store_name_2"
     height=500
+	onclick={(row) => console.log(`This could be a link to /store/${row.store_name.replaceAll(" ", "-")}`)}
 />
