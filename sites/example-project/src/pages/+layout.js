@@ -11,8 +11,8 @@ import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
 import md5 from 'blueimp-md5';
 
-export const ssr = false;
-export const prerender = false;
+export const ssr = !dev;
+export const prerender = import.meta.env.VITE_EVIDENCE_SPA !== 'true';
 export const trailingSlash = 'always';
 
 const loadDB = async () => {
