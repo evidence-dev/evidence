@@ -83,25 +83,45 @@ const mapResultsToEvidenceColumnTypes = function (fields) {
 	});
 };
 
+const buildConfig = function (database) {
+	const trust_server_certificate = database.trust_server_certificate ?? 'false';
+	const encrypt = database.encrypt ?? 'true';
+
+	port = parseInt(database.port ?? 1433)
+	authentication = { type: database.authenticationType }
+	options = {
+		trustServerCertificate:
+			trust_server_certificate === 'true' || trust_server_certificate === true,
+		encrypt: encrypt === 'true' || encrypt === true
+	}
+
+	if (database.authenticationType === 'default') {
+		return {
+			user: database.user,
+			password: database.password,
+			server: database.server,
+			database: database.database,
+			authentication: authentication,
+			port: port,
+			options: options
+		};
+	}
+	else if (database.authenticationType === 'azure-active-directory-default') {
+		return {
+			server: database.server,
+			database: database.database,
+			authentication: authentication,
+			port: port,
+			options: options
+		};
+	}
+};
+
 /** @type {import("@evidence-dev/db-commons").RunQuery<MsSQLOptions>} */
 const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 	try {
-		const trust_server_certificate = database.trust_server_certificate ?? 'false';
-		const encrypt = database.encrypt ?? 'true';
-		const credentials = {
-			user: database.user,
-			server: database.server,
-			database: database.database,
-			password: database.password,
-			port: parseInt(database.port ?? 1433),
-			options: {
-				trustServerCertificate:
-					trust_server_certificate === 'true' || trust_server_certificate === true,
-				encrypt: encrypt === 'true' || encrypt === true
-			}
-		};
-
-		const pool = await mssql.connect(credentials);
+		const config = buildConfig(database)
+		const pool = await mssql.connect(config);
 
 		const cleaned_string = cleanQuery(queryString);
 		const expected_count = await pool
@@ -164,6 +184,53 @@ module.exports.testConnection = async (opts) => {
 };
 
 module.exports.options = {
+	authenticationType: {
+		title: 'Authentication type',
+		type: 'select',
+		secret: false,
+		nest: false,
+		required: true,
+		default: 'sqlauth',
+		options: [
+			{
+				value: 'default',
+				label: 'SQL Login'
+			},
+			{
+				value: 'azure-active-directory-default',
+				label: 'DefaultAzureCredential'
+			}
+		],
+		children: {
+			'default': {
+				user: {
+					title: 'Username',
+					secret: false,
+					type: 'string',
+					required: true
+				},
+				password: {
+					title: 'Password',
+					secret: true,
+					type: 'string',
+					required: true
+				},
+			},
+			'azure-active-directory-default': {}
+			// TODO: authentication types not supported yet:
+			// - tediousjs.github.io/tedious/api-connection.html
+			// - timothyhoward/evidence-connector-mssql/datasource/src/index.cjs
+			// - [x] default
+			// - [ ] ntlm
+			// - [x] azure-active-directory-default
+			// - [ ] azure-active-directory-password
+			// - [ ] azure-active-directory-access-token
+			// - [ ] azure-active-directory-msi-vm
+			// - [ ] azure-active-directory-msi-app-service
+			// - [ ] azure-active-directory-service-principal-secret
+
+		}
+	},
 	server: {
 		title: 'Host',
 		secret: false,
@@ -173,18 +240,6 @@ module.exports.options = {
 	database: {
 		title: 'Database',
 		secret: false,
-		type: 'string',
-		required: true
-	},
-	user: {
-		title: 'Username',
-		secret: false,
-		type: 'string',
-		required: true
-	},
-	password: {
-		title: 'Password',
-		secret: true,
 		type: 'string',
 		required: true
 	},
