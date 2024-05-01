@@ -117,7 +117,7 @@
 				start: startOfMonth(calendarEnd),
 				end: endOfMonth(calendarEnd)
 			}
-		},	
+		},
 		{
 			label: 'Year to Date',
 			group: 'To Date',
@@ -222,25 +222,25 @@
 			{/if}
 		</Select.Trigger>
 		<Select.Content>
-			{#each presets.filter(d => (d.group === 'Days')) as preset}
+			{#each presets.filter((d) => d.group === 'Days') as preset}
 				<Select.Item value={preset.range} label={preset.label} class="text-xs"
 					>{preset.label}</Select.Item
 				>
 			{/each}
-			<Separator orientation="horizontal"  />
-			{#each presets.filter(d => (d.group === 'Months')) as preset}
+			<Separator orientation="horizontal" />
+			{#each presets.filter((d) => d.group === 'Months') as preset}
 				<Select.Item value={preset.range} label={preset.label} class="text-xs"
 					>{preset.label}</Select.Item
 				>
 			{/each}
-			<Separator orientation="horizontal"  />
-			{#each presets.filter(d => (d.group === 'Last')) as preset}
+			<Separator orientation="horizontal" />
+			{#each presets.filter((d) => d.group === 'Last') as preset}
 				<Select.Item value={preset.range} label={preset.label} class="text-xs"
 					>{preset.label}</Select.Item
 				>
 			{/each}
-			<Separator orientation="horizontal"  />
-			{#each presets.filter(d => (d.group === 'To Date')) as preset}
+			<Separator orientation="horizontal" />
+			{#each presets.filter((d) => d.group === 'To Date') as preset}
 				<Select.Item value={preset.range} label={preset.label} class="text-xs"
 					>{preset.label}</Select.Item
 				>
