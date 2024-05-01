@@ -1,13 +1,18 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 title: Data Sources
 description: Connect a data source in order to run queries.
 ---
 
-:::info Recent changes to data sources in Evidence
+<Alert status=info>
+
+**Recent changes to data sources in Evidence**
+
 A recent Evidence release (Universal SQL, v24+) contains breaking changes for data source setup.
+
 If you recently updated your Evidence version and are having issues setting up data sources, consult the [migration guide](/guides/usql-migration-guide)
-:::
+
+</Alert>
 
 ## Overview of Data Sources
 
@@ -34,7 +39,7 @@ To connect your local development environment to a database:
 
 Evidence will save your credentials locally, and run a test query to confirm that it can connect.
 
-Connections to databases in production are managed via [environment variables](/cli#environment-variables)
+Connections to databases in production are managed via [environment variables](/reference/cli#environment-variables)
 
 ## Configure Source Queries
 
@@ -51,10 +56,13 @@ For SQL data sources, choose which data to extract by adding .sql files to the `
 
 Each of these .sql files will create a table that can be queried in Evidence as `[my_source].[my_source_query]`.
 
-:::info Non-SQL data sources
+<Alert status=info>
+
+**Non-SQL data sources**
 
 For non-SQL data sources, configuring the data extracted is achieved in other ways. Refer to the documentation for the specific data source for details.
-:::
+
+</Alert>
 
 ## Run Sources
 
@@ -81,7 +89,7 @@ Evidence supports:
 - [PostgreSQL](#postgresql)
 - [Timescale](#postgresql)
 - [Trino](#trino)
-- [Microsoft SQL Server](#mssql)
+- [Microsoft SQL Server](#microsoft-sql-server)
 - [MySQL](#mysql)
 - [SQLite](#sqlite)
 - [DuckDB](#duckdb)
@@ -89,8 +97,8 @@ Evidence supports:
 - [Databricks](#databricks)
 - [Cube](#cube)
 - [Google Sheets](#google-sheets)
-- [CSV](#csv-and-parquet-files)
-- [Parquet](#csv-and-parquet-files)
+- [CSV](#csv-files)
+- [Parquet](#csv-files)
 - & More
 
 We're adding new connectors regularly. [Create a GitHub issue](https://github.com/evidence-dev/evidence/issues) or [send us a message in Slack](https://slack.evidence.dev) if you'd like to use Evidence with a database that isn't currently supported.
@@ -178,7 +186,7 @@ Other SSL options will require the use of a custom connection string. Evidence u
 
 One scenario might be a Postgres platform that issues a self-signed certificate for the database connection, but provides a CA certificate to validate that self-signed certificate. In this scenario you could use a CONNECTION STRING value as follows: 
 
-```
+```markdown
 postgresql://{user}:{password}@{host}:{port}/{database}?sslmode=require&sslrootcert=/path/to/file/ca-certificate.crt
 ```
 
@@ -210,7 +218,7 @@ Password: The password you use to login to your Starburst account
 
 Alternatively, you can also create a service account at `https://<YOUR_DOMAIN>.galaxy.starburst.io/service-accounts` and use this to connect.
 
-### Microsoft SQL Server {#mssql}
+### Microsoft SQL Server
 
 #### Trust Server Certificate
 
@@ -219,18 +227,6 @@ The `trustServerCertificate` option indicates whether the channel will be encryp
 #### Encrypt
 
 The `encrypt` option indicates whether SQL Server uses SSL encryption for all data sent between the client and server if the server has a certificate installed. Necessary for Azure databases.
-
-#### Authentication Type
-
-On top of the extra options, an authentication property can be added, see documentation for [`mssql`](https://www.npmjs.com/package/mssql). Passing this object will override `user`, `password`, `domain` settings.
-
-For example, to use Azure Active Directory authentication, you can pass this 
-
-```js
-authentication: {
-  type: "azure-active-directory-default"
-}
-```
 
 ### MySQL
 
@@ -275,6 +271,8 @@ Cube's API is PostgreSQL compatible, so you can use the Evidence PostgreSQL conn
 You can find the credentials to connect to Cube on the BI Integrations page under the SQL API Connection tab (you may need to enable the SQL API first).
 
 ### Google Sheets
+
+The Google Sheets data source is a plugin, you first need to [install the plugin](https://github.com/evidence-dev/datasources/tree/main/gsheets#adding-the-adapter-to-evidence).
 
 Adding data from Google Sheets requires a a [service account](https://cloud.google.com/iam/docs/service-accounts).
 
@@ -327,12 +325,18 @@ You can add [DuckDB source options](https://duckdb.org/docs/data/csv/overview.ht
 
 Ensure there are no spaces in your source options you pass, and to use double quotes when passing strings
 
-Option String | Outcome
---|--
-header=false | Reads the first line as the first row of data
-delim="\|" | Use "\|" characters as delimiters when reading the csv
-header=false,delim="\|" | Use both of these options
 
+```sql source_options
+select 'header=false' as "Option String", 'Reads the first line as the first row of data' as "Outcome", 0 as row_num UNION ALL
+select 'delim="|"', 'Use "|" characters as delimiters when reading the csv', 1 UNION ALL
+select 'header=false,delim="|"', 'Use both of these options', 2
+order by row_num
+```
+
+<DataTable data={source_options}>
+    <Column id="Option String" />
+    <Column id="Outcome" />
+</DataTable>
 
 ## Troubleshooting
 
