@@ -1,5 +1,5 @@
 <script>
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import chroma from 'chroma-js';
 	import 'leaflet/dist/leaflet.css';
@@ -54,7 +54,6 @@
 	export let startingZoom = 13;
 	export let height = 500; // height in pixels
 
-	const dispatch = createEventDispatcher();
 	const scale = chroma.scale(['lightblue', 'darkblue']);
 
 	/**
