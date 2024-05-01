@@ -87,13 +87,13 @@ const buildConfig = function (database) {
 	const trust_server_certificate = database.trust_server_certificate ?? 'false';
 	const encrypt = database.encrypt ?? 'true';
 
-	port = parseInt(database.port ?? 1433)
-	authentication = { type: database.authenticationType }
+	port = parseInt(database.port ?? 1433);
+	authentication = { type: database.authenticationType };
 	options = {
 		trustServerCertificate:
 			trust_server_certificate === 'true' || trust_server_certificate === true,
 		encrypt: encrypt === 'true' || encrypt === true
-	}
+	};
 
 	if (database.authenticationType === 'default') {
 		return {
@@ -105,8 +105,7 @@ const buildConfig = function (database) {
 			port: port,
 			options: options
 		};
-	}
-	else if (database.authenticationType === 'azure-active-directory-default') {
+	} else if (database.authenticationType === 'azure-active-directory-default') {
 		return {
 			server: database.server,
 			database: database.database,
@@ -120,7 +119,7 @@ const buildConfig = function (database) {
 /** @type {import("@evidence-dev/db-commons").RunQuery<MsSQLOptions>} */
 const runQuery = async (queryString, database = {}, batchSize = 100000) => {
 	try {
-		const config = buildConfig(database)
+		const config = buildConfig(database);
 		const pool = await mssql.connect(config);
 
 		const cleaned_string = cleanQuery(queryString);
@@ -202,7 +201,7 @@ module.exports.options = {
 			}
 		],
 		children: {
-			'default': {
+			default: {
 				user: {
 					title: 'Username',
 					secret: false,
@@ -214,7 +213,7 @@ module.exports.options = {
 					secret: true,
 					type: 'string',
 					required: true
-				},
+				}
 			},
 			'azure-active-directory-default': {}
 			// TODO: authentication types not supported yet:
@@ -228,7 +227,6 @@ module.exports.options = {
 			// - [ ] azure-active-directory-msi-vm
 			// - [ ] azure-active-directory-msi-app-service
 			// - [ ] azure-active-directory-service-principal-secret
-
 		}
 	},
 	server: {
