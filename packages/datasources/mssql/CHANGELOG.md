@@ -1,5 +1,11 @@
 # @evidence-dev/mssql
 
+## 1.0.7
+
+### Patch Changes
+
+- a95db3d3: Move types to devDependencies
+
 ## 1.0.6
 
 ### Patch Changes

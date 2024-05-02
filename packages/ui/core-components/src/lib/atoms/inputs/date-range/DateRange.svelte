@@ -6,7 +6,7 @@
 	import DateRange from './_DateRange.svelte';
 	import { getContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
-	import { QueryStore } from '@evidence-dev/query-store';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import { getQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
@@ -30,7 +30,7 @@
 	/** @type {string | Date | undefined} */
 	export let end;
 
-	/** @type {QueryStore | string | undefined} */
+	/** @type {Query | string | undefined} */
 	export let data;
 	/** @type {string | undefined} */
 	export let dates;
@@ -39,16 +39,17 @@
 	let query;
 	$: if (data && dates) {
 		const source = typeof data === 'string' ? data : `(${data.text})`;
-		query = QueryStore.create(
+		query = Query.create(
 			`SELECT min(${dates}) as start, max(${dates}) as end FROM ${source}`,
 			exec,
-			`DateRange-${name}`,
 			{
 				initialData: $page.data.data[`DateRange-${name}`],
 				disableCache: true,
-				noResolve: false
+				noResolve: false,
+				id: `DateRange-${name}`
 			}
 		);
+		query.fetch();
 	}
 
 	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
@@ -98,7 +99,12 @@
 				</span>
 			</span>
 		{:else}
-			<DateRange bind:selectedDateRange start={startString} end={endString} />
+			<DateRange
+				bind:selectedDateRange
+				start={startString}
+				end={endString}
+				loaded={$query?.ready ?? true}
+			/>
 		{/if}
 	</div>
 </HiddenInPrint>

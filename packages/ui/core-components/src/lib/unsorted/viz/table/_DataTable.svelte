@@ -212,7 +212,7 @@
 	}
 
 	// Reactively update Fuse when `data` or `columnSummary` changes
-	$: if (browser) {
+	$: if (browser && !error) {
 		updateFuse();
 		if (searchValue !== '') {
 			runSearch(searchValue);
@@ -380,7 +380,7 @@
 	let groupedData = {};
 	let groupRowData = [];
 
-	$: {
+	$: if (!error) {
 		groupedData = data.reduce((acc, row) => {
 			const groupName = row[groupBy];
 			if (!acc[groupName]) {
@@ -399,7 +399,7 @@
 
 			columnsToAggregate.forEach((columnDef) => {
 				const column = columnDef.id;
-				const colType = columnSummary.find((d) => d.id === column).type;
+				const colType = columnSummary.find((d) => d.id === column)?.type;
 				const totalAgg = columnDef.totalAgg;
 				const weightCol = columnDef.weightCol;
 				const rows = groupedData[groupName];
@@ -469,7 +469,7 @@
 			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
 		{/if}
 
-		<div class="container" style:background-color={backgroundColor}>
+		<div class="scrollbox" style:background-color={backgroundColor}>
 			<table>
 				<TableHeader
 					{rowNumbers}
@@ -712,10 +712,9 @@
 <style>
 	.table-container {
 		font-size: 9.5pt;
-		width: 98%;
 	}
 
-	.container {
+	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
 		/* border-bottom: 1px solid var(--grey-200);    */
@@ -731,31 +730,31 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 
-	.container::-webkit-scrollbar {
+	.scrollbox::-webkit-scrollbar {
 		height: var(--scrollbar-size);
 		width: var(--scrollbar-size);
 	}
 
-	.container::-webkit-scrollbar-track {
+	.scrollbox::-webkit-scrollbar-track {
 		background-color: var(--scrollbar-track-color);
 	}
 
-	.container::-webkit-scrollbar-thumb {
+	.scrollbox::-webkit-scrollbar-thumb {
 		background-color: var(--scrollbar-color);
 		border-radius: 7px;
 		background-clip: padding-box;
 	}
 
-	.container::-webkit-scrollbar-thumb:hover {
+	.scrollbox::-webkit-scrollbar-thumb:hover {
 		background-color: var(--scrollbar-active-color);
 	}
 
-	.container::-webkit-scrollbar-thumb:vertical {
+	.scrollbox::-webkit-scrollbar-thumb:vertical {
 		min-height: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
 
-	.container::-webkit-scrollbar-thumb:horizontal {
+	.scrollbox::-webkit-scrollbar-thumb:horizontal {
 		min-width: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}

@@ -57,21 +57,50 @@
 		{#if $props.columns.length > 0}
 			{#each $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, k}
 				{@const useCol = safeExtractColumn(column, columnSummary)}
-				{@const column_min = column.colorMin ?? useCol.columnUnitSummary.min}
-				{@const column_max = column.colorMax ?? useCol.columnUnitSummary.max}
+				{@const scaleCol = column.scaleColumn
+					? columnSummary.find((d) => d.id === column.scaleColumn)
+					: useCol}
+				{@const column_min = column.colorMin ?? scaleCol.columnUnitSummary?.min}
+				{@const column_max = column.colorMax ?? scaleCol.columnUnitSummary?.max}
 				{@const is_nonzero =
 					column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 				{@const column_format = column.fmt
 					? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
-					: useCol.format}
+					: column.fmtColumn
+						? getFormatObjectFromString(row[column.fmtColumn], useCol.format?.valuetype)
+						: useCol.format}
 				{@const color_domain =
 					column.colorBreakpoints ??
 					(column.colorMid ? [column_min, column.colorMid, column_max] : [column_min, column_max])}
 				{@const color_scale = column.colorPalette
-					? chroma.scale(column.colorPalette).domain(color_domain)
+					? chroma.scale(column.colorPalette).domain(color_domain).nodata('white')
 					: ''}
+				{@const cell_color =
+					column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? column.scaleColumn
+							? color_scale(row[column.scaleColumn]).hex()
+							: color_scale(row[column.id]).hex()
+						: ''}
+				{@const font_color = column.redNegatives
+					? row[column.id] < 0
+						? 'rgb(220 38 38)'
+						: ''
+					: column.contentType === 'colorscale' && is_nonzero && column.colorPalette
+						? chroma.contrast(cell_color, uiColours.grey999) <
+							chroma.contrast(cell_color, 'white') + 0.5
+							? 'white'
+							: uiColours.grey999
+						: ''}
+				{@const bottom_border =
+					i !== displayedData.length - 1 &&
+					rowLines &&
+					column.contentType === 'colorscale' &&
+					is_nonzero &&
+					column.colorPalette
+						? `1px solid ${chroma(cell_color).darken(0.5)}`
+						: ''}
 				<TableCell
-					class="{useCol.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+					class="{useCol?.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
 					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === useCol.id && i !== 0)}
@@ -82,22 +111,9 @@
 					height={column.height}
 					width={column.width}
 					wrap={column.wrap}
-					cellColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
-						? color_scale(row[column.id]).hex()
-						: ''}
-					fontColor={column.contentType === 'colorscale' && is_nonzero && column.colorPalette
-						? chroma.contrast(color_scale(row[column.id]).hex(), uiColours.grey999) <
-							chroma.contrast(color_scale(row[column.id]).hex(), 'white') + 0.5
-							? 'white'
-							: uiColours.grey999
-						: ''}
-					borderBottom={i !== displayedData.length - 1 &&
-					rowLines &&
-					column.contentType === 'colorscale' &&
-					is_nonzero &&
-					column.colorPalette
-						? `1px solid ${color_scale(row[column.id]).darken(0.5)}`
-						: ''}
+					cellColor={cell_color}
+					fontColor={font_color}
+					borderBottom={bottom_border}
 				>
 					{#if column.contentType === 'image' && row[column.id] !== undefined}
 						<img
@@ -167,13 +183,7 @@
 					{:else if column.contentType === 'html' && row[column.id] !== undefined}
 						{@html row[column.id]}
 					{:else}
-						{formatValue(
-							row[column.id],
-							column.fmt
-								? getFormatObjectFromString(column.fmt, useCol.format?.valueType)
-								: useCol.format,
-							useCol.columnUnitSummary
-						)}
+						{formatValue(row[column.id], column_format, useCol.columnUnitSummary)}
 					{/if}
 				</TableCell>
 			{/each}

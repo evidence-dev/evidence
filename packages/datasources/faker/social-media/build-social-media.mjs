@@ -16,7 +16,7 @@ export const buildSocialMediaSources = async (sourceDir, libDir, connectionName)
 
 		queries[name] = {
 			text: `SELECT * FROM ${connectionName}.${name}`,
-			store: `new QueryStore("SELECT * FROM ${connectionName}.${name}", query)`
+			store: `Query.create("SELECT * FROM ${connectionName}.${name}", query)`
 		};
 	}
 	return { social_media: queries };

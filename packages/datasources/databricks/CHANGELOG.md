@@ -1,5 +1,11 @@
 # @evidence-dev/databricks
 
+## 1.0.5
+
+### Patch Changes
+
+- 1457a71b: downgrade databricks connector to 1.7.1 to remove lz4 dep causing install issues
+
 ## 1.0.4
 
 ### Patch Changes

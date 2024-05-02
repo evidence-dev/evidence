@@ -3,7 +3,6 @@
 </script>
 
 <script>
-	/** @typedef {import('@evidence-dev/query-store').QueryStore} QueryStore */
 	/** @typedef {import('./sqlConsole.action.js').SqlConsoleArgs} SqlConsoleArgs */
 	import { sqlConsole, buildAutoCompletes } from './sqlConsole.action.js';
 	import { slide } from 'svelte/transition';
@@ -36,7 +35,7 @@
 		- keyword updates
 	 */
 
-	/** @type {QueryStore} */
+	/** @type {import("@evidence-dev/sdk/usql").Query} */
 	export let data = buildQuery(currentQuery);
 
 	$: if (currentQuery) {

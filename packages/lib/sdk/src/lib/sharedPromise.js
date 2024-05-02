@@ -41,10 +41,12 @@ export const sharedPromise = (stateChangeHook) => {
 		 */
 		resolve: (v) => {
 			if (res) {
-				state = 'resolved';
-				resolvedValue = v;
-				res(v);
-				stateChangeHook?.();
+				if (state === 'loading' || state === 'init') {
+					state = 'resolved';
+					resolvedValue = v;
+					res(v);
+					stateChangeHook?.();
+				}
 			} else throw new Error('SharedPromise encountered an error: res not defined');
 		},
 		/**
@@ -53,9 +55,12 @@ export const sharedPromise = (stateChangeHook) => {
 		 */
 		reject: (e) => {
 			if (rej) {
-				state = 'rejected';
-				rej(e);
-				stateChangeHook?.();
+				if (state === 'loading' || state === 'init') {
+					state = 'rejected';
+					p.catch(() => {}); // noop to prevent the page from dying. This does not prevent .catch from working in other places
+					rej(e);
+					stateChangeHook?.();
+				}
 			} else throw new Error('SharedPromise encountered an error: rej not defined');
 		},
 		get state() {

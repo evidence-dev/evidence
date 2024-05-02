@@ -5,4 +5,4 @@ queries:
 
 <DataTable data={external}/>
 
-{ external instanceof QueryStore }
+{ external instanceof Query }
