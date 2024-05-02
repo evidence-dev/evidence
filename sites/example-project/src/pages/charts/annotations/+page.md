@@ -276,3 +276,30 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     <ReferenceArea xMin='2021-02-01' xMax='2021-09-01' label=grey color=grey/>
     <ReferenceArea xMin='2021-09-01' label=custom color=#f2dbff labelColor=#4d1070/>
 </LineChart>
+
+
+## Example with Input
+
+```sql target
+select 90000 as target, 100000 as stretch, 2020 as year
+union all
+select 100000, 140000, 2021
+```
+
+<Dropdown data={target} name=year value=year defaultValue=2020/>
+
+```sql target_filtered
+select * from ${target}
+where year = ${inputs.year.value}
+```
+
+#### y-axis
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceLine data={target_filtered} y=target label="Target"/>
+    <ReferenceArea data={target_filtered} yMin=target yMax=stretch />
+</LineChart>
