@@ -1,5 +1,22 @@
 # @evidence-dev/core-components
 
+## 4.0.2
+
+### Patch Changes
+
+- 41a9f1b5: Reintroduce error handling to DataTable
+- 0a67d65e: fix: calendar heatmap off by 1 error
+- 63908810: Fix scrollbar appearing on last chart on page
+- 09b999d5: Update Evidence Cloud link in Settings
+
+## 4.0.1
+
+### Patch Changes
+
+- cb6db1a1: Fix for Query not respecting noResolve properly
+  Skeleton slot for QueryLoad was not properly passing the "loaded" slot prop
+  - @evidence-dev/component-utilities@3.0.1
+
 ## 4.0.0
 
 ### Major Changes

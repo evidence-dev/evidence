@@ -57,8 +57,8 @@
 				{@const scaleCol = column.scaleColumn
 					? columnSummary.find((d) => d.id === column.scaleColumn)
 					: useCol}
-				{@const column_min = column.colorMin ?? scaleCol.columnUnitSummary.min}
-				{@const column_max = column.colorMax ?? scaleCol.columnUnitSummary.max}
+				{@const column_min = column.colorMin ?? scaleCol.columnUnitSummary?.min}
+				{@const column_max = column.colorMax ?? scaleCol.columnUnitSummary?.max}
 				{@const is_nonzero =
 					column_max - column_min !== 0 && !isNaN(column_max) && !isNaN(column_min)}
 				{@const column_format = column.fmt
@@ -97,7 +97,7 @@
 						? `1px solid ${chroma(cell_color).darken(0.5)}`
 						: ''}
 				<TableCell
-					class={useCol.type}
+					class={useCol?.type}
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
 					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === useCol.id && i !== 0)}

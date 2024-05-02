@@ -24,7 +24,7 @@
 	"main": "./dist/index.js",
 	"type": "module",
 	"types": "./dist/index.d.ts",
-	"version": "4.0.0",
+	"version": "4.0.2",
 	"evidence": {
 		"components": true
 	},
@@ -104,7 +104,7 @@
 		"tailwindcss": "^3.3.1",
 		"tslib": "^2.4.1",
 		"typescript": "5.4.2",
-		"vite": "5.1.6",
+		"vite": "5.2.10",
 		"@types/lodash.debounce": "^4.0.9",
 		"@types/mermaid": "^9.2.0",
 		"vitest": "^0.34.1"

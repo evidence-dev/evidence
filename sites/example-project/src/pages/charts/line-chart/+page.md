@@ -80,7 +80,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ```
 
 <LineChart 
-    data={orders_by_month} 
+    data=orders_by_month
     x=month
     y=sales_usd0k 
     yAxisTitle="Sales per Month"

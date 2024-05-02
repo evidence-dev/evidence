@@ -1,21 +1,19 @@
 <h2>Deploying to Evidence Cloud</h2>
-<p>Evidence's Cloud hosting service allows you to:</p>
+<p>Evidence Cloud allows you to:</p>
 <ul>
-	<li>Host your project at <code>{'<'}organisation{'>'}.evidence.app</code></li>
+	<li>Host your project at <code>{'<'}project-name{'>'}.evidence.app</code></li>
 	<li>Authenticate users</li>
 	<li>Schedule updates to your data</li>
 	<li>Re-build when you push changes to your project</li>
 </ul>
-<p>Evidence Cloud is invite-only. Request an invite below.</p>
 
-<div class="new-format-buttons mb-3">
+<div class="new-format-buttons my-3">
 	<button type="button">
 		<a
 			class="text-white no-underline hover:no-underline"
 			target="_blank"
 			rel="noreferrer"
-			href="https://du3tapwtcbi.typeform.com/to/kwp7ZD3q?utm_source=product&utm_campaign=deploy_panel"
-			>Request an Invite</a
+			href="https://evidence.app">Sign Up</a
 		>
 	</button>
 </div>

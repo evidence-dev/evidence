@@ -1,0 +1,70 @@
+{
+	"scopeName": "markdown.sql.codeblock",
+	"fileTypes": [],
+	"injectionSelector": "L:text.html.markdown",
+	"patterns": [
+		{
+			"include": "#sql-code-block"
+		}
+	],
+	"repository": {
+		"sql-code-block": {
+			"begin": "(^|\\G)(\\s*)(\\`{3,}|~{3,})(?i:(\\w+)(\\s+[^`~]*)?$)",
+			"name": "markup.fenced_code.block.markdown",
+			"end": "(^|\\G)(\\2|\\s{0,3})(\\3)\\s*$",
+			"beginCaptures": {
+				"3": {
+					"name": "punctuation.definition.markdown"
+				},
+				"4": {
+					"name": "fenced_code.block.language",
+					"patterns": [
+						{
+							"include": "source.js"
+						}
+					]
+				},
+				"6": {
+					"name": "fenced_code.block.language.attributes"
+				}
+			},
+			"endCaptures": {
+				"3": {
+					"name": "punctuation.definition.markdown"
+				}
+			},
+			"patterns": [
+				{
+					"begin": "(^|\\G)(\\s*)(.*)",
+					"while": "(^|\\G)(?!\\s*([`~]{3,})\\s*$)",
+					"contentName": "meta.embedded.block.sql",
+					"patterns": [
+						{
+							"include": "source.sql"
+						},
+						{
+							"begin": "(?<=\\$)(?={)",
+							"end": "(?<=})",
+							"contentName": "query_reference",
+							"patterns": [
+								{
+									"include": "source.svelte"
+								}
+							]
+						},
+						{
+							"begin": "(?=\\${)",
+							"end": "(?<=\\$)",
+							"contentName": "query_reference_start",
+							"patterns": [
+								{
+									"include": "source.js"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	}
+}
