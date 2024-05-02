@@ -1,5 +1,13 @@
 # @evidence-dev/query-store
 
+## 2.1.3
+
+### Patch Changes
+
+- Updated dependencies [7620a1af]
+- Updated dependencies [a95db3d3]
+  - @evidence-dev/universal-sql@2.1.2
+
 ## 2.1.2
 
 ### Patch Changes

@@ -1,5 +1,53 @@
 # @evidence-dev/components
 
+## 3.4.13
+
+### Patch Changes
+
+- 1efc3f8d: update deprecated data.query syntax used for stacked charts in example project
+- Updated dependencies [41a9f1b5]
+- Updated dependencies [0a67d65e]
+- Updated dependencies [63908810]
+- Updated dependencies [09b999d5]
+  - @evidence-dev/core-components@4.0.2
+
+## 3.4.12
+
+### Patch Changes
+
+- Updated dependencies [d60fdad7]
+- Updated dependencies [cb6db1a1]
+  - @evidence-dev/preprocess@5.0.0
+  - @evidence-dev/core-components@4.0.1
+  - @evidence-dev/component-utilities@3.0.1
+  - @evidence-dev/plugin-connector@2.1.2
+
+## 3.4.11
+
+### Patch Changes
+
+- Updated dependencies [2a7f0fc2]
+- Updated dependencies [a27de58e]
+- Updated dependencies [64a54b56]
+- Updated dependencies [7620a1af]
+- Updated dependencies [6f72d476]
+- Updated dependencies [d2e44015]
+- Updated dependencies [a95db3d3]
+- Updated dependencies [d23b166c]
+  - @evidence-dev/core-components@4.0.0
+  - @evidence-dev/component-utilities@3.0.0
+  - @evidence-dev/universal-sql@2.1.2
+  - @evidence-dev/mssql@1.0.7
+  - @evidence-dev/snowflake@1.0.5
+  - @evidence-dev/plugin-connector@2.1.2
+
+## 3.4.10
+
+### Patch Changes
+
+- Updated dependencies [1457a71b]
+  - @evidence-dev/databricks@1.0.5
+
 ## 3.4.9
 
 ### Patch Changes

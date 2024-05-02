@@ -1,0 +1,7 @@
+{
+	"filter": {
+		"prefix": "filter",
+		"body": ["filter(d => d.${1:column} === '${2:value}')"],
+		"description": "Insert dataset filter"
+	}
+}

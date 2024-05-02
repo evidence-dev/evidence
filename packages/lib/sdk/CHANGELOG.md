@@ -1,5 +1,25 @@
 # @evidence-dev/sdk
 
+## 1.1.1
+
+### Patch Changes
+
+- cb6db1a1: Fix for Query not respecting noResolve properly
+  Skeleton slot for QueryLoad was not properly passing the "loaded" slot prop
+
+## 1.1.0
+
+### Minor Changes
+
+- dc073f6e: Moved /query-store export to /usql
+
+### Patch Changes
+
+- a95db3d3: Move types to devDependencies
+- Updated dependencies [7620a1af]
+- Updated dependencies [a95db3d3]
+  - @evidence-dev/universal-sql@2.1.2
+
 ## 1.0.2
 
 ### Patch Changes

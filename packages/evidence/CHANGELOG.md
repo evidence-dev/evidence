@@ -1,5 +1,59 @@
 # @evidence-dev/evidence
 
+## 33.0.2
+
+### Patch Changes
+
+- Updated dependencies [41a9f1b5]
+- Updated dependencies [0a67d65e]
+- Updated dependencies [63908810]
+- Updated dependencies [09b999d5]
+  - @evidence-dev/core-components@4.0.2
+
+## 33.0.1
+
+### Patch Changes
+
+- Updated dependencies [d60fdad7]
+- Updated dependencies [cb6db1a1]
+  - @evidence-dev/preprocess@5.0.0
+  - @evidence-dev/sdk@1.1.1
+  - @evidence-dev/core-components@4.0.1
+  - @evidence-dev/component-utilities@3.0.1
+  - @evidence-dev/plugin-connector@2.1.2
+
+## 33.0.0
+
+### Major Changes
+
+- 64a54b56: Use the new Query from the SDK package
+
+### Patch Changes
+
+- Updated dependencies [2a7f0fc2]
+- Updated dependencies [a27de58e]
+- Updated dependencies [64a54b56]
+- Updated dependencies [7620a1af]
+- Updated dependencies [6f72d476]
+- Updated dependencies [d2e44015]
+- Updated dependencies [a95db3d3]
+- Updated dependencies [dc073f6e]
+- Updated dependencies [d23b166c]
+  - @evidence-dev/core-components@4.0.0
+  - @evidence-dev/component-utilities@3.0.0
+  - @evidence-dev/universal-sql@2.1.2
+  - @evidence-dev/plugin-connector@2.1.2
+  - @evidence-dev/sdk@1.1.0
+  - @evidence-dev/query-store@2.1.3
+  - @evidence-dev/db-orchestrator@3.0.14
+
+## 32.0.1
+
+### Patch Changes
+
+- 1cf4025a: cleaned up logging
+  - @evidence-dev/db-orchestrator@3.0.13
+
 ## 32.0.0
 
 ### Patch Changes
