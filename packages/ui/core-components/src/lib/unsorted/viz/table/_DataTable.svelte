@@ -327,6 +327,7 @@
 	let currentPage = 1;
 
 	$: currentPage = Math.ceil((index + rows) / rows);
+	$: currentPageElWidth = `${(currentPage ?? 1).toString().length}ch`;
 	let max;
 
 	$: goToPage = (pageNumber) => {
@@ -631,7 +632,7 @@
 							class="page-input"
 							class:hovering
 							class:error={inputPage > pageCount}
-							style="width: {inputPageElWidth};"
+							style="width: {inputPage ? inputPageElWidth : currentPageElWidth};"
 							type="number"
 							bind:value={inputPage}
 							on:keyup={() => goToPage((inputPage ?? 1) - 1)}
