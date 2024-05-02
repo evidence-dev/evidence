@@ -3,7 +3,7 @@ import {
 	tableFromIPC,
 	initDB,
 	setParquetURLs,
-	query,
+	query as usqlQuery,
 	updateSearchPath,
 	arrowTableToJSON
 } from '@evidence-dev/universal-sql/client-duckdb';
@@ -120,26 +120,44 @@ export const load = async ({ fetch, route, params, url }) => {
 		data = await getPrerenderedQueries(routeHash, paramsHash, fetch);
 	}
 
+	/** @type {App.PageData["__db"]["query"]} */
+	function query(sql, { query_name, callback = (x) => x } = {}) {
+		if (browser) {
+			return (async () => {
+				await database_initialization;
+				const result = await usqlQuery(sql);
+				return callback(result);
+			})();
+		}
+
+		return callback(
+			usqlQuery(sql, {
+				route_hash: routeHash,
+				additional_hash: paramsHash,
+				query_name,
+				prerendering: building
+			})
+		);
+	};
+
+	async function traversePages(pages) {
+		for (const page of pages) {
+			if (page.children) await traversePages(page.children);
+			if (page.frontMatter?.breadcrumb) {
+				let { breadcrumb } = page.frontMatter;
+				for (const [param, value] of Object.entries(params)) {
+					breadcrumb = breadcrumb.replaceAll(`{params.${param}}`, value);
+				}
+				page.title = (await query(breadcrumb))[0]?.breadcrumb;
+			}
+		}
+	}
+
+	await traversePages(pagesManifest.children);
+
 	return /** @type {App.PageData} */ ({
 		__db: {
-			query(sql, { query_name, callback = (x) => x } = {}) {
-				if (browser) {
-					return (async () => {
-						await database_initialization;
-						const result = await query(sql);
-						return callback(result);
-					})();
-				}
-
-				return callback(
-					query(sql, {
-						route_hash: routeHash,
-						additional_hash: paramsHash,
-						query_name,
-						prerendering: building
-					})
-				);
-			},
+			query,
 			async load() {
 				return database_initialization;
 			},

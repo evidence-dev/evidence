@@ -7,18 +7,18 @@
 	$: pathArray = $page.url.pathname.split('/').slice(1);
 
 	// check if a url is an href in the fileTree and return true or false
-	const checkUrl = function (href, fileTree) {
+	const getUrl = function (href, fileTree) {
 		let found = false;
-		function checkChildren(node) {
+		function searchTree(node) {
 			if (node.href === href || (href.startsWith(node.href) && node.isTemplated)) {
-				found = true;
+				found = node;
 			} else if (node.children) {
 				node.children.forEach((child) => {
-					checkChildren(child);
+					searchTree(child);
 				});
 			}
 		}
-		checkChildren(fileTree);
+		searchTree(fileTree);
 		return found;
 	};
 
@@ -45,8 +45,11 @@
 
 		// check in the file tree if each crumb has an href
 		crumbs.forEach((path) => {
-			if (!checkUrl(path.href, fileTree)) {
+			const node = getUrl(path.href, fileTree);
+			if (!node) {
 				path.href = null;
+			} else {
+				path.title = node.title ?? path.title;
 			}
 		});
 		return crumbs;
