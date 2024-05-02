@@ -18,7 +18,7 @@ select * from orders limit 100
 ```
 
 ```orders
-select * from orders
+select * from orders limit 1000
 ```
 
 
@@ -47,7 +47,7 @@ select * from orders
 select * from orders where id in ${inputs.multiple_selected_order_ids.value}
 ```
 
-<Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" defaultValue={2772} />
+<Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" defaultValue={[2772, 271]} disableSelectAll />
 
 Orders of {inputs.multiple_selected_order_ids.label}
 
@@ -71,11 +71,11 @@ Orders of {inputs.multiple_selected_order_ids.label}
 
 ## Small Demo
 
-<Dropdown multiple title="Item" name="item" value="item" data="orders" />
+<Dropdown multiple title="Item" name="item" value="item" data="orders" noDefault />
 <DateRange name="range" dates="order_datetime" data="orders" />
 
 ```selected_items
-SELECT * FROM orders WHERE item in ${inputs.item.value} AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}'
+SELECT * FROM orders WHERE item in ${inputs.item.value} AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}' limit 100
 ```
 
 <DataTable data={selected_items} />

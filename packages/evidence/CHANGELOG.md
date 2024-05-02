@@ -1,5 +1,124 @@
 # @evidence-dev/evidence
 
+## 33.0.2
+
+### Patch Changes
+
+- Updated dependencies [41a9f1b5]
+- Updated dependencies [0a67d65e]
+- Updated dependencies [63908810]
+- Updated dependencies [09b999d5]
+  - @evidence-dev/core-components@4.0.2
+
+## 33.0.1
+
+### Patch Changes
+
+- Updated dependencies [d60fdad7]
+- Updated dependencies [cb6db1a1]
+  - @evidence-dev/preprocess@5.0.0
+  - @evidence-dev/sdk@1.1.1
+  - @evidence-dev/core-components@4.0.1
+  - @evidence-dev/component-utilities@3.0.1
+  - @evidence-dev/plugin-connector@2.1.2
+
+## 33.0.0
+
+### Major Changes
+
+- 64a54b56: Use the new Query from the SDK package
+
+### Patch Changes
+
+- Updated dependencies [2a7f0fc2]
+- Updated dependencies [a27de58e]
+- Updated dependencies [64a54b56]
+- Updated dependencies [7620a1af]
+- Updated dependencies [6f72d476]
+- Updated dependencies [d2e44015]
+- Updated dependencies [a95db3d3]
+- Updated dependencies [dc073f6e]
+- Updated dependencies [d23b166c]
+  - @evidence-dev/core-components@4.0.0
+  - @evidence-dev/component-utilities@3.0.0
+  - @evidence-dev/universal-sql@2.1.2
+  - @evidence-dev/plugin-connector@2.1.2
+  - @evidence-dev/sdk@1.1.0
+  - @evidence-dev/query-store@2.1.3
+  - @evidence-dev/db-orchestrator@3.0.14
+
+## 32.0.1
+
+### Patch Changes
+
+- 1cf4025a: cleaned up logging
+  - @evidence-dev/db-orchestrator@3.0.13
+
+## 32.0.0
+
+### Patch Changes
+
+- Updated dependencies [9bac016c]
+- Updated dependencies [5e0bbf31]
+- Updated dependencies [e1e9a068]
+- Updated dependencies [629f93a0]
+- Updated dependencies [505f121b]
+- Updated dependencies [5098c3ee]
+  - @evidence-dev/core-components@3.8.0
+  - @evidence-dev/universal-sql@2.1.1
+  - @evidence-dev/preprocess@4.1.2
+  - @evidence-dev/component-utilities@2.5.3
+  - @evidence-dev/db-orchestrator@3.0.12
+  - @evidence-dev/plugin-connector@2.1.1
+  - @evidence-dev/query-store@2.1.2
+
+## 31.0.3
+
+### Patch Changes
+
+- Updated dependencies [fab378cb]
+  - @evidence-dev/core-components@3.7.3
+
+## 31.0.2
+
+### Patch Changes
+
+- 996f4280: Adds a loading screen when in dev mode
+- c449ac45: Fix scrollbar appearing during Windows print
+- Updated dependencies [be3085ce]
+- Updated dependencies [32af67c5]
+- Updated dependencies [94156598]
+- Updated dependencies [75f30e70]
+- Updated dependencies [3a91fdc1]
+  - @evidence-dev/core-components@3.7.2
+  - @evidence-dev/preprocess@4.1.1
+  - @evidence-dev/query-store@2.1.1
+  - @evidence-dev/component-utilities@2.5.2
+  - @evidence-dev/plugin-connector@2.1.0
+
+## 31.0.1
+
+### Patch Changes
+
+- Updated dependencies [8b636a62]
+- Updated dependencies [24cec2ec]
+  - @evidence-dev/core-components@3.7.1
+
+## 31.0.0
+
+### Patch Changes
+
+- Updated dependencies [58880cc9]
+- Updated dependencies [4f918c71]
+- Updated dependencies [d3847df4]
+- Updated dependencies [aa5708f0]
+- Updated dependencies [d97d75e6]
+- Updated dependencies [8efccce0]
+- Updated dependencies [dbf8db42]
+  - @evidence-dev/core-components@3.7.0
+  - @evidence-dev/component-utilities@2.5.1
+  - @evidence-dev/plugin-connector@2.1.0
+
 ## 30.0.1
 
 ### Patch Changes

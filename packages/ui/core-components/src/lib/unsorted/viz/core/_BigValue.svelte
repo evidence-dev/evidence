@@ -5,6 +5,7 @@
 	import BigValueError from './BigValueError.svelte';
 	import Sparkline from './Sparkline.svelte';
 	import { strictBuild } from '@evidence-dev/component-utilities/chartContext';
+	import Delta from './Delta.svelte';
 	export let data;
 	export let value = null;
 	export let comparison = null;
@@ -29,6 +30,8 @@
 
 	// Delta controls
 	export let downIsGood = false;
+	export let neutralMin = 0;
+	export let neutralMax = 0;
 
 	export let maxWidth = 'none';
 	export let minWidth = '18%';
@@ -119,9 +122,16 @@
 		{#if comparison}
 			{#if comparisonDelta}
 				<p class="text-xs font-sans" style={`color:${comparisonColor}`}>
-					<span class="font-[system-ui]"> {@html positive ? '&#9650;' : '&#9660;'} </span>
-					<Value {data} column={comparison} fmt={comparisonFmt} />
-					<span>{comparisonTitle}</span>
+					<Delta
+						{data}
+						column={comparison}
+						fmt={comparisonFmt}
+						fontClass="text-xs"
+						symbolPosition="left"
+						{neutralMin}
+						{neutralMax}
+						text={comparisonTitle}
+					/>
 				</p>
 			{:else}
 				<p class="text-xs font-sans text-gray-500 pt-[0.5px]">

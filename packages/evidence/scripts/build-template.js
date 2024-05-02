@@ -51,6 +51,16 @@ fsExtra.outputFileSync(
 
 	const logger = createLogger();
 	const loggerWarn = logger.warn;
+  const loggerOnce = logger.warnOnce
+  
+  /**
+   * @see https://github.com/evidence-dev/evidence/issues/1876
+   * Ignore the duckdb-wasm sourcemap warning
+   */
+  logger.warnOnce = (m, o) => {
+  if (m.match(/Sourcemap for ".+\\/node_modules\\/@duckdb\\/duckdb-wasm\\/dist\\/duckdb-browser-eh\\.worker\\.js" points to missing source files/)) return;
+  loggerOnce(m, o)
+}
 
 	logger.warn = (msg, options) => {
 		// ignore fs/promises warning, used in +layout.js behind if (!browser) check
@@ -58,7 +68,7 @@ fsExtra.outputFileSync(
 		// ignore eval warning, used in duckdb-wasm
 		if (msg.includes('Use of eval in') && msg.includes('is strongly discouraged as it poses security risks and may cause issues with minification.')) return;
 		loggerWarn(msg, options);
-	};
+};
 
     const strictFs = (process.env.NODE_ENV === 'development') ? false : true;
     /** @type {import('vite').UserConfig} */
@@ -74,7 +84,11 @@ fsExtra.outputFileSync(
 					'@evidence-dev/component-utilities/formatting',
 					'@evidence-dev/component-utilities/globalContexts',
 					'@evidence-dev/component-utilities/buildQuery',
-					'@evidence-dev/component-utilities/profile'
+					'@evidence-dev/component-utilities/profile',
+					'debounce', 
+					'@evidence-dev/query-store',
+					'@duckdb/duckdb-wasm',
+					'apache-arrow'
 				])
 				
 			],

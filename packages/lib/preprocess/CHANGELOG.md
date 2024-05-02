@@ -1,5 +1,23 @@
 # @evidence-dev/preprocess
 
+## 5.0.0
+
+### Major Changes
+
+- d60fdad7: Convert preprocess to use Query from sdk
+
+## 4.1.2
+
+### Patch Changes
+
+- e1e9a068: Add automatic links to headers
+
+## 4.1.1
+
+### Patch Changes
+
+- 3a91fdc1: lower memory consumption during builds
+
 ## 4.1.0
 
 ### Minor Changes

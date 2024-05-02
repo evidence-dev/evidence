@@ -1,5 +1,100 @@
 # @evidence-dev/core-components
 
+## 4.0.2
+
+### Patch Changes
+
+- 41a9f1b5: Reintroduce error handling to DataTable
+- 0a67d65e: fix: calendar heatmap off by 1 error
+- 63908810: Fix scrollbar appearing on last chart on page
+- 09b999d5: Update Evidence Cloud link in Settings
+
+## 4.0.1
+
+### Patch Changes
+
+- cb6db1a1: Fix for Query not respecting noResolve properly
+  Skeleton slot for QueryLoad was not properly passing the "loaded" slot prop
+  - @evidence-dev/component-utilities@3.0.1
+
+## 4.0.0
+
+### Major Changes
+
+- 64a54b56: Use the new Query from the SDK package
+
+### Minor Changes
+
+- d2e44015: Converted QueryLoad to use only sdk Query
+
+### Patch Changes
+
+- 2a7f0fc2: support 0 as a sidebar_position
+- a27de58e: Fix css styling for markdown link headers
+- 6f72d476: Add conditional formatting based on another column, and red negative values
+- a95db3d3: Move types to devDependencies
+- Updated dependencies [64a54b56]
+- Updated dependencies [d23b166c]
+  - @evidence-dev/component-utilities@3.0.0
+
+## 3.8.0
+
+### Minor Changes
+
+- 9bac016c: add `noDefault` prop to `Dropdown`, support for multi-defaultValue
+
+### Patch Changes
+
+- e1e9a068: Add automatic links to headers
+- 505f121b: Adds support for HTML contentType in DataTables
+- 5098c3ee: Fixes bold, italic, strikethrough and code span sizing issues in markdown
+- Updated dependencies [629f93a0]
+  - @evidence-dev/component-utilities@2.5.3
+  - @evidence-dev/query-store@2.1.2
+
+## 3.7.3
+
+### Patch Changes
+
+- fab378cb: Fix for bigvalue loaded is undefined
+
+## 3.7.2
+
+### Patch Changes
+
+- be3085ce: Fix printing of charts in grid component
+- 32af67c5: Custom conditional color scales for DataTable
+- 94156598: Wrap column titles for DataTable
+- 75f30e70: Fix null handling with custom formatting in Delta
+- Updated dependencies [3a91fdc1]
+  - @evidence-dev/query-store@2.1.1
+  - @evidence-dev/component-utilities@2.5.2
+
+## 3.7.1
+
+### Patch Changes
+
+- 8b636a62: Adjust delta neutral symbol
+- 24cec2ec: Fix column order issue in DataTable when Column used
+
+## 3.7.0
+
+### Minor Changes
+
+- 4f918c71: add `Select all` option to `Dropdown`s, add dropdowns to `DateRange` for easier year selection
+
+### Patch Changes
+
+- 58880cc9: Fix errors caused by formatting null values
+- d3847df4: Adjust scatter hover to focus on individual point
+- aa5708f0: Add support for connected charts
+- d97d75e6: Add table groups and standalone Delta component
+- 8efccce0: Fix map image download
+- dbf8db42: Add options to Evidence layout
+- Updated dependencies [aa5708f0]
+- Updated dependencies [8efccce0]
+  - @evidence-dev/component-utilities@2.5.1
+
 ## 3.6.1
 
 ### Patch Changes

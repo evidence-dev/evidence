@@ -53,6 +53,8 @@
 
 	export let renderer = undefined;
 
+	export let connectGroup = undefined;
+
 	function mapColumnsToArray(arrayOfObjects, col1, col2) {
 		return arrayOfObjects.map((obj) => [
 			new Date(obj[col1]).toISOString().split('T')[0],
@@ -86,7 +88,7 @@
 
 		const updatedData = data.map((obj) => ({
 			...obj,
-			year: new Date(obj[date]).getFullYear()
+			year: new Date(obj[date]).getUTCFullYear()
 		}));
 
 		const distinctYears = [...new Set(updatedData.map((obj) => obj.year))];
@@ -361,6 +363,7 @@
 		{config}
 		{printEchartsConfig}
 		{renderer}
+		{connectGroup}
 		{echartsOptions}
 		{seriesOptions}
 	/>

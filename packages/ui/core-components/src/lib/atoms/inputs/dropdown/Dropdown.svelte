@@ -24,7 +24,7 @@
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { browser } from '$app/environment';
 	import debounce from 'lodash.debounce';
-	import { QueryStore } from '@evidence-dev/query-store';
+	import { Query } from '@evidence-dev/sdk/usql';
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
@@ -48,11 +48,21 @@
 
 	export let hideDuringPrint = true;
 
-	/** @type {string} */
-	export let defaultValue = undefined;
+	export let disableSelectAll = false;
+
+	/** @type {string | string[]} */
+	export let defaultValue = [];
+	const _defaultValue = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
+
+	export let noDefault = false;
+	if (noDefault) {
+		_defaultValue.length = 0;
+	}
+
+	const hasDefault = noDefault || _defaultValue.length > 0;
 
 	const ctx = {
-		hasBeenSet: defaultValue !== undefined,
+		hasBeenSet: hasDefault,
 		handleSelect,
 		multiple
 	};
@@ -134,15 +144,18 @@
 	function updateItems(search) {
 		items =
 			search && hasQuery
-				? QueryStore.create(
+				? Query.create(
 						`
 						SELECT
 							*,
 							jaro_winkler_similarity(lower('${search.replaceAll("'", "''")}'), lower(label)) as similarity
 						FROM (${query.text}) WHERE similarity > 0.5 ORDER BY similarity DESC`,
 						exec,
-						`Dropdown-${name}-searched-${search}`,
-						{ initialData: $items ?? $query, initialDataDirty: true }
+						{
+							initialData: $items ?? $query,
+							initialDataDirty: true,
+							id: `Dropdown-${name}-searched-${search}`
+						}
 					)
 				: $query;
 	}
@@ -150,16 +163,16 @@
 	function useNewQuery(query) {
 		items = query;
 
-		if (hasQuery && defaultValue) {
+		if (hasQuery && hasDefault) {
 			ctx.hasBeenSet = true;
 			if (browser) {
 				(async () => {
 					await query.fetch();
-					$selectedValues = query.filter((x) => x.value == defaultValue);
+					$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
 					selectedValuesToInput();
 				})();
 			} else {
-				$selectedValues = query.filter((x) => x.value == defaultValue);
+				$selectedValues = query.filter((x) => _defaultValue.find((d) => x.value == d));
 				selectedValuesToInput();
 			}
 		} else {
@@ -255,9 +268,22 @@
 									</VirtualList>
 								{/if}
 							</Command.Group>
-							{#if $selectedValues.length > 0 && multiple}
+							{#if multiple}
+								{#if !disableSelectAll}
+									<Command.Separator />
+									<Command.Item
+										class="justify-center text-center"
+										onSelect={() => {
+											$selectedValues = $items.map((x) => ({ label: x.label, value: x.value }));
+											selectedValuesToInput();
+										}}
+									>
+										Select all
+									</Command.Item>
+								{/if}
 								<Command.Separator />
 								<Command.Item
+									disabled={$selectedValues.length === 0}
 									class="justify-center text-center"
 									onSelect={() => {
 										$selectedValues = [];

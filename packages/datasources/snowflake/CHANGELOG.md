@@ -1,5 +1,18 @@
 # @evidence-dev/snowflake
 
+## 1.0.5
+
+### Patch Changes
+
+- a95db3d3: Move types to devDependencies
+
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [1da26c4e]
+  - @evidence-dev/db-commons@1.0.4
+
 ## 1.0.3
 
 ### Patch Changes

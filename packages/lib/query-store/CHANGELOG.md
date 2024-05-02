@@ -1,5 +1,26 @@
 # @evidence-dev/query-store
 
+## 2.1.3
+
+### Patch Changes
+
+- Updated dependencies [7620a1af]
+- Updated dependencies [a95db3d3]
+  - @evidence-dev/universal-sql@2.1.2
+
+## 2.1.2
+
+### Patch Changes
+
+- Updated dependencies [5e0bbf31]
+  - @evidence-dev/universal-sql@2.1.1
+
+## 2.1.1
+
+### Patch Changes
+
+- 3a91fdc1: lower memory consumption during builds
+
 ## 2.1.0
 
 ### Minor Changes

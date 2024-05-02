@@ -135,6 +135,8 @@
 	$: printEchartsConfig = printEchartsConfig === 'true' || printEchartsConfig === true;
 	export let renderer = undefined;
 
+	export let connectGroup = undefined;
+
 	export let abbreviations = false;
 	$: abbreviations = abbreviations === 'true' || abbreviations === true;
 
@@ -333,6 +335,7 @@
 		{seriesOptions}
 		{printEchartsConfig}
 		{renderer}
+		{connectGroup}
 	/>
 
 	{#if link}

@@ -4,26 +4,27 @@
 	import { fly, fade } from 'svelte/transition';
 	import { lock, unlock } from 'tua-body-scroll-lock';
 	import { afterUpdate } from 'svelte';
-	import Badge from '$lib/organisms/layout/sidebar/Badge.svelte';
+	import Badge from './Badge.svelte';
 	import Logo from '../Logo.svelte';
 
-	export let fileTree;
-	export let title;
-	export let logo;
-	export let builtWithEvidence;
+	export let fileTree = undefined;
+	export let title = undefined;
+	export let logo = undefined;
+	export let builtWithEvidence = undefined;
+	export let hideHeader = false;
 
 	// sort children arrays by sidebar_position
 	function sortChildrenBySidebarPosition(node) {
 		if (node.children) {
 			node.children = node.children.sort((a, b) => {
-				if (a.frontMatter?.sidebar_position && b.frontMatter?.sidebar_position) {
+				if (!isNaN(a.frontMatter?.sidebar_position) && !isNaN(b.frontMatter?.sidebar_position)) {
 					return (
 						a.frontMatter.sidebar_position - b.frontMatter.sidebar_position ||
 						a.label.localeCompare(b.label)
 					);
-				} else if (a.frontMatter?.sidebar_position) {
+				} else if (!isNaN(a.frontMatter?.sidebar_position)) {
 					return -1;
-				} else if (b.frontMatter?.sidebar_position) {
+				} else if (!isNaN(b.frontMatter?.sidebar_position)) {
 					return 1;
 				} else {
 					return a.label.localeCompare(b.label);
@@ -194,6 +195,7 @@
 	{#if !mobileSidebarOpen}
 		<div
 			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500 pretty-scrollbar"
+			class:top-8={hideHeader}
 		>
 			<div class="flex flex-col pb-6">
 				<a

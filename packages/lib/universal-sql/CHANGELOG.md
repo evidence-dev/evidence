@@ -1,5 +1,18 @@
 # @evidence-dev/universal-sql
 
+## 2.1.2
+
+### Patch Changes
+
+- 7620a1af: removes unused duckdb dep
+- a95db3d3: Move types to devDependencies
+
+## 2.1.1
+
+### Patch Changes
+
+- 5e0bbf31: stop blocking advanced usage of json with usql
+
 ## 2.1.0
 
 ### Minor Changes

@@ -125,7 +125,7 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 		// to avoid loss of accuracy in very large numbers. This is something to keep an eye on,
 		// but for now, we are replacing the default parsing functions with the applicable
 		// JavaScript parsing function for each data type:
-		var types = require('pg').types;
+		var types = pg.types;
 
 		// Override bigint:
 		types.setTypeParser(20, function (val) {
@@ -141,6 +141,10 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 		types.setTypeParser(790, function (val) {
 			return parseFloat(val.replace(/[^0-9.]/g, ''));
 		});
+
+		// Override json / jsonb:
+		types.setTypeParser(types.builtins.JSON, String);
+		types.setTypeParser(types.builtins.JSONB, String);
 
 		var pool = new Pool(credentials);
 
@@ -168,7 +172,7 @@ const runQuery = async (queryString, database, batchSize = 100000, closeBeforeRe
 			return {
 				rows: async function* () {
 					try {
-						yield firstBatch;
+						yield standardizeResult(firstBatch);
 						let results;
 						while ((results = await cursor.read(batchSize)) && results.length > 0)
 							yield standardizeResult(results);
