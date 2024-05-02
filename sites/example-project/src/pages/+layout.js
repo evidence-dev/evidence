@@ -138,7 +138,7 @@ export const load = async ({ fetch, route, params, url }) => {
 				prerendering: building
 			})
 		);
-	};
+	}
 
 	async function traversePages(pages) {
 		for (const page of pages) {

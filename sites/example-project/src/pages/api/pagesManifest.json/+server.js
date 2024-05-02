@@ -2,7 +2,11 @@ import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
 
 // Import pages and create an object structure corresponding to the file structure
-const pages = import.meta.glob('/src/pages/*/**/+page.md', { import: "default", query: "raw", eager: true });
+const pages = import.meta.glob('/src/pages/*/**/+page.md', {
+	import: 'default',
+	query: 'raw',
+	eager: true
+});
 
 export const prerender = true;
 
@@ -43,9 +47,11 @@ export async function GET() {
 		};
 		for (const [pagePath, pageLoader] in Object.entries(pages)) {
 			let node = fileTree;
-			for (const part of pagePath.replace('/src/pages/', '').split("/")) {
+			for (const part of pagePath.replace('/src/pages/', '').split('/')) {
 				if (part === '+page.md') {
-					const href = pagePath.includes('[') ? undefined : encodeURI('/' + pagePath.replace('/+page.md', ''));
+					const href = pagePath.includes('[')
+						? undefined
+						: encodeURI('/' + pagePath.replace('/+page.md', ''));
 					const pageContent = pageLoader();
 					const frontMatter = preprocess.parseFrontmatter(pageContent);
 					node.href = href;
@@ -62,7 +68,7 @@ export async function GET() {
 				}
 			}
 		}
-		deleteEmptyNodes(fileTree)
+		deleteEmptyNodes(fileTree);
 		convertChildrenToArray(fileTree);
 		return new Response(JSON.stringify(fileTree));
 	} catch {
