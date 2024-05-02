@@ -73,7 +73,7 @@
 			}
 
 			if (node.children) {
-				node.children.forEach(traverse);
+				Object.values(node.children).forEach(traverse);
 			}
 		}
 

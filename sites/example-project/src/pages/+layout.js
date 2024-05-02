@@ -140,20 +140,18 @@ export const load = async ({ fetch, route, params, url }) => {
 		);
 	}
 
-	async function traversePages(pages) {
-		for (const page of pages) {
-			if (page.children) await traversePages(page.children);
-			if (page.frontMatter?.breadcrumb) {
-				let { breadcrumb } = page.frontMatter;
-				for (const [param, value] of Object.entries(params)) {
-					breadcrumb = breadcrumb.replaceAll(`{params.${param}}`, value);
-				}
-				page.title = (await query(breadcrumb))[0]?.breadcrumb;
+	let tree = pagesManifest;
+	for (const part of (route.id ?? '').split('/').slice(1)) {
+		tree = tree.children[part];
+		if (!tree) break;
+		if (tree.frontMatter?.breadcrumb) {
+			let { breadcrumb } = tree.frontMatter;
+			for (const [param, value] of Object.entries(params)) {
+				breadcrumb = breadcrumb.replaceAll(`{params.${param}}`, value);
 			}
+			tree.title = (await query(breadcrumb))[0]?.breadcrumb;
 		}
 	}
-
-	await traversePages(pagesManifest.children);
 
 	return /** @type {App.PageData} */ ({
 		__db: {
