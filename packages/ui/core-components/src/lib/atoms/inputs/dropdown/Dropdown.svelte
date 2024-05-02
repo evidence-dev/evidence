@@ -218,7 +218,6 @@
 			// This is the run which actually has what we want
 			setTimeout(evalDefaults, 0);
 			optionUpdates();
-			console.log('Unsub!');
 		});
 	}
 
@@ -271,7 +270,7 @@
 
 <slot />
 <QueryLoad data={$queryOptions} let:loaded>
-	{#each loaded ?? [] as queryOpt (queryOpt.value + queryOpt.label + queryOpt.similarity)}
+	{#each loaded ?? [] as queryOpt (queryOpt.value?.toString() + queryOpt.label?.toString() + queryOpt.similarity?.toString())}
 		<DropdownOption
 			value={queryOpt.value}
 			valueLabel={queryOpt.label}
