@@ -11,7 +11,12 @@
 	/** @type {number} */
 	export let idx = -1;
 
+	/**
+	 * For internal use only
+	 */
+	export let __auto = false;
+
 	/** @type {import("./constants.js").EvidenceDropdownContext} */
 	const dropdownContext = getContext(DropdownContext);
-	onMount(() => dropdownContext.registerOption({ value, label: valueLabel, idx }));
+	onMount(() => dropdownContext.registerOption({ value, label: valueLabel, idx, __auto }));
 </script>

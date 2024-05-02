@@ -7,7 +7,6 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, onMount, setContext, tick } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { page } from '$app/stores';
 	import DropdownOption from './DropdownOption.svelte';
 	import DropdownOptionDisplay from './DropdownOptionDisplay.svelte';
@@ -24,14 +23,9 @@
 	import formatTitle from '@evidence-dev/component-utilities/formatTitle';
 	import { DropdownContext } from './constants.js';
 	import QueryLoad from '../../query-load/QueryLoad.svelte';
+	import { DropdownValueFlag, dropdownOptionStore } from './dropdownOptionStore.js';
 
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
-
-	/**
-	 * @typedef {Object} DropdownValue
-	 * @property {string} label
-	 * @property {string} value
-	 */
 
 	/////
 	// Component Things
@@ -64,22 +58,23 @@
 
 	export let noDefault = false;
 
-	const options = writable([]);
+	// const options = writable([]);
+
+	const state = dropdownOptionStore(multiple);
+	const { selectedOptions, options, addOption, removeOption, flagOption, select, deselectAll } =
+		state;
+
 	setContext(DropdownContext, {
 		registerOption: (targetOption) => {
-			options.update((optionValue) => [...optionValue, targetOption]);
+			addOption(targetOption);
 			return () => {
-				options.update((optionValue) =>
-					optionValue.filter(
-						(opt) => opt.value !== targetOption.value || opt.label !== targetOption.label
-					)
-				);
+				removeOption(targetOption);
 			};
 		}
 	});
 
 	/** @type {import("svelte/store").Writable<DropdownValue[]>}*/
-	const selectedOptions = writable([]);
+	// const selectedOptions = writable([]);
 
 	onMount(() =>
 		selectedOptions.subscribe(
@@ -95,7 +90,6 @@
 					if (!values.length) {
 						$inputs[name] = { label: '', value: null, rawValues: [] };
 					} else if (values.length) {
-						console.log('%cFIZZ', 'font-size: 36px;', values);
 						$inputs[name] = {
 							label: values[0].label,
 							value: duckdbSerialize(values[0].value, { serializeStrings: false }),
@@ -128,7 +122,7 @@
 			) {
 				// External change, we need to react to this
 				// Be VERY careful with this; it can lead to an infinite loop
-				selectedOptions.set(providedValues);
+				providedValues.forEach(select);
 			}
 		})
 	);
@@ -152,6 +146,28 @@
 		$page?.data?.data[`Dropdown-${name}`]
 	);
 	$: update({ value, data, label, order, where });
+
+	let hashTrack;
+	$: {
+		data;
+		if (data.hash !== hashTrack) {
+			console.log('B');
+			$options.forEach(($option) => {
+				if (!$option.__auto) return; // we don't care
+				// console.log('auto option', $option)
+				if (!$option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
+			});
+			hashTrack = data.hash;
+		}
+		setTimeout(() => {
+			$options.forEach(($option) => {
+				if (!$option.__auto) return; // we don't care
+				console.log('Remove the flags!');
+				if ($option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
+			});
+		}, 150);
+	}
+
 	/** @type {{ hasQuery: boolean, query: import("@evidence-dev/sdk/usql").QueryValue }}*/
 	$: ({ hasQuery, query } = $results);
 
@@ -164,9 +180,22 @@
 			// TODO: This may fall victim to the race condition
 			// We need a canonical way / function that handles query replacement like this (e.g. updating buildReactiveInputQuery)
 			const searchQ = query.search(search, 'label');
+			if (searchQ.hash === query.hash) return;
+
 			await searchQ.fetch();
 			queryOptions = searchQ;
+
+			if ($selectedOptions.length) {
+				// We don't want to get rid of selections that already exist when searching
+				$selectedOptions.forEach(($selectedOption) => {
+					flagOption([$selectedOption, DropdownValueFlag.REMOVE_ON_DESELECT]);
+				});
+			}
 		} else {
+			// Search is gone, remove search holdovers
+			$options.forEach(($option) => {
+				if ($option.searchHoldover) flagOption([$option, DropdownValueFlag.REMOVE_ON_DESELECT]);
+			});
 			queryOptions = query;
 		}
 	}, 250);
@@ -181,32 +210,40 @@
 		resolveMaybePromise(
 			() => {
 				if ($selectedOptions.length) {
-					// Try to keep any current selection before falling back to defaults
-					// e.g. if the passed-in query has changed, but the user had a previous selection
 					const presentValues = $selectedOptions.filter((x) =>
 						$options.some((o) => o.value === x.value && o.label === x.label)
 					);
-					// If the available values have changed (e.g. one is missing in the new query), remove that one and update the selection
-					if (presentValues.length !== $selectedOptions.length) $selectedOptions = presentValues;
-					// If there is at least one selection remaining, then we don't need to revert to defaults
-					if ($selectedOptions.length) return;
+					console.log({
+						name,
+						presentValues: [...presentValues],
+						$options: [...$options],
+						$selectedOptions: [...$selectedOptions]
+					});
+					if (JSON.stringify(presentValues) !== JSON.stringify($selectedOptions)) {
+						// Clear the selection and reselect the needed values
+						// We don't need to do diffs, this rolls up into 1 store action
+						deselectAll();
+						presentValues.forEach((v) => select(v));
+						return; // Action was taken
+					}
+					if (presentValues.length) return; // no need to take action
 				}
-				if (noDefault)
-					return; // noop
-				else if (typeof defaultValue !== 'undefined' && defaultValue !== null) {
+				if (noDefault) {
+					deselectAll();
+					return;
+				} else if (typeof defaultValue !== 'undefined' && defaultValue !== null) {
 					// hard-coded default
 					const _def = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
 					if (_def.length) {
-						const presentDefaults = $options.filter((x) => _def.some((d) => x.value === d));
-						// const missingDefaults = _def.filter((d) => !presentDefaults.some((x) => x.value === d));
-						if (presentDefaults.length) {
-							$selectedOptions = [...presentDefaults];
-						}
+						$options.filter((x) => _def.some((d) => x.value === d)).forEach((x) => select(x));
 						return;
 					}
+				} else if (!multiple && $options.length) {
+					// Default Behavior: set to the first value
+					select($options[0]);
 				}
-				// Default Behavior: set to the first value
-				if (!multiple && $selectedOptions.length) $selectedOptions = [$options[0]];
+
+				return;
 			},
 			// Fetch the query, then wait for DOM updates to flush (this ensures that the options store is up to date)
 			() => (query ? query.fetch().then(() => tick()) : tick()),
@@ -220,18 +257,16 @@
 </script>
 
 <slot />
-<!-- 
-	Key is needed here to ensure that we re-render the options list 
-	If we don't do this, sorting is not properly updated
--->
-{#key queryOptions}
-	<QueryLoad data={$queryOptions} let:loaded>
-		<!-- TODO: Add temporary option that shows loading state -->
-		{#each loaded?.sort((a, b) => a.idx - b.idx) ?? [] as queryOpt, i (queryOpt.value)}
-			<DropdownOption value={queryOpt.value} valueLabel={queryOpt.label} idx={i} />
-		{/each}
-	</QueryLoad>
-{/key}
+<QueryLoad data={$queryOptions} let:loaded>
+	{#each loaded ?? [] as queryOpt (queryOpt.value + queryOpt.label + queryOpt.similarity)}
+		<DropdownOption
+			value={queryOpt.value}
+			valueLabel={queryOpt.label}
+			idx={(queryOpt.similarity ?? 0) * -1 ?? -1}
+			__auto
+		/>
+	{/each}
+</QueryLoad>
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class="mt-2 mb-4 ml-0 mr-2 inline-block">
@@ -300,18 +335,8 @@
 										value={option?.value}
 										valueLabel={option?.label}
 										handleSelect={({ value, label }) => {
-											if (multiple) {
-												if ($selectedOptions.find((x) => x.value === value && x.label === label)) {
-													$selectedOptions = $selectedOptions.filter(
-														(x) => x.value !== value || x.label !== label
-													);
-												} else {
-													$selectedOptions = [...$selectedOptions, { value, label }];
-												}
-											} else {
-												$selectedOptions = [{ value, label }];
-												open = false;
-											}
+											select({ value, label });
+											if (!multiple) open = false;
 										}}
 										{multiple}
 										active={$selectedOptions.some(
@@ -326,10 +351,7 @@
 									<Command.Item
 										class="justify-center text-center"
 										onSelect={() => {
-											$selectedOptions = $queryOptions.map((x) => ({
-												label: x.label,
-												value: x.value
-											}));
+											$queryOptions.forEach((opt) => select(opt));
 										}}
 									>
 										Select all
@@ -340,7 +362,7 @@
 									disabled={$selectedOptions.length === 0}
 									class="justify-center text-center"
 									onSelect={() => {
-										$selectedOptions = [];
+										deselectAll();
 									}}
 								>
 									Clear selection

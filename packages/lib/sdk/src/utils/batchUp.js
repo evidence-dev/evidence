@@ -16,8 +16,8 @@ export const batchUp = (fn, timeout = 200) => {
 	}, timeout);
 
 	finalize(); // start the timer
-	return (i) => {
-		collected.push(i);
-		finalize();
+	return (...i) => {
+		collected.push(...i);
+		return finalize();
 	};
 };

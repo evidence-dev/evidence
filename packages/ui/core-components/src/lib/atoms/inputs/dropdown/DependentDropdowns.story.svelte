@@ -19,7 +19,7 @@
 	const baseQuery = Query.create(
 		`SELECT id as value, tag as label from hashtags ORDER BY 1`,
 		slowQuery,
-		{ disableCache: true }
+		{ disableCache: false }
 	);
 
 	$: depQueryFactory(`
@@ -32,6 +32,7 @@
         WHERE hashtags.id = ${$inputs?.hashtag?.value ?? -1}
         GROUP BY ALL
     `);
+
 	let depQuery;
 	const depQueryFactory = Query.createReactive({
 		execFn: slowQuery,

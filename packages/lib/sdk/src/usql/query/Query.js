@@ -2,7 +2,6 @@ import { nanoid } from 'nanoid';
 import { isDebug } from '../../lib/debug.js';
 import {
 	Query as QueryBuilder,
-	sql,
 	sql as taggedSql,
 	sum as qSum,
 	avg as qAvg,
@@ -725,6 +724,9 @@ DESCRIBE ${this.#query.toString()}
 				const newQuery = Query.isQuery(nextQuery)
 					? nextQuery
 					: createFn(nextQuery, execFn, Object.assign({}, opts, newOpts));
+
+				if (newQuery.hash === activeQuery.hash) return; // no-op
+
 				await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), newQuery.fetch()]);
 
 				if (changeIdx !== targetChangeIdx) {
@@ -747,12 +749,13 @@ DESCRIBE ${this.#query.toString()}
 		 */
 		return (queryText, newOpts) => {
 			if (activeQuery) {
-				waitFor(queryText, newOpts);
+				waitFor(queryText, newOpts).catch((e) => {
+					console.warn(`Error while attempting to update reactive query: ${e.message}`);
+				});
 				return;
 			}
 
 			if (import.meta.hot?.data?.hmr) removeInitialState();
-
 			activeQuery = createFn(queryText, execFn, Object.assign({}, opts, newOpts));
 
 			resolveMaybePromise(removeInitialState, activeQuery.fetch());
@@ -1126,7 +1129,7 @@ DESCRIBE ${this.#query.toString()}
 	//////////////////////////////////
 	/** @param {string} filterStatement */
 	where = (filterStatement) =>
-		Query.create(this.#query.clone().where(sql`${filterStatement}`), this.#executeQuery, {
+		Query.create(this.#query.clone().where(taggedSql`${filterStatement}`), this.#executeQuery, {
 			knownColumns: this.#columns
 		});
 
@@ -1163,7 +1166,6 @@ DESCRIBE ${this.#query.toString()}
 				knownColumns: colsWithSimilarity
 			}
 		);
-		console.log(output.originalText);
 		return output;
 	};
 
