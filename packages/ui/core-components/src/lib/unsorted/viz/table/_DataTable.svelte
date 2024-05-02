@@ -184,6 +184,7 @@
 	let index = 0;
 
 	let inputPage = null;
+	$: inputPageElWidth = `${(inputPage ?? 1).toString().length}ch`;
 
 	// ---------------------------------------------------------------------------------------
 	// SEARCH
@@ -328,6 +329,7 @@
 	let currentPage = 1;
 
 	$: currentPage = Math.ceil((index + rows) / rows);
+	$: currentPageElWidth = `${(currentPage ?? 1).toString().length}ch`;
 	let max;
 
 	$: goToPage = (pageNumber) => {
@@ -633,11 +635,13 @@
 							<Icon src={ChevronLeft} class="h-[0.83em]" />
 						</div>
 					</button>
-					<span class="page-count"
-						>Page <input
+					<span class="page-count">
+						Page
+						<input
 							class="page-input"
 							class:hovering
 							class:error={inputPage > pageCount}
+							style="width: {inputPage ? inputPageElWidth : currentPageElWidth};"
 							type="number"
 							bind:value={inputPage}
 							on:keyup={() => goToPage((inputPage ?? 1) - 1)}
@@ -645,11 +649,11 @@
 							placeholder={currentPage}
 						/>
 						/
-						<span class="page-count ml-1">{pageCount.toLocaleString()}</span></span
-					>
+						<span class="page-count ml-1">{pageCount.toLocaleString()}</span>
+					</span>
 					<span class="print-page-count">
-						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span
-					>
+						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records
+					</span>
 					<button
 						aria-label="next-page"
 						class="page-changer"
@@ -825,9 +829,9 @@
 	}
 
 	.page-input {
-		width: 23px;
+		box-sizing: content-box;
 		text-align: center;
-		padding: 0;
+		padding: 0.25em 0.5em;
 		margin: 0;
 		border: 1px solid transparent;
 		border-radius: 4px;
