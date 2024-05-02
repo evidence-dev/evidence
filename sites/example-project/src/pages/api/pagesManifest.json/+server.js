@@ -45,14 +45,14 @@ export async function GET() {
 			children: {},
 			isTemplated: false
 		};
-		for (const [pagePath, pageLoader] in Object.entries(pages)) {
+		for (const [pagePath, pageContent] of Object.entries(pages)) {
+			const path = pagePath.replace('/src/pages/', '');
 			let node = fileTree;
-			for (const part of pagePath.replace('/src/pages/', '').split('/')) {
+			for (const part of path.split('/')) {
 				if (part === '+page.md') {
-					const href = pagePath.includes('[')
+					const href = path.includes('[')
 						? undefined
-						: encodeURI('/' + pagePath.replace('/+page.md', ''));
-					const pageContent = pageLoader();
+						: encodeURI('/' + path.replace('/+page.md', ''));
 					const frontMatter = preprocess.parseFrontmatter(pageContent);
 					node.href = href;
 					node.frontMatter = frontMatter;
