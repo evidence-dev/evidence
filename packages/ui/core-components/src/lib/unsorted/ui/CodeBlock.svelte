@@ -4,6 +4,7 @@
 
 <script>
 	import { onMount, tick } from 'svelte';
+	import { browser } from '$app/environment';
 	import Prism from 'prismjs';
 	import './prism-svelte.js';
 	import 'prismjs/components/prism-bash';
@@ -37,13 +38,14 @@
 		Prism.highlightAll();
 	});
 
-	$: source,
+	$: if(browser){
 		tick().then(() => {
 			const codeElement = document.querySelector(`pre code.language-${language}`);
 			if (codeElement) {
 				Prism.highlightElement(codeElement, false);
 			}
 		});
+	}
 </script>
 
 <div class="my-5 bg-gray-50 border border-gray-200 rounded px-3 py-1 relative group">
