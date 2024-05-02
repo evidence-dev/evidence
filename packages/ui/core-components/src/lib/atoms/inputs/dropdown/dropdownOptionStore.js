@@ -16,7 +16,9 @@ import { batchUp } from '@evidence-dev/sdk/utils';
 /** @enum {Symbol} */
 export const DropdownValueFlag = Object.freeze({
 	REMOVE_ON_DESELECT: Symbol('removeOnDeselect'),
-	IGNORE_SELECTED: Symbol('ignoreSelected')
+	IGNORE_SELECTED: Symbol('ignoreSelected'),
+	FORCE_SELECT: Symbol('forceSelect'),
+	FORCE_DESELECT: Symbol('forceDeselect')
 });
 
 /** @type {typeof batchUp<DropdownValue>} */
@@ -39,7 +41,6 @@ const optEq = (a, b) => {
 const optStr = (a) => a.value + a.label;
 
 /**
- *
  * @param {boolean} [multi=false]
  * @param {number} [delay=100]
  */
@@ -98,6 +99,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 			idx: opt.idx ?? -1,
 			removeOnDeselect: opt.removeOnDeselect ?? false
 		}));
+		if (!addedOptions.length) return;
 		options.update(($options) => {
 			$options.push(...addedOptions);
 			return hygeine($options);
@@ -105,6 +107,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	}, delay);
 
 	const removeOption = typedBatchup((removedOptions) => {
+		if (!removedOptions.length) return;
 		options.update(($options) => {
 			$options = $options.filter((option) => {
 				const optionIsTargetted = removedOptions.some((removedOption) =>
@@ -122,6 +125,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	 * @param {[DropdownValue, DropdownValueFlag][]} opts
 	 */
 	const flagOption = flagBatchup((flaggedOptions) => {
+		if (!flaggedOptions.length) return;
 		options.update(($options) => {
 			$options = $options.map(($option) => {
 				const flagApplications = flaggedOptions.filter(([flagOption]) =>
@@ -137,6 +141,12 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 						case DropdownValueFlag.IGNORE_SELECTED:
 							$option.ignoreSelected = !$option.ignoreSelected;
 							break;
+						case DropdownValueFlag.FORCE_SELECT:
+							$option.selected = true;
+							break;
+						case DropdownValueFlag.FORCE_DESELECT:
+							$option.selected = true;
+							break;
 					}
 				}
 				return $option;
@@ -149,6 +159,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	 * @param {DropdownValue} opt
 	 */
 	const select = (opt) => {
+		if (!opt) return;
 		options.update(($options) => {
 			const target = $options.find((x) => x.value === opt.value && x.label === opt.label);
 			if (multi) {
@@ -160,7 +171,6 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 					return $opt;
 				});
 			}
-
 			return $options;
 		});
 	};
@@ -173,7 +183,6 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 		for (const option of allOptions) {
 			if (option.selected && option.removeOnDeselect) {
 				if (!newSelection.some((x) => optEq(x, option))) {
-					console.log('Cleaning up option', option);
 					removeOption(option);
 				}
 			}
@@ -196,7 +205,8 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 			}
 		}, delay),
 		deselectAll: () => {
-			options.update((x) => x.map((y) => ({ ...y, selected: false })));
+			if (get(options).some((opt) => opt.selected))
+				options.update((x) => x.map((y) => ({ ...y, selected: false })));
 		}
 	};
 };

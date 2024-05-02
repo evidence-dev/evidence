@@ -58,8 +58,6 @@
 
 	export let noDefault = false;
 
-	// const options = writable([]);
-
 	const state = dropdownOptionStore(multiple);
 	const { selectedOptions, options, addOption, removeOption, flagOption, select, deselectAll } =
 		state;
@@ -72,9 +70,6 @@
 			};
 		}
 	});
-
-	/** @type {import("svelte/store").Writable<DropdownValue[]>}*/
-	// const selectedOptions = writable([]);
 
 	onMount(() =>
 		selectedOptions.subscribe(
@@ -135,6 +130,7 @@
 	/////
 
 	export let value,
+		/** @type {string | import("@evidence-dev/sdk/usql").QueryValue }*/
 		data,
 		label,
 		order = undefined,
@@ -145,24 +141,29 @@
 		`Dropdown-${name}`,
 		$page?.data?.data[`Dropdown-${name}`]
 	);
+	// Keep input query up to date
 	$: update({ value, data, label, order, where });
 
-	let hashTrack;
+	// "hash" might just be the string literal if we are operating on a table directly
+	$: currentInputHash = typeof data === 'string' ? data : data?.hash;
+	let trackedInputHash;
 	$: {
 		data;
-		if (data.hash !== hashTrack) {
-			console.log('B');
+		// If data input changes; then we want to discard any selections that may have been made
+		// This happens elsewhere, but if there are items that have the IGNORE_SELECTED flag, we want to make sure they are not
+		// kept around
+		if (currentInputHash !== trackedInputHash) {
 			$options.forEach(($option) => {
 				if (!$option.__auto) return; // we don't care
-				// console.log('auto option', $option)
 				if (!$option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
 			});
-			hashTrack = data.hash;
+			trackedInputHash = currentInputHash;
 		}
+		// We can remove the flags here once we are done
+		// The 150 timeout here is fairly arbitrary, it just needs to be more than the debounce value of the dropdownOptionStore
 		setTimeout(() => {
 			$options.forEach(($option) => {
 				if (!$option.__auto) return; // we don't care
-				console.log('Remove the flags!');
 				if ($option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
 			});
 		}, 150);
@@ -174,15 +175,16 @@
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let queryOptions;
 
-	// Uses context under the hood
 	const updateQueryOptions = debounce(async () => {
 		if (search && hasQuery) {
+			// When search changes, we want to update the query
+
 			// TODO: This may fall victim to the race condition
 			// We need a canonical way / function that handles query replacement like this (e.g. updating buildReactiveInputQuery)
 			const searchQ = query.search(search, 'label');
-			if (searchQ.hash === query.hash) return;
 
 			await searchQ.fetch();
+
 			queryOptions = searchQ;
 
 			if ($selectedOptions.length) {
@@ -201,8 +203,26 @@
 	}, 250);
 
 	// Update the items when the query changes
-	$: search, query, updateQueryOptions();
+	$: query, search, updateQueryOptions();
 
+	$: {
+		$query;
+		let firstRun = true;
+		const optionUpdates = options.subscribe(() => {
+			// The store is going to initially publish the _current_ value, which isn't what we want
+			// So we can ignore the first update
+			if (firstRun) {
+				firstRun = false;
+				return;
+			}
+			// This is the run which actually has what we want
+			setTimeout(evalDefaults, 0);
+			optionUpdates();
+			console.log('Unsub!');
+		});
+	}
+
+	// $: $options, evalDefaults()
 	/**
 	 * Resets the defaults whenever parameters change
 	 */
@@ -213,12 +233,6 @@
 					const presentValues = $selectedOptions.filter((x) =>
 						$options.some((o) => o.value === x.value && o.label === x.label)
 					);
-					console.log({
-						name,
-						presentValues: [...presentValues],
-						$options: [...$options],
-						$selectedOptions: [...$selectedOptions]
-					});
 					if (JSON.stringify(presentValues) !== JSON.stringify($selectedOptions)) {
 						// Clear the selection and reselect the needed values
 						// We don't need to do diffs, this rolls up into 1 store action
@@ -228,6 +242,7 @@
 					}
 					if (presentValues.length) return; // no need to take action
 				}
+
 				if (noDefault) {
 					deselectAll();
 					return;
@@ -252,8 +267,6 @@
 			}
 		);
 	}
-
-	$: $query, $options, evalDefaults();
 </script>
 
 <slot />
@@ -351,7 +364,9 @@
 									<Command.Item
 										class="justify-center text-center"
 										onSelect={() => {
-											$queryOptions.forEach((opt) => select(opt));
+											$queryOptions.forEach((opt) => {
+												flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
+											});
 										}}
 									>
 										Select all

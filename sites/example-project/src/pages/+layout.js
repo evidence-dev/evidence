@@ -142,7 +142,10 @@ export const load = async (event) => {
 				await profile(setParquetURLs, renderedFiles);
 			}
 		},
-		inputs: setTrackProxy({ label: '', value: '(SELECT NULL WHERE 0)' }),
+		inputs: setTrackProxy({
+			label: '',
+			value: '(SELECT NULL WHERE 0 /* An Input has not been set */)'
+		}),
 		data,
 		customFormattingSettings,
 		isUserPage,

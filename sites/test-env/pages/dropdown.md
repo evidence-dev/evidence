@@ -7,6 +7,8 @@
     <DropdownOption value="Top 100" />
 </Dropdown>
 
+---
+
 ## Normal Usage
 
 ```full_selected_order
@@ -21,6 +23,13 @@ select * from orders limit 100
 select * from orders limit 1000
 ```
 
+<Dropdown title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="selected_order_id">
+    <DropdownOption value="All" />
+    <DropdownOption value="Top 100" />
+</Dropdown>
+
+
+<br/>
 
 {#if inputs.selected_order_id.value === 'All'}
 	Displaying all orders
@@ -36,10 +45,7 @@ select * from orders limit 1000
 	<DataTable data={full_selected_order} />
 {/if}
 
-<Dropdown title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="selected_order_id">
-    <DropdownOption value="All" />
-    <DropdownOption value="Top 100" />
-</Dropdown>
+---
 
 ## Multi Dropdown
 
@@ -50,8 +56,9 @@ select * from orders where id in ${inputs.multiple_selected_order_ids.value}
 <Dropdown multiple title="Selected Order ID" label="first_name || ' ' || last_name" value="order_id" data="named_reviews" where="nps_score > 7" order="first_name" name="multiple_selected_order_ids" defaultValue={[2772, 271]} disableSelectAll />
 
 Orders of {inputs.multiple_selected_order_ids.label}
-
 <DataTable data={selected_orders} />
+
+---
 
 ## Dropdown without a query
 
@@ -63,11 +70,7 @@ Orders of {inputs.multiple_selected_order_ids.label}
 
 {inputs.queryless.value}
 
-## Nested inputs
-
-<CustomInput name="nested" />
-
-{inputs.nested.lower} {inputs.nested.upper} {inputs.nested.selected}
+---
 
 ## Small Demo
 
@@ -75,7 +78,11 @@ Orders of {inputs.multiple_selected_order_ids.label}
 <DateRange name="range" dates="order_datetime" data="orders" />
 
 ```selected_items
-SELECT * FROM orders WHERE item in ${inputs.item.value} AND order_datetime BETWEEN '${inputs.range.start}' AND '${inputs.range.end}' limit 100
+SELECT * FROM orders 
+WHERE 	item in ${inputs.item.value} 
+	AND order_datetime BETWEEN '${inputs.range.start}' 
+	AND '${inputs.range.end}' 
+limit 100
 ```
 
 <DataTable data={selected_items} />
