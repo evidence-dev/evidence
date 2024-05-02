@@ -60,7 +60,7 @@
 <div class="over-container" in:blur|local>
 	{#if $showQueries}
 		<!-- Title -->
-		<div class="container" transition:slide|local>
+		<div class="scrollbox" transition:slide|local>
 			<div class="container-a">
 				<button type="button" aria-label="show-sql" on:click={toggleSQL} class="title">
 					<ChevronToggle toggled={$showSQL} />
@@ -253,7 +253,7 @@
 		border-top-right-radius: 6px;
 	}
 
-	.container {
+	.scrollbox {
 		@apply my-3;
 		display: flex;
 		flex-direction: column;
@@ -270,7 +270,7 @@
 	/* container-a avoids whitespace appearing in the slide transition */
 
 	@media print {
-		.container {
+		.scrollbox {
 			break-inside: avoid;
 		}
 	}

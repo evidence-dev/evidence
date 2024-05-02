@@ -4,8 +4,8 @@ import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
 
 // Import pages and create an object structure corresponding to the file structure
-const pages = import.meta.glob(['/src/pages/*/**/+page.md']);
-let pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', ''));
+const pages = import.meta.glob(['/src/pages/**/+page.md']);
+const pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', ''));
 
 export const prerender = true;
 
@@ -38,7 +38,7 @@ function deleteEmptyNodes(node) {
  */
 export async function GET() {
 	try {
-		let fileTree = {
+		const fileTree = {
 			label: 'Home',
 			href: '/',
 			children: {},
@@ -47,17 +47,17 @@ export async function GET() {
 		pagePaths.forEach(function (pagePath) {
 			pagePath.split('/').reduce(function (r, e) {
 				if (e === '+page.md') {
-					let href = pagePath.includes('[')
+					const href = pagePath.includes('[')
 						? undefined
-						: encodeURI('/' + pagePath.replace('/+page.md', ''));
+						: encodeURI('/' + pagePath.replace(/\/?\+page.md$/, ''));
 
-					let absolutePath = path.join(process.cwd(), 'src', 'pages', pagePath);
-					let pageContent = fs.readFileSync(absolutePath, 'utf-8');
-					let frontMatter = preprocess.parseFrontmatter(pageContent);
+					const absolutePath = path.join(process.cwd(), 'src', 'pages', pagePath);
+					const pageContent = fs.readFileSync(absolutePath, 'utf-8');
+					const frontMatter = preprocess.parseFrontmatter(pageContent);
 
 					return (r['href'] = href), (r['frontMatter'] = frontMatter);
 				} else {
-					let label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
+					const label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
 					r.isTemplated = e.includes('[');
 					return (
 						r?.children[e] ||

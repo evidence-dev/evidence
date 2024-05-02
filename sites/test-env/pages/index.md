@@ -1,3 +1,6 @@
 ```sql xyz
-SELECT * FROM users LIMIT 5000
+SELECT * FROM orders LIMIT 5000
 ```
+
+
+<DataTable data={xyz}/>
