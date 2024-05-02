@@ -76,10 +76,22 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 	for (const value of Object.values(groups)) {
 		const nullySpec = series ? { [series]: null } : {};
 		if (nullsZero) {
-			nullySpec[y] = 0;
+			if (y instanceof Array) {
+				for (let i = 0; i < y.length; i++) {
+					nullySpec[y[i]] = 0;
+				}
+			} else {
+				nullySpec[y] = 0;
+			}
 		} else {
 			// Ensure null for consistency
-			nullySpec[y] = null;
+			if (y instanceof Array) {
+				for (let i = 0; i < y.length; i++) {
+					nullySpec[y[i]] = null;
+				}
+			} else {
+				nullySpec[y] = null;
+			}
 		}
 
 		if (series) {
@@ -97,5 +109,6 @@ export default function getCompletedData(_data, x, y, series, nullsZero = false,
 		output.push(tidy(value, ...tidyFuncs));
 	}
 	if (xIsDate) return output.flat().map((r) => ({ ...r, [x]: new Date(r[x]) }));
+
 	return output.flat();
 }
