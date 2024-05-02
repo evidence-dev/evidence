@@ -32,7 +32,7 @@ export async function GET() {
 					node.frontMatter = preprocess.parseFrontmatter(pageContent);
 				} else {
 					const label = part.includes('[') ? undefined : part.replace(/_/g, ' ').replace(/-/g, ' ');
-					node = node.children[part] = {
+					node = node.children[part] = node.children[part] ?? {
 						label,
 						href: undefined,
 						children: {},
