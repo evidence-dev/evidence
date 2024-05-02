@@ -321,16 +321,15 @@ module.exports.options = {
 				}
 			}
 
-			// TODO: authentication types not supported yet:
+			// TODO: authentication types that are not supported yet:
 			// - tediousjs.github.io/tedious/api-connection.html
-			// - timothyhoward/evidence-connector-mssql/datasource/src/index.cjs
-			// - [x] default
 			// - [ ] ntlm
+			// - [ ] azure-active-directory-msi-vm
+			// - [ ] azure-active-directory-msi-app-service
+			// - [x] default
 			// - [x] azure-active-directory-default
 			// - [x] azure-active-directory-password
 			// - [x] azure-active-directory-access-token
-			// - [ ] azure-active-directory-msi-vm
-			// - [ ] azure-active-directory-msi-app-service
 			// - [x] azure-active-directory-service-principal-secret
 		}
 	},
