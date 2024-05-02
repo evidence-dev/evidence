@@ -14,6 +14,7 @@
 	export let fullWidth = undefined;
 	export let maxWidth = undefined;
 	export let hideSidebar = undefined;
+	export let sidebarFrontMatter = undefined;
 
 	export let algolia = undefined;
 
@@ -24,36 +25,40 @@
 </script>
 
 <header
-	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden"
+	class="fixed w-full top-0 z-40 flex h-12 shrink-0 justify-start items-center gap-x-4 border-b border-gray-200 bg-white/90 backdrop-blur print:hidden
+  {sidebarFrontMatter === 'hide' ? 'md:pl-8' : ''}"
 >
 	<div
 		class={(fullWidth ? 'max-w-full ' : maxWidth ? '' : ' max-w-7xl ') +
 			'mx-auto px-6 sm:px-8 md:px-12 flex flex-1 items-center justify-between'}
 		style="max-width:{maxWidth}px;"
 	>
-		{#if hideSidebar}
+		{#if hideSidebar || sidebarFrontMatter === 'never'}
 			<a href="/" class="block text-sm font-bold text-gray-800">
 				<Logo {logo} {title} />
 			</a>
 		{:else}
-			<a href="/" class="hidden md:block text-sm font-bold text-gray-800">
-				<Logo {logo} {title} />
-			</a>
-			<button
-				type="button"
-				class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 md:hidden transition-all duration-500"
-				on:click={() => {
-					mobileSidebarOpen = !mobileSidebarOpen;
-				}}
-			>
-				{#if mobileSidebarOpen}
-					<span class="sr-only">Close sidebar</span>
-					<Icon class="w-5 h-5" src={X} />
-				{:else}
-					<span class="sr-only">Open sidebar</span>
-					<Icon class="w-5 h-5" src={Menu2} />
-				{/if}
-			</button>
+			<div class="flex gap-x-4 items-center">
+				<button
+					type="button"
+					class="text-gray-900 hover:bg-gray-50 rounded-lg p-1 transition-all duration-500
+          {sidebarFrontMatter === 'hide' ? 'block' : 'md:hidden'}"
+					on:click={() => {
+						mobileSidebarOpen = !mobileSidebarOpen;
+					}}
+				>
+					{#if mobileSidebarOpen}
+						<span class="sr-only">Close sidebar</span>
+						<Icon class="w-5 h-5" src={X} />
+					{:else}
+						<span class="sr-only">Open sidebar</span>
+						<Icon class="w-5 h-5" src={Menu2} />
+					{/if}
+				</button>
+				<a href="/" class="text-sm font-bold text-gray-800 hidden md:block">
+					<Logo {logo} {title} />
+				</a>
+			</div>
 		{/if}
 		<div class="flex gap-2 text-sm items-center">
 			{#if algolia}
