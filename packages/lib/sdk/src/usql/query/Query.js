@@ -1057,23 +1057,7 @@ DESCRIBE ${this.#query.toString()}
 		this.#debug(
 			'publish',
 			`Publishing triggered by ${source}`,
-			() => ({
-				data: JSON.parse(JSON.stringify(this.#data)),
-				dataLoaded: this.dataLoaded,
-				dataLoading: this.dataLoading
-			}),
-			() => ({
-				length: JSON.parse(JSON.stringify(this.#length)),
-				lengthLoaded: this.lengthLoaded,
-				lengthLoading: this.lengthLoading
-			}),
-			() => ({
-				columns: JSON.parse(JSON.stringify(this.#columns)),
-				columnsLoaded: this.columnsLoaded,
-				columnsLoading: this.columnsLoading
-			}),
-			() => ({ error: this.#error, opts: this.#opts }),
-			`\n` + this.#query.toString()
+			this
 		);
 		this.#subscribers.forEach((fn) => fn(this.#value));
 	};
