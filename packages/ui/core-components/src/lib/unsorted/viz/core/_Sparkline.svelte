@@ -144,6 +144,27 @@
 	}
 
 	$: data, config;
+
+	$: if (chartInstance && config) {
+		chartInstance.setOption(config, true); // true forces a complete replacement of the options
+	}
+
+	$: if (!interactive) {
+		// Generate static SVG for non-interactive mode
+		const offscreenContainer = document.createElement('div');
+		offscreenContainer.style.width = width + 'px';
+		offscreenContainer.style.height = height + 'px';
+		const tempChart = init(offscreenContainer, 'evidence-light', {
+			renderer: 'svg',
+			height,
+			width
+		});
+		tempChart.setOption(config);
+		staticSVG = tempChart.renderToSVGString();
+		tempChart.dispose();
+	} else {
+		initializeChart();
+	}
 </script>
 
 {#if error}
