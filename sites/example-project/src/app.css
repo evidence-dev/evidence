@@ -19,7 +19,7 @@
 	}
 
 	.pretty-scrollbar::-webkit-scrollbar {
-		height: 0.75rem;
+		height: 6px;
 		width: 6px;
 	}
 
