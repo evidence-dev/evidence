@@ -19,7 +19,7 @@
 </script>
 
 <form id="telemetry">
-	<div class="container">
+	<div class="telemetry-settings-box">
 		<div class="panel">
 			<h2>Telemetry</h2>
 			<p>
@@ -88,7 +88,7 @@
 	form {
 		scroll-margin-top: 3.5rem; /* offset for sticky header */
 	}
-	.container {
+	.telemetry-settings-box {
 		margin-top: 2em;
 		border-top: 1px solid var(--grey-200);
 		border-left: 1px solid var(--grey-200);

@@ -1033,6 +1033,13 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
     defaultValue=false
 />
 <PropListing
+    name=compact
+    description="Enable a more compact table view that allows more content vertically and horizontally"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+
+<PropListing
     name=link
     description="Makes each row of your table a clickable link. Accepts the name of a column containing the link to use for each row in your table"
     required=false

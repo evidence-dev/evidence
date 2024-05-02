@@ -6,10 +6,10 @@
 	import { ExportToCsv } from 'export-to-csv';
 	import { fade } from 'svelte/transition';
 
-	export let data;
-	export let queryID;
+	export let data = undefined;
+	export let queryID = undefined;
 	export let text = 'Download';
-	export let display;
+	export let display = undefined;
 
 	const date = new Date();
 	const localISOTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
