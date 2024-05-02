@@ -1,11 +1,8 @@
-import fs from 'fs-extra';
-import path from 'path';
 import preprocess from '@evidence-dev/preprocess';
 import { error } from '@sveltejs/kit';
 
 // Import pages and create an object structure corresponding to the file structure
-const pages = import.meta.glob(['/src/pages/**/+page.md']);
-const pagePaths = Object.keys(pages).map((path) => path.replace('/src/pages/', ''));
+const pages = import.meta.glob('/src/pages/*/**/+page.md', { import: "default", query: "raw", eager: true });
 
 export const prerender = true;
 
@@ -44,34 +41,28 @@ export async function GET() {
 			children: {},
 			isTemplated: false
 		};
-		pagePaths.forEach(function (pagePath) {
-			pagePath.split('/').reduce(function (r, e) {
-				if (e === '+page.md') {
-					const href = pagePath.includes('[')
-						? undefined
-						: encodeURI('/' + pagePath.replace(/\/?\+page.md$/, ''));
-
-					const absolutePath = path.join(process.cwd(), 'src', 'pages', pagePath);
-					const pageContent = fs.readFileSync(absolutePath, 'utf-8');
+		for (const [pagePath, pageLoader] in Object.entries(pages)) {
+			let node = fileTree;
+			for (const part of pagePath.replace('/src/pages/', '').split("/")) {
+				if (part === '+page.md') {
+					const href = pagePath.includes('[') ? undefined : encodeURI('/' + pagePath.replace('/+page.md', ''));
+					const pageContent = pageLoader();
 					const frontMatter = preprocess.parseFrontmatter(pageContent);
-
-					return (r['href'] = href), (r['frontMatter'] = frontMatter);
+					node.href = href;
+					node.frontMatter = frontMatter;
 				} else {
-					const label = e.includes('[') ? undefined : e.replace(/_/g, ' ').replace(/-/g, ' ');
-					r.isTemplated = e.includes('[');
-					return (
-						r?.children[e] ||
-						(r.children[e] = {
-							label,
-							children: {},
-							href: undefined,
-							isTemplated: false
-						})
-					);
+					const label = part.includes('[') ? undefined : part.replace(/_/g, ' ').replace(/-/g, ' ');
+					node.isTemplated = part.includes('[');
+					node = node.children[part] = node.children[part] ?? {
+						label,
+						children: {},
+						href: undefined,
+						isTemplated: false
+					};
 				}
-			}, fileTree);
-		});
-		deleteEmptyNodes(fileTree);
+			}
+		}
+		deleteEmptyNodes(fileTree)
 		convertChildrenToArray(fileTree);
 		return new Response(JSON.stringify(fileTree));
 	} catch {
