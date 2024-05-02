@@ -113,6 +113,44 @@ const buildConfig = function (database) {
 			port: port,
 			options: options
 		};
+	} else if (database.authenticationType === 'azure-active-directory-access-token') {
+		authentication.options = { token: database.attoken };
+		return {
+			server: database.server,
+			database: database.database,
+			authentication: authentication,
+			port: port,
+			options: options
+		};
+	} else if (database.authenticationType === 'azure-active-directory-password') {
+		authentication.options = {
+			userName: database.pwuname,
+			password: database.pwpword,
+			clientId: database.pwclientid,
+			tenantId: database.pwtenantid
+		};
+
+		return {
+			server: database.server,
+			database: database.database,
+			authentication: authentication,
+			port: port,
+			options: options
+		};
+	} else if (database.authenticationType === 'azure-active-directory-service-principal-secret') {
+		authentication.options = {
+			clientId: database.spclientid,
+			clientSecret: database.spclientsecret,
+			tenantId: database.sptenantid
+		};
+
+		return {
+			server: database.server,
+			database: database.database,
+			authentication: authentication,
+			port: port,
+			options: options
+		};
 	}
 };
 
@@ -189,7 +227,7 @@ module.exports.options = {
 		secret: false,
 		nest: false,
 		required: true,
-		default: 'default',
+		default: 'sqlauth',
 		options: [
 			{
 				value: 'default',
@@ -198,6 +236,18 @@ module.exports.options = {
 			{
 				value: 'azure-active-directory-default',
 				label: 'DefaultAzureCredential'
+			},
+			{
+				value: 'azure-active-directory-access-token',
+				label: 'Access token'
+			},
+			{
+				value: 'azure-active-directory-password',
+				label: 'Entra ID User/Password'
+			},
+			{
+				value: 'azure-active-directory-service-principal-secret',
+				label: 'Service Principal Secret'
 			}
 		],
 		children: {
@@ -215,18 +265,73 @@ module.exports.options = {
 					required: true
 				}
 			},
-			'azure-active-directory-default': {}
+			'azure-active-directory-default': {},
+			'azure-active-directory-access-token': {
+				attoken: {
+					title: 'Access Token',
+					type: 'string',
+					secret: true,
+					required: true
+				}
+			},
+			'azure-active-directory-password': {
+				pwuname: {
+					title: 'User',
+					type: 'string',
+					secret: false,
+					required: true
+				},
+				pwpword: {
+					title: 'Pstring',
+					type: 'string',
+					secret: true,
+					required: true
+				},
+				pwclientid: {
+					title: 'Client ID',
+					type: 'string',
+					secret: true,
+					required: true
+				},
+				pwtenantid: {
+					title: 'Tenant ID',
+					type: 'string',
+					secret: true,
+					required: true
+				}
+			},
+			'azure-active-directory-service-principal-secret': {
+				spclientid: {
+					title: 'Client ID',
+					type: 'string',
+					secret: true,
+					required: true
+				},
+				spclientsecret: {
+					title: 'Client Secret',
+					type: 'string',
+					secret: true,
+					required: true
+				},
+				sptenantid: {
+					title: 'Tenant ID',
+					type: 'string',
+					secret: true,
+					required: true
+				}
+			}
+
 			// TODO: authentication types not supported yet:
 			// - tediousjs.github.io/tedious/api-connection.html
 			// - timothyhoward/evidence-connector-mssql/datasource/src/index.cjs
 			// - [x] default
 			// - [ ] ntlm
 			// - [x] azure-active-directory-default
-			// - [ ] azure-active-directory-password
-			// - [ ] azure-active-directory-access-token
+			// - [x] azure-active-directory-password
+			// - [x] azure-active-directory-access-token
 			// - [ ] azure-active-directory-msi-vm
 			// - [ ] azure-active-directory-msi-app-service
-			// - [ ] azure-active-directory-service-principal-secret
+			// - [x] azure-active-directory-service-principal-secret
 		}
 	},
 	server: {
