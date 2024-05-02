@@ -38,7 +38,7 @@
 		Prism.highlightAll();
 	});
 
-	$: if(browser){
+	$: if (browser) {
 		tick().then(() => {
 			const codeElement = document.querySelector(`pre code.language-${language}`);
 			if (codeElement) {
