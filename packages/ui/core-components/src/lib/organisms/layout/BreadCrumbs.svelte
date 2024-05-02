@@ -7,21 +7,18 @@
 	$: pathArray = $page.url.pathname.split('/').slice(1);
 
 	// check if a url is an href in the fileTree and return true or false
-	function getUrl(href, fileTree) {
+	function searchFileTree(href, fileTree) {
 		const pathArray = href.split('/').slice(1);
 		let node = fileTree;
-		for (const path of pathArray) {
+		for (let path of pathArray) {
 			if (!node.children[path]) {
-				const templated = Object.keys(node.children).find((child) => child.includes('['));
-				if (!templated) return null;
-				node = node.children[templated];
-				if (!node) return null;
-			} else {
-				node = node.children[path];
+				path = Object.keys(node.children).find((child) => child.includes('['));
 			}
+			node = node.children[path];
+			if (!node) return null;
 		}
 		return node;
-	};
+	}
 
 	function buildCrumbs(pathArray) {
 		const crumbs = [{ href: '/', title: 'Home' }];
@@ -35,12 +32,11 @@
 		});
 
 		if (crumbs.length > 3) {
-			const upOne = crumbs.slice(-3)[0].href;
-			crumbs.splice(1, crumbs.length - 3, { href: upOne, title: '...' });
+			crumbs.splice(1, crumbs.length - 3, { href: crumbs.slice(-3)[0].href, title: '...' });
 		}
 
 		for (const path of crumbs) {
-			const node = getUrl(path.href, fileTree);
+			const node = searchFileTree(path.href, fileTree);
 			if (!node) {
 				path.href = null;
 			} else {
@@ -49,7 +45,7 @@
 		}
 
 		return crumbs;
-	};
+	}
 
 	$: crumbs = buildCrumbs(pathArray);
 </script>

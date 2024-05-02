@@ -72,9 +72,7 @@
 				map.set(decodedHref, node);
 			}
 
-			if (node.children) {
-				Object.values(node.children).forEach(traverse);
-			}
+			Object.values(node.children).forEach(traverse);
 		}
 
 		traverse(fileTree);
