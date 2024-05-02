@@ -75,7 +75,7 @@ union all
 select 'b', '2024-01-01'::date, 130
 ```
 
-<Dropdown data={dynamic} name=category value=category/>
+<Dropdown data={dynamic} name=category value=category defaultValue=a/>
 
 ```sql dynamic_filtered
 select * from ${dynamic}
