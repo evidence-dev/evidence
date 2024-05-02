@@ -21,7 +21,7 @@
 
 <td
 	class="{$$restProps.class ||
-		''} {dataType} {topBorder} whitespace-nowrap overflow-hidden first:pl-[3px] 
+		''} {dataType} {topBorder} whitespace-nowrap overflow-hidden first:pl-[3px]
 	{compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}
 	"
 	style:text-align={align}

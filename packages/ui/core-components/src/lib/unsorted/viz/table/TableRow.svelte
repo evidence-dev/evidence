@@ -43,10 +43,7 @@
 		class:row-lines={rowLines}
 	>
 		{#if rowNumbers && groupType !== 'section'}
-			<TableCell
-				class="{'index w-[2%]'}"
-				{compact}
-			>
+			<TableCell class={'index w-[2%]'} {compact}>
 				{#if i === 0}
 					{(index + i + 1).toLocaleString()}
 				{:else}
@@ -101,7 +98,7 @@
 						? `1px solid ${chroma(cell_color).darken(0.5)}`
 						: ''}
 				<TableCell
-					class="{useCol?.type}"
+					class={useCol?.type}
 					{compact}
 					verticalAlign={groupType === 'section' ? groupNamePosition : undefined}
 					rowSpan={groupType === 'section' && groupColumn === useCol.id && i === 0 ? rowSpan : 1}
@@ -195,7 +192,7 @@
 				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column, j}
 				<!-- Check if last row in table-->
 				<TableCell
-					class="{column.type}"
+					class={column.type}
 					{compact}
 					rowSpan={groupType === 'section' && groupColumn === column.id && i === 0 ? rowSpan : 1}
 					show={!(groupType === 'section' && groupColumn === column.id && i !== 0)}

@@ -63,11 +63,7 @@
 				</div>
 			</TableCell>
 		{:else if subtotals}
-			<TableCell
-				class="{useCol.type} font-medium"
-				{compact}
-				align={column.align}
-			>
+			<TableCell class="{useCol.type} font-medium" {compact} align={column.align}>
 				{#if [undefined, 'sum', 'mean', 'median', 'min', 'max', 'weightedMean', 'count', 'countDistinct'].includes(column.totalAgg) || column.subtotalFmt}
 					{#if column.contentType === 'delta'}
 						<Delta

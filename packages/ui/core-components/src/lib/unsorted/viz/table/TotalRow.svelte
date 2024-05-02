@@ -22,11 +22,7 @@
 
 <tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
 	{#if rowNumbers && groupType !== 'section'}
-		<TableCell
-			class="{'index w-[2%]'}"
-			{compact}
-			topBorder="border-t border-gray-600"
-		/>
+		<TableCell class={'index w-[2%]'} {compact} topBorder="border-t border-gray-600" />
 	{/if}
 
 	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
