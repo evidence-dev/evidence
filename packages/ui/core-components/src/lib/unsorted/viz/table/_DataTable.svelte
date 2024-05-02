@@ -14,7 +14,7 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
-	import { safeExtractColumn, aggregateColumn, getFinalColumnOrder } from './datatable.js';
+	import { aggregateColumn, getFinalColumnOrder } from './datatable.js';
 	import TableRow from './TableRow.svelte';
 	import TotalRow from './TotalRow.svelte';
 	import SubtotalRow from './SubtotalRow.svelte';
@@ -162,15 +162,6 @@
 		// Hide link column if columns have not been explicitly selected:
 		for (let i = 0; i < columnSummary.length; i++) {
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
-		}
-
-		for (const column of $props.columns) {
-			const summary = safeExtractColumn(column, columnSummary);
-			if (summary.format === undefined && column.fmt !== undefined) {
-				throw new Error(
-					`Column "${column.id}" unable to be formatted. Please cast the results to dates or numbers.`
-				);
-			}
 		}
 	} catch (e) {
 		error = e.message;
