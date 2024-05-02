@@ -145,11 +145,11 @@
 
 	$: data, config;
 
-	$: if (chartInstance && config) {
+	$: if (browser && chartInstance && config) {
 		chartInstance.setOption(config, true); // true forces a complete replacement of the options
 	}
 
-	$: if (!interactive) {
+	$: if (browser && !interactive) {
 		// Generate static SVG for non-interactive mode
 		const offscreenContainer = document.createElement('div');
 		offscreenContainer.style.width = width + 'px';
