@@ -23,7 +23,8 @@
 <tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
 	{#if rowNumbers && groupType !== 'section'}
 		<TableCell
-			class="{'index w-[2%]'} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+			class="{'index w-[2%]'}"
+			{compact}
 			topBorder="border-t border-gray-600"
 		/>
 	{/if}
@@ -39,7 +40,7 @@
 				: colColumnSummary.format}
 		{@const totalAgg = column.totalAgg ?? 'sum'}
 		<TableCell
-			class={compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}
+			{compact}
 			dataType={colColumnSummary.type}
 			align={column.align}
 			height={column.height}

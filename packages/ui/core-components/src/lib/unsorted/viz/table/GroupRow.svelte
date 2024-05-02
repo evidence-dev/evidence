@@ -52,7 +52,8 @@
 		{@const useFormat = format?.valueType === 'date' ? '' : format}
 		{#if j === 0}
 			<TableCell
-				class="{compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'} font-medium py-[3px]"
+				class="font-medium py-[3px]"
+				{compact}
 				colSpan={rowNumbers ? 2 : 1}
 				paddingLeft="1px"
 			>
@@ -63,9 +64,8 @@
 			</TableCell>
 		{:else if subtotals}
 			<TableCell
-				class="{useCol.type} {compact
-					? 'text-xs py-[1px] px-[4px]'
-					: 'py-[2px] px-[8px]'} font-medium"
+				class="{useCol.type} font-medium"
+				{compact}
 				align={column.align}
 			>
 				{#if [undefined, 'sum', 'mean', 'median', 'min', 'max', 'weightedMean', 'count', 'countDistinct'].includes(column.totalAgg) || column.subtotalFmt}

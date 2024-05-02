@@ -18,7 +18,7 @@
 	export let compact = undefined;
 </script>
 
-<thead class="h-24">
+<thead>
 	{#if $props.columns.length > 0}
 		{@const columnsWithGroupSpan = $props.columns.map((column, index, array) => {
 			// Determine if this column starts a new group or continues an existing one
