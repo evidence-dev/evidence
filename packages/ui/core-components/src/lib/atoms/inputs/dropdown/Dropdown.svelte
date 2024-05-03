@@ -191,13 +191,14 @@
 			if ($selectedOptions.length) {
 				// We don't want to get rid of selections that already exist when searching
 				$selectedOptions.forEach(($selectedOption) => {
-					flagOption([$selectedOption, DropdownValueFlag.REMOVE_ON_DESELECT]);
+					if (!$selectedOption.removeOnDeselect)
+						flagOption([$selectedOption, DropdownValueFlag.REMOVE_ON_DESELECT]);
 				});
 			}
 		} else {
 			// Search is gone, remove search holdovers
 			$options.forEach(($option) => {
-				if ($option.searchHoldover) flagOption([$option, DropdownValueFlag.REMOVE_ON_DESELECT]);
+				if ($option.removeOnDeselect) flagOption([$option, DropdownValueFlag.REMOVE_ON_DESELECT]);
 			});
 			queryOptions = query;
 		}
@@ -366,7 +367,7 @@
 							</Command.Group>
 							{#if multiple}
 								{#if !disableSelectAll}
-									<Command.Separator />
+									<div class="-mx-1 h-px bg-gray-200" />
 									<Command.Item
 										class="justify-center text-center"
 										onSelect={() => {
@@ -378,7 +379,7 @@
 										Select all
 									</Command.Item>
 								{/if}
-								<Command.Separator />
+								<div class="-mx-1 h-px bg-gray-200" />
 								<Command.Item
 									disabled={$selectedOptions.length === 0}
 									class="justify-center text-center"

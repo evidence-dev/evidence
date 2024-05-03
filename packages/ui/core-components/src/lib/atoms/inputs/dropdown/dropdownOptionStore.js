@@ -174,13 +174,15 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	};
 
 	/**
-	 * @param {DropdownValue[]} newSelection
+	 * @param {DropdownValue[]} selectionToggles
 	 * @param {DropdownValue[]} allOptions
 	 */
-	const cleanRemoveOnSelects = (newSelection, allOptions) => {
+	const cleanRemoveOnSelects = (selectionToggles, allOptions) => {
 		for (const option of allOptions) {
 			if (option.selected && option.removeOnDeselect) {
-				if (!newSelection.some((x) => optEq(x, option))) {
+				const matchingToggles = selectionToggles.filter((x) => optEq(x, option));
+				if (matchingToggles.length % 2 === 1) {
+					// odd number means the state will be opposite
 					removeOption(option);
 				}
 			}
@@ -203,8 +205,10 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 			}
 		}, delay),
 		deselectAll: () => {
-			if (get(options).some((opt) => opt.selected))
-				options.update((x) => x.map((y) => ({ ...y, selected: false })));
+			cleanRemoveOnSelects(get(selectedOptions), get(options));
+			for (const opt of get(selectedOptions)) {
+				select(opt);
+			}
 		}
 	};
 };
