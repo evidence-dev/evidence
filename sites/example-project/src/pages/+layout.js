@@ -10,6 +10,11 @@ import {
 import { profile } from '@evidence-dev/component-utilities/profile';
 import { toasts } from '@evidence-dev/component-utilities/stores';
 import { setTrackProxy } from '@evidence-dev/sdk/usql';
+import md5 from 'blueimp-md5';
+
+export const ssr = !dev;
+export const prerender = import.meta.env.VITE_EVIDENCE_SPA !== 'true';
+export const trailingSlash = 'always';
 
 const loadDB = async () => {
 	let renderedFiles = {};
@@ -44,8 +49,14 @@ const loadDB = async () => {
 
 const database_initialization = profile(loadDB);
 
-/** @type {(...params: Parameters<import("./$types").LayoutLoad>) => Promise<App.PageData["data"]>} */
-async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch }) {
+/**
+ *
+ * @param {string} routeHash
+ * @param {string} paramsHash
+ * @param {typeof fetch} fetch
+ * @returns {Promise<Record<string, unknown[]>>}
+ */
+async function getPrerenderedQueries(routeHash, paramsHash, fetch) {
 	// get every query that's run in the component
 	const res = await fetch(`/api/${routeHash}/${paramsHash}/all-queries.json`);
 	if (!res.ok) return {};
@@ -65,33 +76,30 @@ async function getPrerenderedQueries({ data: { routeHash, paramsHash }, fetch })
 	return Object.fromEntries(resolved_entries.filter(Boolean));
 }
 
+const system_routes = ['/settings', '/explore'];
+
 /** @type {Map<string, { inputs: Record<string, string> }>} */
 const dummy_pages = new Map();
 
 /** @satisfies {import("./$types").LayoutLoad} */
-export const load = async (event) => {
-	// cover 404 pages
-	if (!event.data && dev) {
-		const [customFormattingSettings, pagesManifest] = await Promise.all([
-			event.fetch('/api/customFormattingSettings.json').then((x) => x.json()),
-			event.fetch('/api/pagesManifest.json').then((x) => x.json())
-		]);
+export const load = async ({ fetch, route, params, url }) => {
+	const [customFormattingSettings, pagesManifest, evidencemeta] = await Promise.all([
+		fetch('/api/customFormattingSettings.json/GET.json').then((x) => x.json()),
+		fetch('/api/pagesManifest.json').then((x) => x.json()),
+		fetch(`/api/${route.id}/evidencemeta.json`)
+			.then((x) => x.json())
+			.catch(() => ({ queries: [] }))
+	]);
 
-		return { customFormattingSettings, pagesManifest };
-	}
-
-	const {
-		data: {
-			customFormattingSettings,
-			routeHash,
-			paramsHash,
-			isUserPage,
-			evidencemeta,
-			pagesManifest
-		},
-		url,
-		fetch
-	} = event;
+	const routeHash = md5(route.id);
+	const paramsHash = md5(
+		Object.entries(params)
+			.sort()
+			.map(([key, value]) => `${key}\x1F${value}`)
+			.join('\x1E')
+	);
+	const isUserPage =
+		route.id && system_routes.every((system_route) => !route.id.startsWith(system_route));
 
 	/** @type {App.PageData["data"]} */
 	let data = {};
@@ -109,8 +117,8 @@ export const load = async (event) => {
 	if (!browser && dev) await initDB();
 
 	// let SSR saturate the cache first
-	if (browser && isUserPage) {
-		data = await getPrerenderedQueries(event);
+	if (browser && isUserPage && prerender) {
+		data = await getPrerenderedQueries(routeHash, paramsHash, fetch);
 	}
 
 	return /** @type {App.PageData} */ ({
