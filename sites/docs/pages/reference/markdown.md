@@ -188,6 +188,12 @@ You can put whatever data you would like here, and it uses a [yaml syntax](https
     description="references SQL queries stored in the /queries directory."
 />
 <PropListing
+    name="sidebar"
+    description="changes the visibility of the sidebar. 'show' results in a responsive sidebar, 'hide' results in a sidebar accessible via hamburger button and 'never' hides both - the sidebar and the hamburger button."
+    type=string
+    options={['show', 'hide', 'never']}
+/>
+<PropListing
     name="sidebar_position"
     description="changes the position of the page in the sidebar. When used in index.md pages, changes the position of their parent in the sidebar."
 />

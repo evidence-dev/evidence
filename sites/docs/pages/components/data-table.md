@@ -12,7 +12,7 @@ select * from needful_things.orders
 limit 100
 ```
 
-```html
+```svelte
 <DataTable data={orders_summary}/>
 ```
 
@@ -20,7 +20,7 @@ limit 100
 
 ### Selecting Specific Columns
 
-```html
+```svelte
 <DataTable data={orders_summary}> 
     <Column id=state title="Sales State"/> 
 	<Column id=item/> 
@@ -42,7 +42,7 @@ limit 100
 
 You can use the `fmt` prop to format your columns using [built-in format names or Excel format codes](/core-concepts/formatting/)
 
-```html
+```svelte
 <DataTable data={country_summary}>
 	<Column id=country />
 	<Column id=category />
@@ -72,7 +72,7 @@ from ${country_summary}
 
 This example includes a `custom_format` column, which contains a different currency format code for many of the rows.
 
-```html
+```svelte
 <DataTable data={country_summary_fmts}>
 	<Column id=country />
 	<Column id=category />
@@ -91,7 +91,7 @@ This example includes a `custom_format` column, which contains a different curre
 
 ### Search
 
-```html
+```svelte
 <DataTable data={orders_summary} search=true/>
 ```
 
@@ -156,7 +156,7 @@ select date '2020-05-26' as date, 100 as value_usd, 0.011 as yoy, 'Zimbabwe' as 
 ```
 
 
-```html
+```svelte
 <DataTable data={country_summary}>
 	<Column id=country />
 	<Column id=category />
@@ -177,7 +177,7 @@ select date '2020-05-26' as date, 100 as value_usd, 0.011 as yoy, 'Zimbabwe' as 
 
 Default total aggregation is `sum`
 
-```html
+```svelte
 <DataTable data={country_example} totalRow=true rows=5>
   <Column id=country/>
   <Column id=gdp_usd/>
@@ -201,7 +201,7 @@ select * from ${countries}
 limit 5
 ```
 
-```html
+```svelte
 <DataTable data={country_example} totalRow=true rows=5>
   <Column id=country/>
   <Column id=gdp_usd totalAgg=sum/>
@@ -219,7 +219,7 @@ limit 5
 
 #### Custom Aggregations Values
 
-```html
+```svelte
 <DataTable data={countries} totalRow=true rows=5>
   <Column id=country totalAgg="Just the USA"/>
   <Column id=gdp_usd totalAgg={countries[0].gdp_usd} totalFmt=usd/>
@@ -233,7 +233,7 @@ limit 5
 
 #### Custom Total Formats
 
-```html
+```svelte
 <DataTable data={countries} totalRow=true rows=5>
   <Column id=country totalAgg="All Countries"/>
   <Column id=continent totalAgg=countDistinct totalFmt='# "Unique continents"'/>
@@ -267,7 +267,7 @@ limit 5
 
 #### Default (`scaleColor=green`)
 
-```html
+```svelte
 <DataTable data={countries}>
     <Column id=country />
     <Column id=country_id align=center/>
@@ -285,7 +285,7 @@ limit 5
 
 #### `scaleColor=red`
 
-```html
+```svelte
 <DataTable data={countries}>
     <Column id=country />
     <Column id=country_id align=center/>
@@ -303,7 +303,7 @@ limit 5
 
 #### `scaleColor=blue`
 
-```html
+```svelte
 <DataTable data={countries}>
     <Column id=country />
     <Column id=country_id align=center/>
@@ -323,7 +323,7 @@ limit 5
 
 When you pass a custom color to `scaleColor`, Evidence will create a color palette for you, starting at white and ending at the color you provided. See examples further down the page to see how to specify a custom color palette with multiple colors.
 
-```html
+```svelte
 <DataTable data={orders_by_category} rowNumbers=true>
   <Column id=month/>
   <Column id=category/>
@@ -375,7 +375,7 @@ union all
 
 #### Diverging Scale
 
-```html
+```svelte
 <DataTable data={numbers}>
   <Column id=name/>
   <Column id=number contentType=colorscale scaleColor={['#6db678','white','#ce5050']}/>
@@ -388,7 +388,7 @@ union all
 </DataTable>
 
 #### Heatmap
-```html
+```svelte
 <DataTable data={numbers}>
   <Column id=name/>
   <Column id=number contentType=colorscale scaleColor={['#6db678','#ebbb38','#ce5050']}/>
@@ -404,7 +404,7 @@ union all
 #### Color Breakpoints
 Use `colorBreakpoints` or `colorMid`/`colorMin`/`colorMax` to control which values are assigned to which sections of the color scale
 
-```html
+```svelte
 <DataTable data={negatives} rows=all>
   <Column id=name/>
   <Column id=number contentType=colorscale scaleColor={['#ce5050','white','#6db678']} colorMid=0/>
@@ -443,7 +443,7 @@ union all
  order by number asc
  ```
 
-```html
+```svelte
 <DataTable data={numbers_othercol}>
   <Column id=name/>
   <Column id=scale_defining_number fontColor={['green','red']}/>
@@ -482,7 +482,7 @@ select 'J', 4 as number,0
 order by number asc
 ```
 
-```html
+```svelte
 <DataTable data={negatives}>
   <Column id=name/>
   <Column id=number redNegatives=true/>
@@ -500,7 +500,7 @@ You can include images by indicating either an absolute path e.g. `https://www.e
 
 In this example, `flag` is either an absolute path or a relative path to the image.
 
-```html
+```svelte
 <DataTable data={countries}>
 	<Column id=flag contentType=image height=30px align=center />
 	<Column id=country />
@@ -522,7 +522,7 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 
 #### Link Column with Unique Labels
 
-```html
+```svelte
 <DataTable data={countries}>
 	<Column id=country_url contentType=link linkLabel=country />
 	<Column id=country_id align=center />
@@ -540,7 +540,7 @@ In this example, `flag` is either an absolute path or a relative path to the ima
 
 #### Link Column with Consistent String Label
 
-```html
+```svelte
 <DataTable data={countries}>
 	<Column id=country />
 	<Column id=country_id align=center />
@@ -596,7 +596,7 @@ To apply styling to most HTML tags, you should add the `class=markdown` attribut
 
 This example includes a column `country_url` which contains a country name as a search term in Google (e.g., `https://google.ca/search?q=canada`)
 
-```html
+```svelte
 <DataTable data={countries} search=true link=country_url>
 	<Column id=country />
 	<Column id=country_id align=center />
@@ -629,7 +629,7 @@ group by 1
 
 You can then use the `link` property of the DataTable to use your link column as a row link (`category_link` in this example):
 
-```html
+```svelte
 <DataTable data={orders} link=category_link />
 ```
 
@@ -641,7 +641,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 #### Row Shading + Row Lines
 
-```html
+```svelte
 <DataTable data={countries} rowShading=true />
 ```
 
@@ -649,7 +649,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 #### Row Shading + No Row Lines
 
-```html
+```svelte
 <DataTable data={countries} rowShading=true rowLines=false />
 ```
 
@@ -657,7 +657,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 #### No Lines or Shading
 
-```html
+```svelte
 <DataTable data={countries} rowLines=false />
 ```
 
@@ -665,7 +665,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 ### Column Alignment
 
-```html
+```svelte
 <DataTable data={country_summary}>
 	<Column id=country align=right />
 	<Column id=country_id align=center />
@@ -683,7 +683,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 ### Custom Column Titles
 
-```html
+```svelte
 <DataTable data={country_summary}>
 	<Column id=country title="Country Name" />
 	<Column id=country_id align=center title="ID" />
@@ -701,7 +701,7 @@ By default, the link column of your table is hidden. If you would like it to be 
 
 ### Raw Column Names
 
-```html
+```svelte
 <DataTable data={country_summary} formatColumnTitles=false />
 ```
 
@@ -717,7 +717,7 @@ group by all
 limit 25
 ```
 
-```html
+```svelte
 <DataTable data={orders} groupBy=state>
  	<Column id=state/> 
 	<Column id=category totalAgg=""/> 
@@ -739,7 +739,7 @@ limit 25
 
 #### With Subtotals
 
-```html
+```svelte
 <DataTable data={orders} groupBy=state subtotals=true> 
  	<Column id=state/> 
 	<Column id=category totalAgg=""/> 
@@ -761,7 +761,7 @@ limit 25
 
 #### Closed by Default
 
-```html
+```svelte
 <DataTable data={orders} groupBy=state subtotals=true totalRow=true groupsOpen=false> 
  	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
 	<Column id=category totalAgg=countDistinct totalFmt='[=1]0 "category";0 "categories"'/> 
@@ -783,7 +783,7 @@ limit 25
 
 #### With Configured Columns
 
-```html
+```svelte
 <DataTable data={orders} groupBy=category subtotals=true totalRow=true> 
  	<Column id=state totalAgg=countDistinct totalFmt='0 "states"'/> 
 	<Column id=category totalAgg=Total/> 
@@ -807,7 +807,7 @@ limit 25
 
 #### Without subtotals
 
-```html
+```svelte
 <DataTable data={orders} groupBy=state groupType=section/>
 ```
 
@@ -815,7 +815,7 @@ limit 25
 
 #### With Subtotals
 
-```html
+```svelte
 <DataTable data={orders} groupBy=state subtotals=true groupType=section>
  	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
 	<Column id=category totalAgg=Total/> 
@@ -837,7 +837,7 @@ limit 25
 
 #### With Configured Columns
 
-```html
+```svelte
 <DataTable data={orders} groupBy=category groupType=section subtotals=true totalRow=true totalRowColor=#fff0cc> 
  	<Column id=state totalAgg=countDistinct totalFmt='[=1]0 "state";0 "states"'/> 
 	<Column id=category totalAgg=Total/> 
@@ -885,7 +885,7 @@ UNION ALL
 SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.27, -1.8, 213.32
 ```
 
-```html
+```svelte
 <DataTable data={countries} totalRow=true rows=5 wrapTitles groupBy=continent groupType=section totalRowColor=#f2f2f2>
   <Column id=continent totalAgg="Total" totalFmt='# "Unique continents"'/>
   <Column id=country totalAgg=countDistinct totalFmt='0 "countries"'/>
@@ -915,7 +915,7 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 
 ### Wrap Titles
 
-```html
+```svelte
 <DataTable data={countries} wrapTitles=true /> 
 ```
 
@@ -1032,6 +1032,13 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
     options={['true', 'false']}
     defaultValue=false
 />
+<PropListing
+    name=compact
+    description="Enable a more compact table view that allows more content vertically and horizontally"
+    options={['true', 'false']}
+    defaultValue=false
+/>
+
 <PropListing
     name=link
     description="Makes each row of your table a clickable link. Accepts the name of a column containing the link to use for each row in your table"

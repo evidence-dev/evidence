@@ -65,7 +65,7 @@
 		]);
 </script>
 
-<div class="container">
+<div class="venndiagram-container">
 	<svg class="main">
 		<!-- Circles -->
 		{#each circles as circle}
@@ -149,7 +149,7 @@
 		/* fill: #fb923c; */
 	}
 
-	div.container {
+	div.venndiagram-container {
 		display: flex;
 		margin: 1.5em 0;
 		align-items: center;

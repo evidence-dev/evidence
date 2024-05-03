@@ -32,13 +32,13 @@
 	/** @type {boolean} */
 	export let builtWithEvidence = false;
 	/** @type {{appId: string, apiKey: string, indexName: string}} */
-	export let algolia;
+	export let algolia = undefined;
 	/** @type {string} */
-	export let githubRepo;
+	export let githubRepo = undefined;
 	/** @type {string} */
-	export let xProfile;
+	export let xProfile = undefined;
 	/** @type {string} */
-	export let slackCommunity;
+	export let slackCommunity = undefined;
 	/** @type {string}*/
 	export let maxWidth = undefined;
 
@@ -58,6 +58,39 @@
 	}
 
 	let fileTree = data?.pagesManifest;
+
+	function convertFileTreeToFileMap(fileTree) {
+		const map = new Map();
+
+		function traverse(node) {
+			if (!node) {
+				return;
+			}
+
+			if (node.href) {
+				const decodedHref = decodeURI(node.href);
+				map.set(decodedHref, node);
+			}
+
+			if (node.children) {
+				node.children.forEach(traverse);
+			}
+		}
+
+		traverse(fileTree);
+
+		return map;
+	}
+
+	$: fileMap = convertFileTreeToFileMap(fileTree);
+
+	$: routeFrontMatter = fileMap.get($page.route.id)?.frontMatter;
+
+	$: sidebarFrontMatter = routeFrontMatter?.sidebar;
+
+	$: if (!['show', 'hide', 'never'].includes(sidebarFrontMatter)) {
+		sidebarFrontMatter = undefined;
+	}
 </script>
 
 <slot />
@@ -79,6 +112,7 @@
 			{slackCommunity}
 			{xProfile}
 			{algolia}
+			{sidebarFrontMatter}
 		/>
 	{/if}
 	<div
@@ -86,7 +120,7 @@
 			'print:w-[650px] print:md:w-[841px] mx-auto print:md:px-0 print:px-0 px-6 sm:px-8 md:px-12 flex justify-start'}
 		style="max-width:{maxWidth}px;"
 	>
-		{#if !hideSidebar}
+		{#if !hideSidebar && sidebarFrontMatter !== 'never'}
 			<div class="print:hidden">
 				<Sidebar
 					{fileTree}
@@ -95,6 +129,7 @@
 					{logo}
 					{builtWithEvidence}
 					{hideHeader}
+					{sidebarFrontMatter}
 				/>
 			</div>
 		{/if}

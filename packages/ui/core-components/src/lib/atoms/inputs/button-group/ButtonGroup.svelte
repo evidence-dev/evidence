@@ -45,11 +45,11 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class="inline-flex flex-col mt-2 mb-4 ml-0 mr-2">
+	<div class="inline-flex w-fit max-w-full flex-col mt-2 mb-4 ml-0 mr-2">
 		{#if title}
 			<span class="text-gray-900 text-sm block mb-1">{title}</span>
 		{/if}
-		<div class="inline-flex rounded-md shadow-sm" role="group">
+		<div class="inline-flex rounded-md shadow-sm overflow-auto border no-scrollbar" role="group">
 			{#if preset}
 				{#if presets[preset]}
 					{#each presets[preset] as { value, valueLabel }}

@@ -49,6 +49,7 @@
 				id: `DateRange-${name}`
 			}
 		);
+		query.fetch();
 	}
 
 	const YYYYMMDD = /^\d{4}-\d{2}-\d{2}$/;
@@ -98,7 +99,12 @@
 				</span>
 			</span>
 		{:else}
-			<DateRange bind:selectedDateRange start={startString} end={endString} />
+			<DateRange
+				bind:selectedDateRange
+				start={startString}
+				end={endString}
+				loaded={$query?.ready ?? true}
+			/>
 		{/if}
 	</div>
 </HiddenInPrint>
