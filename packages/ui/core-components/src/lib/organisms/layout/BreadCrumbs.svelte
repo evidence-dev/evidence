@@ -13,9 +13,10 @@
 		let node = fileTree;
 		for (let path of pathArray) {
 			if (!node.children[path]) {
-				path = Object.keys(node.children).find((child) => child.includes('['));
+				node = Object.values(node.children).find((child) => child.isTemplated);
+			} else {
+				node = node.children[path];
 			}
-			node = node.children[path];
 			if (!node) return null;
 		}
 		return node;
