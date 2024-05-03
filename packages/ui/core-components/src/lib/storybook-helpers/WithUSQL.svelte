@@ -1,4 +1,5 @@
 <script>
+	import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 	import {
 		initDB,
 		setParquetURLs,
@@ -17,6 +18,7 @@
 		if (r.length === 0) throw new Error('Failed to run test query');
 		console.log('Universal SQL has been initialized successfully');
 	})();
+	setQueryFunction(query);
 </script>
 
 {#await initializing}

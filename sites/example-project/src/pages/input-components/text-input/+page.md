@@ -24,6 +24,9 @@ Input: {inputs.another_search}
 
 Input: {inputs.yet_another_search}
 
+
+Search Value: {inputs.yet_another_search.search('column_name')}
+
 <!-- TODO: Fix this which breaks when you pass input into a query
 
 ## Filter a query with a text input

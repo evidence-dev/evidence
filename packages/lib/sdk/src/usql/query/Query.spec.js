@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Query } from './Query';
-import { sharedPromise } from '../lib/sharedPromise';
+import { sharedPromise } from '../../lib/sharedPromise';
 
-const tick = () => new Promise((r) => setTimeout(r, 0));
+const tick = (timeout = 0) => new Promise((r) => setTimeout(r, timeout));
 
-/** @type {import('./types').MaybePromise<[{rowCount: number}]>} */
+/** @type {import('../types').MaybePromise<[{rowCount: number}]>} */
 let expectedLength = [{ rowCount: -1 }];
-/** @type {import('./types').MaybePromise<import('../types/duckdb-wellknown').DescribeResultRow[]>} */
+/** @type {import('../types').MaybePromise<import('../../types/duckdb-wellknown').DescribeResultRow[]>} */
 let expectedColumns = [];
-/** @type {import('./types').MaybePromise<import('./types').QueryResultRow[]>} */
+/** @type {import('../types').MaybePromise<import('../types').QueryResultRow[]>} */
 let expectedData = [];
 
 const mockRunner = vi.fn((q) => {
@@ -28,7 +28,7 @@ let testIdx = 0;
 
 /**
  * @param {string} s
- * @param {import('./types').QueryOpts} opts
+ * @param {import('../types').QueryOpts} opts
  * @returns
  */
 const getMockQuery = (s, opts) => {
@@ -47,7 +47,6 @@ describe('Query', () => {
 		vi.restoreAllMocks();
 		testQueryIndex = 0;
 		testIdx++;
-		console.log(`Beginning ${testIdx}`);
 		Query.emptyCache();
 	});
 
@@ -143,7 +142,6 @@ describe('Query', () => {
 			const colProm = sharedPromise();
 			expectedColumns = colProm.promise;
 			expectedLength = [{ rowCount: 100 * 100 * 100 }];
-			console.log({ expectedColumns, expectedData, expectedLength });
 			const q = getMockQuery('SELECT 5');
 			const listen = vi.fn();
 			q.addEventListener('highScore', listen);
@@ -180,7 +178,6 @@ describe('Query', () => {
 
 	describe('Data Volume', () => {
 		it('should process result sets of 10k rows in <250ms', async () => {
-			console.log('xx');
 			const rows = Array(10 * 1000)
 				.fill(null)
 				.map(() => ({
@@ -188,11 +185,11 @@ describe('Query', () => {
 					num: Math.random(),
 					bool: Math.random() > 0.5
 				}));
-			/** @type {import('../types/duckdb-wellknown').DescribeResultRow[]} */
+			/** @type {import('../../types/duckdb-wellknown').DescribeResultRow[]} */
 			const columns = [
 				{ column_name: 'str', column_type: 'VARCHAR' },
-				{ column_name: 'num', column_type: 'INT' },
-				{ column_name: 'bool', column_type: 'BOOL' }
+				{ column_name: 'num', column_type: 'INTEGER' },
+				{ column_name: 'bool', column_type: 'BOOLEAN' }
 			];
 			const length = [{ rowCount: 10 * 1000 }];
 
@@ -217,11 +214,11 @@ describe('Query', () => {
 					num: Math.random(),
 					bool: Math.random() > 0.5
 				}));
-			/** @type {import('../types/duckdb-wellknown').DescribeResultRow[]} */
+			/** @type {import('../../types/duckdb-wellknown').DescribeResultRow[]} */
 			const columns = [
 				{ column_name: 'str', column_type: 'VARCHAR' },
-				{ column_name: 'num', column_type: 'INT' },
-				{ column_name: 'bool', column_type: 'BOOL' }
+				{ column_name: 'num', column_type: 'INTEGER' },
+				{ column_name: 'bool', column_type: 'BOOLEAN' }
 			];
 			const length = [{ rowCount: 1000 * 1000 }];
 
@@ -230,7 +227,7 @@ describe('Query', () => {
 			expectedData = rows;
 
 			const before = performance.now();
-			const query = getMockQuery('');
+			const query = getMockQuery('SELECT 7');
 			await query.fetch();
 			const after = performance.now();
 
@@ -253,62 +250,171 @@ describe('Query', () => {
 			expect(spy).toHaveBeenCalled();
 		});
 		it('should throw when query string is not a string or QueryBuilder', () => {
-			expect(() => getMockQuery(null)).toThrowError('Refusing to create Query');
+			const errored = getMockQuery(null);
+
+			expect(errored.error.message.startsWith('Refusing to create Query')).toBe(true);
 		});
 
 		describe('Reactive Variant', () => {
-			it('should return a resolved query promise (w/o artificial delay)', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				const q = reactiveQuery('SELECT 5');
+			// describe('reactivity with QueryBuilder API', () => {
+			// 	// TODO: Try to use the factory with derived queries
+			// });
+			it('should not call the callback if the query hash is the same', async () => {
+				const cb = vi.fn();
+				/** @type {import('..').QueryValue} */
+				const react = Query.createReactive({
+					execFn: mockRunner,
+					callback: cb,
+					loadGracePeriod: 0
+				});
 
-				expect(q).toBeInstanceOf(Promise);
+				react('SELECT 1');
+				react('SELECT 1');
 
-				const $q = await q;
-				expect(Query.isQuery($q)).toBe(true);
-			});
-			it('should return distinct query values when called multiple times', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				const q = await reactiveQuery('SELECT 5');
-				const q2 = await reactiveQuery('SELECT 6');
-
-				expect(Query.isQuery(q)).toBe(true);
-				expect(Query.isQuery(q2)).toBe(true);
-
-				// Not equal
-				expect(q === q2).toBe(false);
-				expect(q.hash).not.toEqual(q2.hash);
-			});
-			it('should return the same query values when called multiple times with the same query', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				const q = await reactiveQuery('SELECT 5');
-				const q2 = await reactiveQuery('SELECT 5');
-
-				expect(Query.isQuery(q)).toBe(true);
-				expect(Query.isQuery(q2)).toBe(true);
-
-				// Not equal
-				expect(q).toBe(q2);
-				expect(q.hash).toEqual(q2.hash);
-			});
-			it('should return a still loading query only if the threshold is passed', async () => {
-				const { updater: reactiveQuery } = Query.reactive(mockRunner, 'SELECT -1');
-				expectedData = [{ x: 1 }];
-				const loadDelay = 100;
-				const initialQuery = await reactiveQuery('SELECT 5', loadDelay);
-
-				expect(initialQuery[0].x).toBe(1);
-
-				const dataPromise = sharedPromise();
-				expectedData = dataPromise.promise;
-				const before = performance.now();
-				const secondQuery = await reactiveQuery('SELECT 10');
-				const after = performance.now();
-				expect(after - before).toBeGreaterThanOrEqual(loadDelay);
-				expect(secondQuery.loading).toBe(true);
-				dataPromise.resolve([{ x: 2 }]);
 				await tick();
-				expect(secondQuery.loading).toBe(false);
-				expect(secondQuery[0].x).toBe(2);
+
+				expect(cb).toHaveBeenCalledTimes(2);
+			});
+
+			describe('change indexing', () => {
+				it('should not provide outdated results', async () => {
+					/** @type {import('..').QueryValue} */
+					let value;
+					const react = Query.createReactive({
+						execFn: mockRunner,
+						callback: (v) => (value = v),
+						loadGracePeriod: 0
+					});
+
+					expectedData = [{ i: 0 }];
+					react('SELECT 1'); // initial state
+					await tick();
+					expect(value.ready).toBe(true);
+
+					const p = sharedPromise();
+					expectedData = p.promise;
+					react('SELECT 2'); // takes 5 seconds
+					await tick();
+					expect(value.ready).toBe(false);
+					expect(value[0]).toBe(undefined); // we're looking at the right query
+
+					react('SELECT 1'); // before previous finishes
+					await tick();
+					expect(value.ready).toBe(true); // Check that the data is correct
+
+					p.resolve([{ i: 1 }]); // Resolve alternate query
+
+					// Check that the data is still correct
+					await tick();
+					expect(value[0].i).toBe(0);
+
+					react('SELECT 2'); // Sanity check that this query did actually finish
+					await tick();
+					expect(value[0].i).toBe(1);
+				});
+			});
+			it('should exist', () => {
+				expect(Query.createReactive).toBeDefined();
+			});
+			it('should return a function', () => {
+				const react = Query.createReactive({ execFn: mockRunner });
+				expect(typeof react).toBe('function');
+			});
+			it('should produce distinct queries when called multiple times', async () => {
+				let values = new Set();
+				const react = Query.createReactive({
+					execFn: mockRunner,
+					loadGracePeriod: 0,
+					callback: (v) => values.add(v)
+				});
+
+				await react('SELECT 5');
+				await tick();
+				await react('SELECT 3');
+				await tick();
+				const [first, second] = values.values();
+
+				expect(Query.isQuery(first)).toBe(true);
+				expect(Query.isQuery(second)).toBe(true);
+				expect(first === second).toBe(false);
+			});
+			it('should return a pending query when it takes more than 250ms to execute', async () => {
+				vi.useFakeTimers();
+				// Test initial state (sync fetch)
+				/** @type {import('..').QueryValue} */
+				let value;
+				const react = Query.createReactive({ execFn: mockRunner, callback: (v) => (value = v) });
+
+				const p = sharedPromise();
+				expectedData = p.promise;
+				react(`SELECT 2`);
+				await expect(
+					vi.advanceTimersByTimeAsync(250).then(() => value.loading),
+					'Query should be loading'
+				).resolves.toBe(true);
+				vi.clearAllTimers();
+				vi.useRealTimers();
+			});
+			it('should return a finalized query when it takes less than 250ms to execute', async () => {
+				vi.useFakeTimers();
+
+				// Test initial state (sync fetch)
+				/** @type {QueryValue} */
+				let innerValue;
+				const react = Query.createReactive({
+					execFn: mockRunner,
+					callback: (v) => {
+						innerValue = v;
+					}
+				});
+
+				expectedData = [{ x: 1 }];
+				react(`SELECT 2`);
+				await vi.advanceTimersByTimeAsync(250);
+				await expect(innerValue.loading, 'Query should not be loading').toBe(false);
+
+				vi.clearAllTimers();
+				vi.useRealTimers();
+			});
+			it('should play nicely with reactivity', async () => {
+				vi.useFakeTimers();
+				const updateTracker = vi.fn();
+
+				let currentValue;
+				const react = Query.createReactive(
+					{
+						execFn: mockRunner,
+						callback: (v) => {
+							currentValue = v;
+							console.log(v.id, v.dataLoaded);
+							updateTracker();
+						}
+					},
+					{ disableCache: true }
+				);
+
+				expectedData = [{ state: 'Iniital' }];
+				react('SELECT 1');
+
+				expect(currentValue.loading).toBe(false);
+				expect(updateTracker).toHaveBeenCalledTimes(2);
+
+				const p = sharedPromise();
+				expectedData = p.promise;
+
+				react('SELECT 2');
+				expect(updateTracker).toHaveBeenCalledTimes(2);
+				await vi.advanceTimersByTime(249); // update shouldn't have run yet
+				expect(updateTracker).toHaveBeenCalledTimes(2);
+				expect(currentValue.loading).toBe(false);
+				await vi.advanceTimersByTimeAsync(2); // let the update run
+				expect(updateTracker).toHaveBeenCalledTimes(3);
+				expect(currentValue.loading).toBe(true); // value has changed
+				p.resolve([]);
+				await vi.advanceTimersToNextTimerAsync();
+				expect(updateTracker).toHaveBeenCalledTimes(4);
+				vi.clearAllTimers();
+				vi.useRealTimers();
 			});
 		});
 	});
@@ -402,13 +508,16 @@ describe('Query', () => {
 	});
 
 	describe('Global Loading State', () => {
+		beforeEach(() => {
+			Query.resetInFlightQueries();
+		});
 		it('should report that no queries are loading when no queries have been created', () => {
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 		});
 		it('should report that no queries are loading when queries have been created, but not loaded', () => {
 			const q = getMockQuery('SELECT 1');
 			const q2 = getMockQuery('SELECT 2');
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 			expect(q.loading).toBe(false);
 			expect(q2.loading).toBe(false);
 		});
@@ -422,13 +531,13 @@ describe('Query', () => {
 			expectedData = mockDataPromise.promise;
 			const q = getMockQuery('SELECT 5');
 			q.fetch();
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(true);
 			expect(onQueryStart).toHaveBeenCalledOnce();
 			expect(onQueryEnd).not.toHaveBeenCalled();
 			mockDataPromise.resolve([]);
 			await tick();
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 			expect(q.dataLoading).toBe(false);
 			expect(onQueryStart).toHaveBeenCalledOnce();
 			expect(onQueryEnd).toHaveBeenCalledOnce();
@@ -449,7 +558,7 @@ describe('Query', () => {
 			expectedData = mockDataPromise.promise;
 			q.fetch();
 			// q1 is in flight
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(true);
 			expect(q2.dataLoading).toBe(false);
 			expect(onQueryStart).toHaveBeenCalledOnce();
@@ -458,7 +567,7 @@ describe('Query', () => {
 			expectedData = mockDataPromise2.promise;
 			q2.fetch();
 			// q1 and q2 are in flight
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(true);
 			expect(q2.dataLoading).toBe(true);
 			expect(onQueryStart).toHaveBeenCalledOnce();
@@ -467,7 +576,7 @@ describe('Query', () => {
 			mockDataPromise.resolve([]);
 			await tick();
 			// q1 resolved, q2 in flight
-			expect(Query.QueriesInFlight).toBe(true);
+			expect(Query.queriesInFlight).toBe(true);
 			expect(q.dataLoading).toBe(false);
 			expect(q2.dataLoading).toBe(true);
 			mockDataPromise2.resolve([]);
@@ -476,7 +585,7 @@ describe('Query', () => {
 
 			await tick();
 			// q1 resolved, q2 resolved
-			expect(Query.QueriesInFlight).toBe(false);
+			expect(Query.queriesInFlight).toBe(false);
 			expect(q.dataLoading).toBe(false);
 			expect(q2.dataLoading).toBe(false);
 			expect(onQueryStart).toHaveBeenCalledOnce();
@@ -550,7 +659,7 @@ describe('Query', () => {
 		});
 		it('should iterate through rows by default', () => {
 			const rows = [{ x: 1 }, { x: 2 }];
-			const q = getMockQuery('', { initialData: rows });
+			const q = getMockQuery('SELECT 5', { initialData: rows });
 
 			// Variety of iteration methods
 			let i = 0;
@@ -574,6 +683,18 @@ describe('Query', () => {
 			for (let idx = 0; idx < rows.length; idx++) {
 				expect(q[idx]).toEqual(rows[idx]);
 			}
+		});
+		describe('basic array usages', () => {
+			it('filter', () => {
+				const rows = [{ x: 1 }, { x: 2 }];
+				const q = getMockQuery('SELECT 1', { initialData: rows });
+				expect(q.filter((r) => r.x === 1)).toEqual([rows[0]]);
+			});
+			it('map', () => {
+				const rows = [{ x: 1 }, { x: 2 }];
+				const q = getMockQuery('SELECT 1', { initialData: rows });
+				expect(q.map((r) => r.x)).toEqual([1, 2]);
+			});
 		});
 	});
 
@@ -684,14 +805,14 @@ describe('Query', () => {
 
 	describe('EventEmitter interface', () => {
 		it('should emit dataReady when done fetching data', async () => {
-			const q = getMockQuery('');
+			const q = getMockQuery('SELECT 5');
 			const sub = vi.fn();
 			q.on('dataReady', sub);
 			await q.fetch();
 			expect(sub).toHaveBeenCalledWith(undefined, 'dataReady');
 		});
 		it('should respect .off', async () => {
-			const q = getMockQuery('');
+			const q = getMockQuery('SELECT 5');
 			const sub = vi.fn();
 			q.on('dataReady', sub);
 			q.off('dataReady', sub);
@@ -700,11 +821,12 @@ describe('Query', () => {
 		});
 		it('should emit an error event when a query fails', async () => {
 			const innerError = new Error('Hello World');
+
 			expectedColumns = Promise.reject(innerError);
 			let output;
 			const sub = vi.fn().mockImplementation((v) => (output = v));
 			try {
-				const q = getMockQuery('');
+				const q = getMockQuery('SELECT a broken value');
 				q.on('error', sub);
 			} catch {
 				/* Ignore */

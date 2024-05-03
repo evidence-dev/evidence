@@ -18,7 +18,18 @@ select 2021 as year
 
 <Dropdown data={years} name=year value=year order=year title="Order Year"/>
 
-{inputs.category.value} {inputs.year.value}
+<table>
+    <tr>
+        <th class="px-4">Label</th><th class="px-4">Value</th>
+    </tr>
+    <tr>
+        <td class="px-4">{inputs.category.label}</td><td class="px-4">{inputs.category.value}</td>
+    </tr>
+    <tr>
+        <td class="px-4">{inputs.year.label}</td><td class="px-4">{inputs.year.value}</td>
+    </tr>
+    
+</table>
 
 ```sql orders
 select category, order_datetime, sales from needful_things.orders
@@ -87,14 +98,19 @@ where category in ${inputs.multi_select.value}
 ## A huge amount of options
 
 ```sql purchases
-select "Vendor" as vendor from purchases group by all
+select "channel_month" || ' ' || "state" as vendor from orders group by all
 ```
 
-<Dropdown name=vendor data={purchases} value=vendor multiple title="Multi Vendors"/>
+<Dropdown name=vendor_multi data={purchases} value=vendor multiple title="Multi Vendors"/>
 
 <Dropdown name=vendor data={purchases} value=vendor title="Single Vendor"/>
 
 ### Selected values
 
-{inputs.vendor.label}
+<p>
+    Multiselect: {inputs.vendor_multi.label}
+</p>
 
+<p>
+    Single Select: {inputs.vendor.label}
+</p>

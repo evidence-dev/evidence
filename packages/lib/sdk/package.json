@@ -24,6 +24,12 @@
 			"import": "./src/usql/index.js",
 			"require": null,
 			"types": "./src/usql/index.d.ts"
+		},
+		"./utils": {
+			"default": "./src/utils/index.js",
+			"import": "./src/utils/index.js",
+			"require": null,
+			"types": "./src/utils/index.d.ts"
 		}
 	},
 	"scripts": {
