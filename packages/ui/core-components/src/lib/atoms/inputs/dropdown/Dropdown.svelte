@@ -222,7 +222,6 @@
 		});
 	}
 
-	// $: $options, evalDefaults()
 	/**
 	 * Resets the defaults whenever parameters change
 	 */
@@ -249,7 +248,11 @@
 				if (noDefault) {
 					deselectAll();
 					return;
-				} else if (typeof defaultValue !== 'undefined' && defaultValue !== null) {
+				} else if (
+					typeof defaultValue !== 'undefined' &&
+					defaultValue !== null &&
+					defaultValue.length
+				) {
 					// hard-coded default
 					const _def = Array.isArray(defaultValue) ? defaultValue : [defaultValue];
 					if (_def.length) {
