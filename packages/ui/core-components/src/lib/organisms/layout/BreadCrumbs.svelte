@@ -1,13 +1,5 @@
-<script>
-	import { page } from '$app/stores';
-	import { Icon } from '@steeze-ui/svelte-icon';
-	import { ChevronRight } from '@steeze-ui/tabler-icons';
-	export let fileTree;
-
-	$: pathArray = $page.url.pathname.split('/').slice(1);
-
-	// check if a url is an href in the fileTree and return true or false
-	function searchFileTree(href, fileTree) {
+<script context="module">
+	export function searchFileTree(href, fileTree) {
 		if (href === '/') return fileTree;
 		const pathArray = href.split('/').slice(1);
 		let node = fileTree;
@@ -22,7 +14,7 @@
 		return node;
 	}
 
-	function buildCrumbs(pathArray) {
+	export function buildCrumbs(pathArray, fileTree) {
 		const crumbs = [{ href: '/', title: 'Home' }];
 		pathArray.forEach((path, i) => {
 			if (path != '') {
@@ -48,8 +40,15 @@
 
 		return crumbs;
 	}
+</script>
 
-	$: crumbs = buildCrumbs(pathArray);
+<script>
+	import { page } from '$app/stores';
+	import { Icon } from '@steeze-ui/svelte-icon';
+	import { ChevronRight } from '@steeze-ui/tabler-icons';
+	export let fileTree;
+
+	$: crumbs = buildCrumbs($page.url.pathname.split('/').slice(1), fileTree);
 </script>
 
 <div class="flex items-start mt-0 whitespace-nowrap overflow-auto">
