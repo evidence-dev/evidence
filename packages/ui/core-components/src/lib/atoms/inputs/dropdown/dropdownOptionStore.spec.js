@@ -72,7 +72,6 @@ describe('dropdownOptionStore', () => {
 			vi.advanceTimersByTime(100);
 			expect(get(options)).toHaveLength(1);
 		});
-		// TODO: How should we resolve the flags / idx of the same option?
 
 		it('should sort options by idx and value', () => {
 			const { addOption, options } = dropdownOptionStore();
@@ -196,7 +195,6 @@ describe('dropdownOptionStore', () => {
 				removeOption(opt);
 
 				await vi.advanceTimersByTimeAsync(100);
-				console.log(get(options));
 				expect(get(options)[0]).toEqual({ ...opt, removeOnDeselect: true, selected: true });
 				expect(get(options)[1]).toEqual({ ...opt2, removeOnDeselect: false, selected: false });
 			});
@@ -216,7 +214,6 @@ describe('dropdownOptionStore', () => {
 				removeOption(opt);
 
 				await vi.advanceTimersByTimeAsync(100);
-				console.log(get(options));
 				expect(get(options)[0]).toEqual({ ...opt3, removeOnDeselect: false, selected: false });
 				expect(get(options)[1]).toEqual({ ...opt, removeOnDeselect: true, selected: true });
 				expect(get(options)[2]).toEqual({ ...opt2, removeOnDeselect: false, selected: false });

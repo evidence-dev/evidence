@@ -301,7 +301,7 @@ export class Query {
 		const dataQuery =
 			`
 ---- Data ${this.#id} ${this.#hash}
-${this.#query.toString()}
+${this.text.trim()}
         `.trim() + '\n';
 
 		this.#debugStyled('data query text', '\n' + dataQuery, 'font-family: monospace;');
@@ -364,7 +364,7 @@ ${this.#query.toString()}
 			() => {},
 			async () => {
 				await new Promise((resolve) => setTimeout(resolve, 0));
-				return this.#executeQuery(`--data\n${this.#query.toString()}`, this.id);
+				return this.#executeQuery(`--data\n${this.text.trim()}`, this.id);
 			},
 			() => {}
 		);
@@ -410,7 +410,7 @@ ${this.#query.toString()}
 		const lengthQuery =
 			`
 ---- Length ${this.#id} (${this.#hash})
-SELECT COUNT(*) as rowCount FROM (${this.#query.toString()})
+SELECT COUNT(*) as rowCount FROM (${this.text.trim()})
         `.trim() + '\n';
 
 		// gotta love jsdoc sometimes
@@ -471,7 +471,7 @@ SELECT COUNT(*) as rowCount FROM (${this.#query.toString()})
 		const metaQuery =
 			`
 ---- Columns ${this.#id} (${this.#hash})
-DESCRIBE ${this.#query.toString()}
+DESCRIBE ${this.text.trim()}
         `.trim() + '\n';
 
 		this.#debugStyled('columns query text', '\n' + metaQuery, 'font-family: monospace;');
@@ -712,7 +712,7 @@ DESCRIBE ${this.#query.toString()}
 					`${activeQuery.id} (${hashQuery(nextQuery)}) | Reactive Updating`,
 					nextQuery,
 					{
-						changeIdx: changeIdx,
+						changeIdx,
 						targetChangeIdx,
 						hash: hashQuery(nextQuery)
 					},
@@ -775,7 +775,6 @@ DESCRIBE ${this.#query.toString()}
 		import.meta.hot.data.hmr = false;
 		import.meta.hot.on('vite:beforeUpdate', () => {
 			if (import.meta.hot) import.meta.hot.data.hmr = true;
-			// TODO: Check if we can look for a change in the query before remaking it?
 			Query.emptyCache();
 		});
 	};
@@ -936,9 +935,6 @@ DESCRIBE ${this.#query.toString()}
 		if (typeof query !== 'string' && !(query instanceof QueryBuilder)) {
 			console.warn(`Query ${id} has no query text`);
 			opts.noResolve = true;
-			// throw new EvidenceError('Refusing to create Query, no query text provided', [
-			// 	JSON.stringify(opts)
-			// ]);
 		}
 
 		if (!Query.#constructing) {

@@ -113,6 +113,7 @@
 
 			if (
 				providedValues.every(Boolean) &&
+				providedValues.length !== knownValues.length &&
 				JSON.stringify(providedValues) !== JSON.stringify(knownValues)
 			) {
 				// External change, we need to react to this
@@ -232,7 +233,10 @@
 					const presentValues = $selectedOptions.filter((x) =>
 						$options.some((o) => o.value === x.value && o.label === x.label)
 					);
-					if (JSON.stringify(presentValues) !== JSON.stringify($selectedOptions)) {
+					if (
+						presentValues.length !== $selectedOptions.length &&
+						JSON.stringify(presentValues) !== JSON.stringify($selectedOptions)
+					) {
 						// Clear the selection and reselect the needed values
 						// We don't need to do diffs, this rolls up into 1 store action
 						deselectAll();

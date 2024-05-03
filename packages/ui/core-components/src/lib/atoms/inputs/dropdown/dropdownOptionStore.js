@@ -47,13 +47,11 @@ const optStr = (a) => a.value + a.label;
 export const dropdownOptionStore = (multi = false, delay = 100) => {
 	/** @type {import("svelte/store").Writable<DropdownValue[]>} */
 	const options = writable([]);
-	/** @type {import("svelte/store").Readable<DropdownValue[]>} */
-	const cleanedOptions = readonly(options);
 
 	/**
 	 * @param {DropdownValue[]} $options
 	 */
-	const hygeine = ($options) => {
+	const hygiene = ($options) => {
 		const knownValues = new Set();
 		// uniqueify
 		$options = $options.reduce((a, c) => {
@@ -102,7 +100,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 		if (!addedOptions.length) return;
 		options.update(($options) => {
 			$options.push(...addedOptions);
-			return hygeine($options);
+			return hygiene($options);
 		});
 	}, delay);
 
@@ -117,7 +115,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				if (option.selected && !option.ignoreSelected) return true;
 				return false;
 			});
-			return hygeine($options);
+			return hygiene($options);
 		});
 	}, delay);
 
@@ -190,7 +188,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	};
 
 	return {
-		options: cleanedOptions,
+		options: readonly(options),
 		destroy() {
 			cleanup.forEach((c) => c());
 		},

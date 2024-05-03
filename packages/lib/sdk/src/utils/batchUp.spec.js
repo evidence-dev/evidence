@@ -8,11 +8,11 @@ describe('batchUp', () => {
 	afterEach(() => {
 		vi.useRealTimers();
 	});
-	it('should call the callback after the timeout', () => {
+	it('should not call the callback if the return function is never called', () => {
 		const callback = vi.fn();
 		batchUp(callback);
 		vi.advanceTimersByTime(201);
-		expect(callback).toHaveBeenCalledTimes(1);
+		expect(callback).toHaveBeenCalledTimes(0);
 	});
 	it('should debounce the callback', () => {
 		const callback = vi.fn();

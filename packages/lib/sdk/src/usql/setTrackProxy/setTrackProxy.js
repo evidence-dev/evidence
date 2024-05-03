@@ -1,4 +1,3 @@
-// TODO: Type this better
 export const Unset = Symbol('Unset');
 export const IsSetTracked = Symbol('IsSetTracked');
 const GetModKeys = Symbol('GetModKeys');
@@ -15,7 +14,6 @@ export const setTrackProxy = (
 	const modifiedKeys = Object.keys(root ?? {});
 	const self = new Proxy(root ?? {}, {
 		get(target, prop) {
-			// console.log(target, prop, root, ownKey, JSON.stringify(target[prop]))
 			switch (prop) {
 				case Unset:
 					return !parent?.[GetModKeys].includes(ownKey);
