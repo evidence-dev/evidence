@@ -19,7 +19,8 @@ export async function GET() {
 			label: 'Home',
 			href: '/',
 			children: {},
-			isTemplated: false
+			isTemplated: false,
+			isPage: true
 		};
 		for (const [pagePath, pageContent] of Object.entries(pages)) {
 			const path = pagePath.replace('/src/pages/', '');
@@ -30,13 +31,15 @@ export async function GET() {
 						node.href = encodeURI('/' + path.replace('/+page.md', ''));
 					}
 					node.frontMatter = preprocess.parseFrontmatter(pageContent);
+					node.isPage = true;
 				} else {
 					const label = part.includes('[') ? undefined : part.replace(/_/g, ' ').replace(/-/g, ' ');
 					node = node.children[part] = node.children[part] ?? {
 						label,
 						href: undefined,
 						children: {},
-						isTemplated: part.includes('[')
+						isTemplated: part.includes('['),
+						isPage: false
 					};
 				}
 			}

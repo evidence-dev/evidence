@@ -8,6 +8,7 @@
 
 	// check if a url is an href in the fileTree and return true or false
 	function searchFileTree(href, fileTree) {
+		if (href === '/') return fileTree;
 		const pathArray = href.split('/').slice(1);
 		let node = fileTree;
 		for (let path of pathArray) {
@@ -37,7 +38,7 @@
 
 		for (const path of crumbs) {
 			const node = searchFileTree(path.href, fileTree);
-			if (!node) {
+			if (!node || !node.isPage) {
 				path.href = null;
 			} else {
 				path.title = node.title ?? path.title;
