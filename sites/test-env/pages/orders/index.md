@@ -1,4 +1,5 @@
-```months
-SELECT strftime(order_month, '%Y-%m-%d') as order_month, count(*) as order_count FROM orders
-GROUP BY ALL
+```all_orders
+SELECT *, '/orders/' || id as link FROM orders LIMIT 20
 ```
+
+<DataTable data={all_orders} link="link" />
