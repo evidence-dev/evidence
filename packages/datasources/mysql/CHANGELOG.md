@@ -1,5 +1,11 @@
 # @evidence-dev/mysql
 
+## 1.1.2
+
+### Patch Changes
+
+- 7f85e600: version bumps
+
 ## 1.1.1
 
 ### Patch Changes
