@@ -91,7 +91,7 @@ One way to circumvent this is to increase the amount of memory allocated to the 
 #### Mac OS / Linux
 
 ```code
-NODE_OPTIONS=--max-old-space-size=4096 npm run sources
+NODE_OPTIONS="--max-old-space-size=4096" npm run sources
 ```
 
 #### Windows
