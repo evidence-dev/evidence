@@ -200,8 +200,8 @@ importers:
   packages/datasources/databricks:
     dependencies:
       '@databricks/sql':
-        specifier: 1.7.1
-        version: 1.7.1
+        specifier: 1.8.4
+        version: 1.8.4
       '@evidence-dev/db-commons':
         specifier: workspace:*
         version: link:../../lib/db-commons
@@ -4347,8 +4347,8 @@ packages:
       kuler: 2.0.0
     dev: false
 
-  /@databricks/sql@1.7.1:
-    resolution: {integrity: sha512-waxZUfB3HEFx+jEzzIbavPfieF2C5kZzzH0isAS10GUiTA5l43bSamIcCMez1w/N0zgEe7jdsjJtV06np6dfyA==}
+  /@databricks/sql@1.8.4:
+    resolution: {integrity: sha512-FB8JfRMTANMdzVnXjdeRK+FF8FWgoq8goXzAQIikz2Q1QYET77WJrCsbLaQLX3EfWy6HabNHVv0C2xlcFmHITg==}
     engines: {node: '>=14.0.0'}
     dependencies:
       apache-arrow: 13.0.0
@@ -4361,6 +4361,8 @@ packages:
       thrift: 0.16.0
       uuid: 9.0.1
       winston: 3.13.0
+    optionalDependencies:
+      lz4: 0.6.5
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -10955,6 +10957,12 @@ packages:
       stream-transform: 2.1.3
     dev: true
 
+  /cuint@0.2.2:
+    resolution: {integrity: sha512-d4ZVpCW31eWwCMe1YT3ur7mUDnTXbgwyzaL320DrcRT45rfjYxkt5QWLrmOJ+/UEAI2+fQgKe/fCjR8l4TpRgw==}
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /cytoscape-cose-bilkent@4.1.0(cytoscape@3.29.2):
     resolution: {integrity: sha512-wgQlVIUJF13Quxiv5e1gstZ08rnZj2XaLHGoFMYXz7SkNfCDOOteKBE6SYRfA9WxxI/iBc3ajfDoc6hb/MRAHQ==}
     peerDependencies:
@@ -15437,6 +15445,18 @@ packages:
     hasBin: true
     dev: true
 
+  /lz4@0.6.5:
+    resolution: {integrity: sha512-KSZcJU49QZOlJSItaeIU3p8WoAvkTmD9fJqeahQXNu1iQ/kR0/mQLdbrK8JY9MY8f6AhJoMrihp1nu1xDbscSQ==}
+    engines: {node: '>= 0.10'}
+    requiresBuild: true
+    dependencies:
+      buffer: 5.7.1
+      cuint: 0.2.2
+      nan: 2.19.0
+      xxhashjs: 0.2.2
+    dev: false
+    optional: true
+
   /magic-string@0.26.7:
     resolution: {integrity: sha512-hX9XH3ziStPoPhJxLq1syWuZMxbDvGNbVchfrdCtanC7D13888bMFow61x8axrx+GfHLtVeAx2kxL7tTGRl+Ow==}
     engines: {node: '>=12'}
@@ -16192,6 +16212,12 @@ packages:
     dependencies:
       lru-cache: 7.18.3
     dev: false
+
+  /nan@2.19.0:
+    resolution: {integrity: sha512-nO1xXxfh/RWNxfd/XPfbIfFk5vgLsAxUR9y5O0cHMJu/AW9U95JLXqthYHjEp+8gQ5p96K9jUp8nbVOxCdRbtw==}
+    requiresBuild: true
+    dev: false
+    optional: true
 
   /nanoid@3.3.1:
     resolution: {integrity: sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==}
@@ -20732,6 +20758,14 @@ packages:
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
+
+  /xxhashjs@0.2.2:
+    resolution: {integrity: sha512-AkTuIuVTET12tpsVIQo+ZU6f/qDmKuRUcjaqR+OIvm+aCBsZ95i7UVY5WJ9TMsSaZ0DA2WxoZ4acu0sPH+OKAw==}
+    requiresBuild: true
+    dependencies:
+      cuint: 0.2.2
+    dev: false
+    optional: true
 
   /y18n@4.0.3:
     resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}
