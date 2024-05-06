@@ -78,6 +78,27 @@ In dev mode, if you have large sources which take a while to run, it can be help
    - `npm run sources -- --sources my_source` run `my_source` only
    - `npm run sources -- --sources my_source --queries query_one,query_two` run `my_source.query_one` and `my_source.query_two` only
 
+### Increase Process Memory
+
+If you are working with large data sources (~1M+ rows), your `npm run sources` process may run out of memory, with an error similar to this:
+
+```code
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+```
+
+One way to circumvent this is to increase the amount of memory allocated to the process. The below command increases the memory to 4GB (the number is measured in MB), but you can set it arbitrarily up to the RAM of your machine
+
+#### Mac OS / Linux
+
+```code
+NODE_OPTIONS=--max-old-space-size=4096 npm run sources
+```
+
+#### Windows
+
+```code
+set NODE_OPTIONS=--max-old-space-size=4096 && npm run sources
+```
 
 ## Supported data sources
 
