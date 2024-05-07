@@ -212,7 +212,7 @@
 	$: query, search, updateQueryOptions();
 
 	let optionUpdates;
-	$: if (!optionUpdates && $query) {
+	$: if (!optionUpdates && ((hasQuery && $query) || !hasQuery)) {
 		let firstRun = true;
 		optionUpdates = options.subscribe(() => {
 			// The store is going to initially publish the _current_ value, which isn't what we want
@@ -221,6 +221,7 @@
 				firstRun = false;
 				return;
 			}
+			console.log("Eat my shorts")
 			// This is the run which actually has what we want
 			setTimeout(evalDefaults, 0);
 			optionUpdates();
@@ -234,6 +235,10 @@
 	function evalDefaults() {
 		resolveMaybePromise(
 			() => {
+				console.log(
+					name,
+					{ $selectedOptions, $options, defaultValue }
+				)
 				if ($selectedOptions.length) {
 					const presentValues = $selectedOptions.filter((x) =>
 						$options.some((o) => o.value === x.value && o.label === x.label)
