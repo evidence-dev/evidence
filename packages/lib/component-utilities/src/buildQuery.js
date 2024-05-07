@@ -52,15 +52,12 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 				// We can run .fetch() with wreckless abandon because if the query
 				// has already been fetched (e.g. hasn't changed), then this
 				// is basically a no-op
-				resolveMaybePromise(
-					() => {
-						if (query.hash !== currentQuery?.hash) {
-							currentQuery = query;
-							internal.set({ hasQuery, query });
-						}
-					},
-					query.fetch()
-				)
+				resolveMaybePromise(() => {
+					if (query.hash !== currentQuery?.hash) {
+						currentQuery = query;
+						internal.set({ hasQuery, query });
+					}
+				}, query.fetch());
 			}
 		}
 	};

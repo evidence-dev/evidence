@@ -71,7 +71,6 @@
 		}
 	});
 
-
 	let hasHadSelection = false;
 	onMount(() =>
 		selectedOptions.subscribe(
@@ -83,10 +82,9 @@
 			 * Transforms values into an array if multiple
 			 */
 			(values) => {
-			  
-			  if (values.length) hasHadSelection = true;
-			  if (!hasHadSelection) return;
-			  
+				if (values.length) hasHadSelection = true;
+				if (!hasHadSelection) return;
+
 				if (!multiple) {
 					if (!values.length) {
 						$inputs[name] = { label: '', value: null, rawValues: [] };
@@ -214,7 +212,7 @@
 	$: query, search, updateQueryOptions();
 
 	let optionUpdates;
-	$: if (!optionUpdates && $query){
+	$: if (!optionUpdates && $query) {
 		let firstRun = true;
 		optionUpdates = options.subscribe(() => {
 			// The store is going to initially publish the _current_ value, which isn't what we want

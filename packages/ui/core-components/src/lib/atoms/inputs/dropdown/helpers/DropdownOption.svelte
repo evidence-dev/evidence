@@ -5,7 +5,6 @@
 <script>
 	import { getContext, onMount } from 'svelte';
 	import { DropdownContext } from '../constants.js';
-	import {browser} from '$app/environment';
 	export let value;
 	export let valueLabel = value;
 	/** @type {number} */
@@ -19,6 +18,6 @@
 	/** @type {import("../constants.js").EvidenceDropdownContext} */
 	const dropdownContext = getContext(DropdownContext);
 	onMount(() => {
-		dropdownContext.registerOption({ value, label: valueLabel, idx, __auto })
+		dropdownContext.registerOption({ value, label: valueLabel, idx, __auto });
 	});
 </script>

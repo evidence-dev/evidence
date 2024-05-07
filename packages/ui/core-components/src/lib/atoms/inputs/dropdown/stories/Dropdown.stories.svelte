@@ -10,9 +10,8 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 	import WithScopedInputStore from '../../../../storybook-helpers/WithScopedInputStore.svelte';
 	import DropdownOption from '../helpers/DropdownOption.svelte';
-	import DependentDropdowns from './DependentDropdowns.story.svelte'
+	import DependentDropdowns from './DependentDropdowns.story.svelte';
 
-	import BarChart from '../../../../unsorted/viz/bar/BarChart.svelte';
 	import DropdownCharts from './DropdownCharts.story.svelte';
 </script>
 
@@ -125,7 +124,6 @@
 	)}
 	<Dropdown name="test" {data} value="value" label="label" />
 </Story>
-
 
 <Story name="Driving a Bar Chart">
 	<DropdownCharts />

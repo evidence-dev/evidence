@@ -736,18 +736,22 @@ DESCRIBE ${this.text.trim()}
 					]);
 				}
 
-				resolveMaybePromise(() => {
-					if (changeIdx !== targetChangeIdx) {
-						Query.#debugStatic(`changeIdx does not match, results are discarded`);
-						return;
+				resolveMaybePromise(
+					() => {
+						if (changeIdx !== targetChangeIdx) {
+							Query.#debugStatic(`changeIdx does not match, results are discarded`);
+							return;
+						}
+						unsub?.();
+						activeQuery = newQuery.value;
+						unsub = activeQuery.subscribe(callback);
+					},
+					dataMaybePromise,
+					(e) => {
+						console.warn(`Error while attempting to update reactive query: ${e.message}`);
+						throw e;
 					}
-					unsub?.();
-					activeQuery = newQuery.value;
-					unsub = activeQuery.subscribe(callback);
-				}, dataMaybePromise, e => {
-					console.warn(`Error while attempting to update reactive query: ${e.message}`);
-					throw e;
-				});
+				);
 			};
 
 		function removeInitialState() {
@@ -761,9 +765,13 @@ DESCRIBE ${this.text.trim()}
 		 */
 		return (queryText, newOpts) => {
 			if (activeQuery) {
-				resolveMaybePromise(() => {}, waitFor(queryText, newOpts), e => {
-					console.warn(`Error while attempting to update reactive query: ${e.message}`);
-				})
+				resolveMaybePromise(
+					() => {},
+					waitFor(queryText, newOpts),
+					(e) => {
+						console.warn(`Error while attempting to update reactive query: ${e.message}`);
+					}
+				);
 				return;
 			}
 
