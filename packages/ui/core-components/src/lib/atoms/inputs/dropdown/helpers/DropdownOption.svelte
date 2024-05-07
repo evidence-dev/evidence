@@ -17,7 +17,5 @@
 
 	/** @type {import("../constants.js").EvidenceDropdownContext} */
 	const dropdownContext = getContext(DropdownContext);
-	onMount(() => {
-		dropdownContext.registerOption({ value, label: valueLabel, idx, __auto });
-	});
+	onMount(() => dropdownContext.registerOption({ value, label: valueLabel, idx, __auto }));
 </script>

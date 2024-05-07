@@ -107,6 +107,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	const removeOption = typedBatchup((removedOptions) => {
 		if (!removedOptions.length) return;
 		options.update(($options) => {
+			const $optionsPre = $options;
 			$options = $options.filter((option) => {
 				const optionIsTargetted = removedOptions.some((removedOption) =>
 					optEq(option, removedOption)
@@ -204,9 +205,10 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				select(option);
 			}
 		}, delay),
-		deselectAll: () => {
+		deselectAll: (autoOnly = false) => {
 			cleanRemoveOnSelects(get(selectedOptions), get(options));
 			for (const opt of get(selectedOptions)) {
+				if (autoOnly && !opt.__auto) continue;
 				select(opt);
 			}
 		}

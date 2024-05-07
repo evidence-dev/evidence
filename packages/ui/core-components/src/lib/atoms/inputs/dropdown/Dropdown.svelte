@@ -155,23 +155,11 @@
 	$: {
 		data;
 		// If data input changes; then we want to discard any selections that may have been made
-		// This happens elsewhere, but if there are items that have the IGNORE_SELECTED flag, we want to make sure they are not
-		// kept around
+		// By deselecting everything, we ensure that there aren't any holdovers from the previous query
 		if (currentInputHash !== trackedInputHash) {
-			$options.forEach(($option) => {
-				if (!$option.__auto) return; // we don't care
-				if (!$option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
-			});
+			deselectAll(true); // only remove __auto options (e.g. query opts)
 			trackedInputHash = currentInputHash;
 		}
-		// We can remove the flags here once we are done
-		// The 150 timeout here is fairly arbitrary, it just needs to be more than the debounce value of the dropdownOptionStore
-		setTimeout(() => {
-			$options.forEach(($option) => {
-				if (!$option.__auto) return; // we don't care
-				if ($option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
-			});
-		}, 150);
 	}
 
 	/** @type {{ hasQuery: boolean, query: import("@evidence-dev/sdk/usql").QueryValue }}*/
@@ -221,11 +209,12 @@
 				firstRun = false;
 				return;
 			}
-			console.log("Eat my shorts")
 			// This is the run which actually has what we want
-			setTimeout(evalDefaults, 0);
-			optionUpdates();
-			optionUpdates = undefined;
+			if (!hasHadSelection) {
+				setTimeout(evalDefaults, 0);
+				optionUpdates();
+				optionUpdates = undefined;
+			}
 		});
 	}
 
@@ -235,10 +224,6 @@
 	function evalDefaults() {
 		resolveMaybePromise(
 			() => {
-				console.log(
-					name,
-					{ $selectedOptions, $options, defaultValue }
-				)
 				if ($selectedOptions.length) {
 					const presentValues = $selectedOptions.filter((x) =>
 						$options.some((o) => o.value === x.value && o.label === x.label)
