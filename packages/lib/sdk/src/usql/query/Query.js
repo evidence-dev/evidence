@@ -723,7 +723,7 @@ DESCRIBE ${this.text.trim()}
 				);
 				const newQuery = Query.isQuery(nextQuery)
 					? nextQuery
-					: createFn(nextQuery, execFn, Object.assign({}, opts, newOpts));
+					: createFn(nextQuery, execFn, Object.assign({}, opts, newOpts, { initialData: undefined, initialError: undefined }));
 
 				if (newQuery.hash === activeQuery.hash) return; // no-op
 
