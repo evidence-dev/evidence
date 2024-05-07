@@ -8,8 +8,8 @@
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, onMount, setContext, tick } from 'svelte';
 	import { page } from '$app/stores';
-	import DropdownOption from './DropdownOption.svelte';
-	import DropdownOptionDisplay from './DropdownOptionDisplay.svelte';
+	import DropdownOption from './helpers/DropdownOption.svelte';
+	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
 	import * as Command from '$lib/atoms/shadcn/command';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { CaretSort } from '@steeze-ui/radix-icons';
@@ -71,6 +71,8 @@
 		}
 	});
 
+
+	let hasHadSelection = false;
 	onMount(() =>
 		selectedOptions.subscribe(
 			/**
@@ -81,6 +83,10 @@
 			 * Transforms values into an array if multiple
 			 */
 			(values) => {
+			  
+			  if (values.length) hasHadSelection = true;
+			  if (!hasHadSelection) return;
+			  
 				if (!multiple) {
 					if (!values.length) {
 						$inputs[name] = { label: '', value: null, rawValues: [] };
@@ -207,10 +213,10 @@
 	// Update the items when the query changes
 	$: query, search, updateQueryOptions();
 
-	$: {
-		$query;
+	let optionUpdates;
+	$: if (!optionUpdates && $query){
 		let firstRun = true;
-		const optionUpdates = options.subscribe(() => {
+		optionUpdates = options.subscribe(() => {
 			// The store is going to initially publish the _current_ value, which isn't what we want
 			// So we can ignore the first update
 			if (firstRun) {
@@ -220,6 +226,7 @@
 			// This is the run which actually has what we want
 			setTimeout(evalDefaults, 0);
 			optionUpdates();
+			optionUpdates = undefined;
 		});
 	}
 
@@ -278,6 +285,7 @@
 
 <slot />
 <QueryLoad data={$queryOptions} let:loaded>
+	<div slot="skeleton"></div>
 	{#each loaded ?? [] as queryOpt (queryOpt.value?.toString() + queryOpt.label?.toString() + queryOpt.similarity?.toString())}
 		<DropdownOption
 			value={queryOpt.value}
