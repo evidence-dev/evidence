@@ -32,7 +32,7 @@ This a test of the each block to make sure that queries remain iterable
 
 ---
 
-This dropdown should have an initial value of 5 (actual: {inputs.hardCodeDefault.value})
+This dropdown should have an initial value of 5 (actual: {inputs.hardCodedDefault.value})
 
 
 <Dropdown name="hardCodedDefault" defaultValue={[5]}>
