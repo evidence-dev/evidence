@@ -1,6 +1,6 @@
 import { setContext, getContext } from 'svelte';
 import { Query as QueryBuilder, sql } from '@uwdata/mosaic-sql';
-import { Query } from '@evidence-dev/sdk/usql';
+import { Query, resolveMaybePromise } from '@evidence-dev/sdk/usql';
 import { query } from '@evidence-dev/universal-sql/client-duckdb';
 import { derived, writable } from 'svelte/store';
 
@@ -49,17 +49,18 @@ export const buildReactiveInputQuery = (queryProps, id, initialData) => {
 			if (!hasQuery) {
 				internal.set({ hasQuery: false });
 			} else {
-				if (query.hash !== currentQuery) {
-					const fetched = query.fetch();
-					if (fetched instanceof Promise)
-						fetched.then(() => {
+				// We can run .fetch() with wreckless abandon because if the query
+				// has already been fetched (e.g. hasn't changed), then this
+				// is basically a no-op
+				resolveMaybePromise(
+					() => {
+						if (query.hash !== currentQuery?.hash) {
 							currentQuery = query;
 							internal.set({ hasQuery, query });
-						});
-				} else {
-					currentQuery = query;
-					internal.set({ hasQuery, query });
-				}
+						}
+					},
+					query.fetch()
+				)
 			}
 		}
 	};
