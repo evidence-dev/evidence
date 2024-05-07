@@ -107,7 +107,6 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	const removeOption = typedBatchup((removedOptions) => {
 		if (!removedOptions.length) return;
 		options.update(($options) => {
-			const $optionsPre = $options;
 			$options = $options.filter((option) => {
 				const optionIsTargetted = removedOptions.some((removedOption) =>
 					optEq(option, removedOption)

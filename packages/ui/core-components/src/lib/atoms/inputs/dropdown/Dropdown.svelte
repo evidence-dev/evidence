@@ -183,7 +183,7 @@
 			if ($selectedOptions.length) {
 				// We don't want to get rid of selections that already exist when searching
 				$selectedOptions.forEach(($selectedOption) => {
-					if (!$selectedOption.removeOnDeselect)
+					if (!$selectedOption.removeOnDeselect && $selectedOption.__auto)
 						flagOption([$selectedOption, DropdownValueFlag.REMOVE_ON_DESELECT]);
 				});
 			}
