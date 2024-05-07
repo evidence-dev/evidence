@@ -703,9 +703,9 @@ DESCRIBE ${this.text.trim()}
 			/**
 			 * @param {string | Query} nextQuery
 			 * @param {import('../types.js').QueryOpts<any>} [newOpts]
-			 * @returns {Promise<void>}
+			 * @returns {Promise<void> | void}
 			 */
-			async (nextQuery, newOpts) => {
+			(nextQuery, newOpts) => {
 				changeIdx += 1;
 				const targetChangeIdx = changeIdx;
 				Query.#debugStatic(
@@ -727,15 +727,27 @@ DESCRIBE ${this.text.trim()}
 
 				if (newQuery.hash === activeQuery.hash) return; // no-op
 
-				await Promise.race([new Promise((r) => setTimeout(r, loadGracePeriod)), newQuery.fetch()]);
-
-				if (changeIdx !== targetChangeIdx) {
-					Query.#debugStatic(`changeIdx does not match, results are discarded`);
-					return;
+				const fetched = newQuery.fetch();
+				let dataMaybePromise = fetched;
+				if (fetched instanceof Promise) {
+					dataMaybePromise = Promise.race([
+						new Promise((r) => setTimeout(r, loadGracePeriod)),
+						newQuery.fetch()
+					]);
 				}
-				unsub?.();
-				activeQuery = newQuery.value;
-				unsub = activeQuery.subscribe(callback);
+
+				resolveMaybePromise(() => {
+					if (changeIdx !== targetChangeIdx) {
+						Query.#debugStatic(`changeIdx does not match, results are discarded`);
+						return;
+					}
+					unsub?.();
+					activeQuery = newQuery.value;
+					unsub = activeQuery.subscribe(callback);
+				}, dataMaybePromise, e => {
+					console.warn(`Error while attempting to update reactive query: ${e.message}`);
+					throw e;
+				});
 			};
 
 		function removeInitialState() {
@@ -749,16 +761,17 @@ DESCRIBE ${this.text.trim()}
 		 */
 		return (queryText, newOpts) => {
 			if (activeQuery) {
-				waitFor(queryText, newOpts).catch((e) => {
+				resolveMaybePromise(() => {}, waitFor(queryText, newOpts), e => {
 					console.warn(`Error while attempting to update reactive query: ${e.message}`);
-				});
+				})
 				return;
 			}
 
 			if (import.meta.hot?.data?.hmr) removeInitialState();
 			activeQuery = createFn(queryText, execFn, Object.assign({}, opts, newOpts));
 
-			resolveMaybePromise(removeInitialState, activeQuery.fetch());
+			const fetched = activeQuery.fetch();
+			resolveMaybePromise(removeInitialState, fetched);
 
 			// We don't want to use this after the initial creation!
 			unsub = activeQuery.subscribe(callback);
