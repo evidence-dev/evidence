@@ -5,7 +5,7 @@
 ### Patch Changes
 
 - b3e10dac: Added loading state to ButtonGroup to prevent layout shifts while Query is executing
-- a6414446: $slots._error is not $slots.error
+- a6414446: $slots.\_error is not $slots.error
 - e400971e: TextInput now respects Unset more effectively
 - 52b3fde1: - Dropdown no longer renders a skeleton
   - Dropdown ensures that only one options subscription exists at a time to prevent over-evaluating defaults
