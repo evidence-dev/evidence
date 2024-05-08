@@ -25,12 +25,16 @@ where category = '${inputs.category.value}'
     data={items}
     value=item
     name=item
-/>
+    multiple
+    defaultValue="Boxing Gloves"
+>
+    <DropdownOption value="Made Up"/>
+</Dropdown>
 
 ```sql item
 SELECT * FROM needful_things.orders
 WHERE category = '${inputs.category.value}'
-AND item = '${inputs.item.value}'
+AND item in ${inputs.item.value}
 ```
 
 <DataTable data={item} />

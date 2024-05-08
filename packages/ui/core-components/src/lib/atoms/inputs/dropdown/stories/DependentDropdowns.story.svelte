@@ -1,9 +1,9 @@
 <script>
 	import { Query } from '@evidence-dev/sdk/usql';
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
-	import Dropdown from './Dropdown.svelte';
-	import DropdownOption from './DropdownOption.svelte';
-	import QueryLoad from '../../query-load/QueryLoad.svelte';
+	import Dropdown from '../Dropdown.svelte';
+	import DropdownOption from '../helpers/DropdownOption.svelte';
+	import QueryLoad from '../../../query-load/QueryLoad.svelte';
 	import { getContext } from 'svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { browser } from '$app/environment';

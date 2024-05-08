@@ -204,9 +204,10 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				select(option);
 			}
 		}, delay),
-		deselectAll: () => {
+		deselectAll: (autoOnly = false) => {
 			cleanRemoveOnSelects(get(selectedOptions), get(options));
 			for (const opt of get(selectedOptions)) {
+				if (autoOnly && !opt.__auto) continue;
 				select(opt);
 			}
 		}
