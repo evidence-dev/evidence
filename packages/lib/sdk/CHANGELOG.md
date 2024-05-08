@@ -1,5 +1,12 @@
 # @evidence-dev/sdk
 
+## 1.2.1
+
+### Patch Changes
+
+- 25ea0fe4: Query.createReactive now handles sync updates better
+- e400971e: SetTrackProxy is now callable to ensure that function values don't break pages
+
 ## 1.2.0
 
 ### Minor Changes
