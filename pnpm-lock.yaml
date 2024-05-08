@@ -1158,8 +1158,8 @@ importers:
         specifier: ^8.0.0
         version: 8.0.10(react-dom@17.0.2)(react@17.0.2)
       '@sveltejs/adapter-auto':
-        specifier: 3.1.1
-        version: 3.1.1(@sveltejs/kit@2.5.4)
+        specifier: 3.2.0
+        version: 3.2.0(@sveltejs/kit@2.5.4)
       '@sveltejs/kit':
         specifier: 2.5.4
         version: 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.10)
@@ -7995,8 +7995,8 @@ packages:
       file-system-cache: 2.3.0
     dev: true
 
-  /@sveltejs/adapter-auto@3.1.1(@sveltejs/kit@2.5.4):
-    resolution: {integrity: sha512-6LeZft2Fo/4HfmLBi5CucMYmgRxgcETweQl/yQoZo/895K3S9YWYN4Sfm/IhwlIpbJp3QNvhKmwCHbsqQNYQpw==}
+  /@sveltejs/adapter-auto@3.2.0(@sveltejs/kit@2.5.4):
+    resolution: {integrity: sha512-She5nKT47kwHE18v9NMe6pbJcvULr82u0V3yZ0ej3n1laWKGgkgdEABE9/ak5iDPs93LqsBkuIo51kkwCLBjJA==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
