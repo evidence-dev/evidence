@@ -34,16 +34,12 @@
 	export let start;
 	/** @type {string} */
 	export let end;
+	/** @type {string | undefined} */
+	export let defaultValue;
 	export let loaded = true;
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
-
-	function updateDateRange(start, end) {
-		selectedDateRange = { start, end };
-	}
-
-	$: updateDateRange(calendarStart, calendarEnd);
 
 	/** @type {{label: string, group: string, range: import('bits-ui').DateRange}[]} */
 	$: presets = [
@@ -144,6 +140,14 @@
 	let selectedPreset;
 	let placeholder;
 	$: setPlaceholderDefault(calendarEnd);
+
+	$: if (defaultValue) {
+		let foundPreset = presets.find((p) => p.label.toLowerCase() === defaultValue.toLowerCase());
+		if (foundPreset) {
+			selectedDateRange = foundPreset.range;
+			selectedPreset = foundPreset;
+		}
+	}
 </script>
 
 <div class="flex">
@@ -204,6 +208,7 @@
 				onValueChange={(value) => {
 					selectedPreset = undefined;
 					selectedDateRange = value;
+					defaultValue = undefined;
 				}}
 				minValue={calendarStart}
 				maxValue={calendarEnd}
@@ -216,6 +221,7 @@
 			if (!v) return;
 			selectedDateRange = presets.filter((presets) => presets.label == v.label)[0].range;
 			selectedPreset = v;
+			defaultValue = undefined;
 		}}
 		bind:selected={selectedPreset}
 		disabled={!loaded}

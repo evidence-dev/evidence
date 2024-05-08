@@ -35,6 +35,9 @@
 	/** @type {string | undefined} */
 	export let dates;
 
+	/** @type {string | undefined} */
+	export let defaultValue;
+
 	const exec = getQueryFunction();
 	let query;
 	$: if (data && dates) {
@@ -104,6 +107,7 @@
 				start={startString}
 				end={endString}
 				loaded={$query?.ready ?? true}
+				{defaultValue}
 			/>
 		{/if}
 	</div>
