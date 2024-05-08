@@ -1,5 +1,11 @@
 # @evidence-dev/query-store
 
+## 2.1.4
+
+### Patch Changes
+
+- 564f3444: fix minor bugs in queryload/querystore/preprocess, add strict cast to daterange
+
 ## 2.1.3
 
 ### Patch Changes

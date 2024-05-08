@@ -12,6 +12,7 @@
 	export let logo = undefined;
 	export let builtWithEvidence = undefined;
 	export let hideHeader = false;
+	export let sidebarFrontMatter = undefined;
 
 	// sort children arrays by sidebar_position
 	function sortChildrenBySidebarPosition(node) {
@@ -191,7 +192,7 @@
 {/if}
 
 <!-- Desktop Sidebar -->
-<aside class="w-48 hidden md:flex flex-none">
+<aside class="w-48 flex-none {sidebarFrontMatter === 'hide' ? 'hidden' : 'hidden md:flex'}">
 	{#if !mobileSidebarOpen}
 		<div
 			class="hidden: md:block fixed w-48 top-20 bottom-8 overflow-y-auto flex-1 text-sm text-gray-500 pretty-scrollbar"

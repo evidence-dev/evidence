@@ -76,14 +76,14 @@
 		{#if Array.isArray(type) && type.length > 0}
 			<div class="flex select-none mt-1">
 				<span class="text-sm text-gray-400">Type:</span>
-				{#each type as t, index (t)}
-					<span class="ml-2 text-sm bg-blue-100 rounded-full px-2 py-0.5">{t}</span>
+				{#each type as t}
+					<span class="bg-blue-50 rounded-full min-w-3 px-3 text-blue-700 hover:bg-blue-100 hover:text-blue-800 flex justify-center transition-colors duration-200">{t}</span>
 				{/each}
 			</div>
 		{:else if typeof type === 'string' && type.length > 0}
 			<dl class="flex select-none mt-1">
 				<dt class="text-sm text-gray-400">Type:</dt>
-				<dd class="ml-2 text-sm bg-blue-100 rounded-full px-2 py-0.5">{type}</dd>
+				<dd class="bg-blue-50 rounded-full min-w-3 px-3 text-blue-700 hover:bg-blue-100 hover:text-blue-800 flex justify-center transition-colors duration-200">{type}</dd>
 			</dl>
 		{/if}
 	</div>

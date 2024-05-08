@@ -1,5 +1,16 @@
 # @evidence-dev/db-orchestrator
 
+## 3.1.0
+
+### Minor Changes
+
+- 84496e62: enable SPA mode
+
+### Patch Changes
+
+- Updated dependencies [7f85e600]
+  - @evidence-dev/mysql@1.1.2
+
 ## 3.0.14
 
 ### Patch Changes

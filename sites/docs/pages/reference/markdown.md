@@ -212,6 +212,15 @@ References SQL queries stored in the /queries directory.
 
 </PropListing>
 <PropListing
+    name="sidebar"
+    type=string
+    options={['show', 'hide', 'never']}
+>
+
+Changes the visibility of the sidebar. 'show' results in a responsive sidebar, 'hide' results in a sidebar accessible via hamburger button and 'never' hides both - the sidebar and the hamburger button.
+
+</PropListing>
+<PropListing
     name="sidebar_position"
 >
 

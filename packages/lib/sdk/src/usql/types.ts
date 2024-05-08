@@ -2,7 +2,7 @@ import type { Query as QueryBuilder } from '@uwdata/mosaic-sql';
 // This file has a .ts instead of .d.ts to ensure that it is included in the built types.
 // It should not be used as anything other than a .d.ts file
 import type { DescribeResultRow } from '../types/duckdb-wellknown.d.ts';
-import type { ChainableSharedPromise, Query, QueryValue } from './Query.js';
+import type { ChainableSharedPromise, Query, QueryValue } from './query/Query.js';
 
 export type EventHandler<
 	Events extends Record<string, any> = {},
@@ -34,6 +34,11 @@ export type Subscriber<T> = (value: T) => unknown;
 
 export type QueryOpts<RowType extends QueryResultRow = QueryResultRow> = {
 	initialData?: RowType[];
+	/**
+	 * @deprecated Use Query.reactive instead
+	 */
+	initialDataDirty?: boolean;
+
 	knownColumns?: DescribeResultRow[];
 
 	initialError?: Error;
@@ -44,6 +49,12 @@ export type QueryOpts<RowType extends QueryResultRow = QueryResultRow> = {
 	 * When true, this prevents the query from ever fetching or presenting data.
 	 **/
 	noResolve?: boolean;
+};
+
+export type QueryReactivityOpts<T extends QueryResultRow = QueryResultRow> = {
+	loadGracePeriod?: number;
+	callback: (v: QueryValue<T>) => void;
+	execFn: Runner<T>;
 };
 
 export interface CreateQuery<RowType extends QueryResultRow = QueryResultRow> {

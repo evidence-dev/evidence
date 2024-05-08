@@ -17,11 +17,12 @@
 	export let fontColor = undefined;
 	export let groupType = undefined;
 	export let finalColumnOrder = undefined;
+	export let compact = undefined;
 </script>
 
 <tr class="font-semibold" style:background-color={rowColor} style:color={fontColor}>
 	{#if rowNumbers && groupType !== 'section'}
-		<TableCell class="index w-[2%]" topBorder="border-t border-gray-600" />
+		<TableCell class={'index w-[2%]'} {compact} topBorder="border-t border-gray-600" />
 	{/if}
 
 	{#each $props.columns.length > 0 ? $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) : columnSummary
@@ -35,6 +36,7 @@
 				: colColumnSummary.format}
 		{@const totalAgg = column.totalAgg ?? 'sum'}
 		<TableCell
+			{compact}
 			dataType={colColumnSummary.type}
 			align={column.align}
 			height={column.height}

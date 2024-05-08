@@ -1,5 +1,17 @@
 # @evidence-dev/component-utilities
 
+## 3.0.2
+
+### Patch Changes
+
+- 1e1486f3: `buildInputQuery` now passes noResolve state to created queries to prevent error flickers
+- 85d01792: Handle nulls for multiple y columns
+- Updated dependencies [1e1486f3]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [276718dd]
+- Updated dependencies [7f85e600]
+  - @evidence-dev/sdk@1.2.0
+
 ## 3.0.1
 
 ### Patch Changes

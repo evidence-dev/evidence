@@ -10,7 +10,7 @@
 </script>
 
 <form id="version-control">
-	<div class="container">
+	<div class="version-control-box">
 		<div class="panel">
 			<h2>Version Control</h2>
 			Use version control to keep track of changes to your project. A published git repo is needed if
@@ -89,7 +89,7 @@
 		@apply font-semibold text-lg pt-3 pb-2;
 	}
 
-	.container {
+	.version-control-box {
 		margin-top: 2em;
 		border-top: 1px solid var(--grey-200);
 		border-left: 1px solid var(--grey-200);

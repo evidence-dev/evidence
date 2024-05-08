@@ -25,7 +25,7 @@ function highlighter(code, lang, meta) {
         `;
 	}
 	// Ensure that "real" code blocks are rendered not run as queries
-	return `<CodeBlock source="${code}" copyToClipboard=true />`;
+	return `<CodeBlock source="${code}" copyToClipboard=true language="${lang}"/>`;
 }
 
 module.exports = { highlighter };

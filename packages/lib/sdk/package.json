@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js"
@@ -24,6 +24,12 @@
 			"import": "./src/usql/index.js",
 			"require": null,
 			"types": "./src/usql/index.d.ts"
+		},
+		"./utils": {
+			"default": "./src/utils/index.js",
+			"import": "./src/utils/index.js",
+			"require": null,
+			"types": "./src/utils/index.d.ts"
 		}
 	},
 	"scripts": {

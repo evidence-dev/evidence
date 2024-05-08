@@ -19,7 +19,7 @@
 	}
 
 	.pretty-scrollbar::-webkit-scrollbar {
-		height: 0.75rem;
+		height: 6px;
 		width: 6px;
 	}
 
@@ -34,6 +34,15 @@
 
 	.pretty-scrollbar:hover::-webkit-scrollbar-thumb {
 		background-color: theme('colors.gray.200');
+	}
+
+	/* hidden scrollbar */
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 	}
 
 	/* remove user agent styles for select */

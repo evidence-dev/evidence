@@ -15,6 +15,7 @@
 	export let formatColumnTitles = undefined;
 	export let sortBy = undefined;
 	export let wrapTitles = undefined;
+	export let compact = undefined;
 </script>
 
 <thead>
@@ -34,11 +35,17 @@
 		{#if columnsWithGroupSpan.length > 0}
 			<tr class="border-0" style:background-color={headerColor}>
 				{#if rowNumbers}
-					<th class="index w-[2%] px-[8px] py-[2px]" style:background-color={headerColor} />
+					<th
+						class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+						style:background-color={headerColor}
+					/>
 				{/if}
 				{#each columnsWithGroupSpan as column}
 					{#if column.colGroup && column.isNewGroup}
-						<th colspan={column.span} class="px-[2px] pt-1 align-bottom text-gray-900">
+						<th
+							colspan={column.span}
+							class="pt-1 align-bottom text-gray-900 {compact ? 'px-[1px]' : 'px-[2px]'}"
+						>
 							<!-- Group header with dynamic colspan -->
 							<div class=" border-b-[1px] border-b-gray-600 whitespace-normal pb-[2px]">
 								{column.colGroup}
@@ -57,12 +64,17 @@
 
 	<tr class="border-b border-gray-600">
 		{#if rowNumbers}
-			<th class="index w-[2%] px-[8px] py-[2px]" style:background-color={headerColor} />
+			<th
+				class="index w-[2%] {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
+				style:background-color={headerColor}
+			/>
 		{/if}
 		{#if $props.columns.length > 0}
 			{#each $props.columns.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 				<th
-					class="{safeExtractColumn(column, columnSummary).type} px-[8px] py-[2px]"
+					class="{safeExtractColumn(column, columnSummary).type} {compact
+						? 'text-xs py-[1px] px-[4px]'
+						: 'py-[2px] px-[8px]'}"
 					style:text-align={column.align}
 					style:color={headerFontColor}
 					style:background-color={headerColor}
@@ -86,7 +98,7 @@
 				.filter((d) => d.show === true)
 				.sort((a, b) => finalColumnOrder.indexOf(a.id) - finalColumnOrder.indexOf(b.id)) as column}
 				<th
-					class="{column.type} px-[8px] py-[2px]"
+					class="{column.type} {compact ? 'text-xs py-[1px] px-[4px]' : 'py-[2px] px-[8px]'}"
 					style:color={headerFontColor}
 					style:background-color={headerColor}
 					style:cursor={sortable ? 'pointer' : 'auto'}

@@ -99,8 +99,8 @@
 			label: 'Last Month',
 			group: 'Last',
 			range: {
-				start: startOfYear(calendarEnd.subtract({ years: 1 })),
-				end: endOfYear(calendarEnd.subtract({ years: 1 }))
+				start: startOfMonth(calendarEnd.subtract({ months: 1 })),
+				end: endOfMonth(calendarEnd.subtract({ months: 1 }))
 			}
 		},
 		{

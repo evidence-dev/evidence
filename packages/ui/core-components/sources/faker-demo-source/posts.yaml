@@ -15,4 +15,4 @@ schema:
     item: recent
     withBias: true
     options:
-      - days: 365
+      - days: 90
