@@ -1,6 +1,11 @@
-```categories
+```sql categories
 select category from needful_things.orders group by category
 ```
+
+```sql neverResolve
+    SELECT '${inputs.madeUp.value}'
+```
+
 
 # Button Group
 
@@ -9,6 +14,11 @@ select category from needful_things.orders group by category
 <ButtonGroup data={categories} name=first_category_name value=category />
 
 {inputs.first_category_name}
+
+### Never Resolves
+
+<ButtonGroup data={neverResolve} name=first_category_name_neverResolves value=category />
+
 
 ## With Title
 
@@ -20,6 +30,10 @@ select category from needful_things.orders group by category
 />
 
 {inputs.second_category_name}
+
+### Never Resolves
+
+<ButtonGroup data={neverResolve} name=first_category_name_neverResolves value=category title="This never resolves!" />
 
 ## Hardcoded Options
 
