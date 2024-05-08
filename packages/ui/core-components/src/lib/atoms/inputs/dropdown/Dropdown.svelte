@@ -8,8 +8,8 @@
 	import { buildReactiveInputQuery } from '@evidence-dev/component-utilities/buildQuery';
 	import { getContext, onMount, setContext, tick } from 'svelte';
 	import { page } from '$app/stores';
-	import DropdownOption from './DropdownOption.svelte';
-	import DropdownOptionDisplay from './DropdownOptionDisplay.svelte';
+	import DropdownOption from './helpers/DropdownOption.svelte';
+	import DropdownOptionDisplay from './helpers/DropdownOptionDisplay.svelte';
 	import * as Command from '$lib/atoms/shadcn/command';
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import { CaretSort } from '@steeze-ui/radix-icons';
@@ -71,6 +71,7 @@
 		}
 	});
 
+	let hasHadSelection = false;
 	onMount(() =>
 		selectedOptions.subscribe(
 			/**
@@ -81,6 +82,9 @@
 			 * Transforms values into an array if multiple
 			 */
 			(values) => {
+				if (values.length) hasHadSelection = true;
+				if (!hasHadSelection) return;
+
 				if (!multiple) {
 					if (!values.length) {
 						$inputs[name] = { label: '', value: null, rawValues: [] };
@@ -151,23 +155,11 @@
 	$: {
 		data;
 		// If data input changes; then we want to discard any selections that may have been made
-		// This happens elsewhere, but if there are items that have the IGNORE_SELECTED flag, we want to make sure they are not
-		// kept around
+		// By deselecting everything, we ensure that there aren't any holdovers from the previous query
 		if (currentInputHash !== trackedInputHash) {
-			$options.forEach(($option) => {
-				if (!$option.__auto) return; // we don't care
-				if (!$option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
-			});
+			deselectAll(true); // only remove __auto options (e.g. query opts)
 			trackedInputHash = currentInputHash;
 		}
-		// We can remove the flags here once we are done
-		// The 150 timeout here is fairly arbitrary, it just needs to be more than the debounce value of the dropdownOptionStore
-		setTimeout(() => {
-			$options.forEach(($option) => {
-				if (!$option.__auto) return; // we don't care
-				if ($option.ignoreSelected) flagOption([$option, DropdownValueFlag.IGNORE_SELECTED]);
-			});
-		}, 150);
 	}
 
 	/** @type {{ hasQuery: boolean, query: import("@evidence-dev/sdk/usql").QueryValue }}*/
@@ -191,7 +183,7 @@
 			if ($selectedOptions.length) {
 				// We don't want to get rid of selections that already exist when searching
 				$selectedOptions.forEach(($selectedOption) => {
-					if (!$selectedOption.removeOnDeselect)
+					if (!$selectedOption.removeOnDeselect && $selectedOption.__auto)
 						flagOption([$selectedOption, DropdownValueFlag.REMOVE_ON_DESELECT]);
 				});
 			}
@@ -207,10 +199,10 @@
 	// Update the items when the query changes
 	$: query, search, updateQueryOptions();
 
-	$: {
-		$query;
+	let optionUpdates;
+	$: if (!optionUpdates && ((hasQuery && $query) || !hasQuery)) {
 		let firstRun = true;
-		const optionUpdates = options.subscribe(() => {
+		optionUpdates = options.subscribe(() => {
 			// The store is going to initially publish the _current_ value, which isn't what we want
 			// So we can ignore the first update
 			if (firstRun) {
@@ -218,8 +210,11 @@
 				return;
 			}
 			// This is the run which actually has what we want
-			setTimeout(evalDefaults, 0);
-			optionUpdates();
+			if (!hasHadSelection) {
+				setTimeout(evalDefaults, 0);
+				optionUpdates();
+				optionUpdates = undefined;
+			}
 		});
 	}
 
@@ -278,6 +273,7 @@
 
 <slot />
 <QueryLoad data={$queryOptions} let:loaded>
+	<div slot="skeleton"></div>
 	{#each loaded ?? [] as queryOpt (queryOpt.value?.toString() + queryOpt.label?.toString() + queryOpt.similarity?.toString())}
 		<DropdownOption
 			value={queryOpt.value}

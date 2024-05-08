@@ -53,12 +53,15 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 					})
 				}
 
-				
-				/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
-				let ${id}
-
 				let ${id}InitialStates = { initialData: undefined, initialError: undefined }
 				
+				// Give initial states for these variables
+				/** @type {boolean} */
+				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+				/** @type {string]} */
+				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
+
+
 				if (browser) {
 					// Data came from SSR
 					if (data.${id}) {
@@ -71,21 +74,35 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 				} else {
 					// On server
 					try {
-						${id}InitialStates.initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })
+						${id}InitialStates.initialData = profile(__db.query, __${id}Text, { query_name: '${id}' })
 					} catch (e) {
+						console.error(e)
 						if (import.meta.env.VITE_BUILD_STRICT) throw e;
 						${id}InitialStates.initialError = e
 					}
 				}
 				
-				const __${id}Factory = Query.createReactive(
-					{ callback: $v => ${id} = $v, execFn: queryFunc },
-					{ id: '${id}' }
-				)
-				globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
+				
+				/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+				let ${id};
+
 				$: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
 				$: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 				$: __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+
+				const __${id}Factory = Query.createReactive(
+					{ callback: $v => ${id} = $v, execFn: queryFunc },
+					{ id: '${id}', initialData: ${id}InitialStates.initialData, initialError: ${id}InitialStates.initialError }
+				)
+
+				// Assign a value for the initial run-through
+				// This is split because chicken / egg
+				__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+
+				// Add queries to global scope inside symbols to ease debugging
+				globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
+				
+				
 			`;
 		});
 
@@ -97,7 +114,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` })
+				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` });
 				`).join('\n')}
 			}));
 		}

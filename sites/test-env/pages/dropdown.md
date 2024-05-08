@@ -42,7 +42,7 @@ select * from orders limit 1000
 {:else}
 	The currently selected order ID is {inputs.selected_order_id.value}, which belongs to {inputs.selected_order_id.label}
 
-	<DataTable data={full_selected_order} />
+	<DataTable data={full_selected_order} emptySet=pass />
 {/if}
 
 ---

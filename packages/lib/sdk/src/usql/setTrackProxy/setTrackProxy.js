@@ -10,9 +10,13 @@ export const setTrackProxy = (
 ) => {
 	if (parent && !parent[IsSetTracked]) throw new Error(`SetTracked parent must be SetTracked`);
 
+	const wrapped = Object.assign(() => {}, root ?? {});
+
+	console.log(wrapped());
+
 	/** @type {Array<string|number|symbol>} */
-	const modifiedKeys = Object.keys(root ?? {});
-	const self = new Proxy(root ?? {}, {
+	const modifiedKeys = Object.keys(wrapped);
+	const self = new Proxy(wrapped, {
 		get(target, prop) {
 			switch (prop) {
 				case Unset:
