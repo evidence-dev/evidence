@@ -1,5 +1,20 @@
 # @evidence-dev/components
 
+## 3.5.1
+
+### Patch Changes
+
+- Updated dependencies [c88cb063]
+- Updated dependencies [b3e10dac]
+- Updated dependencies [a6414446]
+- Updated dependencies [e400971e]
+- Updated dependencies [43d66875]
+- Updated dependencies [52b3fde1]
+  - @evidence-dev/preprocess@5.1.1
+  - @evidence-dev/core-components@4.1.1
+  - @evidence-dev/component-utilities@3.0.3
+  - @evidence-dev/plugin-connector@2.1.3
+
 ## 3.5.0
 
 ### Minor Changes

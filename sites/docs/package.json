@@ -1,6 +1,6 @@
 {
   "name": "my-evidence-project",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "build": "evidence build",
     "build:strict": "evidence build:strict",
