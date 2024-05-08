@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { IsSetTracked, Unset, hasUnsetValues, setTrackProxy } from './setTrackProxy.js';
 
 describe('setTrackProxy', () => {
+	describe('function emulation', () => {
+		it('should be callable, even if a function is not assigned', () => {
+			const v = setTrackProxy();
+			expect(v()).toBeUndefined();
+		});
+	});
 	describe('stringification', () => {
 		it('should respect default stringification for set values', () => {
 			// v is a bare object (e.g. nothing set on it)
