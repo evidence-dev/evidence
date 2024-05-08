@@ -24,26 +24,6 @@ SELECT * FROM post_tags
 <Dropdown multiple title="Multi Select w/ Default" data={hashtags} name="multi_with_default" value=value label=label defaultValue={[4]} />
 
 
-<table>
-  <tr>
-    <th>Input Name</th>
-    <th>Input Value</th>
-  </tr>
-  <tr>
-    <td>single_no_default</td>
-    <td>{inputs.single_no_default.value}</td>
-  </tr>
-  <tr>
-    <td>single_without_default</td>
-    <td>{inputs.single_without_default.value}</td>
-  </tr>
-  <tr>
-    <td>single_with_default</td>
-    <td>{inputs.single_with_default.value}</td>
-  </tr>
-</table>
-
-
 <Tabs>
   <Tab label="Single Select with noDefault set">
 
