@@ -28,89 +28,128 @@ To customize your, add a `+layout.svelte` file to the root of your pages directo
 The `EvidenceDefaultLayout` component accepts the following properties for common customizations.
 
 <PropListing
-    name=title
-    description="Project title that will replace the Evidence Logo."
+    name="title"
     options="Any string"
     defaultValue=""
-/>
+>
+
+Project title that will replace the Evidence Logo.
+
+</PropListing>
 <PropListing
-    name=logo
-    description="Link to an image which will replace the Evidence logo. This will also override any project title in the header. If the image is in your project's static directory, the link should be relative to the static directory."
+    name="logo"
     options="/logo.png"
     defaultValue=""
-/>
+>
+
+Link to an image which will replace the Evidence logo. This will also override any project title in the header. If the image is in your project's static directory, the link should be relative to the static directory.
+
+</PropListing>
 <PropListing
-    name=neverShowQueries
-    description="Removes the option to show queries when the project is deployed. Has no effect in development."
+    name="neverShowQueries"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Removes the option to show queries when the project is deployed. Has no effect in development.
+
+</PropListing>
 <PropListing
-    name=maxWidth
-    description="Sets the width of the project in pixels. The default layout is about 1,280 px wide."
+    name="maxWidth"
     options="Any number"
     defaultValue=""
-/>
+>
+
+Sets the width of the project in pixels. The default layout is about 1,280 px wide.
+
+</PropListing>
 <PropListing
-    name=fullWidth
-    description="Sets the width of the project to full"
+    name="fullWidth"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Sets the width of the project to full
+
+</PropListing>
 <PropListing
-    name=hideSidebar
-    description="Hides the sidebar navigation"
+    name="hideSidebar"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Hides the sidebar navigation
+
+</PropListing>
 <PropListing
-    name=hideHeader
-    description="Hides the page header"
+    name="hideHeader"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Hides the page header
+
+</PropListing>
 <PropListing
-    name=hideBreadcrumbs
-    description="Hides the breadcrumbs which appear at the top of the page"
+    name="hideBreadcrumbs"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Hides the breadcrumbs which appear at the top of the page
+
+</PropListing>
 <PropListing
-    name=hideTOC
-    description="Hides the table of contents (on-page links at top right of page)"
+    name="hideTOC"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Hides the table of contents (on-page links at top right of page)
+
+</PropListing>
 <PropListing
-    name=builtWithEvidence
-    description="Display a subtle link to the Evidence website at the bottom of the sidebar."
+    name="builtWithEvidence"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Display a subtle link to the Evidence website at the bottom of the sidebar.
+
+</PropListing>
 <PropListing
-    name=algolia
-    description="Object containing Algolia docsearch credentials"
+    name="algolia"
     options="{`{{appId: 'xxx', apiKey: 'xxx', indexName: 'xxx'}}`}"
     defaultValue=""
-/>
+>
+
+Object containing Algolia docsearch credentials
+
+</PropListing>
 <PropListing
-    name=githubRepo
-    description="Link to a Github Repo which will appear in the header using the Github Logo"
-    options=""
+    name="githubRepo"
     defaultValue='https://github.com/evidence-dev/evidence'
-/>
+>
+
+Link to a Github Repo which will appear in the header using the Github Logo
+
+</PropListing>
 <PropListing
-    name=xProfile
-    description="Link to an X (Twitter) profile which will appear in the header using the X Logo"
-    options=""
+    name="xProfile"
     defaultValue='https://twitter.com/evidence_dev'
-/>
+>
+
+Link to an X (Twitter) profile which will appear in the header using the X Logo
+
+</PropListing>
 <PropListing
-    name=slackCommunity
-    description="Link to a slack community which will appear in the header using the slack Logo"
-    options=""
+    name="slackCommunity"
     defaultValue='https://slack.evidence.dev'
-/>
+>
+
+Link to a slack community which will appear in the header using the slack Logo
+
+</PropListing>
 
 **Example custom option:**
 ```html

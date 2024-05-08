@@ -101,24 +101,33 @@ A reference line can be produced by defining values inline or by supplying a dat
 
 ### Defining Values Inline
 
-    <PropListing
-        name=x
-        description="x-axis value where line will be plotted"
-        required="false"
-        options="number | string | date"
-    />
-    <PropListing
-        name=y
-        description="y-axis value where line will be plotted"
-        required="false"
-        options="number"    
-    />
-    <PropListing
-        name=label
-        description="Text to show as label for the line. If no label is provided, the value will be used."
-        required="false"
-        options="string"
-    />
+<PropListing
+    name=x
+    options="number | string | date"
+>
+
+x-axis value where line will be plotted
+
+</PropListing>
+
+<PropListing
+    name=y   
+    options="number"    
+>
+
+y-axis value where line will be plotted
+
+</PropListing>
+
+
+<PropListing
+    name=label
+    options="string"
+>
+
+Text to show as label for the line. If no label is provided, the value will be used.
+
+</PropListing>
 
 
 - One of `x` or `y` is required to plot a line.
@@ -128,32 +137,46 @@ A reference line can be produced by defining values inline or by supplying a dat
 
     <PropListing
         name=data
-        description="Query name, wrapped in curly braces"
-        required=true
+        required
         options="query name"
-    />
+    >
+        
+    Query name, wrapped in curly braces
+
+    </PropListing>
     <PropListing
         name=x
-        description="Column containing x-axis values"
         options="column name"
-    />
+    >
+
+    Column containing x-axis values
+
+    </PropListing>
     <PropListing
         name=y
-        description="Column containing y-axis values"
         options="column name"
-    />
+    >
+
+    Column containing y-axis values
+
+    </PropListing>
     <PropListing
         name=label
-        description="Column containing a label to use for each line"
-        required="false"
         options="column name"
-    />
+    >
+
+    Column containing a label to use for each line
+
+    </PropListing>
     <PropListing
         name=hideValue
-        description="Option to remove the value from the label"
         options={["true", "false"]}
         defaultValue=false
-    />
+    >
+
+    Option to remove the value from the label
+
+    </PropListing>
 
 - If both `x` and `y` are provided, `x` will be used and `y` will be ignored.
 
@@ -161,44 +184,64 @@ A reference line can be produced by defining values inline or by supplying a dat
 
     <PropListing
         name=labelPosition
-        description="Where label will appear on the line"
         options={["aboveStart", "aboveCenter", "aboveEnd", "belowStart", "belowCenter", "belowEnd"]}
         defaultValue="aboveEnd"
-    />
+    >
+        
+    Where label will appear on the line
+
+    </PropListing>
     <PropListing
         name=color
-        description="Color to override default line and label colors"
         options="CSS name | hexademical | RGB | HSL"
-    />
+    >
+
+    Color to override default line and label colors
+
+    </PropListing>
     <PropListing
         name=lineColor
-        description="Color to override default line color. If used, takes precedence over `color`"
         options="CSS name | hexademical | RGB | HSL"
-    />
+    >
+
+    Color to override default line color. If used, takes precedence over `color`
+
+    </PropListing>
     <PropListing
         name=labelColor
-        description="Color to override default label color. If used, takes precedence over `color`"
         options="CSS name | hexademical | RGB | HSL"
-    />
+    >
+
+    Color to override default label color. If used, takes precedence over `color`
+
+    </PropListing>
     <PropListing
         name=lineType
-        description="Options to show breaks in a line (dashed or dotted)"
         options={["solid", "dashed", "dotted"]}
         defaultValue="dashed"
-    />
+    >
+
+    Options to show breaks in a line (dashed or dotted)
+
+    </PropListing>
     <PropListing
         name=lineWidth
-        description="Thickness of line (in pixels)"
         options="number"
         defaultValue="1.3"
-    />
+    >
+
+    Thickness of line (in pixels)
+
+    </PropListing>
     <PropListing
         name=labelBackground
-        description="Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours."
         options={["true", "false"]}
         defaultValue="true"
-    />
+    >
 
+    Option to show a white semi-transparent background behind the label. Helps when label is shown in front of darker colours.
+
+    </PropListing>
 
 # Reference Area
 
@@ -308,29 +351,44 @@ A reference area can be produced by defining values inline or by supplying a dat
 
     <PropListing
         name=xMin
-        description="x-axis value where area should start. If left out, range will extend to the start of the x-axis."
         options="number | string | date"
-    />
+    >
+
+    x-axis value where area should start. If left out, range will extend to the start of the x-axis.
+
+    </PropListing>
     <PropListing
         name=xMax
-        description="x-axis value where area should end. If left out, range will extend to the end of the x-axis."
         options="number | string | date"
-    />
+    >
+
+    x-axis value where area should end. If left out, range will extend to the end of the x-axis.
+
+    </PropListing>
     <PropListing
         name=yMin
-        description="y-axis value where area should start. If left out, range will extend to the start of the y-axis."
         options="number"
-    />
+    >
+
+    y-axis value where area should start. If left out, range will extend to the start of the y-axis.
+
+    </PropListing>
     <PropListing
         name=yMax
-        description="y-axis value where area should end. If left out, range will extend to the end of the y-axis."
         options="number"
-    />
+    >
+
+    y-axis value where area should end. If left out, range will extend to the end of the y-axis.
+
+    </PropListing>
     <PropListing
         name=label
-        description="Text to show as label for the area"
         options="string"
-    />
+    >
+
+    Text to show as label for the area
+
+    </PropListing>
 
 - At least 1 of `xMin`, `xMax`, `yMin`, or `yMax` is required to plot an area.
 
@@ -338,36 +396,53 @@ A reference area can be produced by defining values inline or by supplying a dat
 
     <PropListing
         name=data
-        description="Query name, wrapped in curly braces"
-        required=true
+        required
         options="query name"
-    />
+    >
+
+    Query name, wrapped in curly braces
+
+    </PropListing>
     <PropListing
         name=xMin
-        description="Column containing x-axis values for area start. If left out, range will extend to the start of the x-axis."
         options="column name"
-    />
+    >
+
+    Column containing x-axis values for area start. If left out, range will extend to the start of the x-axis.
+
+    </PropListing>
     <PropListing
         name=xMax
-        description="Column containing x-axis values for area end. If left out, range will extend to the end of the x-axis."
         options="column name"
-    />
+    >
+
+    Column containing x-axis values for area end. If left out, range will extend to the end of the x-axis.
+
+    </PropListing>
     <PropListing
         name=yMin
-        description="Column containing y-axis values for area start. If left out, range will extend to the start of the y-axis."
         options="column name"
-    />
+    >
+
+    Column containing y-axis values for area start. If left out, range will extend to the start of the y-axis.
+
+    </PropListing>
     <PropListing
         name=yMax
-        description="Column containing y-axis values for area end. If left out, range will extend to the end of the y-axis."
         options="column name"
-    />
+    >
+
+    Column containing y-axis values for area end. If left out, range will extend to the end of the y-axis.
+
+    </PropListing>
     <PropListing
         name=label
-        description="Column containing a label to use for each area"
-        required="false"
         options="column name"
-    />
+    >
+
+    Column containing a label to use for each area
+
+    </PropListing>
 
 - At least 1 of `xMin`, `xMax`, `yMin`, or `yMax` is required to plot an area.
 
@@ -375,40 +450,61 @@ A reference area can be produced by defining values inline or by supplying a dat
 
     <PropListing
         name=labelPosition
-        description="Where label will appear within the area"
         options={["topLeft", "top", "topRight", "left", "center", "right", "bottomLeft", "bottom", "bottomRight"]}
         defaultValue="topLeft"
-    />
+    >
+
+    Where label will appear within the area
+
+    </PropListing>
     <PropListing
         name=color
-        description="Color to override default area and label colors"
         options="CSS name | hexademical | RGB | HSL"
-    />
+    >
+
+    Color to override default area and label colors
+
+    </PropListing>
     <PropListing
         name=labelColor
-        description="Color to override default label color. If used, takes precedence over `color`"
         options="CSS name | hexademical | RGB | HSL"
-    />
+    >
+
+    Color to override default label color. If used, takes precedence over `color`
+
+    </PropListing>
     <PropListing
         name=border
-        description="Whether border should be shown"
         options={["true", "false"]}
         defaultValue="false"
-    />
+    >
+
+    Whether border should be shown
+
+    </PropListing>
     <PropListing
         name=borderColor
-        description="Color to override default border color"
         options="CSS name | hexademical | RGB | HSL"
-    />
+    >
+
+    Color to override default border color
+
+    </PropListing>
     <PropListing
         name=borderType
-        description="Options to show breaks in a line (dashed or dotted)"
         options={["solid", "dashed", "dotted"]}
         defaultValue="dashed"
-    />
+    >
+
+    Options to show breaks in a line (dashed or dotted)
+
+    </PropListing>
     <PropListing
         name=borderWidth
-        description="Thickness of line (in pixels)"
         options="number"
         defaultValue="1"
-    />
+    >
+
+    Thickness of line (in pixels)
+
+    </PropListing>

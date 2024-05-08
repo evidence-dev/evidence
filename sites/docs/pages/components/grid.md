@@ -15,15 +15,21 @@ sidebar_position: 1
 
 ## Options
 
-<PropListing
-    name=cols
-    description="Number of columns in the grid on a full size screen"
+<PropListing 
+    name="cols"
     options={['1', '2', '3', '4', '5', '6']}
     defaultValue="2"
-/>
-<PropListing
-    name=gapSize
-    description="Space between grid elements"
+>
+
+Number of columns in the grid on a full size screen
+
+</PropListing>
+<PropListing 
+    name="gapSize"
     options={['none', 'sm', 'md', 'lg']}
     defaultValue="md"
-/>
+>
+
+Space between grid elements
+
+</PropListing>

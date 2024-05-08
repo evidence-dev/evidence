@@ -61,42 +61,63 @@ Evidence supports a variety of formats - see [value formatting](/core-concepts/f
 ## Options
 
 <PropListing
-    name=data
-    description="Query name, wrapped in curly braces"
-    options="query name"
+    name="data"
     required
-/>
+    options="query name"
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing
-    name=column
-    description="Column to pull values from"
+    name="column"
     options="column name"
     defaultValue="First column"
-/>
+>
+
+Column to pull values from
+
+</PropListing>
 <PropListing
-    name=row
-    description="Row number to display. 0 is the first row."
+    name="row"
     options="number"
     defaultValue="0"
-/>
+>
+
+Row number to display. 0 is the first row.
+
+</PropListing>
 <PropListing
-    name=placeholder
-    description="Text to display in place of an error"
+    name="placeholder"
     options="string"
-/>
+>
+
+Text to display in place of an error
+
+</PropListing>
 <PropListing
-    name=fmt
-    description="Format to use for the value (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    name="fmt"
     options="Excel-style format | built-in format | custom format"
-/>
+>
+
+Format to use for the value ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing
-    name=emptySet
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    name="emptySet"
     options={['error', 'warn', 'pass']}
     defaultValue="error"
-/>
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
 <PropListing
-    name=emptyMessage
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    name="emptyMessage"
     options="string"
     defaultValue="No records"
-/>
+>
+
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>

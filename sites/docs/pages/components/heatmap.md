@@ -149,223 +149,316 @@ Heatmap currently only works with string columns. If you would like to use a dat
 
 ### Data
 
-<PropListing
-    name=data
-    description="Query name, wrapped in curly braces"
-    required=true
+<PropListing 
+    name="data"
+    required
     options="query name"
-/>
-<PropListing
-    name=x
-    description="Categorical column to use for the x-axis. If you want to use dates, cast them to strings in your query first"
-    required=true
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
+<PropListing 
+    name="x"
+    required
     options="column name"
-/>
-<PropListing
-    name=y
-    description="Categorical column to use for the y-axis. If you want to use dates, cast them to strings in your query first"
-    required=true
+>
+
+Categorical column to use for the x-axis. If you want to use dates, cast them to strings in your query first
+
+</PropListing>
+<PropListing 
+    name="y"
+    required
     options="column name"
-/>
-<PropListing
-    name=value
-    description="Numeric column to use for the y-axis"
-    required=true
+>
+
+Categorical column to use for the y-axis. If you want to use dates, cast them to strings in your query first
+
+</PropListing>
+<PropListing 
+    name="value"
+    required
     options="column name"
-/>
-<PropListing
-    name=min
-    description="Minimum number for the heatmap's color scale"
+>
+
+Numeric column to use for the y-axis
+
+</PropListing>
+<PropListing 
+    name="min"
     options="number"
     defaultValue="min of value column"
-/>
-<PropListing
-    name=max
-    description="Maximum number for the heatmap's color scale"
+>
+
+Minimum number for the heatmap's color scale
+
+</PropListing>
+<PropListing 
+    name="max"
     options="number"
     defaultValue="max of value column"
-/>
-<PropListing
-    name=emptySet
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+>
+
+Maximum number for the heatmap's color scale
+
+</PropListing>
+<PropListing 
+    name="emptySet"
     options={['error', 'warn', 'pass']}
     defaultValue="error"
-/>
-<PropListing
-    name=emptyMessage
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
+<PropListing 
+    name="emptyMessage"
     options="string"
     defaultValue="No records"
-/>
+>
 
-### Formatting & Styling
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
 
-<PropListing
-    name=nullsZero
-    description="Whether to treats nulls or missing values as zero"
+</PropListing>
+<PropListing 
+    name="nullsZero"
     options={['true', 'false']}
     defaultValue="true"
-/>
-<PropListing
-    name=zeroDisplay
-    description="String to display in place of zeros"
+>
+
+Whether to treats nulls or missing values as zero
+
+</PropListing>
+<PropListing 
+    name="zeroDisplay"
     options="string"
-/>
-<PropListing
-    name=colorPalette
-    description="Array of colors to form the gradient for the heatmap."
+>
+
+String to display in place of zeros
+
+</PropListing>
+<PropListing 
+    name="colorPalette"
     options="array of color codes - e.g., {`{['navy', 'white', '#c9c9c9']}`}"
-/>
-<PropListing
-    name=valueFmt
-    description="Format to use for value column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+>
+
+Array of colors to form the gradient for the heatmap.
+
+</PropListing>
+<PropListing 
+    name="valueFmt"
     options="Excel-style format | built-in format name | custom format name"
-/>
-<PropListing
-    name=cellHeight
-    description="Number representing the height of cells in the heatmap"
+>
+
+Format to use for value column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
+<PropListing 
+    name="cellHeight"
     options="number"
     defaultValue="30"
-/>
-<PropListing
-    name=leftPadding
-    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+>
+
+Number representing the height of cells in the heatmap
+
+</PropListing>
+<PropListing 
+    name="leftPadding"
     options="number"
     defaultValue="0"
-/>
-<PropListing
-    name=rightPadding
-    description="Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off"
+>
+
+Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off
+
+</PropListing>
+<PropListing 
+    name="rightPadding"
     options="number"
     defaultValue="2"
-/>
-<PropListing
-    name=valueLabels
-    description="Turn on or off value labels in the heatmap cells"
+>
+
+Number representing the padding (whitespace) on the left side of the chart. Useful to avoid labels getting cut off
+
+</PropListing>
+<PropListing 
+    name="valueLabels"
     options={['true', 'false']}
     defaultValue="true"
-/>
-<PropListing
-    name=mobileValueLabels
-    description="Turn on or off value labels in the heatmap cells when app is viewed on a mobile device screen size"
+>
+
+Turn on or off value labels in the heatmap cells
+
+</PropListing>
+<PropListing 
+    name="mobileValueLabels"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing
-    name=borders
-    description="Turn on or off borders around cells. Default is to show light grey border around each cell. To customize border appearance, use `echartsOptions`"
+>
+
+Turn on or off value labels in the heatmap cells when app is viewed on a mobile device screen size
+
+</PropListing>
+<PropListing 
+    name="borders"
     options={['true', 'false']}
     defaultValue="true"
-/>
+>
 
-### Axes
+Turn on or off borders around cells. Default is to show light grey border around each cell. To customize border appearance, use `echartsOptions`
 
-<PropListing
-    name=xTickMarks
-    description="Turns on/off tick marks for the x-axis labels"
+</PropListing>
+<PropListing 
+    name="xTickMarks"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing
-    name=yTickMarks
-    description="Turns on/off tick marks for the y-axis labels"
+>
+
+Turns on/off tick marks for the x-axis labels
+
+</PropListing>
+<PropListing 
+    name="yTickMarks"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing
-    name=xLabelRotation
-    description="Degrees to rotate the labels on the x-axis. Can be negative number to reverse direction. `45` and `-45` are common options"
+>
+
+Turns on/off tick marks for the y-axis labels
+
+</PropListing>
+<PropListing 
+    name="xLabelRotation"
     options="number"
     defaultValue="0"
-/>
-<PropListing
-    name=xAxisPosition
-    description="Position of x-axis and labels. Can be top or bottom. top recommended for longer charts"
+>
+
+Degrees to rotate the labels on the x-axis. Can be negative number to reverse direction. `45` and `-45` are common options
+
+</PropListing>
+<PropListing 
+    name="xAxisPosition"
     options={['top', 'bottom']}
     defaultValue="top"
-/>
-<PropListing
-    name=xSort
-    description="Column to sort x values by"
+>
+
+Position of x-axis and labels. Can be top or bottom. top recommended for longer charts
+
+</PropListing>
+<PropListing 
+    name="xSort"
     options="column name"
-/>
-<PropListing
-    name=xSortOrder
-    description="Sets direction of sort"
+>
+
+Column to sort x values by
+
+</PropListing>
+<PropListing 
+    name="xSortOrder"
     options={['asc', 'desc']}
     defaultValue="asc"
-/>
-<PropListing
-    name=ySort
-    description="Column to sort y values by"
+>
+
+Sets direction of sort
+
+</PropListing>
+<PropListing 
+    name="ySort"
     options="column name"
-/>
-<PropListing
-    name=ySortOrder
-    description="Sets direction of sort"
+>
+
+Column to sort y values by
+
+</PropListing>
+<PropListing 
+    name="ySortOrder"
     options={['asc', 'desc']}
     defaultValue="asc"
-/>
+>
 
-### Chart
+Sets direction of sort
 
-<PropListing
-    name=title
-    description="Chart title. Appears at top left of chart."
+</PropListing>
+<PropListing 
+    name="title"
     options="string"
-/>
-<PropListing
-    name=subtitle
-    description="Chart subtitle. Appears just under title."
+>
+
+Chart title. Appears at top left of chart.
+
+</PropListing>
+<PropListing 
+    name="subtitle"
     options="string"
-/>
-<PropListing
-    name=chartAreaHeight
-    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
+>
+
+Chart subtitle. Appears just under title.
+
+</PropListing>
+<PropListing 
+    name="chartAreaHeight"
     options="number"
     defaultValue="auto set based on y-axis values"
-/>
-<PropListing
-    name=legend
-    description="Turn on or off the legend"
+>
+
+Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.
+
+</PropListing>
+<PropListing 
+    name="legend"
     options={['true', 'false']}
     defaultValue="true"
-/>
-<PropListing
-    name=filter
-    description="Allow draggable filtering on the legend. Must be used with `legend=true`"
+>
+
+Turn on or off the legend
+
+</PropListing>
+<PropListing 
+    name="filter"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing
-    name=renderer
-    description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
+>
+
+Allow draggable filtering on the legend. Must be used with `legend=true`
+
+</PropListing>
+<PropListing 
+    name="renderer"
     options={['canvas', 'svg']}
     defaultValue="canvas"
-/>
+>
 
-### Custom Echarts Options
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
 
-<PropListing
-    name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+</PropListing>
+<PropListing 
+    name="echartsOptions"
     options="{`{{exampleOption:'exampleValue'}}`}"
-/>
-<PropListing
-    name=seriesOptions
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+>
+
+Custom Echarts options to override the default options. See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
+<PropListing 
+    name="seriesOptions"
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
-/>
-<PropListing
-    name=printEchartsConfig
-    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+>
+
+Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
+<PropListing 
+    name="printEchartsConfig"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
 
-### Interactivity
+Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
 
-<PropListing
-    name=connectGroup
-    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
-/>
+</PropListing>
+<PropListing 
+    name="connectGroup"
+>
+
+Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected
+
+</PropListing>

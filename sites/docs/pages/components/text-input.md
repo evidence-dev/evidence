@@ -95,24 +95,36 @@ LIMIT 10 -- Optionally limit to only show the 10 closest results
 
 <PropListing 
     name="name"
-    description="Name of the text input, used to reference the selected value elsewhere as {`{inputs.name.value}`}"
     required
     options=string
-/>
+>
+
+Name of the text input, used to reference the selected value elsewhere as `{inputs.name.value}`
+
+</PropListing>
 <PropListing 
     name="title"
-    description="Title displayed above the text input"
     options=string
-/>
+>
+
+Title displayed above the text input
+
+</PropListing>
 <PropListing 
     name="placeholder"
-    description="Alternative placeholder text displayed in the text input"
     options=string
     defaultValue="Type to search"
-/>
+>
+
+Alternative placeholder text displayed in the text input
+
+</PropListing>
 <PropListing 
     name="hideDuringPrint"
-    description="Hide the component when the report is printed"
     options={['true', 'false']}
     defaultValue="true"
-/>
+>
+
+Hide the component when the report is printed
+
+</PropListing>
