@@ -87,4 +87,10 @@ describe('loadSourceOptions', () => {
 		expect('ssl' in result).toBeTruthy();
 		expect('rejectUnauthorized' in result.ssl).toBeTruthy();
 	});
+	it('should pickup boolean flags', () => {
+		vi.stubEnv('EVIDENCE_SOURCE__source__ssl__rejectUnauthorized', 'false');
+		const result = loadSourceOptions('source');
+		expect('ssl' in result).toBeTruthy();
+		expect('rejectUnauthorized' in result.ssl).toBeFalsy(); // <-- this is failing
+	});
 });
