@@ -68,6 +68,23 @@ y=sales_usd0k
 yAxisTitle="Sales"
 />
 
+## Down Is Good
+
+`downIsGood=true`
+
+<BigValue data = {owc} 
+value=num_orders_num0
+title="Orders"
+sparkline=month
+sparklineType=bar
+comparison=num_orders_change_pct0
+comparisonTitle="vs. Last Month"
+sparklineColor=maroon
+sparklineDateFmt=shortdate
+connectGroup=bigvalues
+downIsGood=true
+/>
+
 ## Uno sine at nunc pontus rectorque umeros
 
 Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt; Est qui conciderant, parte haud effugit dixerat. Retentas Pelasga vivunt;
