@@ -248,7 +248,7 @@
 					if (presentValues.length) return; // no need to take action
 				}
 
-				if (selectAllByDefault) {
+				if (selectAllByDefault && multiple) {
 					selectAllOptions();
 					return;
 				}
