@@ -5,10 +5,14 @@
 	export let items;
 	export let height = '100%';
 	export let itemHeight = undefined;
+	// kw added displayedOption value from Dropdown.svelte
+	export let displayedOptions
 
 	// read-only, but visible to consumers via bind:start
 	export let start = 0;
 	export let end = 0;
+
+	console.log(items)
 
 	// local state
 	let height_map = [];
@@ -135,11 +139,13 @@
 	});
 </script>
 
+
+<!-- kwongz added tenerary operation for scroll depending on items and displayed options value -->
 <div
 	bind:this={viewport}
 	bind:offsetHeight={viewport_height}
 	on:scroll={handle_scroll}
-	style="height: {height};"
+	style="height: {height}; overflow: {items < displayedOptions ? 'hidden' : 'auto'};"
 	class="viewport"
 >
 	<div
