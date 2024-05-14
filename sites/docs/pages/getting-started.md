@@ -22,7 +22,7 @@ Casey note: I like how the Rails tutorial calls out what you'll achieve, and add
 
 ## Prerequisites
 
-Please ensure that you have already installed Evidence: [Install Evidence](/docs/install-evidence).
+Please ensure that you have already installed Evidence: [Install Evidence](/install-evidence).
 
 New to web development? Start with the [Basics](#basics).
 
