@@ -6,13 +6,13 @@
 	export let height = '100%';
 	export let itemHeight = undefined;
 	// kw added displayedOption value from Dropdown.svelte
-	export let displayedOptions
+	export let displayedOptions;
 
 	// read-only, but visible to consumers via bind:start
 	export let start = 0;
 	export let end = 0;
 
-	console.log(items)
+	console.log(items);
 
 	// local state
 	let height_map = [];
@@ -138,7 +138,6 @@
 		return () => (mounted = false);
 	});
 </script>
-
 
 <!-- kwongz added tenerary operation for scroll depending on items and displayed options value -->
 <div

@@ -271,14 +271,14 @@
 	}
 
 	//kwongz created static variable for displayed options, handle height based on number of options
-	const DISPLAYED_OPTIONS = 5
+	const DISPLAYED_OPTIONS = 5;
 	function handleDropDownHeight(options, numberOfDisplayedOptions) {
 		if (options.length < numberOfDisplayedOptions) {
-			return `${options.length * 32}px`
+			return `${options.length * 32}px`;
 		} else {
-			return `${(numberOfDisplayedOptions * 32)}px`
+			return `${numberOfDisplayedOptions * 32}px`;
 		}
-	} 
+	}
 </script>
 
 <slot />
@@ -357,7 +357,12 @@
 							<Command.Empty>No results found.</Command.Empty>
 							<Command.Group>
 								<!-- kwongz height handle by function, passing Displayed_Options to component for handling overflow (scroll) -->
-								<VirtualList height={handleDropDownHeight($options, DISPLAYED_OPTIONS)} displayedOptions={DISPLAYED_OPTIONS} items={$options} let:item={option}>
+								<VirtualList
+									height={handleDropDownHeight($options, DISPLAYED_OPTIONS)}
+									displayedOptions={DISPLAYED_OPTIONS}
+									items={$options}
+									let:item={option}
+								>
 									<DropdownOptionDisplay
 										value={option?.value}
 										valueLabel={option?.label}
