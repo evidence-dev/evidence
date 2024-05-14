@@ -14,7 +14,7 @@
 
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import CodeBlock from '../../ui/CodeBlock.svelte';
-	import { safeExtractColumn, aggregateColumn, getFinalColumnOrder } from './datatable.js';
+	import { aggregateColumn, getFinalColumnOrder } from './datatable.js';
 	import TableRow from './TableRow.svelte';
 	import TotalRow from './TotalRow.svelte';
 	import SubtotalRow from './SubtotalRow.svelte';
@@ -128,6 +128,8 @@
 
 	export let backgroundColor = 'white';
 
+	export let compact = undefined;
+
 	// ---------------------------------------------------------------------------------------
 	// DATA SETUP
 	// ---------------------------------------------------------------------------------------
@@ -163,15 +165,6 @@
 		for (let i = 0; i < columnSummary.length; i++) {
 			columnSummary[i].show = showLinkCol === false && columnSummary[i].id === link ? false : true;
 		}
-
-		for (const column of $props.columns) {
-			const summary = safeExtractColumn(column, columnSummary);
-			if (summary.format === undefined && column.fmt !== undefined) {
-				throw new Error(
-					`Column "${column.id}" unable to be formatted. Please cast the results to dates or numbers.`
-				);
-			}
-		}
 	} catch (e) {
 		error = e.message;
 		if (strictBuild) {
@@ -182,6 +175,7 @@
 	let index = 0;
 
 	let inputPage = null;
+	$: inputPageElWidth = `${(inputPage ?? 1).toString().length}ch`;
 
 	// ---------------------------------------------------------------------------------------
 	// SEARCH
@@ -210,7 +204,7 @@
 	}
 
 	// Reactively update Fuse when `data` or `columnSummary` changes
-	$: if (browser) {
+	$: if (browser && !error) {
 		updateFuse();
 		if (searchValue !== '') {
 			runSearch(searchValue);
@@ -326,6 +320,7 @@
 	let currentPage = 1;
 
 	$: currentPage = Math.ceil((index + rows) / rows);
+	$: currentPageElWidth = `${(currentPage ?? 1).toString().length}ch`;
 	let max;
 
 	$: goToPage = (pageNumber) => {
@@ -378,7 +373,7 @@
 	let groupedData = {};
 	let groupRowData = [];
 
-	$: {
+	$: if (!error) {
 		groupedData = data.reduce((acc, row) => {
 			const groupName = row[groupBy];
 			if (!acc[groupName]) {
@@ -397,7 +392,7 @@
 
 			columnsToAggregate.forEach((columnDef) => {
 				const column = columnDef.id;
-				const colType = columnSummary.find((d) => d.id === column).type;
+				const colType = columnSummary.find((d) => d.id === column)?.type;
 				const totalAgg = columnDef.totalAgg;
 				const weightCol = columnDef.weightCol;
 				const rows = groupedData[groupName];
@@ -467,7 +462,7 @@
 			<SearchBar bind:value={searchValue} searchFunction={runSearch} />
 		{/if}
 
-		<div class="container" style:background-color={backgroundColor}>
+		<div class="scrollbox" style:background-color={backgroundColor}>
 			<table>
 				<TableHeader
 					{rowNumbers}
@@ -478,6 +473,7 @@
 						$props.priorityColumns
 					)}
 					{columnSummary}
+					{compact}
 					{sortable}
 					{sort}
 					{formatColumnTitles}
@@ -497,6 +493,7 @@
 								rowColor={accordionRowColor}
 								{rowNumbers}
 								{subtotals}
+								{compact}
 								finalColumnOrder={getFinalColumnOrder(
 									$props.columns.length > 0
 										? $props.columns.map((d) => d.id)
@@ -512,6 +509,7 @@
 									{link}
 									{rowNumbers}
 									{rowLines}
+									{compact}
 									{index}
 									{columnSummary}
 									grouped={true}
@@ -534,6 +532,7 @@
 								{link}
 								{rowNumbers}
 								{rowLines}
+								{compact}
 								{index}
 								{columnSummary}
 								grouped={true}
@@ -554,6 +553,7 @@
 									fontColor={subtotalFontColor}
 									{groupType}
 									{groupBy}
+									{compact}
 									finalColumnOrder={getFinalColumnOrder(
 										$props.columns.length > 0
 											? $props.columns.map((d) => d.id)
@@ -571,6 +571,7 @@
 						{link}
 						{rowNumbers}
 						{rowLines}
+						{compact}
 						{index}
 						{columnSummary}
 						finalColumnOrder={getFinalColumnOrder(
@@ -588,6 +589,7 @@
 						rowColor={totalRowColor}
 						fontColor={totalFontColor}
 						{groupType}
+						{compact}
 						finalColumnOrder={getFinalColumnOrder(
 							$props.columns.length > 0 ? $props.columns.map((d) => d.id) : Object.keys(data[0]),
 							$props.priorityColumns
@@ -624,11 +626,13 @@
 							<Icon src={ChevronLeft} class="h-[0.83em]" />
 						</div>
 					</button>
-					<span class="page-count"
-						>Page <input
+					<span class="page-count">
+						Page
+						<input
 							class="page-input"
 							class:hovering
 							class:error={inputPage > pageCount}
+							style="width: {inputPage ? inputPageElWidth : currentPageElWidth};"
 							type="number"
 							bind:value={inputPage}
 							on:keyup={() => goToPage((inputPage ?? 1) - 1)}
@@ -636,11 +640,11 @@
 							placeholder={currentPage}
 						/>
 						/
-						<span class="page-count ml-1">{pageCount.toLocaleString()}</span></span
-					>
+						<span class="page-count ml-1">{pageCount.toLocaleString()}</span>
+					</span>
 					<span class="print-page-count">
-						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records</span
-					>
+						{displayedPageLength.toLocaleString()} of {totalRows.toLocaleString()} records
+					</span>
 					<button
 						aria-label="next-page"
 						class="page-changer"
@@ -703,10 +707,9 @@
 <style>
 	.table-container {
 		font-size: 9.5pt;
-		width: 98%;
 	}
 
-	.container {
+	.scrollbox {
 		width: 100%;
 		overflow-x: auto;
 		/* border-bottom: 1px solid var(--grey-200);    */
@@ -722,31 +725,31 @@
 		--scrollbar-minlength: 1.5rem; /* Minimum length of scrollbar thumb (width of horizontal, height of vertical) */
 	}
 
-	.container::-webkit-scrollbar {
+	.scrollbox::-webkit-scrollbar {
 		height: var(--scrollbar-size);
 		width: var(--scrollbar-size);
 	}
 
-	.container::-webkit-scrollbar-track {
+	.scrollbox::-webkit-scrollbar-track {
 		background-color: var(--scrollbar-track-color);
 	}
 
-	.container::-webkit-scrollbar-thumb {
+	.scrollbox::-webkit-scrollbar-thumb {
 		background-color: var(--scrollbar-color);
 		border-radius: 7px;
 		background-clip: padding-box;
 	}
 
-	.container::-webkit-scrollbar-thumb:hover {
+	.scrollbox::-webkit-scrollbar-thumb:hover {
 		background-color: var(--scrollbar-active-color);
 	}
 
-	.container::-webkit-scrollbar-thumb:vertical {
+	.scrollbox::-webkit-scrollbar-thumb:vertical {
 		min-height: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
 
-	.container::-webkit-scrollbar-thumb:horizontal {
+	.scrollbox::-webkit-scrollbar-thumb:horizontal {
 		min-width: var(--scrollbar-minlength);
 		border: 3px solid transparent;
 	}
@@ -817,9 +820,9 @@
 	}
 
 	.page-input {
-		width: 23px;
+		box-sizing: content-box;
 		text-align: center;
-		padding: 0;
+		padding: 0.25em 0.5em;
 		margin: 0;
 		border: 1px solid transparent;
 		border-radius: 4px;

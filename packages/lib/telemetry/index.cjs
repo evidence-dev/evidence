@@ -2,7 +2,7 @@ const secure = require('@lukeed/uuid/secure');
 const md5 = require('blueimp-md5');
 const { readJSONSync, writeJSONSync, pathExistsSync, copySync } = require('fs-extra');
 const wK = 'ydlp5unBbi75doGz89jC3P1Llb4QjYkM';
-const Analytics = require('analytics-node');
+const { Analytics } = require('@segment/analytics-node');
 
 const PROFILES_PATH = '../customization/.profile.json';
 const LEGACY_PROFILES_PATH = './.profile.json';
@@ -32,7 +32,7 @@ const initializeProfile = async () => {
 	};
 	writeJSONSync(PROFILES_PATH, projectProfile);
 
-	const analytics = new Analytics(wK);
+	const analytics = new Analytics({ writeKey: wK });
 	analytics.identify(projectProfile);
 
 	return projectProfile;
@@ -110,7 +110,7 @@ const logEvent = async (
 
 		if (usageStats === 'yes') {
 			const projectProfile = await getProfile();
-			var analytics = new Analytics(wK);
+			const analytics = new Analytics({ writeKey: wK });
 			const payload = {
 				anonymousId: projectProfile.anonymousId,
 				event: eventName,

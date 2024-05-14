@@ -147,70 +147,107 @@ where column_name in '${inputs.name_of_dropdown.value}'
 
 <PropListing 
     name="name"
-    description="Name of the dropdown, used to reference the selected value elsewhere as {`{inputs.name.value}`}"
     required
-/>
+>
+
+Name of the dropdown, used to reference the selected value elsewhere as `{inputs.name.value}`
+
+</PropListing>
 <PropListing 
     name="data"
-    description="Query name, wrapped in curly braces"
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing 
     name="value"
-    description="Column name from the query containing values to pick from"
     options="column name"
-/>
+>
+
+Column name from the query containing values to pick from
+
+</PropListing>
 <PropListing 
     name="multiple"
-    description="Enables multi-select which returns a list"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Enables multi-select which returns a list
+
+</PropListing>
 <PropListing 
     name="defaultValue"
-    description="Value to use when the dropdown is first loaded. Must be one of the options in the dropdown. Arrays supported for multi-select."
-    options="value from dropdown | array of values e.g. {`{['Value 1', 'Value 2']}`}"
-/>
+    options="value from dropdown | array of values e.g. {['Value 1', 'Value 2']}"
+>
+
+Value to use when the dropdown is first loaded. Must be one of the options in the dropdown. Arrays supported for multi-select.
+
+</PropListing>
 <PropListing 
     name="noDefault"
-    description="Stops any default from being selected. Overrides any set `defaultValue`."
     options="boolean"
     defaultValue="false"
-/>
+>
+
+Stops any default from being selected. Overrides any set `defaultValue`.
+
+</PropListing>
 <PropListing 
     name="disableSelectAll"
-    description="Removes the `Select all` button. Recommended for large datasets."
     options="boolean"
     defaultValue="false"
-/>
+>
+
+Removes the `Select all` button. Recommended for large datasets.
+
+</PropListing>
 <PropListing 
     name="label"
-    description="Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)"
     options="column name"
     defaultValue="Uses the column in value"
-/>
+>
+
+Column name from the query containing labels to display instead of the values (e.g., you may want to have the drop-down use `customer_id` as the value, but show `customer_name` to your users)
+
+</PropListing>
 <PropListing 
     name="title"
-    description="Title to display above the dropdown"
     options="string"
-/>
+>
+
+Title to display above the dropdown
+
+</PropListing>
 <PropListing 
     name="order"
-    description="Column to sort options by"
     options="column name"
     defaultValue="Uses the same order as the query in `data`"
-/>
+>
+
+Column to sort options by
+
+</PropListing>
 <PropListing 
     name="where"
-    description="SQL where fragment to filter options by (e.g., where sales > 40000)"
     options="SQL where clause"
-/>
+>
+
+SQL where fragment to filter options by (e.g., where sales > 40000)
+
+</PropListing>
 <PropListing 
     name="hideDuringPrint"
-    description="Hide the component when the report is printed"
     options={["true", "false"]}
     defaultValue="true"
-/>
+>
+
+Hide the component when the report is printed
+
+</PropListing>
+
 # DropdownOption
 
 ## Options
@@ -219,11 +256,17 @@ The DropdownOption component can be used to manually add options to a dropdown. 
 
 <PropListing 
     name="value"
-    description="Value to use when the option is selected"
     required
-/>
+>
+
+Value to use when the option is selected
+
+</PropListing>
 <PropListing 
     name="valueLabel"
-    description="Label to display for the option in the dropdown"
     defaultValue="Uses the value"
-/>
+>
+
+Label to display for the option in the dropdown
+
+</PropListing>

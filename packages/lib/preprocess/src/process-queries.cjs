@@ -34,36 +34,8 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 
 		
 		const queryStoreDeclarations = validIds.map((id) => {
-			/*
-				"What the heck is happening here":
-					_${id}_initial_query:
-						Copy of the query as it is written in the source markdown file
-						It is interpolated with the initial values of any variables _at mount time_
-						and does not change after that
-
-						This variable _must_ be declared; then assigned "reactively" to make sure it can reference the user's variables,
-						as it pushes the reactive assignment to the bottom of the file (after the user's scripts have run)
-						
-						We use the if to make sure it is only reactive once, and still acts as a "constant"
-
-
-					_${id}_current_query:
-						Copy of the query with the variables reactively interpolated - this is what will
-						actually be executed against the database
-
-						
-					_${id}_changed:
-						Helper variable to check if current is same as initial
-
-					
-					We care about all of this because we want to provide the initialData from SSR when the query is unchanged,
-					but we need to ensure that if the query changes, it re-executes. When constructing the QueryStore below,
-					we hinge on the change to pass intiailData (or not).
-			*/
 			return `
-				$: _${id}_query_text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-				$: _${id}_has_unresolved = __checkForUnsetInputs\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
-
+				// Update external queries
 				if (import.meta?.hot) {
 					import.meta.hot.on("evidence:queryChange", ({queryId, content}) => {
 						let errors = []
@@ -75,131 +47,62 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 						}
 
 						if (queryId === "${id}") {
-							_${id}_query_text = content
+							__${id}Text = content
 						}
 						
 					})
 				}
 
-				// Initial Query
-				let _${id}_initial_query;
-				$: if(!_${id}_initial_query) _${id}_initial_query = _${id}_query_text;
-				onMount(() => _${id}_initial_query = _${id}_query_text);
-		
-				// Current Query
-				$: _${id}_current_query = _${id}_query_text;
+				let ${id}InitialStates = { initialData: undefined, initialError: undefined }
 				
-				// Query has changed
-				$: _${id}_changed = browser ? _${id}_current_query !== _${id}_initial_query : false;
-				
-				// Actual Query Execution
-				let _${id};
+				// Give initial states for these variables
+				/** @type {boolean} */
+				let __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+				/** @type {string]} */
+				let __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
 
-				const _${id}_reactivity_manager = () => {
-					const update = () => {
-						let initialData, initialError;
 
-						try {
-							if (_${id}_changed || import.meta.hot?.data.hmrHasRun) {
-								// Query changed after page load, we have no prerendered results
-								initialData = undefined
-								initialError = undefined
-							} else if (data.${id}) {
-								// Data is coming from SSR
-								if (data.${id} instanceof Error) {
-									throw data.${id}
-								} else {
-									initialData = data.${id}
-								}
-							} else if (!browser) {
-								// We are currently prerendering
-								initialData = profile(__db.query, _${id}_query_text, { query_name: '${id}' })
-							}
-						} catch (e) {
-							if (!browser) {
-								// If building in strict mode; we should fail, this query broke
-								if (import.meta.env.VITE_BUILD_STRICT) throw e;
-							}
-							initialData = []
-							initialError = e
-						}
-
-						const query_store = Query.create(
-							_${id}_query_text,
-							queryFunc,
-							{
-								id: '${id}',
-								scoreNotifier,
-								initialData,
-								initialError,
-								noResolve: _${id}_has_unresolved
-							}
-						);
-						
-						let fetch_maybepromise = undefined
-						if (!query_store.loaded) {
-							fetch_maybepromise = query_store.fetch();
-						}
-
-						// if we have initial data, execute the query anyways in the background, ignoring results
-						// this helps fetch some parquet which can speed up future queries
-						if (initialData) {
-							query_store.backgroundFetch();
-						}
-
-						if (_${id}) {
-							// Query has already been created
-							// Fetch the data and then replace
-							
-							if (fetch_maybepromise instanceof Promise) {
-								fetch_maybepromise.then(() => (_${id} = query_store));
-							} else {
-								_${id} = query_store;
-							}
+				if (browser) {
+					// Data came from SSR
+					if (data.${id}) {
+						if (data.${id} instanceof Error) {
+							${id}InitialStates.initialError = data.${id}
 						} else {
-							_${id} = query_store;
-						}
-					};
-		
-					update();
-		
-					const debounced = debounce(update, 500);
-		
-					return () => {
-						if (_mounted) {
-							debounced();
-						} else {
-							update();
+							${id}InitialStates.initialData = data.${id}
 						}
 					}
-				}
-		
-				let _${id}_debounced_updater;
-				// make sure svelte knows debounced updater is dependent on query text
-				$: if (typeof _${id}_debounced_updater === 'undefined') {
-                    _${id}_query_text;
-                    _${id}_debounced_updater = _${id}_reactivity_manager();
-                };
-				
-				// rerun if query text changes, prevent initial run to stop unnecessary update
-				let _${id}_debounced_once = false;
-				$: if (_${id}_debounced_once) {
-					_${id}_query_text;
-					_${id}_debounced_updater();
 				} else {
-					_${id}_debounced_once = true;
-				}
-
-				// rerun if data changes during dev mode, likely source HMR, prevent initial for same reason as above
-				let _${id}_hmr_once = false;
-				$: if (dev) {
-					if (_${id}_hmr_once) {
-						data;
-						_${id}_debounced_updater();
-					} else {
-						_${id}_hmr_once = true;
+					// On server
+					try {
+						${id}InitialStates.initialData = profile(__db.query, __${id}Text, { query_name: '${id}' })
+					} catch (e) {
+						console.error(e)
+						if (import.meta.env.VITE_BUILD_STRICT) throw e;
+						${id}InitialStates.initialError = e
 					}
 				}
+				
+				
+				/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+				let ${id};
+
+				$: __${id}HasUnresolved = hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`;
+				$: __${id}Text = \`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`
+				$: __${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+
+				const __${id}Factory = Query.createReactive(
+					{ callback: $v => ${id} = $v, execFn: queryFunc },
+					{ id: '${id}', initialData: ${id}InitialStates.initialData, initialError: ${id}InitialStates.initialError }
+				)
+
+				// Assign a value for the initial run-through
+				// This is split because chicken / egg
+				__${id}Factory(__${id}Text, { noResolve: __${id}HasUnresolved })
+
+				// Add queries to global scope inside symbols to ease debugging
+				globalThis[Symbol.for("${id}")] = { get value() { return ${id} } }
+				
+				
 			`;
 		});
 
@@ -211,23 +114,17 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		if (!browser) {
 			onDestroy(inputs_store.subscribe((inputs) => {
 				${input_ids.map((id) => `
-				${id} = get(Query.create(
-						\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`,
-						queryFunc,
-						{ id: '${id}' }
-					));
+				__${id}Factory(\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\`, { noResolve: hasUnsetValues\`${duckdbQueries[id].compiledQueryString.replaceAll('`', '\\`')}\` });
 				`).join('\n')}
 			}));
 		}
 		`;
 
-		const all_query_stores = validIds.map((id) => `$: ${id} = $_${id};`);
-
 		queryDeclarations += `
 		${errQueries.join("\n")}
 		${queryStoreDeclarations.join('\n')}
 		${input_query_stores}
-		${all_query_stores.join('\n')}
+		
 		`;
 	}
 
@@ -254,6 +151,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			reactive statements do not rerun during SSR 
 		*/''}
 		let inputs_store = writable(inputs);
+		
 		setContext(INPUTS_CONTEXT_KEY, inputs_store);
 		onDestroy(inputs_store.subscribe((value) => inputs = value));
 
@@ -268,7 +166,7 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		import { browser, dev } from "$app/environment";
 		import { profile } from '@evidence-dev/component-utilities/profile';
 		import debounce from 'debounce';
-		import { Query } from '@evidence-dev/sdk/usql';
+		import { Query, hasUnsetValues } from '@evidence-dev/sdk/usql';
 		import { setQueryFunction } from '@evidence-dev/component-utilities/buildQuery';
 
 		if (!browser) {
@@ -289,16 +187,24 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 			}, 5000);
 		};
 
+		
+		let inflightQueryTimeout
 		const onInflightQueriesStart = () => {
-			toasts.add({
-				id: 'LoadingToast',
-				title: '',
-				message: 'Loading...',
-				status: 'info'
-			}, 0); // timeout of 0 means forever
+			if (!inflightQueryTimeout) inflightQueryTimeout = setTimeout(() => {
+				toasts.add({
+					id: 'LoadingToast',
+					title: '',
+					message: 'Loading...',
+					status: 'info'
+				}, 0); // timeout of 0 means forever
+			}, 3000)
 		}
 		const onInflightQueriesEnd = () => {
-			toasts.dismiss('LoadingToast')
+			if (inflightQueryTimeout) {
+				clearTimeout(inflightQueryTimeout)
+				inflightQueryTimeout = null
+			}
+			else toasts.dismiss('LoadingToast')
 		}
 		onMount(() => {
 			Query.addEventListener('inFlightQueryStart', onInflightQueriesStart)
@@ -322,14 +228,6 @@ const createDefaultProps = function (filename, componentDevelopmentMode, duckdbQ
 		
 		let params = $page.params;
 		$: params = $page.params;
-
-		function __checkForUnsetInputs(strings, ...args) {
-			if (args.some(a => a?.__unset)) {
-				return true
-			} else {
-				return false
-			}
-		}
 		
 		let _mounted = false;
 		onMount(() => (_mounted = true));

@@ -1,5 +1,50 @@
 # @evidence-dev/core-components
 
+## 4.1.0
+
+### Minor Changes
+
+- 1e1486f3: Dropdown component overhaul, see #1944
+- 1e1486f3: Created new input proxy, added tests, converted to use this instead of existing in-place proxy + detection method
+- dd0dbc16: add show/hide/never sidebar toggle in frontmatter
+
+### Patch Changes
+
+- 9e0f10cc: Fix ReferenceLine and ReferenceArea reactivity
+- 3f6975af: Fix reactivity in Sparklines
+- f4d9b336: Improve responsiveness of button groups
+- 3f53e809: Add syntax highlighting to code blocks
+- 53f7bd14: Add additional date range presets to DateRange input component
+- abae3ed9: Renamed all instances of `container` class to prevent collisions with tailwind container
+- 30c942b1: fix: DataTable pagination input box width overflow
+- cafc814b: Adds support for a more compact table view that allows more content vertically and horizontally
+- 51dd57fb: Fix Details component open option
+- b0539005: Add loading state to `DateRange`
+- 564f3444: fix minor bugs in queryload/querystore/preprocess, add strict cast to daterange
+- 71dabb41: Fix errors caused by formatting null table columns
+- 9e8f8b1a:
+- 7f85e600: version bumps
+- Updated dependencies [1e1486f3]
+- Updated dependencies [85d01792]
+  - @evidence-dev/component-utilities@3.0.2
+
+## 4.0.2
+
+### Patch Changes
+
+- 41a9f1b5: Reintroduce error handling to DataTable
+- 0a67d65e: fix: calendar heatmap off by 1 error
+- 63908810: Fix scrollbar appearing on last chart on page
+- 09b999d5: Update Evidence Cloud link in Settings
+
+## 4.0.1
+
+### Patch Changes
+
+- cb6db1a1: Fix for Query not respecting noResolve properly
+  Skeleton slot for QueryLoad was not properly passing the "loaded" slot prop
+  - @evidence-dev/component-utilities@3.0.1
+
 ## 4.0.0
 
 ### Major Changes

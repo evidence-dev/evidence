@@ -118,216 +118,321 @@ SELECT 'Experiment B' as name, 0.01 as midpoint, 0.04 as confidenceInterval
 
 ### Data
 
-<PropListing 
+<PropListing
     name="data"
-    description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
-/>
-<PropListing 
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
+<PropListing
     name="name"
-    description="Column to use for the names of each box in your plot"
-    required=true
+    required
     options="column name"
-/>
-<PropListing 
+>
+
+Column to use for the names of each box in your plot
+
+</PropListing>
+<PropListing
     name="min"
-    description="Column containing minimum values, appearing as whisker"
     options="column name"
-/>
-<PropListing 
+>
+
+Column containing minimum values, appearing as whisker
+
+</PropListing>
+<PropListing
     name="intervalBottom"
-    description="Column containing values for bottom of box"
     options="column name"
-/>
-<PropListing 
+>
+
+Column containing values for bottom of box
+
+</PropListing>
+<PropListing
     name="midpoint"
-    description="Column containing values for midpoint of box"
-    required=true
+    required
     options="column name"
-/>
-<PropListing 
+>
+
+Column containing values for midpoint of box
+
+</PropListing>
+<PropListing
     name="intervalTop"
-    description="Column containing values for top of box"
     options="column name"
-/>
-<PropListing 
+>
+
+Column containing values for top of box
+
+</PropListing>
+<PropListing
     name="max"
-    description="Column containing maximum values, appearing as whisker"
     options="column name"
-/>
-<PropListing 
+>
+
+Column containing maximum values, appearing as whisker
+
+</PropListing>
+<PropListing
     name="confidenceInterval"
-    description="Column containing value to use in place of intervalBottom and intervalTop. Is subtracted from midpoint to get the bottom and added to midpoint to get the top"
     options="column name"
-/>
-<PropListing 
+>
+
+Column containing value to use in place of intervalBottom and intervalTop. Is subtracted from midpoint to get the bottom and added to midpoint to get the top
+
+</PropListing>
+<PropListing
     name="emptySet"
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
     options={['error', 'warn', 'pass']}
     defaultValue="error"
-/>
-<PropListing 
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
+<PropListing
     name="emptyMessage"
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
     options="string"
     defaultValue="No records"
-/>
+>
+
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
 
 ### Formatting & Styling
 
-<PropListing 
+<PropListing
     name="color"
-    description="Column containing color strings"
     options="column name"
-/>
-<PropListing 
+>
+
+Column containing color strings
+
+</PropListing>
+<PropListing
     name="yFmt"
-    description="Format to use for y column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format name | custom format name"
-/>
-<PropListing 
+>
+
+Format to use for y column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
+<PropListing
     name="seriesColors"
-    description="Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal."
     options="object with series names and assigned colors"
     defaultValue="colors applied by order of series in data"
-/>
+>
+
+Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal.
+
+</PropListing>
 
 ### Axes
 
-<PropListing 
+<PropListing
     name="swapXY"
-    description="Swap the x and y axes to create a horizontal chart"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing 
+>
+
+Swap the x and y axes to create a horizontal chart
+
+</PropListing>
+<PropListing
     name="xAxisTitle"
-    description="Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false"
     options={['true', 'string', 'false']}
     defaultValue="false"
-/>
-<PropListing 
+>
+
+Name to show under x-axis. If 'true', formatted column name is used. Only works with swapXY=false
+
+</PropListing>
+<PropListing
     name="yAxisTitle"
-    description="Name to show beside y-axis. If 'true', formatted column name is used."
     options={['true', 'string', 'false']}
     defaultValue="false"
-/>
-<PropListing 
+>
+
+Name to show beside y-axis. If 'true', formatted column name is used.
+
+</PropListing>
+<PropListing
     name="xGridlines"
-    description="Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing 
+>
+
+Turns on/off gridlines extending from x-axis tick marks (vertical lines when swapXY=false)
+
+</PropListing>
+<PropListing
     name="yGridlines"
-    description="Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)"
     options={['true', 'false']}
     defaultValue="true"
-/>
-<PropListing 
+>
+
+Turns on/off gridlines extending from y-axis tick marks (horizontal lines when swapXY=false)
+
+</PropListing>
+<PropListing
     name="xAxisLabels"
-    description="Turns on/off value labels on the x-axis"
     options={['true', 'false']}
     defaultValue="true"
-/>
-<PropListing 
+>
+
+Turns on/off value labels on the x-axis
+
+</PropListing>
+<PropListing
     name="yAxisLabels"
-    description="Turns on/off value labels on the y-axis"
     options={['true', 'false']}
     defaultValue="true"
-/>
-<PropListing 
+>
+
+Turns on/off value labels on the y-axis
+
+</PropListing>
+<PropListing
     name="xBaseline"
-    description="Turns on/off thick axis line (line appears at y=0)"
     options={['true', 'false']}
     defaultValue="true"
-/>
-<PropListing 
+>
+
+Turns on/off thick axis line (line appears at y=0)
+
+</PropListing>
+<PropListing
     name="yBaseline"
-    description="Turns on/off thick axis line (line appears directly alongside the y-axis labels)"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing 
+>
+
+Turns on/off thick axis line (line appears directly alongside the y-axis labels)
+
+</PropListing>
+<PropListing
     name="xTickMarks"
-    description="Turns on/off tick marks for each of the x-axis labels"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing 
+>
+
+Turns on/off tick marks for each of the x-axis labels
+
+</PropListing>
+<PropListing
     name="yTickMarks"
-    description="Turns on/off tick marks for each of the y-axis labels"
     options={['true', 'false']}
     defaultValue="false"
-/>
-<PropListing 
+>
+
+Turns on/off tick marks for each of the y-axis labels
+
+</PropListing>
+<PropListing
     name="yMin"
-    description="Starting value for the y-axis"
     options="number"
-/>
-<PropListing 
+>
+
+Starting value for the y-axis
+
+</PropListing>
+<PropListing
     name="yMax"
-    description="Maximum value for the y-axis"
     options="number"
-/>
-<PropListing 
+>
+
+Maximum value for the y-axis
+
+</PropListing>
+<PropListing
     name="showAllXAxisLabels"
-    description="Force every x-axis value to be shown. This can truncate labels if there are too many."
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Force every x-axis value to be shown. This can truncate labels if there are too many.
+
+</PropListing>
 
 ### Chart
 
-<PropListing 
+<PropListing
     name="title"
-    description="Chart title. Appears at top left of chart."
     options="string"
-/>
-<PropListing 
+>
+
+Chart title. Appears at top left of chart.
+
+</PropListing>
+<PropListing
     name="subtitle"
-    description="Chart subtitle. Appears just under title."
     options="string"
-/>
-<PropListing 
+>
+
+Chart subtitle. Appears just under title.
+
+</PropListing>
+<PropListing
     name="chartAreaHeight"
-    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
     options="number"
     defaultValue="180"
-/>
-<PropListing 
+>
+
+Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.
+
+</PropListing>
+<PropListing
     name="renderer"
-    description="Which chart renderer type (canvas or SVG) to use. See ECharts' <a href='https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/' class=markdown>documentation on renderers</a>."
     options={['canvas', 'svg']}
     defaultValue="canvas"
-/>
+>
+
+Which chart renderer type (canvas or SVG) to use. See ECharts' [documentation on renderers](https://echarts.apache.org/handbook/en/best-practices/canvas-vs-svg/).
+
+</PropListing>
 
 ### Custom Echarts Options
 
-<PropListing 
+<PropListing
     name="echartsOptions"
-    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
     options="{`{{exampleOption:'exampleValue'}}`}"
-/>
-<PropListing 
+>
+
+Custom Echarts options to override the default options. See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
+<PropListing
     name="seriesOptions"
-    description="Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions` See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
     options="{`{{exampleSeriesOption:'exampleValue'}}`}"
-/>
-<PropListing 
+>
+
+Custom Echarts options to override the default options for all series in the chart. This loops through the series to apply the settings rather than having to specify every series manually using `echartsOptions`. See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
+<PropListing
     name="printEchartsConfig"
-    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
+
+</PropListing>
 
 ### Interactivity
 
 <PropListing
     name=connectGroup
-    description="Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
-/>
+>
+
+Group name to connect this chart to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected
+
+</PropListing>
 
 
 ## Annotations

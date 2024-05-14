@@ -80,7 +80,7 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
 ```
 
 <LineChart 
-    data={orders_by_month} 
+    data={orders_by_month}
     x=month
     y=sales_usd0k 
     yAxisTitle="Sales per Month"
@@ -146,4 +146,29 @@ select '2023-04-14' as start_date, null as end_date, 'Campaign C' as label
         '#fcdad9',
         ]
     }
+/>
+
+## Missing Values with Multiple y Columns
+
+```sql lines
+select '2021-01-01'::date as date, null as value, null as value2
+union all
+select '2021-01-02'::date as date, null as value, null as value2
+union all
+select '2021-01-03'::date as date, null as value, null as value2
+union all
+select '2021-01-04'::date as date, 100 as value, 200 as value2
+union all
+select '2021-01-05'::date as date, null as value, null as value2
+union all
+select '2021-01-06'::date as date, null as value, null as value2
+union all
+select '2021-01-07'::date as date, null as value, null as value2
+```
+
+<LineChart
+  data={lines}
+  x=date
+  y={['value','value2']}
+  handleMissing=zero
 />

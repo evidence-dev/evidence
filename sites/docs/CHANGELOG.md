@@ -1,5 +1,57 @@
 # evidence-docs
 
+## 0.1.0
+
+### Minor Changes
+
+- dd0dbc16: add show/hide/never sidebar toggle in frontmatter
+
+### Patch Changes
+
+- Updated dependencies [9e0f10cc]
+- Updated dependencies [3f6975af]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [f4d9b336]
+- Updated dependencies [3f53e809]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [1e1486f3]
+- Updated dependencies [85d01792]
+- Updated dependencies [53f7bd14]
+- Updated dependencies [abae3ed9]
+- Updated dependencies [30c942b1]
+- Updated dependencies [cafc814b]
+- Updated dependencies [51dd57fb]
+- Updated dependencies [b0539005]
+- Updated dependencies [564f3444]
+- Updated dependencies [71dabb41]
+- Updated dependencies [9e8f8b1a]
+- Updated dependencies [7f85e600]
+- Updated dependencies [dd0dbc16]
+- Updated dependencies [84496e62]
+  - @evidence-dev/core-components@4.1.0
+  - @evidence-dev/component-utilities@3.0.2
+  - @evidence-dev/evidence@34.0.0
+
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [41a9f1b5]
+- Updated dependencies [0a67d65e]
+- Updated dependencies [63908810]
+- Updated dependencies [09b999d5]
+  - @evidence-dev/core-components@4.0.2
+  - @evidence-dev/evidence@33.0.2
+
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [cb6db1a1]
+  - @evidence-dev/core-components@4.0.1
+  - @evidence-dev/evidence@33.0.1
+  - @evidence-dev/component-utilities@3.0.1
+
 ## 0.0.3
 
 ### Patch Changes

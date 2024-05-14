@@ -18,90 +18,119 @@ build UI and validation to ensure an excellent UX for Evidence users.
 Options can have the following fields:
 
 <PropListing
-    name=title
-    type=string
-    required=true
-    description="Name or Title of the option"
-/>
-<PropListing
-    name=type
-    type={['string', 'number', 'boolean', 'select', 'file']}
-    required=true
-    description="Control to show"
-/>
-<PropListing
-    name=secret
-    type=boolean
-    required=false
-    description="Secret values are placed in <code class=markdown>connection.options.yaml</code>, which is not source controlled"
-/>
-<PropListing
-    name=shown
-    type=boolean
-    required=false
-    description="Displays value in UI elements (e.g. for usernames, that should not be source controlled but are not 'secret'. Otherwise the field will display as ∙∙∙)"
-/>
-<PropListing
-    name=virtual
-    type=boolean
-    required=false
-    description="Disables saving a field, useful for credential files"
-/>
-<PropListing
-    name=references
-    type=string
-    required=false
-    description="Indicates that the field should get its value from another field if it is available, useful for credential files. Formatted as a <a href='https://www.npmjs.com/package/@astronautlabs/jsonpath' class=markdown>json path</a>"
-/>
-<PropListing
-    name=forceReference
-    type=boolean
-    required=false
-    description="If true, the input is disabled and the value can only come from a reference"
-/>
-<PropListing
-    name=fileFormat
-    type={['json', 'yaml']}
-    required=false
-    description="If <code class=markdown>type</code> is <code class=markdown>file</code>, set how it should be parsed. It will then be available to <code class=markdown>references</code>"
-/>
-<PropListing
-    name=description
-    type=string
-    required=false
-    description="Description of the option, shown as a hint in UI"
-/>
-<PropListing
-    name=children
-    type="Record<string\|number\|boolean, Options>"
-    required=false
-    description="See <a href='#children' class=markdown>children</a>"
-/>
-<PropListing
-    name=required
-    type=boolean
-    required=false
-    description="Indicates that the user must provide this option"
-/>
-<PropListing
-    name=options
-    type="Array<{`{label: string, value:string}`}>"
-    required=false
-    description="Available options for <code class=markdown>select</code> type"
-/>
-<PropListing
-    name=nest
-    type=boolean
-    required=false
-    description="Determines behavior of <code class=markdown>children</code>"
-/>
-<PropListing
-    name=default
-    type={['string', 'number', 'boolean']}
-    required=false
-    description="Default Value"
-/>
+    name="title"
+    type="string"
+    required
+>
 
+Name or Title of the option
+
+</PropListing>
+<PropListing
+    name="type"
+    type={['string', 'number', 'boolean', 'select', 'file']}
+    required
+>
+
+Control to show
+
+</PropListing>
+<PropListing
+    name="secret"
+    type="boolean"
+>
+
+Secret values are placed in `connection.options.yaml`, which is not source controlled
+
+</PropListing>
+<PropListing
+    name="shown"
+    type="boolean"
+>
+
+Displays value in UI elements (e.g. for usernames, that should not be source controlled but are not 'secret'. Otherwise the field will display as ∙∙∙)
+
+</PropListing>
+<PropListing
+    name="virtual"
+    type="boolean"
+>
+
+Disables saving a field, useful for credential files
+
+</PropListing>
+<PropListing
+    name="references"
+    type="string"
+>
+
+Indicates that the field should get its value from another field if it is available, useful for credential files. Formatted as a [json path](https://www.npmjs.com/package/@astronautlabs/jsonpath)
+
+</PropListing>
+<PropListing
+    name="forceReference"
+    type="boolean"
+>
+
+If true, the input is disabled and the value can only come from a reference
+
+</PropListing>
+<PropListing
+    name="fileFormat"
+    type={['json', 'yaml']}
+>
+
+If `type` is `file`, set how it should be parsed. It will then be available to `references`
+
+</PropListing>
+<PropListing
+    name="description"
+    type="string"
+>
+
+Description of the option, shown as a hint in UI
+
+</PropListing>
+<PropListing
+    name="children"
+    type="Record<string|number|boolean, Options>"
+>
+
+See [children](#children)
+
+</PropListing>
+<PropListing
+    name="required"
+    type="boolean"
+>
+
+Indicates that the user must provide this option
+
+</PropListing>
+<PropListing
+    name="options"
+    type="Array<{`{label: string, value:string}`}>"
+>
+
+Available options for `select` type
+
+</PropListing>
+<PropListing
+    name="nest"
+    type="boolean"
+>
+
+Determines behavior of `children`
+
+</PropListing>
+<PropListing
+    name="default"
+    type={['string', 'number', 'boolean']}
+>
+
+Default Value
+
+</PropListing>
 
 
 ### Children

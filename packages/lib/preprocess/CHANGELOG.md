@@ -1,5 +1,23 @@
 # @evidence-dev/preprocess
 
+## 5.1.0
+
+### Minor Changes
+
+- 1e1486f3: Added Query.createReactive as a canonical way to have reactive queries; converted preprocessor to leverage this
+- 1e1486f3: Created new input proxy, added tests, converted to use this instead of existing in-place proxy + detection method
+
+### Patch Changes
+
+- 3f53e809: Add syntax highlighting to code blocks
+- 564f3444: fix minor bugs in queryload/querystore/preprocess, add strict cast to daterange
+
+## 5.0.0
+
+### Major Changes
+
+- d60fdad7: Convert preprocess to use Query from sdk
+
 ## 4.1.2
 
 ### Patch Changes

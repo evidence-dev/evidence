@@ -1,5 +1,24 @@
 # @evidence-dev/sdk
 
+## 1.2.0
+
+### Minor Changes
+
+- 1e1486f3: Added Query.createReactive as a canonical way to have reactive queries; converted preprocessor to leverage this
+- 1e1486f3: Created new input proxy, added tests, converted to use this instead of existing in-place proxy + detection method
+
+### Patch Changes
+
+- 276718dd: Add /utils export and a batchup util
+- 7f85e600: version bumps
+
+## 1.1.1
+
+### Patch Changes
+
+- cb6db1a1: Fix for Query not respecting noResolve properly
+  Skeleton slot for QueryLoad was not properly passing the "loaded" slot prop
+
 ## 1.1.0
 
 ### Minor Changes

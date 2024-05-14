@@ -1,6 +1,6 @@
 {
 	"name": "@evidence-dev/sdk",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "",
 	"bin": {
 		"evidence-sdk": "./src/cli.js"
@@ -24,6 +24,12 @@
 			"import": "./src/usql/index.js",
 			"require": null,
 			"types": "./src/usql/index.d.ts"
+		},
+		"./utils": {
+			"default": "./src/utils/index.js",
+			"import": "./src/utils/index.js",
+			"require": null,
+			"types": "./src/utils/index.d.ts"
 		}
 	},
 	"scripts": {
@@ -78,7 +84,7 @@
 		"recast": "^0.23.4",
 		"svelte-sequential-preprocessor": "^2.0.1",
 		"sveltekit-autoimport": "^1.7.1",
-		"vite": "^5.0.11",
+		"vite": "5.2.10",
 		"vitest": "^1.1.3",
 		"yaml": "^2.3.4",
 		"zod": "^3.22.4"

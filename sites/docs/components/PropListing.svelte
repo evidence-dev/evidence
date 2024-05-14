@@ -1,77 +1,103 @@
 <script>
-    export let name = "";
-    export let description = "";
-    export let required = false;
-    export let options = [];
-    export let defaultValue = "";
-    export let type = "";
-    let copyStatus = {};
+	import { HoverCard } from '@evidence-dev/core-components';
+	export let name = '';
+	export let description = '';
+	export let required = false;
+	export let options = [];
+	export let defaultValue = '';
+	export let type = '';
+	let copyStatus = {};
 
-    async function copyToClipboard(text, option) {
-        try {
-            await navigator.clipboard.writeText(text);
-            console.log('Copied to clipboard: ' + text);
-            copyStatus[option] = true;
-            setTimeout(() => {
-                copyStatus[option] = false;
-            }, 2000);
-        } catch (err) {
-            console.error('Failed to copy text: ', err);
-        }
-    }
+	async function copyToClipboard(text, option) {
+		try {
+			await navigator.clipboard.writeText(text);
+			copyStatus[option] = true;
+			setTimeout(() => {
+				copyStatus[option] = false;
+			}, 2000);
+		} catch (err) {}
+	}
 </script>
-  
-<section class="py-4 border-t">
-        <div class="flex flex-col lg:flex-row">
-            <div class="text-base font-mono flex flex-row min-w-48 items-center mr-4 pb-1">
-                <div class="text-fuscia-400 text-sm px-1 py-0 mr-4 bg-gray-50 border rounded-md">{name}</div>
-                {#if required === true || required === "true"}
-                <div class="text-red-500 text-sm font-normal pr-6 pt-0.5">REQUIRED</div>
-                {/if}
-            </div>
-            <div class="font-sans font-normal text-base text-gray-600">
-                <div>{@html description}</div>
-       
-    
-    {#if Array.isArray(options) && options.length > 0}
-    <div class="flex items-center mt-2 flex-wrap">
-        <span class="text-sm text-gray-400">Options:</span>
-        {#each options as option, index (option)}
-        <div class="group ml-2 relative">
-            <button class="text-sm font-mono bg-blue-100 text-blue-600 px-1.5 py-0.5 mt-0.5 md:px-2 md:py-1 md:mt-1 rounded-full cursor-pointer hover:bg-blue-200 transition-colors duration-100 ease-in-out" 
-                    on:click={() => copyToClipboard(`${name}=${option}`, option)}>{option}</button>
-            <div class="absolute left-0 mt-2 bg-gray-100 p-2 rounded shadow-lg group-hover:block hidden">
-                <pre><span class="text-gray-950">{name}</span>=<span class="text-blue-800">{option}</span></pre>
-                <div class="text-xs font-mono">{copyStatus[option] ? 'Copied' : 'Click to Copy'}</div>
-            </div>
-        </div>
-        {/each}
-    </div>
-    {:else if typeof options === 'string' && options.length > 0}
-    <dl class="flex items-center mt-2 relative">
-        <dt class="text-sm text-gray-400">Options:</dt>
-        <dd class="ml-2 text-sm">{options}</dd>
-    </dl>
-    {/if}
-    {#if defaultValue && defaultValue !== "-"}
-    <dl class="flex items-center mt-2">
-        <dt class="text-sm text-gray-400">Default:</dt>
-        <dd class="ml-2 text-sm">{defaultValue}</dd>
-    </dl>
-    {/if}
-    {#if Array.isArray(type) && type.length > 0}
-    <div class="flex items-center mt-2">
-        <span class="text-sm text-gray-400">Type:</span>
-        {#each type as t, index (t)}
-        <span class="ml-2 text-sm bg-blue-100 rounded-full px-2 py-0.5">{t}</span>
-        {/each}
-    </div>
-    {:else if typeof type === 'string' && type.length > 0}
-    <dl class="flex items-center mt-2">
-        <dt class="text-sm text-gray-400">Type:</dt>
-        <dd class="ml-2 text-sm bg-blue-100 rounded-full px-2 py-0.5">{type}</dd>
-    </dl>
-    {/if}
-</div>
-</div>
+
+<section class="pt-4 pb-2 border-b text-sm flex flex-col lg:flex-row gap-4">
+	<div class="min-w-48 flex justify-between mr-4">
+		<div class="font-mono">
+			<span
+				class="px-1 py-0.5 text-xs font-medium text-gray-950 bg-gray-50 border rounded select-all"
+			>
+				{name}
+			</span>
+		</div>
+		{#if required}
+			<span class="text-red-500 uppercase tracking-wide">Required</span>
+		{/if}
+	</div>
+	<div>
+		<div id="markdown-slot"><slot /></div>
+		{#if Array.isArray(options) && options.length > 0}
+			<div class="mt-1 select-none flex">
+				<span class="text-sm text-gray-400 mr-2">Options:</span>
+				<div class="flex flex-wrap gap-1">
+					{#each options as option}
+						<HoverCard>
+							<button
+								slot="trigger"
+								class="bg-blue-50 rounded-full min-w-3 px-3 text-blue-700 hover:bg-blue-100 hover:text-blue-800 flex justify-center transition-colors duration-200"
+								on:click={() => copyToClipboard(`${name}=${option}`, option)}
+							>
+								{option}
+							</button>
+							<div slot="content" class="text-xs text-center min-w-28">
+								<p class="font-mono bg-gray-50 rounded-t-md px-4 py-1 text-gray-700">
+									{name}=<span class="text-blue-700"
+										>{option == 'true' ? '{true}' : option == 'false' ? '{false}' : option}</span
+									>
+								</p>
+								<p class="px-4 py-1 text-gray-700 font-sans">
+									{copyStatus[option] ? 'Copied' : 'Click to Copy'}
+								</p>
+							</div>
+						</HoverCard>
+					{/each}
+				</div>
+			</div>
+		{:else if typeof options === 'string' && options.length > 0}
+			<dl class="flex select-none mt-1">
+				<dt class="text-sm text-gray-400">Options:</dt>
+				<dd class="ml-2 text-sm">{options}</dd>
+			</dl>
+		{/if}
+		{#if defaultValue && defaultValue !== '-'}
+			<dl class="flex select-none mt-1">
+				<dt class="text-sm text-gray-400">Default:</dt>
+				<dd class="ml-2 text-sm">{defaultValue}</dd>
+			</dl>
+		{/if}
+		{#if Array.isArray(type) && type.length > 0}
+			<div class="flex select-none mt-1">
+				<span class="text-sm text-gray-400">Type:</span>
+				{#each type as t}
+					<span
+						class="bg-blue-50 rounded-full min-w-3 px-3 text-blue-700 hover:bg-blue-100 hover:text-blue-800 flex justify-center transition-colors duration-200"
+						>{t}</span
+					>
+				{/each}
+			</div>
+		{:else if typeof type === 'string' && type.length > 0}
+			<dl class="flex select-none mt-1">
+				<dt class="text-sm text-gray-400">Type:</dt>
+				<dd
+					class="bg-blue-50 rounded-full min-w-3 px-3 text-blue-700 hover:bg-blue-100 hover:text-blue-800 flex justify-center transition-colors duration-200"
+				>
+					{type}
+				</dd>
+			</dl>
+		{/if}
+	</div>
 </section>
+
+<style>
+	#markdown-slot :global(*) {
+		@apply text-sm;
+	}
+</style>

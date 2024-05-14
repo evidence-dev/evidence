@@ -30,6 +30,7 @@
 
 	// Delta controls
 	export let downIsGood = false;
+	$: downIsGood = downIsGood === 'true' || downIsGood === true;
 	export let neutralMin = 0;
 	export let neutralMax = 0;
 
@@ -131,6 +132,7 @@
 						{neutralMin}
 						{neutralMax}
 						text={comparisonTitle}
+						{downIsGood}
 					/>
 				</p>
 			{:else}

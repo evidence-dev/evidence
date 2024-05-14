@@ -1,5 +1,11 @@
 # @evidence-dev/plugin-connector
 
+## 2.1.3
+
+### Patch Changes
+
+- 7f85e600: version bumps
+
 ## 2.1.2
 
 ### Patch Changes

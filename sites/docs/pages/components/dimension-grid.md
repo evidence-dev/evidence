@@ -5,33 +5,41 @@ sidebar_position: 1
 
 Dimension grid produces an interactive grid of one dimension tables, one for each string column in the source table. The dimension grid can can also be used as an input. 
 
-<img src="/img/dimension-grid.gif" width='600px'/> 
+```orders
+
+select state, category, item, channel, sales from needful_things.orders
+
+```
+
+```monthly_sales
+
+select 
+order_month, 
+sum(sales)filter(${inputs.selected_dimensions}) as sales_usd0 
+from needful_things.orders 
+group by all 
+
+```
+
+<DimensionGrid data={orders} metric='sum(sales)' name=selected_dimensions /> 
+
+<LineChart data={monthly_sales} handleMissing=zero/> 
+
+
+
+
 
 ## Examples
 
 ### Basic Usage 
 
-
 ```html
 <DimensionGrid data={my_query} />
 ```
 
-<img src="/img/dimension-grid.png" width='600px'/> 
-
-
-
-### Custom Metric 
-
-```html
-<DimensionGrid 
-    data={my_query} 
-    metric="sum(fare)"
-/>
-```
-
 ### As an Input 
 
-Dimension grid produces a condition for all of the selected dimensions which is suitable for referencing directly in a `where` clause. For example `airline = 'Air Canada' and plane = '747`. Where no dimensions have been selected, DimensionGrid returns `true`. 
+Dimension grid produces a condition for all of the selected dimensions which is suitable for referencing directly in a `where` or `filter` clause. For example `airline = 'Air Canada' and plane = '747`. Where no dimensions have been selected, DimensionGrid returns `true`. 
 
 ````html
 <DimensionGrid 
@@ -51,29 +59,44 @@ where ${inputs.selected_dimensions}
 
 <PropListing 
     name="data"
-    description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="string"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing 
     name="metric"
-    description="SQL aggregate which could be applied to `data` e.g. 'sum(sales)'"
     options="string"
     default="count(*)"
-/>
+>
+
+SQL aggregate which could be applied to `data` e.g. 'sum(sales)'
+
+</PropListing>
 <PropListing 
     name="name"
-    description="Name of the dimension grid, used to reference the selected value elsewhere as {`{inputs.name}`}"
     options="string"
-/>
+>
+
+Name of the dimension grid, used to reference the selected value elsewhere as `{inputs.name}`
+
+</PropListing>
 <PropListing 
     name="metricLabel"
-    description="Label for the metric"
     options="string"
-/>
+>
+
+Label for the metric
+
+</PropListing>
 <PropListing 
     name="limit"
-    description="Maximum number of rows to include in each table"
     options="number"
     default="10"
-/>
+>
+
+Maximum number of rows to include in each table
+
+</PropListing>
