@@ -123,6 +123,20 @@ A data source in Evidence consists of 3 parts:
 You will see this reflected in the folder structure for each data source under the `sources` folder:
 <img src="/img/getting-started/sources.png" width="70%" class="tut-img"/>
 
+Add a new `.sql` file to the `sources/needful_things` directory. Name it `my_query.sql`, or a name of your choice.
+
+In this file, write a query to select all columns from the `needful_things` table:
+
+**my_query.sql**
+```sql
+## change this
+SELECT * FROM orders
+```
+
+Save the file. Later, you'll be able to refer to this data source as `needful_things.my_query`.
+
+## 4.5 Run sources
+
 ## 5. Create a table
 
 Quick brown fox
