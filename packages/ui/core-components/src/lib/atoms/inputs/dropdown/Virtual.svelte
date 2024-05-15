@@ -135,7 +135,6 @@
 	});
 </script>
 
-<!-- kwongz added tenerary operation for scroll depending on items and displayed options value -->
 <div
 	bind:this={viewport}
 	bind:offsetHeight={viewport_height}

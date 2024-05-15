@@ -18,6 +18,7 @@
 
 <Template let:args>
 	<div class="h-64">
+		{console.log(args)}
 		<TextInput {...args} />
 		<p class="font-bold text-lg mt-4">Output Attributes</p>
 		<dl>
