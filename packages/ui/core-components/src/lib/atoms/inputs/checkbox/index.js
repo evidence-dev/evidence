@@ -1,1 +1,1 @@
-export { default as Checkbox } from './CheckboxInput.svelte';
+export { default as Checkbox } from './Checkbox.svelte';

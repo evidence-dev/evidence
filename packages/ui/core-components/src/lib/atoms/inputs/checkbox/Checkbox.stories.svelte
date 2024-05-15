@@ -2,11 +2,11 @@
 	import WithScopedInputStore from '../../../storybook-helpers/WithScopedInputStore.svelte';
 	/** @type {import("@storybook/svelte").Meta}*/
 	export const meta = {
-		title: 'Atoms/inputs/CheckboxInput',
+		title: 'Atoms/inputs/Checkbox',
 		argTypes: {},
 		args: {
-			title: 'checkbox',
-			name: 'checkboxInput'
+			title: 'Hide Month Zero',
+			name: 'Hide Month Zero'
 		},
 		decorators: [() => WithScopedInputStore]
 	};
@@ -14,12 +14,12 @@
 
 <script>
 	import { Template, Story } from '@storybook/addon-svelte-csf';
-	import CheckboxInput from './CheckboxInput.svelte';
+	import Checkbox from './Checkbox.svelte';
 </script>
 
 <Template let:args>
 	<div class="h-64">
-		<CheckboxInput {...args} />
+		<Checkbox {...args} />
 	</div>
 </Template>
 
