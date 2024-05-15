@@ -23,6 +23,10 @@
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown multiple name="test" {data} value="value" label="label" />
 </Story>
+<Story name="Select all by default">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown multiple name="test" {data} value="value" label="label" selectAllByDefault />
+</Story>
 <Story name="With a default value">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
 	<Dropdown defaultValue={0} name="test1" {data} value="value" label="label" />
