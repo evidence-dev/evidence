@@ -216,8 +216,8 @@ importers:
         specifier: workspace:*
         version: link:../../lib/db-commons
       duckdb-async:
-        specifier: 0.10.0
-        version: 0.10.0
+        specifier: 0.10.2
+        version: 0.10.2
     devDependencies:
       dotenv:
         specifier: ^16.0.1
@@ -11626,18 +11626,18 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /duckdb-async@0.10.0:
-    resolution: {integrity: sha512-YMDYulx5JLzT01CkqfG813h3ikCF3Pf7nV2xH1OZdVB6q0A6Rofrtf0x1CIotXY33fifgFY1jte3WPzD+3708Q==}
+  /duckdb-async@0.10.2:
+    resolution: {integrity: sha512-Lf9MSnfcflyo8lpOfhDTOGsqkKeippJm2RZzry9sOG2Kvz+pDfLMuqhWQ4CQayud+Ktfs1L8DsrTIAsUCmbTlA==}
     dependencies:
-      duckdb: 0.10.0
+      duckdb: 0.10.2
     transitivePeerDependencies:
       - bluebird
       - encoding
       - supports-color
     dev: false
 
-  /duckdb@0.10.0:
-    resolution: {integrity: sha512-+yVccZZTCYVHccKUUKeqCiQQ5/jggdnfyafN01Cgzzx2F0NSSSqNO9vT39oLmpIhEqsJIHYXVC/LuawN3AxUyA==}
+  /duckdb@0.10.2:
+    resolution: {integrity: sha512-7UGLRp+zkAzE0AQjyUfOyEjuX7Xs3St452+ZtUSbQEE8DJjc6GUWscxYPm5XPe5fX4nL+Zy9lVMEss1Yuw74kA==}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
@@ -16780,9 +16780,6 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
-    peerDependenciesMeta:
-      '@parcel/core':
-        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)(postcss@8.4.38)(typescript@5.4.2)
       '@parcel/core': 2.12.0
@@ -18524,9 +18521,6 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
