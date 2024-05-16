@@ -10,6 +10,7 @@ import {
 import { sharedPromise } from '../../lib/sharedPromise.js';
 import { resolveMaybePromise } from '../utilities/resolveMaybePromise.js';
 import { getQueryScore } from './queryScore.js';
+import { cleanQuery } from './cleanQuery.js';
 
 /**
  * @typedef {import("../types.js").QueryResultRow} QueryResultRow
@@ -982,7 +983,7 @@ DESCRIBE ${this.text.trim()}
 						Use of nanoid prevent ambiguity when dealing with nested Queries; 
 						in theory this could be the querystring has but that's kinda gross 
 					*/
-					[`inputQuery-${nanoid(2)}`]: taggedSql`(${query})`
+					[`inputQuery-${nanoid(2)}`]: taggedSql`(${cleanQuery(query)})`
 				})
 				.select('*');
 			this.#query = q;

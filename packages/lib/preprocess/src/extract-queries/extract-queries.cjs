@@ -185,7 +185,7 @@ const extractQueries = (content) => {
 									`Cannot reference inline query from SQL File. (Referenced ${referencedQueryID})`
 								);
 							}
-							const queryString = `(${referencedQuery.compiledQueryString})`;
+							const queryString = `(\n${referencedQuery.compiledQueryString}\n)`;
 							query.compiledQueryString = query.compiledQueryString.replace(reference, queryString);
 							query.compiled = true;
 						}
