@@ -1,0 +1,224 @@
+<script context="module">
+	export const evidenceInclude = true;
+</script>
+
+<script>
+	import { mapContextKey } from '../constants.js';
+	import { getContext } from 'svelte';
+	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
+	import chroma from 'chroma-js';
+	import Point from './Point.svelte';
+	import ErrorChart from '../../core/ErrorChart.svelte';
+	import { getColumnExtentsLegacy } from '@evidence-dev/component-utilities/getColumnExtents';
+	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
+	import { uiColours } from '@evidence-dev/component-utilities/colours';
+
+	/** @type {import("../EvidenceMap.js").EvidenceMap | undefined} */
+	const map = getContext(mapContextKey);
+
+	if (!map) throw new Error('Evidence Map Context has not been set. Points will not function');
+
+	const inputs = getContext(INPUTS_CONTEXT_KEY);
+
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+	export let data;
+
+	/** @type {string|undefined} */
+	export let lat = undefined; // column containing lat values
+	/** @type {string|undefined} */
+	export let long = undefined; // column containing long values
+	/** @type {string|undefined} */
+	export let value = undefined; // column with the value to be represented
+	/** @type {string|undefined} */
+	export let valueFmt = undefined;
+	/** @type {string|undefined} */
+	export let sizeFmt = undefined;
+	/** @type {number|undefined} */
+	export let size = undefined; // point size
+	if (size) {
+		// if size was user-supplied
+		size = Number(size);
+		if (isNaN(size)) {
+			// input must be a number
+			throw Error('size must be a number');
+		} else if (size < 0) {
+			throw Error('size cannot be negative');
+		}
+	} else {
+		size = 5;
+	}
+
+	/** @type {string|undefined} */
+	export let sizeCol = undefined; // column containing values representing bubble size
+
+	/** @type {number|undefined} */
+	export let min = undefined;
+	/** @type {number|undefined} */
+	export let max = undefined;
+
+	/** @type {string|undefined} */
+	export let link = undefined;
+
+	/** @type {string|undefined} */
+	export let pointName = undefined; // column containing point name/title
+
+	/** @type {string | undefined} */
+	export let name = undefined;
+
+	/** @type {Function} */
+	export let onclick = () => {};
+
+	/** @type {number|undefined} */
+	export let borderWidth = undefined;
+	if (borderWidth) {
+		// if borderWidth was user-supplied
+		borderWidth = Number(borderWidth);
+		if (isNaN(borderWidth)) {
+			// input must be a number
+			throw Error('borderWidth must be a number');
+		} else if (borderWidth < 0) {
+			throw Error('borderWidth cannot be negative');
+		}
+	} else {
+		borderWidth = 0.75;
+	}
+
+	/** @type {string} */
+	export let borderColor = 'white';
+	/** @type {string|undefined} */
+	export let color = undefined;
+	/** @type {string[]} */
+	export let colorPalette = ['lightblue', 'darkblue'];
+
+	/** @type {number|undefined} */
+	export let opacity = undefined;
+	if (opacity) {
+		// if opacity was user-supplied
+		opacity = Number(opacity);
+		if (isNaN(opacity)) {
+			// input must be a number
+			throw Error('opacity must be a number');
+		} else if (opacity < 0) {
+			throw Error('opacity cannot be negative');
+		}
+	} else {
+		opacity = 1;
+	}
+
+	/** @type {string | undefined} */
+	export let pointClass = undefined; // User-defined styles
+
+	/** @type {boolean} */
+	export let showTooltip = true;
+
+	/**
+	 * @typedef {Object} TooltipItem
+	 * @property {string} id - The ID of the data field.
+	 * @property {boolean} [showColumnName] - Whether to show the column name.
+	 * @property {string} [valueClass] - The CSS class for the value.
+	 * @property {string} [fieldClass] - The CSS class for the field.
+	 * @property {string} [fmt] - The format for the value.
+	 * @property {string} [contentType] - The content type, default is 'text'.
+	 */
+
+	/** @type {TooltipItem[]} */
+	export let tooltip = [];
+
+	if (tooltip.length === 0) {
+		if (pointName) {
+			tooltip.push({ id: pointName, showColumnName: false, valueClass: 'font-bold text-sm' });
+		}
+		if (value) {
+			tooltip.push({ id: value, fmt: valueFmt });
+		}
+		if (sizeCol && sizeCol !== value) {
+			tooltip.push({ id: sizeCol, fmt: sizeFmt });
+		}
+	}
+
+	if (tooltip.length === 0) {
+		// If empty (pointName and value not set), hide tooltip
+		showTooltip = false;
+	}
+
+	/** @type {string | undefined} */
+	export let tooltipClass = undefined; // User-defined styles
+	/** @type {string} */
+	export let tooltipType = 'hover'; // click or hover
+
+	/** @type {object} */
+	const tooltipOptions = {
+		permanent: false, // Tooltip will only show on hover
+		direction: 'auto', // Automatically determines the best direction for the tooltip
+		sticky: true, // Tooltip follows the mouse
+		opacity: 1, // Opacity of the tooltip
+		className: `${tooltipClass}`,
+		interactive: true
+	};
+
+	/** @type {number} */
+	export let maxSize = 25;
+
+	/**
+	 * Determine bubble sizes.
+	 * @param {number} newPoint - The new point value.
+	 * @returns {number} - The size of the bubble.
+	 */
+	function bubbleSize(newPoint) {
+		return Math.sqrt((newPoint / maxData) * maxSizeSq);
+	}
+
+	let values, minValue, maxValue, colorScale, sizeExtents, maxData, maxSizeSq;
+
+	/**
+	 * Initialize the component.
+	 * @returns {Promise<void>}
+	 */
+	async function init() {
+		await data.fetch();
+		checkInputs(data, [lat, long]);
+		values = $data.map((d) => d[value]);
+		minValue = Math.min(...values);
+		maxValue = Math.max(...values);
+
+		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+
+		if (sizeCol) {
+			sizeExtents = getColumnExtentsLegacy(data, sizeCol);
+			maxData = sizeExtents[1];
+			maxSizeSq = Math.pow(maxSize, 2);
+		}
+	}
+</script>
+
+{#await Promise.all([map.initPromise, init()]) then}
+	{#each $data as item}
+		<Point
+			{map}
+			options={{
+				fillColor: color ?? (value ? colorScale(item[value]).hex() : uiColours.blue700), // Fill color of the circle
+				radius: sizeCol ? bubbleSize(item[sizeCol]) : size, // Radius of the circle in meters
+				fillOpacity: opacity,
+				opacity: opacity,
+				weight: borderWidth,
+				color: borderColor,
+				className: `outline-none ${pointClass}`
+			}}
+			coords={[item[lat], item[long]]}
+			onclick={() => {
+				onclick(item);
+				if (name) {
+					$inputs[name] = item;
+				}
+			}}
+			{tooltip}
+			{tooltipOptions}
+			{tooltipType}
+			{item}
+			{link}
+			{showTooltip}
+		/>
+	{/each}
+{:catch e}
+	<ErrorChart error={e} chartType="Point Map" />
+{/await}
