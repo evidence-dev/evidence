@@ -1,6 +1,7 @@
 const mdsvex = require('mdsvex');
 const { highlighter } = require('./src/utils/highlighter.cjs');
 const addScriptTags = require('./src/add-script-tags.cjs');
+const processMarkdownMetadata = require('./src/process-markdown-metadata.cjs');
 const processQueries = require('./src/process-queries.cjs');
 const addClasses = require('./src/add-classes.cjs');
 // This is includes future proofing to add support for Prism highlighting
@@ -32,7 +33,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 						'*': 'markdown'
 					}
 				],
-				[rehypeSlug],
+				rehypeSlug,
 				[
 					rehypeAutolinkHeadings,
 					{
@@ -42,7 +43,7 @@ module.exports = function evidencePreprocess(componentDevelopmentMode = false) {
 				]
 			]
 		}),
-
+		processMarkdownMetadata,
 		// Add both script tags to all markdown files, if they are missing
 		processFrontmatter()
 	];

@@ -3,24 +3,54 @@ module.exports = `
     MDSvex comes in handy here because it takes frontmatter and shoves it into the metadata object.
     This means that all we need to do is build out the expected page metadata
 -->
+
 <!-- Show title as h1 if defined, and not hidden -->
-{#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title) && metadata.hide_title !== true}
+{#if typeof metadata === "object" && (metadata.title || metadata.og?.title) && metadata.hide_title !== true}
 <h1 class="title">{metadata.title ?? metadata.og?.title}</h1>
 {/if}
+
 <svelte:head>
 <!-- Title has a default case; so we need to handle it in a special way -->
-{#if typeof metadata !== "undefined" && (metadata.title || metadata.og?.title)}
-<title>{metadata.title ?? metadata.og?.title}</title>
-<meta property="og:title" content={metadata.og?.title ?? metadata.title} />
-<meta name="twitter:title" content={metadata.og?.title ?? metadata.title} />
+{#if typeof metadata === "object" && (metadata.title || metadata.og?.title)}
+  <title>
+    {metadata.title ?? metadata.og?.title}
+  </title>
+  <meta
+    property="og:title"
+    content={metadata.og?.title ?? metadata.title}
+  />
+  <meta
+    name="twitter:title"
+    content={metadata.og?.title ?? metadata.title}
+  />
+{:else if typeof markdownMetadata === "object" && !!markdownMetadata.title}
+  <title>
+    {markdownMetadata.title}
+  </title>
+  <meta
+    property="og:title"
+    content={markdownMetadata.title}
+  />
+  <meta
+    name="twitter:title"
+    content={markdownMetadata.title}
+  />
 {:else}
 <!-- EITHER there is no metadata, or there is no specified style -->
-<title>Evidence</title>
+  <title>
+    Evidence
+  </title>
 {/if}
 
 <!-- default twitter cardtags -->
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@evidence_dev" />
+<meta 
+  name="twitter:card" 
+  content="summary"
+/>
+<meta 
+  name="twitter:site" 
+  content="@evidence_dev" 
+/>
 
 {#if typeof metadata === "object"}
 {#if metadata.description || metadata.og?.description}
@@ -38,9 +68,28 @@ module.exports = `
   />
 {/if}
 {#if metadata.og?.image}
-  <meta property="og:image" content={metadata.og?.image} />
-  <meta name="twitter:image" content={metadata.og?.image} />
+  <meta
+    property="og:image"
+    content={metadata.og?.image}
+  />
+  <meta
+    name="twitter:image"
+    content={metadata.og?.image}
+  />
 {/if}
+{:else if typeof markdownMetadata === "object" && !!markdownMetadata.description}
+  <meta
+    name="description"
+    content={markdownMetadata.description}
+  />
+  <meta
+    property="og:description"
+    content={markdownMetadata.description}
+  />
+  <meta
+    name="twitter:description"
+    content={markdownMetadata.description}
+  />
 {/if}
 </svelte:head>
 `;
