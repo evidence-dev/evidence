@@ -1,4 +1,3 @@
-import merge from 'lodash.merge';
 import { sharedPromise } from '@evidence-dev/sdk/utils';
 import debounce from 'lodash.debounce';
 import { fmt } from '@evidence-dev/component-utilities/formatting';
@@ -66,8 +65,8 @@ export class EvidenceMap {
 			startingZoom
 		);
 
-        const processedBasemap = this.processBasemapUrl(basemap);
-        Leaflet.tileLayer(processedBasemap, {
+		const processedBasemap = this.processBasemapUrl(basemap);
+		Leaflet.tileLayer(processedBasemap, {
 			subdomains: 'abcd',
 			maxZoom: 20
 		}).addTo(this.#map);
@@ -174,7 +173,7 @@ export class EvidenceMap {
 			fmt: item.fmt ?? 'num0', // Default formatting
 			formatColumnTitle: item.formatColumnTitle === undefined ? true : item.formatColumnTitle,
 			contentType: item.contentType ?? 'text', // Default to 'text'
-            linkLabel: item.linkLabel ?? undefined
+			linkLabel: item.linkLabel ?? undefined
 		}));
 
 		if (processedTooltip) {
@@ -211,26 +210,25 @@ export class EvidenceMap {
 		}
 	}
 
-    /**
-     * Processes the basemap URL to include retina resolutions and correct file extensions.
-     * @param {string} url - The original basemap URL provided by the user.
-     * @returns {string} The processed basemap URL.
-     */
-    processBasemapUrl(url) {
-        const pixelRatio = window.devicePixelRatio || 1;
-        let newUrl = url;
+	/**
+	 * Processes the basemap URL to include retina resolutions and correct file extensions.
+	 * @param {string} url - The original basemap URL provided by the user.
+	 * @returns {string} The processed basemap URL.
+	 */
+	processBasemapUrl(url) {
+		const pixelRatio = window.devicePixelRatio || 1;
+		let newUrl = url;
 
-        // Handling the {r} placeholder for retina displays
-        if (newUrl.includes('{r}')) {
-            newUrl = newUrl.replace('{r}', pixelRatio > 1 ? '@2x' : '');
-        }
+		// Handling the {r} placeholder for retina displays
+		if (newUrl.includes('{r}')) {
+			newUrl = newUrl.replace('{r}', pixelRatio > 1 ? '@2x' : '');
+		}
 
-        // Handling the {ext} placeholder for file extensions
-        if (newUrl.includes('{ext}')) {
-            newUrl = newUrl.replace('{ext}', 'png');  // Assuming 'png' as default, can be dynamic based on your needs
-        }
+		// Handling the {ext} placeholder for file extensions
+		if (newUrl.includes('{ext}')) {
+			newUrl = newUrl.replace('{ext}', 'png'); // Assuming 'png' as default, can be dynamic based on your needs
+		}
 
-        return newUrl;
-    }
-
+		return newUrl;
+	}
 }

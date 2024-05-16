@@ -43,8 +43,7 @@
 {#if error}
 	<ErrorChart {error} chartType="Area Map" />
 {:else}
-
-<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>		
-	<Areas {geoId} {areaCol} {...$$restProps} />
-</BaseMap>
+	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
+		<Areas {geoId} {areaCol} {...$$restProps} />
+	</BaseMap>
 {/if}

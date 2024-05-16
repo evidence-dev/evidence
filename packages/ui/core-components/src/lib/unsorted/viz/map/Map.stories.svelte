@@ -21,7 +21,10 @@
 	{@const data = Query.create(`SELECT * from locations order by point_name asc limit 20`, query)}
 	{@const la_zip_sales = Query.create(`select * from la_zip_sales`, query)}
 	{@const la_locations = Query.create(`select * from la_locations`, query)}
-	<BaseMap title="My Map" basemap={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}`}>
+	<BaseMap
+		title="My Map"
+		basemap={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}`}
+	>
 		<Points
 			data={la_locations}
 			lat="lat"
@@ -70,7 +73,7 @@
 			tooltipType="hover"
 			opacity="1"
 		/>
-        <Points data={la_locations} lat="lat" long="long" color="orange" />
+		<Points data={la_locations} lat="lat" long="long" color="orange" />
 	</BaseMap>
 
 	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" areaCol="zip_code" />
