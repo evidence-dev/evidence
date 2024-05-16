@@ -31,3 +31,4 @@ datasources:
   # Make to also add them to `package.json`.
   "@evidence-dev/csv": { }
   "@evidence-dev/duckdb": { }
+  "@evidence-dev/faker-datasource": { }

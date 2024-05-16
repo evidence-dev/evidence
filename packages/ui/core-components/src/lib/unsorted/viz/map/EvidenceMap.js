@@ -66,7 +66,8 @@ export class EvidenceMap {
 			startingZoom
 		);
 
-		Leaflet.tileLayer(basemap, {
+        const processedBasemap = this.processBasemapUrl(basemap);
+        Leaflet.tileLayer(processedBasemap, {
 			subdomains: 'abcd',
 			maxZoom: 20
 		}).addTo(this.#map);
@@ -172,7 +173,8 @@ export class EvidenceMap {
 			valueClass: item.valueClass ?? 'default-value-class', // Example default class
 			fmt: item.fmt ?? 'num0', // Default formatting
 			formatColumnTitle: item.formatColumnTitle === undefined ? true : item.formatColumnTitle,
-			contentType: item.contentType ?? 'text' // Default to 'text'
+			contentType: item.contentType ?? 'text', // Default to 'text'
+            linkLabel: item.linkLabel ?? undefined
 		}));
 
 		if (processedTooltip) {
@@ -183,7 +185,7 @@ export class EvidenceMap {
 						? `<span class='font-bold pr-5 ${processedTooltip[j].fieldClass}'>${processedTooltip[j].formatColumnTitle ? formatTitle(processedTooltip[j].title) : processedTooltip[j].title}</span>`
 						: '') +
 					(processedTooltip[j].contentType === 'link'
-						? `<a href='${item[processedTooltip[j].id]}' class='${processedTooltip[j].valueClass}'>${fmt(item[processedTooltip[j].id], processedTooltip[j].fmt)}</a>`
+						? `<a href='${item[processedTooltip[j].id]}' class='${processedTooltip[j].valueClass}'>${processedTooltip[j].linkLabel ? processedTooltip[j].linkLabel : fmt(item[processedTooltip[j].id], processedTooltip[j].fmt)}</a>`
 						: `<span class='${processedTooltip[j].valueClass}'>${fmt(item[processedTooltip[j].id], processedTooltip[j].fmt)}</span>`) +
 					`</div>`;
 			}
@@ -208,4 +210,27 @@ export class EvidenceMap {
 			console.error("tooltipType must be 'hover' or 'click'");
 		}
 	}
+
+    /**
+     * Processes the basemap URL to include retina resolutions and correct file extensions.
+     * @param {string} url - The original basemap URL provided by the user.
+     * @returns {string} The processed basemap URL.
+     */
+    processBasemapUrl(url) {
+        const pixelRatio = window.devicePixelRatio || 1;
+        let newUrl = url;
+
+        // Handling the {r} placeholder for retina displays
+        if (newUrl.includes('{r}')) {
+            newUrl = newUrl.replace('{r}', pixelRatio > 1 ? '@2x' : '');
+        }
+
+        // Handling the {ext} placeholder for file extensions
+        if (newUrl.includes('{ext}')) {
+            newUrl = newUrl.replace('{ext}', 'png');  // Assuming 'png' as default, can be dynamic based on your needs
+        }
+
+        return newUrl;
+    }
+
 }

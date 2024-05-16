@@ -9,6 +9,12 @@ sidebar_position: 1
 <BaseMap height=300/>
 ```
 
+```sql la_locations
+select * from la_locations
+```
+
+<PointMap data={la_locations} lat=lat long=long/>
+
 ## Examples
 
 ### Color Scales
