@@ -1,21 +1,34 @@
 ---
-title: Point Map
+title: Bubble Map
 sidebar_position: 1
 ---
 
-<PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200/>
-
-```html
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=eur
     value=sales 
-    valueFmt=usd 
+    valueFmt=eur
     pointName=point_name 
-    height=200
+    height=300
+/>
+
+```html
+<BubbleMap 
+    data={la_locations} 
+    lat=lat 
+    long=long 
+    size=sales 
+    sizeFmt=eur
+    value=sales 
+    valueFmt=eur
+    pointName=point_name 
+    height=300
 />
 ```
+
 
 ```sql la_locations
 select *, 'https://www.google.com/search?q=' || point_name as link_col from la_locations
@@ -27,12 +40,12 @@ select *, 'https://www.google.com/search?q=' || point_name as link_col from la_l
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<PointMap data={la_locations} lat=lat long=long value=sales valueFmt=usd pointName=point_name height=200 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
+<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name height=300 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
 ```svelte
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat long=long 
     value=sales 
@@ -46,14 +59,16 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 ### Custom Tooltip
 
 #### `tooltipType=hover`
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=usd 
     value=sales 
-    valueFmt=usd 
+    valueFmt=usd
     pointName=point_name 
-    height=200
+    height=300
     tooltipType=hover
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -63,14 +78,16 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 />
 
 ```svelte
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
     value=sales 
     valueFmt=usd 
+    size=sales 
+    sizeFmt=usd 
     pointName=point_name 
-    height=200
+    height=300
     tooltipType=hover
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -81,14 +98,16 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 ```
 
 #### With clickable link and `tooltipType=click`
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
     value=sales 
     valueFmt=usd 
+    size=sales 
+    sizeFmt=usd 
     pointName=point_name 
-    height=200
+    height=300
     tooltipType=click
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -98,14 +117,16 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 />
 
 ```svelte
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
     value=sales 
     valueFmt=usd 
+    size=sales 
+    sizeFmt=usd 
     pointName=point_name 
-    height=200
+    height=300
     tooltipType=click
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -117,76 +138,112 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
 
 ### Custom Color Palette
 
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
     value=sales 
     valueFmt=usd 
+    size=sales 
+    sizeFmt=usd 
     pointName=point_name 
-    height=200
+    height=300
     colorPalette={['yellow','orange','red','darkred']}
 />
 
 ```svelte
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
     value=sales 
     valueFmt=usd 
     pointName=point_name 
-    height=200
+    height=300
     colorPalette={['yellow','orange','red','darkred']}
 />
 ```
 
 ### Custom Styling
 
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=usd
     pointName=point_name 
-    height=200
+    height=300
     color=#128c2b
-    size=10
-    opacity=0.6
-    borderWidth=0
+    opacity=1
+    borderWidth=1
+    borderColor=black
 />
 
 ```svelte
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=usd
     pointName=point_name 
-    height=200
+    height=300
     color=#128c2b
-    size=10
-    opacity=0.6
-    borderWidth=0
+    opacity=1
+    borderWidth=1
+    borderColor=black
+/>
+```
+
+### Max Bubble Size
+
+<BubbleMap 
+    data={la_locations} 
+    lat=lat 
+    long=long 
+    size=sales 
+    sizeFmt=usd
+    pointName=point_name 
+    height=300
+    maxSize=10
+/>
+
+```svelte
+<BubbleMap 
+    data={la_locations} 
+    lat=lat 
+    long=long 
+    size=sales 
+    sizeFmt=usd
+    pointName=point_name 
+    height=300
+    maxSize=10
 />
 ```
 
 ### Link Drilldown
 Pass in a `link` column to enable navigation on click of the point. These can be absolute or relative URLs
 
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=usd
     link=link_col 
-    height=200
+    height=300
 />
 
 ```svelte
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=usd
     link=link_col 
-    height=200
+    height=300
 />
 ```
 
@@ -194,21 +251,25 @@ Pass in a `link` column to enable navigation on click of the point. These can be
 Use the `name` prop to set an input name for the map - when a point is clicked, it will set the input value to that row of data
 
 ```svelte
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=usd
     name=my_point_map 
-    height=200
+    height=300
 />
 ```
 
-<PointMap 
+<BubbleMap 
     data={la_locations} 
     lat=lat 
     long=long 
+    size=sales 
+    sizeFmt=usd
     name=my_point_map 
-    height=200
+    height=300
 />
 
 *Click a point on the map to see the input value get updated:*
@@ -221,6 +282,7 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
   
 {inputs.my_point_map.point_name}
 
+
 ```filtered_locations
 select * from ${la_locations}
 where point_name = '${inputs.my_point_map.point_name}'
@@ -231,7 +293,7 @@ where point_name = '${inputs.my_point_map.point_name}'
 
 ## Options
 
-### Points
+### Bubbles
 <PropListing
 name="data"
 required
@@ -241,10 +303,49 @@ Query result, referenced using curly braces
 </PropListing>
 
 <PropListing
+name="lat"
+required
+options="column name"
+>
+Column containing latitude values
+</PropListing>
+
+<PropListing
+name="long"
+required
+options="column name"
+>
+Column containing longitude values
+</PropListing>
+
+<PropListing
+name="size"
+required
+options="column name"
+>
+Column that determines the size displayed for each point.
+</PropListing>
+
+<PropListing
+name="sizeFmt"
+options="format string"
+>
+Format string for displaying the size value in tooltips.
+</PropListing>
+
+<PropListing
+name="maxSize"
+options="number"
+defaultValue=20
+>
+Maximum size of the bubbles
+</PropListing>
+
+<PropListing
 name="value"
 options="column name"
 >
-Column that determines the value displayed at each point.
+Column that determines the value displayed at each point (used for color scale)
 </PropListing>
 
 <PropListing
@@ -266,6 +367,7 @@ Array of colors used for theming the points based on data <code></code>
 <PropListing
 name="min"
 options="number"
+defaultValue="min of value column"
 >
 Minimum value to use for the color scale.
 </PropListing>
@@ -273,6 +375,7 @@ Minimum value to use for the color scale.
 <PropListing
 name="max"
 options="number"
+defaultValue="max of value column"
 >
 Maximum value to use for the color scale.
 </PropListing>
@@ -309,16 +412,9 @@ Color for the points. Use when you want all points to be the same color.
 </PropListing>
 
 <PropListing
-name="size"
-options="number"
-defaultValue=5
->
-Size of the points
-</PropListing>
-
-<PropListing
 name="borderWidth"
 options="pixel value"
+defaultValue=0.75
 >
 Width of the border around each point.
 </PropListing>
@@ -326,6 +422,7 @@ Width of the border around each point.
 <PropListing
 name="borderColor"
 options="CSS color value"
+defaultVallue="white"
 >
 Color of the border around each point.
 </PropListing>
@@ -333,6 +430,7 @@ Color of the border around each point.
 <PropListing
 name="opacity"
 options="number between 0 and 1"
+defaultValue=0.8
 >
 Opacity of the points.
 </PropListing>
@@ -340,7 +438,7 @@ Opacity of the points.
 ### Tooltips
 <PropListing
 name="showTooltip"
-options="boolean"
+options={['true', 'false']}
 defaultValue=true
 >
 Whether to show tooltips
