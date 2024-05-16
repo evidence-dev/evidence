@@ -3,4 +3,4 @@
 '@evidence-dev/components': patch
 ---
 
-Add defaulValue to DateRange
+Add defaultValue to DateRange
