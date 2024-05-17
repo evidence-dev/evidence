@@ -115,10 +115,10 @@
 		)
 	);
 	onMount(() =>
-		inputs.subscribe(($i) => {
-			const providedValues = Array.isArray($i[name].rawValues)
-				? $i[name]?.rawValues
-				: [$i[name]?.rawValues];
+		inputs.subscribe((i) => {
+			const providedValues = Array.isArray(i[name]?.rawValues)
+				? i[name]?.rawValues
+				: [i[name]?.rawValues];
 			const knownValues = $selectedOptions;
 
 			if (
@@ -282,6 +282,8 @@
 		);
 	}
 
+	const DISPLAYED_OPTIONS = 5;
+
 	function selectAllOptions() {
 		$queryOptions.forEach((opt) => {
 			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
@@ -364,20 +366,42 @@
 						<Command.List>
 							<Command.Empty>No results found.</Command.Empty>
 							<Command.Group>
-								<VirtualList height="160px" items={$options} let:item={option}>
-									<DropdownOptionDisplay
-										value={option?.value}
-										valueLabel={option?.label}
-										handleSelect={({ value, label }) => {
-											select({ value, label });
-											if (!multiple) open = false;
-										}}
-										{multiple}
-										active={$selectedOptions.some(
-											(x) => x.value === option.value && x.label === option.label
-										)}
-									/>
-								</VirtualList>
+								{#if $options.length <= DISPLAYED_OPTIONS}
+									{#each $options as option, i}
+										<DropdownOptionDisplay
+											id={i}
+											value={option.value}
+											valueLabel={option.label}
+											handleSelect={({ value, label }) => {
+												select({ value, label });
+												if (!multiple) open = false;
+											}}
+											{multiple}
+											active={$selectedOptions.some(
+												(x) => x.value === option.value && x.label === option.label
+											)}
+										/>
+									{/each}
+								{:else}
+									<VirtualList
+										height={`${DISPLAYED_OPTIONS * 32}px`}
+										items={$options}
+										let:item={option}
+									>
+										<DropdownOptionDisplay
+											value={option?.value}
+											valueLabel={option?.label}
+											handleSelect={({ value, label }) => {
+												select({ value, label });
+												if (!multiple) open = false;
+											}}
+											{multiple}
+											active={$selectedOptions.some(
+												(x) => x.value === option.value && x.label === option.label
+											)}
+										/>
+									</VirtualList>
+								{/if}
 							</Command.Group>
 							{#if multiple}
 								{#if !disableSelectAll}

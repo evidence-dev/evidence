@@ -62,6 +62,9 @@
 	<Dropdown name="test">
 		<DropdownOption value="All" />
 		<DropdownOption value="Top 100" />
+		<DropdownOption value="Double line breaking option" />
+		<DropdownOption value="Triple line breaking option Triple line breaking option" />
+		<DropdownOption value="Top 1002" />
 	</Dropdown>
 </Story>
 
