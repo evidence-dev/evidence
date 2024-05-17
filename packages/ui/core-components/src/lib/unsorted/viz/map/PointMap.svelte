@@ -12,22 +12,19 @@
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	export let data;
 	if (!data) {
-		error =
-			'data is required';
+		error = 'data is required';
 	}
 
 	/** @type {string|undefined} */
 	export let lat = undefined; // column containing lat values
 	if (!lat) {
-		error =
-			'lat is required (column containing latitude data)';
+		error = 'lat is required (column containing latitude data)';
 	}
 
 	/** @type {string|undefined} */
 	export let long = undefined; // column containing long values
 	if (!long) {
-		error =
-			'long is required (column containing longitude data)';
+		error = 'long is required (column containing longitude data)';
 	}
 
 	/** @type {number} */

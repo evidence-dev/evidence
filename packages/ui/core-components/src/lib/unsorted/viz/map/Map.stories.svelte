@@ -72,7 +72,13 @@
 		<Points data={la_locations} lat="lat" long="long" color="orange" />
 	</BaseMap>
 
-	<AreaMap data={la_zip_sales} geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json" value=sales geoId="ZCTA5CE10" areaCol="zip_code" />
+	<AreaMap
+		data={la_zip_sales}
+		geoJsonUrl="https://evd-geojson.b-cdn.net/ca_california_zip_codes_geo_1.min.json"
+		value="sales"
+		geoId="ZCTA5CE10"
+		areaCol="zip_code"
+	/>
 	<PointMap data={la_locations} lat="lat" long="long" />
 	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" />
 </Story>
