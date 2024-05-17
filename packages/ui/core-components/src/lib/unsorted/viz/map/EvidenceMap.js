@@ -97,6 +97,14 @@ export class EvidenceMap {
      * Dynamically adjusts the map's view to ensure all bounds are visible.
      */
     updateBounds = debounce(() => {
+        this.#bounds = Leaflet.latLngBounds(); // Reset bounds to recalculate
+
+        this.#map.eachLayer(layer => {
+            if (layer instanceof Leaflet.Marker || layer instanceof Leaflet.CircleMarker || layer instanceof Leaflet.GeoJSON) {
+                this.#bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
+            }
+        });
+
         if (this.#bounds.isValid()) {
             this.#map.fitBounds(this.#bounds);
         } else {
