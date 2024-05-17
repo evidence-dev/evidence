@@ -236,14 +236,14 @@
 		}
 	}
 
-		/**
+	/**
 	 * Initializes the input store with default values based on the keys of the item.
 	 * Each key in the item will be set to true in the specified input store entry.
 	 *
 	 * @param {Object} item - The object whose keys will be used to set default values.
 	 * @param {string} name - The key under which to store the defaults in the input store.
 	 */
-	 function setInputDefault(item, name) {
+	function setInputDefault(item, name) {
 		$inputs[name] = Object.fromEntries(Object.keys(item).map((key) => [key, true]));
 	}
 
@@ -255,7 +255,12 @@
 	 * @param {string} name - The store key under which to set the item.
 	 */
 	function updateInput(item, name) {
-		$inputs[name] = Object.fromEntries(Object.entries(item).map(([key, value]) => [key, typeof value === 'string' ? value.replaceAll("'", "''") : value]))
+		$inputs[name] = Object.fromEntries(
+			Object.entries(item).map(([key, value]) => [
+				key,
+				typeof value === 'string' ? value.replaceAll("'", "''") : value
+			])
+		);
 	}
 
 	/**
@@ -274,7 +279,6 @@
 		});
 		setInputDefault(item, name);
 	}
-
 </script>
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->

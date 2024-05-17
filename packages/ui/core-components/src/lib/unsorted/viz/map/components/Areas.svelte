@@ -249,7 +249,12 @@
 	 * @param {string} name - The store key under which to set the item.
 	 */
 	function updateInput(item, name) {
-		$inputs[name] = Object.fromEntries(Object.entries(item).map(([key, value]) => [key, typeof value === 'string' ? value.replaceAll("'", "''") : value]))
+		$inputs[name] = Object.fromEntries(
+			Object.entries(item).map(([key, value]) => [
+				key,
+				typeof value === 'string' ? value.replaceAll("'", "''") : value
+			])
+		);
 	}
 
 	/**
@@ -272,49 +277,49 @@
 
 <!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
 {#await Promise.all([map.initPromise, init(), data.fetch()]) then}
-		{#each filteredGeoJson as feature}
-			{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
-			<MapArea
-				{map}
-				{feature}
-				{item}
-				{name}
-				areaOptions={{
-					fillColor: color ?? colorScale(item[value]).hex(),
-					fillOpacity: opacity,
-					opacity: opacity,
-					weight: borderWidth,
-					color: borderColor,
-					className: `outline-none ${areaClass}`
-				}}
-				selectedAreaOptions={{
-					fillColor: selectedColor,
-					fillOpacity: selectedOpacity,
-					opacity: selectedOpacity,
-					weight: selectedBorderWidth,
-					color: selectedBorderColor,
-					className: `outline-none ${selectedAreaClass}`
-				}}
-				onclick={() => {
-					onclick(item);
-				}}
-				setInput={() => {
-					if (name) {
-						updateInput(item, name);
-					}
-				}}
-				unsetInput={() => {
-					if (name) {
-						unsetInput(item, name);
-					}
-				}}
-				{tooltip}
-				{tooltipOptions}
-				{tooltipType}
-				{showTooltip}
-				{link}
-			/>
-		{/each}
+	{#each filteredGeoJson as feature}
+		{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
+		<MapArea
+			{map}
+			{feature}
+			{item}
+			{name}
+			areaOptions={{
+				fillColor: color ?? colorScale(item[value]).hex(),
+				fillOpacity: opacity,
+				opacity: opacity,
+				weight: borderWidth,
+				color: borderColor,
+				className: `outline-none ${areaClass}`
+			}}
+			selectedAreaOptions={{
+				fillColor: selectedColor,
+				fillOpacity: selectedOpacity,
+				opacity: selectedOpacity,
+				weight: selectedBorderWidth,
+				color: selectedBorderColor,
+				className: `outline-none ${selectedAreaClass}`
+			}}
+			onclick={() => {
+				onclick(item);
+			}}
+			setInput={() => {
+				if (name) {
+					updateInput(item, name);
+				}
+			}}
+			unsetInput={() => {
+				if (name) {
+					unsetInput(item, name);
+				}
+			}}
+			{tooltip}
+			{tooltipOptions}
+			{tooltipType}
+			{showTooltip}
+			{link}
+		/>
+	{/each}
 {:catch e}
 	<ErrorChart error={e} chartType="Area Map" />
 {/await}

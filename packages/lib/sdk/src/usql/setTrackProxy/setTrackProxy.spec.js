@@ -39,7 +39,7 @@ describe('setTrackProxy', () => {
 		it('should JSON serialize properly', () => {
 			const v = setTrackProxy();
 			v.abc = 'something';
-			const foo = {abc: 'something'};
+			const foo = { abc: 'something' };
 			expect(JSON.stringify(v)).toEqual(JSON.stringify(foo));
 		});
 	});
