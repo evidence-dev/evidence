@@ -293,7 +293,7 @@
 </script>
 
 {#await Promise.all([map.initPromise, loadGeoJson()]) then}
-	{#await Promise.all([init()]) then}
+	{#await Promise.all([init(), data.fetch()]) then}
 		{#each filteredGeoJson as feature}
 		{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
 			<MapArea

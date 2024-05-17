@@ -217,87 +217,89 @@
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
-		await data.fetch();
-		checkInputs(data, [lat, long]);
-		values = $data.map((d) => d[value]);
-		minValue = Math.min(...values);
-		maxValue = Math.max(...values);
+		if (data) {
+			await data.fetch();
+			checkInputs(data, [lat, long]);
+			values = $data.map((d) => d[value]);
+			minValue = Math.min(...values);
+			maxValue = Math.max(...values);
 
-		colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
+			colorScale = chroma.scale(colorPalette).domain([min ?? minValue, max ?? maxValue]);
 
-		if (sizeCol) {
-			sizeExtents = getColumnExtentsLegacy(data, sizeCol);
-			maxData = sizeExtents[1];
-			maxSizeSq = Math.pow(maxSize, 2);
-		}
+			if (sizeCol) {
+				sizeExtents = getColumnExtentsLegacy(data, sizeCol);
+				maxData = sizeExtents[1];
+				maxSizeSq = Math.pow(maxSize, 2);
+			}
 
-		if(name && $data.length > 0){
-			setInputDefault($data[0], name)
+			if (name && $data.length > 0) {
+				setInputDefault($data[0], name);
+			}
 		}
 	}
 
-/**
- * Initializes the input store with default values based on the keys of the item.
- * Each key in the item will be set to true in the specified input store entry.
- *
- * @param {Object} item - The object whose keys will be used to set default values.
- * @param {string} name - The key under which to store the defaults in the input store.
- */
- function setInputDefault(item, name){
-    $inputs[name] = {};
-    Object.keys(item).forEach(key => {
-        $inputs[name][key] = true;  // Set all properties to true
-    });
-}
+	/**
+	 * Initializes the input store with default values based on the keys of the item.
+	 * Each key in the item will be set to true in the specified input store entry.
+	 *
+	 * @param {Object} item - The object whose keys will be used to set default values.
+	 * @param {string} name - The key under which to store the defaults in the input store.
+	 */
+	function setInputDefault(item, name) {
+		$inputs[name] = {};
+		Object.keys(item).forEach(key => {
+			$inputs[name][key] = true;  // Set all properties to true
+		});
+	}
 
-/**
-   * Replaces all single quotes with two single quotes in the values of an object.
-   * 
-   * @param {Object} obj - The object whose values need to be sanitized.
-   * @returns {Object} The sanitized object with all single quotes replaced by two single quotes in the string values.
-   */
-   function sanitizeObject(obj) {
-    const sanitizedObj = {};
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        // Ensure the value is a string before replacing quotes
-        sanitizedObj[key] = typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
-      }
-    }
-    return sanitizedObj;
-  }
-  
-/**
- * Updates the input store with a new item under the specified name.
- * This function directly assigns the item to the input store, replacing any existing value.
- *
- * @param {Object} item - The new data object to set in the store.
- * @param {string} name - The store key under which to set the item.
- */
-function updateInput(item, name){
-    $inputs[name] = sanitizeObject(item);
-}
+	/**
+	 * Replaces all single quotes with two single quotes in the values of an object.
+	 * 
+	 * @param {Object} obj - The object whose values need to be sanitized.
+	 * @returns {Object} The sanitized object with all single quotes replaced by two single quotes in the string values.
+	 */
+	function sanitizeObject(obj) {
+		const sanitizedObj = {};
+		for (const key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				// Ensure the value is a string before replacing quotes
+				sanitizedObj[key] = typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
+			}
+		}
+		return sanitizedObj;
+	}
 
-/**
- * Unsets an input in the store by deleting the entry and then reinitializing it
- * with default values based on the provided item's keys, set to true.
- *
- * @param {Object} item - The object whose keys will be used to reset the default values after unset.
- * @param {string} name - The key in the store to unset and then reset.
- */
-function unsetInput(item, name) {
-    inputs.update(values => {
-        if (values.hasOwnProperty(name)) {
-            delete values[name];
-        }
-        return values;
-    });
-    setInputDefault(item, name);
-}
+	/**
+	 * Updates the input store with a new item under the specified name.
+	 * This function directly assigns the item to the input store, replacing any existing value.
+	 *
+	 * @param {Object} item - The new data object to set in the store.
+	 * @param {string} name - The store key under which to set the item.
+	 */
+	function updateInput(item, name) {
+		$inputs[name] = sanitizeObject(item);
+	}
+
+	/**
+	 * Unsets an input in the store by deleting the entry and then reinitializing it
+	 * with default values based on the provided item's keys, set to true.
+	 *
+	 * @param {Object} item - The object whose keys will be used to reset the default values after unset.
+	 * @param {string} name - The key in the store to unset and then reset.
+	 */
+	function unsetInput(item, name) {
+		inputs.update(values => {
+			if (values.hasOwnProperty(name)) {
+				delete values[name];
+			}
+			return values;
+		});
+		setInputDefault(item, name);
+	}
 
 </script>
 
-{#await Promise.all([map.initPromise, init()]) then}
+{#await Promise.all([map.initPromise, data.fetch(), init()]) then}
 	{#each $data as item}
 		<Point
 			{map}
@@ -329,7 +331,7 @@ function unsetInput(item, name) {
 			}}
 			unsetInput={() => {
 				if (name) {
-					unsetInput(item,name);
+					unsetInput(item, name);
 				}
 			}}
 			{tooltip}
