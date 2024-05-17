@@ -90,7 +90,6 @@
 
 	// Selected State Styling Options
 
-
 	/** @type {number|undefined} */
 	export let selectedBorderWidth = 1;
 	// below step of converting to number is important, as accident strings cause bugs in leaflet rendering
@@ -129,8 +128,6 @@
 
 	/** @type {string | undefined} */
 	export let selectedAreaClass = undefined; // User-defined styles
-
-
 
 	/** @type {boolean} */
 	export let showTooltip = true;
@@ -226,9 +223,9 @@
 			.domain([min ?? Math.min(...values), max ?? Math.max(...values)]);
 
 		filteredGeoJson = processAreas();
-	
-		if(name && $data.length > 0){
-			setInputDefault($data[0], name)
+
+		if (name && $data.length > 0) {
+			setInputDefault($data[0], name);
 		}
 	}
 
@@ -239,30 +236,31 @@
 	 * @param {Object} item - The object whose keys will be used to set default values.
 	 * @param {string} name - The key under which to store the defaults in the input store.
 	 */
-	function setInputDefault(item, name){
+	function setInputDefault(item, name) {
 		$inputs[name] = {};
-		Object.keys(item).forEach(key => {
-			$inputs[name][key] = true;  // Set all properties to true
+		Object.keys(item).forEach((key) => {
+			$inputs[name][key] = true; // Set all properties to true
 		});
 	}
-	
+
 	/**
 	 * Replaces all single quotes with two single quotes in the values of an object.
-	 * 
+	 *
 	 * @param {Object} obj - The object whose values need to be sanitized.
 	 * @returns {Object} The sanitized object with all single quotes replaced by two single quotes in the string values.
 	 */
 	function sanitizeObject(obj) {
 		const sanitizedObj = {};
 		for (const key in obj) {
-		if (obj.hasOwnProperty(key)) {
-			// Ensure the value is a string before replacing quotes
-			sanitizedObj[key] = typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
-		}
+			if (Object.prototype.hasOwnProperty.call(obj, key)) {
+				// Ensure the value is a string before replacing quotes
+				sanitizedObj[key] =
+					typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
+			}
 		}
 		return sanitizedObj;
 	}
-	
+
 	/**
 	 * Updates the input store with a new item under the specified name.
 	 * This function directly assigns the item to the input store, replacing any existing value.
@@ -270,7 +268,7 @@
 	 * @param {Object} item - The new data object to set in the store.
 	 * @param {string} name - The store key under which to set the item.
 	 */
-	function updateInput(item, name){
+	function updateInput(item, name) {
 		$inputs[name] = sanitizeObject(item);
 	}
 
@@ -282,8 +280,8 @@
 	 * @param {string} name - The key in the store to unset and then reset.
 	 */
 	function unsetInput(item, name) {
-		inputs.update(values => {
-			if (values.hasOwnProperty(name)) {
+		inputs.update((values) => {
+			if (Object.prototype.hasOwnProperty.call(values, name)) {
 				delete values[name];
 			}
 			return values;
@@ -295,18 +293,14 @@
 {#await Promise.all([map.initPromise, loadGeoJson()]) then}
 	{#await Promise.all([init(), data.fetch()]) then}
 		{#each filteredGeoJson as feature}
-		{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
+			{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
 			<MapArea
 				{map}
 				{feature}
 				{item}
 				{name}
 				areaOptions={{
-					fillColor:
-						color ??
-						colorScale(
-							item[value]
-						).hex(),
+					fillColor: color ?? colorScale(item[value]).hex(),
 					fillOpacity: opacity,
 					opacity: opacity,
 					weight: borderWidth,
@@ -331,7 +325,7 @@
 				}}
 				unsetInput={() => {
 					if (name) {
-						unsetInput(item,name);
+						unsetInput(item, name);
 					}
 				}}
 				{tooltip}

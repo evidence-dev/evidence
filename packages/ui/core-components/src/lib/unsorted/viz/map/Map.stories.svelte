@@ -21,11 +21,8 @@
 	{@const data = Query.create(`SELECT * from locations order by point_name asc limit 20`, query)}
 	{@const la_zip_sales = Query.create(`select * from la_zip_sales where zip_code <> 90704`, query)}
 	{@const la_locations = Query.create(`select * from la_locations`, query)}
-	<BaseMap
-		title="My Map"
-		height=300
-	>
-		<!-- <Points
+	<BaseMap title="My Map" height="300">
+		<Points
 			data={la_locations}
 			lat="lat"
 			long="long"
@@ -34,8 +31,8 @@
 			size="20"
 			opacity="0.7"
 			borderWidth="0"
-		/> -->
-		<!-- <Bubbles
+		/>
+		<Bubbles
 			name="test"
 			{data}
 			lat="lat"
@@ -46,23 +43,21 @@
 			tooltipType="hover"
 			opacity="0.6"
 			colorPalette={['red', 'navy', 'purple']}
-		/> -->
-		<!-- <Points 
-                    name="test" 
-                    data={data} 
-                    lat=lat 
-                    long=long 
-                    color=orange
-                    pointSize=8
-                    pointScaleCol="sales"
-                    value=sales 
-                    valueFmt=eur
-                    tooltip={[
-                        {id: 'sales', title: 'My Sales'}
-                    ]}
-                    colorPalette={['lightblue','navy','purple']} 
-                    tooltipType=click
-                />  -->
+		/>
+		<Points
+			name="test"
+			{data}
+			lat="lat"
+			long="long"
+			color="orange"
+			pointSize="8"
+			pointScaleCol="sales"
+			value="sales"
+			valueFmt="eur"
+			tooltip={[{ id: 'sales', title: 'My Sales' }]}
+			colorPalette={['lightblue', 'navy', 'purple']}
+			tooltipType="click"
+		/>
 		<Areas
 			data={la_zip_sales}
 			areaCol="zip_code"
@@ -73,10 +68,10 @@
 			tooltipType="hover"
 			opacity="1"
 		/>
-		<!-- <Points data={la_locations} lat="lat" long="long" color="orange" /> -->
+		<Points data={la_locations} lat="lat" long="long" color="orange" />
 	</BaseMap>
 
-	<!-- <AreaMap data={la_zip_sales} geoId="ZCTA5CE10" areaCol="zip_code" />
+	<AreaMap data={la_zip_sales} geoId="ZCTA5CE10" areaCol="zip_code" />
 	<PointMap data={la_locations} lat="lat" long="long" />
-	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" /> -->
+	<BubbleMap data={la_locations} lat="lat" long="long" size="sales" />
 </Story>

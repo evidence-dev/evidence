@@ -108,7 +108,6 @@
 	/** @type {string | undefined} */
 	export let pointClass = undefined; // User-defined styles
 
-
 	// Selected point styling options:
 
 	/** @type {number|undefined} */
@@ -148,7 +147,6 @@
 
 	/** @type {string | undefined} */
 	export let selectedPointClass = undefined; // User-defined styles
-
 
 	/** @type {boolean} */
 	export let showTooltip = true;
@@ -247,23 +245,24 @@
 	 */
 	function setInputDefault(item, name) {
 		$inputs[name] = {};
-		Object.keys(item).forEach(key => {
-			$inputs[name][key] = true;  // Set all properties to true
+		Object.keys(item).forEach((key) => {
+			$inputs[name][key] = true; // Set all properties to true
 		});
 	}
 
 	/**
 	 * Replaces all single quotes with two single quotes in the values of an object.
-	 * 
+	 *
 	 * @param {Object} obj - The object whose values need to be sanitized.
 	 * @returns {Object} The sanitized object with all single quotes replaced by two single quotes in the string values.
 	 */
 	function sanitizeObject(obj) {
 		const sanitizedObj = {};
 		for (const key in obj) {
-			if (obj.hasOwnProperty(key)) {
+			if (Object.prototype.hasOwnProperty.call(obj, key)) {
 				// Ensure the value is a string before replacing quotes
-				sanitizedObj[key] = typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
+				sanitizedObj[key] =
+					typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
 			}
 		}
 		return sanitizedObj;
@@ -288,15 +287,14 @@
 	 * @param {string} name - The key in the store to unset and then reset.
 	 */
 	function unsetInput(item, name) {
-		inputs.update(values => {
-			if (values.hasOwnProperty(name)) {
+		inputs.update((values) => {
+			if (Object.prototype.hasOwnProperty.call(values, name)) {
 				delete values[name];
 			}
 			return values;
 		});
 		setInputDefault(item, name);
 	}
-
 </script>
 
 {#await Promise.all([map.initPromise, data.fetch(), init()]) then}

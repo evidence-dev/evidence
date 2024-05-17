@@ -29,7 +29,17 @@
 	export let name = undefined;
 
 	onMount(() => {
-		const marker = map.addCircle(item, name, options, selectedOptions, coords, onclick, setInput, unsetInput, item[link]);
+		const marker = map.addCircle(
+			item,
+			name,
+			options,
+			selectedOptions,
+			coords,
+			onclick,
+			setInput,
+			unsetInput,
+			item[link]
+		);
 		if (showTooltip) {
 			const ttip = map.buildTooltip(item, tooltip);
 			map.attachTooltip(marker, ttip, tooltipOptions, tooltipType);

@@ -29,7 +29,17 @@
 	export let name = undefined;
 
 	onMount(() => {
-		const area = map.addArea(item, name, feature, areaOptions, selectedAreaOptions, onclick, setInput, unsetInput, item[link]);
+		const area = map.addArea(
+			item,
+			name,
+			feature,
+			areaOptions,
+			selectedAreaOptions,
+			onclick,
+			setInput,
+			unsetInput,
+			item[link]
+		);
 		if (showTooltip) {
 			const ttip = map.buildTooltip(item, tooltip);
 			map.attachTooltip(area, ttip, tooltipOptions, tooltipType);
