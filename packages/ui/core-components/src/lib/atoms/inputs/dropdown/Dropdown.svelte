@@ -58,6 +58,12 @@
 
 	export let noDefault = false;
 
+	/**
+	 * When true, all values will be selected by default
+	 * @type {boolean}
+	 */
+	export let selectAllByDefault = false;
+
 	const state = dropdownOptionStore(multiple);
 	const { selectedOptions, options, addOption, removeOption, flagOption, select, deselectAll } =
 		state;
@@ -109,10 +115,10 @@
 		)
 	);
 	onMount(() =>
-		inputs.subscribe(($i) => {
-			const providedValues = Array.isArray($i[name].rawValues)
-				? $i[name]?.rawValues
-				: [$i[name]?.rawValues];
+		inputs.subscribe((i) => {
+			const providedValues = Array.isArray(i[name]?.rawValues)
+				? i[name]?.rawValues
+				: [i[name]?.rawValues];
 			const knownValues = $selectedOptions;
 
 			if (
@@ -140,6 +146,7 @@
 		label,
 		order = undefined,
 		where = undefined;
+
 	/** @type {import("@evidence-dev/component-utilities/buildQuery.js").QueryProps}*/
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
@@ -241,6 +248,11 @@
 					if (presentValues.length) return; // no need to take action
 				}
 
+				if (selectAllByDefault && multiple) {
+					selectAllOptions();
+					return;
+				}
+
 				if (noDefault) {
 					deselectAll();
 					return;
@@ -271,12 +283,11 @@
 	}
 
 	const DISPLAYED_OPTIONS = 5;
-	function handleDropDownHeight(options, numberOfDisplayedOptions) {
-		if (options.length < numberOfDisplayedOptions) {
-			return `${options.length * 32}px`;
-		} else {
-			return `${numberOfDisplayedOptions * 32}px`;
-		}
+
+	function selectAllOptions() {
+		$queryOptions.forEach((opt) => {
+			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
+		});
 	}
 </script>
 
@@ -355,37 +366,47 @@
 						<Command.List>
 							<Command.Empty>No results found.</Command.Empty>
 							<Command.Group>
-								<VirtualList
-									height={handleDropDownHeight($options, DISPLAYED_OPTIONS)}
-									displayedOptions={DISPLAYED_OPTIONS}
-									items={$options}
-									let:item={option}
-								>
-									<DropdownOptionDisplay
-										value={option?.value}
-										valueLabel={option?.label}
-										handleSelect={({ value, label }) => {
-											select({ value, label });
-											if (!multiple) open = false;
-										}}
-										{multiple}
-										active={$selectedOptions.some(
-											(x) => x.value === option.value && x.label === option.label
-										)}
-									/>
-								</VirtualList>
+								{#if $options.length <= DISPLAYED_OPTIONS}
+									{#each $options as option, i}
+										<DropdownOptionDisplay
+											id={i}
+											value={option.value}
+											valueLabel={option.label}
+											handleSelect={({ value, label }) => {
+												select({ value, label });
+												if (!multiple) open = false;
+											}}
+											{multiple}
+											active={$selectedOptions.some(
+												(x) => x.value === option.value && x.label === option.label
+											)}
+										/>
+									{/each}
+								{:else}
+									<VirtualList
+										height={`${DISPLAYED_OPTIONS * 32}px`}
+										items={$options}
+										let:item={option}
+									>
+										<DropdownOptionDisplay
+											value={option?.value}
+											valueLabel={option?.label}
+											handleSelect={({ value, label }) => {
+												select({ value, label });
+												if (!multiple) open = false;
+											}}
+											{multiple}
+											active={$selectedOptions.some(
+												(x) => x.value === option.value && x.label === option.label
+											)}
+										/>
+									</VirtualList>
+								{/if}
 							</Command.Group>
 							{#if multiple}
 								{#if !disableSelectAll}
 									<div class="-mx-1 h-px bg-gray-200" />
-									<Command.Item
-										class="justify-center text-center"
-										onSelect={() => {
-											$queryOptions.forEach((opt) => {
-												flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
-											});
-										}}
-									>
+									<Command.Item class="justify-center text-center" onSelect={selectAllOptions}>
 										Select all
 									</Command.Item>
 								{/if}

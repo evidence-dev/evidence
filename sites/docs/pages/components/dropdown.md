@@ -247,6 +247,15 @@ SQL where fragment to filter options by (e.g., where sales > 40000)
 Hide the component when the report is printed
 
 </PropListing>
+<PropListing 
+    name="selectAllByDefault"
+    options={["true", "false"]}
+    defaultValue="false"
+>
+
+When `multiple` is `true`, select all available options
+
+</PropListing>
 
 # DropdownOption
 
