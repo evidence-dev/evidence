@@ -6,10 +6,25 @@
 	import Areas from './components/Areas.svelte';
 	import BaseMap from './BaseMap.svelte';
 	import ErrorChart from '../core/ErrorChart.svelte';
+	
+	let error;
+
+	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
+	export let data;
+	if (!data) {
+		error =
+			'data is required';
+	}
+
+	/** @type {string} */
+	export let geoJsonUrl = undefined;
+	if (!geoJsonUrl) {
+		error =
+			`geoJsonUrl is required. This is the path to your geoJSON file. If using a local geoJSON file, place it in the static directory and reference it as geoJsonUrl='/yourFileName.json'`;
+	}
 
 	/** @type {string|undefined} */
 	export let geoId = undefined;
-	let error;
 
 	if (!geoId) {
 		error =
@@ -44,6 +59,6 @@
 	<ErrorChart {error} chartType="Area Map" />
 {:else}
 	<BaseMap {startingLat} {startingLong} {startingZoom} {height} {basemap} {title}>
-		<Areas {geoId} {areaCol} {...$$restProps} />
+		<Areas {data} {geoJsonUrl} {geoId} {areaCol} {...$$restProps} />
 	</BaseMap>
 {/if}
