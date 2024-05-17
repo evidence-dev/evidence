@@ -12,8 +12,6 @@ export const setTrackProxy = (
 
 	const wrapped = Object.assign(() => {}, root ?? {});
 
-	console.log(wrapped());
-
 	/** @type {Array<string|number|symbol>} */
 	const modifiedKeys = Object.keys(wrapped);
 	const self = new Proxy(wrapped, {
