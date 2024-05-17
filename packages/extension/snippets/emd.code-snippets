@@ -356,5 +356,33 @@
 		"prefix": "/Delta",
 		"body": ["<Delta data={${1:query_name}} column=${2:column_name} fmt=${3:usd}/>"],
 		"description": "Delta Component"
-	}
+	},
+	"AreaMap": {
+		"prefix": "/AreaMap",
+		"body": [
+			"<AreaMap\n\tdata={${1:query_name}}\n\tgeoJsonUrl=${2:'path/to/geoJson/'}\n\tgeoId=${3:geoJsonField}\n\tareaCol=${4:column}\n\tvalue=${5:column}\n/>\n\n"
+		],
+		"description": "Insert AreaMap"
+	},
+	"PointMap": {
+		"prefix": "/PointMap",
+		"body": [
+			"<PointMap\n\tdata={${1:query_name}}\n\tlat=${2:column}\n\tlong=${3:column}\n\tvalue=${4:column}\n/>\n\n"
+		],
+		"description": "Insert PointMap"
+	},
+	"BubbleMap": {
+		"prefix": "/BubbleMap",
+		"body": [
+			"<BubbleMap\n\tdata={${1:query_name}}\n\tlat=${2:column}\n\tlong=${3:column}\n\tsize=${4:column}\n/>\n\n"
+		],
+		"description": "Insert BubbleMap"
+	},
+	"BaseMap": {
+		"prefix": "/BaseMap",
+		"body": [
+			"<BaseMap>\n\t<Areas data={${1:query_name}} geoJsonUrl='path/to/geoJson' geoId=geoJsonField areaCol=column_name/>\n\t<Points data={${1:query_name}} lat=lat long=long/>\n</BaseMap>"
+		],
+		"description": "Insert Map"
+	},
 }
