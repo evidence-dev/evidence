@@ -28,6 +28,9 @@ export class EvidenceMap {
     /** Manages the bounds of the map to adjust the view based on the layers added. */
     #bounds;
 
+    /** Tracks whether the initial view has been set based on data bounds. */
+    #initialViewSet = false;
+
     constructor() {
         this.#lastClickedMarker = null;
         this.#markerStyles = new Map();
@@ -57,7 +60,7 @@ export class EvidenceMap {
      * @param {number} startingZoom - The starting zoom level for the map.
      * @returns {Promise<void>}
      */
-    async init(mapEl, basemap, startingCoords, startingZoom) {
+    async init(mapEl, basemap, startingCoords, startingZoom, userDefinedView = false) {
         if (!Leaflet) {
             this.#sharedPromise.start();
             Leaflet = await import('leaflet').then(m => m.default).catch((e) => {
@@ -73,6 +76,9 @@ export class EvidenceMap {
 
         this.#mapEl = mapEl;
         this.#map = Leaflet.map(this.#mapEl, { zoomControl: false }).setView(startingCoords, startingZoom);
+        if (userDefinedView) {
+            this.#initialViewSet = true; // Mark initial view as set
+        }
 
         const processedBasemap = this.processBasemapUrl(basemap);
         Leaflet.tileLayer(processedBasemap, {
@@ -164,7 +170,9 @@ export class EvidenceMap {
         }).addTo(this.#map);
 
         this.#bounds.extend(geoJsonLayer.getBounds());
-        this.updateBounds();
+        if(!this.#initialViewSet){
+            this.updateBounds();
+        }
         geoJsonLayer.bringToBack();
         return geoJsonLayer;
     }
@@ -215,13 +223,11 @@ export class EvidenceMap {
         });
 
         // Extend bounds only if coords are valid
-        if (coords && Array.isArray(coords) && coords.length === 2) {
+        if (coords && Array.isArray(coords) && coords.length === 2 && !this.#initialViewSet) {
             this.#bounds.extend(coords);
             this.updateBounds();
-        } else {
-            console.error('Invalid coordinates', coords);
         }
-
+        
         return marker;
     }
 

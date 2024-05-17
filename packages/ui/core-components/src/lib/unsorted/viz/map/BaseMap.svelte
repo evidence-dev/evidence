@@ -13,11 +13,22 @@
 	let mapElement;
 
 	/** @type {number} */
-	export let startingLat = 39.07788448885593;
+	export let startingLat = 39.077;
 	/** @type {number} */
-	export let startingLong = -77.4064950906748;
+	export let startingLong = -180;
 	/** @type {number} */
 	export let startingZoom = 5;
+
+	const defaultLat = 39.077;
+	const defaultLong = -180;
+	const defaultZoom = 5;
+
+	// Determine if the initial view is user-defined
+	const userDefinedView = (
+		startingLat !== defaultLat ||
+		startingLong !== defaultLong ||
+		startingZoom !== defaultZoom
+	);
 
 	/** @type {number} */
 	export let height = 500; // height in pixels
@@ -38,7 +49,7 @@
 	onMount(async () => {
 		if (browser) {
 			try {
-				await evidenceMap.init(mapElement, basemap, [startingLat, startingLong], startingZoom);
+				await evidenceMap.init(mapElement, basemap, [startingLat, startingLong], startingZoom, userDefinedView);
 				return () => evidenceMap.cleanup();
 			} catch (e) {
 				error = e.message;
