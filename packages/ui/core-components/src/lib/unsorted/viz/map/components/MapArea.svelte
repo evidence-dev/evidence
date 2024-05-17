@@ -6,8 +6,14 @@
 	export let feature = undefined;
 	/** @type {object|undefined} */
 	export let areaOptions = undefined;
+	/** @type {object|undefined} */
+	export let selectedAreaOptions = undefined;
 	/** @type {Function|undefined} */
 	export let onclick = undefined;
+	/** @type {Function|undefined} */
+	export let setInput = undefined;
+	/** @type {Function|undefined} */
+	export let unsetInput = undefined;
 	/** @type {object|undefined} */
 	export let item = undefined;
 	/** @type {Array<object>|undefined} */
@@ -20,9 +26,10 @@
 	export let showTooltip = undefined;
 	/** @type {string|undefined} */
 	export let link = undefined; // link column
+	export let name = undefined;
 
 	onMount(() => {
-		const area = map.addArea(feature, areaOptions, onclick, item[link]);
+		const area = map.addArea(item, name, feature, areaOptions, selectedAreaOptions, onclick, setInput, unsetInput, item[link]);
 		if (showTooltip) {
 			const ttip = map.buildTooltip(item, tooltip);
 			map.attachTooltip(area, ttip, tooltipOptions, tooltipType);

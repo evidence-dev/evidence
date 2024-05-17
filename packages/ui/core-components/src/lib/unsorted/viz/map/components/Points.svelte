@@ -108,6 +108,48 @@
 	/** @type {string | undefined} */
 	export let pointClass = undefined; // User-defined styles
 
+
+	// Selected point styling options:
+
+	/** @type {number|undefined} */
+	export let selectedBorderWidth = undefined;
+	if (selectedBorderWidth) {
+		// if selectedBorderWidth was user-supplied
+		selectedBorderWidth = Number(selectedBorderWidth);
+		if (isNaN(selectedBorderWidth)) {
+			// input must be a number
+			throw Error('selectedBorderWidth must be a number');
+		} else if (selectedBorderWidth < 0) {
+			throw Error('selectedBorderWidth cannot be negative');
+		}
+	} else {
+		selectedBorderWidth = 0.75;
+	}
+
+	/** @type {string} */
+	export let selectedBorderColor = '#ab1818';
+	/** @type {string|undefined} */
+	export let selectedColor = '#d42a2a';
+
+	/** @type {number|undefined} */
+	export let selectedOpacity = undefined;
+	if (selectedOpacity) {
+		// if selectedOpacity was user-supplied
+		selectedOpacity = Number(selectedOpacity);
+		if (isNaN(selectedOpacity)) {
+			// input must be a number
+			throw Error('selectedOpacity must be a number');
+		} else if (selectedOpacity < 0) {
+			throw Error('selectedOpacity cannot be negative');
+		}
+	} else {
+		selectedOpacity = 1;
+	}
+
+	/** @type {string | undefined} */
+	export let selectedPointClass = undefined; // User-defined styles
+
+
 	/** @type {boolean} */
 	export let showTooltip = true;
 
@@ -188,7 +230,54 @@
 			maxData = sizeExtents[1];
 			maxSizeSq = Math.pow(maxSize, 2);
 		}
+
+		if(name && $data.length > 0){
+			setInputDefault($data[0], name)
+		}
 	}
+
+/**
+ * Initializes the input store with default values based on the keys of the item.
+ * Each key in the item will be set to true in the specified input store entry.
+ *
+ * @param {Object} item - The object whose keys will be used to set default values.
+ * @param {string} name - The key under which to store the defaults in the input store.
+ */
+ function setInputDefault(item, name){
+    $inputs[name] = {};
+    Object.keys(item).forEach(key => {
+        $inputs[name][key] = true;  // Set all properties to true
+    });
+}
+
+/**
+ * Updates the input store with a new item under the specified name.
+ * This function directly assigns the item to the input store, replacing any existing value.
+ *
+ * @param {Object} item - The new data object to set in the store.
+ * @param {string} name - The store key under which to set the item.
+ */
+function updateInput(item, name){
+    $inputs[name] = item;
+}
+
+/**
+ * Unsets an input in the store by deleting the entry and then reinitializing it
+ * with default values based on the provided item's keys, set to true.
+ *
+ * @param {Object} item - The object whose keys will be used to reset the default values after unset.
+ * @param {string} name - The key in the store to unset and then reset.
+ */
+function unsetInput(item, name) {
+    inputs.update(values => {
+        if (values.hasOwnProperty(name)) {
+            delete values[name];
+        }
+        return values;
+    });
+    setInputDefault(item, name);
+}
+
 </script>
 
 {#await Promise.all([map.initPromise, init()]) then}
@@ -204,11 +293,26 @@
 				color: borderColor,
 				className: `outline-none ${pointClass}`
 			}}
+			selectedOptions={{
+				fillColor: selectedColor,
+				fillOpacity: selectedOpacity,
+				opacity: selectedOpacity,
+				weight: selectedBorderWidth,
+				color: selectedBorderColor,
+				className: `outline-none ${selectedPointClass}`
+			}}
 			coords={[item[lat], item[long]]}
 			onclick={() => {
 				onclick(item);
+			}}
+			setInput={() => {
 				if (name) {
-					$inputs[name] = item;
+					updateInput(item, name);
+				}
+			}}
+			unsetInput={() => {
+				if (name) {
+					unsetInput(item,name);
 				}
 			}}
 			{tooltip}

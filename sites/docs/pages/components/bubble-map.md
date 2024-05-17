@@ -73,7 +73,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
         {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'point_name', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
     ]}
 />
 
@@ -92,7 +92,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
         {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'point_name', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
     ]}
 />
 ```
@@ -112,7 +112,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
         {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'point_name', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
     ]}
 />
 
@@ -131,7 +131,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
         {id: 'sales', fmt: 'eur', fieldClass: 'text-[grey]', valueClass: 'text-[green]'},
-        {id: 'point_name', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
+        {id: 'link_col', showColumnName: false, contentType: 'link', linkLabel: 'Click here', valueClass: 'font-bold mt-1'}
     ]}
 />
 ```
@@ -285,7 +285,7 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
 
 ```filtered_locations
 select * from ${la_locations}
-where point_name = '${inputs.my_point_map.point_name}'
+where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map.point_name}' = 'true'
 ```
 
 #### Filtered Data
@@ -396,13 +396,6 @@ options="string"
 Input name. Can be referenced on your page with `{inputs.my_input_name}`
 </PropListing>
 
-<PropListing
-name="onclick"
-options="function"
->
-Function to execute when a point is clicked.
-</PropListing>
-
 ### Styling
 <PropListing
 name="color"
@@ -434,6 +427,42 @@ defaultValue=0.8
 >
 Opacity of the points.
 </PropListing>
+
+
+### Selected State
+
+<PropListing
+name="selectedColor"
+options="CSS color value"
+>
+When point is selected: Color for the points. Use when you want all points to be the same color.
+</PropListing>
+
+<PropListing
+name="selectedBorderWidth"
+options="pixel value"
+defaultValue=0.75
+>
+When point is selected: Width of the border around each point.
+</PropListing>
+
+<PropListing
+name="selectedBorderColor"
+options="CSS color value"
+defaultVallue="white"
+>
+When point is selected: Color of the border around each point.
+</PropListing>
+
+<PropListing
+name="selectedOpacity"
+options="number between 0 and 1"
+defaultValue=0.8
+>
+When point is selected: Opacity of the points.
+</PropListing>
+
+
 
 ### Tooltips
 <PropListing

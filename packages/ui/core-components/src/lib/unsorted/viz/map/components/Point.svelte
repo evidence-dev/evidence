@@ -4,10 +4,16 @@
 	export let map = undefined;
 	/** @type {object|undefined} */
 	export let options = undefined;
+	/** @type {object|undefined} */
+	export let selectedOptions = undefined;
 	/** @type {import('leaflet').LatLngExpression|undefined} */
 	export let coords = undefined;
 	/** @type {Function|undefined} */
 	export let onclick = undefined;
+	/** @type {Function|undefined} */
+	export let setInput = undefined;
+	/** @type {Function|undefined} */
+	export let unsetInput = undefined;
 	/** @type {Array<object>|undefined} */
 	export let tooltip = undefined;
 	/** @type {object|undefined} */
@@ -20,9 +26,10 @@
 	export let item = undefined;
 	/** @type {string|undefined} */
 	export let link = undefined; // link column
+	export let name = undefined;
 
 	onMount(() => {
-		const marker = map.addCircle(options, coords, onclick, item[link]);
+		const marker = map.addCircle(item, name, options, selectedOptions, coords, onclick, setInput, unsetInput, item[link]);
 		if (showTooltip) {
 			const ttip = map.buildTooltip(item, tooltip);
 			map.attachTooltip(marker, ttip, tooltipOptions, tooltipType);
