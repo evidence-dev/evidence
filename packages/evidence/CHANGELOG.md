@@ -1,5 +1,22 @@
 # @evidence-dev/evidence
 
+## 35.0.0
+
+### Patch Changes
+
+- Updated dependencies [2a396873]
+- Updated dependencies [af9b74ee]
+- Updated dependencies [1377e0ed]
+- Updated dependencies [40c83ee2]
+- Updated dependencies [4e3b925e]
+- Updated dependencies [6157db9a]
+  - @evidence-dev/core-components@4.2.0
+  - @evidence-dev/telemetry@2.1.0
+  - @evidence-dev/sdk@1.2.2
+  - @evidence-dev/db-orchestrator@3.1.1
+  - @evidence-dev/plugin-connector@2.1.4
+  - @evidence-dev/component-utilities@3.0.4
+
 ## 34.0.1
 
 ### Patch Changes

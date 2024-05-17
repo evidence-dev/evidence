@@ -1,5 +1,11 @@
 # @evidence-dev/sdk
 
+## 1.2.2
+
+### Patch Changes
+
+- 4e3b925e: Fix JSON serialization
+
 ## 1.2.1
 
 ### Patch Changes

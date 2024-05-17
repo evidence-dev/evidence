@@ -1,5 +1,18 @@
 # @evidence-dev/core-components
 
+## 4.2.0
+
+### Minor Changes
+
+- 1377e0ed: Interactive map components
+- 6157db9a: Add checkbox component
+
+### Patch Changes
+
+- 2a396873: Adding a selectAllByDefault property to Dropdowns
+- 40c83ee2: Fix BigValue downIsGood
+  - @evidence-dev/component-utilities@3.0.4
+
 ## 4.1.1
 
 ### Patch Changes
