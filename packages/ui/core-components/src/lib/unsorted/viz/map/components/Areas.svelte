@@ -245,7 +245,24 @@
 			$inputs[name][key] = true;  // Set all properties to true
 		});
 	}
-
+	
+	/**
+	 * Replaces all single quotes with two single quotes in the values of an object.
+	 * 
+	 * @param {Object} obj - The object whose values need to be sanitized.
+	 * @returns {Object} The sanitized object with all single quotes replaced by two single quotes in the string values.
+	 */
+	function sanitizeObject(obj) {
+		const sanitizedObj = {};
+		for (const key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			// Ensure the value is a string before replacing quotes
+			sanitizedObj[key] = typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
+		}
+		}
+		return sanitizedObj;
+	}
+	
 	/**
 	 * Updates the input store with a new item under the specified name.
 	 * This function directly assigns the item to the input store, replacing any existing value.
@@ -254,7 +271,7 @@
 	 * @param {string} name - The store key under which to set the item.
 	 */
 	function updateInput(item, name){
-		$inputs[name] = item;
+		$inputs[name] = sanitizeObject(item);
 	}
 
 	/**

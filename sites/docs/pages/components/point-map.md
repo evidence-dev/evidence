@@ -227,7 +227,13 @@ where point_name = '${inputs.my_point_map.point_name}' OR '${inputs.my_point_map
 ```
 
 #### Filtered Data
-<DataTable data={filtered_locations}/>
+<DataTable data={filtered_locations}>  	
+    <Column id=id/> 	
+    <Column id=point_name/> 	
+    <Column id=lat/> 	
+    <Column id=long/> 	
+    <Column id=sales fmt=usd/> 	
+</DataTable>
 
 ## Options
 
