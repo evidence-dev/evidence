@@ -1,5 +1,11 @@
 # @evidence-dev/preprocess
 
+## 5.1.1
+
+### Patch Changes
+
+- c88cb063: Rearranged component initialization to ensure initial data is populating more correctly
+
 ## 5.1.0
 
 ### Minor Changes

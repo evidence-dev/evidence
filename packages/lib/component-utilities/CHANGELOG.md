@@ -1,5 +1,14 @@
 # @evidence-dev/component-utilities
 
+## 3.0.3
+
+### Patch Changes
+
+- 43d66875: buildReactiveInputQuery is more careful with publishing updates
+- Updated dependencies [25ea0fe4]
+- Updated dependencies [e400971e]
+  - @evidence-dev/sdk@1.2.1
+
 ## 3.0.2
 
 ### Patch Changes
