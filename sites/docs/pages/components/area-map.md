@@ -499,7 +499,7 @@ Initial zoom level of the map.
 <PropListing
 name="height"
 options="pixel value"
-defaultValue="400"
+defaultValue="300"
 >
 Height of the map in pixels.
 </PropListing>

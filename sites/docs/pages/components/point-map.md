@@ -260,6 +260,13 @@ options="format string"
 Format string for displaying the value.
 </PropListing>
 
+<PropListing
+name="pointName"
+options="column name"
+>
+Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
+</PropListing>
+
 ### Color Scale
 
 <PropListing
@@ -442,7 +449,7 @@ Initial zoom level of the map.
 <PropListing
 name="height"
 options="pixel value"
-defaultValue="400"
+defaultValue="300"
 >
 Height of the map in pixels.
 </PropListing>

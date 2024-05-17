@@ -12,7 +12,6 @@ sidebar_position: 1
     value=sales 
     valueFmt=eur
     pointName=point_name 
-    height=300
 />
 
 ```html
@@ -25,7 +24,6 @@ sidebar_position: 1
     value=sales 
     valueFmt=eur
     pointName=point_name 
-    height=300
 />
 ```
 
@@ -40,7 +38,7 @@ select *, 'https://www.google.com/search?q=' || point_name as link_col from la_l
 ### Custom Basemap
 You can add a different basemap by passing in a basemap URL. You can find examples here: https://leaflet-extras.github.io/leaflet-providers/preview/
 
-<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name height=300 basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
+<BubbleMap data={la_locations} lat=lat long=long size=sales sizeFmt=eur pointName=point_name basemap={`https://tile.openstreetmap.org/{z}/{x}/{y}.png`}/>
 
 **Note:** you need to wrap the url in curly braces and backticks to avoid the curly braces in the URL being read as variables on your page
 
@@ -68,7 +66,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     value=sales 
     valueFmt=usd
     pointName=point_name 
-    height=300
     tooltipType=hover
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -87,7 +84,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd 
     pointName=point_name 
-    height=300
     tooltipType=hover
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -107,7 +103,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd 
     pointName=point_name 
-    height=300
     tooltipType=click
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -126,7 +121,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd 
     pointName=point_name 
-    height=300
     tooltipType=click
     tooltip={[
         {id: 'point_name', showColumnName: false, valueClass: 'text-xl font-semibold'},
@@ -147,7 +141,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd 
     pointName=point_name 
-    height=300
     colorPalette={['yellow','orange','red','darkred']}
 />
 
@@ -159,7 +152,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     value=sales 
     valueFmt=usd 
     pointName=point_name 
-    height=300
     colorPalette={['yellow','orange','red','darkred']}
 />
 ```
@@ -173,7 +165,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd
     pointName=point_name 
-    height=300
     color=#128c2b
     opacity=1
     borderWidth=1
@@ -188,7 +179,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd
     pointName=point_name 
-    height=300
     color=#128c2b
     opacity=1
     borderWidth=1
@@ -205,7 +195,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd
     pointName=point_name 
-    height=300
     maxSize=10
 />
 
@@ -217,7 +206,6 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     size=sales 
     sizeFmt=usd
     pointName=point_name 
-    height=300
     maxSize=10
 />
 ```
@@ -232,7 +220,6 @@ Pass in a `link` column to enable navigation on click of the point. These can be
     size=sales 
     sizeFmt=usd
     link=link_col 
-    height=300
 />
 
 ```svelte
@@ -243,7 +230,6 @@ Pass in a `link` column to enable navigation on click of the point. These can be
     size=sales 
     sizeFmt=usd
     link=link_col 
-    height=300
 />
 ```
 
@@ -258,7 +244,6 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
     size=sales 
     sizeFmt=usd
     name=my_point_map 
-    height=300
 />
 ```
 
@@ -269,7 +254,6 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
     size=sales 
     sizeFmt=usd
     name=my_point_map 
-    height=300
 />
 
 *Click a point on the map to see the input value get updated:*
@@ -359,6 +343,13 @@ name="valueFmt"
 options="format string"
 >
 Format string for displaying the value.
+</PropListing>
+
+<PropListing
+name="pointName"
+options="column name"
+>
+Column containing the names/labels of the points - by default, this is shown as the title of the tooltip.
 </PropListing>
 
 ### Color Scale
@@ -541,7 +532,7 @@ Initial zoom level of the map.
 <PropListing
 name="height"
 options="pixel value"
-defaultValue="400"
+defaultValue="300"
 >
 Height of the map in pixels.
 </PropListing>

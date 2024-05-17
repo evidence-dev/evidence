@@ -31,7 +31,7 @@
 	);
 
 	/** @type {number} */
-	export let height = 500; // height in pixels
+	export let height = 300; // height in pixels
 
 	/** @type {string} */
 	export let basemap = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
