@@ -86,44 +86,65 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
 ```
 ````
 
-## Options
+
+ ## Options
 
 <PropListing 
     name="name"
-    description="Name of the DateRange, used to reference the selected values elsewhere as {`{inputs.name.start`} or {`inputs.name.end`}"
-    required=true
+    required
     options="string"
-/>
+>
+
+Name of the DateRange, used to reference the selected values elsewhere as `{inputs.name.start}` or `{inputs.name.end}`
+
+</PropListing>
 <PropListing 
     name="data"
-    description="Query name, wrapped in curly braces"
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing 
     name="dates"
-    description="Column name from the query containing date range to span"
     options="column name"
-/>
+>
+
+Column name from the query containing date range to span
+
+</PropListing>
 <PropListing 
     name="start"
-    description="A manually specified start date to use for the range"
     options="string formatted YYYY-MM-DD"
-/>
+>
+
+A manually specified start date to use for the range
+
+</PropListing>
 <PropListing 
     name="end"
-    description="A manually specified end date to use for the range"
     options="string formatted YYYY-MM-DD"
-/>
+>
+
+A manually specified end date to use for the range
+
+</PropListing>
 <PropListing 
     name="title"
-    description="Title to display in the Date Range component"
     options="string"
-/>
+>
+
+Title to display in the Date Range component
+
+</PropListing>
 <PropListing 
     name="hideDuringPrint"
-    description="Hide the component when the report is printed"
     options={["true", "false"]}
     default="true"
-/>
+>
 
+Hide the component when the report is printed
+
+</PropListing>
 

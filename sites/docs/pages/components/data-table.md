@@ -924,219 +924,284 @@ SELECT 'Brazil', 'South America', 1609, 0.032, 0.1375, 0.1007, 0.091, -4.5, 80.2
 # DataTable
 
 ## Options
-
 <PropListing
     name=data
-    description="Query name, wrapped in curly braces"
-    required=true
+    required
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing
     name=rows
-    description="Number of rows to show in the table before paginating results. Use `rows=all` to show all rows in the table."
-    required=false
     options="number | all"
     defaultValue=10
-/>
+>
+
+Number of rows to show in the table before paginating results. Use `rows=all` to show all rows in the table.
+
+</PropListing>
 <PropListing
     name=headerColor
-    description="Background color of the header row"
     required=false
     options="Hex color code | css color name"
-/>
+>
+
+Background color of the header row
+
+</PropListing>
 <PropListing
     name=headerFontColor
-    description="Font color of the header row"
     required=false
     options="Hex color code | css color name"
-/>
+>
+
+Font color of the header row
+
+</PropListing>
+
 <PropListing
     name=totalRow
-    description="Show a total row at the bottom of the table, defaults to sum of all numeric columns"
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Show a total row at the bottom of the table, defaults to sum of all numeric columns
+
+</PropListing>
 <PropListing
     name=totalRowColor
-    description="Background color of the total row"
-    required=false
     options="Hex color code | css color name"
-/>
+>
+
+Background color of the total row
+
+</PropListing>
 <PropListing
     name=totalFontColor
-    description="Font color of the total row"
-    required=false
     options="Hex color code | css color name"
-/>
+>
+
+Font color of the total row
+
+</PropListing>
 <PropListing
     name=rowNumbers
-    description="Turns on or off row index numbers"
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Turns on or off row index numbers
+
+</PropListing>
 <PropListing
     name=rowLines
-    description="Turns on or off borders at the bottom of each row"
-    required=false
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Turns on or off borders at the bottom of each row
+
+</PropListing>
 <PropListing
     name=rowShading
-    description="Shades every second row in light grey"
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Shades every second row in light grey
+
+</PropListing>
 <PropListing
     name=backgroundColor
-    description="Background color of the table"
-    required=false
     options="Hex color code | css color name"
     defaultValue="-"
-/>
+>
+
+Background color of the table
+
+</PropListing>
 <PropListing
     name=sortable
-    description="Enable sort for each column - click the column title to sort"
-    required=false
     options={['true', 'false']}
     defaultValue=true
-/>  
+>
+
+Enable sort for each column - click the column title to sort
+
+</PropListing>
 <PropListing
     name=search
-    description="Add a search bar to the top of your table"
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Add a search bar to the top of your table
+
+</PropListing>
 <PropListing
     name=downloadable
-    description="Enable download data button below the table on hover"
-    required=false
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Enable download data button below the table on hover
+
+</PropListing>
 <PropListing
     name=formatColumnTitles
-    description="Enable auto-formatting of column titles. Turn off to show raw SQL column names"
-    required=false
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+Enable auto-formatting of column titles. Turn off to show raw SQL column names
+
+</PropListing>
 <PropListing
     name=wrapTitles
-    description="Wrap column titles"
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Wrap column titles
+
+</PropListing>
 <PropListing
-    name=compact
-    description="Enable a more compact table view that allows more content vertically and horizontally"
+    name="compact"
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Enable a more compact table view that allows more content vertically and horizontally
+
+</PropListing>
 
 <PropListing
     name=link
-    description="Makes each row of your table a clickable link. Accepts the name of a column containing the link to use for each row in your table"
-    required=false
     options="column name"
     defaultValue="-"
-/>
+>
+
+Makes each row of your table a clickable link. Accepts the name of a column containing the link to use for each row in your table
+
+</PropListing>
 <PropListing
     name=showLinkCol
-    description="Whether to show the column supplied to the `link` prop"
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Whether to show the column supplied to the `link` prop
+
+</PropListing>
 <PropListing
     name=generateMarkdown
-    description="Helper for writing DataTable syntax with many columns. When set to true, markdown for the DataTable including each `Column` contained within the query will be generated and displayed below the table."
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Helper for writing DataTable syntax with many columns. When set to true, markdown for the DataTable including each `Column` contained within the query will be generated and displayed below the table.
+
+</PropListing>
 <PropListing
     name=emptySet
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
-    required=false
     options={["error", "warn", "pass"]}
     defaultValue="error"
-/>
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
 <PropListing
     name=emptyMessage
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
-    required=false
     options="string"
     defaultValue="No records"
-/>
+>
+
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
 
 ### Groups
 Groups allow you to create sections within your table, increasing the density of the content you're displaying. Groups are currently limited to 1 level, but will be expanded in future versions.
 
 <PropListing
     name=groupBy
-    description="Column to use to create groups. Note that groups are currently limited to a single group column."
-    required=false
     options="column name"
-/>
+>
+
+Column to use to create groups. Note that groups are currently limited to a single group column.
+
+</PropListing>
 <PropListing
     name=groupType
-    description="How the groups are shown in the table. Can be accordion (expand/collapse) or section (group column values are merged across rows)"
-    required=false
     options={['accordion', 'section']}
     defaultValue="accordion"
-/>
+>
+
+How the groups are shown in the table. Can be accordion (expand/collapse) or section (group column values are merged across rows)
+
+</PropListing>
 <PropListing
     name=subtotals
-    description="Whether to show aggregated totals for the groups"
-    required=false
     options={['true', 'false']}
     defaultValue=false
-/>
+>
+
+Whether to show aggregated totals for the groups
+
+</PropListing>
 <PropListing
     name=subtotalFmt
-    description="Specify an override format to use in the subtotal row (<a href='/core-concepts/formatting'>see available formats</a>). Custom strings or values are unformatted by default."
-    required=false
     options="Excel-style format | built-in format | custom format"
-/>
+>
+
+Specify an override format to use in the subtotal row ([see available formats](/core-concepts/formatting)). Custom strings or values are unformatted by default.
+
+</PropListing>
 <PropListing
     name=groupsOpen
-    description="[groupType=accordion] Whether to show the accordions as open on page load"
-    required=false
     options={['true', 'false']}
     defaultValue=true
-/>
+>
+
+[groupType=accordion] Whether to show the accordions as open on page load
+
+</PropListing>
 <PropListing
     name=accordionRowColor
-    description="[groupType=accordion] Background color for the accordion row"
-    required=false
     options="Hex color code | css color name"
-/>
+>
+
+[groupType=accordion] Background color for the accordion row
+
+</PropListing>
 <PropListing
     name=subtotalRowColor
-    description="[groupType=section] Background color for the subtotal row"
-    required=false
     options="Hex color code | css color name"
-/>
+>
+
+[groupType=section] Background color for the subtotal row
+
+</PropListing>
 <PropListing
     name=subtotalFontColor
-    description="[groupType=section] Font color for the subtotal row"
-    required=false
     options="Hex color code | css color name"
-/>
+>
+
+[groupType=section] Font color for the subtotal row
+
+</PropListing>
 <PropListing
     name=groupNamePosition
-    description="[groupType=section] Where the group label will appear in its cell"
-    required=false
     options={['top', 'middle', 'bottom']}
     defaultValue="middle"
-/>
+>
 
+[groupType=section] Where the group label will appear in its cell
+
+</PropListing>
 
 # Column
 
@@ -1146,70 +1211,106 @@ Use the `Column` component to choose specific columns to display in your table, 
 
 <PropListing
     name=id
-    description="Column id (from SQL query)"
-    required=true
+    required
     options="column name"
-/>
+>
+
+Column id (from SQL query)
+
+</PropListing>
 <PropListing
     name=title
-    description="Override title of column"
     options="string"
     defaultValue="column name (formatted)"
-/>
+>
+
+Override title of column
+
+</PropListing>
 <PropListing
     name=align
-    description="Align column text"
     options={['left', 'center', 'right']}
     defaultValue="left"
-/>
+>
+
+Align column text
+
+</PropListing>
 <PropListing
     name=fmt
-    description="Format the values in the column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format | custom format"
-/>
+>
+
+Format the values in the column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing
     name=fmtColumn
-    description="Column to use to format values in this column. This is used to achieve different value formats by row. The fmtColumn should contain strings of format codes - either Evidence built-in formats or Excel codes."
     options="column name"
-/>
+>
+
+Column to use to format values in this column. This is used to achieve different value formats by row. The fmtColumn should contain strings of format codes - either Evidence built-in formats or Excel codes.
+
+</PropListing>
 <PropListing
     name=totalAgg
-    description="Specify an aggregation function to use for the total row. Accepts predefined functions, custom strings or values"
     options={['sum', 'mean', 'weightedMean', 'median', 'min', 'max', 'count', 'countDistinct', 'custom string or value']}
     defaultValue="sum"
-/>
+>
+
+Specify an aggregation function to use for the total row. Accepts predefined functions, custom strings or values
+
+</PropListing>
 <PropListing
     name=totalFmt
-    description="Specify an override format to use in the total row (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>). Custom strings or values are unformatted by default."
     options="Excel-style format | built-in format | custom format"
-/>
+>
+
+Specify an override format to use in the total row ([see available formats](/core-concepts/formatting)). Custom strings or values are unformatted by default.
+
+</PropListing>
 <PropListing
     name=weightCol
-    description="Column to use as the weight values for weighted mean aggregation. If not specified, a weight of 1 for each value will be used and the result will be the same as the `mean` aggregation."
     options="column name"
-/>
+>
+
+Column to use as the weight values for weighted mean aggregation. If not specified, a weight of 1 for each value will be used and the result will be the same as the `mean` aggregation.
+
+</PropListing>
 <PropListing
     name=wrap
-    description="Wrap column text"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Wrap column text
+
+</PropListing>
 <PropListing
     name=wrapTitle
-    description="Wrap column title"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Wrap column title
+
+</PropListing>
 <PropListing
     name=contentType
-    description="Lets you specify how to treat the content within a column. See below for contentType-specific options."
     options={['link', 'image', 'delta', 'colorscale', 'html']}
-/>
+>
+
+Lets you specify how to treat the content within a column. See below for contentType-specific options.
+
+</PropListing>
 <PropListing
     name=colGroup
-    description="Group name to display above a group of columns. Columns with the same group name will get a shared header above them"
     options="string"
-/>
+>
+
+Group name to display above a group of columns. Columns with the same group name will get a shared header above them
+
+</PropListing>
 
 ### Images
 
@@ -1217,22 +1318,31 @@ Use the `Column` component to choose specific columns to display in your table, 
 
 <PropListing
     name=height
-    description="Height of image in pixels"
     options="number"
     defaultValue="original height of image"
-/>
+>
+
+Height of image in pixels
+
+</PropListing>
 <PropListing
     name=width
-    description="Width of image in pixels"
     options="number"
     defaultValue="original width of image"
-/>
+>
+
+Width of image in pixels
+
+</PropListing>
 <PropListing
     name=alt
-    description="Alt text for image"
     options="column name"
     defaultValue="Name of the image file (excluding the file extension)"
-/>
+>
+
+Alt text for image
+
+</PropListing>
 
 ### Links
 
@@ -1240,16 +1350,22 @@ Use the `Column` component to choose specific columns to display in your table, 
 
 <PropListing
     name=linkLabel
-    description="Text to display for link"
     options="column name | string"
     defaultValue="raw url"
-/>
+>
+
+Text to display for link
+
+</PropListing>
 <PropListing
     name=openInNewTab
-    description="Whether to open link in new tab"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Whether to open link in new tab
+
+</PropListing>
 
 ### Deltas
 
@@ -1257,40 +1373,58 @@ Use the `Column` component to choose specific columns to display in your table, 
 
 <PropListing
     name=deltaSymbol
-    description="Whether to show the up/down delta arrow symbol"
     options={['true', 'false']}
     defaultValue="true"
-/>
+>
+
+Whether to show the up/down delta arrow symbol
+
+</PropListing>
 <PropListing
     name=downIsGood
-    description="If present, negative comparison values appear in green, and positive values appear in red."
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+If present, negative comparison values appear in green, and positive values appear in red.
+
+</PropListing>
 <PropListing
     name=showValue
-    description="Whether to show the delta value. Set this to false to show only the delta arrow indicator."
     options={['true', 'false']}
     defaultValue="true"
-/>
+>
+
+Whether to show the delta value. Set this to false to show only the delta arrow indicator.
+
+</PropListing>
 <PropListing
     name=neutralMin
-    description="Start of the range for 'neutral' values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values."
     options="number"
     defaultValue="0"
-/>
+>
+
+Start of the range for 'neutral' values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values.
+
+</PropListing>
 <PropListing
     name=neutralMax
-    description="End of the range for 'neutral' values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values."
     options="number"
     defaultValue="0"
-/>
+>
+
+End of the range for 'neutral' values, which appear in grey font with a dash instead of an up/down arrow. By default, neutral is not applied to any values.
+
+</PropListing>
 <PropListing
     name=chip
-    description="Whether to display the delta as a 'chip', with a background color and border."
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Whether to display the delta as a 'chip', with a background color and border.
+
+</PropListing>
 
 ### Conditional Formatting (Color Scales)
 
@@ -1298,38 +1432,57 @@ Use the `Column` component to choose specific columns to display in your table, 
 
 <PropListing
     name=scaleColor
-    description="Color to use for the scale"
     options={['green', 'blue', 'red', 'Hex color code', 'css color name']}
     defaultValue="green"
-/>
+>
+
+Color to use for the scale
+
+</PropListing>
 <PropListing
     name=colorMin
-    description="Set a minimum for the scale. Any values below that minimum will appear in the lowest color on the scale"
     options="number"
     defaultValue="min of column"
-/>
+>
+
+Set a minimum for the scale. Any values below that minimum will appear in the lowest color on the scale
+
+</PropListing>
 <PropListing
     name=colorMid
-    description="Set a midpoint for the scale"
     options="number"
     defaultValue="mid of column"
-/>
+>
+
+Set a midpoint for the scale
+
+</PropListing>
 <PropListing
     name=colorMax
-    description="Set a maximum for the scale. Any values above that maximum will appear in the highest color on the scale"
     options="number"
     defaultValue="max of column"
-/>
+>
+
+Set a maximum for the scale. Any values above that maximum will appear in the highest color on the scale
+
+</PropListing>
 <PropListing
     name=colorBreakpoints
-    description="Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in <code>scaleColor</code>"
     options="array of numbers"
+>
+
+Array of numbers to use as breakpoints for each color in your color scale. Should line up with the colors you provide in `scaleColor`
+
+</PropListing>
 />
 <PropListing
     name=scaleColumn
-    description="Column to use to define the color scale range. Values in this column will have their cell color determined by the value in the scaleColumn"
     options="column name"
-/>
+>
+
+Column to use to define the color scale range. Values in this column will have their cell color determined by the value in the scaleColumn
+
+</PropListing>
 
 ### HTML
 

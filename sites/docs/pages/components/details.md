@@ -36,12 +36,18 @@ The details component allows you to add a collapsible section to your markdown. 
 
 <PropListing 
     name="title"
-    description="The text shown next to the triangle icon."
     defaultValue="Details"
-/>
+>
+
+The text shown next to the triangle icon.
+
+</PropListing>
 <PropListing 
     name="open"
-    description="Whether expanded by default."
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Whether expanded by default.
+
+</PropListing>

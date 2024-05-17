@@ -31,94 +31,135 @@ sidebar_position: 1
 
 <PropListing
     name="data"
-    description="Query name, wrapped in curly braces"
     required
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing
     name="dateCol"
-    description="Categorical column to use for the x-axis"
     required
     options="column name"
-/>
+>
+
+Categorical column to use for the x-axis
+
+</PropListing>
 <PropListing
     name="valueCol"
-    description="Numeric column to use for the y-axis"
     required
     options="column name"
-/>
+>
+
+Numeric column to use for the y-axis
+
+</PropListing>
 <PropListing
     name="type"
-    description="Chart type for sparkline"
     options={['line', 'area', 'bar']}
     defaultValue="line"
-/>
+>
+
+Chart type for sparkline
+
+</PropListing>
 <PropListing
     name="emptySet"
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
     options={['error', 'warn', 'pass']}
     defaultValue="error"
-/>
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
 <PropListing
     name="emptyMessage"
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
     options="string"
     defaultValue="No records"
-/>
+>
+
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
 
 ### Formatting & Styling
 
 <PropListing
     name="color"
-    description="Color to use for the visualization. For area sparklines, choose the color for the line and the area color will be automatically appplied in a lighter shade."
     options="CSS name | hexademical | RGB | HSL"
-/>
+>
+
+Color to use for the visualization. For area sparklines, choose the color for the line and the area color will be automatically appplied in a lighter shade.
+
+</PropListing>
 <PropListing
     name="valueFmt"
-    description="Format to use for value column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format name | custom format name"
-/>
+>
+
+Format to use for value column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing
     name="dateFmt"
-    description="Format to use for date column (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
     options="Excel-style format | built-in format name | custom format name"
-/>
+>
+
+Format to use for date column ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 
 ### Axes
 
 <PropListing
     name="yScale"
-    description="Whether to truncate the y-axis to enhance visibility"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Whether to truncate the y-axis to enhance visibility
+
+</PropListing>
 
 ### Sizing
 
 <PropListing
     name="height"
-    description="Height of sparkline in pixels"
     options="number"
     defaultValue="15"
-/>
+>
+
+Height of sparkline in pixels
+
+</PropListing>
 <PropListing
     name="width"
-    description="Width of sparkline in pixels"
     options="number"
     defaultValue="50"
-/>
+>
+
+Width of sparkline in pixels
+
+</PropListing>
 
 ### Interactivity
 
 <PropListing
     name="interactive"
-    description="Turn on or off tooltip behaviour on hover. If off, chart will be a staticly rendered SVG (better for page performance). If on, you will be able to see dates/values when hovering over the sparkline"
     options={['true', 'false']}
     defaultValue="true"
-/>
+>
+
+Turn on or off tooltip behaviour on hover. If off, chart will be a staticly rendered SVG (better for page performance). If on, you will be able to see dates/values when hovering over the sparkline
+
+</PropListing>
 <PropListing
     name="connectGroup"
-    description="Group name to connect this sparkline to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected"
     options="string"
-/>
+>
 
+Group name to connect this sparkline to other charts for synchronized tooltip hovering. Charts with the same `connectGroup` name will become connected
+
+</PropListing>

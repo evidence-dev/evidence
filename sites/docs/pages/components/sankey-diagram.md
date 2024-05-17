@@ -292,161 +292,239 @@ group by 1, 2
 ### Data
 
 <PropListing
-    name=data
-    description="Query name, wrapped in curly braces"
+    name="data"
     required
     options="query name"
-/>
+>
+
+Query name, wrapped in curly braces
+
+</PropListing>
 <PropListing
-    name=sourceCol
-    description="Column to use for the source of the diagram"
+    name="sourceCol"
     required
     options="column name"
-/>
+>
+
+Column to use for the source of the diagram
+
+</PropListing>
 <PropListing
-    name=targetCol
-    description="Column to use for the target of the diagram"
+    name="targetCol"
     required
     options="column name"
-/>
+>
+
+Column to use for the target of the diagram
+
+</PropListing>
 <PropListing
-    name=valueCol
-    description="Column to use for the value of the diagram"
+    name="valueCol"
     required
     options="column name"
-/>
+>
+
+Column to use for the value of the diagram
+
+</PropListing>
 <PropListing
-    name=percentCol
-    description="Column to use for the percent labels of the diagram"
+    name="percentCol"
     options="column name"
-/>
+>
+
+Column to use for the percent labels of the diagram
+
+</PropListing>
 <PropListing
-    name=depthOverride
-    description="Manual adjustment to location of each node {`{{'services revenue': 2}}`}"
+    name="depthOverride"
     options="object containing node name and depth level (0 is first level)"
-/>
+>
+
+Manual adjustment to location of each node `{{'services revenue': 2}}`
+
+</PropListing>
 <PropListing
-    name=emptySet
-    description="Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed."
+    name="emptySet"
     options={['error', 'warn', 'pass']}
-    default="error"
-/>
+    defaultValue="error"
+>
+
+Sets behaviour for empty datasets. Can throw an error, a warning, or allow empty. When set to 'error', empty datasets will block builds in `build:strict`. Note this only applies to initial page load - empty datasets caused by input component changes (dropdowns, etc.) are allowed.
+
+</PropListing>
 <PropListing
-    name=emptyMessage
-    description="Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.)."
+    name="emptyMessage"
     options="string"
-    default="No records"
-/>
+    defaultValue="No records"
+>
+
+Text to display when an empty dataset is received - only applies when `emptySet` is 'warn' or 'pass', or when the empty dataset is a result of an input component change (dropdowns, etc.).
+
+</PropListing>
 <PropListing
-    name=printEchartsConfig
-    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    name="printEchartsConfig"
     options={['true', 'false']}
-    default="false"
-/>
+    defaultValue="false"
+>
+
+Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
+
+</PropListing>
 
 ### Formatting & Styling
 
 <PropListing
-    name=valueFmt
-    description="Format to use for `valueCol` (<a class=markdown href='/core-concepts/formatting'>see available formats<a/>)"
+    name="valueFmt"
     options="Excel-style format | built-in format | custom format"
-/>
+>
+
+Format to use for `valueCol` ([see available formats](/core-concepts/formatting))
+
+</PropListing>
 <PropListing
-    name=orient
-    description="Layout direction of the nodes in the diagram."
+    name="orient"
     options={['horizontal', 'vertical']}
-    default="horizontal"
-/>
+    defaultValue="horizontal"
+>
+
+Layout direction of the nodes in the diagram.
+
+</PropListing>
 <PropListing
-    name=sort
-    description="Whether the nodes are sorted by size in the diagram"
+    name="sort"
     options={['true', 'false']}
-    default="false"
-/>
+    defaultValue="false"
+>
+
+Whether the nodes are sorted by size in the diagram
+
+</PropListing>
 <PropListing
-    name=nodeAlign
-    description="Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment."
+    name="nodeAlign"
     options={['justify', 'left', 'right']}
-    default="justify"
-/>
+    defaultValue="justify"
+>
+
+Controls the horizontal alignment of nodes in the diagram. When orient is vertical, nodeAlign controls vertical alignment.
+
+</PropListing>
 <PropListing
-    name=nodeGap
-    description="The gap between any two rectangles in each column of the the diagram."
+    name="nodeGap"
     options="number"
-    default="8"
-/>
+    defaultValue="8"
+>
+
+The gap between any two rectangles in each column of the the diagram.
+
+</PropListing>
 <PropListing
-    name=nodeWidth
-    description="The node width of rectangle in the diagram."
+    name="nodeWidth"
     options="number"
-    default="20"
-/>
+    defaultValue="20"
+>
+
+The node width of rectangle in the diagram.
+
+</PropListing>
 <PropListing
-    name=outlineColor
-    description="Border color. Only accepts a single color."
+    name="outlineColor"
     options="CSS name | hexademical | RGB | HSL"
-    default="transparent"
-/>
+    defaultValue="transparent"
+>
+
+Border color. Only accepts a single color.
+
+</PropListing>
 <PropListing
-    name=outlineWidth
-    description="Border Width. It should be a natural number."
+    name="outlineWidth"
     options="number"
-    default="1"
-/>
+    defaultValue="1"
+>
+
+Border Width. It should be a natural number.
+
+</PropListing>
 <PropListing
-    name=colorPalette
-    description="Array of custom colours to use for the chart. E.g., <code class=markdown>{`{['#cf0d06','#eb5752','#e88a87']}`}</code>"
+    name="colorPalette"
     options="array of color strings (CSS name | hexademical | RGB | HSL)"
-    default="built-in color palette"
-/>
+    defaultValue="built-in color palette"
+>
+
+Array of custom colours to use for the chart. E.g., `{['#cf0d06','#eb5752','#e88a87']}`
+
+</PropListing>
 <PropListing
-    name=linkColor
-    description="Color to use for the links between nodes in the diagram"
+    name="linkColor"
     options={['grey', 'source', 'target', 'gradient']}
-    default="grey"
-/>
+    defaultValue="grey"
+>
+
+Color to use for the links between nodes in the diagram
+
+</PropListing>
 
 ### Chart
 
 <PropListing
-    name=title
-    description="Chart title. Appears at top left of chart."
+    name="title"
     options="string"
-/>
+>
+
+Chart title. Appears at top left of chart.
+
+</PropListing>
 <PropListing
-    name=subtitle
-    description="Chart subtitle. Appears just under title."
+    name="subtitle"
     options="string"
-/>
+>
+
+Chart subtitle. Appears just under title.
+
+</PropListing>
 <PropListing
-    name=nodeLabels
-    description="Adds labels to the nodes of the diagram"
+    name="nodeLabels"
     options={['name', 'value', 'full']}
-    default="name"
-/>
+    defaultValue="name"
+>
+
+Adds labels to the nodes of the diagram
+
+</PropListing>
 <PropListing
-    name=linkLabels
-    description="Adds labels to the links between nodes"
+    name="linkLabels"
     options={['full', 'value', 'percent']}
-    default="full (requires percentCol)"
-/>
+    defaultValue="full (requires percentCol)"
+>
+
+Adds labels to the links between nodes
+
+</PropListing>
 <PropListing
-    name=chartAreaHeight
-    description="Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX."
+    name="chartAreaHeight"
     options="number"
-    default="180"
-/>
+    defaultValue="180"
+>
+
+Minimum height of the chart area (excl. header and footer) in pixels. Adjusting the height affects all viewport sizes and may impact the mobile UX.
+
+</PropListing>
 
 ### Custom Echarts Options
 
 <PropListing
-    name=echartsOptions
-    description="Custom Echarts options to override the default options. See <a href='/components/echarts-options/' class=markdown>reference page</a> for available options."
+    name="echartsOptions"
     options="{`{{exampleOption:'exampleValue'}}`}"
-/>
+>
+
+Custom Echarts options to override the default options. See [reference page](/components/echarts-options/) for available options.
+
+</PropListing>
 <PropListing
-    name=printEchartsConfig
-    description="Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options"
+    name="printEchartsConfig"
     options={['true', 'false']}
     defaultValue="false"
-/>
+>
+
+Helper prop for custom chart development - inserts a code block with the current echarts config onto the page so you can see the options used and debug your custom options
+
+</PropListing>

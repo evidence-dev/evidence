@@ -4,7 +4,6 @@
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 
 	const inputStore = writable({});
-
 	setContext(INPUTS_CONTEXT_KEY, inputStore);
 </script>
 

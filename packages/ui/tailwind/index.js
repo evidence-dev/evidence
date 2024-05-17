@@ -44,8 +44,7 @@ export const config = {
 						// proportional oldstyle figures by default
 						fontFeatureSettings: '"pnum", "onum"'
 					}
-				],
-				mono: [`'Menlo', 'Monaco', ${defaultTheme.fontFamily.mono}`]
+				]
 			},
 			textShadow: {
 				DEFAULT: '1px solid var(--tw-shadow-color)'
