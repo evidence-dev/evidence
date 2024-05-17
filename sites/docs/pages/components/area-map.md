@@ -253,7 +253,7 @@ Use the `name` prop to set an input name for the map - when a point is clicked, 
 
 #### Selected value for `{inputs.my_area_map}`: 
 
-{inputs.my_area_map}
+<pre class="text-sm">{JSON.stringify(inputs.my_area_map, null, 2)}</pre>
 
 #### Selected value for `{inputs.my_area_map.zip_code}`: 
   

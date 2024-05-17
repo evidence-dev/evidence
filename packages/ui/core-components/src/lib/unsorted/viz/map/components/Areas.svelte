@@ -212,6 +212,7 @@
 	 * @returns {Promise<void>}
 	 */
 	async function init() {
+		await loadGeoJson();
 		await data.fetch();
 
 		checkInputs(data, [areaCol]);
@@ -237,28 +238,7 @@
 	 * @param {string} name - The key under which to store the defaults in the input store.
 	 */
 	function setInputDefault(item, name) {
-		$inputs[name] = {};
-		Object.keys(item).forEach((key) => {
-			$inputs[name][key] = true; // Set all properties to true
-		});
-	}
-
-	/**
-	 * Replaces all single quotes with two single quotes in the values of an object.
-	 *
-	 * @param {Object} obj - The object whose values need to be sanitized.
-	 * @returns {Object} The sanitized object with all single quotes replaced by two single quotes in the string values.
-	 */
-	function sanitizeObject(obj) {
-		const sanitizedObj = {};
-		for (const key in obj) {
-			if (Object.prototype.hasOwnProperty.call(obj, key)) {
-				// Ensure the value is a string before replacing quotes
-				sanitizedObj[key] =
-					typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
-			}
-		}
-		return sanitizedObj;
+		$inputs[name] = Object.fromEntries(Object.keys(item).map((key) => [key, true]));
 	}
 
 	/**
@@ -269,7 +249,7 @@
 	 * @param {string} name - The store key under which to set the item.
 	 */
 	function updateInput(item, name) {
-		$inputs[name] = sanitizeObject(item);
+		$inputs[name] = Object.fromEntries(Object.entries(item).map(([key, value]) => [key, typeof value === 'string' ? value.replaceAll("'", "''") : value]))
 	}
 
 	/**
@@ -290,8 +270,8 @@
 	}
 </script>
 
-{#await Promise.all([map.initPromise, loadGeoJson()]) then}
-	{#await Promise.all([init(), data.fetch()]) then}
+<!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
+{#await Promise.all([map.initPromise, init(), data.fetch()]) then}
 		{#each filteredGeoJson as feature}
 			{@const item = $data.find((d) => d[areaCol].toString() === feature.properties[geoId])}
 			<MapArea
@@ -335,7 +315,6 @@
 				{link}
 			/>
 		{/each}
-	{:catch e}
-		<ErrorChart error={e} chartType="Area Map" />
-	{/await}
+{:catch e}
+	<ErrorChart error={e} chartType="Area Map" />
 {/await}

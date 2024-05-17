@@ -236,36 +236,15 @@
 		}
 	}
 
-	/**
+		/**
 	 * Initializes the input store with default values based on the keys of the item.
 	 * Each key in the item will be set to true in the specified input store entry.
 	 *
 	 * @param {Object} item - The object whose keys will be used to set default values.
 	 * @param {string} name - The key under which to store the defaults in the input store.
 	 */
-	function setInputDefault(item, name) {
-		$inputs[name] = {};
-		Object.keys(item).forEach((key) => {
-			$inputs[name][key] = true; // Set all properties to true
-		});
-	}
-
-	/**
-	 * Replaces all single quotes with two single quotes in the values of an object.
-	 *
-	 * @param {Object} obj - The object whose values need to be sanitized.
-	 * @returns {Object} The sanitized object with all single quotes replaced by two single quotes in the string values.
-	 */
-	function sanitizeObject(obj) {
-		const sanitizedObj = {};
-		for (const key in obj) {
-			if (Object.prototype.hasOwnProperty.call(obj, key)) {
-				// Ensure the value is a string before replacing quotes
-				sanitizedObj[key] =
-					typeof obj[key] === 'string' ? obj[key].replaceAll("'", "''") : obj[key];
-			}
-		}
-		return sanitizedObj;
+	 function setInputDefault(item, name) {
+		$inputs[name] = Object.fromEntries(Object.keys(item).map((key) => [key, true]));
 	}
 
 	/**
@@ -276,7 +255,7 @@
 	 * @param {string} name - The store key under which to set the item.
 	 */
 	function updateInput(item, name) {
-		$inputs[name] = sanitizeObject(item);
+		$inputs[name] = Object.fromEntries(Object.entries(item).map(([key, value]) => [key, typeof value === 'string' ? value.replaceAll("'", "''") : value]))
 	}
 
 	/**
@@ -295,8 +274,10 @@
 		});
 		setInputDefault(item, name);
 	}
+
 </script>
 
+<!-- Additional data.fetch() included in await to trigger reactivity. Should ideally be handled in init() in the future. -->
 {#await Promise.all([map.initPromise, data.fetch(), init()]) then}
 	{#each $data as item}
 		<Point

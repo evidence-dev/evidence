@@ -24,7 +24,7 @@ export const setTrackProxy = (
 				case IsSetTracked:
 					return true;
 				case 'toJSON':
-					return () => JSON.stringify(target[prop]);
+					return () => ({...target})
 				case 'toString':
 				case 'toPrimitive':
 				case Symbol.toPrimitive:

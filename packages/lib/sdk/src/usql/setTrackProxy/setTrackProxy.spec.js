@@ -35,6 +35,13 @@ describe('setTrackProxy', () => {
 			expect(v.a.b.c.label.toString()).toEqual('Hello World');
 			expect(v.a.b.c.value.toString()).toEqual('(select null where 0)');
 		});
+
+		it('should JSON serialize properly', () => {
+			const v = setTrackProxy();
+			v.abc = 'something';
+			const foo = {abc: 'something'};
+			expect(JSON.stringify(v)).toEqual(JSON.stringify(foo));
+		});
 	});
 
 	it('should identify itself with the IsSetTracked symbol', () => {
