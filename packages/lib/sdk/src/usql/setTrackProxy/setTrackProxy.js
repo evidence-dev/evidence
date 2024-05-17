@@ -12,8 +12,6 @@ export const setTrackProxy = (
 
 	const wrapped = Object.assign(() => {}, root ?? {});
 
-	console.log(wrapped());
-
 	/** @type {Array<string|number|symbol>} */
 	const modifiedKeys = Object.keys(wrapped);
 	const self = new Proxy(wrapped, {
@@ -26,7 +24,7 @@ export const setTrackProxy = (
 				case IsSetTracked:
 					return true;
 				case 'toJSON':
-					return () => JSON.stringify(target[prop]);
+					return () => ({ ...target });
 				case 'toString':
 				case 'toPrimitive':
 				case Symbol.toPrimitive:

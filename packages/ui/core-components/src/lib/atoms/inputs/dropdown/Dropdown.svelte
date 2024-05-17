@@ -58,6 +58,12 @@
 
 	export let noDefault = false;
 
+	/**
+	 * When true, all values will be selected by default
+	 * @type {boolean}
+	 */
+	export let selectAllByDefault = false;
+
 	const state = dropdownOptionStore(multiple);
 	const { selectedOptions, options, addOption, removeOption, flagOption, select, deselectAll } =
 		state;
@@ -140,6 +146,7 @@
 		label,
 		order = undefined,
 		where = undefined;
+
 	/** @type {import("@evidence-dev/component-utilities/buildQuery.js").QueryProps}*/
 	const { results, update } = buildReactiveInputQuery(
 		{ value, data, label, order, where },
@@ -241,6 +248,11 @@
 					if (presentValues.length) return; // no need to take action
 				}
 
+				if (selectAllByDefault && multiple) {
+					selectAllOptions();
+					return;
+				}
+
 				if (noDefault) {
 					deselectAll();
 					return;
@@ -271,6 +283,12 @@
 	}
 
 	const DISPLAYED_OPTIONS = 5;
+
+	function selectAllOptions() {
+		$queryOptions.forEach((opt) => {
+			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
+		});
+	}
 </script>
 
 <slot />
@@ -388,14 +406,7 @@
 							{#if multiple}
 								{#if !disableSelectAll}
 									<div class="-mx-1 h-px bg-gray-200" />
-									<Command.Item
-										class="justify-center text-center"
-										onSelect={() => {
-											$queryOptions.forEach((opt) => {
-												flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
-											});
-										}}
-									>
+									<Command.Item class="justify-center text-center" onSelect={selectAllOptions}>
 										Select all
 									</Command.Item>
 								{/if}
