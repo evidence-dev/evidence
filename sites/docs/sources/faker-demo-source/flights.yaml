@@ -1,0 +1,38 @@
+rows: 250000
+schema:
+  id:
+    type: id
+  plane:
+    category: airline
+    item: airplane 
+    targetField: name
+  airline:
+    category: airline
+    item: airline 
+    targetField: name
+  fare: 
+    category: number
+    item: float 
+    options:
+      - max: 10000
+        min: 75
+        fractionDigits: 21
+  departure_airport: 
+    category: airline
+    item: airport 
+    targetField: name 
+  arrival_airport: 
+    category: airline
+    item: airport 
+    targetField: name 
+  seat:
+    category: airline
+    item: seat
+  departure_date:
+    category: date
+    item: recent
+    options:
+      - days: 365
+  regulator: 
+    category: location 
+    item: country 

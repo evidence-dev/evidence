@@ -4,11 +4,11 @@
 
 	let v = 5;
 
+	let reactiveQuery;
 	const reactiveQueryFactory = Query.createReactive(
 		{ callback: (v) => (reactiveQuery = v), execFn: query },
 		{ initialData: [{ initialData: 'Change the story source code and this should go away' }] }
 	);
-	let reactiveQuery;
 	$: reactiveQueryFactory(`SELECT ${v}`);
 </script>
 
