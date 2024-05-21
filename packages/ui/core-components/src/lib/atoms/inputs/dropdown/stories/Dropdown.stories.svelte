@@ -31,6 +31,21 @@
 	</Dropdown>
 </Story>
 
+<Story name="Alphabetic filtering">
+	<Dropdown name="test" defaultValue="Bottom 100">
+		<DropdownOption value="All" />
+		<DropdownOption value="Apple" />
+		<DropdownOption value="Banana" />
+		<DropdownOption value="Clementine" />
+		<DropdownOption value="Dragon Fruit" />
+		<DropdownOption value="Elderberry" />
+		<DropdownOption value="Fig" />
+		<DropdownOption value="Grape" />
+		<DropdownOption value="Honeydew" />
+		<DropdownOption value="Ichang Papeda" />
+	</Dropdown>
+</Story>
+
 <Story name="String Number filtering">
 	<Dropdown name="test" defaultValue="Bottom 100">
 		<DropdownOption value="All" />
