@@ -1,5 +1,34 @@
 # evidence-docs
 
+## 0.0.6
+
+### Patch Changes
+
+- 2a396873: Adding a selectAllByDefault property to Dropdowns
+- Updated dependencies [2a396873]
+- Updated dependencies [1377e0ed]
+- Updated dependencies [2b5f94e3]
+- Updated dependencies [40c83ee2]
+- Updated dependencies [6157db9a]
+  - @evidence-dev/core-components@4.2.0
+  - @evidence-dev/duckdb@1.0.9
+  - @evidence-dev/evidence@35.0.0
+  - @evidence-dev/csv@1.0.9
+  - @evidence-dev/component-utilities@3.0.4
+
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [b3e10dac]
+- Updated dependencies [a6414446]
+- Updated dependencies [e400971e]
+- Updated dependencies [43d66875]
+- Updated dependencies [52b3fde1]
+  - @evidence-dev/core-components@4.1.1
+  - @evidence-dev/component-utilities@3.0.3
+  - @evidence-dev/evidence@34.0.1
+
 ## 0.1.0
 
 ### Minor Changes
