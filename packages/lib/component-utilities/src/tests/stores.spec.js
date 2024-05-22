@@ -1,7 +1,6 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('$app/environment', () => ({ dev: false, browser: false }));
-globalThis.localStorage = {};
 
 import { toasts } from '../stores.js';
 import { get } from 'svelte/store';
