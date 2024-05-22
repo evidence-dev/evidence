@@ -200,6 +200,8 @@
 				if ($option.removeOnDeselect) flagOption([$option, DropdownValueFlag.REMOVE_ON_DESELECT]);
 			});
 			queryOptions = query;
+			hasHadSelection = false;
+			optionUpdates = undefined;
 		}
 	}, 250);
 
@@ -220,7 +222,6 @@
 			if (!hasHadSelection) {
 				setTimeout(evalDefaults, 0);
 				optionUpdates();
-				optionUpdates = undefined;
 			}
 		});
 	}
