@@ -79,15 +79,8 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				return a.idx - b.idx;
 			}
 
-			if (typeof a.value === 'number' && typeof b.value === 'number') {
-				if (a.value > b.value) {
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-			if (a.value === 'All') {
-				return -1;
+			if (typeof a.value === 'number' && typeof b.value === 'number') {			
+					return a.value - b.value;
 			}
 
 			return a.value.toString().localeCompare(b.value.toString());

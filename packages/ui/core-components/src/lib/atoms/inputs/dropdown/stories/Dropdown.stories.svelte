@@ -21,7 +21,6 @@
 </Story>
 <Story name="Number filtering">
 	<Dropdown name="Number filtering">
-		<DropdownOption value="All" />
 		<DropdownOption value={222} />
 		<DropdownOption value={2} />
 		<DropdownOption value={10} />
@@ -33,7 +32,6 @@
 
 <Story name="Alphabetic filtering">
 	<Dropdown name="test" defaultValue="Bottom 100">
-		<DropdownOption value="All" />
 		<DropdownOption value="Fig" />
 		<DropdownOption value="Honeydew" />
 		<DropdownOption value="Apple" />
@@ -48,7 +46,6 @@
 
 <Story name="String Number filtering">
 	<Dropdown name="test" defaultValue="Bottom 100">
-		<DropdownOption value="All" />
 		<DropdownOption value="Top {100}" />
 		<DropdownOption value="Top {101}" />
 		<DropdownOption value="Top {1001}" />
@@ -63,7 +60,6 @@
 
 <Story name="Strings and Mixed String-Numbers filtering">
 	<Dropdown name="test" defaultValue="Bottom 100">
-		<DropdownOption value="All" />
 		<DropdownOption value="Top {100}" />
 		<DropdownOption value="Top {101}" />
 		<DropdownOption value="Top {1001}" />
