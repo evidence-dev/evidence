@@ -1,0 +1,43 @@
+{
+  "mode": "pre",
+  "tag": "features-b",
+  "initialVersions": {
+    "@evidence-dev/bigquery": "2.0.5",
+    "@evidence-dev/csv": "1.0.9",
+    "@evidence-dev/databricks": "1.0.5",
+    "@evidence-dev/duckdb": "1.0.9",
+    "@evidence-dev/faker-datasource": "2.1.1",
+    "@evidence-dev/mssql": "1.0.7",
+    "@evidence-dev/mysql": "1.1.2",
+    "@evidence-dev/postgres": "1.0.5",
+    "@evidence-dev/redshift": "1.0.5",
+    "@evidence-dev/snowflake": "1.0.5",
+    "@evidence-dev/sqlite": "2.0.4",
+    "@evidence-dev/trino": "1.0.5",
+    "@evidence-dev/evidence": "35.0.0",
+    "evidence-vscode": "1.4.15",
+    "@evidence-dev/component-utilities": "3.0.4",
+    "@evidence-dev/db-commons": "1.0.4",
+    "@evidence-dev/db-orchestrator": "3.1.1",
+    "@evidence-dev/plugin-connector": "2.1.4",
+    "@evidence-dev/preprocess": "5.1.1",
+    "@evidence-dev/query-store": "2.1.4",
+    "@evidence-dev/sdk": "1.2.2",
+    "@evidence-dev/telemetry": "2.1.0",
+    "@evidence-dev/universal-sql": "2.1.2",
+    "@evidence-dev/core-components": "4.2.0",
+    "@evidence-dev/tailwind": "2.1.0",
+    "my-evidence-project": "0.0.6",
+    "@evidence-dev/components": "3.5.2",
+    "evidence-test-environment": "3.0.34",
+    "ui-tests": "1.2.2"
+  },
+  "changesets": [
+    "bright-dolls-repair",
+    "hot-goats-happen",
+    "moody-chairs-whisper",
+    "rude-ravens-run",
+    "shaggy-bulldogs-approve",
+    "tricky-garlics-admire"
+  ]
+}

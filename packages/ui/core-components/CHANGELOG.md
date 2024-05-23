@@ -1,5 +1,18 @@
 # @evidence-dev/core-components
 
+## 4.2.1-features-b.0
+
+### Patch Changes
+
+- 97cb3a7c3: Handle all-null x columns in Line.svelte
+- f6b22bbce: Dropdown behavior when using selectAllByDefault improved
+- 106222df8: - startingZoom is now respected more consistently in Map.svelte
+  - startingZoom does not need to specified with startingLat/Long, and can be used independently
+  - zoomSnap has been modified to allow finer control over the zoom level
+- 106222df8: Mitigated white lines appearing in map
+- Updated dependencies [acba0f3a6]
+  - @evidence-dev/component-utilities@3.0.5-features-b.0
+
 ## 4.2.0
 
 ### Minor Changes
