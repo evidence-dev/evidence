@@ -3,6 +3,7 @@
 	import { setContext } from 'svelte';
 	import { propKey, configKey, strictBuild } from '@evidence-dev/component-utilities/chartContext';
 	let props = writable({});
+	/** @type {import("svelte/store").Writable<import("echarts").Options>} */
 	let config = writable({});
 
 	$: setContext(propKey, props);
@@ -25,6 +26,7 @@
 	import ErrorChart from './ErrorChart.svelte';
 	import checkInputs from '@evidence-dev/component-utilities/checkInputs';
 	import { chartColours, uiColours } from '@evidence-dev/component-utilities/colours';
+	import EmptyChart from './EmptyChart.svelte';
 
 	// ---------------------------------------------------------------------------------------
 	// Input Props
@@ -1044,22 +1046,26 @@
 
 {#if !error}
 	<slot />
-	<ECharts
-		config={$config}
-		{height}
-		{width}
-		{data}
-		{queryID}
-		evidenceChartTitle={title}
-		{showAllXAxisLabels}
-		{swapXY}
-		{echartsOptions}
-		{seriesOptions}
-		{printEchartsConfig}
-		{renderer}
-		{connectGroup}
-		{seriesColors}
-	/>
+	{#if !$config.series.length}
+		<EmptyChart emptySet="pass" />
+	{:else}
+		<ECharts
+			config={$config}
+			{height}
+			{width}
+			{data}
+			{queryID}
+			evidenceChartTitle={title}
+			{showAllXAxisLabels}
+			{swapXY}
+			{echartsOptions}
+			{seriesOptions}
+			{printEchartsConfig}
+			{renderer}
+			{connectGroup}
+			{seriesColors}
+		/>
+	{/if}
 {:else}
 	<ErrorChart {error} {chartType} />
 {/if}
