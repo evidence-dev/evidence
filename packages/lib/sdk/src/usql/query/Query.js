@@ -924,6 +924,16 @@ DESCRIBE ${this.text.trim()}
 	#hash;
 	/** @type {import('../types.js').QueryOpts<RowType>} */
 	#opts;
+
+	/** @type {Pick<import("../types.js").QueryOpts<RowType>, 'autoScore' | 'noResolve' | 'disableCache'>} */
+	get #inheritableOpts() {
+		return {
+			autoScore: this.#opts.autoScore,
+			noResolve: this.#opts.noResolve,
+			disableCache: this.#opts.disableCache
+		};
+	}
+
 	/** @type {string} */
 	get id() {
 		return this.#id;
@@ -1131,7 +1141,8 @@ DESCRIBE ${this.text.trim()}
 	/** @param {string} filterStatement */
 	where = (filterStatement) =>
 		Query.create(this.#query.clone().where(taggedSql`${filterStatement}`), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			noResolve: this.#opts.noResolve
 		});
 
 	/**
@@ -1164,7 +1175,8 @@ DESCRIBE ${this.text.trim()}
 				.orderby(taggedSql`similarity DESC`),
 			this.#executeQuery,
 			{
-				knownColumns: colsWithSimilarity
+				knownColumns: colsWithSimilarity,
+				...this.#inheritableOpts
 			}
 		);
 		return output;
@@ -1173,13 +1185,15 @@ DESCRIBE ${this.text.trim()}
 	/** @param {number} limit */
 	limit = (limit) =>
 		Query.create(this.#query.clone().limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 
 	/** @param {number} offset */
 	offset = (offset) =>
 		Query.create(this.#query.clone().offset(offset), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 	/**
 	 * @param {number} offset
@@ -1187,7 +1201,8 @@ DESCRIBE ${this.text.trim()}
 	 */
 	paginate = (offset, limit) =>
 		Query.create(this.#query.clone().offset(offset).limit(limit), this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 
 	/**
@@ -1201,7 +1216,8 @@ DESCRIBE ${this.text.trim()}
 		query.$groupby(columns);
 
 		return Query.create(query, this.#executeQuery, {
-			knownColumns: this.#columns
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
 		});
 	};
 
@@ -1243,7 +1259,10 @@ DESCRIBE ${this.text.trim()}
 				});
 			}
 		}
-		return Query.create(query, this.#executeQuery, { knownColumns: this.#columns });
+		return Query.create(query, this.#executeQuery, {
+			knownColumns: this.#columns,
+			...this.#inheritableOpts
+		});
 	};
 
 	////////////////////////////////////
