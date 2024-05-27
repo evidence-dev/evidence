@@ -1,6 +1,3 @@
-// SQL query to get a long dimensional table
-// dimension | dimensionName | metric | filteredMetric - (metric filtered by the whereClause)
-// optionally includes an "Others" row and a "Grand Total" row, each which respect the whereClause
 
 // Where clause that optionally excludes any reference to the excluded dimension
 export const getWhereClause = function (selectedDimensions, excludeDimension) {
@@ -21,6 +18,9 @@ export const getWhereClause = function (selectedDimensions, excludeDimension) {
 	}
 	return whereClause;
 };
+
+// SQL query to get a long dimensional table
+// dimension | dimensionName | metric | filteredMetric - (metric filtered by the whereClause) | percentOfTotal - (metric / total(metric))
 
 export const getDimensionCutQuery = function (
 	/** @type {import("@evidence-dev/sdk/usql").Query} */

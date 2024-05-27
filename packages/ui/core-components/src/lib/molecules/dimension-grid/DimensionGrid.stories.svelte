@@ -35,6 +35,20 @@
 	<DimensionGrid name="dimensiongrid" data={fakerSeries.airlines.flights.store} />
 </Story>
 
+<Story name="Loading State">
+	<div class="my-2 bg-gray-50 border-2 border-dashed font-mono rounded p-2 text-xs">
+		<dt class=" font-semibold">$inputs.dimensiongrid</dt>
+		<dd>{$inputStore.dimensiongrid}</dd>
+	</div>
+	<DimensionGrid
+		name="dimensiongrid"
+		data={Query.create('SELECT * FROM series_demo_source.flights', query, {
+			disableCache: true,
+			noResolve: true
+		})}
+	/>
+</Story>
+
 <Story name="Labelled Metric">
 	<DimensionGrid data={fakerSeries.airlines.flights.store} metricLabel="Flights" />
 </Story>
