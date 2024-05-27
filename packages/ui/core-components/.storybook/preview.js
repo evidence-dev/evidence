@@ -9,7 +9,8 @@ const preview = {
 				color: /(background|color)$/i,
 				date: /Date$/
 			}
-		}
+		},
+		chromatic: { delay: 1000 },
 	},
 	argTypes: {
 		data: { table: { disable: true } },
