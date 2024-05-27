@@ -23,10 +23,6 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class=" w-44 text-xs">
 		<DropdownMenu.Group>
-			<DropdownMenu.Item on:click={print}>
-				Print PDF
-				<DropdownMenu.Shortcut>⌘P</DropdownMenu.Shortcut>
-			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				on:click={() => {
 					showQueries.update((val) => !val);
