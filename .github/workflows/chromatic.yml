@@ -6,14 +6,16 @@ jobs:
   chromatic:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
-      - name: Install dependencies
-        run: pnpm install
-
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 8.6.9
+      - uses: actions/setup-node@v3
+        with:
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - name: Core Components Chromatic
         uses: chromaui/action@latest
         with:
