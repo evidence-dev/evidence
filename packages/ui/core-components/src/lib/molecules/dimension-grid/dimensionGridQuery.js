@@ -1,4 +1,3 @@
-
 // Where clause that optionally excludes any reference to the excluded dimension
 export const getWhereClause = function (selectedDimensions, excludeDimension) {
 	let whereClause = 'true';
