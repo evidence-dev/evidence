@@ -75,6 +75,7 @@
 		"dev:test-env": "pnpm --filter ./sites/test-env dev",
 		"dev:core-components": "pnpm --filter ./packages/ui/core-components package:watch",
 		"sources:example-project": "pnpm --filter ./sites/example-project sources",
+		"sources:core-components": "pnpm --filter ./packages/ui/coure-components sources",
 		"sources:test-env": "pnpm --filter ./sites/test-env sources",
 		"sources:docs": "pnpm --filter ./sites/docs sources",
 		"preview:test-env": "pnpm --filter ./sites/test-env preview",

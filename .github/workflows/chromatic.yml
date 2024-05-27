@@ -17,6 +17,7 @@ jobs:
         with:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm sources:core-components
       - name: Core Components Chromatic
         uses: chromaui/action@latest
         with:
