@@ -89,9 +89,9 @@
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`relative ${sizeClass} mb-8`}>
 		<p class="pb-2 truncate text-xs">
-			{title} : <span class="text-sm">{$inputs[name]}</span>
+			{title} : <span class="text-xs">{$inputs[name]}</span>
 		</p>
-		<SliderShadcn {min} {max} {step} {ticks} bind:value />
+		<SliderShadcn {min} {max} {step} bind:value />
 		{#if showMaxMin}
 			<span class="absolute left-0 text-xs pt-1">{min}</span>
 			<span class="absolute right-0 text-xs pt-1">{max}</span>

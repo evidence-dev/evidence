@@ -64,7 +64,7 @@ showMaxMin property can hide the Max and Min values with false, By default showM
 The default size of the slider can be altered with the size property using; medium, large or full
 
 <Slider
-    title="Months" 
+    title="Months Medium" 
     name=monthsMedium
     min=0
     max=36
@@ -72,7 +72,7 @@ The default size of the slider can be altered with the size property using; medi
 />
 
 <Slider
-    title="Months" 
+    title="Months Large" 
     name=monthsLarge
     min=0
     max=36
@@ -80,7 +80,7 @@ The default size of the slider can be altered with the size property using; medi
 />
 <Slider
     title="Months" 
-    name=monthsLarge
+    name=monthsFull
     min=0
     max=36
     size=full
@@ -89,10 +89,10 @@ The default size of the slider can be altered with the size property using; medi
 ````markdown
 <Slider
     title="Months" 
-    name=monthsLarge
+    name=monthsFull
     min=0
     max=36
-    size=large
+    size=full
 />
 ````
 

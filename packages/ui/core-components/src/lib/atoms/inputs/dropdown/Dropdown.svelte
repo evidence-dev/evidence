@@ -174,8 +174,10 @@
 
 	/** @type {import("@evidence-dev/sdk/usql").QueryValue} */
 	let queryOptions;
+	console.log($queryOptions);
 
 	const updateQueryOptions = debounce(async () => {
+		console.log($queryOptions);
 		if (search && hasQuery) {
 			// When search changes, we want to update the query
 
@@ -186,7 +188,7 @@
 			await searchQ.fetch();
 
 			queryOptions = searchQ;
-
+			console.log($queryOptions);
 			if ($selectedOptions.length) {
 				// We don't want to get rid of selections that already exist when searching
 				$selectedOptions.forEach(($selectedOption) => {
