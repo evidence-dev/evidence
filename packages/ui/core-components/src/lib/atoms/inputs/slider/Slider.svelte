@@ -84,8 +84,6 @@
 	};
 
 	$: sizeClass = renderSize(size);
-
-	console.log(value);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
