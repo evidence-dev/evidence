@@ -22,26 +22,39 @@
 </script>
 
 <Template let:args>
-	<div class="inline-flex flex-col">
-		<p class="pb-4 truncate text-xs">{args.title}</p>
-		<Slider {...args} />
-	</div>
+	<Slider {...args} />
 </Template>
 
 <Story name="Default" />
 <Story
 	name="Slider with Steps with default value"
-	args={{ title: 'Months', min: 0, max: 36, step: 12, defaultValue: 12 }}
+	args={{ name: 'Months', title: 'Months', min: 0, max: 36, step: 12, defaultValue: 12 }}
 />
 <Story
 	name="Hide max and min"
-	args={{ title: 'Months', min: 0, max: 36, step: 12, showMaxMin: false }}
+	args={{ name: 'Months', title: 'Months', min: 0, max: 36, step: 12, showMaxMin: false }}
 />
 <Story
 	name="medium size"
-	args={{ title: 'Months', min: 0, max: 36, step: 12, showMaxMin: true, size: 'medium' }}
+	args={{
+		name: 'Months',
+		title: 'Months',
+		min: 0,
+		max: 36,
+		step: 12,
+		showMaxMin: true,
+		size: 'medium'
+	}}
 />
 <Story
 	name="large size"
-	args={{ title: 'Months', min: 0, max: 36, step: 12, showMaxMin: true, size: 'large' }}
+	args={{
+		name: 'Months',
+		title: 'Months',
+		min: 0,
+		max: 36,
+		step: 12,
+		showMaxMin: true,
+		size: 'large'
+	}}
 />

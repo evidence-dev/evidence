@@ -3,11 +3,12 @@
 </script>
 
 <script>
-	import Slider from '../../shadcn/slider/slider.svelte';
-	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { INPUTS_CONTEXT_KEY } from '@evidence-dev/component-utilities/globalContexts';
 	import { getContext } from 'svelte';
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
+	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
+	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+
 	/////
 	// Component Things
 	/////
@@ -18,17 +19,45 @@
 	/** @type {string} */
 	export let name;
 
-	/** @type {number} */
-	export let min;
+	/** @type {number|undefined} */
+	export let min = 0;
+
+	if (min) {
+		// if min was user-supplied
+		min = Number(min);
+		if (isNaN(min)) {
+			// input must be a number
+			throw Error('min must be a number');
+		}
+	} else {
+		min = 0;
+	}
 
 	/** @type {number} */
-	export let max;
+	export let max = 100;
+
+	if (max) {
+		// if min was user-supplied
+		max = Number(max);
+		if (isNaN(max)) {
+			// input must be a number
+			throw Error('max must be a number');
+		} else if (max < min) {
+			throw Error('max cannot be less than min');
+		}
+	} else {
+		max = 100;
+	}
 
 	/** @type {number} */
 	export let step;
 
+	/** @type {number} */
+	export let ticks = 1;
+
 	/** @type {boolean} */
 	export let showMaxMin = true;
+	$: showMaxMin = showMaxMin === 'true' || showMaxMin === true;
 
 	/** @type {boolean} */
 	export let hideDuringPrint = true;
@@ -40,7 +69,7 @@
 	/** @type {[number]} */
 	let value = [defaultValue];
 
-	$inputs[name] = value;
+	$: $inputs[name] = value;
 
 	/** @type {string} */
 	export let size = '';
@@ -48,21 +77,26 @@
 	const renderSize = (size) => {
 		const sizeMap = {
 			medium: 'w-64',
-			large: 'w-96'
+			large: 'w-96',
+			full: 'w-full'
 		};
 		return sizeMap[size.toLowerCase()] || 'w-40';
 	};
 
 	$: sizeClass = renderSize(size);
+
+	console.log(value);
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class={`relative ${sizeClass}`}>
-		<Slider {min} {max} {step} bind:value={$inputs[name]}>{value}</Slider>
+	<div class={`relative ${sizeClass} mb-8`}>
+		<p class="pb-2 truncate text-xs">
+			{title} : <span class="text-sm">{$inputs[name]}</span>
+		</p>
+		<SliderShadcn {min} {max} {step} {ticks} bind:value />
 		{#if showMaxMin}
 			<span class="absolute left-0 text-xs pt-1">{min}</span>
 			<span class="absolute right-0 text-xs pt-1">{max}</span>
 		{/if}
-		<span class="absolute -right-9 -top-3 text-right">{$inputs[name]}</span>
 	</div>
 </HiddenInPrint>
