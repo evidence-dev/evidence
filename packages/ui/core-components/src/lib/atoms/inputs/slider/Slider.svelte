@@ -52,9 +52,6 @@
 	/** @type {number} */
 	export let step;
 
-	/** @type {number} */
-	export let ticks = 1;
-
 	/** @type {boolean} */
 	export let showMaxMin = true;
 	$: showMaxMin = showMaxMin === 'true' || showMaxMin === true;

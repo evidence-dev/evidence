@@ -5,8 +5,8 @@
 		title: 'Atoms/inputs/Slider',
 		argTypes: {},
 		args: {
-			title: 'Basic Slider',
-			name: 'Basic Slider',
+			title: 'Slider title',
+			name: 'Slider name',
 			defaultValue: 0,
 			min: 0,
 			max: 100,
@@ -38,7 +38,7 @@
 	name="medium size"
 	args={{
 		name: 'Months',
-		title: 'Months',
+		title: 'Months Medium',
 		min: 0,
 		max: 36,
 		step: 12,
@@ -50,11 +50,38 @@
 	name="large size"
 	args={{
 		name: 'Months',
-		title: 'Months',
+		title: 'Months Large',
 		min: 0,
 		max: 36,
 		step: 12,
 		showMaxMin: true,
 		size: 'large'
+	}}
+/>
+
+<Story
+	name="large size"
+	args={{
+		name: 'Months',
+		title: 'Months Full',
+		min: 0,
+		max: 36,
+		step: 12,
+		showMaxMin: true,
+		size: 'full'
+	}}
+/>
+
+<Story
+	name="Negative"
+	args={{
+		name: 'Months',
+		title: 'Negative values',
+		min: -1000,
+		max: -100,
+		defaultValue: -500,
+		step: 1,
+		showMaxMin: true,
+		size: 'full'
 	}}
 />
