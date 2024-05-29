@@ -309,7 +309,10 @@ export class EvidenceMap {
 			fieldClass: item.fieldClass ?? 'default-field-class', // Example default class
 			valueClass: item.valueClass ?? 'default-value-class', // Example default class
 			fmt: item.fmt ?? 'num0', // Default formatting
-			formatColumnTitle: item.formatColumnTitle === undefined ? true : item.formatColumnTitle,
+			formatColumnTitle:
+				item.formatColumnTitle === undefined && item.title === undefined
+					? true
+					: item.formatColumnTitle,
 			contentType: item.contentType ?? 'text', // Default to 'text'
 			linkLabel: item.linkLabel ?? undefined
 		}));
