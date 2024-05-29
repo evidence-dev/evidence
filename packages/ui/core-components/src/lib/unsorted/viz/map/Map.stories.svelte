@@ -27,6 +27,7 @@
 			lat="lat"
 			long="long"
 			value="sales"
+			tooltip={[{ title: 'Sales, LTM' }]}
 			colorPalette={['white', 'green']}
 			size="20"
 			opacity="0.7"
