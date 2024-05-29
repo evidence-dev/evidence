@@ -34,10 +34,13 @@
   },
   "changesets": [
     "bright-dolls-repair",
+    "chatty-crabs-know",
     "hot-goats-happen",
     "moody-chairs-whisper",
     "rude-ravens-run",
     "shaggy-bulldogs-approve",
+    "shaggy-sloths-fail",
+    "sweet-seas-reflect",
     "tricky-garlics-admire"
   ]
 }

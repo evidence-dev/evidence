@@ -1,5 +1,16 @@
 # @evidence-dev/core-components
 
+## 4.3.0-features-b.1
+
+### Minor Changes
+
+- f8f7ebdbc: Added sorting for numerical options in dropdop
+
+### Patch Changes
+
+- 064a5c96e: Add optional title slot to Accordian Items
+- 9dd691497: Fix auto-casing on tooltip titles
+
 ## 4.2.1-features-b.0
 
 ### Patch Changes
