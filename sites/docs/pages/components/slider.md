@@ -99,7 +99,7 @@ The default size of the slider can be altered with the size property using; medi
 />
 ````
 
-# Dropdown
+# Slider
 
 ## Options
 
