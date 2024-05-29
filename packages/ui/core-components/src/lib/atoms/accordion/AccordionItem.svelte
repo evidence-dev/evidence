@@ -9,7 +9,9 @@
 
 <BaseAccordion.Item value={title}>
 	<BaseAccordion.Trigger>
-		{title}
+		<slot name="title">
+			{title}
+		</slot>
 	</BaseAccordion.Trigger>
 	<BaseAccordion.Content>
 		<slot />
