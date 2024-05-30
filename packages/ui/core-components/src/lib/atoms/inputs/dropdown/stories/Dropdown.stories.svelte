@@ -187,3 +187,8 @@
 <Story name="Driving a Bar Chart">
 	<DropdownCharts />
 </Story>
+
+<Story name="With custom ordering">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`)}
+	<Dropdown name="test" {data} value="value" label="label" order="label desc" />
+</Story>
