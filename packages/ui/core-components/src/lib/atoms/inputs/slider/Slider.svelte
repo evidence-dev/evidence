@@ -75,7 +75,8 @@
 		const sizeMap = {
 			medium: 'w-64',
 			large: 'w-96',
-			full: 'w-full'
+			//Full size width requires calc to compensate for shifted range span in sliderShadcn
+			full: 'w-[calc(100%-0.6rem)]'
 		};
 		return sizeMap[size.toLowerCase()] || 'w-40';
 	};
@@ -84,14 +85,14 @@
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
-	<div class={`relative ${sizeClass} mb-8`}>
+	<div class={`relative ${sizeClass} mb-10 select-none`}>
 		<p class="pb-2 truncate text-xs">
 			{title} : <span class="text-xs">{$inputs[name]}</span>
 		</p>
-		<SliderShadcn {min} {max} {step} bind:value />
+		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 		{#if showMaxMin}
-			<span class="absolute left-0 text-xs pt-1">{min}</span>
-			<span class="absolute right-0 text-xs pt-1">{max}</span>
+			<span class="absolute left-0 text-xs pt-1 -z-10">{min}</span>
+			<span class="absolute -right-2.5 text-xs pt-1 -z-10">{max}</span>
 		{/if}
 	</div>
 </HiddenInPrint>
