@@ -299,7 +299,7 @@
 		<DropdownOption
 			value={queryOpt.value}
 			valueLabel={queryOpt.label}
-			idx={(queryOpt.similarity ?? 0) * -1 ?? -1}
+			idx={queryOpt.similarity * -1 ?? queryOpt.ordinal ?? 0}
 			__auto
 		/>
 	{/each}

@@ -1146,6 +1146,23 @@ DESCRIBE ${this.text.trim()}
 		});
 
 	/**
+	 * Attaches an `ordinal` column to the query based on some window statement
+	 * @example myQuery.withOrdinal('partition by a order by b')
+	 * @param {string} windowStatement
+	 * @returns
+	 */
+	withOrdinal = (windowStatement) => {
+		const newQ = this.#query.clone();
+		newQ.select({
+			ordinal: taggedSql`row_number() over (${windowStatement})`
+		});
+		return Query.create(newQ, this.#executeQuery, {
+			...this.#inheritableOpts,
+			knownColumns: this.#columns
+		});
+	};
+
+	/**
 	 * @param {string} searchTerm
 	 * @param {string} searchCol
 	 * @param {number} searchThreshold
