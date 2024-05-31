@@ -4,6 +4,26 @@ hide_table_of_contents: false
 title: Build your first dashboard
 description: A 10 minute guide to building your first dashboard in Evidence.
 ---
+<style>
+:root {
+	--lightest-gray: #dee2e6;
+  }
+
+#objectives {
+	background-color: var(--lightest-gray);
+	padding: 1rem;
+}
+
+#objectives ul li {
+	list-style-image: url(/img/getting-started/check.svg);
+	margin-left: 1rem;
+}
+
+.tut-img {
+	margin: 1rem;
+}
+</style>
+
 <div id="objectives" class="alert svelte-17118v7">
 <strong>By the end of this 10 minute guide, you will be able to:</strong>
 <ul>
