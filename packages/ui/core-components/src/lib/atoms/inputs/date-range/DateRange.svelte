@@ -11,6 +11,8 @@
 	import { getLocalTimeZone } from '@internationalized/date';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
 	import { page } from '$app/stores';
+	import QueryLoad from '$lib/atoms/query-load/QueryLoad.svelte';
+	import { Skeleton } from '$lib/atoms/skeletons/index.js';
 
 	function dateToYYYYMMDD(date) {
 		return date.toISOString().split('T')[0];
@@ -103,12 +105,18 @@
 				</span>
 			</span>
 		{:else}
-			<DateRange
-				bind:selectedDateRange
-				start={startString}
-				end={endString}
-				loaded={$query?.ready ?? true}
-			/>
+			<QueryLoad data={query} let:loaded>
+				<svelte:fragment slot="skeleton">
+					<Skeleton class="h-8 w-72" />
+				</svelte:fragment>
+
+				<DateRange
+					bind:selectedDateRange
+					start={startString}
+					end={endString}
+					loaded={loaded?.ready ?? true}
+				/>
+			</QueryLoad>
 		{/if}
 	</div>
 </HiddenInPrint>
