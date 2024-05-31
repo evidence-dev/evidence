@@ -39,6 +39,16 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 </ul>
 </div>
 
+<Alert status="info">
+   # Title
+   **By the end of this 10 minute guide, you will be able to:**
+   - Create and edit a page in Evidence
+   - Write a query on demo data
+   - Create a table
+   - Create a chart
+   - Connect a new CSV data source
+</Alert>
+
 
 <Alert status="info">
 Casey note: I like how the Rails tutorial calls out what you'll achieve, and adds these satisfying green checkmarks. I think it makes the reader feel good and excited. Baked my own CSS for this, happy to change to your suggestions
@@ -105,7 +115,7 @@ Make some more changes to the page. You'll see them reflected "live" in the brow
 
 This is called **hot reloading**, and it allows you to see your changes in real-time.
 
-Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](https://www.markdownguide.org/).
+Evidence pages are `.md` files, and are written in a popular language called Markdown. You can learn more about Markdown [here](https://docs.evidence.dev/reference/markdown/).
 
 You can also insert HTML directly into your page if you need more control.
 
