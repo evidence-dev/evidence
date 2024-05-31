@@ -34,6 +34,8 @@
 	export let data;
 	/** @type {string | undefined} */
 	export let dates;
+	/** @type {string | undefined} */
+	export let omitGroup;
 
 	const exec = getQueryFunction();
 	let query;
@@ -104,6 +106,7 @@
 				start={startString}
 				end={endString}
 				loaded={$query?.ready ?? true}
+				{omitGroup}
 			/>
 		{/if}
 	</div>

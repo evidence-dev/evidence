@@ -86,6 +86,17 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
 ```
 ````
 
+### Omitting a Date Range Group Preset
+
+<DateRange omitGroup='days, months'/>
+
+````markdown
+<DateRange
+    name=name_of_date_range
+    omitGroup='days, months'
+/>
+````
+
 
  ## Options
 
@@ -138,6 +149,19 @@ A manually specified end date to use for the range
 Title to display in the Date Range component
 
 </PropListing>
+
+
+<PropListing 
+    name="omitGroup"
+    options="{["days", "months", "last", "todate"]}"
+    default=undefined
+>
+
+Customize Date Range presets by removing selected groups, String formatted e.g `{"days"}`. <br>Use commas when removing multiple groups. e.g `{"days, todate"}`
+
+</PropListing>
+
+
 <PropListing 
     name="hideDuringPrint"
     options={["true", "false"]}
@@ -147,4 +171,3 @@ Title to display in the Date Range component
 Hide the component when the report is printed
 
 </PropListing>
-

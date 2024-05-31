@@ -35,6 +35,8 @@
 	/** @type {string} */
 	export let end;
 	export let loaded = true;
+	/** @type {string | undefined} */
+	export let omitGroup;
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
@@ -136,6 +138,23 @@
 			}
 		}
 	];
+
+	$: {
+		if (typeof omitGroup === 'string') {
+			// Convert omitGroup to an array of strings
+			let arrayOmitGroup = omitGroup.split(',').map((item) => item.trim());
+
+			// Process omitGroup Array: convert to lowercase and remove whitespace, then store in a Set
+			let processedOmitGroupSet = new Set(
+				arrayOmitGroup.map((group) => group.toLocaleLowerCase().replace(/\s/g, ''))
+			);
+
+			// Filter out the presets that are in the processedOmitGroupSet
+			presets = presets.filter(
+				(preset) => !processedOmitGroupSet.has(preset.group.toLocaleLowerCase().replace(/\s/g, ''))
+			);
+		}
+	}
 
 	function setPlaceholderDefault(d) {
 		placeholder = d;
