@@ -1,5 +1,38 @@
 # @evidence-dev/components
 
+## 3.5.2
+
+### Patch Changes
+
+- 9338738d: prevent gap on drop down
+- Updated dependencies [2a396873]
+- Updated dependencies [af9b74ee]
+- Updated dependencies [1377e0ed]
+- Updated dependencies [2b5f94e3]
+- Updated dependencies [40c83ee2]
+- Updated dependencies [6157db9a]
+  - @evidence-dev/core-components@4.2.0
+  - @evidence-dev/telemetry@2.1.0
+  - @evidence-dev/duckdb@1.0.9
+  - @evidence-dev/plugin-connector@2.1.4
+  - @evidence-dev/csv@1.0.9
+  - @evidence-dev/component-utilities@3.0.4
+
+## 3.5.1
+
+### Patch Changes
+
+- Updated dependencies [c88cb063]
+- Updated dependencies [b3e10dac]
+- Updated dependencies [a6414446]
+- Updated dependencies [e400971e]
+- Updated dependencies [43d66875]
+- Updated dependencies [52b3fde1]
+  - @evidence-dev/preprocess@5.1.1
+  - @evidence-dev/core-components@4.1.1
+  - @evidence-dev/component-utilities@3.0.3
+  - @evidence-dev/plugin-connector@2.1.3
+
 ## 3.5.0
 
 ### Minor Changes

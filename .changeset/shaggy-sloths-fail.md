@@ -2,4 +2,4 @@
 '@evidence-dev/core-components': patch
 ---
 
-$$slots._error is not $$slots.error
+Fix auto-casing on tooltip titles

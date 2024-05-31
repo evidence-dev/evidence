@@ -95,7 +95,7 @@ WHERE category = 'Sinister Toys'
 ```
 ````
 
-The exception is if you use one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/preprocess/supportedLanguages.cjs), which will render the code in a code block.
+The exception is if you use one of the [reserved language names](https://github.com/evidence-dev/evidence/blob/main/packages/lib/preprocess/src/utils/supportedLanguages.cjs), which will render the code in a code block.
 
 ````markdown
 ```python
