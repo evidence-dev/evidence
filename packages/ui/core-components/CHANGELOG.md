@@ -1,5 +1,12 @@
 # @evidence-dev/core-components
 
+## 4.3.0-features-b.3
+
+### Patch Changes
+
+- 90f381dc1: Dropdown option store uses sharedPromise to handle concurrency / races better. Select operations now wait for options to settle (all pending adds/removes must finish first), Add / Removes now wait for flags to finish
+- a2af0beaf: DateRange now waits for the query to resolve, if one is available
+
 ## 4.3.0-features-b.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # evidence-test-environment
 
+## 3.0.35-features-b.3
+
+### Patch Changes
+
+- Updated dependencies [90f381dc1]
+- Updated dependencies [a2af0beaf]
+  - @evidence-dev/core-components@4.3.0-features-b.3
+  - @evidence-dev/evidence@36.0.0-features-b.3
+
 ## 3.0.35-features-b.2
 
 ### Patch Changes
