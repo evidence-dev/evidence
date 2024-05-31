@@ -36,7 +36,7 @@ Start your development server, if isn't already running:
 - VSCode: Click `Start Evidence` in the bottom status bar.
 - Command Line: Run `npm run dev` in your project directory.
 
-If you chose a different setup during [Install Evidence](/docs/install-evidence), use the command that matches your setup.
+If you chose a different setup during [Install Evidence](/install-evidence), use the command that matches your setup.
 
 Your browser should open automatically. If it doesn't, open your browser and navigate to `localhost:3000` in the address bar. You should see your Evidence project:
 
