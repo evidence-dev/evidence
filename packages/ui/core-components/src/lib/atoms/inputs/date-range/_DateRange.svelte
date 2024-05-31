@@ -35,8 +35,8 @@
 	/** @type {string} */
 	export let end;
 	export let loaded = true;
-	/** @type {string | undefined} */
-	export let omitGroup;
+	/** @type {[]string] | undefined} */
+	export let presetRanges;
 
 	$: calendarStart = YYYYMMDDToCalendar(start);
 	$: calendarEnd = YYYYMMDDToCalendar(end);
@@ -140,19 +140,19 @@
 	];
 
 	$: {
-		if (typeof omitGroup === 'string') {
-			// Convert omitGroup to an array of strings
-			let arrayOmitGroup = omitGroup.split(',').map((item) => item.trim());
+		if (presetRanges && typeof presetRanges[0] === 'string') {
+			//filters out present range strings matching in preset array to be displayed to user
 
-			// Process omitGroup Array: convert to lowercase and remove whitespace, then store in a Set
-			let processedOmitGroupSet = new Set(
-				arrayOmitGroup.map((group) => group.toLocaleLowerCase().replace(/\s/g, ''))
-			);
+			let processedPresetRanges = presetRanges.map((preset) => {
+				return preset.toLocaleLowerCase().replace(/\s/g, '');
+			});
 
-			// Filter out the presets that are in the processedOmitGroupSet
-			presets = presets.filter(
-				(preset) => !processedOmitGroupSet.has(preset.group.toLocaleLowerCase().replace(/\s/g, ''))
+			let filteredPresets = presets.filter((preset) =>
+				processedPresetRanges.includes(preset.label.toLocaleLowerCase().replace(/\s/g, ''))
 			);
+			presets = filteredPresets;
+
+			console.log(filteredPresets);
 		}
 	}
 
@@ -163,6 +163,11 @@
 	let selectedPreset;
 	let placeholder;
 	$: setPlaceholderDefault(calendarEnd);
+
+	//group exists check for nicely rendering group border for dropdown
+	function groupExists(groupName) {
+		return presets.some((preset) => preset.group === groupName);
+	}
 </script>
 
 <div class="flex">
@@ -247,30 +252,42 @@
 				<span class="sm:hidden"> Range </span>
 			{/if}
 		</Select.Trigger>
-		<Select.Content>
-			{#each presets.filter((d) => d.group === 'Days') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-			<Separator orientation="horizontal" />
-			{#each presets.filter((d) => d.group === 'Months') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-			<Separator orientation="horizontal" />
-			{#each presets.filter((d) => d.group === 'Last') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-			<Separator orientation="horizontal" />
-			{#each presets.filter((d) => d.group === 'To Date') as preset}
-				<Select.Item value={preset.range} label={preset.label} class="text-xs"
-					>{preset.label}</Select.Item
-				>
-			{/each}
-		</Select.Content>
+		{#if presets && presets.length === 0}
+			<Select.Content class="text-sm text-center">
+				<p>No Valid Presets</p>
+			</Select.Content>
+		{:else}
+			<Select.Content>
+				{#each presets.filter((d) => d.group === 'Days') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+				{#if groupExists('Months')}
+					<Separator orientation="horizontal" />
+				{/if}
+				{#each presets.filter((d) => d.group === 'Months') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+				{#if groupExists('Last')}
+					<Separator orientation="horizontal" />
+				{/if}
+				{#each presets.filter((d) => d.group === 'Last') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+				{#if groupExists('To Date')}
+					<Separator orientation="horizontal" />
+				{/if}
+				{#each presets.filter((d) => d.group === 'To Date') as preset}
+					<Select.Item value={preset.range} label={preset.label} class="text-xs"
+						>{preset.label}</Select.Item
+					>
+				{/each}
+			</Select.Content>
+		{/if}
 	</Select.Root>
 </div>

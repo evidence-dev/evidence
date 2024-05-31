@@ -86,17 +86,27 @@ where date_column between '${inputs.name_of_date_range.start}' and '${inputs.nam
 ```
 ````
 
-### Omitting a Date Range Group Preset
+### Customizing Singluar Preset Ranges
 
-<DateRange omitGroup='days, months'/>
+<DateRange presetRanges={['last7Days']}/>
 
 ````markdown
 <DateRange
     name=name_of_date_range
-    omitGroup='days, months'
+    presetRanges={['last7Days']}
 />
 ````
 
+### Customizing Multiple Preset Ranges
+
+<DateRange presetRanges={['last7Days', 'last3Months', 'lastYear', 'allTime']}/>
+
+````markdown
+<DateRange
+    name=name_of_date_range
+    presetRanges={['last7Days', 'last3Months', 'lastYear', 'allTime']}
+/>
+````
 
  ## Options
 
@@ -152,12 +162,12 @@ Title to display in the Date Range component
 
 
 <PropListing 
-    name="omitGroup"
-    options="{["days", "months", "last", "todate"]}"
+    name="presetRanges"
+    options={['last7Days', 'last30Days', 'last90Days', 'last3Months', 'last6Months', 'last12Months', 'lastMonth', 'lastYear', 'monthToDate', 'yearToDate', 'allTime']}
     default=undefined
 >
 
-Customize Date Range presets by removing selected groups, String formatted e.g `{"days"}`. <br>Use commas when removing multiple groups. e.g `{"days, todate"}`
+Customize "Select a Range" drop down, by including present range options. `{['last7Days']}` or `{['last7Days', 'last6Months', 'lastYear']}`
 
 </PropListing>
 

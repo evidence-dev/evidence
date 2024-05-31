@@ -26,6 +26,14 @@
 	<DateRange {...args} />
 </Story>
 
-<Story name="omitGroup" args={{ omitGroup: 'Days' }} />
+<Story name="Single presetRanges" args={{ presetRanges: ['last7Days'] }} />
 
-<Story name="Multiple omitGroup" args={{ omitGroup: 'Days, TO DATE' }} />
+<Story
+	name="Multiple presetRanges"
+	args={{ presetRanges: ['last7Days', 'last3Months', 'lastYear', 'allTime'] }}
+/>
+
+<Story
+	name="Multiple presetRanges that are not present"
+	args={{ presetRanges: ['tomorrow', 'firstWeek', '30DaysLater', 'Forever'] }}
+/>
