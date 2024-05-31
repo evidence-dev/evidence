@@ -135,20 +135,19 @@ describe('dropdownOptionStore', () => {
 	});
 
 	it('should wait for options to be added before trying to select', async () => {
-		const { addOption, removeOption, select, selectedOptions } = dropdownOptionStore();
+		const { addOption, select, selectedOptions } = dropdownOptionStore();
 
 		const opts = [
 			{ label: '1', value: 1 },
 			{ label: '2', value: 2 },
 			{ label: '3', value: 3 }
-		]
+		];
 
-		select(opts[0])
-		opts.forEach((i) => addOption(i))
+		select(opts[0]);
+		opts.forEach((i) => addOption(i));
 		await vi.advanceTimersByTimeAsync(100);
-		expect(get(selectedOptions).length).toBe(1)
-
-	})
+		expect(get(selectedOptions).length).toBe(1);
+	});
 
 	describe('flags', () => {
 		it('should apply flags to options', async () => {
@@ -199,7 +198,7 @@ describe('dropdownOptionStore', () => {
 				expect(get(options)).toHaveLength(1);
 			});
 			it('should float removeOnDeselects to the top', async () => {
-				const { addOption, removeOption, options, flagOption, select } = dropdownOptionStore();
+				const { addOption, options, flagOption, select } = dropdownOptionStore();
 				const opt = { value: 1, label: 'test', idx: 4 };
 				const opt2 = { value: 2, label: 'test', idx: 2 };
 

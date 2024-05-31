@@ -1,6 +1,5 @@
 import { writable, derived, get, readonly } from 'svelte/store';
 import { batchUp, sharedPromise } from '@evidence-dev/sdk/utils';
-import { forEachLeadingCommentRange } from 'typescript';
 
 /**
  * @typedef {Object} DropdownValue
@@ -96,7 +95,6 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	/** @type {import("svelte/store").Unsubscriber[]} */
 	const cleanup = [];
 
-
 	/*
 		We use these 2 shared promises to avoid concurrency issues
 		If we have any pending option changes, all select operations
@@ -105,17 +103,17 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 		don't yet exist because addOption hasn't processed them into
 		the store yet.
 	*/
-	let addOptionSharedPromise = sharedPromise()
-	addOptionSharedPromise.resolve() // initially these are resolved
+	let addOptionSharedPromise = sharedPromise();
+	addOptionSharedPromise.resolve(); // initially these are resolved
 
-	let removeOptionSharedPromise = sharedPromise()
-	removeOptionSharedPromise.resolve() // initially these are resolved
+	let removeOptionSharedPromise = sharedPromise();
+	removeOptionSharedPromise.resolve(); // initially these are resolved
 
-	let flagOptionSharedPromise = sharedPromise()
-	flagOptionSharedPromise.resolve() // initially these are resolved
+	let flagOptionSharedPromise = sharedPromise();
+	flagOptionSharedPromise.resolve(); // initially these are resolved
 
 	const addOption = typedBatchup(async (addedOptions) => {
-		await flagOptionSharedPromise.promise
+		await flagOptionSharedPromise.promise;
 		try {
 			// Apply defaults
 			addedOptions = addedOptions.map((opt) => ({
@@ -129,12 +127,12 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				return hygiene($options);
 			});
 		} finally {
-			addOptionSharedPromise.resolve()
+			addOptionSharedPromise.resolve();
 		}
 	}, delay);
 
 	const removeOption = typedBatchup(async (removedOptions) => {
-		await flagOptionSharedPromise.promise
+		await flagOptionSharedPromise.promise;
 		try {
 			if (!removedOptions.length) return;
 			options.update(($options) => {
@@ -149,7 +147,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				return hygiene($options);
 			});
 		} finally {
-			removeOptionSharedPromise.resolve()
+			removeOptionSharedPromise.resolve();
 		}
 	}, delay);
 
@@ -186,9 +184,8 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				});
 				return hygiene($options);
 			});
-
 		} finally {
-			flagOptionSharedPromise.resolve()
+			flagOptionSharedPromise.resolve();
 		}
 	}, delay);
 
@@ -236,30 +233,30 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 		selectedOptions,
 		addOption: (...args) => {
 			if (addOptionSharedPromise.state !== 'loading') {
-				addOptionSharedPromise = sharedPromise()
-				addOptionSharedPromise.start()
+				addOptionSharedPromise = sharedPromise();
+				addOptionSharedPromise.start();
 			}
-			addOption(...args)
+			addOption(...args);
 		},
 		removeOption: (...args) => {
 			if (removeOptionSharedPromise.state !== 'loading') {
-				removeOptionSharedPromise = sharedPromise()
-				removeOptionSharedPromise.start()
+				removeOptionSharedPromise = sharedPromise();
+				removeOptionSharedPromise.start();
 			}
-			removeOption(...args)
+			removeOption(...args);
 		},
 		flagOption: (...args) => {
 			if (flagOptionSharedPromise.state !== 'loading') {
-				flagOptionSharedPromise.start()
+				flagOptionSharedPromise.start();
 			}
-			flagOption(...args)
+			flagOption(...args);
 		},
 		select: typedBatchup(async (selectOptions) => {
 			await Promise.all([
 				addOptionSharedPromise.promise,
 				removeOptionSharedPromise.promise,
 				flagOptionSharedPromise.promise
-			])
+			]);
 			cleanRemoveOnSelects(selectOptions, get(options));
 			for (const option of selectOptions) {
 				select(option);
