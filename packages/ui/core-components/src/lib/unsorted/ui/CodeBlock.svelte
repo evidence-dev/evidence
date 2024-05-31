@@ -5,17 +5,12 @@
 <script>
 	import { onMount, tick } from 'svelte';
 	import { browser } from '$app/environment';
-	import Prism from 'prismjs';
-	import './prism-svelte.js';
-	import 'prismjs/components/prism-bash';
-	import 'prismjs/components/prism-sql';
-	import 'prismjs/components/prism-python';
-	import 'prismjs/components/prism-markdown';
-	// import 'prismjs/themes/prism-tomorrow.css'; // theme not taking effect at the moment
+	import { loadPrismComponents } from './prismLoader.js'; // Needed to avoid issues with loading Prism and prism languages out of order
 
 	export let source;
 	export let copyToClipboard = false;
 	export let language = undefined;
+
 	import Copy from './Deployment/CopyIcon.svelte';
 	import Success from './Deployment/CopySuccessIcon.svelte';
 	let copied = false;
@@ -34,15 +29,33 @@
 		}
 	}
 
-	onMount(() => {
-		Prism.highlightAll();
+	onMount(async () => {
+		const Prism = await loadPrismComponents();
+		if (typeof Prism !== 'undefined') {
+			await tick();
+			const codeElements = document.querySelectorAll(
+				`pre code${language ? `.language-${language}` : ''}`
+			);
+			codeElements.forEach((codeElement) => {
+				Prism.highlightElement(codeElement, false);
+			});
+		} else {
+			console.error('Prism is not defined on mount');
+		}
 	});
 
 	$: if (browser) {
-		tick().then(() => {
-			const codeElement = document.querySelector(`pre code.language-${language}`);
-			if (codeElement) {
-				Prism.highlightElement(codeElement, false);
+		tick().then(async () => {
+			const Prism = await loadPrismComponents();
+			if (typeof Prism !== 'undefined') {
+				const codeElements = document.querySelectorAll(
+					`pre code${language ? `.language-${language}` : ''}`
+				);
+				codeElements.forEach((codeElement) => {
+					Prism.highlightElement(codeElement, false);
+				});
+			} else {
+				console.error('Prism is not defined in reactive statement');
 			}
 		});
 	}

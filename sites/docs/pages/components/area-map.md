@@ -13,7 +13,7 @@ sidebar_position: 1
     height=250
 />
 
-```html
+```svelte
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
@@ -151,7 +151,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     borderWidth=0.5
 />
 
-```html
+```svelte
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
@@ -179,7 +179,7 @@ You can add a different basemap by passing in a basemap URL. You can find exampl
     colorPalette={['yellow','orange','red','darkred']}
 />
 
-```html
+```svelte
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
@@ -207,7 +207,7 @@ Pass in a `link` column to enable navigation on click of the point. These can be
     link=link_col
 />
 
-```html
+```svelte
 <AreaMap 
     data={la_zip_sales} 
     areaCol=zip_code
