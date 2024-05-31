@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.3.0-features-b.4
+
+### Patch Changes
+
+- 9fdc805b5: DateRange uses QueryLoad + Skeleton to have a proper loading state
+
 ## 4.3.0-features-b.3
 
 ### Patch Changes

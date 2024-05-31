@@ -33,6 +33,7 @@
     "ui-tests": "1.2.2"
   },
   "changesets": [
+    "angry-birds-jump",
     "bright-dolls-repair",
     "chatty-crabs-know",
     "dry-peaches-smoke",
