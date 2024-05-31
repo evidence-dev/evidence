@@ -19,6 +19,10 @@ description: A 10 minute guide to building your first dashboard in Evidence.
 	margin-left: 1rem;
 }
 
+.tab-bottom-padding {
+   margin-bottom: 2rem;
+}
+
 .tut-img {
 	margin: 1rem;
 }
@@ -53,8 +57,16 @@ Familiar with running a server at `localhost`, and writing pages in Markdown? Sk
 
 Start your development server, if isn't already running: 
 
-- VSCode: Click `Start Evidence` in the bottom status bar.
-- Command Line: Run `npm run dev` in your project directory.
+<div class="tab-bottom-padding">
+<Tabs>
+   <Tab label="VSCode">
+         Click `Start Evidence` in the bottom status bar.
+   </Tab>
+   <Tab label="Command Line">
+         Run `npm run dev` in your project directory.
+   </Tab>
+</Tabs>
+</div>
 
 If you chose a different setup during [Install Evidence](/install-evidence), use the command that matches your setup.
 
