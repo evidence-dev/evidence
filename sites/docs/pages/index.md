@@ -11,21 +11,7 @@ og:
 
 Evidence is an open source framework for building data products with SQL - things like reports, decision-support tools, and embedded dashboards. It's a code-driven alternative to drag-and-drop BI tools.
 
-## Motivation
-
-We think it's still too difficult to build high quality data products. Businesses are stuck with BI software that delivers slow and clunky outputs, and analysts are stuck manually configuring reports.
-
-Our mission is to give you the tools to deliver production-quality data products that look and feel more like the [New York Times' data journalism](https://www.nytimes.com/interactive/2023/us/covid-cases.html) than a drag-and-drop dashboard.
-
-Evidence combines the best of modern web frameworks with the best parts of BI:
-
-- **Code-driven workflows:** Use your IDE, version control, and CI/CD tools
-- **First-class text support:** Add context, explanation and insight to your reports
-- **Programmatic features:** Use loops, conditionals, and templated pages to generate content from data
-- **High performance:** Evidence projects build into fast and reliable web application
-- **Lightweight setup:** Install locally and start building reports in just a few minutes
-
-To get started, [install Evidence](/install-evidence).
+Install Evidence with the [VSCode Extension](vscode:extension/Evidence.evidence-vscode), or see other [installation options](/install-evidence).
 
 ## How does Evidence work?
 
