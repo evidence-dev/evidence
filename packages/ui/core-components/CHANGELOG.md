@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.3.0-features-b.2
+
+### Patch Changes
+
+- 73fc7ebfe: Add ordinal functionality to buildInputQuery and withOrdinal to Query - leverage this in Dropdown to maintain user-specified sorting until search is activated
+
 ## 4.3.0-features-b.1
 
 ### Minor Changes
