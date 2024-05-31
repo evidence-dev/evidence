@@ -8,7 +8,6 @@
 	/** @type {SliderPrimitive.Props["value"]} */
 	export let value = [0];
 	export { className as class };
-	export let sizeClass;
 </script>
 
 <SliderPrimitive.Root
