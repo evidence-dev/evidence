@@ -31,6 +31,12 @@ This has two benefits for you and your users:
 
 ## Build Commands
 
+<Alert status=warning>
+
+Ensure that your build environment aligns with the [system requirements](/guides/system-requirements)
+
+</Alert>
+
 ### Build
 
 The command `npm run build` will build a static version of your reports and place them in the `build` directory.
