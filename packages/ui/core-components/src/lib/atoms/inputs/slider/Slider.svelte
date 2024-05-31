@@ -8,6 +8,10 @@
 	const inputs = getContext(INPUTS_CONTEXT_KEY);
 	import SliderShadcn from '../../shadcn/slider/sliderShadcn.svelte';
 	import HiddenInPrint from '../shared/HiddenInPrint.svelte';
+	import {
+		formatValue,
+		getFormatObjectFromString
+	} from '@evidence-dev/component-utilities/formatting';
 
 	/////
 	// Component Things
@@ -66,6 +70,9 @@
 	/** @type {[number]} */
 	let value = [defaultValue];
 
+	/** @type {string | undefined} */
+	export let fmt = undefined;
+
 	$: $inputs[name] = value;
 
 	/** @type {string} */
@@ -82,17 +89,26 @@
 	};
 
 	$: sizeClass = renderSize(size);
+
+	let format_object;
+	$: if (fmt) format_object = getFormatObjectFromString(fmt, 'number');
+	else format_object = undefined;
 </script>
 
 <HiddenInPrint enabled={hideDuringPrint}>
 	<div class={`relative ${sizeClass} mb-10 select-none`}>
 		<p class="pb-2 truncate text-xs">
-			{title} : <span class="text-xs">{$inputs[name]}</span>
+			{title} :
+			<span class="text-xs">{fmt ? formatValue($inputs[name], format_object) : $inputs[name]}</span>
 		</p>
 		<SliderShadcn {min} {max} {step} {sizeClass} bind:value />
 		{#if showMaxMin}
-			<span class="absolute left-0 text-xs pt-1 -z-10">{min}</span>
-			<span class="absolute -right-2.5 text-xs pt-1 -z-10">{max}</span>
+			<span class="absolute left-0 text-xs pt-1 -z-10"
+				>{fmt ? formatValue(min, format_object) : min}</span
+			>
+			<span class="absolute -right-2.5 text-xs pt-1 -z-10"
+				>{fmt ? formatValue(max, format_object) : max}</span
+			>
 		{/if}
 	</div>
 </HiddenInPrint>

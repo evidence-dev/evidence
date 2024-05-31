@@ -9,8 +9,6 @@
 	export let value = [0];
 	export { className as class };
 	export let sizeClass;
-
-	console.log(typeof sizeClass, sizeClass);
 </script>
 
 <SliderPrimitive.Root
@@ -26,9 +24,13 @@
 			class={`absolute h-full bg-gray-900 before:block before:absolute before:top-0 before:-left-1.5 before:w-2 before:h-1 before:bg-gray-900 after:block after:absolute after:top-0 after:-right-1 after:w-1 after:h-1 after:bg-gray-900/20 after:-z-10 after:rounded-r-full`}
 		/>
 	</span>
-	{#each thumbs as thumb}
+	{#each thumbs ?? [] as thumb}
 		<SliderPrimitive.Thumb
 			{thumb}
+			class="block h-3 w-3 rounded-full border-2 border-gray-900/50 bg-gray-900 shadow transition-colors active:outline-none active:ring-2 active:ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring disabled:opacity-50 cursor-pointer"
+		/>
+	{:else}
+		<SliderPrimitive.Thumb
 			class="block h-3 w-3 rounded-full border-2 border-gray-900/50 bg-gray-900 shadow transition-colors active:outline-none active:ring-2 active:ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring disabled:opacity-50 cursor-pointer"
 		/>
 	{/each}

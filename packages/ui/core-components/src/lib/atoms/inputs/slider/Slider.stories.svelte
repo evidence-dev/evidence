@@ -85,3 +85,33 @@
 		size: 'full'
 	}}
 />
+<Story
+	name="With USD Format"
+	args={{
+		name: 'United State Dollar',
+		title: 'With USD Format',
+		step: 1,
+		showMaxMin: true,
+		fmt: 'usd'
+	}}
+/>
+<Story
+	name="With empty Format"
+	args={{
+		name: 'empty fmt',
+		title: 'With empty Format',
+		step: 1,
+		showMaxMin: true,
+		fmt: ''
+	}}
+/>
+<Story
+	name="With random numbers Format"
+	args={{
+		name: 'random numbers fmt',
+		title: 'With random numbers Format',
+		step: 1,
+		showMaxMin: true,
+		fmt: '932'
+	}}
+/>
