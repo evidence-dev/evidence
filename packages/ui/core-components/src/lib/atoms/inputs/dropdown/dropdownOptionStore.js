@@ -1,5 +1,6 @@
 import { writable, derived, get, readonly } from 'svelte/store';
-import { batchUp } from '@evidence-dev/sdk/utils';
+import { batchUp, sharedPromise } from '@evidence-dev/sdk/utils';
+import { forEachLeadingCommentRange } from 'typescript';
 
 /**
  * @typedef {Object} DropdownValue
@@ -95,67 +96,100 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 	/** @type {import("svelte/store").Unsubscriber[]} */
 	const cleanup = [];
 
-	const addOption = typedBatchup((addedOptions) => {
-		// Apply defaults
-		addedOptions = addedOptions.map((opt) => ({
-			...opt,
-			idx: opt.idx ?? -1,
-			removeOnDeselect: opt.removeOnDeselect ?? false
-		}));
-		if (!addedOptions.length) return;
-		options.update(($options) => {
-			$options.push(...addedOptions);
-			return hygiene($options);
-		});
+
+	/*
+		We use these 2 shared promises to avoid concurrency issues
+		If we have any pending option changes, all select operations
+		will wait for them to finish out before operating.
+		This helps prevent issues when trying to select defaults that
+		don't yet exist because addOption hasn't processed them into
+		the store yet.
+	*/
+	let addOptionSharedPromise = sharedPromise()
+	addOptionSharedPromise.resolve() // initially these are resolved
+
+	let removeOptionSharedPromise = sharedPromise()
+	removeOptionSharedPromise.resolve() // initially these are resolved
+
+	let flagOptionSharedPromise = sharedPromise()
+	flagOptionSharedPromise.resolve() // initially these are resolved
+
+	const addOption = typedBatchup(async (addedOptions) => {
+		await flagOptionSharedPromise.promise
+		try {
+			// Apply defaults
+			addedOptions = addedOptions.map((opt) => ({
+				...opt,
+				idx: opt.idx ?? -1,
+				removeOnDeselect: opt.removeOnDeselect ?? false
+			}));
+			if (!addedOptions.length) return;
+			options.update(($options) => {
+				$options.push(...addedOptions);
+				return hygiene($options);
+			});
+		} finally {
+			addOptionSharedPromise.resolve()
+		}
 	}, delay);
 
-	const removeOption = typedBatchup((removedOptions) => {
-		if (!removedOptions.length) return;
-		options.update(($options) => {
-			$options = $options.filter((option) => {
-				const optionIsTargetted = removedOptions.some((removedOption) =>
-					optEq(option, removedOption)
-				);
-				if (!optionIsTargetted) return true;
-				if (option.selected && !option.ignoreSelected) return true;
-				return false;
+	const removeOption = typedBatchup(async (removedOptions) => {
+		await flagOptionSharedPromise.promise
+		try {
+			if (!removedOptions.length) return;
+			options.update(($options) => {
+				$options = $options.filter((option) => {
+					const optionIsTargetted = removedOptions.some((removedOption) =>
+						optEq(option, removedOption)
+					);
+					if (!optionIsTargetted) return true;
+					if (option.selected && !option.ignoreSelected) return true;
+					return false;
+				});
+				return hygiene($options);
 			});
-			return hygiene($options);
-		});
+		} finally {
+			removeOptionSharedPromise.resolve()
+		}
 	}, delay);
 
 	/**
 	 * @param {[DropdownValue, DropdownValueFlag][]} opts
 	 */
 	const flagOption = flagBatchup((flaggedOptions) => {
-		if (!flaggedOptions.length) return;
-		options.update(($options) => {
-			$options = $options.map(($option) => {
-				const flagApplications = flaggedOptions.filter(([flagOption]) =>
-					optEq($option, flagOption)
-				);
-				// More than one flag application may appear in a single update
-				// We need to ensure that the full operation list is applied
-				for (const application of flagApplications) {
-					switch (application[1]) {
-						case DropdownValueFlag.REMOVE_ON_DESELECT:
-							$option.removeOnDeselect = !$option.removeOnDeselect;
-							break;
-						case DropdownValueFlag.IGNORE_SELECTED:
-							$option.ignoreSelected = !$option.ignoreSelected;
-							break;
-						case DropdownValueFlag.FORCE_SELECT:
-							$option.selected = true;
-							break;
-						case DropdownValueFlag.FORCE_DESELECT:
-							$option.selected = true;
-							break;
+		try {
+			if (!flaggedOptions.length) return;
+			options.update(($options) => {
+				$options = $options.map(($option) => {
+					const flagApplications = flaggedOptions.filter(([flagOption]) =>
+						optEq($option, flagOption)
+					);
+					// More than one flag application may appear in a single update
+					// We need to ensure that the full operation list is applied
+					for (const application of flagApplications) {
+						switch (application[1]) {
+							case DropdownValueFlag.REMOVE_ON_DESELECT:
+								$option.removeOnDeselect = !$option.removeOnDeselect;
+								break;
+							case DropdownValueFlag.IGNORE_SELECTED:
+								$option.ignoreSelected = !$option.ignoreSelected;
+								break;
+							case DropdownValueFlag.FORCE_SELECT:
+								$option.selected = true;
+								break;
+							case DropdownValueFlag.FORCE_DESELECT:
+								$option.selected = true;
+								break;
+						}
 					}
-				}
-				return $option;
+					return $option;
+				});
+				return hygiene($options);
 			});
-			return $options;
-		});
+
+		} finally {
+			flagOptionSharedPromise.resolve()
+		}
 	}, delay);
 
 	/**
@@ -174,7 +208,7 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 					return $opt;
 				});
 			}
-			return $options;
+			return hygiene($options);
 		});
 	};
 
@@ -200,10 +234,32 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 			cleanup.forEach((c) => c());
 		},
 		selectedOptions,
-		addOption,
-		removeOption,
-		flagOption,
-		select: typedBatchup((selectOptions) => {
+		addOption: (...args) => {
+			if (addOptionSharedPromise.state !== 'loading') {
+				addOptionSharedPromise = sharedPromise()
+				addOptionSharedPromise.start()
+			}
+			addOption(...args)
+		},
+		removeOption: (...args) => {
+			if (removeOptionSharedPromise.state !== 'loading') {
+				removeOptionSharedPromise = sharedPromise()
+				removeOptionSharedPromise.start()
+			}
+			removeOption(...args)
+		},
+		flagOption: (...args) => {
+			if (flagOptionSharedPromise.state !== 'loading') {
+				flagOptionSharedPromise.start()
+			}
+			flagOption(...args)
+		},
+		select: typedBatchup(async (selectOptions) => {
+			await Promise.all([
+				addOptionSharedPromise.promise,
+				removeOptionSharedPromise.promise,
+				flagOptionSharedPromise.promise
+			])
 			cleanRemoveOnSelects(selectOptions, get(options));
 			for (const option of selectOptions) {
 				select(option);
