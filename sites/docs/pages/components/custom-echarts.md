@@ -65,7 +65,7 @@ from ${sales_by_country}
           },
           roam: false,
           nodeClick: false,
-          data: test_data,
+          data: [...test_data],
           breadcrumb: {
             show: false
           }
@@ -109,7 +109,7 @@ from ${funnel_stages}
             series: [
                 {
                 type: 'funnel',
-                data: funnel_data,
+                data: [...funnel_data],
                 }
             ]
         }
@@ -149,7 +149,7 @@ from ${pie_query}
         series: [
         {
           type: 'pie',
-          data: pie_data,
+          data: [...pie_data],
         }
       ]
       }
@@ -190,7 +190,7 @@ from ${donut_query}
         {
           type: 'pie',
           radius: ['40%', '70%'],
-          data: donut_data,
+          data: [...donut_data],
         }
       ]
       }
