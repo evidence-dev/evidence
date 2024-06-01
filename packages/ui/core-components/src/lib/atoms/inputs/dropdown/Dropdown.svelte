@@ -290,6 +290,11 @@
 			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
 		});
 	}
+
+	function getIdx(queryOpt) {
+		if ('similarity' in queryOpt) return queryOpt.similarity * -1;
+		return queryOpt.ordinal ?? 0;
+	}
 </script>
 
 <slot />
@@ -299,7 +304,7 @@
 		<DropdownOption
 			value={queryOpt.value}
 			valueLabel={queryOpt.label}
-			idx={queryOpt.similarity * -1 ?? queryOpt.ordinal ?? 0}
+			idx={getIdx(queryOpt)}
 			__auto
 		/>
 	{/each}
