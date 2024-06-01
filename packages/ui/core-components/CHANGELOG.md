@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.3.0-features-b.5
+
+### Patch Changes
+
+- e058d2d35: Dropdown Index was returning NaN for all non-search queries
+
 ## 4.3.0-features-b.4
 
 ### Patch Changes

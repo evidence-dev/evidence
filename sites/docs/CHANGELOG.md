@@ -1,5 +1,13 @@
 # evidence-docs
 
+## 0.0.7-features-b.5
+
+### Patch Changes
+
+- Updated dependencies [e058d2d35]
+  - @evidence-dev/core-components@4.3.0-features-b.5
+  - @evidence-dev/evidence@36.0.0-features-b.5
+
 ## 0.0.7-features-b.4
 
 ### Patch Changes
