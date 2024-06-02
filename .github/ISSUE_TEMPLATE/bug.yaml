@@ -47,11 +47,10 @@ body:
       options:
         - annoyance
         - serious, but I can work around it
-        - blocking an upgrade
         - blocking all usage of Evidence
     validations:
       required: true
   - type: textarea
     id: additional-context
     attributes:
-      label: Additional Information
+      label: Additional Information, or Workarounds 
