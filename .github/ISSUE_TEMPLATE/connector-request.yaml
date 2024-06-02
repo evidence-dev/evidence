@@ -1,5 +1,4 @@
 name: Database connector request
-about: Suggest a database you would like to connect to Evidence
 title: '[Connector]: '
 labels: connectors
 body:
