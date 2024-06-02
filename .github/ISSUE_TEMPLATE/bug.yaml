@@ -1,4 +1,4 @@
-name: "Bug report"
+name: "Bug"
 description: Report an issue with Evidence
 title: '[Bug]: '
 labels: ['bug', 'to-review']
