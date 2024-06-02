@@ -1,4 +1,4 @@
-name: 'Database connector request'
+name: 'Connector request'
 description: 'Suggest a database you would like to connect to Evidence'
 title: '[Connector]: '
 labels: connectors
@@ -14,7 +14,7 @@ body:
   - type: textarea
     id: clients
     attributes:
-      label: Are there any popular and well-maintained clients for this database?
+      label: Are there any existing node clients for this data source?
       description: E.g., npm packages we should consider using
       placeholder: Existing clients
     validations:
