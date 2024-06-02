@@ -1,5 +1,5 @@
 name: "Bug report"
-description: Report an issue with SvelteKit
+description: Report an issue with Evidence
 title: '[Bug]: '
 labels: ['bug', 'to-review']
 body:
