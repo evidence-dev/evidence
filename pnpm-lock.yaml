@@ -124,10 +124,10 @@ importers:
         version: 7.0.1
       prettier:
         specifier: ^3.2.5
-        version: 3.2.5
+        version: 3.3.0
       prettier-plugin-svelte:
         specifier: ^3.1.2
-        version: 3.2.3(prettier@3.2.5)(svelte@4.2.12)
+        version: 3.2.3(prettier@3.3.0)(svelte@4.2.12)
       prismjs:
         specifier: 1.29.0
         version: 1.29.0
@@ -903,13 +903,13 @@ importers:
         version: 1.1.1
       prettier:
         specifier: ^3.1.1
-        version: 3.2.5
+        version: 3.3.0
       prettier-plugin-svelte:
         specifier: ^3.1.2
-        version: 3.2.3(prettier@3.2.5)(svelte@4.2.12)
+        version: 3.2.3(prettier@3.3.0)(svelte@4.2.12)
       recast:
         specifier: ^0.23.4
-        version: 0.23.8
+        version: 0.23.9
       svelte-sequential-preprocessor:
         specifier: ^2.0.1
         version: 2.0.1
@@ -1141,7 +1141,7 @@ importers:
         version: link:../../lib/universal-sql
       '@storybook/addon-essentials':
         specifier: ^8.0.0
-        version: 8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2)
+        version: 8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/addon-interactions':
         specifier: ^8.0.0
         version: 8.1.5(vitest@0.34.6)
@@ -1153,13 +1153,13 @@ importers:
         version: 4.1.3(@storybook/svelte@8.1.5)(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.10)
       '@storybook/blocks':
         specifier: ^8.0.0
-        version: 8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2)
+        version: 8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/svelte':
         specifier: ^8.0.0
-        version: 8.1.5(prettier@3.2.5)(svelte@4.2.12)
+        version: 8.1.5(prettier@3.3.0)(svelte@4.2.12)
       '@storybook/sveltekit':
         specifier: ^8.0.0
-        version: 8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.2.5)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10)
+        version: 8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.3.0)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10)
       '@storybook/testing-library':
         specifier: ^0.2.2
         version: 0.2.2
@@ -1210,10 +1210,10 @@ importers:
         version: 4.0.2(postcss@8.4.38)
       prettier:
         specifier: ^3.2.5
-        version: 3.2.5
+        version: 3.3.0
       prettier-plugin-svelte:
         specifier: ^3.1.2
-        version: 3.2.3(prettier@3.2.5)(svelte@4.2.12)
+        version: 3.2.3(prettier@3.3.0)(svelte@4.2.12)
       publint:
         specifier: ^0.1.9
         version: 0.1.16
@@ -7541,10 +7541,10 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/addon-controls@8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2):
+  /@storybook/addon-controls@8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-O0796G3+772kohYOsR98puROgkEakNXZ9n3FXVsQQ57Ww/CIP7gFRv5VM5z+Jw0a+HQI5be6504hDeAOHrd8qQ==}
     dependencies:
-      '@storybook/blocks': 8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2)
+      '@storybook/blocks': 8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
       dequal: 2.0.3
       lodash: 4.17.21
       ts-dedent: 2.2.0
@@ -7558,12 +7558,12 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/addon-docs@8.1.5(prettier@3.2.5):
+  /@storybook/addon-docs@8.1.5(prettier@3.3.0):
     resolution: {integrity: sha512-D3kDWjOGAthbwQOnouauOmywiTnuvI4KS0E9TDBYspcufimoNve5nOlr/oo9SLS1O2Psmhi6MDJephaDDo+5Dw==}
     dependencies:
       '@babel/core': 7.24.6
       '@mdx-js/react': 3.0.1(@types/react@18.3.3)(react@17.0.2)
-      '@storybook/blocks': 8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2)
+      '@storybook/blocks': 8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/client-logger': 8.1.5
       '@storybook/components': 8.1.5(@types/react@18.3.3)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/csf-plugin': 8.1.5
@@ -7588,19 +7588,19 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/addon-essentials@8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2):
+  /@storybook/addon-essentials@8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-0k2D5+j2N6hso3y+rSqTlQECZ/Z/Q85eit0exx2/Rk/TI5F5HceLveA1YXyC0J291nexdF9RvjP7aCtee3WSYg==}
     dependencies:
       '@storybook/addon-actions': 8.1.5
       '@storybook/addon-backgrounds': 8.1.5
-      '@storybook/addon-controls': 8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2)
-      '@storybook/addon-docs': 8.1.5(prettier@3.2.5)
+      '@storybook/addon-controls': 8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
+      '@storybook/addon-docs': 8.1.5(prettier@3.3.0)
       '@storybook/addon-highlight': 8.1.5
       '@storybook/addon-measure': 8.1.5
       '@storybook/addon-outline': 8.1.5
       '@storybook/addon-toolbars': 8.1.5
       '@storybook/addon-viewport': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.2.5)
+      '@storybook/core-common': 8.1.5(prettier@3.3.0)
       '@storybook/manager-api': 8.1.5(react-dom@17.0.2)(react@17.0.2)
       '@storybook/node-logger': 8.1.5
       '@storybook/preview-api': 8.1.5
@@ -7683,7 +7683,7 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.24.6
-      '@storybook/svelte': 8.1.5(prettier@3.2.5)(svelte@4.2.12)
+      '@storybook/svelte': 8.1.5(prettier@3.3.0)(svelte@4.2.12)
       '@sveltejs/vite-plugin-svelte': 3.0.2(svelte@4.2.12)(vite@5.2.10)
       dedent: 1.5.3
       magic-string: 0.30.10
@@ -7703,7 +7703,7 @@ packages:
       memoizerific: 1.11.3
     dev: true
 
-  /@storybook/blocks@8.1.5(@types/react@18.3.3)(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2):
+  /@storybook/blocks@8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-rq8Ej5feS2BlfXOpNLDwdASkIIZJtKzLy9cUpuGftTiu06HiWAk3wpNpnn/kuunDYlZUa+qHEOSiIkTrdduwYw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
@@ -7719,7 +7719,7 @@ packages:
       '@storybook/components': 8.1.5(@types/react@18.3.3)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/core-events': 8.1.5
       '@storybook/csf': 0.1.7
-      '@storybook/docs-tools': 8.1.5(prettier@3.2.5)
+      '@storybook/docs-tools': 8.1.5(prettier@3.3.0)
       '@storybook/global': 5.0.0
       '@storybook/icons': 1.2.9(react-dom@17.0.2)(react@17.0.2)
       '@storybook/manager-api': 8.1.5(react-dom@17.0.2)(react@17.0.2)
@@ -7748,11 +7748,11 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/builder-manager@8.1.5(prettier@3.2.5):
+  /@storybook/builder-manager@8.1.5(prettier@3.3.0):
     resolution: {integrity: sha512-wDiHLV+UPaUN+765WwXkocVRB2QnJ61CjLHbpWaLiJvryFJt+JQ6nAvgSalCRnZxI046ztbS9T6okhpFI011IA==}
     dependencies:
       '@fal-works/esbuild-plugin-global-externals': 2.1.2
-      '@storybook/core-common': 8.1.5(prettier@3.2.5)
+      '@storybook/core-common': 8.1.5(prettier@3.3.0)
       '@storybook/manager': 8.1.5
       '@storybook/node-logger': 8.1.5
       '@types/ejs': 3.1.5
@@ -7771,7 +7771,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/builder-vite@8.1.5(prettier@3.2.5)(typescript@5.4.2)(vite@5.2.10):
+  /@storybook/builder-vite@8.1.5(prettier@3.3.0)(typescript@5.4.2)(vite@5.2.10):
     resolution: {integrity: sha512-4RblE2npnlRs8bj071g4xkCF8n/FYNdu/Ft5eH8YQIMEpgijtxWnuPXjyOWwnN6MG5e9q0cbZ4y1o3CZIGBIoQ==}
     peerDependencies:
       '@preact/preset-vite': '*'
@@ -7788,7 +7788,7 @@ packages:
     dependencies:
       '@storybook/channels': 8.1.5
       '@storybook/client-logger': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.2.5)
+      '@storybook/core-common': 8.1.5(prettier@3.3.0)
       '@storybook/core-events': 8.1.5
       '@storybook/csf-plugin': 8.1.5
       '@storybook/node-logger': 8.1.5
@@ -7829,12 +7829,12 @@ packages:
       '@babel/types': 7.24.6
       '@ndelangen/get-tarball': 3.0.9
       '@storybook/codemod': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.2.5)
+      '@storybook/core-common': 8.1.5(prettier@3.3.0)
       '@storybook/core-events': 8.1.5
-      '@storybook/core-server': 8.1.5(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2)
+      '@storybook/core-server': 8.1.5(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/csf-tools': 8.1.5
       '@storybook/node-logger': 8.1.5
-      '@storybook/telemetry': 8.1.5(prettier@3.2.5)
+      '@storybook/telemetry': 8.1.5(prettier@3.3.0)
       '@storybook/types': 8.1.5
       '@types/semver': 7.5.8
       '@yarnpkg/fslib': 2.10.3
@@ -7853,7 +7853,7 @@ packages:
       jscodeshift: 0.15.2(@babel/preset-env@7.24.6)
       leven: 3.1.0
       ora: 5.4.1
-      prettier: 3.2.5
+      prettier: 3.3.0
       prompts: 2.4.2
       read-pkg-up: 7.0.1
       semver: 7.6.2
@@ -7892,8 +7892,8 @@ packages:
       globby: 14.0.1
       jscodeshift: 0.15.2(@babel/preset-env@7.24.6)
       lodash: 4.17.21
-      prettier: 3.2.5
-      recast: 0.23.8
+      prettier: 3.3.0
+      recast: 0.23.9
       tiny-invariant: 1.3.3
     transitivePeerDependencies:
       - supports-color
@@ -7922,7 +7922,7 @@ packages:
       - '@types/react-dom'
     dev: true
 
-  /@storybook/core-common@8.1.5(prettier@3.2.5):
+  /@storybook/core-common@8.1.5(prettier@3.3.0):
     resolution: {integrity: sha512-1QDOT6KPZ9KV7Gs1yyqzvSwGBmNSUB33gckUldSBF4aqP+tZ7W5JIQ6/YTtp3V02sEokZGdL9Ud4LczQxTgy3A==}
     peerDependencies:
       prettier: ^2 || ^3
@@ -7951,8 +7951,8 @@ packages:
       node-fetch: 2.7.0
       picomatch: 2.3.1
       pkg-dir: 5.0.0
-      prettier: 3.2.5
-      prettier-fallback: /prettier@3.2.5
+      prettier: 3.3.0
+      prettier-fallback: /prettier@3.3.0
       pretty-hrtime: 1.0.3
       resolve-from: 5.0.0
       semver: 7.6.2
@@ -7972,16 +7972,16 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/core-server@8.1.5(prettier@3.2.5)(react-dom@17.0.2)(react@17.0.2):
+  /@storybook/core-server@8.1.5(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-y16W2sg5KIHG6qgbd+a0nBUYHAgiUpPDFF7cdcIpbeOIoqFn+6ECp93MVefukumiSj3sQiJFU/tSm2A8apGltw==}
     dependencies:
       '@aw-web-design/x-default-browser': 1.4.126
       '@babel/core': 7.24.6
       '@babel/parser': 7.24.6
       '@discoveryjs/json-ext': 0.5.7
-      '@storybook/builder-manager': 8.1.5(prettier@3.2.5)
+      '@storybook/builder-manager': 8.1.5(prettier@3.3.0)
       '@storybook/channels': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.2.5)
+      '@storybook/core-common': 8.1.5(prettier@3.3.0)
       '@storybook/core-events': 8.1.5
       '@storybook/csf': 0.1.7
       '@storybook/csf-tools': 8.1.5
@@ -7991,7 +7991,7 @@ packages:
       '@storybook/manager-api': 8.1.5(react-dom@17.0.2)(react@17.0.2)
       '@storybook/node-logger': 8.1.5
       '@storybook/preview-api': 8.1.5
-      '@storybook/telemetry': 8.1.5(prettier@3.2.5)
+      '@storybook/telemetry': 8.1.5(prettier@3.3.0)
       '@storybook/types': 8.1.5
       '@types/detect-port': 1.3.5
       '@types/diff': 5.2.1
@@ -8050,7 +8050,7 @@ packages:
       '@storybook/csf': 0.1.7
       '@storybook/types': 8.1.5
       fs-extra: 11.2.0
-      recast: 0.23.8
+      recast: 0.23.9
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - supports-color
@@ -8072,10 +8072,10 @@ packages:
     resolution: {integrity: sha512-t4syFIeSyufieNovZbLruPt2DmRKpbwL4fERCZ1MifWDRIORCKLc4NCEHy+IqvIqd71/SJV2k4B51nF7vlJfmQ==}
     dev: true
 
-  /@storybook/docs-tools@8.1.5(prettier@3.2.5):
+  /@storybook/docs-tools@8.1.5(prettier@3.3.0):
     resolution: {integrity: sha512-zlHv8fi1Bw8RbjkGGBJoO/RbM41bwxU1kV76TPQUyqQmzqPRsHi3zt+8bdddQLNrC6rhTF+Cj3yEdPfTZrB0aA==}
     dependencies:
-      '@storybook/core-common': 8.1.5(prettier@3.2.5)
+      '@storybook/core-common': 8.1.5(prettier@3.3.0)
       '@storybook/core-events': 8.1.5
       '@storybook/preview-api': 8.1.5
       '@storybook/types': 8.1.5
@@ -8188,7 +8188,7 @@ packages:
       qs: 6.12.1
     dev: true
 
-  /@storybook/svelte-vite@8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.2.5)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10):
+  /@storybook/svelte-vite@8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.3.0)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10):
     resolution: {integrity: sha512-04OxKPunsd4k0pGrlXnIPX+OeJPcYpMzIfUFp4kCu9bx+72EFvLBEpk/wnrxp2gZJEew9EeyShjYDMWuOwFPEA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -8196,9 +8196,9 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.65
       vite: ^4.0.0 || ^5.0.0
     dependencies:
-      '@storybook/builder-vite': 8.1.5(prettier@3.2.5)(typescript@5.4.2)(vite@5.2.10)
+      '@storybook/builder-vite': 8.1.5(prettier@3.3.0)(typescript@5.4.2)(vite@5.2.10)
       '@storybook/node-logger': 8.1.5
-      '@storybook/svelte': 8.1.5(prettier@3.2.5)(svelte@4.2.12)
+      '@storybook/svelte': 8.1.5(prettier@3.3.0)(svelte@4.2.12)
       '@storybook/types': 8.1.5
       '@sveltejs/vite-plugin-svelte': 3.0.2(svelte@4.2.12)(vite@5.2.10)
       magic-string: 0.30.10
@@ -8225,7 +8225,7 @@ packages:
       - vite-plugin-glimmerx
     dev: true
 
-  /@storybook/svelte@8.1.5(prettier@3.2.5)(svelte@4.2.12):
+  /@storybook/svelte@8.1.5(prettier@3.3.0)(svelte@4.2.12):
     resolution: {integrity: sha512-rMbD/f///duTnMx2HjN6K2qoFgqj6ROZcb4lQpTPnd7n3xHycuyBvmHn82PcdQW6W4kzARHQ7UwJ5SiCYktUKQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -8233,7 +8233,7 @@ packages:
     dependencies:
       '@storybook/client-logger': 8.1.5
       '@storybook/core-events': 8.1.5
-      '@storybook/docs-tools': 8.1.5(prettier@3.2.5)
+      '@storybook/docs-tools': 8.1.5(prettier@3.3.0)
       '@storybook/global': 5.0.0
       '@storybook/preview-api': 8.1.5
       '@storybook/types': 8.1.5
@@ -8247,7 +8247,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/sveltekit@8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.2.5)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10):
+  /@storybook/sveltekit@8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.3.0)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10):
     resolution: {integrity: sha512-TLLmKVvNLN41ACZV/9qrZkrIhLgnUgzgEwIKmIDd1YTHaRcOkUdI2ndZwYfqcSiffcIcA5bVCR6WTsw0qlgqxw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -8255,9 +8255,9 @@ packages:
       vite: ^4.0.0 || ^5.0.0
     dependencies:
       '@storybook/addon-actions': 8.1.5
-      '@storybook/builder-vite': 8.1.5(prettier@3.2.5)(typescript@5.4.2)(vite@5.2.10)
-      '@storybook/svelte': 8.1.5(prettier@3.2.5)(svelte@4.2.12)
-      '@storybook/svelte-vite': 8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.2.5)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10)
+      '@storybook/builder-vite': 8.1.5(prettier@3.3.0)(typescript@5.4.2)(vite@5.2.10)
+      '@storybook/svelte': 8.1.5(prettier@3.3.0)(svelte@4.2.12)
+      '@storybook/svelte-vite': 8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.3.0)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10)
       '@storybook/types': 8.1.5
       svelte: 4.2.12
       vite: 5.2.10(@types/node@20.11.28)
@@ -8280,11 +8280,11 @@ packages:
       - vite-plugin-glimmerx
     dev: true
 
-  /@storybook/telemetry@8.1.5(prettier@3.2.5):
+  /@storybook/telemetry@8.1.5(prettier@3.3.0):
     resolution: {integrity: sha512-QbB1Ox7oBaCvIF2TacFjPLi1XYeHxSPeZUuFXeE+tSMdvvWZzYLnXfj/oISmV6Q+X5VZfyJVMrZ2LfeW9CuFNg==}
     dependencies:
       '@storybook/client-logger': 8.1.5
-      '@storybook/core-common': 8.1.5(prettier@3.2.5)
+      '@storybook/core-common': 8.1.5(prettier@3.3.0)
       '@storybook/csf-tools': 8.1.5
       chalk: 4.1.0
       detect-package-manager: 2.0.1
@@ -10095,7 +10095,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.23.0
-      caniuse-lite: 1.0.30001625
+      caniuse-lite: 1.0.30001626
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.1
@@ -10458,8 +10458,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001625
-      electron-to-chromium: 1.4.787
+      caniuse-lite: 1.0.30001626
+      electron-to-chromium: 1.4.788
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.0)
 
@@ -10612,8 +10612,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite@1.0.30001625:
-    resolution: {integrity: sha512-4KE9N2gcRH+HQhpeiRZXd+1niLB/XNLAhSy4z7fI8EzcbcPoAqjNInxVHTiTwWfTIV4w096XG8OtCOCQQKPv3w==}
+  /caniuse-lite@1.0.30001626:
+    resolution: {integrity: sha512-JRW7kAH8PFJzoPCJhLSHgDgKg5348hsQ68aqb+slnzuB5QFERv846oA/mRChmlLAOdEDeOkRn3ynb1gSFnjt3w==}
 
   /ccount@1.1.0:
     resolution: {integrity: sha512-vlNK021QdI7PNeiUh/lKkC/mNHHfV0m/Ad5JoI0TYtlBnJAslM/JIkm/tGC88bkLIwO6OQ5uV6ztS6kVAtCDlg==}
@@ -12061,8 +12061,8 @@ packages:
       jake: 10.9.1
     dev: true
 
-  /electron-to-chromium@1.4.787:
-    resolution: {integrity: sha512-d0EFmtLPjctczO3LogReyM2pbBiiZbnsKnGF+cdZhsYzHm/A0GV7W94kqzLD8SN4O3f3iHlgLUChqghgyznvCQ==}
+  /electron-to-chromium@1.4.788:
+    resolution: {integrity: sha512-ubp5+Ev/VV8KuRoWnfP2QF2Bg+O2ZFdb49DiiNbz2VmgkIqrnyYaqIOqj8A6K/3p1xV0QcU5hBQ1+BmB6ot1OA==}
 
   /elkjs@0.9.3:
     resolution: {integrity: sha512-f/ZeWvW/BCXbhGEf1Ujp29EASo/lk1FDnETgNKwJrsVvGZhUWCZyg3xLJjAsxfOmt8KjswHmI5EwCQcPMpOYhQ==}
@@ -15162,7 +15162,7 @@ packages:
       micromatch: 4.0.7
       neo-async: 2.6.2
       node-dir: 0.1.17
-      recast: 0.23.8
+      recast: 0.23.9
       temp: 0.8.4
       write-file-atomic: 2.4.3
     transitivePeerDependencies:
@@ -17740,13 +17740,13 @@ packages:
     resolution: {integrity: sha512-EL+oiqnMnGF8iPzAOiuZi5Ja7D2zIQkYZ9iJy+Ddwjapw3SZ6AzP71gN4KhqbM/9WLCFW8WxexqbWc//4L5kpg==}
     dev: false
 
-  /prettier-plugin-svelte@3.2.3(prettier@3.2.5)(svelte@4.2.12):
+  /prettier-plugin-svelte@3.2.3(prettier@3.3.0)(svelte@4.2.12):
     resolution: {integrity: sha512-wJq8RunyFlWco6U0WJV5wNCM7zpBFakS76UBSbmzMGpncpK98NZABaE+s7n8/APDCEVNHXC5Mpq+MLebQtsRlg==}
     peerDependencies:
       prettier: ^3.0.0
       svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
     dependencies:
-      prettier: 3.2.5
+      prettier: 3.3.0
       svelte: 4.2.12
 
   /prettier@1.19.1:
@@ -17761,8 +17761,8 @@ packages:
     hasBin: true
     dev: true
 
-  /prettier@3.2.5:
-    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+  /prettier@3.3.0:
+    resolution: {integrity: sha512-J9odKxERhCQ10OC2yb93583f6UnYutOeiV5i0zEDS7UGTdUt0u+y8erxl3lBKvwo/JHyyoEdXjwp4dke9oyZ/g==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -18170,8 +18170,8 @@ packages:
     dependencies:
       picomatch: 2.3.1
 
-  /recast@0.23.8:
-    resolution: {integrity: sha512-D8izEmRtY34O+B5k2kgNmPx4b/be4MGPGFiNzWUGtezDCWDyj/1w1uQQvzySRzAO/b+6TD05FwGPuYR4X52sVw==}
+  /recast@0.23.9:
+    resolution: {integrity: sha512-Hx/BGIbwj+Des3+xy5uAtAbdCyqK9y9wbBcDFDYanLS9JnMqf7OeF87HQwUimE87OEc72mr6tkKUKMBBL+hF9Q==}
     engines: {node: '>= 4'}
     dependencies:
       ast-types: 0.16.1

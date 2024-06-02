@@ -1,5 +1,11 @@
 # @evidence-dev/core-components
 
+## 4.3.0-features-b.6
+
+### Patch Changes
+
+- a24deaf04: Dropdown now sorts using label before value
+
 ## 4.3.0-features-b.5
 
 ### Patch Changes
