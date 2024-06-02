@@ -30,8 +30,8 @@ body:
       description: |
         Feel free to open a pull request with your suggested changes to the docs! If you're interested in contributing, but you need help, please let us know here or in Slack and we'll be happy to help you get started.
       options:
-      - label: I'd like to contribute, and I'll open a PR 
-      - label: I'd like to contribute, but I need some help 
-      - label: I'm just making a suggestion 
+      - I'd like to contribute, and I'll open a PR 
+      - I'd like to contribute, but I need some help 
+      - I'm just making a suggestion 
     validations:
       required: true      
