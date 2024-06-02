@@ -79,6 +79,8 @@ export const dropdownOptionStore = (multi = false, delay = 100) => {
 				return a.idx - b.idx;
 			}
 
+			if (a.label !== b.label) return a.label.toString().localeCompare(b.label.toString());
+
 			if (typeof a.value === 'number' && typeof b.value === 'number') {
 				return a.value - b.value;
 			}
