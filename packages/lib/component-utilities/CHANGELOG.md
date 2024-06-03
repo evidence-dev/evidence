@@ -1,5 +1,11 @@
 # @evidence-dev/component-utilities
 
+## 3.1.0
+
+### Minor Changes
+
+- 737642a0: Created input slider component and docs
+
 ## 3.0.5-features-b.0
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @evidence-dev/core-components
 
+## 4.3.0
+
+### Minor Changes
+
+- f8f7ebdb: Added sorting for numerical options in dropdop
+
+### Patch Changes
+
+- 064a5c96: Add optional title slot to Accordian Items
+- 54546362: Adjust DownloadData component for general use
+- 9dd69149: Fix auto-casing on tooltip titles
+- ac0df6ca: Fix Prism imports in CodeBlock
+- Updated dependencies [737642a0]
+  - @evidence-dev/component-utilities@3.1.0
+
 ## 4.3.0-features-b.6
 
 ### Patch Changes
