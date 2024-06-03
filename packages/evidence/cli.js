@@ -369,7 +369,8 @@ prog
 
 		logQueryEvent('preview-server-start', undefined, undefined, undefined, true);
 		// Run svelte kit dev in the hidden directory
-		const child = spawn('npx vite preview --outDir build --port 3000', flatArgs, {
+		// We will likely need to modify this for SPA mode previews
+		const child = spawn('npx serve build -l 3000', flatArgs, {
 			shell: true,
 			detached: false,
 			stdio: 'inherit'
