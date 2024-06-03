@@ -96,13 +96,13 @@ importers:
         specifier: 0.2.1
         version: 0.2.1
       express:
-        specifier: ^4.18.3
+        specifier: ^4.19.2
         version: 4.19.2
       fs-extra:
         specifier: 11.2.0
         version: 11.2.0
       get-port:
-        specifier: ^7.0.0
+        specifier: ^7.1.0
         version: 7.1.0
       git-remote-origin-url:
         specifier: 4.0.0
@@ -111,7 +111,7 @@ importers:
         specifier: ^1.18.1
         version: 1.18.1
       node-fetch:
-        specifier: ^3.3.1
+        specifier: ^3.3.2
         version: 3.3.2
       npm-run-all:
         specifier: ^4.1.5
@@ -126,7 +126,7 @@ importers:
         specifier: ^3.2.5
         version: 3.3.0
       prettier-plugin-svelte:
-        specifier: ^3.1.2
+        specifier: ^3.2.3
         version: 3.2.3(prettier@3.3.0)(svelte@4.2.12)
       prismjs:
         specifier: 1.29.0
@@ -1010,31 +1010,31 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2
       '@codemirror/autocomplete':
-        specifier: ^6.12.0
+        specifier: ^6.16.0
         version: 6.16.2(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.3)(@lezer/common@1.2.1)
       '@codemirror/commands':
-        specifier: ^6.3.3
+        specifier: ^6.5.0
         version: 6.5.0
       '@codemirror/lang-sql':
-        specifier: ^6.5.5
+        specifier: ^6.6.4
         version: 6.6.4(@codemirror/view@6.26.3)
       '@codemirror/language':
-        specifier: ^6.10.0
+        specifier: ^6.10.1
         version: 6.10.1
       '@codemirror/lint':
-        specifier: ^6.4.2
+        specifier: ^6.8.0
         version: 6.8.0
       '@codemirror/search':
-        specifier: ^6.5.5
+        specifier: ^6.5.6
         version: 6.5.6
       '@codemirror/view':
-        specifier: ^6.23.0
+        specifier: ^6.26.3
         version: 6.26.3
       '@docsearch/css':
-        specifier: ^3.5.2
+        specifier: ^3.6.0
         version: 3.6.0
       '@docsearch/js':
-        specifier: ^3.5.2
+        specifier: ^3.6.0
         version: 3.6.0(@algolia/client-search@4.23.3)(@types/react@18.3.3)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.14.0)
       '@evidence-dev/component-utilities':
         specifier: workspace:*
@@ -1043,7 +1043,7 @@ importers:
         specifier: workspace:*
         version: link:../tailwind
       '@internationalized/date':
-        specifier: ^3.5.1
+        specifier: ^3.5.4
         version: 3.5.4
       '@steeze-ui/radix-icons':
         specifier: ^1.1.2
@@ -1064,13 +1064,13 @@ importers:
         specifier: ^4.6.9
         version: 4.6.9
       bits-ui:
-        specifier: ^0.11.8
-        version: 0.11.8(svelte@4.2.12)
+        specifier: ^0.21.9
+        version: 0.21.10(svelte@4.2.12)
       chroma-js:
         specifier: ^2.4.2
         version: 2.4.2
       clsx:
-        specifier: ^2.0.0
+        specifier: ^2.1.1
         version: 2.1.1
       cmdk-sv:
         specifier: ^0.0.12
@@ -1100,7 +1100,7 @@ importers:
         specifier: ^4.6.2
         version: 4.6.2
       mermaid:
-        specifier: ^10.6.1
+        specifier: ^10.9.1
         version: 10.9.1
       prismjs:
         specifier: 1.29.0
@@ -1109,22 +1109,22 @@ importers:
         specifier: 0.11.2
         version: 0.11.2
       tailwind-merge:
-        specifier: ^2.2.0
+        specifier: ^2.3.0
         version: 2.3.0
       tailwind-variants:
-        specifier: ^0.1.19
+        specifier: ^0.1.20
         version: 0.1.20(tailwindcss@3.4.3)
       thememirror:
         specifier: ^2.0.1
         version: 2.0.1(@codemirror/language@6.10.1)(@codemirror/state@6.4.1)(@codemirror/view@6.26.3)
       tua-body-scroll-lock:
-        specifier: ^1.4.0
+        specifier: ^1.5.0
         version: 1.5.0
       yaml:
-        specifier: ^2.3.4
+        specifier: ^2.4.2
         version: 2.4.2
       zod:
-        specifier: ^3.22.4
+        specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
       '@evidence-dev/faker-datasource':
@@ -1140,31 +1140,31 @@ importers:
         specifier: workspace:*
         version: link:../../lib/universal-sql
       '@storybook/addon-essentials':
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/addon-interactions':
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(vitest@0.34.6)
       '@storybook/addon-links':
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(react@17.0.2)
       '@storybook/addon-svelte-csf':
-        specifier: ^4.1.2
+        specifier: ^4.1.3
         version: 4.1.3(@storybook/svelte@8.1.5)(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.10)
       '@storybook/blocks':
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(@types/react@18.3.3)(prettier@3.3.0)(react-dom@17.0.2)(react@17.0.2)
       '@storybook/svelte':
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(prettier@3.3.0)(svelte@4.2.12)
       '@storybook/sveltekit':
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(@babel/core@7.24.6)(@sveltejs/vite-plugin-svelte@3.0.2)(postcss-load-config@4.0.2)(postcss@8.4.38)(prettier@3.3.0)(svelte@4.2.12)(typescript@5.4.2)(vite@5.2.10)
       '@storybook/testing-library':
         specifier: ^0.2.2
         version: 0.2.2
       '@storybook/theming':
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(react-dom@17.0.2)(react@17.0.2)
       '@sveltejs/adapter-auto':
         specifier: 3.1.1
@@ -1173,8 +1173,8 @@ importers:
         specifier: 2.5.4
         version: 2.5.4(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.10)
       '@sveltejs/package':
-        specifier: ^2.2.7
-        version: 2.2.7(svelte@4.2.12)(typescript@5.4.2)
+        specifier: ^2.3.1
+        version: 2.3.1(svelte@4.2.12)(typescript@5.4.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: 3.0.2
         version: 3.0.2(svelte@4.2.12)(vite@5.2.10)
@@ -1185,16 +1185,16 @@ importers:
         specifier: ^9.2.0
         version: 9.2.0
       autoprefixer:
-        specifier: ^10.4.14
+        specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
       chromatic:
-        specifier: ^6.17.4
+        specifier: ^6.24.1
         version: 6.24.1
       eslint:
         specifier: 8.45.0
         version: 8.45.0
       eslint-config-prettier:
-        specifier: ^8.5.0
+        specifier: ^8.10.0
         version: 8.10.0(eslint@8.45.0)
       eslint-plugin-storybook:
         specifier: ^0.8.0
@@ -1203,28 +1203,28 @@ importers:
         specifier: 2.35.1
         version: 2.35.1(eslint@8.45.0)(svelte@4.2.12)
       postcss:
-        specifier: ^8.4.23
+        specifier: ^8.4.38
         version: 8.4.38
       postcss-load-config:
-        specifier: ^4.0.1
+        specifier: ^4.0.2
         version: 4.0.2(postcss@8.4.38)
       prettier:
         specifier: ^3.2.5
         version: 3.3.0
       prettier-plugin-svelte:
-        specifier: ^3.1.2
+        specifier: ^3.2.3
         version: 3.2.3(prettier@3.3.0)(svelte@4.2.12)
       publint:
-        specifier: ^0.1.9
+        specifier: ^0.1.16
         version: 0.1.16
       react:
-        specifier: ^17.0.1
+        specifier: ^17.0.2
         version: 17.0.2
       react-dom:
-        specifier: ^17.0.1
+        specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
       storybook:
-        specifier: ^8.0.0
+        specifier: ^8.1.3
         version: 8.1.5(react-dom@17.0.2)(react@17.0.2)
       svelte:
         specifier: 4.2.12
@@ -1236,10 +1236,10 @@ importers:
         specifier: 5.1.3
         version: 5.1.3(@babel/core@7.24.6)(postcss-load-config@4.0.2)(postcss@8.4.38)(svelte@4.2.12)(typescript@5.4.2)
       tailwindcss:
-        specifier: ^3.3.1
+        specifier: ^3.4.3
         version: 3.4.3
       tslib:
-        specifier: ^2.4.1
+        specifier: ^2.6.2
         version: 2.6.2
       typescript:
         specifier: 5.4.2
@@ -1248,7 +1248,7 @@ importers:
         specifier: 5.2.10
         version: 5.2.10(@types/node@20.11.28)
       vitest:
-        specifier: ^0.34.1
+        specifier: ^0.34.6
         version: 0.34.6
 
   packages/ui/tailwind:
@@ -5390,8 +5390,8 @@ packages:
       svelte: 4.2.12
     dev: false
 
-  /@melt-ui/svelte@0.65.2(svelte@4.2.12):
-    resolution: {integrity: sha512-BpsSl9Bjp1++8U3+LaDOFUoX/PFQ9N7QWFhlFdUEZduhrbVyU70v9A459SKrQ+esFSjvh1AvqJYkMAUJXJlAmQ==}
+  /@melt-ui/svelte@0.76.2(svelte@4.2.12):
+    resolution: {integrity: sha512-7SbOa11tXUS95T3fReL+dwDs5FyJtCEqrqG3inRziDws346SYLsxOQ6HmX+4BkIsQh1R8U3XNa+EMmdMt38lMA==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -5400,7 +5400,7 @@ packages:
       '@internationalized/date': 3.5.4
       dequal: 2.0.3
       focus-trap: 7.5.4
-      nanoid: 4.0.2
+      nanoid: 5.0.7
       svelte: 4.2.12
     dev: false
 
@@ -5735,7 +5735,7 @@ packages:
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
       '@parcel/graph': 3.2.0
       '@parcel/logger': 2.12.0
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/profiler': 2.12.0
       '@parcel/rust': 2.12.0
@@ -5910,14 +5910,14 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
-      '@swc/core': 1.5.24(@swc/helpers@0.5.11)
+      '@swc/core': 1.5.24
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
       - '@swc/helpers'
     dev: true
 
-  /@parcel/package-manager@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11):
+  /@parcel/package-manager@2.12.0(@parcel/core@2.12.0):
     resolution: {integrity: sha512-0nvAezcjPx9FT+hIL+LS1jb0aohwLZXct7jAh7i0MLMtehOi0z1Sau+QpgMlA9rfEZZ1LIeFdnZZwqSy7Ccspw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -5931,7 +5931,7 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
       '@parcel/utils': 2.12.0
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-      '@swc/core': 1.5.24(@swc/helpers@0.5.11)
+      '@swc/core': 1.5.24
       semver: 7.6.2
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -6013,7 +6013,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/packager-wasm@2.12.0(@parcel/core@2.12.0):
@@ -6033,17 +6032,6 @@ packages:
       '@parcel/types': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
-    dev: true
-
-  /@parcel/plugin@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11):
-    resolution: {integrity: sha512-nc/uRA8DiMoe4neBbzV6kDndh/58a4wQuGKw5oEoIwBCHUvE2W8ZFSu7ollSXUGRzfacTt4NdY8TwS73ScWZ+g==}
-    engines: {node: '>= 12.0.0'}
-    dependencies:
-      '@parcel/types': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/profiler@2.12.0:
@@ -6066,7 +6054,6 @@ packages:
       term-size: 2.2.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/reporter-dev-server@2.12.0(@parcel/core@2.12.0):
@@ -6090,7 +6077,6 @@ packages:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/resolver-default@2.12.0(@parcel/core@2.12.0):
@@ -6238,7 +6224,6 @@ packages:
       '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/transformer-js@2.12.0(@parcel/core@2.12.0):
@@ -6249,7 +6234,7 @@ packages:
     dependencies:
       '@parcel/core': 2.12.0
       '@parcel/diagnostic': 2.12.0
-      '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/plugin': 2.12.0(@parcel/core@2.12.0)
       '@parcel/rust': 2.12.0
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.12.0
@@ -6359,7 +6344,6 @@ packages:
       typescript: 5.4.2
     transitivePeerDependencies:
       - '@parcel/core'
-      - '@swc/helpers'
     dev: true
 
   /@parcel/ts-utils@2.12.0(typescript@5.4.2):
@@ -6378,22 +6362,7 @@ packages:
       '@parcel/cache': 2.12.0(@parcel/core@2.12.0)
       '@parcel/diagnostic': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
-      '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
-      utility-types: 3.11.0
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - '@swc/helpers'
-    dev: true
-
-  /@parcel/types@2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11):
-    resolution: {integrity: sha512-8zAFiYNCwNTQcglIObyNwKfRYQK5ELlL13GuBOrSMxueUiI5ylgsGbTS1N7J3dAGZixHO8KhHGv5a71FILn9rQ==}
-    dependencies:
-      '@parcel/cache': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/diagnostic': 2.12.0
-      '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/source-map': 2.1.1
       '@parcel/workers': 2.12.0(@parcel/core@2.12.0)
       utility-types: 3.11.0
@@ -8413,6 +8382,23 @@ packages:
       - typescript
     dev: true
 
+  /@sveltejs/package@2.3.1(svelte@4.2.12)(typescript@5.4.2):
+    resolution: {integrity: sha512-JvR2J4ost1oCn1CSdqenYRwGX/1RX+7LN+VZ71aPnz3JAlIFaEKQd1pBxlb+OSQTfeugJO0W39gB9voAbBO5ow==}
+    engines: {node: ^16.14 || >=18}
+    hasBin: true
+    peerDependencies:
+      svelte: ^3.44.0 || ^4.0.0 || ^5.0.0-next.1
+    dependencies:
+      chokidar: 3.6.0
+      kleur: 4.1.5
+      sade: 1.8.1
+      semver: 7.6.2
+      svelte: 4.2.12
+      svelte2tsx: 0.7.4(svelte@4.2.12)(typescript@5.4.2)
+    transitivePeerDependencies:
+      - typescript
+    dev: true
+
   /@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.2.10):
     resolution: {integrity: sha512-9QX28IymvBlSCqsCll5t0kQVxipsfhFFL+L2t3nTWfXnddYwxBuAEtTtlaVQpRz9c37BhJjltSeY4AJSC03SSg==}
     engines: {node: ^18.0.0 || >=20}
@@ -8537,7 +8523,7 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core@1.5.24(@swc/helpers@0.5.11):
+  /@swc/core@1.5.24:
     resolution: {integrity: sha512-Eph9zvO4xvqWZGVzTdtdEJ0Vqf0VIML/o/e4Qd2RLOqtfgnlRi7avmMu5C0oqciJ0tk+hqdUKVUZ4JPoPaiGvQ==}
     engines: {node: '>=10'}
     requiresBuild: true
@@ -8548,7 +8534,6 @@ packages:
         optional: true
     dependencies:
       '@swc/counter': 0.1.3
-      '@swc/helpers': 0.5.11
       '@swc/types': 0.1.7
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.5.24
@@ -10321,13 +10306,13 @@ packages:
     resolution: {integrity: sha512-rA2CrUl1+6yKrn+XgLs8Hdy18OER1UW146nM+ixzhQXDY+Bd3ySkyIJGwF2a4I45JwbvF1mDL/nWkqBwpOcdBA==}
     dev: false
 
-  /bits-ui@0.11.8(svelte@4.2.12):
-    resolution: {integrity: sha512-T3YaT88OJguBoUU/MSncf41fiIc+5/ka8Au2LUDo0nSECex+LFY40+hKWLJc5tRT56avkyHsI7x9daA2r9eS/g==}
+  /bits-ui@0.21.10(svelte@4.2.12):
+    resolution: {integrity: sha512-KuweEOKO0Rr8XX87dQh46G9mG0bZSmTqNxj5qBazz4OTQC+oPKui04/wP/ISsCOSGFomaRydTULqh4p+nsyc2g==}
     peerDependencies:
-      svelte: ^4.0.0
+      svelte: ^4.0.0 || ^5.0.0-next.118
     dependencies:
       '@internationalized/date': 3.5.4
-      '@melt-ui/svelte': 0.65.2(svelte@4.2.12)
+      '@melt-ui/svelte': 0.76.2(svelte@4.2.12)
       nanoid: 5.0.7
       svelte: 4.2.12
     dev: false
@@ -12542,7 +12527,7 @@ packages:
       eslint-scope: 7.2.2
       eslint-utils: 3.0.0(eslint@8.4.1)
       eslint-visitor-keys: 3.4.3
-      espree: 9.2.0
+      espree: 9.6.1
       esquery: 1.5.0
       esutils: 2.0.3
       fast-deep-equal: 3.1.3
@@ -17172,7 +17157,7 @@ packages:
       '@parcel/events': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
       '@parcel/logger': 2.12.0
-      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)(@swc/helpers@0.5.11)
+      '@parcel/package-manager': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-cli': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-dev-server': 2.12.0(@parcel/core@2.12.0)
       '@parcel/reporter-tracer': 2.12.0(@parcel/core@2.12.0)

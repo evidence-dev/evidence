@@ -49,9 +49,7 @@
 							</button>
 							<div slot="content" class="text-xs text-center min-w-28">
 								<p class="font-mono bg-gray-50 rounded-t-md px-4 py-1 text-gray-700">
-									{name}=<span class="text-blue-700"
-										>{option == 'true' ? '{true}' : option == 'false' ? '{false}' : option}</span
-									>
+									{name}=<span class="text-blue-700">{option}</span>
 								</p>
 								<p class="px-4 py-1 text-gray-700 font-sans">
 									{copyStatus[option] ? 'Copied' : 'Click to Copy'}

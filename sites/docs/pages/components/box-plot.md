@@ -228,7 +228,7 @@ Format to use for y column ([see available formats](/core-concepts/formatting))
     defaultValue="colors applied by order of series in data"
 >
 
-Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal.
+Apply a specific color to each series in your chart. Unspecified series will receive colors from the built-in palette as normal. Note the double curly braces required in the syntax `seriesColors={{"Canada": "red", "US": "blue"}}`
 
 </PropListing>
 

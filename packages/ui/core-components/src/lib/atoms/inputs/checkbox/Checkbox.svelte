@@ -37,7 +37,7 @@
 		size="sm"
 		class="min-w-40 inline-flex justify-between gap-4 items-center w-full max-w-fit mb-2"
 	>
-		<p class="truncate">
+		<p class="truncate font-medium">
 			{title}
 		</p>
 		<div>
