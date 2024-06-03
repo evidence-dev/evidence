@@ -368,9 +368,8 @@ prog
 		const flatArgs = flattenArguments(args);
 
 		logQueryEvent('preview-server-start', undefined, undefined, undefined, true);
-		// Run svelte kit dev in the hidden directory
 		// We will likely need to modify this for SPA mode previews
-		const child = spawn('npx serve build -l 3000', flatArgs, {
+		const child = spawn('npx serve build', flatArgs, {
 			shell: true,
 			detached: false,
 			stdio: 'inherit'
