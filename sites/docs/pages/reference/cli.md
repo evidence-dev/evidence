@@ -55,7 +55,7 @@ ORDER BY row_num
 </DataTable>
 
 
-Evidence's `dev`, `build` commands run using Vite, and so support [Vite's options](https://vitejs.dev/guide/cli.html#options).
+Evidence's `dev` and `build` commands run using Vite, and so support [Vite's options](https://vitejs.dev/guide/cli.html#options).
 
 Evidence's `preview` command runs using `npx serve` and supports [Serve's options](https://github.com/vercel/serve/blob/main/source/utilities/cli.ts#L30)
 
