@@ -17,8 +17,6 @@ body:
       label: Are there any existing node clients for this data source?
       description: E.g., npm packages we should consider using
       placeholder: Existing clients
-    validations:
-      required: true 
   - type: dropdown
     id: Contributing
     attributes:
