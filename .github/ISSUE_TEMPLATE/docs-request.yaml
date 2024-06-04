@@ -1,5 +1,5 @@
 name: "Docs Suggestion"
-description: Suggest an idea for Evidence 
+description: Suggest a documentation change
 title: "[Docs]: "
 labels: documentation
 body:
