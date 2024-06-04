@@ -29,8 +29,7 @@
 	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
 
 	$: if (agg) {
-		debugger;
-		data = data.groupBy(undefined).agg({ agg: { col: column, as: column } });
+		data = data.groupBy(undefined).agg({ [agg]: { col: column, as: column } });
 	}
 </script>
 

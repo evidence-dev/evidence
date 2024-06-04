@@ -36,3 +36,12 @@
 <Story name="Agg avg Usage">
 	<Value {data} column="fare" agg="avg" fmt="usd0" />
 </Story>
+<Story name="Agg max Usage">
+	<Value {data} column="fare" agg="max" fmt="usd0" />
+</Story>
+<Story name="Agg min Usage">
+	<Value {data} column="fare" agg="min" fmt="usd0" />
+</Story>
+<Story name="Agg median Usage">
+	<Value {data} column="fare" agg="median" fmt="usd0" />
+</Story>

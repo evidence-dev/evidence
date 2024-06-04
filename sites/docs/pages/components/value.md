@@ -60,7 +60,7 @@ Evidence supports a variety of formats - see [value formatting](/core-concepts/f
 
 ## Adding Aggregation Property
 
-Adds Aggregation to SQL query
+Adds Aggregation to SQL query, column 
 
 
 ```sql orders
@@ -149,7 +149,7 @@ Text to display when an empty dataset is received - only applies when `emptySet`
 </PropListing>
 <PropListing
     name="prop"
-    options={['sum', 'avg']}
+    options={['sum', 'avg', 'min', 'median', 'max']}
     defaultValue="null"
 >
 
