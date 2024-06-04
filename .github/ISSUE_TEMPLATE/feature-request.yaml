@@ -18,8 +18,6 @@ body:
       description: |
         What would this feature help you accomplish? Explain the problem this would solve, including some detail about your use case. 
       placeholder: Problem description
-    validations:
-      required: true
   - type: textarea
     id: API
     attributes:
