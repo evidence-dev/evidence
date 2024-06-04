@@ -38,8 +38,6 @@ body:
       description: Output of `npx envinfo --system --binaries --browsers --npmPackages`
       render: Shell
       placeholder: System, Binaries, Browsers
-    validations:
-      required: true
   - type: dropdown
     id: severity
     attributes:
