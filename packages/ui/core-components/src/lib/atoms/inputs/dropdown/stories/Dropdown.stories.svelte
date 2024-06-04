@@ -81,7 +81,7 @@
 </Story>
 <Story name="With a default value">
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
-	<Dropdown defaultValue={0} name="test1" {data} value="value" label="label" />
+	<Dropdown defaultValue={[1]} name="test1" {data} value="value" label="label" />
 </Story>
 <Story name="With a non-static default value">
 	{@const data = Query.create(
@@ -100,7 +100,7 @@
 	)}
 
 	<Dropdown
-		defaultValue={new Date(Date.now() - 86400000).toISOString().split('T')[0]}
+		defaultValue={[new Date(Date.now() - 86400000).toISOString().split('T')[0]]}
 		name="your-dropdown"
 		{data}
 		value="value"
@@ -186,4 +186,9 @@
 
 <Story name="Driving a Bar Chart">
 	<DropdownCharts />
+</Story>
+
+<Story name="With custom ordering">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`)}
+	<Dropdown name="test" {data} value="value" label="label" order="label desc" />
 </Story>
