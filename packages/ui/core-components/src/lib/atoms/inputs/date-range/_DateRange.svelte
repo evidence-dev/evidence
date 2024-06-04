@@ -151,8 +151,6 @@
 				processedPresetRanges.includes(preset.label.toLocaleLowerCase().replace(/\s/g, ''))
 			);
 			presets = filteredPresets;
-
-			console.log(filteredPresets);
 		}
 	}
 

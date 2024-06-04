@@ -163,11 +163,11 @@ Title to display in the Date Range component
 
 <PropListing 
     name="presetRanges"
-    options={['last7Days', 'last30Days', 'last90Days', 'last3Months', 'last6Months', 'last12Months', 'lastMonth', 'lastYear', 'monthToDate', 'yearToDate', 'allTime']}
+    options= "array of values e.g. {['last7Days']} or {['last7Days', 'last6Months']}"
     default=undefined
 >
 
-Customize "Select a Range" drop down, by including present range options. `{['last7Days']}` or `{['last7Days', 'last6Months', 'lastYear']}`
+Customize "Select a Range" drop down, by including present range options. Range options include: 'last7Days', 'last30Days', 'last90Days', 'last3Months', 'last6Months', 'last12Months', 'lastMonth', 'lastYear', 'monthToDate', 'yearToDate', 'allTime'.
 
 </PropListing>
 
