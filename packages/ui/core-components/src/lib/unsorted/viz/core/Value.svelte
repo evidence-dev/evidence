@@ -9,6 +9,8 @@
 	import EmptyChart from './EmptyChart.svelte';
 
 	export let data;
+	export let column;
+	export let agg;
 
 	const initialHash = Query.isQuery(data) ? data.hash : undefined;
 
@@ -25,6 +27,10 @@
 
 	// Remove any undefined props (e.g. w/o defaults) to prevent them from being passed
 	$: spreadProps = Object.fromEntries(Object.entries($$props).filter(([, v]) => v !== undefined));
+
+	$: if (agg) {
+		data = data.groupBy(undefined).agg({ [agg]: { col: 'fare', as: [column] } });
+	}
 </script>
 
 <!-- Pass all the props through-->
