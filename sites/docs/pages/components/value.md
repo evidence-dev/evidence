@@ -58,9 +58,9 @@ Override errors with the optional `placeholder` argument. This is useful for dra
 ## Formatting Values
 Evidence supports a variety of formats - see [value formatting](/core-concepts/formatting) and the `fmt` prop below for more info.
 
-## Adding Aggregation Property
+## Aggregated Values
 
-Adds Aggregation to SQL query, column 
+Values support basic aggregations such as, `min`, `max`, `median`, `sum`, `avg`
 
 
 ```sql orders
@@ -75,13 +75,6 @@ FROM
 
 <div>
     <Value data={orders} column="sales" agg="avg" fmt="usd0" />
-</div>
-
-```markdown
-<Value data={orders} column="sales" agg="sum" fmt="usd0" />
-```
-<div>
-    <Value data={orders} column="sales" agg="sum" fmt="usd0" />
 </div>
 
 ## Options
@@ -148,7 +141,7 @@ Text to display when an empty dataset is received - only applies when `emptySet`
 
 </PropListing>
 <PropListing
-    name="prop"
+    name="agg"
     options={['sum', 'avg', 'min', 'median', 'max']}
     defaultValue="null"
 >
