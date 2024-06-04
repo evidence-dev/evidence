@@ -15,19 +15,14 @@
 	import { query } from '@evidence-dev/universal-sql/client-duckdb';
 
 	const data = Query.create(`SELECT * from flights`, query);
-	// const data = Query.create(`SELECT * from flights`, query)
-	// 	.groupBy(undefined)
-	// 	.agg({ sum: { col: 'fare', as: 'total' } });
 </script>
 
 ```
 <Story name="Basic Usage">
 	<Value {data} />
 </Story>
-<Story name="Agg Usage">
-	<!-- <Value data={data.groupBy(undefined).agg({ sum: { col: 'fare', as: 'total' } })} fmt="usd0" /> -->
-	<Value {data} column="total" agg="sum" fmt="usd0" />
-
+<Story name="Agg sum Usage">
+	<Value {data} column="fare" agg="sum" fmt="usd0" />
 	<!--
         Goal:
         <Value
@@ -38,4 +33,6 @@
         />
     -->
 </Story>
-```
+<Story name="Agg avg Usage">
+	<Value {data} column="fare" agg="avg" fmt="usd0" />
+</Story>
