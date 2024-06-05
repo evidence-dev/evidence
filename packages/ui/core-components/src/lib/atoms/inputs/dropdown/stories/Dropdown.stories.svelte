@@ -192,3 +192,25 @@
 	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`)}
 	<Dropdown name="test" {data} value="value" label="label" order="label desc" />
 </Story>
+
+<Story name="no query multiselect">
+	<Dropdown multiple name="test">
+		<DropdownOption value="Top {100}" />
+		<DropdownOption value="Top {101}" />
+		<DropdownOption value="Top {1001}" />
+		<DropdownOption value="Top 102" />
+		<DropdownOption value="Top {111}" />
+		<DropdownOption value="Top {199}" />
+		<DropdownOption value="Top 10000" />
+		<DropdownOption value="Bottom {100}" />
+		<DropdownOption value="Bottom 101" />
+	</Dropdown>
+</Story>
+
+<Story name="Using query + non-query options multiselect">
+	{@const data = Query.create(`SELECT id as value, tag as label from hashtags`, query)}
+	<Dropdown multiple name="test" {data} value="value" label="label">
+		<DropdownOption value="All" />
+		<DropdownOption value="Top 100" />
+	</Dropdown>
+</Story>
