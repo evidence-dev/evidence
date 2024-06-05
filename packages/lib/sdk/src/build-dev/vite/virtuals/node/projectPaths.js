@@ -5,7 +5,6 @@ export const URL_PREFIX =
 		? process.env.EVIDENCE_URL_PREFIX
 		: '_evidence';
 
-        console.log({URL_PREFIX})
 export const inTemplate = process.cwd().includes(path.join('.evidence', 'template'));
 
 export const evidenceDirectory = inTemplate ? '..' : '.evidence';
@@ -18,7 +17,7 @@ export const dataDirectory =
 export const dataUrlPrefix = 
     'EVIDENCE_DATA_URL_PREFIX' in process.env
         ? process.env.EVIDENCE_DATA_URL_PREFIX
-        : URL_PREFIX + '/query';
+        : `/${URL_PREFIX}/query`;
 
 export const metaDirectory = path.resolve(evidenceDirectory, 'meta');
 

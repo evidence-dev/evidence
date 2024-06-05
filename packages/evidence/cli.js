@@ -310,7 +310,7 @@ prog
 			process.env.EVIDENCE_DATA_DIR = './.evidence/template/static/data'
 		}
 		if (!('EVIDENCE_DATA_URL_PREFIX' in process.env)) {
-			process.env.EVIDENCE_DATA_URL_PREFIX = 'data'
+			process.env.EVIDENCE_DATA_URL_PREFIX = 'static/data'
 		}
 		loadEnvFile();
 		

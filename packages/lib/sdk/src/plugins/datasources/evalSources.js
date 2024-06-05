@@ -121,7 +121,7 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 					]);
 				}
 				outputManifest.renderedFiles[source.name].push(
-					`/${dataUrlPrefix}/${source.name}/${filename}`
+					`${dataUrlPrefix}/${source.name}/${table.name}/${filename}`
 				);
 				addToCache(source.name, table.name, table.content);
 
