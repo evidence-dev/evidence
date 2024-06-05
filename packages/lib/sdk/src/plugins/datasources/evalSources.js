@@ -17,7 +17,7 @@ import ora from 'ora';
  * @param {string} dataPath
  * @param {string} metaPath
  * @param {import('./types.js').SourceFilters} [filters] `sources` or `queries` being null means no filter
- * @returns {Promise<Record<string, string[]>>}
+ * @returns {Promise<import('./types.js').Manifest>}
  */
 export const evalSources = async (dataPath, metaPath, filters) => {
 	const pluginLoader = ora({ text: 'Loading plugins & sources' }).start();
@@ -34,15 +34,16 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 
 	pluginLoader.succeed();
 
-	/** @type {Record<string, string[]>} */
-	const outputManifest = {};
+	/** @type {import('./types.js').Manifest} */
+	const outputManifest = { renderedFiles: {}, locatedFiles: {} };
 
 	for (const source of sources) {
+		console.log(chalk.dim('-'.repeat(5)));
 		if (filters?.sources?.size && !filters?.sources?.has(source.name)) {
 			console.log(`  [Filtered] ${chalk.bold(source.name)}`);
 			continue;
 		} else {
-			console.log(`  [Processing] ${chalk.bold(source.name)}`);
+			console.log(chalk.green(`  [Processing] ${chalk.bold(source.name)}`));
 		}
 
 		const plugin = sourcePlugins.getBySource(source.type);
@@ -62,7 +63,9 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 
 		const utils = buildUtils(source, filters);
 
-		outputManifest[source.name] = [];
+		outputManifest.renderedFiles[source.name] = [];
+		if (!outputManifest.locatedFiles) outputManifest.locatedFiles = {};
+		outputManifest.locatedFiles[source.name] = [];
 
 		for await (const table of tableIter(
 			source.options,
@@ -75,10 +78,19 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 				discardStdin: false,
 				interval: 250
 			});
+			outputManifest.locatedFiles[source.name].push(table.name);
 			spinner.start('Processing...');
+			if (utils.isFiltered(table.name)) {
+				spinner.warn('Skipping: Filtered');
+				continue;
+			}
+			if (filters?.only_changed && utils.isCached(table.name, table.content)) {
+				spinner.warn('Skipping: Cached');
+				continue;
+			}
 
 			if ('url' in table) {
-				outputManifest[source.name].push(table.url);
+				outputManifest.renderedFiles[source.name].push(table.url);
 				continue;
 			}
 			try {
@@ -86,15 +98,6 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 					spinner.warn('No results returned.');
 					continue;
 				}
-				if (utils.isFiltered(table.name)) {
-					spinner.warn('Skipping: Filtered');
-					continue;
-				}
-				if (filters?.only_changed && utils.isCached(table.name, table.content)) {
-					spinner.warn('Skipping: Cached');
-					continue;
-				}
-
 				const outDir = path.join(dataPath, source.name, table.name);
 				await fs.mkdir(outDir, { recursive: true });
 				const tmpDir = path.join(metaPath, source.name, table.name, 'tmp');
@@ -115,7 +118,9 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 						'No rows were written to the filesystem, but the table claimed to contain rows'
 					]);
 				}
-				outputManifest[source.name].push(`/_evidence/query/${source.name}/${filename}`);
+				outputManifest.renderedFiles[source.name].push(
+					`/_evidence/query/${source.name}/${filename}`
+				);
 				addToCache(source.name, table.name, table.content);
 
 				spinner.succeed(`Finished, wrote ${writtenRows} rows.`);
@@ -133,6 +138,7 @@ export const evalSources = async (dataPath, metaPath, filters) => {
 			}
 		}
 	}
+	console.log(chalk.dim('-'.repeat(5)));
 
 	await flushCache(metaPath);
 
@@ -156,9 +162,10 @@ const buildUtils = (source, filters) => {
 		 * @param {string} name
 		 * @returns {boolean} true if query is included in filters
 		 */
-		isFiltered: (name) =>
-			Boolean(filters?.queries?.has(name) || filters?.queries?.has(`${source.name}.${name}`)) ||
-			!filters?.queries,
+		isFiltered: (name) => {
+			if (!filters?.queries?.size) return false;
+			return Boolean(!filters.queries.has(name) && !filters.queries.has(`${source.name}.${name}`));
+		},
 		/**
 		 * @param {string} name
 		 * @param {string} content
