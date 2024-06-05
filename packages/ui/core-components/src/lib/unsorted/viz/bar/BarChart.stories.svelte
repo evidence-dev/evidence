@@ -38,6 +38,22 @@
 	import BarChart from './BarChart.svelte';
 
 	import { fakerSeries } from '$lib/faker-data-queries';
+
+	let brokenData = [
+		{
+			x: null,
+			y: null,
+			series: 'missing'
+		}
+	];
+
+	const fixBrokenData = () => {
+		brokenData = [...brokenData, { x: 5, y: 5, series: 'appears' }];
+	};
+
+	const rebreakData = () => {
+		brokenData = brokenData.filter((d) => d.x === null);
+	};
 </script>
 
 <Template let:args>
@@ -105,3 +121,13 @@
 		...MissingYCase.keys
 	}}
 /> -->
+
+<Story name="Multiple Series, X null all instances of one">
+	<BarChart x="x" y="y" series="series" data={brokenData} legend sort={false} />
+	<div class="flex gap-2">
+		<button on:click={fixBrokenData}>Fix It</button>
+		<button on:click={rebreakData}>Rebreak it</button>
+	</div>
+
+	<!-- <BarChart x="x" y="y" series="series" data={[]} legend sort={false} /> -->
+</Story>
