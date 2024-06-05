@@ -309,6 +309,9 @@ prog
 		if (!('EVIDENCE_DATA_DIR' in process.env)) {
 			process.env.EVIDENCE_DATA_DIR = './.evidence/template/static/data'
 		}
+		if (!('EVIDENCE_DATA_URL_PREFIX' in process.env)) {
+			process.env.EVIDENCE_DATA_URL_PREFIX = 'data'
+		}
 		loadEnvFile();
 		
 		// The data directory is defined at import time (because we aren't using getters, and it is set once)

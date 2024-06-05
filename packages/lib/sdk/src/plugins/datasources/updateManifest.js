@@ -46,12 +46,22 @@ export const updateManifest = async (updatedManifest, dataDir) => {
 				continue;
 			}
 			const locatedQueries = updatedManifest.locatedFiles[schema];
-			const existingQueries = existingManifest.renderedFiles[schema].filter((queryPath) => {
-				return locatedQueries.includes(path.basename(queryPath, '.parquet'));
-			});
 			const newQueries = updatedManifest.renderedFiles[schema].filter((queryPath) => {
 				return !existingManifest.renderedFiles[schema].includes(queryPath);
 			});
+			const existingQueries = existingManifest.renderedFiles[schema]
+				.filter((queryPath) => {
+					return locatedQueries.includes(path.basename(queryPath, '.parquet'));
+				})
+				.filter(
+					// we want to prefer the new query path
+					// file basenames should never conflict, so we can safely use that as a ref
+					(queryPath) =>
+						!newQueries.some(
+							(newQueryPath) =>
+								path.basename(newQueryPath, '.parquet') === path.basename(queryPath, '.parquet')
+						)
+				);
 
 			const result = [...existingQueries, ...newQueries].sort((a, b) => a.localeCompare(b));
 			finalManifest.renderedFiles[schema] = result;

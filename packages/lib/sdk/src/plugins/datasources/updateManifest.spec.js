@@ -114,4 +114,32 @@ describe('updateManifest', () => {
 			JSON.stringify(fsManifest)
 		);
 	});
+
+	it('should prefer the updated path for a query', async () => {
+		const fsManifest = {
+			renderedFiles: {
+				csv: ['/_evidence/query/csv/data.parquet', '/_evidence/query/csv/nullish.parquet']
+			}
+		};
+		const updatedManifest = {
+			renderedFiles: {
+				csv: ['/__evidence/query/csv/data.parquet', '/__evidence/query/csv/nullish.parquet']
+			},
+			locatedFiles: {
+				csv: ['data', 'nullish']
+			}
+		};
+		const dataDir = '/_evidence';
+		await fs.mkdir(path.join(dataDir), { recursive: true });
+		await fs.writeFile(
+			path.join(dataDir, 'manifest.json'),
+			JSON.stringify({ renderedFiles: fsManifest.renderedFiles })
+		);
+		await updateManifest(updatedManifest, dataDir);
+		expect(await fs.readFile(path.join(dataDir, 'manifest.json'), 'utf8')).toEqual(
+			JSON.stringify({
+				renderedFiles: updatedManifest.renderedFiles
+			})
+		)
+	})
 });
