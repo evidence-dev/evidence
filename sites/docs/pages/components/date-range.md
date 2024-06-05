@@ -1,43 +1,65 @@
 ---
 title: Date Range
 sidebar_position: 1
+queries: 
+- orders_by_day.sql
 ---
 
-Creates a date picker that can be used to filter a query. The picker expands to show a calendar when clicked, and the user can pick a start and end date.
+Creates a date picker that can be used to filter a query.
 
 To see how to filter a query using an input component, see [Filters](/core-concepts/filters).
 
-<img src="/img/date-range.png" alt="date-range" width="400"/>
+<DateRange
+    name=date_range_name
+    data={orders_by_day}
+    dates=day
+/>
+
+From {inputs.date_range_name.start} to {inputs.date_range_name.end}
 
 ````markdown
 <DateRange
-    name=name_of_date_range
-    data={query_name} 
-    dates=column_name
+    name=date_range_name
+    data={orders_by_day}
+    dates=day
 />
+
+From {inputs.date_range_name.start} to {inputs.date_range_name.end}
 ````
 
 ## Examples
 
 ### Using Date Range from a Query
 
-<img src="/img/date-range.png" alt="date range using a query" width="400"/>
+<DateRange
+    name=date_range_from_query
+    data={orders_by_day}
+    dates=day
+/>
+
+From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
 
 ````markdown
 <DateRange
-    name=name_of_date_range
-    data={query_name} 
-    dates=column_name
+    name=date_range_from_query
+    data={orders_by_day}
+    dates=day
 />
+
+From {inputs.date_range_from_query.start} to {inputs.date_range_from_query.end}
 ````
 
 ### Manually Specifying a Range
 
-<img src="/img/date-range-manual.png" alt="date range using a query" width="400"/>
+<DateRange
+    name=manual_date_range
+    start=2019-01-01
+    end=2019-12-31
+/>
 
 ```markdown
 <DateRange
-    name=name_of_date_range
+    name=manual_date_range
     start=2019-01-01
     end=2019-12-31
 />
@@ -46,105 +68,122 @@ To see how to filter a query using an input component, see [Filters](/core-conce
 
 ### With a Title
 
-<img src="/img/date-range-title.png" alt="date range using a query" width="400"/>
-
-````markdown
 <DateRange
-    name=name_of_date_range
-    data={query_name} 
-    dates=column_name
-    title="Order Date"
+    name=date_range_with_title
+    data={orders_by_day}
+    dates=day
+    title="Select a Date Range"
 />
-````
+
+```markdown
+<DateRange
+    name=date_range_with_title
+    data={orders_by_day}
+    dates=day
+    title="Select a Date Range"
+/>
+```
 
 ### Visible During Print / Export
 
-<img src="/img/date-range.png" alt="date range using a query" width="400"/>
+<DateRange
+    name=date_range_visible_during_print
+    data={orders_by_day}
+    dates=day
+    hideDuringPrint={false}
+/>
 
 ````markdown
 <DateRange
-    name=name_of_date_range
-    data={query_name} 
-    dates=column_name
-    hideDuringPrint=false
+    name=date_range_visible_during_print
+    data={orders_by_day}
+    dates=day
+    hideDuringPrint={false}
 />
 ````
 
 ### Filtering a Query
 
-````markdown
 <DateRange
-    name=name_of_date_range
-    data={query_name} 
-    dates=column_name
+    name=range_filtering_a_query
+    data={orders_by_day}
+    dates=day
 />
 
 ```sql filtered_query
-select *
-from source_name.table
-where date_column between '${inputs.name_of_date_range.start}' and '${inputs.name_of_date_range.end}'
+select 
+    *
+from ${orders_by_day}
+where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_filtering_a_query.end}'
 ```
+
+<LineChart
+    data={filtered_query}
+    x=day
+    y=sales
+/>
+
+
+
+````markdown
+<DateRange
+    name=range_filtering_a_query
+    data={orders_by_day}
+    dates=day
+/>
+
+```sql filtered_query
+select 
+    *
+from ${orders_by_day}
+where day between '${inputs.range_filtering_a_query.start}' and '${inputs.range_filtering_a_query.end}'
+```
+
+<LineChart
+    data={filtered_query}
+    x=day
+    y=sales
+/>
 ````
 
-
- ## Options
+## Options
 
 <PropListing 
     name="name"
-    required
+    description="Name of the DateRange, used to reference the selected values elsewhere as {`{inputs.name.start`} or {`inputs.name.end`}"
+    required=true
     options="string"
->
-
-Name of the DateRange, used to reference the selected values elsewhere as `{inputs.name.start}` or `{inputs.name.end}`
-
-</PropListing>
+/>
 <PropListing 
     name="data"
+    description="Query name, wrapped in curly braces"
     options="query name"
->
-
-Query name, wrapped in curly braces
-
-</PropListing>
+/>
 <PropListing 
     name="dates"
+    description="Column name from the query containing date range to span"
     options="column name"
->
-
-Column name from the query containing date range to span
-
-</PropListing>
+/>
 <PropListing 
     name="start"
+    description="A manually specified start date to use for the range"
     options="string formatted YYYY-MM-DD"
->
-
-A manually specified start date to use for the range
-
-</PropListing>
+/>
 <PropListing 
     name="end"
+    description="A manually specified end date to use for the range"
     options="string formatted YYYY-MM-DD"
->
-
-A manually specified end date to use for the range
-
-</PropListing>
+/>
 <PropListing 
     name="title"
+    description="Title to display in the Date Range component"
     options="string"
->
-
-Title to display in the Date Range component
-
-</PropListing>
+/>
 <PropListing 
     name="hideDuringPrint"
+    description="Hide the component when the report is printed"
     options={["true", "false"]}
     default="true"
->
+/>
 
-Hide the component when the report is printed
-
-</PropListing>
 

@@ -1,15 +1,27 @@
 ---
 title: Grid
 sidebar_position: 1
+queries: 
+- orders_by_month.sql
+- orders_by_category_2021.sql
+- orders_by_item_all_time.sql
+- categories_by_channel.sql
 ---
 
-```markdown
 <Grid cols=2>
-    <!-- 2x2 grid of barcharts -->
-    <BarChart ... />
-    <BarChart ... />
-    <BarChart ... />
-    <BarChart ... />
+    <BarChart title="Bar Chart" data={orders_by_category_2021} x=month y=sales series=category/>
+    <LineChart title="Line Chart" data={orders_by_category_2021} x=month y=sales series=category/>
+    <ScatterPlot title="Scatter Plot" data={orders_by_category_2021} x=month y=sales series=category/>
+    <BubbleChart title="Bubble Chart" data={orders_by_category_2021} x=month y=sales series=category size=sales/>
+</Grid>
+
+
+```svelte
+<Grid cols=2>
+    <BarChart title="Bar Chart" data={orders_by_category_2021} x=month y=sales series=category/>
+    <LineChart title="Line Chart" data={orders_by_category_2021} x=month y=sales series=category/>
+    <ScatterPlot title="Scatter Plot" data={orders_by_category_2021} x=month y=sales series=category/>
+    <BubbleChart title="Bubble Chart" data={orders_by_category_2021} x=month y=sales series=category size=sales/>
 </Grid>
 ```
 
