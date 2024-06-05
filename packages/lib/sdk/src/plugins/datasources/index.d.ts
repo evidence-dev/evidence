@@ -1,2 +1,1 @@
-export const sourcesCli = async (...args: string[]): Promise<void>;
-
+export const sourcesCli: (...args: SourcesCliArgs) => Promise<void>;

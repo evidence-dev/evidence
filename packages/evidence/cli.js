@@ -7,7 +7,6 @@ import * as chokidar from 'chokidar';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import sade from 'sade';
-import { updateDatasourceOutputs } from '@evidence-dev/plugin-connector';
 import { logQueryEvent } from '@evidence-dev/telemetry';
 
 import { loadEnv } from 'vite';
@@ -293,7 +292,7 @@ prog
 	.example('npx evidence sources --sources needful_things --queries orders,reviews')
 	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
 	.example('npx evidence sources --sources needful_things,social_media')
-	.action(async (opts,) => {
+	.action(async () => {
 		if (process.argv.some((arg) => arg.includes('build:sources'))) {
 			console.log(
 				chalk.bold.red(
@@ -307,16 +306,18 @@ prog
 			);
 		}
 		if (!('EVIDENCE_DATA_DIR' in process.env)) {
-			process.env.EVIDENCE_DATA_DIR = './.evidence/template/static/data'
+			process.env.EVIDENCE_DATA_DIR = './.evidence/template/static/data';
 		}
 		if (!('EVIDENCE_DATA_URL_PREFIX' in process.env)) {
-			process.env.EVIDENCE_DATA_URL_PREFIX = 'static/data'
+			process.env.EVIDENCE_DATA_URL_PREFIX = 'static/data';
 		}
 		loadEnvFile();
-		
+
 		// The data directory is defined at import time (because we aren't using getters, and it is set once)
 		// So we need to import it here to give the opportunity to override it above
-		const sourcesCli = await import('@evidence-dev/sdk/plugins/datasources').then((m) => m.sourcesCli);
+		const sourcesCli = await import('@evidence-dev/sdk/plugins/datasources').then(
+			(m) => m.sourcesCli
+		);
 		logQueryEvent('build-sources-start');
 		await sourcesCli(...process.argv);
 		return;

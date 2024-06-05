@@ -36,6 +36,18 @@
 			"import": "./src/plugins/datasources/index.js",
 			"require": null,
 			"types": "./src/plugins/datasources/index.d.ts"
+		},
+		"./metrics": {
+			"default": "./src/metrics/index.js",
+			"import": "./src/metrics/index.js",
+			"require": null,
+			"types": "./src/metrics/index.d.ts"
+		},
+		"./metrics/browser": {
+			"default": "./src/metrics/browser.js",
+			"import": "./src/metrics/browser.js",
+			"require": null,
+			"types": "./src/metrics/browser.d.ts"
 		}
 	},
 	"scripts": {

@@ -10,7 +10,7 @@ import { buildMultipartParquet } from '@evidence-dev/universal-sql';
 import { buildSourceDirectoryProxy } from './buildSourceDirectoryProxy.js';
 import { addToCache, checkCache, flushCache, loadCache } from './SourceResultCache.js';
 import ora from 'ora';
-import { URL_PREFIX, dataUrlPrefix } from '../../build-dev/vite/virtuals/node/projectPaths.js';
+import { dataUrlPrefix } from '../../build-dev/vite/virtuals/node/projectPaths.js';
 
 // TODO: Telemetry
 // TODO: Test

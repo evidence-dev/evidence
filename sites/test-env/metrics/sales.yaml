@@ -1,0 +1,15 @@
+- name: Sales
+  source:
+    datasource: needful_things
+    table: orders
+  expression: sales
+  dimensions:
+    - state
+    - channel
+  time_grains:
+    - day
+    - week
+    - month
+    - quarter
+    - year
+  time_expression: order_datetime

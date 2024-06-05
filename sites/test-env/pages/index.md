@@ -1,5 +1,5 @@
-```sql xyz
-SELECT * FROM orders LIMIT 5000
-```
+<MetricFilter metric=Sales/>
+<DataTable data={Sales}/>
 
-<DataTable data={xyz}/>
+
+<pre>{Sales.text}</pre>
