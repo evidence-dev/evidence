@@ -127,6 +127,213 @@ select '2021-04-14' as start_date, null as end_date, 'Campaign C' as name
     <ReferenceLine x='2019-09-18' label="Launch" hideValue=true/>
 </LineChart>
 
+### Diagonal
+
+#### X2 and Y2
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+>
+   <ReferenceLine 
+    x=5000 
+    y=0.01 
+    x2=10000 
+    y2=0.09 
+    label="[x,y] to [x2,y2]"/>
+</ScatterPlot>
+
+#### Just X2
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+>
+   <ReferenceLine 
+    x=5000 
+    y=0.01 
+    x2=10000 
+    label="Just x2"/>
+</ScatterPlot>
+
+#### Just Y2
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+>
+   <ReferenceLine 
+    x=5000 
+    y=0.01  
+    y2=0.09
+    label="Just y2"/>
+</ScatterPlot>
+
+#### Error: Outside Bounds
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+>
+   <ReferenceLine 
+    x=5000 
+    y=0.01 
+    x2=27000 
+    y2=0.09 
+    label="Outside Bounds"/>
+</ScatterPlot>
+
+#### Error: Supplied X and Y but not X2 or Y2
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+>
+   <ReferenceLine 
+    x=5000 
+    y=0.01 
+    label="Error"/>
+</ScatterPlot>
+
+#### Error: supplied x2 and y2, x, y and data
+
+<ScatterPlot
+    data={countries}
+    x=gdp_usd
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+>
+    <ReferenceLine 
+     x=continent
+     y=continent
+     x2=continent 
+     y2=continent
+     data={countries}
+     label="Error"/>
+</ScatterPlot>
+
+
+#### Y = X Line
+
+<ScatterPlot
+    data={countries}
+    x=jobless_rate_pct1
+    xMin=0
+    y=gdp_growth_pct1
+    tooltipTitle=country
+    series=continent
+>
+   <ReferenceLine 
+    x=0.0
+    y=0.0
+    x2=0.09
+    y2=0.09 
+    label="y=x"/>
+</ScatterPlot>
+
+
+#### Linear Regression
+
+```sql orders_by_state
+select 
+    state,
+    sum(sales) as sales_usd,
+    count(*) as num_orders
+from needful_things.orders
+where state != 'Alaska'
+group by all
+order by sales_usd desc
+```
+
+```sql reg
+WITH
+means AS (
+    SELECT 
+        AVG(sales_usd) as mean_sales_usd,
+        AVG(num_orders) as mean_num_orders
+    FROM ${orders_by_state}
+),
+sums AS (
+    SELECT 
+        SUM((sales_usd - mean_sales_usd) * (num_orders - mean_num_orders)) as sum_xy,
+        SUM((sales_usd - mean_sales_usd) * (sales_usd - mean_sales_usd)) as sum_xx
+    FROM ${orders_by_state}, means
+)
+SELECT 
+    sum_xy / sum_xx as slope,
+    mean_num_orders - (sum_xy / sum_xx) * mean_sales_usd as intercept
+FROM sums, means
+```
+
+<ScatterPlot
+    data={orders_by_state}
+    x=sales_usd
+    y=num_orders
+    xMin=0
+    series=state
+>
+     <ReferenceLine
+        x=0
+        y={reg[0].slope * 0 + reg[0].intercept}
+        x2=400000
+        y2={reg[0].slope * 400000 + reg[0].intercept}
+        label="Linear Regression"
+        labelPosition=aboveCenter
+    />
+</ScatterPlot>
+
+#### Swapped X and Y
+
+<BarChart 
+    data={countries}
+    x=country
+    y=gdp_usd
+>
+    <ReferenceLine 
+        x='Japan'
+        y=6500
+        x2='Germany'
+        y2=5000
+        label="-23%"
+        labelPosition=aboveCenter
+        lineType=solid
+        symbol=arrow
+    />
+</BarChart>
+
+#### Trend
+
+<LineChart 
+    data={orders_by_month} 
+    x=month
+    y=sales_usd0k 
+    yAxisTitle="Sales per Month"
+>
+    <ReferenceLine 
+        x='2019-01-01' 
+        y=80000 
+        x2='2021-12-01' 
+        y2=120000
+        label="Trend"
+    />
+</LineChart>
+
 ### From Database
 <LineChart 
     data={orders_by_month} 
@@ -286,7 +493,7 @@ union all
 select 100000, 140000, 2021
 ```
 
-<Dropdown data={target} name=year value=year defaultValue=2020/>
+<Dropdown data={target} name=year value=year defaultValue={2020}/>
 
 ```sql target_filtered
 select * from ${target}

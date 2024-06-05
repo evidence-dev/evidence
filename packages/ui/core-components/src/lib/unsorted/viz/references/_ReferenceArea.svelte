@@ -160,7 +160,7 @@
 		]);
 	}
 
-	const identifier = String(Math.random());
+	const identifier = `reference-area-${xMin}-${yMin}-${xMax}-${yMax}-${label}-${labelPosition}`;
 	let baseConfig;
 
 	$: if (!error) {
@@ -235,6 +235,7 @@
 {#if error}
 	<ErrorChart
 		{error}
+		minHeight=50
 		chartType={chartType === 'Reference Area' ? chartType : `${chartType}: Reference Area`}
 	/>
 {/if}
