@@ -107,7 +107,6 @@
 				</span>
 			</span>
 		{:else}
-
 			<QueryLoad data={query} let:loaded>
 				<svelte:fragment slot="skeleton">
 					<Skeleton class="h-8 w-72" />
@@ -118,7 +117,7 @@
 					start={startString}
 					end={endString}
 					loaded={loaded?.ready ?? true}
-          {presetRanges}
+					{presetRanges}
 				/>
 			</QueryLoad>
 		{/if}
