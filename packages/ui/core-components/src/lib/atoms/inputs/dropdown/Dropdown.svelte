@@ -186,7 +186,6 @@
 			await searchQ.fetch();
 
 			queryOptions = searchQ;
-			console.log($queryOptions);
 			if ($selectedOptions.length) {
 				// We don't want to get rid of selections that already exist when searching
 				$selectedOptions.forEach(($selectedOption) => {
