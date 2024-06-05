@@ -30,6 +30,12 @@
 			"import": "./src/utils/index.js",
 			"require": null,
 			"types": "./src/utils/index.d.ts"
+		},
+		"./plugins/datasources": {
+			"default": "./src/plugins/datasources/index.js",
+			"import": "./src/plugins/datasources/index.js",
+			"require": null,
+			"types": "./src/plugins/datasources/index.d.ts"
 		}
 	},
 	"scripts": {

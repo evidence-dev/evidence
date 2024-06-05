@@ -1,0 +1,1 @@
+export const sourcesCli = (...args: string[]) => Promise<void>;
