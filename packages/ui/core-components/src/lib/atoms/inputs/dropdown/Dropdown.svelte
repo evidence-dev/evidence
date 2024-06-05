@@ -286,17 +286,9 @@
 	const DISPLAYED_OPTIONS = 5;
 
 	function selectAllOptions() {
-		if ($queryOptions) {
-			$queryOptions.forEach((opt) => {
-				flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
-			});
-		}
-
-		if ($options) {
-			$options.forEach((opt) => {
-				flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
-			});
-		}
+		$options.forEach((opt) => {
+			flagOption([opt, DropdownValueFlag.FORCE_SELECT]);
+		});
 	}
 
 	function getIdx(queryOpt) {
