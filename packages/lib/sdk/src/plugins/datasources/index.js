@@ -17,7 +17,7 @@ export const sourcesCli = async (...args) => {
 	const context = { args: parsed, rawArgs: args, cmd: sources };
 	// @ts-expect-error Types are actually correct, but not sure how to express that here
 	await rootCli.setup?.(context);
-	resolveMaybePromise(
+	await resolveMaybePromise(
 		() => {},
 		() => sources.run?.(context),
 		async (e) => {

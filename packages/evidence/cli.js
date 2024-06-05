@@ -293,8 +293,7 @@ prog
 	.example('npx evidence sources --sources needful_things --queries orders,reviews')
 	.example('npx evidence sources --queries needful_things.orders,needful_things.reviews')
 	.example('npx evidence sources --sources needful_things,social_media')
-	.action(async (opts) => {
-		if (opts.debug) process.env.VITE_EVIDENCE_DEBUG = true;
+	.action(async (opts,) => {
 		if (process.argv.some((arg) => arg.includes('build:sources'))) {
 			console.log(
 				chalk.bold.red(
@@ -307,45 +306,17 @@ prog
 				)
 			);
 		}
-
+		if (!('EVIDENCE_DATA_DIR' in process.env)) {
+			process.env.EVIDENCE_DATA_DIR = './.evidence/template/static/data'
+		}
 		loadEnvFile();
-		if (!opts.debug)
-			process.on('uncaughtException', (e) => {
-				console.error(e.message);
-				process.exit(1);
-			});
-		const sources = opts.sources?.split(',') ?? null;
-		const queries = opts.queries?.split(',') ?? null;
-
-		const isExampleProject = Boolean(process.env.__EXAMPLE_PROJECT);
-
-		if (!isExampleProject) {
-			const templatePath = path.join('.evidence', 'template');
-			await fs.mkdir(templatePath, { recursive: true });
-			process.chdir(templatePath);
-		}
-
-		const dataDir = path.join('static', 'data');
-		const metaDir = path.join('.evidence-queries');
-
-		if (opts.debug) {
-			console.log('Building sources in', {
-				dataDir,
-				metaDir,
-				cwd: process.cwd(),
-				resolved: {
-					dataDir: path.resolve(dataDir),
-					metaDir: path.resolve(metaDir)
-				}
-			});
-		}
-
+		
+		// The data directory is defined at import time (because we aren't using getters, and it is set once)
+		// So we need to import it here to give the opportunity to override it above
+		const sourcesCli = await import('@evidence-dev/sdk/plugins/datasources').then((m) => m.sourcesCli);
 		logQueryEvent('build-sources-start');
-		await updateDatasourceOutputs(path.join('static', 'data'), '.evidence-queries', {
-			sources: sources ? new Set(sources) : sources,
-			queries: queries ? new Set(queries) : queries,
-			only_changed: opts.changed
-		});
+		await sourcesCli(...process.argv);
+		return;
 	});
 
 prog
