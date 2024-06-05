@@ -1,3 +1,6 @@
+import { z } from 'zod';
+import { ManifestSchema } from './schemas/manifest.schema.js';
+
 type FileContent = () => Promise<string>;
 
 type QueryResultMeta = {
@@ -36,12 +39,7 @@ export type ProcessSourceFn<T extends Record<string, unknown> = Record<string, u
 	}
 ) => AsyncIterable<QueryResultTable>;
 
-export type Manifest = {
-	/**
-	 * Map of schema names to file URLs
-	 */
-	renderedFiles: Record<string, string[]>;
-};
+export type Manifest = z.infer<typeof ManifestSchema>;
 
 export type SourceFilters = {
 	sources: Set<string> | null;
